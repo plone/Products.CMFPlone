@@ -192,8 +192,8 @@ class ITinyMCEPatternSchema(Interface):
 
     relatedItems = schema.Text(
         title=_(u"Related Items vocabulary url"),
-        description=u"json:{'vocabularyUrl': '%(portal_url)s/@@getVocabulary?name=plone.app.vocabularies.Catalog'}",
-        default=u'json:{"vocabularyUrl": "%(portal_url)s/@@getVocabulary?name=plone.app.vocabularies.Catalog"}',
+        description=u"json:{'vocabularyUrl': '%(portal_url)s/@@getVocabulary?name=plone.app.vocabularies.Catalog'}",  # NOQA
+        default=u'json:{"vocabularyUrl": "%(portal_url)s/@@getVocabulary?name=plone.app.vocabularies.Catalog"}',  # NOQA
         required=True)
 
     rel_upload_path = schema.Text(
@@ -221,7 +221,7 @@ class ITinyMCEPatternSchema(Interface):
 
     content_css = schema.Text(
         title=_(u"Content CSS URL"),
-        description=u'++plone++static/components/tinymce/skins/lightgray/content.min.css')
+        description=u'++plone++static/components/tinymce/skins/lightgray/content.min.css')  # NOQA
 
 
 class ITinyMCELayoutSchema(Interface):
@@ -229,45 +229,61 @@ class ITinyMCELayoutSchema(Interface):
 
     resizing = schema.Bool(
         title=_(u"Enable resizing the editor window."),
-        description=_(u"This option gives you the ability to enable/disable resizing the editor window. If the editor width is set to a percentage only vertical resizing is enabled."),
+        description=_(u"This option gives you the ability to enable/disable "
+                      "resizing the editor window. "
+                      "If the editor width is set to a percentage "
+                      "only vertical resizing is enabled."),
         default=True,
         required=False)
 
     autoresize = schema.Bool(
         title=_(u"Enable auto resizing of the editor window."),
-        description=_(u"This option gives you the ability to enable/disable auto resizing the editor window depending on the content."),
+        description=_(u"This option gives you the ability to enable/disable "
+                      "auto resizing the editor window depending "
+                      "on the content."),
         default=False,
         required=False)
 
     # TODO: add validation to assert % and px in the value
     editor_width = schema.TextLine(
         title=_(u"Editor width"),
-        description=_(u"This option gives you the ability to specify the width of the editor (like 100% or 400px)."),
+        description=_(u"This option gives you the ability to specify the "
+                      "width of the editor (like 100% or 400px)."),
         default=u'100%',
         required=False)
 
     # TODO: add validation to assert % and px in the value
     editor_height = schema.TextLine(
         title=_(u"Editor height"),
-        description=_(u"This option gives you the ability to specify the height of the editor in pixels. If auto resize is enabled this value is used as minimum height."),
+        description=_(u"This option gives you the ability to specify the "
+                      "height of the editor in pixels. "
+                      "If auto resize is enabled this value is used "
+                      "as minimum height."),
         default=u'400px',
         required=False)
 
     contextmenu = schema.Bool(
         title=_(u"Enable contextmenu"),
-        description=_(u"This option gives you the ability to enable/disable the use of the contextmenu."),
+        description=_(u"This option gives you the ability to enable/disable "
+                      "the use of the contextmenu."),
         default=True,
         required=False)
 
     content_css = schema.TextLine(
         title=_(u"Choose the CSS used in WYSIWYG Editor Area"),
-        description=_(u"This option enables you to specify a custom CSS file that replaces the theme content CSS. This CSS file is the one used within the editor (the editable area)."),
+        description=_(u"This option enables you to specify a custom CSS file "
+                      "that replaces the theme content CSS. "
+                      "This CSS file is the one used within the editor "
+                      "(the editable area)."),
         default=u'',
         required=False)
 
     styles = schema.Text(
         title=_(u"Styles"),
-        description=_(u"Enter a list of styles to appear in the style pulldown. Format is title|tag or title|tag|className, one per line."),
+        description=_(u"Enter a list of styles to appear in the style "
+                      "pulldown. "
+                      "Format is title|tag or title|tag|className, "
+                      "one per line."),
         default=u"Heading|h2|\n"
                 u"Subheading|h3|\n"
                 u"Literal|pre|\n"
@@ -294,17 +310,20 @@ class ITinyMCELayoutSchema(Interface):
 
     formats = schema.Text(
         title=_(u"Formats"),
-        description=_(u"Enter a JSON-formatted style format configuration. "
-                      u"A format is for example the style that get applied when "
-                      u"you press the bold button inside the editor. "
-                      u"See http://www.tinymce.com/wiki.php/Configuration:formats"),
+        description=_(
+            u"Enter a JSON-formatted style format configuration. "
+            u"A format is for example the style that get applied when "
+            u"you press the bold button inside the editor. "
+            u"See http://www.tinymce.com/wiki.php/Configuration:formats"),
         constraint=validate_json,
         required=False,
     )
 
     tablestyles = schema.Text(
         title=_(u"Table styles"),
-        description=_(u"Enter a list of styles to appear in the table style pulldown. Format is title|class, one per line."),
+        description=_(
+            u"Enter a list of styles to appear in the table style pulldown. "
+            "Format is title|class, one per line."),
         default=u"Subdued grid|plain\n"
                 u"Invisible grid|invisible\n"
                 u"Fancy listing|listing",
@@ -316,13 +335,15 @@ class ITinyMCEToolbarSchema(Interface):
 
     toolbar_width = schema.TextLine(
         title=_(u"Toolbar width"),
-        description=_(u"This option gives you the ability to specify the width of the toolbar in pixels."),
+        description=_(u"This option gives you the ability to specify the "
+                      "width of the toolbar in pixels."),
         default=u"440",
         required=False)
 
     toolbar_external = schema.Bool(
         title=_(u"Place toolbar on top of the page"),
-        description=_(u"This option enables the external toolbar which will be placed at the top of the page."),
+        description=_(u"This option enables the external toolbar which will "
+                      "be placed at the top of the page."),
         default=False,
         required=False)
 
@@ -588,7 +609,8 @@ class ITinyMCEToolbarSchema(Interface):
 
     customtoolbarbuttons = schema.Text(
         title=_(u"Custom Toolbar Buttons"),
-        description=_(u"Enter a list of custom toolbar buttons which will be loaded in the editor, one per line."),
+        description=_(u"Enter a list of custom toolbar buttons which will be "
+                      "loaded in the editor, one per line."),
         default=u"",
         required=False)
 
@@ -604,13 +626,13 @@ class ITinyMCELibrariesSchema(Interface):
                       u"settings."),
         missing_value=set(),
         vocabulary=SimpleVocabulary([
-                            SimpleTerm('browser', 'browser',
-                                    _(u"Default browser spellchecker")),
-                            SimpleTerm('iespell', 'iespell',
-                                    _(u"ieSpell (free for personal use)")),
-                            SimpleTerm('AtD', 'AtD',
-                                    _(u"After the deadline (FLOSS)")),
-                            ]),
+            SimpleTerm('browser', 'browser',
+                       _(u"Default browser spellchecker")),
+            SimpleTerm('iespell', 'iespell',
+                       _(u"ieSpell (free for personal use)")),
+            SimpleTerm('AtD', 'AtD',
+                       _(u"After the deadline (FLOSS)")),
+        ]),
         default=u'browser',
         required=False)
 
@@ -618,10 +640,10 @@ class ITinyMCELibrariesSchema(Interface):
         title=_(u"AtD Ignore strings"),
         description=_(
             'label_atd_ignore_strings',
-            default=u"A list of strings which the \"After the Deadline\" " \
-                    u"spellchecker should ignore. " \
-                    u"Note: This option is only applicable when the appropriate " \
-                "spellchecker has been chosen above."),
+            default=u"A list of strings which the \"After the Deadline\" "
+                    u"spellchecker should ignore. "
+                    u"Note: This option is only applicable when the "
+                    u"appropriate spellchecker has been chosen above."),
         default=u"Zope\nPlone\nTinyMCE",
         required=False)
 
@@ -629,12 +651,13 @@ class ITinyMCELibrariesSchema(Interface):
         title=_(u"AtD Error types to show"),
         description=_(
             'help_atderrortypes_to_show',
-            default=u"A list of error types which the " \
-                    u"\"After the Deadline\" spellchecker should check for. " \
-                    u"By default, all the available error type will be listed here."),
-        default=u"Bias Language\nCliches\nComplex Expression\n" \
-                u"Diacritical Marks\nDouble Negatives\n" \
-                u"Hidden Verbs\nJargon Language\nPassive voice\n" \
+            default=u"A list of error types which the "
+                    u"\"After the Deadline\" spellchecker should check for. "
+                    u"By default, all the available error type will be "
+                    u"listed here."),
+        default=u"Bias Language\nCliches\nComplex Expression\n"
+                u"Diacritical Marks\nDouble Negatives\n"
+                u"Hidden Verbs\nJargon Language\nPassive voice\n"
                 u"Phrases to Avoid\nRedundant Expression",
         required=False)
 
@@ -642,10 +665,11 @@ class ITinyMCELibrariesSchema(Interface):
         title=_(u"AtD Service URL"),
         description=_(
             'help_atd_service_url',
-            default=u"The URL of the \"After the Deadline\" grammar and spell " \
-                    u"checking server. The default value is the public server, " \
-                    u"but ideally you should download and install your own and " \
-                    u"specify its address here."),
+            default=u"The URL of the \"After the Deadline\" grammar and spell "
+                    u"checking server. "
+                    u"The default value is the public server, "
+                    u"but ideally you should download and install your own "
+                    u"and specify its address here."),
         required=True,
         default=u"service.afterthedeadline.com",)
 
@@ -655,7 +679,9 @@ class ITinyMCEResourceTypesSchema(Interface):
 
     link_using_uids = schema.Bool(
         title=_(u"Link using UIDs"),
-        description=_(u"Links to objects on this site can use unique object ids so that the links remain valid even if the target object is renamed or moved elsewhere on the site."),
+        description=_(u"Links to objects on this site can use unique object "
+                      "ids so that the links remain valid even if the target "
+                      "object is renamed or moved elsewhere on the site."),
         default=True,
         required=False)
 
@@ -667,13 +693,16 @@ class ITinyMCEResourceTypesSchema(Interface):
 
     rooted = schema.Bool(
         title=_(u"Rooted to current object"),
-        description=_(u"When enabled the user will be rooted to the current object and can't add links and images from other parts of the site."),
+        description=_(u"When enabled the user will be rooted to the current "
+                      "object and can't add links and images from other parts "
+                      "of the site."),
         default=False,
         required=False)
 
     containsobjects = schema.Text(
         title=_(u"Contains Objects"),
-        description=_(u"Enter a list of content types which can contain other objects. Format is one contenttype per line."),
+        description=_(u"Enter a list of content types which can contain other "
+                      "objects. Format is one contenttype per line."),
         default=u"Folder\n"
                 u"Large Plone Folder\n"
                 u"Plone Site",
@@ -681,7 +710,8 @@ class ITinyMCEResourceTypesSchema(Interface):
 
     containsanchors = schema.Text(
         title=_(u"Contains Anchors"),
-        description=_(u"Enter a list of content types which can contain anchors. Format is one contenttype per line."),
+        description=_(u"Enter a list of content types which can contain "
+                      "anchors. Format is one contenttype per line."),
         default=u"Event\n"
                 u"News Item\n"
                 u"Document\n"
@@ -690,12 +720,14 @@ class ITinyMCEResourceTypesSchema(Interface):
 
     linkable = schema.Text(
         title=_(u"Linkable Objects"),
-        description=_(u"Enter a list of content types which can be linked. Format is one contenttype per line."),
+        description=_(u"Enter a list of content types which can be linked. "
+                      "Format is one contenttype per line."),
         required=False)
 
     imageobjects = schema.Text(
         title=_(u"Image Objects"),
-        description=_(u"Enter a list of content types which can be used as images. Format is one contenttype per line."),
+        description=_(u"Enter a list of content types which can be used as "
+                      "images. Format is one contenttype per line."),
         default=u"Image",
         required=False)
 
@@ -719,7 +751,9 @@ class ITinyMCEResourceTypesSchema(Interface):
             SimpleTerm('pagebreak', 'pagebreak', u"pagebreak"),
             SimpleTerm('paste', 'paste', u"paste"),
             SimpleTerm('plonebrowser', 'plonebrowser', u"plonebrowser"),
-            SimpleTerm('ploneinlinestyles', 'ploneinlinestyles', u"ploneinlinestyles"),
+            SimpleTerm(
+                'ploneinlinestyles', 'ploneinlinestyles',
+                u"ploneinlinestyles"),
             SimpleTerm('plonestyle', 'plonestyle', u"plonestyle"),
             SimpleTerm('preview', 'preview', u"preview"),
             SimpleTerm('print', 'print', u"print"),
@@ -740,15 +774,26 @@ class ITinyMCEResourceTypesSchema(Interface):
 
     customplugins = schema.Text(
         title=_(u"Custom Plugins"),
-        description=_(u"Enter a list of custom plugins which will be loaded in the editor. Format is pluginname or pluginname|location, one per line."),
+        description=_(u"Enter a list of custom plugins which will be loaded "
+                      "in the editor. Format is pluginname or "
+                      "pluginname|location, one per line."),
         default=u"plonebrowser",
         required=False)
 
     entity_encoding = schema.Choice(
         title=_(u"Entity encoding"),
-        description=_(u"This option controls how entities/characters get processed. Named: Characters will be converted into named entities based on the entities option. Numeric: Characters will be converted into numeric entities. Raw: All characters will be stored in non-entity form except these XML default entities: amp lt gt quot"),
+        description=_(
+            u"This option controls how entities/characters get processed. "
+            "Named: Characters will be converted into named entities "
+            "based on the entities option. "
+            "Numeric: Characters will be converted into numeric entities. "
+            "Raw: All characters will be stored in non-entity form "
+            "except these XML default entities: amp lt gt quot"),
         missing_value=set(),
-        vocabulary=SimpleVocabulary([SimpleTerm('named', 'named', _(u"Named")), SimpleTerm('numeric', 'numeric', _(u"Numeric")), SimpleTerm('raw', 'raw', _(u"Raw"))]),
+        vocabulary=SimpleVocabulary(
+            [SimpleTerm('named', 'named', _(u"Named")),
+             SimpleTerm('numeric', 'numeric', _(u"Numeric")),
+             SimpleTerm('raw', 'raw', _(u"Raw"))]),
         default=u"raw",
         required=False)
 
@@ -759,7 +804,7 @@ class ITinyMCESchema(
     ITinyMCELibrariesSchema,
     ITinyMCEResourceTypesSchema,
     ITinyMCEPatternSchema
-    ):
+):
     """TinyMCE Schema"""
 
 
@@ -807,7 +852,8 @@ class INavigationSchema(Interface):
             u"The content types that should be shown in the navigation and " +
             u"site map."),
         required=False,
-        default=('Image', 'File', 'Link', 'News Item', 'Folder', 'Document', 'Event'),
+        default=('Image', 'File', 'Link', 'News Item', 'Folder', 'Document',
+                 'Event'),
         value_type=schema.Choice(
             source="plone.app.vocabularies.ReallyUserFriendlyTypes"
         ))
