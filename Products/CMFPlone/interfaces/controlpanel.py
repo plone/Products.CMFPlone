@@ -124,13 +124,13 @@ class IFilterSchema(Interface):
         default=False,
         required=False)
 
-    # nasty_tags = schema.List(
-    #     title=_(u'Nasty tags'),
-    #     description=_(u"These tags, and their content are completely blocked "
-    #                   "when a page is saved or rendered."),
-    #     default=[u'applet', u'embed', u'object', u'script'],
-    #     value_type=schema.TextLine(),
-    #     required=False)
+    nasty_tags = schema.List(
+        title=_(u'Nasty tags'),
+        description=_(u"These tags, and their content are completely blocked "
+                      "when a page is saved or rendered."),
+        default=[u'applet', u'embed', u'object', u'script'],
+        value_type=schema.TextLine(),
+        required=False)
 
     # stripped_tags = schema.List(
     #     title=_(u'Stripped tags'),

@@ -37,3 +37,6 @@ class FilterRegistryIntegrationTest(unittest.TestCase):
 
     def test_disable_filtering_setting(self):
         self.assertTrue(hasattr(self.settings, 'disable_filtering'))
+
+    def test_nasty_tags_setting(self):
+        self.assertTrue(hasattr(self.settings, 'nasty_tags'))

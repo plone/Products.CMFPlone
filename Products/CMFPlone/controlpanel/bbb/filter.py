@@ -21,4 +21,11 @@ class FilterControlPanelAdapter(object):
     def set_disable_filtering(self, value):
         self.settings.disable_filtering = value
 
+    def get_nasty_tags(self):
+        return self.settings.nasty_tags
+
+    def set_nasty_tags(self, value):
+        self.settings.nasty_tags = value
+
+    nasty_tags = property(get_nasty_tags, set_nasty_tags)
     disable_filtering = property(get_disable_filtering, set_disable_filtering)
