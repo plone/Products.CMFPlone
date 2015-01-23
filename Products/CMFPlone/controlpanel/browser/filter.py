@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone import PloneMessageFactory as _  # NOQA
 from Products.CMFPlone.interfaces import IFilterSchema
 from plone.app.registry.browser import controlpanel
-from plone.formwidget.namedfile.widget import NamedImageFieldWidget
 
 
 class FilterControlPanelForm(controlpanel.RegistryEditForm):

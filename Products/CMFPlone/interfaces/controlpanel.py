@@ -111,7 +111,11 @@ class TagAttrPair(object):
         self.attributes = attributes
 
 
-class IFilterTagsSchema(Interface):
+class IFilterSchema(Interface):
+    """Combined schema for the adapter lookup.
+    """
+
+    # class IFilterTagsSchema(Interface):
 
     disable_filtering = schema.Bool(
         title=_(u'Disable html filtering'),
@@ -144,8 +148,8 @@ class IFilterTagsSchema(Interface):
         value_type=schema.TextLine(),
         required=False)
 
+    # class IFilterAttributesSchema(Interface):
 
-class IFilterAttributesSchema(Interface):
     stripped_attributes = schema.List(
         title=_(u'Stripped attributes'),
         description=_(u"These attributes are stripped from any tag when "
@@ -165,8 +169,8 @@ class IFilterAttributesSchema(Interface):
         value_type=schema.Object(ITagAttrPair, title=u"combination"),
         required=False)
 
+    # class IFilterEditorSchema(Interface):
 
-class IFilterEditorSchema(Interface):
     style_whitelist = schema.List(
         title=_(u'Permitted properties'),
         description=_(u'These CSS properties are allowed in style attributes.'),
@@ -181,12 +185,6 @@ class IFilterEditorSchema(Interface):
         default=[],
         value_type=schema.TextLine(),
         required=False)
-
-
-class IFilterSchema(IFilterTagsSchema, IFilterAttributesSchema,
-                    IFilterEditorSchema):
-    """Combined schema for the adapter lookup.
-    """
 
 
 class ITinyMCEPatternSchema(Interface):
