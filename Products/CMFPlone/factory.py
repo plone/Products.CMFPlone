@@ -71,9 +71,9 @@ def zmi_constructor(context):
 
 
 def addPloneSite(context, site_id, title='Plone site', description='',
-                 create_userfolder=True, validate_email=True,
-                 profile_id=_DEFAULT_PROFILE, content_profile_id=_CONTENT_PROFILE,
-                 snapshot=False, extension_ids=(), setup_content=True,
+                 create_userfolder=True, profile_id=_DEFAULT_PROFILE,
+                 content_profile_id=_CONTENT_PROFILE, snapshot=False,
+                 extension_ids=(), setup_content=True,
                  default_language='en', portal_timezone='UTC'):
     """Add a PloneSite to the context."""
     context._setObject(site_id, PloneSite(site_id))
@@ -99,7 +99,6 @@ def addPloneSite(context, site_id, title='Plone site', description='',
     props = dict(
         title=title,
         description=description,
-        validate_email=validate_email,
     )
     # Do this before applying extension profiles, so the settings from a
     # properties.xml file are applied and not overwritten by this
