@@ -71,7 +71,7 @@ def zmi_constructor(context):
 
 
 def addPloneSite(context, site_id, title='Plone site', description='',
-                 create_userfolder=True, profile_id=_DEFAULT_PROFILE,
+                 profile_id=_DEFAULT_PROFILE,
                  content_profile_id=_CONTENT_PROFILE, snapshot=False,
                  extension_ids=(), setup_content=True,
                  default_language='en', portal_timezone='UTC'):
