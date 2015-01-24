@@ -160,6 +160,9 @@ Changelog
   an empty userid. That way the user gets a helpful message.
   [do3cc]
 
+- If a page is renamed and the page is a default page, default page setting is corrected
+  [hoka]
+
 
 4.3.2 (2013-08-14)
 ------------------
