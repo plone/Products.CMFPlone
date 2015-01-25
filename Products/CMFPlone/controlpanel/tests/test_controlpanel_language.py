@@ -59,8 +59,8 @@ class LanguageRegistryIntegrationTest(unittest.TestCase):
     def test_authenticated_users_only(self):
         self.assertTrue(hasattr(self.settings, 'authenticated_users_only('))
 
-    def test_set_cookie_everywhere(self):
-        self.assertTrue(hasattr(self.settings, 'set_cookie_everywhere'))
+    def test_set_cookie_always(self):
+        self.assertTrue(hasattr(self.settings, 'set_cookie_always'))
 
     def test_use_subdomain_negotiation(self):
         self.assertTrue(hasattr(self.settings, 'use_subdomain_negotiation'))
