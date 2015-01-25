@@ -54,4 +54,16 @@ require([
       }
     });
   }
+
+  // TODO: Needs to be moved to controlpanel js
+  $(document).ready(function() {
+    var cookieNegotiation = (
+      $("#form-widgets-use_cookie_negotiation > input").value === 'selected');
+    if (cookieNegotiation !== true) {
+      $("#formfield-form-widgets-authenticated_users_only").hide();
+    }else{
+      $("#formfield-form-widgets-authenticated_users_only").show();
+    }
+  });
+
 });

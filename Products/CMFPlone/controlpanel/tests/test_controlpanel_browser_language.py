@@ -13,6 +13,7 @@ from Products.CMFPlone.testing import \
 import unittest2 as unittest
 
 
+
 class LanguageControlPanelFunctionalTest(unittest.TestCase):
     """Test that changes in the language control panel are actually
     stored in the registry.
@@ -30,6 +31,12 @@ class LanguageControlPanelFunctionalTest(unittest.TestCase):
             'Authorization',
             'Basic %s:%s' % (SITE_OWNER_NAME, SITE_OWNER_PASSWORD,)
         )
+
+    def in_out_select(self, form, name, control_name):
+        form.mech_form.new_control(
+            type='hidden',
+            name=name,
+            attrs=dict(value=self.browser.getControl(control_name).optionValue))
 
     def test_language_control_panel_link(self):
         self.browser.open(
@@ -56,6 +63,43 @@ class LanguageControlPanelFunctionalTest(unittest.TestCase):
         view = view.__of__(self.portal)
         self.assertTrue(view())
 
+    def test_default_language(self):
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(ILanguageSchema, prefix='plone')
+        self.browser.open(
+            "%s/@@language-controlpanel" % self.portal_url)
+        self.assertEqual(settings.default_language, 'en')
+        self.assertEqual(
+            self.browser.getControl(
+                'Site language'
+            ).value,
+            ['en']
+        )
+        self.browser.getControl(
+            'Site language'
+        ).value = ['de']
+        self.browser.getControl('Save').click()
+
+        self.assertEqual(settings.default_language, 'de')
+
+    # def test_available_languages(self):
+    #     registry = getUtility(IRegistry)
+    #     settings = registry.forInterface(ILanguageSchema, prefix='plone')
+    #     self.browser.open(
+    #         "%s/@@language-controlpanel" % self.portal_url)
+    #     self.assertEqual(settings.available_languages, ['en'])
+    #     self.assertEqual(
+    #         self.browser.getControl(
+    #             name='form.widgets.available_languages.to'
+    #         ).options,
+    #         ['en']
+    #     )
+    #     control = self.browser.getForm(index=1)
+    #     self.in_out_select(
+    #         control, 'form.widgets.available_languages:list', 'Deutsch')
+    #     self.browser.getControl('Save').click()
+    #     self.assertEqual(settings.available_languages, ['en', 'de'])
+
     def test_use_combined_language_codes(self):
         registry = getUtility(IRegistry)
         settings = registry.forInterface(ILanguageSchema, prefix='plone')
@@ -75,21 +119,139 @@ class LanguageControlPanelFunctionalTest(unittest.TestCase):
 
         self.assertEqual(settings.use_combined_language_codes, True)
 
-    def test_default_language(self):
+    def test_use_content_negotiation(self):
         registry = getUtility(IRegistry)
         settings = registry.forInterface(ILanguageSchema, prefix='plone')
         self.browser.open(
             "%s/@@language-controlpanel" % self.portal_url)
-        self.assertEqual(settings.default_language, 'en')
+        self.assertEqual(settings.use_content_negotiation, False)
         self.assertEqual(
             self.browser.getControl(
-                'Site language'
-            ).value,
-            ['en']
+                'Use the language of the content item'
+            ).selected,
+            False
         )
         self.browser.getControl(
-            'Site language'
-        ).value = ['de']
+            'Use the language of the content item'
+        ).selected = True
         self.browser.getControl('Save').click()
 
-        self.assertEqual(settings.default_language, 'de')
+        self.assertEqual(settings.use_content_negotiation, True)
+
+    def test_use_path_negotiation(self):
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(ILanguageSchema, prefix='plone')
+        self.browser.open(
+            "%s/@@language-controlpanel" % self.portal_url)
+        self.assertEqual(settings.use_path_negotiation, False)
+        self.assertEqual(
+            self.browser.getControl(
+                'Use language codes in URL path for manual override'
+            ).selected,
+            False
+        )
+        self.browser.getControl(
+            'Use language codes in URL path for manual override'
+        ).selected = True
+        self.browser.getControl('Save').click()
+
+        self.assertEqual(settings.use_path_negotiation, True)
+
+    def test_use_cookie_negotiation(self):
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(ILanguageSchema, prefix='plone')
+        self.browser.open(
+            "%s/@@language-controlpanel" % self.portal_url)
+        self.assertEqual(settings.use_cookie_negotiation, False)
+        self.assertEqual(
+            self.browser.getControl(
+                'Use cookie for manual override'
+            ).selected,
+            False
+        )
+        self.browser.getControl(
+            'Use cookie for manual override'
+        ).selected = True
+        self.browser.getControl('Save').click()
+
+        self.assertEqual(settings.use_cookie_negotiation, True)
+
+    def test_authenticated_users_only(self):
+        control_label = "Authenticated users only"
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(ILanguageSchema, prefix='plone')
+        self.browser.open(
+            "%s/@@language-controlpanel" % self.portal_url)
+        self.assertEqual(settings.authenticated_users_only, False)
+        self.assertEqual(
+            self.browser.getControl(control_label).selected,
+            False
+        )
+        self.browser.getControl(control_label).selected = True
+        self.browser.getControl('Save').click()
+
+        self.assertEqual(settings.authenticated_users_only, True)
+
+    def test_set_cookie_always(self):
+        control_label = "Set the language cookie always"
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(ILanguageSchema, prefix='plone')
+        self.browser.open(
+            "%s/@@language-controlpanel" % self.portal_url)
+        self.assertEqual(settings.set_cookie_always, False)
+        self.assertEqual(
+            self.browser.getControl(control_label).selected,
+            False
+        )
+        self.browser.getControl(control_label).selected = True
+        self.browser.getControl('Save').click()
+
+        self.assertEqual(settings.set_cookie_always, True)
+
+    def test_use_subdomain_negotiation(self):
+        control_label = "Use subdomain"
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(ILanguageSchema, prefix='plone')
+        self.browser.open(
+            "%s/@@language-controlpanel" % self.portal_url)
+        self.assertEqual(settings.use_subdomain_negotiation, False)
+        self.assertEqual(
+            self.browser.getControl(control_label).selected,
+            False
+        )
+        self.browser.getControl(control_label).selected = True
+        self.browser.getControl('Save').click()
+
+        self.assertEqual(settings.use_subdomain_negotiation, True)
+
+    def test_use_cctld_negotiation(self):
+        control_label = "Use top-level domain"
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(ILanguageSchema, prefix='plone')
+        self.browser.open(
+            "%s/@@language-controlpanel" % self.portal_url)
+        self.assertEqual(settings.use_cctld_negotiation, False)
+        self.assertEqual(
+            self.browser.getControl(control_label).selected,
+            False
+        )
+        self.browser.getControl(control_label).selected = True
+        self.browser.getControl('Save').click()
+
+        self.assertEqual(settings.use_cctld_negotiation, True)
+
+    def test_use_request_negotiation(self):
+        control_label = "Use browser language request negotiation"
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(ILanguageSchema, prefix='plone')
+        self.browser.open(
+            "%s/@@language-controlpanel" % self.portal_url)
+        self.assertEqual(settings.use_request_negotiation, False)
+        self.assertEqual(
+            self.browser.getControl(control_label).selected,
+            False
+        )
+        self.browser.getControl(control_label).selected = True
+        self.browser.getControl('Save').click()
+
+        self.assertEqual(settings.use_request_negotiation, True)

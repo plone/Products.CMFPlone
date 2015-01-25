@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from plone.supermodel import model
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.utils import validate_json
 from basetool import IPloneBaseTool
@@ -98,6 +99,15 @@ class IEditingSchema(Interface):
 
 
 class ILanguageSchema(Interface):
+    model.fieldset(
+        'general',
+        label=_(u'General', default=u'General'),
+        fields=[
+            'default_language',
+            'available_languages',
+            'use_combined_language_codes',
+        ],
+    )
 
     default_language = schema.Choice(
         title=_(u"heading_site_language",
@@ -138,79 +148,97 @@ class ILanguageSchema(Interface):
         required=False
     )
 
+    model.fieldset(
+        'negotiation_scheme',
+        label=_(u'Negotiation scheme', default=u'Negotiation scheme'),
+        fields=[
+            'use_content_negotiation',
+            'use_path_negotiation',
+            'use_cookie_negotiation',
+            'authenticated_users_only',
+            'set_cookie_everywhere',
+            'use_subdomain_negotiation',
+            'use_cctld_negotiation',
+            'use_request_negotiation',
+            ],
+        )
     use_content_negotiation = schema.Bool(
         title=_(u"heading_language_of_the_content",
-                default=u"Use the language of the content item."),
+                default=u"Use the language of the content item"),
         description=_(u"description_language_of_the_content",
                       default=u"Use the language of the content item."),
+        default=False,
         required=False,
     )
 
     use_path_negotiation = schema.Bool(
         title=_(
             u"heading_language_codes_in_URL",
-            default=u"Use language codes in URL path for manual override."),
+            default=u"Use language codes in URL path for manual override"),
         description=_(
             u"description_language_codes_in_URL",
             default=u"Use language codes in URL path for manual override."),
+        default=False,
         required=False,
     )
 
     use_cookie_negotiation = schema.Bool(
         title=_(u"heading_cookie_manual_override",
-                default=(u"Use cookie for manual override. (Required for "
-                         u"the language selector viewlet to be rendered.)")),
+                default=(u"Use cookie for manual override")),
         description=_(
             u"description_cookie_manual_override",
-            default=(u"Use cookie for manual override. (Required for the "
-                     u"language selector viewlet to be rendered.)")),
+            default=(u"Required for the language selector viewlet to be rendered.")
+        ),
+        default=False,
         required=False,
     )
 
     authenticated_users_only = schema.Bool(
         title=_(u"heading_auth_cookie_manual_override",
-                default=u"Authenticated users only."),
+                default=u"Authenticated users only"),
         description=_(
             u"description_auth_ookie_manual_override",
-            default=(u"Authenticated users only. Use cookie for manual "
-                     u"override. (Required for the language selector viewlet "
-                     u"to be rendered.)")),
+            default=(u"Related to Use cookie for manual override")
+        ),
+        default=False,
         required=False,
     )
 
-    set_cookie_everywhere = schema.Bool(
+    set_cookie_always = schema.Bool(
         title=_(
             u"heading_set_language_cookie_always",
-            default=(u"Set the language cookie always, i.e. also when the "
-                     u"'set_language' request parameter is absent.")),
+            default=(u"Set the language cookie always")),
         description=_(
             u"description_set_language_cookie_always",
-            default=(u"Set the language cookie always, i.e. also when the "
-                     u"'set_language' request parameter is absent.")),
+            default=(u"i.e. also when the 'set_language' request parameter is absent")),
+        default=False,
         required=False,
         )
 
     use_subdomain_negotiation = schema.Bool(
         title=_(u"heading_use_subdomain",
-                default=u"Use subdomain (e.g.: de.plone.org)."),
+                default=u"Use subdomain"),
         description=_(u"description_use_subdomain",
-                      default=u"Use subdomain (e.g.: de.plone.org)."),
+                      default=u"e.g.: de.plone.org"),
+        default=False,
         required=False,
         )
 
     use_cctld_negotiation = schema.Bool(
         title=_(u"heading_top_level_domain",
-                default=u"Use top-level domain (e.g.: www.plone.de)."),
+                default=u"Use top-level domain"),
         description=_(u"description_top_level_domain",
-                      default=u"Use top-level domain (e.g.: www.plone.de)."),
+                      default=u"e.g.: www.plone.de"),
+        default=False,
         required=False,
         )
 
     use_request_negotiation = schema.Bool(
         title=_(u"heading_browser_language_request_negotiation",
-                default=u"Use browser language request negotiation."),
+                default=u"Use browser language request negotiation"),
         description=_(u"description_browser_language_request_negotiation",
                       default=u"Use browser language request negotiation."),
+        default=False,
         required=False,
         )
 
