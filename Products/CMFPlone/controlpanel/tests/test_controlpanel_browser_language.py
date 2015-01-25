@@ -13,6 +13,7 @@ from Products.CMFPlone.testing import \
 import unittest2 as unittest
 
 
+
 class LanguageControlPanelFunctionalTest(unittest.TestCase):
     """Test that changes in the language control panel are actually
     stored in the registry.
@@ -274,18 +275,4 @@ class LanguageControlPanelFunctionalTest(unittest.TestCase):
 
         self.assertEqual(settings.use_request_negotiation, True)
 
-    def test_default_language(self):
-        self.assertEqual(settings.default_language, 'en')
-        self.assertEqual(
-            self.browser.getControl(
-                'Site language'
-            ).value,
-            ['en']
-        )
-        self.browser.getControl(
-            'Site language'
-        ).value = ['de']
-        self.browser.getControl('Save').click()
-
-        self.assertEqual(settings.default_language, 'de')
 
