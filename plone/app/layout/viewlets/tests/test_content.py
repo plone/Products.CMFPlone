@@ -1,18 +1,15 @@
-from z3c.relationfield import RelationValue
-from zope.component import getUtility
-from zope.component.hooks import getSite
-from zope.interface import Interface
-from zope.intid.interfaces import IIntIds
+from DateTime import DateTime
 from plone.app.layout.viewlets.tests.base import ViewletsTestCase
 from plone.app.layout.viewlets.content import DocumentBylineViewlet
 from plone.app.layout.viewlets.content import ContentRelatedItems
-from plone.locking.tests import addMember
 from plone.locking.interfaces import ILockable
 from plone.registry.interfaces import IRegistry
-from Products.CMFPlone.interfaces import ISecuritySchema
-
-from DateTime import DateTime
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.interfaces import ISecuritySchema
+from z3c.relationfield import RelationValue
+from zope.component import getUtility
+from zope.interface import Interface
+from zope.intid.interfaces import IIntIds
 
 try:
     import pkg_resources
