@@ -92,7 +92,7 @@ Login
 We can now login with this email address:
 
     >>> browser.open('http://nohost/plone/login')
-    >>> browser.getControl('Login Name').value = 'email@example.org'
+    >>> browser.getControl('E-mail').value = 'email@example.org'
     >>> browser.getControl('Password').value = SITE_OWNER_PASSWORD
     >>> browser.getControl('Log in').click()
     >>> self.assertTrue('You are now logged in' in browser.contents)
@@ -123,7 +123,7 @@ Now we try logging out and in again with the given email address.
 
     >>> browser.open('http://nohost/plone/logout')
     >>> browser.open('http://nohost/plone/login')
-    >>> browser.getControl('Login Name').value = 'username@example.org'
+    >>> browser.getControl('E-mail').value = 'username@example.org'
     >>> browser.getControl('Password').value = SITE_OWNER_PASSWORD
     >>> browser.getControl('Log in').click()
     >>> browser.open('http://nohost/plone')
@@ -141,7 +141,7 @@ We again log in as the user created after using email as login was
 switched on.
 
     >>> browser.open('http://nohost/plone/login')
-    >>> browser.getControl('Login Name').value = 'email@example.org'
+    >>> browser.getControl('E-mail').value = 'email@example.org'
     >>> browser.getControl('Password').value = SITE_OWNER_PASSWORD
     >>> browser.getControl('Log in').click()
     >>> browser.open('http://nohost/plone')
@@ -162,7 +162,7 @@ want. (See PLIP9214 notes.)
 
     >>> browser.open('http://nohost/plone/logout')
     >>> browser.open('http://nohost/plone/login')
-    >>> browser.getControl('Login Name').value = 'email1@example.org'
+    >>> browser.getControl('E-mail').value = 'email1@example.org'
     >>> browser.getControl('Password').value = SITE_OWNER_PASSWORD
     >>> browser.getControl('Log in').click()
     >>> self.assertTrue('Login failed' in browser.contents)
@@ -171,7 +171,7 @@ The current email address of course works fine for logging in:
 
     >>> browser.open('http://nohost/plone/logout')
     >>> browser.open('http://nohost/plone/login')
-    >>> browser.getControl('Login Name').value = 'email2@example.org'
+    >>> browser.getControl('E-mail').value = 'email2@example.org'
     >>> browser.getControl('Password').value = SITE_OWNER_PASSWORD
     >>> browser.getControl('Log in').click()
     >>> browser.open('http://nohost/plone')
@@ -243,7 +243,7 @@ Now that we have the address, we will reset our password:
 We can now login using our new password:
 
     >>> browser.open('http://nohost/plone/login')
-    >>> browser.getControl('Login Name').value = 'email2@example.org'
+    >>> browser.getControl('E-mail').value = 'email2@example.org'
     >>> browser.getControl('Password').value = 'secretion'
     >>> browser.getControl('Log in').click()
     >>> browser.open('http://nohost/plone')
@@ -290,7 +290,7 @@ login name though, but have to use our current email address as that
 is our login name:
 
     >>> browser.open('http://nohost/plone/login')
-    >>> browser.getControl('Login Name').value = 'username@example.org'
+    >>> browser.getControl('E-mail').value = 'username@example.org'
     >>> browser.getControl('Password').value = 'secretion'
     >>> browser.getControl('Log in').click()
     >>> browser.open('http://nohost/plone')
