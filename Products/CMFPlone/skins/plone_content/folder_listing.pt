@@ -38,7 +38,7 @@
                         isAnon context/@@plone_portal_state/anonymous;
                         normalizeString nocall: context/plone_utils/normalizeString;
                         toLocalizedTime nocall: context/@@plone/toLocalizedTime;
-                        show_about python:not isAnon or site_properties.allowAnonymousViewAbout;
+                        show_about python:not isAnon or context.portal_registry['plone.allow_anon_views_about'];
                         navigation_root_url context/@@plone_portal_state/navigation_root_url;
                         pas_member context/@@pas_member;
                         layout_view context/@@plone_layout;">

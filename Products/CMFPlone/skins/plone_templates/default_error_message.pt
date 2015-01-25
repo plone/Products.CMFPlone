@@ -23,6 +23,7 @@
                  err_log_url options/error_log_url|nothing;
                  err_log_id options/error_log_id|nothing;
                  isAnon context/@@plone_portal_state/anonymous;
+                 show_about python:not isAnon or context.portal_registry['plone.allow_anon_views_about'];
                  toLocalizedTime nocall: context/@@plone/toLocalizedTime;">
 
         <metal:notfound tal:condition="python:err_type=='NotFound'">
@@ -85,7 +86,7 @@
                                      tal:content="first_parent/Title">
                                   <img tal:replace="structure item_icon/html_tag" />
                                     <span class="discreet" i18n:translate="results_by_author"
-                                      tal:condition="python: not isAnon or site_properties.allowAnonymousViewAbout">
+                                      tal:condition="show_about">
                                     by <span tal:omit-tag="" tal:content="first_parent/Creator" i18n:name="author">Author</span>,
                                     <span tal:omit-tag="" tal:content="python:toLocalizedTime(first_parent.ModificationDate(), long_format=1)" i18n:name="date">Modification Date</span>
                                     </span>
@@ -111,7 +112,7 @@
                                   <img tal:replace="structure item_icon/html_tag" />
 
                                     <span class="discreet" i18n:translate="results_by_author"
-                                      tal:condition="python: not isAnon or site_properties.allowAnonymousViewAbout">
+                                      tal:condition="show_about">
                                     by <span tal:omit-tag="" tal:content="similar/Creator" i18n:name="author">Author</span>,
                                     <span tal:omit-tag="" tal:content="python:toLocalizedTime(similar.ModificationDate, long_format=1)" i18n:name="date">Modification Date</span>
                                     </span>

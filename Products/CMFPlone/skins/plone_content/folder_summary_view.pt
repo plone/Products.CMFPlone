@@ -36,7 +36,8 @@
 
                     </h2>
 
-                    <div class="documentByLine" tal:condition="python: site_properties.allowAnonymousViewAbout or not isAnon">
+                    <div class="documentByLine"
+                         tal:condition="python: not isAnon or context.portal_registry['plone.allow_anon_views_about']">
                     <tal:event condition="python: item_type == 'Event'">
                         <span tal:condition="python: item_type == 'Event' and item.location"
                               i18n:translate="label_event_byline_with_location">
@@ -99,9 +100,9 @@
 
                     <p class="tileFooter">
                         <a href=""
-                           tal:attributes="href python:test(item_type in use_view_action, item_url+'/view', item_url);"> 
-                           <span class="hiddenStructure"><span tal:replace="item_title_or_id" /> - </span> 
-                           <span i18n:translate="read_more">Read More&hellip;</span> 
+                           tal:attributes="href python:test(item_type in use_view_action, item_url+'/view', item_url);">
+                           <span class="hiddenStructure"><span tal:replace="item_title_or_id" /> - </span>
+                           <span i18n:translate="read_more">Read More&hellip;</span>
                         </a>
                     </p>
 
