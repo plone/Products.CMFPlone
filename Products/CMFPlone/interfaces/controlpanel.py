@@ -156,7 +156,7 @@ class ILanguageSchema(Interface):
             'use_path_negotiation',
             'use_cookie_negotiation',
             'authenticated_users_only',
-            'set_cookie_everywhere',
+            'set_cookie_always',
             'use_subdomain_negotiation',
             'use_cctld_negotiation',
             'use_request_negotiation',
