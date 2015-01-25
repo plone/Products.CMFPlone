@@ -8,6 +8,8 @@ from plone.app.layout.viewlets.content import DocumentBylineViewlet
 from plone.app.layout.viewlets.content import ContentRelatedItems
 from plone.locking.tests import addMember
 from plone.locking.interfaces import ILockable
+from plone.registry.interfaces import IRegistry
+from Products.CMFPlone.interfaces import ISecuritySchema
 
 from DateTime import DateTime
 from Products.CMFCore.utils import getToolByName
@@ -35,6 +37,44 @@ class TestDocumentBylineViewletView(ViewletsTestCase):
         portal = getSite()
         addMember(portal, 'Alan', roles=('Member', 'Manager'))
         addMember(portal, 'Ano', roles=())
+        self.folder.invokeFactory('Document', 'doc1', title='Document 1')
+
+        registry = getUtility(IRegistry)
+        self.security_settings = registry.forInterface(
+            ISecuritySchema,
+            prefix='plone',
+        )
+
+    def _get_viewlet(self):
+        context = self.folder['doc1']
+        request = self.app.REQUEST
+        viewlet = DocumentBylineViewlet(context, request, None, None)
+        viewlet.update()
+        return viewlet
+
+    def test_show_anonymous_not_allowed(self):
+        self.security_settings.allow_anon_views_about = False
+        self.logout()
+        viewlet = self._get_viewlet()
+        self.assertFalse(viewlet.show())
+
+    def test_show_anonymous_allowed(self):
+        self.security_settings.allow_anon_views_about = True
+        self.logout()
+        viewlet = self._get_viewlet()
+        self.assertTrue(viewlet.show())
+
+    def test_show_logged_in_anonymous_not_allowed(self):
+        self.security_settings.allow_anon_views_about = False
+        self.login('Alan')
+        viewlet = self._get_viewlet()
+        self.assertTrue(viewlet.show())
+
+    def test_show_logged_in_anonymous_allowed(self):
+        self.security_settings.allow_anon_views_about = True
+        self.login('Alan')
+        viewlet = self._get_viewlet()
+        self.assertTrue(viewlet.show())
 
     def test_anonymous_locked_icon(self):
         request = self.app.REQUEST
