@@ -26,7 +26,7 @@ if js_enabled and not cookies_enabled:
 mt=context.portal_membership
 if mt.isAnonymousUser():
     props = getToolByName(context, 'portal_properties').site_properties
-    email_login = props.getProperty('use_email_as_login')
+    email_login = context.portal_registry['plone.use_email_as_login']
     if js_enabled:  # javascript is enabled - we can diagnose the failure
         # using cookie authentication?
         auth = getattr(context, 'cookie_authentication', None)

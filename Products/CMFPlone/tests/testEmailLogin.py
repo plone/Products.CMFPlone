@@ -1,17 +1,22 @@
 from AccessControl import Unauthorized
 from plone.app.testing import SITE_OWNER_NAME
+from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.interfaces import ISecuritySchema
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.utils import set_own_login_name
 from Products.CMFPlone.RegistrationTool import get_member_by_login_name
+from zope.component import getUtility
 
 
 class TestEmailLogin(PloneTestCase.PloneTestCase):
 
-    def testUseEmailProperty(self):
-        props = getToolByName(self.portal, 'portal_properties').site_properties
-        self.assertTrue(props.hasProperty('use_email_as_login'))
-        self.assertEqual(props.getProperty('use_email_as_login'), False)
+    def testUseEmailSetting(self):
+        registry = getUtility(IRegistry)
+        security_settings = registry.forInterface(
+            ISecuritySchema, prefix='plone')
+
+        self.assertFalse(security_settings.use_email_as_login)
 
     def testSetOwnLoginName(self):
         memship = self.portal.portal_membership
@@ -55,8 +60,11 @@ class TestEmailLogin(PloneTestCase.PloneTestCase):
         self.assertTrue(pattern.match('MAURITS'))
 
     def testEmailMemberIdsAllowed(self):
-        props = getToolByName(self.portal, 'portal_properties').site_properties
-        props._updateProperty('use_email_as_login', True)
+        registry = getUtility(IRegistry)
+        security_settings = registry.forInterface(
+            ISecuritySchema, prefix='plone')
+        security_settings.use_email_as_login = True
+
         registration = getToolByName(self.portal, 'portal_registration')
         pattern = self.portal.portal_registration._ALLOWED_MEMBER_ID_PATTERN
         # Normal user ids are still allowed, even when using the email
@@ -69,7 +77,8 @@ class TestEmailLogin(PloneTestCase.PloneTestCase):
         self.assertTrue(pattern.match('user123@example.org'))
         self.assertTrue(registration.isMemberIdAllowed('user123@example.org'))
         self.assertTrue(pattern.match('user.name@example.org'))
-        self.assertTrue(registration.isMemberIdAllowed('user.name@example.org'))
+        self.assertTrue(
+            registration.isMemberIdAllowed('user.name@example.org'))
         # Strange, but valid as id:
         self.assertTrue(pattern.match('no.address@example'))
         self.assertTrue(registration.isMemberIdAllowed('no.address@example'))
@@ -78,7 +87,8 @@ class TestEmailLogin(PloneTestCase.PloneTestCase):
         # A plus sign in the id gives problems in some parts of the
         # UI, so we do not allow it.
         self.assertFalse(pattern.match('user+test@example.org'))
-        self.assertFalse(registration.isMemberIdAllowed('user+test@example.org'))
+        self.assertFalse(
+            registration.isMemberIdAllowed('user+test@example.org'))
         # An apostrophe also sounds like a bad idea to use in an id,
         # though this is a valid email address:
         self.assertFalse(pattern.match("o'hara@example.org"))

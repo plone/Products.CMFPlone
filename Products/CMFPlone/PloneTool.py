@@ -41,6 +41,7 @@ from Products.CMFPlone.interfaces import ISiteSchema
 from Products.CMFPlone.events import ReorderedEvent
 from Products.CMFPlone.interfaces import IPloneTool
 from Products.CMFPlone.interfaces import INonStructuralFolder
+from Products.CMFPlone.interfaces import ISecuritySchema
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper
 from Products.CMFPlone import utils
@@ -969,14 +970,16 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         Creates a mapping of meta tags -> values for the listMetaTags script.
         """
         result = {}
-        site_props = getToolByName(self, 'portal_properties').site_properties
         mt = getToolByName(self, 'portal_membership')
 
         registry = getUtility(IRegistry)
-        settings = registry.forInterface(ISiteSchema, prefix="plone")
-        use_all = settings.exposeDCMetaTags
-        view_about = site_props.getProperty('allowAnonymousViewAbout', False) \
-                     or not mt.isAnonymousUser()
+        site_settings = registry.forInterface(ISiteSchema, prefix="plone")
+        use_all = site_settings.exposeDCMetaTags
+
+        security_settings = registry.forInterface(
+            ISecuritySchema, prefix='plone')
+        view_about = security_settings.allow_anon_views_about \
+            or not mt.isAnonymousUser()
 
         if not use_all:
             metadata_names = {'Description': METADATA_DCNAME['Description']}
