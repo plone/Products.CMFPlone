@@ -179,11 +179,11 @@ The current email address of course works fine for logging in:
 
 Picking the e-mail address of another user should of course fail:
 
-A    >>> browser.open('http://nohost/plone/@@personal-information')
-A   >>> browser.getControl('E-mail').value = 'username@example.org'
-A   >>> browser.getControl('Save').click()
-A    >>> self.assertFalse('Changes saved.' in browser.contents)
-A   >>> browser.open('http://nohost/plone/logout')
+    >>> browser.open('http://nohost/plone/@@personal-information')
+    >>> browser.getControl('E-mail').value = 'username@example.org'
+    >>> browser.getControl('Save').click()
+    >>> self.assertFalse('Changes saved.' in browser.contents)
+    >>> browser.open('http://nohost/plone/logout')
 
 Resetting the password
 ----------------------
