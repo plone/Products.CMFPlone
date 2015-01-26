@@ -1,6 +1,6 @@
-import sys
-import os
 from App.ImageFile import ImageFile
+import os
+import sys
 
 cmfplone_globals = globals()
 this_module = sys.modules[__name__]
@@ -8,8 +8,8 @@ _marker = []
 
 ADD_CONTENT_PERMISSION = 'Add portal content'
 misc_ = {'plone_icon': ImageFile(
-                       os.path.join('skins', 'plone_images', 'logoIcon.png'),
-                       cmfplone_globals)}
+    os.path.join('skins', 'plone_images', 'logoIcon.png'),
+    cmfplone_globals)}
 
 
 def initialize(context):
@@ -21,12 +21,14 @@ def initialize(context):
     # it does speed up import *significantly*.
 
     from AccessControl import ModuleSecurityInfo
-    from AccessControl import allow_module, allow_class
+    from AccessControl import allow_class
+    from AccessControl import allow_module
 
     # protect OFS.ObjectManager
     ModuleSecurityInfo('OFS.ObjectManager').setDefaultAccess(0)
     ModuleSecurityInfo('OFS.ObjectManager').declareObjectPrivate()
-    ModuleSecurityInfo('OFS.ObjectManager').declarePublic('BeforeDeleteException')
+    ModuleSecurityInfo('OFS.ObjectManager').declarePublic(
+        'BeforeDeleteException')
 
     # allow logging
     ModuleSecurityInfo('logging').declarePublic('getLogger')
@@ -40,19 +42,20 @@ def initialize(context):
     allow_module('Products.CMFPlone.utils')
 
     # For content_status_modify
-    from Products.CMFCore.WorkflowCore import ObjectMoved, ObjectDeleted, \
-                                              WorkflowException
-    ModuleSecurityInfo('Products.CMFCore.WorkflowCore') \
-        .declarePublic('ObjectMoved')
-    ModuleSecurityInfo('Products.CMFCore.WorkflowCore') \
-        .declarePublic('ObjectDeleted')
-    ModuleSecurityInfo('Products.CMFCore.WorkflowCore') \
-        .declarePublic('WorkflowException')
-    allow_class(ObjectMoved)
+    from Products.CMFCore.WorkflowCore import ObjectDeleted
+    from Products.CMFCore.WorkflowCore import ObjectMoved
+    from Products.CMFCore.WorkflowCore import WorkflowException
+    ModuleSecurityInfo(
+        'Products.CMFCore.WorkflowCore').declarePublic('ObjectDeleted')
+    ModuleSecurityInfo(
+        'Products.CMFCore.WorkflowCore').declarePublic('ObjectMoved')
+    ModuleSecurityInfo(
+        'Products.CMFCore.WorkflowCore').declarePublic('WorkflowException')
     allow_class(ObjectDeleted)
+    allow_class(ObjectMoved)
     allow_class(WorkflowException)
 
-    from PloneBatch import Batch
+    from .PloneBatch import Batch
     allow_class(Batch)
 
     # Make Batch available at module level
@@ -106,16 +109,16 @@ def initialize(context):
     ModuleSecurityInfo('cgi').declarePublic('escape')
 
     # Apply monkey patches
-    import patches
+    from . import patches  # noqa
 
     # Register unicode splitter w/ ZCTextIndex
     # pipeline registry
-    import UnicodeSplitter
+    from . import UnicodeSplitter  # noqa
 
     # Plone content
 
     # Usage of PloneFolder is discouraged.
-    import PloneFolder
+    from . import PloneFolder
 
     contentClasses = (PloneFolder.PloneFolder, )
     contentConstructors = (PloneFolder.addPloneFolder, )
@@ -124,54 +127,57 @@ def initialize(context):
     from Products.CMFCore import CachingPolicyManager
 
     # Plone tools
-    import PloneTool
-    import MigrationTool
-    import PloneControlPanel
-    import WorkflowTool
-    import URLTool
-    import RegistrationTool
-    import PropertiesTool
-    import ActionsTool
-    import TypesTool
-    import CatalogTool
-    import SkinsTool
-    import QuickInstallerTool
-    import TranslationServiceTool
+    from . import PloneTool
+    from . import MigrationTool
+    from . import PloneControlPanel
+    from . import WorkflowTool
+    from . import URLTool
+    from . import RegistrationTool
+    from . import PropertiesTool
+    from . import ActionsTool
+    from . import TypesTool
+    from . import CatalogTool
+    from . import SkinsTool
+    from . import QuickInstallerTool
+    from . import TranslationServiceTool
 
-    tools = (PloneTool.PloneTool,
-             WorkflowTool.WorkflowTool,
-             CachingPolicyManager.CachingPolicyManager,
-             PropertiesTool.PropertiesTool,
-             MigrationTool.MigrationTool,
-             PloneControlPanel.PloneControlPanel,
-             RegistrationTool.RegistrationTool,
-             URLTool.URLTool,
-             ActionsTool.ActionsTool,
-             TypesTool.TypesTool,
-             CatalogTool.CatalogTool,
-             SkinsTool.SkinsTool,
-             QuickInstallerTool.QuickInstallerTool,
-             TranslationServiceTool.TranslationServiceTool,
-            )
+    tools = (
+        PloneTool.PloneTool,
+        WorkflowTool.WorkflowTool,
+        CachingPolicyManager.CachingPolicyManager,
+        PropertiesTool.PropertiesTool,
+        MigrationTool.MigrationTool,
+        PloneControlPanel.PloneControlPanel,
+        RegistrationTool.RegistrationTool,
+        URLTool.URLTool,
+        ActionsTool.ActionsTool,
+        TypesTool.TypesTool,
+        CatalogTool.CatalogTool,
+        SkinsTool.SkinsTool,
+        QuickInstallerTool.QuickInstallerTool,
+        TranslationServiceTool.TranslationServiceTool,
+    )
 
     from Products.CMFCore.utils import ContentInit
     from Products.CMFPlone.utils import ToolInit
 
     # Register tools and content
-    ToolInit('Plone Tool',
-             tools=tools,
-             icon='tool.gif',
-             ).initialize(context)
+    ToolInit(
+        'Plone Tool',
+        tools=tools,
+        icon='tool.gif',
+    ).initialize(context)
 
-    ContentInit('Plone Content',
-                content_types=contentClasses,
-                permission=ADD_CONTENT_PERMISSION,
-                extra_constructors=contentConstructors,
-                ).initialize(context)
+    ContentInit(
+        'Plone Content',
+        content_types=contentClasses,
+        permission=ADD_CONTENT_PERMISSION,
+        extra_constructors=contentConstructors,
+    ).initialize(context)
 
+    from AccessControl.Permissions import view_management_screens
     from Products.CMFPlone.Portal import PloneSite
     from Products.CMFPlone.factory import zmi_constructor
-    from AccessControl.Permissions import view_management_screens
     context.registerClass(
         instance_class=PloneSite,
         permission=view_management_screens,
@@ -179,12 +185,14 @@ def initialize(context):
     )
 
     from plone.app.folder import nogopip
-    context.registerClass(nogopip.GopipIndex,
+    context.registerClass(
+        nogopip.GopipIndex,
         permission='Add Pluggable Index',
         constructors=(nogopip.manage_addGopipForm,
                       nogopip.manage_addGopipIndex),
         icon='index.gif',
-        visibility=None)
+        visibility=None
+    )
 
 
 # Import PloneMessageFactory to create messages in the plone domain
