@@ -27,6 +27,9 @@ Changelog
 - Get icon from layout_view instead of plone_view.
   [pbauer]
 
+- Fix contentViews (tabs) markup for Plone 5.
+  [davisagli]
+
 - Rename syndication-settings to syndication-controlpanel. Keep the old view registration for backwards compatibility.
   [timo]
 
@@ -63,6 +66,12 @@ Changelog
 
 5.0a3 (2014-11-01)
 ------------------
+
+- folder_position script: make position and id optional.  Default
+  position to 'ordered' and id to None, which means: do nothing.
+  plone.folder 1.0.5 allows this, making it possible to simply reverse
+  the current sort order by using reverse=False.
+  [maurits]
 
 - Fix JS resource viewlet HTML syntax error.
   [rpatterson]
@@ -134,6 +143,19 @@ Changelog
 
 5.0a2 (2014-04-20)
 ------------------
+
+- Advertise the migration of content to dexterity after a successful
+  upgrade to Plone 5.
+  [pbauer]
+
+- Strip leading & trailing spaces from id and title in rename-form.
+  See https://dev.plone.org/ticket/12998, https://dev.plone.org/ticket/12989,
+  https://dev.plone.org/ticket/9370, https://dev.plone.org/ticket/8338
+  [pbauer]
+
+- Fix incorrect use of dict get method in CatalogTool.search, introduced
+  by PloneHotfix20131210 (issue 195)
+  [fulv]
 
 - Added timezone selection to add site page
   [pysailor, yenzenz]
@@ -299,3 +321,14 @@ Changelog
 - Add "plone-5" ZCML feature. Add-ons can register
   ZCML for Plone 5 only using zcml:condition="have plone-5"
   [davisagli]
+
+- Plone's javascript is now developed as part of the Plone mockup
+  (http://github.com/plone/mockup) and is included as a compiled
+  bundle.
+  [davisagli]
+
+- Removed portal_interface tool (PLIP #13770)
+  [ale-rt]
+
+- Removed kss_field_decorator_view support
+  [maurits, jaroel]
