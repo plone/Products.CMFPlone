@@ -31,6 +31,13 @@ Scenario: Enable user folders in the Security Control Panel
    When I enable user folders
    Then a user folder should be created when a user registers and logs in to the site
 
+Scenario: Enable anyone to view 'about' information in the Security Control Panel
+  Given a logged-in site administrator
+    and a published test folder
+    and the security control panel
+   When I enable anyone to view 'about' information
+   Then anonymous users can view 'about' information
+
 Scenario: Enable use email as login in the Security Control Panel
   Given a logged-in site administrator
     and the security control panel
@@ -54,6 +61,12 @@ a logged-in site administrator
 the security control panel
   Go to  ${PLONE_URL}/@@security-controlpanel
 
+a published test folder
+  Go to  ${PLONE_URL}/robot-test-folder
+  Click link  xpath=//li[@id='plone-contentmenu-workflow']/a
+  Wait until element is visible  id=workflow-transition-publish
+  Click link  id=workflow-transition-publish
+  Wait until page contains  Item state changed
 
 # --- WHEN -------------------------------------------------------------------
 
@@ -72,6 +85,11 @@ I enable user folders
   Select Checkbox  form.widgets.enable_self_reg:list
   Select Checkbox  form.widgets.enable_user_pwd_choice:list
   Select Checkbox  form.widgets.enable_user_folders:list
+  Click Button  Save
+  Wait until page contains  Changes saved
+
+I enable anyone to view 'about' information
+  Select Checkbox  form.widgets.allow_anon_views_about:list
   Click Button  Save
   Wait until page contains  Changes saved
 
@@ -131,6 +149,11 @@ A user folder should be created when a user registers and logs in to the site
   Go to  ${PLONE_URL}/Members/joe
   Element Should Contain  css=h1.documentFirstHeading  joe
   Page should Not contain  This page does not seem to exist
+
+Anonymous users can view 'about' information
+  Disable autologin
+  Go to  ${PLONE_URL}/@@search?SearchableText=test
+  Element Should Be Visible  xpath=//span[contains(@class, 'documentAuthor')]
 
 UUID should be used for the user id
 
