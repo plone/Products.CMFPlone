@@ -199,7 +199,7 @@ in our current email address:
     >>> browser.url.startswith('http://nohost/plone/mail_password_form')
     True
     >>> form = browser.getForm(name='mail_password')
-    >>> 'My user name is' in browser.contents
+    >>> 'My email address is' in browser.contents
     True
     >>> form.getControl(name='userid').value = 'email2@example.org'
     >>> form.getControl('Start password reset').click()
