@@ -8,6 +8,9 @@ Changelog
 4.3.5 (unreleased)
 ------------------
 
+- Extended ulocalized_time for target_language
+  [agitator]
+
 - Allow search_rss view on subsites (implementing INavigationRoot, not only
   IPloneSiteRoot) like it was the case in Plone 4.1.6.
   [vincentfretin]

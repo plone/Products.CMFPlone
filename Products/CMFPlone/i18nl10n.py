@@ -103,7 +103,7 @@ def get_formatstring_from_registry(msgid):
 
 
 def ulocalized_time(time, long_format=None, time_only=False, context=None,
-                    domain='plonelocales', request=None):
+                    domain='plonelocales', request=None, target_language=None):
     """unicode aware localized time method (l10n)"""
 
     if time_only:
@@ -167,7 +167,8 @@ def ulocalized_time(time, long_format=None, time_only=False, context=None,
 
     # 2. the normal case: translation machinery,
     # that is the ".../LC_MESSAGES/plonelocales.po" files
-    formatstring = translate(msgid, domain, mapping, request)
+    formatstring = translate(msgid, domain, mapping, request,
+                             target_language=target_language)
 
     # 3. if both failed, fall back to hardcoded ISO style
     if formatstring == msgid:
@@ -219,10 +220,12 @@ def ulocalized_time(time, long_format=None, time_only=False, context=None,
     # translate translateable elements
     for key in name_elements:
         mapping[key] = translate(mapping[key], domain,
-                                 context=request, default=mapping[key])
+                                 context=request, default=mapping[key],
+                                 target_language=target_language)
 
     # translate the time string
-    return translate(msgid, domain, mapping, request)
+    return translate(msgid, domain, mapping, request,
+                     target_language=target_language)
 
 
 def _numbertoenglishname(number, format=None, attr='_days'):
