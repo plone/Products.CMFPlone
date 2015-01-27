@@ -13,6 +13,7 @@ from zope import component
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.ramcache.interfaces import ram
+from Products.CMFCore.utils import _getAuthenticatedUser
 
 
 class ResourceView(ViewletBase):
@@ -21,6 +22,8 @@ class ResourceView(ViewletBase):
 
     @property
     def development(self):
+        if _getAuthenticatedUser(self.context).getUserName() == 'Anonymous User':
+            return False
         return self.registry.records['plone.resources.development'].value
 
     @property
