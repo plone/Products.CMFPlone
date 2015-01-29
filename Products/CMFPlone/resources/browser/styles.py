@@ -75,6 +75,14 @@ class StylesView(ResourceView):
         Get all the styles
         """
         result = self.ordered_bundles_result()
+        # Add manual added resources
+        resources = self.get_resources()
+        if hasattr(self.request, 'enabled_resources'):
+            for resource in self.request.enabled_resources:
+                if resource in resources:                
+                    for data in self.get_urls(resources[resource], None):
+                        result.append(data)
+
         # Add diazo css
         origin = None
         if self.diazo_production_css and self.development is False:

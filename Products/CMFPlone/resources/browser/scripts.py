@@ -95,6 +95,26 @@ class ScriptsView(ResourceView):
         })
         result.extend(self.ordered_bundles_result())
 
+        # Add manual added resources
+        resources = self.get_resources()
+        if hasattr(self.request, 'enabled_resources'):
+            for resource in self.request.enabled_resources:
+                if resource in resources:
+                    data = resources[resource]
+                    if data.js:
+                        url = urlparse(data.js)
+                        if url.netloc == '':
+                            # Local
+                            src = "%s/%s" % (self.portal_url, data.js)
+                        else:
+                            src = "%s" % (data.js)
+
+                        data = {
+                            'bundle': 'none',
+                            'conditionalcomment': '',  # noqa
+                            'src': src}
+                        result.append(data)
+
         # Add diazo url
         origin = None
         if self.diazo_production_js and self.development is False:

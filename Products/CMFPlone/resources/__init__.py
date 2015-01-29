@@ -10,6 +10,16 @@ def onThemeApplied(event):
     # theme.disabled_bundles
 
 
+def add_resource_on_request(request, resource):
+    """ Adds the resource to the request
+    """
+    if hasattr(request, 'enabled_resources'):
+        if isinstance(resource, str):
+            request.enabled_resources.append(resource)
+    else:
+        request.enabled_resources = [resource]
+
+
 def add_bundle_on_request(request, bundle):
     """ Adds the bundle to the request
     """
