@@ -127,6 +127,7 @@
       <value key="js">less-variables.js</value>
   </record>
 
+  <!-- mockup core reqs -->
   <records prefix="plone.resources/mockup-registry"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/mockup-core/js/registry.js</value>
@@ -135,6 +136,11 @@
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/mockup-core/js/pattern.js</value>
   </records>
+  <records prefix="plone.resources/mockup-parser"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/mockup-core/js/parser.js</value>
+  </records>
+
 
   <records prefix="plone.resources/jquery"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
@@ -827,6 +833,36 @@
   <records prefix="plone.resources/rjs"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/r.js/dist/r.js</value>
+  </records>
+
+  <!-- patternslib dependencies -->
+  <records prefix="plone.resources/pat-compat"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/patternslib/src/core/compat</value>
+  </records>
+  <records prefix="plone.resources/pat-jquery-ext"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/patternslib/src/core/jquery-ext</value>
+  </records>
+  <records prefix="plone.resources/pat-logger"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/patternslib/src/core/logger</value>
+  </records>
+  <records prefix="plone.resources/pat-parser"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/patternslib/src/core/parser</value>
+  </records>
+  <records prefix="plone.resources/pat-registry"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/patternslib/src/core/registry</value>
+  </records>
+  <records prefix="plone.resources/pat-utils"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/patternslib/src/core/utils</value>
+  </records>
+  <records prefix="plone.resources/logging"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/logging/src/logging</value>
   </records>
 
   <!-- legacy js -->

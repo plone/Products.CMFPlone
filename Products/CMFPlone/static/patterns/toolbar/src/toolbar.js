@@ -7,6 +7,7 @@ define([
 
   var Toolbar = Base.extend({
     name: 'toolbar',
+    trigger: '.pat-toolbar',
     init: function () {
       if ($(window).width() < "768"){//mobile
         // $( "html" ).has(".plone-toolbar-left").css({'margin-left':'0','margin-top':'0','margin-right':'0'});

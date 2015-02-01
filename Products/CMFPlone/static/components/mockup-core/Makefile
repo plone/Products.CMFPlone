@@ -45,6 +45,9 @@ test-once:
 test-dev:
 	NODE_PATH=$(NODE_PATH) $(GRUNT) test_dev --pattern=$(pattern)
 
+test-serve:
+	NODE_PATH=$(NODE_PATH) $(GRUNT) test_serve --pattern=$(pattern)
+
 test-ci:
 	NODE_PATH=$(NODE_PATH) $(GRUNT) test_ci
 

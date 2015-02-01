@@ -11,21 +11,24 @@
     "lodash": "2.4.1",
     "marked": "0.3.2",
     "react": "0.10.0",
-    "requirejs-text": "2.0.12"
+    "requirejs-text": "2.0.12",
+    "patternslib": "master"
   },
   "devDependencies": {
     "expect": "0.3.1",
     "sinonjs": "1.10.2"
   },
+  "resolutions": {
+    "jquery": "1.11.1"
+  },
   "homepage": "https://github.com/plone/mockup-core",
-  "version": "1.2.15",
-  "_release": "1.2.15",
+  "_release": "0a27114e7d",
   "_resolution": {
-    "type": "version",
-    "tag": "v1.2.15",
-    "commit": "992d94a52936c5fdc9235f0d4af3ef4b6077af6c"
+    "type": "branch",
+    "branch": "master",
+    "commit": "0a27114e7db33972e7ec8fbe9817fb5dea399242"
   },
   "_source": "git://github.com/plone/mockup-core.git",
-  "_target": "1.2.15",
+  "_target": "master",
   "_originalSource": "mockup-core"
 }
