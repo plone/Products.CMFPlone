@@ -14,6 +14,7 @@ from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.ramcache.interfaces import ram
 from Products.CMFCore.utils import _getAuthenticatedUser
+import os
 
 
 class ResourceView(ViewletBase):
@@ -22,6 +23,19 @@ class ResourceView(ViewletBase):
 
     @property
     def development(self):
+        """
+        To set development mode:
+
+        - we can define a envvar: FEDEV
+        - otherwise if its anonymous is using production mode
+        - finally is checked on the registry entry
+        """
+        env_development = os.getenv('FEDEV')
+        if env_development:
+            if env_development.lower() == 'false':
+                return False
+            elif env_development.lower() == 'true':
+                return True
         if _getAuthenticatedUser(self.context).getUserName() == 'Anonymous User':
             return False
         return self.registry.records['plone.resources.development'].value
