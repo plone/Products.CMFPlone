@@ -115,7 +115,7 @@ class TestSecurityDeclarations(RestrictedPythonTest):
 
     def testUse_Batch(self):
         self.check('from Products.CMFPlone import Batch;'
-                   'print Batch([], 0).nexturls')
+                   'print Batch([], 10).nexturls')
 
     # utils
 
