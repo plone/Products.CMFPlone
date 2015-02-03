@@ -10,7 +10,7 @@
           'mockup-patterns-resourceregistry-url': '++resource++mockup/resourceregistry'
         }
       });
-      require(['++resource++mockup/resourceregistry/pattern.js', 'mockup-registry'], function(ResourceRegistry, Registry){
+      require(['++resource++mockup/resourceregistry/pattern.js', 'pat-registry'], function(ResourceRegistry, Registry){
         Registry.scan($('.pat-resourceregistry'));
       });
     });
