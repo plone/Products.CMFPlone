@@ -55,9 +55,11 @@ class HiddenProducts(object):
             'plone.app.discussion',
             'plone.app.folder',
             'plone.app.imaging',
+            'plone.app.intid',
             'plone.app.registry',
             'plone.app.search',
-            'plone.app.z3cform',
+            'plone.app.widgets',
+            'plone.app.z3cform'
             ]
 
 
