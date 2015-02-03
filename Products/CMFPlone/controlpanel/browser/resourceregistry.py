@@ -1,9 +1,9 @@
+# -*- coding:utf-8
 from datetime import datetime
 from Products.CMFPlone.interfaces import IBundleRegistry
 from Products.CMFPlone.interfaces import IResourceRegistry
 from Products.CMFPlone.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME  # noqa
 from Products.CMFPlone.resources.browser.configjs import RequireJsView
-from StringIO import StringIO
 from plone.memoize.view import memoize
 from plone.registry.interfaces import IRegistry
 from plone.resource.interfaces import IResourceDirectory
@@ -61,8 +61,7 @@ class OverrideFolderManager(object):
         if resource_name not in self.container:
             self.container.makeDirectory(resource_name)
         folder = self.container[resource_name]
-        fi = StringIO(data)
-        folder.writeFile(resource_filepath, fi)
+        folder.writeFile(resource_filepath, data)
         return folder[resource_filepath]
 
     def delete_file(self, filepath):
@@ -228,15 +227,22 @@ class ResourceRegistryControlPanelView(RequireJsView):
                     pass
         return json.dumps({
             'include': includes,
-            'shims': shims,
-            'paths': paths
+            'shim': shims,
+            'paths': paths,
+            'wrapShim': True,
+            'optimize': 'none'
         })
 
     def save_js_build(self):
+        """
+        'Â'
+        """
         overrides = OverrideFolderManager(self.context)
         req = self.request
         filepath = 'static/%s-compiled.js' % req.form['bundle']
-        overrides.save_file(filepath, req.form['data'])
+
+        data = req.form['data']
+        overrides.save_file(filepath, data)
         bundle = self.get_bundles().get(req.form['bundle'])
         if bundle:
             bundle.last_compilation = datetime.now()

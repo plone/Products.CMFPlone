@@ -25,8 +25,8 @@
 				win.close();
 			}
 			
-			delete editor.settings.table_adv_tab;
-			delete editor.settings.table_cell_adv_tab;
+			delete editor.settings.table_advtab;
+			delete editor.settings.table_cell_advtab;
 			delete editor.settings.table_class_list;
 			delete editor.settings.table_cell_class_list;
 			delete editor.settings.table_row_class_list;
@@ -65,7 +65,7 @@
 	});
 
 	test("Table properties dialog (get/set data from/to plain table, no adv tab)", function() {
-		editor.settings.table_adv_tab = false;
+		editor.settings.table_advtab = false;
 
 		editor.setContent('<table><tr><td>X</td></tr></table>');
 		Utils.setSelection('td', 0);
@@ -247,7 +247,7 @@
 	});
 
 	test("Table cell properties dialog (get/set data from/to plain cell, no adv tab)", function() {
-		editor.settings.table_cell_adv_tab = false;
+		editor.settings.table_cell_advtab = false;
 
 		editor.setContent('<table><tr><td>X</td></tr></table>');
 		Utils.setSelection('td', 0);
@@ -407,7 +407,7 @@
 	});
 
 	test("mceTableMergeCells command with cell selection", function() {
-		editor.setContent('<table><tr><td class="mce-item-selected">1</td><td class="mce-item-selected">2</td></tr></table>');
+		editor.getBody().innerHTML = '<table><tr><td class="mce-item-selected">1</td><td class="mce-item-selected">2</td></tr></table>';
 		Utils.setSelection('td', 0);
 		editor.execCommand('mceTableMergeCells');
 		equal(cleanTableHtml(editor.getContent()), '<table><tbody><tr><td colspan="2">12</td></tr></tbody></table>');
@@ -440,7 +440,7 @@
 
 		Utils.setSelection('tr:nth-child(2) td:nth-child(2)', 0);
 		editor.fire('keydown', {keyCode: 9});
-		equal(editor.selection.getStart().nodeName, 'TD');
+		equal(editor.selection.getStart(true).nodeName, 'TD');
 		equal(
 			editor.getContent(),
 			'<table><tbody><tr><td>A1</td><td>A2</td></tr><tr><td>B1</td><td>B2</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td></tr></tbody></table><p>x</p>'

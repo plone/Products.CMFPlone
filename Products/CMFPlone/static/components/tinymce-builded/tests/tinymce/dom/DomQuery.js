@@ -1,6 +1,13 @@
 (function() {
+	var $elm;
+
 	module("tinymce.dom.DomQuery", {
 		teardown: function() {
+			if ($elm) {
+				$elm.off();
+				$elm = null;
+			}
+
 			document.getElementById('view').innerHTML = '';
 		}
 	});
@@ -12,6 +19,14 @@
 		}
 
 		return parentNode;
+	}
+
+	function normalizeStyleValue(value) {
+		if (typeof value == 'string') {
+			return value.toLowerCase().replace(/\s+/g, ' ').replace(/;\s*$/, '');
+		}
+
+		return value;
 	}
 
 	function splitAtView(nodes) {
@@ -106,6 +121,10 @@
 			deepEqual($.inArray(1, [1, 2]), 0);
 			deepEqual($.inArray(2, [1, 2]), 1);
 			deepEqual($.inArray(3, [1, 2]), -1);
+		});
+
+		test(prefix + 'static grep()', function() {
+			deepEqual($.grep([1, 2, 3], function(v) {return v > 1;}), [2, 3]);
 		});
 
 		test(prefix + 'static isArray()', function() {
@@ -206,7 +225,7 @@
 
 		test(prefix + 'attr() set/get style attr on element (IE 7)', function() {
 			$elm = $('<b style="font-size: 10px" />').attr('style', 'font-size: 43px');
-			equal($elm.attr('style').toLowerCase().split(';')[0], 'font-size: 43px');
+			equal(normalizeStyleValue($elm.attr('style')), 'font-size: 43px');
 		});
 
 		test(prefix + 'attr() set/get checked attr on element (IE 7)', function() {
@@ -310,6 +329,26 @@
 			$elm = $('<b>x</b>').appendTo('#view').css({'font-size': 42, 'text-indent': 42});
 			equal($elm.css('font-size'), '42px');
 			equal($elm.css('text-indent'), '42px');
+		});
+
+		test(prefix + 'css() set opacity', function() {
+			var styles = new tinymce.html.Styles();
+
+			if (tinymce.Env.ie && tinymce.Env.ie < 9) {
+				// jQuery has a slightly different output but basically the same
+				deepEqual(styles.parse($('<b></b>').css('opacity', 0.5).attr('style')), {filter: 'alpha(opacity=50)', 'zoom': '1'});
+				strictEqual(typeof $('<b></b>').css('opacity', null).attr('style'), 'undefined');
+			} else {
+				strictEqual(normalizeStyleValue($('<b></b>').css('opacity', 0.5).attr('style')), 'opacity: 0.5');
+				ok(!$('<b></b>').css('opacity', null).attr('style'));
+				ok(!$('<b></b>').css('opacity', '').attr('style'));
+			}
+		});
+
+		test(prefix + 'css() set float', function() {
+			strictEqual(normalizeStyleValue($('<b></b>').css('float', 'right').attr('style')), 'float: right');
+			ok(!$('<b style="float: left"></b>').css('float', '').attr('style'));
+			ok(!$('<b></b>').css('float', null).attr('style'));
 		});
 
 		test(prefix + 'remove() single element', function() {
@@ -519,6 +558,18 @@
 			strictEqual($('<b class="a b"></b>').hasClass('a'), true);
 		});
 
+		test(prefix + 'filter()', function() {
+			strictEqual($('<b></b><i></i><u></u>').filter('b,i').length, 2);
+			strictEqual($('<b></b><i></i><u></u>').filter(function(i, elm) {
+				return  elm.tagName != 'U';
+			}).length, 2);
+			strictEqual($('<b></b><i></i><u></u>').filter(function(i, elm) {
+				return i != 2;
+			}).length, 2);
+			strictEqual($([document, window, document.createTextNode('x')]).filter('*').length, 0);
+			strictEqual($.filter('*', [document, window, document.createTextNode('x')]).length, 0);
+		});
+
 		test(prefix + 'each() collection', function() {
 			var $html = $('<b>a</b><i>b</i>'), data;
 
@@ -540,7 +591,9 @@
 		});
 
 		test(prefix + 'on()/off()/trigger()', function() {
-			var $elm = $('<b />'), lastArgs1, lastArgs2;
+			var lastArgs1, lastArgs2;
+
+			$elm = $('<b />')
 
 			// Single listener
 			$elm.on('click', function(e) {
@@ -590,7 +643,7 @@
 		});
 
 		test(prefix + 'show()/hide() element', function() {
-			equal($('<b></b>').hide().attr('style').toLowerCase().split(';')[0], 'display: none');
+			equal(normalizeStyleValue($('<b></b>').hide().attr('style')), 'display: none');
 			ok(!$('<b></b>').show().attr('style'));
 		});
 
@@ -674,9 +727,16 @@
 			strictEqual($('#view').html().toLowerCase(), '<b><i>1<i>a</i></i></b><b><i>2<i>b</i></i></b>');
 		});
 
-		test(prefix + 'unwrap() single element', function() {
-			$('<b>1</b>').appendTo('#view').contents().unwrap();
-			strictEqual($('#view').html().toLowerCase(), '1');
+		test(prefix + 'unwrap() single element with no siblings', function() {
+			$('#view').html('<b><i>1</i></b>');
+			$('#view i').unwrap();
+			strictEqual($('#view').html().toLowerCase(), '<i>1</i>');
+		});
+
+		test(prefix + 'unwrap() single element with siblings', function() {
+			$('#view').html('<b><i>1</i><i>2</i></b>');
+			$('#view i').unwrap();
+			strictEqual($('#view').html().toLowerCase(), '<i>1</i><i>2</i>');
 		});
 
 		test(prefix + 'clone() single element', function() {
@@ -739,7 +799,7 @@
 			strictEqual($result.length, 0);
 		});
 
-		test(prefix + 'parentsUntil()', function() {
+		test(prefix + 'parentsUntil(selector)', function() {
 			var $result, html;
 
 			html = $('<div><em><i>1</i></em><strong><b>2</b></strong></div>').appendTo('#view');
@@ -749,6 +809,42 @@
 			strictEqual($result[0].tagName, 'STRONG');
 			strictEqual($result[1].tagName, 'EM');
 			strictEqual($result[2].tagName, 'DIV');
+
+			$result = $('#view i, #view b').parentsUntil('#view', 'div');
+			strictEqual($result.length, 1);
+			strictEqual($result[0].tagName, 'DIV');
+		});
+
+		test(prefix + 'parentsUntil(element)', function() {
+			var $result, html;
+
+			html = $('<div><em><i>1</i></em><strong><b>2</b></strong></div>').appendTo('#view');
+
+			$result = $('#view i, #view b').parentsUntil(document.getElementById('view'));
+			strictEqual($result.length, 3);
+			strictEqual($result[0].tagName, 'STRONG');
+			strictEqual($result[1].tagName, 'EM');
+			strictEqual($result[2].tagName, 'DIV');
+
+			$result = $('#view i, #view b').parentsUntil(document.getElementById('view'), 'div');
+			strictEqual($result.length, 1);
+			strictEqual($result[0].tagName, 'DIV');
+		});
+
+		test(prefix + 'parentsUntil(query)', function() {
+			var $result, html;
+
+			html = $('<div><em><i>1</i></em><strong><b>2</b></strong></div>').appendTo('#view');
+
+			$result = $('#view i, #view b').parentsUntil($('#view'));
+			strictEqual($result.length, 3);
+			strictEqual($result[0].tagName, 'STRONG');
+			strictEqual($result[1].tagName, 'EM');
+			strictEqual($result[2].tagName, 'DIV');
+
+			$result = $('#view i, #view b').parentsUntil($('#view'), 'div');
+			strictEqual($result.length, 1);
+			strictEqual($result[0].tagName, 'DIV');
 		});
 
 		test(prefix + 'next()', function() {
@@ -771,7 +867,7 @@
 			strictEqual($result[0].tagName, 'B');
 		});
 
-		test(prefix + 'nextUntil()', function() {
+		test(prefix + 'nextUntil(selector)', function() {
 			var $result, html;
 
 			html = $('<b>1</b><i>2</i><em>3</em><span>3</span>');
@@ -780,17 +876,85 @@
 			strictEqual($result.length, 2);
 			strictEqual($result[0].tagName, 'I');
 			strictEqual($result[1].tagName, 'EM');
+
+			$result = html.first().nextUntil('span', 'i');
+			strictEqual($result.length, 1);
+			strictEqual($result[0].tagName, 'I');
 		});
 
-		test(prefix + 'prevUntil()', function() {
+		test(prefix + 'nextUntil(element)', function() {
 			var $result, html;
 
 			html = $('<b>1</b><i>2</i><em>3</em><span>3</span>');
 
-			$result = html.prevUntil('b');
+			$result = html.first().nextUntil(html.last()[0]);
+			strictEqual($result.length, 2);
+			strictEqual($result[0].tagName, 'I');
+			strictEqual($result[1].tagName, 'EM');
+
+			$result = html.first().nextUntil(html.last()[0], 'i');
+			strictEqual($result.length, 1);
+			strictEqual($result[0].tagName, 'I');
+		});
+
+		test(prefix + 'nextUntil(query)', function() {
+			var $result, html;
+
+			html = $('<b>1</b><i>2</i><em>3</em><span>3</span>');
+
+			$result = html.first().nextUntil(html.last());
+			strictEqual($result.length, 2);
+			strictEqual($result[0].tagName, 'I');
+			strictEqual($result[1].tagName, 'EM');
+
+			$result = html.first().nextUntil(html.last(), 'i');
+			strictEqual($result.length, 1);
+			strictEqual($result[0].tagName, 'I');
+		});
+
+		test(prefix + 'prevUntil(selector)', function() {
+			var $result, html;
+
+			html = $('<b>1</b><i>2</i><em>3</em><span>3</span>');
+
+			$result = html.last().prevUntil('b');
 			strictEqual($result.length, 2);
 			strictEqual($result[0].tagName, 'EM');
 			strictEqual($result[1].tagName, 'I');
+
+			$result = html.last().prevUntil('b', 'i');
+			strictEqual($result.length, 1);
+			strictEqual($result[0].tagName, 'I');
+		});
+
+		test(prefix + 'prevUntil(element)', function() {
+			var $result, html;
+
+			html = $('<b>1</b><i>2</i><em>3</em><span>3</span>');
+
+			$result = html.last().prevUntil(html.first()[0]);
+			strictEqual($result.length, 2);
+			strictEqual($result[0].tagName, 'EM');
+			strictEqual($result[1].tagName, 'I');
+
+			$result = html.last().prevUntil(html.first()[0], 'i');
+			strictEqual($result.length, 1);
+			strictEqual($result[0].tagName, 'I');
+		});
+
+		test(prefix + 'prevUntil(query)', function() {
+			var $result, html;
+
+			html = $('<b>1</b><i>2</i><em>3</em><span>3</span>');
+
+			$result = html.last().prevUntil(html.first());
+			strictEqual($result.length, 2);
+			strictEqual($result[0].tagName, 'EM');
+			strictEqual($result[1].tagName, 'I');
+
+			$result = html.last().prevUntil(html.first(), 'i');
+			strictEqual($result.length, 1);
+			strictEqual($result[0].tagName, 'I');
 		});
 
 		test(prefix + 'children()', function() {
@@ -816,15 +980,32 @@
 			strictEqual($result[2].tagName, 'B');
 		});
 
-		test(prefix + 'closest()', function() {
+		test(prefix + 'closest(selector/element/query)', function() {
 			var innerMost, html;
 
 			html = $('<b><i><em><b>x</b></em></i></b>');
 			innerMost = $(html[0].firstChild.firstChild.firstChild);
 
+			strictEqual(innerMost.closest(null).length, 0);
 			strictEqual(innerMost.closest('b').html(), 'x');
 			strictEqual(innerMost.closest(innerMost[0]).html(), 'x');
 			strictEqual(innerMost.closest('b i').html().toLowerCase(), '<em><b>x</b></em>');
+			strictEqual(innerMost.closest($(html[0].firstChild.firstChild)).html().toLowerCase(), '<b>x</b>');
+			strictEqual(innerMost.closest($(html[0].firstChild.firstChild)[0]).html().toLowerCase(), '<b>x</b>');
+		});
+
+		test(prefix + 'offset()', function() {
+			var testElm = $('<b></b>').offset({top: 10, left: 20});
+			strictEqual(testElm[0].style.top, '10px');
+			strictEqual(testElm[0].style.left, '20px');
+
+			var viewOffset = $('#view').offset();
+			var testElmOffset = $('<b></b>').css({position: 'absolute', top: 10, left: 20}).prependTo('#view').offset();
+
+			testElmOffset.left -= viewOffset.left;
+			testElmOffset.top -= viewOffset.top;
+
+			deepEqual(testElmOffset, {top: 10, left: 20});
 		});
 	}
 

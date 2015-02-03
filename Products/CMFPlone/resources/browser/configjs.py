@@ -47,26 +47,26 @@ class RequireJsView(BrowserView):
         registry = self.registryResources()
         paths = {}
         shims = {}
-        for requirejs, script in registry.items():
+        for name, script in registry.items():
             if script.js:
                 # Main resource js file
                 src = re.sub(r"\.js$", "", script.js)
-                paths[requirejs] = src
+                paths[name] = src
                 exports = script.export
                 deps = script.deps
                 inits = script.init
-                if exports != '' or deps != '' or inits != '':
-                    shims[requirejs] = {}
-                    if exports != '' and exports is not None:
-                        shims[requirejs]['exports'] = exports
-                    if deps != '' and deps is not None:
-                        shims[requirejs]['deps'] = deps.split(',')
-                    if inits != '' and inits is not None:
-                        shims[requirejs]['init'] = inits
+                if exports or deps or inits:
+                    shims[name] = {}
+                    if exports not in ('', None):
+                        shims[name]['exports'] = exports
+                    if deps not in ('', None):
+                        shims[name]['deps'] = deps.split(',')
+                    if inits not in ('', None):
+                        shims[name]['init'] = inits
             if script.url:
                 # Resources available under name-url name
                 src = script.url
-                paths[requirejs + '-url'] = src
+                paths[name + '-url'] = src
         return (self.base_url(), paths, shims)
 
     def get_requirejs_config_str(self):

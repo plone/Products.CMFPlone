@@ -13,7 +13,7 @@ var eslint = require('./tools/BuildTools').eslint;
 var nuget = require('./tools/BuildTools').nuget;
 var phantomjs = require('./tools/BuildTools').phantomjs;
 var jscs = require('./tools/BuildTools').jscs;
-var saucelabs = require('./tools/saucelabs').saucelabs;
+var saucelabs = require('./tools/saucelabs/saucelabs').saucelabs;
 
 desc("Default build task");
 task("default", ["minify", "less"], function () {});
@@ -577,7 +577,7 @@ task("zip-component", ["mktmp"], function () {
 			"js/tinymce/plugins/example",
 			"js/tinymce/plugins/example_dependency",
 			/(imagemanager|filemanager|moxiemanager)/,
-			/plugin\.js|plugin\.dev\.js|theme\.js/,
+			/plugin\.dev\.js/,
 			/classes/,
 			/(.+\.less|\.dev\.svg|\.json|\.md)$/
 		],
@@ -586,8 +586,10 @@ task("zip-component", ["mktmp"], function () {
 			["js/tinymce/skins", "skins"],
 			["js/tinymce/plugins", "plugins"],
 			["js/tinymce/themes", "themes"],
+			["js/tinymce/tinymce.js", "tinymce.js"],
 			["js/tinymce/tinymce.min.js", "tinymce.min.js"],
 			["js/tinymce/jquery.tinymce.min.js", "jquery.tinymce.min.js"],
+			["js/tinymce/tinymce.jquery.js", "tinymce.jquery.js"],
 			["js/tinymce/tinymce.jquery.min.js", "tinymce.jquery.min.js"],
 			["js/tinymce/license.txt", "license.txt"],
 			"changelog.txt",
@@ -665,17 +667,16 @@ task("saucelabs-tests", [], function(pluginName) {
 		testname: 'TinyMCE QUnit Tests',
 		urls: ['http://127.0.0.1:9999/tests/index.html?min=true'],
 		browsers: [
-			{browserName: 'firefox', platform: 'XP'},
-			{browserName: 'googlechrome', platform: 'XP'},
+			{browserName: 'firefox', version: 'latest', platform: 'XP'},
+			{browserName: 'googlechrome', version: 'latest', platform: 'XP'},
 			{browserName: 'internet explorer', version: '8', platform: 'XP'},
 			{browserName: 'internet explorer', version: '9', platform: 'Windows 7'},
 			{browserName: 'internet explorer', version: '10', platform: 'Windows 7'},
 			{browserName: 'internet explorer', version: '11', platform: 'Windows 7'},
 			{browserName: 'safari', version: '7', platform: 'OS X 10.9'},
 			{browserName: "safari", version: "6", platform: "OS X 10.8"},
-			//{browserName: "ipad", version: "7", platform: "OS X 10.9"},
-			{browserName: 'firefox', platform: 'Linux'},
-			{browserName: 'googlechrome', platform: 'Linux'}
+			{browserName: 'firefox', platform: 'Linux', version: 'latest'},
+			{browserName: 'googlechrome', platform: 'Linux', version: 'latest'}
 		]
 	});
 });

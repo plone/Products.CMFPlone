@@ -1347,13 +1347,13 @@ define("tinymce/tableplugin/CellSelection", [
 	"tinymce/util/Tools"
 ], function(TableGrid, TreeWalker, Tools) {
 	return function(editor) {
-		var dom = editor.dom, tableGrid, startCell, startTable, hasCellSelection = true;
+		var dom = editor.dom, tableGrid, startCell, startTable, hasCellSelection = true, resizing;
 
-		function clear() {
+		function clear(force) {
 			// Restore selection possibilities
 			editor.getBody().style.webkitUserSelect = '';
 
-			if (hasCellSelection) {
+			if (force || hasCellSelection) {
 				editor.dom.removeClass(
 					editor.dom.select('td.mce-item-selected,th.mce-item-selected'),
 					'mce-item-selected'
@@ -1365,6 +1365,10 @@ define("tinymce/tableplugin/CellSelection", [
 
 		function cellSelectionHandler(e) {
 			var sel, table, target = e.target;
+
+			if (resizing) {
+				return;
+			}
 
 			if (startCell && (tableGrid || target != startCell) && (target.nodeName == 'TD' || target.nodeName == 'TH')) {
 				table = dom.getParent(target, 'table');
@@ -1399,7 +1403,7 @@ define("tinymce/tableplugin/CellSelection", [
 
 		// Add cell selection logic
 		editor.on('MouseDown', function(e) {
-			if (e.button != 2) {
+			if (e.button != 2 && !resizing) {
 				clear();
 
 				startCell = dom.getParent(e.target, 'td,th');
@@ -1481,9 +1485,14 @@ define("tinymce/tableplugin/CellSelection", [
 			}
 		});
 
-		editor.on('KeyUp Drop', function() {
-			clear();
+		editor.on('KeyUp Drop SetContent', function(e) {
+			clear(e.type == 'setcontent');
 			startCell = tableGrid = startTable = null;
+			resizing = false;
+		});
+
+		editor.on('ObjectResizeStart ObjectResized', function(e) {
+			resizing = e.type != 'objectresized';
 		});
 
 		return {
@@ -1519,17 +1528,21 @@ define("tinymce/tableplugin/Dialogs", [
 	return function(editor) {
 		var self = this;
 
-		function pickColorAction() {
-			var self = this, colorPickerCallback = editor.settings.color_picker_callback;
+		function createColorPickAction() {
+			var colorPickerCallback = editor.settings.color_picker_callback;
 
 			if (colorPickerCallback) {
-				colorPickerCallback.call(
-					editor,
-					function(value) {
-						self.value(value).fire('change');
-					},
-					self.value()
-				);
+				return function() {
+					var self = this;
+
+					colorPickerCallback.call(
+						editor,
+						function(value) {
+							self.value(value).fire('change');
+						},
+						self.value()
+					);
+				};
 			}
 		}
 
@@ -1564,14 +1577,14 @@ define("tinymce/tableplugin/Dialogs", [
 								label: 'Border color',
 								type: 'colorbox',
 								name: 'borderColor',
-								onaction: pickColorAction
+								onaction: createColorPickAction()
 							},
 
 							{
 								label: 'Background color',
 								type: 'colorbox',
 								name: 'backgroundColor',
-								onaction: pickColorAction
+								onaction: createColorPickAction()
 							}
 						]
 					}
@@ -1692,10 +1705,13 @@ define("tinymce/tableplugin/Dialogs", [
 						'class': data['class']
 					});
 
-					editor.dom.setStyles(tableElm, {
-						width: addSizeSuffix(data.width),
-						height: addSizeSuffix(data.height)
-					});
+					if (dom.getAttrib(tableElm, 'width')) {
+						dom.setAttrib(tableElm, 'width', removePxSuffix(data.width));
+					} else {
+						dom.setStyle(tableElm, 'width', addSizeSuffix(data.width));
+					}
+
+					dom.setStyle(tableElm, 'height', addSizeSuffix(data.height));
 
 					// Toggle caption on/off
 					captionElm = dom.select('caption', tableElm)[0];
@@ -1813,7 +1829,7 @@ define("tinymce/tableplugin/Dialogs", [
 				]
 			};
 
-			if (editor.settings.table_adv_tab !== false) {
+			if (editor.settings.table_advtab !== false) {
 				appendStylesToData(dom, data, tableElm);
 
 				editor.windowManager.open({
@@ -2035,7 +2051,7 @@ define("tinymce/tableplugin/Dialogs", [
 				]
 			};
 
-			if (editor.settings.table_cell_adv_tab !== false) {
+			if (editor.settings.table_cell_advtab !== false) {
 				appendStylesToData(dom, data, cellElm);
 
 				editor.windowManager.open({
@@ -2058,7 +2074,7 @@ define("tinymce/tableplugin/Dialogs", [
 				editor.windowManager.open({
 					title: "Cell properties",
 					data: data,
-					items: generalCellForm,
+					body: generalCellForm,
 					onsubmit: onSubmitCellForm
 				});
 			}
@@ -2207,7 +2223,7 @@ define("tinymce/tableplugin/Dialogs", [
 				]
 			};
 
-			if (editor.settings.table_row_adv_tab !== false) {
+			if (editor.settings.table_row_advtab !== false) {
 				appendStylesToData(dom, data, rowElm);
 
 				editor.windowManager.open({

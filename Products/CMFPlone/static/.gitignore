@@ -53,3 +53,12 @@ components/mockup-core/.nix/
 components/mockup-core/CHANGES.rst
 components/mockup-core/LICENSE.rst
 components/mockup-core/tests/parser-test.js
+components/r.js/build/tests/lib/nojQDupeDefine/
+components/tinymce-builded/.eslintrc
+components/tinymce-builded/.jscsrc
+components/tinymce-builded/.jshintrc
+components/tinymce-builded/Gruntfile.js
+components/tinymce-builded/tests/.jshintrc
+components/tinymce-builded/tools/saucelabs/
+components/tinymce-builded/tools/tasks/
+

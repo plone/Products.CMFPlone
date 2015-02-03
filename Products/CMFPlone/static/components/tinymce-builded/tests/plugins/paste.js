@@ -128,14 +128,26 @@ test("Paste Word fake list before BR", function() {
 	equal(editor.getContent(), '<ul><li>Item 1</li><li>Item 2</li><li>Item 3</li><li>Item 4</li><li>Item 5</li><li>Item 6</li></ul><p><br />a</p>');
 });
 
+test("Paste Word fake lists interrupted by header", function() {
+	var rng = editor.dom.createRng();
+
+	editor.setContent('<p>1234</p>');
+	rng.setStart(editor.getBody().firstChild.firstChild, 0);
+	rng.setEnd(editor.getBody().firstChild.firstChild, 4);
+	editor.selection.setRng(rng);
+
+	editor.execCommand('mceInsertClipboardContent', false, {content: '<p class=MsoListParagraphCxSpFirst style=\'text-indent:-.25in;mso-list:l0 level1 lfo1\'><![if !supportLists]><span style=\'font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family: Symbol\'><span style=\'mso-list:Ignore\'>·<span style=\'font:7.0pt "Times New Roman"\'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><![endif]>List before heading A<o:p></o:p></p>  <p class=MsoListParagraphCxSpLast style=\'text-indent:-.25in;mso-list:l0 level1 lfo1\'><![if !supportLists]><span style=\'font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family: Symbol\'><span style=\'mso-list:Ignore\'>·<span style=\'font:7.0pt "Times New Roman"\'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><![endif]>List before heading B<o:p></o:p></p>  <h1>heading<o:p></o:p></h1>  <p class=MsoListParagraphCxSpFirst style=\'text-indent:-.25in;mso-list:l0 level1 lfo1\'><![if !supportLists]><span style=\'font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family: Symbol\'><span style=\'mso-list:Ignore\'>·<span style=\'font:7.0pt "Times New Roman"\'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><![endif]>List after heading A<o:p></o:p></p>  <p class=MsoListParagraphCxSpLast style=\'text-indent:-.25in;mso-list:l0 level1 lfo1\'><![if !supportLists]><span style=\'font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family: Symbol\'><span style=\'mso-list:Ignore\'>·<span style=\'font:7.0pt "Times New Roman"\'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><![endif]>List after heading B<o:p></o:p></p>'});
+	equal(editor.getContent(), '<ul><li>List before heading A</li><li>List before heading B</li></ul><h1>heading</h1><ul><li>List after heading A</li><li>List after heading B</li></ul>');
+});
+
 test("Paste list like paragraph and list", function() {
 	editor.setContent('');
 
 	editor.execCommand('mceInsertClipboardContent', false, {
-		content: '<p class=MsoNormal><span style=\'font-size:10.0pt;line-height:115%;font-family:"Trebuchet MS","sans-serif";color:#666666\'>A. X<o:p></o:p></span></p><p class=MsoListParagraph style=\'text-indent:-.25in;mso-list:l0 level1 lfo1\'><![if !supportLists]><span style=\'mso-fareast-font-family:Calibri;mso-fareast-theme-font:minor-latin;mso-bidi-font-family:Calibri;mso-bidi-theme-font:minor-latin\'><span style=\'mso-list:Ignore\'>1.<span style=\'font:7.0pt "Times New Roman"\'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span></span><![endif]>Y</p>'
+		content: '<p class=MsoNormal><span style=\'font-size:10.0pt;line-height:115%;font-family:"Trebuchet MS","sans-serif";color:#666666\'>ABC. X<o:p></o:p></span></p><p class=MsoListParagraph style=\'text-indent:-.25in;mso-list:l0 level1 lfo1\'><![if !supportLists]><span style=\'mso-fareast-font-family:Calibri;mso-fareast-theme-font:minor-latin;mso-bidi-font-family:Calibri;mso-bidi-theme-font:minor-latin\'><span style=\'mso-list:Ignore\'>1.<span style=\'font:7.0pt "Times New Roman"\'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span></span><![endif]>Y</p>'
 	});
 
-	equal(editor.getContent(), '<p>A. X</p><ol><li>Y</li></ol>');
+	equal(editor.getContent(), '<p>ABC. X</p><ol><li>Y</li></ol>');
 });
 
 test("Paste Word table", function() {
@@ -204,9 +216,9 @@ test("Paste Word links", function() {
 				'<a href="#_ftnref238571849" name="_ftn238571849">[5]</a>' +
 				'<a href="#_edn238571849" name="_ednref238571849">[6]</a>' +
 				'<a href="#_ednref238571849" name="_edn238571849">[7]</a>' +
-				'<a href="http://www.tinymce.com/someurl">8</a>' +
+				'<a href="http://domain.tinymce.com/someurl">8</a>' +
 				'<a name="#unknown">9</a>' +
-				'<a href="http://www.tinymce.com/someurl" name="named_link">named_link</a>' +
+				'<a href="http://domain.tinymce.com/someurl" name="named_link">named_link</a>' +
 				'<a>5</a>' +
 			'</p>'
 		)
@@ -222,7 +234,7 @@ test("Paste Word links", function() {
 			'<a href="#_ftnref238571849" name="_ftn238571849">[5]</a>' +
 			'<a href="#_edn238571849" name="_ednref238571849">[6]</a>' +
 			'<a href="#_ednref238571849" name="_edn238571849">[7]</a>' +
-			'<a href="http://www.tinymce.com/someurl">8</a>' +
+			'<a href="http://domain.tinymce.com/someurl">8</a>' +
 			'9' +
 			'named_link' +
 			'5' +
@@ -279,6 +291,98 @@ test('paste track changes comment', function() {
 
 	equal(editor.getContent(), '<p>1</p>');
 });
+
+test('paste nested (UL) word list', function() {
+	editor.setContent('');
+
+	editor.execCommand('mceInsertClipboardContent', false, {
+		content: (
+			"<p class=MsoListParagraphCxSpFirst style='text-indent:-18.0pt;mso-list:l0 level1 lfo1'>" +
+			"<![if !supportLists]><span	style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:Symbol'>" +
+			"<span style='mso-list:Ignore'>·<span style='font:7.0pt \"Times New Roman\"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+			"</span></span></span><![endif]>a</p>" +
+
+			"<p class=MsoListParagraphCxSpMiddle style='margin-left:72.0pt;mso-add-space:auto;text-indent:-18.0pt;mso-list:l0 level2 lfo1'>" +
+			"<![if !supportLists]><span style='font-family:\"Courier New\";mso-fareast-font-family:\"Courier New\"'>" +
+			"<span style='mso-list:Ignore'>o<span style='font:7.0pt \"Times New Roman\"'>&nbsp;&nbsp;</span></span></span><![endif]>b</p>" +
+
+			"<p class=MsoListParagraphCxSpLast style='margin-left:108.0pt;mso-add-space:auto;text-indent:-18.0pt;mso-list:l0 level3 lfo1'>" +
+			"<![if !supportLists]><span style='font-family:Wingdings;mso-fareast-font-family:Wingdings;mso-bidi-font-family:Wingdings'>" +
+			"<span style='mso-list:Ignore'>§<span style='font:7.0pt \"Times New Roman\"'>&nbsp;</span></span></span><![endif]>c 1. x</p>"
+		)
+	});
+
+	equal(
+		editor.getContent(),
+		'<ul>'+
+			'<li>a' +
+				'<ul>' +
+					'<li>b' +
+						'<ul>' +
+							'<li>c 1. x</li>' +
+						'</ul>' +
+					'</li>' +
+				'</ul>' +
+			'</li>' +
+		'</ul>'
+	);
+});
+
+test('paste nested (OL) word list', function() {
+	editor.setContent('');
+
+	editor.execCommand('mceInsertClipboardContent', false, {
+		content: (
+			"<p class=MsoListParagraphCxSpFirst style='text-indent:-18.0pt;mso-list:l0 level1 lfo1'>" +
+			"<![if !supportLists]><span style='mso-bidi-font-family:Calibri;mso-bidi-theme-font:minor-latin'>" +
+			"<span style='mso-list:Ignore'>1.<span style='font:7.0pt \"Times New Roman\"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>" +
+			"</span></span><![endif]>a</p>" +
+
+			"<p class=MsoListParagraphCxSpMiddle style='margin-left:72.0pt;mso-add-space:auto;text-indent:-18.0pt;mso-list:l0 level2 lfo1'>" +
+			"<![if !supportLists]><span style='mso-bidi-font-family:Calibri;mso-bidi-theme-font:minor-latin'><span style='mso-list:Ignore'>a." +
+			"<span style='font:7.0pt \"Times New Roman\"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span></span><![endif]>b</p>" +
+
+			"<p class=MsoListParagraphCxSpLast style='margin-left:108.0pt;mso-add-space:auto;text-indent:-108.0pt;mso-text-indent-alt:-9.0pt;mso-list:l0 level3 lfo1'>" +
+			"<![if !supportLists]><span style='mso-bidi-font-family:Calibri;mso-bidi-theme-font:minor-latin'><span style='mso-list:Ignore'>" +
+			"<span style='font:7.0pt \"Times New Roman\"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+			"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+			"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+			"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>i.<span style='font:7.0pt \"Times New Roman\"'>" +
+			"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span></span><![endif]>c</p>"
+		)
+	});
+
+	equal(
+		editor.getContent(),
+		'<ol>'+
+			'<li>a' +
+				'<ol>' +
+					'<li>b' +
+						'<ol>' +
+							'<li>c</li>' +
+						'</ol>' +
+					'</li>' +
+				'</ol>' +
+			'</li>' +
+		'</ol>'
+	);
+});
+
+test("Paste list start index", function() {
+	editor.settings.paste_merge_formats = true;
+
+	editor.setContent('');
+
+	editor.execCommand('mceInsertClipboardContent', false, {
+		content: (
+			'<p class=MsoListParagraphCxSpMiddle style="text-indent:-18.0pt;mso-list:l0 level1 lfo1">' +
+			'<![if !supportLists]><span style="mso-fareast-font-family:Calibri;mso-fareast-theme-font:minor-latin;' +
+			'mso-bidi-font-family:Calibri;mso-bidi-theme-font:minor-latin"><span style="mso-list:Ignore">10.' +
+			'<span style="font:7.0pt Times>&nbsp;&nbsp;</span></span></span><![endif]>J<o:p></o:p></p>'
+		)
+	});
+	equal(editor.getContent(), '<ol start="10"><li>J</li></ol>');
+})
 
 test("Paste paste_merge_formats: true", function() {
 	editor.settings.paste_merge_formats = true;
@@ -464,6 +568,10 @@ test('paste post process (event)', function() {
 	equal(editor.getContent(), '<p><em>c</em></p>');
 });
 
+test('paste innerText of conditional comments', function() {
+	equal(tinymce.pasteplugin.Utils.innerText('<![if !supportLists]>X<![endif]>'), 'X');
+});
+
 test('paste innerText of single P', function() {
 	editor.setContent('<p>a</p>');
 	equal(tinymce.pasteplugin.Utils.innerText(editor.getBody().innerHTML), 'a');
@@ -509,6 +617,10 @@ test('trim html from clipboard fragments', function() {
 	equal(tinymce.pasteplugin.Utils.trimHtml('a\n<body>\n<!--StartFragment-->\nb\n<!--EndFragment-->\n</body>\nc'), '\nb\n');
 	equal(tinymce.pasteplugin.Utils.trimHtml('a<!--StartFragment-->b<!--EndFragment-->c'), 'abc');
 	equal(tinymce.pasteplugin.Utils.trimHtml('a<body>b</body>c'), 'b');
+	equal(tinymce.pasteplugin.Utils.trimHtml('a<span class="Apple-converted-space">\u00a0<\/span>b'), 'a b');
+	equal(tinymce.pasteplugin.Utils.trimHtml('<span class="Apple-converted-space">\u00a0<\/span>b'), ' b');
+	equal(tinymce.pasteplugin.Utils.trimHtml('a<span class="Apple-converted-space">\u00a0<\/span>'), 'a ');
+	equal(tinymce.pasteplugin.Utils.trimHtml('<span class="Apple-converted-space">\u00a0<\/span>'), ' ');
 });
 
 if (tinymce.Env.webkit) {
@@ -550,7 +662,7 @@ if (tinymce.Env.webkit) {
 		editor.execCommand('mceInsertClipboardContent', false, {content: '<span class="c" style="color:red; text-indent: 10px" title="t">Test</span>'});
 		equal(editor.getContent(), '<p><span class="c" title="t">Test</span></p>');
 	});
-	
+
 	test('paste webkit remove runtime styles (background-color)', function() {
 		editor.settings.paste_webkit_styles = 'background-color';
 		editor.setContent('');
@@ -570,6 +682,13 @@ if (tinymce.Env.webkit) {
 		editor.setContent('');
 		editor.execCommand('mceInsertClipboardContent', false, {content: '<span style="font-family:Arial; text-indent: 10px">Test</span>'});
 		equal(editor.getContent(), '<p><span style="font-family: Arial;">Test</span></p>');
+	});
+
+	test('paste webkit remove runtime styles font-family allowed but not specified', function() {
+		editor.settings.paste_webkit_styles = 'font-family';
+		editor.setContent('');
+		editor.execCommand('mceInsertClipboardContent', false, {content: '<p title="x" style="text-indent: 10px">Test</p>'});
+		equal(editor.getContent(), '<p title="x">Test</p>');
 	});
 
 	test('paste webkit remove runtime styles (custom styles)', function() {
