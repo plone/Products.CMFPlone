@@ -67,7 +67,7 @@ class TinyMceSettingsAdapter(object):
             'upload': {
                 'initialFolder': initial,
                 'currentPath': current_path,
-                'baseUrl': self.config['document_base_url'],
+                'baseUrl': folder.absolute_url(),
                 'relativePath': format_pattern_settings(
                     self.settings.rel_upload_path,
                     self.config),
