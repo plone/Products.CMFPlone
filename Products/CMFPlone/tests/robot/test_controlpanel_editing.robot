@@ -89,7 +89,7 @@ I enable lock on through the web
 
 I can see an id field in the settings tab when I create a document
   Go To  ${PLONE_URL}/++add++Document
-  Given tabs are loaded
+  Given patterns are loaded
   Execute Javascript  $('#form-widgets-IDublinCore-title').val('My Document'); return 0;
   Click Link  Settings
   Page should contain element  name=form.widgets.IShortName.id

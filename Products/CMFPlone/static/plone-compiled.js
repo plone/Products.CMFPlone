@@ -14420,6 +14420,7 @@ define('pat-registry',[
                     }
                 }
             }, null);
+            $('body').addClass('patterns-loaded');
         },
 
         register: function registry_register(pattern, name) {

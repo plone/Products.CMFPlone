@@ -13,31 +13,31 @@ ${TEST_FOLDER}  test-folder
 a document
     [Arguments]  ${title}
     Go to  ${PLONE_URL}/${TEST_FOLDER}/++add++Document
-    Given tabs are loaded
+    Given patterns are loaded
     Execute Javascript  $('#form-widgets-IDublinCore-title').val('${title}'); return 0;
     Click Button  Save
 
 a folder
     [Arguments]  ${title}
     Go to  ${PLONE_URL}/${TEST_FOLDER}/++add++Folder
-    Given tabs are loaded
+    Given patterns are loaded
     Execute Javascript  $('#form-widgets-IDublinCore-title').val('${title}'); return 0;
     Click Button  Save
 
 a folder '${foldername}' with a document '${documentname}'
     Go to  ${PLONE_URL}/${TEST_FOLDER}/++add++Folder
-    Given tabs are loaded
+    Given patterns are loaded
     Execute Javascript  $('#form-widgets-IDublinCore-title').val('${foldername}'); return 0;
     Click Button  Save
     Go to  ${PLONE_URL}/${TEST_FOLDER}/folder/edit
-    Given tabs are loaded
+    Given patterns are loaded
     Execute Javascript  $('#form-widgets-IDublinCore-title').val('${documentname}'); return 0;
     Click Button  Save
 
 a collection
     [Arguments]  ${title}
     Go to  ${PLONE_URL}/${TEST_FOLDER}/++add++Collection
-    Given tabs are loaded
+    Given patterns are loaded
     Execute Javascript  $('#form-widgets-IDublinCore-title').val('${title}'); return 0;
     Click Button  Save
 
@@ -49,7 +49,7 @@ the site root
 
 a test folder
     Go to  ${PLONE_URL}/++add++Folder
-    Given tabs are loaded
+    Given patterns are loaded
     Execute Javascript  $('#form-widgets-IDublinCore-title').val('Test Folder'); return 0;
     Click Button  Save
 
@@ -60,8 +60,5 @@ there should be '${count}' livesearch results
     Wait until keyword succeeds  5s  1s  Element Should Be Visible  css=div#LSResult
     Wait until keyword succeeds  5s  1s  Xpath Should Match X Times  //div[@id = 'LSResult']/descendant::li  ${count}
 
-menu is loaded
-    Wait For Condition  return $('.pat-toolbar.initialized').size() > 0
-
-tabs are loaded
-    Wait For Condition  return $('.autotoc-nav .active:visible').size() > 0
+patterns are loaded
+    Wait For Condition  return $('body.patterns-loaded').size() > 0

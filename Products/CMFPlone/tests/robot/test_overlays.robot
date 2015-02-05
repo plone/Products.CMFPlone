@@ -269,14 +269,14 @@ a document '${title}' in the test folder
 
 I set the default content view of the test folder
     Go to  ${PLONE_URL}/${TEST_FOLDER}
-    Given menu is loaded
+    Given patterns are loaded
     Click link  xpath=//li[@id='plone-contentmenu-moreoptions']/a
     Click link  id=contextSetDefaultPage
 
 a document as the default view of the test folder
     a document 'doc' in the test folder
     Go to  ${PLONE_URL}/${TEST_FOLDER}
-    Given menu is loaded
+    Given patterns are loaded
     Click link  xpath=//li[@id='plone-contentmenu-moreoptions']/a
     Wait until element is visible  id=contextSetDefaultPage
     Click link  id=contextSetDefaultPage
@@ -285,14 +285,14 @@ a document as the default view of the test folder
 
 I change the default content view of the test folder
     Go to  ${PLONE_URL}/${TEST_FOLDER}
-    Given menu is loaded
+    Given patterns are loaded
     Click link  xpath=//li[@id='plone-contentmenu-moreoptions']/a
     Wait until element is visible  id=folderChangeDefaultPage
     Click link  id=folderChangeDefaultPage
 
 I trigger the '${action}' action menu item of the test folder
     Go to  ${PLONE_URL}/${TEST_FOLDER}
-    Given menu is loaded
+    Given patterns are loaded
     Element should be visible  xpath=//li[@id='plone-contentmenu-moreoptions']/a
     Click link  xpath=//li[@id='plone-contentmenu-moreoptions']/a
     Wait until element is visible  id=plone-contentmenu-actions-${action}

@@ -77,7 +77,7 @@ I click show all groups
 
 I create new group
   Click button  Add New Group
-  Given menu is loaded
+  Given patterns are loaded
   Input Text  name=addname  my-new-group
   Input Text  name=title:string  My New Group
   Input Text  name=description:text  This is my new group

@@ -67,7 +67,7 @@ then searching for 'My Document' will show a live search
 
 searching for '${search_term}' will not return any results
   Go to  ${PLONE_URL}/@@search
-  Given menu is loaded
+  Given patterns are loaded
   Wait until page contains  No results were found
   Input Text  xpath=//form[@id='searchform']//input[@name='SearchableText']  ${search_term}
   Submit Form  name=searchform

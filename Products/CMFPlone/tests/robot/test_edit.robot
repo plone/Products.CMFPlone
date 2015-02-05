@@ -66,7 +66,7 @@ Background
 
 a test document
     Go to  ${PLONE_URL}/++add++Document
-    Given tabs are loaded
+    Given patterns are loaded
     Execute Javascript  $('#form-widgets-IDublinCore-title').val('${TITLE}'); return 0;
     Click Button  Save
 
@@ -83,7 +83,7 @@ I can only see the default tab
     Element Should Not Be Visible  xpath=//fieldset[@id='fieldset-categorization']
 
 I click the ${tab} tab
-    Given tabs are loaded
+    Given patterns are loaded
     Click link  ${tab}
 
 the categorization tab is shown
@@ -96,7 +96,7 @@ no other tab is shown
 
 at least one other item
     Go to  ${PLONE_URL}/++add++Document
-    Given tabs are loaded
+    Given patterns are loaded
     Execute Javascript  $('#form-widgets-IDublinCore-title').val('${TITLE}'); return 0;
     Click Button  Save
 
