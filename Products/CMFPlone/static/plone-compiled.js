@@ -15060,9 +15060,8 @@ define('plone-patterns-toolbar',[
             $.cookie('plone-toolbar', $("#edit-zone").attr('class'), {path: '/'});
             plonetoolbar_state = plonetoolbar_state.replace('plone-toolbar-left', 'plone-toolbar-top');
           }
-
         });
-      }
+      }this.$el.addClass('initialized');
     }
   });
 

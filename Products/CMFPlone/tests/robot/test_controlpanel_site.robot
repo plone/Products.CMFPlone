@@ -11,6 +11,7 @@ Variables  Products/CMFPlone/tests/robot/variables.py
 Library  Remote  ${PLONE_URL}/RobotRemote
 
 Resource  keywords.robot
+Resource  common.robot
 
 Test Setup  Open SauceLabs test browser
 Test Teardown  Run keywords  Report test status  Close all browsers
@@ -61,26 +62,31 @@ the site control panel
 # --- WHEN -------------------------------------------------------------------
 
 I enable the sitemap
+  Given menu is loaded
   Select Checkbox  form.widgets.enable_sitemap:list
   Click Button  Save
   Wait until page contains  Changes saved
 
 I set the site title to '${site_title}'
+  Given menu is loaded
   Input Text  name=form.widgets.site_title  ${site_title}
   Click Button  Save
   Wait until page contains  Changes saved
 
 I set a custom logo
+  Given menu is loaded
   Choose File  name=form.widgets.site_logo  ${PATH_TO_TEST_FILES}/pixel.png
   Click Button  Save
   Wait until page contains  Changes saved
 
 I enable dublin core metadata
+  Given menu is loaded
   Select Checkbox  form.widgets.exposeDCMetaTags:list
   Click Button  Save
   Wait until page contains  Changes saved
 
 I add a Javascript snippet to the webstats javascript
+  Given menu is loaded
   Input Text  name=form.widgets.webstats_js  <script id="webstats_snippet"></script>
   Click Button  Save
   Wait until page contains  Changes saved

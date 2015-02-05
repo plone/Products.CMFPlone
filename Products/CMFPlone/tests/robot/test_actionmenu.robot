@@ -85,7 +85,8 @@ Background
 
 a test document
     Go to  ${PLONE_URL}/++add++Document
-    Input text  name=form.widgets.IDublinCore.title  ${TITLE}
+    Given tabs are loaded
+    Execute Javascript  $('#form-widgets-IDublinCore-title').val('${TITLE}'); return 0;
     Click Button  Save
 
 an actionsmenu page
@@ -98,15 +99,19 @@ delete link should not be visible
      Element Should Not Be Visible  xpath=//div[@class='contentActions']//a[@id='plone-contentmenu-actions-delete']
 
 menu link is clicked
+    Given menu is loaded
     Click link  xpath=//li[@id='plone-contentmenu-moreoptions']/a
 
 delete link should be visible
+    Given menu is loaded
     Element Should Be Visible  xpath=//div[@class='contentActions']//a[@id='plone-contentmenu-actions-delete']
 
 actions menu should be visible
+    Given menu is loaded
     Element Should Be Visible  xpath=//li[@id='plone-contentmenu-actions']
 
 first menu link is clicked
+    Given menu is loaded
     Click Link  xpath=(//div[@class="contentActions"]//a[contains(@class, 'actionMenuHeader')])[1]
 
 mouse moves to second menu
@@ -116,9 +121,11 @@ second menu should be visible
     Element Should Be Visible  xpath=(//li[contains(@class, 'actionMenu')])[2]
 
 first menu should not be visible
+    Given menu is loaded
     Wait until keyword succeeds  10s  1s  Element Should Not Be Visible  xpath=(//li[contains(@class, 'actionMenu')])[1]//li
 
 actions menu should not be visible
+    Given menu is loaded
     Wait until keyword succeeds  10s  1s  Element Should Not Be Visible  xpath=//li[@id='plone-contentmenu-actions']
 
 I click outside of menu
@@ -128,6 +135,7 @@ workflow link is clicked
     # store current state
     ${OLD_STATE} =  Get Text  xpath=(//span[contains(@class,'state-')])[2]
     Set Suite Variable  ${OLD_STATE}  ${OLD_STATE}
+    Given menu is loaded
     Click Link  xpath=//li[@id='plone-contentmenu-workflow']/a
     Click Link  xpath=(//li[@id='plone-contentmenu-workflow']/ul/li/a)[1]
     Page Should Contain  Item state changed.
@@ -161,6 +169,7 @@ Open Menu
     Wait until keyword succeeds  5  1  Element Should Be Visible  css=#${elementId} .actionMenuContent
 
 Open Action Menu
+    Given menu is loaded
     Click link  xpath=//li[@id='plone-contentmenu-moreoptions']/a
     Wait until keyword succeeds  5  1  Element Should Be Visible  css=#plone-contentmenu-actions
 

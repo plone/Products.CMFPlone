@@ -71,18 +71,21 @@ Input RichText
 
 I add '${tag}' to the nasty tags list
   Click Button  Add Nasty tags
+  Given menu is loaded
   Input Text  name=form.nasty_tags.6.  ${tag}
   Click Button  Save
   Wait until page contains  Changes saved
 
 I add '${tag}' to the stripped tags list
   Click Button  Add Stripped tags
+  Given menu is loaded
   Input Text  name=form.stripped_tags.16.  ${tag}
   Click Button  Save
   Wait until page contains  Changes saved
 
 I add '${tag}' to the custom tags list
   Click Button  Add Custom tags
+  Given menu is loaded
   Input Text  name=form.custom_tags.26.  ${tag}
   Click Button  Save
   Wait until page contains  Changes saved
@@ -93,6 +96,7 @@ I add '${tag}' to the custom tags list
 the 'h1' tag is filtered out when a document is saved
   ${doc1_uid}=  Create content  id=doc1  title=Document 1  type=Document
   Go To  ${PLONE_URL}/doc1/edit
+  Given menu is loaded
   Input RichText  <h1>h1 heading</h1><p>lorem ipsum</p>
   Click Button  Save
   Wait until page contains  Changes saved
@@ -101,6 +105,7 @@ the 'h1' tag is filtered out when a document is saved
 the 'h1' tag is stripped when a document is saved
   ${doc1_uid}=  Create content  id=doc1  title=Document 1  type=Document
   Go To  ${PLONE_URL}/doc1/edit
+  Given menu is loaded
   Input RichText  <h1>h1 heading</h1><p>lorem ipsum</p>
   Click Button  Save
   Wait until page contains  Changes saved
@@ -110,6 +115,7 @@ the 'h1' tag is stripped when a document is saved
 the 'marquee' tag is preserved when a document is saved
   ${doc1_uid}=  Create content  id=doc1  title=Document 1  type=Document
   Go To  ${PLONE_URL}/doc1/edit
+  Given menu is loaded
   Input RichText  <marquee>lorem ipsum</marquee>
   Click Button  Save
   Wait until page contains  Changes saved
