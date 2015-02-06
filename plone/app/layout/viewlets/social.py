@@ -26,6 +26,7 @@ class SocialTagsViewlet(TitleViewlet):
             dict(name="twitter:card", content="summary"),
             dict(name="twitter:title", content=self.page_title),
             dict(property="og:title", content=self.page_title),
+            dict(itemprop="name", content=self.page_title),
             dict(property="og:type", content="website"),
             dict(property="og:site_name", content=self.site_title),
         ]
@@ -51,6 +52,7 @@ class SocialTagsViewlet(TitleViewlet):
         self.tags.extend([
             dict(name="twitter:description", content=item.description),
             dict(property="og:description", content=item.description),
+            dict(itemprop="description", content=item.description),
             dict(name="twitter:url", content=item.link),
             dict(property="og:url", content=item.link),
         ])
@@ -60,6 +62,7 @@ class SocialTagsViewlet(TitleViewlet):
                 self.tags.extend([
                     dict(name="twitter:image", content=item.file_url),
                     dict(property="og:image", content=item.file_url),
+                    dict(itemprop="image", content=item.file_url),
                     dict(property="og:image:type", content=item.file_type)
                 ])
             elif (item.file_type.startswith('video')
