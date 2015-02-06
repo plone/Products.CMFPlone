@@ -9,10 +9,13 @@
 
 
   <metal:block fill-slot="javascript_head_slot">
+    <!--
+  <link rel="stylesheet/less" type="text/css"
+    tal:attributes="href string:${portal_url}/++resource++mockup/resourceregistry/pattern.resourceregistry.less" />
+  -->
 
-<link rel="stylesheet"
+    <link rel="stylesheet"
           tal:attributes="href string:${portal_url}/++plone++static/resourceregistry.min.css" />
-
     <script tal:attributes="src string:${portal_url}/++plone++static/resourceregistry.js"></script>
   </metal:block>
 <body>
