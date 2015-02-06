@@ -16,27 +16,15 @@ from Products.CMFPlone.interfaces.syndication import IFeedSettings
 from plone.uuid.interfaces import IUUID
 from zope.cachedescriptors.property import Lazy as lazy_property
 
-# this might be a little silly but it's possible to not use
-# Products.CMFPlone with dexterity content types
-try:
-    from plone.dexterity.interfaces import IDexterityContent
-except ImportError:
-    class IDexterityContent(Interface):
-        pass
-try:
-    from plone.rfc822.interfaces import IPrimaryFieldInfo
-except ImportError:
-    class IPrimaryFieldInfo(Interface):
-        pass
-try:
-    from plone.namedfile.interfaces import INamedField
-except ImportError:
-    class INamedField(Interface):
-        pass
-# or without ATContentTypes
+from plone.dexterity.interfaces import IDexterityContent
+from plone.rfc822.interfaces import IPrimaryFieldInfo
+from plone.namedfile.interfaces import INamedField
+from plone.app.contenttypes.behaviors.leadimage import ILeadImage
+
 try:
     from Products.ATContentTypes.interfaces.file import IFileContent
 except ImportError:
+    # or without ATContentTypes
     class IFileContent(Interface):
         pass
 
@@ -270,13 +258,26 @@ class BaseItem(BaseFeedData):
 class DexterityItem(BaseItem):
     adapts(IDexterityContent, IFeed)
 
+    file = None
+    field_name = ''
+
     def __init__(self, context, feed):
         super(DexterityItem, self).__init__(context, feed)
         self.dexterity = IDexterityContent.providedBy(context)
-        try:
-            self.primary = IPrimaryFieldInfo(self.context, None)
-        except TypeError:
-            self.primary = None
+        lead = ILeadImage(self.context, None)
+        if lead:
+            if lead.image.getSize() > 0:
+                self.file = lead.image
+                self.field_name = 'lead'
+        if self.file is None:
+            try:
+                primary = IPrimaryFieldInfo(self.context, None)
+                if (INamedField.providedBy(primary.field)
+                        and primary.field.getSize() > 0):
+                    self.file = primary.field
+                    self.field_name = primary.fieldname
+            except TypeError:
+                pass
 
     @property
     def file_url(self):
@@ -286,20 +287,12 @@ class DexterityItem(BaseItem):
             filename = fi.filename
             if filename:
                 url += '/@@download/%s/%s' % (
-                    self.primary.field.__name__, filename)
+                    self.field_name, filename)
         return url
 
     @property
     def has_enclosure(self):
-        if self.primary:
-            return INamedField.providedBy(self.primary.field)
-        else:
-            return False
-
-    @lazy_property
-    def file(self):
-        if self.has_enclosure:
-            return self.primary.field.get(self.context)
+        return self.file is not None
 
     @property
     def file_length(self):

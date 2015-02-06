@@ -8,6 +8,9 @@ Changelog
 5.0b1 (unreleased)
 ------------------
 
+- Add social media settings control panel
+  [vangheem]
+
 - Extended ulocalized_time for target_language
   [agitator]
 

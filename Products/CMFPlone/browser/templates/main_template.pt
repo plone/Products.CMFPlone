@@ -163,7 +163,6 @@
       <div tal:replace="structure provider:plone.portalfooter" />
     </footer>
 
-
   </body>
 </html>
 
