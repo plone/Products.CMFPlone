@@ -263,6 +263,14 @@
         permission="zope2.View"
         />
 
+    <!-- Render the social media metadata -->
+    <browser:viewlet
+        name="plone.htmlhead.socialtags"
+        manager=".interfaces.IHtmlHead"
+        class=".social.SocialTagsViewlet"
+        permission="zope2.View"
+        />
+
     <!-- Render the viewport -->
     <browser:viewlet
         name="plone.htmlhead.viewport"
