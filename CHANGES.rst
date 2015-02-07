@@ -8,6 +8,9 @@ Changelog
 5.0b1 (unreleased)
 ------------------
 
+- Merge plone.app.search here
+  [vangheem]
+
 - Extended ulocalized_time for target_language
   [agitator]
 

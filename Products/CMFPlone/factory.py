@@ -57,7 +57,6 @@ class HiddenProfiles(object):
                 u'plone.app.imaging:default',
                 u'plone.app.jquery:initial-upgrade',
                 u'plone.app.registry:default',
-                u'plone.app.search:default',
                 u'plone.formwidget.recurrence:default',
                 u'plone.resource:default',
                 ]

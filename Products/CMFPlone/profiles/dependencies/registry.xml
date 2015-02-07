@@ -878,6 +878,12 @@
       <value key="js">jquery.highlightsearchterms.js</value>
   </records>
 
+  <records prefix="plone.resources/resource-search-js"
+           interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++search.js</value>
+      <value key="deps">jquery</value>
+  </records>
+
   <!-- disabled -->
   <records prefix="plone.resources/mark_special_links"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
@@ -956,6 +962,7 @@
             interface='Products.CMFPlone.interfaces.IBundleRegistry'>
     <value key="resources">
       <element>plone</element>
+      <element>resource-search-js</element>
     </value>
     <value key="enabled">True</value>
     <value key="jscompilation">++plone++static/plone-compiled.min.js</value>

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces import ISearchSchema
 from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
 from plone.registry.interfaces import IRegistry
@@ -16,7 +15,6 @@ class SearchControlPanelAdapter(object):
 
     def __init__(self, context):
         self.portal = getSite()
-        self.jstool = getToolByName(context, 'portal_javascripts')
         registry = getUtility(IRegistry)
         self.search_settings = registry.forInterface(
             ISearchSchema, prefix="plone")
@@ -27,11 +25,8 @@ class SearchControlPanelAdapter(object):
     def set_enable_livesearch(self, value):
         if value:
             self.search_settings.enable_livesearch = True
-            # self.jstool.getResource('livesearch.js').setEnabled(True)
         else:
             self.search_settings.enable_livesearch = False
-            # self.jstool.getResource('livesearch.js').setEnabled(False)
-        self.jstool.cookResources()
 
     enable_livesearch = property(get_enable_livesearch, set_enable_livesearch)
 

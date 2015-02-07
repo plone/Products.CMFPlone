@@ -20,7 +20,7 @@
     title="Allow sendto" />
 
   <browser:resource
-      file="plone-logo.png"
+      file="static/plone-logo.png"
       name="plone-logo.png"
       />
 
@@ -164,10 +164,31 @@
 
   <!-- Useful for cross domain iframe proxying -->
   <browser:resource
-      file="blank.html"
+      file="static/blank.html"
       name="blank.html"
       />
 
   <include package=".syndication" />
+
+  <browser:page
+      name="search"
+      class=".search.Search"
+      permission="zope2.View"
+      for="*"
+      template="templates/search.pt"
+      />
+
+  <browser:page
+      name="updated_search"
+      class=".search.Search"
+      permission="zope2.View"
+      for="Products.CMFCore.interfaces.IFolderish"
+      template="templates/updated_search.pt"
+      />
+
+  <browser:resource
+      name="search.js"
+      file="static/search.js"
+      />
 
 </configure>

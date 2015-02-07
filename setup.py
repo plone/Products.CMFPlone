@@ -97,7 +97,6 @@ setup(
         'plone.app.portlets',
         'plone.app.redirector',
         'plone.app.registry',
-        'plone.app.search',
         'plone.app.theming',
         'plone.app.users',
         'plone.app.uuid',

@@ -4,6 +4,212 @@ if(k&&j[k]&&(e||j[k].data)||void 0!==d||"string"!=typeof b)return k||(k=i?a[h]=c
 },cur:function(){var a=Zb.propHooks[this.prop];return a&&a.get?a.get(this):Zb.propHooks._default.get(this)},run:function(a){var b,c=Zb.propHooks[this.prop];return this.pos=b=this.options.duration?m.easing[this.easing](a,this.options.duration*a,0,1,this.options.duration):a,this.now=(this.end-this.start)*b+this.start,this.options.step&&this.options.step.call(this.elem,this.now,this),c&&c.set?c.set(this):Zb.propHooks._default.set(this),this}},Zb.prototype.init.prototype=Zb.prototype,Zb.propHooks={_default:{get:function(a){var b;return null==a.elem[a.prop]||a.elem.style&&null!=a.elem.style[a.prop]?(b=m.css(a.elem,a.prop,""),b&&"auto"!==b?b:0):a.elem[a.prop]},set:function(a){m.fx.step[a.prop]?m.fx.step[a.prop](a):a.elem.style&&(null!=a.elem.style[m.cssProps[a.prop]]||m.cssHooks[a.prop])?m.style(a.elem,a.prop,a.now+a.unit):a.elem[a.prop]=a.now}}},Zb.propHooks.scrollTop=Zb.propHooks.scrollLeft={set:function(a){a.elem.nodeType&&a.elem.parentNode&&(a.elem[a.prop]=a.now)}},m.easing={linear:function(a){return a},swing:function(a){return.5-Math.cos(a*Math.PI)/2}},m.fx=Zb.prototype.init,m.fx.step={};var $b,_b,ac=/^(?:toggle|show|hide)$/,bc=new RegExp("^(?:([+-])=|)("+S+")([a-z%]*)$","i"),cc=/queueHooks$/,dc=[ic],ec={"*":[function(a,b){var c=this.createTween(a,b),d=c.cur(),e=bc.exec(b),f=e&&e[3]||(m.cssNumber[a]?"":"px"),g=(m.cssNumber[a]||"px"!==f&&+d)&&bc.exec(m.css(c.elem,a)),h=1,i=20;if(g&&g[3]!==f){f=f||g[3],e=e||[],g=+d||1;do h=h||".5",g/=h,m.style(c.elem,a,g+f);while(h!==(h=c.cur()/d)&&1!==h&&--i)}return e&&(g=c.start=+g||+d||0,c.unit=f,c.end=e[1]?g+(e[1]+1)*e[2]:+e[2]),c}]};function fc(){return setTimeout(function(){$b=void 0}),$b=m.now()}function gc(a,b){var c,d={height:a},e=0;for(b=b?1:0;4>e;e+=2-b)c=T[e],d["margin"+c]=d["padding"+c]=a;return b&&(d.opacity=d.width=a),d}function hc(a,b,c){for(var d,e=(ec[b]||[]).concat(ec["*"]),f=0,g=e.length;g>f;f++)if(d=e[f].call(c,b,a))return d}function ic(a,b,c){var d,e,f,g,h,i,j,l,n=this,o={},p=a.style,q=a.nodeType&&U(a),r=m._data(a,"fxshow");c.queue||(h=m._queueHooks(a,"fx"),null==h.unqueued&&(h.unqueued=0,i=h.empty.fire,h.empty.fire=function(){h.unqueued||i()}),h.unqueued++,n.always(function(){n.always(function(){h.unqueued--,m.queue(a,"fx").length||h.empty.fire()})})),1===a.nodeType&&("height"in b||"width"in b)&&(c.overflow=[p.overflow,p.overflowX,p.overflowY],j=m.css(a,"display"),l="none"===j?m._data(a,"olddisplay")||Fb(a.nodeName):j,"inline"===l&&"none"===m.css(a,"float")&&(k.inlineBlockNeedsLayout&&"inline"!==Fb(a.nodeName)?p.zoom=1:p.display="inline-block")),c.overflow&&(p.overflow="hidden",k.shrinkWrapBlocks()||n.always(function(){p.overflow=c.overflow[0],p.overflowX=c.overflow[1],p.overflowY=c.overflow[2]}));for(d in b)if(e=b[d],ac.exec(e)){if(delete b[d],f=f||"toggle"===e,e===(q?"hide":"show")){if("show"!==e||!r||void 0===r[d])continue;q=!0}o[d]=r&&r[d]||m.style(a,d)}else j=void 0;if(m.isEmptyObject(o))"inline"===("none"===j?Fb(a.nodeName):j)&&(p.display=j);else{r?"hidden"in r&&(q=r.hidden):r=m._data(a,"fxshow",{}),f&&(r.hidden=!q),q?m(a).show():n.done(function(){m(a).hide()}),n.done(function(){var b;m._removeData(a,"fxshow");for(b in o)m.style(a,b,o[b])});for(d in o)g=hc(q?r[d]:0,d,n),d in r||(r[d]=g.start,q&&(g.end=g.start,g.start="width"===d||"height"===d?1:0))}}function jc(a,b){var c,d,e,f,g;for(c in a)if(d=m.camelCase(c),e=b[d],f=a[c],m.isArray(f)&&(e=f[1],f=a[c]=f[0]),c!==d&&(a[d]=f,delete a[c]),g=m.cssHooks[d],g&&"expand"in g){f=g.expand(f),delete a[d];for(c in f)c in a||(a[c]=f[c],b[c]=e)}else b[d]=e}function kc(a,b,c){var d,e,f=0,g=dc.length,h=m.Deferred().always(function(){delete i.elem}),i=function(){if(e)return!1;for(var b=$b||fc(),c=Math.max(0,j.startTime+j.duration-b),d=c/j.duration||0,f=1-d,g=0,i=j.tweens.length;i>g;g++)j.tweens[g].run(f);return h.notifyWith(a,[j,f,c]),1>f&&i?c:(h.resolveWith(a,[j]),!1)},j=h.promise({elem:a,props:m.extend({},b),opts:m.extend(!0,{specialEasing:{}},c),originalProperties:b,originalOptions:c,startTime:$b||fc(),duration:c.duration,tweens:[],createTween:function(b,c){var d=m.Tween(a,j.opts,b,c,j.opts.specialEasing[b]||j.opts.easing);return j.tweens.push(d),d},stop:function(b){var c=0,d=b?j.tweens.length:0;if(e)return this;for(e=!0;d>c;c++)j.tweens[c].run(1);return b?h.resolveWith(a,[j,b]):h.rejectWith(a,[j,b]),this}}),k=j.props;for(jc(k,j.opts.specialEasing);g>f;f++)if(d=dc[f].call(j,a,k,j.opts))return d;return m.map(k,hc,j),m.isFunction(j.opts.start)&&j.opts.start.call(a,j),m.fx.timer(m.extend(i,{elem:a,anim:j,queue:j.opts.queue})),j.progress(j.opts.progress).done(j.opts.done,j.opts.complete).fail(j.opts.fail).always(j.opts.always)}m.Animation=m.extend(kc,{tweener:function(a,b){m.isFunction(a)?(b=a,a=["*"]):a=a.split(" ");for(var c,d=0,e=a.length;e>d;d++)c=a[d],ec[c]=ec[c]||[],ec[c].unshift(b)},prefilter:function(a,b){b?dc.unshift(a):dc.push(a)}}),m.speed=function(a,b,c){var d=a&&"object"==typeof a?m.extend({},a):{complete:c||!c&&b||m.isFunction(a)&&a,duration:a,easing:c&&b||b&&!m.isFunction(b)&&b};return d.duration=m.fx.off?0:"number"==typeof d.duration?d.duration:d.duration in m.fx.speeds?m.fx.speeds[d.duration]:m.fx.speeds._default,(null==d.queue||d.queue===!0)&&(d.queue="fx"),d.old=d.complete,d.complete=function(){m.isFunction(d.old)&&d.old.call(this),d.queue&&m.dequeue(this,d.queue)},d},m.fn.extend({fadeTo:function(a,b,c,d){return this.filter(U).css("opacity",0).show().end().animate({opacity:b},a,c,d)},animate:function(a,b,c,d){var e=m.isEmptyObject(a),f=m.speed(b,c,d),g=function(){var b=kc(this,m.extend({},a),f);(e||m._data(this,"finish"))&&b.stop(!0)};return g.finish=g,e||f.queue===!1?this.each(g):this.queue(f.queue,g)},stop:function(a,b,c){var d=function(a){var b=a.stop;delete a.stop,b(c)};return"string"!=typeof a&&(c=b,b=a,a=void 0),b&&a!==!1&&this.queue(a||"fx",[]),this.each(function(){var b=!0,e=null!=a&&a+"queueHooks",f=m.timers,g=m._data(this);if(e)g[e]&&g[e].stop&&d(g[e]);else for(e in g)g[e]&&g[e].stop&&cc.test(e)&&d(g[e]);for(e=f.length;e--;)f[e].elem!==this||null!=a&&f[e].queue!==a||(f[e].anim.stop(c),b=!1,f.splice(e,1));(b||!c)&&m.dequeue(this,a)})},finish:function(a){return a!==!1&&(a=a||"fx"),this.each(function(){var b,c=m._data(this),d=c[a+"queue"],e=c[a+"queueHooks"],f=m.timers,g=d?d.length:0;for(c.finish=!0,m.queue(this,a,[]),e&&e.stop&&e.stop.call(this,!0),b=f.length;b--;)f[b].elem===this&&f[b].queue===a&&(f[b].anim.stop(!0),f.splice(b,1));for(b=0;g>b;b++)d[b]&&d[b].finish&&d[b].finish.call(this);delete c.finish})}}),m.each(["toggle","show","hide"],function(a,b){var c=m.fn[b];m.fn[b]=function(a,d,e){return null==a||"boolean"==typeof a?c.apply(this,arguments):this.animate(gc(b,!0),a,d,e)}}),m.each({slideDown:gc("show"),slideUp:gc("hide"),slideToggle:gc("toggle"),fadeIn:{opacity:"show"},fadeOut:{opacity:"hide"},fadeToggle:{opacity:"toggle"}},function(a,b){m.fn[a]=function(a,c,d){return this.animate(b,a,c,d)}}),m.timers=[],m.fx.tick=function(){var a,b=m.timers,c=0;for($b=m.now();c<b.length;c++)a=b[c],a()||b[c]!==a||b.splice(c--,1);b.length||m.fx.stop(),$b=void 0},m.fx.timer=function(a){m.timers.push(a),a()?m.fx.start():m.timers.pop()},m.fx.interval=13,m.fx.start=function(){_b||(_b=setInterval(m.fx.tick,m.fx.interval))},m.fx.stop=function(){clearInterval(_b),_b=null},m.fx.speeds={slow:600,fast:200,_default:400},m.fn.delay=function(a,b){return a=m.fx?m.fx.speeds[a]||a:a,b=b||"fx",this.queue(b,function(b,c){var d=setTimeout(b,a);c.stop=function(){clearTimeout(d)}})},function(){var a,b,c,d,e;b=y.createElement("div"),b.setAttribute("className","t"),b.innerHTML="  <link/><table></table><a href='/a'>a</a><input type='checkbox'/>",d=b.getElementsByTagName("a")[0],c=y.createElement("select"),e=c.appendChild(y.createElement("option")),a=b.getElementsByTagName("input")[0],d.style.cssText="top:1px",k.getSetAttribute="t"!==b.className,k.style=/top/.test(d.getAttribute("style")),k.hrefNormalized="/a"===d.getAttribute("href"),k.checkOn=!!a.value,k.optSelected=e.selected,k.enctype=!!y.createElement("form").enctype,c.disabled=!0,k.optDisabled=!e.disabled,a=y.createElement("input"),a.setAttribute("value",""),k.input=""===a.getAttribute("value"),a.value="t",a.setAttribute("type","radio"),k.radioValue="t"===a.value}();var lc=/\r/g;m.fn.extend({val:function(a){var b,c,d,e=this[0];{if(arguments.length)return d=m.isFunction(a),this.each(function(c){var e;1===this.nodeType&&(e=d?a.call(this,c,m(this).val()):a,null==e?e="":"number"==typeof e?e+="":m.isArray(e)&&(e=m.map(e,function(a){return null==a?"":a+""})),b=m.valHooks[this.type]||m.valHooks[this.nodeName.toLowerCase()],b&&"set"in b&&void 0!==b.set(this,e,"value")||(this.value=e))});if(e)return b=m.valHooks[e.type]||m.valHooks[e.nodeName.toLowerCase()],b&&"get"in b&&void 0!==(c=b.get(e,"value"))?c:(c=e.value,"string"==typeof c?c.replace(lc,""):null==c?"":c)}}}),m.extend({valHooks:{option:{get:function(a){var b=m.find.attr(a,"value");return null!=b?b:m.trim(m.text(a))}},select:{get:function(a){for(var b,c,d=a.options,e=a.selectedIndex,f="select-one"===a.type||0>e,g=f?null:[],h=f?e+1:d.length,i=0>e?h:f?e:0;h>i;i++)if(c=d[i],!(!c.selected&&i!==e||(k.optDisabled?c.disabled:null!==c.getAttribute("disabled"))||c.parentNode.disabled&&m.nodeName(c.parentNode,"optgroup"))){if(b=m(c).val(),f)return b;g.push(b)}return g},set:function(a,b){var c,d,e=a.options,f=m.makeArray(b),g=e.length;while(g--)if(d=e[g],m.inArray(m.valHooks.option.get(d),f)>=0)try{d.selected=c=!0}catch(h){d.scrollHeight}else d.selected=!1;return c||(a.selectedIndex=-1),e}}}}),m.each(["radio","checkbox"],function(){m.valHooks[this]={set:function(a,b){return m.isArray(b)?a.checked=m.inArray(m(a).val(),b)>=0:void 0}},k.checkOn||(m.valHooks[this].get=function(a){return null===a.getAttribute("value")?"on":a.value})});var mc,nc,oc=m.expr.attrHandle,pc=/^(?:checked|selected)$/i,qc=k.getSetAttribute,rc=k.input;m.fn.extend({attr:function(a,b){return V(this,m.attr,a,b,arguments.length>1)},removeAttr:function(a){return this.each(function(){m.removeAttr(this,a)})}}),m.extend({attr:function(a,b,c){var d,e,f=a.nodeType;if(a&&3!==f&&8!==f&&2!==f)return typeof a.getAttribute===K?m.prop(a,b,c):(1===f&&m.isXMLDoc(a)||(b=b.toLowerCase(),d=m.attrHooks[b]||(m.expr.match.bool.test(b)?nc:mc)),void 0===c?d&&"get"in d&&null!==(e=d.get(a,b))?e:(e=m.find.attr(a,b),null==e?void 0:e):null!==c?d&&"set"in d&&void 0!==(e=d.set(a,c,b))?e:(a.setAttribute(b,c+""),c):void m.removeAttr(a,b))},removeAttr:function(a,b){var c,d,e=0,f=b&&b.match(E);if(f&&1===a.nodeType)while(c=f[e++])d=m.propFix[c]||c,m.expr.match.bool.test(c)?rc&&qc||!pc.test(c)?a[d]=!1:a[m.camelCase("default-"+c)]=a[d]=!1:m.attr(a,c,""),a.removeAttribute(qc?c:d)},attrHooks:{type:{set:function(a,b){if(!k.radioValue&&"radio"===b&&m.nodeName(a,"input")){var c=a.value;return a.setAttribute("type",b),c&&(a.value=c),b}}}}}),nc={set:function(a,b,c){return b===!1?m.removeAttr(a,c):rc&&qc||!pc.test(c)?a.setAttribute(!qc&&m.propFix[c]||c,c):a[m.camelCase("default-"+c)]=a[c]=!0,c}},m.each(m.expr.match.bool.source.match(/\w+/g),function(a,b){var c=oc[b]||m.find.attr;oc[b]=rc&&qc||!pc.test(b)?function(a,b,d){var e,f;return d||(f=oc[b],oc[b]=e,e=null!=c(a,b,d)?b.toLowerCase():null,oc[b]=f),e}:function(a,b,c){return c?void 0:a[m.camelCase("default-"+b)]?b.toLowerCase():null}}),rc&&qc||(m.attrHooks.value={set:function(a,b,c){return m.nodeName(a,"input")?void(a.defaultValue=b):mc&&mc.set(a,b,c)}}),qc||(mc={set:function(a,b,c){var d=a.getAttributeNode(c);return d||a.setAttributeNode(d=a.ownerDocument.createAttribute(c)),d.value=b+="","value"===c||b===a.getAttribute(c)?b:void 0}},oc.id=oc.name=oc.coords=function(a,b,c){var d;return c?void 0:(d=a.getAttributeNode(b))&&""!==d.value?d.value:null},m.valHooks.button={get:function(a,b){var c=a.getAttributeNode(b);return c&&c.specified?c.value:void 0},set:mc.set},m.attrHooks.contenteditable={set:function(a,b,c){mc.set(a,""===b?!1:b,c)}},m.each(["width","height"],function(a,b){m.attrHooks[b]={set:function(a,c){return""===c?(a.setAttribute(b,"auto"),c):void 0}}})),k.style||(m.attrHooks.style={get:function(a){return a.style.cssText||void 0},set:function(a,b){return a.style.cssText=b+""}});var sc=/^(?:input|select|textarea|button|object)$/i,tc=/^(?:a|area)$/i;m.fn.extend({prop:function(a,b){return V(this,m.prop,a,b,arguments.length>1)},removeProp:function(a){return a=m.propFix[a]||a,this.each(function(){try{this[a]=void 0,delete this[a]}catch(b){}})}}),m.extend({propFix:{"for":"htmlFor","class":"className"},prop:function(a,b,c){var d,e,f,g=a.nodeType;if(a&&3!==g&&8!==g&&2!==g)return f=1!==g||!m.isXMLDoc(a),f&&(b=m.propFix[b]||b,e=m.propHooks[b]),void 0!==c?e&&"set"in e&&void 0!==(d=e.set(a,c,b))?d:a[b]=c:e&&"get"in e&&null!==(d=e.get(a,b))?d:a[b]},propHooks:{tabIndex:{get:function(a){var b=m.find.attr(a,"tabindex");return b?parseInt(b,10):sc.test(a.nodeName)||tc.test(a.nodeName)&&a.href?0:-1}}}}),k.hrefNormalized||m.each(["href","src"],function(a,b){m.propHooks[b]={get:function(a){return a.getAttribute(b,4)}}}),k.optSelected||(m.propHooks.selected={get:function(a){var b=a.parentNode;return b&&(b.selectedIndex,b.parentNode&&b.parentNode.selectedIndex),null}}),m.each(["tabIndex","readOnly","maxLength","cellSpacing","cellPadding","rowSpan","colSpan","useMap","frameBorder","contentEditable"],function(){m.propFix[this.toLowerCase()]=this}),k.enctype||(m.propFix.enctype="encoding");var uc=/[\t\r\n\f]/g;m.fn.extend({addClass:function(a){var b,c,d,e,f,g,h=0,i=this.length,j="string"==typeof a&&a;if(m.isFunction(a))return this.each(function(b){m(this).addClass(a.call(this,b,this.className))});if(j)for(b=(a||"").match(E)||[];i>h;h++)if(c=this[h],d=1===c.nodeType&&(c.className?(" "+c.className+" ").replace(uc," "):" ")){f=0;while(e=b[f++])d.indexOf(" "+e+" ")<0&&(d+=e+" ");g=m.trim(d),c.className!==g&&(c.className=g)}return this},removeClass:function(a){var b,c,d,e,f,g,h=0,i=this.length,j=0===arguments.length||"string"==typeof a&&a;if(m.isFunction(a))return this.each(function(b){m(this).removeClass(a.call(this,b,this.className))});if(j)for(b=(a||"").match(E)||[];i>h;h++)if(c=this[h],d=1===c.nodeType&&(c.className?(" "+c.className+" ").replace(uc," "):"")){f=0;while(e=b[f++])while(d.indexOf(" "+e+" ")>=0)d=d.replace(" "+e+" "," ");g=a?m.trim(d):"",c.className!==g&&(c.className=g)}return this},toggleClass:function(a,b){var c=typeof a;return"boolean"==typeof b&&"string"===c?b?this.addClass(a):this.removeClass(a):this.each(m.isFunction(a)?function(c){m(this).toggleClass(a.call(this,c,this.className,b),b)}:function(){if("string"===c){var b,d=0,e=m(this),f=a.match(E)||[];while(b=f[d++])e.hasClass(b)?e.removeClass(b):e.addClass(b)}else(c===K||"boolean"===c)&&(this.className&&m._data(this,"__className__",this.className),this.className=this.className||a===!1?"":m._data(this,"__className__")||"")})},hasClass:function(a){for(var b=" "+a+" ",c=0,d=this.length;d>c;c++)if(1===this[c].nodeType&&(" "+this[c].className+" ").replace(uc," ").indexOf(b)>=0)return!0;return!1}}),m.each("blur focus focusin focusout load resize scroll unload click dblclick mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave change select submit keydown keypress keyup error contextmenu".split(" "),function(a,b){m.fn[b]=function(a,c){return arguments.length>0?this.on(b,null,a,c):this.trigger(b)}}),m.fn.extend({hover:function(a,b){return this.mouseenter(a).mouseleave(b||a)},bind:function(a,b,c){return this.on(a,null,b,c)},unbind:function(a,b){return this.off(a,null,b)},delegate:function(a,b,c,d){return this.on(b,a,c,d)},undelegate:function(a,b,c){return 1===arguments.length?this.off(a,"**"):this.off(b,a||"**",c)}});var vc=m.now(),wc=/\?/,xc=/(,)|(\[|{)|(}|])|"(?:[^"\\\r\n]|\\["\\\/bfnrt]|\\u[\da-fA-F]{4})*"\s*:?|true|false|null|-?(?!0\d)\d+(?:\.\d+|)(?:[eE][+-]?\d+|)/g;m.parseJSON=function(b){if(a.JSON&&a.JSON.parse)return a.JSON.parse(b+"");var c,d=null,e=m.trim(b+"");return e&&!m.trim(e.replace(xc,function(a,b,e,f){return c&&b&&(d=0),0===d?a:(c=e||b,d+=!f-!e,"")}))?Function("return "+e)():m.error("Invalid JSON: "+b)},m.parseXML=function(b){var c,d;if(!b||"string"!=typeof b)return null;try{a.DOMParser?(d=new DOMParser,c=d.parseFromString(b,"text/xml")):(c=new ActiveXObject("Microsoft.XMLDOM"),c.async="false",c.loadXML(b))}catch(e){c=void 0}return c&&c.documentElement&&!c.getElementsByTagName("parsererror").length||m.error("Invalid XML: "+b),c};var yc,zc,Ac=/#.*$/,Bc=/([?&])_=[^&]*/,Cc=/^(.*?):[ \t]*([^\r\n]*)\r?$/gm,Dc=/^(?:about|app|app-storage|.+-extension|file|res|widget):$/,Ec=/^(?:GET|HEAD)$/,Fc=/^\/\//,Gc=/^([\w.+-]+:)(?:\/\/(?:[^\/?#]*@|)([^\/?#:]*)(?::(\d+)|)|)/,Hc={},Ic={},Jc="*/".concat("*");try{zc=location.href}catch(Kc){zc=y.createElement("a"),zc.href="",zc=zc.href}yc=Gc.exec(zc.toLowerCase())||[];function Lc(a){return function(b,c){"string"!=typeof b&&(c=b,b="*");var d,e=0,f=b.toLowerCase().match(E)||[];if(m.isFunction(c))while(d=f[e++])"+"===d.charAt(0)?(d=d.slice(1)||"*",(a[d]=a[d]||[]).unshift(c)):(a[d]=a[d]||[]).push(c)}}function Mc(a,b,c,d){var e={},f=a===Ic;function g(h){var i;return e[h]=!0,m.each(a[h]||[],function(a,h){var j=h(b,c,d);return"string"!=typeof j||f||e[j]?f?!(i=j):void 0:(b.dataTypes.unshift(j),g(j),!1)}),i}return g(b.dataTypes[0])||!e["*"]&&g("*")}function Nc(a,b){var c,d,e=m.ajaxSettings.flatOptions||{};for(d in b)void 0!==b[d]&&((e[d]?a:c||(c={}))[d]=b[d]);return c&&m.extend(!0,a,c),a}function Oc(a,b,c){var d,e,f,g,h=a.contents,i=a.dataTypes;while("*"===i[0])i.shift(),void 0===e&&(e=a.mimeType||b.getResponseHeader("Content-Type"));if(e)for(g in h)if(h[g]&&h[g].test(e)){i.unshift(g);break}if(i[0]in c)f=i[0];else{for(g in c){if(!i[0]||a.converters[g+" "+i[0]]){f=g;break}d||(d=g)}f=f||d}return f?(f!==i[0]&&i.unshift(f),c[f]):void 0}function Pc(a,b,c,d){var e,f,g,h,i,j={},k=a.dataTypes.slice();if(k[1])for(g in a.converters)j[g.toLowerCase()]=a.converters[g];f=k.shift();while(f)if(a.responseFields[f]&&(c[a.responseFields[f]]=b),!i&&d&&a.dataFilter&&(b=a.dataFilter(b,a.dataType)),i=f,f=k.shift())if("*"===f)f=i;else if("*"!==i&&i!==f){if(g=j[i+" "+f]||j["* "+f],!g)for(e in j)if(h=e.split(" "),h[1]===f&&(g=j[i+" "+h[0]]||j["* "+h[0]])){g===!0?g=j[e]:j[e]!==!0&&(f=h[0],k.unshift(h[1]));break}if(g!==!0)if(g&&a["throws"])b=g(b);else try{b=g(b)}catch(l){return{state:"parsererror",error:g?l:"No conversion from "+i+" to "+f}}}return{state:"success",data:b}}m.extend({active:0,lastModified:{},etag:{},ajaxSettings:{url:zc,type:"GET",isLocal:Dc.test(yc[1]),global:!0,processData:!0,async:!0,contentType:"application/x-www-form-urlencoded; charset=UTF-8",accepts:{"*":Jc,text:"text/plain",html:"text/html",xml:"application/xml, text/xml",json:"application/json, text/javascript"},contents:{xml:/xml/,html:/html/,json:/json/},responseFields:{xml:"responseXML",text:"responseText",json:"responseJSON"},converters:{"* text":String,"text html":!0,"text json":m.parseJSON,"text xml":m.parseXML},flatOptions:{url:!0,context:!0}},ajaxSetup:function(a,b){return b?Nc(Nc(a,m.ajaxSettings),b):Nc(m.ajaxSettings,a)},ajaxPrefilter:Lc(Hc),ajaxTransport:Lc(Ic),ajax:function(a,b){"object"==typeof a&&(b=a,a=void 0),b=b||{};var c,d,e,f,g,h,i,j,k=m.ajaxSetup({},b),l=k.context||k,n=k.context&&(l.nodeType||l.jquery)?m(l):m.event,o=m.Deferred(),p=m.Callbacks("once memory"),q=k.statusCode||{},r={},s={},t=0,u="canceled",v={readyState:0,getResponseHeader:function(a){var b;if(2===t){if(!j){j={};while(b=Cc.exec(f))j[b[1].toLowerCase()]=b[2]}b=j[a.toLowerCase()]}return null==b?null:b},getAllResponseHeaders:function(){return 2===t?f:null},setRequestHeader:function(a,b){var c=a.toLowerCase();return t||(a=s[c]=s[c]||a,r[a]=b),this},overrideMimeType:function(a){return t||(k.mimeType=a),this},statusCode:function(a){var b;if(a)if(2>t)for(b in a)q[b]=[q[b],a[b]];else v.always(a[v.status]);return this},abort:function(a){var b=a||u;return i&&i.abort(b),x(0,b),this}};if(o.promise(v).complete=p.add,v.success=v.done,v.error=v.fail,k.url=((a||k.url||zc)+"").replace(Ac,"").replace(Fc,yc[1]+"//"),k.type=b.method||b.type||k.method||k.type,k.dataTypes=m.trim(k.dataType||"*").toLowerCase().match(E)||[""],null==k.crossDomain&&(c=Gc.exec(k.url.toLowerCase()),k.crossDomain=!(!c||c[1]===yc[1]&&c[2]===yc[2]&&(c[3]||("http:"===c[1]?"80":"443"))===(yc[3]||("http:"===yc[1]?"80":"443")))),k.data&&k.processData&&"string"!=typeof k.data&&(k.data=m.param(k.data,k.traditional)),Mc(Hc,k,b,v),2===t)return v;h=k.global,h&&0===m.active++&&m.event.trigger("ajaxStart"),k.type=k.type.toUpperCase(),k.hasContent=!Ec.test(k.type),e=k.url,k.hasContent||(k.data&&(e=k.url+=(wc.test(e)?"&":"?")+k.data,delete k.data),k.cache===!1&&(k.url=Bc.test(e)?e.replace(Bc,"$1_="+vc++):e+(wc.test(e)?"&":"?")+"_="+vc++)),k.ifModified&&(m.lastModified[e]&&v.setRequestHeader("If-Modified-Since",m.lastModified[e]),m.etag[e]&&v.setRequestHeader("If-None-Match",m.etag[e])),(k.data&&k.hasContent&&k.contentType!==!1||b.contentType)&&v.setRequestHeader("Content-Type",k.contentType),v.setRequestHeader("Accept",k.dataTypes[0]&&k.accepts[k.dataTypes[0]]?k.accepts[k.dataTypes[0]]+("*"!==k.dataTypes[0]?", "+Jc+"; q=0.01":""):k.accepts["*"]);for(d in k.headers)v.setRequestHeader(d,k.headers[d]);if(k.beforeSend&&(k.beforeSend.call(l,v,k)===!1||2===t))return v.abort();u="abort";for(d in{success:1,error:1,complete:1})v[d](k[d]);if(i=Mc(Ic,k,b,v)){v.readyState=1,h&&n.trigger("ajaxSend",[v,k]),k.async&&k.timeout>0&&(g=setTimeout(function(){v.abort("timeout")},k.timeout));try{t=1,i.send(r,x)}catch(w){if(!(2>t))throw w;x(-1,w)}}else x(-1,"No Transport");function x(a,b,c,d){var j,r,s,u,w,x=b;2!==t&&(t=2,g&&clearTimeout(g),i=void 0,f=d||"",v.readyState=a>0?4:0,j=a>=200&&300>a||304===a,c&&(u=Oc(k,v,c)),u=Pc(k,u,v,j),j?(k.ifModified&&(w=v.getResponseHeader("Last-Modified"),w&&(m.lastModified[e]=w),w=v.getResponseHeader("etag"),w&&(m.etag[e]=w)),204===a||"HEAD"===k.type?x="nocontent":304===a?x="notmodified":(x=u.state,r=u.data,s=u.error,j=!s)):(s=x,(a||!x)&&(x="error",0>a&&(a=0))),v.status=a,v.statusText=(b||x)+"",j?o.resolveWith(l,[r,x,v]):o.rejectWith(l,[v,x,s]),v.statusCode(q),q=void 0,h&&n.trigger(j?"ajaxSuccess":"ajaxError",[v,k,j?r:s]),p.fireWith(l,[v,x]),h&&(n.trigger("ajaxComplete",[v,k]),--m.active||m.event.trigger("ajaxStop")))}return v},getJSON:function(a,b,c){return m.get(a,b,c,"json")},getScript:function(a,b){return m.get(a,void 0,b,"script")}}),m.each(["get","post"],function(a,b){m[b]=function(a,c,d,e){return m.isFunction(c)&&(e=e||d,d=c,c=void 0),m.ajax({url:a,type:b,dataType:e,data:c,success:d})}}),m.each(["ajaxStart","ajaxStop","ajaxComplete","ajaxError","ajaxSuccess","ajaxSend"],function(a,b){m.fn[b]=function(a){return this.on(b,a)}}),m._evalUrl=function(a){return m.ajax({url:a,type:"GET",dataType:"script",async:!1,global:!1,"throws":!0})},m.fn.extend({wrapAll:function(a){if(m.isFunction(a))return this.each(function(b){m(this).wrapAll(a.call(this,b))});if(this[0]){var b=m(a,this[0].ownerDocument).eq(0).clone(!0);this[0].parentNode&&b.insertBefore(this[0]),b.map(function(){var a=this;while(a.firstChild&&1===a.firstChild.nodeType)a=a.firstChild;return a}).append(this)}return this},wrapInner:function(a){return this.each(m.isFunction(a)?function(b){m(this).wrapInner(a.call(this,b))}:function(){var b=m(this),c=b.contents();c.length?c.wrapAll(a):b.append(a)})},wrap:function(a){var b=m.isFunction(a);return this.each(function(c){m(this).wrapAll(b?a.call(this,c):a)})},unwrap:function(){return this.parent().each(function(){m.nodeName(this,"body")||m(this).replaceWith(this.childNodes)}).end()}}),m.expr.filters.hidden=function(a){return a.offsetWidth<=0&&a.offsetHeight<=0||!k.reliableHiddenOffsets()&&"none"===(a.style&&a.style.display||m.css(a,"display"))},m.expr.filters.visible=function(a){return!m.expr.filters.hidden(a)};var Qc=/%20/g,Rc=/\[\]$/,Sc=/\r?\n/g,Tc=/^(?:submit|button|image|reset|file)$/i,Uc=/^(?:input|select|textarea|keygen)/i;function Vc(a,b,c,d){var e;if(m.isArray(b))m.each(b,function(b,e){c||Rc.test(a)?d(a,e):Vc(a+"["+("object"==typeof e?b:"")+"]",e,c,d)});else if(c||"object"!==m.type(b))d(a,b);else for(e in b)Vc(a+"["+e+"]",b[e],c,d)}m.param=function(a,b){var c,d=[],e=function(a,b){b=m.isFunction(b)?b():null==b?"":b,d[d.length]=encodeURIComponent(a)+"="+encodeURIComponent(b)};if(void 0===b&&(b=m.ajaxSettings&&m.ajaxSettings.traditional),m.isArray(a)||a.jquery&&!m.isPlainObject(a))m.each(a,function(){e(this.name,this.value)});else for(c in a)Vc(c,a[c],b,e);return d.join("&").replace(Qc,"+")},m.fn.extend({serialize:function(){return m.param(this.serializeArray())},serializeArray:function(){return this.map(function(){var a=m.prop(this,"elements");return a?m.makeArray(a):this}).filter(function(){var a=this.type;return this.name&&!m(this).is(":disabled")&&Uc.test(this.nodeName)&&!Tc.test(a)&&(this.checked||!W.test(a))}).map(function(a,b){var c=m(this).val();return null==c?null:m.isArray(c)?m.map(c,function(a){return{name:b.name,value:a.replace(Sc,"\r\n")}}):{name:b.name,value:c.replace(Sc,"\r\n")}}).get()}}),m.ajaxSettings.xhr=void 0!==a.ActiveXObject?function(){return!this.isLocal&&/^(get|post|head|put|delete|options)$/i.test(this.type)&&Zc()||$c()}:Zc;var Wc=0,Xc={},Yc=m.ajaxSettings.xhr();a.ActiveXObject&&m(a).on("unload",function(){for(var a in Xc)Xc[a](void 0,!0)}),k.cors=!!Yc&&"withCredentials"in Yc,Yc=k.ajax=!!Yc,Yc&&m.ajaxTransport(function(a){if(!a.crossDomain||k.cors){var b;return{send:function(c,d){var e,f=a.xhr(),g=++Wc;if(f.open(a.type,a.url,a.async,a.username,a.password),a.xhrFields)for(e in a.xhrFields)f[e]=a.xhrFields[e];a.mimeType&&f.overrideMimeType&&f.overrideMimeType(a.mimeType),a.crossDomain||c["X-Requested-With"]||(c["X-Requested-With"]="XMLHttpRequest");for(e in c)void 0!==c[e]&&f.setRequestHeader(e,c[e]+"");f.send(a.hasContent&&a.data||null),b=function(c,e){var h,i,j;if(b&&(e||4===f.readyState))if(delete Xc[g],b=void 0,f.onreadystatechange=m.noop,e)4!==f.readyState&&f.abort();else{j={},h=f.status,"string"==typeof f.responseText&&(j.text=f.responseText);try{i=f.statusText}catch(k){i=""}h||!a.isLocal||a.crossDomain?1223===h&&(h=204):h=j.text?200:404}j&&d(h,i,j,f.getAllResponseHeaders())},a.async?4===f.readyState?setTimeout(b):f.onreadystatechange=Xc[g]=b:b()},abort:function(){b&&b(void 0,!0)}}}});function Zc(){try{return new a.XMLHttpRequest}catch(b){}}function $c(){try{return new a.ActiveXObject("Microsoft.XMLHTTP")}catch(b){}}m.ajaxSetup({accepts:{script:"text/javascript, application/javascript, application/ecmascript, application/x-ecmascript"},contents:{script:/(?:java|ecma)script/},converters:{"text script":function(a){return m.globalEval(a),a}}}),m.ajaxPrefilter("script",function(a){void 0===a.cache&&(a.cache=!1),a.crossDomain&&(a.type="GET",a.global=!1)}),m.ajaxTransport("script",function(a){if(a.crossDomain){var b,c=y.head||m("head")[0]||y.documentElement;return{send:function(d,e){b=y.createElement("script"),b.async=!0,a.scriptCharset&&(b.charset=a.scriptCharset),b.src=a.url,b.onload=b.onreadystatechange=function(a,c){(c||!b.readyState||/loaded|complete/.test(b.readyState))&&(b.onload=b.onreadystatechange=null,b.parentNode&&b.parentNode.removeChild(b),b=null,c||e(200,"success"))},c.insertBefore(b,c.firstChild)},abort:function(){b&&b.onload(void 0,!0)}}}});var _c=[],ad=/(=)\?(?=&|$)|\?\?/;m.ajaxSetup({jsonp:"callback",jsonpCallback:function(){var a=_c.pop()||m.expando+"_"+vc++;return this[a]=!0,a}}),m.ajaxPrefilter("json jsonp",function(b,c,d){var e,f,g,h=b.jsonp!==!1&&(ad.test(b.url)?"url":"string"==typeof b.data&&!(b.contentType||"").indexOf("application/x-www-form-urlencoded")&&ad.test(b.data)&&"data");return h||"jsonp"===b.dataTypes[0]?(e=b.jsonpCallback=m.isFunction(b.jsonpCallback)?b.jsonpCallback():b.jsonpCallback,h?b[h]=b[h].replace(ad,"$1"+e):b.jsonp!==!1&&(b.url+=(wc.test(b.url)?"&":"?")+b.jsonp+"="+e),b.converters["script json"]=function(){return g||m.error(e+" was not called"),g[0]},b.dataTypes[0]="json",f=a[e],a[e]=function(){g=arguments},d.always(function(){a[e]=f,b[e]&&(b.jsonpCallback=c.jsonpCallback,_c.push(e)),g&&m.isFunction(f)&&f(g[0]),g=f=void 0}),"script"):void 0}),m.parseHTML=function(a,b,c){if(!a||"string"!=typeof a)return null;"boolean"==typeof b&&(c=b,b=!1),b=b||y;var d=u.exec(a),e=!c&&[];return d?[b.createElement(d[1])]:(d=m.buildFragment([a],b,e),e&&e.length&&m(e).remove(),m.merge([],d.childNodes))};var bd=m.fn.load;m.fn.load=function(a,b,c){if("string"!=typeof a&&bd)return bd.apply(this,arguments);var d,e,f,g=this,h=a.indexOf(" ");return h>=0&&(d=m.trim(a.slice(h,a.length)),a=a.slice(0,h)),m.isFunction(b)?(c=b,b=void 0):b&&"object"==typeof b&&(f="POST"),g.length>0&&m.ajax({url:a,type:f,dataType:"html",data:b}).done(function(a){e=arguments,g.html(d?m("<div>").append(m.parseHTML(a)).find(d):a)}).complete(c&&function(a,b){g.each(c,e||[a.responseText,b,a])}),this},m.expr.filters.animated=function(a){return m.grep(m.timers,function(b){return a===b.elem}).length};var cd=a.document.documentElement;function dd(a){return m.isWindow(a)?a:9===a.nodeType?a.defaultView||a.parentWindow:!1}m.offset={setOffset:function(a,b,c){var d,e,f,g,h,i,j,k=m.css(a,"position"),l=m(a),n={};"static"===k&&(a.style.position="relative"),h=l.offset(),f=m.css(a,"top"),i=m.css(a,"left"),j=("absolute"===k||"fixed"===k)&&m.inArray("auto",[f,i])>-1,j?(d=l.position(),g=d.top,e=d.left):(g=parseFloat(f)||0,e=parseFloat(i)||0),m.isFunction(b)&&(b=b.call(a,c,h)),null!=b.top&&(n.top=b.top-h.top+g),null!=b.left&&(n.left=b.left-h.left+e),"using"in b?b.using.call(a,n):l.css(n)}},m.fn.extend({offset:function(a){if(arguments.length)return void 0===a?this:this.each(function(b){m.offset.setOffset(this,a,b)});var b,c,d={top:0,left:0},e=this[0],f=e&&e.ownerDocument;if(f)return b=f.documentElement,m.contains(b,e)?(typeof e.getBoundingClientRect!==K&&(d=e.getBoundingClientRect()),c=dd(f),{top:d.top+(c.pageYOffset||b.scrollTop)-(b.clientTop||0),left:d.left+(c.pageXOffset||b.scrollLeft)-(b.clientLeft||0)}):d},position:function(){if(this[0]){var a,b,c={top:0,left:0},d=this[0];return"fixed"===m.css(d,"position")?b=d.getBoundingClientRect():(a=this.offsetParent(),b=this.offset(),m.nodeName(a[0],"html")||(c=a.offset()),c.top+=m.css(a[0],"borderTopWidth",!0),c.left+=m.css(a[0],"borderLeftWidth",!0)),{top:b.top-c.top-m.css(d,"marginTop",!0),left:b.left-c.left-m.css(d,"marginLeft",!0)}}},offsetParent:function(){return this.map(function(){var a=this.offsetParent||cd;while(a&&!m.nodeName(a,"html")&&"static"===m.css(a,"position"))a=a.offsetParent;return a||cd})}}),m.each({scrollLeft:"pageXOffset",scrollTop:"pageYOffset"},function(a,b){var c=/Y/.test(b);m.fn[a]=function(d){return V(this,function(a,d,e){var f=dd(a);return void 0===e?f?b in f?f[b]:f.document.documentElement[d]:a[d]:void(f?f.scrollTo(c?m(f).scrollLeft():e,c?e:m(f).scrollTop()):a[d]=e)},a,d,arguments.length,null)}}),m.each(["top","left"],function(a,b){m.cssHooks[b]=Lb(k.pixelPosition,function(a,c){return c?(c=Jb(a,b),Hb.test(c)?m(a).position()[b]+"px":c):void 0})}),m.each({Height:"height",Width:"width"},function(a,b){m.each({padding:"inner"+a,content:b,"":"outer"+a},function(c,d){m.fn[d]=function(d,e){var f=arguments.length&&(c||"boolean"!=typeof d),g=c||(d===!0||e===!0?"margin":"border");return V(this,function(b,c,d){var e;return m.isWindow(b)?b.document.documentElement["client"+a]:9===b.nodeType?(e=b.documentElement,Math.max(b.body["scroll"+a],e["scroll"+a],b.body["offset"+a],e["offset"+a],e["client"+a])):void 0===d?m.css(b,c,g):m.style(b,c,d,g)},b,f?d:void 0,f,null)}})}),m.fn.size=function(){return this.length},m.fn.andSelf=m.fn.addBack,"function"==typeof define&&define.amd&&define("jquery",[],function(){return m});var ed=a.jQuery,fd=a.$;return m.noConflict=function(b){return a.$===m&&(a.$=fd),b&&a.jQuery===m&&(a.jQuery=ed),m},typeof b===K&&(a.jQuery=a.$=m),m});
 //# sourceMappingURL=jquery.min.map;
 (function(root) {
+define("resource-search-js", ["jquery"], function() {
+  return (function() {
+/* The following line defines global variables defined elsewhere. */
+/*globals jQuery, portal_url, alert, history, window, location*/
+
+jQuery(function ($) {
+
+    var query, pushState, popped, initialURL,
+        $default_res_container = $('#search-results'),
+        $search_filter = $('#search-filter'),
+        $search_field = $('#search-field'),
+        $search_gadget =  $('#searchGadget'),
+        $form_search_page = $("form.searchPage"),
+        navigation_root_url = $('link[rel="home"]').attr('href') || window.navigation_root_url || window.portal_url;
+
+    // The globally available method to pull the search results for the
+    // 'query' into the element, on which the method is invoked
+    $.fn.pullSearchResults = function (query) {
+        return this.each(function () {
+            var $container = $(this);
+            $.get(
+                '@@updated_search',
+                query,
+                function (data) {
+                    $container.hide();
+                    var $ajax_search_res = $('<div id="ajax-search-res"></div>').html(data),
+                        $search_term = $('#search-term');
+
+                    var $data_res = $ajax_search_res.find('#search-results').children(),
+                        data_search_term = $ajax_search_res.find('#updated-search-term').text(),
+                        data_res_number = $ajax_search_res.find('#updated-search-results-number').text(),
+                        data_sorting_opt = $ajax_search_res.find('#updated-sorting-options').html(),
+                        new_header = $ajax_search_res.find('#update-search-header');
+
+                    $container.html($data_res);
+                    $container.fadeIn();
+
+                    if (!$search_term.length) {
+                        // Until now we had queries with empty search term.
+                        // we need to fetch the new header, with proper translations
+                        if(new_header.length){
+                            $('h1.documentFirstHeading').html(new_header.html());
+                        }
+                    } else {
+                        $search_term.text(data_search_term);
+                    }
+
+                    $('#search-results-number').text(data_res_number);
+                    $('#search-results-bar').find('#sorting-options').html(data_sorting_opt);
+
+                    $('#rss-subscription').find('a.link-feed').attr('href', function () {
+                        return navigation_root_url + '/search_rss?' + query;
+                    });
+                });
+        });
+    };
+
+    pushState = function (query) {
+        // Now we need to update the browser's path bar to reflect
+        // the URL we are at now and to push a history state change
+        // in the browser's history. 
+        // API natively or it needs a polyfill, that provides
+        // hash-change events to the older browser
+        if (window.history && window.history.pushState){
+            var url = navigation_root_url + '/@@search?' + query;
+            history.pushState(null, null, url);
+        }
+    };
+
+    // THE HANDLER FOR 'POPSTATE' EVENT IS COPIED FROM PJAX.JS
+    // https://github.com/defunkt/jquery-pjax
+
+    // Used to detect initial (useless) popstate.
+    // If history.state exists, assume browser isn't going to fire initial popstate.
+    popped = (window.history && 'state' in window.history);
+    initialURL = location.href;
+
+
+    // popstate handler takes care of the back and forward buttons
+    //
+    $(window).bind('popstate', function (event) {
+        var initialPop, str;
+        // Ignore initial popstate that some browsers fire on page load
+        initialPop = !popped && location.href === initialURL;
+        popped = true;
+        if (initialPop) {
+            return;
+        }
+
+        if (!location.search){
+            return;
+        }
+
+        query = location.search.split('?')[1];
+        // We need to make sure we update the search field with the search
+        // term from previous query when going back in history
+        var results = query.match(/SearchableText=[^&]*/);
+        if (results){ // not all pages have results
+            str = results[0];
+            str = decodeURIComponent(str.replace(/\+/g, ' ')); // we remove '+' used between words
+            // in search queries.
+
+        // Now we have something like 'SearchableText=test' in str
+        // variable. So, we know when the actual search term begins at
+        // position 15 in that string.
+        $.merge($search_field.find('input[name="SearchableText"]'), $search_gadget).val(str.substr(15, str.length));
+
+            $default_res_container.pullSearchResults(query);
+        }
+
+    });
+
+    $search_filter.find('input.searchPage[type="submit"]').hide();
+
+    // We don't submit the whole form with all the fields when only the
+    // search term is being changed. We just alter the current URL to
+    // substitute the search term and make a new ajax call to get updated
+    // results
+    $search_field.find('input.searchButton').click(function (e) {
+        var st, queryString = location.search.substring(1),
+            re = /([^&=]+)=([^&]*)/g, m, queryParameters = [], key;
+        st = $search_field.find('input[name="SearchableText"]').val();
+        queryParameters.push({"name":"SearchableText", "value": st});
+
+        // parse query string into array of hash
+        while (m = re.exec(queryString)) {
+            key = decodeURIComponent(m[1]);
+            if (key !== 'SearchableText') {
+                // we remove '+' used between words
+                queryParameters.push({"name": key, "value": decodeURIComponent(m[2].replace(/\+/g, ' '))});
+            }
+        }
+        queryString = $.param(queryParameters);
+        $default_res_container.pullSearchResults(queryString);
+        pushState(queryString);
+        e.preventDefault();
+    });
+    $form_search_page.submit(function (e) {
+        query = $(this).serialize();
+        $default_res_container.pullSearchResults(query);
+        pushState(query);
+        e.preventDefault();
+    });
+
+    // We need to update the site-wide search field (at the top right in
+    // stock Plone) when the main search field is updated
+    $search_field.find('input[name="SearchableText"]').keyup(function () {
+        $search_gadget.val($(this).val());
+    });
+
+    // When we click any option in the Filter menu, we need to prevent the
+    // menu from being closed as it is dictated by dropdown.js for all
+    // dl.actionMenu > dd.actionMenuContent
+    $('#search-results-bar').find('dl.actionMenu > dd.actionMenuContent').click(function (e) {
+        e.stopImmediatePropagation();
+    });
+
+    // Now we can handle the actual menu options and update the search
+    // results after any of them has been chosen.
+    $search_filter.delegate('input, select', 'change',
+        function (e) {
+            query = '';
+            // only fill query when there is at least one type selected
+            // by default we have a checked date radio input button
+            if ($search_filter.find('input:checked').length > 1) {
+                query = $form_search_page.serialize();
+            }
+            $default_res_container.pullSearchResults(query);
+            pushState(query);
+        }
+    );
+
+    // Since we replace the whole sorting options with HTML, coming in
+    // AJAX response, we should bind the click event with delegate() in order
+    // for this to keep working with the HTML elements, coming from AJAX
+    // response
+    $('#sorting-options').delegate('a', 'click', function (e) {
+        if ($(this).attr('data-sort')) {
+            $form_search_page.find("input[name='sort_on']").val($(this).attr('data-sort'));
+        }
+        else {
+            $form_search_page.find("input[name='sort_on']").val('');
+        }
+        query = this.search.split('?')[1];
+        $default_res_container.pullSearchResults(query);
+        pushState(query);
+        e.preventDefault();
+    });
+
+    // Handle clicks in the batch navigation bar. Load those with Ajax as
+    // well.
+    $default_res_container.delegate('.listingBar a', 'click', function (e) {
+        query = this.search.split('?')[1];
+        $default_res_container.pullSearchResults(query);
+        pushState(query);
+        e.preventDefault();
+    });
+});
+
+
+
+  }).apply(root, arguments);
+});
+}(this));
+
+(function(root) {
 define("bootstrap-dropdown", ["jquery"], function() {
   return (function() {
 /* ========================================================================
@@ -807,49 +1013,6 @@ define("bootstrap-tooltip", ["jquery"], function() {
   }).apply(root, arguments);
 });
 }(this));
-
-define('mockup-parser',[
-  'jquery'
-], function($) {
-  
-
-  var parser = {
-    getOptions: function getOptions($el, patternName, options) {
-      /* This is the Mockup parser. It parses a DOM element for pattern
-      * configuration options.
-      */
-      options = options || {};
-      // get options from parent element first, stop if element tag name is 'body'
-      if ($el.length !== 0 && !$.nodeName($el[0], 'body')) {
-        options = getOptions($el.parent(), patternName, options);
-      }
-      // collect all options from element
-      var elOptions = {};
-      if ($el.length !== 0) {
-        elOptions = $el.data('pat-' + patternName);
-        if (elOptions) {
-          // parse options if string
-          if (typeof(elOptions) === 'string') {
-              var tmpOptions = {};
-              $.each(elOptions.split(';'), function(i, item) {
-                  item = item.split(':');
-                  item.reverse();
-                  var key = item.pop();
-                  key = key.replace(/^\s+|\s+$/g, '');  // trim
-                  item.reverse();
-                  var value = item.join(':');
-                  value = value.replace(/^\s+|\s+$/g, '');  // trim
-                  tmpOptions[key] = value;
-              });
-              elOptions = tmpOptions;
-          }
-        }
-      }
-      return $.extend(true, {}, options, elOptions);
-    }
-  };
-  return parser;
-});
 
 define('pat-utils',[
     "jquery"
@@ -1881,415 +2044,48 @@ define('pat-jquery-ext',["jquery"], function($) {
     };
 });
 
-(function(root) {
-define("jquery.event.drag", ["jquery"], function() {
-  return (function() {
-/*! 
- * jquery.event.drag - v 2.2
- * Copyright (c) 2010 Three Dub Media - http://threedubmedia.com
- * Open Source MIT License - http://threedubmedia.com/code/license
- */
-// Created: 2008-06-04 
-// Updated: 2012-05-21
-// REQUIRES: jquery 1.7.x
+define('mockup-parser',[
+  'jquery'
+], function($) {
+  
 
-;(function( $ ){
-
-// add the jquery instance method
-$.fn.drag = function( str, arg, opts ){
-    // figure out the event type
-    var type = typeof str == "string" ? str : "",
-    // figure out the event handler...
-    fn = $.isFunction( str ) ? str : $.isFunction( arg ) ? arg : null;
-    // fix the event type
-    if ( type.indexOf("drag") !== 0 ) 
-        type = "drag"+ type;
-    // were options passed
-    opts = ( str == fn ? arg : opts ) || {};
-    // trigger or bind event handler
-    return fn ? this.bind( type, opts, fn ) : this.trigger( type );
-};
-
-// local refs (increase compression)
-var $event = $.event, 
-$special = $event.special,
-// configure the drag special event 
-drag = $special.drag = {
-    
-    // these are the default settings
-    defaults: {
-        which: 1, // mouse button pressed to start drag sequence
-        distance: 0, // distance dragged before dragstart
-        not: ':input', // selector to suppress dragging on target elements
-        handle: null, // selector to match handle target elements
-        relative: false, // true to use "position", false to use "offset"
-        drop: true, // false to suppress drop events, true or selector to allow
-        click: false // false to suppress click events after dragend (no proxy)
-    },
-    
-    // the key name for stored drag data
-    datakey: "dragdata",
-    
-    // prevent bubbling for better performance
-    noBubble: true,
-    
-    // count bound related events
-    add: function( obj ){ 
-        // read the interaction data
-        var data = $.data( this, drag.datakey ),
-        // read any passed options 
-        opts = obj.data || {};
-        // count another realted event
-        data.related += 1;
-        // extend data options bound with this event
-        // don't iterate "opts" in case it is a node 
-        $.each( drag.defaults, function( key, def ){
-            if ( opts[ key ] !== undefined )
-                data[ key ] = opts[ key ];
-        });
-    },
-    
-    // forget unbound related events
-    remove: function(){
-        $.data( this, drag.datakey ).related -= 1;
-    },
-    
-    // configure interaction, capture settings
-    setup: function(){
-        // check for related events
-        if ( $.data( this, drag.datakey ) ) 
-            return;
-        // initialize the drag data with copied defaults
-        var data = $.extend({ related:0 }, drag.defaults );
-        // store the interaction data
-        $.data( this, drag.datakey, data );
-        // bind the mousedown event, which starts drag interactions
-        $event.add( this, "touchstart mousedown", drag.init, data );
-        // prevent image dragging in IE...
-        if ( this.attachEvent ) 
-            this.attachEvent("ondragstart", drag.dontstart ); 
-    },
-    
-    // destroy configured interaction
-    teardown: function(){
-        var data = $.data( this, drag.datakey ) || {};
-        // check for related events
-        if ( data.related ) 
-            return;
-        // remove the stored data
-        $.removeData( this, drag.datakey );
-        // remove the mousedown event
-        $event.remove( this, "touchstart mousedown", drag.init );
-        // enable text selection
-        drag.textselect( true ); 
-        // un-prevent image dragging in IE...
-        if ( this.detachEvent ) 
-            this.detachEvent("ondragstart", drag.dontstart ); 
-    },
-        
-    // initialize the interaction
-    init: function( event ){ 
-        // sorry, only one touch at a time
-        if ( drag.touched ) 
-            return;
-        // the drag/drop interaction data
-        var dd = event.data, results;
-        // check the which directive
-        if ( event.which != 0 && dd.which > 0 && event.which != dd.which ) 
-            return; 
-        // check for suppressed selector
-        if ( $( event.target ).is( dd.not ) ) 
-            return;
-        // check for handle selector
-        if ( dd.handle && !$( event.target ).closest( dd.handle, event.currentTarget ).length ) 
-            return;
-
-        drag.touched = event.type == 'touchstart' ? this : null;
-        dd.propagates = 1;
-        dd.mousedown = this;
-        dd.interactions = [ drag.interaction( this, dd ) ];
-        dd.target = event.target;
-        dd.pageX = event.pageX;
-        dd.pageY = event.pageY;
-        dd.dragging = null;
-        // handle draginit event... 
-        results = drag.hijack( event, "draginit", dd );
-        // early cancel
-        if ( !dd.propagates )
-            return;
-        // flatten the result set
-        results = drag.flatten( results );
-        // insert new interaction elements
-        if ( results && results.length ){
-            dd.interactions = [];
-            $.each( results, function(){
-                dd.interactions.push( drag.interaction( this, dd ) );
-            });
+  var parser = {
+    getOptions: function getOptions($el, patternName, options) {
+      /* This is the Mockup parser. It parses a DOM element for pattern
+      * configuration options.
+      */
+      options = options || {};
+      // get options from parent element first, stop if element tag name is 'body'
+      if ($el.length !== 0 && !$.nodeName($el[0], 'body')) {
+        options = getOptions($el.parent(), patternName, options);
+      }
+      // collect all options from element
+      var elOptions = {};
+      if ($el.length !== 0) {
+        elOptions = $el.data('pat-' + patternName);
+        if (elOptions) {
+          // parse options if string
+          if (typeof(elOptions) === 'string') {
+              var tmpOptions = {};
+              $.each(elOptions.split(';'), function(i, item) {
+                  item = item.split(':');
+                  item.reverse();
+                  var key = item.pop();
+                  key = key.replace(/^\s+|\s+$/g, '');  // trim
+                  item.reverse();
+                  var value = item.join(':');
+                  value = value.replace(/^\s+|\s+$/g, '');  // trim
+                  tmpOptions[key] = value;
+              });
+              elOptions = tmpOptions;
+          }
         }
-        // remember how many interactions are propagating
-        dd.propagates = dd.interactions.length;
-        // locate and init the drop targets
-        if ( dd.drop !== false && $special.drop ) 
-            $special.drop.handler( event, dd );
-        // disable text selection
-        drag.textselect( false ); 
-        // bind additional events...
-        if ( drag.touched )
-            $event.add( drag.touched, "touchmove touchend", drag.handler, dd );
-        else 
-            $event.add( document, "mousemove mouseup", drag.handler, dd );
-        // helps prevent text selection or scrolling
-        if ( !drag.touched || dd.live )
-            return false;
-    },  
-    
-    // returns an interaction object
-    interaction: function( elem, dd ){
-        var offset = $( elem )[ dd.relative ? "position" : "offset" ]() || { top:0, left:0 };
-        return {
-            drag: elem, 
-            callback: new drag.callback(), 
-            droppable: [],
-            offset: offset
-        };
-    },
-    
-    // handle drag-releatd DOM events
-    handler: function( event ){ 
-        // read the data before hijacking anything
-        var dd = event.data;    
-        // handle various events
-        switch ( event.type ){
-            // mousemove, check distance, start dragging
-            case !dd.dragging && 'touchmove': 
-                event.preventDefault();
-            case !dd.dragging && 'mousemove':
-                //  drag tolerance, x� + y� = distance�
-                if ( Math.pow(  event.pageX-dd.pageX, 2 ) + Math.pow(  event.pageY-dd.pageY, 2 ) < Math.pow( dd.distance, 2 ) ) 
-                    break; // distance tolerance not reached
-                event.target = dd.target; // force target from "mousedown" event (fix distance issue)
-                drag.hijack( event, "dragstart", dd ); // trigger "dragstart"
-                if ( dd.propagates ) // "dragstart" not rejected
-                    dd.dragging = true; // activate interaction
-            // mousemove, dragging
-            case 'touchmove':
-                event.preventDefault();
-            case 'mousemove':
-                if ( dd.dragging ){
-                    // trigger "drag"       
-                    drag.hijack( event, "drag", dd );
-                    if ( dd.propagates ){
-                        // manage drop events
-                        if ( dd.drop !== false && $special.drop )
-                            $special.drop.handler( event, dd ); // "dropstart", "dropend"                           
-                        break; // "drag" not rejected, stop     
-                    }
-                    event.type = "mouseup"; // helps "drop" handler behave
-                }
-            // mouseup, stop dragging
-            case 'touchend': 
-            case 'mouseup': 
-            default:
-                if ( drag.touched )
-                    $event.remove( drag.touched, "touchmove touchend", drag.handler ); // remove touch events
-                else 
-                    $event.remove( document, "mousemove mouseup", drag.handler ); // remove page events 
-                if ( dd.dragging ){
-                    if ( dd.drop !== false && $special.drop )
-                        $special.drop.handler( event, dd ); // "drop"
-                    drag.hijack( event, "dragend", dd ); // trigger "dragend"   
-                }
-                drag.textselect( true ); // enable text selection
-                // if suppressing click events...
-                if ( dd.click === false && dd.dragging )
-                    $.data( dd.mousedown, "suppress.click", new Date().getTime() + 5 );
-                dd.dragging = drag.touched = false; // deactivate element   
-                break;
-        }
-    },
-        
-    // re-use event object for custom events
-    hijack: function( event, type, dd, x, elem ){
-        // not configured
-        if ( !dd ) 
-            return;
-        // remember the original event and type
-        var orig = { event:event.originalEvent, type:event.type },
-        // is the event drag related or drog related?
-        mode = type.indexOf("drop") ? "drag" : "drop",
-        // iteration vars
-        result, i = x || 0, ia, $elems, callback,
-        len = !isNaN( x ) ? x : dd.interactions.length;
-        // modify the event type
-        event.type = type;
-        // remove the original event
-        event.originalEvent = null;
-        // initialize the results
-        dd.results = [];
-        // handle each interacted element
-        do if ( ia = dd.interactions[ i ] ){
-            // validate the interaction
-            if ( type !== "dragend" && ia.cancelled )
-                continue;
-            // set the dragdrop properties on the event object
-            callback = drag.properties( event, dd, ia );
-            // prepare for more results
-            ia.results = [];
-            // handle each element
-            $( elem || ia[ mode ] || dd.droppable ).each(function( p, subject ){
-                // identify drag or drop targets individually
-                callback.target = subject;
-                // force propagtion of the custom event
-                event.isPropagationStopped = function(){ return false; };
-                // handle the event 
-                result = subject ? $event.dispatch.call( subject, event, callback ) : null;
-                // stop the drag interaction for this element
-                if ( result === false ){
-                    if ( mode == "drag" ){
-                        ia.cancelled = true;
-                        dd.propagates -= 1;
-                    }
-                    if ( type == "drop" ){
-                        ia[ mode ][p] = null;
-                    }
-                }
-                // assign any dropinit elements
-                else if ( type == "dropinit" )
-                    ia.droppable.push( drag.element( result ) || subject );
-                // accept a returned proxy element 
-                if ( type == "dragstart" )
-                    ia.proxy = $( drag.element( result ) || ia.drag )[0];
-                // remember this result 
-                ia.results.push( result );
-                // forget the event result, for recycling
-                delete event.result;
-                // break on cancelled handler
-                if ( type !== "dropinit" )
-                    return result;
-            }); 
-            // flatten the results  
-            dd.results[ i ] = drag.flatten( ia.results );   
-            // accept a set of valid drop targets
-            if ( type == "dropinit" )
-                ia.droppable = drag.flatten( ia.droppable );
-            // locate drop targets
-            if ( type == "dragstart" && !ia.cancelled )
-                callback.update(); 
-        }
-        while ( ++i < len )
-        // restore the original event & type
-        event.type = orig.type;
-        event.originalEvent = orig.event;
-        // return all handler results
-        return drag.flatten( dd.results );
-    },
-        
-    // extend the callback object with drag/drop properties...
-    properties: function( event, dd, ia ){      
-        var obj = ia.callback;
-        // elements
-        obj.drag = ia.drag;
-        obj.proxy = ia.proxy || ia.drag;
-        // starting mouse position
-        obj.startX = dd.pageX;
-        obj.startY = dd.pageY;
-        // current distance dragged
-        obj.deltaX = event.pageX - dd.pageX;
-        obj.deltaY = event.pageY - dd.pageY;
-        // original element position
-        obj.originalX = ia.offset.left;
-        obj.originalY = ia.offset.top;
-        // adjusted element position
-        obj.offsetX = obj.originalX + obj.deltaX; 
-        obj.offsetY = obj.originalY + obj.deltaY;
-        // assign the drop targets information
-        obj.drop = drag.flatten( ( ia.drop || [] ).slice() );
-        obj.available = drag.flatten( ( ia.droppable || [] ).slice() );
-        return obj; 
-    },
-    
-    // determine is the argument is an element or jquery instance
-    element: function( arg ){
-        if ( arg && ( arg.jquery || arg.nodeType == 1 ) )
-            return arg;
-    },
-    
-    // flatten nested jquery objects and arrays into a single dimension array
-    flatten: function( arr ){
-        return $.map( arr, function( member ){
-            return member && member.jquery ? $.makeArray( member ) : 
-                member && member.length ? drag.flatten( member ) : member;
-        });
-    },
-    
-    // toggles text selection attributes ON (true) or OFF (false)
-    textselect: function( bool ){ 
-        $( document )[ bool ? "unbind" : "bind" ]("selectstart", drag.dontstart )
-            .css("MozUserSelect", bool ? "" : "none" );
-        // .attr("unselectable", bool ? "off" : "on" )
-        document.unselectable = bool ? "off" : "on"; 
-    },
-    
-    // suppress "selectstart" and "ondragstart" events
-    dontstart: function(){ 
-        return false; 
-    },
-    
-    // a callback instance contructor
-    callback: function(){}
-    
-};
-
-// callback methods
-drag.callback.prototype = {
-    update: function(){
-        if ( $special.drop && this.available.length )
-            $.each( this.available, function( i ){
-                $special.drop.locate( this, i );
-            });
+      }
+      return $.extend(true, {}, options, elOptions);
     }
-};
-
-// patch $.event.$dispatch to allow suppressing clicks
-var $dispatch = $event.dispatch;
-$event.dispatch = function( event ){
-    if ( $.data( this, "suppress."+ event.type ) - new Date().getTime() > 0 ){
-        $.removeData( this, "suppress."+ event.type );
-        return;
-    }
-    return $dispatch.apply( this, arguments );
-};
-
-// event fix hooks for touch events...
-var touchHooks = 
-$event.fixHooks.touchstart = 
-$event.fixHooks.touchmove = 
-$event.fixHooks.touchend =
-$event.fixHooks.touchcancel = {
-    props: "clientX clientY pageX pageY screenX screenY".split( " " ),
-    filter: function( event, orig ) {
-        if ( orig ){
-            var touched = ( orig.touches && orig.touches[0] )
-                || ( orig.changedTouches && orig.changedTouches[0] )
-                || null; 
-            // iOS webkit: touchstart, touchmove, touchend
-            if ( touched ) 
-                $.each( touchHooks.props, function( i, prop ){
-                    event[ prop ] = touched[ prop ];
-                });
-        }
-        return event;
-    }
-};
-
-// share the same special event configuration with related events...
-$special.draginit = $special.dragstart = $special.dragend = drag;
-
-})( jQuery );
-
-  }).apply(root, arguments);
+  };
+  return parser;
 });
-}(this));
 
 /*
 Copyright 2012 Igor Vaynberg
@@ -5803,6 +5599,416 @@ the specific language governing permissions and limitations under the Apache Lic
 define("select2", function(){});
 
 (function(root) {
+define("jquery.event.drag", ["jquery"], function() {
+  return (function() {
+/*! 
+ * jquery.event.drag - v 2.2
+ * Copyright (c) 2010 Three Dub Media - http://threedubmedia.com
+ * Open Source MIT License - http://threedubmedia.com/code/license
+ */
+// Created: 2008-06-04 
+// Updated: 2012-05-21
+// REQUIRES: jquery 1.7.x
+
+;(function( $ ){
+
+// add the jquery instance method
+$.fn.drag = function( str, arg, opts ){
+    // figure out the event type
+    var type = typeof str == "string" ? str : "",
+    // figure out the event handler...
+    fn = $.isFunction( str ) ? str : $.isFunction( arg ) ? arg : null;
+    // fix the event type
+    if ( type.indexOf("drag") !== 0 ) 
+        type = "drag"+ type;
+    // were options passed
+    opts = ( str == fn ? arg : opts ) || {};
+    // trigger or bind event handler
+    return fn ? this.bind( type, opts, fn ) : this.trigger( type );
+};
+
+// local refs (increase compression)
+var $event = $.event, 
+$special = $event.special,
+// configure the drag special event 
+drag = $special.drag = {
+    
+    // these are the default settings
+    defaults: {
+        which: 1, // mouse button pressed to start drag sequence
+        distance: 0, // distance dragged before dragstart
+        not: ':input', // selector to suppress dragging on target elements
+        handle: null, // selector to match handle target elements
+        relative: false, // true to use "position", false to use "offset"
+        drop: true, // false to suppress drop events, true or selector to allow
+        click: false // false to suppress click events after dragend (no proxy)
+    },
+    
+    // the key name for stored drag data
+    datakey: "dragdata",
+    
+    // prevent bubbling for better performance
+    noBubble: true,
+    
+    // count bound related events
+    add: function( obj ){ 
+        // read the interaction data
+        var data = $.data( this, drag.datakey ),
+        // read any passed options 
+        opts = obj.data || {};
+        // count another realted event
+        data.related += 1;
+        // extend data options bound with this event
+        // don't iterate "opts" in case it is a node 
+        $.each( drag.defaults, function( key, def ){
+            if ( opts[ key ] !== undefined )
+                data[ key ] = opts[ key ];
+        });
+    },
+    
+    // forget unbound related events
+    remove: function(){
+        $.data( this, drag.datakey ).related -= 1;
+    },
+    
+    // configure interaction, capture settings
+    setup: function(){
+        // check for related events
+        if ( $.data( this, drag.datakey ) ) 
+            return;
+        // initialize the drag data with copied defaults
+        var data = $.extend({ related:0 }, drag.defaults );
+        // store the interaction data
+        $.data( this, drag.datakey, data );
+        // bind the mousedown event, which starts drag interactions
+        $event.add( this, "touchstart mousedown", drag.init, data );
+        // prevent image dragging in IE...
+        if ( this.attachEvent ) 
+            this.attachEvent("ondragstart", drag.dontstart ); 
+    },
+    
+    // destroy configured interaction
+    teardown: function(){
+        var data = $.data( this, drag.datakey ) || {};
+        // check for related events
+        if ( data.related ) 
+            return;
+        // remove the stored data
+        $.removeData( this, drag.datakey );
+        // remove the mousedown event
+        $event.remove( this, "touchstart mousedown", drag.init );
+        // enable text selection
+        drag.textselect( true ); 
+        // un-prevent image dragging in IE...
+        if ( this.detachEvent ) 
+            this.detachEvent("ondragstart", drag.dontstart ); 
+    },
+        
+    // initialize the interaction
+    init: function( event ){ 
+        // sorry, only one touch at a time
+        if ( drag.touched ) 
+            return;
+        // the drag/drop interaction data
+        var dd = event.data, results;
+        // check the which directive
+        if ( event.which != 0 && dd.which > 0 && event.which != dd.which ) 
+            return; 
+        // check for suppressed selector
+        if ( $( event.target ).is( dd.not ) ) 
+            return;
+        // check for handle selector
+        if ( dd.handle && !$( event.target ).closest( dd.handle, event.currentTarget ).length ) 
+            return;
+
+        drag.touched = event.type == 'touchstart' ? this : null;
+        dd.propagates = 1;
+        dd.mousedown = this;
+        dd.interactions = [ drag.interaction( this, dd ) ];
+        dd.target = event.target;
+        dd.pageX = event.pageX;
+        dd.pageY = event.pageY;
+        dd.dragging = null;
+        // handle draginit event... 
+        results = drag.hijack( event, "draginit", dd );
+        // early cancel
+        if ( !dd.propagates )
+            return;
+        // flatten the result set
+        results = drag.flatten( results );
+        // insert new interaction elements
+        if ( results && results.length ){
+            dd.interactions = [];
+            $.each( results, function(){
+                dd.interactions.push( drag.interaction( this, dd ) );
+            });
+        }
+        // remember how many interactions are propagating
+        dd.propagates = dd.interactions.length;
+        // locate and init the drop targets
+        if ( dd.drop !== false && $special.drop ) 
+            $special.drop.handler( event, dd );
+        // disable text selection
+        drag.textselect( false ); 
+        // bind additional events...
+        if ( drag.touched )
+            $event.add( drag.touched, "touchmove touchend", drag.handler, dd );
+        else 
+            $event.add( document, "mousemove mouseup", drag.handler, dd );
+        // helps prevent text selection or scrolling
+        if ( !drag.touched || dd.live )
+            return false;
+    },  
+    
+    // returns an interaction object
+    interaction: function( elem, dd ){
+        var offset = $( elem )[ dd.relative ? "position" : "offset" ]() || { top:0, left:0 };
+        return {
+            drag: elem, 
+            callback: new drag.callback(), 
+            droppable: [],
+            offset: offset
+        };
+    },
+    
+    // handle drag-releatd DOM events
+    handler: function( event ){ 
+        // read the data before hijacking anything
+        var dd = event.data;    
+        // handle various events
+        switch ( event.type ){
+            // mousemove, check distance, start dragging
+            case !dd.dragging && 'touchmove': 
+                event.preventDefault();
+            case !dd.dragging && 'mousemove':
+                //  drag tolerance, x� + y� = distance�
+                if ( Math.pow(  event.pageX-dd.pageX, 2 ) + Math.pow(  event.pageY-dd.pageY, 2 ) < Math.pow( dd.distance, 2 ) ) 
+                    break; // distance tolerance not reached
+                event.target = dd.target; // force target from "mousedown" event (fix distance issue)
+                drag.hijack( event, "dragstart", dd ); // trigger "dragstart"
+                if ( dd.propagates ) // "dragstart" not rejected
+                    dd.dragging = true; // activate interaction
+            // mousemove, dragging
+            case 'touchmove':
+                event.preventDefault();
+            case 'mousemove':
+                if ( dd.dragging ){
+                    // trigger "drag"       
+                    drag.hijack( event, "drag", dd );
+                    if ( dd.propagates ){
+                        // manage drop events
+                        if ( dd.drop !== false && $special.drop )
+                            $special.drop.handler( event, dd ); // "dropstart", "dropend"                           
+                        break; // "drag" not rejected, stop     
+                    }
+                    event.type = "mouseup"; // helps "drop" handler behave
+                }
+            // mouseup, stop dragging
+            case 'touchend': 
+            case 'mouseup': 
+            default:
+                if ( drag.touched )
+                    $event.remove( drag.touched, "touchmove touchend", drag.handler ); // remove touch events
+                else 
+                    $event.remove( document, "mousemove mouseup", drag.handler ); // remove page events 
+                if ( dd.dragging ){
+                    if ( dd.drop !== false && $special.drop )
+                        $special.drop.handler( event, dd ); // "drop"
+                    drag.hijack( event, "dragend", dd ); // trigger "dragend"   
+                }
+                drag.textselect( true ); // enable text selection
+                // if suppressing click events...
+                if ( dd.click === false && dd.dragging )
+                    $.data( dd.mousedown, "suppress.click", new Date().getTime() + 5 );
+                dd.dragging = drag.touched = false; // deactivate element   
+                break;
+        }
+    },
+        
+    // re-use event object for custom events
+    hijack: function( event, type, dd, x, elem ){
+        // not configured
+        if ( !dd ) 
+            return;
+        // remember the original event and type
+        var orig = { event:event.originalEvent, type:event.type },
+        // is the event drag related or drog related?
+        mode = type.indexOf("drop") ? "drag" : "drop",
+        // iteration vars
+        result, i = x || 0, ia, $elems, callback,
+        len = !isNaN( x ) ? x : dd.interactions.length;
+        // modify the event type
+        event.type = type;
+        // remove the original event
+        event.originalEvent = null;
+        // initialize the results
+        dd.results = [];
+        // handle each interacted element
+        do if ( ia = dd.interactions[ i ] ){
+            // validate the interaction
+            if ( type !== "dragend" && ia.cancelled )
+                continue;
+            // set the dragdrop properties on the event object
+            callback = drag.properties( event, dd, ia );
+            // prepare for more results
+            ia.results = [];
+            // handle each element
+            $( elem || ia[ mode ] || dd.droppable ).each(function( p, subject ){
+                // identify drag or drop targets individually
+                callback.target = subject;
+                // force propagtion of the custom event
+                event.isPropagationStopped = function(){ return false; };
+                // handle the event 
+                result = subject ? $event.dispatch.call( subject, event, callback ) : null;
+                // stop the drag interaction for this element
+                if ( result === false ){
+                    if ( mode == "drag" ){
+                        ia.cancelled = true;
+                        dd.propagates -= 1;
+                    }
+                    if ( type == "drop" ){
+                        ia[ mode ][p] = null;
+                    }
+                }
+                // assign any dropinit elements
+                else if ( type == "dropinit" )
+                    ia.droppable.push( drag.element( result ) || subject );
+                // accept a returned proxy element 
+                if ( type == "dragstart" )
+                    ia.proxy = $( drag.element( result ) || ia.drag )[0];
+                // remember this result 
+                ia.results.push( result );
+                // forget the event result, for recycling
+                delete event.result;
+                // break on cancelled handler
+                if ( type !== "dropinit" )
+                    return result;
+            }); 
+            // flatten the results  
+            dd.results[ i ] = drag.flatten( ia.results );   
+            // accept a set of valid drop targets
+            if ( type == "dropinit" )
+                ia.droppable = drag.flatten( ia.droppable );
+            // locate drop targets
+            if ( type == "dragstart" && !ia.cancelled )
+                callback.update(); 
+        }
+        while ( ++i < len )
+        // restore the original event & type
+        event.type = orig.type;
+        event.originalEvent = orig.event;
+        // return all handler results
+        return drag.flatten( dd.results );
+    },
+        
+    // extend the callback object with drag/drop properties...
+    properties: function( event, dd, ia ){      
+        var obj = ia.callback;
+        // elements
+        obj.drag = ia.drag;
+        obj.proxy = ia.proxy || ia.drag;
+        // starting mouse position
+        obj.startX = dd.pageX;
+        obj.startY = dd.pageY;
+        // current distance dragged
+        obj.deltaX = event.pageX - dd.pageX;
+        obj.deltaY = event.pageY - dd.pageY;
+        // original element position
+        obj.originalX = ia.offset.left;
+        obj.originalY = ia.offset.top;
+        // adjusted element position
+        obj.offsetX = obj.originalX + obj.deltaX; 
+        obj.offsetY = obj.originalY + obj.deltaY;
+        // assign the drop targets information
+        obj.drop = drag.flatten( ( ia.drop || [] ).slice() );
+        obj.available = drag.flatten( ( ia.droppable || [] ).slice() );
+        return obj; 
+    },
+    
+    // determine is the argument is an element or jquery instance
+    element: function( arg ){
+        if ( arg && ( arg.jquery || arg.nodeType == 1 ) )
+            return arg;
+    },
+    
+    // flatten nested jquery objects and arrays into a single dimension array
+    flatten: function( arr ){
+        return $.map( arr, function( member ){
+            return member && member.jquery ? $.makeArray( member ) : 
+                member && member.length ? drag.flatten( member ) : member;
+        });
+    },
+    
+    // toggles text selection attributes ON (true) or OFF (false)
+    textselect: function( bool ){ 
+        $( document )[ bool ? "unbind" : "bind" ]("selectstart", drag.dontstart )
+            .css("MozUserSelect", bool ? "" : "none" );
+        // .attr("unselectable", bool ? "off" : "on" )
+        document.unselectable = bool ? "off" : "on"; 
+    },
+    
+    // suppress "selectstart" and "ondragstart" events
+    dontstart: function(){ 
+        return false; 
+    },
+    
+    // a callback instance contructor
+    callback: function(){}
+    
+};
+
+// callback methods
+drag.callback.prototype = {
+    update: function(){
+        if ( $special.drop && this.available.length )
+            $.each( this.available, function( i ){
+                $special.drop.locate( this, i );
+            });
+    }
+};
+
+// patch $.event.$dispatch to allow suppressing clicks
+var $dispatch = $event.dispatch;
+$event.dispatch = function( event ){
+    if ( $.data( this, "suppress."+ event.type ) - new Date().getTime() > 0 ){
+        $.removeData( this, "suppress."+ event.type );
+        return;
+    }
+    return $dispatch.apply( this, arguments );
+};
+
+// event fix hooks for touch events...
+var touchHooks = 
+$event.fixHooks.touchstart = 
+$event.fixHooks.touchmove = 
+$event.fixHooks.touchend =
+$event.fixHooks.touchcancel = {
+    props: "clientX clientY pageX pageY screenX screenY".split( " " ),
+    filter: function( event, orig ) {
+        if ( orig ){
+            var touched = ( orig.touches && orig.touches[0] )
+                || ( orig.changedTouches && orig.changedTouches[0] )
+                || null; 
+            // iOS webkit: touchstart, touchmove, touchend
+            if ( touched ) 
+                $.each( touchHooks.props, function( i, prop ){
+                    event[ prop ] = touched[ prop ];
+                });
+        }
+        return event;
+    }
+};
+
+// share the same special event configuration with related events...
+$special.draginit = $special.dragstart = $special.dragend = drag;
+
+})( jQuery );
+
+  }).apply(root, arguments);
+});
+}(this));
+
+(function(root) {
 define("jquery.event.drop", ["jquery"], function() {
   return (function() {
 /*! 
@@ -6461,7 +6667,7 @@ function PickerConstructor( ELEMENT, NAME, COMPONENT, OPTIONS ) {
                     thingObject = thingIsObject ? thing : {}
 
                 // Make sure we have usable options.
-                options = thingIsObject && $.isPlainObject( value ) ? value : options || {}
+                options = thingIsObject && $.isPlainObject( value ) ? value : options || {}
 
                 if ( thing ) {
 
@@ -7044,17 +7250,17 @@ function aria(element, attribute, value) {
 }
 function ariaSet(element, attribute, value) {
     element.setAttribute(
-        (attribute == 'role' ? '' : 'aria-') + attribute,
+        (attribute == 'role' ? '' : 'aria-') + attribute,
         value
     )
 }
 function ariaAttr(attribute, data) {
     if ( !$.isPlainObject(attribute) ) {
-        attribute = { attribute: data }
+        attribute = { attribute: data }
     }
     data = ''
     for ( var key in attribute ) {
-        var attr = (key == 'role' ? '' : 'aria-') + key,
+        var attr = (key == 'role' ? '' : 'aria-') + key,
             attrVal = attribute[key]
         data += attrVal == null ? '' : attr + '="' + attribute[key] + '"'
     }
@@ -14869,200 +15075,202 @@ define('plone-patterns-toolbar',[
     name: 'toolbar',
     trigger: '.pat-toolbar',
     init: function () {
-      if ($(window).width() < "768"){//mobile
-        // $( "html" ).has(".plone-toolbar-left").css({'margin-left':'0','margin-top':'0','margin-right':'0'});
-        // $( "html" ).has(".plone-toolbar-top").css({'margin-left':'0','margin-top':'0','margin-right':'0'});
-        // $( "html" ).has(".plone-toolbar-left.expanded").css({'margin-left':'0','margin-top':'0','margin-right':'0'});
-        // $( "body" ).css('margin-left: 0px');
-        $( "#edit-zone" ).css("right", "-120px");
-        $( "#edit-zone .plone-toolbar-logo" ).click(function() {
-          if ($(this).hasClass("open")){
-            $( "#edit-zone" ).css("right", "-120px");
-            $( "html" ).css("margin-left", "0");
-            $( "html" ).css("margin-right", "0");
-            $(this).removeClass("open");
-            $( "#edit-zone nav li" ).removeClass("active");
+      if ($(window).width() < '768'){//mobile
+        // $( 'html' ).has('.plone-toolbar-left').css({'margin-left':'0','margin-top':'0','margin-right':'0'});
+        // $( 'html' ).has('.plone-toolbar-top').css({'margin-left':'0','margin-top':'0','margin-right':'0'});
+        // $( 'html' ).has('.plone-toolbar-left.expanded').css({'margin-left':'0','margin-top':'0','margin-right':'0'});
+        // $( 'body' ).css('margin-left: 0px');
+        $('#edit-zone').css('right', '-120px');
+        $( '#edit-zone .plone-toolbar-logo' ).click(function() {
+          if ($(this).hasClass('open')){
+            $( '#edit-zone' ).css('right', '-120px');
+            $( 'html' ).css('margin-left', '0');
+            $( 'html' ).css('margin-right', '0');
+            $(this).removeClass('open');
+            $( '#edit-zone nav li' ).removeClass('active');
           } else {
-            $( "#edit-zone" ).css("right", "0");
-            $(this).addClass("open");
-            $( "html" ).css("margin-left", "-120px");
-            $( "html" ).css("margin-right", "120px");
+            $( '#edit-zone' ).css('right', '0');
+            $(this).addClass('open');
+            $( 'html' ).css('margin-left', '-120px');
+            $( 'html' ).css('margin-right', '120px');
           }
         });
-        $( "#edit-zone nav li" ).has( "a .plone-toolbar-caret" ).click(function(e) {
+        $( '#edit-zone nav li' ).has( 'a .plone-toolbar-caret' ).click(function(e) {
           e.preventDefault();
           e.stopPropagation();
-          if ($(this).hasClass("active")) {
-            $( "#edit-zone" ).css("right", "0");
-            $( "html" ).css("margin-left", "-120px");
-            $( "html" ).css("margin-right", "120px");
-            $( "#edit-zone nav li" ).removeClass("active");
+          if ($(this).hasClass('active')) {
+            $( '#edit-zone' ).css('right', '0');
+            $( 'html' ).css('margin-left', '-120px');
+            $( 'html' ).css('margin-right', '120px');
+            $( '#edit-zone nav li' ).removeClass('active');
           } else {
-            $( "#edit-zone nav li" ).removeClass("active");
-            $(this).addClass("active");
-            $( "#edit-zone" ).css("right", "180px");
-            $( "html" ).css("margin-left", "-300px");
-            $( "html" ).css("margin-right", "300px");
+            $( '#edit-zone nav li' ).removeClass('active');
+            $(this).addClass('active');
+            $( '#edit-zone' ).css('right', '180px');
+            $( 'html' ).css('margin-left', '-300px');
+            $( 'html' ).css('margin-right', '300px');
           }
         });
       }
       else { // not mobile
         var toolbar_cookie = $.cookie('plone-toolbar');
         window.plonetoolbar_state = toolbar_cookie;
-        $("#edit-zone").attr('class', toolbar_cookie);
+        $('#edit-zone').attr('class', toolbar_cookie);
 
-        $( "#edit-zone .plone-toolbar-logo" ).on('click', function() {
-          if (plonetoolbar_state) {
-            if (plonetoolbar_state.indexOf("expanded") != -1) {
+        $( '#edit-zone .plone-toolbar-logo' ).on('click', function() {
+          if (window.plonetoolbar_state) {
+            if (window.plonetoolbar_state.indexOf('expanded') != -1) {
               // Switch to default (only icons)
-              $( "#edit-zone" ).removeClass("expanded");
-              $( "#edit-zone nav li" ).removeClass("active");
-              if (plonetoolbar_state.indexOf("left") != -1) {
-                $("body").addClass("plone-toolbar-left-default");
-                $("body").removeClass("plone-toolbar-left-expanded");
+              $( '#edit-zone' ).removeClass('expanded');
+              $( '#edit-zone nav li' ).removeClass('active');
+              if (window.plonetoolbar_state.indexOf('left') != -1) {
+                $('body').addClass('plone-toolbar-left-default');
+                $('body').removeClass('plone-toolbar-left-expanded');
               } else {
-                $("body").addClass("plone-toolbar-top-default");
-                $("body").removeClass("plone-toolbar-top-expanded");
+                $('body').addClass('plone-toolbar-top-default');
+                $('body').removeClass('plone-toolbar-top-expanded');
               }
-              $.cookie('plone-toolbar', $("#edit-zone").attr('class'), {path: '/'});
-              plonetoolbar_state = plonetoolbar_state.replace(' expanded', '');
+              $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
+              window.plonetoolbar_state = window.plonetoolbar_state.replace(' expanded', '');
             } else {
               // Switch to expanded
-              $( "#edit-zone" ).addClass("expanded");
-              $( "#edit-zone nav li" ).removeClass("active");
-              if (plonetoolbar_state.indexOf("left") != -1) {
-                $("body").addClass("plone-toolbar-left-expanded");
-                $("body").removeClass("plone-toolbar-left-default");
+              $( '#edit-zone' ).addClass('expanded');
+              $( '#edit-zone nav li' ).removeClass('active');
+              if (window.plonetoolbar_state.indexOf('left') != -1) {
+                $('body').addClass('plone-toolbar-left-expanded');
+                $('body').removeClass('plone-toolbar-left-default');
               } else {
-                $("body").addClass("plone-toolbar-top-expanded");
-                $("body").removeClass("plone-toolbar-top-default");
+                $('body').addClass('plone-toolbar-top-expanded');
+                $('body').removeClass('plone-toolbar-top-default');
               }
-              $.cookie('plone-toolbar', $("#edit-zone").attr('class'), {path: '/'});
-              plonetoolbar_state = plonetoolbar_state + ' expanded';
+              $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
+              window.plonetoolbar_state = window.plonetoolbar_state + ' expanded';
             }
           } else {
             // Cookie not set, assume default (only icons)
             window.plonetoolbar_state = 'pat-toolbar plone-toolbar-left';
             // Switch to expanded left
-            $( "#edit-zone" ).addClass("expanded");
-            $( "#edit-zone nav li" ).removeClass("active");
-            $("body").addClass("plone-toolbar-left-expanded");
-            $("body").removeClass("plone-toolbar-left-default");
-            $.cookie('plone-toolbar', $("#edit-zone").attr('class'), {path: '/'});
-            plonetoolbar_state = plonetoolbar_state + ' expanded';
+            $( '#edit-zone' ).addClass('expanded');
+            $( '#edit-zone nav li' ).removeClass('active');
+            $('body').addClass('plone-toolbar-left-expanded');
+            $('body').removeClass('plone-toolbar-left-default');
+            $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
+            window.plonetoolbar_state = window.plonetoolbar_state + ' expanded';
           }
         });
 
         // Switch to compressed
-        $( "#edit-zone .plone-toolbar-logo" ).on('dblclick', function() {
-          if (plonetoolbar_state) {
-            if (plonetoolbar_state.indexOf("compressed") != -1) {
+        $( '#edit-zone .plone-toolbar-logo' ).on('dblclick', function() {
+          if (window.plonetoolbar_state) {
+            if (window.plonetoolbar_state.indexOf('compressed') != -1) {
               // Switch to default (only icons) not compressed
-              $( "#edit-zone" ).removeClass("compressed");
-              if (plonetoolbar_state.indexOf("left") != -1) {
-                $("body").addClass("plone-toolbar-left-default");
-                $("body").removeClass("plone-toolbar-compressed");
+              $( '#edit-zone' ).removeClass('compressed');
+              if (window.plonetoolbar_state.indexOf('left') != -1) {
+                $('body').addClass('plone-toolbar-left-default');
+                $('body').removeClass('plone-toolbar-compressed');
               } else {
-                $("body").addClass("plone-toolbar-top-default");
-                $("body").removeClass("plone-toolbar-compressed");
+                $('body').addClass('plone-toolbar-top-default');
+                $('body').removeClass('plone-toolbar-compressed');
               }
-              $.cookie('plone-toolbar', $("#edit-zone").attr('class'), {path: '/'});
-              plonetoolbar_state = plonetoolbar_state.replace(' expanded', '');
+              $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
+              window.plonetoolbar_state = window.plonetoolbar_state.replace(' expanded', '');
             } else {
               // Switch to compressed
-              $( "#edit-zone" ).addClass("compressed");
-              if (plonetoolbar_state.indexOf("left") != -1) {
-                $("body").addClass("plone-toolbar-compressed");
-                $("body").removeClass("plone-toolbar-left-default");
-                $("body").removeClass("plone-toolbar-left-expanded");
+              $( '#edit-zone' ).addClass('compressed');
+              if (window.plonetoolbar_state.indexOf('left') != -1) {
+                $('body').addClass('plone-toolbar-compressed');
+                $('body').removeClass('plone-toolbar-left-default');
+                $('body').removeClass('plone-toolbar-left-expanded');
               } else {
-                $("body").addClass("plone-toolbar-compressed");
-                $("body").removeClass("plone-toolbar-top-default");
-                $("body").removeClass("plone-toolbar-top-expanded");
+                $('body').addClass('plone-toolbar-compressed');
+                $('body').removeClass('plone-toolbar-top-default');
+                $('body').removeClass('plone-toolbar-top-expanded');
               }
-              $.cookie('plone-toolbar', $("#edit-zone").attr('class'), {path: '/'});
-              plonetoolbar_state = plonetoolbar_state + ' compressed';
+              $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
+              window.plonetoolbar_state = window.plonetoolbar_state + ' compressed';
             }
           } else {
             // Cookie not set, assume default (only icons)
             // Switch to compressed
-            $( "#edit-zone" ).addClass("compressed");
-            $("body").addClass("plone-toolbar-compressed");
-            $("body").removeClass("plone-toolbar-left-default");
-            $("body").removeClass("plone-toolbar-left-expanded");
-            $.cookie('plone-toolbar', $("#edit-zone").attr('class'), {path: '/'});
-            plonetoolbar_state = plonetoolbar_state + ' compressed';
+            $( '#edit-zone' ).addClass('compressed');
+            $('body').addClass('plone-toolbar-compressed');
+            $('body').removeClass('plone-toolbar-left-default');
+            $('body').removeClass('plone-toolbar-left-expanded');
+            $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
+            window.plonetoolbar_state = window.plonetoolbar_state + ' compressed';
           }
         });
 
 
-        $( "#edit-zone nav > ul > li li" ).on('click', function(event) {
+        $( '#edit-zone nav > ul > li li' ).on('click', function(event) {
           event.stopImmediatePropagation();
         });
 
         // active
-        $( "#edit-zone nav > ul > li" ).has( "a .plone-toolbar-caret" ).on('click', function(event) {
+        $( '#edit-zone nav > ul > li' ).has( 'a .plone-toolbar-caret' ).on('click', function(event) {
           event.preventDefault();
           event.stopPropagation();
-          if ($(this).hasClass("active")) {
-            $( "#edit-zone nav li" ).removeClass("active");
+          if ($(this).hasClass('active')) {
+            $( '#edit-zone nav li' ).removeClass('active');
           } else {
-            $("#edit-zone nav li").removeClass("active");
-            $(this).addClass("active");
+            $('#edit-zone nav li').removeClass('active');
+            $(this).addClass('active');
           }
         });
 
         $('body').on('click', function(event) {
           if (!($(this).parent('#edit-zone').length > 0)) {
             $('#edit-zone nav > ul > li').each(function(key, element){
-              $(element).removeClass("active");
+              $(element).removeClass('active');
             });
           }
         });
 
         // top/left switcher
-        $( "#edit-zone .plone-toolbar-switcher" ).on('click', function() {
-          if (plonetoolbar_state) {
-            if (plonetoolbar_state.indexOf("top") != -1) {
+        $( '#edit-zone .plone-toolbar-switcher' ).on('click', function() {
+          if (window.plonetoolbar_state) {
+            if (window.plonetoolbar_state.indexOf('top') != -1) {
               // from top to left
-              $( "#edit-zone" ).addClass("plone-toolbar-left");
-              $( "#edit-zone" ).removeClass("plone-toolbar-top");
-              if (plonetoolbar_state.indexOf("expanded") != -1) {
-                $("body").addClass("plone-toolbar-left-expanded");
-                $("body").removeClass("plone-toolbar-top-expanded");
+              $( '#edit-zone' ).addClass('plone-toolbar-left');
+              $( '#edit-zone' ).removeClass('plone-toolbar-top');
+              if (window.plonetoolbar_state.indexOf('expanded') != -1) {
+                $('body').addClass('plone-toolbar-left-expanded');
+                $('body').removeClass('plone-toolbar-top-expanded');
               } else {
-                $("body").addClass("plone-toolbar-left-default");
-                $("body").removeClass("plone-toolbar-top-default");
+                $('body').addClass('plone-toolbar-left-default');
+                $('body').removeClass('plone-toolbar-top-default');
               }
-              $.cookie('plone-toolbar', $("#edit-zone").attr('class'), {path: '/'});
-              plonetoolbar_state = plonetoolbar_state.replace('plone-toolbar-top', 'plone-toolbar-left');
+              $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
+              window.plonetoolbar_state = window.plonetoolbar_state.replace('plone-toolbar-top', 'plone-toolbar-left');
             } else {
               // from left to top
-              $( "#edit-zone" ).addClass("plone-toolbar-top");
-              $( "#edit-zone" ).removeClass("plone-toolbar-left");
-              if (plonetoolbar_state.indexOf("expanded") != -1) {
-                $("body").addClass("plone-toolbar-top-expanded");
-                $("body").removeClass("plone-toolbar-left-expanded");
+              $( '#edit-zone' ).addClass('plone-toolbar-top');
+              $( '#edit-zone' ).removeClass('plone-toolbar-left');
+              if (window.plonetoolbar_state.indexOf('expanded') != -1) {
+                $('body').addClass('plone-toolbar-top-expanded');
+                $('body').removeClass('plone-toolbar-left-expanded');
               } else {
-                $("body").addClass("plone-toolbar-top-default");
-                $("body").removeClass("plone-toolbar-left-default");
+                $('body').addClass('plone-toolbar-top-default');
+                $('body').removeClass('plone-toolbar-left-default');
               }
-              $.cookie('plone-toolbar', $("#edit-zone").attr('class'), {path: '/'});
-              plonetoolbar_state = plonetoolbar_state.replace('plone-toolbar-left', 'plone-toolbar-top');
+              $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
+              window.plonetoolbar_state = window.plonetoolbar_state.replace('plone-toolbar-left', 'plone-toolbar-top');
             }
           } else {
             // Cookie not set, assume left default (only icons)
             window.plonetoolbar_state = 'pat-toolbar plone-toolbar-left';
             // Switch to top
-            $( "#edit-zone" ).addClass("plone-toolbar-left");
-            $( "#edit-zone" ).removeClass("plone-toolbar-top");
-            $("body").addClass("plone-toolbar-top-default");
-            $("body").removeClass("plone-toolbar-left-default");
-            $.cookie('plone-toolbar', $("#edit-zone").attr('class'), {path: '/'});
-            plonetoolbar_state = plonetoolbar_state.replace('plone-toolbar-left', 'plone-toolbar-top');
+            $( '#edit-zone' ).addClass('plone-toolbar-left');
+            $( '#edit-zone' ).removeClass('plone-toolbar-top');
+            $('body').addClass('plone-toolbar-top-default');
+            $('body').removeClass('plone-toolbar-left-default');
+            $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
+            window.plonetoolbar_state = window.plonetoolbar_state.replace('plone-toolbar-left', 'plone-toolbar-top');
           }
+
         });
-      }this.$el.addClass('initialized');
+      }
+      this.$el.addClass('initialized');
     }
   });
 
@@ -15673,1283 +15881,6 @@ define('mockup-patterns-backdrop',[
 
 
 /*!
- * Date picker for pickadate.js v3.4.0
- * http://amsul.github.io/pickadate.js/date.htm
- */
-
-(function ( factory ) {
-
-    // Register as an anonymous module.
-    if ( typeof define == 'function' && define.amd )
-        define( 'picker.date',['picker','jquery'], factory )
-
-    // Or using browser globals.
-    else factory( Picker, jQuery )
-
-}(function( Picker, $ ) {
-
-
-/**
- * Globals and constants
- */
-var DAYS_IN_WEEK = 7,
-    WEEKS_IN_CALENDAR = 6,
-    _ = Picker._
-
-
-
-/**
- * The date picker constructor
- */
-function DatePicker( picker, settings ) {
-
-    var calendar = this,
-        elementValue = picker.$node[ 0 ].value,
-        elementDataValue = picker.$node.data( 'value' ),
-        valueString = elementDataValue || elementValue,
-        formatString = elementDataValue ? settings.formatSubmit : settings.format,
-        isRTL = function() {
-            return getComputedStyle( picker.$root[0] ).direction === 'rtl'
-        }
-
-    calendar.settings = settings
-    calendar.$node = picker.$node
-
-    // The queue of methods that will be used to build item objects.
-    calendar.queue = {
-        min: 'measure create',
-        max: 'measure create',
-        now: 'now create',
-        select: 'parse create validate',
-        highlight: 'parse navigate create validate',
-        view: 'parse create validate viewset',
-        disable: 'deactivate',
-        enable: 'activate'
-    }
-
-    // The component's item object.
-    calendar.item = {}
-
-    calendar.item.disable = ( settings.disable || [] ).slice( 0 )
-    calendar.item.enable = -(function( collectionDisabled ) {
-        return collectionDisabled[ 0 ] === true ? collectionDisabled.shift() : -1
-    })( calendar.item.disable )
-
-    calendar.
-        set( 'min', settings.min ).
-        set( 'max', settings.max ).
-        set( 'now' )
-
-    // When there’s a value, set the `select`, which in turn
-    // also sets the `highlight` and `view`.
-    if ( valueString ) {
-        calendar.set( 'select', valueString, {
-            format: formatString,
-            fromValue: !!elementValue
-        })
-    }
-
-    // If there’s no value, default to highlighting “today”.
-    else {
-        calendar.
-            set( 'select', null ).
-            set( 'highlight', calendar.item.now )
-    }
-
-
-    // The keycode to movement mapping.
-    calendar.key = {
-        40: 7, // Down
-        38: -7, // Up
-        39: function() { return isRTL() ? -1 : 1 }, // Right
-        37: function() { return isRTL() ? 1 : -1 }, // Left
-        go: function( timeChange ) {
-            var highlightedObject = calendar.item.highlight,
-                targetDate = new Date( highlightedObject.year, highlightedObject.month, highlightedObject.date + timeChange )
-            calendar.set(
-                'highlight',
-                [ targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate() ],
-                { interval: timeChange }
-            )
-            this.render()
-        }
-    }
-
-
-    // Bind some picker events.
-    picker.
-        on( 'render', function() {
-            picker.$root.find( '.' + settings.klass.selectMonth ).on( 'change', function() {
-                var value = this.value
-                if ( value ) {
-                    picker.set( 'highlight', [ picker.get( 'view' ).year, value, picker.get( 'highlight' ).date ] )
-                    picker.$root.find( '.' + settings.klass.selectMonth ).trigger( 'focus' )
-                }
-            })
-            picker.$root.find( '.' + settings.klass.selectYear ).on( 'change', function() {
-                var value = this.value
-                if ( value ) {
-                    picker.set( 'highlight', [ value, picker.get( 'view' ).month, picker.get( 'highlight' ).date ] )
-                    picker.$root.find( '.' + settings.klass.selectYear ).trigger( 'focus' )
-                }
-            })
-        }).
-        on( 'open', function() {
-            picker.$root.find( 'button, select' ).attr( 'disabled', false )
-        }).
-        on( 'close', function() {
-            picker.$root.find( 'button, select' ).attr( 'disabled', true )
-        })
-
-} //DatePicker
-
-
-/**
- * Set a datepicker item object.
- */
-DatePicker.prototype.set = function( type, value, options ) {
-
-    var calendar = this,
-        calendarItem = calendar.item
-
-    // If the value is `null` just set it immediately.
-    if ( value === null ) {
-        calendarItem[ type ] = value
-        return calendar
-    }
-
-    // Otherwise go through the queue of methods, and invoke the functions.
-    // Update this as the time unit, and set the final value as this item.
-    // * In the case of `enable`, keep the queue but set `disable` instead.
-    //   And in the case of `flip`, keep the queue but set `enable` instead.
-    calendarItem[ ( type == 'enable' ? 'disable' : type == 'flip' ? 'enable' : type ) ] = calendar.queue[ type ].split( ' ' ).map( function( method ) {
-        value = calendar[ method ]( type, value, options )
-        return value
-    }).pop()
-
-    // Check if we need to cascade through more updates.
-    if ( type == 'select' ) {
-        calendar.set( 'highlight', calendarItem.select, options )
-    }
-    else if ( type == 'highlight' ) {
-        calendar.set( 'view', calendarItem.highlight, options )
-    }
-    else if ( type.match( /^(flip|min|max|disable|enable)$/ ) ) {
-        if ( calendarItem.select && calendar.disabled( calendarItem.select ) ) {
-            calendar.set( 'select', calendarItem.select, options )
-        }
-        if ( calendarItem.highlight && calendar.disabled( calendarItem.highlight ) ) {
-            calendar.set( 'highlight', calendarItem.highlight, options )
-        }
-    }
-
-    return calendar
-} //DatePicker.prototype.set
-
-
-/**
- * Get a datepicker item object.
- */
-DatePicker.prototype.get = function( type ) {
-    return this.item[ type ]
-} //DatePicker.prototype.get
-
-
-/**
- * Create a picker date object.
- */
-DatePicker.prototype.create = function( type, value, options ) {
-
-    var isInfiniteValue,
-        calendar = this
-
-    // If there’s no value, use the type as the value.
-    value = value === undefined ? type : value
-
-
-    // If it’s infinity, update the value.
-    if ( value == -Infinity || value == Infinity ) {
-        isInfiniteValue = value
-    }
-
-    // If it’s an object, use the native date object.
-    else if ( $.isPlainObject( value ) && _.isInteger( value.pick ) ) {
-        value = value.obj
-    }
-
-    // If it’s an array, convert it into a date and make sure
-    // that it’s a valid date – otherwise default to today.
-    else if ( $.isArray( value ) ) {
-        value = new Date( value[ 0 ], value[ 1 ], value[ 2 ] )
-        value = _.isDate( value ) ? value : calendar.create().obj
-    }
-
-    // If it’s a number or date object, make a normalized date.
-    else if ( _.isInteger( value ) || _.isDate( value ) ) {
-        value = calendar.normalize( new Date( value ), options )
-    }
-
-    // If it’s a literal true or any other case, set it to now.
-    else /*if ( value === true )*/ {
-        value = calendar.now( type, value, options )
-    }
-
-    // Return the compiled object.
-    return {
-        year: isInfiniteValue || value.getFullYear(),
-        month: isInfiniteValue || value.getMonth(),
-        date: isInfiniteValue || value.getDate(),
-        day: isInfiniteValue || value.getDay(),
-        obj: isInfiniteValue || value,
-        pick: isInfiniteValue || value.getTime()
-    }
-} //DatePicker.prototype.create
-
-
-/**
- * Create a range limit object using an array, date object,
- * literal “true”, or integer relative to another time.
- */
-DatePicker.prototype.createRange = function( from, to ) {
-
-    var calendar = this,
-        createDate = function( date ) {
-            if ( date === true || $.isArray( date ) || _.isDate( date ) ) {
-                return calendar.create( date )
-            }
-            return date
-        }
-
-    // Create objects if possible.
-    if ( !_.isInteger( from ) ) {
-        from = createDate( from )
-    }
-    if ( !_.isInteger( to ) ) {
-        to = createDate( to )
-    }
-
-    // Create relative dates.
-    if ( _.isInteger( from ) && $.isPlainObject( to ) ) {
-        from = [ to.year, to.month, to.date + from ];
-    }
-    else if ( _.isInteger( to ) && $.isPlainObject( from ) ) {
-        to = [ from.year, from.month, from.date + to ];
-    }
-
-    return {
-        from: createDate( from ),
-        to: createDate( to )
-    }
-} //DatePicker.prototype.createRange
-
-
-/**
- * Check if a date unit falls within a date range object.
- */
-DatePicker.prototype.withinRange = function( range, dateUnit ) {
-    range = this.createRange(range.from, range.to)
-    return dateUnit.pick >= range.from.pick && dateUnit.pick <= range.to.pick
-}
-
-
-/**
- * Check if two date range objects overlap.
- */
-DatePicker.prototype.overlapRanges = function( one, two ) {
-
-    var calendar = this
-
-    // Convert the ranges into comparable dates.
-    one = calendar.createRange( one.from, one.to )
-    two = calendar.createRange( two.from, two.to )
-
-    return calendar.withinRange( one, two.from ) || calendar.withinRange( one, two.to ) ||
-        calendar.withinRange( two, one.from ) || calendar.withinRange( two, one.to )
-}
-
-
-/**
- * Get the date today.
- */
-DatePicker.prototype.now = function( type, value, options ) {
-    value = new Date()
-    if ( options && options.rel ) {
-        value.setDate( value.getDate() + options.rel )
-    }
-    return this.normalize( value, options )
-}
-
-
-/**
- * Navigate to next/prev month.
- */
-DatePicker.prototype.navigate = function( type, value, options ) {
-
-    var targetDateObject,
-        targetYear,
-        targetMonth,
-        targetDate,
-        isTargetArray = $.isArray( value ),
-        isTargetObject = $.isPlainObject( value ),
-        viewsetObject = this.item.view/*,
-        safety = 100*/
-
-
-    if ( isTargetArray || isTargetObject ) {
-
-        if ( isTargetObject ) {
-            targetYear = value.year
-            targetMonth = value.month
-            targetDate = value.date
-        }
-        else {
-            targetYear = +value[0]
-            targetMonth = +value[1]
-            targetDate = +value[2]
-        }
-
-        // If we’re navigating months but the view is in a different
-        // month, navigate to the view’s year and month.
-        if ( options && options.nav && viewsetObject && viewsetObject.month !== targetMonth ) {
-            targetYear = viewsetObject.year
-            targetMonth = viewsetObject.month
-        }
-
-        // Figure out the expected target year and month.
-        targetDateObject = new Date( targetYear, targetMonth + ( options && options.nav ? options.nav : 0 ), 1 )
-        targetYear = targetDateObject.getFullYear()
-        targetMonth = targetDateObject.getMonth()
-
-        // If the month we’re going to doesn’t have enough days,
-        // keep decreasing the date until we reach the month’s last date.
-        while ( /*safety &&*/ new Date( targetYear, targetMonth, targetDate ).getMonth() !== targetMonth ) {
-            targetDate -= 1
-            /*safety -= 1
-            if ( !safety ) {
-                throw 'Fell into an infinite loop while navigating to ' + new Date( targetYear, targetMonth, targetDate ) + '.'
-            }*/
-        }
-
-        value = [ targetYear, targetMonth, targetDate ]
-    }
-
-    return value
-} //DatePicker.prototype.navigate
-
-
-/**
- * Normalize a date by setting the hours to midnight.
- */
-DatePicker.prototype.normalize = function( value/*, options*/ ) {
-    value.setHours( 0, 0, 0, 0 )
-    return value
-}
-
-
-/**
- * Measure the range of dates.
- */
-DatePicker.prototype.measure = function( type, value/*, options*/ ) {
-
-    var calendar = this
-
-    // If it's anything false-y, remove the limits.
-    if ( !value ) {
-        value = type == 'min' ? -Infinity : Infinity
-    }
-
-    // If it's an integer, get a date relative to today.
-    else if ( _.isInteger( value ) ) {
-        value = calendar.now( type, value, { rel: value } )
-    }
-
-    return value
-} ///DatePicker.prototype.measure
-
-
-/**
- * Create a viewset object based on navigation.
- */
-DatePicker.prototype.viewset = function( type, dateObject/*, options*/ ) {
-    return this.create([ dateObject.year, dateObject.month, 1 ])
-}
-
-
-/**
- * Validate a date as enabled and shift if needed.
- */
-DatePicker.prototype.validate = function( type, dateObject, options ) {
-
-    var calendar = this,
-
-        // Keep a reference to the original date.
-        originalDateObject = dateObject,
-
-        // Make sure we have an interval.
-        interval = options && options.interval ? options.interval : 1,
-
-        // Check if the calendar enabled dates are inverted.
-        isFlippedBase = calendar.item.enable === -1,
-
-        // Check if we have any enabled dates after/before now.
-        hasEnabledBeforeTarget, hasEnabledAfterTarget,
-
-        // The min & max limits.
-        minLimitObject = calendar.item.min,
-        maxLimitObject = calendar.item.max,
-
-        // Check if we’ve reached the limit during shifting.
-        reachedMin, reachedMax,
-
-        // Check if the calendar is inverted and at least one weekday is enabled.
-        hasEnabledWeekdays = isFlippedBase && calendar.item.disable.filter( function( value ) {
-
-            // If there’s a date, check where it is relative to the target.
-            if ( $.isArray( value ) ) {
-                var dateTime = calendar.create( value ).pick
-                if ( dateTime < dateObject.pick ) hasEnabledBeforeTarget = true
-                else if ( dateTime > dateObject.pick ) hasEnabledAfterTarget = true
-            }
-
-            // Return only integers for enabled weekdays.
-            return _.isInteger( value )
-        }).length/*,
-
-        safety = 100*/
-
-
-
-    // Cases to validate for:
-    // [1] Not inverted and date disabled.
-    // [2] Inverted and some dates enabled.
-    // [3] Not inverted and out of range.
-    //
-    // Cases to **not** validate for:
-    // • Navigating months.
-    // • Not inverted and date enabled.
-    // • Inverted and all dates disabled.
-    // • ..and anything else.
-    if ( !options || !options.nav ) if (
-        /* 1 */ ( !isFlippedBase && calendar.disabled( dateObject ) ) ||
-        /* 2 */ ( isFlippedBase && calendar.disabled( dateObject ) && ( hasEnabledWeekdays || hasEnabledBeforeTarget || hasEnabledAfterTarget ) ) ||
-        /* 3 */ ( !isFlippedBase && (dateObject.pick <= minLimitObject.pick || dateObject.pick >= maxLimitObject.pick) )
-    ) {
-
-
-        // When inverted, flip the direction if there aren’t any enabled weekdays
-        // and there are no enabled dates in the direction of the interval.
-        if ( isFlippedBase && !hasEnabledWeekdays && ( ( !hasEnabledAfterTarget && interval > 0 ) || ( !hasEnabledBeforeTarget && interval < 0 ) ) ) {
-            interval *= -1
-        }
-
-
-        // Keep looping until we reach an enabled date.
-        while ( /*safety &&*/ calendar.disabled( dateObject ) ) {
-
-            /*safety -= 1
-            if ( !safety ) {
-                throw 'Fell into an infinite loop while validating ' + dateObject.obj + '.'
-            }*/
-
-
-            // If we’ve looped into the next/prev month with a large interval, return to the original date and flatten the interval.
-            if ( Math.abs( interval ) > 1 && ( dateObject.month < originalDateObject.month || dateObject.month > originalDateObject.month ) ) {
-                dateObject = originalDateObject
-                interval = interval > 0 ? 1 : -1
-            }
-
-
-            // If we’ve reached the min/max limit, reverse the direction, flatten the interval and set it to the limit.
-            if ( dateObject.pick <= minLimitObject.pick ) {
-                reachedMin = true
-                interval = 1
-                dateObject = calendar.create([ minLimitObject.year, minLimitObject.month, minLimitObject.date - 1 ])
-            }
-            else if ( dateObject.pick >= maxLimitObject.pick ) {
-                reachedMax = true
-                interval = -1
-                dateObject = calendar.create([ maxLimitObject.year, maxLimitObject.month, maxLimitObject.date + 1 ])
-            }
-
-
-            // If we’ve reached both limits, just break out of the loop.
-            if ( reachedMin && reachedMax ) {
-                break
-            }
-
-
-            // Finally, create the shifted date using the interval and keep looping.
-            dateObject = calendar.create([ dateObject.year, dateObject.month, dateObject.date + interval ])
-        }
-
-    } //endif
-
-
-    // Return the date object settled on.
-    return dateObject
-} //DatePicker.prototype.validate
-
-
-/**
- * Check if a date is disabled.
- */
-DatePicker.prototype.disabled = function( dateToVerify ) {
-
-    var
-        calendar = this,
-
-        // Filter through the disabled dates to check if this is one.
-        isDisabledMatch = calendar.item.disable.filter( function( dateToDisable ) {
-
-            // If the date is a number, match the weekday with 0index and `firstDay` check.
-            if ( _.isInteger( dateToDisable ) ) {
-                return dateToVerify.day === ( calendar.settings.firstDay ? dateToDisable : dateToDisable - 1 ) % 7
-            }
-
-            // If it’s an array or a native JS date, create and match the exact date.
-            if ( $.isArray( dateToDisable ) || _.isDate( dateToDisable ) ) {
-                return dateToVerify.pick === calendar.create( dateToDisable ).pick
-            }
-
-            // If it’s an object, match a date within the “from” and “to” range.
-            if ( $.isPlainObject( dateToDisable ) ) {
-                return calendar.withinRange( dateToDisable, dateToVerify )
-            }
-        })
-
-    // If this date matches a disabled date, confirm it’s not inverted.
-    isDisabledMatch = isDisabledMatch.length && !isDisabledMatch.filter(function( dateToDisable ) {
-        return $.isArray( dateToDisable ) && dateToDisable[3] == 'inverted' ||
-            $.isPlainObject( dateToDisable ) && dateToDisable.inverted
-    }).length
-
-    // Check the calendar “enabled” flag and respectively flip the
-    // disabled state. Then also check if it’s beyond the min/max limits.
-    return calendar.item.enable === -1 ? !isDisabledMatch : isDisabledMatch ||
-        dateToVerify.pick < calendar.item.min.pick ||
-        dateToVerify.pick > calendar.item.max.pick
-
-} //DatePicker.prototype.disabled
-
-
-/**
- * Parse a string into a usable type.
- */
-DatePicker.prototype.parse = function( type, value, options ) {
-
-    var calendar = this,
-        parsingObject = {},
-        monthIndex
-
-    if ( !value || _.isInteger( value ) || $.isArray( value ) || _.isDate( value ) || $.isPlainObject( value ) && _.isInteger( value.pick ) ) {
-        return value
-    }
-
-    // We need a `.format` to parse the value with.
-    if ( !( options && options.format ) ) {
-        options = options || {}
-        options.format = calendar.settings.format
-    }
-
-    // Calculate the month index to adjust with.
-    monthIndex = typeof value == 'string' && !options.fromValue ? 1 : 0
-
-    // Convert the format into an array and then map through it.
-    calendar.formats.toArray( options.format ).map( function( label ) {
-
-        var
-            // Grab the formatting label.
-            formattingLabel = calendar.formats[ label ],
-
-            // The format length is from the formatting label function or the
-            // label length without the escaping exclamation (!) mark.
-            formatLength = formattingLabel ? _.trigger( formattingLabel, calendar, [ value, parsingObject ] ) : label.replace( /^!/, '' ).length
-
-        // If there's a format label, split the value up to the format length.
-        // Then add it to the parsing object with appropriate label.
-        if ( formattingLabel ) {
-            parsingObject[ label ] = value.substr( 0, formatLength )
-        }
-
-        // Update the value as the substring from format length to end.
-        value = value.substr( formatLength )
-    })
-
-    // If it’s parsing a user provided month value, compensate for month 0index.
-    return [
-        parsingObject.yyyy || parsingObject.yy,
-        +( parsingObject.mm || parsingObject.m ) - monthIndex,
-        parsingObject.dd || parsingObject.d
-    ]
-} //DatePicker.prototype.parse
-
-
-/**
- * Various formats to display the object in.
- */
-DatePicker.prototype.formats = (function() {
-
-    // Return the length of the first word in a collection.
-    function getWordLengthFromCollection( string, collection, dateObject ) {
-
-        // Grab the first word from the string.
-        var word = string.match( /\w+/ )[ 0 ]
-
-        // If there's no month index, add it to the date object
-        if ( !dateObject.mm && !dateObject.m ) {
-            dateObject.m = collection.indexOf( word )
-        }
-
-        // Return the length of the word.
-        return word.length
-    }
-
-    // Get the length of the first word in a string.
-    function getFirstWordLength( string ) {
-        return string.match( /\w+/ )[ 0 ].length
-    }
-
-    return {
-
-        d: function( string, dateObject ) {
-
-            // If there's string, then get the digits length.
-            // Otherwise return the selected date.
-            return string ? _.digits( string ) : dateObject.date
-        },
-        dd: function( string, dateObject ) {
-
-            // If there's a string, then the length is always 2.
-            // Otherwise return the selected date with a leading zero.
-            return string ? 2 : _.lead( dateObject.date )
-        },
-        ddd: function( string, dateObject ) {
-
-            // If there's a string, then get the length of the first word.
-            // Otherwise return the short selected weekday.
-            return string ? getFirstWordLength( string ) : this.settings.weekdaysShort[ dateObject.day ]
-        },
-        dddd: function( string, dateObject ) {
-
-            // If there's a string, then get the length of the first word.
-            // Otherwise return the full selected weekday.
-            return string ? getFirstWordLength( string ) : this.settings.weekdaysFull[ dateObject.day ]
-        },
-        m: function( string, dateObject ) {
-
-            // If there's a string, then get the length of the digits
-            // Otherwise return the selected month with 0index compensation.
-            return string ? _.digits( string ) : dateObject.month + 1
-        },
-        mm: function( string, dateObject ) {
-
-            // If there's a string, then the length is always 2.
-            // Otherwise return the selected month with 0index and leading zero.
-            return string ? 2 : _.lead( dateObject.month + 1 )
-        },
-        mmm: function( string, dateObject ) {
-
-            var collection = this.settings.monthsShort
-
-            // If there's a string, get length of the relevant month from the short
-            // months collection. Otherwise return the selected month from that collection.
-            return string ? getWordLengthFromCollection( string, collection, dateObject ) : collection[ dateObject.month ]
-        },
-        mmmm: function( string, dateObject ) {
-
-            var collection = this.settings.monthsFull
-
-            // If there's a string, get length of the relevant month from the full
-            // months collection. Otherwise return the selected month from that collection.
-            return string ? getWordLengthFromCollection( string, collection, dateObject ) : collection[ dateObject.month ]
-        },
-        yy: function( string, dateObject ) {
-
-            // If there's a string, then the length is always 2.
-            // Otherwise return the selected year by slicing out the first 2 digits.
-            return string ? 2 : ( '' + dateObject.year ).slice( 2 )
-        },
-        yyyy: function( string, dateObject ) {
-
-            // If there's a string, then the length is always 4.
-            // Otherwise return the selected year.
-            return string ? 4 : dateObject.year
-        },
-
-        // Create an array by splitting the formatting string passed.
-        toArray: function( formatString ) { return formatString.split( /(d{1,4}|m{1,4}|y{4}|yy|!.)/g ) },
-
-        // Format an object into a string using the formatting options.
-        toString: function ( formatString, itemObject ) {
-            var calendar = this
-            return calendar.formats.toArray( formatString ).map( function( label ) {
-                return _.trigger( calendar.formats[ label ], calendar, [ 0, itemObject ] ) || label.replace( /^!/, '' )
-            }).join( '' )
-        }
-    }
-})() //DatePicker.prototype.formats
-
-
-
-
-/**
- * Check if two date units are the exact.
- */
-DatePicker.prototype.isDateExact = function( one, two ) {
-
-    var calendar = this
-
-    // When we’re working with weekdays, do a direct comparison.
-    if (
-        ( _.isInteger( one ) && _.isInteger( two ) ) ||
-        ( typeof one == 'boolean' && typeof two == 'boolean' )
-     ) {
-        return one === two
-    }
-
-    // When we’re working with date representations, compare the “pick” value.
-    if (
-        ( _.isDate( one ) || $.isArray( one ) ) &&
-        ( _.isDate( two ) || $.isArray( two ) )
-    ) {
-        return calendar.create( one ).pick === calendar.create( two ).pick
-    }
-
-    // When we’re working with range objects, compare the “from” and “to”.
-    if ( $.isPlainObject( one ) && $.isPlainObject( two ) ) {
-        return calendar.isDateExact( one.from, two.from ) && calendar.isDateExact( one.to, two.to )
-    }
-
-    return false
-}
-
-
-/**
- * Check if two date units overlap.
- */
-DatePicker.prototype.isDateOverlap = function( one, two ) {
-
-    var calendar = this
-
-    // When we’re working with a weekday index, compare the days.
-    if ( _.isInteger( one ) && ( _.isDate( two ) || $.isArray( two ) ) ) {
-        return one === calendar.create( two ).day + 1
-    }
-    if ( _.isInteger( two ) && ( _.isDate( one ) || $.isArray( one ) ) ) {
-        return two === calendar.create( one ).day + 1
-    }
-
-    // When we’re working with range objects, check if the ranges overlap.
-    if ( $.isPlainObject( one ) && $.isPlainObject( two ) ) {
-        return calendar.overlapRanges( one, two )
-    }
-
-    return false
-}
-
-
-/**
- * Flip the “enabled” state.
- */
-DatePicker.prototype.flipEnable = function(val) {
-    var itemObject = this.item
-    itemObject.enable = val || (itemObject.enable == -1 ? 1 : -1)
-}
-
-
-/**
- * Mark a collection of dates as “disabled”.
- */
-DatePicker.prototype.deactivate = function( type, datesToDisable ) {
-
-    var calendar = this,
-        disabledItems = calendar.item.disable.slice(0)
-
-
-    // If we’re flipping, that’s all we need to do.
-    if ( datesToDisable == 'flip' ) {
-        calendar.flipEnable()
-    }
-
-    else if ( datesToDisable === false ) {
-        calendar.flipEnable(1)
-        disabledItems = []
-    }
-
-    else if ( datesToDisable === true ) {
-        calendar.flipEnable(-1)
-        disabledItems = []
-    }
-
-    // Otherwise go through the dates to disable.
-    else {
-
-        datesToDisable.map(function( unitToDisable ) {
-
-            var matchFound
-
-            // When we have disabled items, check for matches.
-            // If something is matched, immediately break out.
-            for ( var index = 0; index < disabledItems.length; index += 1 ) {
-                if ( calendar.isDateExact( unitToDisable, disabledItems[index] ) ) {
-                    matchFound = true
-                    break
-                }
-            }
-
-            // If nothing was found, add the validated unit to the collection.
-            if ( !matchFound ) {
-                if (
-                    _.isInteger( unitToDisable ) ||
-                    _.isDate( unitToDisable ) ||
-                    $.isArray( unitToDisable ) ||
-                    ( $.isPlainObject( unitToDisable ) && unitToDisable.from && unitToDisable.to )
-                ) {
-                    disabledItems.push( unitToDisable )
-                }
-            }
-        })
-    }
-
-    // Return the updated collection.
-    return disabledItems
-} //DatePicker.prototype.deactivate
-
-
-/**
- * Mark a collection of dates as “enabled”.
- */
-DatePicker.prototype.activate = function( type, datesToEnable ) {
-
-    var calendar = this,
-        disabledItems = calendar.item.disable,
-        disabledItemsCount = disabledItems.length
-
-    // If we’re flipping, that’s all we need to do.
-    if ( datesToEnable == 'flip' ) {
-        calendar.flipEnable()
-    }
-
-    else if ( datesToEnable === true ) {
-        calendar.flipEnable(1)
-        disabledItems = []
-    }
-
-    else if ( datesToEnable === false ) {
-        calendar.flipEnable(-1)
-        disabledItems = []
-    }
-
-    // Otherwise go through the disabled dates.
-    else {
-
-        datesToEnable.map(function( unitToEnable ) {
-
-            var matchFound,
-                disabledUnit,
-                index,
-                isExactRange
-
-            // Go through the disabled items and try to find a match.
-            for ( index = 0; index < disabledItemsCount; index += 1 ) {
-
-                disabledUnit = disabledItems[index]
-
-                // When an exact match is found, remove it from the collection.
-                if ( calendar.isDateExact( disabledUnit, unitToEnable ) ) {
-                    matchFound = disabledItems[index] = null
-                    isExactRange = true
-                    break
-                }
-
-                // When an overlapped match is found, add the “inverted” state to it.
-                else if ( calendar.isDateOverlap( disabledUnit, unitToEnable ) ) {
-                    if ( $.isPlainObject( unitToEnable ) ) {
-                        unitToEnable.inverted = true
-                        matchFound = unitToEnable
-                    }
-                    else if ( $.isArray( unitToEnable ) ) {
-                        matchFound = unitToEnable
-                        if ( !matchFound[3] ) matchFound.push( 'inverted' )
-                    }
-                    else if ( _.isDate( unitToEnable ) ) {
-                        matchFound = [ unitToEnable.getFullYear(), unitToEnable.getMonth(), unitToEnable.getDate(), 'inverted' ]
-                    }
-                    break
-                }
-            }
-
-            // If a match was found, remove a previous duplicate entry.
-            if ( matchFound ) for ( index = 0; index < disabledItemsCount; index += 1 ) {
-                if ( calendar.isDateExact( disabledItems[index], unitToEnable ) ) {
-                    disabledItems[index] = null
-                    break
-                }
-            }
-
-            // In the event that we’re dealing with an exact range of dates,
-            // make sure there are no “inverted” dates because of it.
-            if ( isExactRange ) for ( index = 0; index < disabledItemsCount; index += 1 ) {
-                if ( calendar.isDateOverlap( disabledItems[index], unitToEnable ) ) {
-                    disabledItems[index] = null
-                    break
-                }
-            }
-
-            // If something is still matched, add it into the collection.
-            if ( matchFound ) {
-                disabledItems.push( matchFound )
-            }
-        })
-    }
-
-    // Return the updated collection.
-    return disabledItems.filter(function( val ) { return val != null })
-} //DatePicker.prototype.activate
-
-
-/**
- * Create a string for the nodes in the picker.
- */
-DatePicker.prototype.nodes = function( isOpen ) {
-
-    var
-        calendar = this,
-        settings = calendar.settings,
-        calendarItem = calendar.item,
-        nowObject = calendarItem.now,
-        selectedObject = calendarItem.select,
-        highlightedObject = calendarItem.highlight,
-        viewsetObject = calendarItem.view,
-        disabledCollection = calendarItem.disable,
-        minLimitObject = calendarItem.min,
-        maxLimitObject = calendarItem.max,
-
-
-        // Create the calendar table head using a copy of weekday labels collection.
-        // * We do a copy so we don't mutate the original array.
-        tableHead = (function( collection ) {
-
-            // If the first day should be Monday, move Sunday to the end.
-            if ( settings.firstDay ) {
-                collection.push( collection.shift() )
-            }
-
-            // Create and return the table head group.
-            return _.node(
-                'thead',
-                _.node(
-                    'tr',
-                    _.group({
-                        min: 0,
-                        max: DAYS_IN_WEEK - 1,
-                        i: 1,
-                        node: 'th',
-                        item: function( counter ) {
-                            return [
-                                collection[ counter ],
-                                settings.klass.weekdays
-                            ]
-                        }
-                    })
-                )
-            ) //endreturn
-        })( ( settings.showWeekdaysFull ? settings.weekdaysFull : settings.weekdaysShort ).slice( 0 ) ), //tableHead
-
-
-        // Create the nav for next/prev month.
-        createMonthNav = function( next ) {
-
-            // Otherwise, return the created month tag.
-            return _.node(
-                'div',
-                ' ',
-                settings.klass[ 'nav' + ( next ? 'Next' : 'Prev' ) ] + (
-
-                    // If the focused month is outside the range, disabled the button.
-                    ( next && viewsetObject.year >= maxLimitObject.year && viewsetObject.month >= maxLimitObject.month ) ||
-                    ( !next && viewsetObject.year <= minLimitObject.year && viewsetObject.month <= minLimitObject.month ) ?
-                    ' ' + settings.klass.navDisabled : ''
-                ),
-                'data-nav=' + ( next || -1 )
-            ) //endreturn
-        }, //createMonthNav
-
-
-        // Create the month label.
-        createMonthLabel = function( monthsCollection ) {
-
-            // If there are months to select, add a dropdown menu.
-            if ( settings.selectMonths ) {
-
-                return _.node( 'select', _.group({
-                    min: 0,
-                    max: 11,
-                    i: 1,
-                    node: 'option',
-                    item: function( loopedMonth ) {
-
-                        return [
-
-                            // The looped month and no classes.
-                            monthsCollection[ loopedMonth ], 0,
-
-                            // Set the value and selected index.
-                            'value=' + loopedMonth +
-                            ( viewsetObject.month == loopedMonth ? ' selected' : '' ) +
-                            (
-                                (
-                                    ( viewsetObject.year == minLimitObject.year && loopedMonth < minLimitObject.month ) ||
-                                    ( viewsetObject.year == maxLimitObject.year && loopedMonth > maxLimitObject.month )
-                                ) ?
-                                ' disabled' : ''
-                            )
-                        ]
-                    }
-                }), settings.klass.selectMonth, isOpen ? '' : 'disabled' )
-            }
-
-            // If there's a need for a month selector
-            return _.node( 'div', monthsCollection[ viewsetObject.month ], settings.klass.month )
-        }, //createMonthLabel
-
-
-        // Create the year label.
-        createYearLabel = function() {
-
-            var focusedYear = viewsetObject.year,
-
-            // If years selector is set to a literal "true", set it to 5. Otherwise
-            // divide in half to get half before and half after focused year.
-            numberYears = settings.selectYears === true ? 5 : ~~( settings.selectYears / 2 )
-
-            // If there are years to select, add a dropdown menu.
-            if ( numberYears ) {
-
-                var
-                    minYear = minLimitObject.year,
-                    maxYear = maxLimitObject.year,
-                    lowestYear = focusedYear - numberYears,
-                    highestYear = focusedYear + numberYears
-
-                // If the min year is greater than the lowest year, increase the highest year
-                // by the difference and set the lowest year to the min year.
-                if ( minYear > lowestYear ) {
-                    highestYear += minYear - lowestYear
-                    lowestYear = minYear
-                }
-
-                // If the max year is less than the highest year, decrease the lowest year
-                // by the lower of the two: available and needed years. Then set the
-                // highest year to the max year.
-                if ( maxYear < highestYear ) {
-
-                    var availableYears = lowestYear - minYear,
-                        neededYears = highestYear - maxYear
-
-                    lowestYear -= availableYears > neededYears ? neededYears : availableYears
-                    highestYear = maxYear
-                }
-
-                return _.node( 'select', _.group({
-                    min: lowestYear,
-                    max: highestYear,
-                    i: 1,
-                    node: 'option',
-                    item: function( loopedYear ) {
-                        return [
-
-                            // The looped year and no classes.
-                            loopedYear, 0,
-
-                            // Set the value and selected index.
-                            'value=' + loopedYear + ( focusedYear == loopedYear ? ' selected' : '' )
-                        ]
-                    }
-                }), settings.klass.selectYear, isOpen ? '' : 'disabled' )
-            }
-
-            // Otherwise just return the year focused
-            return _.node( 'div', focusedYear, settings.klass.year )
-        } //createYearLabel
-
-
-    // Create and return the entire calendar.
-    return _.node(
-        'div',
-        createMonthNav() + createMonthNav( 1 ) +
-        createMonthLabel( settings.showMonthsShort ? settings.monthsShort : settings.monthsFull ) +
-        createYearLabel(),
-        settings.klass.header
-    ) + _.node(
-        'table',
-        tableHead +
-        _.node(
-            'tbody',
-            _.group({
-                min: 0,
-                max: WEEKS_IN_CALENDAR - 1,
-                i: 1,
-                node: 'tr',
-                item: function( rowCounter ) {
-
-                    // If Monday is the first day and the month starts on Sunday, shift the date back a week.
-                    var shiftDateBy = settings.firstDay && calendar.create([ viewsetObject.year, viewsetObject.month, 1 ]).day === 0 ? -7 : 0
-
-                    return [
-                        _.group({
-                            min: DAYS_IN_WEEK * rowCounter - viewsetObject.day + shiftDateBy + 1, // Add 1 for weekday 0index
-                            max: function() {
-                                return this.min + DAYS_IN_WEEK - 1
-                            },
-                            i: 1,
-                            node: 'td',
-                            item: function( targetDate ) {
-
-                                // Convert the time date from a relative date to a target date.
-                                targetDate = calendar.create([ viewsetObject.year, viewsetObject.month, targetDate + ( settings.firstDay ? 1 : 0 ) ])
-
-                                var isSelected = selectedObject && selectedObject.pick == targetDate.pick,
-                                    isHighlighted = highlightedObject && highlightedObject.pick == targetDate.pick,
-                                    isDisabled = disabledCollection && calendar.disabled( targetDate ) || targetDate.pick < minLimitObject.pick || targetDate.pick > maxLimitObject.pick
-
-                                return [
-                                    _.node(
-                                        'div',
-                                        targetDate.date,
-                                        (function( klasses ) {
-
-                                            // Add the `infocus` or `outfocus` classes based on month in view.
-                                            klasses.push( viewsetObject.month == targetDate.month ? settings.klass.infocus : settings.klass.outfocus )
-
-                                            // Add the `today` class if needed.
-                                            if ( nowObject.pick == targetDate.pick ) {
-                                                klasses.push( settings.klass.now )
-                                            }
-
-                                            // Add the `selected` class if something's selected and the time matches.
-                                            if ( isSelected ) {
-                                                klasses.push( settings.klass.selected )
-                                            }
-
-                                            // Add the `highlighted` class if something's highlighted and the time matches.
-                                            if ( isHighlighted ) {
-                                                klasses.push( settings.klass.highlighted )
-                                            }
-
-                                            // Add the `disabled` class if something's disabled and the object matches.
-                                            if ( isDisabled ) {
-                                                klasses.push( settings.klass.disabled )
-                                            }
-
-                                            return klasses.join( ' ' )
-                                        })([ settings.klass.day ]),
-                                        'data-pick=' + targetDate.pick + ' ' + _.ariaAttr({
-                                            role: 'button',
-                                            controls: calendar.$node[0].id,
-                                            checked: isSelected && calendar.$node.val() === _.trigger(
-                                                    calendar.formats.toString,
-                                                    calendar,
-                                                    [ settings.format, targetDate ]
-                                                ) ? true : null,
-                                            activedescendant: isHighlighted ? true : null,
-                                            disabled: isDisabled ? true : null
-                                        })
-                                    )
-                                ] //endreturn
-                            }
-                        })
-                    ] //endreturn
-                }
-            })
-        ),
-        settings.klass.table
-    ) +
-
-    // * For Firefox forms to submit, make sure to set the buttons’ `type` attributes as “button”.
-    _.node(
-        'div',
-        _.node( 'button', settings.today, settings.klass.buttonToday, 'type=button data-pick=' + nowObject.pick + ( isOpen ? '' : ' disabled' ) ) +
-        _.node( 'button', settings.clear, settings.klass.buttonClear, 'type=button data-clear=1' + ( isOpen ? '' : ' disabled' ) ),
-        settings.klass.footer
-    ) //endreturn
-} //DatePicker.prototype.nodes
-
-
-
-
-/**
- * The date picker defaults.
- */
-DatePicker.defaults = (function( prefix ) {
-
-    return {
-
-        // Months and weekdays
-        monthsFull: [ 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ],
-        monthsShort: [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ],
-        weekdaysFull: [ 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday' ],
-        weekdaysShort: [ 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' ],
-
-        // Today and clear
-        today: 'Today',
-        clear: 'Clear',
-
-        // The format to show on the `input` element
-        format: 'd mmmm, yyyy',
-
-        // Classes
-        klass: {
-
-            table: prefix + 'table',
-
-            header: prefix + 'header',
-
-            navPrev: prefix + 'nav--prev',
-            navNext: prefix + 'nav--next',
-            navDisabled: prefix + 'nav--disabled',
-
-            month: prefix + 'month',
-            year: prefix + 'year',
-
-            selectMonth: prefix + 'select--month',
-            selectYear: prefix + 'select--year',
-
-            weekdays: prefix + 'weekday',
-
-            day: prefix + 'day',
-            disabled: prefix + 'day--disabled',
-            selected: prefix + 'day--selected',
-            highlighted: prefix + 'day--highlighted',
-            now: prefix + 'day--today',
-            infocus: prefix + 'day--infocus',
-            outfocus: prefix + 'day--outfocus',
-
-            footer: prefix + 'footer',
-
-            buttonClear: prefix + 'button--clear',
-            buttonToday: prefix + 'button--today'
-        }
-    }
-})( Picker.klasses().picker + '__' )
-
-
-
-
-
-/**
- * Extend the picker to add the date picker.
- */
-Picker.extend( 'pickadate', DatePicker )
-
-
-}));
-
-
-
-
-
-/*!
  * Time picker for pickadate.js v3.4.0
  * http://amsul.github.io/pickadate.js/time.htm
  */
@@ -17248,7 +16179,7 @@ TimePicker.prototype.overlapRanges = function( one, two ) {
     one = clock.createRange( one.from, one.to )
     two = clock.createRange( two.from, two.to )
 
-    return clock.withinRange( one, two.from ) || clock.withinRange( one, two.to ) ||
+    return clock.withinRange( one, two.from ) || clock.withinRange( one, two.to ) ||
         clock.withinRange( two, one.from ) || clock.withinRange( two, one.to )
 }
 
@@ -18069,6 +17000,1458 @@ define('translate',[
   i18n.loadCatalog('widgets');
   return i18n.MessageFactory('widgets');
 });
+
+/* Formunloadalert pattern.
+ *
+ * Options:
+ *    changingEvents(string): Events on which to check for changes (space-separated). ('change keyup paste')
+ *    changingFields(string): Fields on which to check for changes (comma-separated). ('input,select,textarea,fileupload')
+ *    message(string): Confirmation message to display when dirty form is being unloaded. (Discard changes? If you click OK, any changes you have made will be lost.)
+ *
+ * Documentation:
+ *    # Example
+ *
+ *    {{ example-1 }}
+ *
+ * Example: example-1
+ *    <form class="pat-formunloadalert" onsubmit="javascript:return false;">
+ *      <input type="text" value="" />
+ *      <select>
+ *        <option value="1">value 1</option>
+ *        <option value="2">value 2</option>
+ *      </select>
+ *      <input
+ *        class="btn btn-large btn-primary"
+ *        type="submit" value="Submit" />
+ *      <br />
+ *      <a href="/">Click here to go somewhere else</a>
+ *    </form>
+ *
+ */
+
+
+define('mockup-patterns-formunloadalert',[
+  'jquery',
+  'mockup-patterns-base',
+  'translate'
+], function ($, Base, _t) {
+  
+
+  var FormUnloadAlert = Base.extend({
+    name: 'formunloadalert',
+    trigger: '.pat-formunloadalert',
+    _changed : false,       // Stores a listing of raised changes by their key
+    _suppressed : false,     // whether or not warning should be suppressed
+    defaults: {
+      message :  _t('Discard changes? If you click OK, ' +
+                 'any changes you have made will be lost.'),
+      // events on which to check for changes
+      changingEvents: 'change keyup paste',
+      // fields on which to check for changes
+      changingFields: 'input,select,textarea,fileupload'
+    },
+    init: function () {
+      var self = this;
+      // if this is not a form just return
+      if (!self.$el.is('form')) { return; }
+
+      $(self.options.changingFields, self.$el).on(
+        self.options.changingEvents,
+        function (evt) {
+          self._changed = true;
+        }
+      );
+
+      var $modal = self.$el.parents('.plone-modal');
+      if ($modal.size() !== 0) {
+        $modal.data('pattern-modal').on('hide', function(e) {
+          var modal = $modal.data('pattern-modal');
+          if (modal) {
+            modal._suppressHide = self._handleUnload.apply(self, e);
+          }
+        });
+      } else {
+        $(window).on('beforeunload', function(e) {
+          return self._handleUnload(e);
+        });
+      }
+
+      self.$el.on('submit', function(e) {
+        self._suppressed = true;
+      });
+
+    },
+    _handleUnload : function (e) {
+      var self = this;
+      if (self._suppressed) {
+        self._suppressed = false;
+        return undefined;
+      }
+      if (self._changed) {
+        var msg = self.options.message;
+        self._handleMsg(e,msg);
+        $(window).trigger('messageset');
+        return msg;
+      }
+    },
+    _handleMsg:  function(e,msg) {
+      (e || window.event).returnValue = msg;
+    }
+  });
+  return FormUnloadAlert;
+
+});
+
+/* PreventDoubleSubmit pattern.
+ *
+ * Options:
+ *    guardClassName(string): Class applied to submit button after it is clicked once. ('submitting')
+ *    optOutClassName(string): Class used to opt-out a submit button from double-submit prevention. ('allowMultiSubmit')
+ *    message(string): Message to be displayed when "opt-out" submit button is clicked a second time. ('You already clicked the submit button. Do you really want to submit this form again?')
+ *
+ * Documentation:
+ *    # Example
+ *
+ *    {{ example-1 }}
+ *
+ * Example: example-1
+ *    <form class="pat-preventdoublesubmit" onsubmit="javascript:return false;">
+ *      <input type="text" value="submit this value please!" />
+ *      <input class="btn btn-large btn-primary" type="submit" value="Single submit" />
+ *      <input class="btn btn-large btn-primary allowMultiSubmit" type="submit" value="Multi submit" />
+ *    </form>
+ *
+ */
+
+
+define('mockup-patterns-preventdoublesubmit',[
+  'jquery',
+  'mockup-patterns-base',
+  'translate'
+], function($, Base, _t) {
+  
+
+  var PreventDoubleSubmit = Base.extend({
+    name: 'preventdoublesubmit',
+    trigger: '.pat-preventdoublesubmit',
+    defaults: {
+      message : _t('You already clicked the submit button. ' +
+                'Do you really want to submit this form again?'),
+      guardClassName: 'submitting',
+      optOutClassName: 'allowMultiSubmit'
+    },
+    init: function() {
+      var self = this;
+
+      // if this is not a form just return
+      if (!self.$el.is('form')) {
+        return;
+      }
+
+      $(':submit', self.$el).click(function(e) {
+
+        // mark the button as clicked
+        $(':submit').removeAttr('clicked');
+        $(this).attr('clicked', 'clicked');
+
+        // if submitting and no opt-out guardClassName is found
+        // pop up confirmation dialog
+        if ($(this).hasClass(self.options.guardClassName) &&
+              !$(this).hasClass(self.options.optOutClassName)) {
+          return self._confirm.call(self);
+        }
+
+        $(this).addClass(self.options.guardClassName);
+      });
+
+    },
+
+    _confirm: function(e) {
+      return window.confirm(this.options.message);
+    }
+
+  });
+
+  return PreventDoubleSubmit;
+
+});
+
+
+/*!
+ * Date picker for pickadate.js v3.4.0
+ * http://amsul.github.io/pickadate.js/date.htm
+ */
+
+(function ( factory ) {
+
+    // Register as an anonymous module.
+    if ( typeof define == 'function' && define.amd )
+        define( 'picker.date',['picker','jquery'], factory )
+
+    // Or using browser globals.
+    else factory( Picker, jQuery )
+
+}(function( Picker, $ ) {
+
+
+/**
+ * Globals and constants
+ */
+var DAYS_IN_WEEK = 7,
+    WEEKS_IN_CALENDAR = 6,
+    _ = Picker._
+
+
+
+/**
+ * The date picker constructor
+ */
+function DatePicker( picker, settings ) {
+
+    var calendar = this,
+        elementValue = picker.$node[ 0 ].value,
+        elementDataValue = picker.$node.data( 'value' ),
+        valueString = elementDataValue || elementValue,
+        formatString = elementDataValue ? settings.formatSubmit : settings.format,
+        isRTL = function() {
+            return getComputedStyle( picker.$root[0] ).direction === 'rtl'
+        }
+
+    calendar.settings = settings
+    calendar.$node = picker.$node
+
+    // The queue of methods that will be used to build item objects.
+    calendar.queue = {
+        min: 'measure create',
+        max: 'measure create',
+        now: 'now create',
+        select: 'parse create validate',
+        highlight: 'parse navigate create validate',
+        view: 'parse create validate viewset',
+        disable: 'deactivate',
+        enable: 'activate'
+    }
+
+    // The component's item object.
+    calendar.item = {}
+
+    calendar.item.disable = ( settings.disable || [] ).slice( 0 )
+    calendar.item.enable = -(function( collectionDisabled ) {
+        return collectionDisabled[ 0 ] === true ? collectionDisabled.shift() : -1
+    })( calendar.item.disable )
+
+    calendar.
+        set( 'min', settings.min ).
+        set( 'max', settings.max ).
+        set( 'now' )
+
+    // When there’s a value, set the `select`, which in turn
+    // also sets the `highlight` and `view`.
+    if ( valueString ) {
+        calendar.set( 'select', valueString, {
+            format: formatString,
+            fromValue: !!elementValue
+        })
+    }
+
+    // If there’s no value, default to highlighting “today”.
+    else {
+        calendar.
+            set( 'select', null ).
+            set( 'highlight', calendar.item.now )
+    }
+
+
+    // The keycode to movement mapping.
+    calendar.key = {
+        40: 7, // Down
+        38: -7, // Up
+        39: function() { return isRTL() ? -1 : 1 }, // Right
+        37: function() { return isRTL() ? 1 : -1 }, // Left
+        go: function( timeChange ) {
+            var highlightedObject = calendar.item.highlight,
+                targetDate = new Date( highlightedObject.year, highlightedObject.month, highlightedObject.date + timeChange )
+            calendar.set(
+                'highlight',
+                [ targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate() ],
+                { interval: timeChange }
+            )
+            this.render()
+        }
+    }
+
+
+    // Bind some picker events.
+    picker.
+        on( 'render', function() {
+            picker.$root.find( '.' + settings.klass.selectMonth ).on( 'change', function() {
+                var value = this.value
+                if ( value ) {
+                    picker.set( 'highlight', [ picker.get( 'view' ).year, value, picker.get( 'highlight' ).date ] )
+                    picker.$root.find( '.' + settings.klass.selectMonth ).trigger( 'focus' )
+                }
+            })
+            picker.$root.find( '.' + settings.klass.selectYear ).on( 'change', function() {
+                var value = this.value
+                if ( value ) {
+                    picker.set( 'highlight', [ value, picker.get( 'view' ).month, picker.get( 'highlight' ).date ] )
+                    picker.$root.find( '.' + settings.klass.selectYear ).trigger( 'focus' )
+                }
+            })
+        }).
+        on( 'open', function() {
+            picker.$root.find( 'button, select' ).attr( 'disabled', false )
+        }).
+        on( 'close', function() {
+            picker.$root.find( 'button, select' ).attr( 'disabled', true )
+        })
+
+} //DatePicker
+
+
+/**
+ * Set a datepicker item object.
+ */
+DatePicker.prototype.set = function( type, value, options ) {
+
+    var calendar = this,
+        calendarItem = calendar.item
+
+    // If the value is `null` just set it immediately.
+    if ( value === null ) {
+        calendarItem[ type ] = value
+        return calendar
+    }
+
+    // Otherwise go through the queue of methods, and invoke the functions.
+    // Update this as the time unit, and set the final value as this item.
+    // * In the case of `enable`, keep the queue but set `disable` instead.
+    //   And in the case of `flip`, keep the queue but set `enable` instead.
+    calendarItem[ ( type == 'enable' ? 'disable' : type == 'flip' ? 'enable' : type ) ] = calendar.queue[ type ].split( ' ' ).map( function( method ) {
+        value = calendar[ method ]( type, value, options )
+        return value
+    }).pop()
+
+    // Check if we need to cascade through more updates.
+    if ( type == 'select' ) {
+        calendar.set( 'highlight', calendarItem.select, options )
+    }
+    else if ( type == 'highlight' ) {
+        calendar.set( 'view', calendarItem.highlight, options )
+    }
+    else if ( type.match( /^(flip|min|max|disable|enable)$/ ) ) {
+        if ( calendarItem.select && calendar.disabled( calendarItem.select ) ) {
+            calendar.set( 'select', calendarItem.select, options )
+        }
+        if ( calendarItem.highlight && calendar.disabled( calendarItem.highlight ) ) {
+            calendar.set( 'highlight', calendarItem.highlight, options )
+        }
+    }
+
+    return calendar
+} //DatePicker.prototype.set
+
+
+/**
+ * Get a datepicker item object.
+ */
+DatePicker.prototype.get = function( type ) {
+    return this.item[ type ]
+} //DatePicker.prototype.get
+
+
+/**
+ * Create a picker date object.
+ */
+DatePicker.prototype.create = function( type, value, options ) {
+
+    var isInfiniteValue,
+        calendar = this
+
+    // If there’s no value, use the type as the value.
+    value = value === undefined ? type : value
+
+
+    // If it’s infinity, update the value.
+    if ( value == -Infinity || value == Infinity ) {
+        isInfiniteValue = value
+    }
+
+    // If it’s an object, use the native date object.
+    else if ( $.isPlainObject( value ) && _.isInteger( value.pick ) ) {
+        value = value.obj
+    }
+
+    // If it’s an array, convert it into a date and make sure
+    // that it’s a valid date – otherwise default to today.
+    else if ( $.isArray( value ) ) {
+        value = new Date( value[ 0 ], value[ 1 ], value[ 2 ] )
+        value = _.isDate( value ) ? value : calendar.create().obj
+    }
+
+    // If it’s a number or date object, make a normalized date.
+    else if ( _.isInteger( value ) || _.isDate( value ) ) {
+        value = calendar.normalize( new Date( value ), options )
+    }
+
+    // If it’s a literal true or any other case, set it to now.
+    else /*if ( value === true )*/ {
+        value = calendar.now( type, value, options )
+    }
+
+    // Return the compiled object.
+    return {
+        year: isInfiniteValue || value.getFullYear(),
+        month: isInfiniteValue || value.getMonth(),
+        date: isInfiniteValue || value.getDate(),
+        day: isInfiniteValue || value.getDay(),
+        obj: isInfiniteValue || value,
+        pick: isInfiniteValue || value.getTime()
+    }
+} //DatePicker.prototype.create
+
+
+/**
+ * Create a range limit object using an array, date object,
+ * literal “true”, or integer relative to another time.
+ */
+DatePicker.prototype.createRange = function( from, to ) {
+
+    var calendar = this,
+        createDate = function( date ) {
+            if ( date === true || $.isArray( date ) || _.isDate( date ) ) {
+                return calendar.create( date )
+            }
+            return date
+        }
+
+    // Create objects if possible.
+    if ( !_.isInteger( from ) ) {
+        from = createDate( from )
+    }
+    if ( !_.isInteger( to ) ) {
+        to = createDate( to )
+    }
+
+    // Create relative dates.
+    if ( _.isInteger( from ) && $.isPlainObject( to ) ) {
+        from = [ to.year, to.month, to.date + from ];
+    }
+    else if ( _.isInteger( to ) && $.isPlainObject( from ) ) {
+        to = [ from.year, from.month, from.date + to ];
+    }
+
+    return {
+        from: createDate( from ),
+        to: createDate( to )
+    }
+} //DatePicker.prototype.createRange
+
+
+/**
+ * Check if a date unit falls within a date range object.
+ */
+DatePicker.prototype.withinRange = function( range, dateUnit ) {
+    range = this.createRange(range.from, range.to)
+    return dateUnit.pick >= range.from.pick && dateUnit.pick <= range.to.pick
+}
+
+
+/**
+ * Check if two date range objects overlap.
+ */
+DatePicker.prototype.overlapRanges = function( one, two ) {
+
+    var calendar = this
+
+    // Convert the ranges into comparable dates.
+    one = calendar.createRange( one.from, one.to )
+    two = calendar.createRange( two.from, two.to )
+
+    return calendar.withinRange( one, two.from ) || calendar.withinRange( one, two.to ) ||
+        calendar.withinRange( two, one.from ) || calendar.withinRange( two, one.to )
+}
+
+
+/**
+ * Get the date today.
+ */
+DatePicker.prototype.now = function( type, value, options ) {
+    value = new Date()
+    if ( options && options.rel ) {
+        value.setDate( value.getDate() + options.rel )
+    }
+    return this.normalize( value, options )
+}
+
+
+/**
+ * Navigate to next/prev month.
+ */
+DatePicker.prototype.navigate = function( type, value, options ) {
+
+    var targetDateObject,
+        targetYear,
+        targetMonth,
+        targetDate,
+        isTargetArray = $.isArray( value ),
+        isTargetObject = $.isPlainObject( value ),
+        viewsetObject = this.item.view/*,
+        safety = 100*/
+
+
+    if ( isTargetArray || isTargetObject ) {
+
+        if ( isTargetObject ) {
+            targetYear = value.year
+            targetMonth = value.month
+            targetDate = value.date
+        }
+        else {
+            targetYear = +value[0]
+            targetMonth = +value[1]
+            targetDate = +value[2]
+        }
+
+        // If we’re navigating months but the view is in a different
+        // month, navigate to the view’s year and month.
+        if ( options && options.nav && viewsetObject && viewsetObject.month !== targetMonth ) {
+            targetYear = viewsetObject.year
+            targetMonth = viewsetObject.month
+        }
+
+        // Figure out the expected target year and month.
+        targetDateObject = new Date( targetYear, targetMonth + ( options && options.nav ? options.nav : 0 ), 1 )
+        targetYear = targetDateObject.getFullYear()
+        targetMonth = targetDateObject.getMonth()
+
+        // If the month we’re going to doesn’t have enough days,
+        // keep decreasing the date until we reach the month’s last date.
+        while ( /*safety &&*/ new Date( targetYear, targetMonth, targetDate ).getMonth() !== targetMonth ) {
+            targetDate -= 1
+            /*safety -= 1
+            if ( !safety ) {
+                throw 'Fell into an infinite loop while navigating to ' + new Date( targetYear, targetMonth, targetDate ) + '.'
+            }*/
+        }
+
+        value = [ targetYear, targetMonth, targetDate ]
+    }
+
+    return value
+} //DatePicker.prototype.navigate
+
+
+/**
+ * Normalize a date by setting the hours to midnight.
+ */
+DatePicker.prototype.normalize = function( value/*, options*/ ) {
+    value.setHours( 0, 0, 0, 0 )
+    return value
+}
+
+
+/**
+ * Measure the range of dates.
+ */
+DatePicker.prototype.measure = function( type, value/*, options*/ ) {
+
+    var calendar = this
+
+    // If it's anything false-y, remove the limits.
+    if ( !value ) {
+        value = type == 'min' ? -Infinity : Infinity
+    }
+
+    // If it's an integer, get a date relative to today.
+    else if ( _.isInteger( value ) ) {
+        value = calendar.now( type, value, { rel: value } )
+    }
+
+    return value
+} ///DatePicker.prototype.measure
+
+
+/**
+ * Create a viewset object based on navigation.
+ */
+DatePicker.prototype.viewset = function( type, dateObject/*, options*/ ) {
+    return this.create([ dateObject.year, dateObject.month, 1 ])
+}
+
+
+/**
+ * Validate a date as enabled and shift if needed.
+ */
+DatePicker.prototype.validate = function( type, dateObject, options ) {
+
+    var calendar = this,
+
+        // Keep a reference to the original date.
+        originalDateObject = dateObject,
+
+        // Make sure we have an interval.
+        interval = options && options.interval ? options.interval : 1,
+
+        // Check if the calendar enabled dates are inverted.
+        isFlippedBase = calendar.item.enable === -1,
+
+        // Check if we have any enabled dates after/before now.
+        hasEnabledBeforeTarget, hasEnabledAfterTarget,
+
+        // The min & max limits.
+        minLimitObject = calendar.item.min,
+        maxLimitObject = calendar.item.max,
+
+        // Check if we’ve reached the limit during shifting.
+        reachedMin, reachedMax,
+
+        // Check if the calendar is inverted and at least one weekday is enabled.
+        hasEnabledWeekdays = isFlippedBase && calendar.item.disable.filter( function( value ) {
+
+            // If there’s a date, check where it is relative to the target.
+            if ( $.isArray( value ) ) {
+                var dateTime = calendar.create( value ).pick
+                if ( dateTime < dateObject.pick ) hasEnabledBeforeTarget = true
+                else if ( dateTime > dateObject.pick ) hasEnabledAfterTarget = true
+            }
+
+            // Return only integers for enabled weekdays.
+            return _.isInteger( value )
+        }).length/*,
+
+        safety = 100*/
+
+
+
+    // Cases to validate for:
+    // [1] Not inverted and date disabled.
+    // [2] Inverted and some dates enabled.
+    // [3] Not inverted and out of range.
+    //
+    // Cases to **not** validate for:
+    // • Navigating months.
+    // • Not inverted and date enabled.
+    // • Inverted and all dates disabled.
+    // • ..and anything else.
+    if ( !options || !options.nav ) if (
+        /* 1 */ ( !isFlippedBase && calendar.disabled( dateObject ) ) ||
+        /* 2 */ ( isFlippedBase && calendar.disabled( dateObject ) && ( hasEnabledWeekdays || hasEnabledBeforeTarget || hasEnabledAfterTarget ) ) ||
+        /* 3 */ ( !isFlippedBase && (dateObject.pick <= minLimitObject.pick || dateObject.pick >= maxLimitObject.pick) )
+    ) {
+
+
+        // When inverted, flip the direction if there aren’t any enabled weekdays
+        // and there are no enabled dates in the direction of the interval.
+        if ( isFlippedBase && !hasEnabledWeekdays && ( ( !hasEnabledAfterTarget && interval > 0 ) || ( !hasEnabledBeforeTarget && interval < 0 ) ) ) {
+            interval *= -1
+        }
+
+
+        // Keep looping until we reach an enabled date.
+        while ( /*safety &&*/ calendar.disabled( dateObject ) ) {
+
+            /*safety -= 1
+            if ( !safety ) {
+                throw 'Fell into an infinite loop while validating ' + dateObject.obj + '.'
+            }*/
+
+
+            // If we’ve looped into the next/prev month with a large interval, return to the original date and flatten the interval.
+            if ( Math.abs( interval ) > 1 && ( dateObject.month < originalDateObject.month || dateObject.month > originalDateObject.month ) ) {
+                dateObject = originalDateObject
+                interval = interval > 0 ? 1 : -1
+            }
+
+
+            // If we’ve reached the min/max limit, reverse the direction, flatten the interval and set it to the limit.
+            if ( dateObject.pick <= minLimitObject.pick ) {
+                reachedMin = true
+                interval = 1
+                dateObject = calendar.create([ minLimitObject.year, minLimitObject.month, minLimitObject.date - 1 ])
+            }
+            else if ( dateObject.pick >= maxLimitObject.pick ) {
+                reachedMax = true
+                interval = -1
+                dateObject = calendar.create([ maxLimitObject.year, maxLimitObject.month, maxLimitObject.date + 1 ])
+            }
+
+
+            // If we’ve reached both limits, just break out of the loop.
+            if ( reachedMin && reachedMax ) {
+                break
+            }
+
+
+            // Finally, create the shifted date using the interval and keep looping.
+            dateObject = calendar.create([ dateObject.year, dateObject.month, dateObject.date + interval ])
+        }
+
+    } //endif
+
+
+    // Return the date object settled on.
+    return dateObject
+} //DatePicker.prototype.validate
+
+
+/**
+ * Check if a date is disabled.
+ */
+DatePicker.prototype.disabled = function( dateToVerify ) {
+
+    var
+        calendar = this,
+
+        // Filter through the disabled dates to check if this is one.
+        isDisabledMatch = calendar.item.disable.filter( function( dateToDisable ) {
+
+            // If the date is a number, match the weekday with 0index and `firstDay` check.
+            if ( _.isInteger( dateToDisable ) ) {
+                return dateToVerify.day === ( calendar.settings.firstDay ? dateToDisable : dateToDisable - 1 ) % 7
+            }
+
+            // If it’s an array or a native JS date, create and match the exact date.
+            if ( $.isArray( dateToDisable ) || _.isDate( dateToDisable ) ) {
+                return dateToVerify.pick === calendar.create( dateToDisable ).pick
+            }
+
+            // If it’s an object, match a date within the “from” and “to” range.
+            if ( $.isPlainObject( dateToDisable ) ) {
+                return calendar.withinRange( dateToDisable, dateToVerify )
+            }
+        })
+
+    // If this date matches a disabled date, confirm it’s not inverted.
+    isDisabledMatch = isDisabledMatch.length && !isDisabledMatch.filter(function( dateToDisable ) {
+        return $.isArray( dateToDisable ) && dateToDisable[3] == 'inverted' ||
+            $.isPlainObject( dateToDisable ) && dateToDisable.inverted
+    }).length
+
+    // Check the calendar “enabled” flag and respectively flip the
+    // disabled state. Then also check if it’s beyond the min/max limits.
+    return calendar.item.enable === -1 ? !isDisabledMatch : isDisabledMatch ||
+        dateToVerify.pick < calendar.item.min.pick ||
+        dateToVerify.pick > calendar.item.max.pick
+
+} //DatePicker.prototype.disabled
+
+
+/**
+ * Parse a string into a usable type.
+ */
+DatePicker.prototype.parse = function( type, value, options ) {
+
+    var calendar = this,
+        parsingObject = {},
+        monthIndex
+
+    if ( !value || _.isInteger( value ) || $.isArray( value ) || _.isDate( value ) || $.isPlainObject( value ) && _.isInteger( value.pick ) ) {
+        return value
+    }
+
+    // We need a `.format` to parse the value with.
+    if ( !( options && options.format ) ) {
+        options = options || {}
+        options.format = calendar.settings.format
+    }
+
+    // Calculate the month index to adjust with.
+    monthIndex = typeof value == 'string' && !options.fromValue ? 1 : 0
+
+    // Convert the format into an array and then map through it.
+    calendar.formats.toArray( options.format ).map( function( label ) {
+
+        var
+            // Grab the formatting label.
+            formattingLabel = calendar.formats[ label ],
+
+            // The format length is from the formatting label function or the
+            // label length without the escaping exclamation (!) mark.
+            formatLength = formattingLabel ? _.trigger( formattingLabel, calendar, [ value, parsingObject ] ) : label.replace( /^!/, '' ).length
+
+        // If there's a format label, split the value up to the format length.
+        // Then add it to the parsing object with appropriate label.
+        if ( formattingLabel ) {
+            parsingObject[ label ] = value.substr( 0, formatLength )
+        }
+
+        // Update the value as the substring from format length to end.
+        value = value.substr( formatLength )
+    })
+
+    // If it’s parsing a user provided month value, compensate for month 0index.
+    return [
+        parsingObject.yyyy || parsingObject.yy,
+        +( parsingObject.mm || parsingObject.m ) - monthIndex,
+        parsingObject.dd || parsingObject.d
+    ]
+} //DatePicker.prototype.parse
+
+
+/**
+ * Various formats to display the object in.
+ */
+DatePicker.prototype.formats = (function() {
+
+    // Return the length of the first word in a collection.
+    function getWordLengthFromCollection( string, collection, dateObject ) {
+
+        // Grab the first word from the string.
+        var word = string.match( /\w+/ )[ 0 ]
+
+        // If there's no month index, add it to the date object
+        if ( !dateObject.mm && !dateObject.m ) {
+            dateObject.m = collection.indexOf( word )
+        }
+
+        // Return the length of the word.
+        return word.length
+    }
+
+    // Get the length of the first word in a string.
+    function getFirstWordLength( string ) {
+        return string.match( /\w+/ )[ 0 ].length
+    }
+
+    return {
+
+        d: function( string, dateObject ) {
+
+            // If there's string, then get the digits length.
+            // Otherwise return the selected date.
+            return string ? _.digits( string ) : dateObject.date
+        },
+        dd: function( string, dateObject ) {
+
+            // If there's a string, then the length is always 2.
+            // Otherwise return the selected date with a leading zero.
+            return string ? 2 : _.lead( dateObject.date )
+        },
+        ddd: function( string, dateObject ) {
+
+            // If there's a string, then get the length of the first word.
+            // Otherwise return the short selected weekday.
+            return string ? getFirstWordLength( string ) : this.settings.weekdaysShort[ dateObject.day ]
+        },
+        dddd: function( string, dateObject ) {
+
+            // If there's a string, then get the length of the first word.
+            // Otherwise return the full selected weekday.
+            return string ? getFirstWordLength( string ) : this.settings.weekdaysFull[ dateObject.day ]
+        },
+        m: function( string, dateObject ) {
+
+            // If there's a string, then get the length of the digits
+            // Otherwise return the selected month with 0index compensation.
+            return string ? _.digits( string ) : dateObject.month + 1
+        },
+        mm: function( string, dateObject ) {
+
+            // If there's a string, then the length is always 2.
+            // Otherwise return the selected month with 0index and leading zero.
+            return string ? 2 : _.lead( dateObject.month + 1 )
+        },
+        mmm: function( string, dateObject ) {
+
+            var collection = this.settings.monthsShort
+
+            // If there's a string, get length of the relevant month from the short
+            // months collection. Otherwise return the selected month from that collection.
+            return string ? getWordLengthFromCollection( string, collection, dateObject ) : collection[ dateObject.month ]
+        },
+        mmmm: function( string, dateObject ) {
+
+            var collection = this.settings.monthsFull
+
+            // If there's a string, get length of the relevant month from the full
+            // months collection. Otherwise return the selected month from that collection.
+            return string ? getWordLengthFromCollection( string, collection, dateObject ) : collection[ dateObject.month ]
+        },
+        yy: function( string, dateObject ) {
+
+            // If there's a string, then the length is always 2.
+            // Otherwise return the selected year by slicing out the first 2 digits.
+            return string ? 2 : ( '' + dateObject.year ).slice( 2 )
+        },
+        yyyy: function( string, dateObject ) {
+
+            // If there's a string, then the length is always 4.
+            // Otherwise return the selected year.
+            return string ? 4 : dateObject.year
+        },
+
+        // Create an array by splitting the formatting string passed.
+        toArray: function( formatString ) { return formatString.split( /(d{1,4}|m{1,4}|y{4}|yy|!.)/g ) },
+
+        // Format an object into a string using the formatting options.
+        toString: function ( formatString, itemObject ) {
+            var calendar = this
+            return calendar.formats.toArray( formatString ).map( function( label ) {
+                return _.trigger( calendar.formats[ label ], calendar, [ 0, itemObject ] ) || label.replace( /^!/, '' )
+            }).join( '' )
+        }
+    }
+})() //DatePicker.prototype.formats
+
+
+
+
+/**
+ * Check if two date units are the exact.
+ */
+DatePicker.prototype.isDateExact = function( one, two ) {
+
+    var calendar = this
+
+    // When we’re working with weekdays, do a direct comparison.
+    if (
+        ( _.isInteger( one ) && _.isInteger( two ) ) ||
+        ( typeof one == 'boolean' && typeof two == 'boolean' )
+     ) {
+        return one === two
+    }
+
+    // When we’re working with date representations, compare the “pick” value.
+    if (
+        ( _.isDate( one ) || $.isArray( one ) ) &&
+        ( _.isDate( two ) || $.isArray( two ) )
+    ) {
+        return calendar.create( one ).pick === calendar.create( two ).pick
+    }
+
+    // When we’re working with range objects, compare the “from” and “to”.
+    if ( $.isPlainObject( one ) && $.isPlainObject( two ) ) {
+        return calendar.isDateExact( one.from, two.from ) && calendar.isDateExact( one.to, two.to )
+    }
+
+    return false
+}
+
+
+/**
+ * Check if two date units overlap.
+ */
+DatePicker.prototype.isDateOverlap = function( one, two ) {
+
+    var calendar = this
+
+    // When we’re working with a weekday index, compare the days.
+    if ( _.isInteger( one ) && ( _.isDate( two ) || $.isArray( two ) ) ) {
+        return one === calendar.create( two ).day + 1
+    }
+    if ( _.isInteger( two ) && ( _.isDate( one ) || $.isArray( one ) ) ) {
+        return two === calendar.create( one ).day + 1
+    }
+
+    // When we’re working with range objects, check if the ranges overlap.
+    if ( $.isPlainObject( one ) && $.isPlainObject( two ) ) {
+        return calendar.overlapRanges( one, two )
+    }
+
+    return false
+}
+
+
+/**
+ * Flip the “enabled” state.
+ */
+DatePicker.prototype.flipEnable = function(val) {
+    var itemObject = this.item
+    itemObject.enable = val || (itemObject.enable == -1 ? 1 : -1)
+}
+
+
+/**
+ * Mark a collection of dates as “disabled”.
+ */
+DatePicker.prototype.deactivate = function( type, datesToDisable ) {
+
+    var calendar = this,
+        disabledItems = calendar.item.disable.slice(0)
+
+
+    // If we’re flipping, that’s all we need to do.
+    if ( datesToDisable == 'flip' ) {
+        calendar.flipEnable()
+    }
+
+    else if ( datesToDisable === false ) {
+        calendar.flipEnable(1)
+        disabledItems = []
+    }
+
+    else if ( datesToDisable === true ) {
+        calendar.flipEnable(-1)
+        disabledItems = []
+    }
+
+    // Otherwise go through the dates to disable.
+    else {
+
+        datesToDisable.map(function( unitToDisable ) {
+
+            var matchFound
+
+            // When we have disabled items, check for matches.
+            // If something is matched, immediately break out.
+            for ( var index = 0; index < disabledItems.length; index += 1 ) {
+                if ( calendar.isDateExact( unitToDisable, disabledItems[index] ) ) {
+                    matchFound = true
+                    break
+                }
+            }
+
+            // If nothing was found, add the validated unit to the collection.
+            if ( !matchFound ) {
+                if (
+                    _.isInteger( unitToDisable ) ||
+                    _.isDate( unitToDisable ) ||
+                    $.isArray( unitToDisable ) ||
+                    ( $.isPlainObject( unitToDisable ) && unitToDisable.from && unitToDisable.to )
+                ) {
+                    disabledItems.push( unitToDisable )
+                }
+            }
+        })
+    }
+
+    // Return the updated collection.
+    return disabledItems
+} //DatePicker.prototype.deactivate
+
+
+/**
+ * Mark a collection of dates as “enabled”.
+ */
+DatePicker.prototype.activate = function( type, datesToEnable ) {
+
+    var calendar = this,
+        disabledItems = calendar.item.disable,
+        disabledItemsCount = disabledItems.length
+
+    // If we’re flipping, that’s all we need to do.
+    if ( datesToEnable == 'flip' ) {
+        calendar.flipEnable()
+    }
+
+    else if ( datesToEnable === true ) {
+        calendar.flipEnable(1)
+        disabledItems = []
+    }
+
+    else if ( datesToEnable === false ) {
+        calendar.flipEnable(-1)
+        disabledItems = []
+    }
+
+    // Otherwise go through the disabled dates.
+    else {
+
+        datesToEnable.map(function( unitToEnable ) {
+
+            var matchFound,
+                disabledUnit,
+                index,
+                isExactRange
+
+            // Go through the disabled items and try to find a match.
+            for ( index = 0; index < disabledItemsCount; index += 1 ) {
+
+                disabledUnit = disabledItems[index]
+
+                // When an exact match is found, remove it from the collection.
+                if ( calendar.isDateExact( disabledUnit, unitToEnable ) ) {
+                    matchFound = disabledItems[index] = null
+                    isExactRange = true
+                    break
+                }
+
+                // When an overlapped match is found, add the “inverted” state to it.
+                else if ( calendar.isDateOverlap( disabledUnit, unitToEnable ) ) {
+                    if ( $.isPlainObject( unitToEnable ) ) {
+                        unitToEnable.inverted = true
+                        matchFound = unitToEnable
+                    }
+                    else if ( $.isArray( unitToEnable ) ) {
+                        matchFound = unitToEnable
+                        if ( !matchFound[3] ) matchFound.push( 'inverted' )
+                    }
+                    else if ( _.isDate( unitToEnable ) ) {
+                        matchFound = [ unitToEnable.getFullYear(), unitToEnable.getMonth(), unitToEnable.getDate(), 'inverted' ]
+                    }
+                    break
+                }
+            }
+
+            // If a match was found, remove a previous duplicate entry.
+            if ( matchFound ) for ( index = 0; index < disabledItemsCount; index += 1 ) {
+                if ( calendar.isDateExact( disabledItems[index], unitToEnable ) ) {
+                    disabledItems[index] = null
+                    break
+                }
+            }
+
+            // In the event that we’re dealing with an exact range of dates,
+            // make sure there are no “inverted” dates because of it.
+            if ( isExactRange ) for ( index = 0; index < disabledItemsCount; index += 1 ) {
+                if ( calendar.isDateOverlap( disabledItems[index], unitToEnable ) ) {
+                    disabledItems[index] = null
+                    break
+                }
+            }
+
+            // If something is still matched, add it into the collection.
+            if ( matchFound ) {
+                disabledItems.push( matchFound )
+            }
+        })
+    }
+
+    // Return the updated collection.
+    return disabledItems.filter(function( val ) { return val != null })
+} //DatePicker.prototype.activate
+
+
+/**
+ * Create a string for the nodes in the picker.
+ */
+DatePicker.prototype.nodes = function( isOpen ) {
+
+    var
+        calendar = this,
+        settings = calendar.settings,
+        calendarItem = calendar.item,
+        nowObject = calendarItem.now,
+        selectedObject = calendarItem.select,
+        highlightedObject = calendarItem.highlight,
+        viewsetObject = calendarItem.view,
+        disabledCollection = calendarItem.disable,
+        minLimitObject = calendarItem.min,
+        maxLimitObject = calendarItem.max,
+
+
+        // Create the calendar table head using a copy of weekday labels collection.
+        // * We do a copy so we don't mutate the original array.
+        tableHead = (function( collection ) {
+
+            // If the first day should be Monday, move Sunday to the end.
+            if ( settings.firstDay ) {
+                collection.push( collection.shift() )
+            }
+
+            // Create and return the table head group.
+            return _.node(
+                'thead',
+                _.node(
+                    'tr',
+                    _.group({
+                        min: 0,
+                        max: DAYS_IN_WEEK - 1,
+                        i: 1,
+                        node: 'th',
+                        item: function( counter ) {
+                            return [
+                                collection[ counter ],
+                                settings.klass.weekdays
+                            ]
+                        }
+                    })
+                )
+            ) //endreturn
+        })( ( settings.showWeekdaysFull ? settings.weekdaysFull : settings.weekdaysShort ).slice( 0 ) ), //tableHead
+
+
+        // Create the nav for next/prev month.
+        createMonthNav = function( next ) {
+
+            // Otherwise, return the created month tag.
+            return _.node(
+                'div',
+                ' ',
+                settings.klass[ 'nav' + ( next ? 'Next' : 'Prev' ) ] + (
+
+                    // If the focused month is outside the range, disabled the button.
+                    ( next && viewsetObject.year >= maxLimitObject.year && viewsetObject.month >= maxLimitObject.month ) ||
+                    ( !next && viewsetObject.year <= minLimitObject.year && viewsetObject.month <= minLimitObject.month ) ?
+                    ' ' + settings.klass.navDisabled : ''
+                ),
+                'data-nav=' + ( next || -1 )
+            ) //endreturn
+        }, //createMonthNav
+
+
+        // Create the month label.
+        createMonthLabel = function( monthsCollection ) {
+
+            // If there are months to select, add a dropdown menu.
+            if ( settings.selectMonths ) {
+
+                return _.node( 'select', _.group({
+                    min: 0,
+                    max: 11,
+                    i: 1,
+                    node: 'option',
+                    item: function( loopedMonth ) {
+
+                        return [
+
+                            // The looped month and no classes.
+                            monthsCollection[ loopedMonth ], 0,
+
+                            // Set the value and selected index.
+                            'value=' + loopedMonth +
+                            ( viewsetObject.month == loopedMonth ? ' selected' : '' ) +
+                            (
+                                (
+                                    ( viewsetObject.year == minLimitObject.year && loopedMonth < minLimitObject.month ) ||
+                                    ( viewsetObject.year == maxLimitObject.year && loopedMonth > maxLimitObject.month )
+                                ) ?
+                                ' disabled' : ''
+                            )
+                        ]
+                    }
+                }), settings.klass.selectMonth, isOpen ? '' : 'disabled' )
+            }
+
+            // If there's a need for a month selector
+            return _.node( 'div', monthsCollection[ viewsetObject.month ], settings.klass.month )
+        }, //createMonthLabel
+
+
+        // Create the year label.
+        createYearLabel = function() {
+
+            var focusedYear = viewsetObject.year,
+
+            // If years selector is set to a literal "true", set it to 5. Otherwise
+            // divide in half to get half before and half after focused year.
+            numberYears = settings.selectYears === true ? 5 : ~~( settings.selectYears / 2 )
+
+            // If there are years to select, add a dropdown menu.
+            if ( numberYears ) {
+
+                var
+                    minYear = minLimitObject.year,
+                    maxYear = maxLimitObject.year,
+                    lowestYear = focusedYear - numberYears,
+                    highestYear = focusedYear + numberYears
+
+                // If the min year is greater than the lowest year, increase the highest year
+                // by the difference and set the lowest year to the min year.
+                if ( minYear > lowestYear ) {
+                    highestYear += minYear - lowestYear
+                    lowestYear = minYear
+                }
+
+                // If the max year is less than the highest year, decrease the lowest year
+                // by the lower of the two: available and needed years. Then set the
+                // highest year to the max year.
+                if ( maxYear < highestYear ) {
+
+                    var availableYears = lowestYear - minYear,
+                        neededYears = highestYear - maxYear
+
+                    lowestYear -= availableYears > neededYears ? neededYears : availableYears
+                    highestYear = maxYear
+                }
+
+                return _.node( 'select', _.group({
+                    min: lowestYear,
+                    max: highestYear,
+                    i: 1,
+                    node: 'option',
+                    item: function( loopedYear ) {
+                        return [
+
+                            // The looped year and no classes.
+                            loopedYear, 0,
+
+                            // Set the value and selected index.
+                            'value=' + loopedYear + ( focusedYear == loopedYear ? ' selected' : '' )
+                        ]
+                    }
+                }), settings.klass.selectYear, isOpen ? '' : 'disabled' )
+            }
+
+            // Otherwise just return the year focused
+            return _.node( 'div', focusedYear, settings.klass.year )
+        } //createYearLabel
+
+
+    // Create and return the entire calendar.
+    return _.node(
+        'div',
+        createMonthNav() + createMonthNav( 1 ) +
+        createMonthLabel( settings.showMonthsShort ? settings.monthsShort : settings.monthsFull ) +
+        createYearLabel(),
+        settings.klass.header
+    ) + _.node(
+        'table',
+        tableHead +
+        _.node(
+            'tbody',
+            _.group({
+                min: 0,
+                max: WEEKS_IN_CALENDAR - 1,
+                i: 1,
+                node: 'tr',
+                item: function( rowCounter ) {
+
+                    // If Monday is the first day and the month starts on Sunday, shift the date back a week.
+                    var shiftDateBy = settings.firstDay && calendar.create([ viewsetObject.year, viewsetObject.month, 1 ]).day === 0 ? -7 : 0
+
+                    return [
+                        _.group({
+                            min: DAYS_IN_WEEK * rowCounter - viewsetObject.day + shiftDateBy + 1, // Add 1 for weekday 0index
+                            max: function() {
+                                return this.min + DAYS_IN_WEEK - 1
+                            },
+                            i: 1,
+                            node: 'td',
+                            item: function( targetDate ) {
+
+                                // Convert the time date from a relative date to a target date.
+                                targetDate = calendar.create([ viewsetObject.year, viewsetObject.month, targetDate + ( settings.firstDay ? 1 : 0 ) ])
+
+                                var isSelected = selectedObject && selectedObject.pick == targetDate.pick,
+                                    isHighlighted = highlightedObject && highlightedObject.pick == targetDate.pick,
+                                    isDisabled = disabledCollection && calendar.disabled( targetDate ) || targetDate.pick < minLimitObject.pick || targetDate.pick > maxLimitObject.pick
+
+                                return [
+                                    _.node(
+                                        'div',
+                                        targetDate.date,
+                                        (function( klasses ) {
+
+                                            // Add the `infocus` or `outfocus` classes based on month in view.
+                                            klasses.push( viewsetObject.month == targetDate.month ? settings.klass.infocus : settings.klass.outfocus )
+
+                                            // Add the `today` class if needed.
+                                            if ( nowObject.pick == targetDate.pick ) {
+                                                klasses.push( settings.klass.now )
+                                            }
+
+                                            // Add the `selected` class if something's selected and the time matches.
+                                            if ( isSelected ) {
+                                                klasses.push( settings.klass.selected )
+                                            }
+
+                                            // Add the `highlighted` class if something's highlighted and the time matches.
+                                            if ( isHighlighted ) {
+                                                klasses.push( settings.klass.highlighted )
+                                            }
+
+                                            // Add the `disabled` class if something's disabled and the object matches.
+                                            if ( isDisabled ) {
+                                                klasses.push( settings.klass.disabled )
+                                            }
+
+                                            return klasses.join( ' ' )
+                                        })([ settings.klass.day ]),
+                                        'data-pick=' + targetDate.pick + ' ' + _.ariaAttr({
+                                            role: 'button',
+                                            controls: calendar.$node[0].id,
+                                            checked: isSelected && calendar.$node.val() === _.trigger(
+                                                    calendar.formats.toString,
+                                                    calendar,
+                                                    [ settings.format, targetDate ]
+                                                ) ? true : null,
+                                            activedescendant: isHighlighted ? true : null,
+                                            disabled: isDisabled ? true : null
+                                        })
+                                    )
+                                ] //endreturn
+                            }
+                        })
+                    ] //endreturn
+                }
+            })
+        ),
+        settings.klass.table
+    ) +
+
+    // * For Firefox forms to submit, make sure to set the buttons’ `type` attributes as “button”.
+    _.node(
+        'div',
+        _.node( 'button', settings.today, settings.klass.buttonToday, 'type=button data-pick=' + nowObject.pick + ( isOpen ? '' : ' disabled' ) ) +
+        _.node( 'button', settings.clear, settings.klass.buttonClear, 'type=button data-clear=1' + ( isOpen ? '' : ' disabled' ) ),
+        settings.klass.footer
+    ) //endreturn
+} //DatePicker.prototype.nodes
+
+
+
+
+/**
+ * The date picker defaults.
+ */
+DatePicker.defaults = (function( prefix ) {
+
+    return {
+
+        // Months and weekdays
+        monthsFull: [ 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ],
+        monthsShort: [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ],
+        weekdaysFull: [ 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday' ],
+        weekdaysShort: [ 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' ],
+
+        // Today and clear
+        today: 'Today',
+        clear: 'Clear',
+
+        // The format to show on the `input` element
+        format: 'd mmmm, yyyy',
+
+        // Classes
+        klass: {
+
+            table: prefix + 'table',
+
+            header: prefix + 'header',
+
+            navPrev: prefix + 'nav--prev',
+            navNext: prefix + 'nav--next',
+            navDisabled: prefix + 'nav--disabled',
+
+            month: prefix + 'month',
+            year: prefix + 'year',
+
+            selectMonth: prefix + 'select--month',
+            selectYear: prefix + 'select--year',
+
+            weekdays: prefix + 'weekday',
+
+            day: prefix + 'day',
+            disabled: prefix + 'day--disabled',
+            selected: prefix + 'day--selected',
+            highlighted: prefix + 'day--highlighted',
+            now: prefix + 'day--today',
+            infocus: prefix + 'day--infocus',
+            outfocus: prefix + 'day--outfocus',
+
+            footer: prefix + 'footer',
+
+            buttonClear: prefix + 'button--clear',
+            buttonToday: prefix + 'button--today'
+        }
+    }
+})( Picker.klasses().picker + '__' )
+
+
+
+
+
+/**
+ * Extend the picker to add the date picker.
+ */
+Picker.extend( 'pickadate', DatePicker )
+
+
+}));
+
+
+
 
 /* PickADate pattern.
  *
@@ -19108,180 +19491,3665 @@ define('mockup-patterns-querystring',[
 
 });
 
-/* Formunloadalert pattern.
+(function(root) {
+define("jqtree", ["jquery"], function() {
+  return (function() {
+// Generated by CoffeeScript 1.7.1
+(function() {
+  var $, BorderDropHint, DragAndDropHandler, DragElement, ElementsRenderer, FolderElement, GhostDropHint, HitAreasGenerator, JqTreeWidget, KeyHandler, MouseWidget, Node, NodeElement, Position, SaveStateHandler, ScrollHandler, SelectNodeHandler, SimpleWidget, VisibleNodeIterator, get_json_stringify_function, html_escape, indexOf, isInt, __version__, _indexOf,
+    __slice = [].slice,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  __version__ = '0.22.0';
+
+
+  /*
+  Copyright 2013 Marco Braak
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  
+      http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+   */
+
+  $ = this.jQuery;
+
+  SimpleWidget = (function() {
+    SimpleWidget.prototype.defaults = {};
+
+    function SimpleWidget(el, options) {
+      this.$el = $(el);
+      this.options = $.extend({}, this.defaults, options);
+    }
+
+    SimpleWidget.prototype.destroy = function() {
+      return this._deinit();
+    };
+
+    SimpleWidget.prototype._init = function() {
+      return null;
+    };
+
+    SimpleWidget.prototype._deinit = function() {
+      return null;
+    };
+
+    SimpleWidget.register = function(widget_class, widget_name) {
+      var callFunction, createWidget, destroyWidget, getDataKey, getWidgetData;
+      getDataKey = function() {
+        return "simple_widget_" + widget_name;
+      };
+      getWidgetData = function(el, data_key) {
+        var widget;
+        widget = $.data(el, data_key);
+        if (widget && (widget instanceof SimpleWidget)) {
+          return widget;
+        } else {
+          return null;
+        }
+      };
+      createWidget = function($el, options) {
+        var data_key, el, existing_widget, widget, _i, _len;
+        data_key = getDataKey();
+        for (_i = 0, _len = $el.length; _i < _len; _i++) {
+          el = $el[_i];
+          existing_widget = getWidgetData(el, data_key);
+          if (!existing_widget) {
+            widget = new widget_class(el, options);
+            if (!$.data(el, data_key)) {
+              $.data(el, data_key, widget);
+            }
+            widget._init();
+          }
+        }
+        return $el;
+      };
+      destroyWidget = function($el) {
+        var data_key, el, widget, _i, _len, _results;
+        data_key = getDataKey();
+        _results = [];
+        for (_i = 0, _len = $el.length; _i < _len; _i++) {
+          el = $el[_i];
+          widget = getWidgetData(el, data_key);
+          if (widget) {
+            widget.destroy();
+          }
+          _results.push($.removeData(el, data_key));
+        }
+        return _results;
+      };
+      callFunction = function($el, function_name, args) {
+        var el, result, widget, widget_function, _i, _len;
+        result = null;
+        for (_i = 0, _len = $el.length; _i < _len; _i++) {
+          el = $el[_i];
+          widget = $.data(el, getDataKey());
+          if (widget && (widget instanceof SimpleWidget)) {
+            widget_function = widget[function_name];
+            if (widget_function && (typeof widget_function === 'function')) {
+              result = widget_function.apply(widget, args);
+            }
+          }
+        }
+        return result;
+      };
+      return $.fn[widget_name] = function() {
+        var $el, args, argument1, function_name, options;
+        argument1 = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+        $el = this;
+        if (argument1 === void 0 || typeof argument1 === 'object') {
+          options = argument1;
+          return createWidget($el, options);
+        } else if (typeof argument1 === 'string' && argument1[0] !== '_') {
+          function_name = argument1;
+          if (function_name === 'destroy') {
+            return destroyWidget($el);
+          } else {
+            return callFunction($el, function_name, args);
+          }
+        }
+      };
+    };
+
+    return SimpleWidget;
+
+  })();
+
+  this.SimpleWidget = SimpleWidget;
+
+
+  /*
+  This widget does the same a the mouse widget in jqueryui.
+   */
+
+  MouseWidget = (function(_super) {
+    __extends(MouseWidget, _super);
+
+    function MouseWidget() {
+      return MouseWidget.__super__.constructor.apply(this, arguments);
+    }
+
+    MouseWidget.is_mouse_handled = false;
+
+    MouseWidget.prototype._init = function() {
+      this.$el.bind('mousedown.mousewidget', $.proxy(this._mouseDown, this));
+      this.$el.bind('touchstart.mousewidget', $.proxy(this._touchStart, this));
+      this.is_mouse_started = false;
+      this.mouse_delay = 0;
+      this._mouse_delay_timer = null;
+      this._is_mouse_delay_met = true;
+      return this.mouse_down_info = null;
+    };
+
+    MouseWidget.prototype._deinit = function() {
+      var $document;
+      this.$el.unbind('mousedown.mousewidget');
+      this.$el.unbind('touchstart.mousewidget');
+      $document = $(document);
+      $document.unbind('mousemove.mousewidget');
+      return $document.unbind('mouseup.mousewidget');
+    };
+
+    MouseWidget.prototype._mouseDown = function(e) {
+      var result;
+      if (e.which !== 1) {
+        return;
+      }
+      result = this._handleMouseDown(e, this._getPositionInfo(e));
+      if (result) {
+        e.preventDefault();
+      }
+      return result;
+    };
+
+    MouseWidget.prototype._handleMouseDown = function(e, position_info) {
+      if (MouseWidget.is_mouse_handled) {
+        return;
+      }
+      if (this.is_mouse_started) {
+        this._handleMouseUp(position_info);
+      }
+      this.mouse_down_info = position_info;
+      if (!this._mouseCapture(position_info)) {
+        return;
+      }
+      this._handleStartMouse();
+      this.is_mouse_handled = true;
+      return true;
+    };
+
+    MouseWidget.prototype._handleStartMouse = function() {
+      var $document;
+      $document = $(document);
+      $document.bind('mousemove.mousewidget', $.proxy(this._mouseMove, this));
+      $document.bind('touchmove.mousewidget', $.proxy(this._touchMove, this));
+      $document.bind('mouseup.mousewidget', $.proxy(this._mouseUp, this));
+      $document.bind('touchend.mousewidget', $.proxy(this._touchEnd, this));
+      if (this.mouse_delay) {
+        return this._startMouseDelayTimer();
+      }
+    };
+
+    MouseWidget.prototype._startMouseDelayTimer = function() {
+      if (this._mouse_delay_timer) {
+        clearTimeout(this._mouse_delay_timer);
+      }
+      this._mouse_delay_timer = setTimeout((function(_this) {
+        return function() {
+          return _this._is_mouse_delay_met = true;
+        };
+      })(this), this.mouse_delay);
+      return this._is_mouse_delay_met = false;
+    };
+
+    MouseWidget.prototype._mouseMove = function(e) {
+      return this._handleMouseMove(e, this._getPositionInfo(e));
+    };
+
+    MouseWidget.prototype._handleMouseMove = function(e, position_info) {
+      if (this.is_mouse_started) {
+        this._mouseDrag(position_info);
+        return e.preventDefault();
+      }
+      if (this.mouse_delay && !this._is_mouse_delay_met) {
+        return true;
+      }
+      this.is_mouse_started = this._mouseStart(this.mouse_down_info) !== false;
+      if (this.is_mouse_started) {
+        this._mouseDrag(position_info);
+      } else {
+        this._handleMouseUp(position_info);
+      }
+      return !this.is_mouse_started;
+    };
+
+    MouseWidget.prototype._getPositionInfo = function(e) {
+      return {
+        page_x: e.pageX,
+        page_y: e.pageY,
+        target: e.target,
+        original_event: e
+      };
+    };
+
+    MouseWidget.prototype._mouseUp = function(e) {
+      return this._handleMouseUp(this._getPositionInfo(e));
+    };
+
+    MouseWidget.prototype._handleMouseUp = function(position_info) {
+      var $document;
+      $document = $(document);
+      $document.unbind('mousemove.mousewidget');
+      $document.unbind('touchmove.mousewidget');
+      $document.unbind('mouseup.mousewidget');
+      $document.unbind('touchend.mousewidget');
+      if (this.is_mouse_started) {
+        this.is_mouse_started = false;
+        this._mouseStop(position_info);
+      }
+    };
+
+    MouseWidget.prototype._mouseCapture = function(position_info) {
+      return true;
+    };
+
+    MouseWidget.prototype._mouseStart = function(position_info) {
+      return null;
+    };
+
+    MouseWidget.prototype._mouseDrag = function(position_info) {
+      return null;
+    };
+
+    MouseWidget.prototype._mouseStop = function(position_info) {
+      return null;
+    };
+
+    MouseWidget.prototype.setMouseDelay = function(mouse_delay) {
+      return this.mouse_delay = mouse_delay;
+    };
+
+    MouseWidget.prototype._touchStart = function(e) {
+      var touch;
+      if (e.originalEvent.touches.length > 1) {
+        return;
+      }
+      touch = e.originalEvent.changedTouches[0];
+      return this._handleMouseDown(e, this._getPositionInfo(touch));
+    };
+
+    MouseWidget.prototype._touchMove = function(e) {
+      var touch;
+      if (e.originalEvent.touches.length > 1) {
+        return;
+      }
+      touch = e.originalEvent.changedTouches[0];
+      return this._handleMouseMove(e, this._getPositionInfo(touch));
+    };
+
+    MouseWidget.prototype._touchEnd = function(e) {
+      var touch;
+      if (e.originalEvent.touches.length > 1) {
+        return;
+      }
+      touch = e.originalEvent.changedTouches[0];
+      return this._handleMouseUp(this._getPositionInfo(touch));
+    };
+
+    return MouseWidget;
+
+  })(SimpleWidget);
+
+  this.Tree = {};
+
+  $ = this.jQuery;
+
+  Position = {
+    getName: function(position) {
+      return Position.strings[position - 1];
+    },
+    nameToIndex: function(name) {
+      var i, _i, _ref;
+      for (i = _i = 1, _ref = Position.strings.length; 1 <= _ref ? _i <= _ref : _i >= _ref; i = 1 <= _ref ? ++_i : --_i) {
+        if (Position.strings[i - 1] === name) {
+          return i;
+        }
+      }
+      return 0;
+    }
+  };
+
+  Position.BEFORE = 1;
+
+  Position.AFTER = 2;
+
+  Position.INSIDE = 3;
+
+  Position.NONE = 4;
+
+  Position.strings = ['before', 'after', 'inside', 'none'];
+
+  this.Tree.Position = Position;
+
+  Node = (function() {
+    function Node(o, is_root, node_class) {
+      if (is_root == null) {
+        is_root = false;
+      }
+      if (node_class == null) {
+        node_class = Node;
+      }
+      this.setData(o);
+      this.children = [];
+      this.parent = null;
+      if (is_root) {
+        this.id_mapping = {};
+        this.tree = this;
+        this.node_class = node_class;
+      }
+    }
+
+    Node.prototype.setData = function(o) {
+      var key, value, _results;
+      if (typeof o !== 'object') {
+        return this.name = o;
+      } else {
+        _results = [];
+        for (key in o) {
+          value = o[key];
+          if (key === 'label') {
+            _results.push(this.name = value);
+          } else {
+            _results.push(this[key] = value);
+          }
+        }
+        return _results;
+      }
+    };
+
+    Node.prototype.initFromData = function(data) {
+      var addChildren, addNode;
+      addNode = (function(_this) {
+        return function(node_data) {
+          _this.setData(node_data);
+          if (node_data.children) {
+            return addChildren(node_data.children);
+          }
+        };
+      })(this);
+      addChildren = (function(_this) {
+        return function(children_data) {
+          var child, node, _i, _len;
+          for (_i = 0, _len = children_data.length; _i < _len; _i++) {
+            child = children_data[_i];
+            node = new _this.tree.node_class('');
+            node.initFromData(child);
+            _this.addChild(node);
+          }
+          return null;
+        };
+      })(this);
+      addNode(data);
+      return null;
+    };
+
+
+    /*
+    Create tree from data.
+    
+    Structure of data is:
+    [
+        {
+            label: 'node1',
+            children: [
+                { label: 'child1' },
+                { label: 'child2' }
+            ]
+        },
+        {
+            label: 'node2'
+        }
+    ]
+     */
+
+    Node.prototype.loadFromData = function(data) {
+      var node, o, _i, _len;
+      this.removeChildren();
+      for (_i = 0, _len = data.length; _i < _len; _i++) {
+        o = data[_i];
+        node = new this.tree.node_class(o);
+        this.addChild(node);
+        if (typeof o === 'object' && o.children) {
+          node.loadFromData(o.children);
+        }
+      }
+      return null;
+    };
+
+
+    /*
+    Add child.
+    
+    tree.addChild(
+        new Node('child1')
+    );
+     */
+
+    Node.prototype.addChild = function(node) {
+      this.children.push(node);
+      return node._setParent(this);
+    };
+
+
+    /*
+    Add child at position. Index starts at 0.
+    
+    tree.addChildAtPosition(
+        new Node('abc'),
+        1
+    );
+     */
+
+    Node.prototype.addChildAtPosition = function(node, index) {
+      this.children.splice(index, 0, node);
+      return node._setParent(this);
+    };
+
+    Node.prototype._setParent = function(parent) {
+      this.parent = parent;
+      this.tree = parent.tree;
+      return this.tree.addNodeToIndex(this);
+    };
+
+
+    /*
+    Remove child. This also removes the children of the node.
+    
+    tree.removeChild(tree.children[0]);
+     */
+
+    Node.prototype.removeChild = function(node) {
+      node.removeChildren();
+      return this._removeChild(node);
+    };
+
+    Node.prototype._removeChild = function(node) {
+      this.children.splice(this.getChildIndex(node), 1);
+      return this.tree.removeNodeFromIndex(node);
+    };
+
+
+    /*
+    Get child index.
+    
+    var index = getChildIndex(node);
+     */
+
+    Node.prototype.getChildIndex = function(node) {
+      return $.inArray(node, this.children);
+    };
+
+
+    /*
+    Does the tree have children?
+    
+    if (tree.hasChildren()) {
+        //
+    }
+     */
+
+    Node.prototype.hasChildren = function() {
+      return this.children.length !== 0;
+    };
+
+    Node.prototype.isFolder = function() {
+      return this.hasChildren() || this.load_on_demand;
+    };
+
+
+    /*
+    Iterate over all the nodes in the tree.
+    
+    Calls callback with (node, level).
+    
+    The callback must return true to continue the iteration on current node.
+    
+    tree.iterate(
+        function(node, level) {
+           console.log(node.name);
+    
+           // stop iteration after level 2
+           return (level <= 2);
+        }
+    );
+     */
+
+    Node.prototype.iterate = function(callback) {
+      var _iterate;
+      _iterate = (function(_this) {
+        return function(node, level) {
+          var child, result, _i, _len, _ref;
+          if (node.children) {
+            _ref = node.children;
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+              child = _ref[_i];
+              result = callback(child, level);
+              if (_this.hasChildren() && result) {
+                _iterate(child, level + 1);
+              }
+            }
+            return null;
+          }
+        };
+      })(this);
+      _iterate(this, 0);
+      return null;
+    };
+
+
+    /*
+    Move node relative to another node.
+    
+    Argument position: Position.BEFORE, Position.AFTER or Position.Inside
+    
+    // move node1 after node2
+    tree.moveNode(node1, node2, Position.AFTER);
+     */
+
+    Node.prototype.moveNode = function(moved_node, target_node, position) {
+      if (moved_node.isParentOf(target_node)) {
+        return;
+      }
+      moved_node.parent._removeChild(moved_node);
+      if (position === Position.AFTER) {
+        return target_node.parent.addChildAtPosition(moved_node, target_node.parent.getChildIndex(target_node) + 1);
+      } else if (position === Position.BEFORE) {
+        return target_node.parent.addChildAtPosition(moved_node, target_node.parent.getChildIndex(target_node));
+      } else if (position === Position.INSIDE) {
+        return target_node.addChildAtPosition(moved_node, 0);
+      }
+    };
+
+
+    /*
+    Get the tree as data.
+     */
+
+    Node.prototype.getData = function() {
+      var getDataFromNodes;
+      getDataFromNodes = (function(_this) {
+        return function(nodes) {
+          var data, k, node, tmp_node, v, _i, _len;
+          data = [];
+          for (_i = 0, _len = nodes.length; _i < _len; _i++) {
+            node = nodes[_i];
+            tmp_node = {};
+            for (k in node) {
+              v = node[k];
+              if ((k !== 'parent' && k !== 'children' && k !== 'element' && k !== 'tree') && Object.prototype.hasOwnProperty.call(node, k)) {
+                tmp_node[k] = v;
+              }
+            }
+            if (node.hasChildren()) {
+              tmp_node.children = getDataFromNodes(node.children);
+            }
+            data.push(tmp_node);
+          }
+          return data;
+        };
+      })(this);
+      return getDataFromNodes(this.children);
+    };
+
+    Node.prototype.getNodeByName = function(name) {
+      var result;
+      result = null;
+      this.iterate(function(node) {
+        if (node.name === name) {
+          result = node;
+          return false;
+        } else {
+          return true;
+        }
+      });
+      return result;
+    };
+
+    Node.prototype.addAfter = function(node_info) {
+      var child_index, node;
+      if (!this.parent) {
+        return null;
+      } else {
+        node = new this.tree.node_class(node_info);
+        child_index = this.parent.getChildIndex(this);
+        this.parent.addChildAtPosition(node, child_index + 1);
+        return node;
+      }
+    };
+
+    Node.prototype.addBefore = function(node_info) {
+      var child_index, node;
+      if (!this.parent) {
+        return null;
+      } else {
+        node = new this.tree.node_class(node_info);
+        child_index = this.parent.getChildIndex(this);
+        this.parent.addChildAtPosition(node, child_index);
+        return node;
+      }
+    };
+
+    Node.prototype.addParent = function(node_info) {
+      var child, new_parent, original_parent, _i, _len, _ref;
+      if (!this.parent) {
+        return null;
+      } else {
+        new_parent = new this.tree.node_class(node_info);
+        new_parent._setParent(this.tree);
+        original_parent = this.parent;
+        _ref = original_parent.children;
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          child = _ref[_i];
+          new_parent.addChild(child);
+        }
+        original_parent.children = [];
+        original_parent.addChild(new_parent);
+        return new_parent;
+      }
+    };
+
+    Node.prototype.remove = function() {
+      if (this.parent) {
+        this.parent.removeChild(this);
+        return this.parent = null;
+      }
+    };
+
+    Node.prototype.append = function(node_info) {
+      var node;
+      node = new this.tree.node_class(node_info);
+      this.addChild(node);
+      return node;
+    };
+
+    Node.prototype.prepend = function(node_info) {
+      var node;
+      node = new this.tree.node_class(node_info);
+      this.addChildAtPosition(node, 0);
+      return node;
+    };
+
+    Node.prototype.isParentOf = function(node) {
+      var parent;
+      parent = node.parent;
+      while (parent) {
+        if (parent === this) {
+          return true;
+        }
+        parent = parent.parent;
+      }
+      return false;
+    };
+
+    Node.prototype.getLevel = function() {
+      var level, node;
+      level = 0;
+      node = this;
+      while (node.parent) {
+        level += 1;
+        node = node.parent;
+      }
+      return level;
+    };
+
+    Node.prototype.getNodeById = function(node_id) {
+      return this.id_mapping[node_id];
+    };
+
+    Node.prototype.addNodeToIndex = function(node) {
+      if (node.id != null) {
+        return this.id_mapping[node.id] = node;
+      }
+    };
+
+    Node.prototype.removeNodeFromIndex = function(node) {
+      if (node.id != null) {
+        return delete this.id_mapping[node.id];
+      }
+    };
+
+    Node.prototype.removeChildren = function() {
+      this.iterate((function(_this) {
+        return function(child) {
+          _this.tree.removeNodeFromIndex(child);
+          return true;
+        };
+      })(this));
+      return this.children = [];
+    };
+
+    Node.prototype.getPreviousSibling = function() {
+      var previous_index;
+      if (!this.parent) {
+        return null;
+      } else {
+        previous_index = this.parent.getChildIndex(this) - 1;
+        if (previous_index >= 0) {
+          return this.parent.children[previous_index];
+        } else {
+          return null;
+        }
+      }
+    };
+
+    Node.prototype.getNextSibling = function() {
+      var next_index;
+      if (!this.parent) {
+        return null;
+      } else {
+        next_index = this.parent.getChildIndex(this) + 1;
+        if (next_index < this.parent.children.length) {
+          return this.parent.children[next_index];
+        } else {
+          return null;
+        }
+      }
+    };
+
+    Node.prototype.getNodesByProperty = function(key, value) {
+      return this.filter(function(node) {
+        return node[key] === value;
+      });
+    };
+
+    Node.prototype.filter = function(f) {
+      var result;
+      result = [];
+      this.iterate(function(node) {
+        if (f(node)) {
+          result.push(node);
+        }
+        return true;
+      });
+      return result;
+    };
+
+    return Node;
+
+  })();
+
+  this.Tree.Node = Node;
+
+  ElementsRenderer = (function() {
+    function ElementsRenderer(tree_widget) {
+      this.tree_widget = tree_widget;
+      this.opened_icon_element = this.createButtonElement(tree_widget.options.openedIcon);
+      this.closed_icon_element = this.createButtonElement(tree_widget.options.closedIcon);
+    }
+
+    ElementsRenderer.prototype.render = function(from_node) {
+      if (from_node && from_node.parent) {
+        return this.renderFromNode(from_node);
+      } else {
+        return this.renderFromRoot();
+      }
+    };
+
+    ElementsRenderer.prototype.renderNode = function(node) {
+      var li, parent_node_element, previous_node;
+      $(node.element).remove();
+      parent_node_element = new NodeElement(node.parent, this.tree_widget);
+      li = this.createLi(node);
+      this.attachNodeData(node, li);
+      previous_node = node.getPreviousSibling();
+      if (previous_node) {
+        $(previous_node.element).after(li);
+      } else {
+        parent_node_element.getUl().prepend(li);
+      }
+      if (node.children) {
+        return this.renderFromNode(node);
+      }
+    };
+
+    ElementsRenderer.prototype.renderFromRoot = function() {
+      var $element;
+      $element = this.tree_widget.element;
+      $element.empty();
+      return this.createDomElements($element[0], this.tree_widget.tree.children, true, true);
+    };
+
+    ElementsRenderer.prototype.renderFromNode = function(from_node) {
+      var node_element;
+      node_element = this.tree_widget._getNodeElementForNode(from_node);
+      node_element.getUl().remove();
+      return this.createDomElements(node_element.$element[0], from_node.children, false, false);
+    };
+
+    ElementsRenderer.prototype.createDomElements = function(element, children, is_root_node, is_open) {
+      var child, li, ul, _i, _len;
+      ul = this.createUl(is_root_node);
+      element.appendChild(ul);
+      for (_i = 0, _len = children.length; _i < _len; _i++) {
+        child = children[_i];
+        li = this.createLi(child);
+        ul.appendChild(li);
+        this.attachNodeData(child, li);
+        if (child.hasChildren()) {
+          this.createDomElements(li, child.children, false, child.is_open);
+        }
+      }
+      return null;
+    };
+
+    ElementsRenderer.prototype.attachNodeData = function(node, li) {
+      node.element = li;
+      return $(li).data('node', node);
+    };
+
+    ElementsRenderer.prototype.createUl = function(is_root_node) {
+      var class_string, ul;
+      if (is_root_node) {
+        class_string = 'jqtree-tree';
+      } else {
+        class_string = '';
+      }
+      ul = document.createElement('ul');
+      ul.className = "jqtree_common " + class_string;
+      return ul;
+    };
+
+    ElementsRenderer.prototype.createLi = function(node) {
+      var li;
+      if (node.isFolder()) {
+        li = this.createFolderLi(node);
+      } else {
+        li = this.createNodeLi(node);
+      }
+      if (this.tree_widget.options.onCreateLi) {
+        this.tree_widget.options.onCreateLi(node, $(li));
+      }
+      return li;
+    };
+
+    ElementsRenderer.prototype.createFolderLi = function(node) {
+      var button_classes, button_link, div, escaped_name, folder_classes, icon_element, li, title_span;
+      button_classes = this.getButtonClasses(node);
+      folder_classes = this.getFolderClasses(node);
+      escaped_name = this.escapeIfNecessary(node.name);
+      if (node.is_open) {
+        icon_element = this.opened_icon_element;
+      } else {
+        icon_element = this.closed_icon_element;
+      }
+      li = document.createElement('li');
+      li.className = "jqtree_common " + folder_classes;
+      div = document.createElement('div');
+      div.className = "jqtree-element jqtree_common";
+      li.appendChild(div);
+      button_link = document.createElement('a');
+      button_link.className = "jqtree_common " + button_classes;
+      button_link.appendChild(icon_element.cloneNode());
+      div.appendChild(button_link);
+      title_span = document.createElement('span');
+      title_span.className = "jqtree_common jqtree-title jqtree-title-folder";
+      div.appendChild(title_span);
+      title_span.innerHTML = escaped_name;
+      return li;
+    };
+
+    ElementsRenderer.prototype.createNodeLi = function(node) {
+      var class_string, div, escaped_name, li, li_classes, title_span;
+      li_classes = ['jqtree_common'];
+      if (this.tree_widget.select_node_handler && this.tree_widget.select_node_handler.isNodeSelected(node)) {
+        li_classes.push('jqtree-selected');
+      }
+      class_string = li_classes.join(' ');
+      escaped_name = this.escapeIfNecessary(node.name);
+      li = document.createElement('li');
+      li.className = class_string;
+      div = document.createElement('div');
+      div.className = "jqtree-element jqtree_common";
+      li.appendChild(div);
+      title_span = document.createElement('span');
+      title_span.className = "jqtree-title jqtree_common";
+      title_span.innerHTML = escaped_name;
+      div.appendChild(title_span);
+      return li;
+    };
+
+    ElementsRenderer.prototype.getButtonClasses = function(node) {
+      var classes;
+      classes = ['jqtree-toggler'];
+      if (!node.is_open) {
+        classes.push('jqtree-closed');
+      }
+      return classes.join(' ');
+    };
+
+    ElementsRenderer.prototype.getFolderClasses = function(node) {
+      var classes;
+      classes = ['jqtree-folder'];
+      if (!node.is_open) {
+        classes.push('jqtree-closed');
+      }
+      if (this.tree_widget.select_node_handler && this.tree_widget.select_node_handler.isNodeSelected(node)) {
+        classes.push('jqtree-selected');
+      }
+      return classes.join(' ');
+    };
+
+    ElementsRenderer.prototype.escapeIfNecessary = function(value) {
+      if (this.tree_widget.options.autoEscape) {
+        return html_escape(value);
+      } else {
+        return value;
+      }
+    };
+
+    ElementsRenderer.prototype.createButtonElement = function(value) {
+      var div;
+      if (typeof value === 'string') {
+        div = document.createElement('div');
+        div.innerHTML = value;
+        return document.createTextNode(div.innerHTML);
+      } else {
+        return $(value)[0];
+      }
+    };
+
+    return ElementsRenderer;
+
+  })();
+
+
+  /*
+  Copyright 2013 Marco Braak
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  
+      http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+   */
+
+  JqTreeWidget = (function(_super) {
+    __extends(JqTreeWidget, _super);
+
+    function JqTreeWidget() {
+      return JqTreeWidget.__super__.constructor.apply(this, arguments);
+    }
+
+    JqTreeWidget.prototype.defaults = {
+      autoOpen: false,
+      saveState: false,
+      dragAndDrop: false,
+      selectable: true,
+      useContextMenu: true,
+      onCanSelectNode: null,
+      onSetStateFromStorage: null,
+      onGetStateFromStorage: null,
+      onCreateLi: null,
+      onIsMoveHandle: null,
+      onCanMove: null,
+      onCanMoveTo: null,
+      onLoadFailed: null,
+      autoEscape: true,
+      dataUrl: null,
+      closedIcon: '&#x25ba;',
+      openedIcon: '&#x25bc;',
+      slide: true,
+      nodeClass: Node,
+      dataFilter: null,
+      keyboardSupport: true,
+      openFolderDelay: 500
+    };
+
+    JqTreeWidget.prototype.toggle = function(node, slide) {
+      if (slide == null) {
+        slide = null;
+      }
+      if (slide === null) {
+        slide = this.options.slide;
+      }
+      if (node.is_open) {
+        return this.closeNode(node, slide);
+      } else {
+        return this.openNode(node, slide);
+      }
+    };
+
+    JqTreeWidget.prototype.getTree = function() {
+      return this.tree;
+    };
+
+    JqTreeWidget.prototype.selectNode = function(node) {
+      return this._selectNode(node, false);
+    };
+
+    JqTreeWidget.prototype._selectNode = function(node, must_toggle) {
+      var canSelect, deselected_node, openParents, saveState;
+      if (must_toggle == null) {
+        must_toggle = false;
+      }
+      if (!this.select_node_handler) {
+        return;
+      }
+      canSelect = (function(_this) {
+        return function() {
+          if (_this.options.onCanSelectNode) {
+            return _this.options.selectable && _this.options.onCanSelectNode(node);
+          } else {
+            return _this.options.selectable;
+          }
+        };
+      })(this);
+      openParents = (function(_this) {
+        return function() {
+          var parent;
+          parent = node.parent;
+          if (parent && parent.parent && !parent.is_open) {
+            return _this.openNode(parent, false);
+          }
+        };
+      })(this);
+      saveState = (function(_this) {
+        return function() {
+          if (_this.options.saveState) {
+            return _this.save_state_handler.saveState();
+          }
+        };
+      })(this);
+      if (!node) {
+        this._deselectCurrentNode();
+        saveState();
+        return;
+      }
+      if (!canSelect()) {
+        return;
+      }
+      if (this.select_node_handler.isNodeSelected(node)) {
+        if (must_toggle) {
+          this._deselectCurrentNode();
+          this._triggerEvent('tree.select', {
+            node: null,
+            previous_node: node
+          });
+        }
+      } else {
+        deselected_node = this.getSelectedNode();
+        this._deselectCurrentNode();
+        this.addToSelection(node);
+        this._triggerEvent('tree.select', {
+          node: node,
+          deselected_node: deselected_node
+        });
+        openParents();
+      }
+      return saveState();
+    };
+
+    JqTreeWidget.prototype.getSelectedNode = function() {
+      return this.select_node_handler.getSelectedNode();
+    };
+
+    JqTreeWidget.prototype.toJson = function() {
+      return JSON.stringify(this.tree.getData());
+    };
+
+    JqTreeWidget.prototype.loadData = function(data, parent_node) {
+      return this._loadData(data, parent_node);
+    };
+
+    JqTreeWidget.prototype.loadDataFromUrl = function(url, parent_node, on_finished) {
+      if ($.type(url) !== 'string') {
+        on_finished = parent_node;
+        parent_node = url;
+        url = null;
+      }
+      return this._loadDataFromUrl(url, parent_node, on_finished);
+    };
+
+    JqTreeWidget.prototype.reload = function() {
+      return this.loadDataFromUrl();
+    };
+
+    JqTreeWidget.prototype._loadDataFromUrl = function(url_info, parent_node, on_finished) {
+      var $el, addLoadingClass, handeLoadData, loadDataFromUrlInfo, parseUrlInfo, removeLoadingClass;
+      $el = null;
+      addLoadingClass = (function(_this) {
+        return function() {
+          var folder_element;
+          if (!parent_node) {
+            $el = _this.element;
+          } else {
+            folder_element = new FolderElement(parent_node, _this);
+            $el = folder_element.getLi();
+          }
+          return $el.addClass('jqtree-loading');
+        };
+      })(this);
+      removeLoadingClass = (function(_this) {
+        return function() {
+          if ($el) {
+            return $el.removeClass('jqtree-loading');
+          }
+        };
+      })(this);
+      parseUrlInfo = (function(_this) {
+        return function() {
+          if ($.type(url_info) === 'string') {
+            url_info = {
+              url: url_info
+            };
+          }
+          if (!url_info.method) {
+            return url_info.method = 'get';
+          }
+        };
+      })(this);
+      handeLoadData = (function(_this) {
+        return function(data) {
+          removeLoadingClass();
+          _this._loadData(data, parent_node);
+          if (on_finished && $.isFunction(on_finished)) {
+            return on_finished();
+          }
+        };
+      })(this);
+      loadDataFromUrlInfo = (function(_this) {
+        return function() {
+          parseUrlInfo();
+          return $.ajax({
+            url: url_info.url,
+            data: url_info.data,
+            type: url_info.method.toUpperCase(),
+            cache: false,
+            dataType: 'json',
+            success: function(response) {
+              var data;
+              if ($.isArray(response) || typeof response === 'object') {
+                data = response;
+              } else {
+                data = $.parseJSON(response);
+              }
+              if (_this.options.dataFilter) {
+                data = _this.options.dataFilter(data);
+              }
+              return handeLoadData(data);
+            },
+            error: function(response) {
+              removeLoadingClass();
+              if (_this.options.onLoadFailed) {
+                return _this.options.onLoadFailed(response);
+              }
+            }
+          });
+        };
+      })(this);
+      if (!url_info) {
+        url_info = this._getDataUrlInfo(parent_node);
+      }
+      addLoadingClass();
+      if (!url_info) {
+        removeLoadingClass();
+      } else if ($.isArray(url_info)) {
+        handeLoadData(url_info);
+      } else {
+        return loadDataFromUrlInfo();
+      }
+    };
+
+    JqTreeWidget.prototype._loadData = function(data, parent_node) {
+      var n, selected_nodes_under_parent, _i, _len;
+      if (!data) {
+        return;
+      }
+      this._triggerEvent('tree.load_data', {
+        tree_data: data
+      });
+      if (!parent_node) {
+        this._initTree(data);
+      } else {
+        selected_nodes_under_parent = this.select_node_handler.getSelectedNodesUnder(parent_node);
+        for (_i = 0, _len = selected_nodes_under_parent.length; _i < _len; _i++) {
+          n = selected_nodes_under_parent[_i];
+          this.select_node_handler.removeFromSelection(n);
+        }
+        parent_node.loadFromData(data);
+        parent_node.load_on_demand = false;
+        this._refreshElements(parent_node.parent);
+      }
+      if (this.isDragging()) {
+        return this.dnd_handler.refresh();
+      }
+    };
+
+    JqTreeWidget.prototype.getNodeById = function(node_id) {
+      return this.tree.getNodeById(node_id);
+    };
+
+    JqTreeWidget.prototype.getNodeByName = function(name) {
+      return this.tree.getNodeByName(name);
+    };
+
+    JqTreeWidget.prototype.openNode = function(node, slide) {
+      if (slide == null) {
+        slide = null;
+      }
+      if (slide === null) {
+        slide = this.options.slide;
+      }
+      return this._openNode(node, slide);
+    };
+
+    JqTreeWidget.prototype._openNode = function(node, slide, on_finished) {
+      var doOpenNode, parent;
+      if (slide == null) {
+        slide = true;
+      }
+      doOpenNode = (function(_this) {
+        return function(_node, _slide, _on_finished) {
+          var folder_element;
+          folder_element = new FolderElement(_node, _this);
+          return folder_element.open(_on_finished, _slide);
+        };
+      })(this);
+      if (node.isFolder()) {
+        if (node.load_on_demand) {
+          return this._loadFolderOnDemand(node, slide, on_finished);
+        } else {
+          parent = node.parent;
+          while (parent && !parent.is_open) {
+            if (parent.parent) {
+              doOpenNode(parent, false, null);
+            }
+            parent = parent.parent;
+          }
+          doOpenNode(node, slide, on_finished);
+          return this._saveState();
+        }
+      }
+    };
+
+    JqTreeWidget.prototype._loadFolderOnDemand = function(node, slide, on_finished) {
+      if (slide == null) {
+        slide = true;
+      }
+      return this._loadDataFromUrl(null, node, (function(_this) {
+        return function() {
+          return _this._openNode(node, slide, on_finished);
+        };
+      })(this));
+    };
+
+    JqTreeWidget.prototype.closeNode = function(node, slide) {
+      if (slide == null) {
+        slide = null;
+      }
+      if (slide === null) {
+        slide = this.options.slide;
+      }
+      if (node.isFolder()) {
+        new FolderElement(node, this).close(slide);
+        return this._saveState();
+      }
+    };
+
+    JqTreeWidget.prototype.isDragging = function() {
+      if (this.dnd_handler) {
+        return this.dnd_handler.is_dragging;
+      } else {
+        return false;
+      }
+    };
+
+    JqTreeWidget.prototype.refreshHitAreas = function() {
+      return this.dnd_handler.refresh();
+    };
+
+    JqTreeWidget.prototype.addNodeAfter = function(new_node_info, existing_node) {
+      var new_node;
+      new_node = existing_node.addAfter(new_node_info);
+      this._refreshElements(existing_node.parent);
+      return new_node;
+    };
+
+    JqTreeWidget.prototype.addNodeBefore = function(new_node_info, existing_node) {
+      var new_node;
+      new_node = existing_node.addBefore(new_node_info);
+      this._refreshElements(existing_node.parent);
+      return new_node;
+    };
+
+    JqTreeWidget.prototype.addParentNode = function(new_node_info, existing_node) {
+      var new_node;
+      new_node = existing_node.addParent(new_node_info);
+      this._refreshElements(new_node.parent);
+      return new_node;
+    };
+
+    JqTreeWidget.prototype.removeNode = function(node) {
+      var parent;
+      parent = node.parent;
+      if (parent) {
+        this.select_node_handler.removeFromSelection(node, true);
+        node.remove();
+        return this._refreshElements(parent.parent);
+      }
+    };
+
+    JqTreeWidget.prototype.appendNode = function(new_node_info, parent_node) {
+      var is_already_folder_node, node;
+      if (!parent_node) {
+        parent_node = this.tree;
+      }
+      is_already_folder_node = parent_node.isFolder();
+      node = parent_node.append(new_node_info);
+      if (is_already_folder_node) {
+        this._refreshElements(parent_node);
+      } else {
+        this._refreshElements(parent_node.parent);
+      }
+      return node;
+    };
+
+    JqTreeWidget.prototype.prependNode = function(new_node_info, parent_node) {
+      var node;
+      if (!parent_node) {
+        parent_node = this.tree;
+      }
+      node = parent_node.prepend(new_node_info);
+      this._refreshElements(parent_node);
+      return node;
+    };
+
+    JqTreeWidget.prototype.updateNode = function(node, data) {
+      var id_is_changed;
+      id_is_changed = data.id && data.id !== node.id;
+      if (id_is_changed) {
+        this.tree.removeNodeFromIndex(node);
+      }
+      node.setData(data);
+      if (id_is_changed) {
+        this.tree.addNodeToIndex(node);
+      }
+      this.renderer.renderNode(node);
+      return this._selectCurrentNode();
+    };
+
+    JqTreeWidget.prototype.moveNode = function(node, target_node, position) {
+      var position_index;
+      position_index = Position.nameToIndex(position);
+      this.tree.moveNode(node, target_node, position_index);
+      return this._refreshElements();
+    };
+
+    JqTreeWidget.prototype.getStateFromStorage = function() {
+      return this.save_state_handler.getStateFromStorage();
+    };
+
+    JqTreeWidget.prototype.addToSelection = function(node) {
+      if (node) {
+        this.select_node_handler.addToSelection(node);
+        this._getNodeElementForNode(node).select();
+        return this._saveState();
+      }
+    };
+
+    JqTreeWidget.prototype.getSelectedNodes = function() {
+      return this.select_node_handler.getSelectedNodes();
+    };
+
+    JqTreeWidget.prototype.isNodeSelected = function(node) {
+      return this.select_node_handler.isNodeSelected(node);
+    };
+
+    JqTreeWidget.prototype.removeFromSelection = function(node) {
+      this.select_node_handler.removeFromSelection(node);
+      this._getNodeElementForNode(node).deselect();
+      return this._saveState();
+    };
+
+    JqTreeWidget.prototype.scrollToNode = function(node) {
+      var $element, top;
+      $element = $(node.element);
+      top = $element.offset().top - this.$el.offset().top;
+      return this.scroll_handler.scrollTo(top);
+    };
+
+    JqTreeWidget.prototype.getState = function() {
+      return this.save_state_handler.getState();
+    };
+
+    JqTreeWidget.prototype.setState = function(state) {
+      this.save_state_handler.setState(state);
+      return this._refreshElements();
+    };
+
+    JqTreeWidget.prototype.setOption = function(option, value) {
+      return this.options[option] = value;
+    };
+
+    JqTreeWidget.prototype.getVersion = function() {
+      return __version__;
+    };
+
+    JqTreeWidget.prototype._init = function() {
+      JqTreeWidget.__super__._init.call(this);
+      this.element = this.$el;
+      this.mouse_delay = 300;
+      this.is_initialized = false;
+      this.renderer = new ElementsRenderer(this);
+      if (typeof SaveStateHandler !== "undefined" && SaveStateHandler !== null) {
+        this.save_state_handler = new SaveStateHandler(this);
+      } else {
+        this.options.saveState = false;
+      }
+      if (typeof SelectNodeHandler !== "undefined" && SelectNodeHandler !== null) {
+        this.select_node_handler = new SelectNodeHandler(this);
+      }
+      if (typeof DragAndDropHandler !== "undefined" && DragAndDropHandler !== null) {
+        this.dnd_handler = new DragAndDropHandler(this);
+      } else {
+        this.options.dragAndDrop = false;
+      }
+      if (typeof ScrollHandler !== "undefined" && ScrollHandler !== null) {
+        this.scroll_handler = new ScrollHandler(this);
+      }
+      if ((typeof KeyHandler !== "undefined" && KeyHandler !== null) && (typeof SelectNodeHandler !== "undefined" && SelectNodeHandler !== null)) {
+        this.key_handler = new KeyHandler(this);
+      }
+      this._initData();
+      this.element.click($.proxy(this._click, this));
+      this.element.dblclick($.proxy(this._dblclick, this));
+      if (this.options.useContextMenu) {
+        return this.element.bind('contextmenu', $.proxy(this._contextmenu, this));
+      }
+    };
+
+    JqTreeWidget.prototype._deinit = function() {
+      this.element.empty();
+      this.element.unbind();
+      this.key_handler.deinit();
+      this.tree = null;
+      return JqTreeWidget.__super__._deinit.call(this);
+    };
+
+    JqTreeWidget.prototype._initData = function() {
+      if (this.options.data) {
+        return this._loadData(this.options.data);
+      } else {
+        return this._loadDataFromUrl(this._getDataUrlInfo());
+      }
+    };
+
+    JqTreeWidget.prototype._getDataUrlInfo = function(node) {
+      var data_url, getUrlFromString;
+      data_url = this.options.dataUrl || this.element.data('url');
+      getUrlFromString = (function(_this) {
+        return function() {
+          var data, selected_node_id, url_info;
+          url_info = {
+            url: data_url
+          };
+          if (node && node.id) {
+            data = {
+              node: node.id
+            };
+            url_info['data'] = data;
+          } else {
+            selected_node_id = _this._getNodeIdToBeSelected();
+            if (selected_node_id) {
+              data = {
+                selected_node: selected_node_id
+              };
+              url_info['data'] = data;
+            }
+          }
+          return url_info;
+        };
+      })(this);
+      if ($.isFunction(data_url)) {
+        return data_url(node);
+      } else if ($.type(data_url) === 'string') {
+        return getUrlFromString();
+      } else {
+        return data_url;
+      }
+    };
+
+    JqTreeWidget.prototype._getNodeIdToBeSelected = function() {
+      if (this.options.saveState) {
+        return this.save_state_handler.getNodeIdToBeSelected();
+      } else {
+        return null;
+      }
+    };
+
+    JqTreeWidget.prototype._initTree = function(data) {
+      this.tree = new this.options.nodeClass(null, true, this.options.nodeClass);
+      if (this.select_node_handler) {
+        this.select_node_handler.clear();
+      }
+      this.tree.loadFromData(data);
+      this._openNodes();
+      this._refreshElements();
+      if (!this.is_initialized) {
+        this.is_initialized = true;
+        return this._triggerEvent('tree.init');
+      }
+    };
+
+    JqTreeWidget.prototype._openNodes = function() {
+      var max_level;
+      if (this.options.saveState) {
+        if (this.save_state_handler.restoreState()) {
+          return;
+        }
+      }
+      if (this.options.autoOpen === false) {
+        return;
+      } else if (this.options.autoOpen === true) {
+        max_level = -1;
+      } else {
+        max_level = parseInt(this.options.autoOpen);
+      }
+      return this.tree.iterate(function(node, level) {
+        if (node.hasChildren()) {
+          node.is_open = true;
+        }
+        return level !== max_level;
+      });
+    };
+
+    JqTreeWidget.prototype._refreshElements = function(from_node) {
+      if (from_node == null) {
+        from_node = null;
+      }
+      this.renderer.render(from_node);
+      return this._triggerEvent('tree.refresh');
+    };
+
+    JqTreeWidget.prototype._click = function(e) {
+      var click_target, event, node;
+      click_target = this._getClickTarget(e.target);
+      if (click_target) {
+        if (click_target.type === 'button') {
+          this.toggle(click_target.node, this.options.slide);
+          e.preventDefault();
+          return e.stopPropagation();
+        } else if (click_target.type === 'label') {
+          node = click_target.node;
+          event = this._triggerEvent('tree.click', {
+            node: node,
+            click_event: e
+          });
+          if (!event.isDefaultPrevented()) {
+            return this._selectNode(node, true);
+          }
+        }
+      }
+    };
+
+    JqTreeWidget.prototype._dblclick = function(e) {
+      var click_target;
+      click_target = this._getClickTarget(e.target);
+      if (click_target && click_target.type === 'label') {
+        return this._triggerEvent('tree.dblclick', {
+          node: click_target.node,
+          click_event: e
+        });
+      }
+    };
+
+    JqTreeWidget.prototype._getClickTarget = function(element) {
+      var $button, $el, $target, node;
+      $target = $(element);
+      $button = $target.closest('.jqtree-toggler');
+      if ($button.length) {
+        node = this._getNode($button);
+        if (node) {
+          return {
+            type: 'button',
+            node: node
+          };
+        }
+      } else {
+        $el = $target.closest('.jqtree-element');
+        if ($el.length) {
+          node = this._getNode($el);
+          if (node) {
+            return {
+              type: 'label',
+              node: node
+            };
+          }
+        }
+      }
+      return null;
+    };
+
+    JqTreeWidget.prototype._getNode = function($element) {
+      var $li;
+      $li = $element.closest('li.jqtree_common');
+      if ($li.length === 0) {
+        return null;
+      } else {
+        return $li.data('node');
+      }
+    };
+
+    JqTreeWidget.prototype._getNodeElementForNode = function(node) {
+      if (node.isFolder()) {
+        return new FolderElement(node, this);
+      } else {
+        return new NodeElement(node, this);
+      }
+    };
+
+    JqTreeWidget.prototype._getNodeElement = function($element) {
+      var node;
+      node = this._getNode($element);
+      if (node) {
+        return this._getNodeElementForNode(node);
+      } else {
+        return null;
+      }
+    };
+
+    JqTreeWidget.prototype._contextmenu = function(e) {
+      var $div, node;
+      $div = $(e.target).closest('ul.jqtree-tree .jqtree-element');
+      if ($div.length) {
+        node = this._getNode($div);
+        if (node) {
+          e.preventDefault();
+          e.stopPropagation();
+          this._triggerEvent('tree.contextmenu', {
+            node: node,
+            click_event: e
+          });
+          return false;
+        }
+      }
+    };
+
+    JqTreeWidget.prototype._saveState = function() {
+      if (this.options.saveState) {
+        return this.save_state_handler.saveState();
+      }
+    };
+
+    JqTreeWidget.prototype._mouseCapture = function(position_info) {
+      if (this.options.dragAndDrop) {
+        return this.dnd_handler.mouseCapture(position_info);
+      } else {
+        return false;
+      }
+    };
+
+    JqTreeWidget.prototype._mouseStart = function(position_info) {
+      if (this.options.dragAndDrop) {
+        return this.dnd_handler.mouseStart(position_info);
+      } else {
+        return false;
+      }
+    };
+
+    JqTreeWidget.prototype._mouseDrag = function(position_info) {
+      var result;
+      if (this.options.dragAndDrop) {
+        result = this.dnd_handler.mouseDrag(position_info);
+        if (this.scroll_handler) {
+          this.scroll_handler.checkScrolling();
+        }
+        return result;
+      } else {
+        return false;
+      }
+    };
+
+    JqTreeWidget.prototype._mouseStop = function(position_info) {
+      if (this.options.dragAndDrop) {
+        return this.dnd_handler.mouseStop(position_info);
+      } else {
+        return false;
+      }
+    };
+
+    JqTreeWidget.prototype._triggerEvent = function(event_name, values) {
+      var event;
+      event = $.Event(event_name);
+      $.extend(event, values);
+      this.element.trigger(event);
+      return event;
+    };
+
+    JqTreeWidget.prototype.testGenerateHitAreas = function(moving_node) {
+      this.dnd_handler.current_item = this._getNodeElementForNode(moving_node);
+      this.dnd_handler.generateHitAreas();
+      return this.dnd_handler.hit_areas;
+    };
+
+    JqTreeWidget.prototype._selectCurrentNode = function() {
+      var node, node_element;
+      node = this.getSelectedNode();
+      if (node) {
+        node_element = this._getNodeElementForNode(node);
+        if (node_element) {
+          return node_element.select();
+        }
+      }
+    };
+
+    JqTreeWidget.prototype._deselectCurrentNode = function() {
+      var node;
+      node = this.getSelectedNode();
+      if (node) {
+        return this.removeFromSelection(node);
+      }
+    };
+
+    return JqTreeWidget;
+
+  })(MouseWidget);
+
+  SimpleWidget.register(JqTreeWidget, 'tree');
+
+  NodeElement = (function() {
+    function NodeElement(node, tree_widget) {
+      this.init(node, tree_widget);
+    }
+
+    NodeElement.prototype.init = function(node, tree_widget) {
+      this.node = node;
+      this.tree_widget = tree_widget;
+      if (!node.element) {
+        node.element = this.tree_widget.element;
+      }
+      return this.$element = $(node.element);
+    };
+
+    NodeElement.prototype.getUl = function() {
+      return this.$element.children('ul:first');
+    };
+
+    NodeElement.prototype.getSpan = function() {
+      return this.$element.children('.jqtree-element').find('span.jqtree-title');
+    };
+
+    NodeElement.prototype.getLi = function() {
+      return this.$element;
+    };
+
+    NodeElement.prototype.addDropHint = function(position) {
+      if (position === Position.INSIDE) {
+        return new BorderDropHint(this.$element);
+      } else {
+        return new GhostDropHint(this.node, this.$element, position);
+      }
+    };
+
+    NodeElement.prototype.select = function() {
+      return this.getLi().addClass('jqtree-selected');
+    };
+
+    NodeElement.prototype.deselect = function() {
+      return this.getLi().removeClass('jqtree-selected');
+    };
+
+    return NodeElement;
+
+  })();
+
+  FolderElement = (function(_super) {
+    __extends(FolderElement, _super);
+
+    function FolderElement() {
+      return FolderElement.__super__.constructor.apply(this, arguments);
+    }
+
+    FolderElement.prototype.open = function(on_finished, slide) {
+      var $button, doOpen;
+      if (slide == null) {
+        slide = true;
+      }
+      if (!this.node.is_open) {
+        this.node.is_open = true;
+        $button = this.getButton();
+        $button.removeClass('jqtree-closed');
+        $button.html('');
+        $button.append(this.tree_widget.renderer.opened_icon_element.cloneNode());
+        doOpen = (function(_this) {
+          return function() {
+            _this.getLi().removeClass('jqtree-closed');
+            if (on_finished) {
+              on_finished();
+            }
+            return _this.tree_widget._triggerEvent('tree.open', {
+              node: _this.node
+            });
+          };
+        })(this);
+        if (slide) {
+          return this.getUl().slideDown('fast', doOpen);
+        } else {
+          this.getUl().show();
+          return doOpen();
+        }
+      }
+    };
+
+    FolderElement.prototype.close = function(slide) {
+      var $button, doClose;
+      if (slide == null) {
+        slide = true;
+      }
+      if (this.node.is_open) {
+        this.node.is_open = false;
+        $button = this.getButton();
+        $button.addClass('jqtree-closed');
+        $button.html('');
+        $button.append(this.tree_widget.renderer.closed_icon_element.cloneNode());
+        doClose = (function(_this) {
+          return function() {
+            _this.getLi().addClass('jqtree-closed');
+            return _this.tree_widget._triggerEvent('tree.close', {
+              node: _this.node
+            });
+          };
+        })(this);
+        if (slide) {
+          return this.getUl().slideUp('fast', doClose);
+        } else {
+          this.getUl().hide();
+          return doClose();
+        }
+      }
+    };
+
+    FolderElement.prototype.getButton = function() {
+      return this.$element.children('.jqtree-element').find('a.jqtree-toggler');
+    };
+
+    FolderElement.prototype.addDropHint = function(position) {
+      if (!this.node.is_open && position === Position.INSIDE) {
+        return new BorderDropHint(this.$element);
+      } else {
+        return new GhostDropHint(this.node, this.$element, position);
+      }
+    };
+
+    return FolderElement;
+
+  })(NodeElement);
+
+  html_escape = function(string) {
+    return ('' + string).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#x27;').replace(/\//g, '&#x2F;');
+  };
+
+  _indexOf = function(array, item) {
+    var i, value, _i, _len;
+    for (i = _i = 0, _len = array.length; _i < _len; i = ++_i) {
+      value = array[i];
+      if (value === item) {
+        return i;
+      }
+    }
+    return -1;
+  };
+
+  indexOf = function(array, item) {
+    if (array.indexOf) {
+      return array.indexOf(item);
+    } else {
+      return _indexOf(array, item);
+    }
+  };
+
+  this.Tree.indexOf = indexOf;
+
+  this.Tree._indexOf = _indexOf;
+
+  isInt = function(n) {
+    return typeof n === 'number' && n % 1 === 0;
+  };
+
+  get_json_stringify_function = function() {
+    var json_escapable, json_meta, json_quote, json_str, stringify;
+    json_escapable = /[\\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g;
+    json_meta = {
+      '\b': '\\b',
+      '\t': '\\t',
+      '\n': '\\n',
+      '\f': '\\f',
+      '\r': '\\r',
+      '"': '\\"',
+      '\\': '\\\\'
+    };
+    json_quote = function(string) {
+      json_escapable.lastIndex = 0;
+      if (json_escapable.test(string)) {
+        return '"' + string.replace(json_escapable, function(a) {
+          var c;
+          c = json_meta[a];
+          return (typeof c === 'string' ? c : '\\u' + ('0000' + a.charCodeAt(0).toString(16)).slice(-4));
+        }) + '"';
+      } else {
+        return '"' + string + '"';
+      }
+    };
+    json_str = function(key, holder) {
+      var i, k, partial, v, value, _i, _len;
+      value = holder[key];
+      switch (typeof value) {
+        case 'string':
+          return json_quote(value);
+        case 'number':
+          if (isFinite(value)) {
+            return String(value);
+          } else {
+            return 'null';
+          }
+        case 'boolean':
+        case 'null':
+          return String(value);
+        case 'object':
+          if (!value) {
+            return 'null';
+          }
+          partial = [];
+          if (Object.prototype.toString.apply(value) === '[object Array]') {
+            for (i = _i = 0, _len = value.length; _i < _len; i = ++_i) {
+              v = value[i];
+              partial[i] = json_str(i, value) || 'null';
+            }
+            return (partial.length === 0 ? '[]' : '[' + partial.join(',') + ']');
+          }
+          for (k in value) {
+            if (Object.prototype.hasOwnProperty.call(value, k)) {
+              v = json_str(k, value);
+              if (v) {
+                partial.push(json_quote(k) + ':' + v);
+              }
+            }
+          }
+          return (partial.length === 0 ? '{}' : '{' + partial.join(',') + '}');
+      }
+    };
+    stringify = function(value) {
+      return json_str('', {
+        '': value
+      });
+    };
+    return stringify;
+  };
+
+  this.Tree.get_json_stringify_function = get_json_stringify_function;
+
+  if (!((this.JSON != null) && (this.JSON.stringify != null) && typeof this.JSON.stringify === 'function')) {
+    if (this.JSON == null) {
+      this.JSON = {};
+    }
+    this.JSON.stringify = get_json_stringify_function();
+  }
+
+  SaveStateHandler = (function() {
+    function SaveStateHandler(tree_widget) {
+      this.tree_widget = tree_widget;
+    }
+
+    SaveStateHandler.prototype.saveState = function() {
+      var state;
+      state = JSON.stringify(this.getState());
+      if (this.tree_widget.options.onSetStateFromStorage) {
+        return this.tree_widget.options.onSetStateFromStorage(state);
+      } else if (this.supportsLocalStorage()) {
+        return localStorage.setItem(this.getCookieName(), state);
+      } else if ($.cookie) {
+        $.cookie.raw = true;
+        return $.cookie(this.getCookieName(), state, {
+          path: '/'
+        });
+      }
+    };
+
+    SaveStateHandler.prototype.restoreState = function() {
+      var state;
+      state = this.getStateFromStorage();
+      if (state) {
+        this.setState(state);
+        return true;
+      } else {
+        return false;
+      }
+    };
+
+    SaveStateHandler.prototype.getStateFromStorage = function() {
+      var json_data;
+      json_data = this._loadFromStorage();
+      if (json_data) {
+        return this._parseState(json_data);
+      } else {
+        return null;
+      }
+    };
+
+    SaveStateHandler.prototype._parseState = function(json_data) {
+      var state;
+      state = $.parseJSON(json_data);
+      if (state && state.selected_node && isInt(state.selected_node)) {
+        state.selected_node = [state.selected_node];
+      }
+      return state;
+    };
+
+    SaveStateHandler.prototype._loadFromStorage = function() {
+      if (this.tree_widget.options.onGetStateFromStorage) {
+        return this.tree_widget.options.onGetStateFromStorage();
+      } else if (this.supportsLocalStorage()) {
+        return localStorage.getItem(this.getCookieName());
+      } else if ($.cookie) {
+        $.cookie.raw = true;
+        return $.cookie(this.getCookieName());
+      } else {
+        return null;
+      }
+    };
+
+    SaveStateHandler.prototype.getState = function() {
+      var getOpenNodeIds, getSelectedNodeIds;
+      getOpenNodeIds = (function(_this) {
+        return function() {
+          var open_nodes;
+          open_nodes = [];
+          _this.tree_widget.tree.iterate(function(node) {
+            if (node.is_open && node.id && node.hasChildren()) {
+              open_nodes.push(node.id);
+            }
+            return true;
+          });
+          return open_nodes;
+        };
+      })(this);
+      getSelectedNodeIds = (function(_this) {
+        return function() {
+          var n;
+          return (function() {
+            var _i, _len, _ref, _results;
+            _ref = this.tree_widget.getSelectedNodes();
+            _results = [];
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+              n = _ref[_i];
+              _results.push(n.id);
+            }
+            return _results;
+          }).call(_this);
+        };
+      })(this);
+      return {
+        open_nodes: getOpenNodeIds(),
+        selected_node: getSelectedNodeIds()
+      };
+    };
+
+    SaveStateHandler.prototype.setState = function(state) {
+      var node_id, open_nodes, selected_node, selected_node_ids, _i, _len, _results;
+      if (state) {
+        open_nodes = state.open_nodes;
+        selected_node_ids = state.selected_node;
+        this.tree_widget.tree.iterate((function(_this) {
+          return function(node) {
+            node.is_open = node.id && node.hasChildren() && (indexOf(open_nodes, node.id) >= 0);
+            return true;
+          };
+        })(this));
+        if (selected_node_ids && this.tree_widget.select_node_handler) {
+          this.tree_widget.select_node_handler.clear();
+          _results = [];
+          for (_i = 0, _len = selected_node_ids.length; _i < _len; _i++) {
+            node_id = selected_node_ids[_i];
+            selected_node = this.tree_widget.getNodeById(node_id);
+            if (selected_node) {
+              _results.push(this.tree_widget.select_node_handler.addToSelection(selected_node));
+            } else {
+              _results.push(void 0);
+            }
+          }
+          return _results;
+        }
+      }
+    };
+
+    SaveStateHandler.prototype.getCookieName = function() {
+      if (typeof this.tree_widget.options.saveState === 'string') {
+        return this.tree_widget.options.saveState;
+      } else {
+        return 'tree';
+      }
+    };
+
+    SaveStateHandler.prototype.supportsLocalStorage = function() {
+      var testSupport;
+      testSupport = function() {
+        var error, key;
+        if (typeof localStorage === "undefined" || localStorage === null) {
+          return false;
+        } else {
+          try {
+            key = '_storage_test';
+            sessionStorage.setItem(key, true);
+            sessionStorage.removeItem(key);
+          } catch (_error) {
+            error = _error;
+            return false;
+          }
+          return true;
+        }
+      };
+      if (this._supportsLocalStorage == null) {
+        this._supportsLocalStorage = testSupport();
+      }
+      return this._supportsLocalStorage;
+    };
+
+    SaveStateHandler.prototype.getNodeIdToBeSelected = function() {
+      var state;
+      state = this.getStateFromStorage();
+      if (state && state.selected_node) {
+        return state.selected_node[0];
+      } else {
+        return null;
+      }
+    };
+
+    return SaveStateHandler;
+
+  })();
+
+  SelectNodeHandler = (function() {
+    function SelectNodeHandler(tree_widget) {
+      this.tree_widget = tree_widget;
+      this.clear();
+    }
+
+    SelectNodeHandler.prototype.getSelectedNode = function() {
+      var selected_nodes;
+      selected_nodes = this.getSelectedNodes();
+      if (selected_nodes.length) {
+        return selected_nodes[0];
+      } else {
+        return false;
+      }
+    };
+
+    SelectNodeHandler.prototype.getSelectedNodes = function() {
+      var id, node, selected_nodes;
+      if (this.selected_single_node) {
+        return [this.selected_single_node];
+      } else {
+        selected_nodes = [];
+        for (id in this.selected_nodes) {
+          node = this.tree_widget.getNodeById(id);
+          if (node) {
+            selected_nodes.push(node);
+          }
+        }
+        return selected_nodes;
+      }
+    };
+
+    SelectNodeHandler.prototype.getSelectedNodesUnder = function(parent) {
+      var id, node, selected_nodes;
+      if (this.selected_single_node) {
+        if (parent.isParentOf(this.selected_single_node)) {
+          return [this.selected_single_node];
+        } else {
+          return [];
+        }
+      } else {
+        selected_nodes = [];
+        for (id in this.selected_nodes) {
+          node = this.tree_widget.getNodeById(id);
+          if (node && parent.isParentOf(node)) {
+            selected_nodes.push(node);
+          }
+        }
+        return selected_nodes;
+      }
+    };
+
+    SelectNodeHandler.prototype.isNodeSelected = function(node) {
+      if (node.id) {
+        return this.selected_nodes[node.id];
+      } else if (this.selected_single_node) {
+        return this.selected_single_node.element === node.element;
+      } else {
+        return false;
+      }
+    };
+
+    SelectNodeHandler.prototype.clear = function() {
+      this.selected_nodes = {};
+      return this.selected_single_node = null;
+    };
+
+    SelectNodeHandler.prototype.removeFromSelection = function(node, include_children) {
+      if (include_children == null) {
+        include_children = false;
+      }
+      if (!node.id) {
+        if (this.selected_single_node && node.element === this.selected_single_node.element) {
+          return this.selected_single_node = null;
+        }
+      } else {
+        delete this.selected_nodes[node.id];
+        if (include_children) {
+          return node.iterate((function(_this) {
+            return function(n) {
+              delete _this.selected_nodes[node.id];
+              return true;
+            };
+          })(this));
+        }
+      }
+    };
+
+    SelectNodeHandler.prototype.addToSelection = function(node) {
+      if (node.id) {
+        return this.selected_nodes[node.id] = true;
+      } else {
+        return this.selected_single_node = node;
+      }
+    };
+
+    return SelectNodeHandler;
+
+  })();
+
+  DragAndDropHandler = (function() {
+    function DragAndDropHandler(tree_widget) {
+      this.tree_widget = tree_widget;
+      this.hovered_area = null;
+      this.$ghost = null;
+      this.hit_areas = [];
+      this.is_dragging = false;
+      this.current_item = null;
+    }
+
+    DragAndDropHandler.prototype.mouseCapture = function(position_info) {
+      var $element, node_element;
+      $element = $(position_info.target);
+      if (!this.mustCaptureElement($element)) {
+        return null;
+      }
+      if (this.tree_widget.options.onIsMoveHandle && !this.tree_widget.options.onIsMoveHandle($element)) {
+        return null;
+      }
+      node_element = this.tree_widget._getNodeElement($element);
+      if (node_element && this.tree_widget.options.onCanMove) {
+        if (!this.tree_widget.options.onCanMove(node_element.node)) {
+          node_element = null;
+        }
+      }
+      this.current_item = node_element;
+      return this.current_item !== null;
+    };
+
+    DragAndDropHandler.prototype.mouseStart = function(position_info) {
+      var offset;
+      this.refresh();
+      offset = $(position_info.target).offset();
+      this.drag_element = new DragElement(this.current_item.node, position_info.page_x - offset.left, position_info.page_y - offset.top, this.tree_widget.element);
+      this.is_dragging = true;
+      this.current_item.$element.addClass('jqtree-moving');
+      return true;
+    };
+
+    DragAndDropHandler.prototype.mouseDrag = function(position_info) {
+      var area, can_move_to;
+      this.drag_element.move(position_info.page_x, position_info.page_y);
+      area = this.findHoveredArea(position_info.page_x, position_info.page_y);
+      can_move_to = this.canMoveToArea(area);
+      if (can_move_to && area) {
+        if (!area.node.isFolder()) {
+          this.stopOpenFolderTimer();
+        }
+        if (this.hovered_area !== area) {
+          this.hovered_area = area;
+          if (this.mustOpenFolderTimer(area)) {
+            this.startOpenFolderTimer(area.node);
+          } else {
+            this.stopOpenFolderTimer();
+          }
+          this.updateDropHint();
+        }
+      } else {
+        this.removeHover();
+        this.removeDropHint();
+        this.stopOpenFolderTimer();
+      }
+      return true;
+    };
+
+    DragAndDropHandler.prototype.mustCaptureElement = function($element) {
+      return !$element.is('input,select');
+    };
+
+    DragAndDropHandler.prototype.canMoveToArea = function(area) {
+      var position_name;
+      if (!area) {
+        return false;
+      } else if (this.tree_widget.options.onCanMoveTo) {
+        position_name = Position.getName(area.position);
+        return this.tree_widget.options.onCanMoveTo(this.current_item.node, area.node, position_name);
+      } else {
+        return true;
+      }
+    };
+
+    DragAndDropHandler.prototype.mouseStop = function(position_info) {
+      this.moveItem(position_info);
+      this.clear();
+      this.removeHover();
+      this.removeDropHint();
+      this.removeHitAreas();
+      if (this.current_item) {
+        this.current_item.$element.removeClass('jqtree-moving');
+        this.current_item = null;
+      }
+      this.is_dragging = false;
+      return false;
+    };
+
+    DragAndDropHandler.prototype.refresh = function() {
+      this.removeHitAreas();
+      if (this.current_item) {
+        this.generateHitAreas();
+        this.current_item = this.tree_widget._getNodeElementForNode(this.current_item.node);
+        if (this.is_dragging) {
+          return this.current_item.$element.addClass('jqtree-moving');
+        }
+      }
+    };
+
+    DragAndDropHandler.prototype.removeHitAreas = function() {
+      return this.hit_areas = [];
+    };
+
+    DragAndDropHandler.prototype.clear = function() {
+      this.drag_element.remove();
+      return this.drag_element = null;
+    };
+
+    DragAndDropHandler.prototype.removeDropHint = function() {
+      if (this.previous_ghost) {
+        return this.previous_ghost.remove();
+      }
+    };
+
+    DragAndDropHandler.prototype.removeHover = function() {
+      return this.hovered_area = null;
+    };
+
+    DragAndDropHandler.prototype.generateHitAreas = function() {
+      var hit_areas_generator;
+      hit_areas_generator = new HitAreasGenerator(this.tree_widget.tree, this.current_item.node, this.getTreeDimensions().bottom);
+      return this.hit_areas = hit_areas_generator.generate();
+    };
+
+    DragAndDropHandler.prototype.findHoveredArea = function(x, y) {
+      var area, dimensions, high, low, mid;
+      dimensions = this.getTreeDimensions();
+      if (x < dimensions.left || y < dimensions.top || x > dimensions.right || y > dimensions.bottom) {
+        return null;
+      }
+      low = 0;
+      high = this.hit_areas.length;
+      while (low < high) {
+        mid = (low + high) >> 1;
+        area = this.hit_areas[mid];
+        if (y < area.top) {
+          high = mid;
+        } else if (y > area.bottom) {
+          low = mid + 1;
+        } else {
+          return area;
+        }
+      }
+      return null;
+    };
+
+    DragAndDropHandler.prototype.mustOpenFolderTimer = function(area) {
+      var node;
+      node = area.node;
+      return node.isFolder() && !node.is_open && area.position === Position.INSIDE;
+    };
+
+    DragAndDropHandler.prototype.updateDropHint = function() {
+      var node_element;
+      if (!this.hovered_area) {
+        return;
+      }
+      this.removeDropHint();
+      node_element = this.tree_widget._getNodeElementForNode(this.hovered_area.node);
+      return this.previous_ghost = node_element.addDropHint(this.hovered_area.position);
+    };
+
+    DragAndDropHandler.prototype.startOpenFolderTimer = function(folder) {
+      var openFolder;
+      openFolder = (function(_this) {
+        return function() {
+          return _this.tree_widget._openNode(folder, _this.tree_widget.options.slide, function() {
+            _this.refresh();
+            return _this.updateDropHint();
+          });
+        };
+      })(this);
+      this.stopOpenFolderTimer();
+      return this.open_folder_timer = setTimeout(openFolder, this.tree_widget.options.openFolderDelay);
+    };
+
+    DragAndDropHandler.prototype.stopOpenFolderTimer = function() {
+      if (this.open_folder_timer) {
+        clearTimeout(this.open_folder_timer);
+        return this.open_folder_timer = null;
+      }
+    };
+
+    DragAndDropHandler.prototype.moveItem = function(position_info) {
+      var doMove, event, moved_node, position, previous_parent, target_node;
+      if (this.hovered_area && this.hovered_area.position !== Position.NONE && this.canMoveToArea(this.hovered_area)) {
+        moved_node = this.current_item.node;
+        target_node = this.hovered_area.node;
+        position = this.hovered_area.position;
+        previous_parent = moved_node.parent;
+        if (position === Position.INSIDE) {
+          this.hovered_area.node.is_open = true;
+        }
+        doMove = (function(_this) {
+          return function() {
+            _this.tree_widget.tree.moveNode(moved_node, target_node, position);
+            _this.tree_widget.element.empty();
+            return _this.tree_widget._refreshElements();
+          };
+        })(this);
+        event = this.tree_widget._triggerEvent('tree.move', {
+          move_info: {
+            moved_node: moved_node,
+            target_node: target_node,
+            position: Position.getName(position),
+            previous_parent: previous_parent,
+            do_move: doMove,
+            original_event: position_info.original_event
+          }
+        });
+        if (!event.isDefaultPrevented()) {
+          return doMove();
+        }
+      }
+    };
+
+    DragAndDropHandler.prototype.getTreeDimensions = function() {
+      var offset;
+      offset = this.tree_widget.element.offset();
+      return {
+        left: offset.left,
+        top: offset.top,
+        right: offset.left + this.tree_widget.element.width(),
+        bottom: offset.top + this.tree_widget.element.height() + 16
+      };
+    };
+
+    return DragAndDropHandler;
+
+  })();
+
+  VisibleNodeIterator = (function() {
+    function VisibleNodeIterator(tree) {
+      this.tree = tree;
+    }
+
+    VisibleNodeIterator.prototype.iterate = function() {
+      var is_first_node, _iterateNode;
+      is_first_node = true;
+      _iterateNode = (function(_this) {
+        return function(node, next_node) {
+          var $element, child, children_length, i, must_iterate_inside, _i, _len, _ref;
+          must_iterate_inside = (node.is_open || !node.element) && node.hasChildren();
+          if (node.element) {
+            $element = $(node.element);
+            if (!$element.is(':visible')) {
+              return;
+            }
+            if (is_first_node) {
+              _this.handleFirstNode(node, $element);
+              is_first_node = false;
+            }
+            if (!node.hasChildren()) {
+              _this.handleNode(node, next_node, $element);
+            } else if (node.is_open) {
+              if (!_this.handleOpenFolder(node, $element)) {
+                must_iterate_inside = false;
+              }
+            } else {
+              _this.handleClosedFolder(node, next_node, $element);
+            }
+          }
+          if (must_iterate_inside) {
+            children_length = node.children.length;
+            _ref = node.children;
+            for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
+              child = _ref[i];
+              if (i === (children_length - 1)) {
+                _iterateNode(node.children[i], null);
+              } else {
+                _iterateNode(node.children[i], node.children[i + 1]);
+              }
+            }
+            if (node.is_open) {
+              return _this.handleAfterOpenFolder(node, next_node, $element);
+            }
+          }
+        };
+      })(this);
+      return _iterateNode(this.tree, null);
+    };
+
+    VisibleNodeIterator.prototype.handleNode = function(node, next_node, $element) {};
+
+    VisibleNodeIterator.prototype.handleOpenFolder = function(node, $element) {};
+
+    VisibleNodeIterator.prototype.handleClosedFolder = function(node, next_node, $element) {};
+
+    VisibleNodeIterator.prototype.handleAfterOpenFolder = function(node, next_node, $element) {};
+
+    VisibleNodeIterator.prototype.handleFirstNode = function(node, $element) {};
+
+    return VisibleNodeIterator;
+
+  })();
+
+  HitAreasGenerator = (function(_super) {
+    __extends(HitAreasGenerator, _super);
+
+    function HitAreasGenerator(tree, current_node, tree_bottom) {
+      HitAreasGenerator.__super__.constructor.call(this, tree);
+      this.current_node = current_node;
+      this.tree_bottom = tree_bottom;
+    }
+
+    HitAreasGenerator.prototype.generate = function() {
+      this.positions = [];
+      this.last_top = 0;
+      this.iterate();
+      return this.generateHitAreas(this.positions);
+    };
+
+    HitAreasGenerator.prototype.getTop = function($element) {
+      return $element.offset().top;
+    };
+
+    HitAreasGenerator.prototype.addPosition = function(node, position, top) {
+      var area;
+      area = {
+        top: top,
+        node: node,
+        position: position
+      };
+      this.positions.push(area);
+      return this.last_top = top;
+    };
+
+    HitAreasGenerator.prototype.handleNode = function(node, next_node, $element) {
+      var top;
+      top = this.getTop($element);
+      if (node === this.current_node) {
+        this.addPosition(node, Position.NONE, top);
+      } else {
+        this.addPosition(node, Position.INSIDE, top);
+      }
+      if (next_node === this.current_node || node === this.current_node) {
+        return this.addPosition(node, Position.NONE, top);
+      } else {
+        return this.addPosition(node, Position.AFTER, top);
+      }
+    };
+
+    HitAreasGenerator.prototype.handleOpenFolder = function(node, $element) {
+      if (node === this.current_node) {
+        return false;
+      }
+      if (node.children[0] !== this.current_node) {
+        this.addPosition(node, Position.INSIDE, this.getTop($element));
+      }
+      return true;
+    };
+
+    HitAreasGenerator.prototype.handleClosedFolder = function(node, next_node, $element) {
+      var top;
+      top = this.getTop($element);
+      if (node === this.current_node) {
+        return this.addPosition(node, Position.NONE, top);
+      } else {
+        this.addPosition(node, Position.INSIDE, top);
+        if (next_node !== this.current_node) {
+          return this.addPosition(node, Position.AFTER, top);
+        }
+      }
+    };
+
+    HitAreasGenerator.prototype.handleFirstNode = function(node, $element) {
+      if (node !== this.current_node) {
+        return this.addPosition(node, Position.BEFORE, this.getTop($(node.element)));
+      }
+    };
+
+    HitAreasGenerator.prototype.handleAfterOpenFolder = function(node, next_node, $element) {
+      if (node === this.current_node.node || next_node === this.current_node.node) {
+        return this.addPosition(node, Position.NONE, this.last_top);
+      } else {
+        return this.addPosition(node, Position.AFTER, this.last_top);
+      }
+    };
+
+    HitAreasGenerator.prototype.generateHitAreas = function(positions) {
+      var group, hit_areas, position, previous_top, _i, _len;
+      previous_top = -1;
+      group = [];
+      hit_areas = [];
+      for (_i = 0, _len = positions.length; _i < _len; _i++) {
+        position = positions[_i];
+        if (position.top !== previous_top && group.length) {
+          if (group.length) {
+            this.generateHitAreasForGroup(hit_areas, group, previous_top, position.top);
+          }
+          previous_top = position.top;
+          group = [];
+        }
+        group.push(position);
+      }
+      this.generateHitAreasForGroup(hit_areas, group, previous_top, this.tree_bottom);
+      return hit_areas;
+    };
+
+    HitAreasGenerator.prototype.generateHitAreasForGroup = function(hit_areas, positions_in_group, top, bottom) {
+      var area_height, area_top, i, position, position_count;
+      position_count = Math.min(positions_in_group.length, 4);
+      area_height = Math.round((bottom - top) / position_count);
+      area_top = top;
+      i = 0;
+      while (i < position_count) {
+        position = positions_in_group[i];
+        hit_areas.push({
+          top: area_top,
+          bottom: area_top + area_height,
+          node: position.node,
+          position: position.position
+        });
+        area_top += area_height;
+        i += 1;
+      }
+      return null;
+    };
+
+    return HitAreasGenerator;
+
+  })(VisibleNodeIterator);
+
+  DragElement = (function() {
+    function DragElement(node, offset_x, offset_y, $tree) {
+      this.offset_x = offset_x;
+      this.offset_y = offset_y;
+      this.$element = $("<span class=\"jqtree-title jqtree-dragging\">" + node.name + "</span>");
+      this.$element.css("position", "absolute");
+      $tree.append(this.$element);
+    }
+
+    DragElement.prototype.move = function(page_x, page_y) {
+      return this.$element.offset({
+        left: page_x - this.offset_x,
+        top: page_y - this.offset_y
+      });
+    };
+
+    DragElement.prototype.remove = function() {
+      return this.$element.remove();
+    };
+
+    return DragElement;
+
+  })();
+
+  GhostDropHint = (function() {
+    function GhostDropHint(node, $element, position) {
+      this.$element = $element;
+      this.node = node;
+      this.$ghost = $('<li class="jqtree_common jqtree-ghost"><span class="jqtree_common jqtree-circle"></span><span class="jqtree_common jqtree-line"></span></li>');
+      if (position === Position.AFTER) {
+        this.moveAfter();
+      } else if (position === Position.BEFORE) {
+        this.moveBefore();
+      } else if (position === Position.INSIDE) {
+        if (node.isFolder() && node.is_open) {
+          this.moveInsideOpenFolder();
+        } else {
+          this.moveInside();
+        }
+      }
+    }
+
+    GhostDropHint.prototype.remove = function() {
+      return this.$ghost.remove();
+    };
+
+    GhostDropHint.prototype.moveAfter = function() {
+      return this.$element.after(this.$ghost);
+    };
+
+    GhostDropHint.prototype.moveBefore = function() {
+      return this.$element.before(this.$ghost);
+    };
+
+    GhostDropHint.prototype.moveInsideOpenFolder = function() {
+      return $(this.node.children[0].element).before(this.$ghost);
+    };
+
+    GhostDropHint.prototype.moveInside = function() {
+      this.$element.after(this.$ghost);
+      return this.$ghost.addClass('jqtree-inside');
+    };
+
+    return GhostDropHint;
+
+  })();
+
+  BorderDropHint = (function() {
+    function BorderDropHint($element) {
+      var $div, width;
+      $div = $element.children('.jqtree-element');
+      width = $element.width() - 4;
+      this.$hint = $('<span class="jqtree-border"></span>');
+      $div.append(this.$hint);
+      this.$hint.css({
+        width: width,
+        height: $div.height() - 4
+      });
+    }
+
+    BorderDropHint.prototype.remove = function() {
+      return this.$hint.remove();
+    };
+
+    return BorderDropHint;
+
+  })();
+
+  ScrollHandler = (function() {
+    function ScrollHandler(tree_widget) {
+      this.tree_widget = tree_widget;
+      this.previous_top = -1;
+      this._initScrollParent();
+    }
+
+    ScrollHandler.prototype._initScrollParent = function() {
+      var $scroll_parent, getParentWithOverflow, setDocumentAsScrollParent;
+      getParentWithOverflow = (function(_this) {
+        return function() {
+          var css_values, el, hasOverFlow, _i, _len, _ref;
+          css_values = ['overflow', 'overflow-y'];
+          hasOverFlow = function(el) {
+            var css_value, _i, _len, _ref;
+            for (_i = 0, _len = css_values.length; _i < _len; _i++) {
+              css_value = css_values[_i];
+              if ((_ref = $.css(el, css_value)) === 'auto' || _ref === 'scroll') {
+                return true;
+              }
+            }
+            return false;
+          };
+          if (hasOverFlow(_this.tree_widget.$el[0])) {
+            return _this.tree_widget.$el;
+          }
+          _ref = _this.tree_widget.$el.parents();
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            el = _ref[_i];
+            if (hasOverFlow(el)) {
+              return $(el);
+            }
+          }
+          return null;
+        };
+      })(this);
+      setDocumentAsScrollParent = (function(_this) {
+        return function() {
+          _this.scroll_parent_top = 0;
+          return _this.$scroll_parent = null;
+        };
+      })(this);
+      if (this.tree_widget.$el.css('position') === 'fixed') {
+        setDocumentAsScrollParent();
+      }
+      $scroll_parent = getParentWithOverflow();
+      if ($scroll_parent && $scroll_parent.length && $scroll_parent[0].tagName !== 'HTML') {
+        this.$scroll_parent = $scroll_parent;
+        return this.scroll_parent_top = this.$scroll_parent.offset().top;
+      } else {
+        return setDocumentAsScrollParent();
+      }
+    };
+
+    ScrollHandler.prototype.checkScrolling = function() {
+      var hovered_area;
+      hovered_area = this.tree_widget.dnd_handler.hovered_area;
+      if (hovered_area && hovered_area.top !== this.previous_top) {
+        this.previous_top = hovered_area.top;
+        if (this.$scroll_parent) {
+          return this._handleScrollingWithScrollParent(hovered_area);
+        } else {
+          return this._handleScrollingWithDocument(hovered_area);
+        }
+      }
+    };
+
+    ScrollHandler.prototype._handleScrollingWithScrollParent = function(area) {
+      var distance_bottom;
+      distance_bottom = this.scroll_parent_top + this.$scroll_parent[0].offsetHeight - area.bottom;
+      if (distance_bottom < 20) {
+        this.$scroll_parent[0].scrollTop += 20;
+        this.tree_widget.refreshHitAreas();
+        return this.previous_top = -1;
+      } else if ((area.top - this.scroll_parent_top) < 20) {
+        this.$scroll_parent[0].scrollTop -= 20;
+        this.tree_widget.refreshHitAreas();
+        return this.previous_top = -1;
+      }
+    };
+
+    ScrollHandler.prototype._handleScrollingWithDocument = function(area) {
+      var distance_top;
+      distance_top = area.top - $(document).scrollTop();
+      if (distance_top < 20) {
+        return $(document).scrollTop($(document).scrollTop() - 20);
+      } else if ($(window).height() - (area.bottom - $(document).scrollTop()) < 20) {
+        return $(document).scrollTop($(document).scrollTop() + 20);
+      }
+    };
+
+    ScrollHandler.prototype.scrollTo = function(top) {
+      var tree_top;
+      if (this.$scroll_parent) {
+        return this.$scroll_parent[0].scrollTop = top;
+      } else {
+        tree_top = this.tree_widget.$el.offset().top;
+        return $(document).scrollTop(top + tree_top);
+      }
+    };
+
+    ScrollHandler.prototype.isScrolledIntoView = function(element) {
+      var $element, element_bottom, element_top, view_bottom, view_top;
+      $element = $(element);
+      if (this.$scroll_parent) {
+        view_top = 0;
+        view_bottom = this.$scroll_parent.height();
+        element_top = $element.offset().top - this.scroll_parent_top;
+        element_bottom = element_top + $element.height();
+      } else {
+        view_top = $(window).scrollTop();
+        view_bottom = view_top + $(window).height();
+        element_top = $element.offset().top;
+        element_bottom = element_top + $element.height();
+      }
+      return (element_bottom <= view_bottom) && (element_top >= view_top);
+    };
+
+    return ScrollHandler;
+
+  })();
+
+  KeyHandler = (function() {
+    var DOWN, LEFT, RIGHT, UP;
+
+    LEFT = 37;
+
+    UP = 38;
+
+    RIGHT = 39;
+
+    DOWN = 40;
+
+    function KeyHandler(tree_widget) {
+      this.tree_widget = tree_widget;
+      if (tree_widget.options.keyboardSupport) {
+        $(document).bind('keydown.jqtree', $.proxy(this.handleKeyDown, this));
+      }
+    }
+
+    KeyHandler.prototype.deinit = function() {
+      return $(document).unbind('keydown.jqtree');
+    };
+
+    KeyHandler.prototype.handleKeyDown = function(e) {
+      var current_node, key, moveDown, moveLeft, moveRight, moveUp, selectNode;
+      if (!this.tree_widget.options.keyboardSupport) {
+        return;
+      }
+      if ($(document.activeElement).is('textarea,input,select')) {
+        return true;
+      }
+      current_node = this.tree_widget.getSelectedNode();
+      selectNode = (function(_this) {
+        return function(node) {
+          if (node) {
+            _this.tree_widget.selectNode(node);
+            if (_this.tree_widget.scroll_handler && (!_this.tree_widget.scroll_handler.isScrolledIntoView($(node.element).find('.jqtree-element')))) {
+              _this.tree_widget.scrollToNode(node);
+            }
+            return false;
+          } else {
+            return true;
+          }
+        };
+      })(this);
+      moveDown = (function(_this) {
+        return function() {
+          return selectNode(_this.getNextNode(current_node));
+        };
+      })(this);
+      moveUp = (function(_this) {
+        return function() {
+          return selectNode(_this.getPreviousNode(current_node));
+        };
+      })(this);
+      moveRight = (function(_this) {
+        return function() {
+          if (current_node.isFolder() && !current_node.is_open) {
+            _this.tree_widget.openNode(current_node);
+            return false;
+          } else {
+            return true;
+          }
+        };
+      })(this);
+      moveLeft = (function(_this) {
+        return function() {
+          if (current_node.isFolder() && current_node.is_open) {
+            _this.tree_widget.closeNode(current_node);
+            return false;
+          } else {
+            return true;
+          }
+        };
+      })(this);
+      if (!current_node) {
+        return true;
+      } else {
+        key = e.which;
+        switch (key) {
+          case DOWN:
+            return moveDown();
+          case UP:
+            return moveUp();
+          case RIGHT:
+            return moveRight();
+          case LEFT:
+            return moveLeft();
+        }
+      }
+    };
+
+    KeyHandler.prototype.getNextNode = function(node, include_children) {
+      var next_sibling;
+      if (include_children == null) {
+        include_children = true;
+      }
+      if (include_children && node.hasChildren() && node.is_open) {
+        return node.children[0];
+      } else {
+        if (!node.parent) {
+          return null;
+        } else {
+          next_sibling = node.getNextSibling();
+          if (next_sibling) {
+            return next_sibling;
+          } else {
+            return this.getNextNode(node.parent, false);
+          }
+        }
+      }
+    };
+
+    KeyHandler.prototype.getPreviousNode = function(node) {
+      var previous_sibling;
+      if (!node.parent) {
+        return null;
+      } else {
+        previous_sibling = node.getPreviousSibling();
+        if (previous_sibling) {
+          if (!previous_sibling.hasChildren() || !previous_sibling.is_open) {
+            return previous_sibling;
+          } else {
+            return this.getLastChild(previous_sibling);
+          }
+        } else {
+          if (node.parent.parent) {
+            return node.parent;
+          } else {
+            return null;
+          }
+        }
+      }
+    };
+
+    KeyHandler.prototype.getLastChild = function(node) {
+      var last_child;
+      if (!node.hasChildren()) {
+        return null;
+      } else {
+        last_child = node.children[node.children.length - 1];
+        if (!last_child.hasChildren() || !last_child.is_open) {
+          return last_child;
+        } else {
+          return this.getLastChild(last_child);
+        }
+      }
+    };
+
+    return KeyHandler;
+
+  })();
+
+}).call(this);
+
+
+  }).apply(root, arguments);
+});
+}(this));
+
+/* Tree pattern.
  *
  * Options:
- *    changingEvents(string): Events on which to check for changes (space-separated). ('change keyup paste')
- *    changingFields(string): Fields on which to check for changes (comma-separated). ('input,select,textarea,fileupload')
- *    message(string): Confirmation message to display when dirty form is being unloaded. (Discard changes? If you click OK, any changes you have made will be lost.)
+ * data(jSON): load data structure directly into tree (undefined)
+ * dataUrl(jSON): Load data from remote url (undefined)
+ * autoOpen(boolean): auto open tree contents (false)
+ * dragAndDrop(boolean): node drag and drop support (false)
+ * selectable(boolean): if nodes can be selectable (true)
+ * keyboardSupport(boolean): if keyboard naviation is allowed (true)
  *
- * Documentation:
- *    # Example
+ * Documentation: # JSON node data
  *
  *    {{ example-1 }}
  *
+ *    # Remote data URL
+ *
+ *    {{ example-2 }}
+ *
+ *    # Drag and drop
+ *
+ *    {{ example-3 }}
+ *
  * Example: example-1
- *    <form class="pat-formunloadalert" onsubmit="javascript:return false;">
- *      <input type="text" value="" />
- *      <select>
- *        <option value="1">value 1</option>
- *        <option value="2">value 2</option>
- *      </select>
- *      <input
- *        class="btn btn-large btn-primary"
- *        type="submit" value="Submit" />
- *      <br />
- *      <a href="/">Click here to go somewhere else</a>
- *    </form>
+ *    <div class="pat-tree"
+ *         data-pat-tree='data:[
+ *          { "label": "node1",
+ *            "children": [
+ *              { "label": "child1" },
+ *              { "label": "child2" }
+ *            ]
+ *          },
+ *          { "label": "node2",
+ *            "children": [
+ *              { "label": "child3" }
+ *            ]
+ *          }
+ *        ];'> </div>
+ *
+ * Example: example-2
+ *    <div class="pat-tree"
+ *         data-pat-tree="dataUrl:/docs/dev/tests/json/fileTree.json;
+ *                        autoOpen:true"></div>
+ *
+ * Example: example-3
+ *    <div class="pat-tree"
+ *         data-pat-tree="dataUrl:/docs/dev/tests/json/fileTree.json;
+ *                        dragAndDrop: true;
+ *                        autoOpen: true"></div>
  *
  */
 
 
-define('mockup-patterns-formunloadalert',[
+define('mockup-patterns-tree',[
   'jquery',
+  'underscore',
   'mockup-patterns-base',
-  'translate'
-], function ($, Base, _t) {
+  'mockup-utils',
+  'jqtree'
+], function($, _, Base, utils) {
   
 
-  var FormUnloadAlert = Base.extend({
-    name: 'formunloadalert',
-    trigger: '.pat-formunloadalert',
-    _changed : false,       // Stores a listing of raised changes by their key
-    _suppressed : false,     // whether or not warning should be suppressed
+  var Tree = Base.extend({
+    name: 'tree',
+    trigger: '.pat-tree',
     defaults: {
-      message :  _t('Discard changes? If you click OK, ' +
-                 'any changes you have made will be lost.'),
-      // events on which to check for changes
-      changingEvents: 'change keyup paste',
-      // fields on which to check for changes
-      changingFields: 'input,select,textarea,fileupload'
+      dragAndDrop: false,
+      autoOpen: false,
+      selectable: true,
+      keyboardSupport: true,
+      onLoad: null
     },
-    init: function () {
+    init: function() {
       var self = this;
-      // if this is not a form just return
-      if (!self.$el.is('form')) { return; }
-
-      $(self.options.changingFields, self.$el).on(
-        self.options.changingEvents,
-        function (evt) {
-          self._changed = true;
+      /* convert all bool options */
+      for (var optionKey in self.options) {
+        var def = self.defaults[optionKey];
+        if (def !== undefined && typeof(def) === 'boolean') {
+          self.options[optionKey] = utils.bool(self.options[optionKey]);
         }
-      );
+      }
 
-      var $modal = self.$el.parents('.plone-modal');
-      if ($modal.size() !== 0) {
-        $modal.data('pattern-modal').on('hide', function(e) {
-          var modal = $modal.data('pattern-modal');
-          if (modal) {
-            modal._suppressHide = self._handleUnload.apply(self, e);
-          }
+      if (self.options.dragAndDrop && self.options.onCanMoveTo === undefined) {
+        self.options.onCanMoveTo = function(moved, target, position) {
+          /* if not using folder option, just allow, otherwise, only allow if folder */
+          return target.folder === undefined || target.folder === true;
+        };
+      }
+
+      if (self.options.data && typeof(self.options.data) === 'string') {
+        self.options.data = $.parseJSON(self.options.data);
+      }
+      if (self.options.onLoad !== null){
+        // delay generating tree...
+        var options = $.extend({}, self.options);
+        $.getJSON(options.dataUrl, function(data) {
+          options.data = data;
+          delete options.dataUrl;
+          self.tree = self.$el.tree(options);
+          self.options.onLoad(self);
         });
       } else {
-        $(window).on('beforeunload', function(e) {
-          return self._handleUnload(e);
-        });
+        self.tree = self.$el.tree(self.options);
       }
-
-      self.$el.on('submit', function(e) {
-        self._suppressed = true;
-      });
-
-    },
-    _handleUnload : function (e) {
-      var self = this;
-      if (self._suppressed) {
-        self._suppressed = false;
-        return undefined;
-      }
-      if (self._changed) {
-        var msg = self.options.message;
-        self._handleMsg(e,msg);
-        $(window).trigger('messageset');
-        return msg;
-      }
-    },
-    _handleMsg:  function(e,msg) {
-      (e || window.event).returnValue = msg;
     }
   });
-  return FormUnloadAlert;
+
+
+  return Tree;
 
 });
 
-/* PreventDoubleSubmit pattern.
+/* Related items pattern.
  *
  * Options:
- *    guardClassName(string): Class applied to submit button after it is clicked once. ('submitting')
- *    optOutClassName(string): Class used to opt-out a submit button from double-submit prevention. ('allowMultiSubmit')
- *    message(string): Message to be displayed when "opt-out" submit button is clicked a second time. ('You already clicked the submit button. Do you really want to submit this form again?')
+ *    vocabularyUrl(string): This is a URL to a JSON-formatted file used to populate the list (null)
+ *    attributes(array): This list is passed to the server during an AJAX request to specify the attributes which should be included on each item. (['UID', 'Title', 'Type', 'path'])
+ *    basePath(string): If this is set the widget will start in "Browse" mode and will pass the path to the server to filter the results. ('/')
+ *    breadCrumbTemplate(string): Template to use for a single item in the breadcrumbs. ('/<a href="<%= path %>"><%= text %></a>')
+ *    breadCrumbTemplateSelector(string): Select an element from the DOM from which to grab the breadCrumbTemplate. (null)
+ *    breadCrumbsTemplate(string): Template for element to which breadCrumbs will be appended. ('<span><span class="pattern-relateditems-path-label"><%= searchText %></span><a class="icon-home" href="/"></a><%= items %></span>')
+ *    breadCrumbsTemplateSelector(string): Select an element from the DOM from which to grab the breadCrumbsTemplate. (null)
+ *    cache(boolean): Whether or not results from the server should be
+ *    cached. (true)
+ *    closeOnSelect(boolean): Select2 option. Whether or not the drop down should be closed when an item is selected. (false)
+ *    dropdownCssClass(string): Select2 option. CSS class to add to the drop down element. ('pattern-relateditems-dropdown')
+ *    folderTypes(array): Types which should be considered browsable. (["Folder"])
+ *    homeText(string): Text to display in the initial breadcrumb item. (home)
+ *    maximumSelectionSize(integer): The maximum number of items that can be selected in a multi-select control. If this number is less than 1 selection is not limited. (-1)
+ *    multiple(boolean): Do not change this option. (true)
+ *    orderable(boolean): Whether or not items should be drag-and-drop sortable. (true)
+ *    resultTemplate(string): Template for an item in the in the list of results. Refer to source for default. (Refer to source)
+ *    resultTemplateSelector(string): Select an element from the DOM from which to grab the resultTemplate. (null)
+ *    searchText(string): Text which will be inserted to the left of the
+ *    path. (Search)
+ *    searchAllText(string): Displays next to the path when the path is set to the root. (All)
+ *    selectableTypes(array): If the value is null all types are selectable. Otherwise, provide a list of strings to match item types that are selectable. (null)
+ *    selectionTemplate(string): Template for element that will be used to construct a selected item. (Refer to source)
+ *    selectionTemplateSelector(string): Select an element from the DOM from which to grab the selectionTemplate. (null)
+ *    separator(string): Select2 option. String which separates multiple items. (',')
+ *    tokenSeparators(array): Select2 option, refer to select2 documentation.
+ *    ([",", " "])
+ *    width(string): Specify a width for the widget. ('100%')
  *
  * Documentation:
- *    # Example
+ *    The Related Items pattern is based on Select2 so many of the same options will work here as well.
+ *
+ *    # Default
  *
  *    {{ example-1 }}
  *
+ *    # Existing values, some bad
+ *
+ *    {{ example-2 }}
+ *
+ *    # Selectable Types
+ *
+ *    {{ example-3 }}
+ *
+ *    # Select a single item
+ *
+ *    {{ example-4 }}
+ *
  * Example: example-1
- *    <form class="pat-preventdoublesubmit" onsubmit="javascript:return false;">
- *      <input type="text" value="submit this value please!" />
- *      <input class="btn btn-large btn-primary" type="submit" value="Single submit" />
- *      <input class="btn btn-large btn-primary allowMultiSubmit" type="submit" value="Multi submit" />
- *    </form>
+ *    <input type="text" class="pat-relateditems"
+ *           data-pat-relateditems="width:30em;
+ *                                  vocabularyUrl:/relateditems-test.json" />
+ *
+ * Example: example-2
+ *    <input type="text" class="pat-relateditems"
+ *           value="asdf1234gsad,sdfbsfdh345,asdlfkjasdlfkjasdf,kokpoius98"
+ *           data-pat-relateditems="width:30em; vocabularyUrl:/relateditems-test.json" />
+ *
+ * Example: example-3
+ *    <input type="text" class="pat-relateditems"
+             data-pat-relateditems='{"selectableTypes": ["Document"], "vocabularyUrl": "/relateditems-test.json"}' />
+ *
+ * Example: example-4
+ *    <input type="text" class="pat-relateditems"
+             data-pat-relateditems='{"selectableTypes": ["Document"], "vocabularyUrl": "/relateditems-test.json", "maximumSelectionSize": 1}' />
  *
  */
 
 
-define('mockup-patterns-preventdoublesubmit',[
+define('mockup-patterns-relateditems',[
   'jquery',
+  'underscore',
   'mockup-patterns-base',
+  'mockup-patterns-select2',
+  'mockup-utils',
+  'mockup-patterns-tree',
   'translate'
-], function($, Base, _t) {
+], function($, _, Base, Select2, utils, Tree, _t) {
   
 
-  var PreventDoubleSubmit = Base.extend({
-    name: 'preventdoublesubmit',
-    trigger: '.pat-preventdoublesubmit',
+  var RelatedItems = Base.extend({
+    name: 'relateditems',
+    trigger: '.pat-relateditems',
+    browsing: false,
+    currentPath: null,
     defaults: {
-      message : _t('You already clicked the submit button. ' +
-                'Do you really want to submit this form again?'),
-      guardClassName: 'submitting',
-      optOutClassName: 'allowMultiSubmit'
+      vocabularyUrl: null, // must be set to work
+      width: '100%',
+      multiple: true,
+      tokenSeparators: [',', ' '],
+      separator: ',',
+      orderable: true,
+      cache: true,
+      mode: 'search', // possible values are search and browse
+      closeOnSelect: false,
+      basePath: '/',
+      searchText: _t('Search:'),
+      searchAllText: _t('entire site'),
+      homeText: _t('home'),
+      folderTypes: ['Folder'],
+      selectableTypes: null, // null means everything is selectable, otherwise a list of strings to match types that are selectable
+      attributes: ['UID', 'Title', 'Type', 'path'],
+      dropdownCssClass: 'pattern-relateditems-dropdown',
+      maximumSelectionSize: -1,
+      resultTemplate: '' +
+        '<div class="pattern-relateditems-result pattern-relateditems-type-<%= Type %> <% if (selected) { %>pattern-relateditems-active<% } %>">' +
+        '  <a href="#" class="pattern-relateditems-result-select <% if (selectable) { %>selectable<% } %>">' +
+        '    <span class="pattern-relateditems-result-title"><%= Title %></span>' +
+        '    <span class="pattern-relateditems-result-path"><%= path %></span>' +
+        '  </a>' +
+        '  <span class="pattern-relateditems-buttons">' +
+        '  <% if (folderish) { %>' +
+        '     <a class="pattern-relateditems-result-browse" href="#" data-path="<%= path %>"></a>' +
+        '   <% } %>' +
+        ' </span>' +
+        '</div>',
+      resultTemplateSelector: null,
+      selectionTemplate: '' +
+        '<span class="pattern-relateditems-item pattern-relateditems-type-<%= Type %>">' +
+        ' <span class="pattern-relateditems-item-title"><%= Title %></span>' +
+        ' <span class="pattern-relateditems-item-path"><%= path %></span>' +
+        '</span>',
+      selectionTemplateSelector: null,
+      breadCrumbsTemplate: '<span>' +
+        '<span class="pattern-relateditems-tree">' +
+          '<a href="#" class="pattern-relateditems-tree-select"><span class="glyphicon glyphicon-indent-left"></span></a> ' +
+          '<div class="tree-container">' +
+            '<span class="select-folder-label">Select folder</span>' +
+            '<a href="#" class="btn close pattern-relateditems-tree-cancel">X</a>' +
+            '<div class="pat-tree" />' +
+            '<a href="#" class="btn btn-default pattern-relateditems-tree-itemselect">Select</a>' +
+          '</div>' +
+        '</span>' +
+        '<span class="pattern-relateditems-path-label">' +
+          '<%= searchText %></span><a class="crumb" href="/"><span class="glyphicon glyphicon-home"></span></a><%= items %>' +
+        '</span>' +
+      '</span>',
+      breadCrumbsTemplateSelector: null,
+      breadCrumbTemplate: '' +
+        '/<a href="<%= path %>" class="crumb"><%= text %></a>',
+      breadCrumbTemplateSelector: null,
+      escapeMarkup: function(text) {
+        return text;
+      },
+      setupAjax: function() {
+        // Setup the ajax object to use during requests
+        var self = this;
+        if (self.query.valid) {
+          return self.query.selectAjax();
+        }
+        return {};
+      }
+    },
+    applyTemplate: function(tpl, item) {
+      var self = this;
+      var template;
+      if (self.options[tpl + 'TemplateSelector']) {
+        template = $(self.options[tpl + 'TemplateSelector']).html();
+        if (!template) {
+          template = self.options[tpl + 'Template'];
+        }
+      } else {
+        template = self.options[tpl + 'Template'];
+      }
+      // let's give all the options possible to the template generation
+      var options = $.extend(true, {}, self.options, item);
+      options._item = item;
+      return _.template(template, options);
+    },
+    activateBrowsing: function() {
+      var self = this;
+      self.browsing = true;
+      self.setBreadCrumbs();
+    },
+    deactivateBrowsing: function() {
+      var self = this;
+      self.browsing = false;
+      self.setBreadCrumbs();
+    },
+    browseTo: function(path) {
+      var self = this;
+      self.emit('before-browse');
+      self.currentPath = path;
+      if (path === '/' && self.options.mode === 'search') {
+        self.deactivateBrowsing();
+      } else {
+        self.activateBrowsing();
+      }
+      self.$el.select2('close');
+      self.$el.select2('open');
+      self.emit('after-browse');
+    },
+    setBreadCrumbs: function() {
+      var self = this;
+      var path = self.currentPath ? self.currentPath : self.options.basePath;
+      var html;
+      if (path === '/') {
+        var searchText = '';
+        if (self.options.mode === 'search') {
+          searchText = '<em>' + self.options.searchAllText + '</em>';
+        }
+        html = self.applyTemplate('breadCrumbs', {
+          items: searchText,
+          searchText: self.options.searchText
+        });
+      } else {
+        var paths = path.split('/');
+        var itemPath = '';
+        var itemsHtml = '';
+        _.each(paths, function(node) {
+          if (node !== '') {
+            var item = {};
+            itemPath = itemPath + '/' + node;
+            item.text = node;
+            item.path = itemPath;
+            itemsHtml = itemsHtml + self.applyTemplate('breadCrumb', item);
+          }
+        });
+        html = self.applyTemplate('breadCrumbs', {items: itemsHtml, searchText: self.options.searchText});
+      }
+      var $crumbs = $(html);
+      $('a.crumb', $crumbs).on('click', function(e) {
+        e.preventDefault();
+        self.browseTo($(this).attr('href'));
+        return false;
+      });
+      var $treeSelect = $('.pattern-relateditems-tree-select', $crumbs);
+      var $container = $treeSelect.parent();
+      var $treeContainer = $('.tree-container', $container);
+      var $tree = $('.pat-tree', $container);
+      var selectedNode = null;
+      var treePattern = new Tree($tree, {
+        data: [],
+        dataFilter: function(data) {
+          var nodes = [];
+          _.each(data.results, function(item) {
+            nodes.push({
+              label: item.Title,
+              id: item.UID,
+              path: item.path
+            });
+          });
+          return nodes;
+        }
+      });
+      treePattern.$el.bind('tree.select', function(e) {
+        var node = e.node;
+        if (node && !node._loaded) {
+          self.currentPath = node.path;
+          selectedNode = node;
+          treePattern.$el.tree('loadDataFromUrl', self.treeQuery.getUrl(), node);
+          node._loaded = true;
+        }
+      });
+      treePattern.$el.bind('tree.refresh', function() {
+        /* the purpose of this is that when new data is loaded, the selected
+         * node is cleared. This re-selects it as a user browses structure of site */
+        if (selectedNode) {
+          treePattern.$el.tree('selectNode', selectedNode);
+        }
+      });
+      $('a.pattern-relateditems-tree-cancel', $treeContainer).click(function(e) {
+        e.preventDefault();
+        $treeContainer.fadeOut();
+        return false;
+      });
+
+      $('a.pattern-relateditems-tree-itemselect', $treeContainer).click(function(e) {
+        e.preventDefault();
+        self.browseTo(self.currentPath); // just browse to current path since it's set elsewhere
+        $treeContainer.fadeOut();
+        return false;
+      });
+
+      $treeSelect.on('click', function(e) {
+        e.preventDefault();
+        self.browsing = true;
+        self.currentPath = '/';
+        $treeContainer.fadeIn();
+        treePattern.$el.tree('loadDataFromUrl', self.treeQuery.getUrl());
+        return false;
+      });
+      self.$browsePath.html($crumbs);
+    },
+    selectItem: function(item) {
+      var self = this;
+      self.emit('selecting');
+      var data = self.$el.select2('data');
+      data.push(item);
+      self.$el.select2('data', data);
+      item.selected = true;
+      self.emit('selected');
+    },
+    deselectItem: function(item) {
+      var self = this;
+      self.emit('deselecting');
+      var data = self.$el.select2('data');
+      _.each(data, function(obj, i) {
+        if (obj.UID === item.UID) {
+          data.splice(i, 1);
+        }
+      });
+      self.$el.select2('data', data);
+      item.selected = false;
+      self.emit('deselected');
+    },
+    isSelectable: function(item) {
+      var self = this;
+      if (self.options.selectableTypes === null) {
+        return true;
+      } else {
+        return _.indexOf(self.options.selectableTypes, item.Type) > -1;
+      }
     },
     init: function() {
       var self = this;
 
-      // if this is not a form just return
-      if (!self.$el.is('form')) {
-        return;
-      }
+      self.query = new utils.QueryHelper(
+        $.extend(true, {}, self.options, {pattern: self})
+      );
+      self.treeQuery = new utils.QueryHelper(
+        $.extend(true, {}, self.options, {
+          pattern: self,
+          baseCriteria: [{
+            i: 'Type',
+            o: 'plone.app.querystring.operation.list.contains',
+            v: self.options.folderTypes
+          }]
+        })
+      );
 
-      $(':submit', self.$el).click(function(e) {
+      self.options.ajax = self.options.setupAjax.apply(self);
 
-        // mark the button as clicked
-        $(':submit').removeAttr('clicked');
-        $(this).attr('clicked', 'clicked');
+      self.$el.wrap('<div class="pattern-relateditems-container" />');
+      self.$container = self.$el.parents('.pattern-relateditems-container');
+      self.$container.width(self.options.width);
 
-        // if submitting and no opt-out guardClassName is found
-        // pop up confirmation dialog
-        if ($(this).hasClass(self.options.guardClassName) &&
-              !$(this).hasClass(self.options.optOutClassName)) {
-          return self._confirm.call(self);
+      Select2.prototype.initializeValues.call(self);
+      Select2.prototype.initializeTags.call(self);
+
+      self.options.formatSelection = function(item, $container) {
+        return self.applyTemplate('selection', item);
+      };
+
+      Select2.prototype.initializeOrdering.call(self);
+
+      self.options.formatResult = function(item) {
+        if (!item.Type || _.indexOf(self.options.folderTypes, item.Type) === -1) {
+          item.folderish = false;
+        } else {
+          item.folderish = true;
         }
 
-        $(this).addClass(self.options.guardClassName);
+        item.selectable = self.isSelectable(item);
+
+        if (item.selected === undefined) {
+          var data = self.$el.select2('data');
+          item.selected = false;
+          _.each(data, function(obj) {
+            if (obj.UID === item.UID) {
+              item.selected = true;
+            }
+          });
+        }
+
+        var result = $(self.applyTemplate('result', item));
+
+        $('.pattern-relateditems-result-select', result).on('click', function(event) {
+          event.preventDefault();
+          if ($(this).is('.selectable')) {
+            var $parent = $(this).parents('.pattern-relateditems-result');
+            if ($parent.is('.pattern-relateditems-active')) {
+              $parent.removeClass('pattern-relateditems-active');
+              self.deselectItem(item);
+            } else {
+              self.selectItem(item);
+              $parent.addClass('pattern-relateditems-active');
+              if (self.options.maximumSelectionSize > 0) {
+                var items = self.$select2.select2('data');
+                if (items.length >= self.options.maximumSelectionSize) {
+                  self.$select2.select2('close');
+                }
+              }
+            }
+          }
+        });
+
+        $('.pattern-relateditems-result-browse', result).on('click', function(event) {
+          event.preventDefault();
+          event.stopPropagation();
+          var path = $(this).data('path');
+          self.browseTo(path);
+        });
+
+        return $(result);
+      };
+      self.options.initSelection = function(element, callback) {
+        var data = [];
+        var value = $(element).val();
+        if (value !== '') {
+          var ids = value.split(self.options.separator);
+          self.query.search(
+            'UID', 'plone.app.querystring.operation.list.contains', ids,
+            function(data) {
+              var results = data.results.reduce(function(prev, item) {
+                prev[item.UID] = item;
+                return prev;
+              }, {});
+              callback(
+                ids
+                  .map(function(uid) { return results[uid]; })
+                  .filter(function(item) { return item !== undefined; })
+              );
+            },
+            false
+          );
+        }
+      };
+
+      self.options.id = function(item) {
+        return item.UID;
+      };
+
+      Select2.prototype.initializeSelect2.call(self);
+
+      // Browsing functionality
+      var browseOpts = {
+        browseText: self.options.browseText,
+        searchText: self.options.searchText
+      };
+
+      self.$browsePath = $('<span class="pattern-relateditems-path" />');
+      self.$container.prepend(self.$browsePath);
+
+      if (self.options.mode === 'search') {
+        self.deactivateBrowsing();
+        self.browsing = false;
+      } else {
+        self.activateBrowsing();
+        self.browsing = true;
+      }
+
+      self.$el.on('select2-selecting', function(event) {
+        event.preventDefault();
       });
 
-    },
-
-    _confirm: function(e) {
-      return window.confirm(this.options.message);
     }
-
   });
 
-  return PreventDoubleSubmit;
+  return RelatedItems;
 
 });
+
+
+define('text!mockup-patterns-tinymce-url/templates/result.xml',[],function () { return '<div class="pattern-relateditems-result pattern-relateditems-type-<%= Type %> <% if (selected) { %>pattern-active<% } %>">\n  <a href="#" class="pattern-relateditems-result-select <% if (selectable) { %>selectable<% } %>">\n    <% if (!folderish) { %>\n    <span class="pattern-relateditems-result-image">\n      <img src="<%= generateImageUrl(_item, \'thumb\') %>" />\n    </span>\n    <% } %>\n    <span class="pattern-relateditems-result-title"><%= Title %></span>\n    <span class="pattern-relateditems-result-path"><%= path %></span>\n  </a>\n  <span class="pattern-relateditems-buttons">\n    <% if (folderish) { %>\n      <a class="pattern-relateditems-result-browse" href="#" data-path="<%= path %>"></a>\n    <% } %>\n  </span>\n</div>\n';});
 
 (function(root) {
 define("tinymce", [], function() {
@@ -56888,3666 +60756,6 @@ return (function () { this.tinyMCE.DOM.events.domLoaded = true; return this.tiny
 });
 }(this));
 
-(function(root) {
-define("jqtree", ["jquery"], function() {
-  return (function() {
-// Generated by CoffeeScript 1.7.1
-(function() {
-  var $, BorderDropHint, DragAndDropHandler, DragElement, ElementsRenderer, FolderElement, GhostDropHint, HitAreasGenerator, JqTreeWidget, KeyHandler, MouseWidget, Node, NodeElement, Position, SaveStateHandler, ScrollHandler, SelectNodeHandler, SimpleWidget, VisibleNodeIterator, get_json_stringify_function, html_escape, indexOf, isInt, __version__, _indexOf,
-    __slice = [].slice,
-    __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-
-  __version__ = '0.22.0';
-
-
-  /*
-  Copyright 2013 Marco Braak
-  
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
-  
-      http://www.apache.org/licenses/LICENSE-2.0
-  
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
-   */
-
-  $ = this.jQuery;
-
-  SimpleWidget = (function() {
-    SimpleWidget.prototype.defaults = {};
-
-    function SimpleWidget(el, options) {
-      this.$el = $(el);
-      this.options = $.extend({}, this.defaults, options);
-    }
-
-    SimpleWidget.prototype.destroy = function() {
-      return this._deinit();
-    };
-
-    SimpleWidget.prototype._init = function() {
-      return null;
-    };
-
-    SimpleWidget.prototype._deinit = function() {
-      return null;
-    };
-
-    SimpleWidget.register = function(widget_class, widget_name) {
-      var callFunction, createWidget, destroyWidget, getDataKey, getWidgetData;
-      getDataKey = function() {
-        return "simple_widget_" + widget_name;
-      };
-      getWidgetData = function(el, data_key) {
-        var widget;
-        widget = $.data(el, data_key);
-        if (widget && (widget instanceof SimpleWidget)) {
-          return widget;
-        } else {
-          return null;
-        }
-      };
-      createWidget = function($el, options) {
-        var data_key, el, existing_widget, widget, _i, _len;
-        data_key = getDataKey();
-        for (_i = 0, _len = $el.length; _i < _len; _i++) {
-          el = $el[_i];
-          existing_widget = getWidgetData(el, data_key);
-          if (!existing_widget) {
-            widget = new widget_class(el, options);
-            if (!$.data(el, data_key)) {
-              $.data(el, data_key, widget);
-            }
-            widget._init();
-          }
-        }
-        return $el;
-      };
-      destroyWidget = function($el) {
-        var data_key, el, widget, _i, _len, _results;
-        data_key = getDataKey();
-        _results = [];
-        for (_i = 0, _len = $el.length; _i < _len; _i++) {
-          el = $el[_i];
-          widget = getWidgetData(el, data_key);
-          if (widget) {
-            widget.destroy();
-          }
-          _results.push($.removeData(el, data_key));
-        }
-        return _results;
-      };
-      callFunction = function($el, function_name, args) {
-        var el, result, widget, widget_function, _i, _len;
-        result = null;
-        for (_i = 0, _len = $el.length; _i < _len; _i++) {
-          el = $el[_i];
-          widget = $.data(el, getDataKey());
-          if (widget && (widget instanceof SimpleWidget)) {
-            widget_function = widget[function_name];
-            if (widget_function && (typeof widget_function === 'function')) {
-              result = widget_function.apply(widget, args);
-            }
-          }
-        }
-        return result;
-      };
-      return $.fn[widget_name] = function() {
-        var $el, args, argument1, function_name, options;
-        argument1 = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
-        $el = this;
-        if (argument1 === void 0 || typeof argument1 === 'object') {
-          options = argument1;
-          return createWidget($el, options);
-        } else if (typeof argument1 === 'string' && argument1[0] !== '_') {
-          function_name = argument1;
-          if (function_name === 'destroy') {
-            return destroyWidget($el);
-          } else {
-            return callFunction($el, function_name, args);
-          }
-        }
-      };
-    };
-
-    return SimpleWidget;
-
-  })();
-
-  this.SimpleWidget = SimpleWidget;
-
-
-  /*
-  This widget does the same a the mouse widget in jqueryui.
-   */
-
-  MouseWidget = (function(_super) {
-    __extends(MouseWidget, _super);
-
-    function MouseWidget() {
-      return MouseWidget.__super__.constructor.apply(this, arguments);
-    }
-
-    MouseWidget.is_mouse_handled = false;
-
-    MouseWidget.prototype._init = function() {
-      this.$el.bind('mousedown.mousewidget', $.proxy(this._mouseDown, this));
-      this.$el.bind('touchstart.mousewidget', $.proxy(this._touchStart, this));
-      this.is_mouse_started = false;
-      this.mouse_delay = 0;
-      this._mouse_delay_timer = null;
-      this._is_mouse_delay_met = true;
-      return this.mouse_down_info = null;
-    };
-
-    MouseWidget.prototype._deinit = function() {
-      var $document;
-      this.$el.unbind('mousedown.mousewidget');
-      this.$el.unbind('touchstart.mousewidget');
-      $document = $(document);
-      $document.unbind('mousemove.mousewidget');
-      return $document.unbind('mouseup.mousewidget');
-    };
-
-    MouseWidget.prototype._mouseDown = function(e) {
-      var result;
-      if (e.which !== 1) {
-        return;
-      }
-      result = this._handleMouseDown(e, this._getPositionInfo(e));
-      if (result) {
-        e.preventDefault();
-      }
-      return result;
-    };
-
-    MouseWidget.prototype._handleMouseDown = function(e, position_info) {
-      if (MouseWidget.is_mouse_handled) {
-        return;
-      }
-      if (this.is_mouse_started) {
-        this._handleMouseUp(position_info);
-      }
-      this.mouse_down_info = position_info;
-      if (!this._mouseCapture(position_info)) {
-        return;
-      }
-      this._handleStartMouse();
-      this.is_mouse_handled = true;
-      return true;
-    };
-
-    MouseWidget.prototype._handleStartMouse = function() {
-      var $document;
-      $document = $(document);
-      $document.bind('mousemove.mousewidget', $.proxy(this._mouseMove, this));
-      $document.bind('touchmove.mousewidget', $.proxy(this._touchMove, this));
-      $document.bind('mouseup.mousewidget', $.proxy(this._mouseUp, this));
-      $document.bind('touchend.mousewidget', $.proxy(this._touchEnd, this));
-      if (this.mouse_delay) {
-        return this._startMouseDelayTimer();
-      }
-    };
-
-    MouseWidget.prototype._startMouseDelayTimer = function() {
-      if (this._mouse_delay_timer) {
-        clearTimeout(this._mouse_delay_timer);
-      }
-      this._mouse_delay_timer = setTimeout((function(_this) {
-        return function() {
-          return _this._is_mouse_delay_met = true;
-        };
-      })(this), this.mouse_delay);
-      return this._is_mouse_delay_met = false;
-    };
-
-    MouseWidget.prototype._mouseMove = function(e) {
-      return this._handleMouseMove(e, this._getPositionInfo(e));
-    };
-
-    MouseWidget.prototype._handleMouseMove = function(e, position_info) {
-      if (this.is_mouse_started) {
-        this._mouseDrag(position_info);
-        return e.preventDefault();
-      }
-      if (this.mouse_delay && !this._is_mouse_delay_met) {
-        return true;
-      }
-      this.is_mouse_started = this._mouseStart(this.mouse_down_info) !== false;
-      if (this.is_mouse_started) {
-        this._mouseDrag(position_info);
-      } else {
-        this._handleMouseUp(position_info);
-      }
-      return !this.is_mouse_started;
-    };
-
-    MouseWidget.prototype._getPositionInfo = function(e) {
-      return {
-        page_x: e.pageX,
-        page_y: e.pageY,
-        target: e.target,
-        original_event: e
-      };
-    };
-
-    MouseWidget.prototype._mouseUp = function(e) {
-      return this._handleMouseUp(this._getPositionInfo(e));
-    };
-
-    MouseWidget.prototype._handleMouseUp = function(position_info) {
-      var $document;
-      $document = $(document);
-      $document.unbind('mousemove.mousewidget');
-      $document.unbind('touchmove.mousewidget');
-      $document.unbind('mouseup.mousewidget');
-      $document.unbind('touchend.mousewidget');
-      if (this.is_mouse_started) {
-        this.is_mouse_started = false;
-        this._mouseStop(position_info);
-      }
-    };
-
-    MouseWidget.prototype._mouseCapture = function(position_info) {
-      return true;
-    };
-
-    MouseWidget.prototype._mouseStart = function(position_info) {
-      return null;
-    };
-
-    MouseWidget.prototype._mouseDrag = function(position_info) {
-      return null;
-    };
-
-    MouseWidget.prototype._mouseStop = function(position_info) {
-      return null;
-    };
-
-    MouseWidget.prototype.setMouseDelay = function(mouse_delay) {
-      return this.mouse_delay = mouse_delay;
-    };
-
-    MouseWidget.prototype._touchStart = function(e) {
-      var touch;
-      if (e.originalEvent.touches.length > 1) {
-        return;
-      }
-      touch = e.originalEvent.changedTouches[0];
-      return this._handleMouseDown(e, this._getPositionInfo(touch));
-    };
-
-    MouseWidget.prototype._touchMove = function(e) {
-      var touch;
-      if (e.originalEvent.touches.length > 1) {
-        return;
-      }
-      touch = e.originalEvent.changedTouches[0];
-      return this._handleMouseMove(e, this._getPositionInfo(touch));
-    };
-
-    MouseWidget.prototype._touchEnd = function(e) {
-      var touch;
-      if (e.originalEvent.touches.length > 1) {
-        return;
-      }
-      touch = e.originalEvent.changedTouches[0];
-      return this._handleMouseUp(this._getPositionInfo(touch));
-    };
-
-    return MouseWidget;
-
-  })(SimpleWidget);
-
-  this.Tree = {};
-
-  $ = this.jQuery;
-
-  Position = {
-    getName: function(position) {
-      return Position.strings[position - 1];
-    },
-    nameToIndex: function(name) {
-      var i, _i, _ref;
-      for (i = _i = 1, _ref = Position.strings.length; 1 <= _ref ? _i <= _ref : _i >= _ref; i = 1 <= _ref ? ++_i : --_i) {
-        if (Position.strings[i - 1] === name) {
-          return i;
-        }
-      }
-      return 0;
-    }
-  };
-
-  Position.BEFORE = 1;
-
-  Position.AFTER = 2;
-
-  Position.INSIDE = 3;
-
-  Position.NONE = 4;
-
-  Position.strings = ['before', 'after', 'inside', 'none'];
-
-  this.Tree.Position = Position;
-
-  Node = (function() {
-    function Node(o, is_root, node_class) {
-      if (is_root == null) {
-        is_root = false;
-      }
-      if (node_class == null) {
-        node_class = Node;
-      }
-      this.setData(o);
-      this.children = [];
-      this.parent = null;
-      if (is_root) {
-        this.id_mapping = {};
-        this.tree = this;
-        this.node_class = node_class;
-      }
-    }
-
-    Node.prototype.setData = function(o) {
-      var key, value, _results;
-      if (typeof o !== 'object') {
-        return this.name = o;
-      } else {
-        _results = [];
-        for (key in o) {
-          value = o[key];
-          if (key === 'label') {
-            _results.push(this.name = value);
-          } else {
-            _results.push(this[key] = value);
-          }
-        }
-        return _results;
-      }
-    };
-
-    Node.prototype.initFromData = function(data) {
-      var addChildren, addNode;
-      addNode = (function(_this) {
-        return function(node_data) {
-          _this.setData(node_data);
-          if (node_data.children) {
-            return addChildren(node_data.children);
-          }
-        };
-      })(this);
-      addChildren = (function(_this) {
-        return function(children_data) {
-          var child, node, _i, _len;
-          for (_i = 0, _len = children_data.length; _i < _len; _i++) {
-            child = children_data[_i];
-            node = new _this.tree.node_class('');
-            node.initFromData(child);
-            _this.addChild(node);
-          }
-          return null;
-        };
-      })(this);
-      addNode(data);
-      return null;
-    };
-
-
-    /*
-    Create tree from data.
-    
-    Structure of data is:
-    [
-        {
-            label: 'node1',
-            children: [
-                { label: 'child1' },
-                { label: 'child2' }
-            ]
-        },
-        {
-            label: 'node2'
-        }
-    ]
-     */
-
-    Node.prototype.loadFromData = function(data) {
-      var node, o, _i, _len;
-      this.removeChildren();
-      for (_i = 0, _len = data.length; _i < _len; _i++) {
-        o = data[_i];
-        node = new this.tree.node_class(o);
-        this.addChild(node);
-        if (typeof o === 'object' && o.children) {
-          node.loadFromData(o.children);
-        }
-      }
-      return null;
-    };
-
-
-    /*
-    Add child.
-    
-    tree.addChild(
-        new Node('child1')
-    );
-     */
-
-    Node.prototype.addChild = function(node) {
-      this.children.push(node);
-      return node._setParent(this);
-    };
-
-
-    /*
-    Add child at position. Index starts at 0.
-    
-    tree.addChildAtPosition(
-        new Node('abc'),
-        1
-    );
-     */
-
-    Node.prototype.addChildAtPosition = function(node, index) {
-      this.children.splice(index, 0, node);
-      return node._setParent(this);
-    };
-
-    Node.prototype._setParent = function(parent) {
-      this.parent = parent;
-      this.tree = parent.tree;
-      return this.tree.addNodeToIndex(this);
-    };
-
-
-    /*
-    Remove child. This also removes the children of the node.
-    
-    tree.removeChild(tree.children[0]);
-     */
-
-    Node.prototype.removeChild = function(node) {
-      node.removeChildren();
-      return this._removeChild(node);
-    };
-
-    Node.prototype._removeChild = function(node) {
-      this.children.splice(this.getChildIndex(node), 1);
-      return this.tree.removeNodeFromIndex(node);
-    };
-
-
-    /*
-    Get child index.
-    
-    var index = getChildIndex(node);
-     */
-
-    Node.prototype.getChildIndex = function(node) {
-      return $.inArray(node, this.children);
-    };
-
-
-    /*
-    Does the tree have children?
-    
-    if (tree.hasChildren()) {
-        //
-    }
-     */
-
-    Node.prototype.hasChildren = function() {
-      return this.children.length !== 0;
-    };
-
-    Node.prototype.isFolder = function() {
-      return this.hasChildren() || this.load_on_demand;
-    };
-
-
-    /*
-    Iterate over all the nodes in the tree.
-    
-    Calls callback with (node, level).
-    
-    The callback must return true to continue the iteration on current node.
-    
-    tree.iterate(
-        function(node, level) {
-           console.log(node.name);
-    
-           // stop iteration after level 2
-           return (level <= 2);
-        }
-    );
-     */
-
-    Node.prototype.iterate = function(callback) {
-      var _iterate;
-      _iterate = (function(_this) {
-        return function(node, level) {
-          var child, result, _i, _len, _ref;
-          if (node.children) {
-            _ref = node.children;
-            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-              child = _ref[_i];
-              result = callback(child, level);
-              if (_this.hasChildren() && result) {
-                _iterate(child, level + 1);
-              }
-            }
-            return null;
-          }
-        };
-      })(this);
-      _iterate(this, 0);
-      return null;
-    };
-
-
-    /*
-    Move node relative to another node.
-    
-    Argument position: Position.BEFORE, Position.AFTER or Position.Inside
-    
-    // move node1 after node2
-    tree.moveNode(node1, node2, Position.AFTER);
-     */
-
-    Node.prototype.moveNode = function(moved_node, target_node, position) {
-      if (moved_node.isParentOf(target_node)) {
-        return;
-      }
-      moved_node.parent._removeChild(moved_node);
-      if (position === Position.AFTER) {
-        return target_node.parent.addChildAtPosition(moved_node, target_node.parent.getChildIndex(target_node) + 1);
-      } else if (position === Position.BEFORE) {
-        return target_node.parent.addChildAtPosition(moved_node, target_node.parent.getChildIndex(target_node));
-      } else if (position === Position.INSIDE) {
-        return target_node.addChildAtPosition(moved_node, 0);
-      }
-    };
-
-
-    /*
-    Get the tree as data.
-     */
-
-    Node.prototype.getData = function() {
-      var getDataFromNodes;
-      getDataFromNodes = (function(_this) {
-        return function(nodes) {
-          var data, k, node, tmp_node, v, _i, _len;
-          data = [];
-          for (_i = 0, _len = nodes.length; _i < _len; _i++) {
-            node = nodes[_i];
-            tmp_node = {};
-            for (k in node) {
-              v = node[k];
-              if ((k !== 'parent' && k !== 'children' && k !== 'element' && k !== 'tree') && Object.prototype.hasOwnProperty.call(node, k)) {
-                tmp_node[k] = v;
-              }
-            }
-            if (node.hasChildren()) {
-              tmp_node.children = getDataFromNodes(node.children);
-            }
-            data.push(tmp_node);
-          }
-          return data;
-        };
-      })(this);
-      return getDataFromNodes(this.children);
-    };
-
-    Node.prototype.getNodeByName = function(name) {
-      var result;
-      result = null;
-      this.iterate(function(node) {
-        if (node.name === name) {
-          result = node;
-          return false;
-        } else {
-          return true;
-        }
-      });
-      return result;
-    };
-
-    Node.prototype.addAfter = function(node_info) {
-      var child_index, node;
-      if (!this.parent) {
-        return null;
-      } else {
-        node = new this.tree.node_class(node_info);
-        child_index = this.parent.getChildIndex(this);
-        this.parent.addChildAtPosition(node, child_index + 1);
-        return node;
-      }
-    };
-
-    Node.prototype.addBefore = function(node_info) {
-      var child_index, node;
-      if (!this.parent) {
-        return null;
-      } else {
-        node = new this.tree.node_class(node_info);
-        child_index = this.parent.getChildIndex(this);
-        this.parent.addChildAtPosition(node, child_index);
-        return node;
-      }
-    };
-
-    Node.prototype.addParent = function(node_info) {
-      var child, new_parent, original_parent, _i, _len, _ref;
-      if (!this.parent) {
-        return null;
-      } else {
-        new_parent = new this.tree.node_class(node_info);
-        new_parent._setParent(this.tree);
-        original_parent = this.parent;
-        _ref = original_parent.children;
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          child = _ref[_i];
-          new_parent.addChild(child);
-        }
-        original_parent.children = [];
-        original_parent.addChild(new_parent);
-        return new_parent;
-      }
-    };
-
-    Node.prototype.remove = function() {
-      if (this.parent) {
-        this.parent.removeChild(this);
-        return this.parent = null;
-      }
-    };
-
-    Node.prototype.append = function(node_info) {
-      var node;
-      node = new this.tree.node_class(node_info);
-      this.addChild(node);
-      return node;
-    };
-
-    Node.prototype.prepend = function(node_info) {
-      var node;
-      node = new this.tree.node_class(node_info);
-      this.addChildAtPosition(node, 0);
-      return node;
-    };
-
-    Node.prototype.isParentOf = function(node) {
-      var parent;
-      parent = node.parent;
-      while (parent) {
-        if (parent === this) {
-          return true;
-        }
-        parent = parent.parent;
-      }
-      return false;
-    };
-
-    Node.prototype.getLevel = function() {
-      var level, node;
-      level = 0;
-      node = this;
-      while (node.parent) {
-        level += 1;
-        node = node.parent;
-      }
-      return level;
-    };
-
-    Node.prototype.getNodeById = function(node_id) {
-      return this.id_mapping[node_id];
-    };
-
-    Node.prototype.addNodeToIndex = function(node) {
-      if (node.id != null) {
-        return this.id_mapping[node.id] = node;
-      }
-    };
-
-    Node.prototype.removeNodeFromIndex = function(node) {
-      if (node.id != null) {
-        return delete this.id_mapping[node.id];
-      }
-    };
-
-    Node.prototype.removeChildren = function() {
-      this.iterate((function(_this) {
-        return function(child) {
-          _this.tree.removeNodeFromIndex(child);
-          return true;
-        };
-      })(this));
-      return this.children = [];
-    };
-
-    Node.prototype.getPreviousSibling = function() {
-      var previous_index;
-      if (!this.parent) {
-        return null;
-      } else {
-        previous_index = this.parent.getChildIndex(this) - 1;
-        if (previous_index >= 0) {
-          return this.parent.children[previous_index];
-        } else {
-          return null;
-        }
-      }
-    };
-
-    Node.prototype.getNextSibling = function() {
-      var next_index;
-      if (!this.parent) {
-        return null;
-      } else {
-        next_index = this.parent.getChildIndex(this) + 1;
-        if (next_index < this.parent.children.length) {
-          return this.parent.children[next_index];
-        } else {
-          return null;
-        }
-      }
-    };
-
-    Node.prototype.getNodesByProperty = function(key, value) {
-      return this.filter(function(node) {
-        return node[key] === value;
-      });
-    };
-
-    Node.prototype.filter = function(f) {
-      var result;
-      result = [];
-      this.iterate(function(node) {
-        if (f(node)) {
-          result.push(node);
-        }
-        return true;
-      });
-      return result;
-    };
-
-    return Node;
-
-  })();
-
-  this.Tree.Node = Node;
-
-  ElementsRenderer = (function() {
-    function ElementsRenderer(tree_widget) {
-      this.tree_widget = tree_widget;
-      this.opened_icon_element = this.createButtonElement(tree_widget.options.openedIcon);
-      this.closed_icon_element = this.createButtonElement(tree_widget.options.closedIcon);
-    }
-
-    ElementsRenderer.prototype.render = function(from_node) {
-      if (from_node && from_node.parent) {
-        return this.renderFromNode(from_node);
-      } else {
-        return this.renderFromRoot();
-      }
-    };
-
-    ElementsRenderer.prototype.renderNode = function(node) {
-      var li, parent_node_element, previous_node;
-      $(node.element).remove();
-      parent_node_element = new NodeElement(node.parent, this.tree_widget);
-      li = this.createLi(node);
-      this.attachNodeData(node, li);
-      previous_node = node.getPreviousSibling();
-      if (previous_node) {
-        $(previous_node.element).after(li);
-      } else {
-        parent_node_element.getUl().prepend(li);
-      }
-      if (node.children) {
-        return this.renderFromNode(node);
-      }
-    };
-
-    ElementsRenderer.prototype.renderFromRoot = function() {
-      var $element;
-      $element = this.tree_widget.element;
-      $element.empty();
-      return this.createDomElements($element[0], this.tree_widget.tree.children, true, true);
-    };
-
-    ElementsRenderer.prototype.renderFromNode = function(from_node) {
-      var node_element;
-      node_element = this.tree_widget._getNodeElementForNode(from_node);
-      node_element.getUl().remove();
-      return this.createDomElements(node_element.$element[0], from_node.children, false, false);
-    };
-
-    ElementsRenderer.prototype.createDomElements = function(element, children, is_root_node, is_open) {
-      var child, li, ul, _i, _len;
-      ul = this.createUl(is_root_node);
-      element.appendChild(ul);
-      for (_i = 0, _len = children.length; _i < _len; _i++) {
-        child = children[_i];
-        li = this.createLi(child);
-        ul.appendChild(li);
-        this.attachNodeData(child, li);
-        if (child.hasChildren()) {
-          this.createDomElements(li, child.children, false, child.is_open);
-        }
-      }
-      return null;
-    };
-
-    ElementsRenderer.prototype.attachNodeData = function(node, li) {
-      node.element = li;
-      return $(li).data('node', node);
-    };
-
-    ElementsRenderer.prototype.createUl = function(is_root_node) {
-      var class_string, ul;
-      if (is_root_node) {
-        class_string = 'jqtree-tree';
-      } else {
-        class_string = '';
-      }
-      ul = document.createElement('ul');
-      ul.className = "jqtree_common " + class_string;
-      return ul;
-    };
-
-    ElementsRenderer.prototype.createLi = function(node) {
-      var li;
-      if (node.isFolder()) {
-        li = this.createFolderLi(node);
-      } else {
-        li = this.createNodeLi(node);
-      }
-      if (this.tree_widget.options.onCreateLi) {
-        this.tree_widget.options.onCreateLi(node, $(li));
-      }
-      return li;
-    };
-
-    ElementsRenderer.prototype.createFolderLi = function(node) {
-      var button_classes, button_link, div, escaped_name, folder_classes, icon_element, li, title_span;
-      button_classes = this.getButtonClasses(node);
-      folder_classes = this.getFolderClasses(node);
-      escaped_name = this.escapeIfNecessary(node.name);
-      if (node.is_open) {
-        icon_element = this.opened_icon_element;
-      } else {
-        icon_element = this.closed_icon_element;
-      }
-      li = document.createElement('li');
-      li.className = "jqtree_common " + folder_classes;
-      div = document.createElement('div');
-      div.className = "jqtree-element jqtree_common";
-      li.appendChild(div);
-      button_link = document.createElement('a');
-      button_link.className = "jqtree_common " + button_classes;
-      button_link.appendChild(icon_element.cloneNode());
-      div.appendChild(button_link);
-      title_span = document.createElement('span');
-      title_span.className = "jqtree_common jqtree-title jqtree-title-folder";
-      div.appendChild(title_span);
-      title_span.innerHTML = escaped_name;
-      return li;
-    };
-
-    ElementsRenderer.prototype.createNodeLi = function(node) {
-      var class_string, div, escaped_name, li, li_classes, title_span;
-      li_classes = ['jqtree_common'];
-      if (this.tree_widget.select_node_handler && this.tree_widget.select_node_handler.isNodeSelected(node)) {
-        li_classes.push('jqtree-selected');
-      }
-      class_string = li_classes.join(' ');
-      escaped_name = this.escapeIfNecessary(node.name);
-      li = document.createElement('li');
-      li.className = class_string;
-      div = document.createElement('div');
-      div.className = "jqtree-element jqtree_common";
-      li.appendChild(div);
-      title_span = document.createElement('span');
-      title_span.className = "jqtree-title jqtree_common";
-      title_span.innerHTML = escaped_name;
-      div.appendChild(title_span);
-      return li;
-    };
-
-    ElementsRenderer.prototype.getButtonClasses = function(node) {
-      var classes;
-      classes = ['jqtree-toggler'];
-      if (!node.is_open) {
-        classes.push('jqtree-closed');
-      }
-      return classes.join(' ');
-    };
-
-    ElementsRenderer.prototype.getFolderClasses = function(node) {
-      var classes;
-      classes = ['jqtree-folder'];
-      if (!node.is_open) {
-        classes.push('jqtree-closed');
-      }
-      if (this.tree_widget.select_node_handler && this.tree_widget.select_node_handler.isNodeSelected(node)) {
-        classes.push('jqtree-selected');
-      }
-      return classes.join(' ');
-    };
-
-    ElementsRenderer.prototype.escapeIfNecessary = function(value) {
-      if (this.tree_widget.options.autoEscape) {
-        return html_escape(value);
-      } else {
-        return value;
-      }
-    };
-
-    ElementsRenderer.prototype.createButtonElement = function(value) {
-      var div;
-      if (typeof value === 'string') {
-        div = document.createElement('div');
-        div.innerHTML = value;
-        return document.createTextNode(div.innerHTML);
-      } else {
-        return $(value)[0];
-      }
-    };
-
-    return ElementsRenderer;
-
-  })();
-
-
-  /*
-  Copyright 2013 Marco Braak
-  
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
-  
-      http://www.apache.org/licenses/LICENSE-2.0
-  
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
-   */
-
-  JqTreeWidget = (function(_super) {
-    __extends(JqTreeWidget, _super);
-
-    function JqTreeWidget() {
-      return JqTreeWidget.__super__.constructor.apply(this, arguments);
-    }
-
-    JqTreeWidget.prototype.defaults = {
-      autoOpen: false,
-      saveState: false,
-      dragAndDrop: false,
-      selectable: true,
-      useContextMenu: true,
-      onCanSelectNode: null,
-      onSetStateFromStorage: null,
-      onGetStateFromStorage: null,
-      onCreateLi: null,
-      onIsMoveHandle: null,
-      onCanMove: null,
-      onCanMoveTo: null,
-      onLoadFailed: null,
-      autoEscape: true,
-      dataUrl: null,
-      closedIcon: '&#x25ba;',
-      openedIcon: '&#x25bc;',
-      slide: true,
-      nodeClass: Node,
-      dataFilter: null,
-      keyboardSupport: true,
-      openFolderDelay: 500
-    };
-
-    JqTreeWidget.prototype.toggle = function(node, slide) {
-      if (slide == null) {
-        slide = null;
-      }
-      if (slide === null) {
-        slide = this.options.slide;
-      }
-      if (node.is_open) {
-        return this.closeNode(node, slide);
-      } else {
-        return this.openNode(node, slide);
-      }
-    };
-
-    JqTreeWidget.prototype.getTree = function() {
-      return this.tree;
-    };
-
-    JqTreeWidget.prototype.selectNode = function(node) {
-      return this._selectNode(node, false);
-    };
-
-    JqTreeWidget.prototype._selectNode = function(node, must_toggle) {
-      var canSelect, deselected_node, openParents, saveState;
-      if (must_toggle == null) {
-        must_toggle = false;
-      }
-      if (!this.select_node_handler) {
-        return;
-      }
-      canSelect = (function(_this) {
-        return function() {
-          if (_this.options.onCanSelectNode) {
-            return _this.options.selectable && _this.options.onCanSelectNode(node);
-          } else {
-            return _this.options.selectable;
-          }
-        };
-      })(this);
-      openParents = (function(_this) {
-        return function() {
-          var parent;
-          parent = node.parent;
-          if (parent && parent.parent && !parent.is_open) {
-            return _this.openNode(parent, false);
-          }
-        };
-      })(this);
-      saveState = (function(_this) {
-        return function() {
-          if (_this.options.saveState) {
-            return _this.save_state_handler.saveState();
-          }
-        };
-      })(this);
-      if (!node) {
-        this._deselectCurrentNode();
-        saveState();
-        return;
-      }
-      if (!canSelect()) {
-        return;
-      }
-      if (this.select_node_handler.isNodeSelected(node)) {
-        if (must_toggle) {
-          this._deselectCurrentNode();
-          this._triggerEvent('tree.select', {
-            node: null,
-            previous_node: node
-          });
-        }
-      } else {
-        deselected_node = this.getSelectedNode();
-        this._deselectCurrentNode();
-        this.addToSelection(node);
-        this._triggerEvent('tree.select', {
-          node: node,
-          deselected_node: deselected_node
-        });
-        openParents();
-      }
-      return saveState();
-    };
-
-    JqTreeWidget.prototype.getSelectedNode = function() {
-      return this.select_node_handler.getSelectedNode();
-    };
-
-    JqTreeWidget.prototype.toJson = function() {
-      return JSON.stringify(this.tree.getData());
-    };
-
-    JqTreeWidget.prototype.loadData = function(data, parent_node) {
-      return this._loadData(data, parent_node);
-    };
-
-    JqTreeWidget.prototype.loadDataFromUrl = function(url, parent_node, on_finished) {
-      if ($.type(url) !== 'string') {
-        on_finished = parent_node;
-        parent_node = url;
-        url = null;
-      }
-      return this._loadDataFromUrl(url, parent_node, on_finished);
-    };
-
-    JqTreeWidget.prototype.reload = function() {
-      return this.loadDataFromUrl();
-    };
-
-    JqTreeWidget.prototype._loadDataFromUrl = function(url_info, parent_node, on_finished) {
-      var $el, addLoadingClass, handeLoadData, loadDataFromUrlInfo, parseUrlInfo, removeLoadingClass;
-      $el = null;
-      addLoadingClass = (function(_this) {
-        return function() {
-          var folder_element;
-          if (!parent_node) {
-            $el = _this.element;
-          } else {
-            folder_element = new FolderElement(parent_node, _this);
-            $el = folder_element.getLi();
-          }
-          return $el.addClass('jqtree-loading');
-        };
-      })(this);
-      removeLoadingClass = (function(_this) {
-        return function() {
-          if ($el) {
-            return $el.removeClass('jqtree-loading');
-          }
-        };
-      })(this);
-      parseUrlInfo = (function(_this) {
-        return function() {
-          if ($.type(url_info) === 'string') {
-            url_info = {
-              url: url_info
-            };
-          }
-          if (!url_info.method) {
-            return url_info.method = 'get';
-          }
-        };
-      })(this);
-      handeLoadData = (function(_this) {
-        return function(data) {
-          removeLoadingClass();
-          _this._loadData(data, parent_node);
-          if (on_finished && $.isFunction(on_finished)) {
-            return on_finished();
-          }
-        };
-      })(this);
-      loadDataFromUrlInfo = (function(_this) {
-        return function() {
-          parseUrlInfo();
-          return $.ajax({
-            url: url_info.url,
-            data: url_info.data,
-            type: url_info.method.toUpperCase(),
-            cache: false,
-            dataType: 'json',
-            success: function(response) {
-              var data;
-              if ($.isArray(response) || typeof response === 'object') {
-                data = response;
-              } else {
-                data = $.parseJSON(response);
-              }
-              if (_this.options.dataFilter) {
-                data = _this.options.dataFilter(data);
-              }
-              return handeLoadData(data);
-            },
-            error: function(response) {
-              removeLoadingClass();
-              if (_this.options.onLoadFailed) {
-                return _this.options.onLoadFailed(response);
-              }
-            }
-          });
-        };
-      })(this);
-      if (!url_info) {
-        url_info = this._getDataUrlInfo(parent_node);
-      }
-      addLoadingClass();
-      if (!url_info) {
-        removeLoadingClass();
-      } else if ($.isArray(url_info)) {
-        handeLoadData(url_info);
-      } else {
-        return loadDataFromUrlInfo();
-      }
-    };
-
-    JqTreeWidget.prototype._loadData = function(data, parent_node) {
-      var n, selected_nodes_under_parent, _i, _len;
-      if (!data) {
-        return;
-      }
-      this._triggerEvent('tree.load_data', {
-        tree_data: data
-      });
-      if (!parent_node) {
-        this._initTree(data);
-      } else {
-        selected_nodes_under_parent = this.select_node_handler.getSelectedNodesUnder(parent_node);
-        for (_i = 0, _len = selected_nodes_under_parent.length; _i < _len; _i++) {
-          n = selected_nodes_under_parent[_i];
-          this.select_node_handler.removeFromSelection(n);
-        }
-        parent_node.loadFromData(data);
-        parent_node.load_on_demand = false;
-        this._refreshElements(parent_node.parent);
-      }
-      if (this.isDragging()) {
-        return this.dnd_handler.refresh();
-      }
-    };
-
-    JqTreeWidget.prototype.getNodeById = function(node_id) {
-      return this.tree.getNodeById(node_id);
-    };
-
-    JqTreeWidget.prototype.getNodeByName = function(name) {
-      return this.tree.getNodeByName(name);
-    };
-
-    JqTreeWidget.prototype.openNode = function(node, slide) {
-      if (slide == null) {
-        slide = null;
-      }
-      if (slide === null) {
-        slide = this.options.slide;
-      }
-      return this._openNode(node, slide);
-    };
-
-    JqTreeWidget.prototype._openNode = function(node, slide, on_finished) {
-      var doOpenNode, parent;
-      if (slide == null) {
-        slide = true;
-      }
-      doOpenNode = (function(_this) {
-        return function(_node, _slide, _on_finished) {
-          var folder_element;
-          folder_element = new FolderElement(_node, _this);
-          return folder_element.open(_on_finished, _slide);
-        };
-      })(this);
-      if (node.isFolder()) {
-        if (node.load_on_demand) {
-          return this._loadFolderOnDemand(node, slide, on_finished);
-        } else {
-          parent = node.parent;
-          while (parent && !parent.is_open) {
-            if (parent.parent) {
-              doOpenNode(parent, false, null);
-            }
-            parent = parent.parent;
-          }
-          doOpenNode(node, slide, on_finished);
-          return this._saveState();
-        }
-      }
-    };
-
-    JqTreeWidget.prototype._loadFolderOnDemand = function(node, slide, on_finished) {
-      if (slide == null) {
-        slide = true;
-      }
-      return this._loadDataFromUrl(null, node, (function(_this) {
-        return function() {
-          return _this._openNode(node, slide, on_finished);
-        };
-      })(this));
-    };
-
-    JqTreeWidget.prototype.closeNode = function(node, slide) {
-      if (slide == null) {
-        slide = null;
-      }
-      if (slide === null) {
-        slide = this.options.slide;
-      }
-      if (node.isFolder()) {
-        new FolderElement(node, this).close(slide);
-        return this._saveState();
-      }
-    };
-
-    JqTreeWidget.prototype.isDragging = function() {
-      if (this.dnd_handler) {
-        return this.dnd_handler.is_dragging;
-      } else {
-        return false;
-      }
-    };
-
-    JqTreeWidget.prototype.refreshHitAreas = function() {
-      return this.dnd_handler.refresh();
-    };
-
-    JqTreeWidget.prototype.addNodeAfter = function(new_node_info, existing_node) {
-      var new_node;
-      new_node = existing_node.addAfter(new_node_info);
-      this._refreshElements(existing_node.parent);
-      return new_node;
-    };
-
-    JqTreeWidget.prototype.addNodeBefore = function(new_node_info, existing_node) {
-      var new_node;
-      new_node = existing_node.addBefore(new_node_info);
-      this._refreshElements(existing_node.parent);
-      return new_node;
-    };
-
-    JqTreeWidget.prototype.addParentNode = function(new_node_info, existing_node) {
-      var new_node;
-      new_node = existing_node.addParent(new_node_info);
-      this._refreshElements(new_node.parent);
-      return new_node;
-    };
-
-    JqTreeWidget.prototype.removeNode = function(node) {
-      var parent;
-      parent = node.parent;
-      if (parent) {
-        this.select_node_handler.removeFromSelection(node, true);
-        node.remove();
-        return this._refreshElements(parent.parent);
-      }
-    };
-
-    JqTreeWidget.prototype.appendNode = function(new_node_info, parent_node) {
-      var is_already_folder_node, node;
-      if (!parent_node) {
-        parent_node = this.tree;
-      }
-      is_already_folder_node = parent_node.isFolder();
-      node = parent_node.append(new_node_info);
-      if (is_already_folder_node) {
-        this._refreshElements(parent_node);
-      } else {
-        this._refreshElements(parent_node.parent);
-      }
-      return node;
-    };
-
-    JqTreeWidget.prototype.prependNode = function(new_node_info, parent_node) {
-      var node;
-      if (!parent_node) {
-        parent_node = this.tree;
-      }
-      node = parent_node.prepend(new_node_info);
-      this._refreshElements(parent_node);
-      return node;
-    };
-
-    JqTreeWidget.prototype.updateNode = function(node, data) {
-      var id_is_changed;
-      id_is_changed = data.id && data.id !== node.id;
-      if (id_is_changed) {
-        this.tree.removeNodeFromIndex(node);
-      }
-      node.setData(data);
-      if (id_is_changed) {
-        this.tree.addNodeToIndex(node);
-      }
-      this.renderer.renderNode(node);
-      return this._selectCurrentNode();
-    };
-
-    JqTreeWidget.prototype.moveNode = function(node, target_node, position) {
-      var position_index;
-      position_index = Position.nameToIndex(position);
-      this.tree.moveNode(node, target_node, position_index);
-      return this._refreshElements();
-    };
-
-    JqTreeWidget.prototype.getStateFromStorage = function() {
-      return this.save_state_handler.getStateFromStorage();
-    };
-
-    JqTreeWidget.prototype.addToSelection = function(node) {
-      if (node) {
-        this.select_node_handler.addToSelection(node);
-        this._getNodeElementForNode(node).select();
-        return this._saveState();
-      }
-    };
-
-    JqTreeWidget.prototype.getSelectedNodes = function() {
-      return this.select_node_handler.getSelectedNodes();
-    };
-
-    JqTreeWidget.prototype.isNodeSelected = function(node) {
-      return this.select_node_handler.isNodeSelected(node);
-    };
-
-    JqTreeWidget.prototype.removeFromSelection = function(node) {
-      this.select_node_handler.removeFromSelection(node);
-      this._getNodeElementForNode(node).deselect();
-      return this._saveState();
-    };
-
-    JqTreeWidget.prototype.scrollToNode = function(node) {
-      var $element, top;
-      $element = $(node.element);
-      top = $element.offset().top - this.$el.offset().top;
-      return this.scroll_handler.scrollTo(top);
-    };
-
-    JqTreeWidget.prototype.getState = function() {
-      return this.save_state_handler.getState();
-    };
-
-    JqTreeWidget.prototype.setState = function(state) {
-      this.save_state_handler.setState(state);
-      return this._refreshElements();
-    };
-
-    JqTreeWidget.prototype.setOption = function(option, value) {
-      return this.options[option] = value;
-    };
-
-    JqTreeWidget.prototype.getVersion = function() {
-      return __version__;
-    };
-
-    JqTreeWidget.prototype._init = function() {
-      JqTreeWidget.__super__._init.call(this);
-      this.element = this.$el;
-      this.mouse_delay = 300;
-      this.is_initialized = false;
-      this.renderer = new ElementsRenderer(this);
-      if (typeof SaveStateHandler !== "undefined" && SaveStateHandler !== null) {
-        this.save_state_handler = new SaveStateHandler(this);
-      } else {
-        this.options.saveState = false;
-      }
-      if (typeof SelectNodeHandler !== "undefined" && SelectNodeHandler !== null) {
-        this.select_node_handler = new SelectNodeHandler(this);
-      }
-      if (typeof DragAndDropHandler !== "undefined" && DragAndDropHandler !== null) {
-        this.dnd_handler = new DragAndDropHandler(this);
-      } else {
-        this.options.dragAndDrop = false;
-      }
-      if (typeof ScrollHandler !== "undefined" && ScrollHandler !== null) {
-        this.scroll_handler = new ScrollHandler(this);
-      }
-      if ((typeof KeyHandler !== "undefined" && KeyHandler !== null) && (typeof SelectNodeHandler !== "undefined" && SelectNodeHandler !== null)) {
-        this.key_handler = new KeyHandler(this);
-      }
-      this._initData();
-      this.element.click($.proxy(this._click, this));
-      this.element.dblclick($.proxy(this._dblclick, this));
-      if (this.options.useContextMenu) {
-        return this.element.bind('contextmenu', $.proxy(this._contextmenu, this));
-      }
-    };
-
-    JqTreeWidget.prototype._deinit = function() {
-      this.element.empty();
-      this.element.unbind();
-      this.key_handler.deinit();
-      this.tree = null;
-      return JqTreeWidget.__super__._deinit.call(this);
-    };
-
-    JqTreeWidget.prototype._initData = function() {
-      if (this.options.data) {
-        return this._loadData(this.options.data);
-      } else {
-        return this._loadDataFromUrl(this._getDataUrlInfo());
-      }
-    };
-
-    JqTreeWidget.prototype._getDataUrlInfo = function(node) {
-      var data_url, getUrlFromString;
-      data_url = this.options.dataUrl || this.element.data('url');
-      getUrlFromString = (function(_this) {
-        return function() {
-          var data, selected_node_id, url_info;
-          url_info = {
-            url: data_url
-          };
-          if (node && node.id) {
-            data = {
-              node: node.id
-            };
-            url_info['data'] = data;
-          } else {
-            selected_node_id = _this._getNodeIdToBeSelected();
-            if (selected_node_id) {
-              data = {
-                selected_node: selected_node_id
-              };
-              url_info['data'] = data;
-            }
-          }
-          return url_info;
-        };
-      })(this);
-      if ($.isFunction(data_url)) {
-        return data_url(node);
-      } else if ($.type(data_url) === 'string') {
-        return getUrlFromString();
-      } else {
-        return data_url;
-      }
-    };
-
-    JqTreeWidget.prototype._getNodeIdToBeSelected = function() {
-      if (this.options.saveState) {
-        return this.save_state_handler.getNodeIdToBeSelected();
-      } else {
-        return null;
-      }
-    };
-
-    JqTreeWidget.prototype._initTree = function(data) {
-      this.tree = new this.options.nodeClass(null, true, this.options.nodeClass);
-      if (this.select_node_handler) {
-        this.select_node_handler.clear();
-      }
-      this.tree.loadFromData(data);
-      this._openNodes();
-      this._refreshElements();
-      if (!this.is_initialized) {
-        this.is_initialized = true;
-        return this._triggerEvent('tree.init');
-      }
-    };
-
-    JqTreeWidget.prototype._openNodes = function() {
-      var max_level;
-      if (this.options.saveState) {
-        if (this.save_state_handler.restoreState()) {
-          return;
-        }
-      }
-      if (this.options.autoOpen === false) {
-        return;
-      } else if (this.options.autoOpen === true) {
-        max_level = -1;
-      } else {
-        max_level = parseInt(this.options.autoOpen);
-      }
-      return this.tree.iterate(function(node, level) {
-        if (node.hasChildren()) {
-          node.is_open = true;
-        }
-        return level !== max_level;
-      });
-    };
-
-    JqTreeWidget.prototype._refreshElements = function(from_node) {
-      if (from_node == null) {
-        from_node = null;
-      }
-      this.renderer.render(from_node);
-      return this._triggerEvent('tree.refresh');
-    };
-
-    JqTreeWidget.prototype._click = function(e) {
-      var click_target, event, node;
-      click_target = this._getClickTarget(e.target);
-      if (click_target) {
-        if (click_target.type === 'button') {
-          this.toggle(click_target.node, this.options.slide);
-          e.preventDefault();
-          return e.stopPropagation();
-        } else if (click_target.type === 'label') {
-          node = click_target.node;
-          event = this._triggerEvent('tree.click', {
-            node: node,
-            click_event: e
-          });
-          if (!event.isDefaultPrevented()) {
-            return this._selectNode(node, true);
-          }
-        }
-      }
-    };
-
-    JqTreeWidget.prototype._dblclick = function(e) {
-      var click_target;
-      click_target = this._getClickTarget(e.target);
-      if (click_target && click_target.type === 'label') {
-        return this._triggerEvent('tree.dblclick', {
-          node: click_target.node,
-          click_event: e
-        });
-      }
-    };
-
-    JqTreeWidget.prototype._getClickTarget = function(element) {
-      var $button, $el, $target, node;
-      $target = $(element);
-      $button = $target.closest('.jqtree-toggler');
-      if ($button.length) {
-        node = this._getNode($button);
-        if (node) {
-          return {
-            type: 'button',
-            node: node
-          };
-        }
-      } else {
-        $el = $target.closest('.jqtree-element');
-        if ($el.length) {
-          node = this._getNode($el);
-          if (node) {
-            return {
-              type: 'label',
-              node: node
-            };
-          }
-        }
-      }
-      return null;
-    };
-
-    JqTreeWidget.prototype._getNode = function($element) {
-      var $li;
-      $li = $element.closest('li.jqtree_common');
-      if ($li.length === 0) {
-        return null;
-      } else {
-        return $li.data('node');
-      }
-    };
-
-    JqTreeWidget.prototype._getNodeElementForNode = function(node) {
-      if (node.isFolder()) {
-        return new FolderElement(node, this);
-      } else {
-        return new NodeElement(node, this);
-      }
-    };
-
-    JqTreeWidget.prototype._getNodeElement = function($element) {
-      var node;
-      node = this._getNode($element);
-      if (node) {
-        return this._getNodeElementForNode(node);
-      } else {
-        return null;
-      }
-    };
-
-    JqTreeWidget.prototype._contextmenu = function(e) {
-      var $div, node;
-      $div = $(e.target).closest('ul.jqtree-tree .jqtree-element');
-      if ($div.length) {
-        node = this._getNode($div);
-        if (node) {
-          e.preventDefault();
-          e.stopPropagation();
-          this._triggerEvent('tree.contextmenu', {
-            node: node,
-            click_event: e
-          });
-          return false;
-        }
-      }
-    };
-
-    JqTreeWidget.prototype._saveState = function() {
-      if (this.options.saveState) {
-        return this.save_state_handler.saveState();
-      }
-    };
-
-    JqTreeWidget.prototype._mouseCapture = function(position_info) {
-      if (this.options.dragAndDrop) {
-        return this.dnd_handler.mouseCapture(position_info);
-      } else {
-        return false;
-      }
-    };
-
-    JqTreeWidget.prototype._mouseStart = function(position_info) {
-      if (this.options.dragAndDrop) {
-        return this.dnd_handler.mouseStart(position_info);
-      } else {
-        return false;
-      }
-    };
-
-    JqTreeWidget.prototype._mouseDrag = function(position_info) {
-      var result;
-      if (this.options.dragAndDrop) {
-        result = this.dnd_handler.mouseDrag(position_info);
-        if (this.scroll_handler) {
-          this.scroll_handler.checkScrolling();
-        }
-        return result;
-      } else {
-        return false;
-      }
-    };
-
-    JqTreeWidget.prototype._mouseStop = function(position_info) {
-      if (this.options.dragAndDrop) {
-        return this.dnd_handler.mouseStop(position_info);
-      } else {
-        return false;
-      }
-    };
-
-    JqTreeWidget.prototype._triggerEvent = function(event_name, values) {
-      var event;
-      event = $.Event(event_name);
-      $.extend(event, values);
-      this.element.trigger(event);
-      return event;
-    };
-
-    JqTreeWidget.prototype.testGenerateHitAreas = function(moving_node) {
-      this.dnd_handler.current_item = this._getNodeElementForNode(moving_node);
-      this.dnd_handler.generateHitAreas();
-      return this.dnd_handler.hit_areas;
-    };
-
-    JqTreeWidget.prototype._selectCurrentNode = function() {
-      var node, node_element;
-      node = this.getSelectedNode();
-      if (node) {
-        node_element = this._getNodeElementForNode(node);
-        if (node_element) {
-          return node_element.select();
-        }
-      }
-    };
-
-    JqTreeWidget.prototype._deselectCurrentNode = function() {
-      var node;
-      node = this.getSelectedNode();
-      if (node) {
-        return this.removeFromSelection(node);
-      }
-    };
-
-    return JqTreeWidget;
-
-  })(MouseWidget);
-
-  SimpleWidget.register(JqTreeWidget, 'tree');
-
-  NodeElement = (function() {
-    function NodeElement(node, tree_widget) {
-      this.init(node, tree_widget);
-    }
-
-    NodeElement.prototype.init = function(node, tree_widget) {
-      this.node = node;
-      this.tree_widget = tree_widget;
-      if (!node.element) {
-        node.element = this.tree_widget.element;
-      }
-      return this.$element = $(node.element);
-    };
-
-    NodeElement.prototype.getUl = function() {
-      return this.$element.children('ul:first');
-    };
-
-    NodeElement.prototype.getSpan = function() {
-      return this.$element.children('.jqtree-element').find('span.jqtree-title');
-    };
-
-    NodeElement.prototype.getLi = function() {
-      return this.$element;
-    };
-
-    NodeElement.prototype.addDropHint = function(position) {
-      if (position === Position.INSIDE) {
-        return new BorderDropHint(this.$element);
-      } else {
-        return new GhostDropHint(this.node, this.$element, position);
-      }
-    };
-
-    NodeElement.prototype.select = function() {
-      return this.getLi().addClass('jqtree-selected');
-    };
-
-    NodeElement.prototype.deselect = function() {
-      return this.getLi().removeClass('jqtree-selected');
-    };
-
-    return NodeElement;
-
-  })();
-
-  FolderElement = (function(_super) {
-    __extends(FolderElement, _super);
-
-    function FolderElement() {
-      return FolderElement.__super__.constructor.apply(this, arguments);
-    }
-
-    FolderElement.prototype.open = function(on_finished, slide) {
-      var $button, doOpen;
-      if (slide == null) {
-        slide = true;
-      }
-      if (!this.node.is_open) {
-        this.node.is_open = true;
-        $button = this.getButton();
-        $button.removeClass('jqtree-closed');
-        $button.html('');
-        $button.append(this.tree_widget.renderer.opened_icon_element.cloneNode());
-        doOpen = (function(_this) {
-          return function() {
-            _this.getLi().removeClass('jqtree-closed');
-            if (on_finished) {
-              on_finished();
-            }
-            return _this.tree_widget._triggerEvent('tree.open', {
-              node: _this.node
-            });
-          };
-        })(this);
-        if (slide) {
-          return this.getUl().slideDown('fast', doOpen);
-        } else {
-          this.getUl().show();
-          return doOpen();
-        }
-      }
-    };
-
-    FolderElement.prototype.close = function(slide) {
-      var $button, doClose;
-      if (slide == null) {
-        slide = true;
-      }
-      if (this.node.is_open) {
-        this.node.is_open = false;
-        $button = this.getButton();
-        $button.addClass('jqtree-closed');
-        $button.html('');
-        $button.append(this.tree_widget.renderer.closed_icon_element.cloneNode());
-        doClose = (function(_this) {
-          return function() {
-            _this.getLi().addClass('jqtree-closed');
-            return _this.tree_widget._triggerEvent('tree.close', {
-              node: _this.node
-            });
-          };
-        })(this);
-        if (slide) {
-          return this.getUl().slideUp('fast', doClose);
-        } else {
-          this.getUl().hide();
-          return doClose();
-        }
-      }
-    };
-
-    FolderElement.prototype.getButton = function() {
-      return this.$element.children('.jqtree-element').find('a.jqtree-toggler');
-    };
-
-    FolderElement.prototype.addDropHint = function(position) {
-      if (!this.node.is_open && position === Position.INSIDE) {
-        return new BorderDropHint(this.$element);
-      } else {
-        return new GhostDropHint(this.node, this.$element, position);
-      }
-    };
-
-    return FolderElement;
-
-  })(NodeElement);
-
-  html_escape = function(string) {
-    return ('' + string).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#x27;').replace(/\//g, '&#x2F;');
-  };
-
-  _indexOf = function(array, item) {
-    var i, value, _i, _len;
-    for (i = _i = 0, _len = array.length; _i < _len; i = ++_i) {
-      value = array[i];
-      if (value === item) {
-        return i;
-      }
-    }
-    return -1;
-  };
-
-  indexOf = function(array, item) {
-    if (array.indexOf) {
-      return array.indexOf(item);
-    } else {
-      return _indexOf(array, item);
-    }
-  };
-
-  this.Tree.indexOf = indexOf;
-
-  this.Tree._indexOf = _indexOf;
-
-  isInt = function(n) {
-    return typeof n === 'number' && n % 1 === 0;
-  };
-
-  get_json_stringify_function = function() {
-    var json_escapable, json_meta, json_quote, json_str, stringify;
-    json_escapable = /[\\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g;
-    json_meta = {
-      '\b': '\\b',
-      '\t': '\\t',
-      '\n': '\\n',
-      '\f': '\\f',
-      '\r': '\\r',
-      '"': '\\"',
-      '\\': '\\\\'
-    };
-    json_quote = function(string) {
-      json_escapable.lastIndex = 0;
-      if (json_escapable.test(string)) {
-        return '"' + string.replace(json_escapable, function(a) {
-          var c;
-          c = json_meta[a];
-          return (typeof c === 'string' ? c : '\\u' + ('0000' + a.charCodeAt(0).toString(16)).slice(-4));
-        }) + '"';
-      } else {
-        return '"' + string + '"';
-      }
-    };
-    json_str = function(key, holder) {
-      var i, k, partial, v, value, _i, _len;
-      value = holder[key];
-      switch (typeof value) {
-        case 'string':
-          return json_quote(value);
-        case 'number':
-          if (isFinite(value)) {
-            return String(value);
-          } else {
-            return 'null';
-          }
-        case 'boolean':
-        case 'null':
-          return String(value);
-        case 'object':
-          if (!value) {
-            return 'null';
-          }
-          partial = [];
-          if (Object.prototype.toString.apply(value) === '[object Array]') {
-            for (i = _i = 0, _len = value.length; _i < _len; i = ++_i) {
-              v = value[i];
-              partial[i] = json_str(i, value) || 'null';
-            }
-            return (partial.length === 0 ? '[]' : '[' + partial.join(',') + ']');
-          }
-          for (k in value) {
-            if (Object.prototype.hasOwnProperty.call(value, k)) {
-              v = json_str(k, value);
-              if (v) {
-                partial.push(json_quote(k) + ':' + v);
-              }
-            }
-          }
-          return (partial.length === 0 ? '{}' : '{' + partial.join(',') + '}');
-      }
-    };
-    stringify = function(value) {
-      return json_str('', {
-        '': value
-      });
-    };
-    return stringify;
-  };
-
-  this.Tree.get_json_stringify_function = get_json_stringify_function;
-
-  if (!((this.JSON != null) && (this.JSON.stringify != null) && typeof this.JSON.stringify === 'function')) {
-    if (this.JSON == null) {
-      this.JSON = {};
-    }
-    this.JSON.stringify = get_json_stringify_function();
-  }
-
-  SaveStateHandler = (function() {
-    function SaveStateHandler(tree_widget) {
-      this.tree_widget = tree_widget;
-    }
-
-    SaveStateHandler.prototype.saveState = function() {
-      var state;
-      state = JSON.stringify(this.getState());
-      if (this.tree_widget.options.onSetStateFromStorage) {
-        return this.tree_widget.options.onSetStateFromStorage(state);
-      } else if (this.supportsLocalStorage()) {
-        return localStorage.setItem(this.getCookieName(), state);
-      } else if ($.cookie) {
-        $.cookie.raw = true;
-        return $.cookie(this.getCookieName(), state, {
-          path: '/'
-        });
-      }
-    };
-
-    SaveStateHandler.prototype.restoreState = function() {
-      var state;
-      state = this.getStateFromStorage();
-      if (state) {
-        this.setState(state);
-        return true;
-      } else {
-        return false;
-      }
-    };
-
-    SaveStateHandler.prototype.getStateFromStorage = function() {
-      var json_data;
-      json_data = this._loadFromStorage();
-      if (json_data) {
-        return this._parseState(json_data);
-      } else {
-        return null;
-      }
-    };
-
-    SaveStateHandler.prototype._parseState = function(json_data) {
-      var state;
-      state = $.parseJSON(json_data);
-      if (state && state.selected_node && isInt(state.selected_node)) {
-        state.selected_node = [state.selected_node];
-      }
-      return state;
-    };
-
-    SaveStateHandler.prototype._loadFromStorage = function() {
-      if (this.tree_widget.options.onGetStateFromStorage) {
-        return this.tree_widget.options.onGetStateFromStorage();
-      } else if (this.supportsLocalStorage()) {
-        return localStorage.getItem(this.getCookieName());
-      } else if ($.cookie) {
-        $.cookie.raw = true;
-        return $.cookie(this.getCookieName());
-      } else {
-        return null;
-      }
-    };
-
-    SaveStateHandler.prototype.getState = function() {
-      var getOpenNodeIds, getSelectedNodeIds;
-      getOpenNodeIds = (function(_this) {
-        return function() {
-          var open_nodes;
-          open_nodes = [];
-          _this.tree_widget.tree.iterate(function(node) {
-            if (node.is_open && node.id && node.hasChildren()) {
-              open_nodes.push(node.id);
-            }
-            return true;
-          });
-          return open_nodes;
-        };
-      })(this);
-      getSelectedNodeIds = (function(_this) {
-        return function() {
-          var n;
-          return (function() {
-            var _i, _len, _ref, _results;
-            _ref = this.tree_widget.getSelectedNodes();
-            _results = [];
-            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-              n = _ref[_i];
-              _results.push(n.id);
-            }
-            return _results;
-          }).call(_this);
-        };
-      })(this);
-      return {
-        open_nodes: getOpenNodeIds(),
-        selected_node: getSelectedNodeIds()
-      };
-    };
-
-    SaveStateHandler.prototype.setState = function(state) {
-      var node_id, open_nodes, selected_node, selected_node_ids, _i, _len, _results;
-      if (state) {
-        open_nodes = state.open_nodes;
-        selected_node_ids = state.selected_node;
-        this.tree_widget.tree.iterate((function(_this) {
-          return function(node) {
-            node.is_open = node.id && node.hasChildren() && (indexOf(open_nodes, node.id) >= 0);
-            return true;
-          };
-        })(this));
-        if (selected_node_ids && this.tree_widget.select_node_handler) {
-          this.tree_widget.select_node_handler.clear();
-          _results = [];
-          for (_i = 0, _len = selected_node_ids.length; _i < _len; _i++) {
-            node_id = selected_node_ids[_i];
-            selected_node = this.tree_widget.getNodeById(node_id);
-            if (selected_node) {
-              _results.push(this.tree_widget.select_node_handler.addToSelection(selected_node));
-            } else {
-              _results.push(void 0);
-            }
-          }
-          return _results;
-        }
-      }
-    };
-
-    SaveStateHandler.prototype.getCookieName = function() {
-      if (typeof this.tree_widget.options.saveState === 'string') {
-        return this.tree_widget.options.saveState;
-      } else {
-        return 'tree';
-      }
-    };
-
-    SaveStateHandler.prototype.supportsLocalStorage = function() {
-      var testSupport;
-      testSupport = function() {
-        var error, key;
-        if (typeof localStorage === "undefined" || localStorage === null) {
-          return false;
-        } else {
-          try {
-            key = '_storage_test';
-            sessionStorage.setItem(key, true);
-            sessionStorage.removeItem(key);
-          } catch (_error) {
-            error = _error;
-            return false;
-          }
-          return true;
-        }
-      };
-      if (this._supportsLocalStorage == null) {
-        this._supportsLocalStorage = testSupport();
-      }
-      return this._supportsLocalStorage;
-    };
-
-    SaveStateHandler.prototype.getNodeIdToBeSelected = function() {
-      var state;
-      state = this.getStateFromStorage();
-      if (state && state.selected_node) {
-        return state.selected_node[0];
-      } else {
-        return null;
-      }
-    };
-
-    return SaveStateHandler;
-
-  })();
-
-  SelectNodeHandler = (function() {
-    function SelectNodeHandler(tree_widget) {
-      this.tree_widget = tree_widget;
-      this.clear();
-    }
-
-    SelectNodeHandler.prototype.getSelectedNode = function() {
-      var selected_nodes;
-      selected_nodes = this.getSelectedNodes();
-      if (selected_nodes.length) {
-        return selected_nodes[0];
-      } else {
-        return false;
-      }
-    };
-
-    SelectNodeHandler.prototype.getSelectedNodes = function() {
-      var id, node, selected_nodes;
-      if (this.selected_single_node) {
-        return [this.selected_single_node];
-      } else {
-        selected_nodes = [];
-        for (id in this.selected_nodes) {
-          node = this.tree_widget.getNodeById(id);
-          if (node) {
-            selected_nodes.push(node);
-          }
-        }
-        return selected_nodes;
-      }
-    };
-
-    SelectNodeHandler.prototype.getSelectedNodesUnder = function(parent) {
-      var id, node, selected_nodes;
-      if (this.selected_single_node) {
-        if (parent.isParentOf(this.selected_single_node)) {
-          return [this.selected_single_node];
-        } else {
-          return [];
-        }
-      } else {
-        selected_nodes = [];
-        for (id in this.selected_nodes) {
-          node = this.tree_widget.getNodeById(id);
-          if (node && parent.isParentOf(node)) {
-            selected_nodes.push(node);
-          }
-        }
-        return selected_nodes;
-      }
-    };
-
-    SelectNodeHandler.prototype.isNodeSelected = function(node) {
-      if (node.id) {
-        return this.selected_nodes[node.id];
-      } else if (this.selected_single_node) {
-        return this.selected_single_node.element === node.element;
-      } else {
-        return false;
-      }
-    };
-
-    SelectNodeHandler.prototype.clear = function() {
-      this.selected_nodes = {};
-      return this.selected_single_node = null;
-    };
-
-    SelectNodeHandler.prototype.removeFromSelection = function(node, include_children) {
-      if (include_children == null) {
-        include_children = false;
-      }
-      if (!node.id) {
-        if (this.selected_single_node && node.element === this.selected_single_node.element) {
-          return this.selected_single_node = null;
-        }
-      } else {
-        delete this.selected_nodes[node.id];
-        if (include_children) {
-          return node.iterate((function(_this) {
-            return function(n) {
-              delete _this.selected_nodes[node.id];
-              return true;
-            };
-          })(this));
-        }
-      }
-    };
-
-    SelectNodeHandler.prototype.addToSelection = function(node) {
-      if (node.id) {
-        return this.selected_nodes[node.id] = true;
-      } else {
-        return this.selected_single_node = node;
-      }
-    };
-
-    return SelectNodeHandler;
-
-  })();
-
-  DragAndDropHandler = (function() {
-    function DragAndDropHandler(tree_widget) {
-      this.tree_widget = tree_widget;
-      this.hovered_area = null;
-      this.$ghost = null;
-      this.hit_areas = [];
-      this.is_dragging = false;
-      this.current_item = null;
-    }
-
-    DragAndDropHandler.prototype.mouseCapture = function(position_info) {
-      var $element, node_element;
-      $element = $(position_info.target);
-      if (!this.mustCaptureElement($element)) {
-        return null;
-      }
-      if (this.tree_widget.options.onIsMoveHandle && !this.tree_widget.options.onIsMoveHandle($element)) {
-        return null;
-      }
-      node_element = this.tree_widget._getNodeElement($element);
-      if (node_element && this.tree_widget.options.onCanMove) {
-        if (!this.tree_widget.options.onCanMove(node_element.node)) {
-          node_element = null;
-        }
-      }
-      this.current_item = node_element;
-      return this.current_item !== null;
-    };
-
-    DragAndDropHandler.prototype.mouseStart = function(position_info) {
-      var offset;
-      this.refresh();
-      offset = $(position_info.target).offset();
-      this.drag_element = new DragElement(this.current_item.node, position_info.page_x - offset.left, position_info.page_y - offset.top, this.tree_widget.element);
-      this.is_dragging = true;
-      this.current_item.$element.addClass('jqtree-moving');
-      return true;
-    };
-
-    DragAndDropHandler.prototype.mouseDrag = function(position_info) {
-      var area, can_move_to;
-      this.drag_element.move(position_info.page_x, position_info.page_y);
-      area = this.findHoveredArea(position_info.page_x, position_info.page_y);
-      can_move_to = this.canMoveToArea(area);
-      if (can_move_to && area) {
-        if (!area.node.isFolder()) {
-          this.stopOpenFolderTimer();
-        }
-        if (this.hovered_area !== area) {
-          this.hovered_area = area;
-          if (this.mustOpenFolderTimer(area)) {
-            this.startOpenFolderTimer(area.node);
-          } else {
-            this.stopOpenFolderTimer();
-          }
-          this.updateDropHint();
-        }
-      } else {
-        this.removeHover();
-        this.removeDropHint();
-        this.stopOpenFolderTimer();
-      }
-      return true;
-    };
-
-    DragAndDropHandler.prototype.mustCaptureElement = function($element) {
-      return !$element.is('input,select');
-    };
-
-    DragAndDropHandler.prototype.canMoveToArea = function(area) {
-      var position_name;
-      if (!area) {
-        return false;
-      } else if (this.tree_widget.options.onCanMoveTo) {
-        position_name = Position.getName(area.position);
-        return this.tree_widget.options.onCanMoveTo(this.current_item.node, area.node, position_name);
-      } else {
-        return true;
-      }
-    };
-
-    DragAndDropHandler.prototype.mouseStop = function(position_info) {
-      this.moveItem(position_info);
-      this.clear();
-      this.removeHover();
-      this.removeDropHint();
-      this.removeHitAreas();
-      if (this.current_item) {
-        this.current_item.$element.removeClass('jqtree-moving');
-        this.current_item = null;
-      }
-      this.is_dragging = false;
-      return false;
-    };
-
-    DragAndDropHandler.prototype.refresh = function() {
-      this.removeHitAreas();
-      if (this.current_item) {
-        this.generateHitAreas();
-        this.current_item = this.tree_widget._getNodeElementForNode(this.current_item.node);
-        if (this.is_dragging) {
-          return this.current_item.$element.addClass('jqtree-moving');
-        }
-      }
-    };
-
-    DragAndDropHandler.prototype.removeHitAreas = function() {
-      return this.hit_areas = [];
-    };
-
-    DragAndDropHandler.prototype.clear = function() {
-      this.drag_element.remove();
-      return this.drag_element = null;
-    };
-
-    DragAndDropHandler.prototype.removeDropHint = function() {
-      if (this.previous_ghost) {
-        return this.previous_ghost.remove();
-      }
-    };
-
-    DragAndDropHandler.prototype.removeHover = function() {
-      return this.hovered_area = null;
-    };
-
-    DragAndDropHandler.prototype.generateHitAreas = function() {
-      var hit_areas_generator;
-      hit_areas_generator = new HitAreasGenerator(this.tree_widget.tree, this.current_item.node, this.getTreeDimensions().bottom);
-      return this.hit_areas = hit_areas_generator.generate();
-    };
-
-    DragAndDropHandler.prototype.findHoveredArea = function(x, y) {
-      var area, dimensions, high, low, mid;
-      dimensions = this.getTreeDimensions();
-      if (x < dimensions.left || y < dimensions.top || x > dimensions.right || y > dimensions.bottom) {
-        return null;
-      }
-      low = 0;
-      high = this.hit_areas.length;
-      while (low < high) {
-        mid = (low + high) >> 1;
-        area = this.hit_areas[mid];
-        if (y < area.top) {
-          high = mid;
-        } else if (y > area.bottom) {
-          low = mid + 1;
-        } else {
-          return area;
-        }
-      }
-      return null;
-    };
-
-    DragAndDropHandler.prototype.mustOpenFolderTimer = function(area) {
-      var node;
-      node = area.node;
-      return node.isFolder() && !node.is_open && area.position === Position.INSIDE;
-    };
-
-    DragAndDropHandler.prototype.updateDropHint = function() {
-      var node_element;
-      if (!this.hovered_area) {
-        return;
-      }
-      this.removeDropHint();
-      node_element = this.tree_widget._getNodeElementForNode(this.hovered_area.node);
-      return this.previous_ghost = node_element.addDropHint(this.hovered_area.position);
-    };
-
-    DragAndDropHandler.prototype.startOpenFolderTimer = function(folder) {
-      var openFolder;
-      openFolder = (function(_this) {
-        return function() {
-          return _this.tree_widget._openNode(folder, _this.tree_widget.options.slide, function() {
-            _this.refresh();
-            return _this.updateDropHint();
-          });
-        };
-      })(this);
-      this.stopOpenFolderTimer();
-      return this.open_folder_timer = setTimeout(openFolder, this.tree_widget.options.openFolderDelay);
-    };
-
-    DragAndDropHandler.prototype.stopOpenFolderTimer = function() {
-      if (this.open_folder_timer) {
-        clearTimeout(this.open_folder_timer);
-        return this.open_folder_timer = null;
-      }
-    };
-
-    DragAndDropHandler.prototype.moveItem = function(position_info) {
-      var doMove, event, moved_node, position, previous_parent, target_node;
-      if (this.hovered_area && this.hovered_area.position !== Position.NONE && this.canMoveToArea(this.hovered_area)) {
-        moved_node = this.current_item.node;
-        target_node = this.hovered_area.node;
-        position = this.hovered_area.position;
-        previous_parent = moved_node.parent;
-        if (position === Position.INSIDE) {
-          this.hovered_area.node.is_open = true;
-        }
-        doMove = (function(_this) {
-          return function() {
-            _this.tree_widget.tree.moveNode(moved_node, target_node, position);
-            _this.tree_widget.element.empty();
-            return _this.tree_widget._refreshElements();
-          };
-        })(this);
-        event = this.tree_widget._triggerEvent('tree.move', {
-          move_info: {
-            moved_node: moved_node,
-            target_node: target_node,
-            position: Position.getName(position),
-            previous_parent: previous_parent,
-            do_move: doMove,
-            original_event: position_info.original_event
-          }
-        });
-        if (!event.isDefaultPrevented()) {
-          return doMove();
-        }
-      }
-    };
-
-    DragAndDropHandler.prototype.getTreeDimensions = function() {
-      var offset;
-      offset = this.tree_widget.element.offset();
-      return {
-        left: offset.left,
-        top: offset.top,
-        right: offset.left + this.tree_widget.element.width(),
-        bottom: offset.top + this.tree_widget.element.height() + 16
-      };
-    };
-
-    return DragAndDropHandler;
-
-  })();
-
-  VisibleNodeIterator = (function() {
-    function VisibleNodeIterator(tree) {
-      this.tree = tree;
-    }
-
-    VisibleNodeIterator.prototype.iterate = function() {
-      var is_first_node, _iterateNode;
-      is_first_node = true;
-      _iterateNode = (function(_this) {
-        return function(node, next_node) {
-          var $element, child, children_length, i, must_iterate_inside, _i, _len, _ref;
-          must_iterate_inside = (node.is_open || !node.element) && node.hasChildren();
-          if (node.element) {
-            $element = $(node.element);
-            if (!$element.is(':visible')) {
-              return;
-            }
-            if (is_first_node) {
-              _this.handleFirstNode(node, $element);
-              is_first_node = false;
-            }
-            if (!node.hasChildren()) {
-              _this.handleNode(node, next_node, $element);
-            } else if (node.is_open) {
-              if (!_this.handleOpenFolder(node, $element)) {
-                must_iterate_inside = false;
-              }
-            } else {
-              _this.handleClosedFolder(node, next_node, $element);
-            }
-          }
-          if (must_iterate_inside) {
-            children_length = node.children.length;
-            _ref = node.children;
-            for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
-              child = _ref[i];
-              if (i === (children_length - 1)) {
-                _iterateNode(node.children[i], null);
-              } else {
-                _iterateNode(node.children[i], node.children[i + 1]);
-              }
-            }
-            if (node.is_open) {
-              return _this.handleAfterOpenFolder(node, next_node, $element);
-            }
-          }
-        };
-      })(this);
-      return _iterateNode(this.tree, null);
-    };
-
-    VisibleNodeIterator.prototype.handleNode = function(node, next_node, $element) {};
-
-    VisibleNodeIterator.prototype.handleOpenFolder = function(node, $element) {};
-
-    VisibleNodeIterator.prototype.handleClosedFolder = function(node, next_node, $element) {};
-
-    VisibleNodeIterator.prototype.handleAfterOpenFolder = function(node, next_node, $element) {};
-
-    VisibleNodeIterator.prototype.handleFirstNode = function(node, $element) {};
-
-    return VisibleNodeIterator;
-
-  })();
-
-  HitAreasGenerator = (function(_super) {
-    __extends(HitAreasGenerator, _super);
-
-    function HitAreasGenerator(tree, current_node, tree_bottom) {
-      HitAreasGenerator.__super__.constructor.call(this, tree);
-      this.current_node = current_node;
-      this.tree_bottom = tree_bottom;
-    }
-
-    HitAreasGenerator.prototype.generate = function() {
-      this.positions = [];
-      this.last_top = 0;
-      this.iterate();
-      return this.generateHitAreas(this.positions);
-    };
-
-    HitAreasGenerator.prototype.getTop = function($element) {
-      return $element.offset().top;
-    };
-
-    HitAreasGenerator.prototype.addPosition = function(node, position, top) {
-      var area;
-      area = {
-        top: top,
-        node: node,
-        position: position
-      };
-      this.positions.push(area);
-      return this.last_top = top;
-    };
-
-    HitAreasGenerator.prototype.handleNode = function(node, next_node, $element) {
-      var top;
-      top = this.getTop($element);
-      if (node === this.current_node) {
-        this.addPosition(node, Position.NONE, top);
-      } else {
-        this.addPosition(node, Position.INSIDE, top);
-      }
-      if (next_node === this.current_node || node === this.current_node) {
-        return this.addPosition(node, Position.NONE, top);
-      } else {
-        return this.addPosition(node, Position.AFTER, top);
-      }
-    };
-
-    HitAreasGenerator.prototype.handleOpenFolder = function(node, $element) {
-      if (node === this.current_node) {
-        return false;
-      }
-      if (node.children[0] !== this.current_node) {
-        this.addPosition(node, Position.INSIDE, this.getTop($element));
-      }
-      return true;
-    };
-
-    HitAreasGenerator.prototype.handleClosedFolder = function(node, next_node, $element) {
-      var top;
-      top = this.getTop($element);
-      if (node === this.current_node) {
-        return this.addPosition(node, Position.NONE, top);
-      } else {
-        this.addPosition(node, Position.INSIDE, top);
-        if (next_node !== this.current_node) {
-          return this.addPosition(node, Position.AFTER, top);
-        }
-      }
-    };
-
-    HitAreasGenerator.prototype.handleFirstNode = function(node, $element) {
-      if (node !== this.current_node) {
-        return this.addPosition(node, Position.BEFORE, this.getTop($(node.element)));
-      }
-    };
-
-    HitAreasGenerator.prototype.handleAfterOpenFolder = function(node, next_node, $element) {
-      if (node === this.current_node.node || next_node === this.current_node.node) {
-        return this.addPosition(node, Position.NONE, this.last_top);
-      } else {
-        return this.addPosition(node, Position.AFTER, this.last_top);
-      }
-    };
-
-    HitAreasGenerator.prototype.generateHitAreas = function(positions) {
-      var group, hit_areas, position, previous_top, _i, _len;
-      previous_top = -1;
-      group = [];
-      hit_areas = [];
-      for (_i = 0, _len = positions.length; _i < _len; _i++) {
-        position = positions[_i];
-        if (position.top !== previous_top && group.length) {
-          if (group.length) {
-            this.generateHitAreasForGroup(hit_areas, group, previous_top, position.top);
-          }
-          previous_top = position.top;
-          group = [];
-        }
-        group.push(position);
-      }
-      this.generateHitAreasForGroup(hit_areas, group, previous_top, this.tree_bottom);
-      return hit_areas;
-    };
-
-    HitAreasGenerator.prototype.generateHitAreasForGroup = function(hit_areas, positions_in_group, top, bottom) {
-      var area_height, area_top, i, position, position_count;
-      position_count = Math.min(positions_in_group.length, 4);
-      area_height = Math.round((bottom - top) / position_count);
-      area_top = top;
-      i = 0;
-      while (i < position_count) {
-        position = positions_in_group[i];
-        hit_areas.push({
-          top: area_top,
-          bottom: area_top + area_height,
-          node: position.node,
-          position: position.position
-        });
-        area_top += area_height;
-        i += 1;
-      }
-      return null;
-    };
-
-    return HitAreasGenerator;
-
-  })(VisibleNodeIterator);
-
-  DragElement = (function() {
-    function DragElement(node, offset_x, offset_y, $tree) {
-      this.offset_x = offset_x;
-      this.offset_y = offset_y;
-      this.$element = $("<span class=\"jqtree-title jqtree-dragging\">" + node.name + "</span>");
-      this.$element.css("position", "absolute");
-      $tree.append(this.$element);
-    }
-
-    DragElement.prototype.move = function(page_x, page_y) {
-      return this.$element.offset({
-        left: page_x - this.offset_x,
-        top: page_y - this.offset_y
-      });
-    };
-
-    DragElement.prototype.remove = function() {
-      return this.$element.remove();
-    };
-
-    return DragElement;
-
-  })();
-
-  GhostDropHint = (function() {
-    function GhostDropHint(node, $element, position) {
-      this.$element = $element;
-      this.node = node;
-      this.$ghost = $('<li class="jqtree_common jqtree-ghost"><span class="jqtree_common jqtree-circle"></span><span class="jqtree_common jqtree-line"></span></li>');
-      if (position === Position.AFTER) {
-        this.moveAfter();
-      } else if (position === Position.BEFORE) {
-        this.moveBefore();
-      } else if (position === Position.INSIDE) {
-        if (node.isFolder() && node.is_open) {
-          this.moveInsideOpenFolder();
-        } else {
-          this.moveInside();
-        }
-      }
-    }
-
-    GhostDropHint.prototype.remove = function() {
-      return this.$ghost.remove();
-    };
-
-    GhostDropHint.prototype.moveAfter = function() {
-      return this.$element.after(this.$ghost);
-    };
-
-    GhostDropHint.prototype.moveBefore = function() {
-      return this.$element.before(this.$ghost);
-    };
-
-    GhostDropHint.prototype.moveInsideOpenFolder = function() {
-      return $(this.node.children[0].element).before(this.$ghost);
-    };
-
-    GhostDropHint.prototype.moveInside = function() {
-      this.$element.after(this.$ghost);
-      return this.$ghost.addClass('jqtree-inside');
-    };
-
-    return GhostDropHint;
-
-  })();
-
-  BorderDropHint = (function() {
-    function BorderDropHint($element) {
-      var $div, width;
-      $div = $element.children('.jqtree-element');
-      width = $element.width() - 4;
-      this.$hint = $('<span class="jqtree-border"></span>');
-      $div.append(this.$hint);
-      this.$hint.css({
-        width: width,
-        height: $div.height() - 4
-      });
-    }
-
-    BorderDropHint.prototype.remove = function() {
-      return this.$hint.remove();
-    };
-
-    return BorderDropHint;
-
-  })();
-
-  ScrollHandler = (function() {
-    function ScrollHandler(tree_widget) {
-      this.tree_widget = tree_widget;
-      this.previous_top = -1;
-      this._initScrollParent();
-    }
-
-    ScrollHandler.prototype._initScrollParent = function() {
-      var $scroll_parent, getParentWithOverflow, setDocumentAsScrollParent;
-      getParentWithOverflow = (function(_this) {
-        return function() {
-          var css_values, el, hasOverFlow, _i, _len, _ref;
-          css_values = ['overflow', 'overflow-y'];
-          hasOverFlow = function(el) {
-            var css_value, _i, _len, _ref;
-            for (_i = 0, _len = css_values.length; _i < _len; _i++) {
-              css_value = css_values[_i];
-              if ((_ref = $.css(el, css_value)) === 'auto' || _ref === 'scroll') {
-                return true;
-              }
-            }
-            return false;
-          };
-          if (hasOverFlow(_this.tree_widget.$el[0])) {
-            return _this.tree_widget.$el;
-          }
-          _ref = _this.tree_widget.$el.parents();
-          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            el = _ref[_i];
-            if (hasOverFlow(el)) {
-              return $(el);
-            }
-          }
-          return null;
-        };
-      })(this);
-      setDocumentAsScrollParent = (function(_this) {
-        return function() {
-          _this.scroll_parent_top = 0;
-          return _this.$scroll_parent = null;
-        };
-      })(this);
-      if (this.tree_widget.$el.css('position') === 'fixed') {
-        setDocumentAsScrollParent();
-      }
-      $scroll_parent = getParentWithOverflow();
-      if ($scroll_parent && $scroll_parent.length && $scroll_parent[0].tagName !== 'HTML') {
-        this.$scroll_parent = $scroll_parent;
-        return this.scroll_parent_top = this.$scroll_parent.offset().top;
-      } else {
-        return setDocumentAsScrollParent();
-      }
-    };
-
-    ScrollHandler.prototype.checkScrolling = function() {
-      var hovered_area;
-      hovered_area = this.tree_widget.dnd_handler.hovered_area;
-      if (hovered_area && hovered_area.top !== this.previous_top) {
-        this.previous_top = hovered_area.top;
-        if (this.$scroll_parent) {
-          return this._handleScrollingWithScrollParent(hovered_area);
-        } else {
-          return this._handleScrollingWithDocument(hovered_area);
-        }
-      }
-    };
-
-    ScrollHandler.prototype._handleScrollingWithScrollParent = function(area) {
-      var distance_bottom;
-      distance_bottom = this.scroll_parent_top + this.$scroll_parent[0].offsetHeight - area.bottom;
-      if (distance_bottom < 20) {
-        this.$scroll_parent[0].scrollTop += 20;
-        this.tree_widget.refreshHitAreas();
-        return this.previous_top = -1;
-      } else if ((area.top - this.scroll_parent_top) < 20) {
-        this.$scroll_parent[0].scrollTop -= 20;
-        this.tree_widget.refreshHitAreas();
-        return this.previous_top = -1;
-      }
-    };
-
-    ScrollHandler.prototype._handleScrollingWithDocument = function(area) {
-      var distance_top;
-      distance_top = area.top - $(document).scrollTop();
-      if (distance_top < 20) {
-        return $(document).scrollTop($(document).scrollTop() - 20);
-      } else if ($(window).height() - (area.bottom - $(document).scrollTop()) < 20) {
-        return $(document).scrollTop($(document).scrollTop() + 20);
-      }
-    };
-
-    ScrollHandler.prototype.scrollTo = function(top) {
-      var tree_top;
-      if (this.$scroll_parent) {
-        return this.$scroll_parent[0].scrollTop = top;
-      } else {
-        tree_top = this.tree_widget.$el.offset().top;
-        return $(document).scrollTop(top + tree_top);
-      }
-    };
-
-    ScrollHandler.prototype.isScrolledIntoView = function(element) {
-      var $element, element_bottom, element_top, view_bottom, view_top;
-      $element = $(element);
-      if (this.$scroll_parent) {
-        view_top = 0;
-        view_bottom = this.$scroll_parent.height();
-        element_top = $element.offset().top - this.scroll_parent_top;
-        element_bottom = element_top + $element.height();
-      } else {
-        view_top = $(window).scrollTop();
-        view_bottom = view_top + $(window).height();
-        element_top = $element.offset().top;
-        element_bottom = element_top + $element.height();
-      }
-      return (element_bottom <= view_bottom) && (element_top >= view_top);
-    };
-
-    return ScrollHandler;
-
-  })();
-
-  KeyHandler = (function() {
-    var DOWN, LEFT, RIGHT, UP;
-
-    LEFT = 37;
-
-    UP = 38;
-
-    RIGHT = 39;
-
-    DOWN = 40;
-
-    function KeyHandler(tree_widget) {
-      this.tree_widget = tree_widget;
-      if (tree_widget.options.keyboardSupport) {
-        $(document).bind('keydown.jqtree', $.proxy(this.handleKeyDown, this));
-      }
-    }
-
-    KeyHandler.prototype.deinit = function() {
-      return $(document).unbind('keydown.jqtree');
-    };
-
-    KeyHandler.prototype.handleKeyDown = function(e) {
-      var current_node, key, moveDown, moveLeft, moveRight, moveUp, selectNode;
-      if (!this.tree_widget.options.keyboardSupport) {
-        return;
-      }
-      if ($(document.activeElement).is('textarea,input,select')) {
-        return true;
-      }
-      current_node = this.tree_widget.getSelectedNode();
-      selectNode = (function(_this) {
-        return function(node) {
-          if (node) {
-            _this.tree_widget.selectNode(node);
-            if (_this.tree_widget.scroll_handler && (!_this.tree_widget.scroll_handler.isScrolledIntoView($(node.element).find('.jqtree-element')))) {
-              _this.tree_widget.scrollToNode(node);
-            }
-            return false;
-          } else {
-            return true;
-          }
-        };
-      })(this);
-      moveDown = (function(_this) {
-        return function() {
-          return selectNode(_this.getNextNode(current_node));
-        };
-      })(this);
-      moveUp = (function(_this) {
-        return function() {
-          return selectNode(_this.getPreviousNode(current_node));
-        };
-      })(this);
-      moveRight = (function(_this) {
-        return function() {
-          if (current_node.isFolder() && !current_node.is_open) {
-            _this.tree_widget.openNode(current_node);
-            return false;
-          } else {
-            return true;
-          }
-        };
-      })(this);
-      moveLeft = (function(_this) {
-        return function() {
-          if (current_node.isFolder() && current_node.is_open) {
-            _this.tree_widget.closeNode(current_node);
-            return false;
-          } else {
-            return true;
-          }
-        };
-      })(this);
-      if (!current_node) {
-        return true;
-      } else {
-        key = e.which;
-        switch (key) {
-          case DOWN:
-            return moveDown();
-          case UP:
-            return moveUp();
-          case RIGHT:
-            return moveRight();
-          case LEFT:
-            return moveLeft();
-        }
-      }
-    };
-
-    KeyHandler.prototype.getNextNode = function(node, include_children) {
-      var next_sibling;
-      if (include_children == null) {
-        include_children = true;
-      }
-      if (include_children && node.hasChildren() && node.is_open) {
-        return node.children[0];
-      } else {
-        if (!node.parent) {
-          return null;
-        } else {
-          next_sibling = node.getNextSibling();
-          if (next_sibling) {
-            return next_sibling;
-          } else {
-            return this.getNextNode(node.parent, false);
-          }
-        }
-      }
-    };
-
-    KeyHandler.prototype.getPreviousNode = function(node) {
-      var previous_sibling;
-      if (!node.parent) {
-        return null;
-      } else {
-        previous_sibling = node.getPreviousSibling();
-        if (previous_sibling) {
-          if (!previous_sibling.hasChildren() || !previous_sibling.is_open) {
-            return previous_sibling;
-          } else {
-            return this.getLastChild(previous_sibling);
-          }
-        } else {
-          if (node.parent.parent) {
-            return node.parent;
-          } else {
-            return null;
-          }
-        }
-      }
-    };
-
-    KeyHandler.prototype.getLastChild = function(node) {
-      var last_child;
-      if (!node.hasChildren()) {
-        return null;
-      } else {
-        last_child = node.children[node.children.length - 1];
-        if (!last_child.hasChildren() || !last_child.is_open) {
-          return last_child;
-        } else {
-          return this.getLastChild(last_child);
-        }
-      }
-    };
-
-    return KeyHandler;
-
-  })();
-
-}).call(this);
-
-
-  }).apply(root, arguments);
-});
-}(this));
-
-/* Tree pattern.
- *
- * Options:
- * data(jSON): load data structure directly into tree (undefined)
- * dataUrl(jSON): Load data from remote url (undefined)
- * autoOpen(boolean): auto open tree contents (false)
- * dragAndDrop(boolean): node drag and drop support (false)
- * selectable(boolean): if nodes can be selectable (true)
- * keyboardSupport(boolean): if keyboard naviation is allowed (true)
- *
- * Documentation: # JSON node data
- *
- *    {{ example-1 }}
- *
- *    # Remote data URL
- *
- *    {{ example-2 }}
- *
- *    # Drag and drop
- *
- *    {{ example-3 }}
- *
- * Example: example-1
- *    <div class="pat-tree"
- *         data-pat-tree='data:[
- *          { "label": "node1",
- *            "children": [
- *              { "label": "child1" },
- *              { "label": "child2" }
- *            ]
- *          },
- *          { "label": "node2",
- *            "children": [
- *              { "label": "child3" }
- *            ]
- *          }
- *        ];'> </div>
- *
- * Example: example-2
- *    <div class="pat-tree"
- *         data-pat-tree="dataUrl:/docs/dev/tests/json/fileTree.json;
- *                        autoOpen:true"></div>
- *
- * Example: example-3
- *    <div class="pat-tree"
- *         data-pat-tree="dataUrl:/docs/dev/tests/json/fileTree.json;
- *                        dragAndDrop: true;
- *                        autoOpen: true"></div>
- *
- */
-
-
-define('mockup-patterns-tree',[
-  'jquery',
-  'underscore',
-  'mockup-patterns-base',
-  'mockup-utils',
-  'jqtree'
-], function($, _, Base, utils) {
-  
-
-  var Tree = Base.extend({
-    name: 'tree',
-    trigger: '.pat-tree',
-    defaults: {
-      dragAndDrop: false,
-      autoOpen: false,
-      selectable: true,
-      keyboardSupport: true,
-      onLoad: null
-    },
-    init: function() {
-      var self = this;
-      /* convert all bool options */
-      for (var optionKey in self.options) {
-        var def = self.defaults[optionKey];
-        if (def !== undefined && typeof(def) === 'boolean') {
-          self.options[optionKey] = utils.bool(self.options[optionKey]);
-        }
-      }
-
-      if (self.options.dragAndDrop && self.options.onCanMoveTo === undefined) {
-        self.options.onCanMoveTo = function(moved, target, position) {
-          /* if not using folder option, just allow, otherwise, only allow if folder */
-          return target.folder === undefined || target.folder === true;
-        };
-      }
-
-      if (self.options.data && typeof(self.options.data) === 'string') {
-        self.options.data = $.parseJSON(self.options.data);
-      }
-      if (self.options.onLoad !== null){
-        // delay generating tree...
-        var options = $.extend({}, self.options);
-        $.getJSON(options.dataUrl, function(data) {
-          options.data = data;
-          delete options.dataUrl;
-          self.tree = self.$el.tree(options);
-          self.options.onLoad(self);
-        });
-      } else {
-        self.tree = self.$el.tree(self.options);
-      }
-    }
-  });
-
-
-  return Tree;
-
-});
-
-/* Related items pattern.
- *
- * Options:
- *    vocabularyUrl(string): This is a URL to a JSON-formatted file used to populate the list (null)
- *    attributes(array): This list is passed to the server during an AJAX request to specify the attributes which should be included on each item. (['UID', 'Title', 'Type', 'path'])
- *    basePath(string): If this is set the widget will start in "Browse" mode and will pass the path to the server to filter the results. ('/')
- *    breadCrumbTemplate(string): Template to use for a single item in the breadcrumbs. ('/<a href="<%= path %>"><%= text %></a>')
- *    breadCrumbTemplateSelector(string): Select an element from the DOM from which to grab the breadCrumbTemplate. (null)
- *    breadCrumbsTemplate(string): Template for element to which breadCrumbs will be appended. ('<span><span class="pattern-relateditems-path-label"><%= searchText %></span><a class="icon-home" href="/"></a><%= items %></span>')
- *    breadCrumbsTemplateSelector(string): Select an element from the DOM from which to grab the breadCrumbsTemplate. (null)
- *    cache(boolean): Whether or not results from the server should be
- *    cached. (true)
- *    closeOnSelect(boolean): Select2 option. Whether or not the drop down should be closed when an item is selected. (false)
- *    dropdownCssClass(string): Select2 option. CSS class to add to the drop down element. ('pattern-relateditems-dropdown')
- *    folderTypes(array): Types which should be considered browsable. (["Folder"])
- *    homeText(string): Text to display in the initial breadcrumb item. (home)
- *    maximumSelectionSize(integer): The maximum number of items that can be selected in a multi-select control. If this number is less than 1 selection is not limited. (-1)
- *    multiple(boolean): Do not change this option. (true)
- *    orderable(boolean): Whether or not items should be drag-and-drop sortable. (true)
- *    resultTemplate(string): Template for an item in the in the list of results. Refer to source for default. (Refer to source)
- *    resultTemplateSelector(string): Select an element from the DOM from which to grab the resultTemplate. (null)
- *    searchText(string): Text which will be inserted to the left of the
- *    path. (Search)
- *    searchAllText(string): Displays next to the path when the path is set to the root. (All)
- *    selectableTypes(array): If the value is null all types are selectable. Otherwise, provide a list of strings to match item types that are selectable. (null)
- *    selectionTemplate(string): Template for element that will be used to construct a selected item. (Refer to source)
- *    selectionTemplateSelector(string): Select an element from the DOM from which to grab the selectionTemplate. (null)
- *    separator(string): Select2 option. String which separates multiple items. (',')
- *    tokenSeparators(array): Select2 option, refer to select2 documentation.
- *    ([",", " "])
- *    width(string): Specify a width for the widget. ('100%')
- *
- * Documentation:
- *    The Related Items pattern is based on Select2 so many of the same options will work here as well.
- *
- *    # Default
- *
- *    {{ example-1 }}
- *
- *    # Existing values, some bad
- *
- *    {{ example-2 }}
- *
- *    # Selectable Types
- *
- *    {{ example-3 }}
- *
- *    # Select a single item
- *
- *    {{ example-4 }}
- *
- * Example: example-1
- *    <input type="text" class="pat-relateditems"
- *           data-pat-relateditems="width:30em;
- *                                  vocabularyUrl:/relateditems-test.json" />
- *
- * Example: example-2
- *    <input type="text" class="pat-relateditems"
- *           value="asdf1234gsad,sdfbsfdh345,asdlfkjasdlfkjasdf,kokpoius98"
- *           data-pat-relateditems="width:30em; vocabularyUrl:/relateditems-test.json" />
- *
- * Example: example-3
- *    <input type="text" class="pat-relateditems"
-             data-pat-relateditems='{"selectableTypes": ["Document"], "vocabularyUrl": "/relateditems-test.json"}' />
- *
- * Example: example-4
- *    <input type="text" class="pat-relateditems"
-             data-pat-relateditems='{"selectableTypes": ["Document"], "vocabularyUrl": "/relateditems-test.json", "maximumSelectionSize": 1}' />
- *
- */
-
-
-define('mockup-patterns-relateditems',[
-  'jquery',
-  'underscore',
-  'mockup-patterns-base',
-  'mockup-patterns-select2',
-  'mockup-utils',
-  'mockup-patterns-tree',
-  'translate'
-], function($, _, Base, Select2, utils, Tree, _t) {
-  
-
-  var RelatedItems = Base.extend({
-    name: 'relateditems',
-    trigger: '.pat-relateditems',
-    browsing: false,
-    currentPath: null,
-    defaults: {
-      vocabularyUrl: null, // must be set to work
-      width: '100%',
-      multiple: true,
-      tokenSeparators: [',', ' '],
-      separator: ',',
-      orderable: true,
-      cache: true,
-      mode: 'search', // possible values are search and browse
-      closeOnSelect: false,
-      basePath: '/',
-      searchText: _t('Search:'),
-      searchAllText: _t('entire site'),
-      homeText: _t('home'),
-      folderTypes: ['Folder'],
-      selectableTypes: null, // null means everything is selectable, otherwise a list of strings to match types that are selectable
-      attributes: ['UID', 'Title', 'Type', 'path'],
-      dropdownCssClass: 'pattern-relateditems-dropdown',
-      maximumSelectionSize: -1,
-      resultTemplate: '' +
-        '<div class="pattern-relateditems-result pattern-relateditems-type-<%= Type %> <% if (selected) { %>pattern-relateditems-active<% } %>">' +
-        '  <a href="#" class="pattern-relateditems-result-select <% if (selectable) { %>selectable<% } %>">' +
-        '    <span class="pattern-relateditems-result-title"><%= Title %></span>' +
-        '    <span class="pattern-relateditems-result-path"><%= path %></span>' +
-        '  </a>' +
-        '  <span class="pattern-relateditems-buttons">' +
-        '  <% if (folderish) { %>' +
-        '     <a class="pattern-relateditems-result-browse" href="#" data-path="<%= path %>"></a>' +
-        '   <% } %>' +
-        ' </span>' +
-        '</div>',
-      resultTemplateSelector: null,
-      selectionTemplate: '' +
-        '<span class="pattern-relateditems-item pattern-relateditems-type-<%= Type %>">' +
-        ' <span class="pattern-relateditems-item-title"><%= Title %></span>' +
-        ' <span class="pattern-relateditems-item-path"><%= path %></span>' +
-        '</span>',
-      selectionTemplateSelector: null,
-      breadCrumbsTemplate: '<span>' +
-        '<span class="pattern-relateditems-tree">' +
-          '<a href="#" class="pattern-relateditems-tree-select"><span class="glyphicon glyphicon-indent-left"></span></a> ' +
-          '<div class="tree-container">' +
-            '<span class="select-folder-label">Select folder</span>' +
-            '<a href="#" class="btn close pattern-relateditems-tree-cancel">X</a>' +
-            '<div class="pat-tree" />' +
-            '<a href="#" class="btn btn-default pattern-relateditems-tree-itemselect">Select</a>' +
-          '</div>' +
-        '</span>' +
-        '<span class="pattern-relateditems-path-label">' +
-          '<%= searchText %></span><a class="crumb" href="/"><span class="glyphicon glyphicon-home"></span></a><%= items %>' +
-        '</span>' +
-      '</span>',
-      breadCrumbsTemplateSelector: null,
-      breadCrumbTemplate: '' +
-        '/<a href="<%= path %>" class="crumb"><%= text %></a>',
-      breadCrumbTemplateSelector: null,
-      escapeMarkup: function(text) {
-        return text;
-      },
-      setupAjax: function() {
-        // Setup the ajax object to use during requests
-        var self = this;
-        if (self.query.valid) {
-          return self.query.selectAjax();
-        }
-        return {};
-      }
-    },
-    applyTemplate: function(tpl, item) {
-      var self = this;
-      var template;
-      if (self.options[tpl + 'TemplateSelector']) {
-        template = $(self.options[tpl + 'TemplateSelector']).html();
-        if (!template) {
-          template = self.options[tpl + 'Template'];
-        }
-      } else {
-        template = self.options[tpl + 'Template'];
-      }
-      // let's give all the options possible to the template generation
-      var options = $.extend(true, {}, self.options, item);
-      options._item = item;
-      return _.template(template, options);
-    },
-    activateBrowsing: function() {
-      var self = this;
-      self.browsing = true;
-      self.setBreadCrumbs();
-    },
-    deactivateBrowsing: function() {
-      var self = this;
-      self.browsing = false;
-      self.setBreadCrumbs();
-    },
-    browseTo: function(path) {
-      var self = this;
-      self.emit('before-browse');
-      self.currentPath = path;
-      if (path === '/' && self.options.mode === 'search') {
-        self.deactivateBrowsing();
-      } else {
-        self.activateBrowsing();
-      }
-      self.$el.select2('close');
-      self.$el.select2('open');
-      self.emit('after-browse');
-    },
-    setBreadCrumbs: function() {
-      var self = this;
-      var path = self.currentPath ? self.currentPath : self.options.basePath;
-      var html;
-      if (path === '/') {
-        var searchText = '';
-        if (self.options.mode === 'search') {
-          searchText = '<em>' + self.options.searchAllText + '</em>';
-        }
-        html = self.applyTemplate('breadCrumbs', {
-          items: searchText,
-          searchText: self.options.searchText
-        });
-      } else {
-        var paths = path.split('/');
-        var itemPath = '';
-        var itemsHtml = '';
-        _.each(paths, function(node) {
-          if (node !== '') {
-            var item = {};
-            itemPath = itemPath + '/' + node;
-            item.text = node;
-            item.path = itemPath;
-            itemsHtml = itemsHtml + self.applyTemplate('breadCrumb', item);
-          }
-        });
-        html = self.applyTemplate('breadCrumbs', {items: itemsHtml, searchText: self.options.searchText});
-      }
-      var $crumbs = $(html);
-      $('a.crumb', $crumbs).on('click', function(e) {
-        e.preventDefault();
-        self.browseTo($(this).attr('href'));
-        return false;
-      });
-      var $treeSelect = $('.pattern-relateditems-tree-select', $crumbs);
-      var $container = $treeSelect.parent();
-      var $treeContainer = $('.tree-container', $container);
-      var $tree = $('.pat-tree', $container);
-      var selectedNode = null;
-      var treePattern = new Tree($tree, {
-        data: [],
-        dataFilter: function(data) {
-          var nodes = [];
-          _.each(data.results, function(item) {
-            nodes.push({
-              label: item.Title,
-              id: item.UID,
-              path: item.path
-            });
-          });
-          return nodes;
-        }
-      });
-      treePattern.$el.bind('tree.select', function(e) {
-        var node = e.node;
-        if (node && !node._loaded) {
-          self.currentPath = node.path;
-          selectedNode = node;
-          treePattern.$el.tree('loadDataFromUrl', self.treeQuery.getUrl(), node);
-          node._loaded = true;
-        }
-      });
-      treePattern.$el.bind('tree.refresh', function() {
-        /* the purpose of this is that when new data is loaded, the selected
-         * node is cleared. This re-selects it as a user browses structure of site */
-        if (selectedNode) {
-          treePattern.$el.tree('selectNode', selectedNode);
-        }
-      });
-      $('a.pattern-relateditems-tree-cancel', $treeContainer).click(function(e) {
-        e.preventDefault();
-        $treeContainer.fadeOut();
-        return false;
-      });
-
-      $('a.pattern-relateditems-tree-itemselect', $treeContainer).click(function(e) {
-        e.preventDefault();
-        self.browseTo(self.currentPath); // just browse to current path since it's set elsewhere
-        $treeContainer.fadeOut();
-        return false;
-      });
-
-      $treeSelect.on('click', function(e) {
-        e.preventDefault();
-        self.browsing = true;
-        self.currentPath = '/';
-        $treeContainer.fadeIn();
-        treePattern.$el.tree('loadDataFromUrl', self.treeQuery.getUrl());
-        return false;
-      });
-      self.$browsePath.html($crumbs);
-    },
-    selectItem: function(item) {
-      var self = this;
-      self.emit('selecting');
-      var data = self.$el.select2('data');
-      data.push(item);
-      self.$el.select2('data', data);
-      item.selected = true;
-      self.emit('selected');
-    },
-    deselectItem: function(item) {
-      var self = this;
-      self.emit('deselecting');
-      var data = self.$el.select2('data');
-      _.each(data, function(obj, i) {
-        if (obj.UID === item.UID) {
-          data.splice(i, 1);
-        }
-      });
-      self.$el.select2('data', data);
-      item.selected = false;
-      self.emit('deselected');
-    },
-    isSelectable: function(item) {
-      var self = this;
-      if (self.options.selectableTypes === null) {
-        return true;
-      } else {
-        return _.indexOf(self.options.selectableTypes, item.Type) > -1;
-      }
-    },
-    init: function() {
-      var self = this;
-
-      self.query = new utils.QueryHelper(
-        $.extend(true, {}, self.options, {pattern: self})
-      );
-      self.treeQuery = new utils.QueryHelper(
-        $.extend(true, {}, self.options, {
-          pattern: self,
-          baseCriteria: [{
-            i: 'Type',
-            o: 'plone.app.querystring.operation.list.contains',
-            v: self.options.folderTypes
-          }]
-        })
-      );
-
-      self.options.ajax = self.options.setupAjax.apply(self);
-
-      self.$el.wrap('<div class="pattern-relateditems-container" />');
-      self.$container = self.$el.parents('.pattern-relateditems-container');
-      self.$container.width(self.options.width);
-
-      Select2.prototype.initializeValues.call(self);
-      Select2.prototype.initializeTags.call(self);
-
-      self.options.formatSelection = function(item, $container) {
-        return self.applyTemplate('selection', item);
-      };
-
-      Select2.prototype.initializeOrdering.call(self);
-
-      self.options.formatResult = function(item) {
-        if (!item.Type || _.indexOf(self.options.folderTypes, item.Type) === -1) {
-          item.folderish = false;
-        } else {
-          item.folderish = true;
-        }
-
-        item.selectable = self.isSelectable(item);
-
-        if (item.selected === undefined) {
-          var data = self.$el.select2('data');
-          item.selected = false;
-          _.each(data, function(obj) {
-            if (obj.UID === item.UID) {
-              item.selected = true;
-            }
-          });
-        }
-
-        var result = $(self.applyTemplate('result', item));
-
-        $('.pattern-relateditems-result-select', result).on('click', function(event) {
-          event.preventDefault();
-          if ($(this).is('.selectable')) {
-            var $parent = $(this).parents('.pattern-relateditems-result');
-            if ($parent.is('.pattern-relateditems-active')) {
-              $parent.removeClass('pattern-relateditems-active');
-              self.deselectItem(item);
-            } else {
-              self.selectItem(item);
-              $parent.addClass('pattern-relateditems-active');
-              if (self.options.maximumSelectionSize > 0) {
-                var items = self.$select2.select2('data');
-                if (items.length >= self.options.maximumSelectionSize) {
-                  self.$select2.select2('close');
-                }
-              }
-            }
-          }
-        });
-
-        $('.pattern-relateditems-result-browse', result).on('click', function(event) {
-          event.preventDefault();
-          event.stopPropagation();
-          var path = $(this).data('path');
-          self.browseTo(path);
-        });
-
-        return $(result);
-      };
-      self.options.initSelection = function(element, callback) {
-        var data = [];
-        var value = $(element).val();
-        if (value !== '') {
-          var ids = value.split(self.options.separator);
-          self.query.search(
-            'UID', 'plone.app.querystring.operation.list.contains', ids,
-            function(data) {
-              var results = data.results.reduce(function(prev, item) {
-                prev[item.UID] = item;
-                return prev;
-              }, {});
-              callback(
-                ids
-                  .map(function(uid) { return results[uid]; })
-                  .filter(function(item) { return item !== undefined; })
-              );
-            },
-            false
-          );
-        }
-      };
-
-      self.options.id = function(item) {
-        return item.UID;
-      };
-
-      Select2.prototype.initializeSelect2.call(self);
-
-      // Browsing functionality
-      var browseOpts = {
-        browseText: self.options.browseText,
-        searchText: self.options.searchText
-      };
-
-      self.$browsePath = $('<span class="pattern-relateditems-path" />');
-      self.$container.prepend(self.$browsePath);
-
-      if (self.options.mode === 'search') {
-        self.deactivateBrowsing();
-        self.browsing = false;
-      } else {
-        self.activateBrowsing();
-        self.browsing = true;
-      }
-
-      self.$el.on('select2-selecting', function(event) {
-        event.preventDefault();
-      });
-
-    }
-  });
-
-  return RelatedItems;
-
-});
-
-
-define('text!mockup-patterns-tinymce-url/templates/result.xml',[],function () { return '<div class="pattern-relateditems-result pattern-relateditems-type-<%= Type %> <% if (selected) { %>pattern-active<% } %>">\n  <a href="#" class="pattern-relateditems-result-select <% if (selectable) { %>selectable<% } %>">\n    <% if (!folderish) { %>\n    <span class="pattern-relateditems-result-image">\n      <img src="<%= generateImageUrl(_item, \'thumb\') %>" />\n    </span>\n    <% } %>\n    <span class="pattern-relateditems-result-title"><%= Title %></span>\n    <span class="pattern-relateditems-result-path"><%= path %></span>\n  </a>\n  <span class="pattern-relateditems-buttons">\n    <% if (folderish) { %>\n      <a class="pattern-relateditems-result-browse" href="#" data-path="<%= path %>"></a>\n    <% } %>\n  </span>\n</div>\n';});
-
 
 define('text!mockup-patterns-tinymce-url/templates/selection.xml',[],function () { return '<span class="pattern-relateditems-item pattern-relateditems-type-<%= Type %>">\n <span class="pattern-relateditems-result-image">\n   <img src="<%= generateImageUrl(_item, \'thumb\') %>" />\n </span>\n <span class="pattern-relateditems-item-title"><%= Title %></span>\n <span class="pattern-relateditems-item-path"><%= path %></span>\n</span>\'\n';});
 
@@ -66763,136 +66971,6 @@ tinymce.PluginManager.add('image', function(editor) {
 }(this));
 
 (function(root) {
-define("tinymce-insertdatetime", ["tinymce"], function() {
-  return (function() {
-/**
- * plugin.js
- *
- * Copyright, Moxiecode Systems AB
- * Released under LGPL License.
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-/*global tinymce:true */
-
-tinymce.PluginManager.add('insertdatetime', function(editor) {
-    var daysShort = "Sun Mon Tue Wed Thu Fri Sat Sun".split(' ');
-    var daysLong = "Sunday Monday Tuesday Wednesday Thursday Friday Saturday Sunday".split(' ');
-    var monthsShort = "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec".split(' ');
-    var monthsLong = "January February March April May June July August September October November December".split(' ');
-    var menuItems = [], lastFormat, defaultButtonTimeFormat;
-
-    function getDateTime(fmt, date) {
-        function addZeros(value, len) {
-            value = "" + value;
-
-            if (value.length < len) {
-                for (var i = 0; i < (len - value.length); i++) {
-                    value = "0" + value;
-                }
-            }
-
-            return value;
-        }
-
-        date = date || new Date();
-
-        fmt = fmt.replace("%D", "%m/%d/%Y");
-        fmt = fmt.replace("%r", "%I:%M:%S %p");
-        fmt = fmt.replace("%Y", "" + date.getFullYear());
-        fmt = fmt.replace("%y", "" + date.getYear());
-        fmt = fmt.replace("%m", addZeros(date.getMonth() + 1, 2));
-        fmt = fmt.replace("%d", addZeros(date.getDate(), 2));
-        fmt = fmt.replace("%H", "" + addZeros(date.getHours(), 2));
-        fmt = fmt.replace("%M", "" + addZeros(date.getMinutes(), 2));
-        fmt = fmt.replace("%S", "" + addZeros(date.getSeconds(), 2));
-        fmt = fmt.replace("%I", "" + ((date.getHours() + 11) % 12 + 1));
-        fmt = fmt.replace("%p", "" + (date.getHours() < 12 ? "AM" : "PM"));
-        fmt = fmt.replace("%B", "" + editor.translate(monthsLong[date.getMonth()]));
-        fmt = fmt.replace("%b", "" + editor.translate(monthsShort[date.getMonth()]));
-        fmt = fmt.replace("%A", "" + editor.translate(daysLong[date.getDay()]));
-        fmt = fmt.replace("%a", "" + editor.translate(daysShort[date.getDay()]));
-        fmt = fmt.replace("%%", "%");
-
-        return fmt;
-    }
-
-    function insertDateTime(format) {
-        var html = getDateTime(format);
-
-        if (editor.settings.insertdatetime_element) {
-            var computerTime;
-
-            if (/%[HMSIp]/.test(format)) {
-                computerTime = getDateTime("%Y-%m-%dT%H:%M");
-            } else {
-                computerTime = getDateTime("%Y-%m-%d");
-            }
-
-            html = '<time datetime="' + computerTime + '">' + html + '</time>';
-
-            var timeElm = editor.dom.getParent(editor.selection.getStart(), 'time');
-            if (timeElm) {
-                editor.dom.setOuterHTML(timeElm, html);
-                return;
-            }
-        }
-
-        editor.insertContent(html);
-    }
-
-    editor.addCommand('mceInsertDate', function() {
-        insertDateTime(editor.getParam("insertdatetime_dateformat", editor.translate("%Y-%m-%d")));
-    });
-
-    editor.addCommand('mceInsertTime', function() {
-        insertDateTime(editor.getParam("insertdatetime_timeformat", editor.translate('%H:%M:%S')));
-    });
-
-    editor.addButton('insertdatetime', {
-        type: 'splitbutton',
-        title: 'Insert date/time',
-        onclick: function() {
-            insertDateTime(lastFormat || defaultButtonTimeFormat);
-        },
-        menu: menuItems
-    });
-
-    tinymce.each(editor.settings.insertdatetime_formats || [
-        "%H:%M:%S",
-        "%Y-%m-%d",
-        "%I:%M:%S %p",
-        "%D"
-    ], function(fmt) {
-        if (!defaultButtonTimeFormat) {
-            defaultButtonTimeFormat = fmt;
-        }
-
-        menuItems.push({
-            text: getDateTime(fmt),
-            onclick: function() {
-                lastFormat = fmt;
-                insertDateTime(fmt);
-            }
-        });
-    });
-
-    editor.addMenuItem('insertdatetime', {
-        icon: 'date',
-        text: 'Insert date/time',
-        menu: menuItems,
-        context: 'insert'
-    });
-});
-
-
-  }).apply(root, arguments);
-});
-}(this));
-
-(function(root) {
 define("tinymce-importcss", ["tinymce"], function() {
   return (function() {
 /**
@@ -67089,6 +67167,136 @@ tinymce.PluginManager.add('importcss', function(editor) {
 
     // Expose default convertSelectorToFormat implementation
     self.convertSelectorToFormat = convertSelectorToFormat;
+});
+
+
+  }).apply(root, arguments);
+});
+}(this));
+
+(function(root) {
+define("tinymce-insertdatetime", ["tinymce"], function() {
+  return (function() {
+/**
+ * plugin.js
+ *
+ * Copyright, Moxiecode Systems AB
+ * Released under LGPL License.
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+/*global tinymce:true */
+
+tinymce.PluginManager.add('insertdatetime', function(editor) {
+    var daysShort = "Sun Mon Tue Wed Thu Fri Sat Sun".split(' ');
+    var daysLong = "Sunday Monday Tuesday Wednesday Thursday Friday Saturday Sunday".split(' ');
+    var monthsShort = "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec".split(' ');
+    var monthsLong = "January February March April May June July August September October November December".split(' ');
+    var menuItems = [], lastFormat, defaultButtonTimeFormat;
+
+    function getDateTime(fmt, date) {
+        function addZeros(value, len) {
+            value = "" + value;
+
+            if (value.length < len) {
+                for (var i = 0; i < (len - value.length); i++) {
+                    value = "0" + value;
+                }
+            }
+
+            return value;
+        }
+
+        date = date || new Date();
+
+        fmt = fmt.replace("%D", "%m/%d/%Y");
+        fmt = fmt.replace("%r", "%I:%M:%S %p");
+        fmt = fmt.replace("%Y", "" + date.getFullYear());
+        fmt = fmt.replace("%y", "" + date.getYear());
+        fmt = fmt.replace("%m", addZeros(date.getMonth() + 1, 2));
+        fmt = fmt.replace("%d", addZeros(date.getDate(), 2));
+        fmt = fmt.replace("%H", "" + addZeros(date.getHours(), 2));
+        fmt = fmt.replace("%M", "" + addZeros(date.getMinutes(), 2));
+        fmt = fmt.replace("%S", "" + addZeros(date.getSeconds(), 2));
+        fmt = fmt.replace("%I", "" + ((date.getHours() + 11) % 12 + 1));
+        fmt = fmt.replace("%p", "" + (date.getHours() < 12 ? "AM" : "PM"));
+        fmt = fmt.replace("%B", "" + editor.translate(monthsLong[date.getMonth()]));
+        fmt = fmt.replace("%b", "" + editor.translate(monthsShort[date.getMonth()]));
+        fmt = fmt.replace("%A", "" + editor.translate(daysLong[date.getDay()]));
+        fmt = fmt.replace("%a", "" + editor.translate(daysShort[date.getDay()]));
+        fmt = fmt.replace("%%", "%");
+
+        return fmt;
+    }
+
+    function insertDateTime(format) {
+        var html = getDateTime(format);
+
+        if (editor.settings.insertdatetime_element) {
+            var computerTime;
+
+            if (/%[HMSIp]/.test(format)) {
+                computerTime = getDateTime("%Y-%m-%dT%H:%M");
+            } else {
+                computerTime = getDateTime("%Y-%m-%d");
+            }
+
+            html = '<time datetime="' + computerTime + '">' + html + '</time>';
+
+            var timeElm = editor.dom.getParent(editor.selection.getStart(), 'time');
+            if (timeElm) {
+                editor.dom.setOuterHTML(timeElm, html);
+                return;
+            }
+        }
+
+        editor.insertContent(html);
+    }
+
+    editor.addCommand('mceInsertDate', function() {
+        insertDateTime(editor.getParam("insertdatetime_dateformat", editor.translate("%Y-%m-%d")));
+    });
+
+    editor.addCommand('mceInsertTime', function() {
+        insertDateTime(editor.getParam("insertdatetime_timeformat", editor.translate('%H:%M:%S')));
+    });
+
+    editor.addButton('insertdatetime', {
+        type: 'splitbutton',
+        title: 'Insert date/time',
+        onclick: function() {
+            insertDateTime(lastFormat || defaultButtonTimeFormat);
+        },
+        menu: menuItems
+    });
+
+    tinymce.each(editor.settings.insertdatetime_formats || [
+        "%H:%M:%S",
+        "%Y-%m-%d",
+        "%I:%M:%S %p",
+        "%D"
+    ], function(fmt) {
+        if (!defaultButtonTimeFormat) {
+            defaultButtonTimeFormat = fmt;
+        }
+
+        menuItems.push({
+            text: getDateTime(fmt),
+            onclick: function() {
+                lastFormat = fmt;
+                insertDateTime(fmt);
+            }
+        });
+    });
+
+    editor.addMenuItem('insertdatetime', {
+        icon: 'date',
+        text: 'Insert date/time',
+        menu: menuItems,
+        context: 'insert'
+    });
 });
 
 
@@ -69605,102 +69813,6 @@ tinymce.PluginManager.add('nonbreaking', function(editor) {
 }(this));
 
 (function(root) {
-define("tinymce-pagebreak", ["tinymce"], function() {
-  return (function() {
-/**
- * plugin.js
- *
- * Copyright, Moxiecode Systems AB
- * Released under LGPL License.
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-/*global tinymce:true */
-
-tinymce.PluginManager.add('pagebreak', function(editor) {
-    var pageBreakClass = 'mce-pagebreak', separatorHtml = editor.getParam('pagebreak_separator', '<!-- pagebreak -->');
-
-    var pageBreakSeparatorRegExp = new RegExp(separatorHtml.replace(/[\?\.\*\[\]\(\)\{\}\+\^\$\:]/g, function(a) {
-        return '\\' + a;
-    }), 'gi');
-
-    var pageBreakPlaceHolderHtml = '<img src="' + tinymce.Env.transparentSrc + '" class="' +
-        pageBreakClass + '" data-mce-resize="false" />';
-
-    // Register commands
-    editor.addCommand('mcePageBreak', function() {
-        if (editor.settings.pagebreak_split_block) {
-            editor.insertContent('<p>' + pageBreakPlaceHolderHtml + '</p>');
-        } else {
-            editor.insertContent(pageBreakPlaceHolderHtml);
-        }
-    });
-
-    // Register buttons
-    editor.addButton('pagebreak', {
-        title: 'Page break',
-        cmd: 'mcePageBreak'
-    });
-
-    editor.addMenuItem('pagebreak', {
-        text: 'Page break',
-        icon: 'pagebreak',
-        cmd: 'mcePageBreak',
-        context: 'insert'
-    });
-
-    editor.on('ResolveName', function(e) {
-        if (e.target.nodeName == 'IMG' && editor.dom.hasClass(e.target, pageBreakClass)) {
-            e.name = 'pagebreak';
-        }
-    });
-
-    editor.on('click', function(e) {
-        e = e.target;
-
-        if (e.nodeName === 'IMG' && editor.dom.hasClass(e, pageBreakClass)) {
-            editor.selection.select(e);
-        }
-    });
-
-    editor.on('BeforeSetContent', function(e) {
-        e.content = e.content.replace(pageBreakSeparatorRegExp, pageBreakPlaceHolderHtml);
-    });
-
-    editor.on('PreInit', function() {
-        editor.serializer.addNodeFilter('img', function(nodes) {
-            var i = nodes.length, node, className;
-
-            while (i--) {
-                node = nodes[i];
-                className = node.attr('class');
-                if (className && className.indexOf('mce-pagebreak') !== -1) {
-                    // Replace parent block node if pagebreak_split_block is enabled
-                    var parentNode = node.parent;
-                    if (editor.schema.getBlockElements()[parentNode.name] && editor.settings.pagebreak_split_block) {
-                        parentNode.type = 3;
-                        parentNode.value = separatorHtml;
-                        parentNode.raw = true;
-                        node.remove();
-                        continue;
-                    }
-
-                    node.type = 3;
-                    node.value = separatorHtml;
-                    node.raw = true;
-                }
-            }
-        });
-    });
-});
-
-  }).apply(root, arguments);
-});
-}(this));
-
-(function(root) {
 define("tinymce-noneditable", ["tinymce"], function() {
   return (function() {
 /**
@@ -70249,94 +70361,10 @@ tinymce.PluginManager.add('noneditable', function(editor) {
 }(this));
 
 (function(root) {
-define("tinymce-paste", ["tinymce"], function() {
+define("tinymce-pagebreak", ["tinymce"], function() {
   return (function() {
 /**
- * Compiled inline version. (Library mode)
- */
-
-/*jshint smarttabs:true, undef:true, latedef:true, curly:true, bitwise:true, camelcase:true */
-/*globals $code */
-
-(function(exports, undefined) {
-    
-
-    var modules = {};
-
-    function require(ids, callback) {
-        var module, defs = [];
-
-        for (var i = 0; i < ids.length; ++i) {
-            module = modules[ids[i]] || resolve(ids[i]);
-            if (!module) {
-                throw 'module definition dependecy not found: ' + ids[i];
-            }
-
-            defs.push(module);
-        }
-
-        callback.apply(null, defs);
-    }
-
-    function define(id, dependencies, definition) {
-        if (typeof id !== 'string') {
-            throw 'invalid module definition, module id must be defined and be a string';
-        }
-
-        if (dependencies === undefined) {
-            throw 'invalid module definition, dependencies must be specified';
-        }
-
-        if (definition === undefined) {
-            throw 'invalid module definition, definition function must be specified';
-        }
-
-        require(dependencies, function() {
-            modules[id] = definition.apply(null, arguments);
-        });
-    }
-
-    function defined(id) {
-        return !!modules[id];
-    }
-
-    function resolve(id) {
-        var target = exports;
-        var fragments = id.split(/[.\/]/);
-
-        for (var fi = 0; fi < fragments.length; ++fi) {
-            if (!target[fragments[fi]]) {
-                return;
-            }
-
-            target = target[fragments[fi]];
-        }
-
-        return target;
-    }
-
-    function expose(ids) {
-        for (var i = 0; i < ids.length; i++) {
-            var target = exports;
-            var id = ids[i];
-            var fragments = id.split(/[.\/]/);
-
-            for (var fi = 0; fi < fragments.length - 1; ++fi) {
-                if (target[fragments[fi]] === undefined) {
-                    target[fragments[fi]] = {};
-                }
-
-                target = target[fragments[fi]];
-            }
-
-            target[fragments[fragments.length - 1]] = modules[id];
-        }
-    }
-
-// Included from: js/tinymce/plugins/paste/classes/Utils.js
-
-/**
- * Utils.js
+ * plugin.js
  *
  * Copyright, Moxiecode Systems AB
  * Released under LGPL License.
@@ -70345,1535 +70373,84 @@ define("tinymce-paste", ["tinymce"], function() {
  * Contributing: http://www.tinymce.com/contributing
  */
 
-/**
- * This class contails various utility functions for the paste plugin.
- *
- * @class tinymce.pasteplugin.Clipboard
- * @private
- */
-define("tinymce/pasteplugin/Utils", [
-    "tinymce/util/Tools",
-    "tinymce/html/DomParser",
-    "tinymce/html/Schema"
-], function(Tools, DomParser, Schema) {
-    function filter(content, items) {
-        Tools.each(items, function(v) {
-            if (v.constructor == RegExp) {
-                content = content.replace(v, '');
-            } else {
-                content = content.replace(v[0], v[1]);
-            }
-        });
+/*global tinymce:true */
 
-        return content;
-    }
+tinymce.PluginManager.add('pagebreak', function(editor) {
+    var pageBreakClass = 'mce-pagebreak', separatorHtml = editor.getParam('pagebreak_separator', '<!-- pagebreak -->');
 
-    /**
-     * Gets the innerText of the specified element. It will handle edge cases
-     * and works better than textContent on Gecko.
-     *
-     * @param {String} html HTML string to get text from.
-     * @return {String} String of text with line feeds.
-     */
-    function innerText(html) {
-        var schema = new Schema(), domParser = new DomParser({}, schema), text = '';
-        var shortEndedElements = schema.getShortEndedElements();
-        var ignoreElements = Tools.makeMap('script noscript style textarea video audio iframe object', ' ');
-        var blockElements = schema.getBlockElements();
+    var pageBreakSeparatorRegExp = new RegExp(separatorHtml.replace(/[\?\.\*\[\]\(\)\{\}\+\^\$\:]/g, function(a) {
+        return '\\' + a;
+    }), 'gi');
 
-        function walk(node) {
-            var name = node.name, currentNode = node;
+    var pageBreakPlaceHolderHtml = '<img src="' + tinymce.Env.transparentSrc + '" class="' +
+        pageBreakClass + '" data-mce-resize="false" />';
 
-            if (name === 'br') {
-                text += '\n';
-                return;
-            }
-
-            // img/input/hr
-            if (shortEndedElements[name]) {
-                text += ' ';
-            }
-
-            // Ingore script, video contents
-            if (ignoreElements[name]) {
-                text += ' ';
-                return;
-            }
-
-            if (node.type == 3) {
-                text += node.value;
-            }
-
-            // Walk all children
-            if (!node.shortEnded) {
-                if ((node = node.firstChild)) {
-                    do {
-                        walk(node);
-                    } while ((node = node.next));
-                }
-            }
-
-            // Add \n or \n\n for blocks or P
-            if (blockElements[name] && currentNode.next) {
-                text += '\n';
-
-                if (name == 'p') {
-                    text += '\n';
-                }
-            }
+    // Register commands
+    editor.addCommand('mcePageBreak', function() {
+        if (editor.settings.pagebreak_split_block) {
+            editor.insertContent('<p>' + pageBreakPlaceHolderHtml + '</p>');
+        } else {
+            editor.insertContent(pageBreakPlaceHolderHtml);
         }
+    });
 
-        html = filter(html, [
-            /<!\[[^\]]+\]>/g // Conditional comments
-        ]);
+    // Register buttons
+    editor.addButton('pagebreak', {
+        title: 'Page break',
+        cmd: 'mcePageBreak'
+    });
 
-        walk(domParser.parse(html));
+    editor.addMenuItem('pagebreak', {
+        text: 'Page break',
+        icon: 'pagebreak',
+        cmd: 'mcePageBreak',
+        context: 'insert'
+    });
 
-        return text;
-    }
-
-    /**
-     * Trims the specified HTML by removing all WebKit fragments, all elements wrapping the body trailing BR elements etc.
-     *
-     * @param {String} html Html string to trim contents on.
-     * @return {String} Html contents that got trimmed.
-     */
-    function trimHtml(html) {
-        function trimSpaces(all, s1, s2) {
-            // WebKit &nbsp; meant to preserve multiple spaces but instead inserted around all inline tags,
-            // including the spans with inline styles created on paste
-            if (!s1 && !s2) {
-                return ' ';
-            }
-
-            return '\u00a0';
+    editor.on('ResolveName', function(e) {
+        if (e.target.nodeName == 'IMG' && editor.dom.hasClass(e.target, pageBreakClass)) {
+            e.name = 'pagebreak';
         }
+    });
 
-        html = filter(html, [
-            /^[\s\S]*<body[^>]*>\s*|\s*<\/body[^>]*>[\s\S]*$/g, // Remove anything but the contents within the BODY element
-            /<!--StartFragment-->|<!--EndFragment-->/g, // Inner fragments (tables from excel on mac)
-            [/( ?)<span class="Apple-converted-space">\u00a0<\/span>( ?)/g, trimSpaces],
-            /<br>$/i // Trailing BR elements
-        ]);
+    editor.on('click', function(e) {
+        e = e.target;
 
-        return html;
-    }
-
-    return {
-        filter: filter,
-        innerText: innerText,
-        trimHtml: trimHtml
-    };
-});
-
-// Included from: js/tinymce/plugins/paste/classes/Clipboard.js
-
-/**
- * Clipboard.js
- *
- * Copyright, Moxiecode Systems AB
- * Released under LGPL License.
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-/**
- * This class contains logic for getting HTML contents out of the clipboard.
- *
- * We need to make a lot of ugly hacks to get the contents out of the clipboard since
- * the W3C Clipboard API is broken in all browsers that have it: Gecko/WebKit/Blink.
- * We might rewrite this the way those API:s stabilize. Browsers doesn't handle pasting
- * from applications like Word the same way as it does when pasting into a contentEditable area
- * so we need to do lots of extra work to try to get to this clipboard data.
- *
- * Current implementation steps:
- *  1. On keydown with paste keys Ctrl+V or Shift+Insert create
- *     a paste bin element and move focus to that element.
- *  2. Wait for the browser to fire a "paste" event and get the contents out of the paste bin.
- *  3. Check if the paste was successful if true, process the HTML.
- *  (4). If the paste was unsuccessful use IE execCommand, Clipboard API, document.dataTransfer old WebKit API etc.
- *
- * @class tinymce.pasteplugin.Clipboard
- * @private
- */
-define("tinymce/pasteplugin/Clipboard", [
-    "tinymce/Env",
-    "tinymce/util/VK",
-    "tinymce/pasteplugin/Utils"
-], function(Env, VK, Utils) {
-    return function(editor) {
-        var self = this, pasteBinElm, lastRng, keyboardPasteTimeStamp = 0, draggingInternally = false;
-        var pasteBinDefaultContent = '%MCEPASTEBIN%', keyboardPastePlainTextState;
-
-        /**
-         * Pastes the specified HTML. This means that the HTML is filtered and then
-         * inserted at the current selection in the editor. It will also fire paste events
-         * for custom user filtering.
-         *
-         * @param {String} html HTML code to paste into the current selection.
-         */
-        function pasteHtml(html) {
-            var args, dom = editor.dom;
-
-            args = editor.fire('BeforePastePreProcess', {content: html}); // Internal event used by Quirks
-            args = editor.fire('PastePreProcess', args);
-            html = args.content;
-
-            if (!args.isDefaultPrevented()) {
-                // User has bound PastePostProcess events then we need to pass it through a DOM node
-                // This is not ideal but we don't want to let the browser mess up the HTML for example
-                // some browsers add &nbsp; to P tags etc
-                if (editor.hasEventListeners('PastePostProcess') && !args.isDefaultPrevented()) {
-                    // We need to attach the element to the DOM so Sizzle selectors work on the contents
-                    var tempBody = dom.add(editor.getBody(), 'div', {style: 'display:none'}, html);
-                    args = editor.fire('PastePostProcess', {node: tempBody});
-                    dom.remove(tempBody);
-                    html = args.node.innerHTML;
-                }
-
-                if (!args.isDefaultPrevented()) {
-                    editor.insertContent(html, {merge: editor.settings.paste_merge_formats !== false});
-                }
-            }
+        if (e.nodeName === 'IMG' && editor.dom.hasClass(e, pageBreakClass)) {
+            editor.selection.select(e);
         }
-
-        /**
-         * Pastes the specified text. This means that the plain text is processed
-         * and converted into BR and P elements. It will fire paste events for custom filtering.
-         *
-         * @param {String} text Text to paste as the current selection location.
-         */
-        function pasteText(text) {
-            text = editor.dom.encode(text).replace(/\r\n/g, '\n');
-
-            var startBlock = editor.dom.getParent(editor.selection.getStart(), editor.dom.isBlock);
-
-            // Create start block html for example <p attr="value">
-            var forcedRootBlockName = editor.settings.forced_root_block;
-            var forcedRootBlockStartHtml;
-            if (forcedRootBlockName) {
-                forcedRootBlockStartHtml = editor.dom.createHTML(forcedRootBlockName, editor.settings.forced_root_block_attrs);
-                forcedRootBlockStartHtml = forcedRootBlockStartHtml.substr(0, forcedRootBlockStartHtml.length - 3) + '>';
-            }
-
-            if ((startBlock && /^(PRE|DIV)$/.test(startBlock.nodeName)) || !forcedRootBlockName) {
-                text = Utils.filter(text, [
-                    [/\n/g, "<br>"]
-                ]);
-            } else {
-                text = Utils.filter(text, [
-                    [/\n\n/g, "</p>" + forcedRootBlockStartHtml],
-                    [/^(.*<\/p>)(<p>)$/, forcedRootBlockStartHtml + '$1'],
-                    [/\n/g, "<br />"]
-                ]);
-
-                if (text.indexOf('<p>') != -1) {
-                    text = forcedRootBlockStartHtml + text;
-                }
-            }
-
-            pasteHtml(text);
-        }
-
-        /**
-         * Creates a paste bin element as close as possible to the current caret location and places the focus inside that element
-         * so that when the real paste event occurs the contents gets inserted into this element
-         * instead of the current editor selection element.
-         */
-        function createPasteBin() {
-            var dom = editor.dom, body = editor.getBody();
-            var viewport = editor.dom.getViewPort(editor.getWin()), scrollTop = viewport.y, top = 20;
-            var scrollContainer;
-
-            lastRng = editor.selection.getRng();
-
-            if (editor.inline) {
-                scrollContainer = editor.selection.getScrollContainer();
-
-                // Can't always rely on scrollTop returning a useful value.
-                // It returns 0 if the browser doesn't support scrollTop for the element or is non-scrollable
-                if (scrollContainer && scrollContainer.scrollTop > 0) {
-                    scrollTop = scrollContainer.scrollTop;
-                }
-            }
-
-            /**
-             * Returns the rect of the current caret if the caret is in an empty block before a
-             * BR we insert a temporary invisible character that we get the rect this way we always get a proper rect.
-             *
-             * TODO: This might be useful in core.
-             */
-            function getCaretRect(rng) {
-                var rects, textNode, node, container = rng.startContainer;
-
-                rects = rng.getClientRects();
-                if (rects.length) {
-                    return rects[0];
-                }
-
-                if (!rng.collapsed || container.nodeType != 1) {
-                    return;
-                }
-
-                node = container.childNodes[lastRng.startOffset];
-
-                // Skip empty whitespace nodes
-                while (node && node.nodeType == 3 && !node.data.length) {
-                    node = node.nextSibling;
-                }
-
-                if (!node) {
-                    return;
-                }
-
-                // Check if the location is |<br>
-                // TODO: Might need to expand this to say |<table>
-                if (node.tagName == 'BR') {
-                    textNode = dom.doc.createTextNode('\uFEFF');
-                    node.parentNode.insertBefore(textNode, node);
-
-                    rng = dom.createRng();
-                    rng.setStartBefore(textNode);
-                    rng.setEndAfter(textNode);
-
-                    rects = rng.getClientRects();
-                    dom.remove(textNode);
-                }
-
-                if (rects.length) {
-                    return rects[0];
-                }
-            }
-
-            // Calculate top cordinate this is needed to avoid scrolling to top of document
-            // We want the paste bin to be as close to the caret as possible to avoid scrolling
-            if (lastRng.getClientRects) {
-                var rect = getCaretRect(lastRng);
-
-                if (rect) {
-                    // Client rects gets us closes to the actual
-                    // caret location in for example a wrapped paragraph block
-                    top = scrollTop + (rect.top - dom.getPos(body).y);
-                } else {
-                    top = scrollTop;
-
-                    // Check if we can find a closer location by checking the range element
-                    var container = lastRng.startContainer;
-                    if (container) {
-                        if (container.nodeType == 3 && container.parentNode != body) {
-                            container = container.parentNode;
-                        }
-
-                        if (container.nodeType == 1) {
-                            top = dom.getPos(container, scrollContainer || body).y;
-                        }
-                    }
-                }
-            }
-
-            // Create a pastebin
-            pasteBinElm = dom.add(editor.getBody(), 'div', {
-                id: "mcepastebin",
-                contentEditable: true,
-                "data-mce-bogus": "all",
-                style: 'position: absolute; top: ' + top + 'px;' +
-                    'width: 10px; height: 10px; overflow: hidden; opacity: 0'
-            }, pasteBinDefaultContent);
-
-            // Move paste bin out of sight since the controlSelection rect gets displayed otherwise on IE and Gecko
-            if (Env.ie || Env.gecko) {
-                dom.setStyle(pasteBinElm, 'left', dom.getStyle(body, 'direction', true) == 'rtl' ? 0xFFFF : -0xFFFF);
-            }
-
-            // Prevent focus events from bubbeling fixed FocusManager issues
-            dom.bind(pasteBinElm, 'beforedeactivate focusin focusout', function(e) {
-                e.stopPropagation();
-            });
-
-            pasteBinElm.focus();
-            editor.selection.select(pasteBinElm, true);
-        }
-
-        /**
-         * Removes the paste bin if it exists.
-         */
-        function removePasteBin() {
-            if (pasteBinElm) {
-                var pasteBinClone;
-
-                // WebKit/Blink might clone the div so
-                // lets make sure we remove all clones
-                // TODO: Man o man is this ugly. WebKit is the new IE! Remove this if they ever fix it!
-                while ((pasteBinClone = editor.dom.get('mcepastebin'))) {
-                    editor.dom.remove(pasteBinClone);
-                    editor.dom.unbind(pasteBinClone);
-                }
-
-                if (lastRng) {
-                    editor.selection.setRng(lastRng);
-                }
-            }
-
-            pasteBinElm = lastRng = null;
-        }
-
-        /**
-         * Returns the contents of the paste bin as a HTML string.
-         *
-         * @return {String} Get the contents of the paste bin.
-         */
-        function getPasteBinHtml() {
-            var html = '', pasteBinClones, i, clone, cloneHtml;
-
-            // Since WebKit/Chrome might clone the paste bin when pasting
-            // for example: <img style="float: right"> we need to check if any of them contains some useful html.
-            // TODO: Man o man is this ugly. WebKit is the new IE! Remove this if they ever fix it!
-            pasteBinClones = editor.dom.select('div[id=mcepastebin]');
-            for (i = 0; i < pasteBinClones.length; i++) {
-                clone = pasteBinClones[i];
-
-                // Pasting plain text produces pastebins in pastebinds makes sence right!?
-                if (clone.firstChild && clone.firstChild.id == 'mcepastebin') {
-                    clone = clone.firstChild;
-                }
-
-                cloneHtml = clone.innerHTML;
-                if (html != pasteBinDefaultContent) {
-                    html += cloneHtml;
-                }
-            }
-
-            return html;
-        }
-
-        /**
-         * Gets various content types out of a datatransfer object.
-         *
-         * @param {DataTransfer} dataTransfer Event fired on paste.
-         * @return {Object} Object with mime types and data for those mime types.
-         */
-        function getDataTransferItems(dataTransfer) {
-            var data = {};
-
-            if (dataTransfer) {
-                // Use old WebKit/IE API
-                if (dataTransfer.getData) {
-                    var legacyText = dataTransfer.getData('Text');
-                    if (legacyText && legacyText.length > 0) {
-                        data['text/plain'] = legacyText;
-                    }
-                }
-
-                if (dataTransfer.types) {
-                    for (var i = 0; i < dataTransfer.types.length; i++) {
-                        var contentType = dataTransfer.types[i];
-                        data[contentType] = dataTransfer.getData(contentType);
-                    }
-                }
-            }
-
-            return data;
-        }
-
-        /**
-         * Gets various content types out of the Clipboard API. It will also get the
-         * plain text using older IE and WebKit API:s.
-         *
-         * @param {ClipboardEvent} clipboardEvent Event fired on paste.
-         * @return {Object} Object with mime types and data for those mime types.
-         */
-        function getClipboardContent(clipboardEvent) {
-            return getDataTransferItems(clipboardEvent.clipboardData || editor.getDoc().dataTransfer);
-        }
-
-        /**
-         * Checks if the clipboard contains image data if it does it will take that data
-         * and convert it into a data url image and paste that image at the caret location.
-         *
-         * @param  {ClipboardEvent} e Paste/drop event object.
-         * @param  {DOMRange} rng Optional rng object to move selection to.
-         * @return {Boolean} true/false if the image data was found or not.
-         */
-        function pasteImageData(e, rng) {
-            var dataTransfer = e.clipboardData || e.dataTransfer;
-
-            function processItems(items) {
-                var i, item, reader;
-
-                function pasteImage() {
-                    if (rng) {
-                        editor.selection.setRng(rng);
-                        rng = null;
-                    }
-
-                    pasteHtml('<img src="' + reader.result + '">');
-                }
-
-                if (items) {
-                    for (i = 0; i < items.length; i++) {
-                        item = items[i];
-
-                        if (/^image\/(jpeg|png|gif)$/.test(item.type)) {
-                            reader = new FileReader();
-                            reader.onload = pasteImage;
-                            reader.readAsDataURL(item.getAsFile ? item.getAsFile() : item);
-
-                            e.preventDefault();
-                            return true;
-                        }
-                    }
-                }
-            }
-
-            if (editor.settings.paste_data_images && dataTransfer) {
-                return processItems(dataTransfer.items) || processItems(dataTransfer.files);
-            }
-        }
-
-        /**
-         * Chrome on Android doesn't support proper clipboard access so we have no choice but to allow the browser default behavior.
-         *
-         * @param {Event} e Paste event object to check if it contains any data.
-         * @return {Boolean} true/false if the clipboard is empty or not.
-         */
-        function isBrokenAndroidClipboardEvent(e) {
-            var clipboardData = e.clipboardData;
-
-            return navigator.userAgent.indexOf('Android') != -1 && clipboardData && clipboardData.items && clipboardData.items.length === 0;
-        }
-
-        function getCaretRangeFromEvent(e) {
-            var doc = editor.getDoc(), rng, point;
-
-            if (doc.caretPositionFromPoint) {
-                point = doc.caretPositionFromPoint(e.clientX, e.clientY);
-                rng = doc.createRange();
-                rng.setStart(point.offsetNode, point.offset);
-                rng.collapse(true);
-            } else if (doc.caretRangeFromPoint) {
-                rng = doc.caretRangeFromPoint(e.clientX, e.clientY);
-            } else if (doc.body.createTextRange) {
-                rng = doc.body.createTextRange();
-
-                try {
-                    rng.moveToPoint(e.clientX, e.clientY);
-                    rng.collapse(true);
-                } catch (ex) {
-                    // Append to top or bottom depending on drop location
-                    rng.collapse(e.clientY < doc.body.clientHeight);
-                }
-            }
-
-            return rng;
-        }
-
-        function hasContentType(clipboardContent, mimeType) {
-            return mimeType in clipboardContent && clipboardContent[mimeType].length > 0;
-        }
-
-        function isKeyboardPasteEvent(e) {
-            return (VK.metaKeyPressed(e) && e.keyCode == 86) || (e.shiftKey && e.keyCode == 45);
-        }
-
-        function registerEventHandlers() {
-            editor.on('keydown', function(e) {
-                function removePasteBinOnKeyUp(e) {
-                    // Ctrl+V or Shift+Insert
-                    if (isKeyboardPasteEvent(e) && !e.isDefaultPrevented()) {
-                        removePasteBin();
-                    }
-                }
-
-                // Ctrl+V or Shift+Insert
-                if (isKeyboardPasteEvent(e) && !e.isDefaultPrevented()) {
-                    keyboardPastePlainTextState = e.shiftKey && e.keyCode == 86;
-
-                    // Edge case on Safari on Mac where it doesn't handle Cmd+Shift+V correctly
-                    // it fires the keydown but no paste or keyup so we are left with a paste bin
-                    if (keyboardPastePlainTextState && Env.webkit && navigator.userAgent.indexOf('Version/') != -1) {
-                        return;
-                    }
-
-                    // Prevent undoManager keydown handler from making an undo level with the pastebin in it
-                    e.stopImmediatePropagation();
-
-                    keyboardPasteTimeStamp = new Date().getTime();
-
-                    // IE doesn't support Ctrl+Shift+V and it doesn't even produce a paste event
-                    // so lets fake a paste event and let IE use the execCommand/dataTransfer methods
-                    if (Env.ie && keyboardPastePlainTextState) {
-                        e.preventDefault();
-                        editor.fire('paste', {ieFake: true});
-                        return;
-                    }
-
-                    removePasteBin();
-                    createPasteBin();
-
-                    // Remove pastebin if we get a keyup and no paste event
-                    // For example pasting a file in IE 11 will not produce a paste event
-                    editor.once('keyup', removePasteBinOnKeyUp);
-                    editor.once('paste', function() {
-                        editor.off('keyup', removePasteBinOnKeyUp);
-                    });
-                }
-            });
-
-            editor.on('paste', function(e) {
-                // Getting content from the Clipboard can take some time
-                var clipboardTimer = new Date().getTime();
-                var clipboardContent = getClipboardContent(e);
-                var clipboardDelay = new Date().getTime() - clipboardTimer;
-
-                var isKeyBoardPaste = (new Date().getTime() - keyboardPasteTimeStamp - clipboardDelay) < 1000;
-                var plainTextMode = self.pasteFormat == "text" || keyboardPastePlainTextState;
-
-                keyboardPastePlainTextState = false;
-
-                if (e.isDefaultPrevented() || isBrokenAndroidClipboardEvent(e)) {
-                    removePasteBin();
-                    return;
-                }
-
-                if (pasteImageData(e)) {
-                    removePasteBin();
-                    return;
-                }
-
-                // Not a keyboard paste prevent default paste and try to grab the clipboard contents using different APIs
-                if (!isKeyBoardPaste) {
-                    e.preventDefault();
-                }
-
-                // Try IE only method if paste isn't a keyboard paste
-                if (Env.ie && (!isKeyBoardPaste || e.ieFake)) {
-                    createPasteBin();
-
-                    editor.dom.bind(pasteBinElm, 'paste', function(e) {
-                        e.stopPropagation();
-                    });
-
-                    editor.getDoc().execCommand('Paste', false, null);
-                    clipboardContent["text/html"] = getPasteBinHtml();
-                }
-
-                setTimeout(function() {
-                    var content;
-
-                    // Grab HTML from Clipboard API or paste bin as a fallback
-                    if (hasContentType(clipboardContent, 'text/html')) {
-                        content = clipboardContent['text/html'];
-                    } else {
-                        content = getPasteBinHtml();
-
-                        // If paste bin is empty try using plain text mode
-                        // since that is better than nothing right
-                        if (content == pasteBinDefaultContent) {
-                            plainTextMode = true;
-                        }
-                    }
-
-                    content = Utils.trimHtml(content);
-
-                    // WebKit has a nice bug where it clones the paste bin if you paste from for example notepad
-                    // so we need to force plain text mode in this case
-                    if (pasteBinElm && pasteBinElm.firstChild && pasteBinElm.firstChild.id === 'mcepastebin') {
-                        plainTextMode = true;
-                    }
-
-                    removePasteBin();
-
-                    // If we got nothing from clipboard API and pastebin then we could try the last resort: plain/text
-                    if (!content.length) {
-                        plainTextMode = true;
-                    }
-
-                    // Grab plain text from Clipboard API or convert existing HTML to plain text
-                    if (plainTextMode) {
-                        // Use plain text contents from Clipboard API unless the HTML contains paragraphs then
-                        // we should convert the HTML to plain text since works better when pasting HTML/Word contents as plain text
-                        if (hasContentType(clipboardContent, 'text/plain') && content.indexOf('</p>') == -1) {
-                            content = clipboardContent['text/plain'];
-                        } else {
-                            content = Utils.innerText(content);
-                        }
-                    }
-
-                    // If the content is the paste bin default HTML then it was
-                    // impossible to get the cliboard data out.
-                    if (content == pasteBinDefaultContent) {
-                        if (!isKeyBoardPaste) {
-                            editor.windowManager.alert('Please use Ctrl+V/Cmd+V keyboard shortcuts to paste contents.');
-                        }
-
-                        return;
-                    }
-
-                    if (plainTextMode) {
-                        pasteText(content);
-                    } else {
-                        pasteHtml(content);
-                    }
-                }, 0);
-            });
-
-            editor.on('dragstart dragend', function(e) {
-                draggingInternally = e.type == 'dragstart';
-            });
-
-            editor.on('drop', function(e) {
-                var rng = getCaretRangeFromEvent(e);
-
-                if (e.isDefaultPrevented() || draggingInternally) {
-                    return;
-                }
-
-                if (pasteImageData(e, rng)) {
-                    return;
-                }
-
-                if (rng && editor.settings.paste_filter_drop !== false) {
-                    var dropContent = getDataTransferItems(e.dataTransfer);
-                    var content = dropContent['mce-internal'] || dropContent['text/html'] || dropContent['text/plain'];
-
-                    if (content) {
-                        e.preventDefault();
-
-                        editor.undoManager.transact(function() {
-                            if (dropContent['mce-internal']) {
-                                editor.execCommand('Delete');
-                            }
-
-                            editor.selection.setRng(rng);
-
-                            content = Utils.trimHtml(content);
-
-                            if (!dropContent['text/html']) {
-                                pasteText(content);
-                            } else {
-                                pasteHtml(content);
-                            }
-                        });
-                    }
-                }
-            });
-
-            editor.on('dragover dragend', function(e) {
-                var i, dataTransfer = e.dataTransfer;
-
-                if (editor.settings.paste_data_images && dataTransfer) {
-                    for (i = 0; i < dataTransfer.types.length; i++) {
-                        // Prevent default if we have files dragged into the editor since the pasteImageData handles that
-                        if (dataTransfer.types[i] == "Files") {
-                            e.preventDefault();
-                            return false;
-                        }
-                    }
-                }
-            });
-        }
-
-        self.pasteHtml = pasteHtml;
-        self.pasteText = pasteText;
-
-        editor.on('preInit', function() {
-            registerEventHandlers();
-
-            // Remove all data images from paste for example from Gecko
-            // except internal images like video elements
-            editor.parser.addNodeFilter('img', function(nodes) {
-                if (!editor.settings.paste_data_images) {
-                    var i = nodes.length;
-
-                    while (i--) {
-                        var src = nodes[i].attributes.map.src;
-
-                        // Some browsers automatically produce data uris on paste
-                        // Safari on Mac produces webkit-fake-url see: https://bugs.webkit.org/show_bug.cgi?id=49141
-                        if (src && /^(data:image|webkit\-fake\-url)/.test(src)) {
-                            if (!nodes[i].attr('data-mce-object') && src !== Env.transparentSrc) {
-                                nodes[i].remove();
-                            }
-                        }
-                    }
-                }
-            });
-        });
-    };
-});
-
-// Included from: js/tinymce/plugins/paste/classes/WordFilter.js
-
-/**
- * WordFilter.js
- *
- * Copyright, Moxiecode Systems AB
- * Released under LGPL License.
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-/**
- * This class parses word HTML into proper TinyMCE markup.
- *
- * @class tinymce.pasteplugin.Quirks
- * @private
- */
-define("tinymce/pasteplugin/WordFilter", [
-    "tinymce/util/Tools",
-    "tinymce/html/DomParser",
-    "tinymce/html/Schema",
-    "tinymce/html/Serializer",
-    "tinymce/html/Node",
-    "tinymce/pasteplugin/Utils"
-], function(Tools, DomParser, Schema, Serializer, Node, Utils) {
-    /**
-     * Checks if the specified content is from any of the following sources: MS Word/Office 365/Google docs.
-     */
-    function isWordContent(content) {
-        return (
-            (/<font face="Times New Roman"|class="?Mso|style="[^"]*\bmso-|style='[^'']*\bmso-|w:WordDocument/i).test(content) ||
-            (/class="OutlineElement/).test(content) ||
-            (/id="?docs\-internal\-guid\-/.test(content))
-        );
-    }
-
-    /**
-     * Checks if the specified text starts with "1. " or "a. " etc.
-     */
-    function isNumericList(text) {
-        var found, patterns;
-
-        patterns = [
-            /^[IVXLMCD]{1,2}\.[ \u00a0]/,  // Roman upper case
-            /^[ivxlmcd]{1,2}\.[ \u00a0]/,  // Roman lower case
-            /^[a-z]{1,2}[\.\)][ \u00a0]/,  // Alphabetical a-z
-            /^[A-Z]{1,2}[\.\)][ \u00a0]/,  // Alphabetical A-Z
-            /^[0-9]+\.[ \u00a0]/,          // Numeric lists
-            /^[\u3007\u4e00\u4e8c\u4e09\u56db\u4e94\u516d\u4e03\u516b\u4e5d]+\.[ \u00a0]/, // Japanese
-            /^[\u58f1\u5f10\u53c2\u56db\u4f0d\u516d\u4e03\u516b\u4e5d\u62fe]+\.[ \u00a0]/  // Chinese
-        ];
-
-        text = text.replace(/^[\u00a0 ]+/, '');
-
-        Tools.each(patterns, function(pattern) {
-            if (pattern.test(text)) {
-                found = true;
-                return false;
-            }
-        });
-
-        return found;
-    }
-
-    function isBulletList(text) {
-        return /^[\s\u00a0]*[\u2022\u00b7\u00a7\u00d8\u25CF]\s*/.test(text);
-    }
-
-    function WordFilter(editor) {
-        var settings = editor.settings;
-
-        editor.on('BeforePastePreProcess', function(e) {
-            var content = e.content, retainStyleProperties, validStyles;
-
-            retainStyleProperties = settings.paste_retain_style_properties;
-            if (retainStyleProperties) {
-                validStyles = Tools.makeMap(retainStyleProperties.split(/[, ]/));
-            }
-
-            /**
-             * Converts fake bullet and numbered lists to real semantic OL/UL.
-             *
-             * @param {tinymce.html.Node} node Root node to convert children of.
-             */
-            function convertFakeListsToProperLists(node) {
-                var currentListNode, prevListNode, lastLevel = 1;
-
-                function getText(node) {
-                    var txt = '';
-
-                    if (node.type === 3) {
-                        return node.value;
-                    }
-
-                    if ((node = node.firstChild)) {
-                        do {
-                            txt += getText(node);
-                        } while ((node = node.next));
-                    }
-
-                    return txt;
-                }
-
-                function trimListStart(node, regExp) {
-                    if (node.type === 3) {
-                        if (regExp.test(node.value)) {
-                            node.value = node.value.replace(regExp, '');
-                            return false;
-                        }
-                    }
-
-                    if ((node = node.firstChild)) {
-                        do {
-                            if (!trimListStart(node, regExp)) {
-                                return false;
-                            }
-                        } while ((node = node.next));
-                    }
-
-                    return true;
-                }
-
-                function removeIgnoredNodes(node) {
-                    if (node._listIgnore) {
+    });
+
+    editor.on('BeforeSetContent', function(e) {
+        e.content = e.content.replace(pageBreakSeparatorRegExp, pageBreakPlaceHolderHtml);
+    });
+
+    editor.on('PreInit', function() {
+        editor.serializer.addNodeFilter('img', function(nodes) {
+            var i = nodes.length, node, className;
+
+            while (i--) {
+                node = nodes[i];
+                className = node.attr('class');
+                if (className && className.indexOf('mce-pagebreak') !== -1) {
+                    // Replace parent block node if pagebreak_split_block is enabled
+                    var parentNode = node.parent;
+                    if (editor.schema.getBlockElements()[parentNode.name] && editor.settings.pagebreak_split_block) {
+                        parentNode.type = 3;
+                        parentNode.value = separatorHtml;
+                        parentNode.raw = true;
                         node.remove();
-                        return;
+                        continue;
                     }
 
-                    if ((node = node.firstChild)) {
-                        do {
-                            removeIgnoredNodes(node);
-                        } while ((node = node.next));
-                    }
-                }
-
-                function convertParagraphToLi(paragraphNode, listName, start) {
-                    var level = paragraphNode._listLevel || lastLevel;
-
-                    // Handle list nesting
-                    if (level != lastLevel) {
-                        if (level < lastLevel) {
-                            // Move to parent list
-                            if (currentListNode) {
-                                currentListNode = currentListNode.parent.parent;
-                            }
-                        } else {
-                            // Create new list
-                            prevListNode = currentListNode;
-                            currentListNode = null;
-                        }
-                    }
-
-                    if (!currentListNode || currentListNode.name != listName) {
-                        prevListNode = prevListNode || currentListNode;
-                        currentListNode = new Node(listName, 1);
-
-                        if (start > 1) {
-                            currentListNode.attr('start', '' + start);
-                        }
-
-                        paragraphNode.wrap(currentListNode);
-                    } else {
-                        currentListNode.append(paragraphNode);
-                    }
-
-                    paragraphNode.name = 'li';
-
-                    // Append list to previous list if it exists
-                    if (level > lastLevel && prevListNode) {
-                        prevListNode.lastChild.append(currentListNode);
-                    }
-
-                    lastLevel = level;
-
-                    // Remove start of list item "1. " or "&middot; " etc
-                    removeIgnoredNodes(paragraphNode);
-                    trimListStart(paragraphNode, /^\u00a0+/);
-                    trimListStart(paragraphNode, /^\s*([\u2022\u00b7\u00a7\u00d8\u25CF]|\w+\.)/);
-                    trimListStart(paragraphNode, /^\u00a0+/);
-                }
-
-                // Build a list of all root level elements before we start
-                // altering them in the loop below.
-                var elements = [], child = node.firstChild;
-                while (typeof child !== 'undefined' && child !== null) {
-                    elements.push(child);
-
-                    child = child.walk();
-                    if (child !== null) {
-                        while (typeof child !== 'undefined' && child.parent !== node) {
-                            child = child.walk();
-                        }
-                    }
-                }
-
-                for (var i = 0; i < elements.length; i++) {
-                    node = elements[i];
-
-                    if (node.name == 'p' && node.firstChild) {
-                        // Find first text node in paragraph
-                        var nodeText = getText(node);
-
-                        // Detect unordered lists look for bullets
-                        if (isBulletList(nodeText)) {
-                            convertParagraphToLi(node, 'ul');
-                            continue;
-                        }
-
-                        // Detect ordered lists 1., a. or ixv.
-                        if (isNumericList(nodeText)) {
-                            // Parse OL start number
-                            var matches = /([0-9]+)\./.exec(nodeText);
-                            var start = 1;
-                            if (matches) {
-                                start = parseInt(matches[1], 10);
-                            }
-
-                            convertParagraphToLi(node, 'ol', start);
-                            continue;
-                        }
-
-                        // Convert paragraphs marked as lists but doesn't look like anything
-                        if (node._listLevel) {
-                            convertParagraphToLi(node, 'ul', 1);
-                            continue;
-                        }
-
-                        currentListNode = null;
-                    } else {
-                        // If the root level element isn't a p tag which can be
-                        // processed by convertParagraphToLi, it interrupts the
-                        // lists, causing a new list to start instead of having
-                        // elements from the next list inserted above this tag.
-                        prevListNode = currentListNode;
-                        currentListNode = null;
-                    }
+                    node.type = 3;
+                    node.value = separatorHtml;
+                    node.raw = true;
                 }
             }
-
-            function filterStyles(node, styleValue) {
-                var outputStyles = {}, matches, styles = editor.dom.parseStyle(styleValue);
-
-                Tools.each(styles, function(value, name) {
-                    // Convert various MS styles to W3C styles
-                    switch (name) {
-                        case 'mso-list':
-                            // Parse out list indent level for lists
-                            matches = /\w+ \w+([0-9]+)/i.exec(styleValue);
-                            if (matches) {
-                                node._listLevel = parseInt(matches[1], 10);
-                            }
-
-                            // Remove these nodes <span style="mso-list:Ignore">o</span>
-                            // Since the span gets removed we mark the text node and the span
-                            if (/Ignore/i.test(value) && node.firstChild) {
-                                node._listIgnore = true;
-                                node.firstChild._listIgnore = true;
-                            }
-
-                            break;
-
-                        case "horiz-align":
-                            name = "text-align";
-                            break;
-
-                        case "vert-align":
-                            name = "vertical-align";
-                            break;
-
-                        case "font-color":
-                        case "mso-foreground":
-                            name = "color";
-                            break;
-
-                        case "mso-background":
-                        case "mso-highlight":
-                            name = "background";
-                            break;
-
-                        case "font-weight":
-                        case "font-style":
-                            if (value != "normal") {
-                                outputStyles[name] = value;
-                            }
-                            return;
-
-                        case "mso-element":
-                            // Remove track changes code
-                            if (/^(comment|comment-list)$/i.test(value)) {
-                                node.remove();
-                                return;
-                            }
-
-                            break;
-                    }
-
-                    if (name.indexOf('mso-comment') === 0) {
-                        node.remove();
-                        return;
-                    }
-
-                    // Never allow mso- prefixed names
-                    if (name.indexOf('mso-') === 0) {
-                        return;
-                    }
-
-                    // Output only valid styles
-                    if (retainStyleProperties == "all" || (validStyles && validStyles[name])) {
-                        outputStyles[name] = value;
-                    }
-                });
-
-                // Convert bold style to "b" element
-                if (/(bold)/i.test(outputStyles["font-weight"])) {
-                    delete outputStyles["font-weight"];
-                    node.wrap(new Node("b", 1));
-                }
-
-                // Convert italic style to "i" element
-                if (/(italic)/i.test(outputStyles["font-style"])) {
-                    delete outputStyles["font-style"];
-                    node.wrap(new Node("i", 1));
-                }
-
-                // Serialize the styles and see if there is something left to keep
-                outputStyles = editor.dom.serializeStyle(outputStyles, node.name);
-                if (outputStyles) {
-                    return outputStyles;
-                }
-
-                return null;
-            }
-
-            if (settings.paste_enable_default_filters === false) {
-                return;
-            }
-
-            // Detect is the contents is Word junk HTML
-            if (isWordContent(e.content)) {
-                e.wordContent = true; // Mark it for other processors
-
-                // Remove basic Word junk
-                content = Utils.filter(content, [
-                    // Word comments like conditional comments etc
-                    /<!--[\s\S]+?-->/gi,
-
-                    // Remove comments, scripts (e.g., msoShowComment), XML tag, VML content,
-                    // MS Office namespaced tags, and a few other tags
-                    /<(!|script[^>]*>.*?<\/script(?=[>\s])|\/?(\?xml(:\w+)?|img|meta|link|style|\w:\w+)(?=[\s\/>]))[^>]*>/gi,
-
-                    // Convert <s> into <strike> for line-though
-                    [/<(\/?)s>/gi, "<$1strike>"],
-
-                    // Replace nsbp entites to char since it's easier to handle
-                    [/&nbsp;/gi, "\u00a0"],
-
-                    // Convert <span style="mso-spacerun:yes">___</span> to string of alternating
-                    // breaking/non-breaking spaces of same length
-                    [/<span\s+style\s*=\s*"\s*mso-spacerun\s*:\s*yes\s*;?\s*"\s*>([\s\u00a0]*)<\/span>/gi,
-                        function(str, spaces) {
-                            return (spaces.length > 0) ?
-                                spaces.replace(/./, " ").slice(Math.floor(spaces.length / 2)).split("").join("\u00a0") : "";
-                        }
-                    ]
-                ]);
-
-                var validElements = settings.paste_word_valid_elements;
-                if (!validElements) {
-                    validElements = (
-                        '-strong/b,-em/i,-u,-span,-p,-ol,-ul,-li,-h1,-h2,-h3,-h4,-h5,-h6,' +
-                        '-p/div,-a[href|name],sub,sup,strike,br,del,table[width],tr,' +
-                        'td[colspan|rowspan|width],th[colspan|rowspan|width],thead,tfoot,tbody'
-                    );
-                }
-
-                // Setup strict schema
-                var schema = new Schema({
-                    valid_elements: validElements,
-                    valid_children: '-li[p]'
-                });
-
-                // Add style/class attribute to all element rules since the user might have removed them from
-                // paste_word_valid_elements config option and we need to check them for properties
-                Tools.each(schema.elements, function(rule) {
-                    if (!rule.attributes["class"]) {
-                        rule.attributes["class"] = {};
-                        rule.attributesOrder.push("class");
-                    }
-
-                    if (!rule.attributes.style) {
-                        rule.attributes.style = {};
-                        rule.attributesOrder.push("style");
-                    }
-                });
-
-                // Parse HTML into DOM structure
-                var domParser = new DomParser({}, schema);
-
-                // Filter styles to remove "mso" specific styles and convert some of them
-                domParser.addAttributeFilter('style', function(nodes) {
-                    var i = nodes.length, node;
-
-                    while (i--) {
-                        node = nodes[i];
-                        node.attr('style', filterStyles(node, node.attr('style')));
-
-                        // Remove pointess spans
-                        if (node.name == 'span' && node.parent && !node.attributes.length) {
-                            node.unwrap();
-                        }
-                    }
-                });
-
-                // Check the class attribute for comments or del items and remove those
-                domParser.addAttributeFilter('class', function(nodes) {
-                    var i = nodes.length, node, className;
-
-                    while (i--) {
-                        node = nodes[i];
-
-                        className = node.attr('class');
-                        if (/^(MsoCommentReference|MsoCommentText|msoDel|MsoCaption)$/i.test(className)) {
-                            node.remove();
-                        }
-
-                        node.attr('class', null);
-                    }
-                });
-
-                // Remove all del elements since we don't want the track changes code in the editor
-                domParser.addNodeFilter('del', function(nodes) {
-                    var i = nodes.length;
-
-                    while (i--) {
-                        nodes[i].remove();
-                    }
-                });
-
-                // Keep some of the links and anchors
-                domParser.addNodeFilter('a', function(nodes) {
-                    var i = nodes.length, node, href, name;
-
-                    while (i--) {
-                        node = nodes[i];
-                        href = node.attr('href');
-                        name = node.attr('name');
-
-                        if (href && href.indexOf('#_msocom_') != -1) {
-                            node.remove();
-                            continue;
-                        }
-
-                        if (href && href.indexOf('file://') === 0) {
-                            href = href.split('#')[1];
-                            if (href) {
-                                href = '#' + href;
-                            }
-                        }
-
-                        if (!href && !name) {
-                            node.unwrap();
-                        } else {
-                            // Remove all named anchors that aren't specific to TOC, Footnotes or Endnotes
-                            if (name && !/^_?(?:toc|edn|ftn)/i.test(name)) {
-                                node.unwrap();
-                                continue;
-                            }
-
-                            node.attr({
-                                href: href,
-                                name: name
-                            });
-                        }
-                    }
-                });
-
-                // Parse into DOM structure
-                var rootNode = domParser.parse(content);
-
-                // Process DOM
-                convertFakeListsToProperLists(rootNode);
-
-                // Serialize DOM back to HTML
-                e.content = new Serializer({}, schema).serialize(rootNode);
-            }
-        });
-    }
-
-    WordFilter.isWordContent = isWordContent;
-
-    return WordFilter;
-});
-
-// Included from: js/tinymce/plugins/paste/classes/Quirks.js
-
-/**
- * Quirks.js
- *
- * Copyright, Moxiecode Systems AB
- * Released under LGPL License.
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-/**
- * This class contains various fixes for browsers. These issues can not be feature
- * detected since we have no direct control over the clipboard. However we might be able
- * to remove some of these fixes once the browsers gets updated/fixed.
- *
- * @class tinymce.pasteplugin.Quirks
- * @private
- */
-define("tinymce/pasteplugin/Quirks", [
-    "tinymce/Env",
-    "tinymce/util/Tools",
-    "tinymce/pasteplugin/WordFilter",
-    "tinymce/pasteplugin/Utils"
-], function(Env, Tools, WordFilter, Utils) {
-    
-
-    return function(editor) {
-        function addPreProcessFilter(filterFunc) {
-            editor.on('BeforePastePreProcess', function(e) {
-                e.content = filterFunc(e.content);
-            });
-        }
-
-        /**
-         * Removes BR elements after block elements. IE9 has a nasty bug where it puts a BR element after each
-         * block element when pasting from word. This removes those elements.
-         *
-         * This:
-         *  <p>a</p><br><p>b</p>
-         *
-         * Becomes:
-         *  <p>a</p><p>b</p>
-         */
-        function removeExplorerBrElementsAfterBlocks(html) {
-            // Only filter word specific content
-            if (!WordFilter.isWordContent(html)) {
-                return html;
-            }
-
-            // Produce block regexp based on the block elements in schema
-            var blockElements = [];
-
-            Tools.each(editor.schema.getBlockElements(), function(block, blockName) {
-                blockElements.push(blockName);
-            });
-
-            var explorerBlocksRegExp = new RegExp(
-                '(?:<br>&nbsp;[\\s\\r\\n]+|<br>)*(<\\/?(' + blockElements.join('|') + ')[^>]*>)(?:<br>&nbsp;[\\s\\r\\n]+|<br>)*',
-                'g'
-            );
-
-            // Remove BR:s from: <BLOCK>X</BLOCK><BR>
-            html = Utils.filter(html, [
-                [explorerBlocksRegExp, '$1']
-            ]);
-
-            // IE9 also adds an extra BR element for each soft-linefeed and it also adds a BR for each word wrap break
-            html = Utils.filter(html, [
-                [/<br><br>/g, '<BR><BR>'], // Replace multiple BR elements with uppercase BR to keep them intact
-                [/<br>/g, ' '],            // Replace single br elements with space since they are word wrap BR:s
-                [/<BR><BR>/g, '<br>']      // Replace back the double brs but into a single BR
-            ]);
-
-            return html;
-        }
-
-        /**
-         * WebKit has a nasty bug where the all computed styles gets added to style attributes when copy/pasting contents.
-         * This fix solves that by simply removing the whole style attribute.
-         *
-         * The paste_webkit_styles option can be set to specify what to keep:
-         *  paste_webkit_styles: "none" // Keep no styles
-         *  paste_webkit_styles: "all", // Keep all of them
-         *  paste_webkit_styles: "font-weight color" // Keep specific ones
-         *
-         * @param {String} content Content that needs to be processed.
-         * @return {String} Processed contents.
-         */
-        function removeWebKitStyles(content) {
-            // Passthrough all styles from Word and let the WordFilter handle that junk
-            if (WordFilter.isWordContent(content)) {
-                return content;
-            }
-
-            // Filter away styles that isn't matching the target node
-            var webKitStyles = editor.settings.paste_webkit_styles;
-
-            if (editor.settings.paste_remove_styles_if_webkit === false || webKitStyles == "all") {
-                return content;
-            }
-
-            if (webKitStyles) {
-                webKitStyles = webKitStyles.split(/[, ]/);
-            }
-
-            // Keep specific styles that doesn't match the current node computed style
-            if (webKitStyles) {
-                var dom = editor.dom, node = editor.selection.getNode();
-
-                content = content.replace(/(<[^>]+) style="([^"]*)"([^>]*>)/gi, function(all, before, value, after) {
-                    var inputStyles = dom.parseStyle(value, 'span'), outputStyles = {};
-
-                    if (webKitStyles === "none") {
-                        return before + after;
-                    }
-
-                    for (var i = 0; i < webKitStyles.length; i++) {
-                        var inputValue = inputStyles[webKitStyles[i]], currentValue = dom.getStyle(node, webKitStyles[i], true);
-
-                        if (/color/.test(webKitStyles[i])) {
-                            inputValue = dom.toHex(inputValue);
-                            currentValue = dom.toHex(currentValue);
-                        }
-
-                        if (currentValue != inputValue) {
-                            outputStyles[webKitStyles[i]] = inputValue;
-                        }
-                    }
-
-                    outputStyles = dom.serializeStyle(outputStyles, 'span');
-                    if (outputStyles) {
-                        return before + ' style="' + outputStyles + '"' + after;
-                    }
-
-                    return before + after;
-                });
-            } else {
-                // Remove all external styles
-                content = content.replace(/(<[^>]+) style="([^"]*)"([^>]*>)/gi, '$1$3');
-            }
-
-            // Keep internal styles
-            content = content.replace(/(<[^>]+) data-mce-style="([^"]+)"([^>]*>)/gi, function(all, before, value, after) {
-                return before + ' style="' + value + '"' + after;
-            });
-
-            return content;
-        }
-
-        // Sniff browsers and apply fixes since we can't feature detect
-        if (Env.webkit) {
-            addPreProcessFilter(removeWebKitStyles);
-        }
-
-        if (Env.ie) {
-            addPreProcessFilter(removeExplorerBrElementsAfterBlocks);
-        }
-    };
-});
-
-// Included from: js/tinymce/plugins/paste/classes/Plugin.js
-
-/**
- * Plugin.js
- *
- * Copyright, Moxiecode Systems AB
- * Released under LGPL License.
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-/**
- * This class contains the tinymce plugin logic for the paste plugin.
- *
- * @class tinymce.pasteplugin.Plugin
- * @private
- */
-define("tinymce/pasteplugin/Plugin", [
-    "tinymce/PluginManager",
-    "tinymce/pasteplugin/Clipboard",
-    "tinymce/pasteplugin/WordFilter",
-    "tinymce/pasteplugin/Quirks"
-], function(PluginManager, Clipboard, WordFilter, Quirks) {
-    var userIsInformed;
-
-    PluginManager.add('paste', function(editor) {
-        var self = this, clipboard, settings = editor.settings;
-
-        function togglePlainTextPaste() {
-            if (clipboard.pasteFormat == "text") {
-                this.active(false);
-                clipboard.pasteFormat = "html";
-            } else {
-                clipboard.pasteFormat = "text";
-                this.active(true);
-
-                if (!userIsInformed) {
-                    editor.windowManager.alert(
-                        'Paste is now in plain text mode. Contents will now ' +
-                        'be pasted as plain text until you toggle this option off.'
-                    );
-
-                    userIsInformed = true;
-                }
-            }
-        }
-
-        self.clipboard = clipboard = new Clipboard(editor);
-        self.quirks = new Quirks(editor);
-        self.wordFilter = new WordFilter(editor);
-
-        if (editor.settings.paste_as_text) {
-            self.clipboard.pasteFormat = "text";
-        }
-
-        if (settings.paste_preprocess) {
-            editor.on('PastePreProcess', function(e) {
-                settings.paste_preprocess.call(self, self, e);
-            });
-        }
-
-        if (settings.paste_postprocess) {
-            editor.on('PastePostProcess', function(e) {
-                settings.paste_postprocess.call(self, self, e);
-            });
-        }
-
-        editor.addCommand('mceInsertClipboardContent', function(ui, value) {
-            if (value.content) {
-                self.clipboard.pasteHtml(value.content);
-            }
-
-            if (value.text) {
-                self.clipboard.pasteText(value.text);
-            }
-        });
-
-        // Block all drag/drop events
-        if (editor.paste_block_drop) {
-            editor.on('dragend dragover draggesture dragdrop drop drag', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-            });
-        }
-
-        // Prevent users from dropping data images on Gecko
-        if (!editor.settings.paste_data_images) {
-            editor.on('drop', function(e) {
-                var dataTransfer = e.dataTransfer;
-
-                if (dataTransfer && dataTransfer.files && dataTransfer.files.length > 0) {
-                    e.preventDefault();
-                }
-            });
-        }
-
-        editor.addButton('pastetext', {
-            icon: 'pastetext',
-            tooltip: 'Paste as text',
-            onclick: togglePlainTextPaste,
-            active: self.clipboard.pasteFormat == "text"
-        });
-
-        editor.addMenuItem('pastetext', {
-            text: 'Paste as text',
-            selectable: true,
-            active: clipboard.pasteFormat,
-            onclick: togglePlainTextPaste
         });
     });
 });
-
-expose(["tinymce/pasteplugin/Utils","tinymce/pasteplugin/WordFilter"]);
-})(this);
 
   }).apply(root, arguments);
 });
@@ -73851,6 +72428,1637 @@ tinymce.PluginManager.add('tabfocus', function(editor) {
     });
 });
 
+
+  }).apply(root, arguments);
+});
+}(this));
+
+(function(root) {
+define("tinymce-paste", ["tinymce"], function() {
+  return (function() {
+/**
+ * Compiled inline version. (Library mode)
+ */
+
+/*jshint smarttabs:true, undef:true, latedef:true, curly:true, bitwise:true, camelcase:true */
+/*globals $code */
+
+(function(exports, undefined) {
+    
+
+    var modules = {};
+
+    function require(ids, callback) {
+        var module, defs = [];
+
+        for (var i = 0; i < ids.length; ++i) {
+            module = modules[ids[i]] || resolve(ids[i]);
+            if (!module) {
+                throw 'module definition dependecy not found: ' + ids[i];
+            }
+
+            defs.push(module);
+        }
+
+        callback.apply(null, defs);
+    }
+
+    function define(id, dependencies, definition) {
+        if (typeof id !== 'string') {
+            throw 'invalid module definition, module id must be defined and be a string';
+        }
+
+        if (dependencies === undefined) {
+            throw 'invalid module definition, dependencies must be specified';
+        }
+
+        if (definition === undefined) {
+            throw 'invalid module definition, definition function must be specified';
+        }
+
+        require(dependencies, function() {
+            modules[id] = definition.apply(null, arguments);
+        });
+    }
+
+    function defined(id) {
+        return !!modules[id];
+    }
+
+    function resolve(id) {
+        var target = exports;
+        var fragments = id.split(/[.\/]/);
+
+        for (var fi = 0; fi < fragments.length; ++fi) {
+            if (!target[fragments[fi]]) {
+                return;
+            }
+
+            target = target[fragments[fi]];
+        }
+
+        return target;
+    }
+
+    function expose(ids) {
+        for (var i = 0; i < ids.length; i++) {
+            var target = exports;
+            var id = ids[i];
+            var fragments = id.split(/[.\/]/);
+
+            for (var fi = 0; fi < fragments.length - 1; ++fi) {
+                if (target[fragments[fi]] === undefined) {
+                    target[fragments[fi]] = {};
+                }
+
+                target = target[fragments[fi]];
+            }
+
+            target[fragments[fragments.length - 1]] = modules[id];
+        }
+    }
+
+// Included from: js/tinymce/plugins/paste/classes/Utils.js
+
+/**
+ * Utils.js
+ *
+ * Copyright, Moxiecode Systems AB
+ * Released under LGPL License.
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+/**
+ * This class contails various utility functions for the paste plugin.
+ *
+ * @class tinymce.pasteplugin.Clipboard
+ * @private
+ */
+define("tinymce/pasteplugin/Utils", [
+    "tinymce/util/Tools",
+    "tinymce/html/DomParser",
+    "tinymce/html/Schema"
+], function(Tools, DomParser, Schema) {
+    function filter(content, items) {
+        Tools.each(items, function(v) {
+            if (v.constructor == RegExp) {
+                content = content.replace(v, '');
+            } else {
+                content = content.replace(v[0], v[1]);
+            }
+        });
+
+        return content;
+    }
+
+    /**
+     * Gets the innerText of the specified element. It will handle edge cases
+     * and works better than textContent on Gecko.
+     *
+     * @param {String} html HTML string to get text from.
+     * @return {String} String of text with line feeds.
+     */
+    function innerText(html) {
+        var schema = new Schema(), domParser = new DomParser({}, schema), text = '';
+        var shortEndedElements = schema.getShortEndedElements();
+        var ignoreElements = Tools.makeMap('script noscript style textarea video audio iframe object', ' ');
+        var blockElements = schema.getBlockElements();
+
+        function walk(node) {
+            var name = node.name, currentNode = node;
+
+            if (name === 'br') {
+                text += '\n';
+                return;
+            }
+
+            // img/input/hr
+            if (shortEndedElements[name]) {
+                text += ' ';
+            }
+
+            // Ingore script, video contents
+            if (ignoreElements[name]) {
+                text += ' ';
+                return;
+            }
+
+            if (node.type == 3) {
+                text += node.value;
+            }
+
+            // Walk all children
+            if (!node.shortEnded) {
+                if ((node = node.firstChild)) {
+                    do {
+                        walk(node);
+                    } while ((node = node.next));
+                }
+            }
+
+            // Add \n or \n\n for blocks or P
+            if (blockElements[name] && currentNode.next) {
+                text += '\n';
+
+                if (name == 'p') {
+                    text += '\n';
+                }
+            }
+        }
+
+        html = filter(html, [
+            /<!\[[^\]]+\]>/g // Conditional comments
+        ]);
+
+        walk(domParser.parse(html));
+
+        return text;
+    }
+
+    /**
+     * Trims the specified HTML by removing all WebKit fragments, all elements wrapping the body trailing BR elements etc.
+     *
+     * @param {String} html Html string to trim contents on.
+     * @return {String} Html contents that got trimmed.
+     */
+    function trimHtml(html) {
+        function trimSpaces(all, s1, s2) {
+            // WebKit &nbsp; meant to preserve multiple spaces but instead inserted around all inline tags,
+            // including the spans with inline styles created on paste
+            if (!s1 && !s2) {
+                return ' ';
+            }
+
+            return '\u00a0';
+        }
+
+        html = filter(html, [
+            /^[\s\S]*<body[^>]*>\s*|\s*<\/body[^>]*>[\s\S]*$/g, // Remove anything but the contents within the BODY element
+            /<!--StartFragment-->|<!--EndFragment-->/g, // Inner fragments (tables from excel on mac)
+            [/( ?)<span class="Apple-converted-space">\u00a0<\/span>( ?)/g, trimSpaces],
+            /<br>$/i // Trailing BR elements
+        ]);
+
+        return html;
+    }
+
+    return {
+        filter: filter,
+        innerText: innerText,
+        trimHtml: trimHtml
+    };
+});
+
+// Included from: js/tinymce/plugins/paste/classes/Clipboard.js
+
+/**
+ * Clipboard.js
+ *
+ * Copyright, Moxiecode Systems AB
+ * Released under LGPL License.
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+/**
+ * This class contains logic for getting HTML contents out of the clipboard.
+ *
+ * We need to make a lot of ugly hacks to get the contents out of the clipboard since
+ * the W3C Clipboard API is broken in all browsers that have it: Gecko/WebKit/Blink.
+ * We might rewrite this the way those API:s stabilize. Browsers doesn't handle pasting
+ * from applications like Word the same way as it does when pasting into a contentEditable area
+ * so we need to do lots of extra work to try to get to this clipboard data.
+ *
+ * Current implementation steps:
+ *  1. On keydown with paste keys Ctrl+V or Shift+Insert create
+ *     a paste bin element and move focus to that element.
+ *  2. Wait for the browser to fire a "paste" event and get the contents out of the paste bin.
+ *  3. Check if the paste was successful if true, process the HTML.
+ *  (4). If the paste was unsuccessful use IE execCommand, Clipboard API, document.dataTransfer old WebKit API etc.
+ *
+ * @class tinymce.pasteplugin.Clipboard
+ * @private
+ */
+define("tinymce/pasteplugin/Clipboard", [
+    "tinymce/Env",
+    "tinymce/util/VK",
+    "tinymce/pasteplugin/Utils"
+], function(Env, VK, Utils) {
+    return function(editor) {
+        var self = this, pasteBinElm, lastRng, keyboardPasteTimeStamp = 0, draggingInternally = false;
+        var pasteBinDefaultContent = '%MCEPASTEBIN%', keyboardPastePlainTextState;
+
+        /**
+         * Pastes the specified HTML. This means that the HTML is filtered and then
+         * inserted at the current selection in the editor. It will also fire paste events
+         * for custom user filtering.
+         *
+         * @param {String} html HTML code to paste into the current selection.
+         */
+        function pasteHtml(html) {
+            var args, dom = editor.dom;
+
+            args = editor.fire('BeforePastePreProcess', {content: html}); // Internal event used by Quirks
+            args = editor.fire('PastePreProcess', args);
+            html = args.content;
+
+            if (!args.isDefaultPrevented()) {
+                // User has bound PastePostProcess events then we need to pass it through a DOM node
+                // This is not ideal but we don't want to let the browser mess up the HTML for example
+                // some browsers add &nbsp; to P tags etc
+                if (editor.hasEventListeners('PastePostProcess') && !args.isDefaultPrevented()) {
+                    // We need to attach the element to the DOM so Sizzle selectors work on the contents
+                    var tempBody = dom.add(editor.getBody(), 'div', {style: 'display:none'}, html);
+                    args = editor.fire('PastePostProcess', {node: tempBody});
+                    dom.remove(tempBody);
+                    html = args.node.innerHTML;
+                }
+
+                if (!args.isDefaultPrevented()) {
+                    editor.insertContent(html, {merge: editor.settings.paste_merge_formats !== false});
+                }
+            }
+        }
+
+        /**
+         * Pastes the specified text. This means that the plain text is processed
+         * and converted into BR and P elements. It will fire paste events for custom filtering.
+         *
+         * @param {String} text Text to paste as the current selection location.
+         */
+        function pasteText(text) {
+            text = editor.dom.encode(text).replace(/\r\n/g, '\n');
+
+            var startBlock = editor.dom.getParent(editor.selection.getStart(), editor.dom.isBlock);
+
+            // Create start block html for example <p attr="value">
+            var forcedRootBlockName = editor.settings.forced_root_block;
+            var forcedRootBlockStartHtml;
+            if (forcedRootBlockName) {
+                forcedRootBlockStartHtml = editor.dom.createHTML(forcedRootBlockName, editor.settings.forced_root_block_attrs);
+                forcedRootBlockStartHtml = forcedRootBlockStartHtml.substr(0, forcedRootBlockStartHtml.length - 3) + '>';
+            }
+
+            if ((startBlock && /^(PRE|DIV)$/.test(startBlock.nodeName)) || !forcedRootBlockName) {
+                text = Utils.filter(text, [
+                    [/\n/g, "<br>"]
+                ]);
+            } else {
+                text = Utils.filter(text, [
+                    [/\n\n/g, "</p>" + forcedRootBlockStartHtml],
+                    [/^(.*<\/p>)(<p>)$/, forcedRootBlockStartHtml + '$1'],
+                    [/\n/g, "<br />"]
+                ]);
+
+                if (text.indexOf('<p>') != -1) {
+                    text = forcedRootBlockStartHtml + text;
+                }
+            }
+
+            pasteHtml(text);
+        }
+
+        /**
+         * Creates a paste bin element as close as possible to the current caret location and places the focus inside that element
+         * so that when the real paste event occurs the contents gets inserted into this element
+         * instead of the current editor selection element.
+         */
+        function createPasteBin() {
+            var dom = editor.dom, body = editor.getBody();
+            var viewport = editor.dom.getViewPort(editor.getWin()), scrollTop = viewport.y, top = 20;
+            var scrollContainer;
+
+            lastRng = editor.selection.getRng();
+
+            if (editor.inline) {
+                scrollContainer = editor.selection.getScrollContainer();
+
+                // Can't always rely on scrollTop returning a useful value.
+                // It returns 0 if the browser doesn't support scrollTop for the element or is non-scrollable
+                if (scrollContainer && scrollContainer.scrollTop > 0) {
+                    scrollTop = scrollContainer.scrollTop;
+                }
+            }
+
+            /**
+             * Returns the rect of the current caret if the caret is in an empty block before a
+             * BR we insert a temporary invisible character that we get the rect this way we always get a proper rect.
+             *
+             * TODO: This might be useful in core.
+             */
+            function getCaretRect(rng) {
+                var rects, textNode, node, container = rng.startContainer;
+
+                rects = rng.getClientRects();
+                if (rects.length) {
+                    return rects[0];
+                }
+
+                if (!rng.collapsed || container.nodeType != 1) {
+                    return;
+                }
+
+                node = container.childNodes[lastRng.startOffset];
+
+                // Skip empty whitespace nodes
+                while (node && node.nodeType == 3 && !node.data.length) {
+                    node = node.nextSibling;
+                }
+
+                if (!node) {
+                    return;
+                }
+
+                // Check if the location is |<br>
+                // TODO: Might need to expand this to say |<table>
+                if (node.tagName == 'BR') {
+                    textNode = dom.doc.createTextNode('\uFEFF');
+                    node.parentNode.insertBefore(textNode, node);
+
+                    rng = dom.createRng();
+                    rng.setStartBefore(textNode);
+                    rng.setEndAfter(textNode);
+
+                    rects = rng.getClientRects();
+                    dom.remove(textNode);
+                }
+
+                if (rects.length) {
+                    return rects[0];
+                }
+            }
+
+            // Calculate top cordinate this is needed to avoid scrolling to top of document
+            // We want the paste bin to be as close to the caret as possible to avoid scrolling
+            if (lastRng.getClientRects) {
+                var rect = getCaretRect(lastRng);
+
+                if (rect) {
+                    // Client rects gets us closes to the actual
+                    // caret location in for example a wrapped paragraph block
+                    top = scrollTop + (rect.top - dom.getPos(body).y);
+                } else {
+                    top = scrollTop;
+
+                    // Check if we can find a closer location by checking the range element
+                    var container = lastRng.startContainer;
+                    if (container) {
+                        if (container.nodeType == 3 && container.parentNode != body) {
+                            container = container.parentNode;
+                        }
+
+                        if (container.nodeType == 1) {
+                            top = dom.getPos(container, scrollContainer || body).y;
+                        }
+                    }
+                }
+            }
+
+            // Create a pastebin
+            pasteBinElm = dom.add(editor.getBody(), 'div', {
+                id: "mcepastebin",
+                contentEditable: true,
+                "data-mce-bogus": "all",
+                style: 'position: absolute; top: ' + top + 'px;' +
+                    'width: 10px; height: 10px; overflow: hidden; opacity: 0'
+            }, pasteBinDefaultContent);
+
+            // Move paste bin out of sight since the controlSelection rect gets displayed otherwise on IE and Gecko
+            if (Env.ie || Env.gecko) {
+                dom.setStyle(pasteBinElm, 'left', dom.getStyle(body, 'direction', true) == 'rtl' ? 0xFFFF : -0xFFFF);
+            }
+
+            // Prevent focus events from bubbeling fixed FocusManager issues
+            dom.bind(pasteBinElm, 'beforedeactivate focusin focusout', function(e) {
+                e.stopPropagation();
+            });
+
+            pasteBinElm.focus();
+            editor.selection.select(pasteBinElm, true);
+        }
+
+        /**
+         * Removes the paste bin if it exists.
+         */
+        function removePasteBin() {
+            if (pasteBinElm) {
+                var pasteBinClone;
+
+                // WebKit/Blink might clone the div so
+                // lets make sure we remove all clones
+                // TODO: Man o man is this ugly. WebKit is the new IE! Remove this if they ever fix it!
+                while ((pasteBinClone = editor.dom.get('mcepastebin'))) {
+                    editor.dom.remove(pasteBinClone);
+                    editor.dom.unbind(pasteBinClone);
+                }
+
+                if (lastRng) {
+                    editor.selection.setRng(lastRng);
+                }
+            }
+
+            pasteBinElm = lastRng = null;
+        }
+
+        /**
+         * Returns the contents of the paste bin as a HTML string.
+         *
+         * @return {String} Get the contents of the paste bin.
+         */
+        function getPasteBinHtml() {
+            var html = '', pasteBinClones, i, clone, cloneHtml;
+
+            // Since WebKit/Chrome might clone the paste bin when pasting
+            // for example: <img style="float: right"> we need to check if any of them contains some useful html.
+            // TODO: Man o man is this ugly. WebKit is the new IE! Remove this if they ever fix it!
+            pasteBinClones = editor.dom.select('div[id=mcepastebin]');
+            for (i = 0; i < pasteBinClones.length; i++) {
+                clone = pasteBinClones[i];
+
+                // Pasting plain text produces pastebins in pastebinds makes sence right!?
+                if (clone.firstChild && clone.firstChild.id == 'mcepastebin') {
+                    clone = clone.firstChild;
+                }
+
+                cloneHtml = clone.innerHTML;
+                if (html != pasteBinDefaultContent) {
+                    html += cloneHtml;
+                }
+            }
+
+            return html;
+        }
+
+        /**
+         * Gets various content types out of a datatransfer object.
+         *
+         * @param {DataTransfer} dataTransfer Event fired on paste.
+         * @return {Object} Object with mime types and data for those mime types.
+         */
+        function getDataTransferItems(dataTransfer) {
+            var data = {};
+
+            if (dataTransfer) {
+                // Use old WebKit/IE API
+                if (dataTransfer.getData) {
+                    var legacyText = dataTransfer.getData('Text');
+                    if (legacyText && legacyText.length > 0) {
+                        data['text/plain'] = legacyText;
+                    }
+                }
+
+                if (dataTransfer.types) {
+                    for (var i = 0; i < dataTransfer.types.length; i++) {
+                        var contentType = dataTransfer.types[i];
+                        data[contentType] = dataTransfer.getData(contentType);
+                    }
+                }
+            }
+
+            return data;
+        }
+
+        /**
+         * Gets various content types out of the Clipboard API. It will also get the
+         * plain text using older IE and WebKit API:s.
+         *
+         * @param {ClipboardEvent} clipboardEvent Event fired on paste.
+         * @return {Object} Object with mime types and data for those mime types.
+         */
+        function getClipboardContent(clipboardEvent) {
+            return getDataTransferItems(clipboardEvent.clipboardData || editor.getDoc().dataTransfer);
+        }
+
+        /**
+         * Checks if the clipboard contains image data if it does it will take that data
+         * and convert it into a data url image and paste that image at the caret location.
+         *
+         * @param  {ClipboardEvent} e Paste/drop event object.
+         * @param  {DOMRange} rng Optional rng object to move selection to.
+         * @return {Boolean} true/false if the image data was found or not.
+         */
+        function pasteImageData(e, rng) {
+            var dataTransfer = e.clipboardData || e.dataTransfer;
+
+            function processItems(items) {
+                var i, item, reader;
+
+                function pasteImage() {
+                    if (rng) {
+                        editor.selection.setRng(rng);
+                        rng = null;
+                    }
+
+                    pasteHtml('<img src="' + reader.result + '">');
+                }
+
+                if (items) {
+                    for (i = 0; i < items.length; i++) {
+                        item = items[i];
+
+                        if (/^image\/(jpeg|png|gif)$/.test(item.type)) {
+                            reader = new FileReader();
+                            reader.onload = pasteImage;
+                            reader.readAsDataURL(item.getAsFile ? item.getAsFile() : item);
+
+                            e.preventDefault();
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            if (editor.settings.paste_data_images && dataTransfer) {
+                return processItems(dataTransfer.items) || processItems(dataTransfer.files);
+            }
+        }
+
+        /**
+         * Chrome on Android doesn't support proper clipboard access so we have no choice but to allow the browser default behavior.
+         *
+         * @param {Event} e Paste event object to check if it contains any data.
+         * @return {Boolean} true/false if the clipboard is empty or not.
+         */
+        function isBrokenAndroidClipboardEvent(e) {
+            var clipboardData = e.clipboardData;
+
+            return navigator.userAgent.indexOf('Android') != -1 && clipboardData && clipboardData.items && clipboardData.items.length === 0;
+        }
+
+        function getCaretRangeFromEvent(e) {
+            var doc = editor.getDoc(), rng, point;
+
+            if (doc.caretPositionFromPoint) {
+                point = doc.caretPositionFromPoint(e.clientX, e.clientY);
+                rng = doc.createRange();
+                rng.setStart(point.offsetNode, point.offset);
+                rng.collapse(true);
+            } else if (doc.caretRangeFromPoint) {
+                rng = doc.caretRangeFromPoint(e.clientX, e.clientY);
+            } else if (doc.body.createTextRange) {
+                rng = doc.body.createTextRange();
+
+                try {
+                    rng.moveToPoint(e.clientX, e.clientY);
+                    rng.collapse(true);
+                } catch (ex) {
+                    // Append to top or bottom depending on drop location
+                    rng.collapse(e.clientY < doc.body.clientHeight);
+                }
+            }
+
+            return rng;
+        }
+
+        function hasContentType(clipboardContent, mimeType) {
+            return mimeType in clipboardContent && clipboardContent[mimeType].length > 0;
+        }
+
+        function isKeyboardPasteEvent(e) {
+            return (VK.metaKeyPressed(e) && e.keyCode == 86) || (e.shiftKey && e.keyCode == 45);
+        }
+
+        function registerEventHandlers() {
+            editor.on('keydown', function(e) {
+                function removePasteBinOnKeyUp(e) {
+                    // Ctrl+V or Shift+Insert
+                    if (isKeyboardPasteEvent(e) && !e.isDefaultPrevented()) {
+                        removePasteBin();
+                    }
+                }
+
+                // Ctrl+V or Shift+Insert
+                if (isKeyboardPasteEvent(e) && !e.isDefaultPrevented()) {
+                    keyboardPastePlainTextState = e.shiftKey && e.keyCode == 86;
+
+                    // Edge case on Safari on Mac where it doesn't handle Cmd+Shift+V correctly
+                    // it fires the keydown but no paste or keyup so we are left with a paste bin
+                    if (keyboardPastePlainTextState && Env.webkit && navigator.userAgent.indexOf('Version/') != -1) {
+                        return;
+                    }
+
+                    // Prevent undoManager keydown handler from making an undo level with the pastebin in it
+                    e.stopImmediatePropagation();
+
+                    keyboardPasteTimeStamp = new Date().getTime();
+
+                    // IE doesn't support Ctrl+Shift+V and it doesn't even produce a paste event
+                    // so lets fake a paste event and let IE use the execCommand/dataTransfer methods
+                    if (Env.ie && keyboardPastePlainTextState) {
+                        e.preventDefault();
+                        editor.fire('paste', {ieFake: true});
+                        return;
+                    }
+
+                    removePasteBin();
+                    createPasteBin();
+
+                    // Remove pastebin if we get a keyup and no paste event
+                    // For example pasting a file in IE 11 will not produce a paste event
+                    editor.once('keyup', removePasteBinOnKeyUp);
+                    editor.once('paste', function() {
+                        editor.off('keyup', removePasteBinOnKeyUp);
+                    });
+                }
+            });
+
+            editor.on('paste', function(e) {
+                // Getting content from the Clipboard can take some time
+                var clipboardTimer = new Date().getTime();
+                var clipboardContent = getClipboardContent(e);
+                var clipboardDelay = new Date().getTime() - clipboardTimer;
+
+                var isKeyBoardPaste = (new Date().getTime() - keyboardPasteTimeStamp - clipboardDelay) < 1000;
+                var plainTextMode = self.pasteFormat == "text" || keyboardPastePlainTextState;
+
+                keyboardPastePlainTextState = false;
+
+                if (e.isDefaultPrevented() || isBrokenAndroidClipboardEvent(e)) {
+                    removePasteBin();
+                    return;
+                }
+
+                if (pasteImageData(e)) {
+                    removePasteBin();
+                    return;
+                }
+
+                // Not a keyboard paste prevent default paste and try to grab the clipboard contents using different APIs
+                if (!isKeyBoardPaste) {
+                    e.preventDefault();
+                }
+
+                // Try IE only method if paste isn't a keyboard paste
+                if (Env.ie && (!isKeyBoardPaste || e.ieFake)) {
+                    createPasteBin();
+
+                    editor.dom.bind(pasteBinElm, 'paste', function(e) {
+                        e.stopPropagation();
+                    });
+
+                    editor.getDoc().execCommand('Paste', false, null);
+                    clipboardContent["text/html"] = getPasteBinHtml();
+                }
+
+                setTimeout(function() {
+                    var content;
+
+                    // Grab HTML from Clipboard API or paste bin as a fallback
+                    if (hasContentType(clipboardContent, 'text/html')) {
+                        content = clipboardContent['text/html'];
+                    } else {
+                        content = getPasteBinHtml();
+
+                        // If paste bin is empty try using plain text mode
+                        // since that is better than nothing right
+                        if (content == pasteBinDefaultContent) {
+                            plainTextMode = true;
+                        }
+                    }
+
+                    content = Utils.trimHtml(content);
+
+                    // WebKit has a nice bug where it clones the paste bin if you paste from for example notepad
+                    // so we need to force plain text mode in this case
+                    if (pasteBinElm && pasteBinElm.firstChild && pasteBinElm.firstChild.id === 'mcepastebin') {
+                        plainTextMode = true;
+                    }
+
+                    removePasteBin();
+
+                    // If we got nothing from clipboard API and pastebin then we could try the last resort: plain/text
+                    if (!content.length) {
+                        plainTextMode = true;
+                    }
+
+                    // Grab plain text from Clipboard API or convert existing HTML to plain text
+                    if (plainTextMode) {
+                        // Use plain text contents from Clipboard API unless the HTML contains paragraphs then
+                        // we should convert the HTML to plain text since works better when pasting HTML/Word contents as plain text
+                        if (hasContentType(clipboardContent, 'text/plain') && content.indexOf('</p>') == -1) {
+                            content = clipboardContent['text/plain'];
+                        } else {
+                            content = Utils.innerText(content);
+                        }
+                    }
+
+                    // If the content is the paste bin default HTML then it was
+                    // impossible to get the cliboard data out.
+                    if (content == pasteBinDefaultContent) {
+                        if (!isKeyBoardPaste) {
+                            editor.windowManager.alert('Please use Ctrl+V/Cmd+V keyboard shortcuts to paste contents.');
+                        }
+
+                        return;
+                    }
+
+                    if (plainTextMode) {
+                        pasteText(content);
+                    } else {
+                        pasteHtml(content);
+                    }
+                }, 0);
+            });
+
+            editor.on('dragstart dragend', function(e) {
+                draggingInternally = e.type == 'dragstart';
+            });
+
+            editor.on('drop', function(e) {
+                var rng = getCaretRangeFromEvent(e);
+
+                if (e.isDefaultPrevented() || draggingInternally) {
+                    return;
+                }
+
+                if (pasteImageData(e, rng)) {
+                    return;
+                }
+
+                if (rng && editor.settings.paste_filter_drop !== false) {
+                    var dropContent = getDataTransferItems(e.dataTransfer);
+                    var content = dropContent['mce-internal'] || dropContent['text/html'] || dropContent['text/plain'];
+
+                    if (content) {
+                        e.preventDefault();
+
+                        editor.undoManager.transact(function() {
+                            if (dropContent['mce-internal']) {
+                                editor.execCommand('Delete');
+                            }
+
+                            editor.selection.setRng(rng);
+
+                            content = Utils.trimHtml(content);
+
+                            if (!dropContent['text/html']) {
+                                pasteText(content);
+                            } else {
+                                pasteHtml(content);
+                            }
+                        });
+                    }
+                }
+            });
+
+            editor.on('dragover dragend', function(e) {
+                var i, dataTransfer = e.dataTransfer;
+
+                if (editor.settings.paste_data_images && dataTransfer) {
+                    for (i = 0; i < dataTransfer.types.length; i++) {
+                        // Prevent default if we have files dragged into the editor since the pasteImageData handles that
+                        if (dataTransfer.types[i] == "Files") {
+                            e.preventDefault();
+                            return false;
+                        }
+                    }
+                }
+            });
+        }
+
+        self.pasteHtml = pasteHtml;
+        self.pasteText = pasteText;
+
+        editor.on('preInit', function() {
+            registerEventHandlers();
+
+            // Remove all data images from paste for example from Gecko
+            // except internal images like video elements
+            editor.parser.addNodeFilter('img', function(nodes) {
+                if (!editor.settings.paste_data_images) {
+                    var i = nodes.length;
+
+                    while (i--) {
+                        var src = nodes[i].attributes.map.src;
+
+                        // Some browsers automatically produce data uris on paste
+                        // Safari on Mac produces webkit-fake-url see: https://bugs.webkit.org/show_bug.cgi?id=49141
+                        if (src && /^(data:image|webkit\-fake\-url)/.test(src)) {
+                            if (!nodes[i].attr('data-mce-object') && src !== Env.transparentSrc) {
+                                nodes[i].remove();
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    };
+});
+
+// Included from: js/tinymce/plugins/paste/classes/WordFilter.js
+
+/**
+ * WordFilter.js
+ *
+ * Copyright, Moxiecode Systems AB
+ * Released under LGPL License.
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+/**
+ * This class parses word HTML into proper TinyMCE markup.
+ *
+ * @class tinymce.pasteplugin.Quirks
+ * @private
+ */
+define("tinymce/pasteplugin/WordFilter", [
+    "tinymce/util/Tools",
+    "tinymce/html/DomParser",
+    "tinymce/html/Schema",
+    "tinymce/html/Serializer",
+    "tinymce/html/Node",
+    "tinymce/pasteplugin/Utils"
+], function(Tools, DomParser, Schema, Serializer, Node, Utils) {
+    /**
+     * Checks if the specified content is from any of the following sources: MS Word/Office 365/Google docs.
+     */
+    function isWordContent(content) {
+        return (
+            (/<font face="Times New Roman"|class="?Mso|style="[^"]*\bmso-|style='[^'']*\bmso-|w:WordDocument/i).test(content) ||
+            (/class="OutlineElement/).test(content) ||
+            (/id="?docs\-internal\-guid\-/.test(content))
+        );
+    }
+
+    /**
+     * Checks if the specified text starts with "1. " or "a. " etc.
+     */
+    function isNumericList(text) {
+        var found, patterns;
+
+        patterns = [
+            /^[IVXLMCD]{1,2}\.[ \u00a0]/,  // Roman upper case
+            /^[ivxlmcd]{1,2}\.[ \u00a0]/,  // Roman lower case
+            /^[a-z]{1,2}[\.\)][ \u00a0]/,  // Alphabetical a-z
+            /^[A-Z]{1,2}[\.\)][ \u00a0]/,  // Alphabetical A-Z
+            /^[0-9]+\.[ \u00a0]/,          // Numeric lists
+            /^[\u3007\u4e00\u4e8c\u4e09\u56db\u4e94\u516d\u4e03\u516b\u4e5d]+\.[ \u00a0]/, // Japanese
+            /^[\u58f1\u5f10\u53c2\u56db\u4f0d\u516d\u4e03\u516b\u4e5d\u62fe]+\.[ \u00a0]/  // Chinese
+        ];
+
+        text = text.replace(/^[\u00a0 ]+/, '');
+
+        Tools.each(patterns, function(pattern) {
+            if (pattern.test(text)) {
+                found = true;
+                return false;
+            }
+        });
+
+        return found;
+    }
+
+    function isBulletList(text) {
+        return /^[\s\u00a0]*[\u2022\u00b7\u00a7\u00d8\u25CF]\s*/.test(text);
+    }
+
+    function WordFilter(editor) {
+        var settings = editor.settings;
+
+        editor.on('BeforePastePreProcess', function(e) {
+            var content = e.content, retainStyleProperties, validStyles;
+
+            retainStyleProperties = settings.paste_retain_style_properties;
+            if (retainStyleProperties) {
+                validStyles = Tools.makeMap(retainStyleProperties.split(/[, ]/));
+            }
+
+            /**
+             * Converts fake bullet and numbered lists to real semantic OL/UL.
+             *
+             * @param {tinymce.html.Node} node Root node to convert children of.
+             */
+            function convertFakeListsToProperLists(node) {
+                var currentListNode, prevListNode, lastLevel = 1;
+
+                function getText(node) {
+                    var txt = '';
+
+                    if (node.type === 3) {
+                        return node.value;
+                    }
+
+                    if ((node = node.firstChild)) {
+                        do {
+                            txt += getText(node);
+                        } while ((node = node.next));
+                    }
+
+                    return txt;
+                }
+
+                function trimListStart(node, regExp) {
+                    if (node.type === 3) {
+                        if (regExp.test(node.value)) {
+                            node.value = node.value.replace(regExp, '');
+                            return false;
+                        }
+                    }
+
+                    if ((node = node.firstChild)) {
+                        do {
+                            if (!trimListStart(node, regExp)) {
+                                return false;
+                            }
+                        } while ((node = node.next));
+                    }
+
+                    return true;
+                }
+
+                function removeIgnoredNodes(node) {
+                    if (node._listIgnore) {
+                        node.remove();
+                        return;
+                    }
+
+                    if ((node = node.firstChild)) {
+                        do {
+                            removeIgnoredNodes(node);
+                        } while ((node = node.next));
+                    }
+                }
+
+                function convertParagraphToLi(paragraphNode, listName, start) {
+                    var level = paragraphNode._listLevel || lastLevel;
+
+                    // Handle list nesting
+                    if (level != lastLevel) {
+                        if (level < lastLevel) {
+                            // Move to parent list
+                            if (currentListNode) {
+                                currentListNode = currentListNode.parent.parent;
+                            }
+                        } else {
+                            // Create new list
+                            prevListNode = currentListNode;
+                            currentListNode = null;
+                        }
+                    }
+
+                    if (!currentListNode || currentListNode.name != listName) {
+                        prevListNode = prevListNode || currentListNode;
+                        currentListNode = new Node(listName, 1);
+
+                        if (start > 1) {
+                            currentListNode.attr('start', '' + start);
+                        }
+
+                        paragraphNode.wrap(currentListNode);
+                    } else {
+                        currentListNode.append(paragraphNode);
+                    }
+
+                    paragraphNode.name = 'li';
+
+                    // Append list to previous list if it exists
+                    if (level > lastLevel && prevListNode) {
+                        prevListNode.lastChild.append(currentListNode);
+                    }
+
+                    lastLevel = level;
+
+                    // Remove start of list item "1. " or "&middot; " etc
+                    removeIgnoredNodes(paragraphNode);
+                    trimListStart(paragraphNode, /^\u00a0+/);
+                    trimListStart(paragraphNode, /^\s*([\u2022\u00b7\u00a7\u00d8\u25CF]|\w+\.)/);
+                    trimListStart(paragraphNode, /^\u00a0+/);
+                }
+
+                // Build a list of all root level elements before we start
+                // altering them in the loop below.
+                var elements = [], child = node.firstChild;
+                while (typeof child !== 'undefined' && child !== null) {
+                    elements.push(child);
+
+                    child = child.walk();
+                    if (child !== null) {
+                        while (typeof child !== 'undefined' && child.parent !== node) {
+                            child = child.walk();
+                        }
+                    }
+                }
+
+                for (var i = 0; i < elements.length; i++) {
+                    node = elements[i];
+
+                    if (node.name == 'p' && node.firstChild) {
+                        // Find first text node in paragraph
+                        var nodeText = getText(node);
+
+                        // Detect unordered lists look for bullets
+                        if (isBulletList(nodeText)) {
+                            convertParagraphToLi(node, 'ul');
+                            continue;
+                        }
+
+                        // Detect ordered lists 1., a. or ixv.
+                        if (isNumericList(nodeText)) {
+                            // Parse OL start number
+                            var matches = /([0-9]+)\./.exec(nodeText);
+                            var start = 1;
+                            if (matches) {
+                                start = parseInt(matches[1], 10);
+                            }
+
+                            convertParagraphToLi(node, 'ol', start);
+                            continue;
+                        }
+
+                        // Convert paragraphs marked as lists but doesn't look like anything
+                        if (node._listLevel) {
+                            convertParagraphToLi(node, 'ul', 1);
+                            continue;
+                        }
+
+                        currentListNode = null;
+                    } else {
+                        // If the root level element isn't a p tag which can be
+                        // processed by convertParagraphToLi, it interrupts the
+                        // lists, causing a new list to start instead of having
+                        // elements from the next list inserted above this tag.
+                        prevListNode = currentListNode;
+                        currentListNode = null;
+                    }
+                }
+            }
+
+            function filterStyles(node, styleValue) {
+                var outputStyles = {}, matches, styles = editor.dom.parseStyle(styleValue);
+
+                Tools.each(styles, function(value, name) {
+                    // Convert various MS styles to W3C styles
+                    switch (name) {
+                        case 'mso-list':
+                            // Parse out list indent level for lists
+                            matches = /\w+ \w+([0-9]+)/i.exec(styleValue);
+                            if (matches) {
+                                node._listLevel = parseInt(matches[1], 10);
+                            }
+
+                            // Remove these nodes <span style="mso-list:Ignore">o</span>
+                            // Since the span gets removed we mark the text node and the span
+                            if (/Ignore/i.test(value) && node.firstChild) {
+                                node._listIgnore = true;
+                                node.firstChild._listIgnore = true;
+                            }
+
+                            break;
+
+                        case "horiz-align":
+                            name = "text-align";
+                            break;
+
+                        case "vert-align":
+                            name = "vertical-align";
+                            break;
+
+                        case "font-color":
+                        case "mso-foreground":
+                            name = "color";
+                            break;
+
+                        case "mso-background":
+                        case "mso-highlight":
+                            name = "background";
+                            break;
+
+                        case "font-weight":
+                        case "font-style":
+                            if (value != "normal") {
+                                outputStyles[name] = value;
+                            }
+                            return;
+
+                        case "mso-element":
+                            // Remove track changes code
+                            if (/^(comment|comment-list)$/i.test(value)) {
+                                node.remove();
+                                return;
+                            }
+
+                            break;
+                    }
+
+                    if (name.indexOf('mso-comment') === 0) {
+                        node.remove();
+                        return;
+                    }
+
+                    // Never allow mso- prefixed names
+                    if (name.indexOf('mso-') === 0) {
+                        return;
+                    }
+
+                    // Output only valid styles
+                    if (retainStyleProperties == "all" || (validStyles && validStyles[name])) {
+                        outputStyles[name] = value;
+                    }
+                });
+
+                // Convert bold style to "b" element
+                if (/(bold)/i.test(outputStyles["font-weight"])) {
+                    delete outputStyles["font-weight"];
+                    node.wrap(new Node("b", 1));
+                }
+
+                // Convert italic style to "i" element
+                if (/(italic)/i.test(outputStyles["font-style"])) {
+                    delete outputStyles["font-style"];
+                    node.wrap(new Node("i", 1));
+                }
+
+                // Serialize the styles and see if there is something left to keep
+                outputStyles = editor.dom.serializeStyle(outputStyles, node.name);
+                if (outputStyles) {
+                    return outputStyles;
+                }
+
+                return null;
+            }
+
+            if (settings.paste_enable_default_filters === false) {
+                return;
+            }
+
+            // Detect is the contents is Word junk HTML
+            if (isWordContent(e.content)) {
+                e.wordContent = true; // Mark it for other processors
+
+                // Remove basic Word junk
+                content = Utils.filter(content, [
+                    // Word comments like conditional comments etc
+                    /<!--[\s\S]+?-->/gi,
+
+                    // Remove comments, scripts (e.g., msoShowComment), XML tag, VML content,
+                    // MS Office namespaced tags, and a few other tags
+                    /<(!|script[^>]*>.*?<\/script(?=[>\s])|\/?(\?xml(:\w+)?|img|meta|link|style|\w:\w+)(?=[\s\/>]))[^>]*>/gi,
+
+                    // Convert <s> into <strike> for line-though
+                    [/<(\/?)s>/gi, "<$1strike>"],
+
+                    // Replace nsbp entites to char since it's easier to handle
+                    [/&nbsp;/gi, "\u00a0"],
+
+                    // Convert <span style="mso-spacerun:yes">___</span> to string of alternating
+                    // breaking/non-breaking spaces of same length
+                    [/<span\s+style\s*=\s*"\s*mso-spacerun\s*:\s*yes\s*;?\s*"\s*>([\s\u00a0]*)<\/span>/gi,
+                        function(str, spaces) {
+                            return (spaces.length > 0) ?
+                                spaces.replace(/./, " ").slice(Math.floor(spaces.length / 2)).split("").join("\u00a0") : "";
+                        }
+                    ]
+                ]);
+
+                var validElements = settings.paste_word_valid_elements;
+                if (!validElements) {
+                    validElements = (
+                        '-strong/b,-em/i,-u,-span,-p,-ol,-ul,-li,-h1,-h2,-h3,-h4,-h5,-h6,' +
+                        '-p/div,-a[href|name],sub,sup,strike,br,del,table[width],tr,' +
+                        'td[colspan|rowspan|width],th[colspan|rowspan|width],thead,tfoot,tbody'
+                    );
+                }
+
+                // Setup strict schema
+                var schema = new Schema({
+                    valid_elements: validElements,
+                    valid_children: '-li[p]'
+                });
+
+                // Add style/class attribute to all element rules since the user might have removed them from
+                // paste_word_valid_elements config option and we need to check them for properties
+                Tools.each(schema.elements, function(rule) {
+                    if (!rule.attributes["class"]) {
+                        rule.attributes["class"] = {};
+                        rule.attributesOrder.push("class");
+                    }
+
+                    if (!rule.attributes.style) {
+                        rule.attributes.style = {};
+                        rule.attributesOrder.push("style");
+                    }
+                });
+
+                // Parse HTML into DOM structure
+                var domParser = new DomParser({}, schema);
+
+                // Filter styles to remove "mso" specific styles and convert some of them
+                domParser.addAttributeFilter('style', function(nodes) {
+                    var i = nodes.length, node;
+
+                    while (i--) {
+                        node = nodes[i];
+                        node.attr('style', filterStyles(node, node.attr('style')));
+
+                        // Remove pointess spans
+                        if (node.name == 'span' && node.parent && !node.attributes.length) {
+                            node.unwrap();
+                        }
+                    }
+                });
+
+                // Check the class attribute for comments or del items and remove those
+                domParser.addAttributeFilter('class', function(nodes) {
+                    var i = nodes.length, node, className;
+
+                    while (i--) {
+                        node = nodes[i];
+
+                        className = node.attr('class');
+                        if (/^(MsoCommentReference|MsoCommentText|msoDel|MsoCaption)$/i.test(className)) {
+                            node.remove();
+                        }
+
+                        node.attr('class', null);
+                    }
+                });
+
+                // Remove all del elements since we don't want the track changes code in the editor
+                domParser.addNodeFilter('del', function(nodes) {
+                    var i = nodes.length;
+
+                    while (i--) {
+                        nodes[i].remove();
+                    }
+                });
+
+                // Keep some of the links and anchors
+                domParser.addNodeFilter('a', function(nodes) {
+                    var i = nodes.length, node, href, name;
+
+                    while (i--) {
+                        node = nodes[i];
+                        href = node.attr('href');
+                        name = node.attr('name');
+
+                        if (href && href.indexOf('#_msocom_') != -1) {
+                            node.remove();
+                            continue;
+                        }
+
+                        if (href && href.indexOf('file://') === 0) {
+                            href = href.split('#')[1];
+                            if (href) {
+                                href = '#' + href;
+                            }
+                        }
+
+                        if (!href && !name) {
+                            node.unwrap();
+                        } else {
+                            // Remove all named anchors that aren't specific to TOC, Footnotes or Endnotes
+                            if (name && !/^_?(?:toc|edn|ftn)/i.test(name)) {
+                                node.unwrap();
+                                continue;
+                            }
+
+                            node.attr({
+                                href: href,
+                                name: name
+                            });
+                        }
+                    }
+                });
+
+                // Parse into DOM structure
+                var rootNode = domParser.parse(content);
+
+                // Process DOM
+                convertFakeListsToProperLists(rootNode);
+
+                // Serialize DOM back to HTML
+                e.content = new Serializer({}, schema).serialize(rootNode);
+            }
+        });
+    }
+
+    WordFilter.isWordContent = isWordContent;
+
+    return WordFilter;
+});
+
+// Included from: js/tinymce/plugins/paste/classes/Quirks.js
+
+/**
+ * Quirks.js
+ *
+ * Copyright, Moxiecode Systems AB
+ * Released under LGPL License.
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+/**
+ * This class contains various fixes for browsers. These issues can not be feature
+ * detected since we have no direct control over the clipboard. However we might be able
+ * to remove some of these fixes once the browsers gets updated/fixed.
+ *
+ * @class tinymce.pasteplugin.Quirks
+ * @private
+ */
+define("tinymce/pasteplugin/Quirks", [
+    "tinymce/Env",
+    "tinymce/util/Tools",
+    "tinymce/pasteplugin/WordFilter",
+    "tinymce/pasteplugin/Utils"
+], function(Env, Tools, WordFilter, Utils) {
+    
+
+    return function(editor) {
+        function addPreProcessFilter(filterFunc) {
+            editor.on('BeforePastePreProcess', function(e) {
+                e.content = filterFunc(e.content);
+            });
+        }
+
+        /**
+         * Removes BR elements after block elements. IE9 has a nasty bug where it puts a BR element after each
+         * block element when pasting from word. This removes those elements.
+         *
+         * This:
+         *  <p>a</p><br><p>b</p>
+         *
+         * Becomes:
+         *  <p>a</p><p>b</p>
+         */
+        function removeExplorerBrElementsAfterBlocks(html) {
+            // Only filter word specific content
+            if (!WordFilter.isWordContent(html)) {
+                return html;
+            }
+
+            // Produce block regexp based on the block elements in schema
+            var blockElements = [];
+
+            Tools.each(editor.schema.getBlockElements(), function(block, blockName) {
+                blockElements.push(blockName);
+            });
+
+            var explorerBlocksRegExp = new RegExp(
+                '(?:<br>&nbsp;[\\s\\r\\n]+|<br>)*(<\\/?(' + blockElements.join('|') + ')[^>]*>)(?:<br>&nbsp;[\\s\\r\\n]+|<br>)*',
+                'g'
+            );
+
+            // Remove BR:s from: <BLOCK>X</BLOCK><BR>
+            html = Utils.filter(html, [
+                [explorerBlocksRegExp, '$1']
+            ]);
+
+            // IE9 also adds an extra BR element for each soft-linefeed and it also adds a BR for each word wrap break
+            html = Utils.filter(html, [
+                [/<br><br>/g, '<BR><BR>'], // Replace multiple BR elements with uppercase BR to keep them intact
+                [/<br>/g, ' '],            // Replace single br elements with space since they are word wrap BR:s
+                [/<BR><BR>/g, '<br>']      // Replace back the double brs but into a single BR
+            ]);
+
+            return html;
+        }
+
+        /**
+         * WebKit has a nasty bug where the all computed styles gets added to style attributes when copy/pasting contents.
+         * This fix solves that by simply removing the whole style attribute.
+         *
+         * The paste_webkit_styles option can be set to specify what to keep:
+         *  paste_webkit_styles: "none" // Keep no styles
+         *  paste_webkit_styles: "all", // Keep all of them
+         *  paste_webkit_styles: "font-weight color" // Keep specific ones
+         *
+         * @param {String} content Content that needs to be processed.
+         * @return {String} Processed contents.
+         */
+        function removeWebKitStyles(content) {
+            // Passthrough all styles from Word and let the WordFilter handle that junk
+            if (WordFilter.isWordContent(content)) {
+                return content;
+            }
+
+            // Filter away styles that isn't matching the target node
+            var webKitStyles = editor.settings.paste_webkit_styles;
+
+            if (editor.settings.paste_remove_styles_if_webkit === false || webKitStyles == "all") {
+                return content;
+            }
+
+            if (webKitStyles) {
+                webKitStyles = webKitStyles.split(/[, ]/);
+            }
+
+            // Keep specific styles that doesn't match the current node computed style
+            if (webKitStyles) {
+                var dom = editor.dom, node = editor.selection.getNode();
+
+                content = content.replace(/(<[^>]+) style="([^"]*)"([^>]*>)/gi, function(all, before, value, after) {
+                    var inputStyles = dom.parseStyle(value, 'span'), outputStyles = {};
+
+                    if (webKitStyles === "none") {
+                        return before + after;
+                    }
+
+                    for (var i = 0; i < webKitStyles.length; i++) {
+                        var inputValue = inputStyles[webKitStyles[i]], currentValue = dom.getStyle(node, webKitStyles[i], true);
+
+                        if (/color/.test(webKitStyles[i])) {
+                            inputValue = dom.toHex(inputValue);
+                            currentValue = dom.toHex(currentValue);
+                        }
+
+                        if (currentValue != inputValue) {
+                            outputStyles[webKitStyles[i]] = inputValue;
+                        }
+                    }
+
+                    outputStyles = dom.serializeStyle(outputStyles, 'span');
+                    if (outputStyles) {
+                        return before + ' style="' + outputStyles + '"' + after;
+                    }
+
+                    return before + after;
+                });
+            } else {
+                // Remove all external styles
+                content = content.replace(/(<[^>]+) style="([^"]*)"([^>]*>)/gi, '$1$3');
+            }
+
+            // Keep internal styles
+            content = content.replace(/(<[^>]+) data-mce-style="([^"]+)"([^>]*>)/gi, function(all, before, value, after) {
+                return before + ' style="' + value + '"' + after;
+            });
+
+            return content;
+        }
+
+        // Sniff browsers and apply fixes since we can't feature detect
+        if (Env.webkit) {
+            addPreProcessFilter(removeWebKitStyles);
+        }
+
+        if (Env.ie) {
+            addPreProcessFilter(removeExplorerBrElementsAfterBlocks);
+        }
+    };
+});
+
+// Included from: js/tinymce/plugins/paste/classes/Plugin.js
+
+/**
+ * Plugin.js
+ *
+ * Copyright, Moxiecode Systems AB
+ * Released under LGPL License.
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+/**
+ * This class contains the tinymce plugin logic for the paste plugin.
+ *
+ * @class tinymce.pasteplugin.Plugin
+ * @private
+ */
+define("tinymce/pasteplugin/Plugin", [
+    "tinymce/PluginManager",
+    "tinymce/pasteplugin/Clipboard",
+    "tinymce/pasteplugin/WordFilter",
+    "tinymce/pasteplugin/Quirks"
+], function(PluginManager, Clipboard, WordFilter, Quirks) {
+    var userIsInformed;
+
+    PluginManager.add('paste', function(editor) {
+        var self = this, clipboard, settings = editor.settings;
+
+        function togglePlainTextPaste() {
+            if (clipboard.pasteFormat == "text") {
+                this.active(false);
+                clipboard.pasteFormat = "html";
+            } else {
+                clipboard.pasteFormat = "text";
+                this.active(true);
+
+                if (!userIsInformed) {
+                    editor.windowManager.alert(
+                        'Paste is now in plain text mode. Contents will now ' +
+                        'be pasted as plain text until you toggle this option off.'
+                    );
+
+                    userIsInformed = true;
+                }
+            }
+        }
+
+        self.clipboard = clipboard = new Clipboard(editor);
+        self.quirks = new Quirks(editor);
+        self.wordFilter = new WordFilter(editor);
+
+        if (editor.settings.paste_as_text) {
+            self.clipboard.pasteFormat = "text";
+        }
+
+        if (settings.paste_preprocess) {
+            editor.on('PastePreProcess', function(e) {
+                settings.paste_preprocess.call(self, self, e);
+            });
+        }
+
+        if (settings.paste_postprocess) {
+            editor.on('PastePostProcess', function(e) {
+                settings.paste_postprocess.call(self, self, e);
+            });
+        }
+
+        editor.addCommand('mceInsertClipboardContent', function(ui, value) {
+            if (value.content) {
+                self.clipboard.pasteHtml(value.content);
+            }
+
+            if (value.text) {
+                self.clipboard.pasteText(value.text);
+            }
+        });
+
+        // Block all drag/drop events
+        if (editor.paste_block_drop) {
+            editor.on('dragend dragover draggesture dragdrop drop drag', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            });
+        }
+
+        // Prevent users from dropping data images on Gecko
+        if (!editor.settings.paste_data_images) {
+            editor.on('drop', function(e) {
+                var dataTransfer = e.dataTransfer;
+
+                if (dataTransfer && dataTransfer.files && dataTransfer.files.length > 0) {
+                    e.preventDefault();
+                }
+            });
+        }
+
+        editor.addButton('pastetext', {
+            icon: 'pastetext',
+            tooltip: 'Paste as text',
+            onclick: togglePlainTextPaste,
+            active: self.clipboard.pasteFormat == "text"
+        });
+
+        editor.addMenuItem('pastetext', {
+            text: 'Paste as text',
+            selectable: true,
+            active: clipboard.pasteFormat,
+            onclick: togglePlainTextPaste
+        });
+    });
+});
+
+expose(["tinymce/pasteplugin/Utils","tinymce/pasteplugin/WordFilter"]);
+})(this);
 
   }).apply(root, arguments);
 });
@@ -77372,6 +77580,101 @@ tinymce.PluginManager.add('textpattern', function(editor) {
 }(this));
 
 (function(root) {
+define("tinymce-visualblocks", ["tinymce"], function() {
+  return (function() {
+/**
+ * plugin.js
+ *
+ * Copyright 2012, Moxiecode Systems AB
+ * Released under LGPL License.
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+/*global tinymce:true */
+
+tinymce.PluginManager.add('visualblocks', function(editor, url) {
+    var cssId, visualBlocksMenuItem, enabled;
+
+    // We don't support older browsers like IE6/7 and they don't provide prototypes for DOM objects
+    if (!window.NodeList) {
+        return;
+    }
+
+    function toggleActiveState() {
+        var self = this;
+
+        self.active(enabled);
+
+        editor.on('VisualBlocks', function() {
+            self.active(editor.dom.hasClass(editor.getBody(), 'mce-visualblocks'));
+        });
+    }
+
+    editor.addCommand('mceVisualBlocks', function() {
+        var dom = editor.dom, linkElm;
+
+        if (!cssId) {
+            cssId = dom.uniqueId();
+            linkElm = dom.create('link', {
+                id: cssId,
+                rel: 'stylesheet',
+                href: url + '/css/visualblocks.css'
+            });
+
+            editor.getDoc().getElementsByTagName('head')[0].appendChild(linkElm);
+        }
+
+        // Toggle on/off visual blocks while computing previews
+        editor.on("PreviewFormats AfterPreviewFormats", function(e) {
+            if (enabled) {
+                dom.toggleClass(editor.getBody(), 'mce-visualblocks', e.type == "afterpreviewformats");
+            }
+        });
+
+        dom.toggleClass(editor.getBody(), 'mce-visualblocks');
+        enabled = editor.dom.hasClass(editor.getBody(), 'mce-visualblocks');
+
+        if (visualBlocksMenuItem) {
+            visualBlocksMenuItem.active(dom.hasClass(editor.getBody(), 'mce-visualblocks'));
+        }
+
+        editor.fire('VisualBlocks');
+    });
+
+    editor.addButton('visualblocks', {
+        title: 'Show blocks',
+        cmd: 'mceVisualBlocks',
+        onPostRender: toggleActiveState
+    });
+
+    editor.addMenuItem('visualblocks', {
+        text: 'Show blocks',
+        cmd: 'mceVisualBlocks',
+        onPostRender: toggleActiveState,
+        selectable: true,
+        context: 'view',
+        prependToContext: true
+    });
+
+    editor.on('init', function() {
+        if (editor.settings.visualblocks_default_state) {
+            editor.execCommand('mceVisualBlocks', false, null, {skip_focus: true});
+        }
+    });
+
+    editor.on('remove', function() {
+        editor.dom.removeClass(editor.getBody(), 'mce-visualblocks');
+    });
+});
+
+
+  }).apply(root, arguments);
+});
+}(this));
+
+(function(root) {
 define("tinymce-visualchars", ["tinymce"], function() {
   return (function() {
 /**
@@ -77469,12 +77772,12 @@ tinymce.PluginManager.add('visualchars', function(editor) {
 }(this));
 
 (function(root) {
-define("tinymce-visualblocks", ["tinymce"], function() {
+define("tinymce-wordcount", ["tinymce"], function() {
   return (function() {
 /**
  * plugin.js
  *
- * Copyright 2012, Moxiecode Systems AB
+ * Copyright, Moxiecode Systems AB
  * Released under LGPL License.
  *
  * License: http://www.tinymce.com/license
@@ -77483,85 +77786,70 @@ define("tinymce-visualblocks", ["tinymce"], function() {
 
 /*global tinymce:true */
 
-tinymce.PluginManager.add('visualblocks', function(editor, url) {
-    var cssId, visualBlocksMenuItem, enabled;
+tinymce.PluginManager.add('wordcount', function(editor) {
+    var self = this, countre, cleanre;
 
-    // We don't support older browsers like IE6/7 and they don't provide prototypes for DOM objects
-    if (!window.NodeList) {
-        return;
+    // Included most unicode blocks see: http://en.wikipedia.org/wiki/Unicode_block
+    // Latin-1_Supplement letters, a-z, u2019 == &rsquo;
+    countre = editor.getParam('wordcount_countregex', /[\w\u2019\x27\-\u00C0-\u1FFF]+/g);
+    cleanre = editor.getParam('wordcount_cleanregex', /[0-9.(),;:!?%#$?\x27\x22_+=\\\/\-]*/g);
+
+    function update() {
+        editor.theme.panel.find('#wordcount').text(['Words: {0}', self.getCount()]);
     }
-
-    function toggleActiveState() {
-        var self = this;
-
-        self.active(enabled);
-
-        editor.on('VisualBlocks', function() {
-            self.active(editor.dom.hasClass(editor.getBody(), 'mce-visualblocks'));
-        });
-    }
-
-    editor.addCommand('mceVisualBlocks', function() {
-        var dom = editor.dom, linkElm;
-
-        if (!cssId) {
-            cssId = dom.uniqueId();
-            linkElm = dom.create('link', {
-                id: cssId,
-                rel: 'stylesheet',
-                href: url + '/css/visualblocks.css'
-            });
-
-            editor.getDoc().getElementsByTagName('head')[0].appendChild(linkElm);
-        }
-
-        // Toggle on/off visual blocks while computing previews
-        editor.on("PreviewFormats AfterPreviewFormats", function(e) {
-            if (enabled) {
-                dom.toggleClass(editor.getBody(), 'mce-visualblocks', e.type == "afterpreviewformats");
-            }
-        });
-
-        dom.toggleClass(editor.getBody(), 'mce-visualblocks');
-        enabled = editor.dom.hasClass(editor.getBody(), 'mce-visualblocks');
-
-        if (visualBlocksMenuItem) {
-            visualBlocksMenuItem.active(dom.hasClass(editor.getBody(), 'mce-visualblocks'));
-        }
-
-        editor.fire('VisualBlocks');
-    });
-
-    editor.addButton('visualblocks', {
-        title: 'Show blocks',
-        cmd: 'mceVisualBlocks',
-        onPostRender: toggleActiveState
-    });
-
-    editor.addMenuItem('visualblocks', {
-        text: 'Show blocks',
-        cmd: 'mceVisualBlocks',
-        onPostRender: toggleActiveState,
-        selectable: true,
-        context: 'view',
-        prependToContext: true
-    });
 
     editor.on('init', function() {
-        if (editor.settings.visualblocks_default_state) {
-            editor.execCommand('mceVisualBlocks', false, null, {skip_focus: true});
+        var statusbar = editor.theme.panel && editor.theme.panel.find('#statusbar')[0];
+
+        if (statusbar) {
+            window.setTimeout(function() {
+                statusbar.insert({
+                    type: 'label',
+                    name: 'wordcount',
+                    text: ['Words: {0}', self.getCount()],
+                    classes: 'wordcount',
+                    disabled: editor.settings.readonly
+                }, 0);
+
+                editor.on('setcontent beforeaddundo', update);
+
+                editor.on('keyup', function(e) {
+                    if (e.keyCode == 32) {
+                        update();
+                    }
+                });
+            }, 0);
         }
     });
 
-    editor.on('remove', function() {
-        editor.dom.removeClass(editor.getBody(), 'mce-visualblocks');
-    });
-});
+    self.getCount = function() {
+        var tx = editor.getContent({format: 'raw'});
+        var tc = 0;
 
+        if (tx) {
+            tx = tx.replace(/\.\.\./g, ' '); // convert ellipses to spaces
+            tx = tx.replace(/<.[^<>]*?>/g, ' ').replace(/&nbsp;|&#160;/gi, ' '); // remove html tags and space chars
+
+            // deal with html entities
+            tx = tx.replace(/(\w+)(&#?[a-z0-9]+;)+(\w+)/i, "$1$3").replace(/&.+?;/g, ' ');
+            tx = tx.replace(cleanre, ''); // remove numbers and punctuation
+
+            var wordArray = tx.match(countre);
+            if (wordArray) {
+                tc = wordArray.length;
+            }
+        }
+
+        return tc;
+    };
+});
 
   }).apply(root, arguments);
 });
 }(this));
+
+
+define('text!mockup-patterns-upload-url/templates/upload.xml',[],function () { return '<div class="upload-container upload-multiple">\n    <h2 class="title">Upload stuff here</h2>\n    <p class="help">\n        Just drag N drop stuff on the area below\n        or press "upload" button.\n    </p>\n    <div class="upload-area">\n        <div class="fallback">\n            <input name="file" type="file" multiple />\n        </div>\n        <div class="dz-message"><p><%-_t("Drop files here...")%></p></div>\n        <div class="row">\n            <div class="col-md-9">\n                <input\n                    id="fakeUploadFile"\n                    placeholder="Choose File"\n                    disabled="disabled"\n                    />\n            </div>\n            <div class="col-md-3">\n                <button\n                    type="button"\n                    class="btn btn-primary browse">\n                    Browse\n                </button>\n            </div>\n        </div>\n        <div class="upload-queue">\n            <div class="previews">\n            </div>\n            <div class="controls">\n                <div class="path">\n                    <label>Upload to...</label>\n                    <p class="form-help">\n                        If nothing selected files we be added to current context.\n                    </p>\n                    <input\n                        type="text"\n                        name="location"\n                        />\n                </div>\n                <div class="actions row">\n                    <div class="col-md-9">\n                        <div class="progress progress-striped active">\n                            <div class="progress-bar progress-bar-success"\n                                 role="progressbar"\n                                 aria-valuenow="0"\n                                 aria-valuemin="0"\n                                 aria-valuemax="100"\n                                 style="width: 0%">\n                                <span class="sr-only">40% Complete (success)</span>\n                            </div>\n                        </div>\n                    </div>\n                    <div class="col-md-3 align-right">\n                        <button\n                            type="button"\n                            class="btn btn-primary upload-all">\n                            Upload\n                        </button>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n';});
 
 // Uses AMD or browser globals to create a jQuery plugin.
 (function (factory) {
@@ -79370,86 +79658,6 @@ Emitter.prototype.hasListeners = function(event){
 
     return module.exports;
 }));
-(function(root) {
-define("tinymce-wordcount", ["tinymce"], function() {
-  return (function() {
-/**
- * plugin.js
- *
- * Copyright, Moxiecode Systems AB
- * Released under LGPL License.
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-/*global tinymce:true */
-
-tinymce.PluginManager.add('wordcount', function(editor) {
-    var self = this, countre, cleanre;
-
-    // Included most unicode blocks see: http://en.wikipedia.org/wiki/Unicode_block
-    // Latin-1_Supplement letters, a-z, u2019 == &rsquo;
-    countre = editor.getParam('wordcount_countregex', /[\w\u2019\x27\-\u00C0-\u1FFF]+/g);
-    cleanre = editor.getParam('wordcount_cleanregex', /[0-9.(),;:!?%#$?\x27\x22_+=\\\/\-]*/g);
-
-    function update() {
-        editor.theme.panel.find('#wordcount').text(['Words: {0}', self.getCount()]);
-    }
-
-    editor.on('init', function() {
-        var statusbar = editor.theme.panel && editor.theme.panel.find('#statusbar')[0];
-
-        if (statusbar) {
-            window.setTimeout(function() {
-                statusbar.insert({
-                    type: 'label',
-                    name: 'wordcount',
-                    text: ['Words: {0}', self.getCount()],
-                    classes: 'wordcount',
-                    disabled: editor.settings.readonly
-                }, 0);
-
-                editor.on('setcontent beforeaddundo', update);
-
-                editor.on('keyup', function(e) {
-                    if (e.keyCode == 32) {
-                        update();
-                    }
-                });
-            }, 0);
-        }
-    });
-
-    self.getCount = function() {
-        var tx = editor.getContent({format: 'raw'});
-        var tc = 0;
-
-        if (tx) {
-            tx = tx.replace(/\.\.\./g, ' '); // convert ellipses to spaces
-            tx = tx.replace(/<.[^<>]*?>/g, ' ').replace(/&nbsp;|&#160;/gi, ' '); // remove html tags and space chars
-
-            // deal with html entities
-            tx = tx.replace(/(\w+)(&#?[a-z0-9]+;)+(\w+)/i, "$1$3").replace(/&.+?;/g, ' ');
-            tx = tx.replace(cleanre, ''); // remove numbers and punctuation
-
-            var wordArray = tx.match(countre);
-            if (wordArray) {
-                tc = wordArray.length;
-            }
-        }
-
-        return tc;
-    };
-});
-
-  }).apply(root, arguments);
-});
-}(this));
-
-
-define('text!mockup-patterns-upload-url/templates/upload.xml',[],function () { return '<div class="upload-container upload-multiple">\n    <h2 class="title">Upload stuff here</h2>\n    <p class="help">\n        Just drag N drop stuff on the area below\n        or press "upload" button.\n    </p>\n    <div class="upload-area">\n        <div class="fallback">\n            <input name="file" type="file" multiple />\n        </div>\n        <div class="dz-message"><p><%-_t("Drop files here...")%></p></div>\n        <div class="row">\n            <div class="col-md-9">\n                <input\n                    id="fakeUploadFile"\n                    placeholder="Choose File"\n                    disabled="disabled"\n                    />\n            </div>\n            <div class="col-md-3">\n                <button\n                    type="button"\n                    class="btn btn-primary browse">\n                    Browse\n                </button>\n            </div>\n        </div>\n        <div class="upload-queue">\n            <div class="previews">\n            </div>\n            <div class="controls">\n                <div class="path">\n                    <label>Upload to...</label>\n                    <p class="form-help">\n                        If nothing selected files we be added to current context.\n                    </p>\n                    <input\n                        type="text"\n                        name="location"\n                        />\n                </div>\n                <div class="actions row">\n                    <div class="col-md-9">\n                        <div class="progress progress-striped active">\n                            <div class="progress-bar progress-bar-success"\n                                 role="progressbar"\n                                 aria-valuenow="0"\n                                 aria-valuemin="0"\n                                 aria-valuemax="100"\n                                 style="width: 0%">\n                                <span class="sr-only">40% Complete (success)</span>\n                            </div>\n                        </div>\n                    </div>\n                    <div class="col-md-3 align-right">\n                        <button\n                            type="button"\n                            class="btn btn-primary upload-all">\n                            Upload\n                        </button>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n';});
-
 
 define('text!mockup-patterns-upload-url/templates/preview.xml',[],function () { return '<div class="row item form-inline">\n    <div class="col-md-1 action">\n        <button\n            type="button"\n            class="btn btn-danger btn-xs remove-item"\n            data-dz-remove=""\n            href="javascript:undefined;">\n            <span class="glyphicon glyphicon-remove"></span>\n        </button>\n    </div>\n    <div class="col-md-8 title">\n        <div class="dz-preview">\n          <div class="dz-details">\n            <div class="dz-filename"><span data-dz-name></span></div>\n          </div>\n          <div class="dz-error-message"><span data-dz-errormessage></span></div>\n        </div>\n        <div class="dz-progress">\n            <span class="dz-upload" data-dz-uploadprogress></span>\n        </div>\n    </div>\n    <div class="col-md-3 info">\n        <div class="dz-size" data-dz-size></div>\n        <img data-dz-thumbnail />\n    </div>\n</div>\n';});
 
@@ -82004,65 +82212,6 @@ define('mockup-patterns-structure-url/js/views/delete',[
 
 
 
-define('mockup-patterns-structure-url/js/views/rearrange',[
-  'jquery',
-  'underscore',
-  'mockup-ui-url/views/popover'
-], function($, _, PopoverView) {
-  
-
-  var RearrangeView = PopoverView.extend({
-    className: 'popover rearrange',
-    title: _.template('Rearrange items in this folder'),
-    content: _.template(
-      '<div class="form-group">' +
-        '<label>What to rearrange on</label>' +
-        '<select name="rearrange_on" class="form-control">' +
-          '<% _.each(rearrangeProperties, function(title, property) { %>' +
-            '<option value="<%- property %>"><%- title %></option>' +
-          '<% }); %>' +
-        '</select>' +
-        '<p class="help-block">' +
-          'This permanently changes the order of items in this folder.' +
-          'This operation may take a long time depending on the size ' +
-          'of the folder.' +
-        '</p>' +
-      '</div>' +
-      '<div class="checkbox">' +
-        '<label>Reverse <input type="checkbox" name="reversed" /></label>' +
-      '</div>' +
-      '<button class="btn btn-block btn-primary">Rearrange</button>'
-    ),
-    events: {
-      'click button': 'rearrangeButtonClicked'
-    },
-    initialize: function(options) {
-      this.app = options.app;
-      PopoverView.prototype.initialize.apply(this, [options]);
-      this.options.rearrangeProperties = this.app.options.rearrange.properties;
-    },
-    render: function() {
-      PopoverView.prototype.render.call(this);
-      this.$rearrangeOn = this.$('[name="rearrange_on"]');
-      this.$reversed = this.$('[name="reversed"]');
-      return this;
-    },
-    rearrangeButtonClicked: function() {
-      var data = {
-        'rearrange_on': this.$rearrangeOn.val(),
-        reversed: false
-      };
-      if (this.$reversed[0].checked) {
-        data.reversed = true;
-      }
-      this.app.defaultButtonClickEvent(this.triggerView, data);
-      this.hide();
-    }
-  });
-
-  return RearrangeView;
-});
-
 define('mockup-patterns-structure-url/js/views/rename',[
   'jquery',
   'underscore',
@@ -82131,6 +82280,143 @@ define('mockup-patterns-structure-url/js/views/rename',[
   });
 
   return PropertiesView;
+});
+
+
+
+
+
+
+define('mockup-patterns-structure-url/js/views/rearrange',[
+  'jquery',
+  'underscore',
+  'mockup-ui-url/views/popover'
+], function($, _, PopoverView) {
+  
+
+  var RearrangeView = PopoverView.extend({
+    className: 'popover rearrange',
+    title: _.template('Rearrange items in this folder'),
+    content: _.template(
+      '<div class="form-group">' +
+        '<label>What to rearrange on</label>' +
+        '<select name="rearrange_on" class="form-control">' +
+          '<% _.each(rearrangeProperties, function(title, property) { %>' +
+            '<option value="<%- property %>"><%- title %></option>' +
+          '<% }); %>' +
+        '</select>' +
+        '<p class="help-block">' +
+          'This permanently changes the order of items in this folder.' +
+          'This operation may take a long time depending on the size ' +
+          'of the folder.' +
+        '</p>' +
+      '</div>' +
+      '<div class="checkbox">' +
+        '<label>Reverse <input type="checkbox" name="reversed" /></label>' +
+      '</div>' +
+      '<button class="btn btn-block btn-primary">Rearrange</button>'
+    ),
+    events: {
+      'click button': 'rearrangeButtonClicked'
+    },
+    initialize: function(options) {
+      this.app = options.app;
+      PopoverView.prototype.initialize.apply(this, [options]);
+      this.options.rearrangeProperties = this.app.options.rearrange.properties;
+    },
+    render: function() {
+      PopoverView.prototype.render.call(this);
+      this.$rearrangeOn = this.$('[name="rearrange_on"]');
+      this.$reversed = this.$('[name="reversed"]');
+      return this;
+    },
+    rearrangeButtonClicked: function() {
+      var data = {
+        'rearrange_on': this.$rearrangeOn.val(),
+        reversed: false
+      };
+      if (this.$reversed[0].checked) {
+        data.reversed = true;
+      }
+      this.app.defaultButtonClickEvent(this.triggerView, data);
+      this.hide();
+    }
+  });
+
+  return RearrangeView;
+});
+
+define('mockup-patterns-structure-url/js/views/columns',[
+  'jquery',
+  'underscore',
+  'backbone',
+  'mockup-ui-url/views/popover',
+  'mockup-patterns-sortable'
+], function($, _, Backbone, PopoverView, Sortable) {
+  
+
+  var ColumnsView = PopoverView.extend({
+    className: 'popover columns',
+    title: _.template('Columns'),
+    content: _.template(
+      '<label>Select columns to show, drag and drop to reorder</label>' +
+      '<ul>' +
+      '</ul>' +
+      '<button class="btn btn-block btn-success">Save</button>'
+    ),
+    itemTemplate: _.template(
+      '<li>' +
+        '<label>' +
+          '<input type="checkbox" value="<%- id %>"/>' +
+          '<%- title %>' +
+        '</label>' +
+      '</li>'
+    ),
+    events: {
+      'click button': 'applyButtonClicked'
+    },
+    initialize: function(options) {
+      this.app = options.app;
+      PopoverView.prototype.initialize.apply(this, [options]);
+    },
+    afterRender: function() {
+      var self = this;
+
+      self.$container = self.$('ul');
+      _.each(self.app.activeColumns, function(id) {
+        var $el = $(self.itemTemplate({
+          title: self.app.availableColumns[id],
+          id: id
+        }));
+        $el.find('input')[0].checked = true;
+        self.$container.append($el);
+      });
+      _.each(_.omit(self.app.availableColumns, self.app.activeColumns), function(name, id) {
+        var $el = $(self.itemTemplate({
+          title: name,
+          id: id
+        }));
+        self.$container.append($el);
+      });
+
+      var dd = new Sortable(self.$container, {
+        selector: 'li'
+      });
+      return this;
+    },
+    applyButtonClicked: function() {
+      var self = this;
+      this.hide();
+      self.app.activeColumns = [];
+      self.$('input:checked').each(function() {
+        self.app.activeColumns.push($(this).val());
+      });
+      self.app.setCookieSetting('activeColumns', this.app.activeColumns);
+      self.app.tableView.render();
+    }
+  });
+
+  return ColumnsView;
 });
 
 
@@ -82233,84 +82519,6 @@ define('mockup-patterns-structure-url/js/views/textfilter',[
 
   return TextFilterView;
 });
-
-define('mockup-patterns-structure-url/js/views/columns',[
-  'jquery',
-  'underscore',
-  'backbone',
-  'mockup-ui-url/views/popover',
-  'mockup-patterns-sortable'
-], function($, _, Backbone, PopoverView, Sortable) {
-  
-
-  var ColumnsView = PopoverView.extend({
-    className: 'popover columns',
-    title: _.template('Columns'),
-    content: _.template(
-      '<label>Select columns to show, drag and drop to reorder</label>' +
-      '<ul>' +
-      '</ul>' +
-      '<button class="btn btn-block btn-success">Save</button>'
-    ),
-    itemTemplate: _.template(
-      '<li>' +
-        '<label>' +
-          '<input type="checkbox" value="<%- id %>"/>' +
-          '<%- title %>' +
-        '</label>' +
-      '</li>'
-    ),
-    events: {
-      'click button': 'applyButtonClicked'
-    },
-    initialize: function(options) {
-      this.app = options.app;
-      PopoverView.prototype.initialize.apply(this, [options]);
-    },
-    afterRender: function() {
-      var self = this;
-
-      self.$container = self.$('ul');
-      _.each(self.app.activeColumns, function(id) {
-        var $el = $(self.itemTemplate({
-          title: self.app.availableColumns[id],
-          id: id
-        }));
-        $el.find('input')[0].checked = true;
-        self.$container.append($el);
-      });
-      _.each(_.omit(self.app.availableColumns, self.app.activeColumns), function(name, id) {
-        var $el = $(self.itemTemplate({
-          title: name,
-          id: id
-        }));
-        self.$container.append($el);
-      });
-
-      var dd = new Sortable(self.$container, {
-        selector: 'li'
-      });
-      return this;
-    },
-    applyButtonClicked: function() {
-      var self = this;
-      this.hide();
-      self.app.activeColumns = [];
-      self.$('input:checked').each(function() {
-        self.app.activeColumns.push($(this).val());
-      });
-      self.app.setCookieSetting('activeColumns', this.app.activeColumns);
-      self.app.tableView.render();
-    }
-  });
-
-  return ColumnsView;
-});
-
-
-
-
-
 
 define('mockup-patterns-structure-url/js/views/upload',[
   'jquery',
@@ -87701,3 +87909,4 @@ require([
 });
 
 define("plone", function(){});
+

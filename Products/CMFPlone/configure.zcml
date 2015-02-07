@@ -25,7 +25,6 @@
   <include package="plone.app.locales" />
   <include package="plone.app.portlets" />
   <include package="plone.app.redirector" />
-  <include package="plone.app.search" />
   <include package="plone.app.registry" />
   <include package="plone.app.theming" />
   <include zcml:condition="installed plone.app.upgrade" package="plone.app.upgrade" />
