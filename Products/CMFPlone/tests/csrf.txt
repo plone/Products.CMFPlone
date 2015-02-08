@@ -167,7 +167,7 @@ On the admin side of things there's also the user preferences:
   >>> browser.getControl('E-mail').value = 'john@foo-security.com'
   >>> browser.getControl('Save').click()
   >>> browser.contents
-  '...Info...Changes saved...'
+  '...Info...No changes made...'
 
   >>> browser.goBack()
   >>> browser.getControl(name='_authenticator', index=0).value = 'invalid!'
