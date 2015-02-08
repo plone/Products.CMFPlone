@@ -189,11 +189,11 @@ class AjaxSearch(Search):
         except:
             page = 1
 
-        form = self.request.form
-        if 'SearchableText' in form:
+        # form = self.request.form
+        # if 'SearchableText' in form:
             # let's add * around for better results
-            if '*' not in form['SearchableText']:
-                form['SearchableText'] = '*' + form['SearchableText'] + '*'
+        #    if '*' not in form['SearchableText']:
+        #        form['SearchableText'] = '*' + form['SearchableText'] + '*'
 
         results = self.results(batch=False, use_content_listing=False)
         batch = Batch(results, per_page, start=(page - 1) * per_page)
