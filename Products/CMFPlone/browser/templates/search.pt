@@ -393,6 +393,8 @@
         <div class="visualClear"><!-- --></div>
     </form>
 
+    <script type="text/javascript" src="${context/portal_url}/++resource++search.js">
+    </script>
   </div>
 
 </body>

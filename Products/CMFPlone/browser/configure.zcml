@@ -193,4 +193,8 @@
       template="templates/updated_search.pt"
       />
 
+  <browser:resource
+      name="search.js"
+      file="static/search.js"
+      />
 </configure>
