@@ -108,6 +108,12 @@
       class=".main_template.MainTemplate"
       permission="zope.Public"
       />
+  <browser:page
+      for="*"
+      name="render-toolbar"
+      template="templates/toolbar.pt"
+      permission="zope.Public"
+      />
 
   <browser:page
       for="*"
