@@ -17,6 +17,7 @@ from Acquisition import aq_base, aq_inner
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces import ISiteSchema
+from Products.CMFPlone.interfaces import ISearchSchema
 from Products.CMFPlone.utils import safe_unicode
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.Five.browser import BrowserView
@@ -175,13 +176,9 @@ class SearchBoxViewlet(ViewletBase):
         context_state = getMultiAdapter((self.context, self.request),
                                         name=u'plone_context_state')
 
-        props = getToolByName(self.context, 'portal_properties')
-        livesearch = props.site_properties.getProperty(
-            'enable_livesearch', False)
-        if livesearch:
-            self.search_input_id = "searchGadget"
-        else:
-            self.search_input_id = "nolivesearchGadget"  # don't use "" here!
+        registry = getUtility(IRegistry)
+        search_settings = registry.forInterface(ISearchSchema, prefix='plone')
+        self.livesearch = search_settings.enable_livesearch
 
         folder = context_state.folder()
         self.folder_path = '/'.join(folder.getPhysicalPath())
