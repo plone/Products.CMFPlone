@@ -42,6 +42,7 @@ require([
   'mockup-patterns-formautofocus',
   'mockup-patterns-modal',
   'mockup-patterns-structure',
+  'mockup-patterns-livesearch',
   'bootstrap-dropdown',
   'bootstrap-collapse',
   'bootstrap-tooltip'

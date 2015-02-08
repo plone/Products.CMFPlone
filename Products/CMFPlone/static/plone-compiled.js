@@ -7278,6 +7278,282 @@ return PickerConstructor
 
 
 
+/* Pattern utils
+ */
+
+
+define('mockup-utils',[
+  'jquery'
+], function($) {
+  
+
+  var QueryHelper = function(options) {
+    /* if pattern argument provided, it can implement the interface of:
+      *    - browsing: boolean if currently browsing
+      *    - currentPath: string of current path to apply to search if browsing
+      *    - basePath: default path to provide if no subpath used
+      */
+
+    var self = this;
+    var defaults = {
+      pattern: null, // must be passed in
+      vocabularyUrl: null,
+      searchParam: 'SearchableText', // query string param to pass to search url
+      attributes: ['UID','Title', 'Description', 'getURL', 'Type'],
+      batchSize: 10, // number of results to retrive
+      baseCriteria: [],
+      pathDepth: 1
+    };
+    self.options = $.extend({}, defaults, options);
+    self.pattern = self.options.pattern;
+    if (self.pattern === undefined || self.pattern === null) {
+      self.pattern = {
+        browsing: false,
+        basePath: '/'
+      };
+    }
+
+    if (self.options.url && !self.options.vocabularyUrl) {
+      self.options.vocabularyUrl = self.options.url;
+    } else if (self.pattern.vocabularyUrl) {
+      self.options.vocabularyUrl = self.pattern.vocabularyUrl;
+    }
+    if (self.options.vocabularyUrl !== undefined &&
+        self.options.vocabularyUrl !== null) {
+      self.valid = true;
+    } else {
+      self.valid = false;
+    }
+
+    self.getCurrentPath = function() {
+      var pattern = self.pattern;
+      var currentPath;
+      /* If currentPath is set on the QueryHelper object, use that first.
+       * Then, check on the pattern.
+       * Finally, see if it is a function and call it if it is.
+       */
+      if (self.currentPath) {
+        currentPath = self.currentPath;
+      } else {
+        currentPath = pattern.currentPath;
+      }
+      if (typeof currentPath  === 'function') {
+        currentPath = currentPath();
+      }
+      var path = currentPath;
+      if (!path) {
+        if (pattern.basePath) {
+          path = pattern.basePath;
+        } else if (pattern.options.basePath) {
+          path = pattern.options.basePath;
+        } else {
+          path = '/';
+        }
+      }
+      return path;
+    };
+
+    self.getCriterias = function(term, options) {
+      if (options === undefined) {
+        options = {};
+      }
+      options = $.extend({}, {
+        useBaseCriteria: true,
+        additionalCriterias: []
+      }, options);
+
+      var criterias = [];
+      if (options.useBaseCriteria) {
+        criterias = self.options.baseCriteria.slice(0);
+      }
+      if (term) {
+        term += '*';
+        criterias.push({
+          i: self.options.searchParam,
+          o: 'plone.app.querystring.operation.string.contains',
+          v: term
+        });
+      }
+      if (self.pattern.browsing) {
+        criterias.push({
+          i: 'path',
+          o: 'plone.app.querystring.operation.string.path',
+          v: self.getCurrentPath() + '::' + self.options.pathDepth
+        });
+      }
+      criterias = criterias.concat(options.additionalCriterias);
+      return criterias;
+    };
+
+    self.getBatch = function(page) {
+      if (!page) {
+        page = 1;
+      }
+      return {
+        page: page,
+        size: self.options.batchSize
+      };
+    };
+
+    self.selectAjax = function() {
+      return {
+        url: self.options.vocabularyUrl,
+        dataType: 'JSON',
+        quietMillis: 100,
+        data: function(term, page) {
+          return self.getQueryData(term, page);
+        },
+        results: function (data, page) {
+          var more = (page * 10) < data.total; // whether or not there are more results available
+          // notice we return the value of more so Select2 knows if more results can be loaded
+          return {results: data.results, more: more};
+        }
+      };
+    };
+
+    self.getUrl = function() {
+      var url = self.options.vocabularyUrl;
+      if (url.indexOf('?') === -1) {
+        url += '?';
+      } else {
+        url += '&';
+      }
+      return url + $.param(self.getQueryData());
+    };
+
+    self.getQueryData = function(term, page) {
+      var data = {
+        query: JSON.stringify({
+          criteria: self.getCriterias(term)
+        }),
+        attributes: JSON.stringify(self.options.attributes)
+      };
+      if (page) {
+        data.batch = JSON.stringify(self.getBatch(page));
+      }
+      return data;
+    };
+
+    self.search = function(term, operation, value, callback, useBaseCriteria) {
+      if (useBaseCriteria === undefined) {
+        useBaseCriteria = true;
+      }
+      var criteria = [];
+      if (useBaseCriteria) {
+        criteria = self.options.baseCriteria.slice(0);
+      }
+      criteria.push({
+        i: term,
+        o: operation,
+        v: value
+      });
+      var data = {
+        query: JSON.stringify({ criteria: criteria }),
+        attributes: JSON.stringify(self.options.attributes)
+      };
+      $.ajax({
+        url: self.options.vocabularyUrl,
+        dataType: 'JSON',
+        data: data,
+        success: callback
+      });
+    };
+
+    return self;
+  };
+
+  var Loading = function(options){
+    /*
+     * Options:
+     *   backdrop(pattern): if you want to have the progress indicator work
+     *                      seamlessly with backdrop pattern
+     *   zIndex(integer or function): to override default z-index used
+     */
+    var self = this;
+    self.className = 'mockup-loader-icon';
+    var defaults = {
+      backdrop: null,
+      zIndex: 10005 // can be a function
+    };
+    if(!options){
+      options = {};
+    }
+    self.options = $.extend({}, defaults, options);
+    self.$el = $('.' + self.className);
+    if(self.$el.length === 0){
+      self.$el = $('<div><span class="glyphicon glyphicon-refresh" /></div>');
+      self.$el.addClass(self.className).hide().appendTo('body');
+    }
+
+    self.show = function(closable){
+      self.$el.show();
+      var zIndex = self.options.zIndex;
+      if (typeof(zIndex) === 'function') {
+        zIndex = zIndex();
+      }
+      self.$el.css('zIndex', zIndex);
+
+      if (closable === undefined) {
+        closable = true;
+      }
+      if (self.options.backdrop) {
+        self.options.backdrop.closeOnClick = closable;
+        self.options.backdrop.closeOnEsc = closable;
+        self.options.backdrop.init();
+        self.options.backdrop.show();
+      }
+    };
+
+    self.hide = function(){
+      self.$el.hide();
+    };
+
+    return self;
+  };
+
+  var generateId = function(prefix){
+    if (prefix === undefined) {
+      prefix = 'id';
+    }
+    return prefix + (Math.floor((1 + Math.random()) * 0x10000)
+        .toString(16).substring(1));
+  };
+
+  return {
+    generateId: generateId,
+    parseBodyTag: function(txt) {
+      return $((/<body[^>]*>((.|[\n\r])*)<\/body>/im).exec(txt)[0]
+          .replace('<body', '<div').replace('</body>', '</div>')).eq(0).html();
+    },
+    setId: function($el, prefix) {
+      if (prefix === undefined) {
+        prefix = 'id';
+      }
+      var id = $el.attr('id');
+      if (id === undefined) {
+        id = generateId(prefix);
+      } else {
+        /* hopefully we don't screw anything up here... changing the id
+         * in some cases so we get a decent selector */
+        id = id.replace(/\./g, '-');
+      }
+      $el.attr('id', id);
+      return id;
+    },
+    bool: function(val) {
+      if (typeof val === 'string') {
+        val = $.trim(val).toLowerCase();
+      }
+      return ['true', true, 1].indexOf(val) !== -1;
+    },
+    QueryHelper: QueryHelper,
+    Loading: Loading,
+    getAuthenticator: function() {
+      return $('input[name="_authenticator"]').val();
+    }
+  };
+});
+
 /**
  * @license
  * Lo-Dash 2.4.1 (Custom Build) <http://lodash.com/>
@@ -12258,282 +12534,6 @@ return PickerConstructor
   }
 }.call(this));
 
-/* Pattern utils
- */
-
-
-define('mockup-utils',[
-  'jquery'
-], function($) {
-  
-
-  var QueryHelper = function(options) {
-    /* if pattern argument provided, it can implement the interface of:
-      *    - browsing: boolean if currently browsing
-      *    - currentPath: string of current path to apply to search if browsing
-      *    - basePath: default path to provide if no subpath used
-      */
-
-    var self = this;
-    var defaults = {
-      pattern: null, // must be passed in
-      vocabularyUrl: null,
-      searchParam: 'SearchableText', // query string param to pass to search url
-      attributes: ['UID','Title', 'Description', 'getURL', 'Type'],
-      batchSize: 10, // number of results to retrive
-      baseCriteria: [],
-      pathDepth: 1
-    };
-    self.options = $.extend({}, defaults, options);
-    self.pattern = self.options.pattern;
-    if (self.pattern === undefined || self.pattern === null) {
-      self.pattern = {
-        browsing: false,
-        basePath: '/'
-      };
-    }
-
-    if (self.options.url && !self.options.vocabularyUrl) {
-      self.options.vocabularyUrl = self.options.url;
-    } else if (self.pattern.vocabularyUrl) {
-      self.options.vocabularyUrl = self.pattern.vocabularyUrl;
-    }
-    if (self.options.vocabularyUrl !== undefined &&
-        self.options.vocabularyUrl !== null) {
-      self.valid = true;
-    } else {
-      self.valid = false;
-    }
-
-    self.getCurrentPath = function() {
-      var pattern = self.pattern;
-      var currentPath;
-      /* If currentPath is set on the QueryHelper object, use that first.
-       * Then, check on the pattern.
-       * Finally, see if it is a function and call it if it is.
-       */
-      if (self.currentPath) {
-        currentPath = self.currentPath;
-      } else {
-        currentPath = pattern.currentPath;
-      }
-      if (typeof currentPath  === 'function') {
-        currentPath = currentPath();
-      }
-      var path = currentPath;
-      if (!path) {
-        if (pattern.basePath) {
-          path = pattern.basePath;
-        } else if (pattern.options.basePath) {
-          path = pattern.options.basePath;
-        } else {
-          path = '/';
-        }
-      }
-      return path;
-    };
-
-    self.getCriterias = function(term, options) {
-      if (options === undefined) {
-        options = {};
-      }
-      options = $.extend({}, {
-        useBaseCriteria: true,
-        additionalCriterias: []
-      }, options);
-
-      var criterias = [];
-      if (options.useBaseCriteria) {
-        criterias = self.options.baseCriteria.slice(0);
-      }
-      if (term) {
-        term += '*';
-        criterias.push({
-          i: self.options.searchParam,
-          o: 'plone.app.querystring.operation.string.contains',
-          v: term
-        });
-      }
-      if (self.pattern.browsing) {
-        criterias.push({
-          i: 'path',
-          o: 'plone.app.querystring.operation.string.path',
-          v: self.getCurrentPath() + '::' + self.options.pathDepth
-        });
-      }
-      criterias = criterias.concat(options.additionalCriterias);
-      return criterias;
-    };
-
-    self.getBatch = function(page) {
-      if (!page) {
-        page = 1;
-      }
-      return {
-        page: page,
-        size: self.options.batchSize
-      };
-    };
-
-    self.selectAjax = function() {
-      return {
-        url: self.options.vocabularyUrl,
-        dataType: 'JSON',
-        quietMillis: 100,
-        data: function(term, page) {
-          return self.getQueryData(term, page);
-        },
-        results: function (data, page) {
-          var more = (page * 10) < data.total; // whether or not there are more results available
-          // notice we return the value of more so Select2 knows if more results can be loaded
-          return {results: data.results, more: more};
-        }
-      };
-    };
-
-    self.getUrl = function() {
-      var url = self.options.vocabularyUrl;
-      if (url.indexOf('?') === -1) {
-        url += '?';
-      } else {
-        url += '&';
-      }
-      return url + $.param(self.getQueryData());
-    };
-
-    self.getQueryData = function(term, page) {
-      var data = {
-        query: JSON.stringify({
-          criteria: self.getCriterias(term)
-        }),
-        attributes: JSON.stringify(self.options.attributes)
-      };
-      if (page) {
-        data.batch = JSON.stringify(self.getBatch(page));
-      }
-      return data;
-    };
-
-    self.search = function(term, operation, value, callback, useBaseCriteria) {
-      if (useBaseCriteria === undefined) {
-        useBaseCriteria = true;
-      }
-      var criteria = [];
-      if (useBaseCriteria) {
-        criteria = self.options.baseCriteria.slice(0);
-      }
-      criteria.push({
-        i: term,
-        o: operation,
-        v: value
-      });
-      var data = {
-        query: JSON.stringify({ criteria: criteria }),
-        attributes: JSON.stringify(self.options.attributes)
-      };
-      $.ajax({
-        url: self.options.vocabularyUrl,
-        dataType: 'JSON',
-        data: data,
-        success: callback
-      });
-    };
-
-    return self;
-  };
-
-  var Loading = function(options){
-    /*
-     * Options:
-     *   backdrop(pattern): if you want to have the progress indicator work
-     *                      seamlessly with backdrop pattern
-     *   zIndex(integer or function): to override default z-index used
-     */
-    var self = this;
-    self.className = 'mockup-loader-icon';
-    var defaults = {
-      backdrop: null,
-      zIndex: 10005 // can be a function
-    };
-    if(!options){
-      options = {};
-    }
-    self.options = $.extend({}, defaults, options);
-    self.$el = $('.' + self.className);
-    if(self.$el.length === 0){
-      self.$el = $('<div><span class="glyphicon glyphicon-refresh" /></div>');
-      self.$el.addClass(self.className).hide().appendTo('body');
-    }
-
-    self.show = function(closable){
-      self.$el.show();
-      var zIndex = self.options.zIndex;
-      if (typeof(zIndex) === 'function') {
-        zIndex = zIndex();
-      }
-      self.$el.css('zIndex', zIndex);
-
-      if (closable === undefined) {
-        closable = true;
-      }
-      if (self.options.backdrop) {
-        self.options.backdrop.closeOnClick = closable;
-        self.options.backdrop.closeOnEsc = closable;
-        self.options.backdrop.init();
-        self.options.backdrop.show();
-      }
-    };
-
-    self.hide = function(){
-      self.$el.hide();
-    };
-
-    return self;
-  };
-
-  var generateId = function(prefix){
-    if (prefix === undefined) {
-      prefix = 'id';
-    }
-    return prefix + (Math.floor((1 + Math.random()) * 0x10000)
-        .toString(16).substring(1));
-  };
-
-  return {
-    generateId: generateId,
-    parseBodyTag: function(txt) {
-      return $((/<body[^>]*>((.|[\n\r])*)<\/body>/im).exec(txt)[0]
-          .replace('<body', '<div').replace('</body>', '</div>')).eq(0).html();
-    },
-    setId: function($el, prefix) {
-      if (prefix === undefined) {
-        prefix = 'id';
-      }
-      var id = $el.attr('id');
-      if (id === undefined) {
-        id = generateId(prefix);
-      } else {
-        /* hopefully we don't screw anything up here... changing the id
-         * in some cases so we get a decent selector */
-        id = id.replace(/\./g, '-');
-      }
-      $el.attr('id', id);
-      return id;
-    },
-    bool: function(val) {
-      if (typeof val === 'string') {
-        val = $.trim(val).toLowerCase();
-      }
-      return ['true', true, 1].indexOf(val) !== -1;
-    },
-    QueryHelper: QueryHelper,
-    Loading: Loading,
-    getAuthenticator: function() {
-      return $('input[name="_authenticator"]').val();
-    }
-  };
-});
-
 /**
  * @license RequireJS text 2.0.12 Copyright (c) 2010-2014, The Dojo Foundation All Rights Reserved.
  * Available via the MIT or new BSD license.
@@ -15790,6 +15790,254 @@ define('mockup-patterns-formautofocus',[
 
 });
 
+/* Livesearch
+ *
+ * Options:
+ *    ajaxUrl(string): JSON search url
+ *    perPage(integer): results per page, defaults to 7
+ *    quietMillis: how long to wait after type stops before sending out request in milliseconds. Defaults to 350
+ *    minimumInputLength: miniumum number of letters before doing search. Defaults to 3
+ *    inputSelector: css select to input element search is done with. Defaults to input[type="text"]
+ *    itemTemplate: override template used to render item results
+ *
+ * Documentation:
+ *   # General
+ *
+ *   # Default
+ *
+ *   {{ example-1 }}
+ *
+ * Example: example-1
+ *    <form action="search" class="pat-livesearch" data-pat-livesearch="ajaxUrl:livesearch.json">
+ *      <input type="text" />
+ *    </form>
+ *
+ */
+
+define('mockup-patterns-livesearch',[
+  'jquery',
+  'mockup-patterns-base',
+  'underscore'
+], function ($, Base, _){
+  
+
+  var Livesearch = Base.extend({
+    name: 'livesearch',
+    trigger: '.pat-livesearch',
+    timeout: null,
+    active: false,
+    results: null,
+    selectedItem: -1,
+    resultsClass: 'livesearch-results',
+    defaults: {
+      ajaxUrl: null,
+      perPage: 7,
+      quietMillis: 350,
+      minimumInputLength: 3,
+      inputSelector: 'input[type="text"]',
+      itemTemplate: '<li class="search-result <%- state %>">' +
+        '<h4 class="title"><a href="<%- url %>"><%- title %></a></h4>' +
+        '<p class="description"><%- description %></p>' +
+      '</li>',
+    },
+    doSearch: function(page){
+      var self = this;
+      self.active = true;
+      self.render();
+      self.$el.addClass('searching');
+      var query = self.$el.serialize();
+      if(page === undefined){
+        page = 1;
+      }
+      $.ajax({
+        url: self.options.ajaxUrl + '?' + query +
+             '&page=' + page +
+             '&perPage=' + self.options.perPage,
+        dataType: 'json'
+      }).done(function(data){
+        self.results = data;
+        self.page = page;
+        // maybe odd here.. but we're checking to see if the user
+        // has typed while a search was being performed. Perhap another search if so
+        if(query !== self.$el.serialize()){
+          self.doSearch();
+        }
+      }).fail(function(){
+        self.results = {
+          items: [{
+            url: '',
+            title: 'Error',
+            description: 'There was an error searching…',
+            state: 'error',
+            error: false
+          }],
+          total: 1
+        };
+        self.page = 1;
+      }).always(function(){
+        self.active = false;
+        self.selectedItem = -1;
+        self.$el.removeClass('searching');
+        self.render();
+      });
+    },
+    render: function(){
+      var self = this;
+      self.$results.empty();
+
+      /* find a status message */
+
+      if(self.active){
+        self.$results.append($('<li class="searching">searching…</li>'));
+      }else if(self.results === null){
+        // no results gathered yet
+        self.$results.append($('<li class="no-results no-search">enter search phrase</li>'));
+      } else if(self.results.total === 0){
+        self.$results.append($('<li class="no-results">no results found</li>'));
+      } else{
+        self.$results.append($('<li class="results-summary">found ' + self.results.total + ' results</li>'));
+      }
+
+      if(self.results !== null){
+        var template = _.template(self.options.itemTemplate);
+        _.each(self.results.items, function(item, index){
+          var $el = $(template(item));
+          $el.attr('data-url', item.url).on('click', function(){
+            if(!item.error){
+              window.location = item.url;
+            }
+          });
+          if(index === self.selectedItem){
+            $el.addClass('selected');
+          }
+          self.$results.append($el);
+        });
+        var nav = [];
+        if(self.page > 1){
+          var $prev = $('<a href="#" class="prev">Previous</a>');
+          $prev.click(function(e){
+            self.disableHiding = true;
+            e.preventDefault();
+            self.doSearch(self.page - 1);
+          });
+          nav.push($prev);
+        }
+        if((self.page * self.options.perPage) < self.results.total){
+          var $next = $('<a href="#" class="next">Next</a>');
+          $next.click(function(e){
+            self.disableHiding = true;
+            e.preventDefault();
+            self.doSearch(self.page + 1);
+          });
+          nav.push($next);
+        }
+        if(nav.length > 0){
+          var $li = $('<li class="load-more"><div class="page">' + self.page + '</div></li>');
+          $li.prepend(nav);
+          self.$results.append($li);
+        }
+      }
+      self.position();
+    },
+    position: function(){
+      /* we are positioning directly below the
+         input box, same width */
+      var self = this;
+
+      self.$el.addClass('livesearch-active');
+      var pos = self.$input.position();
+      self.$results.width(self.$input.outerWidth());
+      self.$results.css({
+        top: pos.top + self.$input.outerHeight(),
+        left: pos.left
+      });
+      self.$results.show();
+    },
+    hide: function(){
+      this.$results.hide();
+      this.$el.removeClass('livesearch-active');
+    },
+    init: function(){
+      var self = this;
+      self.$input = self.$el.find(self.options.inputSelector);
+      self.$input.off('focusout').on('focusout', function(){
+        /* we put this in a timer so click events still
+           get trigger on search results */
+        setTimeout(function(){
+          /* hack, look above, to handle dealing with clicks
+             unfocusing element */
+          if(!self.disableHiding){
+            self.hide();
+          }else{
+            self.disableHiding = false;
+            // and refocus elemtn
+            self.$input.focus();
+          }
+        }, 200);
+      }).off('focusin').on('focusin', function(){
+        if(!self.onceFocused){
+          /* Case: field already filled out but no reasons
+             present yet, do ajax search and grab some results */
+          self.onceFocused = true;
+          if(self.$input.val().length >= self.options.minimumInputLength){
+            self.doSearch();
+          }
+        } else if(!self.$results.is(':visible')){
+          self.render();
+        }
+      }).attr('autocomplete', 'off').off('keyup').on('keyup', function(e){
+        // first off, we're capturing up, down and enter key presses
+        if(self.results && self.results.items && self.results.items.length > 0){
+          var code = e.keyCode || e.which;
+          if(code === 13){
+            /* enter key, check to see if there is a selected item */
+            if(self.selectedItem !== -1){
+              window.location = self.results.items[self.selectedItem].url;
+            }
+            return;
+          } else if(code === 38){
+            /* up key */
+            if(self.selectedItem !== -1){
+              self.selectedItem -= 1;
+              self.render();
+            }
+            return;
+          } else if(code === 40){
+            /* down key */
+            if(self.selectedItem < self.results.items.length){
+              self.selectedItem += 1;
+              self.render();
+            }
+            return;
+          }
+        }
+
+        /* then, we handle timeouts for doing ajax search */
+        if(self.timeout !== null){
+          clearTimeout(self.timeout);
+          self.timeout = null;
+        }
+        if(self.active){
+          return;
+        }
+        if(self.$input.val().length >= self.options.minimumInputLength){
+          self.timeout = setTimeout(function(){
+            self.doSearch();
+          }, self.options.quietMillis);
+        }else{
+          self.results = null;
+          self.render();
+        }
+      });
+
+      /* create result dom */
+      self.$results = $('<ul class="' + self.resultsClass + '"></ul>').hide().insertAfter(self.$input);
+    }
+  });
+
+  return Livesearch;
+});
+
 /* Backdrop pattern.
  *
  * Options:
@@ -15876,1303 +16124,6 @@ define('mockup-patterns-backdrop',[
   });
 
   return Backdrop;
-
-});
-
-
-/*!
- * Time picker for pickadate.js v3.4.0
- * http://amsul.github.io/pickadate.js/time.htm
- */
-
-(function ( factory ) {
-
-    // Register as an anonymous module.
-    if ( typeof define == 'function' && define.amd )
-        define( 'picker.time',['picker','jquery'], factory )
-
-    // Or using browser globals.
-    else factory( Picker, jQuery )
-
-}(function( Picker, $ ) {
-
-
-/**
- * Globals and constants
- */
-var HOURS_IN_DAY = 24,
-    MINUTES_IN_HOUR = 60,
-    HOURS_TO_NOON = 12,
-    MINUTES_IN_DAY = HOURS_IN_DAY * MINUTES_IN_HOUR,
-    _ = Picker._
-
-
-
-/**
- * The time picker constructor
- */
-function TimePicker( picker, settings ) {
-
-    var clock = this,
-        elementValue = picker.$node[ 0 ].value,
-        elementDataValue = picker.$node.data( 'value' ),
-        valueString = elementDataValue || elementValue,
-        formatString = elementDataValue ? settings.formatSubmit : settings.format
-
-    clock.settings = settings
-    clock.$node = picker.$node
-
-    // The queue of methods that will be used to build item objects.
-    clock.queue = {
-        interval: 'i',
-        min: 'measure create',
-        max: 'measure create',
-        now: 'now create',
-        select: 'parse create validate',
-        highlight: 'parse create validate',
-        view: 'parse create validate',
-        disable: 'deactivate',
-        enable: 'activate'
-    }
-
-    // The component's item object.
-    clock.item = {}
-
-    clock.item.interval = settings.interval || 30
-    clock.item.disable = ( settings.disable || [] ).slice( 0 )
-    clock.item.enable = -(function( collectionDisabled ) {
-        return collectionDisabled[ 0 ] === true ? collectionDisabled.shift() : -1
-    })( clock.item.disable )
-
-    clock.
-        set( 'min', settings.min ).
-        set( 'max', settings.max ).
-        set( 'now' )
-
-    // When there’s a value, set the `select`, which in turn
-    // also sets the `highlight` and `view`.
-    if ( valueString ) {
-        clock.set( 'select', valueString, {
-            format: formatString,
-            fromValue: !!elementValue
-        })
-    }
-
-    // If there’s no value, default to highlighting “today”.
-    else {
-        clock.
-            set( 'select', null ).
-            set( 'highlight', clock.item.now )
-    }
-
-    // The keycode to movement mapping.
-    clock.key = {
-        40: 1, // Down
-        38: -1, // Up
-        39: 1, // Right
-        37: -1, // Left
-        go: function( timeChange ) {
-            clock.set(
-                'highlight',
-                clock.item.highlight.pick + timeChange * clock.item.interval,
-                { interval: timeChange * clock.item.interval }
-            )
-            this.render()
-        }
-    }
-
-
-    // Bind some picker events.
-    picker.
-        on( 'render', function() {
-            var $pickerHolder = picker.$root.children(),
-                $viewset = $pickerHolder.find( '.' + settings.klass.viewset )
-            if ( $viewset.length ) {
-                $pickerHolder[ 0 ].scrollTop = ~~$viewset.position().top - ( $viewset[ 0 ].clientHeight * 2 )
-            }
-        }).
-        on( 'open', function() {
-            picker.$root.find( 'button' ).attr( 'disable', false )
-        }).
-        on( 'close', function() {
-            picker.$root.find( 'button' ).attr( 'disable', true )
-        })
-
-} //TimePicker
-
-
-/**
- * Set a timepicker item object.
- */
-TimePicker.prototype.set = function( type, value, options ) {
-
-    var clock = this,
-        clockItem = clock.item
-
-    // If the value is `null` just set it immediately.
-    if ( value === null ) {
-        clockItem[ type ] = value
-        return clock
-    }
-
-    // Otherwise go through the queue of methods, and invoke the functions.
-    // Update this as the time unit, and set the final value as this item.
-    // * In the case of `enable`, keep the queue but set `disable` instead.
-    //   And in the case of `flip`, keep the queue but set `enable` instead.
-    clockItem[ ( type == 'enable' ? 'disable' : type == 'flip' ? 'enable' : type ) ] = clock.queue[ type ].split( ' ' ).map( function( method ) {
-        value = clock[ method ]( type, value, options )
-        return value
-    }).pop()
-
-    // Check if we need to cascade through more updates.
-    if ( type == 'select' ) {
-        clock.set( 'highlight', clockItem.select, options )
-    }
-    else if ( type == 'highlight' ) {
-        clock.set( 'view', clockItem.highlight, options )
-    }
-    else if ( type == 'interval' ) {
-        clock.
-            set( 'min', clockItem.min, options ).
-            set( 'max', clockItem.max, options )
-    }
-    else if ( type.match( /^(flip|min|max|disable|enable)$/ ) ) {
-        if ( type == 'min' ) {
-            clock.set( 'max', clockItem.max, options )
-        }
-        if ( clockItem.select && clock.disabled( clockItem.select ) ) {
-            clock.set( 'select', clockItem.select, options )
-        }
-        if ( clockItem.highlight && clock.disabled( clockItem.highlight ) ) {
-            clock.set( 'highlight', clockItem.highlight, options )
-        }
-    }
-
-    return clock
-} //TimePicker.prototype.set
-
-
-/**
- * Get a timepicker item object.
- */
-TimePicker.prototype.get = function( type ) {
-    return this.item[ type ]
-} //TimePicker.prototype.get
-
-
-/**
- * Create a picker time object.
- */
-TimePicker.prototype.create = function( type, value, options ) {
-
-    var clock = this
-
-    // If there’s no value, use the type as the value.
-    value = value === undefined ? type : value
-
-    // If it’s a date object, convert it into an array.
-    if ( _.isDate( value ) ) {
-        value = [ value.getHours(), value.getMinutes() ]
-    }
-
-    // If it’s an object, use the “pick” value.
-    if ( $.isPlainObject( value ) && _.isInteger( value.pick ) ) {
-        value = value.pick
-    }
-
-    // If it’s an array, convert it into minutes.
-    else if ( $.isArray( value ) ) {
-        value = +value[ 0 ] * MINUTES_IN_HOUR + (+value[ 1 ])
-    }
-
-    // If no valid value is passed, set it to “now”.
-    else if ( !_.isInteger( value ) ) {
-        value = clock.now( type, value, options )
-    }
-
-    // If we’re setting the max, make sure it’s greater than the min.
-    if ( type == 'max' && value < clock.item.min.pick ) {
-        value += MINUTES_IN_DAY
-    }
-
-    // If the value doesn’t fall directly on the interval,
-    // add one interval to indicate it as “passed”.
-    if ( type != 'min' && type != 'max' && (value - clock.item.min.pick) % clock.item.interval !== 0 ) {
-        value += clock.item.interval
-    }
-
-    // Normalize it into a “reachable” interval.
-    value = clock.normalize( type, value, options )
-
-    // Return the compiled object.
-    return {
-
-        // Divide to get hours from minutes.
-        hour: ~~( HOURS_IN_DAY + value / MINUTES_IN_HOUR ) % HOURS_IN_DAY,
-
-        // The remainder is the minutes.
-        mins: ( MINUTES_IN_HOUR + value % MINUTES_IN_HOUR ) % MINUTES_IN_HOUR,
-
-        // The time in total minutes.
-        time: ( MINUTES_IN_DAY + value ) % MINUTES_IN_DAY,
-
-        // Reference to the “relative” value to pick.
-        pick: value
-    }
-} //TimePicker.prototype.create
-
-
-/**
- * Create a range limit object using an array, date object,
- * literal “true”, or integer relative to another time.
- */
-TimePicker.prototype.createRange = function( from, to ) {
-
-    var clock = this,
-        createTime = function( time ) {
-            if ( time === true || $.isArray( time ) || _.isDate( time ) ) {
-                return clock.create( time )
-            }
-            return time
-        }
-
-    // Create objects if possible.
-    if ( !_.isInteger( from ) ) {
-        from = createTime( from )
-    }
-    if ( !_.isInteger( to ) ) {
-        to = createTime( to )
-    }
-
-    // Create relative times.
-    if ( _.isInteger( from ) && $.isPlainObject( to ) ) {
-        from = [ to.hour, to.mins + ( from * clock.settings.interval ) ];
-    }
-    else if ( _.isInteger( to ) && $.isPlainObject( from ) ) {
-        to = [ from.hour, from.mins + ( to * clock.settings.interval ) ];
-    }
-
-    return {
-        from: createTime( from ),
-        to: createTime( to )
-    }
-} //TimePicker.prototype.createRange
-
-
-/**
- * Check if a time unit falls within a time range object.
- */
-TimePicker.prototype.withinRange = function( range, timeUnit ) {
-    range = this.createRange(range.from, range.to)
-    return timeUnit.pick >= range.from.pick && timeUnit.pick <= range.to.pick
-}
-
-
-/**
- * Check if two time range objects overlap.
- */
-TimePicker.prototype.overlapRanges = function( one, two ) {
-
-    var clock = this
-
-    // Convert the ranges into comparable times.
-    one = clock.createRange( one.from, one.to )
-    two = clock.createRange( two.from, two.to )
-
-    return clock.withinRange( one, two.from ) || clock.withinRange( one, two.to ) ||
-        clock.withinRange( two, one.from ) || clock.withinRange( two, one.to )
-}
-
-
-/**
- * Get the time relative to now.
- */
-TimePicker.prototype.now = function( type, value/*, options*/ ) {
-
-    var interval = this.item.interval,
-        date = new Date(),
-        nowMinutes = date.getHours() * MINUTES_IN_HOUR + date.getMinutes(),
-        isValueInteger = _.isInteger( value ),
-        isBelowInterval
-
-    // Make sure “now” falls within the interval range.
-    nowMinutes -= nowMinutes % interval
-
-    // Check if the difference is less than the interval itself.
-    isBelowInterval = value < 0 && interval * value + nowMinutes <= -interval
-
-    // Add an interval because the time has “passed”.
-    nowMinutes += type == 'min' && isBelowInterval ? 0 : interval
-
-    // If the value is a number, adjust by that many intervals.
-    if ( isValueInteger ) {
-        nowMinutes += interval * (
-            isBelowInterval && type != 'max' ?
-                value + 1 :
-                value
-            )
-    }
-
-    // Return the final calculation.
-    return nowMinutes
-} //TimePicker.prototype.now
-
-
-/**
- * Normalize minutes to be “reachable” based on the min and interval.
- */
-TimePicker.prototype.normalize = function( type, value/*, options*/ ) {
-
-    var interval = this.item.interval,
-        minTime = this.item.min && this.item.min.pick || 0
-
-    // If setting min time, don’t shift anything.
-    // Otherwise get the value and min difference and then
-    // normalize the difference with the interval.
-    value -= type == 'min' ? 0 : ( value - minTime ) % interval
-
-    // Return the adjusted value.
-    return value
-} //TimePicker.prototype.normalize
-
-
-/**
- * Measure the range of minutes.
- */
-TimePicker.prototype.measure = function( type, value, options ) {
-
-    var clock = this
-
-    // If it’s anything false-y, set it to the default.
-    if ( !value ) {
-        value = type == 'min' ? [ 0, 0 ] : [ HOURS_IN_DAY - 1, MINUTES_IN_HOUR - 1 ]
-    }
-
-    // If it’s a literal true, or an integer, make it relative to now.
-    else if ( value === true || _.isInteger( value ) ) {
-        value = clock.now( type, value, options )
-    }
-
-    // If it’s an object already, just normalize it.
-    else if ( $.isPlainObject( value ) && _.isInteger( value.pick ) ) {
-        value = clock.normalize( type, value.pick, options )
-    }
-
-    return value
-} ///TimePicker.prototype.measure
-
-
-/**
- * Validate an object as enabled.
- */
-TimePicker.prototype.validate = function( type, timeObject, options ) {
-
-    var clock = this,
-        interval = options && options.interval ? options.interval : clock.item.interval
-
-    // Check if the object is disabled.
-    if ( clock.disabled( timeObject ) ) {
-
-        // Shift with the interval until we reach an enabled time.
-        timeObject = clock.shift( timeObject, interval )
-    }
-
-    // Scope the object into range.
-    timeObject = clock.scope( timeObject )
-
-    // Do a second check to see if we landed on a disabled min/max.
-    // In that case, shift using the opposite interval as before.
-    if ( clock.disabled( timeObject ) ) {
-        timeObject = clock.shift( timeObject, interval * -1 )
-    }
-
-    // Return the final object.
-    return timeObject
-} //TimePicker.prototype.validate
-
-
-/**
- * Check if an object is disabled.
- */
-TimePicker.prototype.disabled = function( timeToVerify ) {
-
-    var clock = this,
-
-        // Filter through the disabled times to check if this is one.
-        isDisabledMatch = clock.item.disable.filter( function( timeToDisable ) {
-
-            // If the time is a number, match the hours.
-            if ( _.isInteger( timeToDisable ) ) {
-                return timeToVerify.hour == timeToDisable
-            }
-
-            // If it’s an array, create the object and match the times.
-            if ( $.isArray( timeToDisable ) || _.isDate( timeToDisable ) ) {
-                return timeToVerify.pick == clock.create( timeToDisable ).pick
-            }
-
-            // If it’s an object, match a time within the “from” and “to” range.
-            if ( $.isPlainObject( timeToDisable ) ) {
-                return clock.withinRange( timeToDisable, timeToVerify )
-            }
-        })
-
-    // If this time matches a disabled time, confirm it’s not inverted.
-    isDisabledMatch = isDisabledMatch.length && !isDisabledMatch.filter(function( timeToDisable ) {
-        return $.isArray( timeToDisable ) && timeToDisable[2] == 'inverted' ||
-            $.isPlainObject( timeToDisable ) && timeToDisable.inverted
-    }).length
-
-    // If the clock is "enabled" flag is flipped, flip the condition.
-    return clock.item.enable === -1 ? !isDisabledMatch : isDisabledMatch ||
-        timeToVerify.pick < clock.item.min.pick ||
-        timeToVerify.pick > clock.item.max.pick
-} //TimePicker.prototype.disabled
-
-
-/**
- * Shift an object by an interval until we reach an enabled object.
- */
-TimePicker.prototype.shift = function( timeObject, interval ) {
-
-    var clock = this,
-        minLimit = clock.item.min.pick,
-        maxLimit = clock.item.max.pick/*,
-        safety = 1000*/
-
-    interval = interval || clock.item.interval
-
-    // Keep looping as long as the time is disabled.
-    while ( /*safety &&*/ clock.disabled( timeObject ) ) {
-
-        /*safety -= 1
-        if ( !safety ) {
-            throw 'Fell into an infinite loop while shifting to ' + timeObject.hour + ':' + timeObject.mins + '.'
-        }*/
-
-        // Increase/decrease the time by the interval and keep looping.
-        timeObject = clock.create( timeObject.pick += interval )
-
-        // If we've looped beyond the limits, break out of the loop.
-        if ( timeObject.pick <= minLimit || timeObject.pick >= maxLimit ) {
-            break
-        }
-    }
-
-    // Return the final object.
-    return timeObject
-} //TimePicker.prototype.shift
-
-
-/**
- * Scope an object to be within range of min and max.
- */
-TimePicker.prototype.scope = function( timeObject ) {
-    var minLimit = this.item.min.pick,
-        maxLimit = this.item.max.pick
-    return this.create( timeObject.pick > maxLimit ? maxLimit : timeObject.pick < minLimit ? minLimit : timeObject )
-} //TimePicker.prototype.scope
-
-
-/**
- * Parse a string into a usable type.
- */
-TimePicker.prototype.parse = function( type, value, options ) {
-
-    var hour, minutes, isPM, item, parseValue,
-        clock = this,
-        parsingObject = {}
-
-    if ( !value || _.isInteger( value ) || $.isArray( value ) || _.isDate( value ) || $.isPlainObject( value ) && _.isInteger( value.pick ) ) {
-        return value
-    }
-
-    // We need a `.format` to parse the value with.
-    if ( !( options && options.format ) ) {
-        options = options || {}
-        options.format = clock.settings.format
-    }
-
-    // Convert the format into an array and then map through it.
-    clock.formats.toArray( options.format ).map( function( label ) {
-
-        var
-            substring,
-
-            // Grab the formatting label.
-            formattingLabel = clock.formats[ label ],
-
-            // The format length is from the formatting label function or the
-            // label length without the escaping exclamation (!) mark.
-            formatLength = formattingLabel ?
-                _.trigger( formattingLabel, clock, [ value, parsingObject ] ) :
-                label.replace( /^!/, '' ).length
-
-        // If there's a format label, split the value up to the format length.
-        // Then add it to the parsing object with appropriate label.
-        if ( formattingLabel ) {
-            substring = value.substr( 0, formatLength )
-            parsingObject[ label ] = substring.match(/^\d+$/) ? +substring : substring
-        }
-
-        // Update the time value as the substring from format length to end.
-        value = value.substr( formatLength )
-    })
-
-    // Grab the hour and minutes from the parsing object.
-    for ( item in parsingObject ) {
-        parseValue = parsingObject[item]
-        if ( _.isInteger(parseValue) ) {
-            if ( item.match(/^(h|hh)$/i) ) {
-                hour = parseValue
-                if ( item == 'h' || item == 'hh' ) {
-                    hour %= 12
-                }
-            }
-            else if ( item == 'i' ) {
-                minutes = parseValue
-            }
-        }
-        else if ( item.match(/^a$/i) && parseValue.match(/^p/i) && ('h' in parsingObject || 'hh' in parsingObject) ) {
-            isPM = true
-        }
-    }
-
-    // Calculate it in minutes and return.
-    return (isPM ? hour + 12 : hour) * MINUTES_IN_HOUR + minutes
-} //TimePicker.prototype.parse
-
-
-/**
- * Various formats to display the object in.
- */
-TimePicker.prototype.formats = {
-
-    h: function( string, timeObject ) {
-
-        // If there's string, then get the digits length.
-        // Otherwise return the selected hour in "standard" format.
-        return string ? _.digits( string ) : timeObject.hour % HOURS_TO_NOON || HOURS_TO_NOON
-    },
-    hh: function( string, timeObject ) {
-
-        // If there's a string, then the length is always 2.
-        // Otherwise return the selected hour in "standard" format with a leading zero.
-        return string ? 2 : _.lead( timeObject.hour % HOURS_TO_NOON || HOURS_TO_NOON )
-    },
-    H: function( string, timeObject ) {
-
-        // If there's string, then get the digits length.
-        // Otherwise return the selected hour in "military" format as a string.
-        return string ? _.digits( string ) : '' + ( timeObject.hour % 24 )
-    },
-    HH: function( string, timeObject ) {
-
-        // If there's string, then get the digits length.
-        // Otherwise return the selected hour in "military" format with a leading zero.
-        return string ? _.digits( string ) : _.lead( timeObject.hour % 24 )
-    },
-    i: function( string, timeObject ) {
-
-        // If there's a string, then the length is always 2.
-        // Otherwise return the selected minutes.
-        return string ? 2 : _.lead( timeObject.mins )
-    },
-    a: function( string, timeObject ) {
-
-        // If there's a string, then the length is always 4.
-        // Otherwise check if it's more than "noon" and return either am/pm.
-        return string ? 4 : MINUTES_IN_DAY / 2 > timeObject.time % MINUTES_IN_DAY ? 'a.m.' : 'p.m.'
-    },
-    A: function( string, timeObject ) {
-
-        // If there's a string, then the length is always 2.
-        // Otherwise check if it's more than "noon" and return either am/pm.
-        return string ? 2 : MINUTES_IN_DAY / 2 > timeObject.time % MINUTES_IN_DAY ? 'AM' : 'PM'
-    },
-
-    // Create an array by splitting the formatting string passed.
-    toArray: function( formatString ) { return formatString.split( /(h{1,2}|H{1,2}|i|a|A|!.)/g ) },
-
-    // Format an object into a string using the formatting options.
-    toString: function ( formatString, itemObject ) {
-        var clock = this
-        return clock.formats.toArray( formatString ).map( function( label ) {
-            return _.trigger( clock.formats[ label ], clock, [ 0, itemObject ] ) || label.replace( /^!/, '' )
-        }).join( '' )
-    }
-} //TimePicker.prototype.formats
-
-
-
-
-/**
- * Check if two time units are the exact.
- */
-TimePicker.prototype.isTimeExact = function( one, two ) {
-
-    var clock = this
-
-    // When we’re working with minutes, do a direct comparison.
-    if (
-        ( _.isInteger( one ) && _.isInteger( two ) ) ||
-        ( typeof one == 'boolean' && typeof two == 'boolean' )
-     ) {
-        return one === two
-    }
-
-    // When we’re working with time representations, compare the “pick” value.
-    if (
-        ( _.isDate( one ) || $.isArray( one ) ) &&
-        ( _.isDate( two ) || $.isArray( two ) )
-    ) {
-        return clock.create( one ).pick === clock.create( two ).pick
-    }
-
-    // When we’re working with range objects, compare the “from” and “to”.
-    if ( $.isPlainObject( one ) && $.isPlainObject( two ) ) {
-        return clock.isTimeExact( one.from, two.from ) && clock.isTimeExact( one.to, two.to )
-    }
-
-    return false
-}
-
-
-/**
- * Check if two time units overlap.
- */
-TimePicker.prototype.isTimeOverlap = function( one, two ) {
-
-    var clock = this
-
-    // When we’re working with an integer, compare the hours.
-    if ( _.isInteger( one ) && ( _.isDate( two ) || $.isArray( two ) ) ) {
-        return one === clock.create( two ).hour
-    }
-    if ( _.isInteger( two ) && ( _.isDate( one ) || $.isArray( one ) ) ) {
-        return two === clock.create( one ).hour
-    }
-
-    // When we’re working with range objects, check if the ranges overlap.
-    if ( $.isPlainObject( one ) && $.isPlainObject( two ) ) {
-        return clock.overlapRanges( one, two )
-    }
-
-    return false
-}
-
-
-/**
- * Flip the “enabled” state.
- */
-TimePicker.prototype.flipEnable = function(val) {
-    var itemObject = this.item
-    itemObject.enable = val || (itemObject.enable == -1 ? 1 : -1)
-}
-
-
-/**
- * Mark a collection of times as “disabled”.
- */
-TimePicker.prototype.deactivate = function( type, timesToDisable ) {
-
-    var clock = this,
-        disabledItems = clock.item.disable.slice(0)
-
-
-    // If we’re flipping, that’s all we need to do.
-    if ( timesToDisable == 'flip' ) {
-        clock.flipEnable()
-    }
-
-    else if ( timesToDisable === false ) {
-        clock.flipEnable(1)
-        disabledItems = []
-    }
-
-    else if ( timesToDisable === true ) {
-        clock.flipEnable(-1)
-        disabledItems = []
-    }
-
-    // Otherwise go through the times to disable.
-    else {
-
-        timesToDisable.map(function( unitToDisable ) {
-
-            var matchFound
-
-            // When we have disabled items, check for matches.
-            // If something is matched, immediately break out.
-            for ( var index = 0; index < disabledItems.length; index += 1 ) {
-                if ( clock.isTimeExact( unitToDisable, disabledItems[index] ) ) {
-                    matchFound = true
-                    break
-                }
-            }
-
-            // If nothing was found, add the validated unit to the collection.
-            if ( !matchFound ) {
-                if (
-                    _.isInteger( unitToDisable ) ||
-                    _.isDate( unitToDisable ) ||
-                    $.isArray( unitToDisable ) ||
-                    ( $.isPlainObject( unitToDisable ) && unitToDisable.from && unitToDisable.to )
-                ) {
-                    disabledItems.push( unitToDisable )
-                }
-            }
-        })
-    }
-
-    // Return the updated collection.
-    return disabledItems
-} //TimePicker.prototype.deactivate
-
-
-/**
- * Mark a collection of times as “enabled”.
- */
-TimePicker.prototype.activate = function( type, timesToEnable ) {
-
-    var clock = this,
-        disabledItems = clock.item.disable,
-        disabledItemsCount = disabledItems.length
-
-    // If we’re flipping, that’s all we need to do.
-    if ( timesToEnable == 'flip' ) {
-        clock.flipEnable()
-    }
-
-    else if ( timesToEnable === true ) {
-        clock.flipEnable(1)
-        disabledItems = []
-    }
-
-    else if ( timesToEnable === false ) {
-        clock.flipEnable(-1)
-        disabledItems = []
-    }
-
-    // Otherwise go through the disabled times.
-    else {
-
-        timesToEnable.map(function( unitToEnable ) {
-
-            var matchFound,
-                disabledUnit,
-                index,
-                isRangeMatched
-
-            // Go through the disabled items and try to find a match.
-            for ( index = 0; index < disabledItemsCount; index += 1 ) {
-
-                disabledUnit = disabledItems[index]
-
-                // When an exact match is found, remove it from the collection.
-                if ( clock.isTimeExact( disabledUnit, unitToEnable ) ) {
-                    matchFound = disabledItems[index] = null
-                    isRangeMatched = true
-                    break
-                }
-
-                // When an overlapped match is found, add the “inverted” state to it.
-                else if ( clock.isTimeOverlap( disabledUnit, unitToEnable ) ) {
-                    if ( $.isPlainObject( unitToEnable ) ) {
-                        unitToEnable.inverted = true
-                        matchFound = unitToEnable
-                    }
-                    else if ( $.isArray( unitToEnable ) ) {
-                        matchFound = unitToEnable
-                        if ( !matchFound[2] ) matchFound.push( 'inverted' )
-                    }
-                    else if ( _.isDate( unitToEnable ) ) {
-                        matchFound = [ unitToEnable.getFullYear(), unitToEnable.getMonth(), unitToEnable.getDate(), 'inverted' ]
-                    }
-                    break
-                }
-            }
-
-            // If a match was found, remove a previous duplicate entry.
-            if ( matchFound ) for ( index = 0; index < disabledItemsCount; index += 1 ) {
-                if ( clock.isTimeExact( disabledItems[index], unitToEnable ) ) {
-                    disabledItems[index] = null
-                    break
-                }
-            }
-
-            // In the event that we’re dealing with an overlap of range times,
-            // make sure there are no “inverted” times because of it.
-            if ( isRangeMatched ) for ( index = 0; index < disabledItemsCount; index += 1 ) {
-                if ( clock.isTimeOverlap( disabledItems[index], unitToEnable ) ) {
-                    disabledItems[index] = null
-                    break
-                }
-            }
-
-            // If something is still matched, add it into the collection.
-            if ( matchFound ) {
-                disabledItems.push( matchFound )
-            }
-        })
-    }
-
-    // Return the updated collection.
-    return disabledItems.filter(function( val ) { return val != null })
-} //TimePicker.prototype.activate
-
-
-/**
- * The division to use for the range intervals.
- */
-TimePicker.prototype.i = function( type, value/*, options*/ ) {
-    return _.isInteger( value ) && value > 0 ? value : this.item.interval
-}
-
-
-/**
- * Create a string for the nodes in the picker.
- */
-TimePicker.prototype.nodes = function( isOpen ) {
-
-    var
-        clock = this,
-        settings = clock.settings,
-        selectedObject = clock.item.select,
-        highlightedObject = clock.item.highlight,
-        viewsetObject = clock.item.view,
-        disabledCollection = clock.item.disable
-
-    return _.node(
-        'ul',
-        _.group({
-            min: clock.item.min.pick,
-            max: clock.item.max.pick,
-            i: clock.item.interval,
-            node: 'li',
-            item: function( loopedTime ) {
-                loopedTime = clock.create( loopedTime )
-                var timeMinutes = loopedTime.pick,
-                    isSelected = selectedObject && selectedObject.pick == timeMinutes,
-                    isHighlighted = highlightedObject && highlightedObject.pick == timeMinutes,
-                    isDisabled = disabledCollection && clock.disabled( loopedTime )
-                return [
-                    _.trigger( clock.formats.toString, clock, [ _.trigger( settings.formatLabel, clock, [ loopedTime ] ) || settings.format, loopedTime ] ),
-                    (function( klasses ) {
-
-                        if ( isSelected ) {
-                            klasses.push( settings.klass.selected )
-                        }
-
-                        if ( isHighlighted ) {
-                            klasses.push( settings.klass.highlighted )
-                        }
-
-                        if ( viewsetObject && viewsetObject.pick == timeMinutes ) {
-                            klasses.push( settings.klass.viewset )
-                        }
-
-                        if ( isDisabled ) {
-                            klasses.push( settings.klass.disabled )
-                        }
-
-                        return klasses.join( ' ' )
-                    })( [ settings.klass.listItem ] ),
-                    'data-pick=' + loopedTime.pick + ' ' + _.ariaAttr({
-                        role: 'button',
-                        controls: clock.$node[0].id,
-                        checked: isSelected && clock.$node.val() === _.trigger(
-                                clock.formats.toString,
-                                clock,
-                                [ settings.format, loopedTime ]
-                            ) ? true : null,
-                        activedescendant: isHighlighted ? true : null,
-                        disabled: isDisabled ? true : null
-                    })
-                ]
-            }
-        }) +
-
-        // * For Firefox forms to submit, make sure to set the button’s `type` attribute as “button”.
-        _.node(
-            'li',
-            _.node(
-                'button',
-                settings.clear,
-                settings.klass.buttonClear,
-                'type=button data-clear=1' + ( isOpen ? '' : ' disable' )
-            )
-        ),
-        settings.klass.list
-    )
-} //TimePicker.prototype.nodes
-
-
-
-
-
-
-
-/* ==========================================================================
-   Extend the picker to add the component with the defaults.
-   ========================================================================== */
-
-TimePicker.defaults = (function( prefix ) {
-
-    return {
-
-        // Clear
-        clear: 'Clear',
-
-        // The format to show on the `input` element
-        format: 'h:i A',
-
-        // The interval between each time
-        interval: 30,
-
-        // Classes
-        klass: {
-
-            picker: prefix + ' ' + prefix + '--time',
-            holder: prefix + '__holder',
-
-            list: prefix + '__list',
-            listItem: prefix + '__list-item',
-
-            disabled: prefix + '__list-item--disabled',
-            selected: prefix + '__list-item--selected',
-            highlighted: prefix + '__list-item--highlighted',
-            viewset: prefix + '__list-item--viewset',
-            now: prefix + '__list-item--now',
-
-            buttonClear: prefix + '__button--clear'
-        }
-    }
-})( Picker.klasses().picker )
-
-
-
-
-
-/**
- * Extend the picker to add the time picker.
- */
-Picker.extend( 'pickatime', TimePicker )
-
-
-}));
-
-
-
-
-/* i18n integration. This is forked from jarn.jsi18n
- *
- * This is a singleton.
- * Configuration is done on the body tag data-i18ncatalogurl attribute
- *     <body data-i18ncatalogurl="/plonejsi18n">
- *
- *  Or, it'll default to "/plonejsi18n"
- */
-
-/* global portal_url:true */
-
-
-define('mockup-i18n',[
-  'jquery'
-], function($) {
-  
-
-  var I18N = function() {
-    var self = this;
-
-    self.baseUrl = $('body').attr('data-i18ncatalogurl');
-    if (!self.baseUrl) {
-      self.baseUrl = '/plonejsi18n';
-    }
-    self.currentLanguage = $('html').attr('lang') || 'en';
-    self.storage = null;
-    self.catalogs = {};
-    self.ttl = 24 * 3600 * 1000;
-
-    // Internet Explorer 8 does not know Date.now() which is used in e.g. loadCatalog, so we "define" it
-    if (!Date.now) {
-      Date.now = function() {
-        return new Date().valueOf();
-      };
-    }
-
-    try {
-      if ('localStorage' in window && window.localStorage !== null && 'JSON' in window && window.JSON !== null) {
-        self.storage = window.localStorage;
-      }
-    } catch (e) {}
-
-    self.configure = function(config) {
-      for (var key in config){
-        self[key] = config[key];
-      }
-    };
-
-    self._setCatalog = function (domain, language, catalog) {
-      if (domain in self.catalogs) {
-        self.catalogs[domain][language] = catalog;
-      } else {
-        self.catalogs[domain] = {};
-        self.catalogs[domain][language] = catalog;
-      }
-    };
-
-    self._storeCatalog = function (domain, language, catalog) {
-      var key = domain + '-' + language;
-      if (self.storage !== null && catalog !== null) {
-        self.storage.setItem(key, JSON.stringify(catalog));
-        self.storage.setItem(key + '-updated', Date.now());
-      }
-    };
-
-    self.getUrl = function(domain, language) {
-      return self.baseUrl + '?domain=' + domain + '&language=' + language;
-    };
-
-    self.loadCatalog = function (domain, language) {
-      if (language === undefined) {
-        language = self.currentLanguage;
-      }
-      if (self.storage !== null) {
-        var key = domain + '-' + language;
-        if (key in self.storage) {
-          if ((Date.now() - parseInt(self.storage.getItem(key + '-updated'), 10)) < self.ttl) {
-            var catalog = JSON.parse(self.storage.getItem(key));
-            self._setCatalog(domain, language, catalog);
-            return;
-          }
-        }
-      }
-      $.getJSON(self.getUrl(domain, language), function (catalog) {
-        if (catalog === null) {
-          return;
-        }
-        self._setCatalog(domain, language, catalog);
-        self._storeCatalog(domain, language, catalog);
-      });
-    };
-
-    self.MessageFactory = function (domain, language) {
-      language = language || self.currentLanguage;
-
-      return function translate (msgid, keywords) {
-        var msgstr;
-        if ((domain in self.catalogs) && (language in self.catalogs[domain]) && (msgid in self.catalogs[domain][language])) {
-          msgstr = self.catalogs[domain][language][msgid];
-        } else {
-          msgstr = msgid;
-        }
-        if (keywords) {
-          var regexp, keyword;
-          for (keyword in keywords) {
-            if (keywords.hasOwnProperty(keyword)) {
-              regexp = new RegExp('\\$\\{' + keyword + '\\}', 'g');
-              msgstr = msgstr.replace(regexp, keywords[keyword]);
-            }
-          }
-        }
-        return msgstr;
-      };
-    };
-  };
-
-  return new I18N();
-});
-
-/* i18n integration.
- *
- * This is a singleton.
- * Configuration is done on the body tag data-i18ncatalogurl attribute
- *     <body data-i18ncatalogurl="/plonejsi18n">
- *
- *  Or, it'll default to "/plonejsi18n"
- */
-
-define('translate',[
-  'mockup-i18n'
-], function(i18n) {
-  
-  i18n.loadCatalog('widgets');
-  return i18n.MessageFactory('widgets');
-});
-
-/* Formunloadalert pattern.
- *
- * Options:
- *    changingEvents(string): Events on which to check for changes (space-separated). ('change keyup paste')
- *    changingFields(string): Fields on which to check for changes (comma-separated). ('input,select,textarea,fileupload')
- *    message(string): Confirmation message to display when dirty form is being unloaded. (Discard changes? If you click OK, any changes you have made will be lost.)
- *
- * Documentation:
- *    # Example
- *
- *    {{ example-1 }}
- *
- * Example: example-1
- *    <form class="pat-formunloadalert" onsubmit="javascript:return false;">
- *      <input type="text" value="" />
- *      <select>
- *        <option value="1">value 1</option>
- *        <option value="2">value 2</option>
- *      </select>
- *      <input
- *        class="btn btn-large btn-primary"
- *        type="submit" value="Submit" />
- *      <br />
- *      <a href="/">Click here to go somewhere else</a>
- *    </form>
- *
- */
-
-
-define('mockup-patterns-formunloadalert',[
-  'jquery',
-  'mockup-patterns-base',
-  'translate'
-], function ($, Base, _t) {
-  
-
-  var FormUnloadAlert = Base.extend({
-    name: 'formunloadalert',
-    trigger: '.pat-formunloadalert',
-    _changed : false,       // Stores a listing of raised changes by their key
-    _suppressed : false,     // whether or not warning should be suppressed
-    defaults: {
-      message :  _t('Discard changes? If you click OK, ' +
-                 'any changes you have made will be lost.'),
-      // events on which to check for changes
-      changingEvents: 'change keyup paste',
-      // fields on which to check for changes
-      changingFields: 'input,select,textarea,fileupload'
-    },
-    init: function () {
-      var self = this;
-      // if this is not a form just return
-      if (!self.$el.is('form')) { return; }
-
-      $(self.options.changingFields, self.$el).on(
-        self.options.changingEvents,
-        function (evt) {
-          self._changed = true;
-        }
-      );
-
-      var $modal = self.$el.parents('.plone-modal');
-      if ($modal.size() !== 0) {
-        $modal.data('pattern-modal').on('hide', function(e) {
-          var modal = $modal.data('pattern-modal');
-          if (modal) {
-            modal._suppressHide = self._handleUnload.apply(self, e);
-          }
-        });
-      } else {
-        $(window).on('beforeunload', function(e) {
-          return self._handleUnload(e);
-        });
-      }
-
-      self.$el.on('submit', function(e) {
-        self._suppressed = true;
-      });
-
-    },
-    _handleUnload : function (e) {
-      var self = this;
-      if (self._suppressed) {
-        self._suppressed = false;
-        return undefined;
-      }
-      if (self._changed) {
-        var msg = self.options.message;
-        self._handleMsg(e,msg);
-        $(window).trigger('messageset');
-        return msg;
-      }
-    },
-    _handleMsg:  function(e,msg) {
-      (e || window.event).returnValue = msg;
-    }
-  });
-  return FormUnloadAlert;
-
-});
-
-/* PreventDoubleSubmit pattern.
- *
- * Options:
- *    guardClassName(string): Class applied to submit button after it is clicked once. ('submitting')
- *    optOutClassName(string): Class used to opt-out a submit button from double-submit prevention. ('allowMultiSubmit')
- *    message(string): Message to be displayed when "opt-out" submit button is clicked a second time. ('You already clicked the submit button. Do you really want to submit this form again?')
- *
- * Documentation:
- *    # Example
- *
- *    {{ example-1 }}
- *
- * Example: example-1
- *    <form class="pat-preventdoublesubmit" onsubmit="javascript:return false;">
- *      <input type="text" value="submit this value please!" />
- *      <input class="btn btn-large btn-primary" type="submit" value="Single submit" />
- *      <input class="btn btn-large btn-primary allowMultiSubmit" type="submit" value="Multi submit" />
- *    </form>
- *
- */
-
-
-define('mockup-patterns-preventdoublesubmit',[
-  'jquery',
-  'mockup-patterns-base',
-  'translate'
-], function($, Base, _t) {
-  
-
-  var PreventDoubleSubmit = Base.extend({
-    name: 'preventdoublesubmit',
-    trigger: '.pat-preventdoublesubmit',
-    defaults: {
-      message : _t('You already clicked the submit button. ' +
-                'Do you really want to submit this form again?'),
-      guardClassName: 'submitting',
-      optOutClassName: 'allowMultiSubmit'
-    },
-    init: function() {
-      var self = this;
-
-      // if this is not a form just return
-      if (!self.$el.is('form')) {
-        return;
-      }
-
-      $(':submit', self.$el).click(function(e) {
-
-        // mark the button as clicked
-        $(':submit').removeAttr('clicked');
-        $(this).attr('clicked', 'clicked');
-
-        // if submitting and no opt-out guardClassName is found
-        // pop up confirmation dialog
-        if ($(this).hasClass(self.options.guardClassName) &&
-              !$(this).hasClass(self.options.optOutClassName)) {
-          return self._confirm.call(self);
-        }
-
-        $(this).addClass(self.options.guardClassName);
-      });
-
-    },
-
-    _confirm: function(e) {
-      return window.confirm(this.options.message);
-    }
-
-  });
-
-  return PreventDoubleSubmit;
 
 });
 
@@ -18453,6 +17404,1128 @@ Picker.extend( 'pickadate', DatePicker )
 
 
 
+
+/*!
+ * Time picker for pickadate.js v3.4.0
+ * http://amsul.github.io/pickadate.js/time.htm
+ */
+
+(function ( factory ) {
+
+    // Register as an anonymous module.
+    if ( typeof define == 'function' && define.amd )
+        define( 'picker.time',['picker','jquery'], factory )
+
+    // Or using browser globals.
+    else factory( Picker, jQuery )
+
+}(function( Picker, $ ) {
+
+
+/**
+ * Globals and constants
+ */
+var HOURS_IN_DAY = 24,
+    MINUTES_IN_HOUR = 60,
+    HOURS_TO_NOON = 12,
+    MINUTES_IN_DAY = HOURS_IN_DAY * MINUTES_IN_HOUR,
+    _ = Picker._
+
+
+
+/**
+ * The time picker constructor
+ */
+function TimePicker( picker, settings ) {
+
+    var clock = this,
+        elementValue = picker.$node[ 0 ].value,
+        elementDataValue = picker.$node.data( 'value' ),
+        valueString = elementDataValue || elementValue,
+        formatString = elementDataValue ? settings.formatSubmit : settings.format
+
+    clock.settings = settings
+    clock.$node = picker.$node
+
+    // The queue of methods that will be used to build item objects.
+    clock.queue = {
+        interval: 'i',
+        min: 'measure create',
+        max: 'measure create',
+        now: 'now create',
+        select: 'parse create validate',
+        highlight: 'parse create validate',
+        view: 'parse create validate',
+        disable: 'deactivate',
+        enable: 'activate'
+    }
+
+    // The component's item object.
+    clock.item = {}
+
+    clock.item.interval = settings.interval || 30
+    clock.item.disable = ( settings.disable || [] ).slice( 0 )
+    clock.item.enable = -(function( collectionDisabled ) {
+        return collectionDisabled[ 0 ] === true ? collectionDisabled.shift() : -1
+    })( clock.item.disable )
+
+    clock.
+        set( 'min', settings.min ).
+        set( 'max', settings.max ).
+        set( 'now' )
+
+    // When there’s a value, set the `select`, which in turn
+    // also sets the `highlight` and `view`.
+    if ( valueString ) {
+        clock.set( 'select', valueString, {
+            format: formatString,
+            fromValue: !!elementValue
+        })
+    }
+
+    // If there’s no value, default to highlighting “today”.
+    else {
+        clock.
+            set( 'select', null ).
+            set( 'highlight', clock.item.now )
+    }
+
+    // The keycode to movement mapping.
+    clock.key = {
+        40: 1, // Down
+        38: -1, // Up
+        39: 1, // Right
+        37: -1, // Left
+        go: function( timeChange ) {
+            clock.set(
+                'highlight',
+                clock.item.highlight.pick + timeChange * clock.item.interval,
+                { interval: timeChange * clock.item.interval }
+            )
+            this.render()
+        }
+    }
+
+
+    // Bind some picker events.
+    picker.
+        on( 'render', function() {
+            var $pickerHolder = picker.$root.children(),
+                $viewset = $pickerHolder.find( '.' + settings.klass.viewset )
+            if ( $viewset.length ) {
+                $pickerHolder[ 0 ].scrollTop = ~~$viewset.position().top - ( $viewset[ 0 ].clientHeight * 2 )
+            }
+        }).
+        on( 'open', function() {
+            picker.$root.find( 'button' ).attr( 'disable', false )
+        }).
+        on( 'close', function() {
+            picker.$root.find( 'button' ).attr( 'disable', true )
+        })
+
+} //TimePicker
+
+
+/**
+ * Set a timepicker item object.
+ */
+TimePicker.prototype.set = function( type, value, options ) {
+
+    var clock = this,
+        clockItem = clock.item
+
+    // If the value is `null` just set it immediately.
+    if ( value === null ) {
+        clockItem[ type ] = value
+        return clock
+    }
+
+    // Otherwise go through the queue of methods, and invoke the functions.
+    // Update this as the time unit, and set the final value as this item.
+    // * In the case of `enable`, keep the queue but set `disable` instead.
+    //   And in the case of `flip`, keep the queue but set `enable` instead.
+    clockItem[ ( type == 'enable' ? 'disable' : type == 'flip' ? 'enable' : type ) ] = clock.queue[ type ].split( ' ' ).map( function( method ) {
+        value = clock[ method ]( type, value, options )
+        return value
+    }).pop()
+
+    // Check if we need to cascade through more updates.
+    if ( type == 'select' ) {
+        clock.set( 'highlight', clockItem.select, options )
+    }
+    else if ( type == 'highlight' ) {
+        clock.set( 'view', clockItem.highlight, options )
+    }
+    else if ( type == 'interval' ) {
+        clock.
+            set( 'min', clockItem.min, options ).
+            set( 'max', clockItem.max, options )
+    }
+    else if ( type.match( /^(flip|min|max|disable|enable)$/ ) ) {
+        if ( type == 'min' ) {
+            clock.set( 'max', clockItem.max, options )
+        }
+        if ( clockItem.select && clock.disabled( clockItem.select ) ) {
+            clock.set( 'select', clockItem.select, options )
+        }
+        if ( clockItem.highlight && clock.disabled( clockItem.highlight ) ) {
+            clock.set( 'highlight', clockItem.highlight, options )
+        }
+    }
+
+    return clock
+} //TimePicker.prototype.set
+
+
+/**
+ * Get a timepicker item object.
+ */
+TimePicker.prototype.get = function( type ) {
+    return this.item[ type ]
+} //TimePicker.prototype.get
+
+
+/**
+ * Create a picker time object.
+ */
+TimePicker.prototype.create = function( type, value, options ) {
+
+    var clock = this
+
+    // If there’s no value, use the type as the value.
+    value = value === undefined ? type : value
+
+    // If it’s a date object, convert it into an array.
+    if ( _.isDate( value ) ) {
+        value = [ value.getHours(), value.getMinutes() ]
+    }
+
+    // If it’s an object, use the “pick” value.
+    if ( $.isPlainObject( value ) && _.isInteger( value.pick ) ) {
+        value = value.pick
+    }
+
+    // If it’s an array, convert it into minutes.
+    else if ( $.isArray( value ) ) {
+        value = +value[ 0 ] * MINUTES_IN_HOUR + (+value[ 1 ])
+    }
+
+    // If no valid value is passed, set it to “now”.
+    else if ( !_.isInteger( value ) ) {
+        value = clock.now( type, value, options )
+    }
+
+    // If we’re setting the max, make sure it’s greater than the min.
+    if ( type == 'max' && value < clock.item.min.pick ) {
+        value += MINUTES_IN_DAY
+    }
+
+    // If the value doesn’t fall directly on the interval,
+    // add one interval to indicate it as “passed”.
+    if ( type != 'min' && type != 'max' && (value - clock.item.min.pick) % clock.item.interval !== 0 ) {
+        value += clock.item.interval
+    }
+
+    // Normalize it into a “reachable” interval.
+    value = clock.normalize( type, value, options )
+
+    // Return the compiled object.
+    return {
+
+        // Divide to get hours from minutes.
+        hour: ~~( HOURS_IN_DAY + value / MINUTES_IN_HOUR ) % HOURS_IN_DAY,
+
+        // The remainder is the minutes.
+        mins: ( MINUTES_IN_HOUR + value % MINUTES_IN_HOUR ) % MINUTES_IN_HOUR,
+
+        // The time in total minutes.
+        time: ( MINUTES_IN_DAY + value ) % MINUTES_IN_DAY,
+
+        // Reference to the “relative” value to pick.
+        pick: value
+    }
+} //TimePicker.prototype.create
+
+
+/**
+ * Create a range limit object using an array, date object,
+ * literal “true”, or integer relative to another time.
+ */
+TimePicker.prototype.createRange = function( from, to ) {
+
+    var clock = this,
+        createTime = function( time ) {
+            if ( time === true || $.isArray( time ) || _.isDate( time ) ) {
+                return clock.create( time )
+            }
+            return time
+        }
+
+    // Create objects if possible.
+    if ( !_.isInteger( from ) ) {
+        from = createTime( from )
+    }
+    if ( !_.isInteger( to ) ) {
+        to = createTime( to )
+    }
+
+    // Create relative times.
+    if ( _.isInteger( from ) && $.isPlainObject( to ) ) {
+        from = [ to.hour, to.mins + ( from * clock.settings.interval ) ];
+    }
+    else if ( _.isInteger( to ) && $.isPlainObject( from ) ) {
+        to = [ from.hour, from.mins + ( to * clock.settings.interval ) ];
+    }
+
+    return {
+        from: createTime( from ),
+        to: createTime( to )
+    }
+} //TimePicker.prototype.createRange
+
+
+/**
+ * Check if a time unit falls within a time range object.
+ */
+TimePicker.prototype.withinRange = function( range, timeUnit ) {
+    range = this.createRange(range.from, range.to)
+    return timeUnit.pick >= range.from.pick && timeUnit.pick <= range.to.pick
+}
+
+
+/**
+ * Check if two time range objects overlap.
+ */
+TimePicker.prototype.overlapRanges = function( one, two ) {
+
+    var clock = this
+
+    // Convert the ranges into comparable times.
+    one = clock.createRange( one.from, one.to )
+    two = clock.createRange( two.from, two.to )
+
+    return clock.withinRange( one, two.from ) || clock.withinRange( one, two.to ) ||
+        clock.withinRange( two, one.from ) || clock.withinRange( two, one.to )
+}
+
+
+/**
+ * Get the time relative to now.
+ */
+TimePicker.prototype.now = function( type, value/*, options*/ ) {
+
+    var interval = this.item.interval,
+        date = new Date(),
+        nowMinutes = date.getHours() * MINUTES_IN_HOUR + date.getMinutes(),
+        isValueInteger = _.isInteger( value ),
+        isBelowInterval
+
+    // Make sure “now” falls within the interval range.
+    nowMinutes -= nowMinutes % interval
+
+    // Check if the difference is less than the interval itself.
+    isBelowInterval = value < 0 && interval * value + nowMinutes <= -interval
+
+    // Add an interval because the time has “passed”.
+    nowMinutes += type == 'min' && isBelowInterval ? 0 : interval
+
+    // If the value is a number, adjust by that many intervals.
+    if ( isValueInteger ) {
+        nowMinutes += interval * (
+            isBelowInterval && type != 'max' ?
+                value + 1 :
+                value
+            )
+    }
+
+    // Return the final calculation.
+    return nowMinutes
+} //TimePicker.prototype.now
+
+
+/**
+ * Normalize minutes to be “reachable” based on the min and interval.
+ */
+TimePicker.prototype.normalize = function( type, value/*, options*/ ) {
+
+    var interval = this.item.interval,
+        minTime = this.item.min && this.item.min.pick || 0
+
+    // If setting min time, don’t shift anything.
+    // Otherwise get the value and min difference and then
+    // normalize the difference with the interval.
+    value -= type == 'min' ? 0 : ( value - minTime ) % interval
+
+    // Return the adjusted value.
+    return value
+} //TimePicker.prototype.normalize
+
+
+/**
+ * Measure the range of minutes.
+ */
+TimePicker.prototype.measure = function( type, value, options ) {
+
+    var clock = this
+
+    // If it’s anything false-y, set it to the default.
+    if ( !value ) {
+        value = type == 'min' ? [ 0, 0 ] : [ HOURS_IN_DAY - 1, MINUTES_IN_HOUR - 1 ]
+    }
+
+    // If it’s a literal true, or an integer, make it relative to now.
+    else if ( value === true || _.isInteger( value ) ) {
+        value = clock.now( type, value, options )
+    }
+
+    // If it’s an object already, just normalize it.
+    else if ( $.isPlainObject( value ) && _.isInteger( value.pick ) ) {
+        value = clock.normalize( type, value.pick, options )
+    }
+
+    return value
+} ///TimePicker.prototype.measure
+
+
+/**
+ * Validate an object as enabled.
+ */
+TimePicker.prototype.validate = function( type, timeObject, options ) {
+
+    var clock = this,
+        interval = options && options.interval ? options.interval : clock.item.interval
+
+    // Check if the object is disabled.
+    if ( clock.disabled( timeObject ) ) {
+
+        // Shift with the interval until we reach an enabled time.
+        timeObject = clock.shift( timeObject, interval )
+    }
+
+    // Scope the object into range.
+    timeObject = clock.scope( timeObject )
+
+    // Do a second check to see if we landed on a disabled min/max.
+    // In that case, shift using the opposite interval as before.
+    if ( clock.disabled( timeObject ) ) {
+        timeObject = clock.shift( timeObject, interval * -1 )
+    }
+
+    // Return the final object.
+    return timeObject
+} //TimePicker.prototype.validate
+
+
+/**
+ * Check if an object is disabled.
+ */
+TimePicker.prototype.disabled = function( timeToVerify ) {
+
+    var clock = this,
+
+        // Filter through the disabled times to check if this is one.
+        isDisabledMatch = clock.item.disable.filter( function( timeToDisable ) {
+
+            // If the time is a number, match the hours.
+            if ( _.isInteger( timeToDisable ) ) {
+                return timeToVerify.hour == timeToDisable
+            }
+
+            // If it’s an array, create the object and match the times.
+            if ( $.isArray( timeToDisable ) || _.isDate( timeToDisable ) ) {
+                return timeToVerify.pick == clock.create( timeToDisable ).pick
+            }
+
+            // If it’s an object, match a time within the “from” and “to” range.
+            if ( $.isPlainObject( timeToDisable ) ) {
+                return clock.withinRange( timeToDisable, timeToVerify )
+            }
+        })
+
+    // If this time matches a disabled time, confirm it’s not inverted.
+    isDisabledMatch = isDisabledMatch.length && !isDisabledMatch.filter(function( timeToDisable ) {
+        return $.isArray( timeToDisable ) && timeToDisable[2] == 'inverted' ||
+            $.isPlainObject( timeToDisable ) && timeToDisable.inverted
+    }).length
+
+    // If the clock is "enabled" flag is flipped, flip the condition.
+    return clock.item.enable === -1 ? !isDisabledMatch : isDisabledMatch ||
+        timeToVerify.pick < clock.item.min.pick ||
+        timeToVerify.pick > clock.item.max.pick
+} //TimePicker.prototype.disabled
+
+
+/**
+ * Shift an object by an interval until we reach an enabled object.
+ */
+TimePicker.prototype.shift = function( timeObject, interval ) {
+
+    var clock = this,
+        minLimit = clock.item.min.pick,
+        maxLimit = clock.item.max.pick/*,
+        safety = 1000*/
+
+    interval = interval || clock.item.interval
+
+    // Keep looping as long as the time is disabled.
+    while ( /*safety &&*/ clock.disabled( timeObject ) ) {
+
+        /*safety -= 1
+        if ( !safety ) {
+            throw 'Fell into an infinite loop while shifting to ' + timeObject.hour + ':' + timeObject.mins + '.'
+        }*/
+
+        // Increase/decrease the time by the interval and keep looping.
+        timeObject = clock.create( timeObject.pick += interval )
+
+        // If we've looped beyond the limits, break out of the loop.
+        if ( timeObject.pick <= minLimit || timeObject.pick >= maxLimit ) {
+            break
+        }
+    }
+
+    // Return the final object.
+    return timeObject
+} //TimePicker.prototype.shift
+
+
+/**
+ * Scope an object to be within range of min and max.
+ */
+TimePicker.prototype.scope = function( timeObject ) {
+    var minLimit = this.item.min.pick,
+        maxLimit = this.item.max.pick
+    return this.create( timeObject.pick > maxLimit ? maxLimit : timeObject.pick < minLimit ? minLimit : timeObject )
+} //TimePicker.prototype.scope
+
+
+/**
+ * Parse a string into a usable type.
+ */
+TimePicker.prototype.parse = function( type, value, options ) {
+
+    var hour, minutes, isPM, item, parseValue,
+        clock = this,
+        parsingObject = {}
+
+    if ( !value || _.isInteger( value ) || $.isArray( value ) || _.isDate( value ) || $.isPlainObject( value ) && _.isInteger( value.pick ) ) {
+        return value
+    }
+
+    // We need a `.format` to parse the value with.
+    if ( !( options && options.format ) ) {
+        options = options || {}
+        options.format = clock.settings.format
+    }
+
+    // Convert the format into an array and then map through it.
+    clock.formats.toArray( options.format ).map( function( label ) {
+
+        var
+            substring,
+
+            // Grab the formatting label.
+            formattingLabel = clock.formats[ label ],
+
+            // The format length is from the formatting label function or the
+            // label length without the escaping exclamation (!) mark.
+            formatLength = formattingLabel ?
+                _.trigger( formattingLabel, clock, [ value, parsingObject ] ) :
+                label.replace( /^!/, '' ).length
+
+        // If there's a format label, split the value up to the format length.
+        // Then add it to the parsing object with appropriate label.
+        if ( formattingLabel ) {
+            substring = value.substr( 0, formatLength )
+            parsingObject[ label ] = substring.match(/^\d+$/) ? +substring : substring
+        }
+
+        // Update the time value as the substring from format length to end.
+        value = value.substr( formatLength )
+    })
+
+    // Grab the hour and minutes from the parsing object.
+    for ( item in parsingObject ) {
+        parseValue = parsingObject[item]
+        if ( _.isInteger(parseValue) ) {
+            if ( item.match(/^(h|hh)$/i) ) {
+                hour = parseValue
+                if ( item == 'h' || item == 'hh' ) {
+                    hour %= 12
+                }
+            }
+            else if ( item == 'i' ) {
+                minutes = parseValue
+            }
+        }
+        else if ( item.match(/^a$/i) && parseValue.match(/^p/i) && ('h' in parsingObject || 'hh' in parsingObject) ) {
+            isPM = true
+        }
+    }
+
+    // Calculate it in minutes and return.
+    return (isPM ? hour + 12 : hour) * MINUTES_IN_HOUR + minutes
+} //TimePicker.prototype.parse
+
+
+/**
+ * Various formats to display the object in.
+ */
+TimePicker.prototype.formats = {
+
+    h: function( string, timeObject ) {
+
+        // If there's string, then get the digits length.
+        // Otherwise return the selected hour in "standard" format.
+        return string ? _.digits( string ) : timeObject.hour % HOURS_TO_NOON || HOURS_TO_NOON
+    },
+    hh: function( string, timeObject ) {
+
+        // If there's a string, then the length is always 2.
+        // Otherwise return the selected hour in "standard" format with a leading zero.
+        return string ? 2 : _.lead( timeObject.hour % HOURS_TO_NOON || HOURS_TO_NOON )
+    },
+    H: function( string, timeObject ) {
+
+        // If there's string, then get the digits length.
+        // Otherwise return the selected hour in "military" format as a string.
+        return string ? _.digits( string ) : '' + ( timeObject.hour % 24 )
+    },
+    HH: function( string, timeObject ) {
+
+        // If there's string, then get the digits length.
+        // Otherwise return the selected hour in "military" format with a leading zero.
+        return string ? _.digits( string ) : _.lead( timeObject.hour % 24 )
+    },
+    i: function( string, timeObject ) {
+
+        // If there's a string, then the length is always 2.
+        // Otherwise return the selected minutes.
+        return string ? 2 : _.lead( timeObject.mins )
+    },
+    a: function( string, timeObject ) {
+
+        // If there's a string, then the length is always 4.
+        // Otherwise check if it's more than "noon" and return either am/pm.
+        return string ? 4 : MINUTES_IN_DAY / 2 > timeObject.time % MINUTES_IN_DAY ? 'a.m.' : 'p.m.'
+    },
+    A: function( string, timeObject ) {
+
+        // If there's a string, then the length is always 2.
+        // Otherwise check if it's more than "noon" and return either am/pm.
+        return string ? 2 : MINUTES_IN_DAY / 2 > timeObject.time % MINUTES_IN_DAY ? 'AM' : 'PM'
+    },
+
+    // Create an array by splitting the formatting string passed.
+    toArray: function( formatString ) { return formatString.split( /(h{1,2}|H{1,2}|i|a|A|!.)/g ) },
+
+    // Format an object into a string using the formatting options.
+    toString: function ( formatString, itemObject ) {
+        var clock = this
+        return clock.formats.toArray( formatString ).map( function( label ) {
+            return _.trigger( clock.formats[ label ], clock, [ 0, itemObject ] ) || label.replace( /^!/, '' )
+        }).join( '' )
+    }
+} //TimePicker.prototype.formats
+
+
+
+
+/**
+ * Check if two time units are the exact.
+ */
+TimePicker.prototype.isTimeExact = function( one, two ) {
+
+    var clock = this
+
+    // When we’re working with minutes, do a direct comparison.
+    if (
+        ( _.isInteger( one ) && _.isInteger( two ) ) ||
+        ( typeof one == 'boolean' && typeof two == 'boolean' )
+     ) {
+        return one === two
+    }
+
+    // When we’re working with time representations, compare the “pick” value.
+    if (
+        ( _.isDate( one ) || $.isArray( one ) ) &&
+        ( _.isDate( two ) || $.isArray( two ) )
+    ) {
+        return clock.create( one ).pick === clock.create( two ).pick
+    }
+
+    // When we’re working with range objects, compare the “from” and “to”.
+    if ( $.isPlainObject( one ) && $.isPlainObject( two ) ) {
+        return clock.isTimeExact( one.from, two.from ) && clock.isTimeExact( one.to, two.to )
+    }
+
+    return false
+}
+
+
+/**
+ * Check if two time units overlap.
+ */
+TimePicker.prototype.isTimeOverlap = function( one, two ) {
+
+    var clock = this
+
+    // When we’re working with an integer, compare the hours.
+    if ( _.isInteger( one ) && ( _.isDate( two ) || $.isArray( two ) ) ) {
+        return one === clock.create( two ).hour
+    }
+    if ( _.isInteger( two ) && ( _.isDate( one ) || $.isArray( one ) ) ) {
+        return two === clock.create( one ).hour
+    }
+
+    // When we’re working with range objects, check if the ranges overlap.
+    if ( $.isPlainObject( one ) && $.isPlainObject( two ) ) {
+        return clock.overlapRanges( one, two )
+    }
+
+    return false
+}
+
+
+/**
+ * Flip the “enabled” state.
+ */
+TimePicker.prototype.flipEnable = function(val) {
+    var itemObject = this.item
+    itemObject.enable = val || (itemObject.enable == -1 ? 1 : -1)
+}
+
+
+/**
+ * Mark a collection of times as “disabled”.
+ */
+TimePicker.prototype.deactivate = function( type, timesToDisable ) {
+
+    var clock = this,
+        disabledItems = clock.item.disable.slice(0)
+
+
+    // If we’re flipping, that’s all we need to do.
+    if ( timesToDisable == 'flip' ) {
+        clock.flipEnable()
+    }
+
+    else if ( timesToDisable === false ) {
+        clock.flipEnable(1)
+        disabledItems = []
+    }
+
+    else if ( timesToDisable === true ) {
+        clock.flipEnable(-1)
+        disabledItems = []
+    }
+
+    // Otherwise go through the times to disable.
+    else {
+
+        timesToDisable.map(function( unitToDisable ) {
+
+            var matchFound
+
+            // When we have disabled items, check for matches.
+            // If something is matched, immediately break out.
+            for ( var index = 0; index < disabledItems.length; index += 1 ) {
+                if ( clock.isTimeExact( unitToDisable, disabledItems[index] ) ) {
+                    matchFound = true
+                    break
+                }
+            }
+
+            // If nothing was found, add the validated unit to the collection.
+            if ( !matchFound ) {
+                if (
+                    _.isInteger( unitToDisable ) ||
+                    _.isDate( unitToDisable ) ||
+                    $.isArray( unitToDisable ) ||
+                    ( $.isPlainObject( unitToDisable ) && unitToDisable.from && unitToDisable.to )
+                ) {
+                    disabledItems.push( unitToDisable )
+                }
+            }
+        })
+    }
+
+    // Return the updated collection.
+    return disabledItems
+} //TimePicker.prototype.deactivate
+
+
+/**
+ * Mark a collection of times as “enabled”.
+ */
+TimePicker.prototype.activate = function( type, timesToEnable ) {
+
+    var clock = this,
+        disabledItems = clock.item.disable,
+        disabledItemsCount = disabledItems.length
+
+    // If we’re flipping, that’s all we need to do.
+    if ( timesToEnable == 'flip' ) {
+        clock.flipEnable()
+    }
+
+    else if ( timesToEnable === true ) {
+        clock.flipEnable(1)
+        disabledItems = []
+    }
+
+    else if ( timesToEnable === false ) {
+        clock.flipEnable(-1)
+        disabledItems = []
+    }
+
+    // Otherwise go through the disabled times.
+    else {
+
+        timesToEnable.map(function( unitToEnable ) {
+
+            var matchFound,
+                disabledUnit,
+                index,
+                isRangeMatched
+
+            // Go through the disabled items and try to find a match.
+            for ( index = 0; index < disabledItemsCount; index += 1 ) {
+
+                disabledUnit = disabledItems[index]
+
+                // When an exact match is found, remove it from the collection.
+                if ( clock.isTimeExact( disabledUnit, unitToEnable ) ) {
+                    matchFound = disabledItems[index] = null
+                    isRangeMatched = true
+                    break
+                }
+
+                // When an overlapped match is found, add the “inverted” state to it.
+                else if ( clock.isTimeOverlap( disabledUnit, unitToEnable ) ) {
+                    if ( $.isPlainObject( unitToEnable ) ) {
+                        unitToEnable.inverted = true
+                        matchFound = unitToEnable
+                    }
+                    else if ( $.isArray( unitToEnable ) ) {
+                        matchFound = unitToEnable
+                        if ( !matchFound[2] ) matchFound.push( 'inverted' )
+                    }
+                    else if ( _.isDate( unitToEnable ) ) {
+                        matchFound = [ unitToEnable.getFullYear(), unitToEnable.getMonth(), unitToEnable.getDate(), 'inverted' ]
+                    }
+                    break
+                }
+            }
+
+            // If a match was found, remove a previous duplicate entry.
+            if ( matchFound ) for ( index = 0; index < disabledItemsCount; index += 1 ) {
+                if ( clock.isTimeExact( disabledItems[index], unitToEnable ) ) {
+                    disabledItems[index] = null
+                    break
+                }
+            }
+
+            // In the event that we’re dealing with an overlap of range times,
+            // make sure there are no “inverted” times because of it.
+            if ( isRangeMatched ) for ( index = 0; index < disabledItemsCount; index += 1 ) {
+                if ( clock.isTimeOverlap( disabledItems[index], unitToEnable ) ) {
+                    disabledItems[index] = null
+                    break
+                }
+            }
+
+            // If something is still matched, add it into the collection.
+            if ( matchFound ) {
+                disabledItems.push( matchFound )
+            }
+        })
+    }
+
+    // Return the updated collection.
+    return disabledItems.filter(function( val ) { return val != null })
+} //TimePicker.prototype.activate
+
+
+/**
+ * The division to use for the range intervals.
+ */
+TimePicker.prototype.i = function( type, value/*, options*/ ) {
+    return _.isInteger( value ) && value > 0 ? value : this.item.interval
+}
+
+
+/**
+ * Create a string for the nodes in the picker.
+ */
+TimePicker.prototype.nodes = function( isOpen ) {
+
+    var
+        clock = this,
+        settings = clock.settings,
+        selectedObject = clock.item.select,
+        highlightedObject = clock.item.highlight,
+        viewsetObject = clock.item.view,
+        disabledCollection = clock.item.disable
+
+    return _.node(
+        'ul',
+        _.group({
+            min: clock.item.min.pick,
+            max: clock.item.max.pick,
+            i: clock.item.interval,
+            node: 'li',
+            item: function( loopedTime ) {
+                loopedTime = clock.create( loopedTime )
+                var timeMinutes = loopedTime.pick,
+                    isSelected = selectedObject && selectedObject.pick == timeMinutes,
+                    isHighlighted = highlightedObject && highlightedObject.pick == timeMinutes,
+                    isDisabled = disabledCollection && clock.disabled( loopedTime )
+                return [
+                    _.trigger( clock.formats.toString, clock, [ _.trigger( settings.formatLabel, clock, [ loopedTime ] ) || settings.format, loopedTime ] ),
+                    (function( klasses ) {
+
+                        if ( isSelected ) {
+                            klasses.push( settings.klass.selected )
+                        }
+
+                        if ( isHighlighted ) {
+                            klasses.push( settings.klass.highlighted )
+                        }
+
+                        if ( viewsetObject && viewsetObject.pick == timeMinutes ) {
+                            klasses.push( settings.klass.viewset )
+                        }
+
+                        if ( isDisabled ) {
+                            klasses.push( settings.klass.disabled )
+                        }
+
+                        return klasses.join( ' ' )
+                    })( [ settings.klass.listItem ] ),
+                    'data-pick=' + loopedTime.pick + ' ' + _.ariaAttr({
+                        role: 'button',
+                        controls: clock.$node[0].id,
+                        checked: isSelected && clock.$node.val() === _.trigger(
+                                clock.formats.toString,
+                                clock,
+                                [ settings.format, loopedTime ]
+                            ) ? true : null,
+                        activedescendant: isHighlighted ? true : null,
+                        disabled: isDisabled ? true : null
+                    })
+                ]
+            }
+        }) +
+
+        // * For Firefox forms to submit, make sure to set the button’s `type` attribute as “button”.
+        _.node(
+            'li',
+            _.node(
+                'button',
+                settings.clear,
+                settings.klass.buttonClear,
+                'type=button data-clear=1' + ( isOpen ? '' : ' disable' )
+            )
+        ),
+        settings.klass.list
+    )
+} //TimePicker.prototype.nodes
+
+
+
+
+
+
+
+/* ==========================================================================
+   Extend the picker to add the component with the defaults.
+   ========================================================================== */
+
+TimePicker.defaults = (function( prefix ) {
+
+    return {
+
+        // Clear
+        clear: 'Clear',
+
+        // The format to show on the `input` element
+        format: 'h:i A',
+
+        // The interval between each time
+        interval: 30,
+
+        // Classes
+        klass: {
+
+            picker: prefix + ' ' + prefix + '--time',
+            holder: prefix + '__holder',
+
+            list: prefix + '__list',
+            listItem: prefix + '__list-item',
+
+            disabled: prefix + '__list-item--disabled',
+            selected: prefix + '__list-item--selected',
+            highlighted: prefix + '__list-item--highlighted',
+            viewset: prefix + '__list-item--viewset',
+            now: prefix + '__list-item--now',
+
+            buttonClear: prefix + '__button--clear'
+        }
+    }
+})( Picker.klasses().picker )
+
+
+
+
+
+/**
+ * Extend the picker to add the time picker.
+ */
+Picker.extend( 'pickatime', TimePicker )
+
+
+}));
+
+
+
+
+/* i18n integration. This is forked from jarn.jsi18n
+ *
+ * This is a singleton.
+ * Configuration is done on the body tag data-i18ncatalogurl attribute
+ *     <body data-i18ncatalogurl="/plonejsi18n">
+ *
+ *  Or, it'll default to "/plonejsi18n"
+ */
+
+/* global portal_url:true */
+
+
+define('mockup-i18n',[
+  'jquery'
+], function($) {
+  
+
+  var I18N = function() {
+    var self = this;
+
+    self.baseUrl = $('body').attr('data-i18ncatalogurl');
+    if (!self.baseUrl) {
+      self.baseUrl = '/plonejsi18n';
+    }
+    self.currentLanguage = $('html').attr('lang') || 'en';
+    self.storage = null;
+    self.catalogs = {};
+    self.ttl = 24 * 3600 * 1000;
+
+    // Internet Explorer 8 does not know Date.now() which is used in e.g. loadCatalog, so we "define" it
+    if (!Date.now) {
+      Date.now = function() {
+        return new Date().valueOf();
+      };
+    }
+
+    try {
+      if ('localStorage' in window && window.localStorage !== null && 'JSON' in window && window.JSON !== null) {
+        self.storage = window.localStorage;
+      }
+    } catch (e) {}
+
+    self.configure = function(config) {
+      for (var key in config){
+        self[key] = config[key];
+      }
+    };
+
+    self._setCatalog = function (domain, language, catalog) {
+      if (domain in self.catalogs) {
+        self.catalogs[domain][language] = catalog;
+      } else {
+        self.catalogs[domain] = {};
+        self.catalogs[domain][language] = catalog;
+      }
+    };
+
+    self._storeCatalog = function (domain, language, catalog) {
+      var key = domain + '-' + language;
+      if (self.storage !== null && catalog !== null) {
+        self.storage.setItem(key, JSON.stringify(catalog));
+        self.storage.setItem(key + '-updated', Date.now());
+      }
+    };
+
+    self.getUrl = function(domain, language) {
+      return self.baseUrl + '?domain=' + domain + '&language=' + language;
+    };
+
+    self.loadCatalog = function (domain, language) {
+      if (language === undefined) {
+        language = self.currentLanguage;
+      }
+      if (self.storage !== null) {
+        var key = domain + '-' + language;
+        if (key in self.storage) {
+          if ((Date.now() - parseInt(self.storage.getItem(key + '-updated'), 10)) < self.ttl) {
+            var catalog = JSON.parse(self.storage.getItem(key));
+            self._setCatalog(domain, language, catalog);
+            return;
+          }
+        }
+      }
+      $.getJSON(self.getUrl(domain, language), function (catalog) {
+        if (catalog === null) {
+          return;
+        }
+        self._setCatalog(domain, language, catalog);
+        self._storeCatalog(domain, language, catalog);
+      });
+    };
+
+    self.MessageFactory = function (domain, language) {
+      language = language || self.currentLanguage;
+
+      return function translate (msgid, keywords) {
+        var msgstr;
+        if ((domain in self.catalogs) && (language in self.catalogs[domain]) && (msgid in self.catalogs[domain][language])) {
+          msgstr = self.catalogs[domain][language][msgid];
+        } else {
+          msgstr = msgid;
+        }
+        if (keywords) {
+          var regexp, keyword;
+          for (keyword in keywords) {
+            if (keywords.hasOwnProperty(keyword)) {
+              regexp = new RegExp('\\$\\{' + keyword + '\\}', 'g');
+              msgstr = msgstr.replace(regexp, keywords[keyword]);
+            }
+          }
+        }
+        return msgstr;
+      };
+    };
+  };
+
+  return new I18N();
+});
+
+/* i18n integration.
+ *
+ * This is a singleton.
+ * Configuration is done on the body tag data-i18ncatalogurl attribute
+ *     <body data-i18ncatalogurl="/plonejsi18n">
+ *
+ *  Or, it'll default to "/plonejsi18n"
+ */
+
+define('translate',[
+  'mockup-i18n'
+], function(i18n) {
+  
+  i18n.loadCatalog('widgets');
+  return i18n.MessageFactory('widgets');
+});
+
 /* PickADate pattern.
  *
  * Options:
@@ -19488,6 +19561,181 @@ define('mockup-patterns-querystring',[
   });
 
   return QueryString;
+
+});
+
+/* Formunloadalert pattern.
+ *
+ * Options:
+ *    changingEvents(string): Events on which to check for changes (space-separated). ('change keyup paste')
+ *    changingFields(string): Fields on which to check for changes (comma-separated). ('input,select,textarea,fileupload')
+ *    message(string): Confirmation message to display when dirty form is being unloaded. (Discard changes? If you click OK, any changes you have made will be lost.)
+ *
+ * Documentation:
+ *    # Example
+ *
+ *    {{ example-1 }}
+ *
+ * Example: example-1
+ *    <form class="pat-formunloadalert" onsubmit="javascript:return false;">
+ *      <input type="text" value="" />
+ *      <select>
+ *        <option value="1">value 1</option>
+ *        <option value="2">value 2</option>
+ *      </select>
+ *      <input
+ *        class="btn btn-large btn-primary"
+ *        type="submit" value="Submit" />
+ *      <br />
+ *      <a href="/">Click here to go somewhere else</a>
+ *    </form>
+ *
+ */
+
+
+define('mockup-patterns-formunloadalert',[
+  'jquery',
+  'mockup-patterns-base',
+  'translate'
+], function ($, Base, _t) {
+  
+
+  var FormUnloadAlert = Base.extend({
+    name: 'formunloadalert',
+    trigger: '.pat-formunloadalert',
+    _changed : false,       // Stores a listing of raised changes by their key
+    _suppressed : false,     // whether or not warning should be suppressed
+    defaults: {
+      message :  _t('Discard changes? If you click OK, ' +
+                 'any changes you have made will be lost.'),
+      // events on which to check for changes
+      changingEvents: 'change keyup paste',
+      // fields on which to check for changes
+      changingFields: 'input,select,textarea,fileupload'
+    },
+    init: function () {
+      var self = this;
+      // if this is not a form just return
+      if (!self.$el.is('form')) { return; }
+
+      $(self.options.changingFields, self.$el).on(
+        self.options.changingEvents,
+        function (evt) {
+          self._changed = true;
+        }
+      );
+
+      var $modal = self.$el.parents('.plone-modal');
+      if ($modal.size() !== 0) {
+        $modal.data('pattern-modal').on('hide', function(e) {
+          var modal = $modal.data('pattern-modal');
+          if (modal) {
+            modal._suppressHide = self._handleUnload.apply(self, e);
+          }
+        });
+      } else {
+        $(window).on('beforeunload', function(e) {
+          return self._handleUnload(e);
+        });
+      }
+
+      self.$el.on('submit', function(e) {
+        self._suppressed = true;
+      });
+
+    },
+    _handleUnload : function (e) {
+      var self = this;
+      if (self._suppressed) {
+        self._suppressed = false;
+        return undefined;
+      }
+      if (self._changed) {
+        var msg = self.options.message;
+        self._handleMsg(e,msg);
+        $(window).trigger('messageset');
+        return msg;
+      }
+    },
+    _handleMsg:  function(e,msg) {
+      (e || window.event).returnValue = msg;
+    }
+  });
+  return FormUnloadAlert;
+
+});
+
+/* PreventDoubleSubmit pattern.
+ *
+ * Options:
+ *    guardClassName(string): Class applied to submit button after it is clicked once. ('submitting')
+ *    optOutClassName(string): Class used to opt-out a submit button from double-submit prevention. ('allowMultiSubmit')
+ *    message(string): Message to be displayed when "opt-out" submit button is clicked a second time. ('You already clicked the submit button. Do you really want to submit this form again?')
+ *
+ * Documentation:
+ *    # Example
+ *
+ *    {{ example-1 }}
+ *
+ * Example: example-1
+ *    <form class="pat-preventdoublesubmit" onsubmit="javascript:return false;">
+ *      <input type="text" value="submit this value please!" />
+ *      <input class="btn btn-large btn-primary" type="submit" value="Single submit" />
+ *      <input class="btn btn-large btn-primary allowMultiSubmit" type="submit" value="Multi submit" />
+ *    </form>
+ *
+ */
+
+
+define('mockup-patterns-preventdoublesubmit',[
+  'jquery',
+  'mockup-patterns-base',
+  'translate'
+], function($, Base, _t) {
+  
+
+  var PreventDoubleSubmit = Base.extend({
+    name: 'preventdoublesubmit',
+    trigger: '.pat-preventdoublesubmit',
+    defaults: {
+      message : _t('You already clicked the submit button. ' +
+                'Do you really want to submit this form again?'),
+      guardClassName: 'submitting',
+      optOutClassName: 'allowMultiSubmit'
+    },
+    init: function() {
+      var self = this;
+
+      // if this is not a form just return
+      if (!self.$el.is('form')) {
+        return;
+      }
+
+      $(':submit', self.$el).click(function(e) {
+
+        // mark the button as clicked
+        $(':submit').removeAttr('clicked');
+        $(this).attr('clicked', 'clicked');
+
+        // if submitting and no opt-out guardClassName is found
+        // pop up confirmation dialog
+        if ($(this).hasClass(self.options.guardClassName) &&
+              !$(this).hasClass(self.options.optOutClassName)) {
+          return self._confirm.call(self);
+        }
+
+        $(this).addClass(self.options.guardClassName);
+      });
+
+    },
+
+    _confirm: function(e) {
+      return window.confirm(this.options.message);
+    }
+
+  });
+
+  return PreventDoubleSubmit;
 
 });
 
@@ -23147,9 +23395,6 @@ define('mockup-patterns-relateditems',[
   return RelatedItems;
 
 });
-
-
-define('text!mockup-patterns-tinymce-url/templates/result.xml',[],function () { return '<div class="pattern-relateditems-result pattern-relateditems-type-<%= Type %> <% if (selected) { %>pattern-active<% } %>">\n  <a href="#" class="pattern-relateditems-result-select <% if (selectable) { %>selectable<% } %>">\n    <% if (!folderish) { %>\n    <span class="pattern-relateditems-result-image">\n      <img src="<%= generateImageUrl(_item, \'thumb\') %>" />\n    </span>\n    <% } %>\n    <span class="pattern-relateditems-result-title"><%= Title %></span>\n    <span class="pattern-relateditems-result-path"><%= path %></span>\n  </a>\n  <span class="pattern-relateditems-buttons">\n    <% if (folderish) { %>\n      <a class="pattern-relateditems-result-browse" href="#" data-path="<%= path %>"></a>\n    <% } %>\n  </span>\n</div>\n';});
 
 (function(root) {
 define("tinymce", [], function() {
@@ -60757,6 +61002,9 @@ return (function () { this.tinyMCE.DOM.events.domLoaded = true; return this.tiny
 }(this));
 
 
+define('text!mockup-patterns-tinymce-url/templates/result.xml',[],function () { return '<div class="pattern-relateditems-result pattern-relateditems-type-<%= Type %> <% if (selected) { %>pattern-active<% } %>">\n  <a href="#" class="pattern-relateditems-result-select <% if (selectable) { %>selectable<% } %>">\n    <% if (!folderish) { %>\n    <span class="pattern-relateditems-result-image">\n      <img src="<%= generateImageUrl(_item, \'thumb\') %>" />\n    </span>\n    <% } %>\n    <span class="pattern-relateditems-result-title"><%= Title %></span>\n    <span class="pattern-relateditems-result-path"><%= path %></span>\n  </a>\n  <span class="pattern-relateditems-buttons">\n    <% if (folderish) { %>\n      <a class="pattern-relateditems-result-browse" href="#" data-path="<%= path %>"></a>\n    <% } %>\n  </span>\n</div>\n';});
+
+
 define('text!mockup-patterns-tinymce-url/templates/selection.xml',[],function () { return '<span class="pattern-relateditems-item pattern-relateditems-type-<%= Type %>">\n <span class="pattern-relateditems-result-image">\n   <img src="<%= generateImageUrl(_item, \'thumb\') %>" />\n </span>\n <span class="pattern-relateditems-item-title"><%= Title %></span>\n <span class="pattern-relateditems-item-path"><%= path %></span>\n</span>\'\n';});
 
 
@@ -70554,6 +70802,1637 @@ tinymce.PluginManager.add('preview', function(editor) {
 }(this));
 
 (function(root) {
+define("tinymce-paste", ["tinymce"], function() {
+  return (function() {
+/**
+ * Compiled inline version. (Library mode)
+ */
+
+/*jshint smarttabs:true, undef:true, latedef:true, curly:true, bitwise:true, camelcase:true */
+/*globals $code */
+
+(function(exports, undefined) {
+    
+
+    var modules = {};
+
+    function require(ids, callback) {
+        var module, defs = [];
+
+        for (var i = 0; i < ids.length; ++i) {
+            module = modules[ids[i]] || resolve(ids[i]);
+            if (!module) {
+                throw 'module definition dependecy not found: ' + ids[i];
+            }
+
+            defs.push(module);
+        }
+
+        callback.apply(null, defs);
+    }
+
+    function define(id, dependencies, definition) {
+        if (typeof id !== 'string') {
+            throw 'invalid module definition, module id must be defined and be a string';
+        }
+
+        if (dependencies === undefined) {
+            throw 'invalid module definition, dependencies must be specified';
+        }
+
+        if (definition === undefined) {
+            throw 'invalid module definition, definition function must be specified';
+        }
+
+        require(dependencies, function() {
+            modules[id] = definition.apply(null, arguments);
+        });
+    }
+
+    function defined(id) {
+        return !!modules[id];
+    }
+
+    function resolve(id) {
+        var target = exports;
+        var fragments = id.split(/[.\/]/);
+
+        for (var fi = 0; fi < fragments.length; ++fi) {
+            if (!target[fragments[fi]]) {
+                return;
+            }
+
+            target = target[fragments[fi]];
+        }
+
+        return target;
+    }
+
+    function expose(ids) {
+        for (var i = 0; i < ids.length; i++) {
+            var target = exports;
+            var id = ids[i];
+            var fragments = id.split(/[.\/]/);
+
+            for (var fi = 0; fi < fragments.length - 1; ++fi) {
+                if (target[fragments[fi]] === undefined) {
+                    target[fragments[fi]] = {};
+                }
+
+                target = target[fragments[fi]];
+            }
+
+            target[fragments[fragments.length - 1]] = modules[id];
+        }
+    }
+
+// Included from: js/tinymce/plugins/paste/classes/Utils.js
+
+/**
+ * Utils.js
+ *
+ * Copyright, Moxiecode Systems AB
+ * Released under LGPL License.
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+/**
+ * This class contails various utility functions for the paste plugin.
+ *
+ * @class tinymce.pasteplugin.Clipboard
+ * @private
+ */
+define("tinymce/pasteplugin/Utils", [
+    "tinymce/util/Tools",
+    "tinymce/html/DomParser",
+    "tinymce/html/Schema"
+], function(Tools, DomParser, Schema) {
+    function filter(content, items) {
+        Tools.each(items, function(v) {
+            if (v.constructor == RegExp) {
+                content = content.replace(v, '');
+            } else {
+                content = content.replace(v[0], v[1]);
+            }
+        });
+
+        return content;
+    }
+
+    /**
+     * Gets the innerText of the specified element. It will handle edge cases
+     * and works better than textContent on Gecko.
+     *
+     * @param {String} html HTML string to get text from.
+     * @return {String} String of text with line feeds.
+     */
+    function innerText(html) {
+        var schema = new Schema(), domParser = new DomParser({}, schema), text = '';
+        var shortEndedElements = schema.getShortEndedElements();
+        var ignoreElements = Tools.makeMap('script noscript style textarea video audio iframe object', ' ');
+        var blockElements = schema.getBlockElements();
+
+        function walk(node) {
+            var name = node.name, currentNode = node;
+
+            if (name === 'br') {
+                text += '\n';
+                return;
+            }
+
+            // img/input/hr
+            if (shortEndedElements[name]) {
+                text += ' ';
+            }
+
+            // Ingore script, video contents
+            if (ignoreElements[name]) {
+                text += ' ';
+                return;
+            }
+
+            if (node.type == 3) {
+                text += node.value;
+            }
+
+            // Walk all children
+            if (!node.shortEnded) {
+                if ((node = node.firstChild)) {
+                    do {
+                        walk(node);
+                    } while ((node = node.next));
+                }
+            }
+
+            // Add \n or \n\n for blocks or P
+            if (blockElements[name] && currentNode.next) {
+                text += '\n';
+
+                if (name == 'p') {
+                    text += '\n';
+                }
+            }
+        }
+
+        html = filter(html, [
+            /<!\[[^\]]+\]>/g // Conditional comments
+        ]);
+
+        walk(domParser.parse(html));
+
+        return text;
+    }
+
+    /**
+     * Trims the specified HTML by removing all WebKit fragments, all elements wrapping the body trailing BR elements etc.
+     *
+     * @param {String} html Html string to trim contents on.
+     * @return {String} Html contents that got trimmed.
+     */
+    function trimHtml(html) {
+        function trimSpaces(all, s1, s2) {
+            // WebKit &nbsp; meant to preserve multiple spaces but instead inserted around all inline tags,
+            // including the spans with inline styles created on paste
+            if (!s1 && !s2) {
+                return ' ';
+            }
+
+            return '\u00a0';
+        }
+
+        html = filter(html, [
+            /^[\s\S]*<body[^>]*>\s*|\s*<\/body[^>]*>[\s\S]*$/g, // Remove anything but the contents within the BODY element
+            /<!--StartFragment-->|<!--EndFragment-->/g, // Inner fragments (tables from excel on mac)
+            [/( ?)<span class="Apple-converted-space">\u00a0<\/span>( ?)/g, trimSpaces],
+            /<br>$/i // Trailing BR elements
+        ]);
+
+        return html;
+    }
+
+    return {
+        filter: filter,
+        innerText: innerText,
+        trimHtml: trimHtml
+    };
+});
+
+// Included from: js/tinymce/plugins/paste/classes/Clipboard.js
+
+/**
+ * Clipboard.js
+ *
+ * Copyright, Moxiecode Systems AB
+ * Released under LGPL License.
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+/**
+ * This class contains logic for getting HTML contents out of the clipboard.
+ *
+ * We need to make a lot of ugly hacks to get the contents out of the clipboard since
+ * the W3C Clipboard API is broken in all browsers that have it: Gecko/WebKit/Blink.
+ * We might rewrite this the way those API:s stabilize. Browsers doesn't handle pasting
+ * from applications like Word the same way as it does when pasting into a contentEditable area
+ * so we need to do lots of extra work to try to get to this clipboard data.
+ *
+ * Current implementation steps:
+ *  1. On keydown with paste keys Ctrl+V or Shift+Insert create
+ *     a paste bin element and move focus to that element.
+ *  2. Wait for the browser to fire a "paste" event and get the contents out of the paste bin.
+ *  3. Check if the paste was successful if true, process the HTML.
+ *  (4). If the paste was unsuccessful use IE execCommand, Clipboard API, document.dataTransfer old WebKit API etc.
+ *
+ * @class tinymce.pasteplugin.Clipboard
+ * @private
+ */
+define("tinymce/pasteplugin/Clipboard", [
+    "tinymce/Env",
+    "tinymce/util/VK",
+    "tinymce/pasteplugin/Utils"
+], function(Env, VK, Utils) {
+    return function(editor) {
+        var self = this, pasteBinElm, lastRng, keyboardPasteTimeStamp = 0, draggingInternally = false;
+        var pasteBinDefaultContent = '%MCEPASTEBIN%', keyboardPastePlainTextState;
+
+        /**
+         * Pastes the specified HTML. This means that the HTML is filtered and then
+         * inserted at the current selection in the editor. It will also fire paste events
+         * for custom user filtering.
+         *
+         * @param {String} html HTML code to paste into the current selection.
+         */
+        function pasteHtml(html) {
+            var args, dom = editor.dom;
+
+            args = editor.fire('BeforePastePreProcess', {content: html}); // Internal event used by Quirks
+            args = editor.fire('PastePreProcess', args);
+            html = args.content;
+
+            if (!args.isDefaultPrevented()) {
+                // User has bound PastePostProcess events then we need to pass it through a DOM node
+                // This is not ideal but we don't want to let the browser mess up the HTML for example
+                // some browsers add &nbsp; to P tags etc
+                if (editor.hasEventListeners('PastePostProcess') && !args.isDefaultPrevented()) {
+                    // We need to attach the element to the DOM so Sizzle selectors work on the contents
+                    var tempBody = dom.add(editor.getBody(), 'div', {style: 'display:none'}, html);
+                    args = editor.fire('PastePostProcess', {node: tempBody});
+                    dom.remove(tempBody);
+                    html = args.node.innerHTML;
+                }
+
+                if (!args.isDefaultPrevented()) {
+                    editor.insertContent(html, {merge: editor.settings.paste_merge_formats !== false});
+                }
+            }
+        }
+
+        /**
+         * Pastes the specified text. This means that the plain text is processed
+         * and converted into BR and P elements. It will fire paste events for custom filtering.
+         *
+         * @param {String} text Text to paste as the current selection location.
+         */
+        function pasteText(text) {
+            text = editor.dom.encode(text).replace(/\r\n/g, '\n');
+
+            var startBlock = editor.dom.getParent(editor.selection.getStart(), editor.dom.isBlock);
+
+            // Create start block html for example <p attr="value">
+            var forcedRootBlockName = editor.settings.forced_root_block;
+            var forcedRootBlockStartHtml;
+            if (forcedRootBlockName) {
+                forcedRootBlockStartHtml = editor.dom.createHTML(forcedRootBlockName, editor.settings.forced_root_block_attrs);
+                forcedRootBlockStartHtml = forcedRootBlockStartHtml.substr(0, forcedRootBlockStartHtml.length - 3) + '>';
+            }
+
+            if ((startBlock && /^(PRE|DIV)$/.test(startBlock.nodeName)) || !forcedRootBlockName) {
+                text = Utils.filter(text, [
+                    [/\n/g, "<br>"]
+                ]);
+            } else {
+                text = Utils.filter(text, [
+                    [/\n\n/g, "</p>" + forcedRootBlockStartHtml],
+                    [/^(.*<\/p>)(<p>)$/, forcedRootBlockStartHtml + '$1'],
+                    [/\n/g, "<br />"]
+                ]);
+
+                if (text.indexOf('<p>') != -1) {
+                    text = forcedRootBlockStartHtml + text;
+                }
+            }
+
+            pasteHtml(text);
+        }
+
+        /**
+         * Creates a paste bin element as close as possible to the current caret location and places the focus inside that element
+         * so that when the real paste event occurs the contents gets inserted into this element
+         * instead of the current editor selection element.
+         */
+        function createPasteBin() {
+            var dom = editor.dom, body = editor.getBody();
+            var viewport = editor.dom.getViewPort(editor.getWin()), scrollTop = viewport.y, top = 20;
+            var scrollContainer;
+
+            lastRng = editor.selection.getRng();
+
+            if (editor.inline) {
+                scrollContainer = editor.selection.getScrollContainer();
+
+                // Can't always rely on scrollTop returning a useful value.
+                // It returns 0 if the browser doesn't support scrollTop for the element or is non-scrollable
+                if (scrollContainer && scrollContainer.scrollTop > 0) {
+                    scrollTop = scrollContainer.scrollTop;
+                }
+            }
+
+            /**
+             * Returns the rect of the current caret if the caret is in an empty block before a
+             * BR we insert a temporary invisible character that we get the rect this way we always get a proper rect.
+             *
+             * TODO: This might be useful in core.
+             */
+            function getCaretRect(rng) {
+                var rects, textNode, node, container = rng.startContainer;
+
+                rects = rng.getClientRects();
+                if (rects.length) {
+                    return rects[0];
+                }
+
+                if (!rng.collapsed || container.nodeType != 1) {
+                    return;
+                }
+
+                node = container.childNodes[lastRng.startOffset];
+
+                // Skip empty whitespace nodes
+                while (node && node.nodeType == 3 && !node.data.length) {
+                    node = node.nextSibling;
+                }
+
+                if (!node) {
+                    return;
+                }
+
+                // Check if the location is |<br>
+                // TODO: Might need to expand this to say |<table>
+                if (node.tagName == 'BR') {
+                    textNode = dom.doc.createTextNode('\uFEFF');
+                    node.parentNode.insertBefore(textNode, node);
+
+                    rng = dom.createRng();
+                    rng.setStartBefore(textNode);
+                    rng.setEndAfter(textNode);
+
+                    rects = rng.getClientRects();
+                    dom.remove(textNode);
+                }
+
+                if (rects.length) {
+                    return rects[0];
+                }
+            }
+
+            // Calculate top cordinate this is needed to avoid scrolling to top of document
+            // We want the paste bin to be as close to the caret as possible to avoid scrolling
+            if (lastRng.getClientRects) {
+                var rect = getCaretRect(lastRng);
+
+                if (rect) {
+                    // Client rects gets us closes to the actual
+                    // caret location in for example a wrapped paragraph block
+                    top = scrollTop + (rect.top - dom.getPos(body).y);
+                } else {
+                    top = scrollTop;
+
+                    // Check if we can find a closer location by checking the range element
+                    var container = lastRng.startContainer;
+                    if (container) {
+                        if (container.nodeType == 3 && container.parentNode != body) {
+                            container = container.parentNode;
+                        }
+
+                        if (container.nodeType == 1) {
+                            top = dom.getPos(container, scrollContainer || body).y;
+                        }
+                    }
+                }
+            }
+
+            // Create a pastebin
+            pasteBinElm = dom.add(editor.getBody(), 'div', {
+                id: "mcepastebin",
+                contentEditable: true,
+                "data-mce-bogus": "all",
+                style: 'position: absolute; top: ' + top + 'px;' +
+                    'width: 10px; height: 10px; overflow: hidden; opacity: 0'
+            }, pasteBinDefaultContent);
+
+            // Move paste bin out of sight since the controlSelection rect gets displayed otherwise on IE and Gecko
+            if (Env.ie || Env.gecko) {
+                dom.setStyle(pasteBinElm, 'left', dom.getStyle(body, 'direction', true) == 'rtl' ? 0xFFFF : -0xFFFF);
+            }
+
+            // Prevent focus events from bubbeling fixed FocusManager issues
+            dom.bind(pasteBinElm, 'beforedeactivate focusin focusout', function(e) {
+                e.stopPropagation();
+            });
+
+            pasteBinElm.focus();
+            editor.selection.select(pasteBinElm, true);
+        }
+
+        /**
+         * Removes the paste bin if it exists.
+         */
+        function removePasteBin() {
+            if (pasteBinElm) {
+                var pasteBinClone;
+
+                // WebKit/Blink might clone the div so
+                // lets make sure we remove all clones
+                // TODO: Man o man is this ugly. WebKit is the new IE! Remove this if they ever fix it!
+                while ((pasteBinClone = editor.dom.get('mcepastebin'))) {
+                    editor.dom.remove(pasteBinClone);
+                    editor.dom.unbind(pasteBinClone);
+                }
+
+                if (lastRng) {
+                    editor.selection.setRng(lastRng);
+                }
+            }
+
+            pasteBinElm = lastRng = null;
+        }
+
+        /**
+         * Returns the contents of the paste bin as a HTML string.
+         *
+         * @return {String} Get the contents of the paste bin.
+         */
+        function getPasteBinHtml() {
+            var html = '', pasteBinClones, i, clone, cloneHtml;
+
+            // Since WebKit/Chrome might clone the paste bin when pasting
+            // for example: <img style="float: right"> we need to check if any of them contains some useful html.
+            // TODO: Man o man is this ugly. WebKit is the new IE! Remove this if they ever fix it!
+            pasteBinClones = editor.dom.select('div[id=mcepastebin]');
+            for (i = 0; i < pasteBinClones.length; i++) {
+                clone = pasteBinClones[i];
+
+                // Pasting plain text produces pastebins in pastebinds makes sence right!?
+                if (clone.firstChild && clone.firstChild.id == 'mcepastebin') {
+                    clone = clone.firstChild;
+                }
+
+                cloneHtml = clone.innerHTML;
+                if (html != pasteBinDefaultContent) {
+                    html += cloneHtml;
+                }
+            }
+
+            return html;
+        }
+
+        /**
+         * Gets various content types out of a datatransfer object.
+         *
+         * @param {DataTransfer} dataTransfer Event fired on paste.
+         * @return {Object} Object with mime types and data for those mime types.
+         */
+        function getDataTransferItems(dataTransfer) {
+            var data = {};
+
+            if (dataTransfer) {
+                // Use old WebKit/IE API
+                if (dataTransfer.getData) {
+                    var legacyText = dataTransfer.getData('Text');
+                    if (legacyText && legacyText.length > 0) {
+                        data['text/plain'] = legacyText;
+                    }
+                }
+
+                if (dataTransfer.types) {
+                    for (var i = 0; i < dataTransfer.types.length; i++) {
+                        var contentType = dataTransfer.types[i];
+                        data[contentType] = dataTransfer.getData(contentType);
+                    }
+                }
+            }
+
+            return data;
+        }
+
+        /**
+         * Gets various content types out of the Clipboard API. It will also get the
+         * plain text using older IE and WebKit API:s.
+         *
+         * @param {ClipboardEvent} clipboardEvent Event fired on paste.
+         * @return {Object} Object with mime types and data for those mime types.
+         */
+        function getClipboardContent(clipboardEvent) {
+            return getDataTransferItems(clipboardEvent.clipboardData || editor.getDoc().dataTransfer);
+        }
+
+        /**
+         * Checks if the clipboard contains image data if it does it will take that data
+         * and convert it into a data url image and paste that image at the caret location.
+         *
+         * @param  {ClipboardEvent} e Paste/drop event object.
+         * @param  {DOMRange} rng Optional rng object to move selection to.
+         * @return {Boolean} true/false if the image data was found or not.
+         */
+        function pasteImageData(e, rng) {
+            var dataTransfer = e.clipboardData || e.dataTransfer;
+
+            function processItems(items) {
+                var i, item, reader;
+
+                function pasteImage() {
+                    if (rng) {
+                        editor.selection.setRng(rng);
+                        rng = null;
+                    }
+
+                    pasteHtml('<img src="' + reader.result + '">');
+                }
+
+                if (items) {
+                    for (i = 0; i < items.length; i++) {
+                        item = items[i];
+
+                        if (/^image\/(jpeg|png|gif)$/.test(item.type)) {
+                            reader = new FileReader();
+                            reader.onload = pasteImage;
+                            reader.readAsDataURL(item.getAsFile ? item.getAsFile() : item);
+
+                            e.preventDefault();
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            if (editor.settings.paste_data_images && dataTransfer) {
+                return processItems(dataTransfer.items) || processItems(dataTransfer.files);
+            }
+        }
+
+        /**
+         * Chrome on Android doesn't support proper clipboard access so we have no choice but to allow the browser default behavior.
+         *
+         * @param {Event} e Paste event object to check if it contains any data.
+         * @return {Boolean} true/false if the clipboard is empty or not.
+         */
+        function isBrokenAndroidClipboardEvent(e) {
+            var clipboardData = e.clipboardData;
+
+            return navigator.userAgent.indexOf('Android') != -1 && clipboardData && clipboardData.items && clipboardData.items.length === 0;
+        }
+
+        function getCaretRangeFromEvent(e) {
+            var doc = editor.getDoc(), rng, point;
+
+            if (doc.caretPositionFromPoint) {
+                point = doc.caretPositionFromPoint(e.clientX, e.clientY);
+                rng = doc.createRange();
+                rng.setStart(point.offsetNode, point.offset);
+                rng.collapse(true);
+            } else if (doc.caretRangeFromPoint) {
+                rng = doc.caretRangeFromPoint(e.clientX, e.clientY);
+            } else if (doc.body.createTextRange) {
+                rng = doc.body.createTextRange();
+
+                try {
+                    rng.moveToPoint(e.clientX, e.clientY);
+                    rng.collapse(true);
+                } catch (ex) {
+                    // Append to top or bottom depending on drop location
+                    rng.collapse(e.clientY < doc.body.clientHeight);
+                }
+            }
+
+            return rng;
+        }
+
+        function hasContentType(clipboardContent, mimeType) {
+            return mimeType in clipboardContent && clipboardContent[mimeType].length > 0;
+        }
+
+        function isKeyboardPasteEvent(e) {
+            return (VK.metaKeyPressed(e) && e.keyCode == 86) || (e.shiftKey && e.keyCode == 45);
+        }
+
+        function registerEventHandlers() {
+            editor.on('keydown', function(e) {
+                function removePasteBinOnKeyUp(e) {
+                    // Ctrl+V or Shift+Insert
+                    if (isKeyboardPasteEvent(e) && !e.isDefaultPrevented()) {
+                        removePasteBin();
+                    }
+                }
+
+                // Ctrl+V or Shift+Insert
+                if (isKeyboardPasteEvent(e) && !e.isDefaultPrevented()) {
+                    keyboardPastePlainTextState = e.shiftKey && e.keyCode == 86;
+
+                    // Edge case on Safari on Mac where it doesn't handle Cmd+Shift+V correctly
+                    // it fires the keydown but no paste or keyup so we are left with a paste bin
+                    if (keyboardPastePlainTextState && Env.webkit && navigator.userAgent.indexOf('Version/') != -1) {
+                        return;
+                    }
+
+                    // Prevent undoManager keydown handler from making an undo level with the pastebin in it
+                    e.stopImmediatePropagation();
+
+                    keyboardPasteTimeStamp = new Date().getTime();
+
+                    // IE doesn't support Ctrl+Shift+V and it doesn't even produce a paste event
+                    // so lets fake a paste event and let IE use the execCommand/dataTransfer methods
+                    if (Env.ie && keyboardPastePlainTextState) {
+                        e.preventDefault();
+                        editor.fire('paste', {ieFake: true});
+                        return;
+                    }
+
+                    removePasteBin();
+                    createPasteBin();
+
+                    // Remove pastebin if we get a keyup and no paste event
+                    // For example pasting a file in IE 11 will not produce a paste event
+                    editor.once('keyup', removePasteBinOnKeyUp);
+                    editor.once('paste', function() {
+                        editor.off('keyup', removePasteBinOnKeyUp);
+                    });
+                }
+            });
+
+            editor.on('paste', function(e) {
+                // Getting content from the Clipboard can take some time
+                var clipboardTimer = new Date().getTime();
+                var clipboardContent = getClipboardContent(e);
+                var clipboardDelay = new Date().getTime() - clipboardTimer;
+
+                var isKeyBoardPaste = (new Date().getTime() - keyboardPasteTimeStamp - clipboardDelay) < 1000;
+                var plainTextMode = self.pasteFormat == "text" || keyboardPastePlainTextState;
+
+                keyboardPastePlainTextState = false;
+
+                if (e.isDefaultPrevented() || isBrokenAndroidClipboardEvent(e)) {
+                    removePasteBin();
+                    return;
+                }
+
+                if (pasteImageData(e)) {
+                    removePasteBin();
+                    return;
+                }
+
+                // Not a keyboard paste prevent default paste and try to grab the clipboard contents using different APIs
+                if (!isKeyBoardPaste) {
+                    e.preventDefault();
+                }
+
+                // Try IE only method if paste isn't a keyboard paste
+                if (Env.ie && (!isKeyBoardPaste || e.ieFake)) {
+                    createPasteBin();
+
+                    editor.dom.bind(pasteBinElm, 'paste', function(e) {
+                        e.stopPropagation();
+                    });
+
+                    editor.getDoc().execCommand('Paste', false, null);
+                    clipboardContent["text/html"] = getPasteBinHtml();
+                }
+
+                setTimeout(function() {
+                    var content;
+
+                    // Grab HTML from Clipboard API or paste bin as a fallback
+                    if (hasContentType(clipboardContent, 'text/html')) {
+                        content = clipboardContent['text/html'];
+                    } else {
+                        content = getPasteBinHtml();
+
+                        // If paste bin is empty try using plain text mode
+                        // since that is better than nothing right
+                        if (content == pasteBinDefaultContent) {
+                            plainTextMode = true;
+                        }
+                    }
+
+                    content = Utils.trimHtml(content);
+
+                    // WebKit has a nice bug where it clones the paste bin if you paste from for example notepad
+                    // so we need to force plain text mode in this case
+                    if (pasteBinElm && pasteBinElm.firstChild && pasteBinElm.firstChild.id === 'mcepastebin') {
+                        plainTextMode = true;
+                    }
+
+                    removePasteBin();
+
+                    // If we got nothing from clipboard API and pastebin then we could try the last resort: plain/text
+                    if (!content.length) {
+                        plainTextMode = true;
+                    }
+
+                    // Grab plain text from Clipboard API or convert existing HTML to plain text
+                    if (plainTextMode) {
+                        // Use plain text contents from Clipboard API unless the HTML contains paragraphs then
+                        // we should convert the HTML to plain text since works better when pasting HTML/Word contents as plain text
+                        if (hasContentType(clipboardContent, 'text/plain') && content.indexOf('</p>') == -1) {
+                            content = clipboardContent['text/plain'];
+                        } else {
+                            content = Utils.innerText(content);
+                        }
+                    }
+
+                    // If the content is the paste bin default HTML then it was
+                    // impossible to get the cliboard data out.
+                    if (content == pasteBinDefaultContent) {
+                        if (!isKeyBoardPaste) {
+                            editor.windowManager.alert('Please use Ctrl+V/Cmd+V keyboard shortcuts to paste contents.');
+                        }
+
+                        return;
+                    }
+
+                    if (plainTextMode) {
+                        pasteText(content);
+                    } else {
+                        pasteHtml(content);
+                    }
+                }, 0);
+            });
+
+            editor.on('dragstart dragend', function(e) {
+                draggingInternally = e.type == 'dragstart';
+            });
+
+            editor.on('drop', function(e) {
+                var rng = getCaretRangeFromEvent(e);
+
+                if (e.isDefaultPrevented() || draggingInternally) {
+                    return;
+                }
+
+                if (pasteImageData(e, rng)) {
+                    return;
+                }
+
+                if (rng && editor.settings.paste_filter_drop !== false) {
+                    var dropContent = getDataTransferItems(e.dataTransfer);
+                    var content = dropContent['mce-internal'] || dropContent['text/html'] || dropContent['text/plain'];
+
+                    if (content) {
+                        e.preventDefault();
+
+                        editor.undoManager.transact(function() {
+                            if (dropContent['mce-internal']) {
+                                editor.execCommand('Delete');
+                            }
+
+                            editor.selection.setRng(rng);
+
+                            content = Utils.trimHtml(content);
+
+                            if (!dropContent['text/html']) {
+                                pasteText(content);
+                            } else {
+                                pasteHtml(content);
+                            }
+                        });
+                    }
+                }
+            });
+
+            editor.on('dragover dragend', function(e) {
+                var i, dataTransfer = e.dataTransfer;
+
+                if (editor.settings.paste_data_images && dataTransfer) {
+                    for (i = 0; i < dataTransfer.types.length; i++) {
+                        // Prevent default if we have files dragged into the editor since the pasteImageData handles that
+                        if (dataTransfer.types[i] == "Files") {
+                            e.preventDefault();
+                            return false;
+                        }
+                    }
+                }
+            });
+        }
+
+        self.pasteHtml = pasteHtml;
+        self.pasteText = pasteText;
+
+        editor.on('preInit', function() {
+            registerEventHandlers();
+
+            // Remove all data images from paste for example from Gecko
+            // except internal images like video elements
+            editor.parser.addNodeFilter('img', function(nodes) {
+                if (!editor.settings.paste_data_images) {
+                    var i = nodes.length;
+
+                    while (i--) {
+                        var src = nodes[i].attributes.map.src;
+
+                        // Some browsers automatically produce data uris on paste
+                        // Safari on Mac produces webkit-fake-url see: https://bugs.webkit.org/show_bug.cgi?id=49141
+                        if (src && /^(data:image|webkit\-fake\-url)/.test(src)) {
+                            if (!nodes[i].attr('data-mce-object') && src !== Env.transparentSrc) {
+                                nodes[i].remove();
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    };
+});
+
+// Included from: js/tinymce/plugins/paste/classes/WordFilter.js
+
+/**
+ * WordFilter.js
+ *
+ * Copyright, Moxiecode Systems AB
+ * Released under LGPL License.
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+/**
+ * This class parses word HTML into proper TinyMCE markup.
+ *
+ * @class tinymce.pasteplugin.Quirks
+ * @private
+ */
+define("tinymce/pasteplugin/WordFilter", [
+    "tinymce/util/Tools",
+    "tinymce/html/DomParser",
+    "tinymce/html/Schema",
+    "tinymce/html/Serializer",
+    "tinymce/html/Node",
+    "tinymce/pasteplugin/Utils"
+], function(Tools, DomParser, Schema, Serializer, Node, Utils) {
+    /**
+     * Checks if the specified content is from any of the following sources: MS Word/Office 365/Google docs.
+     */
+    function isWordContent(content) {
+        return (
+            (/<font face="Times New Roman"|class="?Mso|style="[^"]*\bmso-|style='[^'']*\bmso-|w:WordDocument/i).test(content) ||
+            (/class="OutlineElement/).test(content) ||
+            (/id="?docs\-internal\-guid\-/.test(content))
+        );
+    }
+
+    /**
+     * Checks if the specified text starts with "1. " or "a. " etc.
+     */
+    function isNumericList(text) {
+        var found, patterns;
+
+        patterns = [
+            /^[IVXLMCD]{1,2}\.[ \u00a0]/,  // Roman upper case
+            /^[ivxlmcd]{1,2}\.[ \u00a0]/,  // Roman lower case
+            /^[a-z]{1,2}[\.\)][ \u00a0]/,  // Alphabetical a-z
+            /^[A-Z]{1,2}[\.\)][ \u00a0]/,  // Alphabetical A-Z
+            /^[0-9]+\.[ \u00a0]/,          // Numeric lists
+            /^[\u3007\u4e00\u4e8c\u4e09\u56db\u4e94\u516d\u4e03\u516b\u4e5d]+\.[ \u00a0]/, // Japanese
+            /^[\u58f1\u5f10\u53c2\u56db\u4f0d\u516d\u4e03\u516b\u4e5d\u62fe]+\.[ \u00a0]/  // Chinese
+        ];
+
+        text = text.replace(/^[\u00a0 ]+/, '');
+
+        Tools.each(patterns, function(pattern) {
+            if (pattern.test(text)) {
+                found = true;
+                return false;
+            }
+        });
+
+        return found;
+    }
+
+    function isBulletList(text) {
+        return /^[\s\u00a0]*[\u2022\u00b7\u00a7\u00d8\u25CF]\s*/.test(text);
+    }
+
+    function WordFilter(editor) {
+        var settings = editor.settings;
+
+        editor.on('BeforePastePreProcess', function(e) {
+            var content = e.content, retainStyleProperties, validStyles;
+
+            retainStyleProperties = settings.paste_retain_style_properties;
+            if (retainStyleProperties) {
+                validStyles = Tools.makeMap(retainStyleProperties.split(/[, ]/));
+            }
+
+            /**
+             * Converts fake bullet and numbered lists to real semantic OL/UL.
+             *
+             * @param {tinymce.html.Node} node Root node to convert children of.
+             */
+            function convertFakeListsToProperLists(node) {
+                var currentListNode, prevListNode, lastLevel = 1;
+
+                function getText(node) {
+                    var txt = '';
+
+                    if (node.type === 3) {
+                        return node.value;
+                    }
+
+                    if ((node = node.firstChild)) {
+                        do {
+                            txt += getText(node);
+                        } while ((node = node.next));
+                    }
+
+                    return txt;
+                }
+
+                function trimListStart(node, regExp) {
+                    if (node.type === 3) {
+                        if (regExp.test(node.value)) {
+                            node.value = node.value.replace(regExp, '');
+                            return false;
+                        }
+                    }
+
+                    if ((node = node.firstChild)) {
+                        do {
+                            if (!trimListStart(node, regExp)) {
+                                return false;
+                            }
+                        } while ((node = node.next));
+                    }
+
+                    return true;
+                }
+
+                function removeIgnoredNodes(node) {
+                    if (node._listIgnore) {
+                        node.remove();
+                        return;
+                    }
+
+                    if ((node = node.firstChild)) {
+                        do {
+                            removeIgnoredNodes(node);
+                        } while ((node = node.next));
+                    }
+                }
+
+                function convertParagraphToLi(paragraphNode, listName, start) {
+                    var level = paragraphNode._listLevel || lastLevel;
+
+                    // Handle list nesting
+                    if (level != lastLevel) {
+                        if (level < lastLevel) {
+                            // Move to parent list
+                            if (currentListNode) {
+                                currentListNode = currentListNode.parent.parent;
+                            }
+                        } else {
+                            // Create new list
+                            prevListNode = currentListNode;
+                            currentListNode = null;
+                        }
+                    }
+
+                    if (!currentListNode || currentListNode.name != listName) {
+                        prevListNode = prevListNode || currentListNode;
+                        currentListNode = new Node(listName, 1);
+
+                        if (start > 1) {
+                            currentListNode.attr('start', '' + start);
+                        }
+
+                        paragraphNode.wrap(currentListNode);
+                    } else {
+                        currentListNode.append(paragraphNode);
+                    }
+
+                    paragraphNode.name = 'li';
+
+                    // Append list to previous list if it exists
+                    if (level > lastLevel && prevListNode) {
+                        prevListNode.lastChild.append(currentListNode);
+                    }
+
+                    lastLevel = level;
+
+                    // Remove start of list item "1. " or "&middot; " etc
+                    removeIgnoredNodes(paragraphNode);
+                    trimListStart(paragraphNode, /^\u00a0+/);
+                    trimListStart(paragraphNode, /^\s*([\u2022\u00b7\u00a7\u00d8\u25CF]|\w+\.)/);
+                    trimListStart(paragraphNode, /^\u00a0+/);
+                }
+
+                // Build a list of all root level elements before we start
+                // altering them in the loop below.
+                var elements = [], child = node.firstChild;
+                while (typeof child !== 'undefined' && child !== null) {
+                    elements.push(child);
+
+                    child = child.walk();
+                    if (child !== null) {
+                        while (typeof child !== 'undefined' && child.parent !== node) {
+                            child = child.walk();
+                        }
+                    }
+                }
+
+                for (var i = 0; i < elements.length; i++) {
+                    node = elements[i];
+
+                    if (node.name == 'p' && node.firstChild) {
+                        // Find first text node in paragraph
+                        var nodeText = getText(node);
+
+                        // Detect unordered lists look for bullets
+                        if (isBulletList(nodeText)) {
+                            convertParagraphToLi(node, 'ul');
+                            continue;
+                        }
+
+                        // Detect ordered lists 1., a. or ixv.
+                        if (isNumericList(nodeText)) {
+                            // Parse OL start number
+                            var matches = /([0-9]+)\./.exec(nodeText);
+                            var start = 1;
+                            if (matches) {
+                                start = parseInt(matches[1], 10);
+                            }
+
+                            convertParagraphToLi(node, 'ol', start);
+                            continue;
+                        }
+
+                        // Convert paragraphs marked as lists but doesn't look like anything
+                        if (node._listLevel) {
+                            convertParagraphToLi(node, 'ul', 1);
+                            continue;
+                        }
+
+                        currentListNode = null;
+                    } else {
+                        // If the root level element isn't a p tag which can be
+                        // processed by convertParagraphToLi, it interrupts the
+                        // lists, causing a new list to start instead of having
+                        // elements from the next list inserted above this tag.
+                        prevListNode = currentListNode;
+                        currentListNode = null;
+                    }
+                }
+            }
+
+            function filterStyles(node, styleValue) {
+                var outputStyles = {}, matches, styles = editor.dom.parseStyle(styleValue);
+
+                Tools.each(styles, function(value, name) {
+                    // Convert various MS styles to W3C styles
+                    switch (name) {
+                        case 'mso-list':
+                            // Parse out list indent level for lists
+                            matches = /\w+ \w+([0-9]+)/i.exec(styleValue);
+                            if (matches) {
+                                node._listLevel = parseInt(matches[1], 10);
+                            }
+
+                            // Remove these nodes <span style="mso-list:Ignore">o</span>
+                            // Since the span gets removed we mark the text node and the span
+                            if (/Ignore/i.test(value) && node.firstChild) {
+                                node._listIgnore = true;
+                                node.firstChild._listIgnore = true;
+                            }
+
+                            break;
+
+                        case "horiz-align":
+                            name = "text-align";
+                            break;
+
+                        case "vert-align":
+                            name = "vertical-align";
+                            break;
+
+                        case "font-color":
+                        case "mso-foreground":
+                            name = "color";
+                            break;
+
+                        case "mso-background":
+                        case "mso-highlight":
+                            name = "background";
+                            break;
+
+                        case "font-weight":
+                        case "font-style":
+                            if (value != "normal") {
+                                outputStyles[name] = value;
+                            }
+                            return;
+
+                        case "mso-element":
+                            // Remove track changes code
+                            if (/^(comment|comment-list)$/i.test(value)) {
+                                node.remove();
+                                return;
+                            }
+
+                            break;
+                    }
+
+                    if (name.indexOf('mso-comment') === 0) {
+                        node.remove();
+                        return;
+                    }
+
+                    // Never allow mso- prefixed names
+                    if (name.indexOf('mso-') === 0) {
+                        return;
+                    }
+
+                    // Output only valid styles
+                    if (retainStyleProperties == "all" || (validStyles && validStyles[name])) {
+                        outputStyles[name] = value;
+                    }
+                });
+
+                // Convert bold style to "b" element
+                if (/(bold)/i.test(outputStyles["font-weight"])) {
+                    delete outputStyles["font-weight"];
+                    node.wrap(new Node("b", 1));
+                }
+
+                // Convert italic style to "i" element
+                if (/(italic)/i.test(outputStyles["font-style"])) {
+                    delete outputStyles["font-style"];
+                    node.wrap(new Node("i", 1));
+                }
+
+                // Serialize the styles and see if there is something left to keep
+                outputStyles = editor.dom.serializeStyle(outputStyles, node.name);
+                if (outputStyles) {
+                    return outputStyles;
+                }
+
+                return null;
+            }
+
+            if (settings.paste_enable_default_filters === false) {
+                return;
+            }
+
+            // Detect is the contents is Word junk HTML
+            if (isWordContent(e.content)) {
+                e.wordContent = true; // Mark it for other processors
+
+                // Remove basic Word junk
+                content = Utils.filter(content, [
+                    // Word comments like conditional comments etc
+                    /<!--[\s\S]+?-->/gi,
+
+                    // Remove comments, scripts (e.g., msoShowComment), XML tag, VML content,
+                    // MS Office namespaced tags, and a few other tags
+                    /<(!|script[^>]*>.*?<\/script(?=[>\s])|\/?(\?xml(:\w+)?|img|meta|link|style|\w:\w+)(?=[\s\/>]))[^>]*>/gi,
+
+                    // Convert <s> into <strike> for line-though
+                    [/<(\/?)s>/gi, "<$1strike>"],
+
+                    // Replace nsbp entites to char since it's easier to handle
+                    [/&nbsp;/gi, "\u00a0"],
+
+                    // Convert <span style="mso-spacerun:yes">___</span> to string of alternating
+                    // breaking/non-breaking spaces of same length
+                    [/<span\s+style\s*=\s*"\s*mso-spacerun\s*:\s*yes\s*;?\s*"\s*>([\s\u00a0]*)<\/span>/gi,
+                        function(str, spaces) {
+                            return (spaces.length > 0) ?
+                                spaces.replace(/./, " ").slice(Math.floor(spaces.length / 2)).split("").join("\u00a0") : "";
+                        }
+                    ]
+                ]);
+
+                var validElements = settings.paste_word_valid_elements;
+                if (!validElements) {
+                    validElements = (
+                        '-strong/b,-em/i,-u,-span,-p,-ol,-ul,-li,-h1,-h2,-h3,-h4,-h5,-h6,' +
+                        '-p/div,-a[href|name],sub,sup,strike,br,del,table[width],tr,' +
+                        'td[colspan|rowspan|width],th[colspan|rowspan|width],thead,tfoot,tbody'
+                    );
+                }
+
+                // Setup strict schema
+                var schema = new Schema({
+                    valid_elements: validElements,
+                    valid_children: '-li[p]'
+                });
+
+                // Add style/class attribute to all element rules since the user might have removed them from
+                // paste_word_valid_elements config option and we need to check them for properties
+                Tools.each(schema.elements, function(rule) {
+                    if (!rule.attributes["class"]) {
+                        rule.attributes["class"] = {};
+                        rule.attributesOrder.push("class");
+                    }
+
+                    if (!rule.attributes.style) {
+                        rule.attributes.style = {};
+                        rule.attributesOrder.push("style");
+                    }
+                });
+
+                // Parse HTML into DOM structure
+                var domParser = new DomParser({}, schema);
+
+                // Filter styles to remove "mso" specific styles and convert some of them
+                domParser.addAttributeFilter('style', function(nodes) {
+                    var i = nodes.length, node;
+
+                    while (i--) {
+                        node = nodes[i];
+                        node.attr('style', filterStyles(node, node.attr('style')));
+
+                        // Remove pointess spans
+                        if (node.name == 'span' && node.parent && !node.attributes.length) {
+                            node.unwrap();
+                        }
+                    }
+                });
+
+                // Check the class attribute for comments or del items and remove those
+                domParser.addAttributeFilter('class', function(nodes) {
+                    var i = nodes.length, node, className;
+
+                    while (i--) {
+                        node = nodes[i];
+
+                        className = node.attr('class');
+                        if (/^(MsoCommentReference|MsoCommentText|msoDel|MsoCaption)$/i.test(className)) {
+                            node.remove();
+                        }
+
+                        node.attr('class', null);
+                    }
+                });
+
+                // Remove all del elements since we don't want the track changes code in the editor
+                domParser.addNodeFilter('del', function(nodes) {
+                    var i = nodes.length;
+
+                    while (i--) {
+                        nodes[i].remove();
+                    }
+                });
+
+                // Keep some of the links and anchors
+                domParser.addNodeFilter('a', function(nodes) {
+                    var i = nodes.length, node, href, name;
+
+                    while (i--) {
+                        node = nodes[i];
+                        href = node.attr('href');
+                        name = node.attr('name');
+
+                        if (href && href.indexOf('#_msocom_') != -1) {
+                            node.remove();
+                            continue;
+                        }
+
+                        if (href && href.indexOf('file://') === 0) {
+                            href = href.split('#')[1];
+                            if (href) {
+                                href = '#' + href;
+                            }
+                        }
+
+                        if (!href && !name) {
+                            node.unwrap();
+                        } else {
+                            // Remove all named anchors that aren't specific to TOC, Footnotes or Endnotes
+                            if (name && !/^_?(?:toc|edn|ftn)/i.test(name)) {
+                                node.unwrap();
+                                continue;
+                            }
+
+                            node.attr({
+                                href: href,
+                                name: name
+                            });
+                        }
+                    }
+                });
+
+                // Parse into DOM structure
+                var rootNode = domParser.parse(content);
+
+                // Process DOM
+                convertFakeListsToProperLists(rootNode);
+
+                // Serialize DOM back to HTML
+                e.content = new Serializer({}, schema).serialize(rootNode);
+            }
+        });
+    }
+
+    WordFilter.isWordContent = isWordContent;
+
+    return WordFilter;
+});
+
+// Included from: js/tinymce/plugins/paste/classes/Quirks.js
+
+/**
+ * Quirks.js
+ *
+ * Copyright, Moxiecode Systems AB
+ * Released under LGPL License.
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+/**
+ * This class contains various fixes for browsers. These issues can not be feature
+ * detected since we have no direct control over the clipboard. However we might be able
+ * to remove some of these fixes once the browsers gets updated/fixed.
+ *
+ * @class tinymce.pasteplugin.Quirks
+ * @private
+ */
+define("tinymce/pasteplugin/Quirks", [
+    "tinymce/Env",
+    "tinymce/util/Tools",
+    "tinymce/pasteplugin/WordFilter",
+    "tinymce/pasteplugin/Utils"
+], function(Env, Tools, WordFilter, Utils) {
+    
+
+    return function(editor) {
+        function addPreProcessFilter(filterFunc) {
+            editor.on('BeforePastePreProcess', function(e) {
+                e.content = filterFunc(e.content);
+            });
+        }
+
+        /**
+         * Removes BR elements after block elements. IE9 has a nasty bug where it puts a BR element after each
+         * block element when pasting from word. This removes those elements.
+         *
+         * This:
+         *  <p>a</p><br><p>b</p>
+         *
+         * Becomes:
+         *  <p>a</p><p>b</p>
+         */
+        function removeExplorerBrElementsAfterBlocks(html) {
+            // Only filter word specific content
+            if (!WordFilter.isWordContent(html)) {
+                return html;
+            }
+
+            // Produce block regexp based on the block elements in schema
+            var blockElements = [];
+
+            Tools.each(editor.schema.getBlockElements(), function(block, blockName) {
+                blockElements.push(blockName);
+            });
+
+            var explorerBlocksRegExp = new RegExp(
+                '(?:<br>&nbsp;[\\s\\r\\n]+|<br>)*(<\\/?(' + blockElements.join('|') + ')[^>]*>)(?:<br>&nbsp;[\\s\\r\\n]+|<br>)*',
+                'g'
+            );
+
+            // Remove BR:s from: <BLOCK>X</BLOCK><BR>
+            html = Utils.filter(html, [
+                [explorerBlocksRegExp, '$1']
+            ]);
+
+            // IE9 also adds an extra BR element for each soft-linefeed and it also adds a BR for each word wrap break
+            html = Utils.filter(html, [
+                [/<br><br>/g, '<BR><BR>'], // Replace multiple BR elements with uppercase BR to keep them intact
+                [/<br>/g, ' '],            // Replace single br elements with space since they are word wrap BR:s
+                [/<BR><BR>/g, '<br>']      // Replace back the double brs but into a single BR
+            ]);
+
+            return html;
+        }
+
+        /**
+         * WebKit has a nasty bug where the all computed styles gets added to style attributes when copy/pasting contents.
+         * This fix solves that by simply removing the whole style attribute.
+         *
+         * The paste_webkit_styles option can be set to specify what to keep:
+         *  paste_webkit_styles: "none" // Keep no styles
+         *  paste_webkit_styles: "all", // Keep all of them
+         *  paste_webkit_styles: "font-weight color" // Keep specific ones
+         *
+         * @param {String} content Content that needs to be processed.
+         * @return {String} Processed contents.
+         */
+        function removeWebKitStyles(content) {
+            // Passthrough all styles from Word and let the WordFilter handle that junk
+            if (WordFilter.isWordContent(content)) {
+                return content;
+            }
+
+            // Filter away styles that isn't matching the target node
+            var webKitStyles = editor.settings.paste_webkit_styles;
+
+            if (editor.settings.paste_remove_styles_if_webkit === false || webKitStyles == "all") {
+                return content;
+            }
+
+            if (webKitStyles) {
+                webKitStyles = webKitStyles.split(/[, ]/);
+            }
+
+            // Keep specific styles that doesn't match the current node computed style
+            if (webKitStyles) {
+                var dom = editor.dom, node = editor.selection.getNode();
+
+                content = content.replace(/(<[^>]+) style="([^"]*)"([^>]*>)/gi, function(all, before, value, after) {
+                    var inputStyles = dom.parseStyle(value, 'span'), outputStyles = {};
+
+                    if (webKitStyles === "none") {
+                        return before + after;
+                    }
+
+                    for (var i = 0; i < webKitStyles.length; i++) {
+                        var inputValue = inputStyles[webKitStyles[i]], currentValue = dom.getStyle(node, webKitStyles[i], true);
+
+                        if (/color/.test(webKitStyles[i])) {
+                            inputValue = dom.toHex(inputValue);
+                            currentValue = dom.toHex(currentValue);
+                        }
+
+                        if (currentValue != inputValue) {
+                            outputStyles[webKitStyles[i]] = inputValue;
+                        }
+                    }
+
+                    outputStyles = dom.serializeStyle(outputStyles, 'span');
+                    if (outputStyles) {
+                        return before + ' style="' + outputStyles + '"' + after;
+                    }
+
+                    return before + after;
+                });
+            } else {
+                // Remove all external styles
+                content = content.replace(/(<[^>]+) style="([^"]*)"([^>]*>)/gi, '$1$3');
+            }
+
+            // Keep internal styles
+            content = content.replace(/(<[^>]+) data-mce-style="([^"]+)"([^>]*>)/gi, function(all, before, value, after) {
+                return before + ' style="' + value + '"' + after;
+            });
+
+            return content;
+        }
+
+        // Sniff browsers and apply fixes since we can't feature detect
+        if (Env.webkit) {
+            addPreProcessFilter(removeWebKitStyles);
+        }
+
+        if (Env.ie) {
+            addPreProcessFilter(removeExplorerBrElementsAfterBlocks);
+        }
+    };
+});
+
+// Included from: js/tinymce/plugins/paste/classes/Plugin.js
+
+/**
+ * Plugin.js
+ *
+ * Copyright, Moxiecode Systems AB
+ * Released under LGPL License.
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+/**
+ * This class contains the tinymce plugin logic for the paste plugin.
+ *
+ * @class tinymce.pasteplugin.Plugin
+ * @private
+ */
+define("tinymce/pasteplugin/Plugin", [
+    "tinymce/PluginManager",
+    "tinymce/pasteplugin/Clipboard",
+    "tinymce/pasteplugin/WordFilter",
+    "tinymce/pasteplugin/Quirks"
+], function(PluginManager, Clipboard, WordFilter, Quirks) {
+    var userIsInformed;
+
+    PluginManager.add('paste', function(editor) {
+        var self = this, clipboard, settings = editor.settings;
+
+        function togglePlainTextPaste() {
+            if (clipboard.pasteFormat == "text") {
+                this.active(false);
+                clipboard.pasteFormat = "html";
+            } else {
+                clipboard.pasteFormat = "text";
+                this.active(true);
+
+                if (!userIsInformed) {
+                    editor.windowManager.alert(
+                        'Paste is now in plain text mode. Contents will now ' +
+                        'be pasted as plain text until you toggle this option off.'
+                    );
+
+                    userIsInformed = true;
+                }
+            }
+        }
+
+        self.clipboard = clipboard = new Clipboard(editor);
+        self.quirks = new Quirks(editor);
+        self.wordFilter = new WordFilter(editor);
+
+        if (editor.settings.paste_as_text) {
+            self.clipboard.pasteFormat = "text";
+        }
+
+        if (settings.paste_preprocess) {
+            editor.on('PastePreProcess', function(e) {
+                settings.paste_preprocess.call(self, self, e);
+            });
+        }
+
+        if (settings.paste_postprocess) {
+            editor.on('PastePostProcess', function(e) {
+                settings.paste_postprocess.call(self, self, e);
+            });
+        }
+
+        editor.addCommand('mceInsertClipboardContent', function(ui, value) {
+            if (value.content) {
+                self.clipboard.pasteHtml(value.content);
+            }
+
+            if (value.text) {
+                self.clipboard.pasteText(value.text);
+            }
+        });
+
+        // Block all drag/drop events
+        if (editor.paste_block_drop) {
+            editor.on('dragend dragover draggesture dragdrop drop drag', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            });
+        }
+
+        // Prevent users from dropping data images on Gecko
+        if (!editor.settings.paste_data_images) {
+            editor.on('drop', function(e) {
+                var dataTransfer = e.dataTransfer;
+
+                if (dataTransfer && dataTransfer.files && dataTransfer.files.length > 0) {
+                    e.preventDefault();
+                }
+            });
+        }
+
+        editor.addButton('pastetext', {
+            icon: 'pastetext',
+            tooltip: 'Paste as text',
+            onclick: togglePlainTextPaste,
+            active: self.clipboard.pasteFormat == "text"
+        });
+
+        editor.addMenuItem('pastetext', {
+            text: 'Paste as text',
+            selectable: true,
+            active: clipboard.pasteFormat,
+            onclick: togglePlainTextPaste
+        });
+    });
+});
+
+expose(["tinymce/pasteplugin/Utils","tinymce/pasteplugin/WordFilter"]);
+})(this);
+
+  }).apply(root, arguments);
+});
+}(this));
+
+(function(root) {
 define("tinymce-print", ["tinymce"], function() {
   return (function() {
 /**
@@ -72428,1637 +74307,6 @@ tinymce.PluginManager.add('tabfocus', function(editor) {
     });
 });
 
-
-  }).apply(root, arguments);
-});
-}(this));
-
-(function(root) {
-define("tinymce-paste", ["tinymce"], function() {
-  return (function() {
-/**
- * Compiled inline version. (Library mode)
- */
-
-/*jshint smarttabs:true, undef:true, latedef:true, curly:true, bitwise:true, camelcase:true */
-/*globals $code */
-
-(function(exports, undefined) {
-    
-
-    var modules = {};
-
-    function require(ids, callback) {
-        var module, defs = [];
-
-        for (var i = 0; i < ids.length; ++i) {
-            module = modules[ids[i]] || resolve(ids[i]);
-            if (!module) {
-                throw 'module definition dependecy not found: ' + ids[i];
-            }
-
-            defs.push(module);
-        }
-
-        callback.apply(null, defs);
-    }
-
-    function define(id, dependencies, definition) {
-        if (typeof id !== 'string') {
-            throw 'invalid module definition, module id must be defined and be a string';
-        }
-
-        if (dependencies === undefined) {
-            throw 'invalid module definition, dependencies must be specified';
-        }
-
-        if (definition === undefined) {
-            throw 'invalid module definition, definition function must be specified';
-        }
-
-        require(dependencies, function() {
-            modules[id] = definition.apply(null, arguments);
-        });
-    }
-
-    function defined(id) {
-        return !!modules[id];
-    }
-
-    function resolve(id) {
-        var target = exports;
-        var fragments = id.split(/[.\/]/);
-
-        for (var fi = 0; fi < fragments.length; ++fi) {
-            if (!target[fragments[fi]]) {
-                return;
-            }
-
-            target = target[fragments[fi]];
-        }
-
-        return target;
-    }
-
-    function expose(ids) {
-        for (var i = 0; i < ids.length; i++) {
-            var target = exports;
-            var id = ids[i];
-            var fragments = id.split(/[.\/]/);
-
-            for (var fi = 0; fi < fragments.length - 1; ++fi) {
-                if (target[fragments[fi]] === undefined) {
-                    target[fragments[fi]] = {};
-                }
-
-                target = target[fragments[fi]];
-            }
-
-            target[fragments[fragments.length - 1]] = modules[id];
-        }
-    }
-
-// Included from: js/tinymce/plugins/paste/classes/Utils.js
-
-/**
- * Utils.js
- *
- * Copyright, Moxiecode Systems AB
- * Released under LGPL License.
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-/**
- * This class contails various utility functions for the paste plugin.
- *
- * @class tinymce.pasteplugin.Clipboard
- * @private
- */
-define("tinymce/pasteplugin/Utils", [
-    "tinymce/util/Tools",
-    "tinymce/html/DomParser",
-    "tinymce/html/Schema"
-], function(Tools, DomParser, Schema) {
-    function filter(content, items) {
-        Tools.each(items, function(v) {
-            if (v.constructor == RegExp) {
-                content = content.replace(v, '');
-            } else {
-                content = content.replace(v[0], v[1]);
-            }
-        });
-
-        return content;
-    }
-
-    /**
-     * Gets the innerText of the specified element. It will handle edge cases
-     * and works better than textContent on Gecko.
-     *
-     * @param {String} html HTML string to get text from.
-     * @return {String} String of text with line feeds.
-     */
-    function innerText(html) {
-        var schema = new Schema(), domParser = new DomParser({}, schema), text = '';
-        var shortEndedElements = schema.getShortEndedElements();
-        var ignoreElements = Tools.makeMap('script noscript style textarea video audio iframe object', ' ');
-        var blockElements = schema.getBlockElements();
-
-        function walk(node) {
-            var name = node.name, currentNode = node;
-
-            if (name === 'br') {
-                text += '\n';
-                return;
-            }
-
-            // img/input/hr
-            if (shortEndedElements[name]) {
-                text += ' ';
-            }
-
-            // Ingore script, video contents
-            if (ignoreElements[name]) {
-                text += ' ';
-                return;
-            }
-
-            if (node.type == 3) {
-                text += node.value;
-            }
-
-            // Walk all children
-            if (!node.shortEnded) {
-                if ((node = node.firstChild)) {
-                    do {
-                        walk(node);
-                    } while ((node = node.next));
-                }
-            }
-
-            // Add \n or \n\n for blocks or P
-            if (blockElements[name] && currentNode.next) {
-                text += '\n';
-
-                if (name == 'p') {
-                    text += '\n';
-                }
-            }
-        }
-
-        html = filter(html, [
-            /<!\[[^\]]+\]>/g // Conditional comments
-        ]);
-
-        walk(domParser.parse(html));
-
-        return text;
-    }
-
-    /**
-     * Trims the specified HTML by removing all WebKit fragments, all elements wrapping the body trailing BR elements etc.
-     *
-     * @param {String} html Html string to trim contents on.
-     * @return {String} Html contents that got trimmed.
-     */
-    function trimHtml(html) {
-        function trimSpaces(all, s1, s2) {
-            // WebKit &nbsp; meant to preserve multiple spaces but instead inserted around all inline tags,
-            // including the spans with inline styles created on paste
-            if (!s1 && !s2) {
-                return ' ';
-            }
-
-            return '\u00a0';
-        }
-
-        html = filter(html, [
-            /^[\s\S]*<body[^>]*>\s*|\s*<\/body[^>]*>[\s\S]*$/g, // Remove anything but the contents within the BODY element
-            /<!--StartFragment-->|<!--EndFragment-->/g, // Inner fragments (tables from excel on mac)
-            [/( ?)<span class="Apple-converted-space">\u00a0<\/span>( ?)/g, trimSpaces],
-            /<br>$/i // Trailing BR elements
-        ]);
-
-        return html;
-    }
-
-    return {
-        filter: filter,
-        innerText: innerText,
-        trimHtml: trimHtml
-    };
-});
-
-// Included from: js/tinymce/plugins/paste/classes/Clipboard.js
-
-/**
- * Clipboard.js
- *
- * Copyright, Moxiecode Systems AB
- * Released under LGPL License.
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-/**
- * This class contains logic for getting HTML contents out of the clipboard.
- *
- * We need to make a lot of ugly hacks to get the contents out of the clipboard since
- * the W3C Clipboard API is broken in all browsers that have it: Gecko/WebKit/Blink.
- * We might rewrite this the way those API:s stabilize. Browsers doesn't handle pasting
- * from applications like Word the same way as it does when pasting into a contentEditable area
- * so we need to do lots of extra work to try to get to this clipboard data.
- *
- * Current implementation steps:
- *  1. On keydown with paste keys Ctrl+V or Shift+Insert create
- *     a paste bin element and move focus to that element.
- *  2. Wait for the browser to fire a "paste" event and get the contents out of the paste bin.
- *  3. Check if the paste was successful if true, process the HTML.
- *  (4). If the paste was unsuccessful use IE execCommand, Clipboard API, document.dataTransfer old WebKit API etc.
- *
- * @class tinymce.pasteplugin.Clipboard
- * @private
- */
-define("tinymce/pasteplugin/Clipboard", [
-    "tinymce/Env",
-    "tinymce/util/VK",
-    "tinymce/pasteplugin/Utils"
-], function(Env, VK, Utils) {
-    return function(editor) {
-        var self = this, pasteBinElm, lastRng, keyboardPasteTimeStamp = 0, draggingInternally = false;
-        var pasteBinDefaultContent = '%MCEPASTEBIN%', keyboardPastePlainTextState;
-
-        /**
-         * Pastes the specified HTML. This means that the HTML is filtered and then
-         * inserted at the current selection in the editor. It will also fire paste events
-         * for custom user filtering.
-         *
-         * @param {String} html HTML code to paste into the current selection.
-         */
-        function pasteHtml(html) {
-            var args, dom = editor.dom;
-
-            args = editor.fire('BeforePastePreProcess', {content: html}); // Internal event used by Quirks
-            args = editor.fire('PastePreProcess', args);
-            html = args.content;
-
-            if (!args.isDefaultPrevented()) {
-                // User has bound PastePostProcess events then we need to pass it through a DOM node
-                // This is not ideal but we don't want to let the browser mess up the HTML for example
-                // some browsers add &nbsp; to P tags etc
-                if (editor.hasEventListeners('PastePostProcess') && !args.isDefaultPrevented()) {
-                    // We need to attach the element to the DOM so Sizzle selectors work on the contents
-                    var tempBody = dom.add(editor.getBody(), 'div', {style: 'display:none'}, html);
-                    args = editor.fire('PastePostProcess', {node: tempBody});
-                    dom.remove(tempBody);
-                    html = args.node.innerHTML;
-                }
-
-                if (!args.isDefaultPrevented()) {
-                    editor.insertContent(html, {merge: editor.settings.paste_merge_formats !== false});
-                }
-            }
-        }
-
-        /**
-         * Pastes the specified text. This means that the plain text is processed
-         * and converted into BR and P elements. It will fire paste events for custom filtering.
-         *
-         * @param {String} text Text to paste as the current selection location.
-         */
-        function pasteText(text) {
-            text = editor.dom.encode(text).replace(/\r\n/g, '\n');
-
-            var startBlock = editor.dom.getParent(editor.selection.getStart(), editor.dom.isBlock);
-
-            // Create start block html for example <p attr="value">
-            var forcedRootBlockName = editor.settings.forced_root_block;
-            var forcedRootBlockStartHtml;
-            if (forcedRootBlockName) {
-                forcedRootBlockStartHtml = editor.dom.createHTML(forcedRootBlockName, editor.settings.forced_root_block_attrs);
-                forcedRootBlockStartHtml = forcedRootBlockStartHtml.substr(0, forcedRootBlockStartHtml.length - 3) + '>';
-            }
-
-            if ((startBlock && /^(PRE|DIV)$/.test(startBlock.nodeName)) || !forcedRootBlockName) {
-                text = Utils.filter(text, [
-                    [/\n/g, "<br>"]
-                ]);
-            } else {
-                text = Utils.filter(text, [
-                    [/\n\n/g, "</p>" + forcedRootBlockStartHtml],
-                    [/^(.*<\/p>)(<p>)$/, forcedRootBlockStartHtml + '$1'],
-                    [/\n/g, "<br />"]
-                ]);
-
-                if (text.indexOf('<p>') != -1) {
-                    text = forcedRootBlockStartHtml + text;
-                }
-            }
-
-            pasteHtml(text);
-        }
-
-        /**
-         * Creates a paste bin element as close as possible to the current caret location and places the focus inside that element
-         * so that when the real paste event occurs the contents gets inserted into this element
-         * instead of the current editor selection element.
-         */
-        function createPasteBin() {
-            var dom = editor.dom, body = editor.getBody();
-            var viewport = editor.dom.getViewPort(editor.getWin()), scrollTop = viewport.y, top = 20;
-            var scrollContainer;
-
-            lastRng = editor.selection.getRng();
-
-            if (editor.inline) {
-                scrollContainer = editor.selection.getScrollContainer();
-
-                // Can't always rely on scrollTop returning a useful value.
-                // It returns 0 if the browser doesn't support scrollTop for the element or is non-scrollable
-                if (scrollContainer && scrollContainer.scrollTop > 0) {
-                    scrollTop = scrollContainer.scrollTop;
-                }
-            }
-
-            /**
-             * Returns the rect of the current caret if the caret is in an empty block before a
-             * BR we insert a temporary invisible character that we get the rect this way we always get a proper rect.
-             *
-             * TODO: This might be useful in core.
-             */
-            function getCaretRect(rng) {
-                var rects, textNode, node, container = rng.startContainer;
-
-                rects = rng.getClientRects();
-                if (rects.length) {
-                    return rects[0];
-                }
-
-                if (!rng.collapsed || container.nodeType != 1) {
-                    return;
-                }
-
-                node = container.childNodes[lastRng.startOffset];
-
-                // Skip empty whitespace nodes
-                while (node && node.nodeType == 3 && !node.data.length) {
-                    node = node.nextSibling;
-                }
-
-                if (!node) {
-                    return;
-                }
-
-                // Check if the location is |<br>
-                // TODO: Might need to expand this to say |<table>
-                if (node.tagName == 'BR') {
-                    textNode = dom.doc.createTextNode('\uFEFF');
-                    node.parentNode.insertBefore(textNode, node);
-
-                    rng = dom.createRng();
-                    rng.setStartBefore(textNode);
-                    rng.setEndAfter(textNode);
-
-                    rects = rng.getClientRects();
-                    dom.remove(textNode);
-                }
-
-                if (rects.length) {
-                    return rects[0];
-                }
-            }
-
-            // Calculate top cordinate this is needed to avoid scrolling to top of document
-            // We want the paste bin to be as close to the caret as possible to avoid scrolling
-            if (lastRng.getClientRects) {
-                var rect = getCaretRect(lastRng);
-
-                if (rect) {
-                    // Client rects gets us closes to the actual
-                    // caret location in for example a wrapped paragraph block
-                    top = scrollTop + (rect.top - dom.getPos(body).y);
-                } else {
-                    top = scrollTop;
-
-                    // Check if we can find a closer location by checking the range element
-                    var container = lastRng.startContainer;
-                    if (container) {
-                        if (container.nodeType == 3 && container.parentNode != body) {
-                            container = container.parentNode;
-                        }
-
-                        if (container.nodeType == 1) {
-                            top = dom.getPos(container, scrollContainer || body).y;
-                        }
-                    }
-                }
-            }
-
-            // Create a pastebin
-            pasteBinElm = dom.add(editor.getBody(), 'div', {
-                id: "mcepastebin",
-                contentEditable: true,
-                "data-mce-bogus": "all",
-                style: 'position: absolute; top: ' + top + 'px;' +
-                    'width: 10px; height: 10px; overflow: hidden; opacity: 0'
-            }, pasteBinDefaultContent);
-
-            // Move paste bin out of sight since the controlSelection rect gets displayed otherwise on IE and Gecko
-            if (Env.ie || Env.gecko) {
-                dom.setStyle(pasteBinElm, 'left', dom.getStyle(body, 'direction', true) == 'rtl' ? 0xFFFF : -0xFFFF);
-            }
-
-            // Prevent focus events from bubbeling fixed FocusManager issues
-            dom.bind(pasteBinElm, 'beforedeactivate focusin focusout', function(e) {
-                e.stopPropagation();
-            });
-
-            pasteBinElm.focus();
-            editor.selection.select(pasteBinElm, true);
-        }
-
-        /**
-         * Removes the paste bin if it exists.
-         */
-        function removePasteBin() {
-            if (pasteBinElm) {
-                var pasteBinClone;
-
-                // WebKit/Blink might clone the div so
-                // lets make sure we remove all clones
-                // TODO: Man o man is this ugly. WebKit is the new IE! Remove this if they ever fix it!
-                while ((pasteBinClone = editor.dom.get('mcepastebin'))) {
-                    editor.dom.remove(pasteBinClone);
-                    editor.dom.unbind(pasteBinClone);
-                }
-
-                if (lastRng) {
-                    editor.selection.setRng(lastRng);
-                }
-            }
-
-            pasteBinElm = lastRng = null;
-        }
-
-        /**
-         * Returns the contents of the paste bin as a HTML string.
-         *
-         * @return {String} Get the contents of the paste bin.
-         */
-        function getPasteBinHtml() {
-            var html = '', pasteBinClones, i, clone, cloneHtml;
-
-            // Since WebKit/Chrome might clone the paste bin when pasting
-            // for example: <img style="float: right"> we need to check if any of them contains some useful html.
-            // TODO: Man o man is this ugly. WebKit is the new IE! Remove this if they ever fix it!
-            pasteBinClones = editor.dom.select('div[id=mcepastebin]');
-            for (i = 0; i < pasteBinClones.length; i++) {
-                clone = pasteBinClones[i];
-
-                // Pasting plain text produces pastebins in pastebinds makes sence right!?
-                if (clone.firstChild && clone.firstChild.id == 'mcepastebin') {
-                    clone = clone.firstChild;
-                }
-
-                cloneHtml = clone.innerHTML;
-                if (html != pasteBinDefaultContent) {
-                    html += cloneHtml;
-                }
-            }
-
-            return html;
-        }
-
-        /**
-         * Gets various content types out of a datatransfer object.
-         *
-         * @param {DataTransfer} dataTransfer Event fired on paste.
-         * @return {Object} Object with mime types and data for those mime types.
-         */
-        function getDataTransferItems(dataTransfer) {
-            var data = {};
-
-            if (dataTransfer) {
-                // Use old WebKit/IE API
-                if (dataTransfer.getData) {
-                    var legacyText = dataTransfer.getData('Text');
-                    if (legacyText && legacyText.length > 0) {
-                        data['text/plain'] = legacyText;
-                    }
-                }
-
-                if (dataTransfer.types) {
-                    for (var i = 0; i < dataTransfer.types.length; i++) {
-                        var contentType = dataTransfer.types[i];
-                        data[contentType] = dataTransfer.getData(contentType);
-                    }
-                }
-            }
-
-            return data;
-        }
-
-        /**
-         * Gets various content types out of the Clipboard API. It will also get the
-         * plain text using older IE and WebKit API:s.
-         *
-         * @param {ClipboardEvent} clipboardEvent Event fired on paste.
-         * @return {Object} Object with mime types and data for those mime types.
-         */
-        function getClipboardContent(clipboardEvent) {
-            return getDataTransferItems(clipboardEvent.clipboardData || editor.getDoc().dataTransfer);
-        }
-
-        /**
-         * Checks if the clipboard contains image data if it does it will take that data
-         * and convert it into a data url image and paste that image at the caret location.
-         *
-         * @param  {ClipboardEvent} e Paste/drop event object.
-         * @param  {DOMRange} rng Optional rng object to move selection to.
-         * @return {Boolean} true/false if the image data was found or not.
-         */
-        function pasteImageData(e, rng) {
-            var dataTransfer = e.clipboardData || e.dataTransfer;
-
-            function processItems(items) {
-                var i, item, reader;
-
-                function pasteImage() {
-                    if (rng) {
-                        editor.selection.setRng(rng);
-                        rng = null;
-                    }
-
-                    pasteHtml('<img src="' + reader.result + '">');
-                }
-
-                if (items) {
-                    for (i = 0; i < items.length; i++) {
-                        item = items[i];
-
-                        if (/^image\/(jpeg|png|gif)$/.test(item.type)) {
-                            reader = new FileReader();
-                            reader.onload = pasteImage;
-                            reader.readAsDataURL(item.getAsFile ? item.getAsFile() : item);
-
-                            e.preventDefault();
-                            return true;
-                        }
-                    }
-                }
-            }
-
-            if (editor.settings.paste_data_images && dataTransfer) {
-                return processItems(dataTransfer.items) || processItems(dataTransfer.files);
-            }
-        }
-
-        /**
-         * Chrome on Android doesn't support proper clipboard access so we have no choice but to allow the browser default behavior.
-         *
-         * @param {Event} e Paste event object to check if it contains any data.
-         * @return {Boolean} true/false if the clipboard is empty or not.
-         */
-        function isBrokenAndroidClipboardEvent(e) {
-            var clipboardData = e.clipboardData;
-
-            return navigator.userAgent.indexOf('Android') != -1 && clipboardData && clipboardData.items && clipboardData.items.length === 0;
-        }
-
-        function getCaretRangeFromEvent(e) {
-            var doc = editor.getDoc(), rng, point;
-
-            if (doc.caretPositionFromPoint) {
-                point = doc.caretPositionFromPoint(e.clientX, e.clientY);
-                rng = doc.createRange();
-                rng.setStart(point.offsetNode, point.offset);
-                rng.collapse(true);
-            } else if (doc.caretRangeFromPoint) {
-                rng = doc.caretRangeFromPoint(e.clientX, e.clientY);
-            } else if (doc.body.createTextRange) {
-                rng = doc.body.createTextRange();
-
-                try {
-                    rng.moveToPoint(e.clientX, e.clientY);
-                    rng.collapse(true);
-                } catch (ex) {
-                    // Append to top or bottom depending on drop location
-                    rng.collapse(e.clientY < doc.body.clientHeight);
-                }
-            }
-
-            return rng;
-        }
-
-        function hasContentType(clipboardContent, mimeType) {
-            return mimeType in clipboardContent && clipboardContent[mimeType].length > 0;
-        }
-
-        function isKeyboardPasteEvent(e) {
-            return (VK.metaKeyPressed(e) && e.keyCode == 86) || (e.shiftKey && e.keyCode == 45);
-        }
-
-        function registerEventHandlers() {
-            editor.on('keydown', function(e) {
-                function removePasteBinOnKeyUp(e) {
-                    // Ctrl+V or Shift+Insert
-                    if (isKeyboardPasteEvent(e) && !e.isDefaultPrevented()) {
-                        removePasteBin();
-                    }
-                }
-
-                // Ctrl+V or Shift+Insert
-                if (isKeyboardPasteEvent(e) && !e.isDefaultPrevented()) {
-                    keyboardPastePlainTextState = e.shiftKey && e.keyCode == 86;
-
-                    // Edge case on Safari on Mac where it doesn't handle Cmd+Shift+V correctly
-                    // it fires the keydown but no paste or keyup so we are left with a paste bin
-                    if (keyboardPastePlainTextState && Env.webkit && navigator.userAgent.indexOf('Version/') != -1) {
-                        return;
-                    }
-
-                    // Prevent undoManager keydown handler from making an undo level with the pastebin in it
-                    e.stopImmediatePropagation();
-
-                    keyboardPasteTimeStamp = new Date().getTime();
-
-                    // IE doesn't support Ctrl+Shift+V and it doesn't even produce a paste event
-                    // so lets fake a paste event and let IE use the execCommand/dataTransfer methods
-                    if (Env.ie && keyboardPastePlainTextState) {
-                        e.preventDefault();
-                        editor.fire('paste', {ieFake: true});
-                        return;
-                    }
-
-                    removePasteBin();
-                    createPasteBin();
-
-                    // Remove pastebin if we get a keyup and no paste event
-                    // For example pasting a file in IE 11 will not produce a paste event
-                    editor.once('keyup', removePasteBinOnKeyUp);
-                    editor.once('paste', function() {
-                        editor.off('keyup', removePasteBinOnKeyUp);
-                    });
-                }
-            });
-
-            editor.on('paste', function(e) {
-                // Getting content from the Clipboard can take some time
-                var clipboardTimer = new Date().getTime();
-                var clipboardContent = getClipboardContent(e);
-                var clipboardDelay = new Date().getTime() - clipboardTimer;
-
-                var isKeyBoardPaste = (new Date().getTime() - keyboardPasteTimeStamp - clipboardDelay) < 1000;
-                var plainTextMode = self.pasteFormat == "text" || keyboardPastePlainTextState;
-
-                keyboardPastePlainTextState = false;
-
-                if (e.isDefaultPrevented() || isBrokenAndroidClipboardEvent(e)) {
-                    removePasteBin();
-                    return;
-                }
-
-                if (pasteImageData(e)) {
-                    removePasteBin();
-                    return;
-                }
-
-                // Not a keyboard paste prevent default paste and try to grab the clipboard contents using different APIs
-                if (!isKeyBoardPaste) {
-                    e.preventDefault();
-                }
-
-                // Try IE only method if paste isn't a keyboard paste
-                if (Env.ie && (!isKeyBoardPaste || e.ieFake)) {
-                    createPasteBin();
-
-                    editor.dom.bind(pasteBinElm, 'paste', function(e) {
-                        e.stopPropagation();
-                    });
-
-                    editor.getDoc().execCommand('Paste', false, null);
-                    clipboardContent["text/html"] = getPasteBinHtml();
-                }
-
-                setTimeout(function() {
-                    var content;
-
-                    // Grab HTML from Clipboard API or paste bin as a fallback
-                    if (hasContentType(clipboardContent, 'text/html')) {
-                        content = clipboardContent['text/html'];
-                    } else {
-                        content = getPasteBinHtml();
-
-                        // If paste bin is empty try using plain text mode
-                        // since that is better than nothing right
-                        if (content == pasteBinDefaultContent) {
-                            plainTextMode = true;
-                        }
-                    }
-
-                    content = Utils.trimHtml(content);
-
-                    // WebKit has a nice bug where it clones the paste bin if you paste from for example notepad
-                    // so we need to force plain text mode in this case
-                    if (pasteBinElm && pasteBinElm.firstChild && pasteBinElm.firstChild.id === 'mcepastebin') {
-                        plainTextMode = true;
-                    }
-
-                    removePasteBin();
-
-                    // If we got nothing from clipboard API and pastebin then we could try the last resort: plain/text
-                    if (!content.length) {
-                        plainTextMode = true;
-                    }
-
-                    // Grab plain text from Clipboard API or convert existing HTML to plain text
-                    if (plainTextMode) {
-                        // Use plain text contents from Clipboard API unless the HTML contains paragraphs then
-                        // we should convert the HTML to plain text since works better when pasting HTML/Word contents as plain text
-                        if (hasContentType(clipboardContent, 'text/plain') && content.indexOf('</p>') == -1) {
-                            content = clipboardContent['text/plain'];
-                        } else {
-                            content = Utils.innerText(content);
-                        }
-                    }
-
-                    // If the content is the paste bin default HTML then it was
-                    // impossible to get the cliboard data out.
-                    if (content == pasteBinDefaultContent) {
-                        if (!isKeyBoardPaste) {
-                            editor.windowManager.alert('Please use Ctrl+V/Cmd+V keyboard shortcuts to paste contents.');
-                        }
-
-                        return;
-                    }
-
-                    if (plainTextMode) {
-                        pasteText(content);
-                    } else {
-                        pasteHtml(content);
-                    }
-                }, 0);
-            });
-
-            editor.on('dragstart dragend', function(e) {
-                draggingInternally = e.type == 'dragstart';
-            });
-
-            editor.on('drop', function(e) {
-                var rng = getCaretRangeFromEvent(e);
-
-                if (e.isDefaultPrevented() || draggingInternally) {
-                    return;
-                }
-
-                if (pasteImageData(e, rng)) {
-                    return;
-                }
-
-                if (rng && editor.settings.paste_filter_drop !== false) {
-                    var dropContent = getDataTransferItems(e.dataTransfer);
-                    var content = dropContent['mce-internal'] || dropContent['text/html'] || dropContent['text/plain'];
-
-                    if (content) {
-                        e.preventDefault();
-
-                        editor.undoManager.transact(function() {
-                            if (dropContent['mce-internal']) {
-                                editor.execCommand('Delete');
-                            }
-
-                            editor.selection.setRng(rng);
-
-                            content = Utils.trimHtml(content);
-
-                            if (!dropContent['text/html']) {
-                                pasteText(content);
-                            } else {
-                                pasteHtml(content);
-                            }
-                        });
-                    }
-                }
-            });
-
-            editor.on('dragover dragend', function(e) {
-                var i, dataTransfer = e.dataTransfer;
-
-                if (editor.settings.paste_data_images && dataTransfer) {
-                    for (i = 0; i < dataTransfer.types.length; i++) {
-                        // Prevent default if we have files dragged into the editor since the pasteImageData handles that
-                        if (dataTransfer.types[i] == "Files") {
-                            e.preventDefault();
-                            return false;
-                        }
-                    }
-                }
-            });
-        }
-
-        self.pasteHtml = pasteHtml;
-        self.pasteText = pasteText;
-
-        editor.on('preInit', function() {
-            registerEventHandlers();
-
-            // Remove all data images from paste for example from Gecko
-            // except internal images like video elements
-            editor.parser.addNodeFilter('img', function(nodes) {
-                if (!editor.settings.paste_data_images) {
-                    var i = nodes.length;
-
-                    while (i--) {
-                        var src = nodes[i].attributes.map.src;
-
-                        // Some browsers automatically produce data uris on paste
-                        // Safari on Mac produces webkit-fake-url see: https://bugs.webkit.org/show_bug.cgi?id=49141
-                        if (src && /^(data:image|webkit\-fake\-url)/.test(src)) {
-                            if (!nodes[i].attr('data-mce-object') && src !== Env.transparentSrc) {
-                                nodes[i].remove();
-                            }
-                        }
-                    }
-                }
-            });
-        });
-    };
-});
-
-// Included from: js/tinymce/plugins/paste/classes/WordFilter.js
-
-/**
- * WordFilter.js
- *
- * Copyright, Moxiecode Systems AB
- * Released under LGPL License.
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-/**
- * This class parses word HTML into proper TinyMCE markup.
- *
- * @class tinymce.pasteplugin.Quirks
- * @private
- */
-define("tinymce/pasteplugin/WordFilter", [
-    "tinymce/util/Tools",
-    "tinymce/html/DomParser",
-    "tinymce/html/Schema",
-    "tinymce/html/Serializer",
-    "tinymce/html/Node",
-    "tinymce/pasteplugin/Utils"
-], function(Tools, DomParser, Schema, Serializer, Node, Utils) {
-    /**
-     * Checks if the specified content is from any of the following sources: MS Word/Office 365/Google docs.
-     */
-    function isWordContent(content) {
-        return (
-            (/<font face="Times New Roman"|class="?Mso|style="[^"]*\bmso-|style='[^'']*\bmso-|w:WordDocument/i).test(content) ||
-            (/class="OutlineElement/).test(content) ||
-            (/id="?docs\-internal\-guid\-/.test(content))
-        );
-    }
-
-    /**
-     * Checks if the specified text starts with "1. " or "a. " etc.
-     */
-    function isNumericList(text) {
-        var found, patterns;
-
-        patterns = [
-            /^[IVXLMCD]{1,2}\.[ \u00a0]/,  // Roman upper case
-            /^[ivxlmcd]{1,2}\.[ \u00a0]/,  // Roman lower case
-            /^[a-z]{1,2}[\.\)][ \u00a0]/,  // Alphabetical a-z
-            /^[A-Z]{1,2}[\.\)][ \u00a0]/,  // Alphabetical A-Z
-            /^[0-9]+\.[ \u00a0]/,          // Numeric lists
-            /^[\u3007\u4e00\u4e8c\u4e09\u56db\u4e94\u516d\u4e03\u516b\u4e5d]+\.[ \u00a0]/, // Japanese
-            /^[\u58f1\u5f10\u53c2\u56db\u4f0d\u516d\u4e03\u516b\u4e5d\u62fe]+\.[ \u00a0]/  // Chinese
-        ];
-
-        text = text.replace(/^[\u00a0 ]+/, '');
-
-        Tools.each(patterns, function(pattern) {
-            if (pattern.test(text)) {
-                found = true;
-                return false;
-            }
-        });
-
-        return found;
-    }
-
-    function isBulletList(text) {
-        return /^[\s\u00a0]*[\u2022\u00b7\u00a7\u00d8\u25CF]\s*/.test(text);
-    }
-
-    function WordFilter(editor) {
-        var settings = editor.settings;
-
-        editor.on('BeforePastePreProcess', function(e) {
-            var content = e.content, retainStyleProperties, validStyles;
-
-            retainStyleProperties = settings.paste_retain_style_properties;
-            if (retainStyleProperties) {
-                validStyles = Tools.makeMap(retainStyleProperties.split(/[, ]/));
-            }
-
-            /**
-             * Converts fake bullet and numbered lists to real semantic OL/UL.
-             *
-             * @param {tinymce.html.Node} node Root node to convert children of.
-             */
-            function convertFakeListsToProperLists(node) {
-                var currentListNode, prevListNode, lastLevel = 1;
-
-                function getText(node) {
-                    var txt = '';
-
-                    if (node.type === 3) {
-                        return node.value;
-                    }
-
-                    if ((node = node.firstChild)) {
-                        do {
-                            txt += getText(node);
-                        } while ((node = node.next));
-                    }
-
-                    return txt;
-                }
-
-                function trimListStart(node, regExp) {
-                    if (node.type === 3) {
-                        if (regExp.test(node.value)) {
-                            node.value = node.value.replace(regExp, '');
-                            return false;
-                        }
-                    }
-
-                    if ((node = node.firstChild)) {
-                        do {
-                            if (!trimListStart(node, regExp)) {
-                                return false;
-                            }
-                        } while ((node = node.next));
-                    }
-
-                    return true;
-                }
-
-                function removeIgnoredNodes(node) {
-                    if (node._listIgnore) {
-                        node.remove();
-                        return;
-                    }
-
-                    if ((node = node.firstChild)) {
-                        do {
-                            removeIgnoredNodes(node);
-                        } while ((node = node.next));
-                    }
-                }
-
-                function convertParagraphToLi(paragraphNode, listName, start) {
-                    var level = paragraphNode._listLevel || lastLevel;
-
-                    // Handle list nesting
-                    if (level != lastLevel) {
-                        if (level < lastLevel) {
-                            // Move to parent list
-                            if (currentListNode) {
-                                currentListNode = currentListNode.parent.parent;
-                            }
-                        } else {
-                            // Create new list
-                            prevListNode = currentListNode;
-                            currentListNode = null;
-                        }
-                    }
-
-                    if (!currentListNode || currentListNode.name != listName) {
-                        prevListNode = prevListNode || currentListNode;
-                        currentListNode = new Node(listName, 1);
-
-                        if (start > 1) {
-                            currentListNode.attr('start', '' + start);
-                        }
-
-                        paragraphNode.wrap(currentListNode);
-                    } else {
-                        currentListNode.append(paragraphNode);
-                    }
-
-                    paragraphNode.name = 'li';
-
-                    // Append list to previous list if it exists
-                    if (level > lastLevel && prevListNode) {
-                        prevListNode.lastChild.append(currentListNode);
-                    }
-
-                    lastLevel = level;
-
-                    // Remove start of list item "1. " or "&middot; " etc
-                    removeIgnoredNodes(paragraphNode);
-                    trimListStart(paragraphNode, /^\u00a0+/);
-                    trimListStart(paragraphNode, /^\s*([\u2022\u00b7\u00a7\u00d8\u25CF]|\w+\.)/);
-                    trimListStart(paragraphNode, /^\u00a0+/);
-                }
-
-                // Build a list of all root level elements before we start
-                // altering them in the loop below.
-                var elements = [], child = node.firstChild;
-                while (typeof child !== 'undefined' && child !== null) {
-                    elements.push(child);
-
-                    child = child.walk();
-                    if (child !== null) {
-                        while (typeof child !== 'undefined' && child.parent !== node) {
-                            child = child.walk();
-                        }
-                    }
-                }
-
-                for (var i = 0; i < elements.length; i++) {
-                    node = elements[i];
-
-                    if (node.name == 'p' && node.firstChild) {
-                        // Find first text node in paragraph
-                        var nodeText = getText(node);
-
-                        // Detect unordered lists look for bullets
-                        if (isBulletList(nodeText)) {
-                            convertParagraphToLi(node, 'ul');
-                            continue;
-                        }
-
-                        // Detect ordered lists 1., a. or ixv.
-                        if (isNumericList(nodeText)) {
-                            // Parse OL start number
-                            var matches = /([0-9]+)\./.exec(nodeText);
-                            var start = 1;
-                            if (matches) {
-                                start = parseInt(matches[1], 10);
-                            }
-
-                            convertParagraphToLi(node, 'ol', start);
-                            continue;
-                        }
-
-                        // Convert paragraphs marked as lists but doesn't look like anything
-                        if (node._listLevel) {
-                            convertParagraphToLi(node, 'ul', 1);
-                            continue;
-                        }
-
-                        currentListNode = null;
-                    } else {
-                        // If the root level element isn't a p tag which can be
-                        // processed by convertParagraphToLi, it interrupts the
-                        // lists, causing a new list to start instead of having
-                        // elements from the next list inserted above this tag.
-                        prevListNode = currentListNode;
-                        currentListNode = null;
-                    }
-                }
-            }
-
-            function filterStyles(node, styleValue) {
-                var outputStyles = {}, matches, styles = editor.dom.parseStyle(styleValue);
-
-                Tools.each(styles, function(value, name) {
-                    // Convert various MS styles to W3C styles
-                    switch (name) {
-                        case 'mso-list':
-                            // Parse out list indent level for lists
-                            matches = /\w+ \w+([0-9]+)/i.exec(styleValue);
-                            if (matches) {
-                                node._listLevel = parseInt(matches[1], 10);
-                            }
-
-                            // Remove these nodes <span style="mso-list:Ignore">o</span>
-                            // Since the span gets removed we mark the text node and the span
-                            if (/Ignore/i.test(value) && node.firstChild) {
-                                node._listIgnore = true;
-                                node.firstChild._listIgnore = true;
-                            }
-
-                            break;
-
-                        case "horiz-align":
-                            name = "text-align";
-                            break;
-
-                        case "vert-align":
-                            name = "vertical-align";
-                            break;
-
-                        case "font-color":
-                        case "mso-foreground":
-                            name = "color";
-                            break;
-
-                        case "mso-background":
-                        case "mso-highlight":
-                            name = "background";
-                            break;
-
-                        case "font-weight":
-                        case "font-style":
-                            if (value != "normal") {
-                                outputStyles[name] = value;
-                            }
-                            return;
-
-                        case "mso-element":
-                            // Remove track changes code
-                            if (/^(comment|comment-list)$/i.test(value)) {
-                                node.remove();
-                                return;
-                            }
-
-                            break;
-                    }
-
-                    if (name.indexOf('mso-comment') === 0) {
-                        node.remove();
-                        return;
-                    }
-
-                    // Never allow mso- prefixed names
-                    if (name.indexOf('mso-') === 0) {
-                        return;
-                    }
-
-                    // Output only valid styles
-                    if (retainStyleProperties == "all" || (validStyles && validStyles[name])) {
-                        outputStyles[name] = value;
-                    }
-                });
-
-                // Convert bold style to "b" element
-                if (/(bold)/i.test(outputStyles["font-weight"])) {
-                    delete outputStyles["font-weight"];
-                    node.wrap(new Node("b", 1));
-                }
-
-                // Convert italic style to "i" element
-                if (/(italic)/i.test(outputStyles["font-style"])) {
-                    delete outputStyles["font-style"];
-                    node.wrap(new Node("i", 1));
-                }
-
-                // Serialize the styles and see if there is something left to keep
-                outputStyles = editor.dom.serializeStyle(outputStyles, node.name);
-                if (outputStyles) {
-                    return outputStyles;
-                }
-
-                return null;
-            }
-
-            if (settings.paste_enable_default_filters === false) {
-                return;
-            }
-
-            // Detect is the contents is Word junk HTML
-            if (isWordContent(e.content)) {
-                e.wordContent = true; // Mark it for other processors
-
-                // Remove basic Word junk
-                content = Utils.filter(content, [
-                    // Word comments like conditional comments etc
-                    /<!--[\s\S]+?-->/gi,
-
-                    // Remove comments, scripts (e.g., msoShowComment), XML tag, VML content,
-                    // MS Office namespaced tags, and a few other tags
-                    /<(!|script[^>]*>.*?<\/script(?=[>\s])|\/?(\?xml(:\w+)?|img|meta|link|style|\w:\w+)(?=[\s\/>]))[^>]*>/gi,
-
-                    // Convert <s> into <strike> for line-though
-                    [/<(\/?)s>/gi, "<$1strike>"],
-
-                    // Replace nsbp entites to char since it's easier to handle
-                    [/&nbsp;/gi, "\u00a0"],
-
-                    // Convert <span style="mso-spacerun:yes">___</span> to string of alternating
-                    // breaking/non-breaking spaces of same length
-                    [/<span\s+style\s*=\s*"\s*mso-spacerun\s*:\s*yes\s*;?\s*"\s*>([\s\u00a0]*)<\/span>/gi,
-                        function(str, spaces) {
-                            return (spaces.length > 0) ?
-                                spaces.replace(/./, " ").slice(Math.floor(spaces.length / 2)).split("").join("\u00a0") : "";
-                        }
-                    ]
-                ]);
-
-                var validElements = settings.paste_word_valid_elements;
-                if (!validElements) {
-                    validElements = (
-                        '-strong/b,-em/i,-u,-span,-p,-ol,-ul,-li,-h1,-h2,-h3,-h4,-h5,-h6,' +
-                        '-p/div,-a[href|name],sub,sup,strike,br,del,table[width],tr,' +
-                        'td[colspan|rowspan|width],th[colspan|rowspan|width],thead,tfoot,tbody'
-                    );
-                }
-
-                // Setup strict schema
-                var schema = new Schema({
-                    valid_elements: validElements,
-                    valid_children: '-li[p]'
-                });
-
-                // Add style/class attribute to all element rules since the user might have removed them from
-                // paste_word_valid_elements config option and we need to check them for properties
-                Tools.each(schema.elements, function(rule) {
-                    if (!rule.attributes["class"]) {
-                        rule.attributes["class"] = {};
-                        rule.attributesOrder.push("class");
-                    }
-
-                    if (!rule.attributes.style) {
-                        rule.attributes.style = {};
-                        rule.attributesOrder.push("style");
-                    }
-                });
-
-                // Parse HTML into DOM structure
-                var domParser = new DomParser({}, schema);
-
-                // Filter styles to remove "mso" specific styles and convert some of them
-                domParser.addAttributeFilter('style', function(nodes) {
-                    var i = nodes.length, node;
-
-                    while (i--) {
-                        node = nodes[i];
-                        node.attr('style', filterStyles(node, node.attr('style')));
-
-                        // Remove pointess spans
-                        if (node.name == 'span' && node.parent && !node.attributes.length) {
-                            node.unwrap();
-                        }
-                    }
-                });
-
-                // Check the class attribute for comments or del items and remove those
-                domParser.addAttributeFilter('class', function(nodes) {
-                    var i = nodes.length, node, className;
-
-                    while (i--) {
-                        node = nodes[i];
-
-                        className = node.attr('class');
-                        if (/^(MsoCommentReference|MsoCommentText|msoDel|MsoCaption)$/i.test(className)) {
-                            node.remove();
-                        }
-
-                        node.attr('class', null);
-                    }
-                });
-
-                // Remove all del elements since we don't want the track changes code in the editor
-                domParser.addNodeFilter('del', function(nodes) {
-                    var i = nodes.length;
-
-                    while (i--) {
-                        nodes[i].remove();
-                    }
-                });
-
-                // Keep some of the links and anchors
-                domParser.addNodeFilter('a', function(nodes) {
-                    var i = nodes.length, node, href, name;
-
-                    while (i--) {
-                        node = nodes[i];
-                        href = node.attr('href');
-                        name = node.attr('name');
-
-                        if (href && href.indexOf('#_msocom_') != -1) {
-                            node.remove();
-                            continue;
-                        }
-
-                        if (href && href.indexOf('file://') === 0) {
-                            href = href.split('#')[1];
-                            if (href) {
-                                href = '#' + href;
-                            }
-                        }
-
-                        if (!href && !name) {
-                            node.unwrap();
-                        } else {
-                            // Remove all named anchors that aren't specific to TOC, Footnotes or Endnotes
-                            if (name && !/^_?(?:toc|edn|ftn)/i.test(name)) {
-                                node.unwrap();
-                                continue;
-                            }
-
-                            node.attr({
-                                href: href,
-                                name: name
-                            });
-                        }
-                    }
-                });
-
-                // Parse into DOM structure
-                var rootNode = domParser.parse(content);
-
-                // Process DOM
-                convertFakeListsToProperLists(rootNode);
-
-                // Serialize DOM back to HTML
-                e.content = new Serializer({}, schema).serialize(rootNode);
-            }
-        });
-    }
-
-    WordFilter.isWordContent = isWordContent;
-
-    return WordFilter;
-});
-
-// Included from: js/tinymce/plugins/paste/classes/Quirks.js
-
-/**
- * Quirks.js
- *
- * Copyright, Moxiecode Systems AB
- * Released under LGPL License.
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-/**
- * This class contains various fixes for browsers. These issues can not be feature
- * detected since we have no direct control over the clipboard. However we might be able
- * to remove some of these fixes once the browsers gets updated/fixed.
- *
- * @class tinymce.pasteplugin.Quirks
- * @private
- */
-define("tinymce/pasteplugin/Quirks", [
-    "tinymce/Env",
-    "tinymce/util/Tools",
-    "tinymce/pasteplugin/WordFilter",
-    "tinymce/pasteplugin/Utils"
-], function(Env, Tools, WordFilter, Utils) {
-    
-
-    return function(editor) {
-        function addPreProcessFilter(filterFunc) {
-            editor.on('BeforePastePreProcess', function(e) {
-                e.content = filterFunc(e.content);
-            });
-        }
-
-        /**
-         * Removes BR elements after block elements. IE9 has a nasty bug where it puts a BR element after each
-         * block element when pasting from word. This removes those elements.
-         *
-         * This:
-         *  <p>a</p><br><p>b</p>
-         *
-         * Becomes:
-         *  <p>a</p><p>b</p>
-         */
-        function removeExplorerBrElementsAfterBlocks(html) {
-            // Only filter word specific content
-            if (!WordFilter.isWordContent(html)) {
-                return html;
-            }
-
-            // Produce block regexp based on the block elements in schema
-            var blockElements = [];
-
-            Tools.each(editor.schema.getBlockElements(), function(block, blockName) {
-                blockElements.push(blockName);
-            });
-
-            var explorerBlocksRegExp = new RegExp(
-                '(?:<br>&nbsp;[\\s\\r\\n]+|<br>)*(<\\/?(' + blockElements.join('|') + ')[^>]*>)(?:<br>&nbsp;[\\s\\r\\n]+|<br>)*',
-                'g'
-            );
-
-            // Remove BR:s from: <BLOCK>X</BLOCK><BR>
-            html = Utils.filter(html, [
-                [explorerBlocksRegExp, '$1']
-            ]);
-
-            // IE9 also adds an extra BR element for each soft-linefeed and it also adds a BR for each word wrap break
-            html = Utils.filter(html, [
-                [/<br><br>/g, '<BR><BR>'], // Replace multiple BR elements with uppercase BR to keep them intact
-                [/<br>/g, ' '],            // Replace single br elements with space since they are word wrap BR:s
-                [/<BR><BR>/g, '<br>']      // Replace back the double brs but into a single BR
-            ]);
-
-            return html;
-        }
-
-        /**
-         * WebKit has a nasty bug where the all computed styles gets added to style attributes when copy/pasting contents.
-         * This fix solves that by simply removing the whole style attribute.
-         *
-         * The paste_webkit_styles option can be set to specify what to keep:
-         *  paste_webkit_styles: "none" // Keep no styles
-         *  paste_webkit_styles: "all", // Keep all of them
-         *  paste_webkit_styles: "font-weight color" // Keep specific ones
-         *
-         * @param {String} content Content that needs to be processed.
-         * @return {String} Processed contents.
-         */
-        function removeWebKitStyles(content) {
-            // Passthrough all styles from Word and let the WordFilter handle that junk
-            if (WordFilter.isWordContent(content)) {
-                return content;
-            }
-
-            // Filter away styles that isn't matching the target node
-            var webKitStyles = editor.settings.paste_webkit_styles;
-
-            if (editor.settings.paste_remove_styles_if_webkit === false || webKitStyles == "all") {
-                return content;
-            }
-
-            if (webKitStyles) {
-                webKitStyles = webKitStyles.split(/[, ]/);
-            }
-
-            // Keep specific styles that doesn't match the current node computed style
-            if (webKitStyles) {
-                var dom = editor.dom, node = editor.selection.getNode();
-
-                content = content.replace(/(<[^>]+) style="([^"]*)"([^>]*>)/gi, function(all, before, value, after) {
-                    var inputStyles = dom.parseStyle(value, 'span'), outputStyles = {};
-
-                    if (webKitStyles === "none") {
-                        return before + after;
-                    }
-
-                    for (var i = 0; i < webKitStyles.length; i++) {
-                        var inputValue = inputStyles[webKitStyles[i]], currentValue = dom.getStyle(node, webKitStyles[i], true);
-
-                        if (/color/.test(webKitStyles[i])) {
-                            inputValue = dom.toHex(inputValue);
-                            currentValue = dom.toHex(currentValue);
-                        }
-
-                        if (currentValue != inputValue) {
-                            outputStyles[webKitStyles[i]] = inputValue;
-                        }
-                    }
-
-                    outputStyles = dom.serializeStyle(outputStyles, 'span');
-                    if (outputStyles) {
-                        return before + ' style="' + outputStyles + '"' + after;
-                    }
-
-                    return before + after;
-                });
-            } else {
-                // Remove all external styles
-                content = content.replace(/(<[^>]+) style="([^"]*)"([^>]*>)/gi, '$1$3');
-            }
-
-            // Keep internal styles
-            content = content.replace(/(<[^>]+) data-mce-style="([^"]+)"([^>]*>)/gi, function(all, before, value, after) {
-                return before + ' style="' + value + '"' + after;
-            });
-
-            return content;
-        }
-
-        // Sniff browsers and apply fixes since we can't feature detect
-        if (Env.webkit) {
-            addPreProcessFilter(removeWebKitStyles);
-        }
-
-        if (Env.ie) {
-            addPreProcessFilter(removeExplorerBrElementsAfterBlocks);
-        }
-    };
-});
-
-// Included from: js/tinymce/plugins/paste/classes/Plugin.js
-
-/**
- * Plugin.js
- *
- * Copyright, Moxiecode Systems AB
- * Released under LGPL License.
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-/**
- * This class contains the tinymce plugin logic for the paste plugin.
- *
- * @class tinymce.pasteplugin.Plugin
- * @private
- */
-define("tinymce/pasteplugin/Plugin", [
-    "tinymce/PluginManager",
-    "tinymce/pasteplugin/Clipboard",
-    "tinymce/pasteplugin/WordFilter",
-    "tinymce/pasteplugin/Quirks"
-], function(PluginManager, Clipboard, WordFilter, Quirks) {
-    var userIsInformed;
-
-    PluginManager.add('paste', function(editor) {
-        var self = this, clipboard, settings = editor.settings;
-
-        function togglePlainTextPaste() {
-            if (clipboard.pasteFormat == "text") {
-                this.active(false);
-                clipboard.pasteFormat = "html";
-            } else {
-                clipboard.pasteFormat = "text";
-                this.active(true);
-
-                if (!userIsInformed) {
-                    editor.windowManager.alert(
-                        'Paste is now in plain text mode. Contents will now ' +
-                        'be pasted as plain text until you toggle this option off.'
-                    );
-
-                    userIsInformed = true;
-                }
-            }
-        }
-
-        self.clipboard = clipboard = new Clipboard(editor);
-        self.quirks = new Quirks(editor);
-        self.wordFilter = new WordFilter(editor);
-
-        if (editor.settings.paste_as_text) {
-            self.clipboard.pasteFormat = "text";
-        }
-
-        if (settings.paste_preprocess) {
-            editor.on('PastePreProcess', function(e) {
-                settings.paste_preprocess.call(self, self, e);
-            });
-        }
-
-        if (settings.paste_postprocess) {
-            editor.on('PastePostProcess', function(e) {
-                settings.paste_postprocess.call(self, self, e);
-            });
-        }
-
-        editor.addCommand('mceInsertClipboardContent', function(ui, value) {
-            if (value.content) {
-                self.clipboard.pasteHtml(value.content);
-            }
-
-            if (value.text) {
-                self.clipboard.pasteText(value.text);
-            }
-        });
-
-        // Block all drag/drop events
-        if (editor.paste_block_drop) {
-            editor.on('dragend dragover draggesture dragdrop drop drag', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-            });
-        }
-
-        // Prevent users from dropping data images on Gecko
-        if (!editor.settings.paste_data_images) {
-            editor.on('drop', function(e) {
-                var dataTransfer = e.dataTransfer;
-
-                if (dataTransfer && dataTransfer.files && dataTransfer.files.length > 0) {
-                    e.preventDefault();
-                }
-            });
-        }
-
-        editor.addButton('pastetext', {
-            icon: 'pastetext',
-            tooltip: 'Paste as text',
-            onclick: togglePlainTextPaste,
-            active: self.clipboard.pasteFormat == "text"
-        });
-
-        editor.addMenuItem('pastetext', {
-            text: 'Paste as text',
-            selectable: true,
-            active: clipboard.pasteFormat,
-            onclick: togglePlainTextPaste
-        });
-    });
-});
-
-expose(["tinymce/pasteplugin/Utils","tinymce/pasteplugin/WordFilter"]);
-})(this);
 
   }).apply(root, arguments);
 });
@@ -87892,6 +88140,7 @@ require([
   'mockup-patterns-formautofocus',
   'mockup-patterns-modal',
   'mockup-patterns-structure',
+  'mockup-patterns-livesearch',
   'bootstrap-dropdown',
   'bootstrap-collapse',
   'bootstrap-tooltip'

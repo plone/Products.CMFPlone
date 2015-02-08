@@ -11,6 +11,8 @@ from zope.i18nmessageid import MessageFactory
 from zope.publisher.browser import BrowserView
 from ZTUtils import make_query
 
+import json
+
 _ = MessageFactory('plone')
 
 # We should accept both a simple space, unicode u'\u0020 but also a
@@ -34,7 +36,8 @@ class Search(BrowserView):
 
     valid_keys = ('sort_on', 'sort_order', 'sort_limit', 'fq', 'fl', 'facet')
 
-    def results(self, query=None, batch=True, b_size=10, b_start=0):
+    def results(self, query=None, batch=True, b_size=10, b_start=0,
+                use_content_listing=True):
         """ Get properly wrapped search results from the catalog.
         Everything in Plone that performs searches should go through this view.
         'query' should be a dictionary of catalog parameters.
@@ -55,7 +58,8 @@ class Search(BrowserView):
             except ParseError:
                 return []
 
-        results = IContentListing(results)
+        if use_content_listing:
+            results = IContentListing(results)
         if batch:
             results = Batch(results, b_size, b_start)
         return results
@@ -170,6 +174,42 @@ class Search(BrowserView):
             state = self.context.unrestrictedTraverse('@@plone_portal_state')
             self._navroot_url = state.navigation_root_url()
         return self._navroot_url
+
+
+class AjaxSearch(Search):
+
+    def __call__(self):
+        items = []
+        try:
+            per_page = int(self.request.form.get('perPage'))
+        except:
+            per_page = 10
+        try:
+            page = int(self.request.form.get('page'))
+        except:
+            page = 1
+
+        form = self.request.form
+        if 'SearchableText' in form:
+            # let's add * around for better results
+            if '*' not in form['SearchableText']:
+                form['SearchableText'] = '*' + form['SearchableText'] + '*'
+
+        results = self.results(batch=False, use_content_listing=False)
+        batch = Batch(results, per_page, start=(page - 1) * per_page)
+
+        for item in batch:
+            items.append({
+                'id': item.UID,
+                'title': item.Title,
+                'description': item.Description,
+                'url': item.getURL(),
+                'state': item.review_state
+            })
+        return json.dumps({
+            'total': len(results),
+            'items': items
+        })
 
 
 class SortOption(object):

@@ -740,6 +740,14 @@
       </value>
   </records>
 
+  <records prefix="plone.resources/mockup-patterns-livesearch"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockup/livesearch/pattern.js</value>
+      <value key="css">
+        <element>++resource++mockup/livesearch/pattern.livesearch.less</element>
+      </value>
+  </records>
+
   <records prefix="plone.resources/mockup-patterns-structure"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/structure/pattern.js</value>
@@ -878,12 +886,6 @@
       <value key="js">jquery.highlightsearchterms.js</value>
   </records>
 
-  <records prefix="plone.resources/resource-search-js"
-           interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++resource++search.js</value>
-      <value key="deps">jquery</value>
-  </records>
-
   <!-- disabled -->
   <records prefix="plone.resources/mark_special_links"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
@@ -962,7 +964,6 @@
             interface='Products.CMFPlone.interfaces.IBundleRegistry'>
     <value key="resources">
       <element>plone</element>
-      <element>resource-search-js</element>
     </value>
     <value key="enabled">True</value>
     <value key="jscompilation">++plone++static/plone-compiled.min.js</value>
