@@ -120,20 +120,20 @@ class UserGroupsControlPanelFunctionalTest(unittest.TestCase):
             "%s/@@usergroup-groupprefs" % self.portal_url
         )
 
+    def test_usergroups_settings_link(self):
+        self.browser.open(self.usergroups_url)
+        self.browser.getLink('Settings').click()
+        self.assertEqual(
+            self.browser.url,
+            "%s/@@usergroup-controlpanel" % self.portal_url
+        )
+
     def test_usergroups_memberfields_link(self):
         self.browser.open(self.usergroups_url)
         self.browser.getLink('Member fields').click()
         self.assertEqual(
             self.browser.url,
             "%s/@@member-fields" % self.portal_url
-        )
-
-    def test_usergroups_member_registration_link(self):
-        self.browser.open(self.usergroups_url)
-        self.browser.getLink('Member Registration').click()
-        self.assertEqual(
-            self.browser.url,
-            "%s/@@member-registration" % self.portal_url
         )
 
     def test_user_search_by_name(self):
