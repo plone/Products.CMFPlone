@@ -4,372 +4,6 @@ if(k&&j[k]&&(e||j[k].data)||void 0!==d||"string"!=typeof b)return k||(k=i?a[h]=c
 },cur:function(){var a=Zb.propHooks[this.prop];return a&&a.get?a.get(this):Zb.propHooks._default.get(this)},run:function(a){var b,c=Zb.propHooks[this.prop];return this.pos=b=this.options.duration?m.easing[this.easing](a,this.options.duration*a,0,1,this.options.duration):a,this.now=(this.end-this.start)*b+this.start,this.options.step&&this.options.step.call(this.elem,this.now,this),c&&c.set?c.set(this):Zb.propHooks._default.set(this),this}},Zb.prototype.init.prototype=Zb.prototype,Zb.propHooks={_default:{get:function(a){var b;return null==a.elem[a.prop]||a.elem.style&&null!=a.elem.style[a.prop]?(b=m.css(a.elem,a.prop,""),b&&"auto"!==b?b:0):a.elem[a.prop]},set:function(a){m.fx.step[a.prop]?m.fx.step[a.prop](a):a.elem.style&&(null!=a.elem.style[m.cssProps[a.prop]]||m.cssHooks[a.prop])?m.style(a.elem,a.prop,a.now+a.unit):a.elem[a.prop]=a.now}}},Zb.propHooks.scrollTop=Zb.propHooks.scrollLeft={set:function(a){a.elem.nodeType&&a.elem.parentNode&&(a.elem[a.prop]=a.now)}},m.easing={linear:function(a){return a},swing:function(a){return.5-Math.cos(a*Math.PI)/2}},m.fx=Zb.prototype.init,m.fx.step={};var $b,_b,ac=/^(?:toggle|show|hide)$/,bc=new RegExp("^(?:([+-])=|)("+S+")([a-z%]*)$","i"),cc=/queueHooks$/,dc=[ic],ec={"*":[function(a,b){var c=this.createTween(a,b),d=c.cur(),e=bc.exec(b),f=e&&e[3]||(m.cssNumber[a]?"":"px"),g=(m.cssNumber[a]||"px"!==f&&+d)&&bc.exec(m.css(c.elem,a)),h=1,i=20;if(g&&g[3]!==f){f=f||g[3],e=e||[],g=+d||1;do h=h||".5",g/=h,m.style(c.elem,a,g+f);while(h!==(h=c.cur()/d)&&1!==h&&--i)}return e&&(g=c.start=+g||+d||0,c.unit=f,c.end=e[1]?g+(e[1]+1)*e[2]:+e[2]),c}]};function fc(){return setTimeout(function(){$b=void 0}),$b=m.now()}function gc(a,b){var c,d={height:a},e=0;for(b=b?1:0;4>e;e+=2-b)c=T[e],d["margin"+c]=d["padding"+c]=a;return b&&(d.opacity=d.width=a),d}function hc(a,b,c){for(var d,e=(ec[b]||[]).concat(ec["*"]),f=0,g=e.length;g>f;f++)if(d=e[f].call(c,b,a))return d}function ic(a,b,c){var d,e,f,g,h,i,j,l,n=this,o={},p=a.style,q=a.nodeType&&U(a),r=m._data(a,"fxshow");c.queue||(h=m._queueHooks(a,"fx"),null==h.unqueued&&(h.unqueued=0,i=h.empty.fire,h.empty.fire=function(){h.unqueued||i()}),h.unqueued++,n.always(function(){n.always(function(){h.unqueued--,m.queue(a,"fx").length||h.empty.fire()})})),1===a.nodeType&&("height"in b||"width"in b)&&(c.overflow=[p.overflow,p.overflowX,p.overflowY],j=m.css(a,"display"),l="none"===j?m._data(a,"olddisplay")||Fb(a.nodeName):j,"inline"===l&&"none"===m.css(a,"float")&&(k.inlineBlockNeedsLayout&&"inline"!==Fb(a.nodeName)?p.zoom=1:p.display="inline-block")),c.overflow&&(p.overflow="hidden",k.shrinkWrapBlocks()||n.always(function(){p.overflow=c.overflow[0],p.overflowX=c.overflow[1],p.overflowY=c.overflow[2]}));for(d in b)if(e=b[d],ac.exec(e)){if(delete b[d],f=f||"toggle"===e,e===(q?"hide":"show")){if("show"!==e||!r||void 0===r[d])continue;q=!0}o[d]=r&&r[d]||m.style(a,d)}else j=void 0;if(m.isEmptyObject(o))"inline"===("none"===j?Fb(a.nodeName):j)&&(p.display=j);else{r?"hidden"in r&&(q=r.hidden):r=m._data(a,"fxshow",{}),f&&(r.hidden=!q),q?m(a).show():n.done(function(){m(a).hide()}),n.done(function(){var b;m._removeData(a,"fxshow");for(b in o)m.style(a,b,o[b])});for(d in o)g=hc(q?r[d]:0,d,n),d in r||(r[d]=g.start,q&&(g.end=g.start,g.start="width"===d||"height"===d?1:0))}}function jc(a,b){var c,d,e,f,g;for(c in a)if(d=m.camelCase(c),e=b[d],f=a[c],m.isArray(f)&&(e=f[1],f=a[c]=f[0]),c!==d&&(a[d]=f,delete a[c]),g=m.cssHooks[d],g&&"expand"in g){f=g.expand(f),delete a[d];for(c in f)c in a||(a[c]=f[c],b[c]=e)}else b[d]=e}function kc(a,b,c){var d,e,f=0,g=dc.length,h=m.Deferred().always(function(){delete i.elem}),i=function(){if(e)return!1;for(var b=$b||fc(),c=Math.max(0,j.startTime+j.duration-b),d=c/j.duration||0,f=1-d,g=0,i=j.tweens.length;i>g;g++)j.tweens[g].run(f);return h.notifyWith(a,[j,f,c]),1>f&&i?c:(h.resolveWith(a,[j]),!1)},j=h.promise({elem:a,props:m.extend({},b),opts:m.extend(!0,{specialEasing:{}},c),originalProperties:b,originalOptions:c,startTime:$b||fc(),duration:c.duration,tweens:[],createTween:function(b,c){var d=m.Tween(a,j.opts,b,c,j.opts.specialEasing[b]||j.opts.easing);return j.tweens.push(d),d},stop:function(b){var c=0,d=b?j.tweens.length:0;if(e)return this;for(e=!0;d>c;c++)j.tweens[c].run(1);return b?h.resolveWith(a,[j,b]):h.rejectWith(a,[j,b]),this}}),k=j.props;for(jc(k,j.opts.specialEasing);g>f;f++)if(d=dc[f].call(j,a,k,j.opts))return d;return m.map(k,hc,j),m.isFunction(j.opts.start)&&j.opts.start.call(a,j),m.fx.timer(m.extend(i,{elem:a,anim:j,queue:j.opts.queue})),j.progress(j.opts.progress).done(j.opts.done,j.opts.complete).fail(j.opts.fail).always(j.opts.always)}m.Animation=m.extend(kc,{tweener:function(a,b){m.isFunction(a)?(b=a,a=["*"]):a=a.split(" ");for(var c,d=0,e=a.length;e>d;d++)c=a[d],ec[c]=ec[c]||[],ec[c].unshift(b)},prefilter:function(a,b){b?dc.unshift(a):dc.push(a)}}),m.speed=function(a,b,c){var d=a&&"object"==typeof a?m.extend({},a):{complete:c||!c&&b||m.isFunction(a)&&a,duration:a,easing:c&&b||b&&!m.isFunction(b)&&b};return d.duration=m.fx.off?0:"number"==typeof d.duration?d.duration:d.duration in m.fx.speeds?m.fx.speeds[d.duration]:m.fx.speeds._default,(null==d.queue||d.queue===!0)&&(d.queue="fx"),d.old=d.complete,d.complete=function(){m.isFunction(d.old)&&d.old.call(this),d.queue&&m.dequeue(this,d.queue)},d},m.fn.extend({fadeTo:function(a,b,c,d){return this.filter(U).css("opacity",0).show().end().animate({opacity:b},a,c,d)},animate:function(a,b,c,d){var e=m.isEmptyObject(a),f=m.speed(b,c,d),g=function(){var b=kc(this,m.extend({},a),f);(e||m._data(this,"finish"))&&b.stop(!0)};return g.finish=g,e||f.queue===!1?this.each(g):this.queue(f.queue,g)},stop:function(a,b,c){var d=function(a){var b=a.stop;delete a.stop,b(c)};return"string"!=typeof a&&(c=b,b=a,a=void 0),b&&a!==!1&&this.queue(a||"fx",[]),this.each(function(){var b=!0,e=null!=a&&a+"queueHooks",f=m.timers,g=m._data(this);if(e)g[e]&&g[e].stop&&d(g[e]);else for(e in g)g[e]&&g[e].stop&&cc.test(e)&&d(g[e]);for(e=f.length;e--;)f[e].elem!==this||null!=a&&f[e].queue!==a||(f[e].anim.stop(c),b=!1,f.splice(e,1));(b||!c)&&m.dequeue(this,a)})},finish:function(a){return a!==!1&&(a=a||"fx"),this.each(function(){var b,c=m._data(this),d=c[a+"queue"],e=c[a+"queueHooks"],f=m.timers,g=d?d.length:0;for(c.finish=!0,m.queue(this,a,[]),e&&e.stop&&e.stop.call(this,!0),b=f.length;b--;)f[b].elem===this&&f[b].queue===a&&(f[b].anim.stop(!0),f.splice(b,1));for(b=0;g>b;b++)d[b]&&d[b].finish&&d[b].finish.call(this);delete c.finish})}}),m.each(["toggle","show","hide"],function(a,b){var c=m.fn[b];m.fn[b]=function(a,d,e){return null==a||"boolean"==typeof a?c.apply(this,arguments):this.animate(gc(b,!0),a,d,e)}}),m.each({slideDown:gc("show"),slideUp:gc("hide"),slideToggle:gc("toggle"),fadeIn:{opacity:"show"},fadeOut:{opacity:"hide"},fadeToggle:{opacity:"toggle"}},function(a,b){m.fn[a]=function(a,c,d){return this.animate(b,a,c,d)}}),m.timers=[],m.fx.tick=function(){var a,b=m.timers,c=0;for($b=m.now();c<b.length;c++)a=b[c],a()||b[c]!==a||b.splice(c--,1);b.length||m.fx.stop(),$b=void 0},m.fx.timer=function(a){m.timers.push(a),a()?m.fx.start():m.timers.pop()},m.fx.interval=13,m.fx.start=function(){_b||(_b=setInterval(m.fx.tick,m.fx.interval))},m.fx.stop=function(){clearInterval(_b),_b=null},m.fx.speeds={slow:600,fast:200,_default:400},m.fn.delay=function(a,b){return a=m.fx?m.fx.speeds[a]||a:a,b=b||"fx",this.queue(b,function(b,c){var d=setTimeout(b,a);c.stop=function(){clearTimeout(d)}})},function(){var a,b,c,d,e;b=y.createElement("div"),b.setAttribute("className","t"),b.innerHTML="  <link/><table></table><a href='/a'>a</a><input type='checkbox'/>",d=b.getElementsByTagName("a")[0],c=y.createElement("select"),e=c.appendChild(y.createElement("option")),a=b.getElementsByTagName("input")[0],d.style.cssText="top:1px",k.getSetAttribute="t"!==b.className,k.style=/top/.test(d.getAttribute("style")),k.hrefNormalized="/a"===d.getAttribute("href"),k.checkOn=!!a.value,k.optSelected=e.selected,k.enctype=!!y.createElement("form").enctype,c.disabled=!0,k.optDisabled=!e.disabled,a=y.createElement("input"),a.setAttribute("value",""),k.input=""===a.getAttribute("value"),a.value="t",a.setAttribute("type","radio"),k.radioValue="t"===a.value}();var lc=/\r/g;m.fn.extend({val:function(a){var b,c,d,e=this[0];{if(arguments.length)return d=m.isFunction(a),this.each(function(c){var e;1===this.nodeType&&(e=d?a.call(this,c,m(this).val()):a,null==e?e="":"number"==typeof e?e+="":m.isArray(e)&&(e=m.map(e,function(a){return null==a?"":a+""})),b=m.valHooks[this.type]||m.valHooks[this.nodeName.toLowerCase()],b&&"set"in b&&void 0!==b.set(this,e,"value")||(this.value=e))});if(e)return b=m.valHooks[e.type]||m.valHooks[e.nodeName.toLowerCase()],b&&"get"in b&&void 0!==(c=b.get(e,"value"))?c:(c=e.value,"string"==typeof c?c.replace(lc,""):null==c?"":c)}}}),m.extend({valHooks:{option:{get:function(a){var b=m.find.attr(a,"value");return null!=b?b:m.trim(m.text(a))}},select:{get:function(a){for(var b,c,d=a.options,e=a.selectedIndex,f="select-one"===a.type||0>e,g=f?null:[],h=f?e+1:d.length,i=0>e?h:f?e:0;h>i;i++)if(c=d[i],!(!c.selected&&i!==e||(k.optDisabled?c.disabled:null!==c.getAttribute("disabled"))||c.parentNode.disabled&&m.nodeName(c.parentNode,"optgroup"))){if(b=m(c).val(),f)return b;g.push(b)}return g},set:function(a,b){var c,d,e=a.options,f=m.makeArray(b),g=e.length;while(g--)if(d=e[g],m.inArray(m.valHooks.option.get(d),f)>=0)try{d.selected=c=!0}catch(h){d.scrollHeight}else d.selected=!1;return c||(a.selectedIndex=-1),e}}}}),m.each(["radio","checkbox"],function(){m.valHooks[this]={set:function(a,b){return m.isArray(b)?a.checked=m.inArray(m(a).val(),b)>=0:void 0}},k.checkOn||(m.valHooks[this].get=function(a){return null===a.getAttribute("value")?"on":a.value})});var mc,nc,oc=m.expr.attrHandle,pc=/^(?:checked|selected)$/i,qc=k.getSetAttribute,rc=k.input;m.fn.extend({attr:function(a,b){return V(this,m.attr,a,b,arguments.length>1)},removeAttr:function(a){return this.each(function(){m.removeAttr(this,a)})}}),m.extend({attr:function(a,b,c){var d,e,f=a.nodeType;if(a&&3!==f&&8!==f&&2!==f)return typeof a.getAttribute===K?m.prop(a,b,c):(1===f&&m.isXMLDoc(a)||(b=b.toLowerCase(),d=m.attrHooks[b]||(m.expr.match.bool.test(b)?nc:mc)),void 0===c?d&&"get"in d&&null!==(e=d.get(a,b))?e:(e=m.find.attr(a,b),null==e?void 0:e):null!==c?d&&"set"in d&&void 0!==(e=d.set(a,c,b))?e:(a.setAttribute(b,c+""),c):void m.removeAttr(a,b))},removeAttr:function(a,b){var c,d,e=0,f=b&&b.match(E);if(f&&1===a.nodeType)while(c=f[e++])d=m.propFix[c]||c,m.expr.match.bool.test(c)?rc&&qc||!pc.test(c)?a[d]=!1:a[m.camelCase("default-"+c)]=a[d]=!1:m.attr(a,c,""),a.removeAttribute(qc?c:d)},attrHooks:{type:{set:function(a,b){if(!k.radioValue&&"radio"===b&&m.nodeName(a,"input")){var c=a.value;return a.setAttribute("type",b),c&&(a.value=c),b}}}}}),nc={set:function(a,b,c){return b===!1?m.removeAttr(a,c):rc&&qc||!pc.test(c)?a.setAttribute(!qc&&m.propFix[c]||c,c):a[m.camelCase("default-"+c)]=a[c]=!0,c}},m.each(m.expr.match.bool.source.match(/\w+/g),function(a,b){var c=oc[b]||m.find.attr;oc[b]=rc&&qc||!pc.test(b)?function(a,b,d){var e,f;return d||(f=oc[b],oc[b]=e,e=null!=c(a,b,d)?b.toLowerCase():null,oc[b]=f),e}:function(a,b,c){return c?void 0:a[m.camelCase("default-"+b)]?b.toLowerCase():null}}),rc&&qc||(m.attrHooks.value={set:function(a,b,c){return m.nodeName(a,"input")?void(a.defaultValue=b):mc&&mc.set(a,b,c)}}),qc||(mc={set:function(a,b,c){var d=a.getAttributeNode(c);return d||a.setAttributeNode(d=a.ownerDocument.createAttribute(c)),d.value=b+="","value"===c||b===a.getAttribute(c)?b:void 0}},oc.id=oc.name=oc.coords=function(a,b,c){var d;return c?void 0:(d=a.getAttributeNode(b))&&""!==d.value?d.value:null},m.valHooks.button={get:function(a,b){var c=a.getAttributeNode(b);return c&&c.specified?c.value:void 0},set:mc.set},m.attrHooks.contenteditable={set:function(a,b,c){mc.set(a,""===b?!1:b,c)}},m.each(["width","height"],function(a,b){m.attrHooks[b]={set:function(a,c){return""===c?(a.setAttribute(b,"auto"),c):void 0}}})),k.style||(m.attrHooks.style={get:function(a){return a.style.cssText||void 0},set:function(a,b){return a.style.cssText=b+""}});var sc=/^(?:input|select|textarea|button|object)$/i,tc=/^(?:a|area)$/i;m.fn.extend({prop:function(a,b){return V(this,m.prop,a,b,arguments.length>1)},removeProp:function(a){return a=m.propFix[a]||a,this.each(function(){try{this[a]=void 0,delete this[a]}catch(b){}})}}),m.extend({propFix:{"for":"htmlFor","class":"className"},prop:function(a,b,c){var d,e,f,g=a.nodeType;if(a&&3!==g&&8!==g&&2!==g)return f=1!==g||!m.isXMLDoc(a),f&&(b=m.propFix[b]||b,e=m.propHooks[b]),void 0!==c?e&&"set"in e&&void 0!==(d=e.set(a,c,b))?d:a[b]=c:e&&"get"in e&&null!==(d=e.get(a,b))?d:a[b]},propHooks:{tabIndex:{get:function(a){var b=m.find.attr(a,"tabindex");return b?parseInt(b,10):sc.test(a.nodeName)||tc.test(a.nodeName)&&a.href?0:-1}}}}),k.hrefNormalized||m.each(["href","src"],function(a,b){m.propHooks[b]={get:function(a){return a.getAttribute(b,4)}}}),k.optSelected||(m.propHooks.selected={get:function(a){var b=a.parentNode;return b&&(b.selectedIndex,b.parentNode&&b.parentNode.selectedIndex),null}}),m.each(["tabIndex","readOnly","maxLength","cellSpacing","cellPadding","rowSpan","colSpan","useMap","frameBorder","contentEditable"],function(){m.propFix[this.toLowerCase()]=this}),k.enctype||(m.propFix.enctype="encoding");var uc=/[\t\r\n\f]/g;m.fn.extend({addClass:function(a){var b,c,d,e,f,g,h=0,i=this.length,j="string"==typeof a&&a;if(m.isFunction(a))return this.each(function(b){m(this).addClass(a.call(this,b,this.className))});if(j)for(b=(a||"").match(E)||[];i>h;h++)if(c=this[h],d=1===c.nodeType&&(c.className?(" "+c.className+" ").replace(uc," "):" ")){f=0;while(e=b[f++])d.indexOf(" "+e+" ")<0&&(d+=e+" ");g=m.trim(d),c.className!==g&&(c.className=g)}return this},removeClass:function(a){var b,c,d,e,f,g,h=0,i=this.length,j=0===arguments.length||"string"==typeof a&&a;if(m.isFunction(a))return this.each(function(b){m(this).removeClass(a.call(this,b,this.className))});if(j)for(b=(a||"").match(E)||[];i>h;h++)if(c=this[h],d=1===c.nodeType&&(c.className?(" "+c.className+" ").replace(uc," "):"")){f=0;while(e=b[f++])while(d.indexOf(" "+e+" ")>=0)d=d.replace(" "+e+" "," ");g=a?m.trim(d):"",c.className!==g&&(c.className=g)}return this},toggleClass:function(a,b){var c=typeof a;return"boolean"==typeof b&&"string"===c?b?this.addClass(a):this.removeClass(a):this.each(m.isFunction(a)?function(c){m(this).toggleClass(a.call(this,c,this.className,b),b)}:function(){if("string"===c){var b,d=0,e=m(this),f=a.match(E)||[];while(b=f[d++])e.hasClass(b)?e.removeClass(b):e.addClass(b)}else(c===K||"boolean"===c)&&(this.className&&m._data(this,"__className__",this.className),this.className=this.className||a===!1?"":m._data(this,"__className__")||"")})},hasClass:function(a){for(var b=" "+a+" ",c=0,d=this.length;d>c;c++)if(1===this[c].nodeType&&(" "+this[c].className+" ").replace(uc," ").indexOf(b)>=0)return!0;return!1}}),m.each("blur focus focusin focusout load resize scroll unload click dblclick mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave change select submit keydown keypress keyup error contextmenu".split(" "),function(a,b){m.fn[b]=function(a,c){return arguments.length>0?this.on(b,null,a,c):this.trigger(b)}}),m.fn.extend({hover:function(a,b){return this.mouseenter(a).mouseleave(b||a)},bind:function(a,b,c){return this.on(a,null,b,c)},unbind:function(a,b){return this.off(a,null,b)},delegate:function(a,b,c,d){return this.on(b,a,c,d)},undelegate:function(a,b,c){return 1===arguments.length?this.off(a,"**"):this.off(b,a||"**",c)}});var vc=m.now(),wc=/\?/,xc=/(,)|(\[|{)|(}|])|"(?:[^"\\\r\n]|\\["\\\/bfnrt]|\\u[\da-fA-F]{4})*"\s*:?|true|false|null|-?(?!0\d)\d+(?:\.\d+|)(?:[eE][+-]?\d+|)/g;m.parseJSON=function(b){if(a.JSON&&a.JSON.parse)return a.JSON.parse(b+"");var c,d=null,e=m.trim(b+"");return e&&!m.trim(e.replace(xc,function(a,b,e,f){return c&&b&&(d=0),0===d?a:(c=e||b,d+=!f-!e,"")}))?Function("return "+e)():m.error("Invalid JSON: "+b)},m.parseXML=function(b){var c,d;if(!b||"string"!=typeof b)return null;try{a.DOMParser?(d=new DOMParser,c=d.parseFromString(b,"text/xml")):(c=new ActiveXObject("Microsoft.XMLDOM"),c.async="false",c.loadXML(b))}catch(e){c=void 0}return c&&c.documentElement&&!c.getElementsByTagName("parsererror").length||m.error("Invalid XML: "+b),c};var yc,zc,Ac=/#.*$/,Bc=/([?&])_=[^&]*/,Cc=/^(.*?):[ \t]*([^\r\n]*)\r?$/gm,Dc=/^(?:about|app|app-storage|.+-extension|file|res|widget):$/,Ec=/^(?:GET|HEAD)$/,Fc=/^\/\//,Gc=/^([\w.+-]+:)(?:\/\/(?:[^\/?#]*@|)([^\/?#:]*)(?::(\d+)|)|)/,Hc={},Ic={},Jc="*/".concat("*");try{zc=location.href}catch(Kc){zc=y.createElement("a"),zc.href="",zc=zc.href}yc=Gc.exec(zc.toLowerCase())||[];function Lc(a){return function(b,c){"string"!=typeof b&&(c=b,b="*");var d,e=0,f=b.toLowerCase().match(E)||[];if(m.isFunction(c))while(d=f[e++])"+"===d.charAt(0)?(d=d.slice(1)||"*",(a[d]=a[d]||[]).unshift(c)):(a[d]=a[d]||[]).push(c)}}function Mc(a,b,c,d){var e={},f=a===Ic;function g(h){var i;return e[h]=!0,m.each(a[h]||[],function(a,h){var j=h(b,c,d);return"string"!=typeof j||f||e[j]?f?!(i=j):void 0:(b.dataTypes.unshift(j),g(j),!1)}),i}return g(b.dataTypes[0])||!e["*"]&&g("*")}function Nc(a,b){var c,d,e=m.ajaxSettings.flatOptions||{};for(d in b)void 0!==b[d]&&((e[d]?a:c||(c={}))[d]=b[d]);return c&&m.extend(!0,a,c),a}function Oc(a,b,c){var d,e,f,g,h=a.contents,i=a.dataTypes;while("*"===i[0])i.shift(),void 0===e&&(e=a.mimeType||b.getResponseHeader("Content-Type"));if(e)for(g in h)if(h[g]&&h[g].test(e)){i.unshift(g);break}if(i[0]in c)f=i[0];else{for(g in c){if(!i[0]||a.converters[g+" "+i[0]]){f=g;break}d||(d=g)}f=f||d}return f?(f!==i[0]&&i.unshift(f),c[f]):void 0}function Pc(a,b,c,d){var e,f,g,h,i,j={},k=a.dataTypes.slice();if(k[1])for(g in a.converters)j[g.toLowerCase()]=a.converters[g];f=k.shift();while(f)if(a.responseFields[f]&&(c[a.responseFields[f]]=b),!i&&d&&a.dataFilter&&(b=a.dataFilter(b,a.dataType)),i=f,f=k.shift())if("*"===f)f=i;else if("*"!==i&&i!==f){if(g=j[i+" "+f]||j["* "+f],!g)for(e in j)if(h=e.split(" "),h[1]===f&&(g=j[i+" "+h[0]]||j["* "+h[0]])){g===!0?g=j[e]:j[e]!==!0&&(f=h[0],k.unshift(h[1]));break}if(g!==!0)if(g&&a["throws"])b=g(b);else try{b=g(b)}catch(l){return{state:"parsererror",error:g?l:"No conversion from "+i+" to "+f}}}return{state:"success",data:b}}m.extend({active:0,lastModified:{},etag:{},ajaxSettings:{url:zc,type:"GET",isLocal:Dc.test(yc[1]),global:!0,processData:!0,async:!0,contentType:"application/x-www-form-urlencoded; charset=UTF-8",accepts:{"*":Jc,text:"text/plain",html:"text/html",xml:"application/xml, text/xml",json:"application/json, text/javascript"},contents:{xml:/xml/,html:/html/,json:/json/},responseFields:{xml:"responseXML",text:"responseText",json:"responseJSON"},converters:{"* text":String,"text html":!0,"text json":m.parseJSON,"text xml":m.parseXML},flatOptions:{url:!0,context:!0}},ajaxSetup:function(a,b){return b?Nc(Nc(a,m.ajaxSettings),b):Nc(m.ajaxSettings,a)},ajaxPrefilter:Lc(Hc),ajaxTransport:Lc(Ic),ajax:function(a,b){"object"==typeof a&&(b=a,a=void 0),b=b||{};var c,d,e,f,g,h,i,j,k=m.ajaxSetup({},b),l=k.context||k,n=k.context&&(l.nodeType||l.jquery)?m(l):m.event,o=m.Deferred(),p=m.Callbacks("once memory"),q=k.statusCode||{},r={},s={},t=0,u="canceled",v={readyState:0,getResponseHeader:function(a){var b;if(2===t){if(!j){j={};while(b=Cc.exec(f))j[b[1].toLowerCase()]=b[2]}b=j[a.toLowerCase()]}return null==b?null:b},getAllResponseHeaders:function(){return 2===t?f:null},setRequestHeader:function(a,b){var c=a.toLowerCase();return t||(a=s[c]=s[c]||a,r[a]=b),this},overrideMimeType:function(a){return t||(k.mimeType=a),this},statusCode:function(a){var b;if(a)if(2>t)for(b in a)q[b]=[q[b],a[b]];else v.always(a[v.status]);return this},abort:function(a){var b=a||u;return i&&i.abort(b),x(0,b),this}};if(o.promise(v).complete=p.add,v.success=v.done,v.error=v.fail,k.url=((a||k.url||zc)+"").replace(Ac,"").replace(Fc,yc[1]+"//"),k.type=b.method||b.type||k.method||k.type,k.dataTypes=m.trim(k.dataType||"*").toLowerCase().match(E)||[""],null==k.crossDomain&&(c=Gc.exec(k.url.toLowerCase()),k.crossDomain=!(!c||c[1]===yc[1]&&c[2]===yc[2]&&(c[3]||("http:"===c[1]?"80":"443"))===(yc[3]||("http:"===yc[1]?"80":"443")))),k.data&&k.processData&&"string"!=typeof k.data&&(k.data=m.param(k.data,k.traditional)),Mc(Hc,k,b,v),2===t)return v;h=k.global,h&&0===m.active++&&m.event.trigger("ajaxStart"),k.type=k.type.toUpperCase(),k.hasContent=!Ec.test(k.type),e=k.url,k.hasContent||(k.data&&(e=k.url+=(wc.test(e)?"&":"?")+k.data,delete k.data),k.cache===!1&&(k.url=Bc.test(e)?e.replace(Bc,"$1_="+vc++):e+(wc.test(e)?"&":"?")+"_="+vc++)),k.ifModified&&(m.lastModified[e]&&v.setRequestHeader("If-Modified-Since",m.lastModified[e]),m.etag[e]&&v.setRequestHeader("If-None-Match",m.etag[e])),(k.data&&k.hasContent&&k.contentType!==!1||b.contentType)&&v.setRequestHeader("Content-Type",k.contentType),v.setRequestHeader("Accept",k.dataTypes[0]&&k.accepts[k.dataTypes[0]]?k.accepts[k.dataTypes[0]]+("*"!==k.dataTypes[0]?", "+Jc+"; q=0.01":""):k.accepts["*"]);for(d in k.headers)v.setRequestHeader(d,k.headers[d]);if(k.beforeSend&&(k.beforeSend.call(l,v,k)===!1||2===t))return v.abort();u="abort";for(d in{success:1,error:1,complete:1})v[d](k[d]);if(i=Mc(Ic,k,b,v)){v.readyState=1,h&&n.trigger("ajaxSend",[v,k]),k.async&&k.timeout>0&&(g=setTimeout(function(){v.abort("timeout")},k.timeout));try{t=1,i.send(r,x)}catch(w){if(!(2>t))throw w;x(-1,w)}}else x(-1,"No Transport");function x(a,b,c,d){var j,r,s,u,w,x=b;2!==t&&(t=2,g&&clearTimeout(g),i=void 0,f=d||"",v.readyState=a>0?4:0,j=a>=200&&300>a||304===a,c&&(u=Oc(k,v,c)),u=Pc(k,u,v,j),j?(k.ifModified&&(w=v.getResponseHeader("Last-Modified"),w&&(m.lastModified[e]=w),w=v.getResponseHeader("etag"),w&&(m.etag[e]=w)),204===a||"HEAD"===k.type?x="nocontent":304===a?x="notmodified":(x=u.state,r=u.data,s=u.error,j=!s)):(s=x,(a||!x)&&(x="error",0>a&&(a=0))),v.status=a,v.statusText=(b||x)+"",j?o.resolveWith(l,[r,x,v]):o.rejectWith(l,[v,x,s]),v.statusCode(q),q=void 0,h&&n.trigger(j?"ajaxSuccess":"ajaxError",[v,k,j?r:s]),p.fireWith(l,[v,x]),h&&(n.trigger("ajaxComplete",[v,k]),--m.active||m.event.trigger("ajaxStop")))}return v},getJSON:function(a,b,c){return m.get(a,b,c,"json")},getScript:function(a,b){return m.get(a,void 0,b,"script")}}),m.each(["get","post"],function(a,b){m[b]=function(a,c,d,e){return m.isFunction(c)&&(e=e||d,d=c,c=void 0),m.ajax({url:a,type:b,dataType:e,data:c,success:d})}}),m.each(["ajaxStart","ajaxStop","ajaxComplete","ajaxError","ajaxSuccess","ajaxSend"],function(a,b){m.fn[b]=function(a){return this.on(b,a)}}),m._evalUrl=function(a){return m.ajax({url:a,type:"GET",dataType:"script",async:!1,global:!1,"throws":!0})},m.fn.extend({wrapAll:function(a){if(m.isFunction(a))return this.each(function(b){m(this).wrapAll(a.call(this,b))});if(this[0]){var b=m(a,this[0].ownerDocument).eq(0).clone(!0);this[0].parentNode&&b.insertBefore(this[0]),b.map(function(){var a=this;while(a.firstChild&&1===a.firstChild.nodeType)a=a.firstChild;return a}).append(this)}return this},wrapInner:function(a){return this.each(m.isFunction(a)?function(b){m(this).wrapInner(a.call(this,b))}:function(){var b=m(this),c=b.contents();c.length?c.wrapAll(a):b.append(a)})},wrap:function(a){var b=m.isFunction(a);return this.each(function(c){m(this).wrapAll(b?a.call(this,c):a)})},unwrap:function(){return this.parent().each(function(){m.nodeName(this,"body")||m(this).replaceWith(this.childNodes)}).end()}}),m.expr.filters.hidden=function(a){return a.offsetWidth<=0&&a.offsetHeight<=0||!k.reliableHiddenOffsets()&&"none"===(a.style&&a.style.display||m.css(a,"display"))},m.expr.filters.visible=function(a){return!m.expr.filters.hidden(a)};var Qc=/%20/g,Rc=/\[\]$/,Sc=/\r?\n/g,Tc=/^(?:submit|button|image|reset|file)$/i,Uc=/^(?:input|select|textarea|keygen)/i;function Vc(a,b,c,d){var e;if(m.isArray(b))m.each(b,function(b,e){c||Rc.test(a)?d(a,e):Vc(a+"["+("object"==typeof e?b:"")+"]",e,c,d)});else if(c||"object"!==m.type(b))d(a,b);else for(e in b)Vc(a+"["+e+"]",b[e],c,d)}m.param=function(a,b){var c,d=[],e=function(a,b){b=m.isFunction(b)?b():null==b?"":b,d[d.length]=encodeURIComponent(a)+"="+encodeURIComponent(b)};if(void 0===b&&(b=m.ajaxSettings&&m.ajaxSettings.traditional),m.isArray(a)||a.jquery&&!m.isPlainObject(a))m.each(a,function(){e(this.name,this.value)});else for(c in a)Vc(c,a[c],b,e);return d.join("&").replace(Qc,"+")},m.fn.extend({serialize:function(){return m.param(this.serializeArray())},serializeArray:function(){return this.map(function(){var a=m.prop(this,"elements");return a?m.makeArray(a):this}).filter(function(){var a=this.type;return this.name&&!m(this).is(":disabled")&&Uc.test(this.nodeName)&&!Tc.test(a)&&(this.checked||!W.test(a))}).map(function(a,b){var c=m(this).val();return null==c?null:m.isArray(c)?m.map(c,function(a){return{name:b.name,value:a.replace(Sc,"\r\n")}}):{name:b.name,value:c.replace(Sc,"\r\n")}}).get()}}),m.ajaxSettings.xhr=void 0!==a.ActiveXObject?function(){return!this.isLocal&&/^(get|post|head|put|delete|options)$/i.test(this.type)&&Zc()||$c()}:Zc;var Wc=0,Xc={},Yc=m.ajaxSettings.xhr();a.ActiveXObject&&m(a).on("unload",function(){for(var a in Xc)Xc[a](void 0,!0)}),k.cors=!!Yc&&"withCredentials"in Yc,Yc=k.ajax=!!Yc,Yc&&m.ajaxTransport(function(a){if(!a.crossDomain||k.cors){var b;return{send:function(c,d){var e,f=a.xhr(),g=++Wc;if(f.open(a.type,a.url,a.async,a.username,a.password),a.xhrFields)for(e in a.xhrFields)f[e]=a.xhrFields[e];a.mimeType&&f.overrideMimeType&&f.overrideMimeType(a.mimeType),a.crossDomain||c["X-Requested-With"]||(c["X-Requested-With"]="XMLHttpRequest");for(e in c)void 0!==c[e]&&f.setRequestHeader(e,c[e]+"");f.send(a.hasContent&&a.data||null),b=function(c,e){var h,i,j;if(b&&(e||4===f.readyState))if(delete Xc[g],b=void 0,f.onreadystatechange=m.noop,e)4!==f.readyState&&f.abort();else{j={},h=f.status,"string"==typeof f.responseText&&(j.text=f.responseText);try{i=f.statusText}catch(k){i=""}h||!a.isLocal||a.crossDomain?1223===h&&(h=204):h=j.text?200:404}j&&d(h,i,j,f.getAllResponseHeaders())},a.async?4===f.readyState?setTimeout(b):f.onreadystatechange=Xc[g]=b:b()},abort:function(){b&&b(void 0,!0)}}}});function Zc(){try{return new a.XMLHttpRequest}catch(b){}}function $c(){try{return new a.ActiveXObject("Microsoft.XMLHTTP")}catch(b){}}m.ajaxSetup({accepts:{script:"text/javascript, application/javascript, application/ecmascript, application/x-ecmascript"},contents:{script:/(?:java|ecma)script/},converters:{"text script":function(a){return m.globalEval(a),a}}}),m.ajaxPrefilter("script",function(a){void 0===a.cache&&(a.cache=!1),a.crossDomain&&(a.type="GET",a.global=!1)}),m.ajaxTransport("script",function(a){if(a.crossDomain){var b,c=y.head||m("head")[0]||y.documentElement;return{send:function(d,e){b=y.createElement("script"),b.async=!0,a.scriptCharset&&(b.charset=a.scriptCharset),b.src=a.url,b.onload=b.onreadystatechange=function(a,c){(c||!b.readyState||/loaded|complete/.test(b.readyState))&&(b.onload=b.onreadystatechange=null,b.parentNode&&b.parentNode.removeChild(b),b=null,c||e(200,"success"))},c.insertBefore(b,c.firstChild)},abort:function(){b&&b.onload(void 0,!0)}}}});var _c=[],ad=/(=)\?(?=&|$)|\?\?/;m.ajaxSetup({jsonp:"callback",jsonpCallback:function(){var a=_c.pop()||m.expando+"_"+vc++;return this[a]=!0,a}}),m.ajaxPrefilter("json jsonp",function(b,c,d){var e,f,g,h=b.jsonp!==!1&&(ad.test(b.url)?"url":"string"==typeof b.data&&!(b.contentType||"").indexOf("application/x-www-form-urlencoded")&&ad.test(b.data)&&"data");return h||"jsonp"===b.dataTypes[0]?(e=b.jsonpCallback=m.isFunction(b.jsonpCallback)?b.jsonpCallback():b.jsonpCallback,h?b[h]=b[h].replace(ad,"$1"+e):b.jsonp!==!1&&(b.url+=(wc.test(b.url)?"&":"?")+b.jsonp+"="+e),b.converters["script json"]=function(){return g||m.error(e+" was not called"),g[0]},b.dataTypes[0]="json",f=a[e],a[e]=function(){g=arguments},d.always(function(){a[e]=f,b[e]&&(b.jsonpCallback=c.jsonpCallback,_c.push(e)),g&&m.isFunction(f)&&f(g[0]),g=f=void 0}),"script"):void 0}),m.parseHTML=function(a,b,c){if(!a||"string"!=typeof a)return null;"boolean"==typeof b&&(c=b,b=!1),b=b||y;var d=u.exec(a),e=!c&&[];return d?[b.createElement(d[1])]:(d=m.buildFragment([a],b,e),e&&e.length&&m(e).remove(),m.merge([],d.childNodes))};var bd=m.fn.load;m.fn.load=function(a,b,c){if("string"!=typeof a&&bd)return bd.apply(this,arguments);var d,e,f,g=this,h=a.indexOf(" ");return h>=0&&(d=m.trim(a.slice(h,a.length)),a=a.slice(0,h)),m.isFunction(b)?(c=b,b=void 0):b&&"object"==typeof b&&(f="POST"),g.length>0&&m.ajax({url:a,type:f,dataType:"html",data:b}).done(function(a){e=arguments,g.html(d?m("<div>").append(m.parseHTML(a)).find(d):a)}).complete(c&&function(a,b){g.each(c,e||[a.responseText,b,a])}),this},m.expr.filters.animated=function(a){return m.grep(m.timers,function(b){return a===b.elem}).length};var cd=a.document.documentElement;function dd(a){return m.isWindow(a)?a:9===a.nodeType?a.defaultView||a.parentWindow:!1}m.offset={setOffset:function(a,b,c){var d,e,f,g,h,i,j,k=m.css(a,"position"),l=m(a),n={};"static"===k&&(a.style.position="relative"),h=l.offset(),f=m.css(a,"top"),i=m.css(a,"left"),j=("absolute"===k||"fixed"===k)&&m.inArray("auto",[f,i])>-1,j?(d=l.position(),g=d.top,e=d.left):(g=parseFloat(f)||0,e=parseFloat(i)||0),m.isFunction(b)&&(b=b.call(a,c,h)),null!=b.top&&(n.top=b.top-h.top+g),null!=b.left&&(n.left=b.left-h.left+e),"using"in b?b.using.call(a,n):l.css(n)}},m.fn.extend({offset:function(a){if(arguments.length)return void 0===a?this:this.each(function(b){m.offset.setOffset(this,a,b)});var b,c,d={top:0,left:0},e=this[0],f=e&&e.ownerDocument;if(f)return b=f.documentElement,m.contains(b,e)?(typeof e.getBoundingClientRect!==K&&(d=e.getBoundingClientRect()),c=dd(f),{top:d.top+(c.pageYOffset||b.scrollTop)-(b.clientTop||0),left:d.left+(c.pageXOffset||b.scrollLeft)-(b.clientLeft||0)}):d},position:function(){if(this[0]){var a,b,c={top:0,left:0},d=this[0];return"fixed"===m.css(d,"position")?b=d.getBoundingClientRect():(a=this.offsetParent(),b=this.offset(),m.nodeName(a[0],"html")||(c=a.offset()),c.top+=m.css(a[0],"borderTopWidth",!0),c.left+=m.css(a[0],"borderLeftWidth",!0)),{top:b.top-c.top-m.css(d,"marginTop",!0),left:b.left-c.left-m.css(d,"marginLeft",!0)}}},offsetParent:function(){return this.map(function(){var a=this.offsetParent||cd;while(a&&!m.nodeName(a,"html")&&"static"===m.css(a,"position"))a=a.offsetParent;return a||cd})}}),m.each({scrollLeft:"pageXOffset",scrollTop:"pageYOffset"},function(a,b){var c=/Y/.test(b);m.fn[a]=function(d){return V(this,function(a,d,e){var f=dd(a);return void 0===e?f?b in f?f[b]:f.document.documentElement[d]:a[d]:void(f?f.scrollTo(c?m(f).scrollLeft():e,c?e:m(f).scrollTop()):a[d]=e)},a,d,arguments.length,null)}}),m.each(["top","left"],function(a,b){m.cssHooks[b]=Lb(k.pixelPosition,function(a,c){return c?(c=Jb(a,b),Hb.test(c)?m(a).position()[b]+"px":c):void 0})}),m.each({Height:"height",Width:"width"},function(a,b){m.each({padding:"inner"+a,content:b,"":"outer"+a},function(c,d){m.fn[d]=function(d,e){var f=arguments.length&&(c||"boolean"!=typeof d),g=c||(d===!0||e===!0?"margin":"border");return V(this,function(b,c,d){var e;return m.isWindow(b)?b.document.documentElement["client"+a]:9===b.nodeType?(e=b.documentElement,Math.max(b.body["scroll"+a],e["scroll"+a],b.body["offset"+a],e["offset"+a],e["client"+a])):void 0===d?m.css(b,c,g):m.style(b,c,d,g)},b,f?d:void 0,f,null)}})}),m.fn.size=function(){return this.length},m.fn.andSelf=m.fn.addBack,"function"==typeof define&&define.amd&&define("jquery",[],function(){return m});var ed=a.jQuery,fd=a.$;return m.noConflict=function(b){return a.$===m&&(a.$=fd),b&&a.jQuery===m&&(a.jQuery=ed),m},typeof b===K&&(a.jQuery=a.$=m),m});
 //# sourceMappingURL=jquery.min.map;
 (function(root) {
-define("resource-search-js", ["jquery"], function() {
-  return (function() {
-/* The following line defines global variables defined elsewhere. */
-/*globals jQuery, portal_url, alert, history, window, location*/
-
-jQuery(function ($) {
-
-    var query, pushState, popped, initialURL,
-        $default_res_container = $('#search-results'),
-        $search_filter = $('#search-filter'),
-        $search_field = $('#search-field'),
-        $search_gadget =  $('#searchGadget'),
-        $form_search_page = $("form.searchPage"),
-        navigation_root_url = $('link[rel="home"]').attr('href') || window.navigation_root_url || window.portal_url;
-
-    // The globally available method to pull the search results for the
-    // 'query' into the element, on which the method is invoked
-    $.fn.pullSearchResults = function (query) {
-        return this.each(function () {
-            var $container = $(this);
-            $.get(
-                '@@updated_search',
-                query,
-                function (data) {
-                    $container.hide();
-                    var $ajax_search_res = $('<div id="ajax-search-res"></div>').html(data),
-                        $search_term = $('#search-term');
-
-                    var $data_res = $ajax_search_res.find('#search-results').children(),
-                        data_search_term = $ajax_search_res.find('#updated-search-term').text(),
-                        data_res_number = $ajax_search_res.find('#updated-search-results-number').text(),
-                        data_sorting_opt = $ajax_search_res.find('#updated-sorting-options').html(),
-                        new_header = $ajax_search_res.find('#update-search-header');
-
-                    $container.html($data_res);
-                    $container.fadeIn();
-
-                    if (!$search_term.length) {
-                        // Until now we had queries with empty search term.
-                        // we need to fetch the new header, with proper translations
-                        if(new_header.length){
-                            $('h1.documentFirstHeading').html(new_header.html());
-                        }
-                    } else {
-                        $search_term.text(data_search_term);
-                    }
-
-                    $('#search-results-number').text(data_res_number);
-                    $('#search-results-bar').find('#sorting-options').html(data_sorting_opt);
-
-                    $('#rss-subscription').find('a.link-feed').attr('href', function () {
-                        return navigation_root_url + '/search_rss?' + query;
-                    });
-                });
-        });
-    };
-
-    pushState = function (query) {
-        // Now we need to update the browser's path bar to reflect
-        // the URL we are at now and to push a history state change
-        // in the browser's history. 
-        // API natively or it needs a polyfill, that provides
-        // hash-change events to the older browser
-        if (window.history && window.history.pushState){
-            var url = navigation_root_url + '/@@search?' + query;
-            history.pushState(null, null, url);
-        }
-    };
-
-    // THE HANDLER FOR 'POPSTATE' EVENT IS COPIED FROM PJAX.JS
-    // https://github.com/defunkt/jquery-pjax
-
-    // Used to detect initial (useless) popstate.
-    // If history.state exists, assume browser isn't going to fire initial popstate.
-    popped = (window.history && 'state' in window.history);
-    initialURL = location.href;
-
-
-    // popstate handler takes care of the back and forward buttons
-    //
-    $(window).bind('popstate', function (event) {
-        var initialPop, str;
-        // Ignore initial popstate that some browsers fire on page load
-        initialPop = !popped && location.href === initialURL;
-        popped = true;
-        if (initialPop) {
-            return;
-        }
-
-        if (!location.search){
-            return;
-        }
-
-        query = location.search.split('?')[1];
-        // We need to make sure we update the search field with the search
-        // term from previous query when going back in history
-        var results = query.match(/SearchableText=[^&]*/);
-        if (results){ // not all pages have results
-            str = results[0];
-            str = decodeURIComponent(str.replace(/\+/g, ' ')); // we remove '+' used between words
-            // in search queries.
-
-        // Now we have something like 'SearchableText=test' in str
-        // variable. So, we know when the actual search term begins at
-        // position 15 in that string.
-        $.merge($search_field.find('input[name="SearchableText"]'), $search_gadget).val(str.substr(15, str.length));
-
-            $default_res_container.pullSearchResults(query);
-        }
-
-    });
-
-    $search_filter.find('input.searchPage[type="submit"]').hide();
-
-    // We don't submit the whole form with all the fields when only the
-    // search term is being changed. We just alter the current URL to
-    // substitute the search term and make a new ajax call to get updated
-    // results
-    $search_field.find('input.searchButton').click(function (e) {
-        var st, queryString = location.search.substring(1),
-            re = /([^&=]+)=([^&]*)/g, m, queryParameters = [], key;
-        st = $search_field.find('input[name="SearchableText"]').val();
-        queryParameters.push({"name":"SearchableText", "value": st});
-
-        // parse query string into array of hash
-        while (m = re.exec(queryString)) {
-            key = decodeURIComponent(m[1]);
-            if (key !== 'SearchableText') {
-                // we remove '+' used between words
-                queryParameters.push({"name": key, "value": decodeURIComponent(m[2].replace(/\+/g, ' '))});
-            }
-        }
-        queryString = $.param(queryParameters);
-        $default_res_container.pullSearchResults(queryString);
-        pushState(queryString);
-        e.preventDefault();
-    });
-    $form_search_page.submit(function (e) {
-        query = $(this).serialize();
-        $default_res_container.pullSearchResults(query);
-        pushState(query);
-        e.preventDefault();
-    });
-
-    // We need to update the site-wide search field (at the top right in
-    // stock Plone) when the main search field is updated
-    $search_field.find('input[name="SearchableText"]').keyup(function () {
-        $search_gadget.val($(this).val());
-    });
-
-    // When we click any option in the Filter menu, we need to prevent the
-    // menu from being closed as it is dictated by dropdown.js for all
-    // dl.actionMenu > dd.actionMenuContent
-    $('#search-results-bar').find('dl.actionMenu > dd.actionMenuContent').click(function (e) {
-        e.stopImmediatePropagation();
-    });
-
-    // Now we can handle the actual menu options and update the search
-    // results after any of them has been chosen.
-    $search_filter.delegate('input, select', 'change',
-        function (e) {
-            query = '';
-            // only fill query when there is at least one type selected
-            // by default we have a checked date radio input button
-            if ($search_filter.find('input:checked').length > 1) {
-                query = $form_search_page.serialize();
-            }
-            $default_res_container.pullSearchResults(query);
-            pushState(query);
-        }
-    );
-
-    // Since we replace the whole sorting options with HTML, coming in
-    // AJAX response, we should bind the click event with delegate() in order
-    // for this to keep working with the HTML elements, coming from AJAX
-    // response
-    $('#sorting-options').delegate('a', 'click', function (e) {
-        if ($(this).attr('data-sort')) {
-            $form_search_page.find("input[name='sort_on']").val($(this).attr('data-sort'));
-        }
-        else {
-            $form_search_page.find("input[name='sort_on']").val('');
-        }
-        query = this.search.split('?')[1];
-        $default_res_container.pullSearchResults(query);
-        pushState(query);
-        e.preventDefault();
-    });
-
-    // Handle clicks in the batch navigation bar. Load those with Ajax as
-    // well.
-    $default_res_container.delegate('.listingBar a', 'click', function (e) {
-        query = this.search.split('?')[1];
-        $default_res_container.pullSearchResults(query);
-        pushState(query);
-        e.preventDefault();
-    });
-});
-
-
-
-  }).apply(root, arguments);
-});
-}(this));
-
-(function(root) {
-define("bootstrap-dropdown", ["jquery"], function() {
-  return (function() {
-/* ========================================================================
- * Bootstrap: dropdown.js v3.2.0
- * http://getbootstrap.com/javascript/#dropdowns
- * ========================================================================
- * Copyright 2011-2014 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
-
-
-+function ($) {
-  
-
-  // DROPDOWN CLASS DEFINITION
-  // =========================
-
-  var backdrop = '.dropdown-backdrop'
-  var toggle   = '[data-toggle="dropdown"]'
-  var Dropdown = function (element) {
-    $(element).on('click.bs.dropdown', this.toggle)
-  }
-
-  Dropdown.VERSION = '3.2.0'
-
-  Dropdown.prototype.toggle = function (e) {
-    var $this = $(this)
-
-    if ($this.is('.disabled, :disabled')) return
-
-    var $parent  = getParent($this)
-    var isActive = $parent.hasClass('open')
-
-    clearMenus()
-
-    if (!isActive) {
-      if ('ontouchstart' in document.documentElement && !$parent.closest('.navbar-nav').length) {
-        // if mobile we use a backdrop because click events don't delegate
-        $('<div class="dropdown-backdrop"/>').insertAfter($(this)).on('click', clearMenus)
-      }
-
-      var relatedTarget = { relatedTarget: this }
-      $parent.trigger(e = $.Event('show.bs.dropdown', relatedTarget))
-
-      if (e.isDefaultPrevented()) return
-
-      $this.trigger('focus')
-
-      $parent
-        .toggleClass('open')
-        .trigger('shown.bs.dropdown', relatedTarget)
-    }
-
-    return false
-  }
-
-  Dropdown.prototype.keydown = function (e) {
-    if (!/(38|40|27)/.test(e.keyCode)) return
-
-    var $this = $(this)
-
-    e.preventDefault()
-    e.stopPropagation()
-
-    if ($this.is('.disabled, :disabled')) return
-
-    var $parent  = getParent($this)
-    var isActive = $parent.hasClass('open')
-
-    if (!isActive || (isActive && e.keyCode == 27)) {
-      if (e.which == 27) $parent.find(toggle).trigger('focus')
-      return $this.trigger('click')
-    }
-
-    var desc = ' li:not(.divider):visible a'
-    var $items = $parent.find('[role="menu"]' + desc + ', [role="listbox"]' + desc)
-
-    if (!$items.length) return
-
-    var index = $items.index($items.filter(':focus'))
-
-    if (e.keyCode == 38 && index > 0)                 index--                        // up
-    if (e.keyCode == 40 && index < $items.length - 1) index++                        // down
-    if (!~index)                                      index = 0
-
-    $items.eq(index).trigger('focus')
-  }
-
-  function clearMenus(e) {
-    if (e && e.which === 3) return
-    $(backdrop).remove()
-    $(toggle).each(function () {
-      var $parent = getParent($(this))
-      var relatedTarget = { relatedTarget: this }
-      if (!$parent.hasClass('open')) return
-      $parent.trigger(e = $.Event('hide.bs.dropdown', relatedTarget))
-      if (e.isDefaultPrevented()) return
-      $parent.removeClass('open').trigger('hidden.bs.dropdown', relatedTarget)
-    })
-  }
-
-  function getParent($this) {
-    var selector = $this.attr('data-target')
-
-    if (!selector) {
-      selector = $this.attr('href')
-      selector = selector && /#[A-Za-z]/.test(selector) && selector.replace(/.*(?=#[^\s]*$)/, '') // strip for ie7
-    }
-
-    var $parent = selector && $(selector)
-
-    return $parent && $parent.length ? $parent : $this.parent()
-  }
-
-
-  // DROPDOWN PLUGIN DEFINITION
-  // ==========================
-
-  function Plugin(option) {
-    return this.each(function () {
-      var $this = $(this)
-      var data  = $this.data('bs.dropdown')
-
-      if (!data) $this.data('bs.dropdown', (data = new Dropdown(this)))
-      if (typeof option == 'string') data[option].call($this)
-    })
-  }
-
-  var old = $.fn.dropdown
-
-  $.fn.dropdown             = Plugin
-  $.fn.dropdown.Constructor = Dropdown
-
-
-  // DROPDOWN NO CONFLICT
-  // ====================
-
-  $.fn.dropdown.noConflict = function () {
-    $.fn.dropdown = old
-    return this
-  }
-
-
-  // APPLY TO STANDARD DROPDOWN ELEMENTS
-  // ===================================
-
-  $(document)
-    .on('click.bs.dropdown.data-api', clearMenus)
-    .on('click.bs.dropdown.data-api', '.dropdown form', function (e) { e.stopPropagation() })
-    .on('click.bs.dropdown.data-api', toggle, Dropdown.prototype.toggle)
-    .on('keydown.bs.dropdown.data-api', toggle + ', [role="menu"], [role="listbox"]', Dropdown.prototype.keydown)
-
-}(jQuery);
-
-
-  }).apply(root, arguments);
-});
-}(this));
-
-(function(root) {
 define("bootstrap-collapse", ["jquery"], function() {
   return (function() {
 /* ========================================================================
@@ -544,6 +178,166 @@ define("bootstrap-collapse", ["jquery"], function() {
 }(jQuery);
 
 return window.jQuery.fn.collapse.Constructor;
+  }).apply(root, arguments);
+});
+}(this));
+
+(function(root) {
+define("bootstrap-dropdown", ["jquery"], function() {
+  return (function() {
+/* ========================================================================
+ * Bootstrap: dropdown.js v3.2.0
+ * http://getbootstrap.com/javascript/#dropdowns
+ * ========================================================================
+ * Copyright 2011-2014 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
+
++function ($) {
+  
+
+  // DROPDOWN CLASS DEFINITION
+  // =========================
+
+  var backdrop = '.dropdown-backdrop'
+  var toggle   = '[data-toggle="dropdown"]'
+  var Dropdown = function (element) {
+    $(element).on('click.bs.dropdown', this.toggle)
+  }
+
+  Dropdown.VERSION = '3.2.0'
+
+  Dropdown.prototype.toggle = function (e) {
+    var $this = $(this)
+
+    if ($this.is('.disabled, :disabled')) return
+
+    var $parent  = getParent($this)
+    var isActive = $parent.hasClass('open')
+
+    clearMenus()
+
+    if (!isActive) {
+      if ('ontouchstart' in document.documentElement && !$parent.closest('.navbar-nav').length) {
+        // if mobile we use a backdrop because click events don't delegate
+        $('<div class="dropdown-backdrop"/>').insertAfter($(this)).on('click', clearMenus)
+      }
+
+      var relatedTarget = { relatedTarget: this }
+      $parent.trigger(e = $.Event('show.bs.dropdown', relatedTarget))
+
+      if (e.isDefaultPrevented()) return
+
+      $this.trigger('focus')
+
+      $parent
+        .toggleClass('open')
+        .trigger('shown.bs.dropdown', relatedTarget)
+    }
+
+    return false
+  }
+
+  Dropdown.prototype.keydown = function (e) {
+    if (!/(38|40|27)/.test(e.keyCode)) return
+
+    var $this = $(this)
+
+    e.preventDefault()
+    e.stopPropagation()
+
+    if ($this.is('.disabled, :disabled')) return
+
+    var $parent  = getParent($this)
+    var isActive = $parent.hasClass('open')
+
+    if (!isActive || (isActive && e.keyCode == 27)) {
+      if (e.which == 27) $parent.find(toggle).trigger('focus')
+      return $this.trigger('click')
+    }
+
+    var desc = ' li:not(.divider):visible a'
+    var $items = $parent.find('[role="menu"]' + desc + ', [role="listbox"]' + desc)
+
+    if (!$items.length) return
+
+    var index = $items.index($items.filter(':focus'))
+
+    if (e.keyCode == 38 && index > 0)                 index--                        // up
+    if (e.keyCode == 40 && index < $items.length - 1) index++                        // down
+    if (!~index)                                      index = 0
+
+    $items.eq(index).trigger('focus')
+  }
+
+  function clearMenus(e) {
+    if (e && e.which === 3) return
+    $(backdrop).remove()
+    $(toggle).each(function () {
+      var $parent = getParent($(this))
+      var relatedTarget = { relatedTarget: this }
+      if (!$parent.hasClass('open')) return
+      $parent.trigger(e = $.Event('hide.bs.dropdown', relatedTarget))
+      if (e.isDefaultPrevented()) return
+      $parent.removeClass('open').trigger('hidden.bs.dropdown', relatedTarget)
+    })
+  }
+
+  function getParent($this) {
+    var selector = $this.attr('data-target')
+
+    if (!selector) {
+      selector = $this.attr('href')
+      selector = selector && /#[A-Za-z]/.test(selector) && selector.replace(/.*(?=#[^\s]*$)/, '') // strip for ie7
+    }
+
+    var $parent = selector && $(selector)
+
+    return $parent && $parent.length ? $parent : $this.parent()
+  }
+
+
+  // DROPDOWN PLUGIN DEFINITION
+  // ==========================
+
+  function Plugin(option) {
+    return this.each(function () {
+      var $this = $(this)
+      var data  = $this.data('bs.dropdown')
+
+      if (!data) $this.data('bs.dropdown', (data = new Dropdown(this)))
+      if (typeof option == 'string') data[option].call($this)
+    })
+  }
+
+  var old = $.fn.dropdown
+
+  $.fn.dropdown             = Plugin
+  $.fn.dropdown.Constructor = Dropdown
+
+
+  // DROPDOWN NO CONFLICT
+  // ====================
+
+  $.fn.dropdown.noConflict = function () {
+    $.fn.dropdown = old
+    return this
+  }
+
+
+  // APPLY TO STANDARD DROPDOWN ELEMENTS
+  // ===================================
+
+  $(document)
+    .on('click.bs.dropdown.data-api', clearMenus)
+    .on('click.bs.dropdown.data-api', '.dropdown form', function (e) { e.stopPropagation() })
+    .on('click.bs.dropdown.data-api', toggle, Dropdown.prototype.toggle)
+    .on('keydown.bs.dropdown.data-api', toggle + ', [role="menu"], [role="listbox"]', Dropdown.prototype.keydown)
+
+}(jQuery);
+
+
   }).apply(root, arguments);
 });
 }(this));
@@ -1013,6 +807,323 @@ define("bootstrap-tooltip", ["jquery"], function() {
   }).apply(root, arguments);
 });
 }(this));
+
+/**
+ * @license
+ * Patterns @VERSION@ jquery-ext - various jQuery extensions
+ *
+ * Copyright 2011 Humberto Sermeño
+ */
+define('pat-jquery-ext',["jquery"], function($) {
+    var methods = {
+        init: function( options ) {
+            var settings = {
+                time: 3, /* time it will wait before moving to "timeout" after a move event */
+                initialTime: 8, /* time it will wait before first adding the "timeout" class */
+                exceptionAreas: [] /* IDs of elements that, if the mouse is over them, will reset the timer */
+            };
+            return this.each(function() {
+                var $this = $(this),
+                    data = $this.data("timeout");
+
+                if (!data) {
+                    if ( options ) {
+                        $.extend( settings, options );
+                    }
+                    $this.data("timeout", {
+                        "lastEvent": new Date(),
+                        "trueTime": settings.time,
+                        "time": settings.initialTime,
+                        "untouched": true,
+                        "inExceptionArea": false
+                    });
+
+                    $this.bind( "mouseover.timeout", methods.mouseMoved );
+                    $this.bind( "mouseenter.timeout", methods.mouseMoved );
+
+                    $(settings.exceptionAreas).each(function() {
+                        $this.find(this)
+                            .live( "mouseover.timeout", {"parent":$this}, methods.enteredException )
+                            .live( "mouseleave.timeout", {"parent":$this}, methods.leftException );
+                    });
+
+                    if (settings.initialTime > 0)
+                        $this.timeout("startTimer");
+                    else
+                        $this.addClass("timeout");
+                }
+            });
+        },
+
+        enteredException: function(event) {
+            var data = event.data.parent.data("timeout");
+            data.inExceptionArea = true;
+            event.data.parent.data("timeout", data);
+            event.data.parent.trigger("mouseover");
+        },
+
+        leftException: function(event) {
+            var data = event.data.parent.data("timeout");
+            data.inExceptionArea = false;
+            event.data.parent.data("timeout", data);
+        },
+
+        destroy: function() {
+            return this.each( function() {
+                var $this = $(this),
+                    data = $this.data("timeout");
+
+                $(window).unbind(".timeout");
+                data.timeout.remove();
+                $this.removeData("timeout");
+            });
+        },
+
+        mouseMoved: function() {
+            var $this = $(this), data = $this.data("timeout");
+
+            if ($this.hasClass("timeout")) {
+                $this.removeClass("timeout");
+                $this.timeout("startTimer");
+            } else if ( data.untouched ) {
+                data.untouched = false;
+                data.time = data.trueTime;
+            }
+
+            data.lastEvent = new Date();
+            $this.data("timeout", data);
+        },
+
+        startTimer: function() {
+            var $this = $(this), data = $this.data("timeout");
+            var fn = function(){
+                var data = $this.data("timeout");
+                if ( data && data.lastEvent ) {
+                    if ( data.inExceptionArea ) {
+                        setTimeout( fn, Math.floor( data.time*1000 ) );
+                    } else {
+                        var now = new Date();
+                        var diff = Math.floor(data.time*1000) - ( now - data.lastEvent );
+                        if ( diff > 0 ) {
+                            // the timeout has not ocurred, so set the timeout again
+                            setTimeout( fn, diff+100 );
+                        } else {
+                            // timeout ocurred, so set the class
+                            $this.addClass("timeout");
+                        }
+                    }
+                }
+            };
+
+            setTimeout( fn, Math.floor( data.time*1000 ) );
+        }
+    };
+
+    $.fn.timeout = function( method ) {
+        if ( methods[method] ) {
+            return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
+        } else if ( typeof method === "object" || !method ) {
+            return methods.init.apply( this, arguments );
+        } else {
+            $.error( "Method " + method + " does not exist on jQuery.timeout" );
+        }
+    };
+
+    // Custom jQuery selector to find elements with scrollbars
+    $.extend($.expr[":"], {
+        scrollable: function(element) {
+            var vertically_scrollable, horizontally_scrollable;
+            if ($(element).css("overflow") === "scroll" ||
+                $(element).css("overflowX") === "scroll" ||
+                $(element).css("overflowY") === "scroll")
+                return true;
+
+            vertically_scrollable = (element.clientHeight < element.scrollHeight) && (
+                $.inArray($(element).css("overflowY"), ["scroll", "auto"]) !== -1 || $.inArray($(element).css("overflow"), ["scroll", "auto"]) !== -1);
+
+            if (vertically_scrollable)
+                return true;
+
+            horizontally_scrollable = (element.clientWidth < element.scrollWidth) && (
+                $.inArray($(element).css("overflowX"), ["scroll", "auto"]) !== -1 || $.inArray($(element).css("overflow"), ["scroll", "auto"]) !== -1);
+            return horizontally_scrollable;
+        }
+    });
+
+    // Make Visible in scroll
+    $.fn.makeVisibleInScroll = function( parent_id ) {
+        var absoluteParent = null;
+        if ( typeof parent_id === "string" ) {
+            absoluteParent = $("#" + parent_id);
+        } else if ( parent_id ) {
+            absoluteParent = $(parent_id);
+        }
+
+        return this.each(function() {
+            var $this = $(this), parent;
+            if (!absoluteParent) {
+                parent = $this.parents(":scrollable");
+                if (parent.length > 0) {
+                    parent = $(parent[0]);
+                } else {
+                    parent = $(window);
+                }
+            } else {
+                parent = absoluteParent;
+            }
+
+            var elemTop = $this.position().top;
+            var elemBottom = $this.height() + elemTop;
+
+            var viewTop = parent.scrollTop();
+            var viewBottom = parent.height() + viewTop;
+
+            if (elemTop < viewTop) {
+                parent.scrollTop(elemTop);
+            } else if ( elemBottom > viewBottom - parent.height()/2 ) {
+                parent.scrollTop( elemTop - (parent.height() - $this.height())/2 );
+            }
+        });
+    };
+
+    //Make absolute location
+    $.fn.setPositionAbsolute = function(element,offsettop,offsetleft) {
+        return this.each(function() {
+            // set absolute location for based on the element passed
+            // dynamically since every browser has different settings
+            var $this = $(this);
+            var thiswidth = $(this).width();
+            var    pos   = element.offset();
+            var    width = element.width();
+            var    height = element.height();
+            var setleft = (pos.left + width - thiswidth + offsetleft);
+            var settop = (pos.top + height + offsettop);
+            $this.css({ "z-index" : 1, "position": "absolute", "marginLeft": 0, "marginTop": 0, "left": setleft + "px", "top":settop + "px" ,"width":thiswidth});
+            $this.remove().appendTo("body").show();
+        });
+    };
+
+    $.fn.positionAncestor = function(selector) {
+        var left = 0;
+        var top = 0;
+        this.each(function() {
+            // check if current element has an ancestor matching a selector
+            // and that ancestor is positioned
+            var $ancestor = $(this).closest(selector);
+            if ($ancestor.length && $ancestor.css("position") !== "static") {
+                var $child = $(this);
+                var childMarginEdgeLeft = $child.offset().left - parseInt($child.css("marginLeft"), 10);
+                var childMarginEdgeTop = $child.offset().top - parseInt($child.css("marginTop"), 10);
+                var ancestorPaddingEdgeLeft = $ancestor.offset().left + parseInt($ancestor.css("borderLeftWidth"), 10);
+                var ancestorPaddingEdgeTop = $ancestor.offset().top + parseInt($ancestor.css("borderTopWidth"), 10);
+                left = childMarginEdgeLeft - ancestorPaddingEdgeLeft;
+                top = childMarginEdgeTop - ancestorPaddingEdgeTop;
+                // we have found the ancestor and computed the position
+                // stop iterating
+                return false;
+            }
+        });
+        return {
+            left:    left,
+            top:    top
+        };
+    };
+
+
+    // XXX: In compat.js we include things for browser compatibility,
+    // but these two seem to be only convenience. Do we really want to
+    // include these as part of patterns?
+    String.prototype.startsWith = function(str) { return (this.match("^"+str) !== null); };
+    String.prototype.endsWith = function(str) { return (this.match(str+"$") !== null); };
+
+
+    /******************************
+
+     Simple Placeholder
+
+     ******************************/
+
+    $.simplePlaceholder = {
+        placeholder_class: null,
+
+        hide_placeholder: function(){
+            var $this = $(this);
+            if($this.val() === $this.attr("placeholder")){
+                $this.val("").removeClass($.simplePlaceholder.placeholder_class);
+            }
+        },
+
+        show_placeholder: function(){
+            var $this = $(this);
+            if($this.val() === ""){
+                $this.val($this.attr("placeholder")).addClass($.simplePlaceholder.placeholder_class);
+            }
+        },
+
+        prevent_placeholder_submit: function(){
+            $(this).find(".simple-placeholder").each(function() {
+                var $this = $(this);
+                if ($this.val() === $this.attr("placeholder")){
+                    $this.val("");
+                }
+            });
+            return true;
+        }
+    };
+
+    $.fn.simplePlaceholder = function(options) {
+        if(document.createElement("input").placeholder === undefined){
+            var config = {
+                placeholder_class : "placeholding"
+            };
+
+            if(options) $.extend(config, options);
+            $.simplePlaceholder.placeholder_class = config.placeholder_class;
+
+            this.each(function() {
+                var $this = $(this);
+                $this.focus($.simplePlaceholder.hide_placeholder);
+                $this.blur($.simplePlaceholder.show_placeholder);
+                if($this.val() === "") {
+                    $this.val($this.attr("placeholder"));
+                    $this.addClass($.simplePlaceholder.placeholder_class);
+                }
+                $this.addClass("simple-placeholder");
+                $(this.form).submit($.simplePlaceholder.prevent_placeholder_submit);
+            });
+        }
+
+        return this;
+    };
+
+    $.fn.findInclusive = function(selector) {
+        return this.find('*').addBack().filter(selector);
+    };
+
+    $.fn.slideIn = function(speed, easing, callback) {
+        return this.animate({width: "show"}, speed, easing, callback);
+    };
+
+    $.fn.slideOut = function(speed, easing, callback) {
+        return this.animate({width: "hide"}, speed, easing, callback);
+    };
+
+    // case-insensitive :contains
+    $.expr[":"].Contains = function(a, i, m) {
+        return $(a).text().toUpperCase().indexOf(m[3].toUpperCase()) >= 0;
+    };
+
+    $.fn.scopedFind = function (selector) {
+        /*  If the selector starts with an object id do a global search,
+         *  otherwise do a local search.
+         */
+        if (selector.startsWith('#')) {
+            return $(selector);
+        } else {
+            return this.find(selector);
+        }
+    };
+});
 
 define('pat-utils',[
     "jquery"
@@ -1725,323 +1836,6 @@ define('pat-compat',[],function() {
             };
         })();
     }
-});
-
-/**
- * @license
- * Patterns @VERSION@ jquery-ext - various jQuery extensions
- *
- * Copyright 2011 Humberto Sermeño
- */
-define('pat-jquery-ext',["jquery"], function($) {
-    var methods = {
-        init: function( options ) {
-            var settings = {
-                time: 3, /* time it will wait before moving to "timeout" after a move event */
-                initialTime: 8, /* time it will wait before first adding the "timeout" class */
-                exceptionAreas: [] /* IDs of elements that, if the mouse is over them, will reset the timer */
-            };
-            return this.each(function() {
-                var $this = $(this),
-                    data = $this.data("timeout");
-
-                if (!data) {
-                    if ( options ) {
-                        $.extend( settings, options );
-                    }
-                    $this.data("timeout", {
-                        "lastEvent": new Date(),
-                        "trueTime": settings.time,
-                        "time": settings.initialTime,
-                        "untouched": true,
-                        "inExceptionArea": false
-                    });
-
-                    $this.bind( "mouseover.timeout", methods.mouseMoved );
-                    $this.bind( "mouseenter.timeout", methods.mouseMoved );
-
-                    $(settings.exceptionAreas).each(function() {
-                        $this.find(this)
-                            .live( "mouseover.timeout", {"parent":$this}, methods.enteredException )
-                            .live( "mouseleave.timeout", {"parent":$this}, methods.leftException );
-                    });
-
-                    if (settings.initialTime > 0)
-                        $this.timeout("startTimer");
-                    else
-                        $this.addClass("timeout");
-                }
-            });
-        },
-
-        enteredException: function(event) {
-            var data = event.data.parent.data("timeout");
-            data.inExceptionArea = true;
-            event.data.parent.data("timeout", data);
-            event.data.parent.trigger("mouseover");
-        },
-
-        leftException: function(event) {
-            var data = event.data.parent.data("timeout");
-            data.inExceptionArea = false;
-            event.data.parent.data("timeout", data);
-        },
-
-        destroy: function() {
-            return this.each( function() {
-                var $this = $(this),
-                    data = $this.data("timeout");
-
-                $(window).unbind(".timeout");
-                data.timeout.remove();
-                $this.removeData("timeout");
-            });
-        },
-
-        mouseMoved: function() {
-            var $this = $(this), data = $this.data("timeout");
-
-            if ($this.hasClass("timeout")) {
-                $this.removeClass("timeout");
-                $this.timeout("startTimer");
-            } else if ( data.untouched ) {
-                data.untouched = false;
-                data.time = data.trueTime;
-            }
-
-            data.lastEvent = new Date();
-            $this.data("timeout", data);
-        },
-
-        startTimer: function() {
-            var $this = $(this), data = $this.data("timeout");
-            var fn = function(){
-                var data = $this.data("timeout");
-                if ( data && data.lastEvent ) {
-                    if ( data.inExceptionArea ) {
-                        setTimeout( fn, Math.floor( data.time*1000 ) );
-                    } else {
-                        var now = new Date();
-                        var diff = Math.floor(data.time*1000) - ( now - data.lastEvent );
-                        if ( diff > 0 ) {
-                            // the timeout has not ocurred, so set the timeout again
-                            setTimeout( fn, diff+100 );
-                        } else {
-                            // timeout ocurred, so set the class
-                            $this.addClass("timeout");
-                        }
-                    }
-                }
-            };
-
-            setTimeout( fn, Math.floor( data.time*1000 ) );
-        }
-    };
-
-    $.fn.timeout = function( method ) {
-        if ( methods[method] ) {
-            return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
-        } else if ( typeof method === "object" || !method ) {
-            return methods.init.apply( this, arguments );
-        } else {
-            $.error( "Method " + method + " does not exist on jQuery.timeout" );
-        }
-    };
-
-    // Custom jQuery selector to find elements with scrollbars
-    $.extend($.expr[":"], {
-        scrollable: function(element) {
-            var vertically_scrollable, horizontally_scrollable;
-            if ($(element).css("overflow") === "scroll" ||
-                $(element).css("overflowX") === "scroll" ||
-                $(element).css("overflowY") === "scroll")
-                return true;
-
-            vertically_scrollable = (element.clientHeight < element.scrollHeight) && (
-                $.inArray($(element).css("overflowY"), ["scroll", "auto"]) !== -1 || $.inArray($(element).css("overflow"), ["scroll", "auto"]) !== -1);
-
-            if (vertically_scrollable)
-                return true;
-
-            horizontally_scrollable = (element.clientWidth < element.scrollWidth) && (
-                $.inArray($(element).css("overflowX"), ["scroll", "auto"]) !== -1 || $.inArray($(element).css("overflow"), ["scroll", "auto"]) !== -1);
-            return horizontally_scrollable;
-        }
-    });
-
-    // Make Visible in scroll
-    $.fn.makeVisibleInScroll = function( parent_id ) {
-        var absoluteParent = null;
-        if ( typeof parent_id === "string" ) {
-            absoluteParent = $("#" + parent_id);
-        } else if ( parent_id ) {
-            absoluteParent = $(parent_id);
-        }
-
-        return this.each(function() {
-            var $this = $(this), parent;
-            if (!absoluteParent) {
-                parent = $this.parents(":scrollable");
-                if (parent.length > 0) {
-                    parent = $(parent[0]);
-                } else {
-                    parent = $(window);
-                }
-            } else {
-                parent = absoluteParent;
-            }
-
-            var elemTop = $this.position().top;
-            var elemBottom = $this.height() + elemTop;
-
-            var viewTop = parent.scrollTop();
-            var viewBottom = parent.height() + viewTop;
-
-            if (elemTop < viewTop) {
-                parent.scrollTop(elemTop);
-            } else if ( elemBottom > viewBottom - parent.height()/2 ) {
-                parent.scrollTop( elemTop - (parent.height() - $this.height())/2 );
-            }
-        });
-    };
-
-    //Make absolute location
-    $.fn.setPositionAbsolute = function(element,offsettop,offsetleft) {
-        return this.each(function() {
-            // set absolute location for based on the element passed
-            // dynamically since every browser has different settings
-            var $this = $(this);
-            var thiswidth = $(this).width();
-            var    pos   = element.offset();
-            var    width = element.width();
-            var    height = element.height();
-            var setleft = (pos.left + width - thiswidth + offsetleft);
-            var settop = (pos.top + height + offsettop);
-            $this.css({ "z-index" : 1, "position": "absolute", "marginLeft": 0, "marginTop": 0, "left": setleft + "px", "top":settop + "px" ,"width":thiswidth});
-            $this.remove().appendTo("body").show();
-        });
-    };
-
-    $.fn.positionAncestor = function(selector) {
-        var left = 0;
-        var top = 0;
-        this.each(function() {
-            // check if current element has an ancestor matching a selector
-            // and that ancestor is positioned
-            var $ancestor = $(this).closest(selector);
-            if ($ancestor.length && $ancestor.css("position") !== "static") {
-                var $child = $(this);
-                var childMarginEdgeLeft = $child.offset().left - parseInt($child.css("marginLeft"), 10);
-                var childMarginEdgeTop = $child.offset().top - parseInt($child.css("marginTop"), 10);
-                var ancestorPaddingEdgeLeft = $ancestor.offset().left + parseInt($ancestor.css("borderLeftWidth"), 10);
-                var ancestorPaddingEdgeTop = $ancestor.offset().top + parseInt($ancestor.css("borderTopWidth"), 10);
-                left = childMarginEdgeLeft - ancestorPaddingEdgeLeft;
-                top = childMarginEdgeTop - ancestorPaddingEdgeTop;
-                // we have found the ancestor and computed the position
-                // stop iterating
-                return false;
-            }
-        });
-        return {
-            left:    left,
-            top:    top
-        };
-    };
-
-
-    // XXX: In compat.js we include things for browser compatibility,
-    // but these two seem to be only convenience. Do we really want to
-    // include these as part of patterns?
-    String.prototype.startsWith = function(str) { return (this.match("^"+str) !== null); };
-    String.prototype.endsWith = function(str) { return (this.match(str+"$") !== null); };
-
-
-    /******************************
-
-     Simple Placeholder
-
-     ******************************/
-
-    $.simplePlaceholder = {
-        placeholder_class: null,
-
-        hide_placeholder: function(){
-            var $this = $(this);
-            if($this.val() === $this.attr("placeholder")){
-                $this.val("").removeClass($.simplePlaceholder.placeholder_class);
-            }
-        },
-
-        show_placeholder: function(){
-            var $this = $(this);
-            if($this.val() === ""){
-                $this.val($this.attr("placeholder")).addClass($.simplePlaceholder.placeholder_class);
-            }
-        },
-
-        prevent_placeholder_submit: function(){
-            $(this).find(".simple-placeholder").each(function() {
-                var $this = $(this);
-                if ($this.val() === $this.attr("placeholder")){
-                    $this.val("");
-                }
-            });
-            return true;
-        }
-    };
-
-    $.fn.simplePlaceholder = function(options) {
-        if(document.createElement("input").placeholder === undefined){
-            var config = {
-                placeholder_class : "placeholding"
-            };
-
-            if(options) $.extend(config, options);
-            $.simplePlaceholder.placeholder_class = config.placeholder_class;
-
-            this.each(function() {
-                var $this = $(this);
-                $this.focus($.simplePlaceholder.hide_placeholder);
-                $this.blur($.simplePlaceholder.show_placeholder);
-                if($this.val() === "") {
-                    $this.val($this.attr("placeholder"));
-                    $this.addClass($.simplePlaceholder.placeholder_class);
-                }
-                $this.addClass("simple-placeholder");
-                $(this.form).submit($.simplePlaceholder.prevent_placeholder_submit);
-            });
-        }
-
-        return this;
-    };
-
-    $.fn.findInclusive = function(selector) {
-        return this.find('*').addBack().filter(selector);
-    };
-
-    $.fn.slideIn = function(speed, easing, callback) {
-        return this.animate({width: "show"}, speed, easing, callback);
-    };
-
-    $.fn.slideOut = function(speed, easing, callback) {
-        return this.animate({width: "hide"}, speed, easing, callback);
-    };
-
-    // case-insensitive :contains
-    $.expr[":"].Contains = function(a, i, m) {
-        return $(a).text().toUpperCase().indexOf(m[3].toUpperCase()) >= 0;
-    };
-
-    $.fn.scopedFind = function (selector) {
-        /*  If the selector starts with an object id do a global search,
-         *  otherwise do a local search.
-         */
-        if (selector.startsWith('#')) {
-            return $(selector);
-        } else {
-            return this.find(selector);
-        }
-    };
 });
 
 define('mockup-parser',[
@@ -7278,282 +7072,6 @@ return PickerConstructor
 
 
 
-/* Pattern utils
- */
-
-
-define('mockup-utils',[
-  'jquery'
-], function($) {
-  
-
-  var QueryHelper = function(options) {
-    /* if pattern argument provided, it can implement the interface of:
-      *    - browsing: boolean if currently browsing
-      *    - currentPath: string of current path to apply to search if browsing
-      *    - basePath: default path to provide if no subpath used
-      */
-
-    var self = this;
-    var defaults = {
-      pattern: null, // must be passed in
-      vocabularyUrl: null,
-      searchParam: 'SearchableText', // query string param to pass to search url
-      attributes: ['UID','Title', 'Description', 'getURL', 'Type'],
-      batchSize: 10, // number of results to retrive
-      baseCriteria: [],
-      pathDepth: 1
-    };
-    self.options = $.extend({}, defaults, options);
-    self.pattern = self.options.pattern;
-    if (self.pattern === undefined || self.pattern === null) {
-      self.pattern = {
-        browsing: false,
-        basePath: '/'
-      };
-    }
-
-    if (self.options.url && !self.options.vocabularyUrl) {
-      self.options.vocabularyUrl = self.options.url;
-    } else if (self.pattern.vocabularyUrl) {
-      self.options.vocabularyUrl = self.pattern.vocabularyUrl;
-    }
-    if (self.options.vocabularyUrl !== undefined &&
-        self.options.vocabularyUrl !== null) {
-      self.valid = true;
-    } else {
-      self.valid = false;
-    }
-
-    self.getCurrentPath = function() {
-      var pattern = self.pattern;
-      var currentPath;
-      /* If currentPath is set on the QueryHelper object, use that first.
-       * Then, check on the pattern.
-       * Finally, see if it is a function and call it if it is.
-       */
-      if (self.currentPath) {
-        currentPath = self.currentPath;
-      } else {
-        currentPath = pattern.currentPath;
-      }
-      if (typeof currentPath  === 'function') {
-        currentPath = currentPath();
-      }
-      var path = currentPath;
-      if (!path) {
-        if (pattern.basePath) {
-          path = pattern.basePath;
-        } else if (pattern.options.basePath) {
-          path = pattern.options.basePath;
-        } else {
-          path = '/';
-        }
-      }
-      return path;
-    };
-
-    self.getCriterias = function(term, options) {
-      if (options === undefined) {
-        options = {};
-      }
-      options = $.extend({}, {
-        useBaseCriteria: true,
-        additionalCriterias: []
-      }, options);
-
-      var criterias = [];
-      if (options.useBaseCriteria) {
-        criterias = self.options.baseCriteria.slice(0);
-      }
-      if (term) {
-        term += '*';
-        criterias.push({
-          i: self.options.searchParam,
-          o: 'plone.app.querystring.operation.string.contains',
-          v: term
-        });
-      }
-      if (self.pattern.browsing) {
-        criterias.push({
-          i: 'path',
-          o: 'plone.app.querystring.operation.string.path',
-          v: self.getCurrentPath() + '::' + self.options.pathDepth
-        });
-      }
-      criterias = criterias.concat(options.additionalCriterias);
-      return criterias;
-    };
-
-    self.getBatch = function(page) {
-      if (!page) {
-        page = 1;
-      }
-      return {
-        page: page,
-        size: self.options.batchSize
-      };
-    };
-
-    self.selectAjax = function() {
-      return {
-        url: self.options.vocabularyUrl,
-        dataType: 'JSON',
-        quietMillis: 100,
-        data: function(term, page) {
-          return self.getQueryData(term, page);
-        },
-        results: function (data, page) {
-          var more = (page * 10) < data.total; // whether or not there are more results available
-          // notice we return the value of more so Select2 knows if more results can be loaded
-          return {results: data.results, more: more};
-        }
-      };
-    };
-
-    self.getUrl = function() {
-      var url = self.options.vocabularyUrl;
-      if (url.indexOf('?') === -1) {
-        url += '?';
-      } else {
-        url += '&';
-      }
-      return url + $.param(self.getQueryData());
-    };
-
-    self.getQueryData = function(term, page) {
-      var data = {
-        query: JSON.stringify({
-          criteria: self.getCriterias(term)
-        }),
-        attributes: JSON.stringify(self.options.attributes)
-      };
-      if (page) {
-        data.batch = JSON.stringify(self.getBatch(page));
-      }
-      return data;
-    };
-
-    self.search = function(term, operation, value, callback, useBaseCriteria) {
-      if (useBaseCriteria === undefined) {
-        useBaseCriteria = true;
-      }
-      var criteria = [];
-      if (useBaseCriteria) {
-        criteria = self.options.baseCriteria.slice(0);
-      }
-      criteria.push({
-        i: term,
-        o: operation,
-        v: value
-      });
-      var data = {
-        query: JSON.stringify({ criteria: criteria }),
-        attributes: JSON.stringify(self.options.attributes)
-      };
-      $.ajax({
-        url: self.options.vocabularyUrl,
-        dataType: 'JSON',
-        data: data,
-        success: callback
-      });
-    };
-
-    return self;
-  };
-
-  var Loading = function(options){
-    /*
-     * Options:
-     *   backdrop(pattern): if you want to have the progress indicator work
-     *                      seamlessly with backdrop pattern
-     *   zIndex(integer or function): to override default z-index used
-     */
-    var self = this;
-    self.className = 'mockup-loader-icon';
-    var defaults = {
-      backdrop: null,
-      zIndex: 10005 // can be a function
-    };
-    if(!options){
-      options = {};
-    }
-    self.options = $.extend({}, defaults, options);
-    self.$el = $('.' + self.className);
-    if(self.$el.length === 0){
-      self.$el = $('<div><span class="glyphicon glyphicon-refresh" /></div>');
-      self.$el.addClass(self.className).hide().appendTo('body');
-    }
-
-    self.show = function(closable){
-      self.$el.show();
-      var zIndex = self.options.zIndex;
-      if (typeof(zIndex) === 'function') {
-        zIndex = zIndex();
-      }
-      self.$el.css('zIndex', zIndex);
-
-      if (closable === undefined) {
-        closable = true;
-      }
-      if (self.options.backdrop) {
-        self.options.backdrop.closeOnClick = closable;
-        self.options.backdrop.closeOnEsc = closable;
-        self.options.backdrop.init();
-        self.options.backdrop.show();
-      }
-    };
-
-    self.hide = function(){
-      self.$el.hide();
-    };
-
-    return self;
-  };
-
-  var generateId = function(prefix){
-    if (prefix === undefined) {
-      prefix = 'id';
-    }
-    return prefix + (Math.floor((1 + Math.random()) * 0x10000)
-        .toString(16).substring(1));
-  };
-
-  return {
-    generateId: generateId,
-    parseBodyTag: function(txt) {
-      return $((/<body[^>]*>((.|[\n\r])*)<\/body>/im).exec(txt)[0]
-          .replace('<body', '<div').replace('</body>', '</div>')).eq(0).html();
-    },
-    setId: function($el, prefix) {
-      if (prefix === undefined) {
-        prefix = 'id';
-      }
-      var id = $el.attr('id');
-      if (id === undefined) {
-        id = generateId(prefix);
-      } else {
-        /* hopefully we don't screw anything up here... changing the id
-         * in some cases so we get a decent selector */
-        id = id.replace(/\./g, '-');
-      }
-      $el.attr('id', id);
-      return id;
-    },
-    bool: function(val) {
-      if (typeof val === 'string') {
-        val = $.trim(val).toLowerCase();
-      }
-      return ['true', true, 1].indexOf(val) !== -1;
-    },
-    QueryHelper: QueryHelper,
-    Loading: Loading,
-    getAuthenticator: function() {
-      return $('input[name="_authenticator"]').val();
-    }
-  };
-});
-
 /**
  * @license
  * Lo-Dash 2.4.1 (Custom Build) <http://lodash.com/>
@@ -12534,6 +12052,282 @@ define('mockup-utils',[
   }
 }.call(this));
 
+/* Pattern utils
+ */
+
+
+define('mockup-utils',[
+  'jquery'
+], function($) {
+  
+
+  var QueryHelper = function(options) {
+    /* if pattern argument provided, it can implement the interface of:
+      *    - browsing: boolean if currently browsing
+      *    - currentPath: string of current path to apply to search if browsing
+      *    - basePath: default path to provide if no subpath used
+      */
+
+    var self = this;
+    var defaults = {
+      pattern: null, // must be passed in
+      vocabularyUrl: null,
+      searchParam: 'SearchableText', // query string param to pass to search url
+      attributes: ['UID','Title', 'Description', 'getURL', 'Type'],
+      batchSize: 10, // number of results to retrive
+      baseCriteria: [],
+      pathDepth: 1
+    };
+    self.options = $.extend({}, defaults, options);
+    self.pattern = self.options.pattern;
+    if (self.pattern === undefined || self.pattern === null) {
+      self.pattern = {
+        browsing: false,
+        basePath: '/'
+      };
+    }
+
+    if (self.options.url && !self.options.vocabularyUrl) {
+      self.options.vocabularyUrl = self.options.url;
+    } else if (self.pattern.vocabularyUrl) {
+      self.options.vocabularyUrl = self.pattern.vocabularyUrl;
+    }
+    if (self.options.vocabularyUrl !== undefined &&
+        self.options.vocabularyUrl !== null) {
+      self.valid = true;
+    } else {
+      self.valid = false;
+    }
+
+    self.getCurrentPath = function() {
+      var pattern = self.pattern;
+      var currentPath;
+      /* If currentPath is set on the QueryHelper object, use that first.
+       * Then, check on the pattern.
+       * Finally, see if it is a function and call it if it is.
+       */
+      if (self.currentPath) {
+        currentPath = self.currentPath;
+      } else {
+        currentPath = pattern.currentPath;
+      }
+      if (typeof currentPath  === 'function') {
+        currentPath = currentPath();
+      }
+      var path = currentPath;
+      if (!path) {
+        if (pattern.basePath) {
+          path = pattern.basePath;
+        } else if (pattern.options.basePath) {
+          path = pattern.options.basePath;
+        } else {
+          path = '/';
+        }
+      }
+      return path;
+    };
+
+    self.getCriterias = function(term, options) {
+      if (options === undefined) {
+        options = {};
+      }
+      options = $.extend({}, {
+        useBaseCriteria: true,
+        additionalCriterias: []
+      }, options);
+
+      var criterias = [];
+      if (options.useBaseCriteria) {
+        criterias = self.options.baseCriteria.slice(0);
+      }
+      if (term) {
+        term += '*';
+        criterias.push({
+          i: self.options.searchParam,
+          o: 'plone.app.querystring.operation.string.contains',
+          v: term
+        });
+      }
+      if (self.pattern.browsing) {
+        criterias.push({
+          i: 'path',
+          o: 'plone.app.querystring.operation.string.path',
+          v: self.getCurrentPath() + '::' + self.options.pathDepth
+        });
+      }
+      criterias = criterias.concat(options.additionalCriterias);
+      return criterias;
+    };
+
+    self.getBatch = function(page) {
+      if (!page) {
+        page = 1;
+      }
+      return {
+        page: page,
+        size: self.options.batchSize
+      };
+    };
+
+    self.selectAjax = function() {
+      return {
+        url: self.options.vocabularyUrl,
+        dataType: 'JSON',
+        quietMillis: 100,
+        data: function(term, page) {
+          return self.getQueryData(term, page);
+        },
+        results: function (data, page) {
+          var more = (page * 10) < data.total; // whether or not there are more results available
+          // notice we return the value of more so Select2 knows if more results can be loaded
+          return {results: data.results, more: more};
+        }
+      };
+    };
+
+    self.getUrl = function() {
+      var url = self.options.vocabularyUrl;
+      if (url.indexOf('?') === -1) {
+        url += '?';
+      } else {
+        url += '&';
+      }
+      return url + $.param(self.getQueryData());
+    };
+
+    self.getQueryData = function(term, page) {
+      var data = {
+        query: JSON.stringify({
+          criteria: self.getCriterias(term)
+        }),
+        attributes: JSON.stringify(self.options.attributes)
+      };
+      if (page) {
+        data.batch = JSON.stringify(self.getBatch(page));
+      }
+      return data;
+    };
+
+    self.search = function(term, operation, value, callback, useBaseCriteria) {
+      if (useBaseCriteria === undefined) {
+        useBaseCriteria = true;
+      }
+      var criteria = [];
+      if (useBaseCriteria) {
+        criteria = self.options.baseCriteria.slice(0);
+      }
+      criteria.push({
+        i: term,
+        o: operation,
+        v: value
+      });
+      var data = {
+        query: JSON.stringify({ criteria: criteria }),
+        attributes: JSON.stringify(self.options.attributes)
+      };
+      $.ajax({
+        url: self.options.vocabularyUrl,
+        dataType: 'JSON',
+        data: data,
+        success: callback
+      });
+    };
+
+    return self;
+  };
+
+  var Loading = function(options){
+    /*
+     * Options:
+     *   backdrop(pattern): if you want to have the progress indicator work
+     *                      seamlessly with backdrop pattern
+     *   zIndex(integer or function): to override default z-index used
+     */
+    var self = this;
+    self.className = 'mockup-loader-icon';
+    var defaults = {
+      backdrop: null,
+      zIndex: 10005 // can be a function
+    };
+    if(!options){
+      options = {};
+    }
+    self.options = $.extend({}, defaults, options);
+    self.$el = $('.' + self.className);
+    if(self.$el.length === 0){
+      self.$el = $('<div><span class="glyphicon glyphicon-refresh" /></div>');
+      self.$el.addClass(self.className).hide().appendTo('body');
+    }
+
+    self.show = function(closable){
+      self.$el.show();
+      var zIndex = self.options.zIndex;
+      if (typeof(zIndex) === 'function') {
+        zIndex = zIndex();
+      }
+      self.$el.css('zIndex', zIndex);
+
+      if (closable === undefined) {
+        closable = true;
+      }
+      if (self.options.backdrop) {
+        self.options.backdrop.closeOnClick = closable;
+        self.options.backdrop.closeOnEsc = closable;
+        self.options.backdrop.init();
+        self.options.backdrop.show();
+      }
+    };
+
+    self.hide = function(){
+      self.$el.hide();
+    };
+
+    return self;
+  };
+
+  var generateId = function(prefix){
+    if (prefix === undefined) {
+      prefix = 'id';
+    }
+    return prefix + (Math.floor((1 + Math.random()) * 0x10000)
+        .toString(16).substring(1));
+  };
+
+  return {
+    generateId: generateId,
+    parseBodyTag: function(txt) {
+      return $((/<body[^>]*>((.|[\n\r])*)<\/body>/im).exec(txt)[0]
+          .replace('<body', '<div').replace('</body>', '</div>')).eq(0).html();
+    },
+    setId: function($el, prefix) {
+      if (prefix === undefined) {
+        prefix = 'id';
+      }
+      var id = $el.attr('id');
+      if (id === undefined) {
+        id = generateId(prefix);
+      } else {
+        /* hopefully we don't screw anything up here... changing the id
+         * in some cases so we get a decent selector */
+        id = id.replace(/\./g, '-');
+      }
+      $el.attr('id', id);
+      return id;
+    },
+    bool: function(val) {
+      if (typeof val === 'string') {
+        val = $.trim(val).toLowerCase();
+      }
+      return ['true', true, 1].indexOf(val) !== -1;
+    },
+    QueryHelper: QueryHelper,
+    Loading: Loading,
+    getAuthenticator: function() {
+      return $('input[name="_authenticator"]').val();
+    }
+  };
+});
+
 /**
  * @license RequireJS text 2.0.12 Copyright (c) 2010-2014, The Dojo Foundation All Rights Reserved.
  * Available via the MIT or new BSD license.
@@ -15064,6 +14858,106 @@ define('mockup-patterns-select2',[
 
 });
 
+/* Pattern which provides accessibility support
+ *
+ * Options:
+ *    smallbtn(string): Selector used to activate small text on click. (null)
+ *    normalbtn(string): Selector used to activate normal text on click. (null)
+ *    largebtn(string): Selector used to activate large text on click. (null)
+ *
+ * Documentation:
+ *    # Example
+ *
+ *    {{ example-1 }}
+ *
+ * Example: example-1
+ *    <ul id="textAdjust"
+ *        class="pat-accessibility"
+ *        data-pat-accessibility="smallbtn:.decrease-text;
+ *                                normalbtn:.normal-text;
+ *                                largebtn:.increase-text;">
+ *      <li>
+ *        <a href="." class="decrease-text">
+ *          <i class="icon-minus-sign"></i>
+ *          Decrease Text Size
+ *        </a>
+ *      </li>
+ *      <li>
+ *        <a href="." class="normal-text">
+ *          <i class="icon-circle"></i>
+ *          Normal Text Size
+ *        </a>
+ *      </li>
+ *      <li>
+ *        <a href="." class="increase-text">
+ *          <i class="icon-plus-sign"></i>
+ *          Increase Text Size
+ *        </a>
+ *      </li>
+ *    </ul>
+ *
+ */
+
+
+define('mockup-patterns-accessibility',[
+  'jquery',
+  'mockup-patterns-base',
+  'jquery.cookie'
+], function($, Base) {
+  
+
+  var Accessibility = Base.extend({
+    name: 'accessibility',
+    trigger: '.pat-accessibility',
+    defaults: {
+      'smallbtn': null,
+      'normalbtn': null,
+      'largebtn': null
+    },
+    setBaseFontSize: function($fontsize, $reset) {
+      if ($reset) {
+        this.$el.removeClass('smallText').removeClass('largeText').
+            removeClass('mediumText');
+        $.cookie('fontsize', $fontsize, { expires: 365, path: '/' });
+      }
+      this.$el.addClass($fontsize);
+    },
+    initBtn: function(btn) {
+      var self = this;
+      btn.el.click(function(e) {
+        e.preventDefault();
+        self.setBaseFontSize(btn.name + 'Text', 1);
+      });
+    },
+    init: function() {
+      var self = this;
+      var $fontsize = $.cookie('fontsize');
+      if ($fontsize) {
+        self.setBaseFontSize($fontsize, 0);
+      }
+      var btns = ['smallbtn', 'normalbtn', 'largebtn'];
+      $.each(btns, function(idx, btn) {
+        var btnName = btn.replace('btn', '');
+        var btnSelector = self.options[btn];
+        if (btnSelector !== null) {
+          var el = $(btnSelector, self.$el);
+          if (el) {
+            btn = {
+              name: btnName,
+              el: el
+            };
+            self[btnName] = btn;
+            self.initBtn(btn);
+          }
+        }
+      });
+    }
+  });
+
+  return Accessibility;
+
+});
+
 define('plone-patterns-toolbar',[
   'jquery',
   'mockup-patterns-base',
@@ -15275,106 +15169,6 @@ define('plone-patterns-toolbar',[
   });
 
   return Toolbar;
-});
-
-/* Pattern which provides accessibility support
- *
- * Options:
- *    smallbtn(string): Selector used to activate small text on click. (null)
- *    normalbtn(string): Selector used to activate normal text on click. (null)
- *    largebtn(string): Selector used to activate large text on click. (null)
- *
- * Documentation:
- *    # Example
- *
- *    {{ example-1 }}
- *
- * Example: example-1
- *    <ul id="textAdjust"
- *        class="pat-accessibility"
- *        data-pat-accessibility="smallbtn:.decrease-text;
- *                                normalbtn:.normal-text;
- *                                largebtn:.increase-text;">
- *      <li>
- *        <a href="." class="decrease-text">
- *          <i class="icon-minus-sign"></i>
- *          Decrease Text Size
- *        </a>
- *      </li>
- *      <li>
- *        <a href="." class="normal-text">
- *          <i class="icon-circle"></i>
- *          Normal Text Size
- *        </a>
- *      </li>
- *      <li>
- *        <a href="." class="increase-text">
- *          <i class="icon-plus-sign"></i>
- *          Increase Text Size
- *        </a>
- *      </li>
- *    </ul>
- *
- */
-
-
-define('mockup-patterns-accessibility',[
-  'jquery',
-  'mockup-patterns-base',
-  'jquery.cookie'
-], function($, Base) {
-  
-
-  var Accessibility = Base.extend({
-    name: 'accessibility',
-    trigger: '.pat-accessibility',
-    defaults: {
-      'smallbtn': null,
-      'normalbtn': null,
-      'largebtn': null
-    },
-    setBaseFontSize: function($fontsize, $reset) {
-      if ($reset) {
-        this.$el.removeClass('smallText').removeClass('largeText').
-            removeClass('mediumText');
-        $.cookie('fontsize', $fontsize, { expires: 365, path: '/' });
-      }
-      this.$el.addClass($fontsize);
-    },
-    initBtn: function(btn) {
-      var self = this;
-      btn.el.click(function(e) {
-        e.preventDefault();
-        self.setBaseFontSize(btn.name + 'Text', 1);
-      });
-    },
-    init: function() {
-      var self = this;
-      var $fontsize = $.cookie('fontsize');
-      if ($fontsize) {
-        self.setBaseFontSize($fontsize, 0);
-      }
-      var btns = ['smallbtn', 'normalbtn', 'largebtn'];
-      $.each(btns, function(idx, btn) {
-        var btnName = btn.replace('btn', '');
-        var btnSelector = self.options[btn];
-        if (btnSelector !== null) {
-          var el = $(btnSelector, self.$el);
-          if (el) {
-            btn = {
-              name: btnName,
-              el: el
-            };
-            self[btnName] = btn;
-            self.initBtn(btn);
-          }
-        }
-      });
-    }
-  });
-
-  return Accessibility;
-
 });
 
 /* Autotoc pattern.
@@ -15833,7 +15627,7 @@ define('mockup-patterns-livesearch',[
       ajaxUrl: null,
       perPage: 7,
       quietMillis: 350,
-      minimumInputLength: 3,
+      minimumInputLength: 4,
       inputSelector: 'input[type="text"]',
       itemTemplate: '<li class="search-result <%- state %>">' +
         '<h4 class="title"><a href="<%- url %>"><%- title %></a></h4>' +
@@ -23395,6 +23189,9 @@ define('mockup-patterns-relateditems',[
   return RelatedItems;
 
 });
+
+
+define('text!mockup-patterns-tinymce-url/templates/result.xml',[],function () { return '<div class="pattern-relateditems-result pattern-relateditems-type-<%= Type %> <% if (selected) { %>pattern-active<% } %>">\n  <a href="#" class="pattern-relateditems-result-select <% if (selectable) { %>selectable<% } %>">\n    <% if (!folderish) { %>\n    <span class="pattern-relateditems-result-image">\n      <img src="<%= generateImageUrl(_item, \'thumb\') %>" />\n    </span>\n    <% } %>\n    <span class="pattern-relateditems-result-title"><%= Title %></span>\n    <span class="pattern-relateditems-result-path"><%= path %></span>\n  </a>\n  <span class="pattern-relateditems-buttons">\n    <% if (folderish) { %>\n      <a class="pattern-relateditems-result-browse" href="#" data-path="<%= path %>"></a>\n    <% } %>\n  </span>\n</div>\n';});
 
 (function(root) {
 define("tinymce", [], function() {
@@ -61002,9 +60799,6 @@ return (function () { this.tinyMCE.DOM.events.domLoaded = true; return this.tiny
 }(this));
 
 
-define('text!mockup-patterns-tinymce-url/templates/result.xml',[],function () { return '<div class="pattern-relateditems-result pattern-relateditems-type-<%= Type %> <% if (selected) { %>pattern-active<% } %>">\n  <a href="#" class="pattern-relateditems-result-select <% if (selectable) { %>selectable<% } %>">\n    <% if (!folderish) { %>\n    <span class="pattern-relateditems-result-image">\n      <img src="<%= generateImageUrl(_item, \'thumb\') %>" />\n    </span>\n    <% } %>\n    <span class="pattern-relateditems-result-title"><%= Title %></span>\n    <span class="pattern-relateditems-result-path"><%= path %></span>\n  </a>\n  <span class="pattern-relateditems-buttons">\n    <% if (folderish) { %>\n      <a class="pattern-relateditems-result-browse" href="#" data-path="<%= path %>"></a>\n    <% } %>\n  </span>\n</div>\n';});
-
-
 define('text!mockup-patterns-tinymce-url/templates/selection.xml',[],function () { return '<span class="pattern-relateditems-item pattern-relateditems-type-<%= Type %>">\n <span class="pattern-relateditems-result-image">\n   <img src="<%= generateImageUrl(_item, \'thumb\') %>" />\n </span>\n <span class="pattern-relateditems-item-title"><%= Title %></span>\n <span class="pattern-relateditems-item-path"><%= path %></span>\n</span>\'\n';});
 
 
@@ -61024,9 +60818,6 @@ define('text!mockup-ui-url/templates/popover.xml',[],function () { return '<div 
 
 
 define('text!mockup-patterns-tinymce-url/templates/link.xml',[],function () { return '<div>\n  <div class="linkModal">\n    <h1><%- insertHeading %></h1>\n    <p class="info">Drag and drop files from your desktop onto dialog to upload</p>\n\n    <div class="linkTypes pat-autotoc autotabs"\n         data-pat-autotoc="section:fieldset;levels:legend;">\n\n      <fieldset class="linkType internal" data-linkType="internal">\n        <legend>Internal</legend>\n        <div>\n          <div class="form-group main">\n            <!-- this gives the name to the "linkType" -->\n            <input type="text" name="internal" />\n          </div>\n        </div>\n      </fieldset>\n\n      <fieldset class="linkType upload" data-linkType="upload">\n        <legend>Upload</legend>\n        <div class="uploadify-me"></div>\n      </fieldset>\n\n      <fieldset class="linkType external" data-linkType="external">\n        <legend>External</legend>\n        <div class="form-group main">\n          <label for="external"><%- externalText %></label>\n          <input type="text" name="external" />\n        </div>\n      </fieldset>\n\n      <fieldset class="linkType email" data-linkType="email">\n        <legend>Email</legend>\n        <div class="form-inline">\n          <div class="form-group main">\n            <label><%- emailText %></label>\n            <input type="text" name="email" />\n          </div>\n          <div class="form-group">\n            <label><%- subjectText %></label>\n            <input type="text" name="subject" />\n          </div>\n        </div>\n      </fieldset>\n\n      <fieldset class="linkType anchor" data-linkType="anchor">\n        <legend>Anchor</legend>\n        <div>\n          <div class="form-group main">\n            <label>Select an anchor</label>\n            <div class="input-wrapper">\n              <select name="anchor" class="pat-select2" data-pat-select2="width:500px" />\n            </div>\n          </div>\n        </div>\n      </fieldset>\n\n    </div><!-- / tabs -->\n\n    <div class="common-controls">\n      <div class="form-group">\n        <label>Target</label>\n        <select name="target">\n          <% _.each(targetList, function(target){ %>\n            <option value="<%- target.value %>"><%- target.text %></option>\n          <% }); %>\n        </select>\n      </div>\n      <div class="form-group">\n        <label><%- titleText %></label>\n        <input type="text" name="title" />\n      </div>\n    </div>\n\n    <input type="submit" class="btn" name="cancel" value="<%- cancelBtn %>" />\n    <input type="submit" class="btn btn-primary" name="insert" value="<%- insertBtn %>" />\n  </div>\n</div>\n';});
-
-
-define('text!mockup-patterns-tinymce-url/templates/image.xml',[],function () { return '<div>\n  <div class="linkModal">\n    <h1><%- insertHeading %></h1>\n    <p class="info">Drag and drop files from your desktop onto dialog to upload</p>\n\n    <div class="linkTypes pat-autotoc autotabs"\n         data-pat-autotoc="section:fieldset;levels:legend;">\n\n      <fieldset class="linkType image" data-linkType="image">\n        <legend>Image</legend>\n        <div class="form-inline">\n          <div class="form-group main">\n            <input type="text" name="image" />\n          </div>\n          <div class="form-group scale">\n            <label><%- scaleText %></label>\n            <select name="scale">\n              <option value="">Original</option>\n                <% _.each(scales.split(\',\'), function(scale){ %>\n                  <% var scale = scale.split(\':\'); %>\n                  <option value="<%- scale[1] %>">\n                    <%- scale[0] %>\n                  </option>\n                <% }); %>\n            </select>\n          </div>\n        </div>\n      </fieldset>\n\n      <fieldset class="linkType uploadImage" data-linkType="uploadImage">\n        <legend>Upload</legend>\n        <div class="uploadify-me"></div>\n      </fieldset>\n\n      <fieldset class="linkType externalImage" data-linkType="externalImage">\n        <legend>External image</legend>\n        <div>\n          <div class="form-group main">\n            <label><%- externalImageText %></label>\n            <input type="text" name="externalImage" />\n          </div>\n        </div>\n      </fieldset>\n\n    </div><!-- / tabs -->\n\n    <div class="common-controls">\n      <div class="form-group title">\n        <label><%- titleText %></label>\n        <input type="text" name="title" />\n      </div>\n      <div class="form-group text">\n        <label><%- altText %></label>\n        <input type="text" name="alt" />\n      </div>\n      <div class="form-group align">\n        <label><%- imageAlignText %></label>\n        <select name="align">\n          <% _.each([\'inline\', \'right\', \'left\'], function(align){ %>\n              <option value="<%- align %>">\n              <%- align.charAt(0).toUpperCase() + align.slice(1) %>\n              </option>\n          <% }); %>\n        <select>\n      </div>\n    </div>\n\n    <input type="submit" class="btn" name="cancel" value="<%- cancelBtn %>" />\n    <input type="submit" class="btn btn-primary" name="insert" value="<%- insertBtn %>" />\n\n  </div>\n</div>\n';});
 
 //     Backbone.js 1.1.2
 
@@ -63585,6 +63376,9 @@ define('mockup-patterns-modal',[
   return Modal;
 
 });
+
+
+define('text!mockup-patterns-tinymce-url/templates/image.xml',[],function () { return '<div>\n  <div class="linkModal">\n    <h1><%- insertHeading %></h1>\n    <p class="info">Drag and drop files from your desktop onto dialog to upload</p>\n\n    <div class="linkTypes pat-autotoc autotabs"\n         data-pat-autotoc="section:fieldset;levels:legend;">\n\n      <fieldset class="linkType image" data-linkType="image">\n        <legend>Image</legend>\n        <div class="form-inline">\n          <div class="form-group main">\n            <input type="text" name="image" />\n          </div>\n          <div class="form-group scale">\n            <label><%- scaleText %></label>\n            <select name="scale">\n              <option value="">Original</option>\n                <% _.each(scales.split(\',\'), function(scale){ %>\n                  <% var scale = scale.split(\':\'); %>\n                  <option value="<%- scale[1] %>">\n                    <%- scale[0] %>\n                  </option>\n                <% }); %>\n            </select>\n          </div>\n        </div>\n      </fieldset>\n\n      <fieldset class="linkType uploadImage" data-linkType="uploadImage">\n        <legend>Upload</legend>\n        <div class="uploadify-me"></div>\n      </fieldset>\n\n      <fieldset class="linkType externalImage" data-linkType="externalImage">\n        <legend>External image</legend>\n        <div>\n          <div class="form-group main">\n            <label><%- externalImageText %></label>\n            <input type="text" name="externalImage" />\n          </div>\n        </div>\n      </fieldset>\n\n    </div><!-- / tabs -->\n\n    <div class="common-controls">\n      <div class="form-group title">\n        <label><%- titleText %></label>\n        <input type="text" name="title" />\n      </div>\n      <div class="form-group text">\n        <label><%- altText %></label>\n        <input type="text" name="alt" />\n      </div>\n      <div class="form-group align">\n        <label><%- imageAlignText %></label>\n        <select name="align">\n          <% _.each([\'inline\', \'right\', \'left\'], function(align){ %>\n              <option value="<%- align %>">\n              <%- align.charAt(0).toUpperCase() + align.slice(1) %>\n              </option>\n          <% }); %>\n        <select>\n      </div>\n    </div>\n\n    <input type="submit" class="btn" name="cancel" value="<%- cancelBtn %>" />\n    <input type="submit" class="btn btn-primary" name="insert" value="<%- insertBtn %>" />\n\n  </div>\n</div>\n';});
 
 define('mockup-ui-url/views/base',[
   'jquery',
@@ -68416,6 +68210,789 @@ tinymce.PluginManager.add('link', function(editor) {
 }(this));
 
 (function(root) {
+define("tinymce-media", ["tinymce"], function() {
+  return (function() {
+/**
+ * plugin.js
+ *
+ * Copyright, Moxiecode Systems AB
+ * Released under LGPL License.
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+/*jshint maxlen:255 */
+/*eslint max-len:0 */
+/*global tinymce:true */
+
+tinymce.PluginManager.add('media', function(editor, url) {
+    var urlPatterns = [
+        {regex: /youtu\.be\/([\w\-.]+)/, type: 'iframe', w: 425, h: 350, url: '//www.youtube.com/embed/$1'},
+        {regex: /youtube\.com(.+)v=([^&]+)/, type: 'iframe', w: 425, h: 350, url: '//www.youtube.com/embed/$2'},
+        {regex: /vimeo\.com\/([0-9]+)/, type: 'iframe', w: 425, h: 350, url: '//player.vimeo.com/video/$1?title=0&byline=0&portrait=0&color=8dc7dc'},
+        {regex: /vimeo\.com\/(.*)\/([0-9]+)/, type: "iframe", w: 425, h: 350, url: "//player.vimeo.com/video/$2?title=0&amp;byline=0"},
+        {regex: /maps\.google\.([a-z]{2,3})\/maps\/(.+)msid=(.+)/, type: 'iframe', w: 425, h: 350, url: '//maps.google.com/maps/ms?msid=$2&output=embed"'}
+    ];
+
+    var embedChange = (tinymce.Env.ie && tinymce.Env.ie <= 8) ? 'onChange' : 'onInput';
+
+    function guessMime(url) {
+        if (url.indexOf('.mp3') != -1) {
+            return 'audio/mpeg';
+        }
+
+        if (url.indexOf('.wav') != -1) {
+            return 'audio/wav';
+        }
+
+        if (url.indexOf('.mp4') != -1) {
+            return 'video/mp4';
+        }
+
+        if (url.indexOf('.webm') != -1) {
+            return 'video/webm';
+        }
+
+        if (url.indexOf('.ogg') != -1) {
+            return 'video/ogg';
+        }
+
+        if (url.indexOf('.swf') != -1) {
+            return 'application/x-shockwave-flash';
+        }
+
+        return '';
+    }
+
+    function getVideoScriptMatch(src) {
+        var prefixes = editor.settings.media_scripts;
+
+        if (prefixes) {
+            for (var i = 0; i < prefixes.length; i++) {
+                if (src.indexOf(prefixes[i].filter) !== -1) {
+                    return prefixes[i];
+                }
+            }
+        }
+    }
+
+    function showDialog() {
+        var win, width, height, data;
+
+        var generalFormItems = [
+            {
+                name: 'source1',
+                type: 'filepicker',
+                filetype: 'media',
+                size: 40,
+                autofocus: true,
+                label: 'Source',
+                onchange: function(e) {
+                    tinymce.each(e.meta, function(value, key) {
+                        win.find('#' + key).value(value);
+                    });
+                }
+            }
+        ];
+
+        function recalcSize(e) {
+            var widthCtrl, heightCtrl, newWidth, newHeight;
+
+            widthCtrl = win.find('#width')[0];
+            heightCtrl = win.find('#height')[0];
+
+            newWidth = widthCtrl.value();
+            newHeight = heightCtrl.value();
+
+            if (win.find('#constrain')[0].checked() && width && height && newWidth && newHeight) {
+                if (e.control == widthCtrl) {
+                    newHeight = Math.round((newWidth / width) * newHeight);
+                    heightCtrl.value(newHeight);
+                } else {
+                    newWidth = Math.round((newHeight / height) * newWidth);
+                    widthCtrl.value(newWidth);
+                }
+            }
+
+            width = newWidth;
+            height = newHeight;
+        }
+
+        if (editor.settings.media_alt_source !== false) {
+            generalFormItems.push({name: 'source2', type: 'filepicker', filetype: 'media', size: 40, label: 'Alternative source'});
+        }
+
+        if (editor.settings.media_poster !== false) {
+            generalFormItems.push({name: 'poster', type: 'filepicker', filetype: 'image', size: 40, label: 'Poster'});
+        }
+
+        if (editor.settings.media_dimensions !== false) {
+            generalFormItems.push({
+                type: 'container',
+                label: 'Dimensions',
+                layout: 'flex',
+                align: 'center',
+                spacing: 5,
+                items: [
+                    {name: 'width', type: 'textbox', maxLength: 3, size: 3, onchange: recalcSize},
+                    {type: 'label', text: 'x'},
+                    {name: 'height', type: 'textbox', maxLength: 3, size: 3, onchange: recalcSize},
+                    {name: 'constrain', type: 'checkbox', checked: true, text: 'Constrain proportions'}
+                ]
+            });
+        }
+
+        data = getData(editor.selection.getNode());
+        width = data.width;
+        height = data.height;
+
+        var embedTextBox = {
+            id: 'mcemediasource',
+            type: 'textbox',
+            flex: 1,
+            name: 'embed',
+            value: getSource(),
+            multiline: true,
+            label: 'Source'
+        };
+
+        function updateValueOnChange() {
+            data = htmlToData(this.value());
+            this.parent().parent().fromJSON(data);
+        }
+
+        embedTextBox[embedChange] = updateValueOnChange;
+
+        win = editor.windowManager.open({
+            title: 'Insert/edit video',
+            data: data,
+            bodyType: 'tabpanel',
+            body: [
+                {
+                    title: 'General',
+                    type: "form",
+                    onShowTab: function() {
+                        data = htmlToData(this.next().find('#embed').value());
+                        this.fromJSON(data);
+                    },
+                    items: generalFormItems
+                },
+
+                {
+                    title: 'Embed',
+                    type: "panel",
+                    layout: 'flex',
+                    direction: 'column',
+                    align: 'stretch',
+                    padding: 10,
+                    spacing: 10,
+                    onShowTab: function() {
+                        this.find('#embed').value(dataToHtml(this.parent().toJSON()));
+                    },
+                    items: [
+                        {
+                            type: 'label',
+                            text: 'Paste your embed code below:',
+                            forId: 'mcemediasource'
+                        },
+                        embedTextBox
+                    ]
+                }
+            ],
+            onSubmit: function() {
+                var beforeObjects, afterObjects, i, y;
+
+                beforeObjects = editor.dom.select('img[data-mce-object]');
+                editor.insertContent(dataToHtml(this.toJSON()));
+                afterObjects = editor.dom.select('img[data-mce-object]');
+
+                // Find new image placeholder so we can select it
+                for (i = 0; i < beforeObjects.length; i++) {
+                    for (y = afterObjects.length - 1; y >= 0; y--) {
+                        if (beforeObjects[i] == afterObjects[y]) {
+                            afterObjects.splice(y, 1);
+                        }
+                    }
+                }
+
+                editor.selection.select(afterObjects[0]);
+                editor.nodeChanged();
+            }
+        });
+    }
+
+    function getSource() {
+        var elm = editor.selection.getNode();
+
+        if (elm.getAttribute('data-mce-object')) {
+            return editor.selection.getContent();
+        }
+    }
+
+    function dataToHtml(data) {
+        var html = '';
+
+        if (!data.source1) {
+            tinymce.extend(data, htmlToData(data.embed));
+            if (!data.source1) {
+                return '';
+            }
+        }
+
+        if (!data.source2) {
+            data.source2 = '';
+        }
+
+        if (!data.poster) {
+            data.poster = '';
+        }
+
+        data.source1 = editor.convertURL(data.source1, "source");
+        data.source2 = editor.convertURL(data.source2, "source");
+        data.source1mime = guessMime(data.source1);
+        data.source2mime = guessMime(data.source2);
+        data.poster = editor.convertURL(data.poster, "poster");
+        data.flashPlayerUrl = editor.convertURL(url + '/moxieplayer.swf', "movie");
+
+        tinymce.each(urlPatterns, function(pattern) {
+            var match, i, url;
+
+            if ((match = pattern.regex.exec(data.source1))) {
+                url = pattern.url;
+
+                for (i = 0; match[i]; i++) {
+                    /*jshint loopfunc:true*/
+                    /*eslint no-loop-func:0 */
+                    url = url.replace('$' + i, function() {
+                        return match[i];
+                    });
+                }
+
+                data.source1 = url;
+                data.type = pattern.type;
+                data.width = data.width || pattern.w;
+                data.height = data.height || pattern.h;
+            }
+        });
+
+        if (data.embed) {
+            html = updateHtml(data.embed, data, true);
+        } else {
+            var videoScript = getVideoScriptMatch(data.source1);
+            if (videoScript) {
+                data.type = 'script';
+                data.width = videoScript.width;
+                data.height = videoScript.height;
+            }
+
+            data.width = data.width || 300;
+            data.height = data.height || 150;
+
+            tinymce.each(data, function(value, key) {
+                data[key] = editor.dom.encode(value);
+            });
+
+            if (data.type == "iframe") {
+                html += '<iframe src="' + data.source1 + '" width="' + data.width + '" height="' + data.height + '"></iframe>';
+            } else if (data.source1mime == "application/x-shockwave-flash") {
+                html += '<object data="' + data.source1 + '" width="' + data.width + '" height="' + data.height + '" type="application/x-shockwave-flash">';
+
+                if (data.poster) {
+                    html += '<img src="' + data.poster + '" width="' + data.width + '" height="' + data.height + '" />';
+                }
+
+                html += '</object>';
+            } else if (data.source1mime.indexOf('audio') != -1) {
+                if (editor.settings.audio_template_callback) {
+                    html = editor.settings.audio_template_callback(data);
+                } else {
+                    html += (
+                        '<audio controls="controls" src="' + data.source1 + '">' +
+                            (data.source2 ? '\n<source src="' + data.source2 + '"' + (data.source2mime ? ' type="' + data.source2mime + '"' : '') + ' />\n' : '') +
+                        '</audio>'
+                    );
+                }
+            } else if (data.type == "script") {
+                html += '<script src="' + data.source1 + '"></script>';
+            } else {
+                if (editor.settings.video_template_callback) {
+                    html = editor.settings.video_template_callback(data);
+                } else {
+                    html = (
+                        '<video width="' + data.width + '" height="' + data.height + '"' + (data.poster ? ' poster="' + data.poster + '"' : '') + ' controls="controls">\n' +
+                            '<source src="' + data.source1 + '"' + (data.source1mime ? ' type="' + data.source1mime + '"' : '') + ' />\n' +
+                            (data.source2 ? '<source src="' + data.source2 + '"' + (data.source2mime ? ' type="' + data.source2mime + '"' : '') + ' />\n' : '') +
+                        '</video>'
+                    );
+                }
+            }
+        }
+
+        return html;
+    }
+
+    function htmlToData(html) {
+        var data = {};
+
+        new tinymce.html.SaxParser({
+            validate: false,
+            allow_conditional_comments: true,
+            special: 'script,noscript',
+            start: function(name, attrs) {
+                if (!data.source1 && name == "param") {
+                    data.source1 = attrs.map.movie;
+                }
+
+                if (name == "iframe" || name == "object" || name == "embed" || name == "video" || name == "audio") {
+                    if (!data.type) {
+                        data.type = name;
+                    }
+
+                    data = tinymce.extend(attrs.map, data);
+                }
+
+                if (name == "script") {
+                    var videoScript = getVideoScriptMatch(attrs.map.src);
+                    if (!videoScript) {
+                        return;
+                    }
+
+                    data = {
+                        type: "script",
+                        source1: attrs.map.src,
+                        width: videoScript.width,
+                        height: videoScript.height
+                    };
+                }
+
+                if (name == "source") {
+                    if (!data.source1) {
+                        data.source1 = attrs.map.src;
+                    } else if (!data.source2) {
+                        data.source2 = attrs.map.src;
+                    }
+                }
+
+                if (name == "img" && !data.poster) {
+                    data.poster = attrs.map.src;
+                }
+            }
+        }).parse(html);
+
+        data.source1 = data.source1 || data.src || data.data;
+        data.source2 = data.source2 || '';
+        data.poster = data.poster || '';
+
+        return data;
+    }
+
+    function getData(element) {
+        if (element.getAttribute('data-mce-object')) {
+            return htmlToData(editor.serializer.serialize(element, {selection: true}));
+        }
+
+        return {};
+    }
+
+    function sanitize(html) {
+        if (editor.settings.media_filter_html === false) {
+            return html;
+        }
+
+        var writer = new tinymce.html.Writer();
+
+        new tinymce.html.SaxParser({
+            validate: false,
+            allow_conditional_comments: false,
+            special: 'script,noscript',
+
+            comment: function(text) {
+                writer.comment(text);
+            },
+
+            cdata: function(text) {
+                writer.cdata(text);
+            },
+
+            text: function(text, raw) {
+                writer.text(text, raw);
+            },
+
+            start: function(name, attrs, empty) {
+                if (name == 'script' || name == 'noscript') {
+                    return;
+                }
+
+                for (var i = 0; i < attrs.length; i++) {
+                    if (attrs[i].name.indexOf('on') === 0) {
+                        return;
+                    }
+                }
+
+                writer.start(name, attrs, empty);
+            },
+
+            end: function(name) {
+                if (name == 'script' || name == 'noscript') {
+                    return;
+                }
+
+                writer.end(name);
+            }
+        }, new tinymce.html.Schema({})).parse(html);
+
+        return writer.getContent();
+    }
+
+    function updateHtml(html, data, updateAll) {
+        var writer = new tinymce.html.Writer();
+        var sourceCount = 0, hasImage;
+
+        function setAttributes(attrs, updatedAttrs) {
+            var name, i, value, attr;
+
+            for (name in updatedAttrs) {
+                value = "" + updatedAttrs[name];
+
+                if (attrs.map[name]) {
+                    i = attrs.length;
+                    while (i--) {
+                        attr = attrs[i];
+
+                        if (attr.name == name) {
+                            if (value) {
+                                attrs.map[name] = value;
+                                attr.value = value;
+                            } else {
+                                delete attrs.map[name];
+                                attrs.splice(i, 1);
+                            }
+                        }
+                    }
+                } else if (value) {
+                    attrs.push({
+                        name: name,
+                        value: value
+                    });
+
+                    attrs.map[name] = value;
+                }
+            }
+        }
+
+        new tinymce.html.SaxParser({
+            validate: false,
+            allow_conditional_comments: true,
+            special: 'script,noscript',
+
+            comment: function(text) {
+                writer.comment(text);
+            },
+
+            cdata: function(text) {
+                writer.cdata(text);
+            },
+
+            text: function(text, raw) {
+                writer.text(text, raw);
+            },
+
+            start: function(name, attrs, empty) {
+                switch (name) {
+                    case "video":
+                    case "object":
+                    case "embed":
+                    case "img":
+                    case "iframe":
+                        setAttributes(attrs, {
+                            width: data.width,
+                            height: data.height
+                        });
+                        break;
+                }
+
+                if (updateAll) {
+                    switch (name) {
+                        case "video":
+                            setAttributes(attrs, {
+                                poster: data.poster,
+                                src: ""
+                            });
+
+                            if (data.source2) {
+                                setAttributes(attrs, {
+                                    src: ""
+                                });
+                            }
+                            break;
+
+                        case "iframe":
+                            setAttributes(attrs, {
+                                src: data.source1
+                            });
+                            break;
+
+                        case "source":
+                            sourceCount++;
+
+                            if (sourceCount <= 2) {
+                                setAttributes(attrs, {
+                                    src: data["source" + sourceCount],
+                                    type: data["source" + sourceCount + "mime"]
+                                });
+
+                                if (!data["source" + sourceCount]) {
+                                    return;
+                                }
+                            }
+                            break;
+
+                        case "img":
+                            if (!data.poster) {
+                                return;
+                            }
+
+                            hasImage = true;
+                            break;
+                    }
+                }
+
+                writer.start(name, attrs, empty);
+            },
+
+            end: function(name) {
+                if (name == "video" && updateAll) {
+                    for (var index = 1; index <= 2; index++) {
+                        if (data["source" + index]) {
+                            var attrs = [];
+                            attrs.map = {};
+
+                            if (sourceCount < index) {
+                                setAttributes(attrs, {
+                                    src: data["source" + index],
+                                    type: data["source" + index + "mime"]
+                                });
+
+                                writer.start("source", attrs, true);
+                            }
+                        }
+                    }
+                }
+
+                if (data.poster && name == "object" && updateAll && !hasImage) {
+                    var imgAttrs = [];
+                    imgAttrs.map = {};
+
+                    setAttributes(imgAttrs, {
+                        src: data.poster,
+                        width: data.width,
+                        height: data.height
+                    });
+
+                    writer.start("img", imgAttrs, true);
+                }
+
+                writer.end(name);
+            }
+        }, new tinymce.html.Schema({})).parse(html);
+
+        return writer.getContent();
+    }
+
+    editor.on('ResolveName', function(e) {
+        var name;
+
+        if (e.target.nodeType == 1 && (name = e.target.getAttribute("data-mce-object"))) {
+            e.name = name;
+        }
+    });
+
+    editor.on('preInit', function() {
+        // Make sure that any messy HTML is retained inside these
+        var specialElements = editor.schema.getSpecialElements();
+        tinymce.each('video audio iframe object'.split(' '), function(name) {
+            specialElements[name] = new RegExp('<\/' + name + '[^>]*>', 'gi');
+        });
+
+        // Allow elements
+        //editor.schema.addValidElements('object[id|style|width|height|classid|codebase|*],embed[id|style|width|height|type|src|*],video[*],audio[*]');
+
+        // Set allowFullscreen attribs as boolean
+        var boolAttrs = editor.schema.getBoolAttrs();
+        tinymce.each('webkitallowfullscreen mozallowfullscreen allowfullscreen'.split(' '), function(name) {
+            boolAttrs[name] = {};
+        });
+
+        // Converts iframe, video etc into placeholder images
+        editor.parser.addNodeFilter('iframe,video,audio,object,embed,script', function(nodes, name) {
+            var i = nodes.length, ai, node, placeHolder, attrName, attrValue, attribs, innerHtml;
+            var videoScript;
+
+            while (i--) {
+                node = nodes[i];
+                if (!node.parent) {
+                    continue;
+                }
+
+                if (node.name == 'script') {
+                    videoScript = getVideoScriptMatch(node.attr('src'));
+                    if (!videoScript) {
+                        continue;
+                    }
+                }
+
+                placeHolder = new tinymce.html.Node('img', 1);
+                placeHolder.shortEnded = true;
+
+                if (videoScript) {
+                    if (videoScript.width) {
+                        node.attr('width', videoScript.width.toString());
+                    }
+
+                    if (videoScript.height) {
+                        node.attr('height', videoScript.height.toString());
+                    }
+                }
+
+                // Prefix all attributes except width, height and style since we
+                // will add these to the placeholder
+                attribs = node.attributes;
+                ai = attribs.length;
+                while (ai--) {
+                    attrName = attribs[ai].name;
+                    attrValue = attribs[ai].value;
+
+                    if (attrName !== "width" && attrName !== "height" && attrName !== "style") {
+                        if (attrName == "data" || attrName == "src") {
+                            attrValue = editor.convertURL(attrValue, attrName);
+                        }
+
+                        placeHolder.attr('data-mce-p-' + attrName, attrValue);
+                    }
+                }
+
+                // Place the inner HTML contents inside an escaped attribute
+                // This enables us to copy/paste the fake object
+                innerHtml = node.firstChild && node.firstChild.value;
+                if (innerHtml) {
+                    placeHolder.attr("data-mce-html", escape(innerHtml));
+                    placeHolder.firstChild = null;
+                }
+
+                placeHolder.attr({
+                    width: node.attr('width') || "300",
+                    height: node.attr('height') || (name == "audio" ? "30" : "150"),
+                    style: node.attr('style'),
+                    src: tinymce.Env.transparentSrc,
+                    "data-mce-object": name,
+                    "class": "mce-object mce-object-" + name
+                });
+
+                node.replace(placeHolder);
+            }
+        });
+
+        // Replaces placeholder images with real elements for video, object, iframe etc
+        editor.serializer.addAttributeFilter('data-mce-object', function(nodes, name) {
+            var i = nodes.length, node, realElm, ai, attribs, innerHtml, innerNode, realElmName;
+
+            while (i--) {
+                node = nodes[i];
+                if (!node.parent) {
+                    continue;
+                }
+
+                realElmName = node.attr(name);
+                realElm = new tinymce.html.Node(realElmName, 1);
+
+                // Add width/height to everything but audio
+                if (realElmName != "audio" && realElmName != "script") {
+                    realElm.attr({
+                        width: node.attr('width'),
+                        height: node.attr('height')
+                    });
+                }
+
+                realElm.attr({
+                    style: node.attr('style')
+                });
+
+                // Unprefix all placeholder attributes
+                attribs = node.attributes;
+                ai = attribs.length;
+                while (ai--) {
+                    var attrName = attribs[ai].name;
+
+                    if (attrName.indexOf('data-mce-p-') === 0) {
+                        realElm.attr(attrName.substr(11), attribs[ai].value);
+                    }
+                }
+
+                if (realElmName == "script") {
+                    realElm.attr('type', 'text/javascript');
+                }
+
+                // Inject innerhtml
+                innerHtml = node.attr('data-mce-html');
+                if (innerHtml) {
+                    innerNode = new tinymce.html.Node('#text', 3);
+                    innerNode.raw = true;
+                    innerNode.value = sanitize(unescape(innerHtml));
+                    realElm.append(innerNode);
+                }
+
+                node.replace(realElm);
+            }
+        });
+    });
+
+    editor.on('ObjectSelected', function(e) {
+        var objectType = e.target.getAttribute('data-mce-object');
+
+        if (objectType == "audio" || objectType == "script") {
+            e.preventDefault();
+        }
+    });
+
+    editor.on('objectResized', function(e) {
+        var target = e.target, html;
+
+        if (target.getAttribute('data-mce-object')) {
+            html = target.getAttribute('data-mce-html');
+            if (html) {
+                html = unescape(html);
+                target.setAttribute('data-mce-html', escape(
+                    updateHtml(html, {
+                        width: e.width,
+                        height: e.height
+                    })
+                ));
+            }
+        }
+    });
+
+    editor.addButton('media', {
+        tooltip: 'Insert/edit video',
+        onclick: showDialog,
+        stateSelector: ['img[data-mce-object=video]', 'img[data-mce-object=iframe]']
+    });
+
+    editor.addMenuItem('media', {
+        icon: 'media',
+        text: 'Insert video',
+        onclick: showDialog,
+        context: 'insert',
+        prependToContext: true
+    });
+});
+
+
+  }).apply(root, arguments);
+});
+}(this));
+
+(function(root) {
 define("tinymce-lists", ["tinymce"], function() {
   return (function() {
 /**
@@ -69216,789 +69793,6 @@ tinymce.PluginManager.add('lists', function(editor) {
 }(this));
 
 (function(root) {
-define("tinymce-media", ["tinymce"], function() {
-  return (function() {
-/**
- * plugin.js
- *
- * Copyright, Moxiecode Systems AB
- * Released under LGPL License.
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-/*jshint maxlen:255 */
-/*eslint max-len:0 */
-/*global tinymce:true */
-
-tinymce.PluginManager.add('media', function(editor, url) {
-    var urlPatterns = [
-        {regex: /youtu\.be\/([\w\-.]+)/, type: 'iframe', w: 425, h: 350, url: '//www.youtube.com/embed/$1'},
-        {regex: /youtube\.com(.+)v=([^&]+)/, type: 'iframe', w: 425, h: 350, url: '//www.youtube.com/embed/$2'},
-        {regex: /vimeo\.com\/([0-9]+)/, type: 'iframe', w: 425, h: 350, url: '//player.vimeo.com/video/$1?title=0&byline=0&portrait=0&color=8dc7dc'},
-        {regex: /vimeo\.com\/(.*)\/([0-9]+)/, type: "iframe", w: 425, h: 350, url: "//player.vimeo.com/video/$2?title=0&amp;byline=0"},
-        {regex: /maps\.google\.([a-z]{2,3})\/maps\/(.+)msid=(.+)/, type: 'iframe', w: 425, h: 350, url: '//maps.google.com/maps/ms?msid=$2&output=embed"'}
-    ];
-
-    var embedChange = (tinymce.Env.ie && tinymce.Env.ie <= 8) ? 'onChange' : 'onInput';
-
-    function guessMime(url) {
-        if (url.indexOf('.mp3') != -1) {
-            return 'audio/mpeg';
-        }
-
-        if (url.indexOf('.wav') != -1) {
-            return 'audio/wav';
-        }
-
-        if (url.indexOf('.mp4') != -1) {
-            return 'video/mp4';
-        }
-
-        if (url.indexOf('.webm') != -1) {
-            return 'video/webm';
-        }
-
-        if (url.indexOf('.ogg') != -1) {
-            return 'video/ogg';
-        }
-
-        if (url.indexOf('.swf') != -1) {
-            return 'application/x-shockwave-flash';
-        }
-
-        return '';
-    }
-
-    function getVideoScriptMatch(src) {
-        var prefixes = editor.settings.media_scripts;
-
-        if (prefixes) {
-            for (var i = 0; i < prefixes.length; i++) {
-                if (src.indexOf(prefixes[i].filter) !== -1) {
-                    return prefixes[i];
-                }
-            }
-        }
-    }
-
-    function showDialog() {
-        var win, width, height, data;
-
-        var generalFormItems = [
-            {
-                name: 'source1',
-                type: 'filepicker',
-                filetype: 'media',
-                size: 40,
-                autofocus: true,
-                label: 'Source',
-                onchange: function(e) {
-                    tinymce.each(e.meta, function(value, key) {
-                        win.find('#' + key).value(value);
-                    });
-                }
-            }
-        ];
-
-        function recalcSize(e) {
-            var widthCtrl, heightCtrl, newWidth, newHeight;
-
-            widthCtrl = win.find('#width')[0];
-            heightCtrl = win.find('#height')[0];
-
-            newWidth = widthCtrl.value();
-            newHeight = heightCtrl.value();
-
-            if (win.find('#constrain')[0].checked() && width && height && newWidth && newHeight) {
-                if (e.control == widthCtrl) {
-                    newHeight = Math.round((newWidth / width) * newHeight);
-                    heightCtrl.value(newHeight);
-                } else {
-                    newWidth = Math.round((newHeight / height) * newWidth);
-                    widthCtrl.value(newWidth);
-                }
-            }
-
-            width = newWidth;
-            height = newHeight;
-        }
-
-        if (editor.settings.media_alt_source !== false) {
-            generalFormItems.push({name: 'source2', type: 'filepicker', filetype: 'media', size: 40, label: 'Alternative source'});
-        }
-
-        if (editor.settings.media_poster !== false) {
-            generalFormItems.push({name: 'poster', type: 'filepicker', filetype: 'image', size: 40, label: 'Poster'});
-        }
-
-        if (editor.settings.media_dimensions !== false) {
-            generalFormItems.push({
-                type: 'container',
-                label: 'Dimensions',
-                layout: 'flex',
-                align: 'center',
-                spacing: 5,
-                items: [
-                    {name: 'width', type: 'textbox', maxLength: 3, size: 3, onchange: recalcSize},
-                    {type: 'label', text: 'x'},
-                    {name: 'height', type: 'textbox', maxLength: 3, size: 3, onchange: recalcSize},
-                    {name: 'constrain', type: 'checkbox', checked: true, text: 'Constrain proportions'}
-                ]
-            });
-        }
-
-        data = getData(editor.selection.getNode());
-        width = data.width;
-        height = data.height;
-
-        var embedTextBox = {
-            id: 'mcemediasource',
-            type: 'textbox',
-            flex: 1,
-            name: 'embed',
-            value: getSource(),
-            multiline: true,
-            label: 'Source'
-        };
-
-        function updateValueOnChange() {
-            data = htmlToData(this.value());
-            this.parent().parent().fromJSON(data);
-        }
-
-        embedTextBox[embedChange] = updateValueOnChange;
-
-        win = editor.windowManager.open({
-            title: 'Insert/edit video',
-            data: data,
-            bodyType: 'tabpanel',
-            body: [
-                {
-                    title: 'General',
-                    type: "form",
-                    onShowTab: function() {
-                        data = htmlToData(this.next().find('#embed').value());
-                        this.fromJSON(data);
-                    },
-                    items: generalFormItems
-                },
-
-                {
-                    title: 'Embed',
-                    type: "panel",
-                    layout: 'flex',
-                    direction: 'column',
-                    align: 'stretch',
-                    padding: 10,
-                    spacing: 10,
-                    onShowTab: function() {
-                        this.find('#embed').value(dataToHtml(this.parent().toJSON()));
-                    },
-                    items: [
-                        {
-                            type: 'label',
-                            text: 'Paste your embed code below:',
-                            forId: 'mcemediasource'
-                        },
-                        embedTextBox
-                    ]
-                }
-            ],
-            onSubmit: function() {
-                var beforeObjects, afterObjects, i, y;
-
-                beforeObjects = editor.dom.select('img[data-mce-object]');
-                editor.insertContent(dataToHtml(this.toJSON()));
-                afterObjects = editor.dom.select('img[data-mce-object]');
-
-                // Find new image placeholder so we can select it
-                for (i = 0; i < beforeObjects.length; i++) {
-                    for (y = afterObjects.length - 1; y >= 0; y--) {
-                        if (beforeObjects[i] == afterObjects[y]) {
-                            afterObjects.splice(y, 1);
-                        }
-                    }
-                }
-
-                editor.selection.select(afterObjects[0]);
-                editor.nodeChanged();
-            }
-        });
-    }
-
-    function getSource() {
-        var elm = editor.selection.getNode();
-
-        if (elm.getAttribute('data-mce-object')) {
-            return editor.selection.getContent();
-        }
-    }
-
-    function dataToHtml(data) {
-        var html = '';
-
-        if (!data.source1) {
-            tinymce.extend(data, htmlToData(data.embed));
-            if (!data.source1) {
-                return '';
-            }
-        }
-
-        if (!data.source2) {
-            data.source2 = '';
-        }
-
-        if (!data.poster) {
-            data.poster = '';
-        }
-
-        data.source1 = editor.convertURL(data.source1, "source");
-        data.source2 = editor.convertURL(data.source2, "source");
-        data.source1mime = guessMime(data.source1);
-        data.source2mime = guessMime(data.source2);
-        data.poster = editor.convertURL(data.poster, "poster");
-        data.flashPlayerUrl = editor.convertURL(url + '/moxieplayer.swf', "movie");
-
-        tinymce.each(urlPatterns, function(pattern) {
-            var match, i, url;
-
-            if ((match = pattern.regex.exec(data.source1))) {
-                url = pattern.url;
-
-                for (i = 0; match[i]; i++) {
-                    /*jshint loopfunc:true*/
-                    /*eslint no-loop-func:0 */
-                    url = url.replace('$' + i, function() {
-                        return match[i];
-                    });
-                }
-
-                data.source1 = url;
-                data.type = pattern.type;
-                data.width = data.width || pattern.w;
-                data.height = data.height || pattern.h;
-            }
-        });
-
-        if (data.embed) {
-            html = updateHtml(data.embed, data, true);
-        } else {
-            var videoScript = getVideoScriptMatch(data.source1);
-            if (videoScript) {
-                data.type = 'script';
-                data.width = videoScript.width;
-                data.height = videoScript.height;
-            }
-
-            data.width = data.width || 300;
-            data.height = data.height || 150;
-
-            tinymce.each(data, function(value, key) {
-                data[key] = editor.dom.encode(value);
-            });
-
-            if (data.type == "iframe") {
-                html += '<iframe src="' + data.source1 + '" width="' + data.width + '" height="' + data.height + '"></iframe>';
-            } else if (data.source1mime == "application/x-shockwave-flash") {
-                html += '<object data="' + data.source1 + '" width="' + data.width + '" height="' + data.height + '" type="application/x-shockwave-flash">';
-
-                if (data.poster) {
-                    html += '<img src="' + data.poster + '" width="' + data.width + '" height="' + data.height + '" />';
-                }
-
-                html += '</object>';
-            } else if (data.source1mime.indexOf('audio') != -1) {
-                if (editor.settings.audio_template_callback) {
-                    html = editor.settings.audio_template_callback(data);
-                } else {
-                    html += (
-                        '<audio controls="controls" src="' + data.source1 + '">' +
-                            (data.source2 ? '\n<source src="' + data.source2 + '"' + (data.source2mime ? ' type="' + data.source2mime + '"' : '') + ' />\n' : '') +
-                        '</audio>'
-                    );
-                }
-            } else if (data.type == "script") {
-                html += '<script src="' + data.source1 + '"></script>';
-            } else {
-                if (editor.settings.video_template_callback) {
-                    html = editor.settings.video_template_callback(data);
-                } else {
-                    html = (
-                        '<video width="' + data.width + '" height="' + data.height + '"' + (data.poster ? ' poster="' + data.poster + '"' : '') + ' controls="controls">\n' +
-                            '<source src="' + data.source1 + '"' + (data.source1mime ? ' type="' + data.source1mime + '"' : '') + ' />\n' +
-                            (data.source2 ? '<source src="' + data.source2 + '"' + (data.source2mime ? ' type="' + data.source2mime + '"' : '') + ' />\n' : '') +
-                        '</video>'
-                    );
-                }
-            }
-        }
-
-        return html;
-    }
-
-    function htmlToData(html) {
-        var data = {};
-
-        new tinymce.html.SaxParser({
-            validate: false,
-            allow_conditional_comments: true,
-            special: 'script,noscript',
-            start: function(name, attrs) {
-                if (!data.source1 && name == "param") {
-                    data.source1 = attrs.map.movie;
-                }
-
-                if (name == "iframe" || name == "object" || name == "embed" || name == "video" || name == "audio") {
-                    if (!data.type) {
-                        data.type = name;
-                    }
-
-                    data = tinymce.extend(attrs.map, data);
-                }
-
-                if (name == "script") {
-                    var videoScript = getVideoScriptMatch(attrs.map.src);
-                    if (!videoScript) {
-                        return;
-                    }
-
-                    data = {
-                        type: "script",
-                        source1: attrs.map.src,
-                        width: videoScript.width,
-                        height: videoScript.height
-                    };
-                }
-
-                if (name == "source") {
-                    if (!data.source1) {
-                        data.source1 = attrs.map.src;
-                    } else if (!data.source2) {
-                        data.source2 = attrs.map.src;
-                    }
-                }
-
-                if (name == "img" && !data.poster) {
-                    data.poster = attrs.map.src;
-                }
-            }
-        }).parse(html);
-
-        data.source1 = data.source1 || data.src || data.data;
-        data.source2 = data.source2 || '';
-        data.poster = data.poster || '';
-
-        return data;
-    }
-
-    function getData(element) {
-        if (element.getAttribute('data-mce-object')) {
-            return htmlToData(editor.serializer.serialize(element, {selection: true}));
-        }
-
-        return {};
-    }
-
-    function sanitize(html) {
-        if (editor.settings.media_filter_html === false) {
-            return html;
-        }
-
-        var writer = new tinymce.html.Writer();
-
-        new tinymce.html.SaxParser({
-            validate: false,
-            allow_conditional_comments: false,
-            special: 'script,noscript',
-
-            comment: function(text) {
-                writer.comment(text);
-            },
-
-            cdata: function(text) {
-                writer.cdata(text);
-            },
-
-            text: function(text, raw) {
-                writer.text(text, raw);
-            },
-
-            start: function(name, attrs, empty) {
-                if (name == 'script' || name == 'noscript') {
-                    return;
-                }
-
-                for (var i = 0; i < attrs.length; i++) {
-                    if (attrs[i].name.indexOf('on') === 0) {
-                        return;
-                    }
-                }
-
-                writer.start(name, attrs, empty);
-            },
-
-            end: function(name) {
-                if (name == 'script' || name == 'noscript') {
-                    return;
-                }
-
-                writer.end(name);
-            }
-        }, new tinymce.html.Schema({})).parse(html);
-
-        return writer.getContent();
-    }
-
-    function updateHtml(html, data, updateAll) {
-        var writer = new tinymce.html.Writer();
-        var sourceCount = 0, hasImage;
-
-        function setAttributes(attrs, updatedAttrs) {
-            var name, i, value, attr;
-
-            for (name in updatedAttrs) {
-                value = "" + updatedAttrs[name];
-
-                if (attrs.map[name]) {
-                    i = attrs.length;
-                    while (i--) {
-                        attr = attrs[i];
-
-                        if (attr.name == name) {
-                            if (value) {
-                                attrs.map[name] = value;
-                                attr.value = value;
-                            } else {
-                                delete attrs.map[name];
-                                attrs.splice(i, 1);
-                            }
-                        }
-                    }
-                } else if (value) {
-                    attrs.push({
-                        name: name,
-                        value: value
-                    });
-
-                    attrs.map[name] = value;
-                }
-            }
-        }
-
-        new tinymce.html.SaxParser({
-            validate: false,
-            allow_conditional_comments: true,
-            special: 'script,noscript',
-
-            comment: function(text) {
-                writer.comment(text);
-            },
-
-            cdata: function(text) {
-                writer.cdata(text);
-            },
-
-            text: function(text, raw) {
-                writer.text(text, raw);
-            },
-
-            start: function(name, attrs, empty) {
-                switch (name) {
-                    case "video":
-                    case "object":
-                    case "embed":
-                    case "img":
-                    case "iframe":
-                        setAttributes(attrs, {
-                            width: data.width,
-                            height: data.height
-                        });
-                        break;
-                }
-
-                if (updateAll) {
-                    switch (name) {
-                        case "video":
-                            setAttributes(attrs, {
-                                poster: data.poster,
-                                src: ""
-                            });
-
-                            if (data.source2) {
-                                setAttributes(attrs, {
-                                    src: ""
-                                });
-                            }
-                            break;
-
-                        case "iframe":
-                            setAttributes(attrs, {
-                                src: data.source1
-                            });
-                            break;
-
-                        case "source":
-                            sourceCount++;
-
-                            if (sourceCount <= 2) {
-                                setAttributes(attrs, {
-                                    src: data["source" + sourceCount],
-                                    type: data["source" + sourceCount + "mime"]
-                                });
-
-                                if (!data["source" + sourceCount]) {
-                                    return;
-                                }
-                            }
-                            break;
-
-                        case "img":
-                            if (!data.poster) {
-                                return;
-                            }
-
-                            hasImage = true;
-                            break;
-                    }
-                }
-
-                writer.start(name, attrs, empty);
-            },
-
-            end: function(name) {
-                if (name == "video" && updateAll) {
-                    for (var index = 1; index <= 2; index++) {
-                        if (data["source" + index]) {
-                            var attrs = [];
-                            attrs.map = {};
-
-                            if (sourceCount < index) {
-                                setAttributes(attrs, {
-                                    src: data["source" + index],
-                                    type: data["source" + index + "mime"]
-                                });
-
-                                writer.start("source", attrs, true);
-                            }
-                        }
-                    }
-                }
-
-                if (data.poster && name == "object" && updateAll && !hasImage) {
-                    var imgAttrs = [];
-                    imgAttrs.map = {};
-
-                    setAttributes(imgAttrs, {
-                        src: data.poster,
-                        width: data.width,
-                        height: data.height
-                    });
-
-                    writer.start("img", imgAttrs, true);
-                }
-
-                writer.end(name);
-            }
-        }, new tinymce.html.Schema({})).parse(html);
-
-        return writer.getContent();
-    }
-
-    editor.on('ResolveName', function(e) {
-        var name;
-
-        if (e.target.nodeType == 1 && (name = e.target.getAttribute("data-mce-object"))) {
-            e.name = name;
-        }
-    });
-
-    editor.on('preInit', function() {
-        // Make sure that any messy HTML is retained inside these
-        var specialElements = editor.schema.getSpecialElements();
-        tinymce.each('video audio iframe object'.split(' '), function(name) {
-            specialElements[name] = new RegExp('<\/' + name + '[^>]*>', 'gi');
-        });
-
-        // Allow elements
-        //editor.schema.addValidElements('object[id|style|width|height|classid|codebase|*],embed[id|style|width|height|type|src|*],video[*],audio[*]');
-
-        // Set allowFullscreen attribs as boolean
-        var boolAttrs = editor.schema.getBoolAttrs();
-        tinymce.each('webkitallowfullscreen mozallowfullscreen allowfullscreen'.split(' '), function(name) {
-            boolAttrs[name] = {};
-        });
-
-        // Converts iframe, video etc into placeholder images
-        editor.parser.addNodeFilter('iframe,video,audio,object,embed,script', function(nodes, name) {
-            var i = nodes.length, ai, node, placeHolder, attrName, attrValue, attribs, innerHtml;
-            var videoScript;
-
-            while (i--) {
-                node = nodes[i];
-                if (!node.parent) {
-                    continue;
-                }
-
-                if (node.name == 'script') {
-                    videoScript = getVideoScriptMatch(node.attr('src'));
-                    if (!videoScript) {
-                        continue;
-                    }
-                }
-
-                placeHolder = new tinymce.html.Node('img', 1);
-                placeHolder.shortEnded = true;
-
-                if (videoScript) {
-                    if (videoScript.width) {
-                        node.attr('width', videoScript.width.toString());
-                    }
-
-                    if (videoScript.height) {
-                        node.attr('height', videoScript.height.toString());
-                    }
-                }
-
-                // Prefix all attributes except width, height and style since we
-                // will add these to the placeholder
-                attribs = node.attributes;
-                ai = attribs.length;
-                while (ai--) {
-                    attrName = attribs[ai].name;
-                    attrValue = attribs[ai].value;
-
-                    if (attrName !== "width" && attrName !== "height" && attrName !== "style") {
-                        if (attrName == "data" || attrName == "src") {
-                            attrValue = editor.convertURL(attrValue, attrName);
-                        }
-
-                        placeHolder.attr('data-mce-p-' + attrName, attrValue);
-                    }
-                }
-
-                // Place the inner HTML contents inside an escaped attribute
-                // This enables us to copy/paste the fake object
-                innerHtml = node.firstChild && node.firstChild.value;
-                if (innerHtml) {
-                    placeHolder.attr("data-mce-html", escape(innerHtml));
-                    placeHolder.firstChild = null;
-                }
-
-                placeHolder.attr({
-                    width: node.attr('width') || "300",
-                    height: node.attr('height') || (name == "audio" ? "30" : "150"),
-                    style: node.attr('style'),
-                    src: tinymce.Env.transparentSrc,
-                    "data-mce-object": name,
-                    "class": "mce-object mce-object-" + name
-                });
-
-                node.replace(placeHolder);
-            }
-        });
-
-        // Replaces placeholder images with real elements for video, object, iframe etc
-        editor.serializer.addAttributeFilter('data-mce-object', function(nodes, name) {
-            var i = nodes.length, node, realElm, ai, attribs, innerHtml, innerNode, realElmName;
-
-            while (i--) {
-                node = nodes[i];
-                if (!node.parent) {
-                    continue;
-                }
-
-                realElmName = node.attr(name);
-                realElm = new tinymce.html.Node(realElmName, 1);
-
-                // Add width/height to everything but audio
-                if (realElmName != "audio" && realElmName != "script") {
-                    realElm.attr({
-                        width: node.attr('width'),
-                        height: node.attr('height')
-                    });
-                }
-
-                realElm.attr({
-                    style: node.attr('style')
-                });
-
-                // Unprefix all placeholder attributes
-                attribs = node.attributes;
-                ai = attribs.length;
-                while (ai--) {
-                    var attrName = attribs[ai].name;
-
-                    if (attrName.indexOf('data-mce-p-') === 0) {
-                        realElm.attr(attrName.substr(11), attribs[ai].value);
-                    }
-                }
-
-                if (realElmName == "script") {
-                    realElm.attr('type', 'text/javascript');
-                }
-
-                // Inject innerhtml
-                innerHtml = node.attr('data-mce-html');
-                if (innerHtml) {
-                    innerNode = new tinymce.html.Node('#text', 3);
-                    innerNode.raw = true;
-                    innerNode.value = sanitize(unescape(innerHtml));
-                    realElm.append(innerNode);
-                }
-
-                node.replace(realElm);
-            }
-        });
-    });
-
-    editor.on('ObjectSelected', function(e) {
-        var objectType = e.target.getAttribute('data-mce-object');
-
-        if (objectType == "audio" || objectType == "script") {
-            e.preventDefault();
-        }
-    });
-
-    editor.on('objectResized', function(e) {
-        var target = e.target, html;
-
-        if (target.getAttribute('data-mce-object')) {
-            html = target.getAttribute('data-mce-html');
-            if (html) {
-                html = unescape(html);
-                target.setAttribute('data-mce-html', escape(
-                    updateHtml(html, {
-                        width: e.width,
-                        height: e.height
-                    })
-                ));
-            }
-        }
-    });
-
-    editor.addButton('media', {
-        tooltip: 'Insert/edit video',
-        onclick: showDialog,
-        stateSelector: ['img[data-mce-object=video]', 'img[data-mce-object=iframe]']
-    });
-
-    editor.addMenuItem('media', {
-        icon: 'media',
-        text: 'Insert video',
-        onclick: showDialog,
-        context: 'insert',
-        prependToContext: true
-    });
-});
-
-
-  }).apply(root, arguments);
-});
-}(this));
-
-(function(root) {
 define("tinymce-nonbreaking", ["tinymce"], function() {
   return (function() {
 /**
@@ -70699,103 +70493,6 @@ tinymce.PluginManager.add('pagebreak', function(editor) {
         });
     });
 });
-
-  }).apply(root, arguments);
-});
-}(this));
-
-(function(root) {
-define("tinymce-preview", ["tinymce"], function() {
-  return (function() {
-/**
- * plugin.js
- *
- * Copyright, Moxiecode Systems AB
- * Released under LGPL License.
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-/*global tinymce:true */
-
-tinymce.PluginManager.add('preview', function(editor) {
-    var settings = editor.settings, sandbox = !tinymce.Env.ie;
-
-    editor.addCommand('mcePreview', function() {
-        editor.windowManager.open({
-            title: 'Preview',
-            width : parseInt(editor.getParam("plugin_preview_width", "650"), 10),
-            height : parseInt(editor.getParam("plugin_preview_height", "500"), 10),
-            html: '<iframe src="javascript:\'\'" frameborder="0"' + (sandbox ? ' sandbox="allow-scripts"' : '') + '></iframe>',
-            buttons: {
-                text: 'Close',
-                onclick: function() {
-                    this.parent().parent().close();
-                }
-            },
-            onPostRender: function() {
-                var previewHtml, headHtml = '';
-
-                headHtml += '<base href="' + editor.documentBaseURI.getURI() + '">';
-
-                tinymce.each(editor.contentCSS, function(url) {
-                    headHtml += '<link type="text/css" rel="stylesheet" href="' + editor.documentBaseURI.toAbsolute(url) + '">';
-                });
-
-                var bodyId = settings.body_id || 'tinymce';
-                if (bodyId.indexOf('=') != -1) {
-                    bodyId = editor.getParam('body_id', '', 'hash');
-                    bodyId = bodyId[editor.id] || bodyId;
-                }
-
-                var bodyClass = settings.body_class || '';
-                if (bodyClass.indexOf('=') != -1) {
-                    bodyClass = editor.getParam('body_class', '', 'hash');
-                    bodyClass = bodyClass[editor.id] || '';
-                }
-
-                var dirAttr = editor.settings.directionality ? ' dir="' + editor.settings.directionality + '"' : '';
-
-                previewHtml = (
-                    '<!DOCTYPE html>' +
-                    '<html>' +
-                    '<head>' +
-                        headHtml +
-                    '</head>' +
-                    '<body id="' + bodyId + '" class="mce-content-body ' + bodyClass + '"' + dirAttr + '>' +
-                        editor.getContent() +
-                    '</body>' +
-                    '</html>'
-                );
-
-                if (!sandbox) {
-                    // IE 6-11 doesn't support data uris on iframes
-                    // so I guess they will have to be less secure since we can't sandbox on those
-                    // TODO: Use sandbox if future versions of IE supports iframes with data: uris.
-                    var doc = this.getEl('body').firstChild.contentWindow.document;
-                    doc.open();
-                    doc.write(previewHtml);
-                    doc.close();
-                } else {
-                    this.getEl('body').firstChild.src = 'data:text/html;charset=utf-8,' + encodeURIComponent(previewHtml);
-                }
-            }
-        });
-    });
-
-    editor.addButton('preview', {
-        title : 'Preview',
-        cmd : 'mcePreview'
-    });
-
-    editor.addMenuItem('preview', {
-        text : 'Preview',
-        cmd : 'mcePreview',
-        context: 'view'
-    });
-});
-
 
   }).apply(root, arguments);
 });
@@ -72427,6 +72124,103 @@ define("tinymce/pasteplugin/Plugin", [
 
 expose(["tinymce/pasteplugin/Utils","tinymce/pasteplugin/WordFilter"]);
 })(this);
+
+  }).apply(root, arguments);
+});
+}(this));
+
+(function(root) {
+define("tinymce-preview", ["tinymce"], function() {
+  return (function() {
+/**
+ * plugin.js
+ *
+ * Copyright, Moxiecode Systems AB
+ * Released under LGPL License.
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+/*global tinymce:true */
+
+tinymce.PluginManager.add('preview', function(editor) {
+    var settings = editor.settings, sandbox = !tinymce.Env.ie;
+
+    editor.addCommand('mcePreview', function() {
+        editor.windowManager.open({
+            title: 'Preview',
+            width : parseInt(editor.getParam("plugin_preview_width", "650"), 10),
+            height : parseInt(editor.getParam("plugin_preview_height", "500"), 10),
+            html: '<iframe src="javascript:\'\'" frameborder="0"' + (sandbox ? ' sandbox="allow-scripts"' : '') + '></iframe>',
+            buttons: {
+                text: 'Close',
+                onclick: function() {
+                    this.parent().parent().close();
+                }
+            },
+            onPostRender: function() {
+                var previewHtml, headHtml = '';
+
+                headHtml += '<base href="' + editor.documentBaseURI.getURI() + '">';
+
+                tinymce.each(editor.contentCSS, function(url) {
+                    headHtml += '<link type="text/css" rel="stylesheet" href="' + editor.documentBaseURI.toAbsolute(url) + '">';
+                });
+
+                var bodyId = settings.body_id || 'tinymce';
+                if (bodyId.indexOf('=') != -1) {
+                    bodyId = editor.getParam('body_id', '', 'hash');
+                    bodyId = bodyId[editor.id] || bodyId;
+                }
+
+                var bodyClass = settings.body_class || '';
+                if (bodyClass.indexOf('=') != -1) {
+                    bodyClass = editor.getParam('body_class', '', 'hash');
+                    bodyClass = bodyClass[editor.id] || '';
+                }
+
+                var dirAttr = editor.settings.directionality ? ' dir="' + editor.settings.directionality + '"' : '';
+
+                previewHtml = (
+                    '<!DOCTYPE html>' +
+                    '<html>' +
+                    '<head>' +
+                        headHtml +
+                    '</head>' +
+                    '<body id="' + bodyId + '" class="mce-content-body ' + bodyClass + '"' + dirAttr + '>' +
+                        editor.getContent() +
+                    '</body>' +
+                    '</html>'
+                );
+
+                if (!sandbox) {
+                    // IE 6-11 doesn't support data uris on iframes
+                    // so I guess they will have to be less secure since we can't sandbox on those
+                    // TODO: Use sandbox if future versions of IE supports iframes with data: uris.
+                    var doc = this.getEl('body').firstChild.contentWindow.document;
+                    doc.open();
+                    doc.write(previewHtml);
+                    doc.close();
+                } else {
+                    this.getEl('body').firstChild.src = 'data:text/html;charset=utf-8,' + encodeURIComponent(previewHtml);
+                }
+            }
+        });
+    });
+
+    editor.addButton('preview', {
+        title : 'Preview',
+        cmd : 'mcePreview'
+    });
+
+    editor.addMenuItem('preview', {
+        text : 'Preview',
+        cmd : 'mcePreview',
+        context: 'view'
+    });
+});
+
 
   }).apply(root, arguments);
 });
@@ -77923,6 +77717,83 @@ tinymce.PluginManager.add('visualblocks', function(editor, url) {
 }(this));
 
 (function(root) {
+define("tinymce-wordcount", ["tinymce"], function() {
+  return (function() {
+/**
+ * plugin.js
+ *
+ * Copyright, Moxiecode Systems AB
+ * Released under LGPL License.
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+/*global tinymce:true */
+
+tinymce.PluginManager.add('wordcount', function(editor) {
+    var self = this, countre, cleanre;
+
+    // Included most unicode blocks see: http://en.wikipedia.org/wiki/Unicode_block
+    // Latin-1_Supplement letters, a-z, u2019 == &rsquo;
+    countre = editor.getParam('wordcount_countregex', /[\w\u2019\x27\-\u00C0-\u1FFF]+/g);
+    cleanre = editor.getParam('wordcount_cleanregex', /[0-9.(),;:!?%#$?\x27\x22_+=\\\/\-]*/g);
+
+    function update() {
+        editor.theme.panel.find('#wordcount').text(['Words: {0}', self.getCount()]);
+    }
+
+    editor.on('init', function() {
+        var statusbar = editor.theme.panel && editor.theme.panel.find('#statusbar')[0];
+
+        if (statusbar) {
+            window.setTimeout(function() {
+                statusbar.insert({
+                    type: 'label',
+                    name: 'wordcount',
+                    text: ['Words: {0}', self.getCount()],
+                    classes: 'wordcount',
+                    disabled: editor.settings.readonly
+                }, 0);
+
+                editor.on('setcontent beforeaddundo', update);
+
+                editor.on('keyup', function(e) {
+                    if (e.keyCode == 32) {
+                        update();
+                    }
+                });
+            }, 0);
+        }
+    });
+
+    self.getCount = function() {
+        var tx = editor.getContent({format: 'raw'});
+        var tc = 0;
+
+        if (tx) {
+            tx = tx.replace(/\.\.\./g, ' '); // convert ellipses to spaces
+            tx = tx.replace(/<.[^<>]*?>/g, ' ').replace(/&nbsp;|&#160;/gi, ' '); // remove html tags and space chars
+
+            // deal with html entities
+            tx = tx.replace(/(\w+)(&#?[a-z0-9]+;)+(\w+)/i, "$1$3").replace(/&.+?;/g, ' ');
+            tx = tx.replace(cleanre, ''); // remove numbers and punctuation
+
+            var wordArray = tx.match(countre);
+            if (wordArray) {
+                tc = wordArray.length;
+            }
+        }
+
+        return tc;
+    };
+});
+
+  }).apply(root, arguments);
+});
+}(this));
+
+(function(root) {
 define("tinymce-visualchars", ["tinymce"], function() {
   return (function() {
 /**
@@ -78018,86 +77889,6 @@ tinymce.PluginManager.add('visualchars', function(editor) {
   }).apply(root, arguments);
 });
 }(this));
-
-(function(root) {
-define("tinymce-wordcount", ["tinymce"], function() {
-  return (function() {
-/**
- * plugin.js
- *
- * Copyright, Moxiecode Systems AB
- * Released under LGPL License.
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-/*global tinymce:true */
-
-tinymce.PluginManager.add('wordcount', function(editor) {
-    var self = this, countre, cleanre;
-
-    // Included most unicode blocks see: http://en.wikipedia.org/wiki/Unicode_block
-    // Latin-1_Supplement letters, a-z, u2019 == &rsquo;
-    countre = editor.getParam('wordcount_countregex', /[\w\u2019\x27\-\u00C0-\u1FFF]+/g);
-    cleanre = editor.getParam('wordcount_cleanregex', /[0-9.(),;:!?%#$?\x27\x22_+=\\\/\-]*/g);
-
-    function update() {
-        editor.theme.panel.find('#wordcount').text(['Words: {0}', self.getCount()]);
-    }
-
-    editor.on('init', function() {
-        var statusbar = editor.theme.panel && editor.theme.panel.find('#statusbar')[0];
-
-        if (statusbar) {
-            window.setTimeout(function() {
-                statusbar.insert({
-                    type: 'label',
-                    name: 'wordcount',
-                    text: ['Words: {0}', self.getCount()],
-                    classes: 'wordcount',
-                    disabled: editor.settings.readonly
-                }, 0);
-
-                editor.on('setcontent beforeaddundo', update);
-
-                editor.on('keyup', function(e) {
-                    if (e.keyCode == 32) {
-                        update();
-                    }
-                });
-            }, 0);
-        }
-    });
-
-    self.getCount = function() {
-        var tx = editor.getContent({format: 'raw'});
-        var tc = 0;
-
-        if (tx) {
-            tx = tx.replace(/\.\.\./g, ' '); // convert ellipses to spaces
-            tx = tx.replace(/<.[^<>]*?>/g, ' ').replace(/&nbsp;|&#160;/gi, ' '); // remove html tags and space chars
-
-            // deal with html entities
-            tx = tx.replace(/(\w+)(&#?[a-z0-9]+;)+(\w+)/i, "$1$3").replace(/&.+?;/g, ' ');
-            tx = tx.replace(cleanre, ''); // remove numbers and punctuation
-
-            var wordArray = tx.match(countre);
-            if (wordArray) {
-                tc = wordArray.length;
-            }
-        }
-
-        return tc;
-    };
-});
-
-  }).apply(root, arguments);
-});
-}(this));
-
-
-define('text!mockup-patterns-upload-url/templates/upload.xml',[],function () { return '<div class="upload-container upload-multiple">\n    <h2 class="title">Upload stuff here</h2>\n    <p class="help">\n        Just drag N drop stuff on the area below\n        or press "upload" button.\n    </p>\n    <div class="upload-area">\n        <div class="fallback">\n            <input name="file" type="file" multiple />\n        </div>\n        <div class="dz-message"><p><%-_t("Drop files here...")%></p></div>\n        <div class="row">\n            <div class="col-md-9">\n                <input\n                    id="fakeUploadFile"\n                    placeholder="Choose File"\n                    disabled="disabled"\n                    />\n            </div>\n            <div class="col-md-3">\n                <button\n                    type="button"\n                    class="btn btn-primary browse">\n                    Browse\n                </button>\n            </div>\n        </div>\n        <div class="upload-queue">\n            <div class="previews">\n            </div>\n            <div class="controls">\n                <div class="path">\n                    <label>Upload to...</label>\n                    <p class="form-help">\n                        If nothing selected files we be added to current context.\n                    </p>\n                    <input\n                        type="text"\n                        name="location"\n                        />\n                </div>\n                <div class="actions row">\n                    <div class="col-md-9">\n                        <div class="progress progress-striped active">\n                            <div class="progress-bar progress-bar-success"\n                                 role="progressbar"\n                                 aria-valuenow="0"\n                                 aria-valuemin="0"\n                                 aria-valuemax="100"\n                                 style="width: 0%">\n                                <span class="sr-only">40% Complete (success)</span>\n                            </div>\n                        </div>\n                    </div>\n                    <div class="col-md-3 align-right">\n                        <button\n                            type="button"\n                            class="btn btn-primary upload-all">\n                            Upload\n                        </button>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n';});
 
 // Uses AMD or browser globals to create a jQuery plugin.
 (function (factory) {
@@ -79907,6 +79698,258 @@ Emitter.prototype.hasListeners = function(event){
     return module.exports;
 }));
 
+define('text!mockup-patterns-upload-url/templates/upload.xml',[],function () { return '<div class="upload-container upload-multiple">\n    <h2 class="title">Upload stuff here</h2>\n    <p class="help">\n        Just drag N drop stuff on the area below\n        or press "upload" button.\n    </p>\n    <div class="upload-area">\n        <div class="fallback">\n            <input name="file" type="file" multiple />\n        </div>\n        <div class="dz-message"><p><%-_t("Drop files here...")%></p></div>\n        <div class="row">\n            <div class="col-md-9">\n                <input\n                    id="fakeUploadFile"\n                    placeholder="Choose File"\n                    disabled="disabled"\n                    />\n            </div>\n            <div class="col-md-3">\n                <button\n                    type="button"\n                    class="btn btn-primary browse">\n                    Browse\n                </button>\n            </div>\n        </div>\n        <div class="upload-queue">\n            <div class="previews">\n            </div>\n            <div class="controls">\n                <div class="path">\n                    <label>Upload to...</label>\n                    <p class="form-help">\n                        If nothing selected files we be added to current context.\n                    </p>\n                    <input\n                        type="text"\n                        name="location"\n                        />\n                </div>\n                <div class="actions row">\n                    <div class="col-md-9">\n                        <div class="progress progress-striped active">\n                            <div class="progress-bar progress-bar-success"\n                                 role="progressbar"\n                                 aria-valuenow="0"\n                                 aria-valuemin="0"\n                                 aria-valuemax="100"\n                                 style="width: 0%">\n                                <span class="sr-only">40% Complete (success)</span>\n                            </div>\n                        </div>\n                    </div>\n                    <div class="col-md-3 align-right">\n                        <button\n                            type="button"\n                            class="btn btn-primary upload-all">\n                            Upload\n                        </button>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n';});
+
+define('mockup-ui-url/views/container',[
+  'jquery',
+  'underscore',
+  'backbone',
+  'mockup-ui-url/views/base'
+], function($, _, Backbone, BaseView) {
+  
+
+  var Container = BaseView.extend({
+    id: '',
+    items: [],
+    itemContainer: null,
+    isOffsetParent: true,
+    render: function() {
+      this.applyTemplate();
+
+      this.renderItems();
+      this.bindEvents();
+
+      if (this.isOffsetParent) {
+        this.$el.addClass('ui-offset-parent');
+      }
+
+      this.trigger('render', this);
+
+      this.afterRender();
+
+      return this;
+    },
+    renderItems: function() {
+      var $container;
+
+      if (this.itemContainer !== null) {
+        $container = $(this.itemContainer, this.$el);
+        if ($container.length === 0) {
+          throw 'Item Container element not found.';
+        }
+      } else {
+        $container = this.$el;
+      }
+      _.each(this.items, function(view) {
+        if (view.appendInContainer === true) {
+          $container.append(view.render().$el);
+        } else {
+          view.render();
+        }
+      }, this);
+    },
+    bindEvents: function() {
+      var self = this;
+      _.each(this.items, function(view) {
+        view.on('all', function() {
+          var slice = [].slice;
+          var eventName = arguments[0];
+          var eventTarget;
+          var newName = self.id !== '' ? self.id + '.' + eventName : eventName;
+          if (arguments.length > 1) {
+            eventTarget = arguments[1];
+          }
+          if (newName !== eventName) {
+            var newArgs = slice.call(arguments, 0);
+            newArgs[0] = newName;
+            self.trigger.apply(self, newArgs);
+          }
+          if (eventTarget !== undefined && eventTarget.isUIView === true) {
+            if (eventTarget.propagateEvent(eventName) === true) {
+              self.trigger.apply(self, arguments);
+            }
+          }
+        });
+      });
+    },
+    get: function(id) {
+      // Remove the recursive part because it was confusing if two children had the
+      // same id
+      return _.findWhere(this.items, {'id': id});
+    },
+    add: function(item) {
+      if (item.id !== undefined && this.get(item.id)) {
+        throw 'Another item with the same `id` already exists.';
+      }
+      this.items.push(item);
+    }
+  });
+
+  return Container;
+});
+
+define('mockup-ui-url/views/buttongroup',[
+  'underscore',
+  'backbone',
+  'mockup-ui-url/views/container'
+], function(_, Backbone, ContainerView) {
+  
+
+  var ButtonGroup = ContainerView.extend({
+    tagName: 'div',
+    className: 'btn-group',
+    disable: function() {
+      _.each(this.items, function(button) {
+        button.trigger('disable');
+      });
+    },
+    enable: function() {
+      _.each(this.items, function(button) {
+        button.trigger('enable');
+      });
+    }
+  });
+
+  return ButtonGroup;
+});
+
+/* global alert:true */
+
+define('mockup-patterns-structure-url/js/views/addmenu',[
+  'jquery',
+  'underscore',
+  'backbone',
+  'mockup-ui-url/views/buttongroup',
+  'mockup-ui-url/views/button',
+  'mockup-patterns-modal',
+  'mockup-utils',
+  'bootstrap-dropdown'
+], function($, _, Backbone, ButtonGroup, ButtonView, Modal, utils) {
+  
+
+  var AddMenu = ButtonGroup.extend({
+    title: 'Add',
+    className: 'btn-group addnew',
+    events: {
+    },
+    initialize: function(options) {
+      var self = this;
+      ButtonGroup.prototype.initialize.apply(self, [options]);
+      self.app.on('context-info-loaded', function(data) {
+        self.$items.empty();
+        _.each(data.addButtons, function(item) {
+          var view = new ButtonView({
+            id: item.id,
+            title: item.title,
+            url: item.action
+          });
+          view.render();
+          var wrap = $('<li/>');
+          // As we are reusing the whole ButtonView for render the add content
+          // list we should remove entirely the "btn btn-default" classes.
+          // This element in fact, should not have any class at all, so we
+          // remove the attribute completely
+          view.$el.removeAttr('class');
+
+          wrap.append(view.el);
+          self.$items.append(wrap);
+          view.$el.click(function(e) {
+            self.buttonClicked.apply(self, [e, view]);
+            return false;
+          });
+        });
+      });
+    },
+    buttonClicked: function(e, button) {
+      var self = this;
+      e.preventDefault();
+      self.app.loading.show();
+
+      $.ajax({
+        url: button.url,
+        type: 'POST',
+        data: {
+          '_authenticator': $('[name="_authenticator"]').val(),
+        },
+        success: function(response) {
+          self.app.loading.hide();
+          var modal = new Modal(self.$el, {
+            html: utils.parseBodyTag(response),
+            content: '#content',
+            width: '80%',
+            backdropOptions: {
+              closeOnClick: false
+            },
+            automaticallyAddButtonActions: false,
+            actionOptions: {
+              displayInModal: false,
+              reloadWindowOnClose: false
+            },
+            actions: {
+              'input#form-buttons-save, .formControls input[name="form.button.save"]': {
+                onSuccess: function(modal, response, state, xhr, form) {
+                  self.app.collection.pager();
+                  if (self.$items.is(':visible')) {
+                    self.$dropdown.dropdown('toggle');
+                  }
+                  modal.hide();
+                },
+                onError: function() {
+                  alert('error on form');
+                }
+              },
+              'input#form-buttons-cancel, .formControls input[name="form.button.cancel"]': {
+                modalFunction: 'hide'
+              }
+            },
+          });
+          modal.show();
+        },
+        error: function() {
+          // XXX handle error
+          self.app.loading.hide();
+        }
+      });
+    },
+    render: function() {
+      var self = this;
+      self.$el.empty();
+
+      self.$el.append(
+        '<a class="btn dropdown-toggle btn-success" data-toggle="dropdown" href="#">' +
+          self.title +
+          '<span class="caret"></span>' +
+        '</a>' +
+        '<ul class="dropdown-menu">' +
+        '</ul>' +
+      '</div>');
+
+      self.$items = self.$('.dropdown-menu');
+      self.$dropdown = self.$('.dropdown-toggle');
+      self.$dropdown.dropdown();
+      return this;
+    }
+  });
+
+  return AddMenu;
+});
+
+define('mockup-ui-url/views/toolbar',[
+  'underscore',
+  'backbone',
+  'mockup-ui-url/views/container'
+], function(_, Backbone, ContainerView) {
+  
+
+  var Toolbar = ContainerView.extend({
+    tagName: 'div',
+    className: 'navbar'
+  });
+
+  return Toolbar;
+});
+
+
 define('text!mockup-patterns-upload-url/templates/preview.xml',[],function () { return '<div class="row item form-inline">\n    <div class="col-md-1 action">\n        <button\n            type="button"\n            class="btn btn-danger btn-xs remove-item"\n            data-dz-remove=""\n            href="javascript:undefined;">\n            <span class="glyphicon glyphicon-remove"></span>\n        </button>\n    </div>\n    <div class="col-md-8 title">\n        <div class="dz-preview">\n          <div class="dz-details">\n            <div class="dz-filename"><span data-dz-name></span></div>\n          </div>\n          <div class="dz-error-message"><span data-dz-errormessage></span></div>\n        </div>\n        <div class="dz-progress">\n            <span class="dz-upload" data-dz-uploadprogress></span>\n        </div>\n    </div>\n    <div class="col-md-3 info">\n        <div class="dz-size" data-dz-size></div>\n        <img data-dz-thumbnail />\n    </div>\n</div>\n';});
 
 /* Upload pattern.
@@ -81425,426 +81468,6 @@ define('mockup-patterns-textareamimetypeselector',[
   return TextareaMimetypeSelector;
 });
 
-define('mockup-ui-url/views/container',[
-  'jquery',
-  'underscore',
-  'backbone',
-  'mockup-ui-url/views/base'
-], function($, _, Backbone, BaseView) {
-  
-
-  var Container = BaseView.extend({
-    id: '',
-    items: [],
-    itemContainer: null,
-    isOffsetParent: true,
-    render: function() {
-      this.applyTemplate();
-
-      this.renderItems();
-      this.bindEvents();
-
-      if (this.isOffsetParent) {
-        this.$el.addClass('ui-offset-parent');
-      }
-
-      this.trigger('render', this);
-
-      this.afterRender();
-
-      return this;
-    },
-    renderItems: function() {
-      var $container;
-
-      if (this.itemContainer !== null) {
-        $container = $(this.itemContainer, this.$el);
-        if ($container.length === 0) {
-          throw 'Item Container element not found.';
-        }
-      } else {
-        $container = this.$el;
-      }
-      _.each(this.items, function(view) {
-        if (view.appendInContainer === true) {
-          $container.append(view.render().$el);
-        } else {
-          view.render();
-        }
-      }, this);
-    },
-    bindEvents: function() {
-      var self = this;
-      _.each(this.items, function(view) {
-        view.on('all', function() {
-          var slice = [].slice;
-          var eventName = arguments[0];
-          var eventTarget;
-          var newName = self.id !== '' ? self.id + '.' + eventName : eventName;
-          if (arguments.length > 1) {
-            eventTarget = arguments[1];
-          }
-          if (newName !== eventName) {
-            var newArgs = slice.call(arguments, 0);
-            newArgs[0] = newName;
-            self.trigger.apply(self, newArgs);
-          }
-          if (eventTarget !== undefined && eventTarget.isUIView === true) {
-            if (eventTarget.propagateEvent(eventName) === true) {
-              self.trigger.apply(self, arguments);
-            }
-          }
-        });
-      });
-    },
-    get: function(id) {
-      // Remove the recursive part because it was confusing if two children had the
-      // same id
-      return _.findWhere(this.items, {'id': id});
-    },
-    add: function(item) {
-      if (item.id !== undefined && this.get(item.id)) {
-        throw 'Another item with the same `id` already exists.';
-      }
-      this.items.push(item);
-    }
-  });
-
-  return Container;
-});
-
-define('mockup-ui-url/views/toolbar',[
-  'underscore',
-  'backbone',
-  'mockup-ui-url/views/container'
-], function(_, Backbone, ContainerView) {
-  
-
-  var Toolbar = ContainerView.extend({
-    tagName: 'div',
-    className: 'navbar'
-  });
-
-  return Toolbar;
-});
-
-define('mockup-ui-url/views/buttongroup',[
-  'underscore',
-  'backbone',
-  'mockup-ui-url/views/container'
-], function(_, Backbone, ContainerView) {
-  
-
-  var ButtonGroup = ContainerView.extend({
-    tagName: 'div',
-    className: 'btn-group',
-    disable: function() {
-      _.each(this.items, function(button) {
-        button.trigger('disable');
-      });
-    },
-    enable: function() {
-      _.each(this.items, function(button) {
-        button.trigger('enable');
-      });
-    }
-  });
-
-  return ButtonGroup;
-});
-
-/* global alert:true */
-
-define('mockup-patterns-structure-url/js/views/addmenu',[
-  'jquery',
-  'underscore',
-  'backbone',
-  'mockup-ui-url/views/buttongroup',
-  'mockup-ui-url/views/button',
-  'mockup-patterns-modal',
-  'mockup-utils',
-  'bootstrap-dropdown'
-], function($, _, Backbone, ButtonGroup, ButtonView, Modal, utils) {
-  
-
-  var AddMenu = ButtonGroup.extend({
-    title: 'Add',
-    className: 'btn-group addnew',
-    events: {
-    },
-    initialize: function(options) {
-      var self = this;
-      ButtonGroup.prototype.initialize.apply(self, [options]);
-      self.app.on('context-info-loaded', function(data) {
-        self.$items.empty();
-        _.each(data.addButtons, function(item) {
-          var view = new ButtonView({
-            id: item.id,
-            title: item.title,
-            url: item.action
-          });
-          view.render();
-          var wrap = $('<li/>');
-          // As we are reusing the whole ButtonView for render the add content
-          // list we should remove entirely the "btn btn-default" classes.
-          // This element in fact, should not have any class at all, so we
-          // remove the attribute completely
-          view.$el.removeAttr('class');
-
-          wrap.append(view.el);
-          self.$items.append(wrap);
-          view.$el.click(function(e) {
-            self.buttonClicked.apply(self, [e, view]);
-            return false;
-          });
-        });
-      });
-    },
-    buttonClicked: function(e, button) {
-      var self = this;
-      e.preventDefault();
-      self.app.loading.show();
-
-      $.ajax({
-        url: button.url,
-        type: 'POST',
-        data: {
-          '_authenticator': $('[name="_authenticator"]').val(),
-        },
-        success: function(response) {
-          self.app.loading.hide();
-          var modal = new Modal(self.$el, {
-            html: utils.parseBodyTag(response),
-            content: '#content',
-            width: '80%',
-            backdropOptions: {
-              closeOnClick: false
-            },
-            automaticallyAddButtonActions: false,
-            actionOptions: {
-              displayInModal: false,
-              reloadWindowOnClose: false
-            },
-            actions: {
-              'input#form-buttons-save, .formControls input[name="form.button.save"]': {
-                onSuccess: function(modal, response, state, xhr, form) {
-                  self.app.collection.pager();
-                  if (self.$items.is(':visible')) {
-                    self.$dropdown.dropdown('toggle');
-                  }
-                  modal.hide();
-                },
-                onError: function() {
-                  alert('error on form');
-                }
-              },
-              'input#form-buttons-cancel, .formControls input[name="form.button.cancel"]': {
-                modalFunction: 'hide'
-              }
-            },
-          });
-          modal.show();
-        },
-        error: function() {
-          // XXX handle error
-          self.app.loading.hide();
-        }
-      });
-    },
-    render: function() {
-      var self = this;
-      self.$el.empty();
-
-      self.$el.append(
-        '<a class="btn dropdown-toggle btn-success" data-toggle="dropdown" href="#">' +
-          self.title +
-          '<span class="caret"></span>' +
-        '</a>' +
-        '<ul class="dropdown-menu">' +
-        '</ul>' +
-      '</div>');
-
-      self.$items = self.$('.dropdown-menu');
-      self.$dropdown = self.$('.dropdown-toggle');
-      self.$dropdown.dropdown();
-      return this;
-    }
-  });
-
-  return AddMenu;
-});
-
-/* Sortable pattern.
- *
- * Options:
- *    selector(string): Selector to use to draggable items in pattern ('li')
- *    dragClass(string): Class to apply to original item that is being dragged. ('item-dragging')
- *    cloneClass(string): Class to apply to cloned item that is dragged. ('dragging')
- *    drop(function): callback function for when item is dropped (null)
- *
- * Documentation:
- *    # Default
- *
- *    {{ example-1 }}
- *
- *    # Table
- *
- *    {{ example-2 }}
- *
- * Example: example-1
- *    <ul class="pat-sortable">
- *      <li>One</li>
- *      <li>Two</li>
- *      <li>Three</li>
- *    </ul>
- *
- * Example: example-2
- *    <table class="table table-stripped pat-sortable"
- *           data-pat-sortable="selector:tr;">
- *      <tbody>
- *        <tr>
- *          <td>One One</td>
- *          <td>One Two</td>
- *        </tr>
- *        <tr>
- *          <td>Two One</td>
- *          <td>Two Two</td>
- *        </tr>
- *        <tr>
- *          <td>Three One</td>
- *          <td>Three Two</td>
- *        </tr>
- *      </tbody>
- *    </table>
- *
- */
-
-
-define('mockup-patterns-sortable',[
-  'jquery',
-  'mockup-patterns-base',
-  'jquery.event.drag',
-  'jquery.event.drop'
-], function($, Base, drag, drop) {
-  
-
-  var SortablePattern = Base.extend({
-    name: 'sortable',
-    trigger: '.pat-sortable',
-    defaults: {
-      selector: 'li',
-      dragClass: 'item-dragging',
-      cloneClass: 'dragging',
-      drop: null // function to handle drop event
-    },
-    init: function() {
-      var self = this;
-      var start = 0;
-
-      self.$el.find(self.options.selector).drag('start', function(e, dd) {
-        var dragged = this;
-        $(dragged).addClass(self.options.dragClass);
-        drop({
-          tolerance: function(event, proxy, target) {
-            if ($(target.elem).closest(self.$el).length === 0) {
-              /* prevent dragging conflict over another drag area */
-              return;
-            }
-            var test = event.pageY > (target.top + target.height / 2);
-            $.data(target.elem, 'drop+reorder', test ? 'insertAfter' : 'insertBefore' );
-            return this.contains(target, [event.pageX, event.pageY]);
-          }
-        });
-        start = $(this).index();
-        return $( this ).clone().
-          addClass(self.options.cloneClass).
-          css({opacity: 0.75, position: 'absolute'}).
-          appendTo(document.body);
-      })
-      .drag(function(e, dd) {
-        /*jshint eqeqeq:false */
-        $( dd.proxy ).css({
-          top: dd.offsetY,
-          left: dd.offsetX
-        });
-        var drop = dd.drop[0],
-            method = $.data(drop || {}, 'drop+reorder');
-        /* XXX Cannot use triple equals here */
-        if (method && drop && (drop != dd.current || method != dd.method)) {
-          $(this)[method](drop);
-          dd.current = drop;
-          dd.method = method;
-          dd.update();
-        }
-      })
-      .drag('end', function(e, dd) {
-        var $el = $(this);
-        $el.removeClass(self.options.dragClass);
-        $(dd.proxy).remove();
-        if (self.options.drop) {
-          self.options.drop($el, $el.index() - start);
-        }
-      })
-      .drop('init', function(e, dd ) {
-        /*jshint eqeqeq:false */
-        /* XXX Cannot use triple equals here */
-        return (this == dd.drag) ? false: true;
-      });
-
-    }
-  });
-
-  return SortablePattern;
-
-});
-
-
-
-define('mockup-patterns-structure-url/js/models/result',['backbone'], function(Backbone) {
-  
-
-  var Result = Backbone.Model.extend({
-    defaults: function() {
-      return {
-        'is_folderish': false,
-        'review_state': ''
-      };
-    },
-    uid: function() {
-      return this.attributes.UID;
-    }
-  });
-
-  return Result;
-});
-
-define('mockup-patterns-structure-url/js/collections/selected',[
-  'backbone',
-  'mockup-patterns-structure-url/js/models/result'
-], function(Backbone, Result) {
-  
-
-  var SelectedCollection = Backbone.Collection.extend({
-    model: Result,
-    removeResult: function(model) {
-      return this.removeByUID(model.uid());
-    },
-    removeByUID: function(uid) {
-      var found = this.getByUID(uid);
-      if (found) {
-        this.remove(found);
-      }
-      return found;
-    },
-    getByUID: function(uid) {
-      return this.findWhere({UID: uid});
-    }
-  });
-
-  return SelectedCollection;
-});
-
-
 define('mockup-ui-url/views/popover',[
   'jquery',
   'underscore',
@@ -82594,84 +82217,6 @@ define('mockup-patterns-structure-url/js/views/rearrange',[
   return RearrangeView;
 });
 
-define('mockup-patterns-structure-url/js/views/columns',[
-  'jquery',
-  'underscore',
-  'backbone',
-  'mockup-ui-url/views/popover',
-  'mockup-patterns-sortable'
-], function($, _, Backbone, PopoverView, Sortable) {
-  
-
-  var ColumnsView = PopoverView.extend({
-    className: 'popover columns',
-    title: _.template('Columns'),
-    content: _.template(
-      '<label>Select columns to show, drag and drop to reorder</label>' +
-      '<ul>' +
-      '</ul>' +
-      '<button class="btn btn-block btn-success">Save</button>'
-    ),
-    itemTemplate: _.template(
-      '<li>' +
-        '<label>' +
-          '<input type="checkbox" value="<%- id %>"/>' +
-          '<%- title %>' +
-        '</label>' +
-      '</li>'
-    ),
-    events: {
-      'click button': 'applyButtonClicked'
-    },
-    initialize: function(options) {
-      this.app = options.app;
-      PopoverView.prototype.initialize.apply(this, [options]);
-    },
-    afterRender: function() {
-      var self = this;
-
-      self.$container = self.$('ul');
-      _.each(self.app.activeColumns, function(id) {
-        var $el = $(self.itemTemplate({
-          title: self.app.availableColumns[id],
-          id: id
-        }));
-        $el.find('input')[0].checked = true;
-        self.$container.append($el);
-      });
-      _.each(_.omit(self.app.availableColumns, self.app.activeColumns), function(name, id) {
-        var $el = $(self.itemTemplate({
-          title: name,
-          id: id
-        }));
-        self.$container.append($el);
-      });
-
-      var dd = new Sortable(self.$container, {
-        selector: 'li'
-      });
-      return this;
-    },
-    applyButtonClicked: function() {
-      var self = this;
-      this.hide();
-      self.app.activeColumns = [];
-      self.$('input:checked').each(function() {
-        self.app.activeColumns.push($(this).val());
-      });
-      self.app.setCookieSetting('activeColumns', this.app.activeColumns);
-      self.app.tableView.render();
-    }
-  });
-
-  return ColumnsView;
-});
-
-
-
-
-
-
 define('mockup-patterns-structure-url/js/views/textfilter',[
   'jquery',
   'backbone',
@@ -82836,6 +82381,255 @@ define('mockup-patterns-structure-url/js/views/upload',[
 
 
 
+
+
+/* Sortable pattern.
+ *
+ * Options:
+ *    selector(string): Selector to use to draggable items in pattern ('li')
+ *    dragClass(string): Class to apply to original item that is being dragged. ('item-dragging')
+ *    cloneClass(string): Class to apply to cloned item that is dragged. ('dragging')
+ *    drop(function): callback function for when item is dropped (null)
+ *
+ * Documentation:
+ *    # Default
+ *
+ *    {{ example-1 }}
+ *
+ *    # Table
+ *
+ *    {{ example-2 }}
+ *
+ * Example: example-1
+ *    <ul class="pat-sortable">
+ *      <li>One</li>
+ *      <li>Two</li>
+ *      <li>Three</li>
+ *    </ul>
+ *
+ * Example: example-2
+ *    <table class="table table-stripped pat-sortable"
+ *           data-pat-sortable="selector:tr;">
+ *      <tbody>
+ *        <tr>
+ *          <td>One One</td>
+ *          <td>One Two</td>
+ *        </tr>
+ *        <tr>
+ *          <td>Two One</td>
+ *          <td>Two Two</td>
+ *        </tr>
+ *        <tr>
+ *          <td>Three One</td>
+ *          <td>Three Two</td>
+ *        </tr>
+ *      </tbody>
+ *    </table>
+ *
+ */
+
+
+define('mockup-patterns-sortable',[
+  'jquery',
+  'mockup-patterns-base',
+  'jquery.event.drag',
+  'jquery.event.drop'
+], function($, Base, drag, drop) {
+  
+
+  var SortablePattern = Base.extend({
+    name: 'sortable',
+    trigger: '.pat-sortable',
+    defaults: {
+      selector: 'li',
+      dragClass: 'item-dragging',
+      cloneClass: 'dragging',
+      drop: null // function to handle drop event
+    },
+    init: function() {
+      var self = this;
+      var start = 0;
+
+      self.$el.find(self.options.selector).drag('start', function(e, dd) {
+        var dragged = this;
+        $(dragged).addClass(self.options.dragClass);
+        drop({
+          tolerance: function(event, proxy, target) {
+            if ($(target.elem).closest(self.$el).length === 0) {
+              /* prevent dragging conflict over another drag area */
+              return;
+            }
+            var test = event.pageY > (target.top + target.height / 2);
+            $.data(target.elem, 'drop+reorder', test ? 'insertAfter' : 'insertBefore' );
+            return this.contains(target, [event.pageX, event.pageY]);
+          }
+        });
+        start = $(this).index();
+        return $( this ).clone().
+          addClass(self.options.cloneClass).
+          css({opacity: 0.75, position: 'absolute'}).
+          appendTo(document.body);
+      })
+      .drag(function(e, dd) {
+        /*jshint eqeqeq:false */
+        $( dd.proxy ).css({
+          top: dd.offsetY,
+          left: dd.offsetX
+        });
+        var drop = dd.drop[0],
+            method = $.data(drop || {}, 'drop+reorder');
+        /* XXX Cannot use triple equals here */
+        if (method && drop && (drop != dd.current || method != dd.method)) {
+          $(this)[method](drop);
+          dd.current = drop;
+          dd.method = method;
+          dd.update();
+        }
+      })
+      .drag('end', function(e, dd) {
+        var $el = $(this);
+        $el.removeClass(self.options.dragClass);
+        $(dd.proxy).remove();
+        if (self.options.drop) {
+          self.options.drop($el, $el.index() - start);
+        }
+      })
+      .drop('init', function(e, dd ) {
+        /*jshint eqeqeq:false */
+        /* XXX Cannot use triple equals here */
+        return (this == dd.drag) ? false: true;
+      });
+
+    }
+  });
+
+  return SortablePattern;
+
+});
+
+
+
+define('mockup-patterns-structure-url/js/views/columns',[
+  'jquery',
+  'underscore',
+  'backbone',
+  'mockup-ui-url/views/popover',
+  'mockup-patterns-sortable'
+], function($, _, Backbone, PopoverView, Sortable) {
+  
+
+  var ColumnsView = PopoverView.extend({
+    className: 'popover columns',
+    title: _.template('Columns'),
+    content: _.template(
+      '<label>Select columns to show, drag and drop to reorder</label>' +
+      '<ul>' +
+      '</ul>' +
+      '<button class="btn btn-block btn-success">Save</button>'
+    ),
+    itemTemplate: _.template(
+      '<li>' +
+        '<label>' +
+          '<input type="checkbox" value="<%- id %>"/>' +
+          '<%- title %>' +
+        '</label>' +
+      '</li>'
+    ),
+    events: {
+      'click button': 'applyButtonClicked'
+    },
+    initialize: function(options) {
+      this.app = options.app;
+      PopoverView.prototype.initialize.apply(this, [options]);
+    },
+    afterRender: function() {
+      var self = this;
+
+      self.$container = self.$('ul');
+      _.each(self.app.activeColumns, function(id) {
+        var $el = $(self.itemTemplate({
+          title: self.app.availableColumns[id],
+          id: id
+        }));
+        $el.find('input')[0].checked = true;
+        self.$container.append($el);
+      });
+      _.each(_.omit(self.app.availableColumns, self.app.activeColumns), function(name, id) {
+        var $el = $(self.itemTemplate({
+          title: name,
+          id: id
+        }));
+        self.$container.append($el);
+      });
+
+      var dd = new Sortable(self.$container, {
+        selector: 'li'
+      });
+      return this;
+    },
+    applyButtonClicked: function() {
+      var self = this;
+      this.hide();
+      self.app.activeColumns = [];
+      self.$('input:checked').each(function() {
+        self.app.activeColumns.push($(this).val());
+      });
+      self.app.setCookieSetting('activeColumns', this.app.activeColumns);
+      self.app.tableView.render();
+    }
+  });
+
+  return ColumnsView;
+});
+
+
+
+
+
+
+define('mockup-patterns-structure-url/js/models/result',['backbone'], function(Backbone) {
+  
+
+  var Result = Backbone.Model.extend({
+    defaults: function() {
+      return {
+        'is_folderish': false,
+        'review_state': ''
+      };
+    },
+    uid: function() {
+      return this.attributes.UID;
+    }
+  });
+
+  return Result;
+});
+
+define('mockup-patterns-structure-url/js/collections/selected',[
+  'backbone',
+  'mockup-patterns-structure-url/js/models/result'
+], function(Backbone, Result) {
+  
+
+  var SelectedCollection = Backbone.Collection.extend({
+    model: Result,
+    removeResult: function(model) {
+      return this.removeByUID(model.uid());
+    },
+    removeByUID: function(uid) {
+      var found = this.getByUID(uid);
+      if (found) {
+        this.remove(found);
+      }
+      return found;
+    },
+    getByUID: function(uid) {
+      return this.findWhere({UID: uid});
+    }
+  });
+
+  return SelectedCollection;
+});
 
 
 
@@ -87625,14 +87419,50 @@ define('mockup-patterns-structure-url/js/views/app',[
 
       self.collection.on('pager', function() {
         self.loading.show();
-        window.location.hash = self.queryHelper.getCurrentPath();
+
+        /* maintain history here */
+        if (!self.doNotPushState && self.options.urlStructure && window.history && window.history.pushState){
+          var path = self.queryHelper.getCurrentPath();
+          if(path === '/'){
+            path = '';
+          }
+          var url = self.options.urlStructure.base + path + self.options.urlStructure.appended;
+          window.history.pushState(null, null, url);
+        }else{
+          self.doNotPushState = false;
+        }
       });
 
-      /* detect key events */
-      $(document).bind('keyup keydown', function(e) {
-        self.keyEvent = e;
-      });
-
+      if (self.options.urlStructure && window.history && window.history.pushState){
+        $(window).bind('popstate', function () {
+          /* normalize this url first... */
+          var url = window.location.href;
+          if(url.indexOf('?') !== -1){
+            url = url.split('?')[0];
+          }
+          if(url.indexOf('#') !== -1){
+            url = url.split('#')[0];
+          }
+          // take off the base url
+          var path = url.substring(self.options.urlStructure.base.length);
+          if(path.substring(path.length - self.options.urlStructure.appended.length) ===
+              self.options.urlStructure.appended){
+            /* check that it ends with appended value */
+            path = path.substring(0, path.length - self.options.urlStructure.appended.length);
+          }
+          if(!path){
+            path = '/';
+          }
+          self.queryHelper.currentPath = path;
+          // since this next call causes state to be pushed...
+          self.doNotPushState = true;
+          self.collection.goTo(self.collection.information.firstPage);
+        });
+        /* detect key events */
+        $(document).bind('keyup keydown', function(e) {
+          self.keyEvent = e;
+        });
+      }
     },
     inQueryMode: function() {
       if (this.additionalCriterias.length > 0) {
@@ -87989,6 +87819,9 @@ define('mockup-patterns-structure',[
     name: 'structure',
     trigger: '.pat-structure',
     defaults: {
+      // for implementing history changes
+      // Example: {base: 'http://mysite.com', appended: '/folder_contents'}
+      urlStructure: null,
       vocabularyUrl: null,
       tagsVocabularyUrl: null,
       usersVocabularyUrl: null,
