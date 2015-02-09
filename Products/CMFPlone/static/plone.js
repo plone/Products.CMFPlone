@@ -43,6 +43,7 @@ require([
   'mockup-patterns-modal',
   'mockup-patterns-structure',
   'mockup-patterns-livesearch',
+  'mockup-patterns-contentloader',
   'bootstrap-dropdown',
   'bootstrap-collapse',
   'bootstrap-tooltip'
