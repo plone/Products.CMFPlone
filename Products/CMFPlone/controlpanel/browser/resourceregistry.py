@@ -150,6 +150,11 @@ class ResourceRegistryControlPanelView(RequireJsView):
             IBundleRegistry, "plone.bundles",
             json.loads(req.get('bundles')))
 
+        # it'd be difficult to know if the legacy bundle settings
+        # changed or not so we need to just set the last import date
+        # back so it gets re-built
+        self.registry.records['plone.resources.last_legacy_import'].value = datetime.now()
+
         return json.dumps({
             'success': True
         })
