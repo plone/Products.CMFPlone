@@ -45,14 +45,28 @@
   <body tal:define="isRTL portal_state/is_rtl;
                     sl python:plone_layout.have_portlets('plone.leftcolumn', view);
                     sr python:plone_layout.have_portlets('plone.rightcolumn', view);
-                    body_class python:plone_layout.bodyClass(template, view);"
+                    body_class python:plone_layout.bodyClass(template, view);
+                    toolbar_class python:request.cookies.get('plone-toolbar', 'plone-toolbar-left pat-toolbar');"
         tal:attributes="class body_class;
                         dir python:isRTL and 'rtl' or 'ltr';
                         python:plone_view.patterns_settings()"
         id="visual-portal-wrapper">
 
-    <section id="edit-bar" role="toolbar" tal:replace="structure context/@@render-toolbar"
-             tal:on-error="structure string:Error rendering toolbar, try @@render-toolbar for info"/>
+    <section id="edit-bar" role="toolbar">
+      <div id="edit-zone" role="toolbar" tal:attributes="class toolbar_class">
+        <div class="plone-toolbar-container">
+          <a class="plone-toolbar-logo">
+            <img alt="Plone Toolbar" tal:attributes="src string:${portal_url}/++plone++static/plone-toolbarlogo.svg" />
+          </a>
+          <a class="plone-toolbar-switcher"><span>Left-Top switcher</span></a>
+          <nav role="navigation">
+            <ul>
+              <div tal:replace="structure provider:plone.toolbar">
+              </div>
+            </ul>
+        </div>
+      </div>
+    </section>
 
     <header id="portal-top" i18n:domain="plone">
       <div tal:replace="structure provider:plone.portaltop" />
