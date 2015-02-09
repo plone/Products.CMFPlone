@@ -2,8 +2,9 @@ define([
   'jquery',
   'mockup-patterns-base',
   'pat-registry',
+  'mockup-utils',
   'jquery.cookie'
-], function ($, Base, Registry) {
+], function ($, Base, Registry, utils) {
   'use strict';
 
   var Toolbar = Base.extend({
@@ -213,9 +214,9 @@ define([
          the folder contents context */
       $('body').off('structure-url-changed').on('structure-url-changed', function (e, path) {
         $.ajax({
-          url: $('body').attr('data-base-url') + path + '/@@render-toolbar'
+          url: $('body').attr('data-portal-url') + path + '/@@render-toolbar'
         }).done(function(data){
-          var $el = $(data);
+          var $el = $(utils.parseBodyTag(data));
           that.$el.replaceWith($el);
           Registry.scan($el);
         });

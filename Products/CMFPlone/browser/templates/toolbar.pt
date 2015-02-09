@@ -5,7 +5,8 @@
       tal:define="
           portal_state context/@@plone_portal_state;
           portal_url portal_state/portal_url;
-          toolbar_class python:request.cookies.get('plone-toolbar', 'plone-toolbar-left pat-toolbar')"
+          toolbar_class python:request.cookies.get('plone-toolbar', 'plone-toolbar-left pat-toolbar');
+          dummy python:request.response.setHeader('X-Theme-Disabled', 'True');"
       id="edit-bar" role="toolbar">
   <div id="edit-zone" role="toolbar" tal:attributes="class toolbar_class">
     <div class="plone-toolbar-container">
