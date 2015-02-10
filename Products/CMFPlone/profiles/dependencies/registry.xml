@@ -861,14 +861,6 @@
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/patternslib/src/core/logger</value>
   </records>
-  <records prefix="plone.resources/pat-parser"
-            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++plone++static/components/patternslib/src/core/parser</value>
-  </records>
-  <records prefix="plone.resources/pat-registry"
-            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++plone++static/components/patternslib/src/core/registry</value>
-  </records>
   <records prefix="plone.resources/pat-utils"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/patternslib/src/core/utils</value>
@@ -962,9 +954,15 @@
         <element>++plone++static/plone.less</element>
       </value>
   </records>
+  <records prefix="plone.resources/plone-logged-in"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++plone-logged-in.js</value>
+      <value key="css">
+        <element>++plone++static/plone-logged-in.less</element>
+      </value>
+  </records>
 
   <!-- Bundles -->
-
   <records prefix="plone.bundles/plone"
             interface='Products.CMFPlone.interfaces.IBundleRegistry'>
     <value key="resources">
@@ -973,6 +971,19 @@
     <value key="enabled">True</value>
     <value key="jscompilation">++plone++static/plone-compiled.min.js</value>
     <value key="csscompilation">++plone++static/plone-compiled.css</value>
+    <value key="last_compilation">2014-11-26 00:00:00</value>
+    <value key="depends">plone-logged-in</value>
+  </records>
+
+  <records prefix="plone.bundles/plone-logged-in"
+            interface='Products.CMFPlone.interfaces.IBundleRegistry'>
+    <value key="resources">
+      <element>plone-logged-in</element>
+    </value>
+    <value key="enabled">True</value>
+    <value key="expression">python: member is not None</value>
+    <value key="jscompilation">++plone++static/plone-logged-in-compiled.min.js</value>
+    <value key="csscompilation">++plone++static/plone-logged-in-compiled.css</value>
     <value key="last_compilation">2014-11-26 00:00:00</value>
   </records>
 

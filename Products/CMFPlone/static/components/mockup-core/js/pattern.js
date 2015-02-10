@@ -3,7 +3,7 @@
 
 define([
   'jquery',
-  'pat-registry',
+  'mockup-registry',
   'mockup-parser',
   "pat-logger"
 ], function($, Registry, mockupParser, logger) {

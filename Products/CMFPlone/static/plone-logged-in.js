@@ -21,39 +21,13 @@
 // Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 
-if (window.jQuery) {
-  define( 'jquery', [], function () {
-    'use strict';
-    return window.jQuery;
-  } );
-}
-
 require([
-  'jquery',
-  'mockup-registry',
-  'mockup-patterns-base',
-
-  'mockup-patterns-select2',
-  'mockup-patterns-pickadate',
-  'plone-patterns-toolbar',
-  'mockup-patterns-accessibility',
-  'mockup-patterns-autotoc',
-  'mockup-patterns-cookietrigger',
-  'mockup-patterns-formunloadalert',
-  'mockup-patterns-preventdoublesubmit',
-  'mockup-patterns-formautofocus',
-  'mockup-patterns-modal',
-  'mockup-patterns-livesearch',
-  'mockup-patterns-contentloader',
-  'bootstrap-dropdown',
-  'bootstrap-collapse',
-  'bootstrap-tooltip'
-], function($, Registry) {
+  'mockup-patterns-textareamimetypeselector',
+  'mockup-patterns-relateditems',
+  'mockup-patterns-querystring',
+  'mockup-patterns-tinymce',
+  'mockup-patterns-inlinevalidation',
+  'mockup-patterns-structure'
+], function() {
   'use strict';
-
-  // initialize only if we are in top frame
-  if (window.parent === window) {
-    Registry.init();
-  }
-
 });
