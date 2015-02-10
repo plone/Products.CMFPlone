@@ -2,7 +2,7 @@ define([
   'underscore',
   'marked',
   'react',
-  'pat-registry'
+  'mockup-registry'
 ], function(_, marked, React, Registry) {
   'use strict';
 

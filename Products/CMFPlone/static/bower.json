@@ -20,6 +20,7 @@
     "pickadate": "3.4.0",
     "requirejs-text": "2.0.12",
     "select2": "3.5.1",
+    "jquery.recurrenceinput.js": "v1.2",
 
     "tinymce-builded": "4.1.6",
     "patternslib": "2.0.8",
@@ -30,7 +31,8 @@
   },
   "resolutions": {
     "jquery": "1.11.1",
-    "select2": "3.5.1"
+    "select2": "3.5.1",
+    "patternslib": "2.0.8"
   },
   "devDependencies": {
     "expect": "0.3.1",

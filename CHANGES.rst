@@ -8,6 +8,15 @@ Changelog
 5.0b1 (unreleased)
 ------------------
 
+- fix bootstrap css bleeding into global namespaces
+  [vangheem]
+
+- add recurrence pattern
+  [vangheem]
+
+- add history support for folder contents
+  [vangheem]
+
 - Merge plone.app.search here
   [vangheem]
 

@@ -27,7 +27,8 @@ require([
   'mockup-patterns-querystring',
   'mockup-patterns-tinymce',
   'mockup-patterns-inlinevalidation',
-  'mockup-patterns-structure'
+  'mockup-patterns-structure',
+  'mockup-patterns-recurrence'
 ], function() {
   'use strict';
 });

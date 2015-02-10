@@ -45,10 +45,12 @@ define([
     }
 
     if(window.registry_settings === undefined){
-      window.registry_settings = {
-        patterns: {},
-        initialized: false
-      };
+        /* use global settings in case mockup-registry is included by
+           multiple compiled sources. Makes this a global registry */
+        window.registry_settings = {
+            patterns: {},
+            initialized: false
+        };
     }
 
     var registry = {
