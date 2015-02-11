@@ -15,7 +15,7 @@
     "jquery-form": "3.46.0",
     "jquery.cookie": "1.4.1",
     "lodash": "2.4.1",
-    "mockup-core": "2.1.1",
+    "mockup-core": "2.1.3",
     "moment": "2.8.3",
     "pickadate": "3.4.0",
     "requirejs-text": "2.0.12",
