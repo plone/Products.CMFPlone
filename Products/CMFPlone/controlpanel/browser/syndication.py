@@ -1,11 +1,11 @@
 from Products.CMFCore.utils import getToolByName
-from zope.component import getUtility
-from plone.registry.interfaces import IRegistry
 from zope.i18nmessageid import MessageFactory
 from Products.CMFPlone.interfaces.syndication import ISiteSyndicationSettings
 from plone.app.registry.browser import controlpanel
 from z3c.form import button
 from Products.statusmessages.interfaces import IStatusMessage
+from plone.app.z3cform.widget import SelectFieldWidget
+
 
 _ = MessageFactory('plone')
 
@@ -14,6 +14,10 @@ class SyndicationControlPanelForm(controlpanel.RegistryEditForm):
     schema = ISiteSyndicationSettings
     label = _(u'Syndication Settings')
     description = _(u'Default syndication settings.')
+
+    def updateFields(self):
+        super(SyndicationControlPanelForm, self).updateFields()
+        self.fields['site_rss_items'].widgetFactory = SelectFieldWidget
 
     def getSyndicationSettingsButtonShown(self):
         actions = getToolByName(self.context, 'portal_actions')
