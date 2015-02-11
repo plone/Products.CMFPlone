@@ -30,7 +30,7 @@ if (window.jQuery) {
 
 require([
   'jquery',
-  'mockup-registry',
+  'pat-registry',
   'mockup-patterns-base',
 
   'mockup-patterns-select2',
@@ -48,12 +48,16 @@ require([
   'bootstrap-dropdown',
   'bootstrap-collapse',
   'bootstrap-tooltip'
-], function($, Registry) {
+], function($, registry, Base) {
   'use strict';
 
   // initialize only if we are in top frame
   if (window.parent === window) {
-    Registry.init();
+    $(document).ready(function() {
+      $('body').addClass('pat-plone');
+      if (!registry.initialized) {
+        registry.init();
+      }
+    });
   }
-
 });
