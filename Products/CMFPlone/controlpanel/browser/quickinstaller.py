@@ -29,6 +29,7 @@ class ManageProductsView(BrowserView):
         for profile in profiles:
             if profile['type'] != EXTENSION:
                 continue
+
             pid = profile['id']
             pid_parts = pid.split(':')
             if len(pid_parts) != 2:
@@ -53,6 +54,15 @@ class ManageProductsView(BrowserView):
                     if not self.qi.isProductInstallable(product_id):
                         continue
 
+                if profile_type in product_id:
+                    profile_type = 'default'
+                    # XXX override here so some products that do not
+                    # explicitly say "default" for their install
+                    # profile still work
+                    # I'm not sure this is right but this is a way
+                    # to get CMFPlacefulWorkflow to show up in addons
+                    # If it's safe to rename profiles, we can do that too
+
                 addons[product_id] = {
                     'id': product_id,
                     'title': product_id,
@@ -71,8 +81,10 @@ class ManageProductsView(BrowserView):
                 product['title'] = profile['title']
                 product['description'] = profile['description']
                 product['install_profile'] = profile
+                product['profile_type'] = profile_type
             elif profile_type == 'uninstall':
                 product['uninstall_profile'] = profile
+                product['profile_type'] = profile_type
             else:
                 if 'version' in profile:
                     product['upgrade_profiles'][profile['version']] = profile

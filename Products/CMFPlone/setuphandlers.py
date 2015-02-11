@@ -57,8 +57,12 @@ class HiddenProducts(object):
             'plone.app.imaging',
             'plone.app.intid',
             'plone.app.registry',
+            'plone.app.referenceablebehavior',
+            'plone.app.relationfield',
+            'plone.resource',
             'plone.app.widgets',
-            'plone.app.z3cform'
+            'plone.app.z3cform',
+            'plone.formwidget.recurrence'
             ]
 
 
