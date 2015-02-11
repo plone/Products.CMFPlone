@@ -861,6 +861,10 @@
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/patternslib/src/core/compat</value>
   </records>
+  <records prefix="plone.resources/pat-registry"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/patternslib/src/core/registry</value>
+  </records>
   <records prefix="plone.resources/pat-jquery-ext"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/patternslib/src/core/jquery-ext</value>
