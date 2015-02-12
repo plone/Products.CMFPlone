@@ -9161,1709 +9161,54 @@ define('text',['module'], function (module) {
     return text;
 });
 
-(function(root) {
-define("jquery.tools.overlay", ["jquery"], function() {
-  return (function() {
-/**
- * @license 
- * jQuery Tools @VERSION Overlay - Overlay base. Extend it.
- * 
- * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
- * 
- * http://flowplayer.org/tools/overlay/
- *
- * Since: March 2008
- * Date: @DATE 
- */
-(function($) { 
+!function($){function Overlay(trigger,conf){var closers,overlay,opened,self=this,fire=trigger.add(self),w=$(window),maskConf=$.tools.expose&&(conf.mask||conf.expose),uid=Math.random().toString().slice(10);maskConf&&("string"==typeof maskConf&&(maskConf={color:maskConf}),maskConf.closeOnClick=maskConf.closeOnEsc=!1);var jq=conf.target||trigger.attr("rel");if(overlay=jq?$(jq):null||trigger,!overlay.length)throw"Could not find Overlay: "+jq;trigger&&-1==trigger.index(overlay)&&trigger.click(function(e){return self.load(e),e.preventDefault()}),$.extend(self,{load:function(e){if(self.isOpened())return self;var eff=effects[conf.effect];if(!eff)throw'Overlay: cannot find effect : "'+conf.effect+'"';if(conf.oneInstance&&$.each(instances,function(){this.close(e)}),e=e||$.Event(),e.type="onBeforeLoad",fire.trigger(e),e.isDefaultPrevented())return self;opened=!0,maskConf&&$(overlay).expose(maskConf);var top=conf.top,left=conf.left,oWidth=overlay.outerWidth(!0),oHeight=overlay.outerHeight(!0);return"string"==typeof top&&(top="center"==top?Math.max((w.height()-oHeight)/2,0):parseInt(top,10)/100*w.height()),"center"==left&&(left=Math.max((w.width()-oWidth)/2,0)),eff[0].call(self,{top:top,left:left},function(){opened&&(e.type="onLoad",fire.trigger(e))}),maskConf&&conf.closeOnClick&&$.mask.getMask().one("click",self.close),conf.closeOnClick&&$(document).on("click."+uid,function(e){$(e.target).parents(overlay).length||self.close(e)}),conf.closeOnEsc&&$(document).on("keydown."+uid,function(e){27==e.keyCode&&self.close(e)}),self},close:function(e){return self.isOpened()?(e=e||$.Event(),e.type="onBeforeClose",fire.trigger(e),e.isDefaultPrevented()?void 0:(opened=!1,effects[conf.effect][1].call(self,function(){e.type="onClose",fire.trigger(e)}),$(document).off("click."+uid+" keydown."+uid),maskConf&&$.mask.close(),self)):self},getOverlay:function(){return overlay},getTrigger:function(){return trigger},getClosers:function(){return closers},isOpened:function(){return opened},getConf:function(){return conf}}),$.each("onBeforeLoad,onStart,onLoad,onBeforeClose,onClose".split(","),function(i,name){$.isFunction(conf[name])&&$(self).on(name,conf[name]),self[name]=function(fn){return fn&&$(self).on(name,fn),self}}),closers=overlay.find(conf.close||".close"),closers.length||conf.close||(closers=$('<a class="close"></a>'),overlay.prepend(closers)),closers.click(function(e){self.close(e)}),conf.load&&self.load()}$.tools=$.tools||{version:"@VERSION"},$.tools.overlay={addEffect:function(name,loadFn,closeFn){effects[name]=[loadFn,closeFn]},conf:{close:null,closeOnClick:!0,closeOnEsc:!0,closeSpeed:"fast",effect:"default",fixed:!/msie/.test(navigator.userAgent.toLowerCase())||navigator.appVersion>6,left:"center",load:!1,mask:null,oneInstance:!0,speed:"normal",target:null,top:"10%"}};var instances=[],effects={};$.tools.overlay.addEffect("default",function(pos,onLoad){var conf=this.getConf(),w=$(window);conf.fixed||(pos.top+=w.scrollTop(),pos.left+=w.scrollLeft()),pos.position=conf.fixed?"fixed":"absolute",this.getOverlay().css(pos).fadeIn(conf.speed,onLoad)},function(onClose){this.getOverlay().fadeOut(this.getConf().closeSpeed,onClose)}),$.fn.overlay=function(conf){var el=this.data("overlay");return el?el:($.isFunction(conf)&&(conf={onBeforeLoad:conf}),conf=$.extend(!0,{},$.tools.overlay.conf,conf),this.each(function(){el=new Overlay($(this),conf),instances.push(el),$(this).data("overlay",el)}),conf.api?el:this)}}(jQuery),function($){function find(root,query){var el=$(query);return el.length<2?el:root.parent().find(query)}function Scrollable(root,conf){var self=this,fire=root.add(self),itemWrap=root.children(),index=0,vertical=conf.vertical;if(current||(current=self),itemWrap.length>1&&(itemWrap=$(conf.items,root)),conf.size>1&&(conf.circular=!1),$.extend(self,{getConf:function(){return conf},getIndex:function(){return index},getSize:function(){return self.getItems().size()},getNaviButtons:function(){return prev.add(next)},getRoot:function(){return root},getItemWrap:function(){return itemWrap},getItems:function(){return itemWrap.find(conf.item).not("."+conf.clonedClass)},move:function(offset,time){return self.seekTo(index+offset,time)},next:function(time){return self.move(conf.size,time)},prev:function(time){return self.move(-conf.size,time)},begin:function(time){return self.seekTo(0,time)},end:function(time){return self.seekTo(self.getSize()-1,time)},focus:function(){return current=self,self},addItem:function(item){return item=$(item),conf.circular?(itemWrap.children().last().before(item),itemWrap.children().first().replaceWith(item.clone().addClass(conf.clonedClass))):(itemWrap.append(item),next.removeClass("disabled")),fire.trigger("onAddItem",[item]),self},seekTo:function(i,time,fn){if(i.jquery||(i*=1),conf.circular&&0===i&&-1==index&&0!==time)return self;if(!conf.circular&&0>i||i>self.getSize()||-1>i)return self;var item=i;i.jquery?i=self.getItems().index(i):item=self.getItems().eq(i);var e=$.Event("onBeforeSeek");if(!fn&&(fire.trigger(e,[i,time]),e.isDefaultPrevented()||!item.length))return self;var props=vertical?{top:-item.position().top}:{left:-item.position().left};return index=i,current=self,void 0===time&&(time=conf.speed),itemWrap.animate(props,time,conf.easing,fn||function(){fire.trigger("onSeek",[i])}),self}}),$.each(["onBeforeSeek","onSeek","onAddItem"],function(i,name){$.isFunction(conf[name])&&$(self).on(name,conf[name]),self[name]=function(fn){return fn&&$(self).on(name,fn),self}}),conf.circular){var cloned1=self.getItems().slice(-1).clone().prependTo(itemWrap),cloned2=self.getItems().eq(1).clone().appendTo(itemWrap);cloned1.add(cloned2).addClass(conf.clonedClass),self.onBeforeSeek(function(e,i,time){return e.isDefaultPrevented()?void 0:-1==i?(self.seekTo(cloned1,time,function(){self.end(0)}),e.preventDefault()):void(i==self.getSize()&&self.seekTo(cloned2,time,function(){self.begin(0)}))});var hidden_parents=root.parents().add(root).filter(function(){return"none"===$(this).css("display")?!0:void 0});hidden_parents.length?(hidden_parents.show(),self.seekTo(0,0,function(){}),hidden_parents.hide()):self.seekTo(0,0,function(){})}var prev=find(root,conf.prev).click(function(e){e.stopPropagation(),self.prev()}),next=find(root,conf.next).click(function(e){e.stopPropagation(),self.next()});if(conf.circular||(self.onBeforeSeek(function(e,i){setTimeout(function(){e.isDefaultPrevented()||(prev.toggleClass(conf.disabledClass,0>=i),next.toggleClass(conf.disabledClass,i>=self.getSize()-1))},1)}),conf.initialIndex||prev.addClass(conf.disabledClass)),self.getSize()<2&&prev.add(next).addClass(conf.disabledClass),conf.mousewheel&&$.fn.mousewheel&&root.mousewheel(function(e,delta){return conf.mousewheel?(self.move(0>delta?1:-1,conf.wheelSpeed||50),!1):void 0}),conf.touch){var touch={};itemWrap[0].ontouchstart=function(e){var t=e.touches[0];touch.x=t.clientX,touch.y=t.clientY},itemWrap[0].ontouchmove=function(e){if(1==e.touches.length&&!itemWrap.is(":animated")){var t=e.touches[0],deltaX=touch.x-t.clientX,deltaY=touch.y-t.clientY;self[vertical&&deltaY>0||!vertical&&deltaX>0?"next":"prev"](),e.preventDefault()}}}conf.keyboard&&$(document).on("keydown.scrollable",function(evt){if(!(!conf.keyboard||evt.altKey||evt.ctrlKey||evt.metaKey||$(evt.target).is(":input")||"static"!=conf.keyboard&&current!=self)){var key=evt.keyCode;return!vertical||38!=key&&40!=key?vertical||37!=key&&39!=key?void 0:(self.move(37==key?-1:1),evt.preventDefault()):(self.move(38==key?-1:1),evt.preventDefault())}}),conf.initialIndex&&self.seekTo(conf.initialIndex,0,function(){})}$.tools=$.tools||{version:"@VERSION"},$.tools.scrollable={conf:{activeClass:"active",circular:!1,clonedClass:"cloned",disabledClass:"disabled",easing:"swing",initialIndex:0,item:"> *",items:".items",keyboard:!0,mousewheel:!1,next:".next",prev:".prev",size:1,speed:400,vertical:!1,touch:!0,wheelSpeed:0}};var current;$.fn.scrollable=function(conf){var el=this.data("scrollable");return el?el:(conf=$.extend({},$.tools.scrollable.conf,conf),this.each(function(){el=new Scrollable($(this),conf),$(this).data("scrollable",el)}),conf.api?el:this)}}(jQuery),function($){function Tabs(root,paneSelector,conf){var current,self=this,trigger=root.add(this),tabs=root.find(conf.tabs),panes=paneSelector.jquery?paneSelector:root.children(paneSelector);tabs.length||(tabs=root.children()),panes.length||(panes=root.parent().find(paneSelector)),panes.length||(panes=$(paneSelector)),$.extend(this,{click:function(i,e){var tab=tabs.eq(i),firstRender=!root.data("tabs");if("string"==typeof i&&i.replace("#","")&&(tab=tabs.filter('[href*="'+i.replace("#","")+'"]'),i=Math.max(tabs.index(tab),0)),conf.rotate){var last=tabs.length-1;if(0>i)return self.click(last,e);if(i>last)return self.click(0,e)}if(!tab.length){if(current>=0)return self;i=conf.initialIndex,tab=tabs.eq(i)}if(i===current)return self;if(e=e||$.Event(),e.type="onBeforeClick",trigger.trigger(e,[i]),!e.isDefaultPrevented()){var effect=firstRender?conf.initialEffect&&conf.effect||"default":conf.effect;return effects[effect].call(self,i,function(){current=i,e.type="onClick",trigger.trigger(e,[i])}),tabs.removeClass(conf.current),tab.addClass(conf.current),self}},getConf:function(){return conf},getTabs:function(){return tabs},getPanes:function(){return panes},getCurrentPane:function(){return panes.eq(current)},getCurrentTab:function(){return tabs.eq(current)},getIndex:function(){return current},next:function(){return self.click(current+1)},prev:function(){return self.click(current-1)},destroy:function(){return tabs.off(conf.event).removeClass(conf.current),panes.find('a[href^="#"]').off("click.T"),self}}),$.each("onBeforeClick,onClick".split(","),function(i,name){$.isFunction(conf[name])&&$(self).on(name,conf[name]),self[name]=function(fn){return fn&&$(self).on(name,fn),self}}),conf.history&&$.fn.history&&($.tools.history.init(tabs),conf.event="history"),tabs.each(function(i){$(this).on(conf.event,function(e){return self.click(i,e),e.preventDefault()})}),panes.find('a[href^="#"]').on("click.T",function(e){self.click($(this).attr("href"),e)}),location.hash&&"a"==conf.tabs&&root.find('[href="'+location.hash+'"]').length?self.click(location.hash):(0===conf.initialIndex||conf.initialIndex>0)&&self.click(conf.initialIndex)}$.tools=$.tools||{version:"@VERSION"},$.tools.tabs={conf:{tabs:"a",current:"current",onBeforeClick:null,onClick:null,effect:"default",initialEffect:!1,initialIndex:0,event:"click",rotate:!1,slideUpSpeed:400,slideDownSpeed:400,history:!1},addEffect:function(name,fn){effects[name]=fn}};var animating,w,effects={"default":function(i,done){this.getPanes().hide().eq(i).show(),done.call()},fade:function(i,done){var conf=this.getConf(),speed=conf.fadeOutSpeed,panes=this.getPanes();speed?panes.fadeOut(speed):panes.hide(),panes.eq(i).fadeIn(conf.fadeInSpeed,done)},slide:function(i,done){var conf=this.getConf();this.getPanes().slideUp(conf.slideUpSpeed),this.getPanes().eq(i).slideDown(conf.slideDownSpeed,done)},ajax:function(i,done){this.getPanes().eq(0).load(this.getTabs().eq(i).attr("href"),done)}};$.tools.tabs.addEffect("horizontal",function(i,done){if(!animating){var nextPane=this.getPanes().eq(i),currentPane=this.getCurrentPane();w||(w=this.getPanes().eq(0).width()),animating=!0,nextPane.show(),currentPane.animate({width:0},{step:function(now){nextPane.css("width",w-now)},complete:function(){$(this).hide(),done.call(),animating=!1}}),currentPane.length||(done.call(),animating=!1)}}),$.fn.tabs=function(paneSelector,conf){var el=this.data("tabs");return el&&(el.destroy(),this.removeData("tabs")),$.isFunction(conf)&&(conf={onBeforeClick:conf}),conf=$.extend({},$.tools.tabs.conf,conf),this.each(function(){el=new Tabs($(this),paneSelector,conf),$(this).data("tabs",el)}),conf.api?el:this}}(jQuery),function($){function setIframeLocation(h){if(h){var doc=iframe.contentWindow.document;doc.open().close(),doc.location.hash=h}}var hash,iframe,links,inited;$.tools=$.tools||{version:"@VERSION"},$.tools.history={init:function(els){inited||($.browser.msie&&$.browser.version<"8"?iframe||(iframe=$("<iframe/>").attr("src","javascript:false;").hide().get(0),$("body").append(iframe),setInterval(function(){var idoc=iframe.contentWindow.document,h=idoc.location.hash;hash!==h&&$(window).trigger("hash",h)},100),setIframeLocation(location.hash||"#")):setInterval(function(){var h=location.hash;h!==hash&&$(window).trigger("hash",h)},100),links=links?links.add(els):els,els.click(function(e){var href=$(this).attr("href");return iframe&&setIframeLocation(href),"#"!=href.slice(0,1)?(location.href="#"+href,e.preventDefault()):void 0}),inited=!0)}},$(window).on("hash",function(e,h){h?links.filter(function(){var href=$(this).attr("href");return href==h||href==h.replace("#","")}).trigger("history",[h]):links.eq(0).trigger("history",[h]),hash=h}),$.fn.history=function(fn){return $.tools.history.init(this),this.on("history",fn)}}(jQuery),function($){function viewport(){if(/msie/.test(navigator.userAgent.toLowerCase())){var d=$(document).height(),w=$(window).height();return[window.innerWidth||document.documentElement.clientWidth||document.body.clientWidth,20>d-w?w:d]}return[$(document).width(),$(document).height()]}function call(fn){return fn?fn.call($.mask):void 0}$.tools=$.tools||{version:"@VERSION"};var tool;tool=$.tools.expose={conf:{maskId:"exposeMask",loadSpeed:"slow",closeSpeed:"fast",closeOnClick:!0,closeOnEsc:!0,zIndex:9998,opacity:.8,startOpacity:0,color:"#fff",onLoad:null,onClose:null}};var mask,exposed,loaded,config,overlayIndex;$.mask={load:function(conf,els){if(loaded)return this;"string"==typeof conf&&(conf={color:conf}),conf=conf||config,config=conf=$.extend($.extend({},tool.conf),conf),mask=$("#"+conf.maskId),mask.length||(mask=$("<div/>").attr("id",conf.maskId),$("body").append(mask));var size=viewport();return mask.css({position:"absolute",top:0,left:0,width:size[0],height:size[1],display:"none",opacity:conf.startOpacity,zIndex:conf.zIndex}),conf.color&&mask.css("backgroundColor",conf.color),call(conf.onBeforeLoad)===!1?this:(conf.closeOnEsc&&$(document).on("keydown.mask",function(e){27==e.keyCode&&$.mask.close(e)}),conf.closeOnClick&&mask.on("click.mask",function(e){$.mask.close(e)}),$(window).on("resize.mask",function(){$.mask.fit()}),els&&els.length&&(overlayIndex=els.eq(0).css("zIndex"),$.each(els,function(){var el=$(this);/relative|absolute|fixed/i.test(el.css("position"))||el.css("position","relative")}),exposed=els.css({zIndex:Math.max(conf.zIndex+1,"auto"==overlayIndex?0:overlayIndex)})),mask.css({display:"block"}).fadeTo(conf.loadSpeed,conf.opacity,function(){$.mask.fit(),call(conf.onLoad),loaded="full"}),loaded=!0,this)},close:function(){if(loaded){if(call(config.onBeforeClose)===!1)return this;mask.fadeOut(config.closeSpeed,function(){exposed&&exposed.css({zIndex:overlayIndex}),loaded=!1,call(config.onClose)}),$(document).off("keydown.mask"),mask.off("click.mask"),$(window).off("resize.mask")}return this},fit:function(){if(loaded){var size=viewport();mask.css({width:size[0],height:size[1]})}},getMask:function(){return mask},isLoaded:function(fully){return fully?"full"==loaded:loaded},getConf:function(){return config},getExposed:function(){return exposed}},$.fn.mask=function(conf){return $.mask.load(conf),this},$.fn.expose=function(conf){return $.mask.load(conf,this),this}}(jQuery),function($){function getPosition(trigger,tip,conf){var top=conf.relative?trigger.position().top:trigger.offset().top,left=conf.relative?trigger.position().left:trigger.offset().left,pos=conf.position[0];top-=tip.outerHeight()-conf.offset[0],left+=trigger.outerWidth()+conf.offset[1],/iPad/i.test(navigator.userAgent)&&(top-=$(window).scrollTop());var height=tip.outerHeight()+trigger.outerHeight();"center"==pos&&(top+=height/2),"bottom"==pos&&(top+=height),pos=conf.position[1];var width=tip.outerWidth()+trigger.outerWidth();return"center"==pos&&(left-=width/2),"left"==pos&&(left-=width),{top:top,left:left}}function Tooltip(trigger,conf){var tip,shown,self=this,fire=trigger.add(self),timer=0,pretimer=0,title=trigger.attr("title"),tipAttr=trigger.attr("data-tooltip"),effect=effects[conf.effect],isInput=trigger.is(":input"),isWidget=isInput&&trigger.is(":checkbox, :radio, select, :button, :submit"),type=trigger.attr("type"),evt=conf.events[type]||conf.events[isInput?isWidget?"widget":"input":"def"];if(!effect)throw'Nonexistent effect "'+conf.effect+'"';if(evt=evt.split(/,\s*/),2!=evt.length)throw"Tooltip: bad events configuration for "+type;trigger.on(evt[0],function(e){clearTimeout(timer),conf.predelay?pretimer=setTimeout(function(){self.show(e)},conf.predelay):self.show(e)}).on(evt[1],function(e){clearTimeout(pretimer),conf.delay?timer=setTimeout(function(){self.hide(e)},conf.delay):self.hide(e)}),title&&conf.cancelDefault&&(trigger.removeAttr("title"),trigger.data("title",title)),$.extend(self,{show:function(e){if(!tip&&(tipAttr?tip=$(tipAttr):conf.tip?tip=$(conf.tip).eq(0):title?tip=$(conf.layout).addClass(conf.tipClass).appendTo(document.body).hide().append(title):(tip=trigger.find("."+conf.tipClass),tip.length||(tip=trigger.next()),tip.length||(tip=trigger.parent().next())),!tip.length))throw"Cannot find tooltip for "+trigger;if(self.isShown())return self;tip.stop(!0,!0);var pos=getPosition(trigger,tip,conf);if(conf.tip&&tip.html(trigger.data("title")),e=$.Event(),e.type="onBeforeShow",fire.trigger(e,[pos]),e.isDefaultPrevented())return self;pos=getPosition(trigger,tip,conf),tip.css({position:"absolute",top:pos.top,left:pos.left}),shown=!0,effect[0].call(self,function(){e.type="onShow",shown="full",fire.trigger(e)});var event=conf.events.tooltip.split(/,\s*/);return tip.data("__set")||(tip.off(event[0]).on(event[0],function(){clearTimeout(timer),clearTimeout(pretimer)}),event[1]&&!trigger.is("input:not(:checkbox, :radio), textarea")&&tip.off(event[1]).on(event[1],function(e){e.relatedTarget!=trigger[0]&&trigger.trigger(evt[1].split(" ")[0])}),conf.tip||tip.data("__set",!0)),self},hide:function(e){return tip&&self.isShown()?(e=$.Event(),e.type="onBeforeHide",fire.trigger(e),e.isDefaultPrevented()?void 0:(shown=!1,effects[conf.effect][1].call(self,function(){e.type="onHide",fire.trigger(e)}),self)):self},isShown:function(fully){return fully?"full"==shown:shown},getConf:function(){return conf},getTip:function(){return tip},getTrigger:function(){return trigger}}),$.each("onHide,onBeforeShow,onShow,onBeforeHide".split(","),function(i,name){$.isFunction(conf[name])&&$(self).on(name,conf[name]),self[name]=function(fn){return fn&&$(self).on(name,fn),self}})}$.tools=$.tools||{version:"@VERSION"},$.tools.tooltip={conf:{effect:"toggle",fadeOutSpeed:"fast",predelay:0,delay:30,opacity:1,tip:0,fadeIE:!1,position:["top","center"],offset:[0,0],relative:!1,cancelDefault:!0,events:{def:"mouseenter,mouseleave",input:"focus,blur",widget:"focus mouseenter,blur mouseleave",tooltip:"mouseenter,mouseleave"},layout:"<div/>",tipClass:"tooltip"},addEffect:function(name,loadFn,hideFn){effects[name]=[loadFn,hideFn]}};var effects={toggle:[function(done){var conf=this.getConf(),tip=this.getTip(),o=conf.opacity;1>o&&tip.css({opacity:o}),tip.show(),done.call()},function(done){this.getTip().hide(),done.call()}],fade:[function(done){var conf=this.getConf();!/msie/.test(navigator.userAgent.toLowerCase())||conf.fadeIE?this.getTip().fadeTo(conf.fadeInSpeed,conf.opacity,done):(this.getTip().show(),done())},function(done){var conf=this.getConf();!/msie/.test(navigator.userAgent.toLowerCase())||conf.fadeIE?this.getTip().fadeOut(conf.fadeOutSpeed,done):(this.getTip().hide(),done())}]};$.fn.tooltip=function(conf){var api=this.data("tooltip");return api?api:(conf=$.extend(!0,{},$.tools.tooltip.conf,conf),"string"==typeof conf.position&&(conf.position=conf.position.split(/,?\s/)),this.each(function(){api=new Tooltip($(this),conf),$(this).data("tooltip",api)}),conf.api?api:this)}}(jQuery);
+define("resource-plone-app-jquerytools-js", function(){});
 
-    // static constructs
-    $.tools = $.tools || {version: '@VERSION'};
-    
-    $.tools.overlay = {
-        
-        addEffect: function(name, loadFn, closeFn) {
-            effects[name] = [loadFn, closeFn];  
-        },
-    
-        conf: {  
-            close: null,    
-            closeOnClick: true,
-            closeOnEsc: true,           
-            closeSpeed: 'fast',
-            effect: 'default',
-            
-            // since 1.2. fixed positioning not supported by IE6
-            fixed: !/msie/.test(navigator.userAgent.toLowerCase()) || navigator.appVersion > 6, 
-            
-            left: 'center',     
-            load: false, // 1.2
-            mask: null,  
-            oneInstance: true,
-            speed: 'normal',
-            target: null, // target element to be overlayed. by default taken from [rel]
-            top: '10%'
-        }
-    };
-
-    
-    var instances = [], effects = {};
-        
-    // the default effect. nice and easy!
-    $.tools.overlay.addEffect('default', 
-        
-        /* 
-            onLoad/onClose functions must be called otherwise none of the 
-            user supplied callback methods won't be called
-        */
-        function(pos, onLoad) {
-            
-            var conf = this.getConf(),
-                 w = $(window);              
-                
-            if (!conf.fixed)  {
-                pos.top += w.scrollTop();
-                pos.left += w.scrollLeft();
-            } 
-                
-            pos.position = conf.fixed ? 'fixed' : 'absolute';
-            this.getOverlay().css(pos).fadeIn(conf.speed, onLoad); 
-            
-        }, function(onClose) {
-            this.getOverlay().fadeOut(this.getConf().closeSpeed, onClose);          
-        }       
-    );      
-
-    
-    function Overlay(trigger, conf) {       
-        
-        // private variables
-        var self = this,
-             fire = trigger.add(self),
-             w = $(window), 
-             closers,            
-             overlay,
-             opened,
-             maskConf = $.tools.expose && (conf.mask || conf.expose),
-             uid = Math.random().toString().slice(10);      
-        
-             
-        // mask configuration
-        if (maskConf) {         
-            if (typeof maskConf == 'string') { maskConf = {color: maskConf}; }
-            maskConf.closeOnClick = maskConf.closeOnEsc = false;
-        }            
-         
-        // get overlay and trigger
-        var jq = conf.target || trigger.attr("rel");
-        overlay = jq ? $(jq) : null || trigger; 
-        
-        // overlay not found. cannot continue
-        if (!overlay.length) { throw "Could not find Overlay: " + jq; }
-        
-        // trigger's click event
-        if (trigger && trigger.index(overlay) == -1) {
-            trigger.click(function(e) {             
-                self.load(e);
-                return e.preventDefault();
-            });
-        }               
-        
-        // API methods  
-        $.extend(self, {
-
-            load: function(e) {
-                
-                // can be opened only once
-                if (self.isOpened()) { return self; }
-                
-                // find the effect
-                var eff = effects[conf.effect];
-                if (!eff) { throw "Overlay: cannot find effect : \"" + conf.effect + "\""; }
-                
-                // close other instances?
-                if (conf.oneInstance) {
-                    $.each(instances, function() {
-                        this.close(e);
-                    });
-                }
-                
-                // onBeforeLoad
-                e = e || $.Event();
-                e.type = "onBeforeLoad";
-                fire.trigger(e);                
-                if (e.isDefaultPrevented()) { return self; }                
-
-                // opened
-                opened = true;
-                
-                // possible mask effect
-                if (maskConf) { $(overlay).expose(maskConf); }              
-                
-                // position & dimensions 
-                var top = conf.top,                 
-                     left = conf.left,
-                     oWidth = overlay.outerWidth(true),
-                     oHeight = overlay.outerHeight(true); 
-                
-                if (typeof top == 'string')  {
-                    top = top == 'center' ? Math.max((w.height() - oHeight) / 2, 0) : 
-                        parseInt(top, 10) / 100 * w.height();           
-                }               
-                
-                if (left == 'center') { left = Math.max((w.width() - oWidth) / 2, 0); }
-
-                
-                // load effect                  
-                eff[0].call(self, {top: top, left: left}, function() {                  
-                    if (opened) {
-                        e.type = "onLoad";
-                        fire.trigger(e);
-                    }
-                });                 
-
-                // mask.click closes overlay
-                if (maskConf && conf.closeOnClick) {
-                    $.mask.getMask().one("click", self.close); 
-                }
-                
-                // when window is clicked outside overlay, we close
-                if (conf.closeOnClick) {
-                    $(document).on("click." + uid, function(e) { 
-                        if (!$(e.target).parents(overlay).length) { 
-                            self.close(e); 
-                        }
-                    });                     
-                }                       
-            
-                // keyboard::escape
-                if (conf.closeOnEsc) { 
-
-                    // one callback is enough if multiple instances are loaded simultaneously
-                    $(document).on("keydown." + uid, function(e) {
-                        if (e.keyCode == 27) { 
-                            self.close(e);   
-                        }
-                    });         
-                }
-
-                
-                return self; 
-            }, 
-            
-            close: function(e) {
-
-                if (!self.isOpened()) { return self; }
-                
-                e = e || $.Event();
-                e.type = "onBeforeClose";
-                fire.trigger(e);                
-                if (e.isDefaultPrevented()) { return; }             
-                
-                opened = false;
-                
-                // close effect
-                effects[conf.effect][1].call(self, function() {
-                    e.type = "onClose";
-                    fire.trigger(e); 
-                });
-                
-                // unbind the keyboard / clicking actions
-                $(document).off("click." + uid + " keydown." + uid);          
-                
-                if (maskConf) {
-                    $.mask.close();     
-                }
-                 
-                return self;
-            }, 
-            
-            getOverlay: function() {
-                return overlay; 
-            },
-            
-            getTrigger: function() {
-                return trigger; 
-            },
-            
-            getClosers: function() {
-                return closers; 
-            },          
-
-            isOpened: function()  {
-                return opened;
-            },
-            
-            // manipulate start, finish and speeds
-            getConf: function() {
-                return conf;    
-            }           
-            
-        });
-        
-        // callbacks    
-        $.each("onBeforeLoad,onStart,onLoad,onBeforeClose,onClose".split(","), function(i, name) {
-                
-            // configuration
-            if ($.isFunction(conf[name])) { 
-                $(self).on(name, conf[name]); 
-            }
-
-            // API
-            self[name] = function(fn) {
-                if (fn) { $(self).on(name, fn); }
-                return self;
-            };
-        });
-        
-        // close button
-        closers = overlay.find(conf.close || ".close");     
-        
-        if (!closers.length && !conf.close) {
-            closers = $('<a class="close"></a>');
-            overlay.prepend(closers);   
-        }       
-        
-        closers.click(function(e) { 
-            self.close(e);  
-        }); 
-        
-        // autoload
-        if (conf.load) { self.load(); }
-        
-    }
-    
-    // jQuery plugin initialization
-    $.fn.overlay = function(conf) {   
-        
-        // already constructed --> return API
-        var el = this.data("overlay");
-        if (el) { return el; }           
-        
-        if ($.isFunction(conf)) {
-            conf = {onBeforeLoad: conf};    
-        }
-
-        conf = $.extend(true, {}, $.tools.overlay.conf, conf);
-        
-        this.each(function() {      
-            el = new Overlay($(this), conf);
-            instances.push(el);
-            $(this).data("overlay", el);    
-        });
-        
-        return conf.api ? el: this;     
-    }; 
-    
-})(jQuery);
-
-
-
-/**
- * @license 
- * jQuery Tools @VERSION Scrollable - New wave UI design
- * 
- * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
- * 
- * http://flowplayer.org/tools/scrollable.html
- *
- * Since: March 2008
- * Date: @DATE 
- */
-(function($) { 
-
-    // static constructs
-    $.tools = $.tools || {version: '@VERSION'};
-    
-    $.tools.scrollable = {
-        
-        conf: { 
-            activeClass: 'active',
-            circular: false,
-            clonedClass: 'cloned',
-            disabledClass: 'disabled',
-            easing: 'swing',
-            initialIndex: 0,
-            item: '> *',
-            items: '.items',
-            keyboard: true,
-            mousewheel: false,
-            next: '.next',   
-            prev: '.prev', 
-            size: 1,
-            speed: 400,
-            vertical: false,
-            touch: true,
-            wheelSpeed: 0
-        } 
-    };
-                    
-    // get hidden element's width or height even though it's hidden
-    function dim(el, key) {
-        var v = parseInt(el.css(key), 10);
-        if (v) { return v; }
-        var s = el[0].currentStyle; 
-        return s && s.width && parseInt(s.width, 10);   
-    }
-
-    function find(root, query) { 
-        var el = $(query);
-        return el.length < 2 ? el : root.parent().find(query);
-    }
-    
-    var current;        
-    
-    // constructor
-    function Scrollable(root, conf) {   
-        
-        // current instance
-        var self = this, 
-             fire = root.add(self),
-             itemWrap = root.children(),
-             index = 0,
-             vertical = conf.vertical;
-                
-        if (!current) { current = self; } 
-        if (itemWrap.length > 1) { itemWrap = $(conf.items, root); }
-        
-        
-        // in this version circular not supported when size > 1
-        if (conf.size > 1) { conf.circular = false; } 
-        
-        // methods
-        $.extend(self, {
-                
-            getConf: function() {
-                return conf;    
-            },          
-            
-            getIndex: function() {
-                return index;   
-            }, 
-
-            getSize: function() {
-                return self.getItems().size();  
-            },
-
-            getNaviButtons: function() {
-                return prev.add(next);  
-            },
-            
-            getRoot: function() {
-                return root;    
-            },
-            
-            getItemWrap: function() {
-                return itemWrap;    
-            },
-            
-            getItems: function() {
-                return itemWrap.find(conf.item).not("." + conf.clonedClass);    
-            },
-                            
-            move: function(offset, time) {
-                return self.seekTo(index + offset, time);
-            },
-            
-            next: function(time) {
-                return self.move(conf.size, time);  
-            },
-            
-            prev: function(time) {
-                return self.move(-conf.size, time); 
-            },
-            
-            begin: function(time) {
-                return self.seekTo(0, time);    
-            },
-            
-            end: function(time) {
-                return self.seekTo(self.getSize() -1, time);    
-            },  
-            
-            focus: function() {
-                current = self;
-                return self;
-            },
-            
-            addItem: function(item) {
-                item = $(item);
-                
-                if (!conf.circular)  {
-                    itemWrap.append(item);
-                    next.removeClass("disabled");
-                    
-                } else {
-                    itemWrap.children().last().before(item);
-                    itemWrap.children().first().replaceWith(item.clone().addClass(conf.clonedClass));                       
-                }
-                
-                fire.trigger("onAddItem", [item]);
-                return self;
-            },
-            
-            
-            /* all seeking functions depend on this */      
-            seekTo: function(i, time, fn) { 
-                
-                // ensure numeric index
-                if (!i.jquery) { i *= 1; }
-                
-                // avoid seeking from end clone to the beginning
-                if (conf.circular && i === 0 && index == -1 && time !== 0) { return self; }
-                
-                // check that index is sane             
-                if (!conf.circular && i < 0 || i > self.getSize() || i < -1) { return self; }
-                
-                var item = i;
-            
-                if (i.jquery) {
-                    i = self.getItems().index(i);   
-                    
-                } else {
-                    item = self.getItems().eq(i);
-                }  
-                
-                // onBeforeSeek
-                var e = $.Event("onBeforeSeek"); 
-                if (!fn) {
-                    fire.trigger(e, [i, time]);             
-                    if (e.isDefaultPrevented() || !item.length) { return self; }            
-                }  
-    
-                var props = vertical ? {top: -item.position().top} : {left: -item.position().left};  
-                
-                index = i;
-                current = self;  
-                if (time === undefined) { time = conf.speed; }   
-                
-                itemWrap.animate(props, time, conf.easing, fn || function() { 
-                    fire.trigger("onSeek", [i]);        
-                });  
-                
-                return self; 
-            }                   
-            
-        });
-                
-        // callbacks    
-        $.each(['onBeforeSeek', 'onSeek', 'onAddItem'], function(i, name) {
-                
-            // configuration
-            if ($.isFunction(conf[name])) { 
-                $(self).on(name, conf[name]); 
-            }
-            
-            self[name] = function(fn) {
-                if (fn) { $(self).on(name, fn); }
-                return self;
-            };
-        });  
-        
-        // circular loop
-        if (conf.circular) {
-            
-            var cloned1 = self.getItems().slice(-1).clone().prependTo(itemWrap),
-                 cloned2 = self.getItems().eq(1).clone().appendTo(itemWrap);
-
-            cloned1.add(cloned2).addClass(conf.clonedClass);
-            
-            self.onBeforeSeek(function(e, i, time) {
-                
-                if (e.isDefaultPrevented()) { return; }
-                
-                /*
-                    1. animate to the clone without event triggering
-                    2. seek to correct position with 0 speed
-                */
-                if (i == -1) {
-                    self.seekTo(cloned1, time, function()  {
-                        self.end(0);        
-                    });          
-                    return e.preventDefault();
-                    
-                } else if (i == self.getSize()) {
-                    self.seekTo(cloned2, time, function()  {
-                        self.begin(0);      
-                    }); 
-                }
-                
-            });
-
-            // seek over the cloned item
-
-            // if the scrollable is hidden the calculations for seekTo position
-            // will be incorrect (eg, if the scrollable is inside an overlay).
-            // ensure the elements are shown, calculate the correct position,
-            // then re-hide the elements. This must be done synchronously to
-            // prevent the hidden elements being shown to the user.
-
-            // See: https://github.com/jquerytools/jquerytools/issues#issue/87
-
-            var hidden_parents = root.parents().add(root).filter(function () {
-                if ($(this).css('display') === 'none') {
-                    return true;
-                }
-            });
-            if (hidden_parents.length) {
-                hidden_parents.show();
-                self.seekTo(0, 0, function() {});
-                hidden_parents.hide();
-            }
-            else {
-                self.seekTo(0, 0, function() {});
-            }
-
-        }
-        
-        // next/prev buttons
-        var prev = find(root, conf.prev).click(function(e) { e.stopPropagation(); self.prev(); }),
-             next = find(root, conf.next).click(function(e) { e.stopPropagation(); self.next(); }); 
-        
-        if (!conf.circular) {
-            self.onBeforeSeek(function(e, i) {
-                setTimeout(function() {
-                    if (!e.isDefaultPrevented()) {
-                        prev.toggleClass(conf.disabledClass, i <= 0);
-                        next.toggleClass(conf.disabledClass, i >= self.getSize() -1);
-                    }
-                }, 1);
-            });
-            
-            if (!conf.initialIndex) {
-                prev.addClass(conf.disabledClass);  
-            }           
-        }
-            
-        if (self.getSize() < 2) {
-            prev.add(next).addClass(conf.disabledClass);    
-        }
-            
-        // mousewheel support
-        if (conf.mousewheel && $.fn.mousewheel) {
-            root.mousewheel(function(e, delta)  {
-                if (conf.mousewheel) {
-                    self.move(delta < 0 ? 1 : -1, conf.wheelSpeed || 50);
-                    return false;
-                }
-            });         
-        }
-        
-        // touch event
-        if (conf.touch) {
-            var touch = {};
-            
-            itemWrap[0].ontouchstart = function(e) {
-                var t = e.touches[0];
-                touch.x = t.clientX;
-                touch.y = t.clientY;
-            };
-            
-            itemWrap[0].ontouchmove = function(e) {
-                
-                // only deal with one finger
-                if (e.touches.length == 1 && !itemWrap.is(":animated")) {           
-                    var t = e.touches[0],
-                         deltaX = touch.x - t.clientX,
-                         deltaY = touch.y - t.clientY;
-    
-                    self[vertical && deltaY > 0 || !vertical && deltaX > 0 ? 'next' : 'prev']();                
-                    e.preventDefault();
-                }
-            };
-        }
-        
-        if (conf.keyboard)  {
-            
-            $(document).on("keydown.scrollable", function(evt) {
-
-                // skip certain conditions
-                if (!conf.keyboard || evt.altKey || evt.ctrlKey || evt.metaKey || $(evt.target).is(":input")) { 
-                    return; 
-                }
-                
-                // does this instance have focus?
-                if (conf.keyboard != 'static' && current != self) { return; }
-                    
-                var key = evt.keyCode;
-            
-                if (vertical && (key == 38 || key == 40)) {
-                    self.move(key == 38 ? -1 : 1);
-                    return evt.preventDefault();
-                }
-                
-                if (!vertical && (key == 37 || key == 39)) {                    
-                    self.move(key == 37 ? -1 : 1);
-                    return evt.preventDefault();
-                }     
-                
-            });  
-        }
-        
-        // initial index
-        if (conf.initialIndex) {
-            self.seekTo(conf.initialIndex, 0, function() {});
-        }
-    } 
-
-        
-    // jQuery plugin implementation
-    $.fn.scrollable = function(conf) { 
-            
-        // already constructed --> return API
-        var el = this.data("scrollable");
-        if (el) { return el; }       
-
-        conf = $.extend({}, $.tools.scrollable.conf, conf); 
-        
-        this.each(function() {          
-            el = new Scrollable($(this), conf);
-            $(this).data("scrollable", el); 
-        });
-        
-        return conf.api ? el: this; 
-        
-    };
-            
-    
-})(jQuery);
-
-
-/**
- * @license 
- * jQuery Tools @VERSION Tabs- The basics of UI design.
- * 
- * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
- * 
- * http://flowplayer.org/tools/tabs/
- *
- * Since: November 2008
- * Date: @DATE 
- */  
-(function($) {
-        
-    // static constructs
-    $.tools = $.tools || {version: '@VERSION'};
-    
-    $.tools.tabs = {
-        
-        conf: {
-            tabs: 'a',
-            current: 'current',
-            onBeforeClick: null,
-            onClick: null, 
-            effect: 'default',
-            initialEffect: false,   // whether or not to show effect in first init of tabs
-            initialIndex: 0,            
-            event: 'click',
-            rotate: false,
-            
-      // slide effect
-      slideUpSpeed: 400,
-      slideDownSpeed: 400,
-            
-            // 1.2
-            history: false
-        },
-        
-        addEffect: function(name, fn) {
-            effects[name] = fn;
-        }
-        
-    };
-    
-    var effects = {
-        
-        // simple "toggle" effect
-        'default': function(i, done) { 
-            this.getPanes().hide().eq(i).show();
-            done.call();
-        }, 
-        
-        /*
-            configuration:
-                - fadeOutSpeed (positive value does "crossfading")
-                - fadeInSpeed
-        */
-        fade: function(i, done) {       
-            
-            var conf = this.getConf(),
-                 speed = conf.fadeOutSpeed,
-                 panes = this.getPanes();
-            
-            if (speed) {
-                panes.fadeOut(speed);   
-            } else {
-                panes.hide();   
-            }
-
-            panes.eq(i).fadeIn(conf.fadeInSpeed, done); 
-        },
-        
-        // for basic accordions
-        slide: function(i, done) {
-          var conf = this.getConf();
-          
-            this.getPanes().slideUp(conf.slideUpSpeed);
-            this.getPanes().eq(i).slideDown(conf.slideDownSpeed, done);          
-        }, 
-
-        /**
-         * AJAX effect
-         */
-        ajax: function(i, done)  {          
-            this.getPanes().eq(0).load(this.getTabs().eq(i).attr("href"), done);    
-        }       
-    };      
-    
-    /**
-     * Horizontal accordion
-     * 
-     * @deprecated will be replaced with a more robust implementation
-    */
-    
-    var
-      /**
-      *   @type {Boolean}
-      *
-      *   Mutex to control horizontal animation
-      *   Disables clicking of tabs while animating
-      *   They mess up otherwise as currentPane gets set *after* animation is done
-      */
-      animating,
-      /**
-      *   @type {Number}
-      *   
-      *   Initial width of tab panes
-      */
-      w;
-     
-    $.tools.tabs.addEffect("horizontal", function(i, done) {
-      if (animating) return;    // don't allow other animations
-      
-      var nextPane = this.getPanes().eq(i),
-          currentPane = this.getCurrentPane();
-          
-        // store original width of a pane into memory
-        w || ( w = this.getPanes().eq(0).width() );
-        animating = true;
-        
-        nextPane.show(); // hidden by default
-        
-        // animate current pane's width to zero
-    // animate next pane's width at the same time for smooth animation
-    currentPane.animate({width: 0}, {
-      step: function(now){
-        nextPane.css("width", w-now);
-      },
-      complete: function(){
-        $(this).hide();
-        done.call();
-        animating = false;
-     }
-    });
-    // Dirty hack...  onLoad, currentPant will be empty and nextPane will be the first pane
-    // If this is the case, manually run callback since the animation never occured, and reset animating
-    if (!currentPane.length){ 
-      done.call(); 
-      animating = false;
-    }
-    }); 
-
-    
-    function Tabs(root, paneSelector, conf) {
-        
-        var self = this,
-        trigger = root.add(this),
-        tabs = root.find(conf.tabs),
-        panes = paneSelector.jquery ? paneSelector : root.children(paneSelector),
-        current;
-             
-        
-        // make sure tabs and panes are found
-        if (!tabs.length)  { tabs = root.children(); }
-        if (!panes.length) { panes = root.parent().find(paneSelector); }
-        if (!panes.length) { panes = $(paneSelector); }
-        
-        
-        // public methods
-        $.extend(this, {                
-            click: function(i, e) {
-              
-                var tab = tabs.eq(i),
-                    firstRender = !root.data('tabs');
-                
-                if (typeof i == 'string' && i.replace("#", "")) {
-                    tab = tabs.filter("[href*=\"" + i.replace("#", "") + "\"]");
-                    i = Math.max(tabs.index(tab), 0);
-                }
-                                
-                if (conf.rotate) {
-                    var last = tabs.length -1; 
-                    if (i < 0) { return self.click(last, e); }
-                    if (i > last) { return self.click(0, e); }                      
-                }
-                
-                if (!tab.length) {
-                    if (current >= 0) { return self; }
-                    i = conf.initialIndex;
-                    tab = tabs.eq(i);
-                }               
-                
-                // current tab is being clicked
-                if (i === current) { return self; }
-                
-                // possibility to cancel click action               
-                e = e || $.Event();
-                e.type = "onBeforeClick";
-                trigger.trigger(e, [i]);                
-                if (e.isDefaultPrevented()) { return; }
-                
-        // if firstRender, only run effect if initialEffect is set, otherwise default
-                var effect = firstRender ? conf.initialEffect && conf.effect || 'default' : conf.effect;
-
-                // call the effect
-                effects[effect].call(self, i, function() {
-                    current = i;
-                    // onClick callback
-                    e.type = "onClick";
-                    trigger.trigger(e, [i]);
-                });         
-                
-                // default behaviour
-                tabs.removeClass(conf.current); 
-                tab.addClass(conf.current);             
-                
-                return self;
-            },
-            
-            getConf: function() {
-                return conf;    
-            },
-
-            getTabs: function() {
-                return tabs;    
-            },
-            
-            getPanes: function() {
-                return panes;   
-            },
-            
-            getCurrentPane: function() {
-                return panes.eq(current);   
-            },
-            
-            getCurrentTab: function() {
-                return tabs.eq(current);    
-            },
-            
-            getIndex: function() {
-                return current; 
-            }, 
-            
-            next: function() {
-                return self.click(current + 1);
-            },
-            
-            prev: function() {
-                return self.click(current - 1); 
-            },
-            
-            destroy: function() {
-                tabs.off(conf.event).removeClass(conf.current);
-                panes.find("a[href^=\"#\"]").off("click.T"); 
-                return self;
-            }
-        
-        });
-
-        // callbacks    
-        $.each("onBeforeClick,onClick".split(","), function(i, name) {
-                
-            // configuration
-            if ($.isFunction(conf[name])) {
-                $(self).on(name, conf[name]); 
-            }
-
-            // API
-            self[name] = function(fn) {
-                if (fn) { $(self).on(name, fn); }
-                return self;    
-            };
-        });
-    
-        
-        if (conf.history && $.fn.history) {
-            $.tools.history.init(tabs);
-            conf.event = 'history';
-        }   
-        
-        // setup click actions for each tab
-        tabs.each(function(i) {                 
-            $(this).on(conf.event, function(e) {
-                self.click(i, e);
-                return e.preventDefault();
-            });         
-        });
-        
-        // cross tab anchor link
-        panes.find("a[href^=\"#\"]").on("click.T", function(e) {
-            self.click($(this).attr("href"), e);        
-        }); 
-        
-        // open initial tab
-        if (location.hash && conf.tabs == "a" && root.find("[href=\"" +location.hash+ "\"]").length) {
-            self.click(location.hash);
-
-        } else {
-            if (conf.initialIndex === 0 || conf.initialIndex > 0) {
-                self.click(conf.initialIndex);
-            }
-        }               
-        
-    }
-    
-    
-    // jQuery plugin implementation
-    $.fn.tabs = function(paneSelector, conf) {
-        
-        // return existing instance
-        var el = this.data("tabs");
-        if (el) { 
-            el.destroy();   
-            this.removeData("tabs");
-        }
-
-        if ($.isFunction(conf)) {
-            conf = {onBeforeClick: conf};
-        }
-        
-        // setup conf
-        conf = $.extend({}, $.tools.tabs.conf, conf);       
-        
-        
-        this.each(function() {              
-            el = new Tabs($(this), paneSelector, conf);
-            $(this).data("tabs", el); 
-        });     
-        
-        return conf.api ? el: this;     
-    };      
-        
-}) (jQuery); 
-
-
-
-
-/**
- * @license 
- * jQuery Tools @VERSION History "Back button for AJAX apps"
- * 
- * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
- * 
- * http://flowplayer.org/tools/toolbox/history.html
- * 
- * Since: Mar 2010
- * Date: @DATE 
- */
-(function($) {
-        
-    var hash, iframe, links, inited;        
-    
-    $.tools = $.tools || {version: '@VERSION'};
-    
-    $.tools.history = {
-    
-        init: function(els) {
-            
-            if (inited) { return; }
-            
-            // IE
-            if ($.browser.msie && $.browser.version < '8') {
-                
-                // create iframe that is constantly checked for hash changes
-                if (!iframe) {
-                    iframe = $("<iframe/>").attr("src", "javascript:false;").hide().get(0);
-                    $("body").append(iframe);
-                                    
-                    setInterval(function() {
-                        var idoc = iframe.contentWindow.document, 
-                             h = idoc.location.hash;
-                    
-                        if (hash !== h) {                       
-                            $(window).trigger("hash", h);
-                        }
-                    }, 100);
-                    
-                    setIframeLocation(location.hash || '#');
-                }
-
-                
-            // other browsers scans for location.hash changes directly without iframe hack
-            } else { 
-                setInterval(function() {
-                    var h = location.hash;
-                    if (h !== hash) {
-                        $(window).trigger("hash", h);
-                    }                       
-                }, 100);
-            }
-
-            links = !links ? els : links.add(els);
-            
-            els.click(function(e) {
-                var href = $(this).attr("href");
-                if (iframe) { setIframeLocation(href); }
-                
-                // handle non-anchor links
-                if (href.slice(0, 1) != "#") {
-                    location.href = "#" + href;
-                    return e.preventDefault();      
-                }
-                
-            }); 
-            
-            inited = true;
-        }   
-    };  
-    
-
-    function setIframeLocation(h) {
-        if (h) {
-            var doc = iframe.contentWindow.document;
-            doc.open().close(); 
-            doc.location.hash = h;
-        }
-    } 
-         
-    // global histroy change listener
-    $(window).on("hash", function(e, h)  { 
-        if (h) {
-            links.filter(function() {
-              var href = $(this).attr("href");
-              return href == h || href == h.replace("#", ""); 
-            }).trigger("history", [h]); 
-        } else {
-            links.eq(0).trigger("history", [h]);    
-        }
-
-        hash = h;
-
-    });
-        
-    
-    // jQuery plugin implementation
-    $.fn.history = function(fn) {
-            
-        $.tools.history.init(this);
-
-        // return jQuery
-        return this.on("history", fn);      
-    };  
-        
-})(jQuery); 
-
-
-
-/**
- * @license 
- * jQuery Tools @VERSION / Expose - Dim the lights
- * 
- * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
- * 
- * http://flowplayer.org/tools/toolbox/expose.html
- *
- * Since: Mar 2010
- * Date: @DATE 
- */
-(function($) {  
-
-    // static constructs
-    $.tools = $.tools || {version: '@VERSION'};
-    
-    var tool;
-    
-    tool = $.tools.expose = {
-        
-        conf: { 
-            maskId: 'exposeMask',
-            loadSpeed: 'slow',
-            closeSpeed: 'fast',
-            closeOnClick: true,
-            closeOnEsc: true,
-            
-            // css settings
-            zIndex: 9998,
-            opacity: 0.8,
-            startOpacity: 0,
-            color: '#fff',
-            
-            // callbacks
-            onLoad: null,
-            onClose: null
-        }
-    };
-
-    /* one of the greatest headaches in the tool. finally made it */
-    function viewport() {
-                
-        // the horror case
-        if (/msie/.test(navigator.userAgent.toLowerCase())) {
-            
-            // if there are no scrollbars then use window.height
-            var d = $(document).height(), w = $(window).height();
-            
-            return [
-                window.innerWidth ||                            // ie7+
-                document.documentElement.clientWidth ||     // ie6  
-                document.body.clientWidth,                  // ie6 quirks mode
-                d - w < 20 ? w : d
-            ];
-        } 
-        
-        // other well behaving browsers
-        return [$(document).width(), $(document).height()]; 
-    } 
-    
-    function call(fn) {
-        if (fn) { return fn.call($.mask); }
-    }
-    
-    var mask, exposed, loaded, config, overlayIndex;        
-    
-    
-    $.mask = {
-        
-        load: function(conf, els) {
-            
-            // already loaded ?
-            if (loaded) { return this; }            
-            
-            // configuration
-            if (typeof conf == 'string') {
-                conf = {color: conf};   
-            }
-            
-            // use latest config
-            conf = conf || config;
-            
-            config = conf = $.extend($.extend({}, tool.conf), conf);
-
-            // get the mask
-            mask = $("#" + conf.maskId);
-                
-            // or create it
-            if (!mask.length) {
-                mask = $('<div/>').attr("id", conf.maskId);
-                $("body").append(mask);
-            }
-            
-            // set position and dimensions          
-            var size = viewport();
-                
-            mask.css({              
-                position:'absolute', 
-                top: 0, 
-                left: 0,
-                width: size[0],
-                height: size[1],
-                display: 'none',
-                opacity: conf.startOpacity,                         
-                zIndex: conf.zIndex 
-            });
-            
-            if (conf.color) {
-                mask.css("backgroundColor", conf.color);    
-            }           
-            
-            // onBeforeLoad
-            if (call(conf.onBeforeLoad) === false) {
-                return this;
-            }
-            
-            // esc button
-            if (conf.closeOnEsc) {                      
-                $(document).on("keydown.mask", function(e) {                            
-                    if (e.keyCode == 27) {
-                        $.mask.close(e);    
-                    }       
-                });         
-            }
-            
-            // mask click closes
-            if (conf.closeOnClick) {
-                mask.on("click.mask", function(e)  {
-                    $.mask.close(e);        
-                });                 
-            }           
-            
-            // resize mask when window is resized
-            $(window).on("resize.mask", function() {
-                $.mask.fit();
-            });
-            
-            // exposed elements
-            if (els && els.length) {
-                
-                overlayIndex = els.eq(0).css("zIndex");
-
-                // make sure element is positioned absolutely or relatively
-                $.each(els, function() {
-                    var el = $(this);
-                    if (!/relative|absolute|fixed/i.test(el.css("position"))) {
-                        el.css("position", "relative");     
-                    }                   
-                });
-             
-                // make elements sit on top of the mask
-                exposed = els.css({ zIndex: Math.max(conf.zIndex + 1, overlayIndex == 'auto' ? 0 : overlayIndex)});         
-            }   
-            
-            // reveal mask
-            mask.css({display: 'block'}).fadeTo(conf.loadSpeed, conf.opacity, function() {
-                $.mask.fit(); 
-                call(conf.onLoad);
-                loaded = "full";
-            });
-            
-            loaded = true;          
-            return this;                
-        },
-        
-        close: function() {
-            if (loaded) {
-                
-                // onBeforeClose
-                if (call(config.onBeforeClose) === false) { return this; }
-                    
-                mask.fadeOut(config.closeSpeed, function()  {                                       
-                    if (exposed) {
-                        exposed.css({zIndex: overlayIndex});                        
-                    }               
-                    loaded = false;
-                    call(config.onClose);
-                });             
-                
-                // unbind various event listeners
-                $(document).off("keydown.mask");
-                mask.off("click.mask");
-                $(window).off("resize.mask");  
-            }
-            
-            return this; 
-        },
-        
-        fit: function() {
-            if (loaded) {
-                var size = viewport();              
-                mask.css({width: size[0], height: size[1]});
-            }               
-        },
-        
-        getMask: function() {
-            return mask;    
-        },
-        
-        isLoaded: function(fully) {
-            return fully ? loaded == 'full' : loaded;   
-        }, 
-        
-        getConf: function() {
-            return config;  
-        },
-        
-        getExposed: function() {
-            return exposed; 
-        }       
-    };
-    
-    $.fn.mask = function(conf) {
-        $.mask.load(conf);
-        return this;        
-    };          
-    
-    $.fn.expose = function(conf) {
-        $.mask.load(conf, this);
-        return this;            
-    };
-
-
-})(jQuery);
-
-
-/**
- * @license 
- * jQuery Tools @VERSION Tooltip - UI essentials
- * 
- * NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
- * 
- * http://flowplayer.org/tools/tooltip/
- *
- * Since: November 2008
- * Date: @DATE 
- */
-(function($) {  
-    // static constructs
-    $.tools = $.tools || {version: '@VERSION'};
-    
-    $.tools.tooltip = {
-        
-        conf: { 
-            
-            // default effect variables
-            effect: 'toggle',           
-            fadeOutSpeed: "fast",
-            predelay: 0,
-            delay: 30,
-            opacity: 1,         
-            tip: 0,
-            fadeIE: false, // enables fade effect in IE
-            
-            // 'top', 'bottom', 'right', 'left', 'center'
-            position: ['top', 'center'], 
-            offset: [0, 0],
-            relative: false,
-            cancelDefault: true,
-            
-            // type to event mapping 
-            events: {
-                def:            "mouseenter,mouseleave",
-                input:      "focus,blur",
-                widget:     "focus mouseenter,blur mouseleave",
-                tooltip:        "mouseenter,mouseleave"
-            },
-            
-            // 1.2
-            layout: '<div/>',
-            tipClass: 'tooltip'
-        },
-        
-        addEffect: function(name, loadFn, hideFn) {
-            effects[name] = [loadFn, hideFn];   
-        } 
-    };
-    
-    
-    var effects = { 
-        toggle: [ 
-            function(done) { 
-                var conf = this.getConf(), tip = this.getTip(), o = conf.opacity;
-                if (o < 1) { tip.css({opacity: o}); }
-                tip.show();
-                done.call();
-            },
-            
-            function(done) { 
-                this.getTip().hide();
-                done.call();
-            } 
-        ],
-        
-        fade: [
-            function(done) {
-                var conf = this.getConf();
-                if (!/msie/.test(navigator.userAgent.toLowerCase()) || conf.fadeIE) {
-                    this.getTip().fadeTo(conf.fadeInSpeed, conf.opacity, done);
-                }
-                else {
-                    this.getTip().show();
-                    done();
-                }
-            },
-            function(done) {
-                var conf = this.getConf();
-                if (!/msie/.test(navigator.userAgent.toLowerCase()) || conf.fadeIE) {
-                    this.getTip().fadeOut(conf.fadeOutSpeed, done);
-                }
-                else {
-                    this.getTip().hide();
-                    done();
-                }
-            }
-        ]       
-    };   
-
-        
-    /* calculate tip position relative to the trigger */    
-    function getPosition(trigger, tip, conf) {  
-
-        
-        // get origin top/left position 
-        var top = conf.relative ? trigger.position().top : trigger.offset().top, 
-             left = conf.relative ? trigger.position().left : trigger.offset().left,
-             pos = conf.position[0];
-
-        top  -= tip.outerHeight() - conf.offset[0];
-        left += trigger.outerWidth() + conf.offset[1];
-        
-        // iPad position fix
-        if (/iPad/i.test(navigator.userAgent)) {
-            top -= $(window).scrollTop();
-        }
-        
-        // adjust Y     
-        var height = tip.outerHeight() + trigger.outerHeight();
-        if (pos == 'center')    { top += height / 2; }
-        if (pos == 'bottom')    { top += height; }
-        
-        
-        // adjust X
-        pos = conf.position[1];     
-        var width = tip.outerWidth() + trigger.outerWidth();
-        if (pos == 'center')    { left -= width / 2; }
-        if (pos == 'left')      { left -= width; }   
-        
-        return {top: top, left: left};
-    }       
-
-    
-    
-    function Tooltip(trigger, conf) {
-
-        var self = this, 
-             fire = trigger.add(self),
-             tip,
-             timer = 0,
-             pretimer = 0, 
-             title = trigger.attr("title"),
-             tipAttr = trigger.attr("data-tooltip"),
-             effect = effects[conf.effect],
-             shown,
-                 
-             // get show/hide configuration
-             isInput = trigger.is(":input"), 
-             isWidget = isInput && trigger.is(":checkbox, :radio, select, :button, :submit"),           
-             type = trigger.attr("type"),
-             evt = conf.events[type] || conf.events[isInput ? (isWidget ? 'widget' : 'input') : 'def']; 
-        
-        
-        // check that configuration is sane
-        if (!effect) { throw "Nonexistent effect \"" + conf.effect + "\""; }                    
-        
-        evt = evt.split(/,\s*/); 
-        if (evt.length != 2) { throw "Tooltip: bad events configuration for " + type; } 
-        
-        
-        // trigger --> show  
-        trigger.on(evt[0], function(e) {
-
-            clearTimeout(timer);
-            if (conf.predelay) {
-                pretimer = setTimeout(function() { self.show(e); }, conf.predelay); 
-                
-            } else {
-                self.show(e);   
-            }
-            
-        // trigger --> hide
-        }).on(evt[1], function(e)  {
-            clearTimeout(pretimer);
-            if (conf.delay)  {
-                timer = setTimeout(function() { self.hide(e); }, conf.delay);   
-                
-            } else {
-                self.hide(e);       
-            }
-            
-        }); 
-        
-        
-        // remove default title
-        if (title && conf.cancelDefault) { 
-            trigger.removeAttr("title");
-            trigger.data("title", title);           
-        }       
-        
-        $.extend(self, {
-                
-            show: function(e) {  
-
-                // tip not initialized yet
-                if (!tip) {
-                    
-                    // data-tooltip 
-                    if (tipAttr) {
-                        tip = $(tipAttr);
-
-                    // single tip element for all
-                    } else if (conf.tip) { 
-                        tip = $(conf.tip).eq(0);
-                        
-                    // autogenerated tooltip
-                    } else if (title) { 
-                        tip = $(conf.layout).addClass(conf.tipClass).appendTo(document.body)
-                            .hide().append(title);
-
-                    // manual tooltip
-                    } else {    
-                        tip = trigger.find('.' + conf.tipClass);
-                        if (!tip.length) { tip = trigger.next(); }
-                        if (!tip.length) { tip = trigger.parent().next(); }      
-                    }
-                    
-                    if (!tip.length) { throw "Cannot find tooltip for " + trigger;  }
-                } 
-                
-                if (self.isShown()) { return self; }  
-                
-                // stop previous animation
-                tip.stop(true, true);               
-                
-                // get position
-                var pos = getPosition(trigger, tip, conf);          
-        
-                // restore title for single tooltip element
-                if (conf.tip) {
-                    tip.html(trigger.data("title"));
-                }
-
-                // onBeforeShow
-                e = $.Event();
-                e.type = "onBeforeShow";
-                fire.trigger(e, [pos]);             
-                if (e.isDefaultPrevented()) { return self; }
-        
-                
-                // onBeforeShow may have altered the configuration
-                pos = getPosition(trigger, tip, conf);
-                
-                // set position
-                tip.css({position:'absolute', top: pos.top, left: pos.left});                   
-                
-                shown = true;
-                
-                // invoke effect 
-                effect[0].call(self, function() {
-                    e.type = "onShow";
-                    shown = 'full';
-                    fire.trigger(e);         
-                });                 
-
-        
-                // tooltip events       
-                var event = conf.events.tooltip.split(/,\s*/);
-
-                if (!tip.data("__set")) {
-                    
-                    tip.off(event[0]).on(event[0], function() { 
-                        clearTimeout(timer);
-                        clearTimeout(pretimer);
-                    });
-                    
-                    if (event[1] && !trigger.is("input:not(:checkbox, :radio), textarea")) {                    
-                        tip.off(event[1]).on(event[1], function(e) {
-    
-                            // being moved to the trigger element
-                            if (e.relatedTarget != trigger[0]) {
-                                trigger.trigger(evt[1].split(" ")[0]);
-                            }
-                        }); 
-                    } 
-                    
-                    // bind agein for if same tip element
-                    if (!conf.tip) tip.data("__set", true);
-                }
-                
-                return self;
-            },
-            
-            hide: function(e) {
-
-                if (!tip || !self.isShown()) { return self; }
-            
-                // onBeforeHide
-                e = $.Event();
-                e.type = "onBeforeHide";
-                fire.trigger(e);                
-                if (e.isDefaultPrevented()) { return; }
-    
-                shown = false;
-                
-                effects[conf.effect][1].call(self, function() {
-                    e.type = "onHide";
-                    fire.trigger(e);         
-                });
-                
-                return self;
-            },
-            
-            isShown: function(fully) {
-                return fully ? shown == 'full' : shown; 
-            },
-                
-            getConf: function() {
-                return conf;    
-            },
-                
-            getTip: function() {
-                return tip; 
-            },
-            
-            getTrigger: function() {
-                return trigger; 
-            }       
-
-        });     
-
-        // callbacks    
-        $.each("onHide,onBeforeShow,onShow,onBeforeHide".split(","), function(i, name) {
-                
-            // configuration
-            if ($.isFunction(conf[name])) { 
-                $(self).on(name, conf[name]); 
-            }
-
-            // API
-            self[name] = function(fn) {
-                if (fn) { $(self).on(name, fn); }
-                return self;
-            };
-        });
-        
-    }
-        
-    
-    // jQuery plugin implementation
-    $.fn.tooltip = function(conf) {
-        
-        // return existing instance
-        var api = this.data("tooltip");
-        if (api) { return api; }
-
-        conf = $.extend(true, {}, $.tools.tooltip.conf, conf);
-        
-        // position can also be given as string
-        if (typeof conf.position == 'string') {
-            conf.position = conf.position.split(/,?\s/);    
-        }
-        
-        // install tooltip for each entry in jQuery object
-        this.each(function() {
-            api = new Tooltip($(this), conf); 
-            $(this).data("tooltip", api); 
-        });
-        
-        return conf.api ? api: this;         
-    };
-        
-}) (jQuery);
-
-        
-
-
-
-  }).apply(root, arguments);
-});
-}(this));
-
-(function(root) {
-define("jquery.tools.dateinput", ["jquery"], function() {
-  return (function() {
 !function($,undefined){function dayAm(year,month){return new Date(year,month+1,0).getDate()}function zeropad(val,len){for(val=""+val,len=len||2;val.length<len;)val="0"+val;return val}function format(formatter,date,text,lang){var d=date.getDate(),D=date.getDay(),m=date.getMonth(),y=date.getFullYear(),flags={d:d,dd:zeropad(d),ddd:LABELS[lang].shortDays[D],dddd:LABELS[lang].days[D],m:m+1,mm:zeropad(m+1),mmm:LABELS[lang].shortMonths[m],mmmm:LABELS[lang].months[m],yy:String(y).slice(2),yyyy:y},ret=formatters[formatter](text,date,flags,lang);return tmpTag.html(ret).html()}function integer(val){return parseInt(val,10)}function isSameDay(d1,d2){return d1.getFullYear()===d2.getFullYear()&&d1.getMonth()==d2.getMonth()&&d1.getDate()==d2.getDate()}function parseDate(val){if(val!==undefined){if(val.constructor==Date)return val;if("string"==typeof val){var els=val.split("-");if(3==els.length)return new Date(integer(els[0]),integer(els[1])-1,integer(els[2]));if(!/^-?\d+$/.test(val))return;val=integer(val)}var date=new Date;return date.setDate(date.getDate()+val),date}}function Dateinput(input,conf){function select(date,conf,e){return input.attr("readonly")?void self.hide(e):(value=date,currYear=date.getFullYear(),currMonth=date.getMonth(),currDay=date.getDate(),e||(e=$.Event("api")),"click"!=e.type||/msie/.test(navigator.userAgent.toLowerCase())||input.focus(),e.type="beforeChange",fire.trigger(e,[date]),void(e.isDefaultPrevented()||(input.val(format(conf.formatter,date,conf.format,conf.lang)),e.type="change",e.target=input[0],fire.trigger(e),input.data("date",date),self.hide(e))))}function onShow(ev){ev.type="onShow",fire.trigger(ev),$(document).on("keydown.d",function(e){if(e.ctrlKey)return!0;var key=e.keyCode;if(8==key||46==key)return input.val(""),self.hide(e);if(27==key||9==key)return self.hide(e);if($(KEYS).index(key)>=0){if(!opened)return self.show(e),e.preventDefault();var days=$("#"+css.weeks+" a"),el=$("."+css.focus),index=days.index(el);return el.removeClass(css.focus),74==key||40==key?index+=7:75==key||38==key?index-=7:76==key||39==key?index+=1:(72==key||37==key)&&(index-=1),index>41?(self.addMonth(),el=$("#"+css.weeks+" a:eq("+(index-42)+")")):0>index?(self.addMonth(-1),el=$("#"+css.weeks+" a:eq("+(index+42)+")")):el=days.eq(index),el.addClass(css.focus),e.preventDefault()}return 34==key?self.addMonth():33==key?self.addMonth(-1):36==key?self.today():(13==key&&($(e.target).is("select")||$("."+css.focus).click()),$([16,17,18,9]).index(key)>=0)}),$(document).on("click.d",function(e){var el=e.target;el.id==css.root||$(el).parents("#"+css.root).length||el==input[0]||trigger&&el==trigger[0]||self.hide(e)})}var trigger,pm,nm,currYear,currMonth,currDay,opened,original,self=this,now=new Date,yearNow=now.getFullYear(),css=conf.css,labels=LABELS[conf.lang],root=$("#"+css.root),title=root.find("#"+css.title),value=input.attr("data-value")||conf.value||input.val(),min=input.attr("min")||conf.min,max=input.attr("max")||conf.max;if(0===min&&(min="0"),value=parseDate(value)||now,min=parseDate(min||new Date(yearNow+conf.yearRange[0],1,1)),max=parseDate(max||new Date(yearNow+conf.yearRange[1]+1,1,-1)),!labels)throw"Dateinput: invalid language: "+conf.lang;if("date"==input.attr("type")){var original=input.clone(),def=original.wrap("<div/>").parent().html(),clone=$(def.replace(/type/i,"type=text data-orig-type"));conf.value&&clone.val(conf.value),input.replaceWith(clone),input=clone}input.addClass(css.input);var fire=input.add(self);if(!root.length){if(root=$("<div><div><a/><div/><a/></div><div><div/><div/></div></div>").hide().css({position:"absolute"}).attr("id",css.root),root.children().eq(0).attr("id",css.head).end().eq(1).attr("id",css.body).children().eq(0).attr("id",css.days).end().eq(1).attr("id",css.weeks).end().end().end().find("a").eq(0).attr("id",css.prev).end().eq(1).attr("id",css.next),title=root.find("#"+css.head).find("div").attr("id",css.title),conf.selectors){var monthSelector=$("<select/>").attr("id",css.month),yearSelector=$("<select/>").attr("id",css.year);title.html(monthSelector.add(yearSelector))}for(var days=root.find("#"+css.days),d=0;7>d;d++)days.append($("<span/>").text(labels.shortDays[(d+conf.firstDay)%7]));$("body").append(root)}conf.trigger&&(trigger=$("<a/>").attr("href","#").addClass(css.trigger).click(function(e){return conf.toggle?self.toggle():self.show(),e.preventDefault()}).insertAfter(input));var weeks=root.find("#"+css.weeks);yearSelector=root.find("#"+css.year),monthSelector=root.find("#"+css.month),$.extend(self,{show:function(e){if(!input.attr("disabled")&&!opened&&(e=e||$.Event(),e.type="onBeforeShow",fire.trigger(e),!e.isDefaultPrevented())){$.each(instances,function(){this.hide()}),opened=!0,monthSelector.off("change").change(function(){self.setValue(integer(yearSelector.val()),integer($(this).val()))}),yearSelector.off("change").change(function(){self.setValue(integer($(this).val()),integer(monthSelector.val()))}),pm=root.find("#"+css.prev).off("click").click(function(){return pm.hasClass(css.disabled)||self.addMonth(-1),!1}),nm=root.find("#"+css.next).off("click").click(function(){return nm.hasClass(css.disabled)||self.addMonth(),!1}),self.setValue(value);var pos=input.offset();return/iPad/i.test(navigator.userAgent)&&(pos.top-=$(window).scrollTop()),root.css({top:pos.top+input.outerHeight(!0)+conf.offset[0],left:pos.left+conf.offset[1]}),conf.speed?root.show(conf.speed,function(){onShow(e)}):(root.show(),onShow(e)),self}},setValue:function(year,month,day){var date=integer(month)>=-1?new Date(integer(year),integer(month),integer(day==undefined||isNaN(day)?1:day)):year||value;if(min>date?date=min:date>max&&(date=max),"string"==typeof year&&(date=parseDate(year)),year=date.getFullYear(),month=date.getMonth(),day=date.getDate(),-1==month?(month=11,year--):12==month&&(month=0,year++),!opened)return select(date,conf),self;currMonth=month,currYear=year,currDay=day;var week,tmp=new Date(year,month,1-conf.firstDay),begin=tmp.getDay(),days=dayAm(year,month),prevDays=dayAm(year,month-1);if(conf.selectors){monthSelector.empty(),$.each(labels.months,function(i,m){min<new Date(year,i+1,1)&&max>new Date(year,i,0)&&monthSelector.append($("<option/>").html(m).attr("value",i))}),yearSelector.empty();for(var yearNow=now.getFullYear(),i=yearNow+conf.yearRange[0];i<yearNow+conf.yearRange[1];i++)min<new Date(i+1,0,1)&&max>new Date(i,0,0)&&yearSelector.append($("<option/>").text(i));monthSelector.val(month),yearSelector.val(year)}else title.html(labels.months[month]+" "+year);weeks.empty(),pm.add(nm).removeClass(css.disabled);for(var a,num,j=begin?0:-7;(begin?42:35)>j;j++)a=$("<a/>"),j%7===0&&(week=$("<div/>").addClass(css.week),weeks.append(week)),begin>j?(a.addClass(css.off),num=prevDays-begin+j+1,date=new Date(year,month-1,num)):j>=begin+days?(a.addClass(css.off),num=j-days-begin+1,date=new Date(year,month+1,num)):(num=j-begin+1,date=new Date(year,month,num),isSameDay(value,date)?a.attr("id",css.current).addClass(css.focus):isSameDay(now,date)&&a.attr("id",css.today)),min&&min>date&&a.add(pm).addClass(css.disabled),max&&date>max&&a.add(nm).addClass(css.disabled),a.attr("href","#"+num).text(num).data("date",date),week.append(a);return weeks.find("a").click(function(e){var el=$(this);return el.hasClass(css.disabled)||($("#"+css.current).removeAttr("id"),el.attr("id",css.current),select(el.data("date"),conf,e)),!1}),css.sunday&&weeks.find("."+css.week).each(function(){var beg=conf.firstDay?7-conf.firstDay:0;$(this).children().slice(beg,beg+1).addClass(css.sunday)}),self},setMin:function(val,fit){return min=parseDate(val),fit&&min>value&&self.setValue(min),self},setMax:function(val,fit){return max=parseDate(val),fit&&value>max&&self.setValue(max),self},today:function(){return self.setValue(now)},addDay:function(amount){return this.setValue(currYear,currMonth,currDay+(amount||1))},addMonth:function(amount){var targetMonth=currMonth+(amount||1),daysInTargetMonth=dayAm(currYear,targetMonth),targetDay=daysInTargetMonth>=currDay?currDay:daysInTargetMonth;return this.setValue(currYear,targetMonth,targetDay)},addYear:function(amount){return this.setValue(currYear+(amount||1),currMonth,currDay)},destroy:function(){input.add(document).off("click.d keydown.d"),root.add(trigger).remove(),input.removeData("dateinput").removeClass(css.input),original&&input.replaceWith(original)},hide:function(e){if(opened){if(e=$.Event(),e.type="onHide",fire.trigger(e),e.isDefaultPrevented())return;$(document).off("click.d keydown.d"),root.hide(),opened=!1}return self},toggle:function(){return self.isOpen()?self.hide():self.show()},getConf:function(){return conf},getInput:function(){return input},getCalendar:function(){return root},getValue:function(dateFormat){return dateFormat?format(conf.formatter,value,dateFormat,conf.lang):value},isOpen:function(){return opened}}),$.each(["onBeforeShow","onShow","change","onHide"],function(i,name){$.isFunction(conf[name])&&$(self).on(name,conf[name]),self[name]=function(fn){return fn&&$(self).on(name,fn),self}}),conf.editable||input.on("focus.d click.d",self.show).keydown(function(e){var key=e.keyCode;return!opened&&$(KEYS).index(key)>=0?(self.show(e),e.preventDefault()):((8==key||46==key)&&input.val(""),e.shiftKey||e.ctrlKey||e.altKey||9==key?!0:e.preventDefault())}),parseDate(input.val())&&select(value,conf)}$.tools=$.tools||{version:"@VERSION"};var tool,instances=[],formatters={},KEYS=[75,76,38,39,74,72,40,37],LABELS={};tool=$.tools.dateinput={conf:{format:"mm/dd/yy",formatter:"default",selectors:!1,yearRange:[-5,5],lang:"en",offset:[0,0],speed:0,firstDay:0,min:undefined,max:undefined,trigger:0,toggle:0,editable:0,css:{prefix:"cal",input:"date",root:0,head:0,title:0,prev:0,next:0,month:0,year:0,days:0,body:0,weeks:0,today:0,current:0,week:0,off:0,sunday:0,focus:0,disabled:0,trigger:0}},addFormatter:function(name,fn){formatters[name]=fn},localize:function(language,labels){$.each(labels,function(key,val){labels[key]=val.split(",")}),LABELS[language]=labels}},tool.localize("en",{months:"January,February,March,April,May,June,July,August,September,October,November,December",shortMonths:"Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec",days:"Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday",shortDays:"Sun,Mon,Tue,Wed,Thu,Fri,Sat"});var tmpTag=$("<a/>");tool.addFormatter("default",function(text,date,flags){return text.replace(/d{1,4}|m{1,4}|yy(?:yy)?|"[^"]*"|'[^']*'/g,function($0){return $0 in flags?flags[$0]:$0})}),tool.addFormatter("prefixed",function(text,date,flags){return text.replace(/%(d{1,4}|m{1,4}|yy(?:yy)?|"[^"]*"|'[^']*')/g,function($0,$1){return $1 in flags?flags[$1]:$0})}),$.expr[":"].date=function(el){var type=el.getAttribute("type");return type&&"date"==type||!!$(el).data("dateinput")},$.fn.dateinput=function(conf){if(this.data("dateinput"))return this;conf=$.extend(!0,{},tool.conf,conf),$.each(conf.css,function(key,val){val||"prefix"==key||(conf.css[key]=(conf.css.prefix||"")+(val||key))});var els;return this.each(function(){var el=new Dateinput($(this),conf);instances.push(el);var input=el.getInput().data("dateinput",el);els=els?els.add(input):input}),els?els:this}}(jQuery);
+define("resource-plone-app-jquerytools-dateinput-js", function(){});
 
-  }).apply(root, arguments);
+define('mockup-parser',[
+  'jquery'
+], function($) {
+  
+
+  var parser = {
+    getOptions: function getOptions($el, patternName, options) {
+      /* This is the Mockup parser. It parses a DOM element for pattern
+      * configuration options.
+      */
+      options = options || {};
+      // get options from parent element first, stop if element tag name is 'body'
+      if ($el.length !== 0 && !$.nodeName($el[0], 'body')) {
+        options = getOptions($el.parent(), patternName, options);
+      }
+      // collect all options from element
+      var elOptions = {};
+      if ($el.length !== 0) {
+        elOptions = $el.data('pat-' + patternName);
+        if (elOptions) {
+          // parse options if string
+          if (typeof(elOptions) === 'string') {
+              var tmpOptions = {};
+              $.each(elOptions.split(';'), function(i, item) {
+                  item = item.split(':');
+                  item.reverse();
+                  var key = item.pop();
+                  key = key.replace(/^\s+|\s+$/g, '');  // trim
+                  item.reverse();
+                  var value = item.join(':');
+                  value = value.replace(/^\s+|\s+$/g, '');  // trim
+                  tmpOptions[key] = value;
+              });
+              elOptions = tmpOptions;
+          }
+        }
+      }
+      return $.extend(true, {}, options, elOptions);
+    }
+  };
+  return parser;
 });
-}(this));
 
 (function(root) {
 define("jquery.tmpl", ["jquery"], function() {
@@ -11360,359 +9705,1035 @@ define("jquery.tmpl", ["jquery"], function() {
 });
 }(this));
 
-define('mockup-parser',[
-  'jquery'
+define('pat-utils',[
+    "jquery"
 ], function($) {
-  
 
-  var parser = {
-    getOptions: function getOptions($el, patternName, options) {
-      /* This is the Mockup parser. It parses a DOM element for pattern
-      * configuration options.
-      */
-      options = options || {};
-      // get options from parent element first, stop if element tag name is 'body'
-      if ($el.length !== 0 && !$.nodeName($el[0], 'body')) {
-        options = getOptions($el.parent(), patternName, options);
-      }
-      // collect all options from element
-      var elOptions = {};
-      if ($el.length !== 0) {
-        elOptions = $el.data('pat-' + patternName);
-        if (elOptions) {
-          // parse options if string
-          if (typeof(elOptions) === 'string') {
-              var tmpOptions = {};
-              $.each(elOptions.split(';'), function(i, item) {
-                  item = item.split(':');
-                  item.reverse();
-                  var key = item.pop();
-                  key = key.replace(/^\s+|\s+$/g, '');  // trim
-                  item.reverse();
-                  var value = item.join(':');
-                  value = value.replace(/^\s+|\s+$/g, '');  // trim
-                  tmpOptions[key] = value;
-              });
-              elOptions = tmpOptions;
-          }
-        }
-      }
-      return $.extend(true, {}, options, elOptions);
-    }
-  };
-  return parser;
-});
-
-(function(root) {
-define("jquery.event.drop", ["jquery"], function() {
-  return (function() {
-/*! 
- * jquery.event.drop - v 2.2
- * Copyright (c) 2010 Three Dub Media - http://threedubmedia.com
- * Open Source MIT License - http://threedubmedia.com/code/license
- */
-// Created: 2008-06-04 
-// Updated: 2012-05-21
-// REQUIRES: jquery 1.7.x, event.drag 2.2
-
-;(function($){ // secure $ jQuery alias
-
-// Events: drop, dropstart, dropend
-
-// add the jquery instance method
-$.fn.drop = function( str, arg, opts ){
-    // figure out the event type
-    var type = typeof str == "string" ? str : "",
-    // figure out the event handler...
-    fn = $.isFunction( str ) ? str : $.isFunction( arg ) ? arg : null;
-    // fix the event type
-    if ( type.indexOf("drop") !== 0 ) 
-        type = "drop"+ type;
-    // were options passed
-    opts = ( str == fn ? arg : opts ) || {};
-    // trigger or bind event handler
-    return fn ? this.bind( type, opts, fn ) : this.trigger( type );
-};
-
-// DROP MANAGEMENT UTILITY
-// returns filtered drop target elements, caches their positions
-$.drop = function( opts ){ 
-    opts = opts || {};
-    // safely set new options...
-    drop.multi = opts.multi === true ? Infinity : 
-        opts.multi === false ? 1 : !isNaN( opts.multi ) ? opts.multi : drop.multi;
-    drop.delay = opts.delay || drop.delay;
-    drop.tolerance = $.isFunction( opts.tolerance ) ? opts.tolerance : 
-        opts.tolerance === null ? null : drop.tolerance;
-    drop.mode = opts.mode || drop.mode || 'intersect';
-};
-
-// local refs (increase compression)
-var $event = $.event, 
-$special = $event.special,
-// configure the drop special event
-drop = $.event.special.drop = {
-
-    // these are the default settings
-    multi: 1, // allow multiple drop winners per dragged element
-    delay: 20, // async timeout delay
-    mode: 'overlap', // drop tolerance mode
-        
-    // internal cache
-    targets: [], 
-    
-    // the key name for stored drop data
-    datakey: "dropdata",
-        
-    // prevent bubbling for better performance
-    noBubble: true,
-    
-    // count bound related events
-    add: function( obj ){ 
-        // read the interaction data
-        var data = $.data( this, drop.datakey );
-        // count another realted event
-        data.related += 1;
-    },
-    
-    // forget unbound related events
-    remove: function(){
-        $.data( this, drop.datakey ).related -= 1;
-    },
-    
-    // configure the interactions
-    setup: function(){
-        // check for related events
-        if ( $.data( this, drop.datakey ) ) 
-            return;
-        // initialize the drop element data
-        var data = { 
-            related: 0,
-            active: [],
-            anyactive: 0,
-            winner: 0,
-            location: {}
-        };
-        // store the drop data on the element
-        $.data( this, drop.datakey, data );
-        // store the drop target in internal cache
-        drop.targets.push( this );
-    },
-    
-    // destroy the configure interaction    
-    teardown: function(){ 
-        var data = $.data( this, drop.datakey ) || {};
-        // check for related events
-        if ( data.related ) 
-            return;
-        // remove the stored data
-        $.removeData( this, drop.datakey );
-        // reference the targeted element
-        var element = this;
-        // remove from the internal cache
-        drop.targets = $.grep( drop.targets, function( target ){ 
-            return ( target !== element ); 
+    var singleBoundJQueryPlugin = function (pattern, method, options) {
+        /* This is a jQuery plugin for patterns which are invoked ONCE FOR EACH
+         * matched element in the DOM.
+         *
+         * This is how the Mockup-type patterns behave. They are constructor
+         * functions which need to be invoked once per jQuery-wrapped DOM node
+         * for all DOM nodes on which the pattern applies.
+         */
+        var $this = this;
+        $this.each(function() {
+            var pat, $el = $(this);
+            pat = pattern.init($el, options);
+            if (method) {
+                if (pat[method] === undefined) {
+                    $.error("Method " + method +
+                            " does not exist on jQuery." + pattern.name);
+                    return false;
+                }
+                if (method.charAt(0) === '_') {
+                    $.error("Method " + method +
+                            " is private on jQuery." + pattern.name);
+                    return false;
+                }
+                pat[method].apply(pat, [options]);
+            }
         });
-    },
-    
-    // shared event handler
-    handler: function( event, dd ){ 
-        // local vars
-        var results, $targets;
-        // make sure the right data is available
-        if ( !dd ) 
-            return;
-        // handle various events
-        switch ( event.type ){
-            // draginit, from $.event.special.drag
-            case 'mousedown': // DROPINIT >>
-            case 'touchstart': // DROPINIT >>
-                // collect and assign the drop targets
-                $targets =  $( drop.targets );
-                if ( typeof dd.drop == "string" )
-                    $targets = $targets.filter( dd.drop );
-                // reset drop data winner properties
-                $targets.each(function(){
-                    var data = $.data( this, drop.datakey );
-                    data.active = [];
-                    data.anyactive = 0;
-                    data.winner = 0;
-                });
-                // set available target elements
-                dd.droppable = $targets;
-                // activate drop targets for the initial element being dragged
-                $special.drag.hijack( event, "dropinit", dd ); 
-                break;
-            // drag, from $.event.special.drag
-            case 'mousemove': // TOLERATE >>
-            case 'touchmove': // TOLERATE >>
-                drop.event = event; // store the mousemove event
-                if ( !drop.timer )
-                    // monitor drop targets
-                    drop.tolerate( dd ); 
-                break;
-            // dragend, from $.event.special.drag
-            case 'mouseup': // DROP >> DROPEND >>
-            case 'touchend': // DROP >> DROPEND >>
-                drop.timer = clearTimeout( drop.timer ); // delete timer    
-                if ( dd.propagates ){
-                    $special.drag.hijack( event, "drop", dd ); 
-                    $special.drag.hijack( event, "dropend", dd ); 
-                }
-                break;
-                
+        return $this;
+    };
+
+    var pluralBoundJQueryPlugin = function (pattern, method, options) {
+        /* This is a jQuery plugin for patterns which are invoked ONCE FOR ALL
+         * matched elements in the DOM.
+         *
+         * This is how the vanilla Patternslib-type patterns behave. They are
+         * simple objects with an init method and this method gets called once
+         * with a list of jQuery-wrapped DOM nodes on which the pattern
+         * applies.
+         */
+        var $this = this;
+        if (method) {
+            if (pattern[method]) {
+                return pattern[method].apply($this, [$this].concat([options]));
+            } else {
+                $.error("Method " + method +
+                        " does not exist on jQuery." + pattern.name);
+            }
+        } else {
+            pattern.init.apply($this, [$this].concat([options]));
         }
-    },
-        
-    // returns the location positions of an element
-    locate: function( elem, index ){ 
-        var data = $.data( elem, drop.datakey ),
-        $elem = $( elem ), 
-        posi = $elem.offset() || {}, 
-        height = $elem.outerHeight(), 
-        width = $elem.outerWidth(),
-        location = { 
-            elem: elem, 
-            width: width, 
-            height: height,
-            top: posi.top, 
-            left: posi.left, 
-            right: posi.left + width, 
-            bottom: posi.top + height
+        return $this;
+    };
+
+    var jqueryPlugin = function(pattern) {
+        return function(method, options) {
+            var $this = this;
+            if ($this.length === 0) {
+                return $this;
+            }
+            if (typeof method === 'object') {
+                options = method;
+                method = undefined;
+            }
+            if (typeof pattern === "function") {
+                return singleBoundJQueryPlugin.call(this, pattern, method, options);
+            } else {
+                return pluralBoundJQueryPlugin.call(this, pattern, method, options);
+            }
         };
-        // drag elements might not have dropdata
-        if ( data ){
-            data.location = location;
-            data.index = index;
-            data.elem = elem;
-        }
-        return location;
-    },
-    
-    // test the location positions of an element against another OR an X,Y coord
-    contains: function( target, test ){ // target { location } contains test [x,y] or { location }
-        return ( ( test[0] || test.left ) >= target.left && ( test[0] || test.right ) <= target.right
-            && ( test[1] || test.top ) >= target.top && ( test[1] || test.bottom ) <= target.bottom ); 
-    },
-    
-    // stored tolerance modes
-    modes: { // fn scope: "$.event.special.drop" object 
-        // target with mouse wins, else target with most overlap wins
-        'intersect': function( event, proxy, target ){
-            return this.contains( target, [ event.pageX, event.pageY ] ) ? // check cursor
-                1e9 : this.modes.overlap.apply( this, arguments ); // check overlap
-        },
-        // target with most overlap wins    
-        'overlap': function( event, proxy, target ){
-            // calculate the area of overlap...
-            return Math.max( 0, Math.min( target.bottom, proxy.bottom ) - Math.max( target.top, proxy.top ) )
-                * Math.max( 0, Math.min( target.right, proxy.right ) - Math.max( target.left, proxy.left ) );
-        },
-        // proxy is completely contained within target bounds   
-        'fit': function( event, proxy, target ){
-            return this.contains( target, proxy ) ? 1 : 0;
-        },
-        // center of the proxy is contained within target bounds    
-        'middle': function( event, proxy, target ){
-            return this.contains( target, [ proxy.left + proxy.width * .5, proxy.top + proxy.height * .5 ] ) ? 1 : 0;
-        }
-    },  
-    
-    // sort drop target cache by by winner (dsc), then index (asc)
-    sort: function( a, b ){
-        return ( b.winner - a.winner ) || ( a.index - b.index );
-    },
-        
-    // async, recursive tolerance execution
-    tolerate: function( dd ){       
-        // declare local refs
-        var i, drp, drg, data, arr, len, elem,
-        // interaction iteration variables
-        x = 0, ia, end = dd.interactions.length,
-        // determine the mouse coords
-        xy = [ drop.event.pageX, drop.event.pageY ],
-        // custom or stored tolerance fn
-        tolerance = drop.tolerance || drop.modes[ drop.mode ];
-        // go through each passed interaction...
-        do if ( ia = dd.interactions[x] ){
-            // check valid interaction
-            if ( !ia )
-                return; 
-            // initialize or clear the drop data
-            ia.drop = [];
-            // holds the drop elements
-            arr = []; 
-            len = ia.droppable.length;
-            // determine the proxy location, if needed
-            if ( tolerance )
-                drg = drop.locate( ia.proxy ); 
-            // reset the loop
-            i = 0;
-            // loop each stored drop target
-            do if ( elem = ia.droppable[i] ){ 
-                data = $.data( elem, drop.datakey );
-                drp = data.location;
-                if ( !drp ) continue;
-                // find a winner: tolerance function is defined, call it
-                data.winner = tolerance ? tolerance.call( drop, drop.event, drg, drp ) 
-                    // mouse position is always the fallback
-                    : drop.contains( drp, xy ) ? 1 : 0; 
-                arr.push( data );   
-            } while ( ++i < len ); // loop 
-            // sort the drop targets
-            arr.sort( drop.sort );          
-            // reset the loop
-            i = 0;
-            // loop through all of the targets again
-            do if ( data = arr[ i ] ){
-                // winners...
-                if ( data.winner && ia.drop.length < drop.multi ){
-                    // new winner... dropstart
-                    if ( !data.active[x] && !data.anyactive ){
-                        // check to make sure that this is not prevented
-                        if ( $special.drag.hijack( drop.event, "dropstart", dd, x, data.elem )[0] !== false ){  
-                            data.active[x] = 1;
-                            data.anyactive += 1;
-                        }
-                        // if false, it is not a winner
-                        else
-                            data.winner = 0;
-                    }
-                    // if it is still a winner
-                    if ( data.winner )
-                        ia.drop.push( data.elem );
-                }
-                // losers... 
-                else if ( data.active[x] && data.anyactive == 1 ){
-                    // former winner... dropend
-                    $special.drag.hijack( drop.event, "dropend", dd, x, data.elem ); 
-                    data.active[x] = 0;
-                    data.anyactive -= 1;
-                }
-            } while ( ++i < len ); // loop      
-        } while ( ++x < end ) // loop
-        // check if the mouse is still moving or is idle
-        if ( drop.last && xy[0] == drop.last.pageX && xy[1] == drop.last.pageY ) 
-            delete drop.timer; // idle, don't recurse
-        else  // recurse
-            drop.timer = setTimeout(function(){ 
-                drop.tolerate( dd ); 
-            }, drop.delay );
-        // remember event, to compare idleness
-        drop.last = drop.event; 
+    };
+
+    //     Underscore.js 1.3.1
+    //     (c) 2009-2012 Jeremy Ashkenas, DocumentCloud Inc.
+    //     Underscore is freely distributable under the MIT license.
+    //     Portions of Underscore are inspired or borrowed from Prototype,
+    //     Oliver Steele's Functional, and John Resig's Micro-Templating.
+    //     For all details and documentation:
+    //     http://documentcloud.github.com/underscore
+    //
+    // Returns a function, that, as long as it continues to be invoked, will not
+    // be triggered. The function will be called after it stops being called for
+    // N milliseconds.
+    function debounce(func, wait) {
+        var timeout;
+        return function debounce_run() {
+            var context = this, args = arguments;
+            var later = function() {
+                timeout = null;
+                func.apply(context, args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
     }
-    
-};
 
-// share the same special event configuration with related events...
-$special.dropinit = $special.dropstart = $special.dropend = drop;
+    // Is a given variable an object?
+    function isObject(obj) {
+        var type = typeof obj;
+        return type === 'function' || type === 'object' && !!obj;
+    }
 
-})(jQuery); // confine scope    
-;
-return $.drop;
-  }).apply(root, arguments);
+    // Extend a given object with all the properties in passed-in object(s).
+    function extend(obj) {
+        if (!isObject(obj)) return obj;
+        var source, prop;
+        for (var i = 1, length = arguments.length; i < length; i++) {
+            source = arguments[i];
+            for (prop in source) {
+                if (hasOwnProperty.call(source, prop)) {
+                    obj[prop] = source[prop];
+                }
+            }
+        }
+        return obj;
+    }
+    // END: Taken from Underscore.js until here.
+
+    function rebaseURL(base, url) {
+        if (url.indexOf("://")!==-1 || url[0]==="/")
+            return url;
+        return base.slice(0, base.lastIndexOf("/")+1) + url;
+    }
+
+    function findLabel(input) {
+        for (var label=input.parentNode; label && label.nodeType!==11; label=label.parentNode)
+            if (label.tagName==="LABEL")
+                return label;
+
+        var $label;
+
+        if (input.id)
+            $label = $("label[for="+input.id+"]");
+        if ($label && $label.length===0 && input.form)
+            $label = $("label[for="+input.name+"]", input.form);
+        if ($label && $label.length)
+            return $label[0];
+        else
+            return null;
+    }
+
+    // Taken from http://stackoverflow.com/questions/123999/how-to-tell-if-a-dom-element-is-visible-in-the-current-viewport
+    function elementInViewport(el) {
+       var rect = el.getBoundingClientRect(),
+           docEl = document.documentElement,
+           vWidth = window.innerWidth || docEl.clientWidth,
+           vHeight = window.innerHeight || docEl.clientHeight;
+
+        if (rect.right<0 || rect.bottom<0 || rect.left>vWidth || rect.top>vHeight)
+            return false;
+        return true;
+    }
+
+    // Taken from http://stackoverflow.com/questions/3446170/escape-string-for-use-in-javascript-regex
+    function escapeRegExp(str) {
+        return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+    }
+
+    function removeWildcardClass($targets, classes) {
+        if (classes.indexOf("*")===-1)
+            $targets.removeClass(classes);
+        else {
+            var matcher = classes.replace(/[\-\[\]{}()+?.,\\\^$|#\s]/g, "\\$&");
+            matcher = matcher.replace(/[*]/g, ".*");
+            matcher = new RegExp("^" + matcher + "$");
+            $targets.filter("[class]").each(function() {
+                var $this = $(this),
+                    classes = $this.attr("class").split(/\s+/),
+                    ok=[];
+                for (var i=0; i<classes.length; i++)
+                    if (!matcher.test(classes[i]))
+                        ok.push(classes[i]);
+                if (ok.length)
+                    $this.attr("class", ok.join(" "));
+                else
+                    $this.removeAttr("class");
+            });
+        }
+    }
+
+    var transitions = {
+        none: {hide: "hide", show: "show"},
+        fade: {hide: "fadeOut", show: "fadeIn"},
+        slide: {hide: "slideUp", show: "slideDown"}
+    };
+
+    function hideOrShow($slave, visible, options, pattern_name) {
+        var duration = (options.transition==="css" || options.transition==="none") ? null : options.effect.duration;
+
+        $slave.removeClass("visible hidden in-progress");
+        var onComplete = function() {
+            $slave
+                .removeClass("in-progress")
+                .addClass(visible ? "visible" : "hidden")
+                .trigger("pat-update",
+                        {pattern: pattern_name,
+                         transition: "complete"});
+        };
+        if (!duration) {
+            if (options.transition!=="css")
+                $slave[visible ? "show" : "hide"]();
+            onComplete();
+        } else {
+            var t = transitions[options.transition];
+            $slave
+                .addClass("in-progress")
+                .trigger("pat-update",
+                        {pattern: pattern_name,
+                         transition: "start"});
+            $slave[visible ? t.show : t.hide]({
+                duration: duration,
+                easing: options.effect.easing,
+                complete: onComplete
+            });
+        }
+    }
+
+    function addURLQueryParameter(fullURL, param, value) {
+        /* Using a positive lookahead (?=\=) to find the given parameter,
+         * preceded by a ? or &, and followed by a = with a value after
+         * than (using a non-greedy selector) and then followed by
+         * a & or the end of the string.
+         *
+         * Taken from http://stackoverflow.com/questions/7640270/adding-modify-query-string-get-variables-in-a-url-with-javascript
+         */
+        var val = new RegExp('(\\?|\\&)' + param + '=.*?(?=(&|$))'),
+            parts = fullURL.toString().split('#'),
+            url = parts[0],
+            hash = parts[1],
+            qstring = /\?.+$/,
+            newURL = url;
+        // Check if the parameter exists
+        if (val.test(url)) {
+            // if it does, replace it, using the captured group
+            // to determine & or ? at the beginning
+            newURL = url.replace(val, '$1' + param + '=' + value);
+        } else if (qstring.test(url)) {
+            // otherwise, if there is a query string at all
+            // add the param to the end of it
+            newURL = url + '&' + param + '=' + value;
+        } else {
+            // if there's no query string, add one
+            newURL = url + '?' + param + '=' + value;
+        }
+        if (hash) { newURL += '#' + hash; }
+        return newURL;
+    }
+
+    var utils = {
+        // pattern pimping - own module?
+        jqueryPlugin: jqueryPlugin,
+        debounce: debounce,
+        escapeRegExp: escapeRegExp,
+        isObject: isObject,
+        extend: extend,
+        rebaseURL: rebaseURL,
+        findLabel: findLabel,
+        elementInViewport: elementInViewport,
+        removeWildcardClass: removeWildcardClass,
+        hideOrShow: hideOrShow,
+        addURLQueryParameter: addURLQueryParameter
+    };
+    return utils;
 });
-}(this));
+
+define('pat-compat',[],function() {
+
+    // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/every (JS 1.6)
+    if (!Array.prototype.every)
+    {
+        Array.prototype.every = function(fun /*, thisp */)
+        {
+            
+
+            if (this === null)
+                throw new TypeError();
+
+            var t = Object(this);
+            var len = t.length >>> 0;
+            if (typeof fun !== "function")
+                throw new TypeError();
+
+            var thisp = arguments[1];
+            for (var i = 0; i < len; i++)
+            {
+                if (i in t && !fun.call(thisp, t[i], i, t))
+                    return false;
+            }
+
+            return true;
+        };
+    }
+
+
+    // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/filter (JS 1.6)
+    if (!Array.prototype.filter) {
+        Array.prototype.filter = function(fun /*, thisp */) {
+            
+
+            if (this === null)
+                throw new TypeError();
+
+            var t = Object(this);
+            var len = t.length >>> 0;
+            if (typeof fun !== "function")
+                throw new TypeError();
+
+            var res = [];
+            var thisp = arguments[1];
+            for (var i = 0; i < len; i++)
+            {
+                if (i in t)
+                {
+                    var val = t[i]; // in case fun mutates this
+                    if (fun.call(thisp, val, i, t))
+                        res.push(val);
+                }
+            }
+
+            return res;
+        };
+    }
+
+
+    // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/forEach (JS 1.6)
+    // Production steps of ECMA-262, Edition 5, 15.4.4.18
+    // Reference: http://es5.github.com/#x15.4.4.18
+    if ( !Array.prototype.forEach ) {
+
+        Array.prototype.forEach = function( callback, thisArg ) {
+
+            var T, k;
+
+            if ( this === null ) {
+                throw new TypeError( " this is null or not defined" );
+            }
+
+            // 1. Let O be the result of calling ToObject passing the |this| value as the argument.
+            var O = Object(this);
+
+            // 2. Let lenValue be the result of calling the Get internal method of O with the argument "length".
+            // 3. Let len be ToUint32(lenValue).
+            var len = O.length >>> 0; // Hack to convert O.length to a UInt32
+
+            // 4. If IsCallable(callback) is false, throw a TypeError exception.
+            // See: http://es5.github.com/#x9.11
+            if ( {}.toString.call(callback) !== "[object Function]" ) {
+                throw new TypeError( callback + " is not a function" );
+            }
+
+            // 5. If thisArg was supplied, let T be thisArg; else let T be undefined.
+            if ( thisArg ) {
+                T = thisArg;
+            }
+
+            // 6. Let k be 0
+            k = 0;
+
+            // 7. Repeat, while k < len
+            while( k < len ) {
+
+                var kValue;
+
+                // a. Let Pk be ToString(k).
+                //   This is implicit for LHS operands of the in operator
+                // b. Let kPresent be the result of calling the HasProperty internal method of O with argument Pk.
+                //   This step can be combined with c
+                // c. If kPresent is true, then
+                if ( k in O ) {
+
+                    // i. Let kValue be the result of calling the Get internal method of O with argument Pk.
+                    kValue = O[ k ];
+
+                    // ii. Call the Call internal method of callback with T as the this value and
+                    // argument list containing kValue, k, and O.
+                    callback.call( T, kValue, k, O );
+                }
+                // d. Increase k by 1.
+                k++;
+            }
+            // 8. return undefined
+        };
+    }
+
+
+    // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/indexOf (JS 1.6)
+    if (!Array.prototype.indexOf) {
+        Array.prototype.indexOf = function (searchElement /*, fromIndex */ ) {
+            
+            if (this === null) {
+                throw new TypeError();
+            }
+            var t = Object(this);
+            var len = t.length >>> 0;
+            if (len === 0) {
+                return -1;
+            }
+            var n = 0;
+            if (arguments.length > 0) {
+                n = Number(arguments[1]);
+                if (n !== n) { // shortcut for verifying if it's NaN
+                    n = 0;
+                } else if (n !== 0 && n !== Infinity && n !== -Infinity) {
+                    n = (n > 0 || -1) * Math.floor(Math.abs(n));
+                }
+            }
+            if (n >= len) {
+                return -1;
+            }
+            var k = n >= 0 ? n : Math.max(len - Math.abs(n), 0);
+            for (; k < len; k++) {
+                if (k in t && t[k] === searchElement) {
+                    return k;
+                }
+            }
+            return -1;
+        };
+    }
+
+
+    // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/lastIndexOf (JS 1.6)
+    if (!Array.prototype.lastIndexOf) {
+        Array.prototype.lastIndexOf = function(searchElement /*, fromIndex*/) {
+            
+
+            if (this === null)
+                throw new TypeError();
+
+            var t = Object(this);
+            var len = t.length >>> 0;
+            if (len === 0)
+                return -1;
+
+            var n = len;
+            if (arguments.length > 1)
+            {
+                n = Number(arguments[1]);
+                if (n !== n)
+                    n = 0;
+                else if (n !== 0 && n !== (1 / 0) && n !== -(1 / 0))
+                    n = (n > 0 || -1) * Math.floor(Math.abs(n));
+            }
+
+            var k = n >= 0 ? Math.min(n, len - 1) : len - Math.abs(n);
+
+            for (; k >= 0; k--)
+            {
+                if (k in t && t[k] === searchElement)
+                    return k;
+            }
+            return -1;
+        };
+    }
+
+
+    // source: https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/map (JS 1.6)
+    // Production steps of ECMA-262, Edition 5, 15.4.4.19
+    // Reference: http://es5.github.com/#x15.4.4.19
+    if (!Array.prototype.map) {
+        Array.prototype.map = function(callback, thisArg) {
+
+            var T, A, k;
+
+            if (this === null) {
+                throw new TypeError(" this is null or not defined");
+            }
+
+            // 1. Let O be the result of calling ToObject passing the |this| value as the argument.
+            var O = Object(this);
+
+            // 2. Let lenValue be the result of calling the Get internal method of O with the argument "length".
+            // 3. Let len be ToUint32(lenValue).
+            var len = O.length >>> 0;
+
+            // 4. If IsCallable(callback) is false, throw a TypeError exception.
+            // See: http://es5.github.com/#x9.11
+            if ({}.toString.call(callback) !== "[object Function]") {
+                throw new TypeError(callback + " is not a function");
+            }
+
+            // 5. If thisArg was supplied, let T be thisArg; else let T be undefined.
+            if (thisArg) {
+                T = thisArg;
+            }
+
+            // 6. Let A be a new array created as if by the expression new Array(len) where Array is
+            // the standard built-in constructor with that name and len is the value of len.
+            A = new Array(len);
+
+            // 7. Let k be 0
+            k = 0;
+
+            // 8. Repeat, while k < len
+            while(k < len) {
+
+                var kValue, mappedValue;
+
+                // a. Let Pk be ToString(k).
+                //   This is implicit for LHS operands of the in operator
+                // b. Let kPresent be the result of calling the HasProperty internal method of O with argument Pk.
+                //   This step can be combined with c
+                // c. If kPresent is true, then
+                if (k in O) {
+
+                    // i. Let kValue be the result of calling the Get internal method of O with argument Pk.
+                    kValue = O[ k ];
+
+                    // ii. Let mappedValue be the result of calling the Call internal method of callback
+                    // with T as the this value and argument list containing kValue, k, and O.
+                    mappedValue = callback.call(T, kValue, k, O);
+
+                    // iii. Call the DefineOwnProperty internal method of A with arguments
+                    // Pk, Property Descriptor {Value: mappedValue, Writable: true, Enumerable: true, Configurable: true},
+                    // and false.
+
+                    // In browsers that support Object.defineProperty, use the following:
+                    // Object.defineProperty(A, Pk, { value: mappedValue, writable: true, enumerable: true, configurable: true });
+
+                    // For best browser support, use the following:
+                    A[ k ] = mappedValue;
+                }
+                // d. Increase k by 1.
+                k++;
+            }
+
+            // 9. return A
+            return A;
+        };
+    }
+
+
+    // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/Reduce (JS 1.8)
+    if (!Array.prototype.reduce) {
+        Array.prototype.reduce = function reduce(accumulator){
+            if (this===null || this===undefined) throw new TypeError("Object is null or undefined");
+            var i = 0, l = this.length >> 0, curr;
+
+            if(typeof accumulator !== "function") // ES5 : "If IsCallable(callbackfn) is false, throw a TypeError exception."
+                throw new TypeError("First argument is not callable");
+
+            if(arguments.length < 2) {
+                if (l === 0) throw new TypeError("Array length is 0 and no second argument");
+                curr = this[0];
+                i = 1; // start accumulating at the second element
+            }
+            else
+                curr = arguments[1];
+
+            while (i < l) {
+                if(i in this) curr = accumulator.call(undefined, curr, this[i], i, this);
+                ++i;
+            }
+
+            return curr;
+        };
+    }
+
+
+    // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/ReduceRight (JS 1.8)
+    if (!Array.prototype.reduceRight)
+    {
+        Array.prototype.reduceRight = function(callbackfn /*, initialValue */)
+        {
+            
+
+            if (this === null)
+                throw new TypeError();
+
+            var t = Object(this);
+            var len = t.length >>> 0;
+            if (typeof callbackfn !== "function")
+                throw new TypeError();
+
+            // no value to return if no initial value, empty array
+            if (len === 0 && arguments.length === 1)
+                throw new TypeError();
+
+            var k = len - 1;
+            var accumulator;
+            if (arguments.length >= 2)
+            {
+                accumulator = arguments[1];
+            }
+            else
+            {
+                do
+                {
+                    if (k in this)
+                    {
+                        accumulator = this[k--];
+                        break;
+                    }
+
+                    // if array contains no values, no initial value to return
+                    if (--k < 0)
+                        throw new TypeError();
+                }
+                while (true);
+            }
+
+            while (k >= 0)
+            {
+                if (k in t)
+                    accumulator = callbackfn.call(undefined, accumulator, t[k], k, t);
+                k--;
+            }
+
+            return accumulator;
+        };
+    }
+
+
+    // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/some (JS 1.6)
+    if (!Array.prototype.some)
+    {
+        Array.prototype.some = function(fun /*, thisp */)
+        {
+            
+
+            if (this === null)
+                throw new TypeError();
+
+            var t = Object(this);
+            var len = t.length >>> 0;
+            if (typeof fun !== "function")
+                throw new TypeError();
+
+            var thisp = arguments[1];
+            for (var i = 0; i < len; i++)
+            {
+                if (i in t && fun.call(thisp, t[i], i, t))
+                    return true;
+            }
+
+            return false;
+        };
+    }
+
+
+    // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/isArray (JS 1.8.5)
+    if (!Array.isArray) {
+        Array.isArray = function (arg) {
+            return Object.prototype.toString.call(arg) === "[object Array]";
+        };
+    }
+
+    // source: https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String/Trim (JS 1.8.1)
+    if (!String.prototype.trim) {
+        String.prototype.trim = function () {
+            return this.replace(/^\s+|\s+$/g, "");
+        };
+    }
+
+    // source: https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Function/bind
+    if (!Function.prototype.bind) {
+        Function.prototype.bind = function (oThis) {
+            if (typeof this !== "function") {
+                // closest thing possible to the ECMAScript 5 internal IsCallable function
+                throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
+            }
+
+            var aArgs = Array.prototype.slice.call(arguments, 1),
+                fToBind = this,
+                fNOP = function () {},
+                fBound = function () {
+                    return fToBind.apply(this instanceof fNOP &&
+                            oThis ? this : oThis,
+                            aArgs.concat(Array.prototype.slice.call(arguments)));
+                };
+            fNOP.prototype = this.prototype;
+            fBound.prototype = new fNOP();
+
+            return fBound;
+        };
+    }
+
+    // https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Object/keys
+    if (!Object.keys) {
+        Object.keys = (function () {
+            var _hasOwnProperty = Object.prototype.hasOwnProperty,
+            hasDontEnumBug = !({toString: null}).propertyIsEnumerable("toString"),
+            dontEnums = [
+            "toString",
+            "toLocaleString",
+            "valueOf",
+            "hasOwnProperty",
+            "isPrototypeOf",
+            "propertyIsEnumerable",
+            "constructor"
+            ],
+            dontEnumsLength = dontEnums.length;
+
+            return function (obj) {
+                if (typeof obj !== "object" && typeof obj !== "function" || obj === null)
+                    throw new TypeError("Object.keys called on non-object");
+
+                var result = [];
+                for (var prop in obj)
+                    if (_hasOwnProperty.call(obj, prop))
+                        result.push(prop);
+
+                if (hasDontEnumBug)
+                    for (var i=0; i < dontEnumsLength; i++)
+                        if (_hasOwnProperty.call(obj, dontEnums[i]))
+                            result.push(dontEnums[i]);
+                return result;
+            };
+        })();
+    }
+});
+
+/**
+ * @license
+ * Patterns @VERSION@ jquery-ext - various jQuery extensions
+ *
+ * Copyright 2011 Humberto Sermeño
+ */
+define('pat-jquery-ext',["jquery"], function($) {
+    var methods = {
+        init: function( options ) {
+            var settings = {
+                time: 3, /* time it will wait before moving to "timeout" after a move event */
+                initialTime: 8, /* time it will wait before first adding the "timeout" class */
+                exceptionAreas: [] /* IDs of elements that, if the mouse is over them, will reset the timer */
+            };
+            return this.each(function() {
+                var $this = $(this),
+                    data = $this.data("timeout");
+
+                if (!data) {
+                    if ( options ) {
+                        $.extend( settings, options );
+                    }
+                    $this.data("timeout", {
+                        "lastEvent": new Date(),
+                        "trueTime": settings.time,
+                        "time": settings.initialTime,
+                        "untouched": true,
+                        "inExceptionArea": false
+                    });
+
+                    $this.bind( "mouseover.timeout", methods.mouseMoved );
+                    $this.bind( "mouseenter.timeout", methods.mouseMoved );
+
+                    $(settings.exceptionAreas).each(function() {
+                        $this.find(this)
+                            .live( "mouseover.timeout", {"parent":$this}, methods.enteredException )
+                            .live( "mouseleave.timeout", {"parent":$this}, methods.leftException );
+                    });
+
+                    if (settings.initialTime > 0)
+                        $this.timeout("startTimer");
+                    else
+                        $this.addClass("timeout");
+                }
+            });
+        },
+
+        enteredException: function(event) {
+            var data = event.data.parent.data("timeout");
+            data.inExceptionArea = true;
+            event.data.parent.data("timeout", data);
+            event.data.parent.trigger("mouseover");
+        },
+
+        leftException: function(event) {
+            var data = event.data.parent.data("timeout");
+            data.inExceptionArea = false;
+            event.data.parent.data("timeout", data);
+        },
+
+        destroy: function() {
+            return this.each( function() {
+                var $this = $(this),
+                    data = $this.data("timeout");
+
+                $(window).unbind(".timeout");
+                data.timeout.remove();
+                $this.removeData("timeout");
+            });
+        },
+
+        mouseMoved: function() {
+            var $this = $(this), data = $this.data("timeout");
+
+            if ($this.hasClass("timeout")) {
+                $this.removeClass("timeout");
+                $this.timeout("startTimer");
+            } else if ( data.untouched ) {
+                data.untouched = false;
+                data.time = data.trueTime;
+            }
+
+            data.lastEvent = new Date();
+            $this.data("timeout", data);
+        },
+
+        startTimer: function() {
+            var $this = $(this), data = $this.data("timeout");
+            var fn = function(){
+                var data = $this.data("timeout");
+                if ( data && data.lastEvent ) {
+                    if ( data.inExceptionArea ) {
+                        setTimeout( fn, Math.floor( data.time*1000 ) );
+                    } else {
+                        var now = new Date();
+                        var diff = Math.floor(data.time*1000) - ( now - data.lastEvent );
+                        if ( diff > 0 ) {
+                            // the timeout has not ocurred, so set the timeout again
+                            setTimeout( fn, diff+100 );
+                        } else {
+                            // timeout ocurred, so set the class
+                            $this.addClass("timeout");
+                        }
+                    }
+                }
+            };
+
+            setTimeout( fn, Math.floor( data.time*1000 ) );
+        }
+    };
+
+    $.fn.timeout = function( method ) {
+        if ( methods[method] ) {
+            return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
+        } else if ( typeof method === "object" || !method ) {
+            return methods.init.apply( this, arguments );
+        } else {
+            $.error( "Method " + method + " does not exist on jQuery.timeout" );
+        }
+    };
+
+    // Custom jQuery selector to find elements with scrollbars
+    $.extend($.expr[":"], {
+        scrollable: function(element) {
+            var vertically_scrollable, horizontally_scrollable;
+            if ($(element).css("overflow") === "scroll" ||
+                $(element).css("overflowX") === "scroll" ||
+                $(element).css("overflowY") === "scroll")
+                return true;
+
+            vertically_scrollable = (element.clientHeight < element.scrollHeight) && (
+                $.inArray($(element).css("overflowY"), ["scroll", "auto"]) !== -1 || $.inArray($(element).css("overflow"), ["scroll", "auto"]) !== -1);
+
+            if (vertically_scrollable)
+                return true;
+
+            horizontally_scrollable = (element.clientWidth < element.scrollWidth) && (
+                $.inArray($(element).css("overflowX"), ["scroll", "auto"]) !== -1 || $.inArray($(element).css("overflow"), ["scroll", "auto"]) !== -1);
+            return horizontally_scrollable;
+        }
+    });
+
+    // Make Visible in scroll
+    $.fn.makeVisibleInScroll = function( parent_id ) {
+        var absoluteParent = null;
+        if ( typeof parent_id === "string" ) {
+            absoluteParent = $("#" + parent_id);
+        } else if ( parent_id ) {
+            absoluteParent = $(parent_id);
+        }
+
+        return this.each(function() {
+            var $this = $(this), parent;
+            if (!absoluteParent) {
+                parent = $this.parents(":scrollable");
+                if (parent.length > 0) {
+                    parent = $(parent[0]);
+                } else {
+                    parent = $(window);
+                }
+            } else {
+                parent = absoluteParent;
+            }
+
+            var elemTop = $this.position().top;
+            var elemBottom = $this.height() + elemTop;
+
+            var viewTop = parent.scrollTop();
+            var viewBottom = parent.height() + viewTop;
+
+            if (elemTop < viewTop) {
+                parent.scrollTop(elemTop);
+            } else if ( elemBottom > viewBottom - parent.height()/2 ) {
+                parent.scrollTop( elemTop - (parent.height() - $this.height())/2 );
+            }
+        });
+    };
+
+    //Make absolute location
+    $.fn.setPositionAbsolute = function(element,offsettop,offsetleft) {
+        return this.each(function() {
+            // set absolute location for based on the element passed
+            // dynamically since every browser has different settings
+            var $this = $(this);
+            var thiswidth = $(this).width();
+            var    pos   = element.offset();
+            var    width = element.width();
+            var    height = element.height();
+            var setleft = (pos.left + width - thiswidth + offsetleft);
+            var settop = (pos.top + height + offsettop);
+            $this.css({ "z-index" : 1, "position": "absolute", "marginLeft": 0, "marginTop": 0, "left": setleft + "px", "top":settop + "px" ,"width":thiswidth});
+            $this.remove().appendTo("body").show();
+        });
+    };
+
+    $.fn.positionAncestor = function(selector) {
+        var left = 0;
+        var top = 0;
+        this.each(function() {
+            // check if current element has an ancestor matching a selector
+            // and that ancestor is positioned
+            var $ancestor = $(this).closest(selector);
+            if ($ancestor.length && $ancestor.css("position") !== "static") {
+                var $child = $(this);
+                var childMarginEdgeLeft = $child.offset().left - parseInt($child.css("marginLeft"), 10);
+                var childMarginEdgeTop = $child.offset().top - parseInt($child.css("marginTop"), 10);
+                var ancestorPaddingEdgeLeft = $ancestor.offset().left + parseInt($ancestor.css("borderLeftWidth"), 10);
+                var ancestorPaddingEdgeTop = $ancestor.offset().top + parseInt($ancestor.css("borderTopWidth"), 10);
+                left = childMarginEdgeLeft - ancestorPaddingEdgeLeft;
+                top = childMarginEdgeTop - ancestorPaddingEdgeTop;
+                // we have found the ancestor and computed the position
+                // stop iterating
+                return false;
+            }
+        });
+        return {
+            left:    left,
+            top:    top
+        };
+    };
+
+
+    // XXX: In compat.js we include things for browser compatibility,
+    // but these two seem to be only convenience. Do we really want to
+    // include these as part of patterns?
+    String.prototype.startsWith = function(str) { return (this.match("^"+str) !== null); };
+    String.prototype.endsWith = function(str) { return (this.match(str+"$") !== null); };
+
+
+    /******************************
+
+     Simple Placeholder
+
+     ******************************/
+
+    $.simplePlaceholder = {
+        placeholder_class: null,
+
+        hide_placeholder: function(){
+            var $this = $(this);
+            if($this.val() === $this.attr("placeholder")){
+                $this.val("").removeClass($.simplePlaceholder.placeholder_class);
+            }
+        },
+
+        show_placeholder: function(){
+            var $this = $(this);
+            if($this.val() === ""){
+                $this.val($this.attr("placeholder")).addClass($.simplePlaceholder.placeholder_class);
+            }
+        },
+
+        prevent_placeholder_submit: function(){
+            $(this).find(".simple-placeholder").each(function() {
+                var $this = $(this);
+                if ($this.val() === $this.attr("placeholder")){
+                    $this.val("");
+                }
+            });
+            return true;
+        }
+    };
+
+    $.fn.simplePlaceholder = function(options) {
+        if(document.createElement("input").placeholder === undefined){
+            var config = {
+                placeholder_class : "placeholding"
+            };
+
+            if(options) $.extend(config, options);
+            $.simplePlaceholder.placeholder_class = config.placeholder_class;
+
+            this.each(function() {
+                var $this = $(this);
+                $this.focus($.simplePlaceholder.hide_placeholder);
+                $this.blur($.simplePlaceholder.show_placeholder);
+                if($this.val() === "") {
+                    $this.val($this.attr("placeholder"));
+                    $this.addClass($.simplePlaceholder.placeholder_class);
+                }
+                $this.addClass("simple-placeholder");
+                $(this.form).submit($.simplePlaceholder.prevent_placeholder_submit);
+            });
+        }
+
+        return this;
+    };
+
+    $.fn.findInclusive = function(selector) {
+        return this.find('*').addBack().filter(selector);
+    };
+
+    $.fn.slideIn = function(speed, easing, callback) {
+        return this.animate({width: "show"}, speed, easing, callback);
+    };
+
+    $.fn.slideOut = function(speed, easing, callback) {
+        return this.animate({width: "hide"}, speed, easing, callback);
+    };
+
+    // case-insensitive :contains
+    $.expr[":"].Contains = function(a, i, m) {
+        return $(a).text().toUpperCase().indexOf(m[3].toUpperCase()) >= 0;
+    };
+
+    $.fn.scopedFind = function (selector) {
+        /*  If the selector starts with an object id do a global search,
+         *  otherwise do a local search.
+         */
+        if (selector.startsWith('#')) {
+            return $(selector);
+        } else {
+            return this.find(selector);
+        }
+    };
+});
 
 (function(root) {
 define("jquery.event.drag", ["jquery"], function() {
@@ -12123,6 +11144,453 @@ $special.draginit = $special.dragstart = $special.dragend = drag;
   }).apply(root, arguments);
 });
 }(this));
+
+(function(root) {
+define("jquery.event.drop", ["jquery"], function() {
+  return (function() {
+/*! 
+ * jquery.event.drop - v 2.2
+ * Copyright (c) 2010 Three Dub Media - http://threedubmedia.com
+ * Open Source MIT License - http://threedubmedia.com/code/license
+ */
+// Created: 2008-06-04 
+// Updated: 2012-05-21
+// REQUIRES: jquery 1.7.x, event.drag 2.2
+
+;(function($){ // secure $ jQuery alias
+
+// Events: drop, dropstart, dropend
+
+// add the jquery instance method
+$.fn.drop = function( str, arg, opts ){
+    // figure out the event type
+    var type = typeof str == "string" ? str : "",
+    // figure out the event handler...
+    fn = $.isFunction( str ) ? str : $.isFunction( arg ) ? arg : null;
+    // fix the event type
+    if ( type.indexOf("drop") !== 0 ) 
+        type = "drop"+ type;
+    // were options passed
+    opts = ( str == fn ? arg : opts ) || {};
+    // trigger or bind event handler
+    return fn ? this.bind( type, opts, fn ) : this.trigger( type );
+};
+
+// DROP MANAGEMENT UTILITY
+// returns filtered drop target elements, caches their positions
+$.drop = function( opts ){ 
+    opts = opts || {};
+    // safely set new options...
+    drop.multi = opts.multi === true ? Infinity : 
+        opts.multi === false ? 1 : !isNaN( opts.multi ) ? opts.multi : drop.multi;
+    drop.delay = opts.delay || drop.delay;
+    drop.tolerance = $.isFunction( opts.tolerance ) ? opts.tolerance : 
+        opts.tolerance === null ? null : drop.tolerance;
+    drop.mode = opts.mode || drop.mode || 'intersect';
+};
+
+// local refs (increase compression)
+var $event = $.event, 
+$special = $event.special,
+// configure the drop special event
+drop = $.event.special.drop = {
+
+    // these are the default settings
+    multi: 1, // allow multiple drop winners per dragged element
+    delay: 20, // async timeout delay
+    mode: 'overlap', // drop tolerance mode
+        
+    // internal cache
+    targets: [], 
+    
+    // the key name for stored drop data
+    datakey: "dropdata",
+        
+    // prevent bubbling for better performance
+    noBubble: true,
+    
+    // count bound related events
+    add: function( obj ){ 
+        // read the interaction data
+        var data = $.data( this, drop.datakey );
+        // count another realted event
+        data.related += 1;
+    },
+    
+    // forget unbound related events
+    remove: function(){
+        $.data( this, drop.datakey ).related -= 1;
+    },
+    
+    // configure the interactions
+    setup: function(){
+        // check for related events
+        if ( $.data( this, drop.datakey ) ) 
+            return;
+        // initialize the drop element data
+        var data = { 
+            related: 0,
+            active: [],
+            anyactive: 0,
+            winner: 0,
+            location: {}
+        };
+        // store the drop data on the element
+        $.data( this, drop.datakey, data );
+        // store the drop target in internal cache
+        drop.targets.push( this );
+    },
+    
+    // destroy the configure interaction    
+    teardown: function(){ 
+        var data = $.data( this, drop.datakey ) || {};
+        // check for related events
+        if ( data.related ) 
+            return;
+        // remove the stored data
+        $.removeData( this, drop.datakey );
+        // reference the targeted element
+        var element = this;
+        // remove from the internal cache
+        drop.targets = $.grep( drop.targets, function( target ){ 
+            return ( target !== element ); 
+        });
+    },
+    
+    // shared event handler
+    handler: function( event, dd ){ 
+        // local vars
+        var results, $targets;
+        // make sure the right data is available
+        if ( !dd ) 
+            return;
+        // handle various events
+        switch ( event.type ){
+            // draginit, from $.event.special.drag
+            case 'mousedown': // DROPINIT >>
+            case 'touchstart': // DROPINIT >>
+                // collect and assign the drop targets
+                $targets =  $( drop.targets );
+                if ( typeof dd.drop == "string" )
+                    $targets = $targets.filter( dd.drop );
+                // reset drop data winner properties
+                $targets.each(function(){
+                    var data = $.data( this, drop.datakey );
+                    data.active = [];
+                    data.anyactive = 0;
+                    data.winner = 0;
+                });
+                // set available target elements
+                dd.droppable = $targets;
+                // activate drop targets for the initial element being dragged
+                $special.drag.hijack( event, "dropinit", dd ); 
+                break;
+            // drag, from $.event.special.drag
+            case 'mousemove': // TOLERATE >>
+            case 'touchmove': // TOLERATE >>
+                drop.event = event; // store the mousemove event
+                if ( !drop.timer )
+                    // monitor drop targets
+                    drop.tolerate( dd ); 
+                break;
+            // dragend, from $.event.special.drag
+            case 'mouseup': // DROP >> DROPEND >>
+            case 'touchend': // DROP >> DROPEND >>
+                drop.timer = clearTimeout( drop.timer ); // delete timer    
+                if ( dd.propagates ){
+                    $special.drag.hijack( event, "drop", dd ); 
+                    $special.drag.hijack( event, "dropend", dd ); 
+                }
+                break;
+                
+        }
+    },
+        
+    // returns the location positions of an element
+    locate: function( elem, index ){ 
+        var data = $.data( elem, drop.datakey ),
+        $elem = $( elem ), 
+        posi = $elem.offset() || {}, 
+        height = $elem.outerHeight(), 
+        width = $elem.outerWidth(),
+        location = { 
+            elem: elem, 
+            width: width, 
+            height: height,
+            top: posi.top, 
+            left: posi.left, 
+            right: posi.left + width, 
+            bottom: posi.top + height
+        };
+        // drag elements might not have dropdata
+        if ( data ){
+            data.location = location;
+            data.index = index;
+            data.elem = elem;
+        }
+        return location;
+    },
+    
+    // test the location positions of an element against another OR an X,Y coord
+    contains: function( target, test ){ // target { location } contains test [x,y] or { location }
+        return ( ( test[0] || test.left ) >= target.left && ( test[0] || test.right ) <= target.right
+            && ( test[1] || test.top ) >= target.top && ( test[1] || test.bottom ) <= target.bottom ); 
+    },
+    
+    // stored tolerance modes
+    modes: { // fn scope: "$.event.special.drop" object 
+        // target with mouse wins, else target with most overlap wins
+        'intersect': function( event, proxy, target ){
+            return this.contains( target, [ event.pageX, event.pageY ] ) ? // check cursor
+                1e9 : this.modes.overlap.apply( this, arguments ); // check overlap
+        },
+        // target with most overlap wins    
+        'overlap': function( event, proxy, target ){
+            // calculate the area of overlap...
+            return Math.max( 0, Math.min( target.bottom, proxy.bottom ) - Math.max( target.top, proxy.top ) )
+                * Math.max( 0, Math.min( target.right, proxy.right ) - Math.max( target.left, proxy.left ) );
+        },
+        // proxy is completely contained within target bounds   
+        'fit': function( event, proxy, target ){
+            return this.contains( target, proxy ) ? 1 : 0;
+        },
+        // center of the proxy is contained within target bounds    
+        'middle': function( event, proxy, target ){
+            return this.contains( target, [ proxy.left + proxy.width * .5, proxy.top + proxy.height * .5 ] ) ? 1 : 0;
+        }
+    },  
+    
+    // sort drop target cache by by winner (dsc), then index (asc)
+    sort: function( a, b ){
+        return ( b.winner - a.winner ) || ( a.index - b.index );
+    },
+        
+    // async, recursive tolerance execution
+    tolerate: function( dd ){       
+        // declare local refs
+        var i, drp, drg, data, arr, len, elem,
+        // interaction iteration variables
+        x = 0, ia, end = dd.interactions.length,
+        // determine the mouse coords
+        xy = [ drop.event.pageX, drop.event.pageY ],
+        // custom or stored tolerance fn
+        tolerance = drop.tolerance || drop.modes[ drop.mode ];
+        // go through each passed interaction...
+        do if ( ia = dd.interactions[x] ){
+            // check valid interaction
+            if ( !ia )
+                return; 
+            // initialize or clear the drop data
+            ia.drop = [];
+            // holds the drop elements
+            arr = []; 
+            len = ia.droppable.length;
+            // determine the proxy location, if needed
+            if ( tolerance )
+                drg = drop.locate( ia.proxy ); 
+            // reset the loop
+            i = 0;
+            // loop each stored drop target
+            do if ( elem = ia.droppable[i] ){ 
+                data = $.data( elem, drop.datakey );
+                drp = data.location;
+                if ( !drp ) continue;
+                // find a winner: tolerance function is defined, call it
+                data.winner = tolerance ? tolerance.call( drop, drop.event, drg, drp ) 
+                    // mouse position is always the fallback
+                    : drop.contains( drp, xy ) ? 1 : 0; 
+                arr.push( data );   
+            } while ( ++i < len ); // loop 
+            // sort the drop targets
+            arr.sort( drop.sort );          
+            // reset the loop
+            i = 0;
+            // loop through all of the targets again
+            do if ( data = arr[ i ] ){
+                // winners...
+                if ( data.winner && ia.drop.length < drop.multi ){
+                    // new winner... dropstart
+                    if ( !data.active[x] && !data.anyactive ){
+                        // check to make sure that this is not prevented
+                        if ( $special.drag.hijack( drop.event, "dropstart", dd, x, data.elem )[0] !== false ){  
+                            data.active[x] = 1;
+                            data.anyactive += 1;
+                        }
+                        // if false, it is not a winner
+                        else
+                            data.winner = 0;
+                    }
+                    // if it is still a winner
+                    if ( data.winner )
+                        ia.drop.push( data.elem );
+                }
+                // losers... 
+                else if ( data.active[x] && data.anyactive == 1 ){
+                    // former winner... dropend
+                    $special.drag.hijack( drop.event, "dropend", dd, x, data.elem ); 
+                    data.active[x] = 0;
+                    data.anyactive -= 1;
+                }
+            } while ( ++i < len ); // loop      
+        } while ( ++x < end ) // loop
+        // check if the mouse is still moving or is idle
+        if ( drop.last && xy[0] == drop.last.pageX && xy[1] == drop.last.pageY ) 
+            delete drop.timer; // idle, don't recurse
+        else  // recurse
+            drop.timer = setTimeout(function(){ 
+                drop.tolerate( dd ); 
+            }, drop.delay );
+        // remember event, to compare idleness
+        drop.last = drop.event; 
+    }
+    
+};
+
+// share the same special event configuration with related events...
+$special.dropinit = $special.dropstart = $special.dropend = drop;
+
+})(jQuery); // confine scope    
+;
+return $.drop;
+  }).apply(root, arguments);
+});
+}(this));
+
+/* i18n integration. This is forked from jarn.jsi18n
+ *
+ * This is a singleton.
+ * Configuration is done on the body tag data-i18ncatalogurl attribute
+ *     <body data-i18ncatalogurl="/plonejsi18n">
+ *
+ *  Or, it'll default to "/plonejsi18n"
+ */
+
+/* global portal_url:true */
+
+
+define('mockup-i18n',[
+  'jquery'
+], function($) {
+  
+
+  var I18N = function() {
+    var self = this;
+
+    self.baseUrl = $('body').attr('data-i18ncatalogurl');
+    if (!self.baseUrl) {
+      self.baseUrl = '/plonejsi18n';
+    }
+    self.currentLanguage = $('html').attr('lang') || 'en';
+    self.storage = null;
+    self.catalogs = {};
+    self.ttl = 24 * 3600 * 1000;
+
+    // Internet Explorer 8 does not know Date.now() which is used in e.g. loadCatalog, so we "define" it
+    if (!Date.now) {
+      Date.now = function() {
+        return new Date().valueOf();
+      };
+    }
+
+    try {
+      if ('localStorage' in window && window.localStorage !== null && 'JSON' in window && window.JSON !== null) {
+        self.storage = window.localStorage;
+      }
+    } catch (e) {}
+
+    self.configure = function(config) {
+      for (var key in config){
+        self[key] = config[key];
+      }
+    };
+
+    self._setCatalog = function (domain, language, catalog) {
+      if (domain in self.catalogs) {
+        self.catalogs[domain][language] = catalog;
+      } else {
+        self.catalogs[domain] = {};
+        self.catalogs[domain][language] = catalog;
+      }
+    };
+
+    self._storeCatalog = function (domain, language, catalog) {
+      var key = domain + '-' + language;
+      if (self.storage !== null && catalog !== null) {
+        self.storage.setItem(key, JSON.stringify(catalog));
+        self.storage.setItem(key + '-updated', Date.now());
+      }
+    };
+
+    self.getUrl = function(domain, language) {
+      return self.baseUrl + '?domain=' + domain + '&language=' + language;
+    };
+
+    self.loadCatalog = function (domain, language) {
+      if (language === undefined) {
+        language = self.currentLanguage;
+      }
+      if (self.storage !== null) {
+        var key = domain + '-' + language;
+        if (key in self.storage) {
+          if ((Date.now() - parseInt(self.storage.getItem(key + '-updated'), 10)) < self.ttl) {
+            var catalog = JSON.parse(self.storage.getItem(key));
+            self._setCatalog(domain, language, catalog);
+            return;
+          }
+        }
+      }
+      $.getJSON(self.getUrl(domain, language), function (catalog) {
+        if (catalog === null) {
+          return;
+        }
+        self._setCatalog(domain, language, catalog);
+        self._storeCatalog(domain, language, catalog);
+      });
+    };
+
+    self.MessageFactory = function (domain, language) {
+      language = language || self.currentLanguage;
+
+      return function translate (msgid, keywords) {
+        var msgstr;
+        if ((domain in self.catalogs) && (language in self.catalogs[domain]) && (msgid in self.catalogs[domain][language])) {
+          msgstr = self.catalogs[domain][language][msgid];
+        } else {
+          msgstr = msgid;
+        }
+        if (keywords) {
+          var regexp, keyword;
+          for (keyword in keywords) {
+            if (keywords.hasOwnProperty(keyword)) {
+              regexp = new RegExp('\\$\\{' + keyword + '\\}', 'g');
+              msgstr = msgstr.replace(regexp, keywords[keyword]);
+            }
+          }
+        }
+        return msgstr;
+      };
+    };
+  };
+
+  return new I18N();
+});
+
+/* i18n integration.
+ *
+ * This is a singleton.
+ * Configuration is done on the body tag data-i18ncatalogurl attribute
+ *     <body data-i18ncatalogurl="/plonejsi18n">
+ *
+ *  Or, it'll default to "/plonejsi18n"
+ */
+
+define('translate',[
+  'mockup-i18n'
+], function(i18n) {
+  
+  i18n.loadCatalog('widgets');
+  return i18n.MessageFactory('widgets');
+});
 
 (function(root) {
 define("jqtree", ["jquery"], function() {
@@ -15214,1172 +14682,6 @@ define("jqtree", ["jquery"], function() {
 });
 }(this));
 
-/* i18n integration. This is forked from jarn.jsi18n
- *
- * This is a singleton.
- * Configuration is done on the body tag data-i18ncatalogurl attribute
- *     <body data-i18ncatalogurl="/plonejsi18n">
- *
- *  Or, it'll default to "/plonejsi18n"
- */
-
-/* global portal_url:true */
-
-
-define('mockup-i18n',[
-  'jquery'
-], function($) {
-  
-
-  var I18N = function() {
-    var self = this;
-
-    self.baseUrl = $('body').attr('data-i18ncatalogurl');
-    if (!self.baseUrl) {
-      self.baseUrl = '/plonejsi18n';
-    }
-    self.currentLanguage = $('html').attr('lang') || 'en';
-    self.storage = null;
-    self.catalogs = {};
-    self.ttl = 24 * 3600 * 1000;
-
-    // Internet Explorer 8 does not know Date.now() which is used in e.g. loadCatalog, so we "define" it
-    if (!Date.now) {
-      Date.now = function() {
-        return new Date().valueOf();
-      };
-    }
-
-    try {
-      if ('localStorage' in window && window.localStorage !== null && 'JSON' in window && window.JSON !== null) {
-        self.storage = window.localStorage;
-      }
-    } catch (e) {}
-
-    self.configure = function(config) {
-      for (var key in config){
-        self[key] = config[key];
-      }
-    };
-
-    self._setCatalog = function (domain, language, catalog) {
-      if (domain in self.catalogs) {
-        self.catalogs[domain][language] = catalog;
-      } else {
-        self.catalogs[domain] = {};
-        self.catalogs[domain][language] = catalog;
-      }
-    };
-
-    self._storeCatalog = function (domain, language, catalog) {
-      var key = domain + '-' + language;
-      if (self.storage !== null && catalog !== null) {
-        self.storage.setItem(key, JSON.stringify(catalog));
-        self.storage.setItem(key + '-updated', Date.now());
-      }
-    };
-
-    self.getUrl = function(domain, language) {
-      return self.baseUrl + '?domain=' + domain + '&language=' + language;
-    };
-
-    self.loadCatalog = function (domain, language) {
-      if (language === undefined) {
-        language = self.currentLanguage;
-      }
-      if (self.storage !== null) {
-        var key = domain + '-' + language;
-        if (key in self.storage) {
-          if ((Date.now() - parseInt(self.storage.getItem(key + '-updated'), 10)) < self.ttl) {
-            var catalog = JSON.parse(self.storage.getItem(key));
-            self._setCatalog(domain, language, catalog);
-            return;
-          }
-        }
-      }
-      $.getJSON(self.getUrl(domain, language), function (catalog) {
-        if (catalog === null) {
-          return;
-        }
-        self._setCatalog(domain, language, catalog);
-        self._storeCatalog(domain, language, catalog);
-      });
-    };
-
-    self.MessageFactory = function (domain, language) {
-      language = language || self.currentLanguage;
-
-      return function translate (msgid, keywords) {
-        var msgstr;
-        if ((domain in self.catalogs) && (language in self.catalogs[domain]) && (msgid in self.catalogs[domain][language])) {
-          msgstr = self.catalogs[domain][language][msgid];
-        } else {
-          msgstr = msgid;
-        }
-        if (keywords) {
-          var regexp, keyword;
-          for (keyword in keywords) {
-            if (keywords.hasOwnProperty(keyword)) {
-              regexp = new RegExp('\\$\\{' + keyword + '\\}', 'g');
-              msgstr = msgstr.replace(regexp, keywords[keyword]);
-            }
-          }
-        }
-        return msgstr;
-      };
-    };
-  };
-
-  return new I18N();
-});
-
-/* i18n integration.
- *
- * This is a singleton.
- * Configuration is done on the body tag data-i18ncatalogurl attribute
- *     <body data-i18ncatalogurl="/plonejsi18n">
- *
- *  Or, it'll default to "/plonejsi18n"
- */
-
-define('translate',[
-  'mockup-i18n'
-], function(i18n) {
-  
-  i18n.loadCatalog('widgets');
-  return i18n.MessageFactory('widgets');
-});
-
-define('pat-utils',[
-    "jquery"
-], function($) {
-
-    var singleBoundJQueryPlugin = function (pattern, method, options) {
-        /* This is a jQuery plugin for patterns which are invoked ONCE FOR EACH
-         * matched element in the DOM.
-         *
-         * This is how the Mockup-type patterns behave. They are constructor
-         * functions which need to be invoked once per jQuery-wrapped DOM node
-         * for all DOM nodes on which the pattern applies.
-         */
-        var $this = this;
-        $this.each(function() {
-            var pat, $el = $(this);
-            pat = pattern.init($el, options);
-            if (method) {
-                if (pat[method] === undefined) {
-                    $.error("Method " + method +
-                            " does not exist on jQuery." + pattern.name);
-                    return false;
-                }
-                if (method.charAt(0) === '_') {
-                    $.error("Method " + method +
-                            " is private on jQuery." + pattern.name);
-                    return false;
-                }
-                pat[method].apply(pat, [options]);
-            }
-        });
-        return $this;
-    };
-
-    var pluralBoundJQueryPlugin = function (pattern, method, options) {
-        /* This is a jQuery plugin for patterns which are invoked ONCE FOR ALL
-         * matched elements in the DOM.
-         *
-         * This is how the vanilla Patternslib-type patterns behave. They are
-         * simple objects with an init method and this method gets called once
-         * with a list of jQuery-wrapped DOM nodes on which the pattern
-         * applies.
-         */
-        var $this = this;
-        if (method) {
-            if (pattern[method]) {
-                return pattern[method].apply($this, [$this].concat([options]));
-            } else {
-                $.error("Method " + method +
-                        " does not exist on jQuery." + pattern.name);
-            }
-        } else {
-            pattern.init.apply($this, [$this].concat([options]));
-        }
-        return $this;
-    };
-
-    var jqueryPlugin = function(pattern) {
-        return function(method, options) {
-            var $this = this;
-            if ($this.length === 0) {
-                return $this;
-            }
-            if (typeof method === 'object') {
-                options = method;
-                method = undefined;
-            }
-            if (typeof pattern === "function") {
-                return singleBoundJQueryPlugin.call(this, pattern, method, options);
-            } else {
-                return pluralBoundJQueryPlugin.call(this, pattern, method, options);
-            }
-        };
-    };
-
-    //     Underscore.js 1.3.1
-    //     (c) 2009-2012 Jeremy Ashkenas, DocumentCloud Inc.
-    //     Underscore is freely distributable under the MIT license.
-    //     Portions of Underscore are inspired or borrowed from Prototype,
-    //     Oliver Steele's Functional, and John Resig's Micro-Templating.
-    //     For all details and documentation:
-    //     http://documentcloud.github.com/underscore
-    //
-    // Returns a function, that, as long as it continues to be invoked, will not
-    // be triggered. The function will be called after it stops being called for
-    // N milliseconds.
-    function debounce(func, wait) {
-        var timeout;
-        return function debounce_run() {
-            var context = this, args = arguments;
-            var later = function() {
-                timeout = null;
-                func.apply(context, args);
-            };
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-        };
-    }
-
-    // Is a given variable an object?
-    function isObject(obj) {
-        var type = typeof obj;
-        return type === 'function' || type === 'object' && !!obj;
-    }
-
-    // Extend a given object with all the properties in passed-in object(s).
-    function extend(obj) {
-        if (!isObject(obj)) return obj;
-        var source, prop;
-        for (var i = 1, length = arguments.length; i < length; i++) {
-            source = arguments[i];
-            for (prop in source) {
-                if (hasOwnProperty.call(source, prop)) {
-                    obj[prop] = source[prop];
-                }
-            }
-        }
-        return obj;
-    }
-    // END: Taken from Underscore.js until here.
-
-    function rebaseURL(base, url) {
-        if (url.indexOf("://")!==-1 || url[0]==="/")
-            return url;
-        return base.slice(0, base.lastIndexOf("/")+1) + url;
-    }
-
-    function findLabel(input) {
-        for (var label=input.parentNode; label && label.nodeType!==11; label=label.parentNode)
-            if (label.tagName==="LABEL")
-                return label;
-
-        var $label;
-
-        if (input.id)
-            $label = $("label[for="+input.id+"]");
-        if ($label && $label.length===0 && input.form)
-            $label = $("label[for="+input.name+"]", input.form);
-        if ($label && $label.length)
-            return $label[0];
-        else
-            return null;
-    }
-
-    // Taken from http://stackoverflow.com/questions/123999/how-to-tell-if-a-dom-element-is-visible-in-the-current-viewport
-    function elementInViewport(el) {
-       var rect = el.getBoundingClientRect(),
-           docEl = document.documentElement,
-           vWidth = window.innerWidth || docEl.clientWidth,
-           vHeight = window.innerHeight || docEl.clientHeight;
-
-        if (rect.right<0 || rect.bottom<0 || rect.left>vWidth || rect.top>vHeight)
-            return false;
-        return true;
-    }
-
-    // Taken from http://stackoverflow.com/questions/3446170/escape-string-for-use-in-javascript-regex
-    function escapeRegExp(str) {
-        return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
-    }
-
-    function removeWildcardClass($targets, classes) {
-        if (classes.indexOf("*")===-1)
-            $targets.removeClass(classes);
-        else {
-            var matcher = classes.replace(/[\-\[\]{}()+?.,\\\^$|#\s]/g, "\\$&");
-            matcher = matcher.replace(/[*]/g, ".*");
-            matcher = new RegExp("^" + matcher + "$");
-            $targets.filter("[class]").each(function() {
-                var $this = $(this),
-                    classes = $this.attr("class").split(/\s+/),
-                    ok=[];
-                for (var i=0; i<classes.length; i++)
-                    if (!matcher.test(classes[i]))
-                        ok.push(classes[i]);
-                if (ok.length)
-                    $this.attr("class", ok.join(" "));
-                else
-                    $this.removeAttr("class");
-            });
-        }
-    }
-
-    var transitions = {
-        none: {hide: "hide", show: "show"},
-        fade: {hide: "fadeOut", show: "fadeIn"},
-        slide: {hide: "slideUp", show: "slideDown"}
-    };
-
-    function hideOrShow($slave, visible, options, pattern_name) {
-        var duration = (options.transition==="css" || options.transition==="none") ? null : options.effect.duration;
-
-        $slave.removeClass("visible hidden in-progress");
-        var onComplete = function() {
-            $slave
-                .removeClass("in-progress")
-                .addClass(visible ? "visible" : "hidden")
-                .trigger("pat-update",
-                        {pattern: pattern_name,
-                         transition: "complete"});
-        };
-        if (!duration) {
-            if (options.transition!=="css")
-                $slave[visible ? "show" : "hide"]();
-            onComplete();
-        } else {
-            var t = transitions[options.transition];
-            $slave
-                .addClass("in-progress")
-                .trigger("pat-update",
-                        {pattern: pattern_name,
-                         transition: "start"});
-            $slave[visible ? t.show : t.hide]({
-                duration: duration,
-                easing: options.effect.easing,
-                complete: onComplete
-            });
-        }
-    }
-
-    function addURLQueryParameter(fullURL, param, value) {
-        /* Using a positive lookahead (?=\=) to find the given parameter,
-         * preceded by a ? or &, and followed by a = with a value after
-         * than (using a non-greedy selector) and then followed by
-         * a & or the end of the string.
-         *
-         * Taken from http://stackoverflow.com/questions/7640270/adding-modify-query-string-get-variables-in-a-url-with-javascript
-         */
-        var val = new RegExp('(\\?|\\&)' + param + '=.*?(?=(&|$))'),
-            parts = fullURL.toString().split('#'),
-            url = parts[0],
-            hash = parts[1],
-            qstring = /\?.+$/,
-            newURL = url;
-        // Check if the parameter exists
-        if (val.test(url)) {
-            // if it does, replace it, using the captured group
-            // to determine & or ? at the beginning
-            newURL = url.replace(val, '$1' + param + '=' + value);
-        } else if (qstring.test(url)) {
-            // otherwise, if there is a query string at all
-            // add the param to the end of it
-            newURL = url + '&' + param + '=' + value;
-        } else {
-            // if there's no query string, add one
-            newURL = url + '?' + param + '=' + value;
-        }
-        if (hash) { newURL += '#' + hash; }
-        return newURL;
-    }
-
-    var utils = {
-        // pattern pimping - own module?
-        jqueryPlugin: jqueryPlugin,
-        debounce: debounce,
-        escapeRegExp: escapeRegExp,
-        isObject: isObject,
-        extend: extend,
-        rebaseURL: rebaseURL,
-        findLabel: findLabel,
-        elementInViewport: elementInViewport,
-        removeWildcardClass: removeWildcardClass,
-        hideOrShow: hideOrShow,
-        addURLQueryParameter: addURLQueryParameter
-    };
-    return utils;
-});
-
-define('pat-compat',[],function() {
-
-    // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/every (JS 1.6)
-    if (!Array.prototype.every)
-    {
-        Array.prototype.every = function(fun /*, thisp */)
-        {
-            
-
-            if (this === null)
-                throw new TypeError();
-
-            var t = Object(this);
-            var len = t.length >>> 0;
-            if (typeof fun !== "function")
-                throw new TypeError();
-
-            var thisp = arguments[1];
-            for (var i = 0; i < len; i++)
-            {
-                if (i in t && !fun.call(thisp, t[i], i, t))
-                    return false;
-            }
-
-            return true;
-        };
-    }
-
-
-    // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/filter (JS 1.6)
-    if (!Array.prototype.filter) {
-        Array.prototype.filter = function(fun /*, thisp */) {
-            
-
-            if (this === null)
-                throw new TypeError();
-
-            var t = Object(this);
-            var len = t.length >>> 0;
-            if (typeof fun !== "function")
-                throw new TypeError();
-
-            var res = [];
-            var thisp = arguments[1];
-            for (var i = 0; i < len; i++)
-            {
-                if (i in t)
-                {
-                    var val = t[i]; // in case fun mutates this
-                    if (fun.call(thisp, val, i, t))
-                        res.push(val);
-                }
-            }
-
-            return res;
-        };
-    }
-
-
-    // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/forEach (JS 1.6)
-    // Production steps of ECMA-262, Edition 5, 15.4.4.18
-    // Reference: http://es5.github.com/#x15.4.4.18
-    if ( !Array.prototype.forEach ) {
-
-        Array.prototype.forEach = function( callback, thisArg ) {
-
-            var T, k;
-
-            if ( this === null ) {
-                throw new TypeError( " this is null or not defined" );
-            }
-
-            // 1. Let O be the result of calling ToObject passing the |this| value as the argument.
-            var O = Object(this);
-
-            // 2. Let lenValue be the result of calling the Get internal method of O with the argument "length".
-            // 3. Let len be ToUint32(lenValue).
-            var len = O.length >>> 0; // Hack to convert O.length to a UInt32
-
-            // 4. If IsCallable(callback) is false, throw a TypeError exception.
-            // See: http://es5.github.com/#x9.11
-            if ( {}.toString.call(callback) !== "[object Function]" ) {
-                throw new TypeError( callback + " is not a function" );
-            }
-
-            // 5. If thisArg was supplied, let T be thisArg; else let T be undefined.
-            if ( thisArg ) {
-                T = thisArg;
-            }
-
-            // 6. Let k be 0
-            k = 0;
-
-            // 7. Repeat, while k < len
-            while( k < len ) {
-
-                var kValue;
-
-                // a. Let Pk be ToString(k).
-                //   This is implicit for LHS operands of the in operator
-                // b. Let kPresent be the result of calling the HasProperty internal method of O with argument Pk.
-                //   This step can be combined with c
-                // c. If kPresent is true, then
-                if ( k in O ) {
-
-                    // i. Let kValue be the result of calling the Get internal method of O with argument Pk.
-                    kValue = O[ k ];
-
-                    // ii. Call the Call internal method of callback with T as the this value and
-                    // argument list containing kValue, k, and O.
-                    callback.call( T, kValue, k, O );
-                }
-                // d. Increase k by 1.
-                k++;
-            }
-            // 8. return undefined
-        };
-    }
-
-
-    // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/indexOf (JS 1.6)
-    if (!Array.prototype.indexOf) {
-        Array.prototype.indexOf = function (searchElement /*, fromIndex */ ) {
-            
-            if (this === null) {
-                throw new TypeError();
-            }
-            var t = Object(this);
-            var len = t.length >>> 0;
-            if (len === 0) {
-                return -1;
-            }
-            var n = 0;
-            if (arguments.length > 0) {
-                n = Number(arguments[1]);
-                if (n !== n) { // shortcut for verifying if it's NaN
-                    n = 0;
-                } else if (n !== 0 && n !== Infinity && n !== -Infinity) {
-                    n = (n > 0 || -1) * Math.floor(Math.abs(n));
-                }
-            }
-            if (n >= len) {
-                return -1;
-            }
-            var k = n >= 0 ? n : Math.max(len - Math.abs(n), 0);
-            for (; k < len; k++) {
-                if (k in t && t[k] === searchElement) {
-                    return k;
-                }
-            }
-            return -1;
-        };
-    }
-
-
-    // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/lastIndexOf (JS 1.6)
-    if (!Array.prototype.lastIndexOf) {
-        Array.prototype.lastIndexOf = function(searchElement /*, fromIndex*/) {
-            
-
-            if (this === null)
-                throw new TypeError();
-
-            var t = Object(this);
-            var len = t.length >>> 0;
-            if (len === 0)
-                return -1;
-
-            var n = len;
-            if (arguments.length > 1)
-            {
-                n = Number(arguments[1]);
-                if (n !== n)
-                    n = 0;
-                else if (n !== 0 && n !== (1 / 0) && n !== -(1 / 0))
-                    n = (n > 0 || -1) * Math.floor(Math.abs(n));
-            }
-
-            var k = n >= 0 ? Math.min(n, len - 1) : len - Math.abs(n);
-
-            for (; k >= 0; k--)
-            {
-                if (k in t && t[k] === searchElement)
-                    return k;
-            }
-            return -1;
-        };
-    }
-
-
-    // source: https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/map (JS 1.6)
-    // Production steps of ECMA-262, Edition 5, 15.4.4.19
-    // Reference: http://es5.github.com/#x15.4.4.19
-    if (!Array.prototype.map) {
-        Array.prototype.map = function(callback, thisArg) {
-
-            var T, A, k;
-
-            if (this === null) {
-                throw new TypeError(" this is null or not defined");
-            }
-
-            // 1. Let O be the result of calling ToObject passing the |this| value as the argument.
-            var O = Object(this);
-
-            // 2. Let lenValue be the result of calling the Get internal method of O with the argument "length".
-            // 3. Let len be ToUint32(lenValue).
-            var len = O.length >>> 0;
-
-            // 4. If IsCallable(callback) is false, throw a TypeError exception.
-            // See: http://es5.github.com/#x9.11
-            if ({}.toString.call(callback) !== "[object Function]") {
-                throw new TypeError(callback + " is not a function");
-            }
-
-            // 5. If thisArg was supplied, let T be thisArg; else let T be undefined.
-            if (thisArg) {
-                T = thisArg;
-            }
-
-            // 6. Let A be a new array created as if by the expression new Array(len) where Array is
-            // the standard built-in constructor with that name and len is the value of len.
-            A = new Array(len);
-
-            // 7. Let k be 0
-            k = 0;
-
-            // 8. Repeat, while k < len
-            while(k < len) {
-
-                var kValue, mappedValue;
-
-                // a. Let Pk be ToString(k).
-                //   This is implicit for LHS operands of the in operator
-                // b. Let kPresent be the result of calling the HasProperty internal method of O with argument Pk.
-                //   This step can be combined with c
-                // c. If kPresent is true, then
-                if (k in O) {
-
-                    // i. Let kValue be the result of calling the Get internal method of O with argument Pk.
-                    kValue = O[ k ];
-
-                    // ii. Let mappedValue be the result of calling the Call internal method of callback
-                    // with T as the this value and argument list containing kValue, k, and O.
-                    mappedValue = callback.call(T, kValue, k, O);
-
-                    // iii. Call the DefineOwnProperty internal method of A with arguments
-                    // Pk, Property Descriptor {Value: mappedValue, Writable: true, Enumerable: true, Configurable: true},
-                    // and false.
-
-                    // In browsers that support Object.defineProperty, use the following:
-                    // Object.defineProperty(A, Pk, { value: mappedValue, writable: true, enumerable: true, configurable: true });
-
-                    // For best browser support, use the following:
-                    A[ k ] = mappedValue;
-                }
-                // d. Increase k by 1.
-                k++;
-            }
-
-            // 9. return A
-            return A;
-        };
-    }
-
-
-    // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/Reduce (JS 1.8)
-    if (!Array.prototype.reduce) {
-        Array.prototype.reduce = function reduce(accumulator){
-            if (this===null || this===undefined) throw new TypeError("Object is null or undefined");
-            var i = 0, l = this.length >> 0, curr;
-
-            if(typeof accumulator !== "function") // ES5 : "If IsCallable(callbackfn) is false, throw a TypeError exception."
-                throw new TypeError("First argument is not callable");
-
-            if(arguments.length < 2) {
-                if (l === 0) throw new TypeError("Array length is 0 and no second argument");
-                curr = this[0];
-                i = 1; // start accumulating at the second element
-            }
-            else
-                curr = arguments[1];
-
-            while (i < l) {
-                if(i in this) curr = accumulator.call(undefined, curr, this[i], i, this);
-                ++i;
-            }
-
-            return curr;
-        };
-    }
-
-
-    // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/ReduceRight (JS 1.8)
-    if (!Array.prototype.reduceRight)
-    {
-        Array.prototype.reduceRight = function(callbackfn /*, initialValue */)
-        {
-            
-
-            if (this === null)
-                throw new TypeError();
-
-            var t = Object(this);
-            var len = t.length >>> 0;
-            if (typeof callbackfn !== "function")
-                throw new TypeError();
-
-            // no value to return if no initial value, empty array
-            if (len === 0 && arguments.length === 1)
-                throw new TypeError();
-
-            var k = len - 1;
-            var accumulator;
-            if (arguments.length >= 2)
-            {
-                accumulator = arguments[1];
-            }
-            else
-            {
-                do
-                {
-                    if (k in this)
-                    {
-                        accumulator = this[k--];
-                        break;
-                    }
-
-                    // if array contains no values, no initial value to return
-                    if (--k < 0)
-                        throw new TypeError();
-                }
-                while (true);
-            }
-
-            while (k >= 0)
-            {
-                if (k in t)
-                    accumulator = callbackfn.call(undefined, accumulator, t[k], k, t);
-                k--;
-            }
-
-            return accumulator;
-        };
-    }
-
-
-    // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/some (JS 1.6)
-    if (!Array.prototype.some)
-    {
-        Array.prototype.some = function(fun /*, thisp */)
-        {
-            
-
-            if (this === null)
-                throw new TypeError();
-
-            var t = Object(this);
-            var len = t.length >>> 0;
-            if (typeof fun !== "function")
-                throw new TypeError();
-
-            var thisp = arguments[1];
-            for (var i = 0; i < len; i++)
-            {
-                if (i in t && fun.call(thisp, t[i], i, t))
-                    return true;
-            }
-
-            return false;
-        };
-    }
-
-
-    // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/isArray (JS 1.8.5)
-    if (!Array.isArray) {
-        Array.isArray = function (arg) {
-            return Object.prototype.toString.call(arg) === "[object Array]";
-        };
-    }
-
-    // source: https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String/Trim (JS 1.8.1)
-    if (!String.prototype.trim) {
-        String.prototype.trim = function () {
-            return this.replace(/^\s+|\s+$/g, "");
-        };
-    }
-
-    // source: https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Function/bind
-    if (!Function.prototype.bind) {
-        Function.prototype.bind = function (oThis) {
-            if (typeof this !== "function") {
-                // closest thing possible to the ECMAScript 5 internal IsCallable function
-                throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
-            }
-
-            var aArgs = Array.prototype.slice.call(arguments, 1),
-                fToBind = this,
-                fNOP = function () {},
-                fBound = function () {
-                    return fToBind.apply(this instanceof fNOP &&
-                            oThis ? this : oThis,
-                            aArgs.concat(Array.prototype.slice.call(arguments)));
-                };
-            fNOP.prototype = this.prototype;
-            fBound.prototype = new fNOP();
-
-            return fBound;
-        };
-    }
-
-    // https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Object/keys
-    if (!Object.keys) {
-        Object.keys = (function () {
-            var _hasOwnProperty = Object.prototype.hasOwnProperty,
-            hasDontEnumBug = !({toString: null}).propertyIsEnumerable("toString"),
-            dontEnums = [
-            "toString",
-            "toLocaleString",
-            "valueOf",
-            "hasOwnProperty",
-            "isPrototypeOf",
-            "propertyIsEnumerable",
-            "constructor"
-            ],
-            dontEnumsLength = dontEnums.length;
-
-            return function (obj) {
-                if (typeof obj !== "object" && typeof obj !== "function" || obj === null)
-                    throw new TypeError("Object.keys called on non-object");
-
-                var result = [];
-                for (var prop in obj)
-                    if (_hasOwnProperty.call(obj, prop))
-                        result.push(prop);
-
-                if (hasDontEnumBug)
-                    for (var i=0; i < dontEnumsLength; i++)
-                        if (_hasOwnProperty.call(obj, dontEnums[i]))
-                            result.push(dontEnums[i]);
-                return result;
-            };
-        })();
-    }
-});
-
-/**
- * @license
- * Patterns @VERSION@ jquery-ext - various jQuery extensions
- *
- * Copyright 2011 Humberto Sermeño
- */
-define('pat-jquery-ext',["jquery"], function($) {
-    var methods = {
-        init: function( options ) {
-            var settings = {
-                time: 3, /* time it will wait before moving to "timeout" after a move event */
-                initialTime: 8, /* time it will wait before first adding the "timeout" class */
-                exceptionAreas: [] /* IDs of elements that, if the mouse is over them, will reset the timer */
-            };
-            return this.each(function() {
-                var $this = $(this),
-                    data = $this.data("timeout");
-
-                if (!data) {
-                    if ( options ) {
-                        $.extend( settings, options );
-                    }
-                    $this.data("timeout", {
-                        "lastEvent": new Date(),
-                        "trueTime": settings.time,
-                        "time": settings.initialTime,
-                        "untouched": true,
-                        "inExceptionArea": false
-                    });
-
-                    $this.bind( "mouseover.timeout", methods.mouseMoved );
-                    $this.bind( "mouseenter.timeout", methods.mouseMoved );
-
-                    $(settings.exceptionAreas).each(function() {
-                        $this.find(this)
-                            .live( "mouseover.timeout", {"parent":$this}, methods.enteredException )
-                            .live( "mouseleave.timeout", {"parent":$this}, methods.leftException );
-                    });
-
-                    if (settings.initialTime > 0)
-                        $this.timeout("startTimer");
-                    else
-                        $this.addClass("timeout");
-                }
-            });
-        },
-
-        enteredException: function(event) {
-            var data = event.data.parent.data("timeout");
-            data.inExceptionArea = true;
-            event.data.parent.data("timeout", data);
-            event.data.parent.trigger("mouseover");
-        },
-
-        leftException: function(event) {
-            var data = event.data.parent.data("timeout");
-            data.inExceptionArea = false;
-            event.data.parent.data("timeout", data);
-        },
-
-        destroy: function() {
-            return this.each( function() {
-                var $this = $(this),
-                    data = $this.data("timeout");
-
-                $(window).unbind(".timeout");
-                data.timeout.remove();
-                $this.removeData("timeout");
-            });
-        },
-
-        mouseMoved: function() {
-            var $this = $(this), data = $this.data("timeout");
-
-            if ($this.hasClass("timeout")) {
-                $this.removeClass("timeout");
-                $this.timeout("startTimer");
-            } else if ( data.untouched ) {
-                data.untouched = false;
-                data.time = data.trueTime;
-            }
-
-            data.lastEvent = new Date();
-            $this.data("timeout", data);
-        },
-
-        startTimer: function() {
-            var $this = $(this), data = $this.data("timeout");
-            var fn = function(){
-                var data = $this.data("timeout");
-                if ( data && data.lastEvent ) {
-                    if ( data.inExceptionArea ) {
-                        setTimeout( fn, Math.floor( data.time*1000 ) );
-                    } else {
-                        var now = new Date();
-                        var diff = Math.floor(data.time*1000) - ( now - data.lastEvent );
-                        if ( diff > 0 ) {
-                            // the timeout has not ocurred, so set the timeout again
-                            setTimeout( fn, diff+100 );
-                        } else {
-                            // timeout ocurred, so set the class
-                            $this.addClass("timeout");
-                        }
-                    }
-                }
-            };
-
-            setTimeout( fn, Math.floor( data.time*1000 ) );
-        }
-    };
-
-    $.fn.timeout = function( method ) {
-        if ( methods[method] ) {
-            return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
-        } else if ( typeof method === "object" || !method ) {
-            return methods.init.apply( this, arguments );
-        } else {
-            $.error( "Method " + method + " does not exist on jQuery.timeout" );
-        }
-    };
-
-    // Custom jQuery selector to find elements with scrollbars
-    $.extend($.expr[":"], {
-        scrollable: function(element) {
-            var vertically_scrollable, horizontally_scrollable;
-            if ($(element).css("overflow") === "scroll" ||
-                $(element).css("overflowX") === "scroll" ||
-                $(element).css("overflowY") === "scroll")
-                return true;
-
-            vertically_scrollable = (element.clientHeight < element.scrollHeight) && (
-                $.inArray($(element).css("overflowY"), ["scroll", "auto"]) !== -1 || $.inArray($(element).css("overflow"), ["scroll", "auto"]) !== -1);
-
-            if (vertically_scrollable)
-                return true;
-
-            horizontally_scrollable = (element.clientWidth < element.scrollWidth) && (
-                $.inArray($(element).css("overflowX"), ["scroll", "auto"]) !== -1 || $.inArray($(element).css("overflow"), ["scroll", "auto"]) !== -1);
-            return horizontally_scrollable;
-        }
-    });
-
-    // Make Visible in scroll
-    $.fn.makeVisibleInScroll = function( parent_id ) {
-        var absoluteParent = null;
-        if ( typeof parent_id === "string" ) {
-            absoluteParent = $("#" + parent_id);
-        } else if ( parent_id ) {
-            absoluteParent = $(parent_id);
-        }
-
-        return this.each(function() {
-            var $this = $(this), parent;
-            if (!absoluteParent) {
-                parent = $this.parents(":scrollable");
-                if (parent.length > 0) {
-                    parent = $(parent[0]);
-                } else {
-                    parent = $(window);
-                }
-            } else {
-                parent = absoluteParent;
-            }
-
-            var elemTop = $this.position().top;
-            var elemBottom = $this.height() + elemTop;
-
-            var viewTop = parent.scrollTop();
-            var viewBottom = parent.height() + viewTop;
-
-            if (elemTop < viewTop) {
-                parent.scrollTop(elemTop);
-            } else if ( elemBottom > viewBottom - parent.height()/2 ) {
-                parent.scrollTop( elemTop - (parent.height() - $this.height())/2 );
-            }
-        });
-    };
-
-    //Make absolute location
-    $.fn.setPositionAbsolute = function(element,offsettop,offsetleft) {
-        return this.each(function() {
-            // set absolute location for based on the element passed
-            // dynamically since every browser has different settings
-            var $this = $(this);
-            var thiswidth = $(this).width();
-            var    pos   = element.offset();
-            var    width = element.width();
-            var    height = element.height();
-            var setleft = (pos.left + width - thiswidth + offsetleft);
-            var settop = (pos.top + height + offsettop);
-            $this.css({ "z-index" : 1, "position": "absolute", "marginLeft": 0, "marginTop": 0, "left": setleft + "px", "top":settop + "px" ,"width":thiswidth});
-            $this.remove().appendTo("body").show();
-        });
-    };
-
-    $.fn.positionAncestor = function(selector) {
-        var left = 0;
-        var top = 0;
-        this.each(function() {
-            // check if current element has an ancestor matching a selector
-            // and that ancestor is positioned
-            var $ancestor = $(this).closest(selector);
-            if ($ancestor.length && $ancestor.css("position") !== "static") {
-                var $child = $(this);
-                var childMarginEdgeLeft = $child.offset().left - parseInt($child.css("marginLeft"), 10);
-                var childMarginEdgeTop = $child.offset().top - parseInt($child.css("marginTop"), 10);
-                var ancestorPaddingEdgeLeft = $ancestor.offset().left + parseInt($ancestor.css("borderLeftWidth"), 10);
-                var ancestorPaddingEdgeTop = $ancestor.offset().top + parseInt($ancestor.css("borderTopWidth"), 10);
-                left = childMarginEdgeLeft - ancestorPaddingEdgeLeft;
-                top = childMarginEdgeTop - ancestorPaddingEdgeTop;
-                // we have found the ancestor and computed the position
-                // stop iterating
-                return false;
-            }
-        });
-        return {
-            left:    left,
-            top:    top
-        };
-    };
-
-
-    // XXX: In compat.js we include things for browser compatibility,
-    // but these two seem to be only convenience. Do we really want to
-    // include these as part of patterns?
-    String.prototype.startsWith = function(str) { return (this.match("^"+str) !== null); };
-    String.prototype.endsWith = function(str) { return (this.match(str+"$") !== null); };
-
-
-    /******************************
-
-     Simple Placeholder
-
-     ******************************/
-
-    $.simplePlaceholder = {
-        placeholder_class: null,
-
-        hide_placeholder: function(){
-            var $this = $(this);
-            if($this.val() === $this.attr("placeholder")){
-                $this.val("").removeClass($.simplePlaceholder.placeholder_class);
-            }
-        },
-
-        show_placeholder: function(){
-            var $this = $(this);
-            if($this.val() === ""){
-                $this.val($this.attr("placeholder")).addClass($.simplePlaceholder.placeholder_class);
-            }
-        },
-
-        prevent_placeholder_submit: function(){
-            $(this).find(".simple-placeholder").each(function() {
-                var $this = $(this);
-                if ($this.val() === $this.attr("placeholder")){
-                    $this.val("");
-                }
-            });
-            return true;
-        }
-    };
-
-    $.fn.simplePlaceholder = function(options) {
-        if(document.createElement("input").placeholder === undefined){
-            var config = {
-                placeholder_class : "placeholding"
-            };
-
-            if(options) $.extend(config, options);
-            $.simplePlaceholder.placeholder_class = config.placeholder_class;
-
-            this.each(function() {
-                var $this = $(this);
-                $this.focus($.simplePlaceholder.hide_placeholder);
-                $this.blur($.simplePlaceholder.show_placeholder);
-                if($this.val() === "") {
-                    $this.val($this.attr("placeholder"));
-                    $this.addClass($.simplePlaceholder.placeholder_class);
-                }
-                $this.addClass("simple-placeholder");
-                $(this.form).submit($.simplePlaceholder.prevent_placeholder_submit);
-            });
-        }
-
-        return this;
-    };
-
-    $.fn.findInclusive = function(selector) {
-        return this.find('*').addBack().filter(selector);
-    };
-
-    $.fn.slideIn = function(speed, easing, callback) {
-        return this.animate({width: "show"}, speed, easing, callback);
-    };
-
-    $.fn.slideOut = function(speed, easing, callback) {
-        return this.animate({width: "hide"}, speed, easing, callback);
-    };
-
-    // case-insensitive :contains
-    $.expr[":"].Contains = function(a, i, m) {
-        return $(a).text().toUpperCase().indexOf(m[3].toUpperCase()) >= 0;
-    };
-
-    $.fn.scopedFind = function (selector) {
-        /*  If the selector starts with an object id do a global search,
-         *  otherwise do a local search.
-         */
-        if (selector.startsWith('#')) {
-            return $(selector);
-        } else {
-            return this.find(selector);
-        }
-    };
-});
-
 
 /*!
  * pickadate.js v3.4.0, 2014/02/15
@@ -17338,15 +15640,6 @@ return PickerConstructor
 
 
 
-
-
-define('text!mockup-patterns-structure-url/templates/paging.xml',[],function () { return '  <ul class="pagination pagination-sm pagination-centered">\n    <li class="<% if (currentPage === 1) { %>disabled<% } %>">\n      <a href="#" class="serverfirst">\n        &laquo;\n      </a>\n    </li>\n    <li class="<% if (currentPage === 1) { %>disabled<% } %>">\n      <a href="#" class="serverprevious">\n        &lt;\n      </a>\n    </li>\n    <% _.each(pages, function(p){ %>\n    <li class="<% if (currentPage == p) { %>active<% } %>">\n      <a href="#" class="page"><%= p %></a>\n    </li>\n    <% }); %>\n    <li class="<% if (currentPage === lastPage) { %>disabled<% } %>">\n      <a href="#" class="servernext">\n        &gt;\n      </a>\n    </li>\n    <li class="<% if (currentPage === lastPage) { %>disabled<% } %>">\n      <a href="#" class="serverlast">\n        &raquo;\n      </a>\n    </li>\n  </ul>\n\n  <ul class="pagination pagination-sm">\n    <li class="disabled"><a href="#">Show:</a></li>\n    <li class="serverhowmany serverhowmany15 <% if(perPage == 15){ %>disabled<% } %>">\n      <a href="#" class="">15</a>\n    </li>\n    <li class="serverhowmany serverhowmany30 <% if(perPage == 30){ %>disabled<% } %>">\n      <a href="#" class="">30</a>\n    </li>\n    <li class="serverhowmany serverhowmany50 <% if(perPage == 50){ %>disabled<% } %>">\n      <a href="#" class="">50</a>\n    </li>\n  </ul>\n\n  <ul class="pagination pagination-sm">\n    <li class="disabled">\n      <a href="#">\n        Page: <span class="current"><%= currentPage %></span>\n        of\n        <span class="total"><%= totalPages %></span>\n              shown\n      </a>\n    </li>\n  </ul>\n';});
-
-
-define('text!mockup-patterns-structure-url/templates/selection_item.xml',[],function () { return '<span class="selected-item">\r  <a href="#" data-uid="<%= UID %>" title="remove" class="remove">\r    <span class="glyphicon glyphicon-remove-circle"></span>\r  </a>\r  <%= Title %>\r</span>\r';});
-
-
-define('text!mockup-patterns-structure-url/templates/tablerow.xml',[],function () { return '<td class="selection"><input type="checkbox" <% if(selected){ %> checked="checked" <% } %>/></td>\n<td class="title">\n  <a href="<%- getURL %>" class="state-<%- review_state %> contenttype-<%- Type.toLowerCase() %>"><%- Title %></a>\n</td>\n<% _.each(activeColumns, function(column){ %>\n  <% if(_.has(availableColumns, column)) { %>\n    <td class="<%- column %>"><%- attributes[column] %></td>\n  <% } %>\n<% }); %>\n<td class="actionmenu-container">\n</td>\n';});
 
 (function(root) {
 define("tinymce", [], function() {
@@ -54953,17 +53246,1250 @@ return (function () { this.tinyMCE.DOM.events.domLoaded = true; return this.tiny
 });
 }(this));
 
+/*!
+ * jQuery Form Plugin
+ * version: 3.46.0-2013.11.21
+ * Requires jQuery v1.5 or later
+ * Copyright (c) 2013 M. Alsup
+ * Examples and documentation at: http://malsup.com/jquery/form/
+ * Project repository: https://github.com/malsup/form
+ * Dual licensed under the MIT and GPL licenses.
+ * https://github.com/malsup/form#copyright-and-license
+ */
+/*global ActiveXObject */
 
-define('text!mockup-patterns-structure-url/templates/table.xml',[],function () { return '<div class="alert alert-<%= statusType %> status">\n    <%= status %>\n</div>\n<table class="table table-striped table-bordered">\n  <thead>\n    <tr class="breadcrumbs-container">\n      <td colspan="<%= activeColumns.length + 3 %>">\n        <% if(pathParts.length > 0) { %>\n          <div class="input-group context-buttons" style="display:none">\n            <span class="input-group-addon">\n              <input type="checkbox" />\n            </span>\n            <div class="input-group-btn">\n            </div>\n          </div>\n        <% } %>\n        <div class="breadcrumbs">\n          <a href="#" data-path="/">\n            <span class="glyphicon glyphicon-home"></span> /\n          </a>\n          <% _.each(pathParts, function(part, idx, list){\n            if(part){\n              if(idx > 0){ %>\n                /\n              <% } %>\n              <a href="#" class="crumb" data-path="<%- part %>"><%- part %></a>\n            <% }\n          }); %>\n        </div>\n      </td>\n    </tr>\n    <tr>\n      <th><input type="checkbox" class="select-all" /></th>\n      <th>Title</th>\n      <% _.each(activeColumns, function(column){ %>\n        <% if(_.has(availableColumns, column)) { %>\n          <th><%- availableColumns[column] %></th>\n        <% } %>\n      <% }); %>\n      <th>Actions</th>\n    </tr>\n  </thead>\n  <tbody>\n  </tbody>\n</table>\n';});
+// AMD support
+(function (factory) {
+    if (typeof define === 'function' && define.amd) {
+        // using AMD; register as anon module
+        define('jquery.form',['jquery'], factory);
+    } else {
+        // no AMD; invoke directly
+        factory( (typeof(jQuery) != 'undefined') ? jQuery : window.Zepto );
+    }
+}
+
+(function($) {
 
 
-define('text!mockup-ui-url/templates/popover.xml',[],function () { return '<div class="arrow"></div>\n<div class="popover-title">\n</div>\n<div class="items popover-content">\n</div>\n\n';});
+/*
+    Usage Note:
+    -----------
+    Do not use both ajaxSubmit and ajaxForm on the same form.  These
+    functions are mutually exclusive.  Use ajaxSubmit if you want
+    to bind your own submit handler to the form.  For example,
+
+    $(document).ready(function() {
+        $('#myForm').on('submit', function(e) {
+            e.preventDefault(); // <-- important
+            $(this).ajaxSubmit({
+                target: '#output'
+            });
+        });
+    });
+
+    Use ajaxForm when you want the plugin to manage all the event binding
+    for you.  For example,
+
+    $(document).ready(function() {
+        $('#myForm').ajaxForm({
+            target: '#output'
+        });
+    });
+
+    You can also use ajaxForm with delegation (requires jQuery v1.7+), so the
+    form does not have to exist when you invoke ajaxForm:
+
+    $('#myForm').ajaxForm({
+        delegation: true,
+        target: '#output'
+    });
+
+    When using ajaxForm, the ajaxSubmit function will be invoked for you
+    at the appropriate time.
+*/
+
+/**
+ * Feature detection
+ */
+var feature = {};
+feature.fileapi = $("<input type='file'/>").get(0).files !== undefined;
+feature.formdata = window.FormData !== undefined;
+
+var hasProp = !!$.fn.prop;
+
+// attr2 uses prop when it can but checks the return type for
+// an expected string.  this accounts for the case where a form 
+// contains inputs with names like "action" or "method"; in those
+// cases "prop" returns the element
+$.fn.attr2 = function() {
+    if ( ! hasProp )
+        return this.attr.apply(this, arguments);
+    var val = this.prop.apply(this, arguments);
+    if ( ( val && val.jquery ) || typeof val === 'string' )
+        return val;
+    return this.attr.apply(this, arguments);
+};
+
+/**
+ * ajaxSubmit() provides a mechanism for immediately submitting
+ * an HTML form using AJAX.
+ */
+$.fn.ajaxSubmit = function(options) {
+    /*jshint scripturl:true */
+
+    // fast fail if nothing selected (http://dev.jquery.com/ticket/2752)
+    if (!this.length) {
+        log('ajaxSubmit: skipping submit process - no element selected');
+        return this;
+    }
+
+    var method, action, url, $form = this;
+
+    if (typeof options == 'function') {
+        options = { success: options };
+    }
+    else if ( options === undefined ) {
+        options = {};
+    }
+
+    method = options.type || this.attr2('method');
+    action = options.url  || this.attr2('action');
+
+    url = (typeof action === 'string') ? $.trim(action) : '';
+    url = url || window.location.href || '';
+    if (url) {
+        // clean url (don't include hash vaue)
+        url = (url.match(/^([^#]+)/)||[])[1];
+    }
+
+    options = $.extend(true, {
+        url:  url,
+        success: $.ajaxSettings.success,
+        type: method || $.ajaxSettings.type,
+        iframeSrc: /^https/i.test(window.location.href || '') ? 'javascript:false' : 'about:blank'
+    }, options);
+
+    // hook for manipulating the form data before it is extracted;
+    // convenient for use with rich editors like tinyMCE or FCKEditor
+    var veto = {};
+    this.trigger('form-pre-serialize', [this, options, veto]);
+    if (veto.veto) {
+        log('ajaxSubmit: submit vetoed via form-pre-serialize trigger');
+        return this;
+    }
+
+    // provide opportunity to alter form data before it is serialized
+    if (options.beforeSerialize && options.beforeSerialize(this, options) === false) {
+        log('ajaxSubmit: submit aborted via beforeSerialize callback');
+        return this;
+    }
+
+    var traditional = options.traditional;
+    if ( traditional === undefined ) {
+        traditional = $.ajaxSettings.traditional;
+    }
+
+    var elements = [];
+    var qx, a = this.formToArray(options.semantic, elements);
+    if (options.data) {
+        options.extraData = options.data;
+        qx = $.param(options.data, traditional);
+    }
+
+    // give pre-submit callback an opportunity to abort the submit
+    if (options.beforeSubmit && options.beforeSubmit(a, this, options) === false) {
+        log('ajaxSubmit: submit aborted via beforeSubmit callback');
+        return this;
+    }
+
+    // fire vetoable 'validate' event
+    this.trigger('form-submit-validate', [a, this, options, veto]);
+    if (veto.veto) {
+        log('ajaxSubmit: submit vetoed via form-submit-validate trigger');
+        return this;
+    }
+
+    var q = $.param(a, traditional);
+    if (qx) {
+        q = ( q ? (q + '&' + qx) : qx );
+    }
+    if (options.type.toUpperCase() == 'GET') {
+        options.url += (options.url.indexOf('?') >= 0 ? '&' : '?') + q;
+        options.data = null;  // data is null for 'get'
+    }
+    else {
+        options.data = q; // data is the query string for 'post'
+    }
+
+    var callbacks = [];
+    if (options.resetForm) {
+        callbacks.push(function() { $form.resetForm(); });
+    }
+    if (options.clearForm) {
+        callbacks.push(function() { $form.clearForm(options.includeHidden); });
+    }
+
+    // perform a load on the target only if dataType is not provided
+    if (!options.dataType && options.target) {
+        var oldSuccess = options.success || function(){};
+        callbacks.push(function(data) {
+            var fn = options.replaceTarget ? 'replaceWith' : 'html';
+            $(options.target)[fn](data).each(oldSuccess, arguments);
+        });
+    }
+    else if (options.success) {
+        callbacks.push(options.success);
+    }
+
+    options.success = function(data, status, xhr) { // jQuery 1.4+ passes xhr as 3rd arg
+        var context = options.context || this ;    // jQuery 1.4+ supports scope context
+        for (var i=0, max=callbacks.length; i < max; i++) {
+            callbacks[i].apply(context, [data, status, xhr || $form, $form]);
+        }
+    };
+
+    if (options.error) {
+        var oldError = options.error;
+        options.error = function(xhr, status, error) {
+            var context = options.context || this;
+            oldError.apply(context, [xhr, status, error, $form]);
+        };
+    }
+
+     if (options.complete) {
+        var oldComplete = options.complete;
+        options.complete = function(xhr, status) {
+            var context = options.context || this;
+            oldComplete.apply(context, [xhr, status, $form]);
+        };
+    }
+
+    // are there files to upload?
+
+    // [value] (issue #113), also see comment:
+    // https://github.com/malsup/form/commit/588306aedba1de01388032d5f42a60159eea9228#commitcomment-2180219
+    var fileInputs = $('input[type=file]:enabled', this).filter(function() { return $(this).val() !== ''; });
+
+    var hasFileInputs = fileInputs.length > 0;
+    var mp = 'multipart/form-data';
+    var multipart = ($form.attr('enctype') == mp || $form.attr('encoding') == mp);
+
+    var fileAPI = feature.fileapi && feature.formdata;
+    log("fileAPI :" + fileAPI);
+    var shouldUseFrame = (hasFileInputs || multipart) && !fileAPI;
+
+    var jqxhr;
+
+    // options.iframe allows user to force iframe mode
+    // 06-NOV-09: now defaulting to iframe mode if file input is detected
+    if (options.iframe !== false && (options.iframe || shouldUseFrame)) {
+        // hack to fix Safari hang (thanks to Tim Molendijk for this)
+        // see:  http://groups.google.com/group/jquery-dev/browse_thread/thread/36395b7ab510dd5d
+        if (options.closeKeepAlive) {
+            $.get(options.closeKeepAlive, function() {
+                jqxhr = fileUploadIframe(a);
+            });
+        }
+        else {
+            jqxhr = fileUploadIframe(a);
+        }
+    }
+    else if ((hasFileInputs || multipart) && fileAPI) {
+        jqxhr = fileUploadXhr(a);
+    }
+    else {
+        jqxhr = $.ajax(options);
+    }
+
+    $form.removeData('jqxhr').data('jqxhr', jqxhr);
+
+    // clear element array
+    for (var k=0; k < elements.length; k++)
+        elements[k] = null;
+
+    // fire 'notify' event
+    this.trigger('form-submit-notify', [this, options]);
+    return this;
+
+    // utility fn for deep serialization
+    function deepSerialize(extraData){
+        var serialized = $.param(extraData, options.traditional).split('&');
+        var len = serialized.length;
+        var result = [];
+        var i, part;
+        for (i=0; i < len; i++) {
+            // #252; undo param space replacement
+            serialized[i] = serialized[i].replace(/\+/g,' ');
+            part = serialized[i].split('=');
+            // #278; use array instead of object storage, favoring array serializations
+            result.push([decodeURIComponent(part[0]), decodeURIComponent(part[1])]);
+        }
+        return result;
+    }
+
+     // XMLHttpRequest Level 2 file uploads (big hat tip to francois2metz)
+    function fileUploadXhr(a) {
+        var formdata = new FormData();
+
+        for (var i=0; i < a.length; i++) {
+            formdata.append(a[i].name, a[i].value);
+        }
+
+        if (options.extraData) {
+            var serializedData = deepSerialize(options.extraData);
+            for (i=0; i < serializedData.length; i++)
+                if (serializedData[i])
+                    formdata.append(serializedData[i][0], serializedData[i][1]);
+        }
+
+        options.data = null;
+
+        var s = $.extend(true, {}, $.ajaxSettings, options, {
+            contentType: false,
+            processData: false,
+            cache: false,
+            type: method || 'POST'
+        });
+
+        if (options.uploadProgress) {
+            // workaround because jqXHR does not expose upload property
+            s.xhr = function() {
+                var xhr = $.ajaxSettings.xhr();
+                if (xhr.upload) {
+                    xhr.upload.addEventListener('progress', function(event) {
+                        var percent = 0;
+                        var position = event.loaded || event.position; /*event.position is deprecated*/
+                        var total = event.total;
+                        if (event.lengthComputable) {
+                            percent = Math.ceil(position / total * 100);
+                        }
+                        options.uploadProgress(event, position, total, percent);
+                    }, false);
+                }
+                return xhr;
+            };
+        }
+
+        s.data = null;
+        var beforeSend = s.beforeSend;
+        s.beforeSend = function(xhr, o) {
+            //Send FormData() provided by user
+            if (options.formData)
+                o.data = options.formData;
+            else
+                o.data = formdata;
+            if(beforeSend)
+                beforeSend.call(this, xhr, o);
+        };
+        return $.ajax(s);
+    }
+
+    // private function for handling file uploads (hat tip to YAHOO!)
+    function fileUploadIframe(a) {
+        var form = $form[0], el, i, s, g, id, $io, io, xhr, sub, n, timedOut, timeoutHandle;
+        var deferred = $.Deferred();
+
+        // #341
+        deferred.abort = function(status) {
+            xhr.abort(status);
+        };
+
+        if (a) {
+            // ensure that every serialized input is still enabled
+            for (i=0; i < elements.length; i++) {
+                el = $(elements[i]);
+                if ( hasProp )
+                    el.prop('disabled', false);
+                else
+                    el.removeAttr('disabled');
+            }
+        }
+
+        s = $.extend(true, {}, $.ajaxSettings, options);
+        s.context = s.context || s;
+        id = 'jqFormIO' + (new Date().getTime());
+        if (s.iframeTarget) {
+            $io = $(s.iframeTarget);
+            n = $io.attr2('name');
+            if (!n)
+                 $io.attr2('name', id);
+            else
+                id = n;
+        }
+        else {
+            $io = $('<iframe name="' + id + '" src="'+ s.iframeSrc +'" />');
+            $io.css({ position: 'absolute', top: '-1000px', left: '-1000px' });
+        }
+        io = $io[0];
+
+
+        xhr = { // mock object
+            aborted: 0,
+            responseText: null,
+            responseXML: null,
+            status: 0,
+            statusText: 'n/a',
+            getAllResponseHeaders: function() {},
+            getResponseHeader: function() {},
+            setRequestHeader: function() {},
+            abort: function(status) {
+                var e = (status === 'timeout' ? 'timeout' : 'aborted');
+                log('aborting upload... ' + e);
+                this.aborted = 1;
+
+                try { // #214, #257
+                    if (io.contentWindow.document.execCommand) {
+                        io.contentWindow.document.execCommand('Stop');
+                    }
+                }
+                catch(ignore) {}
+
+                $io.attr('src', s.iframeSrc); // abort op in progress
+                xhr.error = e;
+                if (s.error)
+                    s.error.call(s.context, xhr, e, status);
+                if (g)
+                    $.event.trigger("ajaxError", [xhr, s, e]);
+                if (s.complete)
+                    s.complete.call(s.context, xhr, e);
+            }
+        };
+
+        g = s.global;
+        // trigger ajax global events so that activity/block indicators work like normal
+        if (g && 0 === $.active++) {
+            $.event.trigger("ajaxStart");
+        }
+        if (g) {
+            $.event.trigger("ajaxSend", [xhr, s]);
+        }
+
+        if (s.beforeSend && s.beforeSend.call(s.context, xhr, s) === false) {
+            if (s.global) {
+                $.active--;
+            }
+            deferred.reject();
+            return deferred;
+        }
+        if (xhr.aborted) {
+            deferred.reject();
+            return deferred;
+        }
+
+        // add submitting element to data if we know it
+        sub = form.clk;
+        if (sub) {
+            n = sub.name;
+            if (n && !sub.disabled) {
+                s.extraData = s.extraData || {};
+                s.extraData[n] = sub.value;
+                if (sub.type == "image") {
+                    s.extraData[n+'.x'] = form.clk_x;
+                    s.extraData[n+'.y'] = form.clk_y;
+                }
+            }
+        }
+
+        var CLIENT_TIMEOUT_ABORT = 1;
+        var SERVER_ABORT = 2;
+                
+        function getDoc(frame) {
+            /* it looks like contentWindow or contentDocument do not
+             * carry the protocol property in ie8, when running under ssl
+             * frame.document is the only valid response document, since
+             * the protocol is know but not on the other two objects. strange?
+             * "Same origin policy" http://en.wikipedia.org/wiki/Same_origin_policy
+             */
+            
+            var doc = null;
+            
+            // IE8 cascading access check
+            try {
+                if (frame.contentWindow) {
+                    doc = frame.contentWindow.document;
+                }
+            } catch(err) {
+                // IE8 access denied under ssl & missing protocol
+                log('cannot get iframe.contentWindow document: ' + err);
+            }
+
+            if (doc) { // successful getting content
+                return doc;
+            }
+
+            try { // simply checking may throw in ie8 under ssl or mismatched protocol
+                doc = frame.contentDocument ? frame.contentDocument : frame.document;
+            } catch(err) {
+                // last attempt
+                log('cannot get iframe.contentDocument: ' + err);
+                doc = frame.document;
+            }
+            return doc;
+        }
+
+        // Rails CSRF hack (thanks to Yvan Barthelemy)
+        var csrf_token = $('meta[name=csrf-token]').attr('content');
+        var csrf_param = $('meta[name=csrf-param]').attr('content');
+        if (csrf_param && csrf_token) {
+            s.extraData = s.extraData || {};
+            s.extraData[csrf_param] = csrf_token;
+        }
+
+        // take a breath so that pending repaints get some cpu time before the upload starts
+        function doSubmit() {
+            // make sure form attrs are set
+            var t = $form.attr2('target'), a = $form.attr2('action');
+
+            // update form attrs in IE friendly way
+            form.setAttribute('target',id);
+            if (!method || /post/i.test(method) ) {
+                form.setAttribute('method', 'POST');
+            }
+            if (a != s.url) {
+                form.setAttribute('action', s.url);
+            }
+
+            // ie borks in some cases when setting encoding
+            if (! s.skipEncodingOverride && (!method || /post/i.test(method))) {
+                $form.attr({
+                    encoding: 'multipart/form-data',
+                    enctype:  'multipart/form-data'
+                });
+            }
+
+            // support timout
+            if (s.timeout) {
+                timeoutHandle = setTimeout(function() { timedOut = true; cb(CLIENT_TIMEOUT_ABORT); }, s.timeout);
+            }
+
+            // look for server aborts
+            function checkState() {
+                try {
+                    var state = getDoc(io).readyState;
+                    log('state = ' + state);
+                    if (state && state.toLowerCase() == 'uninitialized')
+                        setTimeout(checkState,50);
+                }
+                catch(e) {
+                    log('Server abort: ' , e, ' (', e.name, ')');
+                    cb(SERVER_ABORT);
+                    if (timeoutHandle)
+                        clearTimeout(timeoutHandle);
+                    timeoutHandle = undefined;
+                }
+            }
+
+            // add "extra" data to form if provided in options
+            var extraInputs = [];
+            try {
+                if (s.extraData) {
+                    for (var n in s.extraData) {
+                        if (s.extraData.hasOwnProperty(n)) {
+                           // if using the $.param format that allows for multiple values with the same name
+                           if($.isPlainObject(s.extraData[n]) && s.extraData[n].hasOwnProperty('name') && s.extraData[n].hasOwnProperty('value')) {
+                               extraInputs.push(
+                               $('<input type="hidden" name="'+s.extraData[n].name+'">').val(s.extraData[n].value)
+                                   .appendTo(form)[0]);
+                           } else {
+                               extraInputs.push(
+                               $('<input type="hidden" name="'+n+'">').val(s.extraData[n])
+                                   .appendTo(form)[0]);
+                           }
+                        }
+                    }
+                }
+
+                if (!s.iframeTarget) {
+                    // add iframe to doc and submit the form
+                    $io.appendTo('body');
+                }
+                if (io.attachEvent)
+                    io.attachEvent('onload', cb);
+                else
+                    io.addEventListener('load', cb, false);
+                setTimeout(checkState,15);
+
+                try {
+                    form.submit();
+                } catch(err) {
+                    // just in case form has element with name/id of 'submit'
+                    var submitFn = document.createElement('form').submit;
+                    submitFn.apply(form);
+                }
+            }
+            finally {
+                // reset attrs and remove "extra" input elements
+                form.setAttribute('action',a);
+                if(t) {
+                    form.setAttribute('target', t);
+                } else {
+                    $form.removeAttr('target');
+                }
+                $(extraInputs).remove();
+            }
+        }
+
+        if (s.forceSync) {
+            doSubmit();
+        }
+        else {
+            setTimeout(doSubmit, 10); // this lets dom updates render
+        }
+
+        var data, doc, domCheckCount = 50, callbackProcessed;
+
+        function cb(e) {
+            if (xhr.aborted || callbackProcessed) {
+                return;
+            }
+            
+            doc = getDoc(io);
+            if(!doc) {
+                log('cannot access response document');
+                e = SERVER_ABORT;
+            }
+            if (e === CLIENT_TIMEOUT_ABORT && xhr) {
+                xhr.abort('timeout');
+                deferred.reject(xhr, 'timeout');
+                return;
+            }
+            else if (e == SERVER_ABORT && xhr) {
+                xhr.abort('server abort');
+                deferred.reject(xhr, 'error', 'server abort');
+                return;
+            }
+
+            if (!doc || doc.location.href == s.iframeSrc) {
+                // response not received yet
+                if (!timedOut)
+                    return;
+            }
+            if (io.detachEvent)
+                io.detachEvent('onload', cb);
+            else
+                io.removeEventListener('load', cb, false);
+
+            var status = 'success', errMsg;
+            try {
+                if (timedOut) {
+                    throw 'timeout';
+                }
+
+                var isXml = s.dataType == 'xml' || doc.XMLDocument || $.isXMLDoc(doc);
+                log('isXml='+isXml);
+                if (!isXml && window.opera && (doc.body === null || !doc.body.innerHTML)) {
+                    if (--domCheckCount) {
+                        // in some browsers (Opera) the iframe DOM is not always traversable when
+                        // the onload callback fires, so we loop a bit to accommodate
+                        log('requeing onLoad callback, DOM not available');
+                        setTimeout(cb, 250);
+                        return;
+                    }
+                    // let this fall through because server response could be an empty document
+                    //log('Could not access iframe DOM after mutiple tries.');
+                    //throw 'DOMException: not available';
+                }
+
+                //log('response detected');
+                var docRoot = doc.body ? doc.body : doc.documentElement;
+                xhr.responseText = docRoot ? docRoot.innerHTML : null;
+                xhr.responseXML = doc.XMLDocument ? doc.XMLDocument : doc;
+                if (isXml)
+                    s.dataType = 'xml';
+                xhr.getResponseHeader = function(header){
+                    var headers = {'content-type': s.dataType};
+                    return headers[header.toLowerCase()];
+                };
+                // support for XHR 'status' & 'statusText' emulation :
+                if (docRoot) {
+                    xhr.status = Number( docRoot.getAttribute('status') ) || xhr.status;
+                    xhr.statusText = docRoot.getAttribute('statusText') || xhr.statusText;
+                }
+
+                var dt = (s.dataType || '').toLowerCase();
+                var scr = /(json|script|text)/.test(dt);
+                if (scr || s.textarea) {
+                    // see if user embedded response in textarea
+                    var ta = doc.getElementsByTagName('textarea')[0];
+                    if (ta) {
+                        xhr.responseText = ta.value;
+                        // support for XHR 'status' & 'statusText' emulation :
+                        xhr.status = Number( ta.getAttribute('status') ) || xhr.status;
+                        xhr.statusText = ta.getAttribute('statusText') || xhr.statusText;
+                    }
+                    else if (scr) {
+                        // account for browsers injecting pre around json response
+                        var pre = doc.getElementsByTagName('pre')[0];
+                        var b = doc.getElementsByTagName('body')[0];
+                        if (pre) {
+                            xhr.responseText = pre.textContent ? pre.textContent : pre.innerText;
+                        }
+                        else if (b) {
+                            xhr.responseText = b.textContent ? b.textContent : b.innerText;
+                        }
+                    }
+                }
+                else if (dt == 'xml' && !xhr.responseXML && xhr.responseText) {
+                    xhr.responseXML = toXml(xhr.responseText);
+                }
+
+                try {
+                    data = httpData(xhr, dt, s);
+                }
+                catch (err) {
+                    status = 'parsererror';
+                    xhr.error = errMsg = (err || status);
+                }
+            }
+            catch (err) {
+                log('error caught: ',err);
+                status = 'error';
+                xhr.error = errMsg = (err || status);
+            }
+
+            if (xhr.aborted) {
+                log('upload aborted');
+                status = null;
+            }
+
+            if (xhr.status) { // we've set xhr.status
+                status = (xhr.status >= 200 && xhr.status < 300 || xhr.status === 304) ? 'success' : 'error';
+            }
+
+            // ordering of these callbacks/triggers is odd, but that's how $.ajax does it
+            if (status === 'success') {
+                if (s.success)
+                    s.success.call(s.context, data, 'success', xhr);
+                deferred.resolve(xhr.responseText, 'success', xhr);
+                if (g)
+                    $.event.trigger("ajaxSuccess", [xhr, s]);
+            }
+            else if (status) {
+                if (errMsg === undefined)
+                    errMsg = xhr.statusText;
+                if (s.error)
+                    s.error.call(s.context, xhr, status, errMsg);
+                deferred.reject(xhr, 'error', errMsg);
+                if (g)
+                    $.event.trigger("ajaxError", [xhr, s, errMsg]);
+            }
+
+            if (g)
+                $.event.trigger("ajaxComplete", [xhr, s]);
+
+            if (g && ! --$.active) {
+                $.event.trigger("ajaxStop");
+            }
+
+            if (s.complete)
+                s.complete.call(s.context, xhr, status);
+
+            callbackProcessed = true;
+            if (s.timeout)
+                clearTimeout(timeoutHandle);
+
+            // clean up
+            setTimeout(function() {
+                if (!s.iframeTarget)
+                    $io.remove();
+                else  //adding else to clean up existing iframe response.
+                    $io.attr('src', s.iframeSrc);
+                xhr.responseXML = null;
+            }, 100);
+        }
+
+        var toXml = $.parseXML || function(s, doc) { // use parseXML if available (jQuery 1.5+)
+            if (window.ActiveXObject) {
+                doc = new ActiveXObject('Microsoft.XMLDOM');
+                doc.async = 'false';
+                doc.loadXML(s);
+            }
+            else {
+                doc = (new DOMParser()).parseFromString(s, 'text/xml');
+            }
+            return (doc && doc.documentElement && doc.documentElement.nodeName != 'parsererror') ? doc : null;
+        };
+        var parseJSON = $.parseJSON || function(s) {
+            /*jslint evil:true */
+            return window['eval']('(' + s + ')');
+        };
+
+        var httpData = function( xhr, type, s ) { // mostly lifted from jq1.4.4
+
+            var ct = xhr.getResponseHeader('content-type') || '',
+                xml = type === 'xml' || !type && ct.indexOf('xml') >= 0,
+                data = xml ? xhr.responseXML : xhr.responseText;
+
+            if (xml && data.documentElement.nodeName === 'parsererror') {
+                if ($.error)
+                    $.error('parsererror');
+            }
+            if (s && s.dataFilter) {
+                data = s.dataFilter(data, type);
+            }
+            if (typeof data === 'string') {
+                if (type === 'json' || !type && ct.indexOf('json') >= 0) {
+                    data = parseJSON(data);
+                } else if (type === "script" || !type && ct.indexOf("javascript") >= 0) {
+                    $.globalEval(data);
+                }
+            }
+            return data;
+        };
+
+        return deferred;
+    }
+};
+
+/**
+ * ajaxForm() provides a mechanism for fully automating form submission.
+ *
+ * The advantages of using this method instead of ajaxSubmit() are:
+ *
+ * 1: This method will include coordinates for <input type="image" /> elements (if the element
+ *    is used to submit the form).
+ * 2. This method will include the submit element's name/value data (for the element that was
+ *    used to submit the form).
+ * 3. This method binds the submit() method to the form for you.
+ *
+ * The options argument for ajaxForm works exactly as it does for ajaxSubmit.  ajaxForm merely
+ * passes the options argument along after properly binding events for submit elements and
+ * the form itself.
+ */
+$.fn.ajaxForm = function(options) {
+    options = options || {};
+    options.delegation = options.delegation && $.isFunction($.fn.on);
+
+    // in jQuery 1.3+ we can fix mistakes with the ready state
+    if (!options.delegation && this.length === 0) {
+        var o = { s: this.selector, c: this.context };
+        if (!$.isReady && o.s) {
+            log('DOM not ready, queuing ajaxForm');
+            $(function() {
+                $(o.s,o.c).ajaxForm(options);
+            });
+            return this;
+        }
+        // is your DOM ready?  http://docs.jquery.com/Tutorials:Introducing_$(document).ready()
+        log('terminating; zero elements found by selector' + ($.isReady ? '' : ' (DOM not ready)'));
+        return this;
+    }
+
+    if ( options.delegation ) {
+        $(document)
+            .off('submit.form-plugin', this.selector, doAjaxSubmit)
+            .off('click.form-plugin', this.selector, captureSubmittingElement)
+            .on('submit.form-plugin', this.selector, options, doAjaxSubmit)
+            .on('click.form-plugin', this.selector, options, captureSubmittingElement);
+        return this;
+    }
+
+    return this.ajaxFormUnbind()
+        .bind('submit.form-plugin', options, doAjaxSubmit)
+        .bind('click.form-plugin', options, captureSubmittingElement);
+};
+
+// private event handlers
+function doAjaxSubmit(e) {
+    /*jshint validthis:true */
+    var options = e.data;
+    if (!e.isDefaultPrevented()) { // if event has been canceled, don't proceed
+        e.preventDefault();
+        $(e.target).ajaxSubmit(options); // #365
+    }
+}
+
+function captureSubmittingElement(e) {
+    /*jshint validthis:true */
+    var target = e.target;
+    var $el = $(target);
+    if (!($el.is("[type=submit],[type=image]"))) {
+        // is this a child element of the submit el?  (ex: a span within a button)
+        var t = $el.closest('[type=submit]');
+        if (t.length === 0) {
+            return;
+        }
+        target = t[0];
+    }
+    var form = this;
+    form.clk = target;
+    if (target.type == 'image') {
+        if (e.offsetX !== undefined) {
+            form.clk_x = e.offsetX;
+            form.clk_y = e.offsetY;
+        } else if (typeof $.fn.offset == 'function') {
+            var offset = $el.offset();
+            form.clk_x = e.pageX - offset.left;
+            form.clk_y = e.pageY - offset.top;
+        } else {
+            form.clk_x = e.pageX - target.offsetLeft;
+            form.clk_y = e.pageY - target.offsetTop;
+        }
+    }
+    // clear form vars
+    setTimeout(function() { form.clk = form.clk_x = form.clk_y = null; }, 100);
+}
+
+
+// ajaxFormUnbind unbinds the event handlers that were bound by ajaxForm
+$.fn.ajaxFormUnbind = function() {
+    return this.unbind('submit.form-plugin click.form-plugin');
+};
+
+/**
+ * formToArray() gathers form element data into an array of objects that can
+ * be passed to any of the following ajax functions: $.get, $.post, or load.
+ * Each object in the array has both a 'name' and 'value' property.  An example of
+ * an array for a simple login form might be:
+ *
+ * [ { name: 'username', value: 'jresig' }, { name: 'password', value: 'secret' } ]
+ *
+ * It is this array that is passed to pre-submit callback functions provided to the
+ * ajaxSubmit() and ajaxForm() methods.
+ */
+$.fn.formToArray = function(semantic, elements) {
+    var a = [];
+    if (this.length === 0) {
+        return a;
+    }
+
+    var form = this[0];
+    var els = semantic ? form.getElementsByTagName('*') : form.elements;
+    if (!els) {
+        return a;
+    }
+
+    var i,j,n,v,el,max,jmax;
+    for(i=0, max=els.length; i < max; i++) {
+        el = els[i];
+        n = el.name;
+        if (!n || el.disabled) {
+            continue;
+        }
+
+        if (semantic && form.clk && el.type == "image") {
+            // handle image inputs on the fly when semantic == true
+            if(form.clk == el) {
+                a.push({name: n, value: $(el).val(), type: el.type });
+                a.push({name: n+'.x', value: form.clk_x}, {name: n+'.y', value: form.clk_y});
+            }
+            continue;
+        }
+
+        v = $.fieldValue(el, true);
+        if (v && v.constructor == Array) {
+            if (elements)
+                elements.push(el);
+            for(j=0, jmax=v.length; j < jmax; j++) {
+                a.push({name: n, value: v[j]});
+            }
+        }
+        else if (feature.fileapi && el.type == 'file') {
+            if (elements)
+                elements.push(el);
+            var files = el.files;
+            if (files.length) {
+                for (j=0; j < files.length; j++) {
+                    a.push({name: n, value: files[j], type: el.type});
+                }
+            }
+            else {
+                // #180
+                a.push({ name: n, value: '', type: el.type });
+            }
+        }
+        else if (v !== null && typeof v != 'undefined') {
+            if (elements)
+                elements.push(el);
+            a.push({name: n, value: v, type: el.type, required: el.required});
+        }
+    }
+
+    if (!semantic && form.clk) {
+        // input type=='image' are not found in elements array! handle it here
+        var $input = $(form.clk), input = $input[0];
+        n = input.name;
+        if (n && !input.disabled && input.type == 'image') {
+            a.push({name: n, value: $input.val()});
+            a.push({name: n+'.x', value: form.clk_x}, {name: n+'.y', value: form.clk_y});
+        }
+    }
+    return a;
+};
+
+/**
+ * Serializes form data into a 'submittable' string. This method will return a string
+ * in the format: name1=value1&amp;name2=value2
+ */
+$.fn.formSerialize = function(semantic) {
+    //hand off to jQuery.param for proper encoding
+    return $.param(this.formToArray(semantic));
+};
+
+/**
+ * Serializes all field elements in the jQuery object into a query string.
+ * This method will return a string in the format: name1=value1&amp;name2=value2
+ */
+$.fn.fieldSerialize = function(successful) {
+    var a = [];
+    this.each(function() {
+        var n = this.name;
+        if (!n) {
+            return;
+        }
+        var v = $.fieldValue(this, successful);
+        if (v && v.constructor == Array) {
+            for (var i=0,max=v.length; i < max; i++) {
+                a.push({name: n, value: v[i]});
+            }
+        }
+        else if (v !== null && typeof v != 'undefined') {
+            a.push({name: this.name, value: v});
+        }
+    });
+    //hand off to jQuery.param for proper encoding
+    return $.param(a);
+};
+
+/**
+ * Returns the value(s) of the element in the matched set.  For example, consider the following form:
+ *
+ *  <form><fieldset>
+ *      <input name="A" type="text" />
+ *      <input name="A" type="text" />
+ *      <input name="B" type="checkbox" value="B1" />
+ *      <input name="B" type="checkbox" value="B2"/>
+ *      <input name="C" type="radio" value="C1" />
+ *      <input name="C" type="radio" value="C2" />
+ *  </fieldset></form>
+ *
+ *  var v = $('input[type=text]').fieldValue();
+ *  // if no values are entered into the text inputs
+ *  v == ['','']
+ *  // if values entered into the text inputs are 'foo' and 'bar'
+ *  v == ['foo','bar']
+ *
+ *  var v = $('input[type=checkbox]').fieldValue();
+ *  // if neither checkbox is checked
+ *  v === undefined
+ *  // if both checkboxes are checked
+ *  v == ['B1', 'B2']
+ *
+ *  var v = $('input[type=radio]').fieldValue();
+ *  // if neither radio is checked
+ *  v === undefined
+ *  // if first radio is checked
+ *  v == ['C1']
+ *
+ * The successful argument controls whether or not the field element must be 'successful'
+ * (per http://www.w3.org/TR/html4/interact/forms.html#successful-controls).
+ * The default value of the successful argument is true.  If this value is false the value(s)
+ * for each element is returned.
+ *
+ * Note: This method *always* returns an array.  If no valid value can be determined the
+ *    array will be empty, otherwise it will contain one or more values.
+ */
+$.fn.fieldValue = function(successful) {
+    for (var val=[], i=0, max=this.length; i < max; i++) {
+        var el = this[i];
+        var v = $.fieldValue(el, successful);
+        if (v === null || typeof v == 'undefined' || (v.constructor == Array && !v.length)) {
+            continue;
+        }
+        if (v.constructor == Array)
+            $.merge(val, v);
+        else
+            val.push(v);
+    }
+    return val;
+};
+
+/**
+ * Returns the value of the field element.
+ */
+$.fieldValue = function(el, successful) {
+    var n = el.name, t = el.type, tag = el.tagName.toLowerCase();
+    if (successful === undefined) {
+        successful = true;
+    }
+
+    if (successful && (!n || el.disabled || t == 'reset' || t == 'button' ||
+        (t == 'checkbox' || t == 'radio') && !el.checked ||
+        (t == 'submit' || t == 'image') && el.form && el.form.clk != el ||
+        tag == 'select' && el.selectedIndex == -1)) {
+            return null;
+    }
+
+    if (tag == 'select') {
+        var index = el.selectedIndex;
+        if (index < 0) {
+            return null;
+        }
+        var a = [], ops = el.options;
+        var one = (t == 'select-one');
+        var max = (one ? index+1 : ops.length);
+        for(var i=(one ? index : 0); i < max; i++) {
+            var op = ops[i];
+            if (op.selected) {
+                var v = op.value;
+                if (!v) { // extra pain for IE...
+                    v = (op.attributes && op.attributes['value'] && !(op.attributes['value'].specified)) ? op.text : op.value;
+                }
+                if (one) {
+                    return v;
+                }
+                a.push(v);
+            }
+        }
+        return a;
+    }
+    return $(el).val();
+};
+
+/**
+ * Clears the form data.  Takes the following actions on the form's input fields:
+ *  - input text fields will have their 'value' property set to the empty string
+ *  - select elements will have their 'selectedIndex' property set to -1
+ *  - checkbox and radio inputs will have their 'checked' property set to false
+ *  - inputs of type submit, button, reset, and hidden will *not* be effected
+ *  - button elements will *not* be effected
+ */
+$.fn.clearForm = function(includeHidden) {
+    return this.each(function() {
+        $('input,select,textarea', this).clearFields(includeHidden);
+    });
+};
+
+/**
+ * Clears the selected form elements.
+ */
+$.fn.clearFields = $.fn.clearInputs = function(includeHidden) {
+    var re = /^(?:color|date|datetime|email|month|number|password|range|search|tel|text|time|url|week)$/i; // 'hidden' is not in this list
+    return this.each(function() {
+        var t = this.type, tag = this.tagName.toLowerCase();
+        if (re.test(t) || tag == 'textarea') {
+            this.value = '';
+        }
+        else if (t == 'checkbox' || t == 'radio') {
+            this.checked = false;
+        }
+        else if (tag == 'select') {
+            this.selectedIndex = -1;
+        }
+        else if (t == "file") {
+            if (/MSIE/.test(navigator.userAgent)) {
+                $(this).replaceWith($(this).clone(true));
+            } else {
+                $(this).val('');
+            }
+        }
+        else if (includeHidden) {
+            // includeHidden can be the value true, or it can be a selector string
+            // indicating a special test; for example:
+            //  $('#myForm').clearForm('.special:hidden')
+            // the above would clean hidden inputs that have the class of 'special'
+            if ( (includeHidden === true && /hidden/.test(t)) ||
+                 (typeof includeHidden == 'string' && $(this).is(includeHidden)) )
+                this.value = '';
+        }
+    });
+};
+
+/**
+ * Resets the form data.  Causes all form elements to be reset to their original value.
+ */
+$.fn.resetForm = function() {
+    return this.each(function() {
+        // guard against an input with the name of 'reset'
+        // note that IE reports the reset function as an 'object'
+        if (typeof this.reset == 'function' || (typeof this.reset == 'object' && !this.reset.nodeType)) {
+            this.reset();
+        }
+    });
+};
+
+/**
+ * Enables or disables any matching elements.
+ */
+$.fn.enable = function(b) {
+    if (b === undefined) {
+        b = true;
+    }
+    return this.each(function() {
+        this.disabled = !b;
+    });
+};
+
+/**
+ * Checks/unchecks any matching checkboxes or radio buttons and
+ * selects/deselects and matching option elements.
+ */
+$.fn.selected = function(select) {
+    if (select === undefined) {
+        select = true;
+    }
+    return this.each(function() {
+        var t = this.type;
+        if (t == 'checkbox' || t == 'radio') {
+            this.checked = select;
+        }
+        else if (this.tagName.toLowerCase() == 'option') {
+            var $sel = $(this).parent('select');
+            if (select && $sel[0] && $sel[0].type == 'select-one') {
+                // deselect all other options
+                $sel.find('option').selected(false);
+            }
+            this.selected = select;
+        }
+    });
+};
+
+// expose debug var
+$.fn.ajaxSubmit.debug = false;
+
+// helper fn for console logging
+function log() {
+    if (!$.fn.ajaxSubmit.debug)
+        return;
+    var msg = '[jquery.form] ' + Array.prototype.join.call(arguments,'');
+    if (window.console && window.console.log) {
+        window.console.log(msg);
+    }
+    else if (window.opera && window.opera.postError) {
+        window.opera.postError(msg);
+    }
+}
+
+}));
+
 
 
 define('text!mockup-patterns-tinymce-url/templates/result.xml',[],function () { return '<div class="pattern-relateditems-result pattern-relateditems-type-<%= Type %> <% if (selected) { %>pattern-active<% } %>">\n  <a href="#" class="pattern-relateditems-result-select <% if (selectable) { %>selectable<% } %>">\n    <% if (!folderish) { %>\n    <span class="pattern-relateditems-result-image">\n      <img src="<%= generateImageUrl(_item, \'thumb\') %>" />\n    </span>\n    <% } %>\n    <span class="pattern-relateditems-result-title"><%= Title %></span>\n    <span class="pattern-relateditems-result-path"><%= path %></span>\n  </a>\n  <span class="pattern-relateditems-buttons">\n    <% if (folderish) { %>\n      <a class="pattern-relateditems-result-browse" href="#" data-path="<%= path %>"></a>\n    <% } %>\n  </span>\n</div>\n';});
 
 
 define('text!mockup-patterns-tinymce-url/templates/selection.xml',[],function () { return '<span class="pattern-relateditems-item pattern-relateditems-type-<%= Type %>">\n <span class="pattern-relateditems-result-image">\n   <img src="<%= generateImageUrl(_item, \'thumb\') %>" />\n </span>\n <span class="pattern-relateditems-item-title"><%= Title %></span>\n <span class="pattern-relateditems-item-path"><%= path %></span>\n</span>\'\n';});
+
+
+define('text!mockup-patterns-structure-url/templates/paging.xml',[],function () { return '  <ul class="pagination pagination-sm pagination-centered">\n    <li class="<% if (currentPage === 1) { %>disabled<% } %>">\n      <a href="#" class="serverfirst">\n        &laquo;\n      </a>\n    </li>\n    <li class="<% if (currentPage === 1) { %>disabled<% } %>">\n      <a href="#" class="serverprevious">\n        &lt;\n      </a>\n    </li>\n    <% _.each(pages, function(p){ %>\n    <li class="<% if (currentPage == p) { %>active<% } %>">\n      <a href="#" class="page"><%= p %></a>\n    </li>\n    <% }); %>\n    <li class="<% if (currentPage === lastPage) { %>disabled<% } %>">\n      <a href="#" class="servernext">\n        &gt;\n      </a>\n    </li>\n    <li class="<% if (currentPage === lastPage) { %>disabled<% } %>">\n      <a href="#" class="serverlast">\n        &raquo;\n      </a>\n    </li>\n  </ul>\n\n  <ul class="pagination pagination-sm">\n    <li class="disabled"><a href="#">Show:</a></li>\n    <li class="serverhowmany serverhowmany15 <% if(perPage == 15){ %>disabled<% } %>">\n      <a href="#" class="">15</a>\n    </li>\n    <li class="serverhowmany serverhowmany30 <% if(perPage == 30){ %>disabled<% } %>">\n      <a href="#" class="">30</a>\n    </li>\n    <li class="serverhowmany serverhowmany50 <% if(perPage == 50){ %>disabled<% } %>">\n      <a href="#" class="">50</a>\n    </li>\n  </ul>\n\n  <ul class="pagination pagination-sm">\n    <li class="disabled">\n      <a href="#">\n        Page: <span class="current"><%= currentPage %></span>\n        of\n        <span class="total"><%= totalPages %></span>\n              shown\n      </a>\n    </li>\n  </ul>\n';});
+
+
+define('text!mockup-patterns-structure-url/templates/selection_item.xml',[],function () { return '<span class="selected-item">\r  <a href="#" data-uid="<%= UID %>" title="remove" class="remove">\r    <span class="glyphicon glyphicon-remove-circle"></span>\r  </a>\r  <%= Title %>\r</span>\r';});
+
+
+define('text!mockup-patterns-structure-url/templates/tablerow.xml',[],function () { return '<td class="selection"><input type="checkbox" <% if(selected){ %> checked="checked" <% } %>/></td>\n<td class="title">\n  <a href="<%- getURL %>" class="state-<%- review_state %> contenttype-<%- Type.toLowerCase() %>"><%- Title %></a>\n</td>\n<% _.each(activeColumns, function(column){ %>\n  <% if(_.has(availableColumns, column)) { %>\n    <td class="<%- column %>"><%- attributes[column] %></td>\n  <% } %>\n<% }); %>\n<td class="actionmenu-container">\n</td>\n';});
+
+
+define('text!mockup-ui-url/templates/popover.xml',[],function () { return '<div class="arrow"></div>\n<div class="popover-title">\n</div>\n<div class="items popover-content">\n</div>\n\n';});
+
+
+define('text!mockup-patterns-structure-url/templates/table.xml',[],function () { return '<div class="alert alert-<%= statusType %> status">\n    <%= status %>\n</div>\n<table class="table table-striped table-bordered">\n  <thead>\n    <tr class="breadcrumbs-container">\n      <td colspan="<%= activeColumns.length + 3 %>">\n        <% if(pathParts.length > 0) { %>\n          <div class="input-group context-buttons" style="display:none">\n            <span class="input-group-addon">\n              <input type="checkbox" />\n            </span>\n            <div class="input-group-btn">\n            </div>\n          </div>\n        <% } %>\n        <div class="breadcrumbs">\n          <a href="#" data-path="/">\n            <span class="glyphicon glyphicon-home"></span> /\n          </a>\n          <% _.each(pathParts, function(part, idx, list){\n            if(part){\n              if(idx > 0){ %>\n                /\n              <% } %>\n              <a href="#" class="crumb" data-path="<%- part %>"><%- part %></a>\n            <% }\n          }); %>\n        </div>\n      </td>\n    </tr>\n    <tr>\n      <th><input type="checkbox" class="select-all" /></th>\n      <th>Title</th>\n      <% _.each(activeColumns, function(column){ %>\n        <% if(_.has(availableColumns, column)) { %>\n          <th><%- availableColumns[column] %></th>\n        <% } %>\n      <% }); %>\n      <th>Actions</th>\n    </tr>\n  </thead>\n  <tbody>\n  </tbody>\n</table>\n';});
+
+
+define('text!mockup-patterns-tinymce-url/templates/link.xml',[],function () { return '<div>\n  <div class="linkModal">\n    <h1><%- insertHeading %></h1>\n    <p class="info">Drag and drop files from your desktop onto dialog to upload</p>\n\n    <div class="linkTypes pat-autotoc autotabs"\n         data-pat-autotoc="section:fieldset;levels:legend;">\n\n      <fieldset class="linkType internal" data-linkType="internal">\n        <legend>Internal</legend>\n        <div>\n          <div class="form-group main">\n            <!-- this gives the name to the "linkType" -->\n            <input type="text" name="internal" />\n          </div>\n        </div>\n      </fieldset>\n\n      <fieldset class="linkType upload" data-linkType="upload">\n        <legend>Upload</legend>\n        <div class="uploadify-me"></div>\n      </fieldset>\n\n      <fieldset class="linkType external" data-linkType="external">\n        <legend>External</legend>\n        <div class="form-group main">\n          <label for="external"><%- externalText %></label>\n          <input type="text" name="external" />\n        </div>\n      </fieldset>\n\n      <fieldset class="linkType email" data-linkType="email">\n        <legend>Email</legend>\n        <div class="form-inline">\n          <div class="form-group main">\n            <label><%- emailText %></label>\n            <input type="text" name="email" />\n          </div>\n          <div class="form-group">\n            <label><%- subjectText %></label>\n            <input type="text" name="subject" />\n          </div>\n        </div>\n      </fieldset>\n\n      <fieldset class="linkType anchor" data-linkType="anchor">\n        <legend>Anchor</legend>\n        <div>\n          <div class="form-group main">\n            <label>Select an anchor</label>\n            <div class="input-wrapper">\n              <select name="anchor" class="pat-select2" data-pat-select2="width:500px" />\n            </div>\n          </div>\n        </div>\n      </fieldset>\n\n    </div><!-- / tabs -->\n\n    <div class="common-controls">\n      <div class="form-group">\n        <label>Target</label>\n        <select name="target">\n          <% _.each(targetList, function(target){ %>\n            <option value="<%- target.value %>"><%- target.text %></option>\n          <% }); %>\n        </select>\n      </div>\n      <div class="form-group">\n        <label><%- titleText %></label>\n        <input type="text" name="title" />\n      </div>\n    </div>\n\n    <input type="submit" class="plone-btn" name="cancel" value="<%- cancelBtn %>" />\n    <input type="submit" class="plone-btn plone-btn-primary" name="insert" value="<%- insertBtn %>" />\n  </div>\n</div>\n';});
+
+
+define('text!mockup-patterns-tinymce-url/templates/image.xml',[],function () { return '<div>\n  <div class="linkModal">\n    <h1><%- insertHeading %></h1>\n    <p class="info">Drag and drop files from your desktop onto dialog to upload</p>\n\n    <div class="linkTypes pat-autotoc autotabs"\n         data-pat-autotoc="section:fieldset;levels:legend;">\n\n      <fieldset class="linkType image" data-linkType="image">\n        <legend>Image</legend>\n        <div class="form-inline">\n          <div class="form-group main">\n            <input type="text" name="image" />\n          </div>\n          <div class="form-group scale">\n            <label><%- scaleText %></label>\n            <select name="scale">\n              <option value="">Original</option>\n                <% _.each(scales.split(\',\'), function(scale){ %>\n                  <% var scale = scale.split(\':\'); %>\n                  <option value="<%- scale[1] %>">\n                    <%- scale[0] %>\n                  </option>\n                <% }); %>\n            </select>\n          </div>\n        </div>\n      </fieldset>\n\n      <fieldset class="linkType uploadImage" data-linkType="uploadImage">\n        <legend>Upload</legend>\n        <div class="uploadify-me"></div>\n      </fieldset>\n\n      <fieldset class="linkType externalImage" data-linkType="externalImage">\n        <legend>External image</legend>\n        <div>\n          <div class="form-group main">\n            <label><%- externalImageText %></label>\n            <input type="text" name="externalImage" />\n          </div>\n        </div>\n      </fieldset>\n\n    </div><!-- / tabs -->\n\n    <div class="common-controls">\n      <div class="form-group title">\n        <label><%- titleText %></label>\n        <input type="text" name="title" />\n      </div>\n      <div class="form-group text">\n        <label><%- altText %></label>\n        <input type="text" name="alt" />\n      </div>\n      <div class="form-group align">\n        <label><%- imageAlignText %></label>\n        <select name="align">\n          <% _.each([\'inline\', \'right\', \'left\'], function(align){ %>\n              <option value="<%- align %>">\n              <%- align.charAt(0).toUpperCase() + align.slice(1) %>\n              </option>\n          <% }); %>\n        <select>\n      </div>\n    </div>\n\n    <input type="submit" class="plone-btn" name="cancel" value="<%- cancelBtn %>" />\n    <input type="submit" class="plone-btn plone-btn-primary" name="insert" value="<%- insertBtn %>" />\n\n  </div>\n</div>\n';});
 
 //     Backbone.js 1.1.2
 
@@ -56574,11 +56100,102 @@ define('text!mockup-patterns-tinymce-url/templates/selection.xml',[],function ()
 
 }));
 
-define('mockup-ui-url/views/base',[
+/* Pattern router
+ */
+
+
+define('mockup-router',[
   'jquery',
   'underscore',
   'backbone'
 ], function($, _, Backbone) {
+  
+
+  var regexEscape = function(s) {
+    return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+  };
+
+  var Router = Backbone.Router.extend({
+    actions: [],
+    redirects: {},
+    addRoute: function(patternName, id, callback, context, pathExp, expReplace) {
+      if (_.findWhere(this.patterns, {patternName: patternName, id: id}) === undefined) {
+        this.actions.push({patternName: patternName, id: id, callback: callback, context: context, pathExp: pathExp, expReplace: expReplace});
+      }
+      var regex = new RegExp('(' + regexEscape(patternName) + ':' + regexEscape(id) + ')');
+      this.route(regex, 'handleRoute');
+    },
+    addRedirect: function(pathExp, destination) {
+      this.redirects[pathExp] = destination;
+    },
+    handleRoute: function(pattern) {
+      var parts = pattern.split(':');
+      var patternName = parts[0];
+      var id = parts[1];
+      var action = _.findWhere(this.actions, {patternName: patternName, id: id});
+      if (action) {
+        action.callback.call(action.context);
+      }
+    },
+    redirect: function() {
+      var path = window.parent.location.pathname,
+          newPath,
+          regex,
+          hash;
+
+      _.some(this.actions, function(action) {
+        if (action.pathExp) {
+          regex = new RegExp(action.pathExp);
+          if (path.match(regex)) {
+            hash = '!/' + action.patternName + ':' + action.id;
+            var replaceWith = '';
+            if (action.expReplace) {
+              replaceWith = action.expReplace;
+            }
+            newPath = path.replace(regex, replaceWith);
+            return true;
+          }
+        }
+      }, this);
+
+      if (hash === undefined) {
+        for (var pathExp in this.redirects) {
+          regex = new RegExp(pathExp);
+          if (path.match(regex)) {
+            hash = '!/' + this.redirects[pathExp];
+            newPath = path.replace(regex, '');
+            break;
+          }
+        }
+      }
+
+      if (hash !== undefined) {
+        this._changeLocation.apply(this, [newPath, hash]);
+      }
+    },
+    _changeLocation: function(path, hash) {
+      window.parent.location.hash = hash;
+      window.parent.location.pathname = path;
+    },
+    start: function() {
+      Backbone.history.start();
+    },
+    reset: function() {
+      this.actions = [];
+    }
+
+  });
+
+  return new Router();
+
+});
+
+define('mockup-ui-url/views/base',[
+  'jquery',
+  'underscore',
+  'backbone',
+  'translate'
+], function($, _, Backbone, _t) {
   
 
   var BaseView = Backbone.View.extend({
@@ -56612,7 +56229,7 @@ define('mockup-ui-url/views/base',[
     },
     applyTemplate: function() {
       if (this.template !== null) {
-        var data = $.extend({}, this.options, this.serializedModel());
+        var data = $.extend({_t: _t}, this.options, this.serializedModel());
         var template = this.template;
         if(typeof(template) === 'string'){
           template = _.template(template);
@@ -56872,1322 +56489,8 @@ define('mockup-patterns-structure-url/js/views/paging',[
 
 }));
 
-/* Pattern router
- */
-
-
-define('mockup-router',[
-  'jquery',
-  'underscore',
-  'backbone'
-], function($, _, Backbone) {
-  
-
-  var regexEscape = function(s) {
-    return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-  };
-
-  var Router = Backbone.Router.extend({
-    actions: [],
-    redirects: {},
-    addRoute: function(patternName, id, callback, context, pathExp, expReplace) {
-      if (_.findWhere(this.patterns, {patternName: patternName, id: id}) === undefined) {
-        this.actions.push({patternName: patternName, id: id, callback: callback, context: context, pathExp: pathExp, expReplace: expReplace});
-      }
-      var regex = new RegExp('(' + regexEscape(patternName) + ':' + regexEscape(id) + ')');
-      this.route(regex, 'handleRoute');
-    },
-    addRedirect: function(pathExp, destination) {
-      this.redirects[pathExp] = destination;
-    },
-    handleRoute: function(pattern) {
-      var parts = pattern.split(':');
-      var patternName = parts[0];
-      var id = parts[1];
-      var action = _.findWhere(this.actions, {patternName: patternName, id: id});
-      if (action) {
-        action.callback.call(action.context);
-      }
-    },
-    redirect: function() {
-      var path = window.parent.location.pathname,
-          newPath,
-          regex,
-          hash;
-
-      _.some(this.actions, function(action) {
-        if (action.pathExp) {
-          regex = new RegExp(action.pathExp);
-          if (path.match(regex)) {
-            hash = '!/' + action.patternName + ':' + action.id;
-            var replaceWith = '';
-            if (action.expReplace) {
-              replaceWith = action.expReplace;
-            }
-            newPath = path.replace(regex, replaceWith);
-            return true;
-          }
-        }
-      }, this);
-
-      if (hash === undefined) {
-        for (var pathExp in this.redirects) {
-          regex = new RegExp(pathExp);
-          if (path.match(regex)) {
-            hash = '!/' + this.redirects[pathExp];
-            newPath = path.replace(regex, '');
-            break;
-          }
-        }
-      }
-
-      if (hash !== undefined) {
-        this._changeLocation.apply(this, [newPath, hash]);
-      }
-    },
-    _changeLocation: function(path, hash) {
-      window.parent.location.hash = hash;
-      window.parent.location.pathname = path;
-    },
-    start: function() {
-      Backbone.history.start();
-    },
-    reset: function() {
-      this.actions = [];
-    }
-
-  });
-
-  return new Router();
-
-});
-
-/*!
- * jQuery Form Plugin
- * version: 3.46.0-2013.11.21
- * Requires jQuery v1.5 or later
- * Copyright (c) 2013 M. Alsup
- * Examples and documentation at: http://malsup.com/jquery/form/
- * Project repository: https://github.com/malsup/form
- * Dual licensed under the MIT and GPL licenses.
- * https://github.com/malsup/form#copyright-and-license
- */
-/*global ActiveXObject */
-
-// AMD support
-(function (factory) {
-    if (typeof define === 'function' && define.amd) {
-        // using AMD; register as anon module
-        define('jquery.form',['jquery'], factory);
-    } else {
-        // no AMD; invoke directly
-        factory( (typeof(jQuery) != 'undefined') ? jQuery : window.Zepto );
-    }
-}
-
-(function($) {
-
-
-/*
-    Usage Note:
-    -----------
-    Do not use both ajaxSubmit and ajaxForm on the same form.  These
-    functions are mutually exclusive.  Use ajaxSubmit if you want
-    to bind your own submit handler to the form.  For example,
-
-    $(document).ready(function() {
-        $('#myForm').on('submit', function(e) {
-            e.preventDefault(); // <-- important
-            $(this).ajaxSubmit({
-                target: '#output'
-            });
-        });
-    });
-
-    Use ajaxForm when you want the plugin to manage all the event binding
-    for you.  For example,
-
-    $(document).ready(function() {
-        $('#myForm').ajaxForm({
-            target: '#output'
-        });
-    });
-
-    You can also use ajaxForm with delegation (requires jQuery v1.7+), so the
-    form does not have to exist when you invoke ajaxForm:
-
-    $('#myForm').ajaxForm({
-        delegation: true,
-        target: '#output'
-    });
-
-    When using ajaxForm, the ajaxSubmit function will be invoked for you
-    at the appropriate time.
-*/
-
-/**
- * Feature detection
- */
-var feature = {};
-feature.fileapi = $("<input type='file'/>").get(0).files !== undefined;
-feature.formdata = window.FormData !== undefined;
-
-var hasProp = !!$.fn.prop;
-
-// attr2 uses prop when it can but checks the return type for
-// an expected string.  this accounts for the case where a form 
-// contains inputs with names like "action" or "method"; in those
-// cases "prop" returns the element
-$.fn.attr2 = function() {
-    if ( ! hasProp )
-        return this.attr.apply(this, arguments);
-    var val = this.prop.apply(this, arguments);
-    if ( ( val && val.jquery ) || typeof val === 'string' )
-        return val;
-    return this.attr.apply(this, arguments);
-};
-
-/**
- * ajaxSubmit() provides a mechanism for immediately submitting
- * an HTML form using AJAX.
- */
-$.fn.ajaxSubmit = function(options) {
-    /*jshint scripturl:true */
-
-    // fast fail if nothing selected (http://dev.jquery.com/ticket/2752)
-    if (!this.length) {
-        log('ajaxSubmit: skipping submit process - no element selected');
-        return this;
-    }
-
-    var method, action, url, $form = this;
-
-    if (typeof options == 'function') {
-        options = { success: options };
-    }
-    else if ( options === undefined ) {
-        options = {};
-    }
-
-    method = options.type || this.attr2('method');
-    action = options.url  || this.attr2('action');
-
-    url = (typeof action === 'string') ? $.trim(action) : '';
-    url = url || window.location.href || '';
-    if (url) {
-        // clean url (don't include hash vaue)
-        url = (url.match(/^([^#]+)/)||[])[1];
-    }
-
-    options = $.extend(true, {
-        url:  url,
-        success: $.ajaxSettings.success,
-        type: method || $.ajaxSettings.type,
-        iframeSrc: /^https/i.test(window.location.href || '') ? 'javascript:false' : 'about:blank'
-    }, options);
-
-    // hook for manipulating the form data before it is extracted;
-    // convenient for use with rich editors like tinyMCE or FCKEditor
-    var veto = {};
-    this.trigger('form-pre-serialize', [this, options, veto]);
-    if (veto.veto) {
-        log('ajaxSubmit: submit vetoed via form-pre-serialize trigger');
-        return this;
-    }
-
-    // provide opportunity to alter form data before it is serialized
-    if (options.beforeSerialize && options.beforeSerialize(this, options) === false) {
-        log('ajaxSubmit: submit aborted via beforeSerialize callback');
-        return this;
-    }
-
-    var traditional = options.traditional;
-    if ( traditional === undefined ) {
-        traditional = $.ajaxSettings.traditional;
-    }
-
-    var elements = [];
-    var qx, a = this.formToArray(options.semantic, elements);
-    if (options.data) {
-        options.extraData = options.data;
-        qx = $.param(options.data, traditional);
-    }
-
-    // give pre-submit callback an opportunity to abort the submit
-    if (options.beforeSubmit && options.beforeSubmit(a, this, options) === false) {
-        log('ajaxSubmit: submit aborted via beforeSubmit callback');
-        return this;
-    }
-
-    // fire vetoable 'validate' event
-    this.trigger('form-submit-validate', [a, this, options, veto]);
-    if (veto.veto) {
-        log('ajaxSubmit: submit vetoed via form-submit-validate trigger');
-        return this;
-    }
-
-    var q = $.param(a, traditional);
-    if (qx) {
-        q = ( q ? (q + '&' + qx) : qx );
-    }
-    if (options.type.toUpperCase() == 'GET') {
-        options.url += (options.url.indexOf('?') >= 0 ? '&' : '?') + q;
-        options.data = null;  // data is null for 'get'
-    }
-    else {
-        options.data = q; // data is the query string for 'post'
-    }
-
-    var callbacks = [];
-    if (options.resetForm) {
-        callbacks.push(function() { $form.resetForm(); });
-    }
-    if (options.clearForm) {
-        callbacks.push(function() { $form.clearForm(options.includeHidden); });
-    }
-
-    // perform a load on the target only if dataType is not provided
-    if (!options.dataType && options.target) {
-        var oldSuccess = options.success || function(){};
-        callbacks.push(function(data) {
-            var fn = options.replaceTarget ? 'replaceWith' : 'html';
-            $(options.target)[fn](data).each(oldSuccess, arguments);
-        });
-    }
-    else if (options.success) {
-        callbacks.push(options.success);
-    }
-
-    options.success = function(data, status, xhr) { // jQuery 1.4+ passes xhr as 3rd arg
-        var context = options.context || this ;    // jQuery 1.4+ supports scope context
-        for (var i=0, max=callbacks.length; i < max; i++) {
-            callbacks[i].apply(context, [data, status, xhr || $form, $form]);
-        }
-    };
-
-    if (options.error) {
-        var oldError = options.error;
-        options.error = function(xhr, status, error) {
-            var context = options.context || this;
-            oldError.apply(context, [xhr, status, error, $form]);
-        };
-    }
-
-     if (options.complete) {
-        var oldComplete = options.complete;
-        options.complete = function(xhr, status) {
-            var context = options.context || this;
-            oldComplete.apply(context, [xhr, status, $form]);
-        };
-    }
-
-    // are there files to upload?
-
-    // [value] (issue #113), also see comment:
-    // https://github.com/malsup/form/commit/588306aedba1de01388032d5f42a60159eea9228#commitcomment-2180219
-    var fileInputs = $('input[type=file]:enabled', this).filter(function() { return $(this).val() !== ''; });
-
-    var hasFileInputs = fileInputs.length > 0;
-    var mp = 'multipart/form-data';
-    var multipart = ($form.attr('enctype') == mp || $form.attr('encoding') == mp);
-
-    var fileAPI = feature.fileapi && feature.formdata;
-    log("fileAPI :" + fileAPI);
-    var shouldUseFrame = (hasFileInputs || multipart) && !fileAPI;
-
-    var jqxhr;
-
-    // options.iframe allows user to force iframe mode
-    // 06-NOV-09: now defaulting to iframe mode if file input is detected
-    if (options.iframe !== false && (options.iframe || shouldUseFrame)) {
-        // hack to fix Safari hang (thanks to Tim Molendijk for this)
-        // see:  http://groups.google.com/group/jquery-dev/browse_thread/thread/36395b7ab510dd5d
-        if (options.closeKeepAlive) {
-            $.get(options.closeKeepAlive, function() {
-                jqxhr = fileUploadIframe(a);
-            });
-        }
-        else {
-            jqxhr = fileUploadIframe(a);
-        }
-    }
-    else if ((hasFileInputs || multipart) && fileAPI) {
-        jqxhr = fileUploadXhr(a);
-    }
-    else {
-        jqxhr = $.ajax(options);
-    }
-
-    $form.removeData('jqxhr').data('jqxhr', jqxhr);
-
-    // clear element array
-    for (var k=0; k < elements.length; k++)
-        elements[k] = null;
-
-    // fire 'notify' event
-    this.trigger('form-submit-notify', [this, options]);
-    return this;
-
-    // utility fn for deep serialization
-    function deepSerialize(extraData){
-        var serialized = $.param(extraData, options.traditional).split('&');
-        var len = serialized.length;
-        var result = [];
-        var i, part;
-        for (i=0; i < len; i++) {
-            // #252; undo param space replacement
-            serialized[i] = serialized[i].replace(/\+/g,' ');
-            part = serialized[i].split('=');
-            // #278; use array instead of object storage, favoring array serializations
-            result.push([decodeURIComponent(part[0]), decodeURIComponent(part[1])]);
-        }
-        return result;
-    }
-
-     // XMLHttpRequest Level 2 file uploads (big hat tip to francois2metz)
-    function fileUploadXhr(a) {
-        var formdata = new FormData();
-
-        for (var i=0; i < a.length; i++) {
-            formdata.append(a[i].name, a[i].value);
-        }
-
-        if (options.extraData) {
-            var serializedData = deepSerialize(options.extraData);
-            for (i=0; i < serializedData.length; i++)
-                if (serializedData[i])
-                    formdata.append(serializedData[i][0], serializedData[i][1]);
-        }
-
-        options.data = null;
-
-        var s = $.extend(true, {}, $.ajaxSettings, options, {
-            contentType: false,
-            processData: false,
-            cache: false,
-            type: method || 'POST'
-        });
-
-        if (options.uploadProgress) {
-            // workaround because jqXHR does not expose upload property
-            s.xhr = function() {
-                var xhr = $.ajaxSettings.xhr();
-                if (xhr.upload) {
-                    xhr.upload.addEventListener('progress', function(event) {
-                        var percent = 0;
-                        var position = event.loaded || event.position; /*event.position is deprecated*/
-                        var total = event.total;
-                        if (event.lengthComputable) {
-                            percent = Math.ceil(position / total * 100);
-                        }
-                        options.uploadProgress(event, position, total, percent);
-                    }, false);
-                }
-                return xhr;
-            };
-        }
-
-        s.data = null;
-        var beforeSend = s.beforeSend;
-        s.beforeSend = function(xhr, o) {
-            //Send FormData() provided by user
-            if (options.formData)
-                o.data = options.formData;
-            else
-                o.data = formdata;
-            if(beforeSend)
-                beforeSend.call(this, xhr, o);
-        };
-        return $.ajax(s);
-    }
-
-    // private function for handling file uploads (hat tip to YAHOO!)
-    function fileUploadIframe(a) {
-        var form = $form[0], el, i, s, g, id, $io, io, xhr, sub, n, timedOut, timeoutHandle;
-        var deferred = $.Deferred();
-
-        // #341
-        deferred.abort = function(status) {
-            xhr.abort(status);
-        };
-
-        if (a) {
-            // ensure that every serialized input is still enabled
-            for (i=0; i < elements.length; i++) {
-                el = $(elements[i]);
-                if ( hasProp )
-                    el.prop('disabled', false);
-                else
-                    el.removeAttr('disabled');
-            }
-        }
-
-        s = $.extend(true, {}, $.ajaxSettings, options);
-        s.context = s.context || s;
-        id = 'jqFormIO' + (new Date().getTime());
-        if (s.iframeTarget) {
-            $io = $(s.iframeTarget);
-            n = $io.attr2('name');
-            if (!n)
-                 $io.attr2('name', id);
-            else
-                id = n;
-        }
-        else {
-            $io = $('<iframe name="' + id + '" src="'+ s.iframeSrc +'" />');
-            $io.css({ position: 'absolute', top: '-1000px', left: '-1000px' });
-        }
-        io = $io[0];
-
-
-        xhr = { // mock object
-            aborted: 0,
-            responseText: null,
-            responseXML: null,
-            status: 0,
-            statusText: 'n/a',
-            getAllResponseHeaders: function() {},
-            getResponseHeader: function() {},
-            setRequestHeader: function() {},
-            abort: function(status) {
-                var e = (status === 'timeout' ? 'timeout' : 'aborted');
-                log('aborting upload... ' + e);
-                this.aborted = 1;
-
-                try { // #214, #257
-                    if (io.contentWindow.document.execCommand) {
-                        io.contentWindow.document.execCommand('Stop');
-                    }
-                }
-                catch(ignore) {}
-
-                $io.attr('src', s.iframeSrc); // abort op in progress
-                xhr.error = e;
-                if (s.error)
-                    s.error.call(s.context, xhr, e, status);
-                if (g)
-                    $.event.trigger("ajaxError", [xhr, s, e]);
-                if (s.complete)
-                    s.complete.call(s.context, xhr, e);
-            }
-        };
-
-        g = s.global;
-        // trigger ajax global events so that activity/block indicators work like normal
-        if (g && 0 === $.active++) {
-            $.event.trigger("ajaxStart");
-        }
-        if (g) {
-            $.event.trigger("ajaxSend", [xhr, s]);
-        }
-
-        if (s.beforeSend && s.beforeSend.call(s.context, xhr, s) === false) {
-            if (s.global) {
-                $.active--;
-            }
-            deferred.reject();
-            return deferred;
-        }
-        if (xhr.aborted) {
-            deferred.reject();
-            return deferred;
-        }
-
-        // add submitting element to data if we know it
-        sub = form.clk;
-        if (sub) {
-            n = sub.name;
-            if (n && !sub.disabled) {
-                s.extraData = s.extraData || {};
-                s.extraData[n] = sub.value;
-                if (sub.type == "image") {
-                    s.extraData[n+'.x'] = form.clk_x;
-                    s.extraData[n+'.y'] = form.clk_y;
-                }
-            }
-        }
-
-        var CLIENT_TIMEOUT_ABORT = 1;
-        var SERVER_ABORT = 2;
-                
-        function getDoc(frame) {
-            /* it looks like contentWindow or contentDocument do not
-             * carry the protocol property in ie8, when running under ssl
-             * frame.document is the only valid response document, since
-             * the protocol is know but not on the other two objects. strange?
-             * "Same origin policy" http://en.wikipedia.org/wiki/Same_origin_policy
-             */
-            
-            var doc = null;
-            
-            // IE8 cascading access check
-            try {
-                if (frame.contentWindow) {
-                    doc = frame.contentWindow.document;
-                }
-            } catch(err) {
-                // IE8 access denied under ssl & missing protocol
-                log('cannot get iframe.contentWindow document: ' + err);
-            }
-
-            if (doc) { // successful getting content
-                return doc;
-            }
-
-            try { // simply checking may throw in ie8 under ssl or mismatched protocol
-                doc = frame.contentDocument ? frame.contentDocument : frame.document;
-            } catch(err) {
-                // last attempt
-                log('cannot get iframe.contentDocument: ' + err);
-                doc = frame.document;
-            }
-            return doc;
-        }
-
-        // Rails CSRF hack (thanks to Yvan Barthelemy)
-        var csrf_token = $('meta[name=csrf-token]').attr('content');
-        var csrf_param = $('meta[name=csrf-param]').attr('content');
-        if (csrf_param && csrf_token) {
-            s.extraData = s.extraData || {};
-            s.extraData[csrf_param] = csrf_token;
-        }
-
-        // take a breath so that pending repaints get some cpu time before the upload starts
-        function doSubmit() {
-            // make sure form attrs are set
-            var t = $form.attr2('target'), a = $form.attr2('action');
-
-            // update form attrs in IE friendly way
-            form.setAttribute('target',id);
-            if (!method || /post/i.test(method) ) {
-                form.setAttribute('method', 'POST');
-            }
-            if (a != s.url) {
-                form.setAttribute('action', s.url);
-            }
-
-            // ie borks in some cases when setting encoding
-            if (! s.skipEncodingOverride && (!method || /post/i.test(method))) {
-                $form.attr({
-                    encoding: 'multipart/form-data',
-                    enctype:  'multipart/form-data'
-                });
-            }
-
-            // support timout
-            if (s.timeout) {
-                timeoutHandle = setTimeout(function() { timedOut = true; cb(CLIENT_TIMEOUT_ABORT); }, s.timeout);
-            }
-
-            // look for server aborts
-            function checkState() {
-                try {
-                    var state = getDoc(io).readyState;
-                    log('state = ' + state);
-                    if (state && state.toLowerCase() == 'uninitialized')
-                        setTimeout(checkState,50);
-                }
-                catch(e) {
-                    log('Server abort: ' , e, ' (', e.name, ')');
-                    cb(SERVER_ABORT);
-                    if (timeoutHandle)
-                        clearTimeout(timeoutHandle);
-                    timeoutHandle = undefined;
-                }
-            }
-
-            // add "extra" data to form if provided in options
-            var extraInputs = [];
-            try {
-                if (s.extraData) {
-                    for (var n in s.extraData) {
-                        if (s.extraData.hasOwnProperty(n)) {
-                           // if using the $.param format that allows for multiple values with the same name
-                           if($.isPlainObject(s.extraData[n]) && s.extraData[n].hasOwnProperty('name') && s.extraData[n].hasOwnProperty('value')) {
-                               extraInputs.push(
-                               $('<input type="hidden" name="'+s.extraData[n].name+'">').val(s.extraData[n].value)
-                                   .appendTo(form)[0]);
-                           } else {
-                               extraInputs.push(
-                               $('<input type="hidden" name="'+n+'">').val(s.extraData[n])
-                                   .appendTo(form)[0]);
-                           }
-                        }
-                    }
-                }
-
-                if (!s.iframeTarget) {
-                    // add iframe to doc and submit the form
-                    $io.appendTo('body');
-                }
-                if (io.attachEvent)
-                    io.attachEvent('onload', cb);
-                else
-                    io.addEventListener('load', cb, false);
-                setTimeout(checkState,15);
-
-                try {
-                    form.submit();
-                } catch(err) {
-                    // just in case form has element with name/id of 'submit'
-                    var submitFn = document.createElement('form').submit;
-                    submitFn.apply(form);
-                }
-            }
-            finally {
-                // reset attrs and remove "extra" input elements
-                form.setAttribute('action',a);
-                if(t) {
-                    form.setAttribute('target', t);
-                } else {
-                    $form.removeAttr('target');
-                }
-                $(extraInputs).remove();
-            }
-        }
-
-        if (s.forceSync) {
-            doSubmit();
-        }
-        else {
-            setTimeout(doSubmit, 10); // this lets dom updates render
-        }
-
-        var data, doc, domCheckCount = 50, callbackProcessed;
-
-        function cb(e) {
-            if (xhr.aborted || callbackProcessed) {
-                return;
-            }
-            
-            doc = getDoc(io);
-            if(!doc) {
-                log('cannot access response document');
-                e = SERVER_ABORT;
-            }
-            if (e === CLIENT_TIMEOUT_ABORT && xhr) {
-                xhr.abort('timeout');
-                deferred.reject(xhr, 'timeout');
-                return;
-            }
-            else if (e == SERVER_ABORT && xhr) {
-                xhr.abort('server abort');
-                deferred.reject(xhr, 'error', 'server abort');
-                return;
-            }
-
-            if (!doc || doc.location.href == s.iframeSrc) {
-                // response not received yet
-                if (!timedOut)
-                    return;
-            }
-            if (io.detachEvent)
-                io.detachEvent('onload', cb);
-            else
-                io.removeEventListener('load', cb, false);
-
-            var status = 'success', errMsg;
-            try {
-                if (timedOut) {
-                    throw 'timeout';
-                }
-
-                var isXml = s.dataType == 'xml' || doc.XMLDocument || $.isXMLDoc(doc);
-                log('isXml='+isXml);
-                if (!isXml && window.opera && (doc.body === null || !doc.body.innerHTML)) {
-                    if (--domCheckCount) {
-                        // in some browsers (Opera) the iframe DOM is not always traversable when
-                        // the onload callback fires, so we loop a bit to accommodate
-                        log('requeing onLoad callback, DOM not available');
-                        setTimeout(cb, 250);
-                        return;
-                    }
-                    // let this fall through because server response could be an empty document
-                    //log('Could not access iframe DOM after mutiple tries.');
-                    //throw 'DOMException: not available';
-                }
-
-                //log('response detected');
-                var docRoot = doc.body ? doc.body : doc.documentElement;
-                xhr.responseText = docRoot ? docRoot.innerHTML : null;
-                xhr.responseXML = doc.XMLDocument ? doc.XMLDocument : doc;
-                if (isXml)
-                    s.dataType = 'xml';
-                xhr.getResponseHeader = function(header){
-                    var headers = {'content-type': s.dataType};
-                    return headers[header.toLowerCase()];
-                };
-                // support for XHR 'status' & 'statusText' emulation :
-                if (docRoot) {
-                    xhr.status = Number( docRoot.getAttribute('status') ) || xhr.status;
-                    xhr.statusText = docRoot.getAttribute('statusText') || xhr.statusText;
-                }
-
-                var dt = (s.dataType || '').toLowerCase();
-                var scr = /(json|script|text)/.test(dt);
-                if (scr || s.textarea) {
-                    // see if user embedded response in textarea
-                    var ta = doc.getElementsByTagName('textarea')[0];
-                    if (ta) {
-                        xhr.responseText = ta.value;
-                        // support for XHR 'status' & 'statusText' emulation :
-                        xhr.status = Number( ta.getAttribute('status') ) || xhr.status;
-                        xhr.statusText = ta.getAttribute('statusText') || xhr.statusText;
-                    }
-                    else if (scr) {
-                        // account for browsers injecting pre around json response
-                        var pre = doc.getElementsByTagName('pre')[0];
-                        var b = doc.getElementsByTagName('body')[0];
-                        if (pre) {
-                            xhr.responseText = pre.textContent ? pre.textContent : pre.innerText;
-                        }
-                        else if (b) {
-                            xhr.responseText = b.textContent ? b.textContent : b.innerText;
-                        }
-                    }
-                }
-                else if (dt == 'xml' && !xhr.responseXML && xhr.responseText) {
-                    xhr.responseXML = toXml(xhr.responseText);
-                }
-
-                try {
-                    data = httpData(xhr, dt, s);
-                }
-                catch (err) {
-                    status = 'parsererror';
-                    xhr.error = errMsg = (err || status);
-                }
-            }
-            catch (err) {
-                log('error caught: ',err);
-                status = 'error';
-                xhr.error = errMsg = (err || status);
-            }
-
-            if (xhr.aborted) {
-                log('upload aborted');
-                status = null;
-            }
-
-            if (xhr.status) { // we've set xhr.status
-                status = (xhr.status >= 200 && xhr.status < 300 || xhr.status === 304) ? 'success' : 'error';
-            }
-
-            // ordering of these callbacks/triggers is odd, but that's how $.ajax does it
-            if (status === 'success') {
-                if (s.success)
-                    s.success.call(s.context, data, 'success', xhr);
-                deferred.resolve(xhr.responseText, 'success', xhr);
-                if (g)
-                    $.event.trigger("ajaxSuccess", [xhr, s]);
-            }
-            else if (status) {
-                if (errMsg === undefined)
-                    errMsg = xhr.statusText;
-                if (s.error)
-                    s.error.call(s.context, xhr, status, errMsg);
-                deferred.reject(xhr, 'error', errMsg);
-                if (g)
-                    $.event.trigger("ajaxError", [xhr, s, errMsg]);
-            }
-
-            if (g)
-                $.event.trigger("ajaxComplete", [xhr, s]);
-
-            if (g && ! --$.active) {
-                $.event.trigger("ajaxStop");
-            }
-
-            if (s.complete)
-                s.complete.call(s.context, xhr, status);
-
-            callbackProcessed = true;
-            if (s.timeout)
-                clearTimeout(timeoutHandle);
-
-            // clean up
-            setTimeout(function() {
-                if (!s.iframeTarget)
-                    $io.remove();
-                else  //adding else to clean up existing iframe response.
-                    $io.attr('src', s.iframeSrc);
-                xhr.responseXML = null;
-            }, 100);
-        }
-
-        var toXml = $.parseXML || function(s, doc) { // use parseXML if available (jQuery 1.5+)
-            if (window.ActiveXObject) {
-                doc = new ActiveXObject('Microsoft.XMLDOM');
-                doc.async = 'false';
-                doc.loadXML(s);
-            }
-            else {
-                doc = (new DOMParser()).parseFromString(s, 'text/xml');
-            }
-            return (doc && doc.documentElement && doc.documentElement.nodeName != 'parsererror') ? doc : null;
-        };
-        var parseJSON = $.parseJSON || function(s) {
-            /*jslint evil:true */
-            return window['eval']('(' + s + ')');
-        };
-
-        var httpData = function( xhr, type, s ) { // mostly lifted from jq1.4.4
-
-            var ct = xhr.getResponseHeader('content-type') || '',
-                xml = type === 'xml' || !type && ct.indexOf('xml') >= 0,
-                data = xml ? xhr.responseXML : xhr.responseText;
-
-            if (xml && data.documentElement.nodeName === 'parsererror') {
-                if ($.error)
-                    $.error('parsererror');
-            }
-            if (s && s.dataFilter) {
-                data = s.dataFilter(data, type);
-            }
-            if (typeof data === 'string') {
-                if (type === 'json' || !type && ct.indexOf('json') >= 0) {
-                    data = parseJSON(data);
-                } else if (type === "script" || !type && ct.indexOf("javascript") >= 0) {
-                    $.globalEval(data);
-                }
-            }
-            return data;
-        };
-
-        return deferred;
-    }
-};
-
-/**
- * ajaxForm() provides a mechanism for fully automating form submission.
- *
- * The advantages of using this method instead of ajaxSubmit() are:
- *
- * 1: This method will include coordinates for <input type="image" /> elements (if the element
- *    is used to submit the form).
- * 2. This method will include the submit element's name/value data (for the element that was
- *    used to submit the form).
- * 3. This method binds the submit() method to the form for you.
- *
- * The options argument for ajaxForm works exactly as it does for ajaxSubmit.  ajaxForm merely
- * passes the options argument along after properly binding events for submit elements and
- * the form itself.
- */
-$.fn.ajaxForm = function(options) {
-    options = options || {};
-    options.delegation = options.delegation && $.isFunction($.fn.on);
-
-    // in jQuery 1.3+ we can fix mistakes with the ready state
-    if (!options.delegation && this.length === 0) {
-        var o = { s: this.selector, c: this.context };
-        if (!$.isReady && o.s) {
-            log('DOM not ready, queuing ajaxForm');
-            $(function() {
-                $(o.s,o.c).ajaxForm(options);
-            });
-            return this;
-        }
-        // is your DOM ready?  http://docs.jquery.com/Tutorials:Introducing_$(document).ready()
-        log('terminating; zero elements found by selector' + ($.isReady ? '' : ' (DOM not ready)'));
-        return this;
-    }
-
-    if ( options.delegation ) {
-        $(document)
-            .off('submit.form-plugin', this.selector, doAjaxSubmit)
-            .off('click.form-plugin', this.selector, captureSubmittingElement)
-            .on('submit.form-plugin', this.selector, options, doAjaxSubmit)
-            .on('click.form-plugin', this.selector, options, captureSubmittingElement);
-        return this;
-    }
-
-    return this.ajaxFormUnbind()
-        .bind('submit.form-plugin', options, doAjaxSubmit)
-        .bind('click.form-plugin', options, captureSubmittingElement);
-};
-
-// private event handlers
-function doAjaxSubmit(e) {
-    /*jshint validthis:true */
-    var options = e.data;
-    if (!e.isDefaultPrevented()) { // if event has been canceled, don't proceed
-        e.preventDefault();
-        $(e.target).ajaxSubmit(options); // #365
-    }
-}
-
-function captureSubmittingElement(e) {
-    /*jshint validthis:true */
-    var target = e.target;
-    var $el = $(target);
-    if (!($el.is("[type=submit],[type=image]"))) {
-        // is this a child element of the submit el?  (ex: a span within a button)
-        var t = $el.closest('[type=submit]');
-        if (t.length === 0) {
-            return;
-        }
-        target = t[0];
-    }
-    var form = this;
-    form.clk = target;
-    if (target.type == 'image') {
-        if (e.offsetX !== undefined) {
-            form.clk_x = e.offsetX;
-            form.clk_y = e.offsetY;
-        } else if (typeof $.fn.offset == 'function') {
-            var offset = $el.offset();
-            form.clk_x = e.pageX - offset.left;
-            form.clk_y = e.pageY - offset.top;
-        } else {
-            form.clk_x = e.pageX - target.offsetLeft;
-            form.clk_y = e.pageY - target.offsetTop;
-        }
-    }
-    // clear form vars
-    setTimeout(function() { form.clk = form.clk_x = form.clk_y = null; }, 100);
-}
-
-
-// ajaxFormUnbind unbinds the event handlers that were bound by ajaxForm
-$.fn.ajaxFormUnbind = function() {
-    return this.unbind('submit.form-plugin click.form-plugin');
-};
-
-/**
- * formToArray() gathers form element data into an array of objects that can
- * be passed to any of the following ajax functions: $.get, $.post, or load.
- * Each object in the array has both a 'name' and 'value' property.  An example of
- * an array for a simple login form might be:
- *
- * [ { name: 'username', value: 'jresig' }, { name: 'password', value: 'secret' } ]
- *
- * It is this array that is passed to pre-submit callback functions provided to the
- * ajaxSubmit() and ajaxForm() methods.
- */
-$.fn.formToArray = function(semantic, elements) {
-    var a = [];
-    if (this.length === 0) {
-        return a;
-    }
-
-    var form = this[0];
-    var els = semantic ? form.getElementsByTagName('*') : form.elements;
-    if (!els) {
-        return a;
-    }
-
-    var i,j,n,v,el,max,jmax;
-    for(i=0, max=els.length; i < max; i++) {
-        el = els[i];
-        n = el.name;
-        if (!n || el.disabled) {
-            continue;
-        }
-
-        if (semantic && form.clk && el.type == "image") {
-            // handle image inputs on the fly when semantic == true
-            if(form.clk == el) {
-                a.push({name: n, value: $(el).val(), type: el.type });
-                a.push({name: n+'.x', value: form.clk_x}, {name: n+'.y', value: form.clk_y});
-            }
-            continue;
-        }
-
-        v = $.fieldValue(el, true);
-        if (v && v.constructor == Array) {
-            if (elements)
-                elements.push(el);
-            for(j=0, jmax=v.length; j < jmax; j++) {
-                a.push({name: n, value: v[j]});
-            }
-        }
-        else if (feature.fileapi && el.type == 'file') {
-            if (elements)
-                elements.push(el);
-            var files = el.files;
-            if (files.length) {
-                for (j=0; j < files.length; j++) {
-                    a.push({name: n, value: files[j], type: el.type});
-                }
-            }
-            else {
-                // #180
-                a.push({ name: n, value: '', type: el.type });
-            }
-        }
-        else if (v !== null && typeof v != 'undefined') {
-            if (elements)
-                elements.push(el);
-            a.push({name: n, value: v, type: el.type, required: el.required});
-        }
-    }
-
-    if (!semantic && form.clk) {
-        // input type=='image' are not found in elements array! handle it here
-        var $input = $(form.clk), input = $input[0];
-        n = input.name;
-        if (n && !input.disabled && input.type == 'image') {
-            a.push({name: n, value: $input.val()});
-            a.push({name: n+'.x', value: form.clk_x}, {name: n+'.y', value: form.clk_y});
-        }
-    }
-    return a;
-};
-
-/**
- * Serializes form data into a 'submittable' string. This method will return a string
- * in the format: name1=value1&amp;name2=value2
- */
-$.fn.formSerialize = function(semantic) {
-    //hand off to jQuery.param for proper encoding
-    return $.param(this.formToArray(semantic));
-};
-
-/**
- * Serializes all field elements in the jQuery object into a query string.
- * This method will return a string in the format: name1=value1&amp;name2=value2
- */
-$.fn.fieldSerialize = function(successful) {
-    var a = [];
-    this.each(function() {
-        var n = this.name;
-        if (!n) {
-            return;
-        }
-        var v = $.fieldValue(this, successful);
-        if (v && v.constructor == Array) {
-            for (var i=0,max=v.length; i < max; i++) {
-                a.push({name: n, value: v[i]});
-            }
-        }
-        else if (v !== null && typeof v != 'undefined') {
-            a.push({name: this.name, value: v});
-        }
-    });
-    //hand off to jQuery.param for proper encoding
-    return $.param(a);
-};
-
-/**
- * Returns the value(s) of the element in the matched set.  For example, consider the following form:
- *
- *  <form><fieldset>
- *      <input name="A" type="text" />
- *      <input name="A" type="text" />
- *      <input name="B" type="checkbox" value="B1" />
- *      <input name="B" type="checkbox" value="B2"/>
- *      <input name="C" type="radio" value="C1" />
- *      <input name="C" type="radio" value="C2" />
- *  </fieldset></form>
- *
- *  var v = $('input[type=text]').fieldValue();
- *  // if no values are entered into the text inputs
- *  v == ['','']
- *  // if values entered into the text inputs are 'foo' and 'bar'
- *  v == ['foo','bar']
- *
- *  var v = $('input[type=checkbox]').fieldValue();
- *  // if neither checkbox is checked
- *  v === undefined
- *  // if both checkboxes are checked
- *  v == ['B1', 'B2']
- *
- *  var v = $('input[type=radio]').fieldValue();
- *  // if neither radio is checked
- *  v === undefined
- *  // if first radio is checked
- *  v == ['C1']
- *
- * The successful argument controls whether or not the field element must be 'successful'
- * (per http://www.w3.org/TR/html4/interact/forms.html#successful-controls).
- * The default value of the successful argument is true.  If this value is false the value(s)
- * for each element is returned.
- *
- * Note: This method *always* returns an array.  If no valid value can be determined the
- *    array will be empty, otherwise it will contain one or more values.
- */
-$.fn.fieldValue = function(successful) {
-    for (var val=[], i=0, max=this.length; i < max; i++) {
-        var el = this[i];
-        var v = $.fieldValue(el, successful);
-        if (v === null || typeof v == 'undefined' || (v.constructor == Array && !v.length)) {
-            continue;
-        }
-        if (v.constructor == Array)
-            $.merge(val, v);
-        else
-            val.push(v);
-    }
-    return val;
-};
-
-/**
- * Returns the value of the field element.
- */
-$.fieldValue = function(el, successful) {
-    var n = el.name, t = el.type, tag = el.tagName.toLowerCase();
-    if (successful === undefined) {
-        successful = true;
-    }
-
-    if (successful && (!n || el.disabled || t == 'reset' || t == 'button' ||
-        (t == 'checkbox' || t == 'radio') && !el.checked ||
-        (t == 'submit' || t == 'image') && el.form && el.form.clk != el ||
-        tag == 'select' && el.selectedIndex == -1)) {
-            return null;
-    }
-
-    if (tag == 'select') {
-        var index = el.selectedIndex;
-        if (index < 0) {
-            return null;
-        }
-        var a = [], ops = el.options;
-        var one = (t == 'select-one');
-        var max = (one ? index+1 : ops.length);
-        for(var i=(one ? index : 0); i < max; i++) {
-            var op = ops[i];
-            if (op.selected) {
-                var v = op.value;
-                if (!v) { // extra pain for IE...
-                    v = (op.attributes && op.attributes['value'] && !(op.attributes['value'].specified)) ? op.text : op.value;
-                }
-                if (one) {
-                    return v;
-                }
-                a.push(v);
-            }
-        }
-        return a;
-    }
-    return $(el).val();
-};
-
-/**
- * Clears the form data.  Takes the following actions on the form's input fields:
- *  - input text fields will have their 'value' property set to the empty string
- *  - select elements will have their 'selectedIndex' property set to -1
- *  - checkbox and radio inputs will have their 'checked' property set to false
- *  - inputs of type submit, button, reset, and hidden will *not* be effected
- *  - button elements will *not* be effected
- */
-$.fn.clearForm = function(includeHidden) {
-    return this.each(function() {
-        $('input,select,textarea', this).clearFields(includeHidden);
-    });
-};
-
-/**
- * Clears the selected form elements.
- */
-$.fn.clearFields = $.fn.clearInputs = function(includeHidden) {
-    var re = /^(?:color|date|datetime|email|month|number|password|range|search|tel|text|time|url|week)$/i; // 'hidden' is not in this list
-    return this.each(function() {
-        var t = this.type, tag = this.tagName.toLowerCase();
-        if (re.test(t) || tag == 'textarea') {
-            this.value = '';
-        }
-        else if (t == 'checkbox' || t == 'radio') {
-            this.checked = false;
-        }
-        else if (tag == 'select') {
-            this.selectedIndex = -1;
-        }
-        else if (t == "file") {
-            if (/MSIE/.test(navigator.userAgent)) {
-                $(this).replaceWith($(this).clone(true));
-            } else {
-                $(this).val('');
-            }
-        }
-        else if (includeHidden) {
-            // includeHidden can be the value true, or it can be a selector string
-            // indicating a special test; for example:
-            //  $('#myForm').clearForm('.special:hidden')
-            // the above would clean hidden inputs that have the class of 'special'
-            if ( (includeHidden === true && /hidden/.test(t)) ||
-                 (typeof includeHidden == 'string' && $(this).is(includeHidden)) )
-                this.value = '';
-        }
-    });
-};
-
-/**
- * Resets the form data.  Causes all form elements to be reset to their original value.
- */
-$.fn.resetForm = function() {
-    return this.each(function() {
-        // guard against an input with the name of 'reset'
-        // note that IE reports the reset function as an 'object'
-        if (typeof this.reset == 'function' || (typeof this.reset == 'object' && !this.reset.nodeType)) {
-            this.reset();
-        }
-    });
-};
-
-/**
- * Enables or disables any matching elements.
- */
-$.fn.enable = function(b) {
-    if (b === undefined) {
-        b = true;
-    }
-    return this.each(function() {
-        this.disabled = !b;
-    });
-};
-
-/**
- * Checks/unchecks any matching checkboxes or radio buttons and
- * selects/deselects and matching option elements.
- */
-$.fn.selected = function(select) {
-    if (select === undefined) {
-        select = true;
-    }
-    return this.each(function() {
-        var t = this.type;
-        if (t == 'checkbox' || t == 'radio') {
-            this.checked = select;
-        }
-        else if (this.tagName.toLowerCase() == 'option') {
-            var $sel = $(this).parent('select');
-            if (select && $sel[0] && $sel[0].type == 'select-one') {
-                // deselect all other options
-                $sel.find('option').selected(false);
-            }
-            this.selected = select;
-        }
-    });
-};
-
-// expose debug var
-$.fn.ajaxSubmit.debug = false;
-
-// helper fn for console logging
-function log() {
-    if (!$.fn.ajaxSubmit.debug)
-        return;
-    var msg = '[jquery.form] ' + Array.prototype.join.call(arguments,'');
-    if (window.console && window.console.log) {
-        window.console.log(msg);
-    }
-    else if (window.opera && window.opera.postError) {
-        window.opera.postError(msg);
-    }
-}
-
-}));
-
-
-
-define('text!mockup-patterns-tinymce-url/templates/image.xml',[],function () { return '<div>\n  <div class="linkModal">\n    <h1><%- insertHeading %></h1>\n    <p class="info">Drag and drop files from your desktop onto dialog to upload</p>\n\n    <div class="linkTypes pat-autotoc autotabs"\n         data-pat-autotoc="section:fieldset;levels:legend;">\n\n      <fieldset class="linkType image" data-linkType="image">\n        <legend>Image</legend>\n        <div class="form-inline">\n          <div class="form-group main">\n            <input type="text" name="image" />\n          </div>\n          <div class="form-group scale">\n            <label><%- scaleText %></label>\n            <select name="scale">\n              <option value="">Original</option>\n                <% _.each(scales.split(\',\'), function(scale){ %>\n                  <% var scale = scale.split(\':\'); %>\n                  <option value="<%- scale[1] %>">\n                    <%- scale[0] %>\n                  </option>\n                <% }); %>\n            </select>\n          </div>\n        </div>\n      </fieldset>\n\n      <fieldset class="linkType uploadImage" data-linkType="uploadImage">\n        <legend>Upload</legend>\n        <div class="uploadify-me"></div>\n      </fieldset>\n\n      <fieldset class="linkType externalImage" data-linkType="externalImage">\n        <legend>External image</legend>\n        <div>\n          <div class="form-group main">\n            <label><%- externalImageText %></label>\n            <input type="text" name="externalImage" />\n          </div>\n        </div>\n      </fieldset>\n\n    </div><!-- / tabs -->\n\n    <div class="common-controls">\n      <div class="form-group title">\n        <label><%- titleText %></label>\n        <input type="text" name="title" />\n      </div>\n      <div class="form-group text">\n        <label><%- altText %></label>\n        <input type="text" name="alt" />\n      </div>\n      <div class="form-group align">\n        <label><%- imageAlignText %></label>\n        <select name="align">\n          <% _.each([\'inline\', \'right\', \'left\'], function(align){ %>\n              <option value="<%- align %>">\n              <%- align.charAt(0).toUpperCase() + align.slice(1) %>\n              </option>\n          <% }); %>\n        <select>\n      </div>\n    </div>\n\n    <input type="submit" class="plone-btn" name="cancel" value="<%- cancelBtn %>" />\n    <input type="submit" class="plone-btn plone-btn-primary" name="insert" value="<%- insertBtn %>" />\n\n  </div>\n</div>\n';});
-
-
-define('text!mockup-patterns-tinymce-url/templates/link.xml',[],function () { return '<div>\n  <div class="linkModal">\n    <h1><%- insertHeading %></h1>\n    <p class="info">Drag and drop files from your desktop onto dialog to upload</p>\n\n    <div class="linkTypes pat-autotoc autotabs"\n         data-pat-autotoc="section:fieldset;levels:legend;">\n\n      <fieldset class="linkType internal" data-linkType="internal">\n        <legend>Internal</legend>\n        <div>\n          <div class="form-group main">\n            <!-- this gives the name to the "linkType" -->\n            <input type="text" name="internal" />\n          </div>\n        </div>\n      </fieldset>\n\n      <fieldset class="linkType upload" data-linkType="upload">\n        <legend>Upload</legend>\n        <div class="uploadify-me"></div>\n      </fieldset>\n\n      <fieldset class="linkType external" data-linkType="external">\n        <legend>External</legend>\n        <div class="form-group main">\n          <label for="external"><%- externalText %></label>\n          <input type="text" name="external" />\n        </div>\n      </fieldset>\n\n      <fieldset class="linkType email" data-linkType="email">\n        <legend>Email</legend>\n        <div class="form-inline">\n          <div class="form-group main">\n            <label><%- emailText %></label>\n            <input type="text" name="email" />\n          </div>\n          <div class="form-group">\n            <label><%- subjectText %></label>\n            <input type="text" name="subject" />\n          </div>\n        </div>\n      </fieldset>\n\n      <fieldset class="linkType anchor" data-linkType="anchor">\n        <legend>Anchor</legend>\n        <div>\n          <div class="form-group main">\n            <label>Select an anchor</label>\n            <div class="input-wrapper">\n              <select name="anchor" class="pat-select2" data-pat-select2="width:500px" />\n            </div>\n          </div>\n        </div>\n      </fieldset>\n\n    </div><!-- / tabs -->\n\n    <div class="common-controls">\n      <div class="form-group">\n        <label>Target</label>\n        <select name="target">\n          <% _.each(targetList, function(target){ %>\n            <option value="<%- target.value %>"><%- target.text %></option>\n          <% }); %>\n        </select>\n      </div>\n      <div class="form-group">\n        <label><%- titleText %></label>\n        <input type="text" name="title" />\n      </div>\n    </div>\n\n    <input type="submit" class="plone-btn" name="cancel" value="<%- cancelBtn %>" />\n    <input type="submit" class="plone-btn plone-btn-primary" name="insert" value="<%- insertBtn %>" />\n  </div>\n</div>\n';});
-
 (function(root) {
-define("jquery.recurrenceinput", ["jquery","jquery.tools.overlay","jquery.tools.dateinput","jquery.tmpl"], function() {
+define("jquery.recurrenceinput", ["jquery","resource-plone-app-jquerytools-js","resource-plone-app-jquerytools-dateinput-js","jquery.tmpl"], function() {
   return (function() {
 /*jslint regexp: false, continue: true, indent: 4 */
 /*global $, alert, jQuery */
@@ -60190,7 +58493,7 @@ define('pat-logger',[
 });
 
 /**
- * Patterns registry fork - Central registry and scan logic for patterns
+ * Patterns registry - Central registry and scan logic for patterns
  *
  * Copyright 2012-2013 Simplon B.V.
  * Copyright 2012-2013 Florian Friesdorf
@@ -60205,10 +58508,8 @@ define('pat-logger',[
  * - handle once within init
  * - no turnstile anymore
  * - set pattern.jquery_plugin if you want it
- * - This is a global registry now
- * - elements can no longer be initialized more than once
  */
-define('mockup-registry',[
+define('pat-registry',[
     "jquery",
     "pat-logger",
     "pat-utils",
@@ -60216,8 +58517,6 @@ define('mockup-registry',[
     "pat-compat",
     "pat-jquery-ext"
 ], function($, logger, utils) {
-    
-
     var log = logger.getLogger("registry");
 
     var disable_re = /patterns-disable=([^&]+)/g,
@@ -60235,27 +58534,18 @@ define('mockup-registry',[
         log.info('I will not catch init exceptions');
     }
 
-    if(window.registry_settings === undefined){
-        /* use global settings in case mockup-registry is included by
-           multiple compiled sources. Makes this a global registry */
-        window.registry_settings = {
-            patterns: {},
-            initialized: false
-        };
-    }
-
     var registry = {
-        settings: window.registry_settings,
-        patterns: window.registry_settings.patterns,
+        patterns: {},
         // as long as the registry is not initialized, pattern
         // registration just registers a pattern. Once init is called,
         // the DOM is scanned. After that registering a new pattern
         // results in rescanning the DOM only for this pattern.
+        initialized: false,
         init: function registry_init() {
             $(document).ready(function() {
                 log.info('loaded: ' + Object.keys(registry.patterns).sort().join(', '));
                 registry.scan(document.body);
-                registry.settings.initialized = true;
+                registry.initialized = true;
                 log.info('finished initial scan.');
             });
         },
@@ -60300,7 +58590,7 @@ define('mockup-registry',[
                     pattern = registry.patterns[name];
                     if (pattern.init) {
                         plog = logger.getLogger("pat." + name);
-                        if ($el.is(pattern.trigger) && !$el.hasClass('pattern-initialized')) {
+                        if ($el.is(pattern.trigger)) {
                             plog.debug("Initialising:", $el);
                             try {
                                 pattern.init($el, null, trigger);
@@ -60309,7 +58599,6 @@ define('mockup-registry',[
                                 if (dont_catch) { throw(e); }
                                 plog.error("Caught error:", e);
                             }
-                            $el.addClass('pattern-initialized');
                         }
                     }
                 }
@@ -60343,7 +58632,7 @@ define('mockup-registry',[
                 $.fn[plugin_name.replace(/^pat/, "pattern")] = utils.jqueryPlugin(pattern);
             }
             log.debug("Registered pattern:", name, pattern);
-            if (registry.settings.initialized) {
+            if (registry.initialized) {
                 registry.scan(document.body, [name]);
             }
             return true;
@@ -60366,7 +58655,7 @@ define('mockup-registry',[
 
 define('mockup-patterns-base',[
   'jquery',
-  'mockup-registry',
+  'pat-registry',
   'mockup-parser',
   "pat-logger"
 ], function($, Registry, mockupParser, logger) {
@@ -61835,7 +60124,7 @@ define('mockup-patterns-modal',[
   'underscore',
   'mockup-patterns-base',
   'mockup-patterns-backdrop',
-  'mockup-registry',
+  'pat-registry',
   'mockup-router',
   'mockup-utils',
   'jquery.form'
@@ -67058,6 +65347,137 @@ tinymce.PluginManager.add('autoresize', function(editor) {
 }(this));
 
 (function(root) {
+define("tinymce-bbcode", ["tinymce"], function() {
+  return (function() {
+/**
+ * plugin.js
+ *
+ * Copyright, Moxiecode Systems AB
+ * Released under LGPL License.
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+/*global tinymce:true */
+
+(function() {
+    tinymce.create('tinymce.plugins.BBCodePlugin', {
+        init : function(ed) {
+            var self = this, dialect = ed.getParam('bbcode_dialect', 'punbb').toLowerCase();
+
+            ed.on('beforeSetContent', function(e) {
+                e.content = self['_' + dialect + '_bbcode2html'](e.content);
+            });
+
+            ed.on('postProcess', function(e) {
+                if (e.set) {
+                    e.content = self['_' + dialect + '_bbcode2html'](e.content);
+                }
+
+                if (e.get) {
+                    e.content = self['_' + dialect + '_html2bbcode'](e.content);
+                }
+            });
+        },
+
+        getInfo: function() {
+            return {
+                longname: 'BBCode Plugin',
+                author: 'Moxiecode Systems AB',
+                authorurl: 'http://www.tinymce.com',
+                infourl: 'http://www.tinymce.com/wiki.php/Plugin:bbcode'
+            };
+        },
+
+        // Private methods
+
+        // HTML -> BBCode in PunBB dialect
+        _punbb_html2bbcode : function(s) {
+            s = tinymce.trim(s);
+
+            function rep(re, str) {
+                s = s.replace(re, str);
+            }
+
+            // example: <strong> to [b]
+            rep(/<a.*?href=\"(.*?)\".*?>(.*?)<\/a>/gi, "[url=$1]$2[/url]");
+            rep(/<font.*?color=\"(.*?)\".*?class=\"codeStyle\".*?>(.*?)<\/font>/gi, "[code][color=$1]$2[/color][/code]");
+            rep(/<font.*?color=\"(.*?)\".*?class=\"quoteStyle\".*?>(.*?)<\/font>/gi, "[quote][color=$1]$2[/color][/quote]");
+            rep(/<font.*?class=\"codeStyle\".*?color=\"(.*?)\".*?>(.*?)<\/font>/gi, "[code][color=$1]$2[/color][/code]");
+            rep(/<font.*?class=\"quoteStyle\".*?color=\"(.*?)\".*?>(.*?)<\/font>/gi, "[quote][color=$1]$2[/color][/quote]");
+            rep(/<span style=\"color: ?(.*?);\">(.*?)<\/span>/gi, "[color=$1]$2[/color]");
+            rep(/<font.*?color=\"(.*?)\".*?>(.*?)<\/font>/gi, "[color=$1]$2[/color]");
+            rep(/<span style=\"font-size:(.*?);\">(.*?)<\/span>/gi, "[size=$1]$2[/size]");
+            rep(/<font>(.*?)<\/font>/gi, "$1");
+            rep(/<img.*?src=\"(.*?)\".*?\/>/gi, "[img]$1[/img]");
+            rep(/<span class=\"codeStyle\">(.*?)<\/span>/gi, "[code]$1[/code]");
+            rep(/<span class=\"quoteStyle\">(.*?)<\/span>/gi, "[quote]$1[/quote]");
+            rep(/<strong class=\"codeStyle\">(.*?)<\/strong>/gi, "[code][b]$1[/b][/code]");
+            rep(/<strong class=\"quoteStyle\">(.*?)<\/strong>/gi, "[quote][b]$1[/b][/quote]");
+            rep(/<em class=\"codeStyle\">(.*?)<\/em>/gi, "[code][i]$1[/i][/code]");
+            rep(/<em class=\"quoteStyle\">(.*?)<\/em>/gi, "[quote][i]$1[/i][/quote]");
+            rep(/<u class=\"codeStyle\">(.*?)<\/u>/gi, "[code][u]$1[/u][/code]");
+            rep(/<u class=\"quoteStyle\">(.*?)<\/u>/gi, "[quote][u]$1[/u][/quote]");
+            rep(/<\/(strong|b)>/gi, "[/b]");
+            rep(/<(strong|b)>/gi, "[b]");
+            rep(/<\/(em|i)>/gi, "[/i]");
+            rep(/<(em|i)>/gi, "[i]");
+            rep(/<\/u>/gi, "[/u]");
+            rep(/<span style=\"text-decoration: ?underline;\">(.*?)<\/span>/gi, "[u]$1[/u]");
+            rep(/<u>/gi, "[u]");
+            rep(/<blockquote[^>]*>/gi, "[quote]");
+            rep(/<\/blockquote>/gi, "[/quote]");
+            rep(/<br \/>/gi, "\n");
+            rep(/<br\/>/gi, "\n");
+            rep(/<br>/gi, "\n");
+            rep(/<p>/gi, "");
+            rep(/<\/p>/gi, "\n");
+            rep(/&nbsp;|\u00a0/gi, " ");
+            rep(/&quot;/gi, "\"");
+            rep(/&lt;/gi, "<");
+            rep(/&gt;/gi, ">");
+            rep(/&amp;/gi, "&");
+
+            return s;
+        },
+
+        // BBCode -> HTML from PunBB dialect
+        _punbb_bbcode2html : function(s) {
+            s = tinymce.trim(s);
+
+            function rep(re, str) {
+                s = s.replace(re, str);
+            }
+
+            // example: [b] to <strong>
+            rep(/\n/gi, "<br />");
+            rep(/\[b\]/gi, "<strong>");
+            rep(/\[\/b\]/gi, "</strong>");
+            rep(/\[i\]/gi, "<em>");
+            rep(/\[\/i\]/gi, "</em>");
+            rep(/\[u\]/gi, "<u>");
+            rep(/\[\/u\]/gi, "</u>");
+            rep(/\[url=([^\]]+)\](.*?)\[\/url\]/gi, "<a href=\"$1\">$2</a>");
+            rep(/\[url\](.*?)\[\/url\]/gi, "<a href=\"$1\">$1</a>");
+            rep(/\[img\](.*?)\[\/img\]/gi, "<img src=\"$1\" />");
+            rep(/\[color=(.*?)\](.*?)\[\/color\]/gi, "<font color=\"$1\">$2</font>");
+            rep(/\[code\](.*?)\[\/code\]/gi, "<span class=\"codeStyle\">$1</span>&nbsp;");
+            rep(/\[quote.*?\](.*?)\[\/quote\]/gi, "<span class=\"quoteStyle\">$1</span>&nbsp;");
+
+            return s;
+        }
+    });
+
+    // Register plugin
+    tinymce.PluginManager.add('bbcode', tinymce.plugins.BBCodePlugin);
+})();
+
+  }).apply(root, arguments);
+});
+}(this));
+
+(function(root) {
 define("tinymce-autosave", ["tinymce"], function() {
   return (function() {
 /**
@@ -67224,205 +65644,6 @@ tinymce.PluginManager.add('autosave', function(editor) {
     this.restoreDraft = restoreDraft;
     this.removeDraft = removeDraft;
     this.isEmpty = isEmpty;
-});
-
-  }).apply(root, arguments);
-});
-}(this));
-
-(function(root) {
-define("tinymce-bbcode", ["tinymce"], function() {
-  return (function() {
-/**
- * plugin.js
- *
- * Copyright, Moxiecode Systems AB
- * Released under LGPL License.
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-/*global tinymce:true */
-
-(function() {
-    tinymce.create('tinymce.plugins.BBCodePlugin', {
-        init : function(ed) {
-            var self = this, dialect = ed.getParam('bbcode_dialect', 'punbb').toLowerCase();
-
-            ed.on('beforeSetContent', function(e) {
-                e.content = self['_' + dialect + '_bbcode2html'](e.content);
-            });
-
-            ed.on('postProcess', function(e) {
-                if (e.set) {
-                    e.content = self['_' + dialect + '_bbcode2html'](e.content);
-                }
-
-                if (e.get) {
-                    e.content = self['_' + dialect + '_html2bbcode'](e.content);
-                }
-            });
-        },
-
-        getInfo: function() {
-            return {
-                longname: 'BBCode Plugin',
-                author: 'Moxiecode Systems AB',
-                authorurl: 'http://www.tinymce.com',
-                infourl: 'http://www.tinymce.com/wiki.php/Plugin:bbcode'
-            };
-        },
-
-        // Private methods
-
-        // HTML -> BBCode in PunBB dialect
-        _punbb_html2bbcode : function(s) {
-            s = tinymce.trim(s);
-
-            function rep(re, str) {
-                s = s.replace(re, str);
-            }
-
-            // example: <strong> to [b]
-            rep(/<a.*?href=\"(.*?)\".*?>(.*?)<\/a>/gi, "[url=$1]$2[/url]");
-            rep(/<font.*?color=\"(.*?)\".*?class=\"codeStyle\".*?>(.*?)<\/font>/gi, "[code][color=$1]$2[/color][/code]");
-            rep(/<font.*?color=\"(.*?)\".*?class=\"quoteStyle\".*?>(.*?)<\/font>/gi, "[quote][color=$1]$2[/color][/quote]");
-            rep(/<font.*?class=\"codeStyle\".*?color=\"(.*?)\".*?>(.*?)<\/font>/gi, "[code][color=$1]$2[/color][/code]");
-            rep(/<font.*?class=\"quoteStyle\".*?color=\"(.*?)\".*?>(.*?)<\/font>/gi, "[quote][color=$1]$2[/color][/quote]");
-            rep(/<span style=\"color: ?(.*?);\">(.*?)<\/span>/gi, "[color=$1]$2[/color]");
-            rep(/<font.*?color=\"(.*?)\".*?>(.*?)<\/font>/gi, "[color=$1]$2[/color]");
-            rep(/<span style=\"font-size:(.*?);\">(.*?)<\/span>/gi, "[size=$1]$2[/size]");
-            rep(/<font>(.*?)<\/font>/gi, "$1");
-            rep(/<img.*?src=\"(.*?)\".*?\/>/gi, "[img]$1[/img]");
-            rep(/<span class=\"codeStyle\">(.*?)<\/span>/gi, "[code]$1[/code]");
-            rep(/<span class=\"quoteStyle\">(.*?)<\/span>/gi, "[quote]$1[/quote]");
-            rep(/<strong class=\"codeStyle\">(.*?)<\/strong>/gi, "[code][b]$1[/b][/code]");
-            rep(/<strong class=\"quoteStyle\">(.*?)<\/strong>/gi, "[quote][b]$1[/b][/quote]");
-            rep(/<em class=\"codeStyle\">(.*?)<\/em>/gi, "[code][i]$1[/i][/code]");
-            rep(/<em class=\"quoteStyle\">(.*?)<\/em>/gi, "[quote][i]$1[/i][/quote]");
-            rep(/<u class=\"codeStyle\">(.*?)<\/u>/gi, "[code][u]$1[/u][/code]");
-            rep(/<u class=\"quoteStyle\">(.*?)<\/u>/gi, "[quote][u]$1[/u][/quote]");
-            rep(/<\/(strong|b)>/gi, "[/b]");
-            rep(/<(strong|b)>/gi, "[b]");
-            rep(/<\/(em|i)>/gi, "[/i]");
-            rep(/<(em|i)>/gi, "[i]");
-            rep(/<\/u>/gi, "[/u]");
-            rep(/<span style=\"text-decoration: ?underline;\">(.*?)<\/span>/gi, "[u]$1[/u]");
-            rep(/<u>/gi, "[u]");
-            rep(/<blockquote[^>]*>/gi, "[quote]");
-            rep(/<\/blockquote>/gi, "[/quote]");
-            rep(/<br \/>/gi, "\n");
-            rep(/<br\/>/gi, "\n");
-            rep(/<br>/gi, "\n");
-            rep(/<p>/gi, "");
-            rep(/<\/p>/gi, "\n");
-            rep(/&nbsp;|\u00a0/gi, " ");
-            rep(/&quot;/gi, "\"");
-            rep(/&lt;/gi, "<");
-            rep(/&gt;/gi, ">");
-            rep(/&amp;/gi, "&");
-
-            return s;
-        },
-
-        // BBCode -> HTML from PunBB dialect
-        _punbb_bbcode2html : function(s) {
-            s = tinymce.trim(s);
-
-            function rep(re, str) {
-                s = s.replace(re, str);
-            }
-
-            // example: [b] to <strong>
-            rep(/\n/gi, "<br />");
-            rep(/\[b\]/gi, "<strong>");
-            rep(/\[\/b\]/gi, "</strong>");
-            rep(/\[i\]/gi, "<em>");
-            rep(/\[\/i\]/gi, "</em>");
-            rep(/\[u\]/gi, "<u>");
-            rep(/\[\/u\]/gi, "</u>");
-            rep(/\[url=([^\]]+)\](.*?)\[\/url\]/gi, "<a href=\"$1\">$2</a>");
-            rep(/\[url\](.*?)\[\/url\]/gi, "<a href=\"$1\">$1</a>");
-            rep(/\[img\](.*?)\[\/img\]/gi, "<img src=\"$1\" />");
-            rep(/\[color=(.*?)\](.*?)\[\/color\]/gi, "<font color=\"$1\">$2</font>");
-            rep(/\[code\](.*?)\[\/code\]/gi, "<span class=\"codeStyle\">$1</span>&nbsp;");
-            rep(/\[quote.*?\](.*?)\[\/quote\]/gi, "<span class=\"quoteStyle\">$1</span>&nbsp;");
-
-            return s;
-        }
-    });
-
-    // Register plugin
-    tinymce.PluginManager.add('bbcode', tinymce.plugins.BBCodePlugin);
-})();
-
-  }).apply(root, arguments);
-});
-}(this));
-
-(function(root) {
-define("tinymce-code", ["tinymce"], function() {
-  return (function() {
-/**
- * plugin.js
- *
- * Copyright, Moxiecode Systems AB
- * Released under LGPL License.
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-/*global tinymce:true */
-
-tinymce.PluginManager.add('code', function(editor) {
-    function showDialog() {
-        var win = editor.windowManager.open({
-            title: "Source code",
-            body: {
-                type: 'textbox',
-                name: 'code',
-                multiline: true,
-                minWidth: editor.getParam("code_dialog_width", 600),
-                minHeight: editor.getParam("code_dialog_height", Math.min(tinymce.DOM.getViewPort().h - 200, 500)),
-                spellcheck: false,
-                style: 'direction: ltr; text-align: left'
-            },
-            onSubmit: function(e) {
-                // We get a lovely "Wrong document" error in IE 11 if we
-                // don't move the focus to the editor before creating an undo
-                // transation since it tries to make a bookmark for the current selection
-                editor.focus();
-
-                editor.undoManager.transact(function() {
-                    editor.setContent(e.data.code);
-                });
-
-                editor.selection.setCursorLocation();
-                editor.nodeChanged();
-            }
-        });
-
-        // Gecko has a major performance issue with textarea
-        // contents so we need to set it when all reflows are done
-        win.find('#code').value(editor.getContent({source_view: true}));
-    }
-
-    editor.addCommand("mceCodeEditor", showDialog);
-
-    editor.addButton('code', {
-        icon: 'code',
-        tooltip: 'Source code',
-        onclick: showDialog
-    });
-
-    editor.addMenuItem('code', {
-        icon: 'code',
-        text: 'Source code',
-        context: 'tools',
-        onclick: showDialog
-    });
 });
 
   }).apply(root, arguments);
@@ -67808,6 +66029,74 @@ tinymce.PluginManager.add('charmap', function(editor) {
 }(this));
 
 (function(root) {
+define("tinymce-code", ["tinymce"], function() {
+  return (function() {
+/**
+ * plugin.js
+ *
+ * Copyright, Moxiecode Systems AB
+ * Released under LGPL License.
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+/*global tinymce:true */
+
+tinymce.PluginManager.add('code', function(editor) {
+    function showDialog() {
+        var win = editor.windowManager.open({
+            title: "Source code",
+            body: {
+                type: 'textbox',
+                name: 'code',
+                multiline: true,
+                minWidth: editor.getParam("code_dialog_width", 600),
+                minHeight: editor.getParam("code_dialog_height", Math.min(tinymce.DOM.getViewPort().h - 200, 500)),
+                spellcheck: false,
+                style: 'direction: ltr; text-align: left'
+            },
+            onSubmit: function(e) {
+                // We get a lovely "Wrong document" error in IE 11 if we
+                // don't move the focus to the editor before creating an undo
+                // transation since it tries to make a bookmark for the current selection
+                editor.focus();
+
+                editor.undoManager.transact(function() {
+                    editor.setContent(e.data.code);
+                });
+
+                editor.selection.setCursorLocation();
+                editor.nodeChanged();
+            }
+        });
+
+        // Gecko has a major performance issue with textarea
+        // contents so we need to set it when all reflows are done
+        win.find('#code').value(editor.getContent({source_view: true}));
+    }
+
+    editor.addCommand("mceCodeEditor", showDialog);
+
+    editor.addButton('code', {
+        icon: 'code',
+        tooltip: 'Source code',
+        onclick: showDialog
+    });
+
+    editor.addMenuItem('code', {
+        icon: 'code',
+        text: 'Source code',
+        context: 'tools',
+        onclick: showDialog
+    });
+});
+
+  }).apply(root, arguments);
+});
+}(this));
+
+(function(root) {
 define("tinymce-colorpicker", ["tinymce"], function() {
   return (function() {
 /**
@@ -67928,6 +66217,78 @@ tinymce.PluginManager.add('colorpicker', function(editor) {
 }(this));
 
 (function(root) {
+define("tinymce-directionality", ["tinymce"], function() {
+  return (function() {
+/**
+ * plugin.js
+ *
+ * Copyright, Moxiecode Systems AB
+ * Released under LGPL License.
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+/*global tinymce:true */
+
+tinymce.PluginManager.add('directionality', function(editor) {
+    function setDir(dir) {
+        var dom = editor.dom, curDir, blocks = editor.selection.getSelectedBlocks();
+
+        if (blocks.length) {
+            curDir = dom.getAttrib(blocks[0], "dir");
+
+            tinymce.each(blocks, function(block) {
+                // Add dir to block if the parent block doesn't already have that dir
+                if (!dom.getParent(block.parentNode, "*[dir='" + dir + "']", dom.getRoot())) {
+                    if (curDir != dir) {
+                        dom.setAttrib(block, "dir", dir);
+                    } else {
+                        dom.setAttrib(block, "dir", null);
+                    }
+                }
+            });
+
+            editor.nodeChanged();
+        }
+    }
+
+    function generateSelector(dir) {
+        var selector = [];
+
+        tinymce.each('h1 h2 h3 h4 h5 h6 div p'.split(' '), function(name) {
+            selector.push(name + '[dir=' + dir + ']');
+        });
+
+        return selector.join(',');
+    }
+
+    editor.addCommand('mceDirectionLTR', function() {
+        setDir("ltr");
+    });
+
+    editor.addCommand('mceDirectionRTL', function() {
+        setDir("rtl");
+    });
+
+    editor.addButton('ltr', {
+        title: 'Left to right',
+        cmd: 'mceDirectionLTR',
+        stateSelector: generateSelector('ltr')
+    });
+
+    editor.addButton('rtl', {
+        title: 'Right to left',
+        cmd: 'mceDirectionRTL',
+        stateSelector: generateSelector('rtl')
+    });
+});
+
+  }).apply(root, arguments);
+});
+}(this));
+
+(function(root) {
 define("tinymce-contextmenu", ["tinymce"], function() {
   return (function() {
 /**
@@ -68017,152 +66378,6 @@ tinymce.PluginManager.add('contextmenu', function(editor) {
         menu.moveTo(pos.x, pos.y);
     });
 });
-
-  }).apply(root, arguments);
-});
-}(this));
-
-(function(root) {
-define("tinymce-directionality", ["tinymce"], function() {
-  return (function() {
-/**
- * plugin.js
- *
- * Copyright, Moxiecode Systems AB
- * Released under LGPL License.
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-/*global tinymce:true */
-
-tinymce.PluginManager.add('directionality', function(editor) {
-    function setDir(dir) {
-        var dom = editor.dom, curDir, blocks = editor.selection.getSelectedBlocks();
-
-        if (blocks.length) {
-            curDir = dom.getAttrib(blocks[0], "dir");
-
-            tinymce.each(blocks, function(block) {
-                // Add dir to block if the parent block doesn't already have that dir
-                if (!dom.getParent(block.parentNode, "*[dir='" + dir + "']", dom.getRoot())) {
-                    if (curDir != dir) {
-                        dom.setAttrib(block, "dir", dir);
-                    } else {
-                        dom.setAttrib(block, "dir", null);
-                    }
-                }
-            });
-
-            editor.nodeChanged();
-        }
-    }
-
-    function generateSelector(dir) {
-        var selector = [];
-
-        tinymce.each('h1 h2 h3 h4 h5 h6 div p'.split(' '), function(name) {
-            selector.push(name + '[dir=' + dir + ']');
-        });
-
-        return selector.join(',');
-    }
-
-    editor.addCommand('mceDirectionLTR', function() {
-        setDir("ltr");
-    });
-
-    editor.addCommand('mceDirectionRTL', function() {
-        setDir("rtl");
-    });
-
-    editor.addButton('ltr', {
-        title: 'Left to right',
-        cmd: 'mceDirectionLTR',
-        stateSelector: generateSelector('ltr')
-    });
-
-    editor.addButton('rtl', {
-        title: 'Right to left',
-        cmd: 'mceDirectionRTL',
-        stateSelector: generateSelector('rtl')
-    });
-});
-
-  }).apply(root, arguments);
-});
-}(this));
-
-(function(root) {
-define("tinymce-emoticons", ["tinymce"], function() {
-  return (function() {
-/**
- * plugin.js
- *
- * Copyright, Moxiecode Systems AB
- * Released under LGPL License.
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-/*global tinymce:true */
-
-tinymce.PluginManager.add('emoticons', function(editor, url) {
-    var emoticons = [
-        ["cool", "cry", "embarassed", "foot-in-mouth"],
-        ["frown", "innocent", "kiss", "laughing"],
-        ["money-mouth", "sealed", "smile", "surprised"],
-        ["tongue-out", "undecided", "wink", "yell"]
-    ];
-
-    function getHtml() {
-        var emoticonsHtml;
-
-        emoticonsHtml = '<table role="list" class="mce-grid">';
-
-        tinymce.each(emoticons, function(row) {
-            emoticonsHtml += '<tr>';
-
-            tinymce.each(row, function(icon) {
-                var emoticonUrl = url + '/img/smiley-' + icon + '.gif';
-
-                emoticonsHtml += '<td><a href="#" data-mce-url="' + emoticonUrl + '" data-mce-alt="' + icon + '" tabindex="-1" ' +
-                    'role="option" aria-label="' + icon + '"><img src="' +
-                    emoticonUrl + '" style="width: 18px; height: 18px" role="presentation" /></a></td>';
-            });
-
-            emoticonsHtml += '</tr>';
-        });
-
-        emoticonsHtml += '</table>';
-
-        return emoticonsHtml;
-    }
-
-    editor.addButton('emoticons', {
-        type: 'panelbutton',
-        panel: {
-            role: 'application',
-            autohide: true,
-            html: getHtml,
-            onclick: function(e) {
-                var linkElm = editor.dom.getParent(e.target, 'a');
-
-                if (linkElm) {
-                    editor.insertContent(
-                        '<img src="' + linkElm.getAttribute('data-mce-url') + '" alt="' + linkElm.getAttribute('data-mce-alt') + '" />'
-                    );
-
-                    this.hide();
-                }
-            }
-        },
-        tooltip: 'Emoticons'
-    });
-});
-
 
   }).apply(root, arguments);
 });
@@ -68668,6 +66883,119 @@ tinymce.PluginManager.add('fullpage', function(editor) {
 }(this));
 
 (function(root) {
+define("tinymce-emoticons", ["tinymce"], function() {
+  return (function() {
+/**
+ * plugin.js
+ *
+ * Copyright, Moxiecode Systems AB
+ * Released under LGPL License.
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+/*global tinymce:true */
+
+tinymce.PluginManager.add('emoticons', function(editor, url) {
+    var emoticons = [
+        ["cool", "cry", "embarassed", "foot-in-mouth"],
+        ["frown", "innocent", "kiss", "laughing"],
+        ["money-mouth", "sealed", "smile", "surprised"],
+        ["tongue-out", "undecided", "wink", "yell"]
+    ];
+
+    function getHtml() {
+        var emoticonsHtml;
+
+        emoticonsHtml = '<table role="list" class="mce-grid">';
+
+        tinymce.each(emoticons, function(row) {
+            emoticonsHtml += '<tr>';
+
+            tinymce.each(row, function(icon) {
+                var emoticonUrl = url + '/img/smiley-' + icon + '.gif';
+
+                emoticonsHtml += '<td><a href="#" data-mce-url="' + emoticonUrl + '" data-mce-alt="' + icon + '" tabindex="-1" ' +
+                    'role="option" aria-label="' + icon + '"><img src="' +
+                    emoticonUrl + '" style="width: 18px; height: 18px" role="presentation" /></a></td>';
+            });
+
+            emoticonsHtml += '</tr>';
+        });
+
+        emoticonsHtml += '</table>';
+
+        return emoticonsHtml;
+    }
+
+    editor.addButton('emoticons', {
+        type: 'panelbutton',
+        panel: {
+            role: 'application',
+            autohide: true,
+            html: getHtml,
+            onclick: function(e) {
+                var linkElm = editor.dom.getParent(e.target, 'a');
+
+                if (linkElm) {
+                    editor.insertContent(
+                        '<img src="' + linkElm.getAttribute('data-mce-url') + '" alt="' + linkElm.getAttribute('data-mce-alt') + '" />'
+                    );
+
+                    this.hide();
+                }
+            }
+        },
+        tooltip: 'Emoticons'
+    });
+});
+
+
+  }).apply(root, arguments);
+});
+}(this));
+
+(function(root) {
+define("tinymce-hr", ["tinymce"], function() {
+  return (function() {
+/**
+ * plugin.js
+ *
+ * Copyright, Moxiecode Systems AB
+ * Released under LGPL License.
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+/*global tinymce:true */
+
+tinymce.PluginManager.add('hr', function(editor) {
+    editor.addCommand('InsertHorizontalRule', function() {
+        editor.execCommand('mceInsertContent', false, '<hr />');
+    });
+
+    editor.addButton('hr', {
+        icon: 'hr',
+        tooltip: 'Horizontal line',
+        cmd: 'InsertHorizontalRule'
+    });
+
+    editor.addMenuItem('hr', {
+        icon: 'hr',
+        text: 'Horizontal line',
+        cmd: 'InsertHorizontalRule',
+        context: 'insert'
+    });
+});
+
+
+  }).apply(root, arguments);
+});
+}(this));
+
+(function(root) {
 define("tinymce-fullscreen", ["tinymce"], function() {
   return (function() {
 /**
@@ -68806,45 +67134,6 @@ tinymce.PluginManager.add('fullscreen', function(editor) {
         }
     };
 });
-
-  }).apply(root, arguments);
-});
-}(this));
-
-(function(root) {
-define("tinymce-hr", ["tinymce"], function() {
-  return (function() {
-/**
- * plugin.js
- *
- * Copyright, Moxiecode Systems AB
- * Released under LGPL License.
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-/*global tinymce:true */
-
-tinymce.PluginManager.add('hr', function(editor) {
-    editor.addCommand('InsertHorizontalRule', function() {
-        editor.execCommand('mceInsertContent', false, '<hr />');
-    });
-
-    editor.addButton('hr', {
-        icon: 'hr',
-        tooltip: 'Horizontal line',
-        cmd: 'InsertHorizontalRule'
-    });
-
-    editor.addMenuItem('hr', {
-        icon: 'hr',
-        text: 'Horizontal line',
-        cmd: 'InsertHorizontalRule',
-        context: 'insert'
-    });
-});
-
 
   }).apply(root, arguments);
 });
@@ -69494,6 +67783,226 @@ tinymce.PluginManager.add('image', function(editor) {
 }(this));
 
 (function(root) {
+define("tinymce-legacyoutput", ["tinymce"], function() {
+  return (function() {
+/**
+ * plugin.js
+ *
+ * Copyright, Moxiecode Systems AB
+ * Released under LGPL License.
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ *
+ * This plugin will force TinyMCE to produce deprecated legacy output such as font elements, u elements, align
+ * attributes and so forth. There are a few cases where these old items might be needed for example in email applications or with Flash
+ *
+ * However you should NOT use this plugin if you are building some system that produces web contents such as a CMS. All these elements are
+ * not apart of the newer specifications for HTML and XHTML.
+ */
+
+/*global tinymce:true */
+
+(function(tinymce) {
+    // Override inline_styles setting to force TinyMCE to produce deprecated contents
+    tinymce.on('AddEditor', function(e) {
+        e.editor.settings.inline_styles = false;
+    });
+
+    tinymce.PluginManager.add('legacyoutput', function(editor, url, $) {
+        editor.on('init', function() {
+            var alignElements = 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img',
+                fontSizes = tinymce.explode(editor.settings.font_size_style_values),
+                schema = editor.schema;
+
+            // Override some internal formats to produce legacy elements and attributes
+            editor.formatter.register({
+                // Change alignment formats to use the deprecated align attribute
+                alignleft: {selector: alignElements, attributes: {align: 'left'}},
+                aligncenter: {selector: alignElements, attributes: {align: 'center'}},
+                alignright: {selector: alignElements, attributes: {align: 'right'}},
+                alignjustify: {selector: alignElements, attributes: {align: 'justify'}},
+
+                // Change the basic formatting elements to use deprecated element types
+                bold: [
+                    {inline: 'b', remove: 'all'},
+                    {inline: 'strong', remove: 'all'},
+                    {inline: 'span', styles: {fontWeight: 'bold'}}
+                ],
+                italic: [
+                    {inline: 'i', remove: 'all'},
+                    {inline: 'em', remove: 'all'},
+                    {inline: 'span', styles: {fontStyle: 'italic'}}
+                ],
+                underline: [
+                    {inline: 'u', remove: 'all'},
+                    {inline: 'span', styles: {textDecoration: 'underline'}, exact: true}
+                ],
+                strikethrough: [
+                    {inline: 'strike', remove: 'all'},
+                    {inline: 'span', styles: {textDecoration: 'line-through'}, exact: true}
+                ],
+
+                // Change font size and font family to use the deprecated font element
+                fontname: {inline: 'font', attributes: {face: '%value'}},
+                fontsize: {
+                    inline: 'font',
+                    attributes: {
+                        size: function(vars) {
+                            return tinymce.inArray(fontSizes, vars.value) + 1;
+                        }
+                    }
+                },
+
+                // Setup font elements for colors as well
+                forecolor: {inline: 'font', attributes: {color: '%value'}},
+                hilitecolor: {inline: 'font', styles: {backgroundColor: '%value'}}
+            });
+
+            // Check that deprecated elements are allowed if not add them
+            tinymce.each('b,i,u,strike'.split(','), function(name) {
+                schema.addValidElements(name + '[*]');
+            });
+
+            // Add font element if it's missing
+            if (!schema.getElementRule("font")) {
+                schema.addValidElements("font[face|size|color|style]");
+            }
+
+            // Add the missing and depreacted align attribute for the serialization engine
+            tinymce.each(alignElements.split(','), function(name) {
+                var rule = schema.getElementRule(name);
+
+                if (rule) {
+                    if (!rule.attributes.align) {
+                        rule.attributes.align = {};
+                        rule.attributesOrder.push('align');
+                    }
+                }
+            });
+        });
+
+        editor.addButton('fontsizeselect', function() {
+            var items = [], defaultFontsizeFormats = '8pt=1 10pt=2 12pt=3 14pt=4 18pt=5 24pt=6 36pt=7';
+            var fontsize_formats = editor.settings.fontsize_formats || defaultFontsizeFormats;
+
+            editor.$.each(fontsize_formats.split(' '), function(i, item) {
+                var text = item, value = item;
+                var values = item.split('=');
+
+                if (values.length > 1) {
+                    text = values[0];
+                    value = values[1];
+                }
+
+                items.push({text: text, value: value});
+            });
+
+            return {
+                type: 'listbox',
+                text: 'Font Sizes',
+                tooltip: 'Font Sizes',
+                values: items,
+                fixedWidth: true,
+                onPostRender: function() {
+                    var self = this;
+
+                    editor.on('NodeChange', function() {
+                        var fontElm;
+
+                        fontElm = editor.dom.getParent(editor.selection.getNode(), 'font');
+                        if (fontElm) {
+                            self.value(fontElm.size);
+                        } else {
+                            self.value('');
+                        }
+                    });
+                },
+                onclick: function(e) {
+                    if (e.control.settings.value) {
+                        editor.execCommand('FontSize', false, e.control.settings.value);
+                    }
+                }
+            };
+        });
+
+        editor.addButton('fontselect', function() {
+            function createFormats(formats) {
+                formats = formats.replace(/;$/, '').split(';');
+
+                var i = formats.length;
+                while (i--) {
+                    formats[i] = formats[i].split('=');
+                }
+
+                return formats;
+            }
+
+            var defaultFontsFormats =
+                'Andale Mono=andale mono,times;' +
+                'Arial=arial,helvetica,sans-serif;' +
+                'Arial Black=arial black,avant garde;' +
+                'Book Antiqua=book antiqua,palatino;' +
+                'Comic Sans MS=comic sans ms,sans-serif;' +
+                'Courier New=courier new,courier;' +
+                'Georgia=georgia,palatino;' +
+                'Helvetica=helvetica;' +
+                'Impact=impact,chicago;' +
+                'Symbol=symbol;' +
+                'Tahoma=tahoma,arial,helvetica,sans-serif;' +
+                'Terminal=terminal,monaco;' +
+                'Times New Roman=times new roman,times;' +
+                'Trebuchet MS=trebuchet ms,geneva;' +
+                'Verdana=verdana,geneva;' +
+                'Webdings=webdings;' +
+                'Wingdings=wingdings,zapf dingbats';
+
+            var items = [], fonts = createFormats(editor.settings.font_formats || defaultFontsFormats);
+
+            $.each(fonts, function(i, font) {
+                items.push({
+                    text: {raw: font[0]},
+                    value: font[1],
+                    textStyle: font[1].indexOf('dings') == -1 ? 'font-family:' + font[1] : ''
+                });
+            });
+
+            return {
+                type: 'listbox',
+                text: 'Font Family',
+                tooltip: 'Font Family',
+                values: items,
+                fixedWidth: true,
+                onPostRender: function() {
+                    var self = this;
+
+                    editor.on('NodeChange', function() {
+                        var fontElm;
+
+                        fontElm = editor.dom.getParent(editor.selection.getNode(), 'font');
+                        if (fontElm) {
+                            self.value(fontElm.face);
+                        } else {
+                            self.value('');
+                        }
+                    });
+                },
+                onselect: function(e) {
+                    if (e.control.settings.value) {
+                        editor.execCommand('FontName', false, e.control.settings.value);
+                    }
+                }
+            };
+        });
+    });
+})(tinymce);
+
+
+  }).apply(root, arguments);
+});
+}(this));
+
+(function(root) {
 define("tinymce-insertdatetime", ["tinymce"], function() {
   return (function() {
 /**
@@ -69616,240 +68125,6 @@ tinymce.PluginManager.add('insertdatetime', function(editor) {
         menu: menuItems,
         context: 'insert'
     });
-});
-
-
-  }).apply(root, arguments);
-});
-}(this));
-
-(function(root) {
-define("tinymce-layer", ["tinymce"], function() {
-  return (function() {
-/**
- * plugin.js
- *
- * Copyright, Moxiecode Systems AB
- * Released under LGPL License.
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-/*global tinymce:true */
-
-tinymce.PluginManager.add('layer', function(editor) {
-    function getParentLayer(node) {
-        do {
-            if (node.className && node.className.indexOf('mceItemLayer') != -1) {
-                return node;
-            }
-        } while ((node = node.parentNode));
-    }
-
-    function visualAid(e) {
-        var dom = editor.dom;
-
-        tinymce.each(dom.select('div,p', e), function(e) {
-            if (/^(absolute|relative|fixed)$/i.test(e.style.position)) {
-                if (e.hasVisual) {
-                    dom.addClass(e, 'mceItemVisualAid');
-                } else {
-                    dom.removeClass(e, 'mceItemVisualAid');
-                }
-
-                dom.addClass(e, 'mceItemLayer');
-            }
-        });
-    }
-
-    function move(d) {
-        var i, z = [], le = getParentLayer(editor.selection.getNode()), ci = -1, fi = -1, nl;
-
-        nl = [];
-        tinymce.walk(editor.getBody(), function(n) {
-            if (n.nodeType == 1 && /^(absolute|relative|static)$/i.test(n.style.position)) {
-                nl.push(n);
-            }
-        }, 'childNodes');
-
-        // Find z-indexes
-        for (i = 0; i < nl.length; i++) {
-            z[i] = nl[i].style.zIndex ? parseInt(nl[i].style.zIndex, 10) : 0;
-
-            if (ci < 0 && nl[i] == le) {
-                ci = i;
-            }
-        }
-
-        if (d < 0) {
-            // Move back
-
-            // Try find a lower one
-            for (i = 0; i < z.length; i++) {
-                if (z[i] < z[ci]) {
-                    fi = i;
-                    break;
-                }
-            }
-
-            if (fi > -1) {
-                nl[ci].style.zIndex = z[fi];
-                nl[fi].style.zIndex = z[ci];
-            } else {
-                if (z[ci] > 0) {
-                    nl[ci].style.zIndex = z[ci] - 1;
-                }
-            }
-        } else {
-            // Move forward
-
-            // Try find a higher one
-            for (i = 0; i < z.length; i++) {
-                if (z[i] > z[ci]) {
-                    fi = i;
-                    break;
-                }
-            }
-
-            if (fi > -1) {
-                nl[ci].style.zIndex = z[fi];
-                nl[fi].style.zIndex = z[ci];
-            } else {
-                nl[ci].style.zIndex = z[ci] + 1;
-            }
-        }
-
-        editor.execCommand('mceRepaint');
-    }
-
-    function insertLayer() {
-        var dom = editor.dom, p = dom.getPos(dom.getParent(editor.selection.getNode(), '*'));
-        var body = editor.getBody();
-
-        editor.dom.add(body, 'div', {
-            style: {
-                position: 'absolute',
-                left: p.x,
-                top: (p.y > 20 ? p.y : 20),
-                width: 100,
-                height: 100
-            },
-            'class': 'mceItemVisualAid mceItemLayer'
-        }, editor.selection.getContent() || editor.getLang('layer.content'));
-
-        // Workaround for IE where it messes up the JS engine if you insert a layer on IE 6,7
-        if (tinymce.Env.ie) {
-            dom.setHTML(body, body.innerHTML);
-        }
-    }
-
-    function toggleAbsolute() {
-        var le = getParentLayer(editor.selection.getNode());
-
-        if (!le) {
-            le = editor.dom.getParent(editor.selection.getNode(), 'DIV,P,IMG');
-        }
-
-        if (le) {
-            if (le.style.position.toLowerCase() == "absolute") {
-                editor.dom.setStyles(le, {
-                    position: '',
-                    left: '',
-                    top: '',
-                    width: '',
-                    height: ''
-                });
-
-                editor.dom.removeClass(le, 'mceItemVisualAid');
-                editor.dom.removeClass(le, 'mceItemLayer');
-            } else {
-                if (!le.style.left) {
-                    le.style.left = 20 + 'px';
-                }
-
-                if (!le.style.top) {
-                    le.style.top = 20 + 'px';
-                }
-
-                if (!le.style.width) {
-                    le.style.width = le.width ? (le.width + 'px') : '100px';
-                }
-
-                if (!le.style.height) {
-                    le.style.height = le.height ? (le.height + 'px') : '100px';
-                }
-
-                le.style.position = "absolute";
-
-                editor.dom.setAttrib(le, 'data-mce-style', '');
-                editor.addVisual(editor.getBody());
-            }
-
-            editor.execCommand('mceRepaint');
-            editor.nodeChanged();
-        }
-    }
-
-    // Register commands
-    editor.addCommand('mceInsertLayer', insertLayer);
-
-    editor.addCommand('mceMoveForward', function() {
-        move(1);
-    });
-
-    editor.addCommand('mceMoveBackward', function() {
-        move(-1);
-    });
-
-    editor.addCommand('mceMakeAbsolute', function() {
-        toggleAbsolute();
-    });
-
-    // Register buttons
-    editor.addButton('moveforward', {title: 'layer.forward_desc', cmd: 'mceMoveForward'});
-    editor.addButton('movebackward', {title: 'layer.backward_desc', cmd: 'mceMoveBackward'});
-    editor.addButton('absolute', {title: 'layer.absolute_desc', cmd: 'mceMakeAbsolute'});
-    editor.addButton('insertlayer', {title: 'layer.insertlayer_desc', cmd: 'mceInsertLayer'});
-
-    editor.on('init', function() {
-        if (tinymce.Env.ie) {
-            editor.getDoc().execCommand('2D-Position', false, true);
-        }
-    });
-
-    // Remove serialized styles when selecting a layer since it might be changed by a drag operation
-    editor.on('mouseup', function(e) {
-        var layer = getParentLayer(e.target);
-
-        if (layer) {
-            editor.dom.setAttrib(layer, 'data-mce-style', '');
-        }
-    });
-
-    // Fixes edit focus issues with layers on Gecko
-    // This will enable designMode while inside a layer and disable it when outside
-    editor.on('mousedown', function(e) {
-        var node = e.target, doc = editor.getDoc(), parent;
-
-        if (tinymce.Env.gecko) {
-            if (getParentLayer(node)) {
-                if (doc.designMode !== 'on') {
-                    doc.designMode = 'on';
-
-                    // Repaint caret
-                    node = doc.body;
-                    parent = node.parentNode;
-                    parent.removeChild(node);
-                    parent.appendChild(node);
-                }
-            } else if (doc.designMode == 'on') {
-                doc.designMode = 'off';
-            }
-        }
-    });
-
-    editor.on('NodeChange', visualAid);
 });
 
 
@@ -70267,7 +68542,7 @@ tinymce.PluginManager.add('link', function(editor) {
 }(this));
 
 (function(root) {
-define("tinymce-legacyoutput", ["tinymce"], function() {
+define("tinymce-layer", ["tinymce"], function() {
   return (function() {
 /**
  * plugin.js
@@ -70277,209 +68552,223 @@ define("tinymce-legacyoutput", ["tinymce"], function() {
  *
  * License: http://www.tinymce.com/license
  * Contributing: http://www.tinymce.com/contributing
- *
- * This plugin will force TinyMCE to produce deprecated legacy output such as font elements, u elements, align
- * attributes and so forth. There are a few cases where these old items might be needed for example in email applications or with Flash
- *
- * However you should NOT use this plugin if you are building some system that produces web contents such as a CMS. All these elements are
- * not apart of the newer specifications for HTML and XHTML.
  */
 
 /*global tinymce:true */
 
-(function(tinymce) {
-    // Override inline_styles setting to force TinyMCE to produce deprecated contents
-    tinymce.on('AddEditor', function(e) {
-        e.editor.settings.inline_styles = false;
-    });
+tinymce.PluginManager.add('layer', function(editor) {
+    function getParentLayer(node) {
+        do {
+            if (node.className && node.className.indexOf('mceItemLayer') != -1) {
+                return node;
+            }
+        } while ((node = node.parentNode));
+    }
 
-    tinymce.PluginManager.add('legacyoutput', function(editor, url, $) {
-        editor.on('init', function() {
-            var alignElements = 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img',
-                fontSizes = tinymce.explode(editor.settings.font_size_style_values),
-                schema = editor.schema;
+    function visualAid(e) {
+        var dom = editor.dom;
 
-            // Override some internal formats to produce legacy elements and attributes
-            editor.formatter.register({
-                // Change alignment formats to use the deprecated align attribute
-                alignleft: {selector: alignElements, attributes: {align: 'left'}},
-                aligncenter: {selector: alignElements, attributes: {align: 'center'}},
-                alignright: {selector: alignElements, attributes: {align: 'right'}},
-                alignjustify: {selector: alignElements, attributes: {align: 'justify'}},
+        tinymce.each(dom.select('div,p', e), function(e) {
+            if (/^(absolute|relative|fixed)$/i.test(e.style.position)) {
+                if (e.hasVisual) {
+                    dom.addClass(e, 'mceItemVisualAid');
+                } else {
+                    dom.removeClass(e, 'mceItemVisualAid');
+                }
 
-                // Change the basic formatting elements to use deprecated element types
-                bold: [
-                    {inline: 'b', remove: 'all'},
-                    {inline: 'strong', remove: 'all'},
-                    {inline: 'span', styles: {fontWeight: 'bold'}}
-                ],
-                italic: [
-                    {inline: 'i', remove: 'all'},
-                    {inline: 'em', remove: 'all'},
-                    {inline: 'span', styles: {fontStyle: 'italic'}}
-                ],
-                underline: [
-                    {inline: 'u', remove: 'all'},
-                    {inline: 'span', styles: {textDecoration: 'underline'}, exact: true}
-                ],
-                strikethrough: [
-                    {inline: 'strike', remove: 'all'},
-                    {inline: 'span', styles: {textDecoration: 'line-through'}, exact: true}
-                ],
+                dom.addClass(e, 'mceItemLayer');
+            }
+        });
+    }
 
-                // Change font size and font family to use the deprecated font element
-                fontname: {inline: 'font', attributes: {face: '%value'}},
-                fontsize: {
-                    inline: 'font',
-                    attributes: {
-                        size: function(vars) {
-                            return tinymce.inArray(fontSizes, vars.value) + 1;
-                        }
-                    }
-                },
+    function move(d) {
+        var i, z = [], le = getParentLayer(editor.selection.getNode()), ci = -1, fi = -1, nl;
 
-                // Setup font elements for colors as well
-                forecolor: {inline: 'font', attributes: {color: '%value'}},
-                hilitecolor: {inline: 'font', styles: {backgroundColor: '%value'}}
-            });
+        nl = [];
+        tinymce.walk(editor.getBody(), function(n) {
+            if (n.nodeType == 1 && /^(absolute|relative|static)$/i.test(n.style.position)) {
+                nl.push(n);
+            }
+        }, 'childNodes');
 
-            // Check that deprecated elements are allowed if not add them
-            tinymce.each('b,i,u,strike'.split(','), function(name) {
-                schema.addValidElements(name + '[*]');
-            });
+        // Find z-indexes
+        for (i = 0; i < nl.length; i++) {
+            z[i] = nl[i].style.zIndex ? parseInt(nl[i].style.zIndex, 10) : 0;
 
-            // Add font element if it's missing
-            if (!schema.getElementRule("font")) {
-                schema.addValidElements("font[face|size|color|style]");
+            if (ci < 0 && nl[i] == le) {
+                ci = i;
+            }
+        }
+
+        if (d < 0) {
+            // Move back
+
+            // Try find a lower one
+            for (i = 0; i < z.length; i++) {
+                if (z[i] < z[ci]) {
+                    fi = i;
+                    break;
+                }
             }
 
-            // Add the missing and depreacted align attribute for the serialization engine
-            tinymce.each(alignElements.split(','), function(name) {
-                var rule = schema.getElementRule(name);
-
-                if (rule) {
-                    if (!rule.attributes.align) {
-                        rule.attributes.align = {};
-                        rule.attributesOrder.push('align');
-                    }
+            if (fi > -1) {
+                nl[ci].style.zIndex = z[fi];
+                nl[fi].style.zIndex = z[ci];
+            } else {
+                if (z[ci] > 0) {
+                    nl[ci].style.zIndex = z[ci] - 1;
                 }
-            });
-        });
+            }
+        } else {
+            // Move forward
 
-        editor.addButton('fontsizeselect', function() {
-            var items = [], defaultFontsizeFormats = '8pt=1 10pt=2 12pt=3 14pt=4 18pt=5 24pt=6 36pt=7';
-            var fontsize_formats = editor.settings.fontsize_formats || defaultFontsizeFormats;
-
-            editor.$.each(fontsize_formats.split(' '), function(i, item) {
-                var text = item, value = item;
-                var values = item.split('=');
-
-                if (values.length > 1) {
-                    text = values[0];
-                    value = values[1];
+            // Try find a higher one
+            for (i = 0; i < z.length; i++) {
+                if (z[i] > z[ci]) {
+                    fi = i;
+                    break;
                 }
-
-                items.push({text: text, value: value});
-            });
-
-            return {
-                type: 'listbox',
-                text: 'Font Sizes',
-                tooltip: 'Font Sizes',
-                values: items,
-                fixedWidth: true,
-                onPostRender: function() {
-                    var self = this;
-
-                    editor.on('NodeChange', function() {
-                        var fontElm;
-
-                        fontElm = editor.dom.getParent(editor.selection.getNode(), 'font');
-                        if (fontElm) {
-                            self.value(fontElm.size);
-                        } else {
-                            self.value('');
-                        }
-                    });
-                },
-                onclick: function(e) {
-                    if (e.control.settings.value) {
-                        editor.execCommand('FontSize', false, e.control.settings.value);
-                    }
-                }
-            };
-        });
-
-        editor.addButton('fontselect', function() {
-            function createFormats(formats) {
-                formats = formats.replace(/;$/, '').split(';');
-
-                var i = formats.length;
-                while (i--) {
-                    formats[i] = formats[i].split('=');
-                }
-
-                return formats;
             }
 
-            var defaultFontsFormats =
-                'Andale Mono=andale mono,times;' +
-                'Arial=arial,helvetica,sans-serif;' +
-                'Arial Black=arial black,avant garde;' +
-                'Book Antiqua=book antiqua,palatino;' +
-                'Comic Sans MS=comic sans ms,sans-serif;' +
-                'Courier New=courier new,courier;' +
-                'Georgia=georgia,palatino;' +
-                'Helvetica=helvetica;' +
-                'Impact=impact,chicago;' +
-                'Symbol=symbol;' +
-                'Tahoma=tahoma,arial,helvetica,sans-serif;' +
-                'Terminal=terminal,monaco;' +
-                'Times New Roman=times new roman,times;' +
-                'Trebuchet MS=trebuchet ms,geneva;' +
-                'Verdana=verdana,geneva;' +
-                'Webdings=webdings;' +
-                'Wingdings=wingdings,zapf dingbats';
+            if (fi > -1) {
+                nl[ci].style.zIndex = z[fi];
+                nl[fi].style.zIndex = z[ci];
+            } else {
+                nl[ci].style.zIndex = z[ci] + 1;
+            }
+        }
 
-            var items = [], fonts = createFormats(editor.settings.font_formats || defaultFontsFormats);
+        editor.execCommand('mceRepaint');
+    }
 
-            $.each(fonts, function(i, font) {
-                items.push({
-                    text: {raw: font[0]},
-                    value: font[1],
-                    textStyle: font[1].indexOf('dings') == -1 ? 'font-family:' + font[1] : ''
+    function insertLayer() {
+        var dom = editor.dom, p = dom.getPos(dom.getParent(editor.selection.getNode(), '*'));
+        var body = editor.getBody();
+
+        editor.dom.add(body, 'div', {
+            style: {
+                position: 'absolute',
+                left: p.x,
+                top: (p.y > 20 ? p.y : 20),
+                width: 100,
+                height: 100
+            },
+            'class': 'mceItemVisualAid mceItemLayer'
+        }, editor.selection.getContent() || editor.getLang('layer.content'));
+
+        // Workaround for IE where it messes up the JS engine if you insert a layer on IE 6,7
+        if (tinymce.Env.ie) {
+            dom.setHTML(body, body.innerHTML);
+        }
+    }
+
+    function toggleAbsolute() {
+        var le = getParentLayer(editor.selection.getNode());
+
+        if (!le) {
+            le = editor.dom.getParent(editor.selection.getNode(), 'DIV,P,IMG');
+        }
+
+        if (le) {
+            if (le.style.position.toLowerCase() == "absolute") {
+                editor.dom.setStyles(le, {
+                    position: '',
+                    left: '',
+                    top: '',
+                    width: '',
+                    height: ''
                 });
-            });
 
-            return {
-                type: 'listbox',
-                text: 'Font Family',
-                tooltip: 'Font Family',
-                values: items,
-                fixedWidth: true,
-                onPostRender: function() {
-                    var self = this;
-
-                    editor.on('NodeChange', function() {
-                        var fontElm;
-
-                        fontElm = editor.dom.getParent(editor.selection.getNode(), 'font');
-                        if (fontElm) {
-                            self.value(fontElm.face);
-                        } else {
-                            self.value('');
-                        }
-                    });
-                },
-                onselect: function(e) {
-                    if (e.control.settings.value) {
-                        editor.execCommand('FontName', false, e.control.settings.value);
-                    }
+                editor.dom.removeClass(le, 'mceItemVisualAid');
+                editor.dom.removeClass(le, 'mceItemLayer');
+            } else {
+                if (!le.style.left) {
+                    le.style.left = 20 + 'px';
                 }
-            };
-        });
+
+                if (!le.style.top) {
+                    le.style.top = 20 + 'px';
+                }
+
+                if (!le.style.width) {
+                    le.style.width = le.width ? (le.width + 'px') : '100px';
+                }
+
+                if (!le.style.height) {
+                    le.style.height = le.height ? (le.height + 'px') : '100px';
+                }
+
+                le.style.position = "absolute";
+
+                editor.dom.setAttrib(le, 'data-mce-style', '');
+                editor.addVisual(editor.getBody());
+            }
+
+            editor.execCommand('mceRepaint');
+            editor.nodeChanged();
+        }
+    }
+
+    // Register commands
+    editor.addCommand('mceInsertLayer', insertLayer);
+
+    editor.addCommand('mceMoveForward', function() {
+        move(1);
     });
-})(tinymce);
+
+    editor.addCommand('mceMoveBackward', function() {
+        move(-1);
+    });
+
+    editor.addCommand('mceMakeAbsolute', function() {
+        toggleAbsolute();
+    });
+
+    // Register buttons
+    editor.addButton('moveforward', {title: 'layer.forward_desc', cmd: 'mceMoveForward'});
+    editor.addButton('movebackward', {title: 'layer.backward_desc', cmd: 'mceMoveBackward'});
+    editor.addButton('absolute', {title: 'layer.absolute_desc', cmd: 'mceMakeAbsolute'});
+    editor.addButton('insertlayer', {title: 'layer.insertlayer_desc', cmd: 'mceInsertLayer'});
+
+    editor.on('init', function() {
+        if (tinymce.Env.ie) {
+            editor.getDoc().execCommand('2D-Position', false, true);
+        }
+    });
+
+    // Remove serialized styles when selecting a layer since it might be changed by a drag operation
+    editor.on('mouseup', function(e) {
+        var layer = getParentLayer(e.target);
+
+        if (layer) {
+            editor.dom.setAttrib(layer, 'data-mce-style', '');
+        }
+    });
+
+    // Fixes edit focus issues with layers on Gecko
+    // This will enable designMode while inside a layer and disable it when outside
+    editor.on('mousedown', function(e) {
+        var node = e.target, doc = editor.getDoc(), parent;
+
+        if (tinymce.Env.gecko) {
+            if (getParentLayer(node)) {
+                if (doc.designMode !== 'on') {
+                    doc.designMode = 'on';
+
+                    // Repaint caret
+                    node = doc.body;
+                    parent = node.parentNode;
+                    parent.removeChild(node);
+                    parent.appendChild(node);
+                }
+            } else if (doc.designMode == 'on') {
+                doc.designMode = 'off';
+            }
+        }
+    });
+
+    editor.on('NodeChange', visualAid);
+});
 
 
   }).apply(root, arguments);
@@ -74504,109 +72793,6 @@ tinymce.PluginManager.add('preview', function(editor) {
 }(this));
 
 (function(root) {
-define("tinymce-save", ["tinymce"], function() {
-  return (function() {
-/**
- * plugin.js
- *
- * Copyright, Moxiecode Systems AB
- * Released under LGPL License.
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-/*global tinymce:true */
-
-tinymce.PluginManager.add('save', function(editor) {
-    function save() {
-        var formObj;
-
-        formObj = tinymce.DOM.getParent(editor.id, 'form');
-
-        if (editor.getParam("save_enablewhendirty", true) && !editor.isDirty()) {
-            return;
-        }
-
-        tinymce.triggerSave();
-
-        // Use callback instead
-        if (editor.getParam("save_onsavecallback")) {
-            if (editor.execCallback('save_onsavecallback', editor)) {
-                editor.startContent = tinymce.trim(editor.getContent({format: 'raw'}));
-                editor.nodeChanged();
-            }
-
-            return;
-        }
-
-        if (formObj) {
-            editor.isNotDirty = true;
-
-            if (!formObj.onsubmit || formObj.onsubmit()) {
-                if (typeof(formObj.submit) == "function") {
-                    formObj.submit();
-                } else {
-                    editor.windowManager.alert("Error: Form submit field collision.");
-                }
-            }
-
-            editor.nodeChanged();
-        } else {
-            editor.windowManager.alert("Error: No form element found.");
-        }
-    }
-
-    function cancel() {
-        var h = tinymce.trim(editor.startContent);
-
-        // Use callback instead
-        if (editor.getParam("save_oncancelcallback")) {
-            editor.execCallback('save_oncancelcallback', editor);
-            return;
-        }
-
-        editor.setContent(h);
-        editor.undoManager.clear();
-        editor.nodeChanged();
-    }
-
-    function stateToggle() {
-        var self = this;
-
-        editor.on('nodeChange', function() {
-            self.disabled(editor.getParam("save_enablewhendirty", true) && !editor.isDirty());
-        });
-    }
-
-    editor.addCommand('mceSave', save);
-    editor.addCommand('mceCancel', cancel);
-
-    editor.addButton('save', {
-        icon: 'save',
-        text: 'Save',
-        cmd: 'mceSave',
-        disabled: true,
-        onPostRender: stateToggle
-    });
-
-    editor.addButton('cancel', {
-        text: 'Cancel',
-        icon: false,
-        cmd: 'mceCancel',
-        disabled: true,
-        onPostRender: stateToggle
-    });
-
-    editor.addShortcut('ctrl+s', '', 'mceSave');
-});
-
-
-  }).apply(root, arguments);
-});
-}(this));
-
-(function(root) {
 define("tinymce-print", ["tinymce"], function() {
   return (function() {
 /**
@@ -75244,6 +73430,109 @@ define("tinymce-searchreplace", ["tinymce"], function() {
 
     tinymce.PluginManager.add('searchreplace', Plugin);
 })();
+
+
+  }).apply(root, arguments);
+});
+}(this));
+
+(function(root) {
+define("tinymce-save", ["tinymce"], function() {
+  return (function() {
+/**
+ * plugin.js
+ *
+ * Copyright, Moxiecode Systems AB
+ * Released under LGPL License.
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+/*global tinymce:true */
+
+tinymce.PluginManager.add('save', function(editor) {
+    function save() {
+        var formObj;
+
+        formObj = tinymce.DOM.getParent(editor.id, 'form');
+
+        if (editor.getParam("save_enablewhendirty", true) && !editor.isDirty()) {
+            return;
+        }
+
+        tinymce.triggerSave();
+
+        // Use callback instead
+        if (editor.getParam("save_onsavecallback")) {
+            if (editor.execCallback('save_onsavecallback', editor)) {
+                editor.startContent = tinymce.trim(editor.getContent({format: 'raw'}));
+                editor.nodeChanged();
+            }
+
+            return;
+        }
+
+        if (formObj) {
+            editor.isNotDirty = true;
+
+            if (!formObj.onsubmit || formObj.onsubmit()) {
+                if (typeof(formObj.submit) == "function") {
+                    formObj.submit();
+                } else {
+                    editor.windowManager.alert("Error: Form submit field collision.");
+                }
+            }
+
+            editor.nodeChanged();
+        } else {
+            editor.windowManager.alert("Error: No form element found.");
+        }
+    }
+
+    function cancel() {
+        var h = tinymce.trim(editor.startContent);
+
+        // Use callback instead
+        if (editor.getParam("save_oncancelcallback")) {
+            editor.execCallback('save_oncancelcallback', editor);
+            return;
+        }
+
+        editor.setContent(h);
+        editor.undoManager.clear();
+        editor.nodeChanged();
+    }
+
+    function stateToggle() {
+        var self = this;
+
+        editor.on('nodeChange', function() {
+            self.disabled(editor.getParam("save_enablewhendirty", true) && !editor.isDirty());
+        });
+    }
+
+    editor.addCommand('mceSave', save);
+    editor.addCommand('mceCancel', cancel);
+
+    editor.addButton('save', {
+        icon: 'save',
+        text: 'Save',
+        cmd: 'mceSave',
+        disabled: true,
+        onPostRender: stateToggle
+    });
+
+    editor.addButton('cancel', {
+        text: 'Cancel',
+        icon: false,
+        cmd: 'mceCancel',
+        disabled: true,
+        onPostRender: stateToggle
+    });
+
+    editor.addShortcut('ctrl+s', '', 'mceSave');
+});
 
 
   }).apply(root, arguments);
@@ -79072,7 +77361,7 @@ define("tinymce/tableplugin/Plugin", [
 }(this));
 
 (function(root) {
-define("tinymce-textpattern", ["tinymce"], function() {
+define("tinymce-template", ["tinymce"], function() {
   return (function() {
 /**
  * plugin.js
@@ -79086,261 +77375,255 @@ define("tinymce-textpattern", ["tinymce"], function() {
 
 /*global tinymce:true */
 
-tinymce.PluginManager.add('textpattern', function(editor) {
-    var isPatternsDirty = true, patterns;
+tinymce.PluginManager.add('template', function(editor) {
+    var each = tinymce.each;
 
-    patterns = editor.settings.textpattern_patterns || [
-        {start: '*', end: '*', format: 'italic'},
-        {start: '**', end: '**', format: 'bold'},
-        {start: '#', format: 'h1'},
-        {start: '##', format: 'h2'},
-        {start: '###', format: 'h3'},
-        {start: '####', format: 'h4'},
-        {start: '#####', format: 'h5'},
-        {start: '######', format: 'h6'},
-        {start: '1. ', cmd: 'InsertOrderedList'},
-        {start: '* ', cmd: 'InsertUnorderedList'},
-        {start: '- ', cmd: 'InsertUnorderedList'}
-    ];
+    function createTemplateList(callback) {
+        return function() {
+            var templateList = editor.settings.templates;
 
-    // Returns a sorted patterns list, ordered descending by start length
-    function getPatterns() {
-        if (isPatternsDirty) {
-            patterns.sort(function(a, b) {
-                if (a.start.length > b.start.length) {
-                    return -1;
+            if (typeof(templateList) == "string") {
+                tinymce.util.XHR.send({
+                    url: templateList,
+                    success: function(text) {
+                        callback(tinymce.util.JSON.parse(text));
+                    }
+                });
+            } else {
+                callback(templateList);
+            }
+        };
+    }
+
+    function showDialog(templateList) {
+        var win, values = [], templateHtml;
+
+        if (!templateList || templateList.length === 0) {
+            editor.windowManager.alert('No templates defined');
+            return;
+        }
+
+        tinymce.each(templateList, function(template) {
+            values.push({
+                selected: !values.length,
+                text: template.title,
+                value: {
+                    url: template.url,
+                    content: template.content,
+                    description: template.description
                 }
-
-                if (a.start.length < b.start.length) {
-                    return 1;
-                }
-
-                return 0;
             });
+        });
 
-            isPatternsDirty = false;
-        }
+        function onSelectTemplate(e) {
+            var value = e.control.value();
 
-        return patterns;
-    }
+            function insertIframeHtml(html) {
+                if (html.indexOf('<html>') == -1) {
+                    var contentCssLinks = '';
 
-    // Finds a matching pattern to the specified text
-    function findPattern(text) {
-        var patterns = getPatterns();
+                    tinymce.each(editor.contentCSS, function(url) {
+                        contentCssLinks += '<link type="text/css" rel="stylesheet" href="' + editor.documentBaseURI.toAbsolute(url) + '">';
+                    });
 
-        for (var i = 0; i < patterns.length; i++) {
-            if (text.indexOf(patterns[i].start) !== 0) {
-                continue;
+                    html = (
+                        '<!DOCTYPE html>' +
+                        '<html>' +
+                            '<head>' +
+                                contentCssLinks +
+                            '</head>' +
+                            '<body>' +
+                                html +
+                            '</body>' +
+                        '</html>'
+                    );
+                }
+
+                html = replaceTemplateValues(html, 'template_preview_replace_values');
+
+                var doc = win.find('iframe')[0].getEl().contentWindow.document;
+                doc.open();
+                doc.write(html);
+                doc.close();
             }
 
-            if (patterns[i].end && text.lastIndexOf(patterns[i].end) != text.length - patterns[i].end.length) {
-                continue;
+            if (value.url) {
+                tinymce.util.XHR.send({
+                    url: value.url,
+                    success: function(html) {
+                        templateHtml = html;
+                        insertIframeHtml(templateHtml);
+                    }
+                });
+            } else {
+                templateHtml = value.content;
+                insertIframeHtml(templateHtml);
             }
 
-            return patterns[i];
+            win.find('#description')[0].text(e.control.value().description);
         }
+
+        win = editor.windowManager.open({
+            title: 'Insert template',
+            layout: 'flex',
+            direction: 'column',
+            align: 'stretch',
+            padding: 15,
+            spacing: 10,
+
+            items: [
+                {type: 'form', flex: 0, padding: 0, items: [
+                    {type: 'container', label: 'Templates', items: {
+                        type: 'listbox', label: 'Templates', name: 'template', values: values, onselect: onSelectTemplate
+                    }}
+                ]},
+                {type: 'label', name: 'description', label: 'Description', text: '\u00a0'},
+                {type: 'iframe', flex: 1, border: 1}
+            ],
+
+            onsubmit: function() {
+                insertTemplate(false, templateHtml);
+            },
+
+            width: editor.getParam('template_popup_width', 600),
+            height: editor.getParam('template_popup_height', 500)
+        });
+
+        win.find('listbox')[0].fire('select');
     }
 
-    // Finds the best matching end pattern
-    function findEndPattern(text, offset, delta) {
-        var patterns, pattern, i;
+    function getDateTime(fmt, date) {
+        var daysShort = "Sun Mon Tue Wed Thu Fri Sat Sun".split(' ');
+        var daysLong = "Sunday Monday Tuesday Wednesday Thursday Friday Saturday Sunday".split(' ');
+        var monthsShort = "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec".split(' ');
+        var monthsLong = "January February March April May June July August September October November December".split(' ');
 
-        // Find best matching end
-        patterns = getPatterns();
-        for (i = 0; i < patterns.length; i++) {
-            pattern = patterns[i];
-            if (pattern.end && text.substr(offset - pattern.end.length - delta, pattern.end.length) == pattern.end) {
-                return pattern;
-            }
-        }
-    }
+        function addZeros(value, len) {
+            value = "" + value;
 
-    // Handles inline formats like *abc* and **abc**
-    function applyInlineFormat(space) {
-        var selection, dom, rng, container, offset, startOffset, text, patternRng, pattern, delta, format;
-
-        function splitContainer() {
-            // Split text node and remove start/end from text node
-            container = container.splitText(startOffset);
-            container.splitText(offset - startOffset - delta);
-            container.deleteData(0, pattern.start.length);
-            container.deleteData(container.data.length - pattern.end.length, pattern.end.length);
-        }
-
-        selection = editor.selection;
-        dom = editor.dom;
-
-        if (!selection.isCollapsed()) {
-            return;
-        }
-
-        rng = selection.getRng(true);
-        container = rng.startContainer;
-        offset = rng.startOffset;
-        text = container.data;
-        delta = space ? 1 : 0;
-
-        if (container.nodeType != 3) {
-            return;
-        }
-
-        // Find best matching end
-        pattern = findEndPattern(text, offset, delta);
-        if (!pattern) {
-            return;
-        }
-
-        // Find start of matched pattern
-        // TODO: Might need to improve this if there is nested formats
-        startOffset = Math.max(0, offset - delta);
-        startOffset = text.lastIndexOf(pattern.start, startOffset - pattern.end.length - 1);
-
-        if (startOffset === -1) {
-            return;
-        }
-
-        // Setup a range for the matching word
-        patternRng = dom.createRng();
-        patternRng.setStart(container, startOffset);
-        patternRng.setEnd(container, offset - delta);
-        pattern = findPattern(patternRng.toString());
-
-        if (!pattern || !pattern.end) {
-            return;
-        }
-
-        // If container match doesn't have anything between start/end then do nothing
-        if (container.data.length <= pattern.start.length + pattern.end.length) {
-            return;
-        }
-
-        format = editor.formatter.get(pattern.format);
-        if (format && format[0].inline) {
-            splitContainer();
-            editor.formatter.apply(pattern.format, {}, container);
-            return container;
-        }
-    }
-
-    // Handles block formats like ##abc or 1. abc
-    function applyBlockFormat() {
-        var selection, dom, container, firstTextNode, node, format, textBlockElm, pattern, walker, rng, offset;
-
-        selection = editor.selection;
-        dom = editor.dom;
-
-        if (!selection.isCollapsed()) {
-            return;
-        }
-
-        textBlockElm = dom.getParent(selection.getStart(), 'p');
-        if (textBlockElm) {
-            walker = new tinymce.dom.TreeWalker(textBlockElm, textBlockElm);
-            while ((node = walker.next())) {
-                if (node.nodeType == 3) {
-                    firstTextNode = node;
-                    break;
+            if (value.length < len) {
+                for (var i = 0; i < (len - value.length); i++) {
+                    value = "0" + value;
                 }
             }
 
-            if (firstTextNode) {
-                pattern = findPattern(firstTextNode.data);
-                if (!pattern) {
-                    return;
-                }
+            return value;
+        }
 
-                rng = selection.getRng(true);
-                container = rng.startContainer;
-                offset = rng.startOffset;
+        date = date || new Date();
 
-                if (firstTextNode == container) {
-                    offset = Math.max(0, offset - pattern.start.length);
-                }
+        fmt = fmt.replace("%D", "%m/%d/%Y");
+        fmt = fmt.replace("%r", "%I:%M:%S %p");
+        fmt = fmt.replace("%Y", "" + date.getFullYear());
+        fmt = fmt.replace("%y", "" + date.getYear());
+        fmt = fmt.replace("%m", addZeros(date.getMonth() + 1, 2));
+        fmt = fmt.replace("%d", addZeros(date.getDate(), 2));
+        fmt = fmt.replace("%H", "" + addZeros(date.getHours(), 2));
+        fmt = fmt.replace("%M", "" + addZeros(date.getMinutes(), 2));
+        fmt = fmt.replace("%S", "" + addZeros(date.getSeconds(), 2));
+        fmt = fmt.replace("%I", "" + ((date.getHours() + 11) % 12 + 1));
+        fmt = fmt.replace("%p", "" + (date.getHours() < 12 ? "AM" : "PM"));
+        fmt = fmt.replace("%B", "" + editor.translate(monthsLong[date.getMonth()]));
+        fmt = fmt.replace("%b", "" + editor.translate(monthsShort[date.getMonth()]));
+        fmt = fmt.replace("%A", "" + editor.translate(daysLong[date.getDay()]));
+        fmt = fmt.replace("%a", "" + editor.translate(daysShort[date.getDay()]));
+        fmt = fmt.replace("%%", "%");
 
-                if (tinymce.trim(firstTextNode.data).length == pattern.start.length) {
-                    return;
-                }
+        return fmt;
+    }
 
-                if (pattern.format) {
-                    format = editor.formatter.get(pattern.format);
-                    if (format && format[0].block) {
-                        firstTextNode.deleteData(0, pattern.start.length);
-                        editor.formatter.apply(pattern.format, {}, firstTextNode);
+    function replaceVals(e) {
+        var dom = editor.dom, vl = editor.getParam('template_replace_values');
 
-                        rng.setStart(container, offset);
-                        rng.collapse(true);
-                        selection.setRng(rng);
+        each(dom.select('*', e), function(e) {
+            each(vl, function(v, k) {
+                if (dom.hasClass(e, k)) {
+                    if (typeof(vl[k]) == 'function') {
+                        vl[k](e);
                     }
                 }
+            });
+        });
+    }
 
-                if (pattern.cmd) {
-                    editor.undoManager.transact(function() {
-                        firstTextNode.deleteData(0, pattern.start.length);
-                        editor.execCommand(pattern.cmd);
-                    });
-                }
+    function replaceTemplateValues(html, templateValuesOptionName) {
+        each(editor.getParam(templateValuesOptionName), function(v, k) {
+            if (typeof(v) != 'function') {
+                html = html.replace(new RegExp('\\{\\$' + k + '\\}', 'g'), v);
             }
-        }
+        });
+
+        return html;
     }
 
-    function handleEnter() {
-        var rng, wrappedTextNode;
+    function insertTemplate(ui, html) {
+        var el, n, dom = editor.dom, sel = editor.selection.getContent();
 
-        wrappedTextNode = applyInlineFormat();
-        if (wrappedTextNode) {
-            rng = editor.dom.createRng();
-            rng.setStart(wrappedTextNode, wrappedTextNode.data.length);
-            rng.setEnd(wrappedTextNode, wrappedTextNode.data.length);
-            editor.selection.setRng(rng);
+        html = replaceTemplateValues(html, 'template_replace_values');
+        el = dom.create('div', null, html);
+
+        // Find template element within div
+        n = dom.select('.mceTmpl', el);
+        if (n && n.length > 0) {
+            el = dom.create('div', null);
+            el.appendChild(n[0].cloneNode(true));
         }
 
-        applyBlockFormat();
-    }
+        function hasClass(n, c) {
+            return new RegExp('\\b' + c + '\\b', 'g').test(n.className);
+        }
 
-    function handleSpace() {
-        var wrappedTextNode, lastChar, lastCharNode, rng, dom;
-
-        wrappedTextNode = applyInlineFormat(true);
-        if (wrappedTextNode) {
-            dom = editor.dom;
-            lastChar = wrappedTextNode.data.slice(-1);
-
-            // Move space after the newly formatted node
-            if (/[\u00a0 ]/.test(lastChar)) {
-                wrappedTextNode.deleteData(wrappedTextNode.data.length - 1, 1);
-                lastCharNode = dom.doc.createTextNode(lastChar);
-
-                if (wrappedTextNode.nextSibling) {
-                    dom.insertAfter(lastCharNode, wrappedTextNode.nextSibling);
-                } else {
-                    wrappedTextNode.parentNode.appendChild(lastCharNode);
-                }
-
-                rng = dom.createRng();
-                rng.setStart(lastCharNode, 1);
-                rng.setEnd(lastCharNode, 1);
-                editor.selection.setRng(rng);
+        each(dom.select('*', el), function(n) {
+            // Replace cdate
+            if (hasClass(n, editor.getParam('template_cdate_classes', 'cdate').replace(/\s+/g, '|'))) {
+                n.innerHTML = getDateTime(editor.getParam("template_cdate_format", editor.getLang("template.cdate_format")));
             }
-        }
+
+            // Replace mdate
+            if (hasClass(n, editor.getParam('template_mdate_classes', 'mdate').replace(/\s+/g, '|'))) {
+                n.innerHTML = getDateTime(editor.getParam("template_mdate_format", editor.getLang("template.mdate_format")));
+            }
+
+            // Replace selection
+            if (hasClass(n, editor.getParam('template_selected_content_classes', 'selcontent').replace(/\s+/g, '|'))) {
+                n.innerHTML = sel;
+            }
+        });
+
+        replaceVals(el);
+
+        editor.execCommand('mceInsertContent', false, el.innerHTML);
+        editor.addVisual();
     }
 
-    editor.on('keydown', function(e) {
-        if (e.keyCode == 13 && !tinymce.util.VK.modifierPressed(e)) {
-            handleEnter();
-        }
-    }, true);
+    editor.addCommand('mceInsertTemplate', insertTemplate);
 
-    editor.on('keyup', function(e) {
-        if (e.keyCode == 32 && !tinymce.util.VK.modifierPressed(e)) {
-            handleSpace();
-        }
+    editor.addButton('template', {
+        title: 'Insert template',
+        onclick: createTemplateList(showDialog)
     });
 
-    this.getPatterns = getPatterns;
-    this.setPatterns = function(newPatterns) {
-        patterns = newPatterns;
-        isPatternsDirty = true;
-    };
+    editor.addMenuItem('template', {
+        text: 'Insert template',
+        onclick: createTemplateList(showDialog),
+        context: 'insert'
+    });
+
+    editor.on('PreProcess', function(o) {
+        var dom = editor.dom;
+
+        each(dom.select('div', o.node), function(e) {
+            if (dom.hasClass(e, 'mceTmpl')) {
+                each(dom.select('*', e), function(e) {
+                    if (dom.hasClass(e, editor.getParam('template_mdate_classes', 'mdate').replace(/\s+/g, '|'))) {
+                        e.innerHTML = getDateTime(editor.getParam("template_mdate_format", editor.getLang("template.mdate_format")));
+                    }
+                });
+
+                replaceVals(e);
+            }
+        });
+    });
 });
 
   }).apply(root, arguments);
@@ -79629,7 +77912,7 @@ tinymce.PluginManager.add('textcolor', function(editor) {
 }(this));
 
 (function(root) {
-define("tinymce-template", ["tinymce"], function() {
+define("tinymce-textpattern", ["tinymce"], function() {
   return (function() {
 /**
  * plugin.js
@@ -79643,255 +77926,261 @@ define("tinymce-template", ["tinymce"], function() {
 
 /*global tinymce:true */
 
-tinymce.PluginManager.add('template', function(editor) {
-    var each = tinymce.each;
+tinymce.PluginManager.add('textpattern', function(editor) {
+    var isPatternsDirty = true, patterns;
 
-    function createTemplateList(callback) {
-        return function() {
-            var templateList = editor.settings.templates;
+    patterns = editor.settings.textpattern_patterns || [
+        {start: '*', end: '*', format: 'italic'},
+        {start: '**', end: '**', format: 'bold'},
+        {start: '#', format: 'h1'},
+        {start: '##', format: 'h2'},
+        {start: '###', format: 'h3'},
+        {start: '####', format: 'h4'},
+        {start: '#####', format: 'h5'},
+        {start: '######', format: 'h6'},
+        {start: '1. ', cmd: 'InsertOrderedList'},
+        {start: '* ', cmd: 'InsertUnorderedList'},
+        {start: '- ', cmd: 'InsertUnorderedList'}
+    ];
 
-            if (typeof(templateList) == "string") {
-                tinymce.util.XHR.send({
-                    url: templateList,
-                    success: function(text) {
-                        callback(tinymce.util.JSON.parse(text));
-                    }
-                });
-            } else {
-                callback(templateList);
-            }
-        };
+    // Returns a sorted patterns list, ordered descending by start length
+    function getPatterns() {
+        if (isPatternsDirty) {
+            patterns.sort(function(a, b) {
+                if (a.start.length > b.start.length) {
+                    return -1;
+                }
+
+                if (a.start.length < b.start.length) {
+                    return 1;
+                }
+
+                return 0;
+            });
+
+            isPatternsDirty = false;
+        }
+
+        return patterns;
     }
 
-    function showDialog(templateList) {
-        var win, values = [], templateHtml;
+    // Finds a matching pattern to the specified text
+    function findPattern(text) {
+        var patterns = getPatterns();
 
-        if (!templateList || templateList.length === 0) {
-            editor.windowManager.alert('No templates defined');
+        for (var i = 0; i < patterns.length; i++) {
+            if (text.indexOf(patterns[i].start) !== 0) {
+                continue;
+            }
+
+            if (patterns[i].end && text.lastIndexOf(patterns[i].end) != text.length - patterns[i].end.length) {
+                continue;
+            }
+
+            return patterns[i];
+        }
+    }
+
+    // Finds the best matching end pattern
+    function findEndPattern(text, offset, delta) {
+        var patterns, pattern, i;
+
+        // Find best matching end
+        patterns = getPatterns();
+        for (i = 0; i < patterns.length; i++) {
+            pattern = patterns[i];
+            if (pattern.end && text.substr(offset - pattern.end.length - delta, pattern.end.length) == pattern.end) {
+                return pattern;
+            }
+        }
+    }
+
+    // Handles inline formats like *abc* and **abc**
+    function applyInlineFormat(space) {
+        var selection, dom, rng, container, offset, startOffset, text, patternRng, pattern, delta, format;
+
+        function splitContainer() {
+            // Split text node and remove start/end from text node
+            container = container.splitText(startOffset);
+            container.splitText(offset - startOffset - delta);
+            container.deleteData(0, pattern.start.length);
+            container.deleteData(container.data.length - pattern.end.length, pattern.end.length);
+        }
+
+        selection = editor.selection;
+        dom = editor.dom;
+
+        if (!selection.isCollapsed()) {
             return;
         }
 
-        tinymce.each(templateList, function(template) {
-            values.push({
-                selected: !values.length,
-                text: template.title,
-                value: {
-                    url: template.url,
-                    content: template.content,
-                    description: template.description
+        rng = selection.getRng(true);
+        container = rng.startContainer;
+        offset = rng.startOffset;
+        text = container.data;
+        delta = space ? 1 : 0;
+
+        if (container.nodeType != 3) {
+            return;
+        }
+
+        // Find best matching end
+        pattern = findEndPattern(text, offset, delta);
+        if (!pattern) {
+            return;
+        }
+
+        // Find start of matched pattern
+        // TODO: Might need to improve this if there is nested formats
+        startOffset = Math.max(0, offset - delta);
+        startOffset = text.lastIndexOf(pattern.start, startOffset - pattern.end.length - 1);
+
+        if (startOffset === -1) {
+            return;
+        }
+
+        // Setup a range for the matching word
+        patternRng = dom.createRng();
+        patternRng.setStart(container, startOffset);
+        patternRng.setEnd(container, offset - delta);
+        pattern = findPattern(patternRng.toString());
+
+        if (!pattern || !pattern.end) {
+            return;
+        }
+
+        // If container match doesn't have anything between start/end then do nothing
+        if (container.data.length <= pattern.start.length + pattern.end.length) {
+            return;
+        }
+
+        format = editor.formatter.get(pattern.format);
+        if (format && format[0].inline) {
+            splitContainer();
+            editor.formatter.apply(pattern.format, {}, container);
+            return container;
+        }
+    }
+
+    // Handles block formats like ##abc or 1. abc
+    function applyBlockFormat() {
+        var selection, dom, container, firstTextNode, node, format, textBlockElm, pattern, walker, rng, offset;
+
+        selection = editor.selection;
+        dom = editor.dom;
+
+        if (!selection.isCollapsed()) {
+            return;
+        }
+
+        textBlockElm = dom.getParent(selection.getStart(), 'p');
+        if (textBlockElm) {
+            walker = new tinymce.dom.TreeWalker(textBlockElm, textBlockElm);
+            while ((node = walker.next())) {
+                if (node.nodeType == 3) {
+                    firstTextNode = node;
+                    break;
                 }
-            });
-        });
+            }
 
-        function onSelectTemplate(e) {
-            var value = e.control.value();
+            if (firstTextNode) {
+                pattern = findPattern(firstTextNode.data);
+                if (!pattern) {
+                    return;
+                }
 
-            function insertIframeHtml(html) {
-                if (html.indexOf('<html>') == -1) {
-                    var contentCssLinks = '';
+                rng = selection.getRng(true);
+                container = rng.startContainer;
+                offset = rng.startOffset;
 
-                    tinymce.each(editor.contentCSS, function(url) {
-                        contentCssLinks += '<link type="text/css" rel="stylesheet" href="' + editor.documentBaseURI.toAbsolute(url) + '">';
+                if (firstTextNode == container) {
+                    offset = Math.max(0, offset - pattern.start.length);
+                }
+
+                if (tinymce.trim(firstTextNode.data).length == pattern.start.length) {
+                    return;
+                }
+
+                if (pattern.format) {
+                    format = editor.formatter.get(pattern.format);
+                    if (format && format[0].block) {
+                        firstTextNode.deleteData(0, pattern.start.length);
+                        editor.formatter.apply(pattern.format, {}, firstTextNode);
+
+                        rng.setStart(container, offset);
+                        rng.collapse(true);
+                        selection.setRng(rng);
+                    }
+                }
+
+                if (pattern.cmd) {
+                    editor.undoManager.transact(function() {
+                        firstTextNode.deleteData(0, pattern.start.length);
+                        editor.execCommand(pattern.cmd);
                     });
-
-                    html = (
-                        '<!DOCTYPE html>' +
-                        '<html>' +
-                            '<head>' +
-                                contentCssLinks +
-                            '</head>' +
-                            '<body>' +
-                                html +
-                            '</body>' +
-                        '</html>'
-                    );
-                }
-
-                html = replaceTemplateValues(html, 'template_preview_replace_values');
-
-                var doc = win.find('iframe')[0].getEl().contentWindow.document;
-                doc.open();
-                doc.write(html);
-                doc.close();
-            }
-
-            if (value.url) {
-                tinymce.util.XHR.send({
-                    url: value.url,
-                    success: function(html) {
-                        templateHtml = html;
-                        insertIframeHtml(templateHtml);
-                    }
-                });
-            } else {
-                templateHtml = value.content;
-                insertIframeHtml(templateHtml);
-            }
-
-            win.find('#description')[0].text(e.control.value().description);
-        }
-
-        win = editor.windowManager.open({
-            title: 'Insert template',
-            layout: 'flex',
-            direction: 'column',
-            align: 'stretch',
-            padding: 15,
-            spacing: 10,
-
-            items: [
-                {type: 'form', flex: 0, padding: 0, items: [
-                    {type: 'container', label: 'Templates', items: {
-                        type: 'listbox', label: 'Templates', name: 'template', values: values, onselect: onSelectTemplate
-                    }}
-                ]},
-                {type: 'label', name: 'description', label: 'Description', text: '\u00a0'},
-                {type: 'iframe', flex: 1, border: 1}
-            ],
-
-            onsubmit: function() {
-                insertTemplate(false, templateHtml);
-            },
-
-            width: editor.getParam('template_popup_width', 600),
-            height: editor.getParam('template_popup_height', 500)
-        });
-
-        win.find('listbox')[0].fire('select');
-    }
-
-    function getDateTime(fmt, date) {
-        var daysShort = "Sun Mon Tue Wed Thu Fri Sat Sun".split(' ');
-        var daysLong = "Sunday Monday Tuesday Wednesday Thursday Friday Saturday Sunday".split(' ');
-        var monthsShort = "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec".split(' ');
-        var monthsLong = "January February March April May June July August September October November December".split(' ');
-
-        function addZeros(value, len) {
-            value = "" + value;
-
-            if (value.length < len) {
-                for (var i = 0; i < (len - value.length); i++) {
-                    value = "0" + value;
                 }
             }
-
-            return value;
         }
-
-        date = date || new Date();
-
-        fmt = fmt.replace("%D", "%m/%d/%Y");
-        fmt = fmt.replace("%r", "%I:%M:%S %p");
-        fmt = fmt.replace("%Y", "" + date.getFullYear());
-        fmt = fmt.replace("%y", "" + date.getYear());
-        fmt = fmt.replace("%m", addZeros(date.getMonth() + 1, 2));
-        fmt = fmt.replace("%d", addZeros(date.getDate(), 2));
-        fmt = fmt.replace("%H", "" + addZeros(date.getHours(), 2));
-        fmt = fmt.replace("%M", "" + addZeros(date.getMinutes(), 2));
-        fmt = fmt.replace("%S", "" + addZeros(date.getSeconds(), 2));
-        fmt = fmt.replace("%I", "" + ((date.getHours() + 11) % 12 + 1));
-        fmt = fmt.replace("%p", "" + (date.getHours() < 12 ? "AM" : "PM"));
-        fmt = fmt.replace("%B", "" + editor.translate(monthsLong[date.getMonth()]));
-        fmt = fmt.replace("%b", "" + editor.translate(monthsShort[date.getMonth()]));
-        fmt = fmt.replace("%A", "" + editor.translate(daysLong[date.getDay()]));
-        fmt = fmt.replace("%a", "" + editor.translate(daysShort[date.getDay()]));
-        fmt = fmt.replace("%%", "%");
-
-        return fmt;
     }
 
-    function replaceVals(e) {
-        var dom = editor.dom, vl = editor.getParam('template_replace_values');
+    function handleEnter() {
+        var rng, wrappedTextNode;
 
-        each(dom.select('*', e), function(e) {
-            each(vl, function(v, k) {
-                if (dom.hasClass(e, k)) {
-                    if (typeof(vl[k]) == 'function') {
-                        vl[k](e);
-                    }
+        wrappedTextNode = applyInlineFormat();
+        if (wrappedTextNode) {
+            rng = editor.dom.createRng();
+            rng.setStart(wrappedTextNode, wrappedTextNode.data.length);
+            rng.setEnd(wrappedTextNode, wrappedTextNode.data.length);
+            editor.selection.setRng(rng);
+        }
+
+        applyBlockFormat();
+    }
+
+    function handleSpace() {
+        var wrappedTextNode, lastChar, lastCharNode, rng, dom;
+
+        wrappedTextNode = applyInlineFormat(true);
+        if (wrappedTextNode) {
+            dom = editor.dom;
+            lastChar = wrappedTextNode.data.slice(-1);
+
+            // Move space after the newly formatted node
+            if (/[\u00a0 ]/.test(lastChar)) {
+                wrappedTextNode.deleteData(wrappedTextNode.data.length - 1, 1);
+                lastCharNode = dom.doc.createTextNode(lastChar);
+
+                if (wrappedTextNode.nextSibling) {
+                    dom.insertAfter(lastCharNode, wrappedTextNode.nextSibling);
+                } else {
+                    wrappedTextNode.parentNode.appendChild(lastCharNode);
                 }
-            });
-        });
-    }
 
-    function replaceTemplateValues(html, templateValuesOptionName) {
-        each(editor.getParam(templateValuesOptionName), function(v, k) {
-            if (typeof(v) != 'function') {
-                html = html.replace(new RegExp('\\{\\$' + k + '\\}', 'g'), v);
+                rng = dom.createRng();
+                rng.setStart(lastCharNode, 1);
+                rng.setEnd(lastCharNode, 1);
+                editor.selection.setRng(rng);
             }
-        });
-
-        return html;
-    }
-
-    function insertTemplate(ui, html) {
-        var el, n, dom = editor.dom, sel = editor.selection.getContent();
-
-        html = replaceTemplateValues(html, 'template_replace_values');
-        el = dom.create('div', null, html);
-
-        // Find template element within div
-        n = dom.select('.mceTmpl', el);
-        if (n && n.length > 0) {
-            el = dom.create('div', null);
-            el.appendChild(n[0].cloneNode(true));
         }
-
-        function hasClass(n, c) {
-            return new RegExp('\\b' + c + '\\b', 'g').test(n.className);
-        }
-
-        each(dom.select('*', el), function(n) {
-            // Replace cdate
-            if (hasClass(n, editor.getParam('template_cdate_classes', 'cdate').replace(/\s+/g, '|'))) {
-                n.innerHTML = getDateTime(editor.getParam("template_cdate_format", editor.getLang("template.cdate_format")));
-            }
-
-            // Replace mdate
-            if (hasClass(n, editor.getParam('template_mdate_classes', 'mdate').replace(/\s+/g, '|'))) {
-                n.innerHTML = getDateTime(editor.getParam("template_mdate_format", editor.getLang("template.mdate_format")));
-            }
-
-            // Replace selection
-            if (hasClass(n, editor.getParam('template_selected_content_classes', 'selcontent').replace(/\s+/g, '|'))) {
-                n.innerHTML = sel;
-            }
-        });
-
-        replaceVals(el);
-
-        editor.execCommand('mceInsertContent', false, el.innerHTML);
-        editor.addVisual();
     }
 
-    editor.addCommand('mceInsertTemplate', insertTemplate);
+    editor.on('keydown', function(e) {
+        if (e.keyCode == 13 && !tinymce.util.VK.modifierPressed(e)) {
+            handleEnter();
+        }
+    }, true);
 
-    editor.addButton('template', {
-        title: 'Insert template',
-        onclick: createTemplateList(showDialog)
+    editor.on('keyup', function(e) {
+        if (e.keyCode == 32 && !tinymce.util.VK.modifierPressed(e)) {
+            handleSpace();
+        }
     });
 
-    editor.addMenuItem('template', {
-        text: 'Insert template',
-        onclick: createTemplateList(showDialog),
-        context: 'insert'
-    });
-
-    editor.on('PreProcess', function(o) {
-        var dom = editor.dom;
-
-        each(dom.select('div', o.node), function(e) {
-            if (dom.hasClass(e, 'mceTmpl')) {
-                each(dom.select('*', e), function(e) {
-                    if (dom.hasClass(e, editor.getParam('template_mdate_classes', 'mdate').replace(/\s+/g, '|'))) {
-                        e.innerHTML = getDateTime(editor.getParam("template_mdate_format", editor.getLang("template.mdate_format")));
-                    }
-                });
-
-                replaceVals(e);
-            }
-        });
-    });
+    this.getPatterns = getPatterns;
+    this.setPatterns = function(newPatterns) {
+        patterns = newPatterns;
+        isPatternsDirty = true;
+    };
 });
 
   }).apply(root, arguments);
@@ -80090,134 +78379,6 @@ tinymce.PluginManager.add('visualchars', function(editor) {
 });
 }(this));
 
-define('mockup-ui-url/views/container',[
-  'jquery',
-  'underscore',
-  'backbone',
-  'mockup-ui-url/views/base'
-], function($, _, Backbone, BaseView) {
-  
-
-  var Container = BaseView.extend({
-    id: '',
-    items: [],
-    itemContainer: null,
-    isOffsetParent: true,
-    render: function() {
-      this.applyTemplate();
-
-      this.renderItems();
-      this.bindEvents();
-
-      if (this.isOffsetParent) {
-        this.$el.addClass('ui-offset-parent');
-      }
-
-      this.trigger('render', this);
-
-      this.afterRender();
-
-      return this;
-    },
-    renderItems: function() {
-      var $container;
-
-      if (this.itemContainer !== null) {
-        $container = $(this.itemContainer, this.$el);
-        if ($container.length === 0) {
-          throw 'Item Container element not found.';
-        }
-      } else {
-        $container = this.$el;
-      }
-      _.each(this.items, function(view) {
-        if (view.appendInContainer === true) {
-          $container.append(view.render().$el);
-        } else {
-          view.render();
-        }
-      }, this);
-    },
-    bindEvents: function() {
-      var self = this;
-      _.each(this.items, function(view) {
-        view.on('all', function() {
-          var slice = [].slice;
-          var eventName = arguments[0];
-          var eventTarget;
-          var newName = self.id !== '' ? self.id + '.' + eventName : eventName;
-          if (arguments.length > 1) {
-            eventTarget = arguments[1];
-          }
-          if (newName !== eventName) {
-            var newArgs = slice.call(arguments, 0);
-            newArgs[0] = newName;
-            self.trigger.apply(self, newArgs);
-          }
-          if (eventTarget !== undefined && eventTarget.isUIView === true) {
-            if (eventTarget.propagateEvent(eventName) === true) {
-              self.trigger.apply(self, arguments);
-            }
-          }
-        });
-      });
-    },
-    get: function(id) {
-      // Remove the recursive part because it was confusing if two children had the
-      // same id
-      return _.findWhere(this.items, {'id': id});
-    },
-    add: function(item) {
-      if (item.id !== undefined && this.get(item.id)) {
-        throw 'Another item with the same `id` already exists.';
-      }
-      this.items.push(item);
-    }
-  });
-
-  return Container;
-});
-
-define('mockup-ui-url/views/toolbar',[
-  'underscore',
-  'backbone',
-  'mockup-ui-url/views/container'
-], function(_, Backbone, ContainerView) {
-  
-
-  var Toolbar = ContainerView.extend({
-    tagName: 'div',
-    className: 'navbar'
-  });
-
-  return Toolbar;
-});
-
-define('mockup-ui-url/views/buttongroup',[
-  'underscore',
-  'backbone',
-  'mockup-ui-url/views/container'
-], function(_, Backbone, ContainerView) {
-  
-
-  var ButtonGroup = ContainerView.extend({
-    tagName: 'div',
-    className: 'btn-group',
-    disable: function() {
-      _.each(this.items, function(button) {
-        button.trigger('disable');
-      });
-    },
-    enable: function() {
-      _.each(this.items, function(button) {
-        button.trigger('enable');
-      });
-    }
-  });
-
-  return ButtonGroup;
-});
-
 (function(root) {
 define("tinymce-wordcount", ["tinymce"], function() {
   return (function() {
@@ -80294,1968 +78455,6 @@ tinymce.PluginManager.add('wordcount', function(editor) {
   }).apply(root, arguments);
 });
 }(this));
-
-(function(root) {
-define("bootstrap-tooltip", ["jquery"], function() {
-  return (function() {
-/* ========================================================================
- * Bootstrap: tooltip.js v3.2.0
- * http://getbootstrap.com/javascript/#tooltip
- * Inspired by the original jQuery.tipsy by Jason Frame
- * ========================================================================
- * Copyright 2011-2014 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
-
-
-+function ($) {
-  
-
-  // TOOLTIP PUBLIC CLASS DEFINITION
-  // ===============================
-
-  var Tooltip = function (element, options) {
-    this.type       =
-    this.options    =
-    this.enabled    =
-    this.timeout    =
-    this.hoverState =
-    this.$element   = null
-
-    this.init('tooltip', element, options)
-  }
-
-  Tooltip.VERSION  = '3.2.0'
-
-  Tooltip.DEFAULTS = {
-    animation: true,
-    placement: 'top',
-    selector: false,
-    template: '<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
-    trigger: 'hover focus',
-    title: '',
-    delay: 0,
-    html: false,
-    container: false,
-    viewport: {
-      selector: 'body',
-      padding: 0
-    }
-  }
-
-  Tooltip.prototype.init = function (type, element, options) {
-    this.enabled   = true
-    this.type      = type
-    this.$element  = $(element)
-    this.options   = this.getOptions(options)
-    this.$viewport = this.options.viewport && $(this.options.viewport.selector || this.options.viewport)
-
-    var triggers = this.options.trigger.split(' ')
-
-    for (var i = triggers.length; i--;) {
-      var trigger = triggers[i]
-
-      if (trigger == 'click') {
-        this.$element.on('click.' + this.type, this.options.selector, $.proxy(this.toggle, this))
-      } else if (trigger != 'manual') {
-        var eventIn  = trigger == 'hover' ? 'mouseenter' : 'focusin'
-        var eventOut = trigger == 'hover' ? 'mouseleave' : 'focusout'
-
-        this.$element.on(eventIn  + '.' + this.type, this.options.selector, $.proxy(this.enter, this))
-        this.$element.on(eventOut + '.' + this.type, this.options.selector, $.proxy(this.leave, this))
-      }
-    }
-
-    this.options.selector ?
-      (this._options = $.extend({}, this.options, { trigger: 'manual', selector: '' })) :
-      this.fixTitle()
-  }
-
-  Tooltip.prototype.getDefaults = function () {
-    return Tooltip.DEFAULTS
-  }
-
-  Tooltip.prototype.getOptions = function (options) {
-    options = $.extend({}, this.getDefaults(), this.$element.data(), options)
-
-    if (options.delay && typeof options.delay == 'number') {
-      options.delay = {
-        show: options.delay,
-        hide: options.delay
-      }
-    }
-
-    return options
-  }
-
-  Tooltip.prototype.getDelegateOptions = function () {
-    var options  = {}
-    var defaults = this.getDefaults()
-
-    this._options && $.each(this._options, function (key, value) {
-      if (defaults[key] != value) options[key] = value
-    })
-
-    return options
-  }
-
-  Tooltip.prototype.enter = function (obj) {
-    var self = obj instanceof this.constructor ?
-      obj : $(obj.currentTarget).data('bs.' + this.type)
-
-    if (!self) {
-      self = new this.constructor(obj.currentTarget, this.getDelegateOptions())
-      $(obj.currentTarget).data('bs.' + this.type, self)
-    }
-
-    clearTimeout(self.timeout)
-
-    self.hoverState = 'in'
-
-    if (!self.options.delay || !self.options.delay.show) return self.show()
-
-    self.timeout = setTimeout(function () {
-      if (self.hoverState == 'in') self.show()
-    }, self.options.delay.show)
-  }
-
-  Tooltip.prototype.leave = function (obj) {
-    var self = obj instanceof this.constructor ?
-      obj : $(obj.currentTarget).data('bs.' + this.type)
-
-    if (!self) {
-      self = new this.constructor(obj.currentTarget, this.getDelegateOptions())
-      $(obj.currentTarget).data('bs.' + this.type, self)
-    }
-
-    clearTimeout(self.timeout)
-
-    self.hoverState = 'out'
-
-    if (!self.options.delay || !self.options.delay.hide) return self.hide()
-
-    self.timeout = setTimeout(function () {
-      if (self.hoverState == 'out') self.hide()
-    }, self.options.delay.hide)
-  }
-
-  Tooltip.prototype.show = function () {
-    var e = $.Event('show.bs.' + this.type)
-
-    if (this.hasContent() && this.enabled) {
-      this.$element.trigger(e)
-
-      var inDom = $.contains(document.documentElement, this.$element[0])
-      if (e.isDefaultPrevented() || !inDom) return
-      var that = this
-
-      var $tip = this.tip()
-
-      var tipId = this.getUID(this.type)
-
-      this.setContent()
-      $tip.attr('id', tipId)
-      this.$element.attr('aria-describedby', tipId)
-
-      if (this.options.animation) $tip.addClass('fade')
-
-      var placement = typeof this.options.placement == 'function' ?
-        this.options.placement.call(this, $tip[0], this.$element[0]) :
-        this.options.placement
-
-      var autoToken = /\s?auto?\s?/i
-      var autoPlace = autoToken.test(placement)
-      if (autoPlace) placement = placement.replace(autoToken, '') || 'top'
-
-      $tip
-        .detach()
-        .css({ top: 0, left: 0, display: 'block' })
-        .addClass(placement)
-        .data('bs.' + this.type, this)
-
-      this.options.container ? $tip.appendTo(this.options.container) : $tip.insertAfter(this.$element)
-
-      var pos          = this.getPosition()
-      var actualWidth  = $tip[0].offsetWidth
-      var actualHeight = $tip[0].offsetHeight
-
-      if (autoPlace) {
-        var orgPlacement = placement
-        var $parent      = this.$element.parent()
-        var parentDim    = this.getPosition($parent)
-
-        placement = placement == 'bottom' && pos.top   + pos.height       + actualHeight - parentDim.scroll > parentDim.height ? 'top'    :
-                    placement == 'top'    && pos.top   - parentDim.scroll - actualHeight < 0                                   ? 'bottom' :
-                    placement == 'right'  && pos.right + actualWidth      > parentDim.width                                    ? 'left'   :
-                    placement == 'left'   && pos.left  - actualWidth      < parentDim.left                                     ? 'right'  :
-                    placement
-
-        $tip
-          .removeClass(orgPlacement)
-          .addClass(placement)
-      }
-
-      var calculatedOffset = this.getCalculatedOffset(placement, pos, actualWidth, actualHeight)
-
-      this.applyPlacement(calculatedOffset, placement)
-
-      var complete = function () {
-        that.$element.trigger('shown.bs.' + that.type)
-        that.hoverState = null
-      }
-
-      $.support.transition && this.$tip.hasClass('fade') ?
-        $tip
-          .one('bsTransitionEnd', complete)
-          .emulateTransitionEnd(150) :
-        complete()
-    }
-  }
-
-  Tooltip.prototype.applyPlacement = function (offset, placement) {
-    var $tip   = this.tip()
-    var width  = $tip[0].offsetWidth
-    var height = $tip[0].offsetHeight
-
-    // manually read margins because getBoundingClientRect includes difference
-    var marginTop = parseInt($tip.css('margin-top'), 10)
-    var marginLeft = parseInt($tip.css('margin-left'), 10)
-
-    // we must check for NaN for ie 8/9
-    if (isNaN(marginTop))  marginTop  = 0
-    if (isNaN(marginLeft)) marginLeft = 0
-
-    offset.top  = offset.top  + marginTop
-    offset.left = offset.left + marginLeft
-
-    // $.fn.offset doesn't round pixel values
-    // so we use setOffset directly with our own function B-0
-    $.offset.setOffset($tip[0], $.extend({
-      using: function (props) {
-        $tip.css({
-          top: Math.round(props.top),
-          left: Math.round(props.left)
-        })
-      }
-    }, offset), 0)
-
-    $tip.addClass('in')
-
-    // check to see if placing tip in new offset caused the tip to resize itself
-    var actualWidth  = $tip[0].offsetWidth
-    var actualHeight = $tip[0].offsetHeight
-
-    if (placement == 'top' && actualHeight != height) {
-      offset.top = offset.top + height - actualHeight
-    }
-
-    var delta = this.getViewportAdjustedDelta(placement, offset, actualWidth, actualHeight)
-
-    if (delta.left) offset.left += delta.left
-    else offset.top += delta.top
-
-    var arrowDelta          = delta.left ? delta.left * 2 - width + actualWidth : delta.top * 2 - height + actualHeight
-    var arrowPosition       = delta.left ? 'left'        : 'top'
-    var arrowOffsetPosition = delta.left ? 'offsetWidth' : 'offsetHeight'
-
-    $tip.offset(offset)
-    this.replaceArrow(arrowDelta, $tip[0][arrowOffsetPosition], arrowPosition)
-  }
-
-  Tooltip.prototype.replaceArrow = function (delta, dimension, position) {
-    this.arrow().css(position, delta ? (50 * (1 - delta / dimension) + '%') : '')
-  }
-
-  Tooltip.prototype.setContent = function () {
-    var $tip  = this.tip()
-    var title = this.getTitle()
-
-    $tip.find('.tooltip-inner')[this.options.html ? 'html' : 'text'](title)
-    $tip.removeClass('fade in top bottom left right')
-  }
-
-  Tooltip.prototype.hide = function () {
-    var that = this
-    var $tip = this.tip()
-    var e    = $.Event('hide.bs.' + this.type)
-
-    this.$element.removeAttr('aria-describedby')
-
-    function complete() {
-      if (that.hoverState != 'in') $tip.detach()
-      that.$element.trigger('hidden.bs.' + that.type)
-    }
-
-    this.$element.trigger(e)
-
-    if (e.isDefaultPrevented()) return
-
-    $tip.removeClass('in')
-
-    $.support.transition && this.$tip.hasClass('fade') ?
-      $tip
-        .one('bsTransitionEnd', complete)
-        .emulateTransitionEnd(150) :
-      complete()
-
-    this.hoverState = null
-
-    return this
-  }
-
-  Tooltip.prototype.fixTitle = function () {
-    var $e = this.$element
-    if ($e.attr('title') || typeof ($e.attr('data-original-title')) != 'string') {
-      $e.attr('data-original-title', $e.attr('title') || '').attr('title', '')
-    }
-  }
-
-  Tooltip.prototype.hasContent = function () {
-    return this.getTitle()
-  }
-
-  Tooltip.prototype.getPosition = function ($element) {
-    $element   = $element || this.$element
-    var el     = $element[0]
-    var isBody = el.tagName == 'BODY'
-    return $.extend({}, (typeof el.getBoundingClientRect == 'function') ? el.getBoundingClientRect() : null, {
-      scroll: isBody ? document.documentElement.scrollTop || document.body.scrollTop : $element.scrollTop(),
-      width:  isBody ? $(window).width()  : $element.outerWidth(),
-      height: isBody ? $(window).height() : $element.outerHeight()
-    }, isBody ? { top: 0, left: 0 } : $element.offset())
-  }
-
-  Tooltip.prototype.getCalculatedOffset = function (placement, pos, actualWidth, actualHeight) {
-    return placement == 'bottom' ? { top: pos.top + pos.height,   left: pos.left + pos.width / 2 - actualWidth / 2  } :
-           placement == 'top'    ? { top: pos.top - actualHeight, left: pos.left + pos.width / 2 - actualWidth / 2  } :
-           placement == 'left'   ? { top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left - actualWidth } :
-        /* placement == 'right' */ { top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left + pos.width   }
-
-  }
-
-  Tooltip.prototype.getViewportAdjustedDelta = function (placement, pos, actualWidth, actualHeight) {
-    var delta = { top: 0, left: 0 }
-    if (!this.$viewport) return delta
-
-    var viewportPadding = this.options.viewport && this.options.viewport.padding || 0
-    var viewportDimensions = this.getPosition(this.$viewport)
-
-    if (/right|left/.test(placement)) {
-      var topEdgeOffset    = pos.top - viewportPadding - viewportDimensions.scroll
-      var bottomEdgeOffset = pos.top + viewportPadding - viewportDimensions.scroll + actualHeight
-      if (topEdgeOffset < viewportDimensions.top) { // top overflow
-        delta.top = viewportDimensions.top - topEdgeOffset
-      } else if (bottomEdgeOffset > viewportDimensions.top + viewportDimensions.height) { // bottom overflow
-        delta.top = viewportDimensions.top + viewportDimensions.height - bottomEdgeOffset
-      }
-    } else {
-      var leftEdgeOffset  = pos.left - viewportPadding
-      var rightEdgeOffset = pos.left + viewportPadding + actualWidth
-      if (leftEdgeOffset < viewportDimensions.left) { // left overflow
-        delta.left = viewportDimensions.left - leftEdgeOffset
-      } else if (rightEdgeOffset > viewportDimensions.width) { // right overflow
-        delta.left = viewportDimensions.left + viewportDimensions.width - rightEdgeOffset
-      }
-    }
-
-    return delta
-  }
-
-  Tooltip.prototype.getTitle = function () {
-    var title
-    var $e = this.$element
-    var o  = this.options
-
-    title = $e.attr('data-original-title')
-      || (typeof o.title == 'function' ? o.title.call($e[0]) :  o.title)
-
-    return title
-  }
-
-  Tooltip.prototype.getUID = function (prefix) {
-    do prefix += ~~(Math.random() * 1000000)
-    while (document.getElementById(prefix))
-    return prefix
-  }
-
-  Tooltip.prototype.tip = function () {
-    return (this.$tip = this.$tip || $(this.options.template))
-  }
-
-  Tooltip.prototype.arrow = function () {
-    return (this.$arrow = this.$arrow || this.tip().find('.tooltip-arrow'))
-  }
-
-  Tooltip.prototype.validate = function () {
-    if (!this.$element[0].parentNode) {
-      this.hide()
-      this.$element = null
-      this.options  = null
-    }
-  }
-
-  Tooltip.prototype.enable = function () {
-    this.enabled = true
-  }
-
-  Tooltip.prototype.disable = function () {
-    this.enabled = false
-  }
-
-  Tooltip.prototype.toggleEnabled = function () {
-    this.enabled = !this.enabled
-  }
-
-  Tooltip.prototype.toggle = function (e) {
-    var self = this
-    if (e) {
-      self = $(e.currentTarget).data('bs.' + this.type)
-      if (!self) {
-        self = new this.constructor(e.currentTarget, this.getDelegateOptions())
-        $(e.currentTarget).data('bs.' + this.type, self)
-      }
-    }
-
-    self.tip().hasClass('in') ? self.leave(self) : self.enter(self)
-  }
-
-  Tooltip.prototype.destroy = function () {
-    clearTimeout(this.timeout)
-    this.hide().$element.off('.' + this.type).removeData('bs.' + this.type)
-  }
-
-
-  // TOOLTIP PLUGIN DEFINITION
-  // =========================
-
-  function Plugin(option) {
-    return this.each(function () {
-      var $this   = $(this)
-      var data    = $this.data('bs.tooltip')
-      var options = typeof option == 'object' && option
-
-      if (!data && option == 'destroy') return
-      if (!data) $this.data('bs.tooltip', (data = new Tooltip(this, options)))
-      if (typeof option == 'string') data[option]()
-    })
-  }
-
-  var old = $.fn.tooltip
-
-  $.fn.tooltip             = Plugin
-  $.fn.tooltip.Constructor = Tooltip
-
-
-  // TOOLTIP NO CONFLICT
-  // ===================
-
-  $.fn.tooltip.noConflict = function () {
-    $.fn.tooltip = old
-    return this
-  }
-
-}(jQuery);
-
-
-  }).apply(root, arguments);
-});
-}(this));
-
-define('mockup-ui-url/views/button',[
-  'jquery',
-  'backbone',
-  'underscore',
-  'mockup-ui-url/views/base',
-  'bootstrap-tooltip'
-], function($, Backbone, _, BaseView) {
-  
-
-  var ButtonView = BaseView.extend({
-    tagName: 'a',
-    className: 'btn',
-    eventPrefix: 'button',
-    context: 'default',
-    attributes: {
-      'href': '#'
-    },
-    extraClasses: [],
-    tooltip: null,
-    template: '<% if (icon) { %><span class="glyphicon glyphicon-<%= icon %>"></span><% } %> <%= title %>',
-    events: {
-      'click': 'handleClick'
-    },
-    initialize: function(options) {
-      if (!options.id) {
-        var title = options.title || '';
-        options.id = title !== '' ? title.toLowerCase().replace(' ', '-') : this.cid;
-      }
-      BaseView.prototype.initialize.apply(this, [options]);
-
-      this.on('disable', function() {
-        this.disable();
-      }, this);
-
-      this.on('enable', function() {
-        this.enable();
-      }, this);
-
-      this.on('render', function() {
-        if (this.context !== null) {
-          this.$el.addClass('btn-' + this.context);
-        }
-        _.each(this.extraClasses, function(klass){
-          this.$el.addClass(klass);
-        });
-
-        if (this.tooltip !== null) {
-          this.$el.tooltip({
-            title: this.tooltip
-          });
-          // XXX since tooltip triggers hidden
-          // suppress so it plays nice with modals, backdrops, etc
-          this.$el.on('hidden', function(e) {
-            if (e.type === 'hidden') {
-              e.stopPropagation();
-            }
-          });
-        }
-      }, this);
-    },
-    handleClick: function(e) {
-      e.preventDefault();
-      if (!this.$el.is('.disabled')) {
-        this.uiEventTrigger('click', this, e);
-      }
-    },
-    serializedModel: function() {
-      return _.extend({'icon': '', 'title': ''}, this.options);
-    },
-    disable: function() {
-      this.options.disabled = true;
-      this.$el.addClass('disabled');
-    },
-    enable: function() {
-      this.options.disabled = false;
-      this.$el.removeClass('disabled');
-    }
-  });
-
-  return ButtonView;
-});
-
-/* Sortable pattern.
- *
- * Options:
- *    selector(string): Selector to use to draggable items in pattern ('li')
- *    dragClass(string): Class to apply to original item that is being dragged. ('item-dragging')
- *    cloneClass(string): Class to apply to cloned item that is dragged. ('dragging')
- *    drop(function): callback function for when item is dropped (null)
- *
- * Documentation:
- *    # Default
- *
- *    {{ example-1 }}
- *
- *    # Table
- *
- *    {{ example-2 }}
- *
- * Example: example-1
- *    <ul class="pat-sortable">
- *      <li>One</li>
- *      <li>Two</li>
- *      <li>Three</li>
- *    </ul>
- *
- * Example: example-2
- *    <table class="table table-stripped pat-sortable"
- *           data-pat-sortable="selector:tr;">
- *      <tbody>
- *        <tr>
- *          <td>One One</td>
- *          <td>One Two</td>
- *        </tr>
- *        <tr>
- *          <td>Two One</td>
- *          <td>Two Two</td>
- *        </tr>
- *        <tr>
- *          <td>Three One</td>
- *          <td>Three Two</td>
- *        </tr>
- *      </tbody>
- *    </table>
- *
- */
-
-
-define('mockup-patterns-sortable',[
-  'jquery',
-  'mockup-patterns-base',
-  'jquery.event.drag',
-  'jquery.event.drop'
-], function($, Base, drag, drop) {
-  
-
-  var SortablePattern = Base.extend({
-    name: 'sortable',
-    trigger: '.pat-sortable',
-    defaults: {
-      selector: 'li',
-      dragClass: 'item-dragging',
-      cloneClass: 'dragging',
-      drop: null // function to handle drop event
-    },
-    init: function() {
-      var self = this;
-      var start = 0;
-
-      self.$el.find(self.options.selector).drag('start', function(e, dd) {
-        var dragged = this;
-        $(dragged).addClass(self.options.dragClass);
-        drop({
-          tolerance: function(event, proxy, target) {
-            if ($(target.elem).closest(self.$el).length === 0) {
-              /* prevent dragging conflict over another drag area */
-              return;
-            }
-            var test = event.pageY > (target.top + target.height / 2);
-            $.data(target.elem, 'drop+reorder', test ? 'insertAfter' : 'insertBefore' );
-            return this.contains(target, [event.pageX, event.pageY]);
-          }
-        });
-        start = $(this).index();
-        return $( this ).clone().
-          addClass(self.options.cloneClass).
-          css({opacity: 0.75, position: 'absolute'}).
-          appendTo(document.body);
-      })
-      .drag(function(e, dd) {
-        /*jshint eqeqeq:false */
-        $( dd.proxy ).css({
-          top: dd.offsetY,
-          left: dd.offsetX
-        });
-        var drop = dd.drop[0],
-            method = $.data(drop || {}, 'drop+reorder');
-        /* XXX Cannot use triple equals here */
-        if (method && drop && (drop != dd.current || method != dd.method)) {
-          $(this)[method](drop);
-          dd.current = drop;
-          dd.method = method;
-          dd.update();
-        }
-      })
-      .drag('end', function(e, dd) {
-        var $el = $(this);
-        $el.removeClass(self.options.dragClass);
-        $(dd.proxy).remove();
-        if (self.options.drop) {
-          self.options.drop($el, $el.index() - start);
-        }
-      })
-      .drop('init', function(e, dd ) {
-        /*jshint eqeqeq:false */
-        /* XXX Cannot use triple equals here */
-        return (this == dd.drag) ? false: true;
-      });
-
-    }
-  });
-
-  return SortablePattern;
-
-});
-
-
-
-define('mockup-patterns-structure-url/js/models/result',['backbone'], function(Backbone) {
-  
-
-  var Result = Backbone.Model.extend({
-    defaults: function() {
-      return {
-        'is_folderish': false,
-        'review_state': ''
-      };
-    },
-    uid: function() {
-      return this.attributes.UID;
-    }
-  });
-
-  return Result;
-});
-
-define('mockup-patterns-structure-url/js/collections/selected',[
-  'backbone',
-  'mockup-patterns-structure-url/js/models/result'
-], function(Backbone, Result) {
-  
-
-  var SelectedCollection = Backbone.Collection.extend({
-    model: Result,
-    removeResult: function(model) {
-      return this.removeByUID(model.uid());
-    },
-    removeByUID: function(uid) {
-      var found = this.getByUID(uid);
-      if (found) {
-        this.remove(found);
-      }
-      return found;
-    },
-    getByUID: function(uid) {
-      return this.findWhere({UID: uid});
-    }
-  });
-
-  return SelectedCollection;
-});
-
-
-(function(root) {
-define("bootstrap-dropdown", ["jquery"], function() {
-  return (function() {
-/* ========================================================================
- * Bootstrap: dropdown.js v3.2.0
- * http://getbootstrap.com/javascript/#dropdowns
- * ========================================================================
- * Copyright 2011-2014 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
-
-
-+function ($) {
-  
-
-  // DROPDOWN CLASS DEFINITION
-  // =========================
-
-  var backdrop = '.dropdown-backdrop'
-  var toggle   = '[data-toggle="dropdown"]'
-  var Dropdown = function (element) {
-    $(element).on('click.bs.dropdown', this.toggle)
-  }
-
-  Dropdown.VERSION = '3.2.0'
-
-  Dropdown.prototype.toggle = function (e) {
-    var $this = $(this)
-
-    if ($this.is('.disabled, :disabled')) return
-
-    var $parent  = getParent($this)
-    var isActive = $parent.hasClass('open')
-
-    clearMenus()
-
-    if (!isActive) {
-      if ('ontouchstart' in document.documentElement && !$parent.closest('.navbar-nav').length) {
-        // if mobile we use a backdrop because click events don't delegate
-        $('<div class="dropdown-backdrop"/>').insertAfter($(this)).on('click', clearMenus)
-      }
-
-      var relatedTarget = { relatedTarget: this }
-      $parent.trigger(e = $.Event('show.bs.dropdown', relatedTarget))
-
-      if (e.isDefaultPrevented()) return
-
-      $this.trigger('focus')
-
-      $parent
-        .toggleClass('open')
-        .trigger('shown.bs.dropdown', relatedTarget)
-    }
-
-    return false
-  }
-
-  Dropdown.prototype.keydown = function (e) {
-    if (!/(38|40|27)/.test(e.keyCode)) return
-
-    var $this = $(this)
-
-    e.preventDefault()
-    e.stopPropagation()
-
-    if ($this.is('.disabled, :disabled')) return
-
-    var $parent  = getParent($this)
-    var isActive = $parent.hasClass('open')
-
-    if (!isActive || (isActive && e.keyCode == 27)) {
-      if (e.which == 27) $parent.find(toggle).trigger('focus')
-      return $this.trigger('click')
-    }
-
-    var desc = ' li:not(.divider):visible a'
-    var $items = $parent.find('[role="menu"]' + desc + ', [role="listbox"]' + desc)
-
-    if (!$items.length) return
-
-    var index = $items.index($items.filter(':focus'))
-
-    if (e.keyCode == 38 && index > 0)                 index--                        // up
-    if (e.keyCode == 40 && index < $items.length - 1) index++                        // down
-    if (!~index)                                      index = 0
-
-    $items.eq(index).trigger('focus')
-  }
-
-  function clearMenus(e) {
-    if (e && e.which === 3) return
-    $(backdrop).remove()
-    $(toggle).each(function () {
-      var $parent = getParent($(this))
-      var relatedTarget = { relatedTarget: this }
-      if (!$parent.hasClass('open')) return
-      $parent.trigger(e = $.Event('hide.bs.dropdown', relatedTarget))
-      if (e.isDefaultPrevented()) return
-      $parent.removeClass('open').trigger('hidden.bs.dropdown', relatedTarget)
-    })
-  }
-
-  function getParent($this) {
-    var selector = $this.attr('data-target')
-
-    if (!selector) {
-      selector = $this.attr('href')
-      selector = selector && /#[A-Za-z]/.test(selector) && selector.replace(/.*(?=#[^\s]*$)/, '') // strip for ie7
-    }
-
-    var $parent = selector && $(selector)
-
-    return $parent && $parent.length ? $parent : $this.parent()
-  }
-
-
-  // DROPDOWN PLUGIN DEFINITION
-  // ==========================
-
-  function Plugin(option) {
-    return this.each(function () {
-      var $this = $(this)
-      var data  = $this.data('bs.dropdown')
-
-      if (!data) $this.data('bs.dropdown', (data = new Dropdown(this)))
-      if (typeof option == 'string') data[option].call($this)
-    })
-  }
-
-  var old = $.fn.dropdown
-
-  $.fn.dropdown             = Plugin
-  $.fn.dropdown.Constructor = Dropdown
-
-
-  // DROPDOWN NO CONFLICT
-  // ====================
-
-  $.fn.dropdown.noConflict = function () {
-    $.fn.dropdown = old
-    return this
-  }
-
-
-  // APPLY TO STANDARD DROPDOWN ELEMENTS
-  // ===================================
-
-  $(document)
-    .on('click.bs.dropdown.data-api', clearMenus)
-    .on('click.bs.dropdown.data-api', '.dropdown form', function (e) { e.stopPropagation() })
-    .on('click.bs.dropdown.data-api', toggle, Dropdown.prototype.toggle)
-    .on('keydown.bs.dropdown.data-api', toggle + ', [role="menu"], [role="listbox"]', Dropdown.prototype.keydown)
-
-}(jQuery);
-
-
-  }).apply(root, arguments);
-});
-}(this));
-
-/* global alert:true */
-
-define('mockup-patterns-structure-url/js/views/addmenu',[
-  'jquery',
-  'underscore',
-  'backbone',
-  'mockup-ui-url/views/buttongroup',
-  'mockup-ui-url/views/button',
-  'mockup-patterns-modal',
-  'mockup-utils',
-  'bootstrap-dropdown'
-], function($, _, Backbone, ButtonGroup, ButtonView, Modal, utils) {
-  
-
-  var AddMenu = ButtonGroup.extend({
-    title: 'Add',
-    className: 'btn-group addnew',
-    events: {
-    },
-    initialize: function(options) {
-      var self = this;
-      ButtonGroup.prototype.initialize.apply(self, [options]);
-      self.app.on('context-info-loaded', function(data) {
-        self.$items.empty();
-        _.each(data.addButtons, function(item) {
-          var view = new ButtonView({
-            id: item.id,
-            title: item.title,
-            url: item.action
-          });
-          view.render();
-          var wrap = $('<li/>');
-          // As we are reusing the whole ButtonView for render the add content
-          // list we should remove entirely the "btn btn-default" classes.
-          // This element in fact, should not have any class at all, so we
-          // remove the attribute completely
-          view.$el.removeAttr('class');
-
-          wrap.append(view.el);
-          self.$items.append(wrap);
-          view.$el.click(function(e) {
-            self.buttonClicked.apply(self, [e, view]);
-            return false;
-          });
-        });
-      });
-    },
-    buttonClicked: function(e, button) {
-      var self = this;
-      e.preventDefault();
-      self.app.loading.show();
-
-      $.ajax({
-        url: button.url,
-        type: 'POST',
-        data: {
-          '_authenticator': $('[name="_authenticator"]').val(),
-        },
-        success: function(response) {
-          self.app.loading.hide();
-          var modal = new Modal(self.$el, {
-            html: utils.parseBodyTag(response),
-            content: '#content',
-            width: '80%',
-            backdropOptions: {
-              closeOnClick: false
-            },
-            automaticallyAddButtonActions: false,
-            actionOptions: {
-              displayInModal: false,
-              reloadWindowOnClose: false
-            },
-            actions: {
-              'input#form-buttons-save, .formControls input[name="form.button.save"]': {
-                onSuccess: function(modal, response, state, xhr, form) {
-                  self.app.collection.pager();
-                  if (self.$items.is(':visible')) {
-                    self.$dropdown.dropdown('toggle');
-                  }
-                  modal.hide();
-                },
-                onError: function() {
-                  alert('error on form');
-                }
-              },
-              'input#form-buttons-cancel, .formControls input[name="form.button.cancel"]': {
-                modalFunction: 'hide'
-              }
-            },
-          });
-          modal.show();
-        },
-        error: function() {
-          // XXX handle error
-          self.app.loading.hide();
-        }
-      });
-    },
-    render: function() {
-      var self = this;
-      self.$el.empty();
-
-      self.$el.append(
-        '<a class="btn dropdown-toggle btn-success" data-toggle="dropdown" href="#">' +
-          self.title +
-          '<span class="caret"></span>' +
-        '</a>' +
-        '<ul class="dropdown-menu">' +
-        '</ul>' +
-      '</div>');
-
-      self.$items = self.$('.dropdown-menu');
-      self.$dropdown = self.$('.dropdown-toggle');
-      self.$dropdown.dropdown();
-      return this;
-    }
-  });
-
-  return AddMenu;
-});
-
-define('mockup-ui-url/views/popover',[
-  'jquery',
-  'underscore',
-  'backbone',
-  'mockup-ui-url/views/container',
-  'mockup-patterns-backdrop',
-  'text!mockup-ui-url/templates/popover.xml',
-], function($, _, Backbone, ContainerView, Backdrop, PopoverTemplate) {
-  
-
-  var PopoverView = ContainerView.extend({
-    tagName: 'div',
-    className: 'popover',
-    eventPrefix: 'popover',
-    template: PopoverTemplate,
-    content: null,
-    title: null,
-    triggerView: null,
-    triggerEvents: {
-      'button:click': 'toggle'
-    },
-    placement: 'bottom',
-    events: {
-    },
-    opened: false,
-    closeOnOutClick: true,
-    appendInContainer: true,
-    backdrop: undefined,
-    $backdrop: null,
-    useBackdrop: true,
-    backdropOptions: {
-      zIndex: '1009',
-      opacity: '0.4',
-      className: 'backdrop backdrop-popover',
-      classActiveName: 'backdrop-active',
-      closeOnEsc: false,
-      closeOnClick: true
-    },
-    initialize: function(options) {
-      ContainerView.prototype.initialize.apply(this, [options]);
-
-      this.on('render', function() {
-        this.bindTriggerEvents();
-        this.renderTitle();
-        this.renderContent();
-      }, this);
-    },
-    afterRender: function () {
-    },
-    renderTitle: function() {
-      this.$('.popover-title').append(this.title(this.options));
-    },
-    renderContent: function() {
-      this.$('.popover-content').append(this.content(this.options));
-    },
-    bindTriggerEvents: function() {
-      if (this.triggerView) {
-        _.each(this.triggerEvents, function(func, event) {
-          var method = this[func];
-          if (!method) {
-            $.error('Function not found.');
-          }
-          this.stopListening(this.triggerView, event);
-          this.listenTo(this.triggerView, event, method);
-        }, this);
-      }
-    },
-    getPosition: function() {
-      var $el = this.triggerView.$el;
-      return $.extend({}, {
-        width: $el[0].offsetWidth,
-        height: $el[0].offsetHeight
-      }, $el.offset());
-    },
-    show: function() {
-      var pos = this.getPosition();
-      var $tip = this.$el, tp, placement, actualWidth, actualHeight;
-
-      placement = this.placement;
-
-      $tip.css({ top: 0, left: 0 }).addClass('active');
-
-
-      actualWidth = $tip[0].offsetWidth;
-      actualHeight = $tip[0].offsetHeight;
-
-      switch (placement) {
-        case 'bottom':
-          tp = {top: pos.top + pos.height, left: pos.left + pos.width / 2 - actualWidth / 2};
-          break;
-        case 'top':
-          tp = {top: pos.top - actualHeight, left: pos.left + pos.width / 2 - actualWidth / 2};
-          break;
-        case 'left':
-          tp = {top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left - actualWidth};
-          break;
-        case 'right':
-          tp = {top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left + pos.width};
-          break;
-      }
-
-      this.applyPlacement(tp, placement);
-
-      this.setBackdrop();
-      if (this.useBackdrop === true) {
-        this.backdrop.show();
-      }
-
-      this.opened = true;
-
-      if (this.triggerView) {
-        this.triggerView.$el.addClass('active');
-      }
-
-      this.uiEventTrigger('show', this);
-    },
-    applyPlacement: function(offset, placement) {
-      var $el = this.$el,
-        $tip = this.$el,
-        width = $tip[0].offsetWidth,
-        height = $tip[0].offsetHeight,
-        actualWidth,
-        actualHeight,
-        delta,
-        replace;
-
-      $el.removeClass(placement);
-
-      $el.offset(offset)
-        .addClass(placement)
-        .addClass('active');
-
-      actualWidth = $tip[0].offsetWidth;
-      actualHeight = $tip[0].offsetHeight;
-
-      if (placement === 'top' && actualHeight !== height) {
-        offset.top = offset.top + height - actualHeight;
-        replace = true;
-      }
-
-      if (placement === 'bottom' || placement === 'top') {
-        delta = 0;
-
-        if (offset.left < 0) {
-          delta = offset.left * -2;
-          offset.left = 0;
-          $el.removeClass(placement);
-          $el.offset(offset).addClass(placement);
-          actualWidth = $tip[0].offsetWidth;
-          actualHeight = $tip[0].offsetHeight;
-        }
-
-        this.positionArrow(delta - width + actualWidth, actualWidth, 'left');
-
-      } else {
-        this.positionArrow(actualHeight - height, actualHeight, 'top');
-      }
-
-      if (replace) {
-        $el.offset(offset);
-      }
-    },
-    positionArrow: function(delta, dimension, position) {
-      var $arrow = this.$('.arrow');
-      $arrow.css(position, delta ? (50 * (1 - delta / dimension) + '%') : '');
-    },
-    hide: function() {
-      this.opened = false;
-      this.$el.removeClass('active');
-      if (this.triggerView) {
-        this.triggerView.$el.removeClass('active');
-      }
-      this.uiEventTrigger('hide', this);
-    },
-    toggle: function(button, e) {
-      if (this.opened) {
-        this.hide();
-      } else {
-        this.show();
-      }
-    },
-    setBackdrop: function() {
-      if (this.useBackdrop === true && this.backdrop === undefined) {
-        var self = this;
-        this.$backdrop = this.$el.closest('.ui-backdrop-element');
-        if (this.$backdrop.length === 0) {
-          this.$backdrop = $('body');
-        }
-
-        this.backdrop = new Backdrop(this.$backdrop, this.backdropOptions);
-        this.backdrop.$el.on('hidden.backdrop.patterns', function(e) {
-          if (e.namespace === 'backdrop.patterns') {
-            e.stopPropagation();
-            if (self.opened === true) {
-              self.hide();
-            }
-          }
-        });
-        this.on('popover:hide', function() {
-          this.backdrop.hide();
-        }, this);
-      }
-    }
-  });
-
-  return PopoverView;
-});
-
-
-define('mockup-patterns-structure-url/js/views/tags',[
-  'jquery',
-  'underscore',
-  'backbone',
-  'mockup-ui-url/views/popover',
-  'mockup-patterns-select2'
-], function($, _, Backbone, PopoverView, Select2) {
-  
-
-  var TagsView = PopoverView.extend({
-    title: _.template('Add/Remove tags'),
-    content: _.template(
-      '<label>Tags to remove</label>' +
-      '<div class="form-group">' +
-        '<select multiple class="toremove" style="width: 300px">' +
-        '</select>' +
-      '</div>' +
-      '<label>Tags to add</label>' +
-      '<div class="form-group">' +
-        '<input class="toadd" style="width:300px" />' +
-      '</div>' +
-      '<button class="btn btn-block btn-primary">Apply</button>'
-    ),
-    events: {
-      'click button': 'applyButtonClicked'
-    },
-    initialize: function(options) {
-      this.app = options.app;
-      this.removeSelect2 = null;
-      this.addSelect2 = null;
-      PopoverView.prototype.initialize.apply(this, [options]);
-    },
-    render: function() {
-      PopoverView.prototype.render.call(this);
-      this.$remove = this.$('.toremove');
-      this.$add = this.$('.toadd');
-      this.$remove.select2();
-      this.addSelect2 = new Select2(this.$add, {
-        multiple: true,
-        vocabularyUrl: this.app.options.tagsVocabularyUrl
-      });
-      return this;
-    },
-    getSelect2Values: function($el) {
-      var values = [];
-      _.each($el.select2('data'), function(item) {
-        values.push(item.id);
-      });
-      return values;
-    },
-    applyButtonClicked: function(e) {
-      this.app.defaultButtonClickEvent(this.triggerView, {
-        remove: JSON.stringify(this.getSelect2Values(this.$remove)),
-        add: JSON.stringify(this.getSelect2Values(this.$add))
-      });
-      this.hide();
-    },
-    toggle: function(button, e) {
-      PopoverView.prototype.toggle.apply(this, [button, e]);
-      var self = this;
-      if (!this.opened) {
-        return;
-      }
-      // clear out
-      self.$remove.select2('destroy');
-      self.$remove.empty();
-      self.$add.select2('data', []);
-
-      self.app.selectedCollection.each(function(item) {
-        if (!item.attributes.Subject) {
-          return;
-        }
-        _.each(item.attributes.Subject, function(tag) {
-          if (self.$remove.find('[value="' + tag + '"]').length === 0) {
-            self.$remove.append('<option value="' + tag + '">' + tag + '</option>');
-          }
-        });
-      });
-      self.$remove.select2();
-    }
-  });
-
-  return TagsView;
-});
-
-define('mockup-patterns-structure-url/js/views/selectionwell',[
-  'jquery',
-  'underscore',
-  'backbone',
-  'mockup-ui-url/views/popover',
-  'text!mockup-patterns-structure-url/templates/selection_item.xml'
-], function($, _, Backbone, PopoverView, ItemTemplate) {
-  
-
-  var WellView = PopoverView.extend({
-    className: 'popover selected',
-    title: _.template('<input type="text" class="filter" placeholder="Filter" />' +
-                      '<a href="#" class=" remove-all">' +
-                        '<span class="glyphicon glyphicon-remove-circle"></span> remove all</a>'),
-    content: _.template(
-      '<% collection.each(function(item) { %>' +
-      '<%= item_template(item.toJSON()) %>' +
-      '<% }); %>'
-    ),
-    events: {
-      'click a.remove': 'itemRemoved',
-      'keyup input.filter': 'filterSelected',
-      'click .remove-all': 'removeAll'
-    },
-    initialize: function(options) {
-      PopoverView.prototype.initialize.apply(this, [options]);
-      this.listenTo(this.collection, 'reset all add remove', this.render);
-      this.options['item_template'] = _.template(ItemTemplate); // jshint ignore:line
-    },
-    render: function () {
-      PopoverView.prototype.render.call(this);
-      if (this.collection.length === 0) {
-        this.$el.removeClass('active');
-      }
-      return this;
-    },
-    itemRemoved: function(e) {
-      e.preventDefault();
-      var uid = $(e.currentTarget).data('uid');
-      this.collection.removeByUID(uid);
-      if (this.collection.length !== 0) {
-        // re-rendering causes it to close, reopen
-        this.show();
-      }
-    },
-    filterSelected: function(e) {
-      var val = $(e.target).val().toLowerCase();
-      $('.selected-item', this.$el).each(function() {
-        var $el = $(this);
-        if ($el.text().toLowerCase().indexOf(val) === -1) {
-          $el.hide();
-        } else {
-          $el.show();
-        }
-      });
-    },
-    removeAll: function(e) {
-      e.preventDefault();
-      this.collection.reset();
-      this.hide();
-    }
-  });
-
-  return WellView;
-});
-
-define('mockup-patterns-structure-url/js/views/properties',[
-  'jquery',
-  'underscore',
-  'backbone',
-  'mockup-ui-url/views/popover',
-  'mockup-patterns-pickadate',
-  'mockup-patterns-select2'
-], function($, _, Backbone, PopoverView, PickADate, Select2) {
-  
-
-  var PropertiesView = PopoverView.extend({
-    className: 'popover properties',
-    title: _.template('Modify properties on items'),
-    content: _.template(
-      '<div class="form-group">' +
-        '<label>Publication Date</label>' +
-        '<input class="form-control" name="effective" />' +
-      '</div>' +
-      '<div class="form-group">' +
-        '<label>Expiration Date</label>' +
-        '<input class="form-control" name="expiration" />' +
-      '</div>' +
-      '<div class="form-group">' +
-        '<label>Copyright</label>' +
-        '<textarea class="form-control" name="copyright"></textarea>' +
-      '</div>' +
-      '<label>Creators</label>' +
-      '<div class="form-group">' +
-        '<input name="creators" style="width: 300px" />' +
-      '</div>' +
-      '<label>Contributors</label>' +
-      '<div class="form-group">' +
-        '<input name="contributors" style="width: 300px" />' +
-      '</div>' +
-      '<label>Exclude from nav</label>' +
-      '<div class="radio">' +
-        '<label>' +
-          '<input type="radio" name="exclude-from-nav" value="yes" />' +
-          'Yes' +
-        '</label>' +
-      '</div>' +
-      '<div class="radio">' +
-        '<label>' +
-          '<input type="radio" name="exclude-from-nav" value="no" />' +
-          'No' +
-        '</label>' +
-      '</div>' +
-      '<button class="btn btn-block btn-primary">Apply</button>'
-    ),
-    events: {
-      'click button': 'applyButtonClicked'
-    },
-    initialize: function(options) {
-      this.app = options.app;
-      PopoverView.prototype.initialize.apply(this, [options]);
-    },
-    render: function() {
-      PopoverView.prototype.render.call(this);
-      this.$effective = this.$('[name="effective"]');
-      this.$expiration = this.$('[name="expiration"]');
-      this.$copyright = this.$('[name="copyright"]');
-      this.$creators = this.$('[name="creators"]');
-      this.$contributors = this.$('[name="contributors"]');
-      this.$exclude = this.$('[name="exclude-from-nav"]');
-
-      this.creatorsSelect2 = new Select2(this.$creators, {
-        multiple: true,
-        vocabularyUrl: this.app.options.usersVocabularyUrl
-      });
-      this.contributorsSelect2 = new Select2(this.$contributors, {
-        multiple: true,
-        vocabularyUrl: this.app.options.usersVocabularyUrl
-      });
-      this.effectivePickADate = new PickADate(this.$effective);
-      this.expirationPickADate = new PickADate(this.$expiration);
-      return this;
-    },
-    applyButtonClicked: function(e) {
-      var data = {
-        effectiveDate: this.effectivePickADate.$date.val(),
-        effectiveTime: this.effectivePickADate.$time.val(),
-        expirationDate: this.expirationPickADate.$date.val(),
-        expirationTime: this.expirationPickADate.$time.val(),
-        copyright: this.$copyright.val(),
-        contributors: JSON.stringify(this.$contributors.select2('data')),
-        creators: JSON.stringify(this.$creators.select2('data'))
-      };
-      if (this.$('[name="exclude-from-nav"]:checked').length > 0) {
-        data['exclude_from_nav'] = this.$('[name="exclude-from-nav"]:checked').val(); // jshint ignore:line
-      }
-      this.app.defaultButtonClickEvent(this.triggerView, data);
-      this.hide();
-    },
-    toggle: function(button, e) {
-      PopoverView.prototype.toggle.apply(this, [button, e]);
-      var self = this;
-      if (!this.opened) {
-        return;
-      }
-      this.$effective.attr('value', '');
-      this.$expiration.attr('value', '');
-      this.$copyright.html('');
-      this.$creators.select2('data', []);
-      this.$contributors.select2('data', []);
-      this.$exclude.each(function() {
-        this.checked = false;
-      });
-    }
-  });
-
-  return PropertiesView;
-});
-
-define('mockup-patterns-structure-url/js/views/workflow',[
-  'jquery',
-  'underscore',
-  'backbone',
-  'mockup-ui-url/views/popover'
-], function($, _, Backbone, PopoverView) {
-  
-
-  var WorkflowView = PopoverView.extend({
-    className: 'popover workflow',
-    title: _.template('Modify dates on items'),
-    content: _.template(
-      '<form>' +
-        '<fieldset>' +
-          '<div class="form-group">' +
-            '<label>Comments</label>' +
-            '<textarea class="form-control" rows="4"></textarea>' +
-            '<p class="help-block">Select the transition to be used for ' +
-              'modifying the items state.</p>' +
-          '</div>' +
-          '<div class="form-group">' +
-            '<label>Change State</label>' +
-            '<p class="help-block">Select the transition to be used for ' +
-              'modifying the items state.</p>' +
-            '<select class="form-control" name="transition">' +
-            '</select>' +
-          '</div>' +
-          '<div class="checkbox">' +
-            '<label>' +
-              '<input type="checkbox" name="recurse" />' +
-              'Include contained items?</label>' +
-            '<p class="help-block">' +
-              'If checked, this will attempt to modify the status of all ' +
-              'content in any selected folders and their subfolders.' +
-            '</p>' +
-          '</div>' +
-        '</fieldset>' +
-      '</form>' +
-      '<button class="btn btn-block btn-primary">Apply</button>'
-    ),
-    events: {
-      'click button': 'applyButtonClicked'
-    },
-    initialize: function(options) {
-      this.app = options.app;
-      PopoverView.prototype.initialize.apply(this, [options]);
-    },
-    render: function() {
-      PopoverView.prototype.render.call(this);
-      this.$comments = this.$('textarea');
-      this.$transition = this.$('select');
-      return this;
-    },
-    applyButtonClicked: function(e) {
-      var data = {
-        comments: this.$comments.val(),
-        transition: this.$transition.val()
-      };
-      if (this.$('[name="recurse"]')[0].checked) {
-        data.recurse = 'yes';
-      }
-      this.app.defaultButtonClickEvent(this.triggerView, data);
-      this.hide();
-    },
-    toggle: function(button, e) {
-      PopoverView.prototype.toggle.apply(this, [button, e]);
-      var self = this;
-      if (!self.opened) {
-        return;
-      }
-      self.$comments.val('');
-      self.$transition.empty();
-      $.ajax({
-        url: self.triggerView.url,
-        type: 'GET',
-        data: {
-          selection: JSON.stringify(self.app.getSelectedUids()),
-          transitions: true
-        },
-        success: function(data) {
-          _.each(data.transitions, function(transition) {
-            self.$transition.append('<option value="' + transition.id + '">' + transition.title + '</option>');
-          });
-        },
-        error: function(data) {
-          // XXX error handling...
-          window.alert('error getting transition data');
-        }
-      });
-    }
-  });
-
-  return WorkflowView;
-});
-
-
-
-
-
-define('mockup-patterns-structure-url/js/views/delete',[
-  'jquery',
-  'underscore',
-  'backbone',
-  'mockup-ui-url/views/popover'
-], function($, _, Backbone, PopoverView) {
-  
-
-  var DeleteView = PopoverView.extend({
-    className: 'popover delete',
-    title: _.template('Delete selected items'),
-    content: _.template(
-      '<label>Are you certain you want to delete the selected items</label>' +
-      '<button class="btn btn-block btn-danger">Yes</button>'
-    ),
-    events: {
-      'click button': 'applyButtonClicked'
-    },
-    initialize: function(options) {
-      this.app = options.app;
-      PopoverView.prototype.initialize.apply(this, [options]);
-    },
-    render: function() {
-      PopoverView.prototype.render.call(this);
-      return this;
-    },
-    applyButtonClicked: function(e) {
-      var self = this;
-      this.app.defaultButtonClickEvent(this.triggerView, {}, function(data) {
-        self.app.selectedCollection.reset();
-      });
-      this.hide();
-    }
-  });
-
-  return DeleteView;
-});
-
-
-
-
-
-
-define('mockup-patterns-structure-url/js/views/rename',[
-  'jquery',
-  'underscore',
-  'backbone',
-  'mockup-ui-url/views/popover'
-], function($, _, Backbone, PopoverView) {
-  
-
-  var PropertiesView = PopoverView.extend({
-    className: 'popover rename',
-    title: _.template('Rename items'),
-    content: _.template(
-      '<div class="itemstoremove"></div>' +
-      '<button class="btn btn-block btn-primary">Apply</button>'
-    ),
-    itemTemplate: _.template(
-      '<div class="item">' +
-        '<div class="form-group">' +
-          '<input name="UID" type="hidden" value="<%- UID %>" />' +
-          '<label>Title</label>' +
-          '<input class="form-control" name="newtitle" value="<%= Title %>" />' +
-          '<label>Short name</label>' +
-          '<input class="form-control" name="newid" value="<%= id %>" />' +
-        '</div>' +
-      '</div>'
-    ),
-    events: {
-      'click button': 'applyButtonClicked'
-    },
-    initialize: function(options) {
-      this.app = options.app;
-      PopoverView.prototype.initialize.apply(this, [options]);
-    },
-    render: function() {
-      PopoverView.prototype.render.call(this);
-      this.$items = this.$('.itemstoremove');
-      return this;
-    },
-    applyButtonClicked: function(e) {
-      var torename = [];
-      this.$items.find('.item').each(function() {
-        var $item = $(this);
-        torename.push({
-          UID: $item.find('[name="UID"]').val(),
-          newid: $item.find('[name="newid"]').val(),
-          newtitle: $item.find('[name="newtitle"]').val()
-        });
-      });
-      var self = this;
-      this.app.defaultButtonClickEvent(this.triggerView, {
-        torename: JSON.stringify(torename)
-      });
-      this.hide();
-    },
-    toggle: function(button, e) {
-      PopoverView.prototype.toggle.apply(this, [button, e]);
-      var self = this;
-      if (!self.opened) {
-        return;
-      }
-      self.$items.empty();
-      self.app.selectedCollection.each(function(item) {
-        self.$items.append(self.itemTemplate(item.toJSON()));
-      });
-    }
-  });
-
-  return PropertiesView;
-});
-
-
-
-
-
-
-define('mockup-patterns-structure-url/js/views/rearrange',[
-  'jquery',
-  'underscore',
-  'mockup-ui-url/views/popover'
-], function($, _, PopoverView) {
-  
-
-  var RearrangeView = PopoverView.extend({
-    className: 'popover rearrange',
-    title: _.template('Rearrange items in this folder'),
-    content: _.template(
-      '<div class="form-group">' +
-        '<label>What to rearrange on</label>' +
-        '<select name="rearrange_on" class="form-control">' +
-          '<% _.each(rearrangeProperties, function(title, property) { %>' +
-            '<option value="<%- property %>"><%- title %></option>' +
-          '<% }); %>' +
-        '</select>' +
-        '<p class="help-block">' +
-          'This permanently changes the order of items in this folder.' +
-          'This operation may take a long time depending on the size ' +
-          'of the folder.' +
-        '</p>' +
-      '</div>' +
-      '<div class="checkbox">' +
-        '<label>Reverse <input type="checkbox" name="reversed" /></label>' +
-      '</div>' +
-      '<button class="btn btn-block btn-primary">Rearrange</button>'
-    ),
-    events: {
-      'click button': 'rearrangeButtonClicked'
-    },
-    initialize: function(options) {
-      this.app = options.app;
-      PopoverView.prototype.initialize.apply(this, [options]);
-      this.options.rearrangeProperties = this.app.options.rearrange.properties;
-    },
-    render: function() {
-      PopoverView.prototype.render.call(this);
-      this.$rearrangeOn = this.$('[name="rearrange_on"]');
-      this.$reversed = this.$('[name="reversed"]');
-      return this;
-    },
-    rearrangeButtonClicked: function() {
-      var data = {
-        'rearrange_on': this.$rearrangeOn.val(),
-        reversed: false
-      };
-      if (this.$reversed[0].checked) {
-        data.reversed = true;
-      }
-      this.app.defaultButtonClickEvent(this.triggerView, data);
-      this.hide();
-    }
-  });
-
-  return RearrangeView;
-});
-
-define('mockup-patterns-structure-url/js/views/textfilter',[
-  'jquery',
-  'backbone',
-  'underscore',
-  'mockup-ui-url/views/base',
-  'mockup-ui-url/views/button',
-  'mockup-ui-url/views/popover',
-  'mockup-patterns-querystring'
-], function($, Backbone, _, BaseView, ButtonView, PopoverView, QueryString) {
-  
-
-  var TextFilterView = BaseView.extend({
-    tagName: 'div',
-    className: 'navbar-search form-search ui-offset-parent',
-    template: _.template(
-      '<div class="input-group">' +
-      '<input type="text" class="form-control search-query" placeholder="Filter">' +
-      '<span class="input-group-btn">' +
-      '</span>' +
-      '</div>'
-    ),
-    popoverContent: _.template(
-      '<input class="pat-querystring" />'
-    ),
-    events: {
-      'keyup .search-query': 'filter'
-    },
-    term: null,
-    timeoutId: null,
-    keyupDelay: 300,
-    initialize: function(options) {
-      BaseView.prototype.initialize.apply(this, [options]);
-      this.app = this.options.app;
-    },
-    render: function() {
-      this.$el.html(this.template({}));
-      this.button = new ButtonView({
-        title: 'Query'
-      });
-      this.popover = new PopoverView({
-        triggerView: this.button,
-        title: _.template('Query'),
-        content: this.popoverContent,
-        placement: 'left'
-      });
-      this.$('.input-group-btn').append(this.button.render().el);
-      this.$el.append(this.popover.render().el);
-      this.popover.$el.addClass('query');
-      this.$queryString = this.popover.$('input.pat-querystring');
-      this.queryString = new QueryString(
-        this.$queryString, {
-          indexOptionsUrl: this.app.options.indexOptionsUrl,
-          showPreviews: false
-        });
-      var self = this;
-      self.queryString.$el.on('change', function() {
-        if (self.timeoutId) {
-          clearTimeout(self.timeoutId);
-        }
-        self.timeoutId = setTimeout(function() {
-          var criterias = $.parseJSON(self.$queryString.val());
-          self.app.additionalCriterias = criterias;
-          self.app.collection.pager();
-        }, this.keyupDelay);
-      });
-      self.queryString.$el.on('initialized', function() {
-        self.queryString.$sortOn.on('change', function() {
-          self.app['sort_on'] = self.queryString.$sortOn.val(); // jshint ignore:line
-          self.app.collection.pager();
-        });
-        self.queryString.$sortOrder.change(function() {
-          if (self.queryString.$sortOrder[0].checked) {
-            self.app['sort_order'] = 'reverse'; // jshint ignore:line
-          } else {
-            self.app['sort_order'] = 'ascending'; // jshint ignore:line
-          }
-          self.app.collection.pager();
-        });
-      });
-      return this;
-    },
-    filter: function(event) {
-      var self = this;
-      if (self.timeoutId) {
-        clearTimeout(self.timeoutId);
-      }
-      self.timeoutId = setTimeout(function() {
-        self.term = $(event.currentTarget).val();
-        self.app.collection.pager();
-      }, this.keyupDelay);
-    }
-  });
-
-  return TextFilterView;
-});
-
-define('mockup-patterns-structure-url/js/views/columns',[
-  'jquery',
-  'underscore',
-  'backbone',
-  'mockup-ui-url/views/popover',
-  'mockup-patterns-sortable'
-], function($, _, Backbone, PopoverView, Sortable) {
-  
-
-  var ColumnsView = PopoverView.extend({
-    className: 'popover columns',
-    title: _.template('Columns'),
-    content: _.template(
-      '<label>Select columns to show, drag and drop to reorder</label>' +
-      '<ul>' +
-      '</ul>' +
-      '<button class="btn btn-block btn-success">Save</button>'
-    ),
-    itemTemplate: _.template(
-      '<li>' +
-        '<label>' +
-          '<input type="checkbox" value="<%- id %>"/>' +
-          '<%- title %>' +
-        '</label>' +
-      '</li>'
-    ),
-    events: {
-      'click button': 'applyButtonClicked'
-    },
-    initialize: function(options) {
-      this.app = options.app;
-      PopoverView.prototype.initialize.apply(this, [options]);
-    },
-    afterRender: function() {
-      var self = this;
-
-      self.$container = self.$('ul');
-      _.each(self.app.activeColumns, function(id) {
-        var $el = $(self.itemTemplate({
-          title: self.app.availableColumns[id],
-          id: id
-        }));
-        $el.find('input')[0].checked = true;
-        self.$container.append($el);
-      });
-      _.each(_.omit(self.app.availableColumns, self.app.activeColumns), function(name, id) {
-        var $el = $(self.itemTemplate({
-          title: name,
-          id: id
-        }));
-        self.$container.append($el);
-      });
-
-      var dd = new Sortable(self.$container, {
-        selector: 'li'
-      });
-      return this;
-    },
-    applyButtonClicked: function() {
-      var self = this;
-      this.hide();
-      self.app.activeColumns = [];
-      self.$('input:checked').each(function() {
-        self.app.activeColumns.push($(this).val());
-      });
-      self.app.setCookieSetting('activeColumns', this.app.activeColumns);
-      self.app.tableView.render();
-    }
-  });
-
-  return ColumnsView;
-});
-
-
-
-
-
-
-
-define('text!mockup-patterns-structure-url/templates/selection_button.xml',[],function () { return '<%= title %> \r<span class="label<% if (length > 0) { %> label-success<% } else { %> label-default<% } %>">\r  <%= length %>\r</span>\r';});
-
-define('mockup-patterns-structure-url/js/views/selectionbutton',[
-  'jquery',
-  'backbone',
-  'underscore',
-  'mockup-ui-url/views/button',
-  'text!mockup-patterns-structure-url/templates/selection_button.xml'
-], function($, Backbone, _, ButtonView, tplButton) {
-  
-
-  var SelectionButton = ButtonView.extend({
-    collection: null,
-    template: tplButton,
-    initialize: function(options) {
-      ButtonView.prototype.initialize.apply(this, [options]);
-
-      if (this.collection !== null) {
-        this.collection.on('add remove reset', function() {
-          this.render();
-          if (this.collection.length === 0) {
-            this.$el.removeClass('active');
-          }
-        }, this);
-      }
-    },
-    serializedModel: function() {
-      var obj = {icon: '', title: this.options.title, length: 0};
-      if (this.collection !== null) {
-        obj.length = this.collection.length;
-      }
-      return obj;
-    }
-  });
-
-  return SelectionButton;
-});
 
 // Uses AMD or browser globals to create a jQuery plugin.
 (function (factory) {
@@ -84065,7 +80264,3689 @@ Emitter.prototype.hasListeners = function(event){
     return module.exports;
 }));
 
+define('text!mockup-patterns-upload-url/templates/upload.xml',[],function () { return '<div class="upload-container upload-multiple">\n    <h2 class="title">Upload stuff here</h2>\n    <p class="help">\n        Just drag N drop stuff on the area below\n        or press "upload" button.\n    </p>\n    <div class="upload-area">\n        <div class="fallback">\n            <input name="file" type="file" multiple />\n        </div>\n        <div class="dz-message"><p><%-_t("Drop files here...")%></p></div>\n        <div class="row">\n            <div class="col-md-9">\n                <input\n                    id="fakeUploadFile"\n                    placeholder="Choose File"\n                    disabled="disabled"\n                    />\n            </div>\n            <div class="col-md-3">\n                <button\n                    type="button"\n                    class="btn btn-primary browse">\n                    Browse\n                </button>\n            </div>\n        </div>\n        <div class="upload-queue">\n            <div class="previews">\n            </div>\n            <div class="controls">\n                <div class="path">\n                    <label>Upload to...</label>\n                    <p class="form-help">\n                        If nothing selected files we be added to current context.\n                    </p>\n                    <input\n                        type="text"\n                        name="location"\n                        />\n                </div>\n                <div class="actions row">\n                    <div class="col-md-9">\n                        <div class="progress progress-striped active">\n                            <div class="progress-bar progress-bar-success"\n                                 role="progressbar"\n                                 aria-valuenow="0"\n                                 aria-valuemin="0"\n                                 aria-valuemax="100"\n                                 style="width: 0%">\n                                <span class="sr-only">40% Complete (success)</span>\n                            </div>\n                        </div>\n                    </div>\n                    <div class="col-md-3 align-right">\n                        <button\n                            type="button"\n                            class="btn btn-primary upload-all">\n                            Upload\n                        </button>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n';});
+
+
 define('text!mockup-patterns-upload-url/templates/preview.xml',[],function () { return '<div class="row item form-inline">\n    <div class="col-md-1 action">\n        <button\n            type="button"\n            class="btn btn-danger btn-xs remove-item"\n            data-dz-remove=""\n            href="javascript:undefined;">\n            <span class="glyphicon glyphicon-remove"></span>\n        </button>\n    </div>\n    <div class="col-md-8 title">\n        <div class="dz-preview">\n          <div class="dz-details">\n            <div class="dz-filename"><span data-dz-name></span></div>\n          </div>\n          <div class="dz-error-message"><span data-dz-errormessage></span></div>\n        </div>\n        <div class="dz-progress">\n            <span class="dz-upload" data-dz-uploadprogress></span>\n        </div>\n    </div>\n    <div class="col-md-3 info">\n        <div class="dz-size" data-dz-size></div>\n        <img data-dz-thumbnail />\n    </div>\n</div>\n';});
+
+/* Upload pattern.
+ *
+ * Options:
+ *    showTitle(boolean): show/hide the h1 title (true)
+ *    url(string): If not used with a form, this option must provide the URL to submit to or baseUrl with relativePath needs to be used (null)
+ *    baseUrl(string): to be used in conjunction with relativePath to generate submission urls based on related items (null)
+ *    relativePath(string): again, to be used with baseUrl to create upload url (null)
+ *    initialFolder(string): UID of initial folder related items widget should have selected (null)
+ *    currentPath(string): Current path related items is starting with (null)
+ *    clickable(boolean): If you can click on container to also upload (false)
+ *    className(string): value for class attribute in the form element ('upload')
+ *    paramName(string): value for name attribute in the file input element ('file')
+ *    ajaxUpload(boolean): true or false for letting the widget upload the files via ajax. If false the form will act like a normal form. (true)
+ *    wrap(boolean): true or false for wrapping this element using the value of wrapperTemplate. (false)
+ *    wrapperTemplate(string): HTML template for wrapping around with this element. ('<div class="upload-container"/>')
+ *    resultTemplate(string): HTML template for the element that will contain file information. ('<div class="dz-notice"><p>Drop files here...</p></div><div class="upload-previews"/>')
+ *    autoCleanResults(boolean): condition value for the file preview in div element to fadeout after file upload is completed. (true)
+ *    previewsContainer(selector): JavaScript selector for file preview in div element. (.upload-previews)
+ *    container(selector): JavaScript selector for where to put upload stuff into in case of form. If not provided it will be place before the first submit button. ('')
+ *    relatedItems(object): Related items pattern options. Will only use only if relativePath is used to use correct upload destination ({ attributes: ["UID", "Title", "Description", "getURL", "Type", "path", "ModificationDate"], batchSize: 20, basePath: "/", vocabularyUrl: null, width: 500, maximumSelectionSize: 1, placeholder: "Search for item on site..." })
+ *
+ * Documentation:
+ *
+ *    # On a div element
+ *
+ *    {{ example-1 }}
+ *
+ * Example: example-1
+ *    <div class="pat-upload" data-pat-upload='{"url": "/upload",
+ *                                              "relatedItems": {
+ *                                                  "vocabularyUrl": "/relateditems-test.json"
+ *                                              }}'>
+ *      <div>
+ *        <p>Something here that is useful</p>
+ *        <p>Something else here that is useful</p>
+ *        <p>Another thing here that is useful</p>
+ *      </div>
+ *    </div>
+ *
+ */
+
+
+define('mockup-patterns-upload',[
+  'jquery',
+  'underscore',
+  'mockup-patterns-base',
+  'mockup-patterns-relateditems',
+  'dropzone',
+  'text!mockup-patterns-upload-url/templates/upload.xml',
+  'text!mockup-patterns-upload-url/templates/preview.xml',
+  'translate'
+], function($, _, Base, RelatedItems, Dropzone,
+            UploadTemplate, PreviewTemplate, _t) {
+  
+
+  /* we do not want this plugin to auto discover */
+  Dropzone.autoDiscover = false;
+
+  var UploadPattern = Base.extend({
+    name: 'upload',
+    trigger: '.pat-upload',
+    defaults: {
+      showTitle: true,
+      url: null, // XXX MUST provide url to submit to OR be in a form
+      className: 'upload',
+      wrap: false,
+      wrapperTemplate: '<div class="upload-wrapper"/>',
+      fileaddedClassName: 'dropping',
+      useTus: false,
+      container: '',
+      ajaxUpload: true,
+
+      paramName: 'file',
+      clickable: true,
+      addRemoveLinks: false,
+      autoCleanResults: true,
+      previewsContainer: '.previews',
+      previewTemplate: null,
+      maxFiles: null,
+      maxFilesize: 99999999, // let's not have a max by default...
+
+      relatedItems: {
+        // UID attribute is required here since we're working with related items
+        attributes: ['UID', 'Title', 'Description', 'getURL', 'Type', 'path', 'ModificationDate'],
+        batchSize: 20,
+        basePath: '/',
+        vocabularyUrl: null,
+        width: 500,
+        maximumSelectionSize: 1,
+        placeholder: _t('Search for item on site...')
+      }
+    },
+
+    //placeholder: 'Search for item on site...'
+    init: function() {
+      var self = this,
+          template = UploadTemplate;
+
+      // values that will change current processing
+      self.currentPath = self.options.currentPath;
+      self.numFiles = 0;
+      self.currentFile = 0;
+
+      template = _.template(template, {_t: _t});
+      self.$el.addClass(self.options.className);
+      self.$el.append(template);
+
+      self.$progress = $('.progress-bar-success', self.$el);
+
+      if (!self.options.showTitle) {
+        self.$el.find('h2.title').hide();
+      }
+
+      if (!self.options.ajaxUpload) {
+        // no ajax upload, drop the fallback
+        $('.fallback', this.$el).remove();
+        if (this.$el.hasClass('.upload-container')) {
+          this.$el.addClass('no-ajax-upload');
+        } else {
+          this.$el.closest('.upload-container').addClass('no-ajax-upload');
+        }
+      }
+
+      if (self.options.wrap) {
+        self.$el.wrap(self.options.wrapperTemplate);
+        self.$el = self.$el.parent();
+      }
+
+      if (self.options.baseUrl && self.options.relativePath){
+        // only use related items if we can generate paths based urls
+        self.$pathInput = $('input[name="location"]', self.$el);
+        self.relatedItems = self.setupRelatedItems(self.$pathInput);
+      } else {
+        $('input[name="location"]', self.$el).parent().remove();
+        self.relatedItems = null;
+      }
+
+      self.$dropzone = $('.upload-area', self.$el);
+
+      $('button.browse', self.$el).click(function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        // we trigger the dropzone dialog!
+        self.dropzone.hiddenFileInput.click();
+      });
+
+      var dzoneOptions = this.getDzoneOptions();
+
+      try {
+        // if init of Dropzone fails it says nothing and
+        // it fails silently. Using this block we make sure
+        // that if you break it w/ some weird or missing option
+        // you can get a proper log of it
+        //
+        self.dropzone = new Dropzone(self.$dropzone[0], dzoneOptions);
+      } catch (e) {
+        if (window.DEBUG) {
+          // log it!
+          console.log(e);
+        }
+        throw e;
+      }
+
+      self.dropzone.on('addedfile', function(file) {
+        self.showControls();
+      });
+
+      self.dropzone.on('removedfile', function() {
+        if (self.dropzone.files.length < 1) {
+          self.hideControls();
+        }
+      });
+
+      if (self.options.autoCleanResults) {
+        self.dropzone.on('complete', function(file) {
+          setTimeout(function() {
+            $(file.previewElement).fadeOut();
+          }, 3000);
+        });
+      }
+
+      self.dropzone.on('complete', function(file) {
+        if (self.dropzone.files.length < 1) {
+          self.hideControls();
+        }
+      });
+
+      self.dropzone.on('totaluploadprogress', function(pct) {
+        // need to caclulate total pct here in reality since we're manually
+        // processing each file one at a time.
+        pct = ((((self.currentFile - 1) * 100) + pct) / (self.numFiles * 100)) * 100;
+        self.$progress.attr('aria-valuenow', pct).css('width', pct + '%');
+      });
+
+      $('.upload-all', self.$el).click(function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        self.processUpload({
+          finished: function() {
+            self.$progress.attr('aria-valuenow', 0).css('width', '0%');
+          }
+        });
+      });
+    },
+
+    showControls: function() {
+      var self = this;
+      $('.controls', self.$el).fadeIn('slow');
+    },
+
+    hideControls: function() {
+      var self = this;
+      $('.controls', self.$el).fadeOut('slow');
+    },
+
+    pathJoin: function() {
+      var parts = [];
+      _.each(arguments, function(part) {
+        if (!part){
+          return;
+        }
+        if (part[0] === '/'){
+          part = part.substring(1);
+        }
+        if (part[part.length - 1] === '/'){
+          part = part.substring(0, part.length - 1);
+        }
+        parts.push(part);
+      });
+      return parts.join('/');
+    },
+
+    getUrl: function() {
+
+      var self = this;
+      var url = self.options.url;
+      if (!url) {
+        if (self.options.baseUrl && self.options.relativePath){
+          url = self.options.baseUrl;
+          if (url[url.length - 1] !== '/'){
+            url = url + '/';
+          }
+          url = url + self.pathJoin(self.currentPath, self.options.relativePath);
+        } else {
+          var $form = self.$el.parents('form');
+          if ($form.length > 0){
+            url = $form.attr('action');
+          } else {
+            url = window.location.href;
+          }
+        }
+      }
+      return url;
+    },
+
+    getDzoneOptions: function() {
+      var self = this;
+
+      // clickable option
+      if (typeof(self.options.clickable) === 'string') {
+        if (self.options.clickable === 'true') {
+          self.options.clickable = true;
+        } else {
+          self.options.clickable = false;
+        }
+      }
+
+      var options = $.extend({}, self.options);
+      options.url = self.getUrl();
+      // XXX force to only upload one at a time,
+      // right now we don't support multiple for backends
+      options.uploadMultiple = false;
+
+      delete options.wrap;
+      delete options.wrapperTemplate;
+      delete options.resultTemplate;
+      delete options.autoCleanResults;
+      delete options.fileaddedClassName;
+      delete options.useTus;
+
+      if (self.options.previewsContainer) {
+        /*
+         * if they have a select but it's not an id, let's make an id selector
+         * so we can target the correct container. dropzone is weird here...
+         */
+        var $preview = self.$el.find(self.options.previewsContainer);
+        if ($preview.length > 0) {
+          options.previewsContainer = $preview[0];
+        }
+      }
+
+      // XXX: do we need to allow this?
+      options.autoProcessQueue = false;
+      // options.addRemoveLinks = true;  // we show them in the template
+      options.previewTemplate = PreviewTemplate;
+
+      // if our element is a form we should force some values
+      // https://github.com/enyo/dropzone/wiki/Combine-normal-form-with-Dropzone
+      return options;
+    },
+
+    processUpload: function(options) {
+      if (!options){
+        options = {};
+      }
+
+      var self = this,
+          processing = false,
+          useTus = self.options.useTus,
+          fileaddedClassName = self.options.fileaddedClassName,
+          finished = options.finished;
+
+      self.numFiles = self.dropzone.files.length;
+      self.currentFile = 0;
+
+      function process() {
+        processing = true;
+        if (self.dropzone.files.length === 0) {
+          processing = false;
+          self.$el.removeClass(fileaddedClassName);
+          if (finished !== undefined && typeof(finished) === 'function'){
+            finished();
+          }
+          return;
+        }
+        var file = self.dropzone.files[0];
+        if ([Dropzone.SUCCESS, Dropzone.ERROR, Dropzone.CANCELED]
+            .indexOf(file.status) !== -1) {
+          // remove it
+          self.dropzone.removeFile(file);
+          process();
+        } else if (file.status !== Dropzone.UPLOADING) {
+          // start processing file
+          if (useTus && window.tus) {
+            // use tus upload if installed
+            self.handleTusUpload(file);
+          } else {
+            // otherwise, just use dropzone to process
+            self.currentFile += 1;
+            self.dropzone.processFile(file);
+          }
+          setTimeout(process, 100);
+        } else {
+          // currently processing
+          setTimeout(process, 100);
+        }
+      }
+      process();
+    },
+
+    handleTusUpload: function(file) {
+      /* this needs fixing... */
+      var self = this,
+          $preview = $(file.previewElement),
+          chunkSize = 1024 * 1024 * 5; // 5mb chunk size
+
+      file.status = Dropzone.UPLOADING;
+
+      window.tus.upload(file, {
+        endpoint: self.dropzone.options.url,
+        headers: {
+          'FILENAME': file.name
+        },
+        chunkSize: chunkSize
+      }).fail(function() {
+        if(window.DEBUG){
+          console.alert('Error uploading with TUS resumable uploads');
+        }
+        file.status = Dropzone.ERROR;
+      }).progress(function(e, bytesUploaded, bytesTotal) {
+        var percentage = (bytesUploaded / bytesTotal * 100);
+        self.$progress.attr('aria-valuenow', percentage).css('width', percentage + '%');
+        self.$progress.html(_t('uploading...<br />') +
+                            self.formatBytes(bytesUploaded) +
+                            ' / ' + self.formatBytes(bytesTotal));
+      }).done(function(url, file) {
+        file.status = Dropzone.SUCCESS;
+        self.dropzone.emit('success', file);
+        self.dropzone.emit('complete', file);
+      });
+    },
+
+    formatBytes: function(bytes) {
+      var kb = Math.round(bytes / 1024);
+      if (kb < 1024) {
+        return kb + ' KiB';
+      }
+      var mb = Math.round(kb / 1024);
+      if (mb < 1024) {
+        return mb + ' MB';
+      }
+      return Math.round(mb / 1024) + ' GB';
+    },
+
+    setPath: function(path){
+      var self = this;
+      self.currentPath = path;
+      self.options.url = self.dropzone.options.url = self.getUrl();
+    },
+
+    setupRelatedItems: function($input) {
+      var self = this;
+      var options = self.options.relatedItems;
+      if (self.options.initialFolder){
+        $input.attr('value', self.options.initialFolder);
+      }
+      var ri = new RelatedItems($input, options);
+      ri.$el.on('change', function() {
+        var result = $(this).select2('data');
+        var path = null;
+        if (result.length > 0){
+          path = result[0].path;
+        }
+        self.setPath(path);
+      });
+      return ri;
+    }
+
+  });
+
+  return UploadPattern;
+
+});
+
+define('mockup-patterns-tinymce-url/js/links',[
+  'jquery',
+  'underscore',
+  'pat-registry',
+  'mockup-patterns-base',
+  'mockup-patterns-relateditems',
+  'mockup-patterns-modal',
+  'tinymce',
+  'mockup-patterns-upload',
+  'text!mockup-patterns-tinymce-url/templates/link.xml',
+  'text!mockup-patterns-tinymce-url/templates/image.xml'
+], function($, _, registry, Base, RelatedItems, Modal, tinymce, Upload, LinkTemplate, ImageTemplate) {
+  
+
+  var LinkType = Base.extend({
+    name: 'linktype',
+    trigger: '.pat-linktype',
+    defaults: {
+      linkModal: null // required
+    },
+
+    init: function() {
+      this.linkModal = this.options.linkModal;
+      this.tinypattern = this.options.tinypattern;
+      this.tiny = this.tinypattern.tiny;
+      this.dom = this.tiny.dom;
+      this.$input = this.$el.find('input');
+    },
+
+    value: function() {
+      return this.$input.val();
+    },
+
+    toUrl: function() {
+      return this.value();
+    },
+
+    load: function(element) {
+      this.$input.attr('value', this.tiny.dom.getAttrib(element, 'data-val'));
+    },
+
+    set: function(val) {
+      this.$input.attr('value', val);
+    },
+
+    attributes: function() {
+      return {
+        'data-val': this.value()
+      };
+    }
+  });
+
+  var InternalLink = LinkType.extend({
+    init: function() {
+      LinkType.prototype.init.call(this);
+      this.$input.addClass('pat-relateditems');
+      this.createRelatedItems();
+    },
+
+    createRelatedItems: function() {
+      this.relatedItems = new RelatedItems(this.$input,
+        this.linkModal.options.relatedItems);
+    },
+
+    value: function() {
+      var val = this.$input.select2('data');
+      if (val && typeof(val) === 'object') {
+        val = val[0];
+      }
+      return val;
+    },
+
+    toUrl: function() {
+      var value = this.value();
+      if (value) {
+        return this.tinypattern.generateUrl(value);
+      }
+      return null;
+    },
+    load: function(element) {
+      var val = this.tiny.dom.getAttrib(element, 'data-val');
+      if (val) {
+        this.set(val);
+      }
+    },
+
+    set: function(val) {
+      // kill it and then reinitialize since select2 will load data then
+      this.$input.select2('destroy');
+      this.$input.attr('data-relateditems', undefined); // reset the pattern
+      this.$input.parent().replaceWith(this.$input);
+      this.$input.attr('value', val);
+      this.createRelatedItems();
+    },
+
+    attributes: function() {
+      var val = this.value();
+      if (val) {
+        return {
+          'data-val': val.UID
+        };
+      }
+      return {};
+    }
+  });
+
+  var UploadLink = InternalLink.extend({
+    toUrl: function() {
+      var filename = $('.pat-upload').data('filename');
+      var path = $('.pat-upload').data('path');
+      var paths = [path, filename];
+      if (path){
+        paths.unshift(''); // add root node
+      }
+      return paths.join('/');
+    }
+  });
+
+  var ImageLink = InternalLink.extend({
+    toUrl: function() {
+      var value = this.value();
+      return this.tinypattern.generateImageUrl(value, this.linkModal.$scale.val());
+    }
+  });
+
+  var EmailLink = LinkType.extend({
+    toUrl: function() {
+      var self = this;
+      var val = self.value();
+      if (val) {
+        var subject = self.getSubject();
+        var href = 'mailto:' + val;
+        if (subject) {
+          href += '?subject=' + subject;
+        }
+        return href;
+      }
+      return null;
+    },
+
+    load: function(element) {
+      LinkType.prototype.load.apply(this, [element]);
+      this.linkModal.$subject.val(this.tiny.dom.getAttrib(element, 'data-subject'));
+    },
+
+    getSubject: function() {
+      return this.linkModal.$subject.val();
+    },
+
+    attributes: function() {
+      var attribs = LinkType.prototype.attributes.call(this);
+      attribs['data-subject'] = this.getSubject();
+      return attribs;
+    }
+  });
+
+  var AnchorLink = LinkType.extend({
+    init: function() {
+      LinkType.prototype.init.call(this);
+      this.$select = this.$el.find('select');
+      this.anchorNodes = [];
+      this.anchorData = [];
+      this.populate();
+    },
+
+    value: function() {
+      var val = this.$select.select2('data');
+      if (val && typeof(val) === 'object') {
+        val = val.id;
+      }
+      return val;
+    },
+
+    populate: function() {
+      var self = this;
+      self.$select.find('option').remove();
+      self.anchorNodes = [];
+      self.anchorData = [];
+      var node, i, j, name, title;
+
+      var nodes = self.tiny.dom.select('a.mceItemAnchor,img.mceItemAnchor,a.mce-item-anchor,img.mce-item-anchor');
+      for (i = 0; i < nodes.length; i = i + 1) {
+        node = nodes[i];
+        name = self.tiny.dom.getAttrib(node, 'name');
+        if (!name) {
+          name = self.tiny.dom.getAttrib(node, 'id');
+        }
+        if (name !== '') {
+          self.anchorNodes.push(node);
+          self.anchorData.push({name: name, title: name});
+        }
+      }
+
+      nodes = self.tiny.dom.select(self.linkModal.options.anchorSelector);
+      if (nodes.length > 0) {
+        for (i = 0; i < nodes.length; i = i + 1) {
+          node = nodes[i];
+          title = $(node).text().replace(/^\s+|\s+$/g, '');
+          if (title === '') {
+            continue;
+          }
+          name = title.toLowerCase().substring(0,1024);
+          name = name.replace(/[^a-z0-9]/g, '-');
+          /* okay, ugly, but we need to first check that this anchor isn't already available */
+          var found = false;
+          for (j = 0; j < self.anchorNodes.length; j = j + 1) {
+            var anode = self.anchorData[j];
+            if (anode.name === name) {
+              found = true;
+              // so it's also found, let's update the title to be more presentable
+              anode.title = title;
+              break;
+            }
+          }
+          if (!found) {
+            self.anchorData.push({name: name, title: title, newAnchor: true});
+            self.anchorNodes.push(node);
+          }
+        }
+      }
+      if (self.anchorNodes.length > 0) {
+        for (i = 0; i < self.anchorData.length; i = i + 1) {
+          var data = self.anchorData[i];
+          self.$select.append('<option value="' + i + '">' + data.title + '</option>');
+        }
+      } else {
+        self.$select.append('<option>No anchors found..</option>');
+      }
+    },
+
+    getIndex: function(name) {
+      for (var i = 0; i < this.anchorData.length; i = i + 1) {
+        var data = this.anchorData[i];
+        if (data.name === name) {
+          return i;
+        }
+      }
+      return 0;
+    },
+
+    toUrl: function() {
+      var val = this.value();
+      if (val) {
+        var index = parseInt(val, 10);
+        var node = this.anchorNodes[index];
+        var data = this.anchorData[index];
+        if (data.newAnchor) {
+          node.innerHTML = '<a name="' + data.name + '" class="mce-item-anchor"></a>' + node.innerHTML;
+        }
+        return '#' + data.name;
+      }
+      return null;
+    },
+
+    set: function(val) {
+      var anchor = this.getIndex(val);
+      this.$select.select2('data', '' + anchor);
+    }
+  });
+
+  tinymce.PluginManager.add('ploneimage', function(editor) {
+    editor.addButton('ploneimage', {
+      icon: 'image',
+      tooltip: 'Insert/edit image',
+      onclick: editor.settings.addImageClicked,
+      stateSelector: 'img:not([data-mce-object])'
+    });
+
+    editor.addMenuItem('ploneimage', {
+      icon: 'image',
+      text: 'Insert image',
+      onclick: editor.settings.addImageClicked,
+      context: 'insert',
+      prependToContext: true
+    });
+  });
+
+  /* register the tinymce plugin */
+  tinymce.PluginManager.add('plonelink', function(editor) {
+    editor.addButton('plonelink', {
+      icon: 'link',
+      tooltip: 'Insert/edit link',
+      shortcut: 'Ctrl+K',
+      onclick: editor.settings.addLinkClicked,
+      stateSelector: 'a[href]'
+    });
+
+    editor.addButton('unlink', {
+      icon: 'unlink',
+      tooltip: 'Remove link(s)',
+      cmd: 'unlink',
+      stateSelector: 'a[href]'
+    });
+
+    editor.addShortcut('Ctrl+K', '', editor.settings.addLinkClicked);
+
+    editor.addMenuItem('plonelink', {
+      icon: 'link',
+      text: 'Insert link',
+      shortcut: 'Ctrl+K',
+      onclick: editor.settings.addLinkClicked,
+      stateSelector: 'a[href]',
+      context: 'insert',
+      prependToContext: true
+    });
+  });
+
+
+  var LinkModal = Base.extend({
+    name: 'linkmodal',
+    trigger: '.pat-linkmodal',
+    defaults: {
+      anchorSelector: 'h1,h2,h3',
+      linkTypes: [
+        /* available, none activate by default because these options
+         * only get merged, not set.
+        'internal',
+        'upload',
+        'external',
+        'email',
+        'anchor',
+        'image'
+        'externalImage'*/
+      ],
+      initialLinkType: 'internal',
+      text: {
+        insertHeading: 'Insert Link'
+      },
+      linkTypeClassMapping: {
+        'internal': InternalLink,
+        'upload': UploadLink,
+        'external': LinkType,
+        'email': EmailLink,
+        'anchor': AnchorLink,
+        'image': ImageLink,
+        'uploadImage': UploadLink,
+        'externalImage': LinkType
+      }
+    },
+    // XXX: this is a temporary work around for having separated templates.
+    // Image modal is going to have its own modal class, funcs and template.
+    linkTypeTemplateMapping: {
+      'internal': LinkTemplate,
+      'upload': LinkTemplate,
+      'external': LinkTemplate,
+      'email': LinkTemplate,
+      'anchor': LinkTemplate,
+      'image': ImageTemplate,
+      'uploadImage': ImageTemplate,
+      'externalImage': ImageTemplate
+    },
+
+    template: function(data) {
+      return _.template(this.linkTypeTemplateMapping[this.linkType])(data);
+    },
+
+    init: function() {
+      var self = this;
+      self.tinypattern = self.options.tinypattern;
+      if (self.tinypattern.options.anchorSelector) {
+        self.options.anchorSelector = self.tinypattern.options.anchorSelector;
+      }
+      self.tiny = self.tinypattern.tiny;
+      self.dom = self.tiny.dom;
+      self.linkType = self.options.initialLinkType;
+      self.linkTypes = {};
+      self.modal = registry.patterns.modal.init(self.$el, {
+        html: self.generateModalHtml(),
+        content: null,
+        buttons: '.plone-btn'
+      });
+      self.modal.on('shown', function(e) {
+        self.modalShown.apply(self, [e]);
+      });
+    },
+
+    generateModalHtml: function() {
+      return this.template({
+        text: this.options.text,
+        insertHeading: this.options.text.insertHeading,
+        linkTypes: this.options.linkTypes,
+        externalText: this.options.text.external,
+        emailText: this.options.text.email,
+        subjectText: this.options.text.subject,
+        targetList: this.options.targetList,
+        titleText: this.options.text.title,
+        externalImageText: this.options.text.externalImage,
+        altText: this.options.text.alt,
+        imageAlignText: this.options.text.imageAlign,
+        scaleText: this.options.text.scale,
+        scales: this.options.scales,
+        cancelBtn: this.options.text.cancelBtn,
+        insertBtn: this.options.text.insertBtn
+      });
+    },
+
+    isImageMode: function() {
+      return ['image', 'uploadImage', 'externalImage'].indexOf(this.linkType) !== -1;
+    },
+
+    initElements: function() {
+      var self = this;
+      self.$target = $('select[name="target"]', self.modal.$modal);
+      self.$button = $('.plone-modal-footer input[name="insert"]', self.modal.$modal);
+      self.$title = $('input[name="title"]', self.modal.$modal);
+      self.$subject = $('input[name="subject"]', self.modal.$modal);
+
+      self.$alt = $('input[name="alt"]', self.modal.$modal);
+      self.$align = $('select[name="align"]', self.modal.$modal);
+      self.$scale = $('select[name="scale"]', self.modal.$modal);
+
+      /* load up all the link types */
+      _.each(self.options.linkTypes, function(type) {
+        var $container = $('.linkType.' + type + ' .main', self.modal.$modal);
+        self.linkTypes[type] = new self.options.linkTypeClassMapping[type]($container, {
+          linkModal: self,
+          tinypattern: self.tinypattern
+        });
+      });
+
+      $('.autotoc-nav a', self.modal.$modal).click(function() {
+        var $fieldset = $('fieldset.linkType', self.modal.$modal).eq($(this).index());
+        var classes = $fieldset[0].className.split(/\s+/);
+        _.each(classes, function(val) {
+          if (_.indexOf(self.options.linkTypes, val) !== -1){
+            self.linkType = val;
+          }
+        });
+      });
+    },
+
+    getLinkUrl: function() {
+      // get the url, only get one uid
+      return this.linkTypes[this.linkType].toUrl();
+    },
+
+    getValue: function() {
+      return this.linkTypes[this.linkType].value();
+    },
+
+    updateAnchor: function(href) {
+      var self = this;
+      var target = self.$target.val();
+      var title = self.$title.val();
+      var data = $.extend(true, {}, {
+        title: title ? title : null,
+        target: target ? target : null,
+        'data-linkType': self.linkType,
+        href: href
+      }, self.linkTypes[self.linkType].attributes());
+      self.tiny.execCommand('mceInsertLink', false, data);
+    },
+
+    focusElement: function(elm) {
+      this.tiny.focus();
+      this.tiny.selection.select(elm);
+      this.tiny.nodeChanged();
+    },
+
+    updateImage: function(src) {
+      var self = this;
+      var data = $.extend(true, {}, {
+        src: src,
+        alt: self.$alt.val(),
+        'class': 'image-' + self.$align.val(),
+        'data-linkType': self.linkType,
+        'data-scale': self.$scale.val()
+      }, self.linkTypes[self.linkType].attributes());
+      if (self.imgElm && !self.imgElm.getAttribute('data-mce-object')) {
+        data.width = self.dom.getAttrib(self.imgElm, 'width');
+        data.height = self.dom.getAttrib(self.imgElm, 'height');
+      } else {
+        self.imgElm = null;
+      }
+
+      function waitLoad(imgElm) {
+        imgElm.onload = imgElm.onerror = function() {
+          imgElm.onload = imgElm.onerror = null;
+          self.focusElement(imgElm);
+        };
+      }
+
+      if (!self.imgElm) {
+        data.id = '__mcenew';
+        self.tiny.insertContent(self.dom.createHTML('img', data));
+        self.imgElm = self.dom.get('__mcenew');
+        self.dom.setAttrib(self.imgElm, 'id', null);
+      } else {
+        self.dom.setAttribs(self.imgElm, data);
+      }
+
+      waitLoad(self.imgElm);
+      if (self.imgElm.complete) {
+        self.focusElement(self.imgElm);
+      }
+    },
+
+    modalShown: function(e) {
+      var self = this;
+      self.initElements();
+      self.initData();
+      // upload init
+      self.$upload = $('.uploadify-me', self.modal.$modal);
+      self.options.upload.relatedItems = self.options.relatedItems;
+      self.$upload.addClass('pat-upload').patternUpload(self.options.upload);
+      self.$upload.on('uploadAllCompleted', function(evt, data) {
+        self.$upload.attr({
+          'data-filename': data.files ? data.files[0].name : '',
+          'data-path': data.path
+        });
+      });
+
+      self.$button.off('click').on('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        self.linkType = self.modal.$modal.find('fieldset.active').data('linktype');
+
+        var href = self.getLinkUrl();
+        if (!href) {
+          return; // just cut out if no url
+        }
+        if (self.isImageMode()) {
+          self.updateImage(href);
+        } else {
+          /* regular anchor */
+          self.updateAnchor(href);
+        }
+        self.hide();
+      });
+      $('.plone-modal-footer input[name="cancel"]', self.modal.$modal).click(function(e) {
+        e.preventDefault();
+        self.hide();
+      });
+    },
+
+    show: function() {
+      this.modal.show();
+    },
+
+    hide: function() {
+      this.modal.hide();
+    },
+
+    initData: function() {
+      var self = this;
+      self.selection = self.tiny.selection;
+      self.tiny.focus();
+      var selectedElm = self.imgElm = self.selection.getNode();
+      self.anchorElm = self.dom.getParent(selectedElm, 'a[href]');
+
+      var linkType;
+      if (self.isImageMode()) {
+        if (self.imgElm.nodeName !== 'IMG') {
+          // try finding elsewhere
+          if (self.anchorElm) {
+            var imgs = self.anchorElm.getElementsByTagName('img');
+            if (imgs.length > 0) {
+              self.imgElm = imgs[0];
+              self.focusElement(self.imgElm);
+            }
+          }
+        }
+        if (self.imgElm.nodeName !== 'IMG') {
+          // okay, still no image, unset
+          self.imgElm = null;
+        }
+        if (self.imgElm) {
+          var src = self.dom.getAttrib(self.imgElm, 'src');
+          self.$alt.val(self.dom.getAttrib(self.imgElm, 'alt'));
+          linkType = self.dom.getAttrib(self.imgElm, 'data-linktype');
+          if (linkType) {
+            self.linkType = linkType;
+            self.linkTypes[self.linkType].load(self.imgElm);
+            var scale = self.dom.getAttrib(self.imgElm, 'data-scale');
+            self.$scale.val(scale);
+          }else if (src) {
+            self.guessImageLink(src);
+          }
+          var className = self.dom.getAttrib(self.imgElm, 'class');
+          var klasses = className.split(' ');
+          for (var i = 0; i < klasses.length; i = i + 1) {
+            var klass = klasses[i];
+            if (klass.indexOf('image-') !== -1) {
+              self.$align.val(klass.replace('image-', ''));
+            }
+          }
+        }
+      }else if (self.anchorElm) {
+        self.focusElement(self.anchorElm);
+        var href = '';
+        href = self.dom.getAttrib(self.anchorElm, 'href');
+        self.$target.val(self.dom.getAttrib(self.anchorElm, 'target'));
+        self.$title.val(self.dom.getAttrib(self.anchorElm, 'title'));
+        linkType = self.dom.getAttrib(self.anchorElm, 'data-linktype');
+        if (linkType) {
+          self.linkType = linkType;
+          self.linkTypes[self.linkType].load(self.anchorElm);
+        }else if (href) {
+          self.guessAnchorLink(href);
+        }
+      }
+    },
+
+    guessImageLink: function(src) {
+      if (src.indexOf(this.options.prependToScalePart) !== -1) {
+        this.linkType = 'image';
+        this.$scale.val(this.tinypattern.getScaleFromUrl(src));
+        this.linkTypes.image.set(this.tinypattern.stripGeneratedUrl(src));
+      } else {
+        this.linkType = 'externalImage';
+        this.linkTypes.externalImage.set(src);
+      }
+    },
+
+    guessAnchorLink: function(href) {
+      if (this.options.prependToUrl &&
+          href.indexOf(this.options.prependToUrl) !== -1) {
+        // XXX if using default configuration, it gets more difficult
+        // here to detect internal urls so this might need to change...
+        this.linkType = 'internal';
+        this.linkTypes.internal.set(this.tinypattern.stripGeneratedUrl(href));
+      } else if (href.indexOf('mailto:') !== -1) {
+        this.linkType = 'email';
+        var email = href.substring('mailto:'.length, href.length);
+        var split = email.split('?subject=');
+        this.linkTypes.email.set(split[0]);
+        if (split.length > 1) {
+          this.$subject.val(decodeURIComponent(split[1]));
+        }
+      } else if (href[0] === '#') {
+        this.linkType = 'anchor';
+        this.linkTypes.anchor.setRaw(href.substring(1));
+      } else {
+        this.linkType = 'external';
+        this.linkTypes.external.setRaw(href);
+      }
+    },
+
+    setSelectElement: function($el, val) {
+      $el.find('option:selected').prop('selected', false);
+      if (val) {
+        // update
+        $el.find('option[value="' + val + '"]').prop('selected', true);
+      }
+    },
+
+    reinitialize: function() {
+      /*
+       * This will probably be called before show is run.
+       * It will overwrite the base html template given to
+       * be able to privde default values for the overlay
+       */
+      this.modal.options.html = this.generateModalHtml();
+    }
+  });
+  return LinkModal;
+
+});
+
+/* TinyMCE pattern.
+ *
+ * Options:
+ *    relatedItems(object): Related items pattern options. ({ attributes: ["UID", "Title", "Description", "getURL", "Type", "path", "ModificationDate"], batchSize: 20, basePath: "/", vocabularyUrl: null, width: 500, maximumSelectionSize: 1, placeholder: "Search for item on site..." })
+ *    upload(object): Upload pattern options. ({ attributes: look at upload pattern for getting the options list })
+ *    text(object): Translation strings ({ insertBtn: "Insert", cancelBtn: "Cancel", insertHeading: "Insert link", title: "Title", internal: "Internal", external: "External", email: "Email", anchor: "Anchor", subject: "Subject" image: "Image", imageAlign: "Align", scale: "Size", alt: "Alternative Text", externalImage: "External Image URI"})
+ *    scales(string): TODO: is this even used ('Listing (16x16):listing,Icon (32x32):icon,Tile (64x64):tile,Thumb (128x128):thumb,Mini (200x200):mini,Preview (400x400):preview,Large (768x768):large')
+ *    targetList(array): TODO ([ {text: "Open in this window / frame", value: ""}, {text: "Open in new window", value: "_blank"}, {text: "Open in parent window / frame", value: "_parent"}, {text: "Open in top frame (replaces all frames)", value: "_top"}])
+ * imageTypes(string): TODO ('Image')
+ *    folderTypes(string): TODO ('Folder,Plone Site')
+ *    linkableTypes(string): TODO ('Document,Event,File,Folder,Image,News Item,Topic')
+ *    tiny(object): TODO ({ plugins: [ "advlist autolink lists charmap print preview anchor", "usearchreplace visualblocks code fullscreen autoresize", "insertdatetime media table contextmenu paste plonelink ploneimage" ], menubar: "edit table format tools view insert",
+toolbar: "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | unlink plonelink ploneimage", autoresize_max_height: 1500 })
+ *    prependToUrl(string): Text to prepend to generated internal urls. ('')
+ *    appendToUrl(string): Text to append to generated internal urls. ('')
+ *    prependToScalePart(string): Text to prepend to generated image scale url part. ('/imagescale/')
+ *    appendToScalePart(string): Text to append to generated image scale url part. ('')
+ *    linkAttribute(string): Ajax response data attribute to use for url. ('path')
+ *
+ * Documentation:
+ *    # Default
+ *
+ *    {{ example-1 }}
+ *
+ *    # With dropzone
+ *
+ *    {{ example-2 }}
+ *
+ * Example: example-1
+ *    <form>
+ *      <textarea class="pat-tinymce"
+ *          data-pat-tinymce='{"relatedItems": {
+ *                                "vocabularyUrl": "/relateditems-test.json"
+ *                                }}'></textarea>
+ *    </form>
+ *
+ * Example: example-2
+ *    <form>
+ *      <textarea class="pat-tinymce"
+ *          data-pat-tinymce='{"relatedItems": {"vocabularyUrl": "/relateditems-test.json" },
+ *                            {"upload": {"baseUrl": "/", relativePath: "upload"} } }'></textarea>
+ *    </form>
+ *
+ */
+
+/* global alert:true */
+
+
+define('mockup-patterns-tinymce',[
+  'jquery',
+  'underscore',
+  'mockup-patterns-base',
+  'mockup-patterns-relateditems',
+  'mockup-patterns-modal',
+  'tinymce',
+  'mockup-patterns-autotoc',
+  'text!mockup-patterns-tinymce-url/templates/result.xml',
+  'text!mockup-patterns-tinymce-url/templates/selection.xml',
+  'mockup-utils',
+  'mockup-patterns-tinymce-url/js/links',
+  'translate',
+  'tinymce-modern-theme',
+  'tinymce-advlist',
+  'tinymce-anchor',
+  'tinymce-autolink',
+  'tinymce-autoresize',
+  'tinymce-autosave',
+  'tinymce-bbcode',
+  'tinymce-charmap',
+  'tinymce-code',
+  'tinymce-colorpicker',
+  'tinymce-contextmenu',
+  'tinymce-directionality',
+  'tinymce-emoticons',
+  'tinymce-fullpage',
+  'tinymce-fullscreen',
+  'tinymce-hr',
+  'tinymce-image',
+  'tinymce-importcss',
+  'tinymce-insertdatetime',
+  'tinymce-layer',
+  'tinymce-legacyoutput',
+  'tinymce-link',
+  'tinymce-lists',
+  'tinymce-media',
+  'tinymce-nonbreaking',
+  'tinymce-noneditable',
+  'tinymce-pagebreak',
+  'tinymce-paste',
+  'tinymce-preview',
+  'tinymce-print',
+  'tinymce-save',
+  'tinymce-searchreplace',
+  'tinymce-spellchecker',
+  'tinymce-tabfocus',
+  'tinymce-table',
+  'tinymce-template',
+  'tinymce-textcolor',
+  'tinymce-textpattern',
+  'tinymce-visualblocks',
+  'tinymce-visualchars',
+  'tinymce-wordcount'
+], function($, _, Base, RelatedItems, Modal, tinymce, AutoTOC, ResultTemplate, SelectionTemplate, utils, LinkModal, _t) {
+  
+
+  var TinyMCE = Base.extend({
+    name: 'tinymce',
+    trigger: '.pat-tinymce',
+    defaults: {
+      upload: {
+        uploadMultiple: false,
+        maxFiles: 1,
+        showTitle: false
+      },
+      relatedItems: {
+        // UID attribute is required here since we're working with related items
+        attributes: ['UID', 'Title', 'Description', 'getURL', 'Type', 'path', 'ModificationDate'],
+        batchSize: 20,
+        basePath: '/',
+        vocabularyUrl: null,
+        width: 500,
+        maximumSelectionSize: 1,
+        placeholder: _t('Search for item on site...')
+      },
+      text: {
+        insertBtn: _t('Insert'), // so this can be configurable for different languages
+        cancelBtn: _t('Cancel'),
+        insertHeading: _t('Insert link'),
+        title: _t('Title'),
+        internal: _t('Internal'),
+        external: _t('External'),
+        email: _t('Email'),
+        anchor: _t('Anchor'),
+        subject: _t('Subject'),
+        image: _t('Image'),
+        imageAlign: _t('Align'),
+        scale: _t('Size'),
+        alt: _t('Alternative Text'),
+        externalImage: _t('External Image URI')
+      },
+      // URL generation options
+      loadingBaseUrl: '../../../bower_components/tinymce-builded/js/tinymce/',
+      prependToUrl: '',
+      appendToUrl: '',
+      linkAttribute: 'path', // attribute to get link value from data
+      prependToScalePart: '/imagescale/', // some value here is required to be able to parse scales back
+      appendToScalePart: '',
+      scales: _t('Listing (16x16):listing,Icon (32x32):icon,Tile (64x64):tile,' +
+              'Thumb (128x128):thumb,Mini (200x200):mini,Preview (400x400):preview,' +
+              'Large (768x768):large'),
+      targetList: [
+        {text: _t('Open in this window / frame'), value: ''},
+        {text: _t('Open in new window'), value: '_blank'},
+        {text: _t('Open in parent window / frame'), value: '_parent'},
+        {text: _t('Open in top frame (replaces all frames)'), value: '_top'}
+      ],
+      imageTypes: 'Image',
+      folderTypes: 'Folder,Plone Site',
+      linkableTypes: 'Document,Event,File,Folder,Image,News Item,Topic',
+      tiny: {
+        'content_css': '../../../bower_components/tinymce-builded/js/tinymce/skins/lightgray/content.min.css',
+        theme: '-modern',
+        plugins: [
+          '-advlist -autolink -lists -charmap -print -preview -anchor ' +
+          '-searchreplace -visualblocks -code -fullscreen -autoresize ' +
+          '-insertdatetime -media -table -contextmenu -paste -plonelink -ploneimage'
+        ],
+        menubar: 'edit table format tools view insert',
+        toolbar: 'undo redo | styleselect | bold italic | ' +
+                 'alignleft aligncenter alignright alignjustify | ' +
+                 'bullist numlist outdent indent | ' +
+                 'unlink plonelink ploneimage',
+        'autoresize_max_height': 1500
+      }
+    },
+    addLinkClicked: function() {
+      var self = this;
+      if (self.linkModal === null) {
+        var $el = $('<div/>').insertAfter(self.$el);
+        self.linkModal = new LinkModal($el,
+          $.extend(true, {}, self.options, {
+            tinypattern: self,
+            linkTypes: [
+              'internal',
+              'upload',
+              'external',
+              'email',
+              'anchor'
+            ]
+          })
+        );
+        self.linkModal.show();
+      } else {
+        self.linkModal.reinitialize();
+        self.linkModal.show();
+      }
+    },
+    addImageClicked: function() {
+      var self = this;
+      if (self.imageModal === null) {
+        var options = $.extend(true, {}, self.options, {
+          tinypattern: self,
+          linkTypes: ['image', 'uploadImage', 'externalImage'],
+          initialLinkType: 'image',
+          text: {
+            insertHeading: _t('Insert Image')
+          },
+          relatedItems: {
+            baseCriteria: [{
+              i: 'Type',
+              o: 'plone.app.querystring.operation.list.contains',
+              v: self.options.imageTypes.split(',').concat(self.options.folderTypes.split(','))
+            }],
+            selectableTypes: self.options.imageTypes.split(','),
+            resultTemplate: ResultTemplate,
+            selectionTemplate: SelectionTemplate
+          }
+        });
+        var $el = $('<div/>').insertAfter(self.$el);
+        self.imageModal = new LinkModal($el, options);
+        self.imageModal.show();
+      } else {
+        self.imageModal.reinitialize();
+        self.imageModal.show();
+      }
+    },
+    generateUrl: function(data) {
+      var self = this;
+      var part = data[self.options.linkAttribute];
+      return self.options.prependToUrl + part + self.options.appendToUrl;
+    },
+    generateImageUrl: function(data, scale) {
+      var self = this;
+      var url = self.generateUrl(data);
+      if (scale !== ""){
+          url = (url + self.options.prependToScalePart + scale +
+                 self.options.appendToScalePart);
+      }
+      return url;
+    },
+    stripGeneratedUrl: function(url) {
+      // to get original attribute back
+      var self = this;
+      url = url.split(self.options.prependToScalePart, 2)[0];
+      if (self.options.prependToUrl) {
+        var parts = url.split(self.options.prependToUrl, 2);
+        if (parts.length === 2) {
+          url = parts[1];
+        }
+      }
+      if (self.options.appendToUrl) {
+        url = url.split(self.options.appendToUrl)[0];
+      }
+      return url;
+    },
+    getScaleFromUrl: function(url) {
+      var self = this;
+      var split = url.split(self.options.prependToScalePart);
+      if (split.length !== 2) {
+        // not valid scale, screw it
+        return null;
+      }
+      if (self.options.appendToScalePart) {
+        url = split[1].split(self.options.appendToScalePart)[0];
+      } else {
+        url = split[1];
+      }
+      if (url.indexOf('/image_') !== -1) {
+        url = url.split('/image_')[1];
+      }
+      return url;
+    },
+    init: function() {
+      var self = this;
+      self.linkModal = self.imageModal = self.uploadModal = null;
+      // tiny needs an id in order to initialize. Creat it if not set.
+      var id = utils.setId(self.$el);
+      var tinyOptions = self.options.tiny;
+      tinyOptions.selector = '#' + id;
+      tinyOptions.addLinkClicked = function() {
+        self.addLinkClicked.apply(self, []);
+      };
+      tinyOptions.addImageClicked = function() {
+        self.addImageClicked.apply(self, []);
+      };
+      // XXX: disabled skin means it wont load css files which we already
+      // include in widgets.min.css
+      tinyOptions.skin = false;
+
+      self.options.relatedItems.generateImageUrl = function(data, scale) {
+        // this is so, in our result and selection template, we can
+        // access getting actual urls from related items
+        return self.generateImageUrl.apply(self, [data, scale]);
+      };
+
+      tinyOptions.init_instance_callback = function(editor) {
+        if (self.tiny === undefined || self.tiny === null) {
+          self.tiny = editor;
+        }
+      };
+      if (tinyOptions.language !== 'en') {
+        tinymce.baseURL = self.options.loadingBaseUrl;
+      }
+
+      tinymce.init(tinyOptions);
+      self.tiny = tinymce.get(id);
+
+      /* tiny really should be doing this by default
+       * but this fixes overlays not saving data */
+      var $form = self.$el.parents('form');
+      $form.on('submit', function() {
+        self.tiny.save();
+      });
+    },
+    destroy: function() {
+      this.tiny.destroy();
+    }
+  });
+
+  return TinyMCE;
+
+});
+
+/* TextareaMimetypeSelector pattern.
+ *
+ *
+ * Options:
+ *    textareaName(string): Value of name attribute of the textarea ('')
+ *    widgets(object): MimeType/PatternConfig pairs ({'text/html': {pattern: 'tinymce', patternOptions: {}}})
+ *
+ *
+ * Documentation:
+ *   # General
+ *
+ *   This pattern displays a mimetype selection widget for textareas. It
+ *   switches the widget according to the selected mimetype.
+ *
+ *   ## widgets option Structure
+ *
+ *   Complex Object/JSON structure with MimeType/PatternConfig pairs. The
+ *   MimeType is a string like "text/html". The PatternConfig is a object with
+ *   a "pattern" and an optional "patternOptions" attribute. The "pattern"
+ *   attribute's value is a string with the patterns name and the
+ *   "patternOptions" attribute is a object with whatever options the pattern
+ *   needs. For example, to use the TinyMCE pattern for the HTML mimetype, use
+ *   "text/html": {"pattern": "tinymce"}
+ *
+ *   # Mimetype selection on textarea including text/html mimetype with TinyMCE editor.
+ *
+ *   {{ example-1 }}
+ *
+ * Example: example-1
+ *
+ *    <textarea name="text">
+ *      <h1>hello world</h1>
+ *    </textarea>
+ *    <select
+ *        name="text.mimeType"
+ *        class="pat-textareamimetypeselector"
+ *        data-pat-textareamimetypeselector='{
+ *          "textareaName": "text",
+ *          "widgets": {
+ *            "text/html": {
+ *              "pattern": "tinymce",
+ *              "patternOptions": {
+ *                "tiny": {
+ *                  "plugins": [],
+ *                  "menubar": "edit format tools",
+ *                  "toolbar": " "
+ *                }
+ *              }
+ *            }
+ *          }
+ *        }'
+ *      >
+ *      <option value="text/html">text/html</option>
+ *      <option value="text/plain" selected="selected">text/plain</option>
+ *    </select>
+ *
+ */
+
+define('mockup-patterns-textareamimetypeselector',[
+  'jquery',
+  'mockup-patterns-base',
+  'pat-registry',
+  'mockup-patterns-tinymce'
+], function ($, Base, registry, tinymce) {
+  
+
+  var TextareaMimetypeSelector = Base.extend({
+    name: 'textareamimetypeselector',
+    trigger: '.pat-textareamimetypeselector',
+    textarea: undefined,
+    currentWidget: undefined,
+    defaults: {
+      textareaName: '',
+      widgets: {'text/html': {pattern: 'tinymce', patternOptions: {}}}
+    },
+    init: function () {
+      var self = this,
+          $el = self.$el,
+          current;
+      self.textarea = $('[name="' + self.options.textareaName + '"]');
+      $el.change(function (e) {
+        self.initTextarea(e.target.value);
+      });
+      self.initTextarea($el.val());
+
+    },
+    initTextarea: function (mimetype) {
+      var self = this,
+          patternConfig = self.options.widgets[mimetype],
+          pattern;
+      // First, destroy current
+      if (self.currentWidget) {
+        // The pattern must implement the destroy method.
+        self.currentWidget.destroy();
+      }
+      // Then, setup new
+      if (patternConfig) {
+          pattern = new registry.patterns[patternConfig.pattern](
+            self.textarea,
+            patternConfig.patternOptions || {}
+          );
+          self.currentWidget = pattern;
+      }
+    }
+
+  });
+
+  return TextareaMimetypeSelector;
+});
+
+define('mockup-ui-url/views/container',[
+  'jquery',
+  'underscore',
+  'backbone',
+  'mockup-ui-url/views/base'
+], function($, _, Backbone, BaseView) {
+  
+
+  var Container = BaseView.extend({
+    id: '',
+    items: [],
+    itemContainer: null,
+    isOffsetParent: true,
+    render: function() {
+      this.applyTemplate();
+
+      this.renderItems();
+      this.bindEvents();
+
+      if (this.isOffsetParent) {
+        this.$el.addClass('ui-offset-parent');
+      }
+
+      this.trigger('render', this);
+
+      this.afterRender();
+
+      return this;
+    },
+    renderItems: function() {
+      var $container;
+
+      if (this.itemContainer !== null) {
+        $container = $(this.itemContainer, this.$el);
+        if ($container.length === 0) {
+          throw 'Item Container element not found.';
+        }
+      } else {
+        $container = this.$el;
+      }
+      _.each(this.items, function(view) {
+        if (view.appendInContainer === true) {
+          $container.append(view.render().$el);
+        } else {
+          view.render();
+        }
+      }, this);
+    },
+    bindEvents: function() {
+      var self = this;
+      _.each(this.items, function(view) {
+        view.on('all', function() {
+          var slice = [].slice;
+          var eventName = arguments[0];
+          var eventTarget;
+          var newName = self.id !== '' ? self.id + '.' + eventName : eventName;
+          if (arguments.length > 1) {
+            eventTarget = arguments[1];
+          }
+          if (newName !== eventName) {
+            var newArgs = slice.call(arguments, 0);
+            newArgs[0] = newName;
+            self.trigger.apply(self, newArgs);
+          }
+          if (eventTarget !== undefined && eventTarget.isUIView === true) {
+            if (eventTarget.propagateEvent(eventName) === true) {
+              self.trigger.apply(self, arguments);
+            }
+          }
+        });
+      });
+    },
+    get: function(id) {
+      // Remove the recursive part because it was confusing if two children had the
+      // same id
+      return _.findWhere(this.items, {'id': id});
+    },
+    add: function(item) {
+      if (item.id !== undefined && this.get(item.id)) {
+        throw 'Another item with the same `id` already exists.';
+      }
+      this.items.push(item);
+    }
+  });
+
+  return Container;
+});
+
+define('mockup-ui-url/views/toolbar',[
+  'underscore',
+  'backbone',
+  'mockup-ui-url/views/container'
+], function(_, Backbone, ContainerView) {
+  
+
+  var Toolbar = ContainerView.extend({
+    tagName: 'div',
+    className: 'navbar'
+  });
+
+  return Toolbar;
+});
+
+define('mockup-ui-url/views/buttongroup',[
+  'underscore',
+  'backbone',
+  'mockup-ui-url/views/container'
+], function(_, Backbone, ContainerView) {
+  
+
+  var ButtonGroup = ContainerView.extend({
+    tagName: 'div',
+    className: 'btn-group',
+    disable: function() {
+      _.each(this.items, function(button) {
+        button.trigger('disable');
+      });
+    },
+    enable: function() {
+      _.each(this.items, function(button) {
+        button.trigger('enable');
+      });
+    }
+  });
+
+  return ButtonGroup;
+});
+
+(function(root) {
+define("bootstrap-tooltip", ["jquery"], function() {
+  return (function() {
+/* ========================================================================
+ * Bootstrap: tooltip.js v3.2.0
+ * http://getbootstrap.com/javascript/#tooltip
+ * Inspired by the original jQuery.tipsy by Jason Frame
+ * ========================================================================
+ * Copyright 2011-2014 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
+
++function ($) {
+  
+
+  // TOOLTIP PUBLIC CLASS DEFINITION
+  // ===============================
+
+  var Tooltip = function (element, options) {
+    this.type       =
+    this.options    =
+    this.enabled    =
+    this.timeout    =
+    this.hoverState =
+    this.$element   = null
+
+    this.init('tooltip', element, options)
+  }
+
+  Tooltip.VERSION  = '3.2.0'
+
+  Tooltip.DEFAULTS = {
+    animation: true,
+    placement: 'top',
+    selector: false,
+    template: '<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
+    trigger: 'hover focus',
+    title: '',
+    delay: 0,
+    html: false,
+    container: false,
+    viewport: {
+      selector: 'body',
+      padding: 0
+    }
+  }
+
+  Tooltip.prototype.init = function (type, element, options) {
+    this.enabled   = true
+    this.type      = type
+    this.$element  = $(element)
+    this.options   = this.getOptions(options)
+    this.$viewport = this.options.viewport && $(this.options.viewport.selector || this.options.viewport)
+
+    var triggers = this.options.trigger.split(' ')
+
+    for (var i = triggers.length; i--;) {
+      var trigger = triggers[i]
+
+      if (trigger == 'click') {
+        this.$element.on('click.' + this.type, this.options.selector, $.proxy(this.toggle, this))
+      } else if (trigger != 'manual') {
+        var eventIn  = trigger == 'hover' ? 'mouseenter' : 'focusin'
+        var eventOut = trigger == 'hover' ? 'mouseleave' : 'focusout'
+
+        this.$element.on(eventIn  + '.' + this.type, this.options.selector, $.proxy(this.enter, this))
+        this.$element.on(eventOut + '.' + this.type, this.options.selector, $.proxy(this.leave, this))
+      }
+    }
+
+    this.options.selector ?
+      (this._options = $.extend({}, this.options, { trigger: 'manual', selector: '' })) :
+      this.fixTitle()
+  }
+
+  Tooltip.prototype.getDefaults = function () {
+    return Tooltip.DEFAULTS
+  }
+
+  Tooltip.prototype.getOptions = function (options) {
+    options = $.extend({}, this.getDefaults(), this.$element.data(), options)
+
+    if (options.delay && typeof options.delay == 'number') {
+      options.delay = {
+        show: options.delay,
+        hide: options.delay
+      }
+    }
+
+    return options
+  }
+
+  Tooltip.prototype.getDelegateOptions = function () {
+    var options  = {}
+    var defaults = this.getDefaults()
+
+    this._options && $.each(this._options, function (key, value) {
+      if (defaults[key] != value) options[key] = value
+    })
+
+    return options
+  }
+
+  Tooltip.prototype.enter = function (obj) {
+    var self = obj instanceof this.constructor ?
+      obj : $(obj.currentTarget).data('bs.' + this.type)
+
+    if (!self) {
+      self = new this.constructor(obj.currentTarget, this.getDelegateOptions())
+      $(obj.currentTarget).data('bs.' + this.type, self)
+    }
+
+    clearTimeout(self.timeout)
+
+    self.hoverState = 'in'
+
+    if (!self.options.delay || !self.options.delay.show) return self.show()
+
+    self.timeout = setTimeout(function () {
+      if (self.hoverState == 'in') self.show()
+    }, self.options.delay.show)
+  }
+
+  Tooltip.prototype.leave = function (obj) {
+    var self = obj instanceof this.constructor ?
+      obj : $(obj.currentTarget).data('bs.' + this.type)
+
+    if (!self) {
+      self = new this.constructor(obj.currentTarget, this.getDelegateOptions())
+      $(obj.currentTarget).data('bs.' + this.type, self)
+    }
+
+    clearTimeout(self.timeout)
+
+    self.hoverState = 'out'
+
+    if (!self.options.delay || !self.options.delay.hide) return self.hide()
+
+    self.timeout = setTimeout(function () {
+      if (self.hoverState == 'out') self.hide()
+    }, self.options.delay.hide)
+  }
+
+  Tooltip.prototype.show = function () {
+    var e = $.Event('show.bs.' + this.type)
+
+    if (this.hasContent() && this.enabled) {
+      this.$element.trigger(e)
+
+      var inDom = $.contains(document.documentElement, this.$element[0])
+      if (e.isDefaultPrevented() || !inDom) return
+      var that = this
+
+      var $tip = this.tip()
+
+      var tipId = this.getUID(this.type)
+
+      this.setContent()
+      $tip.attr('id', tipId)
+      this.$element.attr('aria-describedby', tipId)
+
+      if (this.options.animation) $tip.addClass('fade')
+
+      var placement = typeof this.options.placement == 'function' ?
+        this.options.placement.call(this, $tip[0], this.$element[0]) :
+        this.options.placement
+
+      var autoToken = /\s?auto?\s?/i
+      var autoPlace = autoToken.test(placement)
+      if (autoPlace) placement = placement.replace(autoToken, '') || 'top'
+
+      $tip
+        .detach()
+        .css({ top: 0, left: 0, display: 'block' })
+        .addClass(placement)
+        .data('bs.' + this.type, this)
+
+      this.options.container ? $tip.appendTo(this.options.container) : $tip.insertAfter(this.$element)
+
+      var pos          = this.getPosition()
+      var actualWidth  = $tip[0].offsetWidth
+      var actualHeight = $tip[0].offsetHeight
+
+      if (autoPlace) {
+        var orgPlacement = placement
+        var $parent      = this.$element.parent()
+        var parentDim    = this.getPosition($parent)
+
+        placement = placement == 'bottom' && pos.top   + pos.height       + actualHeight - parentDim.scroll > parentDim.height ? 'top'    :
+                    placement == 'top'    && pos.top   - parentDim.scroll - actualHeight < 0                                   ? 'bottom' :
+                    placement == 'right'  && pos.right + actualWidth      > parentDim.width                                    ? 'left'   :
+                    placement == 'left'   && pos.left  - actualWidth      < parentDim.left                                     ? 'right'  :
+                    placement
+
+        $tip
+          .removeClass(orgPlacement)
+          .addClass(placement)
+      }
+
+      var calculatedOffset = this.getCalculatedOffset(placement, pos, actualWidth, actualHeight)
+
+      this.applyPlacement(calculatedOffset, placement)
+
+      var complete = function () {
+        that.$element.trigger('shown.bs.' + that.type)
+        that.hoverState = null
+      }
+
+      $.support.transition && this.$tip.hasClass('fade') ?
+        $tip
+          .one('bsTransitionEnd', complete)
+          .emulateTransitionEnd(150) :
+        complete()
+    }
+  }
+
+  Tooltip.prototype.applyPlacement = function (offset, placement) {
+    var $tip   = this.tip()
+    var width  = $tip[0].offsetWidth
+    var height = $tip[0].offsetHeight
+
+    // manually read margins because getBoundingClientRect includes difference
+    var marginTop = parseInt($tip.css('margin-top'), 10)
+    var marginLeft = parseInt($tip.css('margin-left'), 10)
+
+    // we must check for NaN for ie 8/9
+    if (isNaN(marginTop))  marginTop  = 0
+    if (isNaN(marginLeft)) marginLeft = 0
+
+    offset.top  = offset.top  + marginTop
+    offset.left = offset.left + marginLeft
+
+    // $.fn.offset doesn't round pixel values
+    // so we use setOffset directly with our own function B-0
+    $.offset.setOffset($tip[0], $.extend({
+      using: function (props) {
+        $tip.css({
+          top: Math.round(props.top),
+          left: Math.round(props.left)
+        })
+      }
+    }, offset), 0)
+
+    $tip.addClass('in')
+
+    // check to see if placing tip in new offset caused the tip to resize itself
+    var actualWidth  = $tip[0].offsetWidth
+    var actualHeight = $tip[0].offsetHeight
+
+    if (placement == 'top' && actualHeight != height) {
+      offset.top = offset.top + height - actualHeight
+    }
+
+    var delta = this.getViewportAdjustedDelta(placement, offset, actualWidth, actualHeight)
+
+    if (delta.left) offset.left += delta.left
+    else offset.top += delta.top
+
+    var arrowDelta          = delta.left ? delta.left * 2 - width + actualWidth : delta.top * 2 - height + actualHeight
+    var arrowPosition       = delta.left ? 'left'        : 'top'
+    var arrowOffsetPosition = delta.left ? 'offsetWidth' : 'offsetHeight'
+
+    $tip.offset(offset)
+    this.replaceArrow(arrowDelta, $tip[0][arrowOffsetPosition], arrowPosition)
+  }
+
+  Tooltip.prototype.replaceArrow = function (delta, dimension, position) {
+    this.arrow().css(position, delta ? (50 * (1 - delta / dimension) + '%') : '')
+  }
+
+  Tooltip.prototype.setContent = function () {
+    var $tip  = this.tip()
+    var title = this.getTitle()
+
+    $tip.find('.tooltip-inner')[this.options.html ? 'html' : 'text'](title)
+    $tip.removeClass('fade in top bottom left right')
+  }
+
+  Tooltip.prototype.hide = function () {
+    var that = this
+    var $tip = this.tip()
+    var e    = $.Event('hide.bs.' + this.type)
+
+    this.$element.removeAttr('aria-describedby')
+
+    function complete() {
+      if (that.hoverState != 'in') $tip.detach()
+      that.$element.trigger('hidden.bs.' + that.type)
+    }
+
+    this.$element.trigger(e)
+
+    if (e.isDefaultPrevented()) return
+
+    $tip.removeClass('in')
+
+    $.support.transition && this.$tip.hasClass('fade') ?
+      $tip
+        .one('bsTransitionEnd', complete)
+        .emulateTransitionEnd(150) :
+      complete()
+
+    this.hoverState = null
+
+    return this
+  }
+
+  Tooltip.prototype.fixTitle = function () {
+    var $e = this.$element
+    if ($e.attr('title') || typeof ($e.attr('data-original-title')) != 'string') {
+      $e.attr('data-original-title', $e.attr('title') || '').attr('title', '')
+    }
+  }
+
+  Tooltip.prototype.hasContent = function () {
+    return this.getTitle()
+  }
+
+  Tooltip.prototype.getPosition = function ($element) {
+    $element   = $element || this.$element
+    var el     = $element[0]
+    var isBody = el.tagName == 'BODY'
+    return $.extend({}, (typeof el.getBoundingClientRect == 'function') ? el.getBoundingClientRect() : null, {
+      scroll: isBody ? document.documentElement.scrollTop || document.body.scrollTop : $element.scrollTop(),
+      width:  isBody ? $(window).width()  : $element.outerWidth(),
+      height: isBody ? $(window).height() : $element.outerHeight()
+    }, isBody ? { top: 0, left: 0 } : $element.offset())
+  }
+
+  Tooltip.prototype.getCalculatedOffset = function (placement, pos, actualWidth, actualHeight) {
+    return placement == 'bottom' ? { top: pos.top + pos.height,   left: pos.left + pos.width / 2 - actualWidth / 2  } :
+           placement == 'top'    ? { top: pos.top - actualHeight, left: pos.left + pos.width / 2 - actualWidth / 2  } :
+           placement == 'left'   ? { top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left - actualWidth } :
+        /* placement == 'right' */ { top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left + pos.width   }
+
+  }
+
+  Tooltip.prototype.getViewportAdjustedDelta = function (placement, pos, actualWidth, actualHeight) {
+    var delta = { top: 0, left: 0 }
+    if (!this.$viewport) return delta
+
+    var viewportPadding = this.options.viewport && this.options.viewport.padding || 0
+    var viewportDimensions = this.getPosition(this.$viewport)
+
+    if (/right|left/.test(placement)) {
+      var topEdgeOffset    = pos.top - viewportPadding - viewportDimensions.scroll
+      var bottomEdgeOffset = pos.top + viewportPadding - viewportDimensions.scroll + actualHeight
+      if (topEdgeOffset < viewportDimensions.top) { // top overflow
+        delta.top = viewportDimensions.top - topEdgeOffset
+      } else if (bottomEdgeOffset > viewportDimensions.top + viewportDimensions.height) { // bottom overflow
+        delta.top = viewportDimensions.top + viewportDimensions.height - bottomEdgeOffset
+      }
+    } else {
+      var leftEdgeOffset  = pos.left - viewportPadding
+      var rightEdgeOffset = pos.left + viewportPadding + actualWidth
+      if (leftEdgeOffset < viewportDimensions.left) { // left overflow
+        delta.left = viewportDimensions.left - leftEdgeOffset
+      } else if (rightEdgeOffset > viewportDimensions.width) { // right overflow
+        delta.left = viewportDimensions.left + viewportDimensions.width - rightEdgeOffset
+      }
+    }
+
+    return delta
+  }
+
+  Tooltip.prototype.getTitle = function () {
+    var title
+    var $e = this.$element
+    var o  = this.options
+
+    title = $e.attr('data-original-title')
+      || (typeof o.title == 'function' ? o.title.call($e[0]) :  o.title)
+
+    return title
+  }
+
+  Tooltip.prototype.getUID = function (prefix) {
+    do prefix += ~~(Math.random() * 1000000)
+    while (document.getElementById(prefix))
+    return prefix
+  }
+
+  Tooltip.prototype.tip = function () {
+    return (this.$tip = this.$tip || $(this.options.template))
+  }
+
+  Tooltip.prototype.arrow = function () {
+    return (this.$arrow = this.$arrow || this.tip().find('.tooltip-arrow'))
+  }
+
+  Tooltip.prototype.validate = function () {
+    if (!this.$element[0].parentNode) {
+      this.hide()
+      this.$element = null
+      this.options  = null
+    }
+  }
+
+  Tooltip.prototype.enable = function () {
+    this.enabled = true
+  }
+
+  Tooltip.prototype.disable = function () {
+    this.enabled = false
+  }
+
+  Tooltip.prototype.toggleEnabled = function () {
+    this.enabled = !this.enabled
+  }
+
+  Tooltip.prototype.toggle = function (e) {
+    var self = this
+    if (e) {
+      self = $(e.currentTarget).data('bs.' + this.type)
+      if (!self) {
+        self = new this.constructor(e.currentTarget, this.getDelegateOptions())
+        $(e.currentTarget).data('bs.' + this.type, self)
+      }
+    }
+
+    self.tip().hasClass('in') ? self.leave(self) : self.enter(self)
+  }
+
+  Tooltip.prototype.destroy = function () {
+    clearTimeout(this.timeout)
+    this.hide().$element.off('.' + this.type).removeData('bs.' + this.type)
+  }
+
+
+  // TOOLTIP PLUGIN DEFINITION
+  // =========================
+
+  function Plugin(option) {
+    return this.each(function () {
+      var $this   = $(this)
+      var data    = $this.data('bs.tooltip')
+      var options = typeof option == 'object' && option
+
+      if (!data && option == 'destroy') return
+      if (!data) $this.data('bs.tooltip', (data = new Tooltip(this, options)))
+      if (typeof option == 'string') data[option]()
+    })
+  }
+
+  var old = $.fn.tooltip
+
+  $.fn.tooltip             = Plugin
+  $.fn.tooltip.Constructor = Tooltip
+
+
+  // TOOLTIP NO CONFLICT
+  // ===================
+
+  $.fn.tooltip.noConflict = function () {
+    $.fn.tooltip = old
+    return this
+  }
+
+}(jQuery);
+
+
+  }).apply(root, arguments);
+});
+}(this));
+
+define('mockup-ui-url/views/button',[
+  'jquery',
+  'backbone',
+  'underscore',
+  'mockup-ui-url/views/base',
+  'bootstrap-tooltip'
+], function($, Backbone, _, BaseView) {
+  
+
+  var ButtonView = BaseView.extend({
+    tagName: 'a',
+    className: 'btn',
+    eventPrefix: 'button',
+    context: 'default',
+    attributes: {
+      'href': '#'
+    },
+    extraClasses: [],
+    tooltip: null,
+    template: '<% if (icon) { %><span class="glyphicon glyphicon-<%= icon %>"></span><% } %> <%= title %>',
+    events: {
+      'click': 'handleClick'
+    },
+    initialize: function(options) {
+      if (!options.id) {
+        var title = options.title || '';
+        options.id = title !== '' ? title.toLowerCase().replace(' ', '-') : this.cid;
+      }
+      BaseView.prototype.initialize.apply(this, [options]);
+
+      this.on('disable', function() {
+        this.disable();
+      }, this);
+
+      this.on('enable', function() {
+        this.enable();
+      }, this);
+
+      this.on('render', function() {
+        if (this.context !== null) {
+          this.$el.addClass('btn-' + this.context);
+        }
+        _.each(this.extraClasses, function(klass){
+          this.$el.addClass(klass);
+        });
+
+        if (this.tooltip !== null) {
+          this.$el.tooltip({
+            title: this.tooltip
+          });
+          // XXX since tooltip triggers hidden
+          // suppress so it plays nice with modals, backdrops, etc
+          this.$el.on('hidden', function(e) {
+            if (e.type === 'hidden') {
+              e.stopPropagation();
+            }
+          });
+        }
+      }, this);
+    },
+    handleClick: function(e) {
+      e.preventDefault();
+      if (!this.$el.is('.disabled')) {
+        this.uiEventTrigger('click', this, e);
+      }
+    },
+    serializedModel: function() {
+      return _.extend({'icon': '', 'title': ''}, this.options);
+    },
+    disable: function() {
+      this.options.disabled = true;
+      this.$el.addClass('disabled');
+    },
+    enable: function() {
+      this.options.disabled = false;
+      this.$el.removeClass('disabled');
+    }
+  });
+
+  return ButtonView;
+});
+
+/* Sortable pattern.
+ *
+ * Options:
+ *    selector(string): Selector to use to draggable items in pattern ('li')
+ *    dragClass(string): Class to apply to original item that is being dragged. ('item-dragging')
+ *    cloneClass(string): Class to apply to cloned item that is dragged. ('dragging')
+ *    drop(function): callback function for when item is dropped (null)
+ *
+ * Documentation:
+ *    # Default
+ *
+ *    {{ example-1 }}
+ *
+ *    # Table
+ *
+ *    {{ example-2 }}
+ *
+ * Example: example-1
+ *    <ul class="pat-sortable">
+ *      <li>One</li>
+ *      <li>Two</li>
+ *      <li>Three</li>
+ *    </ul>
+ *
+ * Example: example-2
+ *    <table class="table table-stripped pat-sortable"
+ *           data-pat-sortable="selector:tr;">
+ *      <tbody>
+ *        <tr>
+ *          <td>One One</td>
+ *          <td>One Two</td>
+ *        </tr>
+ *        <tr>
+ *          <td>Two One</td>
+ *          <td>Two Two</td>
+ *        </tr>
+ *        <tr>
+ *          <td>Three One</td>
+ *          <td>Three Two</td>
+ *        </tr>
+ *      </tbody>
+ *    </table>
+ *
+ */
+
+
+define('mockup-patterns-sortable',[
+  'jquery',
+  'mockup-patterns-base',
+  'jquery.event.drag',
+  'jquery.event.drop'
+], function($, Base, drag, drop) {
+  
+
+  var SortablePattern = Base.extend({
+    name: 'sortable',
+    trigger: '.pat-sortable',
+    defaults: {
+      selector: 'li',
+      dragClass: 'item-dragging',
+      cloneClass: 'dragging',
+      drop: null // function to handle drop event
+    },
+    init: function() {
+      var self = this;
+      var start = 0;
+
+      self.$el.find(self.options.selector).drag('start', function(e, dd) {
+        var dragged = this;
+        $(dragged).addClass(self.options.dragClass);
+        drop({
+          tolerance: function(event, proxy, target) {
+            if ($(target.elem).closest(self.$el).length === 0) {
+              /* prevent dragging conflict over another drag area */
+              return;
+            }
+            var test = event.pageY > (target.top + target.height / 2);
+            $.data(target.elem, 'drop+reorder', test ? 'insertAfter' : 'insertBefore' );
+            return this.contains(target, [event.pageX, event.pageY]);
+          }
+        });
+        start = $(this).index();
+        return $( this ).clone().
+          addClass(self.options.cloneClass).
+          css({opacity: 0.75, position: 'absolute'}).
+          appendTo(document.body);
+      })
+      .drag(function(e, dd) {
+        /*jshint eqeqeq:false */
+        $( dd.proxy ).css({
+          top: dd.offsetY,
+          left: dd.offsetX
+        });
+        var drop = dd.drop[0],
+            method = $.data(drop || {}, 'drop+reorder');
+        /* XXX Cannot use triple equals here */
+        if (method && drop && (drop != dd.current || method != dd.method)) {
+          $(this)[method](drop);
+          dd.current = drop;
+          dd.method = method;
+          dd.update();
+        }
+      })
+      .drag('end', function(e, dd) {
+        var $el = $(this);
+        $el.removeClass(self.options.dragClass);
+        $(dd.proxy).remove();
+        if (self.options.drop) {
+          self.options.drop($el, $el.index() - start);
+        }
+      })
+      .drop('init', function(e, dd ) {
+        /*jshint eqeqeq:false */
+        /* XXX Cannot use triple equals here */
+        return (this == dd.drag) ? false: true;
+      });
+
+    }
+  });
+
+  return SortablePattern;
+
+});
+
+
+
+define('mockup-patterns-structure-url/js/models/result',['backbone'], function(Backbone) {
+  
+
+  var Result = Backbone.Model.extend({
+    defaults: function() {
+      return {
+        'is_folderish': false,
+        'review_state': ''
+      };
+    },
+    uid: function() {
+      return this.attributes.UID;
+    }
+  });
+
+  return Result;
+});
+
+define('mockup-patterns-structure-url/js/collections/selected',[
+  'backbone',
+  'mockup-patterns-structure-url/js/models/result'
+], function(Backbone, Result) {
+  
+
+  var SelectedCollection = Backbone.Collection.extend({
+    model: Result,
+    removeResult: function(model) {
+      return this.removeByUID(model.uid());
+    },
+    removeByUID: function(uid) {
+      var found = this.getByUID(uid);
+      if (found) {
+        this.remove(found);
+      }
+      return found;
+    },
+    getByUID: function(uid) {
+      return this.findWhere({UID: uid});
+    }
+  });
+
+  return SelectedCollection;
+});
+
+
+define('mockup-ui-url/views/popover',[
+  'jquery',
+  'underscore',
+  'backbone',
+  'mockup-ui-url/views/container',
+  'mockup-patterns-backdrop',
+  'text!mockup-ui-url/templates/popover.xml',
+], function($, _, Backbone, ContainerView, Backdrop, PopoverTemplate) {
+  
+
+  var PopoverView = ContainerView.extend({
+    tagName: 'div',
+    className: 'popover',
+    eventPrefix: 'popover',
+    template: PopoverTemplate,
+    content: null,
+    title: null,
+    triggerView: null,
+    triggerEvents: {
+      'button:click': 'toggle'
+    },
+    placement: 'bottom',
+    events: {
+    },
+    opened: false,
+    closeOnOutClick: true,
+    appendInContainer: true,
+    backdrop: undefined,
+    $backdrop: null,
+    useBackdrop: true,
+    backdropOptions: {
+      zIndex: '1009',
+      opacity: '0.4',
+      className: 'backdrop backdrop-popover',
+      classActiveName: 'backdrop-active',
+      closeOnEsc: false,
+      closeOnClick: true
+    },
+    initialize: function(options) {
+      ContainerView.prototype.initialize.apply(this, [options]);
+
+      this.on('render', function() {
+        this.bindTriggerEvents();
+        this.renderTitle();
+        this.renderContent();
+      }, this);
+    },
+    afterRender: function () {
+    },
+    renderTitle: function() {
+      this.$('.popover-title').append(this.title(this.options));
+    },
+    renderContent: function() {
+      this.$('.popover-content').append(this.content(this.options));
+    },
+    bindTriggerEvents: function() {
+      if (this.triggerView) {
+        _.each(this.triggerEvents, function(func, event) {
+          var method = this[func];
+          if (!method) {
+            $.error('Function not found.');
+          }
+          this.stopListening(this.triggerView, event);
+          this.listenTo(this.triggerView, event, method);
+        }, this);
+      }
+    },
+    getPosition: function() {
+      var $el = this.triggerView.$el;
+      return $.extend({}, {
+        width: $el[0].offsetWidth,
+        height: $el[0].offsetHeight
+      }, $el.offset());
+    },
+    show: function() {
+      var pos = this.getPosition();
+      var $tip = this.$el, tp, placement, actualWidth, actualHeight;
+
+      placement = this.placement;
+
+      $tip.css({ top: 0, left: 0 }).addClass('active');
+
+
+      actualWidth = $tip[0].offsetWidth;
+      actualHeight = $tip[0].offsetHeight;
+
+      switch (placement) {
+        case 'bottom':
+          tp = {top: pos.top + pos.height, left: pos.left + pos.width / 2 - actualWidth / 2};
+          break;
+        case 'top':
+          tp = {top: pos.top - actualHeight, left: pos.left + pos.width / 2 - actualWidth / 2};
+          break;
+        case 'left':
+          tp = {top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left - actualWidth};
+          break;
+        case 'right':
+          tp = {top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left + pos.width};
+          break;
+      }
+
+      this.applyPlacement(tp, placement);
+
+      this.setBackdrop();
+      if (this.useBackdrop === true) {
+        this.backdrop.show();
+      }
+
+      this.opened = true;
+
+      if (this.triggerView) {
+        this.triggerView.$el.addClass('active');
+      }
+
+      this.uiEventTrigger('show', this);
+    },
+    applyPlacement: function(offset, placement) {
+      var $el = this.$el,
+        $tip = this.$el,
+        width = $tip[0].offsetWidth,
+        height = $tip[0].offsetHeight,
+        actualWidth,
+        actualHeight,
+        delta,
+        replace;
+
+      $el.removeClass(placement);
+
+      $el.offset(offset)
+        .addClass(placement)
+        .addClass('active');
+
+      actualWidth = $tip[0].offsetWidth;
+      actualHeight = $tip[0].offsetHeight;
+
+      if (placement === 'top' && actualHeight !== height) {
+        offset.top = offset.top + height - actualHeight;
+        replace = true;
+      }
+
+      if (placement === 'bottom' || placement === 'top') {
+        delta = 0;
+
+        if (offset.left < 0) {
+          delta = offset.left * -2;
+          offset.left = 0;
+          $el.removeClass(placement);
+          $el.offset(offset).addClass(placement);
+          actualWidth = $tip[0].offsetWidth;
+          actualHeight = $tip[0].offsetHeight;
+        }
+
+        this.positionArrow(delta - width + actualWidth, actualWidth, 'left');
+
+      } else {
+        this.positionArrow(actualHeight - height, actualHeight, 'top');
+      }
+
+      if (replace) {
+        $el.offset(offset);
+      }
+    },
+    positionArrow: function(delta, dimension, position) {
+      var $arrow = this.$('.arrow');
+      $arrow.css(position, delta ? (50 * (1 - delta / dimension) + '%') : '');
+    },
+    hide: function() {
+      this.opened = false;
+      this.$el.removeClass('active');
+      if (this.triggerView) {
+        this.triggerView.$el.removeClass('active');
+      }
+      this.uiEventTrigger('hide', this);
+    },
+    toggle: function(button, e) {
+      if (this.opened) {
+        this.hide();
+      } else {
+        this.show();
+      }
+    },
+    setBackdrop: function() {
+      if (this.useBackdrop === true && this.backdrop === undefined) {
+        var self = this;
+        this.$backdrop = this.$el.closest('.ui-backdrop-element');
+        if (this.$backdrop.length === 0) {
+          this.$backdrop = $('body');
+        }
+
+        this.backdrop = new Backdrop(this.$backdrop, this.backdropOptions);
+        this.backdrop.$el.on('hidden.backdrop.patterns', function(e) {
+          if (e.namespace === 'backdrop.patterns') {
+            e.stopPropagation();
+            if (self.opened === true) {
+              self.hide();
+            }
+          }
+        });
+        this.on('popover:hide', function() {
+          this.backdrop.hide();
+        }, this);
+      }
+    }
+  });
+
+  return PopoverView;
+});
+
+
+define('mockup-patterns-structure-url/js/views/selectionwell',[
+  'jquery',
+  'underscore',
+  'backbone',
+  'mockup-ui-url/views/popover',
+  'text!mockup-patterns-structure-url/templates/selection_item.xml'
+], function($, _, Backbone, PopoverView, ItemTemplate) {
+  
+
+  var WellView = PopoverView.extend({
+    className: 'popover selected',
+    title: _.template('<input type="text" class="filter" placeholder="Filter" />' +
+                      '<a href="#" class=" remove-all">' +
+                        '<span class="glyphicon glyphicon-remove-circle"></span> remove all</a>'),
+    content: _.template(
+      '<% collection.each(function(item) { %>' +
+      '<%= item_template(item.toJSON()) %>' +
+      '<% }); %>'
+    ),
+    events: {
+      'click a.remove': 'itemRemoved',
+      'keyup input.filter': 'filterSelected',
+      'click .remove-all': 'removeAll'
+    },
+    initialize: function(options) {
+      PopoverView.prototype.initialize.apply(this, [options]);
+      this.listenTo(this.collection, 'reset all add remove', this.render);
+      this.options['item_template'] = _.template(ItemTemplate); // jshint ignore:line
+    },
+    render: function () {
+      PopoverView.prototype.render.call(this);
+      if (this.collection.length === 0) {
+        this.$el.removeClass('active');
+      }
+      return this;
+    },
+    itemRemoved: function(e) {
+      e.preventDefault();
+      var uid = $(e.currentTarget).data('uid');
+      this.collection.removeByUID(uid);
+      if (this.collection.length !== 0) {
+        // re-rendering causes it to close, reopen
+        this.show();
+      }
+    },
+    filterSelected: function(e) {
+      var val = $(e.target).val().toLowerCase();
+      $('.selected-item', this.$el).each(function() {
+        var $el = $(this);
+        if ($el.text().toLowerCase().indexOf(val) === -1) {
+          $el.hide();
+        } else {
+          $el.show();
+        }
+      });
+    },
+    removeAll: function(e) {
+      e.preventDefault();
+      this.collection.reset();
+      this.hide();
+    }
+  });
+
+  return WellView;
+});
+
+define('mockup-patterns-structure-url/js/views/tags',[
+  'jquery',
+  'underscore',
+  'backbone',
+  'mockup-ui-url/views/popover',
+  'mockup-patterns-select2'
+], function($, _, Backbone, PopoverView, Select2) {
+  
+
+  var TagsView = PopoverView.extend({
+    title: _.template('Add/Remove tags'),
+    content: _.template(
+      '<label>Tags to remove</label>' +
+      '<div class="form-group">' +
+        '<select multiple class="toremove" style="width: 300px">' +
+        '</select>' +
+      '</div>' +
+      '<label>Tags to add</label>' +
+      '<div class="form-group">' +
+        '<input class="toadd" style="width:300px" />' +
+      '</div>' +
+      '<button class="btn btn-block btn-primary">Apply</button>'
+    ),
+    events: {
+      'click button': 'applyButtonClicked'
+    },
+    initialize: function(options) {
+      this.app = options.app;
+      this.removeSelect2 = null;
+      this.addSelect2 = null;
+      PopoverView.prototype.initialize.apply(this, [options]);
+    },
+    render: function() {
+      PopoverView.prototype.render.call(this);
+      this.$remove = this.$('.toremove');
+      this.$add = this.$('.toadd');
+      this.$remove.select2();
+      this.addSelect2 = new Select2(this.$add, {
+        multiple: true,
+        vocabularyUrl: this.app.options.tagsVocabularyUrl
+      });
+      return this;
+    },
+    getSelect2Values: function($el) {
+      var values = [];
+      _.each($el.select2('data'), function(item) {
+        values.push(item.id);
+      });
+      return values;
+    },
+    applyButtonClicked: function(e) {
+      this.app.defaultButtonClickEvent(this.triggerView, {
+        remove: JSON.stringify(this.getSelect2Values(this.$remove)),
+        add: JSON.stringify(this.getSelect2Values(this.$add))
+      });
+      this.hide();
+    },
+    toggle: function(button, e) {
+      PopoverView.prototype.toggle.apply(this, [button, e]);
+      var self = this;
+      if (!this.opened) {
+        return;
+      }
+      // clear out
+      self.$remove.select2('destroy');
+      self.$remove.empty();
+      self.$add.select2('data', []);
+
+      self.app.selectedCollection.each(function(item) {
+        if (!item.attributes.Subject) {
+          return;
+        }
+        _.each(item.attributes.Subject, function(tag) {
+          if (self.$remove.find('[value="' + tag + '"]').length === 0) {
+            self.$remove.append('<option value="' + tag + '">' + tag + '</option>');
+          }
+        });
+      });
+      self.$remove.select2();
+    }
+  });
+
+  return TagsView;
+});
+
+define('mockup-patterns-structure-url/js/views/properties',[
+  'jquery',
+  'underscore',
+  'backbone',
+  'mockup-ui-url/views/popover',
+  'mockup-patterns-pickadate',
+  'mockup-patterns-select2'
+], function($, _, Backbone, PopoverView, PickADate, Select2) {
+  
+
+  var PropertiesView = PopoverView.extend({
+    className: 'popover properties',
+    title: _.template('Modify properties on items'),
+    content: _.template(
+      '<div class="form-group">' +
+        '<label>Publication Date</label>' +
+        '<input class="form-control" name="effective" />' +
+      '</div>' +
+      '<div class="form-group">' +
+        '<label>Expiration Date</label>' +
+        '<input class="form-control" name="expiration" />' +
+      '</div>' +
+      '<div class="form-group">' +
+        '<label>Copyright</label>' +
+        '<textarea class="form-control" name="copyright"></textarea>' +
+      '</div>' +
+      '<label>Creators</label>' +
+      '<div class="form-group">' +
+        '<input name="creators" style="width: 300px" />' +
+      '</div>' +
+      '<label>Contributors</label>' +
+      '<div class="form-group">' +
+        '<input name="contributors" style="width: 300px" />' +
+      '</div>' +
+      '<label>Exclude from nav</label>' +
+      '<div class="radio">' +
+        '<label>' +
+          '<input type="radio" name="exclude-from-nav" value="yes" />' +
+          'Yes' +
+        '</label>' +
+      '</div>' +
+      '<div class="radio">' +
+        '<label>' +
+          '<input type="radio" name="exclude-from-nav" value="no" />' +
+          'No' +
+        '</label>' +
+      '</div>' +
+      '<button class="btn btn-block btn-primary">Apply</button>'
+    ),
+    events: {
+      'click button': 'applyButtonClicked'
+    },
+    initialize: function(options) {
+      this.app = options.app;
+      PopoverView.prototype.initialize.apply(this, [options]);
+    },
+    render: function() {
+      PopoverView.prototype.render.call(this);
+      this.$effective = this.$('[name="effective"]');
+      this.$expiration = this.$('[name="expiration"]');
+      this.$copyright = this.$('[name="copyright"]');
+      this.$creators = this.$('[name="creators"]');
+      this.$contributors = this.$('[name="contributors"]');
+      this.$exclude = this.$('[name="exclude-from-nav"]');
+
+      this.creatorsSelect2 = new Select2(this.$creators, {
+        multiple: true,
+        vocabularyUrl: this.app.options.usersVocabularyUrl
+      });
+      this.contributorsSelect2 = new Select2(this.$contributors, {
+        multiple: true,
+        vocabularyUrl: this.app.options.usersVocabularyUrl
+      });
+      this.effectivePickADate = new PickADate(this.$effective);
+      this.expirationPickADate = new PickADate(this.$expiration);
+      return this;
+    },
+    applyButtonClicked: function(e) {
+      var data = {
+        effectiveDate: this.effectivePickADate.$date.val(),
+        effectiveTime: this.effectivePickADate.$time.val(),
+        expirationDate: this.expirationPickADate.$date.val(),
+        expirationTime: this.expirationPickADate.$time.val(),
+        copyright: this.$copyright.val(),
+        contributors: JSON.stringify(this.$contributors.select2('data')),
+        creators: JSON.stringify(this.$creators.select2('data'))
+      };
+      if (this.$('[name="exclude-from-nav"]:checked').length > 0) {
+        data['exclude_from_nav'] = this.$('[name="exclude-from-nav"]:checked').val(); // jshint ignore:line
+      }
+      this.app.defaultButtonClickEvent(this.triggerView, data);
+      this.hide();
+    },
+    toggle: function(button, e) {
+      PopoverView.prototype.toggle.apply(this, [button, e]);
+      var self = this;
+      if (!this.opened) {
+        return;
+      }
+      this.$effective.attr('value', '');
+      this.$expiration.attr('value', '');
+      this.$copyright.html('');
+      this.$creators.select2('data', []);
+      this.$contributors.select2('data', []);
+      this.$exclude.each(function() {
+        this.checked = false;
+      });
+    }
+  });
+
+  return PropertiesView;
+});
+
+define('mockup-patterns-structure-url/js/views/workflow',[
+  'jquery',
+  'underscore',
+  'backbone',
+  'mockup-ui-url/views/popover'
+], function($, _, Backbone, PopoverView) {
+  
+
+  var WorkflowView = PopoverView.extend({
+    className: 'popover workflow',
+    title: _.template('Modify dates on items'),
+    content: _.template(
+      '<form>' +
+        '<fieldset>' +
+          '<div class="form-group">' +
+            '<label>Comments</label>' +
+            '<textarea class="form-control" rows="4"></textarea>' +
+            '<p class="help-block">Select the transition to be used for ' +
+              'modifying the items state.</p>' +
+          '</div>' +
+          '<div class="form-group">' +
+            '<label>Change State</label>' +
+            '<p class="help-block">Select the transition to be used for ' +
+              'modifying the items state.</p>' +
+            '<select class="form-control" name="transition">' +
+            '</select>' +
+          '</div>' +
+          '<div class="checkbox">' +
+            '<label>' +
+              '<input type="checkbox" name="recurse" />' +
+              'Include contained items?</label>' +
+            '<p class="help-block">' +
+              'If checked, this will attempt to modify the status of all ' +
+              'content in any selected folders and their subfolders.' +
+            '</p>' +
+          '</div>' +
+        '</fieldset>' +
+      '</form>' +
+      '<button class="btn btn-block btn-primary">Apply</button>'
+    ),
+    events: {
+      'click button': 'applyButtonClicked'
+    },
+    initialize: function(options) {
+      this.app = options.app;
+      PopoverView.prototype.initialize.apply(this, [options]);
+    },
+    render: function() {
+      PopoverView.prototype.render.call(this);
+      this.$comments = this.$('textarea');
+      this.$transition = this.$('select');
+      return this;
+    },
+    applyButtonClicked: function(e) {
+      var data = {
+        comments: this.$comments.val(),
+        transition: this.$transition.val()
+      };
+      if (this.$('[name="recurse"]')[0].checked) {
+        data.recurse = 'yes';
+      }
+      this.app.defaultButtonClickEvent(this.triggerView, data);
+      this.hide();
+    },
+    toggle: function(button, e) {
+      PopoverView.prototype.toggle.apply(this, [button, e]);
+      var self = this;
+      if (!self.opened) {
+        return;
+      }
+      self.$comments.val('');
+      self.$transition.empty();
+      $.ajax({
+        url: self.triggerView.url,
+        type: 'GET',
+        data: {
+          selection: JSON.stringify(self.app.getSelectedUids()),
+          transitions: true
+        },
+        success: function(data) {
+          _.each(data.transitions, function(transition) {
+            self.$transition.append('<option value="' + transition.id + '">' + transition.title + '</option>');
+          });
+        },
+        error: function(data) {
+          // XXX error handling...
+          window.alert('error getting transition data');
+        }
+      });
+    }
+  });
+
+  return WorkflowView;
+});
+
+
+
+
+
+define('mockup-patterns-structure-url/js/views/delete',[
+  'jquery',
+  'underscore',
+  'backbone',
+  'mockup-ui-url/views/popover'
+], function($, _, Backbone, PopoverView) {
+  
+
+  var DeleteView = PopoverView.extend({
+    className: 'popover delete',
+    title: _.template('Delete selected items'),
+    content: _.template(
+      '<label>Are you certain you want to delete the selected items</label>' +
+      '<button class="btn btn-block btn-danger">Yes</button>'
+    ),
+    events: {
+      'click button': 'applyButtonClicked'
+    },
+    initialize: function(options) {
+      this.app = options.app;
+      PopoverView.prototype.initialize.apply(this, [options]);
+    },
+    render: function() {
+      PopoverView.prototype.render.call(this);
+      return this;
+    },
+    applyButtonClicked: function(e) {
+      var self = this;
+      this.app.defaultButtonClickEvent(this.triggerView, {}, function(data) {
+        self.app.selectedCollection.reset();
+      });
+      this.hide();
+    }
+  });
+
+  return DeleteView;
+});
+
+
+
+
+
+
+define('mockup-patterns-structure-url/js/views/rename',[
+  'jquery',
+  'underscore',
+  'backbone',
+  'mockup-ui-url/views/popover'
+], function($, _, Backbone, PopoverView) {
+  
+
+  var PropertiesView = PopoverView.extend({
+    className: 'popover rename',
+    title: _.template('Rename items'),
+    content: _.template(
+      '<div class="itemstoremove"></div>' +
+      '<button class="btn btn-block btn-primary">Apply</button>'
+    ),
+    itemTemplate: _.template(
+      '<div class="item">' +
+        '<div class="form-group">' +
+          '<input name="UID" type="hidden" value="<%- UID %>" />' +
+          '<label>Title</label>' +
+          '<input class="form-control" name="newtitle" value="<%= Title %>" />' +
+          '<label>Short name</label>' +
+          '<input class="form-control" name="newid" value="<%= id %>" />' +
+        '</div>' +
+      '</div>'
+    ),
+    events: {
+      'click button': 'applyButtonClicked'
+    },
+    initialize: function(options) {
+      this.app = options.app;
+      PopoverView.prototype.initialize.apply(this, [options]);
+    },
+    render: function() {
+      PopoverView.prototype.render.call(this);
+      this.$items = this.$('.itemstoremove');
+      return this;
+    },
+    applyButtonClicked: function(e) {
+      var torename = [];
+      this.$items.find('.item').each(function() {
+        var $item = $(this);
+        torename.push({
+          UID: $item.find('[name="UID"]').val(),
+          newid: $item.find('[name="newid"]').val(),
+          newtitle: $item.find('[name="newtitle"]').val()
+        });
+      });
+      var self = this;
+      this.app.defaultButtonClickEvent(this.triggerView, {
+        torename: JSON.stringify(torename)
+      });
+      this.hide();
+    },
+    toggle: function(button, e) {
+      PopoverView.prototype.toggle.apply(this, [button, e]);
+      var self = this;
+      if (!self.opened) {
+        return;
+      }
+      self.$items.empty();
+      self.app.selectedCollection.each(function(item) {
+        self.$items.append(self.itemTemplate(item.toJSON()));
+      });
+    }
+  });
+
+  return PropertiesView;
+});
+
+
+
+
+
+
+define('mockup-patterns-structure-url/js/views/rearrange',[
+  'jquery',
+  'underscore',
+  'mockup-ui-url/views/popover'
+], function($, _, PopoverView) {
+  
+
+  var RearrangeView = PopoverView.extend({
+    className: 'popover rearrange',
+    title: _.template('Rearrange items in this folder'),
+    content: _.template(
+      '<div class="form-group">' +
+        '<label>What to rearrange on</label>' +
+        '<select name="rearrange_on" class="form-control">' +
+          '<% _.each(rearrangeProperties, function(title, property) { %>' +
+            '<option value="<%- property %>"><%- title %></option>' +
+          '<% }); %>' +
+        '</select>' +
+        '<p class="help-block">' +
+          'This permanently changes the order of items in this folder.' +
+          'This operation may take a long time depending on the size ' +
+          'of the folder.' +
+        '</p>' +
+      '</div>' +
+      '<div class="checkbox">' +
+        '<label>Reverse <input type="checkbox" name="reversed" /></label>' +
+      '</div>' +
+      '<button class="btn btn-block btn-primary">Rearrange</button>'
+    ),
+    events: {
+      'click button': 'rearrangeButtonClicked'
+    },
+    initialize: function(options) {
+      this.app = options.app;
+      PopoverView.prototype.initialize.apply(this, [options]);
+      this.options.rearrangeProperties = this.app.options.rearrange.properties;
+    },
+    render: function() {
+      PopoverView.prototype.render.call(this);
+      this.$rearrangeOn = this.$('[name="rearrange_on"]');
+      this.$reversed = this.$('[name="reversed"]');
+      return this;
+    },
+    rearrangeButtonClicked: function() {
+      var data = {
+        'rearrange_on': this.$rearrangeOn.val(),
+        reversed: false
+      };
+      if (this.$reversed[0].checked) {
+        data.reversed = true;
+      }
+      this.app.defaultButtonClickEvent(this.triggerView, data);
+      this.hide();
+    }
+  });
+
+  return RearrangeView;
+});
+
+define('mockup-patterns-structure-url/js/views/columns',[
+  'jquery',
+  'underscore',
+  'backbone',
+  'mockup-ui-url/views/popover',
+  'mockup-patterns-sortable'
+], function($, _, Backbone, PopoverView, Sortable) {
+  
+
+  var ColumnsView = PopoverView.extend({
+    className: 'popover columns',
+    title: _.template('Columns'),
+    content: _.template(
+      '<label>Select columns to show, drag and drop to reorder</label>' +
+      '<ul>' +
+      '</ul>' +
+      '<button class="btn btn-block btn-success">Save</button>'
+    ),
+    itemTemplate: _.template(
+      '<li>' +
+        '<label>' +
+          '<input type="checkbox" value="<%- id %>"/>' +
+          '<%- title %>' +
+        '</label>' +
+      '</li>'
+    ),
+    events: {
+      'click button': 'applyButtonClicked'
+    },
+    initialize: function(options) {
+      this.app = options.app;
+      PopoverView.prototype.initialize.apply(this, [options]);
+    },
+    afterRender: function() {
+      var self = this;
+
+      self.$container = self.$('ul');
+      _.each(self.app.activeColumns, function(id) {
+        var $el = $(self.itemTemplate({
+          title: self.app.availableColumns[id],
+          id: id
+        }));
+        $el.find('input')[0].checked = true;
+        self.$container.append($el);
+      });
+      _.each(_.omit(self.app.availableColumns, self.app.activeColumns), function(name, id) {
+        var $el = $(self.itemTemplate({
+          title: name,
+          id: id
+        }));
+        self.$container.append($el);
+      });
+
+      var dd = new Sortable(self.$container, {
+        selector: 'li'
+      });
+      return this;
+    },
+    applyButtonClicked: function() {
+      var self = this;
+      this.hide();
+      self.app.activeColumns = [];
+      self.$('input:checked').each(function() {
+        self.app.activeColumns.push($(this).val());
+      });
+      self.app.setCookieSetting('activeColumns', this.app.activeColumns);
+      self.app.tableView.render();
+    }
+  });
+
+  return ColumnsView;
+});
+
+
+
+
+
+
+define('mockup-patterns-structure-url/js/views/textfilter',[
+  'jquery',
+  'backbone',
+  'underscore',
+  'mockup-ui-url/views/base',
+  'mockup-ui-url/views/button',
+  'mockup-ui-url/views/popover',
+  'mockup-patterns-querystring'
+], function($, Backbone, _, BaseView, ButtonView, PopoverView, QueryString) {
+  
+
+  var TextFilterView = BaseView.extend({
+    tagName: 'div',
+    className: 'navbar-search form-search ui-offset-parent',
+    template: _.template(
+      '<div class="input-group">' +
+      '<input type="text" class="form-control search-query" placeholder="Filter">' +
+      '<span class="input-group-btn">' +
+      '</span>' +
+      '</div>'
+    ),
+    popoverContent: _.template(
+      '<input class="pat-querystring" />'
+    ),
+    events: {
+      'keyup .search-query': 'filter'
+    },
+    term: null,
+    timeoutId: null,
+    keyupDelay: 300,
+    initialize: function(options) {
+      BaseView.prototype.initialize.apply(this, [options]);
+      this.app = this.options.app;
+    },
+    render: function() {
+      this.$el.html(this.template({}));
+      this.button = new ButtonView({
+        title: 'Query'
+      });
+      this.popover = new PopoverView({
+        triggerView: this.button,
+        title: _.template('Query'),
+        content: this.popoverContent,
+        placement: 'left'
+      });
+      this.$('.input-group-btn').append(this.button.render().el);
+      this.$el.append(this.popover.render().el);
+      this.popover.$el.addClass('query');
+      this.$queryString = this.popover.$('input.pat-querystring');
+      this.queryString = new QueryString(
+        this.$queryString, {
+          indexOptionsUrl: this.app.options.indexOptionsUrl,
+          showPreviews: false
+        });
+      var self = this;
+      self.queryString.$el.on('change', function() {
+        if (self.timeoutId) {
+          clearTimeout(self.timeoutId);
+        }
+        self.timeoutId = setTimeout(function() {
+          var criterias = $.parseJSON(self.$queryString.val());
+          self.app.additionalCriterias = criterias;
+          self.app.collection.pager();
+        }, this.keyupDelay);
+      });
+      self.queryString.$el.on('initialized', function() {
+        self.queryString.$sortOn.on('change', function() {
+          self.app['sort_on'] = self.queryString.$sortOn.val(); // jshint ignore:line
+          self.app.collection.pager();
+        });
+        self.queryString.$sortOrder.change(function() {
+          if (self.queryString.$sortOrder[0].checked) {
+            self.app['sort_order'] = 'reverse'; // jshint ignore:line
+          } else {
+            self.app['sort_order'] = 'ascending'; // jshint ignore:line
+          }
+          self.app.collection.pager();
+        });
+      });
+      return this;
+    },
+    filter: function(event) {
+      var self = this;
+      if (self.timeoutId) {
+        clearTimeout(self.timeoutId);
+      }
+      self.timeoutId = setTimeout(function() {
+        self.term = $(event.currentTarget).val();
+        self.app.collection.pager();
+      }, this.keyupDelay);
+    }
+  });
+
+  return TextFilterView;
+});
+
+define('mockup-patterns-structure-url/js/views/upload',[
+  'jquery',
+  'underscore',
+  'backbone',
+  'mockup-ui-url/views/popover',
+  'mockup-patterns-upload'
+], function($, _, Backbone, PopoverView, Upload) {
+  
+
+  var UploadView = PopoverView.extend({
+    className: 'popover upload',
+    title: _.template('Upload files'),
+    content: _.template(
+      '<input type="text" name="upload" style="display:none" />' +
+      '<div class="uploadify-me"></div>'),
+
+    initialize: function(options) {
+      var self = this;
+      self.app = options.app;
+      PopoverView.prototype.initialize.apply(self, [options]);
+      self.currentPathData = null;
+      self.app.on('context-info-loaded', function(data) {
+        self.currentPathData = data;
+      });
+    },
+
+    render: function() {
+      var self = this;
+      PopoverView.prototype.render.call(this);
+      var options = self.app.options.upload;
+      options.success = function() {
+        self.app.collection.pager();
+      };
+      options.relatedItems = {
+        vocabularyUrl: self.app.options.vocabularyUrl
+      };
+      options.currentPath = self.app.options.queryHelper.getCurrentPath();
+      self.upload = new Upload(self.$('.uploadify-me').addClass('pat-upload'), options);
+      return this;
+    },
+
+    toggle: function(button, e) {
+      /* we need to be able to change the current default upload directory */
+      PopoverView.prototype.toggle.apply(this, [button, e]);
+      var self = this;
+      if (!this.opened) {
+        return;
+      }
+      var currentPath = self.app.queryHelper.getCurrentPath();
+      var relatedItems = self.upload.relatedItems;
+      if (self.currentPathData && relatedItems && currentPath !== self.upload.currentPath){
+        if (currentPath === '/'){
+          relatedItems.$el.select2('data', []);
+        } else {
+          relatedItems.$el.select2('data', [self.currentPathData.object]);
+        }
+        self.upload.setPath(currentPath);
+      }
+    }
+
+  });
+
+  return UploadView;
+});
+
+
+
+
+
+
+(function(root) {
+define("bootstrap-dropdown", ["jquery"], function() {
+  return (function() {
+/* ========================================================================
+ * Bootstrap: dropdown.js v3.2.0
+ * http://getbootstrap.com/javascript/#dropdowns
+ * ========================================================================
+ * Copyright 2011-2014 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
+
++function ($) {
+  
+
+  // DROPDOWN CLASS DEFINITION
+  // =========================
+
+  var backdrop = '.dropdown-backdrop'
+  var toggle   = '[data-toggle="dropdown"]'
+  var Dropdown = function (element) {
+    $(element).on('click.bs.dropdown', this.toggle)
+  }
+
+  Dropdown.VERSION = '3.2.0'
+
+  Dropdown.prototype.toggle = function (e) {
+    var $this = $(this)
+
+    if ($this.is('.disabled, :disabled')) return
+
+    var $parent  = getParent($this)
+    var isActive = $parent.hasClass('open')
+
+    clearMenus()
+
+    if (!isActive) {
+      if ('ontouchstart' in document.documentElement && !$parent.closest('.navbar-nav').length) {
+        // if mobile we use a backdrop because click events don't delegate
+        $('<div class="dropdown-backdrop"/>').insertAfter($(this)).on('click', clearMenus)
+      }
+
+      var relatedTarget = { relatedTarget: this }
+      $parent.trigger(e = $.Event('show.bs.dropdown', relatedTarget))
+
+      if (e.isDefaultPrevented()) return
+
+      $this.trigger('focus')
+
+      $parent
+        .toggleClass('open')
+        .trigger('shown.bs.dropdown', relatedTarget)
+    }
+
+    return false
+  }
+
+  Dropdown.prototype.keydown = function (e) {
+    if (!/(38|40|27)/.test(e.keyCode)) return
+
+    var $this = $(this)
+
+    e.preventDefault()
+    e.stopPropagation()
+
+    if ($this.is('.disabled, :disabled')) return
+
+    var $parent  = getParent($this)
+    var isActive = $parent.hasClass('open')
+
+    if (!isActive || (isActive && e.keyCode == 27)) {
+      if (e.which == 27) $parent.find(toggle).trigger('focus')
+      return $this.trigger('click')
+    }
+
+    var desc = ' li:not(.divider):visible a'
+    var $items = $parent.find('[role="menu"]' + desc + ', [role="listbox"]' + desc)
+
+    if (!$items.length) return
+
+    var index = $items.index($items.filter(':focus'))
+
+    if (e.keyCode == 38 && index > 0)                 index--                        // up
+    if (e.keyCode == 40 && index < $items.length - 1) index++                        // down
+    if (!~index)                                      index = 0
+
+    $items.eq(index).trigger('focus')
+  }
+
+  function clearMenus(e) {
+    if (e && e.which === 3) return
+    $(backdrop).remove()
+    $(toggle).each(function () {
+      var $parent = getParent($(this))
+      var relatedTarget = { relatedTarget: this }
+      if (!$parent.hasClass('open')) return
+      $parent.trigger(e = $.Event('hide.bs.dropdown', relatedTarget))
+      if (e.isDefaultPrevented()) return
+      $parent.removeClass('open').trigger('hidden.bs.dropdown', relatedTarget)
+    })
+  }
+
+  function getParent($this) {
+    var selector = $this.attr('data-target')
+
+    if (!selector) {
+      selector = $this.attr('href')
+      selector = selector && /#[A-Za-z]/.test(selector) && selector.replace(/.*(?=#[^\s]*$)/, '') // strip for ie7
+    }
+
+    var $parent = selector && $(selector)
+
+    return $parent && $parent.length ? $parent : $this.parent()
+  }
+
+
+  // DROPDOWN PLUGIN DEFINITION
+  // ==========================
+
+  function Plugin(option) {
+    return this.each(function () {
+      var $this = $(this)
+      var data  = $this.data('bs.dropdown')
+
+      if (!data) $this.data('bs.dropdown', (data = new Dropdown(this)))
+      if (typeof option == 'string') data[option].call($this)
+    })
+  }
+
+  var old = $.fn.dropdown
+
+  $.fn.dropdown             = Plugin
+  $.fn.dropdown.Constructor = Dropdown
+
+
+  // DROPDOWN NO CONFLICT
+  // ====================
+
+  $.fn.dropdown.noConflict = function () {
+    $.fn.dropdown = old
+    return this
+  }
+
+
+  // APPLY TO STANDARD DROPDOWN ELEMENTS
+  // ===================================
+
+  $(document)
+    .on('click.bs.dropdown.data-api', clearMenus)
+    .on('click.bs.dropdown.data-api', '.dropdown form', function (e) { e.stopPropagation() })
+    .on('click.bs.dropdown.data-api', toggle, Dropdown.prototype.toggle)
+    .on('keydown.bs.dropdown.data-api', toggle + ', [role="menu"], [role="listbox"]', Dropdown.prototype.keydown)
+
+}(jQuery);
+
+
+  }).apply(root, arguments);
+});
+}(this));
+
+/* global alert:true */
+
+define('mockup-patterns-structure-url/js/views/addmenu',[
+  'jquery',
+  'underscore',
+  'backbone',
+  'mockup-ui-url/views/buttongroup',
+  'mockup-ui-url/views/button',
+  'mockup-utils',
+  'bootstrap-dropdown'
+], function($, _, Backbone, ButtonGroup, ButtonView, utils) {
+  
+
+  var AddMenu = ButtonGroup.extend({
+    title: 'Add',
+    className: 'btn-group addnew',
+    events: {
+    },
+    initialize: function(options) {
+      var self = this;
+      ButtonGroup.prototype.initialize.apply(self, [options]);
+      self.app.on('context-info-loaded', function(data) {
+        self.$items.empty();
+        _.each(data.addButtons, function(item) {
+          var view = new ButtonView({
+            id: item.id,
+            title: item.title,
+            url: item.action
+          });
+          view.render();
+          var wrap = $('<li/>');
+          // As we are reusing the whole ButtonView for render the add content
+          // list we should remove entirely the "btn btn-default" classes.
+          // This element in fact, should not have any class at all, so we
+          // remove the attribute completely
+          view.$el.removeAttr('class');
+
+          wrap.append(view.el);
+          self.$items.append(wrap);
+          view.$el.click(function(e) {
+            self.buttonClicked.apply(self, [e, view]);
+            return false;
+          });
+        });
+      });
+    },
+    buttonClicked: function(e, button) {
+      var self = this;
+      e.preventDefault();
+      self.app.loading.show();
+      window.location = button.url;
+      /* Do not launch in overlay otherwise you get overlays insides of
+         overlays potentials--nasty. Leave here if we change our mind
+         for some reason.
+      $.ajax({
+        url: button.url,
+        type: 'POST',
+        data: {
+          '_authenticator': $('[name="_authenticator"]').val(),
+        },
+        success: function(response) {
+          self.app.loading.hide();
+          var modal = new Modal(self.$el, {
+            html: utils.parseBodyTag(response),
+            content: '#content',
+            width: '80%',
+            backdropOptions: {
+              closeOnClick: false
+            },
+            automaticallyAddButtonActions: false,
+            actionOptions: {
+              displayInModal: false,
+              reloadWindowOnClose: false
+            },
+            actions: {
+              'input#form-buttons-save, .formControls input[name="form.button.save"]': {
+                onSuccess: function(modal, response, state, xhr, form) {
+                  self.app.collection.pager();
+                  if (self.$items.is(':visible')) {
+                    self.$dropdown.dropdown('toggle');
+                  }
+                  modal.hide();
+                },
+                onError: function() {
+                  alert('error on form');
+                }
+              },
+              'input#form-buttons-cancel, .formControls input[name="form.button.cancel"]': {
+                modalFunction: 'hide'
+              }
+            },
+          });
+          modal.show();
+        },
+        error: function() {
+          // XXX handle error
+          self.app.loading.hide();
+        }
+      });
+    */
+    },
+    render: function() {
+      var self = this;
+      self.$el.empty();
+
+      self.$el.append(
+        '<a class="btn dropdown-toggle btn-success" data-toggle="dropdown" href="#">' +
+          self.title +
+          '<span class="caret"></span>' +
+        '</a>' +
+        '<ul class="dropdown-menu">' +
+        '</ul>' +
+      '</div>');
+
+      self.$items = self.$('.dropdown-menu');
+      self.$dropdown = self.$('.dropdown-toggle');
+      self.$dropdown.dropdown();
+      return this;
+    }
+  });
+
+  return AddMenu;
+});
+
+
+define('text!mockup-patterns-structure-url/templates/selection_button.xml',[],function () { return '<%= title %> \r<span class="label<% if (length > 0) { %> label-success<% } else { %> label-default<% } %>">\r  <%= length %>\r</span>\r';});
+
+define('mockup-patterns-structure-url/js/views/selectionbutton',[
+  'jquery',
+  'backbone',
+  'underscore',
+  'mockup-ui-url/views/button',
+  'text!mockup-patterns-structure-url/templates/selection_button.xml'
+], function($, Backbone, _, ButtonView, tplButton) {
+  
+
+  var SelectionButton = ButtonView.extend({
+    collection: null,
+    template: tplButton,
+    initialize: function(options) {
+      ButtonView.prototype.initialize.apply(this, [options]);
+
+      if (this.collection !== null) {
+        this.collection.on('add remove reset', function() {
+          this.render();
+          if (this.collection.length === 0) {
+            this.$el.removeClass('active');
+          }
+        }, this);
+      }
+    },
+    serializedModel: function() {
+      var obj = {icon: '', title: this.options.title, length: 0};
+      if (this.collection !== null) {
+        obj.length = this.collection.length;
+      }
+      return obj;
+    }
+  });
+
+  return SelectionButton;
+});
 
 (function(root) {
 define("backbone.paginator", ["backbone"], function() {
@@ -85190,1595 +85071,6 @@ define('mockup-patterns-structure-url/js/collections/result',[
 
   return ResultCollection;
 });
-
-
-define('text!mockup-patterns-upload-url/templates/upload.xml',[],function () { return '<div class="upload-container upload-multiple">\n    <h2 class="title">Upload stuff here</h2>\n    <p class="help">\n        Just drag N drop stuff on the area below\n        or press "upload" button.\n    </p>\n    <div class="upload-area">\n        <div class="fallback">\n            <input name="file" type="file" multiple />\n        </div>\n        <div class="dz-message"><p><%-_t("Drop files here...")%></p></div>\n        <div class="row">\n            <div class="col-md-9">\n                <input\n                    id="fakeUploadFile"\n                    placeholder="Choose File"\n                    disabled="disabled"\n                    />\n            </div>\n            <div class="col-md-3">\n                <button\n                    type="button"\n                    class="btn btn-primary browse">\n                    Browse\n                </button>\n            </div>\n        </div>\n        <div class="upload-queue">\n            <div class="previews">\n            </div>\n            <div class="controls">\n                <div class="path">\n                    <label>Upload to...</label>\n                    <p class="form-help">\n                        If nothing selected files we be added to current context.\n                    </p>\n                    <input\n                        type="text"\n                        name="location"\n                        />\n                </div>\n                <div class="actions row">\n                    <div class="col-md-9">\n                        <div class="progress progress-striped active">\n                            <div class="progress-bar progress-bar-success"\n                                 role="progressbar"\n                                 aria-valuenow="0"\n                                 aria-valuemin="0"\n                                 aria-valuemax="100"\n                                 style="width: 0%">\n                                <span class="sr-only">40% Complete (success)</span>\n                            </div>\n                        </div>\n                    </div>\n                    <div class="col-md-3 align-right">\n                        <button\n                            type="button"\n                            class="btn btn-primary upload-all">\n                            Upload\n                        </button>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n';});
-
-/* Upload pattern.
- *
- * Options:
- *    showTitle(boolean): show/hide the h1 title (true)
- *    url(string): If not used with a form, this option must provide the URL to submit to or baseUrl with relativePath needs to be used (null)
- *    baseUrl(string): to be used in conjunction with relativePath to generate submission urls based on related items (null)
- *    relativePath(string): again, to be used with baseUrl to create upload url (null)
- *    initialFolder(string): UID of initial folder related items widget should have selected (null)
- *    currentPath(string): Current path related items is starting with (null)
- *    clickable(boolean): If you can click on container to also upload (false)
- *    className(string): value for class attribute in the form element ('upload')
- *    paramName(string): value for name attribute in the file input element ('file')
- *    ajaxUpload(boolean): true or false for letting the widget upload the files via ajax. If false the form will act like a normal form. (true)
- *    wrap(boolean): true or false for wrapping this element using the value of wrapperTemplate. (false)
- *    wrapperTemplate(string): HTML template for wrapping around with this element. ('<div class="upload-container"/>')
- *    resultTemplate(string): HTML template for the element that will contain file information. ('<div class="dz-notice"><p>Drop files here...</p></div><div class="upload-previews"/>')
- *    autoCleanResults(boolean): condition value for the file preview in div element to fadeout after file upload is completed. (true)
- *    previewsContainer(selector): JavaScript selector for file preview in div element. (.upload-previews)
- *    container(selector): JavaScript selector for where to put upload stuff into in case of form. If not provided it will be place before the first submit button. ('')
- *    relatedItems(object): Related items pattern options. Will only use only if relativePath is used to use correct upload destination ({ attributes: ["UID", "Title", "Description", "getURL", "Type", "path", "ModificationDate"], batchSize: 20, basePath: "/", vocabularyUrl: null, width: 500, maximumSelectionSize: 1, placeholder: "Search for item on site..." })
- *
- * Documentation:
- *
- *    # On a div element
- *
- *    {{ example-1 }}
- *
- * Example: example-1
- *    <div class="pat-upload" data-pat-upload='{"url": "/upload",
- *                                              "relatedItems": {
- *                                                  "vocabularyUrl": "/relateditems-test.json"
- *                                              }}'>
- *      <div>
- *        <p>Something here that is useful</p>
- *        <p>Something else here that is useful</p>
- *        <p>Another thing here that is useful</p>
- *      </div>
- *    </div>
- *
- */
-
-
-define('mockup-patterns-upload',[
-  'jquery',
-  'underscore',
-  'mockup-patterns-base',
-  'mockup-patterns-relateditems',
-  'dropzone',
-  'text!mockup-patterns-upload-url/templates/upload.xml',
-  'text!mockup-patterns-upload-url/templates/preview.xml',
-  'translate'
-], function($, _, Base, RelatedItems, Dropzone,
-            UploadTemplate, PreviewTemplate, _t) {
-  
-
-  /* we do not want this plugin to auto discover */
-  Dropzone.autoDiscover = false;
-
-  var UploadPattern = Base.extend({
-    name: 'upload',
-    trigger: '.pat-upload',
-    defaults: {
-      showTitle: true,
-      url: null, // XXX MUST provide url to submit to OR be in a form
-      className: 'upload',
-      wrap: false,
-      wrapperTemplate: '<div class="upload-wrapper"/>',
-      fileaddedClassName: 'dropping',
-      useTus: false,
-      container: '',
-      ajaxUpload: true,
-
-      paramName: 'file',
-      clickable: true,
-      addRemoveLinks: false,
-      autoCleanResults: true,
-      previewsContainer: '.previews',
-      previewTemplate: null,
-      maxFiles: null,
-      maxFilesize: 99999999, // let's not have a max by default...
-
-      relatedItems: {
-        // UID attribute is required here since we're working with related items
-        attributes: ['UID', 'Title', 'Description', 'getURL', 'Type', 'path', 'ModificationDate'],
-        batchSize: 20,
-        basePath: '/',
-        vocabularyUrl: null,
-        width: 500,
-        maximumSelectionSize: 1,
-        placeholder: _t('Search for item on site...')
-      }
-    },
-
-    //placeholder: 'Search for item on site...'
-    init: function() {
-      var self = this,
-          template = UploadTemplate;
-
-      // values that will change current processing
-      self.currentPath = self.options.currentPath;
-      self.numFiles = 0;
-      self.currentFile = 0;
-
-      template = _.template(template, {_t: _t});
-      self.$el.addClass(self.options.className);
-      self.$el.append(template);
-
-      self.$progress = $('.progress-bar-success', self.$el);
-
-      if (!self.options.showTitle) {
-        self.$el.find('h2.title').hide();
-      }
-
-      if (!self.options.ajaxUpload) {
-        // no ajax upload, drop the fallback
-        $('.fallback', this.$el).remove();
-        if (this.$el.hasClass('.upload-container')) {
-          this.$el.addClass('no-ajax-upload');
-        } else {
-          this.$el.closest('.upload-container').addClass('no-ajax-upload');
-        }
-      }
-
-      if (self.options.wrap) {
-        self.$el.wrap(self.options.wrapperTemplate);
-        self.$el = self.$el.parent();
-      }
-
-      if (self.options.baseUrl && self.options.relativePath){
-        // only use related items if we can generate paths based urls
-        self.$pathInput = $('input[name="location"]', self.$el);
-        self.relatedItems = self.setupRelatedItems(self.$pathInput);
-      } else {
-        $('input[name="location"]', self.$el).parent().remove();
-        self.relatedItems = null;
-      }
-
-      self.$dropzone = $('.upload-area', self.$el);
-
-      $('button.browse', self.$el).click(function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        // we trigger the dropzone dialog!
-        self.dropzone.hiddenFileInput.click();
-      });
-
-      var dzoneOptions = this.getDzoneOptions();
-
-      try {
-        // if init of Dropzone fails it says nothing and
-        // it fails silently. Using this block we make sure
-        // that if you break it w/ some weird or missing option
-        // you can get a proper log of it
-        //
-        self.dropzone = new Dropzone(self.$dropzone[0], dzoneOptions);
-      } catch (e) {
-        if (window.DEBUG) {
-          // log it!
-          console.log(e);
-        }
-        throw e;
-      }
-
-      self.dropzone.on('addedfile', function(file) {
-        self.showControls();
-      });
-
-      self.dropzone.on('removedfile', function() {
-        if (self.dropzone.files.length < 1) {
-          self.hideControls();
-        }
-      });
-
-      if (self.options.autoCleanResults) {
-        self.dropzone.on('complete', function(file) {
-          setTimeout(function() {
-            $(file.previewElement).fadeOut();
-          }, 3000);
-        });
-      }
-
-      self.dropzone.on('complete', function(file) {
-        if (self.dropzone.files.length < 1) {
-          self.hideControls();
-        }
-      });
-
-      self.dropzone.on('totaluploadprogress', function(pct) {
-        // need to caclulate total pct here in reality since we're manually
-        // processing each file one at a time.
-        pct = ((((self.currentFile - 1) * 100) + pct) / (self.numFiles * 100)) * 100;
-        self.$progress.attr('aria-valuenow', pct).css('width', pct + '%');
-      });
-
-      $('.upload-all', self.$el).click(function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        self.processUpload({
-          finished: function() {
-            self.$progress.attr('aria-valuenow', 0).css('width', '0%');
-          }
-        });
-      });
-    },
-
-    showControls: function() {
-      var self = this;
-      $('.controls', self.$el).fadeIn('slow');
-    },
-
-    hideControls: function() {
-      var self = this;
-      $('.controls', self.$el).fadeOut('slow');
-    },
-
-    pathJoin: function() {
-      var parts = [];
-      _.each(arguments, function(part) {
-        if (!part){
-          return;
-        }
-        if (part[0] === '/'){
-          part = part.substring(1);
-        }
-        if (part[part.length - 1] === '/'){
-          part = part.substring(0, part.length - 1);
-        }
-        parts.push(part);
-      });
-      return parts.join('/');
-    },
-
-    getUrl: function() {
-
-      var self = this;
-      var url = self.options.url;
-      if (!url) {
-        if (self.options.baseUrl && self.options.relativePath){
-          url = self.options.baseUrl;
-          if (url[url.length - 1] !== '/'){
-            url = url + '/';
-          }
-          url = url + self.pathJoin(self.currentPath, self.options.relativePath);
-        } else {
-          var $form = self.$el.parents('form');
-          if ($form.length > 0){
-            url = $form.attr('action');
-          } else {
-            url = window.location.href;
-          }
-        }
-      }
-      return url;
-    },
-
-    getDzoneOptions: function() {
-      var self = this;
-
-      // clickable option
-      if (typeof(self.options.clickable) === 'string') {
-        if (self.options.clickable === 'true') {
-          self.options.clickable = true;
-        } else {
-          self.options.clickable = false;
-        }
-      }
-
-      var options = $.extend({}, self.options);
-      options.url = self.getUrl();
-      // XXX force to only upload one at a time,
-      // right now we don't support multiple for backends
-      options.uploadMultiple = false;
-
-      delete options.wrap;
-      delete options.wrapperTemplate;
-      delete options.resultTemplate;
-      delete options.autoCleanResults;
-      delete options.fileaddedClassName;
-      delete options.useTus;
-
-      if (self.options.previewsContainer) {
-        /*
-         * if they have a select but it's not an id, let's make an id selector
-         * so we can target the correct container. dropzone is weird here...
-         */
-        var $preview = self.$el.find(self.options.previewsContainer);
-        if ($preview.length > 0) {
-          options.previewsContainer = $preview[0];
-        }
-      }
-
-      // XXX: do we need to allow this?
-      options.autoProcessQueue = false;
-      // options.addRemoveLinks = true;  // we show them in the template
-      options.previewTemplate = PreviewTemplate;
-
-      // if our element is a form we should force some values
-      // https://github.com/enyo/dropzone/wiki/Combine-normal-form-with-Dropzone
-      return options;
-    },
-
-    processUpload: function(options) {
-      if (!options){
-        options = {};
-      }
-
-      var self = this,
-          processing = false,
-          useTus = self.options.useTus,
-          fileaddedClassName = self.options.fileaddedClassName,
-          finished = options.finished;
-
-      self.numFiles = self.dropzone.files.length;
-      self.currentFile = 0;
-
-      function process() {
-        processing = true;
-        if (self.dropzone.files.length === 0) {
-          processing = false;
-          self.$el.removeClass(fileaddedClassName);
-          if (finished !== undefined && typeof(finished) === 'function'){
-            finished();
-          }
-          return;
-        }
-        var file = self.dropzone.files[0];
-        if ([Dropzone.SUCCESS, Dropzone.ERROR, Dropzone.CANCELED]
-            .indexOf(file.status) !== -1) {
-          // remove it
-          self.dropzone.removeFile(file);
-          process();
-        } else if (file.status !== Dropzone.UPLOADING) {
-          // start processing file
-          if (useTus && window.tus) {
-            // use tus upload if installed
-            self.handleTusUpload(file);
-          } else {
-            // otherwise, just use dropzone to process
-            self.currentFile += 1;
-            self.dropzone.processFile(file);
-          }
-          setTimeout(process, 100);
-        } else {
-          // currently processing
-          setTimeout(process, 100);
-        }
-      }
-      process();
-    },
-
-    handleTusUpload: function(file) {
-      /* this needs fixing... */
-      var self = this,
-          $preview = $(file.previewElement),
-          chunkSize = 1024 * 1024 * 5; // 5mb chunk size
-
-      file.status = Dropzone.UPLOADING;
-
-      window.tus.upload(file, {
-        endpoint: self.dropzone.options.url,
-        headers: {
-          'FILENAME': file.name
-        },
-        chunkSize: chunkSize
-      }).fail(function() {
-        if(window.DEBUG){
-          console.alert('Error uploading with TUS resumable uploads');
-        }
-        file.status = Dropzone.ERROR;
-      }).progress(function(e, bytesUploaded, bytesTotal) {
-        var percentage = (bytesUploaded / bytesTotal * 100);
-        self.$progress.attr('aria-valuenow', percentage).css('width', percentage + '%');
-        self.$progress.html(_t('uploading...<br />') +
-                            self.formatBytes(bytesUploaded) +
-                            ' / ' + self.formatBytes(bytesTotal));
-      }).done(function(url, file) {
-        file.status = Dropzone.SUCCESS;
-        self.dropzone.emit('success', file);
-        self.dropzone.emit('complete', file);
-      });
-    },
-
-    formatBytes: function(bytes) {
-      var kb = Math.round(bytes / 1024);
-      if (kb < 1024) {
-        return kb + ' KiB';
-      }
-      var mb = Math.round(kb / 1024);
-      if (mb < 1024) {
-        return mb + ' MB';
-      }
-      return Math.round(mb / 1024) + ' GB';
-    },
-
-    setPath: function(path){
-      var self = this;
-      self.currentPath = path;
-      self.options.url = self.dropzone.options.url = self.getUrl();
-    },
-
-    setupRelatedItems: function($input) {
-      var self = this;
-      var options = self.options.relatedItems;
-      if (self.options.initialFolder){
-        $input.attr('value', self.options.initialFolder);
-      }
-      var ri = new RelatedItems($input, options);
-      ri.$el.on('change', function() {
-        var result = $(this).select2('data');
-        var path = null;
-        if (result.length > 0){
-          path = result[0].path;
-        }
-        self.setPath(path);
-      });
-      return ri;
-    }
-
-  });
-
-  return UploadPattern;
-
-});
-
-define('mockup-patterns-tinymce-url/js/links',[
-  'jquery',
-  'underscore',
-  'mockup-registry',
-  'mockup-patterns-base',
-  'mockup-patterns-relateditems',
-  'mockup-patterns-modal',
-  'tinymce',
-  'mockup-patterns-upload',
-  'text!mockup-patterns-tinymce-url/templates/link.xml',
-  'text!mockup-patterns-tinymce-url/templates/image.xml'
-], function($, _, registry, Base, RelatedItems, Modal, tinymce, Upload, LinkTemplate, ImageTemplate) {
-  
-
-  var LinkType = Base.extend({
-    name: 'linktype',
-    trigger: '.pat-linktype',
-    defaults: {
-      linkModal: null // required
-    },
-
-    init: function() {
-      this.linkModal = this.options.linkModal;
-      this.tinypattern = this.options.tinypattern;
-      this.tiny = this.tinypattern.tiny;
-      this.dom = this.tiny.dom;
-      this.$input = this.$el.find('input');
-    },
-
-    value: function() {
-      return this.$input.val();
-    },
-
-    toUrl: function() {
-      return this.value();
-    },
-
-    load: function(element) {
-      this.$input.attr('value', this.tiny.dom.getAttrib(element, 'data-val'));
-    },
-
-    set: function(val) {
-      this.$input.attr('value', val);
-    },
-
-    attributes: function() {
-      return {
-        'data-val': this.value()
-      };
-    }
-  });
-
-  var InternalLink = LinkType.extend({
-    init: function() {
-      LinkType.prototype.init.call(this);
-      this.$input.addClass('pat-relateditems');
-      this.createRelatedItems();
-    },
-
-    createRelatedItems: function() {
-      this.relatedItems = new RelatedItems(this.$input,
-        this.linkModal.options.relatedItems);
-    },
-
-    value: function() {
-      var val = this.$input.select2('data');
-      if (val && typeof(val) === 'object') {
-        val = val[0];
-      }
-      return val;
-    },
-
-    toUrl: function() {
-      var value = this.value();
-      if (value) {
-        return this.tinypattern.generateUrl(value);
-      }
-      return null;
-    },
-    load: function(element) {
-      var val = this.tiny.dom.getAttrib(element, 'data-val');
-      if (val) {
-        this.set(val);
-      }
-    },
-
-    set: function(val) {
-      // kill it and then reinitialize since select2 will load data then
-      this.$input.select2('destroy');
-      this.$input.attr('data-relateditems', undefined); // reset the pattern
-      this.$input.parent().replaceWith(this.$input);
-      this.$input.attr('value', val);
-      this.createRelatedItems();
-    },
-
-    attributes: function() {
-      var val = this.value();
-      if (val) {
-        return {
-          'data-val': val.UID
-        };
-      }
-      return {};
-    }
-  });
-
-  var UploadLink = InternalLink.extend({
-    toUrl: function() {
-      var filename = $('.pat-upload').data('filename');
-      var path = $('.pat-upload').data('path');
-      var paths = [path, filename];
-      if (path){
-        paths.unshift(''); // add root node
-      }
-      return paths.join('/');
-    }
-  });
-
-  var ImageLink = InternalLink.extend({
-    toUrl: function() {
-      var value = this.value();
-      return this.tinypattern.generateImageUrl(value, this.linkModal.$scale.val());
-    }
-  });
-
-  var EmailLink = LinkType.extend({
-    toUrl: function() {
-      var self = this;
-      var val = self.value();
-      if (val) {
-        var subject = self.getSubject();
-        var href = 'mailto:' + val;
-        if (subject) {
-          href += '?subject=' + subject;
-        }
-        return href;
-      }
-      return null;
-    },
-
-    load: function(element) {
-      LinkType.prototype.load.apply(this, [element]);
-      this.linkModal.$subject.val(this.tiny.dom.getAttrib(element, 'data-subject'));
-    },
-
-    getSubject: function() {
-      return this.linkModal.$subject.val();
-    },
-
-    attributes: function() {
-      var attribs = LinkType.prototype.attributes.call(this);
-      attribs['data-subject'] = this.getSubject();
-      return attribs;
-    }
-  });
-
-  var AnchorLink = LinkType.extend({
-    init: function() {
-      LinkType.prototype.init.call(this);
-      this.$select = this.$el.find('select');
-      this.anchorNodes = [];
-      this.anchorData = [];
-      this.populate();
-    },
-
-    value: function() {
-      var val = this.$select.select2('data');
-      if (val && typeof(val) === 'object') {
-        val = val.id;
-      }
-      return val;
-    },
-
-    populate: function() {
-      var self = this;
-      self.$select.find('option').remove();
-      self.anchorNodes = [];
-      self.anchorData = [];
-      var node, i, j, name, title;
-
-      var nodes = self.tiny.dom.select('a.mceItemAnchor,img.mceItemAnchor,a.mce-item-anchor,img.mce-item-anchor');
-      for (i = 0; i < nodes.length; i = i + 1) {
-        node = nodes[i];
-        name = self.tiny.dom.getAttrib(node, 'name');
-        if (!name) {
-          name = self.tiny.dom.getAttrib(node, 'id');
-        }
-        if (name !== '') {
-          self.anchorNodes.push(node);
-          self.anchorData.push({name: name, title: name});
-        }
-      }
-
-      nodes = self.tiny.dom.select(self.linkModal.options.anchorSelector);
-      if (nodes.length > 0) {
-        for (i = 0; i < nodes.length; i = i + 1) {
-          node = nodes[i];
-          title = $(node).text().replace(/^\s+|\s+$/g, '');
-          if (title === '') {
-            continue;
-          }
-          name = title.toLowerCase().substring(0,1024);
-          name = name.replace(/[^a-z0-9]/g, '-');
-          /* okay, ugly, but we need to first check that this anchor isn't already available */
-          var found = false;
-          for (j = 0; j < self.anchorNodes.length; j = j + 1) {
-            var anode = self.anchorData[j];
-            if (anode.name === name) {
-              found = true;
-              // so it's also found, let's update the title to be more presentable
-              anode.title = title;
-              break;
-            }
-          }
-          if (!found) {
-            self.anchorData.push({name: name, title: title, newAnchor: true});
-            self.anchorNodes.push(node);
-          }
-        }
-      }
-      if (self.anchorNodes.length > 0) {
-        for (i = 0; i < self.anchorData.length; i = i + 1) {
-          var data = self.anchorData[i];
-          self.$select.append('<option value="' + i + '">' + data.title + '</option>');
-        }
-      } else {
-        self.$select.append('<option>No anchors found..</option>');
-      }
-    },
-
-    getIndex: function(name) {
-      for (var i = 0; i < this.anchorData.length; i = i + 1) {
-        var data = this.anchorData[i];
-        if (data.name === name) {
-          return i;
-        }
-      }
-      return 0;
-    },
-
-    toUrl: function() {
-      var val = this.value();
-      if (val) {
-        var index = parseInt(val, 10);
-        var node = this.anchorNodes[index];
-        var data = this.anchorData[index];
-        if (data.newAnchor) {
-          node.innerHTML = '<a name="' + data.name + '" class="mce-item-anchor"></a>' + node.innerHTML;
-        }
-        return '#' + data.name;
-      }
-      return null;
-    },
-
-    set: function(val) {
-      var anchor = this.getIndex(val);
-      this.$select.select2('data', '' + anchor);
-    }
-  });
-
-  tinymce.PluginManager.add('ploneimage', function(editor) {
-    editor.addButton('ploneimage', {
-      icon: 'image',
-      tooltip: 'Insert/edit image',
-      onclick: editor.settings.addImageClicked,
-      stateSelector: 'img:not([data-mce-object])'
-    });
-
-    editor.addMenuItem('ploneimage', {
-      icon: 'image',
-      text: 'Insert image',
-      onclick: editor.settings.addImageClicked,
-      context: 'insert',
-      prependToContext: true
-    });
-  });
-
-  /* register the tinymce plugin */
-  tinymce.PluginManager.add('plonelink', function(editor) {
-    editor.addButton('plonelink', {
-      icon: 'link',
-      tooltip: 'Insert/edit link',
-      shortcut: 'Ctrl+K',
-      onclick: editor.settings.addLinkClicked,
-      stateSelector: 'a[href]'
-    });
-
-    editor.addButton('unlink', {
-      icon: 'unlink',
-      tooltip: 'Remove link(s)',
-      cmd: 'unlink',
-      stateSelector: 'a[href]'
-    });
-
-    editor.addShortcut('Ctrl+K', '', editor.settings.addLinkClicked);
-
-    editor.addMenuItem('plonelink', {
-      icon: 'link',
-      text: 'Insert link',
-      shortcut: 'Ctrl+K',
-      onclick: editor.settings.addLinkClicked,
-      stateSelector: 'a[href]',
-      context: 'insert',
-      prependToContext: true
-    });
-  });
-
-
-  var LinkModal = Base.extend({
-    name: 'linkmodal',
-    trigger: '.pat-linkmodal',
-    defaults: {
-      anchorSelector: 'h1,h2,h3',
-      linkTypes: [
-        /* available, none activate by default because these options
-         * only get merged, not set.
-        'internal',
-        'upload',
-        'external',
-        'email',
-        'anchor',
-        'image'
-        'externalImage'*/
-      ],
-      initialLinkType: 'internal',
-      text: {
-        insertHeading: 'Insert Link'
-      },
-      linkTypeClassMapping: {
-        'internal': InternalLink,
-        'upload': UploadLink,
-        'external': LinkType,
-        'email': EmailLink,
-        'anchor': AnchorLink,
-        'image': ImageLink,
-        'uploadImage': UploadLink,
-        'externalImage': LinkType
-      }
-    },
-    // XXX: this is a temporary work around for having separated templates.
-    // Image modal is going to have its own modal class, funcs and template.
-    linkTypeTemplateMapping: {
-      'internal': LinkTemplate,
-      'upload': LinkTemplate,
-      'external': LinkTemplate,
-      'email': LinkTemplate,
-      'anchor': LinkTemplate,
-      'image': ImageTemplate,
-      'uploadImage': ImageTemplate,
-      'externalImage': ImageTemplate
-    },
-
-    template: function(data) {
-      return _.template(this.linkTypeTemplateMapping[this.linkType])(data);
-    },
-
-    init: function() {
-      var self = this;
-      self.tinypattern = self.options.tinypattern;
-      if (self.tinypattern.options.anchorSelector) {
-        self.options.anchorSelector = self.tinypattern.options.anchorSelector;
-      }
-      self.tiny = self.tinypattern.tiny;
-      self.dom = self.tiny.dom;
-      self.linkType = self.options.initialLinkType;
-      self.linkTypes = {};
-      self.modal = registry.patterns.modal.init(self.$el, {
-        html: self.generateModalHtml(),
-        content: null,
-        buttons: '.plone-btn'
-      });
-      self.modal.on('shown', function(e) {
-        self.modalShown.apply(self, [e]);
-      });
-    },
-
-    generateModalHtml: function() {
-      return this.template({
-        text: this.options.text,
-        insertHeading: this.options.text.insertHeading,
-        linkTypes: this.options.linkTypes,
-        externalText: this.options.text.external,
-        emailText: this.options.text.email,
-        subjectText: this.options.text.subject,
-        targetList: this.options.targetList,
-        titleText: this.options.text.title,
-        externalImageText: this.options.text.externalImage,
-        altText: this.options.text.alt,
-        imageAlignText: this.options.text.imageAlign,
-        scaleText: this.options.text.scale,
-        scales: this.options.scales,
-        cancelBtn: this.options.text.cancelBtn,
-        insertBtn: this.options.text.insertBtn
-      });
-    },
-
-    isImageMode: function() {
-      return ['image', 'uploadImage', 'externalImage'].indexOf(this.linkType) !== -1;
-    },
-
-    initElements: function() {
-      var self = this;
-      self.$target = $('select[name="target"]', self.modal.$modal);
-      self.$button = $('.plone-modal-footer input[name="insert"]', self.modal.$modal);
-      self.$title = $('input[name="title"]', self.modal.$modal);
-      self.$subject = $('input[name="subject"]', self.modal.$modal);
-
-      self.$alt = $('input[name="alt"]', self.modal.$modal);
-      self.$align = $('select[name="align"]', self.modal.$modal);
-      self.$scale = $('select[name="scale"]', self.modal.$modal);
-
-      /* load up all the link types */
-      _.each(self.options.linkTypes, function(type) {
-        var $container = $('.linkType.' + type + ' .main', self.modal.$modal);
-        self.linkTypes[type] = new self.options.linkTypeClassMapping[type]($container, {
-          linkModal: self,
-          tinypattern: self.tinypattern
-        });
-      });
-
-      $('.autotoc-nav a', self.modal.$modal).click(function() {
-        var $fieldset = $('fieldset.linkType', self.modal.$modal).eq($(this).index());
-        var classes = $fieldset[0].className.split(/\s+/);
-        _.each(classes, function(val) {
-          if (_.indexOf(self.options.linkTypes, val) !== -1){
-            self.linkType = val;
-          }
-        });
-      });
-    },
-
-    getLinkUrl: function() {
-      // get the url, only get one uid
-      return this.linkTypes[this.linkType].toUrl();
-    },
-
-    getValue: function() {
-      return this.linkTypes[this.linkType].value();
-    },
-
-    updateAnchor: function(href) {
-      var self = this;
-      var target = self.$target.val();
-      var title = self.$title.val();
-      var data = $.extend(true, {}, {
-        title: title ? title : null,
-        target: target ? target : null,
-        'data-linkType': self.linkType,
-        href: href
-      }, self.linkTypes[self.linkType].attributes());
-      self.tiny.execCommand('mceInsertLink', false, data);
-    },
-
-    focusElement: function(elm) {
-      this.tiny.focus();
-      this.tiny.selection.select(elm);
-      this.tiny.nodeChanged();
-    },
-
-    updateImage: function(src) {
-      var self = this;
-      var data = $.extend(true, {}, {
-        src: src,
-        alt: self.$alt.val(),
-        'class': 'image-' + self.$align.val(),
-        'data-linkType': self.linkType,
-        'data-scale': self.$scale.val()
-      }, self.linkTypes[self.linkType].attributes());
-      if (self.imgElm && !self.imgElm.getAttribute('data-mce-object')) {
-        data.width = self.dom.getAttrib(self.imgElm, 'width');
-        data.height = self.dom.getAttrib(self.imgElm, 'height');
-      } else {
-        self.imgElm = null;
-      }
-
-      function waitLoad(imgElm) {
-        imgElm.onload = imgElm.onerror = function() {
-          imgElm.onload = imgElm.onerror = null;
-          self.focusElement(imgElm);
-        };
-      }
-
-      if (!self.imgElm) {
-        data.id = '__mcenew';
-        self.tiny.insertContent(self.dom.createHTML('img', data));
-        self.imgElm = self.dom.get('__mcenew');
-        self.dom.setAttrib(self.imgElm, 'id', null);
-      } else {
-        self.dom.setAttribs(self.imgElm, data);
-      }
-
-      waitLoad(self.imgElm);
-      if (self.imgElm.complete) {
-        self.focusElement(self.imgElm);
-      }
-    },
-
-    modalShown: function(e) {
-      var self = this;
-      self.initElements();
-      self.initData();
-      // upload init
-      self.$upload = $('.uploadify-me', self.modal.$modal);
-      self.options.upload.relatedItems = self.options.relatedItems;
-      self.$upload.addClass('pat-upload').patternUpload(self.options.upload);
-      self.$upload.on('uploadAllCompleted', function(evt, data) {
-        self.$upload.attr({
-          'data-filename': data.files ? data.files[0].name : '',
-          'data-path': data.path
-        });
-      });
-
-      self.$button.off('click').on('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        self.linkType = self.modal.$modal.find('fieldset.active').data('linktype');
-
-        var href = self.getLinkUrl();
-        if (!href) {
-          return; // just cut out if no url
-        }
-        if (self.isImageMode()) {
-          self.updateImage(href);
-        } else {
-          /* regular anchor */
-          self.updateAnchor(href);
-        }
-        self.hide();
-      });
-      $('.plone-modal-footer input[name="cancel"]', self.modal.$modal).click(function(e) {
-        e.preventDefault();
-        self.hide();
-      });
-    },
-
-    show: function() {
-      this.modal.show();
-    },
-
-    hide: function() {
-      this.modal.hide();
-    },
-
-    initData: function() {
-      var self = this;
-      self.selection = self.tiny.selection;
-      self.tiny.focus();
-      var selectedElm = self.imgElm = self.selection.getNode();
-      self.anchorElm = self.dom.getParent(selectedElm, 'a[href]');
-
-      var linkType;
-      if (self.isImageMode()) {
-        if (self.imgElm.nodeName !== 'IMG') {
-          // try finding elsewhere
-          if (self.anchorElm) {
-            var imgs = self.anchorElm.getElementsByTagName('img');
-            if (imgs.length > 0) {
-              self.imgElm = imgs[0];
-              self.focusElement(self.imgElm);
-            }
-          }
-        }
-        if (self.imgElm.nodeName !== 'IMG') {
-          // okay, still no image, unset
-          self.imgElm = null;
-        }
-        if (self.imgElm) {
-          var src = self.dom.getAttrib(self.imgElm, 'src');
-          self.$alt.val(self.dom.getAttrib(self.imgElm, 'alt'));
-          linkType = self.dom.getAttrib(self.imgElm, 'data-linktype');
-          if (linkType) {
-            self.linkType = linkType;
-            self.linkTypes[self.linkType].load(self.imgElm);
-            var scale = self.dom.getAttrib(self.imgElm, 'data-scale');
-            self.$scale.val(scale);
-          }else if (src) {
-            self.guessImageLink(src);
-          }
-          var className = self.dom.getAttrib(self.imgElm, 'class');
-          var klasses = className.split(' ');
-          for (var i = 0; i < klasses.length; i = i + 1) {
-            var klass = klasses[i];
-            if (klass.indexOf('image-') !== -1) {
-              self.$align.val(klass.replace('image-', ''));
-            }
-          }
-        }
-      }else if (self.anchorElm) {
-        self.focusElement(self.anchorElm);
-        var href = '';
-        href = self.dom.getAttrib(self.anchorElm, 'href');
-        self.$target.val(self.dom.getAttrib(self.anchorElm, 'target'));
-        self.$title.val(self.dom.getAttrib(self.anchorElm, 'title'));
-        linkType = self.dom.getAttrib(self.anchorElm, 'data-linktype');
-        if (linkType) {
-          self.linkType = linkType;
-          self.linkTypes[self.linkType].load(self.anchorElm);
-        }else if (href) {
-          self.guessAnchorLink(href);
-        }
-      }
-    },
-
-    guessImageLink: function(src) {
-      if (src.indexOf(this.options.prependToScalePart) !== -1) {
-        this.linkType = 'image';
-        this.$scale.val(this.tinypattern.getScaleFromUrl(src));
-        this.linkTypes.image.set(this.tinypattern.stripGeneratedUrl(src));
-      } else {
-        this.linkType = 'externalImage';
-        this.linkTypes.externalImage.set(src);
-      }
-    },
-
-    guessAnchorLink: function(href) {
-      if (this.options.prependToUrl &&
-          href.indexOf(this.options.prependToUrl) !== -1) {
-        // XXX if using default configuration, it gets more difficult
-        // here to detect internal urls so this might need to change...
-        this.linkType = 'internal';
-        this.linkTypes.internal.set(this.tinypattern.stripGeneratedUrl(href));
-      } else if (href.indexOf('mailto:') !== -1) {
-        this.linkType = 'email';
-        var email = href.substring('mailto:'.length, href.length);
-        var split = email.split('?subject=');
-        this.linkTypes.email.set(split[0]);
-        if (split.length > 1) {
-          this.$subject.val(decodeURIComponent(split[1]));
-        }
-      } else if (href[0] === '#') {
-        this.linkType = 'anchor';
-        this.linkTypes.anchor.setRaw(href.substring(1));
-      } else {
-        this.linkType = 'external';
-        this.linkTypes.external.setRaw(href);
-      }
-    },
-
-    setSelectElement: function($el, val) {
-      $el.find('option:selected').prop('selected', false);
-      if (val) {
-        // update
-        $el.find('option[value="' + val + '"]').prop('selected', true);
-      }
-    },
-
-    reinitialize: function() {
-      /*
-       * This will probably be called before show is run.
-       * It will overwrite the base html template given to
-       * be able to privde default values for the overlay
-       */
-      this.modal.options.html = this.generateModalHtml();
-    }
-  });
-  return LinkModal;
-
-});
-
-/* TinyMCE pattern.
- *
- * Options:
- *    relatedItems(object): Related items pattern options. ({ attributes: ["UID", "Title", "Description", "getURL", "Type", "path", "ModificationDate"], batchSize: 20, basePath: "/", vocabularyUrl: null, width: 500, maximumSelectionSize: 1, placeholder: "Search for item on site..." })
- *    upload(object): Upload pattern options. ({ attributes: look at upload pattern for getting the options list })
- *    text(object): Translation strings ({ insertBtn: "Insert", cancelBtn: "Cancel", insertHeading: "Insert link", title: "Title", internal: "Internal", external: "External", email: "Email", anchor: "Anchor", subject: "Subject" image: "Image", imageAlign: "Align", scale: "Size", alt: "Alternative Text", externalImage: "External Image URI"})
- *    scales(string): TODO: is this even used ('Listing (16x16):listing,Icon (32x32):icon,Tile (64x64):tile,Thumb (128x128):thumb,Mini (200x200):mini,Preview (400x400):preview,Large (768x768):large')
- *    targetList(array): TODO ([ {text: "Open in this window / frame", value: ""}, {text: "Open in new window", value: "_blank"}, {text: "Open in parent window / frame", value: "_parent"}, {text: "Open in top frame (replaces all frames)", value: "_top"}])
- * imageTypes(string): TODO ('Image')
- *    folderTypes(string): TODO ('Folder,Plone Site')
- *    linkableTypes(string): TODO ('Document,Event,File,Folder,Image,News Item,Topic')
- *    tiny(object): TODO ({ plugins: [ "advlist autolink lists charmap print preview anchor", "usearchreplace visualblocks code fullscreen autoresize", "insertdatetime media table contextmenu paste plonelink ploneimage" ], menubar: "edit table format tools view insert",
-toolbar: "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | unlink plonelink ploneimage", autoresize_max_height: 1500 })
- *    prependToUrl(string): Text to prepend to generated internal urls. ('')
- *    appendToUrl(string): Text to append to generated internal urls. ('')
- *    prependToScalePart(string): Text to prepend to generated image scale url part. ('/imagescale/')
- *    appendToScalePart(string): Text to append to generated image scale url part. ('')
- *    linkAttribute(string): Ajax response data attribute to use for url. ('path')
- *
- * Documentation:
- *    # Default
- *
- *    {{ example-1 }}
- *
- *    # With dropzone
- *
- *    {{ example-2 }}
- *
- * Example: example-1
- *    <form>
- *      <textarea class="pat-tinymce"
- *          data-pat-tinymce='{"relatedItems": {
- *                                "vocabularyUrl": "/relateditems-test.json"
- *                                }}'></textarea>
- *    </form>
- *
- * Example: example-2
- *    <form>
- *      <textarea class="pat-tinymce"
- *          data-pat-tinymce='{"relatedItems": {"vocabularyUrl": "/relateditems-test.json" },
- *                            {"upload": {"baseUrl": "/", relativePath: "upload"} } }'></textarea>
- *    </form>
- *
- */
-
-/* global alert:true */
-
-
-define('mockup-patterns-tinymce',[
-  'jquery',
-  'underscore',
-  'mockup-patterns-base',
-  'mockup-patterns-relateditems',
-  'mockup-patterns-modal',
-  'tinymce',
-  'mockup-patterns-autotoc',
-  'text!mockup-patterns-tinymce-url/templates/result.xml',
-  'text!mockup-patterns-tinymce-url/templates/selection.xml',
-  'mockup-utils',
-  'mockup-patterns-tinymce-url/js/links',
-  'translate',
-  'tinymce-modern-theme',
-  'tinymce-advlist',
-  'tinymce-anchor',
-  'tinymce-autolink',
-  'tinymce-autoresize',
-  'tinymce-autosave',
-  'tinymce-bbcode',
-  'tinymce-charmap',
-  'tinymce-code',
-  'tinymce-colorpicker',
-  'tinymce-contextmenu',
-  'tinymce-directionality',
-  'tinymce-emoticons',
-  'tinymce-fullpage',
-  'tinymce-fullscreen',
-  'tinymce-hr',
-  'tinymce-image',
-  'tinymce-importcss',
-  'tinymce-insertdatetime',
-  'tinymce-layer',
-  'tinymce-legacyoutput',
-  'tinymce-link',
-  'tinymce-lists',
-  'tinymce-media',
-  'tinymce-nonbreaking',
-  'tinymce-noneditable',
-  'tinymce-pagebreak',
-  'tinymce-paste',
-  'tinymce-preview',
-  'tinymce-print',
-  'tinymce-save',
-  'tinymce-searchreplace',
-  'tinymce-spellchecker',
-  'tinymce-tabfocus',
-  'tinymce-table',
-  'tinymce-template',
-  'tinymce-textcolor',
-  'tinymce-textpattern',
-  'tinymce-visualblocks',
-  'tinymce-visualchars',
-  'tinymce-wordcount'
-], function($, _, Base, RelatedItems, Modal, tinymce, AutoTOC, ResultTemplate, SelectionTemplate, utils, LinkModal, _t) {
-  
-
-  var TinyMCE = Base.extend({
-    name: 'tinymce',
-    trigger: '.pat-tinymce',
-    defaults: {
-      upload: {
-        uploadMultiple: false,
-        maxFiles: 1,
-        showTitle: false
-      },
-      relatedItems: {
-        // UID attribute is required here since we're working with related items
-        attributes: ['UID', 'Title', 'Description', 'getURL', 'Type', 'path', 'ModificationDate'],
-        batchSize: 20,
-        basePath: '/',
-        vocabularyUrl: null,
-        width: 500,
-        maximumSelectionSize: 1,
-        placeholder: _t('Search for item on site...')
-      },
-      text: {
-        insertBtn: _t('Insert'), // so this can be configurable for different languages
-        cancelBtn: _t('Cancel'),
-        insertHeading: _t('Insert link'),
-        title: _t('Title'),
-        internal: _t('Internal'),
-        external: _t('External'),
-        email: _t('Email'),
-        anchor: _t('Anchor'),
-        subject: _t('Subject'),
-        image: _t('Image'),
-        imageAlign: _t('Align'),
-        scale: _t('Size'),
-        alt: _t('Alternative Text'),
-        externalImage: _t('External Image URI')
-      },
-      // URL generation options
-      loadingBaseUrl: '../../../bower_components/tinymce-builded/js/tinymce/',
-      prependToUrl: '',
-      appendToUrl: '',
-      linkAttribute: 'path', // attribute to get link value from data
-      prependToScalePart: '/imagescale/', // some value here is required to be able to parse scales back
-      appendToScalePart: '',
-      scales: _t('Listing (16x16):listing,Icon (32x32):icon,Tile (64x64):tile,' +
-              'Thumb (128x128):thumb,Mini (200x200):mini,Preview (400x400):preview,' +
-              'Large (768x768):large'),
-      targetList: [
-        {text: _t('Open in this window / frame'), value: ''},
-        {text: _t('Open in new window'), value: '_blank'},
-        {text: _t('Open in parent window / frame'), value: '_parent'},
-        {text: _t('Open in top frame (replaces all frames)'), value: '_top'}
-      ],
-      imageTypes: 'Image',
-      folderTypes: 'Folder,Plone Site',
-      linkableTypes: 'Document,Event,File,Folder,Image,News Item,Topic',
-      tiny: {
-        'content_css': '../../../bower_components/tinymce-builded/js/tinymce/skins/lightgray/content.min.css',
-        theme: '-modern',
-        plugins: [
-          '-advlist -autolink -lists -charmap -print -preview -anchor ' +
-          '-searchreplace -visualblocks -code -fullscreen -autoresize ' +
-          '-insertdatetime -media -table -contextmenu -paste -plonelink -ploneimage'
-        ],
-        menubar: 'edit table format tools view insert',
-        toolbar: 'undo redo | styleselect | bold italic | ' +
-                 'alignleft aligncenter alignright alignjustify | ' +
-                 'bullist numlist outdent indent | ' +
-                 'unlink plonelink ploneimage',
-        'autoresize_max_height': 1500
-      }
-    },
-    addLinkClicked: function() {
-      var self = this;
-      if (self.linkModal === null) {
-        var $el = $('<div/>').insertAfter(self.$el);
-        self.linkModal = new LinkModal($el,
-          $.extend(true, {}, self.options, {
-            tinypattern: self,
-            linkTypes: [
-              'internal',
-              'upload',
-              'external',
-              'email',
-              'anchor'
-            ]
-          })
-        );
-        self.linkModal.show();
-      } else {
-        self.linkModal.reinitialize();
-        self.linkModal.show();
-      }
-    },
-    addImageClicked: function() {
-      var self = this;
-      if (self.imageModal === null) {
-        var options = $.extend(true, {}, self.options, {
-          tinypattern: self,
-          linkTypes: ['image', 'uploadImage', 'externalImage'],
-          initialLinkType: 'image',
-          text: {
-            insertHeading: _t('Insert Image')
-          },
-          relatedItems: {
-            baseCriteria: [{
-              i: 'Type',
-              o: 'plone.app.querystring.operation.list.contains',
-              v: self.options.imageTypes.split(',').concat(self.options.folderTypes.split(','))
-            }],
-            selectableTypes: self.options.imageTypes.split(','),
-            resultTemplate: ResultTemplate,
-            selectionTemplate: SelectionTemplate
-          }
-        });
-        var $el = $('<div/>').insertAfter(self.$el);
-        self.imageModal = new LinkModal($el, options);
-        self.imageModal.show();
-      } else {
-        self.imageModal.reinitialize();
-        self.imageModal.show();
-      }
-    },
-    generateUrl: function(data) {
-      var self = this;
-      var part = data[self.options.linkAttribute];
-      return self.options.prependToUrl + part + self.options.appendToUrl;
-    },
-    generateImageUrl: function(data, scale) {
-      var self = this;
-      var url = self.generateUrl(data);
-      if (scale !== ""){
-          url = (url + self.options.prependToScalePart + scale +
-                 self.options.appendToScalePart);
-      }
-      return url;
-    },
-    stripGeneratedUrl: function(url) {
-      // to get original attribute back
-      var self = this;
-      url = url.split(self.options.prependToScalePart, 2)[0];
-      if (self.options.prependToUrl) {
-        var parts = url.split(self.options.prependToUrl, 2);
-        if (parts.length === 2) {
-          url = parts[1];
-        }
-      }
-      if (self.options.appendToUrl) {
-        url = url.split(self.options.appendToUrl)[0];
-      }
-      return url;
-    },
-    getScaleFromUrl: function(url) {
-      var self = this;
-      var split = url.split(self.options.prependToScalePart);
-      if (split.length !== 2) {
-        // not valid scale, screw it
-        return null;
-      }
-      if (self.options.appendToScalePart) {
-        url = split[1].split(self.options.appendToScalePart)[0];
-      } else {
-        url = split[1];
-      }
-      if (url.indexOf('/image_') !== -1) {
-        url = url.split('/image_')[1];
-      }
-      return url;
-    },
-    init: function() {
-      var self = this;
-      self.linkModal = self.imageModal = self.uploadModal = null;
-      // tiny needs an id in order to initialize. Creat it if not set.
-      var id = utils.setId(self.$el);
-      var tinyOptions = self.options.tiny;
-      tinyOptions.selector = '#' + id;
-      tinyOptions.addLinkClicked = function() {
-        self.addLinkClicked.apply(self, []);
-      };
-      tinyOptions.addImageClicked = function() {
-        self.addImageClicked.apply(self, []);
-      };
-      // XXX: disabled skin means it wont load css files which we already
-      // include in widgets.min.css
-      tinyOptions.skin = false;
-
-      self.options.relatedItems.generateImageUrl = function(data, scale) {
-        // this is so, in our result and selection template, we can
-        // access getting actual urls from related items
-        return self.generateImageUrl.apply(self, [data, scale]);
-      };
-
-      tinyOptions.init_instance_callback = function(editor) {
-        if (self.tiny === undefined || self.tiny === null) {
-          self.tiny = editor;
-        }
-      };
-      if (tinyOptions.language !== 'en') {
-        tinymce.baseURL = self.options.loadingBaseUrl;
-      }
-
-      tinymce.init(tinyOptions);
-      self.tiny = tinymce.get(id);
-
-      /* tiny really should be doing this by default
-       * but this fixes overlays not saving data */
-      var $form = self.$el.parents('form');
-      $form.on('submit', function() {
-        self.tiny.save();
-      });
-    },
-    destroy: function() {
-      this.tiny.destroy();
-    }
-  });
-
-  return TinyMCE;
-
-});
-
-/* TextareaMimetypeSelector pattern.
- *
- *
- * Options:
- *    textareaName(string): Value of name attribute of the textarea ('')
- *    widgets(object): MimeType/PatternConfig pairs ({'text/html': {pattern: 'tinymce', patternOptions: {}}})
- *
- *
- * Documentation:
- *   # General
- *
- *   This pattern displays a mimetype selection widget for textareas. It
- *   switches the widget according to the selected mimetype.
- *
- *   ## widgets option Structure
- *
- *   Complex Object/JSON structure with MimeType/PatternConfig pairs. The
- *   MimeType is a string like "text/html". The PatternConfig is a object with
- *   a "pattern" and an optional "patternOptions" attribute. The "pattern"
- *   attribute's value is a string with the patterns name and the
- *   "patternOptions" attribute is a object with whatever options the pattern
- *   needs. For example, to use the TinyMCE pattern for the HTML mimetype, use
- *   "text/html": {"pattern": "tinymce"}
- *
- *   # Mimetype selection on textarea including text/html mimetype with TinyMCE editor.
- *
- *   {{ example-1 }}
- *
- * Example: example-1
- *
- *    <textarea name="text">
- *      <h1>hello world</h1>
- *    </textarea>
- *    <select
- *        name="text.mimeType"
- *        class="pat-textareamimetypeselector"
- *        data-pat-textareamimetypeselector='{
- *          "textareaName": "text",
- *          "widgets": {
- *            "text/html": {
- *              "pattern": "tinymce",
- *              "patternOptions": {
- *                "tiny": {
- *                  "plugins": [],
- *                  "menubar": "edit format tools",
- *                  "toolbar": " "
- *                }
- *              }
- *            }
- *          }
- *        }'
- *      >
- *      <option value="text/html">text/html</option>
- *      <option value="text/plain" selected="selected">text/plain</option>
- *    </select>
- *
- */
-
-define('mockup-patterns-textareamimetypeselector',[
-  'jquery',
-  'mockup-patterns-base',
-  'mockup-registry',
-  'mockup-patterns-tinymce'
-], function ($, Base, registry, tinymce) {
-  
-
-  var TextareaMimetypeSelector = Base.extend({
-    name: 'textareamimetypeselector',
-    trigger: '.pat-textareamimetypeselector',
-    textarea: undefined,
-    currentWidget: undefined,
-    defaults: {
-      textareaName: '',
-      widgets: {'text/html': {pattern: 'tinymce', patternOptions: {}}}
-    },
-    init: function () {
-      var self = this,
-          $el = self.$el,
-          current;
-      self.textarea = $('[name="' + self.options.textareaName + '"]');
-      $el.change(function (e) {
-        self.initTextarea(e.target.value);
-      });
-      self.initTextarea($el.val());
-
-    },
-    initTextarea: function (mimetype) {
-      var self = this,
-          patternConfig = self.options.widgets[mimetype],
-          pattern;
-      // First, destroy current
-      if (self.currentWidget) {
-        // The pattern must implement the destroy method.
-        self.currentWidget.destroy();
-      }
-      // Then, setup new
-      if (patternConfig) {
-          pattern = new registry.patterns[patternConfig.pattern](
-            self.textarea,
-            patternConfig.patternOptions || {}
-          );
-          self.currentWidget = pattern;
-      }
-    }
-
-  });
-
-  return TextareaMimetypeSelector;
-});
-
-define('mockup-patterns-structure-url/js/views/upload',[
-  'jquery',
-  'underscore',
-  'backbone',
-  'mockup-ui-url/views/popover',
-  'mockup-patterns-upload'
-], function($, _, Backbone, PopoverView, Upload) {
-  
-
-  var UploadView = PopoverView.extend({
-    className: 'popover upload',
-    title: _.template('Upload files'),
-    content: _.template(
-      '<input type="text" name="upload" style="display:none" />' +
-      '<div class="uploadify-me"></div>'),
-
-    initialize: function(options) {
-      var self = this;
-      self.app = options.app;
-      PopoverView.prototype.initialize.apply(self, [options]);
-      self.currentPathData = null;
-      self.app.on('context-info-loaded', function(data) {
-        self.currentPathData = data;
-      });
-    },
-
-    render: function() {
-      var self = this;
-      PopoverView.prototype.render.call(this);
-      var options = self.app.options.upload;
-      options.success = function() {
-        self.app.collection.pager();
-      };
-      options.relatedItems = {
-        vocabularyUrl: self.app.options.vocabularyUrl
-      };
-      options.currentPath = self.app.options.queryHelper.getCurrentPath();
-      self.upload = new Upload(self.$('.uploadify-me').addClass('pat-upload'), options);
-      return this;
-    },
-
-    toggle: function(button, e) {
-      /* we need to be able to change the current default upload directory */
-      PopoverView.prototype.toggle.apply(this, [button, e]);
-      var self = this;
-      if (!this.opened) {
-        return;
-      }
-      var currentPath = self.app.queryHelper.getCurrentPath();
-      var relatedItems = self.upload.relatedItems;
-      if (self.currentPathData && relatedItems && currentPath !== self.upload.currentPath){
-        if (currentPath === '/'){
-          relatedItems.$el.select2('data', []);
-        } else {
-          relatedItems.$el.select2('data', [self.currentPathData.object]);
-        }
-        self.upload.setPath(currentPath);
-      }
-    }
-
-  });
-
-  return UploadView;
-});
-
-
-
-
-
 
 //! moment.js
 //! version : 2.8.3

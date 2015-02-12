@@ -1070,323 +1070,6 @@ define('pat-utils',[
     return utils;
 });
 
-/**
- * @license
- * Patterns @VERSION@ jquery-ext - various jQuery extensions
- *
- * Copyright 2011 Humberto Sermeño
- */
-define('pat-jquery-ext',["jquery"], function($) {
-    var methods = {
-        init: function( options ) {
-            var settings = {
-                time: 3, /* time it will wait before moving to "timeout" after a move event */
-                initialTime: 8, /* time it will wait before first adding the "timeout" class */
-                exceptionAreas: [] /* IDs of elements that, if the mouse is over them, will reset the timer */
-            };
-            return this.each(function() {
-                var $this = $(this),
-                    data = $this.data("timeout");
-
-                if (!data) {
-                    if ( options ) {
-                        $.extend( settings, options );
-                    }
-                    $this.data("timeout", {
-                        "lastEvent": new Date(),
-                        "trueTime": settings.time,
-                        "time": settings.initialTime,
-                        "untouched": true,
-                        "inExceptionArea": false
-                    });
-
-                    $this.bind( "mouseover.timeout", methods.mouseMoved );
-                    $this.bind( "mouseenter.timeout", methods.mouseMoved );
-
-                    $(settings.exceptionAreas).each(function() {
-                        $this.find(this)
-                            .live( "mouseover.timeout", {"parent":$this}, methods.enteredException )
-                            .live( "mouseleave.timeout", {"parent":$this}, methods.leftException );
-                    });
-
-                    if (settings.initialTime > 0)
-                        $this.timeout("startTimer");
-                    else
-                        $this.addClass("timeout");
-                }
-            });
-        },
-
-        enteredException: function(event) {
-            var data = event.data.parent.data("timeout");
-            data.inExceptionArea = true;
-            event.data.parent.data("timeout", data);
-            event.data.parent.trigger("mouseover");
-        },
-
-        leftException: function(event) {
-            var data = event.data.parent.data("timeout");
-            data.inExceptionArea = false;
-            event.data.parent.data("timeout", data);
-        },
-
-        destroy: function() {
-            return this.each( function() {
-                var $this = $(this),
-                    data = $this.data("timeout");
-
-                $(window).unbind(".timeout");
-                data.timeout.remove();
-                $this.removeData("timeout");
-            });
-        },
-
-        mouseMoved: function() {
-            var $this = $(this), data = $this.data("timeout");
-
-            if ($this.hasClass("timeout")) {
-                $this.removeClass("timeout");
-                $this.timeout("startTimer");
-            } else if ( data.untouched ) {
-                data.untouched = false;
-                data.time = data.trueTime;
-            }
-
-            data.lastEvent = new Date();
-            $this.data("timeout", data);
-        },
-
-        startTimer: function() {
-            var $this = $(this), data = $this.data("timeout");
-            var fn = function(){
-                var data = $this.data("timeout");
-                if ( data && data.lastEvent ) {
-                    if ( data.inExceptionArea ) {
-                        setTimeout( fn, Math.floor( data.time*1000 ) );
-                    } else {
-                        var now = new Date();
-                        var diff = Math.floor(data.time*1000) - ( now - data.lastEvent );
-                        if ( diff > 0 ) {
-                            // the timeout has not ocurred, so set the timeout again
-                            setTimeout( fn, diff+100 );
-                        } else {
-                            // timeout ocurred, so set the class
-                            $this.addClass("timeout");
-                        }
-                    }
-                }
-            };
-
-            setTimeout( fn, Math.floor( data.time*1000 ) );
-        }
-    };
-
-    $.fn.timeout = function( method ) {
-        if ( methods[method] ) {
-            return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
-        } else if ( typeof method === "object" || !method ) {
-            return methods.init.apply( this, arguments );
-        } else {
-            $.error( "Method " + method + " does not exist on jQuery.timeout" );
-        }
-    };
-
-    // Custom jQuery selector to find elements with scrollbars
-    $.extend($.expr[":"], {
-        scrollable: function(element) {
-            var vertically_scrollable, horizontally_scrollable;
-            if ($(element).css("overflow") === "scroll" ||
-                $(element).css("overflowX") === "scroll" ||
-                $(element).css("overflowY") === "scroll")
-                return true;
-
-            vertically_scrollable = (element.clientHeight < element.scrollHeight) && (
-                $.inArray($(element).css("overflowY"), ["scroll", "auto"]) !== -1 || $.inArray($(element).css("overflow"), ["scroll", "auto"]) !== -1);
-
-            if (vertically_scrollable)
-                return true;
-
-            horizontally_scrollable = (element.clientWidth < element.scrollWidth) && (
-                $.inArray($(element).css("overflowX"), ["scroll", "auto"]) !== -1 || $.inArray($(element).css("overflow"), ["scroll", "auto"]) !== -1);
-            return horizontally_scrollable;
-        }
-    });
-
-    // Make Visible in scroll
-    $.fn.makeVisibleInScroll = function( parent_id ) {
-        var absoluteParent = null;
-        if ( typeof parent_id === "string" ) {
-            absoluteParent = $("#" + parent_id);
-        } else if ( parent_id ) {
-            absoluteParent = $(parent_id);
-        }
-
-        return this.each(function() {
-            var $this = $(this), parent;
-            if (!absoluteParent) {
-                parent = $this.parents(":scrollable");
-                if (parent.length > 0) {
-                    parent = $(parent[0]);
-                } else {
-                    parent = $(window);
-                }
-            } else {
-                parent = absoluteParent;
-            }
-
-            var elemTop = $this.position().top;
-            var elemBottom = $this.height() + elemTop;
-
-            var viewTop = parent.scrollTop();
-            var viewBottom = parent.height() + viewTop;
-
-            if (elemTop < viewTop) {
-                parent.scrollTop(elemTop);
-            } else if ( elemBottom > viewBottom - parent.height()/2 ) {
-                parent.scrollTop( elemTop - (parent.height() - $this.height())/2 );
-            }
-        });
-    };
-
-    //Make absolute location
-    $.fn.setPositionAbsolute = function(element,offsettop,offsetleft) {
-        return this.each(function() {
-            // set absolute location for based on the element passed
-            // dynamically since every browser has different settings
-            var $this = $(this);
-            var thiswidth = $(this).width();
-            var    pos   = element.offset();
-            var    width = element.width();
-            var    height = element.height();
-            var setleft = (pos.left + width - thiswidth + offsetleft);
-            var settop = (pos.top + height + offsettop);
-            $this.css({ "z-index" : 1, "position": "absolute", "marginLeft": 0, "marginTop": 0, "left": setleft + "px", "top":settop + "px" ,"width":thiswidth});
-            $this.remove().appendTo("body").show();
-        });
-    };
-
-    $.fn.positionAncestor = function(selector) {
-        var left = 0;
-        var top = 0;
-        this.each(function() {
-            // check if current element has an ancestor matching a selector
-            // and that ancestor is positioned
-            var $ancestor = $(this).closest(selector);
-            if ($ancestor.length && $ancestor.css("position") !== "static") {
-                var $child = $(this);
-                var childMarginEdgeLeft = $child.offset().left - parseInt($child.css("marginLeft"), 10);
-                var childMarginEdgeTop = $child.offset().top - parseInt($child.css("marginTop"), 10);
-                var ancestorPaddingEdgeLeft = $ancestor.offset().left + parseInt($ancestor.css("borderLeftWidth"), 10);
-                var ancestorPaddingEdgeTop = $ancestor.offset().top + parseInt($ancestor.css("borderTopWidth"), 10);
-                left = childMarginEdgeLeft - ancestorPaddingEdgeLeft;
-                top = childMarginEdgeTop - ancestorPaddingEdgeTop;
-                // we have found the ancestor and computed the position
-                // stop iterating
-                return false;
-            }
-        });
-        return {
-            left:    left,
-            top:    top
-        };
-    };
-
-
-    // XXX: In compat.js we include things for browser compatibility,
-    // but these two seem to be only convenience. Do we really want to
-    // include these as part of patterns?
-    String.prototype.startsWith = function(str) { return (this.match("^"+str) !== null); };
-    String.prototype.endsWith = function(str) { return (this.match(str+"$") !== null); };
-
-
-    /******************************
-
-     Simple Placeholder
-
-     ******************************/
-
-    $.simplePlaceholder = {
-        placeholder_class: null,
-
-        hide_placeholder: function(){
-            var $this = $(this);
-            if($this.val() === $this.attr("placeholder")){
-                $this.val("").removeClass($.simplePlaceholder.placeholder_class);
-            }
-        },
-
-        show_placeholder: function(){
-            var $this = $(this);
-            if($this.val() === ""){
-                $this.val($this.attr("placeholder")).addClass($.simplePlaceholder.placeholder_class);
-            }
-        },
-
-        prevent_placeholder_submit: function(){
-            $(this).find(".simple-placeholder").each(function() {
-                var $this = $(this);
-                if ($this.val() === $this.attr("placeholder")){
-                    $this.val("");
-                }
-            });
-            return true;
-        }
-    };
-
-    $.fn.simplePlaceholder = function(options) {
-        if(document.createElement("input").placeholder === undefined){
-            var config = {
-                placeholder_class : "placeholding"
-            };
-
-            if(options) $.extend(config, options);
-            $.simplePlaceholder.placeholder_class = config.placeholder_class;
-
-            this.each(function() {
-                var $this = $(this);
-                $this.focus($.simplePlaceholder.hide_placeholder);
-                $this.blur($.simplePlaceholder.show_placeholder);
-                if($this.val() === "") {
-                    $this.val($this.attr("placeholder"));
-                    $this.addClass($.simplePlaceholder.placeholder_class);
-                }
-                $this.addClass("simple-placeholder");
-                $(this.form).submit($.simplePlaceholder.prevent_placeholder_submit);
-            });
-        }
-
-        return this;
-    };
-
-    $.fn.findInclusive = function(selector) {
-        return this.find('*').addBack().filter(selector);
-    };
-
-    $.fn.slideIn = function(speed, easing, callback) {
-        return this.animate({width: "show"}, speed, easing, callback);
-    };
-
-    $.fn.slideOut = function(speed, easing, callback) {
-        return this.animate({width: "hide"}, speed, easing, callback);
-    };
-
-    // case-insensitive :contains
-    $.expr[":"].Contains = function(a, i, m) {
-        return $(a).text().toUpperCase().indexOf(m[3].toUpperCase()) >= 0;
-    };
-
-    $.fn.scopedFind = function (selector) {
-        /*  If the selector starts with an object id do a global search,
-         *  otherwise do a local search.
-         */
-        if (selector.startsWith('#')) {
-            return $(selector);
-        } else {
-            return this.find(selector);
-        }
-    };
-});
-
 define('pat-compat',[],function() {
 
     // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/every (JS 1.6)
@@ -1831,6 +1514,366 @@ define('pat-compat',[],function() {
             };
         })();
     }
+});
+
+/**
+ * @license
+ * Patterns @VERSION@ jquery-ext - various jQuery extensions
+ *
+ * Copyright 2011 Humberto Sermeño
+ */
+define('pat-jquery-ext',["jquery"], function($) {
+    var methods = {
+        init: function( options ) {
+            var settings = {
+                time: 3, /* time it will wait before moving to "timeout" after a move event */
+                initialTime: 8, /* time it will wait before first adding the "timeout" class */
+                exceptionAreas: [] /* IDs of elements that, if the mouse is over them, will reset the timer */
+            };
+            return this.each(function() {
+                var $this = $(this),
+                    data = $this.data("timeout");
+
+                if (!data) {
+                    if ( options ) {
+                        $.extend( settings, options );
+                    }
+                    $this.data("timeout", {
+                        "lastEvent": new Date(),
+                        "trueTime": settings.time,
+                        "time": settings.initialTime,
+                        "untouched": true,
+                        "inExceptionArea": false
+                    });
+
+                    $this.bind( "mouseover.timeout", methods.mouseMoved );
+                    $this.bind( "mouseenter.timeout", methods.mouseMoved );
+
+                    $(settings.exceptionAreas).each(function() {
+                        $this.find(this)
+                            .live( "mouseover.timeout", {"parent":$this}, methods.enteredException )
+                            .live( "mouseleave.timeout", {"parent":$this}, methods.leftException );
+                    });
+
+                    if (settings.initialTime > 0)
+                        $this.timeout("startTimer");
+                    else
+                        $this.addClass("timeout");
+                }
+            });
+        },
+
+        enteredException: function(event) {
+            var data = event.data.parent.data("timeout");
+            data.inExceptionArea = true;
+            event.data.parent.data("timeout", data);
+            event.data.parent.trigger("mouseover");
+        },
+
+        leftException: function(event) {
+            var data = event.data.parent.data("timeout");
+            data.inExceptionArea = false;
+            event.data.parent.data("timeout", data);
+        },
+
+        destroy: function() {
+            return this.each( function() {
+                var $this = $(this),
+                    data = $this.data("timeout");
+
+                $(window).unbind(".timeout");
+                data.timeout.remove();
+                $this.removeData("timeout");
+            });
+        },
+
+        mouseMoved: function() {
+            var $this = $(this), data = $this.data("timeout");
+
+            if ($this.hasClass("timeout")) {
+                $this.removeClass("timeout");
+                $this.timeout("startTimer");
+            } else if ( data.untouched ) {
+                data.untouched = false;
+                data.time = data.trueTime;
+            }
+
+            data.lastEvent = new Date();
+            $this.data("timeout", data);
+        },
+
+        startTimer: function() {
+            var $this = $(this), data = $this.data("timeout");
+            var fn = function(){
+                var data = $this.data("timeout");
+                if ( data && data.lastEvent ) {
+                    if ( data.inExceptionArea ) {
+                        setTimeout( fn, Math.floor( data.time*1000 ) );
+                    } else {
+                        var now = new Date();
+                        var diff = Math.floor(data.time*1000) - ( now - data.lastEvent );
+                        if ( diff > 0 ) {
+                            // the timeout has not ocurred, so set the timeout again
+                            setTimeout( fn, diff+100 );
+                        } else {
+                            // timeout ocurred, so set the class
+                            $this.addClass("timeout");
+                        }
+                    }
+                }
+            };
+
+            setTimeout( fn, Math.floor( data.time*1000 ) );
+        }
+    };
+
+    $.fn.timeout = function( method ) {
+        if ( methods[method] ) {
+            return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
+        } else if ( typeof method === "object" || !method ) {
+            return methods.init.apply( this, arguments );
+        } else {
+            $.error( "Method " + method + " does not exist on jQuery.timeout" );
+        }
+    };
+
+    // Custom jQuery selector to find elements with scrollbars
+    $.extend($.expr[":"], {
+        scrollable: function(element) {
+            var vertically_scrollable, horizontally_scrollable;
+            if ($(element).css("overflow") === "scroll" ||
+                $(element).css("overflowX") === "scroll" ||
+                $(element).css("overflowY") === "scroll")
+                return true;
+
+            vertically_scrollable = (element.clientHeight < element.scrollHeight) && (
+                $.inArray($(element).css("overflowY"), ["scroll", "auto"]) !== -1 || $.inArray($(element).css("overflow"), ["scroll", "auto"]) !== -1);
+
+            if (vertically_scrollable)
+                return true;
+
+            horizontally_scrollable = (element.clientWidth < element.scrollWidth) && (
+                $.inArray($(element).css("overflowX"), ["scroll", "auto"]) !== -1 || $.inArray($(element).css("overflow"), ["scroll", "auto"]) !== -1);
+            return horizontally_scrollable;
+        }
+    });
+
+    // Make Visible in scroll
+    $.fn.makeVisibleInScroll = function( parent_id ) {
+        var absoluteParent = null;
+        if ( typeof parent_id === "string" ) {
+            absoluteParent = $("#" + parent_id);
+        } else if ( parent_id ) {
+            absoluteParent = $(parent_id);
+        }
+
+        return this.each(function() {
+            var $this = $(this), parent;
+            if (!absoluteParent) {
+                parent = $this.parents(":scrollable");
+                if (parent.length > 0) {
+                    parent = $(parent[0]);
+                } else {
+                    parent = $(window);
+                }
+            } else {
+                parent = absoluteParent;
+            }
+
+            var elemTop = $this.position().top;
+            var elemBottom = $this.height() + elemTop;
+
+            var viewTop = parent.scrollTop();
+            var viewBottom = parent.height() + viewTop;
+
+            if (elemTop < viewTop) {
+                parent.scrollTop(elemTop);
+            } else if ( elemBottom > viewBottom - parent.height()/2 ) {
+                parent.scrollTop( elemTop - (parent.height() - $this.height())/2 );
+            }
+        });
+    };
+
+    //Make absolute location
+    $.fn.setPositionAbsolute = function(element,offsettop,offsetleft) {
+        return this.each(function() {
+            // set absolute location for based on the element passed
+            // dynamically since every browser has different settings
+            var $this = $(this);
+            var thiswidth = $(this).width();
+            var    pos   = element.offset();
+            var    width = element.width();
+            var    height = element.height();
+            var setleft = (pos.left + width - thiswidth + offsetleft);
+            var settop = (pos.top + height + offsettop);
+            $this.css({ "z-index" : 1, "position": "absolute", "marginLeft": 0, "marginTop": 0, "left": setleft + "px", "top":settop + "px" ,"width":thiswidth});
+            $this.remove().appendTo("body").show();
+        });
+    };
+
+    $.fn.positionAncestor = function(selector) {
+        var left = 0;
+        var top = 0;
+        this.each(function() {
+            // check if current element has an ancestor matching a selector
+            // and that ancestor is positioned
+            var $ancestor = $(this).closest(selector);
+            if ($ancestor.length && $ancestor.css("position") !== "static") {
+                var $child = $(this);
+                var childMarginEdgeLeft = $child.offset().left - parseInt($child.css("marginLeft"), 10);
+                var childMarginEdgeTop = $child.offset().top - parseInt($child.css("marginTop"), 10);
+                var ancestorPaddingEdgeLeft = $ancestor.offset().left + parseInt($ancestor.css("borderLeftWidth"), 10);
+                var ancestorPaddingEdgeTop = $ancestor.offset().top + parseInt($ancestor.css("borderTopWidth"), 10);
+                left = childMarginEdgeLeft - ancestorPaddingEdgeLeft;
+                top = childMarginEdgeTop - ancestorPaddingEdgeTop;
+                // we have found the ancestor and computed the position
+                // stop iterating
+                return false;
+            }
+        });
+        return {
+            left:    left,
+            top:    top
+        };
+    };
+
+
+    // XXX: In compat.js we include things for browser compatibility,
+    // but these two seem to be only convenience. Do we really want to
+    // include these as part of patterns?
+    String.prototype.startsWith = function(str) { return (this.match("^"+str) !== null); };
+    String.prototype.endsWith = function(str) { return (this.match(str+"$") !== null); };
+
+
+    /******************************
+
+     Simple Placeholder
+
+     ******************************/
+
+    $.simplePlaceholder = {
+        placeholder_class: null,
+
+        hide_placeholder: function(){
+            var $this = $(this);
+            if($this.val() === $this.attr("placeholder")){
+                $this.val("").removeClass($.simplePlaceholder.placeholder_class);
+            }
+        },
+
+        show_placeholder: function(){
+            var $this = $(this);
+            if($this.val() === ""){
+                $this.val($this.attr("placeholder")).addClass($.simplePlaceholder.placeholder_class);
+            }
+        },
+
+        prevent_placeholder_submit: function(){
+            $(this).find(".simple-placeholder").each(function() {
+                var $this = $(this);
+                if ($this.val() === $this.attr("placeholder")){
+                    $this.val("");
+                }
+            });
+            return true;
+        }
+    };
+
+    $.fn.simplePlaceholder = function(options) {
+        if(document.createElement("input").placeholder === undefined){
+            var config = {
+                placeholder_class : "placeholding"
+            };
+
+            if(options) $.extend(config, options);
+            $.simplePlaceholder.placeholder_class = config.placeholder_class;
+
+            this.each(function() {
+                var $this = $(this);
+                $this.focus($.simplePlaceholder.hide_placeholder);
+                $this.blur($.simplePlaceholder.show_placeholder);
+                if($this.val() === "") {
+                    $this.val($this.attr("placeholder"));
+                    $this.addClass($.simplePlaceholder.placeholder_class);
+                }
+                $this.addClass("simple-placeholder");
+                $(this.form).submit($.simplePlaceholder.prevent_placeholder_submit);
+            });
+        }
+
+        return this;
+    };
+
+    $.fn.findInclusive = function(selector) {
+        return this.find('*').addBack().filter(selector);
+    };
+
+    $.fn.slideIn = function(speed, easing, callback) {
+        return this.animate({width: "show"}, speed, easing, callback);
+    };
+
+    $.fn.slideOut = function(speed, easing, callback) {
+        return this.animate({width: "hide"}, speed, easing, callback);
+    };
+
+    // case-insensitive :contains
+    $.expr[":"].Contains = function(a, i, m) {
+        return $(a).text().toUpperCase().indexOf(m[3].toUpperCase()) >= 0;
+    };
+
+    $.fn.scopedFind = function (selector) {
+        /*  If the selector starts with an object id do a global search,
+         *  otherwise do a local search.
+         */
+        if (selector.startsWith('#')) {
+            return $(selector);
+        } else {
+            return this.find(selector);
+        }
+    };
+});
+
+define('mockup-parser',[
+  'jquery'
+], function($) {
+  
+
+  var parser = {
+    getOptions: function getOptions($el, patternName, options) {
+      /* This is the Mockup parser. It parses a DOM element for pattern
+      * configuration options.
+      */
+      options = options || {};
+      // get options from parent element first, stop if element tag name is 'body'
+      if ($el.length !== 0 && !$.nodeName($el[0], 'body')) {
+        options = getOptions($el.parent(), patternName, options);
+      }
+      // collect all options from element
+      var elOptions = {};
+      if ($el.length !== 0) {
+        elOptions = $el.data('pat-' + patternName);
+        if (elOptions) {
+          // parse options if string
+          if (typeof(elOptions) === 'string') {
+              var tmpOptions = {};
+              $.each(elOptions.split(';'), function(i, item) {
+                  item = item.split(':');
+                  item.reverse();
+                  var key = item.pop();
+                  key = key.replace(/^\s+|\s+$/g, '');  // trim
+                  item.reverse();
+                  var value = item.join(':');
+                  value = value.replace(/^\s+|\s+$/g, '');  // trim
+                  tmpOptions[key] = value;
+              });
+              elOptions = tmpOptions;
+          }
+        }
+      }
+      return $.extend(true, {}, options, elOptions);
+    }
+  };
+  return parser;
 });
 
 /*
@@ -5344,360 +5387,6 @@ the specific language governing permissions and limitations under the Apache Lic
 
 define("select2", function(){});
 
-define('mockup-parser',[
-  'jquery'
-], function($) {
-  
-
-  var parser = {
-    getOptions: function getOptions($el, patternName, options) {
-      /* This is the Mockup parser. It parses a DOM element for pattern
-      * configuration options.
-      */
-      options = options || {};
-      // get options from parent element first, stop if element tag name is 'body'
-      if ($el.length !== 0 && !$.nodeName($el[0], 'body')) {
-        options = getOptions($el.parent(), patternName, options);
-      }
-      // collect all options from element
-      var elOptions = {};
-      if ($el.length !== 0) {
-        elOptions = $el.data('pat-' + patternName);
-        if (elOptions) {
-          // parse options if string
-          if (typeof(elOptions) === 'string') {
-              var tmpOptions = {};
-              $.each(elOptions.split(';'), function(i, item) {
-                  item = item.split(':');
-                  item.reverse();
-                  var key = item.pop();
-                  key = key.replace(/^\s+|\s+$/g, '');  // trim
-                  item.reverse();
-                  var value = item.join(':');
-                  value = value.replace(/^\s+|\s+$/g, '');  // trim
-                  tmpOptions[key] = value;
-              });
-              elOptions = tmpOptions;
-          }
-        }
-      }
-      return $.extend(true, {}, options, elOptions);
-    }
-  };
-  return parser;
-});
-
-(function(root) {
-define("jquery.event.drop", ["jquery"], function() {
-  return (function() {
-/*! 
- * jquery.event.drop - v 2.2
- * Copyright (c) 2010 Three Dub Media - http://threedubmedia.com
- * Open Source MIT License - http://threedubmedia.com/code/license
- */
-// Created: 2008-06-04 
-// Updated: 2012-05-21
-// REQUIRES: jquery 1.7.x, event.drag 2.2
-
-;(function($){ // secure $ jQuery alias
-
-// Events: drop, dropstart, dropend
-
-// add the jquery instance method
-$.fn.drop = function( str, arg, opts ){
-  // figure out the event type
-  var type = typeof str == "string" ? str : "",
-  // figure out the event handler...
-  fn = $.isFunction( str ) ? str : $.isFunction( arg ) ? arg : null;
-  // fix the event type
-  if ( type.indexOf("drop") !== 0 ) 
-    type = "drop"+ type;
-  // were options passed
-  opts = ( str == fn ? arg : opts ) || {};
-  // trigger or bind event handler
-  return fn ? this.bind( type, opts, fn ) : this.trigger( type );
-};
-
-// DROP MANAGEMENT UTILITY
-// returns filtered drop target elements, caches their positions
-$.drop = function( opts ){ 
-  opts = opts || {};
-  // safely set new options...
-  drop.multi = opts.multi === true ? Infinity : 
-    opts.multi === false ? 1 : !isNaN( opts.multi ) ? opts.multi : drop.multi;
-  drop.delay = opts.delay || drop.delay;
-  drop.tolerance = $.isFunction( opts.tolerance ) ? opts.tolerance : 
-    opts.tolerance === null ? null : drop.tolerance;
-  drop.mode = opts.mode || drop.mode || 'intersect';
-};
-
-// local refs (increase compression)
-var $event = $.event, 
-$special = $event.special,
-// configure the drop special event
-drop = $.event.special.drop = {
-
-  // these are the default settings
-  multi: 1, // allow multiple drop winners per dragged element
-  delay: 20, // async timeout delay
-  mode: 'overlap', // drop tolerance mode
-    
-  // internal cache
-  targets: [], 
-  
-  // the key name for stored drop data
-  datakey: "dropdata",
-    
-  // prevent bubbling for better performance
-  noBubble: true,
-  
-  // count bound related events
-  add: function( obj ){ 
-    // read the interaction data
-    var data = $.data( this, drop.datakey );
-    // count another realted event
-    data.related += 1;
-  },
-  
-  // forget unbound related events
-  remove: function(){
-    $.data( this, drop.datakey ).related -= 1;
-  },
-  
-  // configure the interactions
-  setup: function(){
-    // check for related events
-    if ( $.data( this, drop.datakey ) ) 
-      return;
-    // initialize the drop element data
-    var data = { 
-      related: 0,
-      active: [],
-      anyactive: 0,
-      winner: 0,
-      location: {}
-    };
-    // store the drop data on the element
-    $.data( this, drop.datakey, data );
-    // store the drop target in internal cache
-    drop.targets.push( this );
-  },
-  
-  // destroy the configure interaction  
-  teardown: function(){ 
-    var data = $.data( this, drop.datakey ) || {};
-    // check for related events
-    if ( data.related ) 
-      return;
-    // remove the stored data
-    $.removeData( this, drop.datakey );
-    // reference the targeted element
-    var element = this;
-    // remove from the internal cache
-    drop.targets = $.grep( drop.targets, function( target ){ 
-      return ( target !== element ); 
-    });
-  },
-  
-  // shared event handler
-  handler: function( event, dd ){ 
-    // local vars
-    var results, $targets;
-    // make sure the right data is available
-    if ( !dd ) 
-      return;
-    // handle various events
-    switch ( event.type ){
-      // draginit, from $.event.special.drag
-      case 'mousedown': // DROPINIT >>
-      case 'touchstart': // DROPINIT >>
-        // collect and assign the drop targets
-        $targets =  $( drop.targets );
-        if ( typeof dd.drop == "string" )
-          $targets = $targets.filter( dd.drop );
-        // reset drop data winner properties
-        $targets.each(function(){
-          var data = $.data( this, drop.datakey );
-          data.active = [];
-          data.anyactive = 0;
-          data.winner = 0;
-        });
-        // set available target elements
-        dd.droppable = $targets;
-        // activate drop targets for the initial element being dragged
-        $special.drag.hijack( event, "dropinit", dd ); 
-        break;
-      // drag, from $.event.special.drag
-      case 'mousemove': // TOLERATE >>
-      case 'touchmove': // TOLERATE >>
-        drop.event = event; // store the mousemove event
-        if ( !drop.timer )
-          // monitor drop targets
-          drop.tolerate( dd ); 
-        break;
-      // dragend, from $.event.special.drag
-      case 'mouseup': // DROP >> DROPEND >>
-      case 'touchend': // DROP >> DROPEND >>
-        drop.timer = clearTimeout( drop.timer ); // delete timer  
-        if ( dd.propagates ){
-          $special.drag.hijack( event, "drop", dd ); 
-          $special.drag.hijack( event, "dropend", dd ); 
-        }
-        break;
-        
-    }
-  },
-    
-  // returns the location positions of an element
-  locate: function( elem, index ){ 
-    var data = $.data( elem, drop.datakey ),
-    $elem = $( elem ), 
-    posi = $elem.offset() || {}, 
-    height = $elem.outerHeight(), 
-    width = $elem.outerWidth(),
-    location = { 
-      elem: elem, 
-      width: width, 
-      height: height,
-      top: posi.top, 
-      left: posi.left, 
-      right: posi.left + width, 
-      bottom: posi.top + height
-    };
-    // drag elements might not have dropdata
-    if ( data ){
-      data.location = location;
-      data.index = index;
-      data.elem = elem;
-    }
-    return location;
-  },
-  
-  // test the location positions of an element against another OR an X,Y coord
-  contains: function( target, test ){ // target { location } contains test [x,y] or { location }
-    return ( ( test[0] || test.left ) >= target.left && ( test[0] || test.right ) <= target.right
-      && ( test[1] || test.top ) >= target.top && ( test[1] || test.bottom ) <= target.bottom ); 
-  },
-  
-  // stored tolerance modes
-  modes: { // fn scope: "$.event.special.drop" object 
-    // target with mouse wins, else target with most overlap wins
-    'intersect': function( event, proxy, target ){
-      return this.contains( target, [ event.pageX, event.pageY ] ) ? // check cursor
-        1e9 : this.modes.overlap.apply( this, arguments ); // check overlap
-    },
-    // target with most overlap wins  
-    'overlap': function( event, proxy, target ){
-      // calculate the area of overlap...
-      return Math.max( 0, Math.min( target.bottom, proxy.bottom ) - Math.max( target.top, proxy.top ) )
-        * Math.max( 0, Math.min( target.right, proxy.right ) - Math.max( target.left, proxy.left ) );
-    },
-    // proxy is completely contained within target bounds 
-    'fit': function( event, proxy, target ){
-      return this.contains( target, proxy ) ? 1 : 0;
-    },
-    // center of the proxy is contained within target bounds  
-    'middle': function( event, proxy, target ){
-      return this.contains( target, [ proxy.left + proxy.width * .5, proxy.top + proxy.height * .5 ] ) ? 1 : 0;
-    }
-  },  
-  
-  // sort drop target cache by by winner (dsc), then index (asc)
-  sort: function( a, b ){
-    return ( b.winner - a.winner ) || ( a.index - b.index );
-  },
-    
-  // async, recursive tolerance execution
-  tolerate: function( dd ){   
-    // declare local refs
-    var i, drp, drg, data, arr, len, elem,
-    // interaction iteration variables
-    x = 0, ia, end = dd.interactions.length,
-    // determine the mouse coords
-    xy = [ drop.event.pageX, drop.event.pageY ],
-    // custom or stored tolerance fn
-    tolerance = drop.tolerance || drop.modes[ drop.mode ];
-    // go through each passed interaction...
-    do if ( ia = dd.interactions[x] ){
-      // check valid interaction
-      if ( !ia )
-        return; 
-      // initialize or clear the drop data
-      ia.drop = [];
-      // holds the drop elements
-      arr = []; 
-      len = ia.droppable.length;
-      // determine the proxy location, if needed
-      if ( tolerance )
-        drg = drop.locate( ia.proxy ); 
-      // reset the loop
-      i = 0;
-      // loop each stored drop target
-      do if ( elem = ia.droppable[i] ){ 
-        data = $.data( elem, drop.datakey );
-        drp = data.location;
-        if ( !drp ) continue;
-        // find a winner: tolerance function is defined, call it
-        data.winner = tolerance ? tolerance.call( drop, drop.event, drg, drp ) 
-          // mouse position is always the fallback
-          : drop.contains( drp, xy ) ? 1 : 0; 
-        arr.push( data ); 
-      } while ( ++i < len ); // loop 
-      // sort the drop targets
-      arr.sort( drop.sort );      
-      // reset the loop
-      i = 0;
-      // loop through all of the targets again
-      do if ( data = arr[ i ] ){
-        // winners...
-        if ( data.winner && ia.drop.length < drop.multi ){
-          // new winner... dropstart
-          if ( !data.active[x] && !data.anyactive ){
-            // check to make sure that this is not prevented
-            if ( $special.drag.hijack( drop.event, "dropstart", dd, x, data.elem )[0] !== false ){  
-              data.active[x] = 1;
-              data.anyactive += 1;
-            }
-            // if false, it is not a winner
-            else
-              data.winner = 0;
-          }
-          // if it is still a winner
-          if ( data.winner )
-            ia.drop.push( data.elem );
-        }
-        // losers... 
-        else if ( data.active[x] && data.anyactive == 1 ){
-          // former winner... dropend
-          $special.drag.hijack( drop.event, "dropend", dd, x, data.elem ); 
-          data.active[x] = 0;
-          data.anyactive -= 1;
-        }
-      } while ( ++i < len ); // loop    
-    } while ( ++x < end ) // loop
-    // check if the mouse is still moving or is idle
-    if ( drop.last && xy[0] == drop.last.pageX && xy[1] == drop.last.pageY ) 
-      delete drop.timer; // idle, don't recurse
-    else  // recurse
-      drop.timer = setTimeout(function(){ 
-        drop.tolerate( dd ); 
-      }, drop.delay );
-    // remember event, to compare idleness
-    drop.last = drop.event; 
-  }
-  
-};
-
-// share the same special event configuration with related events...
-$special.dropinit = $special.dropstart = $special.dropend = drop;
-
-})(jQuery); // confine scope  
-;
-return $.drop;
-  }).apply(root, arguments);
-});
-}(this));
-
 (function(root) {
 define("jquery.event.drag", ["jquery"], function() {
   return (function() {
@@ -6104,6 +5793,317 @@ $special.draginit = $special.dragstart = $special.dragend = drag;
 
 })( jQuery );
 
+  }).apply(root, arguments);
+});
+}(this));
+
+(function(root) {
+define("jquery.event.drop", ["jquery"], function() {
+  return (function() {
+/*! 
+ * jquery.event.drop - v 2.2
+ * Copyright (c) 2010 Three Dub Media - http://threedubmedia.com
+ * Open Source MIT License - http://threedubmedia.com/code/license
+ */
+// Created: 2008-06-04 
+// Updated: 2012-05-21
+// REQUIRES: jquery 1.7.x, event.drag 2.2
+
+;(function($){ // secure $ jQuery alias
+
+// Events: drop, dropstart, dropend
+
+// add the jquery instance method
+$.fn.drop = function( str, arg, opts ){
+  // figure out the event type
+  var type = typeof str == "string" ? str : "",
+  // figure out the event handler...
+  fn = $.isFunction( str ) ? str : $.isFunction( arg ) ? arg : null;
+  // fix the event type
+  if ( type.indexOf("drop") !== 0 ) 
+    type = "drop"+ type;
+  // were options passed
+  opts = ( str == fn ? arg : opts ) || {};
+  // trigger or bind event handler
+  return fn ? this.bind( type, opts, fn ) : this.trigger( type );
+};
+
+// DROP MANAGEMENT UTILITY
+// returns filtered drop target elements, caches their positions
+$.drop = function( opts ){ 
+  opts = opts || {};
+  // safely set new options...
+  drop.multi = opts.multi === true ? Infinity : 
+    opts.multi === false ? 1 : !isNaN( opts.multi ) ? opts.multi : drop.multi;
+  drop.delay = opts.delay || drop.delay;
+  drop.tolerance = $.isFunction( opts.tolerance ) ? opts.tolerance : 
+    opts.tolerance === null ? null : drop.tolerance;
+  drop.mode = opts.mode || drop.mode || 'intersect';
+};
+
+// local refs (increase compression)
+var $event = $.event, 
+$special = $event.special,
+// configure the drop special event
+drop = $.event.special.drop = {
+
+  // these are the default settings
+  multi: 1, // allow multiple drop winners per dragged element
+  delay: 20, // async timeout delay
+  mode: 'overlap', // drop tolerance mode
+    
+  // internal cache
+  targets: [], 
+  
+  // the key name for stored drop data
+  datakey: "dropdata",
+    
+  // prevent bubbling for better performance
+  noBubble: true,
+  
+  // count bound related events
+  add: function( obj ){ 
+    // read the interaction data
+    var data = $.data( this, drop.datakey );
+    // count another realted event
+    data.related += 1;
+  },
+  
+  // forget unbound related events
+  remove: function(){
+    $.data( this, drop.datakey ).related -= 1;
+  },
+  
+  // configure the interactions
+  setup: function(){
+    // check for related events
+    if ( $.data( this, drop.datakey ) ) 
+      return;
+    // initialize the drop element data
+    var data = { 
+      related: 0,
+      active: [],
+      anyactive: 0,
+      winner: 0,
+      location: {}
+    };
+    // store the drop data on the element
+    $.data( this, drop.datakey, data );
+    // store the drop target in internal cache
+    drop.targets.push( this );
+  },
+  
+  // destroy the configure interaction  
+  teardown: function(){ 
+    var data = $.data( this, drop.datakey ) || {};
+    // check for related events
+    if ( data.related ) 
+      return;
+    // remove the stored data
+    $.removeData( this, drop.datakey );
+    // reference the targeted element
+    var element = this;
+    // remove from the internal cache
+    drop.targets = $.grep( drop.targets, function( target ){ 
+      return ( target !== element ); 
+    });
+  },
+  
+  // shared event handler
+  handler: function( event, dd ){ 
+    // local vars
+    var results, $targets;
+    // make sure the right data is available
+    if ( !dd ) 
+      return;
+    // handle various events
+    switch ( event.type ){
+      // draginit, from $.event.special.drag
+      case 'mousedown': // DROPINIT >>
+      case 'touchstart': // DROPINIT >>
+        // collect and assign the drop targets
+        $targets =  $( drop.targets );
+        if ( typeof dd.drop == "string" )
+          $targets = $targets.filter( dd.drop );
+        // reset drop data winner properties
+        $targets.each(function(){
+          var data = $.data( this, drop.datakey );
+          data.active = [];
+          data.anyactive = 0;
+          data.winner = 0;
+        });
+        // set available target elements
+        dd.droppable = $targets;
+        // activate drop targets for the initial element being dragged
+        $special.drag.hijack( event, "dropinit", dd ); 
+        break;
+      // drag, from $.event.special.drag
+      case 'mousemove': // TOLERATE >>
+      case 'touchmove': // TOLERATE >>
+        drop.event = event; // store the mousemove event
+        if ( !drop.timer )
+          // monitor drop targets
+          drop.tolerate( dd ); 
+        break;
+      // dragend, from $.event.special.drag
+      case 'mouseup': // DROP >> DROPEND >>
+      case 'touchend': // DROP >> DROPEND >>
+        drop.timer = clearTimeout( drop.timer ); // delete timer  
+        if ( dd.propagates ){
+          $special.drag.hijack( event, "drop", dd ); 
+          $special.drag.hijack( event, "dropend", dd ); 
+        }
+        break;
+        
+    }
+  },
+    
+  // returns the location positions of an element
+  locate: function( elem, index ){ 
+    var data = $.data( elem, drop.datakey ),
+    $elem = $( elem ), 
+    posi = $elem.offset() || {}, 
+    height = $elem.outerHeight(), 
+    width = $elem.outerWidth(),
+    location = { 
+      elem: elem, 
+      width: width, 
+      height: height,
+      top: posi.top, 
+      left: posi.left, 
+      right: posi.left + width, 
+      bottom: posi.top + height
+    };
+    // drag elements might not have dropdata
+    if ( data ){
+      data.location = location;
+      data.index = index;
+      data.elem = elem;
+    }
+    return location;
+  },
+  
+  // test the location positions of an element against another OR an X,Y coord
+  contains: function( target, test ){ // target { location } contains test [x,y] or { location }
+    return ( ( test[0] || test.left ) >= target.left && ( test[0] || test.right ) <= target.right
+      && ( test[1] || test.top ) >= target.top && ( test[1] || test.bottom ) <= target.bottom ); 
+  },
+  
+  // stored tolerance modes
+  modes: { // fn scope: "$.event.special.drop" object 
+    // target with mouse wins, else target with most overlap wins
+    'intersect': function( event, proxy, target ){
+      return this.contains( target, [ event.pageX, event.pageY ] ) ? // check cursor
+        1e9 : this.modes.overlap.apply( this, arguments ); // check overlap
+    },
+    // target with most overlap wins  
+    'overlap': function( event, proxy, target ){
+      // calculate the area of overlap...
+      return Math.max( 0, Math.min( target.bottom, proxy.bottom ) - Math.max( target.top, proxy.top ) )
+        * Math.max( 0, Math.min( target.right, proxy.right ) - Math.max( target.left, proxy.left ) );
+    },
+    // proxy is completely contained within target bounds 
+    'fit': function( event, proxy, target ){
+      return this.contains( target, proxy ) ? 1 : 0;
+    },
+    // center of the proxy is contained within target bounds  
+    'middle': function( event, proxy, target ){
+      return this.contains( target, [ proxy.left + proxy.width * .5, proxy.top + proxy.height * .5 ] ) ? 1 : 0;
+    }
+  },  
+  
+  // sort drop target cache by by winner (dsc), then index (asc)
+  sort: function( a, b ){
+    return ( b.winner - a.winner ) || ( a.index - b.index );
+  },
+    
+  // async, recursive tolerance execution
+  tolerate: function( dd ){   
+    // declare local refs
+    var i, drp, drg, data, arr, len, elem,
+    // interaction iteration variables
+    x = 0, ia, end = dd.interactions.length,
+    // determine the mouse coords
+    xy = [ drop.event.pageX, drop.event.pageY ],
+    // custom or stored tolerance fn
+    tolerance = drop.tolerance || drop.modes[ drop.mode ];
+    // go through each passed interaction...
+    do if ( ia = dd.interactions[x] ){
+      // check valid interaction
+      if ( !ia )
+        return; 
+      // initialize or clear the drop data
+      ia.drop = [];
+      // holds the drop elements
+      arr = []; 
+      len = ia.droppable.length;
+      // determine the proxy location, if needed
+      if ( tolerance )
+        drg = drop.locate( ia.proxy ); 
+      // reset the loop
+      i = 0;
+      // loop each stored drop target
+      do if ( elem = ia.droppable[i] ){ 
+        data = $.data( elem, drop.datakey );
+        drp = data.location;
+        if ( !drp ) continue;
+        // find a winner: tolerance function is defined, call it
+        data.winner = tolerance ? tolerance.call( drop, drop.event, drg, drp ) 
+          // mouse position is always the fallback
+          : drop.contains( drp, xy ) ? 1 : 0; 
+        arr.push( data ); 
+      } while ( ++i < len ); // loop 
+      // sort the drop targets
+      arr.sort( drop.sort );      
+      // reset the loop
+      i = 0;
+      // loop through all of the targets again
+      do if ( data = arr[ i ] ){
+        // winners...
+        if ( data.winner && ia.drop.length < drop.multi ){
+          // new winner... dropstart
+          if ( !data.active[x] && !data.anyactive ){
+            // check to make sure that this is not prevented
+            if ( $special.drag.hijack( drop.event, "dropstart", dd, x, data.elem )[0] !== false ){  
+              data.active[x] = 1;
+              data.anyactive += 1;
+            }
+            // if false, it is not a winner
+            else
+              data.winner = 0;
+          }
+          // if it is still a winner
+          if ( data.winner )
+            ia.drop.push( data.elem );
+        }
+        // losers... 
+        else if ( data.active[x] && data.anyactive == 1 ){
+          // former winner... dropend
+          $special.drag.hijack( drop.event, "dropend", dd, x, data.elem ); 
+          data.active[x] = 0;
+          data.anyactive -= 1;
+        }
+      } while ( ++i < len ); // loop    
+    } while ( ++x < end ) // loop
+    // check if the mouse is still moving or is idle
+    if ( drop.last && xy[0] == drop.last.pageX && xy[1] == drop.last.pageY ) 
+      delete drop.timer; // idle, don't recurse
+    else  // recurse
+      drop.timer = setTimeout(function(){ 
+        drop.tolerate( dd ); 
+      }, drop.delay );
+    // remember event, to compare idleness
+    drop.last = drop.event; 
+  }
+  
+};
+
+// share the same special event configuration with related events...
+$special.dropinit = $special.dropstart = $special.dropend = drop;
+
+})(jQuery); // confine scope  
+;
+return $.drop;
   }).apply(root, arguments);
 });
 }(this));
@@ -7066,124 +7066,6 @@ return PickerConstructor
 
 
 
-
-/*!
- * jQuery Cookie Plugin v1.4.1
- * https://github.com/carhartl/jquery-cookie
- *
- * Copyright 2013 Klaus Hartl
- * Released under the MIT license
- */
-(function (factory) {
-  if (typeof define === 'function' && define.amd) {
-    // AMD
-    define('jquery.cookie',['jquery'], factory);
-  } else if (typeof exports === 'object') {
-    // CommonJS
-    factory(require('jquery'));
-  } else {
-    // Browser globals
-    factory(jQuery);
-  }
-}(function ($) {
-
-  var pluses = /\+/g;
-
-  function encode(s) {
-    return config.raw ? s : encodeURIComponent(s);
-  }
-
-  function decode(s) {
-    return config.raw ? s : decodeURIComponent(s);
-  }
-
-  function stringifyCookieValue(value) {
-    return encode(config.json ? JSON.stringify(value) : String(value));
-  }
-
-  function parseCookieValue(s) {
-    if (s.indexOf('"') === 0) {
-      // This is a quoted cookie as according to RFC2068, unescape...
-      s = s.slice(1, -1).replace(/\\"/g, '"').replace(/\\\\/g, '\\');
-    }
-
-    try {
-      // Replace server-side written pluses with spaces.
-      // If we can't decode the cookie, ignore it, it's unusable.
-      // If we can't parse the cookie, ignore it, it's unusable.
-      s = decodeURIComponent(s.replace(pluses, ' '));
-      return config.json ? JSON.parse(s) : s;
-    } catch(e) {}
-  }
-
-  function read(s, converter) {
-    var value = config.raw ? s : parseCookieValue(s);
-    return $.isFunction(converter) ? converter(value) : value;
-  }
-
-  var config = $.cookie = function (key, value, options) {
-
-    // Write
-
-    if (value !== undefined && !$.isFunction(value)) {
-      options = $.extend({}, config.defaults, options);
-
-      if (typeof options.expires === 'number') {
-        var days = options.expires, t = options.expires = new Date();
-        t.setTime(+t + days * 864e+5);
-      }
-
-      return (document.cookie = [
-        encode(key), '=', stringifyCookieValue(value),
-        options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
-        options.path    ? '; path=' + options.path : '',
-        options.domain  ? '; domain=' + options.domain : '',
-        options.secure  ? '; secure' : ''
-      ].join(''));
-    }
-
-    // Read
-
-    var result = key ? undefined : {};
-
-    // To prevent the for loop in the first place assign an empty array
-    // in case there are no cookies at all. Also prevents odd result when
-    // calling $.cookie().
-    var cookies = document.cookie ? document.cookie.split('; ') : [];
-
-    for (var i = 0, l = cookies.length; i < l; i++) {
-      var parts = cookies[i].split('=');
-      var name = decode(parts.shift());
-      var cookie = parts.join('=');
-
-      if (key && key === name) {
-        // If second argument (value) is a function it's a converter...
-        result = read(cookie, value);
-        break;
-      }
-
-      // Prevent storing a cookie that we couldn't decode.
-      if (!key && (cookie = read(cookie)) !== undefined) {
-        result[name] = cookie;
-      }
-    }
-
-    return result;
-  };
-
-  config.defaults = {};
-
-  $.removeCookie = function (key, options) {
-    if ($.cookie(key) === undefined) {
-      return false;
-    }
-
-    // Must not alter options, thus extending a fresh object...
-    $.cookie(key, '', $.extend({}, options, { expires: -1 }));
-    return !$.cookie(key);
-  };
-
-}));
 
 /* Pattern utils
  */
@@ -12442,6 +12324,124 @@ define('mockup-utils',[
 }.call(this));
 
 /*!
+ * jQuery Cookie Plugin v1.4.1
+ * https://github.com/carhartl/jquery-cookie
+ *
+ * Copyright 2013 Klaus Hartl
+ * Released under the MIT license
+ */
+(function (factory) {
+  if (typeof define === 'function' && define.amd) {
+    // AMD
+    define('jquery.cookie',['jquery'], factory);
+  } else if (typeof exports === 'object') {
+    // CommonJS
+    factory(require('jquery'));
+  } else {
+    // Browser globals
+    factory(jQuery);
+  }
+}(function ($) {
+
+  var pluses = /\+/g;
+
+  function encode(s) {
+    return config.raw ? s : encodeURIComponent(s);
+  }
+
+  function decode(s) {
+    return config.raw ? s : decodeURIComponent(s);
+  }
+
+  function stringifyCookieValue(value) {
+    return encode(config.json ? JSON.stringify(value) : String(value));
+  }
+
+  function parseCookieValue(s) {
+    if (s.indexOf('"') === 0) {
+      // This is a quoted cookie as according to RFC2068, unescape...
+      s = s.slice(1, -1).replace(/\\"/g, '"').replace(/\\\\/g, '\\');
+    }
+
+    try {
+      // Replace server-side written pluses with spaces.
+      // If we can't decode the cookie, ignore it, it's unusable.
+      // If we can't parse the cookie, ignore it, it's unusable.
+      s = decodeURIComponent(s.replace(pluses, ' '));
+      return config.json ? JSON.parse(s) : s;
+    } catch(e) {}
+  }
+
+  function read(s, converter) {
+    var value = config.raw ? s : parseCookieValue(s);
+    return $.isFunction(converter) ? converter(value) : value;
+  }
+
+  var config = $.cookie = function (key, value, options) {
+
+    // Write
+
+    if (value !== undefined && !$.isFunction(value)) {
+      options = $.extend({}, config.defaults, options);
+
+      if (typeof options.expires === 'number') {
+        var days = options.expires, t = options.expires = new Date();
+        t.setTime(+t + days * 864e+5);
+      }
+
+      return (document.cookie = [
+        encode(key), '=', stringifyCookieValue(value),
+        options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
+        options.path    ? '; path=' + options.path : '',
+        options.domain  ? '; domain=' + options.domain : '',
+        options.secure  ? '; secure' : ''
+      ].join(''));
+    }
+
+    // Read
+
+    var result = key ? undefined : {};
+
+    // To prevent the for loop in the first place assign an empty array
+    // in case there are no cookies at all. Also prevents odd result when
+    // calling $.cookie().
+    var cookies = document.cookie ? document.cookie.split('; ') : [];
+
+    for (var i = 0, l = cookies.length; i < l; i++) {
+      var parts = cookies[i].split('=');
+      var name = decode(parts.shift());
+      var cookie = parts.join('=');
+
+      if (key && key === name) {
+        // If second argument (value) is a function it's a converter...
+        result = read(cookie, value);
+        break;
+      }
+
+      // Prevent storing a cookie that we couldn't decode.
+      if (!key && (cookie = read(cookie)) !== undefined) {
+        result[name] = cookie;
+      }
+    }
+
+    return result;
+  };
+
+  config.defaults = {};
+
+  $.removeCookie = function (key, options) {
+    if ($.cookie(key) === undefined) {
+      return false;
+    }
+
+    // Must not alter options, thus extending a fresh object...
+    $.cookie(key, '', $.extend({}, options, { expires: -1 }));
+    return !$.cookie(key);
+  };
+
+}));
+
+/*!
  * jQuery Form Plugin
  * version: 3.46.0-2013.11.21
  * Requires jQuery v1.5 or later
@@ -13914,7 +13914,7 @@ define('pat-logger',[
 });
 
 /**
- * Patterns registry fork - Central registry and scan logic for patterns
+ * Patterns registry - Central registry and scan logic for patterns
  *
  * Copyright 2012-2013 Simplon B.V.
  * Copyright 2012-2013 Florian Friesdorf
@@ -13929,10 +13929,8 @@ define('pat-logger',[
  * - handle once within init
  * - no turnstile anymore
  * - set pattern.jquery_plugin if you want it
- * - This is a global registry now
- * - elements can no longer be initialized more than once
  */
-define('mockup-registry',[
+define('pat-registry',[
     "jquery",
     "pat-logger",
     "pat-utils",
@@ -13940,8 +13938,6 @@ define('mockup-registry',[
     "pat-compat",
     "pat-jquery-ext"
 ], function($, logger, utils) {
-    
-
     var log = logger.getLogger("registry");
 
     var disable_re = /patterns-disable=([^&]+)/g,
@@ -13959,25 +13955,18 @@ define('mockup-registry',[
         log.info('I will not catch init exceptions');
     }
 
-    if(window.registry_settings === undefined){
-      window.registry_settings = {
-        patterns: {},
-        initialized: false
-      };
-    }
-
     var registry = {
-        settings: window.registry_settings,
-        patterns: window.registry_settings.patterns,
+        patterns: {},
         // as long as the registry is not initialized, pattern
         // registration just registers a pattern. Once init is called,
         // the DOM is scanned. After that registering a new pattern
         // results in rescanning the DOM only for this pattern.
+        initialized: false,
         init: function registry_init() {
             $(document).ready(function() {
                 log.info('loaded: ' + Object.keys(registry.patterns).sort().join(', '));
                 registry.scan(document.body);
-                registry.settings.initialized = true;
+                registry.initialized = true;
                 log.info('finished initial scan.');
             });
         },
@@ -14022,7 +14011,7 @@ define('mockup-registry',[
                     pattern = registry.patterns[name];
                     if (pattern.init) {
                         plog = logger.getLogger("pat." + name);
-                        if ($el.is(pattern.trigger) && !$el.hasClass('pattern-initialized')) {
+                        if ($el.is(pattern.trigger)) {
                             plog.debug("Initialising:", $el);
                             try {
                                 pattern.init($el, null, trigger);
@@ -14031,7 +14020,6 @@ define('mockup-registry',[
                                 if (dont_catch) { throw(e); }
                                 plog.error("Caught error:", e);
                             }
-                            $el.addClass('pattern-initialized');
                         }
                     }
                 }
@@ -14065,7 +14053,7 @@ define('mockup-registry',[
                 $.fn[plugin_name.replace(/^pat/, "pattern")] = utils.jqueryPlugin(pattern);
             }
             log.debug("Registered pattern:", name, pattern);
-            if (registry.settings.initialized) {
+            if (registry.initialized) {
                 registry.scan(document.body, [name]);
             }
             return true;
@@ -14088,7 +14076,7 @@ define('mockup-registry',[
 
 define('mockup-patterns-base',[
   'jquery',
-  'mockup-registry',
+  'pat-registry',
   'mockup-parser',
   "pat-logger"
 ], function($, Registry, mockupParser, logger) {
@@ -14474,335 +14462,6 @@ define('mockup-patterns-select2',[
 
 });
 
-define('plone-patterns-toolbar',[
-  'jquery',
-  'mockup-patterns-base',
-  'mockup-registry',
-  'mockup-utils',
-  'jquery.cookie'
-], function ($, Base, Registry, utils) {
-  
-
-  var Toolbar = Base.extend({
-    name: 'toolbar',
-    trigger: '.pat-toolbar',
-    init: function () {
-      var that = this;
-      if ($(window).width() < '768'){//mobile
-        // $( 'html' ).has('.plone-toolbar-left').css({'margin-left':'0','margin-top':'0','margin-right':'0'});
-        // $( 'html' ).has('.plone-toolbar-top').css({'margin-left':'0','margin-top':'0','margin-right':'0'});
-        // $( 'html' ).has('.plone-toolbar-left.expanded').css({'margin-left':'0','margin-top':'0','margin-right':'0'});
-        // $( 'body' ).css('margin-left: 0px');
-        $('#edit-zone').css('right', '-120px');
-        $( '#edit-zone .plone-toolbar-logo' ).click(function() {
-          if ($(this).hasClass('open')){
-            $( '#edit-zone' ).css('right', '-120px');
-            $( 'html' ).css('margin-left', '0');
-            $( 'html' ).css('margin-right', '0');
-            $(this).removeClass('open');
-            $( '#edit-zone nav li' ).removeClass('active');
-          } else {
-            $( '#edit-zone' ).css('right', '0');
-            $(this).addClass('open');
-            $( 'html' ).css('margin-left', '-120px');
-            $( 'html' ).css('margin-right', '120px');
-          }
-        });
-        $( '#edit-zone nav li' ).has( 'a .plone-toolbar-caret' ).click(function(e) {
-          e.preventDefault();
-          e.stopPropagation();
-          if ($(this).hasClass('active')) {
-            $( '#edit-zone' ).css('right', '0');
-            $( 'html' ).css('margin-left', '-120px');
-            $( 'html' ).css('margin-right', '120px');
-            $( '#edit-zone nav li' ).removeClass('active');
-          } else {
-            $( '#edit-zone nav li' ).removeClass('active');
-            $(this).addClass('active');
-            $( '#edit-zone' ).css('right', '180px');
-            $( 'html' ).css('margin-left', '-300px');
-            $( 'html' ).css('margin-right', '300px');
-          }
-        });
-      }
-      else { // not mobile
-        var toolbar_cookie = $.cookie('plone-toolbar');
-        window.plonetoolbar_state = toolbar_cookie;
-        $('#edit-zone').attr('class', toolbar_cookie);
-
-        $( '#edit-zone .plone-toolbar-logo' ).on('click', function() {
-          if (window.plonetoolbar_state) {
-            if (window.plonetoolbar_state.indexOf('expanded') != -1) {
-              // Switch to default (only icons)
-              $( '#edit-zone' ).removeClass('expanded');
-              $( '#edit-zone nav li' ).removeClass('active');
-              if (window.plonetoolbar_state.indexOf('left') != -1) {
-                $('body').addClass('plone-toolbar-left-default');
-                $('body').removeClass('plone-toolbar-left-expanded');
-              } else {
-                $('body').addClass('plone-toolbar-top-default');
-                $('body').removeClass('plone-toolbar-top-expanded');
-              }
-              $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
-              window.plonetoolbar_state = window.plonetoolbar_state.replace(' expanded', '');
-            } else {
-              // Switch to expanded
-              $( '#edit-zone' ).addClass('expanded');
-              $( '#edit-zone nav li' ).removeClass('active');
-              if (window.plonetoolbar_state.indexOf('left') != -1) {
-                $('body').addClass('plone-toolbar-left-expanded');
-                $('body').removeClass('plone-toolbar-left-default');
-              } else {
-                $('body').addClass('plone-toolbar-top-expanded');
-                $('body').removeClass('plone-toolbar-top-default');
-              }
-              $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
-              window.plonetoolbar_state = window.plonetoolbar_state + ' expanded';
-            }
-          } else {
-            // Cookie not set, assume default (only icons)
-            window.plonetoolbar_state = 'pat-toolbar plone-toolbar-left';
-            // Switch to expanded left
-            $( '#edit-zone' ).addClass('expanded');
-            $( '#edit-zone nav li' ).removeClass('active');
-            $('body').addClass('plone-toolbar-left-expanded');
-            $('body').removeClass('plone-toolbar-left-default');
-            $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
-            window.plonetoolbar_state = window.plonetoolbar_state + ' expanded';
-          }
-        });
-
-        // Switch to compressed
-        $( '#edit-zone .plone-toolbar-logo' ).on('dblclick', function() {
-          if (window.plonetoolbar_state) {
-            if (window.plonetoolbar_state.indexOf('compressed') != -1) {
-              // Switch to default (only icons) not compressed
-              $( '#edit-zone' ).removeClass('compressed');
-              if (window.plonetoolbar_state.indexOf('left') != -1) {
-                $('body').addClass('plone-toolbar-left-default');
-                $('body').removeClass('plone-toolbar-compressed');
-              } else {
-                $('body').addClass('plone-toolbar-top-default');
-                $('body').removeClass('plone-toolbar-compressed');
-              }
-              $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
-              window.plonetoolbar_state = window.plonetoolbar_state.replace(' expanded', '');
-            } else {
-              // Switch to compressed
-              $( '#edit-zone' ).addClass('compressed');
-              if (window.plonetoolbar_state.indexOf('left') != -1) {
-                $('body').addClass('plone-toolbar-compressed');
-                $('body').removeClass('plone-toolbar-left-default');
-                $('body').removeClass('plone-toolbar-left-expanded');
-              } else {
-                $('body').addClass('plone-toolbar-compressed');
-                $('body').removeClass('plone-toolbar-top-default');
-                $('body').removeClass('plone-toolbar-top-expanded');
-              }
-              $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
-              window.plonetoolbar_state = window.plonetoolbar_state + ' compressed';
-            }
-          } else {
-            // Cookie not set, assume default (only icons)
-            // Switch to compressed
-            $( '#edit-zone' ).addClass('compressed');
-            $('body').addClass('plone-toolbar-compressed');
-            $('body').removeClass('plone-toolbar-left-default');
-            $('body').removeClass('plone-toolbar-left-expanded');
-            $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
-            window.plonetoolbar_state = window.plonetoolbar_state + ' compressed';
-          }
-        });
-
-
-        $( '#edit-zone nav > ul > li li' ).on('click', function(event) {
-          event.stopImmediatePropagation();
-        });
-
-        // active
-        $( '#edit-zone nav > ul > li' ).has( 'a .plone-toolbar-caret' ).on('click', function(event) {
-          event.preventDefault();
-          event.stopPropagation();
-          if ($(this).hasClass('active')) {
-            $( '#edit-zone nav li' ).removeClass('active');
-          } else {
-            $('#edit-zone nav li').removeClass('active');
-            $(this).addClass('active');
-          }
-        });
-
-        $('body').on('click', function(event) {
-          if (!($(this).parent('#edit-zone').length > 0)) {
-            $('#edit-zone nav > ul > li').each(function(key, element){
-              $(element).removeClass('active');
-            });
-          }
-        });
-
-        // top/left switcher
-        $( '#edit-zone .plone-toolbar-switcher' ).on('click', function() {
-          if (window.plonetoolbar_state) {
-            if (window.plonetoolbar_state.indexOf('top') != -1) {
-              // from top to left
-              $( '#edit-zone' ).addClass('plone-toolbar-left');
-              $( '#edit-zone' ).removeClass('plone-toolbar-top');
-              if (window.plonetoolbar_state.indexOf('expanded') != -1) {
-                $('body').addClass('plone-toolbar-left-expanded');
-                $('body').removeClass('plone-toolbar-top-expanded');
-              } else {
-                $('body').addClass('plone-toolbar-left-default');
-                $('body').removeClass('plone-toolbar-top-default');
-              }
-              $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
-              window.plonetoolbar_state = window.plonetoolbar_state.replace('plone-toolbar-top', 'plone-toolbar-left');
-            } else {
-              // from left to top
-              $( '#edit-zone' ).addClass('plone-toolbar-top');
-              $( '#edit-zone' ).removeClass('plone-toolbar-left');
-              if (window.plonetoolbar_state.indexOf('expanded') != -1) {
-                $('body').addClass('plone-toolbar-top-expanded');
-                $('body').removeClass('plone-toolbar-left-expanded');
-              } else {
-                $('body').addClass('plone-toolbar-top-default');
-                $('body').removeClass('plone-toolbar-left-default');
-              }
-              $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
-              window.plonetoolbar_state = window.plonetoolbar_state.replace('plone-toolbar-left', 'plone-toolbar-top');
-            }
-          } else {
-            // Cookie not set, assume left default (only icons)
-            window.plonetoolbar_state = 'pat-toolbar plone-toolbar-left';
-            // Switch to top
-            $( '#edit-zone' ).addClass('plone-toolbar-left');
-            $( '#edit-zone' ).removeClass('plone-toolbar-top');
-            $('body').addClass('plone-toolbar-top-default');
-            $('body').removeClass('plone-toolbar-left-default');
-            $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
-            window.plonetoolbar_state = window.plonetoolbar_state.replace('plone-toolbar-left', 'plone-toolbar-top');
-          }
-
-        });
-      }
-      this.$el.addClass('initialized');
-
-      /* folder contents changes the context.
-         This is for usability so the menu changes along with
-         the folder contents context */
-      $('body').off('structure-url-changed').on('structure-url-changed', function (e, path) {
-        $.ajax({
-          url: $('body').attr('data-portal-url') + path + '/@@render-toolbar'
-        }).done(function(data){
-          var $el = $(utils.parseBodyTag(data));
-          that.$el.replaceWith($el);
-          Registry.scan($el);
-        });
-      });
-    }
-  });
-
-  return Toolbar;
-});
-
-/* Pattern which provides accessibility support
- *
- * Options:
- *    smallbtn(string): Selector used to activate small text on click. (null)
- *    normalbtn(string): Selector used to activate normal text on click. (null)
- *    largebtn(string): Selector used to activate large text on click. (null)
- *
- * Documentation:
- *    # Example
- *
- *    {{ example-1 }}
- *
- * Example: example-1
- *    <ul id="textAdjust"
- *        class="pat-accessibility"
- *        data-pat-accessibility="smallbtn:.decrease-text;
- *                                normalbtn:.normal-text;
- *                                largebtn:.increase-text;">
- *      <li>
- *        <a href="." class="decrease-text">
- *          <i class="icon-minus-sign"></i>
- *          Decrease Text Size
- *        </a>
- *      </li>
- *      <li>
- *        <a href="." class="normal-text">
- *          <i class="icon-circle"></i>
- *          Normal Text Size
- *        </a>
- *      </li>
- *      <li>
- *        <a href="." class="increase-text">
- *          <i class="icon-plus-sign"></i>
- *          Increase Text Size
- *        </a>
- *      </li>
- *    </ul>
- *
- */
-
-
-define('mockup-patterns-accessibility',[
-  'jquery',
-  'mockup-patterns-base',
-  'jquery.cookie'
-], function($, Base) {
-  
-
-  var Accessibility = Base.extend({
-    name: 'accessibility',
-    trigger: '.pat-accessibility',
-    defaults: {
-      'smallbtn': null,
-      'normalbtn': null,
-      'largebtn': null
-    },
-    setBaseFontSize: function($fontsize, $reset) {
-      if ($reset) {
-        this.$el.removeClass('smallText').removeClass('largeText').
-            removeClass('mediumText');
-        $.cookie('fontsize', $fontsize, { expires: 365, path: '/' });
-      }
-      this.$el.addClass($fontsize);
-    },
-    initBtn: function(btn) {
-      var self = this;
-      btn.el.click(function(e) {
-        e.preventDefault();
-        self.setBaseFontSize(btn.name + 'Text', 1);
-      });
-    },
-    init: function() {
-      var self = this;
-      var $fontsize = $.cookie('fontsize');
-      if ($fontsize) {
-        self.setBaseFontSize($fontsize, 0);
-      }
-      var btns = ['smallbtn', 'normalbtn', 'largebtn'];
-      $.each(btns, function(idx, btn) {
-        var btnName = btn.replace('btn', '');
-        var btnSelector = self.options[btn];
-        if (btnSelector !== null) {
-          var el = $(btnSelector, self.$el);
-          if (el) {
-            btn = {
-              name: btnName,
-              el: el
-            };
-            self[btnName] = btn;
-            self.initBtn(btn);
-          }
-        }
-      });
-    }
-  });
-
-  return Accessibility;
-
-});
-
 /* Autotoc pattern.
  *
  * Options:
@@ -14966,6 +14625,106 @@ define('mockup-patterns-autotoc',[
   });
 
   return AutoTOC;
+
+});
+
+/* Pattern which provides accessibility support
+ *
+ * Options:
+ *    smallbtn(string): Selector used to activate small text on click. (null)
+ *    normalbtn(string): Selector used to activate normal text on click. (null)
+ *    largebtn(string): Selector used to activate large text on click. (null)
+ *
+ * Documentation:
+ *    # Example
+ *
+ *    {{ example-1 }}
+ *
+ * Example: example-1
+ *    <ul id="textAdjust"
+ *        class="pat-accessibility"
+ *        data-pat-accessibility="smallbtn:.decrease-text;
+ *                                normalbtn:.normal-text;
+ *                                largebtn:.increase-text;">
+ *      <li>
+ *        <a href="." class="decrease-text">
+ *          <i class="icon-minus-sign"></i>
+ *          Decrease Text Size
+ *        </a>
+ *      </li>
+ *      <li>
+ *        <a href="." class="normal-text">
+ *          <i class="icon-circle"></i>
+ *          Normal Text Size
+ *        </a>
+ *      </li>
+ *      <li>
+ *        <a href="." class="increase-text">
+ *          <i class="icon-plus-sign"></i>
+ *          Increase Text Size
+ *        </a>
+ *      </li>
+ *    </ul>
+ *
+ */
+
+
+define('mockup-patterns-accessibility',[
+  'jquery',
+  'mockup-patterns-base',
+  'jquery.cookie'
+], function($, Base) {
+  
+
+  var Accessibility = Base.extend({
+    name: 'accessibility',
+    trigger: '.pat-accessibility',
+    defaults: {
+      'smallbtn': null,
+      'normalbtn': null,
+      'largebtn': null
+    },
+    setBaseFontSize: function($fontsize, $reset) {
+      if ($reset) {
+        this.$el.removeClass('smallText').removeClass('largeText').
+            removeClass('mediumText');
+        $.cookie('fontsize', $fontsize, { expires: 365, path: '/' });
+      }
+      this.$el.addClass($fontsize);
+    },
+    initBtn: function(btn) {
+      var self = this;
+      btn.el.click(function(e) {
+        e.preventDefault();
+        self.setBaseFontSize(btn.name + 'Text', 1);
+      });
+    },
+    init: function() {
+      var self = this;
+      var $fontsize = $.cookie('fontsize');
+      if ($fontsize) {
+        self.setBaseFontSize($fontsize, 0);
+      }
+      var btns = ['smallbtn', 'normalbtn', 'largebtn'];
+      $.each(btns, function(idx, btn) {
+        var btnName = btn.replace('btn', '');
+        var btnSelector = self.options[btn];
+        if (btnSelector !== null) {
+          var el = $(btnSelector, self.$el);
+          if (el) {
+            btn = {
+              name: btnName,
+              el: el
+            };
+            self[btnName] = btn;
+            self.initBtn(btn);
+          }
+        }
+      });
+    }
+  });
+
+  return Accessibility;
 
 });
 
@@ -15199,7 +14958,7 @@ define('mockup-patterns-contentloader',[
   'jquery',
   'mockup-patterns-base',
   'pat-logger',
-  'mockup-registry',
+  'pat-registry',
   'mockup-utils'
 ], function($, Base, logger, Registry, utils) {
   
@@ -15271,6 +15030,407 @@ define('mockup-patterns-contentloader',[
 
   return ContentLoader;
 
+});
+
+/**
+ * Patterns registry fork - Central registry and scan logic for patterns
+ *
+ * Copyright 2012-2013 Simplon B.V.
+ * Copyright 2012-2013 Florian Friesdorf
+ * Copyright 2013 Marko Durkovic
+ * Copyright 2013 Rok Garbas
+ */
+
+/*
+ * changes to previous patterns.register/scan mechanism
+ * - if you want initialised class, do it in init
+ * - init returns set of elements actually initialised
+ * - handle once within init
+ * - no turnstile anymore
+ * - set pattern.jquery_plugin if you want it
+ * - This is a global registry now
+ * - elements can no longer be initialized more than once
+ */
+define('mockup-registry',[
+    "jquery",
+    "pat-logger",
+    "pat-utils",
+    // below here modules that are only loaded
+    "pat-compat",
+    "pat-jquery-ext"
+], function($, logger, utils) {
+    
+
+    var log = logger.getLogger("registry");
+
+    var disable_re = /patterns-disable=([^&]+)/g,
+        dont_catch_re = /patterns-dont-catch/g,
+        dont_catch = false,
+        disabled = {}, match;
+
+    while ((match=disable_re.exec(window.location.search)) !== null) {
+        disabled[match[1]] = true;
+        log.info('Pattern disabled via url config:', match[1]);
+    }
+
+    while ((match=dont_catch_re.exec(window.location.search)) !== null) {
+        dont_catch = true;
+        log.info('I will not catch init exceptions');
+    }
+
+    if(window.registry_settings === undefined){
+        /* use global settings in case mockup-registry is included by
+           multiple compiled sources. Makes this a global registry */
+        window.registry_settings = {
+            patterns: {},
+            initialized: false
+        };
+    }
+
+    var registry = {
+        settings: window.registry_settings,
+        patterns: window.registry_settings.patterns,
+        // as long as the registry is not initialized, pattern
+        // registration just registers a pattern. Once init is called,
+        // the DOM is scanned. After that registering a new pattern
+        // results in rescanning the DOM only for this pattern.
+        init: function registry_init() {
+            $(document).ready(function() {
+                log.info('loaded: ' + Object.keys(registry.patterns).sort().join(', '));
+                registry.scan(document.body);
+                registry.settings.initialized = true;
+                log.info('finished initial scan.');
+            });
+        },
+
+        scan: function registry_scan(content, patterns, trigger) {
+            var $content = $(content),
+                all = [], allsel,
+                $match, plog;
+
+            // If no list of patterns was specified, we scan for all patterns
+            patterns = patterns || Object.keys(registry.patterns);
+
+            // selector for all patterns
+            patterns.forEach(function registry_scan_loop(name) {
+                if (disabled[name]) {
+                    log.debug('Skipping disabled pattern:', name);
+                    return;
+                }
+                var pattern = registry.patterns[name];
+                if (pattern.transform) {
+                    try {
+                        pattern.transform($content);
+                    } catch (e) {
+                        if (dont_catch) { throw(e); }
+                        log.error("Transform error for pattern" + name, e);
+                    }
+                }
+                if (pattern.trigger) {
+                    all.push(pattern.trigger);
+                }
+            });
+            // Find all elements that belong to any pattern.
+            allsel = all.join(",");
+            $match = $content.findInclusive(allsel);
+            $match = $match.filter(function() { return $(this).parents('pre').length === 0; });
+            $match = $match.filter(":not(.cant-touch-this)");
+
+            // walk list backwards and initialize patterns inside-out.
+            $match.toArray().reduceRight(function registry_pattern_init(acc, el) {
+                var pattern, $el = $(el);
+                for (var name in registry.patterns) {
+                    pattern = registry.patterns[name];
+                    if (pattern.init) {
+                        plog = logger.getLogger("pat." + name);
+                        if ($el.is(pattern.trigger) && !$el.hasClass('pattern-initialized')) {
+                            plog.debug("Initialising:", $el);
+                            try {
+                                pattern.init($el, null, trigger);
+                                plog.debug("done.");
+                            } catch (e) {
+                                if (dont_catch) { throw(e); }
+                                plog.error("Caught error:", e);
+                            }
+                            $el.addClass('pattern-initialized');
+                        }
+                    }
+                }
+            }, null);
+            $('body').addClass('patterns-loaded');
+        },
+
+        register: function registry_register(pattern, name) {
+            var plugin_name, jquery_plugin;
+            name = name || pattern.name;
+            if (!name) {
+                log.error("Pattern lacks a name:", pattern);
+                return false;
+            }
+            if (registry.patterns[name]) {
+                log.error("Already have a pattern called: " + name);
+                return false;
+            }
+
+            // register pattern to be used for scanning new content
+            registry.patterns[name] = pattern;
+
+            // register pattern as jquery plugin
+            if (pattern.jquery_plugin) {
+                plugin_name = ("pat-" + name)
+                        .replace(/-([a-zA-Z])/g, function(match, p1) {
+                            return p1.toUpperCase();
+                        });
+                $.fn[plugin_name] = utils.jqueryPlugin(pattern);
+                // BBB 2012-12-10 and also for Mockup patterns.
+                $.fn[plugin_name.replace(/^pat/, "pattern")] = utils.jqueryPlugin(pattern);
+            }
+            log.debug("Registered pattern:", name, pattern);
+            if (registry.settings.initialized) {
+                registry.scan(document.body, [name]);
+            }
+            return true;
+        }
+    };
+
+    $(document).on("patterns-injected.patterns",
+            function registry_onInject(ev, inject_config, inject_trigger) {
+                registry.scan(ev.target, null, {type: "injection", element: inject_trigger});
+                $(ev.target).trigger("patterns-injected-scanned");
+            });
+
+    return registry;
+});
+// jshint indent: 4, browser: true, jquery: true, quotmark: double
+// vim: sw=4 expandtab
+;
+define('plone-patterns-toolbar',[
+  'jquery',
+  'mockup-patterns-base',
+  'mockup-registry',
+  'mockup-utils',
+  'jquery.cookie'
+], function ($, Base, Registry, utils) {
+  
+
+  var Toolbar = Base.extend({
+    name: 'toolbar',
+    trigger: '.pat-toolbar',
+    init: function () {
+      var that = this;
+      if ($(window).width() < '768'){//mobile
+        // $( 'html' ).has('.plone-toolbar-left').css({'margin-left':'0','margin-top':'0','margin-right':'0'});
+        // $( 'html' ).has('.plone-toolbar-top').css({'margin-left':'0','margin-top':'0','margin-right':'0'});
+        // $( 'html' ).has('.plone-toolbar-left.expanded').css({'margin-left':'0','margin-top':'0','margin-right':'0'});
+        // $( 'body' ).css('margin-left: 0px');
+        $('#edit-zone').css('right', '-120px');
+        $( '#edit-zone .plone-toolbar-logo' ).click(function() {
+          if ($(this).hasClass('open')){
+            $( '#edit-zone' ).css('right', '-120px');
+            $( 'html' ).css('margin-left', '0');
+            $( 'html' ).css('margin-right', '0');
+            $(this).removeClass('open');
+            $( '#edit-zone nav li' ).removeClass('active');
+          } else {
+            $( '#edit-zone' ).css('right', '0');
+            $(this).addClass('open');
+            $( 'html' ).css('margin-left', '-120px');
+            $( 'html' ).css('margin-right', '120px');
+          }
+        });
+        $( '#edit-zone nav li' ).has( 'a .plone-toolbar-caret' ).click(function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          if ($(this).hasClass('active')) {
+            $( '#edit-zone' ).css('right', '0');
+            $( 'html' ).css('margin-left', '-120px');
+            $( 'html' ).css('margin-right', '120px');
+            $( '#edit-zone nav li' ).removeClass('active');
+          } else {
+            $( '#edit-zone nav li' ).removeClass('active');
+            $(this).addClass('active');
+            $( '#edit-zone' ).css('right', '180px');
+            $( 'html' ).css('margin-left', '-300px');
+            $( 'html' ).css('margin-right', '300px');
+          }
+        });
+      }
+      else { // not mobile
+        var toolbar_cookie = $.cookie('plone-toolbar');
+        window.plonetoolbar_state = toolbar_cookie;
+        $('#edit-zone').attr('class', toolbar_cookie);
+
+        $( '#edit-zone .plone-toolbar-logo' ).on('click', function() {
+          if (window.plonetoolbar_state) {
+            if (window.plonetoolbar_state.indexOf('expanded') != -1) {
+              // Switch to default (only icons)
+              $( '#edit-zone' ).removeClass('expanded');
+              $( '#edit-zone nav li' ).removeClass('active');
+              if (window.plonetoolbar_state.indexOf('left') != -1) {
+                $('body').addClass('plone-toolbar-left-default');
+                $('body').removeClass('plone-toolbar-left-expanded');
+              } else {
+                $('body').addClass('plone-toolbar-top-default');
+                $('body').removeClass('plone-toolbar-top-expanded');
+              }
+              $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
+              window.plonetoolbar_state = window.plonetoolbar_state.replace(' expanded', '');
+            } else {
+              // Switch to expanded
+              $( '#edit-zone' ).addClass('expanded');
+              $( '#edit-zone nav li' ).removeClass('active');
+              if (window.plonetoolbar_state.indexOf('left') != -1) {
+                $('body').addClass('plone-toolbar-left-expanded');
+                $('body').removeClass('plone-toolbar-left-default');
+              } else {
+                $('body').addClass('plone-toolbar-top-expanded');
+                $('body').removeClass('plone-toolbar-top-default');
+              }
+              $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
+              window.plonetoolbar_state = window.plonetoolbar_state + ' expanded';
+            }
+          } else {
+            // Cookie not set, assume default (only icons)
+            window.plonetoolbar_state = 'pat-toolbar plone-toolbar-left';
+            // Switch to expanded left
+            $( '#edit-zone' ).addClass('expanded');
+            $( '#edit-zone nav li' ).removeClass('active');
+            $('body').addClass('plone-toolbar-left-expanded');
+            $('body').removeClass('plone-toolbar-left-default');
+            $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
+            window.plonetoolbar_state = window.plonetoolbar_state + ' expanded';
+          }
+        });
+
+        // Switch to compressed
+        $( '#edit-zone .plone-toolbar-logo' ).on('dblclick', function() {
+          if (window.plonetoolbar_state) {
+            if (window.plonetoolbar_state.indexOf('compressed') != -1) {
+              // Switch to default (only icons) not compressed
+              $( '#edit-zone' ).removeClass('compressed');
+              if (window.plonetoolbar_state.indexOf('left') != -1) {
+                $('body').addClass('plone-toolbar-left-default');
+                $('body').removeClass('plone-toolbar-compressed');
+              } else {
+                $('body').addClass('plone-toolbar-top-default');
+                $('body').removeClass('plone-toolbar-compressed');
+              }
+              $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
+              window.plonetoolbar_state = window.plonetoolbar_state.replace(' expanded', '');
+            } else {
+              // Switch to compressed
+              $( '#edit-zone' ).addClass('compressed');
+              if (window.plonetoolbar_state.indexOf('left') != -1) {
+                $('body').addClass('plone-toolbar-compressed');
+                $('body').removeClass('plone-toolbar-left-default');
+                $('body').removeClass('plone-toolbar-left-expanded');
+              } else {
+                $('body').addClass('plone-toolbar-compressed');
+                $('body').removeClass('plone-toolbar-top-default');
+                $('body').removeClass('plone-toolbar-top-expanded');
+              }
+              $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
+              window.plonetoolbar_state = window.plonetoolbar_state + ' compressed';
+            }
+          } else {
+            // Cookie not set, assume default (only icons)
+            // Switch to compressed
+            $( '#edit-zone' ).addClass('compressed');
+            $('body').addClass('plone-toolbar-compressed');
+            $('body').removeClass('plone-toolbar-left-default');
+            $('body').removeClass('plone-toolbar-left-expanded');
+            $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
+            window.plonetoolbar_state = window.plonetoolbar_state + ' compressed';
+          }
+        });
+
+
+        $( '#edit-zone nav > ul > li li' ).on('click', function(event) {
+          event.stopImmediatePropagation();
+        });
+
+        // active
+        $( '#edit-zone nav > ul > li' ).has( 'a .plone-toolbar-caret' ).on('click', function(event) {
+          event.preventDefault();
+          event.stopPropagation();
+          if ($(this).hasClass('active')) {
+            $( '#edit-zone nav li' ).removeClass('active');
+          } else {
+            $('#edit-zone nav li').removeClass('active');
+            $(this).addClass('active');
+          }
+        });
+
+        $('body').on('click', function(event) {
+          if (!($(this).parent('#edit-zone').length > 0)) {
+            $('#edit-zone nav > ul > li').each(function(key, element){
+              $(element).removeClass('active');
+            });
+          }
+        });
+
+        // top/left switcher
+        $( '#edit-zone .plone-toolbar-switcher' ).on('click', function() {
+          if (window.plonetoolbar_state) {
+            if (window.plonetoolbar_state.indexOf('top') != -1) {
+              // from top to left
+              $( '#edit-zone' ).addClass('plone-toolbar-left');
+              $( '#edit-zone' ).removeClass('plone-toolbar-top');
+              if (window.plonetoolbar_state.indexOf('expanded') != -1) {
+                $('body').addClass('plone-toolbar-left-expanded');
+                $('body').removeClass('plone-toolbar-top-expanded');
+              } else {
+                $('body').addClass('plone-toolbar-left-default');
+                $('body').removeClass('plone-toolbar-top-default');
+              }
+              $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
+              window.plonetoolbar_state = window.plonetoolbar_state.replace('plone-toolbar-top', 'plone-toolbar-left');
+            } else {
+              // from left to top
+              $( '#edit-zone' ).addClass('plone-toolbar-top');
+              $( '#edit-zone' ).removeClass('plone-toolbar-left');
+              if (window.plonetoolbar_state.indexOf('expanded') != -1) {
+                $('body').addClass('plone-toolbar-top-expanded');
+                $('body').removeClass('plone-toolbar-left-expanded');
+              } else {
+                $('body').addClass('plone-toolbar-top-default');
+                $('body').removeClass('plone-toolbar-left-default');
+              }
+              $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
+              window.plonetoolbar_state = window.plonetoolbar_state.replace('plone-toolbar-left', 'plone-toolbar-top');
+            }
+          } else {
+            // Cookie not set, assume left default (only icons)
+            window.plonetoolbar_state = 'pat-toolbar plone-toolbar-left';
+            // Switch to top
+            $( '#edit-zone' ).addClass('plone-toolbar-left');
+            $( '#edit-zone' ).removeClass('plone-toolbar-top');
+            $('body').addClass('plone-toolbar-top-default');
+            $('body').removeClass('plone-toolbar-left-default');
+            $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
+            window.plonetoolbar_state = window.plonetoolbar_state.replace('plone-toolbar-left', 'plone-toolbar-top');
+          }
+
+        });
+      }
+      this.$el.addClass('initialized');
+
+      /* folder contents changes the context.
+         This is for usability so the menu changes along with
+         the folder contents context */
+      $('body').off('structure-url-changed').on('structure-url-changed', function (e, path) {
+        $.ajax({
+          url: $('body').attr('data-portal-url') + path + '/@@render-toolbar'
+        }).done(function(data){
+          var $el = $(utils.parseBodyTag(data));
+          that.$el.replaceWith($el);
+          Registry.scan($el);
+        });
+      });
+    }
+  });
+
+  return Toolbar;
 });
 
 /* i18n integration. This is forked from jarn.jsi18n
@@ -15409,80 +15569,6 @@ define('translate',[
   return i18n.MessageFactory('widgets');
 });
 
-/* PreventDoubleSubmit pattern.
- *
- * Options:
- *    guardClassName(string): Class applied to submit button after it is clicked once. ('submitting')
- *    optOutClassName(string): Class used to opt-out a submit button from double-submit prevention. ('allowMultiSubmit')
- *    message(string): Message to be displayed when "opt-out" submit button is clicked a second time. ('You already clicked the submit button. Do you really want to submit this form again?')
- *
- * Documentation:
- *    # Example
- *
- *    {{ example-1 }}
- *
- * Example: example-1
- *    <form class="pat-preventdoublesubmit" onsubmit="javascript:return false;">
- *      <input type="text" value="submit this value please!" />
- *      <input class="btn btn-large btn-primary" type="submit" value="Single submit" />
- *      <input class="btn btn-large btn-primary allowMultiSubmit" type="submit" value="Multi submit" />
- *    </form>
- *
- */
-
-
-define('mockup-patterns-preventdoublesubmit',[
-  'jquery',
-  'mockup-patterns-base',
-  'translate'
-], function($, Base, _t) {
-  
-
-  var PreventDoubleSubmit = Base.extend({
-    name: 'preventdoublesubmit',
-    trigger: '.pat-preventdoublesubmit',
-    defaults: {
-      message : _t('You already clicked the submit button. ' +
-                'Do you really want to submit this form again?'),
-      guardClassName: 'submitting',
-      optOutClassName: 'allowMultiSubmit'
-    },
-    init: function() {
-      var self = this;
-
-      // if this is not a form just return
-      if (!self.$el.is('form')) {
-        return;
-      }
-
-      $(':submit', self.$el).click(function(e) {
-
-        // mark the button as clicked
-        $(':submit').removeAttr('clicked');
-        $(this).attr('clicked', 'clicked');
-
-        // if submitting and no opt-out guardClassName is found
-        // pop up confirmation dialog
-        if ($(this).hasClass(self.options.guardClassName) &&
-              !$(this).hasClass(self.options.optOutClassName)) {
-          return self._confirm.call(self);
-        }
-
-        $(this).addClass(self.options.guardClassName);
-      });
-
-    },
-
-    _confirm: function(e) {
-      return window.confirm(this.options.message);
-    }
-
-  });
-
-  return PreventDoubleSubmit;
-
-});
-
 /* Formunloadalert pattern.
  *
  * Options:
@@ -15581,6 +15667,80 @@ define('mockup-patterns-formunloadalert',[
     }
   });
   return FormUnloadAlert;
+
+});
+
+/* PreventDoubleSubmit pattern.
+ *
+ * Options:
+ *    guardClassName(string): Class applied to submit button after it is clicked once. ('submitting')
+ *    optOutClassName(string): Class used to opt-out a submit button from double-submit prevention. ('allowMultiSubmit')
+ *    message(string): Message to be displayed when "opt-out" submit button is clicked a second time. ('You already clicked the submit button. Do you really want to submit this form again?')
+ *
+ * Documentation:
+ *    # Example
+ *
+ *    {{ example-1 }}
+ *
+ * Example: example-1
+ *    <form class="pat-preventdoublesubmit" onsubmit="javascript:return false;">
+ *      <input type="text" value="submit this value please!" />
+ *      <input class="btn btn-large btn-primary" type="submit" value="Single submit" />
+ *      <input class="btn btn-large btn-primary allowMultiSubmit" type="submit" value="Multi submit" />
+ *    </form>
+ *
+ */
+
+
+define('mockup-patterns-preventdoublesubmit',[
+  'jquery',
+  'mockup-patterns-base',
+  'translate'
+], function($, Base, _t) {
+  
+
+  var PreventDoubleSubmit = Base.extend({
+    name: 'preventdoublesubmit',
+    trigger: '.pat-preventdoublesubmit',
+    defaults: {
+      message : _t('You already clicked the submit button. ' +
+                'Do you really want to submit this form again?'),
+      guardClassName: 'submitting',
+      optOutClassName: 'allowMultiSubmit'
+    },
+    init: function() {
+      var self = this;
+
+      // if this is not a form just return
+      if (!self.$el.is('form')) {
+        return;
+      }
+
+      $(':submit', self.$el).click(function(e) {
+
+        // mark the button as clicked
+        $(':submit').removeAttr('clicked');
+        $(this).attr('clicked', 'clicked');
+
+        // if submitting and no opt-out guardClassName is found
+        // pop up confirmation dialog
+        if ($(this).hasClass(self.options.guardClassName) &&
+              !$(this).hasClass(self.options.optOutClassName)) {
+          return self._confirm.call(self);
+        }
+
+        $(this).addClass(self.options.guardClassName);
+      });
+
+    },
+
+    _confirm: function(e) {
+      return window.confirm(this.options.message);
+    }
+
+  });
+
+  return PreventDoubleSubmit;
 
 });
 
@@ -20184,7 +20344,7 @@ define('mockup-patterns-modal',[
   'underscore',
   'mockup-patterns-base',
   'mockup-patterns-backdrop',
-  'mockup-registry',
+  'pat-registry',
   'mockup-router',
   'mockup-utils',
   'jquery.form'
@@ -20999,7 +21159,7 @@ if (window.jQuery) {
 
 require([
   'jquery',
-  'mockup-registry',
+  'pat-registry',
   'mockup-patterns-base',
 
   'mockup-patterns-select2',
@@ -21017,14 +21177,18 @@ require([
   'bootstrap-dropdown',
   'bootstrap-collapse',
   'bootstrap-tooltip'
-], function($, Registry) {
+], function($, registry, Base) {
   
 
   // initialize only if we are in top frame
   if (window.parent === window) {
-    Registry.init();
+    $(document).ready(function() {
+      $('body').addClass('pat-plone');
+      if (!registry.initialized) {
+        registry.init();
+      }
+    });
   }
-
 });
 
 define("plone", function(){});
