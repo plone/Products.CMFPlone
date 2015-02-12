@@ -17,7 +17,7 @@ class SyndicationControlPanelForm(controlpanel.RegistryEditForm):
 
     def updateFields(self):
         super(SyndicationControlPanelForm, self).updateFields()
-        #self.fields['site_rss_items'].widgetFactory = SelectFieldWidget
+        self.fields['site_rss_items'].widgetFactory = SelectFieldWidget
 
     def getSyndicationSettingsButtonShown(self):
         actions = getToolByName(self.context, 'portal_actions')
