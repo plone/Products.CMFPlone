@@ -110,12 +110,13 @@ class RSSViewlet(ViewletBase):
                     settings = registry.forInterface(ISiteSyndicationSettings)
                 except KeyError:
                     return
-                for uid in settings.site_rss_items:
-                    obj = uuidToObject(uid)
-                    if obj is not None:
-                        self.rsslinks.extend(self.getRssLinks(obj))
-                self.rsslinks.extend(self.getRssLinks(
-                    self.portal_state.portal()))
+                if settings.site_rss_items:
+                    for uid in settings.site_rss_items:
+                        obj = uuidToObject(uid)
+                        if obj is not None:
+                            self.rsslinks.extend(self.getRssLinks(obj))
+                    self.rsslinks.extend(self.getRssLinks(
+                        self.portal_state.portal()))
         else:
             if util.context_enabled():
                 self.rsslinks.extend(self.getRssLinks(self.context))
