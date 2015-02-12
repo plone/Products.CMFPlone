@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import unittest
 from Products.CMFPlone.tests import PloneTestCase
-
 from Products.CMFPlone.UnicodeSplitter import Splitter
 from Products.CMFPlone.UnicodeSplitter import CaseNormalizer
 
@@ -21,10 +20,12 @@ def _setlocale(*names):
         try:
             locale.setlocale(locale.LC_ALL, name)
             break
-        except locale.Error:
+        except locale.Error, e:
             pass
     else:
-        return None
+        raise e.__class__("Unsupported locale. These tests need at least one "
+                          "of the following locales available on your system",
+                          str(LATIN1))
     return saved
 
 
