@@ -13,26 +13,24 @@
 
 @font-face {
   font-family: 'fontello';
-  src: url('@{fontsPrefix}plone-fontello.eot');
-  src: url('@{fontsPrefix}plone-fontello.eot#iefix') format('embedded-opentype'),
-       url('@{fontsPrefix}plone-fontello.woff') format('woff'),
-       url('@{fontsPrefix}plone-fontello.ttf') format('truetype'),
-       url('@{fontsPrefix}plone-fontello.svg#fontello') format('svg');
+  src: url('@{fontsPrefix}plone-fontello.eot?52933264');
+  src: url('@{fontsPrefix}plone-fontello.eot?52933264#iefix') format('embedded-opentype'),
+       url('@{fontsPrefix}plone-fontello.woff?52933264') format('woff'),
+       url('@{fontsPrefix}plone-fontello.ttf?52933264') format('truetype'),
+       url('@{fontsPrefix}plone-fontello.svg?52933264#fontello') format('svg');
   font-weight: normal;
   font-style: normal;
 }
-// Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. 
-// Note, that will break hinting! In other OS-es font will be not as sharp as it could be 
-
-// @media screen and (-webkit-min-device-pixel-ratio:0) {
-//   @font-face {
-//     font-family: 'fontello';
-//     src: url('../font/fontello.svg?13758537#fontello') format('svg');
-//   }
-// }
-
-// fix navbar height, for twitter bootstrap
-@navbar-height: 29px;
+/* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
+/* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
+/*
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: 'fontello';
+    src: url('../font/fontello.svg?52933264#fontello') format('svg');
+  }
+}
+*/
 
  [class^="icon-"]:before, [class*=" icon-"]:before {
   font-family: "fontello";
@@ -45,38 +43,63 @@
   width: 1em;
   margin-right: .2em;
   text-align: center;
-  // opacity: .8;
+  /* opacity: .8; */
 
-  // For safety - reset parent styles, that can break glyph codes
+  /* For safety - reset parent styles, that can break glyph codes*/
   font-variant: normal;
   text-transform: none;
 
-  // fix buttons height, for twitter bootstrap
+  /* fix buttons height, for twitter bootstrap */
   line-height: 1em;
 
-  // Animation center compensation - margins should be symmetric
-  // remove if not needed 
+  /* Animation center compensation - margins should be symmetric */
+  /* remove if not needed */
   margin-left: .2em;
 
-  // you can be more comfortable with increased icons size 
-  // font-size: 120%; 
+  /* you can be more comfortable with increased icons size */
+  /* font-size: 120%; */
 
-  // Uncomment for 3D effect 
-  // text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3);
+  /* Uncomment for 3D effect */
+  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
 }
 
-// Albert: I do not know if this is longer needed
-.icon-plus:before { content: '\e807'; } // ''
-.icon-resize-horizontal:before { content: '\e804'; } // ''
-.icon-down-dir:before { content: '\e800'; } // ''
-.icon-up-dir:before { content: '\e801'; } // '' 
-.icon-right-dir:before { content: '\e80a'; } // '' 
-.icon-ellipsis:before { content: '\e80c'; } // '' 
-.icon-dot-circled:before { content: '\e809'; } // '' 
-.icon-pencil:before { content: '\e806'; } // '' 
-.icon-user:before { content: '\e802'; } // '' 
-.icon-group:before { content: '\e808'; } // ''
-.icon-view-mode:before { content: '\e80d'; } // ''
-.icon-folder-open:before { content: '\e803'; } // ''
-.icon-resize-vertical:before { content: '\e80b'; } // ''
-.icon-eye:before { content: '\e805'; } // ''
+.icon-user:before { content: '\e800'; } /* '' */
+.icon-folderContents:before { content: '\e801'; } /* '' */
+.icon-edit:before { content: '\e802'; } /* '' */
+.icon-logout:before { content: '\e803'; } /* '' */
+.icon-local_roles:before { content: '\e804'; } /* '' */
+.icon-contentRules:before { content: '\e805'; } /* '' */
+.icon-link:before { content: '\e806'; } /* '' */
+.icon-view:before { content: '\e807'; } /* '' */
+.icon-collection:before { content: '\e808'; } /* '' */
+.icon-event:before { content: '\e809'; } /* '' */
+.icon-plone-contentmenu-factories:before { content: '\e80a'; } /* '' */
+.icon-contentInfo:before { content: '\e80b'; } /* '' */
+.icon-plone-contentmenu-workflow:before { content: '\e80c'; } /* '' */
+.icon-moreOptions:before { content: '\e80d'; } /* '' */
+.icon-document:before { content: '\e80e'; } /* '' */
+.icon-news:before { content: '\e80f'; } /* '' */
+.icon-image:before { content: '\e810'; } /* '' */
+.icon-file:before { content: '\e811'; } /* '' */
+.icon-addon:before { content: '\e812'; } /* '' */
+.icon-datetime:before { content: '\e813'; } /* '' */
+.icon-caching:before { content: '\e814'; } /* '' */
+.icon-markup:before { content: '\e815'; } /* '' */
+.icon-editing:before { content: '\e816'; } /* '' */
+.icon-errors:before { content: '\e817'; } /* '' */
+.icon-imageHandling:before { content: '\e818'; } /* '' */
+.icon-filtering:before { content: '\e819'; } /* '' */
+.icon-language:before { content: '\e81a'; } /* '' */
+.icon-dexterityTypes:before { content: '\e81b'; } /* '' */
+.icon-mail:before { content: '\e81c'; } /* '' */
+.icon-maintenance:before { content: '\e81d'; } /* '' */
+.icon-navigation:before { content: '\e81e'; } /* '' */
+.icon-search:before { content: '\e81f'; } /* '' */
+.icon-security:before { content: '\e820'; } /* '' */
+.icon-theming:before { content: '\e821'; } /* '' */
+.icon-rss:before { content: '\e822'; } /* '' */
+.icon-siteSettings:before { content: '\e823'; } /* '' */
+.icon-userGroups:before { content: '\e824'; } /* '' */
+.icon-zope:before { content: '\e825'; } /* '' */
+.icon-types:before { content: '\e826'; } /* '' */
+

@@ -605,8 +605,8 @@
       <value key="export">window.tinyMCE</value>
       <value key="init">function () { this.tinyMCE.DOM.events.domLoaded = true; return this.tinyMCE; }</value>
       <value key="css">
-        <element>++plone++static/components/tinymce-builded/js/tinymce/skins/lightgray/skin.min.css</element>
-        <element>++plone++static/components/tinymce-builded/js/tinymce/skins/lightgray/content.inline.min.css</element>
+        <element>++plone++static/components/tinymce-builded/js/tinymce/skins/lightgray/skin.less</element>
+        <element>++plone++static/components/tinymce-builded/js/tinymce/skins/lightgray/Content.less</element>
       </value>
   </records>
 
@@ -859,40 +859,40 @@
   <!-- patternslib dependencies -->
   <records prefix="plone.resources/pat-compat"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++plone++static/components/patternslib/src/core/compat</value>
+      <value key="js">++plone++static/components/patternslib/src/core/compat.js</value>
   </records>
   <records prefix="plone.resources/pat-registry"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++plone++static/components/patternslib/src/core/registry</value>
+      <value key="js">++plone++static/components/patternslib/src/core/registry.js</value>
   </records>
   <records prefix="plone.resources/pat-jquery-ext"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++plone++static/components/patternslib/src/core/jquery-ext</value>
+      <value key="js">++plone++static/components/patternslib/src/core/jquery-ext.js</value>
   </records>
   <records prefix="plone.resources/pat-logger"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++plone++static/components/patternslib/src/core/logger</value>
+      <value key="js">++plone++static/components/patternslib/src/core/logger.js</value>
   </records>
   <records prefix="plone.resources/pat-utils"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++plone++static/components/patternslib/src/core/utils</value>
+      <value key="js">++plone++static/components/patternslib/src/core/utils.js</value>
   </records>
   <records prefix="plone.resources/logging"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++plone++static/components/logging/src/logging</value>
+      <value key="js">++plone++static/components/logging/src/logging.js</value>
   </records>
 
 
   <!-- recurrence widget registrations -->
   <records prefix="plone.resources/jquery.recurrenceinput"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++plone++static/components/jquery.recurrenceinput.js/src/jquery.recurrenceinput</value>
+      <value key="js">++plone++static/components/jquery.recurrenceinput.js/src/jquery.recurrenceinput.js</value>
       <!-- Perhaps a bit wonky here for now, depending on legacy jquery tools stuff here -->
       <value key="deps">jquery,resource-plone-app-jquerytools-js,resource-plone-app-jquerytools-dateinput-js,jquery.tmpl</value>
   </records>
   <records prefix="plone.resources/jquery.tmpl"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++plone++static/components/jquery.recurrenceinput.js/lib/jquery.tmpl</value>
+      <value key="js">++plone++static/components/jquery.recurrenceinput.js/lib/jquery.tmpl.js</value>
       <value key="deps">jquery</value>
   </records>
 
@@ -933,7 +933,7 @@
       <value_type type="plone.registry.field.TextLine" />
     </field>
     <value>
-      <element key="icon-font-path">\"{site_url}/++plone++static/components/bootstrap/dist/fonts/\"</element>
+      <element key="icon-font-path">\"../fonts/\"</element>
       <element key="bowerPath">\"{site_url}/++plone++static/components/\"</element>
       <element key="mockupPath">\"{site_url}/++resource++mockup/\"</element>
       <element key="mockuplessPath">\"{site_url}/++resource++mockupless/\"</element>

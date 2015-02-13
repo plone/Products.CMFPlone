@@ -1,807 +1,256 @@
-(function(root) {
-define("bootstrap-dropdown", ["jquery"], function() {
-  return (function() {
-/* ========================================================================
- * Bootstrap: dropdown.js v3.2.0
- * http://getbootstrap.com/javascript/#dropdowns
- * ========================================================================
- * Copyright 2011-2014 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
+/**
+ * Patterns logging - minimal logging framework
+ *
+ * Copyright 2012 Simplon B.V.
+ */
 
+(function() {
+    // source: https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Function/bind
+    if (!Function.prototype.bind) {
+        Function.prototype.bind = function (oThis) {
+            if (typeof this !== "function") {
+                // closest thing possible to the ECMAScript 5 internal IsCallable function
+                throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
+            }
 
-+function ($) {
-  
+            var aArgs = Array.prototype.slice.call(arguments, 1),
+                fToBind = this,
+                fNOP = function () {},
+                fBound = function () {
+                    return fToBind.apply(this instanceof fNOP &&
+                            oThis ? this : oThis,
+                            aArgs.concat(Array.prototype.slice.call(arguments)));
+                };
+            fNOP.prototype = this.prototype;
+            fBound.prototype = new fNOP();
 
-  // DROPDOWN CLASS DEFINITION
-  // =========================
-
-  var backdrop = '.dropdown-backdrop'
-  var toggle   = '[data-toggle="dropdown"]'
-  var Dropdown = function (element) {
-    $(element).on('click.bs.dropdown', this.toggle)
-  }
-
-  Dropdown.VERSION = '3.2.0'
-
-  Dropdown.prototype.toggle = function (e) {
-    var $this = $(this)
-
-    if ($this.is('.disabled, :disabled')) return
-
-    var $parent  = getParent($this)
-    var isActive = $parent.hasClass('open')
-
-    clearMenus()
-
-    if (!isActive) {
-      if ('ontouchstart' in document.documentElement && !$parent.closest('.navbar-nav').length) {
-        // if mobile we use a backdrop because click events don't delegate
-        $('<div class="dropdown-backdrop"/>').insertAfter($(this)).on('click', clearMenus)
-      }
-
-      var relatedTarget = { relatedTarget: this }
-      $parent.trigger(e = $.Event('show.bs.dropdown', relatedTarget))
-
-      if (e.isDefaultPrevented()) return
-
-      $this.trigger('focus')
-
-      $parent
-        .toggleClass('open')
-        .trigger('shown.bs.dropdown', relatedTarget)
+            return fBound;
+        };
     }
 
-    return false
-  }
+    var root,    // root logger instance
+        writer;  // writer instance, used to output log entries
 
-  Dropdown.prototype.keydown = function (e) {
-    if (!/(38|40|27)/.test(e.keyCode)) return
+    var Level = {
+        DEBUG: 10,
+        INFO: 20,
+        WARN: 30,
+        ERROR: 40,
+        FATAL: 50
+    };
 
-    var $this = $(this)
-
-    e.preventDefault()
-    e.stopPropagation()
-
-    if ($this.is('.disabled, :disabled')) return
-
-    var $parent  = getParent($this)
-    var isActive = $parent.hasClass('open')
-
-    if (!isActive || (isActive && e.keyCode == 27)) {
-      if (e.which == 27) $parent.find(toggle).trigger('focus')
-      return $this.trigger('click')
+    function IEConsoleWriter() {
     }
 
-    var desc = ' li:not(.divider):visible a'
-    var $items = $parent.find('[role="menu"]' + desc + ', [role="listbox"]' + desc)
+    IEConsoleWriter.prototype = {
+        output:  function(log_name, level, messages) {
+            // console.log will magically appear in IE8 when the user opens the
+            // F12 Developer Tools, so we have to test for it every time.
+            if (typeof window.console==="undefined" || typeof console.log==="undefined")
+                    return;
+            if (log_name)
+                messages.unshift(log_name+":");
+            var message = messages.join(" ");
 
-    if (!$items.length) return
+            // Under some conditions console.log will be available but the
+            // other functions are missing.
+            if (typeof console.info===undefined) {
+                var level_name;
+                if (level<=Level.DEBUG)
+                    level_name="DEBUG";
+                else if (level<=Level.INFO)
+                    level_name="INFO";
+                else if (level<=Level.WARN)
+                    level_name="WARN";
+                else if (level<=Level.ERROR)
+                    level_name="ERROR";
+                else
+                    level_name="FATAL";
+                console.log("["+level_name+"] "+message);
+            } else {
+                if (level<=Level.DEBUG) {
+                    // console.debug exists but is deprecated
+                    message="[DEBUG] "+message;
+                    console.log(message);
+                } else if (level<=Level.INFO)
+                    console.info(message);
+                else if (level<=Level.WARN)
+                    console.warn(message);
+                else
+                    console.error(message);
+            }
+        }
+    };
 
-    var index = $items.index($items.filter(':focus'))
 
-    if (e.keyCode == 38 && index > 0)                 index--                        // up
-    if (e.keyCode == 40 && index < $items.length - 1) index++                        // down
-    if (!~index)                                      index = 0
-
-    $items.eq(index).trigger('focus')
-  }
-
-  function clearMenus(e) {
-    if (e && e.which === 3) return
-    $(backdrop).remove()
-    $(toggle).each(function () {
-      var $parent = getParent($(this))
-      var relatedTarget = { relatedTarget: this }
-      if (!$parent.hasClass('open')) return
-      $parent.trigger(e = $.Event('hide.bs.dropdown', relatedTarget))
-      if (e.isDefaultPrevented()) return
-      $parent.removeClass('open').trigger('hidden.bs.dropdown', relatedTarget)
-    })
-  }
-
-  function getParent($this) {
-    var selector = $this.attr('data-target')
-
-    if (!selector) {
-      selector = $this.attr('href')
-      selector = selector && /#[A-Za-z]/.test(selector) && selector.replace(/.*(?=#[^\s]*$)/, '') // strip for ie7
+    function ConsoleWriter() {
     }
 
-    var $parent = selector && $(selector)
-
-    return $parent && $parent.length ? $parent : $this.parent()
-  }
-
-
-  // DROPDOWN PLUGIN DEFINITION
-  // ==========================
-
-  function Plugin(option) {
-    return this.each(function () {
-      var $this = $(this)
-      var data  = $this.data('bs.dropdown')
-
-      if (!data) $this.data('bs.dropdown', (data = new Dropdown(this)))
-      if (typeof option == 'string') data[option].call($this)
-    })
-  }
-
-  var old = $.fn.dropdown
-
-  $.fn.dropdown             = Plugin
-  $.fn.dropdown.Constructor = Dropdown
+    ConsoleWriter.prototype = {
+        output: function(log_name, level, messages) {
+            if (log_name)
+                messages.unshift(log_name+":");
+            if (level<=Level.DEBUG) {
+                // console.debug exists but is deprecated
+                messages.unshift("[DEBUG]");
+                console.log.apply(console, messages);
+            } else if (level<=Level.INFO)
+                console.info.apply(console, messages);
+            else if (level<=Level.WARN)
+                console.warn.apply(console, messages);
+            else
+                console.error.apply(console, messages);
+        }
+    };
 
 
-  // DROPDOWN NO CONFLICT
-  // ====================
-
-  $.fn.dropdown.noConflict = function () {
-    $.fn.dropdown = old
-    return this
-  }
-
-
-  // APPLY TO STANDARD DROPDOWN ELEMENTS
-  // ===================================
-
-  $(document)
-    .on('click.bs.dropdown.data-api', clearMenus)
-    .on('click.bs.dropdown.data-api', '.dropdown form', function (e) { e.stopPropagation() })
-    .on('click.bs.dropdown.data-api', toggle, Dropdown.prototype.toggle)
-    .on('keydown.bs.dropdown.data-api', toggle + ', [role="menu"], [role="listbox"]', Dropdown.prototype.keydown)
-
-}(jQuery);
-
-
-  }).apply(root, arguments);
-});
-}(this));
-
-(function(root) {
-define("bootstrap-collapse", ["jquery"], function() {
-  return (function() {
-/* ========================================================================
- * Bootstrap: collapse.js v3.2.0
- * http://getbootstrap.com/javascript/#collapse
- * ========================================================================
- * Copyright 2011-2014 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
-
-
-+function ($) {
-  
-
-  // COLLAPSE PUBLIC CLASS DEFINITION
-  // ================================
-
-  var Collapse = function (element, options) {
-    this.$element      = $(element)
-    this.options       = $.extend({}, Collapse.DEFAULTS, options)
-    this.transitioning = null
-
-    if (this.options.parent) this.$parent = $(this.options.parent)
-    if (this.options.toggle) this.toggle()
-  }
-
-  Collapse.VERSION  = '3.2.0'
-
-  Collapse.DEFAULTS = {
-    toggle: true
-  }
-
-  Collapse.prototype.dimension = function () {
-    var hasWidth = this.$element.hasClass('width')
-    return hasWidth ? 'width' : 'height'
-  }
-
-  Collapse.prototype.show = function () {
-    if (this.transitioning || this.$element.hasClass('in')) return
-
-    var startEvent = $.Event('show.bs.collapse')
-    this.$element.trigger(startEvent)
-    if (startEvent.isDefaultPrevented()) return
-
-    var actives = this.$parent && this.$parent.find('> .panel > .in')
-
-    if (actives && actives.length) {
-      var hasData = actives.data('bs.collapse')
-      if (hasData && hasData.transitioning) return
-      Plugin.call(actives, 'hide')
-      hasData || actives.data('bs.collapse', null)
+    function Logger(name, parent) {
+        this._loggers={};
+        this.name=name || "";
+        this._parent=parent || null;
+        if (!parent) {
+            this._enabled=true;
+            this._level=Level.WARN;
+        }
     }
 
-    var dimension = this.dimension()
+    Logger.prototype = {
+        getLogger: function(name) {
+            var path = name.split("."),
+                root = this,
+                route = this.name ? [this.name] : [];
+            while (path.length) {
+                var entry = path.shift();
+                route.push(entry);
+                if (!(entry in root._loggers))
+                    root._loggers[entry] = new Logger(route.join("."), root);
+                root=root._loggers[entry];
+            }
+            return root;
+        },
 
-    this.$element
-      .removeClass('collapse')
-      .addClass('collapsing')[dimension](0)
+        _getFlag: function(flag) {
+            var context=this;
+            flag="_"+flag;
+            while (context!==null) {
+                if (context[flag]!==undefined)
+                    return context[flag];
+                context=context._parent;
+            }
+            return null;
+        },
 
-    this.transitioning = 1
+        setEnabled: function(state) {
+            this._enabled=!!state;
+        },
 
-    var complete = function () {
-      this.$element
-        .removeClass('collapsing')
-        .addClass('collapse in')[dimension]('')
-      this.transitioning = 0
-      this.$element
-        .trigger('shown.bs.collapse')
+        isEnabled: function() {
+            this._getFlag("enabled");
+        },
+
+        setLevel: function(level) {
+            if (typeof level==="number")
+                this._level=level;
+            else if (typeof level==="string") {
+                level=level.toUpperCase();
+                if (level in Level)
+                    this._level=Level[level];
+            }
+        },
+
+        getLevel: function() {
+            return this._getFlag("level");
+        },
+
+        log: function(level, messages) {
+            if (!messages.length || !this._getFlag("enabled") || level<this._getFlag("level"))
+                return;
+            messages=Array.prototype.slice.call(messages);
+            writer.output(this.name, level, messages);
+        },
+
+        debug: function() {
+            this.log(Level.DEBUG, arguments);
+        },
+
+        info: function() {
+            this.log(Level.INFO, arguments);
+        },
+
+        warn: function() {
+            this.log(Level.WARN, arguments);
+        },
+
+        error: function() {
+            this.log(Level.ERROR, arguments);
+        },
+
+        fatal: function() {
+            this.log(Level.FATAL, arguments);
+        }
+    };
+
+    function getWriter() {
+        return writer;
     }
 
-    if (!$.support.transition) return complete.call(this)
-
-    var scrollSize = $.camelCase(['scroll', dimension].join('-'))
-
-    this.$element
-      .one('bsTransitionEnd', $.proxy(complete, this))
-      .emulateTransitionEnd(350)[dimension](this.$element[0][scrollSize])
-  }
-
-  Collapse.prototype.hide = function () {
-    if (this.transitioning || !this.$element.hasClass('in')) return
-
-    var startEvent = $.Event('hide.bs.collapse')
-    this.$element.trigger(startEvent)
-    if (startEvent.isDefaultPrevented()) return
-
-    var dimension = this.dimension()
-
-    this.$element[dimension](this.$element[dimension]())[0].offsetHeight
-
-    this.$element
-      .addClass('collapsing')
-      .removeClass('collapse')
-      .removeClass('in')
-
-    this.transitioning = 1
-
-    var complete = function () {
-      this.transitioning = 0
-      this.$element
-        .trigger('hidden.bs.collapse')
-        .removeClass('collapsing')
-        .addClass('collapse')
+    function setWriter(w) {
+        writer=w;
     }
 
-    if (!$.support.transition) return complete.call(this)
-
-    this.$element
-      [dimension](0)
-      .one('bsTransitionEnd', $.proxy(complete, this))
-      .emulateTransitionEnd(350)
-  }
-
-  Collapse.prototype.toggle = function () {
-    this[this.$element.hasClass('in') ? 'hide' : 'show']()
-  }
-
-
-  // COLLAPSE PLUGIN DEFINITION
-  // ==========================
-
-  function Plugin(option) {
-    return this.each(function () {
-      var $this   = $(this)
-      var data    = $this.data('bs.collapse')
-      var options = $.extend({}, Collapse.DEFAULTS, $this.data(), typeof option == 'object' && option)
-
-      if (!data && options.toggle && option == 'show') option = !option
-      if (!data) $this.data('bs.collapse', (data = new Collapse(this, options)))
-      if (typeof option == 'string') data[option]()
-    })
-  }
-
-  var old = $.fn.collapse
-
-  $.fn.collapse             = Plugin
-  $.fn.collapse.Constructor = Collapse
-
-
-  // COLLAPSE NO CONFLICT
-  // ====================
-
-  $.fn.collapse.noConflict = function () {
-    $.fn.collapse = old
-    return this
-  }
-
-
-  // COLLAPSE DATA-API
-  // =================
-
-  $(document).on('click.bs.collapse.data-api', '[data-toggle="collapse"]', function (e) {
-    var href
-    var $this   = $(this)
-    var target  = $this.attr('data-target')
-        || e.preventDefault()
-        || (href = $this.attr('href')) && href.replace(/.*(?=#[^\s]+$)/, '') // strip for ie7
-    var $target = $(target)
-    var data    = $target.data('bs.collapse')
-    var option  = data ? 'toggle' : $this.data()
-    var parent  = $this.attr('data-parent')
-    var $parent = parent && $(parent)
-
-    if (!data || !data.transitioning) {
-      if ($parent) $parent.find('[data-toggle="collapse"][data-parent="' + parent + '"]').not($this).addClass('collapsed')
-      $this[$target.hasClass('in') ? 'addClass' : 'removeClass']('collapsed')
-    }
-
-    Plugin.call($target, option)
-  })
-
-}(jQuery);
-
-return window.jQuery.fn.collapse.Constructor;
-  }).apply(root, arguments);
-});
-}(this));
-
-(function(root) {
-define("bootstrap-tooltip", ["jquery"], function() {
-  return (function() {
-/* ========================================================================
- * Bootstrap: tooltip.js v3.2.0
- * http://getbootstrap.com/javascript/#tooltip
- * Inspired by the original jQuery.tipsy by Jason Frame
- * ========================================================================
- * Copyright 2011-2014 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
-
-
-+function ($) {
-  
-
-  // TOOLTIP PUBLIC CLASS DEFINITION
-  // ===============================
-
-  var Tooltip = function (element, options) {
-    this.type       =
-    this.options    =
-    this.enabled    =
-    this.timeout    =
-    this.hoverState =
-    this.$element   = null
-
-    this.init('tooltip', element, options)
-  }
-
-  Tooltip.VERSION  = '3.2.0'
-
-  Tooltip.DEFAULTS = {
-    animation: true,
-    placement: 'top',
-    selector: false,
-    template: '<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
-    trigger: 'hover focus',
-    title: '',
-    delay: 0,
-    html: false,
-    container: false,
-    viewport: {
-      selector: 'body',
-      padding: 0
-    }
-  }
-
-  Tooltip.prototype.init = function (type, element, options) {
-    this.enabled   = true
-    this.type      = type
-    this.$element  = $(element)
-    this.options   = this.getOptions(options)
-    this.$viewport = this.options.viewport && $(this.options.viewport.selector || this.options.viewport)
-
-    var triggers = this.options.trigger.split(' ')
-
-    for (var i = triggers.length; i--;) {
-      var trigger = triggers[i]
-
-      if (trigger == 'click') {
-        this.$element.on('click.' + this.type, this.options.selector, $.proxy(this.toggle, this))
-      } else if (trigger != 'manual') {
-        var eventIn  = trigger == 'hover' ? 'mouseenter' : 'focusin'
-        var eventOut = trigger == 'hover' ? 'mouseleave' : 'focusout'
-
-        this.$element.on(eventIn  + '.' + this.type, this.options.selector, $.proxy(this.enter, this))
-        this.$element.on(eventOut + '.' + this.type, this.options.selector, $.proxy(this.leave, this))
-      }
-    }
-
-    this.options.selector ?
-      (this._options = $.extend({}, this.options, { trigger: 'manual', selector: '' })) :
-      this.fixTitle()
-  }
-
-  Tooltip.prototype.getDefaults = function () {
-    return Tooltip.DEFAULTS
-  }
-
-  Tooltip.prototype.getOptions = function (options) {
-    options = $.extend({}, this.getDefaults(), this.$element.data(), options)
-
-    if (options.delay && typeof options.delay == 'number') {
-      options.delay = {
-        show: options.delay,
-        hide: options.delay
-      }
-    }
-
-    return options
-  }
-
-  Tooltip.prototype.getDelegateOptions = function () {
-    var options  = {}
-    var defaults = this.getDefaults()
-
-    this._options && $.each(this._options, function (key, value) {
-      if (defaults[key] != value) options[key] = value
-    })
-
-    return options
-  }
-
-  Tooltip.prototype.enter = function (obj) {
-    var self = obj instanceof this.constructor ?
-      obj : $(obj.currentTarget).data('bs.' + this.type)
-
-    if (!self) {
-      self = new this.constructor(obj.currentTarget, this.getDelegateOptions())
-      $(obj.currentTarget).data('bs.' + this.type, self)
-    }
-
-    clearTimeout(self.timeout)
-
-    self.hoverState = 'in'
-
-    if (!self.options.delay || !self.options.delay.show) return self.show()
-
-    self.timeout = setTimeout(function () {
-      if (self.hoverState == 'in') self.show()
-    }, self.options.delay.show)
-  }
-
-  Tooltip.prototype.leave = function (obj) {
-    var self = obj instanceof this.constructor ?
-      obj : $(obj.currentTarget).data('bs.' + this.type)
-
-    if (!self) {
-      self = new this.constructor(obj.currentTarget, this.getDelegateOptions())
-      $(obj.currentTarget).data('bs.' + this.type, self)
-    }
-
-    clearTimeout(self.timeout)
-
-    self.hoverState = 'out'
-
-    if (!self.options.delay || !self.options.delay.hide) return self.hide()
-
-    self.timeout = setTimeout(function () {
-      if (self.hoverState == 'out') self.hide()
-    }, self.options.delay.hide)
-  }
-
-  Tooltip.prototype.show = function () {
-    var e = $.Event('show.bs.' + this.type)
-
-    if (this.hasContent() && this.enabled) {
-      this.$element.trigger(e)
-
-      var inDom = $.contains(document.documentElement, this.$element[0])
-      if (e.isDefaultPrevented() || !inDom) return
-      var that = this
-
-      var $tip = this.tip()
-
-      var tipId = this.getUID(this.type)
-
-      this.setContent()
-      $tip.attr('id', tipId)
-      this.$element.attr('aria-describedby', tipId)
-
-      if (this.options.animation) $tip.addClass('fade')
-
-      var placement = typeof this.options.placement == 'function' ?
-        this.options.placement.call(this, $tip[0], this.$element[0]) :
-        this.options.placement
-
-      var autoToken = /\s?auto?\s?/i
-      var autoPlace = autoToken.test(placement)
-      if (autoPlace) placement = placement.replace(autoToken, '') || 'top'
-
-      $tip
-        .detach()
-        .css({ top: 0, left: 0, display: 'block' })
-        .addClass(placement)
-        .data('bs.' + this.type, this)
-
-      this.options.container ? $tip.appendTo(this.options.container) : $tip.insertAfter(this.$element)
-
-      var pos          = this.getPosition()
-      var actualWidth  = $tip[0].offsetWidth
-      var actualHeight = $tip[0].offsetHeight
-
-      if (autoPlace) {
-        var orgPlacement = placement
-        var $parent      = this.$element.parent()
-        var parentDim    = this.getPosition($parent)
-
-        placement = placement == 'bottom' && pos.top   + pos.height       + actualHeight - parentDim.scroll > parentDim.height ? 'top'    :
-                    placement == 'top'    && pos.top   - parentDim.scroll - actualHeight < 0                                   ? 'bottom' :
-                    placement == 'right'  && pos.right + actualWidth      > parentDim.width                                    ? 'left'   :
-                    placement == 'left'   && pos.left  - actualWidth      < parentDim.left                                     ? 'right'  :
-                    placement
-
-        $tip
-          .removeClass(orgPlacement)
-          .addClass(placement)
-      }
-
-      var calculatedOffset = this.getCalculatedOffset(placement, pos, actualWidth, actualHeight)
-
-      this.applyPlacement(calculatedOffset, placement)
-
-      var complete = function () {
-        that.$element.trigger('shown.bs.' + that.type)
-        that.hoverState = null
-      }
-
-      $.support.transition && this.$tip.hasClass('fade') ?
-        $tip
-          .one('bsTransitionEnd', complete)
-          .emulateTransitionEnd(150) :
-        complete()
-    }
-  }
-
-  Tooltip.prototype.applyPlacement = function (offset, placement) {
-    var $tip   = this.tip()
-    var width  = $tip[0].offsetWidth
-    var height = $tip[0].offsetHeight
-
-    // manually read margins because getBoundingClientRect includes difference
-    var marginTop = parseInt($tip.css('margin-top'), 10)
-    var marginLeft = parseInt($tip.css('margin-left'), 10)
-
-    // we must check for NaN for ie 8/9
-    if (isNaN(marginTop))  marginTop  = 0
-    if (isNaN(marginLeft)) marginLeft = 0
-
-    offset.top  = offset.top  + marginTop
-    offset.left = offset.left + marginLeft
-
-    // $.fn.offset doesn't round pixel values
-    // so we use setOffset directly with our own function B-0
-    $.offset.setOffset($tip[0], $.extend({
-      using: function (props) {
-        $tip.css({
-          top: Math.round(props.top),
-          left: Math.round(props.left)
-        })
-      }
-    }, offset), 0)
-
-    $tip.addClass('in')
-
-    // check to see if placing tip in new offset caused the tip to resize itself
-    var actualWidth  = $tip[0].offsetWidth
-    var actualHeight = $tip[0].offsetHeight
-
-    if (placement == 'top' && actualHeight != height) {
-      offset.top = offset.top + height - actualHeight
-    }
-
-    var delta = this.getViewportAdjustedDelta(placement, offset, actualWidth, actualHeight)
-
-    if (delta.left) offset.left += delta.left
-    else offset.top += delta.top
-
-    var arrowDelta          = delta.left ? delta.left * 2 - width + actualWidth : delta.top * 2 - height + actualHeight
-    var arrowPosition       = delta.left ? 'left'        : 'top'
-    var arrowOffsetPosition = delta.left ? 'offsetWidth' : 'offsetHeight'
-
-    $tip.offset(offset)
-    this.replaceArrow(arrowDelta, $tip[0][arrowOffsetPosition], arrowPosition)
-  }
-
-  Tooltip.prototype.replaceArrow = function (delta, dimension, position) {
-    this.arrow().css(position, delta ? (50 * (1 - delta / dimension) + '%') : '')
-  }
-
-  Tooltip.prototype.setContent = function () {
-    var $tip  = this.tip()
-    var title = this.getTitle()
-
-    $tip.find('.tooltip-inner')[this.options.html ? 'html' : 'text'](title)
-    $tip.removeClass('fade in top bottom left right')
-  }
-
-  Tooltip.prototype.hide = function () {
-    var that = this
-    var $tip = this.tip()
-    var e    = $.Event('hide.bs.' + this.type)
-
-    this.$element.removeAttr('aria-describedby')
-
-    function complete() {
-      if (that.hoverState != 'in') $tip.detach()
-      that.$element.trigger('hidden.bs.' + that.type)
-    }
-
-    this.$element.trigger(e)
-
-    if (e.isDefaultPrevented()) return
-
-    $tip.removeClass('in')
-
-    $.support.transition && this.$tip.hasClass('fade') ?
-      $tip
-        .one('bsTransitionEnd', complete)
-        .emulateTransitionEnd(150) :
-      complete()
-
-    this.hoverState = null
-
-    return this
-  }
-
-  Tooltip.prototype.fixTitle = function () {
-    var $e = this.$element
-    if ($e.attr('title') || typeof ($e.attr('data-original-title')) != 'string') {
-      $e.attr('data-original-title', $e.attr('title') || '').attr('title', '')
-    }
-  }
-
-  Tooltip.prototype.hasContent = function () {
-    return this.getTitle()
-  }
-
-  Tooltip.prototype.getPosition = function ($element) {
-    $element   = $element || this.$element
-    var el     = $element[0]
-    var isBody = el.tagName == 'BODY'
-    return $.extend({}, (typeof el.getBoundingClientRect == 'function') ? el.getBoundingClientRect() : null, {
-      scroll: isBody ? document.documentElement.scrollTop || document.body.scrollTop : $element.scrollTop(),
-      width:  isBody ? $(window).width()  : $element.outerWidth(),
-      height: isBody ? $(window).height() : $element.outerHeight()
-    }, isBody ? { top: 0, left: 0 } : $element.offset())
-  }
-
-  Tooltip.prototype.getCalculatedOffset = function (placement, pos, actualWidth, actualHeight) {
-    return placement == 'bottom' ? { top: pos.top + pos.height,   left: pos.left + pos.width / 2 - actualWidth / 2  } :
-           placement == 'top'    ? { top: pos.top - actualHeight, left: pos.left + pos.width / 2 - actualWidth / 2  } :
-           placement == 'left'   ? { top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left - actualWidth } :
-        /* placement == 'right' */ { top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left + pos.width   }
-
-  }
-
-  Tooltip.prototype.getViewportAdjustedDelta = function (placement, pos, actualWidth, actualHeight) {
-    var delta = { top: 0, left: 0 }
-    if (!this.$viewport) return delta
-
-    var viewportPadding = this.options.viewport && this.options.viewport.padding || 0
-    var viewportDimensions = this.getPosition(this.$viewport)
-
-    if (/right|left/.test(placement)) {
-      var topEdgeOffset    = pos.top - viewportPadding - viewportDimensions.scroll
-      var bottomEdgeOffset = pos.top + viewportPadding - viewportDimensions.scroll + actualHeight
-      if (topEdgeOffset < viewportDimensions.top) { // top overflow
-        delta.top = viewportDimensions.top - topEdgeOffset
-      } else if (bottomEdgeOffset > viewportDimensions.top + viewportDimensions.height) { // bottom overflow
-        delta.top = viewportDimensions.top + viewportDimensions.height - bottomEdgeOffset
-      }
+    if (!window.console || !window.console.log || typeof window.console.log.apply !== "function") {
+        setWriter(new IEConsoleWriter());
     } else {
-      var leftEdgeOffset  = pos.left - viewportPadding
-      var rightEdgeOffset = pos.left + viewportPadding + actualWidth
-      if (leftEdgeOffset < viewportDimensions.left) { // left overflow
-        delta.left = viewportDimensions.left - leftEdgeOffset
-      } else if (rightEdgeOffset > viewportDimensions.width) { // right overflow
-        delta.left = viewportDimensions.left + viewportDimensions.width - rightEdgeOffset
-      }
+        setWriter(new ConsoleWriter());
     }
 
-    return delta
-  }
+    root=new Logger();
 
-  Tooltip.prototype.getTitle = function () {
-    var title
-    var $e = this.$element
-    var o  = this.options
+    var logconfig = /loglevel(|-[^=]+)=([^&]+)/g,
+        match;
 
-    title = $e.attr('data-original-title')
-      || (typeof o.title == 'function' ? o.title.call($e[0]) :  o.title)
-
-    return title
-  }
-
-  Tooltip.prototype.getUID = function (prefix) {
-    do prefix += ~~(Math.random() * 1000000)
-    while (document.getElementById(prefix))
-    return prefix
-  }
-
-  Tooltip.prototype.tip = function () {
-    return (this.$tip = this.$tip || $(this.options.template))
-  }
-
-  Tooltip.prototype.arrow = function () {
-    return (this.$arrow = this.$arrow || this.tip().find('.tooltip-arrow'))
-  }
-
-  Tooltip.prototype.validate = function () {
-    if (!this.$element[0].parentNode) {
-      this.hide()
-      this.$element = null
-      this.options  = null
-    }
-  }
-
-  Tooltip.prototype.enable = function () {
-    this.enabled = true
-  }
-
-  Tooltip.prototype.disable = function () {
-    this.enabled = false
-  }
-
-  Tooltip.prototype.toggleEnabled = function () {
-    this.enabled = !this.enabled
-  }
-
-  Tooltip.prototype.toggle = function (e) {
-    var self = this
-    if (e) {
-      self = $(e.currentTarget).data('bs.' + this.type)
-      if (!self) {
-        self = new this.constructor(e.currentTarget, this.getDelegateOptions())
-        $(e.currentTarget).data('bs.' + this.type, self)
-      }
+    while ((match=logconfig.exec(window.location.search))!==null) {
+        var logger = (match[1]==="") ? root : root.getLogger(match[1].slice(1));
+        logger.setLevel(match[2].toUpperCase());
     }
 
-    self.tip().hasClass('in') ? self.leave(self) : self.enter(self)
-  }
+    var api = {
+        Level: Level,
+        getLogger: root.getLogger.bind(root),
+        setEnabled: root.setEnabled.bind(root),
+        isEnabled: root.isEnabled.bind(root),
+        setLevel: root.setLevel.bind(root),
+        getLevel: root.getLevel.bind(root),
+        debug: root.debug.bind(root),
+        info: root.info.bind(root),
+        warn: root.warn.bind(root),
+        error: root.error.bind(root),
+        fatal: root.fatal.bind(root),
+        getWriter: getWriter,
+        setWriter: setWriter
+    };
 
-  Tooltip.prototype.destroy = function () {
-    clearTimeout(this.timeout)
-    this.hide().$element.off('.' + this.type).removeData('bs.' + this.type)
-  }
+    // Expose as either an AMD module if possible. If not fall back to exposing
+    // a global object.
+    if (typeof define==="function")
+        define("logging", [], function () {
+            return api;
+        });
+    else
+        window.logging=api;
+})();
 
-
-  // TOOLTIP PLUGIN DEFINITION
-  // =========================
-
-  function Plugin(option) {
-    return this.each(function () {
-      var $this   = $(this)
-      var data    = $this.data('bs.tooltip')
-      var options = typeof option == 'object' && option
-
-      if (!data && option == 'destroy') return
-      if (!data) $this.data('bs.tooltip', (data = new Tooltip(this, options)))
-      if (typeof option == 'string') data[option]()
-    })
-  }
-
-  var old = $.fn.tooltip
-
-  $.fn.tooltip             = Plugin
-  $.fn.tooltip.Constructor = Tooltip
-
-
-  // TOOLTIP NO CONFLICT
-  // ===================
-
-  $.fn.tooltip.noConflict = function () {
-    $.fn.tooltip = old
-    return this
-  }
-
-}(jQuery);
-
-
-  }).apply(root, arguments);
+/**
+ * Patterns logger - wrapper around logging library
+ *
+ * Copyright 2012-2013 Florian Friesdorf
+ */
+define('pat-logger',[
+    'logging'
+], function(logging) {
+    var log = logging.getLogger('patterns');
+    return log;
 });
-}(this));
 
 define('pat-utils',[
     "jquery"
@@ -1833,6 +1282,164 @@ define('pat-jquery-ext',["jquery"], function($) {
     };
 });
 
+/**
+ * Patterns registry - Central registry and scan logic for patterns
+ *
+ * Copyright 2012-2013 Simplon B.V.
+ * Copyright 2012-2013 Florian Friesdorf
+ * Copyright 2013 Marko Durkovic
+ * Copyright 2013 Rok Garbas
+ */
+
+/*
+ * changes to previous patterns.register/scan mechanism
+ * - if you want initialised class, do it in init
+ * - init returns set of elements actually initialised
+ * - handle once within init
+ * - no turnstile anymore
+ * - set pattern.jquery_plugin if you want it
+ */
+define('pat-registry',[
+    "jquery",
+    "pat-logger",
+    "pat-utils",
+    // below here modules that are only loaded
+    "pat-compat",
+    "pat-jquery-ext"
+], function($, logger, utils) {
+    var log = logger.getLogger("registry");
+
+    var disable_re = /patterns-disable=([^&]+)/g,
+        dont_catch_re = /patterns-dont-catch/g,
+        dont_catch = false,
+        disabled = {}, match;
+
+    while ((match=disable_re.exec(window.location.search)) !== null) {
+        disabled[match[1]] = true;
+        log.info('Pattern disabled via url config:', match[1]);
+    }
+
+    while ((match=dont_catch_re.exec(window.location.search)) !== null) {
+        dont_catch = true;
+        log.info('I will not catch init exceptions');
+    }
+
+    var registry = {
+        patterns: {},
+        // as long as the registry is not initialized, pattern
+        // registration just registers a pattern. Once init is called,
+        // the DOM is scanned. After that registering a new pattern
+        // results in rescanning the DOM only for this pattern.
+        initialized: false,
+        init: function registry_init() {
+            $(document).ready(function() {
+                log.info('loaded: ' + Object.keys(registry.patterns).sort().join(', '));
+                registry.scan(document.body);
+                registry.initialized = true;
+                log.info('finished initial scan.');
+            });
+        },
+
+        scan: function registry_scan(content, patterns, trigger) {
+            var $content = $(content),
+                all = [], allsel,
+                $match, plog;
+
+            // If no list of patterns was specified, we scan for all patterns
+            patterns = patterns || Object.keys(registry.patterns);
+
+            // selector for all patterns
+            patterns.forEach(function registry_scan_loop(name) {
+                if (disabled[name]) {
+                    log.debug('Skipping disabled pattern:', name);
+                    return;
+                }
+                var pattern = registry.patterns[name];
+                if (pattern.transform) {
+                    try {
+                        pattern.transform($content);
+                    } catch (e) {
+                        if (dont_catch) { throw(e); }
+                        log.error("Transform error for pattern" + name, e);
+                    }
+                }
+                if (pattern.trigger) {
+                    all.push(pattern.trigger);
+                }
+            });
+            // Find all elements that belong to any pattern.
+            allsel = all.join(",");
+            $match = $content.findInclusive(allsel);
+            $match = $match.filter(function() { return $(this).parents('pre').length === 0; });
+            $match = $match.filter(":not(.cant-touch-this)");
+
+            // walk list backwards and initialize patterns inside-out.
+            $match.toArray().reduceRight(function registry_pattern_init(acc, el) {
+                var pattern, $el = $(el);
+                for (var name in registry.patterns) {
+                    pattern = registry.patterns[name];
+                    if (pattern.init) {
+                        plog = logger.getLogger("pat." + name);
+                        if ($el.is(pattern.trigger)) {
+                            plog.debug("Initialising:", $el);
+                            try {
+                                pattern.init($el, null, trigger);
+                                plog.debug("done.");
+                            } catch (e) {
+                                if (dont_catch) { throw(e); }
+                                plog.error("Caught error:", e);
+                            }
+                        }
+                    }
+                }
+            }, null);
+            $('body').addClass('patterns-loaded');
+        },
+
+        register: function registry_register(pattern, name) {
+            var plugin_name, jquery_plugin;
+            name = name || pattern.name;
+            if (!name) {
+                log.error("Pattern lacks a name:", pattern);
+                return false;
+            }
+            if (registry.patterns[name]) {
+                log.error("Already have a pattern called: " + name);
+                return false;
+            }
+
+            // register pattern to be used for scanning new content
+            registry.patterns[name] = pattern;
+
+            // register pattern as jquery plugin
+            if (pattern.jquery_plugin) {
+                plugin_name = ("pat-" + name)
+                        .replace(/-([a-zA-Z])/g, function(match, p1) {
+                            return p1.toUpperCase();
+                        });
+                $.fn[plugin_name] = utils.jqueryPlugin(pattern);
+                // BBB 2012-12-10 and also for Mockup patterns.
+                $.fn[plugin_name.replace(/^pat/, "pattern")] = utils.jqueryPlugin(pattern);
+            }
+            log.debug("Registered pattern:", name, pattern);
+            if (registry.initialized) {
+                registry.scan(document.body, [name]);
+            }
+            return true;
+        }
+    };
+
+    $(document).on("patterns-injected.patterns",
+            function registry_onInject(ev, inject_config, inject_trigger) {
+                registry.scan(ev.target, null, {type: "injection", element: inject_trigger});
+                $(ev.target).trigger("patterns-injected-scanned");
+            });
+
+    return registry;
+});
+// jshint indent: 4, browser: true, jquery: true, quotmark: double
+// vim: sw=4 expandtab
+;
 define('mockup-parser',[
   'jquery'
 ], function($) {
@@ -1876,6 +1483,112 @@ define('mockup-parser',[
   return parser;
 });
 
+/* Base Pattern
+ */
+
+define('mockup-patterns-base',[
+  'jquery',
+  'pat-registry',
+  'mockup-parser',
+  "pat-logger"
+], function($, Registry, mockupParser, logger) {
+  
+  var log = logger.getLogger("Mockup Base");
+
+  var initMockup = function initMockup($el, options, trigger) {
+    var name = this.prototype.name;
+    var log = logger.getLogger("pat." + name);
+    var pattern = $el.data('pattern-' + name);
+    if (pattern === undefined && Registry.patterns[name]) {
+      try {
+          pattern = new Registry.patterns[name]($el, mockupParser.getOptions($el, name, options));
+      } catch (e) {
+          log.error('Failed while initializing "' + name + '" pattern.');
+      }
+      $el.data('pattern-' + name, pattern);
+    }
+    return pattern;
+  };
+
+  // Base Pattern
+  var Base = function($el, options) {
+    this.$el = $el;
+    this.options = $.extend(true, {}, this.defaults || {}, options || {});
+    this.init();
+    this.emit('init');
+  };
+
+  Base.prototype = {
+    constructor: Base,
+    on: function(eventName, eventCallback) {
+      this.$el.on(eventName + '.' + this.name + '.patterns', eventCallback);
+    },
+    emit: function(eventName, args) {
+      // args should be a list
+      if (args === undefined) {
+        args = [];
+      }
+      this.$el.trigger(eventName + '.' + this.name + '.patterns', args);
+    }
+  };
+
+  Base.extend = function(patternProps) {
+    /* Helper function to correctly set up the prototype chain for new patterns.
+     */
+    var parent = this;
+    var child;
+
+    // Check that the required configuration properties are given.
+    if (!patternProps) {
+      throw new Error("Pattern configuration properties required when calling Base.extend");
+    }
+
+    // The constructor function for the new subclass is either defined by you
+    // (the "constructor" property in your `extend` definition), or defaulted
+    // by us to simply call the parent's constructor.
+    if (patternProps.hasOwnProperty('constructor')) {
+      child = patternProps.constructor;
+    } else {
+      child = function() { parent.apply(this, arguments); };
+    }
+
+    // Allow patterns to be extended indefinitely
+    child.extend = Base.extend;
+
+    // Static properties required by the Patternslib registry 
+    child.init = initMockup;
+    child.jquery_plugin = true;
+    child.trigger = patternProps.trigger;
+
+    // Set the prototype chain to inherit from `parent`, without calling
+    // `parent`'s constructor function.
+    var Surrogate = function() { this.constructor = child; };
+    Surrogate.prototype = parent.prototype;
+    child.prototype = new Surrogate();
+
+    // Add pattern's configuration properties (instance properties) to the subclass,
+    $.extend(true, child.prototype, patternProps);
+
+    // Set a convenience property in case the parent's prototype is needed
+    // later.
+    child.__super__ = parent.prototype;
+
+    // Register the pattern in the Patternslib registry.
+    if (!patternProps.name) {
+      log.warn("This mockup pattern without a name attribute will not be registered!");
+    } else if (!patternProps.trigger) {
+      log.warn("The mockup pattern '"+patternProps.name+"' does not have a trigger attribute, it will not be registered.");
+    } else {
+      Registry.register(child, patternProps.name);
+    }
+    return child;
+  };
+  return Base;
+});
+
+(function(root) {
+define("select2", [], function() {
+  return (function() {
 /*
 Copyright 2012 Igor Vaynberg
 
@@ -5109,7 +4822,7 @@ the specific language governing permissions and limitations under the Apache Lic
                     if (equal(this.opts.id(current[i]), this.opts.id(old[j]))) {
                         current.splice(i, 1);
                         if(i>0){
-                          i--;
+                        	i--;
                         }
                         old.splice(j, 1);
                         j--;
@@ -5385,7 +5098,10 @@ the specific language governing permissions and limitations under the Apache Lic
 
 }(jQuery));
 
-define("select2", function(){});
+
+  }).apply(root, arguments);
+});
+}(this));
 
 (function(root) {
 define("jquery.event.drag", ["jquery"], function() {
@@ -5403,17 +5119,17 @@ define("jquery.event.drag", ["jquery"], function() {
 
 // add the jquery instance method
 $.fn.drag = function( str, arg, opts ){
-  // figure out the event type
-  var type = typeof str == "string" ? str : "",
-  // figure out the event handler...
-  fn = $.isFunction( str ) ? str : $.isFunction( arg ) ? arg : null;
-  // fix the event type
-  if ( type.indexOf("drag") !== 0 ) 
-    type = "drag"+ type;
-  // were options passed
-  opts = ( str == fn ? arg : opts ) || {};
-  // trigger or bind event handler
-  return fn ? this.bind( type, opts, fn ) : this.trigger( type );
+	// figure out the event type
+	var type = typeof str == "string" ? str : "",
+	// figure out the event handler...
+	fn = $.isFunction( str ) ? str : $.isFunction( arg ) ? arg : null;
+	// fix the event type
+	if ( type.indexOf("drag") !== 0 ) 
+		type = "drag"+ type;
+	// were options passed
+	opts = ( str == fn ? arg : opts ) || {};
+	// trigger or bind event handler
+	return fn ? this.bind( type, opts, fn ) : this.trigger( type );
 };
 
 // local refs (increase compression)
@@ -5421,349 +5137,349 @@ var $event = $.event,
 $special = $event.special,
 // configure the drag special event 
 drag = $special.drag = {
-  
-  // these are the default settings
-  defaults: {
-    which: 1, // mouse button pressed to start drag sequence
-    distance: 0, // distance dragged before dragstart
-    not: ':input', // selector to suppress dragging on target elements
-    handle: null, // selector to match handle target elements
-    relative: false, // true to use "position", false to use "offset"
-    drop: true, // false to suppress drop events, true or selector to allow
-    click: false // false to suppress click events after dragend (no proxy)
-  },
-  
-  // the key name for stored drag data
-  datakey: "dragdata",
-  
-  // prevent bubbling for better performance
-  noBubble: true,
-  
-  // count bound related events
-  add: function( obj ){ 
-    // read the interaction data
-    var data = $.data( this, drag.datakey ),
-    // read any passed options 
-    opts = obj.data || {};
-    // count another realted event
-    data.related += 1;
-    // extend data options bound with this event
-    // don't iterate "opts" in case it is a node 
-    $.each( drag.defaults, function( key, def ){
-      if ( opts[ key ] !== undefined )
-        data[ key ] = opts[ key ];
-    });
-  },
-  
-  // forget unbound related events
-  remove: function(){
-    $.data( this, drag.datakey ).related -= 1;
-  },
-  
-  // configure interaction, capture settings
-  setup: function(){
-    // check for related events
-    if ( $.data( this, drag.datakey ) ) 
-      return;
-    // initialize the drag data with copied defaults
-    var data = $.extend({ related:0 }, drag.defaults );
-    // store the interaction data
-    $.data( this, drag.datakey, data );
-    // bind the mousedown event, which starts drag interactions
-    $event.add( this, "touchstart mousedown", drag.init, data );
-    // prevent image dragging in IE...
-    if ( this.attachEvent ) 
-      this.attachEvent("ondragstart", drag.dontstart ); 
-  },
-  
-  // destroy configured interaction
-  teardown: function(){
-    var data = $.data( this, drag.datakey ) || {};
-    // check for related events
-    if ( data.related ) 
-      return;
-    // remove the stored data
-    $.removeData( this, drag.datakey );
-    // remove the mousedown event
-    $event.remove( this, "touchstart mousedown", drag.init );
-    // enable text selection
-    drag.textselect( true ); 
-    // un-prevent image dragging in IE...
-    if ( this.detachEvent ) 
-      this.detachEvent("ondragstart", drag.dontstart ); 
-  },
-    
-  // initialize the interaction
-  init: function( event ){ 
-    // sorry, only one touch at a time
-    if ( drag.touched ) 
-      return;
-    // the drag/drop interaction data
-    var dd = event.data, results;
-    // check the which directive
-    if ( event.which != 0 && dd.which > 0 && event.which != dd.which ) 
-      return; 
-    // check for suppressed selector
-    if ( $( event.target ).is( dd.not ) ) 
-      return;
-    // check for handle selector
-    if ( dd.handle && !$( event.target ).closest( dd.handle, event.currentTarget ).length ) 
-      return;
+	
+	// these are the default settings
+	defaults: {
+		which: 1, // mouse button pressed to start drag sequence
+		distance: 0, // distance dragged before dragstart
+		not: ':input', // selector to suppress dragging on target elements
+		handle: null, // selector to match handle target elements
+		relative: false, // true to use "position", false to use "offset"
+		drop: true, // false to suppress drop events, true or selector to allow
+		click: false // false to suppress click events after dragend (no proxy)
+	},
+	
+	// the key name for stored drag data
+	datakey: "dragdata",
+	
+	// prevent bubbling for better performance
+	noBubble: true,
+	
+	// count bound related events
+	add: function( obj ){ 
+		// read the interaction data
+		var data = $.data( this, drag.datakey ),
+		// read any passed options 
+		opts = obj.data || {};
+		// count another realted event
+		data.related += 1;
+		// extend data options bound with this event
+		// don't iterate "opts" in case it is a node 
+		$.each( drag.defaults, function( key, def ){
+			if ( opts[ key ] !== undefined )
+				data[ key ] = opts[ key ];
+		});
+	},
+	
+	// forget unbound related events
+	remove: function(){
+		$.data( this, drag.datakey ).related -= 1;
+	},
+	
+	// configure interaction, capture settings
+	setup: function(){
+		// check for related events
+		if ( $.data( this, drag.datakey ) ) 
+			return;
+		// initialize the drag data with copied defaults
+		var data = $.extend({ related:0 }, drag.defaults );
+		// store the interaction data
+		$.data( this, drag.datakey, data );
+		// bind the mousedown event, which starts drag interactions
+		$event.add( this, "touchstart mousedown", drag.init, data );
+		// prevent image dragging in IE...
+		if ( this.attachEvent ) 
+			this.attachEvent("ondragstart", drag.dontstart ); 
+	},
+	
+	// destroy configured interaction
+	teardown: function(){
+		var data = $.data( this, drag.datakey ) || {};
+		// check for related events
+		if ( data.related ) 
+			return;
+		// remove the stored data
+		$.removeData( this, drag.datakey );
+		// remove the mousedown event
+		$event.remove( this, "touchstart mousedown", drag.init );
+		// enable text selection
+		drag.textselect( true ); 
+		// un-prevent image dragging in IE...
+		if ( this.detachEvent ) 
+			this.detachEvent("ondragstart", drag.dontstart ); 
+	},
+		
+	// initialize the interaction
+	init: function( event ){ 
+		// sorry, only one touch at a time
+		if ( drag.touched ) 
+			return;
+		// the drag/drop interaction data
+		var dd = event.data, results;
+		// check the which directive
+		if ( event.which != 0 && dd.which > 0 && event.which != dd.which ) 
+			return; 
+		// check for suppressed selector
+		if ( $( event.target ).is( dd.not ) ) 
+			return;
+		// check for handle selector
+		if ( dd.handle && !$( event.target ).closest( dd.handle, event.currentTarget ).length ) 
+			return;
 
-    drag.touched = event.type == 'touchstart' ? this : null;
-    dd.propagates = 1;
-    dd.mousedown = this;
-    dd.interactions = [ drag.interaction( this, dd ) ];
-    dd.target = event.target;
-    dd.pageX = event.pageX;
-    dd.pageY = event.pageY;
-    dd.dragging = null;
-    // handle draginit event... 
-    results = drag.hijack( event, "draginit", dd );
-    // early cancel
-    if ( !dd.propagates )
-      return;
-    // flatten the result set
-    results = drag.flatten( results );
-    // insert new interaction elements
-    if ( results && results.length ){
-      dd.interactions = [];
-      $.each( results, function(){
-        dd.interactions.push( drag.interaction( this, dd ) );
-      });
-    }
-    // remember how many interactions are propagating
-    dd.propagates = dd.interactions.length;
-    // locate and init the drop targets
-    if ( dd.drop !== false && $special.drop ) 
-      $special.drop.handler( event, dd );
-    // disable text selection
-    drag.textselect( false ); 
-    // bind additional events...
-    if ( drag.touched )
-      $event.add( drag.touched, "touchmove touchend", drag.handler, dd );
-    else 
-      $event.add( document, "mousemove mouseup", drag.handler, dd );
-    // helps prevent text selection or scrolling
-    if ( !drag.touched || dd.live )
-      return false;
-  },  
-  
-  // returns an interaction object
-  interaction: function( elem, dd ){
-    var offset = $( elem )[ dd.relative ? "position" : "offset" ]() || { top:0, left:0 };
-    return {
-      drag: elem, 
-      callback: new drag.callback(), 
-      droppable: [],
-      offset: offset
-    };
-  },
-  
-  // handle drag-releatd DOM events
-  handler: function( event ){ 
-    // read the data before hijacking anything
-    var dd = event.data;  
-    // handle various events
-    switch ( event.type ){
-      // mousemove, check distance, start dragging
-      case !dd.dragging && 'touchmove': 
-        event.preventDefault();
-      case !dd.dragging && 'mousemove':
-        //  drag tolerance, x� + y� = distance�
-        if ( Math.pow(  event.pageX-dd.pageX, 2 ) + Math.pow(  event.pageY-dd.pageY, 2 ) < Math.pow( dd.distance, 2 ) ) 
-          break; // distance tolerance not reached
-        event.target = dd.target; // force target from "mousedown" event (fix distance issue)
-        drag.hijack( event, "dragstart", dd ); // trigger "dragstart"
-        if ( dd.propagates ) // "dragstart" not rejected
-          dd.dragging = true; // activate interaction
-      // mousemove, dragging
-      case 'touchmove':
-        event.preventDefault();
-      case 'mousemove':
-        if ( dd.dragging ){
-          // trigger "drag"   
-          drag.hijack( event, "drag", dd );
-          if ( dd.propagates ){
-            // manage drop events
-            if ( dd.drop !== false && $special.drop )
-              $special.drop.handler( event, dd ); // "dropstart", "dropend"             
-            break; // "drag" not rejected, stop   
-          }
-          event.type = "mouseup"; // helps "drop" handler behave
-        }
-      // mouseup, stop dragging
-      case 'touchend': 
-      case 'mouseup': 
-      default:
-        if ( drag.touched )
-          $event.remove( drag.touched, "touchmove touchend", drag.handler ); // remove touch events
-        else 
-          $event.remove( document, "mousemove mouseup", drag.handler ); // remove page events 
-        if ( dd.dragging ){
-          if ( dd.drop !== false && $special.drop )
-            $special.drop.handler( event, dd ); // "drop"
-          drag.hijack( event, "dragend", dd ); // trigger "dragend" 
-        }
-        drag.textselect( true ); // enable text selection
-        // if suppressing click events...
-        if ( dd.click === false && dd.dragging )
-          $.data( dd.mousedown, "suppress.click", new Date().getTime() + 5 );
-        dd.dragging = drag.touched = false; // deactivate element 
-        break;
-    }
-  },
-    
-  // re-use event object for custom events
-  hijack: function( event, type, dd, x, elem ){
-    // not configured
-    if ( !dd ) 
-      return;
-    // remember the original event and type
-    var orig = { event:event.originalEvent, type:event.type },
-    // is the event drag related or drog related?
-    mode = type.indexOf("drop") ? "drag" : "drop",
-    // iteration vars
-    result, i = x || 0, ia, $elems, callback,
-    len = !isNaN( x ) ? x : dd.interactions.length;
-    // modify the event type
-    event.type = type;
-    // remove the original event
-    event.originalEvent = null;
-    // initialize the results
-    dd.results = [];
-    // handle each interacted element
-    do if ( ia = dd.interactions[ i ] ){
-      // validate the interaction
-      if ( type !== "dragend" && ia.cancelled )
-        continue;
-      // set the dragdrop properties on the event object
-      callback = drag.properties( event, dd, ia );
-      // prepare for more results
-      ia.results = [];
-      // handle each element
-      $( elem || ia[ mode ] || dd.droppable ).each(function( p, subject ){
-        // identify drag or drop targets individually
-        callback.target = subject;
-        // force propagtion of the custom event
-        event.isPropagationStopped = function(){ return false; };
-        // handle the event 
-        result = subject ? $event.dispatch.call( subject, event, callback ) : null;
-        // stop the drag interaction for this element
-        if ( result === false ){
-          if ( mode == "drag" ){
-            ia.cancelled = true;
-            dd.propagates -= 1;
-          }
-          if ( type == "drop" ){
-            ia[ mode ][p] = null;
-          }
-        }
-        // assign any dropinit elements
-        else if ( type == "dropinit" )
-          ia.droppable.push( drag.element( result ) || subject );
-        // accept a returned proxy element 
-        if ( type == "dragstart" )
-          ia.proxy = $( drag.element( result ) || ia.drag )[0];
-        // remember this result 
-        ia.results.push( result );
-        // forget the event result, for recycling
-        delete event.result;
-        // break on cancelled handler
-        if ( type !== "dropinit" )
-          return result;
-      }); 
-      // flatten the results  
-      dd.results[ i ] = drag.flatten( ia.results ); 
-      // accept a set of valid drop targets
-      if ( type == "dropinit" )
-        ia.droppable = drag.flatten( ia.droppable );
-      // locate drop targets
-      if ( type == "dragstart" && !ia.cancelled )
-        callback.update(); 
-    }
-    while ( ++i < len )
-    // restore the original event & type
-    event.type = orig.type;
-    event.originalEvent = orig.event;
-    // return all handler results
-    return drag.flatten( dd.results );
-  },
-    
-  // extend the callback object with drag/drop properties...
-  properties: function( event, dd, ia ){    
-    var obj = ia.callback;
-    // elements
-    obj.drag = ia.drag;
-    obj.proxy = ia.proxy || ia.drag;
-    // starting mouse position
-    obj.startX = dd.pageX;
-    obj.startY = dd.pageY;
-    // current distance dragged
-    obj.deltaX = event.pageX - dd.pageX;
-    obj.deltaY = event.pageY - dd.pageY;
-    // original element position
-    obj.originalX = ia.offset.left;
-    obj.originalY = ia.offset.top;
-    // adjusted element position
-    obj.offsetX = obj.originalX + obj.deltaX; 
-    obj.offsetY = obj.originalY + obj.deltaY;
-    // assign the drop targets information
-    obj.drop = drag.flatten( ( ia.drop || [] ).slice() );
-    obj.available = drag.flatten( ( ia.droppable || [] ).slice() );
-    return obj; 
-  },
-  
-  // determine is the argument is an element or jquery instance
-  element: function( arg ){
-    if ( arg && ( arg.jquery || arg.nodeType == 1 ) )
-      return arg;
-  },
-  
-  // flatten nested jquery objects and arrays into a single dimension array
-  flatten: function( arr ){
-    return $.map( arr, function( member ){
-      return member && member.jquery ? $.makeArray( member ) : 
-        member && member.length ? drag.flatten( member ) : member;
-    });
-  },
-  
-  // toggles text selection attributes ON (true) or OFF (false)
-  textselect: function( bool ){ 
-    $( document )[ bool ? "unbind" : "bind" ]("selectstart", drag.dontstart )
-      .css("MozUserSelect", bool ? "" : "none" );
-    // .attr("unselectable", bool ? "off" : "on" )
-    document.unselectable = bool ? "off" : "on"; 
-  },
-  
-  // suppress "selectstart" and "ondragstart" events
-  dontstart: function(){ 
-    return false; 
-  },
-  
-  // a callback instance contructor
-  callback: function(){}
-  
+		drag.touched = event.type == 'touchstart' ? this : null;
+		dd.propagates = 1;
+		dd.mousedown = this;
+		dd.interactions = [ drag.interaction( this, dd ) ];
+		dd.target = event.target;
+		dd.pageX = event.pageX;
+		dd.pageY = event.pageY;
+		dd.dragging = null;
+		// handle draginit event... 
+		results = drag.hijack( event, "draginit", dd );
+		// early cancel
+		if ( !dd.propagates )
+			return;
+		// flatten the result set
+		results = drag.flatten( results );
+		// insert new interaction elements
+		if ( results && results.length ){
+			dd.interactions = [];
+			$.each( results, function(){
+				dd.interactions.push( drag.interaction( this, dd ) );
+			});
+		}
+		// remember how many interactions are propagating
+		dd.propagates = dd.interactions.length;
+		// locate and init the drop targets
+		if ( dd.drop !== false && $special.drop ) 
+			$special.drop.handler( event, dd );
+		// disable text selection
+		drag.textselect( false ); 
+		// bind additional events...
+		if ( drag.touched )
+			$event.add( drag.touched, "touchmove touchend", drag.handler, dd );
+		else 
+			$event.add( document, "mousemove mouseup", drag.handler, dd );
+		// helps prevent text selection or scrolling
+		if ( !drag.touched || dd.live )
+			return false;
+	},	
+	
+	// returns an interaction object
+	interaction: function( elem, dd ){
+		var offset = $( elem )[ dd.relative ? "position" : "offset" ]() || { top:0, left:0 };
+		return {
+			drag: elem, 
+			callback: new drag.callback(), 
+			droppable: [],
+			offset: offset
+		};
+	},
+	
+	// handle drag-releatd DOM events
+	handler: function( event ){ 
+		// read the data before hijacking anything
+		var dd = event.data;	
+		// handle various events
+		switch ( event.type ){
+			// mousemove, check distance, start dragging
+			case !dd.dragging && 'touchmove': 
+				event.preventDefault();
+			case !dd.dragging && 'mousemove':
+				//  drag tolerance, x� + y� = distance�
+				if ( Math.pow(  event.pageX-dd.pageX, 2 ) + Math.pow(  event.pageY-dd.pageY, 2 ) < Math.pow( dd.distance, 2 ) ) 
+					break; // distance tolerance not reached
+				event.target = dd.target; // force target from "mousedown" event (fix distance issue)
+				drag.hijack( event, "dragstart", dd ); // trigger "dragstart"
+				if ( dd.propagates ) // "dragstart" not rejected
+					dd.dragging = true; // activate interaction
+			// mousemove, dragging
+			case 'touchmove':
+				event.preventDefault();
+			case 'mousemove':
+				if ( dd.dragging ){
+					// trigger "drag"		
+					drag.hijack( event, "drag", dd );
+					if ( dd.propagates ){
+						// manage drop events
+						if ( dd.drop !== false && $special.drop )
+							$special.drop.handler( event, dd ); // "dropstart", "dropend"							
+						break; // "drag" not rejected, stop		
+					}
+					event.type = "mouseup"; // helps "drop" handler behave
+				}
+			// mouseup, stop dragging
+			case 'touchend': 
+			case 'mouseup': 
+			default:
+				if ( drag.touched )
+					$event.remove( drag.touched, "touchmove touchend", drag.handler ); // remove touch events
+				else 
+					$event.remove( document, "mousemove mouseup", drag.handler ); // remove page events	
+				if ( dd.dragging ){
+					if ( dd.drop !== false && $special.drop )
+						$special.drop.handler( event, dd ); // "drop"
+					drag.hijack( event, "dragend", dd ); // trigger "dragend"	
+				}
+				drag.textselect( true ); // enable text selection
+				// if suppressing click events...
+				if ( dd.click === false && dd.dragging )
+					$.data( dd.mousedown, "suppress.click", new Date().getTime() + 5 );
+				dd.dragging = drag.touched = false; // deactivate element	
+				break;
+		}
+	},
+		
+	// re-use event object for custom events
+	hijack: function( event, type, dd, x, elem ){
+		// not configured
+		if ( !dd ) 
+			return;
+		// remember the original event and type
+		var orig = { event:event.originalEvent, type:event.type },
+		// is the event drag related or drog related?
+		mode = type.indexOf("drop") ? "drag" : "drop",
+		// iteration vars
+		result, i = x || 0, ia, $elems, callback,
+		len = !isNaN( x ) ? x : dd.interactions.length;
+		// modify the event type
+		event.type = type;
+		// remove the original event
+		event.originalEvent = null;
+		// initialize the results
+		dd.results = [];
+		// handle each interacted element
+		do if ( ia = dd.interactions[ i ] ){
+			// validate the interaction
+			if ( type !== "dragend" && ia.cancelled )
+				continue;
+			// set the dragdrop properties on the event object
+			callback = drag.properties( event, dd, ia );
+			// prepare for more results
+			ia.results = [];
+			// handle each element
+			$( elem || ia[ mode ] || dd.droppable ).each(function( p, subject ){
+				// identify drag or drop targets individually
+				callback.target = subject;
+				// force propagtion of the custom event
+				event.isPropagationStopped = function(){ return false; };
+				// handle the event	
+				result = subject ? $event.dispatch.call( subject, event, callback ) : null;
+				// stop the drag interaction for this element
+				if ( result === false ){
+					if ( mode == "drag" ){
+						ia.cancelled = true;
+						dd.propagates -= 1;
+					}
+					if ( type == "drop" ){
+						ia[ mode ][p] = null;
+					}
+				}
+				// assign any dropinit elements
+				else if ( type == "dropinit" )
+					ia.droppable.push( drag.element( result ) || subject );
+				// accept a returned proxy element 
+				if ( type == "dragstart" )
+					ia.proxy = $( drag.element( result ) || ia.drag )[0];
+				// remember this result	
+				ia.results.push( result );
+				// forget the event result, for recycling
+				delete event.result;
+				// break on cancelled handler
+				if ( type !== "dropinit" )
+					return result;
+			});	
+			// flatten the results	
+			dd.results[ i ] = drag.flatten( ia.results );	
+			// accept a set of valid drop targets
+			if ( type == "dropinit" )
+				ia.droppable = drag.flatten( ia.droppable );
+			// locate drop targets
+			if ( type == "dragstart" && !ia.cancelled )
+				callback.update(); 
+		}
+		while ( ++i < len )
+		// restore the original event & type
+		event.type = orig.type;
+		event.originalEvent = orig.event;
+		// return all handler results
+		return drag.flatten( dd.results );
+	},
+		
+	// extend the callback object with drag/drop properties...
+	properties: function( event, dd, ia ){		
+		var obj = ia.callback;
+		// elements
+		obj.drag = ia.drag;
+		obj.proxy = ia.proxy || ia.drag;
+		// starting mouse position
+		obj.startX = dd.pageX;
+		obj.startY = dd.pageY;
+		// current distance dragged
+		obj.deltaX = event.pageX - dd.pageX;
+		obj.deltaY = event.pageY - dd.pageY;
+		// original element position
+		obj.originalX = ia.offset.left;
+		obj.originalY = ia.offset.top;
+		// adjusted element position
+		obj.offsetX = obj.originalX + obj.deltaX; 
+		obj.offsetY = obj.originalY + obj.deltaY;
+		// assign the drop targets information
+		obj.drop = drag.flatten( ( ia.drop || [] ).slice() );
+		obj.available = drag.flatten( ( ia.droppable || [] ).slice() );
+		return obj;	
+	},
+	
+	// determine is the argument is an element or jquery instance
+	element: function( arg ){
+		if ( arg && ( arg.jquery || arg.nodeType == 1 ) )
+			return arg;
+	},
+	
+	// flatten nested jquery objects and arrays into a single dimension array
+	flatten: function( arr ){
+		return $.map( arr, function( member ){
+			return member && member.jquery ? $.makeArray( member ) : 
+				member && member.length ? drag.flatten( member ) : member;
+		});
+	},
+	
+	// toggles text selection attributes ON (true) or OFF (false)
+	textselect: function( bool ){ 
+		$( document )[ bool ? "unbind" : "bind" ]("selectstart", drag.dontstart )
+			.css("MozUserSelect", bool ? "" : "none" );
+		// .attr("unselectable", bool ? "off" : "on" )
+		document.unselectable = bool ? "off" : "on"; 
+	},
+	
+	// suppress "selectstart" and "ondragstart" events
+	dontstart: function(){ 
+		return false; 
+	},
+	
+	// a callback instance contructor
+	callback: function(){}
+	
 };
 
 // callback methods
 drag.callback.prototype = {
-  update: function(){
-    if ( $special.drop && this.available.length )
-      $.each( this.available, function( i ){
-        $special.drop.locate( this, i );
-      });
-  }
+	update: function(){
+		if ( $special.drop && this.available.length )
+			$.each( this.available, function( i ){
+				$special.drop.locate( this, i );
+			});
+	}
 };
 
 // patch $.event.$dispatch to allow suppressing clicks
 var $dispatch = $event.dispatch;
 $event.dispatch = function( event ){
-  if ( $.data( this, "suppress."+ event.type ) - new Date().getTime() > 0 ){
-    $.removeData( this, "suppress."+ event.type );
-    return;
-  }
-  return $dispatch.apply( this, arguments );
+	if ( $.data( this, "suppress."+ event.type ) - new Date().getTime() > 0 ){
+		$.removeData( this, "suppress."+ event.type );
+		return;
+	}
+	return $dispatch.apply( this, arguments );
 };
 
 // event fix hooks for touch events...
@@ -5772,20 +5488,20 @@ $event.fixHooks.touchstart =
 $event.fixHooks.touchmove = 
 $event.fixHooks.touchend =
 $event.fixHooks.touchcancel = {
-  props: "clientX clientY pageX pageY screenX screenY".split( " " ),
-  filter: function( event, orig ) {
-    if ( orig ){
-      var touched = ( orig.touches && orig.touches[0] )
-        || ( orig.changedTouches && orig.changedTouches[0] )
-        || null; 
-      // iOS webkit: touchstart, touchmove, touchend
-      if ( touched ) 
-        $.each( touchHooks.props, function( i, prop ){
-          event[ prop ] = touched[ prop ];
-        });
-    }
-    return event;
-  }
+	props: "clientX clientY pageX pageY screenX screenY".split( " " ),
+	filter: function( event, orig ) {
+		if ( orig ){
+			var touched = ( orig.touches && orig.touches[0] )
+				|| ( orig.changedTouches && orig.changedTouches[0] )
+				|| null; 
+			// iOS webkit: touchstart, touchmove, touchend
+			if ( touched ) 
+				$.each( touchHooks.props, function( i, prop ){
+					event[ prop ] = touched[ prop ];
+				});
+		}
+		return event;
+	}
 };
 
 // share the same special event configuration with related events...
@@ -5815,30 +5531,30 @@ define("jquery.event.drop", ["jquery"], function() {
 
 // add the jquery instance method
 $.fn.drop = function( str, arg, opts ){
-  // figure out the event type
-  var type = typeof str == "string" ? str : "",
-  // figure out the event handler...
-  fn = $.isFunction( str ) ? str : $.isFunction( arg ) ? arg : null;
-  // fix the event type
-  if ( type.indexOf("drop") !== 0 ) 
-    type = "drop"+ type;
-  // were options passed
-  opts = ( str == fn ? arg : opts ) || {};
-  // trigger or bind event handler
-  return fn ? this.bind( type, opts, fn ) : this.trigger( type );
+	// figure out the event type
+	var type = typeof str == "string" ? str : "",
+	// figure out the event handler...
+	fn = $.isFunction( str ) ? str : $.isFunction( arg ) ? arg : null;
+	// fix the event type
+	if ( type.indexOf("drop") !== 0 ) 
+		type = "drop"+ type;
+	// were options passed
+	opts = ( str == fn ? arg : opts ) || {};
+	// trigger or bind event handler
+	return fn ? this.bind( type, opts, fn ) : this.trigger( type );
 };
 
 // DROP MANAGEMENT UTILITY
 // returns filtered drop target elements, caches their positions
 $.drop = function( opts ){ 
-  opts = opts || {};
-  // safely set new options...
-  drop.multi = opts.multi === true ? Infinity : 
-    opts.multi === false ? 1 : !isNaN( opts.multi ) ? opts.multi : drop.multi;
-  drop.delay = opts.delay || drop.delay;
-  drop.tolerance = $.isFunction( opts.tolerance ) ? opts.tolerance : 
-    opts.tolerance === null ? null : drop.tolerance;
-  drop.mode = opts.mode || drop.mode || 'intersect';
+	opts = opts || {};
+	// safely set new options...
+	drop.multi = opts.multi === true ? Infinity : 
+		opts.multi === false ? 1 : !isNaN( opts.multi ) ? opts.multi : drop.multi;
+	drop.delay = opts.delay || drop.delay;
+	drop.tolerance = $.isFunction( opts.tolerance ) ? opts.tolerance : 
+		opts.tolerance === null ? null : drop.tolerance;
+	drop.mode = opts.mode || drop.mode || 'intersect';
 };
 
 // local refs (increase compression)
@@ -5847,266 +5563,554 @@ $special = $event.special,
 // configure the drop special event
 drop = $.event.special.drop = {
 
-  // these are the default settings
-  multi: 1, // allow multiple drop winners per dragged element
-  delay: 20, // async timeout delay
-  mode: 'overlap', // drop tolerance mode
-    
-  // internal cache
-  targets: [], 
-  
-  // the key name for stored drop data
-  datakey: "dropdata",
-    
-  // prevent bubbling for better performance
-  noBubble: true,
-  
-  // count bound related events
-  add: function( obj ){ 
-    // read the interaction data
-    var data = $.data( this, drop.datakey );
-    // count another realted event
-    data.related += 1;
-  },
-  
-  // forget unbound related events
-  remove: function(){
-    $.data( this, drop.datakey ).related -= 1;
-  },
-  
-  // configure the interactions
-  setup: function(){
-    // check for related events
-    if ( $.data( this, drop.datakey ) ) 
-      return;
-    // initialize the drop element data
-    var data = { 
-      related: 0,
-      active: [],
-      anyactive: 0,
-      winner: 0,
-      location: {}
-    };
-    // store the drop data on the element
-    $.data( this, drop.datakey, data );
-    // store the drop target in internal cache
-    drop.targets.push( this );
-  },
-  
-  // destroy the configure interaction  
-  teardown: function(){ 
-    var data = $.data( this, drop.datakey ) || {};
-    // check for related events
-    if ( data.related ) 
-      return;
-    // remove the stored data
-    $.removeData( this, drop.datakey );
-    // reference the targeted element
-    var element = this;
-    // remove from the internal cache
-    drop.targets = $.grep( drop.targets, function( target ){ 
-      return ( target !== element ); 
-    });
-  },
-  
-  // shared event handler
-  handler: function( event, dd ){ 
-    // local vars
-    var results, $targets;
-    // make sure the right data is available
-    if ( !dd ) 
-      return;
-    // handle various events
-    switch ( event.type ){
-      // draginit, from $.event.special.drag
-      case 'mousedown': // DROPINIT >>
-      case 'touchstart': // DROPINIT >>
-        // collect and assign the drop targets
-        $targets =  $( drop.targets );
-        if ( typeof dd.drop == "string" )
-          $targets = $targets.filter( dd.drop );
-        // reset drop data winner properties
-        $targets.each(function(){
-          var data = $.data( this, drop.datakey );
-          data.active = [];
-          data.anyactive = 0;
-          data.winner = 0;
-        });
-        // set available target elements
-        dd.droppable = $targets;
-        // activate drop targets for the initial element being dragged
-        $special.drag.hijack( event, "dropinit", dd ); 
-        break;
-      // drag, from $.event.special.drag
-      case 'mousemove': // TOLERATE >>
-      case 'touchmove': // TOLERATE >>
-        drop.event = event; // store the mousemove event
-        if ( !drop.timer )
-          // monitor drop targets
-          drop.tolerate( dd ); 
-        break;
-      // dragend, from $.event.special.drag
-      case 'mouseup': // DROP >> DROPEND >>
-      case 'touchend': // DROP >> DROPEND >>
-        drop.timer = clearTimeout( drop.timer ); // delete timer  
-        if ( dd.propagates ){
-          $special.drag.hijack( event, "drop", dd ); 
-          $special.drag.hijack( event, "dropend", dd ); 
-        }
-        break;
-        
-    }
-  },
-    
-  // returns the location positions of an element
-  locate: function( elem, index ){ 
-    var data = $.data( elem, drop.datakey ),
-    $elem = $( elem ), 
-    posi = $elem.offset() || {}, 
-    height = $elem.outerHeight(), 
-    width = $elem.outerWidth(),
-    location = { 
-      elem: elem, 
-      width: width, 
-      height: height,
-      top: posi.top, 
-      left: posi.left, 
-      right: posi.left + width, 
-      bottom: posi.top + height
-    };
-    // drag elements might not have dropdata
-    if ( data ){
-      data.location = location;
-      data.index = index;
-      data.elem = elem;
-    }
-    return location;
-  },
-  
-  // test the location positions of an element against another OR an X,Y coord
-  contains: function( target, test ){ // target { location } contains test [x,y] or { location }
-    return ( ( test[0] || test.left ) >= target.left && ( test[0] || test.right ) <= target.right
-      && ( test[1] || test.top ) >= target.top && ( test[1] || test.bottom ) <= target.bottom ); 
-  },
-  
-  // stored tolerance modes
-  modes: { // fn scope: "$.event.special.drop" object 
-    // target with mouse wins, else target with most overlap wins
-    'intersect': function( event, proxy, target ){
-      return this.contains( target, [ event.pageX, event.pageY ] ) ? // check cursor
-        1e9 : this.modes.overlap.apply( this, arguments ); // check overlap
-    },
-    // target with most overlap wins  
-    'overlap': function( event, proxy, target ){
-      // calculate the area of overlap...
-      return Math.max( 0, Math.min( target.bottom, proxy.bottom ) - Math.max( target.top, proxy.top ) )
-        * Math.max( 0, Math.min( target.right, proxy.right ) - Math.max( target.left, proxy.left ) );
-    },
-    // proxy is completely contained within target bounds 
-    'fit': function( event, proxy, target ){
-      return this.contains( target, proxy ) ? 1 : 0;
-    },
-    // center of the proxy is contained within target bounds  
-    'middle': function( event, proxy, target ){
-      return this.contains( target, [ proxy.left + proxy.width * .5, proxy.top + proxy.height * .5 ] ) ? 1 : 0;
-    }
-  },  
-  
-  // sort drop target cache by by winner (dsc), then index (asc)
-  sort: function( a, b ){
-    return ( b.winner - a.winner ) || ( a.index - b.index );
-  },
-    
-  // async, recursive tolerance execution
-  tolerate: function( dd ){   
-    // declare local refs
-    var i, drp, drg, data, arr, len, elem,
-    // interaction iteration variables
-    x = 0, ia, end = dd.interactions.length,
-    // determine the mouse coords
-    xy = [ drop.event.pageX, drop.event.pageY ],
-    // custom or stored tolerance fn
-    tolerance = drop.tolerance || drop.modes[ drop.mode ];
-    // go through each passed interaction...
-    do if ( ia = dd.interactions[x] ){
-      // check valid interaction
-      if ( !ia )
-        return; 
-      // initialize or clear the drop data
-      ia.drop = [];
-      // holds the drop elements
-      arr = []; 
-      len = ia.droppable.length;
-      // determine the proxy location, if needed
-      if ( tolerance )
-        drg = drop.locate( ia.proxy ); 
-      // reset the loop
-      i = 0;
-      // loop each stored drop target
-      do if ( elem = ia.droppable[i] ){ 
-        data = $.data( elem, drop.datakey );
-        drp = data.location;
-        if ( !drp ) continue;
-        // find a winner: tolerance function is defined, call it
-        data.winner = tolerance ? tolerance.call( drop, drop.event, drg, drp ) 
-          // mouse position is always the fallback
-          : drop.contains( drp, xy ) ? 1 : 0; 
-        arr.push( data ); 
-      } while ( ++i < len ); // loop 
-      // sort the drop targets
-      arr.sort( drop.sort );      
-      // reset the loop
-      i = 0;
-      // loop through all of the targets again
-      do if ( data = arr[ i ] ){
-        // winners...
-        if ( data.winner && ia.drop.length < drop.multi ){
-          // new winner... dropstart
-          if ( !data.active[x] && !data.anyactive ){
-            // check to make sure that this is not prevented
-            if ( $special.drag.hijack( drop.event, "dropstart", dd, x, data.elem )[0] !== false ){  
-              data.active[x] = 1;
-              data.anyactive += 1;
-            }
-            // if false, it is not a winner
-            else
-              data.winner = 0;
-          }
-          // if it is still a winner
-          if ( data.winner )
-            ia.drop.push( data.elem );
-        }
-        // losers... 
-        else if ( data.active[x] && data.anyactive == 1 ){
-          // former winner... dropend
-          $special.drag.hijack( drop.event, "dropend", dd, x, data.elem ); 
-          data.active[x] = 0;
-          data.anyactive -= 1;
-        }
-      } while ( ++i < len ); // loop    
-    } while ( ++x < end ) // loop
-    // check if the mouse is still moving or is idle
-    if ( drop.last && xy[0] == drop.last.pageX && xy[1] == drop.last.pageY ) 
-      delete drop.timer; // idle, don't recurse
-    else  // recurse
-      drop.timer = setTimeout(function(){ 
-        drop.tolerate( dd ); 
-      }, drop.delay );
-    // remember event, to compare idleness
-    drop.last = drop.event; 
-  }
-  
+	// these are the default settings
+	multi: 1, // allow multiple drop winners per dragged element
+	delay: 20, // async timeout delay
+	mode: 'overlap', // drop tolerance mode
+		
+	// internal cache
+	targets: [], 
+	
+	// the key name for stored drop data
+	datakey: "dropdata",
+		
+	// prevent bubbling for better performance
+	noBubble: true,
+	
+	// count bound related events
+	add: function( obj ){ 
+		// read the interaction data
+		var data = $.data( this, drop.datakey );
+		// count another realted event
+		data.related += 1;
+	},
+	
+	// forget unbound related events
+	remove: function(){
+		$.data( this, drop.datakey ).related -= 1;
+	},
+	
+	// configure the interactions
+	setup: function(){
+		// check for related events
+		if ( $.data( this, drop.datakey ) ) 
+			return;
+		// initialize the drop element data
+		var data = { 
+			related: 0,
+			active: [],
+			anyactive: 0,
+			winner: 0,
+			location: {}
+		};
+		// store the drop data on the element
+		$.data( this, drop.datakey, data );
+		// store the drop target in internal cache
+		drop.targets.push( this );
+	},
+	
+	// destroy the configure interaction	
+	teardown: function(){ 
+		var data = $.data( this, drop.datakey ) || {};
+		// check for related events
+		if ( data.related ) 
+			return;
+		// remove the stored data
+		$.removeData( this, drop.datakey );
+		// reference the targeted element
+		var element = this;
+		// remove from the internal cache
+		drop.targets = $.grep( drop.targets, function( target ){ 
+			return ( target !== element ); 
+		});
+	},
+	
+	// shared event handler
+	handler: function( event, dd ){ 
+		// local vars
+		var results, $targets;
+		// make sure the right data is available
+		if ( !dd ) 
+			return;
+		// handle various events
+		switch ( event.type ){
+			// draginit, from $.event.special.drag
+			case 'mousedown': // DROPINIT >>
+			case 'touchstart': // DROPINIT >>
+				// collect and assign the drop targets
+				$targets =  $( drop.targets );
+				if ( typeof dd.drop == "string" )
+					$targets = $targets.filter( dd.drop );
+				// reset drop data winner properties
+				$targets.each(function(){
+					var data = $.data( this, drop.datakey );
+					data.active = [];
+					data.anyactive = 0;
+					data.winner = 0;
+				});
+				// set available target elements
+				dd.droppable = $targets;
+				// activate drop targets for the initial element being dragged
+				$special.drag.hijack( event, "dropinit", dd ); 
+				break;
+			// drag, from $.event.special.drag
+			case 'mousemove': // TOLERATE >>
+			case 'touchmove': // TOLERATE >>
+				drop.event = event; // store the mousemove event
+				if ( !drop.timer )
+					// monitor drop targets
+					drop.tolerate( dd ); 
+				break;
+			// dragend, from $.event.special.drag
+			case 'mouseup': // DROP >> DROPEND >>
+			case 'touchend': // DROP >> DROPEND >>
+				drop.timer = clearTimeout( drop.timer ); // delete timer	
+				if ( dd.propagates ){
+					$special.drag.hijack( event, "drop", dd ); 
+					$special.drag.hijack( event, "dropend", dd ); 
+				}
+				break;
+				
+		}
+	},
+		
+	// returns the location positions of an element
+	locate: function( elem, index ){ 
+		var data = $.data( elem, drop.datakey ),
+		$elem = $( elem ), 
+		posi = $elem.offset() || {}, 
+		height = $elem.outerHeight(), 
+		width = $elem.outerWidth(),
+		location = { 
+			elem: elem, 
+			width: width, 
+			height: height,
+			top: posi.top, 
+			left: posi.left, 
+			right: posi.left + width, 
+			bottom: posi.top + height
+		};
+		// drag elements might not have dropdata
+		if ( data ){
+			data.location = location;
+			data.index = index;
+			data.elem = elem;
+		}
+		return location;
+	},
+	
+	// test the location positions of an element against another OR an X,Y coord
+	contains: function( target, test ){ // target { location } contains test [x,y] or { location }
+		return ( ( test[0] || test.left ) >= target.left && ( test[0] || test.right ) <= target.right
+			&& ( test[1] || test.top ) >= target.top && ( test[1] || test.bottom ) <= target.bottom ); 
+	},
+	
+	// stored tolerance modes
+	modes: { // fn scope: "$.event.special.drop" object 
+		// target with mouse wins, else target with most overlap wins
+		'intersect': function( event, proxy, target ){
+			return this.contains( target, [ event.pageX, event.pageY ] ) ? // check cursor
+				1e9 : this.modes.overlap.apply( this, arguments ); // check overlap
+		},
+		// target with most overlap wins	
+		'overlap': function( event, proxy, target ){
+			// calculate the area of overlap...
+			return Math.max( 0, Math.min( target.bottom, proxy.bottom ) - Math.max( target.top, proxy.top ) )
+				* Math.max( 0, Math.min( target.right, proxy.right ) - Math.max( target.left, proxy.left ) );
+		},
+		// proxy is completely contained within target bounds	
+		'fit': function( event, proxy, target ){
+			return this.contains( target, proxy ) ? 1 : 0;
+		},
+		// center of the proxy is contained within target bounds	
+		'middle': function( event, proxy, target ){
+			return this.contains( target, [ proxy.left + proxy.width * .5, proxy.top + proxy.height * .5 ] ) ? 1 : 0;
+		}
+	},	
+	
+	// sort drop target cache by by winner (dsc), then index (asc)
+	sort: function( a, b ){
+		return ( b.winner - a.winner ) || ( a.index - b.index );
+	},
+		
+	// async, recursive tolerance execution
+	tolerate: function( dd ){		
+		// declare local refs
+		var i, drp, drg, data, arr, len, elem,
+		// interaction iteration variables
+		x = 0, ia, end = dd.interactions.length,
+		// determine the mouse coords
+		xy = [ drop.event.pageX, drop.event.pageY ],
+		// custom or stored tolerance fn
+		tolerance = drop.tolerance || drop.modes[ drop.mode ];
+		// go through each passed interaction...
+		do if ( ia = dd.interactions[x] ){
+			// check valid interaction
+			if ( !ia )
+				return; 
+			// initialize or clear the drop data
+			ia.drop = [];
+			// holds the drop elements
+			arr = []; 
+			len = ia.droppable.length;
+			// determine the proxy location, if needed
+			if ( tolerance )
+				drg = drop.locate( ia.proxy ); 
+			// reset the loop
+			i = 0;
+			// loop each stored drop target
+			do if ( elem = ia.droppable[i] ){ 
+				data = $.data( elem, drop.datakey );
+				drp = data.location;
+				if ( !drp ) continue;
+				// find a winner: tolerance function is defined, call it
+				data.winner = tolerance ? tolerance.call( drop, drop.event, drg, drp ) 
+					// mouse position is always the fallback
+					: drop.contains( drp, xy ) ? 1 : 0; 
+				arr.push( data );	
+			} while ( ++i < len ); // loop 
+			// sort the drop targets
+			arr.sort( drop.sort );			
+			// reset the loop
+			i = 0;
+			// loop through all of the targets again
+			do if ( data = arr[ i ] ){
+				// winners...
+				if ( data.winner && ia.drop.length < drop.multi ){
+					// new winner... dropstart
+					if ( !data.active[x] && !data.anyactive ){
+						// check to make sure that this is not prevented
+						if ( $special.drag.hijack( drop.event, "dropstart", dd, x, data.elem )[0] !== false ){ 	
+							data.active[x] = 1;
+							data.anyactive += 1;
+						}
+						// if false, it is not a winner
+						else
+							data.winner = 0;
+					}
+					// if it is still a winner
+					if ( data.winner )
+						ia.drop.push( data.elem );
+				}
+				// losers... 
+				else if ( data.active[x] && data.anyactive == 1 ){
+					// former winner... dropend
+					$special.drag.hijack( drop.event, "dropend", dd, x, data.elem ); 
+					data.active[x] = 0;
+					data.anyactive -= 1;
+				}
+			} while ( ++i < len ); // loop 		
+		} while ( ++x < end ) // loop
+		// check if the mouse is still moving or is idle
+		if ( drop.last && xy[0] == drop.last.pageX && xy[1] == drop.last.pageY ) 
+			delete drop.timer; // idle, don't recurse
+		else  // recurse
+			drop.timer = setTimeout(function(){ 
+				drop.tolerate( dd ); 
+			}, drop.delay );
+		// remember event, to compare idleness
+		drop.last = drop.event; 
+	}
+	
 };
 
 // share the same special event configuration with related events...
 $special.dropinit = $special.dropstart = $special.dropend = drop;
 
-})(jQuery); // confine scope  
+})(jQuery); // confine scope	
 ;
 return $.drop;
   }).apply(root, arguments);
 });
 }(this));
+
+/* Select2 pattern.
+ *
+ * Options:
+ *    separator(string): Analagous to the separator constructor parameter from Select2. Defines a custom separator used to distinguish the tag values. Ex: a value of ";" will allow tags and initialValues to have values separated by ";" instead of the default ",". (',')
+ *    initialValues(string): This can be a json encoded string, or a list of id:text values. Ex: Red:The Color Red,Orange:The Color Orange  This is used inside the initSelection method, if AJAX options are NOT set. (null)
+ *    vocabularyUrl(string): This is a URL to a JSON-formatted file used to populate the list (null)
+ *    OTHER OPTIONS(): For more options on select2 go to http://ivaynberg.github.io/select2/#documentation ()
+ *
+ * Documentation:
+ *    # Autocomplete with search (single select)
+ *
+ *    {{ example-1 }}
+ *
+ *    # Tagging
+ *
+ *    {{ example-2 }}
+ *
+ *    # Orderable tags
+ *
+ *    {{ example-3 }}
+ *
+ *    # AJAX tags
+ *
+ *    {{ example-4 }}
+ *
+ * Example: example-1
+ *    <select class="pat-select2" data-pat-select2="width:20em">
+ *      <option value="Acholi">Acholi</option>
+ *      <option value="Afrikaans">Afrikaans</option>
+ *      <option value="Akan">Akan</option>
+ *      <option value="Albanian">Albanian</option>
+ *      <option value="Amharic">Amharic</option>
+ *      <option value="Arabic">Arabic</option>
+ *      <option value="Ashante">Ashante</option>
+ *      <option value="Asl">Asl</option>
+ *      <option value="Assyrian">Assyrian</option>
+ *      <option value="Azerbaijani">Azerbaijani</option>
+ *      <option value="Azeri">Azeri</option>
+ *    </select>
+ *
+ * Example: example-2
+ *    <input type="text" class="pat-select2"
+ *           data-pat-select2="separator:,;
+ *                             tags:Red,Yellow,Green,Orange,Purple;
+ *                             width:20em;
+ *                             initialValues:Red:The Color Red,Orange:The Color Orange"
+ *           value="Red,Orange"/>
+ *
+ * Example: example-3
+ *    <input type="text" class="pat-select2"
+ *           data-pat-select2="orderable:true;
+ *                             tags:Red,Yellow,Green;
+ *                             width:20em" />
+ * Example: example-4
+ *    <input type="hidden" class="pat-select2"
+ *           data-pat-select2="placeholder:Search for a Value;
+ *                             vocabularyUrl:select2-test.json;
+ *                             width:20em" />
+ *
+ */
+
+
+define('mockup-patterns-select2',[
+  'jquery',
+  'mockup-patterns-base',
+  'select2',
+  'jquery.event.drag',
+  'jquery.event.drop'
+], function($, Base) {
+  
+
+  var Select2 = Base.extend({
+    name: 'select2',
+    trigger: '.pat-select2',
+    defaults: {
+      separator: ','
+    },
+    initializeValues: function() {
+      var self = this;
+      // Init Selection ---------------------------------------------
+      if (self.options.initialValues) {
+        self.options.id = function(term) {
+          return term.id;
+        };
+        self.options.initSelection = function ($el, callback) {
+          var data = [],
+              value = $el.val(),
+              seldefaults = self.options.initialValues;
+
+          // Create the initSelection value that contains the default selection,
+          // but in a javascript object
+          if (typeof(self.options.initialValues) === 'string' && self.options.initialValues !== '') {
+            // if default selection value starts with a '{', then treat the value as
+            // a JSON object that needs to be parsed
+            if (self.options.initialValues[0] === '{') {
+              seldefaults = JSON.parse(self.options.initialValues);
+            }
+            // otherwise, treat the value as a list, separated by the defaults.separator value of
+            // strings in the format "id:text", and convert it to an object
+            else {
+              seldefaults = {};
+              $(self.options.initialValues.split(self.options.separator)).each(function() {
+                var selection = this.split(':');
+                var id = $.trim(selection[0]);
+                var text = $.trim(selection[1]);
+                seldefaults[id] = text;
+              });
+            }
+          }
+
+          $(value.split(self.options.separator)).each(function() {
+            var text = this;
+            if (seldefaults[this]) {
+              text = seldefaults[this];
+            }
+            data.push({id: this, text: text});
+          });
+          callback(data);
+        };
+      }
+    },
+    initializeTags: function() {
+      var self = this;
+      if (self.options.tags && typeof(self.options.tags) === 'string') {
+        if (self.options.tags.substr(0, 1) === '[') {
+          self.options.tags = JSON.parse(self.options.tags);
+        } else {
+          self.options.tags = self.options.tags.split(self.options.separator);
+        }
+      }
+
+      if (self.options.tags && !self.options.allowNewItems) {
+        self.options.data = $.map (self.options.tags, function (value, i) {
+          return { id: value, text: value };
+        });
+        self.options.multiple = true;
+        delete self.options.tags;
+      }
+    },
+    initializeOrdering: function() {
+      var self = this;
+      if (self.options.orderable) {
+        var formatSelection = function(data, $container) {
+          return data ? data.text : undefined;
+        };
+        if (self.options.formatSelection) {
+          formatSelection = self.options.formatSelection;
+        }
+
+        self.options.formatSelection = function(data, $container) {
+          $container.parents('li')
+            .drag('start', function(e, dd) {
+              $(this).addClass('select2-choice-dragging');
+              self.$el.select2('onSortStart');
+              $.drop({
+                tolerance: function(event, proxy, target) {
+                  var test = event.pageY > (target.top + target.height / 2);
+                  $.data(target.elem, 'drop+reorder', test ? 'insertAfter' : 'insertBefore' );
+                  return this.contains(target, [event.pageX, event.pageY]);
+                }
+              });
+              return $( this ).clone().
+                addClass('dragging').
+                css({opacity: 0.75, position: 'absolute'}).
+                appendTo(document.body);
+            })
+            .drag(function(e, dd) {
+              /*jshint eqeqeq:false */
+              $( dd.proxy ).css({
+                top: dd.offsetY,
+                left: dd.offsetX
+              });
+              var drop = dd.drop[0],
+                  method = $.data(drop || {}, 'drop+reorder');
+
+              /* XXX Cannot use triple equals here */
+              if (drop && (drop != dd.current || method != dd.method)) {
+                $(this)[method](drop);
+                dd.current = drop;
+                dd.method = method;
+                dd.update();
+              }
+            })
+            .drag('end', function(e, dd) {
+              $(this).removeClass('select2-choice-dragging');
+              self.$el.select2('onSortEnd');
+              $( dd.proxy ).remove();
+            })
+            .drop('init', function(e, dd ) {
+              /*jshint eqeqeq:false */
+              /* XXX Cannot use triple equals here */
+              return (this == dd.drag) ? false: true;
+            });
+          return formatSelection(data, $container);
+        };
+      }
+    },
+    initializeSelect2: function() {
+      var self = this;
+      self.$el.select2(self.options);
+      self.$select2 = self.$el.parent().find('.select2-container');
+      self.$el.parent().off('close.modal.patterns');
+      if (self.options.orderable) {
+        self.$select2.addClass('select2-orderable');
+      }
+    },
+    init: function() {
+      var self = this;
+
+      self.options.allowNewItems = self.options.hasOwnProperty ('allowNewItems') ?
+            JSON.parse(self.options.allowNewItems) : true;
+
+      if (self.options.ajax || self.options.vocabularyUrl) {
+        if (self.options.vocabularyUrl) {
+          self.options.multiple = self.options.multiple === undefined ? true : self.options.multiple;
+          self.options.ajax = self.options.ajax || {};
+          self.options.ajax.url = self.options.vocabularyUrl;
+          // XXX removing the following function does'nt break tests. dead code?
+          self.options.initSelection = function ($el, callback) {
+            var data = [], value = $el.val();
+            $(value.split(self.options.separator)).each(function () {
+              data.push({id: this, text: this});
+            });
+            callback(data);
+          };
+        }
+
+        var queryTerm = '';
+        self.options.ajax = $.extend({
+          quietMillis: 300,
+          data: function (term, page) {
+            queryTerm = term;
+            return {
+              query: term,
+              'page_limit': 10,
+              page: page
+            };
+          },
+          results: function (data, page) {
+            var results = data.results;
+            if (self.options.vocabularyUrl) {
+              var dataIds = [];
+              $.each(data.results, function(i, item) {
+                dataIds.push(item.id);
+              });
+              results = [];
+
+              var haveResult = queryTerm === '' || $.inArray(queryTerm, dataIds) >= 0;
+              if (self.options.allowNewItems && !haveResult) {
+                results.push({id: queryTerm, text: queryTerm});
+              }
+
+              if (haveResult || self.options.allowNewItems) {
+                $.each(data.results, function(i, item) {
+                  results.push(item);
+                });
+              }
+            }
+            return { results: results };
+          }
+        }, self.options.ajax);
+      } else if (self.options.multiple && self.$el.is('select')) {
+        // Multiselects need to be converted to input[type=hidden]
+        // for Select2
+        var vals = self.$el.val() || [];
+        var options = $.map(self.$el.find('option'), function (o) { return {text: $(o).html(), id: o.value}; });
+        var $hidden = $('<input type="hidden" />');
+        $hidden.val(vals.join(self.options.separator));
+        $hidden.attr('class', self.$el.attr('class'));
+        $hidden.attr('name', self.$el.attr('name'));
+        $hidden.attr('id', self.$el.attr('id'));
+        self.$orig = self.$el;
+        self.$el.replaceWith($hidden);
+        self.$el = $hidden;
+        self.options.data = options;
+      }
+
+      self.initializeValues();
+      self.initializeTags();
+      self.initializeOrdering();
+      self.initializeSelect2();
+    }
+  });
+
+  return Select2;
+
+});
 
 
 /*!
@@ -7067,6 +7071,2889 @@ return PickerConstructor
 
 
 
+
+/*!
+ * Date picker for pickadate.js v3.4.0
+ * http://amsul.github.io/pickadate.js/date.htm
+ */
+
+(function ( factory ) {
+
+    // Register as an anonymous module.
+    if ( typeof define == 'function' && define.amd )
+        define( 'picker.date',['picker','jquery'], factory )
+
+    // Or using browser globals.
+    else factory( Picker, jQuery )
+
+}(function( Picker, $ ) {
+
+
+/**
+ * Globals and constants
+ */
+var DAYS_IN_WEEK = 7,
+    WEEKS_IN_CALENDAR = 6,
+    _ = Picker._
+
+
+
+/**
+ * The date picker constructor
+ */
+function DatePicker( picker, settings ) {
+
+    var calendar = this,
+        elementValue = picker.$node[ 0 ].value,
+        elementDataValue = picker.$node.data( 'value' ),
+        valueString = elementDataValue || elementValue,
+        formatString = elementDataValue ? settings.formatSubmit : settings.format,
+        isRTL = function() {
+            return getComputedStyle( picker.$root[0] ).direction === 'rtl'
+        }
+
+    calendar.settings = settings
+    calendar.$node = picker.$node
+
+    // The queue of methods that will be used to build item objects.
+    calendar.queue = {
+        min: 'measure create',
+        max: 'measure create',
+        now: 'now create',
+        select: 'parse create validate',
+        highlight: 'parse navigate create validate',
+        view: 'parse create validate viewset',
+        disable: 'deactivate',
+        enable: 'activate'
+    }
+
+    // The component's item object.
+    calendar.item = {}
+
+    calendar.item.disable = ( settings.disable || [] ).slice( 0 )
+    calendar.item.enable = -(function( collectionDisabled ) {
+        return collectionDisabled[ 0 ] === true ? collectionDisabled.shift() : -1
+    })( calendar.item.disable )
+
+    calendar.
+        set( 'min', settings.min ).
+        set( 'max', settings.max ).
+        set( 'now' )
+
+    // When there’s a value, set the `select`, which in turn
+    // also sets the `highlight` and `view`.
+    if ( valueString ) {
+        calendar.set( 'select', valueString, {
+            format: formatString,
+            fromValue: !!elementValue
+        })
+    }
+
+    // If there’s no value, default to highlighting “today”.
+    else {
+        calendar.
+            set( 'select', null ).
+            set( 'highlight', calendar.item.now )
+    }
+
+
+    // The keycode to movement mapping.
+    calendar.key = {
+        40: 7, // Down
+        38: -7, // Up
+        39: function() { return isRTL() ? -1 : 1 }, // Right
+        37: function() { return isRTL() ? 1 : -1 }, // Left
+        go: function( timeChange ) {
+            var highlightedObject = calendar.item.highlight,
+                targetDate = new Date( highlightedObject.year, highlightedObject.month, highlightedObject.date + timeChange )
+            calendar.set(
+                'highlight',
+                [ targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate() ],
+                { interval: timeChange }
+            )
+            this.render()
+        }
+    }
+
+
+    // Bind some picker events.
+    picker.
+        on( 'render', function() {
+            picker.$root.find( '.' + settings.klass.selectMonth ).on( 'change', function() {
+                var value = this.value
+                if ( value ) {
+                    picker.set( 'highlight', [ picker.get( 'view' ).year, value, picker.get( 'highlight' ).date ] )
+                    picker.$root.find( '.' + settings.klass.selectMonth ).trigger( 'focus' )
+                }
+            })
+            picker.$root.find( '.' + settings.klass.selectYear ).on( 'change', function() {
+                var value = this.value
+                if ( value ) {
+                    picker.set( 'highlight', [ value, picker.get( 'view' ).month, picker.get( 'highlight' ).date ] )
+                    picker.$root.find( '.' + settings.klass.selectYear ).trigger( 'focus' )
+                }
+            })
+        }).
+        on( 'open', function() {
+            picker.$root.find( 'button, select' ).attr( 'disabled', false )
+        }).
+        on( 'close', function() {
+            picker.$root.find( 'button, select' ).attr( 'disabled', true )
+        })
+
+} //DatePicker
+
+
+/**
+ * Set a datepicker item object.
+ */
+DatePicker.prototype.set = function( type, value, options ) {
+
+    var calendar = this,
+        calendarItem = calendar.item
+
+    // If the value is `null` just set it immediately.
+    if ( value === null ) {
+        calendarItem[ type ] = value
+        return calendar
+    }
+
+    // Otherwise go through the queue of methods, and invoke the functions.
+    // Update this as the time unit, and set the final value as this item.
+    // * In the case of `enable`, keep the queue but set `disable` instead.
+    //   And in the case of `flip`, keep the queue but set `enable` instead.
+    calendarItem[ ( type == 'enable' ? 'disable' : type == 'flip' ? 'enable' : type ) ] = calendar.queue[ type ].split( ' ' ).map( function( method ) {
+        value = calendar[ method ]( type, value, options )
+        return value
+    }).pop()
+
+    // Check if we need to cascade through more updates.
+    if ( type == 'select' ) {
+        calendar.set( 'highlight', calendarItem.select, options )
+    }
+    else if ( type == 'highlight' ) {
+        calendar.set( 'view', calendarItem.highlight, options )
+    }
+    else if ( type.match( /^(flip|min|max|disable|enable)$/ ) ) {
+        if ( calendarItem.select && calendar.disabled( calendarItem.select ) ) {
+            calendar.set( 'select', calendarItem.select, options )
+        }
+        if ( calendarItem.highlight && calendar.disabled( calendarItem.highlight ) ) {
+            calendar.set( 'highlight', calendarItem.highlight, options )
+        }
+    }
+
+    return calendar
+} //DatePicker.prototype.set
+
+
+/**
+ * Get a datepicker item object.
+ */
+DatePicker.prototype.get = function( type ) {
+    return this.item[ type ]
+} //DatePicker.prototype.get
+
+
+/**
+ * Create a picker date object.
+ */
+DatePicker.prototype.create = function( type, value, options ) {
+
+    var isInfiniteValue,
+        calendar = this
+
+    // If there’s no value, use the type as the value.
+    value = value === undefined ? type : value
+
+
+    // If it’s infinity, update the value.
+    if ( value == -Infinity || value == Infinity ) {
+        isInfiniteValue = value
+    }
+
+    // If it’s an object, use the native date object.
+    else if ( $.isPlainObject( value ) && _.isInteger( value.pick ) ) {
+        value = value.obj
+    }
+
+    // If it’s an array, convert it into a date and make sure
+    // that it’s a valid date – otherwise default to today.
+    else if ( $.isArray( value ) ) {
+        value = new Date( value[ 0 ], value[ 1 ], value[ 2 ] )
+        value = _.isDate( value ) ? value : calendar.create().obj
+    }
+
+    // If it’s a number or date object, make a normalized date.
+    else if ( _.isInteger( value ) || _.isDate( value ) ) {
+        value = calendar.normalize( new Date( value ), options )
+    }
+
+    // If it’s a literal true or any other case, set it to now.
+    else /*if ( value === true )*/ {
+        value = calendar.now( type, value, options )
+    }
+
+    // Return the compiled object.
+    return {
+        year: isInfiniteValue || value.getFullYear(),
+        month: isInfiniteValue || value.getMonth(),
+        date: isInfiniteValue || value.getDate(),
+        day: isInfiniteValue || value.getDay(),
+        obj: isInfiniteValue || value,
+        pick: isInfiniteValue || value.getTime()
+    }
+} //DatePicker.prototype.create
+
+
+/**
+ * Create a range limit object using an array, date object,
+ * literal “true”, or integer relative to another time.
+ */
+DatePicker.prototype.createRange = function( from, to ) {
+
+    var calendar = this,
+        createDate = function( date ) {
+            if ( date === true || $.isArray( date ) || _.isDate( date ) ) {
+                return calendar.create( date )
+            }
+            return date
+        }
+
+    // Create objects if possible.
+    if ( !_.isInteger( from ) ) {
+        from = createDate( from )
+    }
+    if ( !_.isInteger( to ) ) {
+        to = createDate( to )
+    }
+
+    // Create relative dates.
+    if ( _.isInteger( from ) && $.isPlainObject( to ) ) {
+        from = [ to.year, to.month, to.date + from ];
+    }
+    else if ( _.isInteger( to ) && $.isPlainObject( from ) ) {
+        to = [ from.year, from.month, from.date + to ];
+    }
+
+    return {
+        from: createDate( from ),
+        to: createDate( to )
+    }
+} //DatePicker.prototype.createRange
+
+
+/**
+ * Check if a date unit falls within a date range object.
+ */
+DatePicker.prototype.withinRange = function( range, dateUnit ) {
+    range = this.createRange(range.from, range.to)
+    return dateUnit.pick >= range.from.pick && dateUnit.pick <= range.to.pick
+}
+
+
+/**
+ * Check if two date range objects overlap.
+ */
+DatePicker.prototype.overlapRanges = function( one, two ) {
+
+    var calendar = this
+
+    // Convert the ranges into comparable dates.
+    one = calendar.createRange( one.from, one.to )
+    two = calendar.createRange( two.from, two.to )
+
+    return calendar.withinRange( one, two.from ) || calendar.withinRange( one, two.to ) ||
+        calendar.withinRange( two, one.from ) || calendar.withinRange( two, one.to )
+}
+
+
+/**
+ * Get the date today.
+ */
+DatePicker.prototype.now = function( type, value, options ) {
+    value = new Date()
+    if ( options && options.rel ) {
+        value.setDate( value.getDate() + options.rel )
+    }
+    return this.normalize( value, options )
+}
+
+
+/**
+ * Navigate to next/prev month.
+ */
+DatePicker.prototype.navigate = function( type, value, options ) {
+
+    var targetDateObject,
+        targetYear,
+        targetMonth,
+        targetDate,
+        isTargetArray = $.isArray( value ),
+        isTargetObject = $.isPlainObject( value ),
+        viewsetObject = this.item.view/*,
+        safety = 100*/
+
+
+    if ( isTargetArray || isTargetObject ) {
+
+        if ( isTargetObject ) {
+            targetYear = value.year
+            targetMonth = value.month
+            targetDate = value.date
+        }
+        else {
+            targetYear = +value[0]
+            targetMonth = +value[1]
+            targetDate = +value[2]
+        }
+
+        // If we’re navigating months but the view is in a different
+        // month, navigate to the view’s year and month.
+        if ( options && options.nav && viewsetObject && viewsetObject.month !== targetMonth ) {
+            targetYear = viewsetObject.year
+            targetMonth = viewsetObject.month
+        }
+
+        // Figure out the expected target year and month.
+        targetDateObject = new Date( targetYear, targetMonth + ( options && options.nav ? options.nav : 0 ), 1 )
+        targetYear = targetDateObject.getFullYear()
+        targetMonth = targetDateObject.getMonth()
+
+        // If the month we’re going to doesn’t have enough days,
+        // keep decreasing the date until we reach the month’s last date.
+        while ( /*safety &&*/ new Date( targetYear, targetMonth, targetDate ).getMonth() !== targetMonth ) {
+            targetDate -= 1
+            /*safety -= 1
+            if ( !safety ) {
+                throw 'Fell into an infinite loop while navigating to ' + new Date( targetYear, targetMonth, targetDate ) + '.'
+            }*/
+        }
+
+        value = [ targetYear, targetMonth, targetDate ]
+    }
+
+    return value
+} //DatePicker.prototype.navigate
+
+
+/**
+ * Normalize a date by setting the hours to midnight.
+ */
+DatePicker.prototype.normalize = function( value/*, options*/ ) {
+    value.setHours( 0, 0, 0, 0 )
+    return value
+}
+
+
+/**
+ * Measure the range of dates.
+ */
+DatePicker.prototype.measure = function( type, value/*, options*/ ) {
+
+    var calendar = this
+
+    // If it's anything false-y, remove the limits.
+    if ( !value ) {
+        value = type == 'min' ? -Infinity : Infinity
+    }
+
+    // If it's an integer, get a date relative to today.
+    else if ( _.isInteger( value ) ) {
+        value = calendar.now( type, value, { rel: value } )
+    }
+
+    return value
+} ///DatePicker.prototype.measure
+
+
+/**
+ * Create a viewset object based on navigation.
+ */
+DatePicker.prototype.viewset = function( type, dateObject/*, options*/ ) {
+    return this.create([ dateObject.year, dateObject.month, 1 ])
+}
+
+
+/**
+ * Validate a date as enabled and shift if needed.
+ */
+DatePicker.prototype.validate = function( type, dateObject, options ) {
+
+    var calendar = this,
+
+        // Keep a reference to the original date.
+        originalDateObject = dateObject,
+
+        // Make sure we have an interval.
+        interval = options && options.interval ? options.interval : 1,
+
+        // Check if the calendar enabled dates are inverted.
+        isFlippedBase = calendar.item.enable === -1,
+
+        // Check if we have any enabled dates after/before now.
+        hasEnabledBeforeTarget, hasEnabledAfterTarget,
+
+        // The min & max limits.
+        minLimitObject = calendar.item.min,
+        maxLimitObject = calendar.item.max,
+
+        // Check if we’ve reached the limit during shifting.
+        reachedMin, reachedMax,
+
+        // Check if the calendar is inverted and at least one weekday is enabled.
+        hasEnabledWeekdays = isFlippedBase && calendar.item.disable.filter( function( value ) {
+
+            // If there’s a date, check where it is relative to the target.
+            if ( $.isArray( value ) ) {
+                var dateTime = calendar.create( value ).pick
+                if ( dateTime < dateObject.pick ) hasEnabledBeforeTarget = true
+                else if ( dateTime > dateObject.pick ) hasEnabledAfterTarget = true
+            }
+
+            // Return only integers for enabled weekdays.
+            return _.isInteger( value )
+        }).length/*,
+
+        safety = 100*/
+
+
+
+    // Cases to validate for:
+    // [1] Not inverted and date disabled.
+    // [2] Inverted and some dates enabled.
+    // [3] Not inverted and out of range.
+    //
+    // Cases to **not** validate for:
+    // • Navigating months.
+    // • Not inverted and date enabled.
+    // • Inverted and all dates disabled.
+    // • ..and anything else.
+    if ( !options || !options.nav ) if (
+        /* 1 */ ( !isFlippedBase && calendar.disabled( dateObject ) ) ||
+        /* 2 */ ( isFlippedBase && calendar.disabled( dateObject ) && ( hasEnabledWeekdays || hasEnabledBeforeTarget || hasEnabledAfterTarget ) ) ||
+        /* 3 */ ( !isFlippedBase && (dateObject.pick <= minLimitObject.pick || dateObject.pick >= maxLimitObject.pick) )
+    ) {
+
+
+        // When inverted, flip the direction if there aren’t any enabled weekdays
+        // and there are no enabled dates in the direction of the interval.
+        if ( isFlippedBase && !hasEnabledWeekdays && ( ( !hasEnabledAfterTarget && interval > 0 ) || ( !hasEnabledBeforeTarget && interval < 0 ) ) ) {
+            interval *= -1
+        }
+
+
+        // Keep looping until we reach an enabled date.
+        while ( /*safety &&*/ calendar.disabled( dateObject ) ) {
+
+            /*safety -= 1
+            if ( !safety ) {
+                throw 'Fell into an infinite loop while validating ' + dateObject.obj + '.'
+            }*/
+
+
+            // If we’ve looped into the next/prev month with a large interval, return to the original date and flatten the interval.
+            if ( Math.abs( interval ) > 1 && ( dateObject.month < originalDateObject.month || dateObject.month > originalDateObject.month ) ) {
+                dateObject = originalDateObject
+                interval = interval > 0 ? 1 : -1
+            }
+
+
+            // If we’ve reached the min/max limit, reverse the direction, flatten the interval and set it to the limit.
+            if ( dateObject.pick <= minLimitObject.pick ) {
+                reachedMin = true
+                interval = 1
+                dateObject = calendar.create([ minLimitObject.year, minLimitObject.month, minLimitObject.date - 1 ])
+            }
+            else if ( dateObject.pick >= maxLimitObject.pick ) {
+                reachedMax = true
+                interval = -1
+                dateObject = calendar.create([ maxLimitObject.year, maxLimitObject.month, maxLimitObject.date + 1 ])
+            }
+
+
+            // If we’ve reached both limits, just break out of the loop.
+            if ( reachedMin && reachedMax ) {
+                break
+            }
+
+
+            // Finally, create the shifted date using the interval and keep looping.
+            dateObject = calendar.create([ dateObject.year, dateObject.month, dateObject.date + interval ])
+        }
+
+    } //endif
+
+
+    // Return the date object settled on.
+    return dateObject
+} //DatePicker.prototype.validate
+
+
+/**
+ * Check if a date is disabled.
+ */
+DatePicker.prototype.disabled = function( dateToVerify ) {
+
+    var
+        calendar = this,
+
+        // Filter through the disabled dates to check if this is one.
+        isDisabledMatch = calendar.item.disable.filter( function( dateToDisable ) {
+
+            // If the date is a number, match the weekday with 0index and `firstDay` check.
+            if ( _.isInteger( dateToDisable ) ) {
+                return dateToVerify.day === ( calendar.settings.firstDay ? dateToDisable : dateToDisable - 1 ) % 7
+            }
+
+            // If it’s an array or a native JS date, create and match the exact date.
+            if ( $.isArray( dateToDisable ) || _.isDate( dateToDisable ) ) {
+                return dateToVerify.pick === calendar.create( dateToDisable ).pick
+            }
+
+            // If it’s an object, match a date within the “from” and “to” range.
+            if ( $.isPlainObject( dateToDisable ) ) {
+                return calendar.withinRange( dateToDisable, dateToVerify )
+            }
+        })
+
+    // If this date matches a disabled date, confirm it’s not inverted.
+    isDisabledMatch = isDisabledMatch.length && !isDisabledMatch.filter(function( dateToDisable ) {
+        return $.isArray( dateToDisable ) && dateToDisable[3] == 'inverted' ||
+            $.isPlainObject( dateToDisable ) && dateToDisable.inverted
+    }).length
+
+    // Check the calendar “enabled” flag and respectively flip the
+    // disabled state. Then also check if it’s beyond the min/max limits.
+    return calendar.item.enable === -1 ? !isDisabledMatch : isDisabledMatch ||
+        dateToVerify.pick < calendar.item.min.pick ||
+        dateToVerify.pick > calendar.item.max.pick
+
+} //DatePicker.prototype.disabled
+
+
+/**
+ * Parse a string into a usable type.
+ */
+DatePicker.prototype.parse = function( type, value, options ) {
+
+    var calendar = this,
+        parsingObject = {},
+        monthIndex
+
+    if ( !value || _.isInteger( value ) || $.isArray( value ) || _.isDate( value ) || $.isPlainObject( value ) && _.isInteger( value.pick ) ) {
+        return value
+    }
+
+    // We need a `.format` to parse the value with.
+    if ( !( options && options.format ) ) {
+        options = options || {}
+        options.format = calendar.settings.format
+    }
+
+    // Calculate the month index to adjust with.
+    monthIndex = typeof value == 'string' && !options.fromValue ? 1 : 0
+
+    // Convert the format into an array and then map through it.
+    calendar.formats.toArray( options.format ).map( function( label ) {
+
+        var
+            // Grab the formatting label.
+            formattingLabel = calendar.formats[ label ],
+
+            // The format length is from the formatting label function or the
+            // label length without the escaping exclamation (!) mark.
+            formatLength = formattingLabel ? _.trigger( formattingLabel, calendar, [ value, parsingObject ] ) : label.replace( /^!/, '' ).length
+
+        // If there's a format label, split the value up to the format length.
+        // Then add it to the parsing object with appropriate label.
+        if ( formattingLabel ) {
+            parsingObject[ label ] = value.substr( 0, formatLength )
+        }
+
+        // Update the value as the substring from format length to end.
+        value = value.substr( formatLength )
+    })
+
+    // If it’s parsing a user provided month value, compensate for month 0index.
+    return [
+        parsingObject.yyyy || parsingObject.yy,
+        +( parsingObject.mm || parsingObject.m ) - monthIndex,
+        parsingObject.dd || parsingObject.d
+    ]
+} //DatePicker.prototype.parse
+
+
+/**
+ * Various formats to display the object in.
+ */
+DatePicker.prototype.formats = (function() {
+
+    // Return the length of the first word in a collection.
+    function getWordLengthFromCollection( string, collection, dateObject ) {
+
+        // Grab the first word from the string.
+        var word = string.match( /\w+/ )[ 0 ]
+
+        // If there's no month index, add it to the date object
+        if ( !dateObject.mm && !dateObject.m ) {
+            dateObject.m = collection.indexOf( word )
+        }
+
+        // Return the length of the word.
+        return word.length
+    }
+
+    // Get the length of the first word in a string.
+    function getFirstWordLength( string ) {
+        return string.match( /\w+/ )[ 0 ].length
+    }
+
+    return {
+
+        d: function( string, dateObject ) {
+
+            // If there's string, then get the digits length.
+            // Otherwise return the selected date.
+            return string ? _.digits( string ) : dateObject.date
+        },
+        dd: function( string, dateObject ) {
+
+            // If there's a string, then the length is always 2.
+            // Otherwise return the selected date with a leading zero.
+            return string ? 2 : _.lead( dateObject.date )
+        },
+        ddd: function( string, dateObject ) {
+
+            // If there's a string, then get the length of the first word.
+            // Otherwise return the short selected weekday.
+            return string ? getFirstWordLength( string ) : this.settings.weekdaysShort[ dateObject.day ]
+        },
+        dddd: function( string, dateObject ) {
+
+            // If there's a string, then get the length of the first word.
+            // Otherwise return the full selected weekday.
+            return string ? getFirstWordLength( string ) : this.settings.weekdaysFull[ dateObject.day ]
+        },
+        m: function( string, dateObject ) {
+
+            // If there's a string, then get the length of the digits
+            // Otherwise return the selected month with 0index compensation.
+            return string ? _.digits( string ) : dateObject.month + 1
+        },
+        mm: function( string, dateObject ) {
+
+            // If there's a string, then the length is always 2.
+            // Otherwise return the selected month with 0index and leading zero.
+            return string ? 2 : _.lead( dateObject.month + 1 )
+        },
+        mmm: function( string, dateObject ) {
+
+            var collection = this.settings.monthsShort
+
+            // If there's a string, get length of the relevant month from the short
+            // months collection. Otherwise return the selected month from that collection.
+            return string ? getWordLengthFromCollection( string, collection, dateObject ) : collection[ dateObject.month ]
+        },
+        mmmm: function( string, dateObject ) {
+
+            var collection = this.settings.monthsFull
+
+            // If there's a string, get length of the relevant month from the full
+            // months collection. Otherwise return the selected month from that collection.
+            return string ? getWordLengthFromCollection( string, collection, dateObject ) : collection[ dateObject.month ]
+        },
+        yy: function( string, dateObject ) {
+
+            // If there's a string, then the length is always 2.
+            // Otherwise return the selected year by slicing out the first 2 digits.
+            return string ? 2 : ( '' + dateObject.year ).slice( 2 )
+        },
+        yyyy: function( string, dateObject ) {
+
+            // If there's a string, then the length is always 4.
+            // Otherwise return the selected year.
+            return string ? 4 : dateObject.year
+        },
+
+        // Create an array by splitting the formatting string passed.
+        toArray: function( formatString ) { return formatString.split( /(d{1,4}|m{1,4}|y{4}|yy|!.)/g ) },
+
+        // Format an object into a string using the formatting options.
+        toString: function ( formatString, itemObject ) {
+            var calendar = this
+            return calendar.formats.toArray( formatString ).map( function( label ) {
+                return _.trigger( calendar.formats[ label ], calendar, [ 0, itemObject ] ) || label.replace( /^!/, '' )
+            }).join( '' )
+        }
+    }
+})() //DatePicker.prototype.formats
+
+
+
+
+/**
+ * Check if two date units are the exact.
+ */
+DatePicker.prototype.isDateExact = function( one, two ) {
+
+    var calendar = this
+
+    // When we’re working with weekdays, do a direct comparison.
+    if (
+        ( _.isInteger( one ) && _.isInteger( two ) ) ||
+        ( typeof one == 'boolean' && typeof two == 'boolean' )
+     ) {
+        return one === two
+    }
+
+    // When we’re working with date representations, compare the “pick” value.
+    if (
+        ( _.isDate( one ) || $.isArray( one ) ) &&
+        ( _.isDate( two ) || $.isArray( two ) )
+    ) {
+        return calendar.create( one ).pick === calendar.create( two ).pick
+    }
+
+    // When we’re working with range objects, compare the “from” and “to”.
+    if ( $.isPlainObject( one ) && $.isPlainObject( two ) ) {
+        return calendar.isDateExact( one.from, two.from ) && calendar.isDateExact( one.to, two.to )
+    }
+
+    return false
+}
+
+
+/**
+ * Check if two date units overlap.
+ */
+DatePicker.prototype.isDateOverlap = function( one, two ) {
+
+    var calendar = this
+
+    // When we’re working with a weekday index, compare the days.
+    if ( _.isInteger( one ) && ( _.isDate( two ) || $.isArray( two ) ) ) {
+        return one === calendar.create( two ).day + 1
+    }
+    if ( _.isInteger( two ) && ( _.isDate( one ) || $.isArray( one ) ) ) {
+        return two === calendar.create( one ).day + 1
+    }
+
+    // When we’re working with range objects, check if the ranges overlap.
+    if ( $.isPlainObject( one ) && $.isPlainObject( two ) ) {
+        return calendar.overlapRanges( one, two )
+    }
+
+    return false
+}
+
+
+/**
+ * Flip the “enabled” state.
+ */
+DatePicker.prototype.flipEnable = function(val) {
+    var itemObject = this.item
+    itemObject.enable = val || (itemObject.enable == -1 ? 1 : -1)
+}
+
+
+/**
+ * Mark a collection of dates as “disabled”.
+ */
+DatePicker.prototype.deactivate = function( type, datesToDisable ) {
+
+    var calendar = this,
+        disabledItems = calendar.item.disable.slice(0)
+
+
+    // If we’re flipping, that’s all we need to do.
+    if ( datesToDisable == 'flip' ) {
+        calendar.flipEnable()
+    }
+
+    else if ( datesToDisable === false ) {
+        calendar.flipEnable(1)
+        disabledItems = []
+    }
+
+    else if ( datesToDisable === true ) {
+        calendar.flipEnable(-1)
+        disabledItems = []
+    }
+
+    // Otherwise go through the dates to disable.
+    else {
+
+        datesToDisable.map(function( unitToDisable ) {
+
+            var matchFound
+
+            // When we have disabled items, check for matches.
+            // If something is matched, immediately break out.
+            for ( var index = 0; index < disabledItems.length; index += 1 ) {
+                if ( calendar.isDateExact( unitToDisable, disabledItems[index] ) ) {
+                    matchFound = true
+                    break
+                }
+            }
+
+            // If nothing was found, add the validated unit to the collection.
+            if ( !matchFound ) {
+                if (
+                    _.isInteger( unitToDisable ) ||
+                    _.isDate( unitToDisable ) ||
+                    $.isArray( unitToDisable ) ||
+                    ( $.isPlainObject( unitToDisable ) && unitToDisable.from && unitToDisable.to )
+                ) {
+                    disabledItems.push( unitToDisable )
+                }
+            }
+        })
+    }
+
+    // Return the updated collection.
+    return disabledItems
+} //DatePicker.prototype.deactivate
+
+
+/**
+ * Mark a collection of dates as “enabled”.
+ */
+DatePicker.prototype.activate = function( type, datesToEnable ) {
+
+    var calendar = this,
+        disabledItems = calendar.item.disable,
+        disabledItemsCount = disabledItems.length
+
+    // If we’re flipping, that’s all we need to do.
+    if ( datesToEnable == 'flip' ) {
+        calendar.flipEnable()
+    }
+
+    else if ( datesToEnable === true ) {
+        calendar.flipEnable(1)
+        disabledItems = []
+    }
+
+    else if ( datesToEnable === false ) {
+        calendar.flipEnable(-1)
+        disabledItems = []
+    }
+
+    // Otherwise go through the disabled dates.
+    else {
+
+        datesToEnable.map(function( unitToEnable ) {
+
+            var matchFound,
+                disabledUnit,
+                index,
+                isExactRange
+
+            // Go through the disabled items and try to find a match.
+            for ( index = 0; index < disabledItemsCount; index += 1 ) {
+
+                disabledUnit = disabledItems[index]
+
+                // When an exact match is found, remove it from the collection.
+                if ( calendar.isDateExact( disabledUnit, unitToEnable ) ) {
+                    matchFound = disabledItems[index] = null
+                    isExactRange = true
+                    break
+                }
+
+                // When an overlapped match is found, add the “inverted” state to it.
+                else if ( calendar.isDateOverlap( disabledUnit, unitToEnable ) ) {
+                    if ( $.isPlainObject( unitToEnable ) ) {
+                        unitToEnable.inverted = true
+                        matchFound = unitToEnable
+                    }
+                    else if ( $.isArray( unitToEnable ) ) {
+                        matchFound = unitToEnable
+                        if ( !matchFound[3] ) matchFound.push( 'inverted' )
+                    }
+                    else if ( _.isDate( unitToEnable ) ) {
+                        matchFound = [ unitToEnable.getFullYear(), unitToEnable.getMonth(), unitToEnable.getDate(), 'inverted' ]
+                    }
+                    break
+                }
+            }
+
+            // If a match was found, remove a previous duplicate entry.
+            if ( matchFound ) for ( index = 0; index < disabledItemsCount; index += 1 ) {
+                if ( calendar.isDateExact( disabledItems[index], unitToEnable ) ) {
+                    disabledItems[index] = null
+                    break
+                }
+            }
+
+            // In the event that we’re dealing with an exact range of dates,
+            // make sure there are no “inverted” dates because of it.
+            if ( isExactRange ) for ( index = 0; index < disabledItemsCount; index += 1 ) {
+                if ( calendar.isDateOverlap( disabledItems[index], unitToEnable ) ) {
+                    disabledItems[index] = null
+                    break
+                }
+            }
+
+            // If something is still matched, add it into the collection.
+            if ( matchFound ) {
+                disabledItems.push( matchFound )
+            }
+        })
+    }
+
+    // Return the updated collection.
+    return disabledItems.filter(function( val ) { return val != null })
+} //DatePicker.prototype.activate
+
+
+/**
+ * Create a string for the nodes in the picker.
+ */
+DatePicker.prototype.nodes = function( isOpen ) {
+
+    var
+        calendar = this,
+        settings = calendar.settings,
+        calendarItem = calendar.item,
+        nowObject = calendarItem.now,
+        selectedObject = calendarItem.select,
+        highlightedObject = calendarItem.highlight,
+        viewsetObject = calendarItem.view,
+        disabledCollection = calendarItem.disable,
+        minLimitObject = calendarItem.min,
+        maxLimitObject = calendarItem.max,
+
+
+        // Create the calendar table head using a copy of weekday labels collection.
+        // * We do a copy so we don't mutate the original array.
+        tableHead = (function( collection ) {
+
+            // If the first day should be Monday, move Sunday to the end.
+            if ( settings.firstDay ) {
+                collection.push( collection.shift() )
+            }
+
+            // Create and return the table head group.
+            return _.node(
+                'thead',
+                _.node(
+                    'tr',
+                    _.group({
+                        min: 0,
+                        max: DAYS_IN_WEEK - 1,
+                        i: 1,
+                        node: 'th',
+                        item: function( counter ) {
+                            return [
+                                collection[ counter ],
+                                settings.klass.weekdays
+                            ]
+                        }
+                    })
+                )
+            ) //endreturn
+        })( ( settings.showWeekdaysFull ? settings.weekdaysFull : settings.weekdaysShort ).slice( 0 ) ), //tableHead
+
+
+        // Create the nav for next/prev month.
+        createMonthNav = function( next ) {
+
+            // Otherwise, return the created month tag.
+            return _.node(
+                'div',
+                ' ',
+                settings.klass[ 'nav' + ( next ? 'Next' : 'Prev' ) ] + (
+
+                    // If the focused month is outside the range, disabled the button.
+                    ( next && viewsetObject.year >= maxLimitObject.year && viewsetObject.month >= maxLimitObject.month ) ||
+                    ( !next && viewsetObject.year <= minLimitObject.year && viewsetObject.month <= minLimitObject.month ) ?
+                    ' ' + settings.klass.navDisabled : ''
+                ),
+                'data-nav=' + ( next || -1 )
+            ) //endreturn
+        }, //createMonthNav
+
+
+        // Create the month label.
+        createMonthLabel = function( monthsCollection ) {
+
+            // If there are months to select, add a dropdown menu.
+            if ( settings.selectMonths ) {
+
+                return _.node( 'select', _.group({
+                    min: 0,
+                    max: 11,
+                    i: 1,
+                    node: 'option',
+                    item: function( loopedMonth ) {
+
+                        return [
+
+                            // The looped month and no classes.
+                            monthsCollection[ loopedMonth ], 0,
+
+                            // Set the value and selected index.
+                            'value=' + loopedMonth +
+                            ( viewsetObject.month == loopedMonth ? ' selected' : '' ) +
+                            (
+                                (
+                                    ( viewsetObject.year == minLimitObject.year && loopedMonth < minLimitObject.month ) ||
+                                    ( viewsetObject.year == maxLimitObject.year && loopedMonth > maxLimitObject.month )
+                                ) ?
+                                ' disabled' : ''
+                            )
+                        ]
+                    }
+                }), settings.klass.selectMonth, isOpen ? '' : 'disabled' )
+            }
+
+            // If there's a need for a month selector
+            return _.node( 'div', monthsCollection[ viewsetObject.month ], settings.klass.month )
+        }, //createMonthLabel
+
+
+        // Create the year label.
+        createYearLabel = function() {
+
+            var focusedYear = viewsetObject.year,
+
+            // If years selector is set to a literal "true", set it to 5. Otherwise
+            // divide in half to get half before and half after focused year.
+            numberYears = settings.selectYears === true ? 5 : ~~( settings.selectYears / 2 )
+
+            // If there are years to select, add a dropdown menu.
+            if ( numberYears ) {
+
+                var
+                    minYear = minLimitObject.year,
+                    maxYear = maxLimitObject.year,
+                    lowestYear = focusedYear - numberYears,
+                    highestYear = focusedYear + numberYears
+
+                // If the min year is greater than the lowest year, increase the highest year
+                // by the difference and set the lowest year to the min year.
+                if ( minYear > lowestYear ) {
+                    highestYear += minYear - lowestYear
+                    lowestYear = minYear
+                }
+
+                // If the max year is less than the highest year, decrease the lowest year
+                // by the lower of the two: available and needed years. Then set the
+                // highest year to the max year.
+                if ( maxYear < highestYear ) {
+
+                    var availableYears = lowestYear - minYear,
+                        neededYears = highestYear - maxYear
+
+                    lowestYear -= availableYears > neededYears ? neededYears : availableYears
+                    highestYear = maxYear
+                }
+
+                return _.node( 'select', _.group({
+                    min: lowestYear,
+                    max: highestYear,
+                    i: 1,
+                    node: 'option',
+                    item: function( loopedYear ) {
+                        return [
+
+                            // The looped year and no classes.
+                            loopedYear, 0,
+
+                            // Set the value and selected index.
+                            'value=' + loopedYear + ( focusedYear == loopedYear ? ' selected' : '' )
+                        ]
+                    }
+                }), settings.klass.selectYear, isOpen ? '' : 'disabled' )
+            }
+
+            // Otherwise just return the year focused
+            return _.node( 'div', focusedYear, settings.klass.year )
+        } //createYearLabel
+
+
+    // Create and return the entire calendar.
+    return _.node(
+        'div',
+        createMonthNav() + createMonthNav( 1 ) +
+        createMonthLabel( settings.showMonthsShort ? settings.monthsShort : settings.monthsFull ) +
+        createYearLabel(),
+        settings.klass.header
+    ) + _.node(
+        'table',
+        tableHead +
+        _.node(
+            'tbody',
+            _.group({
+                min: 0,
+                max: WEEKS_IN_CALENDAR - 1,
+                i: 1,
+                node: 'tr',
+                item: function( rowCounter ) {
+
+                    // If Monday is the first day and the month starts on Sunday, shift the date back a week.
+                    var shiftDateBy = settings.firstDay && calendar.create([ viewsetObject.year, viewsetObject.month, 1 ]).day === 0 ? -7 : 0
+
+                    return [
+                        _.group({
+                            min: DAYS_IN_WEEK * rowCounter - viewsetObject.day + shiftDateBy + 1, // Add 1 for weekday 0index
+                            max: function() {
+                                return this.min + DAYS_IN_WEEK - 1
+                            },
+                            i: 1,
+                            node: 'td',
+                            item: function( targetDate ) {
+
+                                // Convert the time date from a relative date to a target date.
+                                targetDate = calendar.create([ viewsetObject.year, viewsetObject.month, targetDate + ( settings.firstDay ? 1 : 0 ) ])
+
+                                var isSelected = selectedObject && selectedObject.pick == targetDate.pick,
+                                    isHighlighted = highlightedObject && highlightedObject.pick == targetDate.pick,
+                                    isDisabled = disabledCollection && calendar.disabled( targetDate ) || targetDate.pick < minLimitObject.pick || targetDate.pick > maxLimitObject.pick
+
+                                return [
+                                    _.node(
+                                        'div',
+                                        targetDate.date,
+                                        (function( klasses ) {
+
+                                            // Add the `infocus` or `outfocus` classes based on month in view.
+                                            klasses.push( viewsetObject.month == targetDate.month ? settings.klass.infocus : settings.klass.outfocus )
+
+                                            // Add the `today` class if needed.
+                                            if ( nowObject.pick == targetDate.pick ) {
+                                                klasses.push( settings.klass.now )
+                                            }
+
+                                            // Add the `selected` class if something's selected and the time matches.
+                                            if ( isSelected ) {
+                                                klasses.push( settings.klass.selected )
+                                            }
+
+                                            // Add the `highlighted` class if something's highlighted and the time matches.
+                                            if ( isHighlighted ) {
+                                                klasses.push( settings.klass.highlighted )
+                                            }
+
+                                            // Add the `disabled` class if something's disabled and the object matches.
+                                            if ( isDisabled ) {
+                                                klasses.push( settings.klass.disabled )
+                                            }
+
+                                            return klasses.join( ' ' )
+                                        })([ settings.klass.day ]),
+                                        'data-pick=' + targetDate.pick + ' ' + _.ariaAttr({
+                                            role: 'button',
+                                            controls: calendar.$node[0].id,
+                                            checked: isSelected && calendar.$node.val() === _.trigger(
+                                                    calendar.formats.toString,
+                                                    calendar,
+                                                    [ settings.format, targetDate ]
+                                                ) ? true : null,
+                                            activedescendant: isHighlighted ? true : null,
+                                            disabled: isDisabled ? true : null
+                                        })
+                                    )
+                                ] //endreturn
+                            }
+                        })
+                    ] //endreturn
+                }
+            })
+        ),
+        settings.klass.table
+    ) +
+
+    // * For Firefox forms to submit, make sure to set the buttons’ `type` attributes as “button”.
+    _.node(
+        'div',
+        _.node( 'button', settings.today, settings.klass.buttonToday, 'type=button data-pick=' + nowObject.pick + ( isOpen ? '' : ' disabled' ) ) +
+        _.node( 'button', settings.clear, settings.klass.buttonClear, 'type=button data-clear=1' + ( isOpen ? '' : ' disabled' ) ),
+        settings.klass.footer
+    ) //endreturn
+} //DatePicker.prototype.nodes
+
+
+
+
+/**
+ * The date picker defaults.
+ */
+DatePicker.defaults = (function( prefix ) {
+
+    return {
+
+        // Months and weekdays
+        monthsFull: [ 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ],
+        monthsShort: [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ],
+        weekdaysFull: [ 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday' ],
+        weekdaysShort: [ 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' ],
+
+        // Today and clear
+        today: 'Today',
+        clear: 'Clear',
+
+        // The format to show on the `input` element
+        format: 'd mmmm, yyyy',
+
+        // Classes
+        klass: {
+
+            table: prefix + 'table',
+
+            header: prefix + 'header',
+
+            navPrev: prefix + 'nav--prev',
+            navNext: prefix + 'nav--next',
+            navDisabled: prefix + 'nav--disabled',
+
+            month: prefix + 'month',
+            year: prefix + 'year',
+
+            selectMonth: prefix + 'select--month',
+            selectYear: prefix + 'select--year',
+
+            weekdays: prefix + 'weekday',
+
+            day: prefix + 'day',
+            disabled: prefix + 'day--disabled',
+            selected: prefix + 'day--selected',
+            highlighted: prefix + 'day--highlighted',
+            now: prefix + 'day--today',
+            infocus: prefix + 'day--infocus',
+            outfocus: prefix + 'day--outfocus',
+
+            footer: prefix + 'footer',
+
+            buttonClear: prefix + 'button--clear',
+            buttonToday: prefix + 'button--today'
+        }
+    }
+})( Picker.klasses().picker + '__' )
+
+
+
+
+
+/**
+ * Extend the picker to add the date picker.
+ */
+Picker.extend( 'pickadate', DatePicker )
+
+
+}));
+
+
+
+
+
+/*!
+ * Time picker for pickadate.js v3.4.0
+ * http://amsul.github.io/pickadate.js/time.htm
+ */
+
+(function ( factory ) {
+
+    // Register as an anonymous module.
+    if ( typeof define == 'function' && define.amd )
+        define( 'picker.time',['picker','jquery'], factory )
+
+    // Or using browser globals.
+    else factory( Picker, jQuery )
+
+}(function( Picker, $ ) {
+
+
+/**
+ * Globals and constants
+ */
+var HOURS_IN_DAY = 24,
+    MINUTES_IN_HOUR = 60,
+    HOURS_TO_NOON = 12,
+    MINUTES_IN_DAY = HOURS_IN_DAY * MINUTES_IN_HOUR,
+    _ = Picker._
+
+
+
+/**
+ * The time picker constructor
+ */
+function TimePicker( picker, settings ) {
+
+    var clock = this,
+        elementValue = picker.$node[ 0 ].value,
+        elementDataValue = picker.$node.data( 'value' ),
+        valueString = elementDataValue || elementValue,
+        formatString = elementDataValue ? settings.formatSubmit : settings.format
+
+    clock.settings = settings
+    clock.$node = picker.$node
+
+    // The queue of methods that will be used to build item objects.
+    clock.queue = {
+        interval: 'i',
+        min: 'measure create',
+        max: 'measure create',
+        now: 'now create',
+        select: 'parse create validate',
+        highlight: 'parse create validate',
+        view: 'parse create validate',
+        disable: 'deactivate',
+        enable: 'activate'
+    }
+
+    // The component's item object.
+    clock.item = {}
+
+    clock.item.interval = settings.interval || 30
+    clock.item.disable = ( settings.disable || [] ).slice( 0 )
+    clock.item.enable = -(function( collectionDisabled ) {
+        return collectionDisabled[ 0 ] === true ? collectionDisabled.shift() : -1
+    })( clock.item.disable )
+
+    clock.
+        set( 'min', settings.min ).
+        set( 'max', settings.max ).
+        set( 'now' )
+
+    // When there’s a value, set the `select`, which in turn
+    // also sets the `highlight` and `view`.
+    if ( valueString ) {
+        clock.set( 'select', valueString, {
+            format: formatString,
+            fromValue: !!elementValue
+        })
+    }
+
+    // If there’s no value, default to highlighting “today”.
+    else {
+        clock.
+            set( 'select', null ).
+            set( 'highlight', clock.item.now )
+    }
+
+    // The keycode to movement mapping.
+    clock.key = {
+        40: 1, // Down
+        38: -1, // Up
+        39: 1, // Right
+        37: -1, // Left
+        go: function( timeChange ) {
+            clock.set(
+                'highlight',
+                clock.item.highlight.pick + timeChange * clock.item.interval,
+                { interval: timeChange * clock.item.interval }
+            )
+            this.render()
+        }
+    }
+
+
+    // Bind some picker events.
+    picker.
+        on( 'render', function() {
+            var $pickerHolder = picker.$root.children(),
+                $viewset = $pickerHolder.find( '.' + settings.klass.viewset )
+            if ( $viewset.length ) {
+                $pickerHolder[ 0 ].scrollTop = ~~$viewset.position().top - ( $viewset[ 0 ].clientHeight * 2 )
+            }
+        }).
+        on( 'open', function() {
+            picker.$root.find( 'button' ).attr( 'disable', false )
+        }).
+        on( 'close', function() {
+            picker.$root.find( 'button' ).attr( 'disable', true )
+        })
+
+} //TimePicker
+
+
+/**
+ * Set a timepicker item object.
+ */
+TimePicker.prototype.set = function( type, value, options ) {
+
+    var clock = this,
+        clockItem = clock.item
+
+    // If the value is `null` just set it immediately.
+    if ( value === null ) {
+        clockItem[ type ] = value
+        return clock
+    }
+
+    // Otherwise go through the queue of methods, and invoke the functions.
+    // Update this as the time unit, and set the final value as this item.
+    // * In the case of `enable`, keep the queue but set `disable` instead.
+    //   And in the case of `flip`, keep the queue but set `enable` instead.
+    clockItem[ ( type == 'enable' ? 'disable' : type == 'flip' ? 'enable' : type ) ] = clock.queue[ type ].split( ' ' ).map( function( method ) {
+        value = clock[ method ]( type, value, options )
+        return value
+    }).pop()
+
+    // Check if we need to cascade through more updates.
+    if ( type == 'select' ) {
+        clock.set( 'highlight', clockItem.select, options )
+    }
+    else if ( type == 'highlight' ) {
+        clock.set( 'view', clockItem.highlight, options )
+    }
+    else if ( type == 'interval' ) {
+        clock.
+            set( 'min', clockItem.min, options ).
+            set( 'max', clockItem.max, options )
+    }
+    else if ( type.match( /^(flip|min|max|disable|enable)$/ ) ) {
+        if ( type == 'min' ) {
+            clock.set( 'max', clockItem.max, options )
+        }
+        if ( clockItem.select && clock.disabled( clockItem.select ) ) {
+            clock.set( 'select', clockItem.select, options )
+        }
+        if ( clockItem.highlight && clock.disabled( clockItem.highlight ) ) {
+            clock.set( 'highlight', clockItem.highlight, options )
+        }
+    }
+
+    return clock
+} //TimePicker.prototype.set
+
+
+/**
+ * Get a timepicker item object.
+ */
+TimePicker.prototype.get = function( type ) {
+    return this.item[ type ]
+} //TimePicker.prototype.get
+
+
+/**
+ * Create a picker time object.
+ */
+TimePicker.prototype.create = function( type, value, options ) {
+
+    var clock = this
+
+    // If there’s no value, use the type as the value.
+    value = value === undefined ? type : value
+
+    // If it’s a date object, convert it into an array.
+    if ( _.isDate( value ) ) {
+        value = [ value.getHours(), value.getMinutes() ]
+    }
+
+    // If it’s an object, use the “pick” value.
+    if ( $.isPlainObject( value ) && _.isInteger( value.pick ) ) {
+        value = value.pick
+    }
+
+    // If it’s an array, convert it into minutes.
+    else if ( $.isArray( value ) ) {
+        value = +value[ 0 ] * MINUTES_IN_HOUR + (+value[ 1 ])
+    }
+
+    // If no valid value is passed, set it to “now”.
+    else if ( !_.isInteger( value ) ) {
+        value = clock.now( type, value, options )
+    }
+
+    // If we’re setting the max, make sure it’s greater than the min.
+    if ( type == 'max' && value < clock.item.min.pick ) {
+        value += MINUTES_IN_DAY
+    }
+
+    // If the value doesn’t fall directly on the interval,
+    // add one interval to indicate it as “passed”.
+    if ( type != 'min' && type != 'max' && (value - clock.item.min.pick) % clock.item.interval !== 0 ) {
+        value += clock.item.interval
+    }
+
+    // Normalize it into a “reachable” interval.
+    value = clock.normalize( type, value, options )
+
+    // Return the compiled object.
+    return {
+
+        // Divide to get hours from minutes.
+        hour: ~~( HOURS_IN_DAY + value / MINUTES_IN_HOUR ) % HOURS_IN_DAY,
+
+        // The remainder is the minutes.
+        mins: ( MINUTES_IN_HOUR + value % MINUTES_IN_HOUR ) % MINUTES_IN_HOUR,
+
+        // The time in total minutes.
+        time: ( MINUTES_IN_DAY + value ) % MINUTES_IN_DAY,
+
+        // Reference to the “relative” value to pick.
+        pick: value
+    }
+} //TimePicker.prototype.create
+
+
+/**
+ * Create a range limit object using an array, date object,
+ * literal “true”, or integer relative to another time.
+ */
+TimePicker.prototype.createRange = function( from, to ) {
+
+    var clock = this,
+        createTime = function( time ) {
+            if ( time === true || $.isArray( time ) || _.isDate( time ) ) {
+                return clock.create( time )
+            }
+            return time
+        }
+
+    // Create objects if possible.
+    if ( !_.isInteger( from ) ) {
+        from = createTime( from )
+    }
+    if ( !_.isInteger( to ) ) {
+        to = createTime( to )
+    }
+
+    // Create relative times.
+    if ( _.isInteger( from ) && $.isPlainObject( to ) ) {
+        from = [ to.hour, to.mins + ( from * clock.settings.interval ) ];
+    }
+    else if ( _.isInteger( to ) && $.isPlainObject( from ) ) {
+        to = [ from.hour, from.mins + ( to * clock.settings.interval ) ];
+    }
+
+    return {
+        from: createTime( from ),
+        to: createTime( to )
+    }
+} //TimePicker.prototype.createRange
+
+
+/**
+ * Check if a time unit falls within a time range object.
+ */
+TimePicker.prototype.withinRange = function( range, timeUnit ) {
+    range = this.createRange(range.from, range.to)
+    return timeUnit.pick >= range.from.pick && timeUnit.pick <= range.to.pick
+}
+
+
+/**
+ * Check if two time range objects overlap.
+ */
+TimePicker.prototype.overlapRanges = function( one, two ) {
+
+    var clock = this
+
+    // Convert the ranges into comparable times.
+    one = clock.createRange( one.from, one.to )
+    two = clock.createRange( two.from, two.to )
+
+    return clock.withinRange( one, two.from ) || clock.withinRange( one, two.to ) ||
+        clock.withinRange( two, one.from ) || clock.withinRange( two, one.to )
+}
+
+
+/**
+ * Get the time relative to now.
+ */
+TimePicker.prototype.now = function( type, value/*, options*/ ) {
+
+    var interval = this.item.interval,
+        date = new Date(),
+        nowMinutes = date.getHours() * MINUTES_IN_HOUR + date.getMinutes(),
+        isValueInteger = _.isInteger( value ),
+        isBelowInterval
+
+    // Make sure “now” falls within the interval range.
+    nowMinutes -= nowMinutes % interval
+
+    // Check if the difference is less than the interval itself.
+    isBelowInterval = value < 0 && interval * value + nowMinutes <= -interval
+
+    // Add an interval because the time has “passed”.
+    nowMinutes += type == 'min' && isBelowInterval ? 0 : interval
+
+    // If the value is a number, adjust by that many intervals.
+    if ( isValueInteger ) {
+        nowMinutes += interval * (
+            isBelowInterval && type != 'max' ?
+                value + 1 :
+                value
+            )
+    }
+
+    // Return the final calculation.
+    return nowMinutes
+} //TimePicker.prototype.now
+
+
+/**
+ * Normalize minutes to be “reachable” based on the min and interval.
+ */
+TimePicker.prototype.normalize = function( type, value/*, options*/ ) {
+
+    var interval = this.item.interval,
+        minTime = this.item.min && this.item.min.pick || 0
+
+    // If setting min time, don’t shift anything.
+    // Otherwise get the value and min difference and then
+    // normalize the difference with the interval.
+    value -= type == 'min' ? 0 : ( value - minTime ) % interval
+
+    // Return the adjusted value.
+    return value
+} //TimePicker.prototype.normalize
+
+
+/**
+ * Measure the range of minutes.
+ */
+TimePicker.prototype.measure = function( type, value, options ) {
+
+    var clock = this
+
+    // If it’s anything false-y, set it to the default.
+    if ( !value ) {
+        value = type == 'min' ? [ 0, 0 ] : [ HOURS_IN_DAY - 1, MINUTES_IN_HOUR - 1 ]
+    }
+
+    // If it’s a literal true, or an integer, make it relative to now.
+    else if ( value === true || _.isInteger( value ) ) {
+        value = clock.now( type, value, options )
+    }
+
+    // If it’s an object already, just normalize it.
+    else if ( $.isPlainObject( value ) && _.isInteger( value.pick ) ) {
+        value = clock.normalize( type, value.pick, options )
+    }
+
+    return value
+} ///TimePicker.prototype.measure
+
+
+/**
+ * Validate an object as enabled.
+ */
+TimePicker.prototype.validate = function( type, timeObject, options ) {
+
+    var clock = this,
+        interval = options && options.interval ? options.interval : clock.item.interval
+
+    // Check if the object is disabled.
+    if ( clock.disabled( timeObject ) ) {
+
+        // Shift with the interval until we reach an enabled time.
+        timeObject = clock.shift( timeObject, interval )
+    }
+
+    // Scope the object into range.
+    timeObject = clock.scope( timeObject )
+
+    // Do a second check to see if we landed on a disabled min/max.
+    // In that case, shift using the opposite interval as before.
+    if ( clock.disabled( timeObject ) ) {
+        timeObject = clock.shift( timeObject, interval * -1 )
+    }
+
+    // Return the final object.
+    return timeObject
+} //TimePicker.prototype.validate
+
+
+/**
+ * Check if an object is disabled.
+ */
+TimePicker.prototype.disabled = function( timeToVerify ) {
+
+    var clock = this,
+
+        // Filter through the disabled times to check if this is one.
+        isDisabledMatch = clock.item.disable.filter( function( timeToDisable ) {
+
+            // If the time is a number, match the hours.
+            if ( _.isInteger( timeToDisable ) ) {
+                return timeToVerify.hour == timeToDisable
+            }
+
+            // If it’s an array, create the object and match the times.
+            if ( $.isArray( timeToDisable ) || _.isDate( timeToDisable ) ) {
+                return timeToVerify.pick == clock.create( timeToDisable ).pick
+            }
+
+            // If it’s an object, match a time within the “from” and “to” range.
+            if ( $.isPlainObject( timeToDisable ) ) {
+                return clock.withinRange( timeToDisable, timeToVerify )
+            }
+        })
+
+    // If this time matches a disabled time, confirm it’s not inverted.
+    isDisabledMatch = isDisabledMatch.length && !isDisabledMatch.filter(function( timeToDisable ) {
+        return $.isArray( timeToDisable ) && timeToDisable[2] == 'inverted' ||
+            $.isPlainObject( timeToDisable ) && timeToDisable.inverted
+    }).length
+
+    // If the clock is "enabled" flag is flipped, flip the condition.
+    return clock.item.enable === -1 ? !isDisabledMatch : isDisabledMatch ||
+        timeToVerify.pick < clock.item.min.pick ||
+        timeToVerify.pick > clock.item.max.pick
+} //TimePicker.prototype.disabled
+
+
+/**
+ * Shift an object by an interval until we reach an enabled object.
+ */
+TimePicker.prototype.shift = function( timeObject, interval ) {
+
+    var clock = this,
+        minLimit = clock.item.min.pick,
+        maxLimit = clock.item.max.pick/*,
+        safety = 1000*/
+
+    interval = interval || clock.item.interval
+
+    // Keep looping as long as the time is disabled.
+    while ( /*safety &&*/ clock.disabled( timeObject ) ) {
+
+        /*safety -= 1
+        if ( !safety ) {
+            throw 'Fell into an infinite loop while shifting to ' + timeObject.hour + ':' + timeObject.mins + '.'
+        }*/
+
+        // Increase/decrease the time by the interval and keep looping.
+        timeObject = clock.create( timeObject.pick += interval )
+
+        // If we've looped beyond the limits, break out of the loop.
+        if ( timeObject.pick <= minLimit || timeObject.pick >= maxLimit ) {
+            break
+        }
+    }
+
+    // Return the final object.
+    return timeObject
+} //TimePicker.prototype.shift
+
+
+/**
+ * Scope an object to be within range of min and max.
+ */
+TimePicker.prototype.scope = function( timeObject ) {
+    var minLimit = this.item.min.pick,
+        maxLimit = this.item.max.pick
+    return this.create( timeObject.pick > maxLimit ? maxLimit : timeObject.pick < minLimit ? minLimit : timeObject )
+} //TimePicker.prototype.scope
+
+
+/**
+ * Parse a string into a usable type.
+ */
+TimePicker.prototype.parse = function( type, value, options ) {
+
+    var hour, minutes, isPM, item, parseValue,
+        clock = this,
+        parsingObject = {}
+
+    if ( !value || _.isInteger( value ) || $.isArray( value ) || _.isDate( value ) || $.isPlainObject( value ) && _.isInteger( value.pick ) ) {
+        return value
+    }
+
+    // We need a `.format` to parse the value with.
+    if ( !( options && options.format ) ) {
+        options = options || {}
+        options.format = clock.settings.format
+    }
+
+    // Convert the format into an array and then map through it.
+    clock.formats.toArray( options.format ).map( function( label ) {
+
+        var
+            substring,
+
+            // Grab the formatting label.
+            formattingLabel = clock.formats[ label ],
+
+            // The format length is from the formatting label function or the
+            // label length without the escaping exclamation (!) mark.
+            formatLength = formattingLabel ?
+                _.trigger( formattingLabel, clock, [ value, parsingObject ] ) :
+                label.replace( /^!/, '' ).length
+
+        // If there's a format label, split the value up to the format length.
+        // Then add it to the parsing object with appropriate label.
+        if ( formattingLabel ) {
+            substring = value.substr( 0, formatLength )
+            parsingObject[ label ] = substring.match(/^\d+$/) ? +substring : substring
+        }
+
+        // Update the time value as the substring from format length to end.
+        value = value.substr( formatLength )
+    })
+
+    // Grab the hour and minutes from the parsing object.
+    for ( item in parsingObject ) {
+        parseValue = parsingObject[item]
+        if ( _.isInteger(parseValue) ) {
+            if ( item.match(/^(h|hh)$/i) ) {
+                hour = parseValue
+                if ( item == 'h' || item == 'hh' ) {
+                    hour %= 12
+                }
+            }
+            else if ( item == 'i' ) {
+                minutes = parseValue
+            }
+        }
+        else if ( item.match(/^a$/i) && parseValue.match(/^p/i) && ('h' in parsingObject || 'hh' in parsingObject) ) {
+            isPM = true
+        }
+    }
+
+    // Calculate it in minutes and return.
+    return (isPM ? hour + 12 : hour) * MINUTES_IN_HOUR + minutes
+} //TimePicker.prototype.parse
+
+
+/**
+ * Various formats to display the object in.
+ */
+TimePicker.prototype.formats = {
+
+    h: function( string, timeObject ) {
+
+        // If there's string, then get the digits length.
+        // Otherwise return the selected hour in "standard" format.
+        return string ? _.digits( string ) : timeObject.hour % HOURS_TO_NOON || HOURS_TO_NOON
+    },
+    hh: function( string, timeObject ) {
+
+        // If there's a string, then the length is always 2.
+        // Otherwise return the selected hour in "standard" format with a leading zero.
+        return string ? 2 : _.lead( timeObject.hour % HOURS_TO_NOON || HOURS_TO_NOON )
+    },
+    H: function( string, timeObject ) {
+
+        // If there's string, then get the digits length.
+        // Otherwise return the selected hour in "military" format as a string.
+        return string ? _.digits( string ) : '' + ( timeObject.hour % 24 )
+    },
+    HH: function( string, timeObject ) {
+
+        // If there's string, then get the digits length.
+        // Otherwise return the selected hour in "military" format with a leading zero.
+        return string ? _.digits( string ) : _.lead( timeObject.hour % 24 )
+    },
+    i: function( string, timeObject ) {
+
+        // If there's a string, then the length is always 2.
+        // Otherwise return the selected minutes.
+        return string ? 2 : _.lead( timeObject.mins )
+    },
+    a: function( string, timeObject ) {
+
+        // If there's a string, then the length is always 4.
+        // Otherwise check if it's more than "noon" and return either am/pm.
+        return string ? 4 : MINUTES_IN_DAY / 2 > timeObject.time % MINUTES_IN_DAY ? 'a.m.' : 'p.m.'
+    },
+    A: function( string, timeObject ) {
+
+        // If there's a string, then the length is always 2.
+        // Otherwise check if it's more than "noon" and return either am/pm.
+        return string ? 2 : MINUTES_IN_DAY / 2 > timeObject.time % MINUTES_IN_DAY ? 'AM' : 'PM'
+    },
+
+    // Create an array by splitting the formatting string passed.
+    toArray: function( formatString ) { return formatString.split( /(h{1,2}|H{1,2}|i|a|A|!.)/g ) },
+
+    // Format an object into a string using the formatting options.
+    toString: function ( formatString, itemObject ) {
+        var clock = this
+        return clock.formats.toArray( formatString ).map( function( label ) {
+            return _.trigger( clock.formats[ label ], clock, [ 0, itemObject ] ) || label.replace( /^!/, '' )
+        }).join( '' )
+    }
+} //TimePicker.prototype.formats
+
+
+
+
+/**
+ * Check if two time units are the exact.
+ */
+TimePicker.prototype.isTimeExact = function( one, two ) {
+
+    var clock = this
+
+    // When we’re working with minutes, do a direct comparison.
+    if (
+        ( _.isInteger( one ) && _.isInteger( two ) ) ||
+        ( typeof one == 'boolean' && typeof two == 'boolean' )
+     ) {
+        return one === two
+    }
+
+    // When we’re working with time representations, compare the “pick” value.
+    if (
+        ( _.isDate( one ) || $.isArray( one ) ) &&
+        ( _.isDate( two ) || $.isArray( two ) )
+    ) {
+        return clock.create( one ).pick === clock.create( two ).pick
+    }
+
+    // When we’re working with range objects, compare the “from” and “to”.
+    if ( $.isPlainObject( one ) && $.isPlainObject( two ) ) {
+        return clock.isTimeExact( one.from, two.from ) && clock.isTimeExact( one.to, two.to )
+    }
+
+    return false
+}
+
+
+/**
+ * Check if two time units overlap.
+ */
+TimePicker.prototype.isTimeOverlap = function( one, two ) {
+
+    var clock = this
+
+    // When we’re working with an integer, compare the hours.
+    if ( _.isInteger( one ) && ( _.isDate( two ) || $.isArray( two ) ) ) {
+        return one === clock.create( two ).hour
+    }
+    if ( _.isInteger( two ) && ( _.isDate( one ) || $.isArray( one ) ) ) {
+        return two === clock.create( one ).hour
+    }
+
+    // When we’re working with range objects, check if the ranges overlap.
+    if ( $.isPlainObject( one ) && $.isPlainObject( two ) ) {
+        return clock.overlapRanges( one, two )
+    }
+
+    return false
+}
+
+
+/**
+ * Flip the “enabled” state.
+ */
+TimePicker.prototype.flipEnable = function(val) {
+    var itemObject = this.item
+    itemObject.enable = val || (itemObject.enable == -1 ? 1 : -1)
+}
+
+
+/**
+ * Mark a collection of times as “disabled”.
+ */
+TimePicker.prototype.deactivate = function( type, timesToDisable ) {
+
+    var clock = this,
+        disabledItems = clock.item.disable.slice(0)
+
+
+    // If we’re flipping, that’s all we need to do.
+    if ( timesToDisable == 'flip' ) {
+        clock.flipEnable()
+    }
+
+    else if ( timesToDisable === false ) {
+        clock.flipEnable(1)
+        disabledItems = []
+    }
+
+    else if ( timesToDisable === true ) {
+        clock.flipEnable(-1)
+        disabledItems = []
+    }
+
+    // Otherwise go through the times to disable.
+    else {
+
+        timesToDisable.map(function( unitToDisable ) {
+
+            var matchFound
+
+            // When we have disabled items, check for matches.
+            // If something is matched, immediately break out.
+            for ( var index = 0; index < disabledItems.length; index += 1 ) {
+                if ( clock.isTimeExact( unitToDisable, disabledItems[index] ) ) {
+                    matchFound = true
+                    break
+                }
+            }
+
+            // If nothing was found, add the validated unit to the collection.
+            if ( !matchFound ) {
+                if (
+                    _.isInteger( unitToDisable ) ||
+                    _.isDate( unitToDisable ) ||
+                    $.isArray( unitToDisable ) ||
+                    ( $.isPlainObject( unitToDisable ) && unitToDisable.from && unitToDisable.to )
+                ) {
+                    disabledItems.push( unitToDisable )
+                }
+            }
+        })
+    }
+
+    // Return the updated collection.
+    return disabledItems
+} //TimePicker.prototype.deactivate
+
+
+/**
+ * Mark a collection of times as “enabled”.
+ */
+TimePicker.prototype.activate = function( type, timesToEnable ) {
+
+    var clock = this,
+        disabledItems = clock.item.disable,
+        disabledItemsCount = disabledItems.length
+
+    // If we’re flipping, that’s all we need to do.
+    if ( timesToEnable == 'flip' ) {
+        clock.flipEnable()
+    }
+
+    else if ( timesToEnable === true ) {
+        clock.flipEnable(1)
+        disabledItems = []
+    }
+
+    else if ( timesToEnable === false ) {
+        clock.flipEnable(-1)
+        disabledItems = []
+    }
+
+    // Otherwise go through the disabled times.
+    else {
+
+        timesToEnable.map(function( unitToEnable ) {
+
+            var matchFound,
+                disabledUnit,
+                index,
+                isRangeMatched
+
+            // Go through the disabled items and try to find a match.
+            for ( index = 0; index < disabledItemsCount; index += 1 ) {
+
+                disabledUnit = disabledItems[index]
+
+                // When an exact match is found, remove it from the collection.
+                if ( clock.isTimeExact( disabledUnit, unitToEnable ) ) {
+                    matchFound = disabledItems[index] = null
+                    isRangeMatched = true
+                    break
+                }
+
+                // When an overlapped match is found, add the “inverted” state to it.
+                else if ( clock.isTimeOverlap( disabledUnit, unitToEnable ) ) {
+                    if ( $.isPlainObject( unitToEnable ) ) {
+                        unitToEnable.inverted = true
+                        matchFound = unitToEnable
+                    }
+                    else if ( $.isArray( unitToEnable ) ) {
+                        matchFound = unitToEnable
+                        if ( !matchFound[2] ) matchFound.push( 'inverted' )
+                    }
+                    else if ( _.isDate( unitToEnable ) ) {
+                        matchFound = [ unitToEnable.getFullYear(), unitToEnable.getMonth(), unitToEnable.getDate(), 'inverted' ]
+                    }
+                    break
+                }
+            }
+
+            // If a match was found, remove a previous duplicate entry.
+            if ( matchFound ) for ( index = 0; index < disabledItemsCount; index += 1 ) {
+                if ( clock.isTimeExact( disabledItems[index], unitToEnable ) ) {
+                    disabledItems[index] = null
+                    break
+                }
+            }
+
+            // In the event that we’re dealing with an overlap of range times,
+            // make sure there are no “inverted” times because of it.
+            if ( isRangeMatched ) for ( index = 0; index < disabledItemsCount; index += 1 ) {
+                if ( clock.isTimeOverlap( disabledItems[index], unitToEnable ) ) {
+                    disabledItems[index] = null
+                    break
+                }
+            }
+
+            // If something is still matched, add it into the collection.
+            if ( matchFound ) {
+                disabledItems.push( matchFound )
+            }
+        })
+    }
+
+    // Return the updated collection.
+    return disabledItems.filter(function( val ) { return val != null })
+} //TimePicker.prototype.activate
+
+
+/**
+ * The division to use for the range intervals.
+ */
+TimePicker.prototype.i = function( type, value/*, options*/ ) {
+    return _.isInteger( value ) && value > 0 ? value : this.item.interval
+}
+
+
+/**
+ * Create a string for the nodes in the picker.
+ */
+TimePicker.prototype.nodes = function( isOpen ) {
+
+    var
+        clock = this,
+        settings = clock.settings,
+        selectedObject = clock.item.select,
+        highlightedObject = clock.item.highlight,
+        viewsetObject = clock.item.view,
+        disabledCollection = clock.item.disable
+
+    return _.node(
+        'ul',
+        _.group({
+            min: clock.item.min.pick,
+            max: clock.item.max.pick,
+            i: clock.item.interval,
+            node: 'li',
+            item: function( loopedTime ) {
+                loopedTime = clock.create( loopedTime )
+                var timeMinutes = loopedTime.pick,
+                    isSelected = selectedObject && selectedObject.pick == timeMinutes,
+                    isHighlighted = highlightedObject && highlightedObject.pick == timeMinutes,
+                    isDisabled = disabledCollection && clock.disabled( loopedTime )
+                return [
+                    _.trigger( clock.formats.toString, clock, [ _.trigger( settings.formatLabel, clock, [ loopedTime ] ) || settings.format, loopedTime ] ),
+                    (function( klasses ) {
+
+                        if ( isSelected ) {
+                            klasses.push( settings.klass.selected )
+                        }
+
+                        if ( isHighlighted ) {
+                            klasses.push( settings.klass.highlighted )
+                        }
+
+                        if ( viewsetObject && viewsetObject.pick == timeMinutes ) {
+                            klasses.push( settings.klass.viewset )
+                        }
+
+                        if ( isDisabled ) {
+                            klasses.push( settings.klass.disabled )
+                        }
+
+                        return klasses.join( ' ' )
+                    })( [ settings.klass.listItem ] ),
+                    'data-pick=' + loopedTime.pick + ' ' + _.ariaAttr({
+                        role: 'button',
+                        controls: clock.$node[0].id,
+                        checked: isSelected && clock.$node.val() === _.trigger(
+                                clock.formats.toString,
+                                clock,
+                                [ settings.format, loopedTime ]
+                            ) ? true : null,
+                        activedescendant: isHighlighted ? true : null,
+                        disabled: isDisabled ? true : null
+                    })
+                ]
+            }
+        }) +
+
+        // * For Firefox forms to submit, make sure to set the button’s `type` attribute as “button”.
+        _.node(
+            'li',
+            _.node(
+                'button',
+                settings.clear,
+                settings.klass.buttonClear,
+                'type=button data-clear=1' + ( isOpen ? '' : ' disable' )
+            )
+        ),
+        settings.klass.list
+    )
+} //TimePicker.prototype.nodes
+
+
+
+
+
+
+
+/* ==========================================================================
+   Extend the picker to add the component with the defaults.
+   ========================================================================== */
+
+TimePicker.defaults = (function( prefix ) {
+
+    return {
+
+        // Clear
+        clear: 'Clear',
+
+        // The format to show on the `input` element
+        format: 'h:i A',
+
+        // The interval between each time
+        interval: 30,
+
+        // Classes
+        klass: {
+
+            picker: prefix + ' ' + prefix + '--time',
+            holder: prefix + '__holder',
+
+            list: prefix + '__list',
+            listItem: prefix + '__list-item',
+
+            disabled: prefix + '__list-item--disabled',
+            selected: prefix + '__list-item--selected',
+            highlighted: prefix + '__list-item--highlighted',
+            viewset: prefix + '__list-item--viewset',
+            now: prefix + '__list-item--now',
+
+            buttonClear: prefix + '__button--clear'
+        }
+    }
+})( Picker.klasses().picker )
+
+
+
+
+
+/**
+ * Extend the picker to add the time picker.
+ */
+Picker.extend( 'pickatime', TimePicker )
+
+
+}));
+
+
+
+
+/* i18n integration. This is forked from jarn.jsi18n
+ *
+ * This is a singleton.
+ * Configuration is done on the body tag data-i18ncatalogurl attribute
+ *     <body data-i18ncatalogurl="/plonejsi18n">
+ *
+ *  Or, it'll default to "/plonejsi18n"
+ */
+
+/* global portal_url:true */
+
+
+define('mockup-i18n',[
+  'jquery'
+], function($) {
+  
+
+  var I18N = function() {
+    var self = this;
+
+    self.baseUrl = $('body').attr('data-i18ncatalogurl');
+    if (!self.baseUrl) {
+      self.baseUrl = '/plonejsi18n';
+    }
+    self.currentLanguage = $('html').attr('lang') || 'en';
+    self.storage = null;
+    self.catalogs = {};
+    self.ttl = 24 * 3600 * 1000;
+
+    // Internet Explorer 8 does not know Date.now() which is used in e.g. loadCatalog, so we "define" it
+    if (!Date.now) {
+      Date.now = function() {
+        return new Date().valueOf();
+      };
+    }
+
+    try {
+      if ('localStorage' in window && window.localStorage !== null && 'JSON' in window && window.JSON !== null) {
+        self.storage = window.localStorage;
+      }
+    } catch (e) {}
+
+    self.configure = function(config) {
+      for (var key in config){
+        self[key] = config[key];
+      }
+    };
+
+    self._setCatalog = function (domain, language, catalog) {
+      if (domain in self.catalogs) {
+        self.catalogs[domain][language] = catalog;
+      } else {
+        self.catalogs[domain] = {};
+        self.catalogs[domain][language] = catalog;
+      }
+    };
+
+    self._storeCatalog = function (domain, language, catalog) {
+      var key = domain + '-' + language;
+      if (self.storage !== null && catalog !== null) {
+        self.storage.setItem(key, JSON.stringify(catalog));
+        self.storage.setItem(key + '-updated', Date.now());
+      }
+    };
+
+    self.getUrl = function(domain, language) {
+      return self.baseUrl + '?domain=' + domain + '&language=' + language;
+    };
+
+    self.loadCatalog = function (domain, language) {
+      if (language === undefined) {
+        language = self.currentLanguage;
+      }
+      if (self.storage !== null) {
+        var key = domain + '-' + language;
+        if (key in self.storage) {
+          if ((Date.now() - parseInt(self.storage.getItem(key + '-updated'), 10)) < self.ttl) {
+            var catalog = JSON.parse(self.storage.getItem(key));
+            self._setCatalog(domain, language, catalog);
+            return;
+          }
+        }
+      }
+      $.getJSON(self.getUrl(domain, language), function (catalog) {
+        if (catalog === null) {
+          return;
+        }
+        self._setCatalog(domain, language, catalog);
+        self._storeCatalog(domain, language, catalog);
+      });
+    };
+
+    self.MessageFactory = function (domain, language) {
+      language = language || self.currentLanguage;
+
+      return function translate (msgid, keywords) {
+        var msgstr;
+        if ((domain in self.catalogs) && (language in self.catalogs[domain]) && (msgid in self.catalogs[domain][language])) {
+          msgstr = self.catalogs[domain][language][msgid];
+        } else {
+          msgstr = msgid;
+        }
+        if (keywords) {
+          var regexp, keyword;
+          for (keyword in keywords) {
+            if (keywords.hasOwnProperty(keyword)) {
+              regexp = new RegExp('\\$\\{' + keyword + '\\}', 'g');
+              msgstr = msgstr.replace(regexp, keywords[keyword]);
+            }
+          }
+        }
+        return msgstr;
+      };
+    };
+  };
+
+  return new I18N();
+});
+
+/* i18n integration.
+ *
+ * This is a singleton.
+ * Configuration is done on the body tag data-i18ncatalogurl attribute
+ *     <body data-i18ncatalogurl="/plonejsi18n">
+ *
+ *  Or, it'll default to "/plonejsi18n"
+ */
+
+define('translate',[
+  'mockup-i18n'
+], function(i18n) {
+  
+  i18n.loadCatalog('widgets');
+  return i18n.MessageFactory('widgets');
+});
+
+/* PickADate pattern.
+ *
+ * Options:
+ *    date(object): Date widget options described here. If false is selected date picker wont be shown. ({{selectYears: true, selectMonths: true })
+ *    time(object): Time widget options described here. If false is selected time picker wont be shown. ({})
+ *    separator(string): Separator between date and time if both are enabled.
+ *    (' ')
+ *    classClearName(string): Class name of element that is generated by pattern. ('pattern-pickadate-clear')
+ *    classDateName(string): Class applied to date input. ('pattern-pickadate-date')
+ *    classDateWrapperName(string): Class applied to extra wrapper div around date input. ('pattern-pickadate-date-wrapper')
+ *    classSeparatorName(string): Class applied to separator. ('pattern-pickadate-separator')
+ *    classTimeName(string): Class applied to time input. ('pattern-pickadate-time')
+ *    classTimeWrapperName(string): Class applied to wrapper div around time input. ('pattern-pickadate-time-wrapper')
+ *    classTimezoneName(string): Class applied to timezone input. ('pattern-pickadate-timezone')
+ *    classTimezoneWrapperName(string): Class applied to wrapper div around timezone input. ('pattern-pickadate-timezone-wrapper')
+ *    classWrapperName(string): Class name of element that is generated by pattern. ('pattern-pickadate-wrapper')
+ *
+ * Documentation:
+ *    # Date and Time
+ *
+ *    {{ example-1 }}
+ *
+ *    # Date and Time with initial data
+ *
+ *    {{ example-2 }}
+ *
+ *    # Date
+ *
+ *    {{ example-3 }}
+ *
+ *    # Date with initial date
+ *
+ *    {{ example-4 }}
+ *
+ *    # Time
+ *
+ *    {{ example-5 }}
+ *
+ *    # Time with initial time
+ *
+ *    {{ example-6 }}
+ *
+ *    # Date and time with timezone
+ *
+ *    {{ example-7 }}
+ *
+ *    # Date and time with timezone and default value
+ *
+ *    {{ example-8 }}
+ *
+ *    # Date and time with one timezone
+ *
+ *    {{ example-9 }}
+ *
+ * Example: example-1
+ *    <input class="pat-pickadate"/>
+ *
+ * Example: example-2
+ *    <input class="pat-pickadate" value="2010-12-31 00:45" />
+ *
+ * Example: example-3
+ *    <input class="pat-pickadate" data-pat-pickadate="time:false"/>
+ *
+ * Example: example-4
+ *    <input class="pat-pickadate" value="2010-12-31" data-pat-pickadate="time:false"/>
+ *
+ * Example: example-5
+ *    <input class="pat-pickadate" data-pat-pickadate="date:false"/>
+ *
+ * Example: example-6
+ *    <input class="pat-pickadate" value="00:00" data-pat-pickadate="date:false"/>
+ *
+ * Example: example-7
+ *    <input class="pat-pickadate" data-pat-pickadate='{"timezone": {"data": [{"id":"Europe/Berlin","text":"Europe/Berlin"},{"id":"Europe/Vienna","text":"Europe/Vienna"}]}}'/>
+ *
+ * Example: example-8
+ *    <input class="pat-pickadate" data-pat-pickadate='{"timezone": {"default": "Europe/Vienna", "data": [{"id":"Europe/Berlin","text":"Europe/Berlin"},{"id":"Europe/Vienna","text":"Europe/Vienna"}]}}'/>
+ *
+ * Example: example-9
+ *    <input class="pat-pickadate" data-pat-pickadate='{"timezone": {"data": [{"id":"Europe/Berlin","text":"Europe/Berlin"}]}}'/>
+ *
+ */
+
+
+define('mockup-patterns-pickadate',[
+  'jquery',
+  'mockup-patterns-base',
+  'picker',
+  'picker.date',
+  'picker.time',
+  'mockup-patterns-select2',
+  'translate'
+], function($, Base, Picker, PickerDate, PickerTime, Select2, _t) {
+  
+
+  var PickADate = Base.extend({
+    name: 'pickadate',
+    trigger: '.pat-pickadate',
+    defaults: {
+      separator: ' ',
+      date: {
+        selectYears: true,
+        selectMonths: true
+      },
+      time: {
+      },
+      timezone: null,
+      classWrapperName: 'pattern-pickadate-wrapper',
+      classSeparatorName: 'pattern-pickadate-separator',
+      classDateName: 'pattern-pickadate-date',
+      classDateWrapperName: 'pattern-pickadate-date-wrapper',
+      classTimeName: 'pattern-pickadate-time',
+      classTimeWrapperName: 'pattern-pickadate-time-wrapper',
+      classTimezoneName: 'pattern-pickadate-timezone',
+      classTimezoneWrapperName: 'pattern-pickadate-timezone-wrapper',
+      classClearName: 'pattern-pickadate-clear',
+      placeholderDate: _t('Enter date...'),
+      placeholderTime: _t('Enter time...'),
+      placeholderTimezone: _t('Enter timezone...')
+    },
+    isFalse: function(value) {
+      if (typeof(value) === 'string' && value === 'false') {
+        return false;
+      }
+      return value;
+    },
+    init: function() {
+      var self = this,
+          value = self.$el.val().split(' '),
+          dateValue = value[0] || '',
+          timeValue = value[1] || '';
+
+      self.options.date = self.isFalse(self.options.date);
+      self.options.time = self.isFalse(self.options.time);
+
+      if (self.options.date === false) {
+        timeValue = value[0];
+      }
+
+      self.$el.hide();
+
+      self.$wrapper = $('<div/>')
+            .addClass(self.options.classWrapperName)
+            .insertAfter(self.$el);
+
+      if (self.options.date !== false) {
+        self.options.date.formatSubmit = 'yyyy-mm-dd';
+        self.$date = $('<input type="text"/>')
+              .attr('placeholder', self.options.placeholderDate)
+              .attr('data-value', dateValue)
+              .addClass(self.options.classDateName)
+              .appendTo($('<div/>')
+                  .addClass(self.options.classDateWrapperName)
+                  .appendTo(self.$wrapper))
+              .pickadate($.extend(true, {}, self.options.date, {
+                onSet: function(e) {
+                  if (e.select !== undefined) {
+                    self.$date.attr('data-value', e.select);
+                    if (self.options.time === false ||
+                        self.$time.attr('data-value') !== '') {
+                      self.updateValue.call(self);
+                    }
+                  }
+                  if (e.hasOwnProperty('clear')) {
+                    self.$el.removeAttr('value');
+                    self.$date.attr('data-value', '');
+                  }
+                }
+              }));
+      }
+
+      if (self.options.date !== false && self.options.time !== false) {
+        self.$separator = $('<span/>')
+              .addClass(self.options.classSeparatorName)
+              .html(self.options.separator === ' ' ? '&nbsp;'
+                                                   : self.options.separator)
+              .appendTo(self.$wrapper);
+      }
+
+      if (self.options.time !== false) {
+        self.options.time.formatSubmit = 'HH:i';
+        self.$time = $('<input type="text"/>')
+              .attr('placeholder', self.options.placeholderTime)
+              .attr('data-value', timeValue)
+              .addClass(self.options.classTimeName)
+              .appendTo($('<div/>')
+                  .addClass(self.options.classTimeWrapperName)
+                  .appendTo(self.$wrapper))
+              .pickatime($.extend(true, {}, self.options.time, {
+                onSet: function(e) {
+                  if (e.select !== undefined) {
+                    self.$time.attr('data-value', e.select);
+                    if (self.options.date === false ||
+                        self.$date.attr('data-value') !== '') {
+                      self.updateValue.call(self);
+                    }
+                  }
+                  if (e.hasOwnProperty('clear')) {
+                    self.$el.removeAttr('value');
+                    self.$time.attr('data-value', '');
+                  }
+                }
+              }));
+
+        // XXX: bug in pickatime
+        // work around pickadate bug loading 00:xx as value
+        if (typeof(timeValue) === 'string' && timeValue.substring(0,2) === '00') {
+          self.$time.pickatime('picker').set('select', timeValue.split(':'));
+          self.$time.attr('data-value', timeValue);
+        }
+      }
+
+      if (self.options.date !== false && self.options.time !== false && self.options.timezone) {
+        self.$separator = $('<span/>')
+              .addClass(self.options.classSeparatorName)
+              .html(self.options.separator === ' ' ? '&nbsp;'
+                                                   : self.options.separator)
+              .appendTo(self.$wrapper);
+      }
+
+      if (self.options.timezone !== null) {
+        self.$timezone = $('<input type="text"/>')
+            .addClass(self.options.classTimezoneName)
+            .appendTo($('<div/>')
+              .addClass(self.options.classTimezoneWrapperName)
+              .appendTo(self.$wrapper))
+          .patternSelect2($.extend(true,
+          {
+            'placeholder': self.options.placeholderTimezone,
+            'width': '10em',
+          },
+          self.options.timezone,
+          { 'multiple': false }))
+          .on('change', function(e) {
+            if (e.val !== undefined){
+              self.$timezone.attr('data-value', e.val);
+              if ((self.options.date === false || self.$date.attr('data-value') !== '') &&
+                  (self.options.time === false || self.$time.attr('data-value') !== '')) {
+                self.updateValue.call(self);
+              }
+            }
+          });
+        var defaultTimezone = self.options.timezone.default;
+        // if timezone has a default value included
+        if (defaultTimezone) {
+          var isInList;
+          // the timezone list contains the default value
+          self.options.timezone.data.forEach(function(obj) {
+            isInList = (obj.text === self.options.timezone.default) ? true : false;
+          });
+          if (isInList) {
+            self.$timezone.attr('data-value', defaultTimezone);
+            self.$timezone.parent().find('.select2-chosen').text(defaultTimezone);
+          }
+        }
+        // if data contains only one timezone this value will be chosen
+        // and the timezone dropdown list will be disabled and
+        if (self.options.timezone.data.length === 1) {
+          self.$timezone.attr('data-value', self.options.timezone.data[0].text);
+          self.$timezone.parent().find('.select2-chosen').text(self.options.timezone.data[0].text);
+          self.$timezone.select2('enable', false);
+        }
+      }
+
+      self.$clear = $('<div/>')
+        .addClass(self.options.classClearName)
+        .appendTo(self.$wrapper);
+
+    },
+    updateValue: function() {
+      var self = this,
+          value = '';
+
+      if (self.options.date !== false) {
+        var date = self.$date.data('pickadate').component,
+            dateValue = self.$date.data('pickadate').get('select'),
+            formatDate = date.formats.toString;
+        if (dateValue) {
+          value += formatDate.apply(date, ['yyyy-mm-dd', dateValue]);
+        }
+      }
+
+      if (self.options.date !== false && self.options.time !== false) {
+        value += ' ';
+      }
+
+      if (self.options.time !== false) {
+        var time = self.$time.data('pickatime').component,
+            timeValue = self.$time.data('pickatime').get('select'),
+            formatTime = time.formats.toString;
+        if (timeValue) {
+          value += formatTime.apply(time, ['HH:i', timeValue]);
+        }
+      }
+
+      if (self.options.timezone !== null) {
+        var timezone = ' ' + self.$timezone.attr('data-value');
+        if (timezone) {
+          value += timezone;
+        }
+      }
+
+      self.$el.attr('value', value);
+
+      self.emit('updated');
+    }
+  });
+
+  return PickADate;
+
+});
+
+/**
+ * Patterns registry fork - Central registry and scan logic for patterns
+ *
+ * Copyright 2012-2013 Simplon B.V.
+ * Copyright 2012-2013 Florian Friesdorf
+ * Copyright 2013 Marko Durkovic
+ * Copyright 2013 Rok Garbas
+ */
+
+/*
+ * changes to previous patterns.register/scan mechanism
+ * - if you want initialised class, do it in init
+ * - init returns set of elements actually initialised
+ * - handle once within init
+ * - no turnstile anymore
+ * - set pattern.jquery_plugin if you want it
+ * - This is a global registry now
+ * - elements can no longer be initialized more than once
+ */
+define('mockup-registry',[
+    "jquery",
+    "pat-logger",
+    "pat-utils",
+    // below here modules that are only loaded
+    "pat-compat",
+    "pat-jquery-ext"
+], function($, logger, utils) {
+    
+
+    var log = logger.getLogger("registry");
+
+    var disable_re = /patterns-disable=([^&]+)/g,
+        dont_catch_re = /patterns-dont-catch/g,
+        dont_catch = false,
+        disabled = {}, match;
+
+    while ((match=disable_re.exec(window.location.search)) !== null) {
+        disabled[match[1]] = true;
+        log.info('Pattern disabled via url config:', match[1]);
+    }
+
+    while ((match=dont_catch_re.exec(window.location.search)) !== null) {
+        dont_catch = true;
+        log.info('I will not catch init exceptions');
+    }
+
+    if(window.registry_settings === undefined){
+        /* use global settings in case mockup-registry is included by
+           multiple compiled sources. Makes this a global registry */
+        window.registry_settings = {
+            patterns: {},
+            initialized: false
+        };
+    }
+
+    var registry = {
+        settings: window.registry_settings,
+        patterns: window.registry_settings.patterns,
+        // as long as the registry is not initialized, pattern
+        // registration just registers a pattern. Once init is called,
+        // the DOM is scanned. After that registering a new pattern
+        // results in rescanning the DOM only for this pattern.
+        init: function registry_init() {
+            $(document).ready(function() {
+                log.info('loaded: ' + Object.keys(registry.patterns).sort().join(', '));
+                registry.scan(document.body);
+                registry.settings.initialized = true;
+                log.info('finished initial scan.');
+            });
+        },
+
+        scan: function registry_scan(content, patterns, trigger) {
+            var $content = $(content),
+                all = [], allsel,
+                $match, plog;
+
+            // If no list of patterns was specified, we scan for all patterns
+            patterns = patterns || Object.keys(registry.patterns);
+
+            // selector for all patterns
+            patterns.forEach(function registry_scan_loop(name) {
+                if (disabled[name]) {
+                    log.debug('Skipping disabled pattern:', name);
+                    return;
+                }
+                var pattern = registry.patterns[name];
+                if (pattern.transform) {
+                    try {
+                        pattern.transform($content);
+                    } catch (e) {
+                        if (dont_catch) { throw(e); }
+                        log.error("Transform error for pattern" + name, e);
+                    }
+                }
+                if (pattern.trigger) {
+                    all.push(pattern.trigger);
+                }
+            });
+            // Find all elements that belong to any pattern.
+            allsel = all.join(",");
+            $match = $content.findInclusive(allsel);
+            $match = $match.filter(function() { return $(this).parents('pre').length === 0; });
+            $match = $match.filter(":not(.cant-touch-this)");
+
+            // walk list backwards and initialize patterns inside-out.
+            $match.toArray().reduceRight(function registry_pattern_init(acc, el) {
+                var pattern, $el = $(el);
+                for (var name in registry.patterns) {
+                    pattern = registry.patterns[name];
+                    if (pattern.init) {
+                        plog = logger.getLogger("pat." + name);
+                        if ($el.is(pattern.trigger) && !$el.hasClass('pattern-initialized')) {
+                            plog.debug("Initialising:", $el);
+                            try {
+                                pattern.init($el, null, trigger);
+                                plog.debug("done.");
+                            } catch (e) {
+                                if (dont_catch) { throw(e); }
+                                plog.error("Caught error:", e);
+                            }
+                            $el.addClass('pattern-initialized');
+                        }
+                    }
+                }
+            }, null);
+            $('body').addClass('patterns-loaded');
+        },
+
+        register: function registry_register(pattern, name) {
+            var plugin_name, jquery_plugin;
+            name = name || pattern.name;
+            if (!name) {
+                log.error("Pattern lacks a name:", pattern);
+                return false;
+            }
+            if (registry.patterns[name]) {
+                log.error("Already have a pattern called: " + name);
+                return false;
+            }
+
+            // register pattern to be used for scanning new content
+            registry.patterns[name] = pattern;
+
+            // register pattern as jquery plugin
+            if (pattern.jquery_plugin) {
+                plugin_name = ("pat-" + name)
+                        .replace(/-([a-zA-Z])/g, function(match, p1) {
+                            return p1.toUpperCase();
+                        });
+                $.fn[plugin_name] = utils.jqueryPlugin(pattern);
+                // BBB 2012-12-10 and also for Mockup patterns.
+                $.fn[plugin_name.replace(/^pat/, "pattern")] = utils.jqueryPlugin(pattern);
+            }
+            log.debug("Registered pattern:", name, pattern);
+            if (registry.settings.initialized) {
+                registry.scan(document.body, [name]);
+            }
+            return true;
+        }
+    };
+
+    $(document).on("patterns-injected.patterns",
+            function registry_onInject(ev, inject_config, inject_trigger) {
+                registry.scan(ev.target, null, {type: "injection", element: inject_trigger});
+                $(ev.target).trigger("patterns-injected-scanned");
+            });
+
+    return registry;
+});
+// jshint indent: 4, browser: true, jquery: true, quotmark: double
+// vim: sw=4 expandtab
+;
 /* Pattern utils
  */
 
@@ -7341,6 +10228,904 @@ define('mockup-utils',[
       return $('input[name="_authenticator"]').val();
     }
   };
+});
+
+/*!
+ * jQuery Cookie Plugin v1.4.1
+ * https://github.com/carhartl/jquery-cookie
+ *
+ * Copyright 2013 Klaus Hartl
+ * Released under the MIT license
+ */
+(function (factory) {
+	if (typeof define === 'function' && define.amd) {
+		// AMD
+		define('jquery.cookie',['jquery'], factory);
+	} else if (typeof exports === 'object') {
+		// CommonJS
+		factory(require('jquery'));
+	} else {
+		// Browser globals
+		factory(jQuery);
+	}
+}(function ($) {
+
+	var pluses = /\+/g;
+
+	function encode(s) {
+		return config.raw ? s : encodeURIComponent(s);
+	}
+
+	function decode(s) {
+		return config.raw ? s : decodeURIComponent(s);
+	}
+
+	function stringifyCookieValue(value) {
+		return encode(config.json ? JSON.stringify(value) : String(value));
+	}
+
+	function parseCookieValue(s) {
+		if (s.indexOf('"') === 0) {
+			// This is a quoted cookie as according to RFC2068, unescape...
+			s = s.slice(1, -1).replace(/\\"/g, '"').replace(/\\\\/g, '\\');
+		}
+
+		try {
+			// Replace server-side written pluses with spaces.
+			// If we can't decode the cookie, ignore it, it's unusable.
+			// If we can't parse the cookie, ignore it, it's unusable.
+			s = decodeURIComponent(s.replace(pluses, ' '));
+			return config.json ? JSON.parse(s) : s;
+		} catch(e) {}
+	}
+
+	function read(s, converter) {
+		var value = config.raw ? s : parseCookieValue(s);
+		return $.isFunction(converter) ? converter(value) : value;
+	}
+
+	var config = $.cookie = function (key, value, options) {
+
+		// Write
+
+		if (value !== undefined && !$.isFunction(value)) {
+			options = $.extend({}, config.defaults, options);
+
+			if (typeof options.expires === 'number') {
+				var days = options.expires, t = options.expires = new Date();
+				t.setTime(+t + days * 864e+5);
+			}
+
+			return (document.cookie = [
+				encode(key), '=', stringifyCookieValue(value),
+				options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
+				options.path    ? '; path=' + options.path : '',
+				options.domain  ? '; domain=' + options.domain : '',
+				options.secure  ? '; secure' : ''
+			].join(''));
+		}
+
+		// Read
+
+		var result = key ? undefined : {};
+
+		// To prevent the for loop in the first place assign an empty array
+		// in case there are no cookies at all. Also prevents odd result when
+		// calling $.cookie().
+		var cookies = document.cookie ? document.cookie.split('; ') : [];
+
+		for (var i = 0, l = cookies.length; i < l; i++) {
+			var parts = cookies[i].split('=');
+			var name = decode(parts.shift());
+			var cookie = parts.join('=');
+
+			if (key && key === name) {
+				// If second argument (value) is a function it's a converter...
+				result = read(cookie, value);
+				break;
+			}
+
+			// Prevent storing a cookie that we couldn't decode.
+			if (!key && (cookie = read(cookie)) !== undefined) {
+				result[name] = cookie;
+			}
+		}
+
+		return result;
+	};
+
+	config.defaults = {};
+
+	$.removeCookie = function (key, options) {
+		if ($.cookie(key) === undefined) {
+			return false;
+		}
+
+		// Must not alter options, thus extending a fresh object...
+		$.cookie(key, '', $.extend({}, options, { expires: -1 }));
+		return !$.cookie(key);
+	};
+
+}));
+
+define('plone-patterns-toolbar',[
+  'jquery',
+  'mockup-patterns-base',
+  'mockup-registry',
+  'mockup-utils',
+  'jquery.cookie'
+], function ($, Base, Registry, utils) {
+  
+
+  var Toolbar = Base.extend({
+    name: 'toolbar',
+    trigger: '.pat-toolbar',
+    init: function () {
+      var that = this;
+      if ($(window).width() < '768'){//mobile
+        // $( 'html' ).has('.plone-toolbar-left').css({'margin-left':'0','margin-top':'0','margin-right':'0'});
+        // $( 'html' ).has('.plone-toolbar-top').css({'margin-left':'0','margin-top':'0','margin-right':'0'});
+        // $( 'html' ).has('.plone-toolbar-left.expanded').css({'margin-left':'0','margin-top':'0','margin-right':'0'});
+        // $( 'body' ).css('margin-left: 0px');
+        $('#edit-zone').css('right', '-120px');
+        $( '#edit-zone .plone-toolbar-logo' ).click(function() {
+          if ($(this).hasClass('open')){
+            $( '#edit-zone' ).css('right', '-120px');
+            $( 'html' ).css('margin-left', '0');
+            $( 'html' ).css('margin-right', '0');
+            $(this).removeClass('open');
+            $( '#edit-zone nav li' ).removeClass('active');
+          } else {
+            $( '#edit-zone' ).css('right', '0');
+            $(this).addClass('open');
+            $( 'html' ).css('margin-left', '-120px');
+            $( 'html' ).css('margin-right', '120px');
+          }
+        });
+        $( '#edit-zone nav li' ).has( 'a .plone-toolbar-caret' ).click(function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          if ($(this).hasClass('active')) {
+            $( '#edit-zone' ).css('right', '0');
+            $( 'html' ).css('margin-left', '-120px');
+            $( 'html' ).css('margin-right', '120px');
+            $( '#edit-zone nav li' ).removeClass('active');
+          } else {
+            $( '#edit-zone nav li' ).removeClass('active');
+            $(this).addClass('active');
+            $( '#edit-zone' ).css('right', '180px');
+            $( 'html' ).css('margin-left', '-300px');
+            $( 'html' ).css('margin-right', '300px');
+          }
+        });
+      }
+      else { // not mobile
+        var toolbar_cookie = $.cookie('plone-toolbar');
+        window.plonetoolbar_state = toolbar_cookie;
+        $('#edit-zone').attr('class', toolbar_cookie);
+
+        $( '#edit-zone .plone-toolbar-logo' ).on('click', function() {
+          if (window.plonetoolbar_state) {
+            if (window.plonetoolbar_state.indexOf('expanded') != -1) {
+              // Switch to default (only icons)
+              $( '#edit-zone' ).removeClass('expanded');
+              $( '#edit-zone nav li' ).removeClass('active');
+              if (window.plonetoolbar_state.indexOf('left') != -1) {
+                $('body').addClass('plone-toolbar-left-default');
+                $('body').removeClass('plone-toolbar-left-expanded');
+              } else {
+                $('body').addClass('plone-toolbar-top-default');
+                $('body').removeClass('plone-toolbar-top-expanded');
+              }
+              $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
+              window.plonetoolbar_state = window.plonetoolbar_state.replace(' expanded', '');
+            } else {
+              // Switch to expanded
+              $( '#edit-zone' ).addClass('expanded');
+              $( '#edit-zone nav li' ).removeClass('active');
+              if (window.plonetoolbar_state.indexOf('left') != -1) {
+                $('body').addClass('plone-toolbar-left-expanded');
+                $('body').removeClass('plone-toolbar-left-default');
+              } else {
+                $('body').addClass('plone-toolbar-top-expanded');
+                $('body').removeClass('plone-toolbar-top-default');
+              }
+              $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
+              window.plonetoolbar_state = window.plonetoolbar_state + ' expanded';
+            }
+          } else {
+            // Cookie not set, assume default (only icons)
+            window.plonetoolbar_state = 'pat-toolbar plone-toolbar-left';
+            // Switch to expanded left
+            $( '#edit-zone' ).addClass('expanded');
+            $( '#edit-zone nav li' ).removeClass('active');
+            $('body').addClass('plone-toolbar-left-expanded');
+            $('body').removeClass('plone-toolbar-left-default');
+            $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
+            window.plonetoolbar_state = window.plonetoolbar_state + ' expanded';
+          }
+        });
+
+        // Switch to compressed
+        $( '#edit-zone .plone-toolbar-logo' ).on('dblclick', function() {
+          if (window.plonetoolbar_state) {
+            if (window.plonetoolbar_state.indexOf('compressed') != -1) {
+              // Switch to default (only icons) not compressed
+              $( '#edit-zone' ).removeClass('compressed');
+              if (window.plonetoolbar_state.indexOf('left') != -1) {
+                $('body').addClass('plone-toolbar-left-default');
+                $('body').removeClass('plone-toolbar-compressed');
+              } else {
+                $('body').addClass('plone-toolbar-top-default');
+                $('body').removeClass('plone-toolbar-compressed');
+              }
+              $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
+              window.plonetoolbar_state = window.plonetoolbar_state.replace(' expanded', '');
+            } else {
+              // Switch to compressed
+              $( '#edit-zone' ).addClass('compressed');
+              if (window.plonetoolbar_state.indexOf('left') != -1) {
+                $('body').addClass('plone-toolbar-compressed');
+                $('body').removeClass('plone-toolbar-left-default');
+                $('body').removeClass('plone-toolbar-left-expanded');
+              } else {
+                $('body').addClass('plone-toolbar-compressed');
+                $('body').removeClass('plone-toolbar-top-default');
+                $('body').removeClass('plone-toolbar-top-expanded');
+              }
+              $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
+              window.plonetoolbar_state = window.plonetoolbar_state + ' compressed';
+            }
+          } else {
+            // Cookie not set, assume default (only icons)
+            // Switch to compressed
+            $( '#edit-zone' ).addClass('compressed');
+            $('body').addClass('plone-toolbar-compressed');
+            $('body').removeClass('plone-toolbar-left-default');
+            $('body').removeClass('plone-toolbar-left-expanded');
+            $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
+            window.plonetoolbar_state = window.plonetoolbar_state + ' compressed';
+          }
+        });
+
+
+        $( '#edit-zone nav > ul > li li' ).on('click', function(event) {
+          event.stopImmediatePropagation();
+        });
+
+        // active
+        $( '#edit-zone nav > ul > li' ).has( 'a .plone-toolbar-caret' ).on('click', function(event) {
+          event.preventDefault();
+          event.stopPropagation();
+          if ($(this).hasClass('active')) {
+            $( '#edit-zone nav li' ).removeClass('active');
+          } else {
+            $('#edit-zone nav li').removeClass('active');
+            $(this).addClass('active');
+          }
+        });
+
+        $('body').on('click', function(event) {
+          if (!($(this).parent('#edit-zone').length > 0)) {
+            $('#edit-zone nav > ul > li').each(function(key, element){
+              $(element).removeClass('active');
+            });
+          }
+        });
+
+        // top/left switcher
+        $( '#edit-zone .plone-toolbar-switcher' ).on('click', function() {
+          if (window.plonetoolbar_state) {
+            if (window.plonetoolbar_state.indexOf('top') != -1) {
+              // from top to left
+              $( '#edit-zone' ).addClass('plone-toolbar-left');
+              $( '#edit-zone' ).removeClass('plone-toolbar-top');
+              if (window.plonetoolbar_state.indexOf('expanded') != -1) {
+                $('body').addClass('plone-toolbar-left-expanded');
+                $('body').removeClass('plone-toolbar-top-expanded');
+              } else {
+                $('body').addClass('plone-toolbar-left-default');
+                $('body').removeClass('plone-toolbar-top-default');
+              }
+              $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
+              window.plonetoolbar_state = window.plonetoolbar_state.replace('plone-toolbar-top', 'plone-toolbar-left');
+            } else {
+              // from left to top
+              $( '#edit-zone' ).addClass('plone-toolbar-top');
+              $( '#edit-zone' ).removeClass('plone-toolbar-left');
+              if (window.plonetoolbar_state.indexOf('expanded') != -1) {
+                $('body').addClass('plone-toolbar-top-expanded');
+                $('body').removeClass('plone-toolbar-left-expanded');
+              } else {
+                $('body').addClass('plone-toolbar-top-default');
+                $('body').removeClass('plone-toolbar-left-default');
+              }
+              $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
+              window.plonetoolbar_state = window.plonetoolbar_state.replace('plone-toolbar-left', 'plone-toolbar-top');
+            }
+          } else {
+            // Cookie not set, assume left default (only icons)
+            window.plonetoolbar_state = 'pat-toolbar plone-toolbar-left';
+            // Switch to top
+            $( '#edit-zone' ).addClass('plone-toolbar-left');
+            $( '#edit-zone' ).removeClass('plone-toolbar-top');
+            $('body').addClass('plone-toolbar-top-default');
+            $('body').removeClass('plone-toolbar-left-default');
+            $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
+            window.plonetoolbar_state = window.plonetoolbar_state.replace('plone-toolbar-left', 'plone-toolbar-top');
+          }
+
+        });
+      }
+      this.$el.addClass('initialized');
+
+      /* folder contents changes the context.
+         This is for usability so the menu changes along with
+         the folder contents context */
+      $('body').off('structure-url-changed').on('structure-url-changed', function (e, path) {
+        $.ajax({
+          url: $('body').attr('data-portal-url') + path + '/@@render-toolbar'
+        }).done(function(data){
+          var $el = $(utils.parseBodyTag(data));
+          that.$el.replaceWith($el);
+          Registry.scan($el);
+        });
+      });
+    }
+  });
+
+  return Toolbar;
+});
+
+/* Pattern which provides accessibility support
+ *
+ * Options:
+ *    smallbtn(string):	Selector used to activate small text on click. (null)
+ *    normalbtn(string): Selector used to activate normal text on click. (null)
+ *    largebtn(string):	Selector used to activate large text on click. (null)
+ *
+ * Documentation:
+ *    # Example
+ *
+ *    {{ example-1 }}
+ *
+ * Example: example-1
+ *    <ul id="textAdjust"
+ *        class="pat-accessibility"
+ *        data-pat-accessibility="smallbtn:.decrease-text;
+ *                                normalbtn:.normal-text;
+ *                                largebtn:.increase-text;">
+ *      <li>
+ *        <a href="." class="decrease-text">
+ *          <i class="icon-minus-sign"></i>
+ *          Decrease Text Size
+ *        </a>
+ *      </li>
+ *      <li>
+ *        <a href="." class="normal-text">
+ *          <i class="icon-circle"></i>
+ *          Normal Text Size
+ *        </a>
+ *      </li>
+ *      <li>
+ *        <a href="." class="increase-text">
+ *          <i class="icon-plus-sign"></i>
+ *          Increase Text Size
+ *        </a>
+ *      </li>
+ *    </ul>
+ *
+ */
+
+
+define('mockup-patterns-accessibility',[
+  'jquery',
+  'mockup-patterns-base',
+  'jquery.cookie'
+], function($, Base) {
+  
+
+  var Accessibility = Base.extend({
+    name: 'accessibility',
+    trigger: '.pat-accessibility',
+    defaults: {
+      'smallbtn': null,
+      'normalbtn': null,
+      'largebtn': null
+    },
+    setBaseFontSize: function($fontsize, $reset) {
+      if ($reset) {
+        this.$el.removeClass('smallText').removeClass('largeText').
+            removeClass('mediumText');
+        $.cookie('fontsize', $fontsize, { expires: 365, path: '/' });
+      }
+      this.$el.addClass($fontsize);
+    },
+    initBtn: function(btn) {
+      var self = this;
+      btn.el.click(function(e) {
+        e.preventDefault();
+        self.setBaseFontSize(btn.name + 'Text', 1);
+      });
+    },
+    init: function() {
+      var self = this;
+      var $fontsize = $.cookie('fontsize');
+      if ($fontsize) {
+        self.setBaseFontSize($fontsize, 0);
+      }
+      var btns = ['smallbtn', 'normalbtn', 'largebtn'];
+      $.each(btns, function(idx, btn) {
+        var btnName = btn.replace('btn', '');
+        var btnSelector = self.options[btn];
+        if (btnSelector !== null) {
+          var el = $(btnSelector, self.$el);
+          if (el) {
+            btn = {
+              name: btnName,
+              el: el
+            };
+            self[btnName] = btn;
+            self.initBtn(btn);
+          }
+        }
+      });
+    }
+  });
+
+  return Accessibility;
+
+});
+
+/* Autotoc pattern.
+ *
+ * Options:
+ *    IDPrefix(string): Prefix used to generate ID. ('autotoc-item-')
+ *    classActiveName(string): Class used for active level. ('active')
+ *    classLevelPrefixName(string): Class prefix used for the TOC levels. ('autotoc-level-')
+ *    classSectionName(string): Class used for section in TOC. ('autotoc-section')
+ *    classTOCName(string): Class used for the TOC. ('autotoc-nav')
+ *    levels(string): Selectors used to find levels. ('h1,h2,h3')
+ *    scrollDuration(string): Speed of scrolling. ('slow')
+ *    scrollEasing(string): Easing to use while scrolling. ('swing')
+ *    section(string): Tag type to use for TOC. ('section')
+ *
+ * Documentation:
+ *    # TOC
+ *    {{ example-1 }}
+ *
+ *    # Tabs
+ *    {{ example-2-tabs }}
+ *
+ * Example: example-1
+ *    <div class="pat-autotoc"
+ *          data-pat-autotoc="scrollDuration:slow;levels:h4,h5,h6;">
+ *      <h4>Title 1</h4>
+ *      <p>Mr. Zuckerkorn, you've been warned about touching. You said
+ *         spanking. It walked on my pillow! How about a turtle? I've always
+ *         loved those leathery little snappy faces.</p>
+ *      <h5>Title 1.1</h5>
+ *      <p>Ah coodle doodle do Caw ca caw, caw ca caw. Butterscotch!</p>
+ *      <h6>Title 1.1.1</h6>
+ *      <p>Want a lick? Okay, Lindsay, are you forgetting that I was
+ *         a professional twice over - an analyst and a therapist.</p>
+ *      <h4>Title 2</h4>
+ *      <p>You boys know how to shovel coal? Don't worry, these young
+ *      beauties have been nowhere near the bananas. I thought the two of
+ *      us could talk man-on-man.</p>
+ *    </div>
+ *
+ * Example: example-2-tabs
+ *    <div class="pat-autotoc autotabs"
+ *          data-pat-autotoc="section:fieldset;levels:legend;">
+ *        <fieldset>
+ *          <legend>Tab 1</legend>
+ *          <div>
+ *            Lorem ipsum dolor sit amet, ex nam odio ceteros fastidii,
+ *            id porro lorem pro, homero facilisis in cum.
+ *            At doming voluptua indoctum mel, natum noster similique ne mel.
+ *          </div>
+ *        </fieldset>
+ *        <fieldset>
+ *          <legend>Tab 2</legend>
+ *          <div>
+ *            Reque repudiare eum et. Prompta expetendis percipitur eu eam,
+ *            et graece mandamus pro, eu vim harum audire tractatos.
+ *            Ad perpetua salutandi mea, soluta delicata aliquando eam ne.
+ *            Qui nostrum lucilius perpetua ut, eum suas stet oblique ut.
+ *          </div>
+ *        </fieldset>
+ *        <fieldset>
+ *          <legend>Tab 3</legend>
+ *          <div>
+ *            Vis mazim harum deterruisset ex, duo nemore nostro civibus ad,
+ *            eros vituperata id cum. Vim at erat solet soleat,
+ *            eum et iuvaret luptatum, pro an esse dolorum maiestatis.
+ *          </div>
+ *        </fieldset>
+ *    </div>
+ *
+ */
+
+
+define('mockup-patterns-autotoc',[
+  'jquery',
+  'mockup-patterns-base'
+], function($, Base) {
+  
+
+  var AutoTOC = Base.extend({
+    name: 'autotoc',
+    trigger: '.pat-autotoc',
+    defaults: {
+      section: 'section',
+      levels: 'h1,h2,h3',
+      IDPrefix: 'autotoc-item-',
+      classTOCName: 'autotoc-nav',
+      classSectionName: 'autotoc-section',
+      classLevelPrefixName: 'autotoc-level-',
+      classActiveName: 'active',
+      scrollDuration: 'slow',
+      scrollEasing: 'swing'
+    },
+    init: function() {
+      var self = this;
+
+      self.$toc = $('<nav/>').addClass(self.options.classTOCName);
+
+      if (self.options.prependTo) {
+        self.$toc.prependTo(self.options.prependTo);
+      } else if (self.options.appendTo) {
+        self.$toc.appendTo(self.options.appendTo);
+      } else {
+        self.$toc.prependTo(self.$el);
+      }
+
+      if (self.options.className) {
+        self.$el.addClass(self.options.className);
+      }
+
+      $(self.options.section, self.$el).addClass(self.options.classSectionName);
+
+      var asTabs = self.$el.hasClass('autotabs');
+
+      $(self.options.levels, self.$el).each(function(i) {
+        var $level = $(this),
+            id = $level.prop('id') ? '#' + $level.prop('id') :
+                 $level.parents(self.options.section).prop('id');
+        if (!id) {
+          id = self.options.IDPrefix + self.name + '-' + i;
+          $level.prop('id', id);
+        }
+        $('<a/>')
+          .appendTo(self.$toc)
+          .text($level.text())
+          .prop('href', id)
+          .addClass(self.options.classLevelPrefixName + self.getLevel($level))
+          .on('click', function(e, doScroll) {
+            e.stopPropagation();
+            e.preventDefault();
+            self.$toc.children('.' + self.options.classActiveName).removeClass(self.options.classActiveName);
+            self.$el.children('.' + self.options.classActiveName).removeClass(self.options.classActiveName);
+            $(e.target).addClass(self.options.classActiveName);
+            $level.parents(self.options.section).addClass(self.options.classActiveName);
+            if (doScroll !== false &&
+                self.options.scrollDuration &&
+                $level &&
+                !asTabs) {
+              $('body,html').animate({
+                scrollTop: $level.offset().top
+              }, self.options.scrollDuration, self.options.scrollEasing);
+            }
+            if (self.$el.parents('.plone-modal').size() !== 0) {
+              self.$el.trigger('resize.modal.patterns');
+            }
+            $(this).trigger('clicked');
+          });
+      });
+
+      self.$toc.find('a').first().trigger('click', false);
+
+    },
+    getLevel: function($el) {
+      var elementLevel = 0;
+      $.each(this.options.levels.split(','), function(level, levelSelector) {
+        if ($el.filter(levelSelector).size() === 1) {
+          elementLevel = level + 1;
+          return false;
+        }
+      });
+      return elementLevel;
+    }
+  });
+
+  return AutoTOC;
+
+});
+
+/* Cookie Trigger pattern.
+ *
+ * Show a DOM element if browser cookies are disabled.
+ *
+ * Documentation:
+ *
+ *    {{ example-1 }}
+ *
+ * Example: example-1
+ *    <div class="portalMessage error pat-cookietrigger">
+ *      Cookies are not enabled. You must enable cookies before you can log in.
+ *    </div>
+ */
+
+define('mockup-patterns-cookietrigger',[
+  'jquery',
+  'mockup-patterns-base'
+], function ($, Base) {
+  
+
+  var CookieTrigger = Base.extend({
+    name: 'cookietrigger',
+    trigger: '.pat-cookietrigger',
+
+    isCookiesEnabled: function() {
+      /* Test whether cookies are enabled by attempting to set a cookie
+       * and then change its value set test cookie.
+       */
+      var c = "areYourCookiesEnabled=0";
+      document.cookie = c;
+      var dc = document.cookie;
+      // cookie not set?  fail
+      if (dc.indexOf(c) === -1) {
+        return 0;
+      }
+      // change test cookie
+      c = "areYourCookiesEnabled=1";
+      document.cookie = c;
+      dc = document.cookie;
+      // cookie not changed?  fail
+      if (dc.indexOf(c) === -1) {
+        return 0;
+      }
+      // delete cookie
+      document.cookie = "areYourCookiesEnabled=; expires=Thu, 01-Jan-70 00:00:01 GMT";
+      return 1;
+    },
+
+    showIfCookiesDisabled: function() {
+      /* Show the element on which this pattern is defined if cookies are
+       * disabled.
+       */
+      if (this.isCookiesEnabled()) {
+        this.$el.hide();
+      } else {
+        this.$el.show();
+      }
+    },
+
+    init: function () {
+      this.showIfCookiesDisabled();
+    },
+  });
+  return CookieTrigger;
+});
+
+/* Formunloadalert pattern.
+ *
+ * Options:
+ *    changingEvents(string): Events on which to check for changes (space-separated). ('change keyup paste')
+ *    changingFields(string): Fields on which to check for changes (comma-separated). ('input,select,textarea,fileupload')
+ *    message(string): Confirmation message to display when dirty form is being unloaded. (Discard changes? If you click OK, any changes you have made will be lost.)
+ *
+ * Documentation:
+ *    # Example
+ *
+ *    {{ example-1 }}
+ *
+ * Example: example-1
+ *    <form class="pat-formunloadalert" onsubmit="javascript:return false;">
+ *      <input type="text" value="" />
+ *      <select>
+ *        <option value="1">value 1</option>
+ *        <option value="2">value 2</option>
+ *      </select>
+ *      <input
+ *        class="btn btn-large btn-primary"
+ *        type="submit" value="Submit" />
+ *      <br />
+ *      <a href="/">Click here to go somewhere else</a>
+ *    </form>
+ *
+ */
+
+
+define('mockup-patterns-formunloadalert',[
+  'jquery',
+  'mockup-patterns-base',
+  'translate'
+], function ($, Base, _t) {
+  
+
+  var FormUnloadAlert = Base.extend({
+    name: 'formunloadalert',
+    trigger: '.pat-formunloadalert',
+    _changed : false,       // Stores a listing of raised changes by their key
+    _suppressed : false,     // whether or not warning should be suppressed
+    defaults: {
+      message :  _t('Discard changes? If you click OK, ' +
+                 'any changes you have made will be lost.'),
+      // events on which to check for changes
+      changingEvents: 'change keyup paste',
+      // fields on which to check for changes
+      changingFields: 'input,select,textarea,fileupload'
+    },
+    init: function () {
+      var self = this;
+      // if this is not a form just return
+      if (!self.$el.is('form')) { return; }
+
+      $(self.options.changingFields, self.$el).on(
+        self.options.changingEvents,
+        function (evt) {
+          self._changed = true;
+        }
+      );
+
+      var $modal = self.$el.parents('.plone-modal');
+      if ($modal.size() !== 0) {
+        $modal.data('pattern-modal').on('hide', function(e) {
+          var modal = $modal.data('pattern-modal');
+          if (modal) {
+            modal._suppressHide = self._handleUnload.apply(self, e);
+          }
+        });
+      } else {
+        $(window).on('beforeunload', function(e) {
+          return self._handleUnload(e);
+        });
+      }
+
+      self.$el.on('submit', function(e) {
+        self._suppressed = true;
+      });
+
+    },
+    _handleUnload : function (e) {
+      var self = this;
+      if (self._suppressed) {
+        self._suppressed = false;
+        return undefined;
+      }
+      if (self._changed) {
+        var msg = self.options.message;
+        self._handleMsg(e,msg);
+        $(window).trigger('messageset');
+        return msg;
+      }
+    },
+    _handleMsg:  function(e,msg) {
+      (e || window.event).returnValue = msg;
+    }
+  });
+  return FormUnloadAlert;
+
+});
+
+/* PreventDoubleSubmit pattern.
+ *
+ * Options:
+ *    guardClassName(string): Class applied to submit button after it is clicked once. ('submitting')
+ *    optOutClassName(string): Class used to opt-out a submit button from double-submit prevention. ('allowMultiSubmit')
+ *    message(string): Message to be displayed when "opt-out" submit button is clicked a second time. ('You already clicked the submit button. Do you really want to submit this form again?')
+ *
+ * Documentation:
+ *    # Example
+ *
+ *    {{ example-1 }}
+ *
+ * Example: example-1
+ *    <form class="pat-preventdoublesubmit" onsubmit="javascript:return false;">
+ *      <input type="text" value="submit this value please!" />
+ *      <input class="btn btn-large btn-primary" type="submit" value="Single submit" />
+ *      <input class="btn btn-large btn-primary allowMultiSubmit" type="submit" value="Multi submit" />
+ *    </form>
+ *
+ */
+
+
+define('mockup-patterns-preventdoublesubmit',[
+  'jquery',
+  'mockup-patterns-base',
+  'translate'
+], function($, Base, _t) {
+  
+
+  var PreventDoubleSubmit = Base.extend({
+    name: 'preventdoublesubmit',
+    trigger: '.pat-preventdoublesubmit',
+    defaults: {
+      message : _t('You already clicked the submit button. ' +
+                'Do you really want to submit this form again?'),
+      guardClassName: 'submitting',
+      optOutClassName: 'allowMultiSubmit'
+    },
+    init: function() {
+      var self = this;
+
+      // if this is not a form just return
+      if (!self.$el.is('form')) {
+        return;
+      }
+
+      $(':submit', self.$el).click(function(e) {
+
+        // mark the button as clicked
+        $(':submit').removeAttr('clicked');
+        $(this).attr('clicked', 'clicked');
+
+        // if submitting and no opt-out guardClassName is found
+        // pop up confirmation dialog
+        if ($(this).hasClass(self.options.guardClassName) &&
+              !$(this).hasClass(self.options.optOutClassName)) {
+          return self._confirm.call(self);
+        }
+
+        $(this).addClass(self.options.guardClassName);
+      });
+
+    },
+
+    _confirm: function(e) {
+      return window.confirm(this.options.message);
+    }
+
+  });
+
+  return PreventDoubleSubmit;
+
+});
+
+/* Formautofocus pattern.
+ *
+ * Options:
+ *    condition(string): TODO ('div.error')
+ *    target(string): TODO ("div.error :input:not(.formTabs):visible:first')
+ *    always(string): TODO (:input:not(.formTabs):visible:first')
+ *
+ * Documentation:
+ *    # TODO
+ *
+ * Example: example-1
+ *
+ */
+
+
+define('mockup-patterns-formautofocus',[
+  'jquery',
+  'mockup-patterns-base'
+], function($, Base, undefined) {
+  
+
+  var FormAutoFocus = Base.extend({
+    name: 'formautofocus',
+    trigger: '.pat-formautofocus',
+    defaults: {
+      condition: 'div.error',
+      target: 'div.error :input:not(.formTabs):visible:first',
+      always: ':input:not(.formTabs):visible:first'
+    },
+    init: function() {
+      var self = this;
+      if ($(self.options.condition, self.$el).size() !== 0) {
+        $(self.options.target, self.$el).focusin();
+      } else {
+        $(self.options.always, self.$el).focusin();
+      }
+
+    }
+  });
+
+  return FormAutoFocus;
+
 });
 
 /**
@@ -12323,2521 +16108,6 @@ define('mockup-utils',[
   }
 }.call(this));
 
-/*!
- * jQuery Cookie Plugin v1.4.1
- * https://github.com/carhartl/jquery-cookie
- *
- * Copyright 2013 Klaus Hartl
- * Released under the MIT license
- */
-(function (factory) {
-  if (typeof define === 'function' && define.amd) {
-    // AMD
-    define('jquery.cookie',['jquery'], factory);
-  } else if (typeof exports === 'object') {
-    // CommonJS
-    factory(require('jquery'));
-  } else {
-    // Browser globals
-    factory(jQuery);
-  }
-}(function ($) {
-
-  var pluses = /\+/g;
-
-  function encode(s) {
-    return config.raw ? s : encodeURIComponent(s);
-  }
-
-  function decode(s) {
-    return config.raw ? s : decodeURIComponent(s);
-  }
-
-  function stringifyCookieValue(value) {
-    return encode(config.json ? JSON.stringify(value) : String(value));
-  }
-
-  function parseCookieValue(s) {
-    if (s.indexOf('"') === 0) {
-      // This is a quoted cookie as according to RFC2068, unescape...
-      s = s.slice(1, -1).replace(/\\"/g, '"').replace(/\\\\/g, '\\');
-    }
-
-    try {
-      // Replace server-side written pluses with spaces.
-      // If we can't decode the cookie, ignore it, it's unusable.
-      // If we can't parse the cookie, ignore it, it's unusable.
-      s = decodeURIComponent(s.replace(pluses, ' '));
-      return config.json ? JSON.parse(s) : s;
-    } catch(e) {}
-  }
-
-  function read(s, converter) {
-    var value = config.raw ? s : parseCookieValue(s);
-    return $.isFunction(converter) ? converter(value) : value;
-  }
-
-  var config = $.cookie = function (key, value, options) {
-
-    // Write
-
-    if (value !== undefined && !$.isFunction(value)) {
-      options = $.extend({}, config.defaults, options);
-
-      if (typeof options.expires === 'number') {
-        var days = options.expires, t = options.expires = new Date();
-        t.setTime(+t + days * 864e+5);
-      }
-
-      return (document.cookie = [
-        encode(key), '=', stringifyCookieValue(value),
-        options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
-        options.path    ? '; path=' + options.path : '',
-        options.domain  ? '; domain=' + options.domain : '',
-        options.secure  ? '; secure' : ''
-      ].join(''));
-    }
-
-    // Read
-
-    var result = key ? undefined : {};
-
-    // To prevent the for loop in the first place assign an empty array
-    // in case there are no cookies at all. Also prevents odd result when
-    // calling $.cookie().
-    var cookies = document.cookie ? document.cookie.split('; ') : [];
-
-    for (var i = 0, l = cookies.length; i < l; i++) {
-      var parts = cookies[i].split('=');
-      var name = decode(parts.shift());
-      var cookie = parts.join('=');
-
-      if (key && key === name) {
-        // If second argument (value) is a function it's a converter...
-        result = read(cookie, value);
-        break;
-      }
-
-      // Prevent storing a cookie that we couldn't decode.
-      if (!key && (cookie = read(cookie)) !== undefined) {
-        result[name] = cookie;
-      }
-    }
-
-    return result;
-  };
-
-  config.defaults = {};
-
-  $.removeCookie = function (key, options) {
-    if ($.cookie(key) === undefined) {
-      return false;
-    }
-
-    // Must not alter options, thus extending a fresh object...
-    $.cookie(key, '', $.extend({}, options, { expires: -1 }));
-    return !$.cookie(key);
-  };
-
-}));
-
-/*!
- * jQuery Form Plugin
- * version: 3.46.0-2013.11.21
- * Requires jQuery v1.5 or later
- * Copyright (c) 2013 M. Alsup
- * Examples and documentation at: http://malsup.com/jquery/form/
- * Project repository: https://github.com/malsup/form
- * Dual licensed under the MIT and GPL licenses.
- * https://github.com/malsup/form#copyright-and-license
- */
-/*global ActiveXObject */
-
-// AMD support
-(function (factory) {
-    if (typeof define === 'function' && define.amd) {
-        // using AMD; register as anon module
-        define('jquery.form',['jquery'], factory);
-    } else {
-        // no AMD; invoke directly
-        factory( (typeof(jQuery) != 'undefined') ? jQuery : window.Zepto );
-    }
-}
-
-(function($) {
-
-
-/*
-    Usage Note:
-    -----------
-    Do not use both ajaxSubmit and ajaxForm on the same form.  These
-    functions are mutually exclusive.  Use ajaxSubmit if you want
-    to bind your own submit handler to the form.  For example,
-
-    $(document).ready(function() {
-        $('#myForm').on('submit', function(e) {
-            e.preventDefault(); // <-- important
-            $(this).ajaxSubmit({
-                target: '#output'
-            });
-        });
-    });
-
-    Use ajaxForm when you want the plugin to manage all the event binding
-    for you.  For example,
-
-    $(document).ready(function() {
-        $('#myForm').ajaxForm({
-            target: '#output'
-        });
-    });
-
-    You can also use ajaxForm with delegation (requires jQuery v1.7+), so the
-    form does not have to exist when you invoke ajaxForm:
-
-    $('#myForm').ajaxForm({
-        delegation: true,
-        target: '#output'
-    });
-
-    When using ajaxForm, the ajaxSubmit function will be invoked for you
-    at the appropriate time.
-*/
-
-/**
- * Feature detection
- */
-var feature = {};
-feature.fileapi = $("<input type='file'/>").get(0).files !== undefined;
-feature.formdata = window.FormData !== undefined;
-
-var hasProp = !!$.fn.prop;
-
-// attr2 uses prop when it can but checks the return type for
-// an expected string.  this accounts for the case where a form 
-// contains inputs with names like "action" or "method"; in those
-// cases "prop" returns the element
-$.fn.attr2 = function() {
-    if ( ! hasProp )
-        return this.attr.apply(this, arguments);
-    var val = this.prop.apply(this, arguments);
-    if ( ( val && val.jquery ) || typeof val === 'string' )
-        return val;
-    return this.attr.apply(this, arguments);
-};
-
-/**
- * ajaxSubmit() provides a mechanism for immediately submitting
- * an HTML form using AJAX.
- */
-$.fn.ajaxSubmit = function(options) {
-    /*jshint scripturl:true */
-
-    // fast fail if nothing selected (http://dev.jquery.com/ticket/2752)
-    if (!this.length) {
-        log('ajaxSubmit: skipping submit process - no element selected');
-        return this;
-    }
-
-    var method, action, url, $form = this;
-
-    if (typeof options == 'function') {
-        options = { success: options };
-    }
-    else if ( options === undefined ) {
-        options = {};
-    }
-
-    method = options.type || this.attr2('method');
-    action = options.url  || this.attr2('action');
-
-    url = (typeof action === 'string') ? $.trim(action) : '';
-    url = url || window.location.href || '';
-    if (url) {
-        // clean url (don't include hash vaue)
-        url = (url.match(/^([^#]+)/)||[])[1];
-    }
-
-    options = $.extend(true, {
-        url:  url,
-        success: $.ajaxSettings.success,
-        type: method || $.ajaxSettings.type,
-        iframeSrc: /^https/i.test(window.location.href || '') ? 'javascript:false' : 'about:blank'
-    }, options);
-
-    // hook for manipulating the form data before it is extracted;
-    // convenient for use with rich editors like tinyMCE or FCKEditor
-    var veto = {};
-    this.trigger('form-pre-serialize', [this, options, veto]);
-    if (veto.veto) {
-        log('ajaxSubmit: submit vetoed via form-pre-serialize trigger');
-        return this;
-    }
-
-    // provide opportunity to alter form data before it is serialized
-    if (options.beforeSerialize && options.beforeSerialize(this, options) === false) {
-        log('ajaxSubmit: submit aborted via beforeSerialize callback');
-        return this;
-    }
-
-    var traditional = options.traditional;
-    if ( traditional === undefined ) {
-        traditional = $.ajaxSettings.traditional;
-    }
-
-    var elements = [];
-    var qx, a = this.formToArray(options.semantic, elements);
-    if (options.data) {
-        options.extraData = options.data;
-        qx = $.param(options.data, traditional);
-    }
-
-    // give pre-submit callback an opportunity to abort the submit
-    if (options.beforeSubmit && options.beforeSubmit(a, this, options) === false) {
-        log('ajaxSubmit: submit aborted via beforeSubmit callback');
-        return this;
-    }
-
-    // fire vetoable 'validate' event
-    this.trigger('form-submit-validate', [a, this, options, veto]);
-    if (veto.veto) {
-        log('ajaxSubmit: submit vetoed via form-submit-validate trigger');
-        return this;
-    }
-
-    var q = $.param(a, traditional);
-    if (qx) {
-        q = ( q ? (q + '&' + qx) : qx );
-    }
-    if (options.type.toUpperCase() == 'GET') {
-        options.url += (options.url.indexOf('?') >= 0 ? '&' : '?') + q;
-        options.data = null;  // data is null for 'get'
-    }
-    else {
-        options.data = q; // data is the query string for 'post'
-    }
-
-    var callbacks = [];
-    if (options.resetForm) {
-        callbacks.push(function() { $form.resetForm(); });
-    }
-    if (options.clearForm) {
-        callbacks.push(function() { $form.clearForm(options.includeHidden); });
-    }
-
-    // perform a load on the target only if dataType is not provided
-    if (!options.dataType && options.target) {
-        var oldSuccess = options.success || function(){};
-        callbacks.push(function(data) {
-            var fn = options.replaceTarget ? 'replaceWith' : 'html';
-            $(options.target)[fn](data).each(oldSuccess, arguments);
-        });
-    }
-    else if (options.success) {
-        callbacks.push(options.success);
-    }
-
-    options.success = function(data, status, xhr) { // jQuery 1.4+ passes xhr as 3rd arg
-        var context = options.context || this ;    // jQuery 1.4+ supports scope context
-        for (var i=0, max=callbacks.length; i < max; i++) {
-            callbacks[i].apply(context, [data, status, xhr || $form, $form]);
-        }
-    };
-
-    if (options.error) {
-        var oldError = options.error;
-        options.error = function(xhr, status, error) {
-            var context = options.context || this;
-            oldError.apply(context, [xhr, status, error, $form]);
-        };
-    }
-
-     if (options.complete) {
-        var oldComplete = options.complete;
-        options.complete = function(xhr, status) {
-            var context = options.context || this;
-            oldComplete.apply(context, [xhr, status, $form]);
-        };
-    }
-
-    // are there files to upload?
-
-    // [value] (issue #113), also see comment:
-    // https://github.com/malsup/form/commit/588306aedba1de01388032d5f42a60159eea9228#commitcomment-2180219
-    var fileInputs = $('input[type=file]:enabled', this).filter(function() { return $(this).val() !== ''; });
-
-    var hasFileInputs = fileInputs.length > 0;
-    var mp = 'multipart/form-data';
-    var multipart = ($form.attr('enctype') == mp || $form.attr('encoding') == mp);
-
-    var fileAPI = feature.fileapi && feature.formdata;
-    log("fileAPI :" + fileAPI);
-    var shouldUseFrame = (hasFileInputs || multipart) && !fileAPI;
-
-    var jqxhr;
-
-    // options.iframe allows user to force iframe mode
-    // 06-NOV-09: now defaulting to iframe mode if file input is detected
-    if (options.iframe !== false && (options.iframe || shouldUseFrame)) {
-        // hack to fix Safari hang (thanks to Tim Molendijk for this)
-        // see:  http://groups.google.com/group/jquery-dev/browse_thread/thread/36395b7ab510dd5d
-        if (options.closeKeepAlive) {
-            $.get(options.closeKeepAlive, function() {
-                jqxhr = fileUploadIframe(a);
-            });
-        }
-        else {
-            jqxhr = fileUploadIframe(a);
-        }
-    }
-    else if ((hasFileInputs || multipart) && fileAPI) {
-        jqxhr = fileUploadXhr(a);
-    }
-    else {
-        jqxhr = $.ajax(options);
-    }
-
-    $form.removeData('jqxhr').data('jqxhr', jqxhr);
-
-    // clear element array
-    for (var k=0; k < elements.length; k++)
-        elements[k] = null;
-
-    // fire 'notify' event
-    this.trigger('form-submit-notify', [this, options]);
-    return this;
-
-    // utility fn for deep serialization
-    function deepSerialize(extraData){
-        var serialized = $.param(extraData, options.traditional).split('&');
-        var len = serialized.length;
-        var result = [];
-        var i, part;
-        for (i=0; i < len; i++) {
-            // #252; undo param space replacement
-            serialized[i] = serialized[i].replace(/\+/g,' ');
-            part = serialized[i].split('=');
-            // #278; use array instead of object storage, favoring array serializations
-            result.push([decodeURIComponent(part[0]), decodeURIComponent(part[1])]);
-        }
-        return result;
-    }
-
-     // XMLHttpRequest Level 2 file uploads (big hat tip to francois2metz)
-    function fileUploadXhr(a) {
-        var formdata = new FormData();
-
-        for (var i=0; i < a.length; i++) {
-            formdata.append(a[i].name, a[i].value);
-        }
-
-        if (options.extraData) {
-            var serializedData = deepSerialize(options.extraData);
-            for (i=0; i < serializedData.length; i++)
-                if (serializedData[i])
-                    formdata.append(serializedData[i][0], serializedData[i][1]);
-        }
-
-        options.data = null;
-
-        var s = $.extend(true, {}, $.ajaxSettings, options, {
-            contentType: false,
-            processData: false,
-            cache: false,
-            type: method || 'POST'
-        });
-
-        if (options.uploadProgress) {
-            // workaround because jqXHR does not expose upload property
-            s.xhr = function() {
-                var xhr = $.ajaxSettings.xhr();
-                if (xhr.upload) {
-                    xhr.upload.addEventListener('progress', function(event) {
-                        var percent = 0;
-                        var position = event.loaded || event.position; /*event.position is deprecated*/
-                        var total = event.total;
-                        if (event.lengthComputable) {
-                            percent = Math.ceil(position / total * 100);
-                        }
-                        options.uploadProgress(event, position, total, percent);
-                    }, false);
-                }
-                return xhr;
-            };
-        }
-
-        s.data = null;
-        var beforeSend = s.beforeSend;
-        s.beforeSend = function(xhr, o) {
-            //Send FormData() provided by user
-            if (options.formData)
-                o.data = options.formData;
-            else
-                o.data = formdata;
-            if(beforeSend)
-                beforeSend.call(this, xhr, o);
-        };
-        return $.ajax(s);
-    }
-
-    // private function for handling file uploads (hat tip to YAHOO!)
-    function fileUploadIframe(a) {
-        var form = $form[0], el, i, s, g, id, $io, io, xhr, sub, n, timedOut, timeoutHandle;
-        var deferred = $.Deferred();
-
-        // #341
-        deferred.abort = function(status) {
-            xhr.abort(status);
-        };
-
-        if (a) {
-            // ensure that every serialized input is still enabled
-            for (i=0; i < elements.length; i++) {
-                el = $(elements[i]);
-                if ( hasProp )
-                    el.prop('disabled', false);
-                else
-                    el.removeAttr('disabled');
-            }
-        }
-
-        s = $.extend(true, {}, $.ajaxSettings, options);
-        s.context = s.context || s;
-        id = 'jqFormIO' + (new Date().getTime());
-        if (s.iframeTarget) {
-            $io = $(s.iframeTarget);
-            n = $io.attr2('name');
-            if (!n)
-                 $io.attr2('name', id);
-            else
-                id = n;
-        }
-        else {
-            $io = $('<iframe name="' + id + '" src="'+ s.iframeSrc +'" />');
-            $io.css({ position: 'absolute', top: '-1000px', left: '-1000px' });
-        }
-        io = $io[0];
-
-
-        xhr = { // mock object
-            aborted: 0,
-            responseText: null,
-            responseXML: null,
-            status: 0,
-            statusText: 'n/a',
-            getAllResponseHeaders: function() {},
-            getResponseHeader: function() {},
-            setRequestHeader: function() {},
-            abort: function(status) {
-                var e = (status === 'timeout' ? 'timeout' : 'aborted');
-                log('aborting upload... ' + e);
-                this.aborted = 1;
-
-                try { // #214, #257
-                    if (io.contentWindow.document.execCommand) {
-                        io.contentWindow.document.execCommand('Stop');
-                    }
-                }
-                catch(ignore) {}
-
-                $io.attr('src', s.iframeSrc); // abort op in progress
-                xhr.error = e;
-                if (s.error)
-                    s.error.call(s.context, xhr, e, status);
-                if (g)
-                    $.event.trigger("ajaxError", [xhr, s, e]);
-                if (s.complete)
-                    s.complete.call(s.context, xhr, e);
-            }
-        };
-
-        g = s.global;
-        // trigger ajax global events so that activity/block indicators work like normal
-        if (g && 0 === $.active++) {
-            $.event.trigger("ajaxStart");
-        }
-        if (g) {
-            $.event.trigger("ajaxSend", [xhr, s]);
-        }
-
-        if (s.beforeSend && s.beforeSend.call(s.context, xhr, s) === false) {
-            if (s.global) {
-                $.active--;
-            }
-            deferred.reject();
-            return deferred;
-        }
-        if (xhr.aborted) {
-            deferred.reject();
-            return deferred;
-        }
-
-        // add submitting element to data if we know it
-        sub = form.clk;
-        if (sub) {
-            n = sub.name;
-            if (n && !sub.disabled) {
-                s.extraData = s.extraData || {};
-                s.extraData[n] = sub.value;
-                if (sub.type == "image") {
-                    s.extraData[n+'.x'] = form.clk_x;
-                    s.extraData[n+'.y'] = form.clk_y;
-                }
-            }
-        }
-
-        var CLIENT_TIMEOUT_ABORT = 1;
-        var SERVER_ABORT = 2;
-                
-        function getDoc(frame) {
-            /* it looks like contentWindow or contentDocument do not
-             * carry the protocol property in ie8, when running under ssl
-             * frame.document is the only valid response document, since
-             * the protocol is know but not on the other two objects. strange?
-             * "Same origin policy" http://en.wikipedia.org/wiki/Same_origin_policy
-             */
-            
-            var doc = null;
-            
-            // IE8 cascading access check
-            try {
-                if (frame.contentWindow) {
-                    doc = frame.contentWindow.document;
-                }
-            } catch(err) {
-                // IE8 access denied under ssl & missing protocol
-                log('cannot get iframe.contentWindow document: ' + err);
-            }
-
-            if (doc) { // successful getting content
-                return doc;
-            }
-
-            try { // simply checking may throw in ie8 under ssl or mismatched protocol
-                doc = frame.contentDocument ? frame.contentDocument : frame.document;
-            } catch(err) {
-                // last attempt
-                log('cannot get iframe.contentDocument: ' + err);
-                doc = frame.document;
-            }
-            return doc;
-        }
-
-        // Rails CSRF hack (thanks to Yvan Barthelemy)
-        var csrf_token = $('meta[name=csrf-token]').attr('content');
-        var csrf_param = $('meta[name=csrf-param]').attr('content');
-        if (csrf_param && csrf_token) {
-            s.extraData = s.extraData || {};
-            s.extraData[csrf_param] = csrf_token;
-        }
-
-        // take a breath so that pending repaints get some cpu time before the upload starts
-        function doSubmit() {
-            // make sure form attrs are set
-            var t = $form.attr2('target'), a = $form.attr2('action');
-
-            // update form attrs in IE friendly way
-            form.setAttribute('target',id);
-            if (!method || /post/i.test(method) ) {
-                form.setAttribute('method', 'POST');
-            }
-            if (a != s.url) {
-                form.setAttribute('action', s.url);
-            }
-
-            // ie borks in some cases when setting encoding
-            if (! s.skipEncodingOverride && (!method || /post/i.test(method))) {
-                $form.attr({
-                    encoding: 'multipart/form-data',
-                    enctype:  'multipart/form-data'
-                });
-            }
-
-            // support timout
-            if (s.timeout) {
-                timeoutHandle = setTimeout(function() { timedOut = true; cb(CLIENT_TIMEOUT_ABORT); }, s.timeout);
-            }
-
-            // look for server aborts
-            function checkState() {
-                try {
-                    var state = getDoc(io).readyState;
-                    log('state = ' + state);
-                    if (state && state.toLowerCase() == 'uninitialized')
-                        setTimeout(checkState,50);
-                }
-                catch(e) {
-                    log('Server abort: ' , e, ' (', e.name, ')');
-                    cb(SERVER_ABORT);
-                    if (timeoutHandle)
-                        clearTimeout(timeoutHandle);
-                    timeoutHandle = undefined;
-                }
-            }
-
-            // add "extra" data to form if provided in options
-            var extraInputs = [];
-            try {
-                if (s.extraData) {
-                    for (var n in s.extraData) {
-                        if (s.extraData.hasOwnProperty(n)) {
-                           // if using the $.param format that allows for multiple values with the same name
-                           if($.isPlainObject(s.extraData[n]) && s.extraData[n].hasOwnProperty('name') && s.extraData[n].hasOwnProperty('value')) {
-                               extraInputs.push(
-                               $('<input type="hidden" name="'+s.extraData[n].name+'">').val(s.extraData[n].value)
-                                   .appendTo(form)[0]);
-                           } else {
-                               extraInputs.push(
-                               $('<input type="hidden" name="'+n+'">').val(s.extraData[n])
-                                   .appendTo(form)[0]);
-                           }
-                        }
-                    }
-                }
-
-                if (!s.iframeTarget) {
-                    // add iframe to doc and submit the form
-                    $io.appendTo('body');
-                }
-                if (io.attachEvent)
-                    io.attachEvent('onload', cb);
-                else
-                    io.addEventListener('load', cb, false);
-                setTimeout(checkState,15);
-
-                try {
-                    form.submit();
-                } catch(err) {
-                    // just in case form has element with name/id of 'submit'
-                    var submitFn = document.createElement('form').submit;
-                    submitFn.apply(form);
-                }
-            }
-            finally {
-                // reset attrs and remove "extra" input elements
-                form.setAttribute('action',a);
-                if(t) {
-                    form.setAttribute('target', t);
-                } else {
-                    $form.removeAttr('target');
-                }
-                $(extraInputs).remove();
-            }
-        }
-
-        if (s.forceSync) {
-            doSubmit();
-        }
-        else {
-            setTimeout(doSubmit, 10); // this lets dom updates render
-        }
-
-        var data, doc, domCheckCount = 50, callbackProcessed;
-
-        function cb(e) {
-            if (xhr.aborted || callbackProcessed) {
-                return;
-            }
-            
-            doc = getDoc(io);
-            if(!doc) {
-                log('cannot access response document');
-                e = SERVER_ABORT;
-            }
-            if (e === CLIENT_TIMEOUT_ABORT && xhr) {
-                xhr.abort('timeout');
-                deferred.reject(xhr, 'timeout');
-                return;
-            }
-            else if (e == SERVER_ABORT && xhr) {
-                xhr.abort('server abort');
-                deferred.reject(xhr, 'error', 'server abort');
-                return;
-            }
-
-            if (!doc || doc.location.href == s.iframeSrc) {
-                // response not received yet
-                if (!timedOut)
-                    return;
-            }
-            if (io.detachEvent)
-                io.detachEvent('onload', cb);
-            else
-                io.removeEventListener('load', cb, false);
-
-            var status = 'success', errMsg;
-            try {
-                if (timedOut) {
-                    throw 'timeout';
-                }
-
-                var isXml = s.dataType == 'xml' || doc.XMLDocument || $.isXMLDoc(doc);
-                log('isXml='+isXml);
-                if (!isXml && window.opera && (doc.body === null || !doc.body.innerHTML)) {
-                    if (--domCheckCount) {
-                        // in some browsers (Opera) the iframe DOM is not always traversable when
-                        // the onload callback fires, so we loop a bit to accommodate
-                        log('requeing onLoad callback, DOM not available');
-                        setTimeout(cb, 250);
-                        return;
-                    }
-                    // let this fall through because server response could be an empty document
-                    //log('Could not access iframe DOM after mutiple tries.');
-                    //throw 'DOMException: not available';
-                }
-
-                //log('response detected');
-                var docRoot = doc.body ? doc.body : doc.documentElement;
-                xhr.responseText = docRoot ? docRoot.innerHTML : null;
-                xhr.responseXML = doc.XMLDocument ? doc.XMLDocument : doc;
-                if (isXml)
-                    s.dataType = 'xml';
-                xhr.getResponseHeader = function(header){
-                    var headers = {'content-type': s.dataType};
-                    return headers[header.toLowerCase()];
-                };
-                // support for XHR 'status' & 'statusText' emulation :
-                if (docRoot) {
-                    xhr.status = Number( docRoot.getAttribute('status') ) || xhr.status;
-                    xhr.statusText = docRoot.getAttribute('statusText') || xhr.statusText;
-                }
-
-                var dt = (s.dataType || '').toLowerCase();
-                var scr = /(json|script|text)/.test(dt);
-                if (scr || s.textarea) {
-                    // see if user embedded response in textarea
-                    var ta = doc.getElementsByTagName('textarea')[0];
-                    if (ta) {
-                        xhr.responseText = ta.value;
-                        // support for XHR 'status' & 'statusText' emulation :
-                        xhr.status = Number( ta.getAttribute('status') ) || xhr.status;
-                        xhr.statusText = ta.getAttribute('statusText') || xhr.statusText;
-                    }
-                    else if (scr) {
-                        // account for browsers injecting pre around json response
-                        var pre = doc.getElementsByTagName('pre')[0];
-                        var b = doc.getElementsByTagName('body')[0];
-                        if (pre) {
-                            xhr.responseText = pre.textContent ? pre.textContent : pre.innerText;
-                        }
-                        else if (b) {
-                            xhr.responseText = b.textContent ? b.textContent : b.innerText;
-                        }
-                    }
-                }
-                else if (dt == 'xml' && !xhr.responseXML && xhr.responseText) {
-                    xhr.responseXML = toXml(xhr.responseText);
-                }
-
-                try {
-                    data = httpData(xhr, dt, s);
-                }
-                catch (err) {
-                    status = 'parsererror';
-                    xhr.error = errMsg = (err || status);
-                }
-            }
-            catch (err) {
-                log('error caught: ',err);
-                status = 'error';
-                xhr.error = errMsg = (err || status);
-            }
-
-            if (xhr.aborted) {
-                log('upload aborted');
-                status = null;
-            }
-
-            if (xhr.status) { // we've set xhr.status
-                status = (xhr.status >= 200 && xhr.status < 300 || xhr.status === 304) ? 'success' : 'error';
-            }
-
-            // ordering of these callbacks/triggers is odd, but that's how $.ajax does it
-            if (status === 'success') {
-                if (s.success)
-                    s.success.call(s.context, data, 'success', xhr);
-                deferred.resolve(xhr.responseText, 'success', xhr);
-                if (g)
-                    $.event.trigger("ajaxSuccess", [xhr, s]);
-            }
-            else if (status) {
-                if (errMsg === undefined)
-                    errMsg = xhr.statusText;
-                if (s.error)
-                    s.error.call(s.context, xhr, status, errMsg);
-                deferred.reject(xhr, 'error', errMsg);
-                if (g)
-                    $.event.trigger("ajaxError", [xhr, s, errMsg]);
-            }
-
-            if (g)
-                $.event.trigger("ajaxComplete", [xhr, s]);
-
-            if (g && ! --$.active) {
-                $.event.trigger("ajaxStop");
-            }
-
-            if (s.complete)
-                s.complete.call(s.context, xhr, status);
-
-            callbackProcessed = true;
-            if (s.timeout)
-                clearTimeout(timeoutHandle);
-
-            // clean up
-            setTimeout(function() {
-                if (!s.iframeTarget)
-                    $io.remove();
-                else  //adding else to clean up existing iframe response.
-                    $io.attr('src', s.iframeSrc);
-                xhr.responseXML = null;
-            }, 100);
-        }
-
-        var toXml = $.parseXML || function(s, doc) { // use parseXML if available (jQuery 1.5+)
-            if (window.ActiveXObject) {
-                doc = new ActiveXObject('Microsoft.XMLDOM');
-                doc.async = 'false';
-                doc.loadXML(s);
-            }
-            else {
-                doc = (new DOMParser()).parseFromString(s, 'text/xml');
-            }
-            return (doc && doc.documentElement && doc.documentElement.nodeName != 'parsererror') ? doc : null;
-        };
-        var parseJSON = $.parseJSON || function(s) {
-            /*jslint evil:true */
-            return window['eval']('(' + s + ')');
-        };
-
-        var httpData = function( xhr, type, s ) { // mostly lifted from jq1.4.4
-
-            var ct = xhr.getResponseHeader('content-type') || '',
-                xml = type === 'xml' || !type && ct.indexOf('xml') >= 0,
-                data = xml ? xhr.responseXML : xhr.responseText;
-
-            if (xml && data.documentElement.nodeName === 'parsererror') {
-                if ($.error)
-                    $.error('parsererror');
-            }
-            if (s && s.dataFilter) {
-                data = s.dataFilter(data, type);
-            }
-            if (typeof data === 'string') {
-                if (type === 'json' || !type && ct.indexOf('json') >= 0) {
-                    data = parseJSON(data);
-                } else if (type === "script" || !type && ct.indexOf("javascript") >= 0) {
-                    $.globalEval(data);
-                }
-            }
-            return data;
-        };
-
-        return deferred;
-    }
-};
-
-/**
- * ajaxForm() provides a mechanism for fully automating form submission.
- *
- * The advantages of using this method instead of ajaxSubmit() are:
- *
- * 1: This method will include coordinates for <input type="image" /> elements (if the element
- *    is used to submit the form).
- * 2. This method will include the submit element's name/value data (for the element that was
- *    used to submit the form).
- * 3. This method binds the submit() method to the form for you.
- *
- * The options argument for ajaxForm works exactly as it does for ajaxSubmit.  ajaxForm merely
- * passes the options argument along after properly binding events for submit elements and
- * the form itself.
- */
-$.fn.ajaxForm = function(options) {
-    options = options || {};
-    options.delegation = options.delegation && $.isFunction($.fn.on);
-
-    // in jQuery 1.3+ we can fix mistakes with the ready state
-    if (!options.delegation && this.length === 0) {
-        var o = { s: this.selector, c: this.context };
-        if (!$.isReady && o.s) {
-            log('DOM not ready, queuing ajaxForm');
-            $(function() {
-                $(o.s,o.c).ajaxForm(options);
-            });
-            return this;
-        }
-        // is your DOM ready?  http://docs.jquery.com/Tutorials:Introducing_$(document).ready()
-        log('terminating; zero elements found by selector' + ($.isReady ? '' : ' (DOM not ready)'));
-        return this;
-    }
-
-    if ( options.delegation ) {
-        $(document)
-            .off('submit.form-plugin', this.selector, doAjaxSubmit)
-            .off('click.form-plugin', this.selector, captureSubmittingElement)
-            .on('submit.form-plugin', this.selector, options, doAjaxSubmit)
-            .on('click.form-plugin', this.selector, options, captureSubmittingElement);
-        return this;
-    }
-
-    return this.ajaxFormUnbind()
-        .bind('submit.form-plugin', options, doAjaxSubmit)
-        .bind('click.form-plugin', options, captureSubmittingElement);
-};
-
-// private event handlers
-function doAjaxSubmit(e) {
-    /*jshint validthis:true */
-    var options = e.data;
-    if (!e.isDefaultPrevented()) { // if event has been canceled, don't proceed
-        e.preventDefault();
-        $(e.target).ajaxSubmit(options); // #365
-    }
-}
-
-function captureSubmittingElement(e) {
-    /*jshint validthis:true */
-    var target = e.target;
-    var $el = $(target);
-    if (!($el.is("[type=submit],[type=image]"))) {
-        // is this a child element of the submit el?  (ex: a span within a button)
-        var t = $el.closest('[type=submit]');
-        if (t.length === 0) {
-            return;
-        }
-        target = t[0];
-    }
-    var form = this;
-    form.clk = target;
-    if (target.type == 'image') {
-        if (e.offsetX !== undefined) {
-            form.clk_x = e.offsetX;
-            form.clk_y = e.offsetY;
-        } else if (typeof $.fn.offset == 'function') {
-            var offset = $el.offset();
-            form.clk_x = e.pageX - offset.left;
-            form.clk_y = e.pageY - offset.top;
-        } else {
-            form.clk_x = e.pageX - target.offsetLeft;
-            form.clk_y = e.pageY - target.offsetTop;
-        }
-    }
-    // clear form vars
-    setTimeout(function() { form.clk = form.clk_x = form.clk_y = null; }, 100);
-}
-
-
-// ajaxFormUnbind unbinds the event handlers that were bound by ajaxForm
-$.fn.ajaxFormUnbind = function() {
-    return this.unbind('submit.form-plugin click.form-plugin');
-};
-
-/**
- * formToArray() gathers form element data into an array of objects that can
- * be passed to any of the following ajax functions: $.get, $.post, or load.
- * Each object in the array has both a 'name' and 'value' property.  An example of
- * an array for a simple login form might be:
- *
- * [ { name: 'username', value: 'jresig' }, { name: 'password', value: 'secret' } ]
- *
- * It is this array that is passed to pre-submit callback functions provided to the
- * ajaxSubmit() and ajaxForm() methods.
- */
-$.fn.formToArray = function(semantic, elements) {
-    var a = [];
-    if (this.length === 0) {
-        return a;
-    }
-
-    var form = this[0];
-    var els = semantic ? form.getElementsByTagName('*') : form.elements;
-    if (!els) {
-        return a;
-    }
-
-    var i,j,n,v,el,max,jmax;
-    for(i=0, max=els.length; i < max; i++) {
-        el = els[i];
-        n = el.name;
-        if (!n || el.disabled) {
-            continue;
-        }
-
-        if (semantic && form.clk && el.type == "image") {
-            // handle image inputs on the fly when semantic == true
-            if(form.clk == el) {
-                a.push({name: n, value: $(el).val(), type: el.type });
-                a.push({name: n+'.x', value: form.clk_x}, {name: n+'.y', value: form.clk_y});
-            }
-            continue;
-        }
-
-        v = $.fieldValue(el, true);
-        if (v && v.constructor == Array) {
-            if (elements)
-                elements.push(el);
-            for(j=0, jmax=v.length; j < jmax; j++) {
-                a.push({name: n, value: v[j]});
-            }
-        }
-        else if (feature.fileapi && el.type == 'file') {
-            if (elements)
-                elements.push(el);
-            var files = el.files;
-            if (files.length) {
-                for (j=0; j < files.length; j++) {
-                    a.push({name: n, value: files[j], type: el.type});
-                }
-            }
-            else {
-                // #180
-                a.push({ name: n, value: '', type: el.type });
-            }
-        }
-        else if (v !== null && typeof v != 'undefined') {
-            if (elements)
-                elements.push(el);
-            a.push({name: n, value: v, type: el.type, required: el.required});
-        }
-    }
-
-    if (!semantic && form.clk) {
-        // input type=='image' are not found in elements array! handle it here
-        var $input = $(form.clk), input = $input[0];
-        n = input.name;
-        if (n && !input.disabled && input.type == 'image') {
-            a.push({name: n, value: $input.val()});
-            a.push({name: n+'.x', value: form.clk_x}, {name: n+'.y', value: form.clk_y});
-        }
-    }
-    return a;
-};
-
-/**
- * Serializes form data into a 'submittable' string. This method will return a string
- * in the format: name1=value1&amp;name2=value2
- */
-$.fn.formSerialize = function(semantic) {
-    //hand off to jQuery.param for proper encoding
-    return $.param(this.formToArray(semantic));
-};
-
-/**
- * Serializes all field elements in the jQuery object into a query string.
- * This method will return a string in the format: name1=value1&amp;name2=value2
- */
-$.fn.fieldSerialize = function(successful) {
-    var a = [];
-    this.each(function() {
-        var n = this.name;
-        if (!n) {
-            return;
-        }
-        var v = $.fieldValue(this, successful);
-        if (v && v.constructor == Array) {
-            for (var i=0,max=v.length; i < max; i++) {
-                a.push({name: n, value: v[i]});
-            }
-        }
-        else if (v !== null && typeof v != 'undefined') {
-            a.push({name: this.name, value: v});
-        }
-    });
-    //hand off to jQuery.param for proper encoding
-    return $.param(a);
-};
-
-/**
- * Returns the value(s) of the element in the matched set.  For example, consider the following form:
- *
- *  <form><fieldset>
- *      <input name="A" type="text" />
- *      <input name="A" type="text" />
- *      <input name="B" type="checkbox" value="B1" />
- *      <input name="B" type="checkbox" value="B2"/>
- *      <input name="C" type="radio" value="C1" />
- *      <input name="C" type="radio" value="C2" />
- *  </fieldset></form>
- *
- *  var v = $('input[type=text]').fieldValue();
- *  // if no values are entered into the text inputs
- *  v == ['','']
- *  // if values entered into the text inputs are 'foo' and 'bar'
- *  v == ['foo','bar']
- *
- *  var v = $('input[type=checkbox]').fieldValue();
- *  // if neither checkbox is checked
- *  v === undefined
- *  // if both checkboxes are checked
- *  v == ['B1', 'B2']
- *
- *  var v = $('input[type=radio]').fieldValue();
- *  // if neither radio is checked
- *  v === undefined
- *  // if first radio is checked
- *  v == ['C1']
- *
- * The successful argument controls whether or not the field element must be 'successful'
- * (per http://www.w3.org/TR/html4/interact/forms.html#successful-controls).
- * The default value of the successful argument is true.  If this value is false the value(s)
- * for each element is returned.
- *
- * Note: This method *always* returns an array.  If no valid value can be determined the
- *    array will be empty, otherwise it will contain one or more values.
- */
-$.fn.fieldValue = function(successful) {
-    for (var val=[], i=0, max=this.length; i < max; i++) {
-        var el = this[i];
-        var v = $.fieldValue(el, successful);
-        if (v === null || typeof v == 'undefined' || (v.constructor == Array && !v.length)) {
-            continue;
-        }
-        if (v.constructor == Array)
-            $.merge(val, v);
-        else
-            val.push(v);
-    }
-    return val;
-};
-
-/**
- * Returns the value of the field element.
- */
-$.fieldValue = function(el, successful) {
-    var n = el.name, t = el.type, tag = el.tagName.toLowerCase();
-    if (successful === undefined) {
-        successful = true;
-    }
-
-    if (successful && (!n || el.disabled || t == 'reset' || t == 'button' ||
-        (t == 'checkbox' || t == 'radio') && !el.checked ||
-        (t == 'submit' || t == 'image') && el.form && el.form.clk != el ||
-        tag == 'select' && el.selectedIndex == -1)) {
-            return null;
-    }
-
-    if (tag == 'select') {
-        var index = el.selectedIndex;
-        if (index < 0) {
-            return null;
-        }
-        var a = [], ops = el.options;
-        var one = (t == 'select-one');
-        var max = (one ? index+1 : ops.length);
-        for(var i=(one ? index : 0); i < max; i++) {
-            var op = ops[i];
-            if (op.selected) {
-                var v = op.value;
-                if (!v) { // extra pain for IE...
-                    v = (op.attributes && op.attributes['value'] && !(op.attributes['value'].specified)) ? op.text : op.value;
-                }
-                if (one) {
-                    return v;
-                }
-                a.push(v);
-            }
-        }
-        return a;
-    }
-    return $(el).val();
-};
-
-/**
- * Clears the form data.  Takes the following actions on the form's input fields:
- *  - input text fields will have their 'value' property set to the empty string
- *  - select elements will have their 'selectedIndex' property set to -1
- *  - checkbox and radio inputs will have their 'checked' property set to false
- *  - inputs of type submit, button, reset, and hidden will *not* be effected
- *  - button elements will *not* be effected
- */
-$.fn.clearForm = function(includeHidden) {
-    return this.each(function() {
-        $('input,select,textarea', this).clearFields(includeHidden);
-    });
-};
-
-/**
- * Clears the selected form elements.
- */
-$.fn.clearFields = $.fn.clearInputs = function(includeHidden) {
-    var re = /^(?:color|date|datetime|email|month|number|password|range|search|tel|text|time|url|week)$/i; // 'hidden' is not in this list
-    return this.each(function() {
-        var t = this.type, tag = this.tagName.toLowerCase();
-        if (re.test(t) || tag == 'textarea') {
-            this.value = '';
-        }
-        else if (t == 'checkbox' || t == 'radio') {
-            this.checked = false;
-        }
-        else if (tag == 'select') {
-            this.selectedIndex = -1;
-        }
-    else if (t == "file") {
-      if (/MSIE/.test(navigator.userAgent)) {
-        $(this).replaceWith($(this).clone(true));
-      } else {
-        $(this).val('');
-      }
-    }
-        else if (includeHidden) {
-            // includeHidden can be the value true, or it can be a selector string
-            // indicating a special test; for example:
-            //  $('#myForm').clearForm('.special:hidden')
-            // the above would clean hidden inputs that have the class of 'special'
-            if ( (includeHidden === true && /hidden/.test(t)) ||
-                 (typeof includeHidden == 'string' && $(this).is(includeHidden)) )
-                this.value = '';
-        }
-    });
-};
-
-/**
- * Resets the form data.  Causes all form elements to be reset to their original value.
- */
-$.fn.resetForm = function() {
-    return this.each(function() {
-        // guard against an input with the name of 'reset'
-        // note that IE reports the reset function as an 'object'
-        if (typeof this.reset == 'function' || (typeof this.reset == 'object' && !this.reset.nodeType)) {
-            this.reset();
-        }
-    });
-};
-
-/**
- * Enables or disables any matching elements.
- */
-$.fn.enable = function(b) {
-    if (b === undefined) {
-        b = true;
-    }
-    return this.each(function() {
-        this.disabled = !b;
-    });
-};
-
-/**
- * Checks/unchecks any matching checkboxes or radio buttons and
- * selects/deselects and matching option elements.
- */
-$.fn.selected = function(select) {
-    if (select === undefined) {
-        select = true;
-    }
-    return this.each(function() {
-        var t = this.type;
-        if (t == 'checkbox' || t == 'radio') {
-            this.checked = select;
-        }
-        else if (this.tagName.toLowerCase() == 'option') {
-            var $sel = $(this).parent('select');
-            if (select && $sel[0] && $sel[0].type == 'select-one') {
-                // deselect all other options
-                $sel.find('option').selected(false);
-            }
-            this.selected = select;
-        }
-    });
-};
-
-// expose debug var
-$.fn.ajaxSubmit.debug = false;
-
-// helper fn for console logging
-function log() {
-    if (!$.fn.ajaxSubmit.debug)
-        return;
-    var msg = '[jquery.form] ' + Array.prototype.join.call(arguments,'');
-    if (window.console && window.console.log) {
-        window.console.log(msg);
-    }
-    else if (window.opera && window.opera.postError) {
-        window.opera.postError(msg);
-    }
-}
-
-}));
-
-
-/**
- * Patterns logging - minimal logging framework
- *
- * Copyright 2012 Simplon B.V.
- */
-
-(function() {
-    // source: https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Function/bind
-    if (!Function.prototype.bind) {
-        Function.prototype.bind = function (oThis) {
-            if (typeof this !== "function") {
-                // closest thing possible to the ECMAScript 5 internal IsCallable function
-                throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
-            }
-
-            var aArgs = Array.prototype.slice.call(arguments, 1),
-                fToBind = this,
-                fNOP = function () {},
-                fBound = function () {
-                    return fToBind.apply(this instanceof fNOP &&
-                            oThis ? this : oThis,
-                            aArgs.concat(Array.prototype.slice.call(arguments)));
-                };
-            fNOP.prototype = this.prototype;
-            fBound.prototype = new fNOP();
-
-            return fBound;
-        };
-    }
-
-    var root,    // root logger instance
-        writer;  // writer instance, used to output log entries
-
-    var Level = {
-        DEBUG: 10,
-        INFO: 20,
-        WARN: 30,
-        ERROR: 40,
-        FATAL: 50
-    };
-
-    function IEConsoleWriter() {
-    }
-
-    IEConsoleWriter.prototype = {
-        output:  function(log_name, level, messages) {
-            // console.log will magically appear in IE8 when the user opens the
-            // F12 Developer Tools, so we have to test for it every time.
-            if (typeof window.console==="undefined" || typeof console.log==="undefined")
-                    return;
-            if (log_name)
-                messages.unshift(log_name+":");
-            var message = messages.join(" ");
-
-            // Under some conditions console.log will be available but the
-            // other functions are missing.
-            if (typeof console.info===undefined) {
-                var level_name;
-                if (level<=Level.DEBUG)
-                    level_name="DEBUG";
-                else if (level<=Level.INFO)
-                    level_name="INFO";
-                else if (level<=Level.WARN)
-                    level_name="WARN";
-                else if (level<=Level.ERROR)
-                    level_name="ERROR";
-                else
-                    level_name="FATAL";
-                console.log("["+level_name+"] "+message);
-            } else {
-                if (level<=Level.DEBUG) {
-                    // console.debug exists but is deprecated
-                    message="[DEBUG] "+message;
-                    console.log(message);
-                } else if (level<=Level.INFO)
-                    console.info(message);
-                else if (level<=Level.WARN)
-                    console.warn(message);
-                else
-                    console.error(message);
-            }
-        }
-    };
-
-
-    function ConsoleWriter() {
-    }
-
-    ConsoleWriter.prototype = {
-        output: function(log_name, level, messages) {
-            if (log_name)
-                messages.unshift(log_name+":");
-            if (level<=Level.DEBUG) {
-                // console.debug exists but is deprecated
-                messages.unshift("[DEBUG]");
-                console.log.apply(console, messages);
-            } else if (level<=Level.INFO)
-                console.info.apply(console, messages);
-            else if (level<=Level.WARN)
-                console.warn.apply(console, messages);
-            else
-                console.error.apply(console, messages);
-        }
-    };
-
-
-    function Logger(name, parent) {
-        this._loggers={};
-        this.name=name || "";
-        this._parent=parent || null;
-        if (!parent) {
-            this._enabled=true;
-            this._level=Level.WARN;
-        }
-    }
-
-    Logger.prototype = {
-        getLogger: function(name) {
-            var path = name.split("."),
-                root = this,
-                route = this.name ? [this.name] : [];
-            while (path.length) {
-                var entry = path.shift();
-                route.push(entry);
-                if (!(entry in root._loggers))
-                    root._loggers[entry] = new Logger(route.join("."), root);
-                root=root._loggers[entry];
-            }
-            return root;
-        },
-
-        _getFlag: function(flag) {
-            var context=this;
-            flag="_"+flag;
-            while (context!==null) {
-                if (context[flag]!==undefined)
-                    return context[flag];
-                context=context._parent;
-            }
-            return null;
-        },
-
-        setEnabled: function(state) {
-            this._enabled=!!state;
-        },
-
-        isEnabled: function() {
-            this._getFlag("enabled");
-        },
-
-        setLevel: function(level) {
-            if (typeof level==="number")
-                this._level=level;
-            else if (typeof level==="string") {
-                level=level.toUpperCase();
-                if (level in Level)
-                    this._level=Level[level];
-            }
-        },
-
-        getLevel: function() {
-            return this._getFlag("level");
-        },
-
-        log: function(level, messages) {
-            if (!messages.length || !this._getFlag("enabled") || level<this._getFlag("level"))
-                return;
-            messages=Array.prototype.slice.call(messages);
-            writer.output(this.name, level, messages);
-        },
-
-        debug: function() {
-            this.log(Level.DEBUG, arguments);
-        },
-
-        info: function() {
-            this.log(Level.INFO, arguments);
-        },
-
-        warn: function() {
-            this.log(Level.WARN, arguments);
-        },
-
-        error: function() {
-            this.log(Level.ERROR, arguments);
-        },
-
-        fatal: function() {
-            this.log(Level.FATAL, arguments);
-        }
-    };
-
-    function getWriter() {
-        return writer;
-    }
-
-    function setWriter(w) {
-        writer=w;
-    }
-
-    if (!window.console || !window.console.log || typeof window.console.log.apply !== "function") {
-        setWriter(new IEConsoleWriter());
-    } else {
-        setWriter(new ConsoleWriter());
-    }
-
-    root=new Logger();
-
-    var logconfig = /loglevel(|-[^=]+)=([^&]+)/g,
-        match;
-
-    while ((match=logconfig.exec(window.location.search))!==null) {
-        var logger = (match[1]==="") ? root : root.getLogger(match[1].slice(1));
-        logger.setLevel(match[2].toUpperCase());
-    }
-
-    var api = {
-        Level: Level,
-        getLogger: root.getLogger.bind(root),
-        setEnabled: root.setEnabled.bind(root),
-        isEnabled: root.isEnabled.bind(root),
-        setLevel: root.setLevel.bind(root),
-        getLevel: root.getLevel.bind(root),
-        debug: root.debug.bind(root),
-        info: root.info.bind(root),
-        warn: root.warn.bind(root),
-        error: root.error.bind(root),
-        fatal: root.fatal.bind(root),
-        getWriter: getWriter,
-        setWriter: setWriter
-    };
-
-    // Expose as either an AMD module if possible. If not fall back to exposing
-    // a global object.
-    if (typeof define==="function")
-        define("logging", [], function () {
-            return api;
-        });
-    else
-        window.logging=api;
-})();
-
-/**
- * Patterns logger - wrapper around logging library
- *
- * Copyright 2012-2013 Florian Friesdorf
- */
-define('pat-logger',[
-    'logging'
-], function(logging) {
-    var log = logging.getLogger('patterns');
-    return log;
-});
-
-/**
- * Patterns registry - Central registry and scan logic for patterns
- *
- * Copyright 2012-2013 Simplon B.V.
- * Copyright 2012-2013 Florian Friesdorf
- * Copyright 2013 Marko Durkovic
- * Copyright 2013 Rok Garbas
- */
-
-/*
- * changes to previous patterns.register/scan mechanism
- * - if you want initialised class, do it in init
- * - init returns set of elements actually initialised
- * - handle once within init
- * - no turnstile anymore
- * - set pattern.jquery_plugin if you want it
- */
-define('pat-registry',[
-    "jquery",
-    "pat-logger",
-    "pat-utils",
-    // below here modules that are only loaded
-    "pat-compat",
-    "pat-jquery-ext"
-], function($, logger, utils) {
-    var log = logger.getLogger("registry");
-
-    var disable_re = /patterns-disable=([^&]+)/g,
-        dont_catch_re = /patterns-dont-catch/g,
-        dont_catch = false,
-        disabled = {}, match;
-
-    while ((match=disable_re.exec(window.location.search)) !== null) {
-        disabled[match[1]] = true;
-        log.info('Pattern disabled via url config:', match[1]);
-    }
-
-    while ((match=dont_catch_re.exec(window.location.search)) !== null) {
-        dont_catch = true;
-        log.info('I will not catch init exceptions');
-    }
-
-    var registry = {
-        patterns: {},
-        // as long as the registry is not initialized, pattern
-        // registration just registers a pattern. Once init is called,
-        // the DOM is scanned. After that registering a new pattern
-        // results in rescanning the DOM only for this pattern.
-        initialized: false,
-        init: function registry_init() {
-            $(document).ready(function() {
-                log.info('loaded: ' + Object.keys(registry.patterns).sort().join(', '));
-                registry.scan(document.body);
-                registry.initialized = true;
-                log.info('finished initial scan.');
-            });
-        },
-
-        scan: function registry_scan(content, patterns, trigger) {
-            var $content = $(content),
-                all = [], allsel,
-                $match, plog;
-
-            // If no list of patterns was specified, we scan for all patterns
-            patterns = patterns || Object.keys(registry.patterns);
-
-            // selector for all patterns
-            patterns.forEach(function registry_scan_loop(name) {
-                if (disabled[name]) {
-                    log.debug('Skipping disabled pattern:', name);
-                    return;
-                }
-                var pattern = registry.patterns[name];
-                if (pattern.transform) {
-                    try {
-                        pattern.transform($content);
-                    } catch (e) {
-                        if (dont_catch) { throw(e); }
-                        log.error("Transform error for pattern" + name, e);
-                    }
-                }
-                if (pattern.trigger) {
-                    all.push(pattern.trigger);
-                }
-            });
-            // Find all elements that belong to any pattern.
-            allsel = all.join(",");
-            $match = $content.findInclusive(allsel);
-            $match = $match.filter(function() { return $(this).parents('pre').length === 0; });
-            $match = $match.filter(":not(.cant-touch-this)");
-
-            // walk list backwards and initialize patterns inside-out.
-            $match.toArray().reduceRight(function registry_pattern_init(acc, el) {
-                var pattern, $el = $(el);
-                for (var name in registry.patterns) {
-                    pattern = registry.patterns[name];
-                    if (pattern.init) {
-                        plog = logger.getLogger("pat." + name);
-                        if ($el.is(pattern.trigger)) {
-                            plog.debug("Initialising:", $el);
-                            try {
-                                pattern.init($el, null, trigger);
-                                plog.debug("done.");
-                            } catch (e) {
-                                if (dont_catch) { throw(e); }
-                                plog.error("Caught error:", e);
-                            }
-                        }
-                    }
-                }
-            }, null);
-            $('body').addClass('patterns-loaded');
-        },
-
-        register: function registry_register(pattern, name) {
-            var plugin_name, jquery_plugin;
-            name = name || pattern.name;
-            if (!name) {
-                log.error("Pattern lacks a name:", pattern);
-                return false;
-            }
-            if (registry.patterns[name]) {
-                log.error("Already have a pattern called: " + name);
-                return false;
-            }
-
-            // register pattern to be used for scanning new content
-            registry.patterns[name] = pattern;
-
-            // register pattern as jquery plugin
-            if (pattern.jquery_plugin) {
-                plugin_name = ("pat-" + name)
-                        .replace(/-([a-zA-Z])/g, function(match, p1) {
-                            return p1.toUpperCase();
-                        });
-                $.fn[plugin_name] = utils.jqueryPlugin(pattern);
-                // BBB 2012-12-10 and also for Mockup patterns.
-                $.fn[plugin_name.replace(/^pat/, "pattern")] = utils.jqueryPlugin(pattern);
-            }
-            log.debug("Registered pattern:", name, pattern);
-            if (registry.initialized) {
-                registry.scan(document.body, [name]);
-            }
-            return true;
-        }
-    };
-
-    $(document).on("patterns-injected.patterns",
-            function registry_onInject(ev, inject_config, inject_trigger) {
-                registry.scan(ev.target, null, {type: "injection", element: inject_trigger});
-                $(ev.target).trigger("patterns-injected-scanned");
-            });
-
-    return registry;
-});
-// jshint indent: 4, browser: true, jquery: true, quotmark: double
-// vim: sw=4 expandtab
-;
-/* Base Pattern
- */
-
-define('mockup-patterns-base',[
-  'jquery',
-  'pat-registry',
-  'mockup-parser',
-  "pat-logger"
-], function($, Registry, mockupParser, logger) {
-  
-  var log = logger.getLogger("Mockup Base");
-
-  var initMockup = function initMockup($el, options, trigger) {
-    var name = this.prototype.name;
-    var log = logger.getLogger("pat." + name);
-    var pattern = $el.data('pattern-' + name);
-    if (pattern === undefined && Registry.patterns[name]) {
-      try {
-          pattern = new Registry.patterns[name]($el, mockupParser.getOptions($el, name, options));
-      } catch (e) {
-          log.error('Failed while initializing "' + name + '" pattern.');
-      }
-      $el.data('pattern-' + name, pattern);
-    }
-    return pattern;
-  };
-
-  // Base Pattern
-  var Base = function($el, options) {
-    this.$el = $el;
-    this.options = $.extend(true, {}, this.defaults || {}, options || {});
-    this.init();
-    this.emit('init');
-  };
-
-  Base.prototype = {
-    constructor: Base,
-    on: function(eventName, eventCallback) {
-      this.$el.on(eventName + '.' + this.name + '.patterns', eventCallback);
-    },
-    emit: function(eventName, args) {
-      // args should be a list
-      if (args === undefined) {
-        args = [];
-      }
-      this.$el.trigger(eventName + '.' + this.name + '.patterns', args);
-    }
-  };
-
-  Base.extend = function(patternProps) {
-    /* Helper function to correctly set up the prototype chain for new patterns.
-     */
-    var parent = this;
-    var child;
-
-    // Check that the required configuration properties are given.
-    if (!patternProps) {
-      throw new Error("Pattern configuration properties required when calling Base.extend");
-    }
-
-    // The constructor function for the new subclass is either defined by you
-    // (the "constructor" property in your `extend` definition), or defaulted
-    // by us to simply call the parent's constructor.
-    if (patternProps.hasOwnProperty('constructor')) {
-      child = patternProps.constructor;
-    } else {
-      child = function() { parent.apply(this, arguments); };
-    }
-
-    // Allow patterns to be extended indefinitely
-    child.extend = Base.extend;
-
-    // Static properties required by the Patternslib registry 
-    child.init = initMockup;
-    child.jquery_plugin = true;
-    child.trigger = patternProps.trigger;
-
-    // Set the prototype chain to inherit from `parent`, without calling
-    // `parent`'s constructor function.
-    var Surrogate = function() { this.constructor = child; };
-    Surrogate.prototype = parent.prototype;
-    child.prototype = new Surrogate();
-
-    // Add pattern's configuration properties (instance properties) to the subclass,
-    $.extend(true, child.prototype, patternProps);
-
-    // Set a convenience property in case the parent's prototype is needed
-    // later.
-    child.__super__ = parent.prototype;
-
-    // Register the pattern in the Patternslib registry.
-    if (!patternProps.name) {
-      log.warn("This mockup pattern without a name attribute will not be registered!");
-    } else if (!patternProps.trigger) {
-      log.warn("The mockup pattern '"+patternProps.name+"' does not have a trigger attribute, it will not be registered.");
-    } else {
-      Registry.register(child, patternProps.name);
-    }
-    return child;
-  };
-  return Base;
-});
-
-/* Select2 pattern.
- *
- * Options:
- *    separator(string): Analagous to the separator constructor parameter from Select2. Defines a custom separator used to distinguish the tag values. Ex: a value of ";" will allow tags and initialValues to have values separated by ";" instead of the default ",". (',')
- *    initialValues(string): This can be a json encoded string, or a list of id:text values. Ex: Red:The Color Red,Orange:The Color Orange  This is used inside the initSelection method, if AJAX options are NOT set. (null)
- *    vocabularyUrl(string): This is a URL to a JSON-formatted file used to populate the list (null)
- *    OTHER OPTIONS(): For more options on select2 go to http://ivaynberg.github.io/select2/#documentation ()
- *
- * Documentation:
- *    # Autocomplete with search (single select)
- *
- *    {{ example-1 }}
- *
- *    # Tagging
- *
- *    {{ example-2 }}
- *
- *    # Orderable tags
- *
- *    {{ example-3 }}
- *
- *    # AJAX tags
- *
- *    {{ example-4 }}
- *
- * Example: example-1
- *    <select class="pat-select2" data-pat-select2="width:20em">
- *      <option value="Acholi">Acholi</option>
- *      <option value="Afrikaans">Afrikaans</option>
- *      <option value="Akan">Akan</option>
- *      <option value="Albanian">Albanian</option>
- *      <option value="Amharic">Amharic</option>
- *      <option value="Arabic">Arabic</option>
- *      <option value="Ashante">Ashante</option>
- *      <option value="Asl">Asl</option>
- *      <option value="Assyrian">Assyrian</option>
- *      <option value="Azerbaijani">Azerbaijani</option>
- *      <option value="Azeri">Azeri</option>
- *    </select>
- *
- * Example: example-2
- *    <input type="text" class="pat-select2"
- *           data-pat-select2="separator:,;
- *                             tags:Red,Yellow,Green,Orange,Purple;
- *                             width:20em;
- *                             initialValues:Red:The Color Red,Orange:The Color Orange"
- *           value="Red,Orange"/>
- *
- * Example: example-3
- *    <input type="text" class="pat-select2"
- *           data-pat-select2="orderable:true;
- *                             tags:Red,Yellow,Green;
- *                             width:20em" />
- * Example: example-4
- *    <input type="hidden" class="pat-select2"
- *           data-pat-select2="placeholder:Search for a Value;
- *                             vocabularyUrl:select2-test.json;
- *                             width:20em" />
- *
- */
-
-
-define('mockup-patterns-select2',[
-  'jquery',
-  'mockup-patterns-base',
-  'select2',
-  'jquery.event.drag',
-  'jquery.event.drop'
-], function($, Base) {
-  
-
-  var Select2 = Base.extend({
-    name: 'select2',
-    trigger: '.pat-select2',
-    defaults: {
-      separator: ','
-    },
-    initializeValues: function() {
-      var self = this;
-      // Init Selection ---------------------------------------------
-      if (self.options.initialValues) {
-        self.options.id = function(term) {
-          return term.id;
-        };
-        self.options.initSelection = function ($el, callback) {
-          var data = [],
-              value = $el.val(),
-              seldefaults = self.options.initialValues;
-
-          // Create the initSelection value that contains the default selection,
-          // but in a javascript object
-          if (typeof(self.options.initialValues) === 'string' && self.options.initialValues !== '') {
-            // if default selection value starts with a '{', then treat the value as
-            // a JSON object that needs to be parsed
-            if (self.options.initialValues[0] === '{') {
-              seldefaults = JSON.parse(self.options.initialValues);
-            }
-            // otherwise, treat the value as a list, separated by the defaults.separator value of
-            // strings in the format "id:text", and convert it to an object
-            else {
-              seldefaults = {};
-              $(self.options.initialValues.split(self.options.separator)).each(function() {
-                var selection = this.split(':');
-                var id = $.trim(selection[0]);
-                var text = $.trim(selection[1]);
-                seldefaults[id] = text;
-              });
-            }
-          }
-
-          $(value.split(self.options.separator)).each(function() {
-            var text = this;
-            if (seldefaults[this]) {
-              text = seldefaults[this];
-            }
-            data.push({id: this, text: text});
-          });
-          callback(data);
-        };
-      }
-    },
-    initializeTags: function() {
-      var self = this;
-      if (self.options.tags && typeof(self.options.tags) === 'string') {
-        if (self.options.tags.substr(0, 1) === '[') {
-          self.options.tags = JSON.parse(self.options.tags);
-        } else {
-          self.options.tags = self.options.tags.split(self.options.separator);
-        }
-      }
-
-      if (self.options.tags && !self.options.allowNewItems) {
-        self.options.data = $.map (self.options.tags, function (value, i) {
-          return { id: value, text: value };
-        });
-        self.options.multiple = true;
-        delete self.options.tags;
-      }
-    },
-    initializeOrdering: function() {
-      var self = this;
-      if (self.options.orderable) {
-        var formatSelection = function(data, $container) {
-          return data ? data.text : undefined;
-        };
-        if (self.options.formatSelection) {
-          formatSelection = self.options.formatSelection;
-        }
-
-        self.options.formatSelection = function(data, $container) {
-          $container.parents('li')
-            .drag('start', function(e, dd) {
-              $(this).addClass('select2-choice-dragging');
-              self.$el.select2('onSortStart');
-              $.drop({
-                tolerance: function(event, proxy, target) {
-                  var test = event.pageY > (target.top + target.height / 2);
-                  $.data(target.elem, 'drop+reorder', test ? 'insertAfter' : 'insertBefore' );
-                  return this.contains(target, [event.pageX, event.pageY]);
-                }
-              });
-              return $( this ).clone().
-                addClass('dragging').
-                css({opacity: 0.75, position: 'absolute'}).
-                appendTo(document.body);
-            })
-            .drag(function(e, dd) {
-              /*jshint eqeqeq:false */
-              $( dd.proxy ).css({
-                top: dd.offsetY,
-                left: dd.offsetX
-              });
-              var drop = dd.drop[0],
-                  method = $.data(drop || {}, 'drop+reorder');
-
-              /* XXX Cannot use triple equals here */
-              if (drop && (drop != dd.current || method != dd.method)) {
-                $(this)[method](drop);
-                dd.current = drop;
-                dd.method = method;
-                dd.update();
-              }
-            })
-            .drag('end', function(e, dd) {
-              $(this).removeClass('select2-choice-dragging');
-              self.$el.select2('onSortEnd');
-              $( dd.proxy ).remove();
-            })
-            .drop('init', function(e, dd ) {
-              /*jshint eqeqeq:false */
-              /* XXX Cannot use triple equals here */
-              return (this == dd.drag) ? false: true;
-            });
-          return formatSelection(data, $container);
-        };
-      }
-    },
-    initializeSelect2: function() {
-      var self = this;
-      self.$el.select2(self.options);
-      self.$select2 = self.$el.parent().find('.select2-container');
-      self.$el.parent().off('close.modal.patterns');
-      if (self.options.orderable) {
-        self.$select2.addClass('select2-orderable');
-      }
-    },
-    init: function() {
-      var self = this;
-
-      self.options.allowNewItems = self.options.hasOwnProperty ('allowNewItems') ?
-            JSON.parse(self.options.allowNewItems) : true;
-
-      if (self.options.ajax || self.options.vocabularyUrl) {
-        if (self.options.vocabularyUrl) {
-          self.options.multiple = self.options.multiple === undefined ? true : self.options.multiple;
-          self.options.ajax = self.options.ajax || {};
-          self.options.ajax.url = self.options.vocabularyUrl;
-          // XXX removing the following function does'nt break tests. dead code?
-          self.options.initSelection = function ($el, callback) {
-            var data = [], value = $el.val();
-            $(value.split(self.options.separator)).each(function () {
-              data.push({id: this, text: this});
-            });
-            callback(data);
-          };
-        }
-
-        var queryTerm = '';
-        self.options.ajax = $.extend({
-          quietMillis: 300,
-          data: function (term, page) {
-            queryTerm = term;
-            return {
-              query: term,
-              'page_limit': 10,
-              page: page
-            };
-          },
-          results: function (data, page) {
-            var results = data.results;
-            if (self.options.vocabularyUrl) {
-              var dataIds = [];
-              $.each(data.results, function(i, item) {
-                dataIds.push(item.id);
-              });
-              results = [];
-
-              var haveResult = queryTerm === '' || $.inArray(queryTerm, dataIds) >= 0;
-              if (self.options.allowNewItems && !haveResult) {
-                results.push({id: queryTerm, text: queryTerm});
-              }
-
-              if (haveResult || self.options.allowNewItems) {
-                $.each(data.results, function(i, item) {
-                  results.push(item);
-                });
-              }
-            }
-            return { results: results };
-          }
-        }, self.options.ajax);
-      } else if (self.options.multiple && self.$el.is('select')) {
-        // Multiselects need to be converted to input[type=hidden]
-        // for Select2
-        var vals = self.$el.val() || [];
-        var options = $.map(self.$el.find('option'), function (o) { return {text: $(o).html(), id: o.value}; });
-        var $hidden = $('<input type="hidden" />');
-        $hidden.val(vals.join(self.options.separator));
-        $hidden.attr('class', self.$el.attr('class'));
-        $hidden.attr('name', self.$el.attr('name'));
-        $hidden.attr('id', self.$el.attr('id'));
-        self.$orig = self.$el;
-        self.$el.replaceWith($hidden);
-        self.$el = $hidden;
-        self.options.data = options;
-      }
-
-      self.initializeValues();
-      self.initializeTags();
-      self.initializeOrdering();
-      self.initializeSelect2();
-    }
-  });
-
-  return Select2;
-
-});
-
-/* Autotoc pattern.
- *
- * Options:
- *    IDPrefix(string): Prefix used to generate ID. ('autotoc-item-')
- *    classActiveName(string): Class used for active level. ('active')
- *    classLevelPrefixName(string): Class prefix used for the TOC levels. ('autotoc-level-')
- *    classSectionName(string): Class used for section in TOC. ('autotoc-section')
- *    classTOCName(string): Class used for the TOC. ('autotoc-nav')
- *    levels(string): Selectors used to find levels. ('h1,h2,h3')
- *    scrollDuration(string): Speed of scrolling. ('slow')
- *    scrollEasing(string): Easing to use while scrolling. ('swing')
- *    section(string): Tag type to use for TOC. ('section')
- *
- * Documentation:
- *    # TOC
- *    {{ example-1 }}
- *
- *    # Tabs
- *    {{ example-2-tabs }}
- *
- * Example: example-1
- *    <div class="pat-autotoc"
- *          data-pat-autotoc="scrollDuration:slow;levels:h4,h5,h6;">
- *      <h4>Title 1</h4>
- *      <p>Mr. Zuckerkorn, you've been warned about touching. You said
- *         spanking. It walked on my pillow! How about a turtle? I've always
- *         loved those leathery little snappy faces.</p>
- *      <h5>Title 1.1</h5>
- *      <p>Ah coodle doodle do Caw ca caw, caw ca caw. Butterscotch!</p>
- *      <h6>Title 1.1.1</h6>
- *      <p>Want a lick? Okay, Lindsay, are you forgetting that I was
- *         a professional twice over - an analyst and a therapist.</p>
- *      <h4>Title 2</h4>
- *      <p>You boys know how to shovel coal? Don't worry, these young
- *      beauties have been nowhere near the bananas. I thought the two of
- *      us could talk man-on-man.</p>
- *    </div>
- *
- * Example: example-2-tabs
- *    <div class="pat-autotoc autotabs"
- *          data-pat-autotoc="section:fieldset;levels:legend;">
- *        <fieldset>
- *          <legend>Tab 1</legend>
- *          <div>
- *            Lorem ipsum dolor sit amet, ex nam odio ceteros fastidii,
- *            id porro lorem pro, homero facilisis in cum.
- *            At doming voluptua indoctum mel, natum noster similique ne mel.
- *          </div>
- *        </fieldset>
- *        <fieldset>
- *          <legend>Tab 2</legend>
- *          <div>
- *            Reque repudiare eum et. Prompta expetendis percipitur eu eam,
- *            et graece mandamus pro, eu vim harum audire tractatos.
- *            Ad perpetua salutandi mea, soluta delicata aliquando eam ne.
- *            Qui nostrum lucilius perpetua ut, eum suas stet oblique ut.
- *          </div>
- *        </fieldset>
- *        <fieldset>
- *          <legend>Tab 3</legend>
- *          <div>
- *            Vis mazim harum deterruisset ex, duo nemore nostro civibus ad,
- *            eros vituperata id cum. Vim at erat solet soleat,
- *            eum et iuvaret luptatum, pro an esse dolorum maiestatis.
- *          </div>
- *        </fieldset>
- *    </div>
- *
- */
-
-
-define('mockup-patterns-autotoc',[
-  'jquery',
-  'mockup-patterns-base'
-], function($, Base) {
-  
-
-  var AutoTOC = Base.extend({
-    name: 'autotoc',
-    trigger: '.pat-autotoc',
-    defaults: {
-      section: 'section',
-      levels: 'h1,h2,h3',
-      IDPrefix: 'autotoc-item-',
-      classTOCName: 'autotoc-nav',
-      classSectionName: 'autotoc-section',
-      classLevelPrefixName: 'autotoc-level-',
-      classActiveName: 'active',
-      scrollDuration: 'slow',
-      scrollEasing: 'swing'
-    },
-    init: function() {
-      var self = this;
-
-      self.$toc = $('<nav/>').addClass(self.options.classTOCName);
-
-      if (self.options.prependTo) {
-        self.$toc.prependTo(self.options.prependTo);
-      } else if (self.options.appendTo) {
-        self.$toc.appendTo(self.options.appendTo);
-      } else {
-        self.$toc.prependTo(self.$el);
-      }
-
-      if (self.options.className) {
-        self.$el.addClass(self.options.className);
-      }
-
-      $(self.options.section, self.$el).addClass(self.options.classSectionName);
-
-      var asTabs = self.$el.hasClass('autotabs');
-
-      $(self.options.levels, self.$el).each(function(i) {
-        var $level = $(this),
-            id = $level.prop('id') ? '#' + $level.prop('id') :
-                 $level.parents(self.options.section).prop('id');
-        if (!id) {
-          id = self.options.IDPrefix + self.name + '-' + i;
-          $level.prop('id', id);
-        }
-        $('<a/>')
-          .appendTo(self.$toc)
-          .text($level.text())
-          .prop('href', id)
-          .addClass(self.options.classLevelPrefixName + self.getLevel($level))
-          .on('click', function(e, doScroll) {
-            e.stopPropagation();
-            e.preventDefault();
-            self.$toc.children('.' + self.options.classActiveName).removeClass(self.options.classActiveName);
-            self.$el.children('.' + self.options.classActiveName).removeClass(self.options.classActiveName);
-            $(e.target).addClass(self.options.classActiveName);
-            $level.parents(self.options.section).addClass(self.options.classActiveName);
-            if (doScroll !== false &&
-                self.options.scrollDuration &&
-                $level &&
-                !asTabs) {
-              $('body,html').animate({
-                scrollTop: $level.offset().top
-              }, self.options.scrollDuration, self.options.scrollEasing);
-            }
-            if (self.$el.parents('.plone-modal').size() !== 0) {
-              self.$el.trigger('resize.modal.patterns');
-            }
-            $(this).trigger('clicked');
-          });
-      });
-
-      self.$toc.find('a').first().trigger('click', false);
-
-    },
-    getLevel: function($el) {
-      var elementLevel = 0;
-      $.each(this.options.levels.split(','), function(level, levelSelector) {
-        if ($el.filter(levelSelector).size() === 1) {
-          elementLevel = level + 1;
-          return false;
-        }
-      });
-      return elementLevel;
-    }
-  });
-
-  return AutoTOC;
-
-});
-
-/* Pattern which provides accessibility support
- *
- * Options:
- *    smallbtn(string): Selector used to activate small text on click. (null)
- *    normalbtn(string): Selector used to activate normal text on click. (null)
- *    largebtn(string): Selector used to activate large text on click. (null)
- *
- * Documentation:
- *    # Example
- *
- *    {{ example-1 }}
- *
- * Example: example-1
- *    <ul id="textAdjust"
- *        class="pat-accessibility"
- *        data-pat-accessibility="smallbtn:.decrease-text;
- *                                normalbtn:.normal-text;
- *                                largebtn:.increase-text;">
- *      <li>
- *        <a href="." class="decrease-text">
- *          <i class="icon-minus-sign"></i>
- *          Decrease Text Size
- *        </a>
- *      </li>
- *      <li>
- *        <a href="." class="normal-text">
- *          <i class="icon-circle"></i>
- *          Normal Text Size
- *        </a>
- *      </li>
- *      <li>
- *        <a href="." class="increase-text">
- *          <i class="icon-plus-sign"></i>
- *          Increase Text Size
- *        </a>
- *      </li>
- *    </ul>
- *
- */
-
-
-define('mockup-patterns-accessibility',[
-  'jquery',
-  'mockup-patterns-base',
-  'jquery.cookie'
-], function($, Base) {
-  
-
-  var Accessibility = Base.extend({
-    name: 'accessibility',
-    trigger: '.pat-accessibility',
-    defaults: {
-      'smallbtn': null,
-      'normalbtn': null,
-      'largebtn': null
-    },
-    setBaseFontSize: function($fontsize, $reset) {
-      if ($reset) {
-        this.$el.removeClass('smallText').removeClass('largeText').
-            removeClass('mediumText');
-        $.cookie('fontsize', $fontsize, { expires: 365, path: '/' });
-      }
-      this.$el.addClass($fontsize);
-    },
-    initBtn: function(btn) {
-      var self = this;
-      btn.el.click(function(e) {
-        e.preventDefault();
-        self.setBaseFontSize(btn.name + 'Text', 1);
-      });
-    },
-    init: function() {
-      var self = this;
-      var $fontsize = $.cookie('fontsize');
-      if ($fontsize) {
-        self.setBaseFontSize($fontsize, 0);
-      }
-      var btns = ['smallbtn', 'normalbtn', 'largebtn'];
-      $.each(btns, function(idx, btn) {
-        var btnName = btn.replace('btn', '');
-        var btnSelector = self.options[btn];
-        if (btnSelector !== null) {
-          var el = $(btnSelector, self.$el);
-          if (el) {
-            btn = {
-              name: btnName,
-              el: el
-            };
-            self[btnName] = btn;
-            self.initBtn(btn);
-          }
-        }
-      });
-    }
-  });
-
-  return Accessibility;
-
-});
-
-/* Cookie Trigger pattern.
- *
- * Show a DOM element if browser cookies are disabled.
- *
- * Documentation:
- *
- *    {{ example-1 }}
- *
- * Example: example-1
- *    <div class="portalMessage error pat-cookietrigger">
- *      Cookies are not enabled. You must enable cookies before you can log in.
- *    </div>
- */
-
-define('mockup-patterns-cookietrigger',[
-  'jquery',
-  'mockup-patterns-base'
-], function ($, Base) {
-  
-
-  var CookieTrigger = Base.extend({
-    name: 'cookietrigger',
-    trigger: '.pat-cookietrigger',
-
-    isCookiesEnabled: function() {
-      /* Test whether cookies are enabled by attempting to set a cookie
-       * and then change its value set test cookie.
-       */
-      var c = "areYourCookiesEnabled=0";
-      document.cookie = c;
-      var dc = document.cookie;
-      // cookie not set?  fail
-      if (dc.indexOf(c) === -1) {
-        return 0;
-      }
-      // change test cookie
-      c = "areYourCookiesEnabled=1";
-      document.cookie = c;
-      dc = document.cookie;
-      // cookie not changed?  fail
-      if (dc.indexOf(c) === -1) {
-        return 0;
-      }
-      // delete cookie
-      document.cookie = "areYourCookiesEnabled=; expires=Thu, 01-Jan-70 00:00:01 GMT";
-      return 1;
-    },
-
-    showIfCookiesDisabled: function() {
-      /* Show the element on which this pattern is defined if cookies are
-       * disabled.
-       */
-      if (this.isCookiesEnabled()) {
-        this.$el.hide();
-      } else {
-        this.$el.show();
-      }
-    },
-
-    init: function () {
-      this.showIfCookiesDisabled();
-    },
-  });
-  return CookieTrigger;
-});
-
-/* Formautofocus pattern.
- *
- * Options:
- *    condition(string): TODO ('div.error')
- *    target(string): TODO ("div.error :input:not(.formTabs):visible:first')
- *    always(string): TODO (:input:not(.formTabs):visible:first')
- *
- * Documentation:
- *    # TODO
- *
- * Example: example-1
- *
- */
-
-
-define('mockup-patterns-formautofocus',[
-  'jquery',
-  'mockup-patterns-base'
-], function($, Base, undefined) {
-  
-
-  var FormAutoFocus = Base.extend({
-    name: 'formautofocus',
-    trigger: '.pat-formautofocus',
-    defaults: {
-      condition: 'div.error',
-      target: 'div.error :input:not(.formTabs):visible:first',
-      always: ':input:not(.formTabs):visible:first'
-    },
-    init: function() {
-      var self = this;
-      if ($(self.options.condition, self.$el).size() !== 0) {
-        $(self.options.target, self.$el).focusin();
-      } else {
-        $(self.options.always, self.$el).focusin();
-      }
-
-    }
-  });
-
-  return FormAutoFocus;
-
-});
-
 /* Backdrop pattern.
  *
  * Options:
@@ -14924,3648 +16194,6 @@ define('mockup-patterns-backdrop',[
   });
 
   return Backdrop;
-
-});
-
-/* Content loader pattern.
- *
- * Options:
- *    url(string): To load content from remote resource. Use 'el' to use with anchor tag href.
- *    content(string): CSS selector for content already on page. Can be used in conjunction with url to load remote content on page.
- *    trigger(string): Event to trigger content loading. Defaults to "click"
- *    target(string): CSS selector of target for content loading. If this is empty, it's assume content will replace pattern element.
- *
- * Documentation:
- *    # With selector
- *    {{ example-1 }}
- *
- *    # With remote content
- *    {{ example-2 }}
- *
- * Example: example-1
- *    <a href="#" class="pat-contentloader" data-pat-contentloader="content:#clexample1;target:#clexample1target;">Load content</a>
- *    <div id="clexample1target">Original Content</div>
- *    <div id="clexample1" style="display:none">Replaced Content</div>
- *
- * Example: example-2
- *    <a href="#" class="pat-contentloader" data-pat-contentloader="url:something.html;">Load content</a>
- *
- *
- */
-
-
-define('mockup-patterns-contentloader',[
-  'jquery',
-  'mockup-patterns-base',
-  'pat-logger',
-  'pat-registry',
-  'mockup-utils'
-], function($, Base, logger, Registry, utils) {
-  
-  var log = logger.getLogger('pat-contentloader');
-
-  var ContentLoader = Base.extend({
-    name: 'contentloader',
-    trigger: '.pat-contentloader',
-    defaults: {
-      url: null,
-      content: null,
-      trigger: 'click',
-      target: null
-    },
-    init: function() {
-      var that = this;
-      if(that.options.url === 'el' && that.$el[0].tagName === 'A'){
-        that.options.url = that.$el.attr('href');
-      }
-      that.$el.on(that.options.trigger, function(e){
-        e.preventDefault();
-        that.$el.addClass('loading-content');
-        if(that.options.url){
-          that.loadRemote();
-        }else{
-          that.loadLocal();
-        }
-      });
-    },
-    loadRemote: function(){
-      var that = this;
-      $.ajax({
-        url: that.options.url
-      }).done(function(data){
-        if(data.indexOf('<html') !== -1){
-          data = utils.parseBodyTag(data);
-        }
-        var $el = $(data);
-        if(that.options.content !== null){
-          $el = $el.find(that.options.content);
-        }
-        that.loadLocal($el);
-      });
-    },
-    loadLocal: function($content){
-      var that = this;
-      if(!$content && that.options.content === null){
-        log.warn('No selector configured');
-        return;
-      }
-      var $target = that.$el;
-      if(that.options.target !== null){
-        $target = $(that.options.target);
-        if($target.size() === 0){
-          log.warn('No target nodes found');
-          return;
-        }
-      }
-
-      if(!$content){
-        $content = $(that.options.content).clone();
-      }
-      $content.show();
-      $target.replaceWith($content);
-      Registry.scan($content);
-      that.$el.removeClass('loading-content');
-    }
-  });
-
-  return ContentLoader;
-
-});
-
-/**
- * Patterns registry fork - Central registry and scan logic for patterns
- *
- * Copyright 2012-2013 Simplon B.V.
- * Copyright 2012-2013 Florian Friesdorf
- * Copyright 2013 Marko Durkovic
- * Copyright 2013 Rok Garbas
- */
-
-/*
- * changes to previous patterns.register/scan mechanism
- * - if you want initialised class, do it in init
- * - init returns set of elements actually initialised
- * - handle once within init
- * - no turnstile anymore
- * - set pattern.jquery_plugin if you want it
- * - This is a global registry now
- * - elements can no longer be initialized more than once
- */
-define('mockup-registry',[
-    "jquery",
-    "pat-logger",
-    "pat-utils",
-    // below here modules that are only loaded
-    "pat-compat",
-    "pat-jquery-ext"
-], function($, logger, utils) {
-    
-
-    var log = logger.getLogger("registry");
-
-    var disable_re = /patterns-disable=([^&]+)/g,
-        dont_catch_re = /patterns-dont-catch/g,
-        dont_catch = false,
-        disabled = {}, match;
-
-    while ((match=disable_re.exec(window.location.search)) !== null) {
-        disabled[match[1]] = true;
-        log.info('Pattern disabled via url config:', match[1]);
-    }
-
-    while ((match=dont_catch_re.exec(window.location.search)) !== null) {
-        dont_catch = true;
-        log.info('I will not catch init exceptions');
-    }
-
-    if(window.registry_settings === undefined){
-        /* use global settings in case mockup-registry is included by
-           multiple compiled sources. Makes this a global registry */
-        window.registry_settings = {
-            patterns: {},
-            initialized: false
-        };
-    }
-
-    var registry = {
-        settings: window.registry_settings,
-        patterns: window.registry_settings.patterns,
-        // as long as the registry is not initialized, pattern
-        // registration just registers a pattern. Once init is called,
-        // the DOM is scanned. After that registering a new pattern
-        // results in rescanning the DOM only for this pattern.
-        init: function registry_init() {
-            $(document).ready(function() {
-                log.info('loaded: ' + Object.keys(registry.patterns).sort().join(', '));
-                registry.scan(document.body);
-                registry.settings.initialized = true;
-                log.info('finished initial scan.');
-            });
-        },
-
-        scan: function registry_scan(content, patterns, trigger) {
-            var $content = $(content),
-                all = [], allsel,
-                $match, plog;
-
-            // If no list of patterns was specified, we scan for all patterns
-            patterns = patterns || Object.keys(registry.patterns);
-
-            // selector for all patterns
-            patterns.forEach(function registry_scan_loop(name) {
-                if (disabled[name]) {
-                    log.debug('Skipping disabled pattern:', name);
-                    return;
-                }
-                var pattern = registry.patterns[name];
-                if (pattern.transform) {
-                    try {
-                        pattern.transform($content);
-                    } catch (e) {
-                        if (dont_catch) { throw(e); }
-                        log.error("Transform error for pattern" + name, e);
-                    }
-                }
-                if (pattern.trigger) {
-                    all.push(pattern.trigger);
-                }
-            });
-            // Find all elements that belong to any pattern.
-            allsel = all.join(",");
-            $match = $content.findInclusive(allsel);
-            $match = $match.filter(function() { return $(this).parents('pre').length === 0; });
-            $match = $match.filter(":not(.cant-touch-this)");
-
-            // walk list backwards and initialize patterns inside-out.
-            $match.toArray().reduceRight(function registry_pattern_init(acc, el) {
-                var pattern, $el = $(el);
-                for (var name in registry.patterns) {
-                    pattern = registry.patterns[name];
-                    if (pattern.init) {
-                        plog = logger.getLogger("pat." + name);
-                        if ($el.is(pattern.trigger) && !$el.hasClass('pattern-initialized')) {
-                            plog.debug("Initialising:", $el);
-                            try {
-                                pattern.init($el, null, trigger);
-                                plog.debug("done.");
-                            } catch (e) {
-                                if (dont_catch) { throw(e); }
-                                plog.error("Caught error:", e);
-                            }
-                            $el.addClass('pattern-initialized');
-                        }
-                    }
-                }
-            }, null);
-            $('body').addClass('patterns-loaded');
-        },
-
-        register: function registry_register(pattern, name) {
-            var plugin_name, jquery_plugin;
-            name = name || pattern.name;
-            if (!name) {
-                log.error("Pattern lacks a name:", pattern);
-                return false;
-            }
-            if (registry.patterns[name]) {
-                log.error("Already have a pattern called: " + name);
-                return false;
-            }
-
-            // register pattern to be used for scanning new content
-            registry.patterns[name] = pattern;
-
-            // register pattern as jquery plugin
-            if (pattern.jquery_plugin) {
-                plugin_name = ("pat-" + name)
-                        .replace(/-([a-zA-Z])/g, function(match, p1) {
-                            return p1.toUpperCase();
-                        });
-                $.fn[plugin_name] = utils.jqueryPlugin(pattern);
-                // BBB 2012-12-10 and also for Mockup patterns.
-                $.fn[plugin_name.replace(/^pat/, "pattern")] = utils.jqueryPlugin(pattern);
-            }
-            log.debug("Registered pattern:", name, pattern);
-            if (registry.settings.initialized) {
-                registry.scan(document.body, [name]);
-            }
-            return true;
-        }
-    };
-
-    $(document).on("patterns-injected.patterns",
-            function registry_onInject(ev, inject_config, inject_trigger) {
-                registry.scan(ev.target, null, {type: "injection", element: inject_trigger});
-                $(ev.target).trigger("patterns-injected-scanned");
-            });
-
-    return registry;
-});
-// jshint indent: 4, browser: true, jquery: true, quotmark: double
-// vim: sw=4 expandtab
-;
-define('plone-patterns-toolbar',[
-  'jquery',
-  'mockup-patterns-base',
-  'mockup-registry',
-  'mockup-utils',
-  'jquery.cookie'
-], function ($, Base, Registry, utils) {
-  
-
-  var Toolbar = Base.extend({
-    name: 'toolbar',
-    trigger: '.pat-toolbar',
-    init: function () {
-      var that = this;
-      if ($(window).width() < '768'){//mobile
-        // $( 'html' ).has('.plone-toolbar-left').css({'margin-left':'0','margin-top':'0','margin-right':'0'});
-        // $( 'html' ).has('.plone-toolbar-top').css({'margin-left':'0','margin-top':'0','margin-right':'0'});
-        // $( 'html' ).has('.plone-toolbar-left.expanded').css({'margin-left':'0','margin-top':'0','margin-right':'0'});
-        // $( 'body' ).css('margin-left: 0px');
-        $('#edit-zone').css('right', '-120px');
-        $( '#edit-zone .plone-toolbar-logo' ).click(function() {
-          if ($(this).hasClass('open')){
-            $( '#edit-zone' ).css('right', '-120px');
-            $( 'html' ).css('margin-left', '0');
-            $( 'html' ).css('margin-right', '0');
-            $(this).removeClass('open');
-            $( '#edit-zone nav li' ).removeClass('active');
-          } else {
-            $( '#edit-zone' ).css('right', '0');
-            $(this).addClass('open');
-            $( 'html' ).css('margin-left', '-120px');
-            $( 'html' ).css('margin-right', '120px');
-          }
-        });
-        $( '#edit-zone nav li' ).has( 'a .plone-toolbar-caret' ).click(function(e) {
-          e.preventDefault();
-          e.stopPropagation();
-          if ($(this).hasClass('active')) {
-            $( '#edit-zone' ).css('right', '0');
-            $( 'html' ).css('margin-left', '-120px');
-            $( 'html' ).css('margin-right', '120px');
-            $( '#edit-zone nav li' ).removeClass('active');
-          } else {
-            $( '#edit-zone nav li' ).removeClass('active');
-            $(this).addClass('active');
-            $( '#edit-zone' ).css('right', '180px');
-            $( 'html' ).css('margin-left', '-300px');
-            $( 'html' ).css('margin-right', '300px');
-          }
-        });
-      }
-      else { // not mobile
-        var toolbar_cookie = $.cookie('plone-toolbar');
-        window.plonetoolbar_state = toolbar_cookie;
-        $('#edit-zone').attr('class', toolbar_cookie);
-
-        $( '#edit-zone .plone-toolbar-logo' ).on('click', function() {
-          if (window.plonetoolbar_state) {
-            if (window.plonetoolbar_state.indexOf('expanded') != -1) {
-              // Switch to default (only icons)
-              $( '#edit-zone' ).removeClass('expanded');
-              $( '#edit-zone nav li' ).removeClass('active');
-              if (window.plonetoolbar_state.indexOf('left') != -1) {
-                $('body').addClass('plone-toolbar-left-default');
-                $('body').removeClass('plone-toolbar-left-expanded');
-              } else {
-                $('body').addClass('plone-toolbar-top-default');
-                $('body').removeClass('plone-toolbar-top-expanded');
-              }
-              $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
-              window.plonetoolbar_state = window.plonetoolbar_state.replace(' expanded', '');
-            } else {
-              // Switch to expanded
-              $( '#edit-zone' ).addClass('expanded');
-              $( '#edit-zone nav li' ).removeClass('active');
-              if (window.plonetoolbar_state.indexOf('left') != -1) {
-                $('body').addClass('plone-toolbar-left-expanded');
-                $('body').removeClass('plone-toolbar-left-default');
-              } else {
-                $('body').addClass('plone-toolbar-top-expanded');
-                $('body').removeClass('plone-toolbar-top-default');
-              }
-              $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
-              window.plonetoolbar_state = window.plonetoolbar_state + ' expanded';
-            }
-          } else {
-            // Cookie not set, assume default (only icons)
-            window.plonetoolbar_state = 'pat-toolbar plone-toolbar-left';
-            // Switch to expanded left
-            $( '#edit-zone' ).addClass('expanded');
-            $( '#edit-zone nav li' ).removeClass('active');
-            $('body').addClass('plone-toolbar-left-expanded');
-            $('body').removeClass('plone-toolbar-left-default');
-            $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
-            window.plonetoolbar_state = window.plonetoolbar_state + ' expanded';
-          }
-        });
-
-        // Switch to compressed
-        $( '#edit-zone .plone-toolbar-logo' ).on('dblclick', function() {
-          if (window.plonetoolbar_state) {
-            if (window.plonetoolbar_state.indexOf('compressed') != -1) {
-              // Switch to default (only icons) not compressed
-              $( '#edit-zone' ).removeClass('compressed');
-              if (window.plonetoolbar_state.indexOf('left') != -1) {
-                $('body').addClass('plone-toolbar-left-default');
-                $('body').removeClass('plone-toolbar-compressed');
-              } else {
-                $('body').addClass('plone-toolbar-top-default');
-                $('body').removeClass('plone-toolbar-compressed');
-              }
-              $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
-              window.plonetoolbar_state = window.plonetoolbar_state.replace(' expanded', '');
-            } else {
-              // Switch to compressed
-              $( '#edit-zone' ).addClass('compressed');
-              if (window.plonetoolbar_state.indexOf('left') != -1) {
-                $('body').addClass('plone-toolbar-compressed');
-                $('body').removeClass('plone-toolbar-left-default');
-                $('body').removeClass('plone-toolbar-left-expanded');
-              } else {
-                $('body').addClass('plone-toolbar-compressed');
-                $('body').removeClass('plone-toolbar-top-default');
-                $('body').removeClass('plone-toolbar-top-expanded');
-              }
-              $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
-              window.plonetoolbar_state = window.plonetoolbar_state + ' compressed';
-            }
-          } else {
-            // Cookie not set, assume default (only icons)
-            // Switch to compressed
-            $( '#edit-zone' ).addClass('compressed');
-            $('body').addClass('plone-toolbar-compressed');
-            $('body').removeClass('plone-toolbar-left-default');
-            $('body').removeClass('plone-toolbar-left-expanded');
-            $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
-            window.plonetoolbar_state = window.plonetoolbar_state + ' compressed';
-          }
-        });
-
-
-        $( '#edit-zone nav > ul > li li' ).on('click', function(event) {
-          event.stopImmediatePropagation();
-        });
-
-        // active
-        $( '#edit-zone nav > ul > li' ).has( 'a .plone-toolbar-caret' ).on('click', function(event) {
-          event.preventDefault();
-          event.stopPropagation();
-          if ($(this).hasClass('active')) {
-            $( '#edit-zone nav li' ).removeClass('active');
-          } else {
-            $('#edit-zone nav li').removeClass('active');
-            $(this).addClass('active');
-          }
-        });
-
-        $('body').on('click', function(event) {
-          if (!($(this).parent('#edit-zone').length > 0)) {
-            $('#edit-zone nav > ul > li').each(function(key, element){
-              $(element).removeClass('active');
-            });
-          }
-        });
-
-        // top/left switcher
-        $( '#edit-zone .plone-toolbar-switcher' ).on('click', function() {
-          if (window.plonetoolbar_state) {
-            if (window.plonetoolbar_state.indexOf('top') != -1) {
-              // from top to left
-              $( '#edit-zone' ).addClass('plone-toolbar-left');
-              $( '#edit-zone' ).removeClass('plone-toolbar-top');
-              if (window.plonetoolbar_state.indexOf('expanded') != -1) {
-                $('body').addClass('plone-toolbar-left-expanded');
-                $('body').removeClass('plone-toolbar-top-expanded');
-              } else {
-                $('body').addClass('plone-toolbar-left-default');
-                $('body').removeClass('plone-toolbar-top-default');
-              }
-              $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
-              window.plonetoolbar_state = window.plonetoolbar_state.replace('plone-toolbar-top', 'plone-toolbar-left');
-            } else {
-              // from left to top
-              $( '#edit-zone' ).addClass('plone-toolbar-top');
-              $( '#edit-zone' ).removeClass('plone-toolbar-left');
-              if (window.plonetoolbar_state.indexOf('expanded') != -1) {
-                $('body').addClass('plone-toolbar-top-expanded');
-                $('body').removeClass('plone-toolbar-left-expanded');
-              } else {
-                $('body').addClass('plone-toolbar-top-default');
-                $('body').removeClass('plone-toolbar-left-default');
-              }
-              $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
-              window.plonetoolbar_state = window.plonetoolbar_state.replace('plone-toolbar-left', 'plone-toolbar-top');
-            }
-          } else {
-            // Cookie not set, assume left default (only icons)
-            window.plonetoolbar_state = 'pat-toolbar plone-toolbar-left';
-            // Switch to top
-            $( '#edit-zone' ).addClass('plone-toolbar-left');
-            $( '#edit-zone' ).removeClass('plone-toolbar-top');
-            $('body').addClass('plone-toolbar-top-default');
-            $('body').removeClass('plone-toolbar-left-default');
-            $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
-            window.plonetoolbar_state = window.plonetoolbar_state.replace('plone-toolbar-left', 'plone-toolbar-top');
-          }
-
-        });
-      }
-      this.$el.addClass('initialized');
-
-      /* folder contents changes the context.
-         This is for usability so the menu changes along with
-         the folder contents context */
-      $('body').off('structure-url-changed').on('structure-url-changed', function (e, path) {
-        $.ajax({
-          url: $('body').attr('data-portal-url') + path + '/@@render-toolbar'
-        }).done(function(data){
-          var $el = $(utils.parseBodyTag(data));
-          that.$el.replaceWith($el);
-          Registry.scan($el);
-        });
-      });
-    }
-  });
-
-  return Toolbar;
-});
-
-/* i18n integration. This is forked from jarn.jsi18n
- *
- * This is a singleton.
- * Configuration is done on the body tag data-i18ncatalogurl attribute
- *     <body data-i18ncatalogurl="/plonejsi18n">
- *
- *  Or, it'll default to "/plonejsi18n"
- */
-
-/* global portal_url:true */
-
-
-define('mockup-i18n',[
-  'jquery'
-], function($) {
-  
-
-  var I18N = function() {
-    var self = this;
-
-    self.baseUrl = $('body').attr('data-i18ncatalogurl');
-    if (!self.baseUrl) {
-      self.baseUrl = '/plonejsi18n';
-    }
-    self.currentLanguage = $('html').attr('lang') || 'en';
-    self.storage = null;
-    self.catalogs = {};
-    self.ttl = 24 * 3600 * 1000;
-
-    // Internet Explorer 8 does not know Date.now() which is used in e.g. loadCatalog, so we "define" it
-    if (!Date.now) {
-      Date.now = function() {
-        return new Date().valueOf();
-      };
-    }
-
-    try {
-      if ('localStorage' in window && window.localStorage !== null && 'JSON' in window && window.JSON !== null) {
-        self.storage = window.localStorage;
-      }
-    } catch (e) {}
-
-    self.configure = function(config) {
-      for (var key in config){
-        self[key] = config[key];
-      }
-    };
-
-    self._setCatalog = function (domain, language, catalog) {
-      if (domain in self.catalogs) {
-        self.catalogs[domain][language] = catalog;
-      } else {
-        self.catalogs[domain] = {};
-        self.catalogs[domain][language] = catalog;
-      }
-    };
-
-    self._storeCatalog = function (domain, language, catalog) {
-      var key = domain + '-' + language;
-      if (self.storage !== null && catalog !== null) {
-        self.storage.setItem(key, JSON.stringify(catalog));
-        self.storage.setItem(key + '-updated', Date.now());
-      }
-    };
-
-    self.getUrl = function(domain, language) {
-      return self.baseUrl + '?domain=' + domain + '&language=' + language;
-    };
-
-    self.loadCatalog = function (domain, language) {
-      if (language === undefined) {
-        language = self.currentLanguage;
-      }
-      if (self.storage !== null) {
-        var key = domain + '-' + language;
-        if (key in self.storage) {
-          if ((Date.now() - parseInt(self.storage.getItem(key + '-updated'), 10)) < self.ttl) {
-            var catalog = JSON.parse(self.storage.getItem(key));
-            self._setCatalog(domain, language, catalog);
-            return;
-          }
-        }
-      }
-      $.getJSON(self.getUrl(domain, language), function (catalog) {
-        if (catalog === null) {
-          return;
-        }
-        self._setCatalog(domain, language, catalog);
-        self._storeCatalog(domain, language, catalog);
-      });
-    };
-
-    self.MessageFactory = function (domain, language) {
-      language = language || self.currentLanguage;
-
-      return function translate (msgid, keywords) {
-        var msgstr;
-        if ((domain in self.catalogs) && (language in self.catalogs[domain]) && (msgid in self.catalogs[domain][language])) {
-          msgstr = self.catalogs[domain][language][msgid];
-        } else {
-          msgstr = msgid;
-        }
-        if (keywords) {
-          var regexp, keyword;
-          for (keyword in keywords) {
-            if (keywords.hasOwnProperty(keyword)) {
-              regexp = new RegExp('\\$\\{' + keyword + '\\}', 'g');
-              msgstr = msgstr.replace(regexp, keywords[keyword]);
-            }
-          }
-        }
-        return msgstr;
-      };
-    };
-  };
-
-  return new I18N();
-});
-
-/* i18n integration.
- *
- * This is a singleton.
- * Configuration is done on the body tag data-i18ncatalogurl attribute
- *     <body data-i18ncatalogurl="/plonejsi18n">
- *
- *  Or, it'll default to "/plonejsi18n"
- */
-
-define('translate',[
-  'mockup-i18n'
-], function(i18n) {
-  
-  i18n.loadCatalog('widgets');
-  return i18n.MessageFactory('widgets');
-});
-
-/* Formunloadalert pattern.
- *
- * Options:
- *    changingEvents(string): Events on which to check for changes (space-separated). ('change keyup paste')
- *    changingFields(string): Fields on which to check for changes (comma-separated). ('input,select,textarea,fileupload')
- *    message(string): Confirmation message to display when dirty form is being unloaded. (Discard changes? If you click OK, any changes you have made will be lost.)
- *
- * Documentation:
- *    # Example
- *
- *    {{ example-1 }}
- *
- * Example: example-1
- *    <form class="pat-formunloadalert" onsubmit="javascript:return false;">
- *      <input type="text" value="" />
- *      <select>
- *        <option value="1">value 1</option>
- *        <option value="2">value 2</option>
- *      </select>
- *      <input
- *        class="btn btn-large btn-primary"
- *        type="submit" value="Submit" />
- *      <br />
- *      <a href="/">Click here to go somewhere else</a>
- *    </form>
- *
- */
-
-
-define('mockup-patterns-formunloadalert',[
-  'jquery',
-  'mockup-patterns-base',
-  'translate'
-], function ($, Base, _t) {
-  
-
-  var FormUnloadAlert = Base.extend({
-    name: 'formunloadalert',
-    trigger: '.pat-formunloadalert',
-    _changed : false,       // Stores a listing of raised changes by their key
-    _suppressed : false,     // whether or not warning should be suppressed
-    defaults: {
-      message :  _t('Discard changes? If you click OK, ' +
-                 'any changes you have made will be lost.'),
-      // events on which to check for changes
-      changingEvents: 'change keyup paste',
-      // fields on which to check for changes
-      changingFields: 'input,select,textarea,fileupload'
-    },
-    init: function () {
-      var self = this;
-      // if this is not a form just return
-      if (!self.$el.is('form')) { return; }
-
-      $(self.options.changingFields, self.$el).on(
-        self.options.changingEvents,
-        function (evt) {
-          self._changed = true;
-        }
-      );
-
-      var $modal = self.$el.parents('.plone-modal');
-      if ($modal.size() !== 0) {
-        $modal.data('pattern-modal').on('hide', function(e) {
-          var modal = $modal.data('pattern-modal');
-          if (modal) {
-            modal._suppressHide = self._handleUnload.apply(self, e);
-          }
-        });
-      } else {
-        $(window).on('beforeunload', function(e) {
-          return self._handleUnload(e);
-        });
-      }
-
-      self.$el.on('submit', function(e) {
-        self._suppressed = true;
-      });
-
-    },
-    _handleUnload : function (e) {
-      var self = this;
-      if (self._suppressed) {
-        self._suppressed = false;
-        return undefined;
-      }
-      if (self._changed) {
-        var msg = self.options.message;
-        self._handleMsg(e,msg);
-        $(window).trigger('messageset');
-        return msg;
-      }
-    },
-    _handleMsg:  function(e,msg) {
-      (e || window.event).returnValue = msg;
-    }
-  });
-  return FormUnloadAlert;
-
-});
-
-/* PreventDoubleSubmit pattern.
- *
- * Options:
- *    guardClassName(string): Class applied to submit button after it is clicked once. ('submitting')
- *    optOutClassName(string): Class used to opt-out a submit button from double-submit prevention. ('allowMultiSubmit')
- *    message(string): Message to be displayed when "opt-out" submit button is clicked a second time. ('You already clicked the submit button. Do you really want to submit this form again?')
- *
- * Documentation:
- *    # Example
- *
- *    {{ example-1 }}
- *
- * Example: example-1
- *    <form class="pat-preventdoublesubmit" onsubmit="javascript:return false;">
- *      <input type="text" value="submit this value please!" />
- *      <input class="btn btn-large btn-primary" type="submit" value="Single submit" />
- *      <input class="btn btn-large btn-primary allowMultiSubmit" type="submit" value="Multi submit" />
- *    </form>
- *
- */
-
-
-define('mockup-patterns-preventdoublesubmit',[
-  'jquery',
-  'mockup-patterns-base',
-  'translate'
-], function($, Base, _t) {
-  
-
-  var PreventDoubleSubmit = Base.extend({
-    name: 'preventdoublesubmit',
-    trigger: '.pat-preventdoublesubmit',
-    defaults: {
-      message : _t('You already clicked the submit button. ' +
-                'Do you really want to submit this form again?'),
-      guardClassName: 'submitting',
-      optOutClassName: 'allowMultiSubmit'
-    },
-    init: function() {
-      var self = this;
-
-      // if this is not a form just return
-      if (!self.$el.is('form')) {
-        return;
-      }
-
-      $(':submit', self.$el).click(function(e) {
-
-        // mark the button as clicked
-        $(':submit').removeAttr('clicked');
-        $(this).attr('clicked', 'clicked');
-
-        // if submitting and no opt-out guardClassName is found
-        // pop up confirmation dialog
-        if ($(this).hasClass(self.options.guardClassName) &&
-              !$(this).hasClass(self.options.optOutClassName)) {
-          return self._confirm.call(self);
-        }
-
-        $(this).addClass(self.options.guardClassName);
-      });
-
-    },
-
-    _confirm: function(e) {
-      return window.confirm(this.options.message);
-    }
-
-  });
-
-  return PreventDoubleSubmit;
-
-});
-
-/* Livesearch
- *
- * Options:
- *    ajaxUrl(string): JSON search url
- *    perPage(integer): results per page, defaults to 7
- *    quietMillis: how long to wait after type stops before sending out request in milliseconds. Defaults to 350
- *    minimumInputLength: miniumum number of letters before doing search. Defaults to 3
- *    inputSelector: css select to input element search is done with. Defaults to input[type="text"]
- *    itemTemplate: override template used to render item results
- *
- * Documentation:
- *   # General
- *
- *   # Default
- *
- *   {{ example-1 }}
- *
- * Example: example-1
- *    <form action="search" class="pat-livesearch" data-pat-livesearch="ajaxUrl:livesearch.json">
- *      <input type="text" />
- *    </form>
- *
- */
-
-define('mockup-patterns-livesearch',[
-  'jquery',
-  'mockup-patterns-base',
-  'underscore',
-  'translate'
-], function ($, Base, _, _t){
-  
-
-  var Livesearch = Base.extend({
-    name: 'livesearch',
-    trigger: '.pat-livesearch',
-    timeout: null,
-    active: false,
-    results: null,
-    selectedItem: -1,
-    resultsClass: 'livesearch-results',
-    defaults: {
-      ajaxUrl: null,
-      perPage: 7,
-      quietMillis: 350,
-      minimumInputLength: 4,
-      inputSelector: 'input[type="text"]',
-      itemTemplate: '<li class="search-result <%- state %>">' +
-        '<h4 class="title"><a href="<%- url %>"><%- title %></a></h4>' +
-        '<p class="description"><%- description %></p>' +
-      '</li>',
-    },
-    doSearch: function(page){
-      var self = this;
-      self.active = true;
-      self.render();
-      self.$el.addClass('searching');
-      var query = self.$el.serialize();
-      if(page === undefined){
-        page = 1;
-      }
-      $.ajax({
-        url: self.options.ajaxUrl + '?' + query +
-             '&page=' + page +
-             '&perPage=' + self.options.perPage,
-        dataType: 'json'
-      }).done(function(data){
-        self.results = data;
-        self.page = page;
-        // maybe odd here.. but we're checking to see if the user
-        // has typed while a search was being performed. Perhap another search if so
-        if(query !== self.$el.serialize()){
-          self.doSearch();
-        }
-      }).fail(function(){
-        self.results = {
-          items: [{
-            url: '',
-            title: _t('Error'),
-            description: _t('There was an error searching…'),
-            state: 'error',
-            error: false
-          }],
-          total: 1
-        };
-        self.page = 1;
-      }).always(function(){
-        self.active = false;
-        self.selectedItem = -1;
-        self.$el.removeClass('searching');
-        self.render();
-      });
-    },
-    render: function(){
-      var self = this;
-      self.$results.empty();
-
-      /* find a status message */
-
-      if(self.active){
-        self.$results.append($('<li class="searching">' + _t('searching…') + '</li>'));
-      }else if(self.results === null){
-        // no results gathered yet
-        self.$results.append($('<li class="no-results no-search">' + _t('enter search phrase') + '</li>'));
-      } else if(self.results.total === 0){
-        self.$results.append($('<li class="no-results">' + _t('no results found') + '</li>'));
-      } else{
-        self.$results.append($('<li class="results-summary">' + _t('found') +
-                               ' ' + self.results.total + ' ' + _t('results') + '</li>'));
-      }
-
-      if(self.results !== null){
-        var template = _.template(self.options.itemTemplate);
-        _.each(self.results.items, function(item, index){
-          var $el = $(template($.extend({_t: _t}, item)));
-          $el.attr('data-url', item.url).on('click', function(){
-            if(!item.error){
-              window.location = item.url;
-            }
-          });
-          if(index === self.selectedItem){
-            $el.addClass('selected');
-          }
-          self.$results.append($el);
-        });
-        var nav = [];
-        if(self.page > 1){
-          var $prev = $('<a href="#" class="prev">' + _t('Previous') + '</a>');
-          $prev.click(function(e){
-            self.disableHiding = true;
-            e.preventDefault();
-            self.doSearch(self.page - 1);
-          });
-          nav.push($prev);
-        }
-        if((self.page * self.options.perPage) < self.results.total){
-          var $next = $('<a href="#" class="next">' + _t('Next') + '</a>');
-          $next.click(function(e){
-            self.disableHiding = true;
-            e.preventDefault();
-            self.doSearch(self.page + 1);
-          });
-          nav.push($next);
-        }
-        if(nav.length > 0){
-          var $li = $('<li class="load-more"><div class="page">' + self.page + '</div></li>');
-          $li.prepend(nav);
-          self.$results.append($li);
-        }
-      }
-      self.position();
-    },
-    position: function(){
-      /* we are positioning directly below the
-         input box, same width */
-      var self = this;
-
-      self.$el.addClass('livesearch-active');
-      var pos = self.$input.position();
-      self.$results.width(self.$input.outerWidth());
-      self.$results.css({
-        top: pos.top + self.$input.outerHeight(),
-        left: pos.left
-      });
-      self.$results.show();
-    },
-    hide: function(){
-      this.$results.hide();
-      this.$el.removeClass('livesearch-active');
-    },
-    init: function(){
-      var self = this;
-      self.$input = self.$el.find(self.options.inputSelector);
-      self.$input.off('focusout').on('focusout', function(){
-        /* we put this in a timer so click events still
-           get trigger on search results */
-        setTimeout(function(){
-          /* hack, look above, to handle dealing with clicks
-             unfocusing element */
-          if(!self.disableHiding){
-            self.hide();
-          }else{
-            self.disableHiding = false;
-            // and refocus elemtn
-            self.$input.focus();
-          }
-        }, 200);
-      }).off('focusin').on('focusin', function(){
-        if(!self.onceFocused){
-          /* Case: field already filled out but no reasons
-             present yet, do ajax search and grab some results */
-          self.onceFocused = true;
-          if(self.$input.val().length >= self.options.minimumInputLength){
-            self.doSearch();
-          }
-        } else if(!self.$results.is(':visible')){
-          self.render();
-        }
-      }).attr('autocomplete', 'off').off('keyup').on('keyup', function(e){
-        // first off, we're capturing up, down and enter key presses
-        if(self.results && self.results.items && self.results.items.length > 0){
-          var code = e.keyCode || e.which;
-          if(code === 13){
-            /* enter key, check to see if there is a selected item */
-            if(self.selectedItem !== -1){
-              window.location = self.results.items[self.selectedItem].url;
-            }
-            return;
-          } else if(code === 38){
-            /* up key */
-            if(self.selectedItem !== -1){
-              self.selectedItem -= 1;
-              self.render();
-            }
-            return;
-          } else if(code === 40){
-            /* down key */
-            if(self.selectedItem < self.results.items.length){
-              self.selectedItem += 1;
-              self.render();
-            }
-            return;
-          }
-        }
-
-        /* then, we handle timeouts for doing ajax search */
-        if(self.timeout !== null){
-          clearTimeout(self.timeout);
-          self.timeout = null;
-        }
-        if(self.active){
-          return;
-        }
-        if(self.$input.val().length >= self.options.minimumInputLength){
-          self.timeout = setTimeout(function(){
-            self.doSearch();
-          }, self.options.quietMillis);
-        }else{
-          self.results = null;
-          self.render();
-        }
-      });
-
-      /* create result dom */
-      self.$results = $('<ul class="' + self.resultsClass + '"></ul>').hide().insertAfter(self.$input);
-    }
-  });
-
-  return Livesearch;
-});
-
-
-/*!
- * Date picker for pickadate.js v3.4.0
- * http://amsul.github.io/pickadate.js/date.htm
- */
-
-(function ( factory ) {
-
-    // Register as an anonymous module.
-    if ( typeof define == 'function' && define.amd )
-        define( 'picker.date',['picker','jquery'], factory )
-
-    // Or using browser globals.
-    else factory( Picker, jQuery )
-
-}(function( Picker, $ ) {
-
-
-/**
- * Globals and constants
- */
-var DAYS_IN_WEEK = 7,
-    WEEKS_IN_CALENDAR = 6,
-    _ = Picker._
-
-
-
-/**
- * The date picker constructor
- */
-function DatePicker( picker, settings ) {
-
-    var calendar = this,
-        elementValue = picker.$node[ 0 ].value,
-        elementDataValue = picker.$node.data( 'value' ),
-        valueString = elementDataValue || elementValue,
-        formatString = elementDataValue ? settings.formatSubmit : settings.format,
-        isRTL = function() {
-            return getComputedStyle( picker.$root[0] ).direction === 'rtl'
-        }
-
-    calendar.settings = settings
-    calendar.$node = picker.$node
-
-    // The queue of methods that will be used to build item objects.
-    calendar.queue = {
-        min: 'measure create',
-        max: 'measure create',
-        now: 'now create',
-        select: 'parse create validate',
-        highlight: 'parse navigate create validate',
-        view: 'parse create validate viewset',
-        disable: 'deactivate',
-        enable: 'activate'
-    }
-
-    // The component's item object.
-    calendar.item = {}
-
-    calendar.item.disable = ( settings.disable || [] ).slice( 0 )
-    calendar.item.enable = -(function( collectionDisabled ) {
-        return collectionDisabled[ 0 ] === true ? collectionDisabled.shift() : -1
-    })( calendar.item.disable )
-
-    calendar.
-        set( 'min', settings.min ).
-        set( 'max', settings.max ).
-        set( 'now' )
-
-    // When there’s a value, set the `select`, which in turn
-    // also sets the `highlight` and `view`.
-    if ( valueString ) {
-        calendar.set( 'select', valueString, {
-            format: formatString,
-            fromValue: !!elementValue
-        })
-    }
-
-    // If there’s no value, default to highlighting “today”.
-    else {
-        calendar.
-            set( 'select', null ).
-            set( 'highlight', calendar.item.now )
-    }
-
-
-    // The keycode to movement mapping.
-    calendar.key = {
-        40: 7, // Down
-        38: -7, // Up
-        39: function() { return isRTL() ? -1 : 1 }, // Right
-        37: function() { return isRTL() ? 1 : -1 }, // Left
-        go: function( timeChange ) {
-            var highlightedObject = calendar.item.highlight,
-                targetDate = new Date( highlightedObject.year, highlightedObject.month, highlightedObject.date + timeChange )
-            calendar.set(
-                'highlight',
-                [ targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate() ],
-                { interval: timeChange }
-            )
-            this.render()
-        }
-    }
-
-
-    // Bind some picker events.
-    picker.
-        on( 'render', function() {
-            picker.$root.find( '.' + settings.klass.selectMonth ).on( 'change', function() {
-                var value = this.value
-                if ( value ) {
-                    picker.set( 'highlight', [ picker.get( 'view' ).year, value, picker.get( 'highlight' ).date ] )
-                    picker.$root.find( '.' + settings.klass.selectMonth ).trigger( 'focus' )
-                }
-            })
-            picker.$root.find( '.' + settings.klass.selectYear ).on( 'change', function() {
-                var value = this.value
-                if ( value ) {
-                    picker.set( 'highlight', [ value, picker.get( 'view' ).month, picker.get( 'highlight' ).date ] )
-                    picker.$root.find( '.' + settings.klass.selectYear ).trigger( 'focus' )
-                }
-            })
-        }).
-        on( 'open', function() {
-            picker.$root.find( 'button, select' ).attr( 'disabled', false )
-        }).
-        on( 'close', function() {
-            picker.$root.find( 'button, select' ).attr( 'disabled', true )
-        })
-
-} //DatePicker
-
-
-/**
- * Set a datepicker item object.
- */
-DatePicker.prototype.set = function( type, value, options ) {
-
-    var calendar = this,
-        calendarItem = calendar.item
-
-    // If the value is `null` just set it immediately.
-    if ( value === null ) {
-        calendarItem[ type ] = value
-        return calendar
-    }
-
-    // Otherwise go through the queue of methods, and invoke the functions.
-    // Update this as the time unit, and set the final value as this item.
-    // * In the case of `enable`, keep the queue but set `disable` instead.
-    //   And in the case of `flip`, keep the queue but set `enable` instead.
-    calendarItem[ ( type == 'enable' ? 'disable' : type == 'flip' ? 'enable' : type ) ] = calendar.queue[ type ].split( ' ' ).map( function( method ) {
-        value = calendar[ method ]( type, value, options )
-        return value
-    }).pop()
-
-    // Check if we need to cascade through more updates.
-    if ( type == 'select' ) {
-        calendar.set( 'highlight', calendarItem.select, options )
-    }
-    else if ( type == 'highlight' ) {
-        calendar.set( 'view', calendarItem.highlight, options )
-    }
-    else if ( type.match( /^(flip|min|max|disable|enable)$/ ) ) {
-        if ( calendarItem.select && calendar.disabled( calendarItem.select ) ) {
-            calendar.set( 'select', calendarItem.select, options )
-        }
-        if ( calendarItem.highlight && calendar.disabled( calendarItem.highlight ) ) {
-            calendar.set( 'highlight', calendarItem.highlight, options )
-        }
-    }
-
-    return calendar
-} //DatePicker.prototype.set
-
-
-/**
- * Get a datepicker item object.
- */
-DatePicker.prototype.get = function( type ) {
-    return this.item[ type ]
-} //DatePicker.prototype.get
-
-
-/**
- * Create a picker date object.
- */
-DatePicker.prototype.create = function( type, value, options ) {
-
-    var isInfiniteValue,
-        calendar = this
-
-    // If there’s no value, use the type as the value.
-    value = value === undefined ? type : value
-
-
-    // If it’s infinity, update the value.
-    if ( value == -Infinity || value == Infinity ) {
-        isInfiniteValue = value
-    }
-
-    // If it’s an object, use the native date object.
-    else if ( $.isPlainObject( value ) && _.isInteger( value.pick ) ) {
-        value = value.obj
-    }
-
-    // If it’s an array, convert it into a date and make sure
-    // that it’s a valid date – otherwise default to today.
-    else if ( $.isArray( value ) ) {
-        value = new Date( value[ 0 ], value[ 1 ], value[ 2 ] )
-        value = _.isDate( value ) ? value : calendar.create().obj
-    }
-
-    // If it’s a number or date object, make a normalized date.
-    else if ( _.isInteger( value ) || _.isDate( value ) ) {
-        value = calendar.normalize( new Date( value ), options )
-    }
-
-    // If it’s a literal true or any other case, set it to now.
-    else /*if ( value === true )*/ {
-        value = calendar.now( type, value, options )
-    }
-
-    // Return the compiled object.
-    return {
-        year: isInfiniteValue || value.getFullYear(),
-        month: isInfiniteValue || value.getMonth(),
-        date: isInfiniteValue || value.getDate(),
-        day: isInfiniteValue || value.getDay(),
-        obj: isInfiniteValue || value,
-        pick: isInfiniteValue || value.getTime()
-    }
-} //DatePicker.prototype.create
-
-
-/**
- * Create a range limit object using an array, date object,
- * literal “true”, or integer relative to another time.
- */
-DatePicker.prototype.createRange = function( from, to ) {
-
-    var calendar = this,
-        createDate = function( date ) {
-            if ( date === true || $.isArray( date ) || _.isDate( date ) ) {
-                return calendar.create( date )
-            }
-            return date
-        }
-
-    // Create objects if possible.
-    if ( !_.isInteger( from ) ) {
-        from = createDate( from )
-    }
-    if ( !_.isInteger( to ) ) {
-        to = createDate( to )
-    }
-
-    // Create relative dates.
-    if ( _.isInteger( from ) && $.isPlainObject( to ) ) {
-        from = [ to.year, to.month, to.date + from ];
-    }
-    else if ( _.isInteger( to ) && $.isPlainObject( from ) ) {
-        to = [ from.year, from.month, from.date + to ];
-    }
-
-    return {
-        from: createDate( from ),
-        to: createDate( to )
-    }
-} //DatePicker.prototype.createRange
-
-
-/**
- * Check if a date unit falls within a date range object.
- */
-DatePicker.prototype.withinRange = function( range, dateUnit ) {
-    range = this.createRange(range.from, range.to)
-    return dateUnit.pick >= range.from.pick && dateUnit.pick <= range.to.pick
-}
-
-
-/**
- * Check if two date range objects overlap.
- */
-DatePicker.prototype.overlapRanges = function( one, two ) {
-
-    var calendar = this
-
-    // Convert the ranges into comparable dates.
-    one = calendar.createRange( one.from, one.to )
-    two = calendar.createRange( two.from, two.to )
-
-    return calendar.withinRange( one, two.from ) || calendar.withinRange( one, two.to ) ||
-        calendar.withinRange( two, one.from ) || calendar.withinRange( two, one.to )
-}
-
-
-/**
- * Get the date today.
- */
-DatePicker.prototype.now = function( type, value, options ) {
-    value = new Date()
-    if ( options && options.rel ) {
-        value.setDate( value.getDate() + options.rel )
-    }
-    return this.normalize( value, options )
-}
-
-
-/**
- * Navigate to next/prev month.
- */
-DatePicker.prototype.navigate = function( type, value, options ) {
-
-    var targetDateObject,
-        targetYear,
-        targetMonth,
-        targetDate,
-        isTargetArray = $.isArray( value ),
-        isTargetObject = $.isPlainObject( value ),
-        viewsetObject = this.item.view/*,
-        safety = 100*/
-
-
-    if ( isTargetArray || isTargetObject ) {
-
-        if ( isTargetObject ) {
-            targetYear = value.year
-            targetMonth = value.month
-            targetDate = value.date
-        }
-        else {
-            targetYear = +value[0]
-            targetMonth = +value[1]
-            targetDate = +value[2]
-        }
-
-        // If we’re navigating months but the view is in a different
-        // month, navigate to the view’s year and month.
-        if ( options && options.nav && viewsetObject && viewsetObject.month !== targetMonth ) {
-            targetYear = viewsetObject.year
-            targetMonth = viewsetObject.month
-        }
-
-        // Figure out the expected target year and month.
-        targetDateObject = new Date( targetYear, targetMonth + ( options && options.nav ? options.nav : 0 ), 1 )
-        targetYear = targetDateObject.getFullYear()
-        targetMonth = targetDateObject.getMonth()
-
-        // If the month we’re going to doesn’t have enough days,
-        // keep decreasing the date until we reach the month’s last date.
-        while ( /*safety &&*/ new Date( targetYear, targetMonth, targetDate ).getMonth() !== targetMonth ) {
-            targetDate -= 1
-            /*safety -= 1
-            if ( !safety ) {
-                throw 'Fell into an infinite loop while navigating to ' + new Date( targetYear, targetMonth, targetDate ) + '.'
-            }*/
-        }
-
-        value = [ targetYear, targetMonth, targetDate ]
-    }
-
-    return value
-} //DatePicker.prototype.navigate
-
-
-/**
- * Normalize a date by setting the hours to midnight.
- */
-DatePicker.prototype.normalize = function( value/*, options*/ ) {
-    value.setHours( 0, 0, 0, 0 )
-    return value
-}
-
-
-/**
- * Measure the range of dates.
- */
-DatePicker.prototype.measure = function( type, value/*, options*/ ) {
-
-    var calendar = this
-
-    // If it's anything false-y, remove the limits.
-    if ( !value ) {
-        value = type == 'min' ? -Infinity : Infinity
-    }
-
-    // If it's an integer, get a date relative to today.
-    else if ( _.isInteger( value ) ) {
-        value = calendar.now( type, value, { rel: value } )
-    }
-
-    return value
-} ///DatePicker.prototype.measure
-
-
-/**
- * Create a viewset object based on navigation.
- */
-DatePicker.prototype.viewset = function( type, dateObject/*, options*/ ) {
-    return this.create([ dateObject.year, dateObject.month, 1 ])
-}
-
-
-/**
- * Validate a date as enabled and shift if needed.
- */
-DatePicker.prototype.validate = function( type, dateObject, options ) {
-
-    var calendar = this,
-
-        // Keep a reference to the original date.
-        originalDateObject = dateObject,
-
-        // Make sure we have an interval.
-        interval = options && options.interval ? options.interval : 1,
-
-        // Check if the calendar enabled dates are inverted.
-        isFlippedBase = calendar.item.enable === -1,
-
-        // Check if we have any enabled dates after/before now.
-        hasEnabledBeforeTarget, hasEnabledAfterTarget,
-
-        // The min & max limits.
-        minLimitObject = calendar.item.min,
-        maxLimitObject = calendar.item.max,
-
-        // Check if we’ve reached the limit during shifting.
-        reachedMin, reachedMax,
-
-        // Check if the calendar is inverted and at least one weekday is enabled.
-        hasEnabledWeekdays = isFlippedBase && calendar.item.disable.filter( function( value ) {
-
-            // If there’s a date, check where it is relative to the target.
-            if ( $.isArray( value ) ) {
-                var dateTime = calendar.create( value ).pick
-                if ( dateTime < dateObject.pick ) hasEnabledBeforeTarget = true
-                else if ( dateTime > dateObject.pick ) hasEnabledAfterTarget = true
-            }
-
-            // Return only integers for enabled weekdays.
-            return _.isInteger( value )
-        }).length/*,
-
-        safety = 100*/
-
-
-
-    // Cases to validate for:
-    // [1] Not inverted and date disabled.
-    // [2] Inverted and some dates enabled.
-    // [3] Not inverted and out of range.
-    //
-    // Cases to **not** validate for:
-    // • Navigating months.
-    // • Not inverted and date enabled.
-    // • Inverted and all dates disabled.
-    // • ..and anything else.
-    if ( !options || !options.nav ) if (
-        /* 1 */ ( !isFlippedBase && calendar.disabled( dateObject ) ) ||
-        /* 2 */ ( isFlippedBase && calendar.disabled( dateObject ) && ( hasEnabledWeekdays || hasEnabledBeforeTarget || hasEnabledAfterTarget ) ) ||
-        /* 3 */ ( !isFlippedBase && (dateObject.pick <= minLimitObject.pick || dateObject.pick >= maxLimitObject.pick) )
-    ) {
-
-
-        // When inverted, flip the direction if there aren’t any enabled weekdays
-        // and there are no enabled dates in the direction of the interval.
-        if ( isFlippedBase && !hasEnabledWeekdays && ( ( !hasEnabledAfterTarget && interval > 0 ) || ( !hasEnabledBeforeTarget && interval < 0 ) ) ) {
-            interval *= -1
-        }
-
-
-        // Keep looping until we reach an enabled date.
-        while ( /*safety &&*/ calendar.disabled( dateObject ) ) {
-
-            /*safety -= 1
-            if ( !safety ) {
-                throw 'Fell into an infinite loop while validating ' + dateObject.obj + '.'
-            }*/
-
-
-            // If we’ve looped into the next/prev month with a large interval, return to the original date and flatten the interval.
-            if ( Math.abs( interval ) > 1 && ( dateObject.month < originalDateObject.month || dateObject.month > originalDateObject.month ) ) {
-                dateObject = originalDateObject
-                interval = interval > 0 ? 1 : -1
-            }
-
-
-            // If we’ve reached the min/max limit, reverse the direction, flatten the interval and set it to the limit.
-            if ( dateObject.pick <= minLimitObject.pick ) {
-                reachedMin = true
-                interval = 1
-                dateObject = calendar.create([ minLimitObject.year, minLimitObject.month, minLimitObject.date - 1 ])
-            }
-            else if ( dateObject.pick >= maxLimitObject.pick ) {
-                reachedMax = true
-                interval = -1
-                dateObject = calendar.create([ maxLimitObject.year, maxLimitObject.month, maxLimitObject.date + 1 ])
-            }
-
-
-            // If we’ve reached both limits, just break out of the loop.
-            if ( reachedMin && reachedMax ) {
-                break
-            }
-
-
-            // Finally, create the shifted date using the interval and keep looping.
-            dateObject = calendar.create([ dateObject.year, dateObject.month, dateObject.date + interval ])
-        }
-
-    } //endif
-
-
-    // Return the date object settled on.
-    return dateObject
-} //DatePicker.prototype.validate
-
-
-/**
- * Check if a date is disabled.
- */
-DatePicker.prototype.disabled = function( dateToVerify ) {
-
-    var
-        calendar = this,
-
-        // Filter through the disabled dates to check if this is one.
-        isDisabledMatch = calendar.item.disable.filter( function( dateToDisable ) {
-
-            // If the date is a number, match the weekday with 0index and `firstDay` check.
-            if ( _.isInteger( dateToDisable ) ) {
-                return dateToVerify.day === ( calendar.settings.firstDay ? dateToDisable : dateToDisable - 1 ) % 7
-            }
-
-            // If it’s an array or a native JS date, create and match the exact date.
-            if ( $.isArray( dateToDisable ) || _.isDate( dateToDisable ) ) {
-                return dateToVerify.pick === calendar.create( dateToDisable ).pick
-            }
-
-            // If it’s an object, match a date within the “from” and “to” range.
-            if ( $.isPlainObject( dateToDisable ) ) {
-                return calendar.withinRange( dateToDisable, dateToVerify )
-            }
-        })
-
-    // If this date matches a disabled date, confirm it’s not inverted.
-    isDisabledMatch = isDisabledMatch.length && !isDisabledMatch.filter(function( dateToDisable ) {
-        return $.isArray( dateToDisable ) && dateToDisable[3] == 'inverted' ||
-            $.isPlainObject( dateToDisable ) && dateToDisable.inverted
-    }).length
-
-    // Check the calendar “enabled” flag and respectively flip the
-    // disabled state. Then also check if it’s beyond the min/max limits.
-    return calendar.item.enable === -1 ? !isDisabledMatch : isDisabledMatch ||
-        dateToVerify.pick < calendar.item.min.pick ||
-        dateToVerify.pick > calendar.item.max.pick
-
-} //DatePicker.prototype.disabled
-
-
-/**
- * Parse a string into a usable type.
- */
-DatePicker.prototype.parse = function( type, value, options ) {
-
-    var calendar = this,
-        parsingObject = {},
-        monthIndex
-
-    if ( !value || _.isInteger( value ) || $.isArray( value ) || _.isDate( value ) || $.isPlainObject( value ) && _.isInteger( value.pick ) ) {
-        return value
-    }
-
-    // We need a `.format` to parse the value with.
-    if ( !( options && options.format ) ) {
-        options = options || {}
-        options.format = calendar.settings.format
-    }
-
-    // Calculate the month index to adjust with.
-    monthIndex = typeof value == 'string' && !options.fromValue ? 1 : 0
-
-    // Convert the format into an array and then map through it.
-    calendar.formats.toArray( options.format ).map( function( label ) {
-
-        var
-            // Grab the formatting label.
-            formattingLabel = calendar.formats[ label ],
-
-            // The format length is from the formatting label function or the
-            // label length without the escaping exclamation (!) mark.
-            formatLength = formattingLabel ? _.trigger( formattingLabel, calendar, [ value, parsingObject ] ) : label.replace( /^!/, '' ).length
-
-        // If there's a format label, split the value up to the format length.
-        // Then add it to the parsing object with appropriate label.
-        if ( formattingLabel ) {
-            parsingObject[ label ] = value.substr( 0, formatLength )
-        }
-
-        // Update the value as the substring from format length to end.
-        value = value.substr( formatLength )
-    })
-
-    // If it’s parsing a user provided month value, compensate for month 0index.
-    return [
-        parsingObject.yyyy || parsingObject.yy,
-        +( parsingObject.mm || parsingObject.m ) - monthIndex,
-        parsingObject.dd || parsingObject.d
-    ]
-} //DatePicker.prototype.parse
-
-
-/**
- * Various formats to display the object in.
- */
-DatePicker.prototype.formats = (function() {
-
-    // Return the length of the first word in a collection.
-    function getWordLengthFromCollection( string, collection, dateObject ) {
-
-        // Grab the first word from the string.
-        var word = string.match( /\w+/ )[ 0 ]
-
-        // If there's no month index, add it to the date object
-        if ( !dateObject.mm && !dateObject.m ) {
-            dateObject.m = collection.indexOf( word )
-        }
-
-        // Return the length of the word.
-        return word.length
-    }
-
-    // Get the length of the first word in a string.
-    function getFirstWordLength( string ) {
-        return string.match( /\w+/ )[ 0 ].length
-    }
-
-    return {
-
-        d: function( string, dateObject ) {
-
-            // If there's string, then get the digits length.
-            // Otherwise return the selected date.
-            return string ? _.digits( string ) : dateObject.date
-        },
-        dd: function( string, dateObject ) {
-
-            // If there's a string, then the length is always 2.
-            // Otherwise return the selected date with a leading zero.
-            return string ? 2 : _.lead( dateObject.date )
-        },
-        ddd: function( string, dateObject ) {
-
-            // If there's a string, then get the length of the first word.
-            // Otherwise return the short selected weekday.
-            return string ? getFirstWordLength( string ) : this.settings.weekdaysShort[ dateObject.day ]
-        },
-        dddd: function( string, dateObject ) {
-
-            // If there's a string, then get the length of the first word.
-            // Otherwise return the full selected weekday.
-            return string ? getFirstWordLength( string ) : this.settings.weekdaysFull[ dateObject.day ]
-        },
-        m: function( string, dateObject ) {
-
-            // If there's a string, then get the length of the digits
-            // Otherwise return the selected month with 0index compensation.
-            return string ? _.digits( string ) : dateObject.month + 1
-        },
-        mm: function( string, dateObject ) {
-
-            // If there's a string, then the length is always 2.
-            // Otherwise return the selected month with 0index and leading zero.
-            return string ? 2 : _.lead( dateObject.month + 1 )
-        },
-        mmm: function( string, dateObject ) {
-
-            var collection = this.settings.monthsShort
-
-            // If there's a string, get length of the relevant month from the short
-            // months collection. Otherwise return the selected month from that collection.
-            return string ? getWordLengthFromCollection( string, collection, dateObject ) : collection[ dateObject.month ]
-        },
-        mmmm: function( string, dateObject ) {
-
-            var collection = this.settings.monthsFull
-
-            // If there's a string, get length of the relevant month from the full
-            // months collection. Otherwise return the selected month from that collection.
-            return string ? getWordLengthFromCollection( string, collection, dateObject ) : collection[ dateObject.month ]
-        },
-        yy: function( string, dateObject ) {
-
-            // If there's a string, then the length is always 2.
-            // Otherwise return the selected year by slicing out the first 2 digits.
-            return string ? 2 : ( '' + dateObject.year ).slice( 2 )
-        },
-        yyyy: function( string, dateObject ) {
-
-            // If there's a string, then the length is always 4.
-            // Otherwise return the selected year.
-            return string ? 4 : dateObject.year
-        },
-
-        // Create an array by splitting the formatting string passed.
-        toArray: function( formatString ) { return formatString.split( /(d{1,4}|m{1,4}|y{4}|yy|!.)/g ) },
-
-        // Format an object into a string using the formatting options.
-        toString: function ( formatString, itemObject ) {
-            var calendar = this
-            return calendar.formats.toArray( formatString ).map( function( label ) {
-                return _.trigger( calendar.formats[ label ], calendar, [ 0, itemObject ] ) || label.replace( /^!/, '' )
-            }).join( '' )
-        }
-    }
-})() //DatePicker.prototype.formats
-
-
-
-
-/**
- * Check if two date units are the exact.
- */
-DatePicker.prototype.isDateExact = function( one, two ) {
-
-    var calendar = this
-
-    // When we’re working with weekdays, do a direct comparison.
-    if (
-        ( _.isInteger( one ) && _.isInteger( two ) ) ||
-        ( typeof one == 'boolean' && typeof two == 'boolean' )
-     ) {
-        return one === two
-    }
-
-    // When we’re working with date representations, compare the “pick” value.
-    if (
-        ( _.isDate( one ) || $.isArray( one ) ) &&
-        ( _.isDate( two ) || $.isArray( two ) )
-    ) {
-        return calendar.create( one ).pick === calendar.create( two ).pick
-    }
-
-    // When we’re working with range objects, compare the “from” and “to”.
-    if ( $.isPlainObject( one ) && $.isPlainObject( two ) ) {
-        return calendar.isDateExact( one.from, two.from ) && calendar.isDateExact( one.to, two.to )
-    }
-
-    return false
-}
-
-
-/**
- * Check if two date units overlap.
- */
-DatePicker.prototype.isDateOverlap = function( one, two ) {
-
-    var calendar = this
-
-    // When we’re working with a weekday index, compare the days.
-    if ( _.isInteger( one ) && ( _.isDate( two ) || $.isArray( two ) ) ) {
-        return one === calendar.create( two ).day + 1
-    }
-    if ( _.isInteger( two ) && ( _.isDate( one ) || $.isArray( one ) ) ) {
-        return two === calendar.create( one ).day + 1
-    }
-
-    // When we’re working with range objects, check if the ranges overlap.
-    if ( $.isPlainObject( one ) && $.isPlainObject( two ) ) {
-        return calendar.overlapRanges( one, two )
-    }
-
-    return false
-}
-
-
-/**
- * Flip the “enabled” state.
- */
-DatePicker.prototype.flipEnable = function(val) {
-    var itemObject = this.item
-    itemObject.enable = val || (itemObject.enable == -1 ? 1 : -1)
-}
-
-
-/**
- * Mark a collection of dates as “disabled”.
- */
-DatePicker.prototype.deactivate = function( type, datesToDisable ) {
-
-    var calendar = this,
-        disabledItems = calendar.item.disable.slice(0)
-
-
-    // If we’re flipping, that’s all we need to do.
-    if ( datesToDisable == 'flip' ) {
-        calendar.flipEnable()
-    }
-
-    else if ( datesToDisable === false ) {
-        calendar.flipEnable(1)
-        disabledItems = []
-    }
-
-    else if ( datesToDisable === true ) {
-        calendar.flipEnable(-1)
-        disabledItems = []
-    }
-
-    // Otherwise go through the dates to disable.
-    else {
-
-        datesToDisable.map(function( unitToDisable ) {
-
-            var matchFound
-
-            // When we have disabled items, check for matches.
-            // If something is matched, immediately break out.
-            for ( var index = 0; index < disabledItems.length; index += 1 ) {
-                if ( calendar.isDateExact( unitToDisable, disabledItems[index] ) ) {
-                    matchFound = true
-                    break
-                }
-            }
-
-            // If nothing was found, add the validated unit to the collection.
-            if ( !matchFound ) {
-                if (
-                    _.isInteger( unitToDisable ) ||
-                    _.isDate( unitToDisable ) ||
-                    $.isArray( unitToDisable ) ||
-                    ( $.isPlainObject( unitToDisable ) && unitToDisable.from && unitToDisable.to )
-                ) {
-                    disabledItems.push( unitToDisable )
-                }
-            }
-        })
-    }
-
-    // Return the updated collection.
-    return disabledItems
-} //DatePicker.prototype.deactivate
-
-
-/**
- * Mark a collection of dates as “enabled”.
- */
-DatePicker.prototype.activate = function( type, datesToEnable ) {
-
-    var calendar = this,
-        disabledItems = calendar.item.disable,
-        disabledItemsCount = disabledItems.length
-
-    // If we’re flipping, that’s all we need to do.
-    if ( datesToEnable == 'flip' ) {
-        calendar.flipEnable()
-    }
-
-    else if ( datesToEnable === true ) {
-        calendar.flipEnable(1)
-        disabledItems = []
-    }
-
-    else if ( datesToEnable === false ) {
-        calendar.flipEnable(-1)
-        disabledItems = []
-    }
-
-    // Otherwise go through the disabled dates.
-    else {
-
-        datesToEnable.map(function( unitToEnable ) {
-
-            var matchFound,
-                disabledUnit,
-                index,
-                isExactRange
-
-            // Go through the disabled items and try to find a match.
-            for ( index = 0; index < disabledItemsCount; index += 1 ) {
-
-                disabledUnit = disabledItems[index]
-
-                // When an exact match is found, remove it from the collection.
-                if ( calendar.isDateExact( disabledUnit, unitToEnable ) ) {
-                    matchFound = disabledItems[index] = null
-                    isExactRange = true
-                    break
-                }
-
-                // When an overlapped match is found, add the “inverted” state to it.
-                else if ( calendar.isDateOverlap( disabledUnit, unitToEnable ) ) {
-                    if ( $.isPlainObject( unitToEnable ) ) {
-                        unitToEnable.inverted = true
-                        matchFound = unitToEnable
-                    }
-                    else if ( $.isArray( unitToEnable ) ) {
-                        matchFound = unitToEnable
-                        if ( !matchFound[3] ) matchFound.push( 'inverted' )
-                    }
-                    else if ( _.isDate( unitToEnable ) ) {
-                        matchFound = [ unitToEnable.getFullYear(), unitToEnable.getMonth(), unitToEnable.getDate(), 'inverted' ]
-                    }
-                    break
-                }
-            }
-
-            // If a match was found, remove a previous duplicate entry.
-            if ( matchFound ) for ( index = 0; index < disabledItemsCount; index += 1 ) {
-                if ( calendar.isDateExact( disabledItems[index], unitToEnable ) ) {
-                    disabledItems[index] = null
-                    break
-                }
-            }
-
-            // In the event that we’re dealing with an exact range of dates,
-            // make sure there are no “inverted” dates because of it.
-            if ( isExactRange ) for ( index = 0; index < disabledItemsCount; index += 1 ) {
-                if ( calendar.isDateOverlap( disabledItems[index], unitToEnable ) ) {
-                    disabledItems[index] = null
-                    break
-                }
-            }
-
-            // If something is still matched, add it into the collection.
-            if ( matchFound ) {
-                disabledItems.push( matchFound )
-            }
-        })
-    }
-
-    // Return the updated collection.
-    return disabledItems.filter(function( val ) { return val != null })
-} //DatePicker.prototype.activate
-
-
-/**
- * Create a string for the nodes in the picker.
- */
-DatePicker.prototype.nodes = function( isOpen ) {
-
-    var
-        calendar = this,
-        settings = calendar.settings,
-        calendarItem = calendar.item,
-        nowObject = calendarItem.now,
-        selectedObject = calendarItem.select,
-        highlightedObject = calendarItem.highlight,
-        viewsetObject = calendarItem.view,
-        disabledCollection = calendarItem.disable,
-        minLimitObject = calendarItem.min,
-        maxLimitObject = calendarItem.max,
-
-
-        // Create the calendar table head using a copy of weekday labels collection.
-        // * We do a copy so we don't mutate the original array.
-        tableHead = (function( collection ) {
-
-            // If the first day should be Monday, move Sunday to the end.
-            if ( settings.firstDay ) {
-                collection.push( collection.shift() )
-            }
-
-            // Create and return the table head group.
-            return _.node(
-                'thead',
-                _.node(
-                    'tr',
-                    _.group({
-                        min: 0,
-                        max: DAYS_IN_WEEK - 1,
-                        i: 1,
-                        node: 'th',
-                        item: function( counter ) {
-                            return [
-                                collection[ counter ],
-                                settings.klass.weekdays
-                            ]
-                        }
-                    })
-                )
-            ) //endreturn
-        })( ( settings.showWeekdaysFull ? settings.weekdaysFull : settings.weekdaysShort ).slice( 0 ) ), //tableHead
-
-
-        // Create the nav for next/prev month.
-        createMonthNav = function( next ) {
-
-            // Otherwise, return the created month tag.
-            return _.node(
-                'div',
-                ' ',
-                settings.klass[ 'nav' + ( next ? 'Next' : 'Prev' ) ] + (
-
-                    // If the focused month is outside the range, disabled the button.
-                    ( next && viewsetObject.year >= maxLimitObject.year && viewsetObject.month >= maxLimitObject.month ) ||
-                    ( !next && viewsetObject.year <= minLimitObject.year && viewsetObject.month <= minLimitObject.month ) ?
-                    ' ' + settings.klass.navDisabled : ''
-                ),
-                'data-nav=' + ( next || -1 )
-            ) //endreturn
-        }, //createMonthNav
-
-
-        // Create the month label.
-        createMonthLabel = function( monthsCollection ) {
-
-            // If there are months to select, add a dropdown menu.
-            if ( settings.selectMonths ) {
-
-                return _.node( 'select', _.group({
-                    min: 0,
-                    max: 11,
-                    i: 1,
-                    node: 'option',
-                    item: function( loopedMonth ) {
-
-                        return [
-
-                            // The looped month and no classes.
-                            monthsCollection[ loopedMonth ], 0,
-
-                            // Set the value and selected index.
-                            'value=' + loopedMonth +
-                            ( viewsetObject.month == loopedMonth ? ' selected' : '' ) +
-                            (
-                                (
-                                    ( viewsetObject.year == minLimitObject.year && loopedMonth < minLimitObject.month ) ||
-                                    ( viewsetObject.year == maxLimitObject.year && loopedMonth > maxLimitObject.month )
-                                ) ?
-                                ' disabled' : ''
-                            )
-                        ]
-                    }
-                }), settings.klass.selectMonth, isOpen ? '' : 'disabled' )
-            }
-
-            // If there's a need for a month selector
-            return _.node( 'div', monthsCollection[ viewsetObject.month ], settings.klass.month )
-        }, //createMonthLabel
-
-
-        // Create the year label.
-        createYearLabel = function() {
-
-            var focusedYear = viewsetObject.year,
-
-            // If years selector is set to a literal "true", set it to 5. Otherwise
-            // divide in half to get half before and half after focused year.
-            numberYears = settings.selectYears === true ? 5 : ~~( settings.selectYears / 2 )
-
-            // If there are years to select, add a dropdown menu.
-            if ( numberYears ) {
-
-                var
-                    minYear = minLimitObject.year,
-                    maxYear = maxLimitObject.year,
-                    lowestYear = focusedYear - numberYears,
-                    highestYear = focusedYear + numberYears
-
-                // If the min year is greater than the lowest year, increase the highest year
-                // by the difference and set the lowest year to the min year.
-                if ( minYear > lowestYear ) {
-                    highestYear += minYear - lowestYear
-                    lowestYear = minYear
-                }
-
-                // If the max year is less than the highest year, decrease the lowest year
-                // by the lower of the two: available and needed years. Then set the
-                // highest year to the max year.
-                if ( maxYear < highestYear ) {
-
-                    var availableYears = lowestYear - minYear,
-                        neededYears = highestYear - maxYear
-
-                    lowestYear -= availableYears > neededYears ? neededYears : availableYears
-                    highestYear = maxYear
-                }
-
-                return _.node( 'select', _.group({
-                    min: lowestYear,
-                    max: highestYear,
-                    i: 1,
-                    node: 'option',
-                    item: function( loopedYear ) {
-                        return [
-
-                            // The looped year and no classes.
-                            loopedYear, 0,
-
-                            // Set the value and selected index.
-                            'value=' + loopedYear + ( focusedYear == loopedYear ? ' selected' : '' )
-                        ]
-                    }
-                }), settings.klass.selectYear, isOpen ? '' : 'disabled' )
-            }
-
-            // Otherwise just return the year focused
-            return _.node( 'div', focusedYear, settings.klass.year )
-        } //createYearLabel
-
-
-    // Create and return the entire calendar.
-    return _.node(
-        'div',
-        createMonthNav() + createMonthNav( 1 ) +
-        createMonthLabel( settings.showMonthsShort ? settings.monthsShort : settings.monthsFull ) +
-        createYearLabel(),
-        settings.klass.header
-    ) + _.node(
-        'table',
-        tableHead +
-        _.node(
-            'tbody',
-            _.group({
-                min: 0,
-                max: WEEKS_IN_CALENDAR - 1,
-                i: 1,
-                node: 'tr',
-                item: function( rowCounter ) {
-
-                    // If Monday is the first day and the month starts on Sunday, shift the date back a week.
-                    var shiftDateBy = settings.firstDay && calendar.create([ viewsetObject.year, viewsetObject.month, 1 ]).day === 0 ? -7 : 0
-
-                    return [
-                        _.group({
-                            min: DAYS_IN_WEEK * rowCounter - viewsetObject.day + shiftDateBy + 1, // Add 1 for weekday 0index
-                            max: function() {
-                                return this.min + DAYS_IN_WEEK - 1
-                            },
-                            i: 1,
-                            node: 'td',
-                            item: function( targetDate ) {
-
-                                // Convert the time date from a relative date to a target date.
-                                targetDate = calendar.create([ viewsetObject.year, viewsetObject.month, targetDate + ( settings.firstDay ? 1 : 0 ) ])
-
-                                var isSelected = selectedObject && selectedObject.pick == targetDate.pick,
-                                    isHighlighted = highlightedObject && highlightedObject.pick == targetDate.pick,
-                                    isDisabled = disabledCollection && calendar.disabled( targetDate ) || targetDate.pick < minLimitObject.pick || targetDate.pick > maxLimitObject.pick
-
-                                return [
-                                    _.node(
-                                        'div',
-                                        targetDate.date,
-                                        (function( klasses ) {
-
-                                            // Add the `infocus` or `outfocus` classes based on month in view.
-                                            klasses.push( viewsetObject.month == targetDate.month ? settings.klass.infocus : settings.klass.outfocus )
-
-                                            // Add the `today` class if needed.
-                                            if ( nowObject.pick == targetDate.pick ) {
-                                                klasses.push( settings.klass.now )
-                                            }
-
-                                            // Add the `selected` class if something's selected and the time matches.
-                                            if ( isSelected ) {
-                                                klasses.push( settings.klass.selected )
-                                            }
-
-                                            // Add the `highlighted` class if something's highlighted and the time matches.
-                                            if ( isHighlighted ) {
-                                                klasses.push( settings.klass.highlighted )
-                                            }
-
-                                            // Add the `disabled` class if something's disabled and the object matches.
-                                            if ( isDisabled ) {
-                                                klasses.push( settings.klass.disabled )
-                                            }
-
-                                            return klasses.join( ' ' )
-                                        })([ settings.klass.day ]),
-                                        'data-pick=' + targetDate.pick + ' ' + _.ariaAttr({
-                                            role: 'button',
-                                            controls: calendar.$node[0].id,
-                                            checked: isSelected && calendar.$node.val() === _.trigger(
-                                                    calendar.formats.toString,
-                                                    calendar,
-                                                    [ settings.format, targetDate ]
-                                                ) ? true : null,
-                                            activedescendant: isHighlighted ? true : null,
-                                            disabled: isDisabled ? true : null
-                                        })
-                                    )
-                                ] //endreturn
-                            }
-                        })
-                    ] //endreturn
-                }
-            })
-        ),
-        settings.klass.table
-    ) +
-
-    // * For Firefox forms to submit, make sure to set the buttons’ `type` attributes as “button”.
-    _.node(
-        'div',
-        _.node( 'button', settings.today, settings.klass.buttonToday, 'type=button data-pick=' + nowObject.pick + ( isOpen ? '' : ' disabled' ) ) +
-        _.node( 'button', settings.clear, settings.klass.buttonClear, 'type=button data-clear=1' + ( isOpen ? '' : ' disabled' ) ),
-        settings.klass.footer
-    ) //endreturn
-} //DatePicker.prototype.nodes
-
-
-
-
-/**
- * The date picker defaults.
- */
-DatePicker.defaults = (function( prefix ) {
-
-    return {
-
-        // Months and weekdays
-        monthsFull: [ 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ],
-        monthsShort: [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ],
-        weekdaysFull: [ 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday' ],
-        weekdaysShort: [ 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' ],
-
-        // Today and clear
-        today: 'Today',
-        clear: 'Clear',
-
-        // The format to show on the `input` element
-        format: 'd mmmm, yyyy',
-
-        // Classes
-        klass: {
-
-            table: prefix + 'table',
-
-            header: prefix + 'header',
-
-            navPrev: prefix + 'nav--prev',
-            navNext: prefix + 'nav--next',
-            navDisabled: prefix + 'nav--disabled',
-
-            month: prefix + 'month',
-            year: prefix + 'year',
-
-            selectMonth: prefix + 'select--month',
-            selectYear: prefix + 'select--year',
-
-            weekdays: prefix + 'weekday',
-
-            day: prefix + 'day',
-            disabled: prefix + 'day--disabled',
-            selected: prefix + 'day--selected',
-            highlighted: prefix + 'day--highlighted',
-            now: prefix + 'day--today',
-            infocus: prefix + 'day--infocus',
-            outfocus: prefix + 'day--outfocus',
-
-            footer: prefix + 'footer',
-
-            buttonClear: prefix + 'button--clear',
-            buttonToday: prefix + 'button--today'
-        }
-    }
-})( Picker.klasses().picker + '__' )
-
-
-
-
-
-/**
- * Extend the picker to add the date picker.
- */
-Picker.extend( 'pickadate', DatePicker )
-
-
-}));
-
-
-
-
-
-/*!
- * Time picker for pickadate.js v3.4.0
- * http://amsul.github.io/pickadate.js/time.htm
- */
-
-(function ( factory ) {
-
-    // Register as an anonymous module.
-    if ( typeof define == 'function' && define.amd )
-        define( 'picker.time',['picker','jquery'], factory )
-
-    // Or using browser globals.
-    else factory( Picker, jQuery )
-
-}(function( Picker, $ ) {
-
-
-/**
- * Globals and constants
- */
-var HOURS_IN_DAY = 24,
-    MINUTES_IN_HOUR = 60,
-    HOURS_TO_NOON = 12,
-    MINUTES_IN_DAY = HOURS_IN_DAY * MINUTES_IN_HOUR,
-    _ = Picker._
-
-
-
-/**
- * The time picker constructor
- */
-function TimePicker( picker, settings ) {
-
-    var clock = this,
-        elementValue = picker.$node[ 0 ].value,
-        elementDataValue = picker.$node.data( 'value' ),
-        valueString = elementDataValue || elementValue,
-        formatString = elementDataValue ? settings.formatSubmit : settings.format
-
-    clock.settings = settings
-    clock.$node = picker.$node
-
-    // The queue of methods that will be used to build item objects.
-    clock.queue = {
-        interval: 'i',
-        min: 'measure create',
-        max: 'measure create',
-        now: 'now create',
-        select: 'parse create validate',
-        highlight: 'parse create validate',
-        view: 'parse create validate',
-        disable: 'deactivate',
-        enable: 'activate'
-    }
-
-    // The component's item object.
-    clock.item = {}
-
-    clock.item.interval = settings.interval || 30
-    clock.item.disable = ( settings.disable || [] ).slice( 0 )
-    clock.item.enable = -(function( collectionDisabled ) {
-        return collectionDisabled[ 0 ] === true ? collectionDisabled.shift() : -1
-    })( clock.item.disable )
-
-    clock.
-        set( 'min', settings.min ).
-        set( 'max', settings.max ).
-        set( 'now' )
-
-    // When there’s a value, set the `select`, which in turn
-    // also sets the `highlight` and `view`.
-    if ( valueString ) {
-        clock.set( 'select', valueString, {
-            format: formatString,
-            fromValue: !!elementValue
-        })
-    }
-
-    // If there’s no value, default to highlighting “today”.
-    else {
-        clock.
-            set( 'select', null ).
-            set( 'highlight', clock.item.now )
-    }
-
-    // The keycode to movement mapping.
-    clock.key = {
-        40: 1, // Down
-        38: -1, // Up
-        39: 1, // Right
-        37: -1, // Left
-        go: function( timeChange ) {
-            clock.set(
-                'highlight',
-                clock.item.highlight.pick + timeChange * clock.item.interval,
-                { interval: timeChange * clock.item.interval }
-            )
-            this.render()
-        }
-    }
-
-
-    // Bind some picker events.
-    picker.
-        on( 'render', function() {
-            var $pickerHolder = picker.$root.children(),
-                $viewset = $pickerHolder.find( '.' + settings.klass.viewset )
-            if ( $viewset.length ) {
-                $pickerHolder[ 0 ].scrollTop = ~~$viewset.position().top - ( $viewset[ 0 ].clientHeight * 2 )
-            }
-        }).
-        on( 'open', function() {
-            picker.$root.find( 'button' ).attr( 'disable', false )
-        }).
-        on( 'close', function() {
-            picker.$root.find( 'button' ).attr( 'disable', true )
-        })
-
-} //TimePicker
-
-
-/**
- * Set a timepicker item object.
- */
-TimePicker.prototype.set = function( type, value, options ) {
-
-    var clock = this,
-        clockItem = clock.item
-
-    // If the value is `null` just set it immediately.
-    if ( value === null ) {
-        clockItem[ type ] = value
-        return clock
-    }
-
-    // Otherwise go through the queue of methods, and invoke the functions.
-    // Update this as the time unit, and set the final value as this item.
-    // * In the case of `enable`, keep the queue but set `disable` instead.
-    //   And in the case of `flip`, keep the queue but set `enable` instead.
-    clockItem[ ( type == 'enable' ? 'disable' : type == 'flip' ? 'enable' : type ) ] = clock.queue[ type ].split( ' ' ).map( function( method ) {
-        value = clock[ method ]( type, value, options )
-        return value
-    }).pop()
-
-    // Check if we need to cascade through more updates.
-    if ( type == 'select' ) {
-        clock.set( 'highlight', clockItem.select, options )
-    }
-    else if ( type == 'highlight' ) {
-        clock.set( 'view', clockItem.highlight, options )
-    }
-    else if ( type == 'interval' ) {
-        clock.
-            set( 'min', clockItem.min, options ).
-            set( 'max', clockItem.max, options )
-    }
-    else if ( type.match( /^(flip|min|max|disable|enable)$/ ) ) {
-        if ( type == 'min' ) {
-            clock.set( 'max', clockItem.max, options )
-        }
-        if ( clockItem.select && clock.disabled( clockItem.select ) ) {
-            clock.set( 'select', clockItem.select, options )
-        }
-        if ( clockItem.highlight && clock.disabled( clockItem.highlight ) ) {
-            clock.set( 'highlight', clockItem.highlight, options )
-        }
-    }
-
-    return clock
-} //TimePicker.prototype.set
-
-
-/**
- * Get a timepicker item object.
- */
-TimePicker.prototype.get = function( type ) {
-    return this.item[ type ]
-} //TimePicker.prototype.get
-
-
-/**
- * Create a picker time object.
- */
-TimePicker.prototype.create = function( type, value, options ) {
-
-    var clock = this
-
-    // If there’s no value, use the type as the value.
-    value = value === undefined ? type : value
-
-    // If it’s a date object, convert it into an array.
-    if ( _.isDate( value ) ) {
-        value = [ value.getHours(), value.getMinutes() ]
-    }
-
-    // If it’s an object, use the “pick” value.
-    if ( $.isPlainObject( value ) && _.isInteger( value.pick ) ) {
-        value = value.pick
-    }
-
-    // If it’s an array, convert it into minutes.
-    else if ( $.isArray( value ) ) {
-        value = +value[ 0 ] * MINUTES_IN_HOUR + (+value[ 1 ])
-    }
-
-    // If no valid value is passed, set it to “now”.
-    else if ( !_.isInteger( value ) ) {
-        value = clock.now( type, value, options )
-    }
-
-    // If we’re setting the max, make sure it’s greater than the min.
-    if ( type == 'max' && value < clock.item.min.pick ) {
-        value += MINUTES_IN_DAY
-    }
-
-    // If the value doesn’t fall directly on the interval,
-    // add one interval to indicate it as “passed”.
-    if ( type != 'min' && type != 'max' && (value - clock.item.min.pick) % clock.item.interval !== 0 ) {
-        value += clock.item.interval
-    }
-
-    // Normalize it into a “reachable” interval.
-    value = clock.normalize( type, value, options )
-
-    // Return the compiled object.
-    return {
-
-        // Divide to get hours from minutes.
-        hour: ~~( HOURS_IN_DAY + value / MINUTES_IN_HOUR ) % HOURS_IN_DAY,
-
-        // The remainder is the minutes.
-        mins: ( MINUTES_IN_HOUR + value % MINUTES_IN_HOUR ) % MINUTES_IN_HOUR,
-
-        // The time in total minutes.
-        time: ( MINUTES_IN_DAY + value ) % MINUTES_IN_DAY,
-
-        // Reference to the “relative” value to pick.
-        pick: value
-    }
-} //TimePicker.prototype.create
-
-
-/**
- * Create a range limit object using an array, date object,
- * literal “true”, or integer relative to another time.
- */
-TimePicker.prototype.createRange = function( from, to ) {
-
-    var clock = this,
-        createTime = function( time ) {
-            if ( time === true || $.isArray( time ) || _.isDate( time ) ) {
-                return clock.create( time )
-            }
-            return time
-        }
-
-    // Create objects if possible.
-    if ( !_.isInteger( from ) ) {
-        from = createTime( from )
-    }
-    if ( !_.isInteger( to ) ) {
-        to = createTime( to )
-    }
-
-    // Create relative times.
-    if ( _.isInteger( from ) && $.isPlainObject( to ) ) {
-        from = [ to.hour, to.mins + ( from * clock.settings.interval ) ];
-    }
-    else if ( _.isInteger( to ) && $.isPlainObject( from ) ) {
-        to = [ from.hour, from.mins + ( to * clock.settings.interval ) ];
-    }
-
-    return {
-        from: createTime( from ),
-        to: createTime( to )
-    }
-} //TimePicker.prototype.createRange
-
-
-/**
- * Check if a time unit falls within a time range object.
- */
-TimePicker.prototype.withinRange = function( range, timeUnit ) {
-    range = this.createRange(range.from, range.to)
-    return timeUnit.pick >= range.from.pick && timeUnit.pick <= range.to.pick
-}
-
-
-/**
- * Check if two time range objects overlap.
- */
-TimePicker.prototype.overlapRanges = function( one, two ) {
-
-    var clock = this
-
-    // Convert the ranges into comparable times.
-    one = clock.createRange( one.from, one.to )
-    two = clock.createRange( two.from, two.to )
-
-    return clock.withinRange( one, two.from ) || clock.withinRange( one, two.to ) ||
-        clock.withinRange( two, one.from ) || clock.withinRange( two, one.to )
-}
-
-
-/**
- * Get the time relative to now.
- */
-TimePicker.prototype.now = function( type, value/*, options*/ ) {
-
-    var interval = this.item.interval,
-        date = new Date(),
-        nowMinutes = date.getHours() * MINUTES_IN_HOUR + date.getMinutes(),
-        isValueInteger = _.isInteger( value ),
-        isBelowInterval
-
-    // Make sure “now” falls within the interval range.
-    nowMinutes -= nowMinutes % interval
-
-    // Check if the difference is less than the interval itself.
-    isBelowInterval = value < 0 && interval * value + nowMinutes <= -interval
-
-    // Add an interval because the time has “passed”.
-    nowMinutes += type == 'min' && isBelowInterval ? 0 : interval
-
-    // If the value is a number, adjust by that many intervals.
-    if ( isValueInteger ) {
-        nowMinutes += interval * (
-            isBelowInterval && type != 'max' ?
-                value + 1 :
-                value
-            )
-    }
-
-    // Return the final calculation.
-    return nowMinutes
-} //TimePicker.prototype.now
-
-
-/**
- * Normalize minutes to be “reachable” based on the min and interval.
- */
-TimePicker.prototype.normalize = function( type, value/*, options*/ ) {
-
-    var interval = this.item.interval,
-        minTime = this.item.min && this.item.min.pick || 0
-
-    // If setting min time, don’t shift anything.
-    // Otherwise get the value and min difference and then
-    // normalize the difference with the interval.
-    value -= type == 'min' ? 0 : ( value - minTime ) % interval
-
-    // Return the adjusted value.
-    return value
-} //TimePicker.prototype.normalize
-
-
-/**
- * Measure the range of minutes.
- */
-TimePicker.prototype.measure = function( type, value, options ) {
-
-    var clock = this
-
-    // If it’s anything false-y, set it to the default.
-    if ( !value ) {
-        value = type == 'min' ? [ 0, 0 ] : [ HOURS_IN_DAY - 1, MINUTES_IN_HOUR - 1 ]
-    }
-
-    // If it’s a literal true, or an integer, make it relative to now.
-    else if ( value === true || _.isInteger( value ) ) {
-        value = clock.now( type, value, options )
-    }
-
-    // If it’s an object already, just normalize it.
-    else if ( $.isPlainObject( value ) && _.isInteger( value.pick ) ) {
-        value = clock.normalize( type, value.pick, options )
-    }
-
-    return value
-} ///TimePicker.prototype.measure
-
-
-/**
- * Validate an object as enabled.
- */
-TimePicker.prototype.validate = function( type, timeObject, options ) {
-
-    var clock = this,
-        interval = options && options.interval ? options.interval : clock.item.interval
-
-    // Check if the object is disabled.
-    if ( clock.disabled( timeObject ) ) {
-
-        // Shift with the interval until we reach an enabled time.
-        timeObject = clock.shift( timeObject, interval )
-    }
-
-    // Scope the object into range.
-    timeObject = clock.scope( timeObject )
-
-    // Do a second check to see if we landed on a disabled min/max.
-    // In that case, shift using the opposite interval as before.
-    if ( clock.disabled( timeObject ) ) {
-        timeObject = clock.shift( timeObject, interval * -1 )
-    }
-
-    // Return the final object.
-    return timeObject
-} //TimePicker.prototype.validate
-
-
-/**
- * Check if an object is disabled.
- */
-TimePicker.prototype.disabled = function( timeToVerify ) {
-
-    var clock = this,
-
-        // Filter through the disabled times to check if this is one.
-        isDisabledMatch = clock.item.disable.filter( function( timeToDisable ) {
-
-            // If the time is a number, match the hours.
-            if ( _.isInteger( timeToDisable ) ) {
-                return timeToVerify.hour == timeToDisable
-            }
-
-            // If it’s an array, create the object and match the times.
-            if ( $.isArray( timeToDisable ) || _.isDate( timeToDisable ) ) {
-                return timeToVerify.pick == clock.create( timeToDisable ).pick
-            }
-
-            // If it’s an object, match a time within the “from” and “to” range.
-            if ( $.isPlainObject( timeToDisable ) ) {
-                return clock.withinRange( timeToDisable, timeToVerify )
-            }
-        })
-
-    // If this time matches a disabled time, confirm it’s not inverted.
-    isDisabledMatch = isDisabledMatch.length && !isDisabledMatch.filter(function( timeToDisable ) {
-        return $.isArray( timeToDisable ) && timeToDisable[2] == 'inverted' ||
-            $.isPlainObject( timeToDisable ) && timeToDisable.inverted
-    }).length
-
-    // If the clock is "enabled" flag is flipped, flip the condition.
-    return clock.item.enable === -1 ? !isDisabledMatch : isDisabledMatch ||
-        timeToVerify.pick < clock.item.min.pick ||
-        timeToVerify.pick > clock.item.max.pick
-} //TimePicker.prototype.disabled
-
-
-/**
- * Shift an object by an interval until we reach an enabled object.
- */
-TimePicker.prototype.shift = function( timeObject, interval ) {
-
-    var clock = this,
-        minLimit = clock.item.min.pick,
-        maxLimit = clock.item.max.pick/*,
-        safety = 1000*/
-
-    interval = interval || clock.item.interval
-
-    // Keep looping as long as the time is disabled.
-    while ( /*safety &&*/ clock.disabled( timeObject ) ) {
-
-        /*safety -= 1
-        if ( !safety ) {
-            throw 'Fell into an infinite loop while shifting to ' + timeObject.hour + ':' + timeObject.mins + '.'
-        }*/
-
-        // Increase/decrease the time by the interval and keep looping.
-        timeObject = clock.create( timeObject.pick += interval )
-
-        // If we've looped beyond the limits, break out of the loop.
-        if ( timeObject.pick <= minLimit || timeObject.pick >= maxLimit ) {
-            break
-        }
-    }
-
-    // Return the final object.
-    return timeObject
-} //TimePicker.prototype.shift
-
-
-/**
- * Scope an object to be within range of min and max.
- */
-TimePicker.prototype.scope = function( timeObject ) {
-    var minLimit = this.item.min.pick,
-        maxLimit = this.item.max.pick
-    return this.create( timeObject.pick > maxLimit ? maxLimit : timeObject.pick < minLimit ? minLimit : timeObject )
-} //TimePicker.prototype.scope
-
-
-/**
- * Parse a string into a usable type.
- */
-TimePicker.prototype.parse = function( type, value, options ) {
-
-    var hour, minutes, isPM, item, parseValue,
-        clock = this,
-        parsingObject = {}
-
-    if ( !value || _.isInteger( value ) || $.isArray( value ) || _.isDate( value ) || $.isPlainObject( value ) && _.isInteger( value.pick ) ) {
-        return value
-    }
-
-    // We need a `.format` to parse the value with.
-    if ( !( options && options.format ) ) {
-        options = options || {}
-        options.format = clock.settings.format
-    }
-
-    // Convert the format into an array and then map through it.
-    clock.formats.toArray( options.format ).map( function( label ) {
-
-        var
-            substring,
-
-            // Grab the formatting label.
-            formattingLabel = clock.formats[ label ],
-
-            // The format length is from the formatting label function or the
-            // label length without the escaping exclamation (!) mark.
-            formatLength = formattingLabel ?
-                _.trigger( formattingLabel, clock, [ value, parsingObject ] ) :
-                label.replace( /^!/, '' ).length
-
-        // If there's a format label, split the value up to the format length.
-        // Then add it to the parsing object with appropriate label.
-        if ( formattingLabel ) {
-            substring = value.substr( 0, formatLength )
-            parsingObject[ label ] = substring.match(/^\d+$/) ? +substring : substring
-        }
-
-        // Update the time value as the substring from format length to end.
-        value = value.substr( formatLength )
-    })
-
-    // Grab the hour and minutes from the parsing object.
-    for ( item in parsingObject ) {
-        parseValue = parsingObject[item]
-        if ( _.isInteger(parseValue) ) {
-            if ( item.match(/^(h|hh)$/i) ) {
-                hour = parseValue
-                if ( item == 'h' || item == 'hh' ) {
-                    hour %= 12
-                }
-            }
-            else if ( item == 'i' ) {
-                minutes = parseValue
-            }
-        }
-        else if ( item.match(/^a$/i) && parseValue.match(/^p/i) && ('h' in parsingObject || 'hh' in parsingObject) ) {
-            isPM = true
-        }
-    }
-
-    // Calculate it in minutes and return.
-    return (isPM ? hour + 12 : hour) * MINUTES_IN_HOUR + minutes
-} //TimePicker.prototype.parse
-
-
-/**
- * Various formats to display the object in.
- */
-TimePicker.prototype.formats = {
-
-    h: function( string, timeObject ) {
-
-        // If there's string, then get the digits length.
-        // Otherwise return the selected hour in "standard" format.
-        return string ? _.digits( string ) : timeObject.hour % HOURS_TO_NOON || HOURS_TO_NOON
-    },
-    hh: function( string, timeObject ) {
-
-        // If there's a string, then the length is always 2.
-        // Otherwise return the selected hour in "standard" format with a leading zero.
-        return string ? 2 : _.lead( timeObject.hour % HOURS_TO_NOON || HOURS_TO_NOON )
-    },
-    H: function( string, timeObject ) {
-
-        // If there's string, then get the digits length.
-        // Otherwise return the selected hour in "military" format as a string.
-        return string ? _.digits( string ) : '' + ( timeObject.hour % 24 )
-    },
-    HH: function( string, timeObject ) {
-
-        // If there's string, then get the digits length.
-        // Otherwise return the selected hour in "military" format with a leading zero.
-        return string ? _.digits( string ) : _.lead( timeObject.hour % 24 )
-    },
-    i: function( string, timeObject ) {
-
-        // If there's a string, then the length is always 2.
-        // Otherwise return the selected minutes.
-        return string ? 2 : _.lead( timeObject.mins )
-    },
-    a: function( string, timeObject ) {
-
-        // If there's a string, then the length is always 4.
-        // Otherwise check if it's more than "noon" and return either am/pm.
-        return string ? 4 : MINUTES_IN_DAY / 2 > timeObject.time % MINUTES_IN_DAY ? 'a.m.' : 'p.m.'
-    },
-    A: function( string, timeObject ) {
-
-        // If there's a string, then the length is always 2.
-        // Otherwise check if it's more than "noon" and return either am/pm.
-        return string ? 2 : MINUTES_IN_DAY / 2 > timeObject.time % MINUTES_IN_DAY ? 'AM' : 'PM'
-    },
-
-    // Create an array by splitting the formatting string passed.
-    toArray: function( formatString ) { return formatString.split( /(h{1,2}|H{1,2}|i|a|A|!.)/g ) },
-
-    // Format an object into a string using the formatting options.
-    toString: function ( formatString, itemObject ) {
-        var clock = this
-        return clock.formats.toArray( formatString ).map( function( label ) {
-            return _.trigger( clock.formats[ label ], clock, [ 0, itemObject ] ) || label.replace( /^!/, '' )
-        }).join( '' )
-    }
-} //TimePicker.prototype.formats
-
-
-
-
-/**
- * Check if two time units are the exact.
- */
-TimePicker.prototype.isTimeExact = function( one, two ) {
-
-    var clock = this
-
-    // When we’re working with minutes, do a direct comparison.
-    if (
-        ( _.isInteger( one ) && _.isInteger( two ) ) ||
-        ( typeof one == 'boolean' && typeof two == 'boolean' )
-     ) {
-        return one === two
-    }
-
-    // When we’re working with time representations, compare the “pick” value.
-    if (
-        ( _.isDate( one ) || $.isArray( one ) ) &&
-        ( _.isDate( two ) || $.isArray( two ) )
-    ) {
-        return clock.create( one ).pick === clock.create( two ).pick
-    }
-
-    // When we’re working with range objects, compare the “from” and “to”.
-    if ( $.isPlainObject( one ) && $.isPlainObject( two ) ) {
-        return clock.isTimeExact( one.from, two.from ) && clock.isTimeExact( one.to, two.to )
-    }
-
-    return false
-}
-
-
-/**
- * Check if two time units overlap.
- */
-TimePicker.prototype.isTimeOverlap = function( one, two ) {
-
-    var clock = this
-
-    // When we’re working with an integer, compare the hours.
-    if ( _.isInteger( one ) && ( _.isDate( two ) || $.isArray( two ) ) ) {
-        return one === clock.create( two ).hour
-    }
-    if ( _.isInteger( two ) && ( _.isDate( one ) || $.isArray( one ) ) ) {
-        return two === clock.create( one ).hour
-    }
-
-    // When we’re working with range objects, check if the ranges overlap.
-    if ( $.isPlainObject( one ) && $.isPlainObject( two ) ) {
-        return clock.overlapRanges( one, two )
-    }
-
-    return false
-}
-
-
-/**
- * Flip the “enabled” state.
- */
-TimePicker.prototype.flipEnable = function(val) {
-    var itemObject = this.item
-    itemObject.enable = val || (itemObject.enable == -1 ? 1 : -1)
-}
-
-
-/**
- * Mark a collection of times as “disabled”.
- */
-TimePicker.prototype.deactivate = function( type, timesToDisable ) {
-
-    var clock = this,
-        disabledItems = clock.item.disable.slice(0)
-
-
-    // If we’re flipping, that’s all we need to do.
-    if ( timesToDisable == 'flip' ) {
-        clock.flipEnable()
-    }
-
-    else if ( timesToDisable === false ) {
-        clock.flipEnable(1)
-        disabledItems = []
-    }
-
-    else if ( timesToDisable === true ) {
-        clock.flipEnable(-1)
-        disabledItems = []
-    }
-
-    // Otherwise go through the times to disable.
-    else {
-
-        timesToDisable.map(function( unitToDisable ) {
-
-            var matchFound
-
-            // When we have disabled items, check for matches.
-            // If something is matched, immediately break out.
-            for ( var index = 0; index < disabledItems.length; index += 1 ) {
-                if ( clock.isTimeExact( unitToDisable, disabledItems[index] ) ) {
-                    matchFound = true
-                    break
-                }
-            }
-
-            // If nothing was found, add the validated unit to the collection.
-            if ( !matchFound ) {
-                if (
-                    _.isInteger( unitToDisable ) ||
-                    _.isDate( unitToDisable ) ||
-                    $.isArray( unitToDisable ) ||
-                    ( $.isPlainObject( unitToDisable ) && unitToDisable.from && unitToDisable.to )
-                ) {
-                    disabledItems.push( unitToDisable )
-                }
-            }
-        })
-    }
-
-    // Return the updated collection.
-    return disabledItems
-} //TimePicker.prototype.deactivate
-
-
-/**
- * Mark a collection of times as “enabled”.
- */
-TimePicker.prototype.activate = function( type, timesToEnable ) {
-
-    var clock = this,
-        disabledItems = clock.item.disable,
-        disabledItemsCount = disabledItems.length
-
-    // If we’re flipping, that’s all we need to do.
-    if ( timesToEnable == 'flip' ) {
-        clock.flipEnable()
-    }
-
-    else if ( timesToEnable === true ) {
-        clock.flipEnable(1)
-        disabledItems = []
-    }
-
-    else if ( timesToEnable === false ) {
-        clock.flipEnable(-1)
-        disabledItems = []
-    }
-
-    // Otherwise go through the disabled times.
-    else {
-
-        timesToEnable.map(function( unitToEnable ) {
-
-            var matchFound,
-                disabledUnit,
-                index,
-                isRangeMatched
-
-            // Go through the disabled items and try to find a match.
-            for ( index = 0; index < disabledItemsCount; index += 1 ) {
-
-                disabledUnit = disabledItems[index]
-
-                // When an exact match is found, remove it from the collection.
-                if ( clock.isTimeExact( disabledUnit, unitToEnable ) ) {
-                    matchFound = disabledItems[index] = null
-                    isRangeMatched = true
-                    break
-                }
-
-                // When an overlapped match is found, add the “inverted” state to it.
-                else if ( clock.isTimeOverlap( disabledUnit, unitToEnable ) ) {
-                    if ( $.isPlainObject( unitToEnable ) ) {
-                        unitToEnable.inverted = true
-                        matchFound = unitToEnable
-                    }
-                    else if ( $.isArray( unitToEnable ) ) {
-                        matchFound = unitToEnable
-                        if ( !matchFound[2] ) matchFound.push( 'inverted' )
-                    }
-                    else if ( _.isDate( unitToEnable ) ) {
-                        matchFound = [ unitToEnable.getFullYear(), unitToEnable.getMonth(), unitToEnable.getDate(), 'inverted' ]
-                    }
-                    break
-                }
-            }
-
-            // If a match was found, remove a previous duplicate entry.
-            if ( matchFound ) for ( index = 0; index < disabledItemsCount; index += 1 ) {
-                if ( clock.isTimeExact( disabledItems[index], unitToEnable ) ) {
-                    disabledItems[index] = null
-                    break
-                }
-            }
-
-            // In the event that we’re dealing with an overlap of range times,
-            // make sure there are no “inverted” times because of it.
-            if ( isRangeMatched ) for ( index = 0; index < disabledItemsCount; index += 1 ) {
-                if ( clock.isTimeOverlap( disabledItems[index], unitToEnable ) ) {
-                    disabledItems[index] = null
-                    break
-                }
-            }
-
-            // If something is still matched, add it into the collection.
-            if ( matchFound ) {
-                disabledItems.push( matchFound )
-            }
-        })
-    }
-
-    // Return the updated collection.
-    return disabledItems.filter(function( val ) { return val != null })
-} //TimePicker.prototype.activate
-
-
-/**
- * The division to use for the range intervals.
- */
-TimePicker.prototype.i = function( type, value/*, options*/ ) {
-    return _.isInteger( value ) && value > 0 ? value : this.item.interval
-}
-
-
-/**
- * Create a string for the nodes in the picker.
- */
-TimePicker.prototype.nodes = function( isOpen ) {
-
-    var
-        clock = this,
-        settings = clock.settings,
-        selectedObject = clock.item.select,
-        highlightedObject = clock.item.highlight,
-        viewsetObject = clock.item.view,
-        disabledCollection = clock.item.disable
-
-    return _.node(
-        'ul',
-        _.group({
-            min: clock.item.min.pick,
-            max: clock.item.max.pick,
-            i: clock.item.interval,
-            node: 'li',
-            item: function( loopedTime ) {
-                loopedTime = clock.create( loopedTime )
-                var timeMinutes = loopedTime.pick,
-                    isSelected = selectedObject && selectedObject.pick == timeMinutes,
-                    isHighlighted = highlightedObject && highlightedObject.pick == timeMinutes,
-                    isDisabled = disabledCollection && clock.disabled( loopedTime )
-                return [
-                    _.trigger( clock.formats.toString, clock, [ _.trigger( settings.formatLabel, clock, [ loopedTime ] ) || settings.format, loopedTime ] ),
-                    (function( klasses ) {
-
-                        if ( isSelected ) {
-                            klasses.push( settings.klass.selected )
-                        }
-
-                        if ( isHighlighted ) {
-                            klasses.push( settings.klass.highlighted )
-                        }
-
-                        if ( viewsetObject && viewsetObject.pick == timeMinutes ) {
-                            klasses.push( settings.klass.viewset )
-                        }
-
-                        if ( isDisabled ) {
-                            klasses.push( settings.klass.disabled )
-                        }
-
-                        return klasses.join( ' ' )
-                    })( [ settings.klass.listItem ] ),
-                    'data-pick=' + loopedTime.pick + ' ' + _.ariaAttr({
-                        role: 'button',
-                        controls: clock.$node[0].id,
-                        checked: isSelected && clock.$node.val() === _.trigger(
-                                clock.formats.toString,
-                                clock,
-                                [ settings.format, loopedTime ]
-                            ) ? true : null,
-                        activedescendant: isHighlighted ? true : null,
-                        disabled: isDisabled ? true : null
-                    })
-                ]
-            }
-        }) +
-
-        // * For Firefox forms to submit, make sure to set the button’s `type` attribute as “button”.
-        _.node(
-            'li',
-            _.node(
-                'button',
-                settings.clear,
-                settings.klass.buttonClear,
-                'type=button data-clear=1' + ( isOpen ? '' : ' disable' )
-            )
-        ),
-        settings.klass.list
-    )
-} //TimePicker.prototype.nodes
-
-
-
-
-
-
-
-/* ==========================================================================
-   Extend the picker to add the component with the defaults.
-   ========================================================================== */
-
-TimePicker.defaults = (function( prefix ) {
-
-    return {
-
-        // Clear
-        clear: 'Clear',
-
-        // The format to show on the `input` element
-        format: 'h:i A',
-
-        // The interval between each time
-        interval: 30,
-
-        // Classes
-        klass: {
-
-            picker: prefix + ' ' + prefix + '--time',
-            holder: prefix + '__holder',
-
-            list: prefix + '__list',
-            listItem: prefix + '__list-item',
-
-            disabled: prefix + '__list-item--disabled',
-            selected: prefix + '__list-item--selected',
-            highlighted: prefix + '__list-item--highlighted',
-            viewset: prefix + '__list-item--viewset',
-            now: prefix + '__list-item--now',
-
-            buttonClear: prefix + '__button--clear'
-        }
-    }
-})( Picker.klasses().picker )
-
-
-
-
-
-/**
- * Extend the picker to add the time picker.
- */
-Picker.extend( 'pickatime', TimePicker )
-
-
-}));
-
-
-
-
-/* PickADate pattern.
- *
- * Options:
- *    date(object): Date widget options described here. If false is selected date picker wont be shown. ({{selectYears: true, selectMonths: true })
- *    time(object): Time widget options described here. If false is selected time picker wont be shown. ({})
- *    separator(string): Separator between date and time if both are enabled.
- *    (' ')
- *    classClearName(string): Class name of element that is generated by pattern. ('pattern-pickadate-clear')
- *    classDateName(string): Class applied to date input. ('pattern-pickadate-date')
- *    classDateWrapperName(string): Class applied to extra wrapper div around date input. ('pattern-pickadate-date-wrapper')
- *    classSeparatorName(string): Class applied to separator. ('pattern-pickadate-separator')
- *    classTimeName(string): Class applied to time input. ('pattern-pickadate-time')
- *    classTimeWrapperName(string): Class applied to wrapper div around time input. ('pattern-pickadate-time-wrapper')
- *    classTimezoneName(string): Class applied to timezone input. ('pattern-pickadate-timezone')
- *    classTimezoneWrapperName(string): Class applied to wrapper div around timezone input. ('pattern-pickadate-timezone-wrapper')
- *    classWrapperName(string): Class name of element that is generated by pattern. ('pattern-pickadate-wrapper')
- *
- * Documentation:
- *    # Date and Time
- *
- *    {{ example-1 }}
- *
- *    # Date and Time with initial data
- *
- *    {{ example-2 }}
- *
- *    # Date
- *
- *    {{ example-3 }}
- *
- *    # Date with initial date
- *
- *    {{ example-4 }}
- *
- *    # Time
- *
- *    {{ example-5 }}
- *
- *    # Time with initial time
- *
- *    {{ example-6 }}
- *
- *    # Date and time with timezone
- *
- *    {{ example-7 }}
- *
- *    # Date and time with timezone and default value
- *
- *    {{ example-8 }}
- *
- *    # Date and time with one timezone
- *
- *    {{ example-9 }}
- *
- * Example: example-1
- *    <input class="pat-pickadate"/>
- *
- * Example: example-2
- *    <input class="pat-pickadate" value="2010-12-31 00:45" />
- *
- * Example: example-3
- *    <input class="pat-pickadate" data-pat-pickadate="time:false"/>
- *
- * Example: example-4
- *    <input class="pat-pickadate" value="2010-12-31" data-pat-pickadate="time:false"/>
- *
- * Example: example-5
- *    <input class="pat-pickadate" data-pat-pickadate="date:false"/>
- *
- * Example: example-6
- *    <input class="pat-pickadate" value="00:00" data-pat-pickadate="date:false"/>
- *
- * Example: example-7
- *    <input class="pat-pickadate" data-pat-pickadate='{"timezone": {"data": [{"id":"Europe/Berlin","text":"Europe/Berlin"},{"id":"Europe/Vienna","text":"Europe/Vienna"}]}}'/>
- *
- * Example: example-8
- *    <input class="pat-pickadate" data-pat-pickadate='{"timezone": {"default": "Europe/Vienna", "data": [{"id":"Europe/Berlin","text":"Europe/Berlin"},{"id":"Europe/Vienna","text":"Europe/Vienna"}]}}'/>
- *
- * Example: example-9
- *    <input class="pat-pickadate" data-pat-pickadate='{"timezone": {"data": [{"id":"Europe/Berlin","text":"Europe/Berlin"}]}}'/>
- *
- */
-
-
-define('mockup-patterns-pickadate',[
-  'jquery',
-  'mockup-patterns-base',
-  'picker',
-  'picker.date',
-  'picker.time',
-  'mockup-patterns-select2',
-  'translate'
-], function($, Base, Picker, PickerDate, PickerTime, Select2, _t) {
-  
-
-  var PickADate = Base.extend({
-    name: 'pickadate',
-    trigger: '.pat-pickadate',
-    defaults: {
-      separator: ' ',
-      date: {
-        selectYears: true,
-        selectMonths: true
-      },
-      time: {
-      },
-      timezone: null,
-      classWrapperName: 'pattern-pickadate-wrapper',
-      classSeparatorName: 'pattern-pickadate-separator',
-      classDateName: 'pattern-pickadate-date',
-      classDateWrapperName: 'pattern-pickadate-date-wrapper',
-      classTimeName: 'pattern-pickadate-time',
-      classTimeWrapperName: 'pattern-pickadate-time-wrapper',
-      classTimezoneName: 'pattern-pickadate-timezone',
-      classTimezoneWrapperName: 'pattern-pickadate-timezone-wrapper',
-      classClearName: 'pattern-pickadate-clear',
-      placeholderDate: _t('Enter date...'),
-      placeholderTime: _t('Enter time...'),
-      placeholderTimezone: _t('Enter timezone...')
-    },
-    isFalse: function(value) {
-      if (typeof(value) === 'string' && value === 'false') {
-        return false;
-      }
-      return value;
-    },
-    init: function() {
-      var self = this,
-          value = self.$el.val().split(' '),
-          dateValue = value[0] || '',
-          timeValue = value[1] || '';
-
-      self.options.date = self.isFalse(self.options.date);
-      self.options.time = self.isFalse(self.options.time);
-
-      if (self.options.date === false) {
-        timeValue = value[0];
-      }
-
-      self.$el.hide();
-
-      self.$wrapper = $('<div/>')
-            .addClass(self.options.classWrapperName)
-            .insertAfter(self.$el);
-
-      if (self.options.date !== false) {
-        self.options.date.formatSubmit = 'yyyy-mm-dd';
-        self.$date = $('<input type="text"/>')
-              .attr('placeholder', self.options.placeholderDate)
-              .attr('data-value', dateValue)
-              .addClass(self.options.classDateName)
-              .appendTo($('<div/>')
-                  .addClass(self.options.classDateWrapperName)
-                  .appendTo(self.$wrapper))
-              .pickadate($.extend(true, {}, self.options.date, {
-                onSet: function(e) {
-                  if (e.select !== undefined) {
-                    self.$date.attr('data-value', e.select);
-                    if (self.options.time === false ||
-                        self.$time.attr('data-value') !== '') {
-                      self.updateValue.call(self);
-                    }
-                  }
-                  if (e.hasOwnProperty('clear')) {
-                    self.$el.removeAttr('value');
-                    self.$date.attr('data-value', '');
-                  }
-                }
-              }));
-      }
-
-      if (self.options.date !== false && self.options.time !== false) {
-        self.$separator = $('<span/>')
-              .addClass(self.options.classSeparatorName)
-              .html(self.options.separator === ' ' ? '&nbsp;'
-                                                   : self.options.separator)
-              .appendTo(self.$wrapper);
-      }
-
-      if (self.options.time !== false) {
-        self.options.time.formatSubmit = 'HH:i';
-        self.$time = $('<input type="text"/>')
-              .attr('placeholder', self.options.placeholderTime)
-              .attr('data-value', timeValue)
-              .addClass(self.options.classTimeName)
-              .appendTo($('<div/>')
-                  .addClass(self.options.classTimeWrapperName)
-                  .appendTo(self.$wrapper))
-              .pickatime($.extend(true, {}, self.options.time, {
-                onSet: function(e) {
-                  if (e.select !== undefined) {
-                    self.$time.attr('data-value', e.select);
-                    if (self.options.date === false ||
-                        self.$date.attr('data-value') !== '') {
-                      self.updateValue.call(self);
-                    }
-                  }
-                  if (e.hasOwnProperty('clear')) {
-                    self.$el.removeAttr('value');
-                    self.$time.attr('data-value', '');
-                  }
-                }
-              }));
-
-        // XXX: bug in pickatime
-        // work around pickadate bug loading 00:xx as value
-        if (typeof(timeValue) === 'string' && timeValue.substring(0,2) === '00') {
-          self.$time.pickatime('picker').set('select', timeValue.split(':'));
-          self.$time.attr('data-value', timeValue);
-        }
-      }
-
-      if (self.options.date !== false && self.options.time !== false && self.options.timezone) {
-        self.$separator = $('<span/>')
-              .addClass(self.options.classSeparatorName)
-              .html(self.options.separator === ' ' ? '&nbsp;'
-                                                   : self.options.separator)
-              .appendTo(self.$wrapper);
-      }
-
-      if (self.options.timezone !== null) {
-        self.$timezone = $('<input type="text"/>')
-            .addClass(self.options.classTimezoneName)
-            .appendTo($('<div/>')
-              .addClass(self.options.classTimezoneWrapperName)
-              .appendTo(self.$wrapper))
-          .patternSelect2($.extend(true,
-          {
-            'placeholder': self.options.placeholderTimezone,
-            'width': '10em',
-          },
-          self.options.timezone,
-          { 'multiple': false }))
-          .on('change', function(e) {
-            if (e.val !== undefined){
-              self.$timezone.attr('data-value', e.val);
-              if ((self.options.date === false || self.$date.attr('data-value') !== '') &&
-                  (self.options.time === false || self.$time.attr('data-value') !== '')) {
-                self.updateValue.call(self);
-              }
-            }
-          });
-        var defaultTimezone = self.options.timezone.default;
-        // if timezone has a default value included
-        if (defaultTimezone) {
-          var isInList;
-          // the timezone list contains the default value
-          self.options.timezone.data.forEach(function(obj) {
-            isInList = (obj.text === self.options.timezone.default) ? true : false;
-          });
-          if (isInList) {
-            self.$timezone.attr('data-value', defaultTimezone);
-            self.$timezone.parent().find('.select2-chosen').text(defaultTimezone);
-          }
-        }
-        // if data contains only one timezone this value will be chosen
-        // and the timezone dropdown list will be disabled and
-        if (self.options.timezone.data.length === 1) {
-          self.$timezone.attr('data-value', self.options.timezone.data[0].text);
-          self.$timezone.parent().find('.select2-chosen').text(self.options.timezone.data[0].text);
-          self.$timezone.select2('enable', false);
-        }
-      }
-
-      self.$clear = $('<div/>')
-        .addClass(self.options.classClearName)
-        .appendTo(self.$wrapper);
-
-    },
-    updateValue: function() {
-      var self = this,
-          value = '';
-
-      if (self.options.date !== false) {
-        var date = self.$date.data('pickadate').component,
-            dateValue = self.$date.data('pickadate').get('select'),
-            formatDate = date.formats.toString;
-        if (dateValue) {
-          value += formatDate.apply(date, ['yyyy-mm-dd', dateValue]);
-        }
-      }
-
-      if (self.options.date !== false && self.options.time !== false) {
-        value += ' ';
-      }
-
-      if (self.options.time !== false) {
-        var time = self.$time.data('pickatime').component,
-            timeValue = self.$time.data('pickatime').get('select'),
-            formatTime = time.formats.toString;
-        if (timeValue) {
-          value += formatTime.apply(time, ['HH:i', timeValue]);
-        }
-      }
-
-      if (self.options.timezone !== null) {
-        var timezone = ' ' + self.$timezone.attr('data-value');
-        if (timezone) {
-          value += timezone;
-        }
-      }
-
-      self.$el.attr('value', value);
-
-      self.emit('updated');
-    }
-  });
-
-  return PickADate;
 
 });
 
@@ -20268,6 +17896,1224 @@ define('mockup-router',[
 
 });
 
+/*!
+ * jQuery Form Plugin
+ * version: 3.46.0-2013.11.21
+ * Requires jQuery v1.5 or later
+ * Copyright (c) 2013 M. Alsup
+ * Examples and documentation at: http://malsup.com/jquery/form/
+ * Project repository: https://github.com/malsup/form
+ * Dual licensed under the MIT and GPL licenses.
+ * https://github.com/malsup/form#copyright-and-license
+ */
+/*global ActiveXObject */
+
+// AMD support
+(function (factory) {
+    if (typeof define === 'function' && define.amd) {
+        // using AMD; register as anon module
+        define('jquery.form',['jquery'], factory);
+    } else {
+        // no AMD; invoke directly
+        factory( (typeof(jQuery) != 'undefined') ? jQuery : window.Zepto );
+    }
+}
+
+(function($) {
+
+
+/*
+    Usage Note:
+    -----------
+    Do not use both ajaxSubmit and ajaxForm on the same form.  These
+    functions are mutually exclusive.  Use ajaxSubmit if you want
+    to bind your own submit handler to the form.  For example,
+
+    $(document).ready(function() {
+        $('#myForm').on('submit', function(e) {
+            e.preventDefault(); // <-- important
+            $(this).ajaxSubmit({
+                target: '#output'
+            });
+        });
+    });
+
+    Use ajaxForm when you want the plugin to manage all the event binding
+    for you.  For example,
+
+    $(document).ready(function() {
+        $('#myForm').ajaxForm({
+            target: '#output'
+        });
+    });
+
+    You can also use ajaxForm with delegation (requires jQuery v1.7+), so the
+    form does not have to exist when you invoke ajaxForm:
+
+    $('#myForm').ajaxForm({
+        delegation: true,
+        target: '#output'
+    });
+
+    When using ajaxForm, the ajaxSubmit function will be invoked for you
+    at the appropriate time.
+*/
+
+/**
+ * Feature detection
+ */
+var feature = {};
+feature.fileapi = $("<input type='file'/>").get(0).files !== undefined;
+feature.formdata = window.FormData !== undefined;
+
+var hasProp = !!$.fn.prop;
+
+// attr2 uses prop when it can but checks the return type for
+// an expected string.  this accounts for the case where a form 
+// contains inputs with names like "action" or "method"; in those
+// cases "prop" returns the element
+$.fn.attr2 = function() {
+    if ( ! hasProp )
+        return this.attr.apply(this, arguments);
+    var val = this.prop.apply(this, arguments);
+    if ( ( val && val.jquery ) || typeof val === 'string' )
+        return val;
+    return this.attr.apply(this, arguments);
+};
+
+/**
+ * ajaxSubmit() provides a mechanism for immediately submitting
+ * an HTML form using AJAX.
+ */
+$.fn.ajaxSubmit = function(options) {
+    /*jshint scripturl:true */
+
+    // fast fail if nothing selected (http://dev.jquery.com/ticket/2752)
+    if (!this.length) {
+        log('ajaxSubmit: skipping submit process - no element selected');
+        return this;
+    }
+
+    var method, action, url, $form = this;
+
+    if (typeof options == 'function') {
+        options = { success: options };
+    }
+    else if ( options === undefined ) {
+        options = {};
+    }
+
+    method = options.type || this.attr2('method');
+    action = options.url  || this.attr2('action');
+
+    url = (typeof action === 'string') ? $.trim(action) : '';
+    url = url || window.location.href || '';
+    if (url) {
+        // clean url (don't include hash vaue)
+        url = (url.match(/^([^#]+)/)||[])[1];
+    }
+
+    options = $.extend(true, {
+        url:  url,
+        success: $.ajaxSettings.success,
+        type: method || $.ajaxSettings.type,
+        iframeSrc: /^https/i.test(window.location.href || '') ? 'javascript:false' : 'about:blank'
+    }, options);
+
+    // hook for manipulating the form data before it is extracted;
+    // convenient for use with rich editors like tinyMCE or FCKEditor
+    var veto = {};
+    this.trigger('form-pre-serialize', [this, options, veto]);
+    if (veto.veto) {
+        log('ajaxSubmit: submit vetoed via form-pre-serialize trigger');
+        return this;
+    }
+
+    // provide opportunity to alter form data before it is serialized
+    if (options.beforeSerialize && options.beforeSerialize(this, options) === false) {
+        log('ajaxSubmit: submit aborted via beforeSerialize callback');
+        return this;
+    }
+
+    var traditional = options.traditional;
+    if ( traditional === undefined ) {
+        traditional = $.ajaxSettings.traditional;
+    }
+
+    var elements = [];
+    var qx, a = this.formToArray(options.semantic, elements);
+    if (options.data) {
+        options.extraData = options.data;
+        qx = $.param(options.data, traditional);
+    }
+
+    // give pre-submit callback an opportunity to abort the submit
+    if (options.beforeSubmit && options.beforeSubmit(a, this, options) === false) {
+        log('ajaxSubmit: submit aborted via beforeSubmit callback');
+        return this;
+    }
+
+    // fire vetoable 'validate' event
+    this.trigger('form-submit-validate', [a, this, options, veto]);
+    if (veto.veto) {
+        log('ajaxSubmit: submit vetoed via form-submit-validate trigger');
+        return this;
+    }
+
+    var q = $.param(a, traditional);
+    if (qx) {
+        q = ( q ? (q + '&' + qx) : qx );
+    }
+    if (options.type.toUpperCase() == 'GET') {
+        options.url += (options.url.indexOf('?') >= 0 ? '&' : '?') + q;
+        options.data = null;  // data is null for 'get'
+    }
+    else {
+        options.data = q; // data is the query string for 'post'
+    }
+
+    var callbacks = [];
+    if (options.resetForm) {
+        callbacks.push(function() { $form.resetForm(); });
+    }
+    if (options.clearForm) {
+        callbacks.push(function() { $form.clearForm(options.includeHidden); });
+    }
+
+    // perform a load on the target only if dataType is not provided
+    if (!options.dataType && options.target) {
+        var oldSuccess = options.success || function(){};
+        callbacks.push(function(data) {
+            var fn = options.replaceTarget ? 'replaceWith' : 'html';
+            $(options.target)[fn](data).each(oldSuccess, arguments);
+        });
+    }
+    else if (options.success) {
+        callbacks.push(options.success);
+    }
+
+    options.success = function(data, status, xhr) { // jQuery 1.4+ passes xhr as 3rd arg
+        var context = options.context || this ;    // jQuery 1.4+ supports scope context
+        for (var i=0, max=callbacks.length; i < max; i++) {
+            callbacks[i].apply(context, [data, status, xhr || $form, $form]);
+        }
+    };
+
+    if (options.error) {
+        var oldError = options.error;
+        options.error = function(xhr, status, error) {
+            var context = options.context || this;
+            oldError.apply(context, [xhr, status, error, $form]);
+        };
+    }
+
+     if (options.complete) {
+        var oldComplete = options.complete;
+        options.complete = function(xhr, status) {
+            var context = options.context || this;
+            oldComplete.apply(context, [xhr, status, $form]);
+        };
+    }
+
+    // are there files to upload?
+
+    // [value] (issue #113), also see comment:
+    // https://github.com/malsup/form/commit/588306aedba1de01388032d5f42a60159eea9228#commitcomment-2180219
+    var fileInputs = $('input[type=file]:enabled', this).filter(function() { return $(this).val() !== ''; });
+
+    var hasFileInputs = fileInputs.length > 0;
+    var mp = 'multipart/form-data';
+    var multipart = ($form.attr('enctype') == mp || $form.attr('encoding') == mp);
+
+    var fileAPI = feature.fileapi && feature.formdata;
+    log("fileAPI :" + fileAPI);
+    var shouldUseFrame = (hasFileInputs || multipart) && !fileAPI;
+
+    var jqxhr;
+
+    // options.iframe allows user to force iframe mode
+    // 06-NOV-09: now defaulting to iframe mode if file input is detected
+    if (options.iframe !== false && (options.iframe || shouldUseFrame)) {
+        // hack to fix Safari hang (thanks to Tim Molendijk for this)
+        // see:  http://groups.google.com/group/jquery-dev/browse_thread/thread/36395b7ab510dd5d
+        if (options.closeKeepAlive) {
+            $.get(options.closeKeepAlive, function() {
+                jqxhr = fileUploadIframe(a);
+            });
+        }
+        else {
+            jqxhr = fileUploadIframe(a);
+        }
+    }
+    else if ((hasFileInputs || multipart) && fileAPI) {
+        jqxhr = fileUploadXhr(a);
+    }
+    else {
+        jqxhr = $.ajax(options);
+    }
+
+    $form.removeData('jqxhr').data('jqxhr', jqxhr);
+
+    // clear element array
+    for (var k=0; k < elements.length; k++)
+        elements[k] = null;
+
+    // fire 'notify' event
+    this.trigger('form-submit-notify', [this, options]);
+    return this;
+
+    // utility fn for deep serialization
+    function deepSerialize(extraData){
+        var serialized = $.param(extraData, options.traditional).split('&');
+        var len = serialized.length;
+        var result = [];
+        var i, part;
+        for (i=0; i < len; i++) {
+            // #252; undo param space replacement
+            serialized[i] = serialized[i].replace(/\+/g,' ');
+            part = serialized[i].split('=');
+            // #278; use array instead of object storage, favoring array serializations
+            result.push([decodeURIComponent(part[0]), decodeURIComponent(part[1])]);
+        }
+        return result;
+    }
+
+     // XMLHttpRequest Level 2 file uploads (big hat tip to francois2metz)
+    function fileUploadXhr(a) {
+        var formdata = new FormData();
+
+        for (var i=0; i < a.length; i++) {
+            formdata.append(a[i].name, a[i].value);
+        }
+
+        if (options.extraData) {
+            var serializedData = deepSerialize(options.extraData);
+            for (i=0; i < serializedData.length; i++)
+                if (serializedData[i])
+                    formdata.append(serializedData[i][0], serializedData[i][1]);
+        }
+
+        options.data = null;
+
+        var s = $.extend(true, {}, $.ajaxSettings, options, {
+            contentType: false,
+            processData: false,
+            cache: false,
+            type: method || 'POST'
+        });
+
+        if (options.uploadProgress) {
+            // workaround because jqXHR does not expose upload property
+            s.xhr = function() {
+                var xhr = $.ajaxSettings.xhr();
+                if (xhr.upload) {
+                    xhr.upload.addEventListener('progress', function(event) {
+                        var percent = 0;
+                        var position = event.loaded || event.position; /*event.position is deprecated*/
+                        var total = event.total;
+                        if (event.lengthComputable) {
+                            percent = Math.ceil(position / total * 100);
+                        }
+                        options.uploadProgress(event, position, total, percent);
+                    }, false);
+                }
+                return xhr;
+            };
+        }
+
+        s.data = null;
+        var beforeSend = s.beforeSend;
+        s.beforeSend = function(xhr, o) {
+            //Send FormData() provided by user
+            if (options.formData)
+                o.data = options.formData;
+            else
+                o.data = formdata;
+            if(beforeSend)
+                beforeSend.call(this, xhr, o);
+        };
+        return $.ajax(s);
+    }
+
+    // private function for handling file uploads (hat tip to YAHOO!)
+    function fileUploadIframe(a) {
+        var form = $form[0], el, i, s, g, id, $io, io, xhr, sub, n, timedOut, timeoutHandle;
+        var deferred = $.Deferred();
+
+        // #341
+        deferred.abort = function(status) {
+            xhr.abort(status);
+        };
+
+        if (a) {
+            // ensure that every serialized input is still enabled
+            for (i=0; i < elements.length; i++) {
+                el = $(elements[i]);
+                if ( hasProp )
+                    el.prop('disabled', false);
+                else
+                    el.removeAttr('disabled');
+            }
+        }
+
+        s = $.extend(true, {}, $.ajaxSettings, options);
+        s.context = s.context || s;
+        id = 'jqFormIO' + (new Date().getTime());
+        if (s.iframeTarget) {
+            $io = $(s.iframeTarget);
+            n = $io.attr2('name');
+            if (!n)
+                 $io.attr2('name', id);
+            else
+                id = n;
+        }
+        else {
+            $io = $('<iframe name="' + id + '" src="'+ s.iframeSrc +'" />');
+            $io.css({ position: 'absolute', top: '-1000px', left: '-1000px' });
+        }
+        io = $io[0];
+
+
+        xhr = { // mock object
+            aborted: 0,
+            responseText: null,
+            responseXML: null,
+            status: 0,
+            statusText: 'n/a',
+            getAllResponseHeaders: function() {},
+            getResponseHeader: function() {},
+            setRequestHeader: function() {},
+            abort: function(status) {
+                var e = (status === 'timeout' ? 'timeout' : 'aborted');
+                log('aborting upload... ' + e);
+                this.aborted = 1;
+
+                try { // #214, #257
+                    if (io.contentWindow.document.execCommand) {
+                        io.contentWindow.document.execCommand('Stop');
+                    }
+                }
+                catch(ignore) {}
+
+                $io.attr('src', s.iframeSrc); // abort op in progress
+                xhr.error = e;
+                if (s.error)
+                    s.error.call(s.context, xhr, e, status);
+                if (g)
+                    $.event.trigger("ajaxError", [xhr, s, e]);
+                if (s.complete)
+                    s.complete.call(s.context, xhr, e);
+            }
+        };
+
+        g = s.global;
+        // trigger ajax global events so that activity/block indicators work like normal
+        if (g && 0 === $.active++) {
+            $.event.trigger("ajaxStart");
+        }
+        if (g) {
+            $.event.trigger("ajaxSend", [xhr, s]);
+        }
+
+        if (s.beforeSend && s.beforeSend.call(s.context, xhr, s) === false) {
+            if (s.global) {
+                $.active--;
+            }
+            deferred.reject();
+            return deferred;
+        }
+        if (xhr.aborted) {
+            deferred.reject();
+            return deferred;
+        }
+
+        // add submitting element to data if we know it
+        sub = form.clk;
+        if (sub) {
+            n = sub.name;
+            if (n && !sub.disabled) {
+                s.extraData = s.extraData || {};
+                s.extraData[n] = sub.value;
+                if (sub.type == "image") {
+                    s.extraData[n+'.x'] = form.clk_x;
+                    s.extraData[n+'.y'] = form.clk_y;
+                }
+            }
+        }
+
+        var CLIENT_TIMEOUT_ABORT = 1;
+        var SERVER_ABORT = 2;
+                
+        function getDoc(frame) {
+            /* it looks like contentWindow or contentDocument do not
+             * carry the protocol property in ie8, when running under ssl
+             * frame.document is the only valid response document, since
+             * the protocol is know but not on the other two objects. strange?
+             * "Same origin policy" http://en.wikipedia.org/wiki/Same_origin_policy
+             */
+            
+            var doc = null;
+            
+            // IE8 cascading access check
+            try {
+                if (frame.contentWindow) {
+                    doc = frame.contentWindow.document;
+                }
+            } catch(err) {
+                // IE8 access denied under ssl & missing protocol
+                log('cannot get iframe.contentWindow document: ' + err);
+            }
+
+            if (doc) { // successful getting content
+                return doc;
+            }
+
+            try { // simply checking may throw in ie8 under ssl or mismatched protocol
+                doc = frame.contentDocument ? frame.contentDocument : frame.document;
+            } catch(err) {
+                // last attempt
+                log('cannot get iframe.contentDocument: ' + err);
+                doc = frame.document;
+            }
+            return doc;
+        }
+
+        // Rails CSRF hack (thanks to Yvan Barthelemy)
+        var csrf_token = $('meta[name=csrf-token]').attr('content');
+        var csrf_param = $('meta[name=csrf-param]').attr('content');
+        if (csrf_param && csrf_token) {
+            s.extraData = s.extraData || {};
+            s.extraData[csrf_param] = csrf_token;
+        }
+
+        // take a breath so that pending repaints get some cpu time before the upload starts
+        function doSubmit() {
+            // make sure form attrs are set
+            var t = $form.attr2('target'), a = $form.attr2('action');
+
+            // update form attrs in IE friendly way
+            form.setAttribute('target',id);
+            if (!method || /post/i.test(method) ) {
+                form.setAttribute('method', 'POST');
+            }
+            if (a != s.url) {
+                form.setAttribute('action', s.url);
+            }
+
+            // ie borks in some cases when setting encoding
+            if (! s.skipEncodingOverride && (!method || /post/i.test(method))) {
+                $form.attr({
+                    encoding: 'multipart/form-data',
+                    enctype:  'multipart/form-data'
+                });
+            }
+
+            // support timout
+            if (s.timeout) {
+                timeoutHandle = setTimeout(function() { timedOut = true; cb(CLIENT_TIMEOUT_ABORT); }, s.timeout);
+            }
+
+            // look for server aborts
+            function checkState() {
+                try {
+                    var state = getDoc(io).readyState;
+                    log('state = ' + state);
+                    if (state && state.toLowerCase() == 'uninitialized')
+                        setTimeout(checkState,50);
+                }
+                catch(e) {
+                    log('Server abort: ' , e, ' (', e.name, ')');
+                    cb(SERVER_ABORT);
+                    if (timeoutHandle)
+                        clearTimeout(timeoutHandle);
+                    timeoutHandle = undefined;
+                }
+            }
+
+            // add "extra" data to form if provided in options
+            var extraInputs = [];
+            try {
+                if (s.extraData) {
+                    for (var n in s.extraData) {
+                        if (s.extraData.hasOwnProperty(n)) {
+                           // if using the $.param format that allows for multiple values with the same name
+                           if($.isPlainObject(s.extraData[n]) && s.extraData[n].hasOwnProperty('name') && s.extraData[n].hasOwnProperty('value')) {
+                               extraInputs.push(
+                               $('<input type="hidden" name="'+s.extraData[n].name+'">').val(s.extraData[n].value)
+                                   .appendTo(form)[0]);
+                           } else {
+                               extraInputs.push(
+                               $('<input type="hidden" name="'+n+'">').val(s.extraData[n])
+                                   .appendTo(form)[0]);
+                           }
+                        }
+                    }
+                }
+
+                if (!s.iframeTarget) {
+                    // add iframe to doc and submit the form
+                    $io.appendTo('body');
+                }
+                if (io.attachEvent)
+                    io.attachEvent('onload', cb);
+                else
+                    io.addEventListener('load', cb, false);
+                setTimeout(checkState,15);
+
+                try {
+                    form.submit();
+                } catch(err) {
+                    // just in case form has element with name/id of 'submit'
+                    var submitFn = document.createElement('form').submit;
+                    submitFn.apply(form);
+                }
+            }
+            finally {
+                // reset attrs and remove "extra" input elements
+                form.setAttribute('action',a);
+                if(t) {
+                    form.setAttribute('target', t);
+                } else {
+                    $form.removeAttr('target');
+                }
+                $(extraInputs).remove();
+            }
+        }
+
+        if (s.forceSync) {
+            doSubmit();
+        }
+        else {
+            setTimeout(doSubmit, 10); // this lets dom updates render
+        }
+
+        var data, doc, domCheckCount = 50, callbackProcessed;
+
+        function cb(e) {
+            if (xhr.aborted || callbackProcessed) {
+                return;
+            }
+            
+            doc = getDoc(io);
+            if(!doc) {
+                log('cannot access response document');
+                e = SERVER_ABORT;
+            }
+            if (e === CLIENT_TIMEOUT_ABORT && xhr) {
+                xhr.abort('timeout');
+                deferred.reject(xhr, 'timeout');
+                return;
+            }
+            else if (e == SERVER_ABORT && xhr) {
+                xhr.abort('server abort');
+                deferred.reject(xhr, 'error', 'server abort');
+                return;
+            }
+
+            if (!doc || doc.location.href == s.iframeSrc) {
+                // response not received yet
+                if (!timedOut)
+                    return;
+            }
+            if (io.detachEvent)
+                io.detachEvent('onload', cb);
+            else
+                io.removeEventListener('load', cb, false);
+
+            var status = 'success', errMsg;
+            try {
+                if (timedOut) {
+                    throw 'timeout';
+                }
+
+                var isXml = s.dataType == 'xml' || doc.XMLDocument || $.isXMLDoc(doc);
+                log('isXml='+isXml);
+                if (!isXml && window.opera && (doc.body === null || !doc.body.innerHTML)) {
+                    if (--domCheckCount) {
+                        // in some browsers (Opera) the iframe DOM is not always traversable when
+                        // the onload callback fires, so we loop a bit to accommodate
+                        log('requeing onLoad callback, DOM not available');
+                        setTimeout(cb, 250);
+                        return;
+                    }
+                    // let this fall through because server response could be an empty document
+                    //log('Could not access iframe DOM after mutiple tries.');
+                    //throw 'DOMException: not available';
+                }
+
+                //log('response detected');
+                var docRoot = doc.body ? doc.body : doc.documentElement;
+                xhr.responseText = docRoot ? docRoot.innerHTML : null;
+                xhr.responseXML = doc.XMLDocument ? doc.XMLDocument : doc;
+                if (isXml)
+                    s.dataType = 'xml';
+                xhr.getResponseHeader = function(header){
+                    var headers = {'content-type': s.dataType};
+                    return headers[header.toLowerCase()];
+                };
+                // support for XHR 'status' & 'statusText' emulation :
+                if (docRoot) {
+                    xhr.status = Number( docRoot.getAttribute('status') ) || xhr.status;
+                    xhr.statusText = docRoot.getAttribute('statusText') || xhr.statusText;
+                }
+
+                var dt = (s.dataType || '').toLowerCase();
+                var scr = /(json|script|text)/.test(dt);
+                if (scr || s.textarea) {
+                    // see if user embedded response in textarea
+                    var ta = doc.getElementsByTagName('textarea')[0];
+                    if (ta) {
+                        xhr.responseText = ta.value;
+                        // support for XHR 'status' & 'statusText' emulation :
+                        xhr.status = Number( ta.getAttribute('status') ) || xhr.status;
+                        xhr.statusText = ta.getAttribute('statusText') || xhr.statusText;
+                    }
+                    else if (scr) {
+                        // account for browsers injecting pre around json response
+                        var pre = doc.getElementsByTagName('pre')[0];
+                        var b = doc.getElementsByTagName('body')[0];
+                        if (pre) {
+                            xhr.responseText = pre.textContent ? pre.textContent : pre.innerText;
+                        }
+                        else if (b) {
+                            xhr.responseText = b.textContent ? b.textContent : b.innerText;
+                        }
+                    }
+                }
+                else if (dt == 'xml' && !xhr.responseXML && xhr.responseText) {
+                    xhr.responseXML = toXml(xhr.responseText);
+                }
+
+                try {
+                    data = httpData(xhr, dt, s);
+                }
+                catch (err) {
+                    status = 'parsererror';
+                    xhr.error = errMsg = (err || status);
+                }
+            }
+            catch (err) {
+                log('error caught: ',err);
+                status = 'error';
+                xhr.error = errMsg = (err || status);
+            }
+
+            if (xhr.aborted) {
+                log('upload aborted');
+                status = null;
+            }
+
+            if (xhr.status) { // we've set xhr.status
+                status = (xhr.status >= 200 && xhr.status < 300 || xhr.status === 304) ? 'success' : 'error';
+            }
+
+            // ordering of these callbacks/triggers is odd, but that's how $.ajax does it
+            if (status === 'success') {
+                if (s.success)
+                    s.success.call(s.context, data, 'success', xhr);
+                deferred.resolve(xhr.responseText, 'success', xhr);
+                if (g)
+                    $.event.trigger("ajaxSuccess", [xhr, s]);
+            }
+            else if (status) {
+                if (errMsg === undefined)
+                    errMsg = xhr.statusText;
+                if (s.error)
+                    s.error.call(s.context, xhr, status, errMsg);
+                deferred.reject(xhr, 'error', errMsg);
+                if (g)
+                    $.event.trigger("ajaxError", [xhr, s, errMsg]);
+            }
+
+            if (g)
+                $.event.trigger("ajaxComplete", [xhr, s]);
+
+            if (g && ! --$.active) {
+                $.event.trigger("ajaxStop");
+            }
+
+            if (s.complete)
+                s.complete.call(s.context, xhr, status);
+
+            callbackProcessed = true;
+            if (s.timeout)
+                clearTimeout(timeoutHandle);
+
+            // clean up
+            setTimeout(function() {
+                if (!s.iframeTarget)
+                    $io.remove();
+                else  //adding else to clean up existing iframe response.
+                    $io.attr('src', s.iframeSrc);
+                xhr.responseXML = null;
+            }, 100);
+        }
+
+        var toXml = $.parseXML || function(s, doc) { // use parseXML if available (jQuery 1.5+)
+            if (window.ActiveXObject) {
+                doc = new ActiveXObject('Microsoft.XMLDOM');
+                doc.async = 'false';
+                doc.loadXML(s);
+            }
+            else {
+                doc = (new DOMParser()).parseFromString(s, 'text/xml');
+            }
+            return (doc && doc.documentElement && doc.documentElement.nodeName != 'parsererror') ? doc : null;
+        };
+        var parseJSON = $.parseJSON || function(s) {
+            /*jslint evil:true */
+            return window['eval']('(' + s + ')');
+        };
+
+        var httpData = function( xhr, type, s ) { // mostly lifted from jq1.4.4
+
+            var ct = xhr.getResponseHeader('content-type') || '',
+                xml = type === 'xml' || !type && ct.indexOf('xml') >= 0,
+                data = xml ? xhr.responseXML : xhr.responseText;
+
+            if (xml && data.documentElement.nodeName === 'parsererror') {
+                if ($.error)
+                    $.error('parsererror');
+            }
+            if (s && s.dataFilter) {
+                data = s.dataFilter(data, type);
+            }
+            if (typeof data === 'string') {
+                if (type === 'json' || !type && ct.indexOf('json') >= 0) {
+                    data = parseJSON(data);
+                } else if (type === "script" || !type && ct.indexOf("javascript") >= 0) {
+                    $.globalEval(data);
+                }
+            }
+            return data;
+        };
+
+        return deferred;
+    }
+};
+
+/**
+ * ajaxForm() provides a mechanism for fully automating form submission.
+ *
+ * The advantages of using this method instead of ajaxSubmit() are:
+ *
+ * 1: This method will include coordinates for <input type="image" /> elements (if the element
+ *    is used to submit the form).
+ * 2. This method will include the submit element's name/value data (for the element that was
+ *    used to submit the form).
+ * 3. This method binds the submit() method to the form for you.
+ *
+ * The options argument for ajaxForm works exactly as it does for ajaxSubmit.  ajaxForm merely
+ * passes the options argument along after properly binding events for submit elements and
+ * the form itself.
+ */
+$.fn.ajaxForm = function(options) {
+    options = options || {};
+    options.delegation = options.delegation && $.isFunction($.fn.on);
+
+    // in jQuery 1.3+ we can fix mistakes with the ready state
+    if (!options.delegation && this.length === 0) {
+        var o = { s: this.selector, c: this.context };
+        if (!$.isReady && o.s) {
+            log('DOM not ready, queuing ajaxForm');
+            $(function() {
+                $(o.s,o.c).ajaxForm(options);
+            });
+            return this;
+        }
+        // is your DOM ready?  http://docs.jquery.com/Tutorials:Introducing_$(document).ready()
+        log('terminating; zero elements found by selector' + ($.isReady ? '' : ' (DOM not ready)'));
+        return this;
+    }
+
+    if ( options.delegation ) {
+        $(document)
+            .off('submit.form-plugin', this.selector, doAjaxSubmit)
+            .off('click.form-plugin', this.selector, captureSubmittingElement)
+            .on('submit.form-plugin', this.selector, options, doAjaxSubmit)
+            .on('click.form-plugin', this.selector, options, captureSubmittingElement);
+        return this;
+    }
+
+    return this.ajaxFormUnbind()
+        .bind('submit.form-plugin', options, doAjaxSubmit)
+        .bind('click.form-plugin', options, captureSubmittingElement);
+};
+
+// private event handlers
+function doAjaxSubmit(e) {
+    /*jshint validthis:true */
+    var options = e.data;
+    if (!e.isDefaultPrevented()) { // if event has been canceled, don't proceed
+        e.preventDefault();
+        $(e.target).ajaxSubmit(options); // #365
+    }
+}
+
+function captureSubmittingElement(e) {
+    /*jshint validthis:true */
+    var target = e.target;
+    var $el = $(target);
+    if (!($el.is("[type=submit],[type=image]"))) {
+        // is this a child element of the submit el?  (ex: a span within a button)
+        var t = $el.closest('[type=submit]');
+        if (t.length === 0) {
+            return;
+        }
+        target = t[0];
+    }
+    var form = this;
+    form.clk = target;
+    if (target.type == 'image') {
+        if (e.offsetX !== undefined) {
+            form.clk_x = e.offsetX;
+            form.clk_y = e.offsetY;
+        } else if (typeof $.fn.offset == 'function') {
+            var offset = $el.offset();
+            form.clk_x = e.pageX - offset.left;
+            form.clk_y = e.pageY - offset.top;
+        } else {
+            form.clk_x = e.pageX - target.offsetLeft;
+            form.clk_y = e.pageY - target.offsetTop;
+        }
+    }
+    // clear form vars
+    setTimeout(function() { form.clk = form.clk_x = form.clk_y = null; }, 100);
+}
+
+
+// ajaxFormUnbind unbinds the event handlers that were bound by ajaxForm
+$.fn.ajaxFormUnbind = function() {
+    return this.unbind('submit.form-plugin click.form-plugin');
+};
+
+/**
+ * formToArray() gathers form element data into an array of objects that can
+ * be passed to any of the following ajax functions: $.get, $.post, or load.
+ * Each object in the array has both a 'name' and 'value' property.  An example of
+ * an array for a simple login form might be:
+ *
+ * [ { name: 'username', value: 'jresig' }, { name: 'password', value: 'secret' } ]
+ *
+ * It is this array that is passed to pre-submit callback functions provided to the
+ * ajaxSubmit() and ajaxForm() methods.
+ */
+$.fn.formToArray = function(semantic, elements) {
+    var a = [];
+    if (this.length === 0) {
+        return a;
+    }
+
+    var form = this[0];
+    var els = semantic ? form.getElementsByTagName('*') : form.elements;
+    if (!els) {
+        return a;
+    }
+
+    var i,j,n,v,el,max,jmax;
+    for(i=0, max=els.length; i < max; i++) {
+        el = els[i];
+        n = el.name;
+        if (!n || el.disabled) {
+            continue;
+        }
+
+        if (semantic && form.clk && el.type == "image") {
+            // handle image inputs on the fly when semantic == true
+            if(form.clk == el) {
+                a.push({name: n, value: $(el).val(), type: el.type });
+                a.push({name: n+'.x', value: form.clk_x}, {name: n+'.y', value: form.clk_y});
+            }
+            continue;
+        }
+
+        v = $.fieldValue(el, true);
+        if (v && v.constructor == Array) {
+            if (elements)
+                elements.push(el);
+            for(j=0, jmax=v.length; j < jmax; j++) {
+                a.push({name: n, value: v[j]});
+            }
+        }
+        else if (feature.fileapi && el.type == 'file') {
+            if (elements)
+                elements.push(el);
+            var files = el.files;
+            if (files.length) {
+                for (j=0; j < files.length; j++) {
+                    a.push({name: n, value: files[j], type: el.type});
+                }
+            }
+            else {
+                // #180
+                a.push({ name: n, value: '', type: el.type });
+            }
+        }
+        else if (v !== null && typeof v != 'undefined') {
+            if (elements)
+                elements.push(el);
+            a.push({name: n, value: v, type: el.type, required: el.required});
+        }
+    }
+
+    if (!semantic && form.clk) {
+        // input type=='image' are not found in elements array! handle it here
+        var $input = $(form.clk), input = $input[0];
+        n = input.name;
+        if (n && !input.disabled && input.type == 'image') {
+            a.push({name: n, value: $input.val()});
+            a.push({name: n+'.x', value: form.clk_x}, {name: n+'.y', value: form.clk_y});
+        }
+    }
+    return a;
+};
+
+/**
+ * Serializes form data into a 'submittable' string. This method will return a string
+ * in the format: name1=value1&amp;name2=value2
+ */
+$.fn.formSerialize = function(semantic) {
+    //hand off to jQuery.param for proper encoding
+    return $.param(this.formToArray(semantic));
+};
+
+/**
+ * Serializes all field elements in the jQuery object into a query string.
+ * This method will return a string in the format: name1=value1&amp;name2=value2
+ */
+$.fn.fieldSerialize = function(successful) {
+    var a = [];
+    this.each(function() {
+        var n = this.name;
+        if (!n) {
+            return;
+        }
+        var v = $.fieldValue(this, successful);
+        if (v && v.constructor == Array) {
+            for (var i=0,max=v.length; i < max; i++) {
+                a.push({name: n, value: v[i]});
+            }
+        }
+        else if (v !== null && typeof v != 'undefined') {
+            a.push({name: this.name, value: v});
+        }
+    });
+    //hand off to jQuery.param for proper encoding
+    return $.param(a);
+};
+
+/**
+ * Returns the value(s) of the element in the matched set.  For example, consider the following form:
+ *
+ *  <form><fieldset>
+ *      <input name="A" type="text" />
+ *      <input name="A" type="text" />
+ *      <input name="B" type="checkbox" value="B1" />
+ *      <input name="B" type="checkbox" value="B2"/>
+ *      <input name="C" type="radio" value="C1" />
+ *      <input name="C" type="radio" value="C2" />
+ *  </fieldset></form>
+ *
+ *  var v = $('input[type=text]').fieldValue();
+ *  // if no values are entered into the text inputs
+ *  v == ['','']
+ *  // if values entered into the text inputs are 'foo' and 'bar'
+ *  v == ['foo','bar']
+ *
+ *  var v = $('input[type=checkbox]').fieldValue();
+ *  // if neither checkbox is checked
+ *  v === undefined
+ *  // if both checkboxes are checked
+ *  v == ['B1', 'B2']
+ *
+ *  var v = $('input[type=radio]').fieldValue();
+ *  // if neither radio is checked
+ *  v === undefined
+ *  // if first radio is checked
+ *  v == ['C1']
+ *
+ * The successful argument controls whether or not the field element must be 'successful'
+ * (per http://www.w3.org/TR/html4/interact/forms.html#successful-controls).
+ * The default value of the successful argument is true.  If this value is false the value(s)
+ * for each element is returned.
+ *
+ * Note: This method *always* returns an array.  If no valid value can be determined the
+ *    array will be empty, otherwise it will contain one or more values.
+ */
+$.fn.fieldValue = function(successful) {
+    for (var val=[], i=0, max=this.length; i < max; i++) {
+        var el = this[i];
+        var v = $.fieldValue(el, successful);
+        if (v === null || typeof v == 'undefined' || (v.constructor == Array && !v.length)) {
+            continue;
+        }
+        if (v.constructor == Array)
+            $.merge(val, v);
+        else
+            val.push(v);
+    }
+    return val;
+};
+
+/**
+ * Returns the value of the field element.
+ */
+$.fieldValue = function(el, successful) {
+    var n = el.name, t = el.type, tag = el.tagName.toLowerCase();
+    if (successful === undefined) {
+        successful = true;
+    }
+
+    if (successful && (!n || el.disabled || t == 'reset' || t == 'button' ||
+        (t == 'checkbox' || t == 'radio') && !el.checked ||
+        (t == 'submit' || t == 'image') && el.form && el.form.clk != el ||
+        tag == 'select' && el.selectedIndex == -1)) {
+            return null;
+    }
+
+    if (tag == 'select') {
+        var index = el.selectedIndex;
+        if (index < 0) {
+            return null;
+        }
+        var a = [], ops = el.options;
+        var one = (t == 'select-one');
+        var max = (one ? index+1 : ops.length);
+        for(var i=(one ? index : 0); i < max; i++) {
+            var op = ops[i];
+            if (op.selected) {
+                var v = op.value;
+                if (!v) { // extra pain for IE...
+                    v = (op.attributes && op.attributes['value'] && !(op.attributes['value'].specified)) ? op.text : op.value;
+                }
+                if (one) {
+                    return v;
+                }
+                a.push(v);
+            }
+        }
+        return a;
+    }
+    return $(el).val();
+};
+
+/**
+ * Clears the form data.  Takes the following actions on the form's input fields:
+ *  - input text fields will have their 'value' property set to the empty string
+ *  - select elements will have their 'selectedIndex' property set to -1
+ *  - checkbox and radio inputs will have their 'checked' property set to false
+ *  - inputs of type submit, button, reset, and hidden will *not* be effected
+ *  - button elements will *not* be effected
+ */
+$.fn.clearForm = function(includeHidden) {
+    return this.each(function() {
+        $('input,select,textarea', this).clearFields(includeHidden);
+    });
+};
+
+/**
+ * Clears the selected form elements.
+ */
+$.fn.clearFields = $.fn.clearInputs = function(includeHidden) {
+    var re = /^(?:color|date|datetime|email|month|number|password|range|search|tel|text|time|url|week)$/i; // 'hidden' is not in this list
+    return this.each(function() {
+        var t = this.type, tag = this.tagName.toLowerCase();
+        if (re.test(t) || tag == 'textarea') {
+            this.value = '';
+        }
+        else if (t == 'checkbox' || t == 'radio') {
+            this.checked = false;
+        }
+        else if (tag == 'select') {
+            this.selectedIndex = -1;
+        }
+		else if (t == "file") {
+			if (/MSIE/.test(navigator.userAgent)) {
+				$(this).replaceWith($(this).clone(true));
+			} else {
+				$(this).val('');
+			}
+		}
+        else if (includeHidden) {
+            // includeHidden can be the value true, or it can be a selector string
+            // indicating a special test; for example:
+            //  $('#myForm').clearForm('.special:hidden')
+            // the above would clean hidden inputs that have the class of 'special'
+            if ( (includeHidden === true && /hidden/.test(t)) ||
+                 (typeof includeHidden == 'string' && $(this).is(includeHidden)) )
+                this.value = '';
+        }
+    });
+};
+
+/**
+ * Resets the form data.  Causes all form elements to be reset to their original value.
+ */
+$.fn.resetForm = function() {
+    return this.each(function() {
+        // guard against an input with the name of 'reset'
+        // note that IE reports the reset function as an 'object'
+        if (typeof this.reset == 'function' || (typeof this.reset == 'object' && !this.reset.nodeType)) {
+            this.reset();
+        }
+    });
+};
+
+/**
+ * Enables or disables any matching elements.
+ */
+$.fn.enable = function(b) {
+    if (b === undefined) {
+        b = true;
+    }
+    return this.each(function() {
+        this.disabled = !b;
+    });
+};
+
+/**
+ * Checks/unchecks any matching checkboxes or radio buttons and
+ * selects/deselects and matching option elements.
+ */
+$.fn.selected = function(select) {
+    if (select === undefined) {
+        select = true;
+    }
+    return this.each(function() {
+        var t = this.type;
+        if (t == 'checkbox' || t == 'radio') {
+            this.checked = select;
+        }
+        else if (this.tagName.toLowerCase() == 'option') {
+            var $sel = $(this).parent('select');
+            if (select && $sel[0] && $sel[0].type == 'select-one') {
+                // deselect all other options
+                $sel.find('option').selected(false);
+            }
+            this.selected = select;
+        }
+    });
+};
+
+// expose debug var
+$.fn.ajaxSubmit.debug = false;
+
+// helper fn for console logging
+function log() {
+    if (!$.fn.ajaxSubmit.debug)
+        return;
+    var msg = '[jquery.form] ' + Array.prototype.join.call(arguments,'');
+    if (window.console && window.console.log) {
+        window.console.log(msg);
+    }
+    else if (window.opera && window.opera.postError) {
+        window.opera.postError(msg);
+    }
+}
+
+}));
+
+
 /* Modal pattern.
  *
  * Options:
@@ -21127,6 +19973,1166 @@ define('mockup-patterns-modal',[
 
 });
 
+/* Livesearch
+ *
+ * Options:
+ *    ajaxUrl(string): JSON search url
+ *    perPage(integer): results per page, defaults to 7
+ *    quietMillis: how long to wait after type stops before sending out request in milliseconds. Defaults to 350
+ *    minimumInputLength: miniumum number of letters before doing search. Defaults to 3
+ *    inputSelector: css select to input element search is done with. Defaults to input[type="text"]
+ *    itemTemplate: override template used to render item results
+ *
+ * Documentation:
+ *   # General
+ *
+ *   # Default
+ *
+ *   {{ example-1 }}
+ *
+ * Example: example-1
+ *    <form action="search" class="pat-livesearch" data-pat-livesearch="ajaxUrl:livesearch.json">
+ *      <input type="text" />
+ *    </form>
+ *
+ */
+
+define('mockup-patterns-livesearch',[
+  'jquery',
+  'mockup-patterns-base',
+  'underscore',
+  'translate'
+], function ($, Base, _, _t){
+  
+
+  var Livesearch = Base.extend({
+    name: 'livesearch',
+    trigger: '.pat-livesearch',
+    timeout: null,
+    active: false,
+    results: null,
+    selectedItem: -1,
+    resultsClass: 'livesearch-results',
+    defaults: {
+      ajaxUrl: null,
+      perPage: 7,
+      quietMillis: 350,
+      minimumInputLength: 4,
+      inputSelector: 'input[type="text"]',
+      itemTemplate: '<li class="search-result <%- state %>">' +
+        '<h4 class="title"><a href="<%- url %>"><%- title %></a></h4>' +
+        '<p class="description"><%- description %></p>' +
+      '</li>',
+    },
+    doSearch: function(page){
+      var self = this;
+      self.active = true;
+      self.render();
+      self.$el.addClass('searching');
+      var query = self.$el.serialize();
+      if(page === undefined){
+        page = 1;
+      }
+      $.ajax({
+        url: self.options.ajaxUrl + '?' + query +
+             '&page=' + page +
+             '&perPage=' + self.options.perPage,
+        dataType: 'json'
+      }).done(function(data){
+        self.results = data;
+        self.page = page;
+        // maybe odd here.. but we're checking to see if the user
+        // has typed while a search was being performed. Perhap another search if so
+        if(query !== self.$el.serialize()){
+          self.doSearch();
+        }
+      }).fail(function(){
+        self.results = {
+          items: [{
+            url: '',
+            title: _t('Error'),
+            description: _t('There was an error searching…'),
+            state: 'error',
+            error: false
+          }],
+          total: 1
+        };
+        self.page = 1;
+      }).always(function(){
+        self.active = false;
+        self.selectedItem = -1;
+        self.$el.removeClass('searching');
+        self.render();
+      });
+    },
+    render: function(){
+      var self = this;
+      self.$results.empty();
+
+      /* find a status message */
+
+      if(self.active){
+        self.$results.append($('<li class="searching">' + _t('searching…') + '</li>'));
+      }else if(self.results === null){
+        // no results gathered yet
+        self.$results.append($('<li class="no-results no-search">' + _t('enter search phrase') + '</li>'));
+      } else if(self.results.total === 0){
+        self.$results.append($('<li class="no-results">' + _t('no results found') + '</li>'));
+      } else{
+        self.$results.append($('<li class="results-summary">' + _t('found') +
+                               ' ' + self.results.total + ' ' + _t('results') + '</li>'));
+      }
+
+      if(self.results !== null){
+        var template = _.template(self.options.itemTemplate);
+        _.each(self.results.items, function(item, index){
+          var $el = $(template($.extend({_t: _t}, item)));
+          $el.attr('data-url', item.url).on('click', function(){
+            if(!item.error){
+              window.location = item.url;
+            }
+          });
+          if(index === self.selectedItem){
+            $el.addClass('selected');
+          }
+          self.$results.append($el);
+        });
+        var nav = [];
+        if(self.page > 1){
+          var $prev = $('<a href="#" class="prev">' + _t('Previous') + '</a>');
+          $prev.click(function(e){
+            self.disableHiding = true;
+            e.preventDefault();
+            self.doSearch(self.page - 1);
+          });
+          nav.push($prev);
+        }
+        if((self.page * self.options.perPage) < self.results.total){
+          var $next = $('<a href="#" class="next">' + _t('Next') + '</a>');
+          $next.click(function(e){
+            self.disableHiding = true;
+            e.preventDefault();
+            self.doSearch(self.page + 1);
+          });
+          nav.push($next);
+        }
+        if(nav.length > 0){
+          var $li = $('<li class="load-more"><div class="page">' + self.page + '</div></li>');
+          $li.prepend(nav);
+          self.$results.append($li);
+        }
+      }
+      self.position();
+    },
+    position: function(){
+      /* we are positioning directly below the
+         input box, same width */
+      var self = this;
+
+      self.$el.addClass('livesearch-active');
+      var pos = self.$input.position();
+      self.$results.width(self.$input.outerWidth());
+      self.$results.css({
+        top: pos.top + self.$input.outerHeight(),
+        left: pos.left
+      });
+      self.$results.show();
+    },
+    hide: function(){
+      this.$results.hide();
+      this.$el.removeClass('livesearch-active');
+    },
+    init: function(){
+      var self = this;
+      self.$input = self.$el.find(self.options.inputSelector);
+      self.$input.off('focusout').on('focusout', function(){
+        /* we put this in a timer so click events still
+           get trigger on search results */
+        setTimeout(function(){
+          /* hack, look above, to handle dealing with clicks
+             unfocusing element */
+          if(!self.disableHiding){
+            self.hide();
+          }else{
+            self.disableHiding = false;
+            // and refocus elemtn
+            self.$input.focus();
+          }
+        }, 200);
+      }).off('focusin').on('focusin', function(){
+        if(!self.onceFocused){
+          /* Case: field already filled out but no reasons
+             present yet, do ajax search and grab some results */
+          self.onceFocused = true;
+          if(self.$input.val().length >= self.options.minimumInputLength){
+            self.doSearch();
+          }
+        } else if(!self.$results.is(':visible')){
+          self.render();
+        }
+      }).attr('autocomplete', 'off').off('keyup').on('keyup', function(e){
+        // first off, we're capturing up, down and enter key presses
+        if(self.results && self.results.items && self.results.items.length > 0){
+          var code = e.keyCode || e.which;
+          if(code === 13){
+            /* enter key, check to see if there is a selected item */
+            if(self.selectedItem !== -1){
+              window.location = self.results.items[self.selectedItem].url;
+            }
+            return;
+          } else if(code === 38){
+            /* up key */
+            if(self.selectedItem !== -1){
+              self.selectedItem -= 1;
+              self.render();
+            }
+            return;
+          } else if(code === 40){
+            /* down key */
+            if(self.selectedItem < self.results.items.length){
+              self.selectedItem += 1;
+              self.render();
+            }
+            return;
+          }
+        }
+
+        /* then, we handle timeouts for doing ajax search */
+        if(self.timeout !== null){
+          clearTimeout(self.timeout);
+          self.timeout = null;
+        }
+        if(self.active){
+          return;
+        }
+        if(self.$input.val().length >= self.options.minimumInputLength){
+          self.timeout = setTimeout(function(){
+            self.doSearch();
+          }, self.options.quietMillis);
+        }else{
+          self.results = null;
+          self.render();
+        }
+      });
+
+      /* create result dom */
+      self.$results = $('<ul class="' + self.resultsClass + '"></ul>').hide().insertAfter(self.$input);
+    }
+  });
+
+  return Livesearch;
+});
+
+/* Content loader pattern.
+ *
+ * Options:
+ *    url(string): To load content from remote resource. Use 'el' to use with anchor tag href.
+ *    content(string): CSS selector for content already on page. Can be used in conjunction with url to load remote content on page.
+ *    trigger(string): Event to trigger content loading. Defaults to "click"
+ *    target(string): CSS selector of target for content loading. If this is empty, it's assume content will replace pattern element.
+ *
+ * Documentation:
+ *    # With selector
+ *    {{ example-1 }}
+ *
+ *    # With remote content
+ *    {{ example-2 }}
+ *
+ * Example: example-1
+ *    <a href="#" class="pat-contentloader" data-pat-contentloader="content:#clexample1;target:#clexample1target;">Load content</a>
+ *    <div id="clexample1target">Original Content</div>
+ *    <div id="clexample1" style="display:none">Replaced Content</div>
+ *
+ * Example: example-2
+ *    <a href="#" class="pat-contentloader" data-pat-contentloader="url:something.html;">Load content</a>
+ *
+ *
+ */
+
+
+define('mockup-patterns-contentloader',[
+  'jquery',
+  'mockup-patterns-base',
+  'pat-logger',
+  'pat-registry',
+  'mockup-utils'
+], function($, Base, logger, Registry, utils) {
+  
+  var log = logger.getLogger('pat-contentloader');
+
+  var ContentLoader = Base.extend({
+    name: 'contentloader',
+    trigger: '.pat-contentloader',
+    defaults: {
+      url: null,
+      content: null,
+      trigger: 'click',
+      target: null
+    },
+    init: function() {
+      var that = this;
+      if(that.options.url === 'el' && that.$el[0].tagName === 'A'){
+        that.options.url = that.$el.attr('href');
+      }
+      that.$el.on(that.options.trigger, function(e){
+        e.preventDefault();
+        that.$el.addClass('loading-content');
+        if(that.options.url){
+          that.loadRemote();
+        }else{
+          that.loadLocal();
+        }
+      });
+    },
+    loadRemote: function(){
+      var that = this;
+      $.ajax({
+        url: that.options.url
+      }).done(function(data){
+        if(data.indexOf('<html') !== -1){
+          data = utils.parseBodyTag(data);
+        }
+        var $el = $(data);
+        if(that.options.content !== null){
+          $el = $el.find(that.options.content);
+        }
+        that.loadLocal($el);
+      });
+    },
+    loadLocal: function($content){
+      var that = this;
+      if(!$content && that.options.content === null){
+        log.warn('No selector configured');
+        return;
+      }
+      var $target = that.$el;
+      if(that.options.target !== null){
+        $target = $(that.options.target);
+        if($target.size() === 0){
+          log.warn('No target nodes found');
+          return;
+        }
+      }
+
+      if(!$content){
+        $content = $(that.options.content).clone();
+      }
+      $content.show();
+      $target.replaceWith($content);
+      Registry.scan($content);
+      that.$el.removeClass('loading-content');
+    }
+  });
+
+  return ContentLoader;
+
+});
+
+(function(root) {
+define("bootstrap-dropdown", ["jquery"], function() {
+  return (function() {
+/* ========================================================================
+ * Bootstrap: dropdown.js v3.2.0
+ * http://getbootstrap.com/javascript/#dropdowns
+ * ========================================================================
+ * Copyright 2011-2014 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
+
++function ($) {
+  
+
+  // DROPDOWN CLASS DEFINITION
+  // =========================
+
+  var backdrop = '.dropdown-backdrop'
+  var toggle   = '[data-toggle="dropdown"]'
+  var Dropdown = function (element) {
+    $(element).on('click.bs.dropdown', this.toggle)
+  }
+
+  Dropdown.VERSION = '3.2.0'
+
+  Dropdown.prototype.toggle = function (e) {
+    var $this = $(this)
+
+    if ($this.is('.disabled, :disabled')) return
+
+    var $parent  = getParent($this)
+    var isActive = $parent.hasClass('open')
+
+    clearMenus()
+
+    if (!isActive) {
+      if ('ontouchstart' in document.documentElement && !$parent.closest('.navbar-nav').length) {
+        // if mobile we use a backdrop because click events don't delegate
+        $('<div class="dropdown-backdrop"/>').insertAfter($(this)).on('click', clearMenus)
+      }
+
+      var relatedTarget = { relatedTarget: this }
+      $parent.trigger(e = $.Event('show.bs.dropdown', relatedTarget))
+
+      if (e.isDefaultPrevented()) return
+
+      $this.trigger('focus')
+
+      $parent
+        .toggleClass('open')
+        .trigger('shown.bs.dropdown', relatedTarget)
+    }
+
+    return false
+  }
+
+  Dropdown.prototype.keydown = function (e) {
+    if (!/(38|40|27)/.test(e.keyCode)) return
+
+    var $this = $(this)
+
+    e.preventDefault()
+    e.stopPropagation()
+
+    if ($this.is('.disabled, :disabled')) return
+
+    var $parent  = getParent($this)
+    var isActive = $parent.hasClass('open')
+
+    if (!isActive || (isActive && e.keyCode == 27)) {
+      if (e.which == 27) $parent.find(toggle).trigger('focus')
+      return $this.trigger('click')
+    }
+
+    var desc = ' li:not(.divider):visible a'
+    var $items = $parent.find('[role="menu"]' + desc + ', [role="listbox"]' + desc)
+
+    if (!$items.length) return
+
+    var index = $items.index($items.filter(':focus'))
+
+    if (e.keyCode == 38 && index > 0)                 index--                        // up
+    if (e.keyCode == 40 && index < $items.length - 1) index++                        // down
+    if (!~index)                                      index = 0
+
+    $items.eq(index).trigger('focus')
+  }
+
+  function clearMenus(e) {
+    if (e && e.which === 3) return
+    $(backdrop).remove()
+    $(toggle).each(function () {
+      var $parent = getParent($(this))
+      var relatedTarget = { relatedTarget: this }
+      if (!$parent.hasClass('open')) return
+      $parent.trigger(e = $.Event('hide.bs.dropdown', relatedTarget))
+      if (e.isDefaultPrevented()) return
+      $parent.removeClass('open').trigger('hidden.bs.dropdown', relatedTarget)
+    })
+  }
+
+  function getParent($this) {
+    var selector = $this.attr('data-target')
+
+    if (!selector) {
+      selector = $this.attr('href')
+      selector = selector && /#[A-Za-z]/.test(selector) && selector.replace(/.*(?=#[^\s]*$)/, '') // strip for ie7
+    }
+
+    var $parent = selector && $(selector)
+
+    return $parent && $parent.length ? $parent : $this.parent()
+  }
+
+
+  // DROPDOWN PLUGIN DEFINITION
+  // ==========================
+
+  function Plugin(option) {
+    return this.each(function () {
+      var $this = $(this)
+      var data  = $this.data('bs.dropdown')
+
+      if (!data) $this.data('bs.dropdown', (data = new Dropdown(this)))
+      if (typeof option == 'string') data[option].call($this)
+    })
+  }
+
+  var old = $.fn.dropdown
+
+  $.fn.dropdown             = Plugin
+  $.fn.dropdown.Constructor = Dropdown
+
+
+  // DROPDOWN NO CONFLICT
+  // ====================
+
+  $.fn.dropdown.noConflict = function () {
+    $.fn.dropdown = old
+    return this
+  }
+
+
+  // APPLY TO STANDARD DROPDOWN ELEMENTS
+  // ===================================
+
+  $(document)
+    .on('click.bs.dropdown.data-api', clearMenus)
+    .on('click.bs.dropdown.data-api', '.dropdown form', function (e) { e.stopPropagation() })
+    .on('click.bs.dropdown.data-api', toggle, Dropdown.prototype.toggle)
+    .on('keydown.bs.dropdown.data-api', toggle + ', [role="menu"], [role="listbox"]', Dropdown.prototype.keydown)
+
+}(jQuery);
+
+
+  }).apply(root, arguments);
+});
+}(this));
+
+(function(root) {
+define("bootstrap-collapse", ["jquery"], function() {
+  return (function() {
+/* ========================================================================
+ * Bootstrap: collapse.js v3.2.0
+ * http://getbootstrap.com/javascript/#collapse
+ * ========================================================================
+ * Copyright 2011-2014 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
+
++function ($) {
+  
+
+  // COLLAPSE PUBLIC CLASS DEFINITION
+  // ================================
+
+  var Collapse = function (element, options) {
+    this.$element      = $(element)
+    this.options       = $.extend({}, Collapse.DEFAULTS, options)
+    this.transitioning = null
+
+    if (this.options.parent) this.$parent = $(this.options.parent)
+    if (this.options.toggle) this.toggle()
+  }
+
+  Collapse.VERSION  = '3.2.0'
+
+  Collapse.DEFAULTS = {
+    toggle: true
+  }
+
+  Collapse.prototype.dimension = function () {
+    var hasWidth = this.$element.hasClass('width')
+    return hasWidth ? 'width' : 'height'
+  }
+
+  Collapse.prototype.show = function () {
+    if (this.transitioning || this.$element.hasClass('in')) return
+
+    var startEvent = $.Event('show.bs.collapse')
+    this.$element.trigger(startEvent)
+    if (startEvent.isDefaultPrevented()) return
+
+    var actives = this.$parent && this.$parent.find('> .panel > .in')
+
+    if (actives && actives.length) {
+      var hasData = actives.data('bs.collapse')
+      if (hasData && hasData.transitioning) return
+      Plugin.call(actives, 'hide')
+      hasData || actives.data('bs.collapse', null)
+    }
+
+    var dimension = this.dimension()
+
+    this.$element
+      .removeClass('collapse')
+      .addClass('collapsing')[dimension](0)
+
+    this.transitioning = 1
+
+    var complete = function () {
+      this.$element
+        .removeClass('collapsing')
+        .addClass('collapse in')[dimension]('')
+      this.transitioning = 0
+      this.$element
+        .trigger('shown.bs.collapse')
+    }
+
+    if (!$.support.transition) return complete.call(this)
+
+    var scrollSize = $.camelCase(['scroll', dimension].join('-'))
+
+    this.$element
+      .one('bsTransitionEnd', $.proxy(complete, this))
+      .emulateTransitionEnd(350)[dimension](this.$element[0][scrollSize])
+  }
+
+  Collapse.prototype.hide = function () {
+    if (this.transitioning || !this.$element.hasClass('in')) return
+
+    var startEvent = $.Event('hide.bs.collapse')
+    this.$element.trigger(startEvent)
+    if (startEvent.isDefaultPrevented()) return
+
+    var dimension = this.dimension()
+
+    this.$element[dimension](this.$element[dimension]())[0].offsetHeight
+
+    this.$element
+      .addClass('collapsing')
+      .removeClass('collapse')
+      .removeClass('in')
+
+    this.transitioning = 1
+
+    var complete = function () {
+      this.transitioning = 0
+      this.$element
+        .trigger('hidden.bs.collapse')
+        .removeClass('collapsing')
+        .addClass('collapse')
+    }
+
+    if (!$.support.transition) return complete.call(this)
+
+    this.$element
+      [dimension](0)
+      .one('bsTransitionEnd', $.proxy(complete, this))
+      .emulateTransitionEnd(350)
+  }
+
+  Collapse.prototype.toggle = function () {
+    this[this.$element.hasClass('in') ? 'hide' : 'show']()
+  }
+
+
+  // COLLAPSE PLUGIN DEFINITION
+  // ==========================
+
+  function Plugin(option) {
+    return this.each(function () {
+      var $this   = $(this)
+      var data    = $this.data('bs.collapse')
+      var options = $.extend({}, Collapse.DEFAULTS, $this.data(), typeof option == 'object' && option)
+
+      if (!data && options.toggle && option == 'show') option = !option
+      if (!data) $this.data('bs.collapse', (data = new Collapse(this, options)))
+      if (typeof option == 'string') data[option]()
+    })
+  }
+
+  var old = $.fn.collapse
+
+  $.fn.collapse             = Plugin
+  $.fn.collapse.Constructor = Collapse
+
+
+  // COLLAPSE NO CONFLICT
+  // ====================
+
+  $.fn.collapse.noConflict = function () {
+    $.fn.collapse = old
+    return this
+  }
+
+
+  // COLLAPSE DATA-API
+  // =================
+
+  $(document).on('click.bs.collapse.data-api', '[data-toggle="collapse"]', function (e) {
+    var href
+    var $this   = $(this)
+    var target  = $this.attr('data-target')
+        || e.preventDefault()
+        || (href = $this.attr('href')) && href.replace(/.*(?=#[^\s]+$)/, '') // strip for ie7
+    var $target = $(target)
+    var data    = $target.data('bs.collapse')
+    var option  = data ? 'toggle' : $this.data()
+    var parent  = $this.attr('data-parent')
+    var $parent = parent && $(parent)
+
+    if (!data || !data.transitioning) {
+      if ($parent) $parent.find('[data-toggle="collapse"][data-parent="' + parent + '"]').not($this).addClass('collapsed')
+      $this[$target.hasClass('in') ? 'addClass' : 'removeClass']('collapsed')
+    }
+
+    Plugin.call($target, option)
+  })
+
+}(jQuery);
+
+return window.jQuery.fn.collapse.Constructor;
+  }).apply(root, arguments);
+});
+}(this));
+
+(function(root) {
+define("bootstrap-tooltip", ["jquery"], function() {
+  return (function() {
+/* ========================================================================
+ * Bootstrap: tooltip.js v3.2.0
+ * http://getbootstrap.com/javascript/#tooltip
+ * Inspired by the original jQuery.tipsy by Jason Frame
+ * ========================================================================
+ * Copyright 2011-2014 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
+
++function ($) {
+  
+
+  // TOOLTIP PUBLIC CLASS DEFINITION
+  // ===============================
+
+  var Tooltip = function (element, options) {
+    this.type       =
+    this.options    =
+    this.enabled    =
+    this.timeout    =
+    this.hoverState =
+    this.$element   = null
+
+    this.init('tooltip', element, options)
+  }
+
+  Tooltip.VERSION  = '3.2.0'
+
+  Tooltip.DEFAULTS = {
+    animation: true,
+    placement: 'top',
+    selector: false,
+    template: '<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
+    trigger: 'hover focus',
+    title: '',
+    delay: 0,
+    html: false,
+    container: false,
+    viewport: {
+      selector: 'body',
+      padding: 0
+    }
+  }
+
+  Tooltip.prototype.init = function (type, element, options) {
+    this.enabled   = true
+    this.type      = type
+    this.$element  = $(element)
+    this.options   = this.getOptions(options)
+    this.$viewport = this.options.viewport && $(this.options.viewport.selector || this.options.viewport)
+
+    var triggers = this.options.trigger.split(' ')
+
+    for (var i = triggers.length; i--;) {
+      var trigger = triggers[i]
+
+      if (trigger == 'click') {
+        this.$element.on('click.' + this.type, this.options.selector, $.proxy(this.toggle, this))
+      } else if (trigger != 'manual') {
+        var eventIn  = trigger == 'hover' ? 'mouseenter' : 'focusin'
+        var eventOut = trigger == 'hover' ? 'mouseleave' : 'focusout'
+
+        this.$element.on(eventIn  + '.' + this.type, this.options.selector, $.proxy(this.enter, this))
+        this.$element.on(eventOut + '.' + this.type, this.options.selector, $.proxy(this.leave, this))
+      }
+    }
+
+    this.options.selector ?
+      (this._options = $.extend({}, this.options, { trigger: 'manual', selector: '' })) :
+      this.fixTitle()
+  }
+
+  Tooltip.prototype.getDefaults = function () {
+    return Tooltip.DEFAULTS
+  }
+
+  Tooltip.prototype.getOptions = function (options) {
+    options = $.extend({}, this.getDefaults(), this.$element.data(), options)
+
+    if (options.delay && typeof options.delay == 'number') {
+      options.delay = {
+        show: options.delay,
+        hide: options.delay
+      }
+    }
+
+    return options
+  }
+
+  Tooltip.prototype.getDelegateOptions = function () {
+    var options  = {}
+    var defaults = this.getDefaults()
+
+    this._options && $.each(this._options, function (key, value) {
+      if (defaults[key] != value) options[key] = value
+    })
+
+    return options
+  }
+
+  Tooltip.prototype.enter = function (obj) {
+    var self = obj instanceof this.constructor ?
+      obj : $(obj.currentTarget).data('bs.' + this.type)
+
+    if (!self) {
+      self = new this.constructor(obj.currentTarget, this.getDelegateOptions())
+      $(obj.currentTarget).data('bs.' + this.type, self)
+    }
+
+    clearTimeout(self.timeout)
+
+    self.hoverState = 'in'
+
+    if (!self.options.delay || !self.options.delay.show) return self.show()
+
+    self.timeout = setTimeout(function () {
+      if (self.hoverState == 'in') self.show()
+    }, self.options.delay.show)
+  }
+
+  Tooltip.prototype.leave = function (obj) {
+    var self = obj instanceof this.constructor ?
+      obj : $(obj.currentTarget).data('bs.' + this.type)
+
+    if (!self) {
+      self = new this.constructor(obj.currentTarget, this.getDelegateOptions())
+      $(obj.currentTarget).data('bs.' + this.type, self)
+    }
+
+    clearTimeout(self.timeout)
+
+    self.hoverState = 'out'
+
+    if (!self.options.delay || !self.options.delay.hide) return self.hide()
+
+    self.timeout = setTimeout(function () {
+      if (self.hoverState == 'out') self.hide()
+    }, self.options.delay.hide)
+  }
+
+  Tooltip.prototype.show = function () {
+    var e = $.Event('show.bs.' + this.type)
+
+    if (this.hasContent() && this.enabled) {
+      this.$element.trigger(e)
+
+      var inDom = $.contains(document.documentElement, this.$element[0])
+      if (e.isDefaultPrevented() || !inDom) return
+      var that = this
+
+      var $tip = this.tip()
+
+      var tipId = this.getUID(this.type)
+
+      this.setContent()
+      $tip.attr('id', tipId)
+      this.$element.attr('aria-describedby', tipId)
+
+      if (this.options.animation) $tip.addClass('fade')
+
+      var placement = typeof this.options.placement == 'function' ?
+        this.options.placement.call(this, $tip[0], this.$element[0]) :
+        this.options.placement
+
+      var autoToken = /\s?auto?\s?/i
+      var autoPlace = autoToken.test(placement)
+      if (autoPlace) placement = placement.replace(autoToken, '') || 'top'
+
+      $tip
+        .detach()
+        .css({ top: 0, left: 0, display: 'block' })
+        .addClass(placement)
+        .data('bs.' + this.type, this)
+
+      this.options.container ? $tip.appendTo(this.options.container) : $tip.insertAfter(this.$element)
+
+      var pos          = this.getPosition()
+      var actualWidth  = $tip[0].offsetWidth
+      var actualHeight = $tip[0].offsetHeight
+
+      if (autoPlace) {
+        var orgPlacement = placement
+        var $parent      = this.$element.parent()
+        var parentDim    = this.getPosition($parent)
+
+        placement = placement == 'bottom' && pos.top   + pos.height       + actualHeight - parentDim.scroll > parentDim.height ? 'top'    :
+                    placement == 'top'    && pos.top   - parentDim.scroll - actualHeight < 0                                   ? 'bottom' :
+                    placement == 'right'  && pos.right + actualWidth      > parentDim.width                                    ? 'left'   :
+                    placement == 'left'   && pos.left  - actualWidth      < parentDim.left                                     ? 'right'  :
+                    placement
+
+        $tip
+          .removeClass(orgPlacement)
+          .addClass(placement)
+      }
+
+      var calculatedOffset = this.getCalculatedOffset(placement, pos, actualWidth, actualHeight)
+
+      this.applyPlacement(calculatedOffset, placement)
+
+      var complete = function () {
+        that.$element.trigger('shown.bs.' + that.type)
+        that.hoverState = null
+      }
+
+      $.support.transition && this.$tip.hasClass('fade') ?
+        $tip
+          .one('bsTransitionEnd', complete)
+          .emulateTransitionEnd(150) :
+        complete()
+    }
+  }
+
+  Tooltip.prototype.applyPlacement = function (offset, placement) {
+    var $tip   = this.tip()
+    var width  = $tip[0].offsetWidth
+    var height = $tip[0].offsetHeight
+
+    // manually read margins because getBoundingClientRect includes difference
+    var marginTop = parseInt($tip.css('margin-top'), 10)
+    var marginLeft = parseInt($tip.css('margin-left'), 10)
+
+    // we must check for NaN for ie 8/9
+    if (isNaN(marginTop))  marginTop  = 0
+    if (isNaN(marginLeft)) marginLeft = 0
+
+    offset.top  = offset.top  + marginTop
+    offset.left = offset.left + marginLeft
+
+    // $.fn.offset doesn't round pixel values
+    // so we use setOffset directly with our own function B-0
+    $.offset.setOffset($tip[0], $.extend({
+      using: function (props) {
+        $tip.css({
+          top: Math.round(props.top),
+          left: Math.round(props.left)
+        })
+      }
+    }, offset), 0)
+
+    $tip.addClass('in')
+
+    // check to see if placing tip in new offset caused the tip to resize itself
+    var actualWidth  = $tip[0].offsetWidth
+    var actualHeight = $tip[0].offsetHeight
+
+    if (placement == 'top' && actualHeight != height) {
+      offset.top = offset.top + height - actualHeight
+    }
+
+    var delta = this.getViewportAdjustedDelta(placement, offset, actualWidth, actualHeight)
+
+    if (delta.left) offset.left += delta.left
+    else offset.top += delta.top
+
+    var arrowDelta          = delta.left ? delta.left * 2 - width + actualWidth : delta.top * 2 - height + actualHeight
+    var arrowPosition       = delta.left ? 'left'        : 'top'
+    var arrowOffsetPosition = delta.left ? 'offsetWidth' : 'offsetHeight'
+
+    $tip.offset(offset)
+    this.replaceArrow(arrowDelta, $tip[0][arrowOffsetPosition], arrowPosition)
+  }
+
+  Tooltip.prototype.replaceArrow = function (delta, dimension, position) {
+    this.arrow().css(position, delta ? (50 * (1 - delta / dimension) + '%') : '')
+  }
+
+  Tooltip.prototype.setContent = function () {
+    var $tip  = this.tip()
+    var title = this.getTitle()
+
+    $tip.find('.tooltip-inner')[this.options.html ? 'html' : 'text'](title)
+    $tip.removeClass('fade in top bottom left right')
+  }
+
+  Tooltip.prototype.hide = function () {
+    var that = this
+    var $tip = this.tip()
+    var e    = $.Event('hide.bs.' + this.type)
+
+    this.$element.removeAttr('aria-describedby')
+
+    function complete() {
+      if (that.hoverState != 'in') $tip.detach()
+      that.$element.trigger('hidden.bs.' + that.type)
+    }
+
+    this.$element.trigger(e)
+
+    if (e.isDefaultPrevented()) return
+
+    $tip.removeClass('in')
+
+    $.support.transition && this.$tip.hasClass('fade') ?
+      $tip
+        .one('bsTransitionEnd', complete)
+        .emulateTransitionEnd(150) :
+      complete()
+
+    this.hoverState = null
+
+    return this
+  }
+
+  Tooltip.prototype.fixTitle = function () {
+    var $e = this.$element
+    if ($e.attr('title') || typeof ($e.attr('data-original-title')) != 'string') {
+      $e.attr('data-original-title', $e.attr('title') || '').attr('title', '')
+    }
+  }
+
+  Tooltip.prototype.hasContent = function () {
+    return this.getTitle()
+  }
+
+  Tooltip.prototype.getPosition = function ($element) {
+    $element   = $element || this.$element
+    var el     = $element[0]
+    var isBody = el.tagName == 'BODY'
+    return $.extend({}, (typeof el.getBoundingClientRect == 'function') ? el.getBoundingClientRect() : null, {
+      scroll: isBody ? document.documentElement.scrollTop || document.body.scrollTop : $element.scrollTop(),
+      width:  isBody ? $(window).width()  : $element.outerWidth(),
+      height: isBody ? $(window).height() : $element.outerHeight()
+    }, isBody ? { top: 0, left: 0 } : $element.offset())
+  }
+
+  Tooltip.prototype.getCalculatedOffset = function (placement, pos, actualWidth, actualHeight) {
+    return placement == 'bottom' ? { top: pos.top + pos.height,   left: pos.left + pos.width / 2 - actualWidth / 2  } :
+           placement == 'top'    ? { top: pos.top - actualHeight, left: pos.left + pos.width / 2 - actualWidth / 2  } :
+           placement == 'left'   ? { top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left - actualWidth } :
+        /* placement == 'right' */ { top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left + pos.width   }
+
+  }
+
+  Tooltip.prototype.getViewportAdjustedDelta = function (placement, pos, actualWidth, actualHeight) {
+    var delta = { top: 0, left: 0 }
+    if (!this.$viewport) return delta
+
+    var viewportPadding = this.options.viewport && this.options.viewport.padding || 0
+    var viewportDimensions = this.getPosition(this.$viewport)
+
+    if (/right|left/.test(placement)) {
+      var topEdgeOffset    = pos.top - viewportPadding - viewportDimensions.scroll
+      var bottomEdgeOffset = pos.top + viewportPadding - viewportDimensions.scroll + actualHeight
+      if (topEdgeOffset < viewportDimensions.top) { // top overflow
+        delta.top = viewportDimensions.top - topEdgeOffset
+      } else if (bottomEdgeOffset > viewportDimensions.top + viewportDimensions.height) { // bottom overflow
+        delta.top = viewportDimensions.top + viewportDimensions.height - bottomEdgeOffset
+      }
+    } else {
+      var leftEdgeOffset  = pos.left - viewportPadding
+      var rightEdgeOffset = pos.left + viewportPadding + actualWidth
+      if (leftEdgeOffset < viewportDimensions.left) { // left overflow
+        delta.left = viewportDimensions.left - leftEdgeOffset
+      } else if (rightEdgeOffset > viewportDimensions.width) { // right overflow
+        delta.left = viewportDimensions.left + viewportDimensions.width - rightEdgeOffset
+      }
+    }
+
+    return delta
+  }
+
+  Tooltip.prototype.getTitle = function () {
+    var title
+    var $e = this.$element
+    var o  = this.options
+
+    title = $e.attr('data-original-title')
+      || (typeof o.title == 'function' ? o.title.call($e[0]) :  o.title)
+
+    return title
+  }
+
+  Tooltip.prototype.getUID = function (prefix) {
+    do prefix += ~~(Math.random() * 1000000)
+    while (document.getElementById(prefix))
+    return prefix
+  }
+
+  Tooltip.prototype.tip = function () {
+    return (this.$tip = this.$tip || $(this.options.template))
+  }
+
+  Tooltip.prototype.arrow = function () {
+    return (this.$arrow = this.$arrow || this.tip().find('.tooltip-arrow'))
+  }
+
+  Tooltip.prototype.validate = function () {
+    if (!this.$element[0].parentNode) {
+      this.hide()
+      this.$element = null
+      this.options  = null
+    }
+  }
+
+  Tooltip.prototype.enable = function () {
+    this.enabled = true
+  }
+
+  Tooltip.prototype.disable = function () {
+    this.enabled = false
+  }
+
+  Tooltip.prototype.toggleEnabled = function () {
+    this.enabled = !this.enabled
+  }
+
+  Tooltip.prototype.toggle = function (e) {
+    var self = this
+    if (e) {
+      self = $(e.currentTarget).data('bs.' + this.type)
+      if (!self) {
+        self = new this.constructor(e.currentTarget, this.getDelegateOptions())
+        $(e.currentTarget).data('bs.' + this.type, self)
+      }
+    }
+
+    self.tip().hasClass('in') ? self.leave(self) : self.enter(self)
+  }
+
+  Tooltip.prototype.destroy = function () {
+    clearTimeout(this.timeout)
+    this.hide().$element.off('.' + this.type).removeData('bs.' + this.type)
+  }
+
+
+  // TOOLTIP PLUGIN DEFINITION
+  // =========================
+
+  function Plugin(option) {
+    return this.each(function () {
+      var $this   = $(this)
+      var data    = $this.data('bs.tooltip')
+      var options = typeof option == 'object' && option
+
+      if (!data && option == 'destroy') return
+      if (!data) $this.data('bs.tooltip', (data = new Tooltip(this, options)))
+      if (typeof option == 'string') data[option]()
+    })
+  }
+
+  var old = $.fn.tooltip
+
+  $.fn.tooltip             = Plugin
+  $.fn.tooltip.Constructor = Tooltip
+
+
+  // TOOLTIP NO CONFLICT
+  // ===================
+
+  $.fn.tooltip.noConflict = function () {
+    $.fn.tooltip = old
+    return this
+  }
+
+}(jQuery);
+
+
+  }).apply(root, arguments);
+});
+}(this));
+
 // Author: Rok Garbas
 // Contact: rok@garbas.si
 // Version: 1.0
@@ -21191,5 +21197,5 @@ require([
   }
 });
 
-define("plone", function(){});
+define("/Users/ramon/Development/buildout.coredev/src/Products.CMFPlone/Products/CMFPlone/static/plone.js", function(){});
 
