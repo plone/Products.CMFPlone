@@ -902,11 +902,6 @@
   <!-- legacy js -->
 
 
-  <records prefix="plone.resources/plone_javascript_variables"
-            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">plone_javascript_variables.js</value>
-  </records>
-
   <records prefix="plone.resources/jquery-highlightsearchterms"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">jquery.highlightsearchterms.js</value>
@@ -1019,7 +1014,6 @@
   <records prefix="plone.bundles/plone-legacy"
             interface='Products.CMFPlone.interfaces.IBundleRegistry'>
     <value key="resources" purge="false">
-      <element>plone_javascript_variables</element>
       <element>jquery-highlightsearchterms</element>
     </value>
     <value key="depends">plone</value>

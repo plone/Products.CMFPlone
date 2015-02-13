@@ -56,13 +56,6 @@
 
   <browser:page
       for="*"
-      name="plone_javascript_variables.js"
-      class=".jsvariables.JSVariables"
-      permission="zope.Public"
-      />
-
-  <browser:page
-      for="*"
       name="navtree_builder_view"
       class=".navigation.CatalogNavigationTree"
       permission="zope.Public"

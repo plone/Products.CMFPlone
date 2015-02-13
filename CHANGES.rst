@@ -8,6 +8,10 @@ Changelog
 5.0b1 (unreleased)
 ------------------
 
+- remove plone_javascript_variables.js as necessary values
+  are provided on body tag and pattern options
+  [vangheem]
+
 - fix bootstrap css bleeding into global namespaces
   [vangheem]
 
