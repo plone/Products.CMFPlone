@@ -12,6 +12,7 @@ from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Acquisition import aq_parent
 from plone.app.theming.utils import getCurrentTheme
 from plone.app.theming.utils import getTheme
+from Products.CMFCore.utils import getToolByName
 
 
 class PloneSettingsAdapter(object):
@@ -26,15 +27,25 @@ class PloneSettingsAdapter(object):
         self.request = request
         self.context = context
         self.field = field
-        self.registry = getUtility(IRegistry)
-        self.settings = self.registry.forInterface(ITinyMCESchema, prefix="plone")
-        self.config = {
-            'portal_url': get_portal_url(context),
-            'document_base_url': self.context.absolute_url()
-        }
+
+    def mark_special_links(self):
+        result = {}
+        properties = getToolByName(self.context, "portal_properties")
+        props = getattr(properties, 'site_properties')
+
+        if not props:
+            return result
+        msl = props.getProperty('mark_special_links', 'false')
+        elonw = props.getProperty('external_links_open_new_window', 'false')
+        if msl == 'true' or elonw == 'true':
+            result = {'data-pat-markspeciallinks':
+                      ('{"external_links_open_new_window": "%s",'
+                       '"mark_special_links": "%s"}' % (elonw, msl))}
+        return result
 
     def __call__(self):
         data = self.tinymce()
+        data.update(self.mark_special_links())
         return data
 
     def tinymce(self):
@@ -52,6 +63,12 @@ class PloneSettingsAdapter(object):
             prependToScalePart: '/@@images/image/'
           })
         """
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(ITinyMCESchema, prefix="plone")
+        config = {
+            'portal_url': get_portal_url(self.context),
+            'document_base_url': self.context.absolute_url()
+        }
 
         folder = self.context
         if not IFolderish.providedBy(self.context):
@@ -60,33 +77,33 @@ class PloneSettingsAdapter(object):
             initial = None
         else:
             initial = IUUID(folder, None)
-        current_path = folder.absolute_url()[len(self.config['portal_url']):]
+        current_path = folder.absolute_url()[len(config['portal_url']):]
 
         # Check if theme has a custom content css
         theme = getCurrentTheme()
         themeObj = getTheme(theme)
         if (themeObj and hasattr(themeObj, 'tinymce_content_css') and
                 themeObj.tinymce_content_css):
-            content_css = self.config['portal_url'] + themeObj.tinymce_content_css
+            content_css = config['portal_url'] + themeObj.tinymce_content_css
         else:
-            content_css = self.settings.content_css
+            content_css = settings.content_css
 
         configuration = {
             'relatedItems': format_pattern_settings(
-                self.settings.relatedItems,
-                self.config),
+                settings.relatedItems,
+                config),
             'upload': {
                 'initialFolder': initial,
                 'currentPath': current_path,
                 'baseUrl': folder.absolute_url(),
                 'relativePath': format_pattern_settings(
-                    self.settings.rel_upload_path,
-                    self.config),
+                    settings.rel_upload_path,
+                    config),
                 'uploadMultiple': False,
                 'maxFiles': 1,
                 'showTitle': False
             },
-            'base_url': self.config['document_base_url'],
+            'base_url': config['document_base_url'],
             'tiny': {
                 'content_css': content_css,
             },
@@ -94,11 +111,11 @@ class PloneSettingsAdapter(object):
             'loadingBaseUrl': '++plone++static/components/tinymce-builded/js/tinymce',
             'prependToUrl': 'resolveuid/',
             'linkAttribute': format_pattern_settings(
-                self.settings.linkAttribute,
-                self.config),
+                settings.linkAttribute,
+                config),
             'prependToScalePart': format_pattern_settings(
-                self.settings.prependToScalePart,
-                self.config),
+                settings.prependToScalePart,
+                config),
             # XXX need to get this from somewhere...
             'folderTypes': ','.join(['Folder']),
             'imageTypes': ','.join(['Image']),

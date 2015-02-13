@@ -42,12 +42,13 @@ require([
   'mockup-patterns-formunloadalert',
   'mockup-patterns-preventdoublesubmit',
   'mockup-patterns-formautofocus',
+  'mockup-patterns-markspeciallinks',
   'mockup-patterns-modal',
   'mockup-patterns-livesearch',
   'mockup-patterns-contentloader',
   'bootstrap-dropdown',
   'bootstrap-collapse',
-  'bootstrap-tooltip'
+  'bootstrap-tooltip',
 ], function($, registry, Base) {
   'use strict';
 

@@ -695,6 +695,14 @@
       <value key="js">++resource++mockup/inlinevalidation/pattern.js</value>
   </records>
 
+  <records prefix="plone.resources/mockup-patterns-markspeciallinks"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockup/markspeciallinks/pattern.js</value>
+      <value key="css">
+        <element>++resource++mockup/markspeciallinks/pattern.markspeciallinks.less</element>
+      </value>
+  </records>
+
   <records prefix="plone.resources/mockup-patterns-modal"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/modal/pattern.js</value>
@@ -905,12 +913,6 @@
   <records prefix="plone.resources/jquery-highlightsearchterms"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">jquery.highlightsearchterms.js</value>
-  </records>
-
-  <!-- disabled -->
-  <records prefix="plone.resources/mark_special_links"
-            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">mark_special_links.js</value>
   </records>
 
   <record name="plone.resources.last_legacy_import">

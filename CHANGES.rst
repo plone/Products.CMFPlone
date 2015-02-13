@@ -8,6 +8,10 @@ Changelog
 5.0b1 (unreleased)
 ------------------
 
+- Replaced the legacy mark_special_links javascript with a
+  corresponding mockup pattern.
+  [fulv]
+
 - remove plone_javascript_variables.js as necessary values
   are provided on body tag and pattern options
   [vangheem]

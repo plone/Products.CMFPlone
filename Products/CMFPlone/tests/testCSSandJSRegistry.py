@@ -54,8 +54,7 @@ class TestJSRegistry(PloneTestCase):
             IResourceRegistry, prefix="plone.resources")
         expected = [
             '++resource++plone.js',
-            'jquery.highlightsearchterms.js',
-            'mark_special_links.js'
+            'jquery.highlightsearchterms.js'
             ]
         js_files = [x.js for x in installedResources.values()]
         for e in expected:
