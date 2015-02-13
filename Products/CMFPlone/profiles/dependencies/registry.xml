@@ -888,6 +888,9 @@
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/jquery.recurrenceinput.js/src/jquery.recurrenceinput.js</value>
       <!-- Perhaps a bit wonky here for now, depending on legacy jquery tools stuff here -->
+      <value key="css">
+        <element>++plone++static/components/jquery.recurrenceinput.js/src/jquery.recurrenceinput.css</element>
+      </value>
       <value key="deps">jquery,resource-plone-app-jquerytools-js,resource-plone-app-jquerytools-dateinput-js,jquery.tmpl</value>
   </records>
   <records prefix="plone.resources/jquery.tmpl"

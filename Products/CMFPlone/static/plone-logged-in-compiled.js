@@ -89178,7 +89178,7 @@ define("jquery.recurrenceinput", ["jquery","resource-plone-app-jquerytools-js","
 /* Recurrence pattern.
  *
  * Options:
- *    locatization(object): Customizations to locatizations. Default to null
+ *    localization(object): Customizations to locatizations. Default to null
  *    configuration(object): recurrent input widget configuration
  *
  * Documentation:
@@ -89207,13 +89207,13 @@ define('mockup-patterns-recurrence',[
     defaults: {
       // just passed onto the widget
       language: 'en',
-      locatization: null,
+      localization: null,
       configuration: {}
     },
     init: function() {
       this.$el.addClass('recurrence-widget');
-      if(this.options.locatization){
-        $.tools.recurrenceinput.localize(this.options.language, this.options.locatization);
+      if(this.options.localization){
+        $.tools.recurrenceinput.localize(this.options.language, this.options.localization);
       }
       this.$el.recurrenceinput(this.options.configuration);
     }
