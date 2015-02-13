@@ -68,7 +68,7 @@ div.riform #riweeklyweekdays .riweeklyweekday {
 }
 
 div.riform input.ricancelbutton {
-    background-image: url(pb_close.png);
+    background-image: url('pb_close.png');
     background-color: transparent;
     font-size: 0; /* For IE8 */
     color: transparent;
@@ -163,19 +163,19 @@ div.rioccurrences a.exdate {
 
 
 div.rioccurrences a.rrule {
-    background-image: url(delete.png);
+    background-image: url('delete.png');
 }
 
 div.rioccurrences a.rdate {
-    background-image: url(delete.png);
+    background-image: url('delete.png');
 }
 
 div.rioccurrences a.exdate {
-    background-image: url(undelete.png);
+    background-image: url('undelete.png');
 }
 
 div.rioccurrencesactions a.rirefreshbutton {
-    background-image: url(refresh.png);
+    background-image: url('refresh.png');
     color: transparent;
     margin-top: 4px;
     margin-right: 5px;
