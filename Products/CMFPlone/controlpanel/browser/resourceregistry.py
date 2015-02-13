@@ -11,6 +11,7 @@ from urlparse import urlparse
 from zExceptions import NotFound
 from zope.component import getUtility
 import json
+from Products.CMFPlone.resources import add_bundle_on_request
 
 
 class JSONEncoder(json.JSONEncoder):
@@ -100,6 +101,7 @@ class OverrideFolderManager(object):
 class ResourceRegistryControlPanelView(RequireJsView):
 
     def __call__(self):
+        add_bundle_on_request(self.request, 'resourceregistry')
         req = self.request
         if req.REQUEST_METHOD == 'POST':
             action = req.get('action', '')

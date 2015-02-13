@@ -769,6 +769,15 @@
       </value>
   </records>
 
+  <records prefix="plone.resources/mockup-patterns-resourceregistry"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="url">++resource++mockup/resourceregistry</value>
+      <value key="js">++resource++mockup/resourceregistry/pattern.js</value>
+      <value key="css">
+        <element>++resource++mockup/resourceregistry/pattern.resourceregistry.less</element>
+      </value>
+  </records>
+
   <records prefix="plone.resources/mockup-patterns-structure"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/structure/pattern.js</value>
@@ -972,7 +981,6 @@
 
 
   <!-- Plone bundle resources -->
-
   <records prefix="plone.resources/plone"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++resource++plone.js</value>
@@ -987,6 +995,14 @@
         <element>++plone++static/plone-logged-in.less</element>
       </value>
   </records>
+  <records prefix="plone.resources/resourceregistry"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/resourceregistry.js</value>
+      <value key="css">
+        <element>++plone++static/resourceregistry.less</element>
+      </value>
+  </records>
+
 
   <!-- Bundles -->
   <records prefix="plone.bundles/plone"
@@ -1025,6 +1041,18 @@
     <value key="compile">False</value>
     <value key="enabled">True</value>
   </records>
+
+  <records prefix="plone.bundles/resourceregistry"
+            interface='Products.CMFPlone.interfaces.IBundleRegistry'>
+    <value key="resources">
+      <element>resourceregistry</element>
+    </value>
+    <value key="enabled">False</value>
+    <value key="jscompilation">++plone++static/resourceregistry-compiled.min.js</value>
+    <value key="csscompilation">++plone++static/resourceregistry-compiled.css</value>
+    <value key="last_compilation">2015-02-13 00:00:00</value>
+  </records>
+
 
   <record name="plone.patternoptions">
     <field type="plone.registry.field.Dict">

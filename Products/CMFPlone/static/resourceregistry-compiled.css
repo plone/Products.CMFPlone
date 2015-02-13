@@ -1,0 +1,4018 @@
+/* ui helper less rules */
+@font-face {
+  font-family: 'Glyphicons Halflings';
+  src: url('http://localhost:8080/Plone/++plone++static/components//bootstrap/fonts/glyphicons-halflings-regular.eot');
+  src: url('http://localhost:8080/Plone/++plone++static/components//bootstrap/fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('http://localhost:8080/Plone/++plone++static/components//bootstrap/fonts/glyphicons-halflings-regular.woff') format('woff'), url('http://localhost:8080/Plone/++plone++static/components//bootstrap/fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('http://localhost:8080/Plone/++plone++static/components//bootstrap/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+}
+/* line 21, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon {
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  font-family: 'Glyphicons Halflings';
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+/* line 34, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-asterisk:before {
+  content: "\2a";
+}
+/* line 35, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-plus:before {
+  content: "\2b";
+}
+/* line 36, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-euro:before {
+  content: "\20ac";
+}
+/* line 37, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-minus:before {
+  content: "\2212";
+}
+/* line 38, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-cloud:before {
+  content: "\2601";
+}
+/* line 39, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-envelope:before {
+  content: "\2709";
+}
+/* line 40, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-pencil:before {
+  content: "\270f";
+}
+/* line 41, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-glass:before {
+  content: "\e001";
+}
+/* line 42, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-music:before {
+  content: "\e002";
+}
+/* line 43, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-search:before {
+  content: "\e003";
+}
+/* line 44, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-heart:before {
+  content: "\e005";
+}
+/* line 45, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-star:before {
+  content: "\e006";
+}
+/* line 46, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-star-empty:before {
+  content: "\e007";
+}
+/* line 47, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-user:before {
+  content: "\e008";
+}
+/* line 48, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-film:before {
+  content: "\e009";
+}
+/* line 49, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-th-large:before {
+  content: "\e010";
+}
+/* line 50, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-th:before {
+  content: "\e011";
+}
+/* line 51, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-th-list:before {
+  content: "\e012";
+}
+/* line 52, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-ok:before {
+  content: "\e013";
+}
+/* line 53, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-remove:before {
+  content: "\e014";
+}
+/* line 54, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-zoom-in:before {
+  content: "\e015";
+}
+/* line 55, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-zoom-out:before {
+  content: "\e016";
+}
+/* line 56, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-off:before {
+  content: "\e017";
+}
+/* line 57, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-signal:before {
+  content: "\e018";
+}
+/* line 58, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-cog:before {
+  content: "\e019";
+}
+/* line 59, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-trash:before {
+  content: "\e020";
+}
+/* line 60, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-home:before {
+  content: "\e021";
+}
+/* line 61, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-file:before {
+  content: "\e022";
+}
+/* line 62, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-time:before {
+  content: "\e023";
+}
+/* line 63, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-road:before {
+  content: "\e024";
+}
+/* line 64, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-download-alt:before {
+  content: "\e025";
+}
+/* line 65, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-download:before {
+  content: "\e026";
+}
+/* line 66, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-upload:before {
+  content: "\e027";
+}
+/* line 67, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-inbox:before {
+  content: "\e028";
+}
+/* line 68, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-play-circle:before {
+  content: "\e029";
+}
+/* line 69, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-repeat:before {
+  content: "\e030";
+}
+/* line 70, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-refresh:before {
+  content: "\e031";
+}
+/* line 71, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-list-alt:before {
+  content: "\e032";
+}
+/* line 72, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-lock:before {
+  content: "\e033";
+}
+/* line 73, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-flag:before {
+  content: "\e034";
+}
+/* line 74, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-headphones:before {
+  content: "\e035";
+}
+/* line 75, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-volume-off:before {
+  content: "\e036";
+}
+/* line 76, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-volume-down:before {
+  content: "\e037";
+}
+/* line 77, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-volume-up:before {
+  content: "\e038";
+}
+/* line 78, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-qrcode:before {
+  content: "\e039";
+}
+/* line 79, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-barcode:before {
+  content: "\e040";
+}
+/* line 80, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-tag:before {
+  content: "\e041";
+}
+/* line 81, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-tags:before {
+  content: "\e042";
+}
+/* line 82, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-book:before {
+  content: "\e043";
+}
+/* line 83, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-bookmark:before {
+  content: "\e044";
+}
+/* line 84, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-print:before {
+  content: "\e045";
+}
+/* line 85, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-camera:before {
+  content: "\e046";
+}
+/* line 86, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-font:before {
+  content: "\e047";
+}
+/* line 87, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-bold:before {
+  content: "\e048";
+}
+/* line 88, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-italic:before {
+  content: "\e049";
+}
+/* line 89, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-text-height:before {
+  content: "\e050";
+}
+/* line 90, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-text-width:before {
+  content: "\e051";
+}
+/* line 91, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-align-left:before {
+  content: "\e052";
+}
+/* line 92, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-align-center:before {
+  content: "\e053";
+}
+/* line 93, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-align-right:before {
+  content: "\e054";
+}
+/* line 94, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-align-justify:before {
+  content: "\e055";
+}
+/* line 95, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-list:before {
+  content: "\e056";
+}
+/* line 96, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-indent-left:before {
+  content: "\e057";
+}
+/* line 97, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-indent-right:before {
+  content: "\e058";
+}
+/* line 98, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-facetime-video:before {
+  content: "\e059";
+}
+/* line 99, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-picture:before {
+  content: "\e060";
+}
+/* line 100, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-map-marker:before {
+  content: "\e062";
+}
+/* line 101, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-adjust:before {
+  content: "\e063";
+}
+/* line 102, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-tint:before {
+  content: "\e064";
+}
+/* line 103, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-edit:before {
+  content: "\e065";
+}
+/* line 104, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-share:before {
+  content: "\e066";
+}
+/* line 105, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-check:before {
+  content: "\e067";
+}
+/* line 106, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-move:before {
+  content: "\e068";
+}
+/* line 107, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-step-backward:before {
+  content: "\e069";
+}
+/* line 108, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-fast-backward:before {
+  content: "\e070";
+}
+/* line 109, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-backward:before {
+  content: "\e071";
+}
+/* line 110, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-play:before {
+  content: "\e072";
+}
+/* line 111, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-pause:before {
+  content: "\e073";
+}
+/* line 112, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-stop:before {
+  content: "\e074";
+}
+/* line 113, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-forward:before {
+  content: "\e075";
+}
+/* line 114, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-fast-forward:before {
+  content: "\e076";
+}
+/* line 115, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-step-forward:before {
+  content: "\e077";
+}
+/* line 116, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-eject:before {
+  content: "\e078";
+}
+/* line 117, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-chevron-left:before {
+  content: "\e079";
+}
+/* line 118, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-chevron-right:before {
+  content: "\e080";
+}
+/* line 119, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-plus-sign:before {
+  content: "\e081";
+}
+/* line 120, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-minus-sign:before {
+  content: "\e082";
+}
+/* line 121, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-remove-sign:before {
+  content: "\e083";
+}
+/* line 122, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-ok-sign:before {
+  content: "\e084";
+}
+/* line 123, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-question-sign:before {
+  content: "\e085";
+}
+/* line 124, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-info-sign:before {
+  content: "\e086";
+}
+/* line 125, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-screenshot:before {
+  content: "\e087";
+}
+/* line 126, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-remove-circle:before {
+  content: "\e088";
+}
+/* line 127, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-ok-circle:before {
+  content: "\e089";
+}
+/* line 128, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-ban-circle:before {
+  content: "\e090";
+}
+/* line 129, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-arrow-left:before {
+  content: "\e091";
+}
+/* line 130, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-arrow-right:before {
+  content: "\e092";
+}
+/* line 131, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-arrow-up:before {
+  content: "\e093";
+}
+/* line 132, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-arrow-down:before {
+  content: "\e094";
+}
+/* line 133, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-share-alt:before {
+  content: "\e095";
+}
+/* line 134, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-resize-full:before {
+  content: "\e096";
+}
+/* line 135, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-resize-small:before {
+  content: "\e097";
+}
+/* line 136, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-exclamation-sign:before {
+  content: "\e101";
+}
+/* line 137, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-gift:before {
+  content: "\e102";
+}
+/* line 138, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-leaf:before {
+  content: "\e103";
+}
+/* line 139, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-fire:before {
+  content: "\e104";
+}
+/* line 140, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-eye-open:before {
+  content: "\e105";
+}
+/* line 141, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-eye-close:before {
+  content: "\e106";
+}
+/* line 142, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-warning-sign:before {
+  content: "\e107";
+}
+/* line 143, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-plane:before {
+  content: "\e108";
+}
+/* line 144, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-calendar:before {
+  content: "\e109";
+}
+/* line 145, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-random:before {
+  content: "\e110";
+}
+/* line 146, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-comment:before {
+  content: "\e111";
+}
+/* line 147, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-magnet:before {
+  content: "\e112";
+}
+/* line 148, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-chevron-up:before {
+  content: "\e113";
+}
+/* line 149, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-chevron-down:before {
+  content: "\e114";
+}
+/* line 150, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-retweet:before {
+  content: "\e115";
+}
+/* line 151, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-shopping-cart:before {
+  content: "\e116";
+}
+/* line 152, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-folder-close:before {
+  content: "\e117";
+}
+/* line 153, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-folder-open:before {
+  content: "\e118";
+}
+/* line 154, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-resize-vertical:before {
+  content: "\e119";
+}
+/* line 155, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-resize-horizontal:before {
+  content: "\e120";
+}
+/* line 156, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-hdd:before {
+  content: "\e121";
+}
+/* line 157, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-bullhorn:before {
+  content: "\e122";
+}
+/* line 158, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-bell:before {
+  content: "\e123";
+}
+/* line 159, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-certificate:before {
+  content: "\e124";
+}
+/* line 160, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-thumbs-up:before {
+  content: "\e125";
+}
+/* line 161, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-thumbs-down:before {
+  content: "\e126";
+}
+/* line 162, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-hand-right:before {
+  content: "\e127";
+}
+/* line 163, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-hand-left:before {
+  content: "\e128";
+}
+/* line 164, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-hand-up:before {
+  content: "\e129";
+}
+/* line 165, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-hand-down:before {
+  content: "\e130";
+}
+/* line 166, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-circle-arrow-right:before {
+  content: "\e131";
+}
+/* line 167, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-circle-arrow-left:before {
+  content: "\e132";
+}
+/* line 168, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-circle-arrow-up:before {
+  content: "\e133";
+}
+/* line 169, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-circle-arrow-down:before {
+  content: "\e134";
+}
+/* line 170, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-globe:before {
+  content: "\e135";
+}
+/* line 171, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-wrench:before {
+  content: "\e136";
+}
+/* line 172, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-tasks:before {
+  content: "\e137";
+}
+/* line 173, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-filter:before {
+  content: "\e138";
+}
+/* line 174, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-briefcase:before {
+  content: "\e139";
+}
+/* line 175, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-fullscreen:before {
+  content: "\e140";
+}
+/* line 176, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-dashboard:before {
+  content: "\e141";
+}
+/* line 177, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-paperclip:before {
+  content: "\e142";
+}
+/* line 178, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-heart-empty:before {
+  content: "\e143";
+}
+/* line 179, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-link:before {
+  content: "\e144";
+}
+/* line 180, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-phone:before {
+  content: "\e145";
+}
+/* line 181, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-pushpin:before {
+  content: "\e146";
+}
+/* line 182, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-usd:before {
+  content: "\e148";
+}
+/* line 183, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-gbp:before {
+  content: "\e149";
+}
+/* line 184, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-sort:before {
+  content: "\e150";
+}
+/* line 185, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-sort-by-alphabet:before {
+  content: "\e151";
+}
+/* line 186, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-sort-by-alphabet-alt:before {
+  content: "\e152";
+}
+/* line 187, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-sort-by-order:before {
+  content: "\e153";
+}
+/* line 188, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-sort-by-order-alt:before {
+  content: "\e154";
+}
+/* line 189, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-sort-by-attributes:before {
+  content: "\e155";
+}
+/* line 190, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-sort-by-attributes-alt:before {
+  content: "\e156";
+}
+/* line 191, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-unchecked:before {
+  content: "\e157";
+}
+/* line 192, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-expand:before {
+  content: "\e158";
+}
+/* line 193, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-collapse-down:before {
+  content: "\e159";
+}
+/* line 194, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-collapse-up:before {
+  content: "\e160";
+}
+/* line 195, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-log-in:before {
+  content: "\e161";
+}
+/* line 196, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-flash:before {
+  content: "\e162";
+}
+/* line 197, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-log-out:before {
+  content: "\e163";
+}
+/* line 198, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-new-window:before {
+  content: "\e164";
+}
+/* line 199, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-record:before {
+  content: "\e165";
+}
+/* line 200, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-save:before {
+  content: "\e166";
+}
+/* line 201, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-open:before {
+  content: "\e167";
+}
+/* line 202, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-saved:before {
+  content: "\e168";
+}
+/* line 203, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-import:before {
+  content: "\e169";
+}
+/* line 204, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-export:before {
+  content: "\e170";
+}
+/* line 205, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-send:before {
+  content: "\e171";
+}
+/* line 206, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-floppy-disk:before {
+  content: "\e172";
+}
+/* line 207, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-floppy-saved:before {
+  content: "\e173";
+}
+/* line 208, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-floppy-remove:before {
+  content: "\e174";
+}
+/* line 209, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-floppy-save:before {
+  content: "\e175";
+}
+/* line 210, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-floppy-open:before {
+  content: "\e176";
+}
+/* line 211, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-credit-card:before {
+  content: "\e177";
+}
+/* line 212, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-transfer:before {
+  content: "\e178";
+}
+/* line 213, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-cutlery:before {
+  content: "\e179";
+}
+/* line 214, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-header:before {
+  content: "\e180";
+}
+/* line 215, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-compressed:before {
+  content: "\e181";
+}
+/* line 216, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-earphone:before {
+  content: "\e182";
+}
+/* line 217, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-phone-alt:before {
+  content: "\e183";
+}
+/* line 218, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-tower:before {
+  content: "\e184";
+}
+/* line 219, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-stats:before {
+  content: "\e185";
+}
+/* line 220, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-sd-video:before {
+  content: "\e186";
+}
+/* line 221, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-hd-video:before {
+  content: "\e187";
+}
+/* line 222, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-subtitles:before {
+  content: "\e188";
+}
+/* line 223, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-sound-stereo:before {
+  content: "\e189";
+}
+/* line 224, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-sound-dolby:before {
+  content: "\e190";
+}
+/* line 225, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-sound-5-1:before {
+  content: "\e191";
+}
+/* line 226, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-sound-6-1:before {
+  content: "\e192";
+}
+/* line 227, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-sound-7-1:before {
+  content: "\e193";
+}
+/* line 228, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-copyright-mark:before {
+  content: "\e194";
+}
+/* line 229, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-registration-mark:before {
+  content: "\e195";
+}
+/* line 230, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-cloud-download:before {
+  content: "\e197";
+}
+/* line 231, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-cloud-upload:before {
+  content: "\e198";
+}
+/* line 232, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-tree-conifer:before {
+  content: "\e199";
+}
+/* line 233, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/glyphicons.less */
+.glyphicon-tree-deciduous:before {
+  content: "\e200";
+}
+/* line 11, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/buttons.less */
+.btn-default:hover,
+.btn-default:focus,
+.btn-default:active,
+.btn-default.active,
+.open > .dropdown-toggle.btn-default {
+  color: #333333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+/* line 20, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/buttons.less */
+.btn-default:active,
+.btn-default.active,
+.open > .dropdown-toggle.btn-default {
+  background-image: none;
+}
+/* line 28, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/buttons.less */
+.btn-default.disabled,
+.btn-default[disabled],
+fieldset[disabled] .btn-default,
+.btn-default.disabled:hover,
+.btn-default[disabled]:hover,
+fieldset[disabled] .btn-default:hover,
+.btn-default.disabled:focus,
+.btn-default[disabled]:focus,
+fieldset[disabled] .btn-default:focus,
+.btn-default.disabled:active,
+.btn-default[disabled]:active,
+fieldset[disabled] .btn-default:active,
+.btn-default.disabled.active,
+.btn-default[disabled].active,
+fieldset[disabled] .btn-default.active {
+  background-color: #ffffff;
+  border-color: #cccccc;
+}
+/* line 38, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/buttons.less */
+.btn-default .badge {
+  color: #ffffff;
+  background-color: #333333;
+}
+/* line 11, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/buttons.less */
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active,
+.open > .dropdown-toggle.btn-primary {
+  color: #ffffff;
+  background-color: #3071a9;
+  border-color: #285e8e;
+}
+/* line 20, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/buttons.less */
+.btn-primary:active,
+.btn-primary.active,
+.open > .dropdown-toggle.btn-primary {
+  background-image: none;
+}
+/* line 28, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/buttons.less */
+.btn-primary.disabled,
+.btn-primary[disabled],
+fieldset[disabled] .btn-primary,
+.btn-primary.disabled:hover,
+.btn-primary[disabled]:hover,
+fieldset[disabled] .btn-primary:hover,
+.btn-primary.disabled:focus,
+.btn-primary[disabled]:focus,
+fieldset[disabled] .btn-primary:focus,
+.btn-primary.disabled:active,
+.btn-primary[disabled]:active,
+fieldset[disabled] .btn-primary:active,
+.btn-primary.disabled.active,
+.btn-primary[disabled].active,
+fieldset[disabled] .btn-primary.active {
+  background-color: #428bca;
+  border-color: #357ebd;
+}
+/* line 38, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/buttons.less */
+.btn-primary .badge {
+  color: #428bca;
+  background-color: #ffffff;
+}
+/* line 11, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/buttons.less */
+.btn-success:hover,
+.btn-success:focus,
+.btn-success:active,
+.btn-success.active,
+.open > .dropdown-toggle.btn-success {
+  color: #ffffff;
+  background-color: #449d44;
+  border-color: #398439;
+}
+/* line 20, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/buttons.less */
+.btn-success:active,
+.btn-success.active,
+.open > .dropdown-toggle.btn-success {
+  background-image: none;
+}
+/* line 28, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/buttons.less */
+.btn-success.disabled,
+.btn-success[disabled],
+fieldset[disabled] .btn-success,
+.btn-success.disabled:hover,
+.btn-success[disabled]:hover,
+fieldset[disabled] .btn-success:hover,
+.btn-success.disabled:focus,
+.btn-success[disabled]:focus,
+fieldset[disabled] .btn-success:focus,
+.btn-success.disabled:active,
+.btn-success[disabled]:active,
+fieldset[disabled] .btn-success:active,
+.btn-success.disabled.active,
+.btn-success[disabled].active,
+fieldset[disabled] .btn-success.active {
+  background-color: #5cb85c;
+  border-color: #4cae4c;
+}
+/* line 38, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/buttons.less */
+.btn-success .badge {
+  color: #5cb85c;
+  background-color: #ffffff;
+}
+/* line 11, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/buttons.less */
+.btn-info:hover,
+.btn-info:focus,
+.btn-info:active,
+.btn-info.active,
+.open > .dropdown-toggle.btn-info {
+  color: #ffffff;
+  background-color: #31b0d5;
+  border-color: #269abc;
+}
+/* line 20, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/buttons.less */
+.btn-info:active,
+.btn-info.active,
+.open > .dropdown-toggle.btn-info {
+  background-image: none;
+}
+/* line 28, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/buttons.less */
+.btn-info.disabled,
+.btn-info[disabled],
+fieldset[disabled] .btn-info,
+.btn-info.disabled:hover,
+.btn-info[disabled]:hover,
+fieldset[disabled] .btn-info:hover,
+.btn-info.disabled:focus,
+.btn-info[disabled]:focus,
+fieldset[disabled] .btn-info:focus,
+.btn-info.disabled:active,
+.btn-info[disabled]:active,
+fieldset[disabled] .btn-info:active,
+.btn-info.disabled.active,
+.btn-info[disabled].active,
+fieldset[disabled] .btn-info.active {
+  background-color: #5bc0de;
+  border-color: #46b8da;
+}
+/* line 38, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/buttons.less */
+.btn-info .badge {
+  color: #5bc0de;
+  background-color: #ffffff;
+}
+/* line 11, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/buttons.less */
+.btn-warning:hover,
+.btn-warning:focus,
+.btn-warning:active,
+.btn-warning.active,
+.open > .dropdown-toggle.btn-warning {
+  color: #ffffff;
+  background-color: #ec971f;
+  border-color: #d58512;
+}
+/* line 20, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/buttons.less */
+.btn-warning:active,
+.btn-warning.active,
+.open > .dropdown-toggle.btn-warning {
+  background-image: none;
+}
+/* line 28, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/buttons.less */
+.btn-warning.disabled,
+.btn-warning[disabled],
+fieldset[disabled] .btn-warning,
+.btn-warning.disabled:hover,
+.btn-warning[disabled]:hover,
+fieldset[disabled] .btn-warning:hover,
+.btn-warning.disabled:focus,
+.btn-warning[disabled]:focus,
+fieldset[disabled] .btn-warning:focus,
+.btn-warning.disabled:active,
+.btn-warning[disabled]:active,
+fieldset[disabled] .btn-warning:active,
+.btn-warning.disabled.active,
+.btn-warning[disabled].active,
+fieldset[disabled] .btn-warning.active {
+  background-color: #f0ad4e;
+  border-color: #eea236;
+}
+/* line 38, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/buttons.less */
+.btn-warning .badge {
+  color: #f0ad4e;
+  background-color: #ffffff;
+}
+/* line 11, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/buttons.less */
+.btn-danger:hover,
+.btn-danger:focus,
+.btn-danger:active,
+.btn-danger.active,
+.open > .dropdown-toggle.btn-danger {
+  color: #ffffff;
+  background-color: #c9302c;
+  border-color: #ac2925;
+}
+/* line 20, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/buttons.less */
+.btn-danger:active,
+.btn-danger.active,
+.open > .dropdown-toggle.btn-danger {
+  background-image: none;
+}
+/* line 28, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/buttons.less */
+.btn-danger.disabled,
+.btn-danger[disabled],
+fieldset[disabled] .btn-danger,
+.btn-danger.disabled:hover,
+.btn-danger[disabled]:hover,
+fieldset[disabled] .btn-danger:hover,
+.btn-danger.disabled:focus,
+.btn-danger[disabled]:focus,
+fieldset[disabled] .btn-danger:focus,
+.btn-danger.disabled:active,
+.btn-danger[disabled]:active,
+fieldset[disabled] .btn-danger:active,
+.btn-danger.disabled.active,
+.btn-danger[disabled].active,
+fieldset[disabled] .btn-danger.active {
+  background-color: #d9534f;
+  border-color: #d43f3a;
+}
+/* line 38, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/buttons.less */
+.btn-danger .badge {
+  color: #d9534f;
+  background-color: #ffffff;
+}
+/* line 124, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/buttons.less */
+.btn-group-lg > .btn {
+  padding: 10px 16px;
+  font-size: 18px;
+  line-height: 1.33;
+  border-radius: 6px;
+}
+/* line 128, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/buttons.less */
+.btn-group-sm > .btn {
+  padding: 5px 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
+}
+/* line 132, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/buttons.less */
+.btn-group-xs > .btn {
+  padding: 1px 5px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
+}
+/* line 7, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/progress-bar.less */
+.progress-striped .progress-bar-success {
+  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+  background-image: -o-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+}
+/* line 7, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/progress-bar.less */
+.progress-striped .progress-bar-info {
+  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+  background-image: -o-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+}
+/* line 7, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/progress-bar.less */
+.progress-striped .progress-bar-warning {
+  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+  background-image: -o-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+}
+/* line 7, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/progress-bar.less */
+.progress-striped .progress-bar-danger {
+  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+  background-image: -o-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+}
+/* buttons */
+/* line 13, http://localhost:8080/Plone/++resource++mockupless//base.less */
+.plone-btn {
+  display: inline-block;
+  margin-bottom: 0;
+  font-weight: normal;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  border-radius: 4px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+/* line 30, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/buttons.less */
+.plone-btn:hover,
+.plone-btn:focus {
+  color: #333333;
+  text-decoration: none;
+}
+/* line 36, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/buttons.less */
+.plone-btn:active,
+.plone-btn.active {
+  outline: 0;
+  background-image: none;
+  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+/* line 43, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/buttons.less */
+.plone-btn.disabled,
+.plone-btn[disabled],
+fieldset[disabled] .plone-btn {
+  cursor: not-allowed;
+  pointer-events: none;
+  opacity: 0.65;
+  filter: alpha(opacity=65);
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+/* line 14, http://localhost:8080/Plone/++resource++mockupless//base.less */
+.plone-btn-lg {
+  padding: 10px 16px;
+  font-size: 18px;
+  line-height: 1.33;
+  border-radius: 6px;
+}
+/* line 15, http://localhost:8080/Plone/++resource++mockupless//base.less */
+.plone-btn-xs {
+  padding: 1px 5px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
+}
+/* line 16, http://localhost:8080/Plone/++resource++mockupless//base.less */
+.plone-btn-sm {
+  padding: 1px 5px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
+}
+/* line 18, http://localhost:8080/Plone/++resource++mockupless//base.less */
+.plone-btn-primary {
+  color: #ffffff;
+  background-color: #428bca;
+  border-color: #357ebd;
+}
+/* line 11, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/buttons.less */
+.plone-btn-primary:hover,
+.plone-btn-primary:focus,
+.plone-btn-primary:active,
+.plone-btn-primary.active,
+.open > .dropdown-toggle.plone-btn-primary {
+  color: #ffffff;
+  background-color: #3071a9;
+  border-color: #285e8e;
+}
+/* line 20, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/buttons.less */
+.plone-btn-primary:active,
+.plone-btn-primary.active,
+.open > .dropdown-toggle.plone-btn-primary {
+  background-image: none;
+}
+/* line 28, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/buttons.less */
+.plone-btn-primary.disabled,
+.plone-btn-primary[disabled],
+fieldset[disabled] .plone-btn-primary,
+.plone-btn-primary.disabled:hover,
+.plone-btn-primary[disabled]:hover,
+fieldset[disabled] .plone-btn-primary:hover,
+.plone-btn-primary.disabled:focus,
+.plone-btn-primary[disabled]:focus,
+fieldset[disabled] .plone-btn-primary:focus,
+.plone-btn-primary.disabled:active,
+.plone-btn-primary[disabled]:active,
+fieldset[disabled] .plone-btn-primary:active,
+.plone-btn-primary.disabled.active,
+.plone-btn-primary[disabled].active,
+fieldset[disabled] .plone-btn-primary.active {
+  background-color: #428bca;
+  border-color: #357ebd;
+}
+/* line 38, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/buttons.less */
+.plone-btn-primary .badge {
+  color: #428bca;
+  background-color: #ffffff;
+}
+/* line 19, http://localhost:8080/Plone/++resource++mockupless//base.less */
+.plone-btn-warning {
+  color: #ffffff;
+  background-color: #f0ad4e;
+  border-color: #eea236;
+}
+/* line 11, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/buttons.less */
+.plone-btn-warning:hover,
+.plone-btn-warning:focus,
+.plone-btn-warning:active,
+.plone-btn-warning.active,
+.open > .dropdown-toggle.plone-btn-warning {
+  color: #ffffff;
+  background-color: #ec971f;
+  border-color: #d58512;
+}
+/* line 20, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/buttons.less */
+.plone-btn-warning:active,
+.plone-btn-warning.active,
+.open > .dropdown-toggle.plone-btn-warning {
+  background-image: none;
+}
+/* line 28, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/buttons.less */
+.plone-btn-warning.disabled,
+.plone-btn-warning[disabled],
+fieldset[disabled] .plone-btn-warning,
+.plone-btn-warning.disabled:hover,
+.plone-btn-warning[disabled]:hover,
+fieldset[disabled] .plone-btn-warning:hover,
+.plone-btn-warning.disabled:focus,
+.plone-btn-warning[disabled]:focus,
+fieldset[disabled] .plone-btn-warning:focus,
+.plone-btn-warning.disabled:active,
+.plone-btn-warning[disabled]:active,
+fieldset[disabled] .plone-btn-warning:active,
+.plone-btn-warning.disabled.active,
+.plone-btn-warning[disabled].active,
+fieldset[disabled] .plone-btn-warning.active {
+  background-color: #f0ad4e;
+  border-color: #eea236;
+}
+/* line 38, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/buttons.less */
+.plone-btn-warning .badge {
+  color: #f0ad4e;
+  background-color: #ffffff;
+}
+/* line 20, http://localhost:8080/Plone/++resource++mockupless//base.less */
+.plone-btn-default {
+  color: #333333;
+  background-color: #ffffff;
+  border-color: #cccccc;
+}
+/* line 11, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/buttons.less */
+.plone-btn-default:hover,
+.plone-btn-default:focus,
+.plone-btn-default:active,
+.plone-btn-default.active,
+.open > .dropdown-toggle.plone-btn-default {
+  color: #333333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+/* line 20, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/buttons.less */
+.plone-btn-default:active,
+.plone-btn-default.active,
+.open > .dropdown-toggle.plone-btn-default {
+  background-image: none;
+}
+/* line 28, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/buttons.less */
+.plone-btn-default.disabled,
+.plone-btn-default[disabled],
+fieldset[disabled] .plone-btn-default,
+.plone-btn-default.disabled:hover,
+.plone-btn-default[disabled]:hover,
+fieldset[disabled] .plone-btn-default:hover,
+.plone-btn-default.disabled:focus,
+.plone-btn-default[disabled]:focus,
+fieldset[disabled] .plone-btn-default:focus,
+.plone-btn-default.disabled:active,
+.plone-btn-default[disabled]:active,
+fieldset[disabled] .plone-btn-default:active,
+.plone-btn-default.disabled.active,
+.plone-btn-default[disabled].active,
+fieldset[disabled] .plone-btn-default.active {
+  background-color: #ffffff;
+  border-color: #cccccc;
+}
+/* line 38, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/buttons.less */
+.plone-btn-default .badge {
+  color: #ffffff;
+  background-color: #333333;
+}
+/* line 21, http://localhost:8080/Plone/++resource++mockupless//base.less */
+.plone-btn-success {
+  color: #ffffff;
+  background-color: #5cb85c;
+  border-color: #4cae4c;
+}
+/* line 11, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/buttons.less */
+.plone-btn-success:hover,
+.plone-btn-success:focus,
+.plone-btn-success:active,
+.plone-btn-success.active,
+.open > .dropdown-toggle.plone-btn-success {
+  color: #ffffff;
+  background-color: #449d44;
+  border-color: #398439;
+}
+/* line 20, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/buttons.less */
+.plone-btn-success:active,
+.plone-btn-success.active,
+.open > .dropdown-toggle.plone-btn-success {
+  background-image: none;
+}
+/* line 28, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/buttons.less */
+.plone-btn-success.disabled,
+.plone-btn-success[disabled],
+fieldset[disabled] .plone-btn-success,
+.plone-btn-success.disabled:hover,
+.plone-btn-success[disabled]:hover,
+fieldset[disabled] .plone-btn-success:hover,
+.plone-btn-success.disabled:focus,
+.plone-btn-success[disabled]:focus,
+fieldset[disabled] .plone-btn-success:focus,
+.plone-btn-success.disabled:active,
+.plone-btn-success[disabled]:active,
+fieldset[disabled] .plone-btn-success:active,
+.plone-btn-success.disabled.active,
+.plone-btn-success[disabled].active,
+fieldset[disabled] .plone-btn-success.active {
+  background-color: #5cb85c;
+  border-color: #4cae4c;
+}
+/* line 38, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/buttons.less */
+.plone-btn-success .badge {
+  color: #5cb85c;
+  background-color: #ffffff;
+}
+/* line 22, http://localhost:8080/Plone/++resource++mockupless//base.less */
+.plone-btn-info {
+  color: #ffffff;
+  background-color: #5bc0de;
+  border-color: #46b8da;
+}
+/* line 11, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/buttons.less */
+.plone-btn-info:hover,
+.plone-btn-info:focus,
+.plone-btn-info:active,
+.plone-btn-info.active,
+.open > .dropdown-toggle.plone-btn-info {
+  color: #ffffff;
+  background-color: #31b0d5;
+  border-color: #269abc;
+}
+/* line 20, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/buttons.less */
+.plone-btn-info:active,
+.plone-btn-info.active,
+.open > .dropdown-toggle.plone-btn-info {
+  background-image: none;
+}
+/* line 28, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/buttons.less */
+.plone-btn-info.disabled,
+.plone-btn-info[disabled],
+fieldset[disabled] .plone-btn-info,
+.plone-btn-info.disabled:hover,
+.plone-btn-info[disabled]:hover,
+fieldset[disabled] .plone-btn-info:hover,
+.plone-btn-info.disabled:focus,
+.plone-btn-info[disabled]:focus,
+fieldset[disabled] .plone-btn-info:focus,
+.plone-btn-info.disabled:active,
+.plone-btn-info[disabled]:active,
+fieldset[disabled] .plone-btn-info:active,
+.plone-btn-info.disabled.active,
+.plone-btn-info[disabled].active,
+fieldset[disabled] .plone-btn-info.active {
+  background-color: #5bc0de;
+  border-color: #46b8da;
+}
+/* line 38, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/buttons.less */
+.plone-btn-info .badge {
+  color: #5bc0de;
+  background-color: #ffffff;
+}
+/* line 23, http://localhost:8080/Plone/++resource++mockupless//base.less */
+.plone-btn-danger {
+  color: #ffffff;
+  background-color: #d9534f;
+  border-color: #d43f3a;
+}
+/* line 11, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/buttons.less */
+.plone-btn-danger:hover,
+.plone-btn-danger:focus,
+.plone-btn-danger:active,
+.plone-btn-danger.active,
+.open > .dropdown-toggle.plone-btn-danger {
+  color: #ffffff;
+  background-color: #c9302c;
+  border-color: #ac2925;
+}
+/* line 20, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/buttons.less */
+.plone-btn-danger:active,
+.plone-btn-danger.active,
+.open > .dropdown-toggle.plone-btn-danger {
+  background-image: none;
+}
+/* line 28, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/buttons.less */
+.plone-btn-danger.disabled,
+.plone-btn-danger[disabled],
+fieldset[disabled] .plone-btn-danger,
+.plone-btn-danger.disabled:hover,
+.plone-btn-danger[disabled]:hover,
+fieldset[disabled] .plone-btn-danger:hover,
+.plone-btn-danger.disabled:focus,
+.plone-btn-danger[disabled]:focus,
+fieldset[disabled] .plone-btn-danger:focus,
+.plone-btn-danger.disabled:active,
+.plone-btn-danger[disabled]:active,
+fieldset[disabled] .plone-btn-danger:active,
+.plone-btn-danger.disabled.active,
+.plone-btn-danger[disabled].active,
+fieldset[disabled] .plone-btn-danger.active {
+  background-color: #d9534f;
+  border-color: #d43f3a;
+}
+/* line 38, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/buttons.less */
+.plone-btn-danger .badge {
+  color: #d9534f;
+  background-color: #ffffff;
+}
+/* line 24, http://localhost:8080/Plone/++resource++mockupless//base.less */
+.plone-btn-link {
+  color: #428bca;
+  font-weight: normal;
+  cursor: pointer;
+  border-radius: 0;
+}
+/* line 91, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/buttons.less */
+.plone-btn-link,
+.plone-btn-link:active,
+.plone-btn-link[disabled],
+fieldset[disabled] .plone-btn-link {
+  background-color: transparent;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+/* line 98, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/buttons.less */
+.plone-btn-link,
+.plone-btn-link:hover,
+.plone-btn-link:focus,
+.plone-btn-link:active {
+  border-color: transparent;
+}
+/* line 104, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/buttons.less */
+.plone-btn-link:hover,
+.plone-btn-link:focus {
+  color: #2a6496;
+  text-decoration: underline;
+  background-color: transparent;
+}
+/* line 26, http://localhost:8080/Plone/++resource++mockupless//base.less */
+.plone-btn-group {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+}
+/* line 11, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/button-groups.less */
+.plone-btn-group > .btn {
+  position: relative;
+  float: left;
+}
+/* line 15, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/button-groups.less */
+.plone-btn-group > .btn:hover,
+.plone-btn-group > .btn:focus,
+.plone-btn-group > .btn:active,
+.plone-btn-group > .btn.active {
+  z-index: 2;
+}
+/* line 21, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/button-groups.less */
+.plone-btn-group > .btn:focus {
+  outline: 0;
+}
+/* line 30, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/button-groups.less */
+.plone-btn-group .btn + .btn,
+.plone-btn-group .btn + .btn-group,
+.plone-btn-group .btn-group + .btn,
+.plone-btn-group .btn-group + .btn-group {
+  margin-left: -1px;
+}
+/* line 27, http://localhost:8080/Plone/++resource++mockupless//base.less */
+.plone-btn-block {
+  display: block;
+  width: 100%;
+}
+/* line 29, http://localhost:8080/Plone/++resource++mockupless//base.less */
+.plone-close {
+  float: right;
+  font-size: 21px;
+  font-weight: bold;
+  line-height: 1;
+  color: #000000;
+  text-shadow: 0 1px 0 #ffffff;
+  opacity: 0.2;
+  filter: alpha(opacity=20);
+}
+/* line 15, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/close.less */
+.plone-close:hover,
+.plone-close:focus {
+  color: #000000;
+  text-decoration: none;
+  cursor: pointer;
+  opacity: 0.5;
+  filter: alpha(opacity=50);
+}
+/* line 26, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/close.less */
+button.plone-close {
+  padding: 0;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  -webkit-appearance: none;
+}
+/* modals */
+/* line 33, http://localhost:8080/Plone/++resource++mockupless//base.less */
+.plone-modal {
+  display: none;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1050;
+  -webkit-overflow-scrolling: touch;
+  outline: 0;
+}
+/* line 32, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/modals.less */
+.plone-modal.fade .modal-dialog {
+  -webkit-transform: translate3d(0, -25%, 0);
+  transform: translate3d(0, -25%, 0);
+  -webkit-transition: -webkit-transform 0.3s ease-out;
+  -moz-transition: -moz-transform 0.3s ease-out;
+  -o-transition: -o-transform 0.3s ease-out;
+  transition: transform 0.3s ease-out;
+}
+/* line 36, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/modals.less */
+.plone-modal.in .modal-dialog {
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}
+/* line 34, http://localhost:8080/Plone/++resource++mockupless//base.less */
+.plone-modal-header {
+  padding: 15px;
+  border-bottom: 1px solid #e5e5e5;
+  min-height: 16.42857143px;
+}
+/* line 35, http://localhost:8080/Plone/++resource++mockupless//base.less */
+.plone-modal-title {
+  margin: 0;
+  line-height: 1.42857143;
+}
+/* line 36, http://localhost:8080/Plone/++resource++mockupless//base.less */
+.plone-modal-body {
+  position: relative;
+  padding: 15px;
+}
+/* line 37, http://localhost:8080/Plone/++resource++mockupless//base.less */
+.plone-modal-footer {
+  padding: 15px;
+  text-align: right;
+  border-top: 1px solid #e5e5e5;
+}
+/* line 110, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/modals.less */
+.plone-modal-footer .btn + .btn {
+  margin-left: 5px;
+  margin-bottom: 0;
+}
+/* line 115, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/modals.less */
+.plone-modal-footer .btn-group .btn + .btn {
+  margin-left: -1px;
+}
+/* line 119, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/modals.less */
+.plone-modal-footer .btn-block + .btn-block {
+  margin-left: 0;
+}
+/* line 38, http://localhost:8080/Plone/++resource++mockupless//base.less */
+.plone-modal-backdrop {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1040;
+  background-color: #000000;
+}
+/* line 73, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/modals.less */
+.plone-modal-backdrop.fade {
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
+/* line 74, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/modals.less */
+.plone-modal-backdrop.in {
+  opacity: 0.5;
+  filter: alpha(opacity=50);
+}
+/* progress */
+/* line 42, http://localhost:8080/Plone/++resource++mockupless//base.less */
+.plone-progress {
+  overflow: hidden;
+  height: 20px;
+  margin-bottom: 20px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+/* line 43, http://localhost:8080/Plone/++resource++mockupless//base.less */
+.plone-progress-bar-striped {
+  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+  background-image: -o-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+  background-size: 40px 40px;
+}
+/* line 44, http://localhost:8080/Plone/++resource++mockupless//base.less */
+.plone-progress-bar {
+  float: left;
+  width: 0%;
+  height: 100%;
+  font-size: 12px;
+  line-height: 20px;
+  color: #ffffff;
+  text-align: center;
+  background-color: #428bca;
+  -webkit-box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+  -webkit-transition: width 0.6s ease;
+  -o-transition: width 0.6s ease;
+  transition: width 0.6s ease;
+}
+/* line 72, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/progress-bars.less */
+.plone-progress-bar[aria-valuenow="1"],
+.plone-progress-bar[aria-valuenow="2"] {
+  min-width: 30px;
+}
+/* line 77, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/progress-bars.less */
+.plone-progress-bar[aria-valuenow="0"] {
+  color: #777777;
+  min-width: 30px;
+  background-color: transparent;
+  background-image: none;
+  box-shadow: none;
+}
+/* loading icon animation */
+/* line 5, http://localhost:8080/Plone/++resource++mockupless//ui.less */
+.mockup-loader-icon {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  font-size: 30px;
+}
+/* line 10, http://localhost:8080/Plone/++resource++mockupless//ui.less */
+.mockup-loader-icon .glyphicon-refresh {
+  -webkit-animation-name: rotateThis;
+  animation-name: rotateThis;
+  -webkit-animation-duration: 2s;
+  animation-duration: 2s;
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+  -webkit-animation-timing-function: linear;
+  animation-timing-function: linear;
+}
+@-webkit-keyframes rotateThis {
+  /* line 19, http://localhost:8080/Plone/++resource++mockupless//ui.less */
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  /* line 20, http://localhost:8080/Plone/++resource++mockupless//ui.less */
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+@keyframes rotateThis {
+  /* line 24, http://localhost:8080/Plone/++resource++mockupless//ui.less */
+  from {
+    transform: rotate(0deg);
+  }
+  /* line 25, http://localhost:8080/Plone/++resource++mockupless//ui.less */
+  to {
+    transform: rotate(360deg);
+  }
+}
+/*
+Version: 3.5.1 Timestamp: Tue Jul 22 18:58:56 EDT 2014
+*/
+/* line 4, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-container {
+  margin: 0;
+  position: relative;
+  display: inline-block;
+  /* inline-block for ie7 */
+  zoom: 1;
+  *display: inline;
+  vertical-align: middle;
+}
+/* line 14, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-container,
+.select2-drop,
+.select2-search,
+.select2-search input {
+  /*
+    Force border-box so that % widths fit the parent
+    container without overlap because of margin/padding.
+    More Info : http://www.quirksmode.org/css/box.html
+  */
+  -webkit-box-sizing: border-box;
+  /* webkit */
+  -moz-box-sizing: border-box;
+  /* firefox */
+  box-sizing: border-box;
+  /* css3 */
+}
+/* line 28, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-container .select2-choice {
+  display: block;
+  height: 26px;
+  padding: 0 0 0 8px;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid #aaa;
+  white-space: nowrap;
+  line-height: 26px;
+  color: #444;
+  text-decoration: none;
+  border-radius: 4px;
+  background-clip: padding-box;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-color: #fff;
+  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #eeeeee), color-stop(0.5, #ffffff));
+  background-image: -webkit-linear-gradient(center bottom, #eeeeee 0%, #ffffff 50%);
+  background-image: -moz-linear-gradient(center bottom, #eeeeee 0%, #ffffff 50%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#eeeeee', GradientType=0);
+  background-image: linear-gradient(to top, #eeeeee 0%, #ffffff 50%);
+}
+/* line 59, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+html[dir="rtl"] .select2-container .select2-choice {
+  padding: 0 8px 0 0;
+}
+/* line 63, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-container.select2-drop-above .select2-choice {
+  border-bottom-color: #aaa;
+  border-radius: 0 0 4px 4px;
+  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #eeeeee), color-stop(0.9, #ffffff));
+  background-image: -webkit-linear-gradient(center bottom, #eeeeee 0%, #ffffff 90%);
+  background-image: -moz-linear-gradient(center bottom, #eeeeee 0%, #ffffff 90%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#eeeeee', GradientType=0);
+  background-image: linear-gradient(to bottom, #eeeeee 0%, #ffffff 90%);
+}
+/* line 75, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-container.select2-allowclear .select2-choice .select2-chosen {
+  margin-right: 42px;
+}
+/* line 79, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-container .select2-choice > .select2-chosen {
+  margin-right: 26px;
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  float: none;
+  width: auto;
+}
+/* line 91, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+html[dir="rtl"] .select2-container .select2-choice > .select2-chosen {
+  margin-left: 26px;
+  margin-right: 0;
+}
+/* line 96, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-container .select2-choice abbr {
+  display: none;
+  width: 12px;
+  height: 12px;
+  position: absolute;
+  right: 24px;
+  top: 8px;
+  font-size: 1px;
+  text-decoration: none;
+  border: 0;
+  background: url('http://localhost:8080/Plone/++plone++static/components//select2/select2.png') right top no-repeat;
+  cursor: pointer;
+  outline: 0;
+}
+/* line 113, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-container.select2-allowclear .select2-choice abbr {
+  display: inline-block;
+}
+/* line 117, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-container .select2-choice abbr:hover {
+  background-position: right -11px;
+  cursor: pointer;
+}
+/* line 122, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-drop-mask {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  position: fixed;
+  left: 0;
+  top: 0;
+  min-height: 100%;
+  min-width: 100%;
+  height: auto;
+  width: auto;
+  opacity: 0;
+  z-index: 9998;
+  /* styles required for IE to work */
+  background-color: #fff;
+  filter: alpha(opacity=0);
+}
+/* line 140, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-drop {
+  width: 100%;
+  margin-top: -1px;
+  position: absolute;
+  z-index: 9999;
+  top: 100%;
+  background: #fff;
+  color: #000;
+  border: 1px solid #aaa;
+  border-top: 0;
+  border-radius: 0 0 4px 4px;
+  -webkit-box-shadow: 0 4px 5px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.15);
+}
+/* line 158, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-drop.select2-drop-above {
+  margin-top: 1px;
+  border-top: 1px solid #aaa;
+  border-bottom: 0;
+  border-radius: 4px 4px 0 0;
+  -webkit-box-shadow: 0 -4px 5px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 -4px 5px rgba(0, 0, 0, 0.15);
+}
+/* line 169, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-drop-active {
+  border: 1px solid #5897fb;
+  border-top: none;
+}
+/* line 174, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-drop.select2-drop-above.select2-drop-active {
+  border-top: 1px solid #5897fb;
+}
+/* line 178, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-drop-auto-width {
+  border-top: 1px solid #aaa;
+  width: auto;
+}
+/* line 183, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-drop-auto-width .select2-search {
+  padding-top: 4px;
+}
+/* line 187, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-container .select2-choice .select2-arrow {
+  display: inline-block;
+  width: 18px;
+  height: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
+  border-left: 1px solid #aaa;
+  border-radius: 0 4px 4px 0;
+  background-clip: padding-box;
+  background: #ccc;
+  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #cccccc), color-stop(0.6, #eeeeee));
+  background-image: -webkit-linear-gradient(center bottom, #cccccc 0%, #eeeeee 60%);
+  background-image: -moz-linear-gradient(center bottom, #cccccc 0%, #eeeeee 60%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eeeeee', endColorstr='#cccccc', GradientType=0);
+  background-image: linear-gradient(to top, #cccccc 0%, #eeeeee 60%);
+}
+/* line 208, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+html[dir="rtl"] .select2-container .select2-choice .select2-arrow {
+  left: 0;
+  right: auto;
+  border-left: none;
+  border-right: 1px solid #aaa;
+  border-radius: 4px 0 0 4px;
+}
+/* line 217, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-container .select2-choice .select2-arrow b {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: url('http://localhost:8080/Plone/++plone++static/components//select2/select2.png') no-repeat 0 1px;
+}
+/* line 224, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+html[dir="rtl"] .select2-container .select2-choice .select2-arrow b {
+  background-position: 2px 1px;
+}
+/* line 228, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-search {
+  display: inline-block;
+  width: 100%;
+  min-height: 26px;
+  margin: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+  position: relative;
+  z-index: 10000;
+  white-space: nowrap;
+}
+/* line 242, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-search input {
+  width: 100%;
+  height: auto !important;
+  min-height: 26px;
+  padding: 4px 20px 4px 5px;
+  margin: 0;
+  outline: 0;
+  font-family: sans-serif;
+  font-size: 1em;
+  border: 1px solid #aaa;
+  border-radius: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  background: #ffffff url('http://localhost:8080/Plone/++plone++static/components//select2/select2.png') no-repeat 100% -22px;
+  background: url('http://localhost:8080/Plone/++plone++static/components//select2/select2.png') no-repeat 100% -22px, -webkit-gradient(linear, left bottom, left top, color-stop(0.85, #ffffff), color-stop(0.99, #eeeeee));
+  background: url('http://localhost:8080/Plone/++plone++static/components//select2/select2.png') no-repeat 100% -22px, -webkit-linear-gradient(center bottom, #ffffff 85%, #eeeeee 99%);
+  background: url('http://localhost:8080/Plone/++plone++static/components//select2/select2.png') no-repeat 100% -22px, -moz-linear-gradient(center bottom, #ffffff 85%, #eeeeee 99%);
+  background: url('http://localhost:8080/Plone/++plone++static/components//select2/select2.png') no-repeat 100% -22px, linear-gradient(to bottom, #ffffff 85%, #eeeeee 99%) 0 0;
+}
+/* line 266, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+html[dir="rtl"] .select2-search input {
+  padding: 4px 5px 4px 20px;
+  background: #ffffff url('http://localhost:8080/Plone/++plone++static/components//select2/select2.png') no-repeat -37px -22px;
+  background: url('http://localhost:8080/Plone/++plone++static/components//select2/select2.png') no-repeat -37px -22px, -webkit-gradient(linear, left bottom, left top, color-stop(0.85, #ffffff), color-stop(0.99, #eeeeee));
+  background: url('http://localhost:8080/Plone/++plone++static/components//select2/select2.png') no-repeat -37px -22px, -webkit-linear-gradient(center bottom, #ffffff 85%, #eeeeee 99%);
+  background: url('http://localhost:8080/Plone/++plone++static/components//select2/select2.png') no-repeat -37px -22px, -moz-linear-gradient(center bottom, #ffffff 85%, #eeeeee 99%);
+  background: url('http://localhost:8080/Plone/++plone++static/components//select2/select2.png') no-repeat -37px -22px, linear-gradient(to bottom, #ffffff 85%, #eeeeee 99%) 0 0;
+}
+/* line 276, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-drop.select2-drop-above .select2-search input {
+  margin-top: 4px;
+}
+/* line 280, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-search input.select2-active {
+  background: #ffffff url('http://localhost:8080/Plone/++plone++static/components//select2/select2-spinner.gif') no-repeat 100%;
+  background: url('http://localhost:8080/Plone/++plone++static/components//select2/select2-spinner.gif') no-repeat 100%, -webkit-gradient(linear, left bottom, left top, color-stop(0.85, #ffffff), color-stop(0.99, #eeeeee));
+  background: url('http://localhost:8080/Plone/++plone++static/components//select2/select2-spinner.gif') no-repeat 100%, -webkit-linear-gradient(center bottom, #ffffff 85%, #eeeeee 99%);
+  background: url('http://localhost:8080/Plone/++plone++static/components//select2/select2-spinner.gif') no-repeat 100%, -moz-linear-gradient(center bottom, #ffffff 85%, #eeeeee 99%);
+  background: url('http://localhost:8080/Plone/++plone++static/components//select2/select2-spinner.gif') no-repeat 100%, linear-gradient(to bottom, #ffffff 85%, #eeeeee 99%) 0 0;
+}
+/* line 288, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-container-active .select2-choice,
+.select2-container-active .select2-choices {
+  border: 1px solid #5897fb;
+  outline: none;
+  -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+/* line 297, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-dropdown-open .select2-choice {
+  border-bottom-color: transparent;
+  -webkit-box-shadow: 0 1px 0 #fff inset;
+  box-shadow: 0 1px 0 #fff inset;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  background-color: #eee;
+  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #ffffff), color-stop(0.5, #eeeeee));
+  background-image: -webkit-linear-gradient(center bottom, #ffffff 0%, #eeeeee 50%);
+  background-image: -moz-linear-gradient(center bottom, #ffffff 0%, #eeeeee 50%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eeeeee', endColorstr='#ffffff', GradientType=0);
+  background-image: linear-gradient(to top, #ffffff 0%, #eeeeee 50%);
+}
+/* line 313, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-dropdown-open.select2-drop-above .select2-choice,
+.select2-dropdown-open.select2-drop-above .select2-choices {
+  border: 1px solid #5897fb;
+  border-top-color: transparent;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ffffff), color-stop(0.5, #eeeeee));
+  background-image: -webkit-linear-gradient(center top, #ffffff 0%, #eeeeee 50%);
+  background-image: -moz-linear-gradient(center top, #ffffff 0%, #eeeeee 50%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eeeeee', endColorstr='#ffffff', GradientType=0);
+  background-image: linear-gradient(to bottom, #ffffff 0%, #eeeeee 50%);
+}
+/* line 325, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-dropdown-open .select2-choice .select2-arrow {
+  background: transparent;
+  border-left: none;
+  filter: none;
+}
+/* line 330, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+html[dir="rtl"] .select2-dropdown-open .select2-choice .select2-arrow {
+  border-right: none;
+}
+/* line 334, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-dropdown-open .select2-choice .select2-arrow b {
+  background-position: -18px 1px;
+}
+/* line 338, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+html[dir="rtl"] .select2-dropdown-open .select2-choice .select2-arrow b {
+  background-position: -16px 1px;
+}
+/* line 342, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-hidden-accessible {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+/* results */
+/* line 354, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-results {
+  max-height: 200px;
+  padding: 0 0 0 4px;
+  margin: 4px 4px 4px 0;
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+/* line 364, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+html[dir="rtl"] .select2-results {
+  padding: 0 4px 0 0;
+  margin: 4px 0 4px 4px;
+}
+/* line 369, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-results ul.select2-result-sub {
+  margin: 0;
+  padding-left: 0;
+}
+/* line 374, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-results li {
+  list-style: none;
+  display: list-item;
+  background-image: none;
+}
+/* line 380, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-results li.select2-result-with-children > .select2-result-label {
+  font-weight: bold;
+}
+/* line 384, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-results .select2-result-label {
+  padding: 3px 7px 4px;
+  margin: 0;
+  cursor: pointer;
+  min-height: 1em;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+/* line 398, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-results-dept-1 .select2-result-label {
+  padding-left: 20px;
+}
+/* line 399, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-results-dept-2 .select2-result-label {
+  padding-left: 40px;
+}
+/* line 400, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-results-dept-3 .select2-result-label {
+  padding-left: 60px;
+}
+/* line 401, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-results-dept-4 .select2-result-label {
+  padding-left: 80px;
+}
+/* line 402, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-results-dept-5 .select2-result-label {
+  padding-left: 100px;
+}
+/* line 403, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-results-dept-6 .select2-result-label {
+  padding-left: 110px;
+}
+/* line 404, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-results-dept-7 .select2-result-label {
+  padding-left: 120px;
+}
+/* line 406, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-results .select2-highlighted {
+  background: #3875d7;
+  color: #fff;
+}
+/* line 411, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-results li em {
+  background: #feffde;
+  font-style: normal;
+}
+/* line 416, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-results .select2-highlighted em {
+  background: transparent;
+}
+/* line 420, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-results .select2-highlighted ul {
+  background: #fff;
+  color: #000;
+}
+/* line 425, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-results .select2-no-results,
+.select2-results .select2-searching,
+.select2-results .select2-ajax-error,
+.select2-results .select2-selection-limit {
+  background: #f4f4f4;
+  display: list-item;
+  padding-left: 5px;
+}
+/*
+disabled look for disabled choices in the results dropdown
+*/
+/* line 437, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-results .select2-disabled.select2-highlighted {
+  color: #666;
+  background: #f4f4f4;
+  display: list-item;
+  cursor: default;
+}
+/* line 443, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-results .select2-disabled {
+  background: #f4f4f4;
+  display: list-item;
+  cursor: default;
+}
+/* line 449, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-results .select2-selected {
+  display: none;
+}
+/* line 453, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-more-results.select2-active {
+  background: #f4f4f4 url('http://localhost:8080/Plone/++plone++static/components//select2/select2-spinner.gif') no-repeat 100%;
+}
+/* line 457, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-results .select2-ajax-error {
+  background: rgba(255, 50, 50, 0.2);
+}
+/* line 461, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-more-results {
+  background: #f4f4f4;
+  display: list-item;
+}
+/* disabled styles */
+/* line 468, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-container.select2-container-disabled .select2-choice {
+  background-color: #f4f4f4;
+  background-image: none;
+  border: 1px solid #ddd;
+  cursor: default;
+}
+/* line 475, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-container.select2-container-disabled .select2-choice .select2-arrow {
+  background-color: #f4f4f4;
+  background-image: none;
+  border-left: 0;
+}
+/* line 481, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-container.select2-container-disabled .select2-choice abbr {
+  display: none;
+}
+/* multiselect */
+/* line 488, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-container-multi .select2-choices {
+  height: auto !important;
+  height: 1%;
+  margin: 0;
+  padding: 0 5px 0 0;
+  position: relative;
+  border: 1px solid #aaa;
+  cursor: text;
+  overflow: hidden;
+  background-color: #fff;
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(1%, #eeeeee), color-stop(15%, #ffffff));
+  background-image: -webkit-linear-gradient(top, #eeeeee 1%, #ffffff 15%);
+  background-image: -moz-linear-gradient(top, #eeeeee 1%, #ffffff 15%);
+  background-image: linear-gradient(to bottom, #eeeeee 1%, #ffffff 15%);
+}
+/* line 506, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+html[dir="rtl"] .select2-container-multi .select2-choices {
+  padding: 0 0 0 5px;
+}
+/* line 510, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-locked {
+  padding: 3px 5px 3px 5px !important;
+}
+/* line 514, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-container-multi .select2-choices {
+  min-height: 26px;
+}
+/* line 518, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-container-multi.select2-container-active .select2-choices {
+  border: 1px solid #5897fb;
+  outline: none;
+  -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+/* line 525, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-container-multi .select2-choices li {
+  float: left;
+  list-style: none;
+}
+/* line 529, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+html[dir="rtl"] .select2-container-multi .select2-choices li {
+  float: right;
+}
+/* line 533, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-container-multi .select2-choices .select2-search-field {
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+}
+/* line 539, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-container-multi .select2-choices .select2-search-field input {
+  padding: 5px;
+  margin: 1px 0;
+  font-family: sans-serif;
+  font-size: 100%;
+  color: #666;
+  outline: 0;
+  border: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  background: transparent !important;
+}
+/* line 553, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-container-multi .select2-choices .select2-search-field input.select2-active {
+  background: #ffffff url('http://localhost:8080/Plone/++plone++static/components//select2/select2-spinner.gif') no-repeat 100% !important;
+}
+/* line 557, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-default {
+  color: #999 !important;
+}
+/* line 561, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-container-multi .select2-choices .select2-search-choice {
+  padding: 3px 5px 3px 18px;
+  margin: 3px 0 3px 5px;
+  position: relative;
+  line-height: 13px;
+  color: #333;
+  cursor: default;
+  border: 1px solid #aaaaaa;
+  border-radius: 3px;
+  -webkit-box-shadow: 0 0 2px #ffffff inset, 0 1px 0 rgba(0, 0, 0, 0.05);
+  box-shadow: 0 0 2px #ffffff inset, 0 1px 0 rgba(0, 0, 0, 0.05);
+  background-clip: padding-box;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-color: #e4e4e4;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eeeeee', endColorstr='#f4f4f4', GradientType=0);
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(20%, #f4f4f4), color-stop(50%, #f0f0f0), color-stop(52%, #e8e8e8), color-stop(100%, #eeeeee));
+  background-image: -webkit-linear-gradient(top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%);
+  background-image: -moz-linear-gradient(top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%);
+  background-image: linear-gradient(to top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%);
+}
+/* line 591, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+html[dir="rtl"] .select2-container-multi .select2-choices .select2-search-choice {
+  margin: 3px 5px 3px 0;
+  padding: 3px 18px 3px 5px;
+}
+/* line 596, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-container-multi .select2-choices .select2-search-choice .select2-chosen {
+  cursor: default;
+}
+/* line 599, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-container-multi .select2-choices .select2-search-choice-focus {
+  background: #d4d4d4;
+}
+/* line 603, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-search-choice-close {
+  display: block;
+  width: 12px;
+  height: 13px;
+  position: absolute;
+  right: 3px;
+  top: 4px;
+  font-size: 1px;
+  outline: none;
+  background: url('http://localhost:8080/Plone/++plone++static/components//select2/select2.png') right top no-repeat;
+}
+/* line 615, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+html[dir="rtl"] .select2-search-choice-close {
+  right: auto;
+  left: 3px;
+}
+/* line 620, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-container-multi .select2-search-choice-close {
+  left: 3px;
+}
+/* line 624, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+html[dir="rtl"] .select2-container-multi .select2-search-choice-close {
+  left: auto;
+  right: 2px;
+}
+/* line 629, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-container-multi .select2-choices .select2-search-choice .select2-search-choice-close:hover {
+  background-position: right -11px;
+}
+/* line 632, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-container-multi .select2-choices .select2-search-choice-focus .select2-search-choice-close {
+  background-position: right -11px;
+}
+/* disabled styles */
+/* line 637, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-container-multi.select2-container-disabled .select2-choices {
+  background-color: #f4f4f4;
+  background-image: none;
+  border: 1px solid #ddd;
+  cursor: default;
+}
+/* line 644, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-container-multi.select2-container-disabled .select2-choices .select2-search-choice {
+  padding: 3px 5px 3px 5px;
+  border: 1px solid #ddd;
+  background-image: none;
+  background-color: #f4f4f4;
+}
+/* line 651, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-container-multi.select2-container-disabled .select2-choices .select2-search-choice .select2-search-choice-close {
+  display: none;
+  background: none;
+}
+/* end multiselect */
+/* line 657, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-result-selectable .select2-match,
+.select2-result-unselectable .select2-match {
+  text-decoration: underline;
+}
+/* line 662, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-offscreen,
+.select2-offscreen:focus {
+  clip: rect(0 0 0 0) !important;
+  width: 1px !important;
+  height: 1px !important;
+  border: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  position: absolute !important;
+  outline: 0 !important;
+  left: 0px !important;
+  top: 0px !important;
+}
+/* line 676, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-display-none {
+  display: none;
+}
+/* line 680, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+.select2-measure-scrollbar {
+  position: absolute;
+  top: -10000px;
+  left: -10000px;
+  width: 100px;
+  height: 100px;
+  overflow: scroll;
+}
+/* Retina-ize icons */
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-resolution: 2dppx) {
+  /* line 692, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+  .select2-search input,
+  .select2-search-choice-close,
+  .select2-container .select2-choice abbr,
+  .select2-container .select2-choice .select2-arrow b {
+    background-image: url('http://localhost:8080/Plone/++plone++static/components//select2/select2x2.png') !important;
+    background-repeat: no-repeat !important;
+    background-size: 60px 40px !important;
+  }
+  /* line 701, http://localhost:8080/Plone/++plone++static/components//select2/select2.css */
+  .select2-search input {
+    background-position: 100% -21px !important;
+  }
+}
+/* line 10, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/list-group.less */
+.pat-resourceregistry .list-group {
+  margin-bottom: 20px;
+  padding-left: 0;
+}
+/* line 21, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/list-group.less */
+.pat-resourceregistry .list-group-item {
+  position: relative;
+  display: block;
+  padding: 10px 15px;
+  margin-bottom: -1px;
+  background-color: #ffffff;
+  border: 1px solid #dddddd;
+}
+/* line 31, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/list-group.less */
+.pat-resourceregistry .list-group-item:first-child {
+  border-top-right-radius: 4px;
+  border-top-left-radius: 4px;
+}
+/* line 34, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/list-group.less */
+.pat-resourceregistry .list-group-item:last-child {
+  margin-bottom: 0;
+  border-bottom-right-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+/* line 40, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/list-group.less */
+.pat-resourceregistry .list-group-item > .badge {
+  float: right;
+}
+/* line 43, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/list-group.less */
+.pat-resourceregistry .list-group-item > .badge + .badge {
+  margin-right: 5px;
+}
+/* line 54, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/list-group.less */
+.pat-resourceregistry a.list-group-item {
+  color: #555555;
+}
+/* line 57, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/list-group.less */
+.pat-resourceregistry a.list-group-item .list-group-item-heading {
+  color: #333333;
+}
+/* line 62, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/list-group.less */
+.pat-resourceregistry a.list-group-item:hover,
+.pat-resourceregistry a.list-group-item:focus {
+  text-decoration: none;
+  color: #555555;
+  background-color: #f5f5f5;
+}
+/* line 72, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/list-group.less */
+.pat-resourceregistry .list-group-item.disabled,
+.pat-resourceregistry .list-group-item.disabled:hover,
+.pat-resourceregistry .list-group-item.disabled:focus {
+  background-color: #eeeeee;
+  color: #777777;
+}
+/* line 79, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/list-group.less */
+.pat-resourceregistry .list-group-item.disabled .list-group-item-heading,
+.pat-resourceregistry .list-group-item.disabled:hover .list-group-item-heading,
+.pat-resourceregistry .list-group-item.disabled:focus .list-group-item-heading {
+  color: inherit;
+}
+/* line 82, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/list-group.less */
+.pat-resourceregistry .list-group-item.disabled .list-group-item-text,
+.pat-resourceregistry .list-group-item.disabled:hover .list-group-item-text,
+.pat-resourceregistry .list-group-item.disabled:focus .list-group-item-text {
+  color: #777777;
+}
+/* line 88, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/list-group.less */
+.pat-resourceregistry .list-group-item.active,
+.pat-resourceregistry .list-group-item.active:hover,
+.pat-resourceregistry .list-group-item.active:focus {
+  z-index: 2;
+  color: #ffffff;
+  background-color: #428bca;
+  border-color: #428bca;
+}
+/* line 97, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/list-group.less */
+.pat-resourceregistry .list-group-item.active .list-group-item-heading,
+.pat-resourceregistry .list-group-item.active:hover .list-group-item-heading,
+.pat-resourceregistry .list-group-item.active:focus .list-group-item-heading,
+.pat-resourceregistry .list-group-item.active .list-group-item-heading > small,
+.pat-resourceregistry .list-group-item.active:hover .list-group-item-heading > small,
+.pat-resourceregistry .list-group-item.active:focus .list-group-item-heading > small,
+.pat-resourceregistry .list-group-item.active .list-group-item-heading > .small,
+.pat-resourceregistry .list-group-item.active:hover .list-group-item-heading > .small,
+.pat-resourceregistry .list-group-item.active:focus .list-group-item-heading > .small {
+  color: inherit;
+}
+/* line 102, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/list-group.less */
+.pat-resourceregistry .list-group-item.active .list-group-item-text,
+.pat-resourceregistry .list-group-item.active:hover .list-group-item-text,
+.pat-resourceregistry .list-group-item.active:focus .list-group-item-text {
+  color: #e1edf7;
+}
+/* line 4, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/list-group.less */
+.pat-resourceregistry .list-group-item-success {
+  color: #3c763d;
+  background-color: #dff0d8;
+}
+/* line 8, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/list-group.less */
+a.pat-resourceregistry .list-group-item-success {
+  color: #3c763d;
+}
+/* line 11, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/list-group.less */
+a.pat-resourceregistry .list-group-item-success .list-group-item-heading {
+  color: inherit;
+}
+/* line 15, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/list-group.less */
+a.pat-resourceregistry .list-group-item-success:hover,
+a.pat-resourceregistry .list-group-item-success:focus {
+  color: #3c763d;
+  background-color: #d0e9c6;
+}
+/* line 20, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/list-group.less */
+a.pat-resourceregistry .list-group-item-success.active,
+a.pat-resourceregistry .list-group-item-success.active:hover,
+a.pat-resourceregistry .list-group-item-success.active:focus {
+  color: #fff;
+  background-color: #3c763d;
+  border-color: #3c763d;
+}
+/* line 4, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/list-group.less */
+.pat-resourceregistry .list-group-item-info {
+  color: #31708f;
+  background-color: #d9edf7;
+}
+/* line 8, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/list-group.less */
+a.pat-resourceregistry .list-group-item-info {
+  color: #31708f;
+}
+/* line 11, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/list-group.less */
+a.pat-resourceregistry .list-group-item-info .list-group-item-heading {
+  color: inherit;
+}
+/* line 15, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/list-group.less */
+a.pat-resourceregistry .list-group-item-info:hover,
+a.pat-resourceregistry .list-group-item-info:focus {
+  color: #31708f;
+  background-color: #c4e3f3;
+}
+/* line 20, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/list-group.less */
+a.pat-resourceregistry .list-group-item-info.active,
+a.pat-resourceregistry .list-group-item-info.active:hover,
+a.pat-resourceregistry .list-group-item-info.active:focus {
+  color: #fff;
+  background-color: #31708f;
+  border-color: #31708f;
+}
+/* line 4, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/list-group.less */
+.pat-resourceregistry .list-group-item-warning {
+  color: #8a6d3b;
+  background-color: #fcf8e3;
+}
+/* line 8, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/list-group.less */
+a.pat-resourceregistry .list-group-item-warning {
+  color: #8a6d3b;
+}
+/* line 11, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/list-group.less */
+a.pat-resourceregistry .list-group-item-warning .list-group-item-heading {
+  color: inherit;
+}
+/* line 15, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/list-group.less */
+a.pat-resourceregistry .list-group-item-warning:hover,
+a.pat-resourceregistry .list-group-item-warning:focus {
+  color: #8a6d3b;
+  background-color: #faf2cc;
+}
+/* line 20, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/list-group.less */
+a.pat-resourceregistry .list-group-item-warning.active,
+a.pat-resourceregistry .list-group-item-warning.active:hover,
+a.pat-resourceregistry .list-group-item-warning.active:focus {
+  color: #fff;
+  background-color: #8a6d3b;
+  border-color: #8a6d3b;
+}
+/* line 4, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/list-group.less */
+.pat-resourceregistry .list-group-item-danger {
+  color: #a94442;
+  background-color: #f2dede;
+}
+/* line 8, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/list-group.less */
+a.pat-resourceregistry .list-group-item-danger {
+  color: #a94442;
+}
+/* line 11, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/list-group.less */
+a.pat-resourceregistry .list-group-item-danger .list-group-item-heading {
+  color: inherit;
+}
+/* line 15, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/list-group.less */
+a.pat-resourceregistry .list-group-item-danger:hover,
+a.pat-resourceregistry .list-group-item-danger:focus {
+  color: #a94442;
+  background-color: #ebcccc;
+}
+/* line 20, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/list-group.less */
+a.pat-resourceregistry .list-group-item-danger.active,
+a.pat-resourceregistry .list-group-item-danger.active:hover,
+a.pat-resourceregistry .list-group-item-danger.active:focus {
+  color: #fff;
+  background-color: #a94442;
+  border-color: #a94442;
+}
+/* line 124, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/list-group.less */
+.pat-resourceregistry .list-group-item-heading {
+  margin-top: 0;
+  margin-bottom: 5px;
+}
+/* line 128, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/list-group.less */
+.pat-resourceregistry .list-group-item-text {
+  margin-bottom: 0;
+  line-height: 1.3;
+}
+/* line 10, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+.pat-resourceregistry fieldset {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  min-width: 0;
+}
+/* line 20, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+.pat-resourceregistry legend {
+  display: block;
+  width: 100%;
+  padding: 0;
+  margin-bottom: 20px;
+  font-size: 21px;
+  line-height: inherit;
+  color: #333333;
+  border: 0;
+  border-bottom: 1px solid #e5e5e5;
+}
+/* line 32, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+.pat-resourceregistry label {
+  display: inline-block;
+  max-width: 100%;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+/* line 47, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+.pat-resourceregistry input[type="search"] {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+/* line 52, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+.pat-resourceregistry input[type="radio"],
+.pat-resourceregistry input[type="checkbox"] {
+  margin: 4px 0 0;
+  margin-top: 1px \9;
+  line-height: normal;
+}
+/* line 60, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+.pat-resourceregistry input[type="file"] {
+  display: block;
+}
+/* line 65, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+.pat-resourceregistry input[type="range"] {
+  display: block;
+  width: 100%;
+}
+/* line 71, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+.pat-resourceregistry select[multiple],
+.pat-resourceregistry select[size] {
+  height: auto;
+}
+/* line 77, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+.pat-resourceregistry input[type="file"]:focus,
+.pat-resourceregistry input[type="radio"]:focus,
+.pat-resourceregistry input[type="checkbox"]:focus {
+  outline: thin dotted;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+/* line 84, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+.pat-resourceregistry output {
+  display: block;
+  padding-top: 7px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555555;
+}
+/* line 115, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+.pat-resourceregistry .form-control {
+  display: block;
+  width: 100%;
+  height: 34px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555555;
+  background-color: #ffffff;
+  background-image: none;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+/* line 53, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/forms.less */
+.pat-resourceregistry .form-control:focus {
+  border-color: #66afe9;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
+}
+/* line 102, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/vendor-prefixes.less */
+.pat-resourceregistry .form-control::-moz-placeholder {
+  color: #777777;
+  opacity: 1;
+}
+/* line 104, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/vendor-prefixes.less */
+.pat-resourceregistry .form-control:-ms-input-placeholder {
+  color: #777777;
+}
+/* line 105, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/vendor-prefixes.less */
+.pat-resourceregistry .form-control::-webkit-input-placeholder {
+  color: #777777;
+}
+/* line 141, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+.pat-resourceregistry .form-control[disabled],
+.pat-resourceregistry .form-control[readonly],
+fieldset[disabled] .pat-resourceregistry .form-control {
+  cursor: not-allowed;
+  background-color: #eeeeee;
+  opacity: 1;
+}
+/* line 150, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+textarea.pat-resourceregistry .form-control {
+  height: auto;
+}
+/* line 163, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+.pat-resourceregistry input[type="search"] {
+  -webkit-appearance: none;
+}
+/* line 176, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+.pat-resourceregistry input[type="date"],
+.pat-resourceregistry input[type="time"],
+.pat-resourceregistry input[type="datetime-local"],
+.pat-resourceregistry input[type="month"] {
+  line-height: 34px;
+  line-height: 1.42857143 \0;
+}
+/* line 184, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+.pat-resourceregistry input[type="date"].input-sm,
+.pat-resourceregistry input[type="time"].input-sm,
+.pat-resourceregistry input[type="datetime-local"].input-sm,
+.pat-resourceregistry input[type="month"].input-sm {
+  line-height: 30px;
+}
+/* line 187, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+.pat-resourceregistry input[type="date"].input-lg,
+.pat-resourceregistry input[type="time"].input-lg,
+.pat-resourceregistry input[type="datetime-local"].input-lg,
+.pat-resourceregistry input[type="month"].input-lg {
+  line-height: 46px;
+}
+/* line 198, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+.pat-resourceregistry .form-group {
+  margin-bottom: 15px;
+}
+/* line 207, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+.pat-resourceregistry .radio,
+.pat-resourceregistry .checkbox {
+  position: relative;
+  display: block;
+  min-height: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+/* line 215, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+.pat-resourceregistry .radio label,
+.pat-resourceregistry .checkbox label {
+  padding-left: 20px;
+  margin-bottom: 0;
+  font-weight: normal;
+  cursor: pointer;
+}
+/* line 222, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+.pat-resourceregistry .radio input[type="radio"],
+.pat-resourceregistry .radio-inline input[type="radio"],
+.pat-resourceregistry .checkbox input[type="checkbox"],
+.pat-resourceregistry .checkbox-inline input[type="checkbox"] {
+  position: absolute;
+  margin-left: -20px;
+  margin-top: 4px \9;
+}
+/* line 231, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+.pat-resourceregistry .radio + .radio,
+.pat-resourceregistry .checkbox + .checkbox {
+  margin-top: -5px;
+}
+/* line 237, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+.pat-resourceregistry .radio-inline,
+.pat-resourceregistry .checkbox-inline {
+  display: inline-block;
+  padding-left: 20px;
+  margin-bottom: 0;
+  vertical-align: middle;
+  font-weight: normal;
+  cursor: pointer;
+}
+/* line 246, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+.pat-resourceregistry .radio-inline + .radio-inline,
+.pat-resourceregistry .checkbox-inline + .checkbox-inline {
+  margin-top: 0;
+  margin-left: 10px;
+}
+/* line 258, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+.pat-resourceregistry input[type="radio"][disabled],
+.pat-resourceregistry input[type="checkbox"][disabled],
+.pat-resourceregistry input[type="radio"].disabled,
+.pat-resourceregistry input[type="checkbox"].disabled,
+fieldset[disabled] .pat-resourceregistry input[type="radio"],
+fieldset[disabled] .pat-resourceregistry input[type="checkbox"] {
+  cursor: not-allowed;
+}
+/* line 267, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+.pat-resourceregistry .radio-inline.disabled,
+.pat-resourceregistry .checkbox-inline.disabled,
+fieldset[disabled] .pat-resourceregistry .radio-inline,
+fieldset[disabled] .pat-resourceregistry .checkbox-inline {
+  cursor: not-allowed;
+}
+/* line 277, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+.pat-resourceregistry .radio.disabled label,
+.pat-resourceregistry .checkbox.disabled label,
+fieldset[disabled] .pat-resourceregistry .radio label,
+fieldset[disabled] .pat-resourceregistry .checkbox label {
+  cursor: not-allowed;
+}
+/* line 289, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+.pat-resourceregistry .form-control-static {
+  padding-top: 7px;
+  padding-bottom: 7px;
+  margin-bottom: 0;
+}
+/* line 296, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+.pat-resourceregistry .form-control-static.input-lg,
+.pat-resourceregistry .form-control-static.input-sm {
+  padding-left: 0;
+  padding-right: 0;
+}
+/* line 309, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+.pat-resourceregistry .input-sm {
+  height: 30px;
+  padding: 5px 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
+}
+/* line 72, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/forms.less */
+select.pat-resourceregistry .input-sm {
+  height: 30px;
+  line-height: 30px;
+}
+/* line 77, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/forms.less */
+textarea.pat-resourceregistry .input-sm,
+select[multiple].pat-resourceregistry .input-sm {
+  height: auto;
+}
+/* line 313, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+.pat-resourceregistry .input-lg {
+  height: 46px;
+  padding: 10px 16px;
+  font-size: 18px;
+  line-height: 1.33;
+  border-radius: 6px;
+}
+/* line 72, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/forms.less */
+select.pat-resourceregistry .input-lg {
+  height: 46px;
+  line-height: 46px;
+}
+/* line 77, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/forms.less */
+textarea.pat-resourceregistry .input-lg,
+select[multiple].pat-resourceregistry .input-lg {
+  height: auto;
+}
+/* line 322, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+.pat-resourceregistry .has-feedback {
+  position: relative;
+}
+/* line 327, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+.pat-resourceregistry .has-feedback .form-control {
+  padding-right: 42.5px;
+}
+/* line 332, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+.pat-resourceregistry .form-control-feedback {
+  position: absolute;
+  top: 25px;
+  right: 0;
+  z-index: 2;
+  display: block;
+  width: 34px;
+  height: 34px;
+  line-height: 34px;
+  text-align: center;
+}
+/* line 343, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+.pat-resourceregistry .input-lg + .form-control-feedback {
+  width: 46px;
+  height: 46px;
+  line-height: 46px;
+}
+/* line 348, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+.pat-resourceregistry .input-sm + .form-control-feedback {
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+}
+/* line 8, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/forms.less */
+.pat-resourceregistry .has-success .help-block,
+.pat-resourceregistry .has-success .control-label,
+.pat-resourceregistry .has-success .radio,
+.pat-resourceregistry .has-success .checkbox,
+.pat-resourceregistry .has-success .radio-inline,
+.pat-resourceregistry .has-success .checkbox-inline {
+  color: #3c763d;
+}
+/* line 17, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/forms.less */
+.pat-resourceregistry .has-success .form-control {
+  border-color: #3c763d;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+/* line 20, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/forms.less */
+.pat-resourceregistry .has-success .form-control:focus {
+  border-color: #2b542c;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #67b168;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #67b168;
+}
+/* line 27, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/forms.less */
+.pat-resourceregistry .has-success .input-group-addon {
+  color: #3c763d;
+  border-color: #3c763d;
+  background-color: #dff0d8;
+}
+/* line 33, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/forms.less */
+.pat-resourceregistry .has-success .form-control-feedback {
+  color: #3c763d;
+}
+/* line 8, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/forms.less */
+.pat-resourceregistry .has-warning .help-block,
+.pat-resourceregistry .has-warning .control-label,
+.pat-resourceregistry .has-warning .radio,
+.pat-resourceregistry .has-warning .checkbox,
+.pat-resourceregistry .has-warning .radio-inline,
+.pat-resourceregistry .has-warning .checkbox-inline {
+  color: #8a6d3b;
+}
+/* line 17, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/forms.less */
+.pat-resourceregistry .has-warning .form-control {
+  border-color: #8a6d3b;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+/* line 20, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/forms.less */
+.pat-resourceregistry .has-warning .form-control:focus {
+  border-color: #66512c;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #c0a16b;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #c0a16b;
+}
+/* line 27, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/forms.less */
+.pat-resourceregistry .has-warning .input-group-addon {
+  color: #8a6d3b;
+  border-color: #8a6d3b;
+  background-color: #fcf8e3;
+}
+/* line 33, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/forms.less */
+.pat-resourceregistry .has-warning .form-control-feedback {
+  color: #8a6d3b;
+}
+/* line 8, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/forms.less */
+.pat-resourceregistry .has-error .help-block,
+.pat-resourceregistry .has-error .control-label,
+.pat-resourceregistry .has-error .radio,
+.pat-resourceregistry .has-error .checkbox,
+.pat-resourceregistry .has-error .radio-inline,
+.pat-resourceregistry .has-error .checkbox-inline {
+  color: #a94442;
+}
+/* line 17, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/forms.less */
+.pat-resourceregistry .has-error .form-control {
+  border-color: #a94442;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+/* line 20, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/forms.less */
+.pat-resourceregistry .has-error .form-control:focus {
+  border-color: #843534;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ce8483;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ce8483;
+}
+/* line 27, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/forms.less */
+.pat-resourceregistry .has-error .input-group-addon {
+  color: #a94442;
+  border-color: #a94442;
+  background-color: #f2dede;
+}
+/* line 33, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/forms.less */
+.pat-resourceregistry .has-error .form-control-feedback {
+  color: #a94442;
+}
+/* line 367, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+.pat-resourceregistry .has-feedback label.sr-only ~ .form-control-feedback {
+  top: 0;
+}
+/* line 377, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+.pat-resourceregistry .help-block {
+  display: block;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  color: #737373;
+}
+@media (min-width: 768px) {
+  /* line 402, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+  .pat-resourceregistry .form-inline .form-group {
+    display: inline-block;
+    margin-bottom: 0;
+    vertical-align: middle;
+  }
+  /* line 409, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+  .pat-resourceregistry .form-inline .form-control {
+    display: inline-block;
+    width: auto;
+    vertical-align: middle;
+  }
+  /* line 415, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+  .pat-resourceregistry .form-inline .input-group {
+    display: inline-table;
+    vertical-align: middle;
+  }
+  /* line 419, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+  .pat-resourceregistry .form-inline .input-group .input-group-addon,
+  .pat-resourceregistry .form-inline .input-group .input-group-btn,
+  .pat-resourceregistry .form-inline .input-group .form-control {
+    width: auto;
+  }
+  /* line 427, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+  .pat-resourceregistry .form-inline .input-group > .form-control {
+    width: 100%;
+  }
+  /* line 431, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+  .pat-resourceregistry .form-inline .control-label {
+    margin-bottom: 0;
+    vertical-align: middle;
+  }
+  /* line 439, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+  .pat-resourceregistry .form-inline .radio,
+  .pat-resourceregistry .form-inline .checkbox {
+    display: inline-block;
+    margin-top: 0;
+    margin-bottom: 0;
+    vertical-align: middle;
+  }
+  /* line 446, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+  .pat-resourceregistry .form-inline .radio label,
+  .pat-resourceregistry .form-inline .checkbox label {
+    padding-left: 0;
+  }
+  /* line 450, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+  .pat-resourceregistry .form-inline .radio input[type="radio"],
+  .pat-resourceregistry .form-inline .checkbox input[type="checkbox"] {
+    position: relative;
+    margin-left: 0;
+  }
+  /* line 460, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+  .pat-resourceregistry .form-inline .has-feedback .form-control-feedback {
+    top: 0;
+  }
+}
+/* line 477, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+.pat-resourceregistry .form-horizontal .radio,
+.pat-resourceregistry .form-horizontal .checkbox,
+.pat-resourceregistry .form-horizontal .radio-inline,
+.pat-resourceregistry .form-horizontal .checkbox-inline {
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-top: 7px;
+}
+/* line 487, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+.pat-resourceregistry .form-horizontal .radio,
+.pat-resourceregistry .form-horizontal .checkbox {
+  min-height: 27px;
+}
+/* line 493, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+.pat-resourceregistry .form-horizontal .form-group {
+  margin-left: -15px;
+  margin-right: -15px;
+}
+@media (min-width: 768px) {
+  /* line 500, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+  .pat-resourceregistry .form-horizontal .control-label {
+    text-align: right;
+    margin-bottom: 0;
+    padding-top: 7px;
+  }
+}
+/* line 511, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+.pat-resourceregistry .form-horizontal .has-feedback .form-control-feedback {
+  top: 0;
+  right: 15px;
+}
+@media (min-width: 768px) {
+  /* line 522, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+  .pat-resourceregistry .form-horizontal .form-group-lg .control-label {
+    padding-top: 14.3px;
+  }
+}
+@media (min-width: 768px) {
+  /* line 532, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/forms.less */
+  .pat-resourceregistry .form-horizontal .form-group-sm .control-label {
+    padding-top: 6px;
+  }
+}
+/* line 7, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/input-groups.less */
+.pat-resourceregistry .input-group {
+  position: relative;
+  display: table;
+  border-collapse: separate;
+}
+/* line 13, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/input-groups.less */
+.pat-resourceregistry .input-group[class*="col-"] {
+  float: none;
+  padding-left: 0;
+  padding-right: 0;
+}
+/* line 19, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/input-groups.less */
+.pat-resourceregistry .input-group .form-control {
+  position: relative;
+  z-index: 2;
+  float: left;
+  width: 100%;
+  margin-bottom: 0;
+}
+/* line 40, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/input-groups.less */
+.pat-resourceregistry .input-group-lg > .form-control,
+.pat-resourceregistry .input-group-lg > .input-group-addon,
+.pat-resourceregistry .input-group-lg > .input-group-btn > .btn {
+  height: 46px;
+  padding: 10px 16px;
+  font-size: 18px;
+  line-height: 1.33;
+  border-radius: 6px;
+}
+/* line 72, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/forms.less */
+select.pat-resourceregistry .input-group-lg > .form-control,
+select.pat-resourceregistry .input-group-lg > .input-group-addon,
+select.pat-resourceregistry .input-group-lg > .input-group-btn > .btn {
+  height: 46px;
+  line-height: 46px;
+}
+/* line 77, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/forms.less */
+textarea.pat-resourceregistry .input-group-lg > .form-control,
+textarea.pat-resourceregistry .input-group-lg > .input-group-addon,
+textarea.pat-resourceregistry .input-group-lg > .input-group-btn > .btn,
+select[multiple].pat-resourceregistry .input-group-lg > .form-control,
+select[multiple].pat-resourceregistry .input-group-lg > .input-group-addon,
+select[multiple].pat-resourceregistry .input-group-lg > .input-group-btn > .btn {
+  height: auto;
+}
+/* line 45, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/input-groups.less */
+.pat-resourceregistry .input-group-sm > .form-control,
+.pat-resourceregistry .input-group-sm > .input-group-addon,
+.pat-resourceregistry .input-group-sm > .input-group-btn > .btn {
+  height: 30px;
+  padding: 5px 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
+}
+/* line 72, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/forms.less */
+select.pat-resourceregistry .input-group-sm > .form-control,
+select.pat-resourceregistry .input-group-sm > .input-group-addon,
+select.pat-resourceregistry .input-group-sm > .input-group-btn > .btn {
+  height: 30px;
+  line-height: 30px;
+}
+/* line 77, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/forms.less */
+textarea.pat-resourceregistry .input-group-sm > .form-control,
+textarea.pat-resourceregistry .input-group-sm > .input-group-addon,
+textarea.pat-resourceregistry .input-group-sm > .input-group-btn > .btn,
+select[multiple].pat-resourceregistry .input-group-sm > .form-control,
+select[multiple].pat-resourceregistry .input-group-sm > .input-group-addon,
+select[multiple].pat-resourceregistry .input-group-sm > .input-group-btn > .btn {
+  height: auto;
+}
+/* line 54, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/input-groups.less */
+.pat-resourceregistry .input-group-addon,
+.pat-resourceregistry .input-group-btn,
+.pat-resourceregistry .input-group .form-control {
+  display: table-cell;
+}
+/* line 59, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/input-groups.less */
+.pat-resourceregistry .input-group-addon:not(:first-child):not(:last-child),
+.pat-resourceregistry .input-group-btn:not(:first-child):not(:last-child),
+.pat-resourceregistry .input-group .form-control:not(:first-child):not(:last-child) {
+  border-radius: 0;
+}
+/* line 64, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/input-groups.less */
+.pat-resourceregistry .input-group-addon,
+.pat-resourceregistry .input-group-btn {
+  width: 1%;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+/* line 73, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/input-groups.less */
+.pat-resourceregistry .input-group-addon {
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1;
+  color: #555555;
+  text-align: center;
+  background-color: #eeeeee;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+}
+/* line 85, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/input-groups.less */
+.pat-resourceregistry .input-group-addon.input-sm {
+  padding: 5px 10px;
+  font-size: 12px;
+  border-radius: 3px;
+}
+/* line 90, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/input-groups.less */
+.pat-resourceregistry .input-group-addon.input-lg {
+  padding: 10px 16px;
+  font-size: 18px;
+  border-radius: 6px;
+}
+/* line 97, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/input-groups.less */
+.pat-resourceregistry .input-group-addon input[type="radio"],
+.pat-resourceregistry .input-group-addon input[type="checkbox"] {
+  margin-top: 0;
+}
+/* line 104, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/input-groups.less */
+.pat-resourceregistry .input-group .form-control:first-child,
+.pat-resourceregistry .input-group-addon:first-child,
+.pat-resourceregistry .input-group-btn:first-child > .btn,
+.pat-resourceregistry .input-group-btn:first-child > .btn-group > .btn,
+.pat-resourceregistry .input-group-btn:first-child > .dropdown-toggle,
+.pat-resourceregistry .input-group-btn:last-child > .btn:not(:last-child):not(.dropdown-toggle),
+.pat-resourceregistry .input-group-btn:last-child > .btn-group:not(:last-child) > .btn {
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+}
+/* line 113, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/input-groups.less */
+.pat-resourceregistry .input-group-addon:first-child {
+  border-right: 0;
+}
+/* line 116, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/input-groups.less */
+.pat-resourceregistry .input-group .form-control:last-child,
+.pat-resourceregistry .input-group-addon:last-child,
+.pat-resourceregistry .input-group-btn:last-child > .btn,
+.pat-resourceregistry .input-group-btn:last-child > .btn-group > .btn,
+.pat-resourceregistry .input-group-btn:last-child > .dropdown-toggle,
+.pat-resourceregistry .input-group-btn:first-child > .btn:not(:first-child),
+.pat-resourceregistry .input-group-btn:first-child > .btn-group:not(:first-child) > .btn {
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+}
+/* line 125, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/input-groups.less */
+.pat-resourceregistry .input-group-addon:last-child {
+  border-left: 0;
+}
+/* line 131, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/input-groups.less */
+.pat-resourceregistry .input-group-btn {
+  position: relative;
+  font-size: 0;
+  white-space: nowrap;
+}
+/* line 140, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/input-groups.less */
+.pat-resourceregistry .input-group-btn > .btn {
+  position: relative;
+}
+/* line 142, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/input-groups.less */
+.pat-resourceregistry .input-group-btn > .btn + .btn {
+  margin-left: -1px;
+}
+/* line 146, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/input-groups.less */
+.pat-resourceregistry .input-group-btn > .btn:hover,
+.pat-resourceregistry .input-group-btn > .btn:focus,
+.pat-resourceregistry .input-group-btn > .btn:active {
+  z-index: 2;
+}
+/* line 155, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/input-groups.less */
+.pat-resourceregistry .input-group-btn:first-child > .btn,
+.pat-resourceregistry .input-group-btn:first-child > .btn-group {
+  margin-right: -1px;
+}
+/* line 161, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/input-groups.less */
+.pat-resourceregistry .input-group-btn:last-child > .btn,
+.pat-resourceregistry .input-group-btn:last-child > .btn-group {
+  margin-left: -1px;
+}
+/* line 9, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry h1,
+.pat-resourceregistry h2,
+.pat-resourceregistry h3,
+.pat-resourceregistry h4,
+.pat-resourceregistry h5,
+.pat-resourceregistry h6,
+.pat-resourceregistry .h1,
+.pat-resourceregistry .h2,
+.pat-resourceregistry .h3,
+.pat-resourceregistry .h4,
+.pat-resourceregistry .h5,
+.pat-resourceregistry .h6 {
+  font-family: inherit;
+  font-weight: 500;
+  line-height: 1.1;
+  color: inherit;
+}
+/* line 16, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry h1 small,
+.pat-resourceregistry h2 small,
+.pat-resourceregistry h3 small,
+.pat-resourceregistry h4 small,
+.pat-resourceregistry h5 small,
+.pat-resourceregistry h6 small,
+.pat-resourceregistry .h1 small,
+.pat-resourceregistry .h2 small,
+.pat-resourceregistry .h3 small,
+.pat-resourceregistry .h4 small,
+.pat-resourceregistry .h5 small,
+.pat-resourceregistry .h6 small,
+.pat-resourceregistry h1 .small,
+.pat-resourceregistry h2 .small,
+.pat-resourceregistry h3 .small,
+.pat-resourceregistry h4 .small,
+.pat-resourceregistry h5 .small,
+.pat-resourceregistry h6 .small,
+.pat-resourceregistry .h1 .small,
+.pat-resourceregistry .h2 .small,
+.pat-resourceregistry .h3 .small,
+.pat-resourceregistry .h4 .small,
+.pat-resourceregistry .h5 .small,
+.pat-resourceregistry .h6 .small {
+  font-weight: normal;
+  line-height: 1;
+  color: #777777;
+}
+/* line 24, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry h1,
+.pat-resourceregistry .h1,
+.pat-resourceregistry h2,
+.pat-resourceregistry .h2,
+.pat-resourceregistry h3,
+.pat-resourceregistry .h3 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+/* line 30, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry h1 small,
+.pat-resourceregistry .h1 small,
+.pat-resourceregistry h2 small,
+.pat-resourceregistry .h2 small,
+.pat-resourceregistry h3 small,
+.pat-resourceregistry .h3 small,
+.pat-resourceregistry h1 .small,
+.pat-resourceregistry .h1 .small,
+.pat-resourceregistry h2 .small,
+.pat-resourceregistry .h2 .small,
+.pat-resourceregistry h3 .small,
+.pat-resourceregistry .h3 .small {
+  font-size: 65%;
+}
+/* line 35, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry h4,
+.pat-resourceregistry .h4,
+.pat-resourceregistry h5,
+.pat-resourceregistry .h5,
+.pat-resourceregistry h6,
+.pat-resourceregistry .h6 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+/* line 41, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry h4 small,
+.pat-resourceregistry .h4 small,
+.pat-resourceregistry h5 small,
+.pat-resourceregistry .h5 small,
+.pat-resourceregistry h6 small,
+.pat-resourceregistry .h6 small,
+.pat-resourceregistry h4 .small,
+.pat-resourceregistry .h4 .small,
+.pat-resourceregistry h5 .small,
+.pat-resourceregistry .h5 .small,
+.pat-resourceregistry h6 .small,
+.pat-resourceregistry .h6 .small {
+  font-size: 75%;
+}
+/* line 47, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry h1,
+.pat-resourceregistry .h1 {
+  font-size: 36px;
+}
+/* line 48, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry h2,
+.pat-resourceregistry .h2 {
+  font-size: 30px;
+}
+/* line 49, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry h3,
+.pat-resourceregistry .h3 {
+  font-size: 24px;
+}
+/* line 50, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry h4,
+.pat-resourceregistry .h4 {
+  font-size: 18px;
+}
+/* line 51, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry h5,
+.pat-resourceregistry .h5 {
+  font-size: 14px;
+}
+/* line 52, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry h6,
+.pat-resourceregistry .h6 {
+  font-size: 12px;
+}
+/* line 58, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry p {
+  margin: 0 0 10px;
+}
+/* line 62, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry .lead {
+  margin-bottom: 20px;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.4;
+}
+@media (min-width: 768px) {
+  /* line 68, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+  .pat-resourceregistry .lead {
+    font-size: 21px;
+  }
+}
+/* line 78, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry small,
+.pat-resourceregistry .small {
+  font-size: 85%;
+}
+/* line 84, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry cite {
+  font-style: normal;
+}
+/* line 88, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry mark,
+.pat-resourceregistry .mark {
+  background-color: #fcf8e3;
+  padding: .2em;
+}
+/* line 95, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry .text-left {
+  text-align: left;
+}
+/* line 96, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry .text-right {
+  text-align: right;
+}
+/* line 97, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry .text-center {
+  text-align: center;
+}
+/* line 98, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry .text-justify {
+  text-align: justify;
+}
+/* line 99, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry .text-nowrap {
+  white-space: nowrap;
+}
+/* line 102, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry .text-lowercase {
+  text-transform: lowercase;
+}
+/* line 103, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry .text-uppercase {
+  text-transform: uppercase;
+}
+/* line 104, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry .text-capitalize {
+  text-transform: capitalize;
+}
+/* line 107, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry .text-muted {
+  color: #777777;
+}
+/* line 110, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry .text-primary {
+  color: #428bca;
+}
+/* line 5, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/text-emphasis.less */
+a.pat-resourceregistry .text-primary:hover {
+  color: #3071a9;
+}
+/* line 113, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry .text-success {
+  color: #3c763d;
+}
+/* line 5, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/text-emphasis.less */
+a.pat-resourceregistry .text-success:hover {
+  color: #2b542c;
+}
+/* line 116, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry .text-info {
+  color: #31708f;
+}
+/* line 5, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/text-emphasis.less */
+a.pat-resourceregistry .text-info:hover {
+  color: #245269;
+}
+/* line 119, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry .text-warning {
+  color: #8a6d3b;
+}
+/* line 5, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/text-emphasis.less */
+a.pat-resourceregistry .text-warning:hover {
+  color: #66512c;
+}
+/* line 122, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry .text-danger {
+  color: #a94442;
+}
+/* line 5, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/text-emphasis.less */
+a.pat-resourceregistry .text-danger:hover {
+  color: #843534;
+}
+/* line 129, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry .bg-primary {
+  color: #fff;
+  background-color: #428bca;
+}
+/* line 5, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/background-variant.less */
+a.pat-resourceregistry .bg-primary:hover {
+  background-color: #3071a9;
+}
+/* line 135, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry .bg-success {
+  background-color: #dff0d8;
+}
+/* line 5, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/background-variant.less */
+a.pat-resourceregistry .bg-success:hover {
+  background-color: #c1e2b3;
+}
+/* line 138, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry .bg-info {
+  background-color: #d9edf7;
+}
+/* line 5, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/background-variant.less */
+a.pat-resourceregistry .bg-info:hover {
+  background-color: #afd9ee;
+}
+/* line 141, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry .bg-warning {
+  background-color: #fcf8e3;
+}
+/* line 5, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/background-variant.less */
+a.pat-resourceregistry .bg-warning:hover {
+  background-color: #f7ecb5;
+}
+/* line 144, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry .bg-danger {
+  background-color: #f2dede;
+}
+/* line 5, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/mixins/background-variant.less */
+a.pat-resourceregistry .bg-danger:hover {
+  background-color: #e4b9b9;
+}
+/* line 152, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry .page-header {
+  padding-bottom: 9px;
+  margin: 40px 0 20px;
+  border-bottom: 1px solid #eeeeee;
+}
+/* line 163, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry ul,
+.pat-resourceregistry ol {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+/* line 167, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry ul ul,
+.pat-resourceregistry ol ul,
+.pat-resourceregistry ul ol,
+.pat-resourceregistry ol ol {
+  margin-bottom: 0;
+}
+/* line 176, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry .list-unstyled {
+  padding-left: 0;
+  list-style: none;
+}
+/* line 182, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry .list-inline {
+  padding-left: 0;
+  list-style: none;
+  margin-left: -5px;
+}
+/* line 186, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry .list-inline > li {
+  display: inline-block;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+/* line 194, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry dl {
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+/* line 198, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry dt,
+.pat-resourceregistry dd {
+  line-height: 1.42857143;
+}
+/* line 202, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry dt {
+  font-weight: bold;
+}
+/* line 205, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry dd {
+  margin-left: 0;
+}
+@media (min-width: 768px) {
+  /* line 220, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+  .pat-resourceregistry .dl-horizontal dt {
+    float: left;
+    width: 160px;
+    clear: left;
+    text-align: right;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  /* line 227, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+  .pat-resourceregistry .dl-horizontal dd {
+    margin-left: 180px;
+  }
+}
+/* line 238, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry abbr[title],
+.pat-resourceregistry abbr[data-original-title] {
+  cursor: help;
+  border-bottom: 1px dotted #777777;
+}
+/* line 244, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry .initialism {
+  font-size: 90%;
+  text-transform: uppercase;
+}
+/* line 250, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry blockquote {
+  padding: 10px 20px;
+  margin: 0 0 20px;
+  font-size: 17.5px;
+  border-left: 5px solid #eeeeee;
+}
+/* line 259, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry blockquote p:last-child,
+.pat-resourceregistry blockquote ul:last-child,
+.pat-resourceregistry blockquote ol:last-child {
+  margin-bottom: 0;
+}
+/* line 266, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry blockquote footer,
+.pat-resourceregistry blockquote small,
+.pat-resourceregistry blockquote .small {
+  display: block;
+  font-size: 80%;
+  line-height: 1.42857143;
+  color: #777777;
+}
+/* line 274, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry blockquote footer:before,
+.pat-resourceregistry blockquote small:before,
+.pat-resourceregistry blockquote .small:before {
+  content: '\2014 \00A0';
+}
+/* line 283, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry .blockquote-reverse,
+.pat-resourceregistry blockquote.pull-right {
+  padding-right: 15px;
+  padding-left: 0;
+  border-right: 5px solid #eeeeee;
+  border-left: 0;
+  text-align: right;
+}
+/* line 295, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry .blockquote-reverse footer:before,
+.pat-resourceregistry blockquote.pull-right footer:before,
+.pat-resourceregistry .blockquote-reverse small:before,
+.pat-resourceregistry blockquote.pull-right small:before,
+.pat-resourceregistry .blockquote-reverse .small:before,
+.pat-resourceregistry blockquote.pull-right .small:before {
+  content: '';
+}
+/* line 296, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry .blockquote-reverse footer:after,
+.pat-resourceregistry blockquote.pull-right footer:after,
+.pat-resourceregistry .blockquote-reverse small:after,
+.pat-resourceregistry blockquote.pull-right small:after,
+.pat-resourceregistry .blockquote-reverse .small:after,
+.pat-resourceregistry blockquote.pull-right .small:after {
+  content: '\00A0 \2014';
+}
+/* line 303, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry blockquote:before,
+.pat-resourceregistry blockquote:after {
+  content: "";
+}
+/* line 309, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/type.less */
+.pat-resourceregistry address {
+  margin-bottom: 20px;
+  font-style: normal;
+  line-height: 1.42857143;
+}
+/* line 9, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/navs.less */
+.pat-resourceregistry .nav {
+  margin-bottom: 0;
+  padding-left: 0;
+  list-style: none;
+}
+/* line 15, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/navs.less */
+.pat-resourceregistry .nav > li {
+  position: relative;
+  display: block;
+}
+/* line 19, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/navs.less */
+.pat-resourceregistry .nav > li > a {
+  position: relative;
+  display: block;
+  padding: 10px 15px;
+}
+/* line 23, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/navs.less */
+.pat-resourceregistry .nav > li > a:hover,
+.pat-resourceregistry .nav > li > a:focus {
+  text-decoration: none;
+  background-color: #eeeeee;
+}
+/* line 31, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/navs.less */
+.pat-resourceregistry .nav > li.disabled > a {
+  color: #777777;
+}
+/* line 34, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/navs.less */
+.pat-resourceregistry .nav > li.disabled > a:hover,
+.pat-resourceregistry .nav > li.disabled > a:focus {
+  color: #777777;
+  text-decoration: none;
+  background-color: transparent;
+  cursor: not-allowed;
+}
+/* line 46, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/navs.less */
+.pat-resourceregistry .nav .open > a,
+.pat-resourceregistry .nav .open > a:hover,
+.pat-resourceregistry .nav .open > a:focus {
+  background-color: #eeeeee;
+  border-color: #428bca;
+}
+/* line 59, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/navs.less */
+.pat-resourceregistry .nav .nav-divider {
+  height: 1px;
+  margin: 9px 0;
+  overflow: hidden;
+  background-color: #e5e5e5;
+}
+/* line 66, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/navs.less */
+.pat-resourceregistry .nav > li > a > img {
+  max-width: none;
+}
+/* line 76, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/navs.less */
+.pat-resourceregistry .nav-tabs {
+  border-bottom: 1px solid #dddddd;
+}
+/* line 78, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/navs.less */
+.pat-resourceregistry .nav-tabs > li {
+  float: left;
+  margin-bottom: -1px;
+}
+/* line 84, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/navs.less */
+.pat-resourceregistry .nav-tabs > li > a {
+  margin-right: 2px;
+  line-height: 1.42857143;
+  border: 1px solid transparent;
+  border-radius: 4px 4px 0 0;
+}
+/* line 89, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/navs.less */
+.pat-resourceregistry .nav-tabs > li > a:hover {
+  border-color: #eeeeee #eeeeee #dddddd;
+}
+/* line 96, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/navs.less */
+.pat-resourceregistry .nav-tabs > li.active > a,
+.pat-resourceregistry .nav-tabs > li.active > a:hover,
+.pat-resourceregistry .nav-tabs > li.active > a:focus {
+  color: #555555;
+  background-color: #ffffff;
+  border: 1px solid #dddddd;
+  border-bottom-color: transparent;
+  cursor: default;
+}
+/* line 108, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/navs.less */
+.pat-resourceregistry .nav-tabs.nav-justified {
+  width: 100%;
+  border-bottom: 0;
+}
+/* line 163, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/navs.less */
+.pat-resourceregistry .nav-tabs.nav-justified > li {
+  float: none;
+}
+/* line 165, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/navs.less */
+.pat-resourceregistry .nav-tabs.nav-justified > li > a {
+  text-align: center;
+  margin-bottom: 5px;
+}
+/* line 171, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/navs.less */
+.pat-resourceregistry .nav-tabs.nav-justified > .dropdown .dropdown-menu {
+  top: auto;
+  left: auto;
+}
+@media (min-width: 768px) {
+  /* line 177, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/navs.less */
+  .pat-resourceregistry .nav-tabs.nav-justified > li {
+    display: table-cell;
+    width: 1%;
+  }
+  /* line 180, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/navs.less */
+  .pat-resourceregistry .nav-tabs.nav-justified > li > a {
+    margin-bottom: 0;
+  }
+}
+/* line 193, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/navs.less */
+.pat-resourceregistry .nav-tabs.nav-justified > li > a {
+  margin-right: 0;
+  border-radius: 4px;
+}
+/* line 199, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/navs.less */
+.pat-resourceregistry .nav-tabs.nav-justified > .active > a,
+.pat-resourceregistry .nav-tabs.nav-justified > .active > a:hover,
+.pat-resourceregistry .nav-tabs.nav-justified > .active > a:focus {
+  border: 1px solid #dddddd;
+}
+@media (min-width: 768px) {
+  /* line 206, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/navs.less */
+  .pat-resourceregistry .nav-tabs.nav-justified > li > a {
+    border-bottom: 1px solid #dddddd;
+    border-radius: 4px 4px 0 0;
+  }
+  /* line 210, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/navs.less */
+  .pat-resourceregistry .nav-tabs.nav-justified > .active > a,
+  .pat-resourceregistry .nav-tabs.nav-justified > .active > a:hover,
+  .pat-resourceregistry .nav-tabs.nav-justified > .active > a:focus {
+    border-bottom-color: #ffffff;
+  }
+}
+/* line 118, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/navs.less */
+.pat-resourceregistry .nav-pills > li {
+  float: left;
+}
+/* line 122, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/navs.less */
+.pat-resourceregistry .nav-pills > li > a {
+  border-radius: 4px;
+}
+/* line 125, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/navs.less */
+.pat-resourceregistry .nav-pills > li + li {
+  margin-left: 2px;
+}
+/* line 131, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/navs.less */
+.pat-resourceregistry .nav-pills > li.active > a,
+.pat-resourceregistry .nav-pills > li.active > a:hover,
+.pat-resourceregistry .nav-pills > li.active > a:focus {
+  color: #ffffff;
+  background-color: #428bca;
+}
+/* line 144, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/navs.less */
+.pat-resourceregistry .nav-stacked > li {
+  float: none;
+}
+/* line 146, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/navs.less */
+.pat-resourceregistry .nav-stacked > li + li {
+  margin-top: 2px;
+  margin-left: 0;
+}
+/* line 160, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/navs.less */
+.pat-resourceregistry .nav-justified {
+  width: 100%;
+}
+/* line 163, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/navs.less */
+.pat-resourceregistry .nav-justified > li {
+  float: none;
+}
+/* line 165, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/navs.less */
+.pat-resourceregistry .nav-justified > li > a {
+  text-align: center;
+  margin-bottom: 5px;
+}
+/* line 171, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/navs.less */
+.pat-resourceregistry .nav-justified > .dropdown .dropdown-menu {
+  top: auto;
+  left: auto;
+}
+@media (min-width: 768px) {
+  /* line 177, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/navs.less */
+  .pat-resourceregistry .nav-justified > li {
+    display: table-cell;
+    width: 1%;
+  }
+  /* line 180, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/navs.less */
+  .pat-resourceregistry .nav-justified > li > a {
+    margin-bottom: 0;
+  }
+}
+/* line 190, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/navs.less */
+.pat-resourceregistry .nav-tabs-justified {
+  border-bottom: 0;
+}
+/* line 193, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/navs.less */
+.pat-resourceregistry .nav-tabs-justified > li > a {
+  margin-right: 0;
+  border-radius: 4px;
+}
+/* line 199, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/navs.less */
+.pat-resourceregistry .nav-tabs-justified > .active > a,
+.pat-resourceregistry .nav-tabs-justified > .active > a:hover,
+.pat-resourceregistry .nav-tabs-justified > .active > a:focus {
+  border: 1px solid #dddddd;
+}
+@media (min-width: 768px) {
+  /* line 206, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/navs.less */
+  .pat-resourceregistry .nav-tabs-justified > li > a {
+    border-bottom: 1px solid #dddddd;
+    border-radius: 4px 4px 0 0;
+  }
+  /* line 210, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/navs.less */
+  .pat-resourceregistry .nav-tabs-justified > .active > a,
+  .pat-resourceregistry .nav-tabs-justified > .active > a:hover,
+  .pat-resourceregistry .nav-tabs-justified > .active > a:focus {
+    border-bottom-color: #ffffff;
+  }
+}
+/* line 224, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/navs.less */
+.pat-resourceregistry .tab-content > .tab-pane {
+  display: none;
+}
+/* line 227, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/navs.less */
+.pat-resourceregistry .tab-content > .active {
+  display: block;
+}
+/* line 237, http://localhost:8080/Plone/++plone++static/components//bootstrap/less/navs.less */
+.pat-resourceregistry .nav-tabs .dropdown-menu {
+  margin-top: -1px;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+}
+/* line 14, http://localhost:8080/Plone/++resource++mockup/resourceregistry/pattern.resourceregistry.less */
+.pat-resourceregistry .nav-tabs a {
+  color: black;
+}
+/* line 19, http://localhost:8080/Plone/++resource++mockup/resourceregistry/pattern.resourceregistry.less */
+.pat-resourceregistry .tab-pane.overrides .list-group-item a {
+  font-size: 11px;
+  /* need to try and fit long strings */
+}
+/* line 23, http://localhost:8080/Plone/++resource++mockup/resourceregistry/pattern.resourceregistry.less */
+.pat-resourceregistry .resources-header.list-group {
+  margin-bottom: 0;
+}
+/* line 25, http://localhost:8080/Plone/++resource++mockup/resourceregistry/pattern.resourceregistry.less */
+.pat-resourceregistry .resources-header.list-group li {
+  border-bottom: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+/* line 31, http://localhost:8080/Plone/++resource++mockup/resourceregistry/pattern.resourceregistry.less */
+.pat-resourceregistry .resources.list-group {
+  max-height: 700px;
+  overflow-x: scroll;
+}
+/* line 35, http://localhost:8080/Plone/++resource++mockup/resourceregistry/pattern.resourceregistry.less */
+.pat-resourceregistry .resources.list-group li {
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+}
+/* line 40, http://localhost:8080/Plone/++resource++mockup/resourceregistry/pattern.resourceregistry.less */
+.pat-resourceregistry .resources.list-group .list-group-item-warning {
+  position: relative;
+}
+/* line 43, http://localhost:8080/Plone/++resource++mockup/resourceregistry/pattern.resourceregistry.less */
+.pat-resourceregistry .resources.list-group .list-group-item-warning input {
+  width: 224px;
+  position: absolute;
+  right: 3px;
+  top: 3px;
+}
+/* line 52, http://localhost:8080/Plone/++resource++mockup/resourceregistry/pattern.resourceregistry.less */
+.pat-resourceregistry .resource-entry .form-group .pat-sortable li,
+.pat-resourceregistry .tab-pane.manual ul.js li:not(.list-group-item-warning),
+.pat-resourceregistry .tab-pane.manual ul.css li:not(.list-group-item-warning) {
+  cursor: move;
+}
+/* line 59, http://localhost:8080/Plone/++resource++mockup/resourceregistry/pattern.resourceregistry.less */
+.pat-resourceregistry .lessvariables .form,
+.pat-resourceregistry .patternoptionsuse .form {
+  padding-top: 15px;
+  clear: both;
+}
+/* line 65, http://localhost:8080/Plone/++resource++mockup/resourceregistry/pattern.resourceregistry.less */
+.pat-resourceregistry .pat-resourceregistry .lessvariables .form {
+  padding-top: 10px;
+  clear: both;
+}
+/* line 71, http://localhost:8080/Plone/++resource++mockup/resourceregistry/pattern.resourceregistry.less */
+.pat-resourceregistry .patternoptions .form-control-feedback {
+  top: 0;
+  right: 12px;
+}
+/* line 77, http://localhost:8080/Plone/++resource++mockup/resourceregistry/pattern.resourceregistry.less */
+.pat-resourceregistry .development-mode {
+  padding-left: 15px;
+}
