@@ -6754,40 +6754,10 @@ fieldset[disabled] .plone-btn-link:focus {
   color: #777777;
   text-decoration: none;
 }
-.plone-btn-group {
-  position: relative;
-  display: inline-block;
-  vertical-align: middle;
-}
-.plone-btn-group > .btn,
-.plone-btn-group > .pat-structure .btn {
-  position: relative;
-  float: left;
-}
-.plone-btn-group > .btn:hover,
-.plone-btn-group > .btn:focus,
-.plone-btn-group > .btn:active,
-.plone-btn-group > .btn.active,
-.plone-btn-group > .pat-structure .btn:hover,
-.plone-btn-group > .pat-structure .btn:focus,
-.plone-btn-group > .pat-structure .btn:active,
-.plone-btn-group > .pat-structure .btn.active {
-  z-index: 2;
-}
-.plone-btn-group > .btn:focus,
-.plone-btn-group > .pat-structure .btn:focus {
-  outline: 0;
-}
-.plone-btn-group .btn + .btn,
-.plone-btn-group .btn + .btn-group,
-.plone-btn-group .btn-group + .btn,
-.plone-btn-group .btn-group + .btn-group,
-.plone-btn-group .pat-structure .btn + .pat-structure .btn,
-.plone-btn-group .pat-structure .btn + .btn-group,
-.plone-btn-group .btn-group + .pat-structure .btn,
-.plone-btn-group .btn + .pat-structure .btn-group,
-.plone-btn-group .pat-structure .btn-group + .btn,
-.plone-btn-group .pat-structure .btn-group + .pat-structure .btn-group {
+.plone-btn-group .plone-btn + .plone-btn,
+.plone-btn-group .plone-btn + .plone-btn-group,
+.plone-btn-group .plone-btn-group + .plone-btn,
+.plone-btn-group .plone-btn-group + .plone-btn-group {
   margin-left: -1px;
 }
 .plone-btn-block {

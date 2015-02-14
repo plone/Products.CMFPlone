@@ -2457,28 +2457,10 @@ fieldset[disabled] .plone-btn-link:focus {
   color: #777777;
   text-decoration: none;
 }
-.plone-btn-group {
-  position: relative;
-  display: inline-block;
-  vertical-align: middle;
-}
-.plone-btn-group > .btn {
-  position: relative;
-  float: left;
-}
-.plone-btn-group > .btn:hover,
-.plone-btn-group > .btn:focus,
-.plone-btn-group > .btn:active,
-.plone-btn-group > .btn.active {
-  z-index: 2;
-}
-.plone-btn-group > .btn:focus {
-  outline: 0;
-}
-.plone-btn-group .btn + .btn,
-.plone-btn-group .btn + .btn-group,
-.plone-btn-group .btn-group + .btn,
-.plone-btn-group .btn-group + .btn-group {
+.plone-btn-group .plone-btn + .plone-btn,
+.plone-btn-group .plone-btn + .plone-btn-group,
+.plone-btn-group .plone-btn-group + .plone-btn,
+.plone-btn-group .plone-btn-group + .plone-btn-group {
   margin-left: -1px;
 }
 .plone-btn-block {
