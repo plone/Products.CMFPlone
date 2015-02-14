@@ -1,10 +1,3 @@
-// Author: Rok Garbas
-// Contact: rok@garbas.si
-// Version: 1.0
-// Description:
-//
-// License:
-//
 // Copyright (C) 2010 Plone Foundation
 //
 // This program is free software; you can redistribute it and/or modify it
