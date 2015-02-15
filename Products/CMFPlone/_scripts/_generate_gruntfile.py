@@ -63,7 +63,8 @@ module.exports = function(grunt) {{
     grunt.loadNpmTasks('grunt-sed');
 
     grunt.registerTask('default', ['watch']);
-    grunt.registerTask('compile', ['requirejs', 'less', 'sed', 'uglify']);
+    grunt.registerTask('compile-all', ['requirejs', 'less', 'sed', 'uglify']);
+    {bundleTasks}
 }}
 """
 
@@ -310,6 +311,8 @@ sourceMap_url = ""
 sed_config_final = ""
 watch_files = []
 sed_count = 0
+bundle_grunt_tasks = ""
+
 for bkey, bundle in bundles.items():
     if bundle.compile:
         for resource in bundle.resources:
@@ -384,6 +387,10 @@ for bkey, bundle in bundles.items():
             files=less_files,
             less_paths=json.dumps(less_paths),
             sourcemap_url=sourceMap_url)
+        bundle_grunt_tasks += (
+            "\ngrunt.registerTask('compile-%s',"
+            "['requirejs:%s', 'less', 'sed', 'uglify:%s']);"
+        ) % (bkey, bkey, bkey)
 
 
 gruntfile = open('Gruntfile.js', 'w')
@@ -392,6 +399,7 @@ gruntfile.write(gruntfile_template.format(
     requirejs=require_configs,
     uglify=uglify_configs,
     sed=sed_config_final,
-    files=json.dumps(watch_files))
+    files=json.dumps(watch_files),
+    bundleTasks=bundle_grunt_tasks)
 )
 gruntfile.close()

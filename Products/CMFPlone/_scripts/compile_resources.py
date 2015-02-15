@@ -15,6 +15,8 @@ parser.add_argument('--instance', dest='instance',
                     help='path to instance executable. If not provided, '
                          'will look in bin this was executed from for '
                          'instance or client1')
+parser.add_argument('--bundle', dest='bundle', default='all',
+                    help='Name of bundle to compile. Defaults to all of them.')
 
 this_dir = os.path.dirname(os.path.realpath(__file__))
 
@@ -80,6 +82,6 @@ def main(argv=sys.argv):
     print('Running command: %s' % ' '.join(cmd))
     subprocess.check_call(cmd)
 
-    cmd = [grunt, '--gruntfile=%s' % gruntfile, 'compile']
+    cmd = [grunt, '--gruntfile=%s' % gruntfile, 'compile-%s' % args.bundle]
     print('Running command: %s' % ' '.join(cmd))
     subprocess.check_call(cmd)
