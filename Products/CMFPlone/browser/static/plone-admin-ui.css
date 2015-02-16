@@ -7,7 +7,7 @@ pre {background: #fea;padding: 20px;border-radius: 3px; margin:0 0 40px;word-wra
 a {color: #0184bf; text-decoration: none;}
 a:hover, a:active {text-decoration: underline;}
 p {color: #666; margin:0;}
-h1 {color: #000; font-weight: 300; font-size: 200%; margin:40px 0; line-height: 1.25}
+h1 {color: #000; font-weight: 300; font-size: 200%; margin:0; line-height: 1.25}
 h2 {font-size: 100%; color: #666; font-weight: 400; margin:20px 0; line-height: 1.25}
 header h1 {margin: 0 0 40px; padding: 0 0 40px; border-bottom: 1px solid #d9d9d9;}
 footer {border-top:1px solid #d9d9d9; padding-top: 40px; margin-top: 40px;}
@@ -26,7 +26,6 @@ footer {border-top:1px solid #d9d9d9; padding-top: 40px; margin-top: 40px;}
 .upgrade-warning:before {content:"!"; color:#fff; text-align: center; background: #b7000d; border-radius: 50%; width: 20px; height: 20px; position: absolute; margin-left: -30px;}
 .upgrade-info {font-size: 87.5%; padding-left: 30px; margin:10px 0;}
 .upgrade-info:before {content:"i"; color:#fff; text-align: center; background: #56a1b9; border-radius: 50%; width: 20px; height: 20px; position: absolute; margin-left: -30px;}
-h1 + .upgrade-info {margin-top: -20px;}
 .version-list {font-size: 87.5%; margin-left: 20px;}
 
 input, select {background:#fff;outline:0;font-family: 'Roboto', sans-serif; font-size: 16px; height: 18px; border-radius: 2px; width:280px; min-width: 180px; display: block; border:1px solid #ccc; padding:10px; margin:5px 0 0;}
