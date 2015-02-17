@@ -153,7 +153,7 @@ class ManageProductsView(BrowserView):
         try:
             qi.upgradeProduct(product)
             messages.addStatusMessage(
-                _(u'Upgraded ${addon}!', mapping={'addon', product}), type="info")
+                _(u'Upgraded ${product}!', mapping={'addon', product}), type="info")
             return True
         except Exception, e:
             logging.error("Could not upgrade %s: %s" % (product, e))
@@ -194,7 +194,7 @@ class InstallProductsView(BrowserView):
                 # TODO: find out where this is and don't run already
                 # activated profiles
                 setupTool.runAllImportStepsFromProfile(profile)
-                msg = _(u'Installed ${addon}!', mapping={'addon': profile})
+                msg = _(u'Installed ${product}!', mapping={'addon': profile})
                 messages.addStatusMessage(msg, type=msg_type)
 
         purl = getToolByName(self.context, 'portal_url')()
@@ -213,11 +213,11 @@ class UninstallProductsView(BrowserView):
             for product in products:
                 try:
                     qi.uninstallProducts(products=[product, ])
-                    msg = _(u'Uninstalled ${addon}.', mapping={'addon': product})
+                    msg = _(u'Uninstalled ${product}.', mapping={'addon': product})
                 except Exception, e:
                     logging.error("Could not uninstall %s: %s" % (product, e))
                     msg_type = 'error'
-                    msg = _(u'Error uninstalling ${addon}.', mapping={'addon': product})
+                    msg = _(u'Error uninstalling ${product}.', mapping={'addon': product})
                 messages.addStatusMessage(msg, type=msg_type)
 
         purl = getToolByName(self.context, 'portal_url')()
