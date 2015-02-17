@@ -152,13 +152,13 @@ class ManageProductsView(BrowserView):
         messages = IStatusMessage(self.request)
         try:
             qi.upgradeProduct(product)
-            messages.addStatusMessage(_(u'Upgraded %s!' % product),
-                                      type="info")
+            messages.addStatusMessage(
+                _(u'Upgraded ${addon}!', mapping={'addon', product}), type="info")
             return True
         except Exception, e:
             logging.error("Could not upgrade %s: %s" % (product, e))
-            messages.addStatusMessage(_(u'Error upgrading %s.' % product),
-                                      type="error")
+            messages.addStatusMessage(
+                _(u'Error upgrading %{addon}.', mapping={'addon': product}), type="error")
 
         return False
 
@@ -194,7 +194,7 @@ class InstallProductsView(BrowserView):
                 # TODO: find out where this is and don't run already
                 # activated profiles
                 setupTool.runAllImportStepsFromProfile(profile)
-                msg = _(u'Installed %s!' % profile)
+                msg = _(u'Installed ${addon}!', mapping={'addon': profile})
                 messages.addStatusMessage(msg, type=msg_type)
 
         purl = getToolByName(self.context, 'portal_url')()
@@ -213,11 +213,11 @@ class UninstallProductsView(BrowserView):
             for product in products:
                 try:
                     qi.uninstallProducts(products=[product, ])
-                    msg = _(u'Uninstalled %s.' % product)
+                    msg = _(u'Uninstalled ${addon}.', mapping={'addon': product})
                 except Exception, e:
                     logging.error("Could not uninstall %s: %s" % (product, e))
                     msg_type = 'error'
-                    msg = _(u'Error uninstalling %s' % product)
+                    msg = _(u'Error uninstalling ${addon}.', mapping={'addon': product})
                 messages.addStatusMessage(msg, type=msg_type)
 
         purl = getToolByName(self.context, 'portal_url')()
