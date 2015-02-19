@@ -36521,201 +36521,16 @@ define('mockup-patterns-resourceregistry-url/js/iframe',[
 
   return window.IFrame;
 });
-/* global alert:true, confirm:true */
 
-define('mockup-patterns-resourceregistry-url/js/registry',[
+define('mockup-patterns-resourceregistry-url/js/builder',[
   'jquery',
-  'underscore',
-  'mockup-ui-url/views/base',
-  'mockup-utils',
   'mockup-patterns-modal',
-  'mockup-patterns-resourceregistry-url/js/fields',
+  'underscore',
+  'mockup-utils',
   'mockup-patterns-resourceregistry-url/js/iframe',
   'translate'
-], function($, _, BaseView, utils, Modal, fields, IFrame, _t) {
+], function($, Modal, _, utils, IFrame, _t){
   
-
-
-  var AbstractResourceEntryView = BaseView.extend({
-    tagName: 'div',
-    className: 'resource-entry',
-    template: _.template(
-      '<h3><%- name %></h3>' +
-      '<div class="panel-body form-horizontal">' +
-      '</div>'
-    ),
-
-    serializedModel: function(){
-      return $.extend({}, {name: this.name}, this.options);
-    },
-
-    afterRender: function(){
-      var self = this;
-      var $body = self.$('.panel-body');
-      _.each(self.fields, function(field){
-        var options = $.extend({}, field, {
-          value: self.options.data[field.name],
-          registryData: self.options.data,
-          containerData: self.options.containerData,
-          resourceName: self.options.name,
-          registryView: self.options.registryView,
-          parent: self.options.parent
-        });
-        if(!options.value){
-          options.value = '';
-        }
-        var View = field.view;
-        if(!View){
-          View = fields.ResourceInputFieldView;
-        }
-        $body.append((new View(options)).render().el);
-      });
-    }
-  });
-
-
-  var ResourceEntryView = AbstractResourceEntryView.extend({
-    fields: [{
-      name: 'name',
-      title: _t('Name'),
-      view: fields.ResourceNameFieldView
-    }, {
-      name: 'url',
-      title: _t('URL'),
-      description: _t('Resources base URL')
-    }, {
-      name: 'js',
-      title: _t('JS'),
-      description: _t('Main JavaScript file')
-    }, {
-      name: 'css',
-      title: _t('CSS/LESS'),
-      description: _t('List of CSS/LESS files to use for resource'),
-      view: fields.ResourceSortableListFieldView
-    },{
-      name: 'init',
-      title: _t('Init'), 
-      description: _t('Init instruction for requirejs shim')
-    }, {
-      name: 'deps',
-      title: _t('Dependencies'),
-      description: _t('Coma separated values of resources for requirejs shim')
-    }, {
-      name: 'export',
-      title: _t('Export'),
-      description: _t('Export vars for requirejs shim')
-    }, {
-      name: 'conf',
-      title: _t('Configuration'),
-      description: _t('Configuration in JSON for the widget'),
-      view: fields.ResourceTextAreaFieldView
-    }]
-  });
-
-
-  var BundleEntryView = AbstractResourceEntryView.extend({
-    fields: [{
-      name: 'name',
-      title: _t('Name'),
-      view: fields.ResourceNameFieldView
-    }, {
-      name: 'resources',
-      title: _t('Resources'),
-      description: _t('A main resource file to bootstrap bundle or a list of resources to load.'),
-      view: fields.BundleResourcesFieldView
-    }, {
-      name: 'depends',
-      title: _t('Depends'),
-      description: _t('Bundle this depends on'),
-      view: fields.BundleDependsFieldView
-    }, {
-      name: 'expression',
-      title: _t('Expression'),
-      description: _t('Conditional expression to decide if this resource will run')
-    }, {
-      name: 'enabled',
-      title: _t('Enabled'),
-      view: fields.ResourceBoolFieldView
-    }, {
-      name: 'conditionalcomment',
-      title: _t('Conditional comment'),
-      description: _t('For Internet Exploder hacks...')
-    }, {
-      name: 'compile',
-      title: _t('Does your bundle contain any RequireJS or LESS files?'),
-      view: fields.ResourceBoolFieldView
-    }, {
-      name: 'last_compilation',
-      title: _t('Last compilation'),
-      description: _t('Date/Time when your bundle was last compiled. Empty, if it was never compiled.'),
-      view: fields.ResourceDisplayFieldView
-    }, {
-      name: 'jscompilation',
-      title: _t('Compiled JavaScript'),
-      description: _t('Automatically generated path to the compiled JavaScript.'),
-      view: fields.ResourceDisplayFieldView
-    }, {
-      name: 'csscompilation',
-      title: _t('Compiled CSS'),
-      description: _t('Automatically generated path to the compiled CSS.'),
-      view: fields.ResourceDisplayFieldView
-    }]
-  });
-
-
-  var RegistryResourceListItem = BaseView.extend({
-    tagName: 'li',
-    type: 'resource',
-    className: 'list-group-item',
-    template: _.template(
-      '<a href="#"><%- name %></a> ' +
-      '<button class="pull-right plone-btn plone-btn-danger delete plone-btn-xs"><%- _t("Delete") %></button>'
-    ),
-    events: {
-      'click a': 'editResource',
-      'click button.delete': 'deleteClicked'
-    },
-    defaults: {
-      develop_javascript: false,
-      develop_css: false,
-      compile: true
-    },
-    afterRender: function(){
-      this.$el.attr('data-name', this.options.name);
-      this.$el.addClass(this.type + '-list-item-' + this.options.name);
-    },
-    serializedModel: function(){
-      return $.extend({}, this.defaults, {
-        name: this.options.name,
-        view: this.options.registryView
-      }, this.options.data);
-    },
-    editResource: function(e){
-      if(e){
-        e.preventDefault();
-      }
-      var options = $.extend({}, this.options, {
-        containerData: this.options.registryView.options.data.resources,
-        parent: this
-      });
-      var resource = new ResourceEntryView(options);
-      this.registryView.showResourceEditor(resource);
-
-      // and scroll to resource since huge list makes this hard to notice
-      $('html, body').animate({
-        scrollTop: resource.$el.offset().top
-      }, 1000);
-    },
-    deleteClicked: function(e){
-      e.preventDefault();
-      if(confirm(_t('Are you sure you want to delete the ' + this.options.name + ' resource?'))){
-        delete this.options.registryView.options.data.resources[this.options.name];
-        this.options.registryView.dirty = true;
-        this.options.registryView.render();
-      }
-    }
-  });
-
 
   var Builder = function(bundleName, bundleListItem){
     var self = this;
@@ -36930,13 +36745,208 @@ define('mockup-patterns-resourceregistry-url/js/registry',[
     return self;
   };
 
+  return Builder;
+});
+/* global alert:true, confirm:true */
+
+define('mockup-patterns-resourceregistry-url/js/registry',[
+  'jquery',
+  'underscore',
+  'mockup-ui-url/views/base',
+  'mockup-utils',
+  'mockup-patterns-resourceregistry-url/js/fields',
+  'mockup-patterns-resourceregistry-url/js/builder',
+  'translate'
+], function($, _, BaseView, utils, fields, Builder, _t) {
+  
+
+  var AbstractResourceEntryView = BaseView.extend({
+    tagName: 'div',
+    className: 'resource-entry',
+    template: _.template(
+      '<h3><%- name %></h3>' +
+      '<div class="panel-body form-horizontal">' +
+      '</div>'
+    ),
+
+    serializedModel: function(){
+      return $.extend({}, {name: this.name}, this.options);
+    },
+
+    afterRender: function(){
+      var self = this;
+      var $body = self.$('.panel-body');
+      _.each(self.fields, function(field){
+        var options = $.extend({}, field, {
+          value: self.options.data[field.name],
+          registryData: self.options.data,
+          containerData: self.options.containerData,
+          resourceName: self.options.name,
+          registryView: self.options.registryView,
+          parent: self.options.parent
+        });
+        if(!options.value){
+          options.value = '';
+        }
+        var View = field.view;
+        if(!View){
+          View = fields.ResourceInputFieldView;
+        }
+        $body.append((new View(options)).render().el);
+      });
+    }
+  });
+
+
+  var ResourceEntryView = AbstractResourceEntryView.extend({
+    fields: [{
+      name: 'name',
+      title: _t('Name'),
+      view: fields.ResourceNameFieldView
+    }, {
+      name: 'url',
+      title: _t('URL'),
+      description: _t('Resources base URL')
+    }, {
+      name: 'js',
+      title: _t('JS'),
+      description: _t('Main JavaScript file')
+    }, {
+      name: 'css',
+      title: _t('CSS/LESS'),
+      description: _t('List of CSS/LESS files to use for resource'),
+      view: fields.ResourceSortableListFieldView
+    },{
+      name: 'init',
+      title: _t('Init'), 
+      description: _t('Init instruction for requirejs shim')
+    }, {
+      name: 'deps',
+      title: _t('Dependencies'),
+      description: _t('Coma separated values of resources for requirejs shim')
+    }, {
+      name: 'export',
+      title: _t('Export'),
+      description: _t('Export vars for requirejs shim')
+    }, {
+      name: 'conf',
+      title: _t('Configuration'),
+      description: _t('Configuration in JSON for the widget'),
+      view: fields.ResourceTextAreaFieldView
+    }]
+  });
+
+
+  var BundleEntryView = AbstractResourceEntryView.extend({
+    fields: [{
+      name: 'name',
+      title: _t('Name'),
+      view: fields.ResourceNameFieldView
+    }, {
+      name: 'resources',
+      title: _t('Resources'),
+      description: _t('A main resource file to bootstrap bundle or a list of resources to load.'),
+      view: fields.BundleResourcesFieldView
+    }, {
+      name: 'depends',
+      title: _t('Depends'),
+      description: _t('Bundle this depends on'),
+      view: fields.BundleDependsFieldView
+    }, {
+      name: 'expression',
+      title: _t('Expression'),
+      description: _t('Conditional expression to decide if this resource will run')
+    }, {
+      name: 'enabled',
+      title: _t('Enabled'),
+      view: fields.ResourceBoolFieldView
+    }, {
+      name: 'conditionalcomment',
+      title: _t('Conditional comment'),
+      description: _t('For Internet Exploder hacks...')
+    }, {
+      name: 'compile',
+      title: _t('Does your bundle contain any RequireJS or LESS files?'),
+      view: fields.ResourceBoolFieldView
+    }, {
+      name: 'last_compilation',
+      title: _t('Last compilation'),
+      description: _t('Date/Time when your bundle was last compiled. Empty, if it was never compiled.'),
+      view: fields.ResourceDisplayFieldView
+    }, {
+      name: 'jscompilation',
+      title: _t('Compiled JavaScript'),
+      description: _t('Automatically generated path to the compiled JavaScript.'),
+      view: fields.ResourceDisplayFieldView
+    }, {
+      name: 'csscompilation',
+      title: _t('Compiled CSS'),
+      description: _t('Automatically generated path to the compiled CSS.'),
+      view: fields.ResourceDisplayFieldView
+    }]
+  });
+
+
+  var RegistryResourceListItem = BaseView.extend({
+    tagName: 'li',
+    type: 'resource',
+    className: 'list-group-item',
+    template: _.template(
+      '<a href="#"><%- name %></a> ' +
+      '<button class="pull-right plone-btn plone-btn-danger delete plone-btn-xs"><%- _t("Delete") %></button>'
+    ),
+    events: {
+      'click a': 'editResource',
+      'click button.delete': 'deleteClicked'
+    },
+    defaults: {
+      develop_javascript: false,
+      develop_css: false,
+      compile: true
+    },
+    afterRender: function(){
+      this.$el.attr('data-name', this.options.name);
+      this.$el.addClass(this.type + '-list-item-' + this.options.name);
+    },
+    serializedModel: function(){
+      return $.extend({}, this.defaults, {
+        name: this.options.name,
+        view: this.options.registryView
+      }, this.options.data);
+    },
+    editResource: function(e){
+      if(e){
+        e.preventDefault();
+      }
+      var options = $.extend({}, this.options, {
+        containerData: this.options.registryView.options.data.resources,
+        parent: this
+      });
+      var resource = new ResourceEntryView(options);
+      this.registryView.showResourceEditor(resource, this, 'resource');
+
+      // and scroll to resource since huge list makes this hard to notice
+      $('html, body').animate({
+        scrollTop: resource.$el.offset().top
+      }, 1000);
+    },
+    deleteClicked: function(e){
+      e.preventDefault();
+      if(confirm(_t('Are you sure you want to delete the ' + this.options.name + ' resource?'))){
+        delete this.options.registryView.options.data.resources[this.options.name];
+        this.options.registryView.dirty = true;
+        this.options.registryView.render();
+      }
+    }
+  });
+
 
   var RegistryBundleListItem = RegistryResourceListItem.extend({
     type: 'bundle',
-    showActions: false,
+    active: false,
     template: _.template(
       '<a href="#"><%- name %></a> ' +
-      '<div class="actions>' +
+      '<div class="actions">' +
         '<div class="plone-btn-group">' +
           '<% if(view.options.data.development) { %>' +
             '<% if(develop_javascript){ %>' +
@@ -36976,8 +36986,8 @@ define('mockup-patterns-resourceregistry-url/js/registry',[
     },
     afterRender: function(){
       RegistryResourceListItem.prototype.afterRender.apply(this);
-      if(this.showActions){
-        this.$el.find('.actions').show();
+      if(this.active){
+        this.editResource();
       }
     },
     editResource: function(e){
@@ -36989,7 +36999,15 @@ define('mockup-patterns-resourceregistry-url/js/registry',[
         parent: this
       });
       var resource = new BundleEntryView(options);
-      this.registryView.showResourceEditor(resource);
+      this.registryView.showResourceEditor(resource, this, 'bundle');
+
+      // only one can be edited at a time, deactivate
+      _.each(this.options.registryView.items.bundles, function(bundleItem){
+        bundleItem.active = false;
+      });
+      this.active = true;
+      this.$el.parent().find('.list-group-item').removeClass('active');
+      this.$el.addClass('active');
     },
     deleteClicked: function(e){
       e.preventDefault();
@@ -37016,6 +37034,7 @@ define('mockup-patterns-resourceregistry-url/js/registry',[
     tagName: 'div',
     className: 'tab-pane',
     $form: null,
+    activeResource: null,
 
     initialize: function(options) {
       var self = this;
@@ -37037,7 +37056,12 @@ define('mockup-patterns-resourceregistry-url/js/registry',[
       */
     },
 
-    showResourceEditor: function(resource){
+    showResourceEditor: function(resource, view, type){
+      this.activeResource = {
+        resource: resource,
+        item: view,
+        type: type
+      };
       this.$form.empty().append(resource.render().el);
     },
 
@@ -37179,23 +37203,38 @@ define('mockup-patterns-resourceregistry-url/js/registry',[
         resources: {}
       };
       _.each(bundles, function(resourceName){
-        var item = new RegistryBundleListItem({
-          data: data.bundles[resourceName],
-          name: resourceName,
-          registryView: self});
+        var item;
+        if(self.activeResource && self.activeResource.type === 'bundle' && self.activeResource.item.options.name === resourceName){
+          item = self.activeResource.item;
+        }else{
+          item = new RegistryBundleListItem({
+            data: data.bundles[resourceName],
+            name: resourceName,
+            registryView: self});
+        }
         self.items.bundles[resourceName] = item;
         self.$bundles.append(item.render().el);
       });
       var resources = _.sortBy(_.keys(data.resources), function(v){ return v.toLowerCase(); });
       _.each(resources, function(resourceName){
-        var item = new RegistryResourceListItem({
-          data: data.resources[resourceName],
-          name: resourceName,
-          registryView: self});
+        var item;
+        if(self.activeResource && self.activeResource.type === 'resource' && self.activeResource.item.options.name === resourceName){
+          item = self.activeResource.item;
+        } else {
+          item = new RegistryResourceListItem({
+            data: data.resources[resourceName],
+            name: resourceName,
+            registryView: self});
+        }
         self.items.resources[resourceName] = item;
         self.$resources.append(item.render().el);
       });
       BaseResourcesPane.prototype.afterRender.apply(self);
+
+      // finally, show edit pane if there is an active resource
+      if(self.activeResource){
+        self.showResourceEditor(self.activeResource.resource, self.activeResource.item, self.activeResource.type);
+      }
       return self;
     },
 
