@@ -9,7 +9,7 @@ class ScriptsView(ResourceView):
 
     def get_data(self, bundle, result):
         bundle_name = bundle.__prefix__.split('/', 1)[1].rstrip('.')
-        if self.development and getattr(bundle, 'develop_javascript', False):
+        if self.develop_bundle(bundle, 'develop_javascript'):
             resources = self.get_resources()
             for resource in bundle.resources:
                 if resource in resources:

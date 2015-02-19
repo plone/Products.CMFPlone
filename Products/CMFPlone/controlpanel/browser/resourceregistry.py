@@ -12,8 +12,10 @@ from zExceptions import NotFound
 from zope.component import getUtility
 import json
 from Products.CMFPlone.resources import add_bundle_on_request
+from Products.CMFPlone.resources import RESOURCE_DEVELOPMENT_MODE
 from plone.registry import field
 from plone.registry.record import Record
+from Products.statusmessages.interfaces import IStatusMessage
 
 
 class JSONEncoder(json.JSONEncoder):
@@ -128,6 +130,11 @@ class ResourceRegistryControlPanelView(RequireJsView):
                     'msg': 'Invalid action: ' + action
                 })
         else:
+            if RESOURCE_DEVELOPMENT_MODE:
+                messages = IStatusMessage(self.request)
+                messages.add(u"The FEDEV environment variable is set. No matter "
+                             u"what settings are done here, all bundles will "
+                             u"always be in development mode.", type=u"warn")
             return self.index()
 
     @property

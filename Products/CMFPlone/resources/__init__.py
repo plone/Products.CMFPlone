@@ -1,5 +1,11 @@
 from zope.component import adapter
 from plone.app.theming.interfaces import IThemeAppliedEvent
+import os
+
+
+RESOURCE_DEVELOPMENT_MODE = False
+if os.getenv('FEDEV', '').lower() == 'true':
+    RESOURCE_DEVELOPMENT_MODE = True
 
 
 @adapter(IThemeAppliedEvent)

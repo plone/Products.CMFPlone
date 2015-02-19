@@ -42,7 +42,7 @@ class StylesView(ResourceView):
         bundle_name = bundle.__prefix__.split(
             '/',
             1)[1].rstrip('.') if bundle else 'none'
-        if self.development and getattr(bundle, 'develop_css', False):
+        if self.develop_bundle(bundle, 'develop_css'):
             self.resources = self.get_resources()
             # The bundle resources
             for resource in bundle.resources:
