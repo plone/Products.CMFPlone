@@ -148,6 +148,19 @@ class ILanguageSchema(Interface):
         required=False
     )
 
+    display_flags = schema.Bool(
+        title=_(
+            u'label_display_flags',
+            default=u"Show language flags"
+        ),
+        description=_(
+            u"help_display_flags",
+            default=u""
+        ),
+        default=False,
+        required=False
+    )
+
     model.fieldset(
         'negotiation_scheme',
         label=_(u'Negotiation scheme', default=u'Negotiation scheme'),

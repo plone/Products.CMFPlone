@@ -94,6 +94,30 @@ class LanguageControlPanelAdapterTest(unittest.TestCase):
             True
         )
 
+    def test_get_display_flags(self):
+        self.assertEqual(
+            getAdapter(
+                self.portal, ILanguageSchema).display_flags,
+            False
+        )
+        self.settings.display_flags = True
+        self.assertEquals(
+            getAdapter(self.portal, ILanguageSchema).display_flags,
+            True
+        )
+
+    def test_set_display_flags(self):
+        self.assertEquals(
+            self.settings.display_flags,
+            False
+        )
+        getAdapter(
+            self.portal, ILanguageSchema).display_flags = True
+        self.assertEquals(
+            self.settings.display_flags,
+            True
+        )
+
     def test_get_use_content_negotiation(self):
         self.assertEqual(
             getAdapter(

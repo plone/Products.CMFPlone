@@ -119,6 +119,25 @@ class LanguageControlPanelFunctionalTest(unittest.TestCase):
 
         self.assertEqual(settings.use_combined_language_codes, True)
 
+    def test_display_flags(self):
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(ILanguageSchema, prefix='plone')
+        self.browser.open(
+            "%s/@@language-controlpanel" % self.portal_url)
+        self.assertEqual(settings.display_flags, False)
+        self.assertEqual(
+            self.browser.getControl(
+                'Show language flags'
+            ).selected,
+            False
+        )
+        self.browser.getControl(
+            'Show language flags'
+        ).selected = True
+        self.browser.getControl('Save').click()
+
+        self.assertEqual(settings.display_flags, True)
+
     def test_use_content_negotiation(self):
         registry = getUtility(IRegistry)
         settings = registry.forInterface(ILanguageSchema, prefix='plone')

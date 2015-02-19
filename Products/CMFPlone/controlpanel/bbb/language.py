@@ -46,6 +46,14 @@ class LanguageControlPanelAdapter(object):
     use_combined_language_codes = property(get_use_combined_language_codes,
                                            set_use_combined_language_codes)
 
+    def get_display_flags(self):
+        return self.settings.display_flags
+
+    def set_display_flags(self, value):
+        self.settings.display_flags = value
+
+    display_flags = property(get_display_flags,
+                                           set_display_flags)
     def get_use_content_negotiation(self):
         return self.settings.use_content_negotiation
 
