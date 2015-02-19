@@ -20,7 +20,7 @@ this_dir = os.path.dirname(os.path.realpath(__file__))
 
 
 def main(argv=sys.argv):
-    args = parser.parse_args()
+    args, _ = parser.parse_known_args()
     instance = args.instance
     if not instance:
         # look for it, get bin directory, search for plone instance

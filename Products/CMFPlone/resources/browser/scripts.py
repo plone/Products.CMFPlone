@@ -9,22 +9,7 @@ class ScriptsView(ResourceView):
 
     def get_data(self, bundle, result):
         bundle_name = bundle.__prefix__.split('/', 1)[1].rstrip('.')
-        if self.development is False:
-            if bundle.compile is False:
-                # Its a legacy css bundle
-                if not bundle.last_compilation\
-                        or self.last_legacy_import > bundle.last_compilation:
-                    # We need to compile
-                    cookWhenChangingSettings(self.context, bundle)
-            if bundle.jscompilation:
-                result.append({
-                    'bundle': bundle_name,
-                    'conditionalcomment': bundle.conditionalcomment,
-                    'src': '%s/%s?version=%s' % (
-                        self.portal_url, bundle.jscompilation,
-                        bundle.last_compilation)
-                })
-        else:
+        if self.development and getattr(bundle, 'develop_javascript', False):
             resources = self.get_resources()
             for resource in bundle.resources:
                 if resource in resources:
@@ -42,6 +27,21 @@ class ScriptsView(ResourceView):
                             'conditionalcomment': bundle.conditionalcomment,  # noqa
                             'src': src}
                         result.append(data)
+        else:
+            if bundle.compile is False:
+                # Its a legacy css bundle
+                if not bundle.last_compilation\
+                        or self.last_legacy_import > bundle.last_compilation:
+                    # We need to compile
+                    cookWhenChangingSettings(self.context, bundle)
+            if bundle.jscompilation:
+                result.append({
+                    'bundle': bundle_name,
+                    'conditionalcomment': bundle.conditionalcomment,
+                    'src': '%s/%s?version=%s' % (
+                        self.portal_url, bundle.jscompilation,
+                        bundle.last_compilation)
+                })
 
     def scripts(self):
         """The requirejs scripts, the ones that are not resources are loaded on
@@ -96,8 +96,8 @@ class ScriptsView(ResourceView):
         result.extend(self.ordered_bundles_result())
 
         # Add manual added resources
-        resources = self.get_resources()
         if hasattr(self.request, 'enabled_resources'):
+            resources = self.get_resources()
             for resource in self.request.enabled_resources:
                 if resource in resources:
                     data = resources[resource]

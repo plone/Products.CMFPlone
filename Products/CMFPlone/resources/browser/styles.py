@@ -42,7 +42,15 @@ class StylesView(ResourceView):
         bundle_name = bundle.__prefix__.split(
             '/',
             1)[1].rstrip('.') if bundle else 'none'
-        if self.development is False:
+        if self.development and getattr(bundle, 'develop_css', False):
+            self.resources = self.get_resources()
+            # The bundle resources
+            for resource in bundle.resources:
+                if resource in self.resources:
+                    style = self.resources[resource]
+                    for data in self.get_urls(style, bundle):
+                        result.append(data)
+        else:
             if bundle.compile is False:
                 # Its a legacy css bundle
                 if not bundle.last_compilation\
@@ -61,14 +69,6 @@ class StylesView(ResourceView):
                         bundle.last_compilation
                     )
                 })
-        else:
-            self.resources = self.get_resources()
-            # The bundle resources
-            for resource in bundle.resources:
-                if resource in self.resources:
-                    style = self.resources[resource]
-                    for data in self.get_urls(style, bundle):
-                        result.append(data)
 
     def styles(self):
         """
@@ -79,7 +79,7 @@ class StylesView(ResourceView):
         resources = self.get_resources()
         if hasattr(self.request, 'enabled_resources'):
             for resource in self.request.enabled_resources:
-                if resource in resources:                
+                if resource in resources:
                     for data in self.get_urls(resources[resource], None):
                         result.append(data)
 

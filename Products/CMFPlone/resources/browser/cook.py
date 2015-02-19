@@ -19,7 +19,7 @@ def cookWhenChangingSettings(context, bundle):
     """
     registry = getUtility(IRegistry)
     resources = registry.collectionOfInterface(
-        IResourceRegistry, prefix="plone.resources")
+        IResourceRegistry, prefix="plone.resources", check=False)
 
     # Let's join all css and js
     css_file = ""

@@ -27,8 +27,8 @@ from zope.component import getUtility
 from plone.registry.interfaces import IRegistry
 
 registry = getUtility(IRegistry)
-bundles = registry.collectionOfInterface(IBundleRegistry, prefix="plone.bundles")  # noqa
-resources = registry.collectionOfInterface(IResourceRegistry, prefix="plone.resources")  # noqa
+bundles = registry.collectionOfInterface(IBundleRegistry, prefix="plone.bundles", check=False)  # noqa
+resources = registry.collectionOfInterface(IResourceRegistry, prefix="plone.resources", check=False)  # noqa
 lessvariables = registry.records['plone.lessvariables'].value
 
 gruntfile_template = """
