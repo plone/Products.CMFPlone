@@ -8,6 +8,12 @@ Changelog
 5.0b1 (unreleased)
 ------------------
 
+- Add __version__ attribute to __init__.py. This allows us to retrieve the
+  current Plone version with 'Products.CMFPlone.__version__'. Even though this
+  is no offical standard, many packages in the Python standard library provide
+  this.
+  [timo]
+
 - Replaced the legacy mark_special_links javascript with a
   corresponding mockup pattern.
   [fulv]
