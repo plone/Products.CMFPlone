@@ -1,10 +1,12 @@
-from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFCore.utils import getToolByName
-import logging
+from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone.interfaces import INonInstallable
 from Products.Five.browser import BrowserView
-from Products.statusmessages.interfaces import IStatusMessage
 from Products.GenericSetup import EXTENSION
+from Products.statusmessages.interfaces import IStatusMessage
 from plone.memoize import view
+from zope.component import getAllUtilitiesRegisteredFor
+import logging
 
 
 class ManageProductsView(BrowserView):
@@ -25,12 +27,19 @@ class ManageProductsView(BrowserView):
     def marshall_addons(self):
         addons = {}
 
+        ignore_profiles = []
+        utils = getAllUtilitiesRegisteredFor(INonInstallable)
+        for util in utils:
+            ignore_profiles.extend(util.getNonInstallableProfiles())
+
         profiles = self.ps.listProfileInfo()
         for profile in profiles:
             if profile['type'] != EXTENSION:
                 continue
 
             pid = profile['id']
+            if pid in ignore_profiles:
+                continue
             pid_parts = pid.split(':')
             if len(pid_parts) != 2:
                 logging.error("Profile with id '%s' is invalid." % pid)
@@ -153,12 +162,12 @@ class ManageProductsView(BrowserView):
         try:
             qi.upgradeProduct(product)
             messages.addStatusMessage(
-                _(u'Upgraded ${product}!', mapping={'addon', product}), type="info")
+                _(u'Upgraded ${product}!', mapping={'product', product}), type="info")
             return True
         except Exception, e:
             logging.error("Could not upgrade %s: %s" % (product, e))
             messages.addStatusMessage(
-                _(u'Error upgrading %{addon}.', mapping={'addon': product}), type="error")
+                _(u'Error upgrading ${product}.', mapping={'product': product}), type="error")
 
         return False
 
@@ -194,7 +203,7 @@ class InstallProductsView(BrowserView):
                 # TODO: find out where this is and don't run already
                 # activated profiles
                 setupTool.runAllImportStepsFromProfile(profile)
-                msg = _(u'Installed ${product}!', mapping={'addon': profile})
+                msg = _(u'Installed ${product}!', mapping={'product': profile})
                 messages.addStatusMessage(msg, type=msg_type)
 
         purl = getToolByName(self.context, 'portal_url')()
@@ -213,11 +222,11 @@ class UninstallProductsView(BrowserView):
             for product in products:
                 try:
                     qi.uninstallProducts(products=[product, ])
-                    msg = _(u'Uninstalled ${product}.', mapping={'addon': product})
+                    msg = _(u'Uninstalled ${product}.', mapping={'product': product})
                 except Exception, e:
                     logging.error("Could not uninstall %s: %s" % (product, e))
                     msg_type = 'error'
-                    msg = _(u'Error uninstalling ${product}.', mapping={'addon': product})
+                    msg = _(u'Error uninstalling ${product}.', mapping={'product': product})
                 messages.addStatusMessage(msg, type=msg_type)
 
         purl = getToolByName(self.context, 'portal_url')()
