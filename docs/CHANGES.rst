@@ -8,11 +8,6 @@ Changelog
 4.3.5 (unreleased)
 ------------------
 
-- Fix: If a user "deletes" the same item twice (ex.: having two different tabs 
-  open and not realising it's already been deleted) any higher level item with 
-  the same short name will be deleted without trace. 
-  [gotcha]
-
 - Extended ulocalized_time for target_language
   [agitator]
 
