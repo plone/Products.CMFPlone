@@ -18,9 +18,7 @@ REQUEST = context.REQUEST
 if REQUEST.get('REQUEST_METHOD', 'GET').upper() == 'GET':
     raise Unauthorized('This method can not be accessed using a GET request')
 
-parent_path = '/'.join(REQUEST.physicalPathFromURL(REQUEST.URL2))
-parent = context.restrictedTraverse(parent_path)
-
+parent = context.aq_inner.aq_parent
 title = safe_unicode(context.title_or_id())
 
 try:
@@ -37,15 +35,6 @@ else:
     authenticator = context.restrictedTraverse('@@authenticator', None)
     if not authenticator.verify():
         raise Forbidden
-
-    id = context.getId()
-    item = parent.get(id, parent)
-    if item == parent:
-        message = _(u'${title} does not exist and cannot be deleted.',
-                    mapping={u'title': title})
-        context.plone_utils.addPortalMessage(message, type='error')
-        return state.set(status='failure')
-
     parent.manage_delObjects(context.getId())
     message = _(u'${title} has been deleted.',
                 mapping={u'title': title})
