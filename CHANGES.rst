@@ -8,6 +8,11 @@ Changelog
 5.0b1 (unreleased)
 ------------------
 
+- Remove the remaining ``Topic`` entry in ``default_page_types`` from
+  ``propertiestool.xml``. This setting is now done in
+  ``plone.app.contenttypes`` respectively ``Products.ATContentTypes``.
+  [thet]
+
 - Add __version__ attribute to __init__.py. This allows us to retrieve the
   current Plone version with 'Products.CMFPlone.__version__'. Even though this
   is no offical standard, many packages in the Python standard library provide
