@@ -1,30 +1,30 @@
 <div id="portal-searchbox"
      i18n:domain="plone"
-     tal:define="navigation_root_url view/navigation_root_url;
-                 search_input_id view/search_input_id;">
+     tal:define="navigation_root_url view/navigation_root_url;">
 
     <form id="searchGadget_form"
           action="@@search"
           role="search"
           tal:attributes="action string:${navigation_root_url}/@@search;
-                          id string:${search_input_id}_form;">
+                          data-pat-livesearch string:ajaxUrl:${navigation_root_url}/@@ajax-search;
+                          class python: view.livesearch and 'pat-livesearch' or ''">
 
         <div class="LSBox">
         <label class="hiddenStructure"
-               tal:attributes="for search_input_id"
+               for="searchGadget"
                i18n:translate="text_search">Search Site</label>
 
         <input name="SearchableText"
                type="text"
                size="18"
                value=""
+               id="searchGadget"
                title="Search Site"
                placeholder="Search Site"
                accesskey="4"
                i18n:attributes="title title_search_site;
                                 placeholder title_search_site"
-               tal:attributes="value request/form/SearchableText|nothing;
-                               id search_input_id"
+               tal:attributes="value request/form/SearchableText|nothing;"
                class="searchField" />
 
         <input class="searchButton"
@@ -46,8 +46,6 @@
                 only in current section
             </label>
         </div>
-
-        <div class="LSResult" id="LSResult"><div class="LSShadow" id="LSShadow"></div></div>
         </div>
     </form>
 

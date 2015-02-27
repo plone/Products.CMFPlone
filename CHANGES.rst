@@ -8,6 +8,12 @@ Changelog
   properties (see https://github.com/plone/Products.CMFPlone/issues/216).
   [jcerjak]
 
+- use livesearch pattern
+  [vangheem]
+
+- use configuration registry pattern options
+  [vangheem]
+
 - Added support for site logos stored in the portal registry via the site
   control panel for the logo viewlet with a fallback to the ``OFS.Image``
   based ``logo.png`` file. Removed support of long-gone
