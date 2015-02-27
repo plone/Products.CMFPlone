@@ -8,6 +8,9 @@ Changelog
 5.0b1 (unreleased)
 ------------------
 
+- Read security settings from the registry instead of portal properties.
+  [jcerjak,timo]
+
 - Fix tests for plone.app.contenttypes unified view names, which uses
   ``listing_view`` for Folder and Collection types.
   [thet]

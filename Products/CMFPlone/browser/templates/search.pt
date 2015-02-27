@@ -147,7 +147,7 @@
                                       <div class="search-type-options">
                                         <tal:div
                                            tal:define="typeLists python:context.createMultiColumnList(types_list, numCols=2, sort_on='self');"
-                                           
+
                                            tal:repeat="sublist typeLists">
                                           <tal:items repeat="type sublist">
                                             <div>
@@ -240,7 +240,7 @@
 
                     </dl>
 
-                    
+
                 </div>
 
 
@@ -275,7 +275,7 @@
                                                    toLocalizedTime nocall: context/@@plone/toLocalizedTime;
                                                    site_properties context/portal_properties/site_properties;
                                                    use_view_action site_properties/typesUseViewActionInListings|python:();
-                                                   allowAnonymousViewAbout site_properties/allowAnonymousViewAbout;
+                                                   allowAnonymousViewAbout python:context.portal_registry['plone.allow_anon_views_about'];
                                                    show_about python:not isAnon or allowAnonymousViewAbout;">
                           <ol class="searchResults">
                               <tal:results repeat="item batch">
