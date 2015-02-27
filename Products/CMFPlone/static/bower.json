@@ -1,6 +1,6 @@
 {
   "name": "Products.CMFPlone",
-  "version": "5.0a2",
+  "version": "5.0a3",
   "description": "CMFPlone Javascript Bundle",
   "dependencies": {
     "ace-builds": "1.1.7",
@@ -15,18 +15,21 @@
     "jquery-form": "3.46.0",
     "jquery.cookie": "1.4.1",
     "lodash": "2.4.1",
-    "mockup-core": "1.2.15",
+    "mockup-core": "2.1.3",
     "moment": "2.8.3",
     "pickadate": "3.4.0",
     "requirejs-text": "2.0.12",
     "select2": "3.5.1",
-    "tinymce": "4.1.6",
-
-    "tinymce-builded": "4.1.0",
-
+    "jquery.recurrenceinput.js": "v1.3",
+    "tinymce-builded": "4.1.6",
+    "patternslib": "2.0.8",
     "requirejs": "",
     "less": "2.1.2",
-    "r.js": "2.1.14"
+    "r.js": "2.1.15"
+  },
+  "resolutions": {
+    "jquery": "1.11.1",
+    "select2": "3.5.1"
   },
   "devDependencies": {
     "expect": "0.3.1",

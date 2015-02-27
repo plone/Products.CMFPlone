@@ -3,6 +3,7 @@ from zope.component import getUtility
 from plone.resource.interfaces import IResourceDirectory
 from Products.CMFPlone.interfaces.resources import (
     OVERRIDE_RESOURCE_DIRECTORY_NAME)
+from zope.globalrequest import getRequest
 
 
 class PloneBundlesTraverser(ResourceTraverser):
@@ -11,10 +12,11 @@ class PloneBundlesTraverser(ResourceTraverser):
 
     def traverse(self, name, remaining):
         # in case its not a request get the default one
-        if 'PATH_INFO' not in self.context.REQUEST.environ:
+        req = getRequest()
+        if 'PATH_INFO' not in req.environ:
             return super(PloneBundlesTraverser, self).traverse(name, remaining)
 
-        resource_path = self.context.REQUEST.environ['PATH_INFO'].split('++plone++')[-1]  # noqa
+        resource_path = req.environ['PATH_INFO'].split('++plone++')[-1]
         resource_name, resource_filepath = resource_path.split('/', 1)
 
         persistentDirectory = getUtility(IResourceDirectory, name="persistent")

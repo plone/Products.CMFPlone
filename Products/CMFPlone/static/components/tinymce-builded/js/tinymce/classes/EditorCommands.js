@@ -386,7 +386,7 @@ define("tinymce/EditorCommands", [
 				// Setup parser and serializer
 				parser = editor.parser;
 				serializer = new Serializer({}, editor.schema);
-				bookmarkHtml = '<span id="mce_marker" data-mce-type="bookmark">&#xFEFF;&#200B;</span>';
+				bookmarkHtml = '<span id="mce_marker" data-mce-type="bookmark">&#xFEFF;&#x200B;</span>';
 
 				// Run beforeSetContent handlers on the HTML to be inserted
 				args = {content: value, format: 'html', selection: true};
@@ -434,7 +434,9 @@ define("tinymce/EditorCommands", [
 
 					for (node = node.prev; node; node = node.walk(true)) {
 						if (node.type == 3 || !dom.isBlock(node.name)) {
-							node.parent.insert(marker, node, node.name === 'br');
+							if (editor.schema.isValidChild(node.parent.name, 'span')) {
+								node.parent.insert(marker, node, node.name === 'br');
+							}
 							break;
 						}
 					}

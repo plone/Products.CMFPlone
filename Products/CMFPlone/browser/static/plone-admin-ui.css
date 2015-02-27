@@ -1,0 +1,53 @@
+body { font-family: 'Roboto', sans-serif; line-height: 1.25; clear: both; background: #f4f4f4; padding: 0; margin:0;}
+#box { max-width: 670px; padding: 40px; background: #fff; background: rgba(255,255,255,.95); box-shadow: 0 0 5px rgba(0,0,0,.15); border-radius: 3px; margin:40px auto;}
+
+ul {padding: 0;}
+ul ul {padding: 1em}
+pre {background: #fea;padding: 20px;border-radius: 3px; margin:0 0 40px;word-wrap: break-word;}
+a {color: #0184bf; text-decoration: none;}
+a:hover, a:active {text-decoration: underline;}
+p {color: #666; margin:0;}
+h1 {color: #000; font-weight: 300; font-size: 200%; margin:0; line-height: 1.25}
+h2 {font-size: 100%; color: #666; font-weight: 400; margin:20px 0; line-height: 1.25}
+header h1 {margin: 0 0 40px; padding: 0 0 40px; border-bottom: 1px solid #d9d9d9;}
+footer {border-top:1px solid #d9d9d9; padding-top: 40px; margin-top: 40px;}
+
+.circle {width: 150px; height: 150px; text-align:center; border-radius: 50%; margin: -10px 0 20px 40px; float: right; background: #56a1b9;}
+.circle img {margin-top: 25px}
+.sites {padding: 0;}
+.sites li {list-style: none; padding-left: 20px; position: relative; margin-bottom: 10px;}
+.sites li a:hover:after{content:""; width: 12px; height: 12px; border:2px solid #56a1b9; border-radius: 50%; position: absolute; left: 0; margin-top: 2px;}
+.sites li:before  {content:"";width: 6px; height: 6px; background:#56a1b9; border-radius: 50%; position: absolute; left: 5px; margin-top: 7px;}
+.discreet, .formHelp {font-size: 87.5%; color: #767676; font-weight: 300;}
+.field {margin: 0 0 20px;}
+.formControls {margin-top: 40px;}
+.upgrade-warning {color: #b7000d; font-size: 87.5%; padding-left: 30px; margin:10px 0;}
+.backup-warning {color: #b7000d; padding-left: 30px; margin:10px 0;}
+.upgrade-warning:before {content:"!"; color:#fff; text-align: center; background: #b7000d; border-radius: 50%; width: 20px; height: 20px; position: absolute; margin-left: -30px;}
+.upgrade-info {font-size: 87.5%; padding-left: 30px; margin:10px 0;}
+.upgrade-info:before {content:"i"; color:#fff; text-align: center; background: #56a1b9; border-radius: 50%; width: 20px; height: 20px; position: absolute; margin-left: -30px;}
+.version-list {font-size: 87.5%; margin-left: 20px;}
+
+input, select {background:#fff;outline:0;font-family: 'Roboto', sans-serif; font-size: 16px; height: 18px; border-radius: 2px; width:280px; min-width: 180px; display: block; border:1px solid #ccc; padding:10px; margin:5px 0 0;}
+select {height: 45px; width: 300px;}
+input:focus, select:focus {border-color: #a2a2a2; background: #fffbea; box-shadow: inset 0 1px 3px rgba(0,0,0,.15);}
+[type="submit"], .plone-btn {background: #0184bf; color: #fff; font-family: 'Roboto', sans-serif; font-size: 16px; height: 40px; border: 0; border-radius: 2px; min-width: 200px; display: block; cursor: pointer; margin:10px 0;}
+.plone-btn-secondary {background: #a2a2a2;}
+[type="submit"]:hover, .plone-btn:hover {box-shadow: inset 0 0 0 40px rgba(0,0,0,.15), 0 1px 3px rgba(0,0,0,.15);}
+[type="submit"]:active, .plone-btn:active, [type="submit"]:focus, .plone-btn:focus {box-shadow: inset 0 0 0 40px rgba(0,0,0,.15), 0 2px 6px rgba(0,0,0,.25); outline: 0}
+a.plone-btn {line-height: 2.5;display: inline-block;text-align: center; text-decoration: none !important; background:#0184bf;}
+label [type="checkbox"], label [type="radio"] {float: left; width: 20px; margin:2px 0 0; box-shadow: none !important;}
+fieldset {border: 0; margin: 40px 0; padding:0;}
+fieldset fieldset {outline:1px solid #d9d9d9; padding: 20px; font-size: 87.5%; color: #666; margin:20px 0;}
+legend {font-size: 150%; font-weight: 300; border-top: 1px solid #d9d9d9; width: 100%; padding-top: 20px;}
+fieldset fieldset legend {border:0; font-size: 100%; color: #000; font-weight: 400;}
+.addons-group {margin-bottom: 10px;}
+ul li {list-style: none;}
+#add-plone-site input[type="submit"] { display: inline; }
+
+@media screen and (max-width: 667px){
+    body, html {background: #fff;}
+    #box  { box-shadow: none; border-radius: 0; margin: 0; padding: 20px;}
+    .circle {float:none; margin: 0 auto;}
+    header h1 {padding: 0 0 20px;}
+}

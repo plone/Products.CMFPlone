@@ -6,6 +6,7 @@ Resource  plone/app/robotframework/saucelabs.robot
 Library  Remote  ${PLONE_URL}/RobotRemote
 
 Resource  keywords.robot
+Resource  common.robot
 
 Test Setup  Open SauceLabs test browser
 Test Teardown  Run keywords  Report test status  Close all browsers
@@ -88,8 +89,8 @@ I enable lock on through the web
 
 I can see an id field in the settings tab when I create a document
   Go To  ${PLONE_URL}/++add++Document
-  Wait until page contains  Add Page
-  Input Text  name=form.widgets.IDublinCore.title  My Document
+  Given patterns are loaded
+  Execute Javascript  $('#form-widgets-IDublinCore-title').val('My Document'); return 0;
   Click Link  Settings
   Page should contain element  name=form.widgets.IShortName.id
   Input Text  name=form.widgets.IShortName.id  this-is-my-custom-short-name

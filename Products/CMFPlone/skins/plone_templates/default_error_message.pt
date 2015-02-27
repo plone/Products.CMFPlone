@@ -23,7 +23,6 @@
                  err_log_url options/error_log_url|nothing;
                  err_log_id options/error_log_id|nothing;
                  isAnon context/@@plone_portal_state/anonymous;
-                 show_about python:not isAnon or context.portal_registry['plone.allow_anon_views_about'];
                  toLocalizedTime nocall: context/@@plone/toLocalizedTime;">
 
         <metal:notfound tal:condition="python:err_type=='NotFound'">
@@ -74,53 +73,24 @@
 
                         <tal:firstparent condition="first_parent/absolute_url | nothing">
                             <li tal:define="result_url first_parent/absolute_url;
-                                               result_type python:hasattr(first_parent, 'getTypeInfo') and first_parent.getTypeInfo().getId();
-                                               item_icon python:plone_view.getIcon(first_parent);
-                                               url python:test(result_type in use_view_action, result_url+'/view', result_url);"
-                                       tal:condition="result_type">
-                                <a tal:define="item_wf_state_class python:'state-' + context.portal_workflow.getInfoFor(first_parent, 'review_state', '');"
-                                    tal:attributes="class python:'contenttype-' + normalizeString(result_type)"
-                                    href="#"
-                                     tal:attributes="href url;
-                                                     class string:$item_wf_state_class"
-                                     tal:content="first_parent/Title">
-                                  <img tal:replace="structure item_icon/html_tag" />
-                                    <span class="discreet" i18n:translate="results_by_author"
-                                      tal:condition="show_about">
-                                    by <span tal:omit-tag="" tal:content="first_parent/Creator" i18n:name="author">Author</span>,
-                                    <span tal:omit-tag="" tal:content="python:toLocalizedTime(first_parent.ModificationDate(), long_format=1)" i18n:name="date">Modification Date</span>
-                                    </span>
-
-                                </a>
-
+                                            result_type python:hasattr(first_parent, 'getTypeInfo') and first_parent.getTypeInfo().getId();
+                                            url python:result_url + '/view' if result_type in use_view_action else result_url;"
+                                tal:condition="result_type">
+                                <a href="${url}"
+                                   tal:define="item_wf_state_class python:' state-' + context.portal_workflow.getInfoFor(first_parent, 'review_state', '');"
+                                   tal:attributes="class python:'contenttype-' + normalizeString(result_type) + item_wf_state_class">${first_parent/Title}</a>
                                 <span tal:content="python:plone_view.cropText(first_parent.Description(), desc_length, desc_ellipsis)" class="discreet"> Description </span>
-
                             </li>
                         </tal:firstparent>
 
                         <tal:similar repeat="similar similar_items">
                             <li tal:define="result_url similar/getURL;
-                                               result_type similar/portal_type;
-                                               item_icon python:plone_view.getIcon(similar);
-                                               url python:test(result_type in use_view_action, result_url+'/view', result_url);">
-                                <a tal:define="item_wf_state_class string:state-${similar/review_state};"
-                                    tal:attributes="class python:'contenttype-' + normalizeString(result_type)"
-                                    href="#"
-                                     tal:attributes="href url;
-                                                     class string:$item_wf_state_class"
-                                     tal:content="similar/pretty_title_or_id">
-                                  <img tal:replace="structure item_icon/html_tag" />
-
-                                    <span class="discreet" i18n:translate="results_by_author"
-                                      tal:condition="show_about">
-                                    by <span tal:omit-tag="" tal:content="similar/Creator" i18n:name="author">Author</span>,
-                                    <span tal:omit-tag="" tal:content="python:toLocalizedTime(similar.ModificationDate, long_format=1)" i18n:name="date">Modification Date</span>
-                                    </span>
-
-                                </a>
-
+                                            result_type similar/portal_type;
+                                            url python:result_url + '/view' if result_type in use_view_action else result_url;">
+                                <a href="${url}"
+                                   tal:define="item_wf_state_class string: state-${similar/review_state};"
+                                   tal:attributes="class python:'contenttype-' + normalizeString(result_type) + item_wf_state_class">${similar/pretty_title_or_id}</a>
                                 <span tal:content="python:plone_view.cropText(similar.Description or '', desc_length, desc_ellipsis)" class="discreet"> Description </span>
-
                             </li>
                         </tal:similar>
 

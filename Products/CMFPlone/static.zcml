@@ -48,6 +48,11 @@
     />
 
   <browser:resource
+    name="plone-logged-in.js"
+    file="static/plone-logged-in.js"
+    />
+
+  <browser:resource
     name="plone.css"
     file="static/plone.css"
     />
@@ -56,6 +61,9 @@
     name="plone.less"
     file="static/plone.less"
     />
-
+  <browser:resource
+    name="plone-logged-in.less"
+    file="static/plone-logged-in.less"
+    />
 
 </configure>

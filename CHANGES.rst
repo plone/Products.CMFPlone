@@ -15,6 +15,45 @@ Changelog
   anymore.
   [jcerjak]
 
+- Fix tests for plone.app.contenttypes unified view names, which uses
+  ``listing_view`` for Folder and Collection types.
+  [thet]
+
+- Remove ``selectable_views`` from ``properties.xml``, which isn't used
+  anywhere anymore.
+  [thet]
+
+- Remove the remaining ``Topic`` entry in ``default_page_types`` from
+  ``propertiestool.xml``. This setting is now done in
+  ``plone.app.contenttypes`` respectively ``Products.ATContentTypes``.
+  [thet]
+
+- Add __version__ attribute to __init__.py. This allows us to retrieve the
+  current Plone version with 'Products.CMFPlone.__version__'. Even though this
+  is no offical standard, many packages in the Python standard library provide
+  this.
+  [timo]
+
+- Replaced the legacy mark_special_links javascript with a
+  corresponding mockup pattern.
+  [fulv]
+
+- remove plone_javascript_variables.js as necessary values
+  are provided on body tag and pattern options
+  [vangheem]
+
+- fix bootstrap css bleeding into global namespaces
+  [vangheem]
+
+- add recurrence pattern
+  [vangheem]
+
+- add history support for folder contents
+  [vangheem]
+
+- Merge plone.app.search here
+  [vangheem]
+
 - Extended ulocalized_time for target_language
   [agitator]
 

@@ -141,7 +141,7 @@ define("tinymce/util/Quirks", [
 
 					// Make sure all elements has a data-mce-style attribute
 					if (!elm.hasAttribute('data-mce-style') && elm.hasAttribute('style')) {
-						editor.dom.setAttrib(elm, 'style', elm.getAttribute('style'));
+						editor.dom.setAttrib(elm, 'style', editor.dom.getAttrib(elm, 'style'));
 					}
 				});
 
@@ -387,12 +387,7 @@ define("tinymce/util/Quirks", [
 		 * This selects the whole body so that backspace/delete logic will delete everything
 		 */
 		function selectAll() {
-			editor.on('keydown', function(e) {
-				if (!isDefaultPrevented(e) && e.keyCode == 65 && VK.metaKeyPressed(e)) {
-					e.preventDefault();
-					editor.execCommand('SelectAll');
-				}
-			});
+			editor.shortcuts.add('ctrl+a', null, 'SelectAll');
 		}
 
 		/**
@@ -414,10 +409,17 @@ define("tinymce/util/Quirks", [
 				});
 
 				// Case 2 IME doesn't initialize if you click the documentElement it also doesn't properly fire the focusin event
-				dom.bind(editor.getDoc(), 'mousedown', function(e) {
+				// Needs to be both down/up due to weird rendering bug on Chrome Windows
+				dom.bind(editor.getDoc(), 'mousedown mouseup', function(e) {
 					if (e.target == editor.getDoc().documentElement) {
 						editor.getBody().focus();
-						selection.setRng(selection.getRng());
+
+						if (e.type == 'mousedown') {
+							// Edge case for mousedown, drag select and mousedown again within selection on Chrome Windows to render caret
+							selection.placeCaretAt(e.clientX, e.clientY);
+						} else {
+							selection.setRng(selection.getRng());
+						}
 					}
 				});
 			}
@@ -489,20 +491,21 @@ define("tinymce/util/Quirks", [
 		 */
 		function selectControlElements() {
 			editor.on('click', function(e) {
-				e = e.target;
+				var target = e.target;
 
 				// Workaround for bug, http://bugs.webkit.org/show_bug.cgi?id=12250
 				// WebKit can't even do simple things like selecting an image
-				// Needs tobe the setBaseAndExtend or it will fail to select floated images
-				if (/^(IMG|HR)$/.test(e.nodeName)) {
-					selection.getSel().setBaseAndExtent(e, 0, e, 1);
+				// Needs to be the setBaseAndExtend or it will fail to select floated images
+				if (/^(IMG|HR)$/.test(target.nodeName)) {
+					e.preventDefault();
+					selection.getSel().setBaseAndExtent(target, 0, target, 1);
+					editor.nodeChanged();
 				}
 
-				if (e.nodeName == 'A' && dom.hasClass(e, 'mce-item-anchor')) {
-					selection.select(e);
+				if (target.nodeName == 'A' && dom.hasClass(target, 'mce-item-anchor')) {
+					e.preventDefault();
+					selection.select(target);
 				}
-
-				editor.nodeChanged();
 			});
 		}
 
@@ -562,35 +565,6 @@ define("tinymce/util/Quirks", [
 						applyAttributes();
 					}, 0);
 				}
-			});
-		}
-
-		/**
-		 * Fire a nodeChanged when the selection is changed on WebKit this fixes selection issues on iOS5. It only fires the nodeChange
-		 * event every 50ms since it would other wise update the UI when you type and it hogs the CPU.
-		 */
-		function selectionChangeNodeChanged() {
-			var lastRng, selectionTimer;
-
-			editor.on('selectionchange', function() {
-				if (selectionTimer) {
-					clearTimeout(selectionTimer);
-					selectionTimer = 0;
-				}
-
-				selectionTimer = window.setTimeout(function() {
-					if (editor.removed) {
-						return;
-					}
-
-					var rng = selection.getRng();
-
-					// Compare the ranges to see if it was a real change or not
-					if (!lastRng || !RangeUtils.compareRanges(rng, lastRng)) {
-						editor.nodeChanged();
-						lastRng = rng;
-					}
-				}, 50);
 			});
 		}
 
@@ -1121,6 +1095,61 @@ define("tinymce/util/Quirks", [
 		}
 
 		/**
+		 * iOS Safari and possible other browsers have a bug where it won't fire
+		 * a click event when a contentEditable is focused. This function fakes click events
+		 * by using touchstart/touchend and measuring the time and distance travelled.
+		 */
+		function touchClickEvent() {
+			editor.on('touchstart', function(e) {
+				var elm, time, startTouch, changedTouches;
+
+				elm = e.target;
+				time = new Date().getTime();
+				changedTouches = e.changedTouches;
+
+				if (!changedTouches || changedTouches.length > 1) {
+					return;
+				}
+
+				startTouch = changedTouches[0];
+
+				editor.once('touchend', function(e) {
+					var endTouch = e.changedTouches[0], args;
+
+					if (new Date().getTime() - time > 500) {
+						return;
+					}
+
+					if (Math.abs(startTouch.clientX - endTouch.clientX) > 5) {
+						return;
+					}
+
+					if (Math.abs(startTouch.clientY - endTouch.clientY) > 5) {
+						return;
+					}
+
+					args = {
+						target: elm
+					};
+
+					each('pageX pageY clientX clientY screenX screenY'.split(' '), function(key) {
+						args[key] = endTouch[key];
+					});
+
+					args = editor.fire('click', args);
+
+					if (!args.isDefaultPrevented()) {
+						// iOS WebKit can't place the caret properly once
+						// you bind touch events so we need to do this manually
+						// TODO: Expand to the closest word? Touble tap still works.
+						editor.selection.placeCaretAt(endTouch.clientX, endTouch.clientY);
+						editor.nodeChanged();
+					}
+				});
+			});
+		}
+
+		/**
 		 * WebKit has a bug where it will allow forms to be submitted if they are inside a contentEditable element.
 		 * For example this: <form><button></form>
 		 */
@@ -1129,6 +1158,26 @@ define("tinymce/util/Quirks", [
 				editor.dom.bind(editor.getBody(), 'submit', function(e) {
 					e.preventDefault();
 				});
+			});
+		}
+
+		/**
+		 * Sometimes WebKit/Blink generates BR elements with the Apple-interchange-newline class.
+		 *
+		 * Scenario:
+		 *  1) Create a table 2x2.
+		 *  2) Select and copy cells A2-B2.
+		 *  3) Paste and it will add BR element to table cell.
+		 */
+		function removeAppleInterchangeBrs() {
+			parser.addNodeFilter('br', function(nodes) {
+				var i = nodes.length;
+
+				while (i--) {
+					if (nodes[i].attr('class') == 'Apple-interchange-newline') {
+						nodes[i].remove();
+					}
+				}
 			});
 		}
 
@@ -1145,10 +1194,11 @@ define("tinymce/util/Quirks", [
 			setDefaultBlockType();
 			blockFormSubmitInsideEditor();
 			disableBackspaceIntoATable();
+			removeAppleInterchangeBrs();
+			touchClickEvent();
 
 			// iOS
 			if (Env.iOS) {
-				selectionChangeNodeChanged();
 				restoreFocusOnKeyDown();
 				bodyHeight();
 				tapLinksAndImages();

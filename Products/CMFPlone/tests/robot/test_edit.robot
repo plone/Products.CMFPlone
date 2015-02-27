@@ -66,7 +66,8 @@ Background
 
 a test document
     Go to  ${PLONE_URL}/++add++Document
-    Input text  name=form.widgets.IDublinCore.title  ${TITLE}
+    Given patterns are loaded
+    Execute Javascript  $('#form-widgets-IDublinCore-title').val('${TITLE}'); return 0;
     Click Button  Save
 
 an edited page
@@ -76,11 +77,13 @@ I have the title input field
     Element Should Be Visible  xpath=//fieldset[@id='fieldset-default']
 
 I can only see the default tab
+    Wait For Condition  return $('.autotoc-nav .active:visible').size() > 0
     Element Should Not Be Visible  xpath=//fieldset[@id='fieldset-settings']
     Element Should Not Be Visible  xpath=//fieldset[@id='fieldset-dates']
     Element Should Not Be Visible  xpath=//fieldset[@id='fieldset-categorization']
 
 I click the ${tab} tab
+    Given patterns are loaded
     Click link  ${tab}
 
 the categorization tab is shown
@@ -93,7 +96,8 @@ no other tab is shown
 
 at least one other item
     Go to  ${PLONE_URL}/++add++Document
-    Input text  name=form.widgets.IDublinCore.title  ${TITLE}
+    Given patterns are loaded
+    Execute Javascript  $('#form-widgets-IDublinCore-title').val('${TITLE}'); return 0;
     Click Button  Save
 
 I click the add related item button

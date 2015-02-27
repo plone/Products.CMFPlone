@@ -13,6 +13,9 @@ from zope import component
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.ramcache.interfaces import ram
+from Products.CMFCore.utils import _getAuthenticatedUser
+from plone.memoize.view import memoize
+from Products.CMFPlone.resources import RESOURCE_DEVELOPMENT_MODE
 
 
 class ResourceView(ViewletBase):
@@ -20,8 +23,25 @@ class ResourceView(ViewletBase):
     """
 
     @property
+    @memoize
     def development(self):
+        """
+        To set development mode:
+
+        - we can define a envvar: FEDEV
+        - otherwise if its anonymous is using production mode
+        - finally is checked on the registry entry
+        """
+        if RESOURCE_DEVELOPMENT_MODE:
+            return True
+        if _getAuthenticatedUser(self.context).getUserName() == 'Anonymous User':
+            return False
         return self.registry.records['plone.resources.development'].value
+
+    def develop_bundle(self, bundle, attr):
+        if RESOURCE_DEVELOPMENT_MODE:
+            return True
+        return self.development and getattr(bundle, attr, False)
 
     @property
     def last_legacy_import(self):
@@ -67,11 +87,11 @@ class ResourceView(ViewletBase):
 
     def get_bundles(self):
         return self.registry.collectionOfInterface(
-            IBundleRegistry, prefix="plone.bundles")
+            IBundleRegistry, prefix="plone.bundles", check=False)
 
     def get_resources(self):
         return self.registry.collectionOfInterface(
-            IResourceRegistry, prefix="plone.resources")
+            IResourceRegistry, prefix="plone.resources", check=False)
 
     def get_cooked_bundles(self):
         """

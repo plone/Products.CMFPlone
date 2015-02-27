@@ -2,6 +2,7 @@
 
 Resource  plone/app/robotframework/keywords.robot
 Resource  plone/app/robotframework/saucelabs.robot
+Resource  plone/app/robotframework/selenium.robot
 
 Library  Remote  ${PLONE_URL}/RobotRemote
 
@@ -132,16 +133,16 @@ A user folder should be created when a user registers and logs in to the site
 
   # I register to the site
   Go to  ${PLONE_URL}/@@register
-  Input Text  form.widgets.username  joe
-  Input Text  form.widgets.email  joe@test.com
-  Input Text  form.widgets.password  supersecret
-  Input Text  form.widgets.password_ctl  supersecret
+  Input Text for sure  form.widgets.username  joe
+  Input Text for sure  form.widgets.email  joe@test.com
+  Input Text for sure  form.widgets.password  supersecret
+  Input Text for sure  form.widgets.password_ctl  supersecret
   Click Button  Register
 
   # I login to the site
   Go to  ${PLONE_URL}/login
-  Input Text  __ac_name  joe
-  Input Text  __ac_password  supersecret
+  Input text for sure  __ac_name  joe
+  Input text for sure  __ac_password  supersecret
   Click Button  Log in
   Wait until page contains  You are now logged in
 
@@ -161,16 +162,16 @@ UUID should be used for the user id
 
   # I register to the site
   Go to  ${PLONE_URL}/@@register
-  Input Text  form.widgets.username  joe
-  Input Text  form.widgets.email  joe@test.com
-  Input Text  form.widgets.password  supersecret
-  Input Text  form.widgets.password_ctl  supersecret
+  Input Text for sure  form.widgets.username  joe
+  Input Text for sure  form.widgets.email  joe@test.com
+  Input Text for sure  form.widgets.password  supersecret
+  Input Text for sure  form.widgets.password_ctl  supersecret
   Click Button  Register
 
   # I login to the site
   Go to  ${PLONE_URL}/login
-  Input Text  __ac_name  joe
-  Input Text  __ac_password  supersecret
+  Input text for sure  __ac_name  joe
+  Input text for sure  __ac_password  supersecret
   Click Button  Log in
   Wait until page contains  You are now logged in
 

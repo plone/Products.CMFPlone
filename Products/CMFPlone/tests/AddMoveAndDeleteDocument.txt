@@ -44,7 +44,7 @@ browser.
 Now that the document has been added, we can edit it, but we pretend
 we don't know better and forget to type in a Title:
 
-    >>> browser.getControl('Body Text').value = 'About test_user_1_'
+    >>> browser.getControl(name='text').value = 'About test_user_1_'
     >>> browser.getControl('Save').click()
     >>> 'Title is required, please correct.' in browser.contents
     True
@@ -179,7 +179,7 @@ between cut and paste, the page should say so and not give a stacktrace.
 
     >>> browser.open('http://nohost/plone/Members/test_user_1_')
     >>> browser.getLink('Page').click()
-    >>> browser.getControl('Body Text').value = ''
+    >>> browser.getControl(name='text').value = ''
     >>> browser.getControl('Title').value = 'Op een dag'
     >>> browser.getControl('Save').click()
     >>> 'Op een dag' in browser.contents

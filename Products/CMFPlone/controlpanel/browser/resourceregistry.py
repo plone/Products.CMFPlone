@@ -1,9 +1,9 @@
+# -*- coding:utf-8
 from datetime import datetime
 from Products.CMFPlone.interfaces import IBundleRegistry
 from Products.CMFPlone.interfaces import IResourceRegistry
 from Products.CMFPlone.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME  # noqa
 from Products.CMFPlone.resources.browser.configjs import RequireJsView
-from StringIO import StringIO
 from plone.memoize.view import memoize
 from plone.registry.interfaces import IRegistry
 from plone.resource.interfaces import IResourceDirectory
@@ -11,6 +11,11 @@ from urlparse import urlparse
 from zExceptions import NotFound
 from zope.component import getUtility
 import json
+from Products.CMFPlone.resources import add_bundle_on_request
+from Products.CMFPlone.resources import RESOURCE_DEVELOPMENT_MODE
+from plone.registry import field
+from plone.registry.record import Record
+from Products.statusmessages.interfaces import IStatusMessage
 
 
 class JSONEncoder(json.JSONEncoder):
@@ -44,7 +49,19 @@ def updateRecordFromDict(record, data):
                         item = item.encode('utf-8')
                     newval.append(item)
                 val = newval
-            setattr(record, name, val)
+
+            full_name = record.__prefix__ + name
+            try:
+                record.__registry__[full_name] = val
+            except (AttributeError, KeyError) as ex:  # noqa
+                # upgrade record on the fly, try to at least
+                if not val:
+                    continue
+                if type(val) == bool:
+                    record.__registry__.records[full_name] = Record(
+                        field.Bool(title=u""), val)
+                else:
+                    raise
 
 
 class OverrideFolderManager(object):
@@ -61,8 +78,7 @@ class OverrideFolderManager(object):
         if resource_name not in self.container:
             self.container.makeDirectory(resource_name)
         folder = self.container[resource_name]
-        fi = StringIO(data)
-        folder.writeFile(resource_filepath, fi)
+        folder.writeFile(resource_filepath, data)
         return folder[resource_filepath]
 
     def delete_file(self, filepath):
@@ -101,6 +117,7 @@ class OverrideFolderManager(object):
 class ResourceRegistryControlPanelView(RequireJsView):
 
     def __call__(self):
+        add_bundle_on_request(self.request, 'resourceregistry')
         req = self.request
         if req.REQUEST_METHOD == 'POST':
             action = req.get('action', '')
@@ -113,6 +130,11 @@ class ResourceRegistryControlPanelView(RequireJsView):
                     'msg': 'Invalid action: ' + action
                 })
         else:
+            if RESOURCE_DEVELOPMENT_MODE:
+                messages = IStatusMessage(self.request)
+                messages.add(u"The FEDEV environment variable is set. No matter "
+                             u"what settings are done here, all bundles will "
+                             u"always be in development mode.", type=u"warn")
             return self.index()
 
     @property
@@ -121,7 +143,7 @@ class ResourceRegistryControlPanelView(RequireJsView):
         return getUtility(IRegistry)
 
     def update_registry_collection(self, itype, prefix, newdata):
-        rdata = self.registry.collectionOfInterface(itype, prefix=prefix)
+        rdata = self.registry.collectionOfInterface(itype, prefix=prefix, check=False)
         for key, data in newdata.items():
             if key not in rdata:
                 record = rdata.add(key)
@@ -151,6 +173,11 @@ class ResourceRegistryControlPanelView(RequireJsView):
             IBundleRegistry, "plone.bundles",
             json.loads(req.get('bundles')))
 
+        # it'd be difficult to know if the legacy bundle settings
+        # changed or not so we need to just set the last import date
+        # back so it gets re-built
+        self.registry.records['plone.resources.last_legacy_import'].value = datetime.now()
+
         return json.dumps({
             'success': True
         })
@@ -176,11 +203,11 @@ class ResourceRegistryControlPanelView(RequireJsView):
 
     def get_bundles(self):
         return self.registry.collectionOfInterface(
-            IBundleRegistry, prefix="plone.bundles")
+            IBundleRegistry, prefix="plone.bundles", check=False)
 
     def get_resources(self):
         return self.registry.collectionOfInterface(
-            IResourceRegistry, prefix="plone.resources")
+            IResourceRegistry, prefix="plone.resources", check=False)
 
     def less_build_config(self):
         site_url = self.context.portal_url()
@@ -228,15 +255,22 @@ class ResourceRegistryControlPanelView(RequireJsView):
                     pass
         return json.dumps({
             'include': includes,
-            'shims': shims,
-            'paths': paths
+            'shim': shims,
+            'paths': paths,
+            'wrapShim': True,
+            'optimize': 'none'
         })
 
     def save_js_build(self):
+        """
+        'Â'
+        """
         overrides = OverrideFolderManager(self.context)
         req = self.request
         filepath = 'static/%s-compiled.js' % req.form['bundle']
-        overrides.save_file(filepath, req.form['data'])
+
+        data = req.form['data']
+        overrides.save_file(filepath, data)
         bundle = self.get_bundles().get(req.form['bundle'])
         if bundle:
             bundle.last_compilation = datetime.now()

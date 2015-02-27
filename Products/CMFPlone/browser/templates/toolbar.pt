@@ -1,0 +1,24 @@
+<section
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      tal:define="
+          portal_state context/@@plone_portal_state;
+          portal_url portal_state/portal_url;
+          toolbar_class python:request.cookies.get('plone-toolbar', 'plone-toolbar-left pat-toolbar');
+          dummy python:request.response.setHeader('X-Theme-Disabled', 'True');"
+      id="edit-bar" role="toolbar">
+  <div id="edit-zone" role="toolbar" tal:attributes="class toolbar_class">
+    <div class="plone-toolbar-container">
+      <a class="plone-toolbar-logo">
+        <img alt="Plone Toolbar" tal:attributes="src string:${portal_url}/++plone++static/plone-toolbarlogo.svg" />
+      </a>
+      <a class="plone-toolbar-switcher"><span>Left-Top switcher</span></a>
+      <nav role="navigation">
+        <ul>
+          <div tal:replace="structure provider:plone.toolbar">
+          </div>
+        </ul>
+    </div>
+  </div>
+</section>

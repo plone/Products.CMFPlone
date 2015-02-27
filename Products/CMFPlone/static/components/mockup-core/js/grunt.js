@@ -261,7 +261,7 @@
       extend(true, this.gruntConfig, customGruntConfig || {});
 
       /*
-       * TODO: add description
+       * Register different test runners
        */
       var bundles = [];
       for (var name in this.bundles) {
@@ -271,6 +271,7 @@
       grunt.registerTask('test', [ 'jshint', 'karma:test' ]);
       grunt.registerTask('test_once', [ 'jshint', 'karma:testOnce' ]);
       grunt.registerTask('test_dev', [ 'karma:testDev' ]);
+      grunt.registerTask('test_serve', [ 'karma:testServe' ]);
       grunt.registerTask('test_ci', [ 'jshint', 'karma:testCI'].concat(bundles));
 
       /*
@@ -281,7 +282,7 @@
         karma: {
           options: {
             basePath: './',
-            frameworks: [],
+            frameworks: ['mocha', 'chai'],
             files: this.files,
             preprocessors: { 'js/**/*.js': 'coverage' },
             reporters: ['dots', 'progress', 'coverage', 'spec'],
@@ -295,6 +296,7 @@
             captureTimeout: 60000,
             plugins: [
               'karma-mocha',
+              'karma-chai',
               'karma-coverage',
               'karma-requirejs',
               'karma-sauce-launcher',
@@ -318,8 +320,18 @@
             reporters: ['dots', 'progress'],
             plugins: [
               'karma-mocha',
+              'karma-chai',
               'karma-requirejs',
-              'karma-chrome-launcher',
+              'karma-chrome-launcher'
+            ]
+          },
+          testServe: {
+            preprocessors: {},
+            reporters: ['dots', 'progress'],
+            plugins: [
+              'karma-mocha',
+              'karma-chai',
+              'karma-requirejs'
             ]
           },
           testCI: {
@@ -376,10 +388,7 @@
       grunt.loadNpmTasks('grunt-contrib-watch');
       grunt.loadNpmTasks('grunt-karma');
       grunt.loadNpmTasks('grunt-sed');
-
     }
   };
-
   module.exports = MockupGrunt;
-
 })();

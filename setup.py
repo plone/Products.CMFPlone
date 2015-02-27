@@ -97,7 +97,6 @@ setup(
         'plone.app.portlets',
         'plone.app.redirector',
         'plone.app.registry',
-        'plone.app.search',
         'plone.app.theming',
         'plone.app.users',
         'plone.app.uuid',
@@ -146,4 +145,9 @@ setup(
         'zope.tales',
         'zope.traversing',
     ],
+    entry_points="""\
+      [console_scripts]
+      plone-generate-gruntfile = Products.CMFPlone._scripts.generate_gruntfile:main
+      plone-compile-resources = Products.CMFPlone._scripts.compile_resources:main
+      """
 )

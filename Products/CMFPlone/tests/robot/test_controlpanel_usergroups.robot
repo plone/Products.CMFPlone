@@ -16,6 +16,7 @@ Resource  plone/app/robotframework/saucelabs.robot
 Library  Remote  ${PLONE_URL}/RobotRemote
 
 Resource  keywords.robot
+Resource  common.robot
 
 Test Setup  Open SauceLabs test browser
 Test Teardown  Run keywords  Report test status  Close all browsers
@@ -76,7 +77,7 @@ I click show all groups
 
 I create new group
   Click button  Add New Group
-  Wait until page contains element  name=addname
+  Given patterns are loaded
   Input Text  name=addname  my-new-group
   Input Text  name=title:string  My New Group
   Input Text  name=description:text  This is my new group

@@ -11,10 +11,14 @@
     "lodash": "2.4.1",
     "marked": "0.3.2",
     "react": "0.10.0",
-    "requirejs-text": "2.0.12"
+    "requirejs-text": "2.0.12",
+    "patternslib": "2.0.8"
   },
   "devDependencies": {
     "expect": "0.3.1",
     "sinonjs": "1.10.2"
+  },
+  "resolutions": {
+    "jquery": "1.11.1"
   }
 }

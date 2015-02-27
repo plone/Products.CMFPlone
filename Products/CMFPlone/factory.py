@@ -51,15 +51,18 @@ class HiddenProfiles(object):
                 u'plone.app.contenttypes:default',
                 u'plone.app.dexterity:default',
                 u'plone.app.discussion:default',
-                u'plone.app.event.at:default',
-                u'plone.app.event.dx:default',
+                u'plone.app.event:default',
                 u'plone.app.folder:default',
                 u'plone.app.imaging:default',
                 u'plone.app.jquery:initial-upgrade',
+                u'plone.app.jquery:default',
+                u'plone.app.jquerytools:default',
                 u'plone.app.registry:default',
-                u'plone.app.search:default',
+                u'plone.app.theming:default',
+                u'plone.app.versioningbehavior:default',
                 u'plone.formwidget.recurrence:default',
                 u'plone.resource:default',
+                u'plonetheme.barceloneta:default',
                 ]
 
 

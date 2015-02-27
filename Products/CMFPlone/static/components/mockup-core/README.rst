@@ -64,7 +64,7 @@ https://github.com/plone/mockup/issues
 License
 =======
 
-The MIT License (MIT). Copyrights hold the Plone Foundation.
+The BSD 3-Clause License. Copyrights hold the Plone Foundation.
 See `LICENSE.rst <LICENSE.rst>`_ for details.
 
 

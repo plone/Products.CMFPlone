@@ -19,30 +19,37 @@ def cookWhenChangingSettings(context, bundle):
     """
     registry = getUtility(IRegistry)
     resources = registry.collectionOfInterface(
-        IResourceRegistry, prefix="plone.resources")
+        IResourceRegistry, prefix="plone.resources", check=False)
 
     # Let's join all css and js
     css_file = ""
-    js_file = ""
+    cooked_js = ""
     siteUrl = getSite().absolute_url()
     request = getRequest()
     for package in bundle.resources:
         if package in resources:
             resource = resources[package]
             for css in resource.css:
-                response = subrequest(siteUrl + '/' + css, root=context)
+                response = subrequest(siteUrl + '/' + css)
                 if response.status == 200:
                     css_file += response.getBody()
                     css_file += '\n'
 
             if resource.js:
-                response = subrequest(
-                    siteUrl + '/' + resource.js, root=context)
+                response = subrequest(siteUrl + '/' + resource.js)
                 if response.status == 200:
-                    js_file += response.getBody()
-                    js_file += '\n'
+                    js = response.getBody()
+                    try:
+                        cooked_js += '\n/* resource: %s */\n%s' % (
+                            resource.js,
+                            minify(js, mangle=True, mangle_toplevel=True)
+                        )
+                    except SyntaxError:
+                        cooked_js += '\n/* resource(error cooking): %s */\n%s' % (
+                            resource.js, js)
+                else:
+                    cooked_js += '\n/* Could not find resource: %s */\n\n' % resource.js
 
-    cooked_js = minify(js_file, mangle=True, mangle_toplevel=True)
     cooked_css = cssmin(css_file)
 
     js_path = bundle.jscompilation

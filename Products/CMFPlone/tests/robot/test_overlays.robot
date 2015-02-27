@@ -24,27 +24,35 @@ Scenario: Contact form overlay opens
      Then overlay should open
 
 Scenario: Contact form overlay closes
+    Go to  ${PLONE_URL}/logout
     Given the 'Contact' overlay
      When I close the overlay
      Then overlay should close
 
 Scenario: Log in form overlay opens
+    Go to  ${PLONE_URL}/logout
     Given the site root
      When I click the 'Log in' link
      Then overlay should open
 
 Scenario: Log in form overlay closes
+    Go to  ${PLONE_URL}/logout
+    Given the site root
     Given the 'Log in' overlay
      When I close the overlay
      Then overlay should close
 
 Scenario: Log in form overlay remains on wrong credentials
+    Go to  ${PLONE_URL}/logout
+    Given the site root
     Given the 'Log in' overlay
      When I enter wrong credentials
      Then overlay should remain open
       And overlay shows an error
 
 Scenario: Log in form overlay closes on valid credentials
+    Go to  ${PLONE_URL}/logout
+    Given the site root
     Given the 'Log in' overlay
      When I enter valid credentials
      Then overlay should close
@@ -108,6 +116,7 @@ Scenario: Rename content action overlay closes
 Scenario: Register user overlay opens
     Given the mail setup configured
       And the self registration enabled
+      Go to  ${PLONE_URL}/logout
       And the site root
      When I click the 'Register' link
      Then overlay should open
@@ -115,6 +124,7 @@ Scenario: Register user overlay opens
 Scenario: Register user overlay closes
     Given the mail setup configured
       And the self registration enabled
+      Go to  ${PLONE_URL}/logout
       And the site root
       And the 'Register' overlay
      When I close the overlay
@@ -123,6 +133,7 @@ Scenario: Register user overlay closes
 Scenario: Register user overlay remains on wrong data
     Given the mail setup configured
       And the self registration enabled
+      Go to  ${PLONE_URL}/logout
       And the site root
       And the 'Register' overlay
      When I send the register form
@@ -188,12 +199,15 @@ Background
 
 the users and groups configlet
     Go to  ${PLONE_URL}/@@usergroup-userprefs
+    Given modals loaded
 
 I click the '${link_name}' link
+    Given modals loaded
     Element should be visible  xpath=//a[descendant-or-self::*[contains(text(), '${link_name}')]]
     Click Link  xpath=//a[descendant-or-self::*[contains(text(), '${link_name}')]]
 
 the '${link_name}' overlay
+    Given modals loaded
     Click Link  xpath=//a[descendant-or-self::*[contains(text(), '${link_name}')]]
     Wait until keyword succeeds  30  1  Page should contain element  css=div.plone-modal-dialog
 
@@ -249,17 +263,20 @@ I trigger the add a new user action
 
 a document '${title}' in the test folder
     Go to  ${PLONE_URL}/${TEST_FOLDER}/++add++Document
-    Input text  name=form.widgets.IDublinCore.title  ${title}
+    Wait For Condition  return $('.autotoc-nav .active:visible').size() > 0
+    Execute Javascript  $('#form-widgets-IDublinCore-title').val('${title}'); return 0;
     Click Button  Save
 
 I set the default content view of the test folder
     Go to  ${PLONE_URL}/${TEST_FOLDER}
+    Given patterns are loaded
     Click link  xpath=//li[@id='plone-contentmenu-moreoptions']/a
     Click link  id=contextSetDefaultPage
 
 a document as the default view of the test folder
     a document 'doc' in the test folder
     Go to  ${PLONE_URL}/${TEST_FOLDER}
+    Given patterns are loaded
     Click link  xpath=//li[@id='plone-contentmenu-moreoptions']/a
     Wait until element is visible  id=contextSetDefaultPage
     Click link  id=contextSetDefaultPage
@@ -268,12 +285,14 @@ a document as the default view of the test folder
 
 I change the default content view of the test folder
     Go to  ${PLONE_URL}/${TEST_FOLDER}
+    Given patterns are loaded
     Click link  xpath=//li[@id='plone-contentmenu-moreoptions']/a
     Wait until element is visible  id=folderChangeDefaultPage
     Click link  id=folderChangeDefaultPage
 
 I trigger the '${action}' action menu item of the test folder
     Go to  ${PLONE_URL}/${TEST_FOLDER}
+    Given patterns are loaded
     Element should be visible  xpath=//li[@id='plone-contentmenu-moreoptions']/a
     Click link  xpath=//li[@id='plone-contentmenu-moreoptions']/a
     Wait until element is visible  id=plone-contentmenu-actions-${action}
@@ -284,3 +303,5 @@ I confirm deletion of the content
     # Note: The 'delete' button has no standard z3c.form name attribute
     Wait until keyword succeeds  2  2  Click Element  css=div.plone-modal-footer input#form-buttons-Delete
 
+modals loaded
+    Wait For Condition  return $('.plone-modal-wrapper').size() > 0

@@ -6,15 +6,6 @@
       metal:use-macro="context/prefs_main_template/macros/master"
       i18n:domain="plone">
 
-
-
-  <metal:block fill-slot="javascript_head_slot">
-
-<link rel="stylesheet"
-          tal:attributes="href string:${portal_url}/++plone++static/resourceregistry.min.css" />
-
-    <script tal:attributes="src string:${portal_url}/++plone++static/resourceregistry.js"></script>
-  </metal:block>
 <body>
 
 <metal:content-core fill-slot="prefs_configlet_main">

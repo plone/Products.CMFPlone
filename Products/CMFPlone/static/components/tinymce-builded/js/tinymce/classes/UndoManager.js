@@ -39,7 +39,7 @@ define("tinymce/UndoManager", [
 		 * @return {String} HTML contents of the editor excluding some internal bogus elements.
 		 */
 		function getContent() {
-			var content = trim(editor.getContent({format: 'raw', no_events: 1}));
+			var content = editor.getContent({format: 'raw', no_events: 1});
 			var bogusAllRegExp = /<(\w+) [^>]*data-mce-bogus="all"[^>]*>/g;
 			var endTagIndex, index, matchLength, matches, shortEndedElements, schema = editor.schema;
 
@@ -61,7 +61,7 @@ define("tinymce/UndoManager", [
 				bogusAllRegExp.lastIndex = index - matchLength;
 			}
 
-			return content;
+			return trim(content);
 		}
 
 		function addNonTypingUndoLevel(e) {
@@ -165,38 +165,6 @@ define("tinymce/UndoManager", [
 				editor.nodeChanged();
 			}
 		});
-
-		// Selection range isn't updated until after the click events default handler is executed
-		// so we need to wait for the selection to update on Gecko/WebKit it happens right away.
-		// On IE it might take a while so we listen for the SelectionChange event.
-		//
-		// We can't use the SelectionChange on all browsers event since Gecko doesn't support that.
-		if (Env.ie) {
-			editor.on('MouseUp', function(e) {
-				if (!e.isDefaultPrevented()) {
-					editor.once('SelectionChange', function() {
-						// Selection change might fire when focus is lost
-						if (editor.dom.isChildOf(editor.selection.getStart(), editor.getBody())) {
-							editor.nodeChanged();
-						}
-					});
-
-					editor.nodeChanged();
-				}
-			});
-		} else {
-			editor.on('MouseUp', function() {
-				editor.nodeChanged();
-			});
-
-			editor.on('Click', function(e) {
-				if (!e.isDefaultPrevented()) {
-					setTimeout(function() {
-						editor.nodeChanged();
-					}, 0);
-				}
-			});
-		}
 
 		self = {
 			// Explose for debugging reasons

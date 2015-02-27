@@ -116,9 +116,9 @@ class Plone(BrowserView):
             idActions[obj.get('id', '')] = 1
 
         if 'edit' in idActions:
-            if (template_id in idActions or \
+            if (template_id in idActions or
                 template_id in ['synPropertiesForm', 'folder_contents',
-                                'folder_listing']):
+                                'folder_listing', 'listing_view']):
                 return True
 
         # Check to see if the user is able to add content

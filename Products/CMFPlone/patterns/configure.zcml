@@ -4,8 +4,8 @@
   <!-- Adapters for patterns settings -->
 
   <adapter for="* * *"
-      factory=".tinymce.TinyMceSettingsAdapter"
+      factory=".PloneSettingsAdapter"
       provides="Products.CMFPlone.interfaces.IPatternsSettings"
-      name="tinymce_settings" />
+      name="plone_settings" />
 
 </configure>

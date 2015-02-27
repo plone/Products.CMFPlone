@@ -1,10 +1,3 @@
-// Author: Rok Garbas
-// Contact: rok@garbas.si
-// Version: 1.0
-// Description:
-//
-// License:
-//
 // Copyright (C) 2010 Plone Foundation
 //
 // This program is free software; you can redistribute it and/or modify it
@@ -21,41 +14,44 @@
 // Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 
-if(window.jQuery){define('jquery', [], function(){ return window.jQuery; })}
+if (window.jQuery) {
+  define( 'jquery', [], function () {
+    'use strict';
+    return window.jQuery;
+  } );
+}
 
 require([
   'jquery',
-  'mockup-registry',
+  'pat-registry',
   'mockup-patterns-base',
 
-  'mockup-patterns-textareamimetypeselector',
   'mockup-patterns-select2',
   'mockup-patterns-pickadate',
-  'mockup-patterns-relateditems',
-  'mockup-patterns-querystring',
-  'mockup-patterns-tinymce',
   'plone-patterns-toolbar',
   'mockup-patterns-accessibility',
   'mockup-patterns-autotoc',
   'mockup-patterns-cookietrigger',
   'mockup-patterns-formunloadalert',
   'mockup-patterns-preventdoublesubmit',
-  'mockup-patterns-inlinevalidation',
   'mockup-patterns-formautofocus',
+  'mockup-patterns-markspeciallinks',
   'mockup-patterns-modal',
-  'mockup-patterns-structure',
+  'mockup-patterns-livesearch',
+  'mockup-patterns-contentloader',
   'bootstrap-dropdown',
   'bootstrap-collapse',
-  'bootstrap-tooltip'
-], function($, Registry, Base) {
+  'bootstrap-tooltip',
+], function($, registry, Base) {
   'use strict';
 
   // initialize only if we are in top frame
   if (window.parent === window) {
     $(document).ready(function() {
       $('body').addClass('pat-plone');
-      Registry.scan($('body'));
+      if (!registry.initialized) {
+        registry.init();
+      }
     });
   }
-
 });

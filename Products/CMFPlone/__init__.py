@@ -1,6 +1,10 @@
 from App.ImageFile import ImageFile
 import os
 import sys
+import pkg_resources
+
+__version__ = pkg_resources.require("Products.CMFPlone")[0].version
+
 
 cmfplone_globals = globals()
 this_module = sys.modules[__name__]

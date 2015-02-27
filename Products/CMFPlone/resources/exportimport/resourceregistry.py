@@ -43,10 +43,10 @@ class ResourceRegistryNodeAdapter(XMLAdapterBase):
             # Upgrade 3.x no registry there
             return
         resources = self.registry.collectionOfInterface(
-            IResourceRegistry, prefix="plone.resources")
+            IResourceRegistry, prefix="plone.resources", check=False)
 
         bundles = self.registry.collectionOfInterface(
-            IBundleRegistry, prefix="plone.bundles")
+            IBundleRegistry, prefix="plone.bundles", check=False)
         if 'plone-legacy' in bundles:
             legacy = bundles['plone-legacy']
         else:

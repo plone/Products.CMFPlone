@@ -1,10 +1,12 @@
-from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFCore.utils import getToolByName
-import logging
+from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone.interfaces import INonInstallable
 from Products.Five.browser import BrowserView
-from Products.statusmessages.interfaces import IStatusMessage
 from Products.GenericSetup import EXTENSION
+from Products.statusmessages.interfaces import IStatusMessage
 from plone.memoize import view
+from zope.component import getAllUtilitiesRegisteredFor
+import logging
 
 
 class ManageProductsView(BrowserView):
@@ -25,11 +27,19 @@ class ManageProductsView(BrowserView):
     def marshall_addons(self):
         addons = {}
 
+        ignore_profiles = []
+        utils = getAllUtilitiesRegisteredFor(INonInstallable)
+        for util in utils:
+            ignore_profiles.extend(util.getNonInstallableProfiles())
+
         profiles = self.ps.listProfileInfo()
         for profile in profiles:
             if profile['type'] != EXTENSION:
                 continue
+
             pid = profile['id']
+            if pid in ignore_profiles:
+                continue
             pid_parts = pid.split(':')
             if len(pid_parts) != 2:
                 logging.error("Profile with id '%s' is invalid." % pid)
@@ -53,6 +63,15 @@ class ManageProductsView(BrowserView):
                     if not self.qi.isProductInstallable(product_id):
                         continue
 
+                if profile_type in product_id:
+                    profile_type = 'default'
+                    # XXX override here so some products that do not
+                    # explicitly say "default" for their install
+                    # profile still work
+                    # I'm not sure this is right but this is a way
+                    # to get CMFPlacefulWorkflow to show up in addons
+                    # If it's safe to rename profiles, we can do that too
+
                 addons[product_id] = {
                     'id': product_id,
                     'title': product_id,
@@ -71,8 +90,10 @@ class ManageProductsView(BrowserView):
                 product['title'] = profile['title']
                 product['description'] = profile['description']
                 product['install_profile'] = profile
+                product['profile_type'] = profile_type
             elif profile_type == 'uninstall':
                 product['uninstall_profile'] = profile
+                product['profile_type'] = profile_type
             else:
                 if 'version' in profile:
                     product['upgrade_profiles'][profile['version']] = profile
@@ -140,13 +161,13 @@ class ManageProductsView(BrowserView):
         messages = IStatusMessage(self.request)
         try:
             qi.upgradeProduct(product)
-            messages.addStatusMessage(_(u'Upgraded %s!' % product),
-                                      type="info")
+            messages.addStatusMessage(
+                _(u'Upgraded ${product}!', mapping={'product', product}), type="info")
             return True
         except Exception, e:
             logging.error("Could not upgrade %s: %s" % (product, e))
-            messages.addStatusMessage(_(u'Error upgrading %s.' % product),
-                                      type="error")
+            messages.addStatusMessage(
+                _(u'Error upgrading ${product}.', mapping={'product': product}), type="error")
 
         return False
 
@@ -182,7 +203,7 @@ class InstallProductsView(BrowserView):
                 # TODO: find out where this is and don't run already
                 # activated profiles
                 setupTool.runAllImportStepsFromProfile(profile)
-                msg = _(u'Installed %s!' % profile)
+                msg = _(u'Installed ${product}!', mapping={'product': profile})
                 messages.addStatusMessage(msg, type=msg_type)
 
         purl = getToolByName(self.context, 'portal_url')()
@@ -201,11 +222,11 @@ class UninstallProductsView(BrowserView):
             for product in products:
                 try:
                     qi.uninstallProducts(products=[product, ])
-                    msg = _(u'Uninstalled %s.' % product)
+                    msg = _(u'Uninstalled ${product}.', mapping={'product': product})
                 except Exception, e:
                     logging.error("Could not uninstall %s: %s" % (product, e))
                     msg_type = 'error'
-                    msg = _(u'Error uninstalling %s' % product)
+                    msg = _(u'Error uninstalling ${product}.', mapping={'product': product})
                 messages.addStatusMessage(msg, type=msg_type)
 
         purl = getToolByName(self.context, 'portal_url')()

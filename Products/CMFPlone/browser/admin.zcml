@@ -57,12 +57,12 @@
   <adapter factory=".admin.AppTraverser" />
 
   <browser:resource
-      file="plone-admin-ui.css"
+      file="static/plone-admin-ui.css"
       name="plone-admin-ui.css"
       />
 
   <browser:resource
-      file="jstz-1.0.4.min.js"
+      file="static/jstz-1.0.4.min.js"
       name="jstz-1.0.4.min.js"
       />
 

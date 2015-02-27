@@ -45,6 +45,7 @@ Scenario: Select All items
 the folder contents view
     Go to  ${PLONE_URL}/${TEST_FOLDER}/folder_contents
     Page should contain element  css=.pat-structure
+    Given folder contents pattern loaded
 
 I click the '${link_name}' link
     Click Link  ${link_name}
@@ -57,7 +58,8 @@ four dummy pages on test folder
 
 a document '${title}' in the test folder
     Go to  ${PLONE_URL}/${TEST_FOLDER}/++add++Document
-    Input text  name=form.widgets.IDublinCore.title  ${title}
+    Wait For Condition  return $('.autotoc-nav .active:visible').size() > 0
+    Execute Javascript  $('#form-widgets-IDublinCore-title').val('${title}'); return 0;
     Click Button  Save
 
 I select all the elements
@@ -129,3 +131,6 @@ Should be above
     ${locator1-position} =  Get vertical position  ${locator1}
     ${locator2-position} =  Get vertical position  ${locator2}
     Should be true  ${locator1-position} < ${locator2-position}
+
+folder contents pattern loaded
+    Wait For Condition  return $('.pat-structure div.navbar').size() > 0
