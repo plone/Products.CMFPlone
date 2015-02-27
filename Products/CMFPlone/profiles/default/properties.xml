@@ -2,10 +2,6 @@
 <site>
  <property name="title">Site</property>
  <property name="description"></property>
- <property name="selectable_views" type="lines">
-  <element value="folder_listing"/>
-  <element value="news_listing"/>
- </property>
  <property name="email_from_address" type="string"></property>
  <property name="email_from_name" type="string"></property>
  <property name="validate_email" type="boolean">True</property>

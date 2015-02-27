@@ -8,6 +8,10 @@ Changelog
 5.0b1 (unreleased)
 ------------------
 
+- Remove ``selectable_views`` from ``properties.xml``, which isn't used
+  anywhere anymore.
+  [thet]
+
 - Remove the remaining ``Topic`` entry in ``default_page_types`` from
   ``propertiestool.xml``. This setting is now done in
   ``plone.app.contenttypes`` respectively ``Products.ATContentTypes``.
