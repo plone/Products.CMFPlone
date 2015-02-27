@@ -8,6 +8,10 @@ Changelog
 5.0b1 (unreleased)
 ------------------
 
+- Fix tests for plone.app.contenttypes unified view names, which uses
+  ``listing_view`` for Folder and Collection types.
+  [thet]
+
 - Remove ``selectable_views`` from ``properties.xml``, which isn't used
   anywhere anymore.
   [thet]

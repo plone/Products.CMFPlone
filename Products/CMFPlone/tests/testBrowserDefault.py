@@ -228,8 +228,12 @@ class TestPloneToolBrowserDefault(unittest.TestCase):
         self.assertEqual(self.putils.browserDefault(f),
                          (f, [f.getId()],))
         f._delObject(f.getId())
-        self.assertEqual(self.putils.browserDefault(f),
-                         (f, ['folder_listing'],))
+        self.assertTrue(
+            self.putils.browserDefault(f) == (f, ['folder_listing'],)
+            or
+            self.putils.browserDefault(f) == (f, ['listing_view'],)
+            # plone.app.contenttypes has unified views
+        )
 
     def testDefaultPageSetting(self):
         sp = getToolByName(self.portal, "portal_properties").site_properties
