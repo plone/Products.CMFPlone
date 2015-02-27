@@ -4,6 +4,10 @@ Changelog
 2.5.4 (unreleased)
 ------------------
 
+- Read ``allow_anon_views_about`` settings from the registry instead of portal
+  properties (see https://github.com/plone/Products.CMFPlone/issues/216).
+  [jcerjak]
+
 - use livesearch pattern
   [vangheem]
 

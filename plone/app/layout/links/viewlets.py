@@ -13,6 +13,7 @@ from plone.app.uuid.utils import uuidToObject
 from zope.schema.interfaces import IVocabularyFactory
 from zope.component import getUtility
 from plone.registry.interfaces import IRegistry
+from Products.CMFPlone.interfaces import ISecuritySchema
 from Products.CMFPlone.interfaces.syndication import IFeedSettings
 from Products.CMFPlone.interfaces.syndication import ISiteSyndicationSettings
 
@@ -62,12 +63,13 @@ class AuthorViewlet(ViewletBase):
                                      name='plone_tools')
 
     def show(self):
-        properties = self.tools.properties()
-        site_properties = getattr(properties, 'site_properties')
         anonymous = self.portal_state.anonymous()
-        allowAnonymousViewAbout = site_properties.getProperty(
-            'allowAnonymousViewAbout', True)
-        return not anonymous or allowAnonymousViewAbout
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(
+            ISecuritySchema,
+            prefix='plone',
+        )
+        return not anonymous or settings.allow_anon_views_about
 
     def render(self):
         if self.show():

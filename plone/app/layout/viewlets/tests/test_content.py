@@ -1,16 +1,15 @@
-from z3c.relationfield import RelationValue
-from zope.component import getUtility
-from zope.component.hooks import getSite
-from zope.interface import Interface
-from zope.intid.interfaces import IIntIds
+from DateTime import DateTime
 from plone.app.layout.viewlets.tests.base import ViewletsTestCase
 from plone.app.layout.viewlets.content import DocumentBylineViewlet
 from plone.app.layout.viewlets.content import ContentRelatedItems
-from plone.locking.tests import addMember
 from plone.locking.interfaces import ILockable
-
-from DateTime import DateTime
+from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.interfaces import ISecuritySchema
+from z3c.relationfield import RelationValue
+from zope.component import getUtility
+from zope.interface import Interface
+from zope.intid.interfaces import IIntIds
 
 try:
     import pkg_resources
@@ -32,51 +31,74 @@ class TestDocumentBylineViewletView(ViewletsTestCase):
     Test the document by line viewlet
     """
     def afterSetUp(self):
-        portal = getSite()
-        addMember(portal, 'Alan', roles=('Member', 'Manager'))
-        addMember(portal, 'Ano', roles=())
+        self.folder.invokeFactory('Document', 'doc1', title='Document 1')
+        self.context = self.folder['doc1']
 
-    def test_anonymous_locked_icon(self):
+        registry = getUtility(IRegistry)
+        self.security_settings = registry.forInterface(
+            ISecuritySchema,
+            prefix='plone',
+        )
+
+    def _get_viewlet(self):
         request = self.app.REQUEST
-        self.setRoles(['Manager', 'Member'])
-        self.portal.invokeFactory('Document', 'd1')
-        context = getattr(self.portal, 'd1')
-        viewlet = DocumentBylineViewlet(context, request, None, None)
+        viewlet = DocumentBylineViewlet(self.context, request, None, None)
         viewlet.update()
-        ILockable(context).lock()
-        self.login('Ano')
-        viewlet = DocumentBylineViewlet(context, request, None, None)
-        viewlet.update()
+        return viewlet
+
+    def test_show_anonymous_not_allowed(self):
+        self.security_settings.allow_anon_views_about = False
+        self.logout()
+        viewlet = self._get_viewlet()
+        self.assertFalse(viewlet.show())
+
+    def test_show_anonymous_allowed(self):
+        self.security_settings.allow_anon_views_about = True
+        self.logout()
+        viewlet = self._get_viewlet()
+        self.assertTrue(viewlet.show())
+
+    def test_show_logged_in_anonymous_not_allowed(self):
+        self.security_settings.allow_anon_views_about = False
+        viewlet = self._get_viewlet()
+        self.assertTrue(viewlet.show())
+
+    def test_show_logged_in_anonymous_allowed(self):
+        self.security_settings.allow_anon_views_about = True
+        viewlet = self._get_viewlet()
+        self.assertTrue(viewlet.show())
+
+    def test_anonymous_locked_icon_not_locked(self):
+        self.logout()
+        viewlet = self._get_viewlet()
         self.assertEqual(viewlet.locked_icon(), "")
 
-    def test_locked_icon(self):
-        request = self.app.REQUEST
-        self.setRoles(['Manager', 'Member'])
-        self.portal.invokeFactory('Document', 'd1')
-        context = getattr(self.portal, 'd1')
-        viewlet = DocumentBylineViewlet(context, request, None, None)
-        viewlet.update()
+    def test_anonymous_locked_icon_is_locked(self):
+        self.logout()
+        ILockable(self.context).lock()
+        viewlet = self._get_viewlet()
         self.assertEqual(viewlet.locked_icon(), "")
-        ILockable(context).lock()
+
+    def test_logged_in_locked_icon_not_locked(self):
+        viewlet = self._get_viewlet()
+        self.assertEqual(viewlet.locked_icon(), "")
+
+    def test_logged_in_locked_icon_is_locked(self):
+        viewlet = self._get_viewlet()
+        ILockable(self.context).lock()
         lockIconUrl = '<img src="http://nohost/plone/lock_icon.png" alt="" \
 title="Locked" height="16" width="16" />'
         self.assertEqual(viewlet.locked_icon(), lockIconUrl)
 
     def test_pub_date(self):
-        request = self.app.REQUEST
-        self.login('Alan')
-        self.portal.invokeFactory('Document', 'd1')
-        context = getattr(self.portal, 'd1')
-
         # configure our portal to enable publication date on pages globally on
         # the site
-        properties = getToolByName(context, 'portal_properties')
+        properties = getToolByName(self.portal, 'portal_properties')
         site_properties = getattr(properties, 'site_properties')
         site_properties.displayPublicationDateInByline = True
 
-        self.login('Ano')
-        viewlet = DocumentBylineViewlet(context, request, None, None)
-        viewlet.update()
+        self.logout()
+        viewlet = self._get_viewlet()
 
         # publication date should be None as there is not Effective date set
         # for our document yet
@@ -84,7 +106,7 @@ title="Locked" height="16" width="16" />'
 
         # now set effective date for our document
         effective = DateTime()
-        context.setEffectiveDate(effective)
+        self.context.setEffectiveDate(effective)
         self.assertEqual(viewlet.pub_date(), DateTime(effective.ISO8601()))
 
         # now switch off publication date globally on the site and see if

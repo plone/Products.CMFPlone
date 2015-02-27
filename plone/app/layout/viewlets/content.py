@@ -6,14 +6,17 @@ from zope.component import getMultiAdapter, queryMultiAdapter
 from AccessControl import getSecurityManager
 from Acquisition import aq_inner
 from DateTime import DateTime
+from plone.registry.interfaces import IRegistry
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.WorkflowCore import WorkflowException
 from Products.CMFEditions.Permissions import AccessPreviousVersions
 from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone.interfaces import ISecuritySchema
 from Products.CMFPlone.utils import base_hasattr
 from Products.CMFPlone.utils import log
+from zope.component import getUtility
 
 from plone.app.layout.globals.interfaces import IViewView
 from plone.app.layout.viewlets import ViewletBase
@@ -64,11 +67,12 @@ class DocumentBylineViewlet(ViewletBase):
         self.has_pam = HAS_PAM
 
     def show(self):
-        properties = getToolByName(self.context, 'portal_properties')
-        site_properties = getattr(properties, 'site_properties')
-        allowAnonymousViewAbout = site_properties.getProperty(
-            'allowAnonymousViewAbout', True)
-        return not self.anonymous or allowAnonymousViewAbout
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(
+            ISecuritySchema,
+            prefix='plone',
+        )
+        return not self.anonymous or settings.allow_anon_views_about
 
     def show_history(self):
         has_access_preview_versions_permission = _checkPermission(
