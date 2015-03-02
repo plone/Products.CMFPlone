@@ -62,7 +62,7 @@ setup(
         'Products.MimetypesRegistry',
         'Products.PasswordResetTool',
         'Products.PlacelessTranslationService',
-        'Products.PloneLanguageTool',
+        # 'Products.PloneLanguageTool',
         'Products.PlonePAS',
         'Products.PluggableAuthService',
         'Products.PluginRegistry',
