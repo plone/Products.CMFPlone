@@ -32,7 +32,7 @@
                         login_name python:request.get('login_name', request.get(ac_name, ''));
                         checkPermission nocall: context/portal_membership/checkPermission;
                         site_properties context/portal_properties/site_properties;
-                        use_email_as_login site_properties/use_email_as_login|nothing;
+                        use_email_as_login python:context.portal_registry['plone.use_email_as_login'];
                         external_login_url site_properties/external_login_url|nothing;
                         external_login_iframe site_properties/external_login_iframe|nothing;
                         mail_password python:test(checkPermission('Mail forgotten password', context), portal_url + '/mail_password_form', '');

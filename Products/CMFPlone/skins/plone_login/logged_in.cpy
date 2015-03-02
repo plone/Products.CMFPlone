@@ -16,8 +16,7 @@ REQUEST = context.REQUEST
 membership_tool = getToolByName(context, 'portal_membership')
 if membership_tool.isAnonymousUser():
     REQUEST.RESPONSE.expireCookie('__ac', path='/')
-    email_login = getToolByName(context, 'portal_properties') \
-                    .site_properties.getProperty('use_email_as_login')
+    email_login = context.portal_registry['plone.use_email_as_login']
     if email_login:
         context.plone_utils.addPortalMessage(
             _(u'Login failed. Both email address and password are case '

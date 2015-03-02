@@ -691,10 +691,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         snapshot_id = self.setup._mangleTimestampName('test')
         self.setup.createSnapshot(snapshot_id)
 
-    def testValidateEmail(self):
-        # validate_email should be on by default
-        self.assertTrue(self.portal.getProperty('validate_email'))
-
     def testSiteManagerSetup(self):
         clearSite()
         # The portal should be an ISite

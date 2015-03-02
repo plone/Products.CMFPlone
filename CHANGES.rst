@@ -8,6 +8,13 @@ Changelog
 5.0b1 (unreleased)
 ------------------
 
+- Move security control panel to CMFPlone. Fixes #216.
+  [jcerjak, timo]
+
+- Remove ``create_userfolder`` from addPloneSite factory, it is not used
+  anymore.
+  [jcerjak]
+
 - Read security settings from the registry instead of portal properties.
   [jcerjak,timo]
 

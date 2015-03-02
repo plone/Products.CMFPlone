@@ -2,6 +2,7 @@ from AccessControl import Unauthorized
 
 from Products.CMFCore.interfaces import IPropertiesTool
 from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone.interfaces import ISecuritySchema
 from Products.CMFPlone.interfaces.controlpanel import IMailSchema
 from Products.CMFPlone.utils import getToolByName
 from Products.CMFPlone.utils import pretty_title_or_id
@@ -245,10 +246,10 @@ class AuthorView(BrowserView):
             self.request.get('HTTP_REFERER', 'unknown url')
         )
 
-        site_properties = self.portal_properties.site_properties
-        allow_anonymous_view_about = site_properties.getProperty(
-            'allowAnonymousViewAbout', True
-        )
+        registry = getUtility(IRegistry)
+        security_settings = registry.forInterface(
+            ISecuritySchema, prefix='plone')
+        allow_anonymous_view_about = security_settings.allow_anon_views_about
 
         if self.is_anonymous and not allow_anonymous_view_about:
             raise Unauthorized()

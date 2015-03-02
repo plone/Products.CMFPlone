@@ -21,6 +21,8 @@ from AccessControl import getSecurityManager
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.SecurityManagement import setSecurityManager
 from AccessControl.User import nobody
+from plone.registry.interfaces import IRegistry
+from Products.CMFPlone.interfaces import ISecuritySchema
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.PloneTool import EMAIL_RE
 from Products.CMFDefault.utils import checkEmailAddress
@@ -277,8 +279,11 @@ class RegistrationTool(PloneBaseTool, BaseTool):
                                 return 0
             # When email addresses are used as logins, we need to check
             # if there are any users with the requested login.
-            props = getToolByName(self, 'portal_properties').site_properties
-            if props.use_email_as_login:
+            registry = getUtility(IRegistry)
+            security_settings = registry.forInterface(
+                ISecuritySchema, prefix='plone')
+
+            if security_settings.use_email_as_login:
                 results = pas.searchUsers(name=id, exact_match=True)
                 if results:
                     return 0
