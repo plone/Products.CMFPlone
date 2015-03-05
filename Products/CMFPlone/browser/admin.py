@@ -116,12 +116,9 @@ class FrontPage(BrowserView):
 
 class AddPloneSite(BrowserView):
 
-    default_extension_profiles = (
-        'plone.app.registry:default',
-        'plonetheme.classic:default',
-        'plone.app.theming:default',
-        'plonetheme.barceloneta:default',
-    )
+    # Profiles that are installed by default,
+    # but can be removed later.
+    default_extension_profiles = ()
 
     def profiles(self):
         base_profiles = []
@@ -130,10 +127,7 @@ class AddPloneSite(BrowserView):
         # profiles available for install/uninstall, but hidden at the time
         # the Plone site is created
         not_installable = [
-            'kupu:default',
-            'plonetheme.classic:uninstall',
             'Products.CMFPlacefulWorkflow:CMFPlacefulWorkflow',
-            'plone.app.z3cform:default',
         ]
         utils = getAllUtilitiesRegisteredFor(INonInstallable)
         for util in utils:
@@ -156,8 +150,7 @@ class AddPloneSite(BrowserView):
 
         for info in profile_registry.listProfileInfo():
             if info.get('type') == BASE and \
-               info.get('for') in (IPloneSiteRoot, None) and \
-               info.get('id') != u'Products.kupu:default':
+               info.get('for') in (IPloneSiteRoot, None):
                 base_profiles.append(info)
 
         return dict(
