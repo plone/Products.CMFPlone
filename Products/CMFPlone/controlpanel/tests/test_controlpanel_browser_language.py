@@ -13,7 +13,6 @@ from Products.CMFPlone.testing import \
 import unittest2 as unittest
 
 
-
 class LanguageControlPanelFunctionalTest(unittest.TestCase):
     """Test that changes in the language control panel are actually
     stored in the registry.
@@ -36,7 +35,8 @@ class LanguageControlPanelFunctionalTest(unittest.TestCase):
         form.mech_form.new_control(
             type='hidden',
             name=name,
-            attrs=dict(value=self.browser.getControl(control_name).optionValue))
+            attrs=dict(value=self.browser.getControl(
+                control_name).optionValue))
 
     def test_language_control_panel_link(self):
         self.browser.open(
