@@ -42,7 +42,7 @@ def cookWhenChangingSettings(context, bundle):
                     try:
                         cooked_js += '\n/* resource: %s */\n%s' % (
                             resource.js,
-                            minify(js, mangle=True, mangle_toplevel=True)
+                            minify(js, mangle=False, mangle_toplevel=False)
                         )
                     except SyntaxError:
                         cooked_js += '\n/* resource(error cooking): %s */\n%s' % (
