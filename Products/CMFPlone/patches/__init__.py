@@ -24,3 +24,6 @@ import security					# misc security fixes
 
 import sendmail
 sendmail.applyPatches()
+
+import templatecookcheck        # Make sure templates aren't re-read in
+                                # production sites
