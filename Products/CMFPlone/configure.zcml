@@ -41,7 +41,7 @@
   <include package="plone.indexer" />
   
   <!-- mockup -->
-  <include package="plone.mockup" />
+  <include package="mockup" />
 
   <!-- viewlets zope 3 layers support for themes -->
   <include package="plone.browserlayer" />
