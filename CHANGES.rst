@@ -8,11 +8,6 @@ Changelog
 5.0b1 (unreleased)
 ------------------
 
-- Include the Mockup integration package ``plone.mockup`` instead of
-  ``mockup``, which is reverted to a non Python package again and made
-  installable via bower.
-  [thet]
-
 - Move security control panel to CMFPlone. Fixes #216.
   [jcerjak, timo]
 
