@@ -119,8 +119,8 @@
     i18n:attributes="title">
   <permission>Plone Site Setup: Navigation</permission>
  </configlet>
- <configlet title="Language" action_id="PloneLanguageTool"
-    appId="PloneLanguageTool" category="Plone" condition_expr=""
+ <configlet title="Language" action_id="LanguageSettings"
+    appId="Plone" category="Plone" condition_expr=""
     icon_expr="string:$portal_url/flag-plone.png"
     url_expr="string:${portal_url}/@@language-controlpanel" visible="True"
     i18n:attributes="title">
