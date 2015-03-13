@@ -322,7 +322,10 @@ class ResourceRegistryControlPanelView(RequireJsView):
         def _read_folder(folder):
             files = []
             for filename in folder.listDirectory():
-                item = folder[filename]
+                try:
+                    item = folder[filename]
+                except NotFound:
+                    continue
                 if folder.isDirectory(filename):
                     files.extend(_read_folder(item))
                 else:
