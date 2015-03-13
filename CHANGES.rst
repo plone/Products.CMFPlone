@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.5.4 (unreleased)
+2.5.4 (2015-03-13)
 ------------------
 
 - Read ``allow_anon_views_about`` settings from the registry instead of portal
