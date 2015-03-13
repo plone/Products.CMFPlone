@@ -29,10 +29,12 @@ class ScriptsView(ResourceView):
                         result.append(data)
         else:
             if bundle.compile is False:
-                # Its a legacy css bundle
-                if not bundle.last_compilation\
-                        or self.last_legacy_import > bundle.last_compilation:
-                    # We need to compile
+                # Its a legacy css bundle OR compiling is happening outside of plone
+                if ((not bundle.last_compilation
+                        or self.last_legacy_import > bundle.last_compilation)
+                        and bundle.resources):
+                    # We need to combine files. It's possible no resources are defined
+                    # because the compiling is done outside of plone
                     cookWhenChangingSettings(self.context, bundle)
             if bundle.jscompilation:
                 result.append({
