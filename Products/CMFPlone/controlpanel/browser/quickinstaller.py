@@ -93,7 +93,10 @@ class ManageProductsView(BrowserView):
                 product['profile_type'] = profile_type
             elif profile_type == 'uninstall':
                 product['uninstall_profile'] = profile
-                product['profile_type'] = profile_type
+                if 'profile_type' not in product:
+                    # if this is the only profile installed, it could just be an uninstall
+                    # profile
+                    product['profile_type'] = profile_type
             else:
                 if 'version' in profile:
                     product['upgrade_profiles'][profile['version']] = profile
@@ -119,6 +122,8 @@ class ManageProductsView(BrowserView):
         addons = self.marshall_addons()
         filtered = {}
         for product_id, addon in addons.items():
+            if 'media' in product_id:
+                import pdb; pdb.set_trace()
             if product_name and addon['id'] != product_name:
                 continue
 
