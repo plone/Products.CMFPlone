@@ -152,9 +152,21 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
 
     def testObjectDelete(self):
         self.folder.invokeFactory('Document', id='doc')
+
+        # prepare fake request with URL and URL2 properly setup
+        physical_path = list(self.folder.doc.getPhysicalPath())
+        physical_path.append('object_delete')
+        url = '/'.join(physical_path)
+        self.request.set('URL', url)
+        url2 = '/'.join(physical_path[:-2])
+        self.request.set('URL2', url2)
         self.setupAuthenticator()
         self.setRequestMethod('POST')
-        self.folder.doc.object_delete()
+
+        # simulate call to object_delete
+        object_delete = self.portal.restrictedTraverse(url)
+        object_delete()
+
         self.assertFalse('doc' in self.folder)
 
 
