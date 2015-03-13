@@ -122,8 +122,6 @@ class ManageProductsView(BrowserView):
         addons = self.marshall_addons()
         filtered = {}
         for product_id, addon in addons.items():
-            if 'media' in product_id:
-                import pdb; pdb.set_trace()
             if product_name and addon['id'] != product_name:
                 continue
 
