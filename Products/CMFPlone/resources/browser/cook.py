@@ -1,3 +1,5 @@
+import logging
+
 from Products.CMFPlone.interfaces.resources import IResourceRegistry
 from Products.CMFPlone.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME  # noqa
 from StringIO import StringIO
@@ -12,6 +14,9 @@ from zope.component import getUtility
 from zope.component.hooks import getSite
 from zope.globalrequest import getRequest
 from zope.interface import alsoProvides
+from zExceptions import NotFound
+
+logger = logging.getLogger('Products.CMFPlone')
 
 
 def cookWhenChangingSettings(context, bundle):
@@ -26,7 +31,7 @@ def cookWhenChangingSettings(context, bundle):
     cooked_js = ""
     siteUrl = getSite().absolute_url()
     request = getRequest()
-    for package in bundle.resources:
+    for package in bundle.resources or []:
         if package in resources:
             resource = resources[package]
             for css in resource.css:
@@ -64,24 +69,26 @@ def cookWhenChangingSettings(context, bundle):
     container = persistent_directory[OVERRIDE_RESOURCE_DIRECTORY_NAME]
     if resource_name not in container:
         container.makeDirectory(resource_name)
-    folder = container[resource_name]
-    fi = StringIO(cooked_js)
-    folder.writeFile(resource_filepath, fi)
+    try:
+        folder = container[resource_name]
+        fi = StringIO(cooked_js)
+        folder.writeFile(resource_filepath, fi)
 
-    # Storing css
-    resource_path = css_path.split('++plone++')[-1]
-    resource_name, resource_filepath = resource_path.split('/', 1)
-    persistent_directory = getUtility(IResourceDirectory, name="persistent")
-    if OVERRIDE_RESOURCE_DIRECTORY_NAME not in persistent_directory:
-        persistent_directory.makeDirectory(OVERRIDE_RESOURCE_DIRECTORY_NAME)
-    container = persistent_directory[OVERRIDE_RESOURCE_DIRECTORY_NAME]
-    if resource_name not in container:
-        container.makeDirectory(resource_name)
-    folder = container[resource_name]
-    fi = StringIO(cooked_css)
-    folder.writeFile(resource_filepath, fi)
-    bundle.last_compilation = datetime.now()
-    # setRequest(original_request)
-
+        # Storing css
+        resource_path = css_path.split('++plone++')[-1]
+        resource_name, resource_filepath = resource_path.split('/', 1)
+        persistent_directory = getUtility(IResourceDirectory, name="persistent")
+        if OVERRIDE_RESOURCE_DIRECTORY_NAME not in persistent_directory:
+            persistent_directory.makeDirectory(OVERRIDE_RESOURCE_DIRECTORY_NAME)
+        container = persistent_directory[OVERRIDE_RESOURCE_DIRECTORY_NAME]
+        if resource_name not in container:
+            container.makeDirectory(resource_name)
+        folder = container[resource_name]
+        fi = StringIO(cooked_css)
+        folder.writeFile(resource_filepath, fi)
+        bundle.last_compilation = datetime.now()
+        # setRequest(original_request)
+    except NotFound:
+        logger.info('Error compiling js/css for the bundle')
     # Disable CSRF protection on this request
     alsoProvides(request, IDisableCSRFProtection)
