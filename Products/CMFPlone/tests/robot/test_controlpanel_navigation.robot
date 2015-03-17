@@ -34,16 +34,16 @@ Scenario: Filter Navigation By Displayed Types in the Navigation Control Panel
    When I remove 'Document' from the displayed types list
    Then the document 'My Document' does not show up in the navigation
 
-Scenario: Filter Navigation By Workflow States in the Navigation Control Panel
-  Given a logged-in site administrator
-    and a published document 'My Document'
-    and a private document 'My Internal Document'
-    and the navigation control panel
-   When I enable filtering by workflow states
-    and I choose to show 'published' items
-    and I choose to not show 'private' items
-   Then the document 'My Document' shows up in the navigation
-    and the document 'My Internal Document' does not show up in the navigation
+#Scenario: Filter Navigation By Workflow States in the Navigation Control Panel
+#  Given a logged-in site administrator
+#    and a published document 'My Document'
+#    and a private document 'My Internal Document'
+#    and the navigation control panel
+#   When I enable filtering by workflow states
+#    and I choose to show 'published' items
+#    and I choose to not show 'private' items
+#   Then the document 'My Document' shows up in the navigation
+#    and the document 'My Internal Document' does not show up in the navigation
 
 
 *** Keywords *****************************************************************
@@ -55,7 +55,6 @@ the navigation control panel
 
 a published document '${title}'
   ${uid}=  a document '${title}'
-  Debug
   Fire transition  ${uid}  publish
 
 a private document '${title}'
