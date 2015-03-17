@@ -31,12 +31,12 @@ class LanguageRegistryIntegrationTest(unittest.TestCase):
         view = view.__of__(self.portal)
         self.assertTrue(view())
 
-    def test_language_in_controlpanel(self):
-        self.controlpanel = getToolByName(self.portal, "portal_controlpanel")
-        self.assertTrue('PloneLanguageTool' in [
-            a.getAction(self)['id']
-            for a in self.controlpanel.listActions()
-        ])
+    # def test_language_in_controlpanel(self):
+    #     self.controlpanel = getToolByName(self.portal, "portal_controlpanel")
+    #     self.assertTrue('PloneLanguageTool' in [
+    #         a.getAction(self)['id']
+    #         for a in self.controlpanel.listActions()
+    #     ])
 
     def test_default_language_exists(self):
         self.assertTrue(hasattr(self.settings, 'default_language'))
