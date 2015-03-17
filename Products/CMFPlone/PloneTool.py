@@ -985,7 +985,6 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             metadata_names = {'Description': METADATA_DCNAME['Description']}
         else:
             metadata_names = METADATA_DCNAME
-
         for accessor, key in metadata_names.items():
             # check non-public properties
             if not view_about and accessor in METADATA_DC_AUTHORFIELDS:

@@ -29,6 +29,7 @@ from events import IReorderedEvent
 from events import ISiteManagerCreatedEvent
 from installable import INonInstallable
 from interface import IInterfaceTool
+from language import ILanguage
 from migration import IMigrationTool
 from patterns import IPatternsSettings
 from properties import IPropertiesTool

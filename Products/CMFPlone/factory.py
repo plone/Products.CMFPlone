@@ -80,7 +80,7 @@ def addPloneSite(context, site_id, title='Plone site', description='',
     """Add a PloneSite to the context."""
     context._setObject(site_id, PloneSite(site_id))
     site = context._getOb(site_id)
-    # site.setLanguage(default_language)
+    site.setLanguage(default_language)
 
     site[_TOOL_ID] = SetupTool(_TOOL_ID)
     setup_tool = site[_TOOL_ID]
