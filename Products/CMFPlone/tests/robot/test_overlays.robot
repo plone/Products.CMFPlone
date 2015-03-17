@@ -12,6 +12,7 @@ Resource  plone/app/robotframework/saucelabs.robot
 Library  Remote  ${PLONE_URL}/RobotRemote
 
 Resource  common.robot
+Resource  keywords.robot
 
 Test Setup  Run keywords  Open SauceLabs test browser  Background
 Test Teardown  Run keywords  Report test status  Close all browsers
@@ -58,19 +59,19 @@ Scenario: Log in form overlay closes on valid credentials
      Then overlay should close
 
 Scenario: Set default content item of a folder overlay opens
-    Given a site owner
+    Given a logged-in site administrator
       And a document 'doc' in the test folder
      When I set the default content view of the test folder
      Then overlay should open
 
 Scenario: Change default content item of a folder overlay opens
-    Given a site owner
+    Given a logged-in site administrator
       And a document as the default view of the test folder
      When I change the default content view of the test folder
      Then overlay should open
 
 Scenario: Change default content item of a folder overlay closes
-    Given a site owner
+    Given a logged-in site administrator
       And a document as the default view of the test folder
      When I change the default content view of the test folder
       And I 'Cancel' the form
@@ -83,12 +84,12 @@ Scenario: Change default content item of a folder overlay closes
      Then overlay should close
 
 Scenario: Delete content action overlay opens
-    Given a site owner
+    Given a logged-in site administrator
      When I trigger the 'delete' action menu item of the test folder
      Then overlay should open
 
 Scenario: Delete content action overlay closes
-    Given a site owner
+    Given a logged-in site administrator
      When I trigger the 'delete' action menu item of the test folder
       And I 'Cancel' the form
      Then overlay should close
@@ -100,12 +101,12 @@ Scenario: Delete content action overlay closes
      Then overlay should close
 
 Scenario: Rename content action overlay opens
-    Given a site owner
+    Given a logged-in site administrator
      When I trigger the 'rename' action menu item of the test folder
      Then overlay should open
 
 Scenario: Rename content action overlay closes
-    Given a site owner
+    Given a logged-in site administrator
      When I trigger the 'rename' action menu item of the test folder
       And I 'Cancel' the form
      Then overlay should close
@@ -153,13 +154,13 @@ Scenario: Register user overlay remains on wrong data
 #     Then overlay should close
 
 Scenario: New user overlay opens
-    Given a site owner
+    Given a logged-in site administrator
       And the users and groups configlet
      When I trigger the add a new user action
      Then overlay should open
 
 Scenario: New user overlay remains on wrong data
-    Given a site owner
+    Given a logged-in site administrator
       And the users and groups configlet
       And I trigger the add a new user action
      When I send the register form
@@ -167,7 +168,7 @@ Scenario: New user overlay remains on wrong data
       And overlay shows an error
 
 Scenario: New user overlay closes on valid data
-    Given a site owner
+    Given a logged-in site administrator
       And the users and groups configlet
       And I trigger the add a new user action
      When I enter valid user data
@@ -175,14 +176,14 @@ Scenario: New user overlay closes on valid data
      Then overlay should close
 
 Scenario: History overlay opens
-    Given a site owner
+    Given a logged-in site administrator
       And the test folder
      When I click the 'Content Info' link
       And I click the 'History' link
      Then overlay should open
 
 Scenario: History overlay closes
-    Given a site owner
+    Given a logged-in site administrator
       And the test folder
       When I click the 'Content Info' link
       And I click the 'History' link
@@ -192,7 +193,7 @@ Scenario: History overlay closes
 *** Keywords ***
 
 Background
-    Given a site owner
+    Given a logged-in site administrator
       and a test folder
     Disable autologin
     Go to homepage
