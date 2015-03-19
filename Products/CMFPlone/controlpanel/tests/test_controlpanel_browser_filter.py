@@ -75,3 +75,20 @@ class FilterControlPanelFunctionalTest(unittest.TestCase):
             nasty_html,
             str(self.safe_html.convert(nasty_html, ds))
         )
+
+    def test_nasty_tags(self):
+        self.browser.open(
+            "%s/@@filter-controlpanel" % self.portal_url)
+        self.browser.getControl(
+            name='form.widgets.nasty_tags'
+        ).value = 'div\r\na'
+        self.browser.getControl('Save').click()
+
+        # test that <a> is filtered
+        self.assertFalse(self.safe_html._config['disable_transform'])
+        good_html = '<a href="http://example.com">harmless link</a>'
+        ds = datastream('dummy_name')
+        self.assertEqual(
+            str(self.safe_html.convert(good_html, ds)),
+            ''
+        )
