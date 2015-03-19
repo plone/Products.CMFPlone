@@ -35,15 +35,19 @@ Scenario: Configure Filter Control Panel to strip out tags
    When I add 'h1' to the stripped tags list
    Then the 'h1' tag is stripped when a document is saved
 
-# XXX: This test currently fails because TinyMCE filters out the marquee tag
-# and ignores the filter control panel settings.
-#Scenario: Configure Filter Control Panel to allow custom tags
-#  Given a logged-in site administrator
-#    and the filter control panel
-#   When I add 'marquee' to the custom tags list
-#   Then the 'marquee' tag is preserved when a document is saved
+Scenario: Configure Filter Control Panel to allow custom tags
+  Pass Execution  This test currently fails because TinyMCE filters out the marquee tag and ignores the filter control panel settings.
+  Given a logged-in site administrator
+    and the filter control panel
+   When I add 'marquee' to the custom tags list
+   Then the 'marquee' tag is preserved when a document is saved
 
-#Scenario: Configure Filter Control Panel to strip out attributes
+Scenario: Configure Filter Control Panel to strip out attributes
+  Pass Execution  Functionality is broken. Maybe even in Plone 4.3?
+  Given a logged-in site administrator
+    and the filter control panel
+   When I add 'class' to the stripped attributes list
+   Then the 'class' attribute is stripped when a document is saved
 
 #Scenario: Configure Filter Control Panel to strip out combinations
 
@@ -71,22 +75,29 @@ Input RichText
 
 I add '${tag}' to the nasty tags list
   Click Button  Add Nasty tags
-  Given patterns are loaded
+  patterns are loaded
   Input Text  name=form.nasty_tags.6.  ${tag}
   Click Button  Save
   Wait until page contains  Changes saved
 
 I add '${tag}' to the stripped tags list
   Click Button  Add Stripped tags
-  Given patterns are loaded
+  patterns are loaded
   Input Text  name=form.stripped_tags.16.  ${tag}
   Click Button  Save
   Wait until page contains  Changes saved
 
 I add '${tag}' to the custom tags list
   Click Button  Add Custom tags
-  Given patterns are loaded
+  patterns are loaded
   Input Text  name=form.custom_tags.26.  ${tag}
+  Click Button  Save
+  Wait until page contains  Changes saved
+
+I add '${tag}' to the stripped attributes list
+  Click Button  Add Stripped attributes
+  patterns are loaded
+  Input Text  name=form.stripped_attributes.9.  ${tag}
   Click Button  Save
   Wait until page contains  Changes saved
 
@@ -96,7 +107,7 @@ I add '${tag}' to the custom tags list
 the 'h1' tag is filtered out when a document is saved
   ${doc1_uid}=  Create content  id=doc1  title=Document 1  type=Document
   Go To  ${PLONE_URL}/doc1/edit
-  Given patterns are loaded
+  patterns are loaded
   Input RichText  <h1>h1 heading</h1><p>lorem ipsum</p>
   Click Button  Save
   Wait until page contains  Changes saved
@@ -105,7 +116,7 @@ the 'h1' tag is filtered out when a document is saved
 the 'h1' tag is stripped when a document is saved
   ${doc1_uid}=  Create content  id=doc1  title=Document 1  type=Document
   Go To  ${PLONE_URL}/doc1/edit
-  Given patterns are loaded
+  patterns are loaded
   Input RichText  <h1>h1 heading</h1><p>lorem ipsum</p>
   Click Button  Save
   Wait until page contains  Changes saved
@@ -115,8 +126,20 @@ the 'h1' tag is stripped when a document is saved
 the 'marquee' tag is preserved when a document is saved
   ${doc1_uid}=  Create content  id=doc1  title=Document 1  type=Document
   Go To  ${PLONE_URL}/doc1/edit
-  Given patterns are loaded
+  patterns are loaded
   Input RichText  <marquee>lorem ipsum</marquee>
   Click Button  Save
   Wait until page contains  Changes saved
   XPath Should Match X Times  //div[@id='content-core']//marquee  1  message=the marquee tag should have been preserved
+
+the 'class' attribute is stripped when a document is saved
+  ${doc1_uid}=  Create content  id=doc1  title=Document 1  type=Document
+  Go To  ${PLONE_URL}/doc1/edit
+  patterns are loaded
+  Input RichText  <h4 class="foo">lorem ipsum</h4>
+  Click Button  Save
+  Wait until page contains  Changes saved
+  Page should contain  lorem ipsum
+
+  XPath Should Match X Times  //*[@id='content-core']//h4  1  message=h4 tag should be present
+  XPath Should Match X Times  //*[@id='content-core']//h4[@class='foo']  0  message=class attribute should have been filtered out
