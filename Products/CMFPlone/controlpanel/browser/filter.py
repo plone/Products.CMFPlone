@@ -73,7 +73,6 @@ class FilterControlPanel(AutoExtensibleForm, form.EditForm):
             safe_html._p_changed = True
             safe_html.reload()
 
-        # Proceed to registry storage
         if errors:
             self.status = self.formErrorsMessage
             return
