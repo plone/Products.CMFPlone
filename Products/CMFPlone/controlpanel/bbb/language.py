@@ -55,6 +55,15 @@ class LanguageControlPanelAdapter(object):
     display_flags = property(get_display_flags,
                                            set_display_flags)
 
+    def get_always_show_selector(self):
+        return self.settings.always_show_selector
+
+    def set_always_show_selector(self, value):
+        self.settings.always_show_selector = value
+
+    always_show_selector = property(get_always_show_selector,
+                                           set_always_show_selector)
+
     def get_use_content_negotiation(self):
         return self.settings.use_content_negotiation
 

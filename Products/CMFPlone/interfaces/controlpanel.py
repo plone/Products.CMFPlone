@@ -162,6 +162,19 @@ class ILanguageSchema(Interface):
         required=False
     )
 
+    always_show_selector = schema.Bool(
+        title=_(
+            u'label_always_show_selector',
+            default=u"Always show language selector"
+        ),
+        description=_(
+            u"help_always_show_selector",
+            default=u""
+        ),
+        default=False,
+        required=False
+    )
+
     model.fieldset(
         'negotiation_scheme',
         label=_(u'Negotiation scheme', default=u'Negotiation scheme'),
