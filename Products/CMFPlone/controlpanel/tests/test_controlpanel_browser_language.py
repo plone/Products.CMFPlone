@@ -208,7 +208,6 @@ class LanguageControlPanelFunctionalTest(unittest.TestCase):
         )
         self.browser.getControl(control_label).selected = True
         self.browser.getControl('Save').click()
-        import pdb; pdb.set_trace()
         self.assertEqual(settings.authenticated_users_only, True)
 
     def test_set_cookie_always(self):
