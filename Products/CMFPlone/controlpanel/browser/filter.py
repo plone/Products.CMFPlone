@@ -56,6 +56,7 @@ class FilterControlPanel(AutoExtensibleForm, form.EditForm):
             getToolByName(self.context, 'portal_transforms'),
             'safe_html',
             None)
+
         nasty_tags = data['nasty_tags']
         if sorted(nasty_tags) != \
                 sorted(safe_html._config['nasty_tags'].keys()):
@@ -65,6 +66,12 @@ class FilterControlPanel(AutoExtensibleForm, form.EditForm):
                 if value in valid:
                     del valid[value]
             self._settransform(nasty_tags=values, valid_tags=valid)
+
+        disable_filtering = int(data['disable_filtering'])
+        if disable_filtering != safe_html._config['disable_transform']:
+            safe_html._config['disable_transform'] = disable_filtering
+            safe_html._p_changed = True
+            safe_html.reload()
 
         # Proceed to registry storage
         if errors:
