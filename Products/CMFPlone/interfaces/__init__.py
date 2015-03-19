@@ -38,6 +38,7 @@ from siteroot import IMigratingPloneSiteRoot
 from siteroot import IPloneSiteRoot
 from siteroot import ITestCasePloneSiteRoot
 from structure import INonStructuralFolder
+from syndication import ISiteSyndicationSettings
 from translationservice import ITranslationServiceTool
 from workflow import IWorkflowChain
 from resources import IResourceRegistry
