@@ -46,14 +46,20 @@ Scenario: Configure Filter Control Panel to strip out attributes
   Pass Execution  Functionality is broken. Maybe even in Plone 4.3?
   Given a logged-in site administrator
     and the filter control panel
-   When I add 'class' to the stripped attributes list
-   Then the 'class' attribute is stripped when a document is saved
+   When I add 'data-stripme' to the stripped attributes list
+   Then the 'data-stripme' attribute is stripped when a document is saved
 
 #Scenario: Configure Filter Control Panel to strip out combinations
 
 #Scenario: Configure Filter Control Panel to allow style attributes
 
-#Scenario: Configure Filter Control Panel to filter out classes
+Scenario: Configure Filter Control Panel to filter out classes
+  Pass Execution  Functionality is broken. Maybe even in Plone 4.3?
+  Given a logged-in site administrator
+    and the filter control panel
+   When I add 'foobar' to the filtered classes
+   Then the 'foobar' class is filtered out when a document is saved
+
 
 
 *** Keywords *****************************************************************
@@ -101,6 +107,13 @@ I add '${tag}' to the stripped attributes list
   Click Button  Save
   Wait until page contains  Changes saved
 
+I add '${tag}' to the filtered classes
+  Click Button  Add Filtered classes
+  patterns are loaded
+  Input Text  name=form.class_blacklist.0.  ${tag}
+  Click Button  Save
+  Wait until page contains  Changes saved
+
 
 # --- THEN -------------------------------------------------------------------
 
@@ -132,14 +145,27 @@ the 'marquee' tag is preserved when a document is saved
   Wait until page contains  Changes saved
   XPath Should Match X Times  //div[@id='content-core']//marquee  1  message=the marquee tag should have been preserved
 
-the 'class' attribute is stripped when a document is saved
+the 'data-stripme' attribute is stripped when a document is saved
   ${doc1_uid}=  Create content  id=doc1  title=Document 1  type=Document
   Go To  ${PLONE_URL}/doc1/edit
   patterns are loaded
-  Input RichText  <h4 class="foo">lorem ipsum</h4>
+  Input RichText  <h4 data-stripme="foo">lorem ipsum</h4>
   Click Button  Save
   Wait until page contains  Changes saved
   Page should contain  lorem ipsum
 
   XPath Should Match X Times  //*[@id='content-core']//h4  1  message=h4 tag should be present
-  XPath Should Match X Times  //*[@id='content-core']//h4[@class='foo']  0  message=class attribute should have been filtered out
+  XPath Should Match X Times  //*[@id='content-core']//h4[@data-stripme='foo']  0  message=data-stripme attribute should have been filtered out
+
+the 'foobar' class is filtered out when a document is saved
+  ${doc1_uid}=  Create content  id=doc1  title=Document 1  type=Document
+  Go To  ${PLONE_URL}/doc1/edit
+  patterns are loaded
+  Input RichText  <h4 class="foobar">lorem ipsum</h4>
+  Click Button  Save
+  Wait until page contains  Changes saved
+  Page should contain  lorem ipsum
+
+  XPath Should Match X Times  //*[@id='content-core']//h4  1  message=h4 tag should be present
+  Debug
+  XPath Should Match X Times  //*[@id='content-core']//h4[@class='foobar']  0  message=class foobar should have been filtered out
