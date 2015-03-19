@@ -35,6 +35,8 @@ the language control panel
 
 I set the site language to German
   Select From List By Label  form.widgets.default_language:list  Deutsch
+  Select From List By Label  form.widgets.available_languages.from  Deutsch
+  Click Button  →
   Click Button  Save
   Wait until page contains  Changes saved
 
