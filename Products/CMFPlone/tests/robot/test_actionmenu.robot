@@ -1,38 +1,43 @@
-*** Settings ***
+*** Settings *****************************************************************
 
 Resource  plone/app/robotframework/keywords.robot
 Resource  plone/app/robotframework/saucelabs.robot
 
 Library  Remote  ${PLONE_URL}/RobotRemote
 
-Resource  common.robot
+Resource  keywords.robot
 
-Test Setup  Run keywords  Open SauceLabs test browser  Background
+Test Setup  Run keywords  Open SauceLabs test browser
 Test Teardown  Run keywords  Report test status  Close all browsers
 
-*** Variables ***
+
+*** Variables ****************************************************************
 
 ${TITLE}  An actionsmenu page
 ${PAGE_ID}  an-actionsmenu-page
 
-*** Test cases ***
+
+*** Test cases ***************************************************************
 
 # ---
 # Basic Contentactions menu
 # ---
 
 Scenario: Actions Menu rendered collapsed
-    Given an actionsmenu page
+    Given a logged-in site administrator
+      and an actionsmenu page
      Then delete link exists
       and delete link should not be visible
 
 Scenario: Clicking expands action menu
-    Given an actionsmenu page
+    Given a logged-in site administrator
+      and an actionsmenu page
      When menu link is clicked
      Then actions menu should be visible
 
 Scenario: Clicking again collapses action menu
-    Given an actionsmenu page
+    Given a logged-in site administrator
+      and an actionsmenu page
      When menu link is clicked
       and menu link is clicked
 
@@ -42,7 +47,8 @@ Scenario: Clicking again collapses action menu
 
 Scenario: Hovering mouse from expanded menu on other menu shows that menu
     Pass Execution  This functionality needs to be fixed for Plone 5, but let's not make it break the build for now.
-    Given an actionsmenu page
+    Given a logged-in site administrator
+      and an actionsmenu page
      When first menu link is clicked
       and mouse moves to second menu
      Then second menu should be visible
@@ -53,7 +59,8 @@ Scenario: Hovering mouse from expanded menu on other menu shows that menu
 # ---
 
 Scenario: Clicking outside of Contentactions menu
-    Given an actionsmenu page
+    Given a logged-in site administrator
+      and an actionsmenu page
      When menu link is clicked
       and I click outside of menu
      Then actions menu should not be visible
@@ -63,7 +70,8 @@ Scenario: Clicking outside of Contentactions menu
 # ---
 
 Scenario: Do a workflow change
-    Given an actionsmenu page
+    Given a logged-in site administrator
+      and an actionsmenu page
      When workflow link is clicked
      Then state should have changed
 
@@ -72,61 +80,26 @@ Scenario: Do a workflow change
 # ---
 
 Scenario:
-    Given an actionsmenu page
+    Given a logged-in site administrator
+      and an actionsmenu page
      When I copy the page
       and I paste
      Then I should see 'Item(s) pasted.' in the page
 
-*** Keywords ***
 
-Background
-    Given a site owner
-      and a test document
+*** Keywords *****************************************************************
 
-a test document
-    Go to  ${PLONE_URL}/++add++Document
-    Given patterns are loaded
-    Execute Javascript  $('#form-widgets-IDublinCore-title').val('${TITLE}'); return 0;
-    Click Button  Save
+# --- GIVEN ------------------------------------------------------------------
 
 an actionsmenu page
+    Create content  type=Document  title=${TITLE}
     Go to  ${PLONE_URL}/${PAGE_ID}
 
-delete link exists
-     Page Should Contain Element  xpath=//a[@id='plone-contentmenu-actions-delete']
 
-delete link should not be visible
-     Element Should Not Be Visible  xpath=//div[@class='contentActions']//a[@id='plone-contentmenu-actions-delete']
-
-menu link is clicked
-    Given patterns are loaded
-    Click link  xpath=//li[@id='plone-contentmenu-moreoptions']/a
-
-delete link should be visible
-    Given patterns are loaded
-    Element Should Be Visible  xpath=//div[@class='contentActions']//a[@id='plone-contentmenu-actions-delete']
-
-actions menu should be visible
-    Given patterns are loaded
-    Element Should Be Visible  xpath=//li[@id='plone-contentmenu-actions']
-
-first menu link is clicked
-    Given patterns are loaded
-    Click Link  xpath=(//div[@class="contentActions"]//a[contains(@class, 'actionMenuHeader')])[1]
+# --- WHEN -------------------------------------------------------------------
 
 mouse moves to second menu
     Click Link  xpath=(//div[@class="contentActions"]//a[contains(@class, 'actionMenuHeader')])[2]
-
-second menu should be visible
-    Element Should Be Visible  xpath=(//li[contains(@class, 'actionMenu')])[2]
-
-first menu should not be visible
-    Given patterns are loaded
-    Wait until keyword succeeds  10s  1s  Element Should Not Be Visible  xpath=(//li[contains(@class, 'actionMenu')])[1]//li
-
-actions menu should not be visible
-    Given patterns are loaded
-    Wait until keyword succeeds  10s  1s  Element Should Not Be Visible  xpath=//li[@id='plone-contentmenu-actions']
 
 I click outside of menu
     Click Element  xpath=//h1
@@ -157,11 +130,6 @@ workflow link is clicked softly
     Mouse Up  xpath=(//li[@id='plone-contentmenu-workflow']//a)[1]
     Wait until page contains  Item state changed.
 
-state should have changed
-    Wait until page contains  Item state changed
-    ${NEW_STATE} =  Get Text  xpath=(//span[contains(@class,'state-')])[2]
-    # Should Not Be Equal  ${NEW_STATE}  ${OLD_STATE}
-
 Open Menu
     [Arguments]  ${elementId}
     Element Should Not Be Visible  css=#${elementId} ul.actionMenuContent
@@ -183,6 +151,48 @@ I paste
     Open Action Menu
     Click Link  link=Paste
 
+
+# --- THEN -------------------------------------------------------------------
+
+delete link exists
+     Page Should Contain Element  xpath=//a[@id='plone-contentmenu-actions-delete']
+
+delete link should not be visible
+     Element Should Not Be Visible  xpath=//div[@class='contentActions']//a[@id='plone-contentmenu-actions-delete']
+
+menu link is clicked
+    Given patterns are loaded
+    Click link  xpath=//li[@id='plone-contentmenu-moreoptions']/a
+
+delete link should be visible
+    Given patterns are loaded
+    Element Should Be Visible  xpath=//div[@class='contentActions']//a[@id='plone-contentmenu-actions-delete']
+
+actions menu should be visible
+    Given patterns are loaded
+    Element Should Be Visible  xpath=//li[@id='plone-contentmenu-actions']
+
+first menu link is clicked
+    Given patterns are loaded
+    Click Link  xpath=(//div[@class="contentActions"]//a[contains(@class, 'actionMenuHeader')])[1]
+
 I should see '${message}' in the page
     Wait until page contains  ${message}
     Page should contain  ${message}
+
+state should have changed
+    Wait until page contains  Item state changed
+    ${NEW_STATE} =  Get Text  xpath=(//span[contains(@class,'state-')])[2]
+    # Should Not Be Equal  ${NEW_STATE}  ${OLD_STATE}
+
+second menu should be visible
+    Element Should Be Visible  xpath=(//li[contains(@class, 'actionMenu')])[2]
+
+first menu should not be visible
+    Given patterns are loaded
+    Wait until keyword succeeds  10s  1s  Element Should Not Be Visible  xpath=(//li[contains(@class, 'actionMenu')])[1]//li
+
+actions menu should not be visible
+    Given patterns are loaded
+    Wait until keyword succeeds  10s  1s  Element Should Not Be Visible  xpath=//li[@id='plone-contentmenu-actions']
+
