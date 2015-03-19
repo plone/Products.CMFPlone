@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
-from Products.CMFPlone.interfaces import IFilterSchema
+# from Products.CMFPlone.interfaces import IFilterSchema
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 from plone.app.testing import SITE_OWNER_NAME, SITE_OWNER_PASSWORD
-from plone.registry.interfaces import IRegistry
 from plone.testing.z2 import Browser
 from zope.component import getMultiAdapter
-from zope.component import getUtility
 import unittest2 as unittest
 
 
@@ -51,75 +49,3 @@ class FilterControlPanelFunctionalTest(unittest.TestCase):
                                name="filter-controlpanel")
         view = view.__of__(self.portal)
         self.assertTrue(view())
-
-    def test_nasty_tags_is_stored_in_registry(self):
-        self.browser.open(
-            "%s/@@filter-controlpanel" % self.portal_url)
-        self.browser.getControl(
-            name='form.widgets.nasty_tags'
-        ).value = 'nastytagone\r\nnastytagtwo'
-        self.browser.getControl('Apply').click()
-
-        registry = getUtility(IRegistry)
-        settings = registry.forInterface(IFilterSchema, prefix="plone")
-        self.assertEqual(settings.nasty_tags, ['nastytagone', 'nastytagtwo'])
-
-    def test_stripped_tags_is_stored_in_registry(self):
-        self.browser.open(
-            "%s/@@filter-controlpanel" % self.portal_url)
-        self.browser.getControl(
-            name='form.widgets.stripped_tags'
-        ).value = 'foo\r\nbar'
-        self.browser.getControl('Apply').click()
-
-        registry = getUtility(IRegistry)
-        settings = registry.forInterface(IFilterSchema, prefix="plone")
-        self.assertEqual(settings.stripped_tags, ['foo', 'bar'])
-
-    def test_custom_tags_is_stored_in_registry(self):
-        self.browser.open(
-            "%s/@@filter-controlpanel" % self.portal_url)
-        self.browser.getControl(
-            name='form.widgets.custom_tags'
-        ).value = 'foo\r\nbar'
-        self.browser.getControl('Apply').click()
-
-        registry = getUtility(IRegistry)
-        settings = registry.forInterface(IFilterSchema, prefix="plone")
-        self.assertEqual(settings.custom_tags, ['foo', 'bar'])
-
-    def test_stripped_attributes_is_stored_in_registry(self):
-        self.browser.open(
-            "%s/@@filter-controlpanel" % self.portal_url)
-        self.browser.getControl(
-            name='form.widgets.stripped_attributes'
-        ).value = 'foo\r\nbar'
-        self.browser.getControl('Apply').click()
-
-        registry = getUtility(IRegistry)
-        settings = registry.forInterface(IFilterSchema, prefix="plone")
-        self.assertEqual(settings.stripped_attributes, ['foo', 'bar'])
-
-    def test_style_whitelist_is_stored_in_registry(self):
-        self.browser.open(
-            "%s/@@filter-controlpanel" % self.portal_url)
-        self.browser.getControl(
-            name='form.widgets.style_whitelist'
-        ).value = 'foo\r\nbar'
-        self.browser.getControl('Apply').click()
-
-        registry = getUtility(IRegistry)
-        settings = registry.forInterface(IFilterSchema, prefix="plone")
-        self.assertEqual(settings.style_whitelist, ['foo', 'bar'])
-
-    def test_class_blacklist_is_stored_in_registry(self):
-        self.browser.open(
-            "%s/@@filter-controlpanel" % self.portal_url)
-        self.browser.getControl(
-            name='form.widgets.class_blacklist'
-        ).value = 'foo\r\nbar'
-        self.browser.getControl('Apply').click()
-
-        registry = getUtility(IRegistry)
-        settings = registry.forInterface(IFilterSchema, prefix="plone")
-        self.assertEqual(settings.class_blacklist, ['foo', 'bar'])
