@@ -23,7 +23,6 @@ class LanguageControlPanelAdapter(object):
         return self.settings.default_language
 
     def set_default_language(self, value):
-        import pdb; pdb.set_trace()
         self.settings.default_language = value
 
     default_language = property(get_default_language,
