@@ -107,6 +107,7 @@ class ILanguageSchema(Interface):
             'available_languages',
             'use_combined_language_codes',
             'display_flags',
+            'always_show_selector'
         ],
     )
 
