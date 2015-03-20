@@ -4,9 +4,7 @@ from plone.app.registry.browser import controlpanel
 
 from Products.CMFPlone.interfaces import ILanguageSchema
 from Products.statusmessages.interfaces import IStatusMessage
-from z3c.form.interfaces import WidgetActionExecutionError
-from z3c.form import form, button
-from zope.interface import Invalid
+from z3c.form import button
 
 
 class LanguageControlPanelForm(controlpanel.RegistryEditForm):
@@ -55,7 +53,6 @@ class LanguageControlPanelForm(controlpanel.RegistryEditForm):
 
 class LanguageControlPanel(controlpanel.ControlPanelFormWrapper):
     form = LanguageControlPanelForm
-
 
 
 #class LanguageControlPanel(ControlPanelForm):

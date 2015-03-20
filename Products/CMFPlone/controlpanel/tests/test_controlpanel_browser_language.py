@@ -31,12 +31,17 @@ class LanguageControlPanelFunctionalTest(unittest.TestCase):
             'Basic %s:%s' % (SITE_OWNER_NAME, SITE_OWNER_PASSWORD,)
         )
 
-    def in_out_select(self, form, name, control_name):
+    def _inject_available_languages_field(self, value):
+        """The in-and-out widget does not work without javascript, therefore
+           we have to inject some values in order to make saving the form work.
+        """
+        form = self.browser.getForm(id='LanguageControlPanel')
         form.mech_form.new_control(
             type='hidden',
-            name=name,
-            attrs=dict(value=self.browser.getControl(
-                control_name).optionValue))
+            name='form.widgets.available_languages:list',
+            attrs=dict(value=value)
+        )
+        self.browser.getControl('Save').click()
 
     def test_language_control_panel_link(self):
         self.browser.open(
@@ -115,6 +120,8 @@ class LanguageControlPanelFunctionalTest(unittest.TestCase):
         self.browser.getControl(
             'Show country-specific language variants'
         ).selected = True
+
+        self._inject_available_languages_field('en')
         self.browser.getControl('Save').click()
 
         self.assertEqual(settings.use_combined_language_codes, True)
@@ -134,6 +141,8 @@ class LanguageControlPanelFunctionalTest(unittest.TestCase):
         self.browser.getControl(
             'Show language flags'
         ).selected = True
+
+        self._inject_available_languages_field('en')
         self.browser.getControl('Save').click()
 
         self.assertEqual(settings.display_flags, True)
@@ -153,6 +162,8 @@ class LanguageControlPanelFunctionalTest(unittest.TestCase):
         self.browser.getControl(
             'Use the language of the content item'
         ).selected = True
+
+        self._inject_available_languages_field('en')
         self.browser.getControl('Save').click()
 
         self.assertEqual(settings.use_content_negotiation, True)
@@ -172,6 +183,8 @@ class LanguageControlPanelFunctionalTest(unittest.TestCase):
         self.browser.getControl(
             'Use language codes in URL path for manual override'
         ).selected = True
+
+        self._inject_available_languages_field('en')
         self.browser.getControl('Save').click()
 
         self.assertEqual(settings.use_path_negotiation, True)
@@ -191,6 +204,8 @@ class LanguageControlPanelFunctionalTest(unittest.TestCase):
         self.browser.getControl(
             'Use cookie for manual override'
         ).selected = True
+
+        self._inject_available_languages_field('en')
         self.browser.getControl('Save').click()
 
         self.assertEqual(settings.use_cookie_negotiation, True)
@@ -207,7 +222,10 @@ class LanguageControlPanelFunctionalTest(unittest.TestCase):
             False
         )
         self.browser.getControl(control_label).selected = True
+
+        self._inject_available_languages_field('en')
         self.browser.getControl('Save').click()
+
         self.assertEqual(settings.authenticated_users_only, True)
 
     def test_set_cookie_always(self):
@@ -222,6 +240,15 @@ class LanguageControlPanelFunctionalTest(unittest.TestCase):
             False
         )
         self.browser.getControl(control_label).selected = True
+
+        # The in-and-out widget does not work without javascript, therefore
+        # we have to inject some values in order to make saving the form work.
+        form = self.browser.getForm(id='LanguageControlPanel')
+        form.mech_form.new_control(
+            type='hidden',
+            name='form.widgets.available_languages:list',
+            attrs=dict(value='en')
+        )
         self.browser.getControl('Save').click()
 
         self.assertEqual(settings.set_cookie_always, True)
@@ -238,6 +265,15 @@ class LanguageControlPanelFunctionalTest(unittest.TestCase):
             False
         )
         self.browser.getControl(control_label).selected = True
+
+        # The in-and-out widget does not work without javascript, therefore
+        # we have to inject some values in order to make saving the form work.
+        form = self.browser.getForm(id='LanguageControlPanel')
+        form.mech_form.new_control(
+            type='hidden',
+            name='form.widgets.available_languages:list',
+            attrs=dict(value='en')
+        )
         self.browser.getControl('Save').click()
 
         self.assertEqual(settings.use_subdomain_negotiation, True)
@@ -254,6 +290,14 @@ class LanguageControlPanelFunctionalTest(unittest.TestCase):
             False
         )
         self.browser.getControl(control_label).selected = True
+        # The in-and-out widget does not work without javascript, therefore
+        # we have to inject some values in order to make saving the form work.
+        form = self.browser.getForm(id='LanguageControlPanel')
+        form.mech_form.new_control(
+            type='hidden',
+            name='form.widgets.available_languages:list',
+            attrs=dict(value='en')
+        )
         self.browser.getControl('Save').click()
 
         self.assertEqual(settings.use_cctld_negotiation, True)
@@ -270,6 +314,14 @@ class LanguageControlPanelFunctionalTest(unittest.TestCase):
             False
         )
         self.browser.getControl(control_label).selected = True
+        # The in-and-out widget does not work without javascript, therefore
+        # we have to inject some values in order to make saving the form work.
+        form = self.browser.getForm(id='LanguageControlPanel')
+        form.mech_form.new_control(
+            type='hidden',
+            name='form.widgets.available_languages:list',
+            attrs=dict(value='en')
+        )
         self.browser.getControl('Save').click()
 
         self.assertEqual(settings.use_request_negotiation, True)
