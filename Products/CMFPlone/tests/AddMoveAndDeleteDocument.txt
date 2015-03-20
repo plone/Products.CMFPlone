@@ -18,10 +18,11 @@ First, we need to log in.
 We need to allow multiple languages to see the result of our changes:
 
     >>> from plone.registry.interfaces import IRegistry
-    >>> from zope.component import getUtility 
+    >>> from zope.component import getUtility
+    >>> from Products.CMFPlone.interfaces import ILanguageSchema
     >>> settings = getUtility(IRegistry).forInterface(
-            ILanguageSchema,
-            prefix='plone')
+    ...     ILanguageSchema,
+    ...     prefix='plone')
     >>> settings.available_languages = ['de', 'en']
     >>> import transaction; transaction.commit()
 
