@@ -8,6 +8,10 @@ Changelog
 4.3.5 (unreleased)
 ------------------
 
+- Pass mail ``Content-Type`` to mailhost when sending forgotten password
+  emails.
+  [davidjb]
+
 - Fix: If a user "deletes" the same item twice (ex.: having two different tabs 
   open and not realising it's already been deleted) any higher level item with 
   the same short name will be deleted without trace. 
