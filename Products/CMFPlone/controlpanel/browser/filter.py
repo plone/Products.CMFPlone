@@ -73,6 +73,12 @@ class FilterControlPanel(AutoExtensibleForm, form.EditForm):
             safe_html._p_changed = True
             safe_html.reload()
 
+        stripped_combinations = data['stripped_combinations']
+        if stripped_combinations != safe_html._config['stripped_combinations']:
+            safe_html._config['stripped_combinations'] = stripped_combinations
+            safe_html._p_changed = True
+            safe_html.reload()
+
         if errors:
             self.status = self.formErrorsMessage
             return

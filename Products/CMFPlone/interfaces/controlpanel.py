@@ -159,15 +159,16 @@ class IFilterSchema(Interface):
         value_type=schema.TextLine(),
         required=False)
 
-    # stripped_combinations = schema.List(
-    #     title=_(u'Stripped combinations'),
-    #     description=_(u"These attributes are stripped from those tags when "
-    #                   "saving."),
-    #     default=[],
-    #     # default=u'dir lang valign halign border frame rules cellspacing '
-    #     #         'cellpadding bgcolor'.split()
-    #     value_type=schema.Object(ITagAttrPair, title=u"combination"),
-    #     required=False)
+    stripped_combinations = schema.Dict(
+        title=_(u'Stripped combinations'),
+        description=_(u"These attributes are stripped from those tags when "
+                      "saving."),
+        key_type=schema.TextLine(title=u"tags"),
+        value_type=schema.TextLine(title=u"attributes"),
+        default={},
+        # XXX replace with value adapter
+        # default={'table th td': 'width height', 'other tags': 'other attrs'}
+        required=False)
 
     # class IFilterEditorSchema(Interface):
 

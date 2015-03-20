@@ -92,3 +92,38 @@ class FilterControlPanelFunctionalTest(unittest.TestCase):
             str(self.safe_html.convert(good_html, ds)),
             ''
         )
+
+    def test_stripped_combinations(self):
+        # test a combination that isn't normally filtered
+        self.assertFalse(self.safe_html._config['disable_transform'])
+        html = '<p class="wow">lala</p>'
+        ds = datastream('dummy_name')
+        self.assertEqual(
+            str(self.safe_html.convert(html, ds)),
+            html)
+
+        # we can set stripped combinations
+        self.browser.open(
+            "%s/@@filter-controlpanel" % self.portal_url)
+        self.browser.getControl(
+            name='form.widgets.stripped_combinations.buttons.add').click()
+        self.browser.getControl(
+            name='form.widgets.stripped_combinations.key.0'
+        ).value = 'mytag1 p'
+        self.browser.getControl(
+            name='form.widgets.stripped_combinations.0'
+        ).value = 'myattr1 class'
+        self.browser.getControl('Save').click()
+
+        # stripped combinations are stored on the transform
+        self.assertIn(
+            'mytag1 p',
+            self.safe_html._config['stripped_combinations'])
+        self.assertEqual(
+            'myattr1 class',
+            self.safe_html._config['stripped_combinations']['mytag1 p'])
+
+        # test that combination is now filtered
+        self.assertEqual(
+            str(self.safe_html.convert(html, ds)),
+            '<p>lala</p>')
