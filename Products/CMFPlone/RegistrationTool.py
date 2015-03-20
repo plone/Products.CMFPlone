@@ -370,10 +370,12 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         subject = message_obj['Subject']
         m_to = message_obj['To']
         m_from = message_obj['From']
+        msg_type = message_obj.get('Content-Type', 'text/plain')
         host = getToolByName(self, 'MailHost')
         try:
             host.send(mail_text, m_to, m_from, subject=subject,
-                      charset=encoding, immediate=immediate)
+                      charset=encoding, immediate=immediate,
+                      msg_type=msg_type)
         except SMTPRecipientsRefused:
             # Don't disclose email address on failure
             raise SMTPRecipientsRefused(

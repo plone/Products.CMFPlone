@@ -8,6 +8,10 @@ Changelog
 5.0b1 (unreleased)
 ------------------
 
+- Pass mail ``Content-Type`` to mailhost when sending forgotten password
+  emails.
+  [davidjb]
+
 - Move security control panel to CMFPlone. Fixes #216.
   [jcerjak, timo]
 
