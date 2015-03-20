@@ -83,7 +83,9 @@ class LanguageControlPanelFunctionalTest(unittest.TestCase):
         self.browser.getControl(
             'Site language'
         ).value = ['de']
-        self.browser.getControl('Save').click()
+        self._inject_available_languages_field('en')
+        self._inject_available_languages_field('de')
+        self.browser.getControl(name='form.buttons.save').click()
 
         self.assertEqual(settings.default_language, 'de')
 
