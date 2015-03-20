@@ -13,7 +13,8 @@ class TestControlPanel(PloneTestCase):
                            'MemberPassword', 'ZMI', 'SecuritySettings',
                            'NavigationSettings', 'SearchSettings',
                            'errorLog', 'PloneReconfig', 'TypesSettings',
-                           'PloneLanguageTool', 'HtmlFilter', 'Maintenance']
+                           'PloneLanguageTool', 'FilterSettings',
+                           'Maintenance']
 
     def testDefaultGroups(self):
         for group in self.groups:
