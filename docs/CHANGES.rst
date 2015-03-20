@@ -8,6 +8,10 @@ Changelog
 4.4a1 (unreleased)
 ------------------
 
+- Pass mail ``Content-Type`` to mailhost when sending forgotten password
+  emails.
+  [davidjb]
+
 - Ensure ``object_rename`` script has ``_`` message factory available
   to prevent error when unauthorized.
   [davidjb]
