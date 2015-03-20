@@ -17,7 +17,12 @@ First, we need to log in.
 
 We need to allow multiple languages to see the result of our changes:
 
-    >>> self.portal.portal_languages.supported_langs = ['de', 'en']
+    >>> from plone.registry.interfaces import IRegistry
+    >>> from zope.component import getUtility 
+    >>> settings = getUtility(IRegistry).forInterface(
+            ILanguageSchema,
+            prefix='plone')
+    >>> settings.available_languages = ['de', 'en']
     >>> import transaction; transaction.commit()
 
 Add Document
