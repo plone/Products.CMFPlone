@@ -1,41 +1,46 @@
-*** Settings ***
+*** Settings *****************************************************************
 
 Resource  plone/app/robotframework/keywords.robot
 Resource  plone/app/robotframework/saucelabs.robot
 
 Library  Remote  ${PLONE_URL}/RobotRemote
 
-Resource  common.robot
+Resource  keywords.robot
 
-Test Setup  Run keywords  Open SauceLabs test browser  Background
+Test Setup  Run keywords  Open SauceLabs test browser
 Test Teardown  Run keywords  Report test status  Close all browsers
 
-*** Test cases ***
+
+*** Test cases ***************************************************************
 
 Scenario: Simple Livesearch
     Pass Execution  Disabled until livesearch pattern is integrated
-    Given a document  Welcome to Plone
+    Given a logged-in site administrator
+      and a document  Welcome to Plone
      When I search for  Welcome
      Then the livesearch results should contain  Welcome to Plone
       and there should be '2' livesearch results
 
 Scenario: Livesearch for documents
     Pass Execution  Disabled until livesearch pattern is integrated
-    Given a document  My document
+    Given a logged-in site administrator
+      and a document  My document
      When I search for  My document
      Then the livesearch results should contain  My document
       and there should be '2' livesearch results
 
 Scenario: Livesearch for folder
     Pass Execution  Disabled until livesearch pattern is integrated
-    Given a folder  My folder
+    Given a logged-in site administrator
+      and a folder  My folder
      When I search for  My folder
      Then the livesearch results should contain  My folder
       and there should be '2' livesearch results
 
 Scenario: Livesearch in current folder only
     Pass Execution  Disabled until livesearch pattern is integrated
-    Given a folder 'folder' with a document 'Inside Document'
+    Given a logged-in site administrator
+      and a folder with a document 'Inside Document'
       and a document  Outside Document
      When I search the currentfolder only for  Inside Document
      Then the livesearch results should contain  Inside Document
@@ -43,11 +48,7 @@ Scenario: Livesearch in current folder only
       and there should be '2' livesearch results
 
 
-*** Keywords ***
-
-Background
-    Given a site owner
-      and a test folder
+*** Keywords *****************************************************************
 
 I search for
     [Arguments]  ${searchtext}

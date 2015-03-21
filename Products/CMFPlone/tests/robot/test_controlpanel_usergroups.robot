@@ -16,7 +16,6 @@ Resource  plone/app/robotframework/saucelabs.robot
 Library  Remote  ${PLONE_URL}/RobotRemote
 
 Resource  keywords.robot
-Resource  common.robot
 
 Test Setup  Open SauceLabs test browser
 Test Teardown  Run keywords  Report test status  Close all browsers

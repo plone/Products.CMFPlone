@@ -1,26 +1,26 @@
-*** Settings ***
+*** Settings *****************************************************************
 
 Resource  plone/app/robotframework/keywords.robot
 Resource  plone/app/robotframework/saucelabs.robot
 
 Library  Remote  ${PLONE_URL}/RobotRemote
 
-Resource  common.robot
+Resource  keywords.robot
 
 Test Setup  Open SauceLabs test browser
 Test Teardown  Run keywords  Report test status  Close all browsers
 
-*** Test cases ***
+
+*** Test cases ***************************************************************
 
 Scenario: Select All items
-    Given a site owner
-      And a test folder
-      And four dummy pages on test folder
-      And the folder contents view
+    Given a logged-in site administrator
+      and a folder with four pages
+      and the folder contents view
      When I select all the elements
      Then the selection count appears
-      And the four elements got selected
-      And the clear selection link appears
+      and the four elements got selected
+      and the clear selection link appears
 
 #Scenario: Clear selection
 #    Given a site owner
@@ -40,27 +40,23 @@ Scenario: Select All items
 #     When I reorder the elements
 #     Then the new order should be 4 > 3 > 2 > 1
 
-*** Keywords ***
+
+*** Keywords *****************************************************************
+
+a folder with four pages
+    ${folder_uid}=  Create content  type=Folder  title=My Folder
+    Create content  type=Document  title=Doc1  container=${folder_uid}
+    Create content  type=Document  title=Doc2  container=${folder_uid}
+    Create content  type=Document  title=Doc3  container=${folder_uid}
+    Create content  type=Document  title=Doc4  container=${folder_uid}
 
 the folder contents view
-    Go to  ${PLONE_URL}/${TEST_FOLDER}/folder_contents
+    Go to  ${PLONE_URL}/my-folder/folder_contents
     Page should contain element  css=.pat-structure
     Given folder contents pattern loaded
 
 I click the '${link_name}' link
     Click Link  ${link_name}
-
-four dummy pages on test folder
-    a document 'doc1' in the test folder
-    a document 'doc2' in the test folder
-    a document 'doc3' in the test folder
-    a document 'doc4' in the test folder
-
-a document '${title}' in the test folder
-    Go to  ${PLONE_URL}/${TEST_FOLDER}/++add++Document
-    Wait For Condition  return $('.autotoc-nav .active:visible').size() > 0
-    Execute Javascript  $('#form-widgets-IDublinCore-title').val('${title}'); return 0;
-    Click Button  Save
 
 I select all the elements
     Element should be visible  css=.pat-structure .select-all

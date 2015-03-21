@@ -1,24 +1,26 @@
-*** Settings ***
+*** Settings *****************************************************************
 
 Resource  plone/app/robotframework/keywords.robot
 Resource  plone/app/robotframework/saucelabs.robot
 
 Library  Remote  ${PLONE_URL}/RobotRemote
 
-Resource  common.robot
+Resource  keywords.robot
 
 Test Setup  Open SauceLabs test browser
 Test Teardown  Run keywords  Report test status  Close all browsers
 
-*** Test cases ***
+
+*** Test cases ***************************************************************
 
 Scenario: Add Login Portlet
-    Given a site owner
+    Given a logged-in site administrator
       and a manage portlets view
      When I add a 'Login' portlet to the left column
      Then I should see a 'Login' portlet in the left column
 
-*** Keywords ***
+
+*** Keywords *****************************************************************
 
 a manage portlets view
     Go to   ${PLONE_URL}/@@manage-portlets
