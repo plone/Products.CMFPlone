@@ -4,6 +4,7 @@
     xmlns:browser="http://namespaces.zope.org/browser">
 
   <adapter factory=".editing.EditingControlPanelAdapter" />
+  <adapter factory=".filter.FilterControlPanelAdapter" />
   <adapter factory=".maintenance.MaintenanceControlPanelAdapter" />
   <adapter factory=".mail.MailControlPanelAdapter" />
   <adapter factory=".navigation.NavigationControlPanelAdapter" />

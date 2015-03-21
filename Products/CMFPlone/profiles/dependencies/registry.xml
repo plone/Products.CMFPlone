@@ -2,6 +2,8 @@
 <registry>
   <records interface="Products.CMFPlone.interfaces.IEditingSchema"
            prefix="plone" />
+  <records interface="Products.CMFPlone.interfaces.IFilterSchema"
+           prefix="plone" />
   <records interface="Products.CMFPlone.interfaces.IMaintenanceSchema"
            prefix="plone" />
   <records interface="Products.CMFPlone.interfaces.IMailSchema"
