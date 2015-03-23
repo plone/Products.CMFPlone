@@ -8,6 +8,9 @@ Changelog
 4.3.5 (unreleased)
 ------------------
 
+- Pass email encoding to forgotten password email template.
+  [davidjb]
+
 - Pass mail ``Content-Type`` to mailhost when sending forgotten password
   emails.
   [davidjb]
