@@ -8,6 +8,10 @@ Changelog
 4.4a1 (unreleased)
 ------------------
 
+- Add tests for configuring encoding of user registration or
+  forgotten password emails.
+  [davidjb]
+
 - Pass email encoding to forgotten password email template.
   [davidjb]
 
