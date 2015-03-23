@@ -637,8 +637,13 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         returned. If a non-folderish item is passed in, return None always.
         """
         if request is None:
-            request = self.REQUEST
-        return utils.getDefaultPage(obj, request)
+            if hasattr(self, 'REQUEST'):
+                request = self.REQUEST
+        if request:
+            return utils.getDefaultPage(obj, request)
+        else:
+            # In case its executed from an event that does not have request
+            return None
 
     security.declarePublic('addPortalMessage')
     def addPortalMessage(self, message, type='info', request=None):
