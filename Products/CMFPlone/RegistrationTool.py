@@ -388,10 +388,11 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         # Rather than have the template try to use the mailhost, we will
         # render the message ourselves and send it from here (where we
         # don't need to worry about 'UseMailHost' permissions).
-        mail_text = self.registered_notify_template(
-            self, self.REQUEST, member=member, reset=reset, email=email)
-
         encoding = getUtility(ISiteRoot).getProperty('email_charset', 'utf-8')
+        mail_text = self.registered_notify_template(
+            self, self.REQUEST, member=member, reset=reset, email=email,
+            charset=encoding)
+
         # The mail headers are not properly encoded we need to extract
         # them and let MailHost manage the encoding.
         if isinstance(mail_text, unicode):
