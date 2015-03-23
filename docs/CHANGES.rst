@@ -8,6 +8,9 @@ Changelog
 4.3.5 (unreleased)
 ------------------
 
+- Implement NewsML feed syndication.
+  [frapell, jpgimenez]
+
 - Add tests for configuring encoding of user registration or
   forgotten password emails.
   [davidjb]
