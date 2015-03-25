@@ -90,13 +90,17 @@ def addPloneSite(context, site_id, title='Plone site', description='',
 
     setup_tool.setBaselineContext('profile-%s' % profile_id)
     setup_tool.runAllImportStepsFromProfile('profile-%s' % profile_id)
-    if setup_content:
-        setup_tool.runAllImportStepsFromProfile(
-            'profile-%s' % content_profile_id)
 
     reg = queryUtility(IRegistry, context=site)
     reg['plone.portal_timezone'] = portal_timezone
     reg['plone.available_timezones'] = [portal_timezone]
+    reg['plone.default_language'] = default_language
+    reg['plone.available_languages'] = [default_language]
+
+    if setup_content:
+        setup_tool.runAllImportStepsFromProfile(
+            'profile-%s' % content_profile_id)
+
 
     props = dict(
         title=title,

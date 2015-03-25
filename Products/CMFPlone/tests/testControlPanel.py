@@ -13,7 +13,7 @@ class TestControlPanel(PloneTestCase):
                            'MemberPassword', 'ZMI', 'SecuritySettings',
                            'NavigationSettings', 'SearchSettings',
                            'errorLog', 'PloneReconfig', 'TypesSettings',
-                           'PloneLanguageTool', 'FilterSettings',
+                           'FilterSettings',
                            'Maintenance']
 
     def testDefaultGroups(self):

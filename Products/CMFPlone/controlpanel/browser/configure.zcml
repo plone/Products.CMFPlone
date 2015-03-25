@@ -41,6 +41,14 @@
     permission="plone.app.controlpanel.TinyMCE"
     />
 
+  <!-- Language Control Panel -->
+  <browser:page
+    name="language-controlpanel"
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    class=".language.LanguageControlPanel"
+    permission="plone.app.controlpanel.Language"
+    />
+
   <!-- Maintenance Control Panel -->
   <browser:page
     name="maintenance-controlpanel"
