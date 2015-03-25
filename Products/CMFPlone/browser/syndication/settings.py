@@ -25,7 +25,8 @@ class FeedSettings(object):
             annotations[FEED_SETTINGS_KEY] = self._metadata
 
         registry = getUtility(IRegistry)
-        self.site_settings = registry.forInterface(ISiteSyndicationSettings)
+        self.site_settings = registry.forInterface(ISiteSyndicationSettings,
+                                                   check=False)
 
     def __setattr__(self, name, value):
         if name in ('context', '_metadata', 'site_settings'):
