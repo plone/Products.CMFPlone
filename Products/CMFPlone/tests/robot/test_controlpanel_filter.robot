@@ -89,50 +89,36 @@ Input RichText
 # --- WHEN -------------------------------------------------------------------
 
 I add '${tag}' to the nasty tags list
-  Click Button  Add Nasty tags
-  patterns are loaded
-  Input Text  name=form.nasty_tags.6.  ${tag}
+  Input Text  name=form.widgets.nasty_tags  ${tag}
   Click Button  Save
   Wait until page contains  Changes saved
 
 I add '${tag}' to the stripped tags list
-  Click Button  Add Stripped tags
-  patterns are loaded
-  Input Text  name=form.stripped_tags.16.  ${tag}
+  Input Text  name=form.widgets.stripped_tags  ${tag}
   Click Button  Save
   Wait until page contains  Changes saved
 
 I add '${tag}' to the custom tags list
-  Click Button  Add Custom tags
-  patterns are loaded
-  Input Text  name=form.custom_tags.26.  ${tag}
+  Input Text  name=form.widgets.custom_tags  ${tag}
   Click Button  Save
   Wait until page contains  Changes saved
 
 I add '${tag}' to the stripped attributes list
-  Click Button  Add Stripped attributes
-  patterns are loaded
-  Input Text  name=form.stripped_attributes.9.  ${tag}
+  Input Text  name=form.widgets.stripped_attributes  ${tag}
   Click Button  Save
   Wait until page contains  Changes saved
 
 I add '${tag}' to the filtered classes
-  Click Button  Add Filtered classes
-  patterns are loaded
-  Input Text  name=form.class_blacklist.0.  ${tag}
+  Input Text  name=form.widgets.class_blacklist  ${tag}
   Click Button  Save
   Wait until page contains  Changes saved
 
 I add '${tag}' to the allowed style attributes
-  Click Button  Add Permitted properties
-  patterns are loaded
-  Input text  name=form.style_whitelist.4.  ${tag}
+  Input text  name=form.widgets.style_whitelist  ${tag}
   Click Button  Save
   Wait until page contains  Changes saved
 
 I add '${tags}' and '${attributes}' to the stripped out combinations
-  Click Button  Add Stripped combinations
-  patterns are loaded
   Input text  name=form.stripped_combinations.1.tags  ${tags}
   Input text  name=form.stripped_combinations.1.attributes  ${attributes}
   Click Button  Save

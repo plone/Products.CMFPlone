@@ -8,6 +8,17 @@ Changelog
 5.0b1 (unreleased)
 ------------------
 
+- Add tests for configuring encoding of user registration or
+  forgotten password emails.
+  [davidjb]
+
+- Pass email encoding to forgotten password email template.
+  [davidjb]
+
+- Pass mail ``Content-Type`` to mailhost when sending forgotten password
+  emails.
+  [davidjb]
+
 - Move security control panel to CMFPlone. Fixes #216.
   [jcerjak, timo]
 

@@ -126,7 +126,7 @@
     i18n:attributes="title">
   <permission>Plone Site Setup: Language</permission>
  </configlet>
- <configlet title="HTML Filtering" action_id="HtmlFilter" appId="HtmlFilter"
+ <configlet title="HTML Filtering" action_id="FilterSettings" appId="FilterSettings"
     category="Plone" condition_expr=""
     icon_expr="string:$portal_url/htmlfilter_icon.png"
     url_expr="string:${portal_url}/@@filter-controlpanel" visible="True"

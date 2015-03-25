@@ -370,10 +370,12 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         subject = message_obj['Subject']
         m_to = message_obj['To']
         m_from = message_obj['From']
+        msg_type = message_obj.get('Content-Type', 'text/plain')
         host = getToolByName(self, 'MailHost')
         try:
             host.send(mail_text, m_to, m_from, subject=subject,
-                      charset=encoding, immediate=immediate)
+                      charset=encoding, immediate=immediate,
+                      msg_type=msg_type)
         except SMTPRecipientsRefused:
             # Don't disclose email address on failure
             raise SMTPRecipientsRefused(
@@ -409,10 +411,11 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         # Rather than have the template try to use the mailhost, we will
         # render the message ourselves and send it from here (where we
         # don't need to worry about 'UseMailHost' permissions).
-        mail_text = self.registered_notify_template(
-            self, self.REQUEST, member=member, reset=reset, email=email)
-
         encoding = getUtility(ISiteRoot).getProperty('email_charset', 'utf-8')
+        mail_text = self.registered_notify_template(
+            self, self.REQUEST, member=member, reset=reset, email=email,
+            charset=encoding)
+
         # The mail headers are not properly encoded we need to extract
         # them and let MailHost manage the encoding.
         if isinstance(mail_text, unicode):
