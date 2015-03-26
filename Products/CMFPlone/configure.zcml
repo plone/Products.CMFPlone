@@ -47,6 +47,9 @@
   <include package="plone.browserlayer" />
   <include package="plone.theme" />
 
+  <!-- multilingual -->
+  <include package="plone.app.multilingual" />
+
   <include package=".controlpanel" />
   <include package=".resources" />
   <include package=".patterns" />
