@@ -8,8 +8,9 @@ Changelog
 4.3.5 (unreleased)
 ------------------
 
-- Implement NewsML feed syndication.
-  [frapell, jpgimenez]
+- Implement new feed syndication using `NewsML 1 <http://iptc.org/standards/newsml-1/>`_,
+  an IPTC standard that provides a media-type-independent, structural framework for multi-media news.
+  [frapell, jpgimenez, tcurvelo]
 
 - Add tests for configuring encoding of user registration or
   forgotten password emails.
