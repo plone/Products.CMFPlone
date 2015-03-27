@@ -5,7 +5,7 @@
 Changelog
 =========
 
-5.0b1 (unreleased)
+5.0b1 (2015-03-26)
 ------------------
 
 - Add tests for configuring encoding of user registration or
