@@ -5,7 +5,7 @@
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       lang="en"
       i18n:domain="plone">
-
+<meta name="viewport" content="width=device-width; initial-scale=0.6666; maximum-scale=1.0; minimum-scale=0.6666" />
 <head>
 
     <metal:block tal:define="dummy python:request.RESPONSE.setHeader('Content-Type', 'text/html;;charset=utf-8')" />
@@ -19,7 +19,7 @@
         background-color: white;
         color: black;
         font-family: "Lucida Grande", Verdana, Lucida, Helvetica, Arial, sans-serif;
-        font-size: 69%;
+        font-size: 90%;
     }
 
     a {
@@ -33,6 +33,7 @@
     img {
         border: 0px;
         padding: 5px;
+        max-width: 100%; height: auto;
     }
 
     #content-core {
