@@ -5,11 +5,11 @@
 Changelog
 =========
 
-5.0b2 (unreleased)
-------------------
+5.0b1-1 (2015-03-27)
+--------------------
 
-- Nothing changed yet.
-
+- Packaging fix, no code changes.
+  [esteele]
 
 5.0b1 (2015-03-26)
 ------------------
