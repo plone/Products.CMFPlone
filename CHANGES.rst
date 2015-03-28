@@ -5,6 +5,12 @@
 Changelog
 =========
 
+5.0b2 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
 5.0b1.post1 (2015-03-27)
 ------------------------
 
