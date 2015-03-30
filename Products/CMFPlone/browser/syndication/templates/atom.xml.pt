@@ -6,25 +6,32 @@
       xml:lang="en"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
       tal:define="feed view/feed;
                   url feed/link;"
       tal:attributes="xml:base url; xml:lang feed/language"
       i18n:domain="Products.CMFPlone">
   <link rel="self"
         href=""
+        type="application/atom+xml"
         tal:attributes="href request/ACTUAL_URL" />
   <title type="html" tal:content="feed/title" />
-  <subtitle tal:content="feed/description" />
+  <subtitle tal:content="feed/description" 
+            tal:condition="feed/description" />
   <updated tal:content="python:feed.modified.ISO8601()" />
-  <link tal:attributes="href url" rel="alternate" type="text/html" />
-  <id tal:content="string:urn:syndication:${feed/uid}" />
+  <link href="atom.xml"
+        rel="alternate"
+        type="text/html"
+        tal:attributes="xml:base string:${url}/"/>
+  <id tal:content="string:urn:syndication:${feed/uid}"/>
   <logo tal:content="feed/logo" />
   <icon tal:content="feed/icon" />
   <generator uri="http://www.plone.org" version="1.0">plone</generator>
-  <rights tal:content="feed/rights" tal:condition="feed/rights" />
-  <author tal:condition="feed/show_about">
+  <rights tal:content="feed/rights" 
+          tal:condition="feed/rights"/>
+  <author tal:condition="python:feed.show_about and feed.author_name and feed.author_email">
     <name tal:content="feed/author_name" />
-    <email tal:content="feed/author_email" tal:condition="feed/author_email" />
+    <email tal:content="feed/author_email" />
   </author>
 
   <tal:repeat repeat="item feed/items">
@@ -32,23 +39,31 @@
                        modified item/modified;">
       <title tal:content="item/title"></title>
       <link rel="alternate" type="text/html" href="" tal:attributes="href item/link" />
-      <link tal:condition="item/has_enclosure" rel="enclosure"
+      <link tal:condition="python:item.has_enclosure and item.file_length" rel="enclosure"
           tal:attributes="href item/file_url;
                           length item/file_length;
                           type item/file_type;" />
       <id tal:content="string:urn:syndication:${item/uid}">urn:syndication:12345678</id>
-      <summary tal:condition="not: feed/settings/render_body" tal:content="item/description" />
-      <content type="html" xml:base="" xml:lang="en-US" xml:space="preserve"
+      <summary tal:condition="item/description" tal:content="item/description" />
+      <content type="xhtml" xml:base="" xml:lang="en-US" xml:space="preserve"
                tal:attributes="xml:base url; xml:lang feed/language;"
                tal:condition="feed/settings/render_body">
-        <tal:block tal:replace="structure string:&lt;![CDATA["/>
-        <tal:block tal:replace="structure item/body"/>
-        <tal:block tal:replace="structure string:]]&gt;"/>
+        <tal:block replace="structure string:&lt;div xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;"
+                   on-error="nothing"/>
+        <tal:block tal:replace="structure item/render_content_core"/>
+        <tal:block replace="structure string:&lt;/div&gt;"/>
       </content>
 
-      <author>
-        <name tal:content="item/author_name" />
-        <email tal:content="item/author_email" tal:condition="item/author_email" />
+      <author tal:define="creator item/creator;
+                          author_name item/author_name;
+                          author_email item/author_email"
+              tal:condition="python:creator or author_name">
+        <name tal:condition="author_name"
+              tal:content="author_name" />
+        <name tal:condition="python: not author_name"
+              tal:content="creator" />
+        <email tal:condition="author_email" 
+               tal:content="author_email" />
       </author>
 
       <published tal:content="python: published and published.ISO8601() or modified.ISO8601()"></published>
@@ -56,7 +71,8 @@
       <updated tal:content="python:modified.ISO8601()"></updated>
 
       <tal:block repeat="category item/categories">
-        <category tal:attributes="term category"/>
+        <category tal:attributes="term category"
+                  tal:condition="category"/>
       </tal:block>
 
     </entry>
