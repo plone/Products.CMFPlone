@@ -8,6 +8,9 @@ Changelog
 5.0b2 (unreleased)
 ------------------
 
+- Upgrade mockup-core and patternslib bower dependencies to fix bower install issue
+  [vangheem]
+
 - Implement new feed syndication using `NewsML 1 <http://iptc.org/standards/newsml-1/>`_,
   an IPTC standard that provides a media-type-independent, structural framework for multi-media news.
   [frapell, jpgimenez, tcurvelo]
