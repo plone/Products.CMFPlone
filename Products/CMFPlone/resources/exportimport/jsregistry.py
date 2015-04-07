@@ -25,5 +25,5 @@ class JSRegistryNodeAdapter(ResourceRegistryNodeAdapter):
 
     # We already have jQuery, blacklist legacy installs of plone.app.jquery js
     resource_blacklist = set((
-        "++resource++/plone.app.jquery.js",
+        "++resource++plone.app.jquery.js",
     ))
