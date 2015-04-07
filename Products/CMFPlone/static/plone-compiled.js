@@ -526,7 +526,7 @@ define('pat-compat',[],function() {
     {
         Array.prototype.every = function(fun /*, thisp */)
         {
-            
+            "use strict";
 
             if (this === null)
                 throw new TypeError();
@@ -551,7 +551,7 @@ define('pat-compat',[],function() {
     // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/filter (JS 1.6)
     if (!Array.prototype.filter) {
         Array.prototype.filter = function(fun /*, thisp */) {
-            
+            "use strict";
 
             if (this === null)
                 throw new TypeError();
@@ -642,7 +642,7 @@ define('pat-compat',[],function() {
     // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/indexOf (JS 1.6)
     if (!Array.prototype.indexOf) {
         Array.prototype.indexOf = function (searchElement /*, fromIndex */ ) {
-            
+            "use strict";
             if (this === null) {
                 throw new TypeError();
             }
@@ -677,7 +677,7 @@ define('pat-compat',[],function() {
     // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/lastIndexOf (JS 1.6)
     if (!Array.prototype.lastIndexOf) {
         Array.prototype.lastIndexOf = function(searchElement /*, fromIndex*/) {
-            
+            "use strict";
 
             if (this === null)
                 throw new TypeError();
@@ -817,7 +817,7 @@ define('pat-compat',[],function() {
     {
         Array.prototype.reduceRight = function(callbackfn /*, initialValue */)
         {
-            
+            "use strict";
 
             if (this === null)
                 throw new TypeError();
@@ -871,7 +871,7 @@ define('pat-compat',[],function() {
     {
         Array.prototype.some = function(fun /*, thisp */)
         {
-            
+            "use strict";
 
             if (this === null)
                 throw new TypeError();
@@ -1443,7 +1443,7 @@ define('pat-registry',[
 define('mockup-parser',[
   'jquery'
 ], function($) {
-  
+  'use strict';
 
   var parser = {
     getOptions: function getOptions($el, patternName, options) {
@@ -1492,7 +1492,7 @@ define('mockup-patterns-base',[
   'mockup-parser',
   "pat-logger"
 ], function($, Registry, mockupParser, logger) {
-  
+  'use strict';
   var log = logger.getLogger("Mockup Base");
 
   var initMockup = function initMockup($el, options, trigger) {
@@ -1630,7 +1630,7 @@ the specific language governing permissions and limitations under the Apache Lic
 })(jQuery);
 
 (function ($, undefined) {
-    
+    "use strict";
     /*global document, window, jQuery, console */
 
     if (window.Select2 !== undefined) {
@@ -5893,7 +5893,7 @@ define('mockup-patterns-select2',[
   'jquery.event.drag',
   'jquery.event.drop'
 ], function($, Base) {
-  
+  'use strict';
 
   var Select2 = Base.extend({
     name: 'select2',
@@ -9349,7 +9349,7 @@ Picker.extend( 'pickatime', TimePicker )
 define('mockup-i18n',[
   'jquery'
 ], function($) {
-  
+  'use strict';
 
   var I18N = function() {
     var self = this;
@@ -9465,7 +9465,7 @@ define('mockup-i18n',[
 define('translate',[
   'mockup-i18n'
 ], function(i18n) {
-  
+  'use strict';
   i18n.loadCatalog('widgets');
   return i18n.MessageFactory('widgets');
 });
@@ -9563,7 +9563,7 @@ define('mockup-patterns-pickadate',[
   'mockup-patterns-select2',
   'translate'
 ], function($, Base, Picker, PickerDate, PickerTime, Select2, _t) {
-  
+  'use strict';
 
   var PickADate = Base.extend({
     name: 'pickadate',
@@ -9782,178 +9782,6 @@ define('mockup-patterns-pickadate',[
 
 });
 
-/**
- * Patterns registry fork - Central registry and scan logic for patterns
- *
- * Copyright 2012-2013 Simplon B.V.
- * Copyright 2012-2013 Florian Friesdorf
- * Copyright 2013 Marko Durkovic
- * Copyright 2013 Rok Garbas
- */
-
-/*
- * changes to previous patterns.register/scan mechanism
- * - if you want initialised class, do it in init
- * - init returns set of elements actually initialised
- * - handle once within init
- * - no turnstile anymore
- * - set pattern.jquery_plugin if you want it
- * - This is a global registry now
- * - elements can no longer be initialized more than once
- */
-define('mockup-registry',[
-    "jquery",
-    "pat-logger",
-    "pat-utils",
-    // below here modules that are only loaded
-    "pat-compat",
-    "pat-jquery-ext"
-], function($, logger, utils) {
-    
-
-    var log = logger.getLogger("registry");
-
-    var disable_re = /patterns-disable=([^&]+)/g,
-        dont_catch_re = /patterns-dont-catch/g,
-        dont_catch = false,
-        disabled = {}, match;
-
-    while ((match=disable_re.exec(window.location.search)) !== null) {
-        disabled[match[1]] = true;
-        log.info('Pattern disabled via url config:', match[1]);
-    }
-
-    while ((match=dont_catch_re.exec(window.location.search)) !== null) {
-        dont_catch = true;
-        log.info('I will not catch init exceptions');
-    }
-
-    if(window.registry_settings === undefined){
-        /* use global settings in case mockup-registry is included by
-           multiple compiled sources. Makes this a global registry */
-        window.registry_settings = {
-            patterns: {},
-            initialized: false
-        };
-    }
-
-    var registry = {
-        settings: window.registry_settings,
-        patterns: window.registry_settings.patterns,
-        // as long as the registry is not initialized, pattern
-        // registration just registers a pattern. Once init is called,
-        // the DOM is scanned. After that registering a new pattern
-        // results in rescanning the DOM only for this pattern.
-        init: function registry_init() {
-            $(document).ready(function() {
-                log.info('loaded: ' + Object.keys(registry.patterns).sort().join(', '));
-                registry.scan(document.body);
-                registry.settings.initialized = true;
-                log.info('finished initial scan.');
-            });
-        },
-
-        scan: function registry_scan(content, patterns, trigger) {
-            var $content = $(content),
-                all = [], allsel,
-                $match, plog;
-
-            // If no list of patterns was specified, we scan for all patterns
-            patterns = patterns || Object.keys(registry.patterns);
-
-            // selector for all patterns
-            patterns.forEach(function registry_scan_loop(name) {
-                if (disabled[name]) {
-                    log.debug('Skipping disabled pattern:', name);
-                    return;
-                }
-                var pattern = registry.patterns[name];
-                if (pattern.transform) {
-                    try {
-                        pattern.transform($content);
-                    } catch (e) {
-                        if (dont_catch) { throw(e); }
-                        log.error("Transform error for pattern" + name, e);
-                    }
-                }
-                if (pattern.trigger) {
-                    all.push(pattern.trigger);
-                }
-            });
-            // Find all elements that belong to any pattern.
-            allsel = all.join(",");
-            $match = $content.findInclusive(allsel);
-            $match = $match.filter(function() { return $(this).parents('pre').length === 0; });
-            $match = $match.filter(":not(.cant-touch-this)");
-
-            // walk list backwards and initialize patterns inside-out.
-            $match.toArray().reduceRight(function registry_pattern_init(acc, el) {
-                var pattern, $el = $(el);
-                for (var name in registry.patterns) {
-                    pattern = registry.patterns[name];
-                    if (pattern.init) {
-                        plog = logger.getLogger("pat." + name);
-                        if ($el.is(pattern.trigger) && !$el.hasClass('pattern-initialized')) {
-                            plog.debug("Initialising:", $el);
-                            try {
-                                pattern.init($el, null, trigger);
-                                plog.debug("done.");
-                            } catch (e) {
-                                if (dont_catch) { throw(e); }
-                                plog.error("Caught error:", e);
-                            }
-                            $el.addClass('pattern-initialized');
-                        }
-                    }
-                }
-            }, null);
-            $('body').addClass('patterns-loaded');
-        },
-
-        register: function registry_register(pattern, name) {
-            var plugin_name, jquery_plugin;
-            name = name || pattern.name;
-            if (!name) {
-                log.error("Pattern lacks a name:", pattern);
-                return false;
-            }
-            if (registry.patterns[name]) {
-                log.error("Already have a pattern called: " + name);
-                return false;
-            }
-
-            // register pattern to be used for scanning new content
-            registry.patterns[name] = pattern;
-
-            // register pattern as jquery plugin
-            if (pattern.jquery_plugin) {
-                plugin_name = ("pat-" + name)
-                        .replace(/-([a-zA-Z])/g, function(match, p1) {
-                            return p1.toUpperCase();
-                        });
-                $.fn[plugin_name] = utils.jqueryPlugin(pattern);
-                // BBB 2012-12-10 and also for Mockup patterns.
-                $.fn[plugin_name.replace(/^pat/, "pattern")] = utils.jqueryPlugin(pattern);
-            }
-            log.debug("Registered pattern:", name, pattern);
-            if (registry.settings.initialized) {
-                registry.scan(document.body, [name]);
-            }
-            return true;
-        }
-    };
-
-    $(document).on("patterns-injected.patterns",
-            function registry_onInject(ev, inject_config, inject_trigger) {
-                registry.scan(ev.target, null, {type: "injection", element: inject_trigger});
-                $(ev.target).trigger("patterns-injected-scanned");
-            });
-
-    return registry;
-});
-// jshint indent: 4, browser: true, jquery: true, quotmark: double
-// vim: sw=4 expandtab
-;
 /* Pattern utils
  */
 
@@ -9961,7 +9789,7 @@ define('mockup-registry',[
 define('mockup-utils',[
   'jquery'
 ], function($) {
-  
+  'use strict';
 
   var QueryHelper = function(options) {
     /* if pattern argument provided, it can implement the interface of:
@@ -9975,7 +9803,7 @@ define('mockup-utils',[
       pattern: null, // must be passed in
       vocabularyUrl: null,
       searchParam: 'SearchableText', // query string param to pass to search url
-      attributes: ['UID','Title', 'Description', 'getURL', 'Type'],
+      attributes: ['UID', 'Title', 'Description', 'getURL', 'portal_type'],
       batchSize: 10, // number of results to retrive
       baseCriteria: [],
       pathDepth: 1
@@ -10351,11 +10179,11 @@ define('mockup-utils',[
 define('plone-patterns-toolbar',[
   'jquery',
   'mockup-patterns-base',
-  'mockup-registry',
+  'pat-registry',
   'mockup-utils',
   'jquery.cookie'
 ], function ($, Base, Registry, utils) {
-  
+  'use strict';
 
   var Toolbar = Base.extend({
     name: 'toolbar',
@@ -10623,7 +10451,7 @@ define('mockup-patterns-accessibility',[
   'mockup-patterns-base',
   'jquery.cookie'
 ], function($, Base) {
-  
+  'use strict';
 
   var Accessibility = Base.extend({
     name: 'accessibility',
@@ -10752,7 +10580,7 @@ define('mockup-patterns-autotoc',[
   'jquery',
   'mockup-patterns-base'
 ], function($, Base) {
-  
+  'use strict';
 
   var AutoTOC = Base.extend({
     name: 'autotoc',
@@ -10861,7 +10689,7 @@ define('mockup-patterns-cookietrigger',[
   'jquery',
   'mockup-patterns-base'
 ], function ($, Base) {
-  
+  'use strict';
 
   var CookieTrigger = Base.extend({
     name: 'cookietrigger',
@@ -10943,7 +10771,7 @@ define('mockup-patterns-formunloadalert',[
   'mockup-patterns-base',
   'translate'
 ], function ($, Base, _t) {
-  
+  'use strict';
 
   var FormUnloadAlert = Base.extend({
     name: 'formunloadalert',
@@ -11037,7 +10865,7 @@ define('mockup-patterns-preventdoublesubmit',[
   'mockup-patterns-base',
   'translate'
 ], function($, Base, _t) {
-  
+  'use strict';
 
   var PreventDoubleSubmit = Base.extend({
     name: 'preventdoublesubmit',
@@ -11103,7 +10931,7 @@ define('mockup-patterns-formautofocus',[
   'jquery',
   'mockup-patterns-base'
 ], function($, Base, undefined) {
-  
+  'use strict';
 
   var FormAutoFocus = Base.extend({
     name: 'formautofocus',
@@ -11212,7 +11040,7 @@ define('mockup-patterns-markspeciallinks',[
   'mockup-patterns-base',
   'jquery'
 ], function (Base, $) {
-  
+  'use strict';
 
   var MarkSpecialLinks = Base.extend({
     name: 'markspeciallinks',
@@ -16283,7 +16111,7 @@ define('mockup-patterns-backdrop',[
   'jquery',
   'mockup-patterns-base'
 ], function($, Base) {
-  
+  'use strict';
 
   var Backdrop = Base.extend({
     name: 'backdrop',
@@ -17968,7 +17796,7 @@ define('mockup-router',[
   'underscore',
   'backbone'
 ], function($, _, Backbone) {
-  
+  'use strict';
 
   var regexEscape = function(s) {
     return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
@@ -18073,7 +17901,7 @@ define('mockup-router',[
 }
 
 (function($) {
-
+"use strict";
 
 /*
     Usage Note:
@@ -19348,7 +19176,7 @@ define('mockup-patterns-modal',[
   'mockup-utils',
   'jquery.form'
 ], function($, _, Base, Backdrop, registry, Router, utils) {
-  
+  'use strict';
 
   var Modal = Base.extend({
     name: 'modal',
@@ -20156,7 +19984,7 @@ define('mockup-patterns-livesearch',[
   'underscore',
   'translate'
 ], function ($, Base, _, _t){
-  
+  'use strict';
 
   var Livesearch = Base.extend({
     name: 'livesearch',
@@ -20408,9 +20236,10 @@ define('mockup-patterns-contentloader',[
   'mockup-patterns-base',
   'pat-logger',
   'pat-registry',
-  'mockup-utils'
-], function($, Base, logger, Registry, utils) {
-  
+  'mockup-utils',
+  'underscore'
+], function($, Base, logger, Registry, utils, _) {
+  'use strict';
   var log = logger.getLogger('pat-contentloader');
 
   var ContentLoader = Base.extend({
@@ -20420,36 +20249,68 @@ define('mockup-patterns-contentloader',[
       url: null,
       content: null,
       trigger: 'click',
-      target: null
+      target: null,
+      template: null,
+      dataType: 'html'
     },
     init: function() {
       var that = this;
       if(that.options.url === 'el' && that.$el[0].tagName === 'A'){
         that.options.url = that.$el.attr('href');
       }
-      that.$el.on(that.options.trigger, function(e){
-        e.preventDefault();
-        that.$el.addClass('loading-content');
-        if(that.options.url){
-          that.loadRemote();
-        }else{
-          that.loadLocal();
-        }
-      });
+      if(that.options.trigger === 'immediate'){
+        that._load();
+      }else{
+        that.$el.on(that.options.trigger, function(e){
+          e.preventDefault();
+          that._load();
+        });
+      }
+    },
+    _load: function(){
+      var that = this;
+      that.$el.addClass('loading-content');
+      if(that.options.url){
+        that.loadRemote();
+      }else{
+        that.loadLocal();
+      }
     },
     loadRemote: function(){
       var that = this;
       $.ajax({
-        url: that.options.url
-      }).done(function(data){
-        if(data.indexOf('<html') !== -1){
-          data = utils.parseBodyTag(data);
+        url: that.options.url,
+        dataType: that.options.dataType,
+        success: function(data){
+          var $el;
+          if(that.options.dataType === 'html'){
+            if(data.indexOf('<html') !== -1){
+              data = utils.parseBodyTag(data);
+            }
+            $el = $(data);
+          }else if(that.options.dataType.indexOf('json') !== -1){
+            // must have template defined with json
+            if(data.constructor === Array && data.length === 1){
+              // normalize json if it makes sense since some json returns as array with one item
+              data = data[0];
+            }
+            try{
+              $el = $(_.template(that.options.template, data));
+            }catch(e){
+              // log this
+              log.warn('error rendering template. pat-contentloader will not work');
+              return;
+            }
+          }
+          if(that.options.content !== null){
+            $el = $el.find(that.options.content);
+          }
+          that.loadLocal($el);
+          that.$el.removeClass('loading-content');
+        },
+        error: function(){
+          that.$el.addClass('content-load-error');
         }
-        var $el = $(data);
-        if(that.options.content !== null){
-          $el = $el.find(that.options.content);
-        }
-        that.loadLocal($el);
       });
     },
     loadLocal: function($content){
@@ -20494,7 +20355,7 @@ define("bootstrap-dropdown", ["jquery"], function() {
 
 
 +function ($) {
-  
+  'use strict';
 
   // DROPDOWN CLASS DEFINITION
   // =========================
@@ -20654,7 +20515,7 @@ define("bootstrap-collapse", ["jquery"], function() {
 
 
 +function ($) {
-  
+  'use strict';
 
   // COLLAPSE PUBLIC CLASS DEFINITION
   // ================================
@@ -20834,7 +20695,7 @@ define("bootstrap-tooltip", ["jquery"], function() {
 
 
 +function ($) {
-  
+  'use strict';
 
   // TOOLTIP PUBLIC CLASS DEFINITION
   // ===============================
@@ -21286,13 +21147,6 @@ define("bootstrap-tooltip", ["jquery"], function() {
 });
 }(this));
 
-// Author: Rok Garbas
-// Contact: rok@garbas.si
-// Version: 1.0
-// Description:
-//
-// License:
-//
 // Copyright (C) 2010 Plone Foundation
 //
 // This program is free software; you can redistribute it and/or modify it
@@ -21311,7 +21165,7 @@ define("bootstrap-tooltip", ["jquery"], function() {
 
 if (window.jQuery) {
   define( 'jquery', [], function () {
-    
+    'use strict';
     return window.jQuery;
   } );
 }
@@ -21338,7 +21192,7 @@ require([
   'bootstrap-collapse',
   'bootstrap-tooltip',
 ], function($, registry, Base) {
-  
+  'use strict';
 
   // initialize only if we are in top frame
   if (window.parent === window) {
@@ -21349,7 +21203,19 @@ require([
       }
     });
   }
+
+  // TODO: Needs to be moved to controlpanel js
+  $(document).ready(function() {
+    var cookieNegotiation = (
+      $("#form-widgets-use_cookie_negotiation > input").value === 'selected');
+    if (cookieNegotiation !== true) {
+      $("#formfield-form-widgets-authenticated_users_only").hide();
+    }else{
+      $("#formfield-form-widgets-authenticated_users_only").show();
+    }
+  });
+
 });
 
-define("/Users/nathan/code/fbigov.policy/src/Products.CMFPlone/Products/CMFPlone/static/plone.js", function(){});
+define("/Users/davisagli/Plone/5.0/src/Products.CMFPlone/Products/CMFPlone/static/plone.js", function(){});
 
