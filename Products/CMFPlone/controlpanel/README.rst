@@ -30,9 +30,7 @@ Now the enable_livesearch should disabled::
   >>> search_settings.enable_livesearch
   False
 
-For more informations about how to access and manipulate Plone registry eintries, look at
-the `plone.registry documentation
-<https://github.com/plone/plone.registry/blob/master/plone/registry/registry.rst>`_:
+For more informations about how to access and manipulate Plone registry entries, have a look at the `plone.registry documentation <https://github.com/plone/plone.registry/blob/master/plone/registry/registry.rst>`_:
 
 
 Editing Control Panel
@@ -60,6 +58,52 @@ Editing Control Panel
   >>> editing_settings.lock_on_ttw_edit
   True
   >>> editing_settings.lock_on_ttw_edit = False
+
+
+Language Control Panel
+----------------------
+
+  >>> from Products.CMFPlone.interfaces import ILanguageSchema
+  >>> language_settings = registry.forInterface(ILanguageSchema, prefix='plone')
+
+  >>> language_settings.default_language
+  'en'
+
+  >>> language_settings.available_languages
+  ['en']
+
+  >>> language_settings.use_combined_language_codes
+  False
+
+  >>> language_settings.display_flags
+  False
+
+  >>> language_settings.always_show_selector
+  False
+
+  >>> language_settings.use_content_negotiation
+  False
+
+  >>> language_settings.use_path_negotiation
+  False
+
+  >>> language_settings.use_cookie_negotiation
+  False
+
+  >>> language_settings.authenticated_users_only
+  False
+
+  >>> language_settings.set_cookie_always
+  False
+
+  >>> language_settings.use_subdomain_negotiation
+  False
+
+  >>> language_settings.use_cctld_negotiation
+  False
+
+  >>> language_settings.use_request_negotiation
+  False
 
 
 Maintenance Control Panel
@@ -151,7 +195,7 @@ Overview Control Panel
 
 
 Markup Control Panel
-------------------------
+--------------------
 
   >>> from Products.CMFPlone.interfaces import IMarkupSchema
   >>> markup_settings = registry.forInterface(IMarkupSchema, prefix='plone')
@@ -161,7 +205,7 @@ Markup Control Panel
 
 
 User and Groups Control Panel
-------------------
+------------------------------
 
   >>> from Products.CMFPlone.interfaces import IUserGroupsSettingsSchema
   >>> usergroups_settings = registry.forInterface(IUserGroupsSettingsSchema, prefix='plone')
