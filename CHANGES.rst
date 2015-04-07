@@ -8,9 +8,7 @@ Changelog
 5.0b2 (unreleased)
 ------------------
 
-- Implement new feed syndication using `NewsML 1 <http://iptc.org/standards/newsml-1/>`_,
-  an IPTC standard that provides a media-type-independent, structural framework for multi-media news.
-  [frapell, jpgimenez, tcurvelo]
+- Nothing changed yet.
 
 
 5.0b1.post1 (2015-03-27)
@@ -18,7 +16,6 @@ Changelog
 
 - Packaging fix, no code changes.
   [esteele]
-
 
 5.0b1 (2015-03-26)
 ------------------

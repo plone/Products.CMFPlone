@@ -26,8 +26,7 @@ class FeedSettings(object):
             self.needs_saving = True
 
         registry = getUtility(IRegistry)
-        self.site_settings = registry.forInterface(ISiteSyndicationSettings,
-                                                   check=False)
+        self.site_settings = registry.forInterface(ISiteSyndicationSettings)
 
     def _set(self):
         """

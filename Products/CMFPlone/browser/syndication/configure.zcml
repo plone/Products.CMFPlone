@@ -82,14 +82,6 @@
     template="templates/search-rss.pt"
     />
 
-  <browser:page
-    for="OFS.interfaces.IItem"
-    class=".views.NewsMLFeedView"
-    name="newsml.xml"
-    permission="zope2.View"
-    template="templates/newsml.xml.pt"
-    />
-
   <utility
     factory=".tool.SyndicationTool"
     provides="Products.CMFCore.interfaces.ISyndicationTool"
