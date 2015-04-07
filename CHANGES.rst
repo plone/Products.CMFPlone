@@ -8,11 +8,6 @@ Changelog
 5.0b2 (unreleased)
 ------------------
 
-- Move `plone.htmlhead.links` viewlet manager after `plone.scripts`,
-  because the former is sometimes used to include scripts that depend on
-  the latter.
-  [davisagli]
-
 - Upgrade mockup-core and patternslib bower dependencies to fix bower install issue
   [vangheem]
 
