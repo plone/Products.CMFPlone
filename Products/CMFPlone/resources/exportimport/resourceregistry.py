@@ -36,6 +36,8 @@ def importResRegistry(context, reg_id, reg_title, filename):
 
 class ResourceRegistryNodeAdapter(XMLAdapterBase):
 
+    resource_blacklist = set()
+
     def _importNode(self, node):
         """Import the object from the DOM node.
         """
@@ -83,6 +85,10 @@ class ResourceRegistryNodeAdapter(XMLAdapterBase):
                     position = ('',)
                     continue
                 if key == 'id':
+                    if value in self.resource_blacklist:
+                        add = False
+                        data.clear()
+                        break
                     res_id = queryUtility(IIDNormalizer).normalize(str(value))
                     data['url'] = str(value)
                 elif value.lower() == 'false':
