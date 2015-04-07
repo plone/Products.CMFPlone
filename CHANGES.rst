@@ -4,7 +4,8 @@ Changelog
 2.5.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add row class to constrain width of footer.
+  [davisagli]
 
 
 2.5.4 (2015-03-13)
