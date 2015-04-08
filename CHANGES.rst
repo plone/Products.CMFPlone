@@ -8,6 +8,10 @@ Changelog
 5.0b2 (unreleased)
 ------------------
 
+- Fix resource registry javascript build
+  [vangheem]
+
+
 - Move `plone.htmlhead.links` viewlet manager after `plone.scripts`,
   because the former is sometimes used to include scripts that depend on
   the latter.
