@@ -8,6 +8,9 @@ Changelog
 5.0b2 (unreleased)
 ------------------
 
+- Fix folder contents button disappeared act
+  [vangheem]
+
 - Fix resource registry javascript build
   [vangheem]
 
