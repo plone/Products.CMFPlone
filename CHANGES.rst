@@ -8,6 +8,11 @@ Changelog
 5.0b2 (unreleased)
 ------------------
 
+- Add `resource_blacklist` attribute to resource registry importer, to
+  allow filtering of known bad legacy resource imports.  Filter js from
+  plone.app.jquery.
+  [alecm]
+
 - Fix broken "Installing a third party add-on" link
   [cedricmessiant]
 
@@ -16,7 +21,6 @@ Changelog
 
 - Fix resource registry javascript build
   [vangheem]
-
 
 - Move `plone.htmlhead.links` viewlet manager after `plone.scripts`,
   because the former is sometimes used to include scripts that depend on
