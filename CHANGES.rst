@@ -8,6 +8,9 @@ Changelog
 5.0b2 (unreleased)
 ------------------
 
+- Fix broken "Installing a third party add-on" link
+  [cedricmessiant]
+
 - Fix folder contents button disappeared act
   [vangheem]
 
