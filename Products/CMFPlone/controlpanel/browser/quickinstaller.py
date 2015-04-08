@@ -113,6 +113,8 @@ class ManageProductsView(BrowserView):
                   'upgrades': only products with upgrades
                   'available': products that are not installed bit
                                could be
+                  'broken': uninstallable products with broken 
+                            dependencies
 
         @product_name:= a specific product id that you want info on. Do
                    not pass in the profile type, just the name
@@ -121,29 +123,34 @@ class ManageProductsView(BrowserView):
         """
         addons = self.marshall_addons()
         filtered = {}
-        for product_id, addon in addons.items():
-            if product_name and addon['id'] != product_name:
-                continue
-
-            installed = addon['is_installed']
-            if apply_filter in ['installed', 'upgrades'] and not installed:
-                continue
-            elif apply_filter == 'available':
-                if installed:
-                    continue
-                # filter out upgrade profiles
-                if addon['profile_type'] != 'default':
-                    continue
-            elif apply_filter == 'upgrades':
-                # weird p.a.discussion integration behavior
-                upgrade_info = addon['upgrade_info']
-                if type(upgrade_info) == bool:
+        if apply_filter == 'broken':
+            all_broken = self.qi.getBrokenInstalls()
+            for broken in all_broken:
+                filtered[broken['productname']] = broken
+        else:
+            for product_id, addon in addons.items():
+                if product_name and addon['id'] != product_name:
                     continue
 
-                if not upgrade_info['available']:
+                installed = addon['is_installed']
+                if apply_filter in ['installed', 'upgrades'] and not installed:
                     continue
+                elif apply_filter == 'available':
+                    if installed:
+                        continue
+                    # filter out upgrade profiles
+                    if addon['profile_type'] != 'default':
+                        continue
+                elif apply_filter == 'upgrades':
+                    # weird p.a.discussion integration behavior
+                    upgrade_info = addon['upgrade_info']
+                    if type(upgrade_info) == bool:
+                        continue
 
-            filtered[product_id] = addon
+                    if not upgrade_info['available']:
+                        continue
+
+                filtered[product_id] = addon
 
         return filtered
 
@@ -158,6 +165,9 @@ class ManageProductsView(BrowserView):
 
     def get_available(self):
         return self.get_addons(apply_filter='available').values()
+
+    def get_broken(self):
+        return self.get_addons(apply_filter='broken').values()
 
     def upgrade_product(self, product):
         qi = getToolByName(self.context, 'portal_quickinstaller')

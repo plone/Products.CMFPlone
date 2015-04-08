@@ -196,6 +196,28 @@
           </section>
         </section>
 
+        <section tal:define="products view/get_broken;
+                             num_products python:len(products);"
+                 tal:condition="num_products"
+                 id="broken-products" class="portlet">
+          <header class="portletHeader" i18n:translate="">Broken add-ons</header>
+          <section class="portletContent">
+            <ul class="configlets">
+              <li tal:repeat="product products">
+                <h3>
+                  <span tal:replace="product/productname">
+                    Add-on Name
+                  </span>
+                </h3>
+                <p class="configletDescription discreet">
+                  <span tal:content="product/type">Error Type</span>
+                  <em class="discreet"> - <tal:span tal:content="product/value">Error Reason</tal:span></em>
+                </p>
+              </li>
+            </ul>
+          </section>
+        </section>
+
     </div>
 </metal:main>
 
