@@ -8,6 +8,10 @@ Changelog
 5.0b2 (unreleased)
 ------------------
 
+- Monkey patch SMTPMailer init method to pick up the mail settings from the
+  registry instead of from the MailHost itself.
+  [timo]
+
 - Add `resource_blacklist` attribute to resource registry importer, to
   allow filtering of known bad legacy resource imports.  Filter js from
   plone.app.jquery.
