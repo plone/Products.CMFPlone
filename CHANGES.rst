@@ -8,6 +8,9 @@ Changelog
 5.0b2 (unreleased)
 ------------------
 
+- Fix submission of tinymce control panel.
+  [davisagli]
+
 - Monkey patch SMTPMailer init method to pick up the mail settings from the
   registry instead of from the MailHost itself.
   [timo]
