@@ -80254,7 +80254,7 @@ define('mockup-patterns-structure-url/js/views/actionmenu',[
         type: 'POST',
         data: {
           '_authenticator': $('[name="_authenticator"]').val(),
-          'id': this.$active.attr('data-id')
+          'id': this.model.attributes.id
         },
         success: function(data) {
           self.app.ajaxSuccessResponse.apply(self.app, [data]);
