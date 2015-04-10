@@ -1,9 +1,11 @@
-from Products.CMFPlone.interfaces import IEditingSchema
-from Products.CMFPlone.interfaces import IPloneSiteRoot
-from plone.registry.interfaces import IRegistry
+# -*- coding: utf-8 -*-
 from zope.component import adapts
-from zope.component import getUtility
 from zope.interface import implements
+from zope.component import getUtility
+from plone.registry.interfaces import IRegistry
+from Products.CMFPlone.interfaces import IPloneSiteRoot
+
+from Products.CMFPlone.interfaces import IEditingSchema
 
 
 class EditingControlPanelAdapter(object):

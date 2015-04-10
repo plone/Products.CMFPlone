@@ -19,7 +19,7 @@ class IAdditiveLayer(Interface):
 class TestBrowserLayerPrecedence(PloneTestCase):
 
     def _get_request_interfaces(self):
-        request = TestRequest()
+        request = self.layer['request']
         notify(BeforeTraverseEvent(self.portal, request))
         iro = list(request.__provides__.__iro__)
         return iro

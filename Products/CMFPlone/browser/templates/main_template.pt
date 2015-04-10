@@ -18,6 +18,7 @@
           ajax_include_head request/ajax_include_head | nothing;
           ajax_load python:False;
           toolbar_class python:request.cookies.get('plone-toolbar', 'plone-toolbar-left pat-toolbar')"
+      i18n:domain="plone"
       tal:attributes="lang lang;">
 
     <metal:cache tal:replace="structure provider:plone.httpheaders" />
@@ -26,7 +27,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
     <div tal:replace="structure provider:plone.htmlhead" />
-    <link tal:replace="structure provider:plone.htmlhead.links" />
 
     <tal:comment replace="nothing">
         Various slots where you can insert elements in the header from a template.
@@ -38,6 +38,7 @@
     <div tal:replace="structure provider:plone.scripts" />
     <metal:javascriptslot define-slot="javascript_head_slot" />
 
+    <link tal:replace="structure provider:plone.htmlhead.links" />
     <meta name="generator" content="Plone - http://plone.org" />
 
   </head>

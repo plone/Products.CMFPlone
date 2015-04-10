@@ -9,9 +9,11 @@
   "dependencies": {
     "jquery": "~2.0.0",
     "requirejs": "~2.1.6",
-    "mockup-core": ""
+    "mockup-core": "",
+    "patternslib": "2.0.9"
   },
   "resolutions": {
-    "jquery": "~2.0.0"
+    "jquery": "~2.0.0",
+    "patternslib": "2.0.9"
   }
 }

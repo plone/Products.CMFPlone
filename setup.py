@@ -1,7 +1,7 @@
 from setuptools import setup
 from setuptools import find_packages
 
-version = '5.0b1.dev0'
+version = '5.0b2.dev0'
 
 setup(
     name='Products.CMFPlone',
@@ -61,7 +61,7 @@ setup(
         'Products.MimetypesRegistry',
         'Products.PasswordResetTool',
         'Products.PlacelessTranslationService',
-        'Products.PloneLanguageTool',
+        # 'Products.PloneLanguageTool',
         'Products.PlonePAS',
         'Products.PluggableAuthService',
         'Products.PluginRegistry',
@@ -89,6 +89,7 @@ setup(
         'plone.app.folder',
         'plone.app.form',
         'plone.app.i18n',
+        'plone.app.multilingual',
         'plone.app.jquerytools',
         'plone.app.layout >=1.1.7dev-r23744',
         'plone.app.linkintegrity >=1.0.3',

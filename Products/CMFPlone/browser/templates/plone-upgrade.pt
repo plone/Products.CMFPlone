@@ -67,7 +67,7 @@
            i18n:translate="">
            Upgrade your existing content to use Dexterity.
         </a>
-        <span i18n:translate="">This will install plone.app.contenttypes and redirect you to a form where migrate your content.</span>
+        <span i18n:translate="">This will install plone.app.contenttypes and redirect you to a form where you can migrate your content.</span>
       </p>
 
     </tal:optional>
@@ -168,7 +168,7 @@
         </fieldset>
 
         <div class="field">
-          <label for="dry_run" i18n:translate=""><input id="dry_run" name="dry_run" type="checkbox" value="1:int" /> Dry run mode</label>
+          <label for="dry_run"><input id="dry_run" name="dry_run" type="checkbox" value="1:int" /> <span i18n:translate="">Dry run mode</span></label>
           
           <div class="formHelp"  i18n:translate="">
             Run the upgrade and show the result without actually writing

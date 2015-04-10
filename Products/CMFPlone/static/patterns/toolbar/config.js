@@ -12,7 +12,7 @@ require.config({
         selectivizr: '../components/selectivizr/selectivizr',
         underscore: '../components/underscore/underscore',
         'mockup-core': '../components/mockup-core/Gruntfile',
-        'mockup-registry': '../components/mockup-core/js/registry',
+        'pat-registry': '../components/patternslib/src/core/registry',
         'mockup-patterns-base': '../components/mockup-core/js/pattern',
         'plone-patterns-toolbar': 'toolbar'
     }

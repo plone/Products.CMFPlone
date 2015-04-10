@@ -1,7 +1,7 @@
 define([
   'jquery',
   'mockup-patterns-base',
-  'mockup-registry',
+  'pat-registry',
   'mockup-utils',
   'jquery.cookie'
 ], function ($, Base, Registry, utils) {

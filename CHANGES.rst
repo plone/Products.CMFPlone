@@ -5,7 +5,47 @@
 Changelog
 =========
 
-5.0b1 (unreleased)
+5.0b2 (unreleased)
+------------------
+
+- Fix submission of tinymce control panel.
+  [davisagli]
+
+- Monkey patch SMTPMailer init method to pick up the mail settings from the
+  registry instead of from the MailHost itself.
+  [timo]
+
+- Add `resource_blacklist` attribute to resource registry importer, to
+  allow filtering of known bad legacy resource imports.  Filter js from
+  plone.app.jquery.
+  [alecm]
+
+- Fix broken "Installing a third party add-on" link
+  [cedricmessiant]
+
+- Fix folder contents button disappeared act
+  [vangheem]
+
+- Fix resource registry javascript build
+  [vangheem]
+
+- Move `plone.htmlhead.links` viewlet manager after `plone.scripts`,
+  because the former is sometimes used to include scripts that depend on
+  the latter.
+  [davisagli]
+
+- Change the order of the plonebar user menu and move the plone.personal_bar
+  viewlet to the last position due to accessibility issues on having it being
+  the first element.
+  [sneridagh]
+
+5.0b1.post1 (2015-03-27)
+------------------------
+
+- Packaging fix, no code changes.
+  [esteele]
+
+5.0b1 (2015-03-26)
 ------------------
 
 - Add tests for configuring encoding of user registration or

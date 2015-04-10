@@ -2708,7 +2708,9 @@ button.plone-close {
 }
 .plone-modal-content {
   background: #fff;
-  overflow: hidden;
+  /* XXX this is necessary for some content inside modals
+     to behave properly */
+  overflow: inherit;
 }
 .plone-modal-body {
   padding: 15px;
@@ -3457,10 +3459,10 @@ html,
     width: 180px;
   }
   .plone-toolbar-left-default {
-    margin-left: 0px;
+    padding-left: 0px;
   }
   .plone-toolbar-left-expanded {
-    margin-left: 0px;
+    padding-left: 0px;
   }
   .plone-toolbar-top-default {
     margin-top: 0px;
@@ -3741,4 +3743,4 @@ body {
   content: '\e826';
 }
 /* '' */
-/*# sourceMappingURL=resourceregistry-compiled.css.map */
+/*# sourceMappingURL=thememapper-compiled.css.map */

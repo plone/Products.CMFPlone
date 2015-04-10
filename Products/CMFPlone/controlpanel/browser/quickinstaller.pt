@@ -26,7 +26,7 @@
           configuration, run buildout, and restart the server process.
           For detailed instructions see
           <span i18n:name="third_party_product">
-          <a i18n:translate="" href="http://plone.org/documentation/tutorial/buildout/installing-a-third-party-product">
+          <a i18n:translate="" href="http://plone.org/documentation/kb/installing-add-ons-quick-how-to">
             Installing a third party add-on
           </a>
           </span>.
@@ -87,10 +87,9 @@
                         </tal:span>
                       </span>
 
-                      <div i18n:translate=""
-                            tal:condition="not:upgrade_info/available">
-                        <strong>Warning</strong>
-                        <span>There is no upgrade procedure defined for this
+                      <div tal:condition="not:upgrade_info/available">
+                        <strong i18n:translate="">Warning</strong>
+                        <span i18n:translate="">There is no upgrade procedure defined for this
                         addon. Please consult the addon documentation
                         for upgrade information, or contact the addon
                         author.</span>
@@ -193,6 +192,28 @@
                 </tal:product>
                 </li>
               </ul>
+          </section>
+        </section>
+
+        <section tal:define="products view/get_broken;
+                             num_products python:len(products);"
+                 tal:condition="num_products"
+                 id="broken-products" class="portlet">
+          <header class="portletHeader" i18n:translate="">Broken add-ons</header>
+          <section class="portletContent">
+            <ul class="configlets">
+              <li tal:repeat="product products">
+                <h3>
+                  <span tal:replace="product/productname">
+                    Add-on Name
+                  </span>
+                </h3>
+                <p class="configletDescription discreet">
+                  <span tal:content="product/type">Error Type</span>
+                  <em class="discreet"> - <tal:span tal:content="product/value">Error Reason</tal:span></em>
+                </p>
+              </li>
+            </ul>
           </section>
         </section>
 
