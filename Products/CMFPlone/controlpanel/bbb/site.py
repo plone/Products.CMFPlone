@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from Products.CMFDefault.formlib.schema import ProxyFieldProperty
+from zope.schema.fieldproperty import FieldProperty
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.CMFPlone.interfaces import ISiteSchema
 from plone.registry.interfaces import IRegistry
@@ -36,6 +36,6 @@ class SiteControlPanelAdapter(object):
     site_title = property(get_site_title, set_site_title)
     webstats_js = property(get_webstats_js, set_webstats_js)
 
-    site_logo = ProxyFieldProperty(ISiteSchema['site_logo'])
-    enable_sitemap = ProxyFieldProperty(ISiteSchema['enable_sitemap'])
-    exposeDCMetaTags = ProxyFieldProperty(ISiteSchema['exposeDCMetaTags'])
+    site_logo = FieldProperty(ISiteSchema['site_logo'])
+    enable_sitemap = FieldProperty(ISiteSchema['enable_sitemap'])
+    exposeDCMetaTags = FieldProperty(ISiteSchema['exposeDCMetaTags'])

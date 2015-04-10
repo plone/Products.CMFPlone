@@ -1,12 +1,17 @@
-from zope.interface import directlyProvides
+from zope.interface import directlyProvides, Interface
 from zope.component import provideAdapter, getGlobalSiteManager
 
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests.dummy import Dummy, DummyWorkflowChainAdapter
-from Products.CMFDefault.interfaces import IDocument
 from Products.CMFCore.interfaces import IWorkflowTool
 
+
 default_user = PloneTestCase.default_user
+
+
+class IDocument(Interface):
+    """ Dummy document interface
+    """
 
 # INFO - Ugh...Rather than use and update ambiguous numbers,
 # we maintain a mapping of the various workflows to states

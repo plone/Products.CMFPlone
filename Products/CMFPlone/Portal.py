@@ -1,5 +1,3 @@
-from Products.CMFDefault.Portal import CMFSite
-
 from Products.CMFCore import permissions
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName
@@ -15,6 +13,7 @@ from Acquisition import aq_base
 from App.class_init import InitializeClass
 from ComputedAttribute import ComputedAttribute
 from webdav.NullResource import NullResource
+from Products.CMFCore.PortalObject import PortalObjectBase
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.CMFPlone.interfaces.syndication import ISyndicatable
@@ -22,10 +21,18 @@ from Products.CMFPlone.interfaces.syndication import ISyndicatable
 from plone.i18n.locales.interfaces import IMetadataLanguageAvailability
 from zope.interface import implements
 from zope.component import queryUtility
+from .DublinCore import DefaultDublinCoreImpl
+from .permissions import AddPortalContent
+from .permissions import AddPortalFolders
+from .permissions import ListPortalMembers
+from .permissions import ReplyToItem
+from .permissions import View
+from .permissions import ModifyPortalContent
 
 
-class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin, UniqueObject):
-    """Make PloneSite subclass CMFSite and add some methods."""
+class PloneSite(PortalObjectBase, DefaultDublinCoreImpl, OrderedContainer,
+                BrowserDefaultMixin, UniqueObject):
+    """Make PloneSite PortalObjectBase and add some methods."""
 
     security = ClassSecurityInfo()
     meta_type = portal_type = 'Plone Site'
@@ -33,15 +40,18 @@ class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin, UniqueObject):
     implements(IPloneSiteRoot, ISyndicatable)
 
     manage_options = (
-        CMFSite.manage_options[:2] +
-        CMFSite.manage_options[3:]
-        )
+        PortalObjectBase.manage_options[:2] +
+        PortalObjectBase.manage_options[3:])
 
-    __ac_permissions__ = tuple(list(CMFSite.__ac_permissions__) +
-        [('Modify portal content',
-         ('manage_cutObjects', 'manage_pasteObjects',
-          'manage_renameForm', 'manage_renameObject',
-          'manage_renameObjects'))])
+    __ac_permissions__ = (
+        (AddPortalContent, ()),
+        (AddPortalFolders, ()),
+        (ListPortalMembers, ()),
+        (ReplyToItem, ()),
+        (View, ('isEffective',)),
+        (ModifyPortalContent, ('manage_cutObjects', 'manage_pasteObjects',
+            'manage_renameForm', 'manage_renameObject',
+            'manage_renameObjects')))
 
     security.declareProtected(Permissions.copy_or_move, 'manage_copyObjects')
 
@@ -62,6 +72,10 @@ class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin, UniqueObject):
     title = ''
     description = ''
     icon = 'misc_/CMFPlone/tool.gif'
+
+    def __init__(self, id, title=''):
+        PortalObjectBase.__init__(self, id, title)
+        DefaultDublinCoreImpl.__init__(self)
 
     def __browser_default__(self, request):
         """ Set default so we can return whatever we want instead
@@ -106,7 +120,7 @@ class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin, UniqueObject):
             if not _checkPermission(permissions.DeleteObjects, item):
                 raise Unauthorized(
                     "Do not have permissions to remove this object")
-        return CMFSite.manage_delObjects(self, ids, REQUEST=REQUEST)
+        return PortalObjectBase.manage_delObjects(self, ids, REQUEST=REQUEST)
 
     def view(self):
         """ Ensure that we get a plain view of the object, via a delegation to
@@ -119,8 +133,7 @@ class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin, UniqueObject):
 
     def folderlistingFolderContents(self, contentFilter=None):
         """Calls listFolderContents in protected only by ACI so that
-        folder_listing can work without the List folder contents permission,
-        as in CMFDefault.
+        folder_listing can work without the List folder contents permission.
 
         This is copied from Archetypes Basefolder and is needed by the
         reference browser.
@@ -135,6 +148,11 @@ class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin, UniqueObject):
         # Put language neutral at the top.
         languages.insert(0, (u'', _(u'Language neutral (site default)')))
         return languages
+ 
+    def isEffective(self, date):
+        """ Override DefaultDublinCoreImpl's test, since we are always viewable.
+        """
+        return 1
 
     # Ensure portals don't get cataloged.
     def indexObject(self):

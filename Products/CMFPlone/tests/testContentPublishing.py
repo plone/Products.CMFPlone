@@ -37,8 +37,6 @@ props = {'description': 'song by ween',
 
 class TestContentPublishing(PloneTestCase):
     """ The instant publishing drop down UI.
-        !NOTE! CMFDefault.Document overrides setFormat and Format
-        so it acts strangely.  This is also hardcoded to work with Document.
 
         This testcase was written to prevent collector/2914 regressions
 
