@@ -29,7 +29,7 @@ class IResourceRegistry(zope.interface.Interface):
 
     deps = schema.ASCIILine(
         title=_(u"Dependencies for shim"),
-        description=_(u"Coma separated values of resource for shim"),
+        description=_(u"Comma separated values of resource for shim"),
         required=False)
 
     export = schema.ASCIILine(
