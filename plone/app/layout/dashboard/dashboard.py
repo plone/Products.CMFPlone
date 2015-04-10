@@ -29,7 +29,10 @@ class DashboardView(BrowserView):
         self.request.set('disable_plone.leftcolumn',1)
         self.request.set('disable_plone.rightcolumn',1)
         if self.can_edit() and self.empty():
-            message = _(u"info_empty_dashboard")
+            message = _(u"info_empty_dashboard",
+                    default=u"Your dashboard is currently empty. Click the"
+                             " <em>edit</em> tab to assign some personal"
+                             " portlets.")
             IStatusMessage(self.request).add(message)
         return self.index()
 

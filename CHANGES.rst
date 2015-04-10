@@ -4,6 +4,9 @@ Changelog
 2.5.5 (unreleased)
 ------------------
 
+- Fix info_empty_dashboard i18n default message.
+  [vincentfretin]
+
 - Add row class to constrain width of footer.
   [davisagli]
 
