@@ -155,10 +155,7 @@ class ILanguageSchema(Interface):
             u'label_display_flags',
             default=u"Show language flags"
         ),
-        description=_(
-            u"help_display_flags",
-            default=u""
-        ),
+        description=u"",
         default=False,
         required=False
     )
