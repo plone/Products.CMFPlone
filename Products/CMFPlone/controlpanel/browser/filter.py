@@ -13,7 +13,7 @@ from z3c.form import form
 class FilterControlPanel(AutoExtensibleForm, form.EditForm):
     id = "FilterControlPanel"
     label = _(u"Filter settings")
-    description = _("Filter settings.")
+    description = ""
     schema = IFilterSchema
     form_name = _(u"Filter Settings")
     control_panel_view = "filter-controlpanel"
