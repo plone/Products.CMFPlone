@@ -67,7 +67,7 @@
            i18n:translate="">
            Upgrade your existing content to use Dexterity.
         </a>
-        <span i18n:translate="">This will install plone.app.contenttypes and redirect you to a form where migrate your content.</span>
+        <span i18n:translate="">This will install plone.app.contenttypes and redirect you to a form where you can migrate your content.</span>
       </p>
 
     </tal:optional>
