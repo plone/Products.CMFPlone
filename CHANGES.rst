@@ -34,6 +34,10 @@ Changelog
   the latter.
   [davisagli]
 
+- Change the order of the plonebar user menu and move the plone.personal_bar
+  viewlet to the last position due to accessibility issues on having it being
+  the first element.
+  [sneridagh]
 
 5.0b1.post1 (2015-03-27)
 ------------------------
