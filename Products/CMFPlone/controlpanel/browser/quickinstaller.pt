@@ -87,10 +87,9 @@
                         </tal:span>
                       </span>
 
-                      <div i18n:translate=""
-                            tal:condition="not:upgrade_info/available">
-                        <strong>Warning</strong>
-                        <span>There is no upgrade procedure defined for this
+                      <div tal:condition="not:upgrade_info/available">
+                        <strong i18n:translate="">Warning</strong>
+                        <span i18n:translate="">There is no upgrade procedure defined for this
                         addon. Please consult the addon documentation
                         for upgrade information, or contact the addon
                         author.</span>
