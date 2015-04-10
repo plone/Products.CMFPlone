@@ -1004,9 +1004,9 @@ class INavigationSchema(Interface):
     generate_tabs = schema.Bool(
         title=_(u"Automatically generate tabs"),
         description=_(
-            u"By default, all items created at the root level will " +
-            u"add to the global section navigation. You can turn this off " +
-            u"if you prefer manually constructing this part of the " +
+            u"By default, all items created at the root level will "
+            u"add to the global section navigation. You can turn this off "
+            u"if you prefer manually constructing this part of the "
             u"navigation."),
         default=True,
         required=False)
@@ -1014,9 +1014,9 @@ class INavigationSchema(Interface):
     nonfolderish_tabs = schema.Bool(
         title=_(u"Generate tabs for items other than folders."),
         description=_(
-            u"By default, any content item in the root of the portal will " +
-            u"be shown as a global section. If you turn this option off, " +
-            u"only folders will be shown. This only has an effect if " +
+            u"By default, any content item in the root of the portal will "
+            u"be shown as a global section. If you turn this option off, "
+            u"only folders will be shown. This only has an effect if "
             u"'Automatically generate tabs' is enabled."),
         default=True,
         required=False)
@@ -1024,7 +1024,7 @@ class INavigationSchema(Interface):
     displayed_types = schema.Tuple(
         title=_(u"Displayed content types"),
         description=_(
-            u"The content types that should be shown in the navigation and " +
+            u"The content types that should be shown in the navigation and "
             u"site map."),
         required=False,
         default=('Image', 'File', 'Link', 'News Item', 'Folder', 'Document',
@@ -1036,7 +1036,7 @@ class INavigationSchema(Interface):
     filter_on_workflow = schema.Bool(
         title=_(u"Filter on workflow state"),
         description=_(
-            u"The workflow states that should be shown in the navigation " +
+            u"The workflow states that should be shown in the navigation "
             u"tree and the site map."),
         default=False,
         required=False)
@@ -1049,11 +1049,11 @@ class INavigationSchema(Interface):
 
     show_excluded_items = schema.Bool(
         title=_(
-            u"Show items normally excluded from navigation if viewing their " +
+            u"Show items normally excluded from navigation if viewing their "
             u"children."),
         description=_(
-            u"If an item has been excluded from navigation should it be " +
-            u"shown in navigation when viewing content contained within it " +
+            u"If an item has been excluded from navigation should it be "
+            u"shown in navigation when viewing content contained within it "
             u"or within a subfolder."),
         default=True,
         required=False)
