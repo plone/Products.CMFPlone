@@ -49,7 +49,7 @@
                     toolbar_class python:request.cookies.get('plone-toolbar', 'plone-toolbar-left pat-toolbar');"
         tal:attributes="class body_class;
                         dir python:isRTL and 'rtl' or 'ltr';
-                        patterns python:plone_view.patterns_settings()"
+                        python:plone_view.patterns_settings()"
         id="visual-portal-wrapper">
 
     <section id="edit-bar" role="toolbar">
