@@ -2,6 +2,7 @@ from Products.CMFCore import permissions
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.utils import UniqueObject
+from Products.CMFCore.PortalObject import PortalObjectBase
 from Products.CMFDynamicViewFTI.browserdefault import BrowserDefaultMixin
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.PloneFolder import OrderedContainer
@@ -32,7 +33,7 @@ from .permissions import ModifyPortalContent
 
 class PloneSite(PortalObjectBase, DefaultDublinCoreImpl, OrderedContainer,
                 BrowserDefaultMixin, UniqueObject):
-    """Make PloneSite PortalObjectBase and add some methods."""
+    """ The Plone site object. """
 
     security = ClassSecurityInfo()
     meta_type = portal_type = 'Plone Site'
@@ -162,8 +163,6 @@ class PloneSite(PortalObjectBase, DefaultDublinCoreImpl, OrderedContainer,
         pass
 
     def reindexObject(self, idxs=None):
-        if idxs is None:
-            idxs = []
         pass
 
     def reindexObjectSecurity(self, skip_self=False):

@@ -59,8 +59,8 @@ from plone.app.linkintegrity.exceptions \
 _marker = utils._marker
 _icons = {}
 
-CEILING_DATE = DefaultDublinCoreImpl._DefaultDublinCoreImpl__CEILING_DATE
-FLOOR_DATE = DefaultDublinCoreImpl._DefaultDublinCoreImpl__FLOOR_DATE
+CEILING_DATE = DateTime(2500, 0)  # never expires
+FLOOR_DATE = __FLOOR_DATE = DateTime(1970, 0)  # always effective
 BAD_CHARS = bad_id.__self__.findall
 
 EMAIL_RE = re.compile(r"^(\w&.%#$&'\*+-/=?^_`{}|~]+!)*[\w&.%#$&'\*+-/=?^_`{}|~]+@(([0-9a-z]([0-9a-z-]*[0-9a-z])?\.)+[a-z]{2,6}|([0-9]{1,3}\.){3}[0-9]{1,3})$", re.IGNORECASE)
