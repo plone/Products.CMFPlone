@@ -1,11 +1,13 @@
-from plone.registry.interfaces import IRegistry
+from Products.CMFPlone.interfaces import ILanguageSchema
 from Products.CMFPlone.interfaces import ISiteSchema
 from plone.app.layout.globals.tests.base import GlobalsTestCase
 from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.app.layout.navigation.root import getNavigationRoot
-from zope.i18n.locales import locales
+from plone.registry.interfaces import IRegistry
 from zope.component import getUtility
-
+from zope.event import notify
+from zope.i18n.locales import locales
+from zope.traversing.interfaces import BeforeTraverseEvent
 import zope.interface
 
 
@@ -94,8 +96,19 @@ class TestPortalStateView(GlobalsTestCase):
         self.assertEqual(self.view.language(), 'no')
 
     def test_locale(self):
-        self.app.REQUEST.set('HTTP_ACCEPT_LANGUAGE', 'no')
+        # Set up registry so that no is an accepted language and that the
+        # language information from the request is actually being used.
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(ILanguageSchema, prefix='plone')
+        settings.use_request_negotiation = True
+        settings.available_languages.append('no')
+
         no = locales.getLocale('no', None, None)
+        self.app.REQUEST.set('HTTP_ACCEPT_LANGUAGE', 'no')
+
+        # Push request through the BeforeTraverseEvent handler again to
+        # update language settings
+        notify(BeforeTraverseEvent(self.portal, self.portal.REQUEST))
         self.assertEqual(self.view.locale(), no)
 
     def test_is_not_rtl(self):
