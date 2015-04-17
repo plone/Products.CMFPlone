@@ -59,7 +59,7 @@ def initialize(context):
     allow_class(ObjectMoved)
     allow_class(WorkflowException)
 
-    from .PloneBatch import Batch
+    from Products.CMFPlone.PloneBatch import Batch
     allow_class(Batch)
 
     # Make Batch available at module level
@@ -113,16 +113,16 @@ def initialize(context):
     ModuleSecurityInfo('cgi').declarePublic('escape')
 
     # Apply monkey patches
-    from . import patches  # noqa
+    from Products.CMFPlone import patches  # noqa
 
     # Register unicode splitter w/ ZCTextIndex
     # pipeline registry
-    from . import UnicodeSplitter  # noqa
+    from Products.CMFPlone import UnicodeSplitter  # noqa
 
     # Plone content
 
     # Usage of PloneFolder is discouraged.
-    from . import PloneFolder
+    from Products.CMFPlone import PloneFolder
 
     contentClasses = (PloneFolder.PloneFolder, )
     contentConstructors = (PloneFolder.addPloneFolder, )
@@ -131,19 +131,19 @@ def initialize(context):
     from Products.CMFCore import CachingPolicyManager
 
     # Plone tools
-    from . import PloneTool
-    from . import MigrationTool
-    from . import PloneControlPanel
-    from . import WorkflowTool
-    from . import URLTool
-    from . import RegistrationTool
-    from . import PropertiesTool
-    from . import ActionsTool
-    from . import TypesTool
-    from . import CatalogTool
-    from . import SkinsTool
-    from . import QuickInstallerTool
-    from . import TranslationServiceTool
+    from Products.CMFPlone import PloneTool
+    from Products.CMFPlone import MigrationTool
+    from Products.CMFPlone import PloneControlPanel
+    from Products.CMFPlone import WorkflowTool
+    from Products.CMFPlone import URLTool
+    from Products.CMFPlone import RegistrationTool
+    from Products.CMFPlone import PropertiesTool
+    from Products.CMFPlone import ActionsTool
+    from Products.CMFPlone import TypesTool
+    from Products.CMFPlone import CatalogTool
+    from Products.CMFPlone import SkinsTool
+    from Products.CMFPlone import QuickInstallerTool
+    from Products.CMFPlone import TranslationServiceTool
 
     tools = (
         PloneTool.PloneTool,
