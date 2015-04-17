@@ -22,13 +22,13 @@ from Products.CMFPlone.interfaces.syndication import ISyndicatable
 from plone.i18n.locales.interfaces import IMetadataLanguageAvailability
 from zope.interface import implements
 from zope.component import queryUtility
-from .DublinCore import DefaultDublinCoreImpl
-from .permissions import AddPortalContent
-from .permissions import AddPortalFolders
-from .permissions import ListPortalMembers
-from .permissions import ReplyToItem
-from .permissions import View
-from .permissions import ModifyPortalContent
+from Products.CMFPlone.DublinCore import DefaultDublinCoreImpl
+from Products.CMFPlone.permissions import AddPortalContent
+from Products.CMFPlone.permissions import AddPortalFolders
+from Products.CMFPlone.permissions import ListPortalMembers
+from Products.CMFPlone.permissions import ReplyToItem
+from Products.CMFPlone.permissions import View
+from Products.CMFPlone.permissions import ModifyPortalContent
 
 
 class PloneSite(PortalObjectBase, DefaultDublinCoreImpl, OrderedContainer,

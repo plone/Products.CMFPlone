@@ -34,7 +34,7 @@ from Products.CMFCore.permissions import AccessContentsInformation, \
                         ManagePortal, ManageUsers, ModifyPortalContent, View
 from Products.CMFCore.interfaces import IDublinCore, IMutableDublinCore
 from Products.CMFCore.WorkflowCore import WorkflowException
-from .DublinCore import DefaultDublinCoreImpl
+from Products.CMFPlone.DublinCore import DefaultDublinCoreImpl
 from Products.CMFDynamicViewFTI.interfaces import IBrowserDefault
 from Products.CMFPlone.interfaces import ISearchSchema
 from Products.CMFPlone.interfaces import ISiteSchema

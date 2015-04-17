@@ -25,9 +25,9 @@ from Products.CMFCore.interfaces import ICatalogableDublinCore
 from Products.CMFCore.interfaces import IDublinCore
 from Products.CMFCore.interfaces import IMutableDublinCore
 from Products.CMFCore.utils import getToolByName
-from .permissions import ModifyPortalContent
-from .permissions import View
-from .utils import WWW_DIR
+from Products.CMFPlone.permissions import ModifyPortalContent
+from Products.CMFPlone.permissions import View
+from Products.CMFPlone.utils import WWW_DIR
 
 _marker=[]
 

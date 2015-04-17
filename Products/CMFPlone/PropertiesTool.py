@@ -14,7 +14,7 @@ from AccessControl import ClassSecurityInfo
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.interfaces \
     import IPropertiesTool, ISimpleItemWithProperties
-from .utils import WWW_DIR
+from Products.CMFPlone.utils import WWW_DIR
 from Products.MailHost.interfaces import IMailHost
 from zope.component import getUtility
 from zope.component import queryUtility
