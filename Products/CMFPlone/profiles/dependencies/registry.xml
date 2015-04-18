@@ -1067,7 +1067,7 @@
     </field>
     <value>
       <element key="pickadate">{"selectYears": 200}</element>
-      <element key="modal">{"actionOptions": {"displayInModal": false}}</element>
+      <element key="plone-modal">{"actionOptions": {"displayInModal": false}}</element>
     </value>
   </record>
 
