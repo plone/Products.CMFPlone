@@ -127,7 +127,7 @@ def initialize(context):
     contentClasses = (PloneFolder.PloneFolder, )
     contentConstructors = (PloneFolder.addPloneFolder, )
 
-    # CMFCore and CMFDefault tools
+    # CMFCore tools
     from Products.CMFCore import CachingPolicyManager
 
     # Plone tools

@@ -22,7 +22,7 @@ minutes = []
 ampm = []
 now = DateTime()
 
-# from CMFDefault.DublinCore
+# from CMFPlone.DublinCore
 CEILING = DateTime(9999, 0)
 FLOOR = DateTime(1970, 0)
 PLONE_CEILING = DateTime(2021, 0)  # 2020-12-31

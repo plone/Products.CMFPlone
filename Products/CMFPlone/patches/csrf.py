@@ -41,7 +41,7 @@ def applyPatches():
     setProperties.__doc__ = original_setProperties.__doc__
     MD.setProperties = patch(setProperties)
 
-    from Products.CMFDefault.RegistrationTool import RegistrationTool
+    from Products.CMFPlone.RegistrationTool import RegistrationTool
     RegistrationTool.editMember = patch(RegistrationTool.editMember)
 
     from Products.PlonePAS.tools.groupdata import GroupData

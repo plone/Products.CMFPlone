@@ -48,7 +48,6 @@ setup(
         'ExtensionClass',
         'Pillow',
         'Products.CMFCore',
-        'Products.CMFDefault',
         'Products.CMFDiffTool',
         'Products.CMFDynamicViewFTI',
         'Products.CMFEditions',

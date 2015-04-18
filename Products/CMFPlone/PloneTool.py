@@ -34,7 +34,7 @@ from Products.CMFCore.permissions import AccessContentsInformation, \
                         ManagePortal, ManageUsers, ModifyPortalContent, View
 from Products.CMFCore.interfaces import IDublinCore, IMutableDublinCore
 from Products.CMFCore.WorkflowCore import WorkflowException
-from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
+from Products.CMFPlone.DublinCore import DefaultDublinCoreImpl
 from Products.CMFDynamicViewFTI.interfaces import IBrowserDefault
 from Products.CMFPlone.interfaces import ISearchSchema
 from Products.CMFPlone.interfaces import ISiteSchema
@@ -59,22 +59,13 @@ from plone.app.linkintegrity.exceptions \
 _marker = utils._marker
 _icons = {}
 
-CEILING_DATE = DefaultDublinCoreImpl._DefaultDublinCoreImpl__CEILING_DATE
-FLOOR_DATE = DefaultDublinCoreImpl._DefaultDublinCoreImpl__FLOOR_DATE
+CEILING_DATE = DateTime(2500, 0)  # never expires
+FLOOR_DATE = __FLOOR_DATE = DateTime(1970, 0)  # always effective
 BAD_CHARS = bad_id.__self__.findall
 
 EMAIL_RE = re.compile(r"^(\w&.%#$&'\*+-/=?^_`{}|~]+!)*[\w&.%#$&'\*+-/=?^_`{}|~]+@(([0-9a-z]([0-9a-z-]*[0-9a-z])?\.)+[a-z]{2,6}|([0-9]{1,3}\.){3}[0-9]{1,3})$", re.IGNORECASE)
 # used to find double new line (in any variant)
 EMAIL_CUTOFF_RE = re.compile(r".*[\n\r][\n\r]")
-
-# XXX Remove this when we don't depend on python2.1 any longer,
-# use email.Utils.getaddresses instead
-from rfc822 import AddressList
-def _getaddresses(fieldvalues):
-    """Return a list of (REALNAME, EMAIL) for each fieldvalue."""
-    all = ', '.join(fieldvalues)
-    a = AddressList(all)
-    return a.addresslist
 
 # dublic core accessor name -> metadata name
 METADATA_DCNAME = {

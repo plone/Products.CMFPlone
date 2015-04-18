@@ -4,14 +4,11 @@ from hashlib import md5
 from email import message_from_string
 from smtplib import SMTPException, SMTPRecipientsRefused
 
-from zope.component import getUtility
 from zope.i18nmessageid import MessageFactory
 
 from Acquisition import aq_base, aq_chain
 from Products.CMFCore.interfaces import ISiteRoot
-
-from Products.CMFCore.utils import getToolByName
-from Products.CMFDefault.RegistrationTool import RegistrationTool as BaseTool
+from Products.CMFCore.RegistrationTool import RegistrationTool as BaseTool
 
 from Products.CMFCore.permissions import AddPortalMember
 
@@ -20,21 +17,26 @@ from AccessControl import ClassSecurityInfo, Unauthorized
 from AccessControl import getSecurityManager
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.SecurityManagement import setSecurityManager
-from AccessControl.User import nobody
 from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.interfaces import ISecuritySchema
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.PloneTool import EMAIL_RE
-from Products.CMFDefault.utils import checkEmailAddress
-from Products.CMFDefault.exceptions import EmailAddressInvalid
 from Products.CMFCore.utils import _checkPermission
-from Products.CMFCore.permissions import ManagePortal
+
 from Products.PluggableAuthService.permissions import SetOwnPassword
 
-from Products.PluggableAuthService.interfaces.plugins import IValidationPlugin, IPropertiesPlugin
+from Products.PluggableAuthService.interfaces.plugins import IValidationPlugin
 from Products.PluggableAuthService.interfaces.authservice \
         import IPluggableAuthService
-from Products.PluggableAuthService.PropertiedUser import PropertiedUser
+
+from AccessControl.requestmethod import postonly
+from Acquisition import aq_base
+from zope.component import getUtility
+from zope.schema import ValidationError
+
+from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.permissions import ManagePortal
+
 
 # - remove '1', 'l', and 'I' to avoid confusion
 # - remove '0', 'O', and 'Q' to avoid confusion
@@ -93,6 +95,8 @@ random.seed()
 
 
 class RegistrationTool(PloneBaseTool, BaseTool):
+    """ Manage through-the-web signup policies.
+    """
 
     meta_type = 'Plone Registration Tool'
     security = ClassSecurityInfo()
@@ -115,6 +119,20 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         if self._v_md5base is None:
             self._v_md5base = md5(self.md5key)
         return self._v_md5base
+
+    def _getValidEmailAddress(self, member):
+        email = member.getProperty('email')
+
+        # assert that we can actually get an email address, otherwise
+        # the template will be made with a blank To:, this is bad
+        if email is None:
+            msg = _(u'No email address is registered for member: '
+                    u'${member_id}', mapping={'member_id': member.getId()})
+            raise ValueError(msg)
+
+        checkEmailAddress(email)
+        return email
+
 
     # Get a password of the prescribed length
     #
@@ -173,9 +191,7 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         if confirm is not None and confirm != password:
             return _(u'Your password and confirmation did not match. '
                      u'Please try again.')
-
         return None
-
 
     def pasValidation(self, property, password):
         """ @return None if no PAS password validators exist or a list of errors """
@@ -392,14 +408,13 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         membership = getToolByName(self, 'portal_membership')
         utils = getToolByName(self, 'plone_utils')
         member = membership.getMemberById(new_member_id)
+        email = member.getProperty('email')
 
-        if member and member.getProperty('email'):
+        if member and email:
             # add the single email address
-            if not utils.validateSingleEmailAddress(
-                    member.getProperty('email')):
+            if not utils.validateSingleEmailAddress(email):
                 raise ValueError(_(u'The email address did not validate.'))
 
-        email = member.getProperty('email')
         try:
             checkEmailAddress(email)
         except EmailAddressInvalid:
@@ -432,7 +447,24 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         return self.mail_password_response(self, self.REQUEST)
 
 
-RegistrationTool.__doc__ = BaseTool.__doc__
+    security.declareProtected(ManagePortal, 'editMember')
+    @postonly
+    def editMember(self, member_id, properties=None, password=None,
+                   roles=None, domains=None, REQUEST=None):
+        """ Edit a user's properties and security settings
+
+        o Checks should be done before this method is called using
+          testPropertiesValidity and testPasswordValidity
+        """
+        # XXX: this method violates the rules for tools/utilities:
+        # it depends on a non-utility tool
+        mtool = getToolByName(self, 'portal_membership')
+        member = mtool.getMemberById(member_id)
+        member.setMemberProperties(properties)
+        member.setSecurityProfile(password,roles,domains)
+
+        return member
+
 
 InitializeClass(RegistrationTool)
 
@@ -454,9 +486,38 @@ _TESTS = (
       )
 
 
+class EmailAddressInvalid(ValidationError):
+    __doc__ = _(u'Invalid email address.')
+
 def _checkEmail(address):
     for pattern, expected, message in _TESTS:
         matched = pattern.search(address) is not None
         if matched != expected:
             return False, message
     return True, ''
+
+
+# RFC 2822 local-part: dot-atom or quoted-string
+# characters allowed in atom: A-Za-z0-9!#$%&'*+-/=?^_`{|}~
+# RFC 2821 domain: max 255 characters
+_LOCAL_RE = re.compile(r'([A-Za-z0-9!#$%&\'*+\-/=?^_`{|}~]+'
+                     r'(\.[A-Za-z0-9!#$%&\'*+\-/=?^_`{|}~]+)*|'
+                     r'"[^(\|")]*")@[^@]{3,255}$')
+
+# RFC 2821 local-part: max 64 characters
+# RFC 2821 domain: sequence of dot-separated labels
+# characters allowed in label: A-Za-z0-9-, first is a letter
+# Even though the RFC does not allow it all-numeric domains do exist
+_DOMAIN_RE = re.compile(r'[^@]{1,64}@[A-Za-z0-9][A-Za-z0-9-]*'
+                                r'(\.[A-Za-z0-9][A-Za-z0-9-]*)+$')
+
+
+def checkEmailAddress(address):
+    """ Check email address.
+
+    This should catch most invalid but no valid addresses.
+    """
+    if not _LOCAL_RE.match(address):
+        raise EmailAddressInvalid
+    if not _DOMAIN_RE.match(address):
+        raise EmailAddressInvalid

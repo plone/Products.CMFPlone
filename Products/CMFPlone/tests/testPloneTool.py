@@ -68,11 +68,7 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
         val = self.utils.validateEmailAddresses
 
         validInputs = (
-            # 'user',
-            # 'user@example',
             'user@example.org',
-            #'user@example.org\n user2',
-            #'user@example.org\r user2',
             'user@example.org,\n user2@example.org',
             'user@example.org\n user2@example.org',  # omitting comma is ok
             'USER@EXAMPLE.ORG,\n User2@Example.Org',
@@ -82,7 +78,6 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
             'user@example.org\n\rfoo',
             'user@example.org\r\nfoo',
             'user@example.org\r\rfoo',
-            #py stdlib bug? 'user@example.org\nuser2@example.org', # continuation line doesn't begin with white space
         )
         for address in validInputs:
             self.assertTrue(val(address), '%s should validate' % address)
@@ -91,7 +86,6 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
 
     def testEditFormatMetadataOfFile(self):
         # Test fix for http://dev.plone.org/plone/ticket/1323
-        # Fixed in CMFDefault.File, not Plone.
         self.folder.invokeFactory('File', id='file')
         self.folder.file.edit(file=dummy.File('foo.zip'))
         self.assertEqual(self.folder.file.Format(), 'application/zip')
@@ -104,7 +98,6 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
 
     def testEditFormatMetadataOfImage(self):
         # Test fix for http://dev.plone.org/plone/ticket/1323
-        # Fixed in CMFDefault.Image, not Plone.
         self.folder.invokeFactory('Image', id='image')
         self.folder.image.edit(file=dummy.Image('foo.zip'))
         self.assertEqual(self.folder.image.Format(), 'application/zip')
