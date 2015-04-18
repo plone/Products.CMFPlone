@@ -8,6 +8,10 @@ Changelog
 5.0b4 (unreleased)
 ----------------
 
+- Fix add-ons to be installed using CMFQuickInstaller (restore support
+  for Extensions/Install.py)
+  [datakurre]
+
 - Rename showEditableBorder to showToolbar and deprecate using
   disable_border and enable_border for enable_toolbar and disable_toolbar
   [vangheem]

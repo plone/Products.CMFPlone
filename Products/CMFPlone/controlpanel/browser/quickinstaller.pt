@@ -131,7 +131,7 @@
                 <form action="install_products" method="post" class="pull-right">
                    <input type="hidden"
                            name="install_products:list"
-                           tal:attributes="value string:profile-${product/install_profile/id};" />
+                           tal:attributes="value pid;" />
                    <span i18n:translate="label_product_install_action">
                       <span i18n:name="install_button">
                          <input class="context"
