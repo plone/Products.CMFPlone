@@ -76,7 +76,7 @@
             doing a specific search.
         </p>
 
-        <a class="pat-modal" id="add-group"
+        <a class="pat-plone-modal" id="add-group"
            tal:attributes="href string:${portal_url}/@@usergroup-groupdetails">
            <button i18n:translate="label_add_new_group">Add New Group</button>
         </a>

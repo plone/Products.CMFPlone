@@ -58,8 +58,8 @@
           search.</span>
         </p>
         <p>
-          <a class="pat-modal" id="add-user"
-             data-pat-modal="{&quot;actionOptions&quot;: {&quot;displayInModal&quot;: false}}"
+          <a class="pat-plone-modal" id="add-user"
+             data-pat-plone-modal="{&quot;actionOptions&quot;: {&quot;displayInModal&quot;: false}}"
              tal:attributes="href string:${portal_url}/@@new-user">
              <button i18n:translate="label_add_new_user" id="add-new-user" class="context">Add New User</button>
           </a>

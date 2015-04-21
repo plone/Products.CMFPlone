@@ -39,6 +39,9 @@ Changelog
   the first element.
   [sneridagh]
 
+- pat-modal pattern has been renamed to pat-plone-modal
+  [jcbrand]
+
 5.0b1.post1 (2015-03-27)
 ------------------------
 
