@@ -51,7 +51,6 @@ setup(
         'Products.CMFDiffTool',
         'Products.CMFDynamicViewFTI',
         'Products.CMFEditions',
-        'Products.CMFFormController',
         'Products.CMFQuickInstallerTool',
         'Products.CMFUid',
         'Products.DCWorkflow',

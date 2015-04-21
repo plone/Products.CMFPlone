@@ -8,6 +8,9 @@ Changelog
 5.0b2 (unreleased)
 ------------------
 
+- Remove Products.CMFFormController dependency.
+  [timo]
+
 - Fix submission of tinymce control panel.
   [davisagli]
 
@@ -39,11 +42,13 @@ Changelog
   the first element.
   [sneridagh]
 
+
 5.0b1.post1 (2015-03-27)
 ------------------------
 
 - Packaging fix, no code changes.
   [esteele]
+
 
 5.0b1 (2015-03-26)
 ------------------
