@@ -11005,7 +11005,7 @@ define('mockup-patterns-select2',[
       var self = this;
       self.$el.select2(self.options);
       self.$select2 = self.$el.parent().find('.select2-container');
-      self.$el.parent().off('close.modal.patterns');
+      self.$el.parent().off('close.plone-modal.patterns');
       if (self.options.orderable) {
         self.$select2.addClass('select2-orderable');
       }
@@ -14588,8 +14588,8 @@ define('mockup-i18n',[
 
   var I18N = function() {
     var self = this;
-
     self.baseUrl = $('body').attr('data-i18ncatalogurl');
+
     if (!self.baseUrl) {
       self.baseUrl = '/plonejsi18n';
     }
@@ -14685,7 +14685,7 @@ define('mockup-i18n',[
     };
   };
 
-  return new I18N();
+  return I18N;
 });
 
 /* i18n integration.
@@ -14699,10 +14699,21 @@ define('mockup-i18n',[
 
 define('translate',[
   'mockup-i18n'
-], function(i18n) {
+], function(I18N) {
   'use strict';
-  i18n.loadCatalog('widgets');
-  return i18n.MessageFactory('widgets');
+
+  // we're creating a singleton here so we can potentially
+  // delay the initialization of the translate catalog
+  // until after the dom is available
+  var _t = null;
+  return function(msgid, keywords){
+    if(_t === null){
+      var i18n = new I18N();
+      i18n.loadCatalog('widgets');
+      _t = i18n.MessageFactory('widgets');
+    }
+    return _t(msgid, keywords);
+  };
 });
 
 /* Related items pattern.
@@ -14727,9 +14738,6 @@ define('translate',[
  *    orderable(boolean): Whether or not items should be drag-and-drop sortable. (true)
  *    resultTemplate(string): Template for an item in the in the list of results. Refer to source for default. (Refer to source)
  *    resultTemplateSelector(string): Select an element from the DOM from which to grab the resultTemplate. (null)
- *    searchText(string): Text which will be inserted to the left of the
- *    path. (Search)
- *    searchAllText(string): Displays next to the path when the path is set to the root. (All)
  *    selectableTypes(array): If the value is null all types are selectable. Otherwise, provide a list of strings to match item types that are selectable. (null)
  *    selectionTemplate(string): Template for element that will be used to construct a selected item. (Refer to source)
  *    selectionTemplateSelector(string): Select an element from the DOM from which to grab the selectionTemplate. (null)
@@ -14805,8 +14813,6 @@ define('mockup-patterns-relateditems',[
       mode: 'search', // possible values are search and browse
       closeOnSelect: false,
       basePath: '/',
-      searchText: _t('Search:'),
-      searchAllText: _t('entire site'),
       homeText: _t('home'),
       folderTypes: ['Folder'],
       selectableTypes: null, // null means everything is selectable, otherwise a list of strings to match types that are selectable
@@ -14910,11 +14916,11 @@ define('mockup-patterns-relateditems',[
       if (path === '/') {
         var searchText = '';
         if (self.options.mode === 'search') {
-          searchText = '<em>' + self.options.searchAllText + '</em>';
+          searchText = '<em>' + _t('entire site') + '</em>';
         }
         html = self.applyTemplate('breadCrumbs', {
           items: searchText,
-          searchText: self.options.searchText
+          searchText: _t('Search:')
         });
       } else {
         var paths = path.split('/');
@@ -14929,7 +14935,7 @@ define('mockup-patterns-relateditems',[
             itemsHtml = itemsHtml + self.applyTemplate('breadCrumb', item);
           }
         });
-        html = self.applyTemplate('breadCrumbs', {items: itemsHtml, searchText: self.options.searchText});
+        html = self.applyTemplate('breadCrumbs', {items: itemsHtml, searchText: _t('Search:') });
       }
       var $crumbs = $(html);
       $('a.crumb', $crumbs).on('click', function(e) {
@@ -15146,12 +15152,6 @@ define('mockup-patterns-relateditems',[
       };
 
       Select2.prototype.initializeSelect2.call(self);
-
-      // Browsing functionality
-      var browseOpts = {
-        browseText: self.options.browseText,
-        searchText: self.options.searchText
-      };
 
       self.$browsePath = $('<span class="pattern-relateditems-path" />');
       self.$container.prepend(self.$browsePath);
@@ -18212,16 +18212,16 @@ function log() {
  *
  *
  * Example: example-basic
- *    <a href="#modal1" class="plone-btn plone-btn-large plone-btn-primary pat-modal"
- *                      data-pat-modal="width: 400">Modal basic</a>
+ *    <a href="#modal1" class="plone-btn plone-btn-large plone-btn-primary pat-plone-modal"
+ *                      data-pat-plone-modal="width: 400">Modal basic</a>
  *    <div id="modal1" style="display: none">
  *      <h1>Basic modal!</h1>
  *      <p>Indeed. Whoa whoa whoa whoa. Wait.</p>
  *    </div>
  *
  * Example: example-long
- *    <a href="#modal2" class="plone-btn plone-btn-lg plone-btn-primary pat-modal"
- *                      data-pat-modal="width: 500">Modal long scrolling</a>
+ *    <a href="#modal2" class="plone-btn plone-btn-lg plone-btn-primary pat-plone-modal"
+ *                      data-pat-plone-modal="width: 500">Modal long scrolling</a>
  *    <div id="modal2" style="display: none">
  *      <h1>Basic with scrolling</h1>
  *      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</p>
@@ -18239,8 +18239,8 @@ function log() {
  *
  *
  * Example: example-tinymce
- *    <a href="#modaltinymce" class="btn btn-lg btn-primary pat-modal"
- *       data-pat-modal="height: 600px;
+ *    <a href="#modaltinymce" class="btn btn-lg btn-primary pat-plone-modal"
+ *       data-pat-plone-modal="height: 600px;
  *                       width: 80%">
  *       Modal with TinyMCE</a>
  *    <div id="modaltinymce" style="display:none">
@@ -18265,8 +18265,8 @@ define('mockup-patterns-modal',[
   'use strict';
 
   var Modal = Base.extend({
-    name: 'modal',
-    trigger: '.pat-modal',
+    name: 'plone-modal',
+    trigger: '.pat-plone-modal',
     createModal: null,
     $model: null,
     defaults: {
@@ -18480,7 +18480,7 @@ define('mockup-patterns-modal',[
             if (options.displayInModal === true) {
               self.redraw(response, patternOptions);
             } else {
-              $action.trigger('destroy.modal.patterns');
+              $action.trigger('destroy.plone-modal.patterns');
               // also calls hide
               if (options.reloadWindowOnClose) {
                 self.reloadWindow();
@@ -18628,7 +18628,7 @@ define('mockup-patterns-modal',[
           .on('click', function(e) {
             e.stopPropagation();
             e.preventDefault();
-            $(e.target).trigger('destroy.modal.patterns');
+            $(e.target).trigger('destroy.plone-modal.patterns');
           });
 
         // cleanup html
@@ -18651,11 +18651,11 @@ define('mockup-patterns-modal',[
             }
             self.$modal.trigger('modal-click');
           })
-          .on('destroy.modal.patterns', function(e) {
+          .on('destroy.plone-modal.patterns', function(e) {
             e.stopPropagation();
             self.hide();
           })
-          .on('resize.modal.patterns', function(e) {
+          .on('resize.plone-modal.patterns', function(e) {
             e.stopPropagation();
             e.preventDefault();
             self.positionModal();
@@ -18991,7 +18991,7 @@ define('mockup-patterns-modal',[
       $('img', self.$modal).load(function() {
         self.positionModal();
       });
-      $(window.parent).on('resize.modal.patterns', function() {
+      $(window.parent).on('resize.plone-modal.patterns', function() {
         self.positionModal();
       });
       self.emit('shown');
@@ -19019,7 +19019,7 @@ define('mockup-patterns-modal',[
         self.$modal.remove();
         self.initModal();
       }
-      $(window.parent).off('resize.modal.patterns');
+      $(window.parent).off('resize.plone-modal.patterns');
       self.emit('hidden');
       $('body').removeClass('plone-modal-open');
     },
@@ -56786,7 +56786,7 @@ define('mockup-patterns-autotoc',[
               }, self.options.scrollDuration, self.options.scrollEasing);
             }
             if (self.$el.parents('.plone-modal').size() !== 0) {
-              self.$el.trigger('resize.modal.patterns');
+              self.$el.trigger('resize.plone-modal.patterns');
             }
             $(this).trigger('clicked');
           });
@@ -59016,7 +59016,7 @@ Emitter.prototype.hasListeners = function(event){
     return module.exports;
 }));
 
-define('text!mockup-patterns-upload-url/templates/upload.xml',[],function () { return '<div class="upload-container upload-multiple">\n    <h2 class="title">Upload stuff here</h2>\n    <p class="help">\n        Just drag N drop stuff on the area below\n        or press "upload" button.\n    </p>\n    <div class="upload-area">\n        <div class="fallback">\n            <input name="file" type="file" multiple />\n        </div>\n        <div class="dz-message"><p><%-_t("Drop files here...")%></p></div>\n        <div class="row">\n            <div class="col-md-9">\n                <input\n                    id="fakeUploadFile"\n                    placeholder="Choose File"\n                    disabled="disabled"\n                    />\n            </div>\n            <div class="col-md-3">\n                <button\n                    type="button"\n                    class="btn btn-primary browse">\n                    Browse\n                </button>\n            </div>\n        </div>\n        <div class="upload-queue">\n            <div class="previews">\n            </div>\n            <div class="controls">\n                <div class="path">\n                    <label>Upload to...</label>\n                    <p class="form-help">\n                        If nothing selected files we be added to current context.\n                    </p>\n                    <input\n                        type="text"\n                        name="location"\n                        />\n                </div>\n                <div class="actions row">\n                    <div class="col-md-9">\n                        <div class="progress progress-striped active">\n                            <div class="progress-bar progress-bar-success"\n                                 role="progressbar"\n                                 aria-valuenow="0"\n                                 aria-valuemin="0"\n                                 aria-valuemax="100"\n                                 style="width: 0%">\n                                <span class="sr-only">40% Complete (success)</span>\n                            </div>\n                        </div>\n                    </div>\n                    <div class="col-md-3 align-right">\n                        <button\n                            type="button"\n                            class="btn btn-primary upload-all">\n                            Upload\n                        </button>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n';});
+define('text!mockup-patterns-upload-url/templates/upload.xml',[],function () { return '<div class="upload-container upload-multiple">\n    <h2 class="title"><%- _t("Upload stuff here") %></h2>\n    <p class="help">\n        <%- _t(\'Just drag N drop stuff on the area below or press "upload" button.\') %>\n    </p>\n    <div class="upload-area">\n        <div class="fallback">\n            <input name="file" type="file" multiple />\n        </div>\n        <div class="dz-message"><p><%-_t("Drop files here...")%></p></div>\n        <div class="row">\n            <div class="col-md-9">\n                <input\n                    id="fakeUploadFile"\n                    placeholder="<%- _t("Choose File") %>"\n                    disabled="disabled"\n                    />\n            </div>\n            <div class="col-md-3">\n                <button\n                    type="button"\n                    class="btn btn-primary browse">\n                    Browse\n                </button>\n            </div>\n        </div>\n        <div class="upload-queue">\n            <div class="previews">\n            </div>\n            <div class="controls">\n                <div class="path">\n                    <label><%- _t("Upload to...") %></label>\n                    <p class="form-help">\n                        <%- _t("If nothing selected files we be added to current context.") %>\n                    </p>\n                    <input\n                        type="text"\n                        name="location"\n                        />\n                </div>\n                <div class="actions row">\n                    <div class="col-md-9">\n                        <div class="progress progress-striped active">\n                            <div class="progress-bar progress-bar-success"\n                                 role="progressbar"\n                                 aria-valuenow="0"\n                                 aria-valuemin="0"\n                                 aria-valuemax="100"\n                                 style="width: 0%">\n                                <span class="sr-only">40% Complete (success)</span>\n                            </div>\n                        </div>\n                    </div>\n                    <div class="col-md-3 align-right">\n                        <button\n                            type="button"\n                            class="btn btn-primary upload-all">\n                            <%- _t("Upload") %>\n                        </button>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n';});
 
 
 define('text!mockup-patterns-upload-url/templates/preview.xml',[],function () { return '<div class="row item form-inline">\n    <div class="col-md-1 action">\n        <button\n            type="button"\n            class="btn btn-danger btn-xs remove-item"\n            data-dz-remove=""\n            href="javascript:undefined;">\n            <span class="glyphicon glyphicon-remove"></span>\n        </button>\n    </div>\n    <div class="col-md-8 title">\n        <div class="dz-preview">\n          <div class="dz-details">\n            <div class="dz-filename"><span data-dz-name></span></div>\n          </div>\n          <div class="dz-error-message"><span data-dz-errormessage></span></div>\n        </div>\n        <div class="dz-progress">\n            <span class="dz-upload" data-dz-uploadprogress></span>\n        </div>\n    </div>\n    <div class="col-md-3 info">\n        <div class="dz-size" data-dz-size></div>\n        <img data-dz-thumbnail />\n    </div>\n</div>\n';});
@@ -59109,12 +59109,10 @@ define('mockup-patterns-upload',[
         basePath: '/',
         vocabularyUrl: null,
         width: 500,
-        maximumSelectionSize: 1,
-        placeholder: _t('Search for item on site...')
+        maximumSelectionSize: 1
       }
     },
 
-    //placeholder: 'Search for item on site...'
     init: function() {
       var self = this,
           template = UploadTemplate;
@@ -59387,13 +59385,13 @@ define('mockup-patterns-upload',[
         chunkSize: chunkSize
       }).fail(function() {
         if(window.DEBUG){
-          console.alert('Error uploading with TUS resumable uploads');
+          console.alert(_t('Error uploading with TUS resumable uploads'));
         }
         file.status = Dropzone.ERROR;
       }).progress(function(e, bytesUploaded, bytesTotal) {
         var percentage = (bytesUploaded / bytesTotal * 100);
         self.$progress.attr('aria-valuenow', percentage).css('width', percentage + '%');
-        self.$progress.html(_t('uploading...<br />') +
+        self.$progress.html(_t('uploading...') + '<br />' +
                             self.formatBytes(bytesUploaded) +
                             ' / ' + self.formatBytes(bytesTotal));
       }).done(function(url, file) {
@@ -59817,7 +59815,7 @@ define('mockup-patterns-tinymce-url/js/links',[
       self.dom = self.tiny.dom;
       self.linkType = self.options.initialLinkType;
       self.linkTypes = {};
-      self.modal = registry.patterns.modal.init(self.$el, {
+      self.modal = registry.patterns['plone-modal'].init(self.$el, {
         html: self.generateModalHtml(),
         content: null,
         buttons: '.plone-btn'
@@ -60085,10 +60083,10 @@ define('mockup-patterns-tinymce-url/js/links',[
         }
       } else if (href[0] === '#') {
         this.linkType = 'anchor';
-        this.linkTypes.anchor.setRaw(href.substring(1));
+        this.linkTypes.anchor.set(href.substring(1));
       } else {
         this.linkType = 'external';
-        this.linkTypes.external.setRaw(href);
+        this.linkTypes.external.set(href);
       }
     },
 
@@ -74467,7 +74465,7 @@ define('mockup-patterns-tinymce',[
 ], function($, _,
             Base, RelatedItems, Modal, tinymce,
             AutoTOC, ResultTemplate, SelectionTemplate,
-            utils, LinkModal, i18n, _t) {
+            utils, LinkModal, I18n, _t) {
   'use strict';
 
   var TinyMCE = Base.extend({
@@ -74651,12 +74649,13 @@ define('mockup-patterns-tinymce',[
     },
     initLanguage: function(call_back){
       var self = this;
+      var i18n = new I18n();
       var lang = i18n.currentLanguage;
-      if (lang != 'en' && self.options.tiny.language !== 'en') {
+      if (lang !== 'en' && self.options.tiny.language !== 'en') {
         tinymce.baseURL = self.options.loadingBaseUrl;
         // does the expected language exist?
         $.ajax({
-          url: tinymce.baseURL + "/langs/" + lang + ".js",
+          url: tinymce.baseURL + '/langs/' + lang + '.js',
           type:'HEAD',
           success: function() {
             self.options.tiny.language = lang;
@@ -74664,13 +74663,13 @@ define('mockup-patterns-tinymce',[
           },
           error: function() {
             // expected lang not available, let's fallback to closest one
-            if (lang.split("_") > 1){
-              lang = lang.split("_")[0];
+            if (lang.split('_') > 1){
+              lang = lang.split('_')[0];
             } else {
-              lang = lang + "_" + lang.toUpperCase();
+              lang = lang + '_' + lang.toUpperCase();
             }
             $.ajax({
-              url: tinymce.baseURL + "/langs/" + lang + ".js",
+              url: tinymce.baseURL + '/langs/' + lang + '.js',
               type:'HEAD',
               success: function() {
                 self.options.tiny.language = lang;
@@ -74722,7 +74721,7 @@ define('mockup-patterns-tinymce',[
               part: scale[1],
               name: scale[1],
               label: scale[0]
-            }
+            };
           });
         }
         if(typeof(self.options.folderTypes) === 'string'){
@@ -78403,10 +78402,6 @@ define('mockup-patterns-pickadate',[
  *    indexOptionsUrl(string): URL to grab index option data from. Must contain "sortable_indexes" and "indexes" data in JSON object. (null)
  *    previewURL(string): URL used to pass in a plone.app.querystring-formatted HTTP querystring and get an HTML list of results ('portal_factory/@@querybuilder_html_results')
  *    previewCountURL(string): URL used to pass in a plone.app.querystring-formatted HTTP querystring and get an HTML string of the total number of records found with the query ('portal_factory/@@querybuildernumberofresults')
- *    sorttxt(string): Text to use to label the sort dropdown ('Sort On')
- *    reversetxt(string): Text to use to label the sort order checkbox ('Reversed Order')
- *    previewTitle(string): Title for the preview area ('Preview')
- *    previewDescription(string): Description for the preview area ('Preview of at most 10 items')
  *    classWrapperName(string): CSS class to apply to the wrapper element ('querystring-wrapper')
  *    classSortLabelName(string): CSS class to apply to the sort on label ('querystring-sort-label')
  *    classSortReverseName(string): CSS class to apply to the sort order label and checkbox container ('querystring-sortreverse')
@@ -78455,11 +78450,7 @@ define('mockup-patterns-querystring',[
   Criteria.prototype = {
     defaults: {
       indexWidth: '20em',
-      placeholder: _t('Select criteria'),
       remove: '',
-      results: _t(' items matching your search.'),
-      days: _t('days'),
-      betweendt: _t('to'),
       classBetweenDtName: 'querystring-criteria-betweendt',
       classWrapperName: 'querystring-criteria-wrapper',
       classIndexName: 'querystring-criteria-index',
@@ -78491,7 +78482,7 @@ define('mockup-patterns-querystring',[
 
       // Index selection
       self.$index = $('<select><option></option></select>')
-          .attr('placeholder', self.options.placeholder);
+          .attr('placeholder', _t('Select criteria'));
 
       // list of indexes
       $.each(self.indexes, function(value, options) {
@@ -78520,7 +78511,7 @@ define('mockup-patterns-querystring',[
       self.$index
         .patternSelect2({
           width: self.options.indexWidth,
-          placeholder: self.options.placeholder
+          placeholder: _t('Select criteria')
         })
         .on('change', function(e) {
           self.removeValue();
@@ -78619,7 +78610,7 @@ define('mockup-patterns-querystring',[
           });
         $wrapper.append(
           $('<span/>')
-            .html(self.options.betweendt)
+            .html(_t('to'))
             .addClass(self.options.classBetweenDtName)
         );
         var endwrap = $('<span/>').appendTo($wrapper);
@@ -78638,7 +78629,7 @@ define('mockup-patterns-querystring',[
 
       } else if (widget === 'RelativeDateWidget') {
         self.$value = $('<input type="text"/>')
-                .after($('<span/>').html(self.options.days))
+                .after($('<span/>').html(_t('days')))
                 .addClass(self.options.classValueName + '-' + widget)
                 .appendTo($wrapper)
                 .change(function() {
@@ -78823,10 +78814,6 @@ define('mockup-patterns-querystring',[
       indexOptionsUrl: null,
       previewURL: 'portal_factory/@@querybuilder_html_results', // base url to use to request preview information from
       previewCountURL: 'portal_factory/@@querybuildernumberofresults',
-      sorttxt: _t('Sort On'),
-      reversetxt: _t('Reversed Order'),
-      previewTitle: _t('Preview'),
-      previewDescription: _t('Preview of at most 10 items'),
       classSortLabelName: 'querystring-sort-label',
       classSortReverseName: 'querystring-sortreverse',
       classSortReverseLabelName: 'querystring-sortreverse-label',
@@ -78889,11 +78876,11 @@ define('mockup-patterns-querystring',[
         // preview title and description
         $('<div/>')
           .addClass(self.options.classPreviewTitleName)
-          .html(self.options.previewTitle)
+          .html(_t('Preview'))
           .appendTo(self.$previewWrapper);
         $('<div/>')
           .addClass(self.options.classPreviewDescriptionName)
-          .html(self.options.previewDescription)
+          .html(_t('Preview of at most 10 items'))
           .appendTo(self.$previewWrapper);
       }
 
@@ -78970,7 +78957,7 @@ define('mockup-patterns-querystring',[
 
       $('<span/>')
         .addClass(self.options.classSortLabelName)
-        .html(self.options.sorttxt)
+        .html(_t('Sort on'))
         .appendTo(self.$sortWrapper);
       self.$sortOn = $('<select/>')
         .attr('name', 'sort_on')
@@ -79007,7 +78994,7 @@ define('mockup-patterns-querystring',[
         .append(self.$sortOrder)
         .append(
           $('<span/>')
-            .html(self.options.reversetxt)
+            .html(_t('Reserved Order'))
             .addClass(self.options.classSortReverseLabelName)
         );
 
@@ -79277,6 +79264,7 @@ define('mockup-ui-url/views/base',[
       for (var key in this.options) {
         this[key] = this.options[key];
       }
+      this.options._t = _t;
     },
     render: function() {
       this.applyTemplate();
@@ -80012,7 +80000,7 @@ define('mockup-ui-url/views/button',[
 });
 
 
-define('text!mockup-patterns-structure-url/templates/actionmenu.xml',[],function () { return '<a class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" href="#">\n  <span class="glyphicon glyphicon-cog"></span>\n  <span class="caret"></span>\n</a>\n<ul class="dropdown-menu pull-right">\n  <% if(header) { %>\n    <li class="dropdown-header"><%- header %></li>\n    <li class="divider"></li>\n  <% } %>\n  <li class="cutItem"><a href="#">Cut</a></li>\n  <li class="copyItem"><a href="#">Copy</a></li>\n  <% if(pasteAllowed && attributes.is_folderish){ %>\n    <li class="pasteItem"><a href="#">Paste</a></li>\n  <% } %>\n  <% if(!inQueryMode && canMove){ %>\n    <li class="move-top"><a href="#">Move to top of folder</a></li>\n    <li class="move-bottom"><a href="#">Move to bottom of folder</a></li>\n  <% } %>\n  <% if(!attributes.is_folderish && canSetDefaultPage){ %>\n    <li class="set-default-page"><a href="#">Set as default page</a></li>\n  <% } %>\n  <li class="openItem"><a href="#">Open</a></li>\n  <li class="editItem"><a href="#">Edit</a></li>\n</ul>\n\n';});
+define('text!mockup-patterns-structure-url/templates/actionmenu.xml',[],function () { return '<a class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" href="#">\n  <span class="glyphicon glyphicon-cog"></span>\n  <span class="caret"></span>\n</a>\n<ul class="dropdown-menu pull-right">\n  <% if(header) { %>\n    <li class="dropdown-header"><%- header %></li>\n    <li class="divider"></li>\n  <% } %>\n  <li class="cutItem"><a href="#"><%- _t("Cut") %></a></li>\n  <li class="copyItem"><a href="#"><%- _t("Copy") %></a></li>\n  <% if(pasteAllowed && attributes.is_folderish){ %>\n    <li class="pasteItem"><a href="#"><%- _t("Paste") %></a></li>\n  <% } %>\n  <% if(!inQueryMode && canMove){ %>\n    <li class="move-top"><a href="#"><%- _t("Move to top of folder") %></a></li>\n    <li class="move-bottom"><a href="#"><%- _t("Move to bottom of folder") %></a></li>\n  <% } %>\n  <% if(!attributes.is_folderish && canSetDefaultPage){ %>\n    <li class="set-default-page"><a href="#"><%- _t("Set as default page") %></a></li>\n  <% } %>\n  <li class="openItem"><a href="#"><%- _t("Open") %></a></li>\n  <li class="editItem"><a href="#"><%- _t("Edit") %></a></li>\n</ul>\n\n';});
 
 (function(root) {
 define("bootstrap-dropdown", ["jquery"], function() {
@@ -80183,8 +80171,9 @@ define('mockup-patterns-structure-url/js/views/actionmenu',[
   'mockup-ui-url/views/base',
   'mockup-utils',
   'text!mockup-patterns-structure-url/templates/actionmenu.xml',
+  'translate',
   'bootstrap-dropdown'
-], function($, _, Backbone, BaseView, utils, ActionMenuTemplate) {
+], function($, _, Backbone, BaseView, utils, ActionMenuTemplate, _t) {
   'use strict';
 
   var ActionMenu = BaseView.extend({
@@ -80304,10 +80293,10 @@ define('mockup-patterns-structure-url/js/views/actionmenu',[
       data.pasteAllowed = self.app.pasteAllowed;
       data.canSetDefaultPage = self.app.setDefaultPageUrl;
       data.inQueryMode = self.app.inQueryMode();
-      data.header = self.options.header;
+      data.header = self.options.header || null;
       data.canMove = self.canMove;
 
-      self.$el.html(self.template(data));
+      self.$el.html(self.template($.extend({ _t: _t }, data)));
 
       self.$dropdown = self.$('.dropdown-toggle');
       self.$dropdown.dropdown();
@@ -80440,7 +80429,7 @@ define('mockup-patterns-structure-url/js/views/tablerow',[
 });
 
 
-define('text!mockup-patterns-structure-url/templates/table.xml',[],function () { return '<div class="alert alert-<%= statusType %> status">\n    <%= status %>\n</div>\n<table class="table table-striped table-bordered">\n  <thead>\n    <tr class="breadcrumbs-container">\n      <td colspan="<%= activeColumns.length + 3 %>">\n        <% if(pathParts.length > 0) { %>\n          <div class="input-group context-buttons" style="display:none">\n            <span class="input-group-addon">\n              <input type="checkbox" />\n            </span>\n            <div class="input-group-btn">\n            </div>\n          </div>\n        <% } %>\n        <div class="breadcrumbs">\n          <a href="#" data-path="/">\n            <span class="glyphicon glyphicon-home"></span> /\n          </a>\n          <% _.each(pathParts, function(part, idx, list){\n            if(part){\n              if(idx > 0){ %>\n                /\n              <% } %>\n              <a href="#" class="crumb" data-path="<%- part %>"><%- part %></a>\n            <% }\n          }); %>\n        </div>\n      </td>\n    </tr>\n    <tr>\n      <th><input type="checkbox" class="select-all" /></th>\n      <th>Title</th>\n      <% _.each(activeColumns, function(column){ %>\n        <% if(_.has(availableColumns, column)) { %>\n          <th><%- availableColumns[column] %></th>\n        <% } %>\n      <% }); %>\n      <th>Actions</th>\n    </tr>\n  </thead>\n  <tbody>\n  </tbody>\n</table>\n';});
+define('text!mockup-patterns-structure-url/templates/table.xml',[],function () { return '<div class="alert alert-<%= statusType %> status">\n    <%= status %>\n</div>\n<table class="table table-striped table-bordered">\n  <thead>\n    <tr class="breadcrumbs-container">\n      <td colspan="<%= activeColumns.length + 3 %>">\n        <% if(pathParts.length > 0) { %>\n          <div class="input-group context-buttons" style="display:none">\n            <span class="input-group-addon">\n              <input type="checkbox" />\n            </span>\n            <div class="input-group-btn">\n            </div>\n          </div>\n        <% } %>\n        <div class="breadcrumbs">\n          <a href="#" data-path="/">\n            <span class="glyphicon glyphicon-home"></span> /\n          </a>\n          <% _.each(pathParts, function(part, idx, list){\n            if(part){\n              if(idx > 0){ %>\n                /\n              <% } %>\n              <a href="#" class="crumb" data-path="<%- part %>"><%- part %></a>\n            <% }\n          }); %>\n        </div>\n      </td>\n    </tr>\n    <tr>\n      <th><input type="checkbox" class="select-all" /></th>\n      <th>Title</th>\n      <% _.each(activeColumns, function(column){ %>\n        <% if(_.has(availableColumns, column)) { %>\n          <th><%- availableColumns[column] %></th>\n        <% } %>\n      <% }); %>\n      <th><%- _t("Actions") %></th>\n    </tr>\n  </thead>\n  <tbody>\n  </tbody>\n</table>\n';});
 
 /* Sortable pattern.
  *
@@ -83588,9 +83577,10 @@ define('mockup-patterns-structure-url/js/views/table',[
   'mockup-patterns-sortable',
   'mockup-patterns-moment',
   'mockup-patterns-structure-url/js/models/result',
-  'mockup-patterns-structure-url/js/views/actionmenu'
+  'mockup-patterns-structure-url/js/views/actionmenu',
+  'translate'
 ], function($, _, Backbone, TableRowView, TableTemplate, BaseView, Sortable,
-            Moment, Result, ActionMenu) {
+            Moment, Result, ActionMenu, _t) {
   'use strict';
 
   var TableView = BaseView.extend({
@@ -83644,7 +83634,7 @@ define('mockup-patterns-structure-url/js/views/table',[
         self.folderMenu = new ActionMenu({
           app: self.app,
           model: self.folderModel,
-          header: 'Actions on current folder',
+          header: _t('Actions on current folder'),
           canMove: false
         });
         $('.input-group-btn', self.$breadcrumbs).empty().append(self.folderMenu.render().el);
@@ -83655,6 +83645,7 @@ define('mockup-patterns-structure-url/js/views/table',[
     render: function() {
       var self = this;
       self.$el.html(self.template({
+        _t: _t,
         pathParts: _.filter(
           self.app.queryHelper.getCurrentPath().split('/').slice(1),
           function(val) {
@@ -83735,7 +83726,7 @@ define('mockup-patterns-structure-url/js/views/table',[
       var self = this;
       // if we have a custom query going on, we do not allow sorting.
       if (self.app.inQueryMode()) {
-        self.app.setStatus('Can not order items while querying');
+        self.app.setStatus(_t('Can not order items while querying'));
         self.$el.removeClass('order-support');
         return;
       }
@@ -83992,7 +83983,7 @@ define('mockup-patterns-structure-url/js/views/selectionwell',[
     className: 'popover selected',
     title: _.template('<input type="text" class="filter" placeholder="Filter" />' +
                       '<a href="#" class=" remove-all">' +
-                        '<span class="glyphicon glyphicon-remove-circle"></span> remove all</a>'),
+                        '<span class="glyphicon glyphicon-remove-circle"></span> <%- _t("remove all") %></a>'),
     content: _.template(
       '<% collection.each(function(item) { %>' +
       '<%= item_template(item.toJSON()) %>' +
@@ -84057,16 +84048,16 @@ define('mockup-patterns-structure-url/js/views/tags',[
   var TagsView = PopoverView.extend({
     title: _.template('Add/Remove tags'),
     content: _.template(
-      '<label>Tags to remove</label>' +
+      '<label><%- _t("Tags to remove") %></label>' +
       '<div class="form-group">' +
         '<select multiple class="toremove" style="width: 300px">' +
         '</select>' +
       '</div>' +
-      '<label>Tags to add</label>' +
+      '<label><%- _t("Tags to add") %></label>' +
       '<div class="form-group">' +
         '<input class="toadd" style="width:300px" />' +
       '</div>' +
-      '<button class="btn btn-block btn-primary">Apply</button>'
+      '<button class="btn btn-block btn-primary"><%- _t("Apply") %></button>'
     ),
     events: {
       'click button': 'applyButtonClicked'
@@ -84142,42 +84133,42 @@ define('mockup-patterns-structure-url/js/views/properties',[
 
   var PropertiesView = PopoverView.extend({
     className: 'popover properties',
-    title: _.template('Modify properties on items'),
+    title: _.template('<%- _t("Modify properties on items") %>'),
     content: _.template(
       '<div class="form-group">' +
-        '<label>Publication Date</label>' +
+        '<label><%- _t("Publication Date") %></label>' +
         '<input class="form-control" name="effective" />' +
       '</div>' +
       '<div class="form-group">' +
-        '<label>Expiration Date</label>' +
+        '<label><%- _t("Expiration Date") %></label>' +
         '<input class="form-control" name="expiration" />' +
       '</div>' +
       '<div class="form-group">' +
-        '<label>Copyright</label>' +
+        '<label><%- _t("Copyright") %></label>' +
         '<textarea class="form-control" name="copyright"></textarea>' +
       '</div>' +
-      '<label>Creators</label>' +
+      '<label><%- _t("Creators") %></label>' +
       '<div class="form-group">' +
         '<input name="creators" style="width: 300px" />' +
       '</div>' +
-      '<label>Contributors</label>' +
+      '<label><%- _t("Contributors") %></label>' +
       '<div class="form-group">' +
         '<input name="contributors" style="width: 300px" />' +
       '</div>' +
-      '<label>Exclude from nav</label>' +
+      '<label><%- _t("Exclude from nav") %></label>' +
       '<div class="radio">' +
         '<label>' +
           '<input type="radio" name="exclude-from-nav" value="yes" />' +
-          'Yes' +
+          '<%- _t("Yes") %>' +
         '</label>' +
       '</div>' +
       '<div class="radio">' +
         '<label>' +
           '<input type="radio" name="exclude-from-nav" value="no" />' +
-          'No' +
+          '<%- _t("No") %>' +
         '</label>' +
       '</div>' +
-      '<button class="btn btn-block btn-primary">Apply</button>'
+      '<button class="btn btn-block btn-primary"><%- _t("Apply") %></button>'
     ),
     events: {
       'click button': 'applyButtonClicked'
@@ -84225,7 +84216,6 @@ define('mockup-patterns-structure-url/js/views/properties',[
     },
     toggle: function(button, e) {
       PopoverView.prototype.toggle.apply(this, [button, e]);
-      var self = this;
       if (!this.opened) {
         return;
       }
@@ -84253,35 +84243,32 @@ define('mockup-patterns-structure-url/js/views/workflow',[
 
   var WorkflowView = PopoverView.extend({
     className: 'popover workflow',
-    title: _.template('Modify dates on items'),
+    title: _.template('<%- _t("Modify dates on items") %>'),
     content: _.template(
       '<form>' +
         '<fieldset>' +
           '<div class="form-group">' +
-            '<label>Comments</label>' +
+            '<label><%- _t("Comments") %></label>' +
             '<textarea class="form-control" rows="4"></textarea>' +
-            '<p class="help-block">Select the transition to be used for ' +
-              'modifying the items state.</p>' +
+            '<p class="help-block"><%- _t("Select the transition to be used for modifying the items state.") %></p>' +
           '</div>' +
           '<div class="form-group">' +
-            '<label>Change State</label>' +
-            '<p class="help-block">Select the transition to be used for ' +
-              'modifying the items state.</p>' +
+            '<label><%- _t("Change State") %></label>' +
+            '<p class="help-block"><%- _t("Select the transition to be used for modifying the items state.") %></p>' +
             '<select class="form-control" name="transition">' +
             '</select>' +
           '</div>' +
           '<div class="checkbox">' +
             '<label>' +
               '<input type="checkbox" name="recurse" />' +
-              'Include contained items?</label>' +
+              '<%- _t("Include contained items?") %></label>' +
             '<p class="help-block">' +
-              'If checked, this will attempt to modify the status of all ' +
-              'content in any selected folders and their subfolders.' +
+              '<%- _t("If checked, this will attempt to modify the status of all content in any selected folders and their subfolders.") %>' +
             '</p>' +
           '</div>' +
         '</fieldset>' +
       '</form>' +
-      '<button class="btn btn-block btn-primary">Apply</button>'
+      '<button class="btn btn-block btn-primary"><%- _t("Apply") %></button>'
     ),
     events: {
       'click button': 'applyButtonClicked'
@@ -84352,10 +84339,10 @@ define('mockup-patterns-structure-url/js/views/delete',[
 
   var DeleteView = PopoverView.extend({
     className: 'popover delete',
-    title: _.template('Delete selected items'),
+    title: _.template('<%- _t("Delete selected items") %>'),
     content: _.template(
-      '<label>Are you certain you want to delete the selected items</label>' +
-      '<button class="btn btn-block btn-danger">Yes</button>'
+      '<label><%- _t("Are you certain you want to delete the selected items") %></label>' +
+      '<button class="btn btn-block btn-danger"><%- _t("Yes") %></button>'
     ),
     events: {
       'click button': 'applyButtonClicked'
@@ -84395,18 +84382,18 @@ define('mockup-patterns-structure-url/js/views/rename',[
 
   var PropertiesView = PopoverView.extend({
     className: 'popover rename',
-    title: _.template('Rename items'),
+    title: _.template('<%- _t("Rename items") %>'),
     content: _.template(
       '<div class="itemstoremove"></div>' +
-      '<button class="btn btn-block btn-primary">Apply</button>'
+      '<button class="btn btn-block btn-primary"><% _t("Apply") %></button>'
     ),
     itemTemplate: _.template(
       '<div class="item">' +
         '<div class="form-group">' +
           '<input name="UID" type="hidden" value="<%- UID %>" />' +
-          '<label>Title</label>' +
+          '<label><%- _t("Title") %></label>' +
           '<input class="form-control" name="newtitle" value="<%= Title %>" />' +
-          '<label>Short name</label>' +
+          '<label><%- _t("Short name") %></label>' +
           '<input class="form-control" name="newid" value="<%= id %>" />' +
         '</div>' +
       '</div>'
@@ -84469,25 +84456,23 @@ define('mockup-patterns-structure-url/js/views/rearrange',[
 
   var RearrangeView = PopoverView.extend({
     className: 'popover rearrange',
-    title: _.template('Rearrange items in this folder'),
+    title: _.template('<%- _t("Rearrange items in this folder") %>'),
     content: _.template(
       '<div class="form-group">' +
-        '<label>What to rearrange on</label>' +
+        '<label><%- _t("What to rearrange on") %></label>' +
         '<select name="rearrange_on" class="form-control">' +
           '<% _.each(rearrangeProperties, function(title, property) { %>' +
             '<option value="<%- property %>"><%- title %></option>' +
           '<% }); %>' +
         '</select>' +
         '<p class="help-block">' +
-          'This permanently changes the order of items in this folder.' +
-          'This operation may take a long time depending on the size ' +
-          'of the folder.' +
+          '<%- _t("This permanently changes the order of items in this folder. This operation may take a long time depending on the size of the folder.") %>' +
         '</p>' +
       '</div>' +
       '<div class="checkbox">' +
-        '<label>Reverse <input type="checkbox" name="reversed" /></label>' +
+        '<label><%- _t("Reverse") %> <input type="checkbox" name="reversed" /></label>' +
       '</div>' +
-      '<button class="btn btn-block btn-primary">Rearrange</button>'
+      '<button class="btn btn-block btn-primary"><%- _t("Rearrange") %></button>'
     ),
     events: {
       'click button': 'rearrangeButtonClicked'
@@ -84559,14 +84544,15 @@ define('mockup-patterns-structure-url/js/views/selectionbutton',[
 });
 
 
-define('text!mockup-patterns-structure-url/templates/paging.xml',[],function () { return '  <ul class="pagination pagination-sm pagination-centered">\n    <li class="<% if (currentPage === 1) { %>disabled<% } %>">\n      <a href="#" class="serverfirst">\n        &laquo;\n      </a>\n    </li>\n    <li class="<% if (currentPage === 1) { %>disabled<% } %>">\n      <a href="#" class="serverprevious">\n        &lt;\n      </a>\n    </li>\n    <% _.each(pages, function(p){ %>\n    <li class="<% if (currentPage == p) { %>active<% } %>">\n      <a href="#" class="page"><%= p %></a>\n    </li>\n    <% }); %>\n    <li class="<% if (currentPage === lastPage) { %>disabled<% } %>">\n      <a href="#" class="servernext">\n        &gt;\n      </a>\n    </li>\n    <li class="<% if (currentPage === lastPage) { %>disabled<% } %>">\n      <a href="#" class="serverlast">\n        &raquo;\n      </a>\n    </li>\n  </ul>\n\n  <ul class="pagination pagination-sm">\n    <li class="disabled"><a href="#">Show:</a></li>\n    <li class="serverhowmany serverhowmany15 <% if(perPage == 15){ %>disabled<% } %>">\n      <a href="#" class="">15</a>\n    </li>\n    <li class="serverhowmany serverhowmany30 <% if(perPage == 30){ %>disabled<% } %>">\n      <a href="#" class="">30</a>\n    </li>\n    <li class="serverhowmany serverhowmany50 <% if(perPage == 50){ %>disabled<% } %>">\n      <a href="#" class="">50</a>\n    </li>\n  </ul>\n\n  <ul class="pagination pagination-sm">\n    <li class="disabled">\n      <a href="#">\n        Page: <span class="current"><%= currentPage %></span>\n        of\n        <span class="total"><%= totalPages %></span>\n              shown\n      </a>\n    </li>\n  </ul>\n';});
+define('text!mockup-patterns-structure-url/templates/paging.xml',[],function () { return '  <ul class="pagination pagination-sm pagination-centered">\n    <li class="<% if (currentPage === 1) { %>disabled<% } %>">\n      <a href="#" class="serverfirst">\n        &laquo;\n      </a>\n    </li>\n    <li class="<% if (currentPage === 1) { %>disabled<% } %>">\n      <a href="#" class="serverprevious">\n        &lt;\n      </a>\n    </li>\n    <% _.each(pages, function(p){ %>\n    <li class="<% if (currentPage == p) { %>active<% } %>">\n      <a href="#" class="page"><%= p %></a>\n    </li>\n    <% }); %>\n    <li class="<% if (currentPage === lastPage) { %>disabled<% } %>">\n      <a href="#" class="servernext">\n        &gt;\n      </a>\n    </li>\n    <li class="<% if (currentPage === lastPage) { %>disabled<% } %>">\n      <a href="#" class="serverlast">\n        &raquo;\n      </a>\n    </li>\n  </ul>\n\n  <ul class="pagination pagination-sm">\n    <li class="disabled"><a href="#"><%- _t("Show:") %></a></li>\n    <li class="serverhowmany serverhowmany15 <% if(perPage == 15){ %>disabled<% } %>">\n      <a href="#" class="">15</a>\n    </li>\n    <li class="serverhowmany serverhowmany30 <% if(perPage == 30){ %>disabled<% } %>">\n      <a href="#" class="">30</a>\n    </li>\n    <li class="serverhowmany serverhowmany50 <% if(perPage == 50){ %>disabled<% } %>">\n      <a href="#" class="">50</a>\n    </li>\n  </ul>\n\n  <ul class="pagination pagination-sm">\n    <li class="disabled">\n      <a href="#">\n        <%- _t("Page:") %> <span class="current"><%= currentPage %></span>\n        <%- _t("of") %>\n        <span class="total"><%= totalPages %></span>\n              <%- _t("shown") %>\n      </a>\n    </li>\n  </ul>\n';});
 
 define('mockup-patterns-structure-url/js/views/paging',[
   'jquery',
   'underscore',
   'backbone',
-  'text!mockup-patterns-structure-url/templates/paging.xml'
-], function($, _, Backbone, PagingTemplate) {
+  'text!mockup-patterns-structure-url/templates/paging.xml',
+  'translate'
+], function($, _, Backbone, PagingTemplate, _t) {
   'use strict';
 
 
@@ -84592,17 +84578,17 @@ define('mockup-patterns-structure-url/js/views/paging',[
       this.collection.on('sync', this.render, this);
 
       this.$el.appendTo('#pagination');
-
     },
+
     render: function () {
       var data = this.collection.info();
       data.pages = this.getPages(data);
-      var html = this.template(data);
+      var html = this.template($.extend({ _t: _t}, data));
       this.$el.html(html);
       return this;
     },
+
     getPages: function(data) {
-      var perPage = data.perPage;
       var totalPages = data.totalPages;
       if (!totalPages) {
         return [];
@@ -84805,10 +84791,10 @@ define('mockup-patterns-structure-url/js/views/columns',[
     className: 'popover columns',
     title: _.template('Columns'),
     content: _.template(
-      '<label>Select columns to show, drag and drop to reorder</label>' +
+      '<label><%- _t("Select columns to show, drag and drop to reorder") %></label>' +
       '<ul>' +
       '</ul>' +
-      '<button class="btn btn-block btn-success">Save</button>'
+      '<button class="btn btn-block btn-success"><%- _t("Save") %></button>'
     ),
     itemTemplate: _.template(
       '<li>' +
@@ -84872,8 +84858,9 @@ define('mockup-patterns-structure-url/js/views/textfilter',[
   'mockup-ui-url/views/base',
   'mockup-ui-url/views/button',
   'mockup-ui-url/views/popover',
-  'mockup-patterns-querystring'
-], function($, Backbone, _, BaseView, ButtonView, PopoverView, QueryString) {
+  'mockup-patterns-querystring',
+  'translate'
+], function($, Backbone, _, BaseView, ButtonView, PopoverView, QueryString, _t) {
   'use strict';
 
   var TextFilterView = BaseView.extend({
@@ -84881,7 +84868,7 @@ define('mockup-patterns-structure-url/js/views/textfilter',[
     className: 'navbar-search form-search ui-offset-parent',
     template: _.template(
       '<div class="input-group">' +
-      '<input type="text" class="form-control search-query" placeholder="Filter">' +
+      '<input type="text" class="form-control search-query" placeholder="<%- _t("Filter") %>">' +
       '<span class="input-group-btn">' +
       '</span>' +
       '</div>'
@@ -84895,12 +84882,14 @@ define('mockup-patterns-structure-url/js/views/textfilter',[
     term: null,
     timeoutId: null,
     keyupDelay: 300,
+
     initialize: function(options) {
       BaseView.prototype.initialize.apply(this, [options]);
       this.app = this.options.app;
     },
+
     render: function() {
-      this.$el.html(this.template({}));
+      this.$el.html(this.template({_t: _t}));
       this.button = new ButtonView({
         title: 'Query'
       });
@@ -84946,6 +84935,7 @@ define('mockup-patterns-structure-url/js/views/textfilter',[
       });
       return this;
     },
+
     filter: function(event) {
       var self = this;
       if (self.timeoutId) {
@@ -84972,7 +84962,7 @@ define('mockup-patterns-structure-url/js/views/upload',[
 
   var UploadView = PopoverView.extend({
     className: 'popover upload',
-    title: _.template('Upload files'),
+    title: _.template('<%- _t("Upload files") %>'),
     content: _.template(
       '<input type="text" name="upload" style="display:none" />' +
       '<div class="uploadify-me"></div>'),
@@ -86325,12 +86315,13 @@ define('mockup-patterns-structure-url/js/views/app',[
   'mockup-patterns-structure-url/js/collections/result',
   'mockup-patterns-structure-url/js/collections/selected',
   'mockup-utils',
+  'translate',
   'jquery.cookie'
 ], function($, _, Backbone, Toolbar, ButtonGroup, ButtonView, BaseView,
             TableView, SelectionWellView, TagsView, PropertiesView,
             WorkflowView, DeleteView, RenameView, RearrangeView, SelectionButtonView,
             PagingView, AddMenu, ColumnsView, TextFilterView, UploadView,
-            ResultCollection, SelectedCollection, utils) {
+            ResultCollection, SelectedCollection, utils, _t) {
   'use strict';
 
   var DISABLE_EVENT = 'DISABLE';
@@ -86367,6 +86358,7 @@ define('mockup-patterns-structure-url/js/views/app',[
     additionalCriterias: [],
     pasteSelection: null,
     cookieSettingPrefix: '_fc_',
+    pasteAllowed: false,
     initialize: function(options) {
       var self = this;
       BaseView.prototype.initialize.apply(self, [options]);
@@ -86398,8 +86390,8 @@ define('mockup-patterns-structure-url/js/views/app',[
       self.queryHelper = self.options.queryHelper;
       self.selectedCollection = new SelectedCollection();
       self.tableView = new TableView({app: self});
+
       self.pagingView = new PagingView({app: self});
-      self.pasteAllowed = self.options.pasteAllowed;
 
       /* initialize buttons */
       self.setupButtons();
@@ -86411,7 +86403,7 @@ define('mockup-patterns-structure-url/js/views/app',[
       });
 
       self.buttonViews = {};
-      _.map(self.buttonViewMapping, function(ViewClass, key, list) {
+      _.map(self.buttonViewMapping, function(ViewClass, key) {
         var name = key.split('.');
         var group = name[0];
         var buttonName = name[1];
@@ -86619,11 +86611,10 @@ define('mockup-patterns-structure-url/js/views/app',[
       self.collection.pager();
     },
     ajaxErrorResponse: function(response, url) {
-      var self = this;
       if (response.status === 404) {
-        window.alert('operation url "' + url + '" is not valid');
+        window.alert(_t('operation url ${url} is not valid', {url: url}));
       } else {
-        window.alert('there was an error performing action');
+        window.alert(_t('there was an error performing action'));
       }
     },
     pasteEvent: function(button, e, data) {
@@ -86641,10 +86632,10 @@ define('mockup-patterns-structure-url/js/views/app',[
       var self = this;
       var txt;
       if (button.id === 'cut') {
-        txt = 'cut ';
+        txt = _t('cut ');
         self.pasteOperation = 'cut';
       } else {
-        txt = 'copied ';
+        txt = _t('copied ');
         self.pasteOperation = 'copy';
       }
 
@@ -86872,13 +86863,12 @@ define('mockup-patterns-structure',[
   'mockup-patterns-base',
   'mockup-utils',
   'mockup-patterns-structure-url/js/views/app',
-  'translate',
   'text!mockup-patterns-structure-url/templates/paging.xml',
   'text!mockup-patterns-structure-url/templates/selection_item.xml',
   'text!mockup-patterns-structure-url/templates/tablerow.xml',
   'text!mockup-patterns-structure-url/templates/table.xml',
   'text!mockup-ui-url/templates/popover.xml',
-], function($, Base, utils, AppView, _t) {
+], function($, Base, utils, AppView) {
   'use strict';
 
   var Structure = Base.extend({
@@ -86907,29 +86897,29 @@ define('mockup-patterns-structure',[
         'review_state'
       ],
       availableColumns: {
-        'id': _t('ID'),
-        'Title': _t('Title'),
-        'ModificationDate': _t('Last modified'),
-        'EffectiveDate': _t('Published'),
-        'ExpirationDate': _t('Expiration'),
-        'CreationDate': _t('Created'),
-        'review_state': _t('Review state'),
-        'Subject': _t('Tags'),
-        'portal_type': _t('Type'),
-        'is_folderish': _t('Folder'),
-        'exclude_from_nav': _t('Excluded from nav'),
-        'getObjSize': _t('Object Size'),
-        'last_comment_date': _t('Last comment date'),
-        'total_comments': _t('Total comments')
+        'id': 'ID',
+        'Title': 'Title',
+        'ModificationDate': 'Last modified',
+        'EffectiveDate': 'Published',
+        'ExpirationDate': 'Expiration',
+        'CreationDate': 'Created',
+        'review_state': 'Review state',
+        'Subject': 'Tags',
+        'portal_type': 'Type',
+        'is_folderish': 'Folder',
+        'exclude_from_nav': 'Excluded from nav',
+        'getObjSize': 'Object Size',
+        'last_comment_date': 'Last comment date',
+        'total_comments': 'Total comments'
       },
       rearrange: {
         properties: {
-          'id': _t('ID'),
-          'sortable_title': _t('Title'),
-          'modified': _t('Last Modified'),
-          'created': _t('Created on'),
-          'effective': _t('Publication Date'),
-          'portal_type': _t('Type')
+          'id': 'ID',
+          'sortable_title': 'Title',
+          'modified': 'Last Modified',
+          'created': 'Created on',
+          'effective': 'Publication Date',
+          'portal_type': 'Type'
         },
         url: '/rearrange'
       },
@@ -86940,31 +86930,31 @@ define('mockup-patterns-structure',[
        */
       buttonGroups: {
         primary: [{
-          title: _t('Cut'),
+          title: 'Cut',
           url: '/cut'
         },{
-          title: _t('Copy'),
+          title: 'Copy',
           url: '/copy'
         },{
-          title: _t('Paste'),
+          title: 'Paste',
           url: '/paste'
         },{
-          title: _t('Delete'),
+          title: 'Delete',
           url: '/delete',
           context: 'danger',
           icon: 'trash'
         }],
         secondary: [{
-          title: _t('Workflow'),
+          title: 'Workflow',
           url: '/workflow'
         },{
-          title: _t('Tags'),
+          title: 'Tags',
           url: '/tags'
         },{
-          title: _t('Properties'),
+          title: 'Properties',
           url: '/properties'
         },{
-          title: _t('Rename'),
+          title: 'Rename',
           url: '/rename'
         }]
       },

@@ -6025,7 +6025,7 @@ define('mockup-patterns-select2',[
       var self = this;
       self.$el.select2(self.options);
       self.$select2 = self.$el.parent().find('.select2-container');
-      self.$el.parent().off('close.modal.patterns');
+      self.$el.parent().off('close.plone-modal.patterns');
       if (self.options.orderable) {
         self.$select2.addClass('select2-orderable');
       }
@@ -9353,8 +9353,8 @@ define('mockup-i18n',[
 
   var I18N = function() {
     var self = this;
-
     self.baseUrl = $('body').attr('data-i18ncatalogurl');
+
     if (!self.baseUrl) {
       self.baseUrl = '/plonejsi18n';
     }
@@ -9450,7 +9450,7 @@ define('mockup-i18n',[
     };
   };
 
-  return new I18N();
+  return I18N;
 });
 
 /* i18n integration.
@@ -9464,10 +9464,21 @@ define('mockup-i18n',[
 
 define('translate',[
   'mockup-i18n'
-], function(i18n) {
+], function(I18N) {
   'use strict';
-  i18n.loadCatalog('widgets');
-  return i18n.MessageFactory('widgets');
+
+  // we're creating a singleton here so we can potentially
+  // delay the initialization of the translate catalog
+  // until after the dom is available
+  var _t = null;
+  return function(msgid, keywords){
+    if(_t === null){
+      var i18n = new I18N();
+      i18n.loadCatalog('widgets');
+      _t = i18n.MessageFactory('widgets');
+    }
+    return _t(msgid, keywords);
+  };
 });
 
 /* PickADate pattern.
@@ -10646,7 +10657,7 @@ define('mockup-patterns-autotoc',[
               }, self.options.scrollDuration, self.options.scrollEasing);
             }
             if (self.$el.parents('.plone-modal').size() !== 0) {
-              self.$el.trigger('resize.modal.patterns');
+              self.$el.trigger('resize.plone-modal.patterns');
             }
             $(this).trigger('clicked');
           });
@@ -19126,16 +19137,16 @@ function log() {
  *
  *
  * Example: example-basic
- *    <a href="#modal1" class="plone-btn plone-btn-large plone-btn-primary pat-modal"
- *                      data-pat-modal="width: 400">Modal basic</a>
+ *    <a href="#modal1" class="plone-btn plone-btn-large plone-btn-primary pat-plone-modal"
+ *                      data-pat-plone-modal="width: 400">Modal basic</a>
  *    <div id="modal1" style="display: none">
  *      <h1>Basic modal!</h1>
  *      <p>Indeed. Whoa whoa whoa whoa. Wait.</p>
  *    </div>
  *
  * Example: example-long
- *    <a href="#modal2" class="plone-btn plone-btn-lg plone-btn-primary pat-modal"
- *                      data-pat-modal="width: 500">Modal long scrolling</a>
+ *    <a href="#modal2" class="plone-btn plone-btn-lg plone-btn-primary pat-plone-modal"
+ *                      data-pat-plone-modal="width: 500">Modal long scrolling</a>
  *    <div id="modal2" style="display: none">
  *      <h1>Basic with scrolling</h1>
  *      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</p>
@@ -19153,8 +19164,8 @@ function log() {
  *
  *
  * Example: example-tinymce
- *    <a href="#modaltinymce" class="btn btn-lg btn-primary pat-modal"
- *       data-pat-modal="height: 600px;
+ *    <a href="#modaltinymce" class="btn btn-lg btn-primary pat-plone-modal"
+ *       data-pat-plone-modal="height: 600px;
  *                       width: 80%">
  *       Modal with TinyMCE</a>
  *    <div id="modaltinymce" style="display:none">
@@ -19179,8 +19190,8 @@ define('mockup-patterns-modal',[
   'use strict';
 
   var Modal = Base.extend({
-    name: 'modal',
-    trigger: '.pat-modal',
+    name: 'plone-modal',
+    trigger: '.pat-plone-modal',
     createModal: null,
     $model: null,
     defaults: {
@@ -19394,7 +19405,7 @@ define('mockup-patterns-modal',[
             if (options.displayInModal === true) {
               self.redraw(response, patternOptions);
             } else {
-              $action.trigger('destroy.modal.patterns');
+              $action.trigger('destroy.plone-modal.patterns');
               // also calls hide
               if (options.reloadWindowOnClose) {
                 self.reloadWindow();
@@ -19542,7 +19553,7 @@ define('mockup-patterns-modal',[
           .on('click', function(e) {
             e.stopPropagation();
             e.preventDefault();
-            $(e.target).trigger('destroy.modal.patterns');
+            $(e.target).trigger('destroy.plone-modal.patterns');
           });
 
         // cleanup html
@@ -19565,11 +19576,11 @@ define('mockup-patterns-modal',[
             }
             self.$modal.trigger('modal-click');
           })
-          .on('destroy.modal.patterns', function(e) {
+          .on('destroy.plone-modal.patterns', function(e) {
             e.stopPropagation();
             self.hide();
           })
-          .on('resize.modal.patterns', function(e) {
+          .on('resize.plone-modal.patterns', function(e) {
             e.stopPropagation();
             e.preventDefault();
             self.positionModal();
@@ -19905,7 +19916,7 @@ define('mockup-patterns-modal',[
       $('img', self.$modal).load(function() {
         self.positionModal();
       });
-      $(window.parent).on('resize.modal.patterns', function() {
+      $(window.parent).on('resize.plone-modal.patterns', function() {
         self.positionModal();
       });
       self.emit('shown');
@@ -19933,7 +19944,7 @@ define('mockup-patterns-modal',[
         self.$modal.remove();
         self.initModal();
       }
-      $(window.parent).off('resize.modal.patterns');
+      $(window.parent).off('resize.plone-modal.patterns');
       self.emit('hidden');
       $('body').removeClass('plone-modal-open');
     },
@@ -20125,6 +20136,7 @@ define('mockup-patterns-livesearch',[
     },
     init: function(){
       var self = this;
+
       self.$input = self.$el.find(self.options.inputSelector);
       self.$input.off('focusout').on('focusout', function(){
         /* we put this in a timer so click events still
@@ -21217,5 +21229,5 @@ require([
 
 });
 
-define("/Users/davisagli/Plone/5.0/src/Products.CMFPlone/Products/CMFPlone/static/plone.js", function(){});
+define("/Users/nathan/code/coredev5/src/Products.CMFPlone/Products/CMFPlone/static/plone.js", function(){});
 
