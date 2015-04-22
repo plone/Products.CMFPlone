@@ -8,6 +8,9 @@ Changelog
 5.0b2 (unreleased)
 ------------------
 
+- pat-modal pattern has been renamed to pat-plone-modal
+  [jcbrand]
+
 - Remove Products.CMFFormController dependency.
   [timo]
 
