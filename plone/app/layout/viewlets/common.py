@@ -286,8 +286,8 @@ class PersonalBarViewlet(ViewletBase):
                 }
             modal = action.get('modal')
             if modal:
-                info['class'] = 'pat-modal'
-                info['data-pat-modal'] = modal
+                info['class'] = 'pat-plone-modal'
+                info['data-pat-plone-modal'] = modal
             self.user_actions.append(info)
 
         self.anonymous = self.portal_state.anonymous()
@@ -383,7 +383,7 @@ class ContentViewsViewlet(ViewletBase):
             modal = item.get('modal', None)
             item['cssClass'] = ''
             if modal:
-                item['cssClass'] += ' pat-modal'
+                item['cssClass'] += ' pat-plone-modal'
                 item['url'] += '?ajax_load=1'
 
             tabs.append(item)

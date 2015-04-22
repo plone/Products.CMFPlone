@@ -10,6 +10,9 @@ Changelog
 - Add row class to constrain width of footer.
   [davisagli]
 
+- pat-modal pattern has been renamed to pat-plone-modal
+  [jcbrand]
+
 
 2.5.4 (2015-03-13)
 ------------------
