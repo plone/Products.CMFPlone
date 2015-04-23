@@ -4,6 +4,7 @@ from zope.interface import implements
 from plone.registry.interfaces import IRegistry
 from zope.component import getUtility
 import json
+from zope import component
 from Products.CMFPlone.patterns.utils import format_pattern_settings
 from Products.CMFPlone.patterns.utils import get_portal_url
 from Products.CMFCore.interfaces._content import IFolderish
@@ -13,6 +14,9 @@ from Acquisition import aq_parent
 from plone.app.theming.utils import getCurrentTheme
 from plone.app.theming.utils import getTheme
 from Products.CMFCore.utils import getToolByName
+from zope.ramcache.interfaces import ram
+from plone.app.theming.utils import isThemeEnabled
+from zope.component import queryMultiAdapter
 
 
 class PloneSettingsAdapter(object):
@@ -80,12 +84,34 @@ class PloneSettingsAdapter(object):
         current_path = folder.absolute_url()[len(config['portal_url']):]
 
         # Check if theme has a custom content css
-        theme = getCurrentTheme()
-        themeObj = getTheme(theme)
-        if (themeObj and hasattr(themeObj, 'tinymce_content_css') and
-                themeObj.tinymce_content_css):
-            content_css = config['portal_url'] + themeObj.tinymce_content_css
+        portal_state = queryMultiAdapter((self.context, self.request), name=u"plone_portal_state")
+        portal = portal_state.portal()
+        # Volatile attribute to cache the current theme
+        if hasattr(portal, '_v_currentTheme'):
+            themeObj = portal._v_currentTheme
         else:
+            theme = getCurrentTheme()
+            themeObj = getTheme(theme)
+            portal._v_currentTheme = themeObj
+        cache = component.queryUtility(ram.IRAMCache)
+        content_css = None
+        if isThemeEnabled(self.request):
+            themeObj = cache.query(
+                'plone.currentTheme',
+                key=dict(prefix='theme'),
+                default=None)
+            if themeObj is None:
+                theme = getCurrentTheme()
+                themeObj = getTheme(theme)
+                cache.set(
+                    themeObj,
+                    'plone.currentTheme',
+                    key=dict(prefix='theme'))
+            if (themeObj and hasattr(themeObj, 'tinymce_content_css') and
+                    themeObj.tinymce_content_css):
+                content_css = config['portal_url'] + themeObj.tinymce_content_css
+
+        if content_css is None:
             content_css = settings.content_css
 
         configuration = {

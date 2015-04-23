@@ -101,8 +101,14 @@ class ResourceView(ViewletBase):
         bundles = self.get_bundles()
         # Check if its Diazo enabled
         if isThemeEnabled(self.request):
-            theme = getCurrentTheme()
-            themeObj = getTheme(theme)
+            portal = self.portal_state.portal()
+            # Volatile attribute to cache the current theme
+            if hasattr(portal, '_v_currentTheme'):
+                themeObj = portal._v_currentTheme
+            else:
+                theme = getCurrentTheme()
+                themeObj = getTheme(theme)
+                portal._v_currentTheme = themeObj
             enabled_diazo_bundles = themeObj.enabled_bundles
             disabled_diazo_bundles = themeObj.disabled_bundles
             if hasattr(themeObj, 'production_css'):
