@@ -16,7 +16,7 @@ from plone.app.theming.utils import getTheme
 from Products.CMFCore.utils import getToolByName
 from zope.ramcache.interfaces import ram
 from plone.app.theming.utils import isThemeEnabled
-from zope.component import queryMultiAdapter
+from zope.component.hooks import getSite
 
 
 class PloneSettingsAdapter(object):
@@ -84,8 +84,7 @@ class PloneSettingsAdapter(object):
         current_path = folder.absolute_url()[len(config['portal_url']):]
 
         # Check if theme has a custom content css
-        portal_state = queryMultiAdapter((self.context, self.request), name=u"plone_portal_state")
-        portal = portal_state.portal()
+        portal = getSite()
         # Volatile attribute to cache the current theme
         if hasattr(portal, '_v_currentTheme'):
             themeObj = portal._v_currentTheme
