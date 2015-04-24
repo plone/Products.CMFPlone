@@ -20,9 +20,9 @@ at_root = pkg_resources.resource_filename('Products.Archetypes', '')
 
 
 class PloneAtTestCase(PloneTestCase):
-    """Test case for #7627 (https://dev.plone.org/ticket/7627)
-    Run archetypes tests in a Plone setup
-    to have "content-slot" not defined in CMFDefault."""
+    """ Test case for #7627 (https://dev.plone.org/ticket/7627)
+        Run archetypes tests in a Plone setup """
+
     def afterSetUp(self):
         profile_registry.registerProfile(
             'Archetypes_sampletypes',
