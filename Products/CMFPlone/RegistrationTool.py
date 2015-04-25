@@ -230,8 +230,7 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         o If the properties are valid, return None.
         o If not, return a string explaining why.
 
-        This is a customized version of the CMFDefault version: we also
-        check if the email property is writable before verifying it.
+        We also check if the email property is writable before verifying it.
         """
         if member is None:  # New member.
 

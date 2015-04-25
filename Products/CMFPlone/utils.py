@@ -727,3 +727,22 @@ def validate_json(value):
         raise JSONError(value)
 
     return True
+
+
+def bodyfinder(text):
+    """ Return body or unchanged text if no body tags found.
+
+    Always use html_headcheck() first.
+    """
+    lowertext = text.lower()
+    bodystart = lowertext.find('<body')
+    if bodystart == -1:
+        return text
+    bodystart = lowertext.find('>', bodystart) + 1
+    if bodystart == 0:
+        return text
+    bodyend = lowertext.rfind('</body>', bodystart)
+    if bodyend == -1:
+        return text
+    return text[bodystart:bodyend]
+
