@@ -8,6 +8,9 @@ Changelog
 5.0b2 (unreleased)
 ------------------
 
+- fix error sending test email in Mail control panel
+  [tkimnguyen]
+
 - pat-modal pattern has been renamed to pat-plone-modal
   [jcbrand]
 

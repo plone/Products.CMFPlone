@@ -73,7 +73,7 @@ class MailControlPanelForm(controlpanel.RegistryEditForm):
             try:
                 mailhost.send(message,
                               mto=fromaddr,
-                              mfrom=fromname,
+                              mfrom=fromaddr,
                               subject=subject,
                               charset=email_charset,
                               immediate=True)
