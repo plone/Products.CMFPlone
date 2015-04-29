@@ -48,6 +48,8 @@ Changelog
   the first element.
   [sneridagh]
 
+- We only support `utf-8` site-encoding at the moment
+  [tomgross]
 
 5.0b1.post1 (2015-03-27)
 ------------------------

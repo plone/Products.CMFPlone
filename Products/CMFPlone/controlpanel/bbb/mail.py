@@ -1,5 +1,4 @@
 from Products.CMFCore.interfaces import ISiteRoot
-from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.CMFPlone.interfaces.controlpanel import IMailSchema
 from Products.CMFPlone.interfaces.controlpanel import IMailSchema
@@ -20,8 +19,7 @@ class MailControlPanelAdapter(object):
         self.context = context
         self.portal = getSite()
         registry = getUtility(IRegistry)
-        pprop = getToolByName(self.portal, 'portal_properties')
-        self.encoding = pprop.site_properties.default_charset
+        self.encoding = 'utf-8'
         self.mail_settings = registry.forInterface(
             IMailSchema, prefix="plone")
 
