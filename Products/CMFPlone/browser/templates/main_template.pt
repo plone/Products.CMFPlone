@@ -53,7 +53,7 @@
                         python:plone_view.patterns_settings()"
         id="visual-portal-wrapper">
 
-    <section id="edit-bar" role="toolbar">
+    <section id="edit-bar" role="toolbar" tal:condition="not: portal_state/anonymous">
       <div id="edit-zone" role="toolbar" tal:attributes="class toolbar_class">
         <div class="plone-toolbar-container">
           <a class="plone-toolbar-logo">

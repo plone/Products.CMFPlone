@@ -8,6 +8,9 @@ Changelog
 5.0b2 (unreleased)
 ------------------
 
+- only show edit bar if user logged in
+  [vangheem]
+
 - fix error sending test email in Mail control panel
   [tkimnguyen]
 
