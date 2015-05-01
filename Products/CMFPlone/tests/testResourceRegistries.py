@@ -9,7 +9,8 @@ from Products.CMFPlone.interfaces import IBundleRegistry
 from Products.CMFPlone.interfaces import IResourceRegistry
 from plone.subrequest import subrequest
 from Products.CMFPlone.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME
-from Products.CMFPlone.resources.exportimport.resourceregistry import ResourceRegistryNodeAdapter
+from Products.CMFPlone.resources.exportimport.resourceregistry import (
+    ResourceRegistryNodeAdapter)
 from plone.resource.interfaces import IResourceDirectory
 
 
@@ -99,40 +100,112 @@ class TestResourceNodeImporter(PloneTestCase.PloneTestCase):
     """Test features of registry node importer"""
     _setup_fixture = 0  # No default fixture
 
+    def _get_importer(self, blacklist=set([])):
+        reg = getToolByName(self.portal, 'portal_javascripts')
+        importer = ResourceRegistryNodeAdapter(reg, SetupEnviron())
+        importer.resource_type = 'javascript'
+        importer.registry = getUtility(IRegistry)
+        importer.resource_blacklist = blacklist
+        return importer
+
+    def _get_resources(self):
+        return getUtility(IRegistry).collectionOfInterface(
+            IResourceRegistry, prefix="plone.resources"
+        )
+
+    def _get_legacy_bundle(self):
+        return getUtility(IRegistry).collectionOfInterface(
+            IBundleRegistry, prefix="plone.bundles", check=False)['plone-legacy']
+
+    def _get_resource_dom(self, name='++resource++/resource.js', remove=False):
+        return parseString("""
+            <object>
+                <javascript id="%s" remove="%s" enabled="true" />
+            </object>
+            """ % (name, str(remove)))
+
     def test_resource_blacklist(self):
         # Ensure that blacklisted resources aren't imported
-        reg = getToolByName(self.portal, 'portal_javascripts')
-        importer = ResourceRegistryNodeAdapter(reg, SetupEnviron())
-        importer.resource_type = 'javascript'
-        importer.registry = getUtility(IRegistry)
-        importer.resource_blacklist = set(('++resource++/bad_resource.js',))
-        dom = parseString("""
-            <object>
-                <javascript id="++resource++/bad_resource.js" enabled="true" />
-            </object>
-            """)
+        importer = self._get_importer(set(('++resource++/bad_resource.js',)))
+        dom = self._get_resource_dom("++resource++/bad_resource.js")
         importer._importNode(dom.documentElement)
-        resources = importer.registry.collectionOfInterface(
-            IResourceRegistry, prefix="plone.resources"
-        )
-        js_files = [x.js for x in resources.values()]
+        js_files = [x.js for x in self._get_resources().values()]
         self.assertTrue("++resource++/bad_resource.js" not in js_files)
+        self.assertTrue(
+            "resource-bad_resource-js" not in self._get_legacy_bundle().resources)
 
     def test_resource_no_blacklist(self):
-        # Ensure that blacklisted resources aren't imported
-        reg = getToolByName(self.portal, 'portal_javascripts')
-        importer = ResourceRegistryNodeAdapter(reg, SetupEnviron())
-        importer.resource_type = 'javascript'
-        importer.registry = getUtility(IRegistry)
-        importer.resource_blacklist = set()
-        dom = parseString("""
+        importer = self._get_importer()
+        dom = self._get_resource_dom()
+        importer._importNode(dom.documentElement)
+        js_files = [x.js for x in self._get_resources().values()]
+        self.assertTrue("++resource++/resource.js" in js_files)
+        self.assertTrue("resource-resource-js" in self._get_legacy_bundle().resources)
+
+    def test_insert_again(self):
+        importer = self._get_importer()
+        dom = self._get_resource_dom()
+        num_resources = self._get_legacy_bundle().resources[:]
+        importer._importNode(dom.documentElement)
+        self.assertEquals(len(num_resources) + 1,
+                          len(self._get_legacy_bundle().resources))
+        importer._importNode(dom.documentElement)
+        self.assertEquals(len(num_resources) + 1,
+                          len(self._get_legacy_bundle().resources))
+
+    def test_remove(self):
+        importer = self._get_importer()
+
+        # inserter it
+        dom = self._get_resource_dom()
+        importer._importNode(dom.documentElement)
+
+        resources = self._get_legacy_bundle().resources[:]
+        js_files = [x.js for x in self._get_resources().values()]
+
+        # import again
+        dom = self._get_resource_dom(remove=True)
+        importer._importNode(dom.documentElement)
+
+        self.assertEquals(len(resources) - 1,
+                          len(self._get_legacy_bundle().resources))
+        self.assertEquals(len(js_files) - 1,
+                          len([x.js for x in self._get_resources().values()]))
+
+    def test_insert_after(self):
+        importer = self._get_importer()
+        one = self._get_resource_dom('one')
+        two = self._get_resource_dom('two')
+        three = self._get_resource_dom('three')
+        importer._importNode(one.documentElement)
+        importer._importNode(two.documentElement)
+        importer._importNode(three.documentElement)
+
+        # now, insert
+        foobar = parseString("""
             <object>
-                <javascript id="++resource++/bad_resource.js" enabled="true" />
+                <javascript id="foobar.js" insert-after="one" enabled="true" />
             </object>
             """)
-        importer._importNode(dom.documentElement)
-        resources = importer.registry.collectionOfInterface(
-            IResourceRegistry, prefix="plone.resources"
-        )
-        js_files = [x.js for x in resources.values()]
-        self.assertTrue("++resource++/bad_resource.js" in js_files)
+        importer._importNode(foobar.documentElement)
+        resources = self._get_legacy_bundle().resources
+        self.assertTrue(resources.index('one') + 1, resources.index('foobar-js'))
+
+    def test_insert_before(self):
+        importer = self._get_importer()
+        one = self._get_resource_dom('one')
+        two = self._get_resource_dom('two')
+        three = self._get_resource_dom('three')
+        importer._importNode(one.documentElement)
+        importer._importNode(two.documentElement)
+        importer._importNode(three.documentElement)
+
+        # now, insert
+        foobar = parseString("""
+            <object>
+                <javascript id="foobar.js" insert-before="one" enabled="true" />
+            </object>
+            """)
+        importer._importNode(foobar.documentElement)
+        resources = self._get_legacy_bundle().resources
+        self.assertTrue(resources.index('one') - 1, resources.index('foobar-js'))

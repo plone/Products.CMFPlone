@@ -8,6 +8,10 @@ Changelog
 5.0b2 (unreleased)
 ------------------
 
+- fix some legacy import wonkiness. Inserting multiple times, insert-before
+  and remove fixed
+  [vangheem]
+
 - make live search and search form give consistent results
   [vangheem]
 

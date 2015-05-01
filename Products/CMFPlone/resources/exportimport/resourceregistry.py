@@ -62,13 +62,15 @@ class ResourceRegistryNodeAdapter(XMLAdapterBase):
 
             data = {}
             add = True
-            position = None
+            remove = False
+            position = res_id = None
             for key, value in child.attributes.items():
                 key = str(key)
                 if key == 'update':
                     continue
-                if key == 'remove':
+                if key == 'remove' and value in (True, 'true', 'True'):
                     add = False
+                    remove = True
                     continue
                 if key in ('position-before', 'insert-before'):
                     position = ('before', queryUtility(
@@ -109,6 +111,11 @@ class ResourceRegistryNodeAdapter(XMLAdapterBase):
                     proxy.css = [data['url']]
                 if 'enabled' in data and not data['enabled']:
                     continue
+                if res_id in legacy.resources:
+                    # remove here so we can possible re-insert into whatever
+                    # position is preferred below and then we do not
+                    # re-add same resource multiple times
+                    legacy.resources.remove(res_id)
                 if position is None:
                     position = ('',)
                 if position[0] == '*':
@@ -129,7 +136,18 @@ class ResourceRegistryNodeAdapter(XMLAdapterBase):
                             res_id)
                     else:
                         legacy.resources.append(res_id)
-                if 'plone.resources.last_legacy_import' in self.registry.records:  # noqa
-                    self.registry.records[
-                        'plone.resources.last_legacy_import'
-                    ].value = datetime.now()
+
+            if remove:
+                if res_id in legacy.resources:
+                    legacy.resources.remove(res_id)
+                if res_id in resources:
+                    del resources[res_id]
+
+            # make sure to trigger committing to db
+            # not sure this is necessary...
+            legacy.resources = legacy.resources
+
+        if 'plone.resources.last_legacy_import' in self.registry.records:  # noqa
+            self.registry.records[
+                'plone.resources.last_legacy_import'
+            ].value = datetime.now()
