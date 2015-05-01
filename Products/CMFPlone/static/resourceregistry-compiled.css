@@ -2899,4 +2899,11 @@ a.pat-resourceregistry .list-group-item-warning.active:focus {
 .pat-resourceregistry .development-mode {
   padding-left: 15px;
 }
+.pat-resourceregistry .plone-legacy-resource-entry .field-compile,
+.pat-resourceregistry .plone-legacy-resource-entry .field-expression,
+.pat-resourceregistry .plone-legacy-resource-entry .field-enabled,
+.pat-resourceregistry .plone-legacy-resource-entry .field-conditionalcomment,
+.pat-resourceregistry .plone-legacy-resource-entry .field-name {
+  display: none;
+}
 /*# sourceMappingURL=thememapper-compiled.css.map */

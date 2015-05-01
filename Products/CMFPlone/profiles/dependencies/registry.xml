@@ -1017,7 +1017,7 @@
     <value key="enabled">True</value>
     <value key="jscompilation">++plone++static/plone-compiled.min.js</value>
     <value key="csscompilation">++plone++static/plone-compiled.css</value>
-    <value key="last_compilation">2014-11-26 00:00:00</value>
+    <value key="last_compilation">2015-05-01 00:00:00</value>
     <value key="depends">plone-logged-in</value>
   </records>
 
@@ -1030,7 +1030,7 @@
     <value key="expression">python: member is not None</value>
     <value key="jscompilation">++plone++static/plone-logged-in-compiled.min.js</value>
     <value key="csscompilation">++plone++static/plone-logged-in-compiled.css</value>
-    <value key="last_compilation">2014-11-26 00:00:00</value>
+    <value key="last_compilation">2015-05-01 00:00:00</value>
   </records>
 
   <records prefix="plone.bundles/plone-legacy"
@@ -1054,7 +1054,7 @@
     <value key="enabled">False</value>
     <value key="jscompilation">++plone++static/resourceregistry-compiled.min.js</value>
     <value key="csscompilation">++plone++static/resourceregistry-compiled.css</value>
-    <value key="last_compilation">2015-02-13 00:00:00</value>
+    <value key="last_compilation">2015-05-01 00:00:00</value>
   </records>
 
 
