@@ -110,6 +110,9 @@ class ResourceRegistryNodeAdapter(XMLAdapterBase):
                 elif self.resource_type == 'stylesheet':
                     proxy.css = [data['url']]
                 if 'enabled' in data and not data['enabled']:
+                    # if we are disabling it, we need to remove from legacy resources
+                    if res_id in legacy.resources:
+                        legacy.resources.remove(res_id)
                     continue
                 if res_id in legacy.resources:
                     # remove here so we can possible re-insert into whatever

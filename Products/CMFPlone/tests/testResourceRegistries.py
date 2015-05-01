@@ -117,12 +117,13 @@ class TestResourceNodeImporter(PloneTestCase.PloneTestCase):
         return getUtility(IRegistry).collectionOfInterface(
             IBundleRegistry, prefix="plone.bundles", check=False)['plone-legacy']
 
-    def _get_resource_dom(self, name='++resource++/resource.js', remove=False):
+    def _get_resource_dom(self, name='++resource++/resource.js',
+                          remove=False, enabled=True):
         return parseString("""
             <object>
-                <javascript id="%s" remove="%s" enabled="true" />
+                <javascript id="%s" remove="%s" enabled="%s" />
             </object>
-            """ % (name, str(remove)))
+            """ % (name, str(remove), str(enabled).lower()))
 
     def test_resource_blacklist(self):
         # Ensure that blacklisted resources aren't imported
@@ -209,3 +210,22 @@ class TestResourceNodeImporter(PloneTestCase.PloneTestCase):
         importer._importNode(foobar.documentElement)
         resources = self._get_legacy_bundle().resources
         self.assertTrue(resources.index('one') - 1, resources.index('foobar-js'))
+
+    def test_be_able_to_disable_but_not_remove(self):
+        importer = self._get_importer()
+
+        # inserter it
+        dom = self._get_resource_dom()
+        importer._importNode(dom.documentElement)
+
+        resources = self._get_legacy_bundle().resources[:]
+        js_files = [x.js for x in self._get_resources().values()]
+
+        # import again
+        dom = self._get_resource_dom(enabled=False)
+        importer._importNode(dom.documentElement)
+
+        self.assertEquals(len(resources) - 1,
+                          len(self._get_legacy_bundle().resources))
+        self.assertEquals(len(js_files),
+                          len([x.js for x in self._get_resources().values()]))
