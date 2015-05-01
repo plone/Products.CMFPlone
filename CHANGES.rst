@@ -8,6 +8,10 @@ Changelog
 5.0b2 (unreleased)
 ------------------
 
+- detect when changes are made to the legacy bundle through the interface
+  so resources are re-built when they need to be
+  [vangheem]
+
 - fix some legacy import wonkiness. Inserting multiple times, insert-before
   and remove fixed
   [vangheem]

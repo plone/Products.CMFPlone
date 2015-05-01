@@ -144,24 +144,26 @@ class ResourceRegistryControlPanelView(RequireJsView):
 
     def update_registry_collection(self, itype, prefix, newdata):
         rdata = self.registry.collectionOfInterface(itype, prefix=prefix, check=False)
+        set_legacy_import_dt = False
         for key, data in newdata.items():
             if key not in rdata:
                 record = rdata.add(key)
             else:
                 record = rdata[key]
+            if key == 'plone-legacy':
+                # special case here. need to set last compiled time
+                if set(record.resources) != set(data.get('resources', [])):
+                    set_legacy_import_dt = True
             updateRecordFromDict(record, data)
         # remove missing ones
         for key in set(rdata.keys()) - set(newdata.keys()):
             del rdata[key]
 
-    def save_development_mode(self):
-        if self.request.form.get('value', '').lower() == 'true':
-            self.registry['plone.resources.development'] = True
-        else:
-            self.registry['plone.resources.development'] = False
-        return json.dumps({
-            'success': True
-        })
+        if set_legacy_import_dt:
+            if 'plone.resources.last_legacy_import' in self.registry.records:  # noqa
+                self.registry.records[
+                    'plone.resources.last_legacy_import'
+                ].value = datetime.now()
 
     def save_registry(self):
         req = self.request
