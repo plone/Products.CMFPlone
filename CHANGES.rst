@@ -8,6 +8,9 @@ Changelog
 5.0b2 (unreleased)
 ------------------
 
+- make live search and search form give consistent results
+  [vangheem]
+
 - only show edit bar if user logged in
   [vangheem]
 

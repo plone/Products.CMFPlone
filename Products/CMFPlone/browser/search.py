@@ -6,6 +6,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.browser.navtree import getNavigationRoot
 from Products.CMFPlone.PloneBatch import Batch
 from Products.ZCTextIndex.ParseTree import ParseError
+from urllib import quote_plus
 from zope.component import getMultiAdapter
 from zope.i18nmessageid import MessageFactory
 from zope.publisher.browser import BrowserView
@@ -18,6 +19,7 @@ _ = MessageFactory('plone')
 # We should accept both a simple space, unicode u'\u0020 but also a
 # multi-space, so called 'waji-kankaku', unicode u'\u3000'
 MULTISPACE = u'\u3000'.encode('utf-8')
+BAD_CHARS = ('?', '-', '+', '*', MULTISPACE)
 EVER = DateTime('1970-01-03')
 
 
@@ -35,6 +37,14 @@ def quote_chars(s):
 class Search(BrowserView):
 
     valid_keys = ('sort_on', 'sort_order', 'sort_limit', 'fq', 'fl', 'facet')
+
+    def munge_search_term(self, q):
+        for char in BAD_CHARS:
+            q = q.replace(char, ' ')
+        r = q.split()
+        r = " AND ".join(r)
+        r = quote_chars(r) + '*'
+        return r
 
     def results(self, query=None, batch=True, b_size=10, b_start=0,
                 use_content_listing=True):
@@ -85,7 +95,7 @@ class Search(BrowserView):
             if v and ((k in valid_keys) or k.startswith('facet.')):
                 query[k] = v
         if text:
-            query['SearchableText'] = quote_chars(text)
+            query['SearchableText'] = self.munge_search_term(text)
 
         # don't filter on created at all if we want all results
         created = query.get('created')
@@ -188,12 +198,6 @@ class AjaxSearch(Search):
             page = int(self.request.form.get('page'))
         except:
             page = 1
-
-        # form = self.request.form
-        # if 'SearchableText' in form:
-            # let's add * around for better results
-        #    if '*' not in form['SearchableText']:
-        #        form['SearchableText'] = '*' + form['SearchableText'] + '*'
 
         results = self.results(batch=False, use_content_listing=False)
         batch = Batch(results, per_page, start=(page - 1) * per_page)
