@@ -2806,6 +2806,7 @@ html,
   color: #007bb3;
   text-decoration: none;
   display: block;
+  outline: 0;
 }
 #edit-zone .plone-toolbar-logo {
   background: #005880;
@@ -3309,9 +3310,11 @@ html,
 }
 #edit-zone.plone-toolbar-top.expanded nav > ul > li {
   width: inherit;
+  border-right: 1px solid #353535;
 }
 #edit-zone.plone-toolbar-top.expanded nav > ul a > span + span {
   width: inherit;
+  padding: 0 8px 0 0;
 }
 #edit-zone.plone-toolbar-top.expanded nav > ul a > [class^="icon"] {
   padding-left: 0;

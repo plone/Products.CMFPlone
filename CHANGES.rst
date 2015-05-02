@@ -8,6 +8,9 @@ Changelog
 5.0b2 (unreleased)
 ------------------
 
+- style tweaks to toolbar
+  [pbauer]
+
 - fix search form usability
   [vangheem]
 

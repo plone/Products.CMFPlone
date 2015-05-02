@@ -21,7 +21,12 @@ body.userrole-authenticated {
     font-family: 'Roboto', sans-serif;
     color: @plone-toolbar-text-color;
     background: @plone-toolbar-bg;
-    a {color: @plone-toolbar-link; text-decoration: none; display: block;}
+    a {
+        color: @plone-toolbar-link;
+        text-decoration: none;
+        display: block;
+        outline: 0;
+    }
     /*logo*/
     .plone-toolbar-logo {
         background: darken(@plone-toolbar-link, 10%);
@@ -285,8 +290,14 @@ body.userrole-authenticated {
 }
 #edit-zone.plone-toolbar-top.expanded {
     .plone-toolbar-logo {width: 60px;}
-    nav > ul > li {width: inherit;}
-    nav > ul a > span + span {width: inherit}
+    nav > ul > li {
+        width: inherit;
+        border-right: 1px solid #353535;
+    }
+    nav > ul a > span + span {
+        width: inherit;
+        padding: 0 8px 0 0;
+    }
     nav > ul a > [class^="icon"] {padding-left: 0;}
     .plone-toolbar-caret {left:16px;}
     li.active > a:after {margin-left: 10px;}
