@@ -6,7 +6,6 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.browser.navtree import getNavigationRoot
 from Products.CMFPlone.PloneBatch import Batch
 from Products.ZCTextIndex.ParseTree import ParseError
-from urllib import quote_plus
 from zope.component import getMultiAdapter
 from zope.i18nmessageid import MessageFactory
 from zope.publisher.browser import BrowserView
@@ -118,6 +117,8 @@ class Search(BrowserView):
         if 'path' not in query:
             query['path'] = getNavigationRoot(self.context)
 
+        if 'sort_order' in query and not query['sort_order']:
+            del query['sort_order']
         return query
 
     def filter_types(self, types):
@@ -240,9 +241,4 @@ class SortOption(object):
             q['sort_order'] = 'reverse'
 
         base_url = self.request.URL
-        # After the AJAX call the request is changed and thus the URL part of
-        # it as well. In this case we need to tweak the URL to point to have
-        # correct URLs
-        if '@@updated_search' in base_url:
-            base_url = base_url.replace('@@updated_search', '@@search')
         return base_url + '?' + make_query(q)

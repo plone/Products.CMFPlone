@@ -8,6 +8,9 @@ Changelog
 5.0b2 (unreleased)
 ------------------
 
+- fix search form usability
+  [vangheem]
+
 - detect when changes are made to the legacy bundle through the interface
   so resources are re-built when they need to be
   [vangheem]

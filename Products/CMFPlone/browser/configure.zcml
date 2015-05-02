@@ -184,14 +184,6 @@
       for="plone.app.layout.navigation.interfaces.INavigationRoot"
       />
 
-  <browser:page
-      name="updated_search"
-      class=".search.Search"
-      permission="zope2.View"
-      for="plone.app.layout.navigation.interfaces.INavigationRoot"
-      template="templates/updated_search.pt"
-      />
-
   <browser:resource
       name="search.js"
       file="static/search.js"
