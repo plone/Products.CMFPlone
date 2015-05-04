@@ -101,13 +101,17 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
         self.folder.invokeFactory('Image', id='image')
         self.folder.image.edit(file=dummy.Image('foo.zip'))
         self.assertEqual(self.folder.image.Format(), 'application/zip')
-        self.assertEqual(self.folder.image.getImage().content_type,
-                        'application/zip')
+        self.assertEqual(
+            'application/zip',
+            self.folder.image.getImage().content_type
+        )
         # Changing the format should be reflected in content_type property
         self.utils.editMetadata(self.folder.image, format='image/gif')
         self.assertEqual(self.folder.image.Format(), 'image/gif')
-        self.assertEqual(self.folder.image.getImage().content_type,
-                         'image/gif')
+        self.assertEqual(
+            'image/gif',
+            self.folder.image.getImage().content_type
+        )
 
     def testNormalizeStringPunctuation(self):
         # Punctuation and spacing is removed and replaced by '-'
