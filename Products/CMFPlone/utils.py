@@ -8,11 +8,13 @@ from os.path import join, abspath, split
 
 import pkg_resources
 from plone.i18n.normalizer.interfaces import IIDNormalizer
+from plone.registry.interfaces import IRegistry
 from webdav.interfaces import IWriteLock
 
 import zope.interface
 from zope.interface import implementedBy
 from zope.component import getMultiAdapter
+from zope.component import getUtility
 from zope.component import queryMultiAdapter
 from zope.component import queryUtility
 from zope.deprecation import deprecated
@@ -206,6 +208,7 @@ deprecated('getSiteEncoding',
            ('`getSiteEncoding` is deprecated. Plone only supports UTF-8 '
             'currently. This method always returns "utf-8"'))
 
+
 # XXX portal_utf8 and utf8_portal probably can go away
 def portal_utf8(context, str, errors='strict'):
     # Test
@@ -234,10 +237,8 @@ def getEmptyTitle(context, translated=True):
 
 
 def typesToList(context):
-    from zope.component import getUtility
-    from plone.registry.interfaces import IRegistry
-    from Products.CMFPlone.interfaces import INavigationSchema
     registry = getUtility(IRegistry)
+    from Products.CMFPlone.interfaces import INavigationSchema
     navigation_settings = registry.forInterface(
         INavigationSchema,
         prefix='plone'
@@ -745,4 +746,3 @@ def bodyfinder(text):
     if bodyend == -1:
         return text
     return text[bodystart:bodyend]
-
