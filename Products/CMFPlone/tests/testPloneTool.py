@@ -148,7 +148,7 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
         # Make sure typesToList() returns the expected types
         wl = self.utils.typesToList()
         self.assertTrue('Folder' in wl)
-        self.assertTrue('Topic' in wl)
+        self.assertTrue('Document' in wl)
         self.assertFalse('ATReferenceCriterion' in wl)
 
     def testGetUserFriendlyTypes(self):

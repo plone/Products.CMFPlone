@@ -8,9 +8,6 @@ Changelog
 5.0b2 (unreleased)
 ------------------
 
-- Add Topic to displayed_types.
-  [timo]
-
 - Make typesToList read metaTypesNotToList from new p.a.registry settings.
   This fixes https://github.com/plone/Products.CMFPlone/issues/454.
   [timo]

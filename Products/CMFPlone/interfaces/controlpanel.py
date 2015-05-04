@@ -1030,7 +1030,6 @@ class INavigationSchema(Interface):
             'Link',
             'News Item',
             'Folder',
-            'Topic',
             'Document',
             'Event'
         ),
