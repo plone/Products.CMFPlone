@@ -234,15 +234,15 @@ def getEmptyTitle(context, translated=True):
 
 
 def typesToList(context):
-    ntp = getToolByName(context, 'portal_properties').navtree_properties
-    ttool = getToolByName(context, 'portal_types')
-    bl = ntp.getProperty('metaTypesNotToList', ())
-    bl_dict = {}
-    for t in bl:
-        bl_dict[t] = 1
-    all_types = ttool.listContentTypes()
-    wl = [t for t in all_types if not t in bl_dict]
-    return wl
+    from zope.component import getUtility
+    from plone.registry.interfaces import IRegistry
+    from Products.CMFPlone.interfaces import INavigationSchema
+    registry = getUtility(IRegistry)
+    navigation_settings = registry.forInterface(
+        INavigationSchema,
+        prefix='plone'
+    )
+    return navigation_settings.displayed_types
 
 
 def normalizeString(text, context=None, encoding=None):

@@ -8,6 +8,9 @@ Changelog
 5.0b2 (unreleased)
 ------------------
 
+- Make typesToList read metaTypesNotToList from new p.a.registry settings.
+  [timo]
+
 - style tweaks to toolbar
   [pbauer]
 

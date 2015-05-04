@@ -33,6 +33,7 @@ Scenario: Filter Navigation By Displayed Types in the Navigation Control Panel
     and the navigation control panel
    When I remove 'Document' from the displayed types list
    Then the document 'My Document' does not show up in the navigation
+    and the document 'My Document' does not show up in the sitemap
 
 #Scenario: Filter Navigation By Workflow States in the Navigation Control Panel
 #  Given a logged-in site administrator
@@ -105,3 +106,8 @@ the document '${title}' does not show up in the navigation
   Go to  ${PLONE_URL}
   Wait until page contains  Powered by Plone
   XPath Should Match X Times  //ul[@id='portal-globalnav']/li/a[contains(text(), '${title}')]  0  message=The global navigation should not have contained the item '${title}'
+
+the document '${title}' does not show up in the sitemap
+  Go to  ${PLONE_URL}/sitemap
+  Wait until page contains  Powered by Plone
+  XPath Should Match X Times  //ul[@id='portal-sitemap']/li/a/span[contains(text(), '${title}')]  0  message=The sitemap should not have contained the item '${title}'
