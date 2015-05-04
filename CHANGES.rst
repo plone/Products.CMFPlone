@@ -4,6 +4,9 @@ Changelog
 2.5.5 (unreleased)
 ------------------
 
+- Updating tests to handle new plone.app.testing.
+  [do3cc]
+
 - Fix info_empty_dashboard i18n default message.
   [vincentfretin]
 
