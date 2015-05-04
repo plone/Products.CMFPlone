@@ -9,6 +9,7 @@ Changelog
 ------------------
 
 - Make typesToList read metaTypesNotToList from new p.a.registry settings.
+  This fixes https://github.com/plone/Products.CMFPlone/issues/454.
   [timo]
 
 - style tweaks to toolbar
@@ -73,6 +74,7 @@ Changelog
 
 - We only support `utf-8` site-encoding at the moment
   [tomgross]
+
 
 5.0b1.post1 (2015-03-27)
 ------------------------
