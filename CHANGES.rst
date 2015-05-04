@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.5.5 (unreleased)
+2.5.5 (2015-05-04)
 ------------------
 
 - Updating tests to handle new plone.app.testing.
