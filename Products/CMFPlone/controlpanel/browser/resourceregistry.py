@@ -164,7 +164,7 @@ class ResourceRegistryControlPanelView(RequireJsView):
             IBundleRegistry, "plone.bundles",
             json.loads(req.get('bundles')))
 
-        if self.request.form.get('value', '').lower() == 'true':
+        if self.request.form.get('development', '').lower() == 'true':
             self.registry['plone.resources.development'] = True
         else:
             self.registry['plone.resources.development'] = False
