@@ -8,6 +8,7 @@ from zope import schema
 from zope.interface import Interface, implements
 from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
+import json
 
 
 class IControlPanel(IPloneBaseTool):
@@ -407,34 +408,54 @@ class ITinyMCELayoutSchema(Interface):
         default=u'++plone++static/components/tinymce/skins/lightgray/content.min.css',
         required=False)
 
+    header_styles = schema.Text(
+        title=_(u"Header styles"),
+        description=_('Name|tag'),
+        default=u'Header 1|h1\n'
+                u"Header 2|h2\n"
+                u"Header 3|h3\n"
+                u"Header 4|h4\n"
+                u"Header 5|h5\n"
+                u"Header 6|h6\n")
+
+    inline_styles = schema.Text(
+        title=_(u"Inline styles"),
+        description=_('Name|format|icon'),
+        default=u"Bold|bold|bold\n"
+                u"Italic|italic|italic\n"
+                u"Underline|underline|underline\n"
+                u"Strikethrough|strikethrough|strikethrough\n"
+                u"Superscript|superscript|superscript\n"
+                u"Subscript|subscript|subscript\n"
+                u"Code|code|code")
+
+    block_styles = schema.Text(
+        title=_(u"Block styles"),
+        description=_('Name|format'),
+        default=u"Paragraph|p\n"
+                u"Blockquote|blockquote\n"
+                u"Div|div\n"
+                u"Pre|pre")
+
+    alignment_styles = schema.Text(
+        title=_(u"Alignment styles"),
+        description=_('Name|format|icon'),
+        default=u"Left|alignleft|alignleft\n"
+                u"Center|aligncenter|aligncenter\n"
+                u"Right|alignright|alignright\n"
+                u"Justify|alignjustify|alignjustify")
+
     styles = schema.Text(
         title=_(u"Styles"),
         description=_(u"Enter a list of styles to appear in the style "
                       "pulldown. "
-                      "Format is title|tag or title|tag|className, "
+                      "Format is title|format"
                       "one per line."),
-        default=u"Heading|h2|\n"
-                u"Subheading|h3|\n"
-                u"Literal|pre|\n"
-                u"Discreet|span|discreet\n"
-                u"Pull-quote|blockquote|pullquote\n"
-                u"Call-out|p|callout\n"
-                u"Highlight|span|visualHighlight\n"
-                u"Disc|ul|listTypeDisc\n"
-                u"Square|ul|listTypeSquare\n"
-                u"Circle|ul|listTypeCircle\n"
-                u"Numbers|ol|listTypeDecimal\n"
-                u"Lower Alpha|ol|listTypeLowerAlpha\n"
-                u"Upper Alpha|ol|listTypeUpperAlpha\n"
-                u"Lower Roman|ol|listTypeLowerRoman\n"
-                u"Upper Roman|ol|listTypeUpperRoman\n"
-                u"Definition term|dt|\n"
-                u"Definition description|dd|\n"
-                u"Odd row|tr|odd\n"
-                u"Even row|tr|even\n"
-                u"Heading cell|th|\n"
-                u"Page break (print only)|div|pageBreak\n"
-                u"Clear floats|div|visualClear",
+        default=u"Pullquote|pullquote\n"
+                u"Discreet|discreet\n"
+                u"Callout|callout\n"
+                u"Highlight|highlight\n"
+                u"Clear floats|clearfix",
         required=False)
 
     formats = schema.Text(
@@ -445,18 +466,15 @@ class ITinyMCELayoutSchema(Interface):
             u"you press the bold button inside the editor. "
             u"See http://www.tinymce.com/wiki.php/Configuration:formats"),
         constraint=validate_json,
-        required=False,
+        default=json.dumps({
+            'pullquote': {'block': 'blockquote', 'classes': 'pullquote'},
+            'discreet': {'inline': 'span', 'classes': 'discreet'},
+            'callout': {'block': 'p', 'classes': 'callout'},
+            'highlight': {'block': 'span', 'classes': 'visualHighlight'},
+            'clearfix': {'block': 'div', 'classes': 'clearfix'}
+        }).decode('utf8'),
+        required=True,
     )
-
-    tablestyles = schema.Text(
-        title=_(u"Table styles"),
-        description=_(
-            u"Enter a list of styles to appear in the table style pulldown. "
-            "Format is title|class, one per line."),
-        default=u"Subdued grid|plain\n"
-                u"Invisible grid|invisible\n"
-                u"Fancy listing|listing",
-        required=False)
 
 
 class ITinyMCEPluginSchema(Interface):
@@ -470,6 +488,7 @@ class ITinyMCEPluginSchema(Interface):
             u"line.")),
         value_type=schema.Choice(vocabulary=SimpleVocabulary([
             SimpleTerm('advlist', 'advlist', u"advlist"),
+            SimpleTerm('anchor', 'anchor', u"anchor"),
             SimpleTerm('autosave', 'autosave', u"autosave"),
             SimpleTerm('charmap', 'charmap', u"charmap"),
             SimpleTerm('code', 'code', u"code"),
@@ -508,19 +527,29 @@ class ITinyMCEPluginSchema(Interface):
                  'visualchars', 'wordcount'],
         required=False)
 
+    toolbar = schema.Text(
+        title=_("label_tinymce_toolbar", default=u"Toolbar"),
+        description=_("help_tinymce_toolbar", default=(
+            u"Enter how you would like the toolbar items to list.")),
+        required=True,
+        default=u'undo redo | styleselect | bold italic | '
+                u'alignleft aligncenter alignright alignjustify | '
+                u'bullist numlist outdent indent | '
+                u'unlink plonelink ploneimage')
+
     customplugins = schema.Text(
         title=_(u"Custom Plugins"),
         description=_(u"Enter a list of custom plugins which will be loaded "
                       "in the editor. Format is pluginname or "
                       "pluginname|location, one per line."),
-        required=False)
+        required=False,
+        default=u'')
 
-    customtoolbarbuttons = schema.Text(
-        title=_(u"Custom Toolbar Buttons"),
-        description=_(u"Enter a list of custom toolbar buttons which will be "
-                      "loaded in the editor, one per line."),
-        default=u"",
-        required=False)
+    custombuttons = schema.Text(
+        title=_(u"Custom Buttons"),
+        description=_(u"Enter a list of custom button which will be added to toolbar"),
+        required=False,
+        default=u'')
 ITinyMCELibrariesSchema = ITinyMCEPluginSchema  # bw compat
 
 
@@ -578,7 +607,7 @@ class ITinyMCESpellCheckerSchema(Interface):
                     u"but ideally you should download and install your own "
                     u"and specify its address here."),
         required=True,
-        default=u"service.afterthedeadline.com",)
+        default=u"https://service.afterthedeadline.com",)
 
 
 class ITinyMCEResourceTypesSchema(Interface):
@@ -602,15 +631,16 @@ class ITinyMCEResourceTypesSchema(Interface):
                 u"Plone Site",
         required=False)
 
-    containsanchors = schema.Text(
-        title=_(u"Contains Anchors"),
-        description=_(u"Enter a list of content types which can contain "
-                      "anchors. Format is one contenttype per line."),
-        default=u"Event\n"
-                u"News Item\n"
-                u"Document\n"
-                u"ATRelativePathCriterion",
-        required=False)
+    # XXX not implements
+    # containsanchors = schema.Text(
+    #    title=_(u"Contains Anchors"),
+    #    description=_(u"Enter a list of content types which can contain "
+    #                  "anchors. Format is one contenttype per line."),
+    #    default=u"Event\n"
+    #            u"News Item\n"
+    #            u"Document\n"
+    #            u"ATRelativePathCriterion",
+    #    required=False)
 
     # XXX do we still want this?
     # seems like it could be really annoying for users

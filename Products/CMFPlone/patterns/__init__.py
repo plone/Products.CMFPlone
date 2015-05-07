@@ -18,6 +18,146 @@ from plone.app.theming.utils import isThemeEnabled
 from zope.component.hooks import getSite
 
 
+class TinyMCESettingsGenerator(object):
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+        self.portal = getSite()
+        registry = getUtility(IRegistry)
+        self.settings = registry.forInterface(ITinyMCESchema, prefix="plone", check=False)
+        self.portal_url = get_portal_url(self.portal)
+
+    def get_content_css(self):
+        # Volatile attribute to cache the current theme
+        if hasattr(self.portal, '_v_currentTheme'):
+            themeObj = self.portal._v_currentTheme
+        else:
+            theme = getCurrentTheme()
+            themeObj = getTheme(theme)
+            self.portal._v_currentTheme = themeObj
+        cache = component.queryUtility(ram.IRAMCache)
+        content_css = None
+        if isThemeEnabled(self.request):
+            themeObj = cache.query(
+                'plone.currentTheme',
+                key=dict(prefix='theme'),
+                default=None)
+            if themeObj is None:
+                theme = getCurrentTheme()
+                themeObj = getTheme(theme)
+                cache.set(
+                    themeObj,
+                    'plone.currentTheme',
+                    key=dict(prefix='theme'))
+            if (themeObj and hasattr(themeObj, 'tinymce_content_css') and
+                    themeObj.tinymce_content_css):
+                content_css = self.portal_url + themeObj.tinymce_content_css
+
+        if content_css is None:
+            content_css = self.settings.content_css
+        return content_css
+
+    def get_style_format(self, txt):
+        parts = txt.strip().split('|')
+        if len(parts) < 2:
+            return
+        val = {
+            'title': parts[0],
+            'format': parts[1]
+        }
+        if len(parts) > 2:
+            val['icon'] = parts[2]
+        return val
+
+    def get_all_style_formats(self):
+        header_styles = self.settings.header_styles or ''
+        block_styles = self.settings.block_styles or ''
+        inline_styles = self.settings.inline_styles or ''
+        alignment_styles = self.settings.alignment_styles or ''
+        styles = self.settings.styles or ''
+        return [{
+            'title': 'Headers',
+            'items': [self.get_style_format(t) for t in
+                      header_styles.splitlines()]
+        }, {
+            'title': 'Block',
+            'items': [self.get_style_format(t) for t in
+                      block_styles.splitlines()]
+        }, {
+            'title': 'Inline',
+            'items': [self.get_style_format(t) for t in
+                      inline_styles.splitlines()]
+        }, {
+            'title': 'Alignment',
+            'items': [self.get_style_format(t) for t in
+                      alignment_styles.splitlines()]
+        }, {
+            'title': 'Styles',
+            'items': [self.get_style_format(t) for t in
+                      styles.splitlines()]
+        }]
+
+    def get_tiny_config(self):
+        settings = self.settings
+
+        tiny_config = {
+            'resize': settings.resizing and 'both' or False,
+            'content_css': self.get_content_css(),
+            'plugins': ['plonelink', 'ploneimage'] + settings.plugins,
+            'external_plugins': {},
+            'toolbar': settings.toolbar,
+            'entity_encoding': settings.entity_encoding
+        }
+        if settings.custombuttons:
+            toolbar_additions = settings.custombuttons.splitlines()
+        else:
+            toolbar_additions = []
+
+        if settings.editor_height:
+            tiny_config['height'] = settings.editor_height
+        if settings.autoresize:
+            tiny_config['plugins'].append('autoresize')
+            tiny_config['autoresize_max_height'] = 1000  # hard coded?
+        if settings.editor_width:
+            tiny_config['width'] = settings.editor_width
+        if 'contextmenu' in settings.plugins:
+            tiny_config['contextmenu'] = "plonelink ploneimage inserttable | cell row column deletetable"  # noqa
+        if settings.libraries_spellchecker_choice == 'AtD':
+            mtool = getToolByName(self.portal, 'portal_membership')
+            member = mtool.getAuthenticatedMember()
+            member_id = member.getId()
+            if member_id:
+                if 'compat3x' not in tiny_config['plugins']:
+                    tiny_config['plugins'].append('compat3x')
+                tiny_config['external_plugins']['AtD'] = \
+                    '%s/++plone++static/tinymce-AtD-plugin/editor_plugin.js' % self.portal_url  # noqa
+                # None when Anonymous User
+                tiny_config['atd_rpc_id'] = 'plone-' + member_id
+                tiny_config['atd_rpc_url'] = self.portal_url
+                tiny_config['atd_show_types'] = settings.libraries_atd_show_types.strip().replace('\n', ',')  # noqa
+                tiny_config['atd_ignore_strings'] = settings.libraries_atd_ignore_strings.replace('\n', ',')  # noqa
+                toolbar_additions.append('AtD')
+        elif settings.libraries_spellchecker_choice == 'AtD':
+            tiny_config['browser_spellcheck'] = True
+
+        if toolbar_additions:
+            tiny_config['toolbar'] += ' | %s' % ' '.join(toolbar_additions)
+
+        if settings.customplugins:
+            for plugin in settings.customplugins.splitlines():
+                parts = plugin.split('|')
+                if len(parts) != 2:
+                    continue
+                tiny_config['external_plugins'][parts[0]] = parts[1]
+
+        tiny_config['style_formats'] = self.get_all_style_formats()
+        if settings.formats:
+            tiny_config['formats'] = json.loads(settings.formats)
+
+        return tiny_config
+
+
 class PloneSettingsAdapter(object):
     """
     This adapter will handle all default plone settings.
@@ -64,13 +204,9 @@ class PloneSettingsAdapter(object):
             prependToScalePart: '/@@images/image/'
           })
         """
-        registry = getUtility(IRegistry)
-        settings = registry.forInterface(ITinyMCESchema, prefix="plone")
-        portal_url = get_portal_url(self.context)
-        config = {
-            'portal_url': portal_url,
-            'document_base_url': self.context.absolute_url()
-        }
+
+        generator = TinyMCESettingsGenerator(self.context, self.request)
+        settings = generator.settings
 
         folder = self.context
         if not IFolderish.providedBy(self.context):
@@ -79,74 +215,15 @@ class PloneSettingsAdapter(object):
             initial = None
         else:
             initial = IUUID(folder, None)
-        current_path = folder.absolute_url()[len(config['portal_url']):]
-
-        # Check if theme has a custom content css
-        portal = getSite()
-        # Volatile attribute to cache the current theme
-        if hasattr(portal, '_v_currentTheme'):
-            themeObj = portal._v_currentTheme
-        else:
-            theme = getCurrentTheme()
-            themeObj = getTheme(theme)
-            portal._v_currentTheme = themeObj
-        cache = component.queryUtility(ram.IRAMCache)
-        content_css = None
-        if isThemeEnabled(self.request):
-            themeObj = cache.query(
-                'plone.currentTheme',
-                key=dict(prefix='theme'),
-                default=None)
-            if themeObj is None:
-                theme = getCurrentTheme()
-                themeObj = getTheme(theme)
-                cache.set(
-                    themeObj,
-                    'plone.currentTheme',
-                    key=dict(prefix='theme'))
-            if (themeObj and hasattr(themeObj, 'tinymce_content_css') and
-                    themeObj.tinymce_content_css):
-                content_css = config['portal_url'] + themeObj.tinymce_content_css
-
-        if content_css is None:
-            content_css = settings.content_css
+        current_path = folder.absolute_url()[len(generator.portal_url):]
 
         image_types = settings.imageobjects.splitlines()
         folder_types = settings.containsobjects.splitlines()
-
-        tiny_config = {
-            'resize': settings.resizing and 'both' or False,
-            'content_css': content_css,
-            'plugins': ['plonelink', 'ploneimage'] + settings.plugins,
-            'external_plugins': {}
-        }
-        if settings.editor_height:
-            tiny_config['height'] = settings.editor_height
-        if settings.autoresize:
-            tiny_config['plugins'].append('autoresize')
-            tiny_config['autoresize_max_height'] = 1000  # hard coded?
-        if settings.editor_width:
-            tiny_config['width'] = settings.editor_width
-        if 'contextmenu' in settings.plugins:
-            tiny_config['contextmenu'] = "plonelink ploneimage inserttable | cell row column deletetable"  # noqa
-        if settings.libraries_spellchecker_choice:
-            tiny_config['plugins'].append('spellchecker')
-            if settings.libraries_spellchecker_choice == 'AtD':
-                mtool = getToolByName(portal, 'portal_membership')
-                member = mtool.getAuthenticatedMember()
-                if 'compat3x' not in tiny_config['plugins']:
-                    tiny_config['plugins'].append('compat3x')
-                tiny_config['external_plugins']['AtD'] = \
-                    '%s/++plone++static/tinymce-AtD-plugin/editor_plugin.js' % portal_url
-                # None when Anonymous User
-                tiny_config['atd_rpc_id'] = 'Products.TinyMCE-' + (member.getId() or '')
-                tiny_config['atd_rpc_url'] = "%s/@@" % portal_url
-                tiny_config['atd_show_types'] = settings.libraries_atd_show_types.strip().replace('\n', ',')  # noqa
-                tiny_config['atd_ignore_strings'] = settings.libraries_atd_ignore_strings.strip().replace('\n', ',')  # noqa
-
         configuration = {
             'relatedItems': {
-                'vocabularyUrl': '%s/@@getVocabulary?name=plone.app.vocabularies.Catalog' % portal_url  # noqa
+                'vocabularyUrl':
+                    '%s/@@getVocabulary?name=plone.app.vocabularies.Catalog' % (
+                        generator.portal_url)
             },
             'upload': {
                 'initialFolder': initial,
@@ -157,8 +234,8 @@ class PloneSettingsAdapter(object):
                 'maxFiles': 1,
                 'showTitle': False
             },
-            'base_url': config['document_base_url'],
-            'tiny': tiny_config,
+            'base_url': self.context.absolute_url(),
+            'tiny': generator.get_tiny_config(),
             # This is for loading the languages on tinymce
             'loadingBaseUrl': '++plone++static/components/tinymce-builded/js/tinymce',
             'prependToUrl': 'resolveuid/',

@@ -8,6 +8,9 @@ Changelog
 5.0b2 (unreleased)
 ------------------
 
+- Respect TinyMCE control panel settings
+  [vangheem]
+
 - Make typesToList read metaTypesNotToList from new p.a.registry settings.
   This fixes https://github.com/plone/Products.CMFPlone/issues/454.
   [timo]
