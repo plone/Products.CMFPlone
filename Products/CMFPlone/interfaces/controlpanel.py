@@ -607,7 +607,7 @@ class ITinyMCESpellCheckerSchema(Interface):
                     u"but ideally you should download and install your own "
                     u"and specify its address here."),
         required=True,
-        default=u"https://service.afterthedeadline.com",)
+        default=u"service.afterthedeadline.com",)
 
 
 class ITinyMCEResourceTypesSchema(Interface):
