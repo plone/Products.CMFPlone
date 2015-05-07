@@ -1028,7 +1028,7 @@
     <value key="expression">python: member is not None</value>
     <value key="jscompilation">++plone++static/plone-logged-in-compiled.min.js</value>
     <value key="csscompilation">++plone++static/plone-logged-in-compiled.css</value>
-    <value key="last_compilation">2015-05-01 00:00:00</value>
+    <value key="last_compilation">2015-05-07 00:00:00</value>
   </records>
 
   <records prefix="plone.bundles/plone-legacy"

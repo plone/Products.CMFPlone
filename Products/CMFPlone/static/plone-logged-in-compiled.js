@@ -59682,6 +59682,20 @@ define('mockup-patterns-upload',[
       var self = this,
           template = UploadTemplate;
 
+      // TODO: find a way to make this work in firefox (and IE)
+      $(document).bind('paste', function(e){
+        var oe = e.originalEvent;
+        var target = $(oe.target);
+        var items = oe.clipboardData.items;
+        if (items) {
+          for (var i = 0; i < items.length; i++) {
+            if (items[i].type.indexOf("image") !== -1) {
+              var blob = items[i].getAsFile();
+              self.dropzone.addFile(blob);
+            }
+          }
+        }
+      });
       // values that will change current processing
       self.currentPath = self.options.currentPath;
       self.numFiles = 0;
@@ -59797,6 +59811,9 @@ define('mockup-patterns-upload',[
           }
         });
       });
+      if(self.options.clipboardfile){
+        self.dropzone.addFile(self.options.clipboardfile);
+      }
     },
 
     showControls: function() {
@@ -60022,7 +60039,7 @@ define('mockup-patterns-upload',[
 define('text!mockup-patterns-tinymce-url/templates/link.xml',[],function () { return '<div>\n  <div class="linkModal">\n    <h1><%- insertHeading %></h1>\n    <% if(upload){ %>\n    <p class="info">Drag and drop files from your desktop onto dialog to upload</p>\n    <% } %>\n\n    <div class="linkTypes pat-autotoc autotabs"\n         data-pat-autotoc="section:fieldset;levels:legend;">\n\n      <fieldset class="linkType internal" data-linkType="internal">\n        <legend>Internal</legend>\n        <div>\n          <div class="form-group main">\n            <!-- this gives the name to the "linkType" -->\n            <input type="text" name="internal" />\n          </div>\n        </div>\n      </fieldset>\n\n      <% if(upload){ %>\n      <fieldset class="linkType upload" data-linkType="upload">\n        <legend>Upload</legend>\n        <div class="uploadify-me"></div>\n      </fieldset>\n      <% } %>\n\n      <fieldset class="linkType external" data-linkType="external">\n        <legend>External</legend>\n        <div class="form-group main">\n          <label for="external"><%- externalText %></label>\n          <input type="text" name="external" />\n        </div>\n      </fieldset>\n\n      <fieldset class="linkType email" data-linkType="email">\n        <legend>Email</legend>\n        <div class="form-inline">\n          <div class="form-group main">\n            <label><%- emailText %></label>\n            <input type="text" name="email" />\n          </div>\n          <div class="form-group">\n            <label><%- subjectText %></label>\n            <input type="text" name="subject" />\n          </div>\n        </div>\n      </fieldset>\n\n      <fieldset class="linkType anchor" data-linkType="anchor">\n        <legend>Anchor</legend>\n        <div>\n          <div class="form-group main">\n            <label>Select an anchor</label>\n            <div class="input-wrapper">\n              <select name="anchor" class="pat-select2" data-pat-select2="width:500px" />\n            </div>\n          </div>\n        </div>\n      </fieldset>\n\n    </div><!-- / tabs -->\n\n    <div class="common-controls">\n      <div class="form-group">\n        <label>Target</label>\n        <select name="target">\n          <% _.each(targetList, function(target){ %>\n            <option value="<%- target.value %>"><%- target.text %></option>\n          <% }); %>\n        </select>\n      </div>\n      <div class="form-group">\n        <label><%- titleText %></label>\n        <input type="text" name="title" />\n      </div>\n    </div>\n\n    <input type="submit" class="plone-btn" name="cancel" value="<%- cancelBtn %>" />\n    <input type="submit" class="plone-btn plone-btn-primary" name="insert" value="<%- insertBtn %>" />\n  </div>\n</div>\n';});
 
 
-define('text!mockup-patterns-tinymce-url/templates/image.xml',[],function () { return '<div>\n  <div class="linkModal">\n    <h1><%- insertHeading %></h1>\n    <% if(upload){ %>\n    <p class="info">Drag and drop files from your desktop onto dialog to upload</p>\n    <% } %>\n\n    <div class="linkTypes pat-autotoc autotabs"\n         data-pat-autotoc="section:fieldset;levels:legend;">\n\n      <fieldset class="linkType image" data-linkType="image">\n        <legend>Image</legend>\n        <div class="form-inline">\n          <div class="form-group main">\n            <input type="text" name="image" />\n          </div>\n          <div class="form-group scale">\n            <label><%- scaleText %></label>\n            <select name="scale">\n              <option value="">Original</option>\n                <% _.each(scales, function(scale){ %>\n                  <option value="<%- scale.part %>" <% if(scale.name === options.defaultScale){ %>selected<% } %> >\n                    <%- scale.label %>\n                  </option>\n                <% }); %>\n            </select>\n          </div>\n        </div>\n      </fieldset>\n\n      <% if(upload){ %>\n      <fieldset class="linkType uploadImage" data-linkType="uploadImage">\n        <legend>Upload</legend>\n        <div class="uploadify-me"></div>\n      </fieldset>\n      <% } %>\n\n      <fieldset class="linkType externalImage" data-linkType="externalImage">\n        <legend>External image</legend>\n        <div>\n          <div class="form-group main">\n            <label><%- externalImageText %></label>\n            <input type="text" name="externalImage" />\n          </div>\n        </div>\n      </fieldset>\n\n    </div><!-- / tabs -->\n\n    <div class="common-controls">\n      <div class="form-group title">\n        <label><%- titleText %></label>\n        <input type="text" name="title" />\n      </div>\n      <div class="form-group text">\n        <label><%- altText %></label>\n        <input type="text" name="alt" />\n      </div>\n      <div class="form-group align">\n        <label><%- imageAlignText %></label>\n        <select name="align">\n          <% _.each([\'inline\', \'right\', \'left\'], function(align){ %>\n              <option value="<%- align %>">\n              <%- align.charAt(0).toUpperCase() + align.slice(1) %>\n              </option>\n          <% }); %>\n        <select>\n      </div>\n    </div>\n\n    <input type="submit" class="plone-btn" name="cancel" value="<%- cancelBtn %>" />\n    <input type="submit" class="plone-btn plone-btn-primary" name="insert" value="<%- insertBtn %>" />\n\n  </div>\n</div>\n';});
+define('text!mockup-patterns-tinymce-url/templates/image.xml',[],function () { return '<div>\n  <div class="linkModal">\n    <h1><%- insertHeading %></h1>\n    <% if(_.contains(linkTypes, \'uploadImage\')){ %>\n    <p class="info">Drag and drop files from your desktop onto dialog to upload</p>\n    <% } %>\n\n    <div class="linkTypes pat-autotoc autotabs"\n         data-pat-autotoc="section:fieldset;levels:legend;">\n\n        <% if(_.contains(linkTypes, \'image\')){ %>\n      <fieldset class="linkType image" data-linkType="image">\n        <legend>Image</legend>\n        <div class="form-inline">\n          <div class="form-group main">\n            <input type="text" name="image" />\n          </div>\n          <div class="form-group scale">\n            <label><%- scaleText %></label>\n            <select name="scale">\n              <option value="">Original</option>\n                <% _.each(scales, function(scale){ %>\n                  <option value="<%- scale.part %>" <% if(scale.name === options.defaultScale){ %>selected<% } %> >\n                    <%- scale.label %>\n                  </option>\n                <% }); %>\n            </select>\n          </div>\n        </div>\n      </fieldset>\n        <% } %>\n\n      <% if(_.contains(linkTypes, \'uploadImage\')){ %>\n      <fieldset class="linkType uploadImage" data-linkType="uploadImage">\n        <legend>Upload</legend>\n        <div class="uploadify-me"></div>\n      </fieldset>\n      <% } %>\n\n      <% if(_.contains(linkTypes, \'externalImage\')){ %>\n      <fieldset class="linkType externalImage" data-linkType="externalImage">\n        <legend>External image</legend>\n        <div>\n          <div class="form-group main">\n            <label><%- externalImageText %></label>\n            <input type="text" name="externalImage" />\n          </div>\n        </div>\n      </fieldset>\n      <% } %>\n\n    </div><!-- / tabs -->\n\n    <div class="common-controls">\n      <div class="form-group title">\n        <label><%- titleText %></label>\n        <input type="text" name="title" />\n      </div>\n      <div class="form-group text">\n        <label><%- altText %></label>\n        <input type="text" name="alt" />\n      </div>\n      <div class="form-group align">\n        <label><%- imageAlignText %></label>\n        <select name="align">\n          <% _.each([\'inline\', \'right\', \'left\'], function(align){ %>\n              <option value="<%- align %>">\n              <%- align.charAt(0).toUpperCase() + align.slice(1) %>\n              </option>\n          <% }); %>\n        <select>\n      </div>\n    </div>\n\n    <input type="submit" class="plone-btn" name="cancel" value="<%- cancelBtn %>" />\n    <input type="submit" class="plone-btn plone-btn-primary" name="insert" value="<%- insertBtn %>" />\n\n  </div>\n</div>\n';});
 
 define('mockup-patterns-tinymce-url/js/links',[
   'jquery',
@@ -60281,6 +60298,36 @@ define('mockup-patterns-tinymce-url/js/links',[
   });
 
   tinymce.PluginManager.add('ploneimage', function(editor) {
+      if(editor.settings.paste_data_images){
+        editor.on('paste', function(e){
+          var target = $(e.currentTarget);
+          var counter = 0;
+          function handlePaste(){
+            if($('img', target).length > 0){
+              // TODO: more options?
+              $('img', target).each(function(i,e){
+                if($(e).attr('src').indexOf('data:image') === 0){
+                  var byteString = atob($(e).attr('src').split(',')[1]);
+                  var ia = new Uint8Array(byteString.length);
+                  for (var i = 0; i < byteString.length; i++) {
+                    ia[i] = byteString.charCodeAt(i);
+                  }
+                  var blob = new Blob([ia],  {type: 'image/png'});
+                  editor.settings.addImagePasted(blob);
+                }
+              });
+              $('img', target).remove();
+            }else{
+              // wait for image to be pasted
+              if(counter < 3){
+                counter += 1;
+                setTimeout(handlePaste, 1);                
+              }
+            }
+          }
+          handlePaste();
+        });
+      }
     editor.addButton('ploneimage', {
       icon: 'image',
       tooltip: 'Insert/edit image',
@@ -75319,6 +75366,312 @@ tinymce.PluginManager.add('wordcount', function(editor) {
 });
 }(this));
 
+(function(root) {
+define("tinymce-compat3x", ["tinymce"], function() {
+  return (function() {
+/**
+ * plugin.js
+ *
+ * Copyright, Moxiecode Systems AB
+ * Released under LGPL License.
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+/*global tinymce:true, console:true */
+/*eslint no-console:0, new-cap:0 */
+
+/**
+ * This plugin adds missing events form the 4.x API back. Not every event is
+ * properly supported but most things should work.
+ *
+ * Unsupported things:
+ *  - No editor.onEvent
+ *  - Can't cancel execCommands with beforeExecCommand
+ */
+(function(tinymce) {
+	var reported;
+
+	function noop() {
+	}
+
+	function log(apiCall) {
+		if (!reported && window && window.console) {
+			reported = true;
+			console.log("Deprecated TinyMCE API call: " + apiCall);
+		}
+	}
+
+	function Dispatcher(target, newEventName, argsMap, defaultScope) {
+		target = target || this;
+
+		if (!newEventName) {
+			this.add = this.addToTop = this.remove = this.dispatch = noop;
+			return;
+		}
+
+		this.add = function(callback, scope, prepend) {
+			log('<target>.on' + newEventName + ".add(..)");
+
+			// Convert callback({arg1:x, arg2:x}) -> callback(arg1, arg2)
+			function patchedEventCallback(e) {
+				var callbackArgs = [];
+
+				if (typeof argsMap == "string") {
+					argsMap = argsMap.split(" ");
+				}
+
+				if (argsMap && typeof argsMap != "function") {
+					for (var i = 0; i < argsMap.length; i++) {
+						callbackArgs.push(e[argsMap[i]]);
+					}
+				}
+
+				if (typeof argsMap == "function") {
+					callbackArgs = argsMap(newEventName, e, target);
+					if (!callbackArgs) {
+						return;
+					}
+				}
+
+				if (!argsMap) {
+					callbackArgs = [e];
+				}
+
+				callbackArgs.unshift(defaultScope || target);
+
+				if (callback.apply(scope || defaultScope || target, callbackArgs) === false) {
+					e.stopImmediatePropagation();
+				}
+			}
+
+			target.on(newEventName, patchedEventCallback, prepend);
+
+			return patchedEventCallback;
+		};
+
+		this.addToTop = function(callback, scope) {
+			this.add(callback, scope, true);
+		};
+
+		this.remove = function(callback) {
+			return target.off(newEventName, callback);
+		};
+
+		this.dispatch = function() {
+			target.fire(newEventName);
+
+			return true;
+		};
+	}
+
+	tinymce.util.Dispatcher = Dispatcher;
+	tinymce.onBeforeUnload = new Dispatcher(tinymce, "BeforeUnload");
+	tinymce.onAddEditor = new Dispatcher(tinymce, "AddEditor", "editor");
+	tinymce.onRemoveEditor = new Dispatcher(tinymce, "RemoveEditor", "editor");
+
+	tinymce.util.Cookie = {
+		get: noop, getHash: noop, remove: noop, set: noop, setHash: noop
+	};
+
+	function patchEditor(editor) {
+		function patchEditorEvents(oldEventNames, argsMap) {
+			tinymce.each(oldEventNames.split(" "), function(oldName) {
+				editor["on" + oldName] = new Dispatcher(editor, oldName, argsMap);
+			});
+		}
+
+		function convertUndoEventArgs(type, event, target) {
+			return [
+				event.level,
+				target
+			];
+		}
+
+		function filterSelectionEvents(needsSelection) {
+			return function(type, e) {
+				if ((!e.selection && !needsSelection) || e.selection == needsSelection) {
+					return [e];
+				}
+			};
+		}
+
+		if (editor.controlManager) {
+			return;
+		}
+
+		function cmNoop() {
+			var obj = {}, methods = 'add addMenu addSeparator collapse createMenu destroy displayColor expand focus ' +
+				'getLength hasMenus hideMenu isActive isCollapsed isDisabled isRendered isSelected mark ' +
+				'postRender remove removeAll renderHTML renderMenu renderNode renderTo select selectByIndex ' +
+				'setActive setAriaProperty setColor setDisabled setSelected setState showMenu update';
+
+			log('editor.controlManager.*');
+
+			function _noop() {
+				return cmNoop();
+			}
+
+			tinymce.each(methods.split(' '), function(method) {
+				obj[method] = _noop;
+			});
+
+			return obj;
+		}
+
+		editor.controlManager = {
+			buttons: {},
+
+			setDisabled: function(name, state) {
+				log("controlManager.setDisabled(..)");
+
+				if (this.buttons[name]) {
+					this.buttons[name].disabled(state);
+				}
+			},
+
+			setActive: function(name, state) {
+				log("controlManager.setActive(..)");
+
+				if (this.buttons[name]) {
+					this.buttons[name].active(state);
+				}
+			},
+
+			onAdd: new Dispatcher(),
+			onPostRender: new Dispatcher(),
+
+			add: function(obj) {
+				return obj;
+			},
+			createButton: cmNoop,
+			createColorSplitButton: cmNoop,
+			createControl: cmNoop,
+			createDropMenu: cmNoop,
+			createListBox: cmNoop,
+			createMenuButton: cmNoop,
+			createSeparator: cmNoop,
+			createSplitButton: cmNoop,
+			createToolbar: cmNoop,
+			createToolbarGroup: cmNoop,
+			destroy: noop,
+			get: noop,
+			setControlType: cmNoop
+		};
+
+		patchEditorEvents("PreInit BeforeRenderUI PostRender Load Init Remove Activate Deactivate", "editor");
+		patchEditorEvents("Click MouseUp MouseDown DblClick KeyDown KeyUp KeyPress ContextMenu Paste Submit Reset");
+		patchEditorEvents("BeforeExecCommand ExecCommand", "command ui value args"); // args.terminate not supported
+		patchEditorEvents("PreProcess PostProcess LoadContent SaveContent Change");
+		patchEditorEvents("BeforeSetContent BeforeGetContent SetContent GetContent", filterSelectionEvents(false));
+		patchEditorEvents("SetProgressState", "state time");
+		patchEditorEvents("VisualAid", "element hasVisual");
+		patchEditorEvents("Undo Redo", convertUndoEventArgs);
+
+		patchEditorEvents("NodeChange", function(type, e) {
+			return [
+				editor.controlManager,
+				e.element,
+				editor.selection.isCollapsed(),
+				e
+			];
+		});
+
+		var originalAddButton = editor.addButton;
+		editor.addButton = function(name, settings) {
+			var originalOnPostRender;
+
+			function patchedPostRender() {
+				editor.controlManager.buttons[name] = this;
+
+				if (originalOnPostRender) {
+					return originalOnPostRender.call(this);
+				}
+			}
+
+			for (var key in settings) {
+				if (key.toLowerCase() === "onpostrender") {
+					originalOnPostRender = settings[key];
+					settings.onPostRender = patchedPostRender;
+				}
+			}
+
+			if (!originalOnPostRender) {
+				settings.onPostRender = patchedPostRender;
+			}
+
+			if (settings.title) {
+				settings.title = tinymce.i18n.translate((editor.settings.language || "en") + "." + settings.title);
+			}
+
+			return originalAddButton.call(this, name, settings);
+		};
+
+		editor.on('init', function() {
+			var undoManager = editor.undoManager, selection = editor.selection;
+
+			undoManager.onUndo = new Dispatcher(editor, "Undo", convertUndoEventArgs, null, undoManager);
+			undoManager.onRedo = new Dispatcher(editor, "Redo", convertUndoEventArgs, null, undoManager);
+			undoManager.onBeforeAdd = new Dispatcher(editor, "BeforeAddUndo", null, undoManager);
+			undoManager.onAdd = new Dispatcher(editor, "AddUndo", null, undoManager);
+
+			selection.onBeforeGetContent = new Dispatcher(editor, "BeforeGetContent", filterSelectionEvents(true), selection);
+			selection.onGetContent = new Dispatcher(editor, "GetContent", filterSelectionEvents(true), selection);
+			selection.onBeforeSetContent = new Dispatcher(editor, "BeforeSetContent", filterSelectionEvents(true), selection);
+			selection.onSetContent = new Dispatcher(editor, "SetContent", filterSelectionEvents(true), selection);
+		});
+
+		editor.on('BeforeRenderUI', function() {
+			var windowManager = editor.windowManager;
+
+			windowManager.onOpen = new Dispatcher();
+			windowManager.onClose = new Dispatcher();
+			windowManager.createInstance = function(className, a, b, c, d, e) {
+				log("windowManager.createInstance(..)");
+
+				var constr = tinymce.resolve(className);
+				return new constr(a, b, c, d, e);
+			};
+		});
+	}
+
+	tinymce.on('SetupEditor', patchEditor);
+	tinymce.PluginManager.add("compat3x", patchEditor);
+
+	tinymce.addI18n = function(prefix, o) {
+		var I18n = tinymce.util.I18n, each = tinymce.each;
+
+		if (typeof prefix == "string" && prefix.indexOf('.') === -1) {
+			I18n.add(prefix, o);
+			return;
+		}
+
+		if (!tinymce.is(prefix, 'string')) {
+			each(prefix, function(o, lc) {
+				each(o, function(o, g) {
+					each(o, function(o, k) {
+						if (g === 'common') {
+							I18n.data[lc + '.' + k] = o;
+						} else {
+							I18n.data[lc + '.' + g + '.' + k] = o;
+						}
+					});
+				});
+			});
+		} else {
+			each(o, function(o, k) {
+				I18n.data[prefix + '.' + k] = o;
+			});
+		}
+	};
+})(tinymce);
+
+
+  }).apply(root, arguments);
+});
+}(this));
+
 /* TinyMCE pattern.
  *
  * Options:
@@ -75360,7 +75713,9 @@ toolbar: "undo redo | styleselect | bold italic | alignleft aligncenter alignrig
  *    <form>
  *      <textarea class="pat-tinymce"
  *          data-pat-tinymce='{"relatedItems": {"vocabularyUrl": "/relateditems-test.json" },
- *                            {"upload": {"baseUrl": "/", relativePath: "upload"} } }'></textarea>
+ *                            "upload": {"baseUrl": "/", "relativePath": "upload"},
+ *                            "pasteImages": true
+ *                            }'></textarea>
  *    </form>
  *
  */
@@ -75380,7 +75735,7 @@ define('mockup-patterns-tinymce',[
   'text!mockup-patterns-tinymce-url/templates/selection.xml',
   'mockup-utils',
   'mockup-patterns-tinymce-url/js/links',
-  "mockup-i18n",
+  'mockup-i18n',
   'translate',
   'tinymce-modern-theme',
   'tinymce-advlist',
@@ -75422,7 +75777,8 @@ define('mockup-patterns-tinymce',[
   'tinymce-textpattern',
   'tinymce-visualblocks',
   'tinymce-visualchars',
-  'tinymce-wordcount'
+  'tinymce-wordcount',
+  'tinymce-compat3x'
 ], function($, _,
             Base, RelatedItems, Modal, tinymce,
             AutoTOC, ResultTemplate, SelectionTemplate,
@@ -75482,17 +75838,14 @@ define('mockup-patterns-tinymce',[
         {text: _t('Open in parent window / frame'), value: '_parent'},
         {text: _t('Open in top frame (replaces all frames)'), value: '_top'}
       ],
-      imageTypes: 'Image',
+      imageTypes: ['Image'],
       folderTypes: ['Folder', 'Plone Site'],
-      linkableTypes: 'Document,Event,File,Folder,Image,News Item,Topic',
       tiny: {
         'content_css': '../../../bower_components/tinymce-builded/js/tinymce/skins/lightgray/content.min.css',
         theme: '-modern',
-        plugins: [
-          'advlist autolink lists charmap print preview anchor ' +
-          'searchreplace visualblocks code fullscreen ' +
-          'insertdatetime media table contextmenu paste plonelink ploneimage'
-        ],
+        plugins: ['advlist', 'autolink', 'lists', 'charmap', 'print', 'preview', 'anchor', 'searchreplace',
+                  'visualblocks', 'code', 'fullscreen', 'insertdatetime', 'media', 'table', 'contextmenu',
+                  'paste', 'plonelink', 'ploneimage'],
         menubar: 'edit table format tools view insert',
         toolbar: 'undo redo | styleselect | bold italic | ' +
                  'alignleft aligncenter alignright alignjustify | ' +
@@ -75500,7 +75853,8 @@ define('mockup-patterns-tinymce',[
                  'unlink plonelink ploneimage',
         //'autoresize_max_height': 900,
         'height': 400
-      }
+      },
+      pasteImages: false
     },
     addLinkClicked: function() {
       var self = this;
@@ -75553,6 +75907,43 @@ define('mockup-patterns-tinymce',[
       } else {
         self.imageModal.reinitialize();
         self.imageModal.show();
+      }
+    },
+    addImagePasted: function(file){
+      var self = this;
+      if (self.pasteModal === null) {
+        var linkTypes = ['uploadImage'];
+        /*if(!self.options.upload){
+          linkTypes.splice(1, 1);
+        }*/
+        var options = $.extend(true, {}, self.options, {
+          tinypattern: self,
+          linkTypes: linkTypes,
+          initialLinkType: 'uploadImage',
+          text: {
+            insertHeading: _t('Insert Image')
+          },
+          /*relatedItems: {
+            baseCriteria: [{
+              i: 'portal_type',
+              o: 'plone.app.querystring.operation.list.contains',
+              v: self.options.imageTypes.concat(self.options.folderTypes)
+            }],
+            selectableTypes: self.options.imageTypes,
+            resultTemplate: ResultTemplate,
+            selectionTemplate: SelectionTemplate
+          }*/
+        });
+        var $el = $('<div/>').insertAfter(self.$el);
+        self.pasteModal = new LinkModal($el, options);
+        self.pasteModal.options.upload.clipboardfile = file;
+        self.pasteModal.show();
+        $('a[href=' + $('.linkType.uploadImage legend').attr('id') + ']').click();
+      } else {
+        self.pasteModal.reinitialize();
+        self.pasteModal.options.upload.clipboardfile = file;
+        self.pasteModal.show();
+        $('a[href=' + $('.linkType.uploadImage legend').attr('id') + ']').click();
       }
     },
     generateUrl: function(data) {
@@ -75651,7 +76042,7 @@ define('mockup-patterns-tinymce',[
     },
     init: function() {
       var self = this;
-      self.linkModal = self.imageModal = self.uploadModal = null;
+      self.linkModal = self.imageModal = self.uploadModal = self.pasteModal = null;
       // tiny needs an id in order to initialize. Creat it if not set.
       var id = utils.setId(self.$el);
       var tinyOptions = self.options.tiny;
@@ -75659,8 +76050,14 @@ define('mockup-patterns-tinymce',[
       tinyOptions.addLinkClicked = function() {
         self.addLinkClicked.apply(self, []);
       };
-      tinyOptions.addImageClicked = function() {
-        self.addImageClicked.apply(self, []);
+      if(self.options.pasteImages){
+        tinyOptions.paste_data_images = 'true';
+        tinyOptions.addImagePasted = function() {
+          self.addImagePasted.apply(self, []);
+        };
+      }
+      tinyOptions.addImageClicked = function(file) {
+        self.addImageClicked.apply(self, [file] );
       };
       // XXX: disabled skin means it wont load css files which we already
       // include in widgets.min.css
@@ -90525,5 +90922,5 @@ require([
   
 });
 
-define("/Users/ramon/Development/buildout.coredev/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
+define("/Users/nathan/code/fbigov.policy/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
 
