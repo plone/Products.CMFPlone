@@ -1386,3 +1386,33 @@ class IUserGroupsSettingsSchema(Interface):
             u"listing all of them."),
         default=False
     )
+
+
+class IImagingSchema(Interface):
+    allowed_sizes = schema.List(
+        title=_(u'Allowed image sizes'),
+        description=_(u'Specify all allowed maximum image dimensions, '
+                      'one per line. '
+                      'The required format is <name> <width>:<height>.'),
+        value_type=schema.TextLine(),
+        default=[
+            "large 768:768",
+            "preview 400:400",
+            "mini 200:200",
+            "thumb 128:128",
+            "tile 64:64",
+            "icon 32:32",
+            "listing 16:16"],
+        required=False,
+    )
+
+    quality = schema.Int(
+        title=_(u'Scaled image quality'),
+        description=_(u'A value for the quality of scaled images, from 1 '
+                      '(lowest) to 95 (highest). A value of 0 will mean '
+                      'plone.scaling\'s default will be used, which is '
+                      'currently 88.'),
+        min=0,
+        max=95,
+        default=88
+    )

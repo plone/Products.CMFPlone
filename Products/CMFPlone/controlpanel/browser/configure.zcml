@@ -3,6 +3,9 @@
     xmlns:five="http://namespaces.zope.org/five"
     xmlns:browser="http://namespaces.zope.org/browser">
 
+  <!-- needed for control panel permission -->
+  <include package="plone.app.imaging" />
+
   <permission id="plone.app.controlpanel.TinyMCE"
               title="Plone Site Setup: TinyMCE">
     <role name="Manager"/>
@@ -230,6 +233,13 @@
     name="uninstall_products"
     class=".quickinstaller.UninstallProductsView"
     permission="cmf.ManagePortal"
+    />
+
+ <browser:page
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    name="imaging-controlpanel"
+    class=".imaging.ImagingControlPanel"
+    permission="plone.app.controlpanel.Imaging"
     />
 
 </configure>

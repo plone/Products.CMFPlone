@@ -168,4 +168,11 @@
     i18n:attributes="title">
   <permission>Plone Site Setup: TinyMCE</permission>
  </configlet>
+  <configlet title="Image Handling" action_id="ImagingSettings" appId="ImagingSettings"
+    category="Products" condition_expr=""
+    icon_expr="string:$portal_url/image_icon.png"
+    url_expr="string:${portal_url}/@@imaging-controlpanel" visible="True"
+    i18n:attributes="title">
+  <permission>Plone Site Setup: Imaging</permission>
+ </configlet>
 </object>
