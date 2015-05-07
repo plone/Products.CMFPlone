@@ -5,7 +5,6 @@ from plone.registry.interfaces import IRegistry
 from zope.component import getUtility
 import json
 from zope import component
-from Products.CMFPlone.patterns.utils import format_pattern_settings
 from Products.CMFPlone.patterns.utils import get_portal_url
 from Products.CMFCore.interfaces._content import IFolderish
 from plone.uuid.interfaces import IUUID
@@ -59,8 +58,6 @@ class PloneSettingsAdapter(object):
               vocabularyUrl: config.portal_url +
                 '/@@getVocabulary?name=plone.app.vocabularies.Catalog'
             },
-            rel_upload_path: '@@fileUpload',
-            folder_url: config.document_base_url,
             tiny: config,
             prependToUrl: 'resolveuid/',
             linkAttribute: 'UID',
@@ -69,8 +66,9 @@ class PloneSettingsAdapter(object):
         """
         registry = getUtility(IRegistry)
         settings = registry.forInterface(ITinyMCESchema, prefix="plone")
+        portal_url = get_portal_url(self.context)
         config = {
-            'portal_url': get_portal_url(self.context),
+            'portal_url': portal_url,
             'document_base_url': self.context.absolute_url()
         }
 
@@ -113,39 +111,62 @@ class PloneSettingsAdapter(object):
         if content_css is None:
             content_css = settings.content_css
 
+        image_types = settings.imageobjects.splitlines()
+        folder_types = settings.containsobjects.splitlines()
+
+        tiny_config = {
+            'resize': settings.resizing and 'both' or False,
+            'content_css': content_css,
+            'plugins': ['plonelink', 'ploneimage'] + settings.plugins,
+            'external_plugins': {}
+        }
+        if settings.editor_height:
+            tiny_config['height'] = settings.editor_height
+        if settings.autoresize:
+            tiny_config['plugins'].append('autoresize')
+            tiny_config['autoresize_max_height'] = 1000  # hard coded?
+        if settings.editor_width:
+            tiny_config['width'] = settings.editor_width
+        if 'contextmenu' in settings.plugins:
+            tiny_config['contextmenu'] = "plonelink ploneimage inserttable | cell row column deletetable"  # noqa
+        if settings.libraries_spellchecker_choice:
+            tiny_config['plugins'].append('spellchecker')
+            if settings.libraries_spellchecker_choice == 'AtD':
+                mtool = getToolByName(portal, 'portal_membership')
+                member = mtool.getAuthenticatedMember()
+                if 'compat3x' not in tiny_config['plugins']:
+                    tiny_config['plugins'].append('compat3x')
+                tiny_config['external_plugins']['AtD'] = \
+                    '%s/++plone++static/tinymce-AtD-plugin/editor_plugin.js' % portal_url
+                # None when Anonymous User
+                tiny_config['atd_rpc_id'] = 'Products.TinyMCE-' + (member.getId() or '')
+                tiny_config['atd_rpc_url'] = "%s/@@" % portal_url
+                tiny_config['atd_show_types'] = settings.libraries_atd_show_types.strip().replace('\n', ',')  # noqa
+                tiny_config['atd_ignore_strings'] = settings.libraries_atd_ignore_strings.strip().replace('\n', ',')  # noqa
+
         configuration = {
-            'relatedItems': format_pattern_settings(
-                settings.relatedItems,
-                config),
+            'relatedItems': {
+                'vocabularyUrl': '%s/@@getVocabulary?name=plone.app.vocabularies.Catalog' % portal_url  # noqa
+            },
             'upload': {
                 'initialFolder': initial,
                 'currentPath': current_path,
                 'baseUrl': folder.absolute_url(),
-                'relativePath': format_pattern_settings(
-                    settings.rel_upload_path,
-                    config),
+                'relativePath': '@@fileUpload',
                 'uploadMultiple': False,
                 'maxFiles': 1,
                 'showTitle': False
             },
             'base_url': config['document_base_url'],
-            'tiny': {
-                'content_css': content_css,
-            },
+            'tiny': tiny_config,
             # This is for loading the languages on tinymce
             'loadingBaseUrl': '++plone++static/components/tinymce-builded/js/tinymce',
             'prependToUrl': 'resolveuid/',
-            'linkAttribute': format_pattern_settings(
-                settings.linkAttribute,
-                config),
-            'prependToScalePart': format_pattern_settings(
-                settings.prependToScalePart,
-                config),
-            # XXX need to get this from somewhere...
-            'folderTypes': ','.join(['Folder']),
-            'imageTypes': ','.join(['Image']),
+            'linkAttribute': 'UID',
+            'prependToScalePart': '/@@images/image/',
+            'folderTypes': folder_types,
+            'imageTypes': image_types
             # 'anchorSelector': utility.anchor_selector,
-            # 'linkableTypes': utility.linkable.replace('\n', ',')
         }
 
         return {'data-pat-tinymce': json.dumps(configuration)}

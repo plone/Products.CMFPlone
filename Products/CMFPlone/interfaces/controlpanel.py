@@ -360,42 +360,6 @@ class IFilterSchema(Interface):
         required=False)
 
 
-class ITinyMCEPatternSchema(Interface):
-
-    relatedItems = schema.Text(
-        title=_(u"Related Items vocabulary url"),
-        description=u"json:{'vocabularyUrl': '%(portal_url)s/@@getVocabulary?name=plone.app.vocabularies.Catalog'}",  # NOQA
-        default=u'json:{"vocabularyUrl": "%(portal_url)s/@@getVocabulary?name=plone.app.vocabularies.Catalog"}',  # NOQA
-        required=True)
-
-    rel_upload_path = schema.Text(
-        title=_(u"Relative upload path"),
-        description=u"@@fileUpload",
-        default=u'@@fileUpload',
-        required=True)
-
-    folder_url = schema.Text(
-        title=_(u"Folder URL"),
-        description=u"%(document_base_url)s",
-        default=u'%(document_base_url)s',
-        required=True)
-
-    linkAttribute = schema.TextLine(
-        title=_(u"Link Attribute"),
-        description=u"UID",
-        default=u'UID',
-        required=True)
-
-    prependToScalePart = schema.Text(
-        title=_(u"Prepend to Scale Part"),
-        description=u'/@@images/image/',
-        default=u'/@@images/image/')
-
-    content_css = schema.Text(
-        title=_(u"Content CSS URL"),
-        description=u'++plone++static/components/tinymce/skins/lightgray/content.min.css')  # NOQA
-
-
 class ITinyMCELayoutSchema(Interface):
     """This interface defines the layout properties."""
 
@@ -421,7 +385,7 @@ class ITinyMCELayoutSchema(Interface):
         title=_(u"Editor width"),
         description=_(u"This option gives you the ability to specify the "
                       "width of the editor (like 100% or 400px)."),
-        default=u'100%',
+        default=None,
         required=False)
 
     # TODO: add validation to assert % and px in the value
@@ -431,14 +395,7 @@ class ITinyMCELayoutSchema(Interface):
                       "height of the editor in pixels. "
                       "If auto resize is enabled this value is used "
                       "as minimum height."),
-        default=u'400px',
-        required=False)
-
-    contextmenu = schema.Bool(
-        title=_(u"Enable contextmenu"),
-        description=_(u"This option gives you the ability to enable/disable "
-                      "the use of the contextmenu."),
-        default=True,
+        default=None,
         required=False)
 
     content_css = schema.TextLine(
@@ -447,7 +404,7 @@ class ITinyMCELayoutSchema(Interface):
                       "that replaces the theme content CSS. "
                       "This CSS file is the one used within the editor "
                       "(the editable area)."),
-        default=u'',
+        default=u'++plone++static/components/tinymce/skins/lightgray/content.min.css',
         required=False)
 
     styles = schema.Text(
@@ -502,281 +459,60 @@ class ITinyMCELayoutSchema(Interface):
         required=False)
 
 
-class ITinyMCEToolbarSchema(Interface):
+class ITinyMCEPluginSchema(Interface):
     """This interface defines the toolbar properties."""
 
-    toolbar_width = schema.TextLine(
-        title=_(u"Toolbar width"),
-        description=_(u"This option gives you the ability to specify the "
-                      "width of the toolbar in pixels."),
-        default=u"440",
+    plugins = schema.List(
+        title=_("label_tinymce_plugins", default=u"Editor Plugins"),
+        description=_("help_tinymce_plugins", default=(
+            u"Enter a list of custom plugins which will be loaded in the "
+            u"editor. Format is pluginname or pluginname|location, one per "
+            u"line.")),
+        value_type=schema.Choice(vocabulary=SimpleVocabulary([
+            SimpleTerm('advlist', 'advlist', u"advlist"),
+            SimpleTerm('autosave', 'autosave', u"autosave"),
+            SimpleTerm('charmap', 'charmap', u"charmap"),
+            SimpleTerm('code', 'code', u"code"),
+            SimpleTerm('colorpicker', 'colorpicker', u"colorpicker"),
+            SimpleTerm('contextmenu', 'contextmenu', u"contextmenu"),
+            SimpleTerm('directionality', 'directionality', u"directionality"),
+            SimpleTerm('emoticons', 'emoticons', u"emoticons"),
+            SimpleTerm('fullpage', 'fullpage', u"fullpage"),
+            SimpleTerm('fullscreen', 'fullscreen', u"fullscreen"),
+            SimpleTerm('hr', 'hr', u"hr"),
+            SimpleTerm('importcss', 'importcss', u"importcss"),
+            SimpleTerm('insertdatetime', 'insertdatetime', u"insertdatetime"),
+            SimpleTerm('layer', 'layer', u"layer"),
+            SimpleTerm('lists', 'lists', u"lists"),
+            SimpleTerm('media', 'media', u"media"),
+            SimpleTerm('nonbreaking', 'nonbreaking', u"nonbreaking"),
+            SimpleTerm('noneditable', 'noneditable', u"noneditable"),
+            SimpleTerm('pagebreak', 'pagebreak', u"pagebreak"),
+            SimpleTerm('paste', 'paste', u"paste"),
+            SimpleTerm('preview', 'preview', u"preview"),
+            SimpleTerm('print', 'print', u"print"),
+            SimpleTerm('save', 'save', u"save"),
+            SimpleTerm('searchreplace', 'searchreplace', u"searchreplace"),
+            SimpleTerm('tabfocus', 'tabfocus', u"tabfocus"),
+            SimpleTerm('table', 'table', u"table"),
+            SimpleTerm('textcolor', 'textcolor', u"textcolor"),
+            SimpleTerm('textpattern', 'textpattern', u"textpattern"),
+            SimpleTerm('visualblocks', 'visualblocks', u"visualblocks"),
+            SimpleTerm('visualchars', 'visualchars', u"visualchars"),
+            SimpleTerm('wordcount', 'wordcount', u"wordcount")
+        ])),
+        default=['advlist', 'directionality', 'emoticons',
+                 'fullscreen', 'hr', 'insertdatetime', 'lists', 'media',
+                 'nonbreaking', 'noneditable', 'pagebreak', 'paste', 'preview',
+                 'print', 'save', 'searchreplace', 'tabfocus', 'table',
+                 'visualchars', 'wordcount'],
         required=False)
 
-    toolbar_external = schema.Bool(
-        title=_(u"Place toolbar on top of the page"),
-        description=_(u"This option enables the external toolbar which will "
-                      "be placed at the top of the page."),
-        default=False,
-        required=False)
-
-    toolbar_save = schema.Bool(
-        title=_(u"Save"),
-        default=True,
-        required=False)
-
-    toolbar_cut = schema.Bool(
-        title=_(u"Cut"),
-        default=False,
-        required=False)
-
-    toolbar_copy = schema.Bool(
-        title=_(u"Copy"),
-        default=False,
-        required=False)
-
-    toolbar_paste = schema.Bool(
-        title=_(u"Paste"),
-        default=False,
-        required=False)
-
-    toolbar_pastetext = schema.Bool(
-        title=_(u"Paste as Plain Text"),
-        default=False,
-        required=False)
-
-    toolbar_pasteword = schema.Bool(
-        title=_(u"Paste from Word"),
-        default=False,
-        required=False)
-
-    toolbar_undo = schema.Bool(
-        title=_(u"Undo"),
-        default=False,
-        required=False)
-
-    toolbar_redo = schema.Bool(
-        title=_(u"Redo"),
-        default=False,
-        required=False)
-
-    toolbar_search = schema.Bool(
-        title=_(u"Find"),
-        default=False,
-        required=False)
-
-    toolbar_replace = schema.Bool(
-        title=_(u"Find/Replace"),
-        default=False,
-        required=False)
-
-    toolbar_style = schema.Bool(
-        title=_(u"Select Style"),
-        default=True,
-        required=False)
-
-    toolbar_bold = schema.Bool(
-        title=_(u"Bold"),
-        default=True,
-        required=False)
-
-    toolbar_italic = schema.Bool(
-        title=_(u"Italic"),
-        default=True,
-        required=False)
-
-    toolbar_underline = schema.Bool(
-        title=_(u"Underline"),
-        default=False,
-        required=False)
-
-    toolbar_strikethrough = schema.Bool(
-        title=_(u"Strikethrough"),
-        default=False,
-        required=False)
-
-    toolbar_sub = schema.Bool(
-        title=_(u"Subscript"),
-        default=False,
-        required=False)
-
-    toolbar_sup = schema.Bool(
-        title=_(u"Superscript"),
-        default=False,
-        required=False)
-
-    toolbar_forecolor = schema.Bool(
-        title=_(u"Forecolor"),
-        default=False,
-        required=False)
-
-    toolbar_backcolor = schema.Bool(
-        title=_(u"Backcolor"),
-        default=False,
-        required=False)
-
-    toolbar_justifyleft = schema.Bool(
-        title=_(u"Align left"),
-        default=True,
-        required=False)
-
-    toolbar_justifycenter = schema.Bool(
-        title=_(u"Align center"),
-        default=True,
-        required=False)
-
-    toolbar_justifyright = schema.Bool(
-        title=_(u"Align right"),
-        default=True,
-        required=False)
-
-    toolbar_justifyfull = schema.Bool(
-        title=_(u"Align full"),
-        default=True,
-        required=False)
-
-    toolbar_bullist = schema.Bool(
-        title=_(u"Unordered list"),
-        default=True,
-        required=False)
-
-    toolbar_numlist = schema.Bool(
-        title=_(u"Ordered list"),
-        default=True,
-        required=False)
-
-    toolbar_definitionlist = schema.Bool(
-        title=_(u"Definition list"),
-        default=True,
-        required=False)
-
-    toolbar_outdent = schema.Bool(
-        title=_(u"Outdent"),
-        default=True,
-        required=False)
-
-    toolbar_indent = schema.Bool(
-        title=_(u"Indent"),
-        default=True,
-        required=False)
-
-    toolbar_tablecontrols = schema.Bool(
-        title=_(u"Table controls"),
-        default=True,
-        required=False)
-
-    toolbar_link = schema.Bool(
-        title=_(u"Insert/edit link"),
-        default=True,
-        required=False)
-
-    toolbar_unlink = schema.Bool(
-        title=_(u"Unlink"),
-        default=True,
-        required=False)
-
-    toolbar_anchor = schema.Bool(
-        title=_(u"Insert/edit anchor"),
-        default=True,
-        required=False)
-
-    toolbar_image = schema.Bool(
-        title=_(u"Insert/edit image"),
-        default=True,
-        required=False)
-
-    toolbar_media = schema.Bool(
-        title=_(u"Insert/edit media"),
-        default=False,
-        required=False)
-
-    toolbar_charmap = schema.Bool(
-        title=_(u"Insert custom character"),
-        default=False,
-        required=False)
-
-    toolbar_hr = schema.Bool(
-        title=_(u"Insert horizontal ruler"),
-        default=False,
-        required=False)
-
-    toolbar_advhr = schema.Bool(
-        title=_(u"Insert advanced horizontal ruler"),
-        default=False,
-        required=False)
-
-    toolbar_insertdate = schema.Bool(
-        title=_(u"Insert date"),
-        default=False,
-        required=False)
-
-    toolbar_inserttime = schema.Bool(
-        title=_(u"Insert time"),
-        default=False,
-        required=False)
-
-    toolbar_emotions = schema.Bool(
-        title=_(u"Emotions"),
-        default=False,
-        required=False)
-
-    toolbar_nonbreaking = schema.Bool(
-        title=_(u"Insert non-breaking space character"),
-        default=False,
-        required=False)
-
-    toolbar_pagebreak = schema.Bool(
-        title=_(u"Insert page break"),
-        default=False,
-        required=False)
-
-    toolbar_print = schema.Bool(
-        title=_(u"Print"),
-        default=False,
-        required=False)
-
-    toolbar_preview = schema.Bool(
-        title=_(u"Preview"),
-        default=False,
-        required=False)
-
-    toolbar_spellchecker = schema.Bool(
-        title=_(u"Spellchecker"),
-        default=False,
-        required=False)
-
-    toolbar_removeformat = schema.Bool(
-        title=_(u"Remove formatting"),
-        default=False,
-        required=False)
-
-    toolbar_cleanup = schema.Bool(
-        title=_(u"Cleanup messy code"),
-        default=False,
-        required=False)
-
-    toolbar_visualaid = schema.Bool(
-        title=_(u"Toggle guidelines/invisible objects"),
-        default=False,
-        required=False)
-
-    toolbar_visualchars = schema.Bool(
-        title=_(u"Visual control characters on/off"),
-        default=False,
-        required=False)
-
-    toolbar_attribs = schema.Bool(
-        title=_(u"Insert/edit attributes"),
-        default=False,
-        required=False)
-
-    toolbar_code = schema.Bool(
-        title=_(u"Edit HTML Source"),
-        default=True,
-        required=False)
-
-    toolbar_fullscreen = schema.Bool(
-        title=_(u"Toggle fullscreen mode"),
-        default=True,
+    customplugins = schema.Text(
+        title=_(u"Custom Plugins"),
+        description=_(u"Enter a list of custom plugins which will be loaded "
+                      "in the editor. Format is pluginname or "
+                      "pluginname|location, one per line."),
         required=False)
 
     customtoolbarbuttons = schema.Text(
@@ -785,9 +521,10 @@ class ITinyMCEToolbarSchema(Interface):
                       "loaded in the editor, one per line."),
         default=u"",
         required=False)
+ITinyMCELibrariesSchema = ITinyMCEPluginSchema  # bw compat
 
 
-class ITinyMCELibrariesSchema(Interface):
+class ITinyMCESpellCheckerSchema(Interface):
     """This interface defines the libraries properties."""
 
     libraries_spellchecker_choice = schema.Choice(
@@ -800,8 +537,6 @@ class ITinyMCELibrariesSchema(Interface):
         vocabulary=SimpleVocabulary([
             SimpleTerm('browser', 'browser',
                        _(u"Default browser spellchecker")),
-            SimpleTerm('iespell', 'iespell',
-                       _(u"ieSpell (free for personal use)")),
             SimpleTerm('AtD', 'AtD',
                        _(u"After the deadline (FLOSS)")),
         ]),
@@ -849,27 +584,14 @@ class ITinyMCELibrariesSchema(Interface):
 class ITinyMCEResourceTypesSchema(Interface):
     """This interface defines the resource types properties."""
 
-    link_using_uids = schema.Bool(
-        title=_(u"Link using UIDs"),
-        description=_(u"Links to objects on this site can use unique object "
-                      "ids so that the links remain valid even if the target "
-                      "object is renamed or moved elsewhere on the site."),
-        default=True,
-        required=False)
-
-    allow_captioned_images = schema.Bool(
-        title=_(u"Allow captioned images"),
-        description=_(u"Images will be automatically captioned."),
-        default=False,
-        required=False)
-
-    rooted = schema.Bool(
-        title=_(u"Rooted to current object"),
-        description=_(u"When enabled the user will be rooted to the current "
-                      "object and can't add links and images from other parts "
-                      "of the site."),
-        default=False,
-        required=False)
+    # XXX Not implemented in new tinymce version. Need to decide about this
+    # rooted = schema.Bool(
+    #    title=_(u"Rooted to current object"),
+    #    description=_(u"When enabled the user will be rooted to the current "
+    #                  "object and can't add links and images from other parts "
+    #                  "of the site."),
+    #    default=False,
+    #    required=False)
 
     containsobjects = schema.Text(
         title=_(u"Contains Objects"),
@@ -890,66 +612,20 @@ class ITinyMCEResourceTypesSchema(Interface):
                 u"ATRelativePathCriterion",
         required=False)
 
-    linkable = schema.Text(
-        title=_(u"Linkable Objects"),
-        description=_(u"Enter a list of content types which can be linked. "
-                      "Format is one contenttype per line."),
-        required=False)
+    # XXX do we still want this?
+    # seems like it could be really annoying for users
+    # creating new types.
+    # linkable = schema.Text(
+    #    title=_(u"Linkable Objects"),
+    #    description=_(u"Enter a list of content types which can be linked. "
+    #                  "Format is one contenttype per line."),
+    #    required=False)
 
     imageobjects = schema.Text(
         title=_(u"Image Objects"),
         description=_(u"Enter a list of content types which can be used as "
                       "images. Format is one contenttype per line."),
         default=u"Image",
-        required=False)
-
-    plugins = schema.List(
-        title=_("label_tinymce_plugins", default=u"Editor Plugins"),
-        description=_("help_tinymce_plugins", default=(
-            u"Enter a list of custom plugins which will be loaded in the "
-            u"editor. Format is pluginname or pluginname|location, one per "
-            u"line.")),
-        value_type=schema.Choice(vocabulary=SimpleVocabulary([
-            SimpleTerm('advhr', 'advhr', u"advhr"),
-            SimpleTerm('definitionlist', 'definitionlist', u"definitionlist"),
-            SimpleTerm('directionality', 'directionality', u"directionality"),
-            SimpleTerm('emotions', 'emotions', u"emotions"),
-            SimpleTerm('fullscreen', 'fullscreen', u"fullscreen"),
-            SimpleTerm('inlinepopups', 'inlinepopups', u"inlinepopups"),
-            SimpleTerm('insertdatetime', 'insertdatetime', u"insertdatetime"),
-            SimpleTerm('media', 'media', u"media"),
-            SimpleTerm('nonbreaking', 'nonbreaking', u"nonbreaking"),
-            SimpleTerm('noneditable', 'noneditable', u"noneditable"),
-            SimpleTerm('pagebreak', 'pagebreak', u"pagebreak"),
-            SimpleTerm('paste', 'paste', u"paste"),
-            SimpleTerm('plonebrowser', 'plonebrowser', u"plonebrowser"),
-            SimpleTerm(
-                'ploneinlinestyles', 'ploneinlinestyles',
-                u"ploneinlinestyles"),
-            SimpleTerm('plonestyle', 'plonestyle', u"plonestyle"),
-            SimpleTerm('preview', 'preview', u"preview"),
-            SimpleTerm('print', 'print', u"print"),
-            SimpleTerm('save', 'save', u"save"),
-            SimpleTerm('searchreplace', 'searchreplace', u"searchreplace"),
-            SimpleTerm('tabfocus', 'tabfocus', u"tabfocus"),
-            SimpleTerm('table', 'table', u"table"),
-            SimpleTerm('visualchars', 'visualchars', u"visualchars"),
-            SimpleTerm('xhtmlxtras', 'xhtmlxtras', u"xhtmlxtras")
-        ])),
-        default=['advhr', 'definitionlist', 'directionality', 'emotions',
-                 'fullscreen', 'inlinepopups', 'insertdatetime', 'media',
-                 'nonbreaking', 'noneditable', 'pagebreak', 'paste',
-                 'plonebrowser', 'ploneinlinestyles', 'plonestyle', 'preview',
-                 'print', 'save', 'searchreplace', 'tabfocus', 'table',
-                 'visualchars', 'xhtmlxtras'],
-        required=False)
-
-    customplugins = schema.Text(
-        title=_(u"Custom Plugins"),
-        description=_(u"Enter a list of custom plugins which will be loaded "
-                      "in the editor. Format is pluginname or "
-                      "pluginname|location, one per line."),
-        default=u"plonebrowser",
         required=False)
 
     entity_encoding = schema.Choice(
@@ -972,10 +648,9 @@ class ITinyMCEResourceTypesSchema(Interface):
 
 class ITinyMCESchema(
     ITinyMCELayoutSchema,
-    ITinyMCEToolbarSchema,
-    ITinyMCELibrariesSchema,
-    ITinyMCEResourceTypesSchema,
-    ITinyMCEPatternSchema
+    ITinyMCEPluginSchema,
+    ITinyMCESpellCheckerSchema,
+    ITinyMCEResourceTypesSchema
 ):
     """TinyMCE Schema"""
 

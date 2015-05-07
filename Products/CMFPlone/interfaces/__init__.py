@@ -18,11 +18,10 @@ from controlpanel import ISearchSchema
 from controlpanel import ISecuritySchema
 from controlpanel import ISiteSchema
 from controlpanel import ITinyMCELayoutSchema
-from controlpanel import ITinyMCELibrariesSchema
-from controlpanel import ITinyMCEPatternSchema
+from controlpanel import ITinyMCESpellCheckerSchema
 from controlpanel import ITinyMCEResourceTypesSchema
 from controlpanel import ITinyMCESchema
-from controlpanel import ITinyMCEToolbarSchema
+from controlpanel import ITinyMCEPluginSchema
 from controlpanel import ITypesSchema
 from controlpanel import IUserGroupsSettingsSchema
 from events import IConfigurationChangedEvent
