@@ -14,10 +14,11 @@
  * @class tinymce.UndoManager
  */
 define("tinymce/UndoManager", [
+	"tinymce/util/VK",
 	"tinymce/Env",
 	"tinymce/util/Tools",
 	"tinymce/html/SaxParser"
-], function(Env, Tools, SaxParser) {
+], function(VK, Env, Tools, SaxParser) {
 	var trim = Tools.trim, trimContentRegExp;
 
 	trimContentRegExp = new RegExp([
@@ -142,7 +143,8 @@ define("tinymce/UndoManager", [
 			}
 
 			// If key isn't shift,ctrl,alt,capslock,metakey
-			if ((keyCode < 16 || keyCode > 20) && keyCode != 224 && keyCode != 91 && !self.typing) {
+			var modKey = VK.modifierPressed(e);
+			if ((keyCode < 16 || keyCode > 20) && keyCode != 224 && keyCode != 91 && !self.typing && !modKey) {
 				self.beforeChange();
 				self.typing = true;
 				self.add({}, e);
@@ -157,8 +159,8 @@ define("tinymce/UndoManager", [
 		});
 
 		// Add keyboard shortcuts for undo/redo keys
-		editor.addShortcut('ctrl+z', '', 'Undo');
-		editor.addShortcut('ctrl+y,ctrl+shift+z', '', 'Redo');
+		editor.addShortcut('meta+z', '', 'Undo');
+		editor.addShortcut('meta+y,meta+shift+z', '', 'Redo');
 
 		editor.on('AddUndo Undo Redo ClearUndos', function(e) {
 			if (!e.isDefaultPrevented()) {

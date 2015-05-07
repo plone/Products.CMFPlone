@@ -32,12 +32,12 @@ define([
 
     while ((match=disable_re.exec(window.location.search)) !== null) {
         disabled[match[1]] = true;
-        log.info('Pattern disabled via url config:', match[1]);
+        log.info("Pattern disabled via url config:", match[1]);
     }
 
     while ((match=dont_catch_re.exec(window.location.search)) !== null) {
         dont_catch = true;
-        log.info('I will not catch init exceptions');
+        log.info("I will not catch init exceptions");
     }
 
     var registry = {
@@ -49,14 +49,20 @@ define([
         initialized: false,
         init: function registry_init() {
             $(document).ready(function() {
-                log.info('loaded: ' + Object.keys(registry.patterns).sort().join(', '));
+                log.info("loaded: " + Object.keys(registry.patterns).sort().join(", "));
                 registry.scan(document.body);
                 registry.initialized = true;
-                log.info('finished initial scan.');
+                log.info("finished initial scan.");
             });
         },
 
-        scan: function registry_scan(content, patterns, trigger) {
+        clear: function clearRegistry() {
+            // Removes all patterns from the registry. Currently only being
+            // used in tests.
+            this.patterns = {};
+        },
+
+        scan: function registryScan(content, patterns, trigger) {
             var $content = $(content),
                 all = [], allsel,
                 $match, plog;
@@ -67,7 +73,7 @@ define([
             // selector for all patterns
             patterns.forEach(function registry_scan_loop(name) {
                 if (disabled[name]) {
-                    log.debug('Skipping disabled pattern:', name);
+                    log.debug("Skipping disabled pattern:", name);
                     return;
                 }
                 var pattern = registry.patterns[name];
@@ -86,7 +92,7 @@ define([
             // Find all elements that belong to any pattern.
             allsel = all.join(",");
             $match = $content.findInclusive(allsel);
-            $match = $match.filter(function() { return $(this).parents('pre').length === 0; });
+            $match = $match.filter(function() { return $(this).parents("pre").length === 0; });
             $match = $match.filter(":not(.cant-touch-this)");
 
             // walk list backwards and initialize patterns inside-out.
@@ -109,7 +115,7 @@ define([
                     }
                 }
             }, null);
-            $('body').addClass('patterns-loaded');
+            $("body").addClass("patterns-loaded");
         },
 
         register: function registry_register(pattern, name) {

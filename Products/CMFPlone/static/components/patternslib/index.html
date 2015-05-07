@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Patterns demo pages</title>
+	<link rel="stylesheet" href="demo/common.css" type="text/css">
+    <script src="main.js" type="text/javascript" charset="utf-8"></script>
+  </head>
+  <body class="component-index">
+	<nav id="component-index" class="component-index navigation">
+		<div class="behavioural">
+			<h4>Behavioural</h4>
+			<a class="navigation ajax" href="/demo/inject/index.html" title="AJAX injection">Injection (AJAX)<sup>unknown</sup></a>
+			<a class="navigation switch" href="/demo/switch/index.html" title="Switch">Switching<sup>β</sup></a>
+			<a class="navigation toggle" href="/demo/toggle/index.html" title="Toggle">Class toggle<sup>β</sup></a>
+			<a class="navigation depends" href="/demo/depends/index.html" title="">Depends<sup>β</sup></a>
+			<a class="navigation clone" href="/demo/clone/index.html" title="">Clone<sup>β</sup></a>
+		</div>
+		<div class="navigation">
+			<h4>Navigation</h4>
+			<a class="navigation tree" href="/demo/expandable-tree/index.html" title="">Expandable tree<sup>unknown</sup></a>
+			<a class="navigation navigation-marker" href="/demo/navigation/index.html" title="Navigation markers">Navigation<sup>unknown</sup></a>
+		</div>
+		
+		<div class="layout">
+			<h4>Layout</h4>
+			<a class="navigation auto-scale" href="/demo/auto-scale/index.html" title="Auto scale">Auto scaling<sup>ß</sup></a>
+			<a class="navigation bumper" href="/demo/bumper/index.html" title="Bumper">Bumper<sup>β</sup></a>
+			<a class="navigation equaliser" href="/demo/equaliser/index.html" title="Equaliser">Equaliser<sup>β</sup></a>
+			<a class="navigation grid" href="/demo/grid/index.html" title="Bumper">Grid</a>
+		</div>
+		
+		<div class="forms">
+			<h4>Forms</h4>
+			<a class="navigation autofocus" href="/demo/autofocus/index.html" title="Auto focus">Autofocus<sup>stable</sup></a>
+			<a class="navigation auto-submit" href="/demo/auto-submit/index.html" title="Auto submit">Auto submit<sup>β</sup></a>
+			<a class="navigation auto-suggest" href="/demo/auto-suggest/index.html" title="Auto suggest">Auto suggest<sup>β</sup></a>
+			<a class="navigation focus" href="/demo/focus/index.html" title="">Focus<sup>stable</sup></a>
+			<!-- <a class="navigation form-validation" href="/demo/validate/index.html" title="">Form validation<sup>unknown</sup></a> -->
+			<a class="navigation checked-flag" href="/demo/checked-flag/index.html" title="checkedflag">Checked flag<sup>unknown</sup></a>
+			<a class="navigation checkboxes" href="/demo/checklist/index.html" title="checklist">Checkboxes<sup>unknown</sup></a>
+            <a class="navigation validate" href="/demo/validate/index.html">Validate<sup>β</sup></a>
+		</div>
+		
+		<div class="fancy-stuff">
+			<h4>Fancy stuff</h4>
+			<a class="navigation full-calendar" href="/demo/calendar/index.html" title="Calendar">Full calendar<sup>β</sup></a><a class="navigation carousel" href="carousel/index.html" title="">Carousel<sup>β</sup></a>
+			<a class="navigation collapsible" href="/demo/collapsible/index.html" title="collapsible">Collapsible<sup>stable</sup></a>
+			<a class="navigation tiny-mce" href="/demo/edit-tinymce/index.html" title="Rich editor">Tiny MCE rich editor<sup>unknown</sup></a>
+                        <a class="navigation forward" href="/demo/forward/index.html" title="Forward">Forward click events<sup>unknown</sup></a>
+			<a class="navigation image-crop" href="/demo/image-crop/index.html" title="Image crop">Image crop<sup>unknown</sup></a>
+			<a class="navigation markdown" href="/demo/markdown/index.html" title="Markdown rendering">Markdown<sup>α</sup></a>
+			<a class="navigation modal-panel" href="/demo/modal/index.html" title="Modal panels">Modal panels<sup>unknown</sup></a>
+			<a class="navigation notification" href="/demo/notification.html" title="Notifications">Notifications<sup>unknown</sup></a>
+			<a class="navigation sortable" href="/demo/sortable/index.html" title="">Sortable<sup>unknown</sup></a>
+			<a class="navigation tooltip" href="/demo/tooltip/index.html" title="">Tooltips<sup>stable</sup></a>
+			<a class="navigation zoom" href="/demo/zoom/index.html" title="">Zoom<sup>β</sup></a>
+			<a class="navigation gallery" href="/demo/gallery/index.html" title="">Gallery<sup>β</sup></a>
+			<a class="navigation slides" href="/demo/slides/index.html" title="">Slideshows<sup>β</sup></a>
+			<a class="navigation slideshow-builder" href="/demo/slideshow-builder/index.html" title="">Slideshow builder<sup>β</sup></a>
+            <a class="navigation masonry" href="/demo/masonry/index.html" title="">Masonry<sup>β</sup></a>
+		</div>
+	</nav>
+	
+	<a href="../index.html" class="pat-inject" data-pat-inject="source: #global-navigation::element; target: self::element; trigger: autoload">Global navigation</a>
+    <script src="bundle.js" type="text/javascript"></script>
+  </body>
+</html>
