@@ -279,16 +279,11 @@
       </value>
   </records>
 
-  <records prefix="plone.resources/domready"
-            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++plone++static/components/domready/ready.js</value>
-  </records>
-
   <records prefix="plone.resources/dropzone"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++plone++static/components/dropzone/downloads/dropzone-amd-module.js</value>
+      <value key="js">++plone++static/components/dropzone/dist/dropzone-amd-module.js</value>
       <value key="css">
-        <element>++plone++static/components/dropzone/downloads/css/dropzone.css</element>
+        <element>++plone++static/components/dropzone/dist/dropzone.css</element>
       </value>
   </records>
 
