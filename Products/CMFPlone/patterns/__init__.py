@@ -155,6 +155,9 @@ class TinyMCESettingsGenerator(object):
         if settings.formats:
             tiny_config['formats'] = json.loads(settings.formats)
 
+        if settings.menubar:
+            tiny_config['menubar'] = settings.menubar
+
         return tiny_config
 
 

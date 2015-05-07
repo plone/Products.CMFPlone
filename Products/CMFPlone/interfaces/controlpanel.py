@@ -527,6 +527,13 @@ class ITinyMCEPluginSchema(Interface):
                  'visualchars', 'wordcount'],
         required=False)
 
+    menubar = schema.Text(
+        title=_("label_tinymce_menubar", default=u"Menubar"),
+        description=_("help_tinymce_menubar", default=(
+            u"Enter what items you would like in the menu bar.")),
+        required=True,
+        default=u'edit table format tools view insert')
+
     toolbar = schema.Text(
         title=_("label_tinymce_toolbar", default=u"Toolbar"),
         description=_("help_tinymce_toolbar", default=(
