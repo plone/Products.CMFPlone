@@ -4,7 +4,8 @@ Changelog
 2.5.6 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add ``_authenticator`` param to contenthistory URLs.
+  This will prevent CSRF warnings. See `#330`__
 
 
 2.5.5 (2015-05-04)

@@ -6,6 +6,7 @@ from zope.component import getMultiAdapter, queryMultiAdapter
 from AccessControl import getSecurityManager
 from Acquisition import aq_inner
 from DateTime import DateTime
+from plone.protect.authenticator import createToken
 from plone.registry.interfaces import IRegistry
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.utils import _checkPermission
@@ -318,10 +319,12 @@ class ContentHistoryViewlet(WorkflowHistoryViewlet):
         def morphVersionDataToHistoryFormat(vdata, version_id):
             meta = vdata["metadata"]["sys_metadata"]
             userid = meta["principal"]
+            token = createToken()
             preview_url = \
-                "%s/versions_history_form?version_id=%s#version_preview" % (
+                "%s/versions_history_form?version_id=%s&_authenticator=%s#version_preview" % (  # noqa
                     context_url,
-                    version_id
+                    version_id,
+                    token
                 )
             info = dict(
                 type='versioning',
@@ -336,13 +339,13 @@ class ContentHistoryViewlet(WorkflowHistoryViewlet):
             if can_diff:
                 if version_id > 0:
                     info["diff_previous_url"] = (
-                        "%s/@@history?one=%s&two=%s" %
-                        (context_url, version_id, version_id - 1)
+                        "%s/@@history?one=%s&two=%s&_authenticator=%s" %
+                        (context_url, version_id, version_id - 1, token)
                     )
                 if not rt.isUpToDate(context, version_id):
                     info["diff_current_url"] = (
-                        "%s/@@history?one=current&two=%s" %
-                        (context_url, version_id)
+                        "%s/@@history?one=current&two=%s&_authenticator=%s" %
+                        (context_url, version_id, token)
                     )
             if can_revert:
                 info["revert_url"] = "%s/revertversion" % context_url
