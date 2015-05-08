@@ -4,6 +4,9 @@ Changelog
 2.5.6 (unreleased)
 ------------------
 
+- do not set width and height on logo
+  [vangheem]
+
 - provide active class for currently selected toolbar item
   [vangheem]
 

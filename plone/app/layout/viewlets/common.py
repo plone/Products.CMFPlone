@@ -195,30 +195,16 @@ class LogoViewlet(ViewletBase):
 
         registry = getUtility(IRegistry)
         settings = registry.forInterface(ISiteSchema, prefix="plone")
-        logo_title = settings.site_title
+        self.logo_title = settings.site_title
 
         if getattr(settings, 'site_logo', False):
             filename, data = b64decode_file(settings.site_logo)
             data = NamedImage(data=data, filename=filename)
-            width, height = data.getImageSize()
-            img_src = '{}/@@site-logo/{}'.format(
+            self.img_src = '{}/@@site-logo/{}'.format(
                 self.navigation_root_url, filename)
-            self.logo_tag = u'<img src="{img_src}" '\
-                u'width="{width}" height="{height}"'\
-                u'alt="{logo_title}" title="{logo_title}"/>'.format(
-                    img_src=img_src,
-                    width=width,
-                    height=height,
-                    logo_title=logo_title
-                )
         else:
-            portal = self.portal_state.navigation_root()
-            # Support for OFS.Image/skin layer based logos
-            logo_name = 'logo.png'
-            self.logo_tag = portal.restrictedTraverse(
-                logo_name).tag(title=logo_title, alt=logo_title)
-            # TODO: deprecate the skin layer based logo above and use one
-            #       defined as browser or plone resource.
+            self.img_src = '%s/logo.png' % (
+                self.navigation_root_url)
 
 
 class GlobalSectionsViewlet(ViewletBase):

@@ -6,4 +6,6 @@
    i18n:domain="plone"
    i18n:attributes="title">
     <img src="logo.png" alt=""
-         tal:replace="structure view/logo_tag" /></a>
+         tal:attributes="alt view/logo_title;
+                         title view/logo_title;
+                         src view/img_src" /></a>
