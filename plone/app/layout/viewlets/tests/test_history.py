@@ -95,9 +95,8 @@ class TestContentHistoryViewlet(ViewletsTestCase):
         repo_tool.save(context, comment='Second Revision')
         viewlet.update()
         history = viewlet.revisionHistory()
-        self.assertEqual(
-            history[0]['diff_previous_url'],
-            'http://nohost/plone/Members/test_user_1_/d1/@@history?one=1&two=0'
+        self.assertTrue(
+            'http://nohost/plone/Members/test_user_1_/d1/@@history?one=1&two=0' in history[0]['diff_previous_url']
         )
 
         # check diff link does not appear if content is not diffable
@@ -120,7 +119,8 @@ class TestContentHistoryViewlet(ViewletsTestCase):
 
         viewlet.update()
         history = viewlet.revisionHistory()
-        self.assertEqual(history[0]['revert_url'], 'http://nohost/plone/Members/test_user_1_/d1/revertversion')
+        self.assertTrue(
+            'http://nohost/plone/Members/test_user_1_/d1/revertversion' in history[0]['revert_url'])  # noqa
 
         self.portal.manage_permission('CMFEditions: Revert to previous versions', [], False)
 
