@@ -11,6 +11,9 @@ Changelog
 - Respect TinyMCE control panel settings
   [vangheem]
 
+- enable/disable versioning behavior with settings in Types control panel
+  [vangheem]
+
 - Make typesToList read metaTypesNotToList from new p.a.registry settings.
   This fixes https://github.com/plone/Products.CMFPlone/issues/454.
   [timo]
