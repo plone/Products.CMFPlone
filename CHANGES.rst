@@ -4,6 +4,9 @@ Changelog
 2.5.6 (unreleased)
 ------------------
 
+- provide active class for currently selected toolbar item
+  [vangheem]
+
 - Add ``_authenticator`` param to contenthistory URLs.
   This will prevent CSRF warnings. See `#330`__
 

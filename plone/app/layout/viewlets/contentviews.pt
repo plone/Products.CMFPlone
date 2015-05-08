@@ -4,7 +4,8 @@
 
   <tal:block define="view_actions view/prepareObjectTabs;">
     <li tal:repeat="action view_actions"
-        tal:attributes="id string:contentview-${action/id}">
+        tal:attributes="id string:contentview-${action/id};
+                        class python: action.get('selected') and 'active' or ''">
       <tal:var define="selected action/selected|nothing;">
         <a href="#"
            tal:attributes="href action/url;
