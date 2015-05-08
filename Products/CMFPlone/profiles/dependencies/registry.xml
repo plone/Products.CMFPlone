@@ -961,9 +961,9 @@
       <element key="plone-toolbar-font-secundary">'Roboto', sans-serif</element>
       <element key="plone-toolbar-separator-color">rgba(255,255,255,.17)</element>
       <element key="plone-toolbar-link">{plone-link-color}</element>
-      <element key="plone-toolbar-text-color">rgba(255,255,255,.9)</element>
-      <element key="plone-toolbar-submenu-text-color">{plone-gray-lighter}</element>
-      <element key="plone-toolbar-submenu-header-color">{plone-gray-light}</element>
+      <element key="plone-toolbar-text-color">rgba(255,255,255,1)</element>
+      <element key="plone-toolbar-submenu-text-color">lighten(#000, 90%)</element>
+      <element key="plone-toolbar-submenu-header-color">lighten(#000, 80%)</element>
       <element key="plone-toolbar-published-color">{plone-link-color}</element>
       <element key="plone-toolbar-draft-color">rgb(250,184,42)</element>
       <element key="plone-toolbar-pending-color">rgb(226,231,33)</element>
