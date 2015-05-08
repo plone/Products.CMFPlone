@@ -11,8 +11,6 @@ from zope.interface import alsoProvides
 from zope.interface import implements
 from zope.publisher.browser import BrowserView
 
-from AccessControl import Unauthorized
-from Acquisition import aq_base
 from Products.CMFCore.utils import getToolByName
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.browserpage.viewpagetemplatefile import (
@@ -133,6 +131,7 @@ class LayoutPolicy(BrowserView):
             (context, self.request), name=u'plone_portal_state')
         normalizer = queryUtility(IIDNormalizer)
 
+        body_classes = []
         # template class (required)
         name = ''
         if isinstance(template, ViewPageTemplateFile) or \
@@ -144,23 +143,21 @@ class LayoutPolicy(BrowserView):
             name = template.getId()
         if name:
             name = normalizer.normalize(name)
-            body_class = 'template-%s' % name
-        else:
-            body_class = ''
+            body_classes.append('template-%s' % name)
 
         # portal type class (optional)
         portal_type = normalizer.normalize(context.portal_type)
         if portal_type:
-            body_class += " portaltype-%s" % portal_type
+            body_classes.append("portaltype-%s" % portal_type)
 
         # section class (optional)
         navroot = portal_state.navigation_root()
-        body_class += " site-%s" % navroot.getId()
+        body_classes.append("site-%s" % navroot.getId())
 
         contentPath = context.getPhysicalPath()[
             len(navroot.getPhysicalPath()):]
         if contentPath:
-            body_class += " section-%s" % contentPath[0]
+            body_classes.append("section-%s" % contentPath[0])
             # skip first section since we already have that...
             if len(contentPath) > 1:
                 registry = getUtility(IRegistry)
@@ -173,40 +170,39 @@ class LayoutPolicy(BrowserView):
                     classes = ['subsection-%s' % contentPath[1]]
                     for section in contentPath[2:depth]:
                         classes.append('-'.join([classes[-1], section]))
-                    body_class += " %s" % ' '.join(classes)
+                    body_classes.extend(classes)
 
         # class for hiding icons (optional)
         if self.icons_visible():
-            body_class += ' icons-on'
+            body_classes.append('icons-on')
 
         # class for user roles
         membership = getToolByName(context, "portal_membership")
 
         if membership.isAnonymousUser():
-            body_class += ' userrole-anonymous'
+            body_classes.append('userrole-anonymous')
         else:
             user = membership.getAuthenticatedMember()
             for role in user.getRolesInContext(self.context):
-                body_class += ' userrole-' + role.lower().replace(' ', '-')
+                body_classes.append('userrole-' + role.lower().replace(' ', '-'))
 
-        # class for the toolbar state
-        if not membership.isAnonymousUser():
+            # toolbar classes
             toolbar_state = self.request.cookies.get('plone-toolbar')
             if toolbar_state:
                 if 'plone-toolbar-left' in toolbar_state:
                     if 'expanded' in toolbar_state:
-                        body_class += ' plone-toolbar-left-expanded'
+                        body_classes.append('plone-toolbar-left-expanded')
                     else:
-                        body_class += ' plone-toolbar-left-default'
+                        body_classes.append('plone-toolbar-left-default')
                 if 'plone-toolbar-top' in toolbar_state:
                     if 'expanded' in toolbar_state:
-                        body_class += ' plone-toolbar-top-expanded'
+                        body_classes.append('plone-toolbar-top-expanded')
                     else:
-                        body_class += ' plone-toolbar-top-default'
+                        body_classes.append('plone-toolbar-top-default')
                 if 'compressed' in toolbar_state:
-                    body_class += ' plone-toolbar-compressed'
+                    body_classes.append('plone-toolbar-compressed')
             else:
-                body_class += ' plone-toolbar-left-default'
+                body_classes.append('plone-toolbar-left-default')
 
         # class for markspeciallinks pattern
         properties = getToolByName(context, "portal_properties")
@@ -215,6 +211,6 @@ class LayoutPolicy(BrowserView):
         msl = props.getProperty('mark_special_links', 'false')
         elonw = props.getProperty('external_links_open_new_window', 'false')
         if msl == 'true' or elonw == 'true':
-            body_class += ' pat-markspeciallinks'
+            body_classes.append('pat-markspeciallinks')
 
-        return body_class
+        return ' '.join(body_classes)
