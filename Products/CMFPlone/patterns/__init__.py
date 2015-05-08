@@ -113,8 +113,14 @@ class TinyMCESettingsGenerator(object):
             tiny_config['autoresize_max_height'] = 1000  # hard coded?
         if settings.editor_width:
             tiny_config['width'] = settings.editor_width
+
+        # specific plugin options
         if 'contextmenu' in settings.plugins:
             tiny_config['contextmenu'] = "plonelink ploneimage inserttable | cell row column deletetable"  # noqa
+        if 'importcss' in settings.plugins:
+            tiny_config['importcss_append'] = True
+            tiny_config['importcss_file_filter'] = tiny_config['content_css']
+
         if settings.libraries_spellchecker_choice == 'AtD':
             mtool = getToolByName(self.portal, 'portal_membership')
             member = mtool.getAuthenticatedMember()
