@@ -52,7 +52,7 @@ class IEditingSchema(Interface):
     available_editors = schema.List(
         title=_(u'Available editors'),
         description=_(u"Available editors in the portal."),
-        default=['Kupu', 'TinyMCE'],
+        default=['TinyMCE'],
         value_type=schema.TextLine(),
         required=True
     )
@@ -408,54 +408,63 @@ class ITinyMCELayoutSchema(Interface):
         default=u'++plone++static/components/tinymce/skins/lightgray/content.min.css',
         required=False)
 
-    header_styles = schema.Text(
+    header_styles = schema.List(
         title=_(u"Header styles"),
         description=_('Name|tag'),
-        default=u'Header 1|h1\n'
-                u"Header 2|h2\n"
-                u"Header 3|h3\n"
-                u"Header 4|h4\n"
-                u"Header 5|h5\n"
-                u"Header 6|h6\n")
+        value_type=schema.TextLine(),
+        default=[
+            u'Header 1|h1',
+            u"Header 2|h2",
+            u"Header 3|h3",
+            u"Header 4|h4",
+            u"Header 5|h5",
+            u"Header 6|h6"
+        ])
 
-    inline_styles = schema.Text(
+    inline_styles = schema.List(
         title=_(u"Inline styles"),
         description=_('Name|format|icon'),
-        default=u"Bold|bold|bold\n"
-                u"Italic|italic|italic\n"
-                u"Underline|underline|underline\n"
-                u"Strikethrough|strikethrough|strikethrough\n"
-                u"Superscript|superscript|superscript\n"
-                u"Subscript|subscript|subscript\n"
-                u"Code|code|code")
+        value_type=schema.TextLine(),
+        default=[
+            u"Bold|bold|bold",
+            u"Italic|italic|italic",
+            u"Underline|underline|underline",
+            u"Strikethrough|strikethrough|strikethrough",
+            u"Superscript|superscript|superscript",
+            u"Subscript|subscript|subscript",
+            u"Code|code|code"])
 
-    block_styles = schema.Text(
+    block_styles = schema.List(
         title=_(u"Block styles"),
         description=_('Name|format'),
-        default=u"Paragraph|p\n"
-                u"Blockquote|blockquote\n"
-                u"Div|div\n"
-                u"Pre|pre")
+        value_type=schema.TextLine(),
+        default=[
+            u"Paragraph|p",
+            u"Blockquote|blockquote",
+            u"Div|div",
+            u"Pre|pre"])
 
-    alignment_styles = schema.Text(
+    alignment_styles = schema.List(
         title=_(u"Alignment styles"),
         description=_('Name|format|icon'),
-        default=u"Left|alignleft|alignleft\n"
-                u"Center|aligncenter|aligncenter\n"
-                u"Right|alignright|alignright\n"
-                u"Justify|alignjustify|alignjustify")
+        value_type=schema.TextLine(),
+        default=[
+            u"Left|alignleft|alignleft",
+            u"Center|aligncenter|aligncenter",
+            u"Right|alignright|alignright",
+            u"Justify|alignjustify|alignjustify"])
 
-    styles = schema.Text(
+    styles = schema.List(
         title=_(u"Styles"),
         description=_(u"Enter a list of styles to appear in the style "
-                      "pulldown. "
-                      "Format is title|format"
-                      "one per line."),
-        default=u"Pullquote|pullquote\n"
-                u"Discreet|discreet\n"
-                u"Callout|callout\n"
-                u"Highlight|highlight\n"
-                u"Clear floats|clearfix",
+                      "pulldown. Format is title|format one per line."),
+        value_type=schema.TextLine(),
+        default=[
+            u"Pullquote|pullquote",
+            u"Discreet|discreet",
+            u"Callout|callout",
+            u"Highlight|highlight",
+            u"Clear floats|clearfix"],
         required=False)
 
     formats = schema.Text(
@@ -472,7 +481,7 @@ class ITinyMCELayoutSchema(Interface):
             'callout': {'block': 'p', 'classes': 'callout'},
             'highlight': {'block': 'span', 'classes': 'visualHighlight'},
             'clearfix': {'block': 'div', 'classes': 'clearfix'}
-        }).decode('utf8'),
+        }, indent=4).decode('utf8'),
         required=True,
     )
 
@@ -483,9 +492,7 @@ class ITinyMCEPluginSchema(Interface):
     plugins = schema.List(
         title=_("label_tinymce_plugins", default=u"Editor Plugins"),
         description=_("help_tinymce_plugins", default=(
-            u"Enter a list of custom plugins which will be loaded in the "
-            u"editor. Format is pluginname or pluginname|location, one per "
-            u"line.")),
+            u"Select plugins to include with tinymce")),
         value_type=schema.Choice(vocabulary=SimpleVocabulary([
             SimpleTerm('advlist', 'advlist', u"advlist"),
             SimpleTerm('anchor', 'anchor', u"anchor"),
@@ -527,12 +534,33 @@ class ITinyMCEPluginSchema(Interface):
                  'visualchars', 'wordcount'],
         required=False)
 
-    menubar = schema.Text(
+    menubar = schema.List(
         title=_("label_tinymce_menubar", default=u"Menubar"),
         description=_("help_tinymce_menubar", default=(
             u"Enter what items you would like in the menu bar.")),
         required=True,
-        default=u'edit table format tools view insert')
+        value_type=schema.TextLine(),
+        default=[
+            u'edit', u'table', u'format',
+            u'tools' u'view', u'insert'])
+
+    menu = schema.Text(
+        title=_('label_tinymce_menu', 'Menu'),
+        description=_('hint_tinymce_menu', default='Menu configuration'),
+        default=json.dumps({
+            'file': {'title': 'File', 'items': 'newdocument'},
+            'edit': {'title': 'Edit', 'items': 'undo redo | cut '
+                              'copy paste pastetext | selectall'},
+            'insert': {'title': 'Insert', 'items': 'link media | template hr'},
+            'view': {'title': 'View', 'items': 'visualaid'},
+            'format': {'title': 'Format',
+                       'items': 'bold italic underline strikethrough '
+                                'superscript subscript | formats | removeformat'},
+            'table': {'title': 'Table', 'items': 'inserttable tableprops deletetable '
+                                                 '| cell row column'},
+            'tools': {'title': 'Tools', 'items': 'spellchecker code'}
+        }, indent=4).decode('utf8')
+    )
 
     toolbar = schema.Text(
         title=_("label_tinymce_toolbar", default=u"Toolbar"),
@@ -544,19 +572,21 @@ class ITinyMCEPluginSchema(Interface):
                 u'bullist numlist outdent indent | '
                 u'unlink plonelink ploneimage')
 
-    customplugins = schema.Text(
+    custom_plugins = schema.List(
         title=_(u"Custom Plugins"),
         description=_(u"Enter a list of custom plugins which will be loaded "
                       "in the editor. Format is pluginname or "
                       "pluginname|location, one per line."),
         required=False,
-        default=u'')
+        value_type=schema.TextLine(),
+        default=[])
 
-    custombuttons = schema.Text(
+    custom_buttons = schema.List(
         title=_(u"Custom Buttons"),
         description=_(u"Enter a list of custom button which will be added to toolbar"),
         required=False,
-        default=u'')
+        value_type=schema.TextLine(),
+        default=[])
 ITinyMCELibrariesSchema = ITinyMCEPluginSchema  # bw compat
 
 
@@ -579,7 +609,7 @@ class ITinyMCESpellCheckerSchema(Interface):
         default=u'browser',
         required=False)
 
-    libraries_atd_ignore_strings = schema.Text(
+    libraries_atd_ignore_strings = schema.List(
         title=_(u"AtD Ignore strings"),
         description=_(
             'label_atd_ignore_strings',
@@ -587,10 +617,14 @@ class ITinyMCESpellCheckerSchema(Interface):
                     u"spellchecker should ignore. "
                     u"Note: This option is only applicable when the "
                     u"appropriate spellchecker has been chosen above."),
-        default=u"Zope\nPlone\nTinyMCE",
+        default=[
+            u"Zope",
+            u"Plone",
+            u"TinyMCE"],
+        value_type=schema.TextLine(),
         required=False)
 
-    libraries_atd_show_types = schema.Text(
+    libraries_atd_show_types = schema.List(
         title=_(u"AtD Error types to show"),
         description=_(
             'help_atderrortypes_to_show',
@@ -598,10 +632,18 @@ class ITinyMCESpellCheckerSchema(Interface):
                     u"\"After the Deadline\" spellchecker should check for. "
                     u"By default, all the available error type will be "
                     u"listed here."),
-        default=u"Bias Language\nCliches\nComplex Expression\n"
-                u"Diacritical Marks\nDouble Negatives\n"
-                u"Hidden Verbs\nJargon Language\nPassive voice\n"
-                u"Phrases to Avoid\nRedundant Expression",
+        value_type=schema.TextLine(),
+        default=[
+            u"Bias Language",
+            u"Cliches",
+            u"Complex Expression",
+            u"Diacritical Marks",
+            u"Double Negatives",
+            u"Hidden Verbs",
+            u"Jargon Language",
+            u"Passive voice",
+            u"Phrases to Avoid",
+            u"Redundant Expression"],
         required=False)
 
     libraries_atd_service_url = schema.TextLine(
@@ -629,13 +671,15 @@ class ITinyMCEResourceTypesSchema(Interface):
     #    default=False,
     #    required=False)
 
-    containsobjects = schema.Text(
+    contains_objects = schema.List(
         title=_(u"Contains Objects"),
         description=_(u"Enter a list of content types which can contain other "
                       "objects. Format is one contenttype per line."),
-        default=u"Folder\n"
-                u"Large Plone Folder\n"
-                u"Plone Site",
+        value_type=schema.TextLine(),
+        default=[
+            u"Folder",
+            u"Large Plone Folder",
+            u"Plone Site"],
         required=False)
 
     # XXX not implements
@@ -658,11 +702,12 @@ class ITinyMCEResourceTypesSchema(Interface):
     #                  "Format is one contenttype per line."),
     #    required=False)
 
-    imageobjects = schema.Text(
+    image_objects = schema.List(
         title=_(u"Image Objects"),
         description=_(u"Enter a list of content types which can be used as "
                       "images. Format is one contenttype per line."),
-        default=u"Image",
+        default=[u"Image"],
+        value_type=schema.TextLine(),
         required=False)
 
     entity_encoding = schema.Choice(

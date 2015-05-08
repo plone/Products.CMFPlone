@@ -71,31 +71,26 @@ class TinyMCESettingsGenerator(object):
         return val
 
     def get_all_style_formats(self):
-        header_styles = self.settings.header_styles or ''
-        block_styles = self.settings.block_styles or ''
-        inline_styles = self.settings.inline_styles or ''
-        alignment_styles = self.settings.alignment_styles or ''
-        styles = self.settings.styles or ''
+        header_styles = self.settings.header_styles or []
+        block_styles = self.settings.block_styles or []
+        inline_styles = self.settings.inline_styles or []
+        alignment_styles = self.settings.alignment_styles or []
+        styles = self.settings.styles or []
         return [{
             'title': 'Headers',
-            'items': [self.get_style_format(t) for t in
-                      header_styles.splitlines()]
+            'items': [self.get_style_format(t) for t in header_styles]
         }, {
             'title': 'Block',
-            'items': [self.get_style_format(t) for t in
-                      block_styles.splitlines()]
+            'items': [self.get_style_format(t) for t in block_styles]
         }, {
             'title': 'Inline',
-            'items': [self.get_style_format(t) for t in
-                      inline_styles.splitlines()]
+            'items': [self.get_style_format(t) for t in inline_styles]
         }, {
             'title': 'Alignment',
-            'items': [self.get_style_format(t) for t in
-                      alignment_styles.splitlines()]
+            'items': [self.get_style_format(t) for t in alignment_styles]
         }, {
             'title': 'Styles',
-            'items': [self.get_style_format(t) for t in
-                      styles.splitlines()]
+            'items': [self.get_style_format(t) for t in styles]
         }]
 
     def get_tiny_config(self):
@@ -109,10 +104,7 @@ class TinyMCESettingsGenerator(object):
             'toolbar': settings.toolbar,
             'entity_encoding': settings.entity_encoding
         }
-        if settings.custombuttons:
-            toolbar_additions = settings.custombuttons.splitlines()
-        else:
-            toolbar_additions = []
+        toolbar_additions = settings.custom_buttons or []
 
         if settings.editor_height:
             tiny_config['height'] = settings.editor_height
@@ -135,8 +127,8 @@ class TinyMCESettingsGenerator(object):
                 # None when Anonymous User
                 tiny_config['atd_rpc_id'] = 'plone-' + member_id
                 tiny_config['atd_rpc_url'] = self.portal_url
-                tiny_config['atd_show_types'] = settings.libraries_atd_show_types.strip().replace('\n', ',')  # noqa
-                tiny_config['atd_ignore_strings'] = settings.libraries_atd_ignore_strings.replace('\n', ',')  # noqa
+                tiny_config['atd_show_types'] = ','.join(settings.libraries_atd_show_types)  # noqa
+                tiny_config['atd_ignore_strings'] = ','.join(settings.libraries_atd_ignore_strings)  # noqa
                 toolbar_additions.append('AtD')
         elif settings.libraries_spellchecker_choice == 'AtD':
             tiny_config['browser_spellcheck'] = True
@@ -144,12 +136,11 @@ class TinyMCESettingsGenerator(object):
         if toolbar_additions:
             tiny_config['toolbar'] += ' | %s' % ' '.join(toolbar_additions)
 
-        if settings.customplugins:
-            for plugin in settings.customplugins.splitlines():
-                parts = plugin.split('|')
-                if len(parts) != 2:
-                    continue
-                tiny_config['external_plugins'][parts[0]] = parts[1]
+        for plugin in settings.custom_plugins or []:
+            parts = plugin.split('|')
+            if len(parts) != 2:
+                continue
+            tiny_config['external_plugins'][parts[0]] = parts[1]
 
         tiny_config['style_formats'] = self.get_all_style_formats()
         if settings.formats:
@@ -157,6 +148,8 @@ class TinyMCESettingsGenerator(object):
 
         if settings.menubar:
             tiny_config['menubar'] = settings.menubar
+        if settings.menu:
+            tiny_config['menu'] = json.loads(settings.menu)
 
         return tiny_config
 
@@ -220,8 +213,8 @@ class PloneSettingsAdapter(object):
             initial = IUUID(folder, None)
         current_path = folder.absolute_url()[len(generator.portal_url):]
 
-        image_types = settings.imageobjects.splitlines()
-        folder_types = settings.containsobjects.splitlines()
+        image_types = settings.image_objects or []
+        folder_types = settings.contains_objects or []
         configuration = {
             'relatedItems': {
                 'vocabularyUrl':

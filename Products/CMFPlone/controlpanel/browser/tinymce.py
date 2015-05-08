@@ -7,6 +7,7 @@ from Products.CMFPlone.interfaces import ITinyMCEPluginSchema
 from plone.app.registry.browser import controlpanel
 from z3c.form import field
 from z3c.form import group
+from z3c.form.browser.checkbox import CheckBoxFieldWidget
 
 
 class TinyMCEPluginForm(group.GroupForm):
@@ -33,6 +34,10 @@ class TinyMCEControlPanelForm(controlpanel.RegistryEditForm):
     fields = field.Fields(ITinyMCELayoutSchema)
     groups = (TinyMCEPluginForm, TinyMCESpellCheckerForm,
               TinyMCEResourceTypesForm)
+
+    def updateFields(self):
+        super(TinyMCEControlPanelForm, self).updateFields()
+        self.groups[0].fields['plugins'].widgetFactory = CheckBoxFieldWidget
 
 
 class TinyMCEControlPanel(controlpanel.ControlPanelFormWrapper):
