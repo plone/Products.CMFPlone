@@ -8,6 +8,9 @@ Changelog
 5.0b2 (unreleased)
 ------------------
 
+- provide image alignment styles for tinymce images
+  [vangheem]
+
 - Respect TinyMCE control panel settings
   [vangheem]
 

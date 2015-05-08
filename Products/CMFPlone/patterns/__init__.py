@@ -56,6 +56,9 @@ class TinyMCESettingsGenerator(object):
 
         if content_css is None:
             content_css = self.settings.content_css
+        if not content_css:
+            content_css = '%s/++plone++static/plone-compiled.css' % self.portal_url
+        content_css += ',%s/++plone++static/plone-compiled.css' % self.portal_url
         return content_css
 
     def get_style_format(self, txt):
