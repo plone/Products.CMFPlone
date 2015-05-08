@@ -526,7 +526,7 @@ define('pat-compat',[],function() {
     {
         Array.prototype.every = function(fun /*, thisp */)
         {
-            
+            "use strict";
 
             if (this === null)
                 throw new TypeError();
@@ -551,7 +551,7 @@ define('pat-compat',[],function() {
     // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/filter (JS 1.6)
     if (!Array.prototype.filter) {
         Array.prototype.filter = function(fun /*, thisp */) {
-            
+            "use strict";
 
             if (this === null)
                 throw new TypeError();
@@ -642,7 +642,7 @@ define('pat-compat',[],function() {
     // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/indexOf (JS 1.6)
     if (!Array.prototype.indexOf) {
         Array.prototype.indexOf = function (searchElement /*, fromIndex */ ) {
-            
+            "use strict";
             if (this === null) {
                 throw new TypeError();
             }
@@ -677,7 +677,7 @@ define('pat-compat',[],function() {
     // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/lastIndexOf (JS 1.6)
     if (!Array.prototype.lastIndexOf) {
         Array.prototype.lastIndexOf = function(searchElement /*, fromIndex*/) {
-            
+            "use strict";
 
             if (this === null)
                 throw new TypeError();
@@ -817,7 +817,7 @@ define('pat-compat',[],function() {
     {
         Array.prototype.reduceRight = function(callbackfn /*, initialValue */)
         {
-            
+            "use strict";
 
             if (this === null)
                 throw new TypeError();
@@ -871,7 +871,7 @@ define('pat-compat',[],function() {
     {
         Array.prototype.some = function(fun /*, thisp */)
         {
-            
+            "use strict";
 
             if (this === null)
                 throw new TypeError();
@@ -1449,7 +1449,7 @@ define('pat-registry',[
 define('mockup-parser',[
   'jquery'
 ], function($) {
-  
+  'use strict';
 
   var parser = {
     getOptions: function getOptions($el, patternName, options) {
@@ -1498,7 +1498,7 @@ define('mockup-patterns-base',[
   'mockup-parser',
   "pat-logger"
 ], function($, Registry, mockupParser, logger) {
-  
+  'use strict';
   var log = logger.getLogger("Mockup Base");
 
   var initMockup = function initMockup($el, options, trigger) {
@@ -6624,7 +6624,7 @@ the specific language governing permissions and limitations under the Apache Lic
 })(jQuery);
 
 (function ($, undefined) {
-    
+    "use strict";
     /*global document, window, jQuery, console */
 
     if (window.Select2 !== undefined) {
@@ -10887,7 +10887,7 @@ define('mockup-patterns-select2',[
   'jquery.event.drag',
   'jquery.event.drop'
 ], function($, Base) {
-  
+  'use strict';
 
   var Select2 = Base.extend({
     name: 'select2',
@@ -11113,7 +11113,7 @@ define('mockup-patterns-select2',[
 define('mockup-utils',[
   'jquery'
 ], function($) {
-  
+  'use strict';
 
   var QueryHelper = function(options) {
     /* if pattern argument provided, it can implement the interface of:
@@ -14531,7 +14531,7 @@ define('mockup-patterns-tree',[
   'mockup-utils',
   'jqtree'
 ], function($, _, Base, utils) {
-  
+  'use strict';
 
   var Tree = Base.extend({
     name: 'tree',
@@ -14598,7 +14598,7 @@ define('mockup-patterns-tree',[
 define('mockup-i18n',[
   'jquery'
 ], function($) {
-  
+  'use strict';
 
   var I18N = function() {
     var self = this;
@@ -14714,7 +14714,7 @@ define('mockup-i18n',[
 define('translate',[
   'mockup-i18n'
 ], function(I18N) {
-  
+  'use strict';
 
   // we're creating a singleton here so we can potentially
   // delay the initialization of the translate catalog
@@ -14809,7 +14809,7 @@ define('mockup-patterns-relateditems',[
   'mockup-patterns-tree',
   'translate'
 ], function($, _, Base, Select2, utils, Tree, _t) {
-  
+  'use strict';
 
   var RelatedItems = Base.extend({
     name: 'relateditems',
@@ -15211,7 +15211,7 @@ define('mockup-patterns-backdrop',[
   'jquery',
   'mockup-patterns-base'
 ], function($, Base) {
-  
+  'use strict';
 
   var Backdrop = Base.extend({
     name: 'backdrop',
@@ -16896,7 +16896,7 @@ define('mockup-router',[
   'underscore',
   'backbone'
 ], function($, _, Backbone) {
-  
+  'use strict';
 
   var regexEscape = function(s) {
     return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
@@ -17001,7 +17001,7 @@ define('mockup-router',[
 }
 
 (function($) {
-
+"use strict";
 
 /*
     Usage Note:
@@ -18276,7 +18276,7 @@ define('mockup-patterns-modal',[
   'mockup-utils',
   'jquery.form'
 ], function($, _, Base, Backdrop, registry, Router, utils) {
-  
+  'use strict';
 
   var Modal = Base.extend({
     name: 'plone-modal',
@@ -19067,7 +19067,7 @@ define("tinymce", [], function() {
 /*globals $code */
 
 (function(exports, undefined) {
-	
+	"use strict";
 
 	var modules = {};
 
@@ -19162,7 +19162,7 @@ define("tinymce", [], function() {
  * @class tinymce.dom.EventUtils
  */
 define("tinymce/dom/EventUtils", [], function() {
-	
+	"use strict";
 
 	var eventExpandoPrefix = "mce-data-";
 	var mouseEventRe = /^(?:mouse|contextmenu)|click/;
@@ -25520,7 +25520,7 @@ define("tinymce/html/Entities", [
 define("tinymce/dom/StyleSheetLoader", [
 	"tinymce/util/Tools"
 ], function(Tools) {
-	
+	"use strict";
 
 	return function(document, settings) {
 		var idCount = 0, loadedStates = {}, maxLoadTime;
@@ -40494,7 +40494,7 @@ define("tinymce/util/EventDispatcher", [
 define("tinymce/ui/Selector", [
 	"tinymce/util/Class"
 ], function(Class) {
-	
+	"use strict";
 
 	/**
 	 * Produces an array with a unique set of objects. It will not compare the values
@@ -40848,7 +40848,7 @@ define("tinymce/ui/Collection", [
 	"tinymce/ui/Selector",
 	"tinymce/util/Class"
 ], function(Tools, Selector, Class) {
-	
+	"use strict";
 
 	var Collection, proto, push = Array.prototype.push, slice = Array.prototype.slice;
 
@@ -41271,7 +41271,7 @@ define("tinymce/ui/DomUtils", [
 	"tinymce/util/Tools",
 	"tinymce/dom/DOMUtils"
 ], function(Tools, DOMUtils) {
-	
+	"use strict";
 
 	var count = 0;
 
@@ -41386,7 +41386,7 @@ define("tinymce/ui/Control", [
 	"tinymce/ui/Collection",
 	"tinymce/ui/DomUtils"
 ], function(Class, Tools, EventDispatcher, Collection, DomUtils) {
-	
+	"use strict";
 
 	var hasMouseWheelEventSupport = "onmousewheel" in document;
 	var hasWheelEventSupport = false;
@@ -42864,7 +42864,7 @@ define("tinymce/ui/Control", [
  * @class tinymce.ui.Factory
  */
 define("tinymce/ui/Factory", [], function() {
-	
+	"use strict";
 
 	var types = {}, namespaceInit;
 
@@ -42968,7 +42968,7 @@ define("tinymce/ui/Factory", [], function() {
  */
 define("tinymce/ui/KeyboardNavigation", [
 ], function() {
-	
+	"use strict";
 
 	/**
 	 * This class handles all keyboard navigation for WAI-ARIA support. Each root container
@@ -43380,7 +43380,7 @@ define("tinymce/ui/Container", [
 	"tinymce/util/Tools",
 	"tinymce/ui/DomUtils"
 ], function(Control, Collection, Selector, Factory, KeyboardNavigation, Tools, DomUtils) {
-	
+	"use strict";
 
 	var selectorCache = {};
 
@@ -43880,7 +43880,7 @@ define("tinymce/ui/Container", [
 define("tinymce/ui/DragHelper", [
 	"tinymce/ui/DomUtils"
 ], function(DomUtils) {
-	
+	"use strict";
 
 	function getDocumentSize() {
 		var doc = document, documentElement, body, scrollWidth, clientWidth;
@@ -44008,7 +44008,7 @@ define("tinymce/ui/Scrollable", [
 	"tinymce/ui/DomUtils",
 	"tinymce/ui/DragHelper"
 ], function(DomUtils, DragHelper) {
-	
+	"use strict";
 
 	return {
 		init: function() {
@@ -44162,7 +44162,7 @@ define("tinymce/ui/Panel", [
 	"tinymce/ui/Container",
 	"tinymce/ui/Scrollable"
 ], function(Container, Scrollable) {
-	
+	"use strict";
 
 	return Container.extend({
 		Defaults: {
@@ -44228,7 +44228,7 @@ define("tinymce/ui/Panel", [
 define("tinymce/ui/Movable", [
 	"tinymce/ui/DomUtils"
 ], function(DomUtils) {
-	
+	"use strict";
 
 	function calculateRelativePosition(ctrl, targetElm, rel) {
 		var ctrlElm, pos, x, y, selfW, selfH, targetW, targetH, viewport, size;
@@ -44431,7 +44431,7 @@ define("tinymce/ui/Movable", [
 define("tinymce/ui/Resizable", [
 	"tinymce/ui/DomUtils"
 ], function(DomUtils) {
-	
+	"use strict";
 
 	return {
 		/**
@@ -44509,7 +44509,7 @@ define("tinymce/ui/FloatPanel", [
 	"tinymce/ui/Resizable",
 	"tinymce/ui/DomUtils"
 ], function(Panel, Movable, Resizable, DomUtils) {
-	
+	"use strict";
 
 	var documentClickHandler, documentScrollHandler, windowResizeHandler, visiblePanels = [];
 	var zOrder = [], hasModal;
@@ -44910,7 +44910,7 @@ define("tinymce/ui/Window", [
 	"tinymce/ui/DomUtils",
 	"tinymce/ui/DragHelper"
 ], function(FloatPanel, Panel, DomUtils, DragHelper) {
-	
+	"use strict";
 
 	var Window = FloatPanel.extend({
 		modal: true,
@@ -45293,7 +45293,7 @@ define("tinymce/ui/Window", [
 define("tinymce/ui/MessageBox", [
 	"tinymce/ui/Window"
 ], function(Window) {
-	
+	"use strict";
 
 	var MessageBox = Window.extend({
 		/**
@@ -49880,7 +49880,7 @@ define("tinymce/Editor", [
  * @class tinymce.util.I18n
  */
 define("tinymce/util/I18n", [], function() {
-	
+	"use strict";
 
 	var data = {}, code = "en";
 
@@ -51677,7 +51677,7 @@ define("tinymce/ui/Layout", [
 	"tinymce/util/Class",
 	"tinymce/util/Tools"
 ], function(Class, Tools) {
-	
+	"use strict";
 
 	return Class.extend({
 		Defaults: {
@@ -51796,7 +51796,7 @@ define("tinymce/ui/Layout", [
 define("tinymce/ui/AbsoluteLayout", [
 	"tinymce/ui/Layout"
 ], function(Layout) {
-	
+	"use strict";
 
 	return Layout.extend({
 		Defaults: {
@@ -51950,7 +51950,7 @@ define("tinymce/ui/Widget", [
 	"tinymce/ui/Control",
 	"tinymce/ui/Tooltip"
 ], function(Control, Tooltip) {
-	
+	"use strict";
 
 	var tooltip;
 
@@ -52117,7 +52117,7 @@ define("tinymce/ui/Widget", [
 define("tinymce/ui/Button", [
 	"tinymce/ui/Widget"
 ], function(Widget) {
-	
+	"use strict";
 
 	return Widget.extend({
 		Defaults: {
@@ -52294,7 +52294,7 @@ define("tinymce/ui/Button", [
 define("tinymce/ui/ButtonGroup", [
 	"tinymce/ui/Container"
 ], function(Container) {
-	
+	"use strict";
 
 	return Container.extend({
 		Defaults: {
@@ -52356,7 +52356,7 @@ define("tinymce/ui/ButtonGroup", [
 define("tinymce/ui/Checkbox", [
 	"tinymce/ui/Widget"
 ], function(Widget) {
-	
+	"use strict";
 
 	return Widget.extend({
 		Defaults: {
@@ -52473,7 +52473,7 @@ define("tinymce/ui/ComboBox", [
 	"tinymce/ui/Factory",
 	"tinymce/ui/DomUtils"
 ], function(Widget, Factory, DomUtils) {
-	
+	"use strict";
 
 	return Widget.extend({
 		/**
@@ -52806,7 +52806,7 @@ define("tinymce/ui/ComboBox", [
 define("tinymce/ui/ColorBox", [
 	"tinymce/ui/ComboBox"
 ], function(ComboBox) {
-	
+	"use strict";
 
 	return ComboBox.extend({
 		/**
@@ -52880,7 +52880,7 @@ define("tinymce/ui/PanelButton", [
 	"tinymce/ui/Button",
 	"tinymce/ui/FloatPanel"
 ], function(Button, FloatPanel) {
-	
+	"use strict";
 
 	return Button.extend({
 		/**
@@ -53000,7 +53000,7 @@ define("tinymce/ui/ColorButton", [
 	"tinymce/ui/PanelButton",
 	"tinymce/dom/DOMUtils"
 ], function(PanelButton, DomUtils) {
-	
+	"use strict";
 
 	var DOM = DomUtils.DOM;
 
@@ -53359,7 +53359,7 @@ define("tinymce/ui/ColorPicker", [
 	"tinymce/ui/DomUtils",
 	"tinymce/util/Color"
 ], function(Widget, DragHelper, DomUtils, Color) {
-	
+	"use strict";
 
 	return Widget.extend({
 		Defaults: {
@@ -53565,7 +53565,7 @@ define("tinymce/ui/ColorPicker", [
 define("tinymce/ui/Path", [
 	"tinymce/ui/Widget"
 ], function(Widget) {
-	
+	"use strict";
 
 	return Widget.extend({
 		/**
@@ -53791,7 +53791,7 @@ define("tinymce/ui/ElementPath", [
 define("tinymce/ui/FormItem", [
 	"tinymce/ui/Container"
 ], function(Container) {
-	
+	"use strict";
 
 	return Container.extend({
 		Defaults: {
@@ -53861,7 +53861,7 @@ define("tinymce/ui/Form", [
 	"tinymce/ui/FormItem",
 	"tinymce/util/Tools"
 ], function(Container, FormItem, Tools) {
-	
+	"use strict";
 
 	return Container.extend({
 		Defaults: {
@@ -54023,7 +54023,7 @@ define("tinymce/ui/Form", [
 define("tinymce/ui/FieldSet", [
 	"tinymce/ui/Form"
 ], function(Form) {
-	
+	"use strict";
 
 	return Form.extend({
 		Defaults: {
@@ -54087,7 +54087,7 @@ define("tinymce/ui/FilePicker", [
 	"tinymce/ui/ComboBox",
 	"tinymce/util/Tools"
 ], function(ComboBox, Tools) {
-	
+	"use strict";
 
 	return ComboBox.extend({
 		/**
@@ -54174,7 +54174,7 @@ define("tinymce/ui/FilePicker", [
 define("tinymce/ui/FitLayout", [
 	"tinymce/ui/AbsoluteLayout"
 ], function(AbsoluteLayout) {
-	
+	"use strict";
 
 	return AbsoluteLayout.extend({
 		/**
@@ -54228,7 +54228,7 @@ define("tinymce/ui/FitLayout", [
 define("tinymce/ui/FlexLayout", [
 	"tinymce/ui/AbsoluteLayout"
 ], function(AbsoluteLayout) {
-	
+	"use strict";
 
 	return AbsoluteLayout.extend({
 		/**
@@ -55067,7 +55067,7 @@ define("tinymce/ui/FormatControls", [
 define("tinymce/ui/GridLayout", [
 	"tinymce/ui/AbsoluteLayout"
 ], function(AbsoluteLayout) {
-	
+	"use strict";
 
 	return AbsoluteLayout.extend({
 		/**
@@ -55300,7 +55300,7 @@ define("tinymce/ui/GridLayout", [
 define("tinymce/ui/Iframe", [
 	"tinymce/ui/Widget"
 ], function(Widget) {
-	
+	"use strict";
 
 	return Widget.extend({
 		/**
@@ -55385,7 +55385,7 @@ define("tinymce/ui/Label", [
 	"tinymce/ui/Widget",
 	"tinymce/ui/DomUtils"
 ], function(Widget, DomUtils) {
-	
+	"use strict";
 
 	return Widget.extend({
 		/**
@@ -55510,7 +55510,7 @@ define("tinymce/ui/Label", [
 define("tinymce/ui/Toolbar", [
 	"tinymce/ui/Container"
 ], function(Container) {
-	
+	"use strict";
 
 	return Container.extend({
 		Defaults: {
@@ -55568,7 +55568,7 @@ define("tinymce/ui/Toolbar", [
 define("tinymce/ui/MenuBar", [
 	"tinymce/ui/Toolbar"
 ], function(Toolbar) {
-	
+	"use strict";
 
 	return Toolbar.extend({
 		Defaults: {
@@ -55606,7 +55606,7 @@ define("tinymce/ui/MenuButton", [
 	"tinymce/ui/Factory",
 	"tinymce/ui/MenuBar"
 ], function(Button, Factory, MenuBar) {
-	
+	"use strict";
 
 	// TODO: Maybe add as some global function
 	function isChildOf(node, parent) {
@@ -55867,7 +55867,7 @@ define("tinymce/ui/MenuButton", [
 define("tinymce/ui/ListBox", [
 	"tinymce/ui/MenuButton"
 ], function(MenuButton) {
-	
+	"use strict";
 
 	return MenuButton.extend({
 		/**
@@ -56015,7 +56015,7 @@ define("tinymce/ui/MenuItem", [
 	"tinymce/ui/Factory",
 	"tinymce/Env"
 ], function(Widget, Factory, Env) {
-	
+	"use strict";
 
 	return Widget.extend({
 		Defaults: {
@@ -56340,7 +56340,7 @@ define("tinymce/ui/Menu", [
 	"tinymce/ui/MenuItem",
 	"tinymce/util/Tools"
 ], function(FloatPanel, MenuItem, Tools) {
-	
+	"use strict";
 
 	var Menu = FloatPanel.extend({
 		Defaults: {
@@ -56481,7 +56481,7 @@ define("tinymce/ui/Menu", [
 define("tinymce/ui/Radio", [
 	"tinymce/ui/Checkbox"
 ], function(Checkbox) {
-	
+	"use strict";
 
 	return Checkbox.extend({
 		Defaults: {
@@ -56514,7 +56514,7 @@ define("tinymce/ui/ResizeHandle", [
 	"tinymce/ui/Widget",
 	"tinymce/ui/DragHelper"
 ], function(Widget, DragHelper) {
-	
+	"use strict";
 
 	return Widget.extend({
 		/**
@@ -56602,7 +56602,7 @@ define("tinymce/ui/ResizeHandle", [
 define("tinymce/ui/Spacer", [
 	"tinymce/ui/Widget"
 ], function(Widget) {
-	
+	"use strict";
 
 	return Widget.extend({
 		/**
@@ -56782,7 +56782,7 @@ define("tinymce/ui/SplitButton", [
 define("tinymce/ui/StackLayout", [
 	"tinymce/ui/FlowLayout"
 ], function(FlowLayout) {
-	
+	"use strict";
 
 	return FlowLayout.extend({
 		Defaults: {
@@ -56818,7 +56818,7 @@ define("tinymce/ui/TabPanel", [
 	"tinymce/ui/Panel",
 	"tinymce/ui/DomUtils"
 ], function(Panel, DomUtils) {
-	
+	"use strict";
 
 	return Panel.extend({
 		Defaults: {
@@ -56996,7 +56996,7 @@ define("tinymce/ui/TextBox", [
 	"tinymce/ui/Widget",
 	"tinymce/ui/DomUtils"
 ], function(Widget, DomUtils) {
-	
+	"use strict";
 
 	return Widget.extend({
 		/**
@@ -57212,7 +57212,7 @@ define("tinymce/ui/Throbber", [
 	"tinymce/ui/DomUtils",
 	"tinymce/ui/Control"
 ], function(DomUtils, Control) {
-	
+	"use strict";
 
 	/**
 	 * Constructs a new throbber.
@@ -57349,7 +57349,7 @@ define('mockup-patterns-autotoc',[
   'jquery',
   'mockup-patterns-base'
 ], function($, Base) {
-  
+  'use strict';
 
   var AutoTOC = Base.extend({
     name: 'autotoc',
@@ -57451,7 +57451,7 @@ define('mockup-patterns-autotoc',[
   java, location, Components, FileUtils */
 
 define('text',['module'], function (module) {
-    
+    'use strict';
 
     var text, fs, Cc, Ci, xpcIsWindows,
         progIds = ['Msxml2.XMLHTTP', 'Microsoft.XMLHTTP', 'Msxml2.XMLHTTP.4.0'],
@@ -59639,7 +59639,7 @@ define('mockup-patterns-upload',[
   'translate'
 ], function($, _, Base, RelatedItems, Dropzone,
             UploadTemplate, PreviewTemplate, _t) {
-  
+  'use strict';
 
   /* we do not want this plugin to auto discover */
   Dropzone.autoDiscover = false;
@@ -60053,7 +60053,7 @@ define('mockup-patterns-tinymce-url/js/links',[
   'text!mockup-patterns-tinymce-url/templates/link.xml',
   'text!mockup-patterns-tinymce-url/templates/image.xml'
 ], function($, _, registry, Base, RelatedItems, Modal, tinymce, Upload, LinkTemplate, ImageTemplate) {
-  
+  'use strict';
 
   var LinkType = Base.extend({
     name: 'linktype',
@@ -67868,7 +67868,7 @@ define("tinymce-paste", ["tinymce"], function() {
 /*globals $code */
 
 (function(exports, undefined) {
-	
+	"use strict";
 
 	var modules = {};
 
@@ -69215,7 +69215,7 @@ define("tinymce/pasteplugin/Quirks", [
 	"tinymce/pasteplugin/WordFilter",
 	"tinymce/pasteplugin/Utils"
 ], function(Env, Tools, WordFilter, Utils) {
-	
+	"use strict";
 
 	return function(editor) {
 		function addPreProcessFilter(filterFunc) {
@@ -70326,7 +70326,7 @@ define("tinymce-spellchecker", ["tinymce"], function() {
 /*globals $code */
 
 (function(exports, undefined) {
-	
+	"use strict";
 
 	var modules = {};
 
@@ -71459,7 +71459,7 @@ define("tinymce-table", ["tinymce"], function() {
 /*globals $code */
 
 (function(exports, undefined) {
-	
+	"use strict";
 
 	var modules = {};
 
@@ -75783,7 +75783,7 @@ define('mockup-patterns-tinymce',[
             Base, RelatedItems, Modal, tinymce,
             AutoTOC, ResultTemplate, SelectionTemplate,
             utils, LinkModal, I18n, _t) {
-  
+  'use strict';
 
   var TinyMCE = Base.extend({
     name: 'tinymce',
@@ -76176,7 +76176,7 @@ define('mockup-patterns-textareamimetypeselector',[
   'pat-registry',
   'mockup-patterns-tinymce'
 ], function ($, Base, registry, tinymce) {
-  
+  'use strict';
 
   var TextareaMimetypeSelector = Base.extend({
     name: 'textareamimetypeselector',
@@ -79537,7 +79537,7 @@ define('mockup-patterns-pickadate',[
   'mockup-patterns-select2',
   'translate'
 ], function($, Base, Picker, PickerDate, PickerTime, Select2, _t) {
-  
+  'use strict';
 
   var PickADate = Base.extend({
     name: 'pickadate',
@@ -79805,7 +79805,7 @@ define('mockup-patterns-querystring',[
   'select2',
   'translate'
 ], function($, Base, Select2, PickADate, undefined, _t) {
-  
+  'use strict';
 
   var Criteria = function() { this.init.apply(this, arguments); };
   Criteria.prototype = {
@@ -80494,7 +80494,7 @@ define('mockup-patterns-inlinevalidation',[
   'jquery',
   'mockup-patterns-base'
 ], function ($, Base) {
-  
+  'use strict';
 
   var InlineValidation = Base.extend({
     name: 'inlinevalidation',
@@ -80613,7 +80613,7 @@ define('mockup-ui-url/views/base',[
   'backbone',
   'translate'
 ], function($, _, Backbone, _t) {
-  
+  'use strict';
 
   var BaseView = Backbone.View.extend({
     isUIView: true,
@@ -80688,7 +80688,7 @@ define('mockup-ui-url/views/container',[
   'backbone',
   'mockup-ui-url/views/base'
 ], function($, _, Backbone, BaseView) {
-  
+  'use strict';
 
   var Container = BaseView.extend({
     id: '',
@@ -80775,7 +80775,7 @@ define('mockup-ui-url/views/toolbar',[
   'backbone',
   'mockup-ui-url/views/container'
 ], function(_, Backbone, ContainerView) {
-  
+  'use strict';
 
   var Toolbar = ContainerView.extend({
     tagName: 'div',
@@ -80790,7 +80790,7 @@ define('mockup-ui-url/views/buttongroup',[
   'backbone',
   'mockup-ui-url/views/container'
 ], function(_, Backbone, ContainerView) {
-  
+  'use strict';
 
   var ButtonGroup = ContainerView.extend({
     tagName: 'div',
@@ -80851,7 +80851,7 @@ define('mockup-patterns-tooltip',[
   'jquery',
   'mockup-patterns-base'
 ], function($, Base, undefined) {
-  
+  'use strict';
 
   var Tooltip = Base.extend({
     name: 'tooltip',
@@ -81285,7 +81285,7 @@ define('mockup-ui-url/views/button',[
   'mockup-ui-url/views/base',
   'mockup-patterns-tooltip'
 ], function($, Backbone, _, BaseView, Tooltip) {
-  
+  'use strict';
 
   var ButtonView = BaseView.extend({
     tagName: 'a',
@@ -81376,7 +81376,7 @@ define("bootstrap-dropdown", ["jquery"], function() {
 
 
 +function ($) {
-  
+  'use strict';
 
   // DROPDOWN CLASS DEFINITION
   // =========================
@@ -81545,7 +81545,7 @@ define('mockup-patterns-structure-url/js/views/actionmenu',[
   'translate',
   'bootstrap-dropdown'
 ], function($, _, Backbone, BaseView, utils, ActionMenuTemplate, _t) {
-  
+  'use strict';
 
   var ActionMenu = BaseView.extend({
     className: 'btn-group actionmenu',
@@ -81692,7 +81692,7 @@ define('mockup-patterns-structure-url/js/views/tablerow',[
   'mockup-patterns-structure-url/js/views/actionmenu',
   'text!mockup-patterns-structure-url/templates/tablerow.xml'
 ], function($, _, Backbone, ActionMenu, TableRowTemplate) {
-  
+  'use strict';
 
   var TableRowView = Backbone.View.extend({
     tagName: 'tr',
@@ -81854,7 +81854,7 @@ define('mockup-patterns-sortable',[
   'jquery.event.drag',
   'jquery.event.drop'
 ], function($, Base, drag, drop) {
-  
+  'use strict';
 
   var SortablePattern = Base.extend({
     name: 'sortable',
@@ -81938,7 +81938,7 @@ define('mockup-patterns-sortable',[
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
     typeof define === 'function' && define.amd ? define('moment',factory) :
     global.moment = factory()
-}(this, function () { 
+}(this, function () { 'use strict';
 
     var hookCallback;
 
@@ -85098,7 +85098,7 @@ define('mockup-patterns-moment',[
   'mockup-patterns-base',
   'moment'
 ], function($, Base, moment) {
-  
+  'use strict';
 
   var Moment = Base.extend({
     name: 'moment',
@@ -85147,7 +85147,7 @@ define('mockup-patterns-moment',[
 });
 
 define('mockup-patterns-structure-url/js/models/result',['backbone'], function(Backbone) {
-  
+  'use strict';
 
   var Result = Backbone.Model.extend({
     defaults: function() {
@@ -85178,7 +85178,7 @@ define('mockup-patterns-structure-url/js/views/table',[
   'translate'
 ], function($, _, Backbone, TableRowView, TableTemplate, BaseView, Sortable,
             Moment, Result, ActionMenu, _t) {
-  
+  'use strict';
 
   var TableView = BaseView.extend({
     tagName: 'div',
@@ -85363,7 +85363,7 @@ define('mockup-ui-url/views/popover',[
   'mockup-patterns-backdrop',
   'text!mockup-ui-url/templates/popover.xml',
 ], function($, _, Backbone, ContainerView, Backdrop, PopoverTemplate) {
-  
+  'use strict';
 
   var PopoverView = ContainerView.extend({
     tagName: 'div',
@@ -85574,7 +85574,7 @@ define('mockup-patterns-structure-url/js/views/selectionwell',[
   'mockup-ui-url/views/popover',
   'text!mockup-patterns-structure-url/templates/selection_item.xml'
 ], function($, _, Backbone, PopoverView, ItemTemplate) {
-  
+  'use strict';
 
   var WellView = PopoverView.extend({
     className: 'popover selected',
@@ -85640,7 +85640,7 @@ define('mockup-patterns-structure-url/js/views/tags',[
   'mockup-ui-url/views/popover',
   'mockup-patterns-select2'
 ], function($, _, Backbone, PopoverView, Select2) {
-  
+  'use strict';
 
   var TagsView = PopoverView.extend({
     title: _.template('Add/Remove tags'),
@@ -85726,7 +85726,7 @@ define('mockup-patterns-structure-url/js/views/properties',[
   'mockup-patterns-pickadate',
   'mockup-patterns-select2'
 ], function($, _, Backbone, PopoverView, PickADate, Select2) {
-  
+  'use strict';
 
   var PropertiesView = PopoverView.extend({
     className: 'popover properties',
@@ -85836,7 +85836,7 @@ define('mockup-patterns-structure-url/js/views/workflow',[
   'backbone',
   'mockup-ui-url/views/popover'
 ], function($, _, Backbone, PopoverView) {
-  
+  'use strict';
 
   var WorkflowView = PopoverView.extend({
     className: 'popover workflow',
@@ -85932,7 +85932,7 @@ define('mockup-patterns-structure-url/js/views/delete',[
   'backbone',
   'mockup-ui-url/views/popover'
 ], function($, _, Backbone, PopoverView) {
-  
+  'use strict';
 
   var DeleteView = PopoverView.extend({
     className: 'popover delete',
@@ -85975,7 +85975,7 @@ define('mockup-patterns-structure-url/js/views/rename',[
   'backbone',
   'mockup-ui-url/views/popover'
 ], function($, _, Backbone, PopoverView) {
-  
+  'use strict';
 
   var PropertiesView = PopoverView.extend({
     className: 'popover rename',
@@ -86049,7 +86049,7 @@ define('mockup-patterns-structure-url/js/views/rearrange',[
   'underscore',
   'mockup-ui-url/views/popover'
 ], function($, _, PopoverView) {
-  
+  'use strict';
 
   var RearrangeView = PopoverView.extend({
     className: 'popover rearrange',
@@ -86066,8 +86066,8 @@ define('mockup-patterns-structure-url/js/views/rearrange',[
           '<%- _t("This permanently changes the order of items in this folder. This operation may take a long time depending on the size of the folder.") %>' +
         '</p>' +
       '</div>' +
-      '<div class="checkbox">' +
-        '<label><%- _t("Reverse") %> <input type="checkbox" name="reversed" /></label>' +
+      '<div>' + 
+        '<label> <input type="checkbox" name="reversed" /> <%- _t("Reverse") %></label>' +
       '</div>' +
       '<button class="btn btn-block btn-primary"><%- _t("Rearrange") %></button>'
     ),
@@ -86111,7 +86111,7 @@ define('mockup-patterns-structure-url/js/views/selectionbutton',[
   'mockup-ui-url/views/button',
   'text!mockup-patterns-structure-url/templates/selection_button.xml'
 ], function($, Backbone, _, ButtonView, tplButton) {
-  
+  'use strict';
 
   var SelectionButton = ButtonView.extend({
     collection: null,
@@ -86150,7 +86150,7 @@ define('mockup-patterns-structure-url/js/views/paging',[
   'text!mockup-patterns-structure-url/templates/paging.xml',
   'translate'
 ], function($, _, Backbone, PagingTemplate, _t) {
-  
+  'use strict';
 
 
   var PagingView = Backbone.View.extend({
@@ -86262,7 +86262,7 @@ define('mockup-patterns-structure-url/js/views/addmenu',[
   'mockup-utils',
   'bootstrap-dropdown'
 ], function($, _, Backbone, ButtonGroup, ButtonView, utils) {
-  
+  'use strict';
 
   var AddMenu = ButtonGroup.extend({
     title: 'Add',
@@ -86382,7 +86382,7 @@ define('mockup-patterns-structure-url/js/views/columns',[
   'mockup-ui-url/views/popover',
   'mockup-patterns-sortable'
 ], function($, _, Backbone, PopoverView, Sortable) {
-  
+  'use strict';
 
   var ColumnsView = PopoverView.extend({
     className: 'popover columns',
@@ -86458,7 +86458,7 @@ define('mockup-patterns-structure-url/js/views/textfilter',[
   'mockup-patterns-querystring',
   'translate'
 ], function($, Backbone, _, BaseView, ButtonView, PopoverView, QueryString, _t) {
-  
+  'use strict';
 
   var TextFilterView = BaseView.extend({
     tagName: 'div',
@@ -86555,7 +86555,7 @@ define('mockup-patterns-structure-url/js/views/upload',[
   'mockup-ui-url/views/popover',
   'mockup-patterns-upload'
 ], function($, _, Backbone, PopoverView, Upload) {
-  
+  'use strict';
 
   var UploadView = PopoverView.extend({
     className: 'popover upload',
@@ -86623,7 +86623,7 @@ define("backbone.paginator", ["backbone"], function() {
   return (function() {
 /*globals Backbone:true, _:true, jQuery:true*/
 Backbone.Paginator = (function ( Backbone, _, $ ) {
-  
+  "use strict";
 
 
   var bbVer = _.map(Backbone.VERSION.split('.'), function(digit) {
@@ -87680,7 +87680,7 @@ define('mockup-patterns-structure-url/js/collections/result',[
   'mockup-patterns-structure-url/js/models/result',
   'backbone.paginator'
 ], function(_, Backbone, Result) {
-  
+  'use strict';
 
   var ResultCollection = Backbone.Paginator.requestPager.extend({
     model: Result,
@@ -87746,7 +87746,7 @@ define('mockup-patterns-structure-url/js/collections/selected',[
   'backbone',
   'mockup-patterns-structure-url/js/models/result'
 ], function(Backbone, Result) {
-  
+  'use strict';
 
   var SelectedCollection = Backbone.Collection.extend({
     model: Result,
@@ -87919,7 +87919,7 @@ define('mockup-patterns-structure-url/js/views/app',[
             WorkflowView, DeleteView, RenameView, RearrangeView, SelectionButtonView,
             PagingView, AddMenu, ColumnsView, TextFilterView, UploadView,
             ResultCollection, SelectedCollection, utils, _t) {
-  
+  'use strict';
 
   var DISABLE_EVENT = 'DISABLE';
 
@@ -88466,7 +88466,7 @@ define('mockup-patterns-structure',[
   'text!mockup-patterns-structure-url/templates/table.xml',
   'text!mockup-ui-url/templates/popover.xml',
 ], function($, Base, utils, AppView) {
-  
+  'use strict';
 
   var Structure = Base.extend({
     name: 'structure',
@@ -90870,7 +90870,7 @@ define('mockup-patterns-recurrence',[
   'mockup-patterns-base',
   'jquery.recurrenceinput'
 ], function($, Base) {
-  
+  'use strict';
 
   var Recurrence = Base.extend({
     name: 'recurrence',
@@ -90919,8 +90919,8 @@ require([
   'mockup-patterns-structure',
   'mockup-patterns-recurrence'
 ], function() {
-  
+  'use strict';
 });
 
-define("/Users/nathan/code/fbigov.policy/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
+define("/Users/nathan/code/coredev5/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
 

@@ -526,7 +526,7 @@ define('pat-compat',[],function() {
     {
         Array.prototype.every = function(fun /*, thisp */)
         {
-            
+            "use strict";
 
             if (this === null)
                 throw new TypeError();
@@ -551,7 +551,7 @@ define('pat-compat',[],function() {
     // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/filter (JS 1.6)
     if (!Array.prototype.filter) {
         Array.prototype.filter = function(fun /*, thisp */) {
-            
+            "use strict";
 
             if (this === null)
                 throw new TypeError();
@@ -642,7 +642,7 @@ define('pat-compat',[],function() {
     // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/indexOf (JS 1.6)
     if (!Array.prototype.indexOf) {
         Array.prototype.indexOf = function (searchElement /*, fromIndex */ ) {
-            
+            "use strict";
             if (this === null) {
                 throw new TypeError();
             }
@@ -677,7 +677,7 @@ define('pat-compat',[],function() {
     // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/lastIndexOf (JS 1.6)
     if (!Array.prototype.lastIndexOf) {
         Array.prototype.lastIndexOf = function(searchElement /*, fromIndex*/) {
-            
+            "use strict";
 
             if (this === null)
                 throw new TypeError();
@@ -817,7 +817,7 @@ define('pat-compat',[],function() {
     {
         Array.prototype.reduceRight = function(callbackfn /*, initialValue */)
         {
-            
+            "use strict";
 
             if (this === null)
                 throw new TypeError();
@@ -871,7 +871,7 @@ define('pat-compat',[],function() {
     {
         Array.prototype.some = function(fun /*, thisp */)
         {
-            
+            "use strict";
 
             if (this === null)
                 throw new TypeError();
@@ -1449,7 +1449,7 @@ define('pat-registry',[
 define('mockup-parser',[
   'jquery'
 ], function($) {
-  
+  'use strict';
 
   var parser = {
     getOptions: function getOptions($el, patternName, options) {
@@ -1498,7 +1498,7 @@ define('mockup-patterns-base',[
   'mockup-parser',
   "pat-logger"
 ], function($, Registry, mockupParser, logger) {
-  
+  'use strict';
   var log = logger.getLogger("Mockup Base");
 
   var initMockup = function initMockup($el, options, trigger) {
@@ -1644,7 +1644,7 @@ the specific language governing permissions and limitations under the Apache Lic
 })(jQuery);
 
 (function ($, undefined) {
-    
+    "use strict";
     /*global document, window, jQuery, console */
 
     if (window.Select2 !== undefined) {
@@ -5907,7 +5907,7 @@ define('mockup-patterns-select2',[
   'jquery.event.drag',
   'jquery.event.drop'
 ], function($, Base) {
-  
+  'use strict';
 
   var Select2 = Base.extend({
     name: 'select2',
@@ -9363,7 +9363,7 @@ Picker.extend( 'pickatime', TimePicker )
 define('mockup-i18n',[
   'jquery'
 ], function($) {
-  
+  'use strict';
 
   var I18N = function() {
     var self = this;
@@ -9479,7 +9479,7 @@ define('mockup-i18n',[
 define('translate',[
   'mockup-i18n'
 ], function(I18N) {
-  
+  'use strict';
 
   // we're creating a singleton here so we can potentially
   // delay the initialization of the translate catalog
@@ -9588,7 +9588,7 @@ define('mockup-patterns-pickadate',[
   'mockup-patterns-select2',
   'translate'
 ], function($, Base, Picker, PickerDate, PickerTime, Select2, _t) {
-  
+  'use strict';
 
   var PickADate = Base.extend({
     name: 'pickadate',
@@ -9814,7 +9814,7 @@ define('mockup-patterns-pickadate',[
 define('mockup-utils',[
   'jquery'
 ], function($) {
-  
+  'use strict';
 
   var QueryHelper = function(options) {
     /* if pattern argument provided, it can implement the interface of:
@@ -10208,7 +10208,7 @@ define('plone-patterns-toolbar',[
   'mockup-utils',
   'jquery.cookie'
 ], function ($, Base, Registry, utils) {
-  
+  'use strict';
 
   var Toolbar = Base.extend({
     name: 'toolbar',
@@ -10476,7 +10476,7 @@ define('mockup-patterns-accessibility',[
   'mockup-patterns-base',
   'jquery.cookie'
 ], function($, Base) {
-  
+  'use strict';
 
   var Accessibility = Base.extend({
     name: 'accessibility',
@@ -10605,7 +10605,7 @@ define('mockup-patterns-autotoc',[
   'jquery',
   'mockup-patterns-base'
 ], function($, Base) {
-  
+  'use strict';
 
   var AutoTOC = Base.extend({
     name: 'autotoc',
@@ -10714,7 +10714,7 @@ define('mockup-patterns-cookietrigger',[
   'jquery',
   'mockup-patterns-base'
 ], function ($, Base) {
-  
+  'use strict';
 
   var CookieTrigger = Base.extend({
     name: 'cookietrigger',
@@ -10796,7 +10796,7 @@ define('mockup-patterns-formunloadalert',[
   'mockup-patterns-base',
   'translate'
 ], function ($, Base, _t) {
-  
+  'use strict';
 
   var FormUnloadAlert = Base.extend({
     name: 'formunloadalert',
@@ -10890,7 +10890,7 @@ define('mockup-patterns-preventdoublesubmit',[
   'mockup-patterns-base',
   'translate'
 ], function($, Base, _t) {
-  
+  'use strict';
 
   var PreventDoubleSubmit = Base.extend({
     name: 'preventdoublesubmit',
@@ -10956,7 +10956,7 @@ define('mockup-patterns-formautofocus',[
   'jquery',
   'mockup-patterns-base'
 ], function($, Base, undefined) {
-  
+  'use strict';
 
   var FormAutoFocus = Base.extend({
     name: 'formautofocus',
@@ -11065,7 +11065,7 @@ define('mockup-patterns-markspeciallinks',[
   'mockup-patterns-base',
   'jquery'
 ], function (Base, $) {
-  
+  'use strict';
 
   var MarkSpecialLinks = Base.extend({
     name: 'markspeciallinks',
@@ -16136,7 +16136,7 @@ define('mockup-patterns-backdrop',[
   'jquery',
   'mockup-patterns-base'
 ], function($, Base) {
-  
+  'use strict';
 
   var Backdrop = Base.extend({
     name: 'backdrop',
@@ -17821,7 +17821,7 @@ define('mockup-router',[
   'underscore',
   'backbone'
 ], function($, _, Backbone) {
-  
+  'use strict';
 
   var regexEscape = function(s) {
     return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
@@ -17926,7 +17926,7 @@ define('mockup-router',[
 }
 
 (function($) {
-
+"use strict";
 
 /*
     Usage Note:
@@ -19201,7 +19201,7 @@ define('mockup-patterns-modal',[
   'mockup-utils',
   'jquery.form'
 ], function($, _, Base, Backdrop, registry, Router, utils) {
-  
+  'use strict';
 
   var Modal = Base.extend({
     name: 'plone-modal',
@@ -20009,7 +20009,7 @@ define('mockup-patterns-livesearch',[
   'underscore',
   'translate'
 ], function ($, Base, _, _t){
-  
+  'use strict';
 
   var Livesearch = Base.extend({
     name: 'livesearch',
@@ -20265,7 +20265,7 @@ define('mockup-patterns-contentloader',[
   'mockup-utils',
   'underscore'
 ], function($, Base, logger, Registry, utils, _) {
-  
+  'use strict';
   var log = logger.getLogger('pat-contentloader');
 
   var ContentLoader = Base.extend({
@@ -20381,7 +20381,7 @@ define("bootstrap-dropdown", ["jquery"], function() {
 
 
 +function ($) {
-  
+  'use strict';
 
   // DROPDOWN CLASS DEFINITION
   // =========================
@@ -20551,7 +20551,7 @@ define("bootstrap-collapse", ["jquery"], function() {
 
 
 +function ($) {
-  
+  'use strict';
 
   // COLLAPSE PUBLIC CLASS DEFINITION
   // ================================
@@ -20772,7 +20772,7 @@ define("bootstrap-tooltip", ["jquery"], function() {
 
 
 +function ($) {
-  
+  'use strict';
 
   // TOOLTIP PUBLIC CLASS DEFINITION
   // ===============================
@@ -21261,7 +21261,7 @@ define("bootstrap-tooltip", ["jquery"], function() {
 
 if (window.jQuery) {
   define( 'jquery', [], function () {
-    
+    'use strict';
     return window.jQuery;
   } );
 }
@@ -21288,7 +21288,7 @@ require([
   'bootstrap-collapse',
   'bootstrap-tooltip',
 ], function($, registry, Base) {
-  
+  'use strict';
 
   // initialize only if we are in top frame
   if (window.parent === window) {
@@ -21313,5 +21313,5 @@ require([
 
 });
 
-define("/Users/ramon/Development/buildout.coredev/src/Products.CMFPlone/Products/CMFPlone/static/plone.js", function(){});
+define("/Users/nathan/code/coredev5/src/Products.CMFPlone/Products/CMFPlone/static/plone.js", function(){});
 

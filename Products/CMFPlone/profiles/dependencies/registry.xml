@@ -957,8 +957,12 @@
 
       <element key="plone-toolbar-bg">rgba(0,0,0,.9)</element>
       <element key="plone-toolbar-submenu-bg">rgba(20,20,20,.9)</element>
+      <!--
       <element key="plone-toolbar-font-primary">'Roboto Condensed', sans-serif</element>
       <element key="plone-toolbar-font-secundary">'Roboto', sans-serif</element>
+      -->
+      <element key="plone-toolbar-font-primary">sans-serif</element>
+      <element key="plone-toolbar-font-secundary">sans-serif</element>
       <element key="plone-toolbar-separator-color">rgba(255,255,255,.17)</element>
       <element key="plone-toolbar-link">{plone-link-color}</element>
       <element key="plone-toolbar-text-color">rgba(255,255,255,1)</element>
