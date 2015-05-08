@@ -85,7 +85,6 @@
   <records interface="Products.CMFPlone.interfaces.ITinyMCESchema"
            prefix="plone">
     <value key="content_css">++plone++static/components/tinymce-builded/js/tinymce/skins/lightgray/content.min.css</value>
-    <value key="prependToScalePart">/@@images/image/</value>
   </records>
   <record name="plone.resources.development">
     <field type="plone.registry.field.Bool">
@@ -391,7 +390,11 @@
       <value key="js">++plone++static/components/tinymce-builded/js/tinymce/plugins/advlist/plugin.js</value>
       <value key="deps">tinymce</value>
   </records>
-
+  <records prefix="plone.resources/tinymce-compat3x"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/tinymce-builded/js/tinymce/plugins/compat3x/plugin.js</value>
+      <value key="deps">tinymce</value>
+  </records>
 
   <records prefix="plone.resources/tinymce-anchor"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
@@ -1025,7 +1028,7 @@
     <value key="expression">python: member is not None</value>
     <value key="jscompilation">++plone++static/plone-logged-in-compiled.min.js</value>
     <value key="csscompilation">++plone++static/plone-logged-in-compiled.css</value>
-    <value key="last_compilation">2015-05-01 00:00:00</value>
+    <value key="last_compilation">2015-05-07 00:00:00</value>
   </records>
 
   <records prefix="plone.bundles/plone-legacy"

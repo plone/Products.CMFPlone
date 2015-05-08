@@ -188,4 +188,13 @@
       name="search.js"
       file="static/search.js"
       />
+
+  <!-- AtD Support -->
+  <browser:page
+    for="*"
+    name="checkDocument"
+    class=".atd.ATDProxyView"
+    permission="zope2.View"
+    attribute="checkDocument"
+    />
 </configure>
