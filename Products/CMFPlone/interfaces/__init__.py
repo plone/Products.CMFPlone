@@ -24,6 +24,7 @@ from controlpanel import ITinyMCESchema
 from controlpanel import ITinyMCEPluginSchema
 from controlpanel import ITypesSchema
 from controlpanel import IUserGroupsSettingsSchema
+from controlpanel import IImagingSchema
 from events import IConfigurationChangedEvent
 from events import IReorderedEvent
 from events import ISiteManagerCreatedEvent

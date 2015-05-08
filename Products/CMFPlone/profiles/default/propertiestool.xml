@@ -155,17 +155,4 @@
   <property name="external_logout_url" type="string"/>
   <property name="external_login_iframe" type="boolean"/>
  </object>
- <object name="imaging_properties" meta_type="Plone Property Sheet">
-  <property name="title">Image handling properties</property>
-  <property name="allowed_sizes" type="lines">
-   <element value="large 768:768"/>
-   <element value="preview 400:400"/>
-   <element value="mini 200:200"/>
-   <element value="thumb 128:128"/>
-   <element value="tile 64:64"/>
-   <element value="icon 32:32"/>
-   <element value="listing 16:16"/>
-  </property>
-  <property name="quality" type="int">88</property>
- </object>
 </object>
