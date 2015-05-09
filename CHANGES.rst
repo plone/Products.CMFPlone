@@ -11,8 +11,9 @@ Changelog
   [vangheem]
 
 - Add ``_authenticator`` param to contenthistory URLs.
-  This will prevent CSRF warnings. See `#330`__
-
+  This will prevent CSRF warnings
+  (see https://github.com/plone/Products.CMFPlone/issues/330)
+  [keul]
 
 2.5.5 (2015-05-04)
 ------------------
