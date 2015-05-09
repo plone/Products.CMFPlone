@@ -124,7 +124,7 @@ class TinyMCESettingsGenerator(object):
 
         theme = self.get_theme()
         if theme and getattr(theme, 'tinymce_styles_css', None):
-            tiny_config['importcss_file_filter'] += ',%s/%s' % (
+            tiny_config['importcss_file_filter'] = '%s/%s' % (
                 self.portal_url,
                 theme.tinymce_styles_css.lstrip('/'))
 
