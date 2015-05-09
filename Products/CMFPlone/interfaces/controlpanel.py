@@ -367,9 +367,7 @@ class ITinyMCELayoutSchema(Interface):
     resizing = schema.Bool(
         title=_(u"Enable resizing the editor window."),
         description=_(u"This option gives you the ability to enable/disable "
-                      "resizing the editor window. "
-                      "If the editor width is set to a percentage "
-                      "only vertical resizing is enabled."),
+                      "resizing the editor window. "),
         default=True,
         required=False)
 
@@ -402,9 +400,11 @@ class ITinyMCELayoutSchema(Interface):
     content_css = schema.TextLine(
         title=_(u"Choose the CSS used in WYSIWYG Editor Area"),
         description=_(u"This option enables you to specify a custom CSS file "
-                      "that replaces the theme content CSS. "
+                      "that provides content CSS. "
                       "This CSS file is the one used within the editor "
-                      "(the editable area)."),
+                      "(the editable area). In addition to what is listed here, "
+                      "the plone bundle CSS and diazo themes using the "
+                      "tinymce-content-css setting are also added."),
         default=u'++plone++static/components/tinymce/skins/lightgray/content.min.css',
         required=False)
 
@@ -463,10 +463,7 @@ class ITinyMCELayoutSchema(Interface):
             u"See http://www.tinymce.com/wiki.php/Configuration:formats"),
         constraint=validate_json,
         default=json.dumps({
-            'pullquote': {'block': 'blockquote', 'classes': 'pullquote'},
             'discreet': {'inline': 'span', 'classes': 'discreet'},
-            'callout': {'block': 'p', 'classes': 'callout'},
-            'highlight': {'block': 'span', 'classes': 'visualHighlight'},
             'clearfix': {'block': 'div', 'classes': 'clearfix'}
         }, indent=4).decode('utf8'),
         required=True,
@@ -532,7 +529,8 @@ class ITinyMCEPluginSchema(Interface):
 
     menu = schema.Text(
         title=_('label_tinymce_menu', 'Menu'),
-        description=_('hint_tinymce_menu', default='Menu configuration'),
+        description=_('hint_tinymce_menu',
+                      default='JSON formatted Menu configuration.'),
         default=json.dumps({
             'file': {'title': 'File', 'items': 'newdocument'},
             'edit': {'title': 'Edit', 'items': 'undo redo | cut '
@@ -561,7 +559,7 @@ class ITinyMCEPluginSchema(Interface):
     custom_plugins = schema.List(
         title=_(u"Custom Plugins"),
         description=_(u"Enter a list of custom plugins which will be loaded "
-                      "in the editor. Format is pluginname or "
+                      "in the editor. Format is "
                       "pluginname|location, one per line."),
         required=False,
         value_type=schema.TextLine(),
@@ -569,7 +567,7 @@ class ITinyMCEPluginSchema(Interface):
 
     custom_buttons = schema.List(
         title=_(u"Custom Buttons"),
-        description=_(u"Enter a list of custom button which will be added to toolbar"),
+        description=_(u"Enter a list of custom buttons which will be added to toolbar"),
         required=False,
         value_type=schema.TextLine(),
         default=[])
@@ -582,9 +580,7 @@ class ITinyMCESpellCheckerSchema(Interface):
     libraries_spellchecker_choice = schema.Choice(
         title=_(u"Spellchecker plugin to use"),
         description=_(u"This option allows you to choose the spellchecker for "
-                      u"TinyMCE. If you want the spellchecker button to be "
-                      u"visible, make sure it is enabled in the toolbar "
-                      u"settings."),
+                      u"TinyMCE."),
         missing_value=set(),
         vocabulary=SimpleVocabulary([
             SimpleTerm('browser', 'browser',
