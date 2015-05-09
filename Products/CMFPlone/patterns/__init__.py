@@ -28,7 +28,7 @@ class TinyMCESettingsGenerator(object):
         self.settings = registry.forInterface(ITinyMCESchema, prefix="plone", check=False)
         self.portal_url = get_portal_url(self.portal)
 
-    def get_content_css(self):
+    def get_theme(self):
         # Volatile attribute to cache the current theme
         if hasattr(self.portal, '_v_currentTheme'):
             themeObj = self.portal._v_currentTheme
@@ -37,7 +37,6 @@ class TinyMCESettingsGenerator(object):
             themeObj = getTheme(theme)
             self.portal._v_currentTheme = themeObj
         cache = component.queryUtility(ram.IRAMCache)
-        content_css = None
         if isThemeEnabled(self.request):
             themeObj = cache.query(
                 'plone.currentTheme',
@@ -50,16 +49,19 @@ class TinyMCESettingsGenerator(object):
                     themeObj,
                     'plone.currentTheme',
                     key=dict(prefix='theme'))
-            if (themeObj and hasattr(themeObj, 'tinymce_content_css') and
-                    themeObj.tinymce_content_css):
-                content_css = self.portal_url + themeObj.tinymce_content_css
+        return themeObj
 
-        if content_css is None:
-            content_css = self.settings.content_css
-        if not content_css:
-            content_css = '%s/++plone++static/plone-compiled.css' % self.portal_url
-        content_css += ',%s/++plone++static/plone-compiled.css' % self.portal_url
-        return content_css
+    def get_content_css(self):
+        files = [
+            '%s/++plone++static/plone-compiled.css' % self.portal_url,
+            '%s/++plone++static/tinymce-styles.css' % self.portal_url
+        ]
+        theme = self.get_theme()
+        if (theme and hasattr(theme, 'tinymce_content_css') and
+                theme.tinymce_content_css):
+            files.append(self.portal_url + theme.tinymce_content_css)
+
+        return ','.join(files)
 
     def get_style_format(self, txt):
         parts = txt.strip().split('|')
@@ -78,7 +80,6 @@ class TinyMCESettingsGenerator(object):
         block_styles = self.settings.block_styles or []
         inline_styles = self.settings.inline_styles or []
         alignment_styles = self.settings.alignment_styles or []
-        styles = self.settings.styles or []
         return [{
             'title': 'Headers',
             'items': [self.get_style_format(t) for t in header_styles]
@@ -91,9 +92,6 @@ class TinyMCESettingsGenerator(object):
         }, {
             'title': 'Alignment',
             'items': [self.get_style_format(t) for t in alignment_styles]
-        }, {
-            'title': 'Styles',
-            'items': [self.get_style_format(t) for t in styles]
         }]
 
     def get_tiny_config(self):
@@ -102,10 +100,13 @@ class TinyMCESettingsGenerator(object):
         tiny_config = {
             'resize': settings.resizing and 'both' or False,
             'content_css': self.get_content_css(),
-            'plugins': ['plonelink', 'ploneimage'] + settings.plugins,
+            'plugins': ['plonelink', 'ploneimage', 'importcss'] + settings.plugins,
             'external_plugins': {},
             'toolbar': settings.toolbar,
-            'entity_encoding': settings.entity_encoding
+            'entity_encoding': settings.entity_encoding,
+            'importcss_append': True,
+            'importcss_file_filter': '%s/++plone++static/tinymce-styles.css' % (
+                self.portal_url)
         }
         toolbar_additions = settings.custom_buttons or []
 
@@ -120,9 +121,12 @@ class TinyMCESettingsGenerator(object):
         # specific plugin options
         if 'contextmenu' in settings.plugins:
             tiny_config['contextmenu'] = "plonelink ploneimage inserttable | cell row column deletetable"  # noqa
-        if 'importcss' in settings.plugins:
-            tiny_config['importcss_append'] = True
-            tiny_config['importcss_file_filter'] = tiny_config['content_css']
+
+        theme = self.get_theme()
+        if theme and getattr(theme, 'tinymce_styles_css', None):
+            tiny_config['importcss_file_filter'] += ',%s/%s' % (
+                self.portal_url,
+                theme.tinymce_styles_css.lstrip('/'))
 
         if settings.libraries_spellchecker_choice == 'AtD':
             mtool = getToolByName(self.portal, 'portal_membership')

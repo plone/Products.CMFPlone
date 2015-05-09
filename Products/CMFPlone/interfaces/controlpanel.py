@@ -454,19 +454,6 @@ class ITinyMCELayoutSchema(Interface):
             u"Right|alignright|alignright",
             u"Justify|alignjustify|alignjustify"])
 
-    styles = schema.List(
-        title=_(u"Styles"),
-        description=_(u"Enter a list of styles to appear in the style "
-                      "pulldown. Format is title|format one per line."),
-        value_type=schema.TextLine(),
-        default=[
-            u"Pullquote|pullquote",
-            u"Discreet|discreet",
-            u"Callout|callout",
-            u"Highlight|highlight",
-            u"Clear floats|clearfix"],
-        required=False)
-
     formats = schema.Text(
         title=_(u"Formats"),
         description=_(
@@ -506,7 +493,6 @@ class ITinyMCEPluginSchema(Interface):
             SimpleTerm('fullpage', 'fullpage', u"fullpage"),
             SimpleTerm('fullscreen', 'fullscreen', u"fullscreen"),
             SimpleTerm('hr', 'hr', u"hr"),
-            SimpleTerm('importcss', 'importcss', u"importcss"),
             SimpleTerm('insertdatetime', 'insertdatetime', u"insertdatetime"),
             SimpleTerm('layer', 'layer', u"layer"),
             SimpleTerm('lists', 'lists', u"lists"),

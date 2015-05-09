@@ -8,6 +8,9 @@ Changelog
 5.0b2 (unreleased)
 ------------------
 
+- add ability to provide a css file for tinymce style formats
+  [vangheem]
+
 - fix plone-generate-gruntfile to compile each less resource
   separately
   [vangheem]
