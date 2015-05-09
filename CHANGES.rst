@@ -8,6 +8,10 @@ Changelog
 5.0b2 (unreleased)
 ------------------
 
+- fix plone-generate-gruntfile to compile each less resource
+  separately
+  [vangheem]
+
 - provide image alignment styles for tinymce images
   [vangheem]
 

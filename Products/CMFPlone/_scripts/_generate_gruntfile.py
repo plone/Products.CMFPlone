@@ -305,8 +305,7 @@ for g, src in globalVars.items():
 
 require_configs = ""
 uglify_configs = ""
-less_files = ""
-less_final_config = ""
+less_configs = []
 sourceMap_url = ""
 sed_config_final = ""
 watch_files = []
@@ -317,6 +316,7 @@ for bkey, bundle in bundles.items():
     if bundle.compile:
         for resource in bundle.resources:
             res_obj = resources[resource]
+            less_files = []
             if res_obj.js:
                 js_object = portal.unrestrictedTraverse(res_obj.js, None)
                 if js_object:
@@ -356,9 +356,9 @@ for bkey, bundle in bundles.items():
                         target_dir = '/'.join(bundle.csscompilation.split('/')[:-1])  # noqa
                         target_name = bundle.csscompilation.split('/')[-1]
                         target_path = resource_to_dir(portal.unrestrictedTraverse(target_dir))  # noqa
-                        less_file = "\"%s/%s\": \"%s\"," % (target_path, target_name, main_css_path)  # noqa
+                        less_file = "\"%s/%s\": \"%s\"" % (target_path, target_name, main_css_path)  # noqa
                         sourceMap_url = target_name + '.map'
-                        less_files += less_file
+                        less_files.append(less_file)
                         watch_files.append(main_css_path)
                         # replace urls
 
@@ -380,22 +380,21 @@ for bkey, bundle in bundles.items():
 
                     else:
                         print "No file found: " + script.js
-                less_files += '\n'
-        less_final_config = less_config.format(
+        less_configs.append(less_config.format(
             name=bkey,
             globalVars=globalVars_string,
-            files=less_files,
+            files=',\n'.join(less_files),
             less_paths=json.dumps(less_paths),
-            sourcemap_url=sourceMap_url)
+            sourcemap_url=sourceMap_url))
         bundle_grunt_tasks += (
             "\ngrunt.registerTask('compile-%s',"
-            "['requirejs:%s', 'less', 'sed', 'uglify:%s']);"
-        ) % (bkey, bkey, bkey)
+            "['requirejs:%s', 'less:%s', 'sed', 'uglify:%s']);"
+        ) % (bkey, bkey, bkey, bkey)
 
 
 gruntfile = open('Gruntfile.js', 'w')
 gruntfile.write(gruntfile_template.format(
-    less=less_final_config,
+    less=','.join(less_configs),
     requirejs=require_configs,
     uglify=uglify_configs,
     sed=sed_config_final,
