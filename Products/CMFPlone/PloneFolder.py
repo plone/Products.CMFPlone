@@ -22,7 +22,7 @@ from Products.CMFCore.PortalFolder import PortalFolderBase
 from Products.CMFCore.permissions import AccessContentsInformation, \
                     AddPortalContent, AddPortalFolders, ListFolderContents, \
                     ModifyPortalContent
-from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
+from Products.CMFPlone.DublinCore import DefaultDublinCoreImpl
 
 from zope.interface import implements
 
@@ -217,8 +217,7 @@ class BasePloneFolder(CatalogAware, WorkflowAware, OpaqueItemManager,
     def folderlistingFolderContents(self, contentFilter=None,
                                     suppressHiddenFiles=0):
         """Calls listFolderContents in protected only by ACI so that
-        folder_listing can work without the List folder contents permission,
-        as in CMFDefault.
+        folder_listing can work without the List folder contents permission
         """
         return self.listFolderContents(contentFilter, suppressHiddenFiles)
 

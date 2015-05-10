@@ -3,6 +3,9 @@
     xmlns:five="http://namespaces.zope.org/five"
     xmlns:browser="http://namespaces.zope.org/browser">
 
+  <!-- needed for control panel permission -->
+  <include package="plone.app.imaging" />
+
   <permission id="plone.app.controlpanel.TinyMCE"
               title="Plone Site Setup: TinyMCE">
     <role name="Manager"/>
@@ -25,12 +28,28 @@
     permission="plone.app.controlpanel.Editing"
     />
 
+  <!-- Filter Control Panel -->
+  <browser:page
+    name="filter-controlpanel"
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    class=".filter.FilterControlPanelView"
+    permission="plone.app.controlpanel.Filtering"
+    />
+
   <!-- TinyMCE Control Panel -->
   <browser:page
     name="tinymce-controlpanel"
     for="Products.CMFPlone.interfaces.IPloneSiteRoot"
     class=".tinymce.TinyMCEControlPanel"
     permission="plone.app.controlpanel.TinyMCE"
+    />
+
+  <!-- Language Control Panel -->
+  <browser:page
+    name="language-controlpanel"
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    class=".language.LanguageControlPanel"
+    permission="plone.app.controlpanel.Language"
     />
 
   <!-- Maintenance Control Panel -->
@@ -222,6 +241,12 @@
     for="Products.CMFPlone.interfaces.IPloneSiteRoot"
     class=".socialmedia.SocialControlPanel"
     permission="plone.app.controlpanel.Site"
+    />
+ <browser:page
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    name="imaging-controlpanel"
+    class=".imaging.ImagingControlPanel"
+    permission="plone.app.controlpanel.Imaging"
     />
 
 </configure>

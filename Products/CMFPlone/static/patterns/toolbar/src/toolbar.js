@@ -1,14 +1,17 @@
 define([
   'jquery',
   'mockup-patterns-base',
+  'pat-registry',
+  'mockup-utils',
   'jquery.cookie'
-], function ($, Base) {
+], function ($, Base, Registry, utils) {
   'use strict';
 
   var Toolbar = Base.extend({
     name: 'toolbar',
     trigger: '.pat-toolbar',
     init: function () {
+      var that = this;
       if ($(window).width() < '768'){//mobile
         // $( 'html' ).has('.plone-toolbar-left').css({'margin-left':'0','margin-top':'0','margin-right':'0'});
         // $( 'html' ).has('.plone-toolbar-top').css({'margin-left':'0','margin-top':'0','margin-right':'0'});
@@ -205,6 +208,19 @@ define([
         });
       }
       this.$el.addClass('initialized');
+
+      /* folder contents changes the context.
+         This is for usability so the menu changes along with
+         the folder contents context */
+      $('body').off('structure-url-changed').on('structure-url-changed', function (e, path) {
+        $.ajax({
+          url: $('body').attr('data-portal-url') + path + '/@@render-toolbar'
+        }).done(function(data){
+          var $el = $(utils.parseBodyTag(data));
+          that.$el.replaceWith($el);
+          Registry.scan($el);
+        });
+      });
     }
   });
 

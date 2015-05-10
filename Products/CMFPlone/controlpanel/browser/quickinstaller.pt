@@ -19,28 +19,21 @@
       add-ons in the lists below.
     </div>
 
-    <div id="content-core"
-         tal:define="products  view/get_addons">
-        <!--<a href=""
-           class="link-parent"
-           tal:attributes="href string:${context/portal_url}/plone_control_panel"
-           i18n:translate="label_up_to_plone_setup">
-          Up to Site Setup
-        </a>-->
+    <div id="content-core">
 
         <p class="discreet" i18n:translate="">
           To make new add-ons show up here, add them to your buildout
           configuration, run buildout, and restart the server process.
           For detailed instructions see
           <span i18n:name="third_party_product">
-          <a i18n:translate="" href="http://plone.org/documentation/tutorial/buildout/installing-a-third-party-product">
+          <a i18n:translate="" href="http://plone.org/documentation/kb/installing-add-ons-quick-how-to">
             Installing a third party add-on
           </a>
           </span>.
         </p>
 
-        <section tal:define="products   view/get_upgrades;
-                         num_products  python:len(products)"
+        <section tal:define="products view/get_upgrades;
+                         num_products python:len(products)"
              id="upgrade-products" class="portlet">
           <header class="portletHeader">Upgrades</header>
           <section tal:condition="not:products" class="portletContent">
@@ -94,10 +87,9 @@
                         </tal:span>
                       </span>
 
-                      <div i18n:translate=""
-                            tal:condition="not:upgrade_info/available">
-                        <strong>Warning</strong>
-                        <span>There is no upgrade procedure defined for this
+                      <div tal:condition="not:upgrade_info/available">
+                        <strong i18n:translate="">Warning</strong>
+                        <span i18n:translate="">There is no upgrade procedure defined for this
                         addon. Please consult the addon documentation
                         for upgrade information, or contact the addon
                         author.</span>
@@ -106,7 +98,7 @@
                 </ul>
               </li>
               </tal:products>
-              <li  tal:condition="python:num_products > 1">
+              <li tal:condition="python:num_products > 1">
                 <form action="upgrade_products" method="post">
                    <tal:products  tal:repeat="product products">
                    <input type="hidden" value="product"
@@ -128,9 +120,8 @@
           </section>
         </section>
 
-
-        <section tal:define="products   view/get_available;
-                         num_products  python:len(products)"
+        <section tal:define="products view/get_available;
+                         num_products python:len(products)"
              id="install-products" class="portlet">
           <header class="portletHeader" i18n:translate="">Available add-ons</header>
           <section class="portletContent">
@@ -167,9 +158,8 @@
           </section>
         </section>
 
-
-        <section tal:define="products   view/get_installed;
-                         num_products  python:len(products)"
+        <section tal:define="products view/get_installed;
+                         num_products python:len(products)"
              id="activated-products" class="portlet">
           <header class="portletHeader" i18n:translate="">Activated add-ons</header>
           <section class="portletContent">
@@ -204,6 +194,30 @@
               </ul>
           </section>
         </section>
+
+        <section tal:define="products view/get_broken;
+                             num_products python:len(products);"
+                 tal:condition="num_products"
+                 id="broken-products" class="portlet">
+          <header class="portletHeader" i18n:translate="">Broken add-ons</header>
+          <section class="portletContent">
+            <ul class="configlets">
+              <li tal:repeat="product products">
+                <h3>
+                  <span tal:replace="product/productname">
+                    Add-on Name
+                  </span>
+                </h3>
+                <p class="configletDescription discreet">
+                  <span tal:content="product/type">Error Type</span>
+                  <em class="discreet"> - <tal:span tal:content="product/value">Error Reason</tal:span></em>
+                </p>
+              </li>
+            </ul>
+          </section>
+        </section>
+
+    </div>
 </metal:main>
 
 </body>

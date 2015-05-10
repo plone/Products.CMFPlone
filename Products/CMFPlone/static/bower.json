@@ -1,39 +1,41 @@
 {
   "name": "Products.CMFPlone",
-  "version": "5.0a3",
+  "version": "5.0b2",
   "description": "CMFPlone Javascript Bundle",
   "dependencies": {
-    "ace-builds": "1.1.7",
+    "ace-builds": "1.1.9",
     "backbone": "1.1.2",
     "backbone.paginator": "0.8.1",
-    "bootstrap": "3.2.0",
+    "bootstrap": "3.3.4",
     "console-polyfill": "0.1.2",
-    "dropzone": "3.10.2",
+    "dropzone": "4.0.1",
     "es5-shim": "4.0.3",
     "jqtree": "0.22.0",
-    "jquery": "1.11.1",
+    "jquery": "1.11.2",
     "jquery-form": "3.46.0",
     "jquery.cookie": "1.4.1",
+    "jquery.recurrenceinput.js": "v1.3",
     "lodash": "2.4.1",
-    "mockup-core": "2.0.0",
-    "moment": "2.8.3",
+    "logging": "",
+    "mockup-core": "2.1.8",
+    "moment": "2.10.2",
+    "patternslib": "2.0.9",
     "pickadate": "3.4.0",
     "requirejs-text": "2.0.12",
     "select2": "3.5.1",
-
-    "tinymce-builded": "4.1.6",
-    "patternslib": "2.0.8",
-
+    "tinymce-builded": "4.1.9",
     "requirejs": "",
     "less": "2.1.2",
     "r.js": "2.1.15"
   },
   "resolutions": {
-    "jquery": "1.11.1",
-    "select2": "3.5.1"
+    "bootstrap": "3.3.4",
+    "jquery": "1.11.2",
+    "select2": "3.5.1",
+    "patternslib": "2.0.9"
   },
   "devDependencies": {
     "expect": "0.3.1",
-    "sinonjs": "1.10.2"
+    "sinonjs": "1.14.1"
   }
 }

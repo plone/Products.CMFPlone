@@ -1,17 +1,15 @@
-// moment.js locale configuration
-// locale : portuguese (pt)
-// author : Jefferson : https://github.com/jalex79
+//! moment.js locale configuration
+//! locale : portuguese (pt)
+//! author : Jefferson : https://github.com/jalex79
 
-(function (factory) {
-    if (typeof define === 'function' && define.amd) {
-        define(['moment'], factory); // AMD
-    } else if (typeof exports === 'object') {
-        module.exports = factory(require('../moment')); // Node
-    } else {
-        factory(window.moment); // Browser global
-    }
-}(function (moment) {
-    return moment.defineLocale('pt', {
+(function (global, factory) {
+   typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('../moment')) :
+   typeof define === 'function' && define.amd ? define(['moment'], factory) :
+   factory(global.moment)
+}(this, function (moment) { 'use strict';
+
+
+    var pt = moment.defineLocale('pt', {
         months : 'janeiro_fevereiro_março_abril_maio_junho_julho_agosto_setembro_outubro_novembro_dezembro'.split('_'),
         monthsShort : 'jan_fev_mar_abr_mai_jun_jul_ago_set_out_nov_dez'.split('_'),
         weekdays : 'domingo_segunda-feira_terça-feira_quarta-feira_quinta-feira_sexta-feira_sábado'.split('_'),
@@ -19,6 +17,7 @@
         weekdaysMin : 'dom_2ª_3ª_4ª_5ª_6ª_sáb'.split('_'),
         longDateFormat : {
             LT : 'HH:mm',
+            LTS : 'LT:ss',
             L : 'DD/MM/YYYY',
             LL : 'D [de] MMMM [de] YYYY',
             LLL : 'D [de] MMMM [de] YYYY LT',
@@ -51,10 +50,14 @@
             y : 'um ano',
             yy : '%d anos'
         },
+        ordinalParse: /\d{1,2}º/,
         ordinal : '%dº',
         week : {
             dow : 1, // Monday is the first day of the week.
             doy : 4  // The week that contains Jan 4th is the first week of the year.
         }
     });
+
+    return pt;
+
 }));

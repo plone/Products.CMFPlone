@@ -1,7 +1,7 @@
 import unittest
 
 from email import message_from_string
-from zope.component import getSiteManager
+from zope.component import getSiteManager, getUtility
 from Products.CMFPlone.tests import PloneTestCase
 
 from AccessControl import Unauthorized
@@ -121,6 +121,8 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
         self.portal.setTitle('T\xc3\xa4st Portal')
         self.portal.email_from_name = 'T\xc3\xa4st Admin'
         self.portal.email_from_address = 'bar@baz.com'
+
+        # Notify the registered user
         self.registration.registeredNotify(member_id)
         self.assertEqual(len(mails.messages), 1)
         msg = message_from_string(mails.messages[0])
@@ -134,6 +136,31 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
         self.assertEqual(msg['Content-Type'], 'text/plain; charset="utf-8"')
         # And a Quoted Printable encoded body
         self.assertTrue('T=C3=A4st Admin' in msg.get_payload())
+
+    def testRegisteredNotifyEncoding(self):
+        mails = self.portal.MailHost = MockMailHost('MailHost')
+        sm = getSiteManager(self.portal)
+        sm.unregisterUtility(provided=IMailHost)
+        sm.registerUtility(mails, IMailHost)
+        # Register a user
+        self.registration.addMember(member_id, 'secret',
+                          properties={'username': member_id,
+                                      'email': 'foo@bar.com'})
+        # Set the portal email info
+        self.portal.setTitle('Test Portal')
+        self.portal.email_from_name = 'Test Admin'
+        self.portal.email_from_address = 'bar@baz.com'
+
+        # Set the portal email encoding
+        self.portal.email_charset = 'us-ascii'
+
+        # Notify the registered user
+        self.registration.registeredNotify(member_id)
+        self.assertEqual(len(mails.messages), 1)
+        msg = message_from_string(mails.messages[0])
+
+        # Ensure charset (and thus Content-Type) were set via template
+        self.assertEqual(msg['Content-Type'], 'text/plain; charset="us-ascii"')
 
     def testMailPassword(self):
         # tests email sending for password emails
@@ -150,6 +177,7 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
         self.portal.setTitle('T\xc3\xa4st Portal')
         self.portal.email_from_name = 'T\xc3\xa4st Admin'
         self.portal.email_from_address = 'bar@baz.com'
+
         from zope.publisher.browser import TestRequest
         self.registration.mailPassword(member_id, TestRequest())
         self.assertEqual(len(mails.messages), 1)
@@ -163,6 +191,33 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
         self.assertEqual(msg['Content-Type'], 'text/plain; charset="utf-8"')
         # And a Quoted Printable encoded body
         self.assertTrue('T=C3=A4st Porta' in msg.get_payload())
+
+    def testMailPasswordEncoding(self):
+        # tests email sending for password emails
+        # First install a fake mailhost utility
+        mails = self.portal.MailHost = MockMailHost('MailHost')
+        sm = getSiteManager(self.portal)
+        sm.unregisterUtility(provided=IMailHost)
+        sm.registerUtility(mails, IMailHost)
+        # Register a user
+        self.registration.addMember(member_id, 'secret',
+                          properties={'username': member_id,
+                                      'email': 'foo@bar.com'})
+        # Set the portal email info
+        self.portal.setTitle('Test Portal')
+        self.portal.email_from_name = 'Test Admin'
+        self.portal.email_from_address = 'bar@baz.com'
+
+        # Set the portal email encoding
+        self.portal.email_charset = 'us-ascii'
+
+        from zope.publisher.browser import TestRequest
+        self.registration.mailPassword(member_id, TestRequest())
+        self.assertEqual(len(mails.messages), 1)
+        msg = message_from_string(mails.messages[0])
+
+        # Ensure charset (and thus Content-Type) were set via template
+        self.assertEqual(msg['Content-Type'], 'text/plain; charset="us-ascii"')
 
 
 class TestPasswordGeneration(PloneTestCase.PloneTestCase):

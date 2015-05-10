@@ -36,6 +36,8 @@ def importResRegistry(context, reg_id, reg_title, filename):
 
 class ResourceRegistryNodeAdapter(XMLAdapterBase):
 
+    resource_blacklist = set()
+
     def _importNode(self, node):
         """Import the object from the DOM node.
         """
@@ -43,10 +45,10 @@ class ResourceRegistryNodeAdapter(XMLAdapterBase):
             # Upgrade 3.x no registry there
             return
         resources = self.registry.collectionOfInterface(
-            IResourceRegistry, prefix="plone.resources")
+            IResourceRegistry, prefix="plone.resources", check=False)
 
         bundles = self.registry.collectionOfInterface(
-            IBundleRegistry, prefix="plone.bundles")
+            IBundleRegistry, prefix="plone.bundles", check=False)
         if 'plone-legacy' in bundles:
             legacy = bundles['plone-legacy']
         else:
@@ -60,13 +62,15 @@ class ResourceRegistryNodeAdapter(XMLAdapterBase):
 
             data = {}
             add = True
-            position = None
+            remove = False
+            position = res_id = None
             for key, value in child.attributes.items():
                 key = str(key)
                 if key == 'update':
                     continue
-                if key == 'remove':
+                if key == 'remove' and value in (True, 'true', 'True'):
                     add = False
+                    remove = True
                     continue
                 if key in ('position-before', 'insert-before'):
                     position = ('before', queryUtility(
@@ -83,6 +87,10 @@ class ResourceRegistryNodeAdapter(XMLAdapterBase):
                     position = ('',)
                     continue
                 if key == 'id':
+                    if value in self.resource_blacklist:
+                        add = False
+                        data.clear()
+                        break
                     res_id = queryUtility(IIDNormalizer).normalize(str(value))
                     data['url'] = str(value)
                 elif value.lower() == 'false':
@@ -102,7 +110,15 @@ class ResourceRegistryNodeAdapter(XMLAdapterBase):
                 elif self.resource_type == 'stylesheet':
                     proxy.css = [data['url']]
                 if 'enabled' in data and not data['enabled']:
+                    # if we are disabling it, we need to remove from legacy resources
+                    if res_id in legacy.resources:
+                        legacy.resources.remove(res_id)
                     continue
+                if res_id in legacy.resources:
+                    # remove here so we can possible re-insert into whatever
+                    # position is preferred below and then we do not
+                    # re-add same resource multiple times
+                    legacy.resources.remove(res_id)
                 if position is None:
                     position = ('',)
                 if position[0] == '*':
@@ -123,7 +139,18 @@ class ResourceRegistryNodeAdapter(XMLAdapterBase):
                             res_id)
                     else:
                         legacy.resources.append(res_id)
-                if 'plone.resources.last_legacy_import' in self.registry.records:  # noqa
-                    self.registry.records[
-                        'plone.resources.last_legacy_import'
-                    ].value = datetime.now()
+
+            if remove:
+                if res_id in legacy.resources:
+                    legacy.resources.remove(res_id)
+                if res_id in resources:
+                    del resources[res_id]
+
+            # make sure to trigger committing to db
+            # not sure this is necessary...
+            legacy.resources = legacy.resources
+
+        if 'plone.resources.last_legacy_import' in self.registry.records:  # noqa
+            self.registry.records[
+                'plone.resources.last_legacy_import'
+            ].value = datetime.now()

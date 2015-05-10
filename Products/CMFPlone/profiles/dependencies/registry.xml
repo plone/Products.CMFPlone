@@ -2,6 +2,10 @@
 <registry>
   <records interface="Products.CMFPlone.interfaces.IEditingSchema"
            prefix="plone" />
+  <records interface="Products.CMFPlone.interfaces.ILanguageSchema"
+           prefix="plone" />
+  <records interface="Products.CMFPlone.interfaces.IFilterSchema"
+           prefix="plone" />
   <records interface="Products.CMFPlone.interfaces.IMaintenanceSchema"
            prefix="plone" />
   <records interface="Products.CMFPlone.interfaces.IMailSchema"
@@ -21,6 +25,8 @@
   <records interface="Products.CMFPlone.interfaces.IUserGroupsSettingsSchema"
            prefix="plone" />
   <records interface="Products.CMFPlone.interfaces.ISocialMediaSchema"
+           prefix="plone" />
+  <records interface="Products.CMFPlone.interfaces.IImagingSchema"
            prefix="plone" />
   <record interface="Products.ResourceRegistries.interfaces.settings.IResourceRegistriesSettings" field="resourceBundlesForThemes">
     <value purge="false">
@@ -83,7 +89,6 @@
   <records interface="Products.CMFPlone.interfaces.ITinyMCESchema"
            prefix="plone">
     <value key="content_css">++plone++static/components/tinymce-builded/js/tinymce/skins/lightgray/content.min.css</value>
-    <value key="prependToScalePart">/@@images/image/</value>
   </records>
   <record name="plone.resources.development">
     <field type="plone.registry.field.Bool">
@@ -277,16 +282,11 @@
       </value>
   </records>
 
-  <records prefix="plone.resources/domready"
-            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++plone++static/components/domready/ready.js</value>
-  </records>
-
   <records prefix="plone.resources/dropzone"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++plone++static/components/dropzone/downloads/dropzone-amd-module.js</value>
+      <value key="js">++plone++static/components/dropzone/dist/dropzone-amd-module.js</value>
       <value key="css">
-        <element>++plone++static/components/dropzone/downloads/css/dropzone.css</element>
+        <element>++plone++static/components/dropzone/dist/dropzone.css</element>
       </value>
   </records>
 
@@ -394,7 +394,11 @@
       <value key="js">++plone++static/components/tinymce-builded/js/tinymce/plugins/advlist/plugin.js</value>
       <value key="deps">tinymce</value>
   </records>
-
+  <records prefix="plone.resources/tinymce-compat3x"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/tinymce-builded/js/tinymce/plugins/compat3x/plugin.js</value>
+      <value key="deps">tinymce</value>
+  </records>
 
   <records prefix="plone.resources/tinymce-anchor"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
@@ -599,6 +603,12 @@
       <value key="js">++plone++static/components/tinymce-builded/js/tinymce/themes/modern/theme.js</value>
       <value key="deps">tinymce</value>
   </records>
+  <records prefix="plone.resources/tinymce-default-styles"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="css">
+        <element>++plone++static/tinymce-styles.css</element>
+      </value>
+  </records>
 
 
   <records prefix="plone.resources/tinymce"
@@ -607,8 +617,8 @@
       <value key="export">window.tinyMCE</value>
       <value key="init">function () { this.tinyMCE.DOM.events.domLoaded = true; return this.tinyMCE; }</value>
       <value key="css">
-        <element>++plone++static/components/tinymce-builded/js/tinymce/skins/lightgray/skin.min.css</element>
-        <element>++plone++static/components/tinymce-builded/js/tinymce/skins/lightgray/content.inline.min.css</element>
+        <element>++plone++static/components/tinymce-builded/js/tinymce/skins/lightgray/skin.less</element>
+        <element>++plone++static/components/tinymce-builded/js/tinymce/skins/lightgray/Content.less</element>
       </value>
   </records>
 
@@ -667,6 +677,11 @@
       <value key="js">++resource++mockup/backdrop/pattern.js</value>
   </records>
 
+  <records prefix="plone.resources/mockup-patterns-contentloader"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockup/contentloader/pattern.js</value>
+  </records>
+
   <records prefix="plone.resources/mockup-patterns-cookietrigger"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/cookietrigger/pattern.js</value>
@@ -690,6 +705,14 @@
   <records prefix="plone.resources/mockup-patterns-inlinevalidation"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/inlinevalidation/pattern.js</value>
+  </records>
+
+  <records prefix="plone.resources/mockup-patterns-markspeciallinks"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockup/markspeciallinks/pattern.js</value>
+      <value key="css">
+        <element>++resource++mockup/markspeciallinks/pattern.markspeciallinks.less</element>
+      </value>
   </records>
 
   <records prefix="plone.resources/mockup-patterns-modal"
@@ -726,6 +749,14 @@
       </value>
   </records>
 
+  <records prefix="plone.resources/mockup-patterns-recurrence"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockup/recurrence/pattern.js</value>
+      <value key="css">
+        <element>++resource++mockup/recurrence/pattern.recurrence.less</element>
+      </value>
+  </records>
+
   <records prefix="plone.resources/mockup-patterns-relateditems"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/relateditems/pattern.js</value>
@@ -739,6 +770,23 @@
       <value key="js">++resource++mockup/select2/pattern.js</value>
       <value key="css">
         <element>++resource++mockup/select2/pattern.select2.less</element>
+      </value>
+  </records>
+
+  <records prefix="plone.resources/mockup-patterns-livesearch"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockup/livesearch/pattern.js</value>
+      <value key="css">
+        <element>++resource++mockup/livesearch/pattern.livesearch.less</element>
+      </value>
+  </records>
+
+  <records prefix="plone.resources/mockup-patterns-resourceregistry"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="url">++resource++mockup/resourceregistry</value>
+      <value key="js">++resource++mockup/resourceregistry/pattern.js</value>
+      <value key="css">
+        <element>++resource++mockup/resourceregistry/pattern.resourceregistry.less</element>
       </value>
   </records>
 
@@ -840,50 +888,52 @@
   <!-- patternslib dependencies -->
   <records prefix="plone.resources/pat-compat"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++plone++static/components/patternslib/src/core/compat</value>
-  </records>
-  <records prefix="plone.resources/pat-jquery-ext"
-            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++plone++static/components/patternslib/src/core/jquery-ext</value>
-  </records>
-  <records prefix="plone.resources/pat-logger"
-            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++plone++static/components/patternslib/src/core/logger</value>
-  </records>
-  <records prefix="plone.resources/pat-parser"
-            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++plone++static/components/patternslib/src/core/parser</value>
+      <value key="js">++plone++static/components/patternslib/src/core/compat.js</value>
   </records>
   <records prefix="plone.resources/pat-registry"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++plone++static/components/patternslib/src/core/registry</value>
+      <value key="js">++plone++static/components/patternslib/src/core/registry.js</value>
+  </records>
+  <records prefix="plone.resources/pat-jquery-ext"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/patternslib/src/core/jquery-ext.js</value>
+  </records>
+  <records prefix="plone.resources/pat-logger"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/patternslib/src/core/logger.js</value>
   </records>
   <records prefix="plone.resources/pat-utils"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++plone++static/components/patternslib/src/core/utils</value>
+      <value key="js">++plone++static/components/patternslib/src/core/utils.js</value>
   </records>
   <records prefix="plone.resources/logging"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++plone++static/components/logging/src/logging</value>
+      <value key="js">++plone++static/components/logging/src/logging.js</value>
+  </records>
+
+
+  <!-- recurrence widget registrations -->
+  <records prefix="plone.resources/jquery.recurrenceinput"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/jquery.recurrenceinput.js/src/jquery.recurrenceinput.js</value>
+      <!-- Perhaps a bit wonky here for now, depending on legacy jquery tools stuff here -->
+      <value key="css">
+        <element>++plone++static/components/jquery.recurrenceinput.js/src/jquery.recurrenceinput.css</element>
+      </value>
+      <value key="deps">jquery,resource-plone-app-jquerytools-js,resource-plone-app-jquerytools-dateinput-js,jquery.tmpl</value>
+  </records>
+  <records prefix="plone.resources/jquery.tmpl"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/jquery.recurrenceinput.js/lib/jquery.tmpl.js</value>
+      <value key="deps">jquery</value>
   </records>
 
   <!-- legacy js -->
 
 
-  <records prefix="plone.resources/plone_javascript_variables"
-            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">plone_javascript_variables.js</value>
-  </records>
-
   <records prefix="plone.resources/jquery-highlightsearchterms"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">jquery.highlightsearchterms.js</value>
-  </records>
-
-  <!-- disabled -->
-  <records prefix="plone.resources/mark_special_links"
-            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">mark_special_links.js</value>
   </records>
 
   <record name="plone.resources.last_legacy_import">
@@ -904,7 +954,7 @@
       <value_type type="plone.registry.field.TextLine" />
     </field>
     <value>
-      <element key="icon-font-path">\"{site_url}/++plone++static/components/bootstrap/dist/fonts/\"</element>
+      <element key="icon-font-path">\"../fonts/\"</element>
       <element key="bowerPath">\"{site_url}/++plone++static/components/\"</element>
       <element key="mockupPath">\"{site_url}/++resource++mockup/\"</element>
       <element key="mockuplessPath">\"{site_url}/++resource++mockupless/\"</element>
@@ -915,13 +965,17 @@
 
       <element key="plone-toolbar-bg">rgba(0,0,0,.9)</element>
       <element key="plone-toolbar-submenu-bg">rgba(20,20,20,.9)</element>
+      <!--
       <element key="plone-toolbar-font-primary">'Roboto Condensed', sans-serif</element>
       <element key="plone-toolbar-font-secundary">'Roboto', sans-serif</element>
+      -->
+      <element key="plone-toolbar-font-primary">sans-serif</element>
+      <element key="plone-toolbar-font-secundary">sans-serif</element>
       <element key="plone-toolbar-separator-color">rgba(255,255,255,.17)</element>
       <element key="plone-toolbar-link">{plone-link-color}</element>
-      <element key="plone-toolbar-text-color">rgba(255,255,255,.9)</element>
-      <element key="plone-toolbar-submenu-text-color">{plone-gray-lighter}</element>
-      <element key="plone-toolbar-submenu-header-color">{plone-gray-light}</element>
+      <element key="plone-toolbar-text-color">rgba(255,255,255,1)</element>
+      <element key="plone-toolbar-submenu-text-color">lighten(#000, 90%)</element>
+      <element key="plone-toolbar-submenu-header-color">lighten(#000, 80%)</element>
       <element key="plone-toolbar-published-color">{plone-link-color}</element>
       <element key="plone-toolbar-draft-color">rgb(250,184,42)</element>
       <element key="plone-toolbar-pending-color">rgb(226,231,33)</element>
@@ -943,7 +997,6 @@
 
 
   <!-- Plone bundle resources -->
-
   <records prefix="plone.resources/plone"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++resource++plone.js</value>
@@ -951,9 +1004,23 @@
         <element>++plone++static/plone.less</element>
       </value>
   </records>
+  <records prefix="plone.resources/plone-logged-in"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++plone-logged-in.js</value>
+      <value key="css">
+        <element>++plone++static/plone-logged-in.less</element>
+      </value>
+  </records>
+  <records prefix="plone.resources/resourceregistry"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/resourceregistry.js</value>
+      <value key="css">
+        <element>++plone++static/resourceregistry.less</element>
+      </value>
+  </records>
+
 
   <!-- Bundles -->
-
   <records prefix="plone.bundles/plone"
             interface='Products.CMFPlone.interfaces.IBundleRegistry'>
     <value key="resources">
@@ -962,13 +1029,25 @@
     <value key="enabled">True</value>
     <value key="jscompilation">++plone++static/plone-compiled.min.js</value>
     <value key="csscompilation">++plone++static/plone-compiled.css</value>
-    <value key="last_compilation">2014-11-26 00:00:00</value>
+    <value key="last_compilation">2015-05-02 00:00:00</value>
+    <value key="depends">plone-logged-in</value>
+  </records>
+
+  <records prefix="plone.bundles/plone-logged-in"
+            interface='Products.CMFPlone.interfaces.IBundleRegistry'>
+    <value key="resources">
+      <element>plone-logged-in</element>
+    </value>
+    <value key="enabled">True</value>
+    <value key="expression">python: member is not None</value>
+    <value key="jscompilation">++plone++static/plone-logged-in-compiled.min.js</value>
+    <value key="csscompilation">++plone++static/plone-logged-in-compiled.css</value>
+    <value key="last_compilation">2015-05-07 00:00:00</value>
   </records>
 
   <records prefix="plone.bundles/plone-legacy"
             interface='Products.CMFPlone.interfaces.IBundleRegistry'>
     <value key="resources" purge="false">
-      <element>plone_javascript_variables</element>
       <element>jquery-highlightsearchterms</element>
     </value>
     <value key="depends">plone</value>
@@ -979,6 +1058,18 @@
     <value key="enabled">True</value>
   </records>
 
+  <records prefix="plone.bundles/resourceregistry"
+            interface='Products.CMFPlone.interfaces.IBundleRegistry'>
+    <value key="resources">
+      <element>resourceregistry</element>
+    </value>
+    <value key="enabled">False</value>
+    <value key="jscompilation">++plone++static/resourceregistry-compiled.min.js</value>
+    <value key="csscompilation">++plone++static/resourceregistry-compiled.css</value>
+    <value key="last_compilation">2015-05-01 00:00:00</value>
+  </records>
+
+
   <record name="plone.patternoptions">
     <field type="plone.registry.field.Dict">
       <title>Patterns configuration</title>
@@ -988,6 +1079,7 @@
     </field>
     <value>
       <element key="pickadate">{"selectYears": 200}</element>
+      <element key="plone-modal">{"actionOptions": {"displayInModal": false}}</element>
     </value>
   </record>
 

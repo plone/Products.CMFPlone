@@ -1,17 +1,15 @@
-// moment.js locale configuration
-// locale : chuvash (cv)
-// author : Anatoly Mironov : https://github.com/mirontoli
+//! moment.js locale configuration
+//! locale : chuvash (cv)
+//! author : Anatoly Mironov : https://github.com/mirontoli
 
-(function (factory) {
-    if (typeof define === 'function' && define.amd) {
-        define(['moment'], factory); // AMD
-    } else if (typeof exports === 'object') {
-        module.exports = factory(require('../moment')); // Node
-    } else {
-        factory(window.moment); // Browser global
-    }
-}(function (moment) {
-    return moment.defineLocale('cv', {
+(function (global, factory) {
+   typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('../moment')) :
+   typeof define === 'function' && define.amd ? define(['moment'], factory) :
+   factory(global.moment)
+}(this, function (moment) { 'use strict';
+
+
+    var cv = moment.defineLocale('cv', {
         months : 'кăрлач_нарăс_пуш_ака_май_çĕртме_утă_çурла_авăн_юпа_чӳк_раштав'.split('_'),
         monthsShort : 'кăр_нар_пуш_ака_май_çĕр_утă_çур_ав_юпа_чӳк_раш'.split('_'),
         weekdays : 'вырсарникун_тунтикун_ытларикун_юнкун_кĕçнерникун_эрнекун_шăматкун'.split('_'),
@@ -19,6 +17,7 @@
         weekdaysMin : 'вр_тн_ыт_юн_кç_эр_шм'.split('_'),
         longDateFormat : {
             LT : 'HH:mm',
+            LTS : 'LT:ss',
             L : 'DD-MM-YYYY',
             LL : 'YYYY [çулхи] MMMM [уйăхĕн] D[-мĕшĕ]',
             LLL : 'YYYY [çулхи] MMMM [уйăхĕн] D[-мĕшĕ], LT',
@@ -50,10 +49,14 @@
             y : 'пĕр çул',
             yy : '%d çул'
         },
+        ordinalParse: /\d{1,2}-мĕш/,
         ordinal : '%d-мĕш',
         week : {
             dow : 1, // Monday is the first day of the week.
             doy : 7  // The week that contains Jan 1st is the first week of the year.
         }
     });
+
+    return cv;
+
 }));

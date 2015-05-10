@@ -1,10 +1,11 @@
 from Acquisition import aq_parent, aq_inner
 from Products.CMFCore.permissions import ManagePortal
-from Products.CMFDefault.PropertiesTool import PropertiesTool as BaseTool
+from Products.CMFCore.utils import UniqueObject
 
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from OFS.Folder import Folder
 from App.class_init import InitializeClass
+from App.special_dtml import DTMLFile
 from zope.interface import implements
 
 from OFS.PropertyManager import PropertyManager
@@ -13,11 +14,18 @@ from AccessControl import ClassSecurityInfo
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.interfaces \
     import IPropertiesTool, ISimpleItemWithProperties
+from Products.CMFPlone.utils import WWW_DIR
+from Products.MailHost.interfaces import IMailHost
+from zope.component import getUtility
+from zope.component import queryUtility
+from Products.CMFCore.interfaces import ISiteRoot
 
 
-class PropertiesTool(PloneBaseTool, Folder, BaseTool):
+class PropertiesTool(PloneBaseTool, Folder, UniqueObject):
+    """ Plone properties tool
+    """
 
-    id = BaseTool.id
+    id = 'portal_properties'
     toolicon = 'skins/plone_images/topic_icon.png'
 
     meta_type = 'Plone Properties Tool'
@@ -29,20 +37,20 @@ class PropertiesTool(PloneBaseTool, Folder, BaseTool):
     implements(IPropertiesTool)
 
     manage_options = ((Folder.manage_options[0], ) +
-                        BaseTool.manage_options)
+                      ({'label': 'Overview',
+                       'action': 'manage_overview'},) +
+                      SimpleItem.manage_options)
 
     manage_addPropertySheetForm = PageTemplateFile('www/addPropertySheet',
                                                    globals())
 
     security = ClassSecurityInfo()
 
+    security.declareProtected(ManagePortal, 'manage_overview')
+    manage_overview = DTMLFile('explainPropertiesTool', WWW_DIR )
+
     def all_meta_types(self, interfaces=None):
         return self.meta_types
-
-    def title(self):
-        """ Return BaseTool title
-        """
-        return BaseTool.title(self)
 
     security.declareProtected(ManagePortal, 'addPropertySheet')
     def addPropertySheet(self, id, title='', propertysheet=None):
@@ -88,8 +96,15 @@ class PropertiesTool(PloneBaseTool, Folder, BaseTool):
             if hasattr(ps, 'props'):
                 ps.props.manage_changeProperties(props)
 
+    def title(self):
+        site = queryUtility(ISiteRoot)
+        if site is None:
+            # fallback
+            return aq_parent(aq_inner(self)).title
+        return site.title
 
-PropertiesTool.__doc__ = BaseTool.__doc__
+    def smtp_server(self):
+        return getUtility(IMailHost).smtp_host
 
 InitializeClass(PropertiesTool)
 

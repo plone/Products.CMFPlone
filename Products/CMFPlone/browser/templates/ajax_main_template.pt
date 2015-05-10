@@ -13,6 +13,7 @@
         checkPermission nocall: context/portal_membership/checkPermission;
         site_properties context/portal_properties/site_properties;
         ajax_load python:True;"
+    i18n:domain="plone"
     tal:attributes="lang lang;">
 
     <metal:cache tal:replace="structure provider:plone.httpheaders" />

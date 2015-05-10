@@ -5,10 +5,164 @@
 Changelog
 =========
 
-5.0b1 (unreleased)
+5.0b2 (unreleased)
 ------------------
 
 - Add social media settings control panel
+
+- add ability to provide a css file for tinymce style formats
+  [vangheem]
+
+- fix plone-generate-gruntfile to compile each less resource
+  separately
+  [vangheem]
+
+- provide image alignment styles for tinymce images
+  [vangheem]
+
+- Respect TinyMCE control panel settings
+  [vangheem]
+
+- enable/disable versioning behavior with settings in Types control panel
+  [vangheem]
+
+- Make typesToList read metaTypesNotToList from new p.a.registry settings.
+  This fixes https://github.com/plone/Products.CMFPlone/issues/454.
+  [timo]
+
+- style tweaks to toolbar
+  [pbauer]
+
+- fix search form usability
+  [vangheem]
+
+- detect when changes are made to the legacy bundle through the interface
+  so resources are re-built when they need to be
+  [vangheem]
+
+- fix some legacy import wonkiness. Inserting multiple times, insert-before
+  and remove fixed
+  [vangheem]
+
+- make live search and search form give consistent results
+  [vangheem]
+
+- only show edit bar if user logged in
+  [vangheem]
+
+- fix error sending test email in Mail control panel
+  [tkimnguyen]
+
+- pat-modal pattern has been renamed to pat-plone-modal
+  [jcbrand]
+
+- Remove Products.CMFFormController dependency.
+  [timo]
+
+- Fix submission of tinymce control panel.
+  [davisagli]
+
+- Monkey patch SMTPMailer init method to pick up the mail settings from the
+  registry instead of from the MailHost itself.
+  [timo]
+
+- Add `resource_blacklist` attribute to resource registry importer, to
+  allow filtering of known bad legacy resource imports.  Filter js from
+  plone.app.jquery.
+  [alecm]
+
+- Fix broken "Installing a third party add-on" link
+  [cedricmessiant]
+
+- Fix folder contents button disappeared act
+  [vangheem]
+
+- Fix resource registry javascript build
+  [vangheem]
+
+- Move `plone.htmlhead.links` viewlet manager after `plone.scripts`,
+  because the former is sometimes used to include scripts that depend on
+  the latter.
+  [davisagli]
+
+- Change the order of the plonebar user menu and move the plone.personal_bar
+  viewlet to the last position due to accessibility issues on having it being
+  the first element.
+  [sneridagh]
+
+- We only support `utf-8` site-encoding at the moment
+  [tomgross]
+
+
+5.0b1.post1 (2015-03-27)
+------------------------
+
+- Packaging fix, no code changes.
+  [esteele]
+
+
+5.0b1 (2015-03-26)
+------------------
+
+- Add tests for configuring encoding of user registration or
+  forgotten password emails.
+  [davidjb]
+
+- Pass email encoding to forgotten password email template.
+  [davidjb]
+
+- Pass mail ``Content-Type`` to mailhost when sending forgotten password
+  emails.
+  [davidjb]
+
+- Move security control panel to CMFPlone. Fixes #216.
+  [jcerjak, timo]
+
+- Remove ``create_userfolder`` from addPloneSite factory, it is not used
+  anymore.
+  [jcerjak]
+
+- Read security settings from the registry instead of portal properties.
+  [jcerjak,timo]
+
+- Fix tests for plone.app.contenttypes unified view names, which uses
+  ``listing_view`` for Folder and Collection types.
+  [thet]
+
+- Remove ``selectable_views`` from ``properties.xml``, which isn't used
+  anywhere anymore.
+  [thet]
+
+- Remove the remaining ``Topic`` entry in ``default_page_types`` from
+  ``propertiestool.xml``. This setting is now done in
+  ``plone.app.contenttypes`` respectively ``Products.ATContentTypes``.
+  [thet]
+
+- Add __version__ attribute to __init__.py. This allows us to retrieve the
+  current Plone version with 'Products.CMFPlone.__version__'. Even though this
+  is no offical standard, many packages in the Python standard library provide
+  this.
+  [timo]
+
+- Replaced the legacy mark_special_links javascript with a
+  corresponding mockup pattern.
+  [fulv]
+
+- remove plone_javascript_variables.js as necessary values
+  are provided on body tag and pattern options
+  [vangheem]
+
+- fix bootstrap css bleeding into global namespaces
+  [vangheem]
+
+- add recurrence pattern
+  [vangheem]
+
+- add history support for folder contents
+  [vangheem]
+
+- Merge plone.app.search here
+>>>>>>> master
   [vangheem]
 
 - Extended ulocalized_time for target_language

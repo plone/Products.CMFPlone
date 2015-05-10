@@ -50,7 +50,7 @@
 
     <tal:ifgroups tal:condition="view/group | nothing">
       <h1 class="documentFirstHeading"
-          i18n:translate="heading_group_members_of">Group: ${view/grouptitle}</h1>
+          i18n:translate="heading_group_members_of">Group: <span i18n:name="groupname" tal:replace="view/grouptitle">groupname</span></h1>
 
       <div metal:use-macro="context/global_statusmessage/macros/portal_message">
         Portal status message

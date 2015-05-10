@@ -214,15 +214,26 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
     def testUnfriendlyTypesProperty(self):
         # We should have an types_not_searched property
         self.assertTrue(
-            self.properties.site_properties.hasProperty('types_not_searched'))
-        self.assertTrue('Plone Site' in self.properties.site_properties.getProperty('types_not_searched'))
+            self.properties.site_properties.hasProperty('types_not_searched')
+        )
+        self.assertTrue(
+            'Plone Site' in
+            self.properties.site_properties.getProperty('types_not_searched')
+        )
 
     def testNonDefaultPageTypes(self):
         # We should have a default_page_types property
         self.assertTrue(
-            self.properties.site_properties.hasProperty('default_page_types'))
-        self.assertTrue('Folder' not in self.properties.site_properties.getProperty('default_page_types'))
-        self.assertTrue('Topic' in self.properties.site_properties.getProperty('default_page_types'))
+            self.properties.site_properties.hasProperty('default_page_types')
+        )
+        self.assertTrue(
+            'Folder' not in
+            self.properties.site_properties.getProperty('default_page_types')
+        )
+        self.assertTrue(
+            'Topic' in
+            self.properties.site_properties.getProperty('default_page_types')
+        )
 
     def testNoMembersAction(self):
         # There should not be a Members action
@@ -690,10 +701,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.setRoles(['Manager'])
         snapshot_id = self.setup._mangleTimestampName('test')
         self.setup.createSnapshot(snapshot_id)
-
-    def testValidateEmail(self):
-        # validate_email should be on by default
-        self.assertTrue(self.portal.getProperty('validate_email'))
 
     def testSiteManagerSetup(self):
         clearSite()

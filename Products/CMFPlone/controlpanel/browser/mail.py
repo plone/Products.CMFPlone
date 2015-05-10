@@ -25,25 +25,33 @@ class MailControlPanelForm(controlpanel.RegistryEditForm):
 
     @button.buttonAndHandler(_('Save'), name=None)
     def handleSave(self, action):
-        super(MailControlPanelForm, self).handleSave(self, action)
+        self.save()
 
     @button.buttonAndHandler(_('Cancel'), name='cancel')
     def handleCancel(self, action):
         super(MailControlPanelForm, self).handleCancel(self, action)
 
+    def save(self):
+        data, errors = self.extractData()
+        if errors:
+            self.status = self.formErrorsMessage
+            return False
+        self.applyChanges(data)
+        return True
+
     @button.buttonAndHandler(
         _('label_smtp_test', default='Save and send test e-mail'),
         name='test')
     def handle_test_action(self, action):
-        data = self.request.form
         # Save data first
-        self.handle_edit_action.success(data)
+        if not self.save():
+            return
         mailhost = getToolByName(self.context, 'MailHost')
 
         registry = getUtility(IRegistry)
         mail_settings = registry.forInterface(IMailSchema, prefix='plone')
         fromaddr = mail_settings.email_from_address
-        fromname = self.mail_settings.email_from_name
+        fromname = mail_settings.email_from_name
 
         message = ("Hi,\n\nThis is a test message sent from the Plone "
                    "'Mail settings' control panel. Your receipt of this "
@@ -52,8 +60,7 @@ class MailControlPanelForm(controlpanel.RegistryEditForm):
                    "working!\n\n"
                    "Have a nice day.\n\n"
                    "Love,\n\nPlone")
-        email_charset = mail_settings.email_charset
-        email_recipient, source = fromaddr, fromaddr
+        email_charset = self.context.getProperty('email_charset')
         subject = "Test e-mail from Plone"
 
         # Make the timeout incredibly short. This is enough time for most mail
@@ -64,8 +71,9 @@ class MailControlPanelForm(controlpanel.RegistryEditForm):
         try:
             socket.setdefaulttimeout(3)
             try:
-                mailhost.send(message, email_recipient, source,
-                              mfrom=fromname,
+                mailhost.send(message,
+                              mto=fromaddr,
+                              mfrom=fromaddr,
                               subject=subject,
                               charset=email_charset,
                               immediate=True)

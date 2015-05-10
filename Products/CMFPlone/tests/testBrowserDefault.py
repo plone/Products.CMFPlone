@@ -32,9 +32,6 @@ class TestPloneToolBrowserDefault(unittest.TestCase):
         self.portal = self.layer['portal']
         setRoles(self.portal, TEST_USER_ID, ['Manager'])
 
-        # make sure the test request gets marked with the default theme layer
-        notify(BeforeTraverseEvent(self.portal, self.layer['app'].REQUEST))
-
         # disable diazo theming
         self.portal.portal_registry[
             'plone.app.theming.interfaces.IThemeSettings.enabled'
@@ -228,8 +225,12 @@ class TestPloneToolBrowserDefault(unittest.TestCase):
         self.assertEqual(self.putils.browserDefault(f),
                          (f, [f.getId()],))
         f._delObject(f.getId())
-        self.assertEqual(self.putils.browserDefault(f),
-                         (f, ['folder_listing'],))
+        self.assertTrue(
+            self.putils.browserDefault(f) == (f, ['folder_listing'],)
+            or
+            self.putils.browserDefault(f) == (f, ['listing_view'],)
+            # plone.app.contenttypes has unified views
+        )
 
     def testDefaultPageSetting(self):
         sp = getToolByName(self.portal, "portal_properties").site_properties
@@ -257,12 +258,6 @@ class TestPortalBrowserDefault(unittest.TestCase):
                                       title='Welcome to Plone')
         self.portal.setDefaultPage('front-page')
 
-        # Also make sure we have folder_listing as a template
-        self.portal.getTypeInfo().manage_changeProperties(
-            view_methods=['folder_listing'],
-            default_view='folder_listing'
-        )
-
     def assertFalseDiff(self, text1, text2):
         """
         Compare two bodies of text.  If they are not the same, fail and output
@@ -279,12 +274,12 @@ class TestPortalBrowserDefault(unittest.TestCase):
         self.assertFalseDiff(resolved, target)
 
     def testDefaultViews(self):
-        self.assertEqual(self.portal.getLayout(), 'folder_listing')
+        self.assertEqual(self.portal.getLayout(), 'listing_view')
         self.assertEqual(self.portal.getDefaultPage(), 'front-page')
         self.assertEqual(self.portal.defaultView(), 'front-page')
-        self.assertEqual(self.portal.getDefaultLayout(), 'folder_listing')
+        self.assertEqual(self.portal.getDefaultLayout(), 'listing_view')
         layoutKeys = [v[0] for v in self.portal.getAvailableLayouts()]
-        self.assertTrue('folder_listing' in layoutKeys)
+        self.assertTrue('listing_view' in layoutKeys)
         self.assertEqual(self.portal.__browser_default__(None),
                          (self.portal, ['front-page', ]))
 
@@ -294,13 +289,13 @@ class TestPortalBrowserDefault(unittest.TestCase):
         self.assertFalse(self.portal.canSetLayout())  # Not permitted
 
     def testSetLayout(self):
-        self.portal.setLayout('folder_listing')
-        self.assertEqual(self.portal.getLayout(), 'folder_listing')
+        self.portal.setLayout('summary_view')
+        self.assertEqual(self.portal.getLayout(), 'summary_view')
         self.assertEqual(self.portal.getDefaultPage(), None)
-        self.assertEqual(self.portal.defaultView(), 'folder_listing')
-        self.assertEqual(self.portal.getDefaultLayout(), 'folder_listing')
+        self.assertEqual(self.portal.defaultView(), 'summary_view')
+        self.assertEqual(self.portal.getDefaultLayout(), 'listing_view')
         layoutKeys = [v[0] for v in self.portal.getAvailableLayouts()]
-        self.assertTrue('folder_listing' in layoutKeys)
+        self.assertTrue('summary_view' in layoutKeys)
 
         view = self.portal.view()
         browserDefault = self.portal.__browser_default__(None)[1][0]
@@ -328,10 +323,10 @@ class TestPortalBrowserDefault(unittest.TestCase):
                          (self.portal, ['ad', ]))
 
         # still have layout settings
-        self.assertEqual(self.portal.getLayout(), 'folder_listing')
-        self.assertEqual(self.portal.getDefaultLayout(), 'folder_listing')
+        self.assertEqual(self.portal.getLayout(), 'listing_view')
+        self.assertEqual(self.portal.getDefaultLayout(), 'listing_view')
         layoutKeys = [v[0] for v in self.portal.getAvailableLayouts()]
-        self.assertTrue('folder_listing' in layoutKeys)
+        self.assertTrue('listing_view' in layoutKeys)
 
     def testSetDefaultPageUpdatesCatalog(self):
         # Ensure that Default page changes update the catalog
@@ -374,31 +369,13 @@ class TestPortalBrowserDefault(unittest.TestCase):
 
     def testMissingTemplatesIgnored(self):
         self.portal.getTypeInfo() \
-            .manage_changeProperties(view_methods=['folder_listing', 'foo'])
+            .manage_changeProperties(view_methods=['listing_view', 'foo'])
         views = [v[0] for v in self.portal.getAvailableLayouts()]
-        self.assertTrue(views == ['folder_listing'])
+        self.assertTrue(views == ['listing_view'])
 
     def testMissingPageIgnored(self):
         self.portal.setDefaultPage('inexistent')
         self.assertEqual(self.portal.getDefaultPage(), None)
-        self.assertEqual(self.portal.defaultView(), 'folder_listing')
+        self.assertEqual(self.portal.defaultView(), 'listing_view')
         self.assertEqual(self.portal.__browser_default__(None),
-                         (self.portal, ['folder_listing', ]))
-
-    def testTemplateTitles(self):
-        views = [
-            v for v in self.portal.getAvailableLayouts()
-            if v[0] == 'folder_listing'
-        ]
-        self.assertEqual(views[0][1], 'Standard view')
-        try:
-            folderListing = self.portal.unrestrictedTraverse('folder_listing')
-            folderListing.title = 'foo'
-            views = [
-                v for v in self.portal.getAvailableLayouts()
-                if v[0] == 'folder_listing'
-            ]
-            self.assertEqual(views[0][1], 'foo')
-        finally:
-            # Restore title to avoid side-effects
-            folderListing.title = 'Standard view'
+                         (self.portal, ['listing_view', ]))

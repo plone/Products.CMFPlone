@@ -17,6 +17,7 @@ from zope.component import getUtility
 from zope.event import notify
 from zope.i18n import translate
 from zope.schema.interfaces import IVocabularyFactory
+from plone.dexterity.interfaces import IDexterityFTI
 
 
 def format_description(text, request=None):
@@ -52,6 +53,7 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
     form_name = _("Types settings")
     control_panel_view = "types-controlpanel"
     template = ViewPageTemplateFile('types.pt')
+    behavior_name = 'plone.app.versioningbehavior.behaviors.IVersionable'
 
     @button.buttonAndHandler(_('Save'), name='save')
     def handleSave(self, action):
@@ -93,6 +95,22 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
         type_id = self.type_id
         portal_types = getToolByName(self.context, 'portal_types')
         return getattr(portal_types, type_id)
+
+    def add_versioning_behavior(self, fti):
+        if not IDexterityFTI.providedBy(fti):
+            return
+        behaviors = list(fti.behaviors)
+        if self.behavior_name not in behaviors:
+            behaviors.append(self.behavior_name)
+            fti.behaviors = behaviors
+
+    def remove_versioning_behavior(self, fti):
+        if not IDexterityFTI.providedBy(fti):
+            return
+        behaviors = list(fti.behaviors)
+        if self.behavior_name in behaviors:
+            behaviors.remove(self.behavior_name)
+            fti.behaviors = behaviors
 
     def __call__(self):
         """Perform the update and redirect if necessary, or render the page
@@ -137,11 +155,15 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
                         portal_repository.getVersionableContentTypes()
                     )
                     if not newpolicy["policy"]:
+                        # check if we need to remove
                         if type_id in versionable_types:
                             versionable_types.remove(type_id)
+                        self.remove_versioning_behavior(fti)
                     else:
+                        # check if we should add
                         if type_id not in versionable_types:
                             versionable_types.append(type_id)
+                        self.add_versioning_behavior(fti)
 
                     for policy in portal_repository.listPolicies():
                         policy_id = policy.getId()

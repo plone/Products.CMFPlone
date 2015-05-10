@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import IEditingSchema
 from plone.app.registry.browser import controlpanel

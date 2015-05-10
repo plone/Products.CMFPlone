@@ -15,10 +15,15 @@ define([
     var log = logger.getLogger("pat." + name);
     var pattern = $el.data('pattern-' + name);
     if (pattern === undefined && Registry.patterns[name]) {
+      options = this.prototype.parser === "mockup" ? mockupParser.getOptions($el, name, options) : options;
       try {
-          pattern = new Registry.patterns[name]($el, mockupParser.getOptions($el, name, options));
+          pattern = new Registry.patterns[name]($el, options);
       } catch (e) {
           log.error('Failed while initializing "' + name + '" pattern.');
+          if (window.DEBUG) {
+            // don't swallow errors in DEBUG mode.
+            log.error(e);
+          }
       }
       $el.data('pattern-' + name, pattern);
     }
@@ -29,7 +34,7 @@ define([
   var Base = function($el, options) {
     this.$el = $el;
     this.options = $.extend(true, {}, this.defaults || {}, options || {});
-    this.init();
+    this.init($el, options);
     this.emit('init');
   };
 
@@ -80,6 +85,9 @@ define([
     var Surrogate = function() { this.constructor = child; };
     Surrogate.prototype = parent.prototype;
     child.prototype = new Surrogate();
+
+    // Fall back to mockup parser if not specified otherwise.
+    patternProps.parser = patternProps.parser || 'mockup';
 
     // Add pattern's configuration properties (instance properties) to the subclass,
     $.extend(true, child.prototype, patternProps);

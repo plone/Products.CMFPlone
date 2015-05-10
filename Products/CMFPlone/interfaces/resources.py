@@ -29,7 +29,7 @@ class IResourceRegistry(zope.interface.Interface):
 
     deps = schema.ASCIILine(
         title=_(u"Dependencies for shim"),
-        description=_(u"Coma separated values of resource for shim"),
+        description=_(u"Comma separated values of resource for shim"),
         required=False)
 
     export = schema.ASCIILine(
@@ -88,3 +88,11 @@ class IBundleRegistry(zope.interface.Interface):
         title=_(u"Depends on another bundle"),
         description=_(u"In case you want to be the last: *, in case its the first should be empty"),
         required=False)
+
+    develop_javascript = schema.Bool(
+        title=_(u'Develop JavaScript'),
+        default=False)
+
+    develop_css = schema.Bool(
+        title=_(u'Develop CSS'),
+        default=False)

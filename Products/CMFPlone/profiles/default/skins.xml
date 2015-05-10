@@ -2,8 +2,6 @@
 <object name="portal_skins" meta_type="Plone Skins Tool" allow_any="False"
    cookie_persistence="False" default_skin="Plone Default"
    request_varname="plone_skin">
- <object name="LanguageTool" meta_type="Filesystem Directory View"
-    directory="Products.PloneLanguageTool:skins/LanguageTool"/>
  <object name="custom" meta_type="Folder"/>
  <object name="PasswordReset" meta_type="Filesystem Directory View"
     directory="Products.PasswordResetTool:skins/PasswordReset"/>

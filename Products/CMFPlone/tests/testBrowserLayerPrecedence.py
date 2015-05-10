@@ -3,7 +3,6 @@
 # add-on products (a la plone.browserlayer).
 
 from plone.app.testing.bbb import PloneTestCase
-from zope.publisher.browser import TestRequest
 
 from zope.event import notify
 from zope.interface import Interface
@@ -19,7 +18,10 @@ class IAdditiveLayer(Interface):
 class TestBrowserLayerPrecedence(PloneTestCase):
 
     def _get_request_interfaces(self):
-        request = TestRequest()
+        request = self.layer['request']
+        # Reset _plonebrowerlayer_ marker, so that we can still register
+        # additional layers for testing. (WTF here?)
+        del request._plonebrowserlayer_
         notify(BeforeTraverseEvent(self.portal, request))
         iro = list(request.__provides__.__iro__)
         return iro

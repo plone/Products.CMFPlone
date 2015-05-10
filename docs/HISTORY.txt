@@ -17,6 +17,9 @@ For what's new in this release, see CHANGES.txt.
 - Removed kss_field_decorator_view support
   [maurits, jaroel]
 
+- Remove CMFDefault dependency
+  [tomgross]
+
 4.3.3 (unreleased)
 ------------------
 

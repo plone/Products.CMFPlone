@@ -3,22 +3,22 @@
   "description": "Core library for the Mockup front end library",
   "dependencies": {
     "backbone": "1.1.2",
-    "bootstrap": "3.2.0",
+    "bootstrap": "3.3.4",
     "console-polyfill": "0.1.2",
     "es5-shim": "4.0.3",
-    "selectivizr": "1.0.2",
-    "jquery": "1.11.1",
+    "jquery": "1.11.2",
     "lodash": "2.4.1",
-    "marked": "0.3.2",
+    "marked": "0.3.3",
+    "patternslib": "2.0.9",
     "react": "0.10.0",
     "requirejs-text": "2.0.12",
-    "patternslib": "master"
+    "selectivizr": "1.0.2"
   },
   "devDependencies": {
     "expect": "0.3.1",
-    "sinonjs": "1.10.2"
+    "sinonjs": "1.14.1"
   },
   "resolutions": {
-    "jquery": "1.11.1"
+    "jquery": "1.11.2"
   }
 }

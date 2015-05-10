@@ -1,5 +1,7 @@
-from .resourceregistry import ResourceRegistryNodeAdapter
-from .resourceregistry import importResRegistry
+from Products.CMFPlone.resources.exportimport.resourceregistry import \
+    ResourceRegistryNodeAdapter
+from Products.CMFPlone.resources.exportimport.resourceregistry import \
+    importResRegistry
 from Products.ResourceRegistries.interfaces import ICSSRegistry
 
 _FILENAME = 'cssregistry.xml'

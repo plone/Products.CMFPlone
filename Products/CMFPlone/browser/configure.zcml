@@ -20,7 +20,7 @@
     title="Allow sendto" />
 
   <browser:resource
-      file="plone-logo.png"
+      file="static/plone-logo.png"
       name="plone-logo.png"
       />
 
@@ -52,13 +52,6 @@
       class=".navigation.RootPhysicalNavigationBreadcrumbs"
       permission="zope.Public"
       allowed_attributes="breadcrumbs"
-      />
-
-  <browser:page
-      for="*"
-      name="plone_javascript_variables.js"
-      class=".jsvariables.JSVariables"
-      permission="zope.Public"
       />
 
   <browser:page
@@ -106,6 +99,12 @@
       for="*"
       name="main_template"
       class=".main_template.MainTemplate"
+      permission="zope.Public"
+      />
+  <browser:page
+      for="*"
+      name="render-toolbar"
+      template="templates/toolbar.pt"
       permission="zope.Public"
       />
 
@@ -164,10 +163,38 @@
 
   <!-- Useful for cross domain iframe proxying -->
   <browser:resource
-      file="blank.html"
+      file="static/blank.html"
       name="blank.html"
       />
 
   <include package=".syndication" />
 
+  <browser:page
+      name="search"
+      class=".search.Search"
+      permission="zope2.View"
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
+      template="templates/search.pt"
+      />
+
+  <browser:page
+      name="ajax-search"
+      class=".search.AjaxSearch"
+      permission="zope2.View"
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
+      />
+
+  <browser:resource
+      name="search.js"
+      file="static/search.js"
+      />
+
+  <!-- AtD Support -->
+  <browser:page
+    for="*"
+    name="checkDocument"
+    class=".atd.ATDProxyView"
+    permission="zope2.View"
+    attribute="checkDocument"
+    />
 </configure>

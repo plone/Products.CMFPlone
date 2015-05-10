@@ -11,7 +11,6 @@ Variables  Products/CMFPlone/tests/robot/variables.py
 Library  Remote  ${PLONE_URL}/RobotRemote
 
 Resource  keywords.robot
-Resource  common.robot
 
 Test Setup  Open SauceLabs test browser
 Test Teardown  Run keywords  Report test status  Close all browsers
@@ -102,7 +101,7 @@ the site title should be set to '${expected_site_title}'
 the site logo should be set to the custom logo
   Go To  ${PLONE_URL}
   Page should contain element  //*[@id="portal-logo"]/img[contains(@src,'@@site-logo/pixel.png')]
-  
+
 then I can see a sitemap
   Go to  ${PLONE_URL}/sitemap.xml.gz
   # We need a 'Download file' selenium2library keyword to test this:

@@ -14,7 +14,8 @@
            Cookie authentication has been disabled.
     </div>
 
-    <div tal:define="ve context/validate_email" tal:omit-tag=""
+    <div tal:define="enable_user_pwd_choice python:context.portal_registry['plone.enable_user_pwd_choice']"
+         tal:omit-tag=""
          tal:condition="python: auth">
 
         <h1 class="documentFirstHeading"
@@ -27,7 +28,7 @@
         </div>
 
         <div id="content-core">
-            <p tal:condition="ve"
+            <p tal:condition="not: enable_user_pwd_choice"
                tal:define="expire_length context/portal_password_reset/getExpirationTimeout;
                            toLocalizedTime nocall:context/@@plone/toLocalizedTime;
                            expire_date python:toLocalizedTime(DateTime() + expire_length / 24.0, long_format=1)"
@@ -40,7 +41,7 @@
                 to generate another password reset request.
             </p>
 
-            <tal:block condition="python:not(ve)">
+            <tal:block condition="enable_user_pwd_choice">
                 <p i18n:translate="description_you_can_log_on_now">
                     Click the button to log in immediately.
                 </p>

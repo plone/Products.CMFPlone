@@ -17,7 +17,13 @@ First, we need to log in.
 
 We need to allow multiple languages to see the result of our changes:
 
-    >>> self.portal.portal_languages.supported_langs = ['de', 'en']
+    >>> from plone.registry.interfaces import IRegistry
+    >>> from zope.component import getUtility
+    >>> from Products.CMFPlone.interfaces import ILanguageSchema
+    >>> settings = getUtility(IRegistry).forInterface(
+    ...     ILanguageSchema,
+    ...     prefix='plone')
+    >>> settings.available_languages = ['de', 'en']
     >>> import transaction; transaction.commit()
 
 Add Document
@@ -38,8 +44,12 @@ browser.
     >>> browser.open('http://nohost/plone/Members/test_user_1_')
     >>> browser.getLink('Page').click()
     >>> #'Edit Page' in browser.contents # ouch, Plone has <span> around 'Page'
-    >>> browser.url
-    'http://nohost/plone/Members/test_user_1_/portal_factory/Document/.../edit'
+    >>> 'http://nohost/plone/Members/test_user_1_/portal_factory/Document' in browser.url
+    True
+    >>> '/edit' in browser.url
+    True
+    >>> '_authenticator=' in browser.url
+    True
 
 Now that the document has been added, we can edit it, but we pretend
 we don't know better and forget to type in a Title:

@@ -104,3 +104,33 @@ class TypesControlPanelFunctionalTest(unittest.TestCase):
         self.assertIn('Globally addable', self.browser.contents)
         self.assertIn('Allow comments', self.browser.contents)
         self.assertIn('Visible in searches', self.browser.contents)
+
+    def test_disable_versioning_removes_behavior(self):
+        self.browser.open(self.types_url)
+        self.browser.getControl(name='type_id').value = ['Document']
+        self.browser.getForm(action=self.types_url).submit()
+        self.browser.getControl(name='versionpolicy').value = ['off']
+        self.browser.getForm(action=self.types_url).submit()
+
+        portal_types = self.portal.portal_types
+        doc_type = portal_types.Document
+        self.assertTrue(
+            'plone.app.versioningbehavior.behaviors.IVersionable' not in doc_type.behaviors)  # noqa
+
+    def test_enable_versioning_behavior(self):
+        self.browser.open(self.types_url)
+        self.browser.getControl(name='type_id').value = ['Document']
+        self.browser.getForm(action=self.types_url).submit()
+        self.browser.getControl(name='versionpolicy').value = ['off']
+        self.browser.getForm(action=self.types_url).submit()
+
+        portal_types = self.portal.portal_types
+        doc_type = portal_types.Document
+        self.assertTrue(
+            'plone.app.versioningbehavior.behaviors.IVersionable' not in doc_type.behaviors)  # noqa
+
+        self.browser.getControl(name='versionpolicy').value = ['manual']
+        self.browser.getForm(action=self.types_url).submit()
+
+        self.assertTrue(
+            'plone.app.versioningbehavior.behaviors.IVersionable' in doc_type.behaviors)

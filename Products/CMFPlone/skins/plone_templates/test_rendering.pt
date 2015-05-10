@@ -1,3 +1,5 @@
+<tal:block tal:define="dummy python:request.set('disable_plone.leftcolumn', False);
+                       dummy python:request.set('disable_plone.rightcolumn', False)"/>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
@@ -5,59 +7,6 @@
       lang="en"
       metal:use-macro="context/main_template/macros/master"
       i18n:domain="plone">
-
-<head>
-    <metal:css fill-slot="css_slot">
-<style type="text/css">
-<!--
-
-/************** Peekaboo bug demo rules ******************/
-
-div#floatholder a:hover{
-background: #f99;     /* An a:hover mouseover change anywhere within #content
-                                                  will uncover missing content, but if 'color' and 'border' are toggled on hover
-                                                 rather than the background, the peekaboo bug is only partially corrected. */
-}
-
-#clear {
-clear: both;                           /* Bug trigger. This div must touch the float to trigger bug. */
-border: 3px solid #f0f;
-text-align: center;
-}
-
-#floatholder {
-background: #fed;          /* Bug trigger. I suspect the peekaboo content is hidden behind this BG. */
-border: 3px dotted #000;
-margin: 1em 15% 1em 13%;
-font-size: 1.1em;
-}
-
-     /************************************************************************
-     * If both #floatholder and #float are given 'position: relative', the bug is prevented *
-     *************************************************************************/
-
-#float {           /* Bug is triggered by either left or right float */
-float : left;
-border: 6px solid #844;
-padding : 5px;
-width : 200px;
-height: 200px;
-font-size: 2em;
-text-align: center;
-}
-
-#float span {
-background: #9c9;
-color: white;
-}
-
-
--->
-</style>
-
-
-    </metal:css>
-</head>
 
 <body>
 
@@ -194,35 +143,6 @@ example <a href="irc://some.network/#channel">IRC link</a>.
 As of Plone 5, we try to get rid of Definition Lists where they don't act as
 definition lists. We replace them in the following manners.
 
-<h4>in portlets</h4>
-
-<div style="width: 300px"> <!-- just to make these look like portlets -->
-
-<section class="portlet">
-  <header class="portletHeader">Portlet header</header>
-  <ul class="portletContent">
-    <li class="portletItem">Item one</li>
-    <li class="portletItem">Item two</li>
-  </ul>
-  <footer class="portletFooter">Portlet footer</footer>
-</section>
-
-If a portlet has only one item:
-
-<section class="portlet">
-  <header class="portletHeader">Portlet header</header>
-  <div class="portletContent">
-    There might be a login form here.
-    <form>
-      <input type="text" value="login" /> <br />
-      <input type="password" value="password" /> <br />
-      <input type="submit" />
-    </form>
-  </div>
-  <footer class="portletFooter">Portlet footer</footer>
-</section>
-
-</div>
 
 <h4>in portal messages</h4>
 
@@ -561,43 +481,32 @@ Table of class <code>vertical listing</code>
 <div>
     <h2>Select All/None</h2>
     <form id="searchform" name="search" method="get" class="enableAutoFocus" action="search">
-
-                    <div>
-                        <label>Item type</label>
-
-        		<div>
-                        <div class="formHelp">
-                        Return items of a specific type.
-                        </div>
-
-                        <span class="optionsToggle">
-                            <input type="checkbox" checked="checked" class="noborder" id="pt_toggle" value="#" name="pt_toggle" onclick="javascript:toggleSelect(this, 'portal_type:list', true)" src="http://localhost:8080/Plone/select_all_icon.png">
-                            <label for="pt_toggle">Select All/None
-                            </label>
-                        </span>
-                        <br>
-                        <div style="float: left; margin-right: 2em;">
-
-                            <input type="checkbox" id="portal_type_1_1" checked="checked" class="noborder" value="Document" name="portal_type:list">
-                            <label for="portal_type_1_1">Page</label>
-                            <br>
-
-
-                            <input type="checkbox" id="portal_type_1_2" checked="checked" class="noborder" value="Folder" name="portal_type:list">
-                            <label for="portal_type_1_2">Folder</label>
-                            <br>
-
-                        </div>
-                        <div style="float: left; margin-right: 2em;">
-
-                            <input type="checkbox" id="portal_type_2_1" checked="checked" class="noborder" value="Topic" name="portal_type:list">
-                            <label for="portal_type_2_1">Collection</label>
-                            <br>
-
-                        </div>
-                    <div id="clear-after-item-type" class="visualClear">
-                </div>
-            </form>
+        <div>
+            <label>Item type</label>
+        </div>
+        <div class="formHelp">
+            Return items of a specific type.
+        </div>
+        <span class="optionsToggle">
+            <input type="checkbox" checked="checked" class="noborder" id="pt_toggle" value="#" name="pt_toggle" onclick="javascript:toggleSelect(this, 'portal_type:list', true)" src="http://localhost:8080/Plone/select_all_icon.png">
+            <label for="pt_toggle">Select All/None</label>
+        </span>
+        <br>
+        <div style="float: left; margin-right: 2em;">
+            <input type="checkbox" id="portal_type_1_1" checked="checked" class="noborder" value="Document" name="portal_type:list">
+            <label for="portal_type_1_1">Page</label>
+            <br>
+            <input type="checkbox" id="portal_type_1_2" checked="checked" class="noborder" value="Folder" name="portal_type:list">
+            <label for="portal_type_1_2">Folder</label>
+            <br>
+        </div>
+        <div style="float: left; margin-right: 2em;">
+            <input type="checkbox" id="portal_type_2_1" checked="checked" class="noborder" value="Topic" name="portal_type:list">
+            <label for="portal_type_2_1">Collection</label>
+            <br>
+        </div>
+    </form>
+    <div class="visualClear"></div>
 </div>
 
 
@@ -617,7 +526,7 @@ Table of class <code>vertical listing</code>
     <h2>Collapsible section</h2>
     <dl class="collapsible">
         <dt class="collapsibleHeader">
-            Collapsable section title
+            Collapsible section title
         </dt>
         <dd class="collapsibleContent">
             Collapsible section content
@@ -626,48 +535,35 @@ Table of class <code>vertical listing</code>
 </div>
 
 
-<h2>The Internet Explorer "Peekaboo" bug</h2>
-
-<p>
-Also known as the "disappearing text" bug. Full explanation of this bug can be
-found on
-<a href="http://www.positioniseverything.net/explorer/peekaboo.html">
-the page dedicated to this at positioniseverything.net</a>.
-</p>
-
-<!--********** Start of peekaboo demo ***********-->
-
-<div id="floatholder">
-
-<div id="float">
-<br />
-<span>&nbsp;Float&nbsp;
-<br /><br />
-<a href="#">&nbsp;test link&nbsp;</a>
-</span>
-</div>
-
-This is bare text. <a href="#">Test link</a>
-<div style="border: 3px solid #f00; background: #dde;">This is text inside a div.
-<a href="#">Test link</a></div>
-This is bare text. <a href="#">Test link</a>
-<div style="border: 3px solid #0c0; background: #dde;">This is text inside a div.
-<a href="#">Test link</a></div>
-This is bare text. <a href="#">Test link</a>
-<div style="border: 3px solid #00f; background: #dde;">This is text inside a div.
-<a href="#">Test link</a></div>
-This is bare text. <a href="#">Test link</a>
-
-<div id="clear">Clearing div</div>  <!--******* Note: a cleared <br> will not prevent bug *******-->
-
-<div style="border: 3px solid #00f; background: #dde;">This div is after the cleared div. (purple box) If cleared div
-does not touch float, bug is not triggered. <a href="#">Test link</a></div>
-</div>
-
-<!--********** End of peekaboo demo ***********-->
 </div>
 
 </metal:main>
+
+<aside id="portal-column-one" metal:fill-slot="column_one_slot">
+  <section class="portlet">
+    <header class="portletHeader">Portlet header</header>
+    <ul class="portletContent">
+      <li class="portletItem">Item one</li>
+      <li class="portletItem">Item two</li>
+    </ul>
+    <footer class="portletFooter">Portlet footer</footer>
+  </section>
+</aside>
+
+<aside id="portal-column-two" metal:fill-slot="column_two_slot">
+  <section class="portlet">
+    <header class="portletHeader">Portlet header</header>
+    <div class="portletContent">
+      There might be a login form here.
+      <form>
+        <input type="text" value="login" /> <br />
+        <input type="password" value="password" /> <br />
+        <input type="submit" />
+      </form>
+    </div>
+    <footer class="portletFooter">Portlet footer</footer>
+  </section>
+</aside>
 
 </body>
 </html>

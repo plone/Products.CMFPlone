@@ -34,13 +34,14 @@ from Products.CMFCore.permissions import AccessContentsInformation, \
                         ManagePortal, ManageUsers, ModifyPortalContent, View
 from Products.CMFCore.interfaces import IDublinCore, IMutableDublinCore
 from Products.CMFCore.WorkflowCore import WorkflowException
-from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
+from Products.CMFPlone.DublinCore import DefaultDublinCoreImpl
 from Products.CMFDynamicViewFTI.interfaces import IBrowserDefault
 from Products.CMFPlone.interfaces import ISearchSchema
 from Products.CMFPlone.interfaces import ISiteSchema
 from Products.CMFPlone.events import ReorderedEvent
 from Products.CMFPlone.interfaces import IPloneTool
 from Products.CMFPlone.interfaces import INonStructuralFolder
+from Products.CMFPlone.interfaces import ISecuritySchema
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper
 from Products.CMFPlone import utils
@@ -58,22 +59,13 @@ from plone.app.linkintegrity.exceptions \
 _marker = utils._marker
 _icons = {}
 
-CEILING_DATE = DefaultDublinCoreImpl._DefaultDublinCoreImpl__CEILING_DATE
-FLOOR_DATE = DefaultDublinCoreImpl._DefaultDublinCoreImpl__FLOOR_DATE
+CEILING_DATE = DateTime(2500, 0)  # never expires
+FLOOR_DATE = __FLOOR_DATE = DateTime(1970, 0)  # always effective
 BAD_CHARS = bad_id.__self__.findall
 
 EMAIL_RE = re.compile(r"^(\w&.%#$&'\*+-/=?^_`{}|~]+!)*[\w&.%#$&'\*+-/=?^_`{}|~]+@(([0-9a-z]([0-9a-z-]*[0-9a-z])?\.)+[a-z]{2,6}|([0-9]{1,3}\.){3}[0-9]{1,3})$", re.IGNORECASE)
 # used to find double new line (in any variant)
 EMAIL_CUTOFF_RE = re.compile(r".*[\n\r][\n\r]")
-
-# XXX Remove this when we don't depend on python2.1 any longer,
-# use email.Utils.getaddresses instead
-from rfc822 import AddressList
-def _getaddresses(fieldvalues):
-    """Return a list of (REALNAME, EMAIL) for each fieldvalue."""
-    all = ', '.join(fieldvalues)
-    a = AddressList(all)
-    return a.addresslist
 
 # dublic core accessor name -> metadata name
 METADATA_DCNAME = {
@@ -636,8 +628,13 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         returned. If a non-folderish item is passed in, return None always.
         """
         if request is None:
-            request = self.REQUEST
-        return utils.getDefaultPage(obj, request)
+            if hasattr(self, 'REQUEST'):
+                request = self.REQUEST
+        if request:
+            return utils.getDefaultPage(obj, request)
+        else:
+            # In case its executed from an event that does not have request
+            return None
 
     security.declarePublic('addPortalMessage')
     def addPortalMessage(self, message, type='info', request=None):
@@ -969,20 +966,21 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         Creates a mapping of meta tags -> values for the listMetaTags script.
         """
         result = {}
-        site_props = getToolByName(self, 'portal_properties').site_properties
         mt = getToolByName(self, 'portal_membership')
 
         registry = getUtility(IRegistry)
-        settings = registry.forInterface(ISiteSchema, prefix="plone")
-        use_all = settings.exposeDCMetaTags
-        view_about = site_props.getProperty('allowAnonymousViewAbout', False) \
-                     or not mt.isAnonymousUser()
+        site_settings = registry.forInterface(ISiteSchema, prefix="plone")
+        use_all = site_settings.exposeDCMetaTags
+
+        security_settings = registry.forInterface(
+            ISecuritySchema, prefix='plone')
+        view_about = security_settings.allow_anon_views_about \
+            or not mt.isAnonymousUser()
 
         if not use_all:
             metadata_names = {'Description': METADATA_DCNAME['Description']}
         else:
             metadata_names = METADATA_DCNAME
-
         for accessor, key in metadata_names.items():
             # check non-public properties
             if not view_about and accessor in METADATA_DC_AUTHORFIELDS:

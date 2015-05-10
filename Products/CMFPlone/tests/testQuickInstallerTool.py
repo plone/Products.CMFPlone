@@ -33,7 +33,11 @@ class TestQuickInstallerTool(PloneTestCase.PloneTestCase):
         self.assertFalse('plone.app.upgrade.v30' in self._available())
 
     def testLatestUpgradeProfiles(self):
-        xmlconfig.file('test_upgrades1.zcml', package=tests, context=self.layer['configurationContext'])
+        xmlconfig.file(
+            'test_upgrades1.zcml',
+            package=tests,
+            context=self.layer['configurationContext']
+        )
         latest = self.qi.getLatestUpgradeStep('Products.CMFPlone:testfixture')
         self.assertTrue(latest == '3')
 
@@ -41,7 +45,11 @@ class TestQuickInstallerTool(PloneTestCase.PloneTestCase):
         # make sure strings don't break things
         # note that pkg_resources interprets 1 as
         # ''00000001', which is > 'banana'
-        xmlconfig.file('test_upgrades2.zcml', package=tests, context=self.layer['configurationContext'])
+        xmlconfig.file(
+            'test_upgrades2.zcml',
+            package=tests,
+            context=self.layer['configurationContext']
+        )
         latest = self.qi.getLatestUpgradeStep('Products.CMFPlone:testfixture')
         self.assertTrue(latest == '3')
 

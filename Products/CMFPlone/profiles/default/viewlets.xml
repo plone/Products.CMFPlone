@@ -17,10 +17,10 @@
     <viewlet name="plone.path_bar" />
   </order>
   <order manager="plone.toolbar" skinname="Plone Default">
-    <viewlet name="plone.personal_bar" />
     <viewlet name="plone.contentviews" />
     <viewlet name="plone.contentactions" />
     <viewlet name="plone.documentbyline" />
+    <viewlet name="plone.personal_bar" />
   </order>
   <order manager="plone.belowcontentbody" skinname="Plone Default">
     <viewlet name="plone.belowcontentbody.relateditems" />

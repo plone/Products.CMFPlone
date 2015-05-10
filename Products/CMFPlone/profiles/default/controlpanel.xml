@@ -119,14 +119,14 @@
     i18n:attributes="title">
   <permission>Plone Site Setup: Navigation</permission>
  </configlet>
- <configlet title="Language" action_id="PloneLanguageTool"
-    appId="PloneLanguageTool" category="Plone" condition_expr=""
+ <configlet title="Language" action_id="LanguageSettings"
+    appId="Plone" category="Plone" condition_expr=""
     icon_expr="string:$portal_url/flag-plone.png"
     url_expr="string:${portal_url}/@@language-controlpanel" visible="True"
     i18n:attributes="title">
   <permission>Plone Site Setup: Language</permission>
  </configlet>
- <configlet title="HTML Filtering" action_id="HtmlFilter" appId="HtmlFilter"
+ <configlet title="HTML Filtering" action_id="FilterSettings" appId="FilterSettings"
     category="Plone" condition_expr=""
     icon_expr="string:$portal_url/htmlfilter_icon.png"
     url_expr="string:${portal_url}/@@filter-controlpanel" visible="True"
@@ -173,5 +173,12 @@
     url_expr="string:${portal_url}/@@social-controlpanel" visible="True"
     i18n:attributes="title">
   <permission>Plone Site Setup: Site</permission>
+ </configlet>
+  <configlet title="Image Handling" action_id="ImagingSettings" appId="ImagingSettings"
+    category="Products" condition_expr=""
+    icon_expr="string:$portal_url/image_icon.png"
+    url_expr="string:${portal_url}/@@imaging-controlpanel" visible="True"
+    i18n:attributes="title">
+  <permission>Plone Site Setup: Imaging</permission>
  </configlet>
 </object>

@@ -25,7 +25,6 @@
   <include package="plone.app.locales" />
   <include package="plone.app.portlets" />
   <include package="plone.app.redirector" />
-  <include package="plone.app.search" />
   <include package="plone.app.registry" />
   <include package="plone.app.theming" />
   <include zcml:condition="installed plone.app.upgrade" package="plone.app.upgrade" />
@@ -47,6 +46,9 @@
   <!-- viewlets zope 3 layers support for themes -->
   <include package="plone.browserlayer" />
   <include package="plone.theme" />
+
+  <!-- multilingual -->
+  <include package="plone.app.multilingual" />
 
   <include package=".controlpanel" />
   <include package=".resources" />

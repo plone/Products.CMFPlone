@@ -47,6 +47,10 @@ define("tinymce/dom/DomQuery", [
 		return typeof obj === 'string';
 	}
 
+	function isWindow(obj) {
+		return obj && obj == obj.window;
+	}
+
 	function createFragment(html, fragDoc) {
 		var frag, node, container;
 
@@ -337,10 +341,6 @@ define("tinymce/dom/DomQuery", [
 				return self.add(DomQuery(items));
 			}
 
-			if (items.nodeType) {
-				return self.add([items]);
-			}
-
 			if (sort !== false) {
 				nodes = DomQuery.unique(self.toArray().concat(DomQuery.makeArray(items)));
 				self.length = nodes.length;
@@ -488,7 +488,7 @@ define("tinymce/dom/DomQuery", [
 					name = camel(name);
 
 					// Default px suffix on these
-					if (typeof(value) === 'number' && !numericCssMap[name]) {
+					if (typeof value === 'number' && !numericCssMap[name]) {
 						value += 'px';
 					}
 
@@ -1121,7 +1121,13 @@ define("tinymce/dom/DomQuery", [
 		 * @param {Object} object Object to convert to array.
 		 * @return {Arrau} Array produced from object.
 		 */
-		makeArray: Tools.toArray,
+		makeArray: function(array) {
+			if (isWindow(array) || array.nodeType) {
+				return [array];
+			}
+
+			return Tools.toArray(array);
+		},
 
 		/**
 		 * Returns the index of the specified item inside the array.

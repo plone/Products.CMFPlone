@@ -86,22 +86,25 @@
           this.gruntConfig.copy[name] = this.gruntConfig.copy[name] || {};
           this.gruntConfig.copy[name].files = this.gruntConfig.copy[name].files || [];
           this.gruntConfig.copy[name].files = this.gruntConfig.copy[name].files.concat([
-            {
-              expand: true, cwd: 'bower_components/bootstrap/dist/fonts/', src: 'glyphicons-halflings-regular.*', dest: bundleOptions.path,
-              rename: function(dest, src) { return dest + name + '-bootstrap-' + src; }
-            }, {
-              expand: true, cwd: 'bower_components/jqtree/', src: 'jqtree-circle.png', dest: bundleOptions.path,
-              rename: function(dest, src) { return dest + name + '-jqtree-' + src; }
-            }, {
-              expand: true, cwd: 'bower_components/select2/', src: 'select2*.png', dest: bundleOptions.path,
-              rename: function(dest, src) { return dest + name + '-select2-' + src; }
-            }, {
-              expand: true, cwd: 'bower_components/select2/', src: 'select2*.gif', dest: bundleOptions.path,
-              rename: function(dest, src) { return dest + name + '-select2-' + src; }
-            }, {
-              expand: true, cwd: 'bower_components/dropzone/downloads/images/', src: 'spritemap*', dest: bundleOptions.path,
-              rename: function(dest, src) { return dest + name + '-dropzone-' + src; }
-            }
+            // BOOTSTRAP
+            { expand: true, cwd: 'bower_components/bootstrap/dist/fonts/', src: 'glyphicons-halflings-regular.*', dest: bundleOptions.path,
+              rename: function(dest, src) { return dest + name + '-bootstrap-' + src; }},
+            // TINYMCE
+            { expand: true, cwd: 'bower_components/tinymce-builded/js/tinymce/langs', src: '*', dest: bundleOptions.path + name + '-tinymce/langs'},
+            { expand: true, cwd: 'bower_components/tinymce-builded/js/tinymce/skins/lightgray/fonts/', src: 'tinymce*', dest: bundleOptions.path,
+              rename: function(dest, src) { return dest + name + '-tinymce-font-' + src; }},
+            { expand: true, cwd: 'bower_components/tinymce-builded/js/tinymce/skins/lightgray/img/', src: '*', dest: bundleOptions.path,
+              rename: function(dest, src) { return dest + name + '-tinymce-img-' + src; }},
+            { expand: true, cwd: 'bower_components/tinymce-builded/js/tinymce/skins/lightgray/', src: 'content.min.css', dest: bundleOptions.path,
+              rename: function(dest, src) { return dest + name + '-tinymce-' + src; }},
+            // JQTREE
+            { expand: true, cwd: 'bower_components/jqtree/', src: 'jqtree-circle.png', dest: bundleOptions.path,
+              rename: function(dest, src) { return dest + name + '-jqtree-' + src; }},
+            // SELECT2
+            { expand: true, cwd: 'bower_components/select2/', src: 'select2*.png', dest: bundleOptions.path,
+              rename: function(dest, src) { return dest + name + '-select2-' + src; }},
+            { expand: true, cwd: 'bower_components/select2/', src: 'select2*.gif', dest: bundleOptions.path,
+              rename: function(dest, src) { return dest + name + '-select2-' + src; }},
           ]);
         }
       },
@@ -120,21 +123,68 @@
             replacement: 'sourceMappingURL=' + bundleOptions.url + '.min.js.map',
           };
           // pattern resources
+          // BOOTSTRAP
           this.gruntConfig.sed[name + '-bootstrap-glyphicons'] = {
             path: bundleOptions.path + name + '.min.css',
             pattern: 'url\\(\'../bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular',
             replacement: 'url(\'' + bundleOptions.url + '-bootstrap-glyphicons-halflings-regular'
           };
-          this.gruntConfig.sed[name + '-dropzone-spritemap'] = {
+          // TINYMCE
+          this.gruntConfig.sed[name + '-tinymce-fonts'] = {
             path: bundleOptions.path + name + '.min.css',
-            pattern: 'url\\("../images/spritemap',
-            replacement: 'url(\'' + bundleOptions.url + '-dropzone-spritemap'
+            pattern: 'url\\((\'?)fonts/tinymce',  // match urls with and without quotes
+            replacement: 'url($1' + bundleOptions.url + '-tinymce-font-tinymce'
           };
+          this.gruntConfig.sed[name + '-tinymce-img-loader'] = {
+            path: bundleOptions.path + name + '.min.css',
+            pattern: 'url\\(\'?img/loader.gif\'?',  // match urls with and without quotes
+            replacement: 'url(\'' + bundleOptions.url + '-tinymce-img-loader.gif\''
+          };
+          this.gruntConfig.sed[name + '-tinymce-img-anchor'] = {
+            path: bundleOptions.path + name + '.min.css',
+            pattern: 'url\\(\'?img/anchor.gif\'?',
+            replacement: 'url(\'' + bundleOptions.url + '-tinymce-img-anchor.gif\''
+          };
+          this.gruntConfig.sed[name + '-tinymce-img-object'] = {
+            path: bundleOptions.path + name + '.min.css',
+            pattern: 'url\\(\'?img/object.gif\'?',
+            replacement: 'url(\'' + bundleOptions.url + '-tinymce-img-object.gif\''
+          };
+          // TINYMCE content.min
+          this.gruntConfig.sed[name + '-tinymce-content.min.css'] = {
+            // replace default content.min.css
+            path: bundleOptions.path,
+            recursive: true,
+            pattern: '../../../bower_components/tinymce-builded/js/tinymce/skins/lightgray/content.min.css',
+            replacement: bundleOptions.url + '-tinymce-content.min.css'
+          };
+          this.gruntConfig.sed[name + '-tinymce-fonts2'] = {
+            path: bundleOptions.path + name + '-tinymce-content.min.css',
+            pattern: 'url\\((\'?)fonts/tinymce',  // match urls with and without quotes
+            replacement: 'url($1' + bundleOptions.url + '-tinymce-font-tinymce'
+          };
+          this.gruntConfig.sed[name + '-tinymce-img-loader2'] = {
+            path: bundleOptions.path + name + '-tinymce-content.min.css',
+            pattern: 'url\\(\'?img/loader.gif\'?',
+            replacement: 'url(\'' + bundleOptions.url + '-tinymce-img-loader.gif\''
+          };
+          this.gruntConfig.sed[name + '-tinymce-img-anchor2'] = {
+            path: bundleOptions.path + name + '-tinymce-content.min.css',
+            pattern: 'url\\(\'?img/anchor.gif\'?',
+            replacement: 'url(\'' + bundleOptions.url + '-tinymce-img-anchor.gif\''
+          };
+          this.gruntConfig.sed[name + '-tinymce-img-object2'] = {
+            path: bundleOptions.path + name + '-tinymce-content.min.css',
+            pattern: 'url\\(\'?img/object.gif\'?',
+            replacement: 'url(\'' + bundleOptions.url + '-tinymce-img-object.gif\''
+          };
+          // SELECT2
           this.gruntConfig.sed[name + '-select2-images'] = {
             path: bundleOptions.path + name + '.min.css',
             pattern: 'url\\(\'select2',
             replacement: 'url(\'' + bundleOptions.url + '-select2-select2'
           };
+          // JQTREE
           this.gruntConfig.sed[name + '-jqtree-circle'] = {
             path: bundleOptions.path + name + '.min.css',
             pattern: 'url\\(jqtree-circle.png',

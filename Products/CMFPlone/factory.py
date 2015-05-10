@@ -51,13 +51,15 @@ class HiddenProfiles(object):
                 u'plone.app.contenttypes:default',
                 u'plone.app.dexterity:default',
                 u'plone.app.discussion:default',
-                u'plone.app.event.at:default',
-                u'plone.app.event.dx:default',
+                u'plone.app.event:default',
                 u'plone.app.folder:default',
                 u'plone.app.imaging:default',
                 u'plone.app.jquery:initial-upgrade',
+                u'plone.app.jquery:default',
+                u'plone.app.jquerytools:default',
                 u'plone.app.registry:default',
-                u'plone.app.search:default',
+                u'plone.app.theming:default',
+                u'plone.app.versioningbehavior:default',
                 u'plone.formwidget.recurrence:default',
                 u'plone.resource:default',
                 ]
@@ -71,9 +73,9 @@ def zmi_constructor(context):
 
 
 def addPloneSite(context, site_id, title='Plone site', description='',
-                 create_userfolder=True, validate_email=True,
-                 profile_id=_DEFAULT_PROFILE, content_profile_id=_CONTENT_PROFILE,
-                 snapshot=False, extension_ids=(), setup_content=True,
+                 profile_id=_DEFAULT_PROFILE,
+                 content_profile_id=_CONTENT_PROFILE, snapshot=False,
+                 extension_ids=(), setup_content=True,
                  default_language='en', portal_timezone='UTC'):
     """Add a PloneSite to the context."""
     context._setObject(site_id, PloneSite(site_id))
@@ -88,18 +90,21 @@ def addPloneSite(context, site_id, title='Plone site', description='',
 
     setup_tool.setBaselineContext('profile-%s' % profile_id)
     setup_tool.runAllImportStepsFromProfile('profile-%s' % profile_id)
-    if setup_content:
-        setup_tool.runAllImportStepsFromProfile(
-            'profile-%s' % content_profile_id)
 
     reg = queryUtility(IRegistry, context=site)
     reg['plone.portal_timezone'] = portal_timezone
     reg['plone.available_timezones'] = [portal_timezone]
+    reg['plone.default_language'] = default_language
+    reg['plone.available_languages'] = [default_language]
+
+    if setup_content:
+        setup_tool.runAllImportStepsFromProfile(
+            'profile-%s' % content_profile_id)
+
 
     props = dict(
         title=title,
         description=description,
-        validate_email=validate_email,
     )
     # Do this before applying extension profiles, so the settings from a
     # properties.xml file are applied and not overwritten by this

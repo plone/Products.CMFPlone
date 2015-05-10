@@ -137,7 +137,7 @@
       </div>
 
       <div class="field" tal:condition="advanced">
-        <label i18n:translate=""><input type="checkbox" name="setup_content:boolean" checked="checked" /> Example content</label>
+        <label><input type="checkbox" name="setup_content:boolean" checked="checked" /> <tal:block i18n:translate="">Example content</tal:block></label>
         <div class="formHelp" i18n:translate="">
             Should the default example content be added to the site?
         </div>

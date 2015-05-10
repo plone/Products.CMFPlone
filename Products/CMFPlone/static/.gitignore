@@ -62,3 +62,15 @@ components/tinymce-builded/tests/.jshintrc
 components/tinymce-builded/tools/saucelabs/
 components/tinymce-builded/tools/tasks/
 
+components/jquery.recurrenceinput.js/.*
+components/jquery.recurrenceinput.js/*.rst
+components/jquery.recurrenceinput.js/*.txt
+components/jquery.recurrenceinput.js/Screenshot*
+components/jquery.recurrenceinput.js/bower.json
+components/jquery.recurrenceinput.js/demo/*
+components/jquery.recurrenceinput.js/lib/jquery-1.7.2.js
+components/jquery.recurrenceinput.js/lib/*.gif
+components/jquery.recurrenceinput.js/lib/*.png
+components/jquery.recurrenceinput.js/src/*.png
+components/jquery.recurrenceinput.js/test*
+
