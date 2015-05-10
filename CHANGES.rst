@@ -162,7 +162,6 @@ Changelog
   [vangheem]
 
 - Merge plone.app.search here
->>>>>>> master
   [vangheem]
 
 - Extended ulocalized_time for target_language
