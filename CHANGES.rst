@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.5.6 (unreleased)
+2.5.6 (2015-05-13)
 ------------------
 
 - do not set width and height on logo
