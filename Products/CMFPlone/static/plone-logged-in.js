@@ -21,7 +21,8 @@ require([
   'mockup-patterns-tinymce',
   'mockup-patterns-inlinevalidation',
   'mockup-patterns-structure',
-  'mockup-patterns-recurrence'
+  'mockup-patterns-recurrence',
+  'plone-patterns-portletmanager'
 ], function() {
   'use strict';
 });

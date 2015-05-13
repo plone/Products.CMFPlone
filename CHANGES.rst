@@ -8,6 +8,10 @@ Changelog
 5.0b2 (unreleased)
 ------------------
 
+- Convert manage-portlets.js into a pattern and make improvements on
+  using the manage portlets infrastructure
+  [vangheem]
+
 - add ability to provide a css file for tinymce style formats
   [vangheem]
 

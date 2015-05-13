@@ -14836,7 +14836,7 @@ define('mockup-patterns-relateditems',[
       resultTemplate: '' +
         '<div class="pattern-relateditems-result pattern-relateditems-type-<%= portal_type %> <% if (selected) { %>pattern-relateditems-active<% } %>">' +
         '  <a href="#" class="pattern-relateditems-result-select <% if (selectable) { %>selectable<% } %> contenttype-<%= portal_type.toLowerCase() %>">' +
-        '    <% if (getIcon) { %><span class="pattern-relateditems-result-icon"><img src="<%= getIcon %>" /></span><% } %>' +
+        '    <% if (typeof getIcon !== "undefined" && getIcon) { %><span class="pattern-relateditems-result-icon"><img src="<%= getIcon %>" /></span><% } %>' +
         '    <span class="pattern-relateditems-result-title"><%= Title %></span>' +
         '    <span class="pattern-relateditems-result-path"><%= path %></span>' +
         '  </a>' +
@@ -14849,7 +14849,7 @@ define('mockup-patterns-relateditems',[
       resultTemplateSelector: null,
       selectionTemplate: '' +
         '<span class="pattern-relateditems-item pattern-relateditems-type-<%= portal_type %>">' +
-        ' <% if (getIcon) { %><span class="pattern-relateditems-result-icon"><img src="<%= getIcon %>" /></span><% } %>' +
+        ' <% if (typeof getIcon !== "undefined" && getIcon) { %><span class="pattern-relateditems-result-icon"><img src="<%= getIcon %>" /></span><% } %>' +
         ' <span class="pattern-relateditems-item-title"><%= Title %></span>' +
         ' <span class="pattern-relateditems-item-path"><%= path %></span>' +
         '</span>',
@@ -19008,8 +19008,8 @@ define('mockup-patterns-modal',[
       $(window.parent).on('resize.plone-modal.patterns', function() {
         self.positionModal();
       });
-      self.emit('shown');
       $('body').addClass('plone-modal-open');
+      self.emit('shown');
     },
     hide: function() {
       var self = this;
@@ -19034,8 +19034,8 @@ define('mockup-patterns-modal',[
         self.initModal();
       }
       $(window.parent).off('resize.plone-modal.patterns');
-      self.emit('hidden');
       $('body').removeClass('plone-modal-open');
+      self.emit('hidden');
     },
     redraw: function(response, options) {
       var self = this;
@@ -90894,6 +90894,126 @@ define('mockup-patterns-recurrence',[
 
 });
 
+define('plone-patterns-portletmanager',[
+  'jquery',
+  'mockup-patterns-base',
+  'pat-registry',
+  'mockup-utils',
+  'mockup-patterns-modal',
+  'translate',
+  'jquery.form'
+], function ($, Base, Registry, utils, Modal, _t) {
+  'use strict';
+  var ManagePortlets = Base.extend({
+    name: 'manage-portlets',
+    trigger: '.pat-manage-portlets',
+    messageTimeout: 0,
+    isModal: false,
+    dirty: false,
+    init: function(){
+      var that = this;
+      that.setupAddDropdown();
+      that.setupSavePortletsSettings();
+      var $modal = that.$el.parents('.plone-modal');
+      if($modal.size() === 1){
+        this.isModal = true;
+        /* want to do something on exit from modal now */
+        var modal = $modal.data('pattern-plone-modal');
+        modal.on('hide', function(){
+          if(that.dirty){
+            window.location.reload();
+          }
+        });
+      }
+    },
+    rebind: function($el){
+      this.$el.replaceWith($el);
+      this.$el = $el;
+      this.init();
+      this.statusMessage();
+      this.dirty = true;
+    },
+    statusMessage: function(msg){
+      if(msg === undefined){
+        msg = _t("Portlet changes saved");
+      }
+      var that = this;
+
+      var $message = $('#portlet-message');
+      if($message.size() === 0){
+        $message = $('<div class="portalMessage info" id="portlet-message" style="display:none"></div>');
+        if(that.isModal){
+          $('#content-core').prepend($message);
+        }else{
+          $('.plone-modal-body:visible').prepend($message);
+        }
+      }
+      $message.html('<strong>' + _t("Info") + '</strong>' + msg);
+      clearTimeout(that.messageTimeout);
+      if(!$message.is(':visible')){
+        $message.fadeIn();
+      }
+      that.messageTimeout = setTimeout(function(){
+        $message.fadeOut();
+      }, 3000);
+    },
+    setupAddDropdown: function(){
+      var that = this;
+      $('.add-portlet', that.$el).change(function(e){
+        e.preventDefault();
+        var $select = $(this);
+        var contextUrl = $select.attr('data-context-url');
+        var url = contextUrl + $select.val() + '?_authenticator=' + $('[name="_authenticator"]').val();
+        /* create model */
+        var $a = $('<a/>');
+        $('body').append($a);
+        var pattern = new Modal($a, {
+          ajaxUrl: url,
+          actionOptions: {
+            displayInModal: false,
+            reloadWindowOnClose: false,
+            isForm: true,
+            onSuccess: function(modal, html){
+              pattern.hide();
+              var $body = $(utils.parseBodyTag(html));
+              that.rebind($('#' + that.$el.attr('id'), $body));
+              that.statusMessage(_t('Portlet added'));
+            }
+          }
+        });
+        pattern.on('after-render', function(){
+          var $el = $('#' + that.$el.attr('id'), pattern.$raw);
+          /* this is a check that the add form doesn't just automatically
+             create the portlet without an actual form.
+             If element is found here, we can short circuit and
+             continue on. */
+          if($el.size() === 1){
+            /* hacky, trying to prevent modal parts from flickering here */
+            $el = $el.clone();
+            pattern.on('shown', function(){
+              pattern.hide();
+            });
+            that.rebind($el);
+            that.statusMessage(_t('Portlet added'));
+          }
+        });
+        pattern.show();
+      });
+    },
+    setupSavePortletsSettings: function(){
+      var that = this;
+      $('.portlets-settings,form.portlet-action', that.$el).ajaxForm(function(html){
+        var $body = $(utils.parseBodyTag(html));
+        that.rebind($('#' + that.$el.attr('id'), $body));
+      });
+      $('.portlets-settings select', that.$el).change(function(){
+        $('.portlets-settings', that.$el).submit();
+      });
+    }
+  });
+
+  return ManagePortlets;
+});
 // Copyright (C) 2010 Plone Foundation
 //
 // This program is free software; you can redistribute it and/or modify it
@@ -90917,7 +91037,8 @@ require([
   'mockup-patterns-tinymce',
   'mockup-patterns-inlinevalidation',
   'mockup-patterns-structure',
-  'mockup-patterns-recurrence'
+  'mockup-patterns-recurrence',
+  'plone-patterns-portletmanager'
 ], function() {
   'use strict';
 });
