@@ -8,18 +8,16 @@ Changelog
 5.0b3 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
-
-5.0b2 (2015-05-13)
-------------------
-
 - fix manage content type and group portlets link to have authenticator
   [vangheem]
 
 - Convert manage-portlets.js into a pattern and make improvements on
   using the manage portlets infrastructure
   [vangheem]
+
+
+5.0b2 (2015-05-13)
+------------------
 
 - add ability to provide a css file for tinymce style formats
   [vangheem]
