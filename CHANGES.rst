@@ -10,6 +10,7 @@ Changelog
 
 - Fix build reading browser cached files by appending random query
   param onto url. See https://github.com/plone/Products.CMFPlone/commit/2d3865805efc6b72dce236eb68e502d8c57717b6
+  and https://github.com/plone/Products.CMFPlone/commit/bd1f9ba99d1ad40bb7fe1c00eaa32b8884aae5e2
   [vangheem]
 
 - fix manage content type and group portlets link to have authenticator
