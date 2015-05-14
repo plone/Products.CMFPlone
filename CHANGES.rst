@@ -4,8 +4,9 @@ Changelog
 2.5.7 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- render the footer portlets in a way where they can still
+  be edited with @@manage-portlets
+  [vangheem]
 
 2.5.6 (2015-05-13)
 ------------------
