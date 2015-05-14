@@ -17,7 +17,8 @@
         Workflow, visibility and versioning settings for your content types.
     </div>
 
-    <div id="content-core">
+    <div id="content-core"
+         tal:define="token context/@@authenticator/token">
         <form method="post"
               tal:define="type_id view/type_id"
               tal:attributes="action string:${context/absolute_url}/@@types-controlpanel">
@@ -124,7 +125,7 @@
     
     
                     <div class="field">
-                        <a tal:attributes="href string:${context/absolute_url}/@@manage-content-type-portlets?key=${type_id}"
+                        <a tal:attributes="href string:${context/absolute_url}/@@manage-content-type-portlets?key=${type_id}&_authenticator=${token}"
                             i18n:translate="types_controlpanel_manage_portlets">
                             Manage portlets assigned to this content type
                         </a>
