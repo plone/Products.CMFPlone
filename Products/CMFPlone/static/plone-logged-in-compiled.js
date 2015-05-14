@@ -90943,9 +90943,9 @@ define('plone-patterns-portletmanager',[
       if($message.size() === 0){
         $message = $('<div class="portalMessage info" id="portlet-message" style="display:none"></div>');
         if(that.isModal){
-          $('#content-core').prepend($message);
-        }else{
           $('.plone-modal-body:visible').prepend($message);
+        }else{
+          $('#content-core').prepend($message);
         }
       }
       $message.html('<strong>' + _t("Info") + '</strong>' + msg);
@@ -90962,8 +90962,11 @@ define('plone-patterns-portletmanager',[
       $('.add-portlet', that.$el).change(function(e){
         e.preventDefault();
         var $select = $(this);
+        var $form = $select.parents('form');
         var contextUrl = $select.attr('data-context-url');
-        var url = contextUrl + $select.val() + '?_authenticator=' + $('[name="_authenticator"]').val();
+        var url = contextUrl + $select.val() +
+          '?_authenticator=' + $('[name="_authenticator"]').val() +
+          '&referer=' + $('[name="referer"]', $form).val();
         /* create model */
         var $a = $('<a/>');
         $('body').append($a);
