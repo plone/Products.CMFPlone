@@ -5,7 +5,7 @@
 Changelog
 =========
 
-4.3.5 (unreleased)
+4.3.5 (2015-05-13)
 ------------------
 
 - Implement new feed syndication using `NewsML 1 <http://iptc.org/standards/newsml-1/>`_,
