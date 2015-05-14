@@ -8,7 +8,7 @@ Changelog
 5.0b2 (unreleased)
 ------------------
 
-- fix manage content type portlets link to have authenticator
+- fix manage content type and group portlets link to have authenticator
   [vangheem]
 
 - Convert manage-portlets.js into a pattern and make improvements on
