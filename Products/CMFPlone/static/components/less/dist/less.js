@@ -462,7 +462,15 @@ FileManager.prototype.loadFile = function loadFile(filename, currentDirectory, o
         return;
     }
 
-    this.doXHR(href, options.mime, function doXHRCallback(data, lastModified) {
+    /* XXX Plone hack to always re-download resource TTW */
+    var url = href;
+    if(url.indexOf('?') === -1){
+        url += '?';
+    }else{
+        url += '&';
+    }
+    url = url + "bust=" +  (new Date()).getTime();
+    this.doXHR(url, options.mime, function doXHRCallback(data, lastModified) {
         // per file cache
         fileCache[href] = data;
 
@@ -564,7 +572,6 @@ function loadStyles(modifyVars) {
 }
 
 function loadStyleSheet(sheet, callback, reload, remaining, modifyVars) {
-
     var instanceOptions = clone(options);
     addDataAttr(instanceOptions, sheet);
     instanceOptions.mime = sheet.type;

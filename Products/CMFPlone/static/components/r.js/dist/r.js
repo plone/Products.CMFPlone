@@ -25821,6 +25821,7 @@ define('build', function (require) {
             d.resolve(require._cachedRawText[path]);
             return d.promise;
         } else {
+            /* XXX Plone hack to always re-download resource TTW */
             var url = path;
             if(url.indexOf('?') === -1){
                 url += '?';
