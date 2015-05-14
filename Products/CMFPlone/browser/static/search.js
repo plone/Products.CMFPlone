@@ -14,7 +14,7 @@ require([
 ], function($) {
   'use strict';
 
-  var $loader = $('.plone-modal-loading');
+  var $loader = $('.plone-loader');
   if($loader.size() === 0){
     $loader = $('<div class="plone-loader"><div class="loader"/></div>');
     $('body').append($loader);
