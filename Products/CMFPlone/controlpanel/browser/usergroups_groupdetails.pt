@@ -60,7 +60,8 @@
         Portal status message
       </div>
 
-      <div id="content-core">
+      <div id="content-core"
+           tal:define="token context/@@authenticator/token">
         <div class="autotabs">
          
           <nav class="autotoc-nav">
@@ -69,7 +70,7 @@
             <a class="active"
                href="${portal_url}/@@usergroup-groupdetails?${groupquery}"
                i18n:translate="label_group_properties">Group Properties</a>
-            <a href="${portal_url}/@@manage-group-portlets?${groupkeyquery}"
+            <a href="${portal_url}/@@manage-group-portlets?${groupkeyquery}&_authenticator=${token}"
                i18n:translate="label_group_portlets">Group Portlets</a>
             <a href="${portal_url}/@@manage-group-dashboard?${groupkeyquery}"
                i18n:translate="label_group_dashboard">Group Dashboard</a>

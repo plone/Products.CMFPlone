@@ -850,6 +850,10 @@
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/texteditor/pattern.js</value>
   </records>
+  <records prefix="plone.resources/plone-patterns-portletmanager"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+    <value key="js">++resource++manage-portlets.js</value>
+  </records>
 
   <!-- ace resources -->
   <records prefix="plone.resources/ace"
