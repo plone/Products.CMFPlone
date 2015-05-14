@@ -9999,7 +9999,7 @@ define('mockup-utils',[
      *   zIndex(integer or function): to override default z-index used
      */
     var self = this;
-    self.className = 'mockup-loader-icon';
+    self.className = 'plone-loader';
     var defaults = {
       backdrop: null,
       zIndex: 10005 // can be a function
@@ -10010,7 +10010,7 @@ define('mockup-utils',[
     self.options = $.extend({}, defaults, options);
     self.$el = $('.' + self.className);
     if(self.$el.length === 0){
-      self.$el = $('<div><span class="glyphicon glyphicon-refresh" /></div>');
+      self.$el = $('<div><div></div></div>');
       self.$el.addClass(self.className).hide().appendTo('body');
     }
 
@@ -10018,7 +10018,15 @@ define('mockup-utils',[
       self.$el.show();
       var zIndex = self.options.zIndex;
       if (typeof(zIndex) === 'function') {
-        zIndex = zIndex();
+        zIndex = Math.max(zIndex(), 10005);
+      }else{
+        // go through all modals and backdrops and make sure we have a higher
+        // z-index to use
+        zIndex = 10005;
+        $('.plone-modal-wrapper,.plone-modal-backdrop').each(function(){
+          zIndex = Math.max(zIndex, $(this).css('zIndex') || 10005);
+        });
+        zIndex += 1;
       }
       self.$el.css('zIndex', zIndex);
 
@@ -10077,6 +10085,8 @@ define('mockup-utils',[
     },
     QueryHelper: QueryHelper,
     Loading: Loading,
+    // provide default loader
+    loading: new Loading(),
     getAuthenticator: function() {
       return $('input[name="_authenticator"]').val();
     }
@@ -19680,17 +19690,7 @@ define('mockup-patterns-modal',[
       }
 
       self.loading = new utils.Loading({
-        backdrop: self.backdrop,
-        zIndex: function() {
-          if (self.modalInitialized()) {
-            var zIndex = self.$modal.css('zIndex');
-            if (zIndex) {
-              return parseInt(zIndex, 10) + 1;
-            }
-          } else {
-            return 10005;
-          }
-        }
+        backdrop: self.backdrop
       });
 
       $(window.parent).resize(function() {
@@ -19933,8 +19933,8 @@ define('mockup-patterns-modal',[
       $(window.parent).on('resize.plone-modal.patterns', function() {
         self.positionModal();
       });
-      self.emit('shown');
       $('body').addClass('plone-modal-open');
+      self.emit('shown');
     },
     hide: function() {
       var self = this;
@@ -19959,8 +19959,8 @@ define('mockup-patterns-modal',[
         self.initModal();
       }
       $(window.parent).off('resize.plone-modal.patterns');
-      self.emit('hidden');
       $('body').removeClass('plone-modal-open');
+      self.emit('hidden');
     },
     redraw: function(response, options) {
       var self = this;

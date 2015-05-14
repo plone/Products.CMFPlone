@@ -11298,7 +11298,7 @@ define('mockup-utils',[
      *   zIndex(integer or function): to override default z-index used
      */
     var self = this;
-    self.className = 'mockup-loader-icon';
+    self.className = 'plone-loader';
     var defaults = {
       backdrop: null,
       zIndex: 10005 // can be a function
@@ -11309,7 +11309,7 @@ define('mockup-utils',[
     self.options = $.extend({}, defaults, options);
     self.$el = $('.' + self.className);
     if(self.$el.length === 0){
-      self.$el = $('<div><span class="glyphicon glyphicon-refresh" /></div>');
+      self.$el = $('<div><div></div></div>');
       self.$el.addClass(self.className).hide().appendTo('body');
     }
 
@@ -11317,7 +11317,15 @@ define('mockup-utils',[
       self.$el.show();
       var zIndex = self.options.zIndex;
       if (typeof(zIndex) === 'function') {
-        zIndex = zIndex();
+        zIndex = Math.max(zIndex(), 10005);
+      }else{
+        // go through all modals and backdrops and make sure we have a higher
+        // z-index to use
+        zIndex = 10005;
+        $('.plone-modal-wrapper,.plone-modal-backdrop').each(function(){
+          zIndex = Math.max(zIndex, $(this).css('zIndex') || 10005);
+        });
+        zIndex += 1;
       }
       self.$el.css('zIndex', zIndex);
 
@@ -11376,6 +11384,8 @@ define('mockup-utils',[
     },
     QueryHelper: QueryHelper,
     Loading: Loading,
+    // provide default loader
+    loading: new Loading(),
     getAuthenticator: function() {
       return $('input[name="_authenticator"]').val();
     }
@@ -15031,7 +15041,7 @@ define('mockup-patterns-relateditems',[
       self.emit('selecting');
       var data = self.$el.select2('data');
       data.push(item);
-      self.$el.select2('data', data);
+      self.$el.select2('data', data, true);
       item.selected = true;
       self.emit('selected');
     },
@@ -15044,7 +15054,7 @@ define('mockup-patterns-relateditems',[
           data.splice(i, 1);
         }
       });
-      self.$el.select2('data', data);
+      self.$el.select2('data', data, true);
       item.selected = false;
       self.emit('deselected');
     },
@@ -18755,17 +18765,7 @@ define('mockup-patterns-modal',[
       }
 
       self.loading = new utils.Loading({
-        backdrop: self.backdrop,
-        zIndex: function() {
-          if (self.modalInitialized()) {
-            var zIndex = self.$modal.css('zIndex');
-            if (zIndex) {
-              return parseInt(zIndex, 10) + 1;
-            }
-          } else {
-            return 10005;
-          }
-        }
+        backdrop: self.backdrop
       });
 
       $(window.parent).resize(function() {
@@ -59674,7 +59674,8 @@ define('mockup-patterns-upload',[
         basePath: '/',
         vocabularyUrl: null,
         width: 500,
-        maximumSelectionSize: 1
+        maximumSelectionSize: 1,
+        selectableTypes: ['Folder']
       }
     },
 
@@ -60574,6 +60575,7 @@ define('mockup-patterns-tinymce-url/js/links',[
       if(self.options.upload){
         self.$upload = $('.uploadify-me', self.modal.$modal);
         self.options.upload.relatedItems = self.options.relatedItems;
+        self.options.upload.relatedItems.selectableTypes = self.options.folderTypes;
         self.$upload.addClass('pat-upload').patternUpload(self.options.upload);
         self.$upload.on('uploadAllCompleted', function(evt, data) {
           // Add upload data and path_uid to the upload node's data attributes.
@@ -90901,13 +90903,18 @@ define('plone-patterns-portletmanager',[
   'mockup-utils',
   'mockup-patterns-modal',
   'translate',
+  'pat-logger',
   'jquery.form'
-], function ($, Base, Registry, utils, Modal, _t) {
+], function ($, Base, Registry, utils, Modal, _t, logger) {
   'use strict';
+
+  var log = logger.getLogger('pat-manage-portlets');
+
   var ManagePortlets = Base.extend({
     name: 'manage-portlets',
     trigger: '.pat-manage-portlets',
     messageTimeout: 0,
+    submitTimeout: 0,
     isModal: false,
     dirty: false,
     init: function(){
@@ -90922,6 +90929,9 @@ define('plone-patterns-portletmanager',[
             window.location.reload();
           }
         });
+        that.loading = modal.loading;
+      }else{
+        that.loading = utils.loading;
       }
       that.bind();
     },
@@ -90930,12 +90940,44 @@ define('plone-patterns-portletmanager',[
       that.setupAddDropdown();
       that.setupSavePortletsSettings();
       that.setupPortletEdit();
+      if(that.isModal){
+        /* if we're in a modal, it's possible we have a link to
+           parent case, bind the link so we can reload modal */
+        $('.portlets-link-to-parent').off('click').click(function(e){
+          that.loading.show();
+          var $el = $(this);
+          e.preventDefault();
+          $.ajax({
+            url: $el.attr('href'),
+            data: {
+              ajax_load: 1
+            }
+          }).done(function(html){
+            var $body = $(utils.parseBodyTag(html));
+            var $modal = $el.parents('.plone-modal-body');
+            $modal.empty();
+            var $content = $('#content', $body);
+            var $h1 = $('h1', $content);
+            $('.plone-modal-header', $modal.parent()).find('h2').html($h1.html());
+            $h1.remove();
+            $modal.append($content);
+            that.rebind($('.pat-manage-portlets', $content), true);
+            that.loading.hide();
+          });
+        });
+      }
     },
-    rebind: function($el){
-      this.$el.replaceWith($el);
+    rebind: function($el, suppress){
+      log.info('rebind');
+      if ($.contains(document, this.$el[0])) {
+        // $el is not detached, replace it
+        this.$el.replaceWith($el);
+      }
       this.$el = $el;
       this.bind();
-      this.statusMessage();
+      if(!suppress){
+        this.statusMessage();
+      }
       this.dirty = true;
     },
     statusMessage: function(msg){
@@ -90946,7 +90988,7 @@ define('plone-patterns-portletmanager',[
 
       var $message = $('#portlet-message');
       if($message.size() === 0){
-        $message = $('<div class="portalMessage info" id="portlet-message" style="display:none"></div>');
+        $message = $('<div class="portalMessage info" id="portlet-message" style="opacity: 0"></div>');
         if(that.isModal){
           $('.plone-modal-body:visible').prepend($message);
         }else{
@@ -90955,14 +90997,13 @@ define('plone-patterns-portletmanager',[
       }
       $message.html('<strong>' + _t("Info") + '</strong>' + msg);
       clearTimeout(that.messageTimeout);
-      if(!$message.is(':visible')){
-        $message.fadeIn();
-      }
+      $message.fadeTo(500, 1);
       that.messageTimeout = setTimeout(function(){
-        $message.fadeOut();
+        $message.fadeTo(500, 0.6);
       }, 3000);
     },
     showEditPortlet: function(url){
+      log.info('show edit portlet in modal');
       var that = this;
       var $a = $('<a/>');
       $('body').append($a);
@@ -90975,7 +91016,7 @@ define('plone-patterns-portletmanager',[
           onSuccess: function(modal, html){
             pattern.hide();
             var $body = $(utils.parseBodyTag(html));
-            that.rebind($('#' + that.$el.attr('id'), $body));
+            that.rebind($('#' + that.$el.attr('id'), $body).eq(0));
             that.statusMessage(_t('Portlet added'));
           }
         }
@@ -91020,12 +91061,23 @@ define('plone-patterns-portletmanager',[
     },
     setupSavePortletsSettings: function(){
       var that = this;
-      $('.portlets-settings,form.portlet-action', that.$el).ajaxForm(function(html){
-        var $body = $(utils.parseBodyTag(html));
-        that.rebind($('#' + that.$el.attr('id'), $body));
+      $('.portlets-settings,form.portlet-action', that.$el).ajaxForm({
+        beforeSubmit: function(){
+          that.loading.show();
+        },
+        success: function(html){
+          that.loading.hide();
+          log.info('form submit');
+          var $body = $(utils.parseBodyTag(html));
+          that.rebind($('#' + that.$el.attr('id'), $body).eq(0));
+        }
       });
       $('.portlets-settings select', that.$el).change(function(){
-        $('.portlets-settings', that.$el).submit();
+        log.info('select change');
+        clearTimeout(that.submitTimeout);
+        that.submitTimeout = setTimeout(function(){
+          $('.portlets-settings', that.$el).submit();
+        }, 100);
       });
     }
   });
