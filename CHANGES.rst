@@ -207,6 +207,46 @@ Changelog
 - Ported tests to plone.app.testing
   [tomgross]
 
+
+2.3.13 (2015-04-30)
+-------------------
+
+- Fix: in test passing portal to addMember, not testcase class.
+  [jensens]
+
+
+2.3.12 (2014-09-07)
+-------------------
+
+- Fix related items viewlet listing dexterity related folder's descendants.
+  [rpatterson]
+
+
+2.3.11 (2014-02-19)
+-------------------
+
+- Update package dependencies and clearly specify this branch is for
+  Plone 4.3 only.
+  [hvelarde]
+
+
+2.3.10 (2013-11-13)
+-------------------
+
+- Fix 'plone.belowcontentbody.relateditems' viewlet to avoid trying to display
+  items if the user has no permission to view them (like content in Private
+  state).
+  [hvelarde]
+
+- modified sections.pt for adding link target.
+  Fixed that portal_actions: 'Link Target' on
+  portal_actions/portal_tabs doesn't work.
+  [terapyon]
+
+- Add plone.app.relationfield to test dependencies,
+  needed to test dexterity support. [jpgimenez]
+
+
 2.3.9 (2013-09-25)
 ------------------
 
