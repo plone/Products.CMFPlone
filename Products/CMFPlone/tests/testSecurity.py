@@ -161,7 +161,7 @@ class TestAttackVectorsFunctional(PloneTestCase):
     def test_createObject(self):
         res = self.publish('/plone/createObject?type_name=File&id=${foo}')
         self.assertEqual(302, res.status)
-        self.assertEqual('http://nohost/plone/portal_factory/File/${foo}/edit', res.headers['location'])
+        self.assertTrue(res.headers['location'].startswith('http://nohost/plone/portal_factory/File/${foo}/edit?_authenticator='))
 
     def test_formatColumns(self):
         res = self.publish('/plone/formatColumns?items:list=')
