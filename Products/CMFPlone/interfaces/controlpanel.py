@@ -514,7 +514,7 @@ class ITinyMCEPluginSchema(Interface):
                  'fullscreen', 'hr', 'insertdatetime', 'lists', 'media',
                  'nonbreaking', 'noneditable', 'pagebreak', 'paste', 'preview',
                  'print', 'save', 'searchreplace', 'tabfocus', 'table',
-                 'visualchars', 'wordcount'],
+                 'visualchars', 'wordcount', 'code'],
         required=False)
 
     menubar = schema.List(
