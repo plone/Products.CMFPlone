@@ -7,7 +7,6 @@ from Products.CMFPlone.interfaces.controlpanel import IMailSchema
 from Products.CMFPlone.utils import getToolByName
 from Products.CMFPlone.utils import pretty_title_or_id
 from Products.Five.browser import BrowserView
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.MailHost.interfaces import IMailHost
 from Products.statusmessages.interfaces import IStatusMessage
 
@@ -98,20 +97,20 @@ class AuthorFeedbackForm(form.Form):
         )
 
         mail_host = getUtility(IMailHost)
-        encoding = mail_settings.email_charset
+        email_charset = self.portal.getProperty('email_charset')
 
         try:
             message = self.feedback_template(
                 self, send_from_address=send_from_address,
                 sender_id=sender_id, url=referer, subject=subject,
-                message=message, encoding=encoding
+                message=message, encoding=email_charset
             )
 
-            message = message.encode(encoding)
+            message = message.encode(email_charset)
 
             mail_host.send(
                 message, send_to_address, envelope_from,
-                subject=subject, charset=encoding
+                subject=subject, charset=email_charset
             )
         except ConflictError:
             raise
@@ -129,6 +128,9 @@ class AuthorFeedbackForm(form.Form):
             _(u'Mail sent.'),
             type=u'info'
         )
+        self.request.response.redirect('%s/author/%s' % (
+            self.portal.absolute_url(),
+            author or ''))
         return
 
 
@@ -250,6 +252,9 @@ class AuthorView(BrowserView):
         security_settings = registry.forInterface(
             ISecuritySchema, prefix='plone')
         allow_anonymous_view_about = security_settings.allow_anon_views_about
+
+        mail_settings = registry.forInterface(IMailSchema, prefix='plone')
+        self.email_from_address = mail_settings.email_from_address
 
         if self.is_anonymous and not allow_anonymous_view_about:
             raise Unauthorized()

@@ -31,7 +31,7 @@
 
     </div>
 
-    <div tal:condition="mailhost_is_configured">
+    <div tal:condition="python: mailhost_is_configured and not view.success">
 
         <div i18n:translate="description_contact_site_owner" class="documentDescription">
             Fill in this form to contact the site owners.
@@ -41,6 +41,11 @@
              </metal:block>
         </div>
 
+    </div>
+    <div tal:condition="view/success">
+      <p i18n:translate="description_contact_site_owner_success" class="documentDescription">
+            Thank you for your feedback
+        </p>
     </div>
 </metal:main>
 </body>

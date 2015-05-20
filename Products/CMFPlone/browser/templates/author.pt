@@ -27,7 +27,7 @@
                     tal:define="portal_url context/@@plone_portal_state/navigation_root_url;
                                 here_url context/@@plone_context_state/object_url;
                                 portal context/@@plone_portal_state/portal;
-                                email_from_address portal/email_from_address;
+                                email_from_address view/email_from_address;
                                 author view/author;
                                 username view/username">
 
@@ -59,6 +59,11 @@
 
             <article id="content">
                 <!-- Author information -->
+
+                <img src=""
+                    alt="User portrait picture"
+                    class="portraitPhoto"
+                    tal:attributes="src portrait/absolute_url" />
                 <h1 class="documentFirstHeading"
                     tal:condition="authorinfo/fullname"
                     tal:content="authorinfo/fullname">
@@ -79,11 +84,6 @@
                     <a href="${portal_url}/@@personal-information"
                        i18n:translate="label_edit">Edit</a>
                   </nav>
-
-                  <img src=""
-                      alt="User portrait picture"
-                      class="portraitPhoto"
-                      tal:attributes="src portrait/absolute_url" />
 
                   <div class="documentDescription"
                        tal:content="authorinfo/description">
@@ -132,7 +132,7 @@
                         </a>
                       </p>
 
-                      <tal:noemailsetup tal:condition="python:not (email_from_address or isAnon)">
+                      <tal:noemailsetup tal:condition="python:not email_from_address">
                           <p class="discreet"
                              i18n:translate="text_no_email_setup">
                               This site doesn't have a valid email setup, so you cannot use

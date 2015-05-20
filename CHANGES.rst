@@ -8,6 +8,9 @@ Changelog
 5.0b3 (unreleased)
 ------------------
 
+- updates to contact forms to make them more user friendly on submission
+  [vangheem]
+
 - include code plugin by default for TinyMCE
   [vangheem]
 

@@ -23,6 +23,7 @@ class ContactForm(form.Form):
 
     fields = field.Fields(IContactForm)
     ignoreContext = True
+    success = False
 
     def mailhost_is_configured(self):
         registry = getUtility(IRegistry)
@@ -44,6 +45,7 @@ class ContactForm(form.Form):
 
         self.send_message(data)
         self.send_feedback()
+        self.success = True
 
     def generate_mail(self, variables, encoding='utf-8'):
         template = self.context.restrictedTraverse(self.template_mailview)
