@@ -85975,8 +85975,9 @@ define('mockup-patterns-structure-url/js/views/rename',[
   'jquery',
   'underscore',
   'backbone',
-  'mockup-ui-url/views/popover'
-], function($, _, Backbone, PopoverView) {
+  'mockup-ui-url/views/popover',
+  'translate'
+], function($, _, Backbone, PopoverView, _t) {
   'use strict';
 
   var PropertiesView = PopoverView.extend({
@@ -85984,7 +85985,7 @@ define('mockup-patterns-structure-url/js/views/rename',[
     title: _.template('<%- _t("Rename items") %>'),
     content: _.template(
       '<div class="itemstoremove"></div>' +
-      '<button class="btn btn-block btn-primary"><% _t("Apply") %></button>'
+      '<button class="btn btn-block btn-primary"><%= _t("Apply") %></button>'
     ),
     itemTemplate: _.template(
       '<div class="item">' +
@@ -86019,7 +86020,6 @@ define('mockup-patterns-structure-url/js/views/rename',[
           newtitle: $item.find('[name="newtitle"]').val()
         });
       });
-      var self = this;
       this.app.defaultButtonClickEvent(this.triggerView, {
         torename: JSON.stringify(torename)
       });
@@ -86033,7 +86033,9 @@ define('mockup-patterns-structure-url/js/views/rename',[
       }
       self.$items.empty();
       self.app.selectedCollection.each(function(item) {
-        self.$items.append(self.itemTemplate(item.toJSON()));
+        self.$items.append(self.itemTemplate($.extend({}, true, item.toJSON(), {
+          _t: _t
+        })));
       });
     }
   });
