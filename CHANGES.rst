@@ -8,6 +8,10 @@ Changelog
 5.0b3 (unreleased)
 ------------------
 
+- fix weird issue with selecting multiple links and images on a page
+  while you are editing with tinymce
+  [vangheem]
+
 - updates to contact forms to make them more user friendly on submission
   [vangheem]
 
