@@ -114,6 +114,7 @@ less_config = """
                     outputSourceFiles: true,
                     strictImports: true,
                     sourceMapURL: "{sourcemap_url}",
+                    sourceMapBasepath: "{base_path}",
                     relativeUrls: true,
                     plugins: [
                         new require('less-plugin-inline-urls'),
@@ -385,7 +386,8 @@ for bkey, bundle in bundles.items():
             globalVars=globalVars_string,
             files=',\n'.join(less_files),
             less_paths=json.dumps(less_paths),
-            sourcemap_url=sourceMap_url))
+            sourcemap_url=sourceMap_url,
+            base_path=os.getcwd()))
         bundle_grunt_tasks += (
             "\ngrunt.registerTask('compile-%s',"
             "['requirejs:%s', 'less:%s', 'sed', 'uglify:%s']);"
