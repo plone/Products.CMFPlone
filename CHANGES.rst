@@ -8,6 +8,9 @@ Changelog
 5.0b3 (unreleased)
 ------------------
 
+- do not require css to be defined for non-compilable bundles
+  [vangheem]
+
 - fix weird issue with selecting multiple links and images on a page
   while you are editing with tinymce
   [vangheem]
