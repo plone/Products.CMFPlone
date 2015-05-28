@@ -96,11 +96,11 @@ uglify_config = """
         "{bkey}": {{
           options: {{
             sourceMap: true,
-            sourceMapName: '{src}.min.js.map',
+            sourceMapName: '{destination}.map',
             sourceMapIncludeSources: false
           }},
           files: {{
-            '{src}.min.js': ['{src}.js']
+            '{destination}': {files}
           }}
         }},
 """
@@ -315,35 +315,28 @@ bundle_grunt_tasks = ""
 
 for bkey, bundle in bundles.items():
     if bundle.compile:
+        less_files = []
+        js_files = []
+        js_resources = []
         for resource in bundle.resources:
             res_obj = resources[resource]
-            less_files = []
             if res_obj.js:
                 js_object = portal.unrestrictedTraverse(res_obj.js, None)
                 if js_object:
                     main_js_path = resource_to_dir(js_object)
-                    target_dir = '/'.join(bundle.jscompilation.split('/')[:-1])
-                    target_name = bundle.jscompilation.split('/')[-1]
-                    if '.min.js' in target_name:
-                        # minified version in new resource registry
-                        target_name = target_name.rpartition('.min.js')[0]
-                    else:
-                        target_name = target_name.rpartition('.js')[0]
-                    target_path = resource_to_dir(portal.unrestrictedTraverse(target_dir))  # noqa
+                    target_path = resource_to_dir(portal.unrestrictedTraverse(res_obj.js))
+                    target_path = '/'.join(target_path.split('/')[:-1])
                     watch_files.append(main_js_path)
                     rc = requirejs_config.format(
                         bkey=resource,
                         paths=json.dumps(paths),
                         shims=json.dumps(shims),
                         name=main_js_path,
-                        out=target_path + '/' + target_name + '.js'
+                        out=target_path + '/' + resource + '-compiled.js'
                     )
                     require_configs += rc
-                    uc = uglify_config.format(
-                        bkey=resource,
-                        src=target_path + '/' + target_name  # noqa
-                    )
-                    uglify_configs += uc
+                    js_files.append(target_path + '/' + resource + '-compiled.js')
+                    js_resources.append(resource)
 
             if res_obj.css:
                 for css_file in res_obj.css:
@@ -388,10 +381,23 @@ for bkey, bundle in bundles.items():
             less_paths=json.dumps(less_paths),
             sourcemap_url=sourceMap_url,
             base_path=os.getcwd()))
+        target_dir = '/'.join(bundle.jscompilation.split('/')[:-1])
+        target_name = bundle.jscompilation.split('/')[-1]
+        target_path = resource_to_dir(portal.unrestrictedTraverse(target_dir))
+        uc = uglify_config.format(
+            bkey=bkey,
+            destination=target_path + '/' + target_name,
+            files=json.dumps(js_files)
+        )
+        uglify_configs += uc
+
+        requirejs_tasks = ''
+        if js_resources:
+            requirejs_tasks = ','.join(['"requirejs:' + r + '"' for r in js_resources]) + ','
         bundle_grunt_tasks += (
             "\ngrunt.registerTask('compile-%s',"
-            "['requirejs:%s', 'less:%s', 'sed', 'uglify:%s']);"
-        ) % (bkey, bkey, bkey, bkey)
+            "[%s 'less:%s', 'sed', 'uglify:%s']);"
+        ) % (bkey, requirejs_tasks, bkey, bkey)
 
 
 gruntfile = open('Gruntfile.js', 'w')

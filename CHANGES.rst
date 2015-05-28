@@ -8,6 +8,11 @@ Changelog
 5.0b3 (unreleased)
 ------------------
 
+- fix bug where bundles would not get built properly with
+  compile-plone-resources script when multiple resources
+  were defined for a bundle
+  [vangheem]
+
 - do not require css to be defined for non-compilable bundles
   [vangheem]
 
