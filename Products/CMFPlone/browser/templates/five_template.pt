@@ -1,0 +1,11 @@
+<metal:macro metal:define-macro="page"
+><html metal:use-macro="context/main_template/macros/master">
+<head>
+<metal:slot metal:fill-slot="style_slot"
+><metal:slot metal:define-slot="style_slot" /></metal:slot>
+</head>
+<body>
+<metal:slot metal:fill-slot="body"
+><metal:slot metal:define-slot="body"/></metal:slot>
+</body>
+</html></metal:macro>
