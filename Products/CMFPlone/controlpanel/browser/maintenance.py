@@ -3,7 +3,6 @@ from z3c.form import button
 import os
 from cgi import escape
 
-from plone.app.form.validators import null_validator
 from z3c.form import form
 
 from AccessControl import getSecurityManager
@@ -54,8 +53,6 @@ class MaintenanceControlPanel(AutoExtensibleForm, form.EditForm):
             cpanel.manage_pack(days=value, REQUEST=None)
         self.status = _(u'Packed the database.')
 
-    #@form.action(_(u'Shut down'), validator=null_validator, name=u'shutdown')
-
     @button.buttonAndHandler(_(u'Shut down'), name='shutdown')
     def handle_shutdown_action(self, action):
         CheckAuthenticator(self.request)
@@ -69,8 +66,6 @@ class MaintenanceControlPanel(AutoExtensibleForm, form.EditForm):
         cpanel = context.unrestrictedTraverse('/Control_Panel')
         result = cpanel.manage_shutdown()
         return result
-
-    #@form.action(_(u'Restart'), validator=null_validator)
 
     @button.buttonAndHandler(_(u'Restart'), name='restart')
     def handle_restart_action(self, action):
