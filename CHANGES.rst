@@ -8,6 +8,9 @@ Changelog
 5.0b3 (unreleased)
 ------------------
 
+- remove plone.app.jquerytools dependency
+  [vangheem]
+
 - fix bug where bundles would not get built properly with
   compile-plone-resources script when multiple resources
   were defined for a bundle
