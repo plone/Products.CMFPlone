@@ -8,6 +8,9 @@ Changelog
 5.0b3 (unreleased)
 ------------------
 
+- Do not require "Enable LiveSearch". This fixes https://github.com/plone/Products.CMFPlone/issues/558
+  [timo]
+
 - Fix control panel titles. This fixes https://github.com/plone/Products.CMFPlone/issues/550 https://github.com/plone/Products.CMFPlone/issues/553 https://github.com/plone/Products.CMFPlone/issues/557
   [timo]
 

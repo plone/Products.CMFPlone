@@ -810,7 +810,7 @@ class ISearchSchema(Interface):
             u"Enables the LiveSearch feature, which shows live "
             u"results if the browser supports JavaScript."),
         default=True,
-        required=True
+        required=False
     )
 
     types_not_searched = schema.Tuple(
