@@ -928,7 +928,7 @@
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/jquery.recurrenceinput.js/lib/jquery.tools.dateinput.js</value>
       <value key="css">
-        <element>++plone++static/components/jquery.recurrenceinput.js/src/jquery.tools.dateinput.css</element>
+        <element>++plone++static/components/jquery.recurrenceinput.js/lib/jquery.tools.dateinput.css</element>
       </value>
       <value key="deps">jquery</value>
   </records>
@@ -936,7 +936,7 @@
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/jquery.recurrenceinput.js/lib/jquery.tools.overlay.js</value>
       <value key="css">
-        <element>++plone++static/components/jquery.recurrenceinput.js/src/jquery.tools.overlay.css</element>
+        <element>++plone++static/components/jquery.recurrenceinput.js/lib/jquery.tools.overlay.css</element>
       </value>
       <value key="deps">jquery</value>
   </records>
