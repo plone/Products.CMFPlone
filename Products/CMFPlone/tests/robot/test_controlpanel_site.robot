@@ -55,7 +55,7 @@ Scenario: Add Webstats Javascript in the Site Control Panel
 
 the site control panel
   Go to  ${PLONE_URL}/@@site-controlpanel
-  Wait until page contains  Site settings
+  Wait until page contains  Site Settings
 
 
 # --- WHEN -------------------------------------------------------------------
