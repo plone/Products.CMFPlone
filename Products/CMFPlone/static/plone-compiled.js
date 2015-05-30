@@ -19198,9 +19198,6 @@ function log() {
  *
  */
 
- /* global confirm:true */
-
-
 define('mockup-patterns-modal',[
   'jquery',
   'underscore',
@@ -19209,8 +19206,9 @@ define('mockup-patterns-modal',[
   'pat-registry',
   'mockup-router',
   'mockup-utils',
+  'translate',
   'jquery.form'
-], function($, _, Base, Backdrop, registry, Router, utils) {
+], function($, _, Base, Backdrop, registry, Router, utils, _t) {
   'use strict';
 
   var Modal = Base.extend({
@@ -19395,6 +19393,7 @@ define('mockup-patterns-modal',[
             } else if (options.onError) {
               options.onError(xhr, textStatus, errorStatus);
             } else {
+              window.alert(_t('There was an error submitting the form.'));
               console.log('error happened do something');
             }
             self.emit('formActionError', [xhr, textStatus, errorStatus]);
@@ -19462,28 +19461,26 @@ define('mockup-patterns-modal',[
 
         // ajax version
         $.ajax({
-          url: url,
-          error: function(xhr, textStatus, errorStatus) {
-            if (textStatus === 'timeout' && options.onTimeout) {
-              options.onTimeout(self.$modal, xhr, errorStatus);
+          url: url
+        }).fail(function(xhr, textStatus, errorStatus) {
+          if (textStatus === 'timeout' && options.onTimeout) {
+            options.onTimeout(self.$modal, xhr, errorStatus);
 
-            // on "error", "abort", and "parsererror"
-            } else if (options.onError) {
-              options.onError(xhr, textStatus, errorStatus);
-            } else {
-              console.log('error happened do something');
-            }
-            self.loading.hide();
-            self.emit('linkActionError', [xhr, textStatus, errorStatus]);
-          },
-          success: function(response, state, xhr) {
-            self.redraw(response, patternOptions);
-            if (options.onSuccess) {
-              options.onSuccess(self, response, state, xhr);
-            }
-            self.loading.hide();
-            self.emit('linkActionSuccess', [response, state, xhr]);
+          // on "error", "abort", and "parsererror"
+          } else if (options.onError) {
+            options.onError(xhr, textStatus, errorStatus);
+          } else {
+            window.alert(_t('There was an error loading modal.'));
           }
+          self.emit('linkActionError', [xhr, textStatus, errorStatus]);
+        }).done(function(response, state, xhr) {
+          self.redraw(response, patternOptions);
+          if (options.onSuccess) {
+            options.onSuccess(self, response, state, xhr);
+          }
+          self.emit('linkActionSuccess', [response, state, xhr]);
+        }).always(function(){
+          self.loading.hide();
         });
       },
       render: function(options) {
@@ -19710,7 +19707,7 @@ define('mockup-patterns-modal',[
       }
 
       if (self.$el.is('a')) {
-        if (self.$el.attr('href')) {
+        if (self.$el.attr('href') && !self.options.image) {
           if (!self.options.target && self.$el.attr('href').substr(0, 1) === '#') {
             self.options.target = self.$el.attr('href');
             self.options.content = '';
@@ -19737,10 +19734,22 @@ define('mockup-patterns-modal',[
         type: self.options.ajaxType
       }).done(function(response, textStatus, xhr) {
         self.ajaxXHR = undefined;
-        self.loading.hide();
         self.$raw = $('<div />').append($(utils.parseBodyTag(response)));
         self.emit('after-ajax', self, textStatus, xhr);
         self._show();
+      }).fail(function(xhr, textStatus, errorStatus){
+        var options = self.options.actionOptions;
+        if (textStatus === 'timeout' && options.onTimeout) {
+          options.onTimeout(self.$modal, xhr, errorStatus);
+        } else if (options.onError) {
+          options.onError(xhr, textStatus, errorStatus);
+        } else {
+          window.alert(_t('There was an error loading modal.'));
+          self.hide();
+        }
+        self.emit('linkActionError', [xhr, textStatus, errorStatus]);
+      }).always(function(){
+        self.loading.hide();
       });
     },
 
@@ -19763,6 +19772,15 @@ define('mockup-patterns-modal',[
       self._show();
     },
 
+    createImageModal: function(){
+      var self = this;
+      self.$wrapper.addClass('image-modal');
+      var src = self.$el.attr('href');
+      // XXX aria?
+      self.$raw = $('<div><h1>Image</h1><div id="content"><div class="modal-image"><img src="' + src + '" /></div></div></div>');
+      self._show();
+    },
+
     initModal: function() {
       var self = this;
       if (self.options.ajaxUrl) {
@@ -19771,10 +19789,13 @@ define('mockup-patterns-modal',[
         self.createModal = self.createTargetModal;
       } else if (self.options.html) {
         self.createModal = self.createHtmlModal;
+      } else if (self.options.image){
+        self.createModal = self.createImageModal;
       } else {
         self.createModal = self.createBasicModal;
       }
     },
+
     findPosition: function(horpos, vertpos, margin, modalWidth, modalHeight,
                            wrapperInnerWidth, wrapperInnerHeight) {
       var returnpos = {};
@@ -19943,7 +19964,7 @@ define('mockup-patterns-modal',[
       }
       self.emit('hide');
       if (self._suppressHide) {
-        if (!confirm(self._suppressHide)) {
+        if (!window.confirm(self._suppressHide)) {
           return;
         }
       }
