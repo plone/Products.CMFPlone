@@ -8,7 +8,7 @@ from plone.formwidget.namedfile.widget import NamedImageFieldWidget
 class SiteControlPanelForm(controlpanel.RegistryEditForm):
 
     id = "SiteControlPanel"
-    label = _(u"Site settings")
+    label = _(u"Site Settings")
     description = _("Site-wide settings.")
     schema = ISiteSchema
     schema_prefix = "plone"

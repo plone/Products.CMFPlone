@@ -7,7 +7,7 @@ from z3c.form.browser.checkbox import CheckBoxFieldWidget
 class MarkupControlPanelForm(controlpanel.RegistryEditForm):
 
     id = "MarkupControlPanel"
-    label = _(u"Markup settings")
+    label = _(u"Markup Settings")
     schema = IMarkupSchema
     schema_prefix = "plone"
 

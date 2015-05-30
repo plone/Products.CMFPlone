@@ -8,7 +8,7 @@ from z3c.form import interfaces
 class EditingControlPanelForm(controlpanel.RegistryEditForm):
 
     id = "EditingControlPanel"
-    label = _(u"Editing settings")
+    label = _(u"Editing Settings")
     schema = IEditingSchema
     schema_prefix = "plone"
 

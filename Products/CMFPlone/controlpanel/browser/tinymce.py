@@ -28,7 +28,7 @@ class TinyMCEResourceTypesForm(group.GroupForm):
 class TinyMCEControlPanelForm(controlpanel.RegistryEditForm):
 
     id = "TinyMCEControlPanel"
-    label = _(u"TinyMCE settings")
+    label = _(u"TinyMCE Settings")
     schema = ITinyMCESchema
     schema_prefix = "plone"
     fields = field.Fields(ITinyMCELayoutSchema)
