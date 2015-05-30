@@ -924,12 +924,27 @@
       </value>
       <value key="deps">jquery,resource-plone-app-jquerytools-js,resource-plone-app-jquerytools-dateinput-js,jquery.tmpl</value>
   </records>
+  <records prefix="plone.resources/resource-plone-app-jquerytools-dateinput-js"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/jquery.recurrenceinput.js/lib/jquery.tools.dateinput.js</value>
+      <value key="css">
+        <element>++plone++static/components/jquery.recurrenceinput.js/src/jquery.tools.dateinput.css</element>
+      </value>
+      <value key="deps">jquery</value>
+  </records>
+  <records prefix="plone.resources/resource-plone-app-jquerytools-js"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/jquery.recurrenceinput.js/lib/jquery.tools.overlay.js</value>
+      <value key="css">
+        <element>++plone++static/components/jquery.recurrenceinput.js/src/jquery.tools.overlay.css</element>
+      </value>
+      <value key="deps">jquery</value>
+  </records>
   <records prefix="plone.resources/jquery.tmpl"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/jquery.recurrenceinput.js/lib/jquery.tmpl.js</value>
       <value key="deps">jquery</value>
   </records>
-
   <!-- legacy js -->
 
 
