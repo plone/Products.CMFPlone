@@ -54,7 +54,6 @@ class HiddenProducts(object):
             'plone.app.imaging',
             'plone.app.intid',
             'plone.app.jquery',
-            'plone.app.jquerytools',
             'plone.app.registry',
             'plone.app.referenceablebehavior',
             'plone.app.relationfield',
