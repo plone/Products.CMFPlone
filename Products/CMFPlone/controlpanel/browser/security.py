@@ -16,7 +16,7 @@ logger = logging.getLogger('Products.CMFPlone')
 class SecurityControlPanelForm(controlpanel.RegistryEditForm):
 
     id = "SecurityControlPanel"
-    label = _(u"Security settings")
+    label = _(u"Security Settings")
     schema = ISecuritySchema
     schema_prefix = "plone"
 

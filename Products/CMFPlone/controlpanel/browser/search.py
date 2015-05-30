@@ -10,7 +10,7 @@ from zope.schema.interfaces import IVocabularyFactory
 class SearchControlPanelForm(controlpanel.RegistryEditForm):
 
     id = "SearchControlPanel"
-    label = _(u"Search settings")
+    label = _(u"Search Settings")
     schema = ISearchSchema
     schema_prefix = "plone"
 

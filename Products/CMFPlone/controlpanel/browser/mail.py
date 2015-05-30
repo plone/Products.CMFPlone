@@ -19,7 +19,7 @@ log = getLogger('Plone')
 class MailControlPanelForm(controlpanel.RegistryEditForm):
 
     id = "MailControlPanel"
-    label = _(u"Mail settings")
+    label = _(u"Mail Settings")
     schema = IMailSchema
     schema_prefix = "plone"
 

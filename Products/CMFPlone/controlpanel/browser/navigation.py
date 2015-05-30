@@ -8,7 +8,7 @@ from z3c.form.browser.checkbox import CheckBoxFieldWidget
 class NavigationControlPanelForm(controlpanel.RegistryEditForm):
 
     id = "NavigationControlPanel"
-    label = _(u"Navigation settings")
+    label = _(u"Navigation Settings")
     description = _(
         u"Lets you control how navigation is constructed in your site. " +
         u"Note that to control how the navigation tree is displayed, you " +

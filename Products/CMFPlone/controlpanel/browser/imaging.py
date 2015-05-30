@@ -9,7 +9,7 @@ log = getLogger('Plone')
 class ImagingControlPanelForm(controlpanel.RegistryEditForm):
 
     id = "ImagingSettings"
-    label = _(u"Image Handling")
+    label = _(u"Imaging Settings")
     schema = IImagingSchema
     schema_prefix = "plone"
 

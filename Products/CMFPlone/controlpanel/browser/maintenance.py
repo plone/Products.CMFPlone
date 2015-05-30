@@ -12,12 +12,8 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import IMaintenanceSchema
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from cgi import escape
 from plone.autoform.form import AutoExtensibleForm
 from plone.protect import CheckAuthenticator
-from z3c.form import button
-from z3c.form import form
-import os
 
 
 class MaintenanceControlPanel(AutoExtensibleForm, form.EditForm):
@@ -25,7 +21,7 @@ class MaintenanceControlPanel(AutoExtensibleForm, form.EditForm):
 
     schema = IMaintenanceSchema
     id = "maintenance-control-panel"
-    label = _(u'Maintenance')
+    label = _(u'Maintenance Settings')
     description = _(u"Zope server and site maintenance options.")
     form_name = _(u'Zope Database Packing')
     control_panel_view = "maintenance-controlpanel"

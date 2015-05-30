@@ -48,7 +48,7 @@ VERSION_POLICIES = [
 class TypesControlPanel(AutoExtensibleForm, form.EditForm):
     schema = ITypesSchema
     id = "types-control-panel"
-    label = _("Types settings")
+    label = _("Types Settings")
     description = _("General types settings.")
     form_name = _("Types settings")
     control_panel_view = "types-controlpanel"

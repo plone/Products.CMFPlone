@@ -1,5 +1,4 @@
 from AccessControl import getSecurityManager
-from Acquisition import aq_base
 from Acquisition import aq_inner
 from Products.CMFPlone.interfaces.controlpanel import IMailSchema
 from Products.CMFCore.permissions import ManagePortal
