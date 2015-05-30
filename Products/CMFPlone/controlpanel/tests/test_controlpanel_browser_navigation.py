@@ -31,7 +31,7 @@ class NavigationControlPanelFunctionalTest(unittest.TestCase):
         self.browser.open(
             "%s/plone_control_panel" % self.portal_url)
         self.browser.getLink('Navigation').click()
-        self.assertTrue("Navigation settings" in self.browser.contents)
+        self.assertTrue("Navigation Settings" in self.browser.contents)
 
     def test_navigation_control_panel_backlink(self):
         self.browser.open(
