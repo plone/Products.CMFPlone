@@ -54,8 +54,6 @@ class HiddenProfiles(object):
                 u'plone.app.event:default',
                 u'plone.app.folder:default',
                 u'plone.app.imaging:default',
-                u'plone.app.jquery:initial-upgrade',
-                u'plone.app.jquery:default',
                 u'plone.app.registry:default',
                 u'plone.app.theming:default',
                 u'plone.app.versioningbehavior:default',
