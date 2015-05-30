@@ -14,6 +14,9 @@ Changelog
 - Fix control panel titles. This fixes https://github.com/plone/Products.CMFPlone/issues/550 https://github.com/plone/Products.CMFPlone/issues/553 https://github.com/plone/Products.CMFPlone/issues/557
   [timo]
 
+- remove plone.app.jquerytools dependency
+  [vangheem]
+
 - fix bug where bundles would not get built properly with
   compile-plone-resources script when multiple resources
   were defined for a bundle
