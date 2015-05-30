@@ -89,7 +89,6 @@ setup(
         'plone.app.form',
         'plone.app.i18n',
         'plone.app.multilingual',
-        'plone.app.jquerytools',
         'plone.app.layout >=1.1.7dev-r23744',
         'plone.app.linkintegrity >=1.0.3',
         'plone.app.locales',
