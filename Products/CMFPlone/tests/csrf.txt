@@ -411,24 +411,9 @@ Traceback (most recent call last):
 ...
 HTTPError: HTTP Error 403: Forbidden
 
-Exceptions to the rule are the "RAM Cache Settings" and "Maintenance"
-configlets, which are tested separately. The former isn't linked from the
-"Site Setup" overview, so we have to navigate there directly:
-
-  >>> browser.open('http://nohost/plone/@@ramcache-controlpanel')
-  >>> browser.getControl('Clear cache').click()
-  >>> browser.contents
-  '...Cleared the cache...'
-
-  >>> browser.open('http://nohost/plone/@@ramcache-controlpanel')
-  >>> browser.getControl(name='_authenticator', index=0).value = 'invalid!'
-  >>> browser.getControl('Clear cache').click()
-  Traceback (most recent call last):
-  ...
-  HTTPError: HTTP Error 403: Forbidden
-
-The "Maintenance" configlet has some special security limitations, which is
-why we need to log in as the portal owner first:
+Exceptions to the rule is the "Maintenance" configlet, which is tested
+separately. The "Maintenance" configlet has some special security
+limitations, which is why we need to log in as the portal owner first:
 
   >>> app_browser = Browser(self.app)
   >>> app_browser.handleErrors = False

@@ -8,6 +8,10 @@ Changelog
 5.0b3 (unreleased)
 ------------------
 
+- Remove ramcache-controlpanel csrf test. Ramcache control panel has been
+  moved to p.a.caching since ages. We will get rid of it.
+  [timo]
+
 - Add undeclared zope.cachedescriptors dependency.
   [timo]
 
