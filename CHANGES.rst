@@ -8,6 +8,9 @@ Changelog
 5.0b3 (unreleased)
 ------------------
 
+- Add undeclared zope.cachedescriptors dependency.
+  [timo]
+
 - Do not require "Enable LiveSearch". This fixes https://github.com/plone/Products.CMFPlone/issues/558
   [timo]
 

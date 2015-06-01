@@ -125,6 +125,7 @@ setup(
         'transaction',
         'z3c.autoinclude',
         'zope.app.locales >= 3.6.0',
+        'zope.cachedescriptors',
         'zope.component',
         'zope.container',
         'zope.deferredimport',
