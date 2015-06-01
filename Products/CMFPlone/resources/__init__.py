@@ -1,20 +1,9 @@
-from zope.component import adapter
-from plone.app.theming.interfaces import IThemeAppliedEvent
 import os
-from zope.component.hooks import getSite
 
 
 RESOURCE_DEVELOPMENT_MODE = False
 if os.getenv('FEDEV', '').lower() == 'true':
     RESOURCE_DEVELOPMENT_MODE = True
-
-
-@adapter(IThemeAppliedEvent)
-def onThemeApplied(event):
-    # change current theme on the _v_ variable
-    theme = event.theme
-    portal = getSite()
-    portal._v_currentTheme = theme
 
 
 def add_resource_on_request(request, resource):

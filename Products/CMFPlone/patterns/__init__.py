@@ -4,17 +4,13 @@ from zope.interface import implements
 from plone.registry.interfaces import IRegistry
 from zope.component import getUtility
 import json
-from zope import component
 from Products.CMFPlone.patterns.utils import get_portal_url
 from Products.CMFCore.interfaces._content import IFolderish
 from plone.uuid.interfaces import IUUID
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Acquisition import aq_parent
-from plone.app.theming.utils import getCurrentTheme
-from plone.app.theming.utils import getTheme
+from plone.app.theming.utils import theming_policy
 from Products.CMFCore.utils import getToolByName
-from zope.ramcache.interfaces import ram
-from plone.app.theming.utils import isThemeEnabled
 from zope.component.hooks import getSite
 
 
@@ -25,31 +21,12 @@ class TinyMCESettingsGenerator(object):
         self.request = request
         self.portal = getSite()
         registry = getUtility(IRegistry)
-        self.settings = registry.forInterface(ITinyMCESchema, prefix="plone", check=False)
+        self.settings = registry.forInterface(
+            ITinyMCESchema, prefix="plone", check=False)
         self.portal_url = get_portal_url(self.portal)
 
     def get_theme(self):
-        # Volatile attribute to cache the current theme
-        if hasattr(self.portal, '_v_currentTheme'):
-            themeObj = self.portal._v_currentTheme
-        else:
-            theme = getCurrentTheme()
-            themeObj = getTheme(theme)
-            self.portal._v_currentTheme = themeObj
-        cache = component.queryUtility(ram.IRAMCache)
-        if isThemeEnabled(self.request):
-            themeObj = cache.query(
-                'plone.currentTheme',
-                key=dict(prefix='theme'),
-                default=None)
-            if themeObj is None:
-                theme = getCurrentTheme()
-                themeObj = getTheme(theme)
-                cache.set(
-                    themeObj,
-                    'plone.currentTheme',
-                    key=dict(prefix='theme'))
-        return themeObj
+        return theming_policy().get_theme()
 
     def get_content_css(self):
         files = [
