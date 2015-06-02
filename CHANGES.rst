@@ -54,6 +54,9 @@ Changelog
   using the manage portlets infrastructure
   [vangheem]
 
+- Remove dependency on plone.app.form and other formlib packages
+  [tomgross]
+
 
 5.0b2 (2015-05-13)
 ------------------
