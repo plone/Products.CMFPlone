@@ -546,6 +546,14 @@ class ITinyMCEPluginSchema(Interface):
         }, indent=4).decode('utf8')
     )
 
+    templates = schema.Text(
+        title=_("label_tinymce_templates", default=u"Templates"),
+        description=_("help_tinymce_templates", default=(
+            u"Enter the list of templates in json format \
+                http://www.tinymce.com/wiki.php/Plugin:template")),
+        required=False,
+        default=u"")
+
     toolbar = schema.Text(
         title=_("label_tinymce_toolbar", default=u"Toolbar"),
         description=_("help_tinymce_toolbar", default=(

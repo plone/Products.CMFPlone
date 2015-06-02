@@ -164,6 +164,12 @@ class TinyMCESettingsGenerator(object):
         if settings.menu:
             tiny_config['menu'] = json.loads(settings.menu)
 
+        if hasattr(settings, 'templates') and settings.templates:
+            try:
+                tiny_config['templates'] = json.loads(settings.templates)
+            except ValueError:
+                pass
+
         return tiny_config
 
 
