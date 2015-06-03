@@ -5,10 +5,11 @@
 Changelog
 =========
 
-4.3.6 (unreleased)
+4.3.6 (2015-06-02)
 ------------------
 
-- Nothing changed yet.
+- Release Plone 4.3.6 to correct some version incompatibilities in 4.3.5. No upgrades to run.
+  [esteele]
 
 
 4.3.5 (2015-05-13)
