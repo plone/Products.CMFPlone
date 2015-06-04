@@ -4,6 +4,9 @@ Changelog
 2.5.7 (unreleased)
 ------------------
 
+- Add social meta tags viewlet
+  [vangheem]
+
 - render the footer portlets in a way where they can still
   be edited with @@manage-portlets
   [vangheem]
