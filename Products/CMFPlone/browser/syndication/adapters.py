@@ -266,13 +266,16 @@ class DexterityItem(BaseItem):
         self.dexterity = IDexterityContent.providedBy(context)
         lead = ILeadImage(self.context, None)
         if lead:
-            if lead.image.getSize() > 0:
+            if (lead.image
+                    and hasattr(lead.image, 'getSize')
+                    and lead.image.getSize() > 0):
                 self.file = lead.image
                 self.field_name = 'lead'
         if self.file is None:
             try:
                 primary = IPrimaryFieldInfo(self.context, None)
                 if (INamedField.providedBy(primary.field)
+                        and hasattr(primary.field, 'getSize')
                         and primary.field.getSize() > 0):
                     self.file = primary.field
                     self.field_name = primary.fieldname
