@@ -8,6 +8,9 @@ Changelog
 5.0b3 (unreleased)
 ------------------
 
+- Add page title to resource registry
+  [vangheem]
+
 - Remove ramcache-controlpanel csrf test. Ramcache control panel has been
   moved to p.a.caching since ages. We will get rid of it.
   [timo]

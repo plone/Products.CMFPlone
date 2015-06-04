@@ -8,19 +8,30 @@
 
 <body>
 
-<metal:content-core fill-slot="prefs_configlet_main">
-    <metal:content-core define-macro="prefs_configlet_main">
-      <a href=""
-         id="setup-link"
-         tal:attributes="href string:$portal_url/plone_control_panel"
-         i18n:translate="">
-          Site Setup
-      </a>
-    
+
+<metal:main metal:fill-slot="prefs_configlet_main" i18n:domain="plone">
+
+    <a href=""
+       id="setup-link"
+       tal:attributes="href string:$portal_url/plone_control_panel"
+       i18n:translate="">
+       Site Setup
+    </a>
+    <h1 class="documentFirstHeading"
+        i18n:translate="">Resource Registry</h1>
+
+    <div class="documentDescription"
+       i18n:translate="">
+      Configure, enable, disable, debug and build Plone JavaScript/LESS/CSS resources.
+      Plone utilizes RequireJS and LESS CSS to build it's resources.
+      Re-building a Plone bundle TTW requires a modern web browser.
+    </div>
+
+   <div id="content-core"> 
       <span tal:replace="structure context/@@authenticator/authenticator"/>
       <div class="pat-resourceregistry" tal:attributes="data-pat-resourceregistry view/config" />
-    </metal:content-core>
-</metal:content-core>
+    </div>
+</metal:main>
 
 </body>
 </html>
