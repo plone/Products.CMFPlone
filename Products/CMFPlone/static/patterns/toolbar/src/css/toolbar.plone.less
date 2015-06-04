@@ -179,7 +179,13 @@ body.userrole-authenticated {
 #edit-zone.expanded {
     width:120px;
     nav > ul ul { left: 120px;}
-    nav > ul a > [class^="icon"] {display: table-cell; width: 40px; padding-left: 10px; }
+    nav > ul a > [class^="icon"] {
+        display: table-cell; width: 40px; padding-left: 10px;
+    }
+    nav > ul a > .icon-logout {
+        margin:0;
+        padding:0;
+    }
     nav > ul a > span + span {background: none; width: 80px; text-align: left;}
     .plone-toolbar-caret {width: 0;}
     li:not(.active) a:hover > span {background: @plone-toolbar-link; transition: background .35s;}
