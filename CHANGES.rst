@@ -70,6 +70,8 @@ Changelog
 5.0b2 (2015-05-13)
 ------------------
 
+- Add social media settings control panel
+
 - add ability to provide a css file for tinymce style formats
   [vangheem]
 

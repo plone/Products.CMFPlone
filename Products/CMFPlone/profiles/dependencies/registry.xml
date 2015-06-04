@@ -24,6 +24,8 @@
            prefix="plone" />
   <records interface="Products.CMFPlone.interfaces.IUserGroupsSettingsSchema"
            prefix="plone" />
+  <records interface="Products.CMFPlone.interfaces.ISocialMediaSchema"
+           prefix="plone" />
   <records interface="Products.CMFPlone.interfaces.IImagingSchema"
            prefix="plone" />
   <record interface="Products.ResourceRegistries.interfaces.settings.IResourceRegistriesSettings" field="resourceBundlesForThemes">

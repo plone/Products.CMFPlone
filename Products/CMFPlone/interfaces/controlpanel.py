@@ -1135,6 +1135,34 @@ class IUserGroupsSettingsSchema(Interface):
     )
 
 
+class ISocialMediaSchema(Interface):
+
+    share_social_data = schema.Bool(
+        title=_(u'Share social data'),
+        description=_(u'Include meta tags on pages to give hints to '
+                      u'social media on how to render your pages better '
+                      u'when shared'),
+        default=True)
+
+    twitter_username = schema.TextLine(
+        title=_(u'Twitter Username'),
+        description=_(u'To idenitify things like Twitter Cards'),
+        required=False,
+        default=u'')
+
+    facebook_app_id = schema.TextLine(
+        title=_(u'Facebook app id'),
+        description=_(u'To be used with some integrations like open graph data'),
+        required=False,
+        default=u'')
+
+    facebook_username = schema.TextLine(
+        title=_(u'Facebook username'),
+        description=_(u'For linking open graph data to a facebook account'),
+        required=False,
+        default=u'')
+
+
 class IImagingSchema(Interface):
     allowed_sizes = schema.List(
         title=_(u'Allowed image sizes'),

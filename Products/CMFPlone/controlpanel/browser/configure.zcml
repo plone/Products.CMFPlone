@@ -235,6 +235,13 @@
     permission="cmf.ManagePortal"
     />
 
+  <!-- Social Media Control Panel -->
+  <browser:page
+    name="social-controlpanel"
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    class=".socialmedia.SocialControlPanel"
+    permission="plone.app.controlpanel.Site"
+    />
  <browser:page
     for="Products.CMFPlone.interfaces.IPloneSiteRoot"
     name="imaging-controlpanel"
