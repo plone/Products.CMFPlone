@@ -1140,7 +1140,7 @@ class IImagingSchema(Interface):
         title=_(u'Allowed image sizes'),
         description=_(u'Specify all allowed maximum image dimensions, '
                       'one per line. '
-                      'The required format is <name> <width>:<height>.'),
+                      'The required format is &lt;name&gt; &lt;width&gt;:&lt;height&gt;.'),
         value_type=schema.TextLine(),
         default=[
             "large 768:768",

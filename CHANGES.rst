@@ -8,6 +8,9 @@ Changelog
 5.0b3 (unreleased)
 ------------------
 
+- fix imaging control panel example format on description
+  [vangheem]
+
 - Add page title to resource registry
   [vangheem]
 
