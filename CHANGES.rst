@@ -8,6 +8,9 @@ Changelog
 5.0b3 (unreleased)
 ------------------
 
+- fix casing on "First weekday" field on Date and Time control panel
+  [vangheem]
+
 - fix imaging control panel example format on description
   [vangheem]
 

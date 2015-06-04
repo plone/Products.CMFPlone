@@ -992,10 +992,10 @@ class IDateAndTimeSchema(Interface):
             vocabulary="plone.app.vocabularies.Timezones"))
 
     first_weekday = schema.Choice(
-        title=_(u'label_first_weekday', default=u'First Weekday'),
+        title=_(u'label_first_weekday', default=u'First weekday'),
         description=_(
             u'help_first_weekday',
-            default=u'First day in the Week.'),
+            default=u'First day in the week.'),
         required=True,
         default=None,
         vocabulary="plone.app.vocabularies.Weekdays")
