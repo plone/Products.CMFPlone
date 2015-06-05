@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.5.7 (unreleased)
+2.5.7 (2015-06-05)
 ------------------
 
 - Add social meta tags viewlet
