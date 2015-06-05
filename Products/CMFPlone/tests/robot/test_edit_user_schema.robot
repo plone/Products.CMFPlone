@@ -23,7 +23,7 @@ Test Teardown  Run keywords  Report test status  Close all browsers
 
 *** Test Cases ***************************************************************
 
-Scenario: As a manager I can add a new field to the registration form
+Scenario: As a manager I can add a field to the registration form
   Given a logged-in manager
     and the mail setup configured
     and site registration enabled
@@ -31,13 +31,21 @@ Scenario: As a manager I can add a new field to the registration form
     and choose to show the field on registration
    Then an anonymous user will see the field in the registration form
 
-Scenario: As a manager I can add a new field to the user form
+Scenario: As a manager I can add a field to the user form
   Given a logged-in manager
     and the mail setup configured
     and site registration enabled
    When I add a new text field to the member fields
     and choose to show the field in the user profile
    Then a logged-in user will see the field in the user profile
+
+Scenario: As a manager I can add a required field to the user form
+  Given a logged-in manager
+    and the mail setup configured
+    and site registration enabled
+   When I add a new required text field to the member fields
+    and choose to show the field in the user profile
+   Then a logged-in user will see the required field in the user profile
 
 
 *** Keywords *****************************************************************
@@ -68,6 +76,20 @@ I add a new text field to the member fields
   Input Text  css=#add-field-form #form-widgets-title  test_field
   Input Text  css=#add-field-form #form-widgets-__name__  test_field
   Select From List  css=#form-widgets-factory  Text line (String)
+  Click button  css=.pattern-modal-buttons input#form-buttons-add
+  # XXX: This is really really bad! We need a UI notification like:
+  # Wait until page contains  Field created.
+  Sleep  1
+
+I add a new required text field to the member fields
+  Go to  ${PLONE_URL}/@@member-fields
+  Wait until page contains element  css=#add-field
+  Click link   css=#add-field
+  Wait Until Element Is visible  css=#add-field-form #form-widgets-title
+  Input Text  css=#add-field-form #form-widgets-title  test_field
+  Input Text  css=#add-field-form #form-widgets-__name__  test_field
+  Select From List  css=#form-widgets-factory  Text line (String)
+  Select Checkbox  form.widgets.required:list
   Click button  css=.pattern-modal-buttons input#form-buttons-add
   # XXX: This is really really bad! We need a UI notification like:
   # Wait until page contains  Field created.
@@ -111,3 +133,6 @@ a logged-in user will see the field in the user profile
   Wait until page contains  Change your personal information
   Page should contain element  form.widgets.test_field
 
+a logged-in user will see the required field in the user profile
+  a logged-in user will see the field in the user profile
+  XPath Should Match X Times  //div[@id='formfield-form-widgets-test_field']//span[contains(@class, 'required')]  1  message=test_field should be required
