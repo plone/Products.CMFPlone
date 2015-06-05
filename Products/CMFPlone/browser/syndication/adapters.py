@@ -299,8 +299,11 @@ class DexterityItem(BaseItem):
 
     @property
     def file_length(self):
-        return self.file.getSize()
+        if self.has_enclosure:
+            return self.file.getSize()
+        return 0
 
     @property
     def file_type(self):
-        return self.file.contentType
+        if self.has_enclosure:
+            return self.file.contentType
