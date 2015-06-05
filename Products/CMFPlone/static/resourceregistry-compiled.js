@@ -8435,6 +8435,8 @@ define('mockup-utils',[
       attributes: ['UID', 'Title', 'Description', 'getURL', 'portal_type'],
       batchSize: 10, // number of results to retrive
       baseCriteria: [],
+      sort_on: 'is_folderish',
+      sort_order: 'reverse',
       pathDepth: 1
     };
     self.options = $.extend({}, defaults, options);
@@ -8557,7 +8559,9 @@ define('mockup-utils',[
     self.getQueryData = function(term, page) {
       var data = {
         query: JSON.stringify({
-          criteria: self.getCriterias(term)
+          criteria: self.getCriterias(term),
+          sort_on: self.options.sort_on,
+          sort_order: self.options.sort_order
         }),
         attributes: JSON.stringify(self.options.attributes)
       };
@@ -8603,7 +8607,7 @@ define('mockup-utils',[
      *   zIndex(integer or function): to override default z-index used
      */
     var self = this;
-    self.className = 'mockup-loader-icon';
+    self.className = 'plone-loader';
     var defaults = {
       backdrop: null,
       zIndex: 10005 // can be a function
@@ -8614,7 +8618,7 @@ define('mockup-utils',[
     self.options = $.extend({}, defaults, options);
     self.$el = $('.' + self.className);
     if(self.$el.length === 0){
-      self.$el = $('<div><span class="glyphicon glyphicon-refresh" /></div>');
+      self.$el = $('<div><div></div></div>');
       self.$el.addClass(self.className).hide().appendTo('body');
     }
 
@@ -8622,7 +8626,15 @@ define('mockup-utils',[
       self.$el.show();
       var zIndex = self.options.zIndex;
       if (typeof(zIndex) === 'function') {
-        zIndex = zIndex();
+        zIndex = Math.max(zIndex(), 10005);
+      }else{
+        // go through all modals and backdrops and make sure we have a higher
+        // z-index to use
+        zIndex = 10005;
+        $('.plone-modal-wrapper,.plone-modal-backdrop').each(function(){
+          zIndex = Math.max(zIndex, $(this).css('zIndex') || 10005);
+        });
+        zIndex += 1;
       }
       self.$el.css('zIndex', zIndex);
 
@@ -8681,6 +8693,8 @@ define('mockup-utils',[
     },
     QueryHelper: QueryHelper,
     Loading: Loading,
+    // provide default loader
+    loading: new Loading(),
     getAuthenticator: function() {
       return $('input[name="_authenticator"]').val();
     }
@@ -13680,13 +13694,19 @@ define('mockup-patterns-resourceregistry-url/js/fields',[
       // move data
       var data = this.options.containerData[this.resourceName];
       this.options.containerData[value] = data;
-      // and now delete old
-      delete this.options.containerData[this.resourceName];
-      this.resourceName = value;
+
+      if(this.resourceName !== value){
+        // and now delete old
+        delete this.options.containerData[this.resourceName];
+      }
+      this.resourceName = this.options.value = this.options.form.options.name = this.options.form.name = value;
 
       if(this.options.parent){
         this.options.parent.options.name = value;
         this.options.parent.render();
+      }
+      if(this.options.form){
+        this.options.form.$('h3').html(value);
       }
       return this.handleError(false);
     },
@@ -13726,10 +13746,10 @@ define('mockup-patterns-resourceregistry-url/js/less',[
     tagName: 'div',
     className: 'tab-pane lessvariables',
     template: _.template(
-      '<div class="clearfix">' +
+      '<div class="buttons-container">' +
         '<div class="btn-group pull-right">' +
           '<button class="plone-btn plone-btn-default add-variable"><%- _t("Add variable") %></button>' +
-          '<button class="plone-btn plone-btn-default save"><%- _t("save") %></button>' +
+          '<button class="plone-btn plone-btn-primary save"><%- _t("Save") %></button>' +
         '</div>' +
       '</div>' +
       '<div class="row clearfix">' +
@@ -32234,8 +32254,6 @@ define('mockup-patterns-texteditor',[
 
 });
 
-/* global alert:true, confirm:true */
-
 define('mockup-patterns-resourceregistry-url/js/overrides',[
   'jquery',
   'underscore',
@@ -32252,8 +32270,14 @@ define('mockup-patterns-resourceregistry-url/js/overrides',[
     className: 'tab-pane overrides',
     editing: null,
     canSave: false,
+    newFile: false,
 
     template: _.template(
+      '<div class="buttons-container">' +
+        '<div class="btn-group pull-right">' +
+          '<button class="plone-btn plone-btn-primary add-file"><%- _t("Add file") %></button> ' +
+        '</div>' +
+      '</div>' +
       '<form class="row">' +
         '<div class="col-md-12">' +
           '<p><%- _t("Only ++plone++ resources are available to override") %></p>' +
@@ -32261,7 +32285,7 @@ define('mockup-patterns-resourceregistry-url/js/overrides',[
         '</div>' +
       '</form>' +
       '<div class="row">' +
-        '<div class="col-md-12">' +
+        '<div class="col-md-12 edit-area">' +
           '<% if(view.editing){ %>' +
             '<p class="resource-name text-primary"><%- view.editing %></p> ' +
             '<div class="plone-btn-group">' +
@@ -32274,9 +32298,10 @@ define('mockup-patterns-resourceregistry-url/js/overrides',[
         '</div>' +
       '</div>'),
     events: {
-      'click button.plone-btn-danger': 'itemDeleted',
-      'click button.plone-btn-primary': 'itemSaved',
-      'click button.plone-btn-default': 'itemCancel'
+      'click .edit-area button.plone-btn-danger': 'itemDeleted',
+      'click .edit-area button.plone-btn-primary': 'itemSaved',
+      'click .edit-area button.plone-btn-default': 'itemCancel',
+      'click .plone-btn.add-file': 'addFile'
     },
 
     initialize: function(options){
@@ -32286,6 +32311,20 @@ define('mockup-patterns-resourceregistry-url/js/overrides',[
 
     serializedModel: function(){
       return $.extend({}, { view: this }, this.options);
+    },
+
+    addFile: function(){
+      var resource = window.prompt('Enter full path and filename', '++plone++static/' + _t('you-filename.js'));
+      if(resource.indexOf('++plone++static/') === -1){
+        window.alert(_t('Filename must start with ++plone++static/'));
+      }else{
+        if(this.options.data.overrides.indexOf(resource) === -1){
+          this.options.data.overrides.push(resource);
+        }
+        this.newFile = true;
+        this.editing = resource;
+        this.render();
+      }
     },
 
     itemSaved: function(e){
@@ -32302,7 +32341,7 @@ define('mockup-patterns-resourceregistry-url/js/overrides',[
     itemDeleted: function(e){
       e.preventDefault();
       var that = this;
-      if(confirm('Are you sure you want to delete this override?')){
+      if(window.confirm('Are you sure you want to delete this override?')){
         that.options.data.overrides.splice(
           that.options.data.overrides.indexOf(that.editing), 1);
         that.tabView.saveData('delete-file', {
@@ -32345,16 +32384,20 @@ define('mockup-patterns-resourceregistry-url/js/overrides',[
         }
         var items = [];
         var url;
-        if(resource.js && resource.js.indexOf('++plone++') !== -1){
-          url = base + resource.js;
-          if(overrides.indexOf(url) === -1){
-            items.push({id: url, text: url});
+        if(resource.js){
+          if(resource.js && resource.js.indexOf('++plone++') !== -1){
+            url = base + resource.js;
+            if(overrides.indexOf(url) === -1){
+              items.push({id: url, text: url});
+            }
           }
         }
-        for(var i=0; i<resource.css.length; i=i+1){
-          url = base + resource.css[i];
-          if(overrides.indexOf(url) === -1 && url.indexOf('++plone++') !== -1){
-            items.push({id: url, text: url});
+        if(resource.css){
+          for(var i=0; i<resource.css.length; i=i+1){
+            url = base + resource.css[i];
+            if(overrides.indexOf(url) === -1 && url.indexOf('++plone++') !== -1){
+              items.push({id: url, text: url});
+            }
           }
         }
         return items;
@@ -32382,30 +32425,40 @@ define('mockup-patterns-resourceregistry-url/js/overrides',[
         if(url[url.length - 1] !== '/'){
           url += '/';
         }
-        that.tabView.loading.show();
-        $.ajax({
-          // cache busting url
-          url: url + that.editing + '?' + utils.generateId(),
-          dataType: 'text'
-        }).done(function(data){
-          var $pre = $('<pre class="pat-texteditor" />');
-          $pre.text(data);
-          that.$editorContainer.empty().append($pre);
-          that.editor = new TextEditor($pre, {
-            width: $('.editor').width(),
-            height: 500
+        if(that.newFile){
+          that.showEditor('');
+          that.newFile = false;
+        }else{
+          that.tabView.loading.show();
+          $.ajax({
+            // cache busting url
+            url: url + that.editing + '?' + utils.generateId(),
+            dataType: 'text'
+          }).done(function(data){
+            that.showEditor(data);
+          }).fail(function(){
+            window.alert(_t('error loading resource for editing'));
+            that.tabView.loading.hide();
           });
-          that.editor.setSyntax(that.editing);
-          that.tabView.loading.hide();
-          that.editor.editor.on('change', function(){
-            that.$el.find('.plone-btn-primary,.plone-btn-default').removeClass('disabled');
-          });
-        }).fail(function(){
-          alert(_t('error loading resource for editing'));
-          that.tabView.loading.hide();
-        });
+        }
       }
-    }
+    },
+
+    showEditor: function(data){
+      var that = this;
+      var $pre = $('<pre class="pat-texteditor" />');
+      $pre.text(data);
+      that.$editorContainer.empty().append($pre);
+      that.editor = new TextEditor($pre, {
+        width: $('.editor').width(),
+        height: 500
+      });
+      that.editor.setSyntax(that.editing);
+      that.tabView.loading.hide();
+      that.editor.editor.on('change', function(){
+        that.$el.find('.plone-btn-primary,.plone-btn-default').removeClass('disabled');
+      });
+    }    
   });
 
   return OverridesView;
@@ -33876,9 +33929,6 @@ function log() {
  *
  */
 
- /* global confirm:true */
-
-
 define('mockup-patterns-modal',[
   'jquery',
   'underscore',
@@ -33887,8 +33937,9 @@ define('mockup-patterns-modal',[
   'pat-registry',
   'mockup-router',
   'mockup-utils',
+  'translate',
   'jquery.form'
-], function($, _, Base, Backdrop, registry, Router, utils) {
+], function($, _, Base, Backdrop, registry, Router, utils, _t) {
   'use strict';
 
   var Modal = Base.extend({
@@ -34073,6 +34124,7 @@ define('mockup-patterns-modal',[
             } else if (options.onError) {
               options.onError(xhr, textStatus, errorStatus);
             } else {
+              window.alert(_t('There was an error submitting the form.'));
               console.log('error happened do something');
             }
             self.emit('formActionError', [xhr, textStatus, errorStatus]);
@@ -34140,28 +34192,26 @@ define('mockup-patterns-modal',[
 
         // ajax version
         $.ajax({
-          url: url,
-          error: function(xhr, textStatus, errorStatus) {
-            if (textStatus === 'timeout' && options.onTimeout) {
-              options.onTimeout(self.$modal, xhr, errorStatus);
+          url: url
+        }).fail(function(xhr, textStatus, errorStatus) {
+          if (textStatus === 'timeout' && options.onTimeout) {
+            options.onTimeout(self.$modal, xhr, errorStatus);
 
-            // on "error", "abort", and "parsererror"
-            } else if (options.onError) {
-              options.onError(xhr, textStatus, errorStatus);
-            } else {
-              console.log('error happened do something');
-            }
-            self.loading.hide();
-            self.emit('linkActionError', [xhr, textStatus, errorStatus]);
-          },
-          success: function(response, state, xhr) {
-            self.redraw(response, patternOptions);
-            if (options.onSuccess) {
-              options.onSuccess(self, response, state, xhr);
-            }
-            self.loading.hide();
-            self.emit('linkActionSuccess', [response, state, xhr]);
+          // on "error", "abort", and "parsererror"
+          } else if (options.onError) {
+            options.onError(xhr, textStatus, errorStatus);
+          } else {
+            window.alert(_t('There was an error loading modal.'));
           }
+          self.emit('linkActionError', [xhr, textStatus, errorStatus]);
+        }).done(function(response, state, xhr) {
+          self.redraw(response, patternOptions);
+          if (options.onSuccess) {
+            options.onSuccess(self, response, state, xhr);
+          }
+          self.emit('linkActionSuccess', [response, state, xhr]);
+        }).always(function(){
+          self.loading.hide();
         });
       },
       render: function(options) {
@@ -34368,17 +34418,7 @@ define('mockup-patterns-modal',[
       }
 
       self.loading = new utils.Loading({
-        backdrop: self.backdrop,
-        zIndex: function() {
-          if (self.modalInitialized()) {
-            var zIndex = self.$modal.css('zIndex');
-            if (zIndex) {
-              return parseInt(zIndex, 10) + 1;
-            }
-          } else {
-            return 10005;
-          }
-        }
+        backdrop: self.backdrop
       });
 
       $(window.parent).resize(function() {
@@ -34398,7 +34438,7 @@ define('mockup-patterns-modal',[
       }
 
       if (self.$el.is('a')) {
-        if (self.$el.attr('href')) {
+        if (self.$el.attr('href') && !self.options.image) {
           if (!self.options.target && self.$el.attr('href').substr(0, 1) === '#') {
             self.options.target = self.$el.attr('href');
             self.options.content = '';
@@ -34425,10 +34465,22 @@ define('mockup-patterns-modal',[
         type: self.options.ajaxType
       }).done(function(response, textStatus, xhr) {
         self.ajaxXHR = undefined;
-        self.loading.hide();
         self.$raw = $('<div />').append($(utils.parseBodyTag(response)));
         self.emit('after-ajax', self, textStatus, xhr);
         self._show();
+      }).fail(function(xhr, textStatus, errorStatus){
+        var options = self.options.actionOptions;
+        if (textStatus === 'timeout' && options.onTimeout) {
+          options.onTimeout(self.$modal, xhr, errorStatus);
+        } else if (options.onError) {
+          options.onError(xhr, textStatus, errorStatus);
+        } else {
+          window.alert(_t('There was an error loading modal.'));
+          self.hide();
+        }
+        self.emit('linkActionError', [xhr, textStatus, errorStatus]);
+      }).always(function(){
+        self.loading.hide();
       });
     },
 
@@ -34451,6 +34503,15 @@ define('mockup-patterns-modal',[
       self._show();
     },
 
+    createImageModal: function(){
+      var self = this;
+      self.$wrapper.addClass('image-modal');
+      var src = self.$el.attr('href');
+      // XXX aria?
+      self.$raw = $('<div><h1>Image</h1><div id="content"><div class="modal-image"><img src="' + src + '" /></div></div></div>');
+      self._show();
+    },
+
     initModal: function() {
       var self = this;
       if (self.options.ajaxUrl) {
@@ -34459,10 +34520,13 @@ define('mockup-patterns-modal',[
         self.createModal = self.createTargetModal;
       } else if (self.options.html) {
         self.createModal = self.createHtmlModal;
+      } else if (self.options.image){
+        self.createModal = self.createImageModal;
       } else {
         self.createModal = self.createBasicModal;
       }
     },
+
     findPosition: function(horpos, vertpos, margin, modalWidth, modalHeight,
                            wrapperInnerWidth, wrapperInnerHeight) {
       var returnpos = {};
@@ -34621,8 +34685,8 @@ define('mockup-patterns-modal',[
       $(window.parent).on('resize.plone-modal.patterns', function() {
         self.positionModal();
       });
-      self.emit('shown');
       $('body').addClass('plone-modal-open');
+      self.emit('shown');
     },
     hide: function() {
       var self = this;
@@ -34631,7 +34695,7 @@ define('mockup-patterns-modal',[
       }
       self.emit('hide');
       if (self._suppressHide) {
-        if (!confirm(self._suppressHide)) {
+        if (!window.confirm(self._suppressHide)) {
           return;
         }
       }
@@ -34647,8 +34711,8 @@ define('mockup-patterns-modal',[
         self.initModal();
       }
       $(window.parent).off('resize.plone-modal.patterns');
-      self.emit('hidden');
       $('body').removeClass('plone-modal-open');
+      self.emit('hidden');
     },
     redraw: function(response, options) {
       var self = this;
@@ -35017,8 +35081,6 @@ define('mockup-patterns-resourceregistry-url/js/builder',[
   return Builder;
 });
 
-/* global alert:true, confirm:true */
-
 define('mockup-patterns-resourceregistry-url/js/registry',[
   'jquery',
   'underscore',
@@ -35054,7 +35116,8 @@ define('mockup-patterns-resourceregistry-url/js/registry',[
           containerData: self.options.containerData,
           resourceName: self.options.name,
           registryView: self.options.registryView,
-          parent: self.options.parent
+          parent: self.options.parent,
+          form: self
         });
         if(!options.value){
           options.value = '';
@@ -35203,9 +35266,13 @@ define('mockup-patterns-resourceregistry-url/js/registry',[
     },
     deleteClicked: function(e){
       e.preventDefault();
-      if(confirm(_t('Are you sure you want to delete the ${name} resource?', {name: this.options.name}))){
+      if(window.confirm(_t('Are you sure you want to delete the ${name} resource?', {name: this.options.name}))){
         delete this.options.registryView.options.data.resources[this.options.name];
         this.options.registryView.dirty = true;
+        if(this.options.registryView.activeResource &&
+           this.options.registryView.activeResource.resource.name === this.options.name){
+          this.options.registryView.activeResource = null;
+        }
         this.options.registryView.render();
       }
     }
@@ -35266,8 +35333,7 @@ define('mockup-patterns-resourceregistry-url/js/registry',[
         e.preventDefault();
       }
       var options = $.extend({}, this.options, {
-        containerData: this.options.registryView.options.data.bundles,
-        parent: this
+        containerData: this.options.registryView.options.data.bundles
       });
       var resource = new BundleEntryView(options);
       this.registryView.showResourceEditor(resource, this, 'bundle');
@@ -35282,9 +35348,13 @@ define('mockup-patterns-resourceregistry-url/js/registry',[
     },
     deleteClicked: function(e){
       e.preventDefault();
-      if(confirm(_t('Are you sure you want to delete the ${name} bundle?', {name: this.options.name}))){
+      if(window.confirm(_t('Are you sure you want to delete the ${name} bundle?', {name: this.options.name}))){
         delete this.options.registryView.options.data.bundles[this.options.name];
         this.options.registryView.dirty = true;
+        if(this.options.registryView.activeResource &&
+           this.options.registryView.activeResource.resource.name === this.options.name){
+          this.options.registryView.activeResource = null;
+        }
         this.options.registryView.render();
       }
     },
@@ -35293,7 +35363,7 @@ define('mockup-patterns-resourceregistry-url/js/registry',[
       e.preventDefault();
       var self = this;
       if(this.options.registryView.dirty){
-        alert(_t('You have unsaved changes. Save or discard before building.'));
+        window.alert(_t('You have unsaved changes. Save or discard before building.'));
       }else{
         var builder = new Builder(self.options.name, self);
         builder.run();
@@ -35348,7 +35418,7 @@ define('mockup-patterns-resourceregistry-url/js/registry',[
       if(e){
         e.preventDefault();
       }
-      if(confirm(_t('Are you sure you want to cancel? You will lose all changes.'))){
+      if(window.confirm(_t('Are you sure you want to cancel? You will lose all changes.'))){
         this._revertData(this.previousData);
         this.activeResource = null;
         this.render();
@@ -35363,9 +35433,9 @@ define('mockup-patterns-resourceregistry-url/js/registry',[
 
   var RegistryView = BaseResourcesPane.extend({
     template: _.template(
-      '<div class="clearfix">' +
+      '<div class="buttons-container">' +
         '<div class="plone-btn-group pull-right">' +
-          '<button class="plone-btn plone-btn-success save"><%- _t("Save") %></button>' +
+          '<button class="plone-btn plone-btn-primary save"><%- _t("Save") %></button>' +
           '<button class="plone-btn plone-btn-default cancel"><%- _t("Cancel") %></button>' +
         '</div>' +
         '<div class="plone-btn-group pull-right">' +
@@ -35541,8 +35611,17 @@ define('mockup-patterns-resourceregistry-url/js/registry',[
         development: self.options.data.development && 'true' || 'false'
       }, function(){
         self.dirty = false;
+        var activeResource = self.activeResource;
+        self.activeResource = null;
         self.previousData = self._copyData();
         self.render();
+        if(activeResource){
+          var name = activeResource.resource.name;
+          self.options.data.resources[name] = {
+            enabled: true
+          };
+          self.items.resources[name].editResource();
+        }
       });
     },
 
@@ -35562,8 +35641,6 @@ define('mockup-patterns-resourceregistry-url/js/registry',[
 
 });
 
-/* global alert:true */
-
 define('mockup-patterns-resourceregistry-url/js/patternoptions',[
   'jquery',
   'mockup-ui-url/views/base',
@@ -35577,10 +35654,10 @@ define('mockup-patterns-resourceregistry-url/js/patternoptions',[
     tagName: 'div',
     className: 'tab-pane patternoptions',
     template: _.template(
-      '<div class="clearfix">' +
+      '<div class="buttons-container">' +
         '<div class="btn-group pull-right">' +
           '<button class="plone-btn plone-btn-default add-pattern"><%- _t("Add pattern") %></button>' +
-          '<button class="plone-btn plone-btn-default save"><%- _t("save") %></button>' +
+          '<button class="plone-btn plone-btn-primary save"><%- _t("Save") %></button>' +
         '</div>' +
       '</div>' +
       '<div class="row clearfix">' +
@@ -35738,9 +35815,6 @@ define('mockup-patterns-resourceregistry-url/js/patternoptions',[
  *
  */
 
-/* global alert:true */
-
-
 define('mockup-patterns-resourceregistry',[
   'jquery',
   'mockup-patterns-base',
@@ -35761,11 +35835,13 @@ define('mockup-patterns-resourceregistry',[
     tagName: 'div',
     activeTab: 'registry',
     template: _.template('' +
-      '<ul class="main-tabs nav nav-tabs" role="tablist">' +
-        '<li class="registry-btn"><a href="#"><%- _t("Registry") %></a></li>' +
-        '<li class="overrides-btn"><a href="#"><%- _t("Overrides") %></a></li>' +
-        '<li class="lessvariables-btn"><a href="#"><%- _t("Less Variables") %></a></li>' +
-        '<li class="patternoptions-btn"><a href="#"><%- _t("Pattern Options") %></a></li>' +
+      '<div class="autotabs">' +
+        '<ul class="main-tabs autotoc-nav" role="tablist">' +
+          '<li class="registry-btn"><a href="#"><%- _t("Registry") %></a></li>' +
+          '<li class="overrides-btn"><a href="#"><%- _t("Overrides") %></a></li>' +
+          '<li class="lessvariables-btn"><a href="#"><%- _t("Less Variables") %></a></li>' +
+          '<li class="patternoptions-btn"><a href="#"><%- _t("Pattern Options") %></a></li>' +
+        '</ul>' +
       '</div>' +
       '<div class="tab-content" />'
     ),
@@ -35781,9 +35857,9 @@ define('mockup-patterns-resourceregistry',[
         e.preventDefault();
         self.activeTab = $(e.target).parent()[0].className.replace('-btn', '');
       }
-      self.$('.main-tabs > li').removeClass('active');
+      self.$('.main-tabs > li a').removeClass('active');
       self.$content.find('.tab-pane').removeClass('active');
-      self.tabs[self.activeTab].btn.addClass('active');
+      self.tabs[self.activeTab].btn.find('a').addClass('active');
       self.tabs[self.activeTab].content.addClass('active');
     },
     initialize: function(options) {
@@ -35857,7 +35933,7 @@ define('mockup-patterns-resourceregistry',[
           onSave(resp);
         }
         if(resp.success !== undefined && !resp.success && resp.msg){
-          alert(resp.msg);
+          window.alert(resp.msg);
         }
       }).always(function(){
         self.loading.hide();
@@ -35865,7 +35941,7 @@ define('mockup-patterns-resourceregistry',[
         if(onError){
           onError(resp);
         }else{
-          alert(_t('Error processing ajax request for action: ') + action);
+          window.alert(_t('Error processing ajax request for action: ') + action);
         }
       });
     }
@@ -35889,6 +35965,7 @@ define('mockup-patterns-resourceregistry',[
     },
     init: function() {
       var self = this;
+      self.$el.empty();
       self.tabs = new TabView(self.options);
       self.$el.append(self.tabs.render().el);
     }

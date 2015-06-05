@@ -1602,35 +1602,49 @@ button.plone-close {
   transition: width 0.6s ease;
 }
 /* loading icon animation */
-.mockup-loader-icon {
+.plone-loader {
+  display: none;
   position: fixed;
   top: 50%;
   left: 50%;
-  font-size: 30px;
 }
-.mockup-loader-icon .glyphicon-refresh {
-  -webkit-animation-name: rotateThis;
-  animation-name: rotateThis;
-  -webkit-animation-duration: 2s;
-  animation-duration: 2s;
-  -webkit-animation-iteration-count: infinite;
-  animation-iteration-count: infinite;
-  -webkit-animation-timing-function: linear;
-  animation-timing-function: linear;
+.plone-loader div {
+  margin: -6em auto;
+  font-size: 5px;
+  text-indent: -9999em;
+  border-top: 1.1em solid rgba(39, 33, 33, 0.2);
+  border-right: 1.1em solid rgba(218, 211, 211, 0.2);
+  border-bottom: 1.1em solid rgba(218, 211, 211, 0.2);
+  border-left: 1.1em solid rgba(218, 211, 211, 0.2);
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-animation: load8 1.1s infinite linear;
+  animation: load8 1.1s infinite linear;
 }
-@-webkit-keyframes rotateThis {
-  from {
+.plone-loader div,
+.plone-loader div:after {
+  border-radius: 50%;
+  width: 10em;
+  height: 10em;
+}
+@-webkit-keyframes load8 {
+  0% {
     -webkit-transform: rotate(0deg);
-  }
-  to {
-    -webkit-transform: rotate(360deg);
-  }
-}
-@keyframes rotateThis {
-  from {
     transform: rotate(0deg);
   }
-  to {
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes load8 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
     transform: rotate(360deg);
   }
 }
@@ -3111,6 +3125,11 @@ a.pat-resourceregistry .list-group-item-warning.active:focus {
 .pat-resourceregistry .pat-resourceregistry .tab-content > .active {
   display: block;
 }
+.pat-resourceregistry .tab-content,
+.pat-resourceregistry .pat-resourceregistry .tab-content {
+  padding: 0 10px;
+  background-color: white;
+}
 .pat-resourceregistry .nav-tabs a,
 .pat-resourceregistry .pat-resourceregistry .nav-tabs a {
   color: black;
@@ -3180,4 +3199,22 @@ a.pat-resourceregistry .list-group-item-warning.active:focus {
 .pat-resourceregistry .plone-legacy-resource-entry .field-name {
   display: none;
 }
-/*# sourceMappingURL=thememapper-compiled.css.map */
+.pat-resourceregistry .buttons-container {
+  position: relative;
+  top: -45px;
+  right: 10px;
+}
+.pat-resourceregistry .autotabs {
+  margin-bottom: 0;
+  border-bottom: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.pat-resourceregistry .autotabs .autotoc-nav {
+  margin: -6px -12px -6px;
+}
+.pat-resourceregistry .bundles .list-group-item.active a,
+.pat-resourceregistry .bundles .pat-resourceregistry .list-group-item.active a {
+  color: white;
+}
+/*# sourceMappingURL=resourceregistry-compiled.css.map */
