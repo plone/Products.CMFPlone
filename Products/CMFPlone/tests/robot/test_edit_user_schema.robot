@@ -47,6 +47,25 @@ Scenario: As a manager I can add a required field to the user form
     and choose to show the field in the user profile
    Then a logged-in user will see the required field in the user profile
 
+Scenario: As a manager I can move user form fields
+  Given a logged-in manager
+    and the mail setup configured
+    and site registration enabled
+   When I add a new text field to the member fields
+    and choose to show the field in the user profile
+    and I move the new field to the top
+   Then a logged-in user will see the field on top of the user profile
+
+Scenario: As a manager I can add a field with constraints to the registration form
+  Given a logged-in manager
+    and the mail setup configured
+    and site registration enabled
+   When I add a new text field to the member fields
+    and choose to show the field in the user profile
+    and add a min/max constraint to the field
+   Then a logged-in user will see a field with min/max constraints
+
+
 
 *** Keywords *****************************************************************
 
@@ -117,6 +136,17 @@ choose to show the field in the user profile
   # Wait until page contains  Field created.
   Sleep  1
 
+I move the new field to the top
+  Drag And Drop  xpath=//div[@data-field_id="test_field"]//span[contains(@class, "draghandle")]  xpath=//div[@data-field_id="home_page"]
+
+add a min/max constraint to the field
+  Click Link  xpath=//div[@data-field_id='test_field']//a[contains(@class, 'fieldSettings')]
+  Wait until page contains element  form.widgets.min_length
+  Input Text  form.widgets.min_length  4
+  Input Text  form.widgets.max_length  6
+  Click Button  css=.pattern-modal-buttons input#form-buttons-save
+  Sleep  1
+
 
 # --- THEN -------------------------------------------------------------------
 
@@ -136,3 +166,14 @@ a logged-in user will see the field in the user profile
 a logged-in user will see the required field in the user profile
   a logged-in user will see the field in the user profile
   XPath Should Match X Times  //div[@id='formfield-form-widgets-test_field']//span[contains(@class, 'required')]  1  message=test_field should be required
+
+a logged-in user will see the field on top of the user profile
+  a logged-in user will see the field in the user profile
+  XPath Should Match X Times  //form[@id='form']/div[1]//input[@id='form-widgets-test_field']  1  message=test_field should be on top
+
+a logged-in user will see a field with min/max constraints
+  a logged-in user will see the field in the user profile
+  Input Text  form.widgets.test_field  1
+  Click Button  Save
+  Wait until page contains  There were some errors.
+  Page should contain  Value is too short
