@@ -11130,6 +11130,8 @@ define('mockup-utils',[
       attributes: ['UID', 'Title', 'Description', 'getURL', 'portal_type'],
       batchSize: 10, // number of results to retrive
       baseCriteria: [],
+      sort_on: 'is_folderish',
+      sort_order: 'reverse',
       pathDepth: 1
     };
     self.options = $.extend({}, defaults, options);
@@ -11252,7 +11254,9 @@ define('mockup-utils',[
     self.getQueryData = function(term, page) {
       var data = {
         query: JSON.stringify({
-          criteria: self.getCriterias(term)
+          criteria: self.getCriterias(term),
+          sort_on: self.options.sort_on,
+          sort_order: self.options.sort_order
         }),
         attributes: JSON.stringify(self.options.attributes)
       };
@@ -80876,8 +80880,16 @@ define('mockup-patterns-tooltip',[
   var Tooltip = Base.extend({
     name: 'tooltip',
     trigger: '.pat-tooltip',
-
-    init: function(element, options) {
+    defaults: {
+      html: false
+    },
+    init: function() {
+        if (this.options.html === 'true') {
+          // TODO: fix the parser!
+          this.options.html = true;
+        } else {
+          this.options.html = false;
+        }
         this.data = new bootstrapTooltip(this.$el[0], this.options);
     },
   });
@@ -80905,7 +80917,7 @@ define('mockup-patterns-tooltip',[
     trigger: 'hover focus',
     title: '',
     delay: 0,
-    html: false,
+    html: true,  // TODO: fix bug, where this setting overwrites whatever is set in options
     container: false,
     viewport: {
       selector: 'body',
@@ -81140,7 +81152,7 @@ define('mockup-patterns-tooltip',[
     var $tip  = this.tip()
     var title = this.getTitle()
 
-    $tip.find('.tooltip-inner')[this.options.html ? 'ht`ml' : 'text'](title)
+    $tip.find('.tooltip-inner')[this.options.html ? 'html' : 'text'](title)
     $tip.removeClass('fade in top bottom left right')
   }
 

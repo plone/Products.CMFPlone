@@ -55,6 +55,7 @@ class LessConfiguration(BrowserView):
         result += "sitePath: '\"%s\"',\n" % site_url
         result += "isPlone: true,\n"
         result += "isMockup: false,\n"
+        result += "staticPath: '\"%s/++plone++static\"',\n" % site_url
 
         less_vars_params = {
             'site_url': site_url,
@@ -101,6 +102,7 @@ class LessModifyConfiguration(LessConfiguration):
         result2 += "'@sitePath': '\"%s\"',\n" % site_url
         result2 += "'@isPlone': true,\n"
         result2 += "'@isMockup': false,\n"
+        result2 += "'@staticPath: '\"%s/++plone++static\"',\n" % site_url
 
         less_vars_params = {
             'site_url': site_url,

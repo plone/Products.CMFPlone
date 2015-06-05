@@ -1,34 +1,42 @@
-import os
+from Products.CMFCore.FSFile import FSFile
+from Products import CMFPlone
+from Products.CMFPlone.interfaces import (
+    IBundleRegistry,
+    IResourceRegistry)
 
+from Products.Five.browser.resource import FileResource
+from Products.Five.browser.resource import DirectoryResource
+
+import os
+import json
+from plone.registry.interfaces import IRegistry
+
+from plone.resource.directory import FilesystemResourceDirectory
+from plone.resource.file import FilesystemFile
+
+from plone.subrequest import subrequest
+import uuid
+from zope.component import getUtility
+
+
+# some initial script setup
 if 'SITE_ID' in os.environ:
     site_id = os.environ['SITE_ID']
 else:
     site_id = 'Plone'
-
 print('Using site id: ' + site_id)
 
-p = app[site_id]  # noqa
+portal = app[site_id]  # noqa
 from zope.site.hooks import setSite
-setSite(p)
+setSite(portal)
 
-from zope.site.hooks import getSite
-
-import os
-import uuid
-
-portal = getSite()
-
-import json
-from plone.subrequest import subrequest
-from Products.CMFPlone.interfaces import (
-    IBundleRegistry,
-    IResourceRegistry)
-from zope.component import getUtility
-from plone.registry.interfaces import IRegistry
-
+# start the juicy stuff
+temp_resource_folder = 'temp_resources'
 registry = getUtility(IRegistry)
-bundles = registry.collectionOfInterface(IBundleRegistry, prefix="plone.bundles", check=False)  # noqa
-resources = registry.collectionOfInterface(IResourceRegistry, prefix="plone.resources", check=False)  # noqa
+bundles = registry.collectionOfInterface(
+    IBundleRegistry, prefix="plone.bundles", check=False)
+resources = registry.collectionOfInterface(
+    IResourceRegistry, prefix="plone.resources", check=False)  # noqa
 lessvariables = registry.records['plone.lessvariables'].value
 
 gruntfile_template = """
@@ -130,15 +138,6 @@ less_config = """
 """
 
 
-from plone.resource.file import FilesystemFile
-from Products.Five.browser.resource import FileResource
-from Products.Five.browser.resource import DirectoryResource
-from plone.resource.directory import FilesystemResourceDirectory
-from Products.CMFCore.FSFile import FSFile
-
-temp_resource_folder = 'temp_resources'
-
-
 def resource_to_dir(resource, file_type='.js'):
     if resource.__module__ == 'Products.Five.metaclass':
         try:
@@ -234,6 +233,9 @@ globalVars = {}
 globalVars["sitePath"] = "'/'"
 globalVars["isPlone"] = "false"
 globalVars["isMockup"] = "false"
+globalVars['staticPath'] = "'" + os.path.join(
+    os.path.dirname(CMFPlone.__file__),
+    'static') + "'"
 
 less_vars_params = {
     'site_url': 'LOCAL',

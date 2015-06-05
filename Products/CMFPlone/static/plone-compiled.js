@@ -9831,6 +9831,8 @@ define('mockup-utils',[
       attributes: ['UID', 'Title', 'Description', 'getURL', 'portal_type'],
       batchSize: 10, // number of results to retrive
       baseCriteria: [],
+      sort_on: 'is_folderish',
+      sort_order: 'reverse',
       pathDepth: 1
     };
     self.options = $.extend({}, defaults, options);
@@ -9953,7 +9955,9 @@ define('mockup-utils',[
     self.getQueryData = function(term, page) {
       var data = {
         query: JSON.stringify({
-          criteria: self.getCriterias(term)
+          criteria: self.getCriterias(term),
+          sort_on: self.options.sort_on,
+          sort_order: self.options.sort_order
         }),
         attributes: JSON.stringify(self.options.attributes)
       };
@@ -20158,7 +20162,7 @@ define('mockup-patterns-livesearch',[
 
       self.$el.addClass('livesearch-active');
       var pos = self.$input.position();
-      self.$results.width(self.$input.outerWidth());
+      self.$results.width(self.$el.outerWidth());
       self.$results.css({
         top: pos.top + self.$input.outerHeight(),
         left: pos.left
