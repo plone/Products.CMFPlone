@@ -193,6 +193,8 @@ class ResourceRegistryControlPanelView(RequireJsView):
         overrides = OverrideFolderManager(self.context)
         overrides.delete_file(resource_path)
 
+        if req.form.get('response') == 'html':
+            return req.response.redirect(req.URL)
         return json.dumps({
             'success': True
         })
