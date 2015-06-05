@@ -61,6 +61,8 @@ I add a new text field to the member fields
     Input Text  css=#add-field-form #form-widgets-__name__  test_field
     Select From List  css=#form-widgets-factory  Text line (String)
     Click button  css=.pattern-modal-buttons input#form-buttons-add
+    # XXX: This is really really bad! We need a UI notification like:
+    # Wait until page contains  Field created.
     Sleep  1
 
 choose to show the field on registration
@@ -70,6 +72,8 @@ choose to show the field on registration
     Wait Until Element Is visible  form.widgets.IUserFormSelection.forms:list
     Select Checkbox  form.widgets.IUserFormSelection.forms:list
     Click button  css=.pattern-modal-buttons input#form-buttons-save
+    # XXX: This is really really bad! We need a UI notification like:
+    # Wait until page contains  Field created.
     Sleep  1
 
 
