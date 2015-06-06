@@ -90,7 +90,7 @@ site registration enabled
 I add a new text field to the member fields
   Go to  ${PLONE_URL}/@@member-fields
   Wait until page contains element  css=#add-field
-  Click link   css=#add-field
+  Click Button  Add new field…
   Wait Until Element Is visible  css=#add-field-form #form-widgets-title
   Input Text  css=#add-field-form #form-widgets-title  test_field
   Input Text  css=#add-field-form #form-widgets-__name__  test_field
@@ -103,7 +103,7 @@ I add a new text field to the member fields
 I add a new required text field to the member fields
   Go to  ${PLONE_URL}/@@member-fields
   Wait until page contains element  css=#add-field
-  Click link   css=#add-field
+  Click Button  Add new field…
   Wait Until Element Is visible  css=#add-field-form #form-widgets-title
   Input Text  css=#add-field-form #form-widgets-title  test_field
   Input Text  css=#add-field-form #form-widgets-__name__  test_field
