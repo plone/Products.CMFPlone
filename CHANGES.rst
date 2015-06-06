@@ -8,6 +8,9 @@ Changelog
 5.0b3 (unreleased)
 ------------------
 
+- fix issue where product upgrade did show an error status message
+  [datakurre]
+
 - fix casing on "First weekday" field on Date and Time control panel
   [vangheem]
 

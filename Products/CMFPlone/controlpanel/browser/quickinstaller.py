@@ -175,7 +175,7 @@ class ManageProductsView(BrowserView):
         try:
             qi.upgradeProduct(product)
             messages.addStatusMessage(
-                _(u'Upgraded ${product}!', mapping={'product', product}), type="info")
+                _(u'Upgraded ${product}!', mapping={'product': product}), type="info")
             return True
         except Exception, e:
             logging.error("Could not upgrade %s: %s" % (product, e))
