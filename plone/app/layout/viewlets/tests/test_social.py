@@ -68,4 +68,4 @@ class TestSocialViewlet(ViewletsTestCase):
         viewlet.update()
         self.assertTrue(
             self.tagFound(viewlet, 'property',
-                          'og:image:type', 'http://nohost/plone/logo.png'))
+                          'og:image', 'http://nohost/plone/logo.png'))
