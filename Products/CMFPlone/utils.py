@@ -17,6 +17,7 @@ from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.component import queryMultiAdapter
 from zope.component import queryUtility
+from zope.component.hooks import getSite
 from zope.deprecation import deprecated
 from zope.i18n import translate
 from zope.publisher.interfaces.browser import IBrowserRequest
@@ -725,3 +726,20 @@ def getAllowedSizes():
 def getQuality():
     from plone.app.imaging.utils import getQuality as func
     return func()
+
+
+def getSiteLogo(site=None):
+    from Products.CMFPlone.interfaces import ISiteSchema
+    from plone.formwidget.namedfile.converter import b64decode_file
+    if site is None:
+        site = getSite()
+    registry = getUtility(IRegistry)
+    settings = registry.forInterface(ISiteSchema, prefix="plone")
+    site_url = site.absolute_url()
+
+    if getattr(settings, 'site_logo', False):
+        filename, data = b64decode_file(settings.site_logo)
+        return '{}/@@site-logo/{}'.format(
+            site_url, filename)
+    else:
+        return '%s/logo.png' % site_url

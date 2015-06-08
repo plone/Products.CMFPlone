@@ -13,12 +13,15 @@ from Products.CMFPlone.interfaces.syndication import IFeed
 from Products.CMFPlone.interfaces.syndication import IFeedItem
 from Products.CMFPlone.interfaces.syndication import ISearchFeed
 from Products.CMFPlone.interfaces.syndication import IFeedSettings
+from Products.CMFPlone.utils import getSiteLogo
+
 from plone.uuid.interfaces import IUUID
 from zope.cachedescriptors.property import Lazy as lazy_property
 
 from plone.dexterity.interfaces import IDexterityContent
 from plone.rfc822.interfaces import IPrimaryFieldInfo
 from plone.namedfile.interfaces import INamedField
+
 from plone.app.contenttypes.behaviors.leadimage import ILeadImage
 
 try:
@@ -118,7 +121,7 @@ class FolderFeed(BaseFeedData):
 
     @property
     def logo(self):
-        return '%s/logo.png' % self.site.absolute_url()
+        return getSiteLogo()
 
     @property
     def icon(self):

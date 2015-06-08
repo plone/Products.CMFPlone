@@ -8,6 +8,9 @@ Changelog
 5.0b3 (unreleased)
 ------------------
 
+- add utility to get site logo
+  [vangheem]
+
 - fix issue where product upgrade did show an error status message
   [datakurre]
 
