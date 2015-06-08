@@ -191,6 +191,9 @@ class LogoViewlet(ViewletBase):
         # TODO: should this be changed to settings.site_title?
         self.navigation_root_title = self.portal_state.navigation_root_title()
 
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(ISiteSchema, prefix="plone")
+        self.logo_title = settings.site_title
         self.img_src = getSiteLogo(self.portal_state.portal())
 
 

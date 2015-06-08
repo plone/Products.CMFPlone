@@ -1,11 +1,15 @@
-from Products.CMFPlone.browser.syndication.adapters import FolderFeed
-from zope.component import queryMultiAdapter
 from Products.CMFPlone.interfaces import ISocialMediaSchema
 from Products.CMFPlone.interfaces.syndication import IFeedItem
-from plone.app.layout.viewlets.common import TitleViewlet
+from Products.CMFPlone.utils import getSiteLogo
+from Products.CMFPlone.browser.syndication.adapters import FolderFeed, BaseItem
+
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from zope.component import getUtility
+
+from plone.app.layout.viewlets.common import TitleViewlet
 from plone.registry.interfaces import IRegistry
+
+from zope.component import queryMultiAdapter
+from zope.component import getUtility
 from zope.component.hooks import getSite
 
 
@@ -43,11 +47,11 @@ class SocialTagsViewlet(TitleViewlet):
 
         # reuse syndication since that packages the data
         # the way we'd prefer likely
-        item = queryMultiAdapter((self.context, FolderFeed(getSite())),
-                                 IFeedItem, default=None)
+        site = getSite()
+        feed = FolderFeed(site)
+        item = queryMultiAdapter((self.context, feed), IFeedItem, default=None)
         if item is None:
-            # this should not happen but we can be careful
-            return
+            item = BaseItem(self.context, feed)
 
         self.tags.extend([
             dict(name="twitter:description", content=item.description),
@@ -57,8 +61,10 @@ class SocialTagsViewlet(TitleViewlet):
             dict(property="og:url", content=item.link),
         ])
 
+        found_image = False
         if item.has_enclosure and item.file_length > 0:
             if item.file_type.startswith('image'):
+                found_image = True
                 self.tags.extend([
                     dict(name="twitter:image", content=item.file_url),
                     dict(property="og:image", content=item.file_url),
@@ -76,3 +82,12 @@ class SocialTagsViewlet(TitleViewlet):
                     dict(property="og:audio", content=item.file_url),
                     dict(property="og:audio:type", content=item.file_type)
                 ])
+
+        if not found_image:
+            url = getSiteLogo()
+            self.tags.extend([
+                dict(name="twitter:image", content=url),
+                dict(property="og:image", content=url),
+                dict(itemprop="image", content=url),
+                dict(property="og:image:type", content=url)
+            ])

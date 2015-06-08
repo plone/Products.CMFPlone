@@ -5,14 +5,6 @@ from plone.app.layout.viewlets.tests.base import ViewletsTestCase
 from plone.registry.interfaces import IRegistry
 from zope.component import getUtility
 
-from plone.namedfile import NamedBlobFile
-
-
-# Red pixel with filename pixel.png
-IMAGE_BASE64 = 'filenameb64:cGl4ZWwucG5n;datab64:iVBORw0KGgoAAAANSUhEUgAA'\
-               'AAEAAAABCAIAAACQd1PeAAAADElEQVQI12P4z8AAAAMBAQAY3Y2wAAAAA'\
-               'ElFTkSuQmCC'
-
 
 class TestSocialViewlet(ViewletsTestCase):
     """Test the content views viewlet.
@@ -23,9 +15,6 @@ class TestSocialViewlet(ViewletsTestCase):
         self.folder.invokeFactory('News Item', 'news-item',
                                   title='News Item')
         self.news = self.folder['news-item']
-        self.news.lead = NamedBlobFile(
-            data=IMAGE_BASE64, contentType='image/png',
-            filename=u'test.png')
 
     def tagFound(self, viewlet, attr, name, value):
         for meta in viewlet.tags:
@@ -73,3 +62,10 @@ class TestSocialViewlet(ViewletsTestCase):
         self.assertTrue(
             self.tagFound(viewlet, 'property',
                           'og:article:publisher', 'https://www.facebook.com/foobar'))
+
+    def testLogo(self):
+        viewlet = SocialTagsViewlet(self.news, self.app.REQUEST, None)
+        viewlet.update()
+        self.assertTrue(
+            self.tagFound(viewlet, 'property',
+                          'og:image:type', 'http://nohost/plone/logo.png'))

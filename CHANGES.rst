@@ -4,7 +4,8 @@ Changelog
 2.5.8 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- by default, show site logo in social settings
+  [vangheem]
 
 
 2.5.7 (2015-06-05)
