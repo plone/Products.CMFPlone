@@ -121,7 +121,7 @@ class FolderFeed(BaseFeedData):
 
     @property
     def logo(self):
-        return getSiteLogo()
+        return getSiteLogo(self.site)
 
     @property
     def icon(self):
