@@ -89,5 +89,5 @@ class SocialTagsViewlet(TitleViewlet):
                 dict(name="twitter:image", content=url),
                 dict(property="og:image", content=url),
                 dict(itemprop="image", content=url),
-                dict(property="og:image:type", content='image/png')
+                dict(property="og:image:type", content=url)
             ])
