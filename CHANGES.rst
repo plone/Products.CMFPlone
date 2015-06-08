@@ -8,6 +8,9 @@ Changelog
 5.0b3 (unreleased)
 ------------------
 
+- fix syndication feed use of lead image as it was using wrong url
+  [vangheem]
+
 - add utility to get site logo
   [vangheem]
 

@@ -273,7 +273,7 @@ class DexterityItem(BaseItem):
                     and hasattr(lead.image, 'getSize')
                     and lead.image.getSize() > 0):
                 self.file = lead.image
-                self.field_name = 'lead'
+                self.field_name = 'image'
         if self.file is None:
             try:
                 primary = IPrimaryFieldInfo(self.context, None)
