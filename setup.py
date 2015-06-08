@@ -39,7 +39,7 @@ setup(name='plone.app.layout',
           'Products.CMFCore',
           'Products.CMFDynamicViewFTI',
           'Products.CMFEditions >=1.2.2',
-          'Products.CMFPlone >=4.3',  # XXX: should be 5.0
+          'Products.CMFPlone >=5.0b3.dev0',
           'setuptools',
           'zope.component',
           'zope.deprecation',

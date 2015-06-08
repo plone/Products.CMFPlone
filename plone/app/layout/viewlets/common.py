@@ -18,15 +18,13 @@ from Acquisition import aq_base, aq_inner
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces import ISiteSchema
 from Products.CMFPlone.interfaces import ISearchSchema
-from Products.CMFPlone.utils import safe_unicode
+from Products.CMFPlone.utils import safe_unicode, getSiteLogo
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 from plone.app.layout.globals.interfaces import IViewView
 from plone.protect.utils import addTokenToUrl
-from plone.formwidget.namedfile.converter import b64decode_file
-from plone.namedfile.file import NamedImage
 
 
 class ViewletBase(BrowserView):
@@ -193,18 +191,7 @@ class LogoViewlet(ViewletBase):
         # TODO: should this be changed to settings.site_title?
         self.navigation_root_title = self.portal_state.navigation_root_title()
 
-        registry = getUtility(IRegistry)
-        settings = registry.forInterface(ISiteSchema, prefix="plone")
-        self.logo_title = settings.site_title
-
-        if getattr(settings, 'site_logo', False):
-            filename, data = b64decode_file(settings.site_logo)
-            data = NamedImage(data=data, filename=filename)
-            self.img_src = '{}/@@site-logo/{}'.format(
-                self.navigation_root_url, filename)
-        else:
-            self.img_src = '%s/logo.png' % (
-                self.navigation_root_url)
+        self.img_src = getSiteLogo(self.portal_state.portal())
 
 
 class GlobalSectionsViewlet(ViewletBase):
