@@ -26,7 +26,7 @@ class TypesControlPanelFunctionalTest(unittest.TestCase):
 
     def test_types_control_panel_link(self):
         self.browser.open(
-            "%s/plone_control_panel" % self.portal_url)
+            "%s/@@overview-controlpanel" % self.portal_url)
         self.browser.getLink('Editing').click()
 
     def test_standard_type_select(self):
@@ -39,7 +39,7 @@ class TypesControlPanelFunctionalTest(unittest.TestCase):
         self.browser.open(self.types_url)
         self.browser.getControl(name='type_id').value = ['Link']
         self.browser.getControl('Cancel').click()
-        self.assertIn('plone_control_panel', self.browser.url)
+        self.assertIn('@@overview-controlpanel', self.browser.url)
 
     def test_standard_type_allow_commenting(self):
         self.browser.open(self.types_url)

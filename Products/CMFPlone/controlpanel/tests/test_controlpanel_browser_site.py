@@ -40,7 +40,7 @@ class SiteControlPanelFunctionalTest(unittest.TestCase):
 
     def test_site_control_panel_link(self):
         self.browser.open(
-            "%s/plone_control_panel" % self.portal_url)
+            "%s/@@overview-controlpanel" % self.portal_url)
         self.browser.getLink('Site').click()
 
     def test_site_control_panel_backlink(self):

@@ -30,7 +30,7 @@ class SyndicationControlPanelFunctionalTest(unittest.TestCase):
 
     def test_syndication_controlpanel_link(self):
         self.browser.open(
-            "%s/plone_control_panel" % self.portal_url)
+            "%s/@@overview-controlpanel" % self.portal_url)
         self.browser.getLink('Syndication').click()
 
     def test_syndication_controlpanel_backlink(self):
