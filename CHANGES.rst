@@ -8,6 +8,9 @@ Changelog
 5.0b3 (unreleased)
 ------------------
 
+- Fix email validation of long domain names.
+  [gotcha]
+
 - fix syndication feed use of lead image as it was using wrong url
   [vangheem]
 
