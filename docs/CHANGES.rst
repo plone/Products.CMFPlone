@@ -8,7 +8,8 @@ Changelog
 4.3.7 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix email validation of long domain names.
+  [gotcha]
 
 
 4.3.6 (2015-06-02)
