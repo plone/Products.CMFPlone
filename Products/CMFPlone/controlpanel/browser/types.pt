@@ -251,10 +251,10 @@
     
                 <div class="formControls">
                   <input type="submit"
-                         value="Apply Changes"
+                         value="Save"
                          name="form.button.Save"
                          class="context"
-                         i18n:attributes="value label_apply_changes;" />
+                         i18n:attributes="value Save;" />
                   <input type="submit"
                          value="Cancel"
                          name="form.button.Cancel"
