@@ -71,7 +71,7 @@ Before you start exploring your newly created Plone site, please do the followin
     </li>
 
     <li>…and many more settings are available in the
-        <a href="plone_control_panel">Site Setup</a>.
+        <a href="@@overview-controlpanel">Site Setup</a>.
     </li>
 
 </ul>

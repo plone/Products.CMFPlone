@@ -33,7 +33,7 @@ class MailControlPanelFunctionalTest(unittest.TestCase):
 
     def test_mail_controlpanel_link(self):
         self.browser.open(
-            "%s/plone_control_panel" % self.portal_url)
+            "%s/@@overview-controlpanel" % self.portal_url)
         self.browser.getLink('Mail').click()
 
     def test_mail_controlpanel_backlink(self):

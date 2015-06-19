@@ -186,7 +186,7 @@ Make sure users and roles can be managed through the control panel. First
 we need to alter the security settings so that no email roundtrip is required
 anymore (which at the same time tests the security control panel):
 
-  >>> browser.open('http://nohost/plone/plone_control_panel')
+  >>> browser.open('http://nohost/plone/@@overview-controlpanel')
   >>> browser.getLink('Security').click()
   >>> browser.getControl(name='form.widgets.enable_user_pwd_choice:list').value = ['selected']
   >>> browser.getControl('Save').click()
@@ -218,7 +218,7 @@ anymore (which at the same time tests the security control panel):
 
 Let's also try adding that user to a group:
 
-  >>> browser.open('http://nohost/plone/plone_control_panel')
+  >>> browser.open('http://nohost/plone/@@overview-controlpanel')
   >>> browser.getLink('Users and Groups').click()
   >>> browser.getControl('Show all').click()
   >>> browser.getLink('johnny').click()
@@ -242,7 +242,7 @@ There's an alternative way to adding a user to a group in which the group in
 question is selected first and the user can then be added via the "Group
 Members" tab:
 
-  >>> browser.open('http://nohost/plone/plone_control_panel')
+  >>> browser.open('http://nohost/plone/@@overview-controlpanel')
   >>> browser.getLink('Users and Groups').click()
   >>> browser.getLink(url='/@@usergroup-groupprefs').click()
   >>> browser.getLink('Reviewers').click()
@@ -393,7 +393,7 @@ Some parts of the control panel have already been tested, but the "configlets"
 haven't. Luckily most of them are using the same form handlers and template,
 so testing one of them already makes sure the protection works in most cases:
 
-  >>> browser.open('http://nohost/plone/plone_control_panel')
+  >>> browser.open('http://nohost/plone/@@overview-controlpanel')
   >>> browser.getLink('Security').click()
   >>> browser.getControl(name='form.widgets.enable_self_reg:list').value
   []
@@ -423,7 +423,7 @@ limitations, which is why we need to log in as the portal owner first:
   >>> z2.login(app['acl_users'], 'app')
   >>> import transaction; transaction.commit()
   >>> app_browser.addHeader('Authorization', 'Basic app:secret')
-  >>> app_browser.open('http://nohost/plone/plone_control_panel')
+  >>> app_browser.open('http://nohost/plone/@@overview-controlpanel')
   >>> app_browser.getLink('Maintenance').click()
   >>> app_browser.getControl(name='_authenticator', index=0).value = 'invalid!'
   >>> app_browser.getControl(name='_authenticator', index=1).value = 'invalid!'

@@ -33,7 +33,7 @@ class SecurityControlPanelFunctionalTest(unittest.TestCase):
 
     def test_security_control_panel_link(self):
         self.browser.open(
-            "%s/plone_control_panel" % self.portal_url)
+            "%s/@@overview-controlpanel" % self.portal_url)
         self.browser.getLink('Security').click()
 
     def test_security_control_panel_backlink(self):

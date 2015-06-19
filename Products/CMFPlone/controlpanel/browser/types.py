@@ -79,7 +79,7 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
     def handleCancel(self, action):
         IStatusMessage(self.request).addStatusMessage(
             _(u"Changes canceled."), "info")
-        self.request.response.redirect("plone_control_panel")
+        self.request.response.redirect("@@overview-controlpanel")
 
     @property
     @memoize
@@ -266,7 +266,7 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
 
         elif cancel_button:
             self.request.response.redirect(
-                self.context.absolute_url() + '/plone_control_panel')
+                self.context.absolute_url() + '/@@overview-controlpanel')
             postback = False
 
         if postback:

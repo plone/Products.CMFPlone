@@ -105,7 +105,7 @@ class UserGroupsControlPanelFunctionalTest(unittest.TestCase):
 
     def test_usergroups_control_panel_link(self):
         self.browser.open(
-            "%s/plone_control_panel" % self.portal_url)
+            "%s/@@overview-controlpanel" % self.portal_url)
         self.browser.getLink('Users and Groups').click()
         self.assertEqual(
             self.browser.url,

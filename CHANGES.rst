@@ -8,6 +8,10 @@ Changelog
 5.0b3 (unreleased)
 ------------------
 
+- Update links to point to '@@overview-controlpanel'.
+  Fixes https://github.com/plone/Products.CMFPlone/issues/573
+  [gforcada]
+
 - Fix email validation of long domain names.
   [gotcha]
 
