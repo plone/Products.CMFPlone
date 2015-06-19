@@ -7,6 +7,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.GenericSetup.context import SetupEnviron
 from Products.CMFPlone.interfaces import IBundleRegistry
 from Products.CMFPlone.interfaces import IResourceRegistry
+from Products.CMFPlone.controlpanel.browser.resourceregistry import OverrideFolderManager
 from plone.subrequest import subrequest
 from Products.CMFPlone.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME
 from Products.CMFPlone.resources.exportimport.resourceregistry import (
@@ -229,3 +230,42 @@ class TestResourceNodeImporter(PloneTestCase.PloneTestCase):
                           len(self._get_legacy_bundle().resources))
         self.assertEquals(len(js_files),
                           len([x.js for x in self._get_resources().values()]))
+
+
+class TestControlPanel(PloneTestCase.PloneTestCase):
+
+    def test_save_override_file(self):
+        req = self.layer['request']
+        req.environ['PATH_INFO'] = '++plone++foo/bar.css'
+        mng = OverrideFolderManager(self.portal)
+        mng.save_file('foo/bar.css', 'foobar')
+        value = self.portal.restrictedTraverse('++plone++foo/bar.css')
+        self.assertEquals(str(value), 'foobar')
+
+    def test_override_rewrite_links(self):
+        req = self.layer['request']
+        req.environ['PATH_INFO'] = '++plone++foo/bar.css'
+        mng = OverrideFolderManager(self.portal)
+        css = """
+.foo {
+    background-image: url("%(site_url)s/foobar.css");
+}
+.bar {
+    background-image: url("%(site_url)s/++plone++foo/bar/foobar.css");
+}
+.foobar {
+    background-image: url("%(site_url)s/foo/bar/foobar.css");
+}""" % {'site_url': self.portal.absolute_url()}
+        mng.save_file('foo/bar.css', css)
+        value = self.portal.restrictedTraverse('++plone++foo/bar.css')
+        match = """
+.foo {
+    background-image: url("../foobar.css");
+}
+.bar {
+    background-image: url("bar/foobar.css");
+}
+.foobar {
+    background-image: url("../foo/bar/foobar.css");
+}"""
+        self.assertEquals(str(value), match)

@@ -11,11 +11,16 @@ from urlparse import urlparse
 from zExceptions import NotFound
 from zope.component import getUtility
 import json
+import re
 from Products.CMFPlone.resources import add_bundle_on_request
 from Products.CMFPlone.resources import RESOURCE_DEVELOPMENT_MODE
 from plone.registry import field
 from plone.registry.record import Record
 from Products.statusmessages.interfaces import IStatusMessage
+import posixpath
+
+
+CSS_URL_REGEX = re.compile('url\(([^)]+)\)')
 
 
 class JSONEncoder(json.JSONEncoder):
@@ -78,8 +83,49 @@ class OverrideFolderManager(object):
         if resource_name not in self.container:
             self.container.makeDirectory(resource_name)
         folder = self.container[resource_name]
+        if '.css' in resource_filepath:
+            data = self.make_links_relative(filepath, data)
         folder.writeFile(resource_filepath, data)
         return folder[resource_filepath]
+
+    def _rewrite_url(self, css_url, asset_url):
+        """
+        Pulled from:
+        http://stackoverflow.com/questions/7469573/how-to-construct-relative-url-given-two-absolute-urls-in-python
+
+        """
+        base = urlparse(css_url)
+        target = urlparse(asset_url)
+        if base.netloc != target.netloc:
+            return asset_url
+        base_dir = '.' + posixpath.dirname(base.path)
+        target = '.' + target.path
+        return posixpath.relpath(target, start=base_dir)
+
+    def make_links_relative(self, filepath, data):
+        """
+        make sure we don't write out any full urls.
+        filepath will be something like foo/bar.css
+        and the full real url will be something like http://site-url/++plone++foo/bar.css
+
+        So we'll be everything relative the resource path.
+
+
+        """
+        site_url = self.context.absolute_url()
+        full_resource_url = '%s/++plone++%s' % (site_url, filepath)
+        for css_url in CSS_URL_REGEX.findall(data):
+            if css_url.startswith("data:"):
+                continue
+            if css_url.find("data:image") > 0:
+                continue
+
+            css_url = css_url.lstrip('url(').rstrip(')').\
+                strip('"').strip("'")
+            if css_url.startswith(site_url):
+                data = data.replace(css_url, self._rewrite_url(full_resource_url, css_url))
+
+        return data
 
     def delete_file(self, filepath):
         resource_name, resource_filepath = filepath.split('/', 1)
