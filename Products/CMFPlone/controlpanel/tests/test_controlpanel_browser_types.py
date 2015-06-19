@@ -46,7 +46,7 @@ class TypesControlPanelFunctionalTest(unittest.TestCase):
         self.browser.getControl(name='type_id').value = ['Link']
         self.browser.getForm(action=self.types_url).submit()
         self.browser.getControl('Allow comments').selected = True
-        self.browser.getControl('Apply Changes').click()
+        self.browser.getControl('Save').click()
 
         # Check if settings got saved correctly
         self.browser.open(self.types_url)
@@ -75,7 +75,7 @@ class TypesControlPanelFunctionalTest(unittest.TestCase):
         self.browser.getControl(
             'Redirect immediately to link target'
         ).selected = True
-        self.browser.getControl('Apply Changes').click()
+        self.browser.getControl('Save').click()
 
         # Check if settings got saved correctly
         self.browser.open(self.types_url)

@@ -57,11 +57,11 @@ I select '${content_type}' in types dropdown
 
 Allow discussion
   Select checkbox  name=allow_discussion:boolean
-  Click Button  Apply Changes
+  Click Button  Save
 
 I select '${workflow}' workflow
   Select from list  name=new_workflow  ${workflow}
-  Click Button  Apply Changes
+  Click Button  Save
 
 I add new Link '${id}'
   Go to  ${PLONE_URL}
