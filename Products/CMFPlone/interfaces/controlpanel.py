@@ -1062,7 +1062,7 @@ class IMailSchema(Interface):
         default=None,
         required=True)
 
-    email_from_address = schema.ASCII(
+    email_from_address = schema.ASCIILine(
         title=_(u"Site 'From' address"),
         description=_(
             u"Plone generates e-mail using "
