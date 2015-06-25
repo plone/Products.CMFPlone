@@ -243,7 +243,7 @@ class PloneSettingsAdapter(object):
             'upload': {
                 'initialFolder': initial,
                 'currentPath': current_path,
-                'baseUrl': folder.absolute_url(),
+                'baseUrl': generator.portal_url,
                 'relativePath': '@@fileUpload',
                 'uploadMultiple': False,
                 'maxFiles': 1,

@@ -8,6 +8,10 @@ Changelog
 5.0b3 (unreleased)
 ------------------
 
+- Upload pattern uses the baseUrl to compute the upload URL, so this should
+  always be the site root and not the current context
+  [frapell]
+
 - rewrite css files when saving customized files in the resource registry
   [vangheem]
 
