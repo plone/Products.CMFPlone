@@ -8,6 +8,9 @@ Changelog
 5.0b3 (unreleased)
 ------------------
 
+- better formatting of config.js
+  [vangheem]
+
 - Upload pattern uses the baseUrl to compute the upload URL, so this should
   always be the site root and not the current context
   [frapell]

@@ -4,17 +4,10 @@ from plone.registry.interfaces import IRegistry
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 import re
+import json
 
 
-configjs = """requirejs.config({
-    baseUrl: '%s',
-    paths: %s,
-    shim: %s,
-    optimize: 'uglify',
-    wrapShim: true
-});
-
-"""
+configjs = """requirejs.config(%s);"""
 
 
 class RequireJsView(BrowserView):
@@ -69,19 +62,18 @@ class RequireJsView(BrowserView):
                 paths[name + '-url'] = src
         return (self.base_url(), paths, shims)
 
-    def get_requirejs_config_str(self):
-        base, paths, shims = self.get_requirejs_config()
-        shims_str = str(shims).replace('\'deps\'', 'deps').replace(
-            '\'exports\'', 'exports').replace(
-            '\'init\': \'', 'init: ').replace('}\'}', '}}')
-        return (self.base_url(), str(paths), shims_str)
-
 
 class ConfigJsView(RequireJsView):
     """ config.js for requirejs for script rendering. """
 
     def __call__(self):
-        (baseUrl, paths, shims) = self.get_requirejs_config_str()
+        (baseUrl, paths, shims) = self.get_requirejs_config()
         self.request.response.setHeader("Content-Type",
                                         "application/javascript")
-        return configjs % (baseUrl, paths, shims)
+        return configjs % json.dumps({
+            'baseUrl': baseUrl,
+            'paths': paths,
+            'shim': shims,
+            'optimize': 'uglify',
+            'wrapShim': True
+        }, indent=4)
