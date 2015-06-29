@@ -53,11 +53,6 @@
     />
 
   <browser:resource
-    name="plone.css"
-    file="static/plone.css"
-    />
-
-  <browser:resource
     name="plone.less"
     file="static/plone.less"
     />
