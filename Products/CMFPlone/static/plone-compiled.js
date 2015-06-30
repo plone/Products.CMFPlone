@@ -10658,16 +10658,16 @@ define('mockup-patterns-autotoc',[
 
       $(self.options.levels, self.$el).each(function(i) {
         var $level = $(this),
-            id = $level.prop('id') ? '#' + $level.prop('id') :
+            id = $level.prop('id') ? $level.prop('id') :
                  $level.parents(self.options.section).prop('id');
         if (!id) {
           id = self.options.IDPrefix + self.name + '-' + i;
-          $level.prop('id', id);
         }
         $('<a/>')
           .appendTo(self.$toc)
           .text($level.text())
-          .prop('href', id)
+          .attr('id', id)
+          .attr('href', '#' + id)
           .addClass(self.options.classLevelPrefixName + self.getLevel($level))
           .on('click', function(e, doScroll) {
             e.stopPropagation();
