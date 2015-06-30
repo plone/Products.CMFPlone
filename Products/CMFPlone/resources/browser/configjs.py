@@ -1,13 +1,38 @@
+import json
+import re
+
 from Products.CMFPlone.interfaces import IResourceRegistry
 from Products.Five.browser import BrowserView
 from plone.registry.interfaces import IRegistry
 from zope.component import getMultiAdapter
 from zope.component import getUtility
-import re
-import json
 
 
-configjs = """requirejs.config(%s);"""
+configjs = """requirejs.config({
+    baseUrl: '%s',
+    paths: %s,
+    shim: %s,
+    optimize: 'uglify',
+    wrapShim: true
+});"""
+
+
+def _format_shims(shims):
+    result = []
+    for name, val in shims.items():
+        options = []
+        if val.get('exports'):
+            options.append('exports: "%s"' % val['exports'])
+        if val.get('deps'):
+            options.append('deps: ' + json.dumps(val['deps']))
+        if val.get('init'):
+            # function, no escaping here
+            options.append('init: %s' % val['init'])
+        result.append("""
+        "%s": {
+            %s
+        }""" % (name, ',\n            '.join(options)))
+    return '{' + ','.join(result) + '\n    }'
 
 
 class RequireJsView(BrowserView):
@@ -70,10 +95,8 @@ class ConfigJsView(RequireJsView):
         (baseUrl, paths, shims) = self.get_requirejs_config()
         self.request.response.setHeader("Content-Type",
                                         "application/javascript")
-        return configjs % json.dumps({
-            'baseUrl': baseUrl,
-            'paths': paths,
-            'shim': shims,
-            'optimize': 'uglify',
-            'wrapShim': True
-        }, indent=4)
+        return configjs % (
+            baseUrl,
+            json.dumps(paths, indent=4),
+            _format_shims(shims)
+        )

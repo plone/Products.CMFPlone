@@ -232,6 +232,13 @@ class TestResourceNodeImporter(PloneTestCase.PloneTestCase):
                           len([x.js for x in self._get_resources().values()]))
 
 
+class TestConfigJs(PloneTestCase.PloneTestCase):
+
+    def test_init_shim_works_with_function(self):
+        config = self.portal.restrictedTraverse('config.js')()
+        self.assertTrue('init: function' in config)
+
+
 class TestControlPanel(PloneTestCase.PloneTestCase):
 
     def test_save_override_file(self):
