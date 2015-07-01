@@ -190,11 +190,12 @@
                   <strong i18n:name="number" id="search-results-number"
                           tal:content="batch/sequence_length|string:0">234</strong>
                     items matching your search terms.
-                  </span>
+                </span>
+              </div>
 
                   
 
-                <metal:searchresults define-macro="search_results">
+              <metal:searchresults define-macro="search_results">
                 <div class="autotabs">
                   <nav class="autotoc-nav" id="searchResultsSort">
                     <span i18n:translate="sort_by" class="autotab-heading">Sort by</span>
