@@ -8,6 +8,10 @@ Changelog
 5.0b3 (unreleased)
 ------------------
 
+- use ajax_load in @@search when loading results dynamically, and add missing
+  closing tag
+  [ebrehault]
+
 - better formatting of config.js
   [vangheem]
 
