@@ -81835,7 +81835,7 @@ define('mockup-patterns-structure-url/js/views/tablerow',[
     itemSelected: function() {
       var checkbox = this.$('input')[0];
       if (checkbox.checked) {
-        this.app.selectedCollection.add(this.model);
+        this.app.selectedCollection.add(this.model.clone());
       } else {
         this.app.selectedCollection.removeResult(this.model);
       }
@@ -81859,10 +81859,10 @@ define('mockup-patterns-structure-url/js/views/tablerow',[
             var existing = selectedCollection.getByUID(model.attributes.UID);
             if (this.checked) {
               if (!existing) {
-                selectedCollection.add(model);
+                selectedCollection.add(model.clone());
               }
             } else if (existing) {
-              selectedCollection.remove(existing);
+              selectedCollection.removeResult(existing);
             }
           }
         });
@@ -85478,7 +85478,7 @@ define('mockup-patterns-structure-url/js/views/table',[
       var self = this;
       if (self.folderModel){
         if ($(e.target).is(':checked')) {
-          self.selectedCollection.add(self.folderModel);
+          self.selectedCollection.add(self.folderModel.clone());
         } else {
           this.selectedCollection.removeByUID(self.folderModel.attributes.UID);
         }
@@ -88213,10 +88213,7 @@ define('mockup-patterns-structure-url/js/views/app',[
         // need to reload models inside selectedCollection so they get any
         // updated metadata
         if (self.selectedCollection.models.length > 0) {
-          var uids = [];
-          self.selectedCollection.each(function(item) {
-            uids.push(item.attributes.UID);
-          });
+          var uids = self.getSelectedUids(self.selectedCollection);
           self.queryHelper.search(
             'UID', 'plone.app.querystring.operation.list.contains',
             uids,
