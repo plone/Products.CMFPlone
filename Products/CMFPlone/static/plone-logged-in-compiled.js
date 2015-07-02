@@ -14872,10 +14872,13 @@ define('mockup-patterns-relateditems',[
         '<span class="pattern-relateditems-tree">' +
           '<a href="#" class="pattern-relateditems-tree-select"><span class="glyphicon glyphicon-indent-left"></span></a> ' +
           '<div class="tree-container">' +
-            '<span class="select-folder-label">Select folder</span>' +
-            '<a href="#" class="btn close pattern-relateditems-tree-cancel">X</a>' +
+            '<div class="title-container">' +
+              '<a href="#" class="btn close pattern-relateditems-tree-cancel">' +
+                '<span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>' +
+              '</a>' +
+              '<span class="select-folder-label">Select folder</span>' +
+            '</div>' +
             '<div class="pat-tree" />' +
-            '<a href="#" class="btn btn-default pattern-relateditems-tree-itemselect">Select</a>' +
           '</div>' +
         '</span>' +
         '<span class="pattern-relateditems-path-label">' +
@@ -14990,6 +14993,20 @@ define('mockup-patterns-relateditems',[
             nodes.push(node);
           });
           return nodes;
+        },
+        onCreateLi: function(node, $li) {
+          if(node._loaded){
+            if(node.children.length === 0){
+              $li.find('.jqtree-title').append('<span class="tree-node-empty">' + _t('(empty)') + '</span>');
+            }
+          }
+          $li.append('<span class="pattern-relateditems-buttons"><a class="pattern-relateditems-result-browse" href="#"></a></span>');
+          $li.find('.pattern-relateditems-result-browse').click(function(e){
+            e.preventDefault();
+            self.currentPath = node.path;
+            self.browseTo(self.currentPath);
+            $treeContainer.fadeOut();
+          });
         }
       });
       treePattern.$el.bind('tree.select', function(e) {
@@ -15023,21 +15040,20 @@ define('mockup-patterns-relateditems',[
         return false;
       });
 
-      $('a.pattern-relateditems-tree-itemselect', $treeContainer).click(function(e) {
-        e.preventDefault();
-        self.browseTo(self.currentPath); // just browse to current path since it's set elsewhere
-        $treeContainer.fadeOut();
-        return false;
-      });
-
       $treeSelect.on('click', function(e) {
         e.preventDefault();
         self.browsing = true;
         self.currentPath = '/';
+        self.$el.select2('close');
         $treeContainer.fadeIn();
         treePattern.$el.tree('loadDataFromUrl', self.treeQuery.getUrl());
         return false;
       });
+
+      self.$el.on('select2-opening', function(){
+        $treeContainer.fadeOut();
+      });
+
       self.$browsePath.html($crumbs);
     },
     selectItem: function(item) {

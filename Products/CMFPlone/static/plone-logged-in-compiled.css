@@ -1557,6 +1557,9 @@ ul.jqtree-tree .jqtree-moving > .jqtree-element .jqtree-title {
     outline: dashed 1px #0000ff;
 }
 
+.autotabs ul li.jqtree_common {
+  display: block;
+}
 .pattern-relateditems-dropdown {
   z-index: 10002;
 }
@@ -1593,19 +1596,7 @@ ul.jqtree-tree .jqtree-moving > .jqtree-element .jqtree-title {
 .pattern-relateditems-path em {
   color: #666;
 }
-.pattern-relateditems-result {
-  padding-right: 30px;
-  position: relative;
-}
-.pattern-relateditems-result a:hover {
-  text-decoration: none;
-}
-.pattern-relateditems-result .pattern-relateditems-result-select {
-  display: block;
-  line-height: 15px;
-  padding-top: 5px;
-}
-.pattern-relateditems-result .pattern-relateditems-buttons {
+.pattern-relateditems-buttons {
   position: absolute;
   display: inline-block;
   text-align: right;
@@ -1614,7 +1605,7 @@ ul.jqtree-tree .jqtree-moving > .jqtree-element .jqtree-title {
   top: 50%;
   margin-top: -16px;
 }
-.pattern-relateditems-result .pattern-relateditems-buttons a {
+.pattern-relateditems-buttons a {
   display: block;
   height: 36px;
   line-height: 36px;
@@ -1628,8 +1619,20 @@ ul.jqtree-tree .jqtree-moving > .jqtree-element .jqtree-title {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-.pattern-relateditems-result .pattern-relateditems-buttons a:before {
+.pattern-relateditems-buttons a:before {
   content: "\e080";
+}
+.pattern-relateditems-result {
+  padding-right: 30px;
+  position: relative;
+}
+.pattern-relateditems-result a:hover {
+  text-decoration: none;
+}
+.pattern-relateditems-result .pattern-relateditems-result-select {
+  display: block;
+  line-height: 15px;
+  padding-top: 5px;
 }
 .pattern-relateditems-result .pattern-relateditems-result-path {
   display: block;
@@ -1643,14 +1646,14 @@ ul.jqtree-tree .jqtree-moving > .jqtree-element .jqtree-title {
 }
 /* tree parts */
 .pattern-relateditems-tree .tree-container {
+  box-shadow: 0px 0px 8px 0px #DDD;
   position: absolute;
   background-color: white;
   min-width: 200px;
   padding: 0px;
-  left: 4px;
-  border: 3px solid #DDD;
-  border-radius: 7px;
-  top: 4px;
+  left: -1px;
+  top: -11px;
+  border: 1px solid #5897fb;
   display: none;
   z-index: 10000;
   min-width: 350px;
@@ -1665,36 +1668,46 @@ ul.jqtree-tree .jqtree-moving > .jqtree-element .jqtree-title {
   padding: 2px 0;
 }
 .pattern-relateditems-tree .tree-container .select-folder-label {
-  display: block;
-  margin: 10px 5px 5px 5px;
-  font-style: italic;
   font-weight: bold;
 }
-.pattern-relateditems-tree .tree-container .btn.close.pattern-relateditems-tree-itemselect,
-.pattern-relateditems-tree .tree-container .pat-structure .btn.close.pattern-relateditems-tree-itemselect {
-  display: block;
-  margin: 2px;
-  opacity: 1.0;
+.pattern-relateditems-tree .tree-container .tree-node-empty {
+  font-size: 75%;
 }
-.pattern-relateditems-tree .tree-container .btn.close.pattern-relateditems-tree-cancel,
-.pattern-relateditems-tree .tree-container .pat-structure .btn.close.pattern-relateditems-tree-cancel {
-  display: block;
-  position: absolute;
-  top: 5px;
-  right: 5px;
+.pattern-relateditems-tree .tree-container .title-container {
+  background-color: #f1f1f1;
+}
+.pattern-relateditems-tree .tree-container .jqtree-tree {
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(1%, #eeeeee), color-stop(5%, #ffffff));
+  background-image: -webkit-linear-gradient(top, #eeeeee 1%, #ffffff 5%);
+  background-image: -moz-linear-gradient(top, #eeeeee 1%, #ffffff 5%);
+  background-image: linear-gradient(to bottom, #eeeeee 1%, #ffffff 5%);
+}
+.pattern-relateditems-tree .tree-container .jqtree-tree .pattern-relateditems-buttons {
+  margin-top: -22px;
+  top: inherit;
 }
 .pattern-relateditems-tree .tree-container .jqtree-tree .jqtree_common {
   padding-left: 2px;
 }
 .pattern-relateditems-tree .tree-container .jqtree-tree .jqtree_common.jqtree-selected .jqtree_common.jqtree-element {
-  background: #97BDD6;
+  background: #f1f1f1;
   text-shadow: none;
 }
-.pattern-relateditems-tree .tree-container .jqtree-tree li.jqtree_common {
-  padding-right: 6px;
+.pattern-relateditems-tree .tree-container .jqtree-tree .jqtree-toggler {
+  top: 20%;
+}
+.pattern-relateditems-tree .tree-container .jqtree-tree li.jqtree_common .jqtree-element {
+  padding: 0;
 }
 .pattern-relateditems-tree .tree-container .jqtree-tree li.jqtree_common .jqtree_common.jqtree-element:hover {
-  background: #DDD;
+  background: #f1f1f1;
+}
+.pattern-relateditems-tree .tree-container .jqtree-tree li.jqtree_common.jqtree-folder {
+  margin-left: 18px;
+}
+.pattern-relateditems-tree .tree-container .jqtree-tree li.jqtree_common.jqtree-folder ul.jqtree_common {
+  margin-left: 0;
+  padding-left: 0;
 }
 #content .field .querystring-criteria-wrapper .picker__input {
   font-size: 16px;
