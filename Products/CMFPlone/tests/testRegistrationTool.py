@@ -1,14 +1,16 @@
+# -*- coding: utf-8 -*-
 import unittest
-
-from email import message_from_string
-from zope.component import getSiteManager, getUtility
-from Products.CMFPlone.tests import PloneTestCase
 
 from AccessControl import Unauthorized
 from Products.CMFCore.permissions import AddPortalMember
+from Products.CMFPlone.RegistrationTool import _checkEmail
+from Products.CMFPlone.interfaces.controlpanel import IMailSchema, ISiteSchema
+from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests.utils import MockMailHost
 from Products.MailHost.interfaces import IMailHost
-from Products.CMFPlone.RegistrationTool import _checkEmail
+from email import message_from_string
+from plone.registry.interfaces import IRegistry
+from zope.component import getSiteManager, getUtility
 
 member_id = 'new_member'
 
@@ -117,10 +119,13 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
         self.registration.addMember(member_id, 'secret',
                           properties={'username': member_id,
                                       'email': 'foo@bar.com'})
-        # Set the portal email info
-        self.portal.setTitle('T\xc3\xa4st Portal')
-        self.portal.email_from_name = 'T\xc3\xa4st Admin'
-        self.portal.email_from_address = 'bar@baz.com'
+
+        registry = getUtility(IRegistry)
+        site_settings = registry.forInterface(ISiteSchema, prefix='plone')
+        site_settings.site_title = u'Tëst Portal'
+        mail_settings = registry.forInterface(IMailSchema, prefix="plone")
+        mail_settings.email_from_name = u'Tëst Admin'
+        mail_settings.email_from_address = 'bar@baz.com'
 
         # Notify the registered user
         self.registration.registeredNotify(member_id)
@@ -129,13 +134,11 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
         # We get an encoded subject
         self.assertEqual(
             msg['Subject'],
-            '=?utf-8?q?User_Account_Information_for_T=C3=A4st_Portal?=')
+            '=?utf-8?q?User_Account_Information_for_T=C3=ABst_Portal?=')
         # Also a partially encoded from header
         self.assertEqual(msg['From'],
-                         '=?utf-8?q?T=C3=A4st_Admin?= <bar@baz.com>')
+                         '=?utf-8?q?T=C3=ABst_Admin?= <bar@baz.com>')
         self.assertEqual(msg['Content-Type'], 'text/plain; charset="utf-8"')
-        # And a Quoted Printable encoded body
-        self.assertTrue('T=C3=A4st Admin' in msg.get_payload())
 
     def testRegisteredNotifyEncoding(self):
         mails = self.portal.MailHost = MockMailHost('MailHost')
@@ -146,10 +149,12 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
         self.registration.addMember(member_id, 'secret',
                           properties={'username': member_id,
                                       'email': 'foo@bar.com'})
-        # Set the portal email info
-        self.portal.setTitle('Test Portal')
-        self.portal.email_from_name = 'Test Admin'
-        self.portal.email_from_address = 'bar@baz.com'
+        registry = getUtility(IRegistry)
+        site_settings = registry.forInterface(ISiteSchema, prefix='plone')
+        site_settings.site_title = u'Test Portal'
+        mail_settings = registry.forInterface(IMailSchema, prefix="plone")
+        mail_settings.email_from_name = u'Test Admin'
+        mail_settings.email_from_address = 'bar@baz.com'
 
         # Set the portal email encoding
         self.portal.email_charset = 'us-ascii'
@@ -173,10 +178,13 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
         self.registration.addMember(member_id, 'secret',
                           properties={'username': member_id,
                                       'email': 'foo@bar.com'})
-        # Set the portal email info
-        self.portal.setTitle('T\xc3\xa4st Portal')
-        self.portal.email_from_name = 'T\xc3\xa4st Admin'
-        self.portal.email_from_address = 'bar@baz.com'
+
+        registry = getUtility(IRegistry)
+        site_settings = registry.forInterface(ISiteSchema, prefix='plone')
+        site_settings.site_title = u'Tëst Portal'
+        mail_settings = registry.forInterface(IMailSchema, prefix="plone")
+        mail_settings.email_from_name = u'Tëst Admin'
+        mail_settings.email_from_address = 'bar@baz.com'
 
         from zope.publisher.browser import TestRequest
         self.registration.mailPassword(member_id, TestRequest())
@@ -187,10 +195,8 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
                          '=?utf-8?q?Password_reset_request?=')
         # Also a partially encoded from header
         self.assertEqual(msg['From'],
-                         '=?utf-8?q?T=C3=A4st_Admin?= <bar@baz.com>')
+                         '=?utf-8?q?T=C3=ABst_Admin?= <bar@baz.com>')
         self.assertEqual(msg['Content-Type'], 'text/plain; charset="utf-8"')
-        # And a Quoted Printable encoded body
-        self.assertTrue('T=C3=A4st Porta' in msg.get_payload())
 
     def testMailPasswordEncoding(self):
         # tests email sending for password emails
@@ -203,10 +209,12 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
         self.registration.addMember(member_id, 'secret',
                           properties={'username': member_id,
                                       'email': 'foo@bar.com'})
-        # Set the portal email info
-        self.portal.setTitle('Test Portal')
-        self.portal.email_from_name = 'Test Admin'
-        self.portal.email_from_address = 'bar@baz.com'
+        registry = getUtility(IRegistry)
+        site_settings = registry.forInterface(ISiteSchema, prefix='plone')
+        site_settings.site_title = u'Tëst Portal'
+        mail_settings = registry.forInterface(IMailSchema, prefix="plone")
+        mail_settings.email_from_name = u'Test Admin'
+        mail_settings.email_from_address = 'bar@baz.com'
 
         # Set the portal email encoding
         self.portal.email_charset = 'us-ascii'
