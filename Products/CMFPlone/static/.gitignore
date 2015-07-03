@@ -74,3 +74,14 @@ components/jquery.recurrenceinput.js/lib/*.png
 components/jquery.recurrenceinput.js/src/*.png
 components/jquery.recurrenceinput.js/test*
 
+components/pickadate/.gitignore
+components/pickadate/.jshintrc
+components/pickadate/.travis.yml
+components/pickadate/Gruntfile.js
+components/pickadate/bower.json
+components/pickadate/lib/themes-source/
+components/pickadate/package.json
+components/pickadate/tests/
+components/pickadate/version-bump.js
+components/pickadate/version-commit.js
+

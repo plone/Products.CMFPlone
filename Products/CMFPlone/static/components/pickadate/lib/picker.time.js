@@ -1,16 +1,19 @@
-
 /*!
- * Time picker for pickadate.js v3.4.0
+ * Time picker for pickadate.js v3.5.6
  * http://amsul.github.io/pickadate.js/time.htm
  */
 
 (function ( factory ) {
 
-    // Register as an anonymous module.
+    // AMD.
     if ( typeof define == 'function' && define.amd )
-        define( ['picker','jquery'], factory )
+        define( ['picker', 'jquery'], factory )
 
-    // Or using browser globals.
+    // Node.js/browserify.
+    else if ( typeof exports == 'object' )
+        module.exports = factory( require('./picker.js'), require('jquery') )
+
+    // Browser globals.
     else factory( Picker, jQuery )
 
 }(function( Picker, $ ) {
@@ -57,6 +60,7 @@ function TimePicker( picker, settings ) {
     // The component's item object.
     clock.item = {}
 
+    clock.item.clear = null
     clock.item.interval = settings.interval || 30
     clock.item.disable = ( settings.disable || [] ).slice( 0 )
     clock.item.enable = -(function( collectionDisabled ) {
@@ -72,8 +76,7 @@ function TimePicker( picker, settings ) {
     // also sets the `highlight` and `view`.
     if ( valueString ) {
         clock.set( 'select', valueString, {
-            format: formatString,
-            fromValue: !!elementValue
+            format: formatString
         })
     }
 
@@ -105,17 +108,32 @@ function TimePicker( picker, settings ) {
     picker.
         on( 'render', function() {
             var $pickerHolder = picker.$root.children(),
-                $viewset = $pickerHolder.find( '.' + settings.klass.viewset )
+                $viewset = $pickerHolder.find( '.' + settings.klass.viewset ),
+                vendors = function( prop ) {
+                    return ['webkit', 'moz', 'ms', 'o', ''].map(function( vendor ) {
+                        return ( vendor ? '-' + vendor + '-' : '' ) + prop
+                    })
+                },
+                animations = function( $el, state ) {
+                    vendors( 'transform' ).map(function( prop ) {
+                        $el.css( prop, state )
+                    })
+                    vendors( 'transition' ).map(function( prop ) {
+                        $el.css( prop, state )
+                    })
+                }
             if ( $viewset.length ) {
+                animations( $pickerHolder, 'none' )
                 $pickerHolder[ 0 ].scrollTop = ~~$viewset.position().top - ( $viewset[ 0 ].clientHeight * 2 )
+                animations( $pickerHolder, '' )
             }
-        }).
+        }, 1 ).
         on( 'open', function() {
-            picker.$root.find( 'button' ).attr( 'disable', false )
-        }).
+            picker.$root.find( 'button' ).attr( 'disabled', false )
+        }, 1 ).
         on( 'close', function() {
-            picker.$root.find( 'button' ).attr( 'disable', true )
-        })
+            picker.$root.find( 'button' ).attr( 'disabled', true )
+        }, 1 )
 
 } //TimePicker
 
@@ -130,6 +148,7 @@ TimePicker.prototype.set = function( type, value, options ) {
 
     // If the value is `null` just set it immediately.
     if ( value === null ) {
+        if ( type == 'clear' ) type = 'select'
         clockItem[ type ] = value
         return clock
     }
@@ -156,14 +175,14 @@ TimePicker.prototype.set = function( type, value, options ) {
             set( 'max', clockItem.max, options )
     }
     else if ( type.match( /^(flip|min|max|disable|enable)$/ ) ) {
-        if ( type == 'min' ) {
-            clock.set( 'max', clockItem.max, options )
-        }
         if ( clockItem.select && clock.disabled( clockItem.select ) ) {
-            clock.set( 'select', clockItem.select, options )
+            clock.set( 'select', value, options )
         }
         if ( clockItem.highlight && clock.disabled( clockItem.highlight ) ) {
-            clock.set( 'highlight', clockItem.highlight, options )
+            clock.set( 'highlight', value, options )
+        }
+        if ( type == 'min' ) {
+            clock.set( 'max', clockItem.max, options )
         }
     }
 
@@ -236,7 +255,7 @@ TimePicker.prototype.create = function( type, value, options ) {
         time: ( MINUTES_IN_DAY + value ) % MINUTES_IN_DAY,
 
         // Reference to the “relative” value to pick.
-        pick: value
+        pick: value % MINUTES_IN_DAY
     }
 } //TimePicker.prototype.create
 
@@ -298,7 +317,7 @@ TimePicker.prototype.overlapRanges = function( one, two ) {
     one = clock.createRange( one.from, one.to )
     two = clock.createRange( two.from, two.to )
 
-    return clock.withinRange( one, two.from ) || clock.withinRange( one, two.to ) ||
+    return clock.withinRange( one, two.from ) || clock.withinRange( one, two.to ) ||
         clock.withinRange( two, one.from ) || clock.withinRange( two, one.to )
 }
 
@@ -365,6 +384,11 @@ TimePicker.prototype.measure = function( type, value, options ) {
     // If it’s anything false-y, set it to the default.
     if ( !value ) {
         value = type == 'min' ? [ 0, 0 ] : [ HOURS_IN_DAY - 1, MINUTES_IN_HOUR - 1 ]
+    }
+
+    // If it’s a string, parse it.
+    if ( typeof value == 'string' ) {
+        value = clock.parse( type, value )
     }
 
     // If it’s a literal true, or an integer, make it relative to now.
@@ -502,7 +526,8 @@ TimePicker.prototype.parse = function( type, value, options ) {
         clock = this,
         parsingObject = {}
 
-    if ( !value || _.isInteger( value ) || $.isArray( value ) || _.isDate( value ) || $.isPlainObject( value ) && _.isInteger( value.pick ) ) {
+    // If it’s already parsed, we’re good.
+    if ( !value || typeof value != 'string' ) {
         return value
     }
 
@@ -874,7 +899,8 @@ TimePicker.prototype.nodes = function( isOpen ) {
                 var timeMinutes = loopedTime.pick,
                     isSelected = selectedObject && selectedObject.pick == timeMinutes,
                     isHighlighted = highlightedObject && highlightedObject.pick == timeMinutes,
-                    isDisabled = disabledCollection && clock.disabled( loopedTime )
+                    isDisabled = disabledCollection && clock.disabled( loopedTime ),
+                    formattedTime = _.trigger( clock.formats.toString, clock, [ settings.format, loopedTime ] )
                 return [
                     _.trigger( clock.formats.toString, clock, [ _.trigger( settings.formatLabel, clock, [ loopedTime ] ) || settings.format, loopedTime ] ),
                     (function( klasses ) {
@@ -898,13 +924,9 @@ TimePicker.prototype.nodes = function( isOpen ) {
                         return klasses.join( ' ' )
                     })( [ settings.klass.listItem ] ),
                     'data-pick=' + loopedTime.pick + ' ' + _.ariaAttr({
-                        role: 'button',
-                        controls: clock.$node[0].id,
-                        checked: isSelected && clock.$node.val() === _.trigger(
-                                clock.formats.toString,
-                                clock,
-                                [ settings.format, loopedTime ]
-                            ) ? true : null,
+                        role: 'option',
+                        label: formattedTime,
+                        selected: isSelected && clock.$node.val() === formattedTime ? true : null,
                         activedescendant: isHighlighted ? true : null,
                         disabled: isDisabled ? true : null
                     })
@@ -919,10 +941,13 @@ TimePicker.prototype.nodes = function( isOpen ) {
                 'button',
                 settings.clear,
                 settings.klass.buttonClear,
-                'type=button data-clear=1' + ( isOpen ? '' : ' disable' )
-            )
+                'type=button data-clear=1' + ( isOpen ? '' : ' disabled' ) + ' ' +
+                _.ariaAttr({ controls: clock.$node[0].id })
+            ),
+            '', _.ariaAttr({ role: 'presentation' })
         ),
-        settings.klass.list
+        settings.klass.list,
+        _.ariaAttr({ role: 'listbox', controls: clock.$node[0].id })
     )
 } //TimePicker.prototype.nodes
 
@@ -932,10 +957,9 @@ TimePicker.prototype.nodes = function( isOpen ) {
 
 
 
-/* ==========================================================================
-   Extend the picker to add the component with the defaults.
-   ========================================================================== */
-
+/**
+ * Extend the picker to add the component with the defaults.
+ */
 TimePicker.defaults = (function( prefix ) {
 
     return {
@@ -948,6 +972,10 @@ TimePicker.defaults = (function( prefix ) {
 
         // The interval between each time
         interval: 30,
+
+        // Picker close behavior
+        closeOnSelect: true,
+        closeOnClear: true,
 
         // Classes
         klass: {
