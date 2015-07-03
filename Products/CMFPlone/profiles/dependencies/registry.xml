@@ -1097,7 +1097,7 @@
       <value_type type="plone.registry.field.Text" />
     </field>
     <value>
-      <element key="pickadate">{"selectYears": 200}</element>
+      <element key="pickadate">{"date": {"selectYears": 200}, "time": {"interval": 5 } }</element>
       <element key="plone-modal">{"actionOptions": {"displayInModal": false}}</element>
     </value>
   </record>

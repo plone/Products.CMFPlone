@@ -8,6 +8,9 @@ Changelog
 5.0b3 (unreleased)
 ------------------
 
+- update time widget interval selection to be the same as Plone 4 time selection intervals
+  [vangheem]
+
 - use ajax_load in @@search when loading results dynamically, and add missing
   closing tag
   [ebrehault]
