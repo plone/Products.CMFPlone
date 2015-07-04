@@ -11204,7 +11204,13 @@ define('mockup-utils',[
           v: term
         });
       }
-      if (self.pattern.browsing) {
+      if(options.searchPath){
+        criterias.push({
+          i: 'path',
+          o: 'plone.app.querystring.operation.string.path',
+          v: options.searchPath + '::' + self.options.pathDepth
+        });
+      }else if (self.pattern.browsing) {
         criterias.push({
           i: 'path',
           o: 'plone.app.querystring.operation.string.path',
@@ -11266,9 +11272,12 @@ define('mockup-utils',[
       return data;
     };
 
-    self.search = function(term, operation, value, callback, useBaseCriteria) {
+    self.search = function(term, operation, value, callback, useBaseCriteria, type) {
       if (useBaseCriteria === undefined) {
         useBaseCriteria = true;
+      }
+      if(type === undefined){
+        type = 'GET';
       }
       var criteria = [];
       if (useBaseCriteria) {
@@ -11287,6 +11296,7 @@ define('mockup-utils',[
         url: self.options.vocabularyUrl,
         dataType: 'JSON',
         data: data,
+        type: type,
         success: callback
       });
     };
@@ -81000,6 +81010,7 @@ define('mockup-ui-url/views/base',[
     isUIView: true,
     eventPrefix: 'ui',
     template: null,
+    idPrefix: 'base-',
     appendInContainer: true,
     initialize: function(options) {
       this.options = options;
@@ -81014,9 +81025,9 @@ define('mockup-ui-url/views/base',[
       this.trigger('render', this);
       this.afterRender();
 
-      if (!this.$el.attr('id') && this.options.id) {
+      if (this.options.id) {
         // apply id to element
-        this.$el.attr('id', 'gen-' + this.options.id);
+        this.$el.attr('id', this.idPrefix + this.options.id);
       }
       return this;
     },
@@ -81076,7 +81087,12 @@ define('mockup-ui-url/views/container',[
     items: [],
     itemContainer: null,
     isOffsetParent: true,
+    idPrefix: 'container-',
     render: function() {
+      if (this.options.id) {
+        this.$el.attr('id', this.idPrefix + this.options.id);
+      }
+
       this.applyTemplate();
 
       this.renderItems();
@@ -81090,6 +81106,7 @@ define('mockup-ui-url/views/container',[
 
       this.afterRender();
 
+      this.$el.data('component', this);
       return this;
     },
     renderItems: function() {
@@ -81160,7 +81177,8 @@ define('mockup-ui-url/views/toolbar',[
 
   var Toolbar = ContainerView.extend({
     tagName: 'div',
-    className: 'navbar'
+    className: 'navbar',
+    idPrefix: 'toolbar-'
   });
 
   return Toolbar;
@@ -81176,6 +81194,7 @@ define('mockup-ui-url/views/buttongroup',[
   var ButtonGroup = ContainerView.extend({
     tagName: 'div',
     className: 'btn-group',
+    idPrefix: 'btngroup-',
     disable: function() {
       _.each(this.items, function(button) {
         button.trigger('disable');
@@ -81681,6 +81700,7 @@ define('mockup-ui-url/views/button',[
     className: 'btn',
     eventPrefix: 'button',
     context: 'default',
+    idPrefix: 'btn-',
     attributes: {
       'href': '#'
     },
@@ -81749,8 +81769,26 @@ define('mockup-ui-url/views/button',[
   return ButtonView;
 });
 
+define('mockup-patterns-structure-url/js/models/result',['backbone'], function(Backbone) {
+  'use strict';
 
-define('text!mockup-patterns-structure-url/templates/actionmenu.xml',[],function () { return '<a class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" href="#">\n  <span class="glyphicon glyphicon-cog"></span>\n  <span class="caret"></span>\n</a>\n<ul class="dropdown-menu pull-right">\n  <% if(header) { %>\n    <li class="dropdown-header"><%- header %></li>\n    <li class="divider"></li>\n  <% } %>\n  <li class="cutItem"><a href="#"><%- _t("Cut") %></a></li>\n  <li class="copyItem"><a href="#"><%- _t("Copy") %></a></li>\n  <% if(pasteAllowed && attributes.is_folderish){ %>\n    <li class="pasteItem"><a href="#"><%- _t("Paste") %></a></li>\n  <% } %>\n  <% if(!inQueryMode && canMove){ %>\n    <li class="move-top"><a href="#"><%- _t("Move to top of folder") %></a></li>\n    <li class="move-bottom"><a href="#"><%- _t("Move to bottom of folder") %></a></li>\n  <% } %>\n  <% if(!attributes.is_folderish && canSetDefaultPage){ %>\n    <li class="set-default-page"><a href="#"><%- _t("Set as default page") %></a></li>\n  <% } %>\n  <li class="openItem"><a href="#"><%- _t("Open") %></a></li>\n  <li class="editItem"><a href="#"><%- _t("Edit") %></a></li>\n</ul>\n\n';});
+  var Result = Backbone.Model.extend({
+    defaults: function() {
+      return {
+        'is_folderish': false,
+        'review_state': ''
+      };
+    },
+    uid: function() {
+      return this.attributes.UID;
+    }
+  });
+
+  return Result;
+});
+
+
+define('text!mockup-patterns-structure-url/templates/actionmenu.xml',[],function () { return '<a class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" href="#">\n  <span class="glyphicon glyphicon-cog"></span>\n  <span class="caret"></span>\n</a>\n<ul class="dropdown-menu pull-right">\n  <% if(header) { %>\n    <li class="dropdown-header"><%- header %></li>\n    <li class="divider"></li>\n  <% } %>\n  <li class="cutItem"><a href="#"><%- _t("Cut") %></a></li>\n  <li class="copyItem"><a href="#"><%- _t("Copy") %></a></li>\n  <% if(pasteAllowed && attributes.is_folderish){ %>\n    <li class="pasteItem"><a href="#"><%- _t("Paste") %></a></li>\n  <% } %>\n  <% if(!inQueryMode && canMove){ %>\n    <li class="move-top"><a href="#"><%- _t("Move to top of folder") %></a></li>\n    <li class="move-bottom"><a href="#"><%- _t("Move to bottom of folder") %></a></li>\n  <% } %>\n  <% if(!attributes.is_folderish && canSetDefaultPage){ %>\n    <li class="set-default-page"><a href="#"><%- _t("Set as default page") %></a></li>\n  <% } %>\n  <% if(attributes.is_folderish){ %>\n    <li class="selectAll"><a href="#"><%- _t("Select all contained items") %></a></li>\n  <% } %>\n  <li class="openItem"><a href="#"><%- _t("Open") %></a></li>\n  <li class="editItem"><a href="#"><%- _t("Edit") %></a></li>\n</ul>\n\n';});
 
 (function(root) {
 define("bootstrap-dropdown", ["jquery"], function() {
@@ -81927,17 +81965,19 @@ define('mockup-patterns-structure-url/js/views/actionmenu',[
   'underscore',
   'backbone',
   'mockup-ui-url/views/base',
+  'mockup-patterns-structure-url/js/models/result',
   'mockup-utils',
   'text!mockup-patterns-structure-url/templates/actionmenu.xml',
   'translate',
   'bootstrap-dropdown'
-], function($, _, Backbone, BaseView, utils, ActionMenuTemplate, _t) {
+], function($, _, Backbone, BaseView, Result, utils, ActionMenuTemplate, _t) {
   'use strict';
 
   var ActionMenu = BaseView.extend({
     className: 'btn-group actionmenu',
     template: _.template(ActionMenuTemplate),
     events: {
+      'click .selectAll a': 'selectAll',
       'click .cutItem a': 'cutClicked',
       'click .copyItem a': 'copyClicked',
       'click .pasteItem a': 'pasteClicked',
@@ -81958,32 +81998,76 @@ define('mockup-patterns-structure-url/js/views/actionmenu',[
         this.canMove = true;
       }
     },
+    selectAll: function(e){
+      e.preventDefault();
+      var self = this;
+      var page = 1;
+      var count = 0;
+      var getPage = function(){
+        self.app.loading.show();
+        $.ajax({
+          url: self.app.collection.url,
+          type: 'GET',
+          dataType: 'json',
+          data: {
+            query: self.app.collection.queryParser({
+              searchPath: self.model.attributes.path
+            }),
+            batch: JSON.stringify({
+              page: page,
+              size: 100
+            }),
+            attributes: JSON.stringify(self.app.queryHelper.options.attributes)
+          }
+        }).done(function(data){
+          var items = self.app.collection.parse(data, count);
+          count += items.length;
+          _.each(items, function(item){
+            self.app.selectedCollection.add(new Result(item));
+          });
+          page += 1;
+          if(data.total > count){
+            getPage();
+          }else{
+            self.app.loading.hide();
+            self.app.tableView.render();
+          }
+        });
+      };
+      getPage();
+    },
+    doAction: function(buttonName, successMsg, failMsg){
+      var self = this;
+      $.ajax({
+        url: self.app.buttons.get(buttonName).options.url,
+        data: {
+          selection: JSON.stringify([self.model.attributes.UID]),
+          folder: self.model.attributes.path,
+          _authenticator: utils.getAuthenticator()
+        },
+        dataType: 'json',
+        type: 'POST'
+      }).done(function(data){
+        if(data.status === 'success'){
+          self.app.setStatus(_t(successMsg + ' "' + self.model.attributes.Title + '"'));
+          self.app.collection.pager();
+          self.app.updateButtons();
+        }else{
+          self.app.setStatus(_t('Error ' + failMsg + ' "' + self.model.attributes.Title + '"'));
+        }
+      }); 
+    },
     cutClicked: function(e) {
       e.preventDefault();
-      this.cutCopyClicked('cut');
-      this.app.collection.pager(); // reload to be able to now show paste button
+      this.doAction('cut', _t('Cut'), _t('cutting'));
     },
     copyClicked: function(e) {
       e.preventDefault();
-      this.cutCopyClicked('copy');
-      this.app.collection.pager(); // reload to be able to now show paste button
-    },
-    cutCopyClicked: function(operation) {
-      var self = this;
-      self.app.pasteOperation = operation;
-
-      self.app.pasteSelection = new Backbone.Collection();
-      self.app.pasteSelection.add(this.model);
-      self.app.setStatus(operation + ' 1 item');
-      self.app.pasteAllowed = true;
-      self.app.buttons.primary.get('paste').enable();
+      this.doAction('copy', _t('Copied'), _t('copying'));
     },
     pasteClicked: function(e) {
       e.preventDefault();
-      this.app.pasteEvent(this.app.buttons.primary.get('paste'), e, {
-        folder: this.model.attributes.path
-      });
-      this.app.collection.pager(); // reload to be able to now show paste button
+      this.doAction('paste', _t('Pasted into'), _t('Error pasting into'));
     },
     moveTopClicked: function(e) {
       e.preventDefault();
@@ -82166,14 +82250,17 @@ define('mockup-patterns-structure-url/js/views/tablerow',[
           if ((index > lastCheckedIndex && index < thisIndex) ||
               (index < lastCheckedIndex && index > thisIndex)) {
             this.checked = checkbox.checked;
-            var model = $(this).closest('tr')[0].model;
-            var existing = selectedCollection.getByUID(model.attributes.UID);
-            if (this.checked) {
-              if (!existing) {
-                selectedCollection.add(model.clone());
+            var $tr = $(this).closest('tr.itemRow');
+            if($tr.length > 0){
+              var model = $tr[0].model;
+              var existing = selectedCollection.getByUID(model.attributes.UID);
+              if (this.checked) {
+                if (!existing) {
+                  selectedCollection.add(model.clone());
+                }
+              } else if (existing) {
+                selectedCollection.removeResult(existing);
               }
-            } else if (existing) {
-              selectedCollection.removeResult(existing);
             }
           }
         });
@@ -82187,7 +82274,7 @@ define('mockup-patterns-structure-url/js/views/tablerow',[
 });
 
 
-define('text!mockup-patterns-structure-url/templates/table.xml',[],function () { return '<div class="alert alert-<%= statusType %> status">\n    <%= status %>\n</div>\n<table class="table table-striped table-bordered">\n  <thead>\n    <tr class="breadcrumbs-container">\n      <td colspan="<%= activeColumns.length + 3 %>">\n        <% if(pathParts.length > 0) { %>\n          <div class="input-group context-buttons" style="display:none">\n            <span class="input-group-addon">\n              <input type="checkbox" />\n            </span>\n            <div class="input-group-btn">\n            </div>\n          </div>\n        <% } %>\n        <div class="breadcrumbs">\n          <a href="#" data-path="/">\n            <span class="glyphicon glyphicon-home"></span> /\n          </a>\n          <% _.each(pathParts, function(part, idx, list){\n            if(part){\n              if(idx > 0){ %>\n                /\n              <% } %>\n              <a href="#" class="crumb" data-path="<%- part %>"><%- part %></a>\n            <% }\n          }); %>\n        </div>\n      </td>\n    </tr>\n    <tr>\n      <th><input type="checkbox" class="select-all" /></th>\n      <th>Title</th>\n      <% _.each(activeColumns, function(column){ %>\n        <% if(_.has(availableColumns, column)) { %>\n          <th><%- availableColumns[column] %></th>\n        <% } %>\n      <% }); %>\n      <th><%- _t("Actions") %></th>\n    </tr>\n  </thead>\n  <tbody>\n  </tbody>\n</table>\n';});
+define('text!mockup-patterns-structure-url/templates/table.xml',[],function () { return '<div class="alert alert-<%= statusType %> status">\n    <%= status %>\n</div>\n<table class="table table-striped table-bordered">\n  <thead>\n    <tr class="breadcrumbs-container">\n      <td colspan="<%= activeColumns.length + 3 %>">\n        <% if(pathParts.length > 0) { %>\n          <div class="input-group context-buttons" style="display:none">\n            <span class="input-group-addon">\n              <input type="checkbox" />\n            </span>\n            <div class="input-group-btn">\n            </div>\n          </div>\n        <% } %>\n        <div class="breadcrumbs">\n          <a href="#" data-path="/">\n            <span class="glyphicon glyphicon-home"></span> /\n          </a>\n          <% _.each(pathParts, function(part, idx, list){\n            if(part){\n              if(idx > 0){ %>\n                /\n              <% } %>\n              <a href="#" class="crumb" data-path="<%- part %>"><%- part %></a>\n            <% }\n          }); %>\n        </div>\n      </td>\n    </tr>\n    <tr>\n      <th class="selection"><input type="checkbox" class="select-all" /></th>\n      <th class="title">Title</th>\n      <% _.each(activeColumns, function(column){ %>\n        <% if(_.has(availableColumns, column)) { %>\n          <th><%- availableColumns[column] %></th>\n        <% } %>\n      <% }); %>\n      <th class="actions"><%- _t("Actions") %></th>\n    </tr>\n  </thead>\n  <tbody>\n  </tbody>\n</table>\n';});
 
 /* Sortable pattern.
  *
@@ -82250,6 +82337,11 @@ define('mockup-patterns-sortable',[
       selector: 'li',
       dragClass: 'item-dragging',
       cloneClass: 'dragging',
+      createDragItem: function(pattern, $el){
+        return $el.clone().
+          addClass(pattern.options.cloneClass).
+          css({opacity: 0.75, position: 'absolute'}).appendTo(document.body);
+      },
       drop: null // function to handle drop event
     },
     init: function() {
@@ -82258,6 +82350,7 @@ define('mockup-patterns-sortable',[
 
       self.$el.find(self.options.selector).drag('start', function(e, dd) {
         var dragged = this;
+        var $el = $(this);
         $(dragged).addClass(self.options.dragClass);
         drop({
           tolerance: function(event, proxy, target) {
@@ -82270,11 +82363,8 @@ define('mockup-patterns-sortable',[
             return this.contains(target, [event.pageX, event.pageY]);
           }
         });
-        start = $(this).index();
-        return $( this ).clone().
-          addClass(self.options.cloneClass).
-          css({opacity: 0.75, position: 'absolute'}).
-          appendTo(document.body);
+        start = $el.index();
+        return self.options.createDragItem(self, $el);
       })
       .drag(function(e, dd) {
         /*jshint eqeqeq:false */
@@ -85533,24 +85623,6 @@ define('mockup-patterns-moment',[
 
 });
 
-define('mockup-patterns-structure-url/js/models/result',['backbone'], function(Backbone) {
-  'use strict';
-
-  var Result = Backbone.Model.extend({
-    defaults: function() {
-      return {
-        'is_folderish': false,
-        'review_state': ''
-      };
-    },
-    uid: function() {
-      return this.attributes.UID;
-    }
-  });
-
-  return Result;
-});
-
 (function(root) {
 define("bootstrap-alert", ["jquery"], function() {
   return (function() {
@@ -85702,7 +85774,6 @@ define('mockup-patterns-structure-url/js/views/table',[
       var data = self.contextInfo;
       var $defaultPage = self.$('[data-id="' + data.defaultPage + '"]');
       if ($defaultPage.length > 0) {
-        $defaultPage.find('td.title').prepend('<span>*</span> ');
         $defaultPage.addClass('default-page');
       }
       /* set breadcrumb title info */
@@ -85800,7 +85871,9 @@ define('mockup-patterns-structure-url/js/views/table',[
       if ($(e.target).is(':checked')) {
         $('input[type="checkbox"]', this.$('tbody')).prop('checked', true).change();
       } else {
-        this.selectedCollection.remove(this.collection.models);
+        /* delaying the re-rendering is much faster in this case */
+        this.selectedCollection.remove(this.collection.models, { silent: true });
+        this.selectedCollection.trigger('remove');
       }
       this.setContextInfo();
     },
@@ -85821,7 +85894,17 @@ define('mockup-patterns-structure-url/js/views/table',[
       self.$el.addClass('order-support');
       var dd = new Sortable(self.$('tbody'), {
         selector: 'tr',
-        dragClass: 'structure-dragging',
+        createDragItem: function(pattern, $el){
+          var $tr = $el.clone();
+          var $table = $('<table><tbody></tbody></table>');
+          $('tbody', $table).append($tr);
+          $table.addClass('structure-dragging')
+            .css({opacity: 0.85, position: 'absolute'});
+          $table.width($el.width());
+          $table.height($el.height());
+          $table.appendTo(document.body);
+          return $table;
+        },
         drop: function($el, delta) {
           if (delta !== 0){
             self.app.moveItem($el.attr('data-id'), delta, self.subsetIds);
@@ -85864,6 +85947,7 @@ define('mockup-ui-url/views/popover',[
     content: null,
     title: null,
     triggerView: null,
+    idPrefix: 'popover-',
     triggerEvents: {
       'button:click': 'toggle'
     },
@@ -85886,20 +85970,27 @@ define('mockup-ui-url/views/popover',[
     },
     initialize: function(options) {
       ContainerView.prototype.initialize.apply(this, [options]);
+      this.bindTriggerEvents();
 
       this.on('render', function() {
-        this.bindTriggerEvents();
         this.renderTitle();
         this.renderContent();
       }, this);
     },
     afterRender: function () {
     },
+    getTemplateOptions: function(){
+      return this.options;
+    },
     renderTitle: function() {
-      this.$('.popover-title').append(this.title(this.options));
+      var title = this.title;
+      if(typeof(title) === 'function'){
+        title = title(this.getTemplateOptions());
+      }
+      this.$('.popover-title').empty().append(title);
     },
     renderContent: function() {
-      this.$('.popover-content').append(this.content(this.options));
+      this.$('.popover-content').empty().append(this.content(this.getTemplateOptions()));
     },
     bindTriggerEvents: function() {
       if (this.triggerView) {
@@ -85921,13 +86012,20 @@ define('mockup-ui-url/views/popover',[
       }, $el.offset());
     },
     show: function() {
+      /* hide existing */
+      $('.popover:visible').each(function(){
+        var popover = $(this).data('component');
+        if(popover){
+          popover.hide();
+        }
+      });
+
       var pos = this.getPosition();
       var $tip = this.$el, tp, placement, actualWidth, actualHeight;
 
       placement = this.placement;
 
       $tip.css({ top: 0, left: 0 }).addClass('active');
-
 
       actualWidth = $tip[0].offsetWidth;
       actualHeight = $tip[0].offsetHeight;
@@ -86084,7 +86182,14 @@ define('mockup-patterns-structure-url/js/views/selectionwell',[
     },
     initialize: function(options) {
       PopoverView.prototype.initialize.apply(this, [options]);
-      this.listenTo(this.collection, 'reset all add remove', this.render);
+      var self = this;
+      var timeout = 0;
+      this.listenTo(this.collection, 'reset all add remove', function(){
+        clearTimeout(timeout);
+        timeout = setTimeout(function(){
+          self.render();
+        }, 50);
+      });
       this.options['item_template'] = _.template(ItemTemplate); // jshint ignore:line
     },
     render: function () {
@@ -86124,418 +86229,89 @@ define('mockup-patterns-structure-url/js/views/selectionwell',[
   return WellView;
 });
 
-define('mockup-patterns-structure-url/js/views/tags',[
+define('mockup-patterns-structure-url/js/views/generic-popover',[
   'jquery',
   'underscore',
   'backbone',
   'mockup-ui-url/views/popover',
-  'mockup-patterns-select2'
-], function($, _, Backbone, PopoverView, Select2) {
+  'translate',
+  'pat-registry'
+], function($, _, Backbone, PopoverView, _t, registry) {
   'use strict';
 
-  var TagsView = PopoverView.extend({
-    title: _.template('Add/Remove tags'),
-    content: _.template(
-      '<label><%- _t("Tags to remove") %></label>' +
-      '<div class="form-group">' +
-        '<select multiple class="toremove" style="width: 300px">' +
-        '</select>' +
-      '</div>' +
-      '<label><%- _t("Tags to add") %></label>' +
-      '<div class="form-group">' +
-        '<input class="toadd" style="width:300px" />' +
-      '</div>' +
-      '<button class="btn btn-block btn-primary"><%- _t("Apply") %></button>'
-    ),
+  var PropertiesView = PopoverView.extend({
     events: {
-      'click button': 'applyButtonClicked'
+      'click button.applyBtn': 'applyButtonClicked'
     },
+    submitText: _t('Apply'),
     initialize: function(options) {
-      this.app = options.app;
-      this.removeSelect2 = null;
-      this.addSelect2 = null;
+      var self = this;
+      self.app = options.app;
+      self.className = 'popover ' + options.id;
+      self.title = options.form.title || options.title;
+      self.submitText = options.form.submitText || _t('Apply');
+      self.submitContext = options.form.submitContext || 'primary';
+      self.data = {};
+
+      self.content = _.template('<form>' + options.form.template + '</form>' +
+        '<button class="btn btn-block btn-' + self.submitContext + ' applyBtn">' + self.submitText + ' </button>');
+
       PopoverView.prototype.initialize.apply(this, [options]);
     },
-    render: function() {
-      PopoverView.prototype.render.call(this);
-      this.$remove = this.$('.toremove');
-      this.$add = this.$('.toadd');
-      this.$remove.select2();
-      this.addSelect2 = new Select2(this.$add, {
-        multiple: true,
-        vocabularyUrl: this.app.options.tagsVocabularyUrl
+    getTemplateOptions: function(){
+      var self = this;
+      var items = [];
+      self.app.selectedCollection.each(function(item){
+        items.push(item.toJSON());
       });
-      return this;
+      return $.extend({}, true, self.options, {
+        items: items,
+        data: self.data
+      });
     },
-    getSelect2Values: function($el) {
-      var values = [];
-      _.each($el.select2('data'), function(item) {
-        values.push(item.id);
+    applyButtonClicked: function() {
+      var self = this;
+      var data = {};
+      _.each(self.$el.find('form').serializeArray(), function(param){
+        data[param.name] = param.value;
       });
-      return values;
-    },
-    applyButtonClicked: function(e) {
-      this.app.defaultButtonClickEvent(this.triggerView, {
-        remove: JSON.stringify(this.getSelect2Values(this.$remove)),
-        add: JSON.stringify(this.getSelect2Values(this.$add))
-      });
+      this.app.buttonClickEvent(this.triggerView, data);
       this.hide();
     },
-    toggle: function(button, e) {
-      PopoverView.prototype.toggle.apply(this, [button, e]);
+    afterRender: function(){
       var self = this;
-      if (!this.opened) {
-        return;
-      }
-      // clear out
-      self.$remove.select2('destroy');
-      self.$remove.empty();
-      self.$add.select2('data', []);
-
-      self.app.selectedCollection.each(function(item) {
-        if (!item.attributes.Subject) {
-          return;
-        }
-        _.each(item.attributes.Subject, function(tag) {
-          if (self.$remove.find('[value="' + tag + '"]').length === 0) {
-            self.$remove.append('<option value="' + tag + '">' + tag + '</option>');
+      if(self.options.form.dataUrl){
+        $.ajax({
+          url: self.options.form.dataUrl,
+          dataType: 'json',
+          type: 'POST',
+          data: {
+            selection: JSON.stringify(self.app.getSelectedUids()),
+            transitions: true,
+            render: 'yes'
           }
+        }).done(function(data){
+          self.data = data;
+          self.renderContent();
+          registry.scan(self.$el);
         });
-      });
-      self.$remove.select2();
-    }
-  });
-
-  return TagsView;
-});
-
-define('mockup-patterns-structure-url/js/views/properties',[
-  'jquery',
-  'underscore',
-  'backbone',
-  'mockup-ui-url/views/popover',
-  'mockup-patterns-pickadate',
-  'mockup-patterns-select2'
-], function($, _, Backbone, PopoverView, PickADate, Select2) {
-  'use strict';
-
-  var PropertiesView = PopoverView.extend({
-    className: 'popover properties',
-    title: _.template('<%- _t("Modify properties on items") %>'),
-    content: _.template(
-      '<div class="form-group">' +
-        '<label><%- _t("Publication Date") %></label>' +
-        '<input class="form-control" name="effective" />' +
-      '</div>' +
-      '<div class="form-group">' +
-        '<label><%- _t("Expiration Date") %></label>' +
-        '<input class="form-control" name="expiration" />' +
-      '</div>' +
-      '<div class="form-group">' +
-        '<label><%- _t("Copyright") %></label>' +
-        '<textarea class="form-control" name="copyright"></textarea>' +
-      '</div>' +
-      '<label><%- _t("Creators") %></label>' +
-      '<div class="form-group">' +
-        '<input name="creators" style="width: 300px" />' +
-      '</div>' +
-      '<label><%- _t("Contributors") %></label>' +
-      '<div class="form-group">' +
-        '<input name="contributors" style="width: 300px" />' +
-      '</div>' +
-      '<label><%- _t("Exclude from nav") %></label>' +
-      '<div class="radio">' +
-        '<label>' +
-          '<input type="radio" name="exclude-from-nav" value="yes" />' +
-          '<%- _t("Yes") %>' +
-        '</label>' +
-      '</div>' +
-      '<div class="radio">' +
-        '<label>' +
-          '<input type="radio" name="exclude-from-nav" value="no" />' +
-          '<%- _t("No") %>' +
-        '</label>' +
-      '</div>' +
-      '<button class="btn btn-block btn-primary"><%- _t("Apply") %></button>'
-    ),
-    events: {
-      'click button': 'applyButtonClicked'
-    },
-    initialize: function(options) {
-      this.app = options.app;
-      PopoverView.prototype.initialize.apply(this, [options]);
-    },
-    render: function() {
-      PopoverView.prototype.render.call(this);
-      this.$effective = this.$('[name="effective"]');
-      this.$expiration = this.$('[name="expiration"]');
-      this.$copyright = this.$('[name="copyright"]');
-      this.$creators = this.$('[name="creators"]');
-      this.$contributors = this.$('[name="contributors"]');
-      this.$exclude = this.$('[name="exclude-from-nav"]');
-
-      this.creatorsSelect2 = new Select2(this.$creators, {
-        multiple: true,
-        vocabularyUrl: this.app.options.usersVocabularyUrl
-      });
-      this.contributorsSelect2 = new Select2(this.$contributors, {
-        multiple: true,
-        vocabularyUrl: this.app.options.usersVocabularyUrl
-      });
-      this.effectivePickADate = new PickADate(this.$effective);
-      this.expirationPickADate = new PickADate(this.$expiration);
-      return this;
-    },
-    applyButtonClicked: function(e) {
-      var data = {
-        effectiveDate: this.effectivePickADate.$date.val(),
-        effectiveTime: this.effectivePickADate.$time.val(),
-        expirationDate: this.expirationPickADate.$date.val(),
-        expirationTime: this.expirationPickADate.$time.val(),
-        copyright: this.$copyright.val(),
-        contributors: JSON.stringify(this.$contributors.select2('data')),
-        creators: JSON.stringify(this.$creators.select2('data'))
-      };
-      if (this.$('[name="exclude-from-nav"]:checked').length > 0) {
-        data['exclude_from_nav'] = this.$('[name="exclude-from-nav"]:checked').val(); // jshint ignore:line
+      }else{
+        registry.scan(self.$el);
       }
-      this.app.defaultButtonClickEvent(this.triggerView, data);
-      this.hide();
-    },
-    toggle: function(button, e) {
-      PopoverView.prototype.toggle.apply(this, [button, e]);
-      if (!this.opened) {
-        return;
-      }
-      this.$effective.attr('value', '');
-      this.$expiration.attr('value', '');
-      this.$copyright.html('');
-      this.$creators.select2('data', []);
-      this.$contributors.select2('data', []);
-      this.$exclude.each(function() {
-        this.checked = false;
-      });
-    }
-  });
-
-  return PropertiesView;
-});
-
-define('mockup-patterns-structure-url/js/views/workflow',[
-  'jquery',
-  'underscore',
-  'backbone',
-  'mockup-ui-url/views/popover'
-], function($, _, Backbone, PopoverView) {
-  'use strict';
-
-  var WorkflowView = PopoverView.extend({
-    className: 'popover workflow',
-    title: _.template('<%- _t("Modify dates on items") %>'),
-    content: _.template(
-      '<form>' +
-        '<fieldset>' +
-          '<div class="form-group">' +
-            '<label><%- _t("Comments") %></label>' +
-            '<textarea class="form-control" rows="4"></textarea>' +
-            '<p class="help-block"><%- _t("Select the transition to be used for modifying the items state.") %></p>' +
-          '</div>' +
-          '<div class="form-group">' +
-            '<label><%- _t("Change State") %></label>' +
-            '<p class="help-block"><%- _t("Select the transition to be used for modifying the items state.") %></p>' +
-            '<select class="form-control" name="transition">' +
-            '</select>' +
-          '</div>' +
-          '<div class="checkbox">' +
-            '<label>' +
-              '<input type="checkbox" name="recurse" />' +
-              '<%- _t("Include contained items?") %></label>' +
-            '<p class="help-block">' +
-              '<%- _t("If checked, this will attempt to modify the status of all content in any selected folders and their subfolders.") %>' +
-            '</p>' +
-          '</div>' +
-        '</fieldset>' +
-      '</form>' +
-      '<button class="btn btn-block btn-primary"><%- _t("Apply") %></button>'
-    ),
-    events: {
-      'click button': 'applyButtonClicked'
-    },
-    initialize: function(options) {
-      this.app = options.app;
-      PopoverView.prototype.initialize.apply(this, [options]);
-    },
-    render: function() {
-      PopoverView.prototype.render.call(this);
-      this.$comments = this.$('textarea');
-      this.$transition = this.$('select');
-      return this;
-    },
-    applyButtonClicked: function(e) {
-      var data = {
-        comments: this.$comments.val(),
-        transition: this.$transition.val()
-      };
-      if (this.$('[name="recurse"]')[0].checked) {
-        data.recurse = 'yes';
-      }
-      this.app.defaultButtonClickEvent(this.triggerView, data);
-      this.hide();
     },
     toggle: function(button, e) {
       PopoverView.prototype.toggle.apply(this, [button, e]);
       var self = this;
       if (!self.opened) {
         return;
+      }else{
+        this.$el.replaceWith(this.render().el);
       }
-      self.$comments.val('');
-      self.$transition.empty();
-      $.ajax({
-        url: self.triggerView.url,
-        type: 'GET',
-        data: {
-          selection: JSON.stringify(self.app.getSelectedUids()),
-          transitions: true
-        },
-        success: function(data) {
-          _.each(data.transitions, function(transition) {
-            self.$transition.append('<option value="' + transition.id + '">' + transition.title + '</option>');
-          });
-        },
-        error: function(data) {
-          // XXX error handling...
-          window.alert('error getting transition data');
-        }
-      });
-    }
-  });
-
-  return WorkflowView;
-});
-
-
-
-
-
-define('mockup-patterns-structure-url/js/views/delete',[
-  'jquery',
-  'underscore',
-  'backbone',
-  'mockup-ui-url/views/popover'
-], function($, _, Backbone, PopoverView) {
-  'use strict';
-
-  var DeleteView = PopoverView.extend({
-    className: 'popover delete',
-    title: _.template('<%- _t("Delete selected items") %>'),
-    content: _.template(
-      '<label><%- _t("Are you certain you want to delete the selected items") %></label>' +
-      '<button class="btn btn-block btn-danger"><%- _t("Yes") %></button>'
-    ),
-    events: {
-      'click button': 'applyButtonClicked'
-    },
-    initialize: function(options) {
-      this.app = options.app;
-      PopoverView.prototype.initialize.apply(this, [options]);
-    },
-    render: function() {
-      PopoverView.prototype.render.call(this);
-      return this;
-    },
-    applyButtonClicked: function(e) {
-      var self = this;
-      this.app.defaultButtonClickEvent(this.triggerView, {}, function(data) {
-        self.app.selectedCollection.reset();
-      });
-      this.hide();
-    }
-  });
-
-  return DeleteView;
-});
-
-
-
-
-
-
-define('mockup-patterns-structure-url/js/views/rename',[
-  'jquery',
-  'underscore',
-  'backbone',
-  'mockup-ui-url/views/popover',
-  'translate'
-], function($, _, Backbone, PopoverView, _t) {
-  'use strict';
-
-  var PropertiesView = PopoverView.extend({
-    className: 'popover rename',
-    title: _.template('<%- _t("Rename items") %>'),
-    content: _.template(
-      '<div class="itemstoremove"></div>' +
-      '<button class="btn btn-block btn-primary"><%= _t("Apply") %></button>'
-    ),
-    itemTemplate: _.template(
-      '<div class="item">' +
-        '<div class="form-group">' +
-          '<input name="UID" type="hidden" value="<%- UID %>" />' +
-          '<label><%- _t("Title") %></label>' +
-          '<input class="form-control" name="newtitle" value="<%= Title %>" />' +
-          '<label><%- _t("Short name") %></label>' +
-          '<input class="form-control" name="newid" value="<%= id %>" />' +
-        '</div>' +
-      '</div>'
-    ),
-    events: {
-      'click button': 'applyButtonClicked'
-    },
-    initialize: function(options) {
-      this.app = options.app;
-      PopoverView.prototype.initialize.apply(this, [options]);
-    },
-    render: function() {
-      PopoverView.prototype.render.call(this);
-      this.$items = this.$('.itemstoremove');
-      return this;
-    },
-    applyButtonClicked: function(e) {
-      var torename = [];
-      this.$items.find('.item').each(function() {
-        var $item = $(this);
-        torename.push({
-          UID: $item.find('[name="UID"]').val(),
-          newid: $item.find('[name="newid"]').val(),
-          newtitle: $item.find('[name="newtitle"]').val()
-        });
-      });
-      this.app.defaultButtonClickEvent(this.triggerView, {
-        torename: JSON.stringify(torename)
-      });
-      this.hide();
-    },
-    toggle: function(button, e) {
-      PopoverView.prototype.toggle.apply(this, [button, e]);
-      var self = this;
-      if (!self.opened) {
-        return;
-      }
-      self.$items.empty();
-      self.app.selectedCollection.each(function(item) {
-        self.$items.append(self.itemTemplate($.extend({}, true, item.toJSON(), {
-          _t: _t
-        })));
-      });
     }
   });
 
   return PropertiesView;
 });
-
-
-
-
-
 
 define('mockup-patterns-structure-url/js/views/rearrange',[
   'jquery',
@@ -86586,7 +86362,7 @@ define('mockup-patterns-structure-url/js/views/rearrange',[
       if (this.$reversed[0].checked) {
         data.reversed = true;
       }
-      this.app.defaultButtonClickEvent(this.triggerView, data);
+      this.app.buttonClickEvent(this.triggerView, data);
       this.hide();
     }
   });
@@ -86595,7 +86371,7 @@ define('mockup-patterns-structure-url/js/views/rearrange',[
 });
 
 
-define('text!mockup-patterns-structure-url/templates/selection_button.xml',[],function () { return '<%= title %> \r<span class="label<% if (length > 0) { %> label-success<% } else { %> label-default<% } %>">\r  <%= length %>\r</span>\r';});
+define('text!mockup-patterns-structure-url/templates/selection_button.xml',[],function () { return '<span class="glyphicon glyphicon-list"></span>\r<%= title %> \r<span class="label<% if (length > 0) { %> label-success<% } else { %> label-default<% } %>">\r  <%= length %>\r</span>\r';});
 
 define('mockup-patterns-structure-url/js/views/selectionbutton',[
   'jquery',
@@ -86611,13 +86387,18 @@ define('mockup-patterns-structure-url/js/views/selectionbutton',[
     template: tplButton,
     initialize: function(options) {
       ButtonView.prototype.initialize.apply(this, [options]);
-
+      var self = this;
+      self.timeout = 0;
       if (this.collection !== null) {
         this.collection.on('add remove reset', function() {
-          this.render();
-          if (this.collection.length === 0) {
-            this.$el.removeClass('active');
-          }
+          /* delay it */
+          clearTimeout(self.timeout);
+          self.timeout = setTimeout(function(){
+            self.render();
+            if (self.collection.length === 0) {
+              self.$el.removeClass('active');
+            }
+          }, 50);
         }, this);
       }
     },
@@ -86738,6 +86519,7 @@ define('mockup-patterns-structure-url/js/views/paging',[
       e.preventDefault();
       var per = $(e.target).text();
       this.collection.howManyPer(per);
+      this.app.setCookieSetting('perPage', per);
     }
   });
 
@@ -86848,7 +86630,8 @@ define('mockup-patterns-structure-url/js/views/addmenu',[
       self.$el.empty();
 
       self.$el.append(
-        '<a class="btn dropdown-toggle btn-success" data-toggle="dropdown" href="#">' +
+        '<a class="btn dropdown-toggle btn-default" data-toggle="dropdown" href="#">' +
+          '<span class="glyphicon glyphicon-plus"></span>' +
           self.title +
           '<span class="caret"></span>' +
         '</a>' +
@@ -86979,11 +86762,12 @@ define('mockup-patterns-structure-url/js/views/textfilter',[
     render: function() {
       this.$el.html(this.template({_t: _t}));
       this.button = new ButtonView({
-        title: 'Query'
+        title: _t('Query'),
+        icon: 'search'
       });
       this.popover = new PopoverView({
         triggerView: this.button,
-        title: _.template('Query'),
+        title: _.template(_t('Query')),
         content: this.popoverContent,
         placement: 'left'
       });
@@ -88187,7 +87971,7 @@ define('mockup-patterns-structure-url/js/collections/result',[
       this.trigger('pager');
       Backbone.Paginator.requestPager.prototype.pager.apply(this, []);
     },
-    'paginator_core': {
+    paginator_core: {
       // the type of the request (GET by default)
       type: 'GET',
       // the type of reply (jsonp by default)
@@ -88196,7 +87980,7 @@ define('mockup-patterns-structure-url/js/collections/result',[
         return this.url;
       }
     },
-    'paginator_ui': {
+    paginator_ui: {
       // the lowest page index your API allows to be accessed
       firstPage: 1,
       // which page should the paginator start from
@@ -88205,7 +87989,7 @@ define('mockup-patterns-structure-url/js/collections/result',[
       // how many items per page should be shown
       perPage: 15
     },
-    'server_api': {
+    server_api: {
       query: function() {
         return this.queryParser();
       },
@@ -88217,13 +88001,16 @@ define('mockup-patterns-structure-url/js/collections/result',[
         return JSON.stringify(this.queryHelper.options.attributes);
       }
     },
-    parse: function (response) {
+    parse: function (response, baseSortIdx) {
+      if(baseSortIdx === undefined){
+        baseSortIdx = 0;
+      }
       this.totalRecords = response.total;
       var results = response.results;
       // XXX manually set sort order here since backbone will otherwise
       // do arbitrary sorting?
       _.each(results, function(item, idx) {
-        item._sort = idx;
+        item._sort = idx + baseSortIdx;
       });
       return results;
     },
@@ -88388,11 +88175,7 @@ define('mockup-patterns-structure-url/js/views/app',[
   'mockup-ui-url/views/base',
   'mockup-patterns-structure-url/js/views/table',
   'mockup-patterns-structure-url/js/views/selectionwell',
-  'mockup-patterns-structure-url/js/views/tags',
-  'mockup-patterns-structure-url/js/views/properties',
-  'mockup-patterns-structure-url/js/views/workflow',
-  'mockup-patterns-structure-url/js/views/delete',
-  'mockup-patterns-structure-url/js/views/rename',
+  'mockup-patterns-structure-url/js/views/generic-popover',
   'mockup-patterns-structure-url/js/views/rearrange',
   'mockup-patterns-structure-url/js/views/selectionbutton',
   'mockup-patterns-structure-url/js/views/paging',
@@ -88404,59 +88187,53 @@ define('mockup-patterns-structure-url/js/views/app',[
   'mockup-patterns-structure-url/js/collections/selected',
   'mockup-utils',
   'translate',
+  'pat-logger',
   'jquery.cookie'
 ], function($, _, Backbone, Toolbar, ButtonGroup, ButtonView, BaseView,
-            TableView, SelectionWellView, TagsView, PropertiesView,
-            WorkflowView, DeleteView, RenameView, RearrangeView, SelectionButtonView,
+            TableView, SelectionWellView,
+            GenericPopover, RearrangeView, SelectionButtonView,
             PagingView, AddMenu, ColumnsView, TextFilterView, UploadView,
-            ResultCollection, SelectedCollection, utils, _t) {
+            ResultCollection, SelectedCollection, utils, _t, logger) {
   'use strict';
 
-  var DISABLE_EVENT = 'DISABLE';
+  var log = logger.getLogger('pat-structure');
 
   var AppView = BaseView.extend({
     tagName: 'div',
-    /* we setup binding here and specifically for every button so there is a
-     * way to override default click event behavior.
-     * Otherwise, if we bound all buttons to the same event, there is no way
-     * to override the event or stop bubbling it. */
-    buttonClickEvents: {
-      'cut': 'cutCopyClickEvent',
-      'copy': 'cutCopyClickEvent',
-      'paste': 'pasteEvent',
-      'tags': DISABLE_EVENT, //disable
-      'properties': DISABLE_EVENT,
-      'workflow': DISABLE_EVENT,
-      'delete': DISABLE_EVENT,
-      'rename': DISABLE_EVENT,
-      'rearrange': DISABLE_EVENT
-    },
-    buttonViewMapping: {
-      'secondary.tags': TagsView,
-      'secondary.properties': PropertiesView,
-      'secondary.workflow': WorkflowView,
-      'primary.delete': DeleteView,
-      'secondary.rename': RenameView
-    },
     status: '',
+    pasteAllowed: !!$.cookie('__cp'),
     statusType: 'warning',
-    pasteOperation: null,
-    'sort_on': 'getObjPositionInParent',
-    'sort_order': 'ascending',
+    sort_on: 'getObjPositionInParent',
+    sort_order: 'ascending',
     additionalCriterias: [],
-    pasteSelection: null,
     cookieSettingPrefix: '_fc_',
-    pasteAllowed: false,
     initialize: function(options) {
       var self = this;
       BaseView.prototype.initialize.apply(self, [options]);
-      self.setAllCookieSettings();
       self.loading = new utils.Loading();
       self.loading.show();
 
+      /* close popovers when clicking away */
+      $(document).click(function(e){
+        var $el = $(e.target);
+        if($el.is('a') || $el.parent().is('a')){
+          return;
+        }
+        var $popover = $('.popover:visible');
+        if($popover.length > 0 && !$.contains($popover[0], e.target)){
+          var popover = $popover.data('component');
+          if(popover){
+            popover.hide();
+          }
+        }
+      });
+
       self.collection = new ResultCollection([], {
         url: self.options.collectionUrl,
-        queryParser: function() {
+        queryParser: function(options) {
+          if(options === undefined){
+            options = {};
+          }
           var term = null;
           if (self.toolbar) {
             term = self.toolbar.get('filter').term;
@@ -88466,15 +88243,18 @@ define('mockup-patterns-structure-url/js/views/app',[
             sortOn = 'getObjPositionInParent';
           }
           return JSON.stringify({
-            criteria: self.queryHelper.getCriterias(term, {
+            criteria: self.queryHelper.getCriterias(term, $.extend({}, options, {
               additionalCriterias: self.additionalCriterias
-            }),
-            'sort_on': sortOn,
-            'sort_order': self['sort_order'] // jshint ignore:line
+            })),
+            sort_on: sortOn,
+            sort_order: self['sort_order'] // jshint ignore:line
           });
         },
         queryHelper: self.options.queryHelper
       });
+
+      self.setAllCookieSettings();
+
       self.queryHelper = self.options.queryHelper;
       self.selectedCollection = new SelectedCollection();
       self.tableView = new TableView({app: self});
@@ -88490,54 +88270,19 @@ define('mockup-patterns-structure-url/js/views/app',[
         app: self
       });
 
-      self.buttonViews = {};
-      _.map(self.buttonViewMapping, function(ViewClass, key) {
-        var name = key.split('.');
-        var group = name[0];
-        var buttonName = name[1];
-        self.buttonViews[key] = new ViewClass({
-          triggerView: self.buttons[group].get(buttonName),
-          app: self
-        });
-      });
-
       self.toolbar.get('selected').disable();
-      self.buttons.primary.disable();
-      self.buttons.secondary.disable();
+      self.buttons.disable();
 
-      self.selectedCollection.on('add remove reset', function(modal, collection) {
-        if (collection.length) {
-          self.toolbar.get('selected').enable();
-          self.buttons.primary.enable();
-          self.buttons.secondary.enable();
-          if (!self.pasteAllowed) {
-            self.buttons.primary.get('paste').disable();
-          }
-        } else {
-          this.toolbar.get('selected').disable();
-          self.buttons.primary.disable();
-          self.buttons.secondary.disable();
-        }
+      var timeout = 0;
+      self.selectedCollection.on('add remove reset', function(/*modal, collection*/) {
+        /* delay rendering since this can happen in batching */
+        clearTimeout(timeout);
+        timeout = setTimeout(function(){
+          self.updateButtons();
+        }, 100);
       }, self);
 
       self.collection.on('sync', function() {
-        // need to reload models inside selectedCollection so they get any
-        // updated metadata
-        if (self.selectedCollection.models.length > 0) {
-          var uids = self.getSelectedUids(self.selectedCollection);
-          self.queryHelper.search(
-            'UID', 'plone.app.querystring.operation.list.contains',
-            uids,
-            function(data) {
-              _.each(data.results, function(attributes) {
-                var item = self.selectedCollection.getByUID(attributes.UID);
-                item.attributes = attributes;
-              });
-            },
-            false
-          );
-        }
-
         if (self.contextInfoUrl) {
           $.ajax({
             url: self.getAjaxUrl(self.contextInfoUrl),
@@ -88548,7 +88293,7 @@ define('mockup-patterns-structure-url/js/views/app',[
             error: function(response) {
               // XXX handle error?
               if (response.status === 404) {
-                console.log('context info url not found');
+                log.info('context info url not found');
               }
             }
           });
@@ -88558,6 +88303,7 @@ define('mockup-patterns-structure-url/js/views/app',[
 
       self.collection.on('pager', function() {
         self.loading.show();
+        self.updateButtons();
 
         /* maintain history here */
         if(self.options.urlStructure && window.history && window.history.pushState){
@@ -88607,6 +88353,23 @@ define('mockup-patterns-structure-url/js/views/app',[
         });
       }
     },
+    updateButtons: function(){
+      var self = this;
+      if (self.selectedCollection.length) {
+        self.toolbar.get('selected').enable();
+        self.buttons.enable();
+      } else {
+        this.toolbar.get('selected').disable();
+        self.buttons.disable();
+      }
+
+      self.pasteAllowed = !!$.cookie('__cp');
+      if (self.pasteAllowed) {
+        self.buttons.get('paste').enable();
+      }else{
+        self.buttons.get('paste').disable();
+      }
+    },
     inQueryMode: function() {
       if (this.additionalCriterias.length > 0) {
         return true;
@@ -88633,7 +88396,7 @@ define('mockup-patterns-structure-url/js/views/app',[
     getAjaxUrl: function(url) {
       return url.replace('{path}', this.options.queryHelper.getCurrentPath());
     },
-    defaultButtonClickEvent: function(button) {
+    buttonClickEvent: function(button) {
       var self = this;
       var data = null, callback = null;
 
@@ -88683,6 +88446,7 @@ define('mockup-patterns-structure-url/js/views/app',[
     },
     ajaxSuccessResponse: function(data, callback) {
       var self = this;
+      self.selectedCollection.reset();
       if (data.status === 'success') {
         self.collection.reset();
       }
@@ -88702,41 +88466,8 @@ define('mockup-patterns-structure-url/js/views/app',[
         window.alert(_t('there was an error performing action'));
       }
     },
-    pasteEvent: function(button, e, data) {
-      var self = this;
-      if (data === undefined) {
-        data = {};
-      }
-      data = $.extend(true, {}, {
-        selection: JSON.stringify(self.getSelectedUids(self.pasteSelection)),
-        pasteOperation: self.pasteOperation
-      }, data);
-      self.defaultButtonClickEvent(button, data);
-    },
-    cutCopyClickEvent: function(button) {
-      var self = this;
-      var txt;
-      if (button.id === 'cut') {
-        txt = _t('cut ');
-        self.pasteOperation = 'cut';
-      } else {
-        txt = _t('copied ');
-        self.pasteOperation = 'copy';
-      }
-
-      // clone selected items
-      self.pasteSelection = new Backbone.Collection();
-      self.selectedCollection.each(function(item) {
-        self.pasteSelection.add(item);
-      });
-      txt += 'selection';
-      self.setStatus(txt);
-      self.pasteAllowed = true;
-      self.buttons.primary.get('paste').enable();
-    },
     setupButtons: function() {
       var self = this;
-      self.buttons = {};
       var items = [];
 
       var columnsBtn = new ButtonView({
@@ -88757,17 +88488,11 @@ define('mockup-patterns-structure-url/js/views/app',[
         collection: this.selectedCollection
       }));
 
-      if (self.options.contextInfoUrl) {
-        // only add menu if set
-        items.push(new AddMenu({
-          contextInfoUrl: self.options.contextInfoUrl,
-          app: self
-        }));
-      }
       if (self.options.rearrange) {
         var rearrangeButton = new ButtonView({
           id: 'rearrange',
           title: 'Rearrange',
+          icon: 'sort-by-attributes',
           tooltip: 'Rearrange folder contents',
           url: self.options.rearrange.url
         });
@@ -88777,35 +88502,12 @@ define('mockup-patterns-structure-url/js/views/app',[
         });
         items.push(rearrangeButton);
       }
-
-      _.each(_.pairs(this.options.buttonGroups), function(group) {
-        var buttons = [];
-        _.each(group[1], function(button) {
-          button = new ButtonView(button);
-          buttons.push(button);
-          // bind click events now...
-          var ev = self.buttonClickEvents[button.id];
-          if (ev !== DISABLE_EVENT) {
-            if (ev === undefined) {
-              ev = 'defaultButtonClickEvent'; // default click event
-            }
-            button.on('button:click', self[ev], self);
-          }
-        });
-        self.buttons[group[0]] = new ButtonGroup({
-          items: buttons,
-          id: group[0],
-          app: self
-        });
-        items.push(self.buttons[group[0]]);
-      });
       if (self.options.upload) {
         var uploadButton = new ButtonView({
           id: 'upload',
           title: 'Upload',
           tooltip: 'Upload files',
-          icon: 'upload',
-          context: 'success'
+          icon: 'upload'
         });
         self.uploadView = new UploadView({
           triggerView: uploadButton,
@@ -88813,6 +88515,39 @@ define('mockup-patterns-structure-url/js/views/app',[
         });
         items.push(uploadButton);
       }
+      if (self.options.contextInfoUrl) {
+        // only add menu if set
+        items.push(new AddMenu({
+          contextInfoUrl: self.options.contextInfoUrl,
+          app: self
+        }));
+      }
+
+      var buttons = [];
+      _.each(self.options.buttons, function(buttonOptions) {
+        try{
+          var button = new ButtonView(buttonOptions);
+          buttons.push(button);
+
+          if(button.form){
+            buttonOptions.triggerView = button;
+            buttonOptions.app = self;
+            var view = new GenericPopover(buttonOptions);
+            self.$el.append(view.el);
+          }else{
+            button.on('button:click', self.buttonClickEvent, self);
+          }
+        }catch(err){
+          log.error('Error initializing button ' + buttonOptions.title + ' ' + err);
+        }
+      });
+      self.buttons = new ButtonGroup({
+        items: buttons,
+        id: 'mainbuttons',
+        app: self
+      });
+      items.push(self.buttons);
+
       items.push(new TextFilterView({
         id: 'filter',
         app: this
@@ -88842,7 +88577,7 @@ define('mockup-patterns-structure-url/js/views/app',[
           }
           self.collection.pager(); // reload it all
         },
-        error: function(data) {
+        error: function() {
           self.setStatus('error moving item');
         }
       });
@@ -88867,10 +88602,6 @@ define('mockup-patterns-structure-url/js/views/app',[
       if (self.uploadView) {
         self.$el.append(self.uploadView.render().el);
       }
-
-      _.each(self.buttonViews, function(view) {
-        self.$el.append(view.render().el);
-      });
 
       self.$el.append(self.tableView.render().el);
       self.$el.append(self.pagingView.render().el);
@@ -88908,6 +88639,11 @@ define('mockup-patterns-structure-url/js/views/app',[
     },
     setAllCookieSettings: function() {
       this.activeColumns = this.getCookieSetting('activeColumns', this.activeColumns);
+      var perPage = this.getCookieSetting('perPage', 15);
+      if(typeof(perPage) === 'string'){
+        perPage = parseInt(perPage);
+      }
+      this.collection.howManyPer(perPage);
     }
   });
 
@@ -88918,8 +88654,6 @@ define('mockup-patterns-structure-url/js/views/app',[
  *
  * Options:
  *    vocabularyUrl(string): Url to return query results (null)
- *    tagsVocabularyUrl(string): Url to return tags query results (null)
- *    usersVocabularyUrl(string): Url to query users (null)
  *    indexOptionsUrl(string): Url to configure querystring widget with (null)
  *    upload(string): upload configuration settings(null)
  *    moveUrl(string): For supporting drag drop reordering (null)
@@ -88935,8 +88669,6 @@ define('mockup-patterns-structure-url/js/views/app',[
  *         data-pat-structure="vocabularyUrl:/relateditems-test.json;
  *                             uploadUrl:/upload;
  *                             moveUrl:/moveitem;
- *                             tagsVocabularyUrl:/select2-test.json;
- *                             usersVocabularyUrl:/tests/json/users.json;
  *                             indexOptionsUrl:/tests/json/queryStringCriteria.json;
  *                             contextInfoUrl:{path}/context-info;"></div>
  *
@@ -88964,8 +88696,6 @@ define('mockup-patterns-structure',[
       // Example: {base: 'http://mysite.com', appended: '/folder_contents'}
       urlStructure: null,
       vocabularyUrl: null,
-      tagsVocabularyUrl: null,
-      usersVocabularyUrl: null,
       indexOptionsUrl: null, // for querystring widget
       contextInfoUrl: null, // for add new dropdown and other info
       setDefaultPageUrl: null,
@@ -89000,49 +88730,40 @@ define('mockup-patterns-structure',[
       rearrange: {
         properties: {
           'id': 'ID',
-          'sortable_title': 'Title',
-          'modified': 'Last Modified',
-          'created': 'Created on',
-          'effective': 'Publication Date',
-          'portal_type': 'Type'
+          'sortable_title': 'Title'
         },
         url: '/rearrange'
       },
       basePath: '/',
       moveUrl: null,
-      /*
-       * all these base buttons are required
-       */
-      buttonGroups: {
-        primary: [{
-          title: 'Cut',
-          url: '/cut'
-        },{
-          title: 'Copy',
-          url: '/copy'
-        },{
-          title: 'Paste',
-          url: '/paste'
-        },{
-          title: 'Delete',
-          url: '/delete',
-          context: 'danger',
-          icon: 'trash'
-        }],
-        secondary: [{
-          title: 'Workflow',
-          url: '/workflow'
-        },{
-          title: 'Tags',
-          url: '/tags'
-        },{
-          title: 'Properties',
-          url: '/properties'
-        },{
-          title: 'Rename',
-          url: '/rename'
-        }]
-      },
+      buttons: [],
+      demoButtons: [{
+        title: 'Cut',
+        url: '/cut'
+      },{
+        title: 'Copy',
+        url: '/copy'
+      },{
+        title: 'Paste',
+        url: '/paste'
+      },{
+        title: 'Delete',
+        url: '/delete',
+        context: 'danger',
+        icon: 'trash'
+      },{
+        title: 'Workflow',
+        url: '/workflow'
+      },{
+        title: 'Tags',
+        url: '/tags'
+      },{
+        title: 'Properties',
+        url: '/properties'
+      },{
+        title: 'Rename',
+        url: '/rename'
+      }],
       upload: {
         uploadMultiple: true,
         showTitle: true
@@ -89050,6 +88771,11 @@ define('mockup-patterns-structure',[
     },
     init: function() {
       var self = this;
+      if(self.options.buttons.length === 0){
+        /* XXX I know this is wonky... but this prevents
+           weird option merging issues */
+        self.options.buttons = self.options.demoButtons;
+      }
       self.browsing = true; // so all queries will be correct with QueryHelper
       self.options.collectionUrl = self.options.vocabularyUrl;
       self.options.queryHelper = new utils.QueryHelper(

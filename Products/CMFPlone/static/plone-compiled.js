@@ -10216,7 +10216,13 @@ define('mockup-utils',[
           v: term
         });
       }
-      if (self.pattern.browsing) {
+      if(options.searchPath){
+        criterias.push({
+          i: 'path',
+          o: 'plone.app.querystring.operation.string.path',
+          v: options.searchPath + '::' + self.options.pathDepth
+        });
+      }else if (self.pattern.browsing) {
         criterias.push({
           i: 'path',
           o: 'plone.app.querystring.operation.string.path',
@@ -10278,9 +10284,12 @@ define('mockup-utils',[
       return data;
     };
 
-    self.search = function(term, operation, value, callback, useBaseCriteria) {
+    self.search = function(term, operation, value, callback, useBaseCriteria, type) {
       if (useBaseCriteria === undefined) {
         useBaseCriteria = true;
+      }
+      if(type === undefined){
+        type = 'GET';
       }
       var criteria = [];
       if (useBaseCriteria) {
@@ -10299,6 +10308,7 @@ define('mockup-utils',[
         url: self.options.vocabularyUrl,
         dataType: 'JSON',
         data: data,
+        type: type,
         success: callback
       });
     };

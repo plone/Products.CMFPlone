@@ -4611,18 +4611,28 @@ tbody.pat-structure .collapse.in {
 /*
 @import "@{bowerPath}bootstrap/less/tooltip.less";
 */
+.pat-structure {
+  /* button overrides to make it look
+       more streamlined */
+}
 .pat-structure .btn,
 .pat-structure .pat-structure .btn {
-  padding: 1px 5px;
+  padding: 5px 10px;
   font-size: 12px;
   line-height: 1.5;
   border-radius: 3px;
+  padding: 5px 5px;
+  font-size: 13px;
 }
 .pat-structure table {
   margin-bottom: 0;
 }
 .pat-structure table tr td.selection {
   width: 15px;
+}
+.pat-structure table tr td.actionmenu-container .btn,
+.pat-structure table tr td.actionmenu-container .pat-structure .btn {
+  padding: 2px 4px;
 }
 .pat-structure table .breadcrumbs-container .input-group,
 .pat-structure table .breadcrumbs-container .pat-structure .input-group {
@@ -4635,8 +4645,18 @@ tbody.pat-structure .collapse.in {
 .pat-structure table .breadcrumbs-container .input-group .pat-structure .input-group-addon {
   padding: 2px 5px;
 }
+.pat-structure table .breadcrumbs-container .input-group .btn,
+.pat-structure table .breadcrumbs-container .input-group .pat-structure .btn,
+.pat-structure table .breadcrumbs-container .pat-structure .input-group .btn {
+  padding: 2px 4px;
+}
+.pat-structure table .breadcrumbs-container .breadcrumbs {
+  font-size: 15px;
+  padding-top: 2px;
+}
 .pat-structure .navbar,
 .pat-structure .pat-structure .navbar {
+  min-height: inherit;
   margin-bottom: 5px;
 }
 .pat-structure .navbar .btn-group,
@@ -4665,27 +4685,20 @@ tbody.pat-structure .collapse.in {
 .pat-structure .contextmenuactive {
   outline: 1px dashed orange;
 }
-.pat-structure .navbar-search,
-.pat-structure .pat-structure .navbar-search {
-  margin-top: 5px;
-}
 .pat-structure .navbar-search input.form-control,
-.pat-structure .navbar-search #gen-query,
+.pat-structure .navbar-search #btn-query,
 .pat-structure .pat-structure .navbar-search input.form-control,
-.pat-structure .pat-structure .navbar-search #gen-query {
-  height: 26px;
+.pat-structure .pat-structure .navbar-search #btn-query {
+  height: 31px;
 }
 .pat-structure .alert.status {
   margin-bottom: 5px;
   padding: 5px;
+  color: #007bb3;
 }
 .pat-structure #filter {
   width: 200px;
   float: right;
-}
-.pat-structure #rearrange,
-.pat-structure #gen-upload {
-  margin-left: 5px;
 }
 .pat-structure .popover.upload,
 .pat-structure .pat-structure .popover.upload {
@@ -4693,6 +4706,65 @@ tbody.pat-structure .collapse.in {
 }
 .pat-structure .upload-container .upload-area {
   width: 500px;
+}
+.pat-structure #btn-columns {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: 0;
+}
+.pat-structure #btn-selected,
+.pat-structure #btn-rearrange,
+.pat-structure #btn-upload {
+  border-radius: 0;
+  border-right: 0;
+}
+.pat-structure .btn-group.addnew,
+.pat-structure .pat-structure .btn-group.addnew {
+  margin-left: 0;
+}
+.pat-structure .btn-group.addnew .btn,
+.pat-structure .btn-group.addnew .pat-structure .btn,
+.pat-structure .pat-structure .btn-group.addnew .btn {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+@media all and (max-width: 1200px) {
+  .pat-structure #filter {
+    margin-top: 5px;
+    float: left;
+  }
+  .pat-structure #btngroup-mainbuttons {
+    float: left;
+    width: 100%;
+    margin-left: 0;
+    margin-top: 5px;
+  }
+}
+@media all and (max-width: 620px) {
+  .pat-structure #btn-columns {
+    display: none;
+  }
+  .pat-structure #btn-selected {
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    border-left: 1px solid #cccccc;
+  }
+  .pat-structure table thead th {
+    display: none;
+  }
+  .pat-structure table thead th.selection,
+  .pat-structure table thead th.title,
+  .pat-structure table thead th.actions {
+    display: table-cell;
+  }
+  .pat-structure table tbody td {
+    display: none;
+  }
+  .pat-structure table tbody td.selection,
+  .pat-structure table tbody td.title,
+  .pat-structure table tbody td.actionmenu-container {
+    display: table-cell;
+  }
 }
 .pat-structure .popover .popover-title .remove-all,
 .pat-structure .pat-structure .popover .popover-title .remove-all,
@@ -4726,6 +4798,10 @@ tbody.pat-structure .collapse.in {
 }
 .pat-structure .itemRow.folder .title a {
   color: #005580;
+}
+.pat-structure .itemRow.default-page .title:before {
+  content: '*';
+  color: red;
 }
 .popover.selected .items,
 .pat-structure .popover.selected .items {
@@ -4764,25 +4840,21 @@ tbody.pat-structure .collapse.in {
   width: 700px;
   max-width: 700px;
 }
-.popover.rename,
-.pat-structure .popover.rename {
+#popover-rename {
   width: 400px;
 }
-.popover.rename .popover-content,
-.pat-structure .popover.rename .popover-content,
-.popover.rename .pat-structure .popover-content {
+#popover-rename .popover-content,
+#popover-rename .pat-structure .popover-content {
   max-height: 500px;
   overflow-y: scroll;
 }
-.popover.rename input,
-.pat-structure .popover.rename input {
+#popover-rename input {
   width: 100%;
   height: 24px;
   line-height: 110%;
   font-size: 110%;
 }
-.popover.rename div.item,
-.pat-structure .popover.rename div.item {
+#popover-rename div.item {
   border-bottom: 1px solid #0E6EB0;
   margin-bottom: 5px;
   padding-bottom: 10px;
@@ -4808,8 +4880,15 @@ tbody.pat-structure .collapse.in {
 .order-support tbody tr {
   cursor: move;
 }
-.structure-dragging {
+table.structure-dragging {
   outline: 1px dashed black;
+  background-color: white;
+}
+table.structure-dragging .itemRow .actionmenu-container {
+  display: none;
+}
+table.structure-dragging .itemRow td {
+  padding: 5px;
 }
 /*
  * The MIT License
