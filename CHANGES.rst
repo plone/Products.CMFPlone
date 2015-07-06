@@ -8,6 +8,9 @@ Changelog
 5.0b3 (unreleased)
 ------------------
 
+- Fix issue where site root syndication was giving 404s
+  [vangheem]
+
 - update time widget interval selection to be the same as Plone 4 time selection intervals
   [vangheem]
 
