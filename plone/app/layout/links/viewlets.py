@@ -101,6 +101,7 @@ class RSSViewlet(ViewletBase):
     def update(self):
         super(RSSViewlet, self).update()
         self.rsslinks = []
+        portal = self.portal_state.portal()
         util = getMultiAdapter((self.context, self.request),
                                name="syndication-util")
         context_state = getMultiAdapter((self.context, self.request),
@@ -114,11 +115,14 @@ class RSSViewlet(ViewletBase):
                     return
                 if settings.site_rss_items:
                     for uid in settings.site_rss_items:
+                        if not uid:
+                            continue
                         obj = uuidToObject(uid)
+                        if obj is None and uid[0] == '/':
+                            obj = portal.restrictedTraverse(uid.lstrip('/'), None)
                         if obj is not None:
                             self.rsslinks.extend(self.getRssLinks(obj))
-                    self.rsslinks.extend(self.getRssLinks(
-                        self.portal_state.portal()))
+                self.rsslinks.extend(self.getRssLinks(portal))
         else:
             if util.context_enabled():
                 self.rsslinks.extend(self.getRssLinks(self.context))

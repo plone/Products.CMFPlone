@@ -4,6 +4,9 @@ Changelog
 2.5.8 (unreleased)
 ------------------
 
+- always show site root syndication links if enabled
+  [vangheem]
+
 - by default, show site logo in social settings
   [vangheem]
 
