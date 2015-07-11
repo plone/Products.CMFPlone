@@ -5844,6 +5844,7 @@ return $.drop;
  *    separator(string): Analagous to the separator constructor parameter from Select2. Defines a custom separator used to distinguish the tag values. Ex: a value of ";" will allow tags and initialValues to have values separated by ";" instead of the default ",". (',')
  *    initialValues(string): This can be a json encoded string, or a list of id:text values. Ex: Red:The Color Red,Orange:The Color Orange  This is used inside the initSelection method, if AJAX options are NOT set. (null)
  *    vocabularyUrl(string): This is a URL to a JSON-formatted file used to populate the list (null)
+ *    allowNewItems(string): All new items to be entered into the widget(true)
  *    OTHER OPTIONS(): For more options on select2 go to http://ivaynberg.github.io/select2/#documentation ()
  *
  * Documentation:
@@ -6090,11 +6091,9 @@ define('mockup-patterns-select2',[
                 results.push({id: queryTerm, text: queryTerm});
               }
 
-              if (haveResult || self.options.allowNewItems) {
-                $.each(data.results, function(i, item) {
-                  results.push(item);
-                });
-              }
+              $.each(data.results, function(i, item) {
+                results.push(item);
+              });
             }
             return { results: results };
           }
@@ -10414,6 +10413,22 @@ define('mockup-utils',[
     loading: new Loading(),
     getAuthenticator: function() {
       return $('input[name="_authenticator"]').val();
+    },
+    featureSupport: {
+      /*
+        well tested feature support for things we use in mockup.
+        All gathered from: http://diveintohtml5.info/everything.html
+        Alternative to using some form of modernizr.
+      */
+      dragAndDrop: function(){
+        return 'draggable' in document.createElement('span');
+      },
+      fileApi: function(){
+        return typeof FileReader != 'undefined'; // jshint ignore:line
+      },
+      history: function(){
+        return !!(window.history && window.history.pushState);
+      }
     }
   };
 });
@@ -19597,6 +19612,7 @@ define('mockup-patterns-modal',[
       actions: {},
       actionOptions: {
         eventType: 'click',
+        disableAjaxFormSubmit: false,
         target: null,
         ajaxUrl: null, // string, or function($el, options) that returns a string
         modalFunction: null, // String, function name on self to call
@@ -19676,6 +19692,7 @@ define('mockup-patterns-modal',[
       },
       handleFormAction: function($action, options, patternOptions) {
         var self = this;
+
         // pass action that was clicked when submiting form
         var extraData = {};
         extraData[$action.attr('name')] = $action.attr('value');
@@ -19699,6 +19716,10 @@ define('mockup-patterns-modal',[
           url = $action.parents('form').attr('action');
         }
 
+        if(options.disableAjaxFormSubmit){
+          $form.trigger('submit');
+          return;
+        }
         // We want to trigger the form submit event but NOT use the default
         $form.on('submit', function(e) {
           e.preventDefault();
