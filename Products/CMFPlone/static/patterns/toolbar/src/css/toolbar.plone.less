@@ -28,6 +28,7 @@ body.userrole-authenticated {
         display: block;
         outline: 0;
     }
+
     /*logo*/
     .plone-toolbar-logo {
         background: darken(@plone-toolbar-link, 10%);
@@ -172,6 +173,19 @@ body.userrole-authenticated {
 #edit-zone.plone-toolbar-left{
     z-index: 5;
     nav > ul ul {width: 0; height: 100%}
+    .plone-toolbar-container{
+        height: 100%;
+        position: relative;
+    }
+    #personal-bar-container{
+        position: absolute;
+        bottom: 0;
+        ul{
+            position: fixed;
+            height: 100%;
+            top: 0;
+        }
+    }
 }
 #edit-zone.plone-toolbar-top nav > ul ul {height: 0; max-height: 0; width: 180px}
 
