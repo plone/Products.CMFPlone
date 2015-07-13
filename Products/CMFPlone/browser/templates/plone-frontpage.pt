@@ -10,7 +10,7 @@
 <body i18n:translate="front-text"><p class="discreet">
 If you're seeing this instead of the web site you were expecting, the owner of
 this web site has just installed Plone. Do not contact the Plone Team or the
-Plone mailing lists about this.
+Plone support channels about this.
 </p>
 
 <h2>Get started</h2>
@@ -22,8 +22,8 @@ Before you start exploring your newly created Plone site, please do the followin
 <ol>
     <li>Make sure you are logged in as an admin/manager user.
         <span class="discreet">(You should have a Site Setup entry in the menu in the top right corner)</span></li>
-    <li><a href="@@mail-controlpanel">Set up your mail server</a>. <span class="discreet">(Plone needs a valid SMTP server to verify users and send out password reminders)</span></li>
-    <li><a href="@@security-controlpanel">Decide what security level you want on your site</a>. <span class="discreet">(Allow self registration, password policies, etc)</span></li>
+    <li><a href="@@mail-controlpanel" target="_blank">Set up your mail server</a>. <span class="discreet">(Plone needs a valid SMTP server to verify users and send out password reminders)</span></li>
+    <li><a href="@@security-controlpanel" target="_blank">Decide what security level you want on your site</a>. <span class="discreet">(Allow self registration, password policies, etc)</span></li>
 </ol>
 
 <h2>Get comfortable</h2>
@@ -31,14 +31,12 @@ Before you start exploring your newly created Plone site, please do the followin
 <p>After that, we suggest you do one or more of the following:</p>
 
 <ul>
-    <li>Find out <a class="link-plain" href="http://plone.org/products/plone/features/" target="_blank">What's new in Plone</a>.</li>
-    <li>Read the <a class="link-plain" href="http://plone.org/documentation" target="_blank">documentation</a>, especially the
-        <a class="link-plain" href="http://plone.org/documentation/manual/plone-4-user-manual" target="_blank">Documentation for content editors</a>
-        and
-        <a class="link-plain" href="http://plone.org/documentation/faq/server-recommendations" target="_blank">Server setup recommendations</a>.
+    <li>Find out <a class="link-plain" href="http://plone.com/features/" target="_blank">What's new in Plone</a>.</li>
+    <li>Read the <a class="link-plain" href="http://plone.org/documentation/" target="_blank">documentation</a>.
     </li>
     <li>Explore the <a class="link-plain" href="http://plone.org/products" target="_blank">available add-ons</a> for Plone.</li>
-    <li>Read and/or subscribe to the <a class="link-plain" href="http://plone.org/support" target="_blank">support forums</a>.</li>
+    <li>Read and/or subscribe to the <a class="link-plain" href="http://plone.org/support" target="_blank">support channels</a>.</li>
+    <li>Find out <a class="link-plain" href="http://plone.com/success-stories" target="_blank">how others are using Plone</a>.</li>
 </ul>
 
 <h2>Make it your own</h2>
@@ -48,30 +46,30 @@ Before you start exploring your newly created Plone site, please do the followin
 <ul>
     <li>
     Try out a different theme, either pick from
-    <a href="@@skins-controlpanel">the included ones</a>, or one of the
+    <a href="@@theming-controlpanel" target="_blank">the included ones</a>, or one of the
     <a class="link-plain"
-       href="http://plone.org/products/by-category/themes" target="_blank">available themes
+       href="http://plone.org/products/" target="_blank">available themes
        from plone.org</a>. <span class="discreet">(Make sure the theme is
        compatible with the version of Plone you are currently using)</span>
     </li>
 
     <li>
-    <a href="@@types-controlpanel">
+    <a href="@@types-controlpanel" target="_blank">
     Decide what kind of workflow you want in your site.</a>
-    <span class="discreet">(The default is a
-    website-centric workflow, if you want to use Plone as a closed intranet,
-    you should adjust your workflow settings accordingly)</span>
+    <span class="discreet">(The default is typical for a 
+    public web site; if you want to use Plone as a closed intranet or extranet,
+    you can choose a different workflow.)</span>
     </li>
 
     <li>
     By default, Plone uses a visual editor for content.
     <span class="discreet">(If you prefer text-based syntax and/or wiki
         syntax, you can change this in the
-    <a href="@@markup-controlpanel">markup control panel</a>)</span>
+    <a href="@@markup-controlpanel" target="_blank">markup control panel</a>)</span>
     </li>
 
     <li>…and many more settings are available in the
-        <a href="@@overview-controlpanel">Site Setup</a>.
+        <a href="@@overview-controlpanel" target="_blank">Site Setup</a>.
     </li>
 
 </ul>
@@ -90,29 +88,29 @@ solutions?
         <span class="discreet">(Or see what sites are already out there!)</span>
     </li>
     <li>Add your company as a <a class="link-plain"
-        href="http://plone.org/support/providers" target="_blank">Plone provider</a>.</li>
+        href="http://plone.com/providers" target="_blank">Plone provider</a>.</li>
     <li>Add a <a class="link-plain"
-        href="http://plone.org/support/case-studies" target="_blank">case study</a> describing your
+        href="http://plone.com/success-stories" target="_blank">success story</a> describing your
         deployed project and customer.</li>
 </ul>
 
-<h2>Find out more about our architecture</h2>
+<h2>Find out more about Plone</h2>
 
 <p>
-Plone is based on the Zope application server, and uses the Python programming
+Plone is a powerful content management system built on a rock-solid application stack written using the Python programming
 language. More about these technologies:
 </p>
 
 <ul>
-<li>The <a class="link-plain" href="http://plone.org" target="_blank">Plone open source
-    Content Management System</a> web site.</li>
-<li>The <a class="link-plain" href="http://zope2.zope.org" target="_blank">Zope
-    application server</a> web site.</li>
+<li>The <a class="link-plain" href="http://plone.com" target="_blank">Plone open source
+    Content Management System</a> web site for evaluators and decision makers.</li>
+<li>The <a class="link-plain" href="http://plone.org" target="_blank">Plone community
+    </a> web site for developers.</li>
 <li>The <a class="link-plain" href="http://www.python.org" target="_blank">Python
     programming language</a> web site.</li>
 </ul>
 
-<h2>Donate to the Plone Foundation</h2>
+<h2>Support the Plone Foundation</h2>
 
 <p>
 Plone is made possible only through the efforts of thousands of dedicated
@@ -122,10 +120,10 @@ individuals and hundreds of companies. The Plone Foundation:
     <li>…protects and promotes Plone.</li>
     <li>…is a registered 501(c)(3) charitable organization.</li>
     <li>…donations are tax-deductible.</li>
-    <li><a href="http://plone.org/foundation/foundation-donations">Show your support!</a></li>
+    <li><a href="http://plone.org/foundation/foundation-donations" target="_blank">Support the Foundation and help make Plone better!</a></li>
 </ul>
 
-<p>Thanks for using our product, we hope you like it!</p>
+<p>Thanks for using our product; we hope you like it!</p>
 
 <p>—The Plone Team</p>
 </body>
