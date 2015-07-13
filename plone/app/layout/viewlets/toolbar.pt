@@ -1,0 +1,21 @@
+<div tal:define="portal_state view/portal_state;
+                     toolbar_class python:request.cookies.get('plone-toolbar', 'plone-toolbar-left pat-toolbar');
+                     portal_url portal_state/portal_url;">
+<section id="edit-bar" role="toolbar"
+         tal:condition="not: portal_state/anonymous">
+  <div id="edit-zone" role="toolbar" tal:attributes="class toolbar_class">
+    <div class="plone-toolbar-container">
+      <a class="plone-toolbar-logo">
+        <img alt="Plone Toolbar" tal:attributes="src string:${portal_url}/++plone++static/plone-toolbarlogo.svg" />
+      </a>
+      <a class="plone-toolbar-switcher"><span>Left-Top switcher</span></a>
+      <nav role="navigation">
+        <ul>
+          <div tal:replace="structure view/base_render">
+          </div>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</section>
+</div>

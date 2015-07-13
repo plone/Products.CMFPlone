@@ -67,7 +67,7 @@
         name="plone.toolbar"
         provides=".interfaces.IToolbar"
         permission="zope2.View"
-        class="plone.app.viewletmanager.manager.OrderedViewletManager"
+        class=".toolbar.ToolbarViewletManager"
         />
 
     <browser:viewletManager
