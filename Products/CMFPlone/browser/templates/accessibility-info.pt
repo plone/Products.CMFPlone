@@ -41,7 +41,7 @@
             accordance with the Web Content Accessibility Guidelines
             (<acronym i18n:name="wcag"
                       title="Web Content Accessibility Guidelines"
-                      i18n:attributes="title title_wcag;">WCAG</acronym> v1.0).
+                      i18n:attributes="title title_wcag;">WCAG</acronym> v2.0).
             If there is anything on this site &mdash; accessibility or validation related &mdash;
             that is not according to the standard, please contact the <span i18n:name="site_admin">
             <a href="#"
@@ -49,30 +49,6 @@
                tal:attributes="href string:${context/portal_url}/contact-info">Site Administration</a></span>,
             and not the Plone Team.
         </p>
-
-        <h2 i18n:translate="heading_access_keys">Access keys</h2>
-
-        <p i18n:translate="description_access_keys">
-            Access keys are a navigation device enabling you to get around this web
-            site using your keyboard.
-        </p>
-
-        <h3 i18n:translate="heading_available_access_keys">Available access keys</h3>
-
-        <p i18n:translate="description_available_access_keys">This site uses a setup that closely matches most international
-        recommendations on access keys. These are:
-        </p>
-
-        <ul>
-            <li i18n:translate="accesskey_home_page"><code>1</code> &mdash; Home Page</li>
-            <li i18n:translate="accesskey_skip_to_content"><code>2</code> &mdash; Skip to content</li>
-            <li i18n:translate="accesskey_sitemap"><code>3</code> &mdash; Site Map</li>
-            <li i18n:translate="accesskey_search_field"><code>4</code> &mdash; Search field focus</li>
-            <li i18n:translate="accesskey_advanced_search"><code>5</code> &mdash; Advanced Search</li>
-            <li i18n:translate="accesskey_navigation"><code>6</code> &mdash; Site navigation tree</li>
-            <li i18n:translate="accesskey_contact"><code>9</code> &mdash; Contact information</li>
-            <li i18n:translate="accesskey_accesskey_details"><code>0</code> &mdash; Access Key details</li>
-        </ul>
 
         <h2 i18n:translate="heading_accessibility_statement">Accessibility Statement</h2>
 
@@ -106,7 +82,7 @@
 
         <p i18n:translate="description_wcag_aa_rating">
         We have also endeavoured to achieve AA accessibility as measured against
-        version 1.0 of the
+        version 2.0 of the
         <acronym i18n:name="wcag"
                  title="Web Content Accessibility Guidelines"
                  i18n:attributes="title title_wcag;">WCAG</acronym>.
