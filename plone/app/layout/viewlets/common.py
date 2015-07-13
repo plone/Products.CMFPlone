@@ -242,8 +242,6 @@ class GlobalSectionsViewlet(ViewletBase):
 
 class PersonalBarViewlet(ViewletBase):
 
-    index = ViewPageTemplateFile('personal_bar.pt')
-
     def update(self):
         super(PersonalBarViewlet, self).update()
         context = aq_inner(self.context)

@@ -201,14 +201,6 @@
         permission="zope2.View"
         />
 
-    <!-- The personal bar -->
-    <browser:viewlet
-        name="plone.personal_bar"
-        manager=".interfaces.IToolbar"
-        class=".common.PersonalBarViewlet"
-        permission="zope2.View"
-        />
-
     <!-- Content views (tabs) -->
     <browser:viewlet
         name="plone.contentviews"
