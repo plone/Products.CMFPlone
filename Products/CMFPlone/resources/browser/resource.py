@@ -5,9 +5,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces import IBundleRegistry
 from Products.CMFPlone.interfaces import IResourceRegistry
 from plone.app.layout.viewlets.common import ViewletBase
-from plone.app.theming.utils import getCurrentTheme
-from plone.app.theming.utils import getTheme
-from plone.app.theming.utils import isThemeEnabled
+from plone.app.theming.utils import theming_policy
 from plone.registry.interfaces import IRegistry
 from zope import component
 from zope.component import getMultiAdapter
@@ -99,16 +97,10 @@ class ResourceView(ViewletBase):
         """
         cache = component.queryUtility(ram.IRAMCache)
         bundles = self.get_bundles()
+        policy = theming_policy(self.request)
         # Check if its Diazo enabled
-        if isThemeEnabled(self.request):
-            portal = self.portal_state.portal()
-            # Volatile attribute to cache the current theme
-            if hasattr(portal, '_v_currentTheme'):
-                themeObj = portal._v_currentTheme
-            else:
-                theme = getCurrentTheme()
-                themeObj = getTheme(theme)
-                portal._v_currentTheme = themeObj
+        if policy.isThemeEnabled():
+            themeObj = policy.get_theme()
             enabled_diazo_bundles = themeObj.enabled_bundles
             disabled_diazo_bundles = themeObj.disabled_bundles
             if hasattr(themeObj, 'production_css'):

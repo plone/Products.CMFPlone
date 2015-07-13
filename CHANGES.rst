@@ -8,6 +8,9 @@ Changelog
 5.0b3 (unreleased)
 ------------------
 
+- Use new plone.app.theming policy API and delegate theme cache to plone.app.theming
+  [gyst]
+
 - Fix issue where site root syndication was giving 404s
   [vangheem]
 
