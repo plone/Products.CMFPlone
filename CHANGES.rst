@@ -8,6 +8,9 @@ Changelog
 5.0b3 (unreleased)
 ------------------
 
+- hide ATContentTypes from products install form
+  [vangheem]
+
 - Fix issue where site root syndication was giving 404s
   [vangheem]
 

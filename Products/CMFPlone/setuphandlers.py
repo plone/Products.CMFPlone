@@ -28,6 +28,7 @@ class HiddenProducts(object):
     def getNonInstallableProducts(self):
         return [
             'Archetypes', 'Products.Archetypes',
+            'ATContentTypes', 'Products.ATContentTypes',
             'CMFDefault', 'Products.CMFDefault',
             'CMFPlone', 'Products.CMFPlone', 'Products.CMFPlone.migrations',
             'CMFTopic', 'Products.CMFTopic',
