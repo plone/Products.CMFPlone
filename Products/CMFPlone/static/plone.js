@@ -29,7 +29,6 @@ require([
   'mockup-patterns-select2',
   'mockup-patterns-pickadate',
   'plone-patterns-toolbar',
-  'mockup-patterns-accessibility',
   'mockup-patterns-autotoc',
   'mockup-patterns-cookietrigger',
   'mockup-patterns-formunloadalert',

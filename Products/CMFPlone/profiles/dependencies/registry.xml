@@ -659,11 +659,6 @@
       </value>
   </records>
 
-  <records prefix="plone.resources/mockup-patterns-accessibility"
-            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++resource++mockup/accessibility/pattern.js</value>
-  </records>
-
   <records prefix="plone.resources/mockup-patterns-autotoc"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/autotoc/pattern.js</value>
