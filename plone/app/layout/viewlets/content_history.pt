@@ -28,11 +28,11 @@
                                    tal:replace="actor_name"/>
                          </tal:actor>
                          on
-                         <span tal:replace="python:view.toLocalizedTime(item['time'],long_format=True)" i18n:name="time"/>
+                         <span tal:content="python:view.toLocalizedTime(item['time'],long_format=True)" class="pat-moment" data-pat-moment="format:relative;"/>
                      </tal:action>
                      <tal:effective tal:condition="effective|nothing">
                          (<span i18n:translate="label_publishing_effective" tal:omit-tag="">effective</span>:
-                         <span tal:replace="effectiveDate"/>)
+                         <span tal:content="python:item['effective']" class="pat-moment" data-pat-moment="format:relative;" />)
                      </tal:effective>
 
                  </span>
