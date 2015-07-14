@@ -139,6 +139,7 @@ define([
         return;
       }
       // try to place content as close to the user click as possible
+      debugger;
       var $content = $('> ul', $li);
       var $inner = $content.find('> *');
       var $first = $inner.first();
@@ -174,7 +175,7 @@ define([
 
       $('.plone-toolbar-main', this.$container).height(height);
       /* if there is active, make sure to reposition */
-      var $active = $('li.active', this.$container);
+      var $active = $('li.active ul:visible', this.$container);
       if($active.size() > 0){
         this.padPulloutContent($active);
       }
