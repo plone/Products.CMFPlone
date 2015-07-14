@@ -1,6 +1,5 @@
 <section id="edit-bar" role="toolbar"
          tal:define="portal_state view/portal_state;
-                     toolbar_class view/get_toolbar_position;
                      personal_bar python: view.get_personal_bar()"
          tal:condition="not: portal_state/anonymous"
          i18n:domain="plone">
