@@ -303,7 +303,7 @@
     <browser:page
         for="*"
         name="historyview"
-        template="history_view.pt"
+        class=".content.HistoryByLineView"
         permission="zope2.View"
         />
 
