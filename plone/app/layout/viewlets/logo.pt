@@ -1,6 +1,5 @@
 <a id="portal-logo"
    title="Home"
-   accesskey="1"
    tal:attributes="href view/navigation_root_url;
                    title view/navigation_root_title"
    i18n:domain="plone"
