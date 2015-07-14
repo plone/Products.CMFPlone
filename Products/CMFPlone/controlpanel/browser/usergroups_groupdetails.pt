@@ -209,7 +209,7 @@
                       <input class="context"
                              type="submit"
                              name="form.button.Save"
-                             value="Save"
+                             value="Apply Changes"
                              i18n:attributes="value label_save;" />
                   </div>
               </fieldset>
