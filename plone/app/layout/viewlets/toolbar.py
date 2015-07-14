@@ -35,5 +35,3 @@ class ToolbarViewletManager(OrderedViewletManager):
 
     def show_switcher(self):
         return False
-
-

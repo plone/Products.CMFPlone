@@ -10,9 +10,11 @@
       </a>
       <a class="plone-toolbar-switcher" tal:condition="view/show_switcher"><span>Left-Top switcher</span></a>
       <nav role="navigation">
-        <ul>
+        <ul class="plone-toolbar-main">
           <div tal:replace="structure view/base_render">
           </div>
+        </ul>
+        <ul id="personal-bar-container">
           <li id="portal-personaltools" class="plone-toolbar-separator"
               tal:condition="personal_bar/user_actions">
             <a href="#"
