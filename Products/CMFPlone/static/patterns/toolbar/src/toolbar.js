@@ -35,6 +35,8 @@ define([
       // make sure we are in expanded mode
       $('body').addClass(that.options.classNames.leftExpanded);
       $('body').addClass(that.options.classNames.expanded);
+      $('body').addClass(that.options.classNames.topExpanded);
+      $('body').addClass(that.options.classNames.topDefault);
       $('.' + that.options.classNames.logo, that.$container).click(function() {
         var $el = $(this);
         if ($el.hasClass('open')){
