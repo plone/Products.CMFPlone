@@ -14,7 +14,11 @@ Changelog
   [vangheem]
 
 - Add aria hidden role to avoid screenreaders to nonesense stop by at the
-  toolbar tiny logo
+  toolbar tiny logo [sneridagh]
+
+- Get rid completely of the plone.skip_links viewlet because it already doesn't
+  worked OOTB since always and this does not follow modern a11y methods and we
+  are dropping support for outdated ways [sneridagh]
 
 
 2.5.7 (2015-06-05)
