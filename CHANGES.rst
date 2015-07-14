@@ -13,6 +13,9 @@ Changelog
 - by default, show site logo in social settings
   [vangheem]
 
+- Add aria hidden role to avoid screenreaders to nonesense stop by at the
+  toolbar tiny logo
+
 
 2.5.7 (2015-06-05)
 ------------------
