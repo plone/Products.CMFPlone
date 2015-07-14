@@ -4,7 +4,6 @@
     <viewlet name="plone.header" />
   </order>
   <order manager="plone.portalheader" skinname="Plone Default">
-    <viewlet name="plone.skip_links" />
     <viewlet name="plone.logo" />
     <viewlet name="plone.searchbox" />
     <viewlet name="plone.anontools" />

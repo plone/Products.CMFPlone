@@ -112,6 +112,9 @@ Changelog
 - Remove dependency on plone.app.form and other formlib packages
   [tomgross]
 
+- Remove plone.skip_links from the default set of viewlets in order to follow
+  modern a11y methods and drop support for outdated ways.
+
 
 5.0b2 (2015-05-13)
 ------------------
