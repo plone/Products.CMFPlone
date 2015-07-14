@@ -10,7 +10,6 @@
       <a class="plone-toolbar-logo">
         <img alt="Plone Toolbar" tal:attributes="src string:${portal_url}/++plone++static/plone-toolbarlogo.svg" />
       </a>
-      <a class="plone-toolbar-switcher"><span>Left-Top switcher</span></a>
       <nav role="navigation">
         <ul>
           <div tal:replace="structure view/base_render">
