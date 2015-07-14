@@ -33,14 +33,6 @@ class ToolbarViewletManager(OrderedViewletManager):
         portal_url = self.portal_state.portal_url()
         return portal_url + settings.toolbar_logo
 
-    def get_toolbar_position(self):
-        registry = getUtility(IRegistry)
-        settings = registry.forInterface(ISiteSchema, prefix='plone')
-        if settings.toolbar_position == 'side':
-            return 'plone-toolbar-left pat-toolbar'
-        else:
-            return 'portal-toolbar-top pat-toolbar'
-
     def show_switcher(self):
         return False
 

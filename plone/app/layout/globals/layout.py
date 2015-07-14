@@ -186,23 +186,14 @@ class LayoutPolicy(BrowserView):
             for role in user.getRolesInContext(self.context):
                 body_classes.append('userrole-' + role.lower().replace(' ', '-'))
 
+            registry = getUtility(IRegistry)
+            settings = registry.forInterface(ISiteSchema, prefix='plone')
+
             # toolbar classes
-            toolbar_state = self.request.cookies.get('plone-toolbar')
-            if toolbar_state:
-                if 'plone-toolbar-left' in toolbar_state:
-                    if 'expanded' in toolbar_state:
-                        body_classes.append('plone-toolbar-left-expanded')
-                    else:
-                        body_classes.append('plone-toolbar-left-default')
-                if 'plone-toolbar-top' in toolbar_state:
-                    if 'expanded' in toolbar_state:
-                        body_classes.append('plone-toolbar-top-expanded')
-                    else:
-                        body_classes.append('plone-toolbar-top-default')
-                if 'compressed' in toolbar_state:
-                    body_classes.append('plone-toolbar-compressed')
+            if settings.toolbar_position == 'side':
+                body_classes.append('plone-toolbar-left')
             else:
-                body_classes.append('plone-toolbar-left-default')
+                body_classes.append('plone-toolbar-top')
 
         # class for markspeciallinks pattern
         properties = getToolByName(context, "portal_properties")
