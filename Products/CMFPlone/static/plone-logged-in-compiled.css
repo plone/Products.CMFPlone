@@ -4634,23 +4634,23 @@ tbody.pat-structure .collapse.in {
 .pat-structure table tr td.actionmenu-container .pat-structure .btn {
   padding: 2px 4px;
 }
-.pat-structure table .breadcrumbs-container .input-group,
-.pat-structure table .breadcrumbs-container .pat-structure .input-group {
+.pat-structure table .fc-breadcrumbs-container .input-group,
+.pat-structure table .fc-breadcrumbs-container .pat-structure .input-group {
   display: inline-block;
   float: left;
   padding-right: 5px;
 }
-.pat-structure table .breadcrumbs-container .input-group .input-group-addon,
-.pat-structure table .breadcrumbs-container .pat-structure .input-group .input-group-addon,
-.pat-structure table .breadcrumbs-container .input-group .pat-structure .input-group-addon {
+.pat-structure table .fc-breadcrumbs-container .input-group .input-group-addon,
+.pat-structure table .fc-breadcrumbs-container .pat-structure .input-group .input-group-addon,
+.pat-structure table .fc-breadcrumbs-container .input-group .pat-structure .input-group-addon {
   padding: 2px 5px;
 }
-.pat-structure table .breadcrumbs-container .input-group .btn,
-.pat-structure table .breadcrumbs-container .input-group .pat-structure .btn,
-.pat-structure table .breadcrumbs-container .pat-structure .input-group .btn {
+.pat-structure table .fc-breadcrumbs-container .input-group .btn,
+.pat-structure table .fc-breadcrumbs-container .input-group .pat-structure .btn,
+.pat-structure table .fc-breadcrumbs-container .pat-structure .input-group .btn {
   padding: 2px 4px;
 }
-.pat-structure table .breadcrumbs-container .breadcrumbs {
+.pat-structure table .fc-breadcrumbs-container .fc-breadcrumbs {
   font-size: 15px;
   padding-top: 2px;
 }
@@ -4660,10 +4660,8 @@ tbody.pat-structure .collapse.in {
   margin-bottom: 5px;
 }
 .pat-structure .navbar .btn-group,
-.pat-structure .navbar #selected,
 .pat-structure .navbar .pat-structure .btn-group,
-.pat-structure .pat-structure .navbar .btn-group,
-.pat-structure .pat-structure .navbar #selected {
+.pat-structure .pat-structure .navbar .btn-group {
   margin-left: 5px;
 }
 .pat-structure .table th,
@@ -4707,12 +4705,12 @@ tbody.pat-structure .collapse.in {
 .pat-structure .upload-container .upload-area {
   width: 500px;
 }
-.pat-structure #btn-columns {
+.pat-structure #btn-attribute-columns {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
   border-right: 0;
 }
-.pat-structure #btn-selected,
+.pat-structure #btn-selected-items,
 .pat-structure #btn-rearrange,
 .pat-structure #btn-upload {
   border-radius: 0;
@@ -4741,10 +4739,10 @@ tbody.pat-structure .collapse.in {
   }
 }
 @media all and (max-width: 620px) {
-  .pat-structure #btn-columns {
+  .pat-structure #btn-attribute-columns {
     display: none;
   }
-  .pat-structure #btn-selected {
+  .pat-structure #btn-selected-items {
     border-top-left-radius: 3px;
     border-bottom-left-radius: 3px;
     border-left: 1px solid #cccccc;
@@ -4803,36 +4801,36 @@ tbody.pat-structure .collapse.in {
   content: '*';
   color: red;
 }
-.popover.selected .items,
-.pat-structure .popover.selected .items {
+.popover.selected-items .items,
+.pat-structure .popover.selected-items .items {
   max-height: 300px;
   overflow-y: auto;
 }
-.popover.selected .items .selected-item,
-.pat-structure .popover.selected .items .selected-item {
+.popover.selected-items .items .selected-item,
+.pat-structure .popover.selected-items .items .selected-item {
   display: block;
   margin: 0 8px 3px 0;
   border-radius: 6px;
   padding: 4px 6px;
 }
-.popover.selected .items .selected-item:hover,
-.pat-structure .popover.selected .items .selected-item:hover {
+.popover.selected-items .items .selected-item:hover,
+.pat-structure .popover.selected-items .items .selected-item:hover {
   background-color: #f2f2f2;
 }
-.popover.selected .items .selected-item a:hover,
-.pat-structure .popover.selected .items .selected-item a:hover {
+.popover.selected-items .items .selected-item a:hover,
+.pat-structure .popover.selected-items .items .selected-item a:hover {
   text-decoration: none;
 }
-.popover.selected .items .selected-item a:before,
-.pat-structure .popover.selected .items .selected-item a:before {
+.popover.selected-items .items .selected-item a:before,
+.pat-structure .popover.selected-items .items .selected-item a:before {
   color: #999;
 }
-.popover.selected .items .selected-item a:before:before,
-.pat-structure .popover.selected .items .selected-item a:before:before {
+.popover.selected-items .items .selected-item a:before:before,
+.pat-structure .popover.selected-items .items .selected-item a:before:before {
   content: "\e083";
 }
-.popover.selected .items .selected-item a:before:hover,
-.pat-structure .popover.selected .items .selected-item a:before:hover {
+.popover.selected-items .items .selected-item a:before:hover,
+.pat-structure .popover.selected-items .items .selected-item a:before:hover {
   color: #000;
 }
 .popover.query,
@@ -4859,22 +4857,22 @@ tbody.pat-structure .collapse.in {
   margin-bottom: 5px;
   padding-bottom: 10px;
 }
-.popover.columns ul,
-.pat-structure .popover.columns ul {
+.popover.attribute-columns ul,
+.pat-structure .popover.attribute-columns ul {
   list-style: none;
   margin: 0;
   padding: 0;
 }
-.popover.columns ul li,
-.pat-structure .popover.columns ul li {
+.popover.attribute-columns ul li,
+.pat-structure .popover.attribute-columns ul li {
   list-style: none;
   cursor: move;
   border: 1px solid #DDD;
   border-bottom: none;
   padding: 3px 7px;
 }
-.popover.columns ul li label,
-.pat-structure .popover.columns ul li label {
+.popover.attribute-columns ul li label,
+.pat-structure .popover.attribute-columns ul li label {
   margin-bottom: 0;
 }
 .order-support tbody tr {

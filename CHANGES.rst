@@ -8,6 +8,10 @@ Changelog
 5.0b3 (unreleased)
 ------------------
 
+- fix plone-logged-in bundle not using global jquery for requirejs dependency and in
+  weird cases causing select2 load errors in patterns(especially resource registry)
+  [vangheem]
+
 - Use new plone.app.theming policy API and delegate theme cache to plone.app.theming
   [gyst]
 

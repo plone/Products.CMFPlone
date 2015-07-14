@@ -10824,6 +10824,7 @@ return $.drop;
  *    separator(string): Analagous to the separator constructor parameter from Select2. Defines a custom separator used to distinguish the tag values. Ex: a value of ";" will allow tags and initialValues to have values separated by ";" instead of the default ",". (',')
  *    initialValues(string): This can be a json encoded string, or a list of id:text values. Ex: Red:The Color Red,Orange:The Color Orange  This is used inside the initSelection method, if AJAX options are NOT set. (null)
  *    vocabularyUrl(string): This is a URL to a JSON-formatted file used to populate the list (null)
+ *    allowNewItems(string): All new items to be entered into the widget(true)
  *    OTHER OPTIONS(): For more options on select2 go to http://ivaynberg.github.io/select2/#documentation ()
  *
  * Documentation:
@@ -11070,11 +11071,9 @@ define('mockup-patterns-select2',[
                 results.push({id: queryTerm, text: queryTerm});
               }
 
-              if (haveResult || self.options.allowNewItems) {
-                $.each(data.results, function(i, item) {
-                  results.push(item);
-                });
-              }
+              $.each(data.results, function(i, item) {
+                results.push(item);
+              });
             }
             return { results: results };
           }
@@ -11402,6 +11401,22 @@ define('mockup-utils',[
     loading: new Loading(),
     getAuthenticator: function() {
       return $('input[name="_authenticator"]').val();
+    },
+    featureSupport: {
+      /*
+        well tested feature support for things we use in mockup.
+        All gathered from: http://diveintohtml5.info/everything.html
+        Alternative to using some form of modernizr.
+      */
+      dragAndDrop: function(){
+        return 'draggable' in document.createElement('span');
+      },
+      fileApi: function(){
+        return typeof FileReader != 'undefined'; // jshint ignore:line
+      },
+      history: function(){
+        return !!(window.history && window.history.pushState);
+      }
     }
   };
 });
@@ -18377,6 +18392,7 @@ define('mockup-patterns-modal',[
       actions: {},
       actionOptions: {
         eventType: 'click',
+        disableAjaxFormSubmit: false,
         target: null,
         ajaxUrl: null, // string, or function($el, options) that returns a string
         modalFunction: null, // String, function name on self to call
@@ -18456,6 +18472,7 @@ define('mockup-patterns-modal',[
       },
       handleFormAction: function($action, options, patternOptions) {
         var self = this;
+
         // pass action that was clicked when submiting form
         var extraData = {};
         extraData[$action.attr('name')] = $action.attr('value');
@@ -18479,6 +18496,10 @@ define('mockup-patterns-modal',[
           url = $action.parents('form').attr('action');
         }
 
+        if(options.disableAjaxFormSubmit){
+          $form.trigger('submit');
+          return;
+        }
         // We want to trigger the form submit event but NOT use the default
         $form.on('submit', function(e) {
           e.preventDefault();
@@ -59832,7 +59853,7 @@ define('mockup-patterns-upload',[
         // the path uid. This event can be listened to by patterns using the
         // upload pattern, e.g. the TinyMCE pattern's link plugin.
         self.$el.trigger('uploadAllCompleted', {
-          'data': response,
+          'data': $.parseJSON(response),
           'path_uid': (self.$pathInput) ? self.$pathInput.val() : null
         });
       });
@@ -60135,8 +60156,6 @@ define('mockup-patterns-tinymce-url/js/links',[
   'use strict';
 
   var LinkType = Base.extend({
-    name: 'linktype',
-    trigger: '.pat-linktype',
     defaults: {
       linkModal: null // required
     },
@@ -60146,11 +60165,14 @@ define('mockup-patterns-tinymce-url/js/links',[
       this.tinypattern = this.options.tinypattern;
       this.tiny = this.tinypattern.tiny;
       this.dom = this.tiny.dom;
-      this.$input = this.$el.find('input');
+    },
+
+    getEl: function(){
+      return this.$el.find('input');
     },
 
     value: function() {
-      return this.$input.val();
+      return this.getEl().val();
     },
 
     toUrl: function() {
@@ -60158,11 +60180,11 @@ define('mockup-patterns-tinymce-url/js/links',[
     },
 
     load: function(element) {
-      this.$input.attr('value', this.tiny.dom.getAttrib(element, 'data-val'));
+      this.getEl().attr('value', this.tiny.dom.getAttrib(element, 'data-val'));
     },
 
     set: function(val) {
-      this.$input.attr('value', val);
+      this.getEl().attr('value', val);
     },
 
     attributes: function() {
@@ -60175,17 +60197,21 @@ define('mockup-patterns-tinymce-url/js/links',[
   var InternalLink = LinkType.extend({
     init: function() {
       LinkType.prototype.init.call(this);
-      this.$input.addClass('pat-relateditems');
+      this.getEl().addClass('pat-relateditems');
       this.createRelatedItems();
     },
 
+    getEl: function(){
+      return this.$el.find('input:not(.select2-input)');
+    },
+
     createRelatedItems: function() {
-      this.relatedItems = new RelatedItems(this.$input,
+      this.relatedItems = new RelatedItems(this.getEl(),
         this.linkModal.options.relatedItems);
     },
 
     value: function() {
-      var val = this.$input.select2('data');
+      var val = this.getEl().select2('data');
       if (val && typeof(val) === 'object') {
         val = val[0];
       }
@@ -60207,11 +60233,12 @@ define('mockup-patterns-tinymce-url/js/links',[
     },
 
     set: function(val) {
+      var $el = this.getEl();
       // kill it and then reinitialize since select2 will load data then
-      this.$input.select2('destroy');
-      this.$input.attr('data-relateditems', undefined); // reset the pattern
-      this.$input.parent().replaceWith(this.$input);
-      this.$input.attr('value', val);
+      $el.select2('destroy');
+      $el.removeData('pattern-relateditems'); // reset the pattern
+      $el.parent().replaceWith($el);
+      $el.attr('value', val);
       this.createRelatedItems();
     },
 
@@ -60226,11 +60253,32 @@ define('mockup-patterns-tinymce-url/js/links',[
     }
   });
 
-  var UploadLink = InternalLink.extend({
-    toUrl: function() {
-      // Make a URL from the servers uuid of the uploaded file.
-      var upload_data = $('.pat-upload').data('uploaddata');
-      return 'resolveuid/' + upload_data.UID;
+  var UploadLink = LinkType.extend({
+    /* need to do it a bit differently here.
+       when a user uploads and tries to upload from
+       it, you need to delegate to the real insert
+       linke types */
+    getDelegatedLinkType: function(){
+      if(this.linkModal.linkType === 'uploadImage'){
+        return this.linkModal.linkTypes.image;
+      }else{
+        return this.linkModal.linkTypes.internal;
+      }
+    },
+    toUrl: function(){
+      return this.getDelegatedLinkType().toUrl();
+    },
+    attributes: function(){
+      return this.getDelegatedLinkType().attributes();
+    },
+    set: function(val){
+      return this.getDelegatedLinkType().set(val);
+    },
+    load: function(element){
+      return this.getDelegatedLinkType().load(element);
+    },
+    value: function(){
+      return this.getDelegatedLinkType().value();
     }
   });
 
@@ -60658,11 +60706,7 @@ define('mockup-patterns-tinymce-url/js/links',[
         self.options.upload.relatedItems.selectableTypes = self.options.folderTypes;
         self.$upload.addClass('pat-upload').patternUpload(self.options.upload);
         self.$upload.on('uploadAllCompleted', function(evt, data) {
-          // Add upload data and path_uid to the upload node's data attributes.
-          self.$upload.attr({
-            'data-uploaddata': data.data,
-            'data-path': data.path_uid
-          });
+          self.linkTypes.image.set(data.data.UID);
         });
       }
 
@@ -80746,7 +80790,7 @@ define('mockup-patterns-querystring',[
         .append(self.$sortOrder)
         .append(
           $('<span/>')
-            .html(_t('Reserved Order'))
+            .html(_t('Reversed Order'))
             .addClass(self.options.classSortReverseLabelName)
         );
 
@@ -81726,6 +81770,8 @@ define('mockup-ui-url/views/button',[
       }, this);
 
       this.on('render', function() {
+        this.$el.attr('title', this.options.title || '');
+        this.$el.attr('aria-label', this.options.title || this.options.tooltip || '');
         if (this.context !== null) {
           this.$el.addClass('btn-' + this.context);
         }
@@ -81788,7 +81834,7 @@ define('mockup-patterns-structure-url/js/models/result',['backbone'], function(B
 });
 
 
-define('text!mockup-patterns-structure-url/templates/actionmenu.xml',[],function () { return '<a class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" href="#">\n  <span class="glyphicon glyphicon-cog"></span>\n  <span class="caret"></span>\n</a>\n<ul class="dropdown-menu pull-right">\n  <% if(header) { %>\n    <li class="dropdown-header"><%- header %></li>\n    <li class="divider"></li>\n  <% } %>\n  <li class="cutItem"><a href="#"><%- _t("Cut") %></a></li>\n  <li class="copyItem"><a href="#"><%- _t("Copy") %></a></li>\n  <% if(pasteAllowed && attributes.is_folderish){ %>\n    <li class="pasteItem"><a href="#"><%- _t("Paste") %></a></li>\n  <% } %>\n  <% if(!inQueryMode && canMove){ %>\n    <li class="move-top"><a href="#"><%- _t("Move to top of folder") %></a></li>\n    <li class="move-bottom"><a href="#"><%- _t("Move to bottom of folder") %></a></li>\n  <% } %>\n  <% if(!attributes.is_folderish && canSetDefaultPage){ %>\n    <li class="set-default-page"><a href="#"><%- _t("Set as default page") %></a></li>\n  <% } %>\n  <% if(attributes.is_folderish){ %>\n    <li class="selectAll"><a href="#"><%- _t("Select all contained items") %></a></li>\n  <% } %>\n  <li class="openItem"><a href="#"><%- _t("Open") %></a></li>\n  <li class="editItem"><a href="#"><%- _t("Edit") %></a></li>\n</ul>\n\n';});
+define('text!mockup-patterns-structure-url/templates/actionmenu.xml',[],function () { return '<a class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" href="#"\n    aria-haspopup="true" aria-expanded="true" id="<%- id %>" title="Actions">\n  <span class="glyphicon glyphicon-cog"></span>\n  <span class="caret"></span>\n</a>\n<ul class="dropdown-menu pull-right" aria-labelledby="<%- id %>">\n  <% if(header) { %>\n    <li class="dropdown-header"><%- header %></li>\n    <li class="divider"></li>\n  <% } %>\n  <li class="cutItem"><a href="#"><%- _t("Cut") %></a></li>\n  <li class="copyItem"><a href="#"><%- _t("Copy") %></a></li>\n  <% if(pasteAllowed && attributes.is_folderish){ %>\n    <li class="pasteItem"><a href="#"><%- _t("Paste") %></a></li>\n  <% } %>\n  <% if(!inQueryMode && canMove){ %>\n    <li class="move-top"><a href="#"><%- _t("Move to top of folder") %></a></li>\n    <li class="move-bottom"><a href="#"><%- _t("Move to bottom of folder") %></a></li>\n  <% } %>\n  <% if(!attributes.is_folderish && canSetDefaultPage){ %>\n    <li class="set-default-page"><a href="#"><%- _t("Set as default page") %></a></li>\n  <% } %>\n  <% if(attributes.is_folderish){ %>\n    <li class="selectAll"><a href="#"><%- _t("Select all contained items") %></a></li>\n  <% } %>\n  <li class="openItem"><a href="#"><%- _t("Open") %></a></li>\n  <li class="editItem"><a href="#"><%- _t("Edit") %></a></li>\n</ul>\n\n';});
 
 (function(root) {
 define("bootstrap-dropdown", ["jquery"], function() {
@@ -82138,7 +82184,10 @@ define('mockup-patterns-structure-url/js/views/actionmenu',[
       data.header = self.options.header || null;
       data.canMove = self.canMove;
 
-      self.$el.html(self.template($.extend({ _t: _t }, data)));
+      self.$el.html(self.template($.extend({
+        _t: _t,
+        id: utils.generateId()
+      }, data)));
 
       self.$dropdown = self.$('.dropdown-toggle');
       self.$dropdown.dropdown();
@@ -82274,7 +82323,7 @@ define('mockup-patterns-structure-url/js/views/tablerow',[
 });
 
 
-define('text!mockup-patterns-structure-url/templates/table.xml',[],function () { return '<div class="alert alert-<%= statusType %> status">\n    <%= status %>\n</div>\n<table class="table table-striped table-bordered">\n  <thead>\n    <tr class="breadcrumbs-container">\n      <td colspan="<%= activeColumns.length + 3 %>">\n        <% if(pathParts.length > 0) { %>\n          <div class="input-group context-buttons" style="display:none">\n            <span class="input-group-addon">\n              <input type="checkbox" />\n            </span>\n            <div class="input-group-btn">\n            </div>\n          </div>\n        <% } %>\n        <div class="breadcrumbs">\n          <a href="#" data-path="/">\n            <span class="glyphicon glyphicon-home"></span> /\n          </a>\n          <% _.each(pathParts, function(part, idx, list){\n            if(part){\n              if(idx > 0){ %>\n                /\n              <% } %>\n              <a href="#" class="crumb" data-path="<%- part %>"><%- part %></a>\n            <% }\n          }); %>\n        </div>\n      </td>\n    </tr>\n    <tr>\n      <th class="selection"><input type="checkbox" class="select-all" /></th>\n      <th class="title">Title</th>\n      <% _.each(activeColumns, function(column){ %>\n        <% if(_.has(availableColumns, column)) { %>\n          <th><%- availableColumns[column] %></th>\n        <% } %>\n      <% }); %>\n      <th class="actions"><%- _t("Actions") %></th>\n    </tr>\n  </thead>\n  <tbody>\n  </tbody>\n</table>\n';});
+define('text!mockup-patterns-structure-url/templates/table.xml',[],function () { return '<div class="alert alert-<%= statusType %> status">\n    <%= status %>\n</div>\n<table class="table table-striped table-bordered">\n  <thead>\n    <tr class="fc-breadcrumbs-container">\n      <td colspan="<%= activeColumns.length + 3 %>">\n        <% if(pathParts.length > 0) { %>\n          <div class="input-group context-buttons" style="display:none">\n            <span class="input-group-addon">\n              <input type="checkbox" />\n            </span>\n            <div class="input-group-btn">\n            </div>\n          </div>\n        <% } %>\n        <div class="fc-breadcrumbs">\n          <a href="#" data-path="/">\n            <span class="glyphicon glyphicon-home"></span> /\n          </a>\n          <% _.each(pathParts, function(part, idx, list){\n            if(part){\n              if(idx > 0){ %>\n                /\n              <% } %>\n              <a href="#" class="crumb" data-path="<%- part %>"><%- part %></a>\n            <% }\n          }); %>\n        </div>\n      </td>\n    </tr>\n    <tr>\n      <th class="selection"><input type="checkbox" class="select-all" /></th>\n      <th class="title">Title</th>\n      <% _.each(activeColumns, function(column){ %>\n        <% if(_.has(availableColumns, column)) { %>\n          <th><%- availableColumns[column] %></th>\n        <% } %>\n      <% }); %>\n      <th class="actions"><%- _t("Actions") %></th>\n    </tr>\n  </thead>\n  <tbody>\n  </tbody>\n</table>\n';});
 
 /* Sortable pattern.
  *
@@ -85765,9 +85814,9 @@ define('mockup-patterns-structure-url/js/views/table',[
       });
     },
     events: {
-      'click .breadcrumbs a': 'breadcrumbClicked',
+      'click .fc-breadcrumbs a': 'breadcrumbClicked',
       'change .select-all': 'selectAll',
-      'change .breadcrumbs-container input[type="checkbox"]': 'selectFolder'
+      'change .fc-breadcrumbs-container input[type="checkbox"]': 'selectFolder'
     },
     setContextInfo: function() {
       var self = this;
@@ -85779,7 +85828,7 @@ define('mockup-patterns-structure-url/js/views/table',[
       /* set breadcrumb title info */
       var crumbs = data.breadcrumbs;
       if (crumbs && crumbs.length) {
-        var $crumbs = self.$('.breadcrumbs a.crumb');
+        var $crumbs = self.$('.fc-breadcrumbs a.crumb');
         _.each(crumbs, function(crumb, idx) {
           $crumbs.eq(idx).html(crumb.title);
         });
@@ -85816,7 +85865,7 @@ define('mockup-patterns-structure-url/js/views/table',[
         activeColumns: self.app.activeColumns,
         availableColumns: self.app.availableColumns
       }));
-      self.$breadcrumbs = $('.breadcrumbs-container', self.$el);
+      self.$breadcrumbs = $('.fc-breadcrumbs-container', self.$el);
 
       if (self.collection.length) {
         var container = self.$('tbody');
@@ -85973,6 +86022,7 @@ define('mockup-ui-url/views/popover',[
       this.bindTriggerEvents();
 
       this.on('render', function() {
+        this.$el.attr('role', 'tooltip').attr('aria-hidden', 'true');
         this.renderTitle();
         this.renderContent();
       }, this);
@@ -86059,6 +86109,7 @@ define('mockup-ui-url/views/popover',[
       }
 
       this.uiEventTrigger('show', this);
+      this.$el.attr('aria-hidden', 'false');
     },
     applyPlacement: function(offset, placement) {
       var $el = this.$el,
@@ -86117,6 +86168,7 @@ define('mockup-ui-url/views/popover',[
         this.triggerView.$el.removeClass('active');
       }
       this.uiEventTrigger('hide', this);
+      this.$el.attr('aria-hidden', 'true');
     },
     toggle: function(button, e) {
       if (this.opened) {
@@ -86166,7 +86218,7 @@ define('mockup-patterns-structure-url/js/views/selectionwell',[
   'use strict';
 
   var WellView = PopoverView.extend({
-    className: 'popover selected',
+    className: 'popover selected-items',
     title: _.template('<input type="text" class="filter" placeholder="Filter" />' +
                       '<a href="#" class=" remove-all">' +
                         '<span class="glyphicon glyphicon-remove-circle"></span> <%- _t("remove all") %></a>'),
@@ -86659,7 +86711,7 @@ define('mockup-patterns-structure-url/js/views/columns',[
   'use strict';
 
   var ColumnsView = PopoverView.extend({
-    className: 'popover columns',
+    className: 'popover attribute-columns',
     title: _.template('Columns'),
     content: _.template(
       '<label><%- _t("Select columns to show, drag and drop to reorder") %></label>' +
@@ -88270,11 +88322,11 @@ define('mockup-patterns-structure-url/js/views/app',[
 
       self.wellView = new SelectionWellView({
         collection: self.selectedCollection,
-        triggerView: self.toolbar.get('selected'),
+        triggerView: self.toolbar.get('selected-items'),
         app: self
       });
 
-      self.toolbar.get('selected').disable();
+      self.toolbar.get('selected-items').disable();
       self.buttons.disable();
 
       var timeout = 0;
@@ -88325,7 +88377,7 @@ define('mockup-patterns-structure-url/js/views/app',[
         }
       });
 
-      if (self.options.urlStructure && window.history && window.history.pushState){
+      if (self.options.urlStructure && utils.featureSupport.history()){
         $(window).bind('popstate', function () {
           /* normalize this url first... */
           var url = window.location.href;
@@ -88360,10 +88412,10 @@ define('mockup-patterns-structure-url/js/views/app',[
     updateButtons: function(){
       var self = this;
       if (self.selectedCollection.length) {
-        self.toolbar.get('selected').enable();
+        self.toolbar.get('selected-items').enable();
         self.buttons.enable();
       } else {
-        this.toolbar.get('selected').disable();
+        this.toolbar.get('selected-items').disable();
         self.buttons.disable();
       }
 
@@ -88475,7 +88527,7 @@ define('mockup-patterns-structure-url/js/views/app',[
       var items = [];
 
       var columnsBtn = new ButtonView({
-        id: 'columns',
+        id: 'attribute-columns',
         tooltip: 'Configure displayed columns',
         icon: 'th'
       });
@@ -88488,7 +88540,7 @@ define('mockup-patterns-structure-url/js/views/app',[
 
       items.push(new SelectionButtonView({
         title: 'Selected',
-        id: 'selected',
+        id: 'selected-items',
         collection: this.selectedCollection
       }));
 
@@ -88506,7 +88558,7 @@ define('mockup-patterns-structure-url/js/views/app',[
         });
         items.push(rearrangeButton);
       }
-      if (self.options.upload) {
+      if (self.options.upload && utils.featureSupport.dragAndDrop() && utils.featureSupport.fileApi()) {
         var uploadButton = new ButtonView({
           id: 'upload',
           title: 'Upload',
@@ -93001,6 +93053,13 @@ define('plone-patterns-portletmanager',[
 // this program; if not, write to the Free Software Foundation, Inc., 51
 // Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
+
+if (window.jQuery) {
+  define( 'jquery', [], function () {
+    'use strict';
+    return window.jQuery;
+  } );
+}
 
 require([
   'mockup-patterns-textareamimetypeselector',
