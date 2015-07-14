@@ -1510,11 +1510,7 @@ define('mockup-patterns-base',[
       try {
           pattern = new Registry.patterns[name]($el, options);
       } catch (e) {
-          log.error('Failed while initializing "' + name + '" pattern.');
-          if (window.DEBUG) {
-            // don't swallow errors in DEBUG mode.
-            log.error(e);
-          }
+          log.error('Failed while initializing "' + name + '" pattern.', e);
       }
       $el.data('pattern-' + name, pattern);
     }
@@ -8348,6 +8344,7 @@ define('mockup-ui-url/views/base',[
     isUIView: true,
     eventPrefix: 'ui',
     template: null,
+    idPrefix: 'base-',
     appendInContainer: true,
     initialize: function(options) {
       this.options = options;
@@ -8362,9 +8359,9 @@ define('mockup-ui-url/views/base',[
       this.trigger('render', this);
       this.afterRender();
 
-      if (!this.$el.attr('id') && this.options.id) {
+      if (this.options.id) {
         // apply id to element
-        this.$el.attr('id', 'gen-' + this.options.id);
+        this.$el.attr('id', this.idPrefix + this.options.id);
       }
       return this;
     },
@@ -8509,7 +8506,13 @@ define('mockup-utils',[
           v: term
         });
       }
-      if (self.pattern.browsing) {
+      if(options.searchPath){
+        criterias.push({
+          i: 'path',
+          o: 'plone.app.querystring.operation.string.path',
+          v: options.searchPath + '::' + self.options.pathDepth
+        });
+      }else if (self.pattern.browsing) {
         criterias.push({
           i: 'path',
           o: 'plone.app.querystring.operation.string.path',
@@ -8571,9 +8574,12 @@ define('mockup-utils',[
       return data;
     };
 
-    self.search = function(term, operation, value, callback, useBaseCriteria) {
+    self.search = function(term, operation, value, callback, useBaseCriteria, type) {
       if (useBaseCriteria === undefined) {
         useBaseCriteria = true;
+      }
+      if(type === undefined){
+        type = 'GET';
       }
       var criteria = [];
       if (useBaseCriteria) {
@@ -8592,6 +8598,7 @@ define('mockup-utils',[
         url: self.options.vocabularyUrl,
         dataType: 'JSON',
         data: data,
+        type: type,
         success: callback
       });
     };
@@ -8697,6 +8704,22 @@ define('mockup-utils',[
     loading: new Loading(),
     getAuthenticator: function() {
       return $('input[name="_authenticator"]').val();
+    },
+    featureSupport: {
+      /*
+        well tested feature support for things we use in mockup.
+        All gathered from: http://diveintohtml5.info/everything.html
+        Alternative to using some form of modernizr.
+      */
+      dragAndDrop: function(){
+        return 'draggable' in document.createElement('span');
+      },
+      fileApi: function(){
+        return typeof FileReader != 'undefined'; // jshint ignore:line
+      },
+      history: function(){
+        return !!(window.history && window.history.pushState);
+      }
     }
   };
 });
@@ -9483,6 +9506,11 @@ define('mockup-patterns-sortable',[
       selector: 'li',
       dragClass: 'item-dragging',
       cloneClass: 'dragging',
+      createDragItem: function(pattern, $el){
+        return $el.clone().
+          addClass(pattern.options.cloneClass).
+          css({opacity: 0.75, position: 'absolute'}).appendTo(document.body);
+      },
       drop: null // function to handle drop event
     },
     init: function() {
@@ -9491,6 +9519,7 @@ define('mockup-patterns-sortable',[
 
       self.$el.find(self.options.selector).drag('start', function(e, dd) {
         var dragged = this;
+        var $el = $(this);
         $(dragged).addClass(self.options.dragClass);
         drop({
           tolerance: function(event, proxy, target) {
@@ -9503,11 +9532,8 @@ define('mockup-patterns-sortable',[
             return this.contains(target, [event.pageX, event.pageY]);
           }
         });
-        start = $(this).index();
-        return $( this ).clone().
-          addClass(self.options.cloneClass).
-          css({opacity: 0.75, position: 'absolute'}).
-          appendTo(document.body);
+        start = $el.index();
+        return self.options.createDragItem(self, $el);
       })
       .drag(function(e, dd) {
         /*jshint eqeqeq:false */
@@ -13071,6 +13097,7 @@ the specific language governing permissions and limitations under the Apache Lic
  *    separator(string): Analagous to the separator constructor parameter from Select2. Defines a custom separator used to distinguish the tag values. Ex: a value of ";" will allow tags and initialValues to have values separated by ";" instead of the default ",". (',')
  *    initialValues(string): This can be a json encoded string, or a list of id:text values. Ex: Red:The Color Red,Orange:The Color Orange  This is used inside the initSelection method, if AJAX options are NOT set. (null)
  *    vocabularyUrl(string): This is a URL to a JSON-formatted file used to populate the list (null)
+ *    allowNewItems(string): All new items to be entered into the widget(true)
  *    OTHER OPTIONS(): For more options on select2 go to http://ivaynberg.github.io/select2/#documentation ()
  *
  * Documentation:
@@ -13317,11 +13344,9 @@ define('mockup-patterns-select2',[
                 results.push({id: queryTerm, text: queryTerm});
               }
 
-              if (haveResult || self.options.allowNewItems) {
-                $.each(data.results, function(i, item) {
-                  results.push(item);
-                });
-              }
+              $.each(data.results, function(i, item) {
+                results.push(item);
+              });
             }
             return { results: results };
           }
@@ -32195,12 +32220,14 @@ define('mockup-patterns-texteditor',[
 
       // set id on current element
       var id = utils.setId(self.$el);
-      self.$wrapper = $('<div/>').css({
+      self.$wrapper = $('<div class="editorWrapper" />').css({
         height: self.options.height + 25, // weird sizing issue here...
         width: self.options.width,
         position: 'relative'
       });
-      self.$el.wrap(self.$wrapper);
+      if( !self.$el.parent().hasClass('editorWrapper') ) {
+          self.$el.wrap(self.$wrapper);
+      }
       self.$el.css({
         width: self.options.width,
         height: self.options.height,
@@ -34003,6 +34030,7 @@ define('mockup-patterns-modal',[
       actions: {},
       actionOptions: {
         eventType: 'click',
+        disableAjaxFormSubmit: false,
         target: null,
         ajaxUrl: null, // string, or function($el, options) that returns a string
         modalFunction: null, // String, function name on self to call
@@ -34082,6 +34110,7 @@ define('mockup-patterns-modal',[
       },
       handleFormAction: function($action, options, patternOptions) {
         var self = this;
+
         // pass action that was clicked when submiting form
         var extraData = {};
         extraData[$action.attr('name')] = $action.attr('value');
@@ -34105,6 +34134,10 @@ define('mockup-patterns-modal',[
           url = $action.parents('form').attr('action');
         }
 
+        if(options.disableAjaxFormSubmit){
+          $form.trigger('submit');
+          return;
+        }
         // We want to trigger the form submit event but NOT use the default
         $form.on('submit', function(e) {
           e.preventDefault();
@@ -34748,6 +34781,7 @@ define('mockup-patterns-resourceregistry-url/js/iframe',[
       title: '',
       name: '',
       resources: [],
+      callback: function(){},
       configure: function(){},
       onLoad: function(){}
     },
@@ -34840,6 +34874,7 @@ define('mockup-patterns-resourceregistry-url/js/iframe',[
 
   return window.IFrame;
 });
+
 
 define('mockup-patterns-resourceregistry-url/js/builder',[
   'jquery',
@@ -34962,7 +34997,7 @@ define('mockup-patterns-resourceregistry-url/js/builder',[
       var checkFinished = function(){
         var $styles =  $('style[type="text/css"][id]', iframe.document);
         for(var i=0; i<$styles.length; i=i+1){
-          var $style = $styles.eq(i); 
+          var $style = $styles.eq(i);
           if($style.attr('id') === 'less:error-message'){
             self.addResult(_t('Error compiling less'));
             return self.finished(true);
