@@ -152,12 +152,11 @@ define([
         'padding-top': Math.min(itemLocation, height - insideHeight)
       });
     },
-    setHeight: function(){
-      if(!this.state.left){
-        // only when on left
-        return;
-      }
-      $('.plone-toolbar-main', this.$container).css({height: ''});
+    _setHeight: function(){
+      var $items = $('.plone-toolbar-main', this.$container);
+      var $nav = $items.parent();
+      $items.css({height: ''});
+      
       var $el = $('.plone-toolbar-main', this.$container),
         scrollTop = $(window).scrollTop(),
         scrollBot = scrollTop + $(window).height(),
@@ -165,9 +164,31 @@ define([
         elBottom = elTop + $el.outerHeight(),
         visibleTop = elTop < scrollTop ? scrollTop : elTop,
         visibleBottom = elBottom > scrollBot ? scrollBot : elBottom;
-      // unset height first
-      $('.plone-toolbar-main', this.$container).height(
-        visibleBottom - visibleTop - $('#portal-personaltools').outerHeight());
+      var height = (visibleBottom - visibleTop);
+
+      if(height + $('#personal-bar-container').outerHeight() > $nav.height()){
+        height = height + $('#personal-bar-container').outerHeight();
+      }else{
+        height = height - $('#personal-bar-container').outerHeight();
+      }
+
+      $('.plone-toolbar-main', this.$container).height(height);
+      /* if there is active, make sure to reposition */
+      var $active = $('li.active', this.$container);
+      if($active.size() > 0){
+        this.padPulloutContent($active);
+      }
+    },
+    setHeight: function(){
+      if(!this.state.left){
+        // only when on left
+        return;
+      }
+      var that = this;
+      clearTimeout(that.heightTimeout);
+      that.heightTimeout = setTimeout(function(){
+        that._setHeight();
+      }, 50);
     },
     setState: function(state){
       var that = this;
@@ -179,6 +200,7 @@ define([
     },
     init: function () {
       var that = this;
+      that.heightTimeout = 0;
       that.$container = $(that.options.containerSelector);
       var toolbar_cookie = $.cookie(that.options.cookieName);
       that.state = {
