@@ -69,8 +69,8 @@ the four elements got selected
     Checkbox Should Be Selected  css=tr[data-id="doc4"] input
 
 the selection count appears
-    Wait until page contains element  css=#btn-selected .label-success
-    Element Should Contain  css=#btn-selected .label-success  4
+    Wait until page contains element  css=#btn-selected-items .label-success
+    Element Should Contain  css=#btn-selected-items .label-success  4
 
 the clear selection link appears
     Page Should Contain Element  css=a.remove-all
