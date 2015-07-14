@@ -3,8 +3,9 @@ define([
   'mockup-patterns-base',
   'pat-registry',
   'mockup-utils',
+  'translate',
   'jquery.cookie'
-], function ($, Base, Registry, utils) {
+], function ($, Base, Registry, utils, _t) {
   'use strict';
 
   var Toolbar = Base.extend({
@@ -31,6 +32,7 @@ define([
       // $( 'html' ).has('.plone-toolbar-top').css({'margin-left':'0','margin-top':'0','margin-right':'0'});
       // $( 'html' ).has('.plone-toolbar-left.expanded').css({'margin-left':'0','margin-top':'0','margin-right':'0'});
       // $( 'body' ).css('margin-left: 0px');
+
       that.$container.css('right', '-120px');
       // make sure we are in expanded mode
       $('body').addClass(that.options.classNames.leftExpanded);
@@ -206,6 +208,44 @@ define([
         expanded: that.state.expanded
       }), {path: '/'});
     },
+    hideElements: function(){
+      if(this.state.left){
+        // only when on top
+        return;
+      }
+      var $el = $('.plone-toolbar-main', this.$container),
+        w = $('.plone-toolbar-container').width(),
+        wtc = $('.plone-toolbar-logo').width();
+
+      $( ".plone-toolbar-main > li" ).each(function( index ) {
+        wtc += $(this).width();
+      });
+
+      $('#personal-bar-container > li').each(function(index) {
+        wtc += $(this).width();
+      })
+      wtc -= $('#plone-toolbar-more-options').width();
+      if (w < wtc) {
+        if (!($('#plone-toolbar-more-options').length)) {
+          $('[id^="plone-contentmenu-"]').hide();
+          $('.plone-toolbar-main').append('<li id="plone-toolbar-more-options"><a href="#"><span class="icon-moreOptions" aria-hidden="true"></span><span>' + _t('More') + '</span><span class="plone-toolbar-caret"></span></a></li>');
+          $('#personal-bar-container').after('<ul id="plone-toolbar-more-subset" style="display: none"></ul>');
+          $( "[id^=plone-contentmenu-]" ).each(function( index ) {
+            $(this).clone(true, true).appendTo( "#plone-toolbar-more-subset" );
+            $('[id^=plone-contentmenu-]', '#plone-toolbar-more-subset').show();
+          });
+          $('#plone-toolbar-more-options a').on('click', function(event){
+            event.preventDefault();
+            $('#plone-toolbar-more-subset').toggle();
+          })
+        }
+      } else {
+        $('[id^="plone-contentmenu-"]').show();
+        $('#plone-toolbar-more-options').remove();
+        $('#plone-toolbar-more-subset').remove();
+      }
+
+    },
     init: function () {
       var that = this;
       that.heightTimeout = 0;
@@ -225,6 +265,10 @@ define([
 
       if (that.isDesktop()){
         that.setupDesktop();
+        if (!that.state.left) {
+          // in case its top lets just hide what is not needed
+          that.hideElements();
+        }
       }else {
         that.setupMobile();
       }
@@ -245,6 +289,7 @@ define([
 
       $(window).on('resize', function(){
         that.setHeight();
+        that.hideElements();
       });
     },
 

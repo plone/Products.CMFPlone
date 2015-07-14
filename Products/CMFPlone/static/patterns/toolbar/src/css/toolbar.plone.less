@@ -253,6 +253,19 @@ body.userrole-authenticated {
     position: fixed;
     height: 50px;
     width: 100%;
+    .plone-toolbar-container{
+        margin-right: auto;
+        margin-left: auto;
+        @media (min-width: @plone-screen-sm-min) {
+          width: @plone-container-sm;
+        }
+        @media (min-width: @plone-screen-md-min) {
+          width: @plone-container-md;
+        }
+        @media (min-width: @plone-screen-lg-min) {
+          width: @plone-container-lg;
+        }    
+    }
     .plone-toolbar-logo:after {
         border-left: 4px solid darken(@plone-toolbar-link, 10%);
         border-top: 4px solid transparent;
@@ -270,7 +283,7 @@ body.userrole-authenticated {
         position: absolute; top:0;
         img {margin-top: 13px;}
     }
-    nav {margin-left: @plone-left-toolbar;}
+    nav {padding-left: @plone-left-toolbar; width: 100%;}
     .plone-toolbar-caret {
         border-top: 4px solid;
         border-left: 4px solid transparent;
@@ -286,6 +299,9 @@ body.userrole-authenticated {
         overflow-y: auto;
         height: 0;
     }
+    #plone-toolbar-more-subset > li ul {
+        top: 105px;
+    }
     nav > ul li.active ul {
         height: inherit;
         max-height: 1000px; // trick to activate transition
@@ -297,6 +313,13 @@ body.userrole-authenticated {
         right: inherit;
         margin-top: -20px;
         margin-left: 20px;
+    }
+    #personal-bar-container {
+        float: right;
+    }
+    #plone-toolbar-more-subset {
+        background: rgba(0, 0, 0, 0.9);
+        float: right;
     }
 }
 .plone-toolbar-top.plone-toolbar-expanded #edit-zone{
