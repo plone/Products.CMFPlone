@@ -1,15 +1,15 @@
 <section id="edit-bar" role="toolbar"
          tal:define="portal_state view/portal_state;
-                     toolbar_class python:request.cookies.get('plone-toolbar', 'plone-toolbar-left pat-toolbar');
-                     portal_url portal_state/portal_url;
+                     toolbar_class view/get_toolbar_position;
                      personal_bar python: view.get_personal_bar()"
          tal:condition="not: portal_state/anonymous"
          i18n:domain="plone">
   <div id="edit-zone" role="toolbar" tal:attributes="class toolbar_class">
     <div class="plone-toolbar-container">
       <a class="plone-toolbar-logo">
-        <img alt="Plone Toolbar" tal:attributes="src string:${portal_url}/++plone++static/plone-toolbarlogo.svg" />
+        <img alt="Plone Toolbar" tal:attributes="src view/get_toolbar_logo" />
       </a>
+      <a class="plone-toolbar-switcher" tal:condition="view/show_switcher"><span>Left-Top switcher</span></a>
       <nav role="navigation">
         <ul class="plone-toolbar-main">
           <div tal:replace="structure view/base_render">
