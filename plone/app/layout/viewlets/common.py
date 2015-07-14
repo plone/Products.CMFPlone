@@ -6,6 +6,7 @@ from plone.registry.interfaces import IRegistry
 
 from plone.memoize.view import memoize
 from zope.component import getMultiAdapter
+from zope.component import queryMultiAdapter
 from zope.component import getUtility
 from zope.deprecation.deprecation import deprecate
 from zope.i18n import translate
@@ -25,6 +26,7 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 from plone.app.layout.globals.interfaces import IViewView
 from plone.protect.utils import addTokenToUrl
+
 
 
 class ViewletBase(BrowserView):
@@ -364,6 +366,30 @@ class ContentViewsViewlet(ViewletBase):
 
         tabs.sort(key=sortOrder)
         return tabs
+
+    def locked_icon(self):
+        if not getSecurityManager().checkPermission('Modify portal content',
+                                                    self.context):
+            return ""
+
+        locked = False
+        lock_info = queryMultiAdapter((self.context, self.request),
+                                      name='plone_lock_info')
+        if lock_info is not None:
+            locked = lock_info.is_locked()
+        else:
+            context = aq_inner(self.context)
+            lockable = getattr(context.aq_explicit,
+                               'wl_isLocked', None
+                               ) is not None
+            locked = lockable and context.wl_isLocked()
+
+        if not locked:
+            return ""
+
+        portal = self.portal_state.portal()
+        icon = portal.restrictedTraverse('lock_icon.png')
+        return icon.tag(title='Locked')
 
 
 class ManagePortletsFallbackViewlet(ViewletBase):

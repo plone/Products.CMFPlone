@@ -20,6 +20,9 @@ Changelog
   worked OOTB since always and this does not follow modern a11y methods and we
   are dropping support for outdated ways [sneridagh]
 
+- Disabled document_byline viewlet in favor of toolbar action
+  [agitator]
+
 - Remove all references to "accesskeys" attributes on templates [sneridagh]
 
 2.5.7 (2015-06-05)
