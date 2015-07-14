@@ -10563,13 +10563,14 @@ define('plone-patterns-toolbar',[
       containerSelector: '#edit-zone',
       classNames: {
         logo: 'plone-toolbar-logo',
-        left: 'plone-toolbar-left-default',
+        left: 'plone-toolbar-left',
+        leftDefault: 'plone-toolbar-left-default',
         leftExpanded: 'plone-toolbar-left-expanded',
-        top: 'plone-toolbar-top-default',
+        top: 'plone-toolbar-top',
+        topDefault: 'plone-toolbar-top-default',
         topExpanded: 'plone-toolbar-top-expanded',
-        expanded: 'expanded',
-        active: 'active',
-        compressed: 'plone-toolbar-compressed'
+        expanded: 'plone-toolbar-expanded',
+        active: 'active'
       },
       cookieName: 'plone-toolbar'
     },
@@ -10615,94 +10616,43 @@ define('plone-patterns-toolbar',[
     },
     setupDesktop: function(){
       var that = this;
-      var toolbar_cookie = $.cookie(that.options.cookieName);
-      that.state = toolbar_cookie;
-      that.$container.attr('class', toolbar_cookie);
+      if(that.state.expanded){
+        $('body').addClass(that.options.classNames.expanded);
+      }else{
+        $('body').removeClass(that.options.classNames.expanded);
+      }
 
       $('.' + that.options.classNames.logo, that.$container).on('click', function() {
-        if (that.state) {
-          if (that.state.indexOf('expanded') != -1) {
-            // Switch to default (only icons)
-            that.$container.removeClass(that.options.classNames.expanded);
-            $('nav li', that.$container).removeClass(that.options.classNames.active);
-            if (that.state.indexOf('left') != -1) {
-              $('body').addClass(that.options.classNames.left);
-              $('body').removeClass(that.options.classNames.leftExpanded);
-            } else {
-              $('body').addClass(that.options.classNames.top);
-              $('body').removeClass(that.options.classNames.topExpanded);
-            }
-            $.cookie(that.options.cookieName, that.$container.attr('class'), {path: '/'});
-            that.state = that.state.replace(' ' + that.options.classNames.expanded, '');
-          } else {
-            // Switch to expanded
-            that.$container.addClass(that.options.classNames.expanded);
-            $('nav li', that.$container).removeClass(that.options.classNames.active);
-            if (that.state.indexOf('left') != -1) {
-              $('body').addClass(that.options.classNames.leftExpanded);
-              $('body').removeClass(that.options.classNames.left);
-            } else {
-              $('body').addClass(that.options.classNames.topExpanded);
-              $('body').removeClass(that.options.classNames.top);
-            }
-            $.cookie(that.options.cookieName, that.$container.attr('class'), {path: '/'});
-            that.state = that.state + ' ' + that.options.classNames.expanded;
-          }
-        } else {
-          // Cookie not set, assume default (only icons)
-          that.state = 'pat-toolbar plone-toolbar-left';
-          // Switch to expanded left
-          that.$container.addClass(that.options.classNames.expanded);
+        if (that.state.expanded) {
+          // currently expanded, need to compress
+          that.setState({
+            expanded: false
+          });
+          $('body').removeClass(that.options.classNames.expanded);
           $('nav li', that.$container).removeClass(that.options.classNames.active);
-          $('body').addClass(that.options.classNames.leftExpanded);
-          $('body').removeClass(that.options.classNames.left);
-          $.cookie(that.options.cookieName, that.$container.attr('class'), {path: '/'});
-          that.state = that.state + ' ' + that.options.classNames.expanded;
-        }
-      });
-
-      // Switch to compressed
-      $('.' + that.options.classNames.logo, that.$container).on('dblclick', function() {
-        if (that.state) {
-          if (that.state.indexOf('compressed') != -1) {
-            // Switch to default (only icons) not compressed
-            that.$container.removeClass('compressed');
-            if (that.state.indexOf('left') != -1) {
-              $('body').addClass(that.options.classNames.left);
-              $('body').removeClass(that.options.classNames.compressed);
-            } else {
-              $('body').addClass(that.options.classNames.top);
-              $('body').removeClass(that.options.classNames.compressed);
-            }
-            $.cookie(that.options.cookieName, that.$container.attr('class'), {path: '/'});
-            that.state = that.state.replace(' ' + that.options.classNames.expanded, '');
+          if (that.state.left) {
+            $('body').addClass(that.options.classNames.leftDefault);
+            $('body').removeClass(that.options.classNames.leftExpanded);
           } else {
-            // Switch to compressed
-            that.$container.addClass('compressed');
-            if (that.state.indexOf('left') != -1) {
-              $('body').addClass(that.options.classNames.compressed);
-              $('body').removeClass(that.options.classNames.left);
-              $('body').removeClass(that.options.classNames.leftExpanded);
-            } else {
-              $('body').addClass(that.options.classNames.compressed);
-              $('body').removeClass(that.options.classNames.top);
-              $('body').removeClass(that.options.classNames.topExpanded);
-            }
-            $.cookie(that.options.cookieName, that.$container.attr('class'), {path: '/'});
-            that.state = that.state + ' compressed';
+            $('body').addClass(that.options.classNames.topDefault);
+            $('body').removeClass(that.options.classNames.topExpanded);
           }
         } else {
-          // Cookie not set, assume default (only icons)
-          // Switch to compressed
-          that.$container.addClass('compressed');
-          $('body').addClass(that.options.classNames.compressed);
-          $('body').removeClass(that.options.classNames.left);
-          $('body').removeClass(that.options.classNames.leftExpanded);
-          $.cookie(that.options.cookieName, that.$container.attr('class'), {path: '/'});
-          that.state = that.state + ' compressed';
+          that.setState({
+            expanded: true
+          });
+          // Switch to expanded
+          $('body').addClass(that.options.classNames.expanded);
+          $('nav li', that.$container).removeClass(that.options.classNames.active);
+          if (that.state.left) {
+            $('body').addClass(that.options.classNames.leftExpanded);
+            $('body').removeClass(that.options.classNames.leftDefault);
+          } else {
+            $('body').addClass(that.options.classNames.topExpanded);
+            $('body').removeClass(that.options.classNames.topDefault);
+          }
         }
       });
-
 
       $('nav > ul > li li', that.$container).on('click', function(event) {
         event.stopImmediatePropagation();
@@ -10715,6 +10665,7 @@ define('plone-patterns-toolbar',[
         var hasClass = $(this).hasClass(that.options.classNames.active);
         // always close existing
         $('nav li', that.$container).removeClass(that.options.classNames.active);
+        $('nav li > ul', $(this)).css({'padding-top': ''}); // unset this so we get fly-in affect
         if (!hasClass) {
           // open current selected if not already open
           $(this).addClass(that.options.classNames.active);
@@ -10732,6 +10683,10 @@ define('plone-patterns-toolbar',[
       that.setHeight();
     },
     padPulloutContent: function($li){
+      if(!this.state.left){
+        // only when on left
+        return;
+      }
       // try to place content as close to the user click as possible
       var $content = $('> ul', $li);
       var $inner = $content.find('> *');
@@ -10747,6 +10702,10 @@ define('plone-patterns-toolbar',[
       });
     },
     setHeight: function(){
+      if(!this.state.left){
+        // only when on left
+        return;
+      }
       $('.plone-toolbar-main', this.$container).css({height: ''});
       var $el = $('.plone-toolbar-main', this.$container),
         scrollTop = $(window).scrollTop(),
@@ -10759,11 +10718,29 @@ define('plone-patterns-toolbar',[
       $('.plone-toolbar-main', this.$container).height(
         visibleBottom - visibleTop - $('#portal-personaltools').outerHeight());
     },
+    setState: function(state){
+      var that = this;
+      that.state = $.extend({}, that.state, state);
+      /* only cookie configurable attribute is expanded or contracted */
+      $.cookie(that.options.cookieName, JSON.stringify({
+        expanded: that.state.expanded
+      }), {path: '/'});
+    },
     init: function () {
       var that = this;
       that.$container = $(that.options.containerSelector);
       var toolbar_cookie = $.cookie(that.options.cookieName);
-      that.state = toolbar_cookie;
+      that.state = {
+        expanded: true,
+        left: $('body').hasClass(that.options.classNames.left)
+      };
+      if(toolbar_cookie){
+        try{
+          that.state = $.extend({}, that.state, $.parseJSON(toolbar_cookie));
+        }catch(e){
+          // ignore
+        }
+      }
 
       if ($(window).width() < '768'){//mobile
         that.setupMobile();

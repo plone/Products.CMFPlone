@@ -3081,12 +3081,6 @@ html,
   transition: border-top 0.35s;
   -webkit-transition: border-top 0.25s;
 }
-#edit-zone.expanded .plone-toolbar-logo {
-  width: 120px;
-}
-#edit-zone.expanded .plone-toolbar-logo span {
-  display: inline;
-}
 #edit-zone nav > ul {
   font-family: sans-serif;
   font-size: 12px;
@@ -3351,25 +3345,32 @@ html,
   font-size: 30px;
   right: 13px;
 }
-#edit-zone.plone-toolbar-left {
+.plone-toolbar-left #edit-zone {
   z-index: 5;
 }
-#edit-zone.plone-toolbar-left nav > ul ul {
+.plone-toolbar-left #edit-zone nav > ul ul {
   width: 0;
   height: 100%;
+  background-color: transparent;
 }
-#edit-zone.plone-toolbar-left .plone-toolbar-container {
+.plone-toolbar-left #edit-zone nav > ul ul > * {
+  background-color: rgba(20, 20, 20, 0.9);
+}
+.plone-toolbar-left #edit-zone nav > ul ul .plone-toolbar-submenu-header {
+  margin: 0;
+}
+.plone-toolbar-left #edit-zone .plone-toolbar-container {
   height: 100%;
   position: relative;
 }
-#edit-zone.plone-toolbar-left #personal-bar-container {
+.plone-toolbar-left #edit-zone #personal-bar-container {
   position: absolute;
   bottom: 0;
   background-color: black;
   border-top: 1px solid #DDDDDD;
   box-shadow: -3px 2px 9px 2px #dddddd;
 }
-#edit-zone.plone-toolbar-left #personal-bar-container ul {
+.plone-toolbar-left #edit-zone #personal-bar-container ul {
   position: fixed;
   height: 100%;
   top: 0;
@@ -3379,92 +3380,73 @@ html,
   max-height: 0;
   width: 180px;
 }
-#edit-zone.expanded {
+.plone-toolbar-expanded #edit-zone {
   width: 120px;
   /*states*/
 }
-#edit-zone.expanded nav > ul ul {
+.plone-toolbar-expanded #edit-zone nav > ul ul {
   left: 120px;
 }
-#edit-zone.expanded nav > ul a > [class^="icon"] {
+.plone-toolbar-expanded #edit-zone nav > ul a > [class^="icon"] {
   display: table-cell;
   width: 40px;
   padding-left: 10px;
 }
-#edit-zone.expanded nav > ul a > .icon-logout {
+.plone-toolbar-expanded #edit-zone nav > ul a > .icon-logout {
   margin: 0;
   padding: 0;
 }
-#edit-zone.expanded nav > ul a > span + span {
+.plone-toolbar-expanded #edit-zone nav > ul a > span + span {
   background: none;
   width: 80px;
   text-align: left;
 }
-#edit-zone.expanded .plone-toolbar-caret {
+.plone-toolbar-expanded #edit-zone .plone-toolbar-caret {
   width: 0;
 }
-#edit-zone.expanded li:not(.active) a:hover > span {
+.plone-toolbar-expanded #edit-zone li:not(.active) a:hover > span {
   background: #007bb3;
   transition: background .35s;
 }
-#edit-zone.expanded li a.label-state-published:hover > span,
-#edit-zone.expanded li a.label-state-external:hover > span {
+.plone-toolbar-expanded #edit-zone li a.label-state-published:hover > span,
+.plone-toolbar-expanded #edit-zone li a.label-state-external:hover > span {
   background: #007bb3;
 }
-#edit-zone.expanded li a.label-state-published:hover > span:first-child:before,
-#edit-zone.expanded li a.label-state-external:hover > span:first-child:before {
+.plone-toolbar-expanded #edit-zone li a.label-state-published:hover > span:first-child:before,
+.plone-toolbar-expanded #edit-zone li a.label-state-external:hover > span:first-child:before {
   color: #ffffff;
 }
-#edit-zone.expanded li a.label-state-internally_published:hover > span {
+.plone-toolbar-expanded #edit-zone li a.label-state-internally_published:hover > span {
   background: #883dfa;
 }
-#edit-zone.expanded li a.label-state-internally_published:hover > span:first-child:before {
+.plone-toolbar-expanded #edit-zone li a.label-state-internally_published:hover > span:first-child:before {
   color: #ffffff;
 }
-#edit-zone.expanded li a.label-state-pending:hover > span {
+.plone-toolbar-expanded #edit-zone li a.label-state-pending:hover > span {
   background: #e2e721;
 }
-#edit-zone.expanded li a.label-state-pending:hover > span:first-child:before {
+.plone-toolbar-expanded #edit-zone li a.label-state-pending:hover > span:first-child:before {
   color: #ffffff;
 }
-#edit-zone.expanded li a.label-state-draft:hover > span,
-#edit-zone.expanded li a.label-state-internal:hover > span {
+.plone-toolbar-expanded #edit-zone li a.label-state-draft:hover > span,
+.plone-toolbar-expanded #edit-zone li a.label-state-internal:hover > span {
   background: #fab82a;
 }
-#edit-zone.expanded li a.label-state-draft:hover > span:first-child:before,
-#edit-zone.expanded li a.label-state-internal:hover > span:first-child:before {
+.plone-toolbar-expanded #edit-zone li a.label-state-draft:hover > span:first-child:before,
+.plone-toolbar-expanded #edit-zone li a.label-state-internal:hover > span:first-child:before {
   color: #ffffff;
 }
-#edit-zone.expanded li a.label-state-private:hover > span {
+.plone-toolbar-expanded #edit-zone li a.label-state-private:hover > span {
   background: #c4183c;
 }
-#edit-zone.expanded li a.label-state-private:hover > span:first-child:before {
+.plone-toolbar-expanded #edit-zone li a.label-state-private:hover > span:first-child:before {
   color: #ffffff;
 }
-#edit-zone.plone-toolbar-left.compressed,
-#edit-zone.plone-toolbar-top.compressed {
-  height: 50px;
-  width: 60px;
-  background: none;
+.plone-toolbar-expanded #edit-zone .plone-toolbar-logo {
+  width: 120px;
 }
-#edit-zone.plone-toolbar-left.compressed .plone-toolbar-logo,
-#edit-zone.plone-toolbar-top.compressed .plone-toolbar-logo {
-  opacity: .5;
-}
-#edit-zone.plone-toolbar-left.compressed .plone-toolbar-logo:hover,
-#edit-zone.plone-toolbar-top.compressed .plone-toolbar-logo:hover,
-#edit-zone.plone-toolbar-left.compressed .plone-toolbar-logo:active,
-#edit-zone.plone-toolbar-top.compressed .plone-toolbar-logo:active,
-#edit-zone.plone-toolbar-left.compressed .plone-toolbar-logo:focus,
-#edit-zone.plone-toolbar-top.compressed .plone-toolbar-logo:focus {
-  opacity: 1;
-}
-#edit-zone.plone-toolbar-left.compressed nav,
-#edit-zone.plone-toolbar-top.compressed nav {
-  display: none;
-}
-#edit-zone.plone-toolbar-top.compressed .plone-toolbar-container {
-  padding-left: 0;
+.plone-toolbar-expanded #edit-zone .plone-toolbar-logo span {
+  display: inline;
 }
 #edit-zone nav > ul > li.active > a:after {
   content: "";
@@ -3571,24 +3553,24 @@ html,
   margin-top: -20px;
   margin-left: 20px;
 }
-#edit-zone.plone-toolbar-top.expanded .plone-toolbar-logo {
+.plone-toolbar-top.plone-toolbar-expanded #edit-zone .plone-toolbar-logo {
   width: 60px;
 }
-#edit-zone.plone-toolbar-top.expanded nav > ul > li {
+.plone-toolbar-top.plone-toolbar-expanded #edit-zone nav > ul > li {
   width: inherit;
   border-right: 1px solid #353535;
 }
-#edit-zone.plone-toolbar-top.expanded nav > ul a > span + span {
+.plone-toolbar-top.plone-toolbar-expanded #edit-zone nav > ul a > span + span {
   width: inherit;
   padding: 0 8px 0 0;
 }
-#edit-zone.plone-toolbar-top.expanded nav > ul a > [class^="icon"] {
+.plone-toolbar-top.plone-toolbar-expanded #edit-zone nav > ul a > [class^="icon"] {
   padding-left: 0;
 }
-#edit-zone.plone-toolbar-top.expanded .plone-toolbar-caret {
+.plone-toolbar-top.plone-toolbar-expanded #edit-zone .plone-toolbar-caret {
   left: 16px;
 }
-#edit-zone.plone-toolbar-top.expanded li.active > a:after {
+.plone-toolbar-top.plone-toolbar-expanded #edit-zone li.active > a:after {
   margin-left: 10px;
 }
 /*container*/
@@ -3618,100 +3600,38 @@ html,
 .plone-toolbar-top-expanded {
   margin-top: 60px;
 }
-.plone-toolbar-compressed {
-  margin-top: 0px;
-  margin-left: 0px;
-}
 /*mobile*/
 @media (max-width: 769px) {
-  #edit-zone.plone-toolbar-left.compressed,
-  #edit-zone.plone-toolbar-top.compressed {
-    height: 100%;
-    width: 120px;
-  }
-  #edit-zone.plone-toolbar-left.compressed nav,
-  #edit-zone.plone-toolbar-top.compressed nav {
-    display: block;
-  }
   #edit-zone .plone-toolbar-logo,
-  #edit-zone.expanded .plone-toolbar-logo {
+  .plone-toolbar-expanded #edit-zone .plone-toolbar-logo {
     position: absolute;
     width: 60px;
     left: -60px;
   }
   #edit-zone .plone-toolbar-logo:after,
-  #edit-zone.expanded .plone-toolbar-logo:after {
+  .plone-toolbar-expanded #edit-zone .plone-toolbar-logo:after {
     content: none;
   }
   #edit-zone .plone-toolbar-logo img,
-  #edit-zone.expanded .plone-toolbar-logo img {
+  .plone-toolbar-expanded #edit-zone .plone-toolbar-logo img {
     margin-top: 12px;
   }
   #edit-zone {
-    width: 120px;
-    /*states*/
     /*default view users left-expanded as a reference*/
     /*width: 100%;*/
     right: 0;
     left: inherit;
   }
-  #edit-zone nav > ul ul {
-    left: 120px;
+  #edit-zone .plone-toolbar-logo {
+    position: absolute;
+    width: 60px;
+    left: -60px;
   }
-  #edit-zone nav > ul a > [class^="icon"] {
-    display: table-cell;
-    width: 40px;
-    padding-left: 10px;
+  #edit-zone .plone-toolbar-logo:after {
+    content: none;
   }
-  #edit-zone nav > ul a > .icon-logout {
-    margin: 0;
-    padding: 0;
-  }
-  #edit-zone nav > ul a > span + span {
-    background: none;
-    width: 80px;
-    text-align: left;
-  }
-  #edit-zone .plone-toolbar-caret {
-    width: 0;
-  }
-  #edit-zone li:not(.active) a:hover > span {
-    background: #007bb3;
-    transition: background .35s;
-  }
-  #edit-zone li a.label-state-published:hover > span,
-  #edit-zone li a.label-state-external:hover > span {
-    background: #007bb3;
-  }
-  #edit-zone li a.label-state-published:hover > span:first-child:before,
-  #edit-zone li a.label-state-external:hover > span:first-child:before {
-    color: #ffffff;
-  }
-  #edit-zone li a.label-state-internally_published:hover > span {
-    background: #883dfa;
-  }
-  #edit-zone li a.label-state-internally_published:hover > span:first-child:before {
-    color: #ffffff;
-  }
-  #edit-zone li a.label-state-pending:hover > span {
-    background: #e2e721;
-  }
-  #edit-zone li a.label-state-pending:hover > span:first-child:before {
-    color: #ffffff;
-  }
-  #edit-zone li a.label-state-draft:hover > span,
-  #edit-zone li a.label-state-internal:hover > span {
-    background: #fab82a;
-  }
-  #edit-zone li a.label-state-draft:hover > span:first-child:before,
-  #edit-zone li a.label-state-internal:hover > span:first-child:before {
-    color: #ffffff;
-  }
-  #edit-zone li a.label-state-private:hover > span {
-    background: #c4183c;
-  }
-  #edit-zone li a.label-state-private:hover > span:first-child:before {
-    color: #ffffff;
+  #edit-zone .plone-toolbar-logo img {
+    margin-top: 12px;
   }
   #edit-zone nav ul ul {
     width: 200px;
@@ -3743,10 +3663,6 @@ html,
   .plone-toolbar-top-expanded {
     margin-top: 0px;
   }
-  .plone-toolbar-compressed {
-    margin-top: 0px;
-    margin-left: 0px;
-  }
 }
 /* transitions for menu openings*/
 #edit-zone,
@@ -3759,7 +3675,7 @@ body {
 #edit-zone nav > ul li.active ul {
   transition: all 0.25s ease-out;
 }
-#edit-zone.plone-toolbar-top nav > ul li.active ul {
+.plone-toolbar-top #edit-zone nav > ul li.active ul {
   transition: all 0.25s ease-in-out;
 }
 /* small height devices <480 apanyo*/
