@@ -3375,7 +3375,7 @@ html,
   height: 100%;
   top: 0;
 }
-#edit-zone.plone-toolbar-top nav > ul ul {
+.plone-toolbar-top #edit-zone nav > ul ul {
   height: 0;
   max-height: 0;
   width: 180px;
@@ -3489,44 +3489,44 @@ html,
   width: 180px;
 }
 /*plone-toolbar-top*/
-#edit-zone.plone-toolbar-top {
+.plone-toolbar-top #edit-zone {
   position: fixed;
   height: 50px;
   width: 100%;
 }
-#edit-zone.plone-toolbar-top .plone-toolbar-logo:after {
+.plone-toolbar-top #edit-zone .plone-toolbar-logo:after {
   border-left: 4px solid #005880;
   border-top: 4px solid transparent;
   border-bottom: 4px solid transparent;
   left: 60px;
   top: 20px;
 }
-#edit-zone.plone-toolbar-top .plone-toolbar-logo:hover:after {
+.plone-toolbar-top #edit-zone .plone-toolbar-logo:hover:after {
   border-left: 4px solid #007bb3;
   transition: border-top 0.35s;
   -webkit-transition: border-top 0.25s;
 }
-#edit-zone.plone-toolbar-top .plone-toolbar-logo,
-#edit-zone.plone-toolbar-top nav,
-#edit-zone.plone-toolbar-top nav > ul {
+.plone-toolbar-top #edit-zone .plone-toolbar-logo,
+.plone-toolbar-top #edit-zone nav,
+.plone-toolbar-top #edit-zone nav > ul {
   display: inline-block;
 }
-#edit-zone.plone-toolbar-top nav > ul > li {
+.plone-toolbar-top #edit-zone nav > ul > li {
   display: inline-block;
   width: 60px;
   float: left;
 }
-#edit-zone.plone-toolbar-top .plone-toolbar-logo {
+.plone-toolbar-top #edit-zone .plone-toolbar-logo {
   position: absolute;
   top: 0;
 }
-#edit-zone.plone-toolbar-top .plone-toolbar-logo img {
+.plone-toolbar-top #edit-zone .plone-toolbar-logo img {
   margin-top: 13px;
 }
-#edit-zone.plone-toolbar-top nav {
+.plone-toolbar-top #edit-zone nav {
   margin-left: 60px;
 }
-#edit-zone.plone-toolbar-top .plone-toolbar-caret {
+.plone-toolbar-top #edit-zone .plone-toolbar-caret {
   border-top: 4px solid;
   border-left: 4px solid transparent;
   border-right: 4px solid transparent;
@@ -3535,17 +3535,17 @@ html,
   right: inherit;
   padding: 0 !important;
 }
-#edit-zone.plone-toolbar-top nav > ul ul {
+.plone-toolbar-top #edit-zone nav > ul ul {
   left: auto;
   top: 50px;
   overflow-y: auto;
   height: 0;
 }
-#edit-zone.plone-toolbar-top nav > ul li.active ul {
+.plone-toolbar-top #edit-zone nav > ul li.active ul {
   height: inherit;
   max-height: 1000px;
 }
-#edit-zone.plone-toolbar-top li.active > a:after {
+.plone-toolbar-top #edit-zone li.active > a:after {
   border-bottom: 10px solid #2a2a2a;
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
