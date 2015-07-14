@@ -11,7 +11,7 @@
         <img alt="Plone Toolbar" tal:attributes="src string:${portal_url}/++plone++static/plone-toolbarlogo.svg" />
       </a>
       <nav role="navigation">
-        <ul>
+        <ul class="plone-toolbar-main">
           <div tal:replace="structure view/base_render">
           </div>
         </ul>
