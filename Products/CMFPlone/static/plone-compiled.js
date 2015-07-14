@@ -10581,6 +10581,9 @@ define('plone-patterns-toolbar',[
       // $( 'html' ).has('.plone-toolbar-left.expanded').css({'margin-left':'0','margin-top':'0','margin-right':'0'});
       // $( 'body' ).css('margin-left: 0px');
       that.$container.css('right', '-120px');
+      // make sure we are in expanded mode
+      $('body').addClass(that.options.classNames.leftExpanded);
+      $('body').addClass(that.options.classNames.expanded);
       $('.' + that.options.classNames.logo, that.$container).click(function() {
         var $el = $(this);
         if ($el.hasClass('open')){
@@ -10683,7 +10686,7 @@ define('plone-patterns-toolbar',[
       that.setHeight();
     },
     padPulloutContent: function($li){
-      if(!this.state.left){
+      if(!this.state.left || !this.isDesktop()){
         // only when on left
         return;
       }
@@ -10701,12 +10704,14 @@ define('plone-patterns-toolbar',[
         'padding-top': Math.min(itemLocation, height - insideHeight)
       });
     },
-    setHeight: function(){
-      if(!this.state.left){
-        // only when on left
-        return;
-      }
-      $('.plone-toolbar-main', this.$container).css({height: ''});
+    isDesktop: function(){
+      return $(window).width() > '768';
+    },
+    _setHeight: function(){
+      var $items = $('.plone-toolbar-main', this.$container);
+      var $nav = $items.parent();
+      $items.css({height: ''});
+      
       var $el = $('.plone-toolbar-main', this.$container),
         scrollTop = $(window).scrollTop(),
         scrollBot = scrollTop + $(window).height(),
@@ -10714,9 +10719,31 @@ define('plone-patterns-toolbar',[
         elBottom = elTop + $el.outerHeight(),
         visibleTop = elTop < scrollTop ? scrollTop : elTop,
         visibleBottom = elBottom > scrollBot ? scrollBot : elBottom;
-      // unset height first
-      $('.plone-toolbar-main', this.$container).height(
-        visibleBottom - visibleTop - $('#portal-personaltools').outerHeight());
+      var height = (visibleBottom - visibleTop);
+
+      if(height + $('#personal-bar-container').outerHeight() > $nav.height()){
+        height = height + $('#personal-bar-container').outerHeight();
+      }else{
+        height = height - $('#personal-bar-container').outerHeight();
+      }
+
+      $('.plone-toolbar-main', this.$container).height(height);
+      /* if there is active, make sure to reposition */
+      var $active = $('li.active ul:visible', this.$container);
+      if($active.size() > 0){
+        this.padPulloutContent($active);
+      }
+    },
+    setHeight: function(){
+      if(!this.state.left || !this.isDesktop()){
+        // only when on left
+        return;
+      }
+      var that = this;
+      clearTimeout(that.heightTimeout);
+      that.heightTimeout = setTimeout(function(){
+        that._setHeight();
+      }, 50);
     },
     setState: function(state){
       var that = this;
@@ -10728,6 +10755,7 @@ define('plone-patterns-toolbar',[
     },
     init: function () {
       var that = this;
+      that.heightTimeout = 0;
       that.$container = $(that.options.containerSelector);
       var toolbar_cookie = $.cookie(that.options.cookieName);
       that.state = {
@@ -10742,11 +10770,10 @@ define('plone-patterns-toolbar',[
         }
       }
 
-      if ($(window).width() < '768'){//mobile
-        that.setupMobile();
-      }
-      else { // not mobile
+      if (that.isDesktop()){
         that.setupDesktop();
+      }else {
+        that.setupMobile();
       }
       this.$el.addClass('initialized');
 

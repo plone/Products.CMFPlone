@@ -175,32 +175,12 @@ body.userrole-authenticated {
     nav > ul ul {
         width: 0;
         height: 100%;
-        background-color: transparent;
-        > *{
-            background-color: @plone-toolbar-submenu-bg;
-        }
-        .plone-toolbar-submenu-header{
-            margin: 0;
-        }
     }
     .plone-toolbar-container{
         height: 100%;
-        position: relative;
-    }
-    #personal-bar-container{
-        position: absolute;
-        bottom: 0;
-        background-color: black;
-        border-top: 1px solid #DDDDDD;
-        box-shadow: -3px 2px 9px 2px #DDD;
-        ul{
-            position: fixed;
-            height: 100%;
-            top: 0;
-        }
     }
 }
- .plone-toolbar-top #edit-zone nav > ul ul {height: 0; max-height: 0; width: 180px}
+.plone-toolbar-top #edit-zone nav > ul ul {height: 0; max-height: 0; width: 180px}
 
 
 .plone-toolbar-expanded #edit-zone {
@@ -354,6 +334,40 @@ body.userrole-authenticated {
 .plone-toolbar-top-default { margin-top: @plone-left-toolbar; }
 .plone-toolbar-top-expanded { margin-top: @plone-left-toolbar; }
 
+
+@media (min-width: @plone-screen-xs-max) {
+    .plone-toolbar-left #edit-zone{
+        z-index: 5;
+        nav > ul ul {
+            width: 0;
+            height: 100%;
+            background-color: transparent;
+            > *{
+                background-color: @plone-toolbar-submenu-bg;
+            }
+            .plone-toolbar-submenu-header{
+                margin: 0;
+            }
+        }
+        .plone-toolbar-container{
+            height: 100%;
+            position: relative;
+        }
+        #personal-bar-container{
+            position: absolute;
+            bottom: 0;
+            background-color: black;
+            border-top: 1px solid #DDDDDD;
+            box-shadow: -3px 2px 9px 2px #DDD;
+            ul{
+                position: fixed;
+                height: 100%;
+                top: 0;
+            }
+        }
+    }
+}
+
 /*mobile*/
 @media (max-width: @plone-screen-xs-max) {
     #edit-zone, .plone-toolbar-expanded #edit-zone {
@@ -391,11 +405,15 @@ body.userrole-authenticated {
         width: 180px;
     }
 
-.plone-toolbar-left-default { padding-left: 0px; }
-.plone-toolbar-left-expanded { padding-left: 0px; }
-.plone-toolbar-top-default { margin-top: 0px; }
-.plone-toolbar-top-expanded { margin-top: 0px; }
+    .plone-toolbar-left-default { padding-left: 0px; }
+    .plone-toolbar-left-expanded { padding-left: 0px; }
+    .plone-toolbar-top-default { margin-top: 0px; }
+    .plone-toolbar-top-expanded { margin-top: 0px; }
 
+    .plone-toolbar-container nav{
+        height: 100%;
+        overflow-y: scroll;
+    }
 }
 @media (min-width: @plone-screen-xs-min) {
 

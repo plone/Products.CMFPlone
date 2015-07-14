@@ -32,6 +32,9 @@ define([
       // $( 'html' ).has('.plone-toolbar-left.expanded').css({'margin-left':'0','margin-top':'0','margin-right':'0'});
       // $( 'body' ).css('margin-left: 0px');
       that.$container.css('right', '-120px');
+      // make sure we are in expanded mode
+      $('body').addClass(that.options.classNames.leftExpanded);
+      $('body').addClass(that.options.classNames.expanded);
       $('.' + that.options.classNames.logo, that.$container).click(function() {
         var $el = $(this);
         if ($el.hasClass('open')){
@@ -134,12 +137,11 @@ define([
       that.setHeight();
     },
     padPulloutContent: function($li){
-      if(!this.state.left){
+      if(!this.state.left || !this.isDesktop()){
         // only when on left
         return;
       }
       // try to place content as close to the user click as possible
-      debugger;
       var $content = $('> ul', $li);
       var $inner = $content.find('> *');
       var $first = $inner.first();
@@ -152,6 +154,9 @@ define([
       $content.css({
         'padding-top': Math.min(itemLocation, height - insideHeight)
       });
+    },
+    isDesktop: function(){
+      return $(window).width() > '768';
     },
     _setHeight: function(){
       var $items = $('.plone-toolbar-main', this.$container);
@@ -181,7 +186,7 @@ define([
       }
     },
     setHeight: function(){
-      if(!this.state.left){
+      if(!this.state.left || !this.isDesktop()){
         // only when on left
         return;
       }
@@ -216,11 +221,10 @@ define([
         }
       }
 
-      if ($(window).width() < '768'){//mobile
-        that.setupMobile();
-      }
-      else { // not mobile
+      if (that.isDesktop()){
         that.setupDesktop();
+      }else {
+        that.setupMobile();
       }
       this.$el.addClass('initialized');
 
