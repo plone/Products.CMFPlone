@@ -31,7 +31,11 @@ class ToolbarViewletManager(OrderedViewletManager):
         registry = getUtility(IRegistry)
         settings = registry.forInterface(ISiteSchema, prefix='plone')
         portal_url = self.portal_state.portal_url()
-        return portal_url + settings.toolbar_logo
+        try:
+            logo = settings.toolbar_logo
+        except AttributeError:
+            logo = '/++plone++static/plone-toolbarlogo.svg'
+        return portal_url + logo
 
     def show_switcher(self):
         return False

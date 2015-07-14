@@ -191,11 +191,13 @@ class LayoutPolicy(BrowserView):
             settings = registry.forInterface(ISiteSchema, prefix='plone', check=False)
 
             # toolbar classes
-            left = True
-            if settings.toolbar_position == 'side':
+            try:
+                left = settings.toolbar_position == 'side'
+            except AttributeError:
+                left = True
+            if left:
                 body_classes.append('plone-toolbar-left')
             else:
-                left = False
                 body_classes.append('plone-toolbar-top')
             try:
                 toolbar_state = json.loads(self.request.cookies.get('plone-toolbar'))
