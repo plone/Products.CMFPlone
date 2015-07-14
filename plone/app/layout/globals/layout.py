@@ -21,6 +21,8 @@ from Products.Five.browser.metaconfigure import ViewMixinForTemplates
 from plone.app.layout.globals.interfaces import ILayoutPolicy
 from plone.app.layout.globals.interfaces import IViewView
 from plone.app.layout.icons.interfaces import IContentIcon
+from Products.CMFPlone.interfaces.controlpanel import ISiteSchema
+
 
 
 class LayoutPolicy(BrowserView):
