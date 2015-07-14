@@ -964,6 +964,25 @@ class ISiteSchema(ILockSettings):
         default=u'',
         required=False)
 
+    toolbar_position = schema.Choice(
+        title=_(u'Position where the toolbar is displayed'),
+        description=_(
+            u"It can be in the side vertical mode "
+            u"or in the top horizontal mode"),
+        default=u'side',
+        vocabulary=SimpleVocabulary([
+            SimpleTerm('side', 'side', _(u"Side")),
+            SimpleTerm('top', 'top', _(u"Top"))]),
+        required=True)
+
+    toolbar_logo = schema.TextLine(
+        title=_(u"Site based relative url for toolbar logo"),
+        description=_(
+            u"This must be a relative url to portal root site. "
+            u"By default its /++plone++static/plone-toolbarlogo.svg"),
+        default=u'/++plone++static/plone-toolbarlogo.svg',
+        required=False,
+    )
 
 class IDateAndTimeSchema(Interface):
     """Controlpanel settings for date and time related settings.
