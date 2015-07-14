@@ -340,14 +340,6 @@
         permission="zope2.View"
         />
 
-    <!-- Render the document byline -->
-    <!-- <browser:viewlet
-        name="plone.documentbyline"
-        manager=".interfaces.IToolbar"
-        class=".content.DocumentBylineViewlet"
-        permission="zope2.View"
-        /> -->
-
     <!-- Render the keywords -->
     <browser:viewlet
         name="plone.belowcontenttitle.keywords"

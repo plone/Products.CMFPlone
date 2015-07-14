@@ -28,6 +28,9 @@ Changelog
 - Added documentByLine to @@historyview
   [agitator]
 
+- removed DocumentBylineViewlet
+  [agitator]
+
 
 2.5.7 (2015-06-05)
 ------------------
