@@ -3049,6 +3049,9 @@ html,
   display: block;
   outline: 0;
 }
+#edit-zone .plone-toolbar-main {
+  overflow-x: scroll;
+}
 #edit-zone .plone-toolbar-logo {
   background: #005880;
   height: 50px;
@@ -3362,6 +3365,9 @@ html,
 #edit-zone.plone-toolbar-left #personal-bar-container {
   position: absolute;
   bottom: 0;
+  background-color: black;
+  border-top: 1px solid #DDDDDD;
+  box-shadow: -3px 2px 9px 2px #dddddd;
 }
 #edit-zone.plone-toolbar-left #personal-bar-container ul {
   position: fixed;

@@ -10559,202 +10559,217 @@ define('plone-patterns-toolbar',[
   var Toolbar = Base.extend({
     name: 'toolbar',
     trigger: '.pat-toolbar',
+    defaults: {
+      containerSelector: '#edit-zone',
+      classNames: {
+        logo: 'plone-toolbar-logo',
+        left: 'plone-toolbar-left-default',
+        leftExpanded: 'plone-toolbar-left-expanded',
+        top: 'plone-toolbar-top-default',
+        topExpanded: 'plone-toolbar-top-expanded',
+        expanded: 'expanded',
+        active: 'active',
+        compressed: 'plone-toolbar-compressed'
+      },
+      cookieName: 'plone-toolbar'
+    },
+    setupMobile: function(){
+      var that = this;
+      // $( 'html' ).has('.plone-toolbar-left').css({'margin-left':'0','margin-top':'0','margin-right':'0'});
+      // $( 'html' ).has('.plone-toolbar-top').css({'margin-left':'0','margin-top':'0','margin-right':'0'});
+      // $( 'html' ).has('.plone-toolbar-left.expanded').css({'margin-left':'0','margin-top':'0','margin-right':'0'});
+      // $( 'body' ).css('margin-left: 0px');
+      that.$container.css('right', '-120px');
+      $('.' + that.options.classNames.logo, that.$container).click(function() {
+        var $el = $(this);
+        if ($el.hasClass('open')){
+          that.$container.css('right', '-120px');
+          $('html').css('margin-left', '0');
+          $('html').css('margin-right', '0');
+          $el.removeClass('open');
+          $('nav li', that.$container).removeClass(that.options.classNames.active);
+        } else {
+          that.$container.css('right', '0');
+          $el.addClass('open');
+          $('html').css('margin-left', '-120px');
+          $( 'html' ).css('margin-right', '120px');
+        }
+      });
+      $('nav li', that.$container).has( 'a .plone-toolbar-caret' ).click(function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var $el = $(this);
+        if ($el.hasClass(that.options.classNames.active)) {
+          that.$container.css('right', '0');
+          $('html').css('margin-left', '-120px');
+          $('html').css('margin-right', '120px');
+          $('nav li', that.$container).removeClass(that.options.classNames.active);
+        } else {
+          $('nav li', that.$container).removeClass(that.options.classNames.active);
+          $el.addClass(that.options.classNames.active);
+          that.$container.css('right', '180px');
+          $('html').css('margin-left', '-300px');
+          $('html').css('margin-right', '300px');
+        }
+      });
+    },
+    setupDesktop: function(){
+      var that = this;
+      var toolbar_cookie = $.cookie(that.options.cookieName);
+      that.state = toolbar_cookie;
+      that.$container.attr('class', toolbar_cookie);
+
+      $('.' + that.options.classNames.logo, that.$container).on('click', function() {
+        if (that.state) {
+          if (that.state.indexOf('expanded') != -1) {
+            // Switch to default (only icons)
+            that.$container.removeClass(that.options.classNames.expanded);
+            $('nav li', that.$container).removeClass(that.options.classNames.active);
+            if (that.state.indexOf('left') != -1) {
+              $('body').addClass(that.options.classNames.left);
+              $('body').removeClass(that.options.classNames.leftExpanded);
+            } else {
+              $('body').addClass(that.options.classNames.top);
+              $('body').removeClass(that.options.classNames.topExpanded);
+            }
+            $.cookie(that.options.cookieName, that.$container.attr('class'), {path: '/'});
+            that.state = that.state.replace(' ' + that.options.classNames.expanded, '');
+          } else {
+            // Switch to expanded
+            that.$container.addClass(that.options.classNames.expanded);
+            $('nav li', that.$container).removeClass(that.options.classNames.active);
+            if (that.state.indexOf('left') != -1) {
+              $('body').addClass(that.options.classNames.leftExpanded);
+              $('body').removeClass(that.options.classNames.left);
+            } else {
+              $('body').addClass(that.options.classNames.topExpanded);
+              $('body').removeClass(that.options.classNames.top);
+            }
+            $.cookie(that.options.cookieName, that.$container.attr('class'), {path: '/'});
+            that.state = that.state + ' ' + that.options.classNames.expanded;
+          }
+        } else {
+          // Cookie not set, assume default (only icons)
+          that.state = 'pat-toolbar plone-toolbar-left';
+          // Switch to expanded left
+          that.$container.addClass(that.options.classNames.expanded);
+          $('nav li', that.$container).removeClass(that.options.classNames.active);
+          $('body').addClass(that.options.classNames.leftExpanded);
+          $('body').removeClass(that.options.classNames.left);
+          $.cookie(that.options.cookieName, that.$container.attr('class'), {path: '/'});
+          that.state = that.state + ' ' + that.options.classNames.expanded;
+        }
+      });
+
+      // Switch to compressed
+      $('.' + that.options.classNames.logo, that.$container).on('dblclick', function() {
+        if (that.state) {
+          if (that.state.indexOf('compressed') != -1) {
+            // Switch to default (only icons) not compressed
+            that.$container.removeClass('compressed');
+            if (that.state.indexOf('left') != -1) {
+              $('body').addClass(that.options.classNames.left);
+              $('body').removeClass(that.options.classNames.compressed);
+            } else {
+              $('body').addClass(that.options.classNames.top);
+              $('body').removeClass(that.options.classNames.compressed);
+            }
+            $.cookie(that.options.cookieName, that.$container.attr('class'), {path: '/'});
+            that.state = that.state.replace(' ' + that.options.classNames.expanded, '');
+          } else {
+            // Switch to compressed
+            that.$container.addClass('compressed');
+            if (that.state.indexOf('left') != -1) {
+              $('body').addClass(that.options.classNames.compressed);
+              $('body').removeClass(that.options.classNames.left);
+              $('body').removeClass(that.options.classNames.leftExpanded);
+            } else {
+              $('body').addClass(that.options.classNames.compressed);
+              $('body').removeClass(that.options.classNames.top);
+              $('body').removeClass(that.options.classNames.topExpanded);
+            }
+            $.cookie(that.options.cookieName, that.$container.attr('class'), {path: '/'});
+            that.state = that.state + ' compressed';
+          }
+        } else {
+          // Cookie not set, assume default (only icons)
+          // Switch to compressed
+          that.$container.addClass('compressed');
+          $('body').addClass(that.options.classNames.compressed);
+          $('body').removeClass(that.options.classNames.left);
+          $('body').removeClass(that.options.classNames.leftExpanded);
+          $.cookie(that.options.cookieName, that.$container.attr('class'), {path: '/'});
+          that.state = that.state + ' compressed';
+        }
+      });
+
+
+      $('nav > ul > li li', that.$container).on('click', function(event) {
+        event.stopImmediatePropagation();
+      });
+
+      // active
+      $('nav > ul > li', that.$container).has( 'a .plone-toolbar-caret' ).on('click', function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        var hasClass = $(this).hasClass(that.options.classNames.active);
+        // always close existing
+        $('nav li', that.$container).removeClass(that.options.classNames.active);
+        if (!hasClass) {
+          // open current selected if not already open
+          $(this).addClass(that.options.classNames.active);
+          that.padPulloutContent($(this));
+        }
+      });
+
+      $('body').on('click', function(event) {
+        if (!($(this).parent(that.options.containerSelector).length > 0)) {
+          $('nav > ul > li', that.$container).each(function(key, element){
+            $(element).removeClass(that.options.classNames.active);
+          });
+        }
+      });
+      that.setHeight();
+    },
+    padPulloutContent: function($li){
+      // try to place content as close to the user click as possible
+      var $content = $('> ul', $li);
+      var $inner = $content.find('> *');
+      var $first = $inner.first();
+      var $last = $inner.last();
+      var insideHeight = ($last.position().top - $first.position().top) + $last.outerHeight();
+      var height = $content.outerHeight();
+
+      var itemLocation = $li.position().top || $li.offset().top;  // depends on positioning
+      // padding-top + insideHeight should equal total height
+      $content.css({
+        'padding-top': Math.min(itemLocation, height - insideHeight)
+      });
+    },
+    setHeight: function(){
+      $('.plone-toolbar-main', this.$container).css({height: ''});
+      var $el = $('.plone-toolbar-main', this.$container),
+        scrollTop = $(window).scrollTop(),
+        scrollBot = scrollTop + $(window).height(),
+        elTop = $el.offset().top,
+        elBottom = elTop + $el.outerHeight(),
+        visibleTop = elTop < scrollTop ? scrollTop : elTop,
+        visibleBottom = elBottom > scrollBot ? scrollBot : elBottom;
+      // unset height first
+      $('.plone-toolbar-main', this.$container).height(
+        visibleBottom - visibleTop - $('#portal-personaltools').outerHeight());
+    },
     init: function () {
       var that = this;
+      that.$container = $(that.options.containerSelector);
+      var toolbar_cookie = $.cookie(that.options.cookieName);
+      that.state = toolbar_cookie;
+
       if ($(window).width() < '768'){//mobile
-        // $( 'html' ).has('.plone-toolbar-left').css({'margin-left':'0','margin-top':'0','margin-right':'0'});
-        // $( 'html' ).has('.plone-toolbar-top').css({'margin-left':'0','margin-top':'0','margin-right':'0'});
-        // $( 'html' ).has('.plone-toolbar-left.expanded').css({'margin-left':'0','margin-top':'0','margin-right':'0'});
-        // $( 'body' ).css('margin-left: 0px');
-        $('#edit-zone').css('right', '-120px');
-        $( '#edit-zone .plone-toolbar-logo' ).click(function() {
-          if ($(this).hasClass('open')){
-            $( '#edit-zone' ).css('right', '-120px');
-            $( 'html' ).css('margin-left', '0');
-            $( 'html' ).css('margin-right', '0');
-            $(this).removeClass('open');
-            $( '#edit-zone nav li' ).removeClass('active');
-          } else {
-            $( '#edit-zone' ).css('right', '0');
-            $(this).addClass('open');
-            $( 'html' ).css('margin-left', '-120px');
-            $( 'html' ).css('margin-right', '120px');
-          }
-        });
-        $( '#edit-zone nav li' ).has( 'a .plone-toolbar-caret' ).click(function(e) {
-          e.preventDefault();
-          e.stopPropagation();
-          if ($(this).hasClass('active')) {
-            $( '#edit-zone' ).css('right', '0');
-            $( 'html' ).css('margin-left', '-120px');
-            $( 'html' ).css('margin-right', '120px');
-            $( '#edit-zone nav li' ).removeClass('active');
-          } else {
-            $( '#edit-zone nav li' ).removeClass('active');
-            $(this).addClass('active');
-            $( '#edit-zone' ).css('right', '180px');
-            $( 'html' ).css('margin-left', '-300px');
-            $( 'html' ).css('margin-right', '300px');
-          }
-        });
+        that.setupMobile();
       }
       else { // not mobile
-        var toolbar_cookie = $.cookie('plone-toolbar');
-        window.plonetoolbar_state = toolbar_cookie;
-        $('#edit-zone').attr('class', toolbar_cookie);
-
-        $( '#edit-zone .plone-toolbar-logo' ).on('click', function() {
-          if (window.plonetoolbar_state) {
-            if (window.plonetoolbar_state.indexOf('expanded') != -1) {
-              // Switch to default (only icons)
-              $( '#edit-zone' ).removeClass('expanded');
-              $( '#edit-zone nav li' ).removeClass('active');
-              if (window.plonetoolbar_state.indexOf('left') != -1) {
-                $('body').addClass('plone-toolbar-left-default');
-                $('body').removeClass('plone-toolbar-left-expanded');
-              } else {
-                $('body').addClass('plone-toolbar-top-default');
-                $('body').removeClass('plone-toolbar-top-expanded');
-              }
-              $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
-              window.plonetoolbar_state = window.plonetoolbar_state.replace(' expanded', '');
-            } else {
-              // Switch to expanded
-              $( '#edit-zone' ).addClass('expanded');
-              $( '#edit-zone nav li' ).removeClass('active');
-              if (window.plonetoolbar_state.indexOf('left') != -1) {
-                $('body').addClass('plone-toolbar-left-expanded');
-                $('body').removeClass('plone-toolbar-left-default');
-              } else {
-                $('body').addClass('plone-toolbar-top-expanded');
-                $('body').removeClass('plone-toolbar-top-default');
-              }
-              $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
-              window.plonetoolbar_state = window.plonetoolbar_state + ' expanded';
-            }
-          } else {
-            // Cookie not set, assume default (only icons)
-            window.plonetoolbar_state = 'pat-toolbar plone-toolbar-left';
-            // Switch to expanded left
-            $( '#edit-zone' ).addClass('expanded');
-            $( '#edit-zone nav li' ).removeClass('active');
-            $('body').addClass('plone-toolbar-left-expanded');
-            $('body').removeClass('plone-toolbar-left-default');
-            $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
-            window.plonetoolbar_state = window.plonetoolbar_state + ' expanded';
-          }
-        });
-
-        // Switch to compressed
-        $( '#edit-zone .plone-toolbar-logo' ).on('dblclick', function() {
-          if (window.plonetoolbar_state) {
-            if (window.plonetoolbar_state.indexOf('compressed') != -1) {
-              // Switch to default (only icons) not compressed
-              $( '#edit-zone' ).removeClass('compressed');
-              if (window.plonetoolbar_state.indexOf('left') != -1) {
-                $('body').addClass('plone-toolbar-left-default');
-                $('body').removeClass('plone-toolbar-compressed');
-              } else {
-                $('body').addClass('plone-toolbar-top-default');
-                $('body').removeClass('plone-toolbar-compressed');
-              }
-              $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
-              window.plonetoolbar_state = window.plonetoolbar_state.replace(' expanded', '');
-            } else {
-              // Switch to compressed
-              $( '#edit-zone' ).addClass('compressed');
-              if (window.plonetoolbar_state.indexOf('left') != -1) {
-                $('body').addClass('plone-toolbar-compressed');
-                $('body').removeClass('plone-toolbar-left-default');
-                $('body').removeClass('plone-toolbar-left-expanded');
-              } else {
-                $('body').addClass('plone-toolbar-compressed');
-                $('body').removeClass('plone-toolbar-top-default');
-                $('body').removeClass('plone-toolbar-top-expanded');
-              }
-              $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
-              window.plonetoolbar_state = window.plonetoolbar_state + ' compressed';
-            }
-          } else {
-            // Cookie not set, assume default (only icons)
-            // Switch to compressed
-            $( '#edit-zone' ).addClass('compressed');
-            $('body').addClass('plone-toolbar-compressed');
-            $('body').removeClass('plone-toolbar-left-default');
-            $('body').removeClass('plone-toolbar-left-expanded');
-            $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
-            window.plonetoolbar_state = window.plonetoolbar_state + ' compressed';
-          }
-        });
-
-
-        $( '#edit-zone nav > ul > li li' ).on('click', function(event) {
-          event.stopImmediatePropagation();
-        });
-
-        // active
-        $( '#edit-zone nav > ul > li' ).has( 'a .plone-toolbar-caret' ).on('click', function(event) {
-          event.preventDefault();
-          event.stopPropagation();
-          if ($(this).hasClass('active')) {
-            $( '#edit-zone nav li' ).removeClass('active');
-          } else {
-            $('#edit-zone nav li').removeClass('active');
-            $(this).addClass('active');
-          }
-        });
-
-        $('body').on('click', function(event) {
-          if (!($(this).parent('#edit-zone').length > 0)) {
-            $('#edit-zone nav > ul > li').each(function(key, element){
-              $(element).removeClass('active');
-            });
-          }
-        });
-
-        // top/left switcher
-        $( '#edit-zone .plone-toolbar-switcher' ).on('click', function() {
-          if (window.plonetoolbar_state) {
-            if (window.plonetoolbar_state.indexOf('top') != -1) {
-              // from top to left
-              $( '#edit-zone' ).addClass('plone-toolbar-left');
-              $( '#edit-zone' ).removeClass('plone-toolbar-top');
-              if (window.plonetoolbar_state.indexOf('expanded') != -1) {
-                $('body').addClass('plone-toolbar-left-expanded');
-                $('body').removeClass('plone-toolbar-top-expanded');
-              } else {
-                $('body').addClass('plone-toolbar-left-default');
-                $('body').removeClass('plone-toolbar-top-default');
-              }
-              $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
-              window.plonetoolbar_state = window.plonetoolbar_state.replace('plone-toolbar-top', 'plone-toolbar-left');
-            } else {
-              // from left to top
-              $( '#edit-zone' ).addClass('plone-toolbar-top');
-              $( '#edit-zone' ).removeClass('plone-toolbar-left');
-              if (window.plonetoolbar_state.indexOf('expanded') != -1) {
-                $('body').addClass('plone-toolbar-top-expanded');
-                $('body').removeClass('plone-toolbar-left-expanded');
-              } else {
-                $('body').addClass('plone-toolbar-top-default');
-                $('body').removeClass('plone-toolbar-left-default');
-              }
-              $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
-              window.plonetoolbar_state = window.plonetoolbar_state.replace('plone-toolbar-left', 'plone-toolbar-top');
-            }
-          } else {
-            // Cookie not set, assume left default (only icons)
-            window.plonetoolbar_state = 'pat-toolbar plone-toolbar-left';
-            // Switch to top
-            $( '#edit-zone' ).addClass('plone-toolbar-left');
-            $( '#edit-zone' ).removeClass('plone-toolbar-top');
-            $('body').addClass('plone-toolbar-top-default');
-            $('body').removeClass('plone-toolbar-left-default');
-            $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
-            window.plonetoolbar_state = window.plonetoolbar_state.replace('plone-toolbar-left', 'plone-toolbar-top');
-          }
-
-        });
+        that.setupDesktop();
       }
       this.$el.addClass('initialized');
 
@@ -10770,7 +10785,12 @@ define('plone-patterns-toolbar',[
           Registry.scan($el);
         });
       });
-    }
+
+      $(window).on('resize', function(){
+        that.setHeight();
+      });
+    },
+
   });
 
   return Toolbar;

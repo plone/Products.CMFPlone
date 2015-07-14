@@ -180,6 +180,7 @@ define([
           });
         }
       });
+      that.setHeight();
     },
     padPulloutContent: function($li){
       // try to place content as close to the user click as possible
@@ -195,6 +196,19 @@ define([
       $content.css({
         'padding-top': Math.min(itemLocation, height - insideHeight)
       });
+    },
+    setHeight: function(){
+      $('.plone-toolbar-main', this.$container).css({height: ''});
+      var $el = $('.plone-toolbar-main', this.$container),
+        scrollTop = $(window).scrollTop(),
+        scrollBot = scrollTop + $(window).height(),
+        elTop = $el.offset().top,
+        elBottom = elTop + $el.outerHeight(),
+        visibleTop = elTop < scrollTop ? scrollTop : elTop,
+        visibleBottom = elBottom > scrollBot ? scrollBot : elBottom;
+      // unset height first
+      $('.plone-toolbar-main', this.$container).height(
+        visibleBottom - visibleTop - $('#portal-personaltools').outerHeight());
     },
     init: function () {
       var that = this;
@@ -221,6 +235,10 @@ define([
           that.$el.replaceWith($el);
           Registry.scan($el);
         });
+      });
+
+      $(window).on('resize', function(){
+        that.setHeight();
       });
     },
 
