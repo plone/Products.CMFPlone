@@ -152,14 +152,6 @@
         permission="zope2.View"
         />
 
-    <!-- The skip links for accessibility -->
-    <browser:viewlet
-        name="plone.skip_links"
-        manager=".interfaces.IPortalHeader"
-        class=".common.SkipLinksViewlet"
-        permission="zope2.View"
-        />
-
     <!-- The site actions -->
     <browser:viewlet
         name="plone.site_actions"

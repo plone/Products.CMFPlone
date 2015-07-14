@@ -147,15 +147,6 @@ class TableOfContentsViewlet(ViewletBase):
             self.enabled = toc
 
 
-class SkipLinksViewlet(ViewletBase):
-    index = ViewPageTemplateFile('skip_links.pt')
-
-    def update(self):
-        context_state = getMultiAdapter((self.context, self.request),
-                                        name=u'plone_context_state')
-        self.current_page_url = context_state.current_page_url
-
-
 class SiteActionsViewlet(ViewletBase):
     index = ViewPageTemplateFile('site_actions.pt')
 
