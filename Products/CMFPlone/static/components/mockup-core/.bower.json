@@ -6,7 +6,7 @@
     "bootstrap": "3.3.4",
     "console-polyfill": "0.1.2",
     "es5-shim": "4.0.3",
-    "jquery": "1.11.2",
+    "jquery": "1.11.3",
     "lodash": "2.4.1",
     "marked": "0.3.3",
     "patternslib": "2.0.9",
@@ -19,17 +19,17 @@
     "sinonjs": "1.14.1"
   },
   "resolutions": {
-    "jquery": "1.11.2"
+    "jquery": "1.11.3"
   },
   "homepage": "https://github.com/plone/mockup-core",
-  "version": "2.1.8",
-  "_release": "2.1.8",
+  "version": "2.1.10",
+  "_release": "2.1.10",
   "_resolution": {
     "type": "version",
-    "tag": "v2.1.8",
-    "commit": "362559892b6518db3c6b7507d6d62002464c1bdd"
+    "tag": "v2.1.10",
+    "commit": "aa875728dfefeca6136025df1be593d759d93072"
   },
   "_source": "git://github.com/plone/mockup-core.git",
-  "_target": "2.1.8",
+  "_target": "2.1.10",
   "_originalSource": "mockup-core"
 }
