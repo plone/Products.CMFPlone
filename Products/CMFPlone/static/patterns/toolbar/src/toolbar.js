@@ -123,7 +123,7 @@ define([
         var hasClass = $(this).hasClass(that.options.classNames.active);
         // always close existing
         $('nav li', that.$container).removeClass(that.options.classNames.active);
-        $('nav li > ul', $(this)).css({'padding-top': ''}); // unset this so we get fly-in affect
+        $('nav li > ul', $(this)).css({'margin-top': ''}); // unset this so we get fly-in affect
         if (!hasClass) {
           // open current selected if not already open
           $(this).addClass(that.options.classNames.active);
@@ -154,9 +154,9 @@ define([
       var height = $content.outerHeight();
 
       var itemLocation = $li.position().top || $li.offset().top;  // depends on positioning
-      // padding-top + insideHeight should equal total height
+      // margin-top + insideHeight should equal total height
       $content.css({
-        'padding-top': Math.min(itemLocation, height - insideHeight)
+        'margin-top': Math.min(itemLocation, height - insideHeight)
       });
     },
     isDesktop: function(){
@@ -166,7 +166,7 @@ define([
       var $items = $('.plone-toolbar-main', this.$container);
       var $nav = $items.parent();
       $items.css({height: ''});
-      
+
       var $el = $('.plone-toolbar-main', this.$container),
         scrollTop = $(window).scrollTop(),
         scrollBot = scrollTop + $(window).height(),
