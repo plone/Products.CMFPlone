@@ -1,6 +1,6 @@
 from DateTime import DateTime
 from plone.app.layout.viewlets.tests.base import ViewletsTestCase
-from plone.app.layout.viewlets.content import DocumentBylineViewlet
+from plone.app.layout.viewlets.content import HistoryByLineView
 from plone.app.layout.viewlets.content import ContentRelatedItems
 from plone.locking.interfaces import ILockable
 from plone.registry.interfaces import IRegistry
@@ -42,7 +42,7 @@ class TestDocumentBylineViewletView(ViewletsTestCase):
 
     def _get_viewlet(self):
         request = self.app.REQUEST
-        viewlet = DocumentBylineViewlet(self.context, request, None, None)
+        viewlet = HistoryByLineView(self.context, request)
         viewlet.update()
         return viewlet
 

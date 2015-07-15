@@ -36,7 +36,7 @@ Check that the form has been properly submitted
 
 The history viewlet gracefully handles content without workflow.
 
-    >>> browser.getLink('History').click()
+    >>> browser.getLink(url='@@historyview').click()
 
 Create a public page with workflow.
 
@@ -54,7 +54,7 @@ Create a public page with workflow.
 
 The history viewlet gracefully handles initial default workflow state.
 
-    >>> browser.getLink('History').click()
+    >>> browser.getLink(url='@@historyview').click()
     >>> print browser.contents
     <...<span class="historyAction state-private">Create</span>...
 

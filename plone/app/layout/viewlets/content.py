@@ -62,7 +62,7 @@ class HistoryByLineView(BrowserView):
 
     index = ViewPageTemplateFile('history_view.pt')
 
-    def __call__(self):
+    def update(self):
         context = self.context
         self.portal_state = getMultiAdapter((context, self.request),
                                             name=u'plone_portal_state')
@@ -70,6 +70,10 @@ class HistoryByLineView(BrowserView):
                                              name=u'plone_context_state')
         self.anonymous = self.portal_state.anonymous()
         self.has_pam = HAS_PAM
+
+    def __call__(self):
+        self.update()
+
         return self.index()
 
     def show(self):
