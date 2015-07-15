@@ -193,7 +193,7 @@ class LayoutPolicy(BrowserView):
             # toolbar classes
             try:
                 left = settings.toolbar_position == 'side'
-            except AttributeError:
+            except KeyError:
                 left = True
             if left:
                 body_classes.append('plone-toolbar-left')
