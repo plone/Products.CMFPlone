@@ -1,5 +1,3 @@
-import warnings
-
 from zope.interface import implements
 from zope.component import getMultiAdapter
 from zope.component import queryAdapter
@@ -233,29 +231,17 @@ class ContextState(BrowserView):
         context = aq_inner(self.context)
         atool = getToolByName(context, "portal_actions")
         ttool = getToolByName(context, "portal_types")
-        if category is None:
-            warnings.warn(
-                "The actions method of the context state view was "
-                "called without a category argument. This is deprecated and "
-                "won't be supported anymore in Plone 5.",
-                DeprecationWarning, 3
-            )
-            actions = atool.listFilteredActionsFor(
-                context,
-                ignore_providers=BLACKLISTED_PROVIDERS,
-                ignore_categories=BLACKLISTED_CATEGORIES)
-        else:
-            actions = []
-            actions.extend(ttool.listActionInfos(
-                object=context,
-                category=category,
-                max=max,
-            ))
-            actions.extend(atool.listActionInfos(
-                object=context,
-                categories=(category, ),
-                max=max,
-            ))
+        actions = []
+        actions.extend(ttool.listActionInfos(
+            object=context,
+            category=category,
+            max=max,
+        ))
+        actions.extend(atool.listActionInfos(
+            object=context,
+            categories=(category, ),
+            max=max,
+        ))
         return actions
 
     def portlet_assignable(self):

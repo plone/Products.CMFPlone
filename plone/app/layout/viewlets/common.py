@@ -28,7 +28,6 @@ from plone.app.layout.globals.interfaces import IViewView
 from plone.protect.utils import addTokenToUrl
 
 
-
 class ViewletBase(BrowserView):
     """ Base class with common functions for link viewlets.
     """
@@ -281,13 +280,19 @@ class PersonalBarViewlet(ViewletBase):
 
 class ContentViewsViewlet(ViewletBase):
     index = ViewPageTemplateFile('contentviews.pt')
+    menu_template = ViewPageTemplateFile('menu.pt')
 
-    @memoize
-    def prepareObjectTabs(self, default_tab='view',
-                          sort_first=['folderContents']):
-        """Prepare the object tabs by determining their order and working
-        out which tab is selected. Used in global_contentviews.pt
-        """
+    default_tab = 'nothing'
+    primary = ['folderContents', 'edit']
+
+    def update(self):
+        # The drop-down menus are pulled in via a simple content provider
+        # from plone.app.contentmenu. This behaves differently depending on
+        # whether the view is marked with IViewView. If our parent view
+        # provides that marker, we should do it here as well.
+        if IViewView.providedBy(self.__parent__):
+            alsoProvides(self, IViewView)
+
         context = aq_inner(self.context)
         context_url = context.absolute_url()
         context_fti = context.getTypeInfo()
@@ -301,8 +306,10 @@ class ContentViewsViewlet(ViewletBase):
         if context_state.is_structural_folder():
             action_list = actions('folder')
         action_list.extend(actions('object'))
+        action_list.extend(actions('object_actions'))
 
-        tabs = []
+        tabSet1 = []
+        tabSet2 = []
         found_selected = False
         fallback_action = None
 
@@ -344,7 +351,7 @@ class ContentViewsViewlet(ViewletBase):
                     found_selected = True
 
             current_id = item['id']
-            if current_id == default_tab:
+            if current_id == self.default_tab:
                 fallback_action = item
 
             modal = item.get('modal', None)
@@ -353,19 +360,17 @@ class ContentViewsViewlet(ViewletBase):
                 item['cssClass'] += ' pat-plone-modal'
                 item['url'] += '?ajax_load=1'
 
-            tabs.append(item)
+            if item['id'] in self.primary:
+                tabSet1.append(item)
+            else:
+                tabSet2.append(item)
 
         if not found_selected and fallback_action is not None:
             fallback_action['selected'] = True
 
-        def sortOrder(tab):
-            try:
-                return sort_first.index(tab['id'])
-            except ValueError:
-                return 255
-
-        tabs.sort(key=sortOrder)
-        return tabs
+        tabSet1.sort(key=lambda item: self.primary.index(item['id']))
+        self.tabSet1 = tabSet1
+        self.tabSet2 = tabSet2
 
     def locked_icon(self):
         if not getSecurityManager().checkPermission('Modify portal content',
@@ -431,27 +436,6 @@ class PathBarViewlet(ViewletBase):
         breadcrumbs_view = getMultiAdapter((self.context, self.request),
                                            name='breadcrumbs_view')
         self.breadcrumbs = breadcrumbs_view.breadcrumbs()
-
-
-class ContentActionsViewlet(ViewletBase):
-    index = ViewPageTemplateFile('contentactions.pt')
-
-    def update(self):
-        context = aq_inner(self.context)
-        context_state = getMultiAdapter((context, self.request),
-                                        name=u'plone_context_state')
-
-        self.object_actions = context_state.actions('object_actions')
-
-        # The drop-down menus are pulled in via a simple content provider
-        # from plone.app.contentmenu. This behaves differently depending on
-        # whether the view is marked with IViewView. If our parent view
-        # provides that marker, we should do it here as well.
-        if IViewView.providedBy(self.__parent__):
-            alsoProvides(self, IViewView)
-
-    def icon(self, action):
-        return action.get('icon', None)
 
 
 class TinyLogoViewlet(ViewletBase):

@@ -201,36 +201,6 @@
         permission="zope2.View"
         />
 
-    <!-- Content actions (menus)
-            The default version is a blank bar; the one with real menus is
-            registered for the main view + folder contents only.
-      -->
-<!--     <browser:viewlet
-        name="plone.contentactions"
-        for="*"
-        manager=".interfaces.IToolbar"
-        template="contentactions_blank.pt"
-        permission="zope2.View"
-        /> -->
-
-    <browser:viewlet
-        name="plone.contentactions"
-        for="*"
-        view="plone.app.layout.globals.interfaces.IViewView"
-        manager=".interfaces.IToolbar"
-        class=".common.ContentActionsViewlet"
-        permission="zope2.View"
-        />
-
-    <browser:viewlet
-        name="plone.contentactions"
-        for="*"
-        view="plone.app.content.browser.interfaces.IFolderContentsView"
-        manager=".interfaces.IToolbar"
-        class=".common.ContentActionsViewlet"
-        permission="zope2.View"
-        />
-
     <!-- Render the browser title -->
     <browser:viewlet
         name="plone.htmlhead.title"
