@@ -234,6 +234,7 @@ overlay should open
     Wait until keyword succeeds  30  1  Element Should Be Visible  css=div.plone-modal-dialog
 
 overlay should remain open
+    Sleep 1
     Wait until page contains element  css=div.plone-modal-wrapper
     Wait until element is visible  css=div.plone-modal-wrapper
 
