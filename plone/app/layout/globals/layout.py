@@ -204,7 +204,7 @@ class LayoutPolicy(BrowserView):
                 if toolbar_state:
                     toolbar_state = json.loads(toolbar_state)
                 else:
-                    toolbar_state = {'expanded': True}
+                    toolbar_state = {'expanded': False}
                 if toolbar_state.get('expanded', True):
                     body_classes.append('plone-toolbar-expanded')
                     if left:
