@@ -38,7 +38,7 @@ And at last there is the possibility of variable substition:
 
   >>> msg.mapping
   {u'name': u'Plone'}
-  
+
 Messages with translation service set up
 ----------------------------------------
 
@@ -91,7 +91,7 @@ Try simple interpolation:
   u'You have 42 new mails.'
 
 And now try the real translation:
-  
+
   >>> translate(note, target_language='de')
   u'Sie haben 42 neue E-Mails.'
 
@@ -108,7 +108,7 @@ We use the Messages defined earlier.
 
   >>> msg
   u'This is a message.'
-  
+
   >>> note
   u'mail-notification'
 

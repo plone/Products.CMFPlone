@@ -40,7 +40,7 @@ class MailControlPanelForm(controlpanel.RegistryEditForm):
         return True
 
     @button.buttonAndHandler(
-        _('label_smtp_test', default='Save and send test e-mail'),
+        _('label_smtp_test', default='Save and send test email'),
         name='test')
     def handle_test_action(self, action):
         # Save data first
@@ -56,12 +56,12 @@ class MailControlPanelForm(controlpanel.RegistryEditForm):
         message = ("Hi,\n\nThis is a test message sent from the Plone "
                    "'Mail settings' control panel. Your receipt of this "
                    "message (at the address specified in the Site 'From' "
-                   "address field) indicates that your e-mail server is "
+                   "address field) indicates that your email server is "
                    "working!\n\n"
                    "Have a nice day.\n\n"
                    "Love,\n\nPlone")
         email_charset = self.context.getProperty('email_charset')
-        subject = "Test e-mail from Plone"
+        subject = "Test email from Plone"
 
         # Make the timeout incredibly short. This is enough time for most mail
         # servers, wherever they may be in the world, to respond to the
@@ -80,9 +80,9 @@ class MailControlPanelForm(controlpanel.RegistryEditForm):
 
             except (socket.error, MailHostError, smtplib.SMTPException):
                 # Connection refused or timeout.
-                log.exception('Unable to send test e-mail.')
+                log.exception('Unable to send test email.')
                 value = sys.exc_info()[1]
-                msg = _(u'Unable to send test e-mail ${error}.',
+                msg = _(u'Unable to send test email ${error}.',
                         mapping={'error': unicode(value)})
                 IStatusMessage(self.request).addStatusMessage(
                     msg, type='error')

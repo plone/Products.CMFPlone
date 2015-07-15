@@ -60,7 +60,7 @@
            tal:define="token context/@@authenticator/token">
 
         <div class="autotabs">
-         
+
           <nav class="autotoc-nav">
             <a class="active"
                href="${portal_url}/@@usergroup-groupmembership?${groupquery}"
@@ -103,7 +103,7 @@
                                  <!--Remove user from this group-->
                       </th>
                       <th i18n:translate="listingheader_user_name">User name</th>
-                      <th i18n:translate="listingheader_email_address">E-mail Address</th>
+                      <th i18n:translate="listingheader_email_address">Email Address</th>
                   </tr>
 
                   <tal:block tal:repeat="this_user view/groupMembers">
@@ -209,7 +209,7 @@
                     </th>
 
                     <th i18n:translate="listingheader_group_user_name">Group/User name</th>
-                    <th i18n:translate="listingheader_email_address">E-mail Address</th>
+                    <th i18n:translate="listingheader_email_address">Email Address</th>
                   </tr>
 
                   <tal:block repeat="this_user batch">
