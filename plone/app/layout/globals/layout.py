@@ -200,7 +200,11 @@ class LayoutPolicy(BrowserView):
             else:
                 body_classes.append('plone-toolbar-top')
             try:
-                toolbar_state = json.loads(self.request.cookies.get('plone-toolbar'))
+                toolbar_state = self.request.cookies.get('plone-toolbar')
+                if toolbar_state:
+                    toolbar_state = json.loads(toolbar_state)
+                else:
+                    toolbar_state = {'expanded': True}
                 if toolbar_state.get('expanded', True):
                     body_classes.append('plone-toolbar-expanded')
                     if left:
