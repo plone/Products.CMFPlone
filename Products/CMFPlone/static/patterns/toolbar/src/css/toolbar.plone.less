@@ -17,7 +17,7 @@ body.userrole-authenticated {
     top:0;
     left:0;
     z-index: 3;
-    font-weight: 300;
+    font-weight: 400;
     /*font-family: 'Roboto', sans-serif;*/
     font-family: sans-serif;
     color: @plone-toolbar-text-color;
@@ -29,7 +29,7 @@ body.userrole-authenticated {
         outline: 0;
     }
     .plone-toolbar-main{
-        overflow-x: scroll;
+        overflow-y: auto;
     }
 
     /*logo*/
@@ -264,7 +264,7 @@ body.userrole-authenticated {
         }
         @media (min-width: @plone-screen-lg-min) {
           width: @plone-container-lg;
-        }    
+        }
     }
     .plone-toolbar-logo:after {
         border-left: 4px solid darken(@plone-toolbar-link, 10%);
@@ -381,7 +381,7 @@ body.userrole-authenticated {
             bottom: 0;
             background-color: black;
             border-top: 1px solid #DDDDDD;
-            box-shadow: -3px 2px 9px 2px #DDD;
+            box-shadow: -6px 2px 6px 2px #DDD;
             ul{
                 position: fixed;
                 height: 100%;
