@@ -38,6 +38,7 @@ except pkg_resources.DistributionNotFound:
     HAS_PLONE_REST = False
 else:
     HAS_PLONE_REST = True
+    from plone.rest.events import mark_as_api_request
 
 
 class PloneSite(PortalObjectBase, DefaultDublinCoreImpl, OrderedContainer,
@@ -107,8 +108,12 @@ class PloneSite(PortalObjectBase, DefaultDublinCoreImpl, OrderedContainer,
             if IAPIRequest.providedBy(REQUEST):
                 return
 
+            if REQUEST.getHeader('Accept') == 'application/json':
+                mark_as_api_request(REQUEST)
+                return
+
         super(PloneSite, self).__before_publishing_traverse__(
-            self, REQUEST)
+            arg1, arg2)
 
     def index_html(self):
         """ Acquire if not present. """
