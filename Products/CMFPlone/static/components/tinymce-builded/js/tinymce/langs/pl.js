@@ -100,7 +100,7 @@ tinymce.addI18n('pl',{
 "None": "\u017baden",
 "The URL you entered seems to be an external link. Do you want to add the required http:\/\/ prefix?": "URL, kt\u00f3ry wprowadzi\u0142e\u015b wygl\u0105da na link zewn\u0119trzny. Czy chcesz doda\u0107 http:\/\/ jako prefiks?",
 "Target": "Cel",
-"The URL you entered seems to be an email address. Do you want to add the required mailto: prefix?": "URL, kt\u00f3ry wprowadzi\u0142e\u015b wygl\u0105da na adres e-mail. Czy chcesz doda\u0107 mailto: jako prefiks?",
+"The URL you entered seems to be an email address. Do you want to add the required mailto: prefix?": "URL, kt\u00f3ry wprowadzi\u0142e\u015b wygl\u0105da na adres email. Czy chcesz doda\u0107 mailto: jako prefiks?",
 "Insert\/edit link": "Wstaw\/edytuj link",
 "Insert\/edit video": "Wstaw\/edytuj wideo",
 "Poster": "Plakat",

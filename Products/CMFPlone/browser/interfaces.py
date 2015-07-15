@@ -331,7 +331,7 @@ class ISendToForm(Interface):
         title=_(u'label_send_to_mail',
                 default=u'Send to'),
         description=_(u'help_send_to_mail',
-                      default=u'The e-mail address to send this link to.'),
+                      default=u'The email address to send this link to.'),
         required=True
     )
 
@@ -367,7 +367,7 @@ class IContactForm(Interface):
         title=_(u'label_sender_from_address',
                 default=u'From'),
         description=_(u'help_sender_from_address',
-                      default=u'Please enter your e-mail address.'),
+                      default=u'Please enter your email address.'),
         required=True
     )
 

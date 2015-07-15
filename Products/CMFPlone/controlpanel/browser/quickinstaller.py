@@ -113,7 +113,7 @@ class ManageProductsView(BrowserView):
                   'upgrades': only products with upgrades
                   'available': products that are not installed bit
                                could be
-                  'broken': uninstallable products with broken 
+                  'broken': uninstallable products with broken
                             dependencies
 
         @product_name:= a specific product id that you want info on. Do

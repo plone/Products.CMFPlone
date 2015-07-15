@@ -1,4 +1,4 @@
-Email login
+E-mail login
 ===========
 
 Instead of the normal userid or login name, you can let Plone use the
@@ -177,7 +177,7 @@ The current email address of course works fine for logging in:
     >>> browser.open('http://nohost/plone')
     >>> self.assertFalse('Log in' in browser.contents)
 
-Picking the e-mail address of another user should of course fail:
+Picking the email address of another user should of course fail:
 
     >>> browser.open('http://nohost/plone/@@personal-information')
     >>> browser.getControl('E-mail').value = 'username@example.org'

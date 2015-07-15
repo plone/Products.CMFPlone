@@ -123,7 +123,7 @@
 
                         <label i18n:translate="label_email"
                                tal:condition="use_email_as_login"
-                               tal:attributes="for ac_name">E-mail</label>
+                               tal:attributes="for ac_name">Email</label>
 
                         <div tal:condition="error"
                              tal:content="error">Validation error output</div>
