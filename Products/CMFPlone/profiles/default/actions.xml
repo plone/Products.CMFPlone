@@ -158,7 +158,6 @@
    <property
       name="url_expr">string:${globals_view/getCurrentFolderUrl}/folder_contents</property>
    <property name="icon_expr"></property>
-   <property name="available_expr">object/displayContentsTab</property>
    <property name="permissions">
     <element value="List folder contents"/>
    </property>
