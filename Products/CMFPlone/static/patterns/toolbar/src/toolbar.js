@@ -37,8 +37,10 @@ define([
       // make sure we are in expanded mode
       $('body').addClass(that.options.classNames.leftExpanded);
       $('body').addClass(that.options.classNames.expanded);
-      $('body').addClass(that.options.classNames.topExpanded);
-      $('body').addClass(that.options.classNames.topDefault);
+      $('body').addClass(that.options.classNames.left);
+      $('body').removeClass(that.options.classNames.topExpanded);
+      $('body').removeClass(that.options.classNames.top);
+      $('body').removeClass(that.options.classNames.topDefault);
       $('.' + that.options.classNames.logo, that.$container).click(function() {
         var $el = $(this);
         if ($el.hasClass('open')){
@@ -212,15 +214,18 @@ define([
       var $el = $('.plone-toolbar-main', this.$container),
         w = $('.plone-toolbar-container').width(),
         wtc = $('.plone-toolbar-logo').width();
-
+      console.log(wtc);
       $( ".plone-toolbar-main > li" ).each(function( index ) {
         wtc += $(this).width();
       });
+      console.log(wtc);
 
       $('#personal-bar-container > li').each(function(index) {
         wtc += $(this).width();
       })
+      console.log(wtc);
       wtc -= $('#plone-toolbar-more-options').width();
+      console.log(wtc);
       if (w < wtc) {
         if (!($('#plone-toolbar-more-options').length)) {
           $('[id^="plone-contentmenu-"]').hide();
@@ -284,8 +289,15 @@ define([
       });
 
       $(window).on('resize', function(){
-        that.setHeight();
-        that.hideElements();
+        if (that.isDesktop()){
+          that.setupDesktop();
+          if (!that.state.left) {
+            // in case its top lets just hide what is not needed
+            that.hideElements();
+          }
+        }else {
+          that.setupMobile();
+        }
       });
     },
 
