@@ -92,31 +92,26 @@
     <tal:category tal:repeat="category view/categories">
 
         <section class="portlet portletNavigationTree portletSiteSetup" tal:define="sublist python:view.sublists(category.get('id'))">
-          <header class="portletHeader hiddenStructure" tal:content="category/title"
+          <header class="portletHeader" tal:content="category/title"
             i18n:translate="">Category</header>
 
           <nav class="portletContent" tal:condition="sublist">
 
-            <ul class="configlets"
+            <ul class="row configlets"
                 tal:condition="sublist">
               <tal:actions tal:repeat="action sublist">
-                      <li tal:condition="action/visible">
+                      <li class="col-xs-4 col-sm-3 col-md-2" tal:condition="action/visible">
+                        <div class="inner-configlet">
                           <a href=""
                              tal:define="icon action/icon"
                              tal:attributes="href action/url">
-                              <img src="" alt=""
-                                   tal:condition="not:icon"
-                                   tal:attributes="src string:${portal_url}/maintenance_icon.png" />
-                              <img src="" alt=""
-                                   tal:condition="icon"
-                                   tal:attributes="src icon;
-                                                   alt action/title;"
-                                   i18n:attributes="alt" />
+                             <span tal:attributes="class python:'icon-controlpanel-' + action['id'].replace('.', '_')"></span>
                               <tal:title tal:content="action/title"
                                          i18n:translate="">
                                   Title
                               </tal:title>
                           </a>
+                        </div>
                       </li>
                   </tal:actions>
                 </ul>

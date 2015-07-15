@@ -66,7 +66,13 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
         member=[
             ('Member', _(u'My Preferences')),
         ],
-        site=[('Plone', _(u'Plone Configuration')),
+        site=[
+              ('plone-general', _(u'General')),
+              ('plone-content', _(u'Content')),
+              ('plone-users', _(u'Users')),
+              ('plone-security', _(u'Security')),
+              ('plone-advanced', _(u'Advanced')),
+              ('Plone', _(u'Plone Configuration')),
               ('Products', _(u'Add-on Configuration')),
              ]
     )

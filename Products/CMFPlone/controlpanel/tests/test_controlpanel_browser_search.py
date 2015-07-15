@@ -35,7 +35,7 @@ class SearchControlPanelFunctionalTest(unittest.TestCase):
     def test_search_control_panel_backlink(self):
         self.browser.open(
             "%s/@@search-controlpanel" % self.portal_url)
-        self.assertTrue("Plone Configuration" in self.browser.contents)
+        self.assertTrue("General" in self.browser.contents)
 
     def test_search_control_panel_sidebar(self):
         self.browser.open(

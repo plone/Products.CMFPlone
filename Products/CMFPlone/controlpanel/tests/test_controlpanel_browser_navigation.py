@@ -36,7 +36,7 @@ class NavigationControlPanelFunctionalTest(unittest.TestCase):
     def test_navigation_control_panel_backlink(self):
         self.browser.open(
             "%s/@@navigation-controlpanel" % self.portal_url)
-        self.assertTrue("Plone Configuration" in self.browser.contents)
+        self.assertTrue("General" in self.browser.contents)
 
     def test_navigation_control_panel_sidebar(self):
         self.browser.open(
