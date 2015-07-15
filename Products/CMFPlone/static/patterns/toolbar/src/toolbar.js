@@ -164,25 +164,21 @@ define([
     },
     _setHeight: function(){
       var $items = $('.plone-toolbar-main', this.$container);
-      var $nav = $items.parent();
       $items.css({height: ''});
+      var natualHeight = $items.outerHeight();
+      $('.scroll-btn', this.$container).remove();
 
-      var $el = $('.plone-toolbar-main', this.$container),
-        scrollTop = $(window).scrollTop(),
-        scrollBot = scrollTop + $(window).height(),
-        elTop = $el.offset().top,
-        elBottom = elTop + $el.outerHeight(),
-        visibleTop = elTop < scrollTop ? scrollTop : elTop,
-        visibleBottom = elBottom > scrollBot ? scrollBot : elBottom;
-      var height = (visibleBottom - visibleTop);
+      var height = $(window).height() - $('#personal-bar-container').height() -
+        $('.plone-toolbar-logo').height();
 
-      if(height + $('#personal-bar-container').outerHeight() > $nav.height()){
-        height = height + $('#personal-bar-container').outerHeight();
-      }else{
-        height = height - $('#personal-bar-container').outerHeight();
+      if(height < natualHeight){
+        /* add scroll buttons */
+        var $scrollUp = $('<li class="scroll-btn up"><a href="#"><span class="icon-up"></span></a></li>');
+        var $scrollDown = $('<li class="scroll-btn down"><a href="#"><span class="icon-down"></span></a></li>');
+        $items.prepend($scrollUp);
+        $items.append($scrollDown);
+        $items.height(height);
       }
-
-      $('.plone-toolbar-main', this.$container).height(height);
       /* if there is active, make sure to reposition */
       var $active = $('li.active ul:visible', this.$container);
       if($active.size() > 0){

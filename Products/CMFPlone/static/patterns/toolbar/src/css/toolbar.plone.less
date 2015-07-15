@@ -15,7 +15,7 @@ body.userrole-authenticated {
     top:0;
     left:0;
     z-index: 3;
-    font-weight: 700;
+    font-weight: 400;
     /*font-family: 'Roboto', sans-serif;*/
     font-family: sans-serif;
     color: @plone-toolbar-text-color;
@@ -25,9 +25,6 @@ body.userrole-authenticated {
         text-decoration: none;
         display: block;
         outline: 0;
-    }
-    .plone-toolbar-main{
-        overflow-y: auto;
     }
 
     /*logo*/
@@ -97,10 +94,10 @@ body.userrole-authenticated {
         li:last-child {margin-bottom: 5px; }
         li > span {display: block;}
         .plone-toolbar-submenu-header > a {
-            color: @plone-toolbar-link; font-weight: 700;
+            color: @plone-toolbar-link; font-weight: 400;
             &:hover {color: darken(@plone-toolbar-link, 15%);}
         }
-        .plone-toolbar-submenu-header > span {font-weight: 700; color: @plone-toolbar-submenu-header-color;}
+        .plone-toolbar-submenu-header > span {font-weight: 400; color: @plone-toolbar-submenu-header-color;}
         li:not(.plone-toolbar-submenu-header) > a:before {content:"•"; left: 15px; color: @plone-toolbar-link; position: absolute;}
         li:not(.plone-toolbar-submenu-header) > span:before {content:"•"; left: 15px; color: darken(@plone-toolbar-text-color,70%); position: absolute;}
         li:not(.plone-toolbar-submenu-header) > a:hover:before {color: lighten(@plone-toolbar-link, 25%);}
@@ -356,9 +353,16 @@ body.userrole-authenticated {
 .plone-toolbar-top-expanded { margin-top: @plone-left-toolbar; }
 
 
+/* NOT mobile styles here */
 @media (min-width: @plone-screen-xs-max) {
+    .plone-toolbar-main{
+        overflow-y: auto;
+    }
     .plone-toolbar-left #edit-zone{
         z-index: 5;
+        nav{
+            overflow-x: hidden;
+        }
         nav > ul ul {
             width: 0;
             height: 100%;
@@ -385,6 +389,15 @@ body.userrole-authenticated {
                 height: 100%;
                 top: 0;
             }
+        }
+        .plone-toolbar-main{
+            width: 138px; /* hide scroll bar */
+            padding-right: 18px;
+        }
+    }
+    .plone-toolbar-top-default #edit-zone{
+        .plone-toolbar-main{
+            width: 78px; /* hide scroll bar */
         }
     }
 }
