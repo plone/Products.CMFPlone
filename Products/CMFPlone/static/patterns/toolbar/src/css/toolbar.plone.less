@@ -1,9 +1,7 @@
 //*// TOOLBAR EDIT ZONE PLONE //*//
 
 html, #edit-zone {
-    transition-property: margin, right; //margin for body and right for edit-zone mobile
-    transition-duration: .2s, .2s;
-    transition-timing-function: ease-in-out;
+    
 }
 body.userrole-authenticated {
 }
@@ -195,7 +193,7 @@ body.userrole-authenticated {
     }
     nav > ul a > span + span {background: none; width: 80px; text-align: left; word-wrap: break-word; word-break: break-word;}
     .plone-toolbar-caret {width: 0;}
-    li:not(.active) a:hover > span {background: @plone-toolbar-link; transition: background .35s;}
+    li:not(.active) a:hover > span {background: @plone-toolbar-link;}
 
     /*states*/
     li a.label-state-published:hover > span, li a.label-state-external:hover > span  {
@@ -444,10 +442,10 @@ body.userrole-authenticated {
 
 
 /* transitions for menu openings*/
-#edit-zone, body  { transition: all .15s ease-in-out;}
-#edit-zone nav > ul ul { transition: all .1s ease-in;}
-#edit-zone nav > ul li.active ul {transition: all .25s ease-out;}
-.plone-toolbar-top #edit-zone nav > ul li.active ul {transition: all .25s ease-in-out;}
+#edit-zone, body  { }
+#edit-zone nav > ul ul { }
+#edit-zone nav > ul li.active ul { display: block;}
+.plone-toolbar-top #edit-zone nav > ul li.active ul {}
 
 
 /* small height devices <480 apanyo*/
