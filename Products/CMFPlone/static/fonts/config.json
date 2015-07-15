@@ -3535,6 +3535,20 @@
       ]
     },
     {
+      "uid": "7cc8cc8b775ded5d65c1e02afc071be9",
+      "css": "plone-contentmenu-portetmanager",
+      "code": 59435,
+      "src": "custom_icons",
+      "selected": true,
+      "svg": {
+        "path": "M83.3 916.7L1000 916.7 1000 197.9 83.3 197.9 83.3 916.7ZM1083.3 83.3L1083.3 916.7C1083.3 939.2 1075.1 958.8 1058.6 975.3 1042.1 991.8 1022.6 1000 1000 1000L83.3 1000C60.8 1000 41.2 991.8 24.7 975.3 8.2 958.8 0 939.2 0 916.7L0 83.3C0 60.8 8.2 41.2 24.7 24.7 41.2 8.2 60.8 0 83.3 0L1000 0C1022.6 0 1042.1 8.2 1058.6 24.7 1075.1 41.2 1083.3 60.8 1083.3 83.3Z",
+        "width": 1083
+      },
+      "search": [
+        "portlet"
+      ]
+    },
+    {
       "uid": "9dd9e835aebe1060ba7190ad2b2ed951",
       "css": "search",
       "code": 59423,
@@ -3625,9 +3639,21 @@
       "src": "fontawesome"
     },
     {
+      "uid": "ead4c82d04d7758db0f076584893a8c1",
+      "css": "calendar-empty",
+      "code": 59437,
+      "src": "fontawesome"
+    },
+    {
       "uid": "598a5f2bcf3521d1615de8e1881ccd17",
       "css": "history",
       "code": 59397,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "3212f42c65d41ed91cb435d0490e29ed",
+      "css": "plone-contentmenu-actions",
+      "code": 59434,
       "src": "fontawesome"
     },
     {
@@ -3682,6 +3708,12 @@
       "uid": "3def559c3c39b8500882e02892b7daa8",
       "css": "imageHandling",
       "code": 59416,
+      "src": "entypo"
+    },
+    {
+      "uid": "922ab2cb66943a83de969990289ef1dc",
+      "css": "plone-contentmenu-display",
+      "code": 59436,
       "src": "entypo"
     },
     {
