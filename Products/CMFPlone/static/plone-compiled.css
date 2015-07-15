@@ -3185,13 +3185,13 @@ html,
 }
 #edit-zone nav > ul ul .plone-toolbar-submenu-header > a {
   color: #007bb3;
-  font-weight: 500;
+  font-weight: 700;
 }
 #edit-zone nav > ul ul .plone-toolbar-submenu-header > a:hover {
   color: #004666;
 }
 #edit-zone nav > ul ul .plone-toolbar-submenu-header > span {
-  font-weight: 500;
+  font-weight: 700;
   color: #cccccc;
 }
 #edit-zone nav > ul ul li:not(.plone-toolbar-submenu-header) > a:before {
