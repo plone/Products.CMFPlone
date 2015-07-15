@@ -14,7 +14,6 @@ from Acquisition import aq_base
 from App.class_init import InitializeClass
 from ComputedAttribute import ComputedAttribute
 from webdav.NullResource import NullResource
-from Products.CMFCore.PortalObject import PortalObjectBase
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.CMFPlone.interfaces.syndication import ISyndicatable
@@ -29,6 +28,16 @@ from Products.CMFPlone.permissions import ListPortalMembers
 from Products.CMFPlone.permissions import ReplyToItem
 from Products.CMFPlone.permissions import View
 from Products.CMFPlone.permissions import ModifyPortalContent
+
+
+import pkg_resources
+
+try:
+    pkg_resources.get_distribution('plone.rest')
+except pkg_resources.DistributionNotFound:
+    HAS_PLONE_REST = False
+else:
+    HAS_PLONE_REST = True
 
 
 class PloneSite(PortalObjectBase, DefaultDublinCoreImpl, OrderedContainer,
@@ -50,9 +59,13 @@ class PloneSite(PortalObjectBase, DefaultDublinCoreImpl, OrderedContainer,
         (ListPortalMembers, ()),
         (ReplyToItem, ()),
         (View, ('isEffective',)),
-        (ModifyPortalContent, ('manage_cutObjects', 'manage_pasteObjects',
-            'manage_renameForm', 'manage_renameObject',
-            'manage_renameObjects')))
+        (ModifyPortalContent, (
+            'manage_cutObjects',
+            'manage_pasteObjects',
+            'manage_renameForm',
+            'manage_renameObject',
+            'manage_renameObjects'
+        )))
 
     security.declareProtected(Permissions.copy_or_move, 'manage_copyObjects')
 
@@ -84,15 +97,15 @@ class PloneSite(PortalObjectBase, DefaultDublinCoreImpl, OrderedContainer,
         return getToolByName(self, 'plone_utils').browserDefault(self)
 
     def __before_publishing_traverse__(self, arg1, arg2=None):
-        """ Pre-traversal hook. To avoid default view
+        """Pre-traversal hook that stops traversal to prevent the default view
+           to be appended. Appending the default view will break REST calls.
         """
         REQUEST = arg2 or arg1
-        try:
+
+        if HAS_PLONE_REST:
             from plone.rest.interfaces import IAPIRequest
             if IAPIRequest.providedBy(REQUEST):
                 return
-        except ImportError:
-            pass
 
         super(PloneSite, self).__before_publishing_traverse__(
             self, REQUEST)
@@ -163,7 +176,7 @@ class PloneSite(PortalObjectBase, DefaultDublinCoreImpl, OrderedContainer,
         # Put language neutral at the top.
         languages.insert(0, (u'', _(u'Language neutral (site default)')))
         return languages
- 
+
     def isEffective(self, date):
         """ Override DefaultDublinCoreImpl's test, since we are always viewable.
         """
