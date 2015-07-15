@@ -83,6 +83,20 @@ class PloneSite(PortalObjectBase, DefaultDublinCoreImpl, OrderedContainer,
         of index_html """
         return getToolByName(self, 'plone_utils').browserDefault(self)
 
+    def __before_publishing_traverse__(self, arg1, arg2=None):
+        """ Pre-traversal hook. To avoid default view
+        """
+        REQUEST = arg2 or arg1
+        try:
+            from plone.rest.interfaces import IAPIRequest
+            if IAPIRequest.providedBy(REQUEST):
+                return
+        except ImportError:
+            pass
+
+        super(PloneSite, self).__before_publishing_traverse__(
+            self, REQUEST)
+
     def index_html(self):
         """ Acquire if not present. """
         request = getattr(self, 'REQUEST', None)
