@@ -3536,7 +3536,7 @@
     },
     {
       "uid": "7cc8cc8b775ded5d65c1e02afc071be9",
-      "css": "plone-contentmenu-portetmanager",
+      "css": "plone-contentmenu-portletmanager",
       "code": 59435,
       "src": "custom_icons",
       "selected": true,
