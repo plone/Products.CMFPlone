@@ -8,6 +8,9 @@ Changelog
 5.0b3 (unreleased)
 ------------------
 
+- Renamed 'Zope Management Interface' to 'Management Interface'.
+  [jaroel]
+
 - Fix adding a new Plone site with country specific language. Refs #411.
   [jaroel]
 
