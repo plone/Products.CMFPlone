@@ -67,12 +67,23 @@ body.userrole-authenticated {
             > span + span {display: table-cell; text-align: center; padding: 0 8px; height: 50px; width:@plone-left-toolbar; vertical-align: middle; background: @plone-toolbar-link; line-height: 1em; }
         }
         .scroll-btn {
+            z-index:10;
+            background-color: black;
+            position: fixed;
+            left: 0;
+            &.up{
+                top: 50px;
+            }
+            &.down{
+                bottom: 50px;
+            }
             a {
                 [class^="icon"] { font-size: 12px; }
                 height: 20px;
                 > span { height: 20px; }
                 span:before { line-height: 26px;}
                 span.icon-down:before { line-height: 20px;}
+                &:hover > span {margin-top: 0; transition: none; -webkit-transition: none; background: #007bb3;}
             }
         }
         /*states on first level*/

@@ -165,6 +165,9 @@ define([
       var natualHeight = $items.outerHeight();
       $('.scroll-btn', this.$container).remove();
 
+      $items.css({
+        'padding-top': ''
+      });
       var height = $(window).height() - $('#personal-bar-container').height() -
         $('.plone-toolbar-logo').height();
 
@@ -174,7 +177,19 @@ define([
         var $scrollDown = $('<li class="scroll-btn down"><a href="#"><span class="icon-down"></span><span>&nbsp;</span></a></li>');
         $items.prepend($scrollUp);
         $items.append($scrollDown);
+        height = height - $scrollDown.height();
         $items.height(height);
+        $items.css({
+          'padding-top': $scrollUp.height()
+        });
+        $scrollUp.click(function(e){
+          e.preventDefault();
+          $items.scrollTop($items.scrollTop() - 50);
+        });
+        $scrollDown.click(function(e){
+          e.preventDefault();
+          $items.scrollTop($items.scrollTop() + 50);
+        });
       }
       /* if there is active, make sure to reposition */
       var $active = $('li.active ul:visible', this.$container);
