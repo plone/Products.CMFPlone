@@ -92,7 +92,6 @@
     <element value="List folder contents"/>
    </property>
    <property name="visible">True</property>
-   <property name="modal" type="text">{}</property>
   </object>
   <object name="history" meta_type="CMF Action" i18n:domain="plone">
    <property name="title" i18n:translate="">History</property>
@@ -105,7 +104,6 @@
     <element value="View"/>
    </property>
    <property name="visible">True</property>
-   <property name="modal" type="text">{}</property>
   </object>
   <object name="local_roles" meta_type="CMF Action" i18n:domain="plone">
    <property name="title" i18n:translate="">Sharing</property>
@@ -131,7 +129,6 @@
     <element value="Content rules: Manage rules"/>
    </property>
    <property name="visible">True</property>
-   <property name="modal" type="text">{}</property>
   </object>
   <object name="syndication" meta_type="CMF Action" i18n:domain="plone">
    <property name="title" i18n:translate="">Syndication</property>
