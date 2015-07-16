@@ -147,7 +147,7 @@ class ILanguageSchema(Interface):
             default=u"Examples: pt-br (Brazilian Portuguese), "
                     u"en-us (American English) etc."
         ),
-        default=False,
+        default=True,
         required=False
     )
 
