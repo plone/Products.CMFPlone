@@ -1,3 +1,4 @@
+from borg.localrole.interfaces import IFactoryTempFolder
 from Products.CMFPlone.interfaces import IPatternsSettings
 from Products.CMFPlone.interfaces import ITinyMCESchema
 from zope.interface import implements
@@ -8,7 +9,7 @@ from Products.CMFPlone.patterns.utils import get_portal_url
 from Products.CMFCore.interfaces._content import IFolderish
 from plone.uuid.interfaces import IUUID
 from Products.CMFPlone.interfaces import IPloneSiteRoot
-from Acquisition import aq_parent
+from Acquisition import aq_parent, aq_inner
 from plone.app.theming.utils import theming_policy
 from Products.CMFCore.utils import getToolByName
 from zope.component.hooks import getSite
@@ -200,9 +201,13 @@ class PloneSettingsAdapter(object):
         generator = TinyMCESettingsGenerator(self.context, self.request)
         settings = generator.settings
 
-        folder = self.context
-        if not IFolderish.providedBy(self.context):
-            folder = aq_parent(self.context)
+        folder = aq_inner(self.context)
+        # Test if we are currently creating an Archetype object
+        if IFactoryTempFolder.providedBy(aq_parent(folder)):
+            folder = aq_parent(aq_parent(aq_parent(folder)))
+        if not IFolderish.providedBy(folder):
+            folder = aq_parent(folder)
+
         if IPloneSiteRoot.providedBy(folder):
             initial = None
         else:
