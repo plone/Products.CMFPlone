@@ -90,8 +90,8 @@
     </div>
 
     <tal:category tal:repeat="category view/categories">
-
-        <section class="portlet portletNavigationTree portletSiteSetup" tal:define="sublist python:view.sublists(category.get('id'))">
+      <tal:defs tal:define="sublist python:view.sublists(category.get('id'))">
+        <section class="portlet portletNavigationTree portletSiteSetup" tal:condition="sublist">
           <header class="portletHeader" tal:content="category/title"
             i18n:translate="">Category</header>
 
@@ -124,7 +124,7 @@
             </div>
 
         </section>
-
+      </tal:defs>
     </tal:category>
 
     <div class="visualClear"><!-- --></div>
