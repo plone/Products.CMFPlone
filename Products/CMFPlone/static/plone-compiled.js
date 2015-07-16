@@ -10577,18 +10577,15 @@ define('plone-patterns-toolbar',[
     },
     setupMobile: function(){
       var that = this;
-      // $( 'html' ).has('.plone-toolbar-left').css({'margin-left':'0','margin-top':'0','margin-right':'0'});
-      // $( 'html' ).has('.plone-toolbar-top').css({'margin-left':'0','margin-top':'0','margin-right':'0'});
-      // $( 'html' ).has('.plone-toolbar-left.expanded').css({'margin-left':'0','margin-top':'0','margin-right':'0'});
-      // $( 'body' ).css('margin-left: 0px');
-
       that.$container.css('right', '-120px');
       // make sure we are in expanded mode
       $('body').addClass(that.options.classNames.leftExpanded);
       $('body').addClass(that.options.classNames.expanded);
-      $('body').addClass(that.options.classNames.topExpanded);
-      $('body').addClass(that.options.classNames.topDefault);
-      $('.' + that.options.classNames.logo, that.$container).click(function() {
+      $('body').addClass(that.options.classNames.left);
+      $('body').removeClass(that.options.classNames.topExpanded);
+      $('body').removeClass(that.options.classNames.top);
+      $('body').removeClass(that.options.classNames.topDefault);
+      $('.' + that.options.classNames.logo, that.$container).off('click').on('click', function() {
         var $el = $(this);
         if ($el.hasClass('open')){
           that.$container.css('right', '-120px');
@@ -10603,10 +10600,10 @@ define('plone-patterns-toolbar',[
           $( 'html' ).css('margin-right', '120px');
         }
       });
-      $('nav li', that.$container).has( 'a .plone-toolbar-caret' ).click(function(e) {
+      $('nav li a', that.$container).has('.plone-toolbar-caret').off('click').on('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
-        var $el = $(this);
+        var $el = $(this).parent();
         if ($el.hasClass(that.options.classNames.active)) {
           that.$container.css('right', '0');
           $('html').css('margin-left', '-120px');
@@ -10629,7 +10626,7 @@ define('plone-patterns-toolbar',[
         $('body').removeClass(that.options.classNames.expanded);
       }
 
-      $('.' + that.options.classNames.logo, that.$container).on('click', function() {
+      $('.' + that.options.classNames.logo, that.$container).off('click').on('click', function() {
         if (that.state.expanded) {
           // currently expanded, need to compress
           that.setState({
@@ -10661,12 +10658,12 @@ define('plone-patterns-toolbar',[
         }
       });
 
-      $('nav > ul > li li', that.$container).on('click', function(event) {
+      $('nav > ul > li li', that.$container).off('click').on('click', function(event) {
         event.stopImmediatePropagation();
       });
 
       // active
-      $('nav > ul > li', that.$container).has( 'a .plone-toolbar-caret' ).on('click', function(event) {
+      $('nav > ul > li', that.$container).has( 'a .plone-toolbar-caret' ).off('click').on('click', function(event) {
         event.preventDefault();
         event.stopPropagation();
         var hasClass = $(this).hasClass(that.options.classNames.active);
@@ -10717,16 +10714,31 @@ define('plone-patterns-toolbar',[
       var natualHeight = $items.outerHeight();
       $('.scroll-btn', this.$container).remove();
 
+      $items.css({
+        'padding-top': ''
+      });
       var height = $(window).height() - $('#personal-bar-container').height() -
         $('.plone-toolbar-logo').height();
 
       if(height < natualHeight){
         /* add scroll buttons */
-        var $scrollUp = $('<li class="scroll-btn up"><span class="icon-contentrules"></span></li>');
-        var $scrollDown = $('<li class="scroll-btn down"><span class="icon-contentrules"></span></li>');
-        //$items.prepend($scrollUp);
-        //$items.append($scrollDown);
+        var $scrollUp = $('<li class="scroll-btn up"><a href="#"><span class="icon-up"></span><span>&nbsp;</span></a></li>');
+        var $scrollDown = $('<li class="scroll-btn down"><a href="#"><span class="icon-down"></span><span>&nbsp;</span></a></li>');
+        $items.prepend($scrollUp);
+        $items.append($scrollDown);
+        height = height - $scrollDown.height();
         $items.height(height);
+        $items.css({
+          'padding-top': $scrollUp.height()
+        });
+        $scrollUp.click(function(e){
+          e.preventDefault();
+          $items.scrollTop($items.scrollTop() - 50);
+        });
+        $scrollDown.click(function(e){
+          e.preventDefault();
+          $items.scrollTop($items.scrollTop() + 50);
+        });
       }
       /* if there is active, make sure to reposition */
       var $active = $('li.active ul:visible', this.$container);
@@ -10758,31 +10770,29 @@ define('plone-patterns-toolbar',[
         // only when on top
         return;
       }
-      var $el = $('.plone-toolbar-main', this.$container),
-        w = $('.plone-toolbar-container').width(),
-        wtc = $('.plone-toolbar-logo').width();
-
-      $( ".plone-toolbar-main > li" ).each(function( index ) {
+      var w = $('.plone-toolbar-container').width(),
+          wtc = $('.plone-toolbar-logo').width();
+      $( ".plone-toolbar-main > li" ).each(function() {
         wtc += $(this).width();
       });
 
-      $('#personal-bar-container > li').each(function(index) {
+      $('#personal-bar-container > li').each(function() {
         wtc += $(this).width();
-      })
+      });
       wtc -= $('#plone-toolbar-more-options').width();
       if (w < wtc) {
         if (!($('#plone-toolbar-more-options').length)) {
           $('[id^="plone-contentmenu-"]').hide();
           $('.plone-toolbar-main').append('<li id="plone-toolbar-more-options"><a href="#"><span class="icon-moreOptions" aria-hidden="true"></span><span>' + _t('More') + '</span><span class="plone-toolbar-caret"></span></a></li>');
           $('#personal-bar-container').after('<ul id="plone-toolbar-more-subset" style="display: none"></ul>');
-          $( "[id^=plone-contentmenu-]" ).each(function( index ) {
+          $( "[id^=plone-contentmenu-]" ).each(function() {
             $(this).clone(true, true).appendTo( "#plone-toolbar-more-subset" );
             $('[id^=plone-contentmenu-]', '#plone-toolbar-more-subset').show();
           });
           $('#plone-toolbar-more-options a').on('click', function(event){
             event.preventDefault();
             $('#plone-toolbar-more-subset').toggle();
-          })
+          });
         }
       } else {
         $('[id^="plone-contentmenu-"]').show();
@@ -10833,8 +10843,15 @@ define('plone-patterns-toolbar',[
       });
 
       $(window).on('resize', function(){
-        that.setHeight();
-        that.hideElements();
+        if (that.isDesktop()){
+          that.setupDesktop();
+          if (!that.state.left) {
+            // in case its top lets just hide what is not needed
+            that.hideElements();
+          }
+        }else {
+          that.setupMobile();
+        }
       });
     },
 
