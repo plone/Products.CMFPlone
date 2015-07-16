@@ -73,7 +73,7 @@
                 <a href=""
                    i18n:translate="text_no_timezone_configured_control_panel_link"
                    tal:attributes="href string:${portal_url}/@@dateandtime-controlpanel"
-                >Date and Time settings control panel</a>
+                >Date and Time Settings control panel</a>
             </tal:link>
             to fix this.
         </span>

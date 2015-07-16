@@ -7,7 +7,7 @@ from plone.app.registry.browser import controlpanel
 class SocialControlPanelForm(controlpanel.RegistryEditForm):
 
     id = "SocialControlPanel"
-    label = _(u"Social settings")
+    label = _(u"Social Media Settings")
     description = _("Social media sharing settings.")
     schema = ISocialMediaSchema
     schema_prefix = "plone"

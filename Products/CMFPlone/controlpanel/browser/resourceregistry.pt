@@ -18,7 +18,7 @@
        Site Setup
     </a>
     <h1 class="documentFirstHeading"
-        i18n:translate="">Resource Registry</h1>
+        i18n:translate="">Resource Registries</h1>
 
     <div class="documentDescription"
        i18n:translate="">
@@ -27,7 +27,7 @@
       Re-building a Plone bundle TTW requires a modern web browser.
     </div>
 
-   <div id="content-core"> 
+   <div id="content-core">
       <span tal:replace="structure context/@@authenticator/authenticator"/>
       <div class="pat-resourceregistry" tal:attributes="data-pat-resourceregistry view/config">
         <div class="portalMessage info">
@@ -38,7 +38,7 @@
         </div>
         <h2>Available Options</h2>
         <ul>
-          <li>Reload the page. There could be a intermittent issue.</li> 
+          <li>Reload the page. There could be a intermittent issue.</li>
           <li>Go to the <a href="${portal_url}/portal_registry">Configuration Registry</a>
               and manually edit the configuration to enable development mode
               on the resource registry and try to rebuild.</li>
@@ -63,4 +63,4 @@
 
 </body>
 </html>
-    
+

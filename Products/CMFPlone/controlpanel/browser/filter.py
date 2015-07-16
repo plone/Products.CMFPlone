@@ -12,10 +12,10 @@ from z3c.form import form
 
 class FilterControlPanel(AutoExtensibleForm, form.EditForm):
     id = "FilterControlPanel"
-    label = _(u"Filter Settings")
+    label = _(u"HTML Filtering Settings")
     description = ""
     schema = IFilterSchema
-    form_name = _(u"Filter Settings")
+    form_name = _(u"HTML Filtering Settings")
     control_panel_view = "filter-controlpanel"
 
     def _settransform(self, **kwargs):
