@@ -283,14 +283,13 @@ class ContentViewsViewlet(ViewletBase):
     menu_template = ViewPageTemplateFile('menu.pt')
 
     default_tab = 'nothing'
-    primary = ['folderContents', 'edit']
+    primary = ['folderContents', 'edit', 'view']
 
     def update(self):
         # The drop-down menus are pulled in via a simple content provider
         # from plone.app.contentmenu. This behaves differently depending on
         # whether the view is marked with IViewView. If our parent view
         # provides that marker, we should do it here as well.
-        super(ContentViewsViewlet, self).update()
         if IViewView.providedBy(self.__parent__):
             alsoProvides(self, IViewView)
 
@@ -347,7 +346,7 @@ class ContentViewsViewlet(ViewletBase):
                 request_action = context_fti.queryMethodID(
                     request_action, default=request_action
                 )
-                if action_method == request_action:
+                if action_method == request_action and item['id'] != 'view':
                     item['selected'] = True
                     found_selected = True
 
@@ -359,7 +358,8 @@ class ContentViewsViewlet(ViewletBase):
             item['cssClass'] = ''
             if modal:
                 item['cssClass'] += ' pat-plone-modal'
-                item['url'] += '?ajax_load=1'
+                if 'ajax_load' not in item['url']:
+                    item['url'] += '?ajax_load=1'
 
             if item['id'] in self.primary:
                 tabSet1.append(item)

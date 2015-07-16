@@ -9,7 +9,8 @@
       <tal:var define="selected action/selected|nothing;">
         <a href="#"
            tal:attributes="href action/url;
-                           target action/link_target|nothing;">
+                           target action/link_target|nothing;
+                           class action/cssClass|nothing;">
           <span tal:attributes="class string:icon-${action/id}${action/cssClass|nothing};"
                 class="icon-folderContents" aria-hidden="true">
           </span>
@@ -25,7 +26,8 @@
                        locked view/locked_icon">
         <a href="#"
            tal:attributes="href action/url;
-                           target action/link_target|nothing;">
+                           target action/link_target|nothing;
+                           class action/cssClass|nothing">
           <span tal:attributes="class python:locked and 'icon-lock' or 'icon-history'"
                 class="icon-folderContents" aria-hidden="true">
           </span>
