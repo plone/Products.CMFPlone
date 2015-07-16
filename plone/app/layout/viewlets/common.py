@@ -290,9 +290,14 @@ class ContentViewsViewlet(ViewletBase):
         # from plone.app.contentmenu. This behaves differently depending on
         # whether the view is marked with IViewView. If our parent view
         # provides that marker, we should do it here as well.
+        super(ContentViewsViewlet, self).update()
         if IViewView.providedBy(self.__parent__):
             alsoProvides(self, IViewView)
 
+        self.tabSet1, self.tabSet2 = self.getTabSets()
+
+    @memoize
+    def getTabSets(self):
         context = aq_inner(self.context)
         context_url = context.absolute_url()
         context_fti = context.getTypeInfo()
@@ -370,8 +375,7 @@ class ContentViewsViewlet(ViewletBase):
             fallback_action['selected'] = True
 
         tabSet1.sort(key=lambda item: self.primary.index(item['id']))
-        self.tabSet1 = tabSet1
-        self.tabSet2 = tabSet2
+        return tabSet1, tabSet2
 
     def locked_icon(self):
         if not getSecurityManager().checkPermission('Modify portal content',
