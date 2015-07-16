@@ -29,6 +29,17 @@ return member_search()
 """
 
 
+import pkg_resources
+
+try:
+    pkg_resources.get_distribution('plone.rest')
+except pkg_resources.DistributionNotFound:
+    HAS_PLONE_REST = False
+else:
+    HAS_PLONE_REST = True
+    from plone.rest.events import mark_as_api_request
+
+
 class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin, UniqueObject):
     """Make PloneSite subclass CMFSite and add some methods."""
 
@@ -72,6 +83,24 @@ class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin, UniqueObject):
         """ Set default so we can return whatever we want instead
         of index_html """
         return getToolByName(self, 'plone_utils').browserDefault(self)
+
+    def __before_publishing_traverse__(self, arg1, arg2=None):
+        """Pre-traversal hook that stops traversal to prevent the default view
+           to be appended. Appending the default view will break REST calls.
+        """
+        REQUEST = arg2 or arg1
+
+        if HAS_PLONE_REST:
+            from plone.rest.interfaces import IAPIRequest
+            if IAPIRequest.providedBy(REQUEST):
+                return
+
+            if REQUEST.getHeader('Accept') == 'application/json':
+                mark_as_api_request(REQUEST)
+                return
+
+        super(PloneSite, self).__before_publishing_traverse__(
+            arg1, arg2)
 
     def index_html(self):
         """ Acquire if not present. """
