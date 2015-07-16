@@ -2,9 +2,7 @@
          i18n:domain="plone"
          tal:define="breadcrumbs view/breadcrumbs">
   <div class="container">
-    <span id="breadcrumbs-you-are-here"
-            i18n:translate="you_are_here">You are here:</span>
-    <ol aria-labelledby="breadcrumbs-you-are-here">
+    <ol>
       <li id="breadcrumbs-home">
         <a i18n:translate="tabs_home"
             tal:attributes="href view/navigation_root_url">Home</a>

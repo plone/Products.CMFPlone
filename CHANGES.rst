@@ -4,6 +4,9 @@ Changelog
 2.5.8 (unreleased)
 ------------------
 
+- remove "you are here" in breadcrumbs
+  [vangheem]
+
 - always show site root syndication links if enabled
   [vangheem]
 
