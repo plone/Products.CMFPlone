@@ -128,13 +128,6 @@ class Plone(BrowserView):
 
         return False
 
-    @memoize
-    def displayContentsTab(self):
-        """
-        Plone 5 we always want to show contents tab because it's awesome
-        """
-        return True
-
     def normalizeString(self, text):
         """Normalizes a title to an id.
         """
