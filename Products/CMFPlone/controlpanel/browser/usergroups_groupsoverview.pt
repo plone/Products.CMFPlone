@@ -78,7 +78,7 @@
 
         <a class="pat-plone-modal" id="add-group"
            tal:attributes="href string:${portal_url}/@@usergroup-groupdetails">
-           <button i18n:translate="label_add_new_group">Add New Group</button>
+           <button i18n:translate="label_add_new_group" class="context">Add New Group</button>
         </a>
 
         <form action=""
