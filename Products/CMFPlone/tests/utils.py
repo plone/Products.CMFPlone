@@ -3,7 +3,7 @@ import re
 
 from Products.MailHost.MailHost import _mungeHeaders
 from Products.MailHost.MailHost import MailBase
-from Products.CMFPlone.patches.securemailhost import secureSend
+from Products.MailHost.MailHost import MailHost
 
 # regexp for a valid CSS identifier without the leading #
 VALID_CSS_ID = re.compile("[A-Za-z_@][A-Za-z0-9_@-]*")
@@ -59,13 +59,13 @@ class MockMailHost(MailBase):
     # Outside of the tests we patch the MailHost to provide a
     # secureSend method for backwards compatibility, so we should do
     # that for our MockMailHost as well.
-    secureSend = secureSend
+    secureSend = MailHost.send
 
 
 # a function to test if a string is a valid CSS identifier
 def validateCSSIdentifier(identifier):
     match = VALID_CSS_ID.match(identifier)
-    if not match is None:
+    if match is not None:
         return match.end() == len(identifier)
     else:
         return False
