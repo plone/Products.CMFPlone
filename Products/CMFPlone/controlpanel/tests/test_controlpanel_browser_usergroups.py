@@ -249,7 +249,7 @@ class UserGroupsControlPanelFunctionalTest(unittest.TestCase):
         self.browser.getControl(
             name='group_group1:list', index=1
         ).getControl(value='Contributor').selected = True
-        self.browser.getControl('Apply Changes').click()
+        self.browser.getControl('Save').click()
 
         # Check that role is now selected
         self.browser.getControl(

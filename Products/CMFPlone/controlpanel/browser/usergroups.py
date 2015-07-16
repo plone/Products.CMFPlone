@@ -27,14 +27,14 @@ class UserGroupsSettingsControlPanel(AutoExtensibleForm, form.EditForm):
     form_name = _("User/Groups settings")
     control_panel_view = "usergroups-controlpanel"
 
-    @button.buttonAndHandler(_('label_apply_changes', default="Apply Changes"), name='apply')
+    @button.buttonAndHandler(_('label_save', default="Save"), name='save')
     def handleApply(self, action):
         super(UserGroupsSettingsControlPanel, self).handleApply(self, action)
 
     def updateActions(self):
         super(UserGroupsSettingsControlPanel, self).updateActions()
-        if self.actions and 'apply' in self.actions:
-            self.actions['apply'].addClass('context')
+        if self.actions and 'save' in self.actions:
+            self.actions['save'].addClass('context')
 
 
 class ControlPanelFormWrapper(layout.FormWrapper):

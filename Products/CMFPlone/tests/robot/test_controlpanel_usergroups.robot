@@ -93,7 +93,7 @@ I go to Settings control panel
 enable many groups and many users settings
   Select Checkbox  name=form.widgets.many_groups:list
   Select Checkbox  name=form.widgets.many_users:list
-  Click button  Apply Changes
+  Click button  Save
 
 # --- THEN -------------------------------------------------------------------
 

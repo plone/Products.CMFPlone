@@ -63,7 +63,7 @@
       <div id="content-core"
            tal:define="token context/@@authenticator/token">
         <div class="autotabs">
-         
+
           <nav class="autotoc-nav">
             <a href="${portal_url}/@@usergroup-groupmembership?${groupquery}"
                i18n:translate="label_group_members">Group Members</a>
@@ -209,7 +209,7 @@
                       <input class="context"
                              type="submit"
                              name="form.button.Save"
-                             value="Apply Changes"
+                             value="Save"
                              i18n:attributes="value label_save;" />
                   </div>
               </fieldset>

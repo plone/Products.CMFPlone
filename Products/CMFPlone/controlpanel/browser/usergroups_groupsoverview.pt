@@ -244,8 +244,8 @@
                   <input class="context"
                          type="submit"
                          name="form.button.Modify"
-                         value="Apply Changes"
-                         i18n:attributes="value label_apply_changes;"
+                         value="Save"
+                         i18n:attributes="value label_save;"
                          />
                 </div>
 
