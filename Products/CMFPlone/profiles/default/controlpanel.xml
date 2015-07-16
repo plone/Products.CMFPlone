@@ -78,10 +78,10 @@
     i18n:attributes="title">
   <permission>Manage portal</permission>
  </configlet>
- <configlet title="Types" action_id="TypesSettings" appId="TypesSettings"
+ <configlet title="Content Settings" action_id="TypesSettings" appId="TypesSettings"
     category="plone-content" condition_expr=""
     icon_expr="string:$portal_url/document_icon.png"
-    url_expr="string:${portal_url}/@@types-controlpanel" visible="True"
+    url_expr="string:${portal_url}/@@content-controlpanel" visible="True"
     i18n:attributes="title">
   <permission>Plone Site Setup: Types</permission>
  </configlet>

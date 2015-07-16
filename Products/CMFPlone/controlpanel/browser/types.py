@@ -51,7 +51,7 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
     label = _("Types Settings")
     description = _("General types settings.")
     form_name = _("Types settings")
-    control_panel_view = "types-controlpanel"
+    control_panel_view = "content-controlpanel"
     template = ViewPageTemplateFile('types.pt')
     behavior_name = 'plone.app.versioningbehavior.behaviors.IVersionable'
 
@@ -73,7 +73,7 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
         #    lock_on_ttw_edit=data['lock_on_ttw_edit'])
         #IStatusMessage(self.request).addStatusMessage(_(u"Changes saved"),
         #S                                              "info")
-        self.request.response.redirect("@@types-controlpanel")
+        self.request.response.redirect("@@content-controlpanel")
 
     @button.buttonAndHandler(_(u"Cancel"), name='cancel')
     def handleCancel(self, action):
@@ -257,7 +257,7 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
                         )
 
                 self.request.response.redirect(
-                    '%s/@@types-controlpanel?type_id=%s' % (
+                    '%s/@@content-controlpanel?type_id=%s' % (
                         context.absolute_url(),
                         type_id
                     )

@@ -16,7 +16,7 @@ class TypesControlPanelFunctionalTest(unittest.TestCase):
         self.app = self.layer['app']
         self.portal = self.layer['portal']
         self.portal_url = self.portal.absolute_url()
-        self.types_url = "%s/@@types-controlpanel" % self.portal_url
+        self.types_url = "%s/@@content-controlpanel" % self.portal_url
         self.browser = Browser(self.app)
         self.browser.handleErrors = False
         self.browser.addHeader(
@@ -33,7 +33,7 @@ class TypesControlPanelFunctionalTest(unittest.TestCase):
         self.browser.open(self.types_url)
         self.browser.getControl(name='type_id').value = ['Link']
         self.browser.getForm(action=self.types_url).submit()
-        self.assertIn('types-controlpanel', self.browser.url)
+        self.assertIn('content-controlpanel', self.browser.url)
 
     def test_standard_type_cancel(self):
         self.browser.open(self.types_url)

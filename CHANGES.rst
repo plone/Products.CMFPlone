@@ -113,7 +113,11 @@ Changelog
   [tomgross]
 
 - Remove plone.skip_links from the default set of viewlets in order to follow
-  modern a11y methods and drop support for outdated ways.
+  modern a11y methods and drop support for outdated ways [sneridagh]
+
+- Change the name and link of 'Types' control panel to 'Content Settings' and
+  '@@content-controlpanel' since there was confusion with the 'Dexterity
+  Content Types' one [sneridagh]
 
 
 5.0b2 (2015-05-13)

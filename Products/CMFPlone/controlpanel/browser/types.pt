@@ -11,7 +11,7 @@
 <metal:main metal:fill-slot="prefs_configlet_main">
 
     <h1 class="documentFirstHeading"
-        i18n:translate="heading_type_settings">Type Settings</h1>
+        i18n:translate="heading_type_settings">Content Settings</h1>
 
     <div class="documentDescription" i18n:translate="description_types_setup">
         Workflow, visibility and versioning settings for your content types.
@@ -21,15 +21,15 @@
          tal:define="token context/@@authenticator/token">
         <form method="post"
               tal:define="type_id view/type_id"
-              tal:attributes="action string:${context/absolute_url}/@@types-controlpanel">
-    
+              tal:attributes="action string:${context/absolute_url}/@@content-controlpanel">
+
             <input type="hidden" name="form.submitted:boolean" value="True" />
             <input type="hidden" name="old_type_id" tal:attributes="value type_id" />
-    
+
             <fieldset>
                 <legend>
                     <select name="type_id" onchange="form.submit()">
-    
+
                         <tal:option repeat="selectable view/selectable_types">
                             <option tal:content="selectable/title" i18n:translate=""
                                     tal:attributes="value selectable/id;
@@ -52,16 +52,16 @@
                                i18n:attributes="value label_change;" />
                     </noscript>
                </legend>
-    
+
                <tal:block tal:condition="python:type_id!=''">
-    
+
                    <p class="discreet"
                       tal:content="view/selected_type_description"
                       tal:condition="view/selected_type_description"
                       i18n:translate="">
                        Type description
                    </p>
-    
+
                    <div class="field">
                         <input id="addable"
                                type="checkbox"
@@ -73,7 +73,7 @@
                             Globally addable
                         </label>
                         <br />
-    
+
                         <input id="allow_discussion"
                                type="checkbox"
                                class="noborder"
@@ -83,8 +83,8 @@
                             Allow comments
                         </label>
                         <br />
-    
-    
+
+
                         <input id="searchable"
                                type="checkbox"
                                class="noborder"
@@ -94,10 +94,10 @@
                             Visible in searches
                         </label>
                         <br />
-    
-    
+
+
                         <tal:block tal:condition="python:type_id=='Link'">
-    
+
                           <input id="redirect_links"
                                  type="checkbox"
                                  class="noborder"
@@ -106,10 +106,10 @@
                           <label for="redirect_links" i18n:translate="types_controlpanel_redirect_links">
                               Redirect immediately to link target
                           </label>
-    
+
                         </tal:block>
                     </div>
-    
+
                     <div class="field">
                         <label for="versionpolicy" i18n:translate="types_controlpanel_versionpolicy">
                             Versioning policy:
@@ -122,8 +122,8 @@
                                     tal:content="policy/title">No versioning</option>
                         </select>
                     </div>
-    
-    
+
+
                     <div class="field">
                         <a tal:attributes="href string:${context/absolute_url}/@@manage-content-type-portlets?key=${type_id}&_authenticator=${token}"
                             i18n:translate="types_controlpanel_manage_portlets">
@@ -131,15 +131,15 @@
                         </a>
                     </div>
                 </tal:block>
-    
+
                 <tal:workflows define="current_wf view/current_workflow">
-    
+
                     <div class="field">
                         <label i18n:translate="types_controlpanel_current_workflow">Current workflow:</label>
                         <span tal:content="current_wf/title"
                               i18n:translate="">Community Workflow</span>
                     </div>
-    
+
                     <ul>
                       <tal:list-type
                         repeat="desc current_wf/description"
@@ -148,14 +148,14 @@
                             i18n:translate="">Workflow description</li>
                       </tal:list-type>
                     </ul>
-    
+
                     <div class="field">
                         <label for="new_workflow"
                                i18n:translate="types_controlpanel_new_workflow">New workflow:</label>
-    
+
                         <select onchange="form.submit()" id="workflows" name="new_workflow"
                             tal:define="selected_wf view/new_workflow">
-    
+
                             <tal:wfs repeat="wf view/available_workflows">
                                 <option i18n:translate=""
                                         tal:content="wf/title"
@@ -163,7 +163,7 @@
                                                         value wf/id">Intranet Workflow
                                 </option>
                             </tal:wfs>
-    
+
                             <option
                                 value="[none]"
                                 tal:attributes="selected python:selected_wf == '[none]' and 'selected' or None"
@@ -177,7 +177,7 @@
                                    i18n:attributes="value label_change;" />
                         </noscript>
                     </div>
-    
+
                     <input
                         type="hidden"
                         name="form.workflow.submitted:boolean"
@@ -191,19 +191,19 @@
                         <li tal:content="desc">Workflow description</li>
                       </tal:list-type>
                     </ul>
-    
+
                     <div tal:define="new_workflow view/new_workflow"
                          tal:condition="python:view.have_new_workflow() and not view.new_workflow_is_none() and view.new_workflow_is_different()">
-    
+
                         <label for="states" i18n:translate="types_controlpanel_state_mapping">
                             State Mapping
                         </label>
-    
+
                         <div class="formHelp" i18n:translate="types_controlpanel_state_mapping_help">
                             When changing workflows, you have to select a state equivalent in the
                             new workflow.
                         </div>
-    
+
                         <table id="states"
                                class="listing nosort"
                                tal:define="new_wf_states view/new_workflow_available_states">
@@ -238,9 +238,9 @@
                             </tbody>
                         </table>
                     </div>
-    
+
                 </tal:workflows>
-    
+
                 <div tal:condition="view/have_new_workflow" class="portalMessage info">
                     <strong>Info</strong>
                     <span i18n:translate="types_controlpanel_warn_remap">
@@ -248,7 +248,7 @@
                         the site significantly while the content is updated to the new setting.
                     </span>
                 </div>
-    
+
                 <div class="formControls">
                   <input type="submit"
                          value="Save"
@@ -261,9 +261,9 @@
                          class="standalone"
                          i18n:attributes="value label_cancel;" />
                 </div>
-    
+
             </fieldset>
-    
+
         </form>
     </div>
 </metal:main>

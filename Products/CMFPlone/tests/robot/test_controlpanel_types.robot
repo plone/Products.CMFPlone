@@ -19,7 +19,7 @@ Scenario: Allow comments for Link Type
     and the types control panel
    When I select 'Link' in types dropdown
     and Allow discussion
-   Then Wait until page contains  Type Settings
+   Then Wait until page contains  Content Settings
    When I add new Link 'my_link'
     Then Link 'my_link' should have comments enabled
 
@@ -27,7 +27,7 @@ Scenarion: Change default workflow
   Given a logged-in site administrator
     and the types control panel
    When I select 'Single State Workflow' workflow
-   Then Wait until page contains  Type Settings
+   Then Wait until page contains  Content Settings
    When I add new Link 'my_link'
     Then Link 'my_link' should have Single State Workflow enabled
 
@@ -40,7 +40,7 @@ a logged-in manager
   Enable autologin as  Manager
 
 the types control panel
-  Go to  ${PLONE_URL}/@@types-controlpanel
+  Go to  ${PLONE_URL}/@@content-controlpanel
 
 Globaly enabled comments
   Go to  ${PLONE_URL}/@@discussion-settings
