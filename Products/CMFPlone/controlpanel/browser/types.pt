@@ -27,31 +27,29 @@
             <input type="hidden" name="old_type_id" tal:attributes="value type_id" />
 
             <fieldset>
-                <legend>
-                    <select name="type_id" onchange="form.submit()">
+                <select name="type_id" onchange="form.submit()">
 
-                        <tal:option repeat="selectable view/selectable_types">
-                            <option tal:content="selectable/title" i18n:translate=""
-                                    tal:attributes="value selectable/id;
-                                                    selected python:type_id == selectable['id'] and 'selected' or None">
-                                    Content type
-                            </option>
-                        </tal:option>
-                        <option
-                            value=""
-                            i18n:translate="label_default_type"
-                            tal:attributes="selected python:type_id == '' and 'selected' or None">
-                          (Default)
+                    <tal:option repeat="selectable view/selectable_types">
+                        <option tal:content="selectable/title" i18n:translate=""
+                                tal:attributes="value selectable/id;
+                                                selected python:type_id == selectable['id'] and 'selected' or None">
+                                Content type
                         </option>
-                    </select>
-                    <noscript>
-                        <input type="submit"
-                               name="form.button.SelectContentType"
-                               class="standalone"
-                               value="Change"
-                               i18n:attributes="value label_change;" />
-                    </noscript>
-               </legend>
+                    </tal:option>
+                    <option
+                        value=""
+                        i18n:translate="label_default_type"
+                        tal:attributes="selected python:type_id == '' and 'selected' or None">
+                      (Default)
+                    </option>
+                </select>
+                <noscript>
+                    <input type="submit"
+                           name="form.button.SelectContentType"
+                           class="standalone"
+                           value="Change"
+                           i18n:attributes="value label_change;" />
+                </noscript>
 
                <tal:block tal:condition="python:type_id!=''">
 
