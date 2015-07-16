@@ -91,7 +91,7 @@ class LanguageControlPanelAdapterTest(unittest.TestCase):
               self.portal, ILanguageSchema).use_combined_language_codes = False
         self.assertEquals(
             self.settings.use_combined_language_codes,
-            True
+            False
         )
 
     def test_get_display_flags(self):
