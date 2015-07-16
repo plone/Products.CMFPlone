@@ -290,6 +290,7 @@ class ContentViewsViewlet(ViewletBase):
         # from plone.app.contentmenu. This behaves differently depending on
         # whether the view is marked with IViewView. If our parent view
         # provides that marker, we should do it here as well.
+        super(ContentViewsViewlet, self).update()
         if IViewView.providedBy(self.__parent__):
             alsoProvides(self, IViewView)
 
