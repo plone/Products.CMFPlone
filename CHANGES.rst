@@ -13,6 +13,8 @@ Changelog
 
 5.0b3 (2015-07-20)
 ------------------
+- Rework language selection in @@plone-addsite.
+  [jaroel]
 
 - show toolbar buttons on sitemap, accessibility and search pages
   [vangheem]

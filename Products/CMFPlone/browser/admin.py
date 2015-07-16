@@ -11,6 +11,7 @@ from Products.GenericSetup import BASE, EXTENSION
 from Products.GenericSetup import profile_registry
 from Products.GenericSetup.upgrade import normalize_version
 from ZPublisher.BaseRequest import DefaultPublishTraverse
+from collections import OrderedDict
 from operator import itemgetter
 from plone.i18n.locales.interfaces import IContentLanguageAvailability
 from plone.keyring.interfaces import IKeyManager
@@ -172,9 +173,6 @@ class AddPloneSite(BrowserView):
                 if parts[0] == parts[1]:
                     # Avoid creating a country code for simple languages codes
                     parts = [parts[0], None, None]
-                elif parts[0] == 'en':
-                    # Avoid en-us as a language
-                    parts = ['en', None, None]
                 try:
                     locale = locales.getLocale(*parts)
                     language = locale.getLocaleID().replace('_', '-').lower()
@@ -184,16 +182,37 @@ class AddPloneSite(BrowserView):
                     pass
         return language
 
-    def languages(self, default='en'):
+    def grouped_languages(self, default='en'):
         util = queryUtility(IContentLanguageAvailability)
-        if '-' in default:
-            available = util.getLanguages(combined=True)
-        else:
-            available = util.getLanguages()
-        languages = [(code, v.get(u'native', v.get(u'name'))) for
-                     code, v in available.items()]
-        languages.sort(key=itemgetter(1))
-        return languages
+        available = util.getLanguages(combined=True)
+        languages = dict(util.getLanguageListing())
+
+        # Group country specific versions by language
+        grouped = OrderedDict()
+        for langcode, data in available.items():
+            splitted = langcode.split('-')
+            lang = splitted.pop(0)
+            try:
+                locale = splitted.pop(0)
+            except IndexError:
+                locale = None
+            language = languages.get(lang, lang)  # Label
+
+            struct = grouped.get(lang, {'label': language, 'languages': []})
+
+            langs = struct['languages']
+            langs.append({
+                'langcode': langcode,
+                'label': data.get(u'native', data.get(u'name')),
+            })
+
+            grouped[lang] = struct
+
+        # Sort list by language, next by country
+        data = sorted(grouped.values(), key=lambda k: k['label'])
+        for item in data:
+            item['languages'] = sorted(item['languages'], key=lambda k: k['langcode'])
+        return data
 
     def timezones(self):
         tz_vocab = getUtility(
