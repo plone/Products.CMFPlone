@@ -320,7 +320,7 @@ class UserGroupsControlPanelFunctionalTest(unittest.TestCase):
         self.browser.getControl(
             name='form.widgets.many_users:list'
         ).controls[0].selected = True
-        self.browser.getControl('Apply').click()
+        self.browser.getControl('Save').click()
 
         # Check that show all button for users is no longer available
         self.browser.open(self.usergroups_url)
@@ -335,7 +335,7 @@ class UserGroupsControlPanelFunctionalTest(unittest.TestCase):
         self.browser.getControl(
             name='form.widgets.many_groups:list'
         ).controls[0].selected = True
-        self.browser.getControl('Apply').click()
+        self.browser.getControl('Save').click()
 
         # Check that show all button for groups is no longer available
         self.browser.open(self.groups_url)

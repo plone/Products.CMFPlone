@@ -204,14 +204,14 @@ anymore (which at the same time tests the security control panel):
   >>> browser.getLink('Users and Groups').click()
   >>> browser.getControl('Show all').click()
   >>> browser.getControl(name='users.roles:list:records').value = ['Manager'] * 3
-  >>> browser.getControl('Apply Changes').click()
+  >>> browser.getControl('Save').click()
   >>> browser.contents
   '...Info...Changes applied...'
 
   >>> browser.goBack()
   >>> browser.getControl(name='_authenticator', index=0).value = 'invalid!'
   >>> browser.getControl(name='users.roles:list:records').value = ['Manager'] * 3
-  >>> browser.getControl('Apply Changes').click()
+  >>> browser.getControl('Save').click()
   Traceback (most recent call last):
   ...
   HTTPError: HTTP Error 403: Forbidden
