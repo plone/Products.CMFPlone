@@ -162,7 +162,7 @@
   <permission>Plone Site Setup: Site</permission>
  </configlet>
  <configlet title="TinyMCE" action_id="tinymce" appId="Plone"
-    category="plone-content" condition_expr=""
+    category="plone-general" condition_expr=""
     icon_expr="string:$portal_url/tinymce.png"
     url_expr="string:${portal_url}/@@tinymce-controlpanel" visible="True"
     i18n:attributes="title">
