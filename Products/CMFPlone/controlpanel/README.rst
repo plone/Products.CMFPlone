@@ -68,7 +68,7 @@ Language Control Panel
   ['en']
 
   >>> language_settings.use_combined_language_codes
-  False
+  True
 
   >>> language_settings.display_flags
   False
