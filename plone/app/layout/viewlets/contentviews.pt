@@ -2,20 +2,14 @@
                   tal:condition="ploneview/showEditableBorder"
                   i18n:domain="plone">
 
-  <tal:block define="view_actions view/prepareObjectTabs;">
-    <li tal:repeat="action view_actions"
-        tal:attributes="id string:contentview-${action/id};
-                        class python: action.get('selected') and 'active' or ''">
-      <tal:var define="selected action/selected|nothing;">
-        <a href="#"
-           tal:attributes="href action/url;
-                           target action/link_target|nothing;">
-          <span tal:attributes="class string:icon-${action/id}${action/cssClass|nothing};"
-                class="icon-folderContents" aria-hidden="true">
-          </span>
-          <span tal:content="action/title" i18n:translate="">View name</span>
-        </a>
-      </tal:var>
-    </li>
+  <tal:block define="actions view/tabSet1;">
+    <div tal:replace="structure python: view.menu_template(actions=actions)" />
   </tal:block>
+  <tal:contentmenus>
+    <div tal:replace="structure provider:plone.contentmenu" />
+  </tal:contentmenus>
+  <tal:block define="actions view/tabSet2;">
+    <div tal:replace="structure python: view.menu_template(actions=actions)" />
+  </tal:block>
+
 </tal:contentviews>

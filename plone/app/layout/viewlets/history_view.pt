@@ -13,6 +13,93 @@
             Generic KSS Title. Is rendered with class="documentFirstHeading".
         </h1>
 
+        <div class="documentByLine"
+             id="plone-document-byline"
+             i18n:domain="plone"
+             tal:condition="view/show">
+          <span id="lock-icon"
+                tal:define="lock_icon view/locked_icon"
+                tal:condition="python:lock_icon">
+              <img tal:replace="structure lock_icon" />
+          </span>
+
+          <tal:creator tal:define="creator_short_form view/creator;"
+                       tal:condition="creator_short_form">
+          <tal:name tal:define="creator_long_form string:?author=${creator_short_form};
+                                creator_is_openid python:'/' in creator_short_form;
+                                creator_id python:(creator_short_form, creator_long_form)[creator_is_openid];">
+            <span class="documentAuthor">
+              <tal:i18n i18n:translate="label_by_author">
+              by
+              <a href="#"
+                 tal:attributes="href string:${context/@@plone_portal_state/navigation_root_url}/author/${creator_id}"
+                 tal:content="view/authorname"
+                 tal:omit-tag="python:view.author() is None"
+                 i18n:name="author">Roland Barthes</a>
+              </tal:i18n>
+                 —
+            </span>
+          </tal:name>
+          </tal:creator>
+
+          <tal:dates define="published view/pub_date;
+                             modified context/ModificationDate">
+          <span class="documentPublished"
+                tal:condition="published">
+            <span i18n:translate="box_published">
+              published
+            </span>
+            <span tal:replace="python:view.toLocalizedTime(published,long_format=1)">
+              August 16, 2001 at 23:35:59
+            </span><tal:sep condition="modified">,</tal:sep>
+          </span>
+
+          <span class="documentModified"
+                tal:condition="modified">
+            <span i18n:translate="box_last_modified">
+              last modified
+            </span>
+            <span tal:replace="python:view.toLocalizedTime(modified,long_format=1)">
+              August 16, 2001 at 23:35:59
+            </span>
+          </span>
+          </tal:dates>
+
+          <tal:expired tal:condition="view/isExpired">
+            —
+            <span class="state-expired"
+                  i18n:translate="time_expired">expired</span>
+          </tal:expired>
+
+          <span class="contentHistory" id="content-history"
+                tal:condition="view/show_history">
+            —
+            <a href="#"
+               tal:attributes="href string:${here/absolute_url}/@@historyview"
+               i18n:translate="label_history">History</a>
+          </span>
+
+          <div class="documentContributors"
+               tal:define="contributors context/Contributors"
+               tal:condition="contributors"
+               i18n:translate="text_contributors">
+            Contributors:
+            <span i18n:name="name"
+                  tal:omit-tag=""
+                  tal:content="python: ', '.join(contributors)">
+              Mary
+            </span>
+          </div>
+
+          <tal:rights tal:define="rights context/Rights"
+                      tal:condition="rights">
+            <div tal:replace="rights">
+              Copyleft NiceCorp Inc.
+            </div>
+          </tal:rights>
+
+        </div>
+
         <div id="content-core">
             <h3 i18n:translate="label_history">History</h3>
             <div tal:replace="structure here/@@contenthistory">Content History</div>

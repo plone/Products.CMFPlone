@@ -53,38 +53,26 @@ class TestContentViewsViewlet(ViewletsTestCase):
         except AttributeError:
             pass
 
-    def testPrepareObjectTabsOnPortalRoot(self):
+    def testSet1OnPortalRoot(self):
         self._invalidateRequestMemoizations()
         self.loginAsPortalOwner()
         self.app.REQUEST['ACTUAL_URL'] = self.portal.absolute_url()
         view = ContentViewsViewlet(self.portal, self.app.REQUEST, None)
-        tabs = view.prepareObjectTabs()
-        self.assertEqual(tabs[0]['id'], 'folderContents')
-        self.assertEqual(['view'], [t['id'] for t in tabs if t['selected']])
+        view.update()
+        self.assertEqual(view.tabSet1[0]['id'], 'folderContents')
 
-    def testPrepareObjectTabsNonFolder(self):
-        self._invalidateRequestMemoizations()
-        self.loginAsPortalOwner()
-        self.app.REQUEST['ACTUAL_URL'] = self.folder.test.absolute_url()
-        view = ContentViewsViewlet(self.folder.test, self.app.REQUEST, None)
-        tabs = view.prepareObjectTabs()
-        self.assertEqual(0, len([t for t in tabs if t[
-                         'id'] == 'folderContents']))
-        self.assertEqual(['view'], [t['id'] for t in tabs if t['selected']])
-
-    def testPrepareObjectTabsNonStructuralFolder(self):
+    def testSet1NonStructuralFolder(self):
         self._invalidateRequestMemoizations()
         self.loginAsPortalOwner()
         self.app.REQUEST['ACTUAL_URL'] = self.folder.absolute_url()
         directlyProvides(self.folder, INonStructuralFolder)
         view = ContentViewsViewlet(self.folder, self.app.REQUEST, None)
-        tabs = view.prepareObjectTabs()
+        view.update()
         noLongerProvides(self.folder, INonStructuralFolder)
-        self.assertEqual(0, len([t for t in tabs if t[
+        self.assertEqual(1, len([t for t in view.tabSet1 if t[
                          'id'] == 'folderContents']))
-        self.assertEqual(['view'], [t['id'] for t in tabs if t['selected']])
 
-    def testPrepareObjectTabsDefaultView(self):
+    def testSet1(self):
         self._invalidateRequestMemoizations()
         self.loginAsPortalOwner()
         self.app.REQUEST['ACTUAL_URL'] = '%s/edit?_authenticator=%s' % (
@@ -92,10 +80,10 @@ class TestContentViewsViewlet(ViewletsTestCase):
             auth.createToken()
         )
         view = ContentViewsViewlet(self.folder.test, self.app.REQUEST, None)
-        tabs = view.prepareObjectTabs()
-        self.assertEqual(0, len([t for t in tabs if t[
+        view.update()
+        self.assertEqual(1, len([t for t in view.tabSet1 if t[
                          'id'] == 'folderContents']))
-        self.assertEqual(['edit'], [t['id'] for t in tabs if t['selected']])
+        self.assertEqual(['edit'], [t['id'] for t in view.tabSet1 if t['selected']])
 
     def testTitleViewlet(self):
         """Title viewlet renders navigation root title

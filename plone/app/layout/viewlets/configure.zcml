@@ -67,7 +67,7 @@
         name="plone.toolbar"
         provides=".interfaces.IToolbar"
         permission="zope2.View"
-        class="plone.app.viewletmanager.manager.OrderedViewletManager"
+        class=".toolbar.ToolbarViewletManager"
         />
 
     <browser:viewletManager
@@ -152,14 +152,6 @@
         permission="zope2.View"
         />
 
-    <!-- The skip links for accessibility -->
-    <browser:viewlet
-        name="plone.skip_links"
-        manager=".interfaces.IPortalHeader"
-        class=".common.SkipLinksViewlet"
-        permission="zope2.View"
-        />
-
     <!-- The site actions -->
     <browser:viewlet
         name="plone.site_actions"
@@ -201,49 +193,11 @@
         permission="zope2.View"
         />
 
-    <!-- The personal bar -->
-    <browser:viewlet
-        name="plone.personal_bar"
-        manager=".interfaces.IToolbar"
-        class=".common.PersonalBarViewlet"
-        permission="zope2.View"
-        />
-
     <!-- Content views (tabs) -->
     <browser:viewlet
         name="plone.contentviews"
         manager=".interfaces.IToolbar"
         class=".common.ContentViewsViewlet"
-        permission="zope2.View"
-        />
-
-    <!-- Content actions (menus)
-            The default version is a blank bar; the one with real menus is
-            registered for the main view + folder contents only.
-      -->
-<!--     <browser:viewlet
-        name="plone.contentactions"
-        for="*"
-        manager=".interfaces.IToolbar"
-        template="contentactions_blank.pt"
-        permission="zope2.View"
-        /> -->
-
-    <browser:viewlet
-        name="plone.contentactions"
-        for="*"
-        view="plone.app.layout.globals.interfaces.IViewView"
-        manager=".interfaces.IToolbar"
-        class=".common.ContentActionsViewlet"
-        permission="zope2.View"
-        />
-
-    <browser:viewlet
-        name="plone.contentactions"
-        for="*"
-        view="plone.app.content.browser.interfaces.IFolderContentsView"
-        manager=".interfaces.IToolbar"
-        class=".common.ContentActionsViewlet"
         permission="zope2.View"
         />
 
@@ -319,7 +273,7 @@
     <browser:page
         for="*"
         name="historyview"
-        template="history_view.pt"
+        class=".content.HistoryByLineView"
         permission="zope2.View"
         />
 
@@ -353,14 +307,6 @@
         name="plone.globalstatusmessage"
         manager=".interfaces.IGlobalStatusMessage"
         class=".globalstatusmessage.GlobalStatusMessage"
-        permission="zope2.View"
-        />
-
-    <!-- Render the document byline -->
-    <browser:viewlet
-        name="plone.documentbyline"
-        manager=".interfaces.IToolbar"
-        class=".content.DocumentBylineViewlet"
         permission="zope2.View"
         />
 

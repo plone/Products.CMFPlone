@@ -6,6 +6,7 @@ from plone.registry.interfaces import IRegistry
 
 from plone.memoize.view import memoize
 from zope.component import getMultiAdapter
+from zope.component import queryMultiAdapter
 from zope.component import getUtility
 from zope.deprecation.deprecation import deprecate
 from zope.i18n import translate
@@ -147,15 +148,6 @@ class TableOfContentsViewlet(ViewletBase):
             self.enabled = toc
 
 
-class SkipLinksViewlet(ViewletBase):
-    index = ViewPageTemplateFile('skip_links.pt')
-
-    def update(self):
-        context_state = getMultiAdapter((self.context, self.request),
-                                        name=u'plone_context_state')
-        self.current_page_url = context_state.current_page_url
-
-
 class SiteActionsViewlet(ViewletBase):
     index = ViewPageTemplateFile('site_actions.pt')
 
@@ -242,8 +234,6 @@ class GlobalSectionsViewlet(ViewletBase):
 
 class PersonalBarViewlet(ViewletBase):
 
-    index = ViewPageTemplateFile('personal_bar.pt')
-
     def update(self):
         super(PersonalBarViewlet, self).update()
         context = aq_inner(self.context)
@@ -290,13 +280,24 @@ class PersonalBarViewlet(ViewletBase):
 
 class ContentViewsViewlet(ViewletBase):
     index = ViewPageTemplateFile('contentviews.pt')
+    menu_template = ViewPageTemplateFile('menu.pt')
+
+    default_tab = 'nothing'
+    primary = ['folderContents', 'edit', 'view']
+
+    def update(self):
+        # The drop-down menus are pulled in via a simple content provider
+        # from plone.app.contentmenu. This behaves differently depending on
+        # whether the view is marked with IViewView. If our parent view
+        # provides that marker, we should do it here as well.
+        super(ContentViewsViewlet, self).update()
+        if IViewView.providedBy(self.__parent__):
+            alsoProvides(self, IViewView)
+
+        self.tabSet1, self.tabSet2 = self.getTabSets()
 
     @memoize
-    def prepareObjectTabs(self, default_tab='view',
-                          sort_first=['folderContents']):
-        """Prepare the object tabs by determining their order and working
-        out which tab is selected. Used in global_contentviews.pt
-        """
+    def getTabSets(self):
         context = aq_inner(self.context)
         context_url = context.absolute_url()
         context_fti = context.getTypeInfo()
@@ -310,8 +311,10 @@ class ContentViewsViewlet(ViewletBase):
         if context_state.is_structural_folder():
             action_list = actions('folder')
         action_list.extend(actions('object'))
+        action_list.extend(actions('object_actions'))
 
-        tabs = []
+        tabSet1 = []
+        tabSet2 = []
         found_selected = False
         fallback_action = None
 
@@ -348,33 +351,55 @@ class ContentViewsViewlet(ViewletBase):
                 request_action = context_fti.queryMethodID(
                     request_action, default=request_action
                 )
-                if action_method == request_action:
+                if action_method == request_action and item['id'] != 'view':
                     item['selected'] = True
                     found_selected = True
 
             current_id = item['id']
-            if current_id == default_tab:
+            if current_id == self.default_tab:
                 fallback_action = item
 
             modal = item.get('modal', None)
             item['cssClass'] = ''
             if modal:
                 item['cssClass'] += ' pat-plone-modal'
-                item['url'] += '?ajax_load=1'
+                if 'ajax_load' not in item['url']:
+                    item['url'] += '?ajax_load=1'
 
-            tabs.append(item)
+            if item['id'] in self.primary:
+                tabSet1.append(item)
+            else:
+                tabSet2.append(item)
 
         if not found_selected and fallback_action is not None:
             fallback_action['selected'] = True
 
-        def sortOrder(tab):
-            try:
-                return sort_first.index(tab['id'])
-            except ValueError:
-                return 255
+        tabSet1.sort(key=lambda item: self.primary.index(item['id']))
+        return tabSet1, tabSet2
 
-        tabs.sort(key=sortOrder)
-        return tabs
+    def locked_icon(self):
+        if not getSecurityManager().checkPermission('Modify portal content',
+                                                    self.context):
+            return ""
+
+        locked = False
+        lock_info = queryMultiAdapter((self.context, self.request),
+                                      name='plone_lock_info')
+        if lock_info is not None:
+            locked = lock_info.is_locked()
+        else:
+            context = aq_inner(self.context)
+            lockable = getattr(context.aq_explicit,
+                               'wl_isLocked', None
+                               ) is not None
+            locked = lockable and context.wl_isLocked()
+
+        if not locked:
+            return ""
+
+        portal = self.portal_state.portal()
+        icon = portal.restrictedTraverse('lock_icon.png')
+        return icon.tag(title='Locked')
 
 
 class ManagePortletsFallbackViewlet(ViewletBase):
@@ -416,27 +441,6 @@ class PathBarViewlet(ViewletBase):
         breadcrumbs_view = getMultiAdapter((self.context, self.request),
                                            name='breadcrumbs_view')
         self.breadcrumbs = breadcrumbs_view.breadcrumbs()
-
-
-class ContentActionsViewlet(ViewletBase):
-    index = ViewPageTemplateFile('contentactions.pt')
-
-    def update(self):
-        context = aq_inner(self.context)
-        context_state = getMultiAdapter((context, self.request),
-                                        name=u'plone_context_state')
-
-        self.object_actions = context_state.actions('object_actions')
-
-        # The drop-down menus are pulled in via a simple content provider
-        # from plone.app.contentmenu. This behaves differently depending on
-        # whether the view is marked with IViewView. If our parent view
-        # provides that marker, we should do it here as well.
-        if IViewView.providedBy(self.__parent__):
-            alsoProvides(self, IViewView)
-
-    def icon(self, action):
-        return action.get('icon', None)
 
 
 class TinyLogoViewlet(ViewletBase):

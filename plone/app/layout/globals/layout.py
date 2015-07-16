@@ -1,26 +1,27 @@
-from zope.component import getUtility
-from plone.registry.interfaces import IRegistry
+import json
+
+from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.interfaces.controlpanel import ISiteSchema
+from Products.Five.browser.metaconfigure import ViewMixinForTemplates
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from plone.app.layout.globals.interfaces import ILayoutPolicy
+from plone.app.layout.globals.interfaces import IViewView
+from plone.app.layout.icons.interfaces import IContentIcon
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.memoize.view import memoize
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPortletManagerRenderer
-from zope.component import getMultiAdapter
-from zope.component import queryUtility
-from zope.component import queryMultiAdapter
-from zope.interface import alsoProvides
-from zope.interface import implements
-from zope.publisher.browser import BrowserView
-
-from Products.CMFCore.utils import getToolByName
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from plone.registry.interfaces import IRegistry
 from zope.browserpage.viewpagetemplatefile import (
     ViewPageTemplateFile as ZopeViewPageTemplateFile
 )
-from Products.Five.browser.metaconfigure import ViewMixinForTemplates
-
-from plone.app.layout.globals.interfaces import ILayoutPolicy
-from plone.app.layout.globals.interfaces import IViewView
-from plone.app.layout.icons.interfaces import IContentIcon
+from zope.component import getMultiAdapter
+from zope.component import getUtility
+from zope.component import queryMultiAdapter
+from zope.component import queryUtility
+from zope.interface import alsoProvides
+from zope.interface import implements
+from zope.publisher.browser import BrowserView
 
 
 class LayoutPolicy(BrowserView):
@@ -186,23 +187,37 @@ class LayoutPolicy(BrowserView):
             for role in user.getRolesInContext(self.context):
                 body_classes.append('userrole-' + role.lower().replace(' ', '-'))
 
+            registry = getUtility(IRegistry)
+            settings = registry.forInterface(ISiteSchema, prefix='plone', check=False)
+
             # toolbar classes
-            toolbar_state = self.request.cookies.get('plone-toolbar')
-            if toolbar_state:
-                if 'plone-toolbar-left' in toolbar_state:
-                    if 'expanded' in toolbar_state:
+            try:
+                left = settings.toolbar_position == 'side'
+            except KeyError:
+                left = True
+            if left:
+                body_classes.append('plone-toolbar-left')
+            else:
+                body_classes.append('plone-toolbar-top')
+            try:
+                toolbar_state = self.request.cookies.get('plone-toolbar')
+                if toolbar_state:
+                    toolbar_state = json.loads(toolbar_state)
+                else:
+                    toolbar_state = {'expanded': False}
+                if toolbar_state.get('expanded', True):
+                    body_classes.append('plone-toolbar-expanded')
+                    if left:
                         body_classes.append('plone-toolbar-left-expanded')
                     else:
-                        body_classes.append('plone-toolbar-left-default')
-                if 'plone-toolbar-top' in toolbar_state:
-                    if 'expanded' in toolbar_state:
                         body_classes.append('plone-toolbar-top-expanded')
+                else:
+                    if left:
+                        body_classes.append('plone-toolbar-left-default')
                     else:
                         body_classes.append('plone-toolbar-top-default')
-                if 'compressed' in toolbar_state:
-                    body_classes.append('plone-toolbar-compressed')
-            else:
-                body_classes.append('plone-toolbar-left-default')
+            except:
+                pass
 
         # class for markspeciallinks pattern
         properties = getToolByName(context, "portal_properties")

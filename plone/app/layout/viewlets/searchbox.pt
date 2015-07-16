@@ -21,7 +21,6 @@
                id="searchGadget"
                title="Search Site"
                placeholder="Search Site"
-               accesskey="4"
                i18n:attributes="title title_search_site;
                                 placeholder title_search_site"
                tal:attributes="value request/form/SearchableText|nothing;"
@@ -53,8 +52,7 @@
          class="hiddenStructure">
         <a href="#"
            tal:attributes="href string:${navigation_root_url}/@@search"
-           i18n:translate="label_advanced_search"
-           accesskey="5">
+           i18n:translate="label_advanced_search">
             Advanced Search&hellip;
         </a>
     </div>

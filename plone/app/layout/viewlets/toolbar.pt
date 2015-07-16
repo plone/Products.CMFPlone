@@ -1,0 +1,47 @@
+<section id="edit-bar" role="toolbar"
+         tal:define="portal_state view/portal_state;
+                     personal_bar python: view.get_personal_bar()"
+         tal:condition="not: portal_state/anonymous"
+         i18n:domain="plone">
+  <div id="edit-zone" role="toolbar" class="pat-toolbar">
+    <div class="plone-toolbar-container">
+      <a class="plone-toolbar-logo">
+        <img alt="Plone Toolbar" tal:attributes="src view/get_toolbar_logo" />
+      </a>
+      <a class="plone-toolbar-switcher" tal:condition="view/show_switcher"><span>Left-Top switcher</span></a>
+      <nav role="navigation">
+        <ul class="plone-toolbar-main">
+          <div tal:replace="structure view/base_render">
+          </div>
+        </ul>
+        <ul id="personal-bar-container">
+          <li id="portal-personaltools" class="plone-toolbar-separator"
+              tal:condition="personal_bar/user_actions">
+            <a href="#"
+               tal:attributes="href personal_bar/homelink_url">
+              <span class="icon-user" aria-hidden="true"></span>
+              <span tal:content="personal_bar/user_name">User</span>
+              <span class="plone-toolbar-caret"></span>
+            </a>
+            <ul>
+              <li class="plone-toolbar-submenu-header">
+                <span tal:content="personal_bar/user_name">Username</span>
+              </li>
+              <li class="user-action"
+                  tal:repeat="action personal_bar/user_actions">
+                <a href="" tal:attributes="action">
+                  <tal:actionname tal:content="action/title">
+                     action title
+                  </tal:actionname>
+                  <tal:islogout condition="python:action['id'] == 'personaltools-logout'">
+                    <span class="icon-logout"></span>
+                  </tal:islogout>
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</section>

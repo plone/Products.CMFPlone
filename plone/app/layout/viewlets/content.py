@@ -8,6 +8,7 @@ from Acquisition import aq_inner
 from DateTime import DateTime
 from plone.protect.authenticator import createToken
 from plone.registry.interfaces import IRegistry
+from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName
@@ -56,16 +57,24 @@ class DocumentActionsViewlet(ViewletBase):
         self.actions = self.context_state.actions('document_actions')
 
 
-class DocumentBylineViewlet(ViewletBase):
+class HistoryByLineView(BrowserView):
+    """ DocumentByLine information for content history view """
 
-    index = ViewPageTemplateFile("document_byline.pt")
+    index = ViewPageTemplateFile('history_view.pt')
 
     def update(self):
-        super(DocumentBylineViewlet, self).update()
+        context = self.context
+        self.portal_state = getMultiAdapter((context, self.request),
+                                            name=u'plone_portal_state')
         self.context_state = getMultiAdapter((self.context, self.request),
                                              name=u'plone_context_state')
         self.anonymous = self.portal_state.anonymous()
         self.has_pam = HAS_PAM
+
+    def __call__(self):
+        self.update()
+
+        return self.index()
 
     def show(self):
         registry = getUtility(IRegistry)
@@ -379,9 +388,10 @@ class ContentHistoryViewlet(WorkflowHistoryViewlet):
     def toLocalizedTime(self, time, long_format=None, time_only=None):
         """Convert time to localized time
         """
-        util = getToolByName(self.context, 'translation_service')
-        return util.ulocalized_time(time, long_format, time_only, self.context,
-                                    domain='plonelocales')
+        # util = getToolByName(self.context, 'translation_service')
+        return DateTime(time).ISO()
+        # return util.ulocalized_time(time, long_format, time_only, self.context,
+        #                             domain='plonelocales')
 
 
 class ContentHistoryView(ContentHistoryViewlet):
