@@ -1510,11 +1510,7 @@ define('mockup-patterns-base',[
       try {
           pattern = new Registry.patterns[name]($el, options);
       } catch (e) {
-          log.error('Failed while initializing "' + name + '" pattern.');
-          if (window.DEBUG) {
-            // don't swallow errors in DEBUG mode.
-            log.error(e);
-          }
+          log.error('Failed while initializing "' + name + '" pattern.', e);
       }
       $el.data('pattern-' + name, pattern);
     }
@@ -5844,6 +5840,7 @@ return $.drop;
  *    separator(string): Analagous to the separator constructor parameter from Select2. Defines a custom separator used to distinguish the tag values. Ex: a value of ";" will allow tags and initialValues to have values separated by ";" instead of the default ",". (',')
  *    initialValues(string): This can be a json encoded string, or a list of id:text values. Ex: Red:The Color Red,Orange:The Color Orange  This is used inside the initSelection method, if AJAX options are NOT set. (null)
  *    vocabularyUrl(string): This is a URL to a JSON-formatted file used to populate the list (null)
+ *    allowNewItems(string): All new items to be entered into the widget(true)
  *    OTHER OPTIONS(): For more options on select2 go to http://ivaynberg.github.io/select2/#documentation ()
  *
  * Documentation:
@@ -6090,11 +6087,9 @@ define('mockup-patterns-select2',[
                 results.push({id: queryTerm, text: queryTerm});
               }
 
-              if (haveResult || self.options.allowNewItems) {
-                $.each(data.results, function(i, item) {
-                  results.push(item);
-                });
-              }
+              $.each(data.results, function(i, item) {
+                results.push(item);
+              });
             }
             return { results: results };
           }
@@ -10414,6 +10409,22 @@ define('mockup-utils',[
     loading: new Loading(),
     getAuthenticator: function() {
       return $('input[name="_authenticator"]').val();
+    },
+    featureSupport: {
+      /*
+        well tested feature support for things we use in mockup.
+        All gathered from: http://diveintohtml5.info/everything.html
+        Alternative to using some form of modernizr.
+      */
+      dragAndDrop: function(){
+        return 'draggable' in document.createElement('span');
+      },
+      fileApi: function(){
+        return typeof FileReader != 'undefined'; // jshint ignore:line
+      },
+      history: function(){
+        return !!(window.history && window.history.pushState);
+      }
     }
   };
 });
@@ -10541,209 +10552,280 @@ define('plone-patterns-toolbar',[
   'mockup-patterns-base',
   'pat-registry',
   'mockup-utils',
+  'translate',
   'jquery.cookie'
-], function ($, Base, Registry, utils) {
+], function ($, Base, Registry, utils, _t) {
   'use strict';
 
   var Toolbar = Base.extend({
     name: 'toolbar',
     trigger: '.pat-toolbar',
-    init: function () {
+    defaults: {
+      containerSelector: '#edit-zone',
+      classNames: {
+        logo: 'plone-toolbar-logo',
+        left: 'plone-toolbar-left',
+        leftDefault: 'plone-toolbar-left-default',
+        leftExpanded: 'plone-toolbar-left-expanded',
+        top: 'plone-toolbar-top',
+        topDefault: 'plone-toolbar-top-default',
+        topExpanded: 'plone-toolbar-top-expanded',
+        expanded: 'plone-toolbar-expanded',
+        active: 'active'
+      },
+      cookieName: 'plone-toolbar'
+    },
+    setupMobile: function(){
       var that = this;
-      if ($(window).width() < '768'){//mobile
-        // $( 'html' ).has('.plone-toolbar-left').css({'margin-left':'0','margin-top':'0','margin-right':'0'});
-        // $( 'html' ).has('.plone-toolbar-top').css({'margin-left':'0','margin-top':'0','margin-right':'0'});
-        // $( 'html' ).has('.plone-toolbar-left.expanded').css({'margin-left':'0','margin-top':'0','margin-right':'0'});
-        // $( 'body' ).css('margin-left: 0px');
-        $('#edit-zone').css('right', '-120px');
-        $( '#edit-zone .plone-toolbar-logo' ).click(function() {
-          if ($(this).hasClass('open')){
-            $( '#edit-zone' ).css('right', '-120px');
-            $( 'html' ).css('margin-left', '0');
-            $( 'html' ).css('margin-right', '0');
-            $(this).removeClass('open');
-            $( '#edit-zone nav li' ).removeClass('active');
+      that.$container.css('right', '-120px');
+      // make sure we are in expanded mode
+      $('body').addClass(that.options.classNames.leftExpanded);
+      $('body').addClass(that.options.classNames.expanded);
+      $('body').addClass(that.options.classNames.left);
+      $('body').removeClass(that.options.classNames.topExpanded);
+      $('body').removeClass(that.options.classNames.top);
+      $('body').removeClass(that.options.classNames.topDefault);
+      $('.' + that.options.classNames.logo, that.$container).off('click').on('click', function() {
+        var $el = $(this);
+        if ($el.hasClass('open')){
+          that.$container.css('right', '-120px');
+          $('html').css('margin-left', '0');
+          $('html').css('margin-right', '0');
+          $el.removeClass('open');
+          $('nav li', that.$container).removeClass(that.options.classNames.active);
+        } else {
+          that.$container.css('right', '0');
+          $el.addClass('open');
+          $('html').css('margin-left', '-120px');
+          $( 'html' ).css('margin-right', '120px');
+        }
+      });
+      $('nav li a', that.$container).has('.plone-toolbar-caret').off('click').on('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var $el = $(this).parent();
+        if ($el.hasClass(that.options.classNames.active)) {
+          that.$container.css('right', '0');
+          $('html').css('margin-left', '-120px');
+          $('html').css('margin-right', '120px');
+          $('nav li', that.$container).removeClass(that.options.classNames.active);
+        } else {
+          $('nav li', that.$container).removeClass(that.options.classNames.active);
+          $el.addClass(that.options.classNames.active);
+          that.$container.css('right', '180px');
+          $('html').css('margin-left', '-300px');
+          $('html').css('margin-right', '300px');
+        }
+      });
+    },
+    setupDesktop: function(){
+      var that = this;
+      if(that.state.expanded){
+        $('body').addClass(that.options.classNames.expanded);
+      }else{
+        $('body').removeClass(that.options.classNames.expanded);
+      }
+
+      $('.' + that.options.classNames.logo, that.$container).off('click').on('click', function() {
+        if (that.state.expanded) {
+          // currently expanded, need to compress
+          that.setState({
+            expanded: false
+          });
+          $('body').removeClass(that.options.classNames.expanded);
+          $('nav li', that.$container).removeClass(that.options.classNames.active);
+          if (that.state.left) {
+            $('body').addClass(that.options.classNames.leftDefault);
+            $('body').removeClass(that.options.classNames.leftExpanded);
           } else {
-            $( '#edit-zone' ).css('right', '0');
-            $(this).addClass('open');
-            $( 'html' ).css('margin-left', '-120px');
-            $( 'html' ).css('margin-right', '120px');
+            $('body').addClass(that.options.classNames.topDefault);
+            $('body').removeClass(that.options.classNames.topExpanded);
           }
+        } else {
+          that.setState({
+            expanded: true
+          });
+          // Switch to expanded
+          $('body').addClass(that.options.classNames.expanded);
+          $('nav li', that.$container).removeClass(that.options.classNames.active);
+          if (that.state.left) {
+            $('body').addClass(that.options.classNames.leftExpanded);
+            $('body').removeClass(that.options.classNames.leftDefault);
+          } else {
+            $('body').addClass(that.options.classNames.topExpanded);
+            $('body').removeClass(that.options.classNames.topDefault);
+          }
+        }
+      });
+
+      $('nav > ul > li li', that.$container).off('click').on('click', function(event) {
+        event.stopImmediatePropagation();
+      });
+
+      // active
+      $('nav > ul > li', that.$container).has( 'a .plone-toolbar-caret' ).off('click').on('click', function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        var hasClass = $(this).hasClass(that.options.classNames.active);
+        // always close existing
+        $('nav li', that.$container).removeClass(that.options.classNames.active);
+        $('nav li > ul', $(this)).css({'margin-top': ''}); // unset this so we get fly-in affect
+        if (!hasClass) {
+          // open current selected if not already open
+          $(this).addClass(that.options.classNames.active);
+          that.padPulloutContent($(this));
+        }
+      });
+
+      $('body').on('click', function(event) {
+        if (!($(this).parent(that.options.containerSelector).length > 0)) {
+          $('nav > ul > li', that.$container).each(function(key, element){
+            $(element).removeClass(that.options.classNames.active);
+          });
+        }
+      });
+      that.setHeight();
+    },
+    padPulloutContent: function($li){
+      if(!this.state.left || !this.isDesktop()){
+        // only when on left
+        return;
+      }
+      // try to place content as close to the user click as possible
+      var $content = $('> ul', $li);
+      var $inner = $content.find('> *');
+      var $first = $inner.first();
+      var $last = $inner.last();
+      var insideHeight = ($last.position().top - $first.position().top) + $last.outerHeight();
+      var height = $content.outerHeight();
+
+      var itemLocation = $li.position().top || $li.offset().top;  // depends on positioning
+      // margin-top + insideHeight should equal total height
+      $content.css({
+        'margin-top': Math.min(itemLocation, height - insideHeight)
+      });
+    },
+    isDesktop: function(){
+      return $(window).width() > '768';
+    },
+    _setHeight: function(){
+      var $items = $('.plone-toolbar-main', this.$container);
+      $items.css({height: ''});
+      var natualHeight = $items.outerHeight();
+      $('.scroll-btn', this.$container).remove();
+
+      $items.css({
+        'padding-top': ''
+      });
+      var height = $(window).height() - $('#personal-bar-container').height() -
+        $('.plone-toolbar-logo').height();
+
+      if(height < natualHeight){
+        /* add scroll buttons */
+        var $scrollUp = $('<li class="scroll-btn up"><a href="#"><span class="icon-up"></span><span>&nbsp;</span></a></li>');
+        var $scrollDown = $('<li class="scroll-btn down"><a href="#"><span class="icon-down"></span><span>&nbsp;</span></a></li>');
+        $items.prepend($scrollUp);
+        $items.append($scrollDown);
+        height = height - $scrollDown.height();
+        $items.height(height);
+        $items.css({
+          'padding-top': $scrollUp.height()
         });
-        $( '#edit-zone nav li' ).has( 'a .plone-toolbar-caret' ).click(function(e) {
+        $scrollUp.click(function(e){
           e.preventDefault();
-          e.stopPropagation();
-          if ($(this).hasClass('active')) {
-            $( '#edit-zone' ).css('right', '0');
-            $( 'html' ).css('margin-left', '-120px');
-            $( 'html' ).css('margin-right', '120px');
-            $( '#edit-zone nav li' ).removeClass('active');
-          } else {
-            $( '#edit-zone nav li' ).removeClass('active');
-            $(this).addClass('active');
-            $( '#edit-zone' ).css('right', '180px');
-            $( 'html' ).css('margin-left', '-300px');
-            $( 'html' ).css('margin-right', '300px');
-          }
+          $items.scrollTop($items.scrollTop() - 50);
+        });
+        $scrollDown.click(function(e){
+          e.preventDefault();
+          $items.scrollTop($items.scrollTop() + 50);
         });
       }
-      else { // not mobile
-        var toolbar_cookie = $.cookie('plone-toolbar');
-        window.plonetoolbar_state = toolbar_cookie;
-        $('#edit-zone').attr('class', toolbar_cookie);
+      /* if there is active, make sure to reposition */
+      var $active = $('li.active ul:visible', this.$container);
+      if($active.size() > 0){
+        this.padPulloutContent($active);
+      }
+    },
+    setHeight: function(){
+      if(!this.state.left || !this.isDesktop()){
+        // only when on left
+        return;
+      }
+      var that = this;
+      clearTimeout(that.heightTimeout);
+      that.heightTimeout = setTimeout(function(){
+        that._setHeight();
+      }, 50);
+    },
+    setState: function(state){
+      var that = this;
+      that.state = $.extend({}, that.state, state);
+      /* only cookie configurable attribute is expanded or contracted */
+      $.cookie(that.options.cookieName, JSON.stringify({
+        expanded: that.state.expanded
+      }), {path: '/'});
+    },
+    hideElements: function(){
+      if(this.state.left){
+        // only when on top
+        return;
+      }
+      var w = $('.plone-toolbar-container').width(),
+          wtc = $('.plone-toolbar-logo').width();
+      $( ".plone-toolbar-main > li" ).each(function() {
+        wtc += $(this).width();
+      });
 
-        $( '#edit-zone .plone-toolbar-logo' ).on('click', function() {
-          if (window.plonetoolbar_state) {
-            if (window.plonetoolbar_state.indexOf('expanded') != -1) {
-              // Switch to default (only icons)
-              $( '#edit-zone' ).removeClass('expanded');
-              $( '#edit-zone nav li' ).removeClass('active');
-              if (window.plonetoolbar_state.indexOf('left') != -1) {
-                $('body').addClass('plone-toolbar-left-default');
-                $('body').removeClass('plone-toolbar-left-expanded');
-              } else {
-                $('body').addClass('plone-toolbar-top-default');
-                $('body').removeClass('plone-toolbar-top-expanded');
-              }
-              $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
-              window.plonetoolbar_state = window.plonetoolbar_state.replace(' expanded', '');
-            } else {
-              // Switch to expanded
-              $( '#edit-zone' ).addClass('expanded');
-              $( '#edit-zone nav li' ).removeClass('active');
-              if (window.plonetoolbar_state.indexOf('left') != -1) {
-                $('body').addClass('plone-toolbar-left-expanded');
-                $('body').removeClass('plone-toolbar-left-default');
-              } else {
-                $('body').addClass('plone-toolbar-top-expanded');
-                $('body').removeClass('plone-toolbar-top-default');
-              }
-              $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
-              window.plonetoolbar_state = window.plonetoolbar_state + ' expanded';
-            }
-          } else {
-            // Cookie not set, assume default (only icons)
-            window.plonetoolbar_state = 'pat-toolbar plone-toolbar-left';
-            // Switch to expanded left
-            $( '#edit-zone' ).addClass('expanded');
-            $( '#edit-zone nav li' ).removeClass('active');
-            $('body').addClass('plone-toolbar-left-expanded');
-            $('body').removeClass('plone-toolbar-left-default');
-            $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
-            window.plonetoolbar_state = window.plonetoolbar_state + ' expanded';
-          }
-        });
+      $('#personal-bar-container > li').each(function() {
+        wtc += $(this).width();
+      });
+      wtc -= $('#plone-toolbar-more-options').width();
+      if (w < wtc) {
+        if (!($('#plone-toolbar-more-options').length)) {
+          $('[id^="plone-contentmenu-"]').hide();
+          $('.plone-toolbar-main').append('<li id="plone-toolbar-more-options"><a href="#"><span class="icon-moreOptions" aria-hidden="true"></span><span>' + _t('More') + '</span><span class="plone-toolbar-caret"></span></a></li>');
+          $('#personal-bar-container').after('<ul id="plone-toolbar-more-subset" style="display: none"></ul>');
+          $( "[id^=plone-contentmenu-]" ).each(function() {
+            $(this).clone(true, true).appendTo( "#plone-toolbar-more-subset" );
+            $('[id^=plone-contentmenu-]', '#plone-toolbar-more-subset').show();
+          });
+          $('#plone-toolbar-more-options a').on('click', function(event){
+            event.preventDefault();
+            $('#plone-toolbar-more-subset').toggle();
+          });
+        }
+      } else {
+        $('[id^="plone-contentmenu-"]').show();
+        $('#plone-toolbar-more-options').remove();
+        $('#plone-toolbar-more-subset').remove();
+      }
 
-        // Switch to compressed
-        $( '#edit-zone .plone-toolbar-logo' ).on('dblclick', function() {
-          if (window.plonetoolbar_state) {
-            if (window.plonetoolbar_state.indexOf('compressed') != -1) {
-              // Switch to default (only icons) not compressed
-              $( '#edit-zone' ).removeClass('compressed');
-              if (window.plonetoolbar_state.indexOf('left') != -1) {
-                $('body').addClass('plone-toolbar-left-default');
-                $('body').removeClass('plone-toolbar-compressed');
-              } else {
-                $('body').addClass('plone-toolbar-top-default');
-                $('body').removeClass('plone-toolbar-compressed');
-              }
-              $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
-              window.plonetoolbar_state = window.plonetoolbar_state.replace(' expanded', '');
-            } else {
-              // Switch to compressed
-              $( '#edit-zone' ).addClass('compressed');
-              if (window.plonetoolbar_state.indexOf('left') != -1) {
-                $('body').addClass('plone-toolbar-compressed');
-                $('body').removeClass('plone-toolbar-left-default');
-                $('body').removeClass('plone-toolbar-left-expanded');
-              } else {
-                $('body').addClass('plone-toolbar-compressed');
-                $('body').removeClass('plone-toolbar-top-default');
-                $('body').removeClass('plone-toolbar-top-expanded');
-              }
-              $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
-              window.plonetoolbar_state = window.plonetoolbar_state + ' compressed';
-            }
-          } else {
-            // Cookie not set, assume default (only icons)
-            // Switch to compressed
-            $( '#edit-zone' ).addClass('compressed');
-            $('body').addClass('plone-toolbar-compressed');
-            $('body').removeClass('plone-toolbar-left-default');
-            $('body').removeClass('plone-toolbar-left-expanded');
-            $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
-            window.plonetoolbar_state = window.plonetoolbar_state + ' compressed';
-          }
-        });
+    },
+    init: function () {
+      var that = this;
+      that.heightTimeout = 0;
+      that.$container = $(that.options.containerSelector);
+      var toolbar_cookie = $.cookie(that.options.cookieName);
+      that.state = {
+        expanded: true,
+        left: $('body').hasClass(that.options.classNames.left)
+      };
+      if(toolbar_cookie){
+        try{
+          that.state = $.extend({}, that.state, $.parseJSON(toolbar_cookie));
+        }catch(e){
+          // ignore
+        }
+      }
 
-
-        $( '#edit-zone nav > ul > li li' ).on('click', function(event) {
-          event.stopImmediatePropagation();
-        });
-
-        // active
-        $( '#edit-zone nav > ul > li' ).has( 'a .plone-toolbar-caret' ).on('click', function(event) {
-          event.preventDefault();
-          event.stopPropagation();
-          if ($(this).hasClass('active')) {
-            $( '#edit-zone nav li' ).removeClass('active');
-          } else {
-            $('#edit-zone nav li').removeClass('active');
-            $(this).addClass('active');
-          }
-        });
-
-        $('body').on('click', function(event) {
-          if (!($(this).parent('#edit-zone').length > 0)) {
-            $('#edit-zone nav > ul > li').each(function(key, element){
-              $(element).removeClass('active');
-            });
-          }
-        });
-
-        // top/left switcher
-        $( '#edit-zone .plone-toolbar-switcher' ).on('click', function() {
-          if (window.plonetoolbar_state) {
-            if (window.plonetoolbar_state.indexOf('top') != -1) {
-              // from top to left
-              $( '#edit-zone' ).addClass('plone-toolbar-left');
-              $( '#edit-zone' ).removeClass('plone-toolbar-top');
-              if (window.plonetoolbar_state.indexOf('expanded') != -1) {
-                $('body').addClass('plone-toolbar-left-expanded');
-                $('body').removeClass('plone-toolbar-top-expanded');
-              } else {
-                $('body').addClass('plone-toolbar-left-default');
-                $('body').removeClass('plone-toolbar-top-default');
-              }
-              $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
-              window.plonetoolbar_state = window.plonetoolbar_state.replace('plone-toolbar-top', 'plone-toolbar-left');
-            } else {
-              // from left to top
-              $( '#edit-zone' ).addClass('plone-toolbar-top');
-              $( '#edit-zone' ).removeClass('plone-toolbar-left');
-              if (window.plonetoolbar_state.indexOf('expanded') != -1) {
-                $('body').addClass('plone-toolbar-top-expanded');
-                $('body').removeClass('plone-toolbar-left-expanded');
-              } else {
-                $('body').addClass('plone-toolbar-top-default');
-                $('body').removeClass('plone-toolbar-left-default');
-              }
-              $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
-              window.plonetoolbar_state = window.plonetoolbar_state.replace('plone-toolbar-left', 'plone-toolbar-top');
-            }
-          } else {
-            // Cookie not set, assume left default (only icons)
-            window.plonetoolbar_state = 'pat-toolbar plone-toolbar-left';
-            // Switch to top
-            $( '#edit-zone' ).addClass('plone-toolbar-left');
-            $( '#edit-zone' ).removeClass('plone-toolbar-top');
-            $('body').addClass('plone-toolbar-top-default');
-            $('body').removeClass('plone-toolbar-left-default');
-            $.cookie('plone-toolbar', $('#edit-zone').attr('class'), {path: '/'});
-            window.plonetoolbar_state = window.plonetoolbar_state.replace('plone-toolbar-left', 'plone-toolbar-top');
-          }
-
-        });
+      if (that.isDesktop()){
+        that.setupDesktop();
+        if (!that.state.left) {
+          // in case its top lets just hide what is not needed
+          that.hideElements();
+        }
+      }else {
+        that.setupMobile();
       }
       this.$el.addClass('initialized');
 
@@ -10759,110 +10841,23 @@ define('plone-patterns-toolbar',[
           Registry.scan($el);
         });
       });
-    }
+
+      $(window).on('resize', function(){
+        if (that.isDesktop()){
+          that.setupDesktop();
+          if (!that.state.left) {
+            // in case its top lets just hide what is not needed
+            that.hideElements();
+          }
+        }else {
+          that.setupMobile();
+        }
+      });
+    },
+
   });
 
   return Toolbar;
-});
-
-/* Pattern which provides accessibility support
- *
- * Options:
- *    smallbtn(string):	Selector used to activate small text on click. (null)
- *    normalbtn(string): Selector used to activate normal text on click. (null)
- *    largebtn(string):	Selector used to activate large text on click. (null)
- *
- * Documentation:
- *    # Example
- *
- *    {{ example-1 }}
- *
- * Example: example-1
- *    <ul id="textAdjust"
- *        class="pat-accessibility"
- *        data-pat-accessibility="smallbtn:.decrease-text;
- *                                normalbtn:.normal-text;
- *                                largebtn:.increase-text;">
- *      <li>
- *        <a href="." class="decrease-text">
- *          <i class="icon-minus-sign"></i>
- *          Decrease Text Size
- *        </a>
- *      </li>
- *      <li>
- *        <a href="." class="normal-text">
- *          <i class="icon-circle"></i>
- *          Normal Text Size
- *        </a>
- *      </li>
- *      <li>
- *        <a href="." class="increase-text">
- *          <i class="icon-plus-sign"></i>
- *          Increase Text Size
- *        </a>
- *      </li>
- *    </ul>
- *
- */
-
-
-define('mockup-patterns-accessibility',[
-  'jquery',
-  'mockup-patterns-base',
-  'jquery.cookie'
-], function($, Base) {
-  'use strict';
-
-  var Accessibility = Base.extend({
-    name: 'accessibility',
-    trigger: '.pat-accessibility',
-    defaults: {
-      'smallbtn': null,
-      'normalbtn': null,
-      'largebtn': null
-    },
-    setBaseFontSize: function($fontsize, $reset) {
-      if ($reset) {
-        this.$el.removeClass('smallText').removeClass('largeText').
-            removeClass('mediumText');
-        $.cookie('fontsize', $fontsize, { expires: 365, path: '/' });
-      }
-      this.$el.addClass($fontsize);
-    },
-    initBtn: function(btn) {
-      var self = this;
-      btn.el.click(function(e) {
-        e.preventDefault();
-        self.setBaseFontSize(btn.name + 'Text', 1);
-      });
-    },
-    init: function() {
-      var self = this;
-      var $fontsize = $.cookie('fontsize');
-      if ($fontsize) {
-        self.setBaseFontSize($fontsize, 0);
-      }
-      var btns = ['smallbtn', 'normalbtn', 'largebtn'];
-      $.each(btns, function(idx, btn) {
-        var btnName = btn.replace('btn', '');
-        var btnSelector = self.options[btn];
-        if (btnSelector !== null) {
-          var el = $(btnSelector, self.$el);
-          if (el) {
-            btn = {
-              name: btnName,
-              el: el
-            };
-            self[btnName] = btn;
-            self.initBtn(btn);
-          }
-        }
-      });
-    }
-  });
-
-  return Accessibility;
-
 });
 
 /* Autotoc pattern.
@@ -19597,6 +19592,7 @@ define('mockup-patterns-modal',[
       actions: {},
       actionOptions: {
         eventType: 'click',
+        disableAjaxFormSubmit: false,
         target: null,
         ajaxUrl: null, // string, or function($el, options) that returns a string
         modalFunction: null, // String, function name on self to call
@@ -19676,6 +19672,7 @@ define('mockup-patterns-modal',[
       },
       handleFormAction: function($action, options, patternOptions) {
         var self = this;
+
         // pass action that was clicked when submiting form
         var extraData = {};
         extraData[$action.attr('name')] = $action.attr('value');
@@ -19699,6 +19696,10 @@ define('mockup-patterns-modal',[
           url = $action.parents('form').attr('action');
         }
 
+        if(options.disableAjaxFormSubmit){
+          $form.trigger('submit');
+          return;
+        }
         // We want to trigger the form submit event but NOT use the default
         $form.on('submit', function(e) {
           e.preventDefault();
@@ -21620,7 +21621,6 @@ require([
   'mockup-patterns-select2',
   'mockup-patterns-pickadate',
   'plone-patterns-toolbar',
-  'mockup-patterns-accessibility',
   'mockup-patterns-autotoc',
   'mockup-patterns-cookietrigger',
   'mockup-patterns-formunloadalert',
@@ -21659,5 +21659,5 @@ require([
 
 });
 
-define("/Users/nathan/code/coredev5/src/Products.CMFPlone/Products/CMFPlone/static/plone.js", function(){});
+define("/Users/ramon/Development/buildout.coredev-toolbar/src/Products.CMFPlone/Products/CMFPlone/static/plone.js", function(){});
 

@@ -39,7 +39,7 @@ class MailControlPanelFunctionalTest(unittest.TestCase):
     def test_mail_controlpanel_backlink(self):
         self.browser.open(
             "%s/@@mail-controlpanel" % self.portal_url)
-        self.assertTrue("Plone Configuration" in self.browser.contents)
+        self.assertTrue("General" in self.browser.contents)
 
     def test_mail_controlpanel_sidebar(self):
         self.browser.open(

@@ -41,7 +41,7 @@ class EditingControlPanelFunctionalTest(unittest.TestCase):
     def test_editing_control_panel_backlink(self):
         self.browser.open(
             "%s/@@editing-controlpanel" % self.portal_url)
-        self.assertTrue("Plone Configuration" in self.browser.contents)
+        self.assertTrue("Content" in self.browser.contents)
 
     def test_editing_control_panel_sidebar(self):
         self.browser.open(

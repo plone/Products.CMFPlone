@@ -39,7 +39,7 @@ class SecurityControlPanelFunctionalTest(unittest.TestCase):
     def test_security_control_panel_backlink(self):
         self.browser.open(
             "%s/@@security-controlpanel" % self.portal_url)
-        self.assertTrue("Plone Configuration" in self.browser.contents)
+        self.assertTrue("Security" in self.browser.contents)
 
     def test_security_control_panel_sidebar(self):
         self.browser.open(

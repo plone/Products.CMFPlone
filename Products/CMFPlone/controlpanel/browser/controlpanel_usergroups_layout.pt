@@ -15,9 +15,10 @@
      tal:attributes="href string:$portal_url/@@overview-controlpanel"
      i18n:translate="">
       Site Setup
-  </a> &rsaquo;
+  </a>
 
-  <h1 class="documentFirstHeading" tal:content="view/label">View Title</h1>
+  <h1 class="documentFirstHeading"
+      i18n:translate="">Users and Groups</h1>
 
   <div metal:use-macro="context/global_statusmessage/macros/portal_message">
     Portal status message

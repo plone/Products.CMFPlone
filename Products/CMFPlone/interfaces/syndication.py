@@ -172,7 +172,7 @@ class ISiteSyndicationSettings(Interface):
 
     max_items = schema.Int(
         title=_(u'label_syndication_max_items',
-                default=u'Maximum Items'),
+                default=u'Maximum items'),
         description=_(u'help_syndication_max_items',
                 default=u'Maximum number of items that will be syndicated.'),
         default=15)
@@ -201,12 +201,12 @@ class ISiteSyndicationSettings(Interface):
     )
 
     show_syndication_button = schema.Bool(
-        title=_(u"Show Settings Button"),
+        title=_(u"Show settings button"),
         description=_(u"Makes it possible to customize syndication settings "
                       u"for particular folders and collections "))
 
     show_syndication_link = schema.Bool(
-        title=_(u"Show Feed Link"),
+        title=_(u"Show feed link"),
         description=_(u"Enable RSS link document action on the syndication "
                       u"content item."))
 
@@ -235,7 +235,7 @@ class IFeedSettings(Interface):
 
     max_items = schema.Int(
         title=_(u'label_syndication_max_items',
-                default=u'Maximum Items'),
+                default=u'Maximum items'),
         description=_(u'help_syndication_max_items',
                 default=u'Maximum number of items that will be syndicated.'),
         default=15)

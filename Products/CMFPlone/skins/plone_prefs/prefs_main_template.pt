@@ -6,13 +6,13 @@
             <tal:defines tal:define="dummy python:request.set('disable_border',1);
                                      controlPanel python:modules['Products.CMFCore.utils'].getToolByName(here, 'portal_controlpanel');
                                      show_leftcolumn controlPanel/maySeeSomeConfiglets;
-                                     disable_column_one python:request.set('disable_plone.leftcolumn', not show_leftcolumn);
-                                     disable_column_two python:request.set('disable_plone.rightcolumn',1);"/>
+                                     disable_column_one python:request.set('disable_plone.leftcolumn', 1);
+                                     disable_column_two python:request.set('disable_plone.rightcolumn',not show_leftcolumn);"/>
         </metal:override>
     </metal:block>
 
-    <metal:override fill-slot="portlets_one_slot">
-        <metal:override define-slot="column_one_slot">
+    <metal:override fill-slot="portlets_two_slot">
+        <metal:override define-slot="column_two_slot">
             <metal:prefs use-macro="here/portlet_prefs/macros/portlet" />
         </metal:override>
     </metal:override>

@@ -323,7 +323,7 @@
 
   <records prefix="plone.resources/moment"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++plone++static/components/moment/moment.js</value>
+      <value key="js">++plone++static/components/moment/min/moment-with-locales.min.js</value>
   </records>
 
   <records prefix="plone.resources/picker"
@@ -1001,6 +1001,13 @@
       <element key="plone-screen-sm-min">768px</element>
       <element key="plone-screen-md-min">992px</element>
       <element key="plone-screen-lg-min">1200px</element>
+
+      <element key="plone-left-toolbar-expanded">120px</element>
+      <element key="plone-left-toolbar">60px</element>
+
+      <element key="plone-container-sm">750px</element>
+      <element key="plone-container-md">970px</element>
+      <element key="plone-container-lg">1170px</element>
 
       <element key="plone-screen-xs-max">(@plone-screen-sm-min + 1)</element>
       <element key="plone-screen-sm-max">(@plone-screen-md-min + 1)</element>
