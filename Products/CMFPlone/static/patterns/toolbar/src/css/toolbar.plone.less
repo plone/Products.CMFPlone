@@ -1,7 +1,7 @@
 //*// TOOLBAR EDIT ZONE PLONE //*//
 
 html, #edit-zone {
-    
+
 }
 body.userrole-authenticated {
 }
@@ -65,6 +65,15 @@ body.userrole-authenticated {
                 &:before {line-height: 50px;}
             }
             > span + span {display: table-cell; text-align: center; padding: 0 8px; height: 50px; width:@plone-left-toolbar; vertical-align: middle; background: @plone-toolbar-link; line-height: 1em; }
+        }
+        .scroll-btn {
+            a {
+                [class^="icon"] { font-size: 12px; }
+                height: 20px;
+                > span { height: 20px; }
+                span:before { line-height: 26px;}
+                span.icon-down:before { line-height: 20px;}
+            }
         }
         /*states on first level*/
         a.label-state-published > span:before, a.label-state-external > span:before {color: @plone-toolbar-published-color; }
@@ -395,7 +404,7 @@ body.userrole-authenticated {
             }
         }
         .plone-toolbar-main{
-            width: 138px; /* hide scroll bar */
+            width: 153px; /* hide scroll bar */
             padding-right: 18px;
         }
     }
