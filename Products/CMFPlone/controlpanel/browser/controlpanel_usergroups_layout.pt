@@ -15,7 +15,7 @@
      tal:attributes="href string:$portal_url/@@overview-controlpanel"
      i18n:translate="">
       Site Setup
-  </a> &rsaquo;
+  </a>
 
   <h1 class="documentFirstHeading" tal:content="view/label">View Title</h1>
 
