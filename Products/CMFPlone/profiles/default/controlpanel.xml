@@ -98,7 +98,7 @@
     i18n:attributes="title">
   <permission>Plone Site Setup: Security</permission>
  </configlet>
- <configlet title="Zope Management Interface" action_id="ZMI" appId="ZMI"
+ <configlet title="Management Interface" action_id="ZMI" appId="ZMI"
     category="plone-advanced" condition_expr=""
     icon_expr="string:$portal_url/zope_icon.png"
     url_expr="string:${portal_url}/manage_main" visible="True"
