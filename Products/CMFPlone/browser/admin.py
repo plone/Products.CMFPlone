@@ -168,16 +168,10 @@ class AddPloneSite(BrowserView):
         if pl is not None:
             languages = pl.getPreferredLanguages()
             for httplang in languages:
-                parts = (httplang.split('-') + [None, None])[:3]
-                if parts[0] == parts[1]:
-                    # Avoid creating a country code for simple languages codes
-                    parts = [parts[0], None, None]
-                elif parts[0] == 'en':
-                    # Avoid en-us as a language
-                    parts = ['en', None, None]
+                parts = httplang.split('-')
                 try:
-                    locale = locales.getLocale(*parts)
-                    language = locale.getLocaleID().replace('_', '-').lower()
+                    locale = locales.getLocale(parts[0])
+                    language = locale.getLocaleID().split('_')[0]
                     break
                 except LoadLocaleError:
                     # Just try the next combination
@@ -186,10 +180,7 @@ class AddPloneSite(BrowserView):
 
     def languages(self, default='en'):
         util = queryUtility(IContentLanguageAvailability)
-        if '-' in default:
-            available = util.getLanguages(combined=True)
-        else:
-            available = util.getLanguages()
+        available = util.getLanguages()
         languages = [(code, v.get(u'native', v.get(u'name'))) for
                      code, v in available.items()]
         languages.sort(key=itemgetter(1))
