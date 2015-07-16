@@ -190,12 +190,7 @@ class AddPloneSite(BrowserView):
         # Group country specific versions by language
         grouped = OrderedDict()
         for langcode, data in available.items():
-            splitted = langcode.split('-')
-            lang = splitted.pop(0)
-            try:
-                locale = splitted.pop(0)
-            except IndexError:
-                locale = None
+            lang = langcode.split('-')[0]
             language = languages.get(lang, lang)  # Label
 
             struct = grouped.get(lang, {'label': language, 'languages': []})
@@ -219,8 +214,19 @@ class AddPloneSite(BrowserView):
             IVocabularyFactory,
             'plone.app.vocabularies.CommonTimezones'
         )(self.context)
-        tz_list = [it.value for it in tz_vocab]
-        return tz_list
+
+        grouped = OrderedDict()
+        tz_values = [it.value for it in tz_vocab]
+        for value in tz_values:
+            splitted = value.split('/')
+            group = splitted.pop(0)
+            label = u'/'.join(splitted)
+
+            entries = grouped.get(group, [])
+            entries.append({'label': label or group, 'value': value})
+            grouped[group] = entries
+
+        return grouped
 
     def __call__(self):
         context = self.context
