@@ -474,7 +474,7 @@ class ITinyMCEPluginSchema(Interface):
     """This interface defines the toolbar properties."""
 
     plugins = schema.List(
-        title=_("label_tinymce_plugins", default=u"Editor Plugins"),
+        title=_("label_tinymce_plugins", default=u"Editor plugins"),
         description=_("help_tinymce_plugins", default=(
             u"Select plugins to include with tinymce")),
         value_type=schema.Choice(vocabulary=SimpleVocabulary([
@@ -565,7 +565,7 @@ class ITinyMCEPluginSchema(Interface):
                 u'unlink plonelink ploneimage')
 
     custom_plugins = schema.List(
-        title=_(u"Custom Plugins"),
+        title=_(u"Custom plugins"),
         description=_(u"Enter a list of custom plugins which will be loaded "
                       "in the editor. Format is "
                       "pluginname|location, one per line."),
@@ -574,7 +574,7 @@ class ITinyMCEPluginSchema(Interface):
         default=[])
 
     custom_buttons = schema.List(
-        title=_(u"Custom Buttons"),
+        title=_(u"Custom buttons"),
         description=_(u"Enter a list of custom buttons which will be added to toolbar"),
         required=False,
         value_type=schema.TextLine(),
@@ -600,7 +600,7 @@ class ITinyMCESpellCheckerSchema(Interface):
         required=False)
 
     libraries_atd_ignore_strings = schema.List(
-        title=_(u"AtD Ignore strings"),
+        title=_(u"AtD ignore strings"),
         description=_(
             'label_atd_ignore_strings',
             default=u"A list of strings which the \"After the Deadline\" "
@@ -615,7 +615,7 @@ class ITinyMCESpellCheckerSchema(Interface):
         required=False)
 
     libraries_atd_show_types = schema.List(
-        title=_(u"AtD Error types to show"),
+        title=_(u"AtD error types to show"),
         description=_(
             'help_atderrortypes_to_show',
             default=u"A list of error types which the "
@@ -637,7 +637,7 @@ class ITinyMCESpellCheckerSchema(Interface):
         required=False)
 
     libraries_atd_service_url = schema.TextLine(
-        title=_(u"AtD Service URL"),
+        title=_(u"AtD service URL"),
         description=_(
             'help_atd_service_url',
             default=u"The URL of the \"After the Deadline\" grammar and spell "
@@ -662,7 +662,7 @@ class ITinyMCEResourceTypesSchema(Interface):
     #    required=False)
 
     contains_objects = schema.List(
-        title=_(u"Contains Objects"),
+        title=_(u"Contains objects"),
         description=_(u"Enter a list of content types which can contain other "
                       "objects. Format is one contenttype per line."),
         value_type=schema.TextLine(),
@@ -693,7 +693,7 @@ class ITinyMCEResourceTypesSchema(Interface):
     #    required=False)
 
     image_objects = schema.List(
-        title=_(u"Image Objects"),
+        title=_(u"Image objects"),
         description=_(u"Enter a list of content types which can be used as "
                       "images. Format is one contenttype per line."),
         default=[u"Image"],
