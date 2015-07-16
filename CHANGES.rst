@@ -8,6 +8,9 @@ Changelog
 5.0b3 (unreleased)
 ------------------
 
+- Fix adding a new Plone site with country specific language. Refs #411.
+  [jaroel]
+
 - fix plone-logged-in bundle not using global jquery for requirejs dependency and in
   weird cases causing select2 load errors in patterns(especially resource registry)
   [vangheem]

@@ -74,24 +74,24 @@ class LanguageControlPanelAdapterTest(unittest.TestCase):
         self.assertEqual(
             getAdapter(
                 self.portal, ILanguageSchema).use_combined_language_codes,
-            False
+            True
         )
-        self.settings.use_combined_language_codes = True
+        self.settings.use_combined_language_codes = False
         self.assertEquals(
             getAdapter(self.portal, ILanguageSchema).use_combined_language_codes,
-            True
+            False
         )
 
     def test_set_use_combined_language_codes(self):
         self.assertEquals(
             self.settings.use_combined_language_codes,
-            False
+            True
         )
         getAdapter(
-              self.portal, ILanguageSchema).use_combined_language_codes = True
+              self.portal, ILanguageSchema).use_combined_language_codes = False
         self.assertEquals(
             self.settings.use_combined_language_codes,
-            True
+            False
         )
 
     def test_get_display_flags(self):
