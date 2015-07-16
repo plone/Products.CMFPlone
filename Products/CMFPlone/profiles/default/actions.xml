@@ -94,28 +94,15 @@
    <property name="visible">True</property>
    <property name="modal" type="text">{}</property>
   </object>
-  <object name="syndication" meta_type="CMF Action" i18n:domain="plone">
-   <property name="title" i18n:translate="">Syndication</property>
+  <object name="history" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">History</property>
    <property name="description" i18n:translate=""></property>
-   <property name="url_expr">string:${object_url}/synPropertiesForm</property>
+   <property name="url_expr">string:${object_url}/@@historyview</property>
+   <property name="link_target"></property>
    <property name="icon_expr"></property>
-   <property
-      name="available_expr">object/@@syndication-util/context_allowed</property>
+   <property name="available_expr"></property>
    <property name="permissions">
-    <element value="Manage properties"/>
-   </property>
-   <property name="visible">False</property>
-  </object>
-  <object name="contentrules" meta_type="CMF Action" i18n:domain="plone">
-   <property name="title" i18n:translate="">Rules</property>
-   <property name="description" i18n:translate=""></property>
-   <property
-      name="url_expr">string:${plone_context_state/canonical_object_url}/@@manage-content-rules</property>
-   <property name="icon_expr"></property>
-   <property
-      name="available_expr">python:plone_context_state.canonical_object().restrictedTraverse('@@plone_contentrules_info').show_rules_tab()</property>
-   <property name="permissions">
-    <element value="Content rules: Manage rules"/>
+    <element value="View"/>
    </property>
    <property name="visible">True</property>
    <property name="modal" type="text">{}</property>
@@ -132,18 +119,31 @@
    <property name="visible">True</property>
    <property name="modal" type="text">{}</property>
   </object>
-  <object name="history" meta_type="CMF Action" i18n:domain="plone">
-   <property name="title" i18n:translate="">History</property>
+  <object name="contentrules" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Rules</property>
    <property name="description" i18n:translate=""></property>
-   <property name="url_expr">string:${object_url}/@@historyview</property>
-   <property name="link_target"></property>
+   <property
+      name="url_expr">string:${plone_context_state/canonical_object_url}/@@manage-content-rules</property>
    <property name="icon_expr"></property>
-   <property name="available_expr"></property>
+   <property
+      name="available_expr">python:plone_context_state.canonical_object().restrictedTraverse('@@plone_contentrules_info').show_rules_tab()</property>
    <property name="permissions">
-    <element value="View"/>
+    <element value="Content rules: Manage rules"/>
    </property>
    <property name="visible">True</property>
    <property name="modal" type="text">{}</property>
+  </object>
+  <object name="syndication" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Syndication</property>
+   <property name="description" i18n:translate=""></property>
+   <property name="url_expr">string:${object_url}/synPropertiesForm</property>
+   <property name="icon_expr"></property>
+   <property
+      name="available_expr">object/@@syndication-util/context_allowed</property>
+   <property name="permissions">
+    <element value="Manage properties"/>
+   </property>
+   <property name="visible">False</property>
   </object>
  </object>
  <object name="object_buttons" meta_type="CMF Action Category">
