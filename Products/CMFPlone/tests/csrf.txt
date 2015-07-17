@@ -159,7 +159,8 @@ know the current passwort to exploit this, but we'll check nevertheless:
   ...
   HTTPError: HTTP Error 403: Forbidden
 
-On the admin side of things there's also the user preferences:
+On the admin side of things there's also the user preferences
+as its z3cform the portrait gets always modified because is IObject:
 
   >>> self.setRoles(('Manager'),)
   >>> browser.open('http://nohost/plone/@@user-information?userid=%s' % TEST_USER_ID)

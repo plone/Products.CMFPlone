@@ -10,6 +10,7 @@
     <dependency>profile-plone.app.discussion:default</dependency>
     <dependency>profile-plone.app.registry:default</dependency>
     <dependency>profile-plone.app.theming:default</dependency>
+    <dependency>profile-plone.app.users:default</dependency>
     <dependency>profile-plone.outputfilters:default</dependency>
     <dependency>profile-plone.portlet.collection:default</dependency>
     <dependency>profile-plone.portlet.static:default</dependency>
