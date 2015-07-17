@@ -4,6 +4,9 @@ Changelog
 2.5.8 (unreleased)
 ------------------
 
+- Moved historyRecords in @@historyview into a table
+  [agitator]
+
 - Combine viewlets used in the IToolbar viewlet manager, merge, reorder
   items so they make more sense
   [vangheem]
