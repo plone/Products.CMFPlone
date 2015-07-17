@@ -66,7 +66,7 @@ Plone is a content management framework that works hand-in-hand and sits on top
 of Zope, a widely-used Open Source web application server and development
 system. To use Plone, you don't need to learn anything about Zope; to develop
 new Plone content types, a small amount of Zope knowledge is helpful, and it is
-covered in the `documentation`_.
+covered in the `documentation <http://docs.plone.org>`_.
 
 Zope itself is written in Python, an easy-to-learn, widely-used and supported
 Open Source programming language. Python can be used to add new features to
@@ -83,6 +83,5 @@ double-click installers are available for Windows and Mac OS X, and RPM
 packages are available for Linux. For full information, see the
 `plone.org product page`_.
 
-.. _documentation: http://plone.org/documentation
 .. _plone.org product page: http://plone.org/products/plone
 
