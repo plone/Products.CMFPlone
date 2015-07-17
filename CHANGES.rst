@@ -4,6 +4,20 @@ Changelog
 2.5.8 (unreleased)
 ------------------
 
+- Combine viewlets used in the IToolbar viewlet manager, merge, reorder
+  items so they make more sense
+  [vangheem]
+
+- merge plone.personal_bar viewlet into toolbar viewlet manager
+  [vangheem]
+
+- remove plone.contentactions, merged into ContentViewsViewlet
+  [vangheem]
+
+- remove plone.documentbyline as it wasn't really a viewlet anymore and we
+  were force rendering it into toolbar viewlet manager
+  [vangheem]
+
 - remove "you are here" in breadcrumbs
   [vangheem]
 
