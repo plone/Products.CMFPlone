@@ -6,11 +6,6 @@
       metal:use-macro="context/main_template/macros/master"
       i18n:domain="plone">
 
-<head>
-    <metal:noborder fill-slot="top_slot"
-                 tal:define="dummy python:request.set('disable_border',1)" />
-</head>
-
 <body>
 <metal:main fill-slot="main">
 
@@ -21,7 +16,7 @@
         
 
         <p i18n:translate="description_accessibility_info">
-            This site uses the open source Content Management System<a href="http://plone.com" i18n:name="plone">Plone</a>,
+            This site uses the open source Content Management System <a href="http://plone.com" i18n:name="plone">Plone</a>,
             and is designed to be completely accessible and usable, working in
             accordance with the Web Content Accessibility Guidelines
             (<acronym i18n:name="wcag"

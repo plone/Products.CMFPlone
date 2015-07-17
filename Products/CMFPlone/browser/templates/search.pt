@@ -18,8 +18,7 @@
   </metal:block>
 
   <metal:block fill-slot="top_slot"
-               tal:define="dummy python:request.set('disable_border',1);
-                           disable_column_one python:request.set('disable_plone.leftcolumn',1);
+               tal:define="disable_column_one python:request.set('disable_plone.leftcolumn',1);
                            disable_column_two python:request.set('disable_plone.rightcolumn',1);" />
 </head>
 
