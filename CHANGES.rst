@@ -8,6 +8,9 @@ Changelog
 5.0b3 (unreleased)
 ------------------
 
+- show toolbar buttons on sitemap, accessibility and search pages
+  [vangheem]
+
 - log info after catalog rebuilt
   [vangheem]
 
