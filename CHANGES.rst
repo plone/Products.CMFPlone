@@ -8,6 +8,10 @@ Changelog
 5.0b4 (unreleased)
 ------------------
 
+- remove Products.CMFPlone.utils.isLinked function. Switch to using
+  plone.app.linkintegrity's variant
+  [vangheem]
+
 - fix #350: "plone.app.content circular dependency on Products.CMFPlone" - this
   fixes the imports only, not on zcml/genericsetup level.
   [jensens]
