@@ -115,7 +115,6 @@
     <element value="Sharing page: Delegate roles"/>
    </property>
    <property name="visible">True</property>
-   <property name="modal" type="text">{}</property>
   </object>
   <object name="contentrules" meta_type="CMF Action" i18n:domain="plone">
    <property name="title" i18n:translate="">Rules</property>
