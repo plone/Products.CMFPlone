@@ -10842,7 +10842,6 @@ define('plone-patterns-toolbar',[
         });
       });
 
-<<<<<<< HEAD
       $(window).on('resize', function(){
         if (that.isDesktop()){
           that.setupDesktop();
@@ -10861,8 +10860,6 @@ define('plone-patterns-toolbar',[
   return Toolbar;
 });
 
-=======
->>>>>>> update resources
 /* Autotoc pattern.
  *
  * Options:
@@ -21662,5 +21659,5 @@ require([
 
 });
 
-define("/Users/nathan/code/coredev5/src/Products.CMFPlone/Products/CMFPlone/static/plone.js", function(){});
+define("/Users/philip/workspace/coredev/src/Products.CMFPlone/Products/CMFPlone/static/plone.js", function(){});
 
