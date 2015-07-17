@@ -591,6 +591,13 @@ def _getSecurity(klass, create=True):
     return security
 
 
+def isLinked(obj):
+    """Check if the given content object is linked from another one."""
+    log_deprecated("utils.isLinked is deprecated, you should use plone.app.linkintegrity.utils.hasIncomingLinks")  # noqa
+    from plone.app.linkintegrity.utils import hasIncomingLinks
+    return hasIncomingLinks(obj)
+
+
 def set_own_login_name(member, loginname):
     """Allow the user to set his/her own login name.
 
