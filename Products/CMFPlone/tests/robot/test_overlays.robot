@@ -189,21 +189,22 @@ Scenario: New user overlay closes on valid data
       And I send the register form
      Then overlay should close
 
-Scenario: History overlay opens
-    Given a logged-in site administrator
-      And the test folder
-     When I click the 'Content Info' link
-      And I click the 'History' link
-     Then overlay should open
-
-Scenario: History overlay closes
-    Given a logged-in site administrator
-      And the test folder
-      When I click the 'Content Info' link
-      And I click the 'History' link
-     When I close the overlay
-     Then overlay should close
-
+# There is no more history overlay
+# Scenario: History overlay opens
+#     Given a logged-in site administrator
+#       And the test folder
+#      When I click the 'Content Info' link
+#       And I click the 'History' link
+#      Then overlay should open
+# 
+# Scenario: History overlay closes
+#     Given a logged-in site administrator
+#       And the test folder
+#       When I click the 'Content Info' link
+#       And I click the 'History' link
+#      When I close the overlay
+#      Then overlay should close
+# 
 *** Keywords ***
 
 Background
@@ -288,14 +289,14 @@ a document '${title}' in the test folder
 I set the default content view of the test folder
     Go to  ${PLONE_URL}/${TEST_FOLDER}
     Given patterns are loaded
-    Click link  xpath=//li[@id='plone-contentmenu-moreoptions']/a
+    Click link  xpath=//li[@id='plone-contentmenu-display']/a
     Click link  id=contextSetDefaultPage
 
 a document as the default view of the test folder
     a document 'doc' in the test folder
     Go to  ${PLONE_URL}/${TEST_FOLDER}
     Given patterns are loaded
-    Click link  xpath=//li[@id='plone-contentmenu-moreoptions']/a
+    Click link  xpath=//li[@id='plone-contentmenu-display']/a
     Wait until element is visible  id=contextSetDefaultPage
     Click link  id=contextSetDefaultPage
     Click element  id=doc
@@ -304,15 +305,15 @@ a document as the default view of the test folder
 I change the default content view of the test folder
     Go to  ${PLONE_URL}/${TEST_FOLDER}
     Given patterns are loaded
-    Click link  xpath=//li[@id='plone-contentmenu-moreoptions']/a
+    Click link  xpath=//li[@id='plone-contentmenu-display']/a
     Wait until element is visible  id=folderChangeDefaultPage
     Click link  id=folderChangeDefaultPage
 
 I trigger the '${action}' action menu item of the test folder
     Go to  ${PLONE_URL}/${TEST_FOLDER}
     Given patterns are loaded
-    Element should be visible  xpath=//li[@id='plone-contentmenu-moreoptions']/a
-    Click link  xpath=//li[@id='plone-contentmenu-moreoptions']/a
+    Element should be visible  xpath=//li[@id='plone-contentmenu-actions']/a
+    Click link  xpath=//li[@id='plone-contentmenu-actions']/a
     Wait until element is visible  id=plone-contentmenu-actions-${action}
     Click link  id=plone-contentmenu-actions-${action}
     Wait until page contains Element  css=div.plone-modal-dialog

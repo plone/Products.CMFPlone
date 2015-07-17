@@ -54,9 +54,9 @@ Before you start exploring your newly created Plone site, please do the followin
     </li>
 
     <li>
-    <a href="@@types-controlpanel" target="_blank">
+    <a href="@@content-controlpanel" target="_blank">
     Decide what kind of workflow you want in your site.</a>
-    <span class="discreet">(The default is typical for a 
+    <span class="discreet">(The default is typical for a
     public web site; if you want to use Plone as a closed intranet or extranet,
     you can choose a different workflow.)</span>
     </li>

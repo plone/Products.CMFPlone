@@ -128,50 +128,6 @@ class Plone(BrowserView):
 
         return False
 
-    @memoize
-    def displayContentsTab(self):
-        """Whether or not the contents tabs should be displayed
-        """
-        context = aq_inner(self.context)
-        modification_permissions = (ModifyPortalContent,
-                                    AddPortalContent,
-                                    DeleteObjects,
-                                    ReviewPortalContent)
-
-        contents_object = context
-        # If this object is the parent folder's default page, then the
-        # folder_contents action is for the parent, we check permissions
-        # there. Otherwise, if the object is not folderish, we don not display
-        # the tab.
-        if self.isDefaultPageInFolder():
-            contents_object = self.getCurrentFolder()
-        elif not self.isStructuralFolder():
-            return 0
-
-        # If this is not a structural folder, stop.
-        plone_view = getMultiAdapter((contents_object, self.request),
-                                     name='plone')
-        if not plone_view.isStructuralFolder():
-            return 0
-
-        show = 0
-        # We only want to show the 'contents' action under the following
-        # conditions:
-        # - If you have permission to list the contents of the relavant
-        #   object, and you can DO SOMETHING in a folder_contents view. i.e.
-        #   Copy or Move, or Modify portal content, Add portal content,
-        #   or Delete objects.
-
-        # Require 'List folder contents' on the current object
-        if _checkPermission(ListFolderContents, contents_object):
-            # If any modifications are allowed on object show the tab.
-            for permission in modification_permissions:
-                if _checkPermission(permission, contents_object):
-                    show = 1
-                    break
-
-        return show
-
     def normalizeString(self, text):
         """Normalizes a title to an id.
         """

@@ -320,6 +320,7 @@
       }
       grunt.registerTask('test', [ 'jshint', 'karma:test' ]);
       grunt.registerTask('test_once', [ 'jshint', 'karma:testOnce' ]);
+      grunt.registerTask('test_jenkins', [ 'jshint', 'karma:testJenkins' ]);
       grunt.registerTask('test_dev', [ 'karma:testDev' ]);
       grunt.registerTask('test_serve', [ 'karma:testServe' ]);
       grunt.registerTask('test_ci', [ 'jshint', 'karma:testCI'].concat(bundles));
@@ -363,6 +364,16 @@
           testOnce: {
             singleRun: true,
             browsers: ['PhantomJS']
+          },
+          testJenkins: {
+            autoWatch: false,
+            colors: false,
+            singleRun: true,
+            browsers: ['PhantomJS'],
+            reporters: ['junit'],
+            junitReporter: {
+              outputFile: 'test-results.xml'
+            },
           },
           testDev: {
             browsers: ['Chrome'],

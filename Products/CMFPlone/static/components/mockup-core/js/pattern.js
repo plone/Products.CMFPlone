@@ -19,11 +19,7 @@ define([
       try {
           pattern = new Registry.patterns[name]($el, options);
       } catch (e) {
-          log.error('Failed while initializing "' + name + '" pattern.');
-          if (window.DEBUG) {
-            // don't swallow errors in DEBUG mode.
-            log.error(e);
-          }
+          log.error('Failed while initializing "' + name + '" pattern.', e);
       }
       $el.data('pattern-' + name, pattern);
     }

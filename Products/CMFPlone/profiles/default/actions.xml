@@ -80,76 +80,6 @@
    <property name="modal" type="text">{}</property>
   </object>
  </object>
- <object name="folder_buttons" meta_type="CMF Action Category">
-  <property name="title"></property>
-  <object name="copy" meta_type="CMF Action" i18n:domain="plone">
-   <property name="title" i18n:translate="">Copy</property>
-   <property name="description" i18n:translate=""></property>
-   <property name="url_expr">string:folder_copy:method</property>
-   <property name="available_expr"></property>
-   <property name="permissions">
-    <element value="Copy or Move"/>
-   </property>
-   <property name="visible">True</property>
-  </object>
-  <object name="cut" meta_type="CMF Action" i18n:domain="plone">
-   <property name="title" i18n:translate="">Cut</property>
-   <property name="description" i18n:translate=""></property>
-   <property name="url_expr">string:folder_cut:method</property>
-   <property
-      name="available_expr">python:checkPermission("Delete objects", object)</property>
-   <property name="permissions">
-    <element value="Copy or Move"/>
-   </property>
-   <property name="visible">True</property>
-  </object>
-  <object name="rename" meta_type="CMF Action" i18n:domain="plone">
-   <property name="title" i18n:translate="">Rename</property>
-   <property name="description" i18n:translate=""></property>
-   <property name="url_expr">string:folder_rename_form:method</property>
-   <property name="icon_expr"></property>
-   <property name="available_expr"></property>
-   <property name="permissions">
-    <element value="Add portal content"/>
-   </property>
-   <property name="visible">True</property>
-   <property name="modal" type="text">{}</property>
-  </object>
-  <object name="paste" meta_type="CMF Action" i18n:domain="plone">
-   <property name="title" i18n:translate="">Paste</property>
-   <property name="description" i18n:translate=""></property>
-   <property name="url_expr">string:folder_paste:method</property>
-   <property name="available_expr">folder/cb_dataValid</property>
-   <property name="permissions">
-    <element value="Add portal content"/>
-   </property>
-   <property name="visible">True</property>
-  </object>
-  <object name="delete" meta_type="CMF Action" i18n:domain="plone">
-   <property name="title" i18n:translate="">Delete</property>
-   <property name="description" i18n:translate=""></property>
-   <property name="url_expr">string:folder_delete:method</property>
-   <property name="available_expr"></property>
-   <property name="permissions">
-    <element value="Delete objects"/>
-   </property>
-   <property name="visible">True</property>
-   <property name="modal" type="text">{}</property>
-  </object>
-  <object name="change_state" meta_type="CMF Action" i18n:domain="plone">
-   <property name="title" i18n:translate="">Change State</property>
-   <property name="description" i18n:translate=""></property>
-   <property name="url_expr">string:content_status_history:method</property>
-   <property name="icon_expr"></property>
-   <property
-      name="available_expr">python:checkPermission("Modify portal content", object) or checkPermission("Review portal content", object)</property>
-   <property name="permissions">
-    <element value="View"/>
-   </property>
-   <property name="visible">True</property>
-   <property name="modal" type="text">{}</property>
-  </object>
- </object>
  <object name="object" meta_type="CMF Action Category">
   <property name="title"></property>
   <object name="folderContents" meta_type="CMF Action" i18n:domain="plone">
@@ -158,24 +88,34 @@
    <property
       name="url_expr">string:${globals_view/getCurrentFolderUrl}/folder_contents</property>
    <property name="icon_expr"></property>
-   <property name="available_expr">object/displayContentsTab</property>
    <property name="permissions">
     <element value="List folder contents"/>
    </property>
    <property name="visible">True</property>
-   <property name="modal" type="text">{}</property>
   </object>
-  <object name="syndication" meta_type="CMF Action" i18n:domain="plone">
-   <property name="title" i18n:translate="">Syndication</property>
+  <object name="history" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">History</property>
    <property name="description" i18n:translate=""></property>
-   <property name="url_expr">string:${object_url}/synPropertiesForm</property>
+   <property name="url_expr">string:${object_url}/@@historyview</property>
+   <property name="link_target"></property>
    <property name="icon_expr"></property>
-   <property
-      name="available_expr">object/@@syndication-util/context_allowed</property>
+   <property name="available_expr"></property>
    <property name="permissions">
-    <element value="Manage properties"/>
+    <element value="View"/>
    </property>
-   <property name="visible">False</property>
+   <property name="visible">True</property>
+  </object>
+  <object name="local_roles" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Sharing</property>
+   <property name="description" i18n:translate=""></property>
+   <property name="url_expr">string:${object_url}/@@sharing</property>
+   <property name="icon_expr"></property>
+   <property name="available_expr"></property>
+   <property name="permissions">
+    <element value="Sharing page: Delegate roles"/>
+   </property>
+   <property name="visible">True</property>
+   <property name="modal" type="text">{}</property>
   </object>
   <object name="contentrules" meta_type="CMF Action" i18n:domain="plone">
    <property name="title" i18n:translate="">Rules</property>
@@ -189,19 +129,18 @@
     <element value="Content rules: Manage rules"/>
    </property>
    <property name="visible">True</property>
-   <property name="modal" type="text">{}</property>
   </object>
-  <object name="local_roles" meta_type="CMF Action" i18n:domain="plone">
-   <property name="title" i18n:translate="">Sharing</property>
+  <object name="syndication" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Syndication</property>
    <property name="description" i18n:translate=""></property>
-   <property name="url_expr">string:${object_url}/@@sharing</property>
+   <property name="url_expr">string:${object_url}/synPropertiesForm</property>
    <property name="icon_expr"></property>
-   <property name="available_expr"></property>
+   <property
+      name="available_expr">object/@@syndication-util/context_allowed</property>
    <property name="permissions">
-    <element value="Sharing page: Delegate roles"/>
+    <element value="Manage properties"/>
    </property>
-   <property name="visible">True</property>
-   <property name="modal" type="text">{}</property>
+   <property name="visible">False</property>
   </object>
  </object>
  <object name="object_buttons" meta_type="CMF Action Category">
@@ -307,7 +246,7 @@
     <element value="View"/>
    </property>
    <property name="visible">True</property>
-   <property name="modal" type="text">{"prependContent": ".portalMessage", "title": "Log in"}</property>
+   <property name="modal" type="text">{"prependContent": ".portalMessage", "title": "Log in", "width": "26em"}</property>
   </object>
   <object name="join" meta_type="CMF Action" i18n:domain="plone">
    <property name="title" i18n:translate="">Register</property>

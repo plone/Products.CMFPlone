@@ -66,7 +66,13 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
         member=[
             ('Member', _(u'My Preferences')),
         ],
-        site=[('Plone', _(u'Plone Configuration')),
+        site=[
+              ('plone-general', _(u'General')),
+              ('plone-content', _(u'Content')),
+              ('plone-users', _(u'Users')),
+              ('plone-security', _(u'Security')),
+              ('plone-advanced', _(u'Advanced')),
+              ('Plone', _(u'Plone Configuration')),
               ('Products', _(u'Add-on Configuration')),
              ]
     )
@@ -131,10 +137,9 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
                 a['title'] = translate(title,
                                        context=self.REQUEST)
 
-        def _title(v):
-            return v['title']
-
-        res.sort(key=_title)
+        def _id(v):
+            return v['id']
+        res.sort(key=_id)
         return res
 
     security.declareProtected(ManagePortal, 'unregisterConfiglet')

@@ -3201,8 +3201,20 @@ a.pat-resourceregistry .list-group-item-warning.active:focus {
 }
 .pat-resourceregistry .buttons-container {
   position: relative;
-  top: -45px;
-  right: 10px;
+}
+.pat-resourceregistry .buttons-container .plone-btn-group,
+.pat-resourceregistry .buttons-container .btn-group {
+  padding: 5px 0;
+}
+@media (min-width: 1200px) {
+  .pat-resourceregistry .buttons-container {
+    top: -42px;
+    padding: 0;
+  }
+  .pat-resourceregistry .buttons-container .plone-btn-group,
+  .pat-resourceregistry .buttons-container .btn-group {
+    padding: 0;
+  }
 }
 .pat-resourceregistry .autotabs {
   margin-bottom: 0;

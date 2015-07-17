@@ -16,6 +16,7 @@ from Products.CMFPlone import PloneMessageFactory as _
 from z3c.form import form
 
 from Products.CMFPlone.interfaces import IUserGroupsSettingsSchema
+from z3c.form import button
 
 
 class UserGroupsSettingsControlPanel(AutoExtensibleForm, form.EditForm):
@@ -25,6 +26,15 @@ class UserGroupsSettingsControlPanel(AutoExtensibleForm, form.EditForm):
     description = _("User and groups settings for this site.")
     form_name = _("User/Groups settings")
     control_panel_view = "usergroups-controlpanel"
+
+    @button.buttonAndHandler(_('label_save', default="Save"), name='save')
+    def handleApply(self, action):
+        super(UserGroupsSettingsControlPanel, self).handleApply(self, action)
+
+    def updateActions(self):
+        super(UserGroupsSettingsControlPanel, self).updateActions()
+        if self.actions and 'save' in self.actions:
+            self.actions['save'].addClass('context')
 
 
 class ControlPanelFormWrapper(layout.FormWrapper):

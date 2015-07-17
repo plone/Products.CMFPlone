@@ -4,7 +4,6 @@
     <viewlet name="plone.header" />
   </order>
   <order manager="plone.portalheader" skinname="Plone Default">
-    <viewlet name="plone.skip_links" />
     <viewlet name="plone.logo" />
     <viewlet name="plone.searchbox" />
     <viewlet name="plone.anontools" />
@@ -18,9 +17,6 @@
   </order>
   <order manager="plone.toolbar" skinname="Plone Default">
     <viewlet name="plone.contentviews" />
-    <viewlet name="plone.contentactions" />
-    <viewlet name="plone.documentbyline" />
-    <viewlet name="plone.personal_bar" />
   </order>
   <order manager="plone.belowcontentbody" skinname="Plone Default">
     <viewlet name="plone.belowcontentbody.relateditems" />

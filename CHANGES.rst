@@ -8,6 +8,12 @@ Changelog
 5.0b3 (unreleased)
 ------------------
 
+- Renamed 'Zope Management Interface' to 'Management Interface'.
+  [jaroel]
+
+- Fix adding a new Plone site with country specific language. Refs #411.
+  [jaroel]
+
 - fix plone-logged-in bundle not using global jquery for requirejs dependency and in
   weird cases causing select2 load errors in patterns(especially resource registry)
   [vangheem]
@@ -108,6 +114,13 @@ Changelog
 
 - Remove dependency on plone.app.form and other formlib packages
   [tomgross]
+
+- Remove plone.skip_links from the default set of viewlets in order to follow
+  modern a11y methods and drop support for outdated ways [sneridagh]
+
+- Change the name and link of 'Types' control panel to 'Content Settings' and
+  '@@content-controlpanel' since there was confusion with the 'Dexterity
+  Content Types' one [sneridagh]
 
 
 5.0b2 (2015-05-13)

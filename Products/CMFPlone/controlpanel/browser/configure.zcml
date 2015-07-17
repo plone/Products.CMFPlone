@@ -119,7 +119,7 @@
 
   <!-- Types Control panel -->
   <browser:page
-    name="types-controlpanel"
+    name="content-controlpanel"
     for="Products.CMFPlone.interfaces.IPloneSiteRoot"
     class=".types.TypesControlPanel"
     permission="plone.app.controlpanel.Types"

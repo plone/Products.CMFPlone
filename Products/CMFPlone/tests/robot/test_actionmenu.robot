@@ -138,8 +138,8 @@ Open Menu
 
 Open Action Menu
     Given patterns are loaded
-    Click link  xpath=//li[@id='plone-contentmenu-moreoptions']/a
-    Wait until keyword succeeds  5  1  Element Should Be Visible  css=#plone-contentmenu-actions
+    Click link  xpath=//li[@id='plone-contentmenu-actions']/a
+    Wait until keyword succeeds  5  1  Element Should Be Visible  css=.plonetoolbar-content-action
 
 I copy the page
     Open Action Menu
@@ -162,7 +162,7 @@ delete link should not be visible
 
 menu link is clicked
     Given patterns are loaded
-    Click link  xpath=//li[@id='plone-contentmenu-moreoptions']/a
+    Click link  xpath=//li[@id='plone-contentmenu-actions']/a
 
 delete link should be visible
     Given patterns are loaded
@@ -194,5 +194,5 @@ first menu should not be visible
 
 actions menu should not be visible
     Given patterns are loaded
-    Wait until keyword succeeds  10s  1s  Element Should Not Be Visible  xpath=//li[@id='plone-contentmenu-actions']
+    Wait until keyword succeeds  10s  1s  Element Should Not Be Visible  xpath=//li[@id='plone-contentmenu-actions-delete']
 

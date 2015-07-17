@@ -13,7 +13,8 @@ REQUEST = context.REQUEST
 if 'cancel' in REQUEST.form:
     context.plone_utils.addPortalMessage(_(u'Password change was canceled.'),
                                          'warning')
-    return context.plone_memberprefs_panel()
+    return context.REQUEST.RESPONSE.redirect(
+            '%s/@@personal-preferences' % context.absolute_url())
 
 mt = context.portal_membership
 
@@ -50,4 +51,4 @@ transaction_note('Changed password for %s' % (member.getUserName()))
 context.plone_utils.addPortalMessage(_(u'Password changed.'))
 
 return context.REQUEST.RESPONSE.redirect(
-            '%s/plone_memberprefs_panel' % context.absolute_url())
+            '%s/@@personal-preferences' % context.absolute_url())

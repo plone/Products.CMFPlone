@@ -114,7 +114,7 @@ class UserGroupsControlPanelFunctionalTest(unittest.TestCase):
 
     def test_usergroups_groups_link(self):
         self.browser.open(self.usergroups_url)
-        self.browser.getLink('Groups', index=1).click()
+        self.browser.getLink('Groups', index=0).click()
         self.assertEqual(
             self.browser.url,
             "%s/@@usergroup-groupprefs" % self.portal_url
@@ -249,7 +249,7 @@ class UserGroupsControlPanelFunctionalTest(unittest.TestCase):
         self.browser.getControl(
             name='group_group1:list', index=1
         ).getControl(value='Contributor').selected = True
-        self.browser.getControl('Apply Changes').click()
+        self.browser.getControl('Save').click()
 
         # Check that role is now selected
         self.browser.getControl(
@@ -320,7 +320,7 @@ class UserGroupsControlPanelFunctionalTest(unittest.TestCase):
         self.browser.getControl(
             name='form.widgets.many_users:list'
         ).controls[0].selected = True
-        self.browser.getControl('Apply').click()
+        self.browser.getControl('Save').click()
 
         # Check that show all button for users is no longer available
         self.browser.open(self.usergroups_url)
@@ -335,7 +335,7 @@ class UserGroupsControlPanelFunctionalTest(unittest.TestCase):
         self.browser.getControl(
             name='form.widgets.many_groups:list'
         ).controls[0].selected = True
-        self.browser.getControl('Apply').click()
+        self.browser.getControl('Save').click()
 
         # Check that show all button for groups is no longer available
         self.browser.open(self.groups_url)

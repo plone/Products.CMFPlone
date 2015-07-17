@@ -120,7 +120,7 @@ class TestSiteAdministratorRoleFunctional(UserGroupsControlPanelTestCase):
             '_authenticator': self.manager_token,
             'users.id:records': self.normal_user,
             'users.roles:list:records': 'Manager',
-            'form.button.Modify': 'Apply Changes',
+            'form.button.Modify': 'Save',
             'form.submitted': 1,
             }
         post_data = StringIO(urlencode(form))
@@ -137,7 +137,7 @@ class TestSiteAdministratorRoleFunctional(UserGroupsControlPanelTestCase):
             '_authenticator': self.siteadmin_token,
             'users.id:records': self.normal_user,
             'users.roles:list:records': 'Manager',
-            'form.button.Modify': 'Apply Changes',
+            'form.button.Modify': 'Save',
             'form.submitted': 1,
             }
         post_data = StringIO(urlencode(form))
@@ -155,7 +155,7 @@ class TestSiteAdministratorRoleFunctional(UserGroupsControlPanelTestCase):
             '_authenticator': self.siteadmin_token,
             'users.id:records': 'root',
             'users.roles:list:records': ('Member', 'Manager'),
-            'form.button.Modify': 'Apply Changes',
+            'form.button.Modify': 'Save',
             'form.submitted': 1,
             }
         post_data = StringIO(urlencode(form, doseq=True))
@@ -181,7 +181,7 @@ class TestSiteAdministratorRoleFunctional(UserGroupsControlPanelTestCase):
         form = {
             '_authenticator': self.manager_token,
             'group_Reviewers:list': ('', 'Manager'),
-            'form.button.Modify': 'Apply Changes',
+            'form.button.Modify': 'Save',
             'form.submitted': 1,
             }
         post_data = StringIO(urlencode(form, doseq=True))
@@ -197,7 +197,7 @@ class TestSiteAdministratorRoleFunctional(UserGroupsControlPanelTestCase):
         form = {
             '_authenticator': self.siteadmin_token,
             'group_Reviewers:list': ('', 'Manager'),
-            'form.button.Modify': 'Apply Changes',
+            'form.button.Modify': 'Save',
             'form.submitted': 1,
             }
         post_data = StringIO(urlencode(form, doseq=True))
@@ -214,7 +214,7 @@ class TestSiteAdministratorRoleFunctional(UserGroupsControlPanelTestCase):
         form = {
             '_authenticator': self.siteadmin_token,
             'group_Administrators:list': ('', 'Member', 'Manager'),
-            'form.button.Modify': 'Apply Changes',
+            'form.button.Modify': 'Save',
             'form.submitted': 1,
             }
         post_data = StringIO(urlencode(form, doseq=True))
@@ -322,7 +322,7 @@ class TestSiteAdministratorRoleFunctional(UserGroupsControlPanelTestCase):
             '_authenticator': self.siteadmin_token,
             'users.id:records': 'root',
             'delete:list': 'root',
-            'form.button.Modify': 'Apply Changes',
+            'form.button.Modify': 'Save',
             'form.submitted': 1,
             }
         post_data = StringIO(urlencode(form))
@@ -350,7 +350,7 @@ class TestSiteAdministratorRoleFunctional(UserGroupsControlPanelTestCase):
         form = {
             '_authenticator': self.siteadmin_token,
             'delete:list': 'Administrators',
-            'form.button.Modify': 'Apply Changes',
+            'form.button.Modify': 'Save',
             'form.submitted': 1,
             }
         post_data = StringIO(urlencode(form))

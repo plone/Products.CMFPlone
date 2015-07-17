@@ -145,6 +145,14 @@ div.ridisplay .occurrence.exdate {
     display: none;
 }
 
+div.ridisplay label.ridisplay {
+    font-weight: 300;
+}
+
+div.ridisplay .rimain a {
+    margin-right: 0.5em;
+}
+
 div.rioccurrences .occurrence.rdate {
     background: #FFFFE0;
 }

@@ -16,8 +16,7 @@
           checkPermission nocall: context/portal_membership/checkPermission;
           site_properties context/portal_properties/site_properties;
           ajax_include_head request/ajax_include_head | nothing;
-          ajax_load python:False;
-          toolbar_class python:request.cookies.get('plone-toolbar', 'plone-toolbar-left pat-toolbar')"
+          ajax_load python:False;"
       i18n:domain="plone"
       tal:attributes="lang lang;">
 
@@ -46,28 +45,13 @@
   <body tal:define="isRTL portal_state/is_rtl;
                     sl python:plone_layout.have_portlets('plone.leftcolumn', view);
                     sr python:plone_layout.have_portlets('plone.rightcolumn', view);
-                    body_class python:plone_layout.bodyClass(template, view);
-                    toolbar_class python:request.cookies.get('plone-toolbar', 'plone-toolbar-left pat-toolbar');"
+                    body_class python:plone_layout.bodyClass(template, view);"
         tal:attributes="class body_class;
                         dir python:isRTL and 'rtl' or 'ltr';
                         python:plone_view.patterns_settings()"
         id="visual-portal-wrapper">
 
-    <section id="edit-bar" role="toolbar" tal:condition="not: portal_state/anonymous">
-      <div id="edit-zone" role="toolbar" tal:attributes="class toolbar_class">
-        <div class="plone-toolbar-container">
-          <a class="plone-toolbar-logo">
-            <img alt="Plone Toolbar" tal:attributes="src string:${portal_url}/++plone++static/plone-toolbarlogo.svg" />
-          </a>
-          <a class="plone-toolbar-switcher"><span>Left-Top switcher</span></a>
-          <nav role="navigation">
-            <ul>
-              <div tal:replace="structure provider:plone.toolbar">
-              </div>
-            </ul>
-        </div>
-      </div>
-    </section>
+    <div tal:replace="structure provider:plone.toolbar" />
 
     <header id="portal-top" i18n:domain="plone">
       <div tal:replace="structure provider:plone.portaltop" />

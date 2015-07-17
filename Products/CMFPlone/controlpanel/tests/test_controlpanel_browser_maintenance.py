@@ -48,7 +48,7 @@ class MaintenanceControlPanelFunctionalTest(unittest.TestCase):
     def test_maintenance_control_panel_backlink(self):
         self.browser.open(
             "%s/@@maintenance-controlpanel" % self.portal_url)
-        self.assertTrue("Plone Configuration" in self.browser.contents)
+        self.assertTrue("Advanced" in self.browser.contents)
 
     def test_maintenance_control_panel_sidebar(self):
         self.browser.open(

@@ -33,13 +33,6 @@
                       <a href=""
                          tal:define="icon configlet/icon|nothing"
                          tal:attributes="href configlet/url">
-                          <img src="" alt=""
-                               tal:condition="not:icon"
-                               tal:attributes="src string:${portal_url}/maintenance_icon.png" />
-                          <img src="" alt="" tal:attributes="src icon;
-                                               alt configlet/description"
-                               tal:condition="icon"
-                               i18n:attributes="alt" />
                       <tal:configletname tal:content="configlet/title"
                                          i18n:translate=""></tal:configletname>
                       </a>

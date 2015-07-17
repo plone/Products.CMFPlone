@@ -52,7 +52,7 @@ class LanguageControlPanelFunctionalTest(unittest.TestCase):
     def test_language_control_panel_backlink(self):
         self.browser.open(
             "%s/@@language-controlpanel" % self.portal_url)
-        self.assertTrue("Plone Configuration" in self.browser.contents)
+        self.assertTrue("General" in self.browser.contents)
 
     def test_language_control_panel_sidebar(self):
         self.browser.open(
@@ -108,25 +108,26 @@ class LanguageControlPanelFunctionalTest(unittest.TestCase):
     #     self.assertEqual(settings.available_languages, ['en', 'de'])
 
     def test_use_combined_language_codes(self):
+        """This checks swithing combined languages codes support off/on."""
         registry = getUtility(IRegistry)
         settings = registry.forInterface(ILanguageSchema, prefix='plone')
         self.browser.open(
             "%s/@@language-controlpanel" % self.portal_url)
-        self.assertEqual(settings.use_combined_language_codes, False)
+        self.assertEqual(settings.use_combined_language_codes, True)
         self.assertEqual(
             self.browser.getControl(
                 'Show country-specific language variants'
             ).selected,
-            False
+            True
         )
         self.browser.getControl(
             'Show country-specific language variants'
-        ).selected = True
+        ).selected = False
 
         self._inject_available_languages_field('en')
         self.browser.getControl('Save').click()
 
-        self.assertEqual(settings.use_combined_language_codes, True)
+        self.assertEqual(settings.use_combined_language_codes, False)
 
     def test_display_flags(self):
         registry = getUtility(IRegistry)
