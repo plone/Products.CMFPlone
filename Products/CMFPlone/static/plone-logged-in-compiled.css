@@ -4711,18 +4711,12 @@ tbody.pat-structure .collapse.in {
   border-right: 0;
 }
 .pat-structure #btn-selected-items,
-.pat-structure #btn-rearrange,
-.pat-structure #btn-upload {
+.pat-structure #btn-rearrange {
   border-radius: 0;
   border-right: 0;
 }
-.pat-structure .btn-group.addnew,
-.pat-structure .pat-structure .btn-group.addnew {
+.pat-structure #btn-upload {
   margin-left: 0;
-}
-.pat-structure .btn-group.addnew .btn,
-.pat-structure .btn-group.addnew .pat-structure .btn,
-.pat-structure .pat-structure .btn-group.addnew .btn {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
@@ -8108,6 +8102,12 @@ div.rioccurrences .occurrence.exdate {
 }
 div.ridisplay .occurrence.exdate {
   display: none;
+}
+div.ridisplay label.ridisplay {
+  font-weight: 300;
+}
+div.ridisplay .rimain a {
+  margin-right: 0.5em;
 }
 div.rioccurrences .occurrence.rdate {
   background: #FFFFE0;
