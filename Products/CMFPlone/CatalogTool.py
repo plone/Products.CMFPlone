@@ -1,7 +1,12 @@
+import logging
+import re
+import time
+import urllib
+
 from AccessControl import ClassSecurityInfo
 from AccessControl.PermissionRole import rolesForPermissionOn
-from AccessControl.Permissions import manage_zcatalog_entries as \
-    ManageZCatalogEntries
+from AccessControl.Permissions import (
+    manage_zcatalog_entries as ManageZCatalogEntries)
 from AccessControl.Permissions import search_zcatalog as SearchZCatalog
 from Acquisition import aq_base
 from Acquisition import aq_inner
@@ -31,9 +36,9 @@ from zope.component import queryMultiAdapter
 from zope.interface import Interface
 from zope.interface import implementer
 from zope.interface import providedBy
-import re
-import time
-import urllib
+
+
+logger = logging.getLogger('Plone')
 
 _marker = object()
 
@@ -437,12 +442,14 @@ class CatalogTool(PloneBaseTool, BaseTool):
         elapse = time.time() - elapse
         c_elapse = time.clock() - c_elapse
 
+        msg = ('Catalog Rebuilt\n'
+               'Total time: %s\n'
+               'Total CPU time: %s' % (repr(elapse), repr(c_elapse)))
+        logger.info(msg)
+
         if RESPONSE is not None:
             RESPONSE.redirect(
                 URL1 + '/manage_catalogAdvanced?manage_tabs_message=' +
-                urllib.quote('Catalog Rebuilt\n'
-                             'Total time: %s\n'
-                             'Total CPU time: %s' %
-                             (repr(elapse), repr(c_elapse))))
+                urllib.quote(msg))
 
 InitializeClass(CatalogTool)

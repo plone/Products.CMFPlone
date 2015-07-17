@@ -8,6 +8,9 @@ Changelog
 5.0b3 (unreleased)
 ------------------
 
+- log info after catalog rebuilt
+  [vangheem]
+
 - Renamed 'Zope Management Interface' to 'Management Interface'.
   [jaroel]
 
