@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.5.8 (unreleased)
+2.5.8 (2015-07-18)
 ------------------
 
 - Moved historyRecords in @@historyview into a table
