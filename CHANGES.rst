@@ -5,7 +5,7 @@
 Changelog
 =========
 
-5.0b3 (unreleased)
+5.0b3 (2015-07-20)
 ------------------
 
 - show toolbar buttons on sitemap, accessibility and search pages
