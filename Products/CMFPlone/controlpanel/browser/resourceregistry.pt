@@ -23,7 +23,7 @@
     <div class="documentDescription"
        i18n:translate="">
       Configure, enable, disable, debug and build Plone JavaScript/LESS/CSS resources.
-      Plone utilizes RequireJS and LESS CSS to build it's resources.
+      Plone utilizes RequireJS and LESS CSS to build its resources.
       Re-building a Plone bundle TTW requires a modern web browser.
     </div>
 
