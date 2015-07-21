@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.5.9 (unreleased)
+2.5.9 (2015-07-21)
 ------------------
 
 - Default is expanded Toolbar.
