@@ -4,7 +4,8 @@ Changelog
 2.5.9 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Default is expanded Toolbar.
+  [bloodbare]
 
 
 2.5.8 (2015-07-18)
