@@ -264,8 +264,8 @@
     var DISPLAYTMPL = ['<div class="ridisplay">',
         '<div class="rimain">',
             '{{if !readOnly}}',
-                '<a href="#" name="riedit">${i18n.add_rules}</a>',
-                '<a href="#" name="ridelete" style="display:none">${i18n.delete_rules}</a>',
+                '<button name="riedit">${i18n.add_rules}</button>',
+                '<button name="ridelete" style="display:none">${i18n.delete_rules}</button>',
             '{{/if}}',
             '<label class="ridisplay">${i18n.displayUnactivate}</label>',
         '</div>',
@@ -1445,8 +1445,8 @@
             if (startdate !== null) {
                 loadOccurrences(startdate, widgetSaveToRfc5545(form, conf, false).result, 0, true);
             }
-            display.find('a[name="riedit"]').text(conf.i18n.edit_rules);
-            display.find('a[name="ridelete"]').show();
+            display.find('button[name="riedit"]').text(conf.i18n.edit_rules);
+            display.find('button[name="ridelete"]').show();
         }
 
         function recurrenceOff() {
@@ -1454,8 +1454,8 @@
             label.text(conf.i18n.displayUnactivate);
             textarea.val('').change();  // Clear the textarea.
             display.find('.rioccurrences').hide();
-            display.find('a[name="riedit"]').text(conf.i18n.add_rules);
-            display.find('a[name="ridelete"]').hide();
+            display.find('button[name="riedit"]').text(conf.i18n.add_rules);
+            display.find('button[name="ridelete"]').hide();
         }
 
         function checkFields(form) {
@@ -1621,13 +1621,13 @@
         */
 
         // When you click "Delete...", the recurrence rules should be cleared.
-        display.find('a[name=ridelete]').click(function (e) {
+        display.find('button[name=ridelete]').click(function (e) {
             e.preventDefault();
             recurrenceOff();
         });
 
         // Show form overlay when you click on the "Edit..." link
-        display.find('a[name=riedit]').click(
+        display.find('button[name=riedit]').click(
             function (e) {
                 // Load the form to set up the right fields to show, etc.
                 loadData(textarea.val());
