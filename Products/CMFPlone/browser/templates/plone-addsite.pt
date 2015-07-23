@@ -102,14 +102,18 @@
 
         <select name="default_language"
                 tal:define="browser_language view/browser_language;
-                            languages python:view.languages(browser_language)">
-            <option value="en"
-                    tal:repeat="lang languages"
-                    tal:attributes="value python:lang[0];
-                                    selected python:lang[0]==browser_language"
-                    tal:content="python: lang[1]">
-                English
-            </option>
+                            grouped_languages python:view.grouped_languages(browser_language)">
+            <optgroup tal:repeat="group grouped_languages" tal:attributes="label group/label">
+
+              <option value="en"
+                      tal:repeat="lang group/languages"
+                      tal:attributes="value python:lang['langcode'];
+                                      selected python:lang['langcode'] == browser_language"
+                      tal:content="python: lang['label']">
+                  English
+              </option>
+
+            </optgroup>
         </select>
       </div>
 
