@@ -10,11 +10,15 @@ Changelog
 
 - Fix link to documentation
 
+- Rework timezone selection in @@plone-addsite.
+  [jaroel]
+
+- Rework language selection in @@plone-addsite.
+  [jaroel]
+
 
 5.0b3 (2015-07-20)
 ------------------
-- Rework language selection in @@plone-addsite.
-  [jaroel]
 
 - show toolbar buttons on sitemap, accessibility and search pages
   [vangheem]

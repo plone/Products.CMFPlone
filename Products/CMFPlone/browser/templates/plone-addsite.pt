@@ -131,12 +131,14 @@
         <select id="portal_timezone"
           name="portal_timezone"
           tal:define="tz_list view/timezones">
+          <optgroup tal:repeat="group tz_list" tal:attributes="label group">
           <option value="UTC"
-                  tal:repeat="tz tz_list"
-                  tal:attributes="value tz"
-                  tal:content="tz">
+                  tal:repeat="tz python:tz_list[group]"
+                  tal:attributes="value tz/value"
+                  tal:content="tz/label">
               UTC
           </option>
+          </optgroup>
         </select>
       </div>
 
