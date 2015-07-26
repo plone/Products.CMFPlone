@@ -287,7 +287,7 @@ class IPlone(Interface):
            the context object.
         """
 
-    def showEditableBorder():
+    def showToolbar():
         """Returns true if the editable border should be shown
         """
 

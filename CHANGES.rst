@@ -8,12 +8,19 @@ Changelog
 5.0b4 (unreleased)
 ----------------
 
+- Rename showEditableBorder to showToolbar and deprecate using
+  disable_border and enable_border for enable_toolbar and disable_toolbar
+  [vangheem]
+
 - Not using less variables in toolbar everywhere
   [vangheem]
 
 - Fix link to documentation
 
 - Rework timezone selection in @@plone-addsite.
+  [jaroel]
+
+- Rework language selection in @@plone-addsite.
   [jaroel]
 
 
