@@ -64,7 +64,16 @@ body.userrole-authenticated {
                 display: block; text-align: center; height: 50px; width:@plone-left-toolbar;
                 &:before {line-height: 50px;}
             }
-            > span + span {display: table-cell; text-align: center; padding: 0 8px; height: 50px; width:@plone-left-toolbar; vertical-align: middle; background: @plone-toolbar-link; line-height: 1em; }
+            > span + span {
+                display: table-cell;
+                text-align: center;
+                padding: 0 8px;
+                height: 50px;
+                width: @plone-left-toolbar;
+                vertical-align: middle;
+                background: @plone-toolbar-link;
+                line-height: 1em;
+            }
         }
         .scroll-btn {
             z-index:10;
@@ -202,13 +211,21 @@ body.userrole-authenticated {
     width:@plone-left-toolbar-expanded;
     nav > ul ul { left: @plone-left-toolbar-expanded;}
     nav > ul a > [class^="icon"] {
-        display: table-cell; width: 40px; padding-left: 10px;
+        display: table-cell;
+        width: 40px;
+        padding-left: 10px;
     }
     nav > ul a > .icon-logout {
         margin:0;
         padding:0;
     }
-    nav > ul a > span + span {background: none; width: 80px; text-align: left; word-wrap: break-word; word-break: break-word;}
+    nav > ul a > span + span {
+        background: none;
+        width: @plone-left-toolbar-expanded - 40px;
+        text-align: left;
+        word-wrap: break-word;
+        word-break: break-word;
+    }
     .plone-toolbar-caret {width: 0;}
     li:not(.active) a:hover > span {background: @plone-toolbar-link;}
 
@@ -415,13 +432,13 @@ body.userrole-authenticated {
             }
         }
         .plone-toolbar-main{
-            width: 138px; /* hide scroll bar */
+            width: @plone-left-toolbar-expanded+18px; /* hide scroll bar */
             padding-right: 18px;
         }
     }
     .plone-toolbar-left-default #edit-zone{
         .plone-toolbar-main{
-            width: 78px; /* hide scroll bar */
+            width: @plone-left-toolbar+18px; /* hide scroll bar */
         }
     }
 }

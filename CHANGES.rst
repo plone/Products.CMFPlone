@@ -8,12 +8,12 @@ Changelog
 5.0b4 (unreleased)
 ----------------
 
+- Not using less variables in toolbar everywhere
+  [vangheem]
+
 - Fix link to documentation
 
 - Rework timezone selection in @@plone-addsite.
-  [jaroel]
-
-- Rework language selection in @@plone-addsite.
   [jaroel]
 
 
