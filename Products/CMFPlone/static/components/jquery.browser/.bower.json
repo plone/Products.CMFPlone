@@ -1,6 +1,6 @@
 {
   "name": "jquery.browser",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "homepage": "https://github.com/gabceb/jquery-browser-plugin",
   "authors": [
     "Gabriel Cebrian <gabceb@gmail.com>",
@@ -18,11 +18,11 @@
   "dependencies": {
     "jquery": ">=1.5"
   },
-  "_release": "0.0.7",
+  "_release": "0.0.8",
   "_resolution": {
     "type": "version",
-    "tag": "v0.0.7",
-    "commit": "c41db05410c4278432fdd8bef24d1f28988c13ef"
+    "tag": "v0.0.8",
+    "commit": "deedc12dcf8857686d592365df0cc0cf7324eec8"
   },
   "_source": "git://github.com/gabceb/jquery-browser-plugin.git",
   "_target": "~0.0.7",
