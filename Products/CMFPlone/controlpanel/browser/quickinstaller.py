@@ -203,20 +203,14 @@ class UpgradeProductsView(BrowserView):
 class InstallProductsView(BrowserView):
 
     def __call__(self):
-        """
-        Install products by running the default import steps
-        XXX: is this running all profiles?
-        """
-        setupTool = getToolByName(self.context, 'portal_setup')
-        profiles = self.request.get('install_products')
+        qi = getToolByName(self.context, 'portal_quickinstaller')
+        products = self.request.get('install_products')
         msg_type = 'info'
-        if profiles:
+        if products:
             messages = IStatusMessage(self.request)
-            for profile in profiles:
-                # TODO: find out where this is and don't run already
-                # activated profiles
-                setupTool.runAllImportStepsFromProfile(profile)
-                msg = _(u'Installed ${product}!', mapping={'product': profile})
+            for product in products:
+                qi.installProducts(products=[product, ])
+                msg = _(u'Installed ${product}!', mapping={'product': product})
                 messages.addStatusMessage(msg, type=msg_type)
 
         purl = getToolByName(self.context, 'portal_url')()
@@ -225,7 +219,6 @@ class InstallProductsView(BrowserView):
 
 class UninstallProductsView(BrowserView):
     def __call__(self):
-        # XXX: Need to call the uninstall profile
         qi = getToolByName(self.context, 'portal_quickinstaller')
         products = self.request.get('uninstall_products')
         msg_type = 'info'
