@@ -1,18 +1,25 @@
 # -*- coding: utf-8 -*-
-
-import re
-import json
-
-from types import ClassType
+from AccessControl import getSecurityManager
+from AccessControl import ModuleSecurityInfo
+from AccessControl import Unauthorized
+from Acquisition import aq_base
+from Acquisition import aq_get
+from Acquisition import aq_inner
+from Acquisition import aq_parent
+from App.Common import package_home
+from App.ImageFile import ImageFile
+from DateTime import DateTime
+from DateTime.interfaces import DateTimeError
 from os.path import join, abspath, split
-
-import pkg_resources
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.registry.interfaces import IRegistry
+from Products.CMFCore.permissions import ManageUsers
+from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.utils import ToolInit as CMFCoreToolInit
+from Products.CMFPlone import PloneMessageFactory as _
+from types import ClassType
 from webdav.interfaces import IWriteLock
-
-import zope.interface
-from zope.interface import implementedBy
+from zope import schema
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.component import queryMultiAdapter
@@ -20,24 +27,15 @@ from zope.component import queryUtility
 from zope.component.hooks import getSite
 from zope.deprecation import deprecated
 from zope.i18n import translate
+from zope.interface import implementedBy
 from zope.publisher.interfaces.browser import IBrowserRequest
-from zope import schema
 
+import json
 import OFS
-from AccessControl import getSecurityManager, Unauthorized
-from AccessControl import ModuleSecurityInfo
-from Acquisition import aq_get
-from Acquisition import aq_base, aq_inner, aq_parent
-from App.Common import package_home
-from App.ImageFile import ImageFile
-from DateTime import DateTime
-from DateTime.interfaces import DateTimeError
-from Products.CMFCore.permissions import ManageUsers
-from Products.CMFCore.utils import ToolInit as CMFCoreToolInit
-from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import PloneMessageFactory as _
-
+import pkg_resources
+import re
 import transaction
+import zope.interface
 
 security = ModuleSecurityInfo()
 security.declarePrivate('deprecated')
@@ -97,8 +95,7 @@ def _getDefaultPageView(obj, request):
     """
     view = queryMultiAdapter((obj, request), name='default_page')
     if view is None:
-        # XXX: import here to avoid a circular dependency
-        from plone.app.layout.navigation.defaultpage import DefaultPage
+        from Products.CMFPlone.browser.defaultpage import DefaultPage
         view = DefaultPage(obj, request)
     return view
 
@@ -268,7 +265,7 @@ class RealIndexIterator(object):
         return result
 
 
-security.declarePrivate('ToolInit')
+@security.private
 class ToolInit(CMFCoreToolInit):
 
     def getProductContext(self, context):
@@ -392,7 +389,7 @@ def versionTupleFromString(v_str):
         >>> versionTupleFromString('foo') is None
         True
         """
-    regex_str = "(^\d+)[.]?(\d*)[.]?(\d*)[- ]?(alpha|beta|candidate|final|a|b|rc)?(\d*)"
+    regex_str = "(^\d+)[.]?(\d*)[.]?(\d*)[- ]?(alpha|beta|candidate|final|a|b|rc)?(\d*)"  # noqa
     v_regex = re.compile(regex_str)
     match = v_regex.match(v_str)
     if match is None:

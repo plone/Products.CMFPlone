@@ -8,6 +8,11 @@ Changelog
 5.0b4 (unreleased)
 ----------------
 
+- move Plone specific ``getDefaultPage`` (magic) code from plone.app.layout
+  over to Products.CMFPlone. This avoids a circular dependency. Also its
+  not really layout only related code.
+  [jensens]
+
 - Fix add-ons to be installed using CMFQuickInstaller (restore support
   for Extensions/Install.py)
   [datakurre]
