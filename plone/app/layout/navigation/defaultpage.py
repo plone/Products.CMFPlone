@@ -1,34 +1,23 @@
-import warnings
-from zope.component import queryAdapter
-from zope.component import queryUtility
-from zope.interface import implements
-
+# -*- coding: utf-8 -*-
 from Acquisition import aq_inner, aq_base
+from plone.app.layout.navigation.interfaces import IDefaultPage
+from Products.BTreeFolder2.BTreeFolder2 import BTreeFolder2Base
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFDynamicViewFTI.interfaces import IBrowserDefault
 from Products.CMFDynamicViewFTI.interfaces import IDynamicViewTypeInformation
 from Products.Five.browser import BrowserView
+from zope.component import queryAdapter
+from zope.component import queryUtility
+from zope.interface import implementer
 
-from plone.app.layout.navigation.interfaces import IDefaultPage
 
-
+@implementer(IDefaultPage)
 class DefaultPage(BrowserView):
-    implements(IDefaultPage)
 
-    def isDefaultPage(self, obj, context_=None):
-        if context_ is not None:
-            warnings.warn("The context_ parameter for isDefaultPage was never "
-                          "implemented and will be removed in Plone 4.",
-                          DeprecationWarning, 1)
-
+    def isDefaultPage(self, obj):
         return isDefaultPage(aq_inner(self.context), obj)
 
-    def getDefaultPage(self, context_=None):
-        if context_ is not None:
-            warnings.warn("The context_ parameter for getDefaultPage was "
-                          "never implemented and will be removed in Plone 4.",
-                          DeprecationWarning, 1)
-
+    def getDefaultPage(self):
         return getDefaultPage(aq_inner(self.context))
 
 
@@ -39,10 +28,12 @@ def isDefaultPage(container, obj):
     with the default_page property, or using IBrowserDefault.
     """
     parentDefaultPage = getDefaultPage(container)
-    if (parentDefaultPage is None or '/' in parentDefaultPage
-            or not hasattr(obj, 'getId')):
-        return False
-    return (parentDefaultPage == obj.getId())
+    precondition = (
+        parentDefaultPage is not None
+        and '/' not in parentDefaultPage
+        and hasattr(obj, 'getId')
+    )
+    return precondition and (parentDefaultPage == obj.getId())
 
 
 def getDefaultPage(context):
@@ -50,27 +41,30 @@ def getDefaultPage(context):
     the following lookup rules:
 
         1. A content object called 'index_html' wins
-        2. If the folder implements IBrowserDefault, query this
-        3. Else, look up the property default_page on the object
-            - Note that in this case, the returned id may *not* be of an
-              object in the folder, since it could be acquired from a
-              parent folder or skin layer
+        2. Else check for IBrowserDefault, either if the container implements
+           it or if an adapter exists. In both cases fetch its FTI and either
+           take it if it implements IDynamicViewTypeInformation or adapt it to
+           IDynamicViewTypeInformation. call getDefaultPage on the implementer
+           and take value if given.
+        3. Else, look up the attribute default_page on the object, without
+           acquisition in place
+        3.1 look for a content in the container with the id, no acquisition!
+        3.2 look for a content at portal, with acquisition
         4. Else, look up the property default_page in site_properties for
-            magic ids and test these
+           magic ids and test these
 
     The id of the first matching item is then used to lookup a translation
     and if found, its id is returned. If no default page is set, None is
     returned. If a non-folderish item is passed in, return None always.
     """
-    # The list of ids where we look for default
-    ids = {}
+    # The ids where we look for default - must support __contains__
+    ids = set()
 
-    # For BTreeFolders we just use the has_key, otherwise build a dict
-    if hasattr(aq_base(context), 'has_key'):
+    # For BTreeFolders we just use the __contains__ otherwise build a set
+    if isinstance(aq_base(context), BTreeFolder2Base):
         ids = context
     elif hasattr(aq_base(context), 'objectIds'):
-        for id in context.objectIds():
-            ids[id] = 1
+        ids = set(context.objectIds())
 
     # 1. test for contentish index_html
     if 'index_html' in ids:
@@ -94,7 +88,7 @@ def getDefaultPage(context):
                 if page is not None:
                     return page
 
-    # 3. Test for default_page property in folder, then skins
+    # 3.1 Test for default_page attribute in folder, no acquisition
     pages = getattr(aq_base(context), 'default_page', [])
     if isinstance(pages, basestring):
         pages = [pages]
@@ -104,18 +98,21 @@ def getDefaultPage(context):
 
     portal = queryUtility(ISiteRoot)
     # Might happen during portal creation
-    if portal is not None:
-        for page in pages:
-            if portal.unrestrictedTraverse(page, None):
-                return page
+    if portal is None:
+        return
 
-        # 4. Test for default sitewide default_page setting
-        pp = getattr(portal, 'portal_properties', None)
-        if pp is not None:
-            site_properties = getattr(pp, 'site_properties', None)
-            if site_properties is not None:
-                for page in site_properties.getProperty('default_page', []):
-                    if page in ids:
-                        return page
+    # 3.2 Test for default page in portal, acquire
+    for page in pages:
+        if portal.unrestrictedTraverse(page, None):
+            return page
 
-    return None
+    # 4. Test for default sitewide default_page setting
+    pp = getattr(portal, 'portal_properties', None)
+    if pp is not None:
+        site_properties = getattr(pp, 'site_properties', None)
+        if site_properties is not None:
+            for page in site_properties.getProperty('default_page', []):
+                if page in ids:
+                    return page
+
+    return

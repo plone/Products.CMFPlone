@@ -4,8 +4,14 @@ Changelog
 2.5.10 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Remove deprecated ``context`` parameter from ``DefaultPage`` methods.
+  [jensens]
 
+- minor cleanup in getDefaultPage function
+  [jensens[]
+
+- Added a test for the complex getDefaultPage function
+  [jensens]
 
 2.5.9 (2015-07-21)
 ------------------
