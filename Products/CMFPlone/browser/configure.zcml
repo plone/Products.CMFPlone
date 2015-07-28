@@ -200,7 +200,7 @@
 
     <!-- Default Page View -->
     <browser:page
-      for="Products.CMFCore.interfaces.IFolderish"
+      for="OFS.interfaces.IZopeObject"
       name="default_page"
       class=".defaultpage.DefaultPage"
       permission="zope.Public"
