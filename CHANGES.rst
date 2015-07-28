@@ -6,7 +6,7 @@ Changelog
 =========
 
 5.0b4 (unreleased)
-----------------
+------------------
 
 - Fix add-ons to be installed using CMFQuickInstaller (restore support
   for Extensions/Install.py)
