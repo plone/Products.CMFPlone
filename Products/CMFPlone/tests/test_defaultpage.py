@@ -50,7 +50,7 @@ class DefaultPageTestCase(unittest.TestCase):
         # 3) fti should return it
         self.assertEqual(
             'd1',
-            fti.get_default_page(self.folder, check_exists=True)
+            fti.getDefaultPage(self.folder, check_exists=True)
         )
 
         # now test since we're sure everythings set up correctly
