@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from Acquisition import aq_base
+from Acquisition import aq_parent
+from Acquisition import aq_inner
 from Products.BTreeFolder2.BTreeFolder2 import BTreeFolder2Base
 from Products.CMFCore.interfaces import IFolderish
 from Products.CMFCore.interfaces import ISiteRoot
@@ -7,6 +9,7 @@ from Products.CMFDynamicViewFTI.interfaces import IBrowserDefault
 from Products.CMFDynamicViewFTI.interfaces import IDynamicViewTypeInformation
 from zope.component import queryAdapter
 from zope.component import queryUtility
+from zope.component import queryMultiAdapter
 
 
 def get_default_page(context):
@@ -106,3 +109,33 @@ def is_default_page(container, obj):
         and hasattr(aq_base(obj), 'getId')
     )
     return precondition and (parent_default_page == obj.getId())
+
+
+def _getDefaultPageView(obj, request):
+    """This is a nasty hack because the view lookup fails when it occurs too
+       early in the publishing process because the request isn't marked with
+       the default skin.  Explicitly marking the request appears to cause
+       connection errors, so we just instantiate the view manually.
+    """
+    view = queryMultiAdapter((obj, request), name='default_page')
+    if view is None:
+        # mask circular import
+        from Products.CMFPlone.browser.defaultpage import DefaultPage
+        view = DefaultPage(obj, request)
+    return view
+
+
+def check_default_page_via_view(obj, request):
+    container = aq_parent(aq_inner(obj))
+    if container is None:
+        return False
+    view = _getDefaultPageView(container, request)
+    return view.isDefaultPage(obj)
+
+
+def get_default_page_via_view(obj, request):
+    # Short circuit if we are not looking at a Folder
+    if not obj.isPrincipiaFolderish:
+        return None
+    view = _getDefaultPageView(obj, request)
+    return view.getDefaultPage()
