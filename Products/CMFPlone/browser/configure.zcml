@@ -200,7 +200,7 @@
 
     <!-- Default Page View -->
     <browser:page
-      for="OFS.interfaces.IZopeObject"
+      for="OFS.interfaces.ITraversable"
       name="default_page"
       class=".defaultpage.DefaultPage"
       permission="zope.Public"
