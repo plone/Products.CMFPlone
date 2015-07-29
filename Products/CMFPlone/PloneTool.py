@@ -1,59 +1,58 @@
-from email.Utils import getaddresses
-import re
-import sys
-from types import UnicodeType, StringType
-import urlparse
-import transaction
-
-from plone.registry.interfaces import IRegistry
-
-from zope.component import queryAdapter
-from zope.component import getUtility
-
-from zope.deprecation import deprecate
-from zope.interface import implements
-from zope.event import notify
-from zope.lifecycleevent import ObjectModifiedEvent
-
-from AccessControl import ClassSecurityInfo, Unauthorized
+# -*- coding: utf-8 -*-
+from AccessControl import ClassSecurityInfo
 from AccessControl import getSecurityManager
+from AccessControl import Unauthorized
+from AccessControl.requestmethod import postonly
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
+from App.class_init import InitializeClass
 from ComputedAttribute import ComputedAttribute
 from DateTime import DateTime
-from App.class_init import InitializeClass
-from OFS.SimpleItem import SimpleItem
+from email.Utils import getaddresses
 from OFS.ObjectManager import bad_id
-from ZODB.POSException import ConflictError
-
-from Products.CMFCore.utils import UniqueObject
+from OFS.SimpleItem import SimpleItem
+from plone.registry.interfaces import IRegistry
+from Products.CMFCore.interfaces import IDublinCore
+from Products.CMFCore.interfaces import IMutableDublinCore
+from Products.CMFCore.permissions import AccessContentsInformation
+from Products.CMFCore.permissions import ManagePortal
+from Products.CMFCore.permissions import ManageUsers
+from Products.CMFCore.permissions import ModifyPortalContent
+from Products.CMFCore.permissions import View
 from Products.CMFCore.utils import getToolByName
-from Products.CMFCore import permissions
-from Products.CMFCore.permissions import AccessContentsInformation, \
-                        ManagePortal, ManageUsers, ModifyPortalContent, View
-from Products.CMFCore.interfaces import IDublinCore, IMutableDublinCore
+from Products.CMFCore.utils import UniqueObject
 from Products.CMFCore.WorkflowCore import WorkflowException
-from Products.CMFPlone.DublinCore import DefaultDublinCoreImpl
 from Products.CMFDynamicViewFTI.interfaces import IBrowserDefault
-from Products.CMFPlone.interfaces import ISearchSchema
-from Products.CMFPlone.interfaces import ISiteSchema
+from Products.CMFPlone import utils
+from Products.CMFPlone.defaultpage import check_default_page_via_view
+from Products.CMFPlone.defaultpage import get_default_page_via_view
 from Products.CMFPlone.events import ReorderedEvent
-from Products.CMFPlone.interfaces import IPloneTool
 from Products.CMFPlone.interfaces import INonStructuralFolder
+from Products.CMFPlone.interfaces import IPloneTool
+from Products.CMFPlone.interfaces import ISearchSchema
 from Products.CMFPlone.interfaces import ISecuritySchema
+from Products.CMFPlone.interfaces import ISiteSchema
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper
-from Products.CMFPlone import utils
+from Products.CMFPlone.utils import base_hasattr
 from Products.CMFPlone.utils import log
 from Products.CMFPlone.utils import log_exc
-from Products.CMFPlone.utils import transaction_note
-from Products.CMFPlone.utils import base_hasattr
 from Products.CMFPlone.utils import safe_hasattr
+from Products.CMFPlone.utils import transaction_note
 from Products.statusmessages.interfaces import IStatusMessage
-from AccessControl.requestmethod import postonly
-from plone.app.linkintegrity.exceptions \
-    import LinkIntegrityNotificationException
+from types import UnicodeType
+from ZODB.POSException import ConflictError
+from zope.component import getUtility
+from zope.component import queryAdapter
+from zope.deprecation import deprecate
+from zope.event import notify
+from zope.interface import implementer
+from zope.lifecycleevent import ObjectModifiedEvent
+import re
+import sys
+import transaction
+import urlparse
 
 
 _marker = utils._marker
@@ -64,7 +63,7 @@ FLOOR_DATE = __FLOOR_DATE = DateTime(1970, 0)  # always effective
 BAD_CHARS = bad_id.__self__.findall
 
 # max 63 chars per label in domains, see RFC1035
-EMAIL_RE = re.compile(r"^(\w&.%#$&'\*+-/=?^_`{}|~]+!)*[\w&.%#$&'\*+-/=?^_`{}|~]+@(([0-9a-z]([0-9a-z-]*[0-9a-z])?\.)+[a-z]{2,63}|([0-9]{1,3}\.){3}[0-9]{1,3})$", re.IGNORECASE)
+EMAIL_RE = re.compile(r"^(\w&.%#$&'\*+-/=?^_`{}|~]+!)*[\w&.%#$&'\*+-/=?^_`{}|~]+@(([0-9a-z]([0-9a-z-]*[0-9a-z])?\.)+[a-z]{2,63}|([0-9]{1,3}\.){3}[0-9]{1,3})$", re.IGNORECASE)  # noqa
 # used to find double new line (in any variant)
 EMAIL_CUTOFF_RE = re.compile(r".*[\n\r][\n\r]")
 
@@ -84,10 +83,11 @@ METADATA_DCNAME = {
     'Format'           : 'DC.format',
     'Language'         : 'DC.language',
     'Rights'           : 'DC.rights',
-    }
+}
 METADATA_DC_AUTHORFIELDS = ('Creator', 'Contributors', 'Publisher')
 
 
+@implementer(IPloneTool)
 class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     """Various utility methods."""
 
@@ -99,9 +99,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     # Prefix for forms fields!?
     field_prefix = 'field_'
 
-    implements(IPloneTool)
-
-    security.declareProtected(ManageUsers, 'setMemberProperties')
+    @security.protected(ManageUsers)
     def setMemberProperties(self, member, REQUEST=None, **properties):
         pas = getToolByName(self, 'acl_users')
         if safe_hasattr(member, 'getId'):
@@ -109,7 +107,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         user = pas.getUserById(member)
         user.setProperties(**properties)
 
-    security.declarePublic('getSiteEncoding')
+    @security.public
     @deprecate(('`getSiteEncoding` is deprecated. Plone only supports UTF-8 '
                 'currently. This method always returns "utf-8"'))
     def getSiteEncoding(self):
@@ -122,7 +120,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         """
         return 'utf-8'
 
-    security.declarePublic('portal_utf8')
+    @security.public
     def portal_utf8(self, str, errors='strict'):
         """ Transforms an string in portal encoding to utf8.
 
@@ -135,7 +133,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         """
         return utils.portal_utf8(self, str, errors)
 
-    security.declarePublic('utf8_portal')
+    @security.public
     def utf8_portal(self, str, errors='strict'):
         """ Transforms an utf8 string to portal encoding.
 
@@ -148,7 +146,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         """
         return utils.utf8_portal(self, str, errors)
 
-    security.declarePrivate('getMailHost')
+    @security.private
     def getMailHost(self):
         """ Gets the MailHost.
 
@@ -159,7 +157,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         """
         return getattr(aq_parent(self), 'MailHost')
 
-    security.declarePublic('validateSingleNormalizedEmailAddress')
+    @security.public
     def validateSingleNormalizedEmailAddress(self, address):
         """Lower-level function to validate a single normalized email address,
         see validateEmailAddress.
@@ -168,7 +166,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             return False
 
         sub = EMAIL_CUTOFF_RE.match(address)
-        if sub != None:
+        if sub is not None:
             # Address contains two newlines (possible spammer relay attack)
             return False
 
@@ -178,14 +176,14 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             return True
         return False
 
-    security.declarePublic('validateSingleEmailAddress')
+    @security.public
     def validateSingleEmailAddress(self, address):
         """Validate a single email address, see also validateEmailAddresses."""
         if not isinstance(address, basestring):
             return False
 
         sub = EMAIL_CUTOFF_RE.match(address)
-        if sub != None:
+        if sub is not None:
             # Address contains two newlines (spammer attack using
             # "address\n\nSpam message")
             return False
@@ -200,7 +198,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 return False
         return True
 
-    security.declarePublic('validateEmailAddresses')
+    @security.public
     def validateEmailAddresses(self, addresses):
         """Validate a list of possibly several email addresses, see also
         validateSingleEmailAddress.
@@ -209,7 +207,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             return False
 
         sub = EMAIL_CUTOFF_RE.match(addresses)
-        if sub != None:
+        if sub is not None:
             # Addresses contains two newlines (spammer attack using
             # "To: list\n\nSpam message")
             return False
@@ -220,7 +218,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 return False
         return True
 
-    security.declarePublic('editMetadata')
+    @security.public
     def editMetadata(self, obj, allowDiscussion=None, title=None,
                      subject=None, description=None, contributors=None,
                      effective_date=None, expiration_date=None, format=None,
@@ -297,9 +295,10 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             parent.manage_renameObject(obj.getId(), id)
 
     def _makeTransactionNote(self, obj, msg=''):
-        #TODO Why not aq_parent()?
-        relative_path = '/'.join(getToolByName(self, 'portal_url') \
-                                    .getRelativeContentPath(obj)[:-1])
+        # TODO Why not aq_parent()?
+        relative_path = '/'.join(
+            getToolByName(self, 'portal_url').getRelativeContentPath(obj)[:-1]
+        )
         if not msg:
             msg = relative_path + '/' + obj.title_or_id() \
                     + ' has been modified.'
@@ -311,7 +310,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         if not transaction.get().description:
             transaction_note(msg)
 
-    security.declarePublic('contentEdit')
+    @security.public
     def contentEdit(self, obj, **kwargs):
         """Encapsulates how the editing of content occurs."""
         try:
@@ -323,7 +322,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             self._renameObject(obj, id=kwargs['id'].strip())
         self._makeTransactionNote(obj)
 
-    security.declarePublic('availableMIMETypes')
+    @security.public
     def availableMIMETypes(self):
         """Returns a map of mimetypes.
 
@@ -332,7 +331,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         mtr = getToolByName(self, 'mimetypes_registry')
         return mtr.list_mimetypes()
 
-    security.declareProtected(View, 'getWorkflowChainFor')
+    @security.protected(View)
     def getWorkflowChainFor(self, object):
         """Proxy the request for the chain to the workflow tool, as
         this method is private there.
@@ -347,7 +346,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             pass
         return wfs
 
-    security.declareProtected(View, 'getIconFor')
+    @security.protected(View)
     def getIconFor(self, category, id, default=_marker, context=None):
         """Get an icon for an action, from its icon_expr.
         """
@@ -373,7 +372,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         return icon
 
-    security.declareProtected(View, 'getReviewStateTitleFor')
+    @security.protected(View)
     def getReviewStateTitleFor(self, obj):
         """Utility method that gets the workflow state title for the
         object's review_state.
@@ -399,7 +398,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                     return w.states[objstate].title or objstate
         return None
 
-    security.declareProtected(ManagePortal, 'changeOwnershipOf')
+    @security.protected(ManagePortal)
     def changeOwnershipOf(self, object, userid, recursive=0, REQUEST=None):
         """Changes the ownership of an object."""
         membership = getToolByName(self, 'portal_membership')
@@ -439,15 +438,17 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             catalog_tool = getToolByName(self, 'portal_catalog')
             purl = getToolByName(self, 'portal_url')
             _path = purl.getRelativeContentURL(object)
-            subobjects = [b.getObject() for b in
-                         catalog_tool(path={'query': _path, 'level': 1})]
+            subobjects = [
+                b.getObject()
+                for b in catalog_tool(path={'query': _path, 'level': 1})
+            ]
             for obj in subobjects:
                 fixOwnerRole(obj, user.getId())
                 if base_hasattr(obj, 'reindexObject'):
                     obj.reindexObject()
     changeOwnershipOf = postonly(changeOwnershipOf)
 
-    security.declarePublic('urlparse')
+    @security.public
     def urlparse(self, url):
         """Returns the pieces of url in a six-part tuple.
 
@@ -465,7 +466,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         """
         return tuple(urlparse.urlparse(url))
 
-    security.declarePublic('urlunparse')
+    @security.public
     def urlunparse(self, url_tuple):
         """Puts a url back together again, in the manner that
         urlparse breaks it.
@@ -475,7 +476,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         >>> ptool = self.portal.plone_utils
 
-        >>> ptool.urlunparse(('http', 'plone.org', '/support', '', '', 'users'))
+        >>> ptool.urlunparse(
+        ...     ('http', 'plone.org', '/support', '', '', 'users'))
         'http://plone.org/support#users'
         """
         return urlparse.urlunparse(url_tuple)
@@ -488,7 +490,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         s = sys.exc_info()[:2]
         if s[0] == None:
             return None
-        if type(s[0]) == type(''):
+        if isinstance(s[0], basestring):
             return s[0]
         return str(s[1])
 
@@ -499,7 +501,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         """
         log_exc()
 
-    security.declarePublic('createSitemap')
+    @security.public
     def createSitemap(self, context, request=None):
         """Returns a sitemap navtree structure.
         """
@@ -512,11 +514,11 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         """
         return utils.addToNavTreeResult(result, data)
 
-    security.declareProtected(AccessContentsInformation, 'typesToList')
+    @security.protected(AccessContentsInformation)
     def typesToList(self):
         return utils.typesToList(self)
 
-    security.declarePublic('createNavTree')
+    @security.public
     def createNavTree(self, context, sitemap=None, request=None):
         """Returns a structure that can be used by navigation_tree_slot.
         """
@@ -524,7 +526,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             request = self.REQUEST
         return utils.createNavTree(context, request)
 
-    security.declarePublic('createBreadCrumbs')
+    @security.public
     def createBreadCrumbs(self, context, request=None):
         """Returns a structure for the portal breadcumbs.
         """
@@ -532,7 +534,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             request = self.REQUEST
         return utils.createBreadCrumbs(context, request)
 
-    security.declarePublic('good_id')
+    @security.public
     def good_id(self, id):
         """Exposes ObjectManager's bad_id test to skin scripts."""
         m = bad_id(id)
@@ -540,12 +542,12 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             return 0
         return 1
 
-    security.declarePublic('bad_chars')
+    @security.public
     def bad_chars(self, id):
         """Returns a list of the Bad characters."""
         return BAD_CHARS(id)
 
-    security.declarePublic('getInheritedLocalRoles')
+    @security.public
     def getInheritedLocalRoles(self, context):
         """Returns a tuple with the acquired local roles."""
         portal = getToolByName(context, 'portal_url').getPortalObject()
@@ -564,7 +566,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                         if user2 == user:
                             # Check which roles must be added to roles2
                             for role in roles:
-                                if not role in roles2:
+                                if role not in roles2:
                                     roles2.append(role)
                             found = 1
                             break
@@ -599,45 +601,30 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     #       : lookup rules for old-style content types
     #
 
-    security.declarePublic('isDefaultPage')
+    @security.public
     def isDefaultPage(self, obj, request=None):
         """Finds out if the given obj is the default page in its parent folder.
-
-        Only considers explicitly contained objects, either set as index_html,
-        with the default_page property, or using IBrowserDefault.
+        Uses the lookup rules of Plone.  Lookup happens over a view, for which
+        in theory a different implementation may exist.
         """
         if request is None:
             request = self.REQUEST
-        return utils.isDefaultPage(obj, request)
+        return check_default_page_via_view(obj, request)
 
-    security.declarePublic('getDefaultPage')
+    @security.public
     def getDefaultPage(self, obj, request=None):
         """Given a folderish item, find out if it has a default-page using
-        the following lookup rules:
-
-            1. A content object called 'index_html' wins
-            2. If the folder implements IBrowserDefault, query this
-            3. Else, look up the property default_page on the object
-                - Note that in this case, the returned id may *not* be of an
-                  object in the folder, since it could be acquired from a
-                  parent folder or skin layer
-            4. Else, look up the property default_page in site_properties for
-                magic ids and test these
-
-        The id of the first matching item is then used to lookup a translation
-        and if found, its id is returned. If no default page is set, None is
-        returned. If a non-folderish item is passed in, return None always.
+        the lookup rules of Plone (see Products.CMFPlone/defaultpage.py).
+        Lookup happens over a view, for which in theory a different
+        implementation may be used.
         """
         if request is None:
             if hasattr(self, 'REQUEST'):
                 request = self.REQUEST
         if request:
-            return utils.getDefaultPage(obj, request)
-        else:
-            # In case its executed from an event that does not have request
-            return None
+            return get_default_page_via_view(obj, request)
 
-    security.declarePublic('addPortalMessage')
+    @security.public
     def addPortalMessage(self, message, type='info', request=None):
         """\
         Call this once or more to add messages to be displayed at the
@@ -670,13 +657,13 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         long as they are processed before the portal_message macro is
         called by the main template. Example:
 
-          <tal:block tal:define="temp python:context.plone_utils.addPortalMessage('A random info message')" />
+          <tal:block tal:define="temp python:context.plone_utils.addPortalMessage('A random info message')" />  # noqa
         """
         if request is None:
             request = self.REQUEST
         IStatusMessage(request).add(message, type=type)
 
-    security.declarePublic('showPortalMessages')
+    @security.public
     def showPortalMessages(self, request=None):
         """\
         Return portal status messages that will be displayed when the
@@ -690,7 +677,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             request = self.REQUEST
         return IStatusMessage(request).show()
 
-    security.declarePublic('browserDefault')
+    @security.public
     def browserDefault(self, obj):
         """Sets default so we can return whatever we want instead of index_html.
 
@@ -702,7 +689,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         a template or other object to be acquired and displayed on the object.
         The path is determined as follows:
 
-        0. If we're coming from WebDAV, make sure we don't return a contained
+        0. If we're c oming from WebDAV, make sure we don't return a contained
             object "default page" ever
         1. If there is an index_html attribute (either a contained object or
             an explicit attribute) on the object, return that as the
@@ -773,8 +760,10 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                     return obj, [defaultPage]
                 # Avoid infinite recursion in the case that the page id == the
                 # object id
-                elif defaultPage != obj.getId() and \
-                     defaultPage != '/'.join(obj.getPhysicalPath()):
+                elif (
+                    defaultPage != obj.getId()
+                    and defaultPage != '/'.join(obj.getPhysicalPath())
+                ):
                     # For the default_page property, we may get things in the
                     # skin layers or with an explicit path - split this path
                     # to comply with the __browser_default__() spec
@@ -808,7 +797,9 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 # XXX: This isn't quite right since it assumes the action
                 # starts with ${object_url}.  Should we raise an error if
                 # it doesn't?
-                act = obj.getTypeInfo().getActionInfo('folder/folderlisting')['url'].split('/')[-1]
+                act = obj.getTypeInfo().getActionInfo(
+                    'folder/folderlisting'
+                )['url'].split('/')[-1]
                 return obj, [act]
             except ValueError:
                 pass
@@ -821,7 +812,9 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 # XXX: This isn't quite right since it assumes the action
                 # starts with ${object_url}.  Should we raise an error if
                 # it doesn't?
-                act = obj.getTypeInfo().getActionInfo('object/view')['url'].split('/')[-1]
+                act = obj.getTypeInfo().getActionInfo(
+                    'object/view'
+                )['url'].split('/')[-1]
                 return obj, [act]
             except ValueError:
                 pass
@@ -831,10 +824,11 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         #
 
         raise AttributeError(
-                "Failed to get a default page or view_action for %s"
-                    % (obj.absolute_url(),))
+            "Failed to get a default page or view_action for %s"
+            % (obj.absolute_url(),)
+        )
 
-    security.declarePublic('isStructuralFolder')
+    @security.public
     def isStructuralFolder(self, obj):
         """Checks if a given object is a "structural folder".
 
@@ -847,14 +841,12 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         >>> ptool.isStructuralFolder(self.folder)
         True
         """
-        if not obj.isPrincipiaFolderish:
-            return False
-        elif INonStructuralFolder.providedBy(obj):
-            return False
-        else:
-            return True
+        return (
+            obj.isPrincipiaFolderish
+            and not INonStructuralFolder.providedBy(obj)
+        )
 
-    security.declarePublic('acquireLocalRoles')
+    @security.public
     def acquireLocalRoles(self, obj, status=1, REQUEST=None):
         """If status is 1, allow acquisition of local roles (regular
         behaviour).
@@ -878,7 +870,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         obj.reindexObjectSecurity()
     acquireLocalRoles = postonly(acquireLocalRoles)
 
-    security.declarePublic('isLocalRoleAcquired')
+    @security.public
     def isLocalRoleAcquired(self, obj):
         """Returns local role acquisition blocking status.
 
@@ -888,7 +880,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             return False
         return True
 
-    security.declarePublic('getOwnerName')
+    @security.public
     def getOwnerName(self, obj):
         """ Returns the userid of the owner of an object.
 
@@ -903,7 +895,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             raise Unauthorized
         return obj.getOwner().getId()
 
-    security.declarePublic('normalizeString')
+    @security.public
     def normalizeString(self, text):
         """Normalizes a title to an id.
 
@@ -960,7 +952,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         """
         return utils.normalizeString(text, context=self)
 
-    security.declarePublic('listMetaTags')
+    @security.public
     def listMetaTags(self, context):
         """Lists meta tags helper.
 
@@ -1073,7 +1065,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         return result
 
-    security.declarePublic('getUserFriendlyTypes')
+    @security.public
     def getUserFriendlyTypes(self, typesList=None):
         """Get a list of types which are considered "user friendly" for search
         and selection purposes.
@@ -1100,18 +1092,18 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         friendlyTypes = set(types) - set(blacklistedTypes)
         return list(friendlyTypes)
 
-    security.declarePublic('reindexOnReorder')
+    @security.public
     def reindexOnReorder(self, parent):
         """ reindexing of "gopip" isn't needed any longer,
         but some extensions might need the info anyway :("""
         notify(ReorderedEvent(parent))
 
-    security.declarePublic('isIDAutoGenerated')
+    @security.public
     def isIDAutoGenerated(self, id):
         """Determine if an id is autogenerated"""
         return utils.isIDAutoGenerated(self, id)
 
-    security.declarePublic('getEmptyTitle')
+    @security.public
     def getEmptyTitle(self, translated=True):
         """ Returns string to be used for objects with no title or id.
 
@@ -1122,7 +1114,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         """
         return utils.getEmptyTitle(self, translated)
 
-    security.declarePublic('pretty_title_or_id')
+    @security.public
     def pretty_title_or_id(self, obj, empty_value=_marker):
         """Return the best possible title or id of an item, regardless
         of whether obj is a catalog brain or an object, but returning an
@@ -1130,7 +1122,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         """
         return utils.pretty_title_or_id(self, obj, empty_value=empty_value)
 
-    security.declarePublic('getMethodAliases')
+    @security.public
     def getMethodAliases(self, typeInfo):
         """Given an FTI, return the dict of method aliases defined on that
         FTI. If there are no method aliases (i.e. this FTI doesn't support it),
@@ -1145,7 +1137,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     # This is public because we don't know what permissions the user
     # has on the objects to be deleted.  The restrictedTraverse and
     # manage_delObjects calls should handle permission checks for us.
-    security.declarePublic('deleteObjectsByPaths')
+    @security.public
     def deleteObjectsByPaths(self, paths, handle_errors=True, REQUEST=None):
         failure = {}
         success = []
@@ -1176,7 +1168,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         return success, failure
     deleteObjectsByPaths = postonly(deleteObjectsByPaths)
 
-    security.declarePublic('transitionObjectsByPaths')
+    @security.public
     def transitionObjectsByPaths(self, workflow_action, paths, comment='',
                                  expiration_date=None, effective_date=None,
                                  include_children=False, handle_errors=True,
@@ -1213,7 +1205,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         return failure
     transitionObjectsByPaths = postonly(transitionObjectsByPaths)
 
-    security.declarePublic('renameObjectsByPaths')
+    @security.public
     def renameObjectsByPaths(self, paths, new_ids, new_titles,
                              handle_errors=True, REQUEST=None):
         failure = {}
@@ -1233,7 +1225,9 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 change_title = new_title and title != new_title
                 changed = False
                 if change_title:
-                    getSecurityManager().validate(obj, obj, 'setTitle', obj.setTitle)
+                    getSecurityManager().validate(
+                        obj, obj, 'setTitle', obj.setTitle
+                    )
                     obj.setTitle(new_title)
                     notify(ObjectModifiedEvent(obj))
                     changed = True
