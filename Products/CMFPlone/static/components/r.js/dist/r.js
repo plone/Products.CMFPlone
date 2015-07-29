@@ -25829,7 +25829,7 @@ define('build', function (require) {
                 url += '&';
             }
             url = url + "bust=" +  (new Date()).getTime();
-            return file.readFileAsync(path, encoding).then(function (text) {
+            return file.readFileAsync(url, encoding).then(function (text) {
                 require._cachedRawText[path] = text;
                 return text;
             });
