@@ -1,26 +1,17 @@
 # -*- coding: utf-8 -*-
+from zope.deferredimport import deprecated
 from zope.interface import Attribute
 from zope.interface import Interface
+
+deprecated(
+    "Import from Products.CMFPlone instead",
+    IDefaultPage='Products.CMFPlone.interfaces.defaultpage:DefaultPage',
+)
 
 
 class INavigationRoot(Interface):
     """A marker interface for signaling the navigation root.
     """
-
-
-class IDefaultPage(Interface):
-    """Interface for a view that can determine if its context is the
-    default page or not.
-    """
-
-    def isDefaultPage(obj):
-        """Finds out if the given obj is the default page for the
-        adapted object.
-        """
-
-    def getDefaultPage():
-        """Returns the id of the default page for the adapted object.
-        """
 
 
 class INavigationQueryBuilder(Interface):

@@ -4,11 +4,17 @@ Changelog
 2.5.10 (unreleased)
 -------------------
 
+- Move getDefaultPage, isDefaultPage, IDefaultPage and DefaultPage view to
+  Products.CMFPlone in order to avoid circular imports between both packages.
+  Moved test for it as well. Placed deferred deprecated imports for all old
+  names here.
+  [jensens]
+
 - Remove deprecated ``context`` parameter from ``DefaultPage`` methods.
   [jensens]
 
 - minor cleanup in getDefaultPage function
-  [jensens[]
+  [jensens]
 
 - Added a test for the complex getDefaultPage function
   [jensens]
