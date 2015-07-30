@@ -33,6 +33,7 @@ from Products.CMFPlone.interfaces import IPloneTool
 from Products.CMFPlone.interfaces import ISearchSchema
 from Products.CMFPlone.interfaces import ISecuritySchema
 from Products.CMFPlone.interfaces import ISiteSchema
+from Products.CMFPlone.log import log_deprecated
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper
 from Products.CMFPlone.utils import base_hasattr
@@ -1139,6 +1140,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     # manage_delObjects calls should handle permission checks for us.
     @security.public
     def deleteObjectsByPaths(self, paths, handle_errors=True, REQUEST=None):
+        log_deprecated("deleteObjectsByPaths is deprecated, you should use. "
+                       "plone.api.content.delete. This method no longer does link integrity checks")  # noqa
         failure = {}
         success = []
         # use the portal for traversal in case we have relative paths
@@ -1154,8 +1157,6 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 obj_parent.manage_delObjects([obj.getId()])
                 success.append('%s (%s)' % (obj.getId(), path))
             except ConflictError:
-                raise
-            except LinkIntegrityNotificationException:
                 raise
             except Exception, e:
                 if handle_errors:
@@ -1173,6 +1174,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                                  expiration_date=None, effective_date=None,
                                  include_children=False, handle_errors=True,
                                  REQUEST=None):
+        log_deprecated("transitionObjectsByPaths is deprecated")
         failure = {}
         # use the portal for traversal in case we have relative paths
         portal = getToolByName(self, 'portal_url').getPortalObject()
