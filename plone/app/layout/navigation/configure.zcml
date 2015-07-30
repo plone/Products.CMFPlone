@@ -6,12 +6,4 @@
         <allow interface=".interfaces.INavtreeStrategy" />
     </class>
 
-    <browser:page
-      for="*"
-      name="default_page"
-      class=".defaultpage.DefaultPage"
-      permission="zope.Public"
-      allowed_interface=".interfaces.IDefaultPage"
-      />
-
 </configure>
