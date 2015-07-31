@@ -11,7 +11,7 @@
       <span i18n:translate="description_copyright" tal:omit-tag="">
       The
       <span i18n:name="plonecms" tal:omit-tag="">
-           <a href="http://plone.org" i18n:translate="label_plone_cms">Plone<sup>&reg;</sup> Open Source CMS/WCM</a>
+           <a href="http://plone.com" i18n:translate="label_plone_cms">Plone<sup>&reg;</sup> Open Source CMS/WCM</a>
       </span>
       is
       <abbr title="Copyright" i18n:name="copyright" i18n:attributes="title title_copyright;">&copy;</abbr>
