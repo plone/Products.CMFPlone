@@ -4,10 +4,9 @@ from plone.memoize.view import memoize
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
 from Products.CMFPlone.browser.interfaces import IPlone
-from Products.CMFPlone.log import log_deprecated
 from Products.Five import BrowserView
 from zope.component import getMultiAdapter
-from zope.deprecation import deprecated
+from zope.deprecation import deprecate
 from zope.i18n import translate
 from zope.interface import implementer
 from zope.size import byteDisplay
@@ -120,7 +119,7 @@ class Plone(BrowserView):
 
         return False
 
-    @deprecated('showEditableBorder is renamed to showToolbar')
+    @deprecate('showEditableBorder is renamed to showToolbar')
     def showEditableBorder(self):
         # remove in 5.1
         return self.showToolbar()
@@ -229,16 +228,14 @@ class Plone(BrowserView):
             name=u'plone_context_state')
         return context_state.view_template_id()
 
-    # Deprecated in favour of @@plone_layout
-
+    @deprecate(
+        "@@plone_view/mark_view as been deprecated, you should use "
+        "@@plone_layout/mark_view"
+    )
     def mark_view(self, view):
         """Adds a marker interface to the view if it is "the" view for the
         context May only be called from a template.
         """
-        log_deprecated(
-            "@@plone_view/mark_view as been deprecated, you should use "
-            "@@plone_layout/mark_view"
-        )
         context = aq_inner(self.context)
         layout = getMultiAdapter((context, self.request), name=u'plone_layout')
         layout.mark_view(view)
@@ -250,7 +247,7 @@ class Plone(BrowserView):
             (context, self.request),
             name=u'plone_patterns_settings')()
 
-    @deprecated(  # remove in Plone 5.1
+    @deprecate(  # remove in Plone 5.1
         "@@plone_view/hide_columns as been deprecated, you should use "
         "@@plone_layout/hide_columns"
     )
@@ -261,7 +258,7 @@ class Plone(BrowserView):
         layout = getMultiAdapter((context, self.request), name=u'plone_layout')
         return layout.hide_columns(column_left, column_right)
 
-    @deprecated(  # remove in Plone 5.1
+    @deprecate(  # remove in Plone 5.1
         "@@plone_view/icons_visible as been deprecated, you should use "
         "@@plone_layout/icons_visible"
     )
@@ -272,7 +269,7 @@ class Plone(BrowserView):
         layout = getMultiAdapter((context, self.request), name=u'plone_layout')
         return layout.icons_visible()
 
-    @deprecated(  # remove in Plone 5.1
+    @deprecate(  # remove in Plone 5.1
         "@@plone_view/getIcon as been deprecated, you should use "
         "@@plone_layout/getIcon"
     )
@@ -287,7 +284,7 @@ class Plone(BrowserView):
         layout = getMultiAdapter((context, self.request), name=u'plone_layout')
         return layout.getIcon(item)
 
-    @deprecated(  # remove in Plone 5.1
+    @deprecate(  # remove in Plone 5.1
         "@@plone_view/have_portlets as been deprecated, you should "
         "use @@plone_layout/have_portlets"
     )
@@ -299,7 +296,7 @@ class Plone(BrowserView):
         layout = getMultiAdapter((context, self.request), name=u'plone_layout')
         return layout.have_portlets(manager_name, view=view)
 
-    @deprecated(  # remove in Plone 5.1
+    @deprecate(  # remove in Plone 5.1
         "@@plone_view/bodyClass as been deprecated, you should use "
         "@@plone_layout/bodyClass"
     )
