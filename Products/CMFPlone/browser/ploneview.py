@@ -6,7 +6,6 @@ from Products.CMFPlone import utils
 from Products.CMFPlone.browser.interfaces import IPlone
 from Products.CMFPlone.log import log_deprecated
 from Products.Five import BrowserView
-from plone.app.content.browser.folderfactories import _allowedTypes
 from zope.component import getMultiAdapter
 from zope.deprecation import deprecated
 from zope.i18n import translate
@@ -115,7 +114,7 @@ class Plone(BrowserView):
                 return True
 
         # Check to see if the user is able to add content
-        allowedTypes = [fti for fti in _allowedTypes(request, context)]
+        allowedTypes = context.allowedContentTypes()
         if allowedTypes:
             return True
 
