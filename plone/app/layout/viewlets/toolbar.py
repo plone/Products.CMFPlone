@@ -35,6 +35,8 @@ class ToolbarViewletManager(OrderedViewletManager):
             logo = settings.toolbar_logo
         except AttributeError:
             logo = '/++plone++static/plone-toolbarlogo.svg'
+        if not logo:
+            logo = '/++plone++static/plone-toolbarlogo.svg'
         return portal_url + logo
 
     def show_switcher(self):

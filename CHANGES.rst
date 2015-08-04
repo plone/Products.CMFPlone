@@ -4,6 +4,9 @@ Changelog
 2.5.10 (unreleased)
 -------------------
 
+- If toolbar logo is empty, use default
+  [vangheem]
+
 - Move getDefaultPage, isDefaultPage, IDefaultPage and DefaultPage view to
   Products.CMFPlone in order to avoid circular imports between both packages.
   Moved test for it as well. Placed deferred deprecated imports for all old
