@@ -8,9 +8,8 @@
     <dependency>profile-Products.CMFEditions:CMFEditions</dependency>
     <dependency>profile-Products.PlonePAS:PlonePAS</dependency>
     <dependency>profile-plone.app.discussion:default</dependency>
-    <dependency>profile-plone.app.intid:default</dependency>
+    <dependency>profile-plone.app.linkintegrity:default</dependency>
     <dependency>profile-plone.app.registry:default</dependency>
-    <dependency>profile-plone.app.relationfield:default</dependency>
     <dependency>profile-plone.app.theming:default</dependency>
     <dependency>profile-plone.app.users:default</dependency>
     <dependency>profile-plone.outputfilters:default</dependency>
