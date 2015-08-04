@@ -8,6 +8,10 @@ Changelog
 5.0b4 (unreleased)
 ------------------
 
+- fix #350: "plone.app.content circular dependency on Products.CMFPlone" - this
+  fixes the imports only, not on zcml/genericsetup level.
+  [jensens]
+
 - move Plone specific ``getDefaultPage`` (magic) code from plone.app.layout
   over to Products.CMFPlone. This avoids a circular dependency. Also its
   not really layout only related code.
