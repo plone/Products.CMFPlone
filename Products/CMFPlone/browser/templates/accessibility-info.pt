@@ -17,50 +17,47 @@
 
         <p i18n:translate="description_accessibility_info">
             This site uses the open source Content Management System <a href="http://plone.com" i18n:name="plone">Plone</a>. 
-            It meets the Web Content Accessibility Guidelines for people with disabilities, including blindness and low vision, 
-            deafness and hearing loss, learning disabilities, cognitive limitations, limited movement, speech disabilities, 
-            photosensitivity and combinations of these as outlined in <a href="http://www.w3.org/TR/WCAG20/"
-            (<acronym i18n:name="wcag"
-                      title="Web Content Accessibility Guidelines"
-                      i18n:attributes="title title_wcag;">WCAG</acronym> v2.0)</a>.<br></br><br></br>
-            It is also accessible to content authors with disabilities per the 
-            <a href="http://www.w3.org/TR/ATAG20/"></a><acronym i18n:name="atag"
+            It meets the Web Content Accessibility Guidelines (<a href="http://www.w3.org/TR/WCAG20/">
+            <acronym i18n:name="wcag"
+                  title="Web Content Accessibility Guidelines"
+                  i18n:attributes="title title_wcag;">WCAG</acronym> v2.0</a>) level 'AA' for people with disabilities, 
+            including blindness and low vision, deafness and hearing loss, learning disabilities, 
+            cognitive limitations, limited movement, speech disabilities, photosensitivity, 
+            and combinations of these.<br></br>
+            It is also accessible to content authors with disabilities per the level 'AA' Authoring Tool Accessibility Guidelines 
+            (<a href="http://www.w3.org/TR/ATAG20/">
+            <acronym i18n:name="atag"
                  title="Authoring Tool Accessibility Guidelines"
-                 i18n:attributes="title title_wcag;">ATAG</acronym> 2.0 guidelines</a>.         
+                 i18n:attributes="title title_wcag;">ATAG</acronym> 2.0</a>).         
 
         </p>
 
         <h2 i18n:translate="heading_accessibility_statement">Accessibility Statement</h2>
 
         <p i18n:translate="description_accessibility_statement">
-        We have undertaken to use our knowledge and understanding of the ways in which
-        different people access the Internet, to develop a web site that is clear and
-        simple for everybody to use.
+        This site was designed to accommodate the different ways people access and use the Internet.
         </p>
 
         <h3 i18n:translate="heading_validation">Validation</h3>
 
         <p i18n:translate="description_validation">
-       The site uses assistive technology like WAI-ARIA roles to the current best practices.
-       However, both standards and the actual content of sites vary over time.         
+       The site uses assistive technology like WAI-ARIA roles to the current best practices;
+       however, site standards and content vary over time.         
 
-        If anything on this web site does not validate correctly, please contact the
+        If this web site does not validate correctly, please contact the
         <span i18n:name="site_admin"><a href="/contact-info"
               tal:attributes="href string:${context/portal_url}/contact-info"
-              i18n:translate="label_site_admin">Site Administration</a></span>,
-        and not the Plone Team.
+              i18n:translate="label_site_admin">Site Administration</a></span>.
         </p>
 
         <p i18n:translate="description_wcag_aa_rating">
-        We aim for the 'AA' level of version 2.0 of both
+        A number of checkpoints in 
         <acronym i18n:name="wcag"
                  title="Web Content Accessibility Guidelines"
-                 i18n:attributes="title title_wcag;">WCAG</acronym> and <acronym i18n:name="atag"
+                 i18n:attributes="title title_wcag;">WCAG</acronym> 2.0 and <acronym i18n:name="atag"
                  title="Authoring Tool Accessibility Guidelines"
-                 i18n:attributes="title title_wcag;">ATAG</acronym>
-        We are aware however, that a number of checkpoints in these guidelines are
-        subjective &mdash; and although we are sure that we have met them satisfactory,
-        there may be instances where interpretation may vary.
+                 i18n:attributes="title title_wcag;">ATAG</acronym> 2.0 guidelines are
+        subjective; there may be instances where interpretations vary.
         </p>
     </div>
 
