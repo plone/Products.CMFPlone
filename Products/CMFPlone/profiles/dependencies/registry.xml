@@ -88,7 +88,9 @@
   <records interface="Products.CMFPlone.interfaces.syndication.ISiteSyndicationSettings" />
   <records interface="Products.CMFPlone.interfaces.ITinyMCESchema"
            prefix="plone">
-    <value key="content_css">++plone++static/components/tinymce-builded/js/tinymce/skins/lightgray/content.min.css</value>
+    <value key="content_css">
+      <element>++plone++static/components/tinymce-builded/js/tinymce/skins/lightgray/content.min.css</element>
+    </value>
   </records>
   <record name="plone.resources.development">
     <field type="plone.registry.field.Bool">

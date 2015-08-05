@@ -36,6 +36,11 @@ Changelog
 - Rework language selection in @@plone-addsite.
   [jaroel]
 
+- Turn @@tinymce-controlpanel ``content_css`` field into a list, so we can add
+  several CSS URLs (useful when add-ons need to provide extra TinyMCE styles),
+  and fix TinyMCE config getter so it considers the ``content_css`` value.
+  [ebrehault]
+
 
 5.0b3 (2015-07-20)
 ------------------
