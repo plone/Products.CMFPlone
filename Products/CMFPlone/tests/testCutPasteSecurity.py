@@ -37,7 +37,7 @@ class TestCutPasteSecurity(PloneTestCase):
 
         self.login('user2')
         folder = self.membership.getHomeFolder('user1')
-        self.assertRaises(CopyError, folder.manage_renameObject,
+        self.assertRaises(Unauthorized, folder.manage_renameObject,
                           'testrename', 'bad')
 
     def testCopyMemberContent(self):
