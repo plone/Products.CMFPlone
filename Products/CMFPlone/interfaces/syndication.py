@@ -162,12 +162,12 @@ class ISiteSyndicationSettings(Interface):
 
     search_rss_enabled = schema.Bool(
         title=_(u'Search RSS enabled'),
-        description=_(u'Allows users to subscribe to feeds of search results'),
+        description=_(u'Allows users to subscribe to feeds of search results.'),
         default=True)
 
     show_author_info = schema.Bool(
         title=_(u'Show author info'),
-        description=_(u'Should feeds include author information'),
+        description=_(u'If feeds should include author information.'),
         default=True)
 
     max_items = schema.Int(
@@ -203,11 +203,11 @@ class ISiteSyndicationSettings(Interface):
     show_syndication_button = schema.Bool(
         title=_(u"Show settings button"),
         description=_(u"Makes it possible to customize syndication settings "
-                      u"for particular folders and collections "))
+                      u"for particular folders and collections. "))
 
     show_syndication_link = schema.Bool(
         title=_(u"Show feed link"),
-        description=_(u"Enable RSS link document action on the syndication "
+        description=_(u"Enable RSS link document action on the syndicated "
                       u"content item."))
 
 
