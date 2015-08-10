@@ -137,6 +137,13 @@
       <span i18n:translate="label_zmi_link_description"> &#151; low-level technical configuration.</span>
     </p>
     <p>
+      <span i18n:translate="label_plone_com_description"> For an introduction to Plone, success stories, demos, providers, visit</span>
+      <a href="http://plone.com"
+        title="Plone.com"
+        target="_blank"
+        i18n:attributes="title label_plone_com_title;">plone.com</a>.
+    </p>
+    <p>
       <span i18n:translate="label_plone_org_description"> For documentation, add-ons, support, community, visit</span>
       <a href="http://plone.org"
         title="Plone Community Home"
