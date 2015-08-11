@@ -4,6 +4,9 @@ Changelog
 2.5.10 (unreleased)
 -------------------
 
+- Add view url to document as data-view-url
+  [ale-rt]
+
 - If toolbar logo is empty, use default
   [vangheem]
 

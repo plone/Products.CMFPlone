@@ -16,11 +16,27 @@ class TestPatternSettings(GlobalsTestCase):
             self.assertTrue(isinstance(key, basestring))
             self.assertTrue(isinstance(value, basestring))
 
-    def testUrls(self):
+    def testFolderUrls(self):
         settings = PatternsSettings(self.folder, self.app.REQUEST)
         result = settings()
         self.assertEquals(result['data-base-url'], self.folder.absolute_url())
         self.assertEquals(result['data-portal-url'], self.portal.absolute_url())
+        self.assertEquals(result['data-view-url'], self.folder.absolute_url())
+
+    def testFileUrls(self):
+        self.folder.invokeFactory('File', 'file1')
+        file_obj = self.folder['file1']
+        settings = PatternsSettings(file_obj, self.app.REQUEST)
+        result = settings()
+        self.assertEquals(result['data-base-url'], file_obj.absolute_url())
+        self.assertEquals(
+            result['data-portal-url'],
+            self.portal.absolute_url()
+        )
+        self.assertEquals(
+            result['data-view-url'],
+            file_obj.absolute_url() + '/view'
+        )
 
     def testPatternOptions(self):
         registry = getUtility(IRegistry)
