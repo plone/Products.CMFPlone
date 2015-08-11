@@ -23,22 +23,31 @@ Test Teardown  Run keywords  Report test status  Close all browsers
 
 *** Test Cases ***************************************************************
 
-Scenario: When page is linked show warning
-  Given a logged-in site administrator
-    a page to link to
-    and a page to edit
-    and a link in rich text
-    should show warning when deleting page
+# Scenario: When page is linked show warning
+#   Given a logged-in site administrator
+#     a page to link to
+#     and a page to edit
+#     and a link in rich text
+#     should show warning when deleting page
 
 
-Scenario: After you fix linked page no longer show warning
+# Scenario: After you fix linked page no longer show warning
+#   Given a logged-in site administrator
+#   a page to link to
+#     and a page to edit
+#     and a link in rich text
+#   should show warning when deleting page
+#     remove link to page
+#   should not show warning when deleting page
+
+Scenario: Show warning when deleting linked item from folder_contents
   Given a logged-in site administrator
   a page to link to
     and a page to edit
     and a link in rich text
-  should show warning when deleting page
+  should show warning when deleting page from folder_contents
     remove link to page
-  should not show warning when deleting page
+  should not show warning when deleting page from folder_contents
 
 
 *** Keywords *****************************************************************
@@ -69,6 +78,31 @@ should show warning when deleting page
   Click Link  css=#plone-contentmenu-actions a
   Click Link  css=#plone-contentmenu-actions-delete
   Page should contain element  css=.breach-container .breach-item
+
+
+should show warning when deleting page from folder_contents
+  Go To  ${PLONE_URL}/folder_contents
+  Click Element  css=tr[data-id="foo"] input
+  Checkbox Should Be Selected  css=tr[data-id="foo"] input
+  Wait until keyword succeeds  30  1  Page should not contain element  css=#btn-delete.disabled
+  Click Link  Delete
+  Wait until page contains element  css=.popover-content .btn-danger
+  Page should contain element  css=.breach-container .breach-item
+  Click Button  No
+  Checkbox Should Be Selected  css=tr[data-id="foo"] input
+
+
+should not show warning when deleting page from folder_contents
+  Go To  ${PLONE_URL}/folder_contents
+  Click Element  css=tr[data-id="foo"] input
+  Checkbox Should Be Selected  css=tr[data-id="foo"] input
+  Wait until keyword succeeds  30  1  Page should not contain element  css=#btn-delete.disabled
+  Click Link  Delete
+  Wait until page contains element  css=.popover-content .btn-danger
+  Page should not contain element  css=.breach-container .breach-item
+  Click Button  Yes
+  Wait until page contains  Successfully delete items
+  Wait until keyword succeeds  30  1  Page should not contain Element  css=tr[data-id="foo"] input
 
 
 should not show warning when deleting page
