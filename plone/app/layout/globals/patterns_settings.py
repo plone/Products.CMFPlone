@@ -16,6 +16,15 @@ class PatternsSettings(BrowserView):
     """
     implements(IPatternsSettingsRenderer)
 
+    def view_url(self):
+        ''' Facade to the homonymous plone_context_state method
+        '''
+        context_state = getMultiAdapter(
+            (self.context, self.request),
+            name='plone_context_state'
+        )
+        return context_state.view_url()
+
     def __call__(self):
         portal_state = getMultiAdapter(
             (self.context, self.request), name=u'plone_portal_state')
@@ -24,6 +33,7 @@ class PatternsSettings(BrowserView):
         base_url = portal_state.portal_url()
         result = {
             'data-base-url': self.context.absolute_url(),
+            'data-view-url': self.view_url(),
             'data-portal-url': base_url,
             'data-i18ncatalogurl': base_url + '/plonejsi18n'
         }
