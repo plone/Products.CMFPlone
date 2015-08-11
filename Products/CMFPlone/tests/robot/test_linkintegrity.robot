@@ -28,7 +28,6 @@ Scenario: When page is linked show warning
     a page to link to
     and a page to edit
     and a link in rich text
-    and re-edit the object
     should show warning when deleting page
 
 
@@ -37,7 +36,6 @@ Scenario: After you fix linked page no longer show warning
   a page to link to
     and a page to edit
     and a link in rich text
-    and re-edit the object
   should show warning when deleting page
     remove link to page
   should not show warning when deleting page
@@ -78,12 +76,6 @@ should not show warning when deleting page
   Click Link  css=#plone-contentmenu-actions a
   Click Link  css=#plone-contentmenu-actions-delete
   Page should not contain element  css=.breach-container .breach-item
-
-# XXX need to remove this once creation event handling is fixed
-re-edit the object
-  Go To  ${PLONE_URL}/bar
-  Click Link  css=#contentview-edit a
-  Click Button  css=#form-buttons-save
 
 
 a link in rich text
