@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from Products.CMFPlone.interfaces import IEditingSchema
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
-from plone.app.linkintegrity.interfaces import ILinkIntegrityInfo
+from plone.app.linkintegrity.utils import linkintegrity_enabled
 from plone.app.testing import SITE_OWNER_NAME
 from plone.app.testing import SITE_OWNER_PASSWORD
 from plone.registry.interfaces import IRegistry
@@ -109,9 +109,7 @@ class EditingControlPanelFunctionalTest(unittest.TestCase):
         self.browser.getControl("Enable link integrity checks")\
             .selected = True
         self.browser.getControl('Save').click()
-
-        self.assertTrue(
-            ILinkIntegrityInfo(self.request).integrityCheckingEnabled())
+        self.assertTrue(linkintegrity_enabled())
 
     def test_lock_on_ttw_edit(self):
         self.browser.open(
