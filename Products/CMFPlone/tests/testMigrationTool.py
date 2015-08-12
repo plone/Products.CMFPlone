@@ -56,7 +56,22 @@ class TestMigrationTool(PloneTestCase.PloneTestCase):
         current = self.setup.getVersionForProfile(_DEFAULT_PROFILE)
         current = tuple(current.split('.'))
         last = self.setup.getLastVersionForProfile(_DEFAULT_PROFILE)
-        self.assertEquals(last, current)
+        self.assertEqual(last, current)
+
+        # There are no more upgrade steps available
+        upgrades = self.setup.listUpgrades(_DEFAULT_PROFILE)
+        self.assertTrue(len(upgrades) == 0)
+
+    def testUpgrade(self):
+        self.setRoles(['Manager'])
+        self.setup.setLastVersionForProfile(_DEFAULT_PROFILE, '2.5')
+        self.migration.upgrade()
+
+        # And we have reached our current profile version
+        current = self.setup.getVersionForProfile(_DEFAULT_PROFILE)
+        current = tuple(current.split('.'))
+        last = self.setup.getLastVersionForProfile(_DEFAULT_PROFILE)
+        self.assertEqual(last, current)
 
         # There are no more upgrade steps available
         upgrades = self.setup.listUpgrades(_DEFAULT_PROFILE)
