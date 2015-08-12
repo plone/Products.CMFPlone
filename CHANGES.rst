@@ -8,7 +8,8 @@ Changelog
 5.0b5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Upgrade known core packages at the end of the Plone migration.
+  [maurits]
 
 
 5.0b4 (2015-08-23)

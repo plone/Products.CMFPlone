@@ -26,6 +26,84 @@ logger = logging.getLogger('plone.app.upgrade')
 _upgradePaths = {}
 
 
+class Addon(object):
+    """A profile or product.
+
+    This is meant for core Plone packages, especially packages that
+    are marked as not installable (INonInstallable from
+    CMFQuickInstallerTool).  These are packages that an admin should
+    not activate, deactivate or upgrade manually, but that should be
+    handled by Plone.
+
+    Most of this is already handled in plone.app.upgrade.  But when
+    you have added an upgrade step to such a package, it can be hard
+    to remember that you should also arrange that plone.app.upgrade
+    applies this upgrade step.  This leads to an upgraded Plone Site
+    where some core packages are not updated.  Or the upgrade handlers
+    are run, but the version of the profile is not upgraded in the
+    GenericSetup tool.
+    """
+
+    def __init__(self, profile_id=None, check_module=None):
+        self.profile_id = profile_id
+        self.check_module = check_module
+
+    def __repr__(self):
+        return u'<{0} profile {1}>'.format(
+            self.__class__.__name__, self.profile_id)
+
+    def safe(self):
+        """Is this addon safe to upgrade?
+
+        Is it safe to pass its profile id to
+        portal_setup.upgradeProfile?  That method checks if the
+        profile is 'unknown' and in this case does nothing.
+
+        But in some cases the profile may have been applied, but the
+        package is gone.  For that case, you can set
+        self.check_module.
+        """
+        if self.check_module:
+            # Can we import a module, as evidence that the code is
+            # available?  Note that some modules may have been faked,
+            # to avoid breakage.  For example on Plone 5.0 the
+            # Products.TinyMCE module is faked by plone.app.upgrade.
+            try:
+                __import__(self.check_module)
+            except ImportError:
+                logger.info('Cannot import module %s. Ignoring %s',
+                            self.check_module, self)
+                return False
+        return True
+
+
+class AddonList(list):
+
+    def upgrade_all(self, context):
+        setup = getToolByName(context, 'portal_setup')
+        for addon in self:
+            if addon.safe():
+                setup.upgradeProfile(addon.profile_id)
+
+
+# List of upgradeable packages.  Obvious items to add here, are all
+# core packages that actually have upgrade steps.
+# Good start is portal_setup.listProfilesWithUpgrades()
+ADDON_LIST = AddonList([
+    Addon(profile_id=u'Products.CMFEditions:CMFEditions'),
+    Addon(profile_id=u'Products.TinyMCE:TinyMCE',
+        check_module='Products.TinyMCE.upgrades'),
+    Addon(profile_id=u'plone.app.dexterity:default'),
+    Addon(profile_id=u'plone.app.discussion:default'),
+    Addon(profile_id=u'plone.app.iterate:plone.app.iterate'),
+    Addon(profile_id=u'plone.app.jquery:default'),
+    Addon(profile_id=u'plone.app.jquerytools:default'),
+    Addon(profile_id=u'plone.app.querystring:default'),
+    Addon(profile_id=u'plone.app.theming:default'),
+    Addon(profile_id=u'plonetheme.sunburst:default'),
+    ])
+
+
 class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     """Handles migrations between Plone releases"""
 
@@ -191,6 +269,10 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
                         # abort transaction to safe the zodb
                         transaction.abort()
                         break
+
+            logger.info("Starting upgrade of core addons.")
+            ADDON_LIST.upgrade_all(self)
+            logger.info("Done upgrading core addons.")
 
             logger.info("End of upgrade path, migration has finished")
 
