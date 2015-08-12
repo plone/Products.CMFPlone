@@ -123,6 +123,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
                 except pkg_resources.DistributionNotFound:
                     try:
                         import _imaging
+                        _imaging  # pyflakes
                         vars['PIL'] = 'unknown'
                     except ImportError:
                         pass
