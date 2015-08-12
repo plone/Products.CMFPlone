@@ -146,12 +146,16 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
     def unregisterConfiglet(self, id):
         actids = [o.id for o in self.listActions()]
         selection = [actids.index(a) for a in actids if a == id]
+        if not selection:
+            return
         self.deleteActions(selection)
 
     security.declareProtected(ManagePortal, 'unregisterApplication')
     def unregisterApplication(self, appId):
         acts = list(self.listActions())
         selection = [acts.index(a) for a in acts if a.appId == appId]
+        if not selection:
+            return
         self.deleteActions(selection)
 
     def _extractAction(self, properties, index):
