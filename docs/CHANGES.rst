@@ -8,6 +8,10 @@ Changelog
 4.3.7 (unreleased)
 ------------------
 
+- Properly hide ``plone.app.jquery`` and ``plone.app.jquerytools``
+  from products.
+  [maurits]
+
 - Fix email validation of long domain names.
   [gotcha]
 

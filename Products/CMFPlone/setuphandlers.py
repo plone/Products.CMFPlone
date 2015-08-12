@@ -60,7 +60,7 @@ class HiddenProducts(object):
             'borg.localrole',
             'plone.keyring',
             'plone.protect',
-            'plone.app.jquery'
+            'plone.app.jquery',
             'plone.app.jquerytools',
             'plone.app.blob',
             'plone.app.discussion',
