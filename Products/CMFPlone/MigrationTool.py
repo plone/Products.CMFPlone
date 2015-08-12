@@ -203,6 +203,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
 
             # do this once all the changes have been done
             if self.needRecatalog():
+                logger.info("Please wait while we recatalog.")
                 try:
                     catalog = self.portal_catalog
                     # Reduce threshold for the reindex run
@@ -221,8 +222,10 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
                                  exc_info=True)
                     if not swallow_errors:
                         raise
+                logger.info("Done with recatalog.")
 
             if self.needUpdateRole():
+                logger.info("Please wait while we update role mappings.")
                 try:
                     self.portal_workflow.updateRoleMappings()
                     self._needUpdateRole = 0
@@ -233,6 +236,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
                                  "mappings", exc_info=True)
                     if not swallow_errors:
                         raise
+                logger.info("Done updating role mappings.")
 
             if dry_run:
                 logger.info("Dry run selected, transaction aborted")
