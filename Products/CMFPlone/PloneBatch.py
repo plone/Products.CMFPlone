@@ -24,6 +24,11 @@ class Batch(QuantumBatch):
         ('Using len() for getting the actual pagesize is deprecated. Use the '
          '`pagesize` attribute instead.'))
 
+    def __nonzero__(self):
+        # Without __nonzero__ a bool(self) would call len(self), which
+        # gives a deprecation warning.
+        return bool(self.length)
+
     def initialize(self, start, end, size):
         super(Batch, self).initialize(start, end, size)
         self.pagerange, self.pagerangestart, self.pagerangeend = \
