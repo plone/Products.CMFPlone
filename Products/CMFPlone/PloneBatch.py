@@ -21,8 +21,10 @@ class Batch(QuantumBatch):
     def __len__(self):
         return self.length
     __len__ = deprecated(__len__,
-        ('Using len() for getting the actual pagesize is deprecated. Use the '
-         '`pagesize` attribute instead.'))
+        ('Using len() is deprecated. Use the `length` attribute for the '
+         'size of the current page, which is what we return now. '
+         'Use the `sequence_length` attribute for the size of the '
+         'entire sequence. '))
 
     def __nonzero__(self):
         # Without __nonzero__ a bool(self) would call len(self), which
