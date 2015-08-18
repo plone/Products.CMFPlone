@@ -211,6 +211,8 @@ class GlobalSectionsViewlet(ViewletBase):
         url = request['URL']
         path = url[plone_url_len:]
         path_list = path.split('/')
+        if len(path_list) <= 1:
+            return {'portal': default_tab}
 
         for action in portal_tabs:
             if not action['url'].startswith(plone_url):
