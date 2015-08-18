@@ -210,6 +210,7 @@ class GlobalSectionsViewlet(ViewletBase):
 
         url = request['URL']
         path = url[plone_url_len:]
+        path_list = path.split('/')
 
         for action in portal_tabs:
             if not action['url'].startswith(plone_url):
@@ -220,10 +221,11 @@ class GlobalSectionsViewlet(ViewletBase):
             action_path = action['url'][plone_url_len:]
             if not action_path.startswith('/'):
                 action_path = '/' + action_path
-            if path.startswith(action_path + '/') or path == action_path:
+            action_path_list = action_path.split('/')
+            if action_path_list[1] == path_list[1]:
                 # Make a list of the action ids, along with the path length
                 # for choosing the longest (most relevant) path.
-                valid_actions.append((len(action_path), action['id']))
+                valid_actions.append((len(action_path_list), action['id']))
 
         # Sort by path length, the longest matching path wins
         valid_actions.sort()
