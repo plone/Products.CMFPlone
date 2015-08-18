@@ -4,6 +4,10 @@ Changelog
 2.5.10 (unreleased)
 -------------------
 
+- Correctly display selected item in global navigation for images and files.
+  Fixes https://github.com/plone/Products.CMFPlone/issues/830
+  [pbauer]
+
 - Add view url to document as data-view-url
   [ale-rt]
 
