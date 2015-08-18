@@ -201,7 +201,8 @@ class GlobalSectionsViewlet(ViewletBase):
         self.selected_tabs = self.selectedTabs(portal_tabs=self.portal_tabs)
         self.selected_portal_tab = self.selected_tabs['portal']
 
-    def selectedTabs(self, default_tab='index_html', portal_tabs=()):
+    def selectedTabs(self, default_tab='index_html', portal_tabs=None):
+        portal_tabs = portal_tabs or []
         plone_url = getToolByName(self.context, 'portal_url')()
         plone_url_len = len(plone_url)
         request = self.request
