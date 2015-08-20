@@ -526,7 +526,7 @@ define('pat-compat',[],function() {
     {
         Array.prototype.every = function(fun /*, thisp */)
         {
-            
+            "use strict";
 
             if (this === null)
                 throw new TypeError();
@@ -551,7 +551,7 @@ define('pat-compat',[],function() {
     // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/filter (JS 1.6)
     if (!Array.prototype.filter) {
         Array.prototype.filter = function(fun /*, thisp */) {
-            
+            "use strict";
 
             if (this === null)
                 throw new TypeError();
@@ -642,7 +642,7 @@ define('pat-compat',[],function() {
     // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/indexOf (JS 1.6)
     if (!Array.prototype.indexOf) {
         Array.prototype.indexOf = function (searchElement /*, fromIndex */ ) {
-            
+            "use strict";
             if (this === null) {
                 throw new TypeError();
             }
@@ -677,7 +677,7 @@ define('pat-compat',[],function() {
     // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/lastIndexOf (JS 1.6)
     if (!Array.prototype.lastIndexOf) {
         Array.prototype.lastIndexOf = function(searchElement /*, fromIndex*/) {
-            
+            "use strict";
 
             if (this === null)
                 throw new TypeError();
@@ -817,7 +817,7 @@ define('pat-compat',[],function() {
     {
         Array.prototype.reduceRight = function(callbackfn /*, initialValue */)
         {
-            
+            "use strict";
 
             if (this === null)
                 throw new TypeError();
@@ -871,7 +871,7 @@ define('pat-compat',[],function() {
     {
         Array.prototype.some = function(fun /*, thisp */)
         {
-            
+            "use strict";
 
             if (this === null)
                 throw new TypeError();
@@ -1449,7 +1449,7 @@ define('pat-registry',[
 define('mockup-parser',[
   'jquery'
 ], function($) {
-  
+  'use strict';
 
   var parser = {
     getOptions: function getOptions($el, patternName, options) {
@@ -1498,7 +1498,7 @@ define('mockup-patterns-base',[
   'mockup-parser',
   "pat-logger"
 ], function($, Registry, mockupParser, logger) {
-  
+  'use strict';
   var log = logger.getLogger("Mockup Base");
 
   var initMockup = function initMockup($el, options, trigger) {
@@ -6620,7 +6620,7 @@ the specific language governing permissions and limitations under the Apache Lic
 })(jQuery);
 
 (function ($, undefined) {
-    
+    "use strict";
     /*global document, window, jQuery, console */
 
     if (window.Select2 !== undefined) {
@@ -10884,7 +10884,7 @@ define('mockup-patterns-select2',[
   'jquery.event.drag',
   'jquery.event.drop'
 ], function($, Base) {
-  
+  'use strict';
 
   var Select2 = Base.extend({
     name: 'select2',
@@ -11108,7 +11108,7 @@ define('mockup-patterns-select2',[
 define('mockup-utils',[
   'jquery'
 ], function($) {
-  
+  'use strict';
 
   var QueryHelper = function(options) {
     /* if pattern argument provided, it can implement the interface of:
@@ -14566,7 +14566,7 @@ define('mockup-patterns-tree',[
   'mockup-utils',
   'jqtree'
 ], function($, _, Base, utils) {
-  
+  'use strict';
 
   var Tree = Base.extend({
     name: 'tree',
@@ -14633,7 +14633,7 @@ define('mockup-patterns-tree',[
 define('mockup-i18n',[
   'jquery'
 ], function($) {
-  
+  'use strict';
 
   var I18N = function() {
     var self = this;
@@ -14749,7 +14749,7 @@ define('mockup-i18n',[
 define('translate',[
   'mockup-i18n'
 ], function(I18N) {
-  
+  'use strict';
 
   // we're creating a singleton here so we can potentially
   // delay the initialization of the translate catalog
@@ -14844,7 +14844,7 @@ define('mockup-patterns-relateditems',[
   'mockup-patterns-tree',
   'translate'
 ], function($, _, Base, Select2, utils, Tree, _t) {
-  
+  'use strict';
 
   var RelatedItems = Base.extend({
     name: 'relateditems',
@@ -15262,7 +15262,7 @@ define('mockup-patterns-backdrop',[
   'jquery',
   'mockup-patterns-base'
 ], function($, Base) {
-  
+  'use strict';
 
   var Backdrop = Base.extend({
     name: 'backdrop',
@@ -16947,7 +16947,7 @@ define('mockup-router',[
   'underscore',
   'backbone'
 ], function($, _, Backbone) {
-  
+  'use strict';
 
   var regexEscape = function(s) {
     return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
@@ -17052,7 +17052,7 @@ define('mockup-router',[
 }
 
 (function($) {
-
+"use strict";
 
 /*
     Usage Note:
@@ -18325,7 +18325,7 @@ define('mockup-patterns-modal',[
   'translate',
   'jquery.form'
 ], function($, _, Base, Backdrop, registry, Router, utils, _t) {
-  
+  'use strict';
 
   var Modal = Base.extend({
     name: 'plone-modal',
@@ -18404,19 +18404,23 @@ define('mockup-patterns-modal',[
         onTimeout: null,
         redirectOnResponse: false,
         redirectToUrl: function($action, response, options) {
-          var baseUrl = '';
-          var reg = /<body.*data-base-url=[\"'](.*)[\"'].*/im.exec(response);
+          var reg;
+          reg = /<body.*data-view-url=[\"'](.*)[\"'].*/im.exec(response);
+          if (reg && reg.length > 1) {
+            // view url as data attribute on body (Plone 5)
+            return reg[1].split('"')[0];
+          }
+          reg = /<body.*data-base-url=[\"'](.*)[\"'].*/im.exec(response);
           if (reg && reg.length > 1) {
             // Base url as data attribute on body (Plone 5)
-            baseUrl = reg[1];
-          } else {
-            reg = /<base.*href=[\"'](.*)[\"'].*/im.exec(response);
-            if (reg && reg.length > 1) {
-              // base tag available (Plone 4)
-              baseUrl = reg[1];
-            }
+            return reg[1].split('"')[0];
           }
-          return baseUrl;
+          reg = /<base.*href=[\"'](.*)[\"'].*/im.exec(response);
+          if (reg && reg.length > 1) {
+              // base tag available (Plone 4)
+              return reg[1];
+          }
+          return '';
         }
       },
       routerOptions: {
@@ -18493,6 +18497,9 @@ define('mockup-patterns-modal',[
         }
 
         if(options.disableAjaxFormSubmit){
+          if($action.attr('name') && $action.attr('value')){
+            $form.append($('<input type="hidden" name="' + $action.attr('name') + '" value="' + $action.attr('value') + '" />'));
+          }
           $form.trigger('submit');
           return;
         }
@@ -19135,7 +19142,7 @@ define("tinymce", [], function() {
 /*globals $code */
 
 (function(exports, undefined) {
-	
+	"use strict";
 
 	var modules = {};
 
@@ -19230,7 +19237,7 @@ define("tinymce", [], function() {
  * @class tinymce.dom.EventUtils
  */
 define("tinymce/dom/EventUtils", [], function() {
-	
+	"use strict";
 
 	var eventExpandoPrefix = "mce-data-";
 	var mouseEventRe = /^(?:mouse|contextmenu)|click/;
@@ -25588,7 +25595,7 @@ define("tinymce/html/Entities", [
 define("tinymce/dom/StyleSheetLoader", [
 	"tinymce/util/Tools"
 ], function(Tools) {
-	
+	"use strict";
 
 	return function(document, settings) {
 		var idCount = 0, loadedStates = {}, maxLoadTime;
@@ -40562,7 +40569,7 @@ define("tinymce/util/EventDispatcher", [
 define("tinymce/ui/Selector", [
 	"tinymce/util/Class"
 ], function(Class) {
-	
+	"use strict";
 
 	/**
 	 * Produces an array with a unique set of objects. It will not compare the values
@@ -40916,7 +40923,7 @@ define("tinymce/ui/Collection", [
 	"tinymce/ui/Selector",
 	"tinymce/util/Class"
 ], function(Tools, Selector, Class) {
-	
+	"use strict";
 
 	var Collection, proto, push = Array.prototype.push, slice = Array.prototype.slice;
 
@@ -41339,7 +41346,7 @@ define("tinymce/ui/DomUtils", [
 	"tinymce/util/Tools",
 	"tinymce/dom/DOMUtils"
 ], function(Tools, DOMUtils) {
-	
+	"use strict";
 
 	var count = 0;
 
@@ -41454,7 +41461,7 @@ define("tinymce/ui/Control", [
 	"tinymce/ui/Collection",
 	"tinymce/ui/DomUtils"
 ], function(Class, Tools, EventDispatcher, Collection, DomUtils) {
-	
+	"use strict";
 
 	var hasMouseWheelEventSupport = "onmousewheel" in document;
 	var hasWheelEventSupport = false;
@@ -42932,7 +42939,7 @@ define("tinymce/ui/Control", [
  * @class tinymce.ui.Factory
  */
 define("tinymce/ui/Factory", [], function() {
-	
+	"use strict";
 
 	var types = {}, namespaceInit;
 
@@ -43036,7 +43043,7 @@ define("tinymce/ui/Factory", [], function() {
  */
 define("tinymce/ui/KeyboardNavigation", [
 ], function() {
-	
+	"use strict";
 
 	/**
 	 * This class handles all keyboard navigation for WAI-ARIA support. Each root container
@@ -43448,7 +43455,7 @@ define("tinymce/ui/Container", [
 	"tinymce/util/Tools",
 	"tinymce/ui/DomUtils"
 ], function(Control, Collection, Selector, Factory, KeyboardNavigation, Tools, DomUtils) {
-	
+	"use strict";
 
 	var selectorCache = {};
 
@@ -43948,7 +43955,7 @@ define("tinymce/ui/Container", [
 define("tinymce/ui/DragHelper", [
 	"tinymce/ui/DomUtils"
 ], function(DomUtils) {
-	
+	"use strict";
 
 	function getDocumentSize() {
 		var doc = document, documentElement, body, scrollWidth, clientWidth;
@@ -44076,7 +44083,7 @@ define("tinymce/ui/Scrollable", [
 	"tinymce/ui/DomUtils",
 	"tinymce/ui/DragHelper"
 ], function(DomUtils, DragHelper) {
-	
+	"use strict";
 
 	return {
 		init: function() {
@@ -44230,7 +44237,7 @@ define("tinymce/ui/Panel", [
 	"tinymce/ui/Container",
 	"tinymce/ui/Scrollable"
 ], function(Container, Scrollable) {
-	
+	"use strict";
 
 	return Container.extend({
 		Defaults: {
@@ -44296,7 +44303,7 @@ define("tinymce/ui/Panel", [
 define("tinymce/ui/Movable", [
 	"tinymce/ui/DomUtils"
 ], function(DomUtils) {
-	
+	"use strict";
 
 	function calculateRelativePosition(ctrl, targetElm, rel) {
 		var ctrlElm, pos, x, y, selfW, selfH, targetW, targetH, viewport, size;
@@ -44499,7 +44506,7 @@ define("tinymce/ui/Movable", [
 define("tinymce/ui/Resizable", [
 	"tinymce/ui/DomUtils"
 ], function(DomUtils) {
-	
+	"use strict";
 
 	return {
 		/**
@@ -44577,7 +44584,7 @@ define("tinymce/ui/FloatPanel", [
 	"tinymce/ui/Resizable",
 	"tinymce/ui/DomUtils"
 ], function(Panel, Movable, Resizable, DomUtils) {
-	
+	"use strict";
 
 	var documentClickHandler, documentScrollHandler, windowResizeHandler, visiblePanels = [];
 	var zOrder = [], hasModal;
@@ -44978,7 +44985,7 @@ define("tinymce/ui/Window", [
 	"tinymce/ui/DomUtils",
 	"tinymce/ui/DragHelper"
 ], function(FloatPanel, Panel, DomUtils, DragHelper) {
-	
+	"use strict";
 
 	var Window = FloatPanel.extend({
 		modal: true,
@@ -45361,7 +45368,7 @@ define("tinymce/ui/Window", [
 define("tinymce/ui/MessageBox", [
 	"tinymce/ui/Window"
 ], function(Window) {
-	
+	"use strict";
 
 	var MessageBox = Window.extend({
 		/**
@@ -49948,7 +49955,7 @@ define("tinymce/Editor", [
  * @class tinymce.util.I18n
  */
 define("tinymce/util/I18n", [], function() {
-	
+	"use strict";
 
 	var data = {}, code = "en";
 
@@ -51745,7 +51752,7 @@ define("tinymce/ui/Layout", [
 	"tinymce/util/Class",
 	"tinymce/util/Tools"
 ], function(Class, Tools) {
-	
+	"use strict";
 
 	return Class.extend({
 		Defaults: {
@@ -51864,7 +51871,7 @@ define("tinymce/ui/Layout", [
 define("tinymce/ui/AbsoluteLayout", [
 	"tinymce/ui/Layout"
 ], function(Layout) {
-	
+	"use strict";
 
 	return Layout.extend({
 		Defaults: {
@@ -52018,7 +52025,7 @@ define("tinymce/ui/Widget", [
 	"tinymce/ui/Control",
 	"tinymce/ui/Tooltip"
 ], function(Control, Tooltip) {
-	
+	"use strict";
 
 	var tooltip;
 
@@ -52185,7 +52192,7 @@ define("tinymce/ui/Widget", [
 define("tinymce/ui/Button", [
 	"tinymce/ui/Widget"
 ], function(Widget) {
-	
+	"use strict";
 
 	return Widget.extend({
 		Defaults: {
@@ -52362,7 +52369,7 @@ define("tinymce/ui/Button", [
 define("tinymce/ui/ButtonGroup", [
 	"tinymce/ui/Container"
 ], function(Container) {
-	
+	"use strict";
 
 	return Container.extend({
 		Defaults: {
@@ -52424,7 +52431,7 @@ define("tinymce/ui/ButtonGroup", [
 define("tinymce/ui/Checkbox", [
 	"tinymce/ui/Widget"
 ], function(Widget) {
-	
+	"use strict";
 
 	return Widget.extend({
 		Defaults: {
@@ -52541,7 +52548,7 @@ define("tinymce/ui/ComboBox", [
 	"tinymce/ui/Factory",
 	"tinymce/ui/DomUtils"
 ], function(Widget, Factory, DomUtils) {
-	
+	"use strict";
 
 	return Widget.extend({
 		/**
@@ -52874,7 +52881,7 @@ define("tinymce/ui/ComboBox", [
 define("tinymce/ui/ColorBox", [
 	"tinymce/ui/ComboBox"
 ], function(ComboBox) {
-	
+	"use strict";
 
 	return ComboBox.extend({
 		/**
@@ -52948,7 +52955,7 @@ define("tinymce/ui/PanelButton", [
 	"tinymce/ui/Button",
 	"tinymce/ui/FloatPanel"
 ], function(Button, FloatPanel) {
-	
+	"use strict";
 
 	return Button.extend({
 		/**
@@ -53068,7 +53075,7 @@ define("tinymce/ui/ColorButton", [
 	"tinymce/ui/PanelButton",
 	"tinymce/dom/DOMUtils"
 ], function(PanelButton, DomUtils) {
-	
+	"use strict";
 
 	var DOM = DomUtils.DOM;
 
@@ -53427,7 +53434,7 @@ define("tinymce/ui/ColorPicker", [
 	"tinymce/ui/DomUtils",
 	"tinymce/util/Color"
 ], function(Widget, DragHelper, DomUtils, Color) {
-	
+	"use strict";
 
 	return Widget.extend({
 		Defaults: {
@@ -53633,7 +53640,7 @@ define("tinymce/ui/ColorPicker", [
 define("tinymce/ui/Path", [
 	"tinymce/ui/Widget"
 ], function(Widget) {
-	
+	"use strict";
 
 	return Widget.extend({
 		/**
@@ -53859,7 +53866,7 @@ define("tinymce/ui/ElementPath", [
 define("tinymce/ui/FormItem", [
 	"tinymce/ui/Container"
 ], function(Container) {
-	
+	"use strict";
 
 	return Container.extend({
 		Defaults: {
@@ -53929,7 +53936,7 @@ define("tinymce/ui/Form", [
 	"tinymce/ui/FormItem",
 	"tinymce/util/Tools"
 ], function(Container, FormItem, Tools) {
-	
+	"use strict";
 
 	return Container.extend({
 		Defaults: {
@@ -54091,7 +54098,7 @@ define("tinymce/ui/Form", [
 define("tinymce/ui/FieldSet", [
 	"tinymce/ui/Form"
 ], function(Form) {
-	
+	"use strict";
 
 	return Form.extend({
 		Defaults: {
@@ -54155,7 +54162,7 @@ define("tinymce/ui/FilePicker", [
 	"tinymce/ui/ComboBox",
 	"tinymce/util/Tools"
 ], function(ComboBox, Tools) {
-	
+	"use strict";
 
 	return ComboBox.extend({
 		/**
@@ -54242,7 +54249,7 @@ define("tinymce/ui/FilePicker", [
 define("tinymce/ui/FitLayout", [
 	"tinymce/ui/AbsoluteLayout"
 ], function(AbsoluteLayout) {
-	
+	"use strict";
 
 	return AbsoluteLayout.extend({
 		/**
@@ -54296,7 +54303,7 @@ define("tinymce/ui/FitLayout", [
 define("tinymce/ui/FlexLayout", [
 	"tinymce/ui/AbsoluteLayout"
 ], function(AbsoluteLayout) {
-	
+	"use strict";
 
 	return AbsoluteLayout.extend({
 		/**
@@ -55135,7 +55142,7 @@ define("tinymce/ui/FormatControls", [
 define("tinymce/ui/GridLayout", [
 	"tinymce/ui/AbsoluteLayout"
 ], function(AbsoluteLayout) {
-	
+	"use strict";
 
 	return AbsoluteLayout.extend({
 		/**
@@ -55368,7 +55375,7 @@ define("tinymce/ui/GridLayout", [
 define("tinymce/ui/Iframe", [
 	"tinymce/ui/Widget"
 ], function(Widget) {
-	
+	"use strict";
 
 	return Widget.extend({
 		/**
@@ -55453,7 +55460,7 @@ define("tinymce/ui/Label", [
 	"tinymce/ui/Widget",
 	"tinymce/ui/DomUtils"
 ], function(Widget, DomUtils) {
-	
+	"use strict";
 
 	return Widget.extend({
 		/**
@@ -55578,7 +55585,7 @@ define("tinymce/ui/Label", [
 define("tinymce/ui/Toolbar", [
 	"tinymce/ui/Container"
 ], function(Container) {
-	
+	"use strict";
 
 	return Container.extend({
 		Defaults: {
@@ -55636,7 +55643,7 @@ define("tinymce/ui/Toolbar", [
 define("tinymce/ui/MenuBar", [
 	"tinymce/ui/Toolbar"
 ], function(Toolbar) {
-	
+	"use strict";
 
 	return Toolbar.extend({
 		Defaults: {
@@ -55674,7 +55681,7 @@ define("tinymce/ui/MenuButton", [
 	"tinymce/ui/Factory",
 	"tinymce/ui/MenuBar"
 ], function(Button, Factory, MenuBar) {
-	
+	"use strict";
 
 	// TODO: Maybe add as some global function
 	function isChildOf(node, parent) {
@@ -55935,7 +55942,7 @@ define("tinymce/ui/MenuButton", [
 define("tinymce/ui/ListBox", [
 	"tinymce/ui/MenuButton"
 ], function(MenuButton) {
-	
+	"use strict";
 
 	return MenuButton.extend({
 		/**
@@ -56083,7 +56090,7 @@ define("tinymce/ui/MenuItem", [
 	"tinymce/ui/Factory",
 	"tinymce/Env"
 ], function(Widget, Factory, Env) {
-	
+	"use strict";
 
 	return Widget.extend({
 		Defaults: {
@@ -56408,7 +56415,7 @@ define("tinymce/ui/Menu", [
 	"tinymce/ui/MenuItem",
 	"tinymce/util/Tools"
 ], function(FloatPanel, MenuItem, Tools) {
-	
+	"use strict";
 
 	var Menu = FloatPanel.extend({
 		Defaults: {
@@ -56549,7 +56556,7 @@ define("tinymce/ui/Menu", [
 define("tinymce/ui/Radio", [
 	"tinymce/ui/Checkbox"
 ], function(Checkbox) {
-	
+	"use strict";
 
 	return Checkbox.extend({
 		Defaults: {
@@ -56582,7 +56589,7 @@ define("tinymce/ui/ResizeHandle", [
 	"tinymce/ui/Widget",
 	"tinymce/ui/DragHelper"
 ], function(Widget, DragHelper) {
-	
+	"use strict";
 
 	return Widget.extend({
 		/**
@@ -56670,7 +56677,7 @@ define("tinymce/ui/ResizeHandle", [
 define("tinymce/ui/Spacer", [
 	"tinymce/ui/Widget"
 ], function(Widget) {
-	
+	"use strict";
 
 	return Widget.extend({
 		/**
@@ -56850,7 +56857,7 @@ define("tinymce/ui/SplitButton", [
 define("tinymce/ui/StackLayout", [
 	"tinymce/ui/FlowLayout"
 ], function(FlowLayout) {
-	
+	"use strict";
 
 	return FlowLayout.extend({
 		Defaults: {
@@ -56886,7 +56893,7 @@ define("tinymce/ui/TabPanel", [
 	"tinymce/ui/Panel",
 	"tinymce/ui/DomUtils"
 ], function(Panel, DomUtils) {
-	
+	"use strict";
 
 	return Panel.extend({
 		Defaults: {
@@ -57064,7 +57071,7 @@ define("tinymce/ui/TextBox", [
 	"tinymce/ui/Widget",
 	"tinymce/ui/DomUtils"
 ], function(Widget, DomUtils) {
-	
+	"use strict";
 
 	return Widget.extend({
 		/**
@@ -57280,7 +57287,7 @@ define("tinymce/ui/Throbber", [
 	"tinymce/ui/DomUtils",
 	"tinymce/ui/Control"
 ], function(DomUtils, Control) {
-	
+	"use strict";
 
 	/**
 	 * Constructs a new throbber.
@@ -57417,7 +57424,7 @@ define('mockup-patterns-autotoc',[
   'jquery',
   'mockup-patterns-base'
 ], function($, Base) {
-  
+  'use strict';
 
   var AutoTOC = Base.extend({
     name: 'autotoc',
@@ -57519,7 +57526,7 @@ define('mockup-patterns-autotoc',[
   java, location, Components, FileUtils */
 
 define('text',['module'], function (module) {
-    
+    'use strict';
 
     var text, fs, Cc, Ci, xpcIsWindows,
         progIds = ['Msxml2.XMLHTTP', 'Microsoft.XMLHTTP', 'Msxml2.XMLHTTP.4.0'],
@@ -59649,7 +59656,7 @@ define('text!mockup-patterns-tinymce-url/templates/selection.xml',[],function ()
     return module.exports;
 }));
 
-define('text!mockup-patterns-upload-url/templates/upload.xml',[],function () { return '<div class="upload-container upload-multiple">\n    <h2 class="title"><%- _t("Upload here") %></h2>\n    <p class="help">\n        <%- _t(\'Just drag N drop files on the area below or press the "browse" button.\') %>\n    </p>\n    <div class="upload-area">\n        <div class="fallback">\n            <input name="file" type="file" multiple />\n        </div>\n        <div class="dz-message"><p><%-_t("Drop files here...")%></p></div>\n        <div class="row">\n            <div class="col-md-9">\n                <input\n                    id="fakeUploadFile"\n                    placeholder="<%- _t("Choose File") %>"\n                    disabled="disabled"\n                    />\n            </div>\n            <div class="col-md-3">\n                <button\n                    type="button"\n                    class="btn btn-primary browse">\n                    Browse\n                </button>\n            </div>\n        </div>\n        <div class="upload-queue">\n            <div class="previews">\n            </div>\n            <div class="controls">\n                <div class="path">\n                    <label><%- _t("Upload to...") %></label>\n                    <p class="form-help">\n                        <%- _t("If nothing selected files we be added to current context.") %>\n                    </p>\n                    <input\n                        type="text"\n                        name="location"\n                        />\n                </div>\n                <div class="actions row">\n                    <div class="col-md-9">\n                        <div class="progress progress-striped active">\n                            <div class="progress-bar progress-bar-success"\n                                 role="progressbar"\n                                 aria-valuenow="0"\n                                 aria-valuemin="0"\n                                 aria-valuemax="100"\n                                 style="width: 0%">\n                                <span class="sr-only">40% Complete (success)</span>\n                            </div>\n                        </div>\n                    </div>\n                    <div class="col-md-3 align-right">\n                        <button\n                            type="button"\n                            class="btn btn-primary upload-all">\n                            <%- _t("Upload") %>\n                        </button>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n';});
+define('text!mockup-patterns-upload-url/templates/upload.xml',[],function () { return '<div class="upload-container upload-multiple">\n    <h2 class="title"><%- _t("Upload here") %></h2>\n    <p class="help">\n        <%- _t(\'Drag and drop files from your computer onto the area below or click the "Browse" button.\') %>\n    </p>\n    <div class="upload-area">\n        <div class="fallback">\n            <input name="file" type="file" multiple />\n        </div>\n        <div class="dz-message"><p><%-_t("Drop files here...")%></p></div>\n        <div class="row browse-select">\n            <div class="col-md-9">\n                <input\n                    id="fakeUploadFile"\n                    placeholder="<%- _t("Choose File") %>"\n                    disabled="disabled"\n                    />\n            </div>\n            <div class="col-md-3">\n                <button\n                    type="button"\n                    class="btn btn-primary browse">\n                    Browse\n                </button>\n            </div>\n        </div>\n        <div class="upload-queue">\n            <div class="previews">\n            </div>\n            <div class="controls">\n                <div class="path">\n                    <label><%- _t("Upload to...") %></label>\n                    <p class="form-help">\n                        <%- _t("Select another destination folder or leave blank to add files to the current location.") %>\n                    </p>\n                    <input\n                        type="text"\n                        name="location"\n                        />\n                </div>\n                <div class="actions row">\n                    <div class="col-md-9">\n                        <div class="progress progress-striped active">\n                            <div class="progress-bar progress-bar-success"\n                                 role="progressbar"\n                                 aria-valuenow="0"\n                                 aria-valuemin="0"\n                                 aria-valuemax="100"\n                                 style="width: 0%">\n                                <span class="sr-only">40% Complete (success)</span>\n                            </div>\n                        </div>\n                    </div>\n                    <div class="col-md-3 align-right">\n                        <button\n                            type="button"\n                            class="btn btn-primary upload-all">\n                            <%- _t("Upload") %>\n                        </button>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n';});
 
 
 define('text!mockup-patterns-upload-url/templates/preview.xml',[],function () { return '<div class="row item form-inline">\n    <div class="col-md-1 action">\n        <button\n            type="button"\n            class="btn btn-danger btn-xs remove-item"\n            data-dz-remove=""\n            href="javascript:undefined;">\n            <span class="glyphicon glyphicon-remove"></span>\n        </button>\n    </div>\n    <div class="col-md-8 title">\n        <div class="dz-preview">\n          <div class="dz-details">\n            <div class="dz-filename"><span data-dz-name></span></div>\n          </div>\n          <div class="dz-error-message"><span data-dz-errormessage></span></div>\n        </div>\n        <div class="dz-progress">\n            <span class="dz-upload" data-dz-uploadprogress></span>\n        </div>\n    </div>\n    <div class="col-md-3 info">\n        <div class="dz-size" data-dz-size></div>\n        <img data-dz-thumbnail />\n    </div>\n</div>\n';});
@@ -59663,7 +59670,6 @@ define('text!mockup-patterns-upload-url/templates/preview.xml',[],function () { 
  *    relativePath(string): again, to be used with baseUrl to create upload url (null)
  *    initialFolder(string): UID of initial folder related items widget should have selected (null)
  *    currentPath(string): Current path related items is starting with (null)
- *    clickable(boolean): If you can click on container to also upload (false)
  *    className(string): value for class attribute in the form element ('upload')
  *    paramName(string): value for name attribute in the file input element ('file')
  *    ajaxUpload(boolean): true or false for letting the widget upload the files via ajax. If false the form will act like a normal form. (true)
@@ -59707,7 +59713,7 @@ define('mockup-patterns-upload',[
   'translate'
 ], function($, _, Base, RelatedItems, Dropzone,
             UploadTemplate, PreviewTemplate, _t) {
-  
+  'use strict';
 
   /* we do not want this plugin to auto discover */
   Dropzone.autoDiscover = false;
@@ -59727,7 +59733,6 @@ define('mockup-patterns-upload',[
       ajaxUpload: true,
 
       paramName: 'file',
-      clickable: true,
       addRemoveLinks: false,
       autoCleanResults: true,
       previewsContainer: '.previews',
@@ -59754,7 +59759,6 @@ define('mockup-patterns-upload',[
       // TODO: find a way to make this work in firefox (and IE)
       $(document).bind('paste', function(e){
         var oe = e.originalEvent;
-        var target = $(oe.target);
         var items = oe.clipboardData.items;
         if (items) {
           for (var i = 0; i < items.length; i++) {
@@ -59767,7 +59771,6 @@ define('mockup-patterns-upload',[
       });
       // values that will change current processing
       self.currentPath = self.options.currentPath;
-      self.numFiles = 0;
       self.currentFile = 0;
 
       template = _.template(template, {_t: _t});
@@ -59809,8 +59812,9 @@ define('mockup-patterns-upload',[
       $('button.browse', self.$el).click(function(e) {
         e.preventDefault();
         e.stopPropagation();
-        // we trigger the dropzone dialog!
-        self.dropzone.hiddenFileInput.click();
+        if(self.dropzone.files.length < self.options.maxFiles){
+          self.dropzone.hiddenFileInput.click();
+        }
       });
 
       var dzoneOptions = this.getDzoneOptions();
@@ -59830,18 +59834,16 @@ define('mockup-patterns-upload',[
         throw e;
       }
 
-      self.dropzone.on('addedfile', function(file) {
-        self.showControls();
+      self.dropzone.on('maxfilesreached', function(){
+        self.showHideControls();
+      });
+
+      self.dropzone.on('addedfile', function(/* file */) {
+        self.showHideControls();
       });
 
       self.dropzone.on('removedfile', function() {
-        if (self.dropzone.files.length < 1) {
-          self.hideControls();
-        } else {
-          // Clear the "you can not upload any more files" message
-          var file = self.dropzone.files[0];
-          $(".dz-error-message span", file.previewElement).html("");
-        }
+        self.showHideControls();
       });
 
       self.dropzone.on('success', function(e, response){
@@ -59865,22 +59867,22 @@ define('mockup-patterns-upload',[
       }
 
       self.dropzone.on('complete', function(file) {
-        if (file.status === Dropzone.SUCCESS && self.dropzone.files.length < 1) {
-          self.hideControls();
+        if (file.status === Dropzone.SUCCESS && self.dropzone.files.length === 1) {
+          self.showHideControls();
         }
       });
 
       self.dropzone.on('error', function(file, response, xmlhr) {
-        if (typeof xmlhr !== "undefined" && xmlhr.status !== 403){
+        if (typeof(xmlhr) !== 'undefined' && xmlhr.status !== 403){
           // If error other than 403, just print a generic message
-          $(".dz-error-message span", file.previewElement).html("The file transfer failed");
+          $('.dz-error-message span', file.previewElement).html(_('The file transfer failed'));
         }
       });
 
       self.dropzone.on('totaluploadprogress', function(pct) {
         // need to caclulate total pct here in reality since we're manually
         // processing each file one at a time.
-        pct = ((((self.currentFile - 1) * 100) + pct) / (self.numFiles * 100)) * 100;
+        pct = ((((self.currentFile - 1) * 100) + pct) / (self.dropzone.files.length * 100)) * 100;
         self.$progress.attr('aria-valuenow', pct).css('width', pct + '%');
       });
 
@@ -59898,14 +59900,42 @@ define('mockup-patterns-upload',[
       }
     },
 
-    showControls: function() {
+    showHideControls: function(){
+      /* we do this delayed because this can be called multiple times
+         AND we need to do this hide/show AFTER dropzone is done with
+         all it's own events. This is NASTY but the only way we can
+         enforce some numFiles with dropzone! */
       var self = this;
-      $('.controls', self.$el).fadeIn('slow');
+      if(self._showHideTimeout){
+        clearTimeout(self._showHideTimeout);
+      }
+      self._showHideTimeout = setTimeout(function(){
+        self._showHideControls();
+      }, 50);
     },
 
-    hideControls: function() {
+    _showHideControls: function(){
       var self = this;
-      $('.controls', self.$el).fadeOut('slow');
+      var $controls = $('.controls', self.$el);
+      var $browse = $('.browse-select', self.$el);
+      var $input = $('.dz-hidden-input');
+
+      if(self.options.maxFiles){
+        if(self.dropzone.files.length < self.options.maxFiles){
+          $browse.show();
+          $input.prop('disabled', false);
+        }else{
+          $browse.hide();
+          $input.prop('disabled', true);
+        }
+      }
+      if(self.dropzone.files.length > 0){
+        $controls.fadeIn('slow');
+        var file = self.dropzone.files[0];
+        $('.dz-error-message span', file.previewElement).html('');
+      }else{
+        $controls.fadeOut('slow');
+      }
     },
 
     pathJoin: function() {
@@ -59951,18 +59981,13 @@ define('mockup-patterns-upload',[
     getDzoneOptions: function() {
       var self = this;
 
-      // clickable option
-      if (typeof(self.options.clickable) === 'string') {
-        if (self.options.clickable === 'true') {
-          self.options.clickable = true;
-        } else {
-          self.options.clickable = false;
-        }
-      }
+      // This pattern REQUIRE dropzone to be clickable
+      self.options.clickable = true;
 
       var options = $.extend({}, self.options);
       options.url = self.getUrl();
-      // XXX force to only upload one at a time,
+
+      // XXX force to only upload one to the server at a time,
       // right now we don't support multiple for backends
       options.uploadMultiple = false;
 
@@ -60005,7 +60030,6 @@ define('mockup-patterns-upload',[
           fileaddedClassName = self.options.fileaddedClassName,
           finished = options.finished;
 
-      self.numFiles = self.dropzone.files.length;
       self.currentFile = 0;
 
       function process() {
@@ -60132,10 +60156,10 @@ define('mockup-patterns-upload',[
 });
 
 
-define('text!mockup-patterns-tinymce-url/templates/link.xml',[],function () { return '<div>\n  <div class="linkModal">\n    <h1><%- insertHeading %></h1>\n    <% if(upload){ %>\n    <p class="info">Drag and drop files from your desktop onto dialog to upload</p>\n    <% } %>\n\n    <div class="linkTypes pat-autotoc autotabs"\n         data-pat-autotoc="section:fieldset;levels:legend;IDPrefix:tinymce-autotoc-">\n\n      <fieldset class="linkType internal" data-linkType="internal">\n        <legend id="tinylink-internal">Internal</legend>\n        <div>\n          <div class="form-group main">\n            <!-- this gives the name to the "linkType" -->\n            <input type="text" name="internal" />\n          </div>\n        </div>\n      </fieldset>\n\n      <% if(upload){ %>\n      <fieldset class="linkType upload" data-linkType="upload">\n        <legend id="tinylink-upload">Upload</legend>\n        <div class="uploadify-me"></div>\n      </fieldset>\n      <% } %>\n\n      <fieldset class="linkType external" data-linkType="external">\n        <legend id="tinylink-external">External</legend>\n        <div class="form-group main">\n          <label for="external"><%- externalText %></label>\n          <input type="text" name="external" />\n        </div>\n      </fieldset>\n\n      <fieldset class="linkType email" data-linkType="email">\n        <legend id="tinylink-email">Email</legend>\n        <div class="form-inline">\n          <div class="form-group main">\n            <label><%- emailText %></label>\n            <input type="text" name="email" />\n          </div>\n          <div class="form-group">\n            <label><%- subjectText %></label>\n            <input type="text" name="subject" />\n          </div>\n        </div>\n      </fieldset>\n\n      <fieldset class="linkType anchor" data-linkType="anchor">\n        <legend id="tinylink-anchor">Anchor</legend>\n        <div>\n          <div class="form-group main">\n            <label>Select an anchor</label>\n            <div class="input-wrapper">\n              <select name="anchor" class="pat-select2" data-pat-select2="width:500px" />\n            </div>\n          </div>\n        </div>\n      </fieldset>\n\n    </div><!-- / tabs -->\n\n    <div class="common-controls">\n      <div class="form-group">\n        <label>Target</label>\n        <select name="target">\n          <% _.each(targetList, function(target){ %>\n            <option value="<%- target.value %>"><%- target.text %></option>\n          <% }); %>\n        </select>\n      </div>\n      <div class="form-group">\n        <label><%- titleText %></label>\n        <input type="text" name="title" />\n      </div>\n    </div>\n\n    <input type="submit" class="plone-btn" name="cancel" value="<%- cancelBtn %>" />\n    <input type="submit" class="plone-btn plone-btn-primary" name="insert" value="<%- insertBtn %>" />\n  </div>\n</div>\n';});
+define('text!mockup-patterns-tinymce-url/templates/link.xml',[],function () { return '<div>\n  <div class="linkModal">\n    <h1><%- insertHeading %></h1>\n    <% if(upload){ %>\n    <p class="info">Specify the object to link to. It can be on this site already ("Internal"), an object you upload ("Upload"), from an external site ("External"), an email address ("Email"), or an anchor on this page ("Anchor").</p>\n    <% } %>\n\n    <div class="linkTypes pat-autotoc autotabs"\n         data-pat-autotoc="section:fieldset;levels:legend;IDPrefix:tinymce-autotoc-">\n\n      <fieldset class="linkType internal" data-linkType="internal">\n        <legend id="tinylink-internal">Internal</legend>\n        <div>\n          <div class="form-group main">\n            <!-- this gives the name to the "linkType" -->\n            <input type="text" name="internal" />\n          </div>\n        </div>\n      </fieldset>\n\n      <% if(upload){ %>\n      <fieldset class="linkType upload" data-linkType="upload">\n        <legend id="tinylink-upload">Upload</legend>\n        <div class="uploadify-me"></div>\n      </fieldset>\n      <% } %>\n\n      <fieldset class="linkType external" data-linkType="external">\n        <legend id="tinylink-external">External</legend>\n        <div class="form-group main">\n          <label for="external"><%- externalText %></label>\n          <input type="text" name="external" />\n        </div>\n      </fieldset>\n\n      <fieldset class="linkType email" data-linkType="email">\n        <legend id="tinylink-email">Email</legend>\n        <div class="form-inline">\n          <div class="form-group main">\n            <label><%- emailText %></label>\n            <input type="text" name="email" />\n          </div>\n          <div class="form-group">\n            <label><%- subjectText %></label>\n            <input type="text" name="subject" />\n          </div>\n        </div>\n      </fieldset>\n\n      <fieldset class="linkType anchor" data-linkType="anchor">\n        <legend id="tinylink-anchor">Anchor</legend>\n        <div>\n          <div class="form-group main">\n            <label>Select an anchor</label>\n            <div class="input-wrapper">\n              <select name="anchor" class="pat-select2" data-pat-select2="width:500px" />\n            </div>\n          </div>\n        </div>\n      </fieldset>\n\n    </div><!-- / tabs -->\n\n    <div class="common-controls">\n      <div class="form-group">\n        <label>Target</label>\n        <select name="target">\n          <% _.each(targetList, function(target){ %>\n            <option value="<%- target.value %>"><%- target.text %></option>\n          <% }); %>\n        </select>\n      </div>\n      <div class="form-group">\n        <label><%- titleText %></label>\n        <input type="text" name="title" />\n      </div>\n    </div>\n\n    <input type="submit" class="plone-btn" name="cancel" value="<%- cancelBtn %>" />\n    <input type="submit" class="plone-btn plone-btn-primary context" name="insert" value="<%- insertBtn %>" />\n  </div>\n</div>\n';});
 
 
-define('text!mockup-patterns-tinymce-url/templates/image.xml',[],function () { return '<div>\n  <div class="linkModal">\n    <h1><%- insertHeading %></h1>\n    <% if(_.contains(linkTypes, \'uploadImage\')){ %>\n    <p class="info">Drag and drop files from your desktop onto dialog to upload</p>\n    <% } %>\n\n    <div class="linkTypes pat-autotoc autotabs"\n         data-pat-autotoc="section:fieldset;levels:legend;IDPrefix:tinymce-autotoc-">\n\n        <% if(_.contains(linkTypes, \'image\')){ %>\n      <fieldset class="linkType image" data-linkType="image">\n        <legend id="tinylink-image">Image</legend>\n        <div class="form-inline">\n          <div class="form-group main">\n            <input type="text" name="image" />\n          </div>\n          <div class="form-group scale">\n            <label><%- scaleText %></label>\n            <select name="scale">\n              <option value="">Original</option>\n                <% _.each(scales, function(scale){ %>\n                  <option value="<%- scale.part %>" <% if(scale.name === options.defaultScale){ %>selected<% } %> >\n                    <%- scale.label %>\n                  </option>\n                <% }); %>\n            </select>\n          </div>\n        </div>\n      </fieldset>\n        <% } %>\n\n      <% if(_.contains(linkTypes, \'uploadImage\')){ %>\n      <fieldset class="linkType uploadImage" data-linkType="uploadImage">\n        <legend id="tinylink-uploadImage">Upload</legend>\n        <div class="uploadify-me"></div>\n      </fieldset>\n      <% } %>\n\n      <% if(_.contains(linkTypes, \'externalImage\')){ %>\n      <fieldset class="linkType externalImage" data-linkType="externalImage">\n        <legend id="tinylink-externalImage">External image</legend>\n        <div>\n          <div class="form-group main">\n            <label><%- externalImageText %></label>\n            <input type="text" name="externalImage" />\n          </div>\n        </div>\n      </fieldset>\n      <% } %>\n\n    </div><!-- / tabs -->\n\n    <div class="common-controls">\n      <div class="form-group title">\n        <label><%- titleText %></label>\n        <input type="text" name="title" />\n      </div>\n      <div class="form-group text">\n        <label><%- altText %></label>\n        <input type="text" name="alt" />\n      </div>\n      <div class="form-group align">\n        <label><%- imageAlignText %></label>\n        <select name="align">\n          <% _.each([\'inline\', \'right\', \'left\'], function(align){ %>\n              <option value="<%- align %>">\n              <%- align.charAt(0).toUpperCase() + align.slice(1) %>\n              </option>\n          <% }); %>\n        <select>\n      </div>\n    </div>\n\n    <input type="submit" class="plone-btn" name="cancel" value="<%- cancelBtn %>" />\n    <input type="submit" class="plone-btn plone-btn-primary" name="insert" value="<%- insertBtn %>" />\n\n  </div>\n</div>\n';});
+define('text!mockup-patterns-tinymce-url/templates/image.xml',[],function () { return '<div>\n  <div class="linkModal">\n    <h1><%- insertHeading %></h1>\n    <% if(_.contains(linkTypes, \'uploadImage\')){ %>\n    <p class="info">Specify an image. It can be on this site already ("Internal Image"), an image you upload ("Upload"), or from an external site ("External Image").</p>\n    <% } %>\n\n    <div class="linkTypes pat-autotoc autotabs"\n         data-pat-autotoc="section:fieldset;levels:legend;IDPrefix:tinymce-autotoc-">\n\n        <% if(_.contains(linkTypes, \'image\')){ %>\n      <fieldset class="linkType image" data-linkType="image">\n        <legend id="tinylink-image">Internal Image</legend>\n        <div class="form-inline">\n          <div class="form-group main">\n            <input type="text" name="image" />\n          </div>\n          <div class="form-group scale">\n            <label><%- scaleText %></label>\n            <select name="scale">\n              <option value="">Original</option>\n                <% _.each(scales, function(scale){ %>\n                  <option value="<%- scale.part %>" <% if(scale.name === options.defaultScale){ %>selected<% } %> >\n                    <%- scale.label %>\n                  </option>\n                <% }); %>\n            </select>\n          </div>\n        </div>\n      </fieldset>\n        <% } %>\n\n      <% if(_.contains(linkTypes, \'uploadImage\')){ %>\n      <fieldset class="linkType uploadImage" data-linkType="uploadImage">\n        <legend id="tinylink-uploadImage">Upload</legend>\n        <div class="uploadify-me"></div>\n      </fieldset>\n      <% } %>\n\n      <% if(_.contains(linkTypes, \'externalImage\')){ %>\n      <fieldset class="linkType externalImage" data-linkType="externalImage">\n        <legend id="tinylink-externalImage">External Image</legend>\n        <div>\n          <div class="form-group main">\n            <label><%- externalImageText %></label>\n            <input type="text" name="externalImage" />\n          </div>\n        </div>\n      </fieldset>\n      <% } %>\n\n    </div><!-- / tabs -->\n\n    <div class="common-controls">\n      <div class="form-group title">\n        <label><%- titleText %></label>\n        <input type="text" name="title" />\n      </div>\n      <div class="form-group text">\n        <label><%- altText %></label>\n        <input type="text" name="alt" />\n      </div>\n      <div class="form-group align">\n        <label><%- imageAlignText %></label>\n        <select name="align">\n          <% _.each([\'inline\', \'right\', \'left\'], function(align){ %>\n              <option value="<%- align %>">\n              <%- align.charAt(0).toUpperCase() + align.slice(1) %>\n              </option>\n          <% }); %>\n        <select>\n      </div>\n    </div>\n\n    <input type="submit" class="plone-btn" name="cancel" value="<%- cancelBtn %>" />\n    <input type="submit" class="plone-btn plone-btn-primary context" name="insert" value="<%- insertBtn %>" />\n\n  </div>\n</div>\n';});
 
 define('mockup-patterns-tinymce-url/js/links',[
   'jquery',
@@ -60149,7 +60173,7 @@ define('mockup-patterns-tinymce-url/js/links',[
   'text!mockup-patterns-tinymce-url/templates/link.xml',
   'text!mockup-patterns-tinymce-url/templates/image.xml'
 ], function($, _, registry, Base, RelatedItems, Modal, tinymce, Upload, LinkTemplate, ImageTemplate) {
-  
+  'use strict';
 
   var LinkType = Base.extend({
     defaults: {
@@ -60439,36 +60463,6 @@ define('mockup-patterns-tinymce-url/js/links',[
   });
 
   tinymce.PluginManager.add('ploneimage', function(editor) {
-      if(editor.settings.paste_data_images){
-        editor.on('paste', function(e){
-          var target = $(e.currentTarget);
-          var counter = 0;
-          function handlePaste(){
-            if($('img', target).length > 0){
-              // TODO: more options?
-              $('img', target).each(function(i,e){
-                if($(e).attr('src').indexOf('data:image') === 0){
-                  var byteString = atob($(e).attr('src').split(',')[1]);
-                  var ia = new Uint8Array(byteString.length);
-                  for (var i = 0; i < byteString.length; i++) {
-                    ia[i] = byteString.charCodeAt(i);
-                  }
-                  var blob = new Blob([ia],  {type: 'image/png'});
-                  editor.settings.addImagePasted(blob);
-                }
-              });
-              $('img', target).remove();
-            }else{
-              // wait for image to be pasted
-              if(counter < 3){
-                counter += 1;
-                setTimeout(handlePaste, 1);                
-              }
-            }
-          }
-          handlePaste();
-        });
-      }
     editor.addButton('ploneimage', {
       icon: 'image',
       tooltip: 'Insert/edit image',
@@ -60720,7 +60714,13 @@ define('mockup-patterns-tinymce-url/js/links',[
         self.options.upload.relatedItems.selectableTypes = self.options.folderTypes;
         self.$upload.addClass('pat-upload').patternUpload(self.options.upload);
         self.$upload.on('uploadAllCompleted', function(evt, data) {
-          self.linkTypes.image.set(data.data.UID);
+          if(self.linkTypes.image){
+            self.linkTypes.image.set(data.data.UID);
+            $('#tinylink-image' , self.modal.$modal).trigger('click');
+          }else{
+            self.linkTypes.internal.set(data.data.UID);
+            $('#tinylink-internal', self.modal.$modal).trigger('click');
+          }
         });
       }
 
@@ -68013,7 +68013,7 @@ define("tinymce-paste", ["tinymce"], function() {
 /*globals $code */
 
 (function(exports, undefined) {
-	
+	"use strict";
 
 	var modules = {};
 
@@ -69360,7 +69360,7 @@ define("tinymce/pasteplugin/Quirks", [
 	"tinymce/pasteplugin/WordFilter",
 	"tinymce/pasteplugin/Utils"
 ], function(Env, Tools, WordFilter, Utils) {
-	
+	"use strict";
 
 	return function(editor) {
 		function addPreProcessFilter(filterFunc) {
@@ -70471,7 +70471,7 @@ define("tinymce-spellchecker", ["tinymce"], function() {
 /*globals $code */
 
 (function(exports, undefined) {
-	
+	"use strict";
 
 	var modules = {};
 
@@ -71604,7 +71604,7 @@ define("tinymce-table", ["tinymce"], function() {
 /*globals $code */
 
 (function(exports, undefined) {
-	
+	"use strict";
 
 	var modules = {};
 
@@ -75858,8 +75858,7 @@ toolbar: "undo redo | styleselect | bold italic | alignleft aligncenter alignrig
  *    <form>
  *      <textarea class="pat-tinymce"
  *          data-pat-tinymce='{"relatedItems": {"vocabularyUrl": "/relateditems-test.json" },
- *                            "upload": {"baseUrl": "/", "relativePath": "upload"},
- *                            "pasteImages": true
+ *                            "upload": {"baseUrl": "/", "relativePath": "upload"}
  *                            }'></textarea>
  *    </form>
  *
@@ -75925,7 +75924,7 @@ define('mockup-patterns-tinymce',[
             Base, RelatedItems, Modal, tinymce,
             AutoTOC, ResultTemplate, SelectionTemplate,
             utils, LinkModal, I18n, _t) {
-  
+  'use strict';
 
   var TinyMCE = Base.extend({
     name: 'tinymce',
@@ -75952,15 +75951,15 @@ define('mockup-patterns-tinymce',[
         insertHeading: _t('Insert link'),
         title: _t('Title'),
         internal: _t('Internal'),
-        external: _t('External'),
-        email: _t('Email'),
+        external: _t('External URL (can be relative within this site or absolute if it starts with http:// or https://)'),
+        email: _t('Email Address'),
         anchor: _t('Anchor'),
-        subject: _t('Subject'),
+        subject: _t('Email Subject (optional)'),
         image: _t('Image'),
         imageAlign: _t('Align'),
         scale: _t('Size'),
         alt: _t('Alternative Text'),
-        externalImage: _t('External Image URI')
+        externalImage: _t('External Image URL (can be relative within this site or absolute if it starts with http:// or https://)')
       },
       // URL generation options
       loadingBaseUrl: '../../../bower_components/tinymce-builded/js/tinymce/',
@@ -75995,8 +75994,7 @@ define('mockup-patterns-tinymce',[
                  'unlink plonelink ploneimage',
         //'autoresize_max_height': 900,
         'height': 400
-      },
-      pasteImages: false
+      }
     },
     addLinkClicked: function() {
       var self = this;
@@ -76049,43 +76047,6 @@ define('mockup-patterns-tinymce',[
       } else {
         self.imageModal.reinitialize();
         self.imageModal.show();
-      }
-    },
-    addImagePasted: function(file){
-      var self = this;
-      if (self.pasteModal === null) {
-        var linkTypes = ['uploadImage'];
-        /*if(!self.options.upload){
-          linkTypes.splice(1, 1);
-        }*/
-        var options = $.extend(true, {}, self.options, {
-          tinypattern: self,
-          linkTypes: linkTypes,
-          initialLinkType: 'uploadImage',
-          text: {
-            insertHeading: _t('Insert Image')
-          },
-          /*relatedItems: {
-            baseCriteria: [{
-              i: 'portal_type',
-              o: 'plone.app.querystring.operation.list.contains',
-              v: self.options.imageTypes.concat(self.options.folderTypes)
-            }],
-            selectableTypes: self.options.imageTypes,
-            resultTemplate: ResultTemplate,
-            selectionTemplate: SelectionTemplate
-          }*/
-        });
-        var $el = $('<div/>').insertAfter(self.$el);
-        self.pasteModal = new LinkModal($el, options);
-        self.pasteModal.options.upload.clipboardfile = file;
-        self.pasteModal.show();
-        $('a[href=' + $('.linkType.uploadImage legend').attr('id') + ']').click();
-      } else {
-        self.pasteModal.reinitialize();
-        self.pasteModal.options.upload.clipboardfile = file;
-        self.pasteModal.show();
-        $('a[href=' + $('.linkType.uploadImage legend').attr('id') + ']').click();
       }
     },
     generateUrl: function(data) {
@@ -76192,12 +76153,6 @@ define('mockup-patterns-tinymce',[
       tinyOptions.addLinkClicked = function() {
         self.addLinkClicked.apply(self, []);
       };
-      if(self.options.pasteImages){
-        tinyOptions.paste_data_images = 'true';
-        tinyOptions.addImagePasted = function() {
-          self.addImagePasted.apply(self, []);
-        };
-      }
       tinyOptions.addImageClicked = function(file) {
         self.addImageClicked.apply(self, [file] );
       };
@@ -76318,7 +76273,7 @@ define('mockup-patterns-textareamimetypeselector',[
   'pat-registry',
   'mockup-patterns-tinymce'
 ], function ($, Base, registry, tinymce) {
-  
+  'use strict';
 
   var TextareaMimetypeSelector = Base.extend({
     name: 'textareamimetypeselector',
@@ -79990,7 +79945,7 @@ define('mockup-patterns-pickadate',[
   'mockup-patterns-select2',
   'translate'
 ], function($, Base, Picker, PickerDate, PickerTime, Select2, _t) {
-  
+  'use strict';
 
   var PickADate = Base.extend({
     name: 'pickadate',
@@ -79999,7 +79954,9 @@ define('mockup-patterns-pickadate',[
       separator: ' ',
       date: {
         selectYears: true,
-        selectMonths: true
+        selectMonths: true,
+        formatSubmit: 'yyyy-mm-dd',
+        format: 'yyyy-mm-dd'
       },
       time: {
       },
@@ -80043,7 +80000,6 @@ define('mockup-patterns-pickadate',[
             .insertAfter(self.$el);
 
       if (self.options.date !== false) {
-        self.options.date.formatSubmit = 'yyyy-mm-dd';
         self.$date = $('<input type="text"/>')
               .attr('placeholder', self.options.placeholderDate)
               .attr('data-value', dateValue)
@@ -80061,7 +80017,7 @@ define('mockup-patterns-pickadate',[
                     }
                   }
                   if (e.hasOwnProperty('clear')) {
-                    self.$el.removeAttr('value');
+                    self.$el.val('');
                     self.$date.attr('data-value', '');
                   }
                 }
@@ -80095,7 +80051,7 @@ define('mockup-patterns-pickadate',[
                     }
                   }
                   if (e.hasOwnProperty('clear')) {
-                    self.$el.removeAttr('value');
+                    self.$el.val('');
                     self.$time.attr('data-value', '');
                   }
                 }
@@ -80176,7 +80132,7 @@ define('mockup-patterns-pickadate',[
             dateValue = self.$date.data('pickadate').get('select'),
             formatDate = date.formats.toString;
         if (dateValue) {
-          value += formatDate.apply(date, ['yyyy-mm-dd', dateValue]);
+          value += formatDate.apply(date, [self.options.date.formatSubmit, dateValue]);
         }
       }
 
@@ -80200,7 +80156,7 @@ define('mockup-patterns-pickadate',[
         }
       }
 
-      self.$el.attr('value', value);
+      self.$el.val(value);
 
       self.emit('updated');
     }
@@ -80260,7 +80216,7 @@ define('mockup-patterns-querystring',[
   'translate',
   'underscore'
 ], function($, Base, Select2, PickADate, undefined, _t, _) {
-  
+  'use strict';
 
   var Criteria = function() { this.init.apply(this, arguments); };
   Criteria.prototype = {
@@ -80406,24 +80362,34 @@ define('mockup-patterns-querystring',[
       } else if (widget === 'DateWidget') {
         self.$value = $('<input type="text"/>')
                 .addClass(self.options.classValueName + '-' + widget)
+                .attr('data-pat-pickadate', '{"time": false, "date": {"format": "dd/mm/yyyy" }}')
+                .val(value)
                 .appendTo($wrapper)
-                .patternPickadate({
-                  time: false,
-                  date: { format: 'dd/mm/yyyy' }
-                })
-                .change(function() {
+                .patternPickadate()
+                .on('updated.pickadate.patterns', function() {
                   self.trigger('value-changed');
                 });
 
+
       } else if (widget === 'DateRangeWidget') {
         var startwrap = $('<span/>').appendTo($wrapper);
+        var val1 = "";
+        var val2 = "";
+
+        if (value) {
+          val1 = value[0]?value[0]:"";
+          val2 = value[1]?value[1]:"";
+        }
+
         var startdt = $('<input type="text"/>')
           .addClass(self.options.classValueName + '-' + widget)
           .addClass(self.options.classValueName + '-' + widget + '-start')
+          .attr('data-pat-pickadate', '{"time": false, "date": {"format": "dd/mm/yyyy" }}')
+          .val(val1)
           .appendTo(startwrap)
-          .patternPickadate({
-            time: false,
-            date: { format: 'dd/mm/yyyy' }
+          .patternPickadate()
+          .on('updated.pickadate.patterns', function() {
+            self.trigger('value-changed');
           });
         $wrapper.append(
           $('<span/>')
@@ -80434,14 +80400,13 @@ define('mockup-patterns-querystring',[
         var enddt = $('<input type="text"/>')
                         .addClass(self.options.classValueName + '-' + widget)
                         .addClass(self.options.classValueName + '-' + widget + '-end')
+                        .attr('data-pat-pickadate', '{"time": false, "date": {"format": "dd/mm/yyyy" }}')
+                        .val(val2)
                         .appendTo(endwrap)
-                        .patternPickadate({
-                          time: false,
-                          date: { format: 'dd/mm/yyyy' }
+                        .patternPickadate()
+                        .on('updated.pickadate.patterns', function() {
+                          self.trigger('value-changed');
                         });
-        $wrapper.find('.picker__input').change(function() {
-          self.trigger('value-changed');
-        });
         self.$value = [startdt, enddt];
 
       } else if (widget === 'RelativeDateWidget') {
@@ -80489,7 +80454,14 @@ define('mockup-patterns-querystring',[
       }
 
       if (value !== undefined && typeof self.$value !== 'undefined') {
-        self.$value.select2('val', value);
+        if ($.isArray(self.$value)) {
+          $.each(value, function( i, v ) {
+            self.$value[i].select2('val', v);
+          });
+        }
+        else {
+          self.$value.select2('val', value);
+        }
       }
 
       self.trigger('create-value');
@@ -80599,7 +80571,7 @@ define('mockup-patterns-querystring',[
       var varr = [];
       if ($.isArray(self.$value)) { // handles only datepickers from the 'between' operator right now
         $.each(self.$value, function(i, v) {
-          varr.push($(this).parent().find('.picker__input').val());
+          varr.push($(this).val());
         });
       }
       else if (typeof self.$value !== 'undefined') {
@@ -80607,7 +80579,7 @@ define('mockup-patterns-querystring',[
       }
       var vval;
       if (varr.length > 1) {
-        vval = '[j' + varr.join('","') + '"]';
+        vval = '["' + varr.join('","') + '"]';
       }
       else if (varr.length === 1) {
         vval = JSON.stringify(varr[0]);
@@ -80955,7 +80927,7 @@ define('mockup-patterns-inlinevalidation',[
   'jquery',
   'mockup-patterns-base'
 ], function ($, Base) {
-  
+  'use strict';
 
   var InlineValidation = Base.extend({
     name: 'inlinevalidation',
@@ -81074,7 +81046,7 @@ define('mockup-ui-url/views/base',[
   'backbone',
   'translate'
 ], function($, _, Backbone, _t) {
-  
+  'use strict';
 
   var BaseView = Backbone.View.extend({
     isUIView: true,
@@ -81150,7 +81122,7 @@ define('mockup-ui-url/views/container',[
   'backbone',
   'mockup-ui-url/views/base'
 ], function($, _, Backbone, BaseView) {
-  
+  'use strict';
 
   var Container = BaseView.extend({
     id: '',
@@ -81243,7 +81215,7 @@ define('mockup-ui-url/views/toolbar',[
   'backbone',
   'mockup-ui-url/views/container'
 ], function(_, Backbone, ContainerView) {
-  
+  'use strict';
 
   var Toolbar = ContainerView.extend({
     tagName: 'div',
@@ -81259,7 +81231,7 @@ define('mockup-ui-url/views/buttongroup',[
   'backbone',
   'mockup-ui-url/views/container'
 ], function(_, Backbone, ContainerView) {
-  
+  'use strict';
 
   var ButtonGroup = ContainerView.extend({
     tagName: 'div',
@@ -81321,7 +81293,7 @@ define('mockup-patterns-tooltip',[
   'jquery',
   'mockup-patterns-base'
 ], function($, Base, undefined) {
-  
+  'use strict';
 
   var Tooltip = Base.extend({
     name: 'tooltip',
@@ -81763,7 +81735,7 @@ define('mockup-ui-url/views/button',[
   'mockup-ui-url/views/base',
   'mockup-patterns-tooltip'
 ], function($, Backbone, _, BaseView, Tooltip) {
-  
+  'use strict';
 
   var ButtonView = BaseView.extend({
     tagName: 'a',
@@ -81842,7 +81814,7 @@ define('mockup-ui-url/views/button',[
 });
 
 define('mockup-patterns-structure-url/js/models/result',['backbone'], function(Backbone) {
-  
+  'use strict';
 
   var Result = Backbone.Model.extend({
     defaults: function() {
@@ -81860,7 +81832,7 @@ define('mockup-patterns-structure-url/js/models/result',['backbone'], function(B
 });
 
 
-define('text!mockup-patterns-structure-url/templates/actionmenu.xml',[],function () { return '<a class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" href="#"\n    aria-haspopup="true" aria-expanded="true" id="<%- id %>" title="Actions">\n  <span class="glyphicon glyphicon-cog"></span>\n  <span class="caret"></span>\n</a>\n<ul class="dropdown-menu pull-right" aria-labelledby="<%- id %>">\n  <% if(header) { %>\n    <li class="dropdown-header"><%- header %></li>\n    <li class="divider"></li>\n  <% } %>\n  <li class="cutItem"><a href="#"><%- _t("Cut") %></a></li>\n  <li class="copyItem"><a href="#"><%- _t("Copy") %></a></li>\n  <% if(pasteAllowed && attributes.is_folderish){ %>\n    <li class="pasteItem"><a href="#"><%- _t("Paste") %></a></li>\n  <% } %>\n  <% if(!inQueryMode && canMove){ %>\n    <li class="move-top"><a href="#"><%- _t("Move to top of folder") %></a></li>\n    <li class="move-bottom"><a href="#"><%- _t("Move to bottom of folder") %></a></li>\n  <% } %>\n  <% if(!attributes.is_folderish && canSetDefaultPage){ %>\n    <li class="set-default-page"><a href="#"><%- _t("Set as default page") %></a></li>\n  <% } %>\n  <% if(attributes.is_folderish){ %>\n    <li class="selectAll"><a href="#"><%- _t("Select all contained items") %></a></li>\n  <% } %>\n  <li class="openItem"><a href="#"><%- _t("Open") %></a></li>\n  <li class="editItem"><a href="#"><%- _t("Edit") %></a></li>\n</ul>\n\n';});
+define('text!mockup-patterns-structure-url/templates/actionmenu.xml',[],function () { return '<a class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" href="#"\n    aria-haspopup="true" aria-expanded="true" id="<%- id %>" title="Actions">\n  <span class="glyphicon glyphicon-cog"></span>\n  <span class="caret"></span>\n</a>\n<ul class="dropdown-menu pull-right" aria-labelledby="<%- id %>">\n  <% if(header) { %>\n    <li class="dropdown-header"><%- header %></li>\n    <li class="divider"></li>\n  <% } %>\n  <li class="cutItem"><a href="#"><%- _t("Cut") %></a></li>\n  <li class="copyItem"><a href="#"><%- _t("Copy") %></a></li>\n  <% if(pasteAllowed && attributes.is_folderish){ %>\n    <li class="pasteItem"><a href="#"><%- _t("Paste") %></a></li>\n  <% } %>\n  <% if(!inQueryMode && canMove){ %>\n    <li class="move-top"><a href="#"><%- _t("Move to top of folder") %></a></li>\n    <li class="move-bottom"><a href="#"><%- _t("Move to bottom of folder") %></a></li>\n  <% } %>\n  <% if(!attributes.is_folderish && canSetDefaultPage){ %>\n    <li class="set-default-page"><a href="#"><%- _t("Set as default page") %></a></li>\n  <% } %>\n  <% if(attributes.is_folderish){ %>\n    <li class="selectAll"><a href="#"><%- _t("Select all contained items") %></a></li>\n  <% } %>\n  <% if(header) { %>\n    <li class="openItem"><a href="#"><%- _t("Open") %></a></li>\n  <% } %>\n  <li class="editItem"><a href="#"><%- _t("Edit") %></a></li>\n</ul>\n\n';});
 
 (function(root) {
 define("bootstrap-dropdown", ["jquery"], function() {
@@ -81875,7 +81847,7 @@ define("bootstrap-dropdown", ["jquery"], function() {
 
 
 +function ($) {
-  
+  'use strict';
 
   // DROPDOWN CLASS DEFINITION
   // =========================
@@ -82043,7 +82015,7 @@ define('mockup-patterns-structure-url/js/views/actionmenu',[
   'translate',
   'bootstrap-dropdown'
 ], function($, _, Backbone, BaseView, Result, utils, ActionMenuTemplate, _t) {
-  
+  'use strict';
 
   var ActionMenu = BaseView.extend({
     className: 'btn-group actionmenu',
@@ -82240,7 +82212,7 @@ define('mockup-patterns-structure-url/js/views/tablerow',[
   'mockup-utils',
   'translate'
 ], function($, _, Backbone, ActionMenu, TableRowTemplate, utils, _t) {
-  
+  'use strict';
 
   var TableRowView = Backbone.View.extend({
     tagName: 'tr',
@@ -82407,7 +82379,7 @@ define('mockup-patterns-sortable',[
   'jquery.event.drag',
   'jquery.event.drop'
 ], function($, Base, drag, drop) {
-  
+  'use strict';
 
   var SortablePattern = Base.extend({
     name: 'sortable',
@@ -82484,7 +82456,7 @@ define('mockup-patterns-sortable',[
 
 
 
-!function(a,b){"object"==typeof exports&&"undefined"!=typeof module?module.exports=b():"function"==typeof define&&define.amd?define('moment',b):a.moment=b()}(this,function(){function a(){return Gd.apply(null,arguments)}function b(a){Gd=a}function c(a){return"[object Array]"===Object.prototype.toString.call(a)}function d(a){return a instanceof Date||"[object Date]"===Object.prototype.toString.call(a)}function e(a,b){var c,d=[];for(c=0;c<a.length;++c)d.push(b(a[c],c));return d}function f(a,b){return Object.prototype.hasOwnProperty.call(a,b)}function g(a,b){for(var c in b)f(b,c)&&(a[c]=b[c]);return f(b,"toString")&&(a.toString=b.toString),f(b,"valueOf")&&(a.valueOf=b.valueOf),a}function h(a,b,c,d){return za(a,b,c,d,!0).utc()}function i(){return{empty:!1,unusedTokens:[],unusedInput:[],overflow:-2,charsLeftOver:0,nullInput:!1,invalidMonth:null,invalidFormat:!1,userInvalidated:!1,iso:!1}}function j(a){return null==a._pf&&(a._pf=i()),a._pf}function k(a){if(null==a._isValid){var b=j(a);a._isValid=!isNaN(a._d.getTime())&&b.overflow<0&&!b.empty&&!b.invalidMonth&&!b.nullInput&&!b.invalidFormat&&!b.userInvalidated,a._strict&&(a._isValid=a._isValid&&0===b.charsLeftOver&&0===b.unusedTokens.length&&void 0===b.bigHour)}return a._isValid}function l(a){var b=h(0/0);return null!=a?g(j(b),a):j(b).userInvalidated=!0,b}function m(a,b){var c,d,e;if("undefined"!=typeof b._isAMomentObject&&(a._isAMomentObject=b._isAMomentObject),"undefined"!=typeof b._i&&(a._i=b._i),"undefined"!=typeof b._f&&(a._f=b._f),"undefined"!=typeof b._l&&(a._l=b._l),"undefined"!=typeof b._strict&&(a._strict=b._strict),"undefined"!=typeof b._tzm&&(a._tzm=b._tzm),"undefined"!=typeof b._isUTC&&(a._isUTC=b._isUTC),"undefined"!=typeof b._offset&&(a._offset=b._offset),"undefined"!=typeof b._pf&&(a._pf=j(b)),"undefined"!=typeof b._locale&&(a._locale=b._locale),Id.length>0)for(c in Id)d=Id[c],e=b[d],"undefined"!=typeof e&&(a[d]=e);return a}function n(b){m(this,b),this._d=new Date(+b._d),Jd===!1&&(Jd=!0,a.updateOffset(this),Jd=!1)}function o(a){return a instanceof n||null!=a&&null!=a._isAMomentObject}function p(a){var b=+a,c=0;return 0!==b&&isFinite(b)&&(c=b>=0?Math.floor(b):Math.ceil(b)),c}function q(a,b,c){var d,e=Math.min(a.length,b.length),f=Math.abs(a.length-b.length),g=0;for(d=0;e>d;d++)(c&&a[d]!==b[d]||!c&&p(a[d])!==p(b[d]))&&g++;return g+f}function r(){}function s(a){return a?a.toLowerCase().replace("_","-"):a}function t(a){for(var b,c,d,e,f=0;f<a.length;){for(e=s(a[f]).split("-"),b=e.length,c=s(a[f+1]),c=c?c.split("-"):null;b>0;){if(d=u(e.slice(0,b).join("-")))return d;if(c&&c.length>=b&&q(e,c,!0)>=b-1)break;b--}f++}return null}function u(a){var b=null;if(!Kd[a]&&"undefined"!=typeof module&&module&&module.exports)try{b=Hd._abbr,require("./locale/"+a),v(b)}catch(c){}return Kd[a]}function v(a,b){var c;return a&&(c="undefined"==typeof b?x(a):w(a,b),c&&(Hd=c)),Hd._abbr}function w(a,b){return null!==b?(b.abbr=a,Kd[a]||(Kd[a]=new r),Kd[a].set(b),v(a),Kd[a]):(delete Kd[a],null)}function x(a){var b;if(a&&a._locale&&a._locale._abbr&&(a=a._locale._abbr),!a)return Hd;if(!c(a)){if(b=u(a))return b;a=[a]}return t(a)}function y(a,b){var c=a.toLowerCase();Ld[c]=Ld[c+"s"]=Ld[b]=a}function z(a){return"string"==typeof a?Ld[a]||Ld[a.toLowerCase()]:void 0}function A(a){var b,c,d={};for(c in a)f(a,c)&&(b=z(c),b&&(d[b]=a[c]));return d}function B(b,c){return function(d){return null!=d?(D(this,b,d),a.updateOffset(this,c),this):C(this,b)}}function C(a,b){return a._d["get"+(a._isUTC?"UTC":"")+b]()}function D(a,b,c){return a._d["set"+(a._isUTC?"UTC":"")+b](c)}function E(a,b){var c;if("object"==typeof a)for(c in a)this.set(c,a[c]);else if(a=z(a),"function"==typeof this[a])return this[a](b);return this}function F(a,b,c){for(var d=""+Math.abs(a),e=a>=0;d.length<b;)d="0"+d;return(e?c?"+":"":"-")+d}function G(a,b,c,d){var e=d;"string"==typeof d&&(e=function(){return this[d]()}),a&&(Pd[a]=e),b&&(Pd[b[0]]=function(){return F(e.apply(this,arguments),b[1],b[2])}),c&&(Pd[c]=function(){return this.localeData().ordinal(e.apply(this,arguments),a)})}function H(a){return a.match(/\[[\s\S]/)?a.replace(/^\[|\]$/g,""):a.replace(/\\/g,"")}function I(a){var b,c,d=a.match(Md);for(b=0,c=d.length;c>b;b++)Pd[d[b]]?d[b]=Pd[d[b]]:d[b]=H(d[b]);return function(e){var f="";for(b=0;c>b;b++)f+=d[b]instanceof Function?d[b].call(e,a):d[b];return f}}function J(a,b){return a.isValid()?(b=K(b,a.localeData()),Od[b]||(Od[b]=I(b)),Od[b](a)):a.localeData().invalidDate()}function K(a,b){function c(a){return b.longDateFormat(a)||a}var d=5;for(Nd.lastIndex=0;d>=0&&Nd.test(a);)a=a.replace(Nd,c),Nd.lastIndex=0,d-=1;return a}function L(a,b,c){ce[a]="function"==typeof b?b:function(a){return a&&c?c:b}}function M(a,b){return f(ce,a)?ce[a](b._strict,b._locale):new RegExp(N(a))}function N(a){return a.replace("\\","").replace(/\\(\[)|\\(\])|\[([^\]\[]*)\]|\\(.)/g,function(a,b,c,d,e){return b||c||d||e}).replace(/[-\/\\^$*+?.()|[\]{}]/g,"\\$&")}function O(a,b){var c,d=b;for("string"==typeof a&&(a=[a]),"number"==typeof b&&(d=function(a,c){c[b]=p(a)}),c=0;c<a.length;c++)de[a[c]]=d}function P(a,b){O(a,function(a,c,d,e){d._w=d._w||{},b(a,d._w,d,e)})}function Q(a,b,c){null!=b&&f(de,a)&&de[a](b,c._a,c,a)}function R(a,b){return new Date(Date.UTC(a,b+1,0)).getUTCDate()}function S(a){return this._months[a.month()]}function T(a){return this._monthsShort[a.month()]}function U(a,b,c){var d,e,f;for(this._monthsParse||(this._monthsParse=[],this._longMonthsParse=[],this._shortMonthsParse=[]),d=0;12>d;d++){if(e=h([2e3,d]),c&&!this._longMonthsParse[d]&&(this._longMonthsParse[d]=new RegExp("^"+this.months(e,"").replace(".","")+"$","i"),this._shortMonthsParse[d]=new RegExp("^"+this.monthsShort(e,"").replace(".","")+"$","i")),c||this._monthsParse[d]||(f="^"+this.months(e,"")+"|^"+this.monthsShort(e,""),this._monthsParse[d]=new RegExp(f.replace(".",""),"i")),c&&"MMMM"===b&&this._longMonthsParse[d].test(a))return d;if(c&&"MMM"===b&&this._shortMonthsParse[d].test(a))return d;if(!c&&this._monthsParse[d].test(a))return d}}function V(a,b){var c;return"string"==typeof b&&(b=a.localeData().monthsParse(b),"number"!=typeof b)?a:(c=Math.min(a.date(),R(a.year(),b)),a._d["set"+(a._isUTC?"UTC":"")+"Month"](b,c),a)}function W(b){return null!=b?(V(this,b),a.updateOffset(this,!0),this):C(this,"Month")}function X(){return R(this.year(),this.month())}function Y(a){var b,c=a._a;return c&&-2===j(a).overflow&&(b=c[fe]<0||c[fe]>11?fe:c[ge]<1||c[ge]>R(c[ee],c[fe])?ge:c[he]<0||c[he]>24||24===c[he]&&(0!==c[ie]||0!==c[je]||0!==c[ke])?he:c[ie]<0||c[ie]>59?ie:c[je]<0||c[je]>59?je:c[ke]<0||c[ke]>999?ke:-1,j(a)._overflowDayOfYear&&(ee>b||b>ge)&&(b=ge),j(a).overflow=b),a}function Z(b){a.suppressDeprecationWarnings===!1&&"undefined"!=typeof console&&console.warn&&console.warn("Deprecation warning: "+b)}function $(a,b){var c=!0,d=a+"\n"+(new Error).stack;return g(function(){return c&&(Z(d),c=!1),b.apply(this,arguments)},b)}function _(a,b){ne[a]||(Z(b),ne[a]=!0)}function aa(a){var b,c,d=a._i,e=oe.exec(d);if(e){for(j(a).iso=!0,b=0,c=pe.length;c>b;b++)if(pe[b][1].exec(d)){a._f=pe[b][0]+(e[6]||" ");break}for(b=0,c=qe.length;c>b;b++)if(qe[b][1].exec(d)){a._f+=qe[b][0];break}d.match(_d)&&(a._f+="Z"),ta(a)}else a._isValid=!1}function ba(b){var c=re.exec(b._i);return null!==c?void(b._d=new Date(+c[1])):(aa(b),void(b._isValid===!1&&(delete b._isValid,a.createFromInputFallback(b))))}function ca(a,b,c,d,e,f,g){var h=new Date(a,b,c,d,e,f,g);return 1970>a&&h.setFullYear(a),h}function da(a){var b=new Date(Date.UTC.apply(null,arguments));return 1970>a&&b.setUTCFullYear(a),b}function ea(a){return fa(a)?366:365}function fa(a){return a%4===0&&a%100!==0||a%400===0}function ga(){return fa(this.year())}function ha(a,b,c){var d,e=c-b,f=c-a.day();return f>e&&(f-=7),e-7>f&&(f+=7),d=Aa(a).add(f,"d"),{week:Math.ceil(d.dayOfYear()/7),year:d.year()}}function ia(a){return ha(a,this._week.dow,this._week.doy).week}function ja(){return this._week.dow}function ka(){return this._week.doy}function la(a){var b=this.localeData().week(this);return null==a?b:this.add(7*(a-b),"d")}function ma(a){var b=ha(this,1,4).week;return null==a?b:this.add(7*(a-b),"d")}function na(a,b,c,d,e){var f,g,h=da(a,0,1).getUTCDay();return h=0===h?7:h,c=null!=c?c:e,f=e-h+(h>d?7:0)-(e>h?7:0),g=7*(b-1)+(c-e)+f+1,{year:g>0?a:a-1,dayOfYear:g>0?g:ea(a-1)+g}}function oa(a){var b=Math.round((this.clone().startOf("day")-this.clone().startOf("year"))/864e5)+1;return null==a?b:this.add(a-b,"d")}function pa(a,b,c){return null!=a?a:null!=b?b:c}function qa(a){var b=new Date;return a._useUTC?[b.getUTCFullYear(),b.getUTCMonth(),b.getUTCDate()]:[b.getFullYear(),b.getMonth(),b.getDate()]}function ra(a){var b,c,d,e,f=[];if(!a._d){for(d=qa(a),a._w&&null==a._a[ge]&&null==a._a[fe]&&sa(a),a._dayOfYear&&(e=pa(a._a[ee],d[ee]),a._dayOfYear>ea(e)&&(j(a)._overflowDayOfYear=!0),c=da(e,0,a._dayOfYear),a._a[fe]=c.getUTCMonth(),a._a[ge]=c.getUTCDate()),b=0;3>b&&null==a._a[b];++b)a._a[b]=f[b]=d[b];for(;7>b;b++)a._a[b]=f[b]=null==a._a[b]?2===b?1:0:a._a[b];24===a._a[he]&&0===a._a[ie]&&0===a._a[je]&&0===a._a[ke]&&(a._nextDay=!0,a._a[he]=0),a._d=(a._useUTC?da:ca).apply(null,f),null!=a._tzm&&a._d.setUTCMinutes(a._d.getUTCMinutes()-a._tzm),a._nextDay&&(a._a[he]=24)}}function sa(a){var b,c,d,e,f,g,h;b=a._w,null!=b.GG||null!=b.W||null!=b.E?(f=1,g=4,c=pa(b.GG,a._a[ee],ha(Aa(),1,4).year),d=pa(b.W,1),e=pa(b.E,1)):(f=a._locale._week.dow,g=a._locale._week.doy,c=pa(b.gg,a._a[ee],ha(Aa(),f,g).year),d=pa(b.w,1),null!=b.d?(e=b.d,f>e&&++d):e=null!=b.e?b.e+f:f),h=na(c,d,e,g,f),a._a[ee]=h.year,a._dayOfYear=h.dayOfYear}function ta(b){if(b._f===a.ISO_8601)return void aa(b);b._a=[],j(b).empty=!0;var c,d,e,f,g,h=""+b._i,i=h.length,k=0;for(e=K(b._f,b._locale).match(Md)||[],c=0;c<e.length;c++)f=e[c],d=(h.match(M(f,b))||[])[0],d&&(g=h.substr(0,h.indexOf(d)),g.length>0&&j(b).unusedInput.push(g),h=h.slice(h.indexOf(d)+d.length),k+=d.length),Pd[f]?(d?j(b).empty=!1:j(b).unusedTokens.push(f),Q(f,d,b)):b._strict&&!d&&j(b).unusedTokens.push(f);j(b).charsLeftOver=i-k,h.length>0&&j(b).unusedInput.push(h),j(b).bigHour===!0&&b._a[he]<=12&&b._a[he]>0&&(j(b).bigHour=void 0),b._a[he]=ua(b._locale,b._a[he],b._meridiem),ra(b),Y(b)}function ua(a,b,c){var d;return null==c?b:null!=a.meridiemHour?a.meridiemHour(b,c):null!=a.isPM?(d=a.isPM(c),d&&12>b&&(b+=12),d||12!==b||(b=0),b):b}function va(a){var b,c,d,e,f;if(0===a._f.length)return j(a).invalidFormat=!0,void(a._d=new Date(0/0));for(e=0;e<a._f.length;e++)f=0,b=m({},a),null!=a._useUTC&&(b._useUTC=a._useUTC),b._f=a._f[e],ta(b),k(b)&&(f+=j(b).charsLeftOver,f+=10*j(b).unusedTokens.length,j(b).score=f,(null==d||d>f)&&(d=f,c=b));g(a,c||b)}function wa(a){if(!a._d){var b=A(a._i);a._a=[b.year,b.month,b.day||b.date,b.hour,b.minute,b.second,b.millisecond],ra(a)}}function xa(a){var b,e=a._i,f=a._f;return a._locale=a._locale||x(a._l),null===e||void 0===f&&""===e?l({nullInput:!0}):("string"==typeof e&&(a._i=e=a._locale.preparse(e)),o(e)?new n(Y(e)):(c(f)?va(a):f?ta(a):d(e)?a._d=e:ya(a),b=new n(Y(a)),b._nextDay&&(b.add(1,"d"),b._nextDay=void 0),b))}function ya(b){var f=b._i;void 0===f?b._d=new Date:d(f)?b._d=new Date(+f):"string"==typeof f?ba(b):c(f)?(b._a=e(f.slice(0),function(a){return parseInt(a,10)}),ra(b)):"object"==typeof f?wa(b):"number"==typeof f?b._d=new Date(f):a.createFromInputFallback(b)}function za(a,b,c,d,e){var f={};return"boolean"==typeof c&&(d=c,c=void 0),f._isAMomentObject=!0,f._useUTC=f._isUTC=e,f._l=c,f._i=a,f._f=b,f._strict=d,xa(f)}function Aa(a,b,c,d){return za(a,b,c,d,!1)}function Ba(a,b){var d,e;if(1===b.length&&c(b[0])&&(b=b[0]),!b.length)return Aa();for(d=b[0],e=1;e<b.length;++e)b[e][a](d)&&(d=b[e]);return d}function Ca(){var a=[].slice.call(arguments,0);return Ba("isBefore",a)}function Da(){var a=[].slice.call(arguments,0);return Ba("isAfter",a)}function Ea(a){var b=A(a),c=b.year||0,d=b.quarter||0,e=b.month||0,f=b.week||0,g=b.day||0,h=b.hour||0,i=b.minute||0,j=b.second||0,k=b.millisecond||0;this._milliseconds=+k+1e3*j+6e4*i+36e5*h,this._days=+g+7*f,this._months=+e+3*d+12*c,this._data={},this._locale=x(),this._bubble()}function Fa(a){return a instanceof Ea}function Ga(a,b){G(a,0,0,function(){var a=this.utcOffset(),c="+";return 0>a&&(a=-a,c="-"),c+F(~~(a/60),2)+b+F(~~a%60,2)})}function Ha(a){var b=(a||"").match(_d)||[],c=b[b.length-1]||[],d=(c+"").match(we)||["-",0,0],e=+(60*d[1])+p(d[2]);return"+"===d[0]?e:-e}function Ia(b,c){var e,f;return c._isUTC?(e=c.clone(),f=(o(b)||d(b)?+b:+Aa(b))-+e,e._d.setTime(+e._d+f),a.updateOffset(e,!1),e):Aa(b).local();return c._isUTC?Aa(b).zone(c._offset||0):Aa(b).local()}function Ja(a){return 15*-Math.round(a._d.getTimezoneOffset()/15)}function Ka(b,c){var d,e=this._offset||0;return null!=b?("string"==typeof b&&(b=Ha(b)),Math.abs(b)<16&&(b=60*b),!this._isUTC&&c&&(d=Ja(this)),this._offset=b,this._isUTC=!0,null!=d&&this.add(d,"m"),e!==b&&(!c||this._changeInProgress?$a(this,Va(b-e,"m"),1,!1):this._changeInProgress||(this._changeInProgress=!0,a.updateOffset(this,!0),this._changeInProgress=null)),this):this._isUTC?e:Ja(this)}function La(a,b){return null!=a?("string"!=typeof a&&(a=-a),this.utcOffset(a,b),this):-this.utcOffset()}function Ma(a){return this.utcOffset(0,a)}function Na(a){return this._isUTC&&(this.utcOffset(0,a),this._isUTC=!1,a&&this.subtract(Ja(this),"m")),this}function Oa(){return this._tzm?this.utcOffset(this._tzm):"string"==typeof this._i&&this.utcOffset(Ha(this._i)),this}function Pa(a){return a=a?Aa(a).utcOffset():0,(this.utcOffset()-a)%60===0}function Qa(){return this.utcOffset()>this.clone().month(0).utcOffset()||this.utcOffset()>this.clone().month(5).utcOffset()}function Ra(){if(this._a){var a=this._isUTC?h(this._a):Aa(this._a);return this.isValid()&&q(this._a,a.toArray())>0}return!1}function Sa(){return!this._isUTC}function Ta(){return this._isUTC}function Ua(){return this._isUTC&&0===this._offset}function Va(a,b){var c,d,e,g=a,h=null;return Fa(a)?g={ms:a._milliseconds,d:a._days,M:a._months}:"number"==typeof a?(g={},b?g[b]=a:g.milliseconds=a):(h=xe.exec(a))?(c="-"===h[1]?-1:1,g={y:0,d:p(h[ge])*c,h:p(h[he])*c,m:p(h[ie])*c,s:p(h[je])*c,ms:p(h[ke])*c}):(h=ye.exec(a))?(c="-"===h[1]?-1:1,g={y:Wa(h[2],c),M:Wa(h[3],c),d:Wa(h[4],c),h:Wa(h[5],c),m:Wa(h[6],c),s:Wa(h[7],c),w:Wa(h[8],c)}):null==g?g={}:"object"==typeof g&&("from"in g||"to"in g)&&(e=Ya(Aa(g.from),Aa(g.to)),g={},g.ms=e.milliseconds,g.M=e.months),d=new Ea(g),Fa(a)&&f(a,"_locale")&&(d._locale=a._locale),d}function Wa(a,b){var c=a&&parseFloat(a.replace(",","."));return(isNaN(c)?0:c)*b}function Xa(a,b){var c={milliseconds:0,months:0};return c.months=b.month()-a.month()+12*(b.year()-a.year()),a.clone().add(c.months,"M").isAfter(b)&&--c.months,c.milliseconds=+b-+a.clone().add(c.months,"M"),c}function Ya(a,b){var c;return b=Ia(b,a),a.isBefore(b)?c=Xa(a,b):(c=Xa(b,a),c.milliseconds=-c.milliseconds,c.months=-c.months),c}function Za(a,b){return function(c,d){var e,f;return null===d||isNaN(+d)||(_(b,"moment()."+b+"(period, number) is deprecated. Please use moment()."+b+"(number, period)."),f=c,c=d,d=f),c="string"==typeof c?+c:c,e=Va(c,d),$a(this,e,a),this}}function $a(b,c,d,e){var f=c._milliseconds,g=c._days,h=c._months;e=null==e?!0:e,f&&b._d.setTime(+b._d+f*d),g&&D(b,"Date",C(b,"Date")+g*d),h&&V(b,C(b,"Month")+h*d),e&&a.updateOffset(b,g||h)}function _a(a){var b=a||Aa(),c=Ia(b,this).startOf("day"),d=this.diff(c,"days",!0),e=-6>d?"sameElse":-1>d?"lastWeek":0>d?"lastDay":1>d?"sameDay":2>d?"nextDay":7>d?"nextWeek":"sameElse";return this.format(this.localeData().calendar(e,this,Aa(b)))}function ab(){return new n(this)}function bb(a,b){var c;return b=z("undefined"!=typeof b?b:"millisecond"),"millisecond"===b?(a=o(a)?a:Aa(a),+this>+a):(c=o(a)?+a:+Aa(a),c<+this.clone().startOf(b))}function cb(a,b){var c;return b=z("undefined"!=typeof b?b:"millisecond"),"millisecond"===b?(a=o(a)?a:Aa(a),+a>+this):(c=o(a)?+a:+Aa(a),+this.clone().endOf(b)<c)}function db(a,b,c){return this.isAfter(a,c)&&this.isBefore(b,c)}function eb(a,b){var c;return b=z(b||"millisecond"),"millisecond"===b?(a=o(a)?a:Aa(a),+this===+a):(c=+Aa(a),+this.clone().startOf(b)<=c&&c<=+this.clone().endOf(b))}function fb(a){return 0>a?Math.ceil(a):Math.floor(a)}function gb(a,b,c){var d,e,f=Ia(a,this),g=6e4*(f.utcOffset()-this.utcOffset());return b=z(b),"year"===b||"month"===b||"quarter"===b?(e=hb(this,f),"quarter"===b?e/=3:"year"===b&&(e/=12)):(d=this-f,e="second"===b?d/1e3:"minute"===b?d/6e4:"hour"===b?d/36e5:"day"===b?(d-g)/864e5:"week"===b?(d-g)/6048e5:d),c?e:fb(e)}function hb(a,b){var c,d,e=12*(b.year()-a.year())+(b.month()-a.month()),f=a.clone().add(e,"months");return 0>b-f?(c=a.clone().add(e-1,"months"),d=(b-f)/(f-c)):(c=a.clone().add(e+1,"months"),d=(b-f)/(c-f)),-(e+d)}function ib(){return this.clone().locale("en").format("ddd MMM DD YYYY HH:mm:ss [GMT]ZZ")}function jb(){var a=this.clone().utc();return 0<a.year()&&a.year()<=9999?"function"==typeof Date.prototype.toISOString?this.toDate().toISOString():J(a,"YYYY-MM-DD[T]HH:mm:ss.SSS[Z]"):J(a,"YYYYYY-MM-DD[T]HH:mm:ss.SSS[Z]")}function kb(b){var c=J(this,b||a.defaultFormat);return this.localeData().postformat(c)}function lb(a,b){return this.isValid()?Va({to:this,from:a}).locale(this.locale()).humanize(!b):this.localeData().invalidDate()}function mb(a){return this.from(Aa(),a)}function nb(a,b){return this.isValid()?Va({from:this,to:a}).locale(this.locale()).humanize(!b):this.localeData().invalidDate()}function ob(a){return this.to(Aa(),a)}function pb(a){var b;return void 0===a?this._locale._abbr:(b=x(a),null!=b&&(this._locale=b),this)}function qb(){return this._locale}function rb(a){switch(a=z(a)){case"year":this.month(0);case"quarter":case"month":this.date(1);case"week":case"isoWeek":case"day":this.hours(0);case"hour":this.minutes(0);case"minute":this.seconds(0);case"second":this.milliseconds(0)}return"week"===a&&this.weekday(0),"isoWeek"===a&&this.isoWeekday(1),"quarter"===a&&this.month(3*Math.floor(this.month()/3)),this}function sb(a){return a=z(a),void 0===a||"millisecond"===a?this:this.startOf(a).add(1,"isoWeek"===a?"week":a).subtract(1,"ms")}function tb(){return+this._d-6e4*(this._offset||0)}function ub(){return Math.floor(+this/1e3)}function vb(){return this._offset?new Date(+this):this._d}function wb(){var a=this;return[a.year(),a.month(),a.date(),a.hour(),a.minute(),a.second(),a.millisecond()]}function xb(){return k(this)}function yb(){return g({},j(this))}function zb(){return j(this).overflow}function Ab(a,b){G(0,[a,a.length],0,b)}function Bb(a,b,c){return ha(Aa([a,11,31+b-c]),b,c).week}function Cb(a){var b=ha(this,this.localeData()._week.dow,this.localeData()._week.doy).year;return null==a?b:this.add(a-b,"y")}function Db(a){var b=ha(this,1,4).year;return null==a?b:this.add(a-b,"y")}function Eb(){return Bb(this.year(),1,4)}function Fb(){var a=this.localeData()._week;return Bb(this.year(),a.dow,a.doy)}function Gb(a){return null==a?Math.ceil((this.month()+1)/3):this.month(3*(a-1)+this.month()%3)}function Hb(a,b){if("string"==typeof a)if(isNaN(a)){if(a=b.weekdaysParse(a),"number"!=typeof a)return null}else a=parseInt(a,10);return a}function Ib(a){return this._weekdays[a.day()]}function Jb(a){return this._weekdaysShort[a.day()]}function Kb(a){return this._weekdaysMin[a.day()]}function Lb(a){var b,c,d;for(this._weekdaysParse||(this._weekdaysParse=[]),b=0;7>b;b++)if(this._weekdaysParse[b]||(c=Aa([2e3,1]).day(b),d="^"+this.weekdays(c,"")+"|^"+this.weekdaysShort(c,"")+"|^"+this.weekdaysMin(c,""),this._weekdaysParse[b]=new RegExp(d.replace(".",""),"i")),this._weekdaysParse[b].test(a))return b}function Mb(a){var b=this._isUTC?this._d.getUTCDay():this._d.getDay();return null!=a?(a=Hb(a,this.localeData()),this.add(a-b,"d")):b}function Nb(a){var b=(this.day()+7-this.localeData()._week.dow)%7;return null==a?b:this.add(a-b,"d")}function Ob(a){return null==a?this.day()||7:this.day(this.day()%7?a:a-7)}function Pb(a,b){G(a,0,0,function(){return this.localeData().meridiem(this.hours(),this.minutes(),b)})}function Qb(a,b){return b._meridiemParse}function Rb(a){return"p"===(a+"").toLowerCase().charAt(0)}function Sb(a,b,c){return a>11?c?"pm":"PM":c?"am":"AM"}function Tb(a){G(0,[a,3],0,"millisecond")}function Ub(){return this._isUTC?"UTC":""}function Vb(){return this._isUTC?"Coordinated Universal Time":""}function Wb(a){return Aa(1e3*a)}function Xb(){return Aa.apply(null,arguments).parseZone()}function Yb(a,b,c){var d=this._calendar[a];return"function"==typeof d?d.call(b,c):d}function Zb(a){var b=this._longDateFormat[a];return!b&&this._longDateFormat[a.toUpperCase()]&&(b=this._longDateFormat[a.toUpperCase()].replace(/MMMM|MM|DD|dddd/g,function(a){return a.slice(1)}),this._longDateFormat[a]=b),b}function $b(){return this._invalidDate}function _b(a){return this._ordinal.replace("%d",a)}function ac(a){return a}function bc(a,b,c,d){var e=this._relativeTime[c];return"function"==typeof e?e(a,b,c,d):e.replace(/%d/i,a)}function cc(a,b){var c=this._relativeTime[a>0?"future":"past"];return"function"==typeof c?c(b):c.replace(/%s/i,b)}function dc(a){var b,c;for(c in a)b=a[c],"function"==typeof b?this[c]=b:this["_"+c]=b;this._ordinalParseLenient=new RegExp(this._ordinalParse.source+"|"+/\d{1,2}/.source)}function ec(a,b,c,d){var e=x(),f=h().set(d,b);return e[c](f,a)}function fc(a,b,c,d,e){if("number"==typeof a&&(b=a,a=void 0),a=a||"",null!=b)return ec(a,b,c,e);var f,g=[];for(f=0;d>f;f++)g[f]=ec(a,f,c,e);return g}function gc(a,b){return fc(a,b,"months",12,"month")}function hc(a,b){return fc(a,b,"monthsShort",12,"month")}function ic(a,b){return fc(a,b,"weekdays",7,"day")}function jc(a,b){return fc(a,b,"weekdaysShort",7,"day")}function kc(a,b){return fc(a,b,"weekdaysMin",7,"day")}function lc(){var a=this._data;return this._milliseconds=Ue(this._milliseconds),this._days=Ue(this._days),this._months=Ue(this._months),a.milliseconds=Ue(a.milliseconds),a.seconds=Ue(a.seconds),a.minutes=Ue(a.minutes),a.hours=Ue(a.hours),a.months=Ue(a.months),a.years=Ue(a.years),this}function mc(a,b,c,d){var e=Va(b,c);return a._milliseconds+=d*e._milliseconds,a._days+=d*e._days,a._months+=d*e._months,a._bubble()}function nc(a,b){return mc(this,a,b,1)}function oc(a,b){return mc(this,a,b,-1)}function pc(){var a,b,c,d=this._milliseconds,e=this._days,f=this._months,g=this._data,h=0;return g.milliseconds=d%1e3,a=fb(d/1e3),g.seconds=a%60,b=fb(a/60),g.minutes=b%60,c=fb(b/60),g.hours=c%24,e+=fb(c/24),h=fb(qc(e)),e-=fb(rc(h)),f+=fb(e/30),e%=30,h+=fb(f/12),f%=12,g.days=e,g.months=f,g.years=h,this}function qc(a){return 400*a/146097}function rc(a){return 146097*a/400}function sc(a){var b,c,d=this._milliseconds;if(a=z(a),"month"===a||"year"===a)return b=this._days+d/864e5,c=this._months+12*qc(b),"month"===a?c:c/12;switch(b=this._days+Math.round(rc(this._months/12)),a){case"week":return b/7+d/6048e5;case"day":return b+d/864e5;case"hour":return 24*b+d/36e5;case"minute":return 1440*b+d/6e4;case"second":return 86400*b+d/1e3;case"millisecond":return Math.floor(864e5*b)+d;default:throw new Error("Unknown unit "+a)}}function tc(){return this._milliseconds+864e5*this._days+this._months%12*2592e6+31536e6*p(this._months/12)}function uc(a){return function(){return this.as(a)}}function vc(a){return a=z(a),this[a+"s"]()}function wc(a){return function(){return this._data[a]}}function xc(){return fb(this.days()/7)}function yc(a,b,c,d,e){return e.relativeTime(b||1,!!c,a,d)}function zc(a,b,c){var d=Va(a).abs(),e=jf(d.as("s")),f=jf(d.as("m")),g=jf(d.as("h")),h=jf(d.as("d")),i=jf(d.as("M")),j=jf(d.as("y")),k=e<kf.s&&["s",e]||1===f&&["m"]||f<kf.m&&["mm",f]||1===g&&["h"]||g<kf.h&&["hh",g]||1===h&&["d"]||h<kf.d&&["dd",h]||1===i&&["M"]||i<kf.M&&["MM",i]||1===j&&["y"]||["yy",j];return k[2]=b,k[3]=+a>0,k[4]=c,yc.apply(null,k)}function Ac(a,b){return void 0===kf[a]?!1:void 0===b?kf[a]:(kf[a]=b,!0)}function Bc(a){var b=this.localeData(),c=zc(this,!a,b);return a&&(c=b.pastFuture(+this,c)),b.postformat(c)}function Cc(){var a=lf(this.years()),b=lf(this.months()),c=lf(this.days()),d=lf(this.hours()),e=lf(this.minutes()),f=lf(this.seconds()+this.milliseconds()/1e3),g=this.asSeconds();return g?(0>g?"-":"")+"P"+(a?a+"Y":"")+(b?b+"M":"")+(c?c+"D":"")+(d||e||f?"T":"")+(d?d+"H":"")+(e?e+"M":"")+(f?f+"S":""):"P0D"}
+!function(a,b){"object"==typeof exports&&"undefined"!=typeof module?module.exports=b():"function"==typeof define&&define.amd?define('moment',b):a.moment=b()}(this,function(){"use strict";function a(){return Gd.apply(null,arguments)}function b(a){Gd=a}function c(a){return"[object Array]"===Object.prototype.toString.call(a)}function d(a){return a instanceof Date||"[object Date]"===Object.prototype.toString.call(a)}function e(a,b){var c,d=[];for(c=0;c<a.length;++c)d.push(b(a[c],c));return d}function f(a,b){return Object.prototype.hasOwnProperty.call(a,b)}function g(a,b){for(var c in b)f(b,c)&&(a[c]=b[c]);return f(b,"toString")&&(a.toString=b.toString),f(b,"valueOf")&&(a.valueOf=b.valueOf),a}function h(a,b,c,d){return za(a,b,c,d,!0).utc()}function i(){return{empty:!1,unusedTokens:[],unusedInput:[],overflow:-2,charsLeftOver:0,nullInput:!1,invalidMonth:null,invalidFormat:!1,userInvalidated:!1,iso:!1}}function j(a){return null==a._pf&&(a._pf=i()),a._pf}function k(a){if(null==a._isValid){var b=j(a);a._isValid=!isNaN(a._d.getTime())&&b.overflow<0&&!b.empty&&!b.invalidMonth&&!b.nullInput&&!b.invalidFormat&&!b.userInvalidated,a._strict&&(a._isValid=a._isValid&&0===b.charsLeftOver&&0===b.unusedTokens.length&&void 0===b.bigHour)}return a._isValid}function l(a){var b=h(0/0);return null!=a?g(j(b),a):j(b).userInvalidated=!0,b}function m(a,b){var c,d,e;if("undefined"!=typeof b._isAMomentObject&&(a._isAMomentObject=b._isAMomentObject),"undefined"!=typeof b._i&&(a._i=b._i),"undefined"!=typeof b._f&&(a._f=b._f),"undefined"!=typeof b._l&&(a._l=b._l),"undefined"!=typeof b._strict&&(a._strict=b._strict),"undefined"!=typeof b._tzm&&(a._tzm=b._tzm),"undefined"!=typeof b._isUTC&&(a._isUTC=b._isUTC),"undefined"!=typeof b._offset&&(a._offset=b._offset),"undefined"!=typeof b._pf&&(a._pf=j(b)),"undefined"!=typeof b._locale&&(a._locale=b._locale),Id.length>0)for(c in Id)d=Id[c],e=b[d],"undefined"!=typeof e&&(a[d]=e);return a}function n(b){m(this,b),this._d=new Date(+b._d),Jd===!1&&(Jd=!0,a.updateOffset(this),Jd=!1)}function o(a){return a instanceof n||null!=a&&null!=a._isAMomentObject}function p(a){var b=+a,c=0;return 0!==b&&isFinite(b)&&(c=b>=0?Math.floor(b):Math.ceil(b)),c}function q(a,b,c){var d,e=Math.min(a.length,b.length),f=Math.abs(a.length-b.length),g=0;for(d=0;e>d;d++)(c&&a[d]!==b[d]||!c&&p(a[d])!==p(b[d]))&&g++;return g+f}function r(){}function s(a){return a?a.toLowerCase().replace("_","-"):a}function t(a){for(var b,c,d,e,f=0;f<a.length;){for(e=s(a[f]).split("-"),b=e.length,c=s(a[f+1]),c=c?c.split("-"):null;b>0;){if(d=u(e.slice(0,b).join("-")))return d;if(c&&c.length>=b&&q(e,c,!0)>=b-1)break;b--}f++}return null}function u(a){var b=null;if(!Kd[a]&&"undefined"!=typeof module&&module&&module.exports)try{b=Hd._abbr,require("./locale/"+a),v(b)}catch(c){}return Kd[a]}function v(a,b){var c;return a&&(c="undefined"==typeof b?x(a):w(a,b),c&&(Hd=c)),Hd._abbr}function w(a,b){return null!==b?(b.abbr=a,Kd[a]||(Kd[a]=new r),Kd[a].set(b),v(a),Kd[a]):(delete Kd[a],null)}function x(a){var b;if(a&&a._locale&&a._locale._abbr&&(a=a._locale._abbr),!a)return Hd;if(!c(a)){if(b=u(a))return b;a=[a]}return t(a)}function y(a,b){var c=a.toLowerCase();Ld[c]=Ld[c+"s"]=Ld[b]=a}function z(a){return"string"==typeof a?Ld[a]||Ld[a.toLowerCase()]:void 0}function A(a){var b,c,d={};for(c in a)f(a,c)&&(b=z(c),b&&(d[b]=a[c]));return d}function B(b,c){return function(d){return null!=d?(D(this,b,d),a.updateOffset(this,c),this):C(this,b)}}function C(a,b){return a._d["get"+(a._isUTC?"UTC":"")+b]()}function D(a,b,c){return a._d["set"+(a._isUTC?"UTC":"")+b](c)}function E(a,b){var c;if("object"==typeof a)for(c in a)this.set(c,a[c]);else if(a=z(a),"function"==typeof this[a])return this[a](b);return this}function F(a,b,c){for(var d=""+Math.abs(a),e=a>=0;d.length<b;)d="0"+d;return(e?c?"+":"":"-")+d}function G(a,b,c,d){var e=d;"string"==typeof d&&(e=function(){return this[d]()}),a&&(Pd[a]=e),b&&(Pd[b[0]]=function(){return F(e.apply(this,arguments),b[1],b[2])}),c&&(Pd[c]=function(){return this.localeData().ordinal(e.apply(this,arguments),a)})}function H(a){return a.match(/\[[\s\S]/)?a.replace(/^\[|\]$/g,""):a.replace(/\\/g,"")}function I(a){var b,c,d=a.match(Md);for(b=0,c=d.length;c>b;b++)Pd[d[b]]?d[b]=Pd[d[b]]:d[b]=H(d[b]);return function(e){var f="";for(b=0;c>b;b++)f+=d[b]instanceof Function?d[b].call(e,a):d[b];return f}}function J(a,b){return a.isValid()?(b=K(b,a.localeData()),Od[b]||(Od[b]=I(b)),Od[b](a)):a.localeData().invalidDate()}function K(a,b){function c(a){return b.longDateFormat(a)||a}var d=5;for(Nd.lastIndex=0;d>=0&&Nd.test(a);)a=a.replace(Nd,c),Nd.lastIndex=0,d-=1;return a}function L(a,b,c){ce[a]="function"==typeof b?b:function(a){return a&&c?c:b}}function M(a,b){return f(ce,a)?ce[a](b._strict,b._locale):new RegExp(N(a))}function N(a){return a.replace("\\","").replace(/\\(\[)|\\(\])|\[([^\]\[]*)\]|\\(.)/g,function(a,b,c,d,e){return b||c||d||e}).replace(/[-\/\\^$*+?.()|[\]{}]/g,"\\$&")}function O(a,b){var c,d=b;for("string"==typeof a&&(a=[a]),"number"==typeof b&&(d=function(a,c){c[b]=p(a)}),c=0;c<a.length;c++)de[a[c]]=d}function P(a,b){O(a,function(a,c,d,e){d._w=d._w||{},b(a,d._w,d,e)})}function Q(a,b,c){null!=b&&f(de,a)&&de[a](b,c._a,c,a)}function R(a,b){return new Date(Date.UTC(a,b+1,0)).getUTCDate()}function S(a){return this._months[a.month()]}function T(a){return this._monthsShort[a.month()]}function U(a,b,c){var d,e,f;for(this._monthsParse||(this._monthsParse=[],this._longMonthsParse=[],this._shortMonthsParse=[]),d=0;12>d;d++){if(e=h([2e3,d]),c&&!this._longMonthsParse[d]&&(this._longMonthsParse[d]=new RegExp("^"+this.months(e,"").replace(".","")+"$","i"),this._shortMonthsParse[d]=new RegExp("^"+this.monthsShort(e,"").replace(".","")+"$","i")),c||this._monthsParse[d]||(f="^"+this.months(e,"")+"|^"+this.monthsShort(e,""),this._monthsParse[d]=new RegExp(f.replace(".",""),"i")),c&&"MMMM"===b&&this._longMonthsParse[d].test(a))return d;if(c&&"MMM"===b&&this._shortMonthsParse[d].test(a))return d;if(!c&&this._monthsParse[d].test(a))return d}}function V(a,b){var c;return"string"==typeof b&&(b=a.localeData().monthsParse(b),"number"!=typeof b)?a:(c=Math.min(a.date(),R(a.year(),b)),a._d["set"+(a._isUTC?"UTC":"")+"Month"](b,c),a)}function W(b){return null!=b?(V(this,b),a.updateOffset(this,!0),this):C(this,"Month")}function X(){return R(this.year(),this.month())}function Y(a){var b,c=a._a;return c&&-2===j(a).overflow&&(b=c[fe]<0||c[fe]>11?fe:c[ge]<1||c[ge]>R(c[ee],c[fe])?ge:c[he]<0||c[he]>24||24===c[he]&&(0!==c[ie]||0!==c[je]||0!==c[ke])?he:c[ie]<0||c[ie]>59?ie:c[je]<0||c[je]>59?je:c[ke]<0||c[ke]>999?ke:-1,j(a)._overflowDayOfYear&&(ee>b||b>ge)&&(b=ge),j(a).overflow=b),a}function Z(b){a.suppressDeprecationWarnings===!1&&"undefined"!=typeof console&&console.warn&&console.warn("Deprecation warning: "+b)}function $(a,b){var c=!0,d=a+"\n"+(new Error).stack;return g(function(){return c&&(Z(d),c=!1),b.apply(this,arguments)},b)}function _(a,b){ne[a]||(Z(b),ne[a]=!0)}function aa(a){var b,c,d=a._i,e=oe.exec(d);if(e){for(j(a).iso=!0,b=0,c=pe.length;c>b;b++)if(pe[b][1].exec(d)){a._f=pe[b][0]+(e[6]||" ");break}for(b=0,c=qe.length;c>b;b++)if(qe[b][1].exec(d)){a._f+=qe[b][0];break}d.match(_d)&&(a._f+="Z"),ta(a)}else a._isValid=!1}function ba(b){var c=re.exec(b._i);return null!==c?void(b._d=new Date(+c[1])):(aa(b),void(b._isValid===!1&&(delete b._isValid,a.createFromInputFallback(b))))}function ca(a,b,c,d,e,f,g){var h=new Date(a,b,c,d,e,f,g);return 1970>a&&h.setFullYear(a),h}function da(a){var b=new Date(Date.UTC.apply(null,arguments));return 1970>a&&b.setUTCFullYear(a),b}function ea(a){return fa(a)?366:365}function fa(a){return a%4===0&&a%100!==0||a%400===0}function ga(){return fa(this.year())}function ha(a,b,c){var d,e=c-b,f=c-a.day();return f>e&&(f-=7),e-7>f&&(f+=7),d=Aa(a).add(f,"d"),{week:Math.ceil(d.dayOfYear()/7),year:d.year()}}function ia(a){return ha(a,this._week.dow,this._week.doy).week}function ja(){return this._week.dow}function ka(){return this._week.doy}function la(a){var b=this.localeData().week(this);return null==a?b:this.add(7*(a-b),"d")}function ma(a){var b=ha(this,1,4).week;return null==a?b:this.add(7*(a-b),"d")}function na(a,b,c,d,e){var f,g,h=da(a,0,1).getUTCDay();return h=0===h?7:h,c=null!=c?c:e,f=e-h+(h>d?7:0)-(e>h?7:0),g=7*(b-1)+(c-e)+f+1,{year:g>0?a:a-1,dayOfYear:g>0?g:ea(a-1)+g}}function oa(a){var b=Math.round((this.clone().startOf("day")-this.clone().startOf("year"))/864e5)+1;return null==a?b:this.add(a-b,"d")}function pa(a,b,c){return null!=a?a:null!=b?b:c}function qa(a){var b=new Date;return a._useUTC?[b.getUTCFullYear(),b.getUTCMonth(),b.getUTCDate()]:[b.getFullYear(),b.getMonth(),b.getDate()]}function ra(a){var b,c,d,e,f=[];if(!a._d){for(d=qa(a),a._w&&null==a._a[ge]&&null==a._a[fe]&&sa(a),a._dayOfYear&&(e=pa(a._a[ee],d[ee]),a._dayOfYear>ea(e)&&(j(a)._overflowDayOfYear=!0),c=da(e,0,a._dayOfYear),a._a[fe]=c.getUTCMonth(),a._a[ge]=c.getUTCDate()),b=0;3>b&&null==a._a[b];++b)a._a[b]=f[b]=d[b];for(;7>b;b++)a._a[b]=f[b]=null==a._a[b]?2===b?1:0:a._a[b];24===a._a[he]&&0===a._a[ie]&&0===a._a[je]&&0===a._a[ke]&&(a._nextDay=!0,a._a[he]=0),a._d=(a._useUTC?da:ca).apply(null,f),null!=a._tzm&&a._d.setUTCMinutes(a._d.getUTCMinutes()-a._tzm),a._nextDay&&(a._a[he]=24)}}function sa(a){var b,c,d,e,f,g,h;b=a._w,null!=b.GG||null!=b.W||null!=b.E?(f=1,g=4,c=pa(b.GG,a._a[ee],ha(Aa(),1,4).year),d=pa(b.W,1),e=pa(b.E,1)):(f=a._locale._week.dow,g=a._locale._week.doy,c=pa(b.gg,a._a[ee],ha(Aa(),f,g).year),d=pa(b.w,1),null!=b.d?(e=b.d,f>e&&++d):e=null!=b.e?b.e+f:f),h=na(c,d,e,g,f),a._a[ee]=h.year,a._dayOfYear=h.dayOfYear}function ta(b){if(b._f===a.ISO_8601)return void aa(b);b._a=[],j(b).empty=!0;var c,d,e,f,g,h=""+b._i,i=h.length,k=0;for(e=K(b._f,b._locale).match(Md)||[],c=0;c<e.length;c++)f=e[c],d=(h.match(M(f,b))||[])[0],d&&(g=h.substr(0,h.indexOf(d)),g.length>0&&j(b).unusedInput.push(g),h=h.slice(h.indexOf(d)+d.length),k+=d.length),Pd[f]?(d?j(b).empty=!1:j(b).unusedTokens.push(f),Q(f,d,b)):b._strict&&!d&&j(b).unusedTokens.push(f);j(b).charsLeftOver=i-k,h.length>0&&j(b).unusedInput.push(h),j(b).bigHour===!0&&b._a[he]<=12&&b._a[he]>0&&(j(b).bigHour=void 0),b._a[he]=ua(b._locale,b._a[he],b._meridiem),ra(b),Y(b)}function ua(a,b,c){var d;return null==c?b:null!=a.meridiemHour?a.meridiemHour(b,c):null!=a.isPM?(d=a.isPM(c),d&&12>b&&(b+=12),d||12!==b||(b=0),b):b}function va(a){var b,c,d,e,f;if(0===a._f.length)return j(a).invalidFormat=!0,void(a._d=new Date(0/0));for(e=0;e<a._f.length;e++)f=0,b=m({},a),null!=a._useUTC&&(b._useUTC=a._useUTC),b._f=a._f[e],ta(b),k(b)&&(f+=j(b).charsLeftOver,f+=10*j(b).unusedTokens.length,j(b).score=f,(null==d||d>f)&&(d=f,c=b));g(a,c||b)}function wa(a){if(!a._d){var b=A(a._i);a._a=[b.year,b.month,b.day||b.date,b.hour,b.minute,b.second,b.millisecond],ra(a)}}function xa(a){var b,e=a._i,f=a._f;return a._locale=a._locale||x(a._l),null===e||void 0===f&&""===e?l({nullInput:!0}):("string"==typeof e&&(a._i=e=a._locale.preparse(e)),o(e)?new n(Y(e)):(c(f)?va(a):f?ta(a):d(e)?a._d=e:ya(a),b=new n(Y(a)),b._nextDay&&(b.add(1,"d"),b._nextDay=void 0),b))}function ya(b){var f=b._i;void 0===f?b._d=new Date:d(f)?b._d=new Date(+f):"string"==typeof f?ba(b):c(f)?(b._a=e(f.slice(0),function(a){return parseInt(a,10)}),ra(b)):"object"==typeof f?wa(b):"number"==typeof f?b._d=new Date(f):a.createFromInputFallback(b)}function za(a,b,c,d,e){var f={};return"boolean"==typeof c&&(d=c,c=void 0),f._isAMomentObject=!0,f._useUTC=f._isUTC=e,f._l=c,f._i=a,f._f=b,f._strict=d,xa(f)}function Aa(a,b,c,d){return za(a,b,c,d,!1)}function Ba(a,b){var d,e;if(1===b.length&&c(b[0])&&(b=b[0]),!b.length)return Aa();for(d=b[0],e=1;e<b.length;++e)b[e][a](d)&&(d=b[e]);return d}function Ca(){var a=[].slice.call(arguments,0);return Ba("isBefore",a)}function Da(){var a=[].slice.call(arguments,0);return Ba("isAfter",a)}function Ea(a){var b=A(a),c=b.year||0,d=b.quarter||0,e=b.month||0,f=b.week||0,g=b.day||0,h=b.hour||0,i=b.minute||0,j=b.second||0,k=b.millisecond||0;this._milliseconds=+k+1e3*j+6e4*i+36e5*h,this._days=+g+7*f,this._months=+e+3*d+12*c,this._data={},this._locale=x(),this._bubble()}function Fa(a){return a instanceof Ea}function Ga(a,b){G(a,0,0,function(){var a=this.utcOffset(),c="+";return 0>a&&(a=-a,c="-"),c+F(~~(a/60),2)+b+F(~~a%60,2)})}function Ha(a){var b=(a||"").match(_d)||[],c=b[b.length-1]||[],d=(c+"").match(we)||["-",0,0],e=+(60*d[1])+p(d[2]);return"+"===d[0]?e:-e}function Ia(b,c){var e,f;return c._isUTC?(e=c.clone(),f=(o(b)||d(b)?+b:+Aa(b))-+e,e._d.setTime(+e._d+f),a.updateOffset(e,!1),e):Aa(b).local();return c._isUTC?Aa(b).zone(c._offset||0):Aa(b).local()}function Ja(a){return 15*-Math.round(a._d.getTimezoneOffset()/15)}function Ka(b,c){var d,e=this._offset||0;return null!=b?("string"==typeof b&&(b=Ha(b)),Math.abs(b)<16&&(b=60*b),!this._isUTC&&c&&(d=Ja(this)),this._offset=b,this._isUTC=!0,null!=d&&this.add(d,"m"),e!==b&&(!c||this._changeInProgress?$a(this,Va(b-e,"m"),1,!1):this._changeInProgress||(this._changeInProgress=!0,a.updateOffset(this,!0),this._changeInProgress=null)),this):this._isUTC?e:Ja(this)}function La(a,b){return null!=a?("string"!=typeof a&&(a=-a),this.utcOffset(a,b),this):-this.utcOffset()}function Ma(a){return this.utcOffset(0,a)}function Na(a){return this._isUTC&&(this.utcOffset(0,a),this._isUTC=!1,a&&this.subtract(Ja(this),"m")),this}function Oa(){return this._tzm?this.utcOffset(this._tzm):"string"==typeof this._i&&this.utcOffset(Ha(this._i)),this}function Pa(a){return a=a?Aa(a).utcOffset():0,(this.utcOffset()-a)%60===0}function Qa(){return this.utcOffset()>this.clone().month(0).utcOffset()||this.utcOffset()>this.clone().month(5).utcOffset()}function Ra(){if(this._a){var a=this._isUTC?h(this._a):Aa(this._a);return this.isValid()&&q(this._a,a.toArray())>0}return!1}function Sa(){return!this._isUTC}function Ta(){return this._isUTC}function Ua(){return this._isUTC&&0===this._offset}function Va(a,b){var c,d,e,g=a,h=null;return Fa(a)?g={ms:a._milliseconds,d:a._days,M:a._months}:"number"==typeof a?(g={},b?g[b]=a:g.milliseconds=a):(h=xe.exec(a))?(c="-"===h[1]?-1:1,g={y:0,d:p(h[ge])*c,h:p(h[he])*c,m:p(h[ie])*c,s:p(h[je])*c,ms:p(h[ke])*c}):(h=ye.exec(a))?(c="-"===h[1]?-1:1,g={y:Wa(h[2],c),M:Wa(h[3],c),d:Wa(h[4],c),h:Wa(h[5],c),m:Wa(h[6],c),s:Wa(h[7],c),w:Wa(h[8],c)}):null==g?g={}:"object"==typeof g&&("from"in g||"to"in g)&&(e=Ya(Aa(g.from),Aa(g.to)),g={},g.ms=e.milliseconds,g.M=e.months),d=new Ea(g),Fa(a)&&f(a,"_locale")&&(d._locale=a._locale),d}function Wa(a,b){var c=a&&parseFloat(a.replace(",","."));return(isNaN(c)?0:c)*b}function Xa(a,b){var c={milliseconds:0,months:0};return c.months=b.month()-a.month()+12*(b.year()-a.year()),a.clone().add(c.months,"M").isAfter(b)&&--c.months,c.milliseconds=+b-+a.clone().add(c.months,"M"),c}function Ya(a,b){var c;return b=Ia(b,a),a.isBefore(b)?c=Xa(a,b):(c=Xa(b,a),c.milliseconds=-c.milliseconds,c.months=-c.months),c}function Za(a,b){return function(c,d){var e,f;return null===d||isNaN(+d)||(_(b,"moment()."+b+"(period, number) is deprecated. Please use moment()."+b+"(number, period)."),f=c,c=d,d=f),c="string"==typeof c?+c:c,e=Va(c,d),$a(this,e,a),this}}function $a(b,c,d,e){var f=c._milliseconds,g=c._days,h=c._months;e=null==e?!0:e,f&&b._d.setTime(+b._d+f*d),g&&D(b,"Date",C(b,"Date")+g*d),h&&V(b,C(b,"Month")+h*d),e&&a.updateOffset(b,g||h)}function _a(a){var b=a||Aa(),c=Ia(b,this).startOf("day"),d=this.diff(c,"days",!0),e=-6>d?"sameElse":-1>d?"lastWeek":0>d?"lastDay":1>d?"sameDay":2>d?"nextDay":7>d?"nextWeek":"sameElse";return this.format(this.localeData().calendar(e,this,Aa(b)))}function ab(){return new n(this)}function bb(a,b){var c;return b=z("undefined"!=typeof b?b:"millisecond"),"millisecond"===b?(a=o(a)?a:Aa(a),+this>+a):(c=o(a)?+a:+Aa(a),c<+this.clone().startOf(b))}function cb(a,b){var c;return b=z("undefined"!=typeof b?b:"millisecond"),"millisecond"===b?(a=o(a)?a:Aa(a),+a>+this):(c=o(a)?+a:+Aa(a),+this.clone().endOf(b)<c)}function db(a,b,c){return this.isAfter(a,c)&&this.isBefore(b,c)}function eb(a,b){var c;return b=z(b||"millisecond"),"millisecond"===b?(a=o(a)?a:Aa(a),+this===+a):(c=+Aa(a),+this.clone().startOf(b)<=c&&c<=+this.clone().endOf(b))}function fb(a){return 0>a?Math.ceil(a):Math.floor(a)}function gb(a,b,c){var d,e,f=Ia(a,this),g=6e4*(f.utcOffset()-this.utcOffset());return b=z(b),"year"===b||"month"===b||"quarter"===b?(e=hb(this,f),"quarter"===b?e/=3:"year"===b&&(e/=12)):(d=this-f,e="second"===b?d/1e3:"minute"===b?d/6e4:"hour"===b?d/36e5:"day"===b?(d-g)/864e5:"week"===b?(d-g)/6048e5:d),c?e:fb(e)}function hb(a,b){var c,d,e=12*(b.year()-a.year())+(b.month()-a.month()),f=a.clone().add(e,"months");return 0>b-f?(c=a.clone().add(e-1,"months"),d=(b-f)/(f-c)):(c=a.clone().add(e+1,"months"),d=(b-f)/(c-f)),-(e+d)}function ib(){return this.clone().locale("en").format("ddd MMM DD YYYY HH:mm:ss [GMT]ZZ")}function jb(){var a=this.clone().utc();return 0<a.year()&&a.year()<=9999?"function"==typeof Date.prototype.toISOString?this.toDate().toISOString():J(a,"YYYY-MM-DD[T]HH:mm:ss.SSS[Z]"):J(a,"YYYYYY-MM-DD[T]HH:mm:ss.SSS[Z]")}function kb(b){var c=J(this,b||a.defaultFormat);return this.localeData().postformat(c)}function lb(a,b){return this.isValid()?Va({to:this,from:a}).locale(this.locale()).humanize(!b):this.localeData().invalidDate()}function mb(a){return this.from(Aa(),a)}function nb(a,b){return this.isValid()?Va({from:this,to:a}).locale(this.locale()).humanize(!b):this.localeData().invalidDate()}function ob(a){return this.to(Aa(),a)}function pb(a){var b;return void 0===a?this._locale._abbr:(b=x(a),null!=b&&(this._locale=b),this)}function qb(){return this._locale}function rb(a){switch(a=z(a)){case"year":this.month(0);case"quarter":case"month":this.date(1);case"week":case"isoWeek":case"day":this.hours(0);case"hour":this.minutes(0);case"minute":this.seconds(0);case"second":this.milliseconds(0)}return"week"===a&&this.weekday(0),"isoWeek"===a&&this.isoWeekday(1),"quarter"===a&&this.month(3*Math.floor(this.month()/3)),this}function sb(a){return a=z(a),void 0===a||"millisecond"===a?this:this.startOf(a).add(1,"isoWeek"===a?"week":a).subtract(1,"ms")}function tb(){return+this._d-6e4*(this._offset||0)}function ub(){return Math.floor(+this/1e3)}function vb(){return this._offset?new Date(+this):this._d}function wb(){var a=this;return[a.year(),a.month(),a.date(),a.hour(),a.minute(),a.second(),a.millisecond()]}function xb(){return k(this)}function yb(){return g({},j(this))}function zb(){return j(this).overflow}function Ab(a,b){G(0,[a,a.length],0,b)}function Bb(a,b,c){return ha(Aa([a,11,31+b-c]),b,c).week}function Cb(a){var b=ha(this,this.localeData()._week.dow,this.localeData()._week.doy).year;return null==a?b:this.add(a-b,"y")}function Db(a){var b=ha(this,1,4).year;return null==a?b:this.add(a-b,"y")}function Eb(){return Bb(this.year(),1,4)}function Fb(){var a=this.localeData()._week;return Bb(this.year(),a.dow,a.doy)}function Gb(a){return null==a?Math.ceil((this.month()+1)/3):this.month(3*(a-1)+this.month()%3)}function Hb(a,b){if("string"==typeof a)if(isNaN(a)){if(a=b.weekdaysParse(a),"number"!=typeof a)return null}else a=parseInt(a,10);return a}function Ib(a){return this._weekdays[a.day()]}function Jb(a){return this._weekdaysShort[a.day()]}function Kb(a){return this._weekdaysMin[a.day()]}function Lb(a){var b,c,d;for(this._weekdaysParse||(this._weekdaysParse=[]),b=0;7>b;b++)if(this._weekdaysParse[b]||(c=Aa([2e3,1]).day(b),d="^"+this.weekdays(c,"")+"|^"+this.weekdaysShort(c,"")+"|^"+this.weekdaysMin(c,""),this._weekdaysParse[b]=new RegExp(d.replace(".",""),"i")),this._weekdaysParse[b].test(a))return b}function Mb(a){var b=this._isUTC?this._d.getUTCDay():this._d.getDay();return null!=a?(a=Hb(a,this.localeData()),this.add(a-b,"d")):b}function Nb(a){var b=(this.day()+7-this.localeData()._week.dow)%7;return null==a?b:this.add(a-b,"d")}function Ob(a){return null==a?this.day()||7:this.day(this.day()%7?a:a-7)}function Pb(a,b){G(a,0,0,function(){return this.localeData().meridiem(this.hours(),this.minutes(),b)})}function Qb(a,b){return b._meridiemParse}function Rb(a){return"p"===(a+"").toLowerCase().charAt(0)}function Sb(a,b,c){return a>11?c?"pm":"PM":c?"am":"AM"}function Tb(a){G(0,[a,3],0,"millisecond")}function Ub(){return this._isUTC?"UTC":""}function Vb(){return this._isUTC?"Coordinated Universal Time":""}function Wb(a){return Aa(1e3*a)}function Xb(){return Aa.apply(null,arguments).parseZone()}function Yb(a,b,c){var d=this._calendar[a];return"function"==typeof d?d.call(b,c):d}function Zb(a){var b=this._longDateFormat[a];return!b&&this._longDateFormat[a.toUpperCase()]&&(b=this._longDateFormat[a.toUpperCase()].replace(/MMMM|MM|DD|dddd/g,function(a){return a.slice(1)}),this._longDateFormat[a]=b),b}function $b(){return this._invalidDate}function _b(a){return this._ordinal.replace("%d",a)}function ac(a){return a}function bc(a,b,c,d){var e=this._relativeTime[c];return"function"==typeof e?e(a,b,c,d):e.replace(/%d/i,a)}function cc(a,b){var c=this._relativeTime[a>0?"future":"past"];return"function"==typeof c?c(b):c.replace(/%s/i,b)}function dc(a){var b,c;for(c in a)b=a[c],"function"==typeof b?this[c]=b:this["_"+c]=b;this._ordinalParseLenient=new RegExp(this._ordinalParse.source+"|"+/\d{1,2}/.source)}function ec(a,b,c,d){var e=x(),f=h().set(d,b);return e[c](f,a)}function fc(a,b,c,d,e){if("number"==typeof a&&(b=a,a=void 0),a=a||"",null!=b)return ec(a,b,c,e);var f,g=[];for(f=0;d>f;f++)g[f]=ec(a,f,c,e);return g}function gc(a,b){return fc(a,b,"months",12,"month")}function hc(a,b){return fc(a,b,"monthsShort",12,"month")}function ic(a,b){return fc(a,b,"weekdays",7,"day")}function jc(a,b){return fc(a,b,"weekdaysShort",7,"day")}function kc(a,b){return fc(a,b,"weekdaysMin",7,"day")}function lc(){var a=this._data;return this._milliseconds=Ue(this._milliseconds),this._days=Ue(this._days),this._months=Ue(this._months),a.milliseconds=Ue(a.milliseconds),a.seconds=Ue(a.seconds),a.minutes=Ue(a.minutes),a.hours=Ue(a.hours),a.months=Ue(a.months),a.years=Ue(a.years),this}function mc(a,b,c,d){var e=Va(b,c);return a._milliseconds+=d*e._milliseconds,a._days+=d*e._days,a._months+=d*e._months,a._bubble()}function nc(a,b){return mc(this,a,b,1)}function oc(a,b){return mc(this,a,b,-1)}function pc(){var a,b,c,d=this._milliseconds,e=this._days,f=this._months,g=this._data,h=0;return g.milliseconds=d%1e3,a=fb(d/1e3),g.seconds=a%60,b=fb(a/60),g.minutes=b%60,c=fb(b/60),g.hours=c%24,e+=fb(c/24),h=fb(qc(e)),e-=fb(rc(h)),f+=fb(e/30),e%=30,h+=fb(f/12),f%=12,g.days=e,g.months=f,g.years=h,this}function qc(a){return 400*a/146097}function rc(a){return 146097*a/400}function sc(a){var b,c,d=this._milliseconds;if(a=z(a),"month"===a||"year"===a)return b=this._days+d/864e5,c=this._months+12*qc(b),"month"===a?c:c/12;switch(b=this._days+Math.round(rc(this._months/12)),a){case"week":return b/7+d/6048e5;case"day":return b+d/864e5;case"hour":return 24*b+d/36e5;case"minute":return 1440*b+d/6e4;case"second":return 86400*b+d/1e3;case"millisecond":return Math.floor(864e5*b)+d;default:throw new Error("Unknown unit "+a)}}function tc(){return this._milliseconds+864e5*this._days+this._months%12*2592e6+31536e6*p(this._months/12)}function uc(a){return function(){return this.as(a)}}function vc(a){return a=z(a),this[a+"s"]()}function wc(a){return function(){return this._data[a]}}function xc(){return fb(this.days()/7)}function yc(a,b,c,d,e){return e.relativeTime(b||1,!!c,a,d)}function zc(a,b,c){var d=Va(a).abs(),e=jf(d.as("s")),f=jf(d.as("m")),g=jf(d.as("h")),h=jf(d.as("d")),i=jf(d.as("M")),j=jf(d.as("y")),k=e<kf.s&&["s",e]||1===f&&["m"]||f<kf.m&&["mm",f]||1===g&&["h"]||g<kf.h&&["hh",g]||1===h&&["d"]||h<kf.d&&["dd",h]||1===i&&["M"]||i<kf.M&&["MM",i]||1===j&&["y"]||["yy",j];return k[2]=b,k[3]=+a>0,k[4]=c,yc.apply(null,k)}function Ac(a,b){return void 0===kf[a]?!1:void 0===b?kf[a]:(kf[a]=b,!0)}function Bc(a){var b=this.localeData(),c=zc(this,!a,b);return a&&(c=b.pastFuture(+this,c)),b.postformat(c)}function Cc(){var a=lf(this.years()),b=lf(this.months()),c=lf(this.days()),d=lf(this.hours()),e=lf(this.minutes()),f=lf(this.seconds()+this.milliseconds()/1e3),g=this.asSeconds();return g?(0>g?"-":"")+"P"+(a?a+"Y":"")+(b?b+"M":"")+(c?c+"D":"")+(d||e||f?"T":"")+(d?d+"H":"")+(e?e+"M":"")+(f?f+"S":""):"P0D"}
 //! moment.js locale configuration
 //! locale : belarusian (be)
 //! author : Dmitry Demidov : https://github.com/demidov91
@@ -82654,7 +82626,7 @@ define('mockup-patterns-moment',[
   'moment',
   'mockup-i18n'
 ], function($, Base, moment, i18n) {
-  
+  'use strict';
 
   var Moment = Base.extend({
     name: 'moment',
@@ -82720,7 +82692,7 @@ define("bootstrap-alert", ["jquery"], function() {
 
 
 +function ($) {
-  
+  'use strict';
 
   // ALERT CLASS DEFINITION
   // ======================
@@ -82825,7 +82797,7 @@ define('mockup-patterns-structure-url/js/views/table',[
   'bootstrap-alert'
 ], function($, _, Backbone, TableRowView, TableTemplate, BaseView, Sortable,
             Moment, Result, ActionMenu, _t) {
-  
+  'use strict';
 
   var TableView = BaseView.extend({
     tagName: 'div',
@@ -83021,7 +82993,7 @@ define('mockup-ui-url/views/popover',[
   'mockup-patterns-backdrop',
   'text!mockup-ui-url/templates/popover.xml',
 ], function($, _, Backbone, ContainerView, Backdrop, PopoverTemplate) {
-  
+  'use strict';
 
   var PopoverView = ContainerView.extend({
     tagName: 'div',
@@ -83250,7 +83222,7 @@ define('mockup-patterns-structure-url/js/views/selectionwell',[
   'mockup-ui-url/views/popover',
   'text!mockup-patterns-structure-url/templates/selection_item.xml'
 ], function($, _, Backbone, PopoverView, ItemTemplate) {
-  
+  'use strict';
 
   var WellView = PopoverView.extend({
     className: 'popover selected-items',
@@ -83324,7 +83296,7 @@ define('mockup-patterns-structure-url/js/views/generic-popover',[
   'translate',
   'pat-registry'
 ], function($, _, Backbone, PopoverView, _t, registry) {
-  
+  'use strict';
 
   var PropertiesView = PopoverView.extend({
     events: {
@@ -83411,7 +83383,7 @@ define('mockup-patterns-structure-url/js/views/rearrange',[
   'mockup-ui-url/views/popover',
   'translate'
 ], function($, _, PopoverView, _t) {
-  
+  'use strict';
 
   var RearrangeView = PopoverView.extend({
     className: 'popover rearrange',
@@ -83480,7 +83452,7 @@ define('mockup-patterns-structure-url/js/views/selectionbutton',[
   'mockup-ui-url/views/button',
   'text!mockup-patterns-structure-url/templates/selection_button.xml'
 ], function($, Backbone, _, ButtonView, tplButton) {
-  
+  'use strict';
 
   var SelectionButton = ButtonView.extend({
     collection: null,
@@ -83524,7 +83496,7 @@ define('mockup-patterns-structure-url/js/views/paging',[
   'text!mockup-patterns-structure-url/templates/paging.xml',
   'translate'
 ], function($, _, Backbone, PagingTemplate, _t) {
-  
+  'use strict';
 
 
   var PagingView = Backbone.View.extend({
@@ -83633,7 +83605,7 @@ define('mockup-patterns-structure-url/js/views/columns',[
   'mockup-ui-url/views/popover',
   'mockup-patterns-sortable'
 ], function($, _, Backbone, PopoverView, Sortable) {
-  
+  'use strict';
 
   var ColumnsView = PopoverView.extend({
     className: 'popover attribute-columns',
@@ -83709,7 +83681,7 @@ define('mockup-patterns-structure-url/js/views/textfilter',[
   'mockup-patterns-querystring',
   'translate'
 ], function($, Backbone, _, BaseView, ButtonView, PopoverView, QueryString, _t) {
-  
+  'use strict';
 
   var TextFilterView = BaseView.extend({
     tagName: 'div',
@@ -83807,7 +83779,7 @@ define('mockup-patterns-structure-url/js/views/upload',[
   'mockup-ui-url/views/popover',
   'mockup-patterns-upload'
 ], function($, _, Backbone, PopoverView, Upload) {
-  
+  'use strict';
 
   var UploadView = PopoverView.extend({
     className: 'popover upload',
@@ -83875,7 +83847,7 @@ define("backbone.paginator", ["backbone"], function() {
   return (function() {
 /*globals Backbone:true, _:true, jQuery:true*/
 Backbone.Paginator = (function ( Backbone, _, $ ) {
-  
+  "use strict";
 
 
   var bbVer = _.map(Backbone.VERSION.split('.'), function(digit) {
@@ -84932,7 +84904,7 @@ define('mockup-patterns-structure-url/js/collections/result',[
   'mockup-patterns-structure-url/js/models/result',
   'backbone.paginator'
 ], function(_, Backbone, Result) {
-  
+  'use strict';
 
   var ResultCollection = Backbone.Paginator.requestPager.extend({
     model: Result,
@@ -85001,7 +84973,7 @@ define('mockup-patterns-structure-url/js/collections/selected',[
   'backbone',
   'mockup-patterns-structure-url/js/models/result'
 ], function(Backbone, Result) {
-  
+  'use strict';
 
   var SelectedCollection = Backbone.Collection.extend({
     model: Result,
@@ -85170,7 +85142,7 @@ define('mockup-patterns-structure-url/js/views/app',[
             GenericPopover, RearrangeView, SelectionButtonView,
             PagingView, ColumnsView, TextFilterView, UploadView,
             ResultCollection, SelectedCollection, utils, _t, logger) {
-  
+  'use strict';
 
   var log = logger.getLogger('pat-structure');
 
@@ -85659,7 +85631,7 @@ define('mockup-patterns-structure',[
   'text!mockup-patterns-structure-url/templates/table.xml',
   'text!mockup-ui-url/templates/popover.xml',
 ], function($, Base, utils, AppView) {
-  
+  'use strict';
 
   var Structure = Base.extend({
     name: 'structure',
@@ -85686,7 +85658,6 @@ define('mockup-patterns-structure',[
       ],
       availableColumns: {
         'id': 'ID',
-        'Title': 'Title',
         'ModificationDate': 'Last modified',
         'EffectiveDate': 'Published',
         'ExpirationDate': 'Expiration',
@@ -89743,7 +89714,7 @@ define('mockup-patterns-recurrence',[
   'mockup-patterns-base',
   'jquery.recurrenceinput'
 ], function($, Base) {
-  
+  'use strict';
 
   var Recurrence = Base.extend({
     name: 'recurrence',
@@ -89777,7 +89748,7 @@ define('plone-patterns-portletmanager',[
   'pat-logger',
   'jquery.form'
 ], function ($, Base, Registry, utils, Modal, _t, logger) {
-  
+  'use strict';
 
   var log = logger.getLogger('pat-manage-portlets');
 
@@ -89973,7 +89944,7 @@ define('plone-patterns-portletmanager',[
 
 if (window.jQuery) {
   define( 'jquery', [], function () {
-    
+    'use strict';
     return window.jQuery;
   } );
 }
@@ -89988,8 +89959,8 @@ require([
   'mockup-patterns-recurrence',
   'plone-patterns-portletmanager'
 ], function() {
-  
+  'use strict';
 });
 
-define("/home/thet-data/data/dev/plone/buildout.coredev/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
+define("/Users/nathan/code/coredev5/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
 
