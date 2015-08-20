@@ -23,22 +23,23 @@ Test Teardown  Run keywords  Report test status  Close all browsers
 
 *** Test Cases ***************************************************************
 
-# Scenario: When page is linked show warning
-#   Given a logged-in site administrator
-#     a page to link to
-#     and a page to edit
-#     and a link in rich text
-#     should show warning when deleting page
+Scenario: When page is linked show warning
+  Given a logged-in site administrator
+    a page to link to
+    and a page to edit
+    and a link in rich text
+    should show warning when deleting page
 
 
-# Scenario: After you fix linked page no longer show warning
-#   Given a logged-in site administrator
-#   a page to link to
-#     and a page to edit
-#     and a link in rich text
-#   should show warning when deleting page
-#     remove link to page
-#   should not show warning when deleting page
+Scenario: After you fix linked page no longer show warning
+  Given a logged-in site administrator
+  a page to link to
+    and a page to edit
+    and a link in rich text
+  should show warning when deleting page
+    remove link to page
+  should not show warning when deleting page
+
 
 Scenario: Show warning when deleting linked item from folder_contents
   Given a logged-in site administrator
