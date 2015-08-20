@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.5.10 (unreleased)
+2.5.10 (2015-08-20)
 -------------------
 
 - Correctly display selected item in global navigation for images and files.
