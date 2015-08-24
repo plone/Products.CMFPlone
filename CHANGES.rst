@@ -5,7 +5,7 @@
 Changelog
 =========
 
-5.0b4 (unreleased)
+5.0b4 (2015-08-23)
 ------------------
 
 - fix #350: "plone.app.content circular dependency on Products.CMFPlone" - this
