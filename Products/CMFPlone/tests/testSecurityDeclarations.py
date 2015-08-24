@@ -407,6 +407,11 @@ class TestAllowSendtoSecurity(PloneTestCase.PloneTestCase):
         from Products.statusmessages.interfaces import IStatusMessage
         # Clean out any current status messages.
         IStatusMessage(request).show()
+        # First, a GET request will fail.
+        from zExceptions import Forbidden
+        self.assertRaises(Forbidden, sendto)
+        # So use a POST.
+        request['REQUEST_METHOD'] = 'POST'
         # Should fail with the not allowed msg as status message.
         sendto()
         status_messages = IStatusMessage(request).show()

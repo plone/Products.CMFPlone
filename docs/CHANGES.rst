@@ -8,6 +8,9 @@ Changelog
 4.3.7 (unreleased)
 ------------------
 
+- Require ``POST`` request for various forms that send email.
+  [maurits]
+
 - Properly hide ``plone.app.jquery`` and ``plone.app.jquerytools``
   from products.
   [maurits]

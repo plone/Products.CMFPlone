@@ -14,6 +14,9 @@ from Products.CMFPlone import PloneMessageFactory as _
 mtool = getToolByName(context, 'portal_membership')
 dtool = getToolByName(context, 'portal_discussion')
 req = context.REQUEST
+if req.get('REQUEST_METHOD', '').upper() != 'POST':
+    from zExceptions import Forbidden
+    raise Forbidden('Use POST please.')
 
 if username or password:
     # The user username/password inputs on on the comment form were used,
