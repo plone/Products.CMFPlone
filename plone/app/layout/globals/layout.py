@@ -187,18 +187,6 @@ class LayoutPolicy(BrowserView):
         if not getattr(view, '__ac_permissions__'):
             # should we have this special permission if it requires none?
             body_classes.append('viewpermission-none')
-        roles = []
-        if view is None or not getattr(view, '__ac_permissions__', tuple()):
-            roles = rolesForPermissionOn('Access contents information', context)
-        elif hasattr(view, '__roles__'):
-            roles = view.__roles__.rolesForPermissionOn(context)
-        elif hasattr(view, '__call____roles__'):
-            roles = view.__call____roles__.rolesForPermissionOn(context)
-        for role in roles:
-            body_classes.append('viewrole-' + normalizer.normalize(role))
-
-        # determine if this is the default view
-        #context.getLayout()
 
         # class for user roles
         membership = getToolByName(context, "portal_membership")
