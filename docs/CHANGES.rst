@@ -8,6 +8,9 @@ Changelog
 4.3.7 (unreleased)
 ------------------
 
+- Upgrade known core packages at the end of the Plone migration.
+  [maurits]
+
 - Require ``POST`` request for various forms that send email.
   [maurits]
 
@@ -44,9 +47,9 @@ Changelog
   emails.
   [davidjb]
 
-- Fix: If a user "deletes" the same item twice (ex.: having two different tabs 
-  open and not realising it's already been deleted) any higher level item with 
-  the same short name will be deleted without trace. 
+- Fix: If a user "deletes" the same item twice (ex.: having two different tabs
+  open and not realising it's already been deleted) any higher level item with
+  the same short name will be deleted without trace.
   [gotcha]
 
 - Extended ulocalized_time for target_language
