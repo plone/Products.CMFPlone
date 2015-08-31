@@ -101,18 +101,19 @@ class ResourceView(ViewletBase):
         # Check if its Diazo enabled
         if policy.isThemeEnabled():
             themeObj = policy.get_theme()
-            enabled_diazo_bundles = themeObj.enabled_bundles
-            disabled_diazo_bundles = themeObj.disabled_bundles
-            if hasattr(themeObj, 'production_css'):
-                self.diazo_production_css = themeObj.production_css
-                self.diazo_development_css = themeObj.development_css
-                self.diazo_development_js = themeObj.development_js
-                self.diazo_production_js = themeObj.production_js
-            else:
-                self.diazo_production_css = None
-                self.diazo_development_css = None
-                self.diazo_development_js = None
-                self.diazo_production_js = None
+            if themeObj:
+                enabled_diazo_bundles = themeObj.enabled_bundles
+                disabled_diazo_bundles = themeObj.disabled_bundles
+                if hasattr(themeObj, 'production_css'):
+                    self.diazo_production_css = themeObj.production_css
+                    self.diazo_development_css = themeObj.development_css
+                    self.diazo_development_js = themeObj.development_js
+                    self.diazo_production_js = themeObj.production_js
+                else:
+                    self.diazo_production_css = None
+                    self.diazo_development_css = None
+                    self.diazo_development_js = None
+                    self.diazo_production_js = None
         else:
             enabled_diazo_bundles = []
             disabled_diazo_bundles = []
