@@ -91,6 +91,7 @@ class AddonList(list):
 # Good start is portal_setup.listProfilesWithUpgrades()
 ADDON_LIST = AddonList([
     Addon(profile_id=u'Products.CMFEditions:CMFEditions'),
+    Addon(profile_id=u'Products.CMFPlacefulWorkflow:CMFPlacefulWorkflow'),
     Addon(profile_id=u'Products.TinyMCE:TinyMCE',
         check_module='Products.TinyMCE.upgrades'),
     Addon(profile_id=u'plone.app.dexterity:default'),
