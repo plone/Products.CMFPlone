@@ -160,32 +160,28 @@ class TestAddonList(PloneTestCase.PloneTestCase):
         # is why this list was created.
         cmfeditions_id = 'Products.CMFEditions:CMFEditions'
         discussion_id = 'plone.app.discussion:default'
-        jq_id = 'plone.app.jquery:default'
-        jqtools_id = 'plone.app.jquerytools:default'
-        sunburst_id = 'plonetheme.sunburst:default'
+        querystring_id = 'plone.app.querystring:default'
         # Note the current versions.
         setup = getToolByName(self.portal, "portal_setup")
         getversion = setup.getLastVersionForProfile
         cmfeditions_version = getversion(cmfeditions_id)
         discussion_version = getversion(discussion_id)
-        jq_version = getversion(jq_id)
-        jqtools_version = getversion(jqtools_id)
-        sunburst_version = getversion(sunburst_id)
+        querystring_version = getversion(querystring_id)
+        # Check that they are not unknown
+        self.assertNotEqual(cmfeditions_version, 'unknown')
+        self.assertNotEqual(discussion_version, 'unknown')
+        self.assertNotEqual(querystring_version, 'unknown')
         # So let's mess with some profile versions.  We get some older
         # versions that really exist.
         setversion = setup.setLastVersionForProfile
         setversion(cmfeditions_id, '2.0')
         setversion(discussion_id, '100')
-        setversion(jq_id, '2')
-        setversion(jqtools_id, '1.0rc2')
-        setversion(sunburst_id, '2')
+        setversion(querystring_id, '7')
         # Check that it worked, that the profile versions really are
         # different.
         self.assertNotEqual(cmfeditions_version, getversion(cmfeditions_id))
         self.assertNotEqual(discussion_version, getversion(discussion_id))
-        self.assertNotEqual(jq_version, getversion(jq_id))
-        self.assertNotEqual(jqtools_version, getversion(jqtools_id))
-        self.assertNotEqual(sunburst_version, getversion(sunburst_id))
+        self.assertNotEqual(querystring_version, getversion(querystring_id))
 
         # Run the upgrade.
         ADDON_LIST.upgrade_all(self.portal)
@@ -194,6 +190,4 @@ class TestAddonList(PloneTestCase.PloneTestCase):
         # original versions.
         self.assertEqual(cmfeditions_version, getversion(cmfeditions_id))
         self.assertEqual(discussion_version, getversion(discussion_id))
-        self.assertEqual(jq_version, getversion(jq_id))
-        self.assertEqual(jqtools_version, getversion(jqtools_id))
-        self.assertEqual(sunburst_version, getversion(sunburst_id))
+        self.assertEqual(querystring_version, getversion(querystring_id))

@@ -91,16 +91,16 @@ class AddonList(list):
 # Good start is portal_setup.listProfilesWithUpgrades()
 ADDON_LIST = AddonList([
     Addon(profile_id=u'Products.CMFEditions:CMFEditions'),
-    Addon(profile_id=u'Products.TinyMCE:TinyMCE',
-        check_module='Products.TinyMCE.upgrades'),
+    Addon(profile_id=u'Products.CMFPlacefulWorkflow:CMFPlacefulWorkflow'),
+    Addon(profile_id=u'plone.app.contenttypes:default'),
     Addon(profile_id=u'plone.app.dexterity:default'),
     Addon(profile_id=u'plone.app.discussion:default'),
+    Addon(profile_id=u'plone.app.event:default'),
     Addon(profile_id=u'plone.app.iterate:plone.app.iterate'),
-    Addon(profile_id=u'plone.app.jquery:default'),
-    Addon(profile_id=u'plone.app.jquerytools:default'),
+    Addon(profile_id=u'plone.app.multilingual:default'),
     Addon(profile_id=u'plone.app.querystring:default'),
     Addon(profile_id=u'plone.app.theming:default'),
-    Addon(profile_id=u'plonetheme.sunburst:default'),
+    Addon(profile_id=u'plone.app.users:default'),
     ])
 
 
