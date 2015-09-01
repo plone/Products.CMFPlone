@@ -98,6 +98,14 @@ class ResourceView(ViewletBase):
         cache = component.queryUtility(ram.IRAMCache)
         bundles = self.get_bundles()
         policy = theming_policy(self.request)
+
+        enabled_diazo_bundles = []
+        disabled_diazo_bundles = []
+        self.diazo_production_css = None
+        self.diazo_development_css = None
+        self.diazo_development_js = None
+        self.diazo_production_js = None
+
         # Check if its Diazo enabled
         if policy.isThemeEnabled():
             themeObj = policy.get_theme()
@@ -109,18 +117,6 @@ class ResourceView(ViewletBase):
                     self.diazo_development_css = themeObj.development_css
                     self.diazo_development_js = themeObj.development_js
                     self.diazo_production_js = themeObj.production_js
-                else:
-                    self.diazo_production_css = None
-                    self.diazo_development_css = None
-                    self.diazo_development_js = None
-                    self.diazo_production_js = None
-        else:
-            enabled_diazo_bundles = []
-            disabled_diazo_bundles = []
-            self.diazo_production_css = None
-            self.diazo_development_css = None
-            self.diazo_development_js = None
-            self.diazo_production_js = None
 
         # Request set bundles
         enabled_request_bundles = []
