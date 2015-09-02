@@ -8,6 +8,9 @@ Changelog
 5.0b5 (unreleased)
 ------------------
 
+- Typo in delete modal configuration caused submission redirection errors
+  [vangheem]
+
 - Upgrade known core packages at the end of the Plone migration.
   [maurits]
 
