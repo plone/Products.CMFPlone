@@ -96,6 +96,7 @@ should show warning when deleting page from folder_contents
 
 should not show warning when deleting page from folder_contents
   Go To  ${PLONE_URL}/folder_contents
+  Wait until page contains element  css=tr[data-id="foo"] input
   Click Element  css=tr[data-id="foo"] input
   Checkbox Should Be Selected  css=tr[data-id="foo"] input
   Wait until keyword succeeds  30  1  Page should not contain element  css=#btn-delete.disabled
