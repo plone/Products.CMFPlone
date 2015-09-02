@@ -120,7 +120,7 @@ less_config = """
                     strictMath: false,
                     sourceMap: true,
                     outputSourceFiles: true,
-                    strictImports: true,
+                    strictImports: false,
                     sourceMapURL: "{sourcemap_url}",
                     sourceMapBasepath: "{base_path}",
                     relativeUrls: true,
