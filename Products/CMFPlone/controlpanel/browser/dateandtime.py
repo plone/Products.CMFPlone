@@ -8,7 +8,6 @@ from plone.app.registry.browser.controlpanel import RegistryEditForm
 class DateAndTimeControlPanelForm(RegistryEditForm):
 
     id = "DateAndTimeControlPanel"
-    label = _(u"Date and Time Settings")
     schema = IDateAndTimeSchema
     schema_prefix = "plone"
 
