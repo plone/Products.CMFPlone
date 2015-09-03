@@ -1,6 +1,7 @@
 import logging
 
 from Products.CMFPlone.interfaces.resources import IResourceRegistry
+from Products.CMFPlone.interfaces.resources import IBundleRegistry
 from Products.CMFPlone.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME  # noqa
 from StringIO import StringIO
 from cssmin import cssmin
@@ -19,12 +20,21 @@ from zExceptions import NotFound
 logger = logging.getLogger('Products.CMFPlone')
 
 
-def cookWhenChangingSettings(context, bundle):
+def cookWhenChangingSettings(context, bundle=None):
     """When our settings are changed, re-cook the not compilable bundles
     """
     registry = getUtility(IRegistry)
     resources = registry.collectionOfInterface(
         IResourceRegistry, prefix="plone.resources", check=False)
+    if bundle is None:
+        # default to cooking legacy bundle
+        bundles = registry.collectionOfInterface(
+            IBundleRegistry, prefix="plone.bundles", check=False)
+        if 'plone-legacy' in bundles:
+            bundle = bundles['plone-legacy']
+        else:
+            bundle = bundles.setdefault('plone-legacy')
+            bundle.resources = []
 
     # Let's join all css and js
     css_file = ""

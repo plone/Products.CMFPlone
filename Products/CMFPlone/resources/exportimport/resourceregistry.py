@@ -1,9 +1,11 @@
+from datetime import datetime
+
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces import IBundleRegistry
 from Products.CMFPlone.interfaces import IResourceRegistry
+from Products.CMFPlone.resources.browser.cook import cookWhenChangingSettings
 from Products.GenericSetup.interfaces import IBody
 from Products.GenericSetup.utils import XMLAdapterBase
-from datetime import datetime
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from zope.component import queryMultiAdapter
 from zope.component import queryUtility
@@ -154,3 +156,4 @@ class ResourceRegistryNodeAdapter(XMLAdapterBase):
             self.registry.records[
                 'plone.resources.last_legacy_import'
             ].value = datetime.now()
+            cookWhenChangingSettings(self.context, legacy)
