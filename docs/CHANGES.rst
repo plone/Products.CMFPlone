@@ -14,6 +14,10 @@ Changelog
 - Require ``POST`` request for various forms that send email.
   [maurits]
 
+- Make the `formUnload.js` protection works while using CKEditor
+  as it is the case with TinyMCE.
+  [gbastien]
+
 - Properly hide ``plone.app.jquery`` and ``plone.app.jquerytools``
   from products.
   [maurits]

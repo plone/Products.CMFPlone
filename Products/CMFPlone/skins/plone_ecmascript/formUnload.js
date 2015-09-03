@@ -12,14 +12,14 @@ if (!window.beforeunload) {(function($) {
         Class,
         form,
         c;
-    
+
     BeforeUnloadHandler = function() {
         var self = this,
             message;
 
         this.message = window.form_modified_message ||
             "Discard changes? If you click OK, any changes you have made will be lost.";
-        
+
         this.forms = [];
         this.chkId = [];
         this.chkType = new this.CheckType();
@@ -31,11 +31,11 @@ if (!window.beforeunload) {(function($) {
             // First clean out dead references to make sure we only work on
             // forms that are actually in the dom. This is needed in
             // combination with KSS and/or other dynamic replacements.
-            var domforms = $('form'); 
+            var domforms = $('form');
             self.forms = $.grep(self.forms, function(form) {
                 return domforms.index(form) > -1;
-            });             
-            
+            });
+
             // Now do the protection work
             if (self.submitting) {return;}
 
@@ -54,7 +54,7 @@ if (!window.beforeunload) {(function($) {
     // form checking code
     Class.isAnyFormChanged = function() {
         var i;
-        for (i=0; i < this.forms.length; i+=1) { 
+        for (i=0; i < this.forms.length; i+=1) {
             form = this.forms[i];
             if (this.isElementChanged(form)) {
                 return true;
@@ -121,6 +121,8 @@ if (!window.beforeunload) {(function($) {
     c.text = c.textarea = function(ele) {
         if ($(ele).hasClass('mce_editable') && typeof(tinyMCE) != "undefined") {
             return tinyMCE.get(ele.id).getContent() != ele.defaultValue;
+        } else if ($(ele).hasClass('ckeditor_plone') && typeof(CKEDITOR) != "undefined") {
+            return CKEDITOR.instances[ele.id].getData() != ele.defaultValue;
         } else {
             return ele.value !== ele.defaultValue;
         }
@@ -187,7 +189,7 @@ if (!window.beforeunload) {(function($) {
 
     // Can't use jQuery handlers here as kupu and kss rely on direct access.
     window.onbeforeunload = new BeforeUnloadHandler().execute;
-    
+
     $(function() {
         var tool = window.onbeforeunload && window.onbeforeunload.tool;
         if (tool && $('#region-content,#content').length) {
