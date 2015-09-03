@@ -123,6 +123,7 @@ a link in rich text
   Click Button  css=div[aria-label="Insert/edit link"] button
   Click Element  css=.select2-input.select2-default
   Input text  css=.select2-dropdown-open .select2-input  foo
+  Wait until page contains element  css=.pattern-relateditems-result-select.selectable
   Click Link  css=.pattern-relateditems-result-select.selectable
   Click Button  css=.plone-modal-footer .plone-btn-primary
   Click Button  css=#form-buttons-save
