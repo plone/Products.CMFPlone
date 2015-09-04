@@ -19,29 +19,6 @@
     name="static"
     />
 
-<!--   <browser:resourceDirectory
-    name="plonejs"
-    directory="static/components"
-    />
-
-  <browser:resource
-    name="plone-fontello.eot"
-    file="static/fonts/plone-fontello.eot"
-    />
-  <browser:resource
-    name="plone-fontello.svg"
-    file="static/fonts/plone-fontello.svg"
-    />
-  <browser:resource
-    name="plone-fontello.ttf"
-    file="static/fonts/plone-fontello.ttf"
-    />
-  <browser:resource
-    name="plone-fontello.woff"
-    file="static/fonts/plone-fontello.woff"
-    /> -->
-
-
   <browser:resource
     name="plone.js"
     file="static/plone.js"
