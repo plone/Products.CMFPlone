@@ -38,7 +38,6 @@
   <layer name="plone_templates"/>
   <layer name="plone_form_scripts"/>
   <layer name="plone_scripts"/>
-  <layer name="plone_forms"/>
   <layer name="plone_images"/>
   <layer name="plone_content"/>
   <layer name="plone_login"/>

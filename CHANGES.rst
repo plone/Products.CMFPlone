@@ -8,6 +8,10 @@ Changelog
 5.0b5 (unreleased)
 ------------------
 
+- Remove history_form, history_comparison templates.
+  Remove now-empty plone_forms skins folder.
+  [esteele]
+
 - Remove no-longer-used images from portal_images. 
   [esteele]
 
