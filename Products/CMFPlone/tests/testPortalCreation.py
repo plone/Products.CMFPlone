@@ -74,7 +74,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
 
     def testPloneSkins(self):
         # Plone skins should have been set up
-        self.assertTrue(hasattr(self.folder, 'plone_powered.png'))
+        self.assertTrue(hasattr(self.folder, 'logo.png'))
 
     def testDefaultSkin(self):
         # index_html should render
