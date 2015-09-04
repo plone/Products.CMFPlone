@@ -8,6 +8,9 @@ Changelog
 5.0b5 (unreleased)
 ------------------
 
+- Remove no-longer-used images from portal_images. 
+  [esteele]
+
 - Typo in delete modal configuration caused submission redirection errors
   [vangheem]
 
