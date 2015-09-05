@@ -8,6 +8,9 @@ Changelog
   schema does not cause errors
   [vangheem]
 
+- Pull value for display_publication_date_in_byline from the configuration
+  registry.
+  [esteele]
 
 2.5.10 (2015-08-20)
 -------------------

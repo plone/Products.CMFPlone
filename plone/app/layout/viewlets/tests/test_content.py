@@ -4,8 +4,8 @@ from plone.app.layout.viewlets.content import HistoryByLineView
 from plone.app.layout.viewlets.content import ContentRelatedItems
 from plone.locking.interfaces import ILockable
 from plone.registry.interfaces import IRegistry
-from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces import ISecuritySchema
+from Products.CMFPlone.interfaces import ISiteSchema
 from z3c.relationfield import RelationValue
 from zope.component import getUtility
 from zope.interface import Interface
@@ -93,9 +93,12 @@ title="Locked" height="16" width="16" />'
     def test_pub_date(self):
         # configure our portal to enable publication date on pages globally on
         # the site
-        properties = getToolByName(self.portal, 'portal_properties')
-        site_properties = getattr(properties, 'site_properties')
-        site_properties.displayPublicationDateInByline = True
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(
+            ISiteSchema,
+            prefix='plone')
+
+        settings.display_publication_date_in_byline = True
 
         self.logout()
         viewlet = self._get_viewlet()
@@ -111,7 +114,7 @@ title="Locked" height="16" width="16" />'
 
         # now switch off publication date globally on the site and see if
         # viewlet returns None for publication date
-        site_properties.displayPublicationDateInByline = False
+        settings.display_publication_date_in_byline = False
         self.assertEqual(viewlet.pub_date(), None)
 
 

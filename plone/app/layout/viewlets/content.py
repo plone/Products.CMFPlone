@@ -16,6 +16,7 @@ from Products.CMFCore.WorkflowCore import WorkflowException
 from Products.CMFEditions.Permissions import AccessPreviousVersions
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import ISecuritySchema
+from Products.CMFPlone.interfaces import ISiteSchema
 from Products.CMFPlone.utils import base_hasattr
 from Products.CMFPlone.utils import log
 from zope.component import getUtility
@@ -150,10 +151,12 @@ class HistoryByLineView(BrowserView):
         or if Effective Date is not set on object.
         """
         # check if we are allowed to display publication date
-        properties = getToolByName(self.context, 'portal_properties')
-        site_properties = getattr(properties, 'site_properties')
-        if not site_properties.getProperty('displayPublicationDateInByline',
-           False):
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(
+            ISiteSchema,
+            prefix='plone')
+
+        if not settings.display_publication_date_in_byline:
             return None
 
         # check if we have Effective Date set
