@@ -130,11 +130,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         mailhost = self.portal.MailHost
         self.assertEqual(mailhost.meta_type, 'Mail Host')
 
-    def testUseFolderContentsProperty(self):
-        # The use_folder_contents site property should be emtpy
-        props = self.portal.portal_properties.site_properties
-        self.assertEqual(props.getProperty('use_folder_contents'), ())
-
     def testFolderEditActionHasEditTitle(self):
         # Edit tab of folders should be named 'edit', not 'properties'
         folder = self.types.getTypeInfo('Folder')

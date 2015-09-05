@@ -44,12 +44,6 @@
   <property name="displayPublicationDateInByline" type="boolean">False</property>
   <property name="default_language" type="string">en</property>
   <property name="default_charset" type="string">utf-8</property>
-  <property name="ext_editor" type="boolean">False</property>
-  <property name="available_editors" type="lines">
-   <element value="None"/>
-   <element value="TinyMCE"/>
-  </property>
-  <property name="default_editor" type="string">TinyMCE</property>
   <property name="allowRolesToAddKeywords" type="lines">
    <element value="Manager"/>
    <element value="Site Administrator"/>
@@ -72,84 +66,16 @@
   <property name="typesLinkToFolderContentsInFC" type="lines">
    <element value="Folder"/>
   </property>
-  <property name="visible_ids" type="boolean">False</property>
-  <property name="exposeDCMetaTags" type="boolean">False</property>
-  <property name="types_not_searched" type="lines">
-   <element value="ATBooleanCriterion"/>
-   <element value="ATDateCriteria"/>
-   <element value="ATDateRangeCriterion"/>
-   <element value="ATListCriterion"/>
-   <element value="ATPortalTypeCriterion"/>
-   <element value="ATReferenceCriterion"/>
-   <element value="ATSelectionCriterion"/>
-   <element value="ATSimpleIntCriterion"/>
-   <element value="ATSimpleStringCriterion"/>
-   <element value="ATSortCriterion"/>
-   <element value="ChangeSet"/>
-   <element value="Discussion Item"/>
-   <element value="Plone Site"/>
-   <element value="TempFolder"/>
-   <element value="ATCurrentAuthorCriterion"/>
-   <element value="ATPathCriterion"/>
-   <element value="ATRelativePathCriterion"/>
-  </property>
-  <property name="search_review_state_for_anon"
-     type="boolean">False</property>
-  <property name="search_enable_title_search" type="lines"/>
-  <property name="search_enable_description_search" type="lines"/>
-  <property name="search_enable_sort_on" type="lines">
-   <element value="auth"/>
-   <element value="anon"/>
-  </property>
-  <property name="search_enable_batch_size" type="lines">
-   <element value="auth"/>
-   <element value="anon"/>
-  </property>
-  <property name="search_collapse_options" type="boolean">True</property>
-  <property name="disable_folder_sections" type="boolean">False</property>
-  <property name="disable_nonfolderish_sections"
-     type="boolean">False</property>
   <property name="typesUseViewActionInListings" type="lines">
    <element value="Image"/>
    <element value="File"/>
   </property>
   <property name="verify_login_name" type="boolean">True</property>
-  <property name="many_users" type="boolean">False</property>
-  <property name="many_groups" type="boolean">False</property>
-  <property name="enable_livesearch" type="boolean">True</property>
-  <property name="use_folder_contents" type="lines"/>
-  <property name="forbidden_contenttypes" type="lines">
-   <element value="text/structured"/>
-   <element value="text/restructured"/>
-   <element value="text/x-rst"/>
-   <element value="text/plain"/>
-   <element value="text/plain-pre"/>
-   <element value="text/x-python"/>
-   <element value="text/x-web-markdown"/>
-   <element value="text/x-web-intelligent"/>
-   <element value="text/x-html-captioned"/>
-  </property>
-  <property name="default_contenttype" type="string">text/html</property>
-  <property name="enable_sitemap" type="boolean">False</property>
-  <property name="number_of_days_to_keep" type="int">7</property>
-  <property name="enable_inline_editing" type="boolean">False</property>
-  <property name="lock_on_ttw_edit" type="boolean">True</property>
-  <property name="enable_link_integrity_checks" type="boolean">True</property>
-  <property name="webstats_js" type="text"></property>
   <property name="external_links_open_new_window"
      type="string">false</property>
   <property name="icon_visibility" type="string">false</property>
   <property name="mark_special_links" type="string">false</property>
   <property name="redirect_links" type="boolean">True</property>
-  <property name="use_email_as_login" type="boolean">False</property>
-  <property name="use_uuid_as_userid" type="boolean">False</property>
-  <property name="user_registration_fields" type="lines">
-   <element value="fullname"/>
-   <element value="username"/>
-   <element value="email"/>
-   <element value="password"/>
-   <element value="mail_me"/>
-  </property>
   <property name="allow_external_login_sites" type="lines"/>
   <property name="external_login_url" type="string"/>
   <property name="external_logout_url" type="string"/>
