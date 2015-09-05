@@ -156,4 +156,8 @@ class ResourceRegistryNodeAdapter(XMLAdapterBase):
             self.registry.records[
                 'plone.resources.last_legacy_import'
             ].value = datetime.now()
-            cookWhenChangingSettings(self.context, legacy)
+            try:
+                cookWhenChangingSettings(self.context, legacy)
+            except AssertionError:
+                # zope.globalrequest might be setup, don't error out
+                pass
