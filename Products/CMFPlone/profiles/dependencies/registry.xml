@@ -1039,7 +1039,7 @@
 
   <records prefix="plone.resources/plonenonui"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++resource++plonenonui.js</value>
+      <value key="js">++plone++static/plonenonui.js</value>
       <value key="css">
         <element>++plone++static/plonenonui.less</element>
       </value>

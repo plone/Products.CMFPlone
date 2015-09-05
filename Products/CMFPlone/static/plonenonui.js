@@ -27,7 +27,6 @@ require([
   'mockup-patterns-base',
 
   'plone-patterns-toolbar',
-  'mockup-patterns-accessibility',
   'mockup-patterns-autotoc',
   'mockup-patterns-preventdoublesubmit',
   'mockup-patterns-formautofocus',
