@@ -976,7 +976,7 @@ class ISiteSchema(ILockSettings):
         vocabulary=SimpleVocabulary([
             SimpleTerm('side', 'side', _(u"Side")),
             SimpleTerm('top', 'top', _(u"Top"))]),
-        required=True)
+        required=False)
 
     toolbar_logo = schema.TextLine(
         title=_(u"Site based relative url for toolbar logo"),
