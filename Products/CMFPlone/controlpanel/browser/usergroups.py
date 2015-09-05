@@ -59,13 +59,11 @@ class UsersGroupsControlPanelView(BrowserView):
 
     @property
     def many_users(self):
-        pprop = getToolByName(aq_inner(self.context), 'portal_properties')
-        return pprop.site_properties.many_users
+        return getAdapter(aq_inner(self.context), IUserGroupsSettingsSchema).many_users
 
     @property
     def many_groups(self):
-        pprop = getToolByName(aq_inner(self.context), 'portal_properties')
-        return pprop.site_properties.many_groups
+        return getAdapter(aq_inner(self.context), IUserGroupsSettingsSchema).many_groups
 
     @property
     def email_as_username(self):
