@@ -41,7 +41,6 @@
  </object>
  <object name="site_properties" meta_type="Plone Property Sheet">
   <property name="title">Site wide properties</property>
-  <property name="displayPublicationDateInByline" type="boolean">False</property>
   <property name="default_language" type="string">en</property>
   <property name="default_charset" type="string">utf-8</property>
   <property name="allowRolesToAddKeywords" type="lines">

@@ -992,6 +992,12 @@ class ISiteSchema(ILockSettings):
         default=u'',
         required=False)
 
+    display_publication_date_in_byline = schema.Bool(
+        title=_(u'Display publication date'),
+        description=_(u'Show the date a content item was published in the byline.'),
+        default=False,
+        required=False)
+
     toolbar_position = schema.Choice(
         title=_(u'Position where the toolbar is displayed'),
         description=_(
