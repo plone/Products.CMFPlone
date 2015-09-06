@@ -160,8 +160,7 @@ class CatalogNavigationTabs(BrowserView):
 
         query['is_default_page'] = False
 
-        if self.site_properties.getProperty('disable_nonfolderish_sections',
-                                            False):
+        if not navigation_settings.nonfolderish_tabs:
             query['is_folderish'] = True
 
         return query

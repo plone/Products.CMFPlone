@@ -20,6 +20,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import setuphandlers
 from Products.CMFPlone.factory import _DEFAULT_PROFILE
 from Products.CMFPlone.interfaces import INavigationSchema
+from Products.CMFPlone.interfaces import ISearchSchema
 from Products.CMFPlone.UnicodeSplitter import Splitter, I18NNormalizer
 from Products.GenericSetup.browser.manage import ExportStepsView
 from Products.GenericSetup.browser.manage import ImportStepsView
@@ -176,8 +177,8 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
 
     def testVisibleIdsProperties(self):
         # visible_ids should be a site property and a memberdata property
-        self.assertTrue(
-            self.properties.site_properties.hasProperty('visible_ids'))
+        registry = getUtility(IRegistry)
+        self.assertTrue('plone.visible_ids' in registry)
         self.assertTrue(self.memberdata.hasProperty('visible_ids'))
 
     def testFormToolTipsProperty(self):
@@ -210,13 +211,10 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
 
     def testUnfriendlyTypesProperty(self):
         # We should have an types_not_searched property
-        self.assertTrue(
-            self.properties.site_properties.hasProperty('types_not_searched')
-        )
-        self.assertTrue(
-            'Plone Site' in
-            self.properties.site_properties.getProperty('types_not_searched')
-        )
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(ISearchSchema, prefix="plone")
+        self.assertTrue('plone.types_not_searched' in registry)
+        self.assertTrue('Plone Site' in settings.types_not_searched)
 
     def testNonDefaultPageTypes(self):
         # We should have a default_page_types property
@@ -875,7 +873,10 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
                                 if r['selected']])
 
     def testNonFolderishTabsProperty(self):
-        self.assertEqual(False, self.properties.site_properties.disable_nonfolderish_sections)
+        registry = getUtility(IRegistry)
+        navigation_settings = registry.forInterface(INavigationSchema,
+                                                    prefix="plone")
+        self.assertEqual(True, navigation_settings.nonfolderish_tabs)
 
     def testNoDoubleGenericSetupImportSteps(self):
         view = ImportStepsView(self.setup, None)
