@@ -76,7 +76,7 @@ class IEditingSchema(Interface):
     available_editors = schema.List(
         title=_(u'Available editors'),
         description=_(u"Available editors in the portal."),
-        default=['TinyMCE'],
+        default=['TinyMCE', 'None'],
         value_type=schema.TextLine(),
         required=True
     )
