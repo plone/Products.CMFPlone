@@ -19,6 +19,7 @@ from Products.CMFCore.permissions import AccessInactivePortalContent
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import setuphandlers
 from Products.CMFPlone.factory import _DEFAULT_PROFILE
+from Products.CMFPlone.interfaces import INavigationSchema
 from Products.CMFPlone.UnicodeSplitter import Splitter, I18NNormalizer
 from Products.GenericSetup.browser.manage import ExportStepsView
 from Products.GenericSetup.browser.manage import ImportStepsView
@@ -32,6 +33,7 @@ from plone.portlets.interfaces import IPortletAssignmentMapping
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import ILocalPortletAssignmentManager
 from plone.portlets.constants import CONTEXT_CATEGORY as CONTEXT_PORTLETS
+from plone.registry.interfaces import IRegistry
 
 
 class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
@@ -361,12 +363,15 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
                          'Topic'):
             self.assertTrue(metaType in types)
 
-    def testDisableFolderSectionsSiteProperty(self):
-        # The disable_folder_sections site property should be emtpy
-        props = self.portal.portal_properties.site_properties
-        self.assertTrue(
-            props.getProperty('disable_folder_sections', None) is not None)
-        self.assertFalse(props.getProperty('disable_folder_sections'))
+    def testGenerateTabsSiteProperty(self):
+        # The generate_tabs site property should be emtpy
+        registry = getUtility(IRegistry)
+        navigation_settings = registry.forInterface(
+            INavigationSchema,
+            prefix="plone"
+        )
+        self.assertTrue('plone.generate_tabs' in registry)
+        self.assertTrue(navigation_settings.generate_tabs)
 
     def testSelectableViewsOnFolder(self):
         views = self.portal.portal_types.Folder.getAvailableViewMethods(None)
@@ -421,9 +426,9 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
             'string:${folder_url}/view')
 
     def testEnableLivesearchProperty(self):
-        # site_properties should have enable_livesearch property
-        self.assertTrue(self.properties.site_properties \
-            .hasProperty('enable_livesearch'))
+        # registry should have enable_livesearch property
+        registry = getUtility(IRegistry)
+        self.assertTrue('plone.enable_livesearch' in registry)
 
     def testRedirectLinksProperty(self):
         self.assertTrue(self.properties.site_properties \
