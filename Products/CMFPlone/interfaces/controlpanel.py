@@ -859,28 +859,29 @@ class ISearchSchema(Interface):
         ),
         required=False,
         default=(
-            'ATBooleanCriterion',
-            'ATDateCriteria',
-            'ATDateRangeCriterion',
-            'ATListCriterion',
-            'ATPortalTypeCriterion',
-            'ATReferenceCriterion',
-            'ATSelectionCriterion',
-            'ATSimpleIntCriterion',
-            'ATSimpleStringCriterion',
-            'ATSortCriterion',
-            'ChangeSet',
             'Discussion Item',
             'Plone Site',
             'TempFolder',
-            'ATCurrentAuthorCriterion',
-            'ATPathCriterion',
-            'ATRelativePathCriterion',
         ),
         value_type=schema.Choice(
             source="plone.app.vocabularies.PortalTypes"
         ),
     )
+# TODO: These need to get moved into ATCT setup profile.
+# 'ATBooleanCriterion',
+# 'ATDateCriteria',
+# 'ATDateRangeCriterion',
+# 'ATListCriterion',
+# 'ATPortalTypeCriterion',
+# 'ATReferenceCriterion',
+# 'ATSelectionCriterion',
+# 'ATSimpleIntCriterion',
+# 'ATSimpleStringCriterion',
+# 'ATSortCriterion',
+# 'ChangeSet',
+# 'ATCurrentAuthorCriterion',
+# 'ATPathCriterion',
+# 'ATRelativePathCriterion',
 
 
 class ISecuritySchema(Interface):
