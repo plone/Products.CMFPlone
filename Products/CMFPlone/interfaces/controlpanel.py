@@ -10,6 +10,31 @@ from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
 import json
 
+ROBOTS_TXT = u"""Sitemap: {portal_url}/sitemap.xml.gz
+
+# Define access-restrictions for robots/spiders
+# http://www.robotstxt.org/wc/norobots.html
+
+
+
+# By default we allow robots to access all areas of our site
+# already accessible to anonymous users
+
+User-agent: *
+Disallow:
+
+
+
+# Add Googlebot-specific syntax extension to exclude forms
+# that are repeated for each piece of content in the site
+# the wildcard is only supported by Googlebot
+# http://www.google.com/support/webmasters/bin/answer.py?answer=40367&ctx=sibling
+
+User-Agent: Googlebot
+Disallow: /*sendto_form$
+Disallow: /*folder_factories$
+"""
+
 
 class IControlPanel(IPloneBaseTool):
     """ Interface for the ControlPanel """
@@ -986,6 +1011,20 @@ class ISiteSchema(ILockSettings):
         default=u'/++plone++static/plone-toolbarlogo.svg',
         required=False,
     )
+
+    robots_txt = schema.SourceText(
+        title=_("robots.txt"),
+        description=_(
+            u"help_robots_txt",
+            default=u"robots.txt is read by search-engines to "
+                    u"determine how to index your site. "
+                    u"For details see <a href='http://www.robotstxt.org'>"
+                    u"http://www.robotstxt.org</a>. "
+                    u"'{portal_url}' is replaced by the sites url."),
+        default=ROBOTS_TXT,
+        required=False,
+    )
+
 
 class IDateAndTimeSchema(Interface):
     """Controlpanel settings for date and time related settings.
