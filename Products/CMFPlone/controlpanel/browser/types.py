@@ -3,6 +3,7 @@ from Acquisition import aq_inner
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.controlpanel.events import ConfigurationChangedEvent
+from Products.CMFPlone.interfaces import ISearchSchema
 from Products.CMFPlone.interfaces import ITypesSchema
 from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -11,6 +12,7 @@ from operator import itemgetter
 from plone.app.workflow.remap import remap_workflow
 from plone.autoform.form import AutoExtensibleForm
 from plone.memoize.instance import memoize
+from plone.registry.interfaces import IRegistry
 from z3c.form import button
 from z3c.form import form
 from zope.component import getUtility
@@ -183,16 +185,16 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
                     )
 
                 searchable = form.get('searchable', False)
-                blacklisted = list(
-                    site_properties.getProperty('types_not_searched')
-                )
+
+                registry = getUtility(IRegistry)
+                site_settings = registry.forInterface(ISearchSchema, prefix="plone")
+                blacklisted = site_settings.types_not_searched
+
                 if searchable and type_id in blacklisted:
                     blacklisted.remove(type_id)
                 elif not searchable and type_id not in blacklisted:
                     blacklisted.append(type_id)
-                site_properties.manage_changeProperties(
-                    types_not_searched=blacklisted
-                )
+                site_settings.types_not_searched = blacklisted
 
                 redirect_links = form.get('redirect_links', False)
                 site_properties.manage_changeProperties(
@@ -321,9 +323,9 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
         return None
 
     def is_searchable(self):
-        context = aq_inner(self.context)
-        portal_properties = getToolByName(context, 'portal_properties')
-        blacklisted = portal_properties.site_properties.types_not_searched
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(ISearchSchema, prefix="plone")
+        blacklisted = settings.types_not_searched
         return (self.type_id not in blacklisted)
 
     def is_redirect_links_enabled(self):
