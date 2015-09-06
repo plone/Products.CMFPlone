@@ -102,10 +102,10 @@ class DefaultPageTestCase(unittest.TestCase):
         self.assertEqual('d1', getDefaultPage(self.folder))
 
         # fetch from i.e. portal_skins by acquisition
-        # robots.txt is in portal_skins/plone_templates and so available
+        # test_rendering.pt is in portal_skins/plone_templates and so available
         # by acquisition
-        self.folder.default_page = 'robots.txt'
-        self.assertEqual('robots.txt', getDefaultPage(self.folder))
+        self.folder.default_page = 'test_rendering'
+        self.assertEqual('test_rendering', getDefaultPage(self.folder))
 
     def test_getDefaultPage_step_4(self):
         # 4. Else, look up the property default_page in site_properties for
