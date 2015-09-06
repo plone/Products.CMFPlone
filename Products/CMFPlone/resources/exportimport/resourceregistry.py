@@ -9,6 +9,7 @@ from Products.GenericSetup.utils import XMLAdapterBase
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from zope.component import queryMultiAdapter
 from zope.component import queryUtility
+from zope.component.interfaces import ComponentLookupError
 
 
 def importResRegistry(context, reg_id, reg_title, filename):
@@ -158,6 +159,6 @@ class ResourceRegistryNodeAdapter(XMLAdapterBase):
             ].value = datetime.now()
             try:
                 cookWhenChangingSettings(self.context, legacy)
-            except AssertionError:
+            except (AssertionError, ComponentLookupError):
                 # zope.globalrequest might be setup, don't error out
                 pass
