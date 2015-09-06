@@ -160,5 +160,5 @@ class ResourceRegistryNodeAdapter(XMLAdapterBase):
             try:
                 cookWhenChangingSettings(self.context, legacy)
             except (AssertionError, ComponentLookupError):
-                # zope.globalrequest might be setup, don't error out
+                # zope.globalrequest and the site might not be setup, don't error out
                 pass
