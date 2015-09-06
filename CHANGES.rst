@@ -8,11 +8,16 @@ Changelog
 5.0b5 (unreleased)
 ------------------
 
+- Turn robots.txt into a browser-view, fix link to sitemap.xml.gz, allow
+  editing in site-controlpanel.
+  Fixes https://github.com/plone/Products.CMFPlone/issues/604
+  [pbauer]
+
 - Remove history_form, history_comparison templates.
   Remove now-empty plone_forms skins folder.
   [esteele]
 
-- Remove no-longer-used images from portal_images. 
+- Remove no-longer-used images from portal_images.
   [esteele]
 
 - Typo in delete modal configuration caused submission redirection errors

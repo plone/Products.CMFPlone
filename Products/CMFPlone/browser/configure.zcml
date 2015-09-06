@@ -161,6 +161,13 @@
             factory=".navtree.SitemapNavtreeStrategy"
             provides="plone.app.layout.navigation.interfaces.INavtreeStrategy" />
 
+  <browser:page
+      for="*"
+      name="robots.txt"
+      class=".robots.Robots"
+      permission="zope.Public"
+      />
+
   <!-- Useful for cross domain iframe proxying -->
   <browser:resource
       file="static/blank.html"
