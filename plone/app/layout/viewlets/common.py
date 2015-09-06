@@ -70,7 +70,7 @@ class TitleViewlet(ViewletBase):
     @memoize
     def site_title_setting(self):
         registry = getUtility(IRegistry)
-        site_settings = registry.forInterface(ISiteSchema, prefix="plone")
+        site_settings = registry.forInterface(ISiteSchema, prefix="plone", check=False)
         return site_settings.site_title
 
     @property
@@ -184,7 +184,7 @@ class LogoViewlet(ViewletBase):
         self.navigation_root_title = self.portal_state.navigation_root_title()
 
         registry = getUtility(IRegistry)
-        settings = registry.forInterface(ISiteSchema, prefix="plone")
+        settings = registry.forInterface(ISiteSchema, prefix="plone", check=False)
         self.logo_title = settings.site_title
         self.img_src = getSiteLogo(self.portal_state.portal())
 

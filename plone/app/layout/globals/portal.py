@@ -32,7 +32,7 @@ class PortalState(BrowserView):
     @memoize_contextless
     def portal_title(self):
         registry = getUtility(IRegistry)
-        settings = registry.forInterface(ISiteSchema, prefix="plone")
+        settings = registry.forInterface(ISiteSchema, prefix="plone", check=False)
         return settings.site_title
 
     @memoize_contextless

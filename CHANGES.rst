@@ -4,7 +4,9 @@ Changelog
 2.5.11 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Be more defensive in getting registry settings so upgraded
+  schema does not cause errors
+  [vangheem]
 
 
 2.5.10 (2015-08-20)
