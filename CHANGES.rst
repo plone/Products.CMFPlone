@@ -8,6 +8,9 @@ Changelog
 5.0b5 (unreleased)
 ------------------
 
+- pre-cook resources so we do not write on read for resources generation
+  [vangheem]
+
 - Turn robots.txt into a browser-view, fix link to sitemap.xml.gz, allow
   editing in site-controlpanel.
   Fixes https://github.com/plone/Products.CMFPlone/issues/604
