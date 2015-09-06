@@ -3,7 +3,6 @@ from plone.supermodel import model
 from Products.CMFPlone import PloneMessageFactory as _  # NOQA
 from Products.CMFPlone.utils import validate_json
 from basetool import IPloneBaseTool
-from plone.locking.interfaces import ILockSettings
 from zope import schema
 from zope.interface import Interface, implements
 from zope.schema.vocabulary import SimpleTerm
@@ -947,8 +946,7 @@ class ISecuritySchema(Interface):
         required=False)
 
 
-# XXX: Why does ISiteSchema inherit from ILockSettings here ???
-class ISiteSchema(ILockSettings):
+class ISiteSchema(Interface):
 
     site_title = schema.TextLine(
         title=_(u'Site title'),
