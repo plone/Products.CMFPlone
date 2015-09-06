@@ -14,6 +14,9 @@ Changelog
 - Remove no-longer-used properties from portal_properties
   [esteele]
 
+- Move footer and colophon out of skins
+  [vangheem]
+
 - pre-cook resources so we do not write on read for resources generation
   [vangheem]
 

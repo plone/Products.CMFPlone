@@ -214,4 +214,18 @@
       allowed_interface="Products.CMFPlone.interfaces.defaultpage.IDefaultPage"
       />
 
+  <browser:page
+    for="*"
+    name="footer"
+    permission="zope.Public"
+    template="templates/footer.pt"
+    />
+
+  <browser:page
+    for="*"
+    name="colophon"
+    permission="zope.Public"
+    template="templates/colophon.pt"
+    />
+
 </configure>
