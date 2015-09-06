@@ -1,23 +1,25 @@
 # -*- coding:utf-8
 from datetime import datetime
+import json
+import re
+from urlparse import urlparse
+
 from Products.CMFPlone.interfaces import IBundleRegistry
 from Products.CMFPlone.interfaces import IResourceRegistry
 from Products.CMFPlone.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME  # noqa
+from Products.CMFPlone.resources import RESOURCE_DEVELOPMENT_MODE
+from Products.CMFPlone.resources import add_bundle_on_request
 from Products.CMFPlone.resources.browser.configjs import RequireJsView
+from Products.CMFPlone.resources.browser.cook import cookWhenChangingSettings
+from Products.statusmessages.interfaces import IStatusMessage
 from plone.memoize.view import memoize
+from plone.registry import field
 from plone.registry.interfaces import IRegistry
+from plone.registry.record import Record
 from plone.resource.interfaces import IResourceDirectory
-from urlparse import urlparse
+import posixpath
 from zExceptions import NotFound
 from zope.component import getUtility
-import json
-import re
-from Products.CMFPlone.resources import add_bundle_on_request
-from Products.CMFPlone.resources import RESOURCE_DEVELOPMENT_MODE
-from plone.registry import field
-from plone.registry.record import Record
-from Products.statusmessages.interfaces import IStatusMessage
-import posixpath
 
 
 CSS_URL_REGEX = re.compile('url\(([^)]+)\)')
@@ -219,6 +221,7 @@ class ResourceRegistryControlPanelView(RequireJsView):
         # changed or not so we need to just set the last import date
         # back so it gets re-built
         self.registry.records['plone.resources.last_legacy_import'].value = datetime.now()
+        cookWhenChangingSettings(self.context)
 
         return json.dumps({
             'success': True

@@ -1,6 +1,7 @@
-from Products.CMFPlone.resources.browser.resource import ResourceView
 from urlparse import urlparse
+
 from Products.CMFPlone.resources.browser.cook import cookWhenChangingSettings
+from Products.CMFPlone.resources.browser.resource import ResourceView
 
 
 class ScriptsView(ResourceView):
