@@ -29,13 +29,13 @@ Changelog
 - Upgrade known core packages at the end of the Plone migration.
   [maurits]
 
-
-5.0b4 (2015-08-23)
-------------------
-
 - remove Products.CMFPlone.utils.isLinked function. Switch to using
   plone.app.linkintegrity's variant
   [vangheem]
+
+
+5.0b4 (2015-08-23)
+------------------
 
 - fix #350: "plone.app.content circular dependency on Products.CMFPlone" - this
   fixes the imports only, not on zcml/genericsetup level.
