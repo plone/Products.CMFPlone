@@ -439,10 +439,9 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.assertEqual(self.types.Link.default_view, 'link_redirect_view')
 
     def testTTWLockableProperty(self):
-        self.assertTrue(self.properties.site_properties \
-            .hasProperty('lock_on_ttw_edit'))
-        self.assertEqual(True,
-                          self.properties.site_properties.lock_on_ttw_edit)
+        registry = getUtility(IRegistry)
+        self.assertTrue('plone.lock_on_ttw_edit' in registry)
+        self.assertEqual(True, registry['plone.lock_on_ttw_edit'])
 
     def testPortalFTIIsDynamicFTI(self):
         # Plone Site FTI should be a DynamicView FTI
