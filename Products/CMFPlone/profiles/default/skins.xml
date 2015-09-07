@@ -13,8 +13,6 @@
     directory="Products.CMFPlone:skins/plone_ecmascript"/>
  <object name="plone_form_scripts" meta_type="Filesystem Directory View"
     directory="Products.CMFPlone:skins/plone_form_scripts"/>
- <object name="plone_forms" meta_type="Filesystem Directory View"
-    directory="Products.CMFPlone:skins/plone_forms"/>
  <object name="plone_images" meta_type="Filesystem Directory View"
     directory="Products.CMFPlone:skins/plone_images"/>
  <object name="plone_login" meta_type="Filesystem Directory View"
