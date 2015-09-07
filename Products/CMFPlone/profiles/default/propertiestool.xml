@@ -37,7 +37,6 @@
    <element value="ATRelativePathCriterion"/>
   </property>
   <property name="enable_wf_state_filtering" type="boolean">False</property>
-  <property name="wf_states_to_show" type="lines"/>
  </object>
  <object name="site_properties" meta_type="Plone Property Sheet">
   <property name="title">Site wide properties</property>
