@@ -1,4 +1,5 @@
 from Products.CMFPlone.interfaces import ILanguageSchema
+from Products.CMFPlone.interfaces import ISearchSchema
 from Products.CMFPlone.interfaces import ISiteSchema
 from plone.app.layout.globals.tests.base import GlobalsTestCase
 from plone.app.layout.navigation.interfaces import INavigationRoot
@@ -134,6 +135,7 @@ class TestPortalStateView(GlobalsTestCase):
         self.assertEqual(self.view.anonymous(), True)
 
     def test_friendly_types(self):
-        self.portal.portal_properties.site_properties.types_not_searched = (
-            'Document', )
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(ISearchSchema, prefix="plone")
+        settings.types_not_searched = ('Document',)
         self.assertFalse('Document' in self.view.friendly_types())

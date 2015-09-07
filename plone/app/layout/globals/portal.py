@@ -7,7 +7,7 @@ from plone.memoize.view import memoize
 
 from Acquisition import aq_inner
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.interfaces import IPloneSiteRoot
+from Products.CMFPlone.interfaces import ISearchSchema
 from Products.Five.browser import BrowserView
 
 from plone.app.layout.navigation.root import getNavigationRoot
@@ -99,9 +99,9 @@ class PortalState(BrowserView):
     @memoize_contextless
     def friendly_types(self):
         context = aq_inner(self.context)
-        site_properties = getToolByName(
-            context, "portal_properties").site_properties
-        not_searched = site_properties.getProperty('types_not_searched', [])
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(ISearchSchema, prefix="plone")
+        not_searched = settings.types_not_searched
 
         types = getToolByName(context, "portal_types").listContentTypes()
         return [t for t in types if t not in not_searched]
