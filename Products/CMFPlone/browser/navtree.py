@@ -5,6 +5,7 @@
 
 from zope.interface import implements
 from zope.component import getMultiAdapter, queryUtility
+from zope.component import getUtility
 
 from plone.app.layout.navigation.interfaces import INavigationQueryBuilder
 from plone.app.layout.navigation.interfaces import INavtreeStrategy
@@ -13,11 +14,13 @@ from plone.app.layout.navigation.navtree import NavtreeStrategyBase
 from plone.app.layout.navigation.root import getNavigationRoot
 
 from plone.i18n.normalizer.interfaces import IIDNormalizer
+from plone.registry.interfaces import IRegistry
 
 from AccessControl import ModuleSecurityInfo
 from Acquisition import aq_inner
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
+from Products.CMFPlone.interfaces import INavigationSchema
 
 # Strategy objects for the navtree creation code. You can subclass these
 # to expand the default navtree behaviour, and pass instances of your
@@ -76,9 +79,12 @@ class NavtreeQueryBuilder(object):
                 query['sort_order'] = sortOrder
 
         # Filter on workflow states, if enabled
-        if navtree_properties.getProperty('enable_wf_state_filtering', False):
-            query['review_state'] = \
-                navtree_properties.getProperty('wf_states_to_show', ())
+        registry = getUtility(IRegistry)
+        navigation_settings = registry.forInterface(INavigationSchema,
+                                                    prefix="plone")
+
+        if navigation_settings.filter_on_workflow:
+            query['review_state'] = navigation_settings.workflow_states_to_show
 
         self.query = query
 

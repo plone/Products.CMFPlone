@@ -339,9 +339,12 @@ class TestBaseNavTree(PloneTestCase.PloneTestCase):
         self.portal._delObject('news')
         self.portal._delObject('events')
         workflow = self.portal.portal_workflow
-        ntp = self.portal.portal_properties.navtree_properties
-        ntp.manage_changeProperties(wf_states_to_show=['published'])
-        ntp.manage_changeProperties(enable_wf_state_filtering=True)
+
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(INavigationSchema, prefix='plone')
+
+        settings.workflow_states_to_show = ('published',)
+        settings.filter_on_workflow = True
         view = self.view_class(self.portal.folder2, self.request)
         tree = view.navigationTree()
         self.assertTrue(tree)
@@ -574,9 +577,14 @@ class TestBasePortalTabs(PloneTestCase.PloneTestCase):
         self.portal._delObject('news')
         self.portal._delObject('events')
         workflow = self.portal.portal_workflow
-        ntp = self.portal.portal_properties.navtree_properties
-        ntp.manage_changeProperties(wf_states_to_show=['published'])
-        ntp.manage_changeProperties(enable_wf_state_filtering=True)
+        
+        registry = getUtility(IRegistry)
+        navigation_settings = registry.forInterface(
+            INavigationSchema,
+            prefix="plone"
+        )
+        navigation_settings.workflow_states_to_show = ('published',)
+        navigation_settings.filter_on_workflow = True
         view = self.view_class(self.portal, self.request)
         tabs = view.topLevelTabs(actions=[])
         #Should contain no folders

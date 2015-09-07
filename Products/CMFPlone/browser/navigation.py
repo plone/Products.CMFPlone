@@ -154,9 +154,8 @@ class CatalogNavigationTabs(BrowserView):
             if sortOrder is not None:
                 query['sort_order'] = sortOrder
 
-        if navtree_properties.getProperty('enable_wf_state_filtering', False):
-            query['review_state'] = navtree_properties.getProperty(
-                                                    'wf_states_to_show', [])
+        if navigation_settings.filter_on_workflow:
+            query['review_state'] = navigation_settings.workflow_states_to_show
 
         query['is_default_page'] = False
 

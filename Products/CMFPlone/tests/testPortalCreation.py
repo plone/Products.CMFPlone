@@ -193,8 +193,10 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.assertTrue(self.properties.navtree_properties.hasProperty('sortOrder'))
         self.assertTrue(self.properties.navtree_properties.hasProperty('sitemapDepth'))
         self.assertTrue(self.properties.navtree_properties.hasProperty('showAllParents'))
-        self.assertTrue(self.properties.navtree_properties.hasProperty('wf_states_to_show'))
-        self.assertTrue(self.properties.navtree_properties.hasProperty('enable_wf_state_filtering'))
+
+        registry = getUtility(IRegistry)
+        self.assertTrue('plone.workflow_states_to_show' in registry)
+        self.assertTrue('plone.filter_on_workflow' in registry)
 
     def testSitemapAction(self):
         # There should be a sitemap action
