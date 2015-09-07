@@ -11396,7 +11396,16 @@ define('mockup-utils',[
     // provide default loader
     loading: new Loading(),
     getAuthenticator: function() {
-      return $('input[name="_authenticator"]').val();
+      var $el = $('input[name="_authenticator"]');
+      if($el.length === 0){
+        $el = $('a[href*="_authenticator"]');
+        if($el.length > 0){
+          return $el.attr('href').split('_authenticator=')[1];
+        }
+        return '';
+      }else{
+        return $el.val();
+      }
     },
     featureSupport: {
       /*
@@ -14642,7 +14651,7 @@ define('mockup-i18n',[
     if (!self.baseUrl) {
       self.baseUrl = '/plonejsi18n';
     }
-    self.currentLanguage = $('html').attr('lang') || 'en';
+    self.currentLanguage = $('html').attr('lang') || 'en-us';
     self.storage = null;
     self.catalogs = {};
     self.ttl = 24 * 3600 * 1000;
@@ -59762,7 +59771,7 @@ define('mockup-patterns-upload',[
         var items = oe.clipboardData.items;
         if (items) {
           for (var i = 0; i < items.length; i++) {
-            if (items[i].type.indexOf("image") !== -1) {
+            if (items[i].type.indexOf('image') !== -1) {
               var blob = items[i].getAsFile();
               self.dropzone.addFile(blob);
             }
@@ -59812,7 +59821,7 @@ define('mockup-patterns-upload',[
       $('button.browse', self.$el).click(function(e) {
         e.preventDefault();
         e.stopPropagation();
-        if(self.dropzone.files.length < self.options.maxFiles){
+        if(!self.options.maxFiles || self.dropzone.files.length < self.options.maxFiles){
           self.dropzone.hiddenFileInput.click();
         }
       });
@@ -59850,8 +59859,14 @@ define('mockup-patterns-upload',[
         // Trigger event 'uploadAllCompleted' and pass the server's reponse and
         // the path uid. This event can be listened to by patterns using the
         // upload pattern, e.g. the TinyMCE pattern's link plugin.
+        var data;
+        try{
+          data = $.parseJSON(response);
+        }catch(ex){
+          data = response;
+        }
         self.$el.trigger('uploadAllCompleted', {
-          'data': $.parseJSON(response),
+          'data': data,
           'path_uid': (self.$pathInput) ? self.$pathInput.val() : null
         });
       });
@@ -59875,7 +59890,7 @@ define('mockup-patterns-upload',[
       self.dropzone.on('error', function(file, response, xmlhr) {
         if (typeof(xmlhr) !== 'undefined' && xmlhr.status !== 403){
           // If error other than 403, just print a generic message
-          $('.dz-error-message span', file.previewElement).html(_('The file transfer failed'));
+          $('.dz-error-message span', file.previewElement).html(_t('The file transfer failed'));
         }
       });
 
@@ -60038,14 +60053,11 @@ define('mockup-patterns-upload',[
           processing = false;
         }
 
-        if (processing){
-          var file = self.dropzone.files[0];
-
-          if (file.status === Dropzone.ERROR){
-            // Put the file back as "queued" for retrying
-            file.status = Dropzone.QUEUED;
-            processing = false;
-          }
+        var file = self.dropzone.files[0];
+        if (processing && file.status === Dropzone.ERROR){
+          // Put the file back as "queued" for retrying
+          file.status = Dropzone.QUEUED;
+          processing = false;
         }
 
         if (!processing){
@@ -76107,7 +76119,7 @@ define('mockup-patterns-tinymce',[
       var self = this;
       var i18n = new I18n();
       var lang = i18n.currentLanguage;
-      if (lang !== 'en' && self.options.tiny.language !== 'en') {
+      if (lang !== 'en-us' && self.options.tiny.language !== 'en') {
         tinymce.baseURL = self.options.loadingBaseUrl;
         // does the expected language exist?
         $.ajax({
@@ -76122,7 +76134,9 @@ define('mockup-patterns-tinymce',[
             // expected lang not available, let's fallback to closest one
             if (lang.split('_') > 1){
               lang = lang.split('_')[0];
-            } else {
+            } else if(lang.split('-') > 1){
+              lang = lang.split('-')[0];
+            }else {
               lang = lang + '_' + lang.toUpperCase();
             }
             $.ajax({
@@ -83313,14 +83327,19 @@ define('mockup-patterns-structure-url/js/views/generic-popover',[
       self.submitContext = options.form.submitContext || 'primary';
       self.data = {};
 
-      var html = '<form>' + options.form.template + '</form>' +
-        '<button class="btn btn-block btn-' + self.submitContext + ' applyBtn">' + self.submitText + ' </button>';
-      if(options.form.closeText){
-        html += '<button class="btn btn-block btn-default closeBtn">' + options.form.closeText + ' </button>';
-      }
-      self.content = _.template(html);
+      self.options = options;
+      self.setContent(options.form.template);
 
       PopoverView.prototype.initialize.apply(this, [options]);
+    },
+    setContent: function(content){
+      var self = this;
+      var html = '<form>' + content + '</form>';
+      html += '<button class="btn btn-block btn-' + self.submitContext + ' applyBtn">' + self.submitText + ' </button>';
+      if(self.options.form.closeText){
+        html += '<button class="btn btn-block btn-default closeBtn">' + self.options.form.closeText + ' </button>';
+      }
+      this.content = _.template(html);
     },
     getTemplateOptions: function(){
       var self = this;
@@ -83339,25 +83358,38 @@ define('mockup-patterns-structure-url/js/views/generic-popover',[
       _.each(self.$el.find('form').serializeArray(), function(param){
         data[param.name] = param.value;
       });
-      this.app.buttonClickEvent(this.triggerView, data);
-      this.hide();
+
+      self.app.buttonClickEvent(this.triggerView, data);
+      self.hide();
     },
     afterRender: function(){
       var self = this;
       if(self.options.form.dataUrl){
+        self.$('.popover-content').html(_t('Loading...'));
+        self.app.loading.show();
         $.ajax({
           url: self.options.form.dataUrl,
           dataType: 'json',
           type: 'POST',
+          cache: false,
           data: {
             selection: JSON.stringify(self.app.getSelectedUids()),
             transitions: true,
             render: 'yes'
           }
-        }).done(function(data){
-          self.data = data;
+        }).done(function(result){
+          self.data = result.data || result;
           self.renderContent();
           registry.scan(self.$el);
+        }).fail(function(){
+          /* we temporarily set original html to a value here so we can
+             render the updated content and then put the original back */
+          var originalContent = self.content;
+          self.setContent('<p>' + _t('Error loading popover from server.') + '</p>', false);
+          self.renderContent();
+          self.content = originalContent;
+        }).always(function(){
+          self.app.loading.hide();
         });
       }else{
         registry.scan(self.$el);
@@ -83376,7 +83408,6 @@ define('mockup-patterns-structure-url/js/views/generic-popover',[
 
   return PropertiesView;
 });
-
 define('mockup-patterns-structure-url/js/views/rearrange',[
   'jquery',
   'underscore',
@@ -84959,7 +84990,7 @@ define('mockup-patterns-structure-url/js/collections/result',[
       // XXX manually set sort order here since backbone will otherwise
       // do arbitrary sorting?
       _.each(results, function(item, idx) {
-        item._sort = idx + baseSortIdx;
+        item._sort = idx;
       });
       return results;
     },

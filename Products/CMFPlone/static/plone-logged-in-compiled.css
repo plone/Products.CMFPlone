@@ -5360,7 +5360,7 @@ table.structure-dragging .itemRow td {
   padding: 30px;
   border-radius: 5px;
   margin: 0 auto 15px auto;
-  width: 600px;
+  max-width: 600px;
 }
 .upload-container .upload-area:hover {
   background: rgba(0, 0, 0, 0.025);
@@ -7584,7 +7584,7 @@ td, th {
   padding: 30px;
   border-radius: 5px;
   margin: 0 auto 15px auto;
-  width: 600px;
+  max-width: 600px;
 }
 .upload-container .upload-area:hover {
   background: rgba(0, 0, 0, 0.025);
