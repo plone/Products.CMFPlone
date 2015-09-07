@@ -1,15 +1,15 @@
 Changelog
 =========
 
-2.5.11 (unreleased)
+2.5.11 (2015-09-07)
 -------------------
 
 - Be more defensive in getting registry settings so upgraded
   schema does not cause errors
   [vangheem]
 
-- Pull value for display_publication_date_in_byline from the configuration
-  registry.
+- Pull values for display_publication_date_in_byline, default_language,
+  icon_visibility from the configuration registry.
   [esteele]
 
 2.5.10 (2015-08-20)
