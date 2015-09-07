@@ -89,7 +89,9 @@ class TestPortalStateView(GlobalsTestCase):
         self.assertEqual(view.navigation_root_url(), url)
 
     def test_default_language(self):
-        self.portal.portal_properties.site_properties.default_language = 'no'
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(ILanguageSchema, prefix="plone")
+        settings.default_language = 'no'
         self.assertEqual(self.view.default_language(), 'no')
 
     def test_language(self):

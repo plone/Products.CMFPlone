@@ -7,6 +7,7 @@ from plone.memoize.view import memoize
 
 from Acquisition import aq_inner
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.interfaces import ILanguageSchema
 from Products.CMFPlone.interfaces import ISearchSchema
 from Products.Five.browser import BrowserView
 
@@ -64,10 +65,9 @@ class PortalState(BrowserView):
 
     @memoize_contextless
     def default_language(self):
-        context = aq_inner(self.context)
-        site_properties = getToolByName(
-            context, "portal_properties").site_properties
-        return site_properties.getProperty('default_language', None)
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(ILanguageSchema, prefix="plone")
+        return settings.default_language
 
     def language(self):
         return self.request.get('LANGUAGE', None) or \
