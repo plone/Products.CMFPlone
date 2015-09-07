@@ -6,6 +6,9 @@ from Products.CMFPlone import utils
 from Products.CMFPlone.browser.interfaces import IPlone
 from Products.Five import BrowserView
 from zope.component import getMultiAdapter
+from zope.component import getUtility
+from plone.registry.interfaces import IRegistry
+from Products.CMFPlone.interfaces import IEditingSchema
 from zope.deprecation import deprecate
 from zope.i18n import translate
 from zope.interface import implementer
@@ -43,8 +46,9 @@ class Plone(BrowserView):
         """Determine if visible ids are enabled
         """
         context = aq_inner(self.context)
-        props = getToolByName(context, "portal_properties").site_properties
-        if not props.getProperty('visible_ids', False):
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(IEditingSchema, prefix="plone")
+        if not settings.visible_ids:
             return False
 
         pm = getToolByName(context, "portal_membership")
