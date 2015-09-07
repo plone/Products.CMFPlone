@@ -84,12 +84,11 @@ class LayoutPolicy(BrowserView):
         """
         context = self.context
         membership = getToolByName(context, "portal_membership")
-        properties = getToolByName(context, "portal_properties")
-
-        site_properties = getattr(properties, 'site_properties')
         anon = membership.isAnonymousUser()
-        icon_visibility = site_properties.getProperty(
-            'icon_visibility', 'enabled')
+
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(ISiteSchema, prefix="plone")
+        icon_visibility = settings.icon_visibility
 
         if icon_visibility == 'enabled':
             return True
