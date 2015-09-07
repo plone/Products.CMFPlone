@@ -997,6 +997,17 @@ class ISiteSchema(Interface):
         default=False,
         required=False)
 
+    icon_visibility = schema.Choice(
+        title=_(u'Icon visibility'),
+        description=_(u'Show icons...'),
+        default=u'false',
+        vocabulary=SimpleVocabulary([
+            SimpleTerm('false', 'false', _(u'Never')),
+            SimpleTerm('enabled', 'enabled', _(u'Always')),
+            SimpleTerm('authenticated', 'authenticated',
+                       _('For authenticated users only'))]),
+        required=False)
+
     toolbar_position = schema.Choice(
         title=_(u'Position where the toolbar is displayed'),
         description=_(

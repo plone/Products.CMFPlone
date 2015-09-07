@@ -40,7 +40,6 @@
  </object>
  <object name="site_properties" meta_type="Plone Property Sheet">
   <property name="title">Site wide properties</property>
-  <property name="default_language" type="string">en</property>
   <property name="default_charset" type="string">utf-8</property>
   <property name="allowRolesToAddKeywords" type="lines">
    <element value="Manager"/>
@@ -71,7 +70,6 @@
   <property name="verify_login_name" type="boolean">True</property>
   <property name="external_links_open_new_window"
      type="string">false</property>
-  <property name="icon_visibility" type="string">false</property>
   <property name="mark_special_links" type="string">false</property>
   <property name="redirect_links" type="boolean">True</property>
   <property name="allow_external_login_sites" type="lines"/>
