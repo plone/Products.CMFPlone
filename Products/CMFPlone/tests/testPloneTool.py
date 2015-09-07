@@ -1,10 +1,13 @@
 from Acquisition import Implicit
 from plone.app.testing import SITE_OWNER_NAME
+from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces import IReorderedEvent
+from Products.CMFPlone.interfaces import ISearchSchema
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 from zope.component import getGlobalSiteManager
+from zope.component import getUtility
 from zope.interface import Interface
 
 default_user = PloneTestCase.default_user
@@ -154,9 +157,10 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
     def testGetUserFriendlyTypes(self):
         ttool = getToolByName(self.portal, 'portal_types')
         types = set(ttool.keys())
-        ptool = getToolByName(self.portal, 'portal_properties')
-        site_props = getattr(ptool, 'site_properties')
-        blacklistedTypes = site_props.getProperty('types_not_searched', [])
+        registry = getUtility(IRegistry)
+        search_settings = registry.forInterface(ISearchSchema, prefix="plone")
+        blacklistedTypes = search_settings.types_not_searched
+
         # 'ChangeSet' is blacklisted, but not in the types by default,
         # so we filter that out.
         blacklistedTypes = set([t for t in blacklistedTypes if t in types])
