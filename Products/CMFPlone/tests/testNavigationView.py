@@ -339,9 +339,12 @@ class TestBaseNavTree(PloneTestCase.PloneTestCase):
         self.portal._delObject('news')
         self.portal._delObject('events')
         workflow = self.portal.portal_workflow
-        ntp = self.portal.portal_properties.navtree_properties
-        ntp.manage_changeProperties(wf_states_to_show=['published'])
-        ntp.manage_changeProperties(enable_wf_state_filtering=True)
+
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(INavigationSchema, prefix='plone')
+
+        settings.workflow_states_to_show = ('published',)
+        settings.filter_on_workflow = True
         view = self.view_class(self.portal.folder2, self.request)
         tree = view.navigationTree()
         self.assertTrue(tree)
@@ -522,8 +525,10 @@ class TestBasePortalTabs(PloneTestCase.PloneTestCase):
         self.assertEqual(len(tabs), 8)
 
         #Only the folders show up (Members, news, events, folder1, folder2)
-        self.portal.portal_properties \
-               .site_properties.disable_nonfolderish_sections = True
+        registry = getUtility(IRegistry)
+        navigation_settings = registry.forInterface(INavigationSchema,
+                                                    prefix="plone")
+        navigation_settings.nonfolderish_tabs = False
         tabs = view.topLevelTabs(actions=[])
         self.assertEqual(len(tabs), 5)
 
@@ -572,9 +577,14 @@ class TestBasePortalTabs(PloneTestCase.PloneTestCase):
         self.portal._delObject('news')
         self.portal._delObject('events')
         workflow = self.portal.portal_workflow
-        ntp = self.portal.portal_properties.navtree_properties
-        ntp.manage_changeProperties(wf_states_to_show=['published'])
-        ntp.manage_changeProperties(enable_wf_state_filtering=True)
+        
+        registry = getUtility(IRegistry)
+        navigation_settings = registry.forInterface(
+            INavigationSchema,
+            prefix="plone"
+        )
+        navigation_settings.workflow_states_to_show = ('published',)
+        navigation_settings.filter_on_workflow = True
         view = self.view_class(self.portal, self.request)
         tabs = view.topLevelTabs(actions=[])
         #Should contain no folders
@@ -648,8 +658,10 @@ class TestBasePortalTabs(PloneTestCase.PloneTestCase):
         self.assertFalse('folder2' in tab_names)
 
     def testTabsExcludeNonFolderishItems(self):
-        self.portal.portal_properties.site_properties \
-               .disable_nonfolderish_sections = True
+        registry = getUtility(IRegistry)
+        navigation_settings = registry.forInterface(INavigationSchema,
+                                                    prefix="plone")
+        navigation_settings.nonfolderish_tabs = False
         view = self.view_class(self.portal, self.request)
         tabs = view.topLevelTabs(actions=[])
         orig_len = len(tabs)
@@ -671,8 +683,11 @@ class TestBasePortalTabs(PloneTestCase.PloneTestCase):
         self.setRoles(['Member'])
 
         self.portal.portal_properties.navtree_properties.root = '/folder1'
-        self.portal.portal_properties.site_properties \
-                .disable_nonfolderish_sections = True
+
+        registry = getUtility(IRegistry)
+        navigation_settings = registry.forInterface(INavigationSchema,
+                                                    prefix="plone")
+        navigation_settings.nonfolderish_tabs = False
 
         view = self.view_class(self.portal, self.request)
         tabs = view.topLevelTabs(actions=[])

@@ -124,7 +124,7 @@
                        name="form.button.FindAll"
                        value="Show all"
                        i18n:attributes="value label_showall;"
-                       tal:condition="not:site_properties/many_groups"
+                       tal:condition="not:view/many_groups"
                        />
 
             </div>

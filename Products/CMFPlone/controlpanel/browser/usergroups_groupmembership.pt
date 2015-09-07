@@ -264,13 +264,13 @@
                       style="text-align:center;">No matches</td>
 
                     <tal:block tal:condition="not:view/searchString">
-                      <td tal:condition="site_properties/many_users"
+                      <td tal:condition="view/many_users"
                         class="discreet"
                         i18n:translate="text_no_searchstring_large"
                         style="text-align:center; font-size: 100%;">
                         Enter a group or user name to search for.
                       </td>
-                      <td tal:condition="not:site_properties/many_users"
+                      <td tal:condition="not:view/many_users"
                         class="discreet"
                         i18n:translate="text_no_searchstring"
                         style="text-align:center; font-size: 100%;">

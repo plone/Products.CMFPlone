@@ -8,6 +8,9 @@ Changelog
 5.0b5 (unreleased)
 ------------------
 
+- Remove no-longer-used properties from portal_properties
+  [esteele]
+
 - pre-cook resources so we do not write on read for resources generation
   [vangheem]
 

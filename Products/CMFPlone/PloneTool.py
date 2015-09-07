@@ -963,7 +963,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         mt = getToolByName(self, 'portal_membership')
 
         registry = getUtility(IRegistry)
-        site_settings = registry.forInterface(ISiteSchema, prefix="plone")
+        site_settings = registry.forInterface(ISiteSchema, prefix="plone", check=False)
         use_all = site_settings.exposeDCMetaTags
 
         security_settings = registry.forInterface(

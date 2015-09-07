@@ -3,7 +3,6 @@ from plone.supermodel import model
 from Products.CMFPlone import PloneMessageFactory as _  # NOQA
 from Products.CMFPlone.utils import validate_json
 from basetool import IPloneBaseTool
-from plone.locking.interfaces import ILockSettings
 from zope import schema
 from zope.interface import Interface, implements
 from zope.schema.vocabulary import SimpleTerm
@@ -77,7 +76,7 @@ class IEditingSchema(Interface):
     available_editors = schema.List(
         title=_(u'Available editors'),
         description=_(u"Available editors in the portal."),
-        default=['TinyMCE'],
+        default=['TinyMCE', 'None'],
         value_type=schema.TextLine(),
         required=True
     )
@@ -860,28 +859,29 @@ class ISearchSchema(Interface):
         ),
         required=False,
         default=(
-            'ATBooleanCriterion',
-            'ATDateCriteria',
-            'ATDateRangeCriterion',
-            'ATListCriterion',
-            'ATPortalTypeCriterion',
-            'ATReferenceCriterion',
-            'ATSelectionCriterion',
-            'ATSimpleIntCriterion',
-            'ATSimpleStringCriterion',
-            'ATSortCriterion',
-            'ChangeSet',
             'Discussion Item',
             'Plone Site',
             'TempFolder',
-            'ATCurrentAuthorCriterion',
-            'ATPathCriterion',
-            'ATRelativePathCriterion',
         ),
         value_type=schema.Choice(
             source="plone.app.vocabularies.PortalTypes"
         ),
     )
+# TODO: These need to get moved into ATCT setup profile.
+# 'ATBooleanCriterion',
+# 'ATDateCriteria',
+# 'ATDateRangeCriterion',
+# 'ATListCriterion',
+# 'ATPortalTypeCriterion',
+# 'ATReferenceCriterion',
+# 'ATSelectionCriterion',
+# 'ATSimpleIntCriterion',
+# 'ATSimpleStringCriterion',
+# 'ATSortCriterion',
+# 'ChangeSet',
+# 'ATCurrentAuthorCriterion',
+# 'ATPathCriterion',
+# 'ATRelativePathCriterion',
 
 
 class ISecuritySchema(Interface):
@@ -947,8 +947,7 @@ class ISecuritySchema(Interface):
         required=False)
 
 
-# XXX: Why does ISiteSchema inherit from ILockSettings here ???
-class ISiteSchema(ILockSettings):
+class ISiteSchema(Interface):
 
     site_title = schema.TextLine(
         title=_(u'Site title'),
@@ -990,6 +989,23 @@ class ISiteSchema(ILockSettings):
             u"It will be included in the rendered HTML as "
             u"entered near the end of the page."),
         default=u'',
+        required=False)
+
+    display_publication_date_in_byline = schema.Bool(
+        title=_(u'Display publication date'),
+        description=_(u'Show the date a content item was published in the byline.'),
+        default=False,
+        required=False)
+
+    icon_visibility = schema.Choice(
+        title=_(u'Icon visibility'),
+        description=_(u'Show icons...'),
+        default=u'false',
+        vocabulary=SimpleVocabulary([
+            SimpleTerm('false', 'false', _(u'Never')),
+            SimpleTerm('enabled', 'enabled', _(u'Always')),
+            SimpleTerm('authenticated', 'authenticated',
+                       _('For authenticated users only'))]),
         required=False)
 
     toolbar_position = schema.Choice(

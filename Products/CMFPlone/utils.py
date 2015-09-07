@@ -672,7 +672,7 @@ def getSiteLogo(site=None):
     if site is None:
         site = getSite()
     registry = getUtility(IRegistry)
-    settings = registry.forInterface(ISiteSchema, prefix="plone")
+    settings = registry.forInterface(ISiteSchema, prefix="plone", check=False)
     site_url = site.absolute_url()
 
     if getattr(settings, 'site_logo', False):
