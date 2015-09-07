@@ -34,7 +34,8 @@ class TinyMCESettingsGenerator(object):
             '%s/++plone++static/plone-compiled.css' % self.portal_url,
             '%s/++plone++static/tinymce-styles.css' % self.portal_url
         ]
-        for url in self.settings.content_css:
+        content_css = self.settings.content_css or []
+        for url in content_css:
             files.append('%s/%s' % (self.portal_url, url))
         theme = self.get_theme()
         if (theme and hasattr(theme, 'tinymce_content_css') and
