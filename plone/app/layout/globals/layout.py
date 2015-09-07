@@ -87,7 +87,7 @@ class LayoutPolicy(BrowserView):
         anon = membership.isAnonymousUser()
 
         registry = getUtility(IRegistry)
-        settings = registry.forInterface(ISiteSchema, prefix="plone")
+        settings = registry.forInterface(ISiteSchema, prefix="plone", check=False)
         icon_visibility = settings.icon_visibility
 
         if icon_visibility == 'enabled':
