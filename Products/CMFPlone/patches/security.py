@@ -63,6 +63,7 @@ def check_getToolByName(obj, name, default=_marker):
             name in _tool_interface_registry or \
             (isinstance(result, FauxArchetypeTool)) or \
             '.test' in result.__class__.__module__ or \
+            result.__class__.__module__ == 'mock' or \
             result is _marker or \
             result is default:
         return result
