@@ -1,0 +1,8 @@
+<!--
+  The global defines view is deprecated.
+
+  This is left in place to not require all main_templates to be forced to be
+  compatible with only one of Plone 3.x or 4.0.
+-->
+
+<metal:globaldefine define-macro="defines" />

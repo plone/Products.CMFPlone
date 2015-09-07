@@ -8,9 +8,6 @@ Changelog
 5.0b5 (unreleased)
 ------------------
 
-- Remove deprecated global_defines.pt
-  [esteele]
-
 - Remove no-longer-used properties from portal_properties
   [esteele]
 
