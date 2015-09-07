@@ -331,8 +331,13 @@ class ResourceRegistryControlPanelView(RequireJsView):
         overrides = OverrideFolderManager(self.context)
         req = self.request
         filepath = 'static/%s-compiled.css' % req.form['bundle']
-        data = '\n'.join([req.form[k] for k in req.form.keys()
-                          if k.startswith('data-')])
+        data = ''
+        for key, value in req.form.items():
+            if not key.startswith('data-'):
+                continue
+            if isinstance(value, basestring):
+                value = [value]
+            data += '\n'.join(value) + '\n'
         overrides.save_file(filepath, data)
         bundle = self.get_bundles().get(req.form['bundle'])
         if bundle:
