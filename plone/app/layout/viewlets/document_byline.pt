@@ -1,0 +1,117 @@
+<li id="plone-document-byline" class="plone-toolbar-separator"
+    tal:condition="view/show"
+    i18n:domain="plone">
+
+  <a href="#">
+    <span class="icon-contentInfo" aria-hidden="true"></span>
+    <span i18n:translate="">Content Info</span>
+    <span class="plone-toolbar-caret"></span>
+  </a>
+
+  <ul>
+    <li class="plone-toolbar-submenu-header">
+      <span id="lock-icon"
+            tal:define="lock_icon view/locked_icon"
+            tal:condition="python:lock_icon">
+        <img tal:replace="structure lock_icon" />
+      </span>
+      <span i18n:translate="">Content Info</span>
+    </li>
+    <li>
+      <tal:creator tal:define="creator_short_form view/creator;"
+                   tal:condition="creator_short_form">
+        <tal:name tal:define="creator_long_form string:?author=${creator_short_form};
+                              creator_is_openid python:'/' in creator_short_form;
+                              creator_id python:(creator_short_form, creator_long_form)[creator_is_openid];">
+
+          <tal:i18n i18n:translate="label_by_author">
+            <a href="#"
+               class="documentAuthor"
+               tal:attributes="href string:${context/@@plone_portal_state/navigation_root_url}/author/${creator_id}"
+               tal:omit-tag="python:view.author() is None">
+               by <tal:author tal:content="view/authorname" i18n:name="author">Roland Barthes</tal:author></a>
+          </tal:i18n>
+
+        </tal:name>
+      </tal:creator>
+    </li>
+    <li>
+      <tal:dates define="published view/pub_date;
+                         modified context/ModificationDate">
+        <span class="documentPublished"
+              tal:condition="published">
+          <span i18n:translate="box_published">
+            published
+          </span>
+          <span tal:replace="python:view.toLocalizedTime(published,long_format=1)">
+            August 16, 2001 at 23:35:59
+          </span><tal:sep condition="modified">,</tal:sep>
+        </span>
+
+        <span class="documentModified"
+              tal:condition="modified">
+          <span i18n:translate="box_last_modified">
+            last modified
+          </span>
+          <span tal:replace="python:view.toLocalizedTime(modified,long_format=1)">
+            August 16, 2001 at 23:35:59
+          </span>
+        </span>
+      </tal:dates>
+    </li>
+    <li>
+      <tal:expired tal:condition="view/isExpired">
+        <span class="state-expired"
+              i18n:translate="time_expired">expired</span>
+      </tal:expired>
+    </li>
+    <li>
+      <a href="#" class="contentHistory" id="content-history"
+         tal:condition="view/show_history"
+         tal:attributes="href string:${here/absolute_url}/@@historyview"
+         i18n:translate="label_history">History</a>
+    </li>
+    <li>
+      <span class="documentContributors"
+           tal:define="contributors context/Contributors"
+           tal:condition="contributors"
+           i18n:translate="text_contributors">
+        Contributors:
+        <span i18n:name="name"
+              tal:omit-tag=""
+              tal:content="python: ', '.join(contributors)">
+          Mary
+        </span>
+      </span>
+    </li>
+    <li>
+      <span tal:define="rights context/Rights"
+                  tal:condition="rights">
+        <span tal:replace="rights">
+          Copyleft NiceCorp Inc.
+        </span>
+      </span>
+    </li>
+<!-- Part of the Albert's mockup, just decide if we need/want it.
+
+    <li class="plone-toolbar-submenu-header">
+      <span>File info</span>
+    </li>
+    <li><span>Content name: Name</span></li>
+    <li><span>Short name: /short-name</span></li>
+
+  -->
+    <li class="plone-toolbar-submenu-header"
+        tal:condition="view/has_pam">
+      <span>Linked Translations</span>
+    </li>
+    <tal:translations condition="view/has_pam">
+      <li tal:repeat="linked_content view/get_translations">
+        <a tal:attributes="href linked_content/url"
+           tal:content="linked_content/lang_native">
+            Occitanian
+        </a>
+      </li>
+    </tal:translations>
+  </ul>
+</li>
