@@ -5,8 +5,8 @@
 Changelog
 =========
 
-5.0b5 (unreleased)
-------------------
+5.0rc1 (2015-09-08)
+-------------------
 
 - Remove deprecated global_defines.pt
   [esteele]
