@@ -130,7 +130,6 @@ a link in rich text
   Click Button  css=.plone-modal-footer .plone-btn-primary
   Click Button  css=#form-buttons-save
 
-.pattern-relateditems-result-select.selectable
 
 remove link to page
   Go To  ${PLONE_URL}/bar
