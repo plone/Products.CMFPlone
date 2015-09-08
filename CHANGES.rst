@@ -4,7 +4,8 @@ Changelog
 2.5.12 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Bring back document byline (closes `#741`_).
+  [rodfersou]
 
 
 2.5.11 (2015-09-07)
@@ -1566,3 +1567,5 @@ Changelog
 - Show the authors full name in presentation view. This fixes
   http://dev.plone.org/plone/ticket/6810
   [wichert]
+
+.. _`#741`: https://github.com/plone/Products.CMFPlone/issues/741
