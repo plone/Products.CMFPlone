@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.5.12 (unreleased)
+2.5.12 (2015-09-08)
 -------------------
 
 - Bring back document byline (closes `#741`_).
