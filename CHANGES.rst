@@ -39,6 +39,8 @@ Changelog
   plone.app.linkintegrity's variant
   [vangheem]
 
+- Fix error to allow site navigation if TinyMCE content_css setting is None
+  [Gagaro]
 
 5.0b4 (2015-08-23)
 ------------------
