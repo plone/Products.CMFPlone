@@ -16,7 +16,8 @@
       is
       <abbr title="Copyright" i18n:name="copyright" i18n:attributes="title title_copyright;">&copy;</abbr>
       2000-<tal:year i18n:name="current_year"
-         tal:define="myTime python:DateTime()"
+         tal:define="DateTime nocall:modules/DateTime.DateTime;
+                     myTime python:DateTime()"
          tal:content="python:myTime.year()" />
       by the
       <span i18n:name="plonefoundation" tal:omit-tag="">

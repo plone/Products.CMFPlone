@@ -966,6 +966,11 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         site_settings = registry.forInterface(ISiteSchema, prefix="plone", check=False)
         use_all = site_settings.exposeDCMetaTags
 
+        try:
+            use_all = site_settings.exposeDCMetaTags
+        except AttributeError:
+            use_all = False
+
         security_settings = registry.forInterface(
             ISecuritySchema, prefix='plone')
         view_about = security_settings.allow_anon_views_about \
