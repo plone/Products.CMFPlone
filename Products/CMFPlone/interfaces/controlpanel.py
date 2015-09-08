@@ -30,8 +30,18 @@ Disallow:
 # http://www.google.com/support/webmasters/bin/answer.py?answer=40367&ctx=sibling
 
 User-Agent: Googlebot
-Disallow: /*sendto_form$
+Disallow: /*?
+Disallow: /*atct_album_view$
 Disallow: /*folder_factories$
+Disallow: /*folder_summary_view$
+Disallow: /*login_form$
+Disallow: /*mail_password_form$
+Disallow: /*search
+Disallow: /*search_rss$
+Disallow: /*sendto_form$
+Disallow: /*summary_view$
+Disallow: /*thumbnail_view$
+Disallow: /*view$
 """
 
 
