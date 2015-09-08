@@ -28,7 +28,9 @@ class FeedView(BrowserView):
     def __call__(self):
         util = getMultiAdapter((self.context, self.request),
                                name='syndication-util')
-        if util.context_enabled(raise404=True):
+        context_state = getMultiAdapter((self.context, self.request),
+                                        name=u'plone_context_state')
+        if context_state.is_portal_root() or util.context_enabled(raise404=True):
             settings = IFeedSettings(self.context)
             if self.__name__ not in settings.feed_types:
                 raise NotFound
@@ -111,8 +113,9 @@ class NewsMLFeedView(FeedView):
 
 class SettingsForm(form.EditForm):
     label = _(u'heading_syndication_properties',
-        default=u'Syndication Properties')
-    description = _(u'description_syndication_properties',
+              default=u'Syndication Properties')
+    description = _(
+        u'description_syndication_properties',
         default=u'Syndication enables you to syndicate this folder so it can'
                 u'be synchronized from other web sites.')
     fields = field.Fields(IFeedSettings)
