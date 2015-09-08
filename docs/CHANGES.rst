@@ -8,6 +8,9 @@ Changelog
 4.3.7 (unreleased)
 ------------------
 
+- Do not throw a 404 on site root RSS feeds
+  [vangheem]
+
 - Upgrade known core packages at the end of the Plone migration.
   [maurits]
 
