@@ -116,22 +116,26 @@ should not show warning when deleting page
 
 
 a link in rich text
+  Wait until element is visible  css=.mce-edit-area iframe
   Select Frame  css=.mce-edit-area iframe
   Input text  css=.mce-content-body  foo
   Execute Javascript    function selectElementContents(el) {var range = document.createRange(); range.selectNodeContents(el); var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);} var el = document.getElementById("tinymce"); selectElementContents(el);
   UnSelect Frame
   Click Button  css=div[aria-label="Insert/edit link"] button
+  Wait until element is visible  css=.select2-input.select2-default
   Click Element  css=.select2-input.select2-default
   Input text  css=.select2-dropdown-open .select2-input  foo
-  Wait until element is visible  css=.pattern-relateditems-result-select.selectable
-  Click Link  css=.pattern-relateditems-result-select.selectable
+  Wait until element is visible  jquery=.select2-highlighted .pattern-relateditems-result-select.selectable:contains(Foo)
+  Click Link  jquery=.select2-highlighted .pattern-relateditems-result-select.selectable:contains(Foo)
   Click Button  css=.plone-modal-footer .plone-btn-primary
   Click Button  css=#form-buttons-save
 
+.pattern-relateditems-result-select.selectable
 
 remove link to page
   Go To  ${PLONE_URL}/bar
   Click Link  css=#contentview-edit a
+  Wait until element is visible  css=.mce-edit-area iframe
   Select Frame  css=.mce-edit-area iframe
   Input text  css=.mce-content-body  foo
   Execute Javascript    function selectElementContents(el) {var range = document.createRange(); range.selectNodeContents(el); var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);} var el = document.getElementById("tinymce"); selectElementContents(el);
