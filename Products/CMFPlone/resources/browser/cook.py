@@ -38,7 +38,15 @@ def cookWhenChangingSettings(context, bundle=None):
 
     # Let's join all css and js
     css_file = ""
-    cooked_js = ""
+    cooked_js = """
+/* reset requirejs definitions so that people who
+   put requirejs in legacy compilation do not get errors */
+var _old_define = define;
+var _old_require = require;
+define = undefined;
+require = undefined;
+try{
+"""
     siteUrl = getSite().absolute_url()
     request = getRequest()
     for package in bundle.resources or []:
@@ -65,6 +73,17 @@ def cookWhenChangingSettings(context, bundle=None):
                 else:
                     cooked_js += '\n/* Could not find resource: %s */\n\n' % resource.js
 
+    cooked_js += """
+}catch(e){
+    // log it
+    if (typeof console !== "undefined"){
+        console.log('Error loading javascripts!' + e);
+    }
+}finally{
+    define = _old_define;
+    require = _old_require;
+}
+"""
     cooked_css = cssmin(css_file)
 
     js_path = bundle.jscompilation
