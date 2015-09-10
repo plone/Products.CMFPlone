@@ -136,6 +136,8 @@ class Plone(BrowserView):
     def cropText(self, text, length, ellipsis='...'):
         """Crop text on a word boundary
         """
+        if not length:
+            return text
         converted = False
         if not isinstance(text, unicode):
             text = utils.safe_unicode(text)
@@ -281,7 +283,7 @@ class Plone(BrowserView):
         """Returns an object which implements the IContentIcon interface and
         provides the informations necessary to render an icon. The item
         parameter needs to be adaptable to IContentIcon. Icons can be disabled
-        globally or just for anonymous users with the icon_visibility site 
+        globally or just for anonymous users with the icon_visibility site
         setting.
         """
         context = aq_inner(self.context)

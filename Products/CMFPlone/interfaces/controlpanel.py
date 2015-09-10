@@ -877,6 +877,13 @@ class ISearchSchema(Interface):
             source="plone.app.vocabularies.PortalTypes"
         ),
     )
+
+    search_results_description_length = schema.Int(
+        title=_(u"Crop the item description in search result listings "
+                u"after a number of characters."),
+        required=False,
+        default=160,
+    )
 # TODO: These need to get moved into ATCT setup profile.
 # 'ATBooleanCriterion',
 # 'ATDateCriteria',
