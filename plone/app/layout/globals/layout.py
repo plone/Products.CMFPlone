@@ -22,7 +22,7 @@ from zope.component import queryUtility
 from zope.interface import alsoProvides
 from zope.interface import implements
 from zope.publisher.browser import BrowserView
-from AccessControl.PermissionRole import rolesForPermissionOn
+
 
 class LayoutPolicy(BrowserView):
     """A view that gives access to various layout related functions.
@@ -181,9 +181,9 @@ class LayoutPolicy(BrowserView):
 
         # permissions required. Useful to theme frontend and backend differently
         permissions = []
-        if not getattr(view, '__ac_permissions__'):
+        if not getattr(view, '__ac_permissions__', tuple()):
             permissions = ['none']
-        for permission,roles in getattr(view, '__ac_permissions__', tuple()):
+        for permission, roles in getattr(view, '__ac_permissions__', tuple()):
             permissions.append(normalizer.normalize(permission))
         if 'none' in permissions or 'view' in permissions:
             body_classes.append('frontend')
