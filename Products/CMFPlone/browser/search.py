@@ -206,7 +206,7 @@ class AjaxSearch(Search):
         batch = Batch(results, per_page, start=(page - 1) * per_page)
 
         registry = queryUtility(IRegistry)
-        length = registry['plone.search_results_description_length']
+        length = registry.get('plone.search_results_description_length')
         plone_view = getMultiAdapter(
             (self.context, self.request), name='plone')
         for item in batch:
