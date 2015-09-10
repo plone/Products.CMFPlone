@@ -22,7 +22,7 @@ from zope.component import queryUtility
 from zope.interface import alsoProvides
 from zope.interface import implements
 from zope.publisher.browser import BrowserView
-
+from AccessControl.PermissionRole import rolesForPermissionOn
 
 class LayoutPolicy(BrowserView):
     """A view that gives access to various layout related functions.
@@ -125,6 +125,9 @@ class LayoutPolicy(BrowserView):
             - a class for every container in the tree
         - hide icons: icons-on
         - markspeciallinks: pat-markspeciallinks
+        - userrole-{} for each role the user has in this context
+        - min-view-role: role required to view context
+        - default-view: if view is the default view
         """
         context = self.context
         portal_state = getMultiAdapter(
@@ -175,6 +178,17 @@ class LayoutPolicy(BrowserView):
         # class for hiding icons (optional)
         if self.icons_visible():
             body_classes.append('icons-on')
+
+        # permissions required. Useful to theme frontend and backend differently
+        permissions = []
+        if not getattr(view, '__ac_permissions__'):
+            permissions = ['none']
+        for permission,roles in getattr(view, '__ac_permissions__', tuple()):
+            permissions.append(normalizer.normalize(permission))
+        if 'none' in permissions or 'view' in permissions:
+            body_classes.append('frontend')
+        for permission in permissions:
+            body_classes.append('viewpermission-' + permission)
 
         # class for user roles
         membership = getToolByName(context, "portal_membership")
