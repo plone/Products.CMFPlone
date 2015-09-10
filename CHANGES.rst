@@ -8,6 +8,9 @@ Changelog
 5.0rc2 (unreleased)
 -------------------
 
+- Remove site properties that have been migrated to the registry.
+  [esteele]
+
 - fix #862: Profile listing on site creation has alignment issues
   [ichim-david]
 
