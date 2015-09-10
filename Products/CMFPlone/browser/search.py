@@ -215,7 +215,7 @@ class AjaxSearch(Search):
                 'title': item.Title,
                 'description': plone_view.cropText(item.Description, length),
                 'url': item.getURL(),
-                'state': item.review_state
+                'state': item.review_state if item.review_state else None,
             })
         return json.dumps({
             'total': len(results),

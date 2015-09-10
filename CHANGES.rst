@@ -8,6 +8,9 @@ Changelog
 5.0rc2 (unreleased)
 -------------------
 
+- Fix Livesearch for items without review_state (files and image). Fixes #915.
+  [pbauer]
+
 - Apply isURLInPortal fix from https://pypi.python.org/pypi/Products.PloneHotfix20150910
   [vangheem]
 
