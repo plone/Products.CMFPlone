@@ -209,12 +209,18 @@ class AjaxSearch(Search):
         length = registry.get('plone.search_results_description_length')
         plone_view = getMultiAdapter(
             (self.context, self.request), name='plone')
+        props = getToolByName(self.context, 'portal_properties')
+        stp = props.site_properties
+        view_action_types = stp.getProperty('typesUseViewActionInListings', ())
         for item in batch:
+            url = item.getURL()
+            if item.portal_type in view_action_types:
+                url = '%s/view' % url
             items.append({
                 'id': item.UID,
                 'title': item.Title,
                 'description': plone_view.cropText(item.Description, length),
-                'url': item.getURL(),
+                'url': url,
                 'state': item.review_state if item.review_state else None,
             })
         return json.dumps({

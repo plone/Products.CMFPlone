@@ -8,6 +8,9 @@ Changelog
 5.0rc2 (unreleased)
 -------------------
 
+- Respect view-url in livesearch-results. Fixes #918.
+  [pbauer]
+
 - Fix Livesearch for items without review_state (files and image). Fixes #915.
   [pbauer]
 
