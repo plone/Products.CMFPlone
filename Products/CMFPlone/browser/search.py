@@ -1,15 +1,17 @@
 # -*- coding: utf-8 -*-
 
 from DateTime import DateTime
-from plone.app.contentlisting.interfaces import IContentListing
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.browser.navtree import getNavigationRoot
 from Products.CMFPlone.PloneBatch import Batch
+from Products.CMFPlone.browser.navtree import getNavigationRoot
 from Products.ZCTextIndex.ParseTree import ParseError
+from ZTUtils import make_query
+from plone.app.contentlisting.interfaces import IContentListing
+from plone.registry.interfaces import IRegistry
 from zope.component import getMultiAdapter
+from zope.component import queryUtility
 from zope.i18nmessageid import MessageFactory
 from zope.publisher.browser import BrowserView
-from ZTUtils import make_query
 
 import json
 
@@ -203,11 +205,15 @@ class AjaxSearch(Search):
         results = self.results(batch=False, use_content_listing=False)
         batch = Batch(results, per_page, start=(page - 1) * per_page)
 
+        registry = queryUtility(IRegistry)
+        length = registry.get('plone.search_results_description_length')
+        plone_view = getMultiAdapter(
+            (self.context, self.request), name='plone')
         for item in batch:
             items.append({
                 'id': item.UID,
                 'title': item.Title,
-                'description': item.Description,
+                'description': plone_view.cropText(item.Description, length),
                 'url': item.getURL(),
                 'state': item.review_state
             })
