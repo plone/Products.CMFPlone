@@ -96,3 +96,12 @@ class TestURLTool(unittest.TestCase):
         self.assertFalse(iURLiP('http://external4/other'))
         self.assertFalse(iURLiP('http://external5'))
         self.assertFalse(iURLiP('http://external11'))
+
+    def test_script_tag_url_not_in_portal(self):
+        self.assertFalse(self.portal.portal_url.isURLInPortal('<script>alert("hi");</script>'))
+        self.assertFalse(
+            self.portal.portal_url.isURLInPortal('%3Cscript%3Ealert(%22hi%22)%3B%3C%2Fscript%3E'))
+
+    def test_inline_url_not_in_portal(self):
+        self.assertFalse(self.portal.portal_url.isURLInPortal('javascript%3Aalert(3)'))
+        self.assertFalse(self.portal.portal_url.isURLInPortal('javascript:alert(3)'))

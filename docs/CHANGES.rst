@@ -8,6 +8,9 @@ Changelog
 4.3.7 (unreleased)
 ------------------
 
+- Apply hotfixes from https://pypi.python.org/pypi/Products.PloneHotfix20150910
+  [vangheem]
+
 - Do not throw a 404 on site root RSS feeds
   [vangheem]
 

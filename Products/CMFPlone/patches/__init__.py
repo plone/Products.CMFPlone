@@ -24,3 +24,11 @@ import security					# misc security fixes
 
 import sendmail
 sendmail.applyPatches()
+
+try:
+    # kupu may not be installed
+    import kupu
+except ImportError:
+    pass
+
+import addMember
