@@ -8,6 +8,9 @@ Changelog
 5.0rc2 (unreleased)
 -------------------
 
+- Apply isURLInPortal fix from https://pypi.python.org/pypi/Products.PloneHotfix20150910
+  [vangheem]
+
 - Do not bother additional CRSF protection for addMember since all public
   users get same CSRF token and the method should be unpublished.
   See https://pypi.python.org/pypi/Products.PloneHotfix20150910
