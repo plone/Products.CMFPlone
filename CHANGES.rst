@@ -8,6 +8,11 @@ Changelog
 5.0rc2 (unreleased)
 -------------------
 
+- Do not bother additional CRSF protection for addMember since all public
+  users get same CSRF token and the method should be unpublished.
+  See https://pypi.python.org/pypi/Products.PloneHotfix20150910
+  [vangheem]
+
 - Remove site properties that have been migrated to the registry.
   [esteele]
 

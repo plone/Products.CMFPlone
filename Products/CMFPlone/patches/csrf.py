@@ -15,9 +15,6 @@ def applyPatches():
     PT.transitionObjectsByPaths = patch(PT.transitionObjectsByPaths)
     PT.renameObjectsByPaths = patch(PT.renameObjectsByPaths)
 
-    from Products.CMFCore.RegistrationTool import RegistrationTool
-    RegistrationTool.addMember = patch(RegistrationTool.addMember)
-
     from Products.CMFCore.MembershipTool import MembershipTool as MT
     from Products.PlonePAS.tools.membership import MembershipTool as PMT
     MT.setPassword = patch(MT.setPassword)

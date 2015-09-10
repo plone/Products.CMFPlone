@@ -57,11 +57,6 @@ class AuthenticatorTestCase(PloneTestCase):
             'paths:list=events&new_ids:list=foo&new_titles:list=Foo')
         self.assertTrue(self.portal.get('foo', None))
 
-    def test_RegistrationTool_addMember(self):
-        self.checkAuthenticator(
-            '/portal_registration/addMember',
-            'id=john&password=y0d4Wg')
-
     def test_RegistrationTool_editMember(self):
         self.checkAuthenticator(
             '/portal_registration/editMember',
