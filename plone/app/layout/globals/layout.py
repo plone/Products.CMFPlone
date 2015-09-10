@@ -180,13 +180,16 @@ class LayoutPolicy(BrowserView):
         if self.icons_visible():
             body_classes.append('icons-on')
 
-        # who is allowed to view this view.
-        # HACK: there must be a less dodgy way to do this?
-        for permission,roles in getattr(view, '__ac_permissions__', tuple()):
-            body_classes.append('viewpermission-' + normalizer.normalize(permission))
+        # permissions required. Useful to theme frontend and backend differently
+        permissions = []
         if not getattr(view, '__ac_permissions__'):
-            # should we have this special permission if it requires none?
-            body_classes.append('viewpermission-none')
+            permissions = ['none']
+        for permission,roles in getattr(view, '__ac_permissions__', tuple()):
+            permissions.append(normalizer.normalize(permission))
+        if 'none' in permissions or 'view' in permissions:
+            body_classes.append('frontend')
+        for permission in permissions:
+            body_classes.append('viewpermission-' + permission)
 
         # class for user roles
         membership = getToolByName(context, "portal_membership")
