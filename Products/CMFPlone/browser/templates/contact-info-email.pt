@@ -6,11 +6,12 @@
      tal:omit-tag=""
      tal:define="portal context/@@plone_portal_state/portal;
                  charset portal/email_charset|string:utf-8;
+                 from_name python:context.portal_registry['plone.email_from_name'];
                  dummy python:request.RESPONSE.setHeader('Content-Type', 'text/plain;;charset=%s' % charset);"
 ><span tal:omit-tag="" tal:content="options/message | nothing" />
 
 --
-<span tal:replace="portal/email_from_name" />
+<span tal:replace="from_name" />
 
 <div i18n:translate="site_feedback_mailtemplate_body" tal:omit-tag="">
 You are receiving this mail because <span i18n:name="fullname" tal:omit-tag="" tal:content="options/sender_fullname|nothing" />
