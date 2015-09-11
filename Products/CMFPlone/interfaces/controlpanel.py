@@ -1285,3 +1285,43 @@ class IImagingSchema(Interface):
         max=95,
         default=88
     )
+
+
+class ILoginSchema(Interface):
+
+    auth_cookie_length = schema.Int(
+        title=_(u'Auth cookie length'),
+        default=0,
+        required=False
+    )
+
+    verify_login_name = schema.Bool(
+        title=_(u'Verify login name'),
+        default=True,
+        required=False
+    )
+
+    allow_external_login_sites = schema.Tuple(
+        title=_(u'Allow external login sites'),
+        default=(),
+        value_type=schema.ASCIILine(),
+        required=False
+    )
+
+    external_login_url = schema.ASCIILine(
+        title=_(u'External login url'),
+        default=None,
+        required=False
+    )
+
+    external_logout_url = schema.ASCIILine(
+        title=_(u'External logout url'),
+        default=None,
+        required=False
+    )
+
+    external_login_iframe = schema.Bool(
+        title=_(u'External login iframe'),
+        default=False,
+        required=False
+    )

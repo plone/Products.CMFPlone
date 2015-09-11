@@ -10,6 +10,7 @@ from controlpanel import IDateAndTimeSchema
 from controlpanel import IEditingSchema
 from controlpanel import ILanguageSchema
 from controlpanel import IFilterSchema
+from controlpanel import ILoginSchema
 from controlpanel import IMaintenanceSchema
 from controlpanel import IMailSchema
 from controlpanel import IMarkupSchema

@@ -24,8 +24,7 @@ if (next is not None and context.portal_url.isURLInPortal(next)):
     target_url = next
 else:
     target_url = request.URL1 + '/logged_out'
-    site_properties = context.portal_properties.site_properties
-    external_logout_url = site_properties.getProperty('external_logout_url')
+    external_logout_url = context.portal_registry['plone.external_logout_url']
     if external_logout_url:
         target_url = "%s?next=%s" % (external_logout_url, target_url)
 

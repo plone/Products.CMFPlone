@@ -31,10 +31,9 @@
                         ac_persist auth/persist_cookie|nothing;
                         login_name python:request.get('login_name', request.get(ac_name, ''));
                         checkPermission nocall: context/portal_membership/checkPermission;
-                        site_properties context/portal_properties/site_properties;
                         use_email_as_login python:context.portal_registry['plone.use_email_as_login'];
-                        external_login_url site_properties/external_login_url|nothing;
-                        external_login_iframe site_properties/external_login_iframe|nothing;
+                        external_login_url python:context.portal_registry['plone.external_login_url'];
+                        external_login_iframe python:context.portal_registry['plone.external_login_iframe'];
                         mail_password python:test(checkPermission('Mail forgotten password', context), portal_url + '/mail_password_form', '');
                         mail_password_url request/mail_password_url|nothing;
                         mail_password_url python:test(mail_password_url and isURLInPortal(mail_password_url), mail_password_url, mail_password);
@@ -49,6 +48,13 @@
                         target request/target|nothing;
                         target python:test(target in ('_parent', '_top', '_blank', '_self'), target, None);
                         ztu modules/ZTUtils;">
+
+  <span>external_login_url: ${external_login_url}</span>
+  <span>external_login_iframe: ${external_login_iframe}</span>
+  <span>use_iframe: ${use_iframe}</span>
+  <span>use_external: ${use_external}</span>
+  <span>request/mail_password_url: ${request/mail_password_url|nothing}</span>
+  <span>in portal: ${python:isURLInPortal(mail_password_url)}</span>
 
             <div class="portalMessage error pat-cookietrigger" style="display:none">
                 <strong i18n:translate="">

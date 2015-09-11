@@ -3,7 +3,9 @@ from Products.CMFCore.utils import getToolByName
 from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
-
+from zope.component import getUtility
+from plone.registry.interfaces import IRegistry
+from Products.CMFPlone.interfaces import ILoginSchema
 from posixpath import normpath
 from urlparse import urlparse, urljoin
 import re
@@ -65,8 +67,9 @@ class URLTool(PloneBaseTool, BaseTool):
         if host == u_host and u_path.startswith(path):
             return True
 
-        props = getToolByName(self, 'portal_properties').site_properties
-        for external_site in props.getProperty('allow_external_login_sites', []):
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(ILoginSchema, prefix='plone')
+        for external_site in settings.allow_external_login_sites:
             _, host, path, _, _, _ = urlparse(external_site)
             if not path.endswith('/'):
                 path += '/'
