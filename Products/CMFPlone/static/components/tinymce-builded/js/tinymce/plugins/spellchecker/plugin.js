@@ -63,10 +63,12 @@
 	}
 
 	function expose(ids) {
-		for (var i = 0; i < ids.length; i++) {
-			var target = exports;
-			var id = ids[i];
-			var fragments = id.split(/[.\/]/);
+		var i, target, id, fragments, privateModules;
+
+		for (i = 0; i < ids.length; i++) {
+			target = exports;
+			id = ids[i];
+			fragments = id.split(/[.\/]/);
 
 			for (var fi = 0; fi < fragments.length - 1; ++fi) {
 				if (target[fragments[fi]] === undefined) {
@@ -78,6 +80,21 @@
 
 			target[fragments[fragments.length - 1]] = modules[id];
 		}
+		
+		// Expose private modules for unit tests
+		if (exports.AMDLC_TESTS) {
+			privateModules = exports.privateModules || {};
+
+			for (id in modules) {
+				privateModules[id] = modules[id];
+			}
+
+			for (i = 0; i < ids.length; i++) {
+				delete privateModules[ids[i]];
+			}
+
+			exports.privateModules = privateModules;
+		}
 	}
 
 // Included from: js/tinymce/plugins/spellchecker/classes/DomTextMatcher.js
@@ -85,8 +102,8 @@
 /**
  * DomTextMatcher.js
  *
- * Copyright, Moxiecode Systems AB
  * Released under LGPL License.
+ * Copyright (c) 1999-2015 Ephox Corp. All rights reserved
  *
  * License: http://www.tinymce.com/license
  * Contributing: http://www.tinymce.com/contributing
@@ -285,34 +302,34 @@ define("tinymce/spellcheckerplugin/DomTextMatcher", [], function() {
 					node.parentNode.removeChild(node);
 
 					return el;
-				} else {
-					// Replace startNode -> [innerNodes...] -> endNode (in that order)
-					before = doc.createTextNode(startNode.data.substring(0, range.startNodeIndex));
-					after = doc.createTextNode(endNode.data.substring(range.endNodeIndex));
-					var elA = makeReplacementNode(startNode.data.substring(range.startNodeIndex), matchIndex);
-					var innerEls = [];
-
-					for (var i = 0, l = range.innerNodes.length; i < l; ++i) {
-						var innerNode = range.innerNodes[i];
-						var innerEl = makeReplacementNode(innerNode.data, matchIndex);
-						innerNode.parentNode.replaceChild(innerEl, innerNode);
-						innerEls.push(innerEl);
-					}
-
-					var elB = makeReplacementNode(endNode.data.substring(0, range.endNodeIndex), matchIndex);
-
-					parentNode = startNode.parentNode;
-					parentNode.insertBefore(before, startNode);
-					parentNode.insertBefore(elA, startNode);
-					parentNode.removeChild(startNode);
-
-					parentNode = endNode.parentNode;
-					parentNode.insertBefore(elB, endNode);
-					parentNode.insertBefore(after, endNode);
-					parentNode.removeChild(endNode);
-
-					return elB;
 				}
+
+				// Replace startNode -> [innerNodes...] -> endNode (in that order)
+				before = doc.createTextNode(startNode.data.substring(0, range.startNodeIndex));
+				after = doc.createTextNode(endNode.data.substring(range.endNodeIndex));
+				var elA = makeReplacementNode(startNode.data.substring(range.startNodeIndex), matchIndex);
+				var innerEls = [];
+
+				for (var i = 0, l = range.innerNodes.length; i < l; ++i) {
+					var innerNode = range.innerNodes[i];
+					var innerEl = makeReplacementNode(innerNode.data, matchIndex);
+					innerNode.parentNode.replaceChild(innerEl, innerNode);
+					innerEls.push(innerEl);
+				}
+
+				var elB = makeReplacementNode(endNode.data.substring(0, range.endNodeIndex), matchIndex);
+
+				parentNode = startNode.parentNode;
+				parentNode.insertBefore(before, startNode);
+				parentNode.insertBefore(elA, startNode);
+				parentNode.removeChild(startNode);
+
+				parentNode = endNode.parentNode;
+				parentNode.insertBefore(elB, endNode);
+				parentNode.insertBefore(after, endNode);
+				parentNode.removeChild(endNode);
+
+				return elB;
 			};
 		}
 
@@ -558,8 +575,8 @@ define("tinymce/spellcheckerplugin/DomTextMatcher", [], function() {
 /**
  * Plugin.js
  *
- * Copyright, Moxiecode Systems AB
  * Released under LGPL License.
+ * Copyright (c) 1999-2015 Ephox Corp. All rights reserved
  *
  * License: http://www.tinymce.com/license
  * Contributing: http://www.tinymce.com/contributing
@@ -764,11 +781,10 @@ define("tinymce/spellcheckerplugin/Plugin", [
 		}
 
 		function spellcheck() {
+			finish();
+
 			if (started) {
-				finish();
 				return;
-			} else {
-				finish();
 			}
 
 			function errorCallback(message) {

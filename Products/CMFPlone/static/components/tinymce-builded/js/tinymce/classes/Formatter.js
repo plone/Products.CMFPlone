@@ -1,8 +1,8 @@
 /**
  * Formatter.js
  *
- * Copyright, Moxiecode Systems AB
  * Released under LGPL License.
+ * Copyright (c) 1999-2015 Ephox Corp. All rights reserved
  *
  * License: http://www.tinymce.com/license
  * Contributing: http://www.tinymce.com/contributing
@@ -10,8 +10,8 @@
 
 /**
  * Text formatter engine class. This class is used to apply formats like bold, italic, font size
- * etc to the current selection or specific nodes. This engine was build to replace the browsers
- * default formatting logic for execCommand due to it's inconsistent and buggy behavior.
+ * etc to the current selection or specific nodes. This engine was built to replace the browser's
+ * default formatting logic for execCommand due to its inconsistent and buggy behavior.
  *
  * @class tinymce.Formatter
  * @example
@@ -67,6 +67,14 @@ define("tinymce/Formatter", [
 			}
 
 			return !!ed.schema.getTextBlockElements()[name.toLowerCase()];
+		}
+
+		function isTableCell(node) {
+			return /^(TH|TD)$/.test(node.nodeName);
+		}
+
+		function isInlineBlock(node) {
+			return node && /^(IMG)$/.test(node.nodeName);
 		}
 
 		function getParents(node, selector) {
@@ -186,12 +194,12 @@ define("tinymce/Formatter", [
 
 			// BlockFormat shortcuts keys
 			for (var i = 1; i <= 6; i++) {
-				ed.addShortcut('meta+shift+' + i, '', ['FormatBlock', false, 'h' + i]);
+				ed.addShortcut('access+' + i, '', ['FormatBlock', false, 'h' + i]);
 			}
 
-			ed.addShortcut('meta+shift+7', '', ['FormatBlock', false, 'p']);
-			ed.addShortcut('meta+shift+8', '', ['FormatBlock', false, 'div']);
-			ed.addShortcut('meta+shift+9', '', ['FormatBlock', false, 'address']);
+			ed.addShortcut('access+7', '', ['FormatBlock', false, 'p']);
+			ed.addShortcut('access+8', '', ['FormatBlock', false, 'div']);
+			ed.addShortcut('access+9', '', ['FormatBlock', false, 'address']);
 		}
 
 		// Public functions
@@ -801,8 +809,16 @@ define("tinymce/Formatter", [
 						// Try to adjust endContainer as well if cells on the same row were selected - bug #6410
 						if (commonAncestorContainer &&
 							/^T(HEAD|BODY|FOOT|R)$/.test(commonAncestorContainer.nodeName) &&
-							/^(TH|TD)$/.test(endContainer.nodeName) && endContainer.firstChild) {
+							isTableCell(endContainer) && endContainer.firstChild) {
 							endContainer = endContainer.firstChild || endContainer;
+						}
+
+						if (dom.isChildOf(startContainer, endContainer) && !isBlock(endContainer) &&
+							!isTableCell(startContainer) && !isTableCell(endContainer)) {
+							startContainer = wrap(startContainer, 'span', {id: '_start', 'data-mce-type': 'bookmark'});
+							splitToFormatRoot(startContainer);
+							startContainer = unwrap(TRUE);
+							return;
 						}
 
 						// Wrap start/end nodes in span element since these might be cloned/moved
@@ -2278,6 +2294,12 @@ define("tinymce/Formatter", [
 			var container = rng.startContainer,
 					offset = rng.startOffset, isAtEndOfText,
 					walker, node, nodes, tmpNode;
+
+			if (rng.startContainer == rng.endContainer) {
+				if (isInlineBlock(rng.startContainer.childNodes[rng.startOffset])) {
+					return;
+				}
+			}
 
 			// Convert text node into index if possible
 			if (container.nodeType == 3 && offset >= container.nodeValue.length) {

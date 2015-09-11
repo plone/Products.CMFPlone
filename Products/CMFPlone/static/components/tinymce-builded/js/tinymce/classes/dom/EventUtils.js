@@ -1,8 +1,8 @@
 /**
  * EventUtils.js
  *
- * Copyright, Moxiecode Systems AB
  * Released under LGPL License.
+ * Copyright (c) 1999-2015 Ephox Corp. All rights reserved
  *
  * License: http://www.tinymce.com/license
  * Contributing: http://www.tinymce.com/contributing
@@ -21,7 +21,7 @@ define("tinymce/dom/EventUtils", [], function() {
 
 	var eventExpandoPrefix = "mce-data-";
 	var mouseEventRe = /^(?:mouse|contextmenu)|click/;
-	var deprecated = {keyLocation: 1, layerX: 1, layerY: 1, returnValue: 1};
+	var deprecated = {keyLocation: 1, layerX: 1, layerY: 1, returnValue: 1, webkitMovementX: 1, webkitMovementY: 1};
 
 	/**
 	 * Binds a native event to a callback on the speified target.
@@ -126,6 +126,11 @@ define("tinymce/dom/EventUtils", [], function() {
 			event.isDefaultPrevented = returnFalse;
 			event.isPropagationStopped = returnFalse;
 			event.isImmediatePropagationStopped = returnFalse;
+		}
+
+		// Add missing metaKey for IE 8
+		if (typeof event.metaKey == 'undefined') {
+			event.metaKey = false;
 		}
 
 		return event;

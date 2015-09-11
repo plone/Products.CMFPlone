@@ -1,8 +1,8 @@
 /**
  * FormatControls.js
  *
- * Copyright, Moxiecode Systems AB
  * Released under LGPL License.
+ * Copyright (c) 1999-2015 Ephox Corp. All rights reserved
  *
  * License: http://www.tinymce.com/license
  * Contributing: http://www.tinymce.com/contributing
@@ -291,7 +291,8 @@ define("tinymce/ui/FormatControls", [
 			alignleft: ['Align left', 'JustifyLeft'],
 			aligncenter: ['Align center', 'JustifyCenter'],
 			alignright: ['Align right', 'JustifyRight'],
-			alignjustify: ['Justify', 'JustifyFull']
+			alignjustify: ['Justify', 'JustifyFull'],
+			alignnone: ['No alignment', 'JustifyNone']
 		}, function(item, name) {
 			editor.addButton(name, {
 				tooltip: item[0],
@@ -381,6 +382,12 @@ define("tinymce/ui/FormatControls", [
 			selectable: true,
 			onPostRender: toggleVisualAidState,
 			cmd: 'mceToggleVisualAid'
+		});
+
+		editor.addButton('remove', {
+			tooltip: 'Remove',
+			icon: 'remove',
+			cmd: 'Delete'
 		});
 
 		each({

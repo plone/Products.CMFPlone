@@ -1,8 +1,8 @@
 /**
  * Quirks.js
  *
- * Copyright, Moxiecode Systems AB
  * Released under LGPL License.
+ * Copyright (c) 1999-2015 Ephox Corp. All rights reserved
  *
  * License: http://www.tinymce.com/license
  * Contributing: http://www.tinymce.com/contributing
@@ -13,6 +13,7 @@
 /**
  * This file includes fixes for various browser quirks it's made to make it easy to add/remove browser specific fixes.
  *
+ * @private
  * @class tinymce.util.Quirks
  */
 define("tinymce/util/Quirks", [
@@ -72,7 +73,7 @@ define("tinymce/util/Quirks", [
 		 * @param {DragEvent} e Event object
 		 */
 		function setMceInteralContent(e) {
-			var selectionHtml;
+			var selectionHtml, internalContent;
 
 			if (e.dataTransfer) {
 				if (editor.selection.isCollapsed() && e.target.tagName == 'IMG') {
@@ -83,7 +84,8 @@ define("tinymce/util/Quirks", [
 
 				// Safari/IE doesn't support custom dataTransfer items so we can only use URL and Text
 				if (selectionHtml.length > 0) {
-					e.dataTransfer.setData(mceInternalDataType, mceInternalUrlPrefix + escape(selectionHtml));
+					internalContent = mceInternalUrlPrefix + escape(editor.id) + ',' + escape(selectionHtml);
+					e.dataTransfer.setData(mceInternalDataType, internalContent);
 				}
 			}
 		}
@@ -98,17 +100,22 @@ define("tinymce/util/Quirks", [
 		 * @returns {String} mce-internal content
 		 */
 		function getMceInternalContent(e) {
-			var internalContent, content;
+			var internalContent;
 
 			if (e.dataTransfer) {
 				internalContent = e.dataTransfer.getData(mceInternalDataType);
 
 				if (internalContent && internalContent.indexOf(mceInternalUrlPrefix) >= 0) {
-					content = unescape(internalContent.substr(mceInternalUrlPrefix.length));
+					internalContent = internalContent.substr(mceInternalUrlPrefix.length).split(',');
+
+					return {
+						id: unescape(internalContent[0]),
+						html: unescape(internalContent[1])
+					};
 				}
 			}
 
-			return content;
+			return null;
 		}
 
 		/**
@@ -210,6 +217,22 @@ define("tinymce/util/Quirks", [
 				}
 
 				return true;
+			}
+
+			function isSiblingsIgnoreWhiteSpace(node1, node2) {
+				var node;
+
+				for (node = node1.nextSibling; node && node != node2; node = node.nextSibling) {
+					if (node.nodeType == 3 && $.trim(node.data).length === 0) {
+						continue;
+					}
+
+					if (node !== node2) {
+						return false;
+					}
+				}
+
+				return node === node2;
 			}
 
 			function findCaretNode(node, forward, startNode) {
@@ -323,8 +346,12 @@ define("tinymce/util/Quirks", [
 					return rng;
 				}
 
-				if (textBlock != targetTextBlock) {
+				if (targetTextBlock && textBlock != targetTextBlock) {
 					if (!isForward) {
+						if (!isSiblingsIgnoreWhiteSpace(targetTextBlock, textBlock)) {
+							return rng;
+						}
+
 						if (targetCaretNode.nodeType == 1) {
 							if (targetCaretNode.nodeName == "BR") {
 								rng.setStartBefore(targetCaretNode);
@@ -341,6 +368,10 @@ define("tinymce/util/Quirks", [
 							rng.setEndBefore(caretNode);
 						}
 					} else {
+						if (!isSiblingsIgnoreWhiteSpace(textBlock, targetTextBlock)) {
+							return rng;
+						}
+
 						if (caretNode.nodeType == 1) {
 							if (caretNode.nodeName == "BR") {
 								rng.setStartBefore(caretNode);
@@ -552,6 +583,7 @@ define("tinymce/util/Quirks", [
 			editor.on('drop', function(e) {
 				if (!isDefaultPrevented(e)) {
 					var internalContent = getMceInternalContent(e);
+
 					if (internalContent) {
 						e.preventDefault();
 
@@ -569,19 +601,25 @@ define("tinymce/util/Quirks", [
 
 							customDelete();
 							selection.setRng(pointRng);
-							insertClipboardContents(internalContent);
+							insertClipboardContents(internalContent.html);
 						}, 0);
 					}
 				}
 			});
 
 			editor.on('cut', function(e) {
-				if (!isDefaultPrevented(e) && e.clipboardData) {
+				if (!isDefaultPrevented(e) && e.clipboardData && !editor.selection.isCollapsed()) {
 					e.preventDefault();
 					e.clipboardData.clearData();
 					e.clipboardData.setData('text/html', editor.selection.getContent());
 					e.clipboardData.setData('text/plain', editor.selection.getContent({format: 'text'}));
-					customDelete(true);
+
+					// Needed delay for https://code.google.com/p/chromium/issues/detail?id=363288#c3
+					// Nested delete/forwardDelete not allowed on execCommand("cut")
+					// This is ugly but not sure how to work around it otherwise
+					window.setTimeout(function() {
+						customDelete(true);
+					}, 0);
 				}
 			});
 		}
@@ -1323,9 +1361,9 @@ define("tinymce/util/Quirks", [
 		function blockCmdArrowNavigation() {
 			if (Env.mac) {
 				editor.on('keydown', function(e) {
-					if (VK.metaKeyPressed(e) && (e.keyCode == 37 || e.keyCode == 39)) {
+					if (VK.metaKeyPressed(e) && !e.shiftKey && (e.keyCode == 37 || e.keyCode == 39)) {
 						e.preventDefault();
-						editor.selection.getSel().modify('move', e.keyCode == 37 ? 'backward' : 'forward', 'word');
+						editor.selection.getSel().modify('move', e.keyCode == 37 ? 'backward' : 'forward', 'lineboundary');
 					}
 				});
 			}
@@ -1382,6 +1420,7 @@ define("tinymce/util/Quirks", [
 		 * a click event when a contentEditable is focused. This function fakes click events
 		 * by using touchstart/touchend and measuring the time and distance travelled.
 		 */
+		/*
 		function touchClickEvent() {
 			editor.on('touchstart', function(e) {
 				var elm, time, startTouch, changedTouches;
@@ -1431,6 +1470,7 @@ define("tinymce/util/Quirks", [
 				});
 			});
 		}
+		*/
 
 		/**
 		 * WebKit has a bug where it will allow forms to be submitted if they are inside a contentEditable element.
@@ -1476,12 +1516,13 @@ define("tinymce/util/Quirks", [
 			editor.on('drop', function(e) {
 				if (!isDefaultPrevented(e)) {
 					var internalContent = getMceInternalContent(e);
-					if (internalContent) {
+
+					if (internalContent && internalContent.id != editor.id) {
 						e.preventDefault();
 
 						var rng = RangeUtils.getCaretRangeFromPoint(e.x, e.y, editor.getDoc());
 						selection.setRng(rng);
-						insertClipboardContents(internalContent);
+						insertClipboardContents(internalContent.html);
 					}
 				}
 			});
@@ -1501,7 +1542,7 @@ define("tinymce/util/Quirks", [
 			blockFormSubmitInsideEditor();
 			disableBackspaceIntoATable();
 			removeAppleInterchangeBrs();
-			touchClickEvent();
+			//touchClickEvent();
 
 			// iOS
 			if (Env.iOS) {

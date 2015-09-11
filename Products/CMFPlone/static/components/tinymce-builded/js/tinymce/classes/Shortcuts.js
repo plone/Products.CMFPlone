@@ -1,8 +1,8 @@
 /**
  * Shortcuts.js
  *
- * Copyright, Moxiecode Systems AB
  * Released under LGPL License.
+ * Copyright (c) 1999-2015 Ephox Corp. All rights reserved
  *
  * License: http://www.tinymce.com/license
  * Contributing: http://www.tinymce.com/contributing
@@ -11,6 +11,7 @@
 /**
  * Contains all logic for handling of keyboard shortcuts.
  *
+ * @class tinymce.Shortcuts
  * @example
  * editor.shortcuts.add('ctrl+a', function() {});
  * editor.shortcuts.add('meta+a', function() {}); // "meta" maps to Command on Mac and Ctrl on PC

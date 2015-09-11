@@ -1,15 +1,15 @@
 /**
  * NodeChange.js
  *
- * Copyright, Moxiecode Systems AB
  * Released under LGPL License.
+ * Copyright (c) 1999-2015 Ephox Corp. All rights reserved
  *
  * License: http://www.tinymce.com/license
  * Contributing: http://www.tinymce.com/contributing
  */
 
 /**
- * This class handles the nodechange event dispatching both manual and though selection change events.
+ * This class handles the nodechange event dispatching both manual and through selection change events.
  *
  * @class tinymce.NodeChange
  * @private
@@ -111,7 +111,7 @@ define("tinymce/NodeChange", [
 		});
 
 		/**
-		 * Distpaches out a onNodeChange event to all observers. This method should be called when you
+		 * Dispatches out a onNodeChange event to all observers. This method should be called when you
 		 * need to update the UI states or element path etc.
 		 *
 		 * @method nodeChanged

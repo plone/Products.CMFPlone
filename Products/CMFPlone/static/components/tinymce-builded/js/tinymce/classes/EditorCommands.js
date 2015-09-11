@@ -1,8 +1,8 @@
 /**
  * EditorCommands.js
  *
- * Copyright, Moxiecode Systems AB
  * Released under LGPL License.
+ * Copyright (c) 1999-2015 Ephox Corp. All rights reserved
  *
  * License: http://www.tinymce.com/license
  * Contributing: http://www.tinymce.com/contributing
@@ -324,7 +324,7 @@ define("tinymce/EditorCommands", [
 			},
 
 			// Override justify commands to use the text formatter engine
-			'JustifyLeft,JustifyCenter,JustifyRight,JustifyFull': function(command) {
+			'JustifyLeft,JustifyCenter,JustifyRight,JustifyFull,JustifyNone': function(command) {
 				var align = command.substring(7);
 
 				if (align == 'full') {
@@ -338,8 +338,10 @@ define("tinymce/EditorCommands", [
 					}
 				});
 
-				toggleFormat('align' + align);
-				execCommand('mceRepaint');
+				if (align != 'none') {
+					toggleFormat('align' + align);
+					execCommand('mceRepaint');
+				}
 			},
 
 			// Override list commands to fix WebKit bug
@@ -440,7 +442,7 @@ define("tinymce/EditorCommands", [
 
 			mceInsertContent: function(command, ui, value) {
 				var parser, serializer, parentNode, rootNode, fragment, args;
-				var marker, rng, node, node2, bookmarkHtml, merge;
+				var marker, rng, node, node2, bookmarkHtml, merge, data;
 				var textInlineElements = editor.schema.getTextInlineElements();
 
 				function trimOrPaddLeftRight(html) {
@@ -524,6 +526,7 @@ define("tinymce/EditorCommands", [
 
 				if (typeof value != 'string') {
 					merge = value.merge;
+					data = value.data;
 					value = value.content;
 				}
 
@@ -572,7 +575,7 @@ define("tinymce/EditorCommands", [
 				parentNode = selection.getNode();
 
 				// Parse the fragment within the context of the parent node
-				var parserArgs = {context: parentNode.nodeName.toLowerCase()};
+				var parserArgs = {context: parentNode.nodeName.toLowerCase(), data: data};
 				fragment = parser.parse(value, parserArgs);
 
 				markInlineFormatElements(fragment);
