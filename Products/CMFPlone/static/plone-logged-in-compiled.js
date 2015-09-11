@@ -19110,6 +19110,7 @@ define('mockup-patterns-modal',[
         self.backdrop.hide();
         self.$wrapper.hide();
         self.$wrapper.parent().css('overflow', 'visible');
+        $('body').removeClass('plone-modal-open');
       }
       self.loading.hide();
       self.$el.removeClass(self.options.templateOptions.classActiveName);
@@ -19118,7 +19119,6 @@ define('mockup-patterns-modal',[
         self.initModal();
       }
       $(window.parent).off('resize.plone-modal.patterns');
-      $('body').removeClass('plone-modal-open');
       self.emit('hidden');
     },
     redraw: function(response, options) {
@@ -57470,12 +57470,17 @@ define('mockup-patterns-autotoc',[
 
       var asTabs = self.$el.hasClass('autotabs');
 
+      var activeId = null;
+
       $(self.options.levels, self.$el).each(function(i) {
         var $level = $(this),
             id = $level.prop('id') ? $level.prop('id') :
                  $level.parents(self.options.section).prop('id');
-        if (!id) {
+        if (!id || $('#' + id).length > 0) {
           id = self.options.IDPrefix + self.name + '-' + i;
+        }
+        if(window.location.hash === '#' + id){
+          activeId = id;
         }
         $('<a/>')
           .appendTo(self.$toc)
@@ -57483,14 +57488,21 @@ define('mockup-patterns-autotoc',[
           .attr('id', id)
           .attr('href', '#' + id)
           .addClass(self.options.classLevelPrefixName + self.getLevel($level))
-          .on('click', function(e, doScroll) {
+          .on('click', function(e, options) {
             e.stopPropagation();
             e.preventDefault();
+            if(!options){
+              options = {
+                doScroll: true,
+                skipHash: false
+              };
+            }
+            var $el = $(this);
             self.$toc.children('.' + self.options.classActiveName).removeClass(self.options.classActiveName);
             self.$el.children('.' + self.options.classActiveName).removeClass(self.options.classActiveName);
             $(e.target).addClass(self.options.classActiveName);
             $level.parents(self.options.section).addClass(self.options.classActiveName);
-            if (doScroll !== false &&
+            if (options.doScroll !== false &&
                 self.options.scrollDuration &&
                 $level &&
                 !asTabs) {
@@ -57502,11 +57514,22 @@ define('mockup-patterns-autotoc',[
               self.$el.trigger('resize.plone-modal.patterns');
             }
             $(this).trigger('clicked');
+            if(!options.skipHash){
+              window.location.hash = $el.attr('id');
+            }
           });
       });
 
-      self.$toc.find('a').first().trigger('click', false);
-
+      if(activeId){
+        $('a#' + activeId).trigger('click', {
+          doScroll: true,
+          skipHash: true
+        });
+      }else{
+        self.$toc.find('a').first().trigger('click', {
+          doScroll: false,
+          skipHash: true});
+      }
     },
     getLevel: function($el) {
       var elementLevel = 0;
@@ -75841,7 +75864,7 @@ define("tinymce-compat3x", ["tinymce"], function() {
  *    folderTypes(string): TODO ('Folder,Plone Site')
  *    linkableTypes(string): TODO ('Document,Event,File,Folder,Image,News Item,Topic')
  *    tiny(object): TODO ({ plugins: [ "advlist autolink lists charmap print preview anchor", "usearchreplace visualblocks code fullscreen autoresize", "insertdatetime media table contextmenu paste plonelink ploneimage" ], menubar: "edit table format tools view insert",
-toolbar: "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | unlink plonelink ploneimage", autoresize_max_height: 1500 })
+ toolbar: "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | unlink plonelink ploneimage", autoresize_max_height: 1500, inline: false })
  *    prependToUrl(string): Text to prepend to generated internal urls. ('')
  *    appendToUrl(string): Text to append to generated internal urls. ('')
  *    prependToScalePart(string): Text to prepend to generated image scale url part. ('/imagescale/')
@@ -75858,6 +75881,10 @@ toolbar: "undo redo | styleselect | bold italic | alignleft aligncenter alignrig
  *
  *    {{ example-2 }}
  *
+ *    # Inline editing
+ *
+ *    {{ example-3 }}
+ *
  * Example: example-1
  *    <form>
  *      <textarea class="pat-tinymce"
@@ -75872,6 +75899,14 @@ toolbar: "undo redo | styleselect | bold italic | alignleft aligncenter alignrig
  *          data-pat-tinymce='{"relatedItems": {"vocabularyUrl": "/relateditems-test.json" },
  *                            "upload": {"baseUrl": "/", "relativePath": "upload"}
  *                            }'></textarea>
+ *    </form>
+ *
+ * Example: example-3
+ *    <form>
+ *      <textarea class="pat-tinymce" data-pat-tinymce='{"tiny": {"inline": true}}'>
+ *        <h3>I'm a content editable</h3>
+ *        <p>Try to edit me!</p>
+ *      </textarea>
  *    </form>
  *
  */
@@ -76005,7 +76040,8 @@ define('mockup-patterns-tinymce',[
                  'bullist numlist outdent indent | ' +
                  'unlink plonelink ploneimage',
         //'autoresize_max_height': 900,
-        'height': 400
+        'height': 400,
+        inline: false
       }
     },
     addLinkClicked: function() {
@@ -76163,7 +76199,8 @@ define('mockup-patterns-tinymce',[
       // tiny needs an id in order to initialize. Creat it if not set.
       var id = utils.setId(self.$el);
       var tinyOptions = self.options.tiny;
-      tinyOptions.selector = '#' + id;
+      self.tinyId = tinyOptions.inline ? id + '-editable' : id;  // when displaying TinyMCE inline, a separate div is created.
+      tinyOptions.selector = '#' + self.tinyId;
       tinyOptions.addLinkClicked = function() {
         self.addLinkClicked.apply(self, []);
       };
@@ -76203,19 +76240,41 @@ define('mockup-patterns-tinymce',[
           self.options.imageTypes = self.options.imageTypes.split(',');
         }
 
+        if (tinyOptions.inline === true) {
+          // create a div, which will be made content-editable by TinyMCE and
+          // copy contents from textarea to it. Then hide textarea.
+          self.$el.after('<div id="' + self.tinyId + '">' + self.$el.val() + '</div>');
+          self.$el.hide();
+        }
+
         tinymce.init(tinyOptions);
-        self.tiny = tinymce.get(id);
+        self.tiny = tinymce.get(self.tinyId);
 
         /* tiny really should be doing this by default
          * but this fixes overlays not saving data */
         var $form = self.$el.parents('form');
         $form.on('submit', function() {
-          self.tiny.save();
+          if (tinyOptions.inline === true) {
+            // save back from contenteditable to textarea
+            self.$el.val(self.tiny.getContent());
+          } else {
+            // normal case
+            self.tiny.save();
+          }
         });
       });
     },
     destroy: function() {
-      this.tiny.destroy();
+      if (this.tiny) {
+        if (this.options.tiny.inline === true) {
+          // destroy also inline editable
+          this.$el.val(this.tiny.getContent());
+          $('#' + this.tinyId).remove();
+          this.$el.show();
+        }
+        this.tiny.destroy();
+        this.tiny = undefined;
+      }
     }
   });
 
@@ -76251,8 +76310,11 @@ define('mockup-patterns-tinymce',[
  *
  *   {{ example-1 }}
  *
- * Example: example-1
+ *   # Mimetype selection on textarea with inline TinyMCE editor.
  *
+ *   {{ example-2 }}
+ *
+  * Example: example-1
  *    <textarea name="text">
  *      <h1>hello world</h1>
  *    </textarea>
@@ -76269,6 +76331,34 @@ define('mockup-patterns-tinymce',[
  *                  "plugins": [],
  *                  "menubar": "edit format tools",
  *                  "toolbar": " "
+ *                }
+ *              }
+ *            }
+ *          }
+ *        }'
+ *      >
+ *      <option value="text/html">text/html</option>
+ *      <option value="text/plain" selected="selected">text/plain</option>
+ *    </select>
+ *
+ * Example: example-2
+ *    <textarea name="text2">
+ *      <h1>hello world</h1>
+ *    </textarea>
+ *    <select
+ *        name="text.mimeType"
+ *        class="pat-textareamimetypeselector"
+ *        data-pat-textareamimetypeselector='{
+ *          "textareaName": "text2",
+ *          "widgets": {
+ *            "text/html": {
+ *              "pattern": "tinymce",
+ *              "patternOptions": {
+ *                "tiny": {
+ *                  "plugins": [],
+ *                  "menubar": "edit format tools",
+ *                  "toolbar": " ",
+ *                  "inline": true
  *                }
  *              }
  *            }
@@ -89993,5 +90083,5 @@ require([
   'use strict';
 });
 
-define("/Users/nathan/code/coredev5/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
+define("/home/ebr/dev/osprojects/plone-dev/plone5/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
 
