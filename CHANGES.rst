@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.5.13 (unreleased)
+2.5.13 (2015-09-12)
 -------------------
 
 - Fixed AttributeError for ac_permissions.
