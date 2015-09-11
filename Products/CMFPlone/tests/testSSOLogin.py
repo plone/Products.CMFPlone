@@ -3,6 +3,9 @@ from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
 from plone.app.testing import TEST_USER_ROLES
+from zope.component import getUtility
+from plone.registry.interfaces import IRegistry
+from Products.CMFPlone.interfaces import ILoginSchema
 from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
 from Products.CMFPlone.factory import addPloneSite
 import transaction
@@ -32,13 +35,11 @@ class SSOLoginTestCase(PloneTestCase):
         for role in TEST_USER_ROLES:
             portal.acl_users.portal_role_manager.doAssignRoleToPrincipal(TEST_USER_ID, role)
 
+        registry = self.login_portal.portal_registry
+
         # Configure the login portal to allow logins from our sites.
-        self.login_portal.portal_properties.site_properties._updateProperty(
-            'allow_external_login_sites', [
-                self.portal.absolute_url(),
-                self.another_portal.absolute_url(),
-                ]
-            )
+        registry['plone.allow_external_login_sites'] = (self.portal.absolute_url(),
+                                                        self.another_portal.absolute_url())
 
         # Configure our sites to use the login portal for logins and logouts
         login_portal_url = self.login_portal.absolute_url()
