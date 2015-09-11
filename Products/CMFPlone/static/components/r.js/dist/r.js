@@ -25821,15 +25821,7 @@ define('build', function (require) {
             d.resolve(require._cachedRawText[path]);
             return d.promise;
         } else {
-            /* XXX Plone hack to always re-download resource TTW */
-            var url = path;
-            if(url.indexOf('?') === -1){
-                url += '?';
-            }else{
-                url += '&';
-            }
-            url = url + "bust=" +  (new Date()).getTime();
-            return file.readFileAsync(url, encoding).then(function (text) {
+            return file.readFileAsync(path, encoding).then(function (text) {
                 require._cachedRawText[path] = text;
                 return text;
             });
