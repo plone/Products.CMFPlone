@@ -120,7 +120,7 @@ Changelog
   [vangheem]
 
 - Renamed 'Zope Management Interface' to 'Management Interface'.
-  [jaroel]
+  [jaroel, aclark]
 
 - Fix adding a new Plone site with country specific language. Refs #411.
   [jaroel]
