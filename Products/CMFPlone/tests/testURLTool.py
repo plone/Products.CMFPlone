@@ -5,6 +5,9 @@ from Products.CMFCore.tests.base.dummy import DummyFolder
 from Products.CMFCore.tests.base.dummy import DummyContent
 
 from Acquisition import aq_parent
+from plone.registry.interfaces import IRegistry
+from Products.CMFPlone.interfaces import ILoginSchema
+from zope.component import getSiteManager
 
 
 class DummyFolder(DummyFolder):
@@ -12,19 +15,26 @@ class DummyFolder(DummyFolder):
         return '/'.join([aq_parent(self).absolute_url(), self.getId()])
 
 
-class DummyProperties(DummyContent):
-
-    _allow_external_login_sites = [
+class DummyLoginSettings():
+    allow_external_login_sites = [
         'http://external1',
         'http://external2/',
         'http://external3/site',
         'http://external4/site/'
         ]
 
-    def getProperty(self, name, default=None):
-        if name == 'allow_external_login_sites':
-            return self._allow_external_login_sites
+class DummyRegistry(DummyContent):
+
+
+    def __getitem__(self, name, default=None):
+        if name == 'plone.allow_external_login_sites':
+            return DummyLoginSettings().allow_external_login_sites
         return default
+
+    def forInterface(self, iface, prefix=''):
+    	if iface == ILoginSchema:
+    		return DummyLoginSettings()
+
 
 
 class TestURLTool(unittest.TestCase):
@@ -33,9 +43,10 @@ class TestURLTool(unittest.TestCase):
         self.site = DummySite(id='foo')
         self.site._setObject('foo', DummyFolder(id='foo'))
         self.site.foo._setObject('doc1', DummyContent(id='doc1'))
-        self.site.portal_properties = DummyProperties(id='portal_properties')
-        self.site.portal_properties.site_properties = \
-            DummyProperties(id='site_properties')
+        mock_registry = DummyRegistry(id='portal_registry')
+        self.site.portal_registry = mock_registry
+        sm = getSiteManager()
+        sm.registerUtility(component=mock_registry, provided=IRegistry)
 
     def _makeOne(self, *args, **kw):
         from Products.CMFPlone.URLTool import URLTool
