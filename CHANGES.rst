@@ -4,7 +4,9 @@ Changelog
 2.5.13 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fixed AttributeError for ac_permissions.
+  Happens in plone.app.portlets tests.
+  [maurits]
 
 
 2.5.12 (2015-09-08)
