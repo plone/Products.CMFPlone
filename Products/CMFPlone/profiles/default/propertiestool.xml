@@ -65,13 +65,9 @@
    <element value="Image"/>
    <element value="File"/>
   </property>
-  <property name="verify_login_name" type="boolean">True</property>
   <property name="external_links_open_new_window"
      type="string">false</property>
   <property name="mark_special_links" type="string">false</property>
   <property name="redirect_links" type="boolean">True</property>
-  <property name="external_login_url" type="string"/>
-  <property name="external_logout_url" type="string"/>
-  <property name="external_login_iframe" type="boolean"/>
  </object>
 </object>

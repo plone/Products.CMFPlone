@@ -44,11 +44,9 @@ class SSOLoginTestCase(PloneTestCase):
         # Configure our sites to use the login portal for logins and logouts
         login_portal_url = self.login_portal.absolute_url()
         for portal in (self.portal, self.another_portal):
-            site_properties = portal.portal_properties.site_properties
-            site_properties._updateProperty('external_login_url',
-                                            login_portal_url + '/login')
-            site_properties._updateProperty('external_logout_url',
-                                            login_portal_url + '/logout')
+            reg = portal.portal_registry
+            reg['plone.external_login_url'] = login_portal_url + '/login'
+            reg['plone.external_logout_url'] = login_portal_url + '/logout'
 
         # Configure all sites to use a shared secret and set cookies per path
         # (normally they would have different domains.)
@@ -131,8 +129,7 @@ class TestSSOLoginIframe(SSOLoginTestCase):
         SSOLoginTestCase.afterSetUp(self)
         # Configure our sites to use the iframe
         for portal in (self.portal, self.another_portal):
-            site_properties = portal.portal_properties.site_properties
-            site_properties._updateProperty('external_login_iframe', True)
+            portal.portal_registry['plone.external_login_iframe'] = True
         transaction.commit()
 
     def test_loginAndLogoutSSO(self):
