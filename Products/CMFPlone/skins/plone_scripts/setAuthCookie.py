@@ -3,7 +3,7 @@
 ##parameters=resp, cookie_name, cookie_value
 
 try:
-    length = context.portal_properties.site_properties.auth_cookie_length
+    length = context.portal_registry['plone.auth_cookie_length']
 except AttributeError:
     length = 0
 
