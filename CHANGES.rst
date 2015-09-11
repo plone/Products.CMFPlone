@@ -8,6 +8,9 @@ Changelog
 5.0rc2 (unreleased)
 -------------------
 
+- Move login properties to the configuration registry.
+  [esteele]
+
 - Fix changing searchable in types-controlpanel.
   Fix https://github.com/plone/Products.CMFPlone/issues/926
   [pbauer]
