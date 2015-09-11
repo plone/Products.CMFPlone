@@ -63,18 +63,8 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
         if errors:
             self.status = self.formErrorsMessage
             return
-        #portal = getSite()
-        #pprop = getToolByName(portal, 'portal_properties')
-        #site_properties = pprop.site_properties
-        #site_properties.manage_changeProperties(
-        #    visible_ids=data['visible_ids'],
-        #    enable_inline_types=data['enable_inline_types'],
-        #    enable_link_integrity_checks=data['enable_link_integrity_checks'],
-        #    ext_editor=data['ext_editor'],
-        #    default_editor=data['default_editor'],
-        #    lock_on_ttw_edit=data['lock_on_ttw_edit'])
-        #IStatusMessage(self.request).addStatusMessage(_(u"Changes saved"),
-        #S                                              "info")
+        IStatusMessage(self.request).addStatusMessage(
+            _(u"Changes saved"), "info")
         self.request.response.redirect("@@content-controlpanel")
 
     @button.buttonAndHandler(_(u"Cancel"), name='cancel')
@@ -187,14 +177,14 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
                 searchable = form.get('searchable', False)
 
                 registry = getUtility(IRegistry)
-                site_settings = registry.forInterface(ISearchSchema, prefix="plone")
-                blacklisted = site_settings.types_not_searched
-
+                site_settings = registry.forInterface(
+                    ISearchSchema, prefix="plone")
+                blacklisted = [i for i in site_settings.types_not_searched]
                 if searchable and type_id in blacklisted:
                     blacklisted.remove(type_id)
                 elif not searchable and type_id not in blacklisted:
                     blacklisted.append(type_id)
-                site_settings.types_not_searched = blacklisted
+                site_settings.types_not_searched = tuple(blacklisted)
 
                 redirect_links = form.get('redirect_links', False)
                 site_properties.manage_changeProperties(

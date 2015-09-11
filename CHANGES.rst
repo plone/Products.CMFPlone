@@ -8,6 +8,10 @@ Changelog
 5.0rc2 (unreleased)
 -------------------
 
+- Fix changing searchable in types-controlpanel.
+  Fix https://github.com/plone/Products.CMFPlone/issues/926
+  [pbauer]
+
 - Respect view-url in livesearch-results. Fixes #918.
   [pbauer]
 
