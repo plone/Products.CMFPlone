@@ -5,7 +5,7 @@
 Changelog
 =========
 
-5.0rc2 (unreleased)
+5.0rc2 (2015-09-11)
 -------------------
 
 - Move login properties to the configuration registry.
