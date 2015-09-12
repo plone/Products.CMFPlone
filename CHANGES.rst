@@ -8,7 +8,8 @@ Changelog
 5.0rc3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Better default tinymce settings
+  [vangheem]
 
 
 5.0rc2 (2015-09-11)
