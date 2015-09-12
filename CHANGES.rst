@@ -8,6 +8,10 @@ Changelog
 5.0rc3 (unreleased)
 -------------------
 
+- Fix issue where some filter settings would not get saved and provide
+  correct defaults
+  [vangheem]
+
 - Better default tinymce settings
   [vangheem]
 

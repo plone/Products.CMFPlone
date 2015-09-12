@@ -334,8 +334,9 @@ class IFilterSchema(Interface):
         title=_(u'Nasty tags'),
         description=_(u"These tags, and their content are completely blocked "
                       "when a page is saved or rendered."),
-        default=[u'applet', u'embed', u'object', u'script'],
+        default=[u'style', u'applet', u'script', u'meta'],
         value_type=schema.TextLine(),
+        missing_value=[],
         required=False)
 
     stripped_tags = schema.List(
@@ -344,6 +345,7 @@ class IFilterSchema(Interface):
                       "but any content is preserved."),
         default=[u'font', ],
         value_type=schema.TextLine(),
+        missing_value=[],
         required=False)
 
     custom_tags = schema.List(
@@ -352,6 +354,7 @@ class IFilterSchema(Interface):
                       "XHTML but which should be permitted."),
         default=[],
         value_type=schema.TextLine(),
+        missing_value=[],
         required=False)
 
     # class IFilterAttributesSchema(Interface):
@@ -363,6 +366,7 @@ class IFilterSchema(Interface):
         default=(u'dir lang valign halign border frame rules cellspacing '
                  'cellpadding bgcolor').split(),
         value_type=schema.TextLine(),
+        missing_value=[],
         required=False)
 
     stripped_combinations = schema.Dict(
@@ -371,9 +375,8 @@ class IFilterSchema(Interface):
                       "saving."),
         key_type=schema.TextLine(title=u"tags"),
         value_type=schema.TextLine(title=u"attributes"),
-        default={},
-        # XXX replace with value adapter
-        # default={'table th td': 'width height', 'other tags': 'other attrs'}
+        default={'table th td': 'width height'},
+        missing_value={},
         required=False)
 
     # class IFilterEditorSchema(Interface):
@@ -382,8 +385,9 @@ class IFilterSchema(Interface):
         title=_(u'Permitted properties'),
         description=_(
             u'These CSS properties are allowed in style attributes.'),
-        default=u'text-align list-style-type float text-decoration'.split(),
+        default=u'text-align list-style-type float padding-left text-decoration'.split(),
         value_type=schema.TextLine(),
+        missing_value=[],
         required=False)
 
     class_blacklist = schema.List(
@@ -391,6 +395,7 @@ class IFilterSchema(Interface):
         description=_(u'These class names are not allowed in class '
                       'attributes.'),
         default=[],
+        missing_value=[],
         value_type=schema.TextLine(),
         required=False)
 
