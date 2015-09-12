@@ -8,6 +8,9 @@ Changelog
 5.0rc3 (unreleased)
 -------------------
 
+-  Fix #952: Toolbar menu completely misplaced because of link duplication
+  [ichim-david]
+  
 - Fix issue where some filter settings would not get saved and provide
   correct defaults
   [vangheem]
