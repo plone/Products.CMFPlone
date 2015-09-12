@@ -537,7 +537,8 @@ class ITinyMCEPluginSchema(Interface):
             SimpleTerm('paste', 'paste', u"paste"),
             SimpleTerm('preview', 'preview', u"preview"),
             SimpleTerm('print', 'print', u"print"),
-            SimpleTerm('save', 'save', u"save"),
+            # XXX disable save button since it is not implemeneted
+            # SimpleTerm('save', 'save', u"save"),
             SimpleTerm('searchreplace', 'searchreplace', u"searchreplace"),
             SimpleTerm('tabfocus', 'tabfocus', u"tabfocus"),
             SimpleTerm('table', 'table', u"table"),
@@ -547,10 +548,9 @@ class ITinyMCEPluginSchema(Interface):
             SimpleTerm('visualchars', 'visualchars', u"visualchars"),
             SimpleTerm('wordcount', 'wordcount', u"wordcount")
         ])),
-        default=['advlist', 'directionality', 'emoticons',
-                 'fullscreen', 'hr', 'insertdatetime', 'lists', 'media',
+        default=['advlist', 'fullscreen', 'hr', 'lists', 'media',
                  'nonbreaking', 'noneditable', 'pagebreak', 'paste', 'preview',
-                 'print', 'save', 'searchreplace', 'tabfocus', 'table',
+                 'print', 'save', 'tabfocus', 'table',
                  'visualchars', 'wordcount', 'code'],
         required=False)
 
@@ -569,9 +569,10 @@ class ITinyMCEPluginSchema(Interface):
         description=_('hint_tinymce_menu',
                       default='JSON formatted Menu configuration.'),
         default=json.dumps({
-            'file': {'title': 'File', 'items': 'newdocument'},
-            'edit': {'title': 'Edit', 'items': 'undo redo | cut '
-                              'copy paste pastetext | selectall'},
+            'edit': {
+                'title': 'Edit',
+                'items': 'undo redo | cut copy paste pastetext | '
+                         'searchreplace textpattern selectall | textcolor'},
             'insert': {'title': 'Insert', 'items': 'link media | template hr'},
             'view': {'title': 'View', 'items': 'visualaid'},
             'format': {'title': 'Format',
@@ -579,7 +580,10 @@ class ITinyMCEPluginSchema(Interface):
                                 'superscript subscript | formats | removeformat'},
             'table': {'title': 'Table', 'items': 'inserttable tableprops deletetable '
                                                  '| cell row column'},
-            'tools': {'title': 'Tools', 'items': 'spellchecker code'}
+            'tools': {
+                'title': 'Tools',
+                'items': 'spellchecker preview charmap fullpage fullscreen emoticons '
+                         'insertdatetime visualblocks visualchars layer code'}
         }, indent=4).decode('utf8')
     )
 
@@ -596,7 +600,7 @@ class ITinyMCEPluginSchema(Interface):
         description=_("help_tinymce_toolbar", default=(
             u"Enter how you would like the toolbar items to list.")),
         required=True,
-        default=u'undo redo | styleselect | bold italic | '
+        default=u'ltr rtl | undo redo | styleselect | bold italic | '
                 u'alignleft aligncenter alignright alignjustify | '
                 u'bullist numlist outdent indent | '
                 u'unlink plonelink ploneimage')
