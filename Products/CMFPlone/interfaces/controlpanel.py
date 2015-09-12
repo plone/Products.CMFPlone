@@ -574,7 +574,8 @@ class ITinyMCEPluginSchema(Interface):
                 'items': 'undo redo | cut copy paste pastetext | '
                          'searchreplace textpattern selectall | textcolor'},
             'insert': {'title': 'Insert', 'items': 'link media | template hr'},
-            'view': {'title': 'View', 'items': 'visualaid'},
+            'view': {'title': 'View', 'items': 'visualaid visualchars visualblocks preview '
+                                               'fullpage fullscreen'},
             'format': {'title': 'Format',
                        'items': 'bold italic underline strikethrough '
                                 'superscript subscript | formats | removeformat'},
@@ -582,8 +583,7 @@ class ITinyMCEPluginSchema(Interface):
                                                  '| cell row column'},
             'tools': {
                 'title': 'Tools',
-                'items': 'spellchecker preview charmap fullpage fullscreen emoticons '
-                         'insertdatetime visualblocks visualchars layer code'}
+                'items': 'spellchecker charmap emoticons insertdatetime layer code'}
         }, indent=4).decode('utf8')
     )
 
