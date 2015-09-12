@@ -334,7 +334,7 @@ class IFilterSchema(Interface):
         title=_(u'Nasty tags'),
         description=_(u"These tags, and their content are completely blocked "
                       "when a page is saved or rendered."),
-        default=[u'style', u'applet', u'script', u'meta'],
+        default=[u'style', u'object', u'embed', u'applet', u'script', u'meta'],
         value_type=schema.TextLine(),
         missing_value=[],
         required=False)
