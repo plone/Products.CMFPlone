@@ -51,15 +51,6 @@ class EditingControlPanelFunctionalTest(unittest.TestCase):
             self.browser.url,
             'http://nohost/plone/@@overview-controlpanel')
 
-    def test_visible_ids(self):
-        self.browser.open(
-            "%s/@@editing-controlpanel" % self.portal_url)
-        self.browser.getControl("Show 'Short Name' on content?")\
-            .selected = True
-        self.browser.getControl('Save').click()
-
-        self.assertEqual(self.settings.visible_ids, True)
-
     @unittest.skip("TODO: Not implemented yet.")
     def test_visible_ids_active(self):
         pass

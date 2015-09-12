@@ -13,12 +13,6 @@ Test Teardown  Run keywords  Report test status  Close all browsers
 
 *** Test Cases ***************************************************************
 
-Scenario: Enable Visible IDs in the Editing Control Panel
-  Given a logged-in site administrator
-    and the editing control panel
-   When I enable visible ids
-   Then I can see an id field in the settings tab when I create a document
-
 Scenario: Disable Standard Editor in the Editing Control Panel
   Given a logged-in site administrator
     and the editing control panel
@@ -62,11 +56,6 @@ the editing control panel
 
 
 # --- WHEN -------------------------------------------------------------------
-
-I enable visible ids
-  Select Checkbox  form.widgets.visible_ids:list
-  Click Button  Save
-  Wait until page contains  Changes saved
 
 I disable the standard editor
   Select from list by label  name=form.widgets.default_editor:list  None

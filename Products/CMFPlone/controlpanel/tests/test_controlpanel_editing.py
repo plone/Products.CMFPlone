@@ -35,9 +35,6 @@ class EditingRegistryIntegrationTest(unittest.TestCase):
             for a in self.controlpanel.listActions()
         ])
 
-    def test_visible_ids_attribute_exists(self):
-        self.assertTrue(hasattr(self.settings, 'visible_ids'))
-
     def test_default_editor_attribute_exists(self):
         self.assertTrue(hasattr(self.settings, 'default_editor'))
 

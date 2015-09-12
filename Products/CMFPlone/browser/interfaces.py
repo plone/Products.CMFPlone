@@ -200,11 +200,6 @@ class IPlone(Interface):
     def getCurrentUrl():
         """ Returns the actual url plus the query string. """
 
-    def visibleIdsEnabled():
-        """Determines whether to show object ids based on portal and user
-           settings.
-        """
-
     def uniqueItemIndex(pos=0):
         """Return an index iterator."""
 

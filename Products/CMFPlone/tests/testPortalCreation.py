@@ -175,12 +175,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         # navigation_properties should have been removed
         self.assertFalse('navigation_properties' in self.properties)
 
-    def testVisibleIdsProperties(self):
-        # visible_ids should be a site property and a memberdata property
-        registry = getUtility(IRegistry)
-        self.assertTrue('plone.visible_ids' in registry)
-        self.assertTrue(self.memberdata.hasProperty('visible_ids'))
-
     def testFormToolTipsProperty(self):
         # formtooltips should have been removed
         self.assertFalse(self.memberdata.hasProperty('formtooltips'))
