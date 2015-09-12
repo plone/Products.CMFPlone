@@ -49,13 +49,6 @@
                         target python:test(target in ('_parent', '_top', '_blank', '_self'), target, None);
                         ztu modules/ZTUtils;">
 
-  <span>external_login_url: ${external_login_url}</span>
-  <span>external_login_iframe: ${external_login_iframe}</span>
-  <span>use_iframe: ${use_iframe}</span>
-  <span>use_external: ${use_external}</span>
-  <span>request/mail_password_url: ${request/mail_password_url|nothing}</span>
-  <span>in portal: ${python:isURLInPortal(mail_password_url)}</span>
-
             <div class="portalMessage error pat-cookietrigger" style="display:none">
                 <strong i18n:translate="">
                     Error
