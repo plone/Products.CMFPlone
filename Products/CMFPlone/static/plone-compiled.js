@@ -10796,7 +10796,7 @@ define('plone-patterns-toolbar',[
           $('[id^="plone-contentmenu-"]').hide();
           $('.plone-toolbar-main').append('<li id="plone-toolbar-more-options"><a href="#"><span class="icon-moreOptions" aria-hidden="true"></span><span>' + _t('More') + '</span><span class="plone-toolbar-caret"></span></a></li>');
           $('#personal-bar-container').after('<ul id="plone-toolbar-more-subset" style="display: none"></ul>');
-          $( "[id^=plone-contentmenu-]" ).each(function() {
+          $("li[id^=plone-contentmenu-]").each(function() {
             $(this).clone(true, true).appendTo( "#plone-toolbar-more-subset" );
             $('[id^=plone-contentmenu-]', '#plone-toolbar-more-subset').show();
           });
