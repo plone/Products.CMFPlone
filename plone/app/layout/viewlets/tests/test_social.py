@@ -36,7 +36,7 @@ class TestSocialViewlet(ViewletsTestCase):
         self.assertTrue(self.tagFound(viewlet, 'name', 'twitter:title',
                                       viewlet.page_title))
         self.assertTrue(self.tagFound(viewlet, 'property', 'og:site_name',
-                                      viewlet.site_title))
+                                      viewlet.site_title_setting))
 
     def testDisabled(self):
         registry = getUtility(IRegistry)
