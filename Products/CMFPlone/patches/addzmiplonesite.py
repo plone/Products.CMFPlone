@@ -9,6 +9,7 @@ ADD_PLONE_SITE_HTML = '''
         target="_top">
     <input type="hidden" name="site_id" value="Plone" />
     <input type="submit" value="Add Plone Site" />
+    <label><input type="checkbox" name="advanced">advanced</label>
   </form>
 </dtml-if>
 <dtml-if "this().meta_type == 'Plone Site'">

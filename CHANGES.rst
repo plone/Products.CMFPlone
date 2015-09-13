@@ -8,9 +8,12 @@ Changelog
 5.0rc3 (unreleased)
 -------------------
 
+- Add advanced-option to button "Add Plone Site" in ZMI.
+  [pbauer]
+
 - Fix #952: Toolbar menu completely misplaced because of link duplication
   [ichim-david]
-  
+
 - Fix issue where some filter settings would not get saved and provide
   correct defaults
   [vangheem]
