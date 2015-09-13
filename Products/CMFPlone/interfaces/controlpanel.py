@@ -555,7 +555,7 @@ class ITinyMCEPluginSchema(Interface):
         ])),
         default=['advlist', 'fullscreen', 'hr', 'lists', 'media',
                  'nonbreaking', 'noneditable', 'pagebreak', 'paste', 'preview',
-                 'print', 'save', 'tabfocus', 'table',
+                 'print', 'searchreplace', 'tabfocus', 'table',
                  'visualchars', 'wordcount', 'code'],
         required=False)
 
