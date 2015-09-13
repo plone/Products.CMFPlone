@@ -216,43 +216,69 @@ define([
         expanded: that.state.expanded
       }), {path: '/'});
     },
+    moveViewsToSubset: function($container, $views, $subset) {
+      var i, $content_view, length = $views.length - 1;
+      if ($container.offset().top !== 0) {
+        for (i = length; length >= 0; length -= 1) {
+          $content_view = $views.eq(i);
+          $content_view.hide().clone(true, true).appendTo($subset).show();
+          if ($container.offset().top === 0) {
+            break;
+          }
+        }
+      }
+    },
     hideElements: function(){
+      var that = this;
       if(this.state.left){
         // only when on top
         return;
       }
       var w = $('.plone-toolbar-container').width(),
           wtc = $('.plone-toolbar-logo').width();
-      $( ".plone-toolbar-main > li" ).each(function() {
+      var $plone_toolbar_main =  $( ".plone-toolbar-main");
+      var $toolbar_menus = $plone_toolbar_main.find("> li" );
+      $toolbar_menus.each(function() {
+          wtc += $(this).width();
+      });
+      var $pers_bar_container = $('#personal-bar-container');
+      $pers_bar_container.find('> li').each(function() {
         wtc += $(this).width();
       });
-
-      $('#personal-bar-container > li').each(function() {
-        wtc += $(this).width();
-      });
-      wtc -= $('#plone-toolbar-more-options').width();
+      var $toolbar_more_options = $('#plone-toolbar-more-options');
+      wtc -= $toolbar_more_options.width();
+      var $content_menus = $toolbar_menus.filter($('[id^="plone-contentmenu-"]'));
+      var $content_views = $toolbar_menus.filter($('[id^="contentview-"]'));
       if (w < wtc) {
-        if (!($('#plone-toolbar-more-options').length)) {
-          $('[id^="plone-contentmenu-"]').hide();
-          $('.plone-toolbar-main').append('<li id="plone-toolbar-more-options"><a href="#"><span class="icon-moreOptions" aria-hidden="true"></span><span>' + _t('More') + '</span><span class="plone-toolbar-caret"></span></a></li>');
-          $('#personal-bar-container').after('<ul id="plone-toolbar-more-subset" style="display: none"></ul>');
-          // we want only the list items with id that contains plone-contentmenu and not the children links
-          // of these lists therefore we iterate only over the list elements
-          $("li[id^=plone-contentmenu-]").each(function() {
-            $(this).clone(true, true).appendTo( "#plone-toolbar-more-subset" );
-            $('[id^=plone-contentmenu-]', '#plone-toolbar-more-subset').show();
-          });
-          $('#plone-toolbar-more-options a').on('click', function(event){
-            event.preventDefault();
-            $('#plone-toolbar-more-subset').toggle();
-          });
+        if (!($toolbar_more_options.length)) {
+          (function(){
+            $content_menus.hide();
+            $toolbar_more_options = $('<li id="plone-toolbar-more-options"><a href="#"><span class="icon-moreOptions" aria-hidden="true"></span><span>' + _t('More') + '</span><span class="plone-toolbar-caret"></span></a></li>');
+            $plone_toolbar_main.append($toolbar_more_options);
+            var $toolbar_more_subset = $('<ul id="plone-toolbar-more-subset" style="display: none"></ul>');
+            $pers_bar_container.after($toolbar_more_subset);
+            // we want only the list items with id that contains plone-contentmenu and not the children links
+            // of these lists therefore we iterate only over the list elements
+            $content_menus.each(function() {
+              $(this).clone(true, true).show().appendTo($toolbar_more_subset);
+            });
+
+            that.moveViewsToSubset($pers_bar_container, $content_views, $toolbar_more_subset);
+
+            $toolbar_more_options.find('a').on('click', function(event){
+              event.preventDefault();
+              $toolbar_more_subset.toggle();
+            });
+          })();
         }
       } else {
-        $('[id^="plone-contentmenu-"]').show();
-        $('#plone-toolbar-more-options').remove();
+        $toolbar_more_options.remove();
         $('#plone-toolbar-more-subset').remove();
+        $plone_toolbar_main.children().show();
       }
-
+      if ($pers_bar_container.offset().top !== 0) {
+        that.moveViewsToSubset($pers_bar_container, $content_views, $("#plone-toolbar-more-subset"));
+      }
     },
     init: function () {
       var that = this;
@@ -306,7 +332,7 @@ define([
           that.setupMobile();
         }
       });
-    },
+    }
 
   });
 
