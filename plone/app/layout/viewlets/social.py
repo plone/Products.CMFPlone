@@ -32,7 +32,7 @@ class SocialTagsViewlet(TitleViewlet):
             dict(property="og:title", content=self.page_title),
             dict(itemprop="name", content=self.page_title),
             dict(property="og:type", content="website"),
-            dict(property="og:site_name", content=self.site_title),
+            dict(property="og:site_name", content=self.site_title_setting),
         ]
         if settings.twitter_username:
             self.tags.append(dict(name="twitter:site",
