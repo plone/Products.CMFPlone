@@ -8,6 +8,9 @@ Changelog
 5.0rc3 (unreleased)
 -------------------
 
+- Fix redirect for syndication-controlpanel.
+  [pbauer]
+
 - Add advanced-option to button "Add Plone Site" in ZMI.
   [pbauer]
 
