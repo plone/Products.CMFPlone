@@ -9905,7 +9905,14 @@ define('mockup-patterns-pickadate',[
         selectYears: true,
         selectMonths: true,
         formatSubmit: 'yyyy-mm-dd',
-        format: 'yyyy-mm-dd'
+        format: 'yyyy-mm-dd',
+        clear: _t('Clear'),
+        close: _t('Close'),
+        today: _t('Today'),
+        labelMonthNext: _t('Next month'),
+        labelMonthPrev: _t('Previous month'),
+        labelMonthSelect: _t('Select a month'),
+        labelYearSelect: _t('Select a year')
       },
       time: {
       },
@@ -10796,6 +10803,8 @@ define('plone-patterns-toolbar',[
           $('[id^="plone-contentmenu-"]').hide();
           $('.plone-toolbar-main').append('<li id="plone-toolbar-more-options"><a href="#"><span class="icon-moreOptions" aria-hidden="true"></span><span>' + _t('More') + '</span><span class="plone-toolbar-caret"></span></a></li>');
           $('#personal-bar-container').after('<ul id="plone-toolbar-more-subset" style="display: none"></ul>');
+          // we want only the list items with id that contains plone-contentmenu and not the children links
+          // of these lists therefore we iterate only over the list elements
           $("li[id^=plone-contentmenu-]").each(function() {
             $(this).clone(true, true).appendTo( "#plone-toolbar-more-subset" );
             $('[id^=plone-contentmenu-]', '#plone-toolbar-more-subset').show();
@@ -20339,6 +20348,7 @@ define('mockup-patterns-modal',[
         self.backdrop.hide();
         self.$wrapper.hide();
         self.$wrapper.parent().css('overflow', 'visible');
+        $('body').removeClass('plone-modal-open');
       }
       self.loading.hide();
       self.$el.removeClass(self.options.templateOptions.classActiveName);
@@ -20347,7 +20357,6 @@ define('mockup-patterns-modal',[
         self.initModal();
       }
       $(window.parent).off('resize.plone-modal.patterns');
-      $('body').removeClass('plone-modal-open');
       self.emit('hidden');
     },
     redraw: function(response, options) {
