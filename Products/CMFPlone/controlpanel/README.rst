@@ -39,9 +39,6 @@ Editing Control Panel
   >>> from Products.CMFPlone.interfaces import IEditingSchema
   >>> editing_settings = registry.forInterface(IEditingSchema, prefix='plone')
 
-  >>> editing_settings.visible_ids
-  False
-
   >>> editing_settings.default_editor
   u'TinyMCE'
 

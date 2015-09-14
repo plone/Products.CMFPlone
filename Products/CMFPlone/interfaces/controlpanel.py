@@ -72,17 +72,6 @@ class IControlPanel(IPloneBaseTool):
 
 class IEditingSchema(Interface):
 
-    visible_ids = schema.Bool(
-        title=_(u"Show 'Short Name' on content?"),
-        description=_(
-            u"Display and allow users to edit the "
-            u"'Short name' content identifiers, which form the "
-            u"URL part of a content item's address. Once "
-            u"enabled, users will then be able to enable this "
-            u"option in their preferences."),
-        default=False,
-        required=False)
-
     available_editors = schema.List(
         title=_(u'Available editors'),
         description=_(u"Available editors in the portal."),

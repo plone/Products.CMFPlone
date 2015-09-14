@@ -22,28 +22,6 @@ class EditingControlPanelAdapterTest(unittest.TestCase):
     def test_adapter_lookup(self):
         self.assertTrue(getAdapter(self.portal, IEditingSchema))
 
-    def test_get_visible_ids(self):
-        self.assertEqual(
-            getAdapter(self.portal, IEditingSchema).visible_ids,
-            False
-        )
-        self.settings.visible_ids = True
-        self.assertEqual(
-            getAdapter(self.portal, IEditingSchema).visible_ids,
-            True
-        )
-
-    def test_set_visible_ids(self):
-        self.assertEqual(
-            self.settings.visible_ids,
-            False
-        )
-        getAdapter(self.portal, IEditingSchema).visible_ids = True
-        self.assertEqual(
-            self.settings.visible_ids,
-            True
-        )
-
     def test_get_enable_link_integrity_checks_setting(self):
         self.assertEqual(
             getAdapter(self.portal, IEditingSchema).enable_link_integrity_checks,  # noqa

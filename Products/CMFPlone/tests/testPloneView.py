@@ -153,34 +153,3 @@ class TestPloneView(PloneTestCase.PloneTestCase):
     def testSiteEncoding(self):
         view = Plone(self.portal, self.app.REQUEST)
         self.assertEqual('utf-8', view.site_encoding())
-
-
-class TestVisibleIdsEnabled(PloneTestCase.PloneTestCase):
-    '''Tests the visibleIdsEnabled method'''
-
-    def afterSetUp(self):
-        self.view = Plone(self.portal, self.app.REQUEST)
-        self.member = self.portal.portal_membership.getAuthenticatedMember()
-        registry = getUtility(IRegistry)
-        self.props = registry.forInterface(IEditingSchema, prefix="plone")
-
-    def testFailsWithSitePropertyDisabled(self):
-        # Set baseline
-        self.member.setProperties(visible_ids=False)
-        self.props.visible_ids = False
-        # Should fail when site property is set false
-        self.assertFalse(self.view.visibleIdsEnabled())
-        self.member.setProperties(visible_ids=True)
-        self.assertFalse(self.view.visibleIdsEnabled())
-
-    def testFailsWithMemberPropertyDisabled(self):
-        # Should fail when member property is false
-        self.member.setProperties(visible_ids=False)
-        self.props.visible_ids = True
-        self.assertFalse(self.view.visibleIdsEnabled())
-
-    def testSucceedsWithMemberAndSitePropertyEnabled(self):
-        # Should succeed only when site property and member property are true
-        self.props.visible_ids = True
-        self.member.setProperties(visible_ids=True)
-        self.assertTrue(self.view.visibleIdsEnabled())
