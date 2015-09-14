@@ -13,6 +13,9 @@ class GroupMembershipControlPanel(UsersGroupsControlPanelView):
         self.gtool = getToolByName(self, 'portal_groups')
         self.mtool = getToolByName(self, 'portal_membership')
         self.group = self.gtool.getGroupById(self.groupname)
+        if self.group is None:
+            return
+
         self.grouptitle = self.group.getGroupTitleOrName() or self.groupname
 
         self.request.set('grouproles', self.group.getRoles() if self.group else [])

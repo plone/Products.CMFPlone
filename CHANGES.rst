@@ -8,6 +8,9 @@ Changelog
 5.0rc3 (unreleased)
 -------------------
 
+- Fix #935: Fix group membership form rendering when group can't be found.
+  [esteele]
+
 - Fix redirect for syndication-controlpanel.
   [pbauer]
 
