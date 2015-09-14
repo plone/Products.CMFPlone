@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
-from plone.supermodel import model
+import json
+
 from Products.CMFPlone import PloneMessageFactory as _  # NOQA
 from Products.CMFPlone.utils import validate_json
+from Products.CMFPlone.validators import positiveNumber
 from basetool import IPloneBaseTool
+from plone.supermodel import model
 from zope import schema
 from zope.interface import Interface, implements
 from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
-import json
+
 
 ROBOTS_TXT = u"""Sitemap: {portal_url}/sitemap.xml.gz
 
@@ -774,6 +777,7 @@ class IMaintenanceSchema(Interface):
             u"will be kept. Recommended value is 7 days."
         ),
         default=7,
+        constraint=positiveNumber,
         required=True
     )
 
