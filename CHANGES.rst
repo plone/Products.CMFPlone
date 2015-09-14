@@ -4,6 +4,9 @@ Changelog
 2.5.14 (unreleased)
 -------------------
 
+- add icons-off body class for icon setting
+  [vangheem]
+
 - Use global site-title for og:site_name.
   Fixes https://github.com/plone/Products.CMFPlone/issues/951
   [pbauer]
