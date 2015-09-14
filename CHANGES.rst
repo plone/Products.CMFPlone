@@ -8,6 +8,9 @@ Changelog
 5.0rc3 (unreleased)
 -------------------
 
+- Remove invalid_ids portal property as it isn't used.
+  [esteele]
+
 - Fix #935: Fix group membership form rendering when group can't be found.
   [esteele]
 

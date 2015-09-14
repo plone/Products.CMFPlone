@@ -47,9 +47,6 @@
   </property>
   <property name="calendar_starting_year" type="int">2001</property>
   <property name="calendar_future_years_available" type="int">5</property>
-  <property name="invalid_ids" type="lines">
-   <element value="actions"/>
-  </property>
   <property name="default_page" type="lines">
    <element value="index_html"/>
    <element value="index.html"/>
