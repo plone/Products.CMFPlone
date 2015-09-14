@@ -4,6 +4,7 @@ from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
 from plone.testing.z2 import Browser
 import unittest2 as unittest
+from App.ApplicationManager import ApplicationManager
 
 
 class MaintenanceControlPanelFunctionalTest(unittest.TestCase):
@@ -71,7 +72,13 @@ class MaintenanceControlPanelFunctionalTest(unittest.TestCase):
            days.
         """
         self.browser.open(self.portal_url + '/@@maintenance-controlpanel')
-        self.browser.getControl(name='form.widgets.days').value = '-1'
+        original_pack = ApplicationManager.manage_pack
+        def manage_pack(self, days=0, REQUEST=None, _when=None):
+            pass
+        ApplicationManager.manage_pack = manage_pack
+
+        self.browser.getControl(name='form.widgets.days').value = '0'
         self.browser.getControl(name="form.buttons.pack").click()
         self.assertTrue(self.browser.url.endswith('maintenance-controlpanel'))
         self.assertTrue('Packed the database.' in self.browser.contents)
+        ApplicationManager.manage_pack = original_pack

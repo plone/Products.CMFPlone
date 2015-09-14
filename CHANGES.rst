@@ -8,6 +8,9 @@ Changelog
 5.0rc3 (unreleased)
 -------------------
 
+- provide positive number validator
+  [vangheem]
+
 - Remove invalid_ids portal property as it isn't used.
   [esteele]
 
