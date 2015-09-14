@@ -1014,8 +1014,8 @@ class ISiteSchema(Interface):
 
     icon_visibility = schema.Choice(
         title=_(u'Icon visibility'),
-        description=_(u'Show icons...'),
-        default=u'false',
+        description=_(u'Show icons in listings'),
+        default=u'enabled',
         vocabulary=SimpleVocabulary([
             SimpleTerm('false', 'false', _(u'Never')),
             SimpleTerm('enabled', 'enabled', _(u'Always')),

@@ -11,6 +11,9 @@ Changelog
 - Remove invalid_ids portal property as it isn't used.
   [esteele]
 
+- Fix #963: respect icon visibility setting
+  [vangheem]
+
 - Fix #935: Fix group membership form rendering when group can't be found.
   [esteele]
 
