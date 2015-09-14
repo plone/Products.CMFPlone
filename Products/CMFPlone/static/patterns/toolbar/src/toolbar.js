@@ -106,6 +106,7 @@ define([
             $('body').addClass(that.options.classNames.topExpanded);
             $('body').removeClass(that.options.classNames.topDefault);
           }
+          that.hideElements();
         }
       });
 
@@ -218,7 +219,8 @@ define([
     },
     moveViewsToSubset: function($container, $views, $subset) {
       var i, $content_view, length = $views.length - 1;
-      if ($container.offset().top !== 0) {
+      var view_should_move = $container.offset().top !== 0;
+      if (view_should_move) {
         for (i = length; length >= 0; length -= 1) {
           $content_view = $views.eq(i);
           $content_view.hide().clone(true, true).appendTo($subset).show();
@@ -276,6 +278,8 @@ define([
         $('#plone-toolbar-more-subset').remove();
         $plone_toolbar_main.children().show();
       }
+      // check if the personal toolbar is not offseted if there isn't enough space
+      // and we already have the plone-toolbar-more-options added to the page.
       if ($pers_bar_container.offset().top !== 0) {
         that.moveViewsToSubset($pers_bar_container, $content_views, $("#plone-toolbar-more-subset"));
       }
