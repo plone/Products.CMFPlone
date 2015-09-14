@@ -3,7 +3,6 @@ import json
 
 from Products.CMFPlone import PloneMessageFactory as _  # NOQA
 from Products.CMFPlone.utils import validate_json
-from Products.CMFPlone.validators import positiveNumber
 from basetool import IPloneBaseTool
 from plone.supermodel import model
 from zope import schema
@@ -777,7 +776,7 @@ class IMaintenanceSchema(Interface):
             u"will be kept. Recommended value is 7 days."
         ),
         default=7,
-        constraint=positiveNumber,
+        min=0,
         required=True
     )
 

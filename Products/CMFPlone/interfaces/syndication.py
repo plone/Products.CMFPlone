@@ -1,7 +1,6 @@
 from zope.interface import Interface
 from zope import schema
 from Products.CMFPlone import PloneMessageFactory as _
-from Products.CMFPlone.validators import positiveNumber
 
 
 class ISyndicatable(Interface):
@@ -176,7 +175,7 @@ class ISiteSyndicationSettings(Interface):
                 default=u'Maximum items'),
         description=_(u'help_syndication_max_items',
                       default=u'Maximum number of items that will be syndicated.'),
-        constraint=positiveNumber,
+        min=1,
         default=15)
 
     allowed_feed_types = schema.Tuple(
