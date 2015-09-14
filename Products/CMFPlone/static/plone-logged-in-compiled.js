@@ -19110,6 +19110,7 @@ define('mockup-patterns-modal',[
         self.backdrop.hide();
         self.$wrapper.hide();
         self.$wrapper.parent().css('overflow', 'visible');
+        $('body').removeClass('plone-modal-open');
       }
       self.loading.hide();
       self.$el.removeClass(self.options.templateOptions.classActiveName);
@@ -19118,7 +19119,6 @@ define('mockup-patterns-modal',[
         self.initModal();
       }
       $(window.parent).off('resize.plone-modal.patterns');
-      $('body').removeClass('plone-modal-open');
       self.emit('hidden');
     },
     redraw: function(response, options) {
@@ -82615,7 +82615,14 @@ define('mockup-patterns-pickadate',[
         selectYears: true,
         selectMonths: true,
         formatSubmit: 'yyyy-mm-dd',
-        format: 'yyyy-mm-dd'
+        format: 'yyyy-mm-dd',
+        clear: _t('Clear'),
+        close: _t('Close'),
+        today: _t('Today'),
+        labelMonthNext: _t('Next month'),
+        labelMonthPrev: _t('Previous month'),
+        labelMonthSelect: _t('Select a month'),
+        labelYearSelect: _t('Select a year')
       },
       time: {
       },

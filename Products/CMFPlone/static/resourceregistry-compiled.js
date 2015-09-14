@@ -34755,6 +34755,7 @@ define('mockup-patterns-modal',[
         self.backdrop.hide();
         self.$wrapper.hide();
         self.$wrapper.parent().css('overflow', 'visible');
+        $('body').removeClass('plone-modal-open');
       }
       self.loading.hide();
       self.$el.removeClass(self.options.templateOptions.classActiveName);
@@ -34763,7 +34764,6 @@ define('mockup-patterns-modal',[
         self.initModal();
       }
       $(window.parent).off('resize.plone-modal.patterns');
-      $('body').removeClass('plone-modal-open');
       self.emit('hidden');
     },
     redraw: function(response, options) {
