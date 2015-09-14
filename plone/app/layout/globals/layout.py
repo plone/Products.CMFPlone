@@ -178,6 +178,8 @@ class LayoutPolicy(BrowserView):
         # class for hiding icons (optional)
         if self.icons_visible():
             body_classes.append('icons-on')
+        else:
+            body_classes.append('icons-off')
 
         # permissions required. Useful to theme frontend and backend differently
         permissions = []
