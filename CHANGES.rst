@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.5.14 (unreleased)
+2.5.14 (2015-09-15)
 -------------------
 
 - add icons-off body class for icon setting
