@@ -223,7 +223,7 @@ class TestRenderBody(BaseSyndicationTest):
         xml = self.folder.restrictedTraverse("@@atom.xml")()
         self.assertTrue(len(re.findall('<entry>', xml)) == 5)
         news1_feed = '<entry>\s*<title>News 1</title>\s*' \
-                     '<link rel="alternate" type="text/html" href="{0}"/>\s*' \
+                     '<link rel="alternate" type="text/html" href="{0}" />\s*' \
                      '<id>urn:syndication:{1}</id>\s*' \
                      '<summary>The news item #1</summary>\s*' \
                      '<content type="xhtml" xml:base="{2}" xml:lang="en" xml:space="preserve">'.format(self.news1.absolute_url(),
@@ -232,7 +232,7 @@ class TestRenderBody(BaseSyndicationTest):
         self.assertTrue(re.search(news1_feed, xml) is not None)
         self.assertTrue(re.search(BODY_TEXT, xml) is not None)
         news2_feed = '<entry>\s*<title>News 2</title>\s*' \
-                     '<link rel="alternate" type="text/html" href="{0}"/>\s*' \
+                     '<link rel="alternate" type="text/html" href="{0}" />\s*' \
                      '<id>urn:syndication:{1}</id>\s*' \
                      '<content type="xhtml" xml:base="{2}" xml:lang="en" xml:space="preserve">'.format(self.news2.absolute_url(),
                                                                                                        self.news2.UID(),
