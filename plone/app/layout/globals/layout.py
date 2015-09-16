@@ -1,6 +1,7 @@
 import json
 
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.interfaces.controlpanel import ILinkSchema
 from Products.CMFPlone.interfaces.controlpanel import ISiteSchema
 from Products.Five.browser.metaconfigure import ViewMixinForTemplates
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -235,11 +236,13 @@ class LayoutPolicy(BrowserView):
                 pass
 
         # class for markspeciallinks pattern
-        properties = getToolByName(context, "portal_properties")
-        props = getattr(properties, 'site_properties')
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(ILinkSchema,
+                                         prefix="plone",
+                                         check=False)
 
-        msl = props.getProperty('mark_special_links', 'false')
-        elonw = props.getProperty('external_links_open_new_window', 'false')
+        msl = settings.mark_special_links
+        elonw = settings.external_links_open_new_window
         if msl == 'true' or elonw == 'true':
             body_classes.append('pat-markspeciallinks')
 
