@@ -12,12 +12,12 @@
   </class>
 
   <class class=".navtree.NavtreeQueryBuilder">
-      <allow interface="plone.app.layout.navigation.interfaces.INavigationQueryBuilder" />
+    <allow interface="plone.app.layout.navigation.interfaces.INavigationQueryBuilder" />
   </class>
 
   <permission
-    id="Products.CMFPlone.AllowSendto"
-    title="Allow sendto" />
+      id="Products.CMFPlone.AllowSendto"
+      title="Allow sendto" />
 
   <browser:resource
       file="static/plone-logo.png"
@@ -101,6 +101,7 @@
       class=".main_template.MainTemplate"
       permission="zope.Public"
       />
+
   <browser:page
       for="*"
       name="render-toolbar"
@@ -151,15 +152,19 @@
       permission="zope.Public"
       />
 
-   <adapter for="*
-                .interfaces.INavigationTree"
-            factory=".navtree.DefaultNavtreeStrategy"
-            provides="plone.app.layout.navigation.interfaces.INavtreeStrategy" />
+   <adapter
+      for="*
+           .interfaces.INavigationTree"
+      factory=".navtree.DefaultNavtreeStrategy"
+      provides="plone.app.layout.navigation.interfaces.INavtreeStrategy"
+      />
 
-   <adapter for="*
-                .interfaces.ISiteMap"
-            factory=".navtree.SitemapNavtreeStrategy"
-            provides="plone.app.layout.navigation.interfaces.INavtreeStrategy" />
+   <adapter
+      for="*
+          .interfaces.ISiteMap"
+      factory=".navtree.SitemapNavtreeStrategy"
+      provides="plone.app.layout.navigation.interfaces.INavtreeStrategy"
+      />
 
   <browser:page
       for="*"
@@ -198,15 +203,15 @@
 
   <!-- AtD Support -->
   <browser:page
-    for="*"
-    name="checkDocument"
-    class=".atd.ATDProxyView"
-    permission="zope2.View"
-    attribute="checkDocument"
-    />
+      for="*"
+      name="checkDocument"
+      class=".atd.ATDProxyView"
+      permission="zope2.View"
+      attribute="checkDocument"
+      />
 
-    <!-- Default Page View -->
-    <browser:page
+  <!-- Default Page View -->
+  <browser:page
       for="OFS.interfaces.ITraversable"
       name="default_page"
       class=".defaultpage.DefaultPage"
@@ -215,24 +220,24 @@
       />
 
   <browser:page
-    for="*"
-    name="hero"
-    permission="zope.Public"
-    template="templates/hero.pt"
-    />
+      for="*"
+      name="hero"
+      permission="zope.Public"
+      template="templates/hero.pt"
+      />
 
   <browser:page
-    for="*"
-    name="footer"
-    permission="zope.Public"
-    template="templates/footer.pt"
-    />
+      for="*"
+      name="footer"
+      permission="zope.Public"
+      template="templates/footer.pt"
+      />
 
   <browser:page
-    for="*"
-    name="colophon"
-    permission="zope.Public"
-    template="templates/colophon.pt"
-    />
+      for="*"
+      name="colophon"
+      permission="zope.Public"
+      template="templates/colophon.pt"
+      />
 
 </configure>
