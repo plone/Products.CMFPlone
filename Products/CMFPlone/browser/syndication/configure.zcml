@@ -83,7 +83,7 @@
     />
 
   <browser:page
-    for="OFS.interfaces.IItem"
+    for="Products.CMFPlone.interfaces.syndication.ISyndicatable"
     class=".views.NewsMLFeedView"
     name="newsml.xml"
     permission="zope2.View"
