@@ -102,7 +102,7 @@ body.userrole-authenticated {
         a.label-state-internally_published > span + span { background: @plone-toolbar-internally-published-color; }
         a.label-state-pending > span:before {color: @plone-toolbar-pending-color; }
         a.label-state-pending > span + span { background: @plone-toolbar-pending-color; }
-            a.label-state-pending > span { color:(#fff - @plone-toolbar-text-color) !important;} //contrast
+        a.label-state-pending > span:hover { color:(#fff - @plone-toolbar-text-color) !important;} //contrast
         a.label-state-draft > span:before, a.label-state-internal > span:before {color: @plone-toolbar-draft-color; }
         a.label-state-draft > span + span, a.label-state-internal > span + span  { background: @plone-toolbar-draft-color; }
         a.label-state-private > span:before {color: @plone-toolbar-private-color; }
