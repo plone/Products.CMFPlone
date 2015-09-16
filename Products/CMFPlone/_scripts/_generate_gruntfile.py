@@ -333,7 +333,7 @@ for bkey, bundle in bundles.items():
                         bkey=resource,
                         paths=json.dumps(paths),
                         shims=json.dumps(shims),
-                        name=resource,
+                        name=main_js_path,
                         out=target_path + '/' + resource + '-compiled.js'
                     )
                     require_configs += rc
