@@ -218,13 +218,19 @@ define([
       }), {path: '/'});
     },
     moveViewsToSubset: function($container, $views, $subset) {
-      var i, $content_view, length = $views.length - 1;
-      var view_should_move = $container.offset().top !== 0;
+      var i, $content_view,
+          container = $container[0],
+          length = $views.length - 1;
+
+      var view_should_move = container.offsetTop !== 0;
       if (view_should_move) {
         for (i = length; length >= 0; length -= 1) {
           $content_view = $views.eq(i);
+          if ($content_view.is(":hidden")) {
+            continue;
+          }
           $content_view.hide().clone(true, true).appendTo($subset).show();
-          if ($container.offset().top === 0) {
+          if ($container.offsetTop === 0) {
             break;
           }
         }
@@ -280,7 +286,7 @@ define([
       }
       // check if the personal toolbar is not offseted if there isn't enough space
       // and we already have the plone-toolbar-more-options added to the page.
-      if ($pers_bar_container.offset().top !== 0) {
+      if ($pers_bar_container[0].offsetTop !== 0) {
         that.moveViewsToSubset($pers_bar_container, $content_views, $("#plone-toolbar-more-subset"));
       }
     },
