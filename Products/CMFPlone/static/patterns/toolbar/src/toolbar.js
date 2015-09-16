@@ -114,25 +114,43 @@ define([
         event.stopImmediatePropagation();
       });
 
-      // active
+      // content menu activated
       $('nav > ul > li', that.$container).has( 'a .plone-toolbar-caret' ).off('click').on('click', function(event) {
+        var $this = $(this);
+        var active_class = that.options.classNames.active;
         event.preventDefault();
         event.stopPropagation();
-        var hasClass = $(this).hasClass(that.options.classNames.active);
-        // always close existing
-        $('nav li', that.$container).removeClass(that.options.classNames.active);
+        var hasClass = $this.hasClass(active_class);
+        var $more_subset = $this.parent("#plone-toolbar-more-subset");
+        if ($more_subset.length) {
+          // close only the content menus from the subset, keeping the toolbar more list active
+          $more_subset.find('li').filter('[id*="contentmenu-"]').removeClass(active_class);
+        }
+        else {
+          // close existing opened contentmenus
+          $('nav li', that.$container).removeClass(active_class);
+        }
         $('nav li > ul', $(this)).css({'margin-top': ''}); // unset this so we get fly-in affect
         if (!hasClass) {
           // open current selected if not already open
-          $(this).addClass(that.options.classNames.active);
-          that.padPulloutContent($(this));
+          $this.addClass(active_class);
+          that.padPulloutContent($this);
         }
       });
 
       $('body').on('click', function(event) {
-        if (!($(this).parent(that.options.containerSelector).length > 0)) {
+        var $el = that.$container.find(event.target);
+        // we need to check if the target isn't the nav which can be
+        // triggered if we click on the portal-header and plone-toolbar-more-subset
+        // is visible which enlarges the nav. In this case we want to hide the
+        // active lists because the user assumes that he targeted an element outside
+        // the edit-bar
+        if (!$el.length || $el.prop("tagName") === "NAV") {
           $('nav > ul > li', that.$container).each(function(key, element){
             $(element).removeClass(that.options.classNames.active);
+            // we need to close the more subset as well not just the content-menus
+            // when we click on the body area
+            $("#plone-toolbar-more-subset").hide();
           });
         }
       });
@@ -274,8 +292,11 @@ define([
             that.moveViewsToSubset($pers_bar_container, $content_views, $toolbar_more_subset);
 
             $toolbar_more_options.find('a').on('click', function(event){
-              event.preventDefault();
+              var $more_list = $(this).parent();
+              // properly toggle active class for toolbar_more list item
+              $more_list.toggleClass('active', $toolbar_more_subset.is(":hidden"));
               $toolbar_more_subset.toggle();
+              event.preventDefault();
             });
           })();
         }
