@@ -1585,9 +1585,9 @@ define('mockup-patterns-base',[
 
     // Register the pattern in the Patternslib registry.
     if (!patternProps.name) {
-      log.warn("This mockup pattern without a name attribute will not be registered!");
+      log.info("This mockup pattern without a name attribute will not be registered!");
     } else if (!patternProps.trigger) {
-      log.warn("The mockup pattern '"+patternProps.name+"' does not have a trigger attribute, it will not be registered.");
+      log.info("The mockup pattern '"+patternProps.name+"' does not have a trigger attribute, it will not be registered.");
     } else {
       Registry.register(child, patternProps.name);
     }
@@ -14721,7 +14721,6 @@ define('mockup-i18n',[
 
     self.MessageFactory = function (domain, language) {
       language = language || self.currentLanguage;
-
       return function translate (msgid, keywords) {
         var msgstr;
         if ((domain in self.catalogs) && (language in self.catalogs[domain]) && (msgid in self.catalogs[domain][language])) {
