@@ -1,29 +1,22 @@
-from Acquisition import aq_inner
-from zope.interface import implements
-from zope.component import getMultiAdapter
-from zope.component import getUtility
-
-from plone.registry.interfaces import IRegistry
-from Products.CMFPlone.interfaces import INavigationSchema
-
+# -*- coding: utf-8 -*-
 from Acquisition import aq_base
+from Acquisition import aq_inner
+from plone.app.layout.navigation.interfaces import INavtreeStrategy
+from plone.app.layout.navigation.navtree import buildFolderTree
+from plone.app.layout.navigation.root import getNavigationRoot
+from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
-from Products.Five import BrowserView
-
 from Products.CMFPlone.browser.interfaces import INavigationBreadcrumbs
 from Products.CMFPlone.browser.interfaces import INavigationTabs
-from Products.CMFPlone.browser.interfaces import INavigationTree
 from Products.CMFPlone.browser.interfaces import ISiteMap
+from Products.CMFPlone.browser.navtree import SitemapQueryBuilder
 from Products.CMFPlone.interfaces import IHideFromBreadcrumbs
-
-from Products.CMFPlone.browser.navtree \
-    import NavtreeQueryBuilder, SitemapQueryBuilder
-
-from plone.app.layout.navigation.interfaces import INavtreeStrategy
-
-from plone.app.layout.navigation.root import getNavigationRoot
-from plone.app.layout.navigation.navtree import buildFolderTree
+from Products.CMFPlone.interfaces import INavigationSchema
+from Products.Five import BrowserView
+from zope.component import getMultiAdapter
+from zope.component import getUtility
+from zope.interface import implementer
 
 
 def get_url(item):
@@ -53,62 +46,15 @@ def get_view_url(context):
     item_url = get_url(context)
     name = get_id(context)
 
-    if hasattr(context, 'portal_type') and context.portal_type in view_action_types:
+    if getattr(context, 'portal_type', {}) in view_action_types:
         item_url += '/view'
         name += '/view'
 
     return name, item_url
 
 
-class CatalogNavigationTree(BrowserView):
-    implements(INavigationTree)
-
-    def navigationTreeRootPath(self):
-        context = aq_inner(self.context)
-
-        portal_properties = getToolByName(context, 'portal_properties')
-
-        navtree_properties = getattr(portal_properties, 'navtree_properties')
-
-        currentFolderOnlyInNavtree = \
-            navtree_properties.getProperty('currentFolderOnlyInNavtree', False)
-        if currentFolderOnlyInNavtree:
-            if context.restrictedTraverse('@@plone').isStructuralFolder():
-                return '/'.join(context.getPhysicalPath())
-            else:
-                return '/'.join(utils.parent(context).getPhysicalPath())
-
-        rootPath = getNavigationRoot(context)
-
-        # Adjust for topLevel
-        topLevel = navtree_properties.getProperty('topLevel', None)
-        if topLevel is not None and topLevel > 0:
-            contextPath = '/'.join(context.getPhysicalPath())
-            if not contextPath.startswith(rootPath):
-                return None
-            contextSubPathElements = contextPath[len(rootPath) + 1:].split('/')
-            if len(contextSubPathElements) < topLevel:
-                return None
-            rootPath = rootPath \
-                        + '/' \
-                        + '/'.join(contextSubPathElements[:topLevel])
-
-        return rootPath
-
-    def navigationTree(self):
-        context = aq_inner(self.context)
-
-        queryBuilder = NavtreeQueryBuilder(context)
-        query = queryBuilder()
-
-        strategy = getMultiAdapter((context, self), INavtreeStrategy)
-
-        return buildFolderTree(context, obj=context,
-                               query=query, strategy=strategy)
-
-
+@implementer(ISiteMap)
 class CatalogSiteMap(BrowserView):
-    implements(ISiteMap)
 
     def siteMap(self):
         context = aq_inner(self.context)
@@ -122,8 +68,8 @@ class CatalogSiteMap(BrowserView):
                                query=query, strategy=strategy)
 
 
+@implementer(INavigationTabs)
 class CatalogNavigationTabs(BrowserView):
-    implements(INavigationTabs)
 
     def _getNavQuery(self):
         context = self.context
@@ -226,8 +172,8 @@ class CatalogNavigationTabs(BrowserView):
         return result
 
 
+@implementer(INavigationBreadcrumbs)
 class CatalogNavigationBreadcrumbs(BrowserView):
-    implements(INavigationBreadcrumbs)
 
     def breadcrumbs(self):
         context = aq_inner(self.context)
@@ -268,8 +214,8 @@ class CatalogNavigationBreadcrumbs(BrowserView):
         return result
 
 
+@implementer(INavigationBreadcrumbs)
 class PhysicalNavigationBreadcrumbs(BrowserView):
-    implements(INavigationBreadcrumbs)
 
     def breadcrumbs(self):
         context = aq_inner(self.context)
@@ -279,9 +225,10 @@ class PhysicalNavigationBreadcrumbs(BrowserView):
         name, item_url = get_view_url(context)
 
         if container is None:
-            return ({'absolute_url': item_url,
-                     'Title': utils.pretty_title_or_id(context, context), },
-                   )
+            return ({
+                'absolute_url': item_url,
+                'Title': utils.pretty_title_or_id(context, context),
+            },)
 
         view = getMultiAdapter((container, request), name='breadcrumbs_view')
         base = tuple(view.breadcrumbs())
@@ -299,16 +246,16 @@ class PhysicalNavigationBreadcrumbs(BrowserView):
         # don't show default pages in breadcrumbs or pages above the navigation
         # root
         if not utils.isDefaultPage(context, request) \
-                and not rootPath.startswith(itemPath):
-            base += ({'absolute_url': item_url,
-                      'Title': utils.pretty_title_or_id(context, context), },
-                    )
-
+           and not rootPath.startswith(itemPath):
+            base += ({
+                'absolute_url': item_url,
+                'Title': utils.pretty_title_or_id(context, context), },
+            )
         return base
 
 
+@implementer(INavigationBreadcrumbs)
 class RootPhysicalNavigationBreadcrumbs(BrowserView):
-    implements(INavigationBreadcrumbs)
 
     def breadcrumbs(self):
         # XXX Root never gets included, it's hardcoded as 'Home' in
