@@ -7,6 +7,10 @@ Changelog
 
 5.0rc3 (unreleased)
 -------------------
+
+- Add view @@hero to be included by plonetheme.barceloneta with diazo.
+  [pbauer]
+
 - Fix #991: improve contrast for pending state in tollbar.
   [pabo3000]
 
