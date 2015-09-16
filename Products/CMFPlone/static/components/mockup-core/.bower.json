@@ -22,14 +22,14 @@
     "jquery": "1.11.3"
   },
   "homepage": "https://github.com/plone/mockup-core",
-  "version": "2.1.11",
-  "_release": "2.1.11",
+  "version": "2.1.12",
+  "_release": "2.1.12",
   "_resolution": {
     "type": "version",
-    "tag": "v2.1.11",
-    "commit": "6637f00644712a29777e9576766411651abb03e1"
+    "tag": "v2.1.12",
+    "commit": "43a3ff15a4619e52b6c7f0ad80ebe9cff17b5f6c"
   },
   "_source": "git://github.com/plone/mockup-core.git",
-  "_target": "2.1.11",
+  "_target": "2.1.12",
   "_originalSource": "mockup-core"
 }
