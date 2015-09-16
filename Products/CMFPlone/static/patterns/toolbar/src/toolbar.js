@@ -106,8 +106,8 @@ define([
             $('body').addClass(that.options.classNames.topExpanded);
             $('body').removeClass(that.options.classNames.topDefault);
           }
-          that.hideElements();
         }
+        that.hideElements();
       });
 
       $('nav > ul > li li', that.$container).off('click').on('click', function(event) {
@@ -128,7 +128,10 @@ define([
         }
         else {
           // close existing opened contentmenus
-          $('nav li', that.$container).removeClass(active_class);
+          $('.' + active_class, that.$container).removeClass(active_class);
+          // we need to close the more subset as well not just the content-menus
+          // when we click on the personal bar
+          $("#plone-toolbar-more-subset").hide();
         }
         $('nav li > ul', $(this)).css({'margin-top': ''}); // unset this so we get fly-in affect
         if (!hasClass) {
@@ -290,8 +293,11 @@ define([
             });
 
             that.moveViewsToSubset($pers_bar_container, $content_views, $toolbar_more_subset);
-
+            var active_class = that.options.classNames.active;
             $toolbar_more_options.find('a').on('click', function(event){
+              // close existing opened contentmenus
+              $('.' + active_class, that.$container).removeClass(active_class);
+
               var $more_list = $(this).parent();
               // properly toggle active class for toolbar_more list item
               $more_list.toggleClass('active', $toolbar_more_subset.is(":hidden"));
