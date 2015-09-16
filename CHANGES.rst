@@ -7,6 +7,8 @@ Changelog
 
 5.0rc3 (unreleased)
 -------------------
+- Fix #991: improve contrast for pending state in tollbar.
+  [pabo3000]
 
 - Implement new feed syndication using `NewsML 1 <http://iptc.org/standards/newsml-1/>`_,
   an IPTC standard that provides a media-type-independent, structural framework for multi-media news.
