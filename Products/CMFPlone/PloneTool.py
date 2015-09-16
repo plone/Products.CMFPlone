@@ -520,14 +520,6 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         return utils.typesToList(self)
 
     @security.public
-    def createNavTree(self, context, sitemap=None, request=None):
-        """Returns a structure that can be used by navigation_tree_slot.
-        """
-        if request is None:
-            request = self.REQUEST
-        return utils.createNavTree(context, request)
-
-    @security.public
     def createBreadCrumbs(self, context, request=None):
         """Returns a structure for the portal breadcumbs.
         """

@@ -56,14 +56,6 @@
 
   <browser:page
       for="*"
-      name="navtree_builder_view"
-      class=".navigation.CatalogNavigationTree"
-      permission="zope.Public"
-      allowed_attributes="navigationTree"
-      />
-
-  <browser:page
-      for="*"
       name="sitemap_builder_view"
       class=".navigation.CatalogSiteMap"
       permission="zope.Public"

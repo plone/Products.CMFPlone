@@ -83,11 +83,6 @@ def createBreadCrumbs(context, request):
     return view.breadcrumbs()
 
 
-def createNavTree(context, request, sitemap=False):
-    view = getMultiAdapter((context, request), name='navtree_builder_view')
-    return view.navigationTree()
-
-
 def createSiteMap(context, request, sitemap=False):
     view = getMultiAdapter((context, request), name='sitemap_builder_view')
     return view.siteMap()

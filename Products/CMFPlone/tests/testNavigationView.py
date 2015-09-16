@@ -5,9 +5,10 @@ from Products.CMFPlone.interfaces import INavigationSchema
 
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
-from Products.CMFPlone.tests.utils import validateCSSIdentifier, folder_position
+from Products.CMFPlone.tests.utils import validateCSSIdentifier
+from Products.CMFPlone.tests.utils import folder_position
 
-from Products.CMFPlone.browser.navigation import CatalogNavigationTree
+#from Products.CMFPlone.browser.navigation import CatalogNavigationTree
 from Products.CMFPlone.browser.navigation import CatalogSiteMap
 from Products.CMFPlone.browser.navigation import CatalogNavigationTabs
 from Products.CMFPlone.browser.navigation import CatalogNavigationBreadcrumbs
@@ -360,10 +361,6 @@ class TestBaseNavTree(PloneTestCase.PloneTestCase):
         self.assertEqual(len(tree['children']), 2)
 
 
-class TestCatalogNavTree(TestBaseNavTree):
-        view_class = CatalogNavigationTree
-
-
 class TestSiteMap(PloneTestCase.PloneTestCase):
     """Tests for the sitemap view implementations. This base test is a little
         geared toward a catalog based implementation for now.
@@ -577,7 +574,7 @@ class TestBasePortalTabs(PloneTestCase.PloneTestCase):
         self.portal._delObject('news')
         self.portal._delObject('events')
         workflow = self.portal.portal_workflow
-        
+
         registry = getUtility(IRegistry)
         navigation_settings = registry.forInterface(
             INavigationSchema,
@@ -799,7 +796,6 @@ def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
     suite.addTest(makeSuite(TestCatalogPortalTabs))
-    suite.addTest(makeSuite(TestCatalogNavTree))
     suite.addTest(makeSuite(TestSiteMap))
     suite.addTest(makeSuite(TestCatalogBreadCrumbs))
     suite.addTest(makeSuite(TestPhysicalBreadCrumbs))

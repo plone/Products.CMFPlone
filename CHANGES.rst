@@ -14,6 +14,10 @@ Changelog
 - Fix #991: improve contrast for pending state in tollbar.
   [pabo3000]
 
+- remove unused code to create NavTree probably left from Plone 3.0 times 
+  and since a while handled by plone.app.portlets.
+  [jensens]
+
 - Implement new feed syndication using `NewsML 1 <http://iptc.org/standards/newsml-1/>`_,
   an IPTC standard that provides a media-type-independent, structural framework for multi-media news.
   [frapell, jpgimenez, tcurvelo, rodfersou]
