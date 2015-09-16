@@ -216,6 +216,13 @@
 
   <browser:page
     for="*"
+    name="hero"
+    permission="zope.Public"
+    template="templates/hero.pt"
+    />
+
+  <browser:page
+    for="*"
     name="footer"
     permission="zope.Public"
     template="templates/footer.pt"
