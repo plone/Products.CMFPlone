@@ -7,6 +7,8 @@ Changelog
 
 5.0rc3 (unreleased)
 -------------------
+- Fix #991: improve contrast for pending state in tollbar.
+  [pabo3000]
 
 - provide positive number validator
   [vangheem]
