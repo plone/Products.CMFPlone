@@ -52,6 +52,50 @@ define([
       var tmp = new Tmp($('<div class="pat-example"/>'), {option: 'value'});
     });
 
+    it('default values can be overriden', function(done) {
+      var Tmp = Base.extend({
+        name: 'example',
+        trigger: 'pat-example',
+        some: 'thing',
+        defaults: {
+          'val1': 'default',
+          'val2': 'default',
+          'val3': {
+            'child1': 'default',
+            'child2': 'default',
+            'child3': ['1', '2', '3'],
+            'child4': ['1', '2', '3']
+          },
+          'val4': ['a', 'b', 'c'],
+          'val5': ['a', 'b', 'c'],
+          'val6': 'a',
+          'val7': ['a']
+        },
+        init: function() {
+          expect(this.$el.hasClass('pat-example')).to.equal(true);
+          this.extra();
+        },
+        extra: function() {
+          expect(Object.keys(this.options).length).to.eql(7);
+          expect(this.options.val1).to.eql('value');
+          expect(this.options.val2).to.eql('default');
+          expect(Object.keys(this.options.val3).length).to.eql(5);
+          expect(this.options.val3.child1).to.eql('value');
+          expect(this.options.val3.child2).to.eql('default');
+          expect(this.options.val3.child3).to.eql(['4']);
+          expect(this.options.val3.child4).to.eql(['1', '2', '3']);
+          expect(Object.keys(this.options.val3.child5).length).to.eql(1);
+          expect(this.options.val3.child5.sub1).to.eql('a');
+          expect(this.options.val4).to.eql(['d']);
+          expect(this.options.val5).to.eql(['a', 'b', 'c']);
+          expect(this.options.val6).to.eql(['b', 'c']);
+          expect(this.options.val7).to.eql('b');
+          done();
+        }
+      });
+      var tmp = new Tmp($('<div class="pat-example"/>'), {'val1': 'value', 'val3': {'child1': 'value', 'child3':['4'], 'child5':{'sub1': 'a'}}, 'val4': ['d'], 'val6': ['b', 'c'], 'val7': 'b' });
+    });
+
     it('will automatically register a pattern in the Patternslib registry when extended', function() {
       var registerSpy = sinon.spy();
       var originalRegister = Registry.register;

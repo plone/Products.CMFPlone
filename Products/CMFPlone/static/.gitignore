@@ -61,6 +61,21 @@ components/tinymce-builded/Gruntfile.js
 components/tinymce-builded/tests/.jshintrc
 components/tinymce-builded/tools/saucelabs/
 components/tinymce-builded/tools/tasks/
+components/tinymce-builded/.gitignore
+components/tinymce-builded/LICENSE.TXT
+components/tinymce-builded/changelog.txt
+components/tinymce-builded/package.json
+components/tinymce-builded/tests/.eslintrc
+components/tinymce-builded/tests/js/module_loader.js
+components/tinymce-builded/tests/manual/dirty.html
+components/tinymce-builded/tests/manual/dragdrop.html
+components/tinymce-builded/tests/manual/imagetools.html
+components/tinymce-builded/tests/manual/img/
+components/tinymce-builded/tests/manual/inline-toolbars.html
+components/tinymce-builded/tests/manual/skin.html
+components/tinymce-builded/tests/tinymce/EditorUpload.js
+components/tinymce-builded/tests/tinymce/data/
+components/tinymce-builded/tests/tinymce/file/
 
 components/jquery.recurrenceinput.js/.*
 components/jquery.recurrenceinput.js/*.rst
