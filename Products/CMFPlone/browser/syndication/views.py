@@ -1,5 +1,9 @@
+from DateTime import DateTime
+from uuid import uuid3
+from uuid import NAMESPACE_OID
 from zope.component import queryAdapter
 from zope.component import getMultiAdapter
+from zope.cachedescriptors.property import Lazy as lazy_property
 from Products.Five import BrowserView
 from zExceptions import NotFound
 
@@ -13,6 +17,8 @@ from plone.app.z3cform.layout import wrap_form
 
 
 class FeedView(BrowserView):
+
+    content_type = 'application/atom+xml'
 
     def feed(self):
         f = queryAdapter(self.context, IFeed)
@@ -29,8 +35,7 @@ class FeedView(BrowserView):
             settings = IFeedSettings(self.context)
             if self.__name__ not in settings.feed_types:
                 raise NotFound
-            self.request.response.setHeader('Content-Type',
-                                            'application/atom+xml')
+            self.request.response.setHeader('Content-Type', self.content_type)
             return self.index()
 
 
@@ -48,6 +53,27 @@ class SearchFeedView(FeedView):
             self.request.response.setHeader('Content-Type',
                                             'application/atom+xml')
             return self.index()
+
+
+class NewsMLFeedView(FeedView):
+    content_type = 'application/vnd.iptc.g2.newsitem+xml'
+
+    @lazy_property
+    def current_date(self):
+        return DateTime()
+
+    def duid(self, item, value):
+        uid = uuid3(NAMESPACE_OID, item.uid + str(value))
+        return uid.hex
+
+    def get_image(self, item):
+        scales = item.context.restrictedTraverse('@@images')
+        if scales:
+            try:
+                return scales.scale('image')
+            except AttributeError:
+                pass
+        return None
 
 
 class SettingsForm(form.EditForm):
