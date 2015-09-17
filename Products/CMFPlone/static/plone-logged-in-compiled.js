@@ -78418,13 +78418,14 @@ define("tinymce-compat3x", ["tinymce"], function() {
  *    folderTypes(string): TODO ('Folder,Plone Site')
  *    linkableTypes(string): TODO ('Document,Event,File,Folder,Image,News Item,Topic')
  *    tiny(object): TODO ({ plugins: [ "advlist autolink lists charmap print preview anchor", "usearchreplace visualblocks code fullscreen autoresize", "insertdatetime media table contextmenu paste plonelink ploneimage" ], menubar: "edit table format tools view insert",
- toolbar: "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | unlink plonelink ploneimage", autoresize_max_height: 1500, inline: false })
+ toolbar: "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | unlink plonelink ploneimage", autoresize_max_height: 1500 })
  *    prependToUrl(string): Text to prepend to generated internal urls. ('')
  *    appendToUrl(string): Text to append to generated internal urls. ('')
  *    prependToScalePart(string): Text to prepend to generated image scale url part. ('/imagescale/')
  *    appendToScalePart(string): Text to append to generated image scale url part. ('')
  *    linkAttribute(string): Ajax response data attribute to use for url. ('path')
  *    defaultScale(string): Scale name to default to. ('Original')
+ *    inline(boolean): Show tinyMCE editor inline instead in an iframe. Use this on textarea inputs. If you want to use this pattern directly on a contenteditable, pass "inline: true" to the "tiny" options object. (false)
  *
  * Documentation:
  *    # Default
@@ -78457,7 +78458,7 @@ define("tinymce-compat3x", ["tinymce"], function() {
  *
  * Example: example-3
  *    <form>
- *      <textarea class="pat-tinymce" data-pat-tinymce='{"tiny": {"inline": true}}'>
+ *      <textarea class="pat-tinymce" data-pat-tinymce='{"inline": true}'>
  *        <h3>I'm a content editable</h3>
  *        <p>Try to edit me!</p>
  *      </textarea>
@@ -78594,9 +78595,9 @@ define('mockup-patterns-tinymce',[
                  'bullist numlist outdent indent | ' +
                  'unlink plonelink ploneimage',
         //'autoresize_max_height': 900,
-        'height': 400,
-        inline: false
-      }
+        'height': 400
+      },
+      inline: false
     },
     addLinkClicked: function() {
       var self = this;
@@ -78753,7 +78754,10 @@ define('mockup-patterns-tinymce',[
       // tiny needs an id in order to initialize. Creat it if not set.
       var id = utils.setId(self.$el);
       var tinyOptions = self.options.tiny;
-      self.tinyId = tinyOptions.inline ? id + '-editable' : id;  // when displaying TinyMCE inline, a separate div is created.
+      if (self.options.inline === true) {
+        self.options.tiny.inline = true;
+      }
+      self.tinyId = self.options.inline ? id + '-editable' : id;  // when displaying TinyMCE inline, a separate div is created.
       tinyOptions.selector = '#' + self.tinyId;
       tinyOptions.addLinkClicked = function() {
         self.addLinkClicked.apply(self, []);
@@ -78794,7 +78798,7 @@ define('mockup-patterns-tinymce',[
           self.options.imageTypes = self.options.imageTypes.split(',');
         }
 
-        if (tinyOptions.inline === true) {
+        if (self.options.inline === true) {
           // create a div, which will be made content-editable by TinyMCE and
           // copy contents from textarea to it. Then hide textarea.
           self.$el.after('<div id="' + self.tinyId + '">' + self.$el.val() + '</div>');
@@ -78808,7 +78812,7 @@ define('mockup-patterns-tinymce',[
          * but this fixes overlays not saving data */
         var $form = self.$el.parents('form');
         $form.on('submit', function() {
-          if (tinyOptions.inline === true) {
+          if (self.options.inline === true) {
             // save back from contenteditable to textarea
             self.$el.val(self.tiny.getContent());
           } else {
@@ -78820,7 +78824,7 @@ define('mockup-patterns-tinymce',[
     },
     destroy: function() {
       if (this.tiny) {
-        if (this.options.tiny.inline === true) {
+        if (this.options.inline === true) {
           // destroy also inline editable
           this.$el.val(this.tiny.getContent());
           $('#' + this.tinyId).remove();
@@ -78908,11 +78912,11 @@ define('mockup-patterns-tinymce',[
  *            "text/html": {
  *              "pattern": "tinymce",
  *              "patternOptions": {
+ *                "inline": true,
  *                "tiny": {
  *                  "plugins": [],
  *                  "menubar": "edit format tools",
- *                  "toolbar": " ",
- *                  "inline": true
+ *                  "toolbar": " "
  *                }
  *              }
  *            }
