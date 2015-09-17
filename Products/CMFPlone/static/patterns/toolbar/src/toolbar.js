@@ -251,7 +251,7 @@ define([
             continue;
           }
           $content_view.hide().clone(true, true).appendTo($subset).show();
-          if ($container.offsetTop === 0) {
+          if (container.offsetTop === 0) {
             break;
           }
         }
