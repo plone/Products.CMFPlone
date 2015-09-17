@@ -594,9 +594,7 @@ class TestBasePortalTabs(PloneTestCase.PloneTestCase):
         #Should only contain the published folder
         self.assertEqual(len(tabs), 1)
 
-    def testDisableFolderTabs(self):
-        # Setting the site_property disable_folder_sections should remove
-        # all folder based tabs
+    def testDisableTopLevelTabs(self):
         registry = getUtility(IRegistry)
         navigation_settings = registry.forInterface(
             INavigationSchema,
