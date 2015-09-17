@@ -8,6 +8,9 @@ Changelog
 5.0rc3 (unreleased)
 -------------------
 
+- Fix #950: Missing personal toolbar when expanding the horizontal toolbar
+  [ichim-david]
+
 - Make sure portal_actions are imported before default portlets. Fixes #1015
   [vangheem]
 
