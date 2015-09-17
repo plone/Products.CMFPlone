@@ -8,6 +8,9 @@ Changelog
 5.0rc3 (unreleased)
 -------------------
 
+- Make sure portal_actions are imported before default portlets. Fixes #1015
+  [vangheem]
+
 - Move calendar_starting_year and calendar_future_years_available to
   registry and Products.Archetypes.
   [pbauer]
