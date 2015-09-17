@@ -885,21 +885,6 @@ class ISearchSchema(Interface):
         required=False,
         default=160,
     )
-# TODO: These need to get moved into ATCT setup profile.
-# 'ATBooleanCriterion',
-# 'ATDateCriteria',
-# 'ATDateRangeCriterion',
-# 'ATListCriterion',
-# 'ATPortalTypeCriterion',
-# 'ATReferenceCriterion',
-# 'ATSelectionCriterion',
-# 'ATSimpleIntCriterion',
-# 'ATSimpleStringCriterion',
-# 'ATSortCriterion',
-# 'ChangeSet',
-# 'ATCurrentAuthorCriterion',
-# 'ATPathCriterion',
-# 'ATRelativePathCriterion',
 
 
 class ISecuritySchema(Interface):

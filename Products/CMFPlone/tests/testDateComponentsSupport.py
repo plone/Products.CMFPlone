@@ -21,10 +21,11 @@ class TestDateComponentsSupport(PloneTestCase):
 
     def testYears(self):
         this_year = DateTime().year()
-        site_properties = self.portal.portal_properties.site_properties
-        min_year = site_properties.getProperty('calendar_starting_year', 1999)
-        max_year = site_properties.getProperty(
-                        'calendar_future_years_available', 5) + this_year
+        from plone.registry.interfaces import IRegistry
+        from zope.component import getUtility
+        registry = getUtility(IRegistry)
+        min_year = registry.get('Products.Archetypes.calendar_starting_year', 1999)
+        max_year = registry.get('Products.Archetypes.calendar_future_years_available', 5) + this_year
 
         data = [
             {'selected': None, 'id': '--', 'value': '0000'}
@@ -176,10 +177,11 @@ class TestDateComponentsSupportDefault(PloneTestCase):
 
     def testYears(self):
         this_year = DateTime().year()
-        site_properties = self.portal.portal_properties.site_properties
-        min_year = site_properties.getProperty('calendar_starting_year', 1999)
-        max_year = site_properties.getProperty(
-                        'calendar_future_years_available', 5) + this_year
+        from plone.registry.interfaces import IRegistry
+        from zope.component import getUtility
+        registry = getUtility(IRegistry)
+        min_year = registry.get('Products.Archetypes.calendar_starting_year', 1999)
+        max_year = registry.get('Products.Archetypes.calendar_future_years_available', 5) + this_year
 
         data = [
             {'selected': None, 'id': '--', 'value': '0000'}

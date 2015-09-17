@@ -8,13 +8,17 @@ Changelog
 5.0rc3 (unreleased)
 -------------------
 
+- Move calendar_starting_year and calendar_future_years_available to
+  registry and Products.Archetypes.
+  [pbauer]
+
 - Add view @@hero to be included by plonetheme.barceloneta with diazo.
   [pbauer]
 
 - Fix #991: improve contrast for pending state in tollbar.
   [pabo3000]
 
-- remove unused code to create NavTree probably left from Plone 3.0 times 
+- remove unused code to create NavTree probably left from Plone 3.0 times
   and since a while handled by plone.app.portlets.
   [jensens]
 

@@ -63,15 +63,14 @@ if date.greaterThan(PLONE_CEILING):
     date = PLONE_CEILING
 
 # Get portal year range
-site_properties = context.portal_properties.site_properties
+registry = context.portal_registry
 if starting_year is None:
-    min_year = site_properties.getProperty('calendar_starting_year', 1999)
+    min_year = registry['Products.Archetypes.calendar_starting_year']
 else:
     min_year = starting_year
 if ending_year is None:
     if future_years is None:
-        max_year = site_properties.getProperty(
-                        'calendar_future_years_available', 5) + now.year()
+        max_year = registry['Products.Archetypes.calendar_future_years_available'] + now.year()
     else:
         max_year = future_years + now.year()
 else:
