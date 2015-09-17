@@ -1,8 +1,11 @@
-from Acquisition import aq_base, aq_parent, aq_inner
-
+# -*- coding: utf-8 -*-
+from Acquisition import aq_base
+from Acquisition import aq_inner
+from Acquisition import aq_parent
 from plone.app.layout.navigation.interfaces import INavigationRoot
-
 from Products.CMFCore.utils import getToolByName
+from zope.component import getUtility
+from plone.registry.interfaces import IRegistry
 
 
 def getNavigationRoot(context, relativeRoot=None):
@@ -26,9 +29,8 @@ def getNavigationRoot(context, relativeRoot=None):
 
     if relativeRoot is None:
         # fetch from portal_properties
-        portal_properties = getToolByName(context, 'portal_properties')
-        navtree_properties = getattr(portal_properties, 'navtree_properties')
-        relativeRoot = navtree_properties.getProperty('root', None)
+        registry = getUtility(IRegistry)
+        relativeRoot = registry.records['plone.root'].value
 
     # if relativeRoot has a meaningful value,
     if relativeRoot and relativeRoot != '/':
