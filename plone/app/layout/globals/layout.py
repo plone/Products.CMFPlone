@@ -165,11 +165,8 @@ class LayoutPolicy(BrowserView):
             # skip first section since we already have that...
             if len(contentPath) > 1:
                 registry = getUtility(IRegistry)
-                try:
-                    depth = registry[
-                        'plone.app.layout.globals.bodyClass.depth']
-                except KeyError:
-                    depth = 4
+                depth = registry.get(
+                    'plone.app.layout.globals.bodyClass.depth', 4)
                 if depth > 1:
                     classes = ['subsection-%s' % contentPath[1]]
                     for section in contentPath[2:depth]:
@@ -182,7 +179,8 @@ class LayoutPolicy(BrowserView):
         else:
             body_classes.append('icons-off')
 
-        # permissions required. Useful to theme frontend and backend differently
+        # permissions required. Useful to theme frontend and backend
+        # differently
         permissions = []
         if not getattr(view, '__ac_permissions__', tuple()):
             permissions = ['none']

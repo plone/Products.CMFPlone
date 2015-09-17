@@ -30,7 +30,7 @@ def getNavigationRoot(context, relativeRoot=None):
     if relativeRoot is None:
         # fetch from portal_properties
         registry = getUtility(IRegistry)
-        relativeRoot = registry.records['plone.root'].value
+        relativeRoot = registry.get('plone.root', None)
 
     # if relativeRoot has a meaningful value,
     if relativeRoot and relativeRoot != '/':
