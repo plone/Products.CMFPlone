@@ -868,12 +868,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
                                 self.portal.permissionsOfRole('Editor')
                                 if r['selected']])
 
-    def testNonFolderishTabsProperty(self):
-        registry = getUtility(IRegistry)
-        navigation_settings = registry.forInterface(INavigationSchema,
-                                                    prefix="plone")
-        self.assertEqual(True, navigation_settings.nonfolderish_tabs)
-
     def testNoDoubleGenericSetupImportSteps(self):
         view = ImportStepsView(self.setup, None)
         self.assertEqual([i['id'] for i in view.doubleSteps()], [])

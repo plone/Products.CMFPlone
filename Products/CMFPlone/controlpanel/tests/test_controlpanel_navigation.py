@@ -38,9 +38,6 @@ class NavigationRegistryIntegrationTest(unittest.TestCase):
     def test_generate_tabs_attribute_exists(self):
         self.assertTrue(hasattr(self.settings, 'generate_tabs'))
 
-    def test_nonfolderish_tabs_attribute_exists(self):
-        self.assertTrue(hasattr(self.settings, 'nonfolderish_tabs'))
-
     def test_displayed_types_attribute_exists(self):
         self.assertTrue(hasattr(self.settings, 'displayed_types'))
 

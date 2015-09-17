@@ -8,6 +8,11 @@ Changelog
 5.0rc3 (unreleased)
 -------------------
 
+- Remove setting 'nonfolderish_tabs' (ex-'disable_nonfolderish_sections')
+  and by default display all types except File and Image in Navigation.
+  See https://github.com/plone/Products.CMFPlone/issues/785
+  [pbauer]
+
 - Fix #950: Missing personal toolbar when expanding the horizontal toolbar
   [ichim-david]
 

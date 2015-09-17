@@ -67,22 +67,6 @@ class NavigationControlPanelFunctionalTest(unittest.TestCase):
 
         self.assertEqual(settings.generate_tabs, False)
 
-    def test_nonfolderish_tabs(self):
-        registry = getUtility(IRegistry)
-        settings = registry.forInterface(INavigationSchema, prefix='plone')
-        self.browser.open(
-            "%s/@@navigation-controlpanel" % self.portal_url)
-        self.assertEqual(settings.generate_tabs, True)
-        self.assertEqual(
-            self.browser.getControl('Automatically generate tabs').selected,
-            True
-        )
-        self.browser.getControl(
-            'Generate tabs for items other than folders').selected = False
-        self.browser.getControl('Save').click()
-
-        self.assertEqual(settings.nonfolderish_tabs, False)
-
     def test_displayed_types(self):
         registry = getUtility(IRegistry)
         settings = registry.forInterface(INavigationSchema, prefix='plone')

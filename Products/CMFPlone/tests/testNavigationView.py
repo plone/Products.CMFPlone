@@ -488,7 +488,7 @@ class TestSiteMap(PloneTestCase.PloneTestCase):
         view = self.view_class(self.portal, self.request)
         sitemap = view.siteMap()
         self.assertEqual(sitemap['children'][-1]['item'].getPath(),
-                         '/plone/folder2/file21')
+                         '/plone/folder2/doc23')
 
 
 class TestBasePortalTabs(PloneTestCase.PloneTestCase):
@@ -516,18 +516,16 @@ class TestBasePortalTabs(PloneTestCase.PloneTestCase):
         # See if we can create one at all
         view = self.view_class(self.portal, self.request)
 
-        #Everything shows up by default
+        # Everything sexcept Files and Images shows up by default
         tabs = view.topLevelTabs(actions=[])
         self.assertTrue(tabs)
         self.assertEqual(len(tabs), 8)
-
-        #Only the folders show up (Members, news, events, folder1, folder2)
-        registry = getUtility(IRegistry)
-        navigation_settings = registry.forInterface(INavigationSchema,
-                                                    prefix="plone")
-        navigation_settings.nonfolderish_tabs = False
+        self.setRoles(['Manager'])
+        self.portal.invokeFactory('File', 'file1')
+        self.setRoles(['Member'])
+        # Files don't show up
         tabs = view.topLevelTabs(actions=[])
-        self.assertEqual(len(tabs), 5)
+        self.assertEqual(len(tabs), 8)
 
     def testTabsRespectFolderOrder(self):
         # See if reordering causes a change in the tab order
@@ -653,10 +651,6 @@ class TestBasePortalTabs(PloneTestCase.PloneTestCase):
         self.assertFalse('folder2' in tab_names)
 
     def testTabsExcludeNonFolderishItems(self):
-        registry = getUtility(IRegistry)
-        navigation_settings = registry.forInterface(INavigationSchema,
-                                                    prefix="plone")
-        navigation_settings.nonfolderish_tabs = False
         view = self.view_class(self.portal, self.request)
         tabs = view.topLevelTabs(actions=[])
         orig_len = len(tabs)
@@ -665,10 +659,9 @@ class TestBasePortalTabs(PloneTestCase.PloneTestCase):
         view = self.view_class(self.portal, self.request)
         tabs = view.topLevelTabs(actions=[])
         self.assertTrue(tabs)
-        self.assertEqual(len(tabs), orig_len)
+        self.assertEqual(len(tabs), orig_len + 1)
 
     def testRootBelowPortalRoot(self):
-
         self.setRoles(['Manager'])
         self.portal.folder1.invokeFactory('Document', 'doc1')
         self.portal.folder1.invokeFactory('Document', 'doc2')
@@ -679,17 +672,12 @@ class TestBasePortalTabs(PloneTestCase.PloneTestCase):
 
         self.portal.portal_properties.navtree_properties.root = '/folder1'
 
-        registry = getUtility(IRegistry)
-        navigation_settings = registry.forInterface(INavigationSchema,
-                                                    prefix="plone")
-        navigation_settings.nonfolderish_tabs = False
-
         view = self.view_class(self.portal, self.request)
         tabs = view.topLevelTabs(actions=[])
         self.assertTrue(tabs)
-        self.assertEqual(len(tabs), 2)
-        self.assertEqual(tabs[0]['id'], 'folder1')
-        self.assertEqual(tabs[1]['id'], 'folder2')
+        self.assertEqual(len(tabs), 5)
+        self.assertEqual(tabs[0]['id'], 'doc1')
+        self.assertEqual(tabs[-1]['id'], 'folder2')
 
     def testPortalTabsNotIncludeViewNamesInCSSid(self):
         self.setRoles(['Manager'])
