@@ -238,7 +238,7 @@ define([
         expanded: that.state.expanded
       }), {path: '/'});
     },
-    moveViewsToSubset: function($container, $views, $subset) {
+    cloneViewsIntoSubset: function($container, $views, $subset) {
       var i, $content_view,
           container = $container[0],
           length = $views.length - 1;
@@ -292,7 +292,7 @@ define([
               $(this).clone(true, true).show().appendTo($toolbar_more_subset);
             });
 
-            that.moveViewsToSubset($pers_bar_container, $content_views, $toolbar_more_subset);
+            that.cloneViewsIntoSubset($pers_bar_container, $content_views, $toolbar_more_subset);
             var active_class = that.options.classNames.active;
             $toolbar_more_options.find('a').on('click', function(event){
               // close existing opened contentmenus
@@ -314,7 +314,7 @@ define([
       // check if the personal toolbar is not offseted if there isn't enough space
       // and we already have the plone-toolbar-more-options added to the page.
       if ($pers_bar_container[0].offsetTop !== 0) {
-        that.moveViewsToSubset($pers_bar_container, $content_views, $("#plone-toolbar-more-subset"));
+        that.cloneViewsIntoSubset($pers_bar_container, $content_views, $("#plone-toolbar-more-subset"));
       }
     },
     init: function () {
