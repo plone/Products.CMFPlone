@@ -4,7 +4,8 @@ Changelog
 2.5.15 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fuzzy dates for document_byline (closes `#1000`_).
+  [rodfersou]
 
 
 2.5.14 (2015-09-15)
@@ -1594,3 +1595,4 @@ Changelog
   [wichert]
 
 .. _`#741`: https://github.com/plone/Products.CMFPlone/issues/741
+.. _`#1000`: https://github.com/plone/Products.CMFPlone/issues/1000
