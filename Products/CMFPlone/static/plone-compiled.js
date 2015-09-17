@@ -10673,32 +10673,54 @@ define('plone-patterns-toolbar',[
             $('body').removeClass(that.options.classNames.topDefault);
           }
         }
+        that.hideElements();
       });
 
       $('nav > ul > li li', that.$container).off('click').on('click', function(event) {
         event.stopImmediatePropagation();
       });
 
-      // active
+      // content menu activated
       $('nav > ul > li', that.$container).has( 'a .plone-toolbar-caret' ).off('click').on('click', function(event) {
+        var $this = $(this);
+        var active_class = that.options.classNames.active;
         event.preventDefault();
         event.stopPropagation();
-        var hasClass = $(this).hasClass(that.options.classNames.active);
-        // always close existing
-        $('nav li', that.$container).removeClass(that.options.classNames.active);
+        var hasClass = $this.hasClass(active_class);
+        var $more_subset = $this.parent("#plone-toolbar-more-subset");
+        if ($more_subset.length) {
+          // close only the content menus from the subset, keeping the toolbar more list active
+          $more_subset.find('li').filter('[id*="contentmenu-"]').removeClass(active_class);
+        }
+        else {
+          // close existing opened contentmenus
+          $('.' + active_class, that.$container).removeClass(active_class);
+          // we need to close the more subset as well not just the content-menus
+          // when we click on the personal bar
+          $("#plone-toolbar-more-subset").hide();
+        }
         $('nav li > ul', $(this)).css({'margin-top': ''}); // unset this so we get fly-in affect
         if (!hasClass) {
           // open current selected if not already open
-          $(this).addClass(that.options.classNames.active);
-          that.padPulloutContent($(this));
+          $this.addClass(active_class);
+          that.padPulloutContent($this);
         }
       });
 
       $('body').on('click', function(event) {
-        if (!($(this).parent(that.options.containerSelector).length > 0)) {
+        var $el = that.$container.find(event.target);
+        // we need to check if the target isn't the nav which can be
+        // triggered if we click on the portal-header and plone-toolbar-more-subset
+        // is visible which enlarges the nav. In this case we want to hide the
+        // active lists because the user assumes that he targeted an element outside
+        // the edit-bar
+        if (!$el.length || $el.prop("tagName") === "NAV") {
           $('nav > ul > li', that.$container).each(function(key, element){
             $(element).removeClass(that.options.classNames.active);
           });
+          // we need to close the more subset as well not just the content-menus
+          // when we click on the body area
+          $("#plone-toolbar-more-subset").hide();
         }
       });
       that.setHeight();
@@ -10782,43 +10804,84 @@ define('plone-patterns-toolbar',[
         expanded: that.state.expanded
       }), {path: '/'});
     },
+    cloneViewsIntoSubset: function($container, $views, $subset) {
+      var i, $content_view,
+          container = $container[0],
+          length = $views.length - 1;
+
+      var view_should_move = container.offsetTop !== 0;
+      if (view_should_move) {
+        for (i = length; length >= 0; length -= 1) {
+          $content_view = $views.eq(i);
+          if ($content_view.is(":hidden")) {
+            continue;
+          }
+          $content_view.hide().clone(true, true).appendTo($subset).show();
+          if (container.offsetTop === 0) {
+            break;
+          }
+        }
+      }
+    },
     hideElements: function(){
+      var that = this;
       if(this.state.left){
         // only when on top
         return;
       }
       var w = $('.plone-toolbar-container').width(),
           wtc = $('.plone-toolbar-logo').width();
-      $( ".plone-toolbar-main > li" ).each(function() {
+      var $plone_toolbar_main =  $( ".plone-toolbar-main");
+      var $toolbar_menus = $plone_toolbar_main.find("> li" );
+      $toolbar_menus.each(function() {
+          wtc += $(this).width();
+      });
+      var $pers_bar_container = $('#personal-bar-container');
+      $pers_bar_container.find('> li').each(function() {
         wtc += $(this).width();
       });
-
-      $('#personal-bar-container > li').each(function() {
-        wtc += $(this).width();
-      });
-      wtc -= $('#plone-toolbar-more-options').width();
+      var $toolbar_more_options = $('#plone-toolbar-more-options');
+      wtc -= $toolbar_more_options.width();
+      var $content_menus = $toolbar_menus.filter('[id^="plone-contentmenu-"]');
+      var $content_views = $toolbar_menus.filter('[id^="contentview-"]');
       if (w < wtc) {
-        if (!($('#plone-toolbar-more-options').length)) {
-          $('[id^="plone-contentmenu-"]').hide();
-          $('.plone-toolbar-main').append('<li id="plone-toolbar-more-options"><a href="#"><span class="icon-moreOptions" aria-hidden="true"></span><span>' + _t('More') + '</span><span class="plone-toolbar-caret"></span></a></li>');
-          $('#personal-bar-container').after('<ul id="plone-toolbar-more-subset" style="display: none"></ul>');
-          // we want only the list items with id that contains plone-contentmenu and not the children links
-          // of these lists therefore we iterate only over the list elements
-          $("li[id^=plone-contentmenu-]").each(function() {
-            $(this).clone(true, true).appendTo( "#plone-toolbar-more-subset" );
-            $('[id^=plone-contentmenu-]', '#plone-toolbar-more-subset').show();
-          });
-          $('#plone-toolbar-more-options a').on('click', function(event){
-            event.preventDefault();
-            $('#plone-toolbar-more-subset').toggle();
-          });
+        if (!($toolbar_more_options.length)) {
+          (function(){
+            $content_menus.hide();
+            $toolbar_more_options = $('<li id="plone-toolbar-more-options"><a href="#"><span class="icon-moreOptions" aria-hidden="true"></span><span>' + _t('More') + '</span><span class="plone-toolbar-caret"></span></a></li>');
+            $plone_toolbar_main.append($toolbar_more_options);
+            var $toolbar_more_subset = $('<ul id="plone-toolbar-more-subset" style="display: none"></ul>');
+            $pers_bar_container.after($toolbar_more_subset);
+            // we want only the list items with id that contains plone-contentmenu and not the children links
+            // of these lists therefore we iterate only over the list elements
+            $content_menus.each(function() {
+              $(this).clone(true, true).show().appendTo($toolbar_more_subset);
+            });
+
+            that.cloneViewsIntoSubset($pers_bar_container, $content_views, $toolbar_more_subset);
+            var active_class = that.options.classNames.active;
+            $toolbar_more_options.find('a').on('click', function(event){
+              // close existing opened contentmenus
+              $('.' + active_class, that.$container).removeClass(active_class);
+
+              var $more_list = $(this).parent();
+              // properly toggle active class for toolbar_more list item
+              $more_list.toggleClass('active', $toolbar_more_subset.is(":hidden"));
+              $toolbar_more_subset.toggle();
+              event.preventDefault();
+            });
+          })();
         }
       } else {
-        $('[id^="plone-contentmenu-"]').show();
-        $('#plone-toolbar-more-options').remove();
+        $toolbar_more_options.remove();
         $('#plone-toolbar-more-subset').remove();
+        $plone_toolbar_main.children().show();
       }
-
+      // check if the personal toolbar is not offseted if there isn't enough space
+      // and we already have the plone-toolbar-more-options added to the page.
+      if ($pers_bar_container[0].offsetTop !== 0) {
+        that.cloneViewsIntoSubset($pers_bar_container, $content_views, $("#plone-toolbar-more-subset"));
+      }
     },
     init: function () {
       var that = this;
@@ -10872,7 +10935,7 @@ define('plone-patterns-toolbar',[
           that.setupMobile();
         }
       });
-    },
+    }
 
   });
 

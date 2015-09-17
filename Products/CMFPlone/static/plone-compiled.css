@@ -3566,12 +3566,10 @@ i.link-webcal:after {
   overflow-y: auto;
   height: 0;
 }
-.plone-toolbar-top #edit-zone #plone-toolbar-more-subset > li ul {
-  top: 105px;
-}
 .plone-toolbar-top #edit-zone nav > ul li.active ul {
   height: inherit;
   max-height: 1000px;
+  top: auto;
 }
 .plone-toolbar-top #edit-zone li.active > a:after {
   border-bottom: 10px solid #2a2a2a;
