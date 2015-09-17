@@ -50,6 +50,8 @@ Changelog
 - Better default tinymce settings
   [vangheem]
 
+- Give some padding at the bottom of the toolbar menu dropdowns
+  [sneridagh]
 
 5.0rc2 (2015-09-11)
 -------------------
