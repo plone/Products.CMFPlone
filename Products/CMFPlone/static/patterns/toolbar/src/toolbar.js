@@ -276,8 +276,8 @@ define([
       });
       var $toolbar_more_options = $('#plone-toolbar-more-options');
       wtc -= $toolbar_more_options.width();
-      var $content_menus = $toolbar_menus.filter($('[id^="plone-contentmenu-"]'));
-      var $content_views = $toolbar_menus.filter($('[id^="contentview-"]'));
+      var $content_menus = $toolbar_menus.filter('[id^="plone-contentmenu-"]');
+      var $content_views = $toolbar_menus.filter('[id^="contentview-"]');
       if (w < wtc) {
         if (!($toolbar_more_options.length)) {
           (function(){
