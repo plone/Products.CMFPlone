@@ -151,10 +151,10 @@ define([
         if (!$el.length || $el.prop("tagName") === "NAV") {
           $('nav > ul > li', that.$container).each(function(key, element){
             $(element).removeClass(that.options.classNames.active);
-            // we need to close the more subset as well not just the content-menus
-            // when we click on the body area
-            $("#plone-toolbar-more-subset").hide();
           });
+          // we need to close the more subset as well not just the content-menus
+          // when we click on the body area
+          $("#plone-toolbar-more-subset").hide();
         }
       });
       that.setHeight();
