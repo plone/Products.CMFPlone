@@ -34,8 +34,9 @@
     <span i18n:translate="box_published">
       published
     </span>
-    <span tal:replace="python:view.toLocalizedTime(published,long_format=1)">
-      August 16, 2001 at 23:35:59
+    <span class="pat-moment" data-pat-moment="format:relative;"
+          tal:content="published">
+      Published
     </span><tal:sep condition="modified">,</tal:sep>
   </span>
 
@@ -44,8 +45,9 @@
     <span i18n:translate="box_last_modified">
       last modified
     </span>
-    <span tal:replace="python:view.toLocalizedTime(modified,long_format=1)">
-      August 16, 2001 at 23:35:59
+    <span class="pat-moment" data-pat-moment="format:relative;"
+          tal:content="modified">
+      Modified
     </span>
   </span>
   </tal:dates>
