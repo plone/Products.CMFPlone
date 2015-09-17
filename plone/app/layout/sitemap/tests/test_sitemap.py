@@ -209,8 +209,9 @@ class SiteMapTestCase(PloneTestCase):
         self.wftool.doActionFor(newsitem, 'publish')
         self.assertTrue('published' == self.wftool.getInfoFor(
             newsitem, 'review_state'))
-        self.site_properties.manage_changeProperties(
-            typesUseViewActionInListings=['News Item'])
+        registry = getUtility(IRegistry)
+        registry['plone.types_view_action_in_listings'] = [u'News Item']
+
         self.logout()
 
         xml = self.uncompress(self.sitemap())

@@ -4,7 +4,8 @@ Changelog
 2.5.15 (unreleased)
 -------------------
 
-- Pull mark_special_links, external_links_open_new_window values
+- Pull mark_special_links, external_links_open_new_window, 
+  types_view_action_in_listings values
   from configuration registry.
   [esteele]
 
