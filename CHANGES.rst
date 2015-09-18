@@ -9,6 +9,7 @@ Changelog
 -------------------
 
 - Improve contrast for pending state when state menu active (closes `913`_).
+- Fix buttons positions on resource registry (closes `886`).
   [rodfersou]
 
 - Add missing file for ace-editor to edit XML files (closes `895`_).
@@ -788,6 +789,7 @@ Changelog
 - Removed kss_field_decorator_view support
   [maurits, jaroel]
 
+.. _`#886`: https://github.com/plone/Products.CMFPlone/issues/886
 .. _`#895`: https://github.com/plone/Products.CMFPlone/issues/895
 .. _`#996`: https://github.com/plone/Products.CMFPlone/issues/996
 .. _`#913`: https://github.com/plone/Products.CMFPlone/issues/913
