@@ -805,8 +805,8 @@ class INavigationSchema(Interface):
     displayed_types = schema.Tuple(
         title=_(u"Displayed content types"),
         description=_(
-            u"The content types that should be shown in the navigation "
-            u"and sitemap."),
+            u"The content types that should be shown in the navigation and "
+            u"site map."),
         required=False,
         default=(
             'Image',
