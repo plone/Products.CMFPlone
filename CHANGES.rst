@@ -8,6 +8,9 @@ Changelog
 5.0rc3 (unreleased)
 -------------------
 
+- Add missing file for ace-editor to edit XML files (closes `895`_).
+  [rodfersou]
+
 - Fix #950: Missing personal toolbar when expanding the horizontal toolbar
   [ichim-david]
 
@@ -778,3 +781,5 @@ Changelog
 
 - Removed kss_field_decorator_view support
   [maurits, jaroel]
+
+.. _`#895`: https://github.com/plone/Products.CMFPlone/issues/895
