@@ -36062,5 +36062,5 @@ require([
   'use strict';
 });
 
-define("/Users/nathan/code/coredev5/src/Products.CMFPlone/Products/CMFPlone/static/resourceregistry.js", function(){});
+define("/srv/buildout.coredev/src/Products.CMFPlone/Products/CMFPlone/static/resourceregistry.js", function(){});
 

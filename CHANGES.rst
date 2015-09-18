@@ -8,7 +8,12 @@ Changelog
 5.0rc3 (unreleased)
 -------------------
 
+- Improve contrast for pending state when state menu active (closes `913`_).
+  [rodfersou]
+
 - Add missing file for ace-editor to edit XML files (closes `895`_).
+  [rodfersou]
+
 - Remove empty options for Site Settings configlet (closes `996`_).
   [rodfersou]
 
@@ -785,3 +790,4 @@ Changelog
 
 .. _`#895`: https://github.com/plone/Products.CMFPlone/issues/895
 .. _`#996`: https://github.com/plone/Products.CMFPlone/issues/996
+.. _`#913`: https://github.com/plone/Products.CMFPlone/issues/913
