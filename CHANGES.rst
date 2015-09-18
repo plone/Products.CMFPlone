@@ -9,6 +9,7 @@ Changelog
 -------------------
 
 - Add missing file for ace-editor to edit XML files (closes `895`_).
+- Remove empty options for Site Settings configlet (closes `996`_).
   [rodfersou]
 
 - Fix #950: Missing personal toolbar when expanding the horizontal toolbar
@@ -783,3 +784,4 @@ Changelog
   [maurits, jaroel]
 
 .. _`#895`: https://github.com/plone/Products.CMFPlone/issues/895
+.. _`#996`: https://github.com/plone/Products.CMFPlone/issues/996

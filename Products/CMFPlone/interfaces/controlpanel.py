@@ -1009,7 +1009,7 @@ class ISiteSchema(Interface):
             SimpleTerm('enabled', 'enabled', _(u'Always')),
             SimpleTerm('authenticated', 'authenticated',
                        _('For authenticated users only'))]),
-        required=False)
+        required=True)
 
     toolbar_position = schema.Choice(
         title=_(u'Position where the toolbar is displayed'),
@@ -1020,7 +1020,7 @@ class ISiteSchema(Interface):
         vocabulary=SimpleVocabulary([
             SimpleTerm('side', 'side', _(u"Side")),
             SimpleTerm('top', 'top', _(u"Top"))]),
-        required=False)
+        required=True)
 
     toolbar_logo = schema.TextLine(
         title=_(u"Site based relative url for toolbar logo"),
