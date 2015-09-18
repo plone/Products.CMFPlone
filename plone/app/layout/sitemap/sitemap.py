@@ -48,7 +48,7 @@ class SiteMapView(BrowserView):
         query['portal_type'] = utils.getUserFriendlyTypes()
         registry = getUtility(IRegistry)
         typesUseViewActionInListings = frozenset(
-            registry.get('plone.types_view_action_in_listings', []))
+            registry.get('plone.types_use_view_action_in_listings', []))
 
         is_plone_site_root = IPloneSiteRoot.providedBy(self.context)
         if not is_plone_site_root:

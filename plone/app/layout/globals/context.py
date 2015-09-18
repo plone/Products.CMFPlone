@@ -73,7 +73,7 @@ class ContextState(BrowserView):
         view_url = self.object_url()
         portal_type = getattr(aq_base(self.context), 'portal_type', None)
         registry = getUtility(IRegistry)
-        use_view_action = registry.get('plone.types_view_action_in_listings', [])
+        use_view_action = registry.get('plone.types_use_view_action_in_listings', [])
         if portal_type in use_view_action:
             view_url = view_url + '/view'
         return view_url

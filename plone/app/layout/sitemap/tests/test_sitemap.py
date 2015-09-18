@@ -210,7 +210,7 @@ class SiteMapTestCase(PloneTestCase):
         self.assertTrue('published' == self.wftool.getInfoFor(
             newsitem, 'review_state'))
         registry = getUtility(IRegistry)
-        registry['plone.types_view_action_in_listings'] = [u'News Item']
+        registry['plone.types_use_view_action_in_listings'] = [u'News Item']
 
         self.logout()
 
