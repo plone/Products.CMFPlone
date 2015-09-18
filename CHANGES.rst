@@ -7,6 +7,8 @@ Changelog
 
 5.0rc3 (unreleased)
 -------------------
+- Resolve deprecation warnings about portal_url
+  [fulv]
 
 - Fix #950: Missing personal toolbar when expanding the horizontal toolbar
   [ichim-david]
