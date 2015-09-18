@@ -3211,6 +3211,9 @@ a.pat-resourceregistry .list-group-item-warning.active:focus {
     top: -42px;
     padding: 0;
   }
+  .pat-resourceregistry .tab-pane.active .buttons-container {
+    top: 1rem;
+  }
   .pat-resourceregistry .buttons-container .plone-btn-group,
   .pat-resourceregistry .buttons-container .btn-group {
     padding: 0;
