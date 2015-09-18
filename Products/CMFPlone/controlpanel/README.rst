@@ -117,11 +117,8 @@ Navigation Control Panel
   >>> navigation_settings.generate_tabs
   True
 
-  >>> navigation_settings.nonfolderish_tabs
-  True
-
   >>> navigation_settings.displayed_types
-  ('Image', 'File', 'Link', 'News Item', 'Folder', 'Document', 'Event')
+  ('Collection', 'Link', 'News Item', 'Folder', 'Document', 'Event')
 
   >>> navigation_settings.filter_on_workflow
   False

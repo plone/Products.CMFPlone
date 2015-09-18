@@ -45,28 +45,6 @@ class NavigationControlPanelAdapterTest(unittest.TestCase):
             False
         )
 
-    def test_get_nonfolderish_tabs(self):
-        self.assertEqual(
-            getAdapter(self.portal, INavigationSchema).nonfolderish_tabs,
-            True
-        )
-        self.navigation_settings.nonfolderish_tabs = False
-        self.assertEquals(
-            getAdapter(self.portal, INavigationSchema).nonfolderish_tabs,
-            False
-        )
-
-    def test_set_nonfolderish_tabs(self):
-        self.assertEquals(
-            self.navigation_settings.nonfolderish_tabs,
-            True
-        )
-        getAdapter(self.portal, INavigationSchema).nonfolderish_tabs = False
-        self.assertEquals(
-            self.navigation_settings.nonfolderish_tabs,
-            False
-        )
-
     def test_get_displayed_types(self):
         self.navigation_settings.displayed_types = ('Folder',)
         self.assertEqual(

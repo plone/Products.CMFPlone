@@ -793,16 +793,6 @@ class INavigationSchema(Interface):
         default=True,
         required=False)
 
-    nonfolderish_tabs = schema.Bool(
-        title=_(u"Generate tabs for items other than folders."),
-        description=_(
-            u"By default, any content item in the root of the portal will "
-            u"be shown as a global section. If you turn this option off, "
-            u"only folders will be shown. This only has an effect if "
-            u"'Automatically generate tabs' is enabled."),
-        default=True,
-        required=False)
-
     displayed_types = schema.Tuple(
         title=_(u"Displayed content types"),
         description=_(
@@ -810,8 +800,7 @@ class INavigationSchema(Interface):
             u"site map."),
         required=False,
         default=(
-            'Image',
-            'File',
+            'Collection',
             'Link',
             'News Item',
             'Folder',

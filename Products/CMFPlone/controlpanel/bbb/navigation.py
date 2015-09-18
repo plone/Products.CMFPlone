@@ -26,14 +26,6 @@ class NavigationControlPanelAdapter(object):
 
     generate_tabs = property(get_generate_tabs, set_generate_tabs)
 
-    def get_nonfolderish_tabs(self):
-        return self.navigation_settings.nonfolderish_tabs
-
-    def set_nonfolderish_tabs(self, value):
-        self.navigation_settings.nonfolderish_tabs = value
-
-    nonfolderish_tabs = property(get_nonfolderish_tabs, set_nonfolderish_tabs)
-
     def get_show_excluded_items(self):
         return self.navigation_settings.show_excluded_items
 

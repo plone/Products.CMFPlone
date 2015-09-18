@@ -105,9 +105,6 @@ class CatalogNavigationTabs(BrowserView):
 
         query['is_default_page'] = False
 
-        if not navigation_settings.nonfolderish_tabs:
-            query['is_folderish'] = True
-
         return query
 
     def topLevelTabs(self, actions=None, category='portal_tabs'):
