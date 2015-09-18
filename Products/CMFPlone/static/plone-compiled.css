@@ -3169,6 +3169,7 @@ i.link-webcal:after {
 #edit-zone nav > ul a.label-state-pending > span + span {
   background: #e2e721;
 }
+#edit-zone nav > ul li.active a.label-state-pending > span,
 #edit-zone nav > ul a.label-state-pending > span:hover {
   color: #000000 !important;
 }
