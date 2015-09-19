@@ -62,6 +62,11 @@
       />
 
   <browser:resource
+      file="static/plone-admin-ui.js"
+      name="plone-admin-ui.js"
+      />
+
+  <browser:resource
       file="static/jstz-1.0.4.min.js"
       name="jstz-1.0.4.min.js"
       />
