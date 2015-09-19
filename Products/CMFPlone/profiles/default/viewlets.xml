@@ -38,4 +38,7 @@
   <hidden manager="plone.belowcontent" skinname="Plone Default">
     <viewlet name="plone.manage_portlets_fallback"/>
   </hidden>
+  <hidden manager="plone.belowcontenttitle" skinname="Plone Default">
+    <viewlet name="plone.belowcontenttitle.documentbyline" />
+  </hidden>
 </object>

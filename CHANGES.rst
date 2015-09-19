@@ -17,6 +17,8 @@ Changelog
 
 - Remove empty options for Site Settings configlet (closes `996`_).
   [rodfersou]
+- Hide document byline viewlet by default.
+  [esteele]
 
 - Fix #950: Missing personal toolbar when expanding the horizontal toolbar
   [ichim-david]
