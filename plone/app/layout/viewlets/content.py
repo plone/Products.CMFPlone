@@ -143,10 +143,12 @@ class DocumentBylineViewlet(ViewletBase):
         or if Effective Date is not set on object.
         """
         # check if we are allowed to display publication date
-        properties = getToolByName(self.context, 'portal_properties')
-        site_properties = getattr(properties, 'site_properties')
-        if not site_properties.getProperty('displayPublicationDateInByline',
-           False):
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(
+            ISiteSchema,
+            prefix='plone')
+
+        if not settings.display_publication_date_in_byline:
             return None
 
         # check if we have Effective Date set
