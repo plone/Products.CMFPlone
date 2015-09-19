@@ -8,6 +8,10 @@ Changelog
 5.0rc4 (unreleased)
 -------------------
 
+- Fix #817: When saving the filter control panel show a flash message with
+  info on caching.
+  [jcerjak]
+
 - Remove Chrome Frame from ``X-UA-Compatible`` HTTP header as it's deprecated.
   [hvelarde]
 
