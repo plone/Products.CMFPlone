@@ -19,7 +19,7 @@ class StylesView(ResourceView):
             url = urlparse(css)
             if url.netloc == '':
                 # Local
-                src = "%s/%s" % (self.portal_url, css)
+                src = "%s/%s" % (self.site_url, css)
             else:
                 src = "%s" % (css)
 
@@ -65,7 +65,7 @@ class StylesView(ResourceView):
                     'rel': 'stylesheet',
                     'conditionalcomment': bundle.conditionalcomment,
                     'src': '%s/%s?version=%s' % (
-                        self.portal_url,
+                        self.site_url,
                         bundle.csscompilation,
                         bundle.last_compilation
                     )
@@ -94,7 +94,7 @@ class StylesView(ResourceView):
             url = urlparse(origin)
             if url.netloc == '':
                 # Local
-                src = "%s/%s" % (self.portal_url, origin)
+                src = "%s/%s" % (self.site_url, origin)
             else:
                 src = "%s" % (origin)
 

@@ -19,7 +19,7 @@ class ScriptsView(ResourceView):
                         url = urlparse(script.js)
                         if url.netloc == '':
                             # Local
-                            src = "%s/%s" % (self.portal_url, script.js)
+                            src = "%s/%s" % (self.site_url, script.js)
                         else:
                             src = "%s" % (script.js)
 
@@ -42,7 +42,7 @@ class ScriptsView(ResourceView):
                     'bundle': bundle_name,
                     'conditionalcomment': bundle.conditionalcomment,
                     'src': '%s/%s?version=%s' % (
-                        self.portal_url, bundle.jscompilation,
+                        self.site_url, bundle.jscompilation,
                         bundle.last_compilation)
                 })
 
@@ -54,7 +54,7 @@ class ScriptsView(ResourceView):
         # We always add jquery resource
         result.append({
             'src': '%s/%s' % (
-                self.portal_url,
+                self.site_url,
                 self.registry.records['plone.resources/jquery.js'].value),
             'conditionalcomment': None,
             'bundle': 'basic'
@@ -63,35 +63,35 @@ class ScriptsView(ResourceView):
             # We need to add require.js and config.js
             result.append({
                 'src': '%s/%s' % (
-                    self.portal_url,
+                    self.site_url,
                     self.registry.records['plone.resources.less-variables'].value),  # noqa
                 'conditionalcomment': None,
                 'bundle': 'basic'
             })
             result.append({
                 'src': '%s/%s' % (
-                    self.portal_url,
+                    self.site_url,
                     self.registry.records['plone.resources.lessc'].value),
                 'conditionalcomment': None,
                 'bundle': 'basic'
             })
             # result.append({
             #     'src': '%s/%s' % (
-            #         self.portal_url,
+            #         self.site_url,
             #         self.registry.records['plone.resources.less-modify'].value),
             #     'conditionalcomment': None,
             #     'bundle': 'basic'
             # })
         result.append({
             'src': '%s/%s' % (
-                self.portal_url,
+                self.site_url,
                 self.registry.records['plone.resources.requirejs'].value),
             'conditionalcomment': None,
             'bundle': 'basic'
         })
         result.append({
             'src': '%s/%s' % (
-                self.portal_url,
+                self.site_url,
                 self.registry.records['plone.resources.configjs'].value),
             'conditionalcomment': None,
             'bundle': 'basic'
@@ -108,7 +108,7 @@ class ScriptsView(ResourceView):
                         url = urlparse(data.js)
                         if url.netloc == '':
                             # Local
-                            src = "%s/%s" % (self.portal_url, data.js)
+                            src = "%s/%s" % (self.site_url, data.js)
                         else:
                             src = "%s" % (data.js)
 
@@ -129,7 +129,7 @@ class ScriptsView(ResourceView):
                 'bundle': 'diazo',
                 'conditionalcomment': '',
                 'src': '%s/%s' % (
-                    self.portal_url, origin)
+                    self.site_url, origin)
             })
 
         return result

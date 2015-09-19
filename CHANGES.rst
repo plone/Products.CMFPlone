@@ -7,6 +7,8 @@ Changelog
 
 5.0rc3 (unreleased)
 -------------------
+- Resolve deprecation warnings about portal_url
+  [fulv]
 
 - Improve contrast for pending state when state menu active (closes `913`_).
 - Fix buttons positions on resource registry (closes `886`).
