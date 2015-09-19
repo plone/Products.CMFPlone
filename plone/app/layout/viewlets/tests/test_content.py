@@ -1,7 +1,8 @@
 from DateTime import DateTime
-from plone.app.layout.viewlets.tests.base import ViewletsTestCase
-from plone.app.layout.viewlets.content import HistoryByLineView
 from plone.app.layout.viewlets.content import ContentRelatedItems
+from plone.app.layout.viewlets.content import DocumentBylineViewlet
+from plone.app.layout.viewlets.content import HistoryByLineView
+from plone.app.layout.viewlets.tests.base import ViewletsTestCase
 from plone.locking.interfaces import ILockable
 from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.interfaces import ISecuritySchema
@@ -25,8 +26,72 @@ else:
         """ Dexterity test type
         """
 
-
 class TestDocumentBylineViewletView(ViewletsTestCase):
+    """
+    Test the document by line viewlet
+    """
+    def afterSetUp(self):
+        self.folder.invokeFactory('Document', 'doc1', title='Document 1')
+        self.context = self.folder['doc1']
+
+        registry = getUtility(IRegistry)
+        self.security_settings = registry.forInterface(
+            ISecuritySchema,
+            prefix='plone',
+        )
+
+    def _get_viewlet(self):
+        request = self.app.REQUEST
+        viewlet = DocumentBylineViewlet(self.context, request, None, None)
+        viewlet.update()
+        return viewlet
+
+    def test_anonymous_locked_icon(self):
+        viewlet = self._get_viewlet()
+        ILockable(self.context).lock()
+        self.logout()
+        viewlet = self._get_viewlet()
+        self.assertEqual(viewlet.locked_icon(), '')
+
+    def test_locked_icon(self):
+        viewlet = self._get_viewlet()
+        self.assertEqual(viewlet.locked_icon(), "")
+        ILockable(self.context).lock()
+        lockIconUrl = (
+            '<img src="http://nohost/plone/lock_icon.png" alt="" '
+            'title="Locked" height="16" width="16" />'
+        )
+        self.assertEqual(viewlet.locked_icon(), lockIconUrl)
+
+    def test_pub_date(self):
+        # configure our portal to enable publication date on pages globally on
+        # the site
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(
+            ISiteSchema,
+            prefix='plone')
+
+        settings.display_publication_date_in_byline = True
+
+        self.logout()
+        viewlet = self._get_viewlet()
+
+        # publication date should be None as there is not Effective date set
+        # for our document yet
+        self.assertEqual(viewlet.pub_date(), None)
+
+        # now set effective date for our document
+        effective = DateTime()
+        self.context.setEffectiveDate(effective)
+        self.assertEqual(viewlet.pub_date(), DateTime(effective.ISO8601()))
+
+        # now switch off publication date globally on the site and see if
+        # viewlet returns None for publication date
+        settings.display_publication_date_in_byline = False
+        self.assertEqual(viewlet.pub_date(), None)
+
+
+class TestHistoryBylineViewletView(ViewletsTestCase):
     """
     Test the document by line viewlet
     """

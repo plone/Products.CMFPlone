@@ -4,6 +4,10 @@ Changelog
 2.5.15 (unreleased)
 -------------------
 
+- Respect @@site_controlpanel configuration to show publication date
+  in document_byline (closes `#1037`_).
+  [rodfersou]
+
 - Fuzzy dates for document_byline (closes `#1000`_).
   [rodfersou]
 
@@ -1596,3 +1600,4 @@ Changelog
 
 .. _`#741`: https://github.com/plone/Products.CMFPlone/issues/741
 .. _`#1000`: https://github.com/plone/Products.CMFPlone/issues/1000
+.. _`#1037`: https://github.com/plone/Products.CMFPlone/issues/1037
