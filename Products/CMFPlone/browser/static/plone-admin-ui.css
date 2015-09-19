@@ -1,3 +1,16 @@
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 300;
+  src: local('Roboto Light'), local('Roboto-Light'), url("++theme++barceloneta/less/roboto/Roboto-Light.ttf") format('truetype');
+}
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  src: local('Roboto Regular'), local('Roboto-Regular'), url("++theme++barceloneta/less/roboto/Roboto-Regular.ttf") format('truetype');
+}
+
 body { font-family: 'Roboto', sans-serif; line-height: 1.25; clear: both; background: #f4f4f4; padding: 0; margin:0;}
 #box { max-width: 670px; padding: 40px; background: #fff; background: rgba(255,255,255,.95); box-shadow: 0 0 5px rgba(0,0,0,.15); border-radius: 3px; margin:40px auto;}
 
