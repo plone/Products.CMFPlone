@@ -15,21 +15,22 @@
     <div id="content-core">
         
 
-        <p i18n:translate="description_accessibility_info">
+      <p><tal:i18n i18n:translate="description_accessibility_info">
             This site uses the open source Content Management System <a href="http://plone.com" i18n:name="plone">Plone</a>. 
-            It meets the Web Content Accessibility Guidelines (<a href="http://www.w3.org/TR/WCAG20/">
-            <acronym i18n:name="wcag"
+            It meets the Web Content Accessibility Guidelines (<a href="http://www.w3.org/TR/WCAG20/" i18n:name="wcag">
+            <acronym
                   title="Web Content Accessibility Guidelines"
                   i18n:attributes="title title_wcag;">WCAG</acronym> v2.0</a>) level 'AA' for people with disabilities, 
             including blindness and low vision, deafness and hearing loss, learning disabilities, 
             cognitive limitations, limited movement, speech disabilities, photosensitivity, 
-            and combinations of these.<br></br>
+            and combinations of these.</tal:i18n><br/>
+         <tal:i18n i18n:translate="description_accessibility_info2">
             It is also accessible to content authors with disabilities per the level 'AA' Authoring Tool Accessibility Guidelines 
-            (<a href="http://www.w3.org/TR/ATAG20/">
-            <acronym i18n:name="atag"
+            (<a href="http://www.w3.org/TR/ATAG20/" i18n:name="atag">
+            <acronym
                  title="Authoring Tool Accessibility Guidelines"
-                 i18n:attributes="title title_wcag;">ATAG</acronym> 2.0</a>).         
-
+                 i18n:attributes="title title_atag;">ATAG</acronym> 2.0</a>).
+         </tal:i18n>
         </p>
 
         <h2 i18n:translate="heading_accessibility_statement">Accessibility Statement</h2>

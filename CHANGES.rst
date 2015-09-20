@@ -7,6 +7,10 @@ Changelog
 
 5.0rc3 (unreleased)
 -------------------
+
+- Fix i18n in accessibility-info.pt
+  [vincentfretin]
+
 - Resolve deprecation warnings about portal_url
   [fulv]
 
