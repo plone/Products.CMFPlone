@@ -1412,6 +1412,13 @@ html[dir="rtl"] .select2-container-multi .select2-search-choice-close {
 .pat-select2 {
   min-width: 50%;
 }
+.select2-container-multi .select2-choices .select2-search-field input {
+  padding-bottom: 1px;
+  padding-left: 8px;
+  padding-right: 1px;
+  padding-top: 2px;
+  height: inherit;
+}
 /* (inline) forces includes this file without processing it.
  * Necessary because of the IE hack in there, which causes ParseError. */
 ul.jqtree-tree {
@@ -1585,7 +1592,7 @@ ul.jqtree-tree .jqtree-moving > .jqtree-element .jqtree-title {
   font-size: 12px;
   border: 1px solid #aaa;
   border-bottom-style: none;
-  z-index: 9999;
+  z-index: 999;
   position: relative;
   padding: 0 6px;
   color: #333;
@@ -8147,6 +8154,9 @@ div.overlay div.close {
   background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAMAAAAM7l6QAAABHVBMVEUAAAAAAAADAwMEBAQFBQUGBgYJCQkKCgoPDw8RERETExMWFhYbGxscHBwfHx8iIiIlJSUoKCgsLCwyMjI1NTU4ODg7OztDQ0NGRkZKSkpLS0tNTU1XV1ddXV1gYGBjY2NkZGRmZmZoaGhsbGxvb291dXV7e3t+fn6BgYGCgoKFhYWLi4uMjIyNjY2Ojo6QkJCTk5OVlZWWlpaXl5eZmZmdnZ2fn5+qqqqurq6vr6+ysrKzs7O5ubnCwsLFxcXHx8fJycnLy8vMzMzR0dHV1dXY2Nja2trc3Nzd3d3f39/g4ODh4eHk5OTl5eXo6Ojr6+vs7Ozt7e3u7u7x8fHy8vLz8/P19fX29vb39/f4+Pj6+vr7+/v8/Pz9/f3////kwcJJAAAAAXRSTlMAQObYZgAAAThJREFUKBXNwWdb2gAYhtH3CVbQFisVlOLWVlHcdeBedXSQqoiR4f3/f4YJF8Gg9psfPMfezL8avvqNvaaCz/2Nr2wvPFBbz8qXXrynZs/AXp9aUidgHRpsOmpz5sEibthzFLVGxZ5wl5Q0MCjfx/G49KGEtf1iRdIXyEufS6xLmuTKQh4ZSX0e5PtLUJDU28BC3CqQ8+AWio58p1iIczXlqkDRUWCHH9bCTzWlroA5NW2zai1cK5ByoQF5BY74bi01kpISLhSHPZiW5JSx0CXfJGWg6CjnsSUpi2uhJdy4pMlpR1I6n5S0z661lSiowxgVezIBY4oYrLNqEWswq7bRKgcW1bMCZyNxBbKHcCDrkJj6C9XTjY3jMlwvyJ6Ja/mCpj+bXbKXupUYmpn5+kmy/4jFFLP34hGuw0GxTwkuWgAAAABJRU5ErkJggg==);
 }
 #calroot {
+  width: auto;
+}
+div.riform #rirtemplate select {
   width: auto;
 }
 /*# sourceMappingURL=plone-logged-in-compiled.css.map */
