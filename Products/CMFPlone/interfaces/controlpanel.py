@@ -127,7 +127,7 @@ class IEditingSchema(Interface):
 class ILanguageSchema(Interface):
     model.fieldset(
         'general',
-        label=_(u'General', default=u'General'),
+        label=_(u'General'),
         fields=[
             'default_language',
             'available_languages',
