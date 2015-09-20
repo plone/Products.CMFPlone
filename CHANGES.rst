@@ -5,7 +5,7 @@
 Changelog
 =========
 
-5.0rc3 (unreleased)
+5.0rc3 (2015-09-21)
 -------------------
 
 - Fix i18n in accessibility-info.pt
