@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.5.15 (unreleased)
+2.5.15 (2015-09-20)
 -------------------
 
 - Pull mark_special_links, external_links_open_new_window, 
