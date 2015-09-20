@@ -3,6 +3,7 @@ from zope.component import adapts
 from zope.interface import implements
 from zope.interface import Interface
 from zope.component import queryMultiAdapter
+from zope.component import getUtility
 
 from DateTime import DateTime
 from OFS.interfaces import IItem
@@ -16,6 +17,7 @@ from Products.CMFPlone.interfaces.syndication import ISearchFeed
 from Products.CMFPlone.interfaces.syndication import IFeedSettings
 from Products.CMFPlone.utils import getSiteLogo
 
+from plone.registry.interfaces import IRegistry
 from plone.uuid.interfaces import IUUID
 from zope.cachedescriptors.property import Lazy as lazy_property
 
@@ -41,10 +43,9 @@ class BaseFeedData(object):
         self.site = getSite()
         if self.show_about:
             self.pm = getToolByName(self.context, 'portal_membership')
-        pprops = getToolByName(self.context, 'portal_properties')
-        self.site_props = pprops.site_properties
-        self.view_action_types = self.site_props.getProperty(
-            'typesUseViewActionInListings', ('File', 'Image'))
+        registry = getUtility(IRegistry)
+        self.view_action_types = registry.get(
+            'plone.types_use_view_action_in_listings', [])
 
     @lazy_property
     def show_about(self):

@@ -29,7 +29,7 @@ the 'redirect_links' property is on by default::
 But if we turn off 'redirect_links', visiting the link should redirect us to
 plone.org::
 
-  >>> self.portal.portal_properties.site_properties.redirect_links = False
+  >>> self.portal.portal_registry['plone.redirect_links'] = False
   >>> transaction.commit()
   >>> browser.open('http://nohost/plone/link')
   >>> browser.url
@@ -38,7 +38,7 @@ plone.org::
 Now let's log in as someone who is allowed to edit the link.  They won't get
 redirected, even though 'redirect_links' is re-enabled::
 
-  >>> self.portal.portal_properties.site_properties.redirect_links = True
+  >>> self.portal.portal_registry['plone.redirect_links'] = True
   >>> transaction.commit()
   >>> browser.open('http://nohost/plone/login')
   >>> browser.getControl('Login Name').value = TEST_USER_NAME
@@ -56,7 +56,7 @@ for anonymous users::
 
 If we turn redirect_links back off, that message should not be present::
 
-  >>> self.portal.portal_properties.site_properties.redirect_links = False
+  >>> self.portal.portal_registry['plone.redirect_links'] = False
   >>> transaction.commit()
   >>> browser.open('http://nohost/plone/link')
   >>> browser.url
@@ -80,7 +80,7 @@ Therefore we change the location of the link and set it as default view for the 
 
 We turn on the redirect_link option again and create a browser for anonymous users:
 
-  >>> self.portal.portal_properties.site_properties.redirect_links = True
+  >>> self.portal.portal_registry['plone.redirect_links'] = True
   >>> transaction.commit()
   >>> anon = Browser(app)
   >>> anon.handleErrors = False

@@ -563,7 +563,7 @@ class TestBreadCrumbs(PloneTestCase.PloneTestCase):
                          doc.aq_parent.absolute_url())
 
     def testBreadcrumbsRespectTypesWithViewAction(self):
-        # With a type in typesUseViewActionInListings as current action it
+        # With a type in types_use_view_action_in_listings as current action it
         # should return a breadcrumb which has '/view' appended to the url
         file = self.portal.folder1.file11
         crumbs = self.utils.createBreadCrumbs(file)

@@ -93,6 +93,15 @@
                         </label>
                         <br />
 
+                        <input id="default_page_type"
+                               type="checkbox"
+                               class="noborder"
+                               name="default_page_type"
+                               tal:attributes="checked python: view.is_default_page_type() and 'checked' or None" />
+                        <label for="default_page_type" i18n:translate="types_controlpanel_default_page_type">
+                            Can be used as a default page
+                        </label>
+                        <br />
 
                         <tal:block tal:condition="python:type_id=='Link'">
 

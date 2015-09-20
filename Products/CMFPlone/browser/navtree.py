@@ -1,26 +1,22 @@
+# -*- coding: utf-8 -*-
 # This module contains a function to help build navigation-tree-like structures
 # from catalog queries. It also contains a standard implementation of the
 # strategy/filtering method that uses Plone's navtree_properties to construct
 # navtrees.
-
-from zope.interface import implements
-from zope.component import getMultiAdapter, queryUtility
-from zope.component import getUtility
-
-from plone.app.layout.navigation.interfaces import INavigationQueryBuilder
-from plone.app.layout.navigation.interfaces import INavtreeStrategy
-
-from plone.app.layout.navigation.navtree import NavtreeStrategyBase
-from plone.app.layout.navigation.root import getNavigationRoot
-
-from plone.i18n.normalizer.interfaces import IIDNormalizer
-from plone.registry.interfaces import IRegistry
-
 from AccessControl import ModuleSecurityInfo
 from Acquisition import aq_inner
+from plone.app.layout.navigation.interfaces import INavigationQueryBuilder
+from plone.app.layout.navigation.interfaces import INavtreeStrategy
+from plone.app.layout.navigation.navtree import NavtreeStrategyBase
+from plone.app.layout.navigation.root import getNavigationRoot
+from plone.i18n.normalizer.interfaces import IIDNormalizer
+from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
 from Products.CMFPlone.interfaces import INavigationSchema
+from zope.component import getMultiAdapter, queryUtility
+from zope.component import getUtility
+from zope.interface import implementer
 
 # Strategy objects for the navtree creation code. You can subclass these
 # to expand the default navtree behaviour, and pass instances of your
@@ -30,14 +26,16 @@ security = ModuleSecurityInfo()
 security.declarePrivate('plone')
 security.declarePrivate('utils')
 
+
+@implementer(INavigationQueryBuilder)
 class NavtreeQueryBuilder(object):
     """Build a navtree query based on the settings in navtree_properties
     """
-    implements(INavigationQueryBuilder)
 
     def __init__(self, context):
-        portal_properties = getToolByName(context, 'portal_properties')
-        navtree_properties = getattr(portal_properties, 'navtree_properties')
+        registry = getUtility(IRegistry)
+        navigation_settings = registry.forInterface(INavigationSchema,
+                                                    prefix="plone")
 
         # Acquire a custom nav query if available
         customQuery = getattr(context, 'getCustomNavQuery', None)
@@ -60,9 +58,7 @@ class NavtreeQueryBuilder(object):
         else:
             query['path'] = {'query': currentPath, 'navtree': 1}
 
-        topLevel = navtree_properties.getProperty('topLevel', 0)
-        if topLevel and topLevel > 0:
-            query['path']['navtree_start'] = topLevel + 1
+        query['path']['navtree_start'] = 0
 
         # XXX: It'd make sense to use 'depth' for bottomLevel, but it doesn't
         # seem to work with EPI.
@@ -71,18 +67,15 @@ class NavtreeQueryBuilder(object):
         query['portal_type'] = utils.typesToList(context)
 
         # Apply the desired sort
-        sortAttribute = navtree_properties.getProperty('sortAttribute', None)
+        sortAttribute = navigation_settings.sort_tabs_on
         if sortAttribute is not None:
             query['sort_on'] = sortAttribute
-            sortOrder = navtree_properties.getProperty('sortOrder', None)
-            if sortOrder is not None:
-                query['sort_order'] = sortOrder
+            if navigation_settings.sort_tabs_reversed:
+                query['sort_order'] = 'desc'
+            else:
+                query['sort_order'] = 'asc'
 
         # Filter on workflow states, if enabled
-        registry = getUtility(IRegistry)
-        navigation_settings = registry.forInterface(INavigationSchema,
-                                                    prefix="plone")
-
         if navigation_settings.filter_on_workflow:
             query['review_state'] = navigation_settings.workflow_states_to_show
 
@@ -99,58 +92,41 @@ class SitemapQueryBuilder(NavtreeQueryBuilder):
     def __init__(self, context):
         NavtreeQueryBuilder.__init__(self, context)
         portal_url = getToolByName(context, 'portal_url')
-        portal_properties = getToolByName(context, 'portal_properties')
-        navtree_properties = getattr(portal_properties, 'navtree_properties')
-        sitemapDepth = navtree_properties.getProperty('sitemapDepth', 2)
+        registry = getUtility(IRegistry)
+        sitemap_depth = registry.get('plone.sitemap_depth', 3)
         self.query['path'] = {'query': portal_url.getPortalPath(),
-                              'depth': sitemapDepth}
+                              'depth': sitemap_depth}
 
 
+@implementer(INavtreeStrategy)
 class SitemapNavtreeStrategy(NavtreeStrategyBase):
     """The navtree building strategy used by the sitemap, based on
     navtree_properties
     """
-    implements(INavtreeStrategy)
-    #adapts(*, ISiteMap)
 
     def __init__(self, context, view=None):
         self.context = context
 
         portal_url = getToolByName(context, 'portal_url')
         self.portal = portal_url.getPortalObject()
-        portal_properties = getToolByName(context, 'portal_properties')
-        navtree_properties = getattr(portal_properties, 'navtree_properties')
-        site_properties = getattr(portal_properties, 'site_properties')
-        self.excludedIds = {}
-        for id in navtree_properties.getProperty('idsNotToList', ()):
-            self.excludedIds[id] = True
-        self.parentTypesNQ = \
-            navtree_properties.getProperty('parentMetaTypesNotToQuery', ())
-        self.viewActionTypes = \
-            site_properties.getProperty('typesUseViewActionInListings', ())
+        registry = getUtility(IRegistry)
+        self.parentTypesNQ = registry.get(
+            'plone.parent_types_not_to_query', [])
+        self.viewActionTypes = registry.get(
+            'plone.types_use_view_action_in_listings', [])
 
-        self.showAllParents = \
-            navtree_properties.getProperty('showAllParents', True)
+        self.showAllParents = True
         self.rootPath = getNavigationRoot(context)
 
         membership = getToolByName(context, 'portal_membership')
         self.memberId = membership.getAuthenticatedMember().getId()
 
     def nodeFilter(self, node):
-        item = node['item']
-        if getattr(item, 'getId', None) in self.excludedIds:
-            return False
-        elif getattr(item, 'exclude_from_nav', False):
-            return False
-        else:
-            return True
+        return not getattr(node['item'], 'exclude_from_nav', False)
 
     def subtreeFilter(self, node):
         portalType = getattr(node['item'], 'portal_type', None)
-        if portalType is not None and portalType in self.parentTypesNQ:
-            return False
-        else:
-            return True
+        return portalType is None or portalType not in self.parentTypesNQ
 
     def decoratorFactory(self, node):
         context = aq_inner(self.context)
@@ -195,13 +171,15 @@ class SitemapNavtreeStrategy(NavtreeStrategyBase):
         # BBB getRemoteUrl and link_remote are deprecated, remove in Plone 4
         newNode['getRemoteUrl'] = getattr(item, 'getRemoteUrl', None)
         newNode['useRemoteUrl'] = useRemoteUrl
-        newNode['link_remote'] = newNode['getRemoteUrl'] \
-                                 and newNode['Creator'] != self.memberId
+        newNode['link_remote'] = (
+            newNode['getRemoteUrl'] and newNode['Creator'] != self.memberId
+        )
 
         idnormalizer = queryUtility(IIDNormalizer)
         newNode['normalized_portal_type'] = idnormalizer.normalize(portalType)
-        newNode['normalized_review_state'] = \
-            idnormalizer.normalize(newNode['review_state'])
+        newNode['normalized_review_state'] = idnormalizer.normalize(
+            newNode['review_state']
+        )
         newNode['normalized_id'] = idnormalizer.normalize(newNode['id'])
 
         return newNode
@@ -215,18 +193,13 @@ class SitemapNavtreeStrategy(NavtreeStrategyBase):
         return True
 
 
+@implementer(INavtreeStrategy)
 class DefaultNavtreeStrategy(SitemapNavtreeStrategy):
     """The navtree strategy used for the default navigation portlet
     """
-    implements(INavtreeStrategy)
-    #adapts(*, INavigationTree)
 
     def __init__(self, context, view=None):
         SitemapNavtreeStrategy.__init__(self, context, view)
-        portal_properties = getToolByName(context, 'portal_properties')
-        navtree_properties = getattr(portal_properties, 'navtree_properties')
-        # XXX: We can't do this with a 'depth' query to EPI...
-        self.bottomLevel = navtree_properties.getProperty('bottomLevel', 0)
         if view is not None:
             self.rootPath = view.navigationTreeRootPath()
         else:
@@ -234,10 +207,9 @@ class DefaultNavtreeStrategy(SitemapNavtreeStrategy):
 
     def subtreeFilter(self, node):
         sitemapDecision = SitemapNavtreeStrategy.subtreeFilter(self, node)
-        if sitemapDecision == False:
+        if not sitemapDecision:
             return False
         depth = node.get('depth', 0)
         if depth > 0 and self.bottomLevel > 0 and depth >= self.bottomLevel:
             return False
-        else:
-            return True
+        return True

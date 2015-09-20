@@ -59,7 +59,8 @@ class ContactForm(form.Form):
         mail_settings = registry.forInterface(IMailSchema, prefix='plone')
         send_to_address = mail_settings.email_from_address
         from_address = mail_settings.email_from_address
-        encoding = portal.getProperty('email_charset')
+        registry = getUtility(IRegistry)
+        encoding = registry.get('plone.email_charset', 'utf-8')
         host = getToolByName(self.context, 'MailHost')
 
         data['url'] = portal.absolute_url()

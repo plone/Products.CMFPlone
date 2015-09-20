@@ -157,7 +157,7 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
         mail_settings.email_from_address = 'bar@baz.com'
 
         # Set the portal email encoding
-        self.portal.email_charset = 'us-ascii'
+        mail_settings.email_charset = 'us-ascii'
 
         # Notify the registered user
         self.registration.registeredNotify(member_id)
@@ -217,7 +217,7 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
         mail_settings.email_from_address = 'bar@baz.com'
 
         # Set the portal email encoding
-        self.portal.email_charset = 'us-ascii'
+        mail_settings.email_charset = 'us-ascii'
 
         from zope.publisher.browser import TestRequest
         self.registration.mailPassword(member_id, TestRequest())

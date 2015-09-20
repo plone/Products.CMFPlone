@@ -60,7 +60,7 @@ class MailControlPanelForm(controlpanel.RegistryEditForm):
                    "working!\n\n"
                    "Have a nice day.\n\n"
                    "Love,\n\nPlone")
-        email_charset = self.context.getProperty('email_charset')
+        email_charset = mail_settings.email_charset
         subject = "Test e-mail from Plone"
 
         # Make the timeout incredibly short. This is enough time for most mail

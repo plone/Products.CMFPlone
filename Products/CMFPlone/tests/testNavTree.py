@@ -464,7 +464,7 @@ class TestFolderTree(PloneTestCase.PloneTestCase):
 class TestNavigationRoot(PloneTestCase.PloneTestCase):
 
     def testGetNavigationRootPropertyNotSet(self):
-        self.portal.portal_properties.navtree_properties._delProperty('root')
+        self.portal.portal_registry['plone.root'] = u'/'
         root = getNavigationRoot(self.portal)
         self.assertEqual(root, '/'.join(self.portal.getPhysicalPath()))
 
@@ -484,8 +484,7 @@ class TestNavigationRoot(PloneTestCase.PloneTestCase):
         folderPath = '/'.join(self.folder.getPhysicalPath())
         portalPath = '/'.join(self.portal.getPhysicalPath())
         relativePath = folderPath[len(portalPath):]
-        self.portal.portal_properties.navtree_properties \
-                .manage_changeProperties(root=relativePath)
+        self.portal.portal_registry['plone.root'] = unicode(relativePath)
         root = getNavigationRoot(self.portal)
         self.assertEqual(root, folderPath)
 

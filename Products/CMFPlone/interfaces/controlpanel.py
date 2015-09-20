@@ -803,6 +803,40 @@ class INavigationSchema(Interface):
         default=True,
         required=False)
 
+    sort_tabs_on = schema.Choice(
+        title=_(u"Sort tabs on"),
+        description=_(
+            u"Index used to sort the tabs"
+        ),
+        required=True,
+        default=u'getObjPositionInParent',
+        vocabulary=SimpleVocabulary([
+            # there is no vocabulary of sortable indexes by now, so hard code
+            # some options here
+            SimpleTerm(
+                'getObjPositionInParent',
+                'getObjPositionInParent',
+                _(u'Position in Parent')
+            ),
+            SimpleTerm(
+                'sortable_title',
+                'sortable_title',
+                _(u'Title')
+            ),
+            SimpleTerm(
+                'getId',
+                'getId',
+                _(u'Short Name (ID)')
+            ),
+        ]),
+    )
+    sort_tabs_reversed = schema.Bool(
+        title=_(u"Reversed sort order for tabs."),
+        description=_(
+            u"Sort tabs in descending."),
+        default=False,
+        required=False)
+
     displayed_types = schema.Tuple(
         title=_(u"Displayed content types"),
         description=_(
@@ -846,6 +880,32 @@ class INavigationSchema(Interface):
             u"or within a subfolder."),
         default=True,
         required=False)
+
+    root = schema.TextLine(
+        title=_(
+            u"Root"),
+        description=_(
+            u"Path to be used as navigation root, relative to Plone site root."
+            u"Starts with '/'"
+        ),
+        default=u'/',
+        required=True
+    )
+
+    sitemap_depth = schema.Int(
+        title=_(u"Sitemap depth"),
+        description=_(u"Number of folder levels to show in the site map."),
+        default=3,
+        required=True
+    )
+
+    parent_types_not_to_query = schema.List(
+        title=_(u"Hide children of these types"),
+        description=_(u"Hide content inside the following types in Navigation."),
+        default=[u'TempFolder'],
+        value_type=schema.TextLine(),
+        required=False,
+    )
 
 
 class ISearchSchema(Interface):
@@ -1044,6 +1104,34 @@ class ISiteSchema(Interface):
         required=False,
     )
 
+    default_page = schema.List(
+        title=_(u'Default page ids'),
+        description=_(
+            u"Select which ids can act as fallback default pages for",
+            u"a container."
+        ),
+        required=True,
+        default=[u'index_html',
+                 u'index.html',
+                 u'index.htm',
+                 u'FrontPage'],
+        value_type=schema.TextLine()
+    )
+
+    roles_allowed_to_add_keywords = schema.List(
+        title=_(u'Roles that can add keywords'),
+        description=_(
+            u"help_allow_roles_to_add_keywords",
+            default=u"Only the following roles can add new keywords "),
+        required=False,
+        default=[
+            u"Manager",
+            u"Site Administrator",
+            u"Reviewer",
+        ],
+        value_type=schema.Choice(vocabulary="plone.app.vocabularies.Roles"),
+    )
+
 
 class IDateAndTimeSchema(Interface):
     """Controlpanel settings for date and time related settings.
@@ -1082,8 +1170,57 @@ class IDateAndTimeSchema(Interface):
 
 
 class ITypesSchema(Interface):
+    """Controlpanel settings for the types settings.
     """
-    """
+    types_link_to_folder_contents = schema.List(
+        title=_(u'Types linking to folder contents in folder contents view'),
+        description=_(
+            u"help_types_link_to_folder_contents",
+            default=u"When clicking items in folder contents view, these "
+                    u"types will display their contents instead of using "
+                    u"their default view."),
+        required=False,
+        default=[u'Folder'],
+        value_type=schema.TextLine()
+    )
+
+    types_use_view_action_in_listings = schema.List(
+        title=_(u'Types which use the view action in listing views.'),
+        description=_(
+            u"help_types_use_view_action_in_listings",
+            default=u"When clicking items in listing views, these "
+                    u"types will use the '/view' action instead of using "
+                    u"their default view."),
+        required=False,
+        default=[u'Image',
+                 u'File'],
+        value_type=schema.TextLine(),
+    )
+
+    redirect_links = schema.Bool(
+        title=_(u"Redirect links"),
+        description=_(
+            u"help_redirect_links",
+            default=u"When clicking on a Link type, should the user be "
+                    u"taken to the default view or be redirected to the "
+                    u"Link's URL?"),
+        required=False,
+        default=True
+    )
+
+    default_page_types = schema.List(
+        title=_(u"Types that can be set as a default page"),
+        description=_(
+            u"The content types that should be available for selection "
+            u"when setting a defult page."),
+        required=False,
+        default=[
+            u'Document',
+            u'Event',
+            u'News Item',
+        ],
+        value_type=schema.TextLine()
+    )
 
 
 class IMailSchema(Interface):
@@ -1154,6 +1291,13 @@ class IMailSchema(Interface):
             u"e-mail' feature."),
         default=None,
         required=True)
+
+    email_charset = schema.ASCIILine(
+        title=_(u"Email characterset"),
+        description=_(u'Characterset to use when sending emails.'),
+        default='utf-8',
+        required=True,
+    )
 
 
 class IMarkupSchema(Interface):
@@ -1311,3 +1455,18 @@ class ILoginSchema(Interface):
         default=False,
         required=False
     )
+
+
+class ILinkSchema(Interface):
+
+    external_links_open_new_window = schema.Bool(
+        title=_(u'Open external links in new a window'),
+        description=_(u''),
+        default=False,
+        required=False)
+
+    mark_special_links = schema.Bool(
+        title=_(u'Mark special links'),
+        description=_(u'Marks external or special protocol links with class.'),
+        default=True,
+        required=False)

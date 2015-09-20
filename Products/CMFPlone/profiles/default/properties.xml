@@ -2,5 +2,4 @@
 <site>
  <property name="title">Site</property>
  <property name="description"></property>
- <property name="email_charset" type="string">utf-8</property>
 </site>

@@ -26,6 +26,8 @@
            prefix="plone" />
   <records interface="Products.CMFPlone.interfaces.ISocialMediaSchema"
            prefix="plone" />
+  <records interface="Products.CMFPlone.interfaces.ITypesSchema"
+           prefix="plone" />
   <records interface="Products.CMFPlone.interfaces.IImagingSchema"
            prefix="plone" />
   <records interface="Products.CMFPlone.interfaces.ILoginSchema"

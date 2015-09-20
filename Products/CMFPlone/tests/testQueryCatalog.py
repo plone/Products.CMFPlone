@@ -1,14 +1,14 @@
+# -*- coding: utf-8 -*-
 # Test queryCatalog and plone search forms
-
-from zope.component import getMultiAdapter
-from Products.CMFPlone.tests import PloneTestCase
-from Products.CMFPlone.interfaces import ISearchSchema
-from Products.ZCTextIndex.ParseTree import ParseError
-from Products.CMFPlone.interfaces.syndication import ISiteSyndicationSettings
 from plone.registry.interfaces import IRegistry
-from zope.component import getUtility
+from Products.CMFPlone.interfaces import INavigationSchema
+from Products.CMFPlone.interfaces import ISearchSchema
+from Products.CMFPlone.interfaces.syndication import ISiteSyndicationSettings
+from Products.CMFPlone.tests import PloneTestCase
+from Products.ZCTextIndex.ParseTree import ParseError
 from zExceptions import NotFound
-import types
+from zope.component import getMultiAdapter
+from zope.component import getUtility
 
 
 class TestQueryCatalog(PloneTestCase.PloneTestCase):
@@ -28,7 +28,7 @@ class TestQueryCatalog(PloneTestCase.PloneTestCase):
         # strip portal_types and show_inactive parameter which is
         # auto-set with types blacklisting. Useful to simplify test
         # assertions when we don't care
-        if type(query_dict) == types.DictType:
+        if isinstance(query_dict, dict):
             for ignore in ['portal_type', 'show_inactive']:
                 if ignore in query_dict:
                     del query_dict[ignore]
@@ -114,13 +114,17 @@ class TestQueryCatalog(PloneTestCase.PloneTestCase):
 
     def testNavigationRoot(self):
         request = {'SearchableText': 'a*'}
-        ntp = self.portal.portal_properties.navtree_properties
-        ntp.root = '/'
+        registry = getUtility(IRegistry)
+        navigation_settings = registry.forInterface(
+            INavigationSchema,
+            prefix='plone'
+        )
+        navigation_settings.root = u'/'
         qry = self.folder.queryCatalog(request, use_navigation_root=True)
         self.assertEqual('/'.join(self.portal.getPhysicalPath()), qry['path'])
         self.setRoles(('Manager',))
         self.portal.invokeFactory('Folder', 'foo')
-        ntp.root = '/foo'
+        navigation_settings.root = u'/foo'
         qry = self.folder.queryCatalog(request, use_navigation_root=True)
         self.assertEqual(
             '/'.join(self.portal.foo.getPhysicalPath()),
@@ -154,7 +158,7 @@ class TestQueryCatalogQuoting(PloneTestCase.PloneTestCase):
         # strip portal_types and show_inactive parameter which is
         # auto-set with types blacklisting. Useful to simplify test
         # assertions when we don't care
-        if type(query_dict) == types.DictType:
+        if isinstance(query_dict, dict):
             for ignore in ['portal_type', 'show_inactive']:
                 if ignore in query_dict:
                     del query_dict[ignore]

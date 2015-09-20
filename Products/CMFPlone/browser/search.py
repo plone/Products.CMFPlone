@@ -10,6 +10,7 @@ from plone.app.contentlisting.interfaces import IContentListing
 from plone.registry.interfaces import IRegistry
 from zope.component import getMultiAdapter
 from zope.component import queryUtility
+from zope.component import getUtility
 from zope.i18nmessageid import MessageFactory
 from zope.publisher.browser import BrowserView
 
@@ -209,9 +210,9 @@ class AjaxSearch(Search):
         length = registry.get('plone.search_results_description_length')
         plone_view = getMultiAdapter(
             (self.context, self.request), name='plone')
-        props = getToolByName(self.context, 'portal_properties')
-        stp = props.site_properties
-        view_action_types = stp.getProperty('typesUseViewActionInListings', ())
+        registry = getUtility(IRegistry)
+        view_action_types = registry.get(
+            'plone.types_use_view_action_in_listings', [])
         for item in batch:
             url = item.getURL()
             if item.portal_type in view_action_types:

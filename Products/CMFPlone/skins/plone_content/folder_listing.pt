@@ -30,8 +30,7 @@
                         more_url more_url|request/more_url|string:folder_contents;
                         is_a_topic python:context.portal_type=='Topic';
                         folderContents folderContents|nothing; folderContents python:folderContents or is_a_topic and context.queryCatalog(batch=True, **contentFilter) or context.getFolderContents(contentFilter, batch=True, b_size=limit_display or 100);
-                        site_properties context/portal_properties/site_properties;
-                        use_view_action site_properties/typesUseViewActionInListings|python:();
+                        use_view_action python:context.portal_registry['plone.types_use_view_action_in_listings'];
                         Batch python:modules['Products.CMFPlone'].Batch;
                         b_start python:request.get('b_start', 0);
                         batch python:folderContents if isinstance(folderContents, Batch) else Batch(folderContents, limit_display or 100, int(b_start), orphan=1);

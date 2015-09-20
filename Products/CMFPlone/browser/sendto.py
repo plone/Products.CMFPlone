@@ -74,7 +74,8 @@ class SendToForm(form.Form):
         try:
             # Sends a link of a page to someone.
             host = getUtility(IMailHost)
-            encoding = site.getProperty('email_charset')
+            registry = getUtility(IRegistry)
+            encoding = registry.get('plone.email_charset', 'utf-8')
 
             if not envelope_from:
                 envelope_from = send_from_address

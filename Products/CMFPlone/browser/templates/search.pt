@@ -220,8 +220,7 @@
                       <metal:results tal:condition="batch"
                                      tal:define="isAnon context/@@plone_portal_state/anonymous;
                                                  toLocalizedTime nocall: context/@@plone/toLocalizedTime;
-                                                 site_properties context/portal_properties/site_properties;
-                                                 use_view_action site_properties/typesUseViewActionInListings|python:();
+                                                 use_view_action python:context.portal_registry.get('plone.types_use_view_action_in_listings', []);
                                                  allowAnonymousViewAbout python:context.portal_registry['plone.allow_anon_views_about'];
                                                  show_about python:not isAnon or allowAnonymousViewAbout;">
                         <ol class="searchResults">

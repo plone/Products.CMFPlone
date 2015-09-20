@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from zope.component import getUtility
+from plone.registry.interfaces import IRegistry
 from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
@@ -110,8 +112,8 @@ class DefaultPageTestCase(unittest.TestCase):
     def test_get_default_page_step_4(self):
         # 4. Else, look up the property default_page in site_properties for
         #   magic ids and test these
-        sp = self.portal.portal_properties.site_properties
-        sp.manage_changeProperties(default_page=('d1',))
+        registry = getUtility(IRegistry)
+        registry['plone.default_page'] = [u'd1']
         self.folder.invokeFactory('Document', 'd1', title=u"Doc 1")
 
         from Products.CMFPlone.defaultpage import get_default_page

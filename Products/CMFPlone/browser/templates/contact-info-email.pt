@@ -5,8 +5,8 @@
      i18n:domain="plone"
      tal:omit-tag=""
      tal:define="portal context/@@plone_portal_state/portal;
-                 charset portal/email_charset|string:utf-8;
-                 from_name python:context.portal_registry['plone.email_from_name'];
+                 charset python:context.portal_registry.get('plone.email_charset', 'utf-8');
+                 from_name python:context.portal_registry.get('plone.email_from_name', '');
                  dummy python:request.RESPONSE.setHeader('Content-Type', 'text/plain;;charset=%s' % charset);"
 ><span tal:omit-tag="" tal:content="options/message | nothing" />
 

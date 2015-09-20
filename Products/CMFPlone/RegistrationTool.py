@@ -373,7 +373,8 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         reset_tool = getToolByName(self, 'portal_password_reset')
         reset = reset_tool.requestReset(member.getId())
 
-        encoding = getUtility(ISiteRoot).getProperty('email_charset', 'utf-8')
+        registry = getUtility(IRegistry)
+        encoding = registry.get('plone.email_charset', 'utf-8')
         mail_text = self.mail_password_template(
             self, REQUEST, member=member, reset=reset,
             password=member.getPassword(), charset=encoding)
@@ -425,7 +426,8 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         # Rather than have the template try to use the mailhost, we will
         # render the message ourselves and send it from here (where we
         # don't need to worry about 'UseMailHost' permissions).
-        encoding = getUtility(ISiteRoot).getProperty('email_charset', 'utf-8')
+        registry = getUtility(IRegistry)
+        encoding = registry.get('plone.email_charset', 'utf-8')
         mail_text = self.registered_notify_template(
             self, self.REQUEST, member=member, reset=reset, email=email,
             charset=encoding)

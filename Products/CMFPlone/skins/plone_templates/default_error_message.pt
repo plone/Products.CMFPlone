@@ -60,10 +60,9 @@
                     <tal:suggestions define="first_parent redirection_view/find_first_parent;
                                              similar_items redirection_view/search_for_similar;
                                              plone_view context/@@plone;
-                                             site_properties context/portal_properties/site_properties;
-                                             use_view_action site_properties/typesUseViewActionInListings|python:();
-                                             desc_length site_properties/search_results_description_length;
-                                             desc_ellipsis site_properties/ellipsis;
+                                             registry context/portal_registry;
+                                             use_view_action python:registry['plone.types_use_view_action_in_listings'];
+                                             desc_length python:registry['plone.search_results_description_length'];
                                              normalizeString nocall:plone_view/normalizeString;"
                                      condition="python:first_parent is not None or similar_items">
 
@@ -79,7 +78,7 @@
                                 <a href="${url}"
                                    tal:define="item_wf_state_class python:' state-' + context.portal_workflow.getInfoFor(first_parent, 'review_state', '');"
                                    tal:attributes="class python:'contenttype-' + normalizeString(result_type) + item_wf_state_class">${first_parent/Title}</a>
-                                <span tal:content="python:plone_view.cropText(first_parent.Description(), desc_length, desc_ellipsis)" class="discreet"> Description </span>
+                                <span tal:content="python:plone_view.cropText(first_parent.Description(), desc_length)" class="discreet"> Description </span>
                             </li>
                         </tal:firstparent>
 
@@ -90,7 +89,7 @@
                                 <a href="${url}"
                                    tal:define="item_wf_state_class string: state-${similar/review_state};"
                                    tal:attributes="class python:'contenttype-' + normalizeString(result_type) + item_wf_state_class">${similar/pretty_title_or_id}</a>
-                                <span tal:content="python:plone_view.cropText(similar.Description or '', desc_length, desc_ellipsis)" class="discreet"> Description </span>
+                                <span tal:content="python:plone_view.cropText(similar.Description or '', desc_length)" class="discreet"> Description </span>
                             </li>
                         </tal:similar>
 

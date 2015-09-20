@@ -4,13 +4,13 @@ from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
 from plone.app.testing import setRoles
 from plone.namedfile.file import NamedBlobFile
+from plone.registry.interfaces import IRegistry
 from plone.testing.z2 import Browser
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper
-from zope.event import notify
-from zope.traversing.interfaces import BeforeTraverseEvent
+from zope.component import getUtility
 import difflib
 import re
 import transaction
@@ -138,8 +138,8 @@ class TestPloneToolBrowserDefault(unittest.TestCase):
                          (self.portal.folder, ['index_html'],))
 
     def testBrowserDefaultMixinFolderGlobalDefaultPage(self):
-        getToolByName(self.portal, "portal_properties") \
-            .site_properties.manage_changeProperties(default_page=['foo'])
+        registry = getUtility(IRegistry)
+        registry['plone.default_page'] = [u'foo']
         self.portal.folder.invokeFactory('Document', 'foo')
         self.assertEqual(self.putils.browserDefault(self.portal.folder),
                          (self.portal.folder, ['foo']))
@@ -233,11 +233,11 @@ class TestPloneToolBrowserDefault(unittest.TestCase):
         )
 
     def testDefaultPageSetting(self):
-        sp = getToolByName(self.portal, "portal_properties").site_properties
-        default = sp.getProperty('default_page', [])
+        registry = getUtility(IRegistry)
+        default = registry.get('plone.default_page', [])
         self.assertEqual(
             default,
-            ('index_html', 'index.html', 'index.htm', 'FrontPage')
+            [u'index_html', u'index.html', u'index.htm', u'FrontPage']
             )
 
 

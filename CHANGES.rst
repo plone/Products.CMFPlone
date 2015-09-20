@@ -22,6 +22,9 @@ Changelog
 - Hide document byline viewlet by default.
   [esteele]
 
+- Move portal property email_charset to the registry.
+  [esteele]
+
 - Fix #950: Missing personal toolbar when expanding the horizontal toolbar
   [ichim-david]
 
@@ -31,6 +34,8 @@ Changelog
 - Move calendar_starting_year and calendar_future_years_available to
   registry and Products.Archetypes.
   [pbauer]
+- Use registry lookup for types_use_view_action_in_listings
+  [esteele]
 
 - Add view @@hero to be included by plonetheme.barceloneta with diazo.
   [pbauer]
@@ -40,6 +45,8 @@ Changelog
 
 - remove unused code to create NavTree probably left from Plone 3.0 times
   and since a while handled by plone.app.portlets.
+
+- add navigation root registry value
   [jensens]
 
 - Implement new feed syndication using `NewsML 1 <http://iptc.org/standards/newsml-1/>`_,
@@ -48,6 +55,9 @@ Changelog
 
 - provide positive number validator
   [vangheem]
+
+- Move external_links_open_new_window, redirect_links to the registry.
+  [esteele]
 
 - Remove invalid_ids portal property as it isn't used.
   [esteele]

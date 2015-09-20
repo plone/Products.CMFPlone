@@ -1,19 +1,18 @@
-from zope.component import getUtility
-from zope.interface import directlyProvides
+# -*- coding: utf-8 -*-
 from plone.registry.interfaces import IRegistry
-from Products.CMFPlone.interfaces import INavigationSchema
-
-from Products.CMFPlone.tests import PloneTestCase
-from Products.CMFPlone.tests import dummy
-from Products.CMFPlone.tests.utils import validateCSSIdentifier
-from Products.CMFPlone.tests.utils import folder_position
-
-#from Products.CMFPlone.browser.navigation import CatalogNavigationTree
-from Products.CMFPlone.browser.navigation import CatalogSiteMap
-from Products.CMFPlone.browser.navigation import CatalogNavigationTabs
 from Products.CMFPlone.browser.navigation import CatalogNavigationBreadcrumbs
+from Products.CMFPlone.browser.navigation import CatalogNavigationTabs
+from Products.CMFPlone.browser.navigation import CatalogSiteMap
 from Products.CMFPlone.browser.navigation import PhysicalNavigationBreadcrumbs
 from Products.CMFPlone.interfaces import IHideFromBreadcrumbs
+from Products.CMFPlone.interfaces import INavigationSchema
+from Products.CMFPlone.interfaces import ITypesSchema
+from Products.CMFPlone.tests import dummy
+from Products.CMFPlone.tests import PloneTestCase
+from Products.CMFPlone.tests.utils import folder_position
+from Products.CMFPlone.tests.utils import validateCSSIdentifier
+from zope.component import getUtility
+from zope.interface import directlyProvides
 
 portal_name = PloneTestCase.portal_name
 
@@ -29,6 +28,11 @@ class TestBaseNavTree(PloneTestCase.PloneTestCase):
         self.request = self.app.REQUEST
         self.populateSite()
         self.setupAuthenticator()
+        registry = getUtility(IRegistry)
+        self.navigation_settings = registry.forInterface(
+            INavigationSchema,
+            prefix='plone'
+        )
 
     def populateSite(self):
         self.setRoles(['Manager'])
@@ -78,41 +82,12 @@ class TestBaseNavTree(PloneTestCase.PloneTestCase):
             if c['item'].getPath() == '/plone/folder2':
                 self.fail()
 
-    def testShowAllParentsOverridesNavTreeExcludesItemsWithExcludeProperty(self):
-        # Make sure that items whose ids are in the idsNotToList navTree
-        # property are not included
+    def testShowAllParentsOverridesNavTreeExcludesItemsWithExcludeProp(self):
+        # Make sure excluded items are not included in the navtree
         self.portal.folder2.setExcludeFromNav(True)
         self.portal.folder2.reindexObject()
-        ntp = self.portal.portal_properties.navtree_properties
-        ntp.manage_changeProperties(showAllParents=True)
-        view = self.view_class(self.portal.folder2.doc21, self.request)
-        tree = view.navigationTree()
-        self.assertTrue(tree)
-        found = False
-        for c in tree['children']:
-            if c['item'].getPath() == '/plone/folder2':
-                found = True
-                break
-        self.assertTrue(found)
+        self.navigation_settings.show_excluded_items = True
 
-    def testNavTreeExcludesItemsInIdsNotToList(self):
-        # Make sure that items whose ids are in the idsNotToList navTree
-        # property are not included
-        ntp = self.portal.portal_properties.navtree_properties
-        ntp.manage_changeProperties(idsNotToList=['folder2'])
-        view = self.view_class(self.portal.folder1.doc11, self.request)
-        tree = view.navigationTree()
-        self.assertTrue(tree)
-        for c in tree['children']:
-            if c['item'].getPath() == '/plone/folder2':
-                self.fail()
-
-    def testShowAllParentsOverridesNavTreeExcludesItemsInIdsNotToList(self):
-        # Make sure that items whose ids are in the idsNotToList navTree
-        # property are not included
-        ntp = self.portal.portal_properties.navtree_properties
-        ntp.manage_changeProperties(idsNotToList=['folder2'],
-                                    showAllParents=True)
         view = self.view_class(self.portal.folder2.doc21, self.request)
         tree = view.navigationTree()
         self.assertTrue(tree)
@@ -130,20 +105,11 @@ class TestBaseNavTree(PloneTestCase.PloneTestCase):
         tree = view.navigationTree()
         self.assertTrue(tree)
         # Ensure that our 'doc21' default page is not in the tree.
-        self.assertEqual([c for c in tree['children'][-1]['children']
-                             if c['item'].getPath()[-5:] == 'doc21'], [])
-
-    def testNavTreeMarksParentMetaTypesNotToQuery(self):
-        # Make sure that items whose ids are in the idsNotToList navTree
-        # property get no_display set to True
-        view = self.view_class(self.portal.folder2.file21, self.request)
-        tree = view.navigationTree()
-        self.assertEqual(tree['children'][-1]['show_children'], True)
-        ntp = self.portal.portal_properties.navtree_properties
-        ntp.manage_changeProperties(parentMetaTypesNotToQuery=['Folder'])
-        view = self.view_class(self.portal.folder2.file21, self.request)
-        tree = view.navigationTree()
-        self.assertEqual(tree['children'][-1]['show_children'], False)
+        self.assertEqual(
+            [c for c in tree['children'][-1]['children']
+             if c['item'].getPath()[-5:] == 'doc21'],
+            []
+        )
 
     def testCreateNavTreeWithLink(self):
         # BBB getRemoteURL deprecated, remove in Plone 4
@@ -153,22 +119,25 @@ class TestBaseNavTree(PloneTestCase.PloneTestCase):
             if child['portal_type'] != 'Link':
                 self.assertFalse(child['item'].getRemoteUrl)
             if child['Title'] == 'link1':
-                self.assertEqual(child['item'].getRemoteUrl,
-                                     'http://plone.org')
+                self.assertEqual(
+                    child['item'].getRemoteUrl,
+                    'http://plone.org'
+                )
 
     def testNonStructuralFolderHidesChildren(self):
-        # Make sure NonStructuralFolders act as if parentMetaTypesNotToQuery
+        # Make sure NonStructuralFolders act as if parent_types_not_to_query
         # is set.
         f = dummy.NonStructuralFolder('ns_folder')
         self.folder._setObject('ns_folder', f)
         self.portal.portal_catalog.reindexObject(self.folder.ns_folder)
         self.portal.portal_catalog.reindexObject(self.folder)
-        ntp = self.portal.portal_properties.navtree_properties
-        ntp.manage_changeProperties(root='/Members/test_user_1_')
+        self.navigation_settings.root = '/Members/test_user_1_'
         view = self.view_class(self.folder.ns_folder, self.request)
         tree = view.navigationTree()
-        self.assertEqual(tree['children'][0]['item'].getPath(),
-                                '/plone/Members/test_user_1_/ns_folder')
+        self.assertEqual(
+            tree['children'][0]['item'].getPath(),
+            '/plone/Members/test_user_1_/ns_folder'
+        )
         self.assertEqual(len(tree['children'][0]['children']), 0)
 
     def testTopLevel(self):
@@ -177,8 +146,10 @@ class TestBaseNavTree(PloneTestCase.PloneTestCase):
         view = self.view_class(self.portal.folder2.file21, self.request)
         tree = view.navigationTree()
         self.assertTrue(tree)
-        self.assertEqual(tree['children'][-1]['item'].getPath(),
-                         '/plone/folder2/file21')
+        self.assertEqual(
+            tree['children'][-1]['item'].getPath(),
+            '/plone/folder2/file21'
+        )
 
     def testTopLevelWithContextAboveLevel(self):
         ntp = self.portal.portal_properties.navtree_properties
@@ -199,8 +170,9 @@ class TestBaseNavTree(PloneTestCase.PloneTestCase):
     def testTopLevelWithNavigationRoot(self):
         self.portal.folder2.invokeFactory('Folder', 'folder21')
         self.portal.folder2.folder21.invokeFactory('Document', 'doc211')
+        self.navigation_settings.root = '/folder2'
         ntp = self.portal.portal_properties.navtree_properties
-        ntp.manage_changeProperties(topLevel=1, root='/folder2')
+        ntp.manage_changeProperties(topLevel=1)
         view = self.view_class(self.portal.folder2.folder21, self.request)
         tree = view.navigationTree()
         self.assertTrue(tree)
@@ -209,8 +181,6 @@ class TestBaseNavTree(PloneTestCase.PloneTestCase):
                          '/plone/folder2/folder21/doc211')
 
     def testTopLevelWithPortalFactory(self):
-        ntp = self.portal.portal_properties.navtree_properties
-        ntp.manage_changeProperties(topLevel=1)
         id = self.portal.generateUniqueId('Document')
         typeName = 'Document'
         newObject = self.portal.folder1.restrictedTraverse(
@@ -245,8 +215,7 @@ class TestBaseNavTree(PloneTestCase.PloneTestCase):
         self.assertEqual(len(tree['children'][-1]['children']), 0)
 
     def testNoRootSet(self):
-        ntp = self.portal.portal_properties.navtree_properties
-        ntp.manage_changeProperties(root='')
+        self.navigation_settings.root = u''
         view = self.view_class(self.portal.folder2.file21, self.request)
         tree = view.navigationTree()
         self.assertTrue(tree)
@@ -254,8 +223,7 @@ class TestBaseNavTree(PloneTestCase.PloneTestCase):
                          '/plone/folder2')
 
     def testRootIsPortal(self):
-        ntp = self.portal.portal_properties.navtree_properties
-        ntp.manage_changeProperties(root='/')
+        self.navigation_settings.root = u'/'
         view = self.view_class(self.portal.folder2.file21, self.request)
         tree = view.navigationTree()
         self.assertTrue(tree)
@@ -263,8 +231,7 @@ class TestBaseNavTree(PloneTestCase.PloneTestCase):
                          '/plone/folder2')
 
     def testRootIsNotPortal(self):
-        ntp = self.portal.portal_properties.navtree_properties
-        ntp.manage_changeProperties(root='/folder2')
+        self.navigation_settings.root = u'/folder2'
         view = self.view_class(self.portal.folder2.file21, self.request)
         tree = view.navigationTree()
         self.assertTrue(tree)
@@ -272,8 +239,7 @@ class TestBaseNavTree(PloneTestCase.PloneTestCase):
                          '/plone/folder2/doc21')
 
     def testRootDoesNotExist(self):
-        ntp = self.portal.portal_properties.navtree_properties
-        ntp.manage_changeProperties(root='/dodo')
+        self.navigation_settings.root = u'/dodo'
         view = self.view_class(self.portal.folder2.file21, self.request)
         tree = view.navigationTree()
         self.assertTrue(tree)
@@ -281,31 +247,35 @@ class TestBaseNavTree(PloneTestCase.PloneTestCase):
         self.assertEqual(len(tree['children']), 0)
 
     def testAboveRoot(self):
-        ntp = self.portal.portal_properties.navtree_properties
-        ntp.manage_changeProperties(root='/folder2')
+        self.navigation_settings.root = u'/folder2'
         view = self.view_class(self.portal, self.request)
         tree = view.navigationTree()
         self.assertTrue(tree)
-        self.assertEqual(tree['children'][0]['item'].getPath(),
-                         '/plone/folder2/doc21')
+        self.assertEqual(
+            tree['children'][0]['item'].getPath(),
+            '/plone/folder2/doc21'
+        )
 
     def testOutsideRoot(self):
-        ntp = self.portal.portal_properties.navtree_properties
-        ntp.manage_changeProperties(root='/folder2')
+        self.navigation_settings.root = u'/folder2'
         view = self.view_class(self.portal.folder1, self.request)
         tree = view.navigationTree()
         self.assertTrue(tree)
-        self.assertEqual(tree['children'][0]['item'].getPath(),
-                         '/plone/folder2/doc21')
+        self.assertEqual(
+            tree['children'][0]['item'].getPath(),
+            '/plone/folder2/doc21'
+        )
 
     def testRootIsCurrent(self):
-        ntp = self.portal.portal_properties.navtree_properties
-        ntp.manage_changeProperties(currentFolderOnlyInNavtree=True)
-        view = self.view_class(self.portal.folder2, self.request)
+        view = self.view_class(self.portal.folder2,
+                               self.request,
+                               currentFolderOnly=True)
         tree = view.navigationTree()
         self.assertTrue(tree)
-        self.assertEqual(tree['children'][0]['item'].getPath(),
-                         '/plone/folder2/doc21')
+        self.assertEqual(
+            tree['children'][0]['item'].getPath(),
+            '/plone/folder2/doc21'
+        )
 
     def testCustomQuery(self):
         # Try a custom query script for the navtree that returns only published
@@ -324,14 +294,14 @@ class TestBaseNavTree(PloneTestCase.PloneTestCase):
         tree = view.navigationTree()
         self.assertTrue(tree)
         self.assertTrue('children' in tree)
-        #Should only contain current object
+        # Should only contain current object
         self.assertEqual(len(tree['children']), 1)
-        #change workflow for folder1
+        # change workflow for folder1
         workflow.doActionFor(self.portal.folder1, 'publish')
         self.portal.folder1.reindexObject()
         view = self.view_class(self.portal.folder2, self.request)
         tree = view.navigationTree()
-        #Should only contain current object and published folder
+        # Should only contain current object and published folder
         self.assertEqual(len(tree['children']), 2)
 
     def testStateFiltering(self):
@@ -341,23 +311,20 @@ class TestBaseNavTree(PloneTestCase.PloneTestCase):
         self.portal._delObject('events')
         workflow = self.portal.portal_workflow
 
-        registry = getUtility(IRegistry)
-        settings = registry.forInterface(INavigationSchema, prefix='plone')
-
-        settings.workflow_states_to_show = ('published',)
-        settings.filter_on_workflow = True
+        self.navigation_settings.workflow_states_to_show = ('published',)
+        self.navigation_settings.filter_on_workflow = True
         view = self.view_class(self.portal.folder2, self.request)
         tree = view.navigationTree()
         self.assertTrue(tree)
         self.assertTrue('children' in tree)
-        #Should only contain current object
+        # Should only contain current object
         self.assertEqual(len(tree['children']), 1)
-        #change workflow for folder1
+        # change workflow for folder1
         workflow.doActionFor(self.portal.folder1, 'publish')
         self.portal.folder1.reindexObject()
         view = self.view_class(self.portal.folder2, self.request)
         tree = view.navigationTree()
-        #Should only contain current object and published folder
+        # Should only contain current object and published folder
         self.assertEqual(len(tree['children']), 2)
 
 
@@ -372,6 +339,11 @@ class TestSiteMap(PloneTestCase.PloneTestCase):
         self.request = self.app.REQUEST
         # Apply a default layer for view lookups to work in Zope 2.9+
         self.populateSite()
+        registry = getUtility(IRegistry)
+        self.navigation_settings = registry.forInterface(
+            INavigationSchema,
+            prefix='plone'
+        )
 
     def populateSite(self):
         self.setRoles(['Manager'])
@@ -401,7 +373,8 @@ class TestSiteMap(PloneTestCase.PloneTestCase):
 
     def testComplexSitemap(self):
         # create and test a reasonabley complex sitemap
-        path = lambda x: '/'.join(x.getPhysicalPath())
+        def path(x):
+            return '/'.join(x.getPhysicalPath())
         # We do this in a strange order in order to maximally demonstrate the
         # bug
         folder1 = self.portal.folder1
@@ -422,8 +395,7 @@ class TestSiteMap(PloneTestCase.PloneTestCase):
         subfolder221 = subfolder22.subfolder221
 
         # Increase depth
-        ntp = self.portal.portal_properties.navtree_properties
-        ntp.manage_changeProperties(sitemapDepth=5)
+        self.portal.portal_registry['plone.sitemap_depth'] = 5
 
         view = self.view_class(self.portal, self.request)
         sitemap = view.siteMap()
@@ -483,8 +455,7 @@ class TestSiteMap(PloneTestCase.PloneTestCase):
             self.assertTrue(len(sitemap['children'][-1]['children']) > 0)
 
     def testSitemapWithNavigationRoot(self):
-        ntp = self.portal.portal_properties.navtree_properties
-        ntp.manage_changeProperties(root='/folder2')
+        self.navigation_settings.root = u'/folder2'
         view = self.view_class(self.portal, self.request)
         sitemap = view.siteMap()
         self.assertEqual(sitemap['children'][-1]['item'].getPath(),
@@ -503,6 +474,14 @@ class TestBasePortalTabs(PloneTestCase.PloneTestCase):
         self.request = self.app.REQUEST
         self.populateSite()
 
+    @property
+    def navigation_settings(self):
+        registry = getUtility(IRegistry)
+        return registry.forInterface(
+            INavigationSchema,
+            prefix='plone'
+        )
+
     def populateSite(self):
         self.setRoles(['Manager'])
         self.portal.invokeFactory('Document', 'doc1')
@@ -516,16 +495,13 @@ class TestBasePortalTabs(PloneTestCase.PloneTestCase):
         # See if we can create one at all
         view = self.view_class(self.portal, self.request)
 
-        #Everything shows up by default
+        # Everything shows up by default
         tabs = view.topLevelTabs(actions=[])
         self.assertTrue(tabs)
         self.assertEqual(len(tabs), 8)
 
-        #Only the folders show up (Members, news, events, folder1, folder2)
-        registry = getUtility(IRegistry)
-        navigation_settings = registry.forInterface(INavigationSchema,
-                                                    prefix="plone")
-        navigation_settings.nonfolderish_tabs = False
+        # Only the folders show up (Members, news, events, folder1, folder2)
+        self.navigation_settings.nonfolderish_tabs = False
         tabs = view.topLevelTabs(actions=[])
         self.assertEqual(len(tabs), 5)
 
@@ -538,9 +514,9 @@ class TestBasePortalTabs(PloneTestCase.PloneTestCase):
         folder_position(self.portal, 'up', 'folder2')
         view = self.view_class(self.portal, self.request)
         tabs2 = view.topLevelTabs(actions=[])
-        #Same number of objects
+        # Same number of objects
         self.assertEqual(len(tabs1), len(tabs2))
-        #Different order
+        # Different order
         self.assertTrue(tabs1 != tabs2)
 
     def testCustomQuery(self):
@@ -558,14 +534,14 @@ class TestBasePortalTabs(PloneTestCase.PloneTestCase):
             self.portal.getCustomNavQuery(), {"review_state": "published"})
         view = self.view_class(self.portal, self.request)
         tabs = view.topLevelTabs(actions=[])
-        #Should contain no folders
+        # Should contain no folders
         self.assertEqual(len(tabs), 0)
-        #change workflow for folder1
+        # change workflow for folder1
         workflow.doActionFor(self.portal.folder1, 'publish')
         self.portal.folder1.reindexObject()
         view = self.view_class(self.portal, self.request)
         tabs = view.topLevelTabs(actions=[])
-        #Should only contain the published folder
+        # Should only contain the published folder
         self.assertEqual(len(tabs), 1)
 
     def testStateFiltering(self):
@@ -575,32 +551,24 @@ class TestBasePortalTabs(PloneTestCase.PloneTestCase):
         self.portal._delObject('events')
         workflow = self.portal.portal_workflow
 
-        registry = getUtility(IRegistry)
-        navigation_settings = registry.forInterface(
-            INavigationSchema,
-            prefix="plone"
-        )
-        navigation_settings.workflow_states_to_show = ('published',)
-        navigation_settings.filter_on_workflow = True
+        self.navigation_settings.workflow_states_to_show = ('published',)
+        self.navigation_settings.filter_on_workflow = True
         view = self.view_class(self.portal, self.request)
         tabs = view.topLevelTabs(actions=[])
-        #Should contain no folders
+        # Should contain no folders
         self.assertEqual(len(tabs), 0)
-        #change workflow for folder1
+        # change workflow for folder1
         workflow.doActionFor(self.portal.folder1, 'publish')
         self.portal.folder1.reindexObject()
         view = self.view_class(self.portal, self.request)
         tabs = view.topLevelTabs(actions=[])
-        #Should only contain the published folder
+        # Should only contain the published folder
         self.assertEqual(len(tabs), 1)
 
-    def testDisableTopLevelTabs(self):
-        registry = getUtility(IRegistry)
-        navigation_settings = registry.forInterface(
-            INavigationSchema,
-            prefix="plone"
-        )
-        navigation_settings.generate_tabs = False
+    def testDisableFolderTabs(self):
+        # Setting the site_property disable_folder_sections should remove
+        # all folder based tabs
+        self.navigation_settings.generate_tabs = False
         view = self.view_class(self.portal, self.request)
         tabs = view.topLevelTabs(actions=[])
         self.assertEqual(tabs, [])
@@ -620,43 +588,31 @@ class TestBasePortalTabs(PloneTestCase.PloneTestCase):
         self.assertFalse('folder2' in tab_names)
 
     def testTabsRespectsTypesWithViewAction(self):
-        # With a type in typesUseViewActionInListings as current action it
+        # With a type in types_use_view_action_in_listings as current action it
         # should return a tab which has '/view' appended to the url
         view = self.view_class(self.portal, self.request)
         tabs = view.topLevelTabs(actions=[])
         self.assertTrue(tabs)
         # Fail if 'view' is used for folder
         self.assertFalse(tabs[-1]['url'][-5:] == '/view')
-        # Add Folder to site_property
-        props = self.portal.portal_properties.site_properties
-        props.manage_changeProperties(
-            typesUseViewActionInListings=['Image', 'File', 'Folder'])
+        # Add Folder to type settings
+        registry = getUtility(IRegistry)
+        type_settings = registry.forInterface(
+            ITypesSchema,
+            prefix="plone",
+            check=False
+        )
+        type_settings.types_use_view_action_in_listings = [
+            u'Image', u'File', u'Folder'
+        ]
         # Verify that we have '/view'
         view = self.view_class(self.portal, self.request)
         tabs = view.topLevelTabs(actions=[])
         self.assertTrue(tabs)
         self.assertEqual(tabs[-1]['url'][-5:], '/view')
 
-    def testTabsExcludeItemsInIdsNotToList(self):
-        # Make sure that items whose ids are in the idsNotToList navTree
-        # property get purged
-        view = self.view_class(self.portal, self.request)
-        tabs = view.topLevelTabs(actions=[])
-        orig_len = len(tabs)
-        ntp = self.portal.portal_properties.navtree_properties
-        ntp.manage_changeProperties(idsNotToList=['folder2'])
-        view = self.view_class(self.portal, self.request)
-        tabs = view.topLevelTabs(actions=[])
-        self.assertTrue(tabs)
-        self.assertEqual(len(tabs), orig_len - 1)
-        tab_names = [t['id'] for t in tabs]
-        self.assertFalse('folder2' in tab_names)
-
     def testTabsExcludeNonFolderishItems(self):
-        registry = getUtility(IRegistry)
-        navigation_settings = registry.forInterface(INavigationSchema,
-                                                    prefix="plone")
-        navigation_settings.nonfolderish_tabs = False
+        self.navigation_settings.nonfolderish_tabs = False
         view = self.view_class(self.portal, self.request)
         tabs = view.topLevelTabs(actions=[])
         orig_len = len(tabs)
@@ -668,22 +624,10 @@ class TestBasePortalTabs(PloneTestCase.PloneTestCase):
         self.assertEqual(len(tabs), orig_len)
 
     def testRootBelowPortalRoot(self):
-
         self.setRoles(['Manager'])
-        self.portal.folder1.invokeFactory('Document', 'doc1')
-        self.portal.folder1.invokeFactory('Document', 'doc2')
-        self.portal.folder1.invokeFactory('Document', 'doc3')
-        self.portal.folder1.invokeFactory('Folder', 'folder1')
-        self.portal.folder1.invokeFactory('Folder', 'folder2')
+        self.portal.manage_delObjects(['news', 'events', 'Members'])
         self.setRoles(['Member'])
-
-        self.portal.portal_properties.navtree_properties.root = '/folder1'
-
-        registry = getUtility(IRegistry)
-        navigation_settings = registry.forInterface(INavigationSchema,
-                                                    prefix="plone")
-        navigation_settings.nonfolderish_tabs = False
-
+        self.navigation_settings.nonfolderish_tabs = False
         view = self.view_class(self.portal, self.request)
         tabs = view.topLevelTabs(actions=[])
         self.assertTrue(tabs)
@@ -723,7 +667,7 @@ class TestBasePortalTabs(PloneTestCase.PloneTestCase):
 
 
 class TestCatalogPortalTabs(TestBasePortalTabs):
-        view_class = CatalogNavigationTabs
+    view_class = CatalogNavigationTabs
 
 
 class TestBaseBreadCrumbs(PloneTestCase.PloneTestCase):
@@ -735,6 +679,11 @@ class TestBaseBreadCrumbs(PloneTestCase.PloneTestCase):
     def afterSetUp(self):
         self.request = self.app.REQUEST
         self.populateSite()
+        registry = getUtility(IRegistry)
+        self.navigation_settings = registry.forInterface(
+            INavigationSchema,
+            prefix='plone'
+        )
 
     def populateSite(self):
         self.setRoles(['Manager'])
@@ -756,7 +705,7 @@ class TestBaseBreadCrumbs(PloneTestCase.PloneTestCase):
                          doc.aq_parent.absolute_url())
 
     def testBreadcrumbsRespectTypesWithViewAction(self):
-        # With a type in typesUseViewActionInListings as current action it
+        # With a type in types_use_view_action_in_listings as current action it
         # should return a breadcrumb which has '/view' appended to the url
         view = self.view_class(self.portal.folder1.file11, self.request)
         crumbs = view.breadcrumbs()
@@ -764,8 +713,8 @@ class TestBaseBreadCrumbs(PloneTestCase.PloneTestCase):
         self.assertEqual(crumbs[-1]['absolute_url'][-5:], '/view')
 
     def testBreadcrumbsStopAtNavigationRoot(self):
-        ntp = self.portal.portal_properties.navtree_properties
-        ntp.manage_changeProperties(topLevel=1, root='/folder1')
+        self.navigation_settings.top_level = 1
+        self.navigation_settings.root = u'/folder1'
         view = self.view_class(self.portal.folder1.doc11, self.request)
         crumbs = view.breadcrumbs()
         self.assertTrue(crumbs)

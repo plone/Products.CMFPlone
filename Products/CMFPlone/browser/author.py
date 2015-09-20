@@ -97,7 +97,8 @@ class AuthorFeedbackForm(form.Form):
         )
 
         mail_host = getUtility(IMailHost)
-        email_charset = self.portal.getProperty('email_charset')
+        registry = getUtility(IRegistry)
+        email_charset = registry.get('plone.email_charset', 'utf-8')
 
         try:
             message = self.feedback_template(

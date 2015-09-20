@@ -121,9 +121,6 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
                 portal_types = getToolByName(self.context, 'portal_types')
                 portal_repository = getToolByName(self.context,
                                                   'portal_repository')
-                portal_properties = getToolByName(self.context,
-                                                  'portal_properties')
-                site_properties = getattr(portal_properties, 'site_properties')
 
                 fti = getattr(portal_types, type_id)
 
@@ -154,7 +151,7 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
                     else:
                         # check if we should add
                         if type_id not in versionable_types:
-                            versionable_types.append(type_id)
+                            versionable_types.append(safe_unicode(type_id))
                         self.add_versioning_behavior(fti)
 
                     for policy in portal_repository.listPolicies():
@@ -174,9 +171,10 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
                         versionable_types
                     )
 
-                searchable = form.get('searchable', False)
-
+                # Set Registry-entries
                 registry = getUtility(IRegistry)
+
+                searchable = form.get('searchable', False)
                 site_settings = registry.forInterface(
                     ISearchSchema, prefix="plone")
                 blacklisted = [i for i in site_settings.types_not_searched]
@@ -186,10 +184,19 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
                     blacklisted.append(type_id)
                 site_settings.types_not_searched = tuple(blacklisted)
 
+                default_page_type = form.get('default_page_type', False)
+                types_settings = registry.forInterface(
+                    ITypesSchema, prefix="plone")
+                default_page_types = [
+                    safe_unicode(i) for i in types_settings.default_page_types]
+                if default_page_type and type_id not in default_page_types:
+                    default_page_types.append(safe_unicode(type_id))
+                elif not default_page_type and type_id in default_page_types:
+                    default_page_types.remove(type_id)
+                types_settings.default_page_types = default_page_types
+
                 redirect_links = form.get('redirect_links', False)
-                site_properties.manage_changeProperties(
-                    redirect_links=redirect_links
-                )
+                types_settings.redirect_links = redirect_links
 
             # Update workflow
             if self.have_new_workflow() \
@@ -318,12 +325,17 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
         blacklisted = settings.types_not_searched
         return (self.type_id not in blacklisted)
 
+    def is_default_page_type(self):
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(ITypesSchema, prefix="plone")
+        return self.type_id in settings.default_page_types
+
     def is_redirect_links_enabled(self):
-        context = aq_inner(self.context)
-        portal_properties = getToolByName(context, 'portal_properties')
-        site_props = portal_properties.site_properties
-        return self.type_id == 'Link' \
-            and site_props.getProperty('redirect_links') or False
+        if self.type_id == 'Link':
+            registry = getUtility(IRegistry)
+            settings = registry.forInterface(ITypesSchema, prefix="plone")
+            return settings.redirect_links
+        return False
 
     @memoize
     def current_workflow(self):

@@ -5,7 +5,7 @@
      i18n:domain="plone"
      tal:omit-tag=""
      tal:define="utool nocall:context/portal_url;
-                 charset context/email_charset|string:utf-8;
+                 charset python:context.portal_registry.get('email_charset', 'utf-8');
                  dummy python:request.RESPONSE.setHeader('Content-Type', 'text/html;;charset=%s' % charset)"
 ><div i18n:translate="sendto_mailtemplate_body" tal:omit-tag="">
 This link is sent to you from <span i18n:name="portal_url" tal:omit-tag="" tal:replace="structure utool" />

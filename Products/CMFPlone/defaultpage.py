@@ -2,11 +2,13 @@
 from Acquisition import aq_base
 from Acquisition import aq_parent
 from Acquisition import aq_inner
+from plone.registry.interfaces import IRegistry
 from Products.BTreeFolder2.BTreeFolder2 import BTreeFolder2Base
 from Products.CMFCore.interfaces import IFolderish
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFDynamicViewFTI.interfaces import IBrowserDefault
 from Products.CMFDynamicViewFTI.interfaces import IDynamicViewTypeInformation
+from zope.component import getUtility
 from zope.component import queryAdapter
 from zope.component import queryUtility
 from zope.component import queryMultiAdapter
@@ -87,13 +89,10 @@ def get_default_page(context):
             return page
 
     # 4. Test for default sitewide default_page setting
-    pp = getattr(portal, 'portal_properties', None)
-    if pp is not None:
-        site_properties = getattr(pp, 'site_properties', None)
-        if site_properties is not None:
-            for page in site_properties.getProperty('default_page', []):
-                if page in ids:
-                    return page
+    registry = getUtility(IRegistry)
+    for page in registry.get('plone.default_page', []):
+        if page in ids:
+            return page
 
 
 def is_default_page(container, obj):

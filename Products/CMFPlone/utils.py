@@ -208,12 +208,7 @@ def getEmptyTitle(context, translated=True):
 
 def typesToList(context):
     registry = getUtility(IRegistry)
-    from Products.CMFPlone.interfaces import INavigationSchema
-    navigation_settings = registry.forInterface(
-        INavigationSchema,
-        prefix='plone'
-    )
-    return navigation_settings.displayed_types
+    return registry.get('plone.displayed_types', ())
 
 
 def normalizeString(text, context=None, encoding=None):

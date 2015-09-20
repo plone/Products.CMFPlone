@@ -73,7 +73,8 @@ class OverviewControlPanel(controlpanel.RegistryEditForm):
 
     def mailhost_warning(self):
         registry = getUtility(IRegistry)
-        mail_settings = registry.forInterface(IMailSchema, prefix='plone')
+        mail_settings = registry.forInterface(
+            IMailSchema, prefix='plone', check=False)
         mailhost = mail_settings.smtp_host
         email = mail_settings.email_from_address
         if mailhost and email:

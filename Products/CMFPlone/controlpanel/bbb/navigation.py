@@ -1,22 +1,23 @@
 # -*- coding: utf-8 -*-
+from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.interfaces import INavigationSchema
 from Products.CMFPlone.interfaces import IPloneSiteRoot
-from plone.registry.interfaces import IRegistry
-from zope.component import adapts
+from zope.component import adapter
 from zope.component import getUtility
-from zope.interface import implements
+from zope.interface import implementer
 
 
+@adapter(IPloneSiteRoot)
+@implementer(INavigationSchema)
 class NavigationControlPanelAdapter(object):
-
-    adapts(IPloneSiteRoot)
-    implements(INavigationSchema)
 
     def __init__(self, context):
         self.context = context
         registry = getUtility(IRegistry)
         self.navigation_settings = registry.forInterface(
-            INavigationSchema, prefix="plone")
+            INavigationSchema,
+            prefix="plone"
+        )
 
     def get_generate_tabs(self):
         return self.navigation_settings.generate_tabs
@@ -73,3 +74,11 @@ class NavigationControlPanelAdapter(object):
     workflow_states_to_show = property(
         get_workflow_states_to_show,
         set_workflow_states_to_show)
+
+    @property
+    def root(self):
+        return self.navigation_settings.root
+
+    @root.setter
+    def root(self, value):
+        self.navigation_settings.root = value
