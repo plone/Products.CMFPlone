@@ -1212,7 +1212,7 @@ class ITypesSchema(Interface):
         title=_(u"Types that can be set as a default page"),
         description=_(
             u"The content types that should be available for selection "
-            u"when setting a defult page."),
+            u"when setting a default page."),
         required=False,
         default=[
             u'Document',
