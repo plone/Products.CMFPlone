@@ -8,8 +8,7 @@
                           plone_layout nocall:context/@@plone_layout;
                           normalizeString nocall:plone_view/normalizeString;
                           context_state nocall:context/@@plone_context_state;
-                          site_properties context/portal_properties/site_properties;
-                          use_view_action site_properties/typesUseViewActionInListings|python:();">
+                          use_view_action python:context.portal_registry.get('types_use_view_action_in_listings', []);">
         <header i18n:translate="label_related_items">Related content</header>
         <ul>
           <li tal:repeat="item related">

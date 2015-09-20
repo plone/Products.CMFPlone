@@ -4,6 +4,11 @@ Changelog
 2.5.15 (unreleased)
 -------------------
 
+- Pull mark_special_links, external_links_open_new_window, 
+  types_view_action_in_listings values
+  from configuration registry.
+  [esteele]
+
 - Respect @@site_controlpanel configuration to show publication date
   in document_byline (closes `#1037`_).
   [rodfersou]

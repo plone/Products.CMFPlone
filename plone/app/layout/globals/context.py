@@ -14,6 +14,7 @@ from Products.CMFPlone.interfaces import INonStructuralFolder
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
+from plone.registry.interfaces import IRegistry
 
 from interfaces import IContextState
 
@@ -70,17 +71,11 @@ class ContextState(BrowserView):
         called, instead of with /view appended.  We want to avoid that.
         """
         view_url = self.object_url()
-        portal_properties = getToolByName(
-            self.context, 'portal_properties', None)
-        if portal_properties is not None:
-            site_properties = getattr(
-                portal_properties, 'site_properties', None)
-            portal_type = getattr(aq_base(self.context), 'portal_type', None)
-            if site_properties is not None and portal_type is not None:
-                use_view_action = site_properties.getProperty(
-                    'typesUseViewActionInListings', ())
-                if portal_type in use_view_action:
-                    view_url = view_url + '/view'
+        portal_type = getattr(aq_base(self.context), 'portal_type', None)
+        registry = getUtility(IRegistry)
+        use_view_action = registry.get('plone.types_use_view_action_in_listings', [])
+        if portal_type in use_view_action:
+            view_url = view_url + '/view'
         return view_url
 
     @memoize

@@ -39,15 +39,13 @@ class PatternsSettings(BrowserView):
         }
 
         # first, check for any adapters that need pattern data defined
-        adapters = getAdapters((self.context, self.request, None), IPatternsSettings)
+        adapters = getAdapters(
+            (self.context, self.request, None), IPatternsSettings)
         [result.update(x[1]()) for x in adapters]
 
         # Resources Registered UI patterns can override adapters
         registry = getUtility(IRegistry)
-        try:
-            pattern_options = registry['plone.patternoptions']
-        except (AttributeError, KeyError):
-            pattern_options = {}
+        pattern_options = registry.get('plone.patternoptions', {})
         for key, value in pattern_options.items():
             result['data-pat-' + key] = value
 

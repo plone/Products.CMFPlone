@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
+from zope.component import getUtility
 from plone.app.layout.testing import INTEGRATION_TESTING
 from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
+from plone.registry.interfaces import IRegistry
 import unittest
 
 
@@ -108,10 +110,10 @@ class DefaultPageTestCase(unittest.TestCase):
         self.assertEqual('test_rendering', getDefaultPage(self.folder))
 
     def test_getDefaultPage_step_4(self):
-        # 4. Else, look up the property default_page in site_properties for
-        #   magic ids and test these
-        sp = self.portal.portal_properties.site_properties
-        sp.manage_changeProperties(default_page=('d1',))
+        # 4. Else, look up the property default_page in the configuration
+        # registry for magic ids and test these
+        registry = getUtility(IRegistry)
+        registry['plone.default_page'] = [u'd1']
         self.folder.invokeFactory('Document', 'd1', title=u"Doc 1")
 
         from plone.app.layout.navigation.defaultpage import getDefaultPage
