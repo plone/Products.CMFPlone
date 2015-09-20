@@ -177,8 +177,19 @@ def importFinalSteps(context):
     setProfileVersion(site)
 
     # Install our dependencies
+    # TODO: we somehow rely on reapplying all profiles, instead of
+    # being happy with upgrades.
     st = getToolByName(site, "portal_setup")
-    st.runAllImportStepsFromProfile("profile-Products.CMFPlone:dependencies")
+    try:
+        # GenericSetup 1.7.8 and higher
+        from Products.GenericSetup.tool import DEPENDENCY_STRATEGY_REAPPLY
+    except ImportError:
+        st.runAllImportStepsFromProfile(
+            "profile-Products.CMFPlone:dependencies")
+    else:
+        st.runAllImportStepsFromProfile(
+            "profile-Products.CMFPlone:dependencies",
+            dependency_strategy=DEPENDENCY_STRATEGY_REAPPLY)
 
     assignTitles(site)
     replace_local_role_manager(site)
