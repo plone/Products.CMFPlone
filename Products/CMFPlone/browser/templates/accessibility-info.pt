@@ -57,7 +57,7 @@
                  title="Web Content Accessibility Guidelines"
                  i18n:attributes="title title_wcag;">WCAG</acronym> 2.0 and <acronym i18n:name="atag"
                  title="Authoring Tool Accessibility Guidelines"
-                 i18n:attributes="title title_wcag;">ATAG</acronym> 2.0 guidelines are
+                 i18n:attributes="title title_atag;">ATAG</acronym> 2.0 guidelines are
         subjective; there may be instances where interpretations vary.
         </p>
     </div>
