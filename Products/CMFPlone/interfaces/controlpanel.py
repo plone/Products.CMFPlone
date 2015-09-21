@@ -787,9 +787,8 @@ class INavigationSchema(Interface):
         title=_(u"Automatically generate tabs"),
         description=_(
             u"By default, all items created at the root level will "
-            u"add to the global section navigation. You can turn this off "
-            u"if you prefer manually constructing this part of the "
-            u"navigation."),
+            u"appear as tabs. You can turn this off if you prefer manually "
+            u"constructing this part of the navigation."),
         default=True,
         required=False)
 
@@ -797,9 +796,9 @@ class INavigationSchema(Interface):
         title=_(u"Generate tabs for items other than folders."),
         description=_(
             u"By default, any content item in the root of the portal will "
-            u"be shown as a global section. If you turn this option off, "
-            u"only folders will be shown. This only has an effect if "
-            u"'Automatically generate tabs' is enabled."),
+            u"appear as a tab. If you turn this option off, only folders "
+            u"will be shown. This only has an effect if 'Automatically "
+            u"generate tabs' is enabled."),
         default=True,
         required=False)
 
@@ -860,7 +859,7 @@ class INavigationSchema(Interface):
         title=_(u"Filter on workflow state"),
         description=_(
             u"The workflow states that should be shown in the navigation "
-            u"tree and the site map."),
+            u"and the site map."),
         default=False,
         required=False)
 
