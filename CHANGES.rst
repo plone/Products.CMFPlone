@@ -8,7 +8,7 @@ Changelog
 5.0rc4 (unreleased)
 -------------------
 
-- Fix traceback style (closes `1053`_).
+- Fix traceback style (closes `#1053`_).
   [rodfersou]
 
 
@@ -22,17 +22,18 @@ Changelog
 - Resolve deprecation warnings about portal_url
   [fulv]
 
-- Improve contrast for pending state when state menu active (closes `913`_).
+- Improve contrast for pending state when state menu active (closes `#913`_).
   [rodfersou]
 
-- Fix buttons positions on resource registry (closes `886`).
+- Fix buttons positions on resource registry (closes `#886`_).
   [rodfersou]
 
-- Add missing file for ace-editor to edit XML files (closes `895`_).
+- Add missing file for ace-editor to edit XML files (closes `#895`_).
   [rodfersou]
 
-- Remove empty options for Site Settings configlet (closes `996`_).
+- Remove empty options for Site Settings configlet (closes `#996`_).
   [rodfersou]
+
 - Hide document byline viewlet by default.
   [esteele]
 
