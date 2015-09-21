@@ -11,6 +11,12 @@ Changelog
 - Fix traceback style (closes `#1053`_).
   [rodfersou]
 
+- Purge profile upgrade versions from portal_setup when applying our
+  default CMFPlone:plone profile.  This signals that nothing has been
+  installed yet, so depencies will get reapplied instead of possibly
+  upgraded.  This could cause problems mostly in tests.  Closes
+  `#1041`_.
+  [maurits]
 
 
 5.0rc3 (2015-09-21)
@@ -850,4 +856,5 @@ Changelog
 .. _`#991`: https://github.com/plone/Products.CMFPlone/issues/991
 .. _`#996`: https://github.com/plone/Products.CMFPlone/issues/996
 .. _`#1015`: https://github.com/plone/Products.CMFPlone/issues/1015
+.. _`#1041`: https://github.com/plone/Products.CMFPlone/issues/1041
 .. _`#1053`: https://github.com/plone/Products.CMFPlone/issues/1053
