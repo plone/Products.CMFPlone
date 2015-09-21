@@ -74,6 +74,7 @@
    <depends name="viewlets" />
    <depends name="controlpanel" />
    <depends name="propertiestool" />
+   <depends name="workflow" />
   </genericsetup:importStep>
 
   <genericsetup:importStep

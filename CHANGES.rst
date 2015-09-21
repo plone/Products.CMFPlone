@@ -11,6 +11,12 @@ Changelog
 - Fix traceback style (closes `#1053`_).
   [rodfersou]
 
+- Let plone-final import step also depend on the workflow step.
+  Otherwise the plone-final step installs plone.app.discussion with an
+  extra workflow, and then our own workflow step throws it away again.
+  Closes `#1041`_.
+  [maurits]
+
 - Purge profile upgrade versions from portal_setup when applying our
   default CMFPlone:plone profile.  This signals that nothing has been
   installed yet, so depencies will get reapplied instead of possibly
