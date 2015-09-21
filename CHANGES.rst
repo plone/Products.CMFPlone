@@ -8,7 +8,9 @@ Changelog
 5.0rc4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fix traceback style (closes `1053`_).
+  [rodfersou]
+
 
 
 5.0rc3 (2015-09-21)
@@ -21,6 +23,8 @@ Changelog
   [fulv]
 
 - Improve contrast for pending state when state menu active (closes `913`_).
+  [rodfersou]
+
 - Fix buttons positions on resource registry (closes `886`).
   [rodfersou]
 
@@ -817,3 +821,4 @@ Changelog
 .. _`#895`: https://github.com/plone/Products.CMFPlone/issues/895
 .. _`#996`: https://github.com/plone/Products.CMFPlone/issues/996
 .. _`#913`: https://github.com/plone/Products.CMFPlone/issues/913
+.. _`#1053`: https://github.com/plone/Products.CMFPlone/issues/1053
