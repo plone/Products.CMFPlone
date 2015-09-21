@@ -4180,4 +4180,8 @@ p.callout {
 body#visual-portal-wrapper.pat-plone.icons-off .outer-wrapper [class*="contenttype-"]:before {
   display: none;
 }
+/* error message styles */
+body.template-default_error_message #content-core p {
+  white-space: pre;
+}
 /*# sourceMappingURL=plone-compiled.css.map */
