@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from plone.app.robotframework.remote import RemoteLibrary
+from plone.app.robotframework.utils import disableCSRFProtection
 
 from zope.component import queryUtility
 from plone.registry.interfaces import IRegistry
@@ -12,6 +13,7 @@ class CMFPloneRemoteKeywords(RemoteLibrary):
     """
 
     def the_mail_setup_configured(self):
+        disableCSRFProtection()
         registry = queryUtility(IRegistry)
         if registry is None:
             return
@@ -22,6 +24,7 @@ class CMFPloneRemoteKeywords(RemoteLibrary):
         mail_settings.email_from_address = 'john@doe.com'
 
     def the_self_registration_enabled(self):
+        disableCSRFProtection()
         registry = queryUtility(IRegistry)
         if registry is None:
             return
