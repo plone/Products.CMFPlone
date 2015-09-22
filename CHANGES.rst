@@ -40,22 +40,24 @@ Changelog
 - Move portal property email_charset to the registry.
   [esteele]
 
-- Fix #950: Missing personal toolbar when expanding the horizontal toolbar
+- Fix `#950`_: Missing personal toolbar when expanding the horizontal toolbar
   [ichim-david]
 
-- Make sure portal_actions are imported before default portlets. Fixes #1015
+- Make sure portal_actions are imported before default portlets.
+  Fixes `#1015`_.
   [vangheem]
 
 - Move calendar_starting_year and calendar_future_years_available to
   registry and Products.Archetypes.
   [pbauer]
+
 - Use registry lookup for types_use_view_action_in_listings
   [esteele]
 
 - Add view @@hero to be included by plonetheme.barceloneta with diazo.
   [pbauer]
 
-- Fix #991: improve contrast for pending state in tollbar.
+- Fix `#991`_: improve contrast for pending state in tollbar.
   [pabo3000]
 
 - remove unused code to create NavTree probably left from Plone 3.0 times
@@ -77,10 +79,10 @@ Changelog
 - Remove invalid_ids portal property as it isn't used.
   [esteele]
 
-- Fix #963: respect icon visibility setting
+- Fix `#963`_: respect icon visibility setting
   [vangheem]
 
-- Fix #935: Fix group membership form rendering when group can't be found.
+- Fix `#935`_: Fix group membership form rendering when group can't be found.
   [esteele]
 
 - Fix redirect for syndication-controlpanel.
@@ -89,7 +91,7 @@ Changelog
 - Add advanced-option to button "Add Plone Site" in ZMI.
   [pbauer]
 
-- Fix #952: Toolbar menu completely misplaced because of link duplication
+- Fix `#952`_: Toolbar menu completely misplaced because of link duplication
   [ichim-david]
 
 - Fix issue where some filter settings would not get saved and provide
@@ -109,10 +111,10 @@ Changelog
   [esteele]
 
 - Fix changing searchable in types-controlpanel.
-  Fix https://github.com/plone/Products.CMFPlone/issues/926
+  Fix `#926`_.
   [pbauer]
 
-- Respect view-url in livesearch-results. Fixes #918.
+- Respect view-url in livesearch-results. Fixes `#918`_.
   [pbauer]
 
 - Fix Livesearch for items without review_state (files and image). Fixes #915.
@@ -129,7 +131,7 @@ Changelog
 - Remove site properties that have been migrated to the registry.
   [esteele]
 
-- fix #862: Profile listing on site creation has alignment issues
+- fix `#862`_: Profile listing on site creation has alignment issues
   [ichim-david]
 
 
@@ -150,7 +152,7 @@ Changelog
 
 - Turn robots.txt into a browser-view, fix link to sitemap.xml.gz, allow
   editing in site-controlpanel.
-  Fixes https://github.com/plone/Products.CMFPlone/issues/604
+  Fixes `#604`_.
   [pbauer]
 
 - Remove history_form, history_comparison templates.
@@ -176,7 +178,7 @@ Changelog
 5.0b4 (2015-08-23)
 ------------------
 
-- fix #350: "plone.app.content circular dependency on Products.CMFPlone" - this
+- fix `#350`_: "plone.app.content circular dependency on Products.CMFPlone" - this
   fixes the imports only, not on zcml/genericsetup level.
   [jensens]
 
@@ -222,7 +224,7 @@ Changelog
 - Renamed 'Zope Management Interface' to 'Management Interface'.
   [jaroel, aclark]
 
-- Fix adding a new Plone site with country specific language. Refs #411.
+- Fix adding a new Plone site with country specific language. Refs `#411`_.
   [jaroel]
 
 - fix plone-logged-in bundle not using global jquery for requirejs dependency and in
@@ -253,7 +255,7 @@ Changelog
   [vangheem]
 
 - Update links to point to '@@overview-controlpanel'.
-  Fixes https://github.com/plone/Products.CMFPlone/issues/573
+  Fixes `#573`_.
   [gforcada]
 
 - Fix email validation of long domain names.
@@ -284,10 +286,10 @@ Changelog
 - Add undeclared zope.cachedescriptors dependency.
   [timo]
 
-- Do not require "Enable LiveSearch". This fixes https://github.com/plone/Products.CMFPlone/issues/558
+- Do not require "Enable LiveSearch". This fixes `#558`_.
   [timo]
 
-- Fix control panel titles. This fixes https://github.com/plone/Products.CMFPlone/issues/550 https://github.com/plone/Products.CMFPlone/issues/553 https://github.com/plone/Products.CMFPlone/issues/557
+- Fix control panel titles. This fixes `#550`_, `#553`_, `#557`_.
   [timo]
 
 - remove plone.app.jquerytools dependency
@@ -312,8 +314,8 @@ Changelog
   [vangheem]
 
 - Fix build reading browser cached files by appending random query
-  param onto url. See https://github.com/plone/Products.CMFPlone/commit/2d3865805efc6b72dce236eb68e502d8c57717b6
-  and https://github.com/plone/Products.CMFPlone/commit/bd1f9ba99d1ad40bb7fe1c00eaa32b8884aae5e2
+  param onto url. See `commit 2d3865805efc6b72dce236eb68e502d8c57717b6`_
+  and `commit bd1f9ba99d1ad40bb7fe1c00eaa32b8884aae5e2`_.
   [vangheem]
 
 - fix manage content type and group portlets link to have authenticator
@@ -355,8 +357,8 @@ Changelog
 - enable/disable versioning behavior with settings in Types control panel
   [vangheem]
 
-- Make typesToList read metaTypesNotToList from new p.a.registry settings.
-  This fixes https://github.com/plone/Products.CMFPlone/issues/454.
+- Make ``typesToList`` read ``metaTypesNotToList`` from new p.a.registry settings.
+  This fixes `#454`_.
   [timo]
 
 - style tweaks to toolbar
@@ -444,7 +446,7 @@ Changelog
   emails.
   [davidjb]
 
-- Move security control panel to CMFPlone. Fixes #216.
+- Move security control panel to CMFPlone. Fixes `#216`_.
   [jcerjak, timo]
 
 - Remove ``create_userfolder`` from addPloneSite factory, it is not used
@@ -524,7 +526,7 @@ Changelog
 - Fixed the label for 'Example content' in the advanced 'Create a Plone site' screen.
   [jaroel]
 
-- Move markup control panel to CMFPlone. Fixes #220.
+- Move markup control panel to CMFPlone. Fixes `#220`_.
   [djay, thet]
 
 - Use jstz to set default portal_timezone in @@plone-addsite.
@@ -540,7 +542,7 @@ Changelog
   [bloodbare]
 
 - Move the controlpanel overview from plone.app.controlpanel into this package
-  https://github.com/plone/Products.CMFPlone/issues/290
+  Fixes `#290`_.
   [khink]
 
 - PLIP 10359: Migrate usergroups controlpanel to ``z3c.form`` and move it from
@@ -605,7 +607,7 @@ Changelog
 - Small scoping fix in locking js code
   [do3cc]
 
-- PLIP 13260: Migrate author page to browser views/z3c.form (issue #78)
+- PLIP 13260: Migrate author page to browser views/z3c.form (issue `#78`_)
   [bosim]
 
 - Integration of the new markup update and CSS for both Plone and Barceloneta
@@ -649,14 +651,13 @@ Changelog
   [yenzenz. thet]
 
 - Remove DL/DT/DD's from portal messages, portlet templates and others.
-  https://github.com/plone/Products.CMFPlone/issues/153
-  https://github.com/plone/Products.CMFPlone/issues/163
+  Fixes `#153`_, `#163`_.
   [khink]
 
 - PLIP 13260 remove templates and form scripts for
   ``select_default_page`` and ``select_default_view`` because they got
   migrated to browser views. Fix tests for that and remove legacy tests.
-  See: https://github.com/plone/Products.CMFPlone/issues/90
+  See `#90`_.
   [saily]
 
 - PLIP 13260: Migration contact-info to ``z3c.form`` and make it highly
@@ -818,8 +819,35 @@ Changelog
 - Removed kss_field_decorator_view support
   [maurits, jaroel]
 
+.. _`commit 2d3865805efc6b72dce236eb68e502d8c57717b6`: https://github.com/plone/Products.CMFPlone/commit/2d3865805efc6b72dce236eb68e502d8c57717b6
+.. _`commit bd1f9ba99d1ad40bb7fe1c00eaa32b8884aae5e2`: https://github.com/plone/Products.CMFPlone/commit/bd1f9ba99d1ad40bb7fe1c00eaa32b8884aae5e2
+.. _`#78`: https://github.com/plone/Products.CMFPlone/issues/78
+.. _`#90`: https://github.com/plone/Products.CMFPlone/issues/90
+.. _`#153`: https://github.com/plone/Products.CMFPlone/issues/153
+.. _`#163`: https://github.com/plone/Products.CMFPlone/issues/163
+.. _`#216`: https://github.com/plone/Products.CMFPlone/issues/216
+.. _`#220`: https://github.com/plone/Products.CMFPlone/issues/220
+.. _`#290`: https://github.com/plone/Products.CMFPlone/issues/290
+.. _`#350`: https://github.com/plone/Products.CMFPlone/issues/350
+.. _`#411`: https://github.com/plone/Products.CMFPlone/issues/411
+.. _`#454`: https://github.com/plone/Products.CMFPlone/issues/454
+.. _`#550`: https://github.com/plone/Products.CMFPlone/issues/550
+.. _`#553`: https://github.com/plone/Products.CMFPlone/issues/553
+.. _`#557`: https://github.com/plone/Products.CMFPlone/issues/557
+.. _`#558`: https://github.com/plone/Products.CMFPlone/issues/558
+.. _`#573`: https://github.com/plone/Products.CMFPlone/issues/573
+.. _`#604`: https://github.com/plone/Products.CMFPlone/issues/604
+.. _`#862`: https://github.com/plone/Products.CMFPlone/issues/862
 .. _`#886`: https://github.com/plone/Products.CMFPlone/issues/886
 .. _`#895`: https://github.com/plone/Products.CMFPlone/issues/895
-.. _`#996`: https://github.com/plone/Products.CMFPlone/issues/996
 .. _`#913`: https://github.com/plone/Products.CMFPlone/issues/913
+.. _`#918`: https://github.com/plone/Products.CMFPlone/issues/918
+.. _`#926`: https://github.com/plone/Products.CMFPlone/issues/926
+.. _`#935`: https://github.com/plone/Products.CMFPlone/issues/935
+.. _`#950`: https://github.com/plone/Products.CMFPlone/issues/950
+.. _`#952`: https://github.com/plone/Products.CMFPlone/issues/952
+.. _`#963`: https://github.com/plone/Products.CMFPlone/issues/963
+.. _`#991`: https://github.com/plone/Products.CMFPlone/issues/991
+.. _`#996`: https://github.com/plone/Products.CMFPlone/issues/996
+.. _`#1015`: https://github.com/plone/Products.CMFPlone/issues/1015
 .. _`#1053`: https://github.com/plone/Products.CMFPlone/issues/1053
