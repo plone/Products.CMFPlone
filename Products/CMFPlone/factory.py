@@ -7,12 +7,6 @@ from zope.component import queryUtility
 from zope.event import notify
 from zope.interface import implements
 from zope.site.hooks import setSite
-try:
-    # GenericSetup 1.7.8 and higher
-    from Products.GenericSetup.tool import DEPENDENCY_STRATEGY_REAPPLY
-    DEPENDENCY_STRATEGY_REAPPLY  # pyflakes
-except ImportError:
-    DEPENDENCY_STRATEGY_REAPPLY = None
 
 _TOOL_ID = 'portal_setup'
 _DEFAULT_PROFILE = 'Products.CMFPlone:plone'
@@ -96,18 +90,7 @@ def addPloneSite(context, site_id, title='Plone site', description='',
     setSite(site)
 
     setup_tool.setBaselineContext('profile-%s' % profile_id)
-    # TODO: we somehow rely on reapplying all profiles, instead of
-    # being happy with upgrades.
-    if DEPENDENCY_STRATEGY_REAPPLY is None:
-        # Older GenericSetup.  Reapply is the default.  No alternative
-        # strategy can be given.
-        setup_tool.runAllImportStepsFromProfile('profile-%s' % profile_id)
-    else:
-        # Newer GenericSetup.  Upgrade is the default.  We want to
-        # reapply.
-        setup_tool.runAllImportStepsFromProfile(
-            'profile-%s' % profile_id,
-            dependency_strategy=DEPENDENCY_STRATEGY_REAPPLY)
+    setup_tool.runAllImportStepsFromProfile('profile-%s' % profile_id)
 
     reg = queryUtility(IRegistry, context=site)
     reg['plone.portal_timezone'] = portal_timezone
@@ -116,13 +99,8 @@ def addPloneSite(context, site_id, title='Plone site', description='',
     reg['plone.available_languages'] = [default_language]
 
     if setup_content:
-        if DEPENDENCY_STRATEGY_REAPPLY is None:
-            setup_tool.runAllImportStepsFromProfile(
-                'profile-%s' % content_profile_id)
-        else:
-            setup_tool.runAllImportStepsFromProfile(
-                'profile-%s' % content_profile_id,
-                dependency_strategy=DEPENDENCY_STRATEGY_REAPPLY)
+        setup_tool.runAllImportStepsFromProfile(
+            'profile-%s' % content_profile_id)
 
     props = dict(
         title=title,
@@ -133,13 +111,8 @@ def addPloneSite(context, site_id, title='Plone site', description='',
     site.manage_changeProperties(**props)
 
     for extension_id in extension_ids:
-        if DEPENDENCY_STRATEGY_REAPPLY is None:
-            setup_tool.runAllImportStepsFromProfile(
-                'profile-%s' % extension_id)
-        else:
-            setup_tool.runAllImportStepsFromProfile(
-                'profile-%s' % extension_id,
-                dependency_strategy=DEPENDENCY_STRATEGY_REAPPLY)
+        setup_tool.runAllImportStepsFromProfile(
+            'profile-%s' % extension_id)
 
     if snapshot is True:
         setup_tool.createSnapshot('initial_configuration')
