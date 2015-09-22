@@ -1,4 +1,3 @@
-from Acquisition import aq_parent
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
@@ -7,7 +6,6 @@ from plone.keyring.interfaces import IKeyManager
 from plone.protect.authenticator import AuthenticatorView
 from StringIO import StringIO
 from zope.component import queryUtility
-from zope.component import getSiteManager
 
 
 class AuthenticatorTestCase(PloneTestCase):
@@ -93,14 +91,3 @@ class AuthenticatorTestCase(PloneTestCase):
         self.checkAuthenticator(
             '/acl_users/userFolderDelUsers',
             'names:list=%s' % TEST_USER_ID)
-
-
-class KeyringTestCase(PloneTestCase):
-
-    def afterSetUp(self):
-        self.setRoles(('Manager',))
-
-    def test_zopeRootGetsKeyringInstalled(self):
-        app = aq_parent(self.portal)
-        sm = getSiteManager(app)
-        self.assertTrue(sm.queryUtility(IKeyManager) is not None)
