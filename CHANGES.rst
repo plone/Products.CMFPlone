@@ -8,6 +8,10 @@ Changelog
 5.0rc4 (unreleased)
 -------------------
 
+- Remove trying to install plone.protect to global site manager
+  as that is now handled by plone.protect
+  [vangheem]
+
 - Fix traceback style (closes `#1053`_).
   [rodfersou]
 
