@@ -36,6 +36,10 @@ class MailControlPanelForm(controlpanel.RegistryEditForm):
         if errors:
             self.status = self.formErrorsMessage
             return False
+        #keep password field
+        if (data.get('smtp_userid') is not None
+            and data.get('smtp_pass') is None):
+            del data['smtp_pass']
         self.applyChanges(data)
         return True
 
