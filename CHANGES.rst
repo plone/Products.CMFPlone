@@ -8,6 +8,9 @@ Changelog
 5.0rc4 (unreleased)
 -------------------
 
+- Remove Chrome Frame from ``X-UA-Compatible`` HTTP header as it's deprecated.
+  [hvelarde]
+
 - Fix mail controlpanel not keeping password field when saving
   [allusa]
 
