@@ -119,6 +119,25 @@ class MailControlPanelFunctionalTest(unittest.TestCase):
         settings = registry.forInterface(IMailSchema, prefix="plone")
         self.assertEqual(settings.smtp_pass, 'secret')
 
+    def test_mail_controlpanel_smtp_pass_keep_on_saving(self):
+        self.browser.open(
+            "%s/@@mail-controlpanel" % self.portal_url)
+        self.browser.getControl(
+            name='form.widgets.smtp_userid').value = 'john@example.com'
+        self.browser.getControl(
+            name='form.widgets.smtp_pass').value = 'secret'
+        self.browser.getControl(
+            name='form.widgets.email_from_name').value = 'John'
+        self.browser.getControl(
+            name='form.widgets.email_from_address').value = \
+                'john@example.com'
+        self.browser.getControl(name='form.buttons.save').click()
+        self.browser.getControl(name='form.buttons.save').click()
+
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(IMailSchema, prefix="plone")
+        self.assertEqual(settings.smtp_pass, 'secret')
+
     def test_mail_controlpanel_email_from_name(self):
         self.browser.open(
             "%s/@@mail-controlpanel" % self.portal_url)
