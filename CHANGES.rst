@@ -8,6 +8,9 @@ Changelog
 5.0rc4 (unreleased)
 -------------------
 
+- Fix mail controlpanel not keeping password field when saving
+  [allusa]
+
 - Remove trying to install plone.protect to global site manager
   as that is now handled by plone.protect
   [vangheem]
