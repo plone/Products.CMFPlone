@@ -2,7 +2,7 @@ Plone Controlpanel
 ==================
 
 All control panel related settings are stored in plone.app.registry and
-can be looked up like follow.
+can be looked up as follows.
 
 First we lookup the registry utility::
 
@@ -10,22 +10,24 @@ First we lookup the registry utility::
   >>> from plone.registry.interfaces import IRegistry
   >>> registry = getUtility(IRegistry)
 
-Now we use the schema 'ISearchSchema' to lookup for a RecordProxy object with
+As an example, let's look for search related settings (defined by ISearchSchema).
+We use the schema 'ISearchSchema' to lookup a RecordProxy object with
 all fields::
 
   >>> from Products.CMFPlone.interfaces import ISearchSchema
   >>> search_settings = registry.forInterface(ISearchSchema, prefix='plone')
 
-Now we an get and set all fields of the schema above like::
+Now we can get and set all fields of the schema above. For example the value for
+`enable_livesearch` can be retrieved as follows::
 
   >>> search_settings.enable_livesearch
   True
 
-If you want to change a setting, just change the attribute::
+Changing a setting is a simple as just changing the attribute::
 
   >>> search_settings.enable_livesearch = False
 
-Now the enable_livesearch should disabled::
+Now the `enable_livesearch` should be set to False, effectively disabling it::
 
   >>> search_settings.enable_livesearch
   False
