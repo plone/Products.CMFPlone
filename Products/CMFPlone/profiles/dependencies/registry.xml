@@ -4,6 +4,8 @@
            prefix="plone" />
   <records interface="Products.CMFPlone.interfaces.ILanguageSchema"
            prefix="plone" />
+  <records interface="Products.CMFPlone.interfaces.ILinkSchema"
+           prefix="plone" />
   <records interface="Products.CMFPlone.interfaces.IFilterSchema"
            prefix="plone" />
   <records interface="Products.CMFPlone.interfaces.IMaintenanceSchema"
