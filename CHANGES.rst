@@ -8,6 +8,9 @@ Changelog
 5.0rc4 (unreleased)
 -------------------
 
+- Fix #1071: AttributeError when saving theme settings
+  [vangheem]
+
 - Fix #817: When saving the filter control panel show a flash message with
   info on caching.
   [jcerjak]
