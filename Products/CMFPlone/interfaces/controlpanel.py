@@ -1179,17 +1179,6 @@ class IDateAndTimeSchema(Interface):
 class ITypesSchema(Interface):
     """Controlpanel settings for the types settings.
     """
-    types_link_to_folder_contents = schema.List(
-        title=_(u'Types linking to folder contents in folder contents view'),
-        description=_(
-            u"help_types_link_to_folder_contents",
-            default=u"When clicking items in folder contents view, these "
-                    u"types will display their contents instead of using "
-                    u"their default view."),
-        required=False,
-        default=[u'Folder'],
-        value_type=schema.TextLine()
-    )
 
     types_use_view_action_in_listings = schema.List(
         title=_(u'Types which use the view action in listing views.'),
