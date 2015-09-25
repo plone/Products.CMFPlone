@@ -8,6 +8,9 @@ Changelog
 5.0rc4 (unreleased)
 -------------------
 
+- Be able to provide table styles in tinymce configuration
+  [vangheem]
+
 - Fix #1071: AttributeError when saving theme settings
   [vangheem]
 

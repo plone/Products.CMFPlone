@@ -487,6 +487,14 @@ class ITinyMCELayoutSchema(Interface):
             u"Right|alignright|alignright",
             u"Justify|alignjustify|alignjustify"])
 
+    table_styles = schema.List(
+        title=_(u"Table styles"),
+        description=_('Name|class'),
+        value_type=schema.TextLine(),
+        default=[
+            u"Listing|listing"
+        ])
+
     formats = schema.Text(
         title=_(u"Formats"),
         description=_(
