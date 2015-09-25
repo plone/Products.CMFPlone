@@ -25,4 +25,4 @@ class TestTinyMCESettings(PloneTestCase.PloneTestCase):
 
     def test_style_formats(self):
         conf = self.get_conf()
-        self.assertEqual(len(conf['tiny']['style_formats']), 4)
+        self.assertEqual(len(conf['tiny']['style_formats']), 5)

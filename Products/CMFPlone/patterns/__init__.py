@@ -45,14 +45,18 @@ class TinyMCESettingsGenerator(object):
 
         return ','.join(files)
 
-    def get_style_format(self, txt):
+    def get_style_format(self, txt, _type='format', base=None):
         parts = txt.strip().split('|')
         if len(parts) < 2:
             return
-        val = {
+        if base is None:
+            val = {}
+        else:
+            val = base
+        val.update({
             'title': parts[0],
-            'format': parts[1]
-        }
+            _type: parts[1]
+        })
         if len(parts) > 2:
             val['icon'] = parts[2]
         return val
@@ -62,6 +66,7 @@ class TinyMCESettingsGenerator(object):
         block_styles = self.settings.block_styles or []
         inline_styles = self.settings.inline_styles or []
         alignment_styles = self.settings.alignment_styles or []
+        table_styles = self.settings.table_styles or []
         return [{
             'title': 'Headers',
             'items': [self.get_style_format(t) for t in header_styles]
@@ -74,6 +79,10 @@ class TinyMCESettingsGenerator(object):
         }, {
             'title': 'Alignment',
             'items': [self.get_style_format(t) for t in alignment_styles]
+        }, {
+            'title': 'Tables',
+            'items': [self.get_style_format(t, 'classes', {'selector': 'table'})
+                      for t in table_styles]
         }]
 
     def get_tiny_config(self):
@@ -238,7 +247,7 @@ class PloneSettingsAdapter(object):
             'base_url': self.context.absolute_url(),
             'tiny': generator.get_tiny_config(),
             # This is for loading the languages on tinymce
-            'loadingBaseUrl': '%s/++plone++static/components/tinymce-builded/js/tinymce' % generator.portal_url,
+            'loadingBaseUrl': '%s/++plone++static/components/tinymce-builded/js/tinymce' % generator.portal_url,  # noqa
             'prependToUrl': 'resolveuid/',
             'linkAttribute': 'UID',
             'prependToScalePart': '/@@images/image/',
