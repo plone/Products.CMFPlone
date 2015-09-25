@@ -69,6 +69,11 @@ Scenario: Configure Filter Control Panel to filter out classes
    When I add 'foobar' to the filtered classes
    Then the 'foobar' class is filtered out when a document is saved
 
+Scenario: Filter Control Panel displays information regarding caching when saved
+  Given a logged-in site administrator
+    and the filter control panel
+   When I save the form
+   Then success message should contain information regarding caching
 
 
 *** Keywords *****************************************************************
@@ -121,6 +126,10 @@ I add '${tag}' to the allowed style attributes
 I add '${tags}' and '${attributes}' to the stripped out combinations
   Input text  name=form.stripped_combinations.1.tags  ${tags}
   Input text  name=form.stripped_combinations.1.attributes  ${attributes}
+  Click Button  Save
+  Wait until page contains  Changes saved
+
+I save the form
   Click Button  Save
   Wait until page contains  Changes saved
 
@@ -202,3 +211,6 @@ the 'display' style attribute is preserved when a document is saved
 
   XPath Should Match X Times  //*[@id='content-core']//h4  1  message=h4 tag should be present
   XPath Should Match X Times  //*[@id='content-core']//h4[@style]  1  message=style attribute with display:block should be present
+
+success message should contain information regarding caching
+  Element Should Contain  css=.portalMessage.warning  HTML generation is heavily cached across Plone. You may have to edit existing content or restart your server to see the changes.

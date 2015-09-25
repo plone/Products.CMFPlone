@@ -15,12 +15,7 @@ from Products.PortalTransforms.transforms.safe_html import NASTY_TAGS
 class FilterControlPanel(AutoExtensibleForm, form.EditForm):
     id = "FilterControlPanel"
     label = _(u"HTML Filtering Settings")
-    description = _(
-        'description_html_filtering',
-        default=u"HTML generation is heavily cached across Plone. "
-                u"After changing settings here, you may have to edit "
-                u"existing content to see the changes in these filter settings "
-                u"or restart your server.")
+    description = ""
     schema = IFilterSchema
     form_name = _(u"HTML Filtering Settings")
     control_panel_view = "filter-controlpanel"
@@ -73,8 +68,8 @@ class FilterControlPanel(AutoExtensibleForm, form.EditForm):
         if disable_filtering != safe_html._config['disable_transform']:
             safe_html._config['disable_transform'] = disable_filtering
 
-        for attr in ('stripped_combinations', 'class_blacklist', 'stripped_attributes',
-                     'style_whitelist'):
+        for attr in ('stripped_combinations', 'class_blacklist',
+                     'stripped_attributes', 'style_whitelist'):
             value = data[attr]
             if value is None:
                 if attr == 'stripped_combinations':
@@ -92,6 +87,11 @@ class FilterControlPanel(AutoExtensibleForm, form.EditForm):
         IStatusMessage(self.request).addStatusMessage(
             _(u"Changes saved."),
             "info")
+        IStatusMessage(self.request).addStatusMessage(
+            _(u"HTML generation is heavily cached across Plone. You may "
+              u"have to edit existing content or restart your server to see "
+              u"the changes."),
+            "warning")
         self.request.response.redirect(self.request.getURL())
 
 
