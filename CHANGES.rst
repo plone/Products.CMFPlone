@@ -8,6 +8,10 @@ Changelog
 5.0rc4 (unreleased)
 -------------------
 
+- Closes `#1071`_: AttributeError: mark_special_links when saving theme details. Ensured that ILinkSchema
+  was registered with registry.xml
+  [pigeonflight]
+  
 - Fix #817: When saving the filter control panel show a flash message with
   info on caching.
   [jcerjak]
@@ -878,3 +882,4 @@ Changelog
 .. _`#1015`: https://github.com/plone/Products.CMFPlone/issues/1015
 .. _`#1041`: https://github.com/plone/Products.CMFPlone/issues/1041
 .. _`#1053`: https://github.com/plone/Products.CMFPlone/issues/1053
+.. _`#1071`: https://github.com/plone/Products.CMFPlone/issues/1071
