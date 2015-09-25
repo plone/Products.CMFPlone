@@ -8,6 +8,9 @@ Changelog
 4.3.7 (unreleased)
 ------------------
 
+- Remove Chrome Frame from ``X-UA-Compatible`` HTTP header as it's deprecated.
+  [hvelarde]
+
 - Apply hotfixes from https://pypi.python.org/pypi/Products.PloneHotfix20150910
   [vangheem]
 
