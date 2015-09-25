@@ -32,7 +32,7 @@ Now the `enable_livesearch` should be set to False, effectively disabling it::
   >>> search_settings.enable_livesearch
   False
 
-For more informations about how to access and manipulate Plone registry entries, have a look at the `plone.registry documentation <https://github.com/plone/plone.registry/blob/master/plone/registry/registry.rst>`_:
+For more information about how to access and manipulate Plone registry entries, have a look at the `plone.registry documentation <https://github.com/plone/plone.registry/blob/master/plone/registry/registry.rst>`_:
 
 
 Editing Control Panel
