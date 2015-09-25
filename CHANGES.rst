@@ -12,6 +12,7 @@ Changelog
   [vangheem]
 
 - Fix #1071: AttributeError when saving theme settings
+- Remove unused types_link_to_folder_contents setting
   [vangheem]
 
 - Fix #817: When saving the filter control panel show a flash message with
