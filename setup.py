@@ -55,7 +55,6 @@ setup(
         'Products.CMFUid',
         'Products.DCWorkflow',
         'Products.ExtendedPathIndex',
-        'Products.ExternalEditor',
         'Products.GenericSetup >=1.4',
         'Products.MimetypesRegistry',
         'Products.PasswordResetTool',
