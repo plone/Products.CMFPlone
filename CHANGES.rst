@@ -8,7 +8,7 @@ Changelog
 5.0rc4 (unreleased)
 -------------------
 
-- Fixes #1071: AttributeError: mark_special_links when saving theme details. Ensured that ILinkSchema
+- Fixes `#1071`_: AttributeError: mark_special_links when saving theme details. Ensured that ILinkSchema
   was registered with registry.xml
   [pigeonflight]
   
