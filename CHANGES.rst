@@ -8,6 +8,10 @@ Changelog
 5.0rc4 (unreleased)
 -------------------
 
+- Fix #1071: AttributeError: mark_special_links when saving theme details. Ensured that ILinkSchema
+  was registered with registry.xml
+  [pigeonflight]
+  
 - Fix #817: When saving the filter control panel show a flash message with
   info on caching.
   [jcerjak]
