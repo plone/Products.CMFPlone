@@ -5,7 +5,7 @@
 Changelog
 =========
 
-4.3.7 (unreleased)
+4.3.7 (2015-09-27)
 ------------------
 
 - Remove Chrome Frame from ``X-UA-Compatible`` HTTP header as it's deprecated.
