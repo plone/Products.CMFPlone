@@ -5,8 +5,8 @@
 Changelog
 =========
 
-5.0rc4 (unreleased)
--------------------
+5.0 (2015-09-27)
+----------------
 
 - Update hero text. Remove "rocks" line, more descriptive link button.
   [esteele]
