@@ -8,6 +8,9 @@ Changelog
 5.0rc4 (unreleased)
 -------------------
 
+- Update hero text. Remove "rocks" line, more descriptive link button.
+  [esteele]
+  
 - Be able to provide table styles in tinymce configuration
   [vangheem]
 
