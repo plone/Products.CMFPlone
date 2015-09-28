@@ -8,7 +8,12 @@ Changelog
 4.3.8 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Purge profile upgrade versions from portal_setup when applying our
+  default CMFPlone:plone profile.  This signals that nothing has been
+  installed yet, so depencies will get reapplied instead of possibly
+  upgraded.  This could cause problems mostly in tests.  Closes
+  `#1041`_.
+  [maurits]
 
 
 4.3.7 (2015-09-27)
@@ -597,3 +602,5 @@ Changelog
 - Use configuration registry to override translation of date format,
   or fall back to ISO style as last resort. Fixes http://dev.plone.org/ticket/11171
   [kleist]
+
+.. _`#1041`: https://github.com/plone/Products.CMFPlone/issues/1041

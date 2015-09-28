@@ -374,6 +374,14 @@ def setupPortalContent(p):
             assignable.setBlacklistStatus('content_type', True)
 
 
+def purgeProfileVersions(portal):
+    """
+    Purge profile dependency versions.
+    """
+    setup = getToolByName(portal, 'portal_setup')
+    setup._profile_upgrade_versions = {}
+
+
 def setProfileVersion(portal):
     """
     Set profile version.
@@ -445,6 +453,21 @@ def importFinalSteps(context):
     if context.readDataFile('plone-final.txt') is None:
         return
     site = context.getSite()
+
+    # Unset all profile upgrade versions in portal_setup.  Our default
+    # profile should only be applied when creating a new site, so this
+    # list of versions should be empty.  But some tests apply it too.
+    # This should not be done as it should not be needed.  The profile
+    # is a base profile, which means all import steps are run in purge
+    # mode.  So for example an extra workflow added by
+    # plone.app.discussion is purged.  When plone.app.discussion is
+    # still in the list of profile upgrade versions, with the default
+    # dependency strategy it will not be reapplied again, which leaves
+    # you with a site that misses stuff.  So: when applying our
+    # default profile, start with a clean slate in these versions.
+    purgeProfileVersions(site)
+
+    # Set out default profile version.
     setProfileVersion(site)
 
     # Install our dependencies
