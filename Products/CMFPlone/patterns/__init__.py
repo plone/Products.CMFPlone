@@ -248,7 +248,7 @@ class PloneSettingsAdapter(object):
             'tiny': generator.get_tiny_config(),
             # This is for loading the languages on tinymce
             'loadingBaseUrl': '%s/++plone++static/components/tinymce-builded/js/tinymce' % generator.portal_url,  # noqa
-            'prependToUrl': 'resolveuid/',
+            'prependToUrl': '{0}/resolveuid/'.format(generator.portal_url),
             'linkAttribute': 'UID',
             'prependToScalePart': '/@@images/image/',
             'folderTypes': folder_types,

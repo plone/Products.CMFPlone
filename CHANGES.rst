@@ -54,6 +54,9 @@ Changelog
   `#1041`_.
   [maurits]
 
+- Fix image preview in TinyMCE editor when in modals.
+  [Gagaro]
+
 
 5.0rc3 (2015-09-21)
 -------------------
