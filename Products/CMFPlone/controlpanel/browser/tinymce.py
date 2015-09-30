@@ -2,6 +2,7 @@ from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import ITinyMCELayoutSchema
 from Products.CMFPlone.interfaces import ITinyMCESpellCheckerSchema
 from Products.CMFPlone.interfaces import ITinyMCEResourceTypesSchema
+from Products.CMFPlone.interfaces import ITinyMCEAdvancedSchema
 from Products.CMFPlone.interfaces import ITinyMCESchema
 from Products.CMFPlone.interfaces import ITinyMCEPluginSchema
 from plone.app.registry.browser import controlpanel
@@ -25,6 +26,11 @@ class TinyMCEResourceTypesForm(group.GroupForm):
     fields = field.Fields(ITinyMCEResourceTypesSchema)
 
 
+class TinyMCEAdvancedForm(group.GroupForm):
+    label = _(u"Advanced")
+    fields = field.Fields(ITinyMCEAdvancedSchema)
+
+
 class TinyMCEControlPanelForm(controlpanel.RegistryEditForm):
 
     id = "TinyMCEControlPanel"
@@ -33,7 +39,7 @@ class TinyMCEControlPanelForm(controlpanel.RegistryEditForm):
     schema_prefix = "plone"
     fields = field.Fields(ITinyMCELayoutSchema)
     groups = (TinyMCEPluginForm, TinyMCESpellCheckerForm,
-              TinyMCEResourceTypesForm)
+              TinyMCEResourceTypesForm, TinyMCEAdvancedForm)
 
     def updateFields(self):
         super(TinyMCEControlPanelForm, self).updateFields()

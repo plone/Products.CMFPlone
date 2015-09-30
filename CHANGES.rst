@@ -8,7 +8,8 @@ Changelog
 5.0.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Allow all TinyMCE settings to be set from control panel.
+  [Gagaro]
 
 
 5.0 (2015-09-27)

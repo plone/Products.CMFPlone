@@ -26,3 +26,10 @@ class TestTinyMCESettings(PloneTestCase.PloneTestCase):
     def test_style_formats(self):
         conf = self.get_conf()
         self.assertEqual(len(conf['tiny']['style_formats']), 5)
+
+    def test_other_settings(self):
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(ITinyMCESchema, prefix="plone")
+        settings.other_settings = u'{"foo": "bar"}'
+        conf = self.get_conf()
+        self.assertEqual(conf['tiny']['foo'], 'bar')

@@ -22,6 +22,7 @@ from controlpanel import ISiteSchema
 from controlpanel import ITinyMCELayoutSchema
 from controlpanel import ITinyMCESpellCheckerSchema
 from controlpanel import ITinyMCEResourceTypesSchema
+from controlpanel import ITinyMCEAdvancedSchema
 from controlpanel import ITinyMCESchema
 from controlpanel import ITinyMCEPluginSchema
 from controlpanel import ITypesSchema
