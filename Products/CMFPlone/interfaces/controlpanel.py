@@ -763,11 +763,24 @@ class ITinyMCEResourceTypesSchema(Interface):
         required=False)
 
 
+class ITinyMCEAdvancedSchema(Interface):
+    """This interface defines the resource types properties."""
+
+    other_settings = schema.Text(
+        title=_('label_tinymce_other_settings', 'Other settings'),
+        description=_('hint_tinymce_other_settings',
+                      default='Other TinyMCE configuration formatted as JSON.'),
+        required=False,
+        default=u"{}",
+    )
+
+
 class ITinyMCESchema(
     ITinyMCELayoutSchema,
     ITinyMCEPluginSchema,
     ITinyMCESpellCheckerSchema,
-    ITinyMCEResourceTypesSchema
+    ITinyMCEResourceTypesSchema,
+    ITinyMCEAdvancedSchema
 ):
     """TinyMCE Schema"""
 
