@@ -6,8 +6,11 @@
  */
 define([
     "jquery",
+    "underscore",
     "pat-logger"
-], function($, logger) {
+], function($, _, logger) {
+    "use strict";
+
     function ArgumentParser(name, opts) {
         opts = opts || {};
         this.order = [];
@@ -32,94 +35,135 @@ define([
             });
         },
 
-        add_argument: function ArgumentParser_add_argument(name, default_value, choices, multiple) {
-            var spec, m;
+        addAlias: function argParserAddAlias(alias, original) {
+            /* Add an alias for a previously added parser argument.
+             *
+             * Useful when you want to support both US and UK english argument
+             * names.
+             */
+            if (this.parameters[original]) {
+                this.parameters[original].alias = alias;
+            } else {
+                throw("Attempted to add an alias \""+alias+"\" for a non-existing parser argument \""+original+"\".");
+            }
+        },
 
-            if (multiple && !Array.isArray(default_value))
-                default_value=[default_value];
-            spec={name: name,
-                  value: default_value,
-                  multiple: multiple,
-                  dest: name,
-                  group: null};
-
-            if (choices && Array.isArray(choices) && choices.length) {
-                spec.choices=choices;
-                spec.type=this._typeof(choices[0]);
-                for (var i=0; i<choices.length; i++)
-                    if (this.enum_conflicts.indexOf(choices[i])!==-1)
-                        continue;
-                    else if (choices[i] in this.enum_values) {
-                        this.enum_conflicts.push(choices[i]);
-                        delete this.enum_values[choices[i]];
-                    } else
-                        this.enum_values[choices[i]]=name;
-            } else if (typeof spec.value==="string" && spec.value.slice(0, 1)==="$")
-                spec.type=this.parameters[spec.value.slice(1)].type;
-            else
-                // Note that this will get reset by _defaults if default_value is a function.
-                spec.type=this._typeof(multiple ? spec.value[0] : spec.value);
-
-            m=name.match(this.group_pattern);
+        addGroupToSpec: function argParserAddGroupToSpec(spec) {
+            /* Determine wether an argument being parsed can be grouped and
+             * update its specifications object accordingly.
+             *
+             * Internal method used by addArgument and addJSONArgument
+             */
+            var m = spec.name.match(this.group_pattern);
             if (m) {
-                var group=m[1], field=m[2];
+                var group = m[1],
+                    field = m[2];
                 if (group in this.possible_groups) {
                     var first_spec = this.possible_groups[group],
                         first_name = first_spec.name.match(this.group_pattern)[2];
-                    first_spec.group=group;
-                    first_spec.dest=first_name;
-                    this.groups[group]=new ArgumentParser();
-                    this.groups[group].add_argument(
-                            first_name,
-                            spec.value, spec.choices, spec.multiple);
+                    first_spec.group = group;
+                    first_spec.dest = first_name;
+                    this.groups[group] = new ArgumentParser();
+                    this.groups[group].addArgument(
+                            first_name, first_spec.value, first_spec.choices, first_spec.multiple);
                     delete this.possible_groups[group];
                 }
                 if (group in this.groups) {
-                    this.groups[group].add_argument(field, default_value, choices, multiple);
-                    spec.group=group;
-                    spec.dest=field;
+                    this.groups[group].addArgument(field, spec.value, spec.choices, spec.multiple);
+                    spec.group = group;
+                    spec.dest = field;
                 } else {
-                    this.possible_groups[group]=spec;
-                    spec.dest=this._camelCase(spec.name);
+                    this.possible_groups[group] = spec;
+                    spec.dest = this._camelCase(spec.name);
                 }
             }
-            this.order.push(name);
-            this.parameters[name]=spec;
+            return spec;
         },
 
-        _typeof: function ArgumentParser_typeof(obj) {
+        addJSONArgument: function argParserAddJSONArgument(name, default_value) {
+            /* Add an argument where the value is provided in JSON format.
+             *
+             * This is a different usecase than specifying all arguments to
+             * the data-pat-... attributes in JSON format, and instead is part
+             * of the normal notation except that a value is in JSON instead of
+             * for example a string.
+             */
+            this.order.push(name);
+            this.parameters[name] = this.addGroupToSpec({
+                name: name,
+                value: default_value,
+                dest: name,
+                group: null,
+                type: "json"
+            });
+        },
+
+        addArgument: function ArgParserAddArgument(name, default_value, choices, multiple) {
+            var spec = {
+                name: name,
+                value: (multiple && !Array.isArray(default_value)) ? [default_value] : default_value,
+                multiple: multiple,
+                dest: name,
+                group: null
+            };
+            if (choices && Array.isArray(choices) && choices.length) {
+                spec.choices = choices;
+                spec.type = this._typeof(choices[0]);
+                for (var i=0; i<choices.length; i++) {
+                    if (this.enum_conflicts.indexOf(choices[i])!==-1) {
+                        continue;
+                    } else if (choices[i] in this.enum_values) {
+                        this.enum_conflicts.push(choices[i]);
+                        delete this.enum_values[choices[i]];
+                    } else {
+                        this.enum_values[choices[i]]=name;
+                    }
+                }
+            } else if (typeof spec.value==="string" && spec.value.slice(0, 1)==="$") {
+                spec.type = this.parameters[spec.value.slice(1)].type;
+            } else {
+                // Note that this will get reset by _defaults if default_value is a function.
+                spec.type = this._typeof(multiple ? spec.value[0] : spec.value);
+            }
+            this.order.push(name);
+            this.parameters[name] = this.addGroupToSpec(spec);
+        },
+
+        _typeof: function argParserTypeof(obj) {
             var type = typeof obj;
             if (obj===null)
                 return "null";
             return type;
         },
 
-        _coerce: function ArgumentParser_coerce(name, value) {
-            var spec=this.parameters[name];
-
+        _coerce: function argParserCoerce(name, value) {
+            var spec = this.parameters[name];
             if (typeof value !== spec.type)
                 try {
                     switch (spec.type) {
+                        case "json":
+                            value = JSON.parse(value);
+                            break;
                         case "boolean":
                             if (typeof value === "string") {
-                                value=value.toLowerCase();
+                                value = value.toLowerCase();
                                 var num = parseInt(value, 10);
                                 if (!isNaN(num))
-                                    value=!!num;
+                                    value = !!num;
                                 else
                                     value=(value==="true" || value==="y" || value==="yes" || value==="y");
                             } else if (typeof value === "number")
-                                value=!!value;
+                                value = !!value;
                             else
                                 throw ("Cannot convert value for " + name + " to boolean");
                             break;
                         case "number":
                             if (typeof value === "string") {
-                                value=parseInt(value, 10);
+                                value = parseInt(value, 10);
                                 if (isNaN(value))
                                     throw ("Cannot convert value for " + name + " to number");
                             } else if (typeof value === "boolean")
-                                value=value + 0;
+                                value = value + 0;
                             else
                                 throw ("Cannot convert value for " + name + " to number");
                             break;
@@ -141,37 +185,38 @@ define([
                 this.log.warn("Illegal value for " + name + ": " + value);
                 return null;
             }
-
             return value;
         },
 
-        _set: function ArgumentParser_set(opts, name, value) {
+        _set: function argParserSet(opts, name, value) {
             if (!(name in this.parameters)) {
                 this.log.debug("Ignoring value for unknown argument " + name);
                 return;
             }
-
-            var spec=this.parameters[name];
+            var spec = this.parameters[name],
+                parts, i, v;
             if (spec.multiple) {
-                var parts=value.split(/,+/), i, v;
-                value=[];
+                if (typeof value === "string") {
+                    parts = value.split(/,+/);
+                } else {
+                    parts = value;
+                }
+                value = [];
                 for (i=0; i<parts.length; i++) {
-                    v=this._coerce(name, parts[i].trim());
+                    v = this._coerce(name, parts[i].trim());
                     if (v!==null)
                         value.push(v);
                 }
             } else {
-                value=this._coerce(name, value);
+                value = this._coerce(name, value);
                 if (value===null)
                     return;
             }
-
-            opts[name]=value;
+            opts[name] = value;
         },
 
-        _split: function ArgumentParser_split(text) {
+        _split: function argParserSplit(text) {
             var tokens = [];
-
             text.replace(this.token_pattern, function(match, quoted, _, simple) {
                 if (quoted)
                     tokens.push(quoted);
@@ -181,42 +226,40 @@ define([
             return tokens;
         },
 
-        _parseExtendedNotation: function ArgumentParser_parseExtendedNotation(parameter) {
-            var opts = {}, i,
-                parts, matches;
-
-            parts = parameter.replace(";;", "\xff")
-                        .split(";")
+        _parseExtendedNotation: function argParserParseExtendedNotation(argstring) {
+            var opts = {};
+            var parts = argstring.replace(";;", "\xff").split(";")
                         .map(function(el) { return el.replace("\xff", ";"); });
-            for (i=0; i<parts.length; i++) {
-                if (!parts[i])
-                    continue;
-
-                matches = parts[i].match(this.named_param_pattern);
+            _.each(parts, function (part, i) {
+                if (!part) { return; }
+                var matches = part.match(this.named_param_pattern);
                 if (!matches) {
-                    this.log.warn("Invalid parameter: " + parts[i]);
-                    break;
+                    this.log.warn("Invalid parameter: " + part);
+                    return;
                 }
-
                 var name = matches[1],
-                    value = matches[2].trim();
+                    value = matches[2].trim(),
+                    arg = _.chain(this.parameters).where({'alias': name}).value(),
+                    is_alias = arg.length === 1;
 
-                if (name in this.parameters)
+                if (is_alias) {
+                    this._set(opts, arg[0].name, value);
+                } else if (name in this.parameters) {
                     this._set(opts, name, value);
-                else if (name in this.groups) {
+                } else if (name in this.groups) {
                     var subopt = this.groups[name]._parseShorthandNotation(value);
-                    for (var field in subopt)
+                    for (var field in subopt) {
                         this._set(opts, name+"-"+field, subopt[field]);
+                    }
                 } else {
                     this.log.warn("Unknown named parameter " + matches[1]);
-                    continue;
+                    return;
                 }
-            }
-
+            }.bind(this));
             return opts;
         },
 
-        _parseShorthandNotation: function ArgumentParser_parseShorthandNotation(parameter) {
+        _parseShorthandNotation: function argParserParseShorthandNotation(parameter) {
             var parts = this._split(parameter),
                 opts = {},
                 positional = true,
@@ -244,7 +287,6 @@ define([
                     parts.unshift(part);
                     break;
                 }
-
                 i++;
                 if (i>=this.order.length)
                     break;
@@ -254,7 +296,7 @@ define([
             return opts;
         },
 
-        _parse: function ArgumentParser_parse(parameter) {
+        _parse: function argParser_parse(parameter) {
             var opts, extended, sep;
             if (!parameter) { return {}; }
             if (parameter.match(this.json_param_pattern)) {
@@ -278,7 +320,7 @@ define([
             return opts;
         },
 
-        _defaults: function ArgumentParser_defaults($el) {
+        _defaults: function argParserDefaults($el) {
             var result = {};
             for (var name in this.parameters)
                 if (typeof this.parameters[name].value==="function")
@@ -293,7 +335,7 @@ define([
             return result;
         },
 
-        _cleanupOptions: function ArgumentParser_cleanupOptions(options) {
+        _cleanupOptions: function argParserCleanupOptions(options) {
             var keys = Object.keys(options),
                 i, spec, name, target;
 
@@ -331,16 +373,13 @@ define([
             }
         },
 
-        parse: function ArgumentParser_parse($el, options, multiple, inherit) {
+        parse: function argParserParse($el, options, multiple, inherit) {
             if (typeof options==="boolean" && multiple===undefined) {
                 multiple=options;
                 options={};
             }
-
             inherit = (inherit!==false);
-
             var stack = inherit ? [[this._defaults($el)]] : [[{}]];
-
             var $possible_config_providers = inherit ? $el.parents().andSelf() : $el,
                 final_length = 1,
                 i, data, frame;
@@ -364,9 +403,9 @@ define([
                     stack.push([options]);
             }
 
-            if (!multiple)
+            if (!multiple) {
                 final_length=1;
-
+            }
             var results=[], frame_length, x, xf;
             for (i=0; i<final_length; i++)
                 results.push({});
@@ -380,14 +419,14 @@ define([
                     results[x]=$.extend(results[x], frame[xf]);
                 }
             }
-
             for (i=0; i<results.length; i++)
                 this._cleanupOptions(results[i]);
 
             return multiple ? results : results[0];
         }
     };
-
+    // BBB
+    ArgumentParser.prototype.add_argument = ArgumentParser.prototype.addArgument;
     return ArgumentParser;
 });
 // jshint indent: 4, browser: true, jquery: true, quotmark: double

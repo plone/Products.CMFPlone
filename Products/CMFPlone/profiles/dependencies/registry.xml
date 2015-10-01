@@ -142,20 +142,22 @@
       <value key="js">less-variables.js</value>
   </record>
 
-  <!-- mockup core reqs -->
+  <!-- mockup core
+       XXX these are deprecated -->
   <records prefix="plone.resources/mockup-registry"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/mockup-core/js/registry.js</value>
-  </records>
-  <records prefix="plone.resources/mockup-patterns-base"
-            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++plone++static/components/mockup-core/js/pattern.js</value>
   </records>
   <records prefix="plone.resources/mockup-parser"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/mockup-core/js/parser.js</value>
   </records>
+  <!-- end mockup-core deps -->
 
+  <records prefix="plone.resources/mockup-patterns-base"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockup/base/pattern.js</value>
+  </records>
 
   <records prefix="plone.resources/jquery"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
@@ -908,11 +910,18 @@
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/patternslib/src/core/utils.js</value>
   </records>
+  <records prefix="plone.resources/pat-base"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/patternslib/src/core/base.js</value>
+  </records>
+  <records prefix="plone.resources/pat-mockup-parser"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/patternslib/src/core/mockup-parser.js</value>
+  </records>
   <records prefix="plone.resources/logging"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/logging/src/logging.js</value>
   </records>
-
 
   <!-- recurrence widget registrations -->
   <records prefix="plone.resources/jquery.recurrenceinput"

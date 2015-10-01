@@ -1,0 +1,70 @@
+@charset "UTF-8";
+
+ @font-face {
+  font-family: 'fontello';
+  src: url('../font/fontello.eot?28804349');
+  src: url('../font/fontello.eot?28804349#iefix') format('embedded-opentype'),
+       url('../font/fontello.woff?28804349') format('woff'),
+       url('../font/fontello.ttf?28804349') format('truetype'),
+       url('../font/fontello.svg?28804349#fontello') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+/* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
+/* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
+/*
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: 'fontello';
+    src: url('../font/fontello.svg?28804349#fontello') format('svg');
+  }
+}
+*/
+ 
+ [class^="icon-"]:before, [class*=" icon-"]:before {
+  font-family: "fontello";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+ 
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: .2em;
+  text-align: center;
+  /* opacity: .8; */
+ 
+  /* For safety - reset parent styles, that can break glyph codes*/
+  font-variant: normal;
+  text-transform: none;
+ 
+  /* fix buttons height, for twitter bootstrap */
+  line-height: 1em;
+ 
+  /* Animation center compensation - margins should be symmetric */
+  /* remove if not needed */
+  margin-left: .2em;
+ 
+  /* you can be more comfortable with increased icons size */
+  /* font-size: 120%; */
+ 
+  /* Font smoothing. That was taken from TWBS */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+ 
+  /* Uncomment for 3D effect */
+  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+}
+ 
+.icon-down-circle:before { content: '\e801'; } /* '' */
+.icon-book:before { content: '\e803'; } /* '' */
+.icon-github-circled:before { content: '\e804'; } /* '' */
+.icon-patterns-logo:before { content: '󡀀'; } /* '\e1000' */
+.icon-bookmark:before { content: '󡀁'; } /* '\e1001' */
+.icon-download:before { content: '󡀂'; } /* '\e1002' */
+.icon-circle-empty:before { content: '󢀀'; } /* '\e2000' */
+.icon-dot-circled:before { content: '󢀁'; } /* '\e2001' */
+.icon-check-empty:before { content: '󢀂'; } /* '\e2002' */
+.icon-check:before { content: '󢀃'; } /* '\e2003' */
+.icon-info-circle:before { content: '󢀄'; } /* '\e2004' */
+.icon-cancel:before { content: '󢀅'; } /* '\e2005' */

@@ -17,9 +17,8 @@
     "jquery.recurrenceinput.js": "v1.5.2",
     "lodash": "2.4.1",
     "logging": "",
-    "mockup-core": "2.1.12",
-    "moment": "2.10.3",
-    "patternslib": "2.0.9",
+    "moment": "2.10.6",
+    "patternslib": "2.0.11",
     "pickadate": "3.5.6",
     "requirejs-text": "2.0.12",
     "select2": "3.5.1",
@@ -29,10 +28,11 @@
     "r.js": "2.1.15"
   },
   "resolutions": {
-    "bootstrap": "3.3.4",
     "jquery": "1.11.3",
     "select2": "3.5.1",
-    "patternslib": "2.0.9"
+    "patternslib": "2.0.11",
+    "moment": "2.10.6",
+    "parsleyjs": "1.2.4"
   },
   "devDependencies": {
     "expect": "0.3.1",

@@ -8,6 +8,9 @@ Changelog
 5.0.1 (unreleased)
 ------------------
 
+- Upgrade to patternslib 2.0.11
+  [vangheem]
+
 - Allow all TinyMCE settings to be set from control panel.
   [Gagaro]
 

@@ -1,0 +1,48 @@
+@font-face {
+	font-family: 'Source Sans Pro';
+	font-style: normal;
+	font-weight: 300;
+	src:
+		local('Source Sans Pro Light'),
+		local('SourceSansPro-Light'),
+		/* from http://fonts.gstatic.com/s/sourcesanspro/v9/toadOcfmlt9b38dHJxOBGBlTL9oEQvYTI0YAW1-Ysv0.eot */
+		url('Source_Sans_Pro_300.eot?#iefix') format('embedded-opentype'),
+		/* from http://fonts.gstatic.com/s/sourcesanspro/v9/toadOcfmlt9b38dHJxOBGNbE_oMaV8t2eFeISPpzbdE.woff */
+		url('Source_Sans_Pro_300.woff') format('woff'),
+		/* from http://fonts.gstatic.com/s/sourcesanspro/v9/toadOcfmlt9b38dHJxOBGMw1o1eFRj7wYC6JbISqOjY.ttf */
+		url('Source_Sans_Pro_300.ttf') format('truetype'),
+		/* from http://fonts.gstatic.com/l/font?kit=toadOcfmlt9b38dHJxOBGOUS_KcVBMXUJf1HZjyEEXg#SourceSansPro */
+		url('Source_Sans_Pro_300.svg#SourceSansPro') format('svg');
+}
+@font-face {
+	font-family: 'Source Sans Pro';
+	font-style: normal;
+	font-weight: 400;
+	src:
+		local('Source Sans Pro'),
+		local('SourceSansPro-Regular'),
+		/* from http://fonts.gstatic.com/s/sourcesanspro/v9/ODelI1aHBYDBqgeIAH2zlN0tugusXa58UbOrParLRF0.eot */
+		url('Source_Sans_Pro_400.eot?#iefix') format('embedded-opentype'),
+		/* from http://fonts.gstatic.com/s/sourcesanspro/v9/ODelI1aHBYDBqgeIAH2zlBM0YzuT7MdOe03otPbuUS0.woff */
+		url('Source_Sans_Pro_400.woff') format('woff'),
+		/* from http://fonts.gstatic.com/s/sourcesanspro/v9/ODelI1aHBYDBqgeIAH2zlNzbP97U9sKh0jjxbPbfOKg.ttf */
+		url('Source_Sans_Pro_400.ttf') format('truetype'),
+		/* from http://fonts.gstatic.com/l/font?kit=ODelI1aHBYDBqgeIAH2zlADX0QHsyBtvFGhCuXSMYhM#SourceSansPro */
+		url('Source_Sans_Pro_400.svg#SourceSansPro') format('svg');
+}
+@font-face {
+	font-family: 'Source Sans Pro';
+	font-style: normal;
+	font-weight: 700;
+	src:
+		local('Source Sans Pro Bold'),
+		local('SourceSansPro-Bold'),
+		/* from http://fonts.gstatic.com/s/sourcesanspro/v9/toadOcfmlt9b38dHJxOBGFV89XnfCtb1fhQGOlhyqi8.eot */
+		url('Source_Sans_Pro_700.eot?#iefix') format('embedded-opentype'),
+		/* from http://fonts.gstatic.com/s/sourcesanspro/v9/toadOcfmlt9b38dHJxOBGFkQc6VGVFSmCnC_l7QZG60.woff */
+		url('Source_Sans_Pro_700.woff') format('woff'),
+		/* from http://fonts.gstatic.com/s/sourcesanspro/v9/toadOcfmlt9b38dHJxOBGLsbIrGiHa6JIepkyt5c0A0.ttf */
+		url('Source_Sans_Pro_700.ttf') format('truetype'),
+		/* from http://fonts.gstatic.com/l/font?kit=toadOcfmlt9b38dHJxOBGDoOxVUo1xdF11_PvoexWN4#SourceSansPro */
+		url('Source_Sans_Pro_700.svg#SourceSansPro') format('svg');
+}

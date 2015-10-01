@@ -1,0 +1,8 @@
+
+scripts/main.js
+----------------
+scripts/libs/text.js
+scripts/libs/underscore.js
+scripts/libs/tpl.js
+tpl!templates/message
+scripts/main.js

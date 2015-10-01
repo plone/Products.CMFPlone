@@ -1,0 +1,15 @@
+@charset "UTF-8";
+
+ 
+.icon-down-circle:before { content: '\e801'; } /* '' */
+.icon-book:before { content: '\e803'; } /* '' */
+.icon-github-circled:before { content: '\e804'; } /* '' */
+.icon-patterns-logo:before { content: '󡀀'; } /* '\e1000' */
+.icon-bookmark:before { content: '󡀁'; } /* '\e1001' */
+.icon-download:before { content: '󡀂'; } /* '\e1002' */
+.icon-circle-empty:before { content: '󢀀'; } /* '\e2000' */
+.icon-dot-circled:before { content: '󢀁'; } /* '\e2001' */
+.icon-check-empty:before { content: '󢀂'; } /* '\e2002' */
+.icon-check:before { content: '󢀃'; } /* '\e2003' */
+.icon-info-circle:before { content: '󢀄'; } /* '\e2004' */
+.icon-cancel:before { content: '󢀅'; } /* '\e2005' */
