@@ -10,7 +10,8 @@ from plone.registry.interfaces import IRegistry
 from zope.component import getUtility
 
 try:
-    import plone.app.event  # nopep8
+    import plone.app.event
+    plone.app.event  # pyflakes
     HAS_PAE = True
 except ImportError:
     HAS_PAE = False

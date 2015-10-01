@@ -196,7 +196,7 @@ except ConflictError: pass
 
     def testCatch_ConflictErrorRaisedByPythonModule(self):
         self.app._setObject('raiseConflictError',
-                               dummy.Raiser(ConflictError))
+                            dummy.Raiser(ConflictError))
         try:
             self.check('''
 from ZODB.POSException import ConflictError
@@ -227,6 +227,7 @@ except ParseError: pass
                       (e.__class__.__name__, e, e.__module__))
 
     from DateTime.interfaces import DateTimeError
+    DateTimeError  # pyflakes
 
     def testImport_DateTimeError(self):
         self.check('from DateTime.interfaces import DateTimeError')
@@ -249,6 +250,7 @@ except DateTimeError: pass
                       (e.__class__.__name__, e, e.__module__))
 
     from DateTime.DateTime import SyntaxError
+    SyntaxError  # pyflakes
 
     def testImport_SyntaxError(self):
         self.check('from DateTime.interfaces import SyntaxError')
@@ -379,7 +381,7 @@ class TestAllowSendtoSecurity(PloneTestCase.PloneTestCase):
         # get sendto browser view in context of folder
         try:
             sendto = self.folder.restrictedTraverse('@@sendto_form')
-            msg = sendto()
+            sendto()
             self.fail("Sendto did not throw unauthorized")
         except Unauthorized:
             pass

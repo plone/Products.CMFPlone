@@ -10,7 +10,6 @@
 
 from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
 from DateTime import DateTime
-from time import localtime
 
 
 class DateTimeTests(PloneTestCase):

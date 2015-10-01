@@ -1,34 +1,31 @@
-from Products.CMFCore import permissions
-from Products.CMFCore.utils import _checkPermission
-from Products.CMFCore.utils import getToolByName
-from Products.CMFCore.utils import UniqueObject
-from Products.CMFCore.PortalObject import PortalObjectBase
-from Products.CMFDynamicViewFTI.browserdefault import BrowserDefaultMixin
-from Products.CMFPlone import PloneMessageFactory as _
-from Products.CMFPlone.PloneFolder import OrderedContainer
-
 from AccessControl import ClassSecurityInfo
 from AccessControl import Permissions
 from AccessControl import Unauthorized
 from Acquisition import aq_base
 from App.class_init import InitializeClass
 from ComputedAttribute import ComputedAttribute
-from webdav.NullResource import NullResource
+from plone.i18n.locales.interfaces import IMetadataLanguageAvailability
+from Products.CMFCore import permissions
 from Products.CMFCore.PortalObject import PortalObjectBase
-from Products.CMFPlone.PloneFolder import ReplaceableWrapper
+from Products.CMFCore.utils import _checkPermission
+from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.utils import UniqueObject
+from Products.CMFDynamicViewFTI.browserdefault import BrowserDefaultMixin
+from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone.DublinCore import DefaultDublinCoreImpl
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.CMFPlone.interfaces.syndication import ISyndicatable
-
-from plone.i18n.locales.interfaces import IMetadataLanguageAvailability
-from zope.interface import implements
-from zope.component import queryUtility
-from Products.CMFPlone.DublinCore import DefaultDublinCoreImpl
 from Products.CMFPlone.permissions import AddPortalContent
 from Products.CMFPlone.permissions import AddPortalFolders
 from Products.CMFPlone.permissions import ListPortalMembers
+from Products.CMFPlone.permissions import ModifyPortalContent
 from Products.CMFPlone.permissions import ReplyToItem
 from Products.CMFPlone.permissions import View
-from Products.CMFPlone.permissions import ModifyPortalContent
+from Products.CMFPlone.PloneFolder import OrderedContainer
+from Products.CMFPlone.PloneFolder import ReplaceableWrapper
+from webdav.NullResource import NullResource
+from zope.component import queryUtility
+from zope.interface import implements
 
 
 class PloneSite(PortalObjectBase, DefaultDublinCoreImpl, OrderedContainer,
@@ -148,8 +145,8 @@ class PloneSite(PortalObjectBase, DefaultDublinCoreImpl, OrderedContainer,
         languages.sort(lambda x, y: cmp(x[1], y[1]))
         # Put language neutral at the top.
         languages.insert(0, (u'', _(u'Language neutral (site default)')))
+
         return languages
- 
     def isEffective(self, date):
         """ Override DefaultDublinCoreImpl's test, since we are always viewable.
         """

@@ -36,9 +36,9 @@ class MailControlPanelForm(controlpanel.RegistryEditForm):
         if errors:
             self.status = self.formErrorsMessage
             return False
-        #keep password field
-        if (data.get('smtp_userid') is not None
-            and data.get('smtp_pass') is None):
+        # keep password field
+        if (data.get('smtp_userid') is not None and
+                data.get('smtp_pass') is None):
             del data['smtp_pass']
         self.applyChanges(data)
         return True
@@ -55,7 +55,6 @@ class MailControlPanelForm(controlpanel.RegistryEditForm):
         registry = getUtility(IRegistry)
         mail_settings = registry.forInterface(IMailSchema, prefix='plone')
         fromaddr = mail_settings.email_from_address
-        fromname = mail_settings.email_from_name
 
         message = ("Hi,\n\nThis is a test message sent from the Plone "
                    "'Mail settings' control panel. Your receipt of this "

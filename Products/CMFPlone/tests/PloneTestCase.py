@@ -9,6 +9,9 @@ from plone.protect.authenticator import AuthenticatorView
 from re import match
 import transaction
 
+# We do not use these, but someone might import them.
+portal_name, default_user  # pyflakes
+
 
 class PloneTestCase(PloneTestCase):
     """This is a stub now, but in case you want to try

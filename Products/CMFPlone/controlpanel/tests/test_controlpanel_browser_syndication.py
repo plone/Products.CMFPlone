@@ -1,16 +1,10 @@
 # -*- coding: utf-8 -*-
 from plone.app.testing import SITE_OWNER_NAME, SITE_OWNER_PASSWORD
-from plone.registry.interfaces import IRegistry
 from plone.testing.z2 import Browser
-
+from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 from zope.component import getMultiAdapter
-from zope.component import getUtility
-from Products.CMFPlone.interfaces import ISiteSyndicationSettings
-from Products.CMFPlone.testing import \
-    PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
-
-import unittest2 as unittest
 import transaction
+import unittest2 as unittest
 
 
 class SyndicationControlPanelFunctionalTest(unittest.TestCase):
@@ -116,4 +110,3 @@ class SyndicationControlPanelFunctionalTest(unittest.TestCase):
 
         self.browser.open(self.portal_url + '/collection')
         self.assertTrue('/RSS' in self.browser.contents)
-

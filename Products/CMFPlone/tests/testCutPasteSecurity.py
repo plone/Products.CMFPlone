@@ -1,6 +1,5 @@
 from AccessControl import Unauthorized
 from Acquisition import aq_base
-from OFS.CopySupport import CopyError
 from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
 from Products.CMFCore.interfaces import IContentish
 from urllib2 import HTTPError
@@ -165,9 +164,10 @@ class CutPasteFailureTests(PloneTestCase):
             browser.open(self.folder['destination-folder'].absolute_url())
             try:
                 browser.getLink('Paste').click()
-            except HTTPError, msg:
-                # a HTTP 500 Server error is currently expected, unless we find a better way
-                # to abort the transaction.
+            except HTTPError:
+                # a HTTP 500 Server error is currently expected,
+                # unless we find a better way to abort the
+                # transaction.
                 pass
 
             # test if document is not moved
@@ -176,7 +176,8 @@ class CutPasteFailureTests(PloneTestCase):
 
         finally:
             # unregister event handler
-            getGlobalSiteManager().unregisterHandler(failingEventHandler, [IContentish, IObjectMovedEvent])
+            getGlobalSiteManager().unregisterHandler(
+                failingEventHandler, [IContentish, IObjectMovedEvent])
 
     def testFolder_pasteUncommitOnException(self):
         # register event handler
@@ -188,9 +189,10 @@ class CutPasteFailureTests(PloneTestCase):
             browser.open(self.folder['destination-folder'].absolute_url())
             try:
                 browser.getLink('Paste').click()
-            except HTTPError, msg:
-                # a HTTP 500 Server error is currently expected, unless we find a better way
-                # to abort the transaction.
+            except HTTPError:
+                # a HTTP 500 Server error is currently expected,
+                # unless we find a better way to abort the
+                # transaction.
                 pass
 
             # test if document is not moved
@@ -199,4 +201,5 @@ class CutPasteFailureTests(PloneTestCase):
 
         finally:
             # unregister event handler
-            getGlobalSiteManager().unregisterHandler(failingEventHandler, [IContentish, IObjectMovedEvent])
+            getGlobalSiteManager().unregisterHandler(
+                failingEventHandler, [IContentish, IObjectMovedEvent])

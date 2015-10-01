@@ -1,42 +1,31 @@
-import re
-import random
-from hashlib import md5
-from email import message_from_string
-from smtplib import SMTPException, SMTPRecipientsRefused
-
-from zope.i18nmessageid import MessageFactory
-
-from Acquisition import aq_base, aq_chain
-from Products.CMFCore.interfaces import ISiteRoot
-from Products.CMFCore.RegistrationTool import RegistrationTool as BaseTool
-
-from Products.CMFCore.permissions import AddPortalMember
-
-from App.class_init import InitializeClass
 from AccessControl import ClassSecurityInfo, Unauthorized
 from AccessControl import getSecurityManager
+from AccessControl.requestmethod import postonly
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.SecurityManagement import setSecurityManager
+from Acquisition import aq_base, aq_chain
+from App.class_init import InitializeClass
+from email import message_from_string
+from hashlib import md5
 from plone.registry.interfaces import IRegistry
+from Products.CMFCore.interfaces import ISiteRoot
+from Products.CMFCore.permissions import AddPortalMember
+from Products.CMFCore.RegistrationTool import RegistrationTool as BaseTool
+from Products.CMFCore.utils import _checkPermission
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces import ISecuritySchema
+from Products.CMFPlone.permissions import ManagePortal
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.PloneTool import EMAIL_RE
-from Products.CMFCore.utils import _checkPermission
-
-from Products.PluggableAuthService.permissions import SetOwnPassword
-
+from Products.PluggableAuthService.interfaces.authservice import IPluggableAuthService
 from Products.PluggableAuthService.interfaces.plugins import IValidationPlugin
-from Products.PluggableAuthService.interfaces.authservice \
-        import IPluggableAuthService
-
-from AccessControl.requestmethod import postonly
-from Acquisition import aq_base
+from Products.PluggableAuthService.permissions import SetOwnPassword
+from smtplib import SMTPException, SMTPRecipientsRefused
 from zope.component import getUtility
+from zope.i18nmessageid import MessageFactory
 from zope.schema import ValidationError
-
-from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.permissions import ManagePortal
-
+import random
+import re
 
 # - remove '1', 'l', and 'I' to avoid confusion
 # - remove '0', 'O', and 'Q' to avoid confusion
@@ -132,7 +121,6 @@ class RegistrationTool(PloneBaseTool, BaseTool):
 
         checkEmailAddress(email)
         return email
-
 
     # Get a password of the prescribed length
     #

@@ -1,10 +1,6 @@
-from zope.component import getUtility
-from Products.CMFPlone.tests import PloneTestCase
-from Products.CMFPlone.tests import dummy
-from Products.CMFPlone.interfaces import IEditingSchema
-from plone.registry.interfaces import IRegistry
-
 from Products.CMFPlone.browser.ploneview import Plone
+from Products.CMFPlone.tests import dummy
+from Products.CMFPlone.tests import PloneTestCase
 
 
 class TestPloneView(PloneTestCase.PloneTestCase):
@@ -143,8 +139,8 @@ class TestPloneView(PloneTestCase.PloneTestCase):
         self.assertEqual(view.cropText('Hello world', 99), 'Hello world')
         self.assertEqual(view.cropText('Hello world', 10), 'Hello worl...')
         self.assertEqual(view.cropText(u'Hello world', 10), u'Hello worl...')
-        self.assertEqual(view.cropText(u'Koko\u0159\xedn', 5),
-                                       u'Koko\u0159...')
+        self.assertEqual(
+            view.cropText(u'Koko\u0159\xedn', 5), u'Koko\u0159...')
         # Test utf encoded string Kokorin with 'r' and 'i' accented
         # Must return 6 characters, because 5th character is two byte
         text = u'Koko\u0159\xedn'.encode('utf8')

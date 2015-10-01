@@ -212,6 +212,7 @@ class TestSiteAdministratorRole(PloneTestCase.PloneTestCase):
             })
         try:
             import plone.app.iterate
+            plone.app.iterate  # pyflakes
         except ImportError:
             pass
         else:

@@ -17,6 +17,7 @@ class TestQuickInstallerTool(PloneTestCase.PloneTestCase):
     def testInstallUninstallProduct(self):
         try:
             import Products.CMFPlacefulWorkflow
+            Products.CMFPlacefulWorkflow  # pyflakes
         except ImportError:
             return
         # CMFPlacefulWorkflow should be uninstalled, we install it and

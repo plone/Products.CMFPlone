@@ -1,25 +1,22 @@
 from AccessControl import ClassSecurityInfo
-from App.special_dtml import DTMLFile
 from App.class_init import InitializeClass
+from App.special_dtml import DTMLFile
 from OFS.Folder import Folder
 from OFS.PropertyManager import PropertyManager
-
-from zope.interface import implements
-from zope.i18n import translate
-from zope.i18nmessageid import Message
-
-from Products.CMFCore.Expression import Expression, createExprContext
 from Products.CMFCore.ActionInformation import ActionInformation
 from Products.CMFCore.ActionProviderBase import ActionProviderBase
+from Products.CMFCore.Expression import Expression, createExprContext
 from Products.CMFCore.permissions import ManagePortal, View
-from Products.CMFCore.utils \
-    import _checkPermission, getToolByName, UniqueObject
+from Products.CMFCore.utils import _checkPermission
+from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.utils import registerToolInterface
-
+from Products.CMFCore.utils import UniqueObject
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import IControlPanel
-from Products.CMFPlone.log import log_deprecated
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
+from zope.i18n import translate
+from zope.i18nmessageid import Message
+from zope.interface import implements
 
 
 class PloneConfiglet(ActionInformation):
@@ -184,13 +181,13 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
         if category == '':
             category = 'object'
 
-        if type(visible) is not type(0):
+        if not isinstance(visible, int):
             try:
                 visible = int(visible)
             except ValueError:
                 visible = 0
 
-        if type(permissions) is type(''):
+        if not isinstance(permissions, basestring):
             permissions = (permissions, )
 
         return PloneConfiglet(id=id,
@@ -227,7 +224,7 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
         a_expr = action and Expression(text=str(action)) or ''
         c_expr = condition and Expression(text=str(condition)) or ''
 
-        if type(permission) != type(()):
+        if not isinstance(permission, tuple):
             permission = permission and (str(permission), ) or ()
 
         new_actions = self._cloneActions()
@@ -281,13 +278,14 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
 
         # possible_permissions is in OFS.role.RoleManager.
         pp = self.possible_permissions()
-        return self._actions_form(self,
-                                  REQUEST,
-                                  actions=actions,
-                                  possible_permissions=pp,
-                                  management_view='Actions',
-                                  manage_tabs_message=manage_tabs_message,
-                                 )
+        return self._actions_form(
+            self,
+            REQUEST,
+            actions=actions,
+            possible_permissions=pp,
+            management_view='Actions',
+            manage_tabs_message=manage_tabs_message,
+            )
 
 InitializeClass(PloneControlPanel)
 registerToolInterface('portal_controlpanel', IControlPanel)

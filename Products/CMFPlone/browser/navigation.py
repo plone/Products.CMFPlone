@@ -13,7 +13,6 @@ from Products.CMFPlone.browser.interfaces import ISiteMap
 from Products.CMFPlone.browser.navtree import SitemapQueryBuilder
 from Products.CMFPlone.interfaces import IHideFromBreadcrumbs
 from Products.CMFPlone.interfaces import INavigationSchema
-from Products.CMFPlone.interfaces import ITypesSchema
 from Products.Five import BrowserView
 from zope.component import getMultiAdapter
 from zope.component import getUtility

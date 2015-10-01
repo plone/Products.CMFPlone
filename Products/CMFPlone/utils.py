@@ -68,9 +68,10 @@ pattern = re.compile(r'^(.*)\s+(\d+)\s*:\s*(\d+)$')
 
 # Log methods
 from log import log
-from log import log_exc  # noqa
-from log import log_deprecated  # noqa
+from log import log_exc
+from log import log_deprecated
 
+log_exc  # pyflakes.  Keep this, as someone may import it.
 _marker = []
 
 
@@ -512,6 +513,7 @@ from cgi import escape
 import sys
 
 security.declarePrivate('sys')
+
 
 def _unrestricted_rename(container, id, new_id):
     """Rename a particular sub-object

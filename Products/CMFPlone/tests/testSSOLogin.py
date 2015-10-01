@@ -3,9 +3,6 @@ from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
 from plone.app.testing import TEST_USER_ROLES
-from zope.component import getUtility
-from plone.registry.interfaces import IRegistry
-from Products.CMFPlone.interfaces import ILoginSchema
 from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
 from Products.CMFPlone.factory import addPloneSite
 import transaction

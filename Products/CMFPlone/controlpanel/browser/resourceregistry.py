@@ -60,7 +60,7 @@ def updateRecordFromDict(record, data):
             full_name = record.__prefix__ + name
             try:
                 record.__registry__[full_name] = val
-            except (AttributeError, KeyError) as ex:  # noqa
+            except (AttributeError, KeyError):
                 # upgrade record on the fly, try to at least
                 if not val:
                     continue

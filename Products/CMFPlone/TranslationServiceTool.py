@@ -2,25 +2,26 @@
 This tool requires a translation service which supports
 the translate method and the default parameter.
 """
-from zope.i18n import translate
-from zope.interface import implements
-from zope.publisher.interfaces.browser import IBrowserRequest
 
 from AccessControl import ClassSecurityInfo
-from App.class_init import InitializeClass
 from Acquisition import aq_get
+from App.class_init import InitializeClass
+from i18nl10n import monthname_english
+from i18nl10n import monthname_msgid
+from i18nl10n import monthname_msgid_abbr
+from i18nl10n import ulocalized_time
+from i18nl10n import weekdayname_english
+from i18nl10n import weekdayname_msgid
+from i18nl10n import weekdayname_msgid_abbr
+from i18nl10n import weekdayname_msgid_short
 from OFS.SimpleItem import SimpleItem
-from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.utils import UniqueObject
 from Products.CMFPlone import PloneLocalesMessageFactory as PLMF
 from Products.CMFPlone.interfaces import ITranslationServiceTool
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
-
-from i18nl10n import ulocalized_time, \
-                     monthname_msgid, monthname_msgid_abbr, \
-                     weekdayname_msgid, weekdayname_msgid_abbr, \
-                     weekdayname_msgid_short, \
-                     monthname_english, weekdayname_english
+from zope.i18n import translate
+from zope.interface import implements
+from zope.publisher.interfaces.browser import IBrowserRequest
 
 
 class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):

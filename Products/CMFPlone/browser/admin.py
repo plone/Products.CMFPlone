@@ -12,7 +12,6 @@ from Products.GenericSetup import profile_registry
 from Products.GenericSetup.upgrade import normalize_version
 from ZPublisher.BaseRequest import DefaultPublishTraverse
 from collections import OrderedDict
-from operator import itemgetter
 from plone.i18n.locales.interfaces import IContentLanguageAvailability
 from plone.keyring.interfaces import IKeyManager
 from plone.protect.authenticator import check as checkCSRF

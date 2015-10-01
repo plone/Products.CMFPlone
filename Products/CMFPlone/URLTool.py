@@ -1,13 +1,12 @@
-from Products.CMFCore.URLTool import URLTool as BaseTool
-from Products.CMFCore.utils import getToolByName
 from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
-from Products.CMFPlone.PloneBaseTool import PloneBaseTool
-from zope.component import getUtility
 from plone.registry.interfaces import IRegistry
-from Products.CMFPlone.interfaces import ILoginSchema
 from posixpath import normpath
+from Products.CMFCore.URLTool import URLTool as BaseTool
+from Products.CMFPlone.interfaces import ILoginSchema
+from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from urlparse import urlparse, urljoin
+from zope.component import getUtility
 import re
 
 

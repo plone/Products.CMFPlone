@@ -114,8 +114,8 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     toolicon = 'skins/plone_images/site_icon.png'
 
     manage_options = (
-        ({'label': 'Upgrade', 'action': '../@@plone-upgrade'}, )
-        + SimpleItem.manage_options)
+        ({'label': 'Upgrade', 'action': '../@@plone-upgrade'}, ) +
+        SimpleItem.manage_options)
 
     _needRecatalog = 0
     _needUpdateRole = 0
@@ -201,6 +201,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
                 except pkg_resources.DistributionNotFound:
                     try:
                         import _imaging
+                        _imaging  # pyflakes
                         vars['PIL'] = 'unknown'
                     except ImportError:
                         pass

@@ -10,7 +10,6 @@ from ZODB.POSException import ConflictError
 from plone.registry.interfaces import IRegistry
 from plone.z3cform import layout
 
-from zope.component import getMultiAdapter
 from zope.component import getUtility
 
 from z3c.form import form
@@ -48,18 +47,6 @@ class SendToForm(form.Form):
                 type=u'error'
             )
             return
-
-        portal_state = getMultiAdapter(
-            (self.context, self.request),
-            name=u'plone_portal_state'
-        )
-        site = portal_state.portal()
-
-        context_state = getMultiAdapter(
-            (self.context, self.request),
-            name=u'plone_context_state'
-        )
-        url = context_state.view_url()
 
         send_from_address = data.get('send_from_address')
         send_to_address = data.get('send_to_address')

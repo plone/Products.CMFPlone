@@ -1,6 +1,4 @@
-from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFPlone.interfaces import IPloneSiteRoot
-from Products.CMFPlone.interfaces.controlpanel import IMailSchema
 from Products.CMFPlone.interfaces.controlpanel import IMailSchema
 from Products.CMFPlone.utils import safe_hasattr
 from plone.registry.interfaces import IRegistry
@@ -48,7 +46,7 @@ class MailControlPanelAdapter(object):
     def set_smtp_userid(self, value):
         if safe_hasattr(self.mail_settings, 'smtp_userid'):
             self.mail_settings.smtp_userid = value
-            #SecureMailhost 1.x also uses this:
+            # SecureMailhost 1.x also uses this:
             if safe_hasattr(self.mail_settings, '_smtp_userid'):
                 self.mail_settings._smtp_userid = value
         elif safe_hasattr(self.mail_settings, 'smtp_userid'):
@@ -65,7 +63,7 @@ class MailControlPanelAdapter(object):
         if value is not None:
             if safe_hasattr(self.mail_settings, 'smtp_pass'):
                 self.mail_settings.smtp_pass = value
-                #SecureMailhost 1.x also uses this:
+                # SecureMailhost 1.x also uses this:
                 if safe_hasattr(self.mail_settings, '_smtp_pass'):
                     self.mail_settings._smtp_pass = value
             elif safe_hasattr(self.mail_settings, 'smtp_pwd'):
