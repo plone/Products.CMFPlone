@@ -8,6 +8,10 @@ Changelog
 5.0.1 (unreleased)
 ------------------
 
+- When migration fails, do not upgrade addons or recatalog or
+  update roles.
+  [maurits]
+
 - Allow all TinyMCE settings to be set from control panel.
   [Gagaro]
 
