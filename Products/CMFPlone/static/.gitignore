@@ -100,3 +100,14 @@ components/pickadate/tests/
 components/pickadate/version-bump.js
 components/pickadate/version-commit.js
 
+components/google-code-prettify/
+components/moment/src/lib/utils/abs-ceil.js
+components/patternslib/Gemfile
+components/patternslib/_sass/
+components/patternslib/style/
+components/photoswipe/
+components/pikaday/
+components/requirejs-tpl-jcbrand/
+components/showdown/
+components/validate/
+
