@@ -32,7 +32,8 @@
     "select2": "3.5.1",
     "patternslib": "2.0.11",
     "moment": "2.10.6",
-    "parsleyjs": "1.2.4"
+    "parsleyjs": "1.2.4",
+    "chosen": "4371e8fdabe16d4e8aaa3734421edc367e32a296"
   },
   "devDependencies": {
     "expect": "0.3.1",
