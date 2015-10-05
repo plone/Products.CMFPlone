@@ -1,0 +1,26 @@
+include *.json
+include *.rst
+recursive-include mockup *.html
+recursive-include mockup *.js
+recursive-include mockup *.jshintrc
+recursive-include mockup *.json
+recursive-include mockup *.md
+recursive-include mockup *.zcml
+recursive-include mockup/js *
+recursive-include mockup/less *
+recursive-include mockup/lib *
+recursive-include mockup/patterns *
+recursive-include mockup/tests *
+prune .nix
+prune dist
+prune mockup/bower_components
+prune mockup/build
+prune mockup/coverage
+prune mockup/docs
+prune mockup/node_modules
+exclude .bowerrc
+exclude .travis.yml
+exclude Makefile
+exclude *.sh
+exclude Vagrantfile
+global-exclude *.pyc

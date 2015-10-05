@@ -1,0 +1,1 @@
+<span class="selected-item">  <a href="#" data-uid="<%= UID %>" title="remove" class="remove">    <span class="glyphicon glyphicon-remove-circle"></span>  </a>  <%= Title %></span>

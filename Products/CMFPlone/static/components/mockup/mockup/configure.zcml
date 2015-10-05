@@ -1,0 +1,23 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    i18n_domain="plone">
+
+    <!-- Static resources -->
+    <browser:resourceDirectory
+        name="mockupjs"
+        directory="./js" />
+
+    <browser:resourceDirectory
+        name="mockup"
+        directory="./patterns" />
+
+    <browser:resourceDirectory
+        name="mockupless"
+        directory="./less" />
+
+    <browser:resourceDirectory
+        name="mockuplib"
+        directory="./lib" />
+
+</configure>

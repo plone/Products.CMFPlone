@@ -1,0 +1,17 @@
+<div id="toolbar">
+</div>
+<div class="container">
+    <div class="tree">
+    </div>
+    <div class="nav-and-editor">
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="collapse navbar-collapse">
+              <ul class="nav navbar-nav">
+               </ul>
+            </div><!-- /.navbar-collapse -->
+            <div class="fileeditor">
+                <div class="editor">
+                </div>
+            </div>
+        </nav>
+</div>

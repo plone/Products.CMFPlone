@@ -1,0 +1,7 @@
+<span class="pattern-relateditems-item pattern-relateditems-type-<%= portal_type %>">
+ <span class="pattern-relateditems-result-image">
+   <img src="<%= generateImageUrl(_item, 'thumb') %>" />
+ </span>
+ <span class="pattern-relateditems-item-title"><%= Title %></span>
+ <span class="pattern-relateditems-item-path"><%= path %></span>
+</span>'

@@ -142,20 +142,10 @@
       <value key="js">less-variables.js</value>
   </record>
 
-  <!-- mockup core reqs -->
-  <records prefix="plone.resources/mockup-registry"
-            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++plone++static/components/mockup-core/js/registry.js</value>
-  </records>
   <records prefix="plone.resources/mockup-patterns-base"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++plone++static/components/mockup-core/js/pattern.js</value>
+      <value key="js">++resource++mockup/base/pattern.js</value>
   </records>
-  <records prefix="plone.resources/mockup-parser"
-            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++plone++static/components/mockup-core/js/parser.js</value>
-  </records>
-
 
   <records prefix="plone.resources/jquery"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
@@ -171,7 +161,7 @@
 
   <records prefix="plone.resources/underscore"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++plone++static/components/lodash/dist/lodash.underscore.js</value>
+      <value key="js">++plone++static/components/underscore/underscore.js</value>
       <value key="export">window._</value>
   </records>
 
@@ -888,6 +878,10 @@
   </records>
 
   <!-- patternslib dependencies -->
+  <records prefix="plone.resources/pat-base"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/patternslib/src/core/base.js</value>
+  </records>
   <records prefix="plone.resources/pat-compat"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/patternslib/src/core/compat.js</value>
@@ -908,11 +902,14 @@
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/patternslib/src/core/utils.js</value>
   </records>
+  <records prefix="plone.resources/pat-mockup-parser"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/patternslib/src/core/mockup-parser.js</value>
+  </records>
   <records prefix="plone.resources/logging"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/logging/src/logging.js</value>
   </records>
-
 
   <!-- recurrence widget registrations -->
   <records prefix="plone.resources/jquery.recurrenceinput"

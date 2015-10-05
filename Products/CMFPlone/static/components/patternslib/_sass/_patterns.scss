@@ -1,0 +1,50 @@
+// Each pattern comes with a mixin. They may also be included seperately
+// in a project and applied on custom markup.
+
+@import "settings";
+@import "mixins";
+
+// Individual scss files are imported for each Pattern. These files may
+// also be imported seperately in a project, but always require the Patterns
+// mixins
+
+@import "components/button";
+@import "components/button-bar";
+@import "components/avatar";
+@import "components/form";
+@import "components/icon";
+@import "src/pat/auto-suggest/auto-suggest";
+@import "src/pat/autofocus/autofocus";
+@import "src/pat/auto-scale/auto-scale";
+@import "src/pat/auto-submit/auto-submit";
+@import "src/pat/bumper/bumper";
+@import "src/pat/calendar/calendar";
+@import "src/pat/carousel/carousel";
+@import "src/pat/checked-flag/checked-flag";
+@import "src/pat/checklist/checklist";
+@import "src/pat/collapsible/collapsible";
+@import "src/pat/date-picker/date-picker";
+@import "src/pat/depends/depends";
+@import "src/pat/edit-tinymce/edit-tinymce";
+@import "src/pat/equaliser/equaliser";
+@import "src/pat/expandable-tree/expandable-tree";
+@import "src/pat/focus/focus";
+@import "src/pat/gallery/gallery";
+@import "src/pat/grid/grid";
+@import "src/pat/syntax-highlight/syntax-highlight";
+@import "src/pat/image-crop/image-crop";
+@import "src/pat/inject/inject";
+@import "src/pat/inject/injection";
+@import "src/pat/markdown/markdown";
+@import "src/pat/masonry/masonry";
+@import "src/pat/modal/modal";
+@import "src/pat/navigation/navigation";
+@import "src/pat/notification/notification";
+@import "src/pat/slideshow-builder/slideshow-builder";
+@import "src/pat/sortable/sortable";
+@import "src/pat/stacks/stacks";
+@import "src/pat/switch/switch";
+@import "src/pat/toggle/toggle";
+@import "src/pat/tooltip/tooltip";
+@import "src/pat/validate/validate";
+@import "src/pat/zoom/zoom";

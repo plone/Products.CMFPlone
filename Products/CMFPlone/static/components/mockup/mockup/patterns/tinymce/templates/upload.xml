@@ -1,0 +1,7 @@
+<div>
+  <div class="linkModal">
+    <h1><%- uploadHeading %></h1>
+    <input type="text" name="upload" style="display:none" />
+    <div class="uploadify-me"></div>
+  </div>
+</div>

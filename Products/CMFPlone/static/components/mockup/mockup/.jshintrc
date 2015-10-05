@@ -1,0 +1,30 @@
+{
+   "bitwise": true,
+   "curly": true,
+   "eqeqeq": true,
+   "immed": true,
+   "latedef": true,
+   "newcap": true,
+   "noarg": true,
+   "noempty": true,
+   "nonew": true,
+   "plusplus": true,
+   "undef": true,
+   "strict": true,
+   "trailing": true,
+   "browser": true,
+   "evil": true,
+   "globals": {
+      "console": true,
+      "it": true,
+      "describe": true,
+      "afterEach": true,
+      "beforeEach": true,
+      "define": false,
+      "requirejs": true,
+      "require": false,
+      "tinymce": true,
+      "document": false,
+      "window": false
+   }
+}

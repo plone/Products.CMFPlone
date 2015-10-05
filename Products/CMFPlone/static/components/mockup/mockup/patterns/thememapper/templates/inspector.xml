@@ -1,0 +1,39 @@
+<div class="frame-panel mapper-box col-md-6">
+  <div class="panel-toolbar">
+    <a class="refresh" href="#" title="Refresh mockup. You can also right-click on the mockup to use your browser's native refresh."
+      i18n:attributes="title">
+      <span class="glyphicon glyphicon-refresh"></span>
+    </a>
+    <a class="fullscreen" href="#" title="Toggle fullscreen" i18n:attributes="title">
+      <span class="glyphicon glyphicon-fullscreen"></span>
+    </a>
+  </div>
+
+  <label i18n:translate="heading_theme"><%= name %></label>
+
+  <iframe class="frame" src="<%= url %>"></iframe>
+
+  <div class="frame-info">
+    <div class="frame-shelf-container" style="display:none">
+      <span i18n:translate="theming_mapper_shelf_label">Selected:</span>
+      <span class="selector-info"></span>
+      <a class="clearInspector" href="#clearInspector"
+         title="Clear selection" i18n:attributes="title">x</a>
+    </div>
+    <span class="current-selector"></span>
+  </div>
+
+  <div class="panel-footer">
+    <div class="btn-group">
+      <button class="btn btn-default turnon" disabled="disabled" i18n:translate="">Inspector on</button>
+      <button class="btn btn-default turnoff" i18n:translate="">Inspector off</button>
+    </div>
+  </div>
+
+  <div class="discreet footer-help" i18n:translate="help_highlighter_selection">
+    Hover over an element to see its selector.
+    Left-click or press <em>Enter</em> to save.
+    Press <em>Esc</em> to select parent.
+  </div>
+
+</div>

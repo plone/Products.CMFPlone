@@ -1,0 +1,24 @@
+.iconified {
+  overflow: hidden;
+  text-decoration: none;
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+  line-height: 10px;
+  border-style: none;
+  background-image: none;
+  filter: none !important;
+  outline: none !important;
+  width: 1.3em;
+  &:active {
+    box-shadow: none;
+  }
+  &:hover {
+    text-decoration: none;
+  }
+  &:before {
+    text-indent: 0;
+    display: inline-block;
+    margin: 0 10px 0 0;
+  }
+}

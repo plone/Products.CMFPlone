@@ -1,0 +1,60 @@
+@import (less) "@{bowerPath}/pickadate/lib/themes/classic.css";
+@import (less) "@{bowerPath}/pickadate/lib/themes/classic.date.css";
+@import (less) "@{bowerPath}/pickadate/lib/themes/classic.time.css";
+
+.pattern-pickadate-wrapper {
+  position: relative;
+  margin-bottom: 0.5em;
+
+  .picker{
+    display: none;
+    &.picker--opened{
+      display: block;
+    }
+  }
+  .pattern-pickadate-date-wrapper {
+    float: left;
+    .picker__input {
+      width: 300px;
+      margin-bottom: 0.2em;
+      text-align: center;
+      cursor: context-menu;
+    }
+    .picker__holder {
+      width: 300px;
+      font-size: 12px;
+      //margin: 0 0.5em;
+      margin-top:-2px;
+    }
+  }
+  .pattern-pickadate-separator {
+    float: left;
+    display: block;
+    margin: 0 0.2em;
+  }
+  .pattern-pickadate-time-wrapper {
+    float: left;
+    .picker__input {
+      width: 180px;
+      margin-bottom: 0.2em;
+      text-align: center;
+      cursor: context-menu;
+    }
+    .picker__holder {
+      width: 180px;
+      font-size: 11px;
+      //margin: 0 0.5em;
+      margin-top:-2px;
+    }
+    .picker__list-item {
+      text-align: center;
+    }
+  }
+  .pattern-pickadate-clear {
+    clear: both;
+  }
+
+  .picker__select--month, .picker__select--year {
+    height: 3em;
+  }
+}

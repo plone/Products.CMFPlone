@@ -1,0 +1,62 @@
+.pat-autotoc {
+  .autotoc-nav {
+    float: right;
+    border: 1px solid #DDD;
+    padding: 0.5em 0;
+    margin: 0 0 1em 1em;
+    a { display: block; }
+    a:focus { outline-style: none; }
+    .autotoc-level-1 { margin: 0 1em 0 1em; }
+    .autotoc-level-2 { margin: 0 1em 0 2em; }
+    .autotoc-level-3 { margin: 0 1em 0 3em; }
+  }
+  &.autotabs {
+    .autotoc-nav {
+      float: none;
+      padding: 0;
+      margin: 0 0 0.3em 0;
+      border: 0;
+      border-bottom: 1px solid #DDD;
+      &:after {
+        content: "";
+        display: table;
+        line-height: 0;
+      }
+      a {
+        display: inline-block;
+        margin: 0 0.5em -1px 0.5em;
+        line-height: 1.5em;
+        padding: 0.4em 0.8em;
+        text-decoration: none;
+        -webkit-border-radius: 4px 4px 0 0;
+           -moz-border-radius: 4px 4px 0 0;
+            -ie-border-radius: 4px 4px 0 0;
+             -o-border-radius: 4px 4px 0 0;
+                border-radius: 4px 4px 0 0;
+        &.active {
+          border: 1px solid #DDD;
+          border-bottom-color: #FFF;
+          color: #555555;
+          cursor: default;
+        }
+        &.active:hover {
+          background-color: transparent;
+        }
+        &:hover {
+          background-color: #EEE;
+          border-color: #EEE;
+          border-bottom-color: #FFF;
+        }
+      }
+    }
+    .autotoc-section {
+      display: none;
+      &.active {
+        display: block;
+        legend {
+          display: none;
+        }
+      }
+    }
+  }
+}

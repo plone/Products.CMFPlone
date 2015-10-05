@@ -1,0 +1,141 @@
+@import "@{bowerPath}/bootstrap/less/variables.less"; // Modify this for custom colors, font-sizes, etc
+@icon-font-path: "@{bowerPath}/bootstrap/dist/fonts/";
+@import "@{bowerPath}/bootstrap/less/glyphicons.less";
+
+#content .field .querystring-criteria-wrapper .picker__input {
+  font-size: 16px;
+  margin: 1px;
+}
+
+#content .field .querystring-criteria-wrapper input[type="text"] {
+  font-size: 16px;
+  margin: 1px;
+}
+
+.querystring-criteria-wrapper {
+
+  .querystring-criteria-remove {
+    float: left;
+    display: block;
+    
+    height: 13px;
+    right: 3px;
+    top: 4px;
+    
+    line-height: 13px;
+    font-style: italic;
+    outline: 0;
+    margin: 8px 4px;
+    cursor: pointer;
+    
+    .glyphicon();
+    .glyphicon-remove();
+  }
+
+  .querystring-criteria-index {
+    float: left;
+    margin-right: 0.3em;
+    margin-top: 0.1em;
+    margin-bottom: 0.1em;
+  }
+  .querystring-criteria-operator {
+    float: left;
+    margin-right: 0.3em;
+    margin-top: 0.1em;
+    margin-bottom: 0.1em;
+  }
+  .querystring-criteria-value {
+    float: left;
+    margin-right: 0em;
+    margin-bottom: 0.3em;
+    .querystring-criteria-value-StringWidget {
+      width: 200px;
+      line-height: 1.5em;
+    }
+    .querystring-criteria-value-RelativeDateWidget {
+      width: 50px;
+      line-height: 1.5em;
+      margin-right: 0.3em !important;
+    }
+
+  }
+  .querystring-criteria-clear {
+    clear: both;
+  }
+
+  .pattern-pickadate-date-wrapper .picker__input {
+    line-height: 1.5em;
+    width: 180px;
+  }
+
+  .querystring-criteria-betweendt {
+    float: left;
+    padding: 5px 8px;
+    display: inline-block;
+  }
+
+  .pattern-pickadate-wrapper {
+    display: inline-block;
+    float: left;
+  }
+}
+
+
+.querystring-preview-wrapper {
+
+  .querystring-preview {
+    border: 2px solid #eee;
+    padding: 5px;
+    margin: 5px;
+    height: 258px;
+    overflow-y: scroll;
+  }
+
+  .querystring-preview-title {
+    font-weight: bold;
+    font-size: larger;
+  }
+
+  .querystring-preview-description {
+    color: #bbb;
+  }
+
+  .querystring-previewcount-wrapper {
+    font-style: italic;
+  }
+
+}
+
+
+.querystring-sort-wrapper {
+
+  margin: 10px 0;
+  clear: both;
+
+  .querystring-sort-label {
+    padding-right: 10px;
+    font-weight: bold;
+  }
+
+  .querystring-sortreverse-label {
+    padding-left: 5px;
+    font-weight: bold;
+  }
+
+  .querystring-sortreverse {
+    padding-left: 10px;
+  }
+
+  .querystring-sortreverse input {
+    padding: 0;
+    margin: 0;
+  }
+
+  .select2-container {
+    margin-bottom: 0;
+  }
+}
+
+.modal div.field .querystring-sort-wrapper input[type="checkbox"] {
+  float: none;
+}

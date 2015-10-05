@@ -1,0 +1,16 @@
+<div class="pattern-relateditems-result pattern-relateditems-type-<%= portal_type %> <% if (selected) { %>pattern-active<% } %>">
+  <a href="#" class="pattern-relateditems-result-select <% if (selectable) { %>selectable<% } %>">
+    <% if (!folderish) { %>
+    <span class="pattern-relateditems-result-image">
+      <img src="<%= generateImageUrl(_item, 'thumb') %>" />
+    </span>
+    <% } %>
+    <span class="pattern-relateditems-result-title"><%= Title %></span>
+    <span class="pattern-relateditems-result-path"><%= path %></span>
+  </a>
+  <span class="pattern-relateditems-buttons">
+    <% if (folderish) { %>
+      <a class="pattern-relateditems-result-browse" href="#" data-path="<%= path %>"></a>
+    <% } %>
+  </span>
+</div>

@@ -1,0 +1,13 @@
+{
+  "name": "requirejs-tpl-jcbrand",
+  "homepage": "https://github.com/jcbrand/requirejs-tpl",
+  "_release": "dd90e6f702",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "dd90e6f7026fc78886c61336e939ef3cf39b0b31"
+  },
+  "_source": "git://github.com/jcbrand/requirejs-tpl.git",
+  "_target": "*",
+  "_originalSource": "requirejs-tpl-jcbrand"
+}

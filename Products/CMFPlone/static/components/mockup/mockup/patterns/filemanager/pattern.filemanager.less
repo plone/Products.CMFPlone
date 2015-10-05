@@ -1,0 +1,165 @@
+@import "@{mockuplessPath}/ui.less";
+@import "@{mockupPath}/tree/pattern.tree.less";
+@import "@{mockuplessPath}/popover.less";
+
+@import "@{bowerPath}/bootstrap/less/mixins.less";
+@import "@{bowerPath}bootstrap/less/utilities.less";
+@import (reference) "@{bowerPath}/bootstrap/less/buttons.less";
+@import (reference) "@{bowerPath}/bootstrap/less/button-groups.less";
+@import (reference) "@{bowerPath}/bootstrap/less/badges.less";
+@import (reference) "@{bowerPath}/bootstrap/less/popovers.less";
+@import (reference) "@{bowerPath}/bootstrap/less/pagination.less";
+@import (reference) "@{bowerPath}/bootstrap/less/input-groups.less";
+@import (reference) "@{bowerPath}/bootstrap/less/tables.less";
+@import (reference) "@{bowerPath}/bootstrap/less/dropdowns.less";
+@import (reference) "@{bowerPath}/bootstrap/less/forms.less";
+@import (reference) "@{bowerPath}/bootstrap/less/navbar.less";
+@import (reference) "@{bowerPath}/bootstrap/less/navs.less";
+@import (reference) "@{bowerPath}/bootstrap/less/tooltip.less";
+@import (reference) "@{bowerPath}/bootstrap/less/component-animations.less";
+@import (reference) "@{mockuplessPath}/popover.less";
+
+
+.pat-filemanager {
+    .fade:extend(.fade all){}
+    .collapse:extend(.collapse all){}
+    .collapsing:extend(.collapsing all){}
+
+    .popover:extend(.popover all){}
+    .popover-title:extend(.popover-title all){}
+    .popover-content:extend(.popover-content all){}
+    .arrow:extend(.arrow all){}
+    .tooltip:extend(.tooltip all){}
+    .tooltip-arrow:extend(.tooltip-arrow all){}
+    .tooltip-inner:extend(.tooltip-inner all){}
+
+    .table:extend(.table all){}
+    .pagination:extend(.pagination all){}
+
+    .btn:extend(.btn all){}
+    .btn-default:extend(.btn-default all){}
+    .btn-danger:extend(.btn-danger all){}
+    .btn-primary:extend(.btn-primary all){}
+    .btn-group:extend(.btn-group all){}
+    .btn-success:extend(.btn-success all){}
+    .input-group:extend(.input-group all){}
+    .input-group-addon:extend(.input-group-addon all){}
+    .input-group-btn:extend(.input-group-btn all){}
+    .dropdown-menu:extend(.dropdown-menu all){}
+    .dropdown-toggle:extend(.dropdown-toggle all){}
+    .dropdown-header:extend(.dropdown-header all){}
+    .divider:extend(.divider all){}
+
+    .table-striped:extend(.table-striped all){}
+    .table-bordered:extend(.table-bordered all){}
+
+    .nav:extend(.nav all){}
+    .navbar-nav:extend(.navbar-nav all){}
+    .navbar:extend(.navbar all){}
+    .navbar-search:extend(.navbar-search all){}
+    .navbar-collapse:extend(.navbar-collapse all){}
+
+    .form-search:extend(.form-search all){}
+    .ui-offset-parent:extend(.ui-offset-parent all){}
+
+    .form-group:extend(.form-group all){}
+    .help-block:extend(.help-block all){}
+    .checkbox:extend(.checkbox all){}
+
+    .open:extend(.open all){}
+
+    #fileselector li label {
+        display: inline;
+    }
+    .glyphicon {
+        top: 2px;
+    }
+    ul li,
+    ol li {
+        text-indent: 0;
+        padding-left: 0;
+    }
+    li::before {
+        content: "";
+        padding-right: 0;
+    }
+    #fileselector li label {
+       font-weight: normal;
+       margin-bottom: 0;
+    }
+    .popover.upload{
+        max-width: 700px;
+    }
+    .tree {
+        float: left;
+        width: 17%;
+        word-wrap: break-word;
+        font-size: 0.8em;
+        margin-top: 2.5em;
+        ul.jqtree-tree li.jqtree-selected > .jqtree-element, ul.jqtree-tree li > .jqtree-element:hover {
+        background: #E7E7E7;
+        }
+        ul.jqtree-tree {
+            margin-left: 0px;
+            li.jqtree_common {
+                margin-bottom: 0.2em;
+            }
+            .jqtree-title {
+                margin-left: 0em;
+            }
+        }
+    }
+    .navbar {
+        a.btn {
+            text-decoration: none;
+        }
+    }
+    .navbar-default {
+        min-height: 250px
+    }
+    .nav-and-editor {
+        float: left;
+        width: 75%;
+    }
+    .navbar-nav > li {
+        padding-left: 15px;
+        padding-right: 15px;
+        background-color: #F8F8F8;
+        -webkit-border-top-left-radius: 10px;
+        -webkit-border-top-right-radius: 10px;
+        -moz-border-radius-topleft: 10px;
+        -moz-border-radius-topright: 10px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        margin-right: 5px;
+        border-top: 1px solid #CCC;
+        border-right: 1px solid #CCC;
+        border-left: 1px solid #CCC;
+        &.active {
+            border-top: 1px solid #999;
+            border-right: 1px solid #999;
+            border-left: 1px solid #999;
+            background-color: #E7E7E7;
+            a {
+                background-color: #E7E7E7;
+            }
+        }
+        > a {
+            float: left;
+            padding: 8px 0px;
+            text-decoration: none;
+            color: @gray-dark;
+            +a {
+                padding-left: 4px;
+            }
+            &:focus {
+                outline: none;
+            }
+        }
+        &.modified > a {
+            color: @brand-warning;
+        }
+    }
+
+
+}

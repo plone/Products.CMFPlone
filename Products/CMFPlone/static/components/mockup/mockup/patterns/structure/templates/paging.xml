@@ -1,0 +1,51 @@
+  <ul class="pagination pagination-sm pagination-centered">
+    <li class="<% if (currentPage === 1) { %>disabled<% } %>">
+      <a href="#" class="serverfirst">
+        &laquo;
+      </a>
+    </li>
+    <li class="<% if (currentPage === 1) { %>disabled<% } %>">
+      <a href="#" class="serverprevious">
+        &lt;
+      </a>
+    </li>
+    <% _.each(pages, function(p){ %>
+    <li class="<% if (currentPage == p) { %>active<% } %>">
+      <a href="#" class="page"><%= p %></a>
+    </li>
+    <% }); %>
+    <li class="<% if (currentPage === lastPage) { %>disabled<% } %>">
+      <a href="#" class="servernext">
+        &gt;
+      </a>
+    </li>
+    <li class="<% if (currentPage === lastPage) { %>disabled<% } %>">
+      <a href="#" class="serverlast">
+        &raquo;
+      </a>
+    </li>
+  </ul>
+
+  <ul class="pagination pagination-sm">
+    <li class="disabled"><a href="#"><%- _t("Show:") %></a></li>
+    <li class="serverhowmany serverhowmany15 <% if(perPage == 15){ %>disabled<% } %>">
+      <a href="#" class="">15</a>
+    </li>
+    <li class="serverhowmany serverhowmany30 <% if(perPage == 30){ %>disabled<% } %>">
+      <a href="#" class="">30</a>
+    </li>
+    <li class="serverhowmany serverhowmany50 <% if(perPage == 50){ %>disabled<% } %>">
+      <a href="#" class="">50</a>
+    </li>
+  </ul>
+
+  <ul class="pagination pagination-sm">
+    <li class="disabled">
+      <a href="#">
+        <%- _t("Page:") %> <span class="current"><%= currentPage %></span>
+        <%- _t("of") %>
+        <span class="total"><%= totalPages %></span>
+              <%- _t("shown") %>
+      </a>
+    </li>
+  </ul>

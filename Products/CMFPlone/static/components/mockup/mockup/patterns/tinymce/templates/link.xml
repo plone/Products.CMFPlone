@@ -1,0 +1,82 @@
+<div>
+  <div class="linkModal">
+    <h1><%- insertHeading %></h1>
+    <% if(upload){ %>
+    <p class="info">Specify the object to link to. It can be on this site already ("Internal"), an object you upload ("Upload"), from an external site ("External"), an email address ("Email"), or an anchor on this page ("Anchor").</p>
+    <% } %>
+
+    <div class="linkTypes pat-autotoc autotabs"
+         data-pat-autotoc="section:fieldset;levels:legend;IDPrefix:tinymce-autotoc-">
+
+      <fieldset class="linkType internal" data-linkType="internal">
+        <legend id="tinylink-internal">Internal</legend>
+        <div>
+          <div class="form-group main">
+            <!-- this gives the name to the "linkType" -->
+            <input type="text" name="internal" />
+          </div>
+        </div>
+      </fieldset>
+
+      <% if(upload){ %>
+      <fieldset class="linkType upload" data-linkType="upload">
+        <legend id="tinylink-upload">Upload</legend>
+        <div class="uploadify-me"></div>
+      </fieldset>
+      <% } %>
+
+      <fieldset class="linkType external" data-linkType="external">
+        <legend id="tinylink-external">External</legend>
+        <div class="form-group main">
+          <label for="external"><%- externalText %></label>
+          <input type="text" name="external" />
+        </div>
+      </fieldset>
+
+      <fieldset class="linkType email" data-linkType="email">
+        <legend id="tinylink-email">Email</legend>
+        <div class="form-inline">
+          <div class="form-group main">
+            <label><%- emailText %></label>
+            <input type="text" name="email" />
+          </div>
+          <div class="form-group">
+            <label><%- subjectText %></label>
+            <input type="text" name="subject" />
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="linkType anchor" data-linkType="anchor">
+        <legend id="tinylink-anchor">Anchor</legend>
+        <div>
+          <div class="form-group main">
+            <label>Select an anchor</label>
+            <div class="input-wrapper">
+              <select name="anchor" class="pat-select2" data-pat-select2="width:500px" />
+            </div>
+          </div>
+        </div>
+      </fieldset>
+
+    </div><!-- / tabs -->
+
+    <div class="common-controls">
+      <div class="form-group">
+        <label>Target</label>
+        <select name="target">
+          <% _.each(targetList, function(target){ %>
+            <option value="<%- target.value %>"><%- target.text %></option>
+          <% }); %>
+        </select>
+      </div>
+      <div class="form-group">
+        <label><%- titleText %></label>
+        <input type="text" name="title" />
+      </div>
+    </div>
+
+    <input type="submit" class="plone-btn" name="cancel" value="<%- cancelBtn %>" />
+    <input type="submit" class="plone-btn plone-btn-primary context" name="insert" value="<%- insertBtn %>" />
+  </div>
+</div>

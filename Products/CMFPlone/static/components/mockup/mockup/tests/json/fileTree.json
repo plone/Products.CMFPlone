@@ -1,0 +1,24 @@
+[{
+  "label": "css",
+  "folder": true,
+  "children": [{
+    "label": "style.css",
+    "folder": false
+  },{
+    "label": "tree.css",
+    "folder": false
+  }]
+},{
+  "label": "js",
+  "folder": true,
+  "children": [{
+    "label": "jquery.js",
+    "folder": false
+  },{
+    "label": "tree.js",
+    "folder": false
+  }]
+},{
+  "label": "index.html",
+  "folder": false
+}]

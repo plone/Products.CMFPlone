@@ -1,0 +1,193 @@
+@import "mixins.less";
+@import "../patterns/select2/pattern.select2.less";
+@import "../patterns/pickadate/pattern.pickadate.less";
+@import "../patterns/relateditems/pattern.relateditems.less";
+@import "../patterns/querystring/pattern.querystring.less";
+@import "../patterns/tinymce/less/pattern.tinymce.less";
+@import "../patterns/passwordstrength/pattern.passwordstrength.less";
+@import "../patterns/recurrence/pattern.recurrence.less";
+@icon-font-path: "@{pathPrefix}../bower_components/bootstrap/dist/fonts/";
+
+#content {
+    
+  .pat-autotoc.autotabs {
+    fieldset.autotoc-section {
+      border: 0 !important;
+    }
+    .autotoc-nav {
+      border-style: solid solid none;
+      border-top-left-radius: 0.5em;
+      border-top-right-radius: 0.5em;
+      display: block;
+      margin-left: 0;
+      background-color: #DDDDDD;
+    }
+    .autotoc-level-1 {
+      margin: 0.25em 0.25em 0;
+      line-height: 2em;
+      border: medium none;
+      padding: 0 0.75em;
+      text-decoration: none;
+      &:hover {
+        background: White;
+        border-top-left-radius: 0.5em;
+        border-top-right-radius: 0.5em;
+        color: Black;
+      }
+      &.active {
+        font-weight: bold;
+        color: Black;
+        background: White;
+      }
+    }
+  }
+
+  .pat-select2,
+  .pat-relateditems {
+    min-width: 400px;
+  }
+
+  .pat-select2 {
+    a.select2-choice:link {
+      border: 1px solid #AAAAAA !important;
+      color: #444444 !important;
+    }
+    ul.select2-results {
+      margin: 4px 4px 4px 0;
+      list-style: none;
+    }
+    a.select2-search-choice-close:link {
+      border: 0;
+    }
+    &.select2-container-multi .select2-choices {
+      margin: 0;
+      line-height: 1.2em;
+      .select2-search-choice {
+        line-height: 1.2em;
+      }
+    }
+  }
+
+  .querystring-wrapper {
+    font-size: 0.9em;
+    .querystring-criteria-wrapper .select2-choices {
+      margin: 0;
+    }
+  }
+
+  .field .select2-container {
+    input[type="text"] {
+      border: 0;
+      font-size: 1.2em;
+      margin: 1px 0;
+      padding: 5px;
+    }
+    .select2-choice span {
+      color: #333;
+    }
+  }
+
+  ul.picker__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    .picker__list-item {
+      margin: 0;
+    }
+    .picker__button--clear {
+      font-size: 1em;
+      margin: 1em auto 1em;
+    }
+  }
+  /* XXX hack because opacity is not getting calculated correctly? */
+  .picker--opened {
+
+    .picker__holder {
+      opacity: 1;
+    }
+  }
+
+  ul.select2-choices{
+    margin-left: 0;
+  }
+  .pattern-relateditems-container a{
+    border-bottom: none;
+  }
+}
+
+.select2-drop {
+  font-size: 0.8em;
+}
+
+
+dl.actionMenu dd {
+  display: none;
+}
+
+dl.actionMenu dt {
+  margin: 0 0.25em;
+}
+
+dl.actionMenu.activated dd {
+  display: block;
+}
+
+/* integration with live search */
+.LSBox {
+  .searchButton,
+  .searchSection {
+    display: none;
+  }
+}
+
+// make forms a bit nicer
+
+.inputStyleCommon() {
+  margin: 0;
+  padding: 0.1em 0.2em;
+  border: 1px solid #AAA;
+  cursor: text;
+  background-color: #FFF;
+  background-image: -webkit-gradient(linear,0% 0,0% 100%,color-stop(1%,#EEE),color-stop(15%,#FFF));
+  background-image: -webkit-linear-gradient(top,#EEE 1%,#FFF 15%);
+  background-image: -moz-linear-gradient(top,#EEE 1%,#FFF 15%);
+  background-image: -o-linear-gradient(top,#EEE 1%,#FFF 15%);
+  background-image: -ms-linear-gradient(top,#EEE 1%,#FFF 15%);
+  background-image: linear-gradient(top,#EEE 1%,#FFF 15%);
+  &:focus {
+    border-color: #5897FB;
+    outline: 0;
+  }
+}
+
+#content .field {
+  input[type="text"] {
+    .inputStyleCommon();
+    font-size: 1.5em;
+  }
+  textarea {
+    .inputStyleCommon();
+    padding: 0.2em;
+    min-height: 5em;
+  }
+}
+
+.modal-body .linkModal{
+    hr {
+        border-color: #eee;
+        border-style: solid;
+    }
+    .linkTypes{
+        label:hover{
+            cursor: pointer;
+        }
+    }
+    .control-group{
+        margin-top: 10px;
+    }
+    select, input[type="text"]{
+        font-size: 120%;
+        min-width: 300px;
+    }
+}
+

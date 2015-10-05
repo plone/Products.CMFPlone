@@ -1,0 +1,457 @@
+@charset "UTF-8";
+
+form {
+  section.help .panel-content {  
+    padding-bottom: 2em;
+  }
+
+  p.instruction .pat-message {  
+    margin: 1em 0 0;
+  }
+
+  .pat-message,
+  .message {
+    @include pat-message();
+    @include box-sizing();
+
+    display: block;
+    clear: both;
+    margin-top: 0.5em;
+    font-style: normal;
+  }
+
+  h2 {
+    margin-bottom: 1em;
+  }
+
+  input,
+  textarea,
+  select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    font-family: $body-font-family;
+    display: inline-block;
+    @include box-sizing();
+    padding: 0.2em 0.5em;
+    margin: -0.2em 0;
+    background-color: rgba(0,0,0,0.09);
+    border: none;
+    color: inherit;
+    font-size: 100%;
+    border-radius: 0;
+    max-width: 100%;
+
+    &:disabled {
+      border: transparent;
+      opacity: 1;
+      padding: 0;
+      background-color: transparent;
+    }
+  }
+
+  input[type=search] {
+
+
+    &::-webkit-search-cancel-button {
+        -webkit-appearance: none;
+    }
+
+    &::-webkit-search-cancel-button {
+        &:hover {
+            color: $colour-accent;
+        }
+        &::after {
+            content: '\e803';
+            font-family: fontello;
+            // right: $base-space / 2;
+            // position: absolute;
+            // top: 50%;
+            line-height: 1;
+            // == $base-font-size, not $base-line-height, to vertically align
+            margin-top: -.5em;
+        }
+    }
+    
+  }
+
+  input[type=range] {
+      /*removes default webkit styles*/
+      -webkit-appearance: none;
+      padding: 0.2em 0;
+
+      background: transparent;
+      
+      /*fix for FF unable to apply focus style bug */
+      border: 1px solid white;
+      
+      /*required for proper track sizing in FF*/
+      // width: 300px;
+  }
+
+  input[type=range]:focus {
+      outline: none;
+      border: 1px solid white;
+      -moz-box-shadow: none;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+  }
+
+  input[type=range]::-webkit-slider-runnable-track {
+      // width: 300px;
+      height: 0.5em;
+      background: $colour-base;
+      border: none;
+      border-radius: 1em;
+  }
+
+  input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      border: none;
+      height: 1.4em;
+      width: 1.4em;
+      border-radius: 50%;
+      background: $colour-accent;
+      margin-top: -0.45em;
+  }
+
+  input[type=range]::-moz-range-track {
+      // width: 300px;
+      height: 0.5em;
+      background: #efefef;
+      border: none;
+      border-radius: 1em;
+  }
+
+  input[type=range]::-moz-range-thumb {
+      border: none;
+      height: 1.4em;
+      width: 1.4em;
+      border-radius: 50%;
+      background: $colour-accent;
+  }
+
+  /*hide the outline behind the border*/
+  input[type=range]:-moz-focusring{
+      outline: 1px solid white;
+      outline-offset: -1px;
+  }
+
+  input[type=range]::-ms-track {
+      // width: 300px;
+      height: 0.5em;
+      
+      /*remove bg colour from the track, we'll use ms-fill-lower and ms-fill-upper instead */
+      background: $colour-base;
+      
+      /*leave room for the larger thumb to overflow with a transparent border */
+      border-color: transparent;
+      border-width: 0.5em 0;
+
+      /*remove default tick marks*/
+      color: transparent;
+  }
+
+  // Fill lower/upper unused untill al major browser support this. 
+
+  // input[type=range]::-ms-fill-lower {
+  //     background: #777;
+  //     border-radius: 1em;
+  // }
+
+  // input[type=range]::-ms-fill-upper {
+  //     background: #ddd;
+  //     border-radius: 1em;
+  // }
+
+  input[type=range]::-ms-thumb {
+      border: none;
+      height: 1.4em;
+      width: 1.4em;
+      border-radius: 50%;
+      background: $colour-accent;
+  }
+
+  input[type=range]:focus::-ms-fill-lower {
+      background: #888;
+  }
+
+  input[type=range]:focus::-ms-fill-upper {
+      background: #ccc;
+  }
+
+  .slider-labels {
+    width: 100%;
+    overflow: hidden;
+    font-size: 0.8em;
+
+    .label {
+      float: left;
+      width: 100%;
+      text-align: center;
+
+      &.disabled {
+        opacity: 0.5;
+      }
+
+      &:first-child {
+        text-align: left;
+      }
+
+      &:last-child {
+        text-align: right;
+      }
+    }
+
+    &.two {
+      .label {
+        width: 50%;
+      }
+    }
+
+    &.three {
+      .label {
+        width: 33.3333332%;
+      }
+    }
+
+    &.four {
+      .label {
+        width: 33.333333332%;
+      }
+
+      .label:first-child,
+      .label:last-child {
+        width: 16.666666667%;
+      }
+    }
+  }
+
+  .currency-field {
+    position: relative;
+    &:after {
+      content: " ";
+      display: block;
+      height: 1px;
+      width: 1px;
+    }
+
+    abbr {
+      position: absolute;
+      left: 0.5em;
+    }
+
+    input,
+    output {
+      padding-left: 1.5em;
+    } 
+  }
+
+  select {
+    /*Next 2 lines is a bizarre patch to make misbehaving FF hide the original dropdown button*/
+    text-indent: 0.01px;
+    text-overflow: '';
+    
+    border-right: 0.35em solid rgba(0, 0, 0, 0);
+    padding-right: 1em;
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNS4xLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAgLS0+DQo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiIFsNCgk8IUVOVElUWSBuc19mbG93cyAiaHR0cDovL25zLmFkb2JlLmNvbS9GbG93cy8xLjAvIj4NCl0+DQo8c3ZnIHZlcnNpb249IjEuMSINCgkgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeG1sbnM6YT0iaHR0cDovL25zLmFkb2JlLmNvbS9BZG9iZVNWR1ZpZXdlckV4dGVuc2lvbnMvMy4wLyINCgkgeD0iMHB4IiB5PSIwcHgiIHdpZHRoPSIxMnB4IiBoZWlnaHQ9IjEwcHgiIHZpZXdCb3g9IjAgLTEuNDk2IDEyIDEwIiBvdmVyZmxvdz0idmlzaWJsZSIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIC0xLjQ5NiAxMiAxMCINCgkgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8ZGVmcz4NCjwvZGVmcz4NCjxwb2x5Z29uIHBvaW50cz0iMCwwIDQuMjA1LDcuMDA5IDguNDEsMCAiLz4NCjwvc3ZnPg0K);  
+  }
+
+  fieldset {
+    border-style: none;
+    margin: 0 0 1em;
+    min-width: inherit;
+
+    &:after {
+      display: table;
+      clear: both;
+      content: ' ';
+    }
+
+      &.section {
+        margin: 0 0 2em;
+      }
+   
+      &.horizontal {
+        @media only screen and (min-width: 768px) { 
+        width: 100%;
+
+        > br {
+          display: none;
+        }
+        
+        .legend {
+          width: auto;
+          margin: 0;
+          padding: 0;
+          font-weight: bold;
+          letter-spacing: 0;
+          text-transform: none;
+          float: left;
+        }
+
+        > label {
+          position: relative;
+          display: block;
+          padding-right: 65%;
+          margin-bottom: 1em;
+          width: 35%;
+          left: 0;
+
+          &:after {
+            content: " ";
+            height: 0;
+            display: block;
+            clear: both;
+          }
+
+          > {
+            input, 
+            textarea, 
+            select, 
+            .composed,
+            .pat-message,
+            .message {
+              position: relative;
+              vertical-align: top;
+              max-width: 170%;
+              left: 100%;
+              margin-right: -200%;
+              margin-left: 0;
+              float: left;
+            }
+
+            .message {
+              width: 170%;
+            }
+          }
+
+          &.checkbox:before, &[data-option]:after {
+            position: relative;
+            vertical-align: top;
+            max-width: 170%;
+            left: 100%;
+            margin-right: -200%;
+            margin-left: 0;
+            float: left;
+          }
+        }
+
+        label {
+          .iconified {
+            float: none;
+            position: static;
+            line-height: 10px;
+            margin-top: 0;
+            vertical-align: baseline;
+            filter: none;
+          }
+          sup.required {
+            float: none;
+            position: static;
+            margin-top: 0;
+            vertical-align: baseline;
+            filter: none;
+            margin: 0;
+          }
+          textarea {
+            width: 170%;
+          }
+        }
+
+        fieldset.group,
+        div.group,
+        .help,
+        .instruction {
+          width: 65%;
+          clear: left;
+          border-style: none;
+          margin: 0 0 1em 0;
+          padding-left: 35%;
+          position: relative;
+          padding-bottom: 0;
+          padding-top: 0;
+
+          legend {
+            position: absolute;
+            left: 0;
+            font-weight: normal;
+            font-style: normal;
+            top: 0;
+          }
+
+          .legend {
+            width: 48%;
+            display: inline;
+            text-align: left;
+            padding: 0;
+            position: relative;
+            display: block;
+            font-weight: normal;
+            font-style: normal;
+            margin: 0 0 0 -54%;
+            text-transform: none;
+            letter-spacing: 0;
+          }
+          label {
+            font-weight: normal;
+            font-style: normal;
+            position: relative;
+            border-style: none;
+            width: auto;
+            margin: 0;
+          }
+      }
+    }
+  }
+
+  @mixin form-vertical () {
+    > br {
+      display: none;
+    }
+
+    label {
+      position: relative;
+    }
+
+    input,
+    textarea,
+    select {
+      display: block;
+      margin-top: 0.2em;
+      width: 100%;
+    }
+
+    .legend,
+    > label,
+    .group > label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 1em;
+    }
+
+    .legend {
+      margin-bottom: 0em;
+    }
+
+    .currency-field {
+      display: block;
+
+      abbr {font-weight: normal; top: 0.2em}
+    }
+  }
+
+
+    @media only screen and (max-width: 767px) {
+      &.horizontal {
+        @include form-vertical();
+      }
+    }
+
+    &.vertical {
+      @include form-vertical();
+    }
+  }
+}

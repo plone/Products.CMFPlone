@@ -1,0 +1,107 @@
+<div class="new-rule">
+    <h1 class="documentFirstHeading">Build rule</h1>
+
+    <div id="new-rule-step-1" class="rule-wizard-step" style="display: block;">
+        <div class="documentDescription">
+            This wizard will help you build a Diazo rule by selecting relevant elements using
+            the <strong>HTML mockup</strong> and <strong>Unthemed content</strong> inspectors.
+        </div>
+
+        <form>
+            <div id="new-rule-type-panel" class="inputs">
+                <div>
+                    <input type="radio" name="new-rule-type" value="replace" id="new-rule-replace" checked="checked" />
+                    <label for="new-rule-replace">
+                        <strong>Replace</strong> an element of the theme with an element from the content
+                    </label>
+                </div>
+                <div>
+                    <input type="radio" name="new-rule-type" value="before" id="new-rule-before" />
+                    <label for="new-rule-before">
+                        Insert an element from the content <strong>before</strong> an element in the theme
+                    </label>
+                </div>
+                <div>
+                    <input type="radio" name="new-rule-type" value="after" id="new-rule-after" />
+                    <label for="new-rule-after">
+                        Insert an element from the content <strong>after</strong> an element in the theme
+                    </label>
+                </div>
+                <div>
+                    <input type="radio" name="new-rule-type" value="drop:content" id="new-rule-drop-content" />
+                    <label for="new-rule-drop-content">
+                        <strong>Drop</strong> an element in the <strong>content</strong>
+                    </label>
+                </div>
+                <div>
+                    <input type="radio" name="new-rule-type" value="drop:theme" id="new-rule-drop-theme" />
+                    <label for="new-rule-drop-theme">
+                        <strong>Drop</strong> an element in the <strong>theme</strong>
+                    </label>
+                </div>
+            </div>
+            <div class="field inputs" id="new-rule-reuse-panel" style="display: none;">
+                <input type="checkbox" name="new-rule-reuse-selectors" value="yes" id="new-rule-reuse-selectors" checked="checked" />
+                <label for="new-rule-reuse-selectors">
+                    Use selected elements
+                </label>
+                <div class="formHelp">
+                    If selected, the rule builder will use the elements you have currently selected
+                    in the <strong>HTML mockup</strong> and/or <strong>Unthemed content</strong>
+                    inspectors instead of prompting you to select new ones.
+                </div>
+            </div>
+        </form>
+
+        <div class="formControls new-rule-actions">
+            <input type="submit" class="btn btn-primary next submitting" value="Next" />
+            <input type="submit" class="btn btn-default standalone close" value="Cancel" />
+        </div>
+
+    </div>
+    <div id="new-rule-select-theme" class="rule-wizard-step" style="display: none;">
+        <div class="documentDescription">
+            Please select an element using the <strong>HTML mockup</strong> inspector.
+        </div>
+        <div class="formControls new-rule-actions">
+            <input type="submit" class="btn btn-primary next" value="Ok" />
+            <input type="submit" class="btn btn-default standalone wizard-cancel" value="Cancel" />
+        </div>
+    </div>
+    <div id="new-rule-select-content" class="rule-wizard-step" style="display: none;">
+        <div class="documentDescription">
+            Please select an element using the <strong>Unthemed content</strong> inspector.
+        </div>
+        <div class="formControls new-rule-actions">
+            <input type="submit" class="btn btn-primary next submitting" value="Ok" />
+            <input type="submit" class="btn btn-default standalone wizard-cancel" value="Cancel" />
+        </div>
+    </div>
+    <div id="new-rule-step-2" class="rule-wizard-step" style="display: none;">
+        <div class="documentDescription">
+            The rule can be found below. Use the checkboxes
+            to further refine it.
+        </div>
+        <form>
+            <div id="new-rule-output-panel">
+                <textarea name="new-rule-output" id="new-rule-output"></textarea>
+            </div>
+            <div id="new-rule-selector-panel">
+                <div>
+                    <input type="checkbox" class="rule-modifier" name="new-rule-theme-children" value="replace" id="new-rule-theme-children" />
+                    <label for="new-rule-theme-children">Apply rule to children of the matched theme node(s)</label>
+                </div>
+                <div>
+                    <input type="checkbox" class="rule-modifier" name="new-rule-content-children" value="replace" id="new-rule-content-children" />
+                    <label for="new-rule-content-children">Apply rule to children of the matched content node(s)</label>
+                </div>
+            </div>
+
+        </form>
+        <div class="formControls new-rule-actions">
+            <input type="submit" class="btn btn-primary insert submitting" title="Insert rule into the rules.xml file" value="Insert" />
+            <input type="submit" class="btn btn-primary copy" value="Copy to clipboard" style="display: none;" />
+            <input type="submit" class="btn btn-default close" value="Close" />
+        </div>
+    </div>
+</div>
