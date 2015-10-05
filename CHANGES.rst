@@ -8,6 +8,9 @@ Changelog
 5.0.1 (unreleased)
 ------------------
 
+- fix issue where clicking tabs would cause odd scroll movement
+  [vangheem]
+
 - upgrade to patternslib 2.0.11
   [vangheem]
 
