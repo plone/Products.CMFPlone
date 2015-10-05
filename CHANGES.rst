@@ -15,6 +15,7 @@ Changelog
   [maurits]
 
 - Allow all TinyMCE settings to be set from control panel.
+- Add ``pat-base`` to registry.
   [Gagaro]
 
 

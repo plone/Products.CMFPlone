@@ -890,6 +890,10 @@
   </records>
 
   <!-- patternslib dependencies -->
+  <records prefix="plone.resources/pat-base"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/patternslib/src/core/base.js</value>
+  </records>
   <records prefix="plone.resources/pat-compat"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/patternslib/src/core/compat.js</value>
