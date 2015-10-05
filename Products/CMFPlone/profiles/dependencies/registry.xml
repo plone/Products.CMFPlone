@@ -147,15 +147,14 @@
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/mockup-core/js/registry.js</value>
   </records>
-  <records prefix="plone.resources/mockup-patterns-base"
-            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++plone++static/components/mockup-core/js/pattern.js</value>
-  </records>
   <records prefix="plone.resources/mockup-parser"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/mockup-core/js/parser.js</value>
   </records>
-
+  <records prefix="plone.resources/mockup-patterns-base"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockup/base/pattern.js</value>
+  </records>
 
   <records prefix="plone.resources/jquery"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
