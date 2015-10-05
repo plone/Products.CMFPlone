@@ -10,6 +10,9 @@ Changelog
 
 - Upgrade to patternslib 2.0.11
   [vangheem]
+- When migration fails, do not upgrade addons or recatalog or
+  update roles.
+  [maurits]
 
 - Allow all TinyMCE settings to be set from control panel.
   [Gagaro]
