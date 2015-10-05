@@ -1,0 +1,360 @@
+@import "@{mockuplessPath}/ui.less";
+/* just be lazy here and include all of bootstrap... */
+@import "@{mockupPath}/filemanager/pattern.filemanager.less";
+
+body.plone-toolbar-left-default {
+	padding-left: 0px;
+}
+
+#edit-zone {
+	display: none;
+}
+
+.pat-thememapper{
+    font-family: Roboto, sans-serif;
+
+    iframe{
+        width: 100%;
+        height: 300px;
+        border: solid #eee 1px;
+        position: relative;
+    }
+
+    iframe.fullscreen-frame {
+        height: 600px;
+    }
+
+    .fullscreen {
+        vertical-align: top;
+        display: inline-block;
+        line-height: 12px;
+        padding: 0 0 0 18px;
+        margin: 4px 0 0 2px;
+        background-repeat: no-repeat;
+        text-decoration: none;
+        border-bottom: none !important;
+        color: #333 !important;
+        font-size: 90%;
+        content: none;
+    }
+    .refresh {
+        vertical-align: top;
+        display: inline-block;
+        line-height: 12px;
+        padding: 0 0 0 12px;
+        margin: 4px 0 0 5px;
+        background-repeat: no-repeat;
+        text-decoration: none;
+        border-bottom: none !important;
+        color: #333 !important;
+        font-size: 90%;
+        content: none;
+    }
+
+
+    /* Frame info */
+    .frame-info {
+        background-color: #EEEEEE;
+        height: 1.5em;
+        margin-right: -2px;
+        padding: 0 5px;
+        vertical-align: middle;
+    }
+
+    .frame-shelf {
+        float: right;
+    }
+
+    .clear-shelf {
+        font-size: 85%;
+        vertical-align: top;
+        text-decoration: none;
+        border-bottom: none !important;
+    }
+
+    .panel-toolbar, .frame-shelf-container {
+        float: right;
+    }
+
+    .show-fullscreen .frame-panel {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 99999999;
+        width: 100%;
+        height: 100%;
+        background-color: white;
+
+        iframe {
+            height: 80%;
+        }
+    }
+
+    .ace_editor {
+        border: 1px solid #999;
+        .info {
+            width: 100%;
+            height: 100%;
+
+            img {
+                max-height: 80%;
+            }
+        }
+    }
+
+    .navbar-nav {
+        a {
+            color: black;
+            text-decoration: none;
+            font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+    }
+
+    .navbar.ui-offset-parent {
+        margin-bottom: 0px;
+    }
+
+    .container.fullscreen {
+
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 99999999;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        background-color: white;
+
+        .tree {
+            height: 97%;
+            width: 15%;
+            border: none;
+        }
+
+        .nav-and-editor {
+            width: 83%;
+            height: 97%;
+            border: none;
+        }
+
+        .closeeditor {
+            margin-bottom: 10px;
+            font-size: x-small;
+        }
+    }
+
+    .tree {
+        font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        border-color: #ddd;
+        border-style: solid;
+        border-right: 0;
+        padding: 10px;
+        overflow-y: scroll;
+        height: 80vh;
+        margin-top: 0;
+
+        .jqtree-tree {
+            margin-top: 0px;
+
+            .jqtree-title {
+                padding: 2px;
+            }
+
+            li {
+                white-space: nowrap;
+                overflow: hidden;
+                padding: 3px 0 3px 0;
+            }
+        }
+
+        .glyphicon {
+            top: -1px;
+        }
+
+        .glyphicon:before {
+            margin-right: 5px;
+        }
+
+        ul.jqtree-tree li.jqtree_common > div:hover {
+            background-color: #1C4257;
+            span {
+                color: white;
+                text-shadow: none;
+            }
+
+            a {
+                color: white;
+                text-shadow: none;
+            }
+        }
+
+        ul.jqtree-tree li.jqtree-selected {
+            font-weight: bold;
+
+            > .jqtree_common {
+                background-color: #E7E7E7;
+            }
+        }
+    }
+
+    .nav-and-editor {
+        background-color: #ccc;
+        width: 70vw;
+        height: 80vh;
+        padding-bottom: 20px;
+        border-color: #ddd;
+        border-style: solid;
+        border-left: 0;
+
+        .collapse {
+            padding-left: 0;
+        }
+    }
+
+    .navbar-nav > li {
+        background-color: #DDD;
+
+        a {
+            background-color: transparent;
+        }
+    }
+
+    .navbar-nav > li.active {
+        background-color: #FFF;
+    }
+
+    .nav.smallTabs li {
+        padding: 0 5px 0 5px;
+        font-size: x-small;
+    }
+
+    .upload-area {
+        border: 2px dashed #ddd;
+        background-color: #eee;
+        padding: 10px;
+
+        p {
+            margin-top: 1em;
+            margin-bottom: 1em;
+            text-align: center;
+            font-size: xx-large;
+            color: #aaa;
+        }
+
+        #fakeUploadFile {
+            display: none;
+        }
+
+        .row > div {
+            display: inline;
+        }
+
+        .item {
+            margin: 10px 0;
+            div {
+                display: table-cell;
+            }
+        }
+
+        .browse {
+            width: 100%;
+        }
+
+        .title {
+            width: 250px;
+        }
+
+        .action {
+            width: 20px;
+        }
+
+        .info {
+            width: 100px;
+
+            img {
+                display: inline;
+                background-color: white;
+                max-height: 50px;
+                float: right;
+                max-width: 50px;
+                margin-top: -35px;
+            }
+        }
+
+        .controls {
+            display: none;
+        }
+
+        .sr-only {
+            display: none;
+        }
+    }
+
+    .rulebuilderView {
+        max-width: 500px;
+
+        .inputs {
+            border: 1px solid #999;
+            padding: 5px;
+        }
+
+        .new-rule-type-panel > div {
+            margin-top: 5px;
+        }
+
+        .formControls {
+            margin-top: 5px;
+        }
+
+        #new-rule-output {
+            margin: 5px 0 5px 0;
+            width: 100%;
+            height: 80px;
+        }
+
+        #new-rule-reuse-panel {
+            margin-top: 15px;
+        }
+    }
+
+    #inspectors {
+        clear: both;
+
+        .frame-shelf-container {
+            margin-right: 5px;
+        }
+    }
+
+    .pat-filemanager .navbar .btn-group > a.btn {
+        line-height: 10px;
+        padding: 5px;
+        font-size: small;
+        padding-bottom: 8px;
+        margin-bottom: -15px;
+    }
+
+    .btn-group {
+        margin-right: 30px;
+    }
+
+    #lessBuilder .buttonBox {
+        margin-top: 10px;
+
+		label {
+			display: block;
+		}
+    }
+
+	#lessFileName {
+		margin-bottom: 15px;
+        display: block;
+		width: 100%;
+	}
+    .errorMessage {
+        word-wrap: break-word;
+        font-size: small;
+    }
+    #styleBox {
+        display: none;
+    }
+}

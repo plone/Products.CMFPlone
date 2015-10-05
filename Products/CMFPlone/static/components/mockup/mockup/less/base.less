@@ -1,0 +1,53 @@
+@import "@{bowerPath}/bootstrap/less/variables.less";
+@icon-font-path: "@{bowerPath}/bootstrap/dist/fonts/";
+@import "@{bowerPath}/bootstrap/less/mixins.less";
+@import "@{bowerPath}/bootstrap/less/glyphicons.less";
+@import (reference) "@{bowerPath}/bootstrap/less/modals.less";
+@import (reference) "@{bowerPath}/bootstrap/less/buttons.less";
+@import (reference) "@{bowerPath}/bootstrap/less/button-groups.less";
+@import (reference) "@{bowerPath}/bootstrap/less/progress-bars.less";
+@import (reference) "@{bowerPath}/bootstrap/less/close.less";
+
+
+/* buttons */
+.plone-btn{ .btn() }
+.plone-btn-lg{ .btn-lg() }
+.plone-btn-xs{ .btn-xs() }
+.plone-btn-sm{ .btn-xs() }
+
+.plone-btn-primary{ .btn-primary() }
+.plone-btn-warning{ .btn-warning() }
+.plone-btn-default{ .btn-default() }
+.plone-btn-success{ .btn-success() }
+.plone-btn-info{ .btn-info() }
+.plone-btn-danger{ .btn-danger() }
+.plone-btn-link{ .btn-link() }
+
+.plone-btn-group {
+  .plone-btn + .plone-btn,
+  .plone-btn + .plone-btn-group,
+  .plone-btn-group + .plone-btn,
+  .plone-btn-group + .plone-btn-group {
+    margin-left: -1px;
+  }
+}
+
+.plone-btn-block { .btn-block() }
+
+.plone-close { .close() }
+
+
+/* modals */
+.plone-modal{ .modal() }
+.plone-modal-header{ .modal-header() }
+.plone-modal-title{ .modal-title() }
+.plone-modal-body{ .modal-body() }
+.plone-modal-footer{ .modal-footer() }
+.plone-modal-backdrop{ .modal-backdrop() }
+
+
+/* progress */
+.plone-progress{ .progress() }
+.plone-progress-bar-striped{ .progress-bar-striped() }
+.plone-progress-bar{ .progress-bar() }
+

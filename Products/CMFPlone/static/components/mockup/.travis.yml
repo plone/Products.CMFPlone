@@ -1,0 +1,42 @@
+language: node_js
+node_js:
+  - 0.10
+env:
+  global:
+    - secure: "fPRKgxcbSXyiLqkUjAjPkn5eGBqMqf6c5haTZ9x76sDl1792nDyiL2FXSpiv2s8PeOqMbWgcXly0r+CLXypYkWba9nIxb4bhvtXyDoYAaoBV0lG1NbBakuOwqW/u60WpPJS1qTqmEUSEbSxdntqk7HF1yG6MdMi3PdubxMyw9h0="
+    - secure: VFB17+mogAMLzk1RkwQo4qY8jgc8tD8lUWV6j2xtqDBG6gdkUl+mhuUm8ibbD910/kjQJc47FAHiZi4xrRW1vDmOizw7K48Fq+V180bf+2fAvAJNakI6Z4uuPcA7VnuRYoNfUPXAmWgtvMzgMAF+sXeV+jhgha6Kx02xj39LjD0=
+    - secure: lLMAD0VmG1/SpfuJKwOT9xn4lV1pUq71WszWjpF8TgxJfIgRBYLp9QkRTXQ6pfTwXTL22YSsc8N5yhJsALKV2V57Og6Pfta6jQqRIzJU6maIZBBLqW6LQThuazF6tmEcTpty1j1LdFf3tuNVchsbsii2eRhXNdIPXLjBliMJkuo=
+    - SAUCE_CONNECT_READY_FILE=/tmp/sauce-connect-ready
+  matrix:
+    - BROWSERS="SL_Chrome"
+    - BROWSERS="SL_Firefox"
+    - BROWSERS="SL_IE_9"
+    - BROWSERS="SL_IE_10,SL_IE_11"
+    - BROWSERS="SL_Opera,SL_Safari"
+    - BROWSERS="SL_IPhone"
+    - BROWSERS="SL_IPad"
+    - BROWSERS="SL_Android"
+install:
+  - travis_retry make bootstrap
+  - echo "Host github.com" >> ~/.ssh/config
+  - echo "   StrictHostKeyChecking no" >> ~/.ssh/config
+  - git config --global user.email "mockup@garbas.si"
+  - git config --global user.name "Travis CI"
+script:
+  - make test-once
+  - make bundles
+#  - if [ "$TRAVIS_BRANCH" == "master" ]; then make test-ci; fi
+after_success:
+  - if [ "$BROWSERS" == "SL_Chrome" ]; then ./node_modules/.bin/lcov-result-merger "coverage/**/lcov.info" | ./node_modules/.bin/coveralls; fi
+matrix:
+  fast_finish: true
+  allow_failures:
+    - env: BROWSERS="SL_IE_9"
+    - env: BROWSERS="SL_IE_10,SL_IE_11"
+    - env: BROWSERS="SL_Opera,SL_Safari"
+    - env: BROWSERS="SL_IPhone"
+    - env: BROWSERS="SL_IPad"
+    - env: BROWSERS="SL_Android"
+branches:
+  only:
+    - master

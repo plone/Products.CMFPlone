@@ -1,0 +1,31 @@
+{
+  "name": "validate",
+  "main": "validate.js",
+  "version": "0.8.0",
+  "ignore": [
+    "**/.*",
+    "CNAME",
+    "docs",
+    "spec",
+    "*.md",
+    "*.html",
+    "Gruntfile.js",
+    "package.json",
+    "bower.json"
+  ],
+  "keywords": [
+    "validation",
+    "javascript",
+    "library"
+  ],
+  "homepage": "https://github.com/ansman/validate.js",
+  "_release": "0.8.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.8.0",
+    "commit": "c44e06e4be198c69e99145e3ea857c2036e61a33"
+  },
+  "_source": "git://github.com/ansman/validate.js.git",
+  "_target": "~0.8.0",
+  "_originalSource": "validate"
+}

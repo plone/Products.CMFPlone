@@ -1,0 +1,70 @@
+
+.makePloneLogoDot(@x, @y) {
+  display: block;
+  position: absolute;
+  width: @size * (1 - @ratio);
+  height: @size * (1 - @ratio);
+  background-color: @fgColor;
+  border-radius: @size * (1 - @ratio) / 2;
+  top: @y;
+  left: @x;
+}
+
+.makePloneLogo(@size: 100px, @fgColor: #0083be, @bgColor: #ffffff, @ratio: 0.797) {
+  background: @bgColor;
+  position: relative;
+  font-style: normal;
+  font-size: @ratio * @size;
+  line-height: @size;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+
+  & > *:first-child {
+    float: left;
+    display: block;
+    position: relative;
+    width: @size;
+    height: @size;
+    background-color: @fgColor;
+    border-radius: @size / 2;
+
+    .plone-circle-inner {
+      display: block;
+      position: absolute;
+      width: @size * @ratio;
+      height: @size * @ratio;
+      background-color: @bgColor;
+      border-radius: @size * @ratio / 2;
+      top: @size * (1 - @ratio) / 2;
+      left: @size * (1 - @ratio) / 2;    
+
+      .plone-dot-1 {
+        .makePloneLogoDot(
+            (0.328 - (1 - @ratio) / 2) * @size,
+            (0.180 - (1 - @ratio) / 2) * @size
+          );
+      }
+      .plone-dot-2 {
+        .makePloneLogoDot(
+            (0.547 - (1 - @ratio) / 2) * @size,
+            (0.391 - (1 - @ratio) / 2) * @size
+          );
+      }
+      .plone-dot-3 {
+        .makePloneLogoDot(
+            (0.328 - (1 - @ratio) / 2) * @size,
+            (0.609 - (1 - @ratio) / 2) * @size
+          );
+      }
+    
+    }
+  }
+
+  & > *:last-child {
+    color: @fgColor;
+    float: left;
+    font-size: 0.723 * @size;
+    line-height: @size;
+    margin-left: @size * 0.135;
+  }
+
+}

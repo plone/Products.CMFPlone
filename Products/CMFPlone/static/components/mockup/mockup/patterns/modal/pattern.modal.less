@@ -1,0 +1,117 @@
+@import "@{mockuplessPath}/base.less";
+
+.plone-modal-loading {
+  .plone-progress-bar();
+  .progress.active .progress-bar();
+  .progress-striped .progress-bar();
+  border-radius: 0.5em;
+  width: 40em;
+  height: 40px;
+}
+
+.plone-modal-header {padding: 5px 10px;}
+.plone-modal-title {  font-size: 120%; margin:4px 0;}
+.plone-modal {
+  display: none;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1050;
+  -webkit-overflow-scrolling: touch;
+  outline: 0;
+  z-index: 1040;
+}
+.plone-modal.in {
+  display: block !important;
+}
+.plone-modal.fade {
+opacity: 0;
+-webkit-transition: opacity .5s linear;
+-o-transition: opacity .5s linear;
+transition: opacity .5s linear;
+}
+.plone-modal.fade.in {
+  opacity: 1;
+  -webkit-transition: opacity .5s linear;
+-o-transition: opacity .5s linear;
+transition: opacity .5s linear;
+}
+.plone-modal-open {
+  overflow: hidden;
+  padding-right: 15px;
+}
+.plone-modal-open .plone-modal {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.plone-modal-dialog {
+  position: relative;
+  width: auto;
+  margin: 10px;
+}
+.plone-modal.fade .plone-modal-dialog {
+  -webkit-transform: translate3d(0, -25%, 0);
+  transform: translate3d(0, -25%, 0);
+  -webkit-transition: -webkit-transform 0.3s ease-out;
+  -moz-transition: -moz-transform 0.3s ease-out;
+  -o-transition: -o-transform 0.3s ease-out;
+  transition: transform 0.3s ease-out;
+}
+.plone-modal.in .plone-modal-dialog {  -webkit-transform: translate3d(0, 0, 0);transform: translate3d(0, 0, 0);}
+@media (min-width: 768px) {
+  .plone-modal-dialog {
+    width: 600px;
+    margin: 30px auto;
+  }
+}
+.plone-modal-content {
+  background: #fff;
+  /* XXX this is necessary for some content inside modals
+     to behave properly */
+  overflow: inherit;
+}
+.plone-modal-body {padding: 15px; position: relative;}
+.plone-modal-footer { text-align: right; border-top: 1px solid #e5e5e5; padding: 15px;}
+
+.plone-modal-backdrop {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1040;
+  background-color: #000;
+  opacity: .85;
+}
+
+.plone-modal-close {
+  float: right;
+  font-size: 21px;
+  line-height: 1;
+  color: #000;
+  opacity: .2;
+  filter: alpha(opacity=20);
+  &:hover {
+    text-decoration: none;
+    cursor: pointer;
+    opacity: .5;
+    filter: alpha(opacity=50);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

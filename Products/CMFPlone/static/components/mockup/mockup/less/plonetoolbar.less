@@ -1,0 +1,331 @@
+@import "@{bowerPath}/bootstrap/less/mixins.less";
+
+.gradient(@color: #F5F5F5, @start: #EEE, @stop: #FFF) {
+  background: @color;
+  background: -webkit-gradient(linear,
+                               left bottom,
+                               left top,
+                               color-stop(0, @start),
+                               color-stop(1, @stop));
+  background: -ms-linear-gradient(bottom,
+                                  @start,
+                                  @stop);
+  background: -moz-linear-gradient(center bottom,
+                                   @start 0%,
+                                   @stop 100%);
+  background: -o-linear-gradient(@stop,
+                                 @start);
+  filter: e(%("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=0)",@stop,@start));
+}
+.transition(@duration:0.2s, @ease:ease-out) {
+  -webkit-transition: all @duration @ease;
+  -moz-transition: all @duration @ease;
+  -o-transition: all @duration @ease;
+  transition: all @duration @ease;
+}
+
+/*
+ * Toolbar Dropdown
+ */
+.makeToolbarDropdown(
+      @fgColor,
+      @bgColor,
+      @linkBgColor,
+      @size,
+      @radiusSize,
+      @shadowColor
+    ) {
+
+  position: relative; 
+
+  & > a:after {
+    display: inline-block;
+    font-size: 0.28*@size;
+    line-height: 0.3*@size;
+    content: "\25BC";
+    margin-left: 0.135*@size;
+  }
+
+  & > ul.toolbar-dropdown-menu {
+    border-radius: @radiusSize @radiusSize @radiusSize 0;
+    box-shadow: 0 @radiusSize/2 @radiusSize/2 0 @shadowColor;
+    color: @fgColor;
+    margin: 0;
+    padding: 0.5em 0;
+    position: absolute;
+    top: 0.55*@size;
+    left: @radiusSize/4;
+    min-width: 5*@size;
+    display: none;
+    position: absolute;
+    background-color: @bgColor;
+    list-style: none;
+    z-index: 2000;
+
+    // styles for list in dropdown menu
+    & > li {
+      padding: 0.3em 1em;
+      & > a {
+        color: @fgColor;
+        display: block;
+        width: 100%;
+      }
+      &:hover {
+        .gradient(@linkBgColor, darken(@linkBgColor,8%), @linkBgColor);
+        background-color: @linkBgColor;
+        color: @bgColor;
+        & > a {
+          color: @bgColor;
+          text-decoration: none;
+        }
+      }
+      &.active {
+        .gradient(@linkBgColor, darken(@linkBgColor,8%), @linkBgColor);
+        background-color: @linkBgColor;
+        color: @bgColor;
+        & > a {
+          color: @bgColor;
+          text-decoration: none;
+        }
+      }
+    }
+  }
+  &.toolbar-dropdown-open {
+    & > a {
+      color: @fgColor;
+      background: @bgColor;
+      border-radius: @radiusSize @radiusSize 0 0;
+      & > span { .ploneStatesToolbar(@bgColor, @shadowColor, @radiusSize); }
+    } 
+    & > .toolbar-dropdown-menu {
+      display: block;
+    }
+  }
+}
+
+/*
+ * Toolbar
+ *
+ * HTML Markup:
+ *  <div class="toolbar">
+ *    <div class="toolbar-top"></div>
+ *    <div class="toolbar-right">
+ *      <div class="toolbar-swirl"><div></div></div>
+ *    </div>
+ *    <div class="toolbar-left">
+ *      <div class="toolbar-left-action">
+ *        <li><a href="#">Action 1</a></li>
+ *        <li class="toolbar-dropdown">
+ *          <a href="#">Action 1</a>
+ *          <ul class="toolbar-dropdown-menu">
+ *            <li><a href="#">Sub action 1</a></li>
+ *            <li><a href="#">Sub action 2</a></li>
+ *          </ul>
+ *        </li>
+ *      </div>
+ *      <div class="toolbar-right-action"></div>
+ *    </div>
+ *  </div>
+ * 
+ * LESS Markup:
+ *  .toolbar ( .makeToolbar(44px); }
+ *
+ */
+
+.makeToolbar(
+      @size,
+      @radiusSize: 4px,
+      @borderSize: 1px,
+      @leftFgColor: #FFFFFF,
+      @leftBgColor: #3E3F42,
+      @leftBorderColor: #000000,
+      @rightFgColor: #FFFFFF,
+      @rightBgColor: #3D8CD5,
+      @dropdownFgColor: #333333,
+      @dropdownBgColor: #FFFFFF,
+      @shadowColor: rgba(0,0,0,0.3),
+      @shadow2Color: rgba(255,255,255,0.3)
+    ) {
+
+  .gradient(@leftBgColor, darken(@leftBgColor,8%), @leftBgColor);
+  box-shadow: 0 @radiusSize/4 @radiusSize/2 @shadowColor;
+  min-height: @size;
+  background-color: @leftBgColor;
+  border: 0;
+  border-bottom: @borderSize solid @leftBorderColor;
+  zoom: 1; /* IE < 8 clearfix */
+
+  // clearfix
+  &:after {
+    content: "\25BC";
+    display: block;
+    overflow: hidden;
+    height: 0;
+    clear: both;
+  }
+
+  & > div {
+
+    // top blue line
+    &.toolbar-top {
+      box-shadow: 0 @radiusSize/4 @radiusSize/4 @shadowColor;
+      height: 0.12*@size;
+      background-color: @rightBgColor;
+    }
+
+    // left dark gray area
+    &.toolbar-left {
+
+      // button on left side
+      & > ul > li {
+
+        // if dropdown apply styles
+        &.toolbar-dropdown {
+          .makeToolbarDropdown(
+            @dropdownFgColor,
+            @dropdownBgColor,
+            @rightBgColor,
+            @size,
+            @radiusSize,
+            @shadowColor
+          );
+        }
+
+        & > a {
+          border-radius: @radiusSize;
+          box-shadow: 0 @radiusSize/4 @shadow2Color inset;
+          .gradient(lighten(@leftBgColor,1%), darken(@leftBgColor,11%), lighten(@leftBgColor,1%));
+          .transition(0.1s, linear);
+          padding-left: 0.272*@size;
+          padding-right: 0.272*@size;
+          background-repeat: no-repeat;
+          background-color: darken(@leftBgColor,11%);
+          border: @borderSize solid darken(@leftBgColor,11%);
+          color: @leftFgColor;
+          &:hover {
+            background-position: 0 -0.61*@size;
+          }
+        }
+      }
+
+      & > .toolbar-right-actions {
+        & > li.toolbar-dropdown > ul.toolbar-dropdown-menu {
+          right: @radiusSize/4;
+          left: auto;
+          border-radius: @radiusSize 0 @radiusSize @radiusSize;
+        }
+      }
+    }
+
+    // left blue area
+    &.toolbar-right {
+      float: right;
+      height: 0.77*@size;
+      border-radius: 0 0 0 0.77*@size;
+      box-shadow: inset 0 -1*@radiusSize/4 @shadow2Color;
+      .gradient(@rightBgColor, lighten(@rightBgColor,2%), @rightBgColor);
+
+      // create top part of swirl
+      .toolbar-swirl {
+        width: 0.72*@size;
+        height: 0.36*@size;
+        display: block;
+        float: left;
+        top: 0;
+        left: 0;
+        margin-left: -0.54*@size;
+        overflow: hidden;
+        .gradient(@rightBgColor, lighten(@rightBgColor, 2%), @rightBgColor);
+        div {
+          width: 0.72*@size;
+          height: 0.72*@size;
+          border-radius: 0 0.77*@size 0 0;
+          .gradient(@leftBgColor, darken(@leftBgColor,8%), @leftBgColor);
+        }
+      }
+
+      // 
+      & > ul {
+        margin-top: 0;
+        line-height: 0.65*@size;
+
+        & > li {
+          &.toolbar-dropdown {
+            .makeToolbarDropdown(
+              @dropdownFgColor,
+              @dropdownBgColor,
+              @rightBgColor,
+              @size,
+              @radiusSize,
+              @shadowColor
+            );
+          }
+          &.toolbar-dropdown > ul.toolbar-dropdown-menu {
+            right: 0;
+            left: auto;
+            border-radius: @radiusSize 0 @radiusSize @radiusSize;
+          }
+          & > a {
+            color: @rightFgColor;
+            img {
+              margin: 0;
+              display: inline-block;
+              height: 0.3*@size;
+              line-height: 0.3*@size;
+              vertical-align: text-top;
+            }
+          }
+        }
+      }
+    }
+
+
+    & > ul {
+      list-style: none;
+      & > li { 
+        display: inline-block;
+        & > a {
+          display: inline-block;
+          text-decoration: none;
+          cursor: pointer;
+          font-size: 0.295*@size;
+          padding: 0.068*@size 0.15*@size;
+          margin: 0;
+          &:focus { outline-style: none; }
+          & > span { .ploneStatesToolbar(@leftFgColor, @shadowColor, @radiusSize); }
+        }
+      }
+    }
+    & > .toolbar-left-actions {
+      float: left;
+      margin: 0.13*@size 0.5*@size 0.13*@size 0.25*@size;
+    }
+    & > .toolbar-right-actions {
+      float: right;
+      margin: 0.13*@size 0.25*@size 0.13*@size 0.5*@size;
+    }
+  }
+}
+
+.ploneStates() {
+  &.state-private { background-color: Red; }
+  &.state-visible { background-color: #74AE0B; }
+  &.state-published { background-color: #436976; }
+  &.state-pending { background-color: #FFA500; }
+  &.state-expired { background-color: Red; }
+}
+
+.ploneStatesToolbar(@color, @shadowColor, @radiusSize) {
+  .ploneStates();
+  &.state-private,
+  &.state-visible,
+  &.state-published,
+  &.state-pending,
+  &.state-expired {
+    padding: @radiusSize/4 @radiusSize;
+    border-radius: @radiusSize;
+    box-shadow: 0 @radiusSize/4 @radiusSize/2 @shadowColor;
+    color: @color;
+  }
+}
+

@@ -1,0 +1,37 @@
+{
+  "name": "mockup",
+  "description": "A collection of client side patterns for faster and easier web development",
+  "dependencies": {
+    "ace-builds": "1.1.9",
+    "backbone": "1.1.2",
+    "backbone.paginator": "0.8.1",
+    "bootstrap": "3.3.4",
+    "console-polyfill": "0.1.2",
+    "dropzone": "4.0.1",
+    "es5-shim": "4.0.3",
+    "jqtree": "0.22.0",
+    "jquery": "1.11.3",
+    "jquery-form": "3.46.0",
+    "jquery.cookie": "1.4.1",
+    "jquery.recurrenceinput.js": "v1.5.2",
+    "lodash": "2.4.1",
+    "logging": "",
+    "mockup-core": "2.1.12",
+    "moment": "2.10.3",
+    "patternslib": "2.0.9",
+    "pickadate": "3.5.6",
+    "requirejs-text": "2.0.12",
+    "select2": "3.5.1",
+    "tinymce-builded": "4.2.5"
+  },
+  "devDependencies": {
+    "expect": "0.3.1",
+    "sinonjs": "1.14.1"
+  },
+  "resolutions": {
+    "bootstrap": "3.3.4",
+    "jquery": "1.11.3",
+    "select2": "3.5.1",
+    "patternslib": "2.0.9"
+  }
+}

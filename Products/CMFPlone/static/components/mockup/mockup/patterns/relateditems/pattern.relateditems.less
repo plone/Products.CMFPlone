@@ -1,0 +1,185 @@
+@import "@{bowerPath}/bootstrap/less/variables.less"; // Modify this for custom colors, font-sizes, etc
+@icon-font-path: "@{bowerPath}/bootstrap/dist/fonts/";
+@import "@{bowerPath}/bootstrap/less/glyphicons.less";
+@import "@{mockupPath}/select2/pattern.select2.less";
+@import "@{mockupPath}/tree/pattern.tree.less";
+
+
+.pattern-relateditems-dropdown {
+  z-index: 10002;
+
+  .select2-results {
+    .select2-highlighted {
+      color: #000;
+      background: #d8d8d8;
+    }
+    .select2-selected {
+      display: list-item;
+    }
+  }
+}
+.pat-relateditems {
+
+}
+
+.pattern-relateditems-active {
+    padding: 5px;
+    background-color: #DDD;
+}
+
+.pattern-relateditems-container {
+  display: inline-block;
+  position: relative;
+}
+.pattern-relateditems-path {
+  display: block;
+  line-height: 20px;
+  background-color: #f1f1f1;
+  font-size: 12px;
+  border: 1px solid #aaa;
+  border-bottom-style: none;
+  z-index: 999;
+  position: relative;
+  padding: 0 6px;
+  color: #333;
+
+  a {
+    padding: 0 6px;
+  }
+
+  em {
+    color: #666;
+  }
+}
+
+.pattern-relateditems-buttons {
+  position: absolute;
+  display: inline-block;
+  text-align: right;
+  font-size: 18px;
+  right: 0;
+  top: 50%;
+  margin-top: -16px;
+  a {
+    display: block;
+    height: 36px;
+    line-height: 36px;
+    .glyphicon();
+    .glyphicon-chevron-right();
+  }
+}
+
+.pattern-relateditems-result {
+  padding-right: 30px;
+  position: relative;
+
+  a {
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  .pattern-relateditems-result-select {
+    display: block;
+    line-height: 15px;
+    padding-top: 5px;
+  }
+
+  .pattern-relateditems-result-path {
+    display: block;
+    color: #444;
+    font-size: 11px;
+  }
+}
+
+.pattern-relateditems-item {
+  .pattern-relateditems-item-path {
+    font-size: 11px;
+    color: #444;
+    display: block;
+  }
+}
+
+/* tree parts */
+.pattern-relateditems-tree {
+  .tree-container {
+    box-shadow: 0px 0px 8px 0px #DDD;
+    position: absolute;
+    background-color: white;
+    min-width: 200px;
+    padding: 0px;
+    left: -1px;
+    top: -11px;
+    border: 1px solid #5897fb;
+    display: none;
+    z-index: 10000;
+    min-width: 350px;
+    margin-top: 10px;
+
+    .pat-tree {
+      max-height: 400px;
+      overflow-y: scroll;
+      overflow-x: hidden;
+      border-top: 1px solid #DDD;
+      border-bottom: 1px solid #DDD;
+      padding: 2px 0;
+    }
+
+    .select-folder-label {
+      font-weight: bold;
+    }
+
+    .tree-node-empty{
+      font-size: 75%;
+    }
+
+    .title-container{
+      background-color: #f1f1f1;
+    }
+
+    .jqtree-tree {
+      background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(1%, #eeeeee), color-stop(5%, #ffffff));
+      background-image: -webkit-linear-gradient(top, #eeeeee 1%, #ffffff 5%);
+      background-image: -moz-linear-gradient(top, #eeeeee 1%, #ffffff 5%);
+      background-image: linear-gradient(to bottom, #eeeeee 1%, #ffffff 5%);
+
+      .pattern-relateditems-buttons {
+        margin-top: -22px;
+        top: inherit;
+      }
+      .jqtree_common {
+        padding-left: 2px;
+      }
+
+      .jqtree_common.jqtree-selected {
+        .jqtree_common.jqtree-element {
+          background: #f1f1f1;
+          text-shadow: none;
+        }
+      }
+
+      .jqtree-toggler{
+        top: 20%;
+      }
+
+      li.jqtree_common {
+        .jqtree-element{
+          padding: 0;
+        }
+        .jqtree_common.jqtree-element {
+            &:hover {
+                background: #f1f1f1;
+            }
+        }
+        &.jqtree-folder{
+          margin-left: 18px;
+
+          ul.jqtree_common{
+            margin-left:0;
+            padding-left:0;
+          }
+        }
+      }
+    }
+  }
+}

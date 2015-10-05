@@ -1,0 +1,66 @@
+@import (less) "@{bowerPath}/dropzone/dist/dropzone.css";
+
+.upload-container {
+    .upload-area {
+        border: 3px dashed #ccc;
+        padding: 30px;
+        border-radius: 5px;
+        margin: 0 auto 15px auto;
+        max-width: 600px;
+        &:hover {background: rgba(0,0,0,.025); cursor: pointer;}
+        button.browse,
+        .controls button,
+        input{
+            width: 100%;
+        }
+    }
+    .upload-queue{
+        .input-sm{
+            line-height: 1em;
+            font-size: 0.8em;
+            height: 24px;
+            margin-bottom: 1px;
+        }
+        .controls{
+            margin-top: 10px;
+            padding-top: 10px;
+        }
+        .previews{
+            margin-top: 4em;
+            .item{ padding: 5px 0; clear: both;}
+            .title{ padding-left: 3px; }
+            .info img {
+                width: 32px;
+                height: 32px;
+                margin-top: -26px;
+                float: right;
+            }
+        }
+    }
+    #fakeUploadFile{
+        height: 35px;
+    }
+    .pattern-relateditems-container,
+    .pattern-relateditems-container > *{
+        width: 100% !important;
+    }
+    .align-right{ text-align: right }
+    .controls { display: none }
+    .actions { margin-top: 0.5em };
+    .progress {
+        height: 34px;
+        margin-bottom: 0;
+    }
+    .dz-drag-hover{
+        -webkit-box-shadow: inset 0 0 20px rgba(0,0,0,.75), 0 0 0 1000px rgba(255,255,255,.85);
+        -moz-box-shadow: inset 0 0 20px  rgba(0,0,0,.75), 0 0 0 1000px rgba(255,255,255,.85);
+        box-shadow: inset 0 0 20px rgba(0,0,0,.75), 0 0 0 1000px rgba(0,0,0,.85);
+        z-index: 99999;
+        position: relative;
+    }
+    .upload .dz-preview .dz-details .dz-size,
+    .upload-previews .dz-preview .dz-details .dz-size{
+        font-size: 11px;
+    }
+    .dz-max-files-reached {}
+}

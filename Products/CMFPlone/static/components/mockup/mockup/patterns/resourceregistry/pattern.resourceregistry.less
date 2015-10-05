@@ -1,0 +1,162 @@
+@import "@{mockuplessPath}/ui.less";
+@import (less) "@{bowerPath}/select2/select2.css";
+
+@import (reference) "@{bowerPath}/bootstrap/less/list-group.less";
+@import (reference) "@{bowerPath}/bootstrap/less/forms.less";
+@import (reference) "@{bowerPath}/bootstrap/less/input-groups.less";
+@import (reference) "@{bowerPath}/bootstrap/less/type.less";
+@import (reference) "@{bowerPath}/bootstrap/less/navs.less";
+
+
+.pat-resourceregistry {
+
+    .list-group:extend(.list-group all){}
+    .list-group-item:extend(.list-group-item all){}
+    .list-group-item-variant(warning; @state-warning-bg; @state-warning-text);
+
+    .input-group:extend(.input-group all){}
+    .input-group-addon:extend(.input-group-addon all){}
+    .input-group-btn:extend(.input-group-btn all){}
+
+    .text-primary:extend(.text-primary all){}
+
+    .navbar:extend(.navbar all){}
+    .navbar-search:extend(.navbar-search all){}
+    .nav:extend(.nav all){}
+    .nav-tabs:extend(.nav-tabs all){}
+    .tab-content:extend(.tab-content all){
+      > .tab-pane {
+        display: none;
+      }
+      > .active {
+        display: block;
+      }
+    }
+    .tab-content{
+        padding: 0 10px;
+        background-color:white;
+    }
+
+    .form-group:extend(.form-group all){}
+    .help-block:extend(.help-block all){}
+    .checkbox:extend(.checkbox all){}
+    .form-control:extend(.form-control all){}
+    .input-sm:extend(.input-sm all){}
+    .control-label:extend(.control-label all){}
+
+    .nav-tabs{
+        a {
+            color: black;
+        }
+    }
+    .tab-pane.overrides{
+        .list-group-item a{
+            font-size: 11px; /* need to try and fit long strings */
+        }
+    }
+    .resources-header.list-group{
+        margin-bottom: 0;
+        li{
+            border-bottom: 0;
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+    }
+    .resources.list-group{
+        max-height: 700px;
+        overflow-x: scroll;
+
+        li{
+            border-top-right-radius: 0;
+            border-top-left-radius: 0;
+        }
+
+        .list-group-item-warning{
+            position: relative;
+
+            input{
+                width: 224px;
+                position: absolute;
+                right: 3px;
+                top: 3px;
+            }
+        }
+    }
+
+    .resource-entry .form-group .pat-sortable li,
+    .tab-pane.manual ul.js li:not(.list-group-item-warning),
+    .tab-pane.manual ul.css li:not(.list-group-item-warning){
+        cursor: move;
+    }
+
+    .lessvariables, .patternoptionsuse {
+        .form{
+            padding-top: 15px;
+            clear: both;
+        }
+    }
+
+    .pat-resourceregistry .lessvariables .form {
+        padding-top: 10px;
+        clear: both;
+    }
+
+    .patternoptions{
+        .form-control-feedback {
+            top: 0;
+            right: 12px;
+        }
+    }
+
+    .development-mode{
+        padding-left: 15px;
+    }
+
+    .plone-legacy-resource-entry{
+        .field-compile, .field-expression, .field-enabled, .field-conditionalcomment, .field-name{
+            display: none;
+        }
+    }
+
+    .buttons-container{
+        position: relative;
+    } 
+
+    .buttons-container .plone-btn-group, 
+    .buttons-container .btn-group {
+        padding: 5px 0;
+    }
+
+     @media (min-width: 1200px) {
+        .buttons-container{
+            top: -42px;
+            padding: 0;
+        }
+        .tab-pane.active .buttons-container{
+            top: 1rem;
+        }
+        .buttons-container .plone-btn-group,
+        .buttons-container .btn-group {
+           padding: 0;
+        } 
+     }
+
+    .autotabs{
+        margin-bottom:0;
+        border-bottom: 0;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+
+        .autotoc-nav{
+            margin: -6px -12px -6px;
+        }
+    }
+
+    .bundles{
+        .list-group-item.active{
+            a{
+                color: white;
+            }
+        }
+    }
+}

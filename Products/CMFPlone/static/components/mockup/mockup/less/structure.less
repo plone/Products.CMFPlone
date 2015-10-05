@@ -1,0 +1,20 @@
+@import "mixins.less";
+@import "plonetoolbar.less";
+@import "../patterns/autotoc/pattern.autotoc.less";
+@import "../patterns/pickadate/pattern.pickadate.less";
+@import "../patterns/modal/pattern.modal.less";
+@import "../patterns/select2/pattern.select2.less";
+@import "../patterns/relateditems/pattern.relateditems.less";
+@import "../patterns/tinymce/less/pattern.tinymce.less";
+@import "../patterns/querystring/pattern.querystring.less";
+@import "../patterns/structure/less/pattern.structure.less";
+
+@icon-font-path: "@{pathPrefix}../bower_components/bootstrap/dist/fonts/";
+
+.modal.fade.in>.modal-dialog {
+  z-index: 1010;
+}
+
+.popover-content.items li{
+  display: inherit;
+}

@@ -1,0 +1,65 @@
+<div class="upload-container upload-multiple">
+    <h2 class="title"><%- _t("Upload here") %></h2>
+    <p class="help">
+        <%- _t('Drag and drop files from your computer onto the area below or click the "Browse" button.') %>
+    </p>
+    <div class="upload-area">
+        <div class="fallback">
+            <input name="file" type="file" multiple />
+        </div>
+        <div class="dz-message"><p><%-_t("Drop files here...")%></p></div>
+        <div class="row browse-select">
+            <div class="col-md-9">
+                <input
+                    id="fakeUploadFile"
+                    placeholder="<%- _t("Choose File") %>"
+                    disabled="disabled"
+                    />
+            </div>
+            <div class="col-md-3">
+                <button
+                    type="button"
+                    class="btn btn-primary browse">
+                    Browse
+                </button>
+            </div>
+        </div>
+        <div class="upload-queue">
+            <div class="previews">
+            </div>
+            <div class="controls">
+                <div class="path">
+                    <label><%- _t("Upload to...") %></label>
+                    <p class="form-help">
+                        <%- _t("Select another destination folder or leave blank to add files to the current location.") %>
+                    </p>
+                    <input
+                        type="text"
+                        name="location"
+                        />
+                </div>
+                <div class="actions row">
+                    <div class="col-md-9">
+                        <div class="progress progress-striped active">
+                            <div class="progress-bar progress-bar-success"
+                                 role="progressbar"
+                                 aria-valuenow="0"
+                                 aria-valuemin="0"
+                                 aria-valuemax="100"
+                                 style="width: 0%">
+                                <span class="sr-only">40% Complete (success)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 align-right">
+                        <button
+                            type="button"
+                            class="btn btn-primary upload-all">
+                            <%- _t("Upload") %>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

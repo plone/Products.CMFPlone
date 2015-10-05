@@ -1,0 +1,361 @@
+@import "@{bowerPath}/bootstrap/less/variables.less"; // Modify this for custom colors, font-sizes, etc
+@icon-font-path: "@{bowerPath}/bootstrap/dist/fonts/";
+@import "@{bowerPath}/bootstrap/less/glyphicons.less";
+@import "@{mockuplessPath}/ui.less";
+
+@import "@{bowerPath}/bootstrap/less/mixins.less";
+@import "@{bowerPath}/bootstrap/less/utilities.less";
+@import (reference) "@{bowerPath}/bootstrap/less/buttons.less";
+@import (reference) "@{bowerPath}/bootstrap/less/button-groups.less";
+@import (reference) "@{bowerPath}/bootstrap/less/badges.less";
+@import (reference) "@{bowerPath}/bootstrap/less/popovers.less";
+@import (reference) "@{bowerPath}/bootstrap/less/pagination.less";
+@import (reference) "@{bowerPath}/bootstrap/less/input-groups.less";
+@import (reference) "@{bowerPath}/bootstrap/less/tables.less";
+@import (reference) "@{bowerPath}/bootstrap/less/dropdowns.less";
+@import (reference) "@{bowerPath}/bootstrap/less/forms.less";
+@import (reference) "@{bowerPath}/bootstrap/less/navbar.less";
+@import (reference) "@{bowerPath}/bootstrap/less/navs.less";
+@import (reference) "@{bowerPath}/bootstrap/less/tooltip.less";
+@import (reference) "@{bowerPath}/bootstrap/less/component-animations.less";
+@import (reference) "@{mockuplessPath}/popover.less";
+
+
+/*
+@import "@{bowerPath}bootstrap/less/tooltip.less";
+*/
+
+.pat-structure {
+
+    .fade:extend(.fade all){}
+    .collapse:extend(.collapse all){}
+    .collapsing:extend(.collapsing all){}
+
+    .popover:extend(.popover all){}
+    .popover-title:extend(.popover-title all){}
+    .popover-content:extend(.popover-content all){}
+    .arrow:extend(.arrow all){}
+    .tooltip:extend(.tooltip all){}
+    .tooltip-arrow:extend(.tooltip-arrow all){}
+    .tooltip-inner:extend(.tooltip-inner all){}
+
+    .table:extend(.table all){}
+    .pagination:extend(.pagination all){}
+
+    .btn:extend(.btn all){}
+    .btn-default:extend(.btn-default all){}
+    .btn-danger:extend(.btn-danger all){}
+    .btn-primary:extend(.btn-primary all){}
+    .btn-group:extend(.btn-group all){}
+    .btn-success:extend(.btn-success all){}
+    .input-group:extend(.input-group all){}
+    .input-group-addon:extend(.input-group-addon all){}
+    .input-group-btn:extend(.input-group-btn all){}
+    .dropdown-menu:extend(.dropdown-menu all){}
+    .dropdown-toggle:extend(.dropdown-toggle all){}
+    .dropdown-header:extend(.dropdown-header all){}
+    .divider:extend(.divider all){}
+
+    .table-striped:extend(.table-striped all){}
+    .table-bordered:extend(.table-bordered all){}
+
+    .navbar:extend(.navbar all){}
+    .navbar-search:extend(.navbar-search all){}
+    .form-search:extend(.form-search all){}
+    .ui-offset-parent:extend(.ui-offset-parent all){}
+
+    .form-group:extend(.form-group all){}
+    .help-block:extend(.help-block all){}
+    .checkbox:extend(.checkbox all){}
+
+    .open:extend(.open all){}
+
+    .btn{
+        .btn-sm();
+        padding: 5px 5px;
+        font-size: 13px;
+    }
+    table{
+        margin-bottom: 0;
+
+        tr{
+            td.selection{
+                width: 15px;
+            }
+            td.actionmenu-container{
+                .btn{
+                    padding: 2px 4px;
+                }
+            }
+        }
+        .fc-breadcrumbs-container{
+            .input-group{
+                .input-group-addon{
+                    padding: 2px 5px;
+                }
+                .btn{
+                    padding: 2px 4px;
+                }
+
+                display: inline-block;
+                float: left;
+                padding-right: 5px;
+            }
+            .fc-breadcrumbs{
+                font-size: 15px;
+                padding-top: 2px;
+            }
+        }
+    }
+    .navbar {
+        min-height: inherit;
+        margin-bottom: 5px;
+
+        .btn-group{
+            margin-left: 5px;
+        }
+    }
+    .table th, .table td {
+        padding: 4px;
+    }
+
+    .contextmenu {
+        display: none;
+        position: fixed;
+        z-index: 10000;
+
+        ul{
+            display:block;
+            position:static;
+            margin-bottom:5px;
+        }
+    }
+    .contextmenuactive{
+        outline: 1px dashed orange;
+    }
+
+    .navbar-search{
+        input.form-control, #btn-query{
+            height: 31px;
+        }
+    }
+    .alert.status{
+        margin-bottom: 5px;
+        padding: 5px;
+        color: @plone-link-color;
+    }
+
+    #filter{
+        width: 200px;
+        float: right;
+    }
+
+    .popover.upload{
+        max-width: 650px;
+    }
+
+    .upload-container .upload-area{
+        width: 500px;
+    }
+
+    /* button overrides to make it look
+       more streamlined */
+    #btn-attribute-columns{
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        border-right: 0;
+    }
+    #btn-selected-items, #btn-rearrange{
+        border-radius: 0;
+        border-right: 0;
+    }
+    #btn-upload{
+        margin-left: 0;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+
+    @media all and (max-width: 1200px) {
+        #filter{
+            margin-top: 5px;
+            float: left;
+        }
+        #btngroup-mainbuttons{
+            float: left;
+            width: 100%;
+            margin-left: 0;
+            margin-top: 5px;
+        }
+    }
+    @media all and (max-width: 620px) {
+        #btn-attribute-columns{
+            display:none;
+        }
+        #btn-selected-items{
+            border-top-left-radius: 3px;
+            border-bottom-left-radius: 3px;
+            border-left: 1px solid #cccccc;
+        }
+        table{
+            thead{
+                th{
+                    display:none;
+                }
+                th.selection, th.title, th.actions{
+                    display: table-cell;
+                }
+            }
+            tbody{
+                td{
+                    display:none;
+                }
+                td.selection, td.title, td.actionmenu-container{
+                    display: table-cell;
+                }
+            }
+        }
+    }
+    .icon-group-right{
+        float: right;
+    }
+}
+
+.pat-structure {
+
+    .popover {
+        .popover-title {
+            .remove-all {
+                display: inline-block;
+                clear: left;
+                margin-top: 5px;
+                margin-left: 6px;
+
+                &:before {
+                    padding-right: 5px;
+                }
+
+                &:hover {
+                    text-decoration: none;
+                }
+            }
+        }
+    }
+
+    .clear{
+        clear:both;
+    }
+
+    .pattern-pickadate-wrapper .pattern-pickadate-date-wrapper .pattern-pickadate-date{
+        width: 200px;
+    }
+
+    .pattern-pickadate-wrapper .pattern-pickadate-time-wrapper .pattern-pickadate-time{
+        width: 120px;
+    }
+
+    .itemRow .title a{
+        color: #333333;
+    }
+    .itemRow.folder .title a{
+        color: #005580;
+    }
+    .itemRow.default-page .title:before{
+        content: '*';
+        color: red;
+    }
+}
+
+.popover.selected-items {
+    .items {
+        max-height: 300px;
+        overflow-y: auto;
+
+        .selected-item {
+            display: block;
+            margin: 0 8px 3px 0;
+            border-radius: 6px;
+            padding: 4px 6px;
+
+            &:hover {
+                background-color: #f2f2f2;
+            }
+
+            a:hover {
+                text-decoration: none;
+            }
+
+            a:before {
+                .glyphicon-remove-sign();
+                color: #999;
+
+                &:hover {
+                    color: #000;
+                }
+            }
+        }
+    }
+}
+
+.popover.query {
+    width: 700px;
+    max-width: 700px;
+}
+
+#popover-rename {
+    width: 400px;
+
+    .popover-content{
+        max-height: 500px;
+        overflow-y: scroll;
+    }
+    input{
+        width: 100%;
+        height: 24px;
+        line-height: 110%;
+        font-size: 110%;
+    }
+    div.item{
+        border-bottom: 1px solid #0E6EB0;
+        margin-bottom: 5px;
+        padding-bottom: 10px;
+    }
+}
+
+.popover.attribute-columns{
+    ul{
+        list-style: none;
+        margin: 0;
+        padding: 0;
+
+        li{
+            list-style: none;
+            cursor: move;
+            border: 1px solid #DDD;
+            border-bottom: none;
+            padding: 3px 7px;
+
+            label{
+                margin-bottom: 0;
+            }
+        }
+
+    }
+
+}
+
+.order-support tbody tr{
+    cursor: move;
+}
+
+table.structure-dragging{
+    outline: 1px dashed black;
+    background-color: white;
+    .itemRow{
+        .actionmenu-container{
+            display: none;
+        } 
+        td{
+            padding: 5px;
+        }
+    }
+}

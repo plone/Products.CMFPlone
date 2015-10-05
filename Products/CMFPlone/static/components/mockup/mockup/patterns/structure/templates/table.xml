@@ -1,0 +1,45 @@
+<div class="alert alert-<%= statusType %> status">
+    <%= status %>
+</div>
+<table class="table table-striped table-bordered">
+  <thead>
+    <tr class="fc-breadcrumbs-container">
+      <td colspan="<%= activeColumns.length + 3 %>">
+        <% if(pathParts.length > 0) { %>
+          <div class="input-group context-buttons" style="display:none">
+            <span class="input-group-addon">
+              <input type="checkbox" />
+            </span>
+            <div class="input-group-btn">
+            </div>
+          </div>
+        <% } %>
+        <div class="fc-breadcrumbs">
+          <a href="#" data-path="/">
+            <span class="glyphicon glyphicon-home"></span> /
+          </a>
+          <% _.each(pathParts, function(part, idx, list){
+            if(part){
+              if(idx > 0){ %>
+                /
+              <% } %>
+              <a href="#" class="crumb" data-path="<%- part %>"><%- part %></a>
+            <% }
+          }); %>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <th class="selection"><input type="checkbox" class="select-all" /></th>
+      <th class="title">Title</th>
+      <% _.each(activeColumns, function(column){ %>
+        <% if(_.has(availableColumns, column)) { %>
+          <th><%- availableColumns[column] %></th>
+        <% } %>
+      <% }); %>
+      <th class="actions"><%- _t("Actions") %></th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
