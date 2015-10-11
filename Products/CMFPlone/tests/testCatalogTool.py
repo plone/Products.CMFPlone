@@ -1083,11 +1083,11 @@ class TestIndexers(PloneTestCase):
         self.assertTrue(IIndexableObjectWrapper.providedBy(w))
         self.assertTrue(IContentish.providedBy(w))
 
-    def test_getIcon(self):
-        doc = self.doc
-        iconname = doc.getIcon(relative_to_portal=1)
-        wrapped = IndexableObjectWrapper(doc, self.portal.portal_catalog)
-        self.assertEqual(wrapped.getIcon, iconname)
+#     def test_getIcon(self):
+#         doc = self.doc
+#         iconname = doc.getIcon(relative_to_portal=1)
+#         wrapped = IndexableObjectWrapper(doc, self.portal.portal_catalog)
+#         self.assertEqual(wrapped.getIcon, iconname)
 
     def test_getObjSize(self):
         from Products.CMFPlone.CatalogTool import getObjSize

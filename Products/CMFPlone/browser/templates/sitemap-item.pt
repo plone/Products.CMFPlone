@@ -1,16 +1,15 @@
-<tal:item define="node            options/node;
-                  item_url        node/getURL;
-                  item_remote_url node/getRemoteUrl;
-                  use_remote_url  node/useRemoteUrl | nothing;
-                  item_icon       nocall:node/item_icon;
-                  is_current      node/currentItem;
-                  item_class      string:state-${node/normalized_review_state} contenttype-${node/normalized_portal_type};
-                  item_class      python:is_current and item_class + ' navTreeCurrentItem' or item_class">
+<tal:item define="node             options/node;
+	              item_url         node/getURL;
+                  item_remote_url  node/getRemoteUrl;
+                  use_remote_url   node/useRemoteUrl | nothing;
+                  is_current       node/currentItem;
+                  item_state_class string:state-${node/normalized_review_state};
+                  item_type_class  string:contenttype-${node/normalized_portal_type};
+                  item_class       python:is_current and item_state_class + ' navTreeCurrentItem' or item_state_class">
 
   <a tal:attributes="href python:use_remote_url and item_remote_url or item_url;
                      title node/Description;
-                     class string:$item_class">
-    <img tal:replace="structure item_icon/html_tag" />
+                     class string:$item_class $item_type_class">
     <span tal:content="node/Title">Selected Item Title</span>
   </a>
 

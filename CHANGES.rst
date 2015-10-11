@@ -70,6 +70,14 @@ Fixes:
   [timitos]
 
 - Fixed issue where clicking tabs would cause odd scroll movement.
+- remove deprecated icons ...
+  https://github.com/plone/Products.CMFPlone/issues/1151
+  [fgrcon]
+  
+- fix issue where clicking tabs would cause odd scroll movement
+  [vangheem]
+
+- upgrade to patternslib 2.0.11
   [vangheem]
 
 - When migration fails, do not upgrade addons or recatalog or update

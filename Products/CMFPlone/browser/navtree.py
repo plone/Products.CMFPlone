@@ -160,7 +160,6 @@ class SitemapNavtreeStrategy(NavtreeStrategyBase):
         newNode['absolute_url'] = itemUrl
         newNode['getURL'] = itemUrl
         newNode['path'] = item.getPath()
-        newNode['item_icon'] = layout_view.getIcon(item)
         newNode['Creator'] = getattr(item, 'Creator', None)
         newNode['creation_date'] = getattr(item, 'CreationDate', None)
         newNode['portal_type'] = portalType
