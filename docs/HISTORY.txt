@@ -20,6 +20,9 @@ For what's new in this release, see CHANGES.txt.
 - Remove CMFDefault dependency
   [tomgross]
 
+- Sub-sort timezone by label, not language code when adding a site
+  [instification]
+
 4.3.3 (unreleased)
 ------------------
 
