@@ -8,6 +8,13 @@ Changelog
 5.0.1 (unreleased)
 ------------------
 
+- Add new commandline argument to plone-compile-resource: --compile-dir
+  [petschki]
+
+- Fix issue when csscompilation and/or jscompilation are missing in
+  bundle registry record.
+  [peschki]
+
 - Fix #1131: Allow to compile bundle with more than one resource
   [timitos]
 
@@ -30,7 +37,7 @@ Changelog
 
 - Update hero text. Remove "rocks" line, more descriptive link button.
   [esteele]
-  
+
 - Be able to provide table styles in tinymce configuration
   [vangheem]
 

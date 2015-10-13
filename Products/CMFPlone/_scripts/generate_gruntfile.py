@@ -15,6 +15,8 @@ parser.add_argument('--instance', dest='instance',
                     help='path to instance executable. If not provided, '
                          'will look in bin this was executed from for '
                          'instance or client1')
+parser.add_argument('--compile-dir', dest='compile_dir', default='',
+                    help='Output directory for the compiled bundle files.')
 
 this_dir = os.path.dirname(os.path.realpath(__file__))
 
@@ -37,6 +39,7 @@ def main(argv=sys.argv):
     script_path = os.path.join(this_dir, '_generate_gruntfile.py')
     cmd = [instance, 'run', script_path]
     os.environ['SITE_ID'] = args.site_id
+    os.environ['COMPILE_DIR'] = args.compile_dir
 
     print('Running command: %s' % ' '.join(cmd))
     subprocess.check_call(cmd, env=os.environ)
