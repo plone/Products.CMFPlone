@@ -341,6 +341,15 @@ for bkey, bundle in bundles.items():
                     js_resources.append(resource)
 
             if res_obj.css:
+                if not bundle.csscompilation:
+                    raise KeyError(
+                        'Missing or empty <value key="csscompilation" /> '
+                        'in {}'.format(bundle.__prefix__))
+
+                target_dir = '/'.join(bundle.csscompilation.split('/')[:-1])
+                target_name = bundle.csscompilation.split('/')[-1]
+                target_path = resource_to_dir(portal.unrestrictedTraverse(target_dir))  # noqa
+
                 for css_file in res_obj.css:
                     css = portal.unrestrictedTraverse(css_file, None)
                     if css:
@@ -349,9 +358,6 @@ for bkey, bundle in bundles.items():
                         relative_paths = '../' * (elements - 1)
 
                         main_css_path = resource_to_dir(css)
-                        target_dir = '/'.join(bundle.csscompilation.split('/')[:-1])  # noqa
-                        target_name = bundle.csscompilation.split('/')[-1]
-                        target_path = resource_to_dir(portal.unrestrictedTraverse(target_dir))  # noqa
                         dest_path = '{}/{}'.format(target_path, target_name)
                         less_files.setdefault(dest_path, [])
                         less_files[dest_path].append(main_css_path)
@@ -377,22 +383,31 @@ for bkey, bundle in bundles.items():
 
                     else:
                         print "No file found: " + script.js
-        less_configs.append(less_config.format(
-            name=bkey,
-            globalVars=globalVars_string,
-            files=json.dumps(less_files),
-            less_paths=json.dumps(less_paths),
-            sourcemap_url=sourceMap_url,
-            base_path=os.getcwd()))
-        target_dir = '/'.join(bundle.jscompilation.split('/')[:-1])
-        target_name = bundle.jscompilation.split('/')[-1]
-        target_path = resource_to_dir(portal.unrestrictedTraverse(target_dir))
-        uc = uglify_config.format(
-            bkey=bkey,
-            destination=target_path + '/' + target_name,
-            files=json.dumps(js_files)
-        )
-        uglify_configs += uc
+
+        if less_files:
+            less_configs.append(less_config.format(
+                name=bkey,
+                globalVars=globalVars_string,
+                files=json.dumps(less_files),
+                less_paths=json.dumps(less_paths),
+                sourcemap_url=sourceMap_url,
+                base_path=os.getcwd()))
+
+        if js_files:
+            if not bundle.jscompilation:
+                raise KeyError(
+                    'Missing or empty <value key="jscompilation" /> '
+                    'in {}'.format(bundle.__prefix__))
+
+            target_dir = '/'.join(bundle.jscompilation.split('/')[:-1])
+            target_name = bundle.jscompilation.split('/')[-1]
+            target_path = resource_to_dir(portal.unrestrictedTraverse(target_dir))  # noqa
+            uc = uglify_config.format(
+                bkey=bkey,
+                destination=target_path + '/' + target_name,
+                files=json.dumps(js_files)
+            )
+            uglify_configs += uc
 
         requirejs_tasks = ''
         if js_resources:
