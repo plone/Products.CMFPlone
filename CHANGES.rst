@@ -8,6 +8,9 @@ Changelog
 5.0.1 (unreleased)
 ------------------
 
+- Fix #1131: Allow to compile bundle with more than one resource
+  [timitos]
+
 - fix issue where clicking tabs would cause odd scroll movement
   [vangheem]
 
