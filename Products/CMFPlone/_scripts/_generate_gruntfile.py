@@ -131,9 +131,9 @@ less_config = """
                       {globalVars}
                     }}
                 }},
-                files: {{
+                files: [
                     {files}
-                }}
+                ]
             }}
 """
 
@@ -317,7 +317,7 @@ bundle_grunt_tasks = ""
 
 for bkey, bundle in bundles.items():
     if bundle.compile:
-        less_files = []
+        less_files = {}
         js_files = []
         js_resources = []
         for resource in bundle.resources:
@@ -352,9 +352,10 @@ for bkey, bundle in bundles.items():
                         target_dir = '/'.join(bundle.csscompilation.split('/')[:-1])  # noqa
                         target_name = bundle.csscompilation.split('/')[-1]
                         target_path = resource_to_dir(portal.unrestrictedTraverse(target_dir))  # noqa
-                        less_file = "\"%s/%s\": \"%s\"" % (target_path, target_name, main_css_path)  # noqa
+                        dest_path = '{}/{}'.format(target_path, target_name)
+                        less_files.setdefault(dest_path, [])
+                        less_files[dest_path].append(main_css_path)
                         sourceMap_url = target_name + '.map'
-                        less_files.append(less_file)
                         watch_files.append(main_css_path)
                         # replace urls
 
@@ -379,7 +380,7 @@ for bkey, bundle in bundles.items():
         less_configs.append(less_config.format(
             name=bkey,
             globalVars=globalVars_string,
-            files=',\n'.join(less_files),
+            files=json.dumps(less_files),
             less_paths=json.dumps(less_paths),
             sourcemap_url=sourceMap_url,
             base_path=os.getcwd()))
