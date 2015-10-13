@@ -8,6 +8,9 @@ Changelog
 5.0.1 (unreleased)
 ------------------
 
+- compress generated bundle css file when running plone-compile-resource
+  [petschki]
+
 - Add new commandline argument to plone-compile-resource: --compile-dir
   [petschki]
 

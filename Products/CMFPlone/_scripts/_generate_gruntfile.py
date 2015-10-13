@@ -120,6 +120,7 @@ uglify_config = """
 less_config = """
             "{name}": {{
                 options: {{
+                    compress: true,
                     paths: {less_paths},
                     strictMath: false,
                     sourceMap: true,
@@ -325,8 +326,8 @@ for bkey, bundle in bundles.items():
 
     if compile_path:
         target_name = bundle.__prefix__.split('/').pop()
-        css_target_name = target_name + 'css'
-        js_target_name = target_name + 'js'
+        css_target_name = target_name + 'min.css'
+        js_target_name = target_name + 'min.js'
         css_target_path = js_target_path = os.path.abspath(compile_path)
     else:
         if bundle.csscompilation:
