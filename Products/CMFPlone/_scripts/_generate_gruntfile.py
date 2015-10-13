@@ -26,6 +26,10 @@ else:
     site_id = 'Plone'
 print('Using site id: ' + site_id)
 
+compile_dir = ''
+if 'COMPILE_DIR' in os.environ:
+    compile_path = os.environ['COMPILE_DIR']
+
 portal = app[site_id]  # noqa
 from zope.site.hooks import setSite
 setSite(portal)
@@ -316,10 +320,31 @@ sed_count = 0
 bundle_grunt_tasks = ""
 
 for bkey, bundle in bundles.items():
+    css_target_path = css_target_name = ''
+    js_target_path = js_target_name = ''
+
+    if compile_path:
+        target_name = bundle.__prefix__.split('/').pop()
+        css_target_name = target_name + 'css'
+        js_target_name = target_name + 'js'
+        css_target_path = js_target_path = os.path.abspath(compile_path)
+    else:
+        if bundle.csscompilation:
+            css_compilation = bundle.csscompilation.split('/')
+            css_target_name = css_compilation[-1]
+            css_target_path = resource_to_dir(portal.unrestrictedTraverse(
+                '/'.join(css_compilation[:-1])))
+        if bundle.jscompilation:
+            js_compilation = bundle.jscompilation.split('/')
+            js_target_name = js_compilation[-1]
+            js_target_path = resource_to_dir(portal.unrestrictedTraverse(
+                '/'.join(js_compilation[:-1])))
+
     if bundle.compile:
         less_files = {}
         js_files = []
         js_resources = []
+        sed_task_ids = []
         for resource in bundle.resources:
             res_obj = resources[resource]
             if res_obj.js:
@@ -341,14 +366,10 @@ for bkey, bundle in bundles.items():
                     js_resources.append(resource)
 
             if res_obj.css:
-                if not bundle.csscompilation:
+                if not css_target_path:
                     raise KeyError(
                         'Missing or empty <value key="csscompilation" /> '
                         'in {}'.format(bundle.__prefix__))
-
-                target_dir = '/'.join(bundle.csscompilation.split('/')[:-1])
-                target_name = bundle.csscompilation.split('/')[-1]
-                target_path = resource_to_dir(portal.unrestrictedTraverse(target_dir))  # noqa
 
                 for css_file in res_obj.css:
                     css = portal.unrestrictedTraverse(css_file, None)
@@ -358,25 +379,30 @@ for bkey, bundle in bundles.items():
                         relative_paths = '../' * (elements - 1)
 
                         main_css_path = resource_to_dir(css)
-                        dest_path = '{}/{}'.format(target_path, target_name)
+                        dest_path = '{}/{}'.format(
+                            css_target_path, css_target_name)
                         less_files.setdefault(dest_path, [])
                         less_files[dest_path].append(main_css_path)
-                        sourceMap_url = target_name + '.map'
+                        sourceMap_url = css_target_name + '.map'
                         watch_files.append(main_css_path)
                         # replace urls
 
                         for webpath, direc in less_directories.items():
+                            sed_id = 'sed' + str(sed_count)
+                            sed_task_ids.append("'sed:%s'" % sed_id)
                             sed_config_final += sed_config.format(
-                                path=target_path + '/' + target_name,
-                                name='sed' + str(sed_count),
+                                path=css_target_path + '/' + css_target_name,
+                                name=sed_id,
                                 pattern=direc,
                                 destination=relative_paths + webpath)
                             sed_count += 1
 
                         # replace the final missing paths
+                        sed_id = 'sed' + str(sed_count)
+                        sed_task_ids.append("'sed:%s'" % sed_id)
                         sed_config_final += sed_config.format(
-                            path=target_path + '/' + target_name,
-                            name='sed' + str(sed_count),
+                            path=css_target_path + '/' + css_target_name,
+                            name=sed_id,
                             pattern=os.getcwd(),
                             destination='')
                         sed_count += 1
@@ -394,17 +420,14 @@ for bkey, bundle in bundles.items():
                 base_path=os.getcwd()))
 
         if js_files:
-            if not bundle.jscompilation:
+            if not js_target_path:
                 raise KeyError(
                     'Missing or empty <value key="jscompilation" /> '
                     'in {}'.format(bundle.__prefix__))
 
-            target_dir = '/'.join(bundle.jscompilation.split('/')[:-1])
-            target_name = bundle.jscompilation.split('/')[-1]
-            target_path = resource_to_dir(portal.unrestrictedTraverse(target_dir))  # noqa
             uc = uglify_config.format(
                 bkey=bkey,
-                destination=target_path + '/' + target_name,
+                destination=js_target_path + '/' + js_target_name,
                 files=json.dumps(js_files)
             )
             uglify_configs += uc
@@ -414,8 +437,8 @@ for bkey, bundle in bundles.items():
             requirejs_tasks = ','.join(['"requirejs:' + r + '"' for r in js_resources]) + ','
         bundle_grunt_tasks += (
             "\ngrunt.registerTask('compile-%s',"
-            "[%s 'less:%s', 'sed', 'uglify:%s']);"
-        ) % (bkey, requirejs_tasks, bkey, bkey)
+            "[%s 'less:%s', %s, 'uglify:%s']);"
+        ) % (bkey, requirejs_tasks, bkey, ', '.join(sed_task_ids), bkey)
 
 
 gruntfile = open('Gruntfile.js', 'w')
