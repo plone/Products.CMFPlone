@@ -65,7 +65,9 @@ class ILayoutPolicy(Interface):
         """
 
     def getIcon(item):
-        """Returns an object which implements the IContentIcon interface and
+        """
+        deprecated for Plone > 5.0 see https://github.com/plone/Products.CMFPlone/issues/1151
+        Returns an object which implements the IContentIcon interface and
         provides the informations necessary to render an icon. The item
         parameter needs to be adaptable to IContentIcon. Icons can be disabled
         globally or just for anonymous users with the icon_visibility property
