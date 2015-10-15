@@ -21,6 +21,9 @@ Changelog
   `#1041`_.
   [maurits]
 
+- Add syndication for plone.app.contenttypes collections.
+  [do3cc]
+
 
 4.3.7 (2015-09-27)
 ------------------
