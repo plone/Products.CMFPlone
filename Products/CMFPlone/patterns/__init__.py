@@ -148,12 +148,18 @@ class TinyMCESettingsGenerator(object):
 
         tiny_config['style_formats'] = self.get_all_style_formats()
         if settings.formats:
-            tiny_config['formats'] = json.loads(settings.formats)
+            try:
+                tiny_config['formats'] = json.loads(settings.formats)
+            except ValueError:
+                pass
 
         if settings.menubar:
             tiny_config['menubar'] = settings.menubar
         if settings.menu:
-            tiny_config['menu'] = json.loads(settings.menu)
+            try:
+                tiny_config['menu'] = json.loads(settings.menu)
+            except ValueError:
+                pass
 
         if hasattr(settings, 'templates') and settings.templates:
             try:
