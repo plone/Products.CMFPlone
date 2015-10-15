@@ -4,7 +4,8 @@ Changelog
 2.5.16 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- fix icon rendering ... CMFPlone#1151
+  [fgrcon]
 
 
 2.5.15 (2015-09-20)
