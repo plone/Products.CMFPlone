@@ -8,6 +8,9 @@ Changelog
 5.0.1 (unreleased)
 ------------------
 
+- Add syndication for plone.app.contenttypes collections.
+  [do3cc]
+
 - fix "contains object" tinymce setting not getting passed into pattern
   correctly Fixes #1023
   [vangheem]
