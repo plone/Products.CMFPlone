@@ -239,7 +239,8 @@ class PloneSettingsAdapter(object):
             'relatedItems': {
                 'vocabularyUrl':
                     '%s/@@getVocabulary?name=plone.app.vocabularies.Catalog' % (
-                        generator.portal_url)
+                        generator.portal_url),
+                'folderTypes': folder_types
             },
             'upload': {
                 'initialFolder': initial,
@@ -257,7 +258,6 @@ class PloneSettingsAdapter(object):
             'prependToUrl': '{0}/resolveuid/'.format(generator.portal_url),
             'linkAttribute': 'UID',
             'prependToScalePart': '/@@images/image/',
-            'folderTypes': folder_types,
             'imageTypes': image_types
             # 'anchorSelector': utility.anchor_selector,
         }

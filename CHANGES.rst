@@ -11,6 +11,9 @@ Changelog
 - prevent breaking Plone when TinyMCE settings other_settings contains
   invalid JSON
   [petschki]
+- fix "contains object" tinymce setting not getting passed into pattern
+  correctly Fixes #1023
+  [vangheem]
 
 - compress generated bundle css file when running plone-compile-resource
   [petschki]
