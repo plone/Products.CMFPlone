@@ -8,7 +8,7 @@ Changelog
 5.0.1 (unreleased)
 ------------------
 
-- prevent breaking Plone when TinyMCE settings other_settings contains
+- prevent breaking Plone when TinyMCE JSON settings fields contain
   invalid JSON
   [petschki]
 
