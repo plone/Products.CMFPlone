@@ -8,6 +8,10 @@ Changelog
 5.0.1 (unreleased)
 ------------------
 
+- prevent breaking Plone when TinyMCE settings other_settings contains
+  invalid JSON
+  [petschki]
+
 - compress generated bundle css file when running plone-compile-resource
   [petschki]
 

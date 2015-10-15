@@ -162,7 +162,10 @@ class TinyMCESettingsGenerator(object):
                 pass
 
         if settings.other_settings:
-            tiny_config.update(json.loads(settings.other_settings))
+            try:
+                tiny_config.update(json.loads(settings.other_settings))
+            except ValueError:
+                pass
 
         return tiny_config
 
