@@ -20,12 +20,12 @@ class PloneBundlesTraverser(ResourceTraverser):
         resource_path = req.environ['PATH_INFO'].split('++plone++')[-1]
         resource_name, resource_filepath = resource_path.split('/', 1)
 
-        # If we're traversing through the ++unique++ namespace to indicate a
-        # stable resource, use the un-uniqued file path
-        is_stable_resource = resource_filepath.startswith('++unique++')
-        is_uniqued = IUniqueResourceRequest.providedBy(req)
-        if is_stable_resource:
-            resource_filepath = '/'.join(resource_filepath.split('/')[1:])
+        # If we have additional traversers in the path we should not use them
+        # in the file lookup
+        more_traversal = (resource_filepath.startswith('++') or
+                          resource_filepath.startswith('@@'))
+        if more_traversal:
+            resource_filepath = resource_filepath.split('/')[-1]
 
         persistentDirectory = getUtility(IResourceDirectory, name="persistent")
         directory = None
@@ -33,12 +33,6 @@ class PloneBundlesTraverser(ResourceTraverser):
             container = persistentDirectory[OVERRIDE_RESOURCE_DIRECTORY_NAME]
             if resource_name in container:
                 directory = container[resource_name]
-                if (is_stable_resource and not is_uniqued and
-                        resource_filepath in directory):
-                    # Continue traversal if we have not uniqued the request
+                if resource_filepath in directory:
                     return directory
-                try:
-                    return directory[resource_filepath]
-                except:
-                    pass
         return super(PloneBundlesTraverser, self).traverse(name, remaining)
