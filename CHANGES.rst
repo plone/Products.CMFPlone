@@ -17,6 +17,8 @@ Changelog
 
 - Add syndication for plone.app.contenttypes collections.
   [do3cc]
+- Use unique traverser for stable resources to set proper cache headers.
+  [alecm]
 
 - fix "contains object" tinymce setting not getting passed into pattern
   correctly Fixes #1023
