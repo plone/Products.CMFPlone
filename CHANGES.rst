@@ -38,6 +38,8 @@ Changelog
 - Allow all TinyMCE settings to be set from control panel.
   [Gagaro]
 
+- Added missing_value parameter to controlpanel list and touple fields
+  [tomgross]
 
 5.0 (2015-09-27)
 ----------------
