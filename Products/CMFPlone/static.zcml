@@ -19,6 +19,11 @@
     name="static"
     />
 
+  <browser:resourceDirectory
+    name="patternslib"
+    directory="static/components/patternslib/src"
+    />
+
   <browser:resource
     name="plone.js"
     file="static/plone.js"

@@ -9,7 +9,7 @@ define([
 ], function($, registry) {
     var autofocus = {
         name: "autofocus",
-        trigger: ":input.pat-autofocus,:input[autofocus]",
+        trigger: ":input.pat-autofocus,:input[autofocus],.enableAutoFocus",
 
         init: function($el) {
             $el = $el.filter(
@@ -55,7 +55,6 @@ define([
             $el.eq(0).focus();
         }
     };
-
     registry.register(autofocus);
 });
 

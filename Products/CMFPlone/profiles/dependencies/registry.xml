@@ -694,9 +694,9 @@
       <value key="js">++resource++mockup/sortable/pattern.js</value>
   </records>
 
-  <records prefix="plone.resources/mockup-patterns-formautofocus"
+  <records prefix="plone.resources/patternslib-patterns-autofocus"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++resource++mockup/formautofocus/pattern.js</value>
+      <value key="js">++resource++patternslib/pat/autofocus/autofocus.js</value>
   </records>
 
   <records prefix="plone.resources/mockup-patterns-formunloadalert"
