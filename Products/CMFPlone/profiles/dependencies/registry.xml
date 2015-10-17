@@ -696,7 +696,7 @@
 
   <records prefix="plone.resources/patternslib-patterns-autofocus"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++resource++patternslib/pat/autofocus/autofocus.js</value>
+      <value key="js">++plone++static/components/patternslib/src/pat/autofocus/autofocus.js</value>
   </records>
 
   <records prefix="plone.resources/mockup-patterns-formunloadalert"
