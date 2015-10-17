@@ -8,6 +8,10 @@ Changelog
 5.0.1 (unreleased)
 ------------------
 
+- Fix wrong sentence in front page, there is no "Site Setup entry in the menu
+  in the top right corner", replace it by "Site Setup entry in the user menu".
+  [vincentfretin]
+
 - Fix some i18n issues.
   [vincentfretin]
 
