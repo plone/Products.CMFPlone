@@ -13,7 +13,7 @@
           tal:define="here_url context/@@plone_context_state/object_url;"
           tal:condition="request/SearchableText|nothing"
           tal:attributes="href string:$here_url/search_rss?${request/QUERY_STRING}"/>
-    <link rel="home" title="Home" tal:attributes="href view/navroot_url" />
+    <link rel="home" title="Home" i18n:attributes="title" tal:attributes="href view/navroot_url" />
 
   </metal:block>
 

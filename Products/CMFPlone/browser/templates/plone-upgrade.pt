@@ -8,10 +8,10 @@
       i18n:domain="plone">
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title i18n:translate="">Upgrade this site</title>
-  <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,700' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,700' rel='stylesheet' type='text/css' />
   <link rel="stylesheet" type="text/css"
         href="/++resource++plone-admin-ui.css"
         tal:attributes="href string:${context/absolute_url}/++resource++plone-admin-ui.css" />

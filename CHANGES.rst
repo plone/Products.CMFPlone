@@ -8,6 +8,9 @@ Changelog
 5.0.1 (unreleased)
 ------------------
 
+- Fix some i18n issues.
+  [vincentfretin]
+
 - Add syndication for plone.app.contenttypes collections.
   [do3cc]
 

@@ -31,18 +31,19 @@
       <span tal:replace="structure context/@@authenticator/authenticator"/>
       <div class="pat-resourceregistry" tal:attributes="data-pat-resourceregistry view/config">
         <div class="portalMessage info">
-          <strong>Info</strong>
-          If you see this, it is because there was an error rendering the resource registry
+          <strong i18n:translate="">Info</strong>
+          <span i18n:translate="">If you see this, it is because there was an error rendering the resource registry
           configuration. It's possible you saved a bundle that gives a JavaScript error
-          and it is prevening the resource registry from loading.
+          and it is prevening the resource registry from loading.</span>
         </div>
-        <h2>Available Options</h2>
+        <h2 i18n:translate="">Available Options</h2>
         <ul>
-          <li>Reload the page. There could be a intermittent issue.</li>
-          <li>Go to the <a href="${portal_url}/portal_registry">Configuration Registry</a>
+          <li i18n:translate="">Reload the page. There could be a intermittent issue.</li>
+          <li i18n:translate="">Go to the <a i18n:name="configuration_registry" i18n:translate=""
+              href="${portal_url}/portal_registry">Configuration Registry</a>
               and manually edit the configuration to enable development mode
               on the resource registry and try to rebuild.</li>
-          <li>You can also attempt to delete your customizations/builds and see if that fixes it.
+          <li i18n:translate="">You can also attempt to delete your customizations/builds and see if that fixes it.
             <ul>
               <tal:overrides tal:repeat="override python: view.get_overrides()">
                 <li>
@@ -50,7 +51,7 @@
                     <input type="hidden" name="action" value="delete-file" />
                     <input type="hidden" name="response" value="html" />
                     <input type="hidden" name="filepath" value="${override}" />
-                    <input type="submit" value="Delete ${override}" />
+                    <input type="submit" value="Delete ${override}" i18n:attributes="value" />
                   </form>
                 </li>
               </tal:overrides>
