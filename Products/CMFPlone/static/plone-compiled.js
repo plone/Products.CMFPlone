@@ -13062,51 +13062,69 @@ define('mockup-patterns-preventdoublesubmit',[
 
 });
 
-/* Formautofocus pattern.
+/**
+ * Patterns autofocus - enhanced autofocus form elements
  *
- * Options:
- *    condition(string): TODO ('div.error')
- *    target(string): TODO ("div.error :input:not(.formTabs):visible:first')
- *    always(string): TODO (:input:not(.formTabs):visible:first')
- *
- * Documentation:
- *    # TODO
- *
- * Example: example-1
- *
+ * Copyright 2012-2013 Simplon B.V. - Wichert Akkerman
  */
+define('patternslib-patterns-autofocus',[
+    "jquery",
+    "pat-registry"
+], function($, registry) {
+    var autofocus = {
+        name: "autofocus",
+        trigger: ":input.pat-autofocus,:input[autofocus],.enableAutoFocus",
 
+        init: function($el) {
+            $el = $el.filter(
+                function () {
+                    // This function filters out all elements that have
+                    // .pat-depends ancestors.
+                    // If a .pat-autofocus element has a .pat-depends ancestor, then
+                    // autofocus is dependent on that ancestor being visible.
+                    var $el = $(this);
+                    var $depends_slave = $el.closest(".pat-depends").addBack(".pat-depends");
+                    if ($depends_slave.length > 0) {
+                        // We register an event handler so that the element is
+                        // only autofocused once the .pat-depends ancestor
+                        // becomes visible.
+                        $depends_slave.on("pat-update", function (e, data) {
+                            var $child = $el;
+                            if (data.pattern === "depends") {
+                                if (((data.transition === "complete") && ($(this).is(":visible"))) ||
+                                    ((data.enabled === "true") && ($(this).is("visible")))) {
 
-define('mockup-patterns-formautofocus',[
-  'jquery',
-  'pat-base'
-], function($, Base, undefined) {
-  'use strict';
-
-  var FormAutoFocus = Base.extend({
-    name: 'formautofocus',
-    trigger: '.pat-formautofocus',
-    parser: 'mockup',
-    defaults: {
-      condition: 'div.error',
-      target: 'div.error :input:not(.formTabs):visible:first',
-      always: ':input:not(.formTabs):visible:first'
-    },
-    init: function() {
-      var self = this;
-      if ($(self.options.condition, self.$el).size() !== 0) {
-        $(self.options.target, self.$el).focusin();
-      } else {
-        $(self.options.always, self.$el).focusin();
-      }
-
-    }
-  });
-
-  return FormAutoFocus;
-
+                                    if ($el.hasClass("select2-offscreen")) {
+                                        $child = $el.parent().find(".select2-input");
+                                    }
+                                    if (!$child.is(":disabled")) {
+                                        $child.focus();
+                                    }
+                                }
+                            }
+                        });
+                        return false;
+                    }
+                    return true;
+                }
+            );
+            // $el is now only those elements not dependent on .pat-depends
+            // criteria.
+            for (var i=0; i<$el.length; i+=1) {
+                if (!$el.eq(i).val()) {
+                    $el.get(i).focus();
+                    return;
+                }
+            }
+            $el.eq(0).focus();
+        }
+    };
+    registry.register(autofocus);
 });
 
+// jshint indent: 4, browser: true, jquery: true, quotmark: double
+// vim: sw=4 expandtab
+;
 /* Mark special links
  *
  * Options:
@@ -18453,7 +18471,7 @@ require([
   'mockup-patterns-cookietrigger',
   'mockup-patterns-formunloadalert',
   'mockup-patterns-preventdoublesubmit',
-  'mockup-patterns-formautofocus',
+  'patternslib-patterns-autofocus',
   'mockup-patterns-markspeciallinks',
   'mockup-patterns-modal',
   'mockup-patterns-livesearch',
@@ -18487,5 +18505,5 @@ require([
 
 });
 
-define("/Users/nathan/code/coredev5/src/Products.CMFPlone/Products/CMFPlone/static/plone.js", function(){});
+define("/home/kpreisler/fab_venv/projects/plone_training/buildout/src/Products.CMFPlone/Products/CMFPlone/static/plone.js", function(){});
 
