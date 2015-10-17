@@ -9,6 +9,11 @@ Changelog
 ------------------
 
 New:
+- Changes for Zope 4 compatibility in maintenance controlpanel.
+  [thet]
+
+- Fix some i18n issues.
+  [vincentfretin]
 
 - *add item here*
 
