@@ -1,0 +1,51 @@
+/* @group Expandable tree */
+
+ul.pat-expandable {
+	background-color: #f9f9f9;
+	list-style-type: none;
+	padding: 10px;
+	margin-left: 0;
+}
+
+ul.pat-expandable li li {
+	display: block;
+	padding-left: 30px;
+}
+
+ul.pat-expandable li span.toggle {
+	width: 20px;
+	height: 20px;
+	float: left;
+	font-size: 12px;
+	line-height: 23px;
+}
+
+span.toggle:before {
+	content: "▶";
+}
+
+.open > span.toggle:before {
+	content: "▼";
+	width: 18px;
+	display: inline-block;
+}
+
+ul.pat-expandable li ul {
+	margin-bottom: 0;
+	margin-left: 0;
+	margin-top: 0;
+	padding: 0;
+	display: none;
+}
+
+ul.pat-expandable li.open > ul {
+	display: block;
+}
+
+ul.pat-expandable li a {
+	display: block;
+}
+
+
+
+/* @end */

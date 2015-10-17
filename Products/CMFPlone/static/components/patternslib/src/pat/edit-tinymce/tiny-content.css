@@ -1,0 +1,9 @@
+
+body {
+	padding: 20px;
+	line-height: 1.7;
+	-webkit-transition: all 0.2s;
+	-moz-transition: all 0.2s;
+	transition: all 0.2s;
+}
+
