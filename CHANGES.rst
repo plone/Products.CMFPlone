@@ -9,6 +9,11 @@ Changelog
 ------------------
 
 New:
+- Changes for Zope 4 compatibility in maintenance controlpanel.
+  [thet]
+
+- Fix some i18n issues.
+  [vincentfretin]
 
 - Add barceloneta theme path in less configuration.
   [Gagaro]
@@ -91,6 +96,13 @@ New:
   [do3cc]
 
 - Compress generated bundle CSS file when running ``plone-compile-resource``.
+- Fix "contains object" tinymce setting not getting passed into pattern
+  correctly Fixes #1023.
+- fix "contains object" tinymce setting not getting passed into pattern
+  correctly Fixes #1023
+  [vangheem]
+
+- Compress generated bundle css file when running plone-compile-resource.
   [petschki]
 
 - Added new commandline argument to plone-compile-resource: ``--compile-dir``.

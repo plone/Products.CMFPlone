@@ -105,6 +105,10 @@
                             tal:condition="form_name"
                             tal:content="form_name">Form name</legend>
 
+                    <p>
+                        <strong i18n:translate="text_zope_database_name">Database name:</strong> <span tal:replace="view/dbName" />
+                    </p>
+
                     <p i18n:translate="text_zope_database_size">
                         <strong>Current database size:</strong> <span i18n:name="size" tal:replace="view/dbSize" />
                     </p>
