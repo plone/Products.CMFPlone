@@ -33,7 +33,7 @@ require([
   'mockup-patterns-cookietrigger',
   'mockup-patterns-formunloadalert',
   'mockup-patterns-preventdoublesubmit',
-  'mockup-patterns-formautofocus',
+  'patternslib-patterns-autofocus',
   'mockup-patterns-markspeciallinks',
   'mockup-patterns-modal',
   'mockup-patterns-livesearch',
