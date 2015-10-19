@@ -1,4 +1,5 @@
 from urlparse import urlparse
+from urllib import quote
 
 from Products.CMFPlone.resources.browser.cook import cookWhenChangingSettings
 from Products.CMFPlone.resources.browser.resource import ResourceView
@@ -38,12 +39,26 @@ class ScriptsView(ResourceView):
                     # because the compiling is done outside of plone
                     cookWhenChangingSettings(self.context, bundle)
             if bundle.jscompilation:
+                js_path = bundle.jscompilation
+                if '++plone++' in js_path:
+                    resource_path = js_path.split('++plone++')[-1]
+                    resource_name, resource_filepath = resource_path.split('/', 1)
+                    js_location = '%s/++plone++%s/++unique++%s/%s' % (
+                        self.site_url,
+                        resource_name,
+                        quote(str(bundle.last_compilation)),
+                        resource_filepath
+                    )
+                else:
+                    js_location = '%s/%s?version=%s' % (
+                        self.site_url,
+                        bundle.jscompilation,
+                        quote(str(bundle.last_compilation))
+                    )
                 result.append({
                     'bundle': bundle_name,
                     'conditionalcomment': bundle.conditionalcomment,
-                    'src': '%s/%s?version=%s' % (
-                        self.site_url, bundle.jscompilation,
-                        bundle.last_compilation)
+                    'src': js_location
                 })
 
     def scripts(self):
