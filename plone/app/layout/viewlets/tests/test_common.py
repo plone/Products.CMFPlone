@@ -172,4 +172,4 @@ class TestGlobalSectionsViewlet(ViewletsTestCase):
         gsv = GlobalSectionsViewlet(navroot, request, None)
         gsv.update()
         self.assertEqual(gsv.selected_tabs, {'portal': 'abc'})
-        self.assertEqual(gsv.selected_portal_tab, 'abz')
+        self.assertEqual(gsv.selected_portal_tab, 'abc')
