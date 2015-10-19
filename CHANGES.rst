@@ -7,6 +7,9 @@ Changelog
 - fix icon rendering ... CMFPlone#1151
   [fgrcon]
 
+- fix global sections tabs ... CMFPlone#1178
+  [tomgross]
+
 
 2.5.15 (2015-09-20)
 -------------------
