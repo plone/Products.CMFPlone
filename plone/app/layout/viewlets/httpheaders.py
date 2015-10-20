@@ -39,7 +39,7 @@ class HTTPCachingHeaders(HeaderViewlet):
 
 
 class XUACompatible(HeaderViewlet):
-    """set the header ('X-UA-Compatible', 'IE=edge,chrome=1');"""
+    """set the header ('X-UA-Compatible', 'IE=edge');"""
 
     def getHeaders(self):
-        return [('X-UA-Compatible', 'IE=edge,chrome=1')]
+        return [('X-UA-Compatible', 'IE=edge')]

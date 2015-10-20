@@ -4,6 +4,9 @@ Changelog
 2.5.16 (unreleased)
 -------------------
 
+- Remove Chrome Frame from ``X-UA-Compatible`` HTTP header as it's deprecated.
+  [hvelarde]
+
 - fix icon rendering ... CMFPlone#1151
   [fgrcon]
 
@@ -11,7 +14,7 @@ Changelog
 2.5.15 (2015-09-20)
 -------------------
 
-- Pull mark_special_links, external_links_open_new_window, 
+- Pull mark_special_links, external_links_open_new_window,
   types_view_action_in_listings values
   from configuration registry.
   [esteele]
