@@ -89,6 +89,11 @@ try{
     js_path = bundle.jscompilation
     css_path = bundle.csscompilation
 
+    if not js_path:
+        logger.warn('Could not compile js/css for bundle as there is '
+                    'no jscompilation setting')
+        return
+
     # Storing js
     resource_path = js_path.split('++plone++')[-1]
     resource_name, resource_filepath = resource_path.split('/', 1)

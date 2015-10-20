@@ -8,6 +8,9 @@ Changelog
 5.0.1 (unreleased)
 ------------------
 
+- Fix #1199 prevent throwing error with mis-configured bundle
+  [vangheem]
+
 - Fix wrong sentence in front page, there is no "Site Setup entry in the menu
   in the top right corner", replace it by "Site Setup entry in the user menu".
   [vincentfretin]
