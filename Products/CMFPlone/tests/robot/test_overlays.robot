@@ -218,15 +218,12 @@ a logged-in site administrator
 
 the users and groups configlet
     Go to  ${PLONE_URL}/@@usergroup-userprefs
-    Given modals loaded
 
 I click the '${link_name}' link
-    Given modals loaded
     Element should be visible  xpath=//a[descendant-or-self::*[contains(text(), '${link_name}')]]
     Click Link  xpath=//a[descendant-or-self::*[contains(text(), '${link_name}')]]
 
 the '${link_name}' overlay
-    Given modals loaded
     Click Link  xpath=//a[descendant-or-self::*[contains(text(), '${link_name}')]]
     Wait until keyword succeeds  30  1  Page should contain element  css=div.plone-modal-dialog
 
