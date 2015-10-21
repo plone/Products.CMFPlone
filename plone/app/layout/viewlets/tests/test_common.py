@@ -3,6 +3,7 @@ from Products.CMFPlone.interfaces import INonStructuralFolder
 from Products.CMFPlone.interfaces import ISiteSchema
 from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.app.layout.viewlets.common import ContentViewsViewlet
+from plone.app.layout.viewlets.common import GlobalSectionsViewlet
 from plone.app.layout.viewlets.common import LogoViewlet
 from plone.app.layout.viewlets.common import TitleViewlet
 from plone.app.layout.viewlets.common import ViewletBase
@@ -139,3 +140,36 @@ class TestContentViewsViewlet(ViewletsTestCase):
         self.assertTrue(
             'http://nohost/plone/@@site-logo/pixel.png'
             in viewlet.img_src)
+
+
+class TestGlobalSectionsViewlet(ViewletsTestCase):
+    """Test the global sections views viewlet.
+    """
+
+    def test_selectedtabs(self):
+        """ Test selected tabs the simplest case
+        """
+        request = self.layer['request']
+        request['URL'] = self.folder.absolute_url()
+        gsv = GlobalSectionsViewlet(self.folder, request, None)
+        gsv.update()
+        self.assertEqual(gsv.selected_tabs, {'portal': 'Members'})
+        self.assertEqual(gsv.selected_portal_tab, 'Members')
+
+    def test_selectedtabs_navroot(self):
+        """ Test selected tabs with a INavigationroot folder involved
+        """
+        self.setRoles(('Manager',))
+        self.portal.invokeFactory('Folder', 'navroot', title='My new root')
+        navroot = self.portal['navroot']
+        alsoProvides(navroot, INavigationRoot)
+        navroot.invokeFactory('Folder', 'abc', title='short')
+        navroot.invokeFactory('Folder',
+                              'xyz',
+                              title='Folder with a looong name')
+        request = self.layer['request']
+        request['URL'] = navroot['abc'].absolute_url()
+        gsv = GlobalSectionsViewlet(navroot, request, None)
+        gsv.update()
+        self.assertEqual(gsv.selected_tabs, {'portal': 'abc'})
+        self.assertEqual(gsv.selected_portal_tab, 'abc')

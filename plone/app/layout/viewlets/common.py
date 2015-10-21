@@ -25,6 +25,7 @@ from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 from plone.app.layout.globals.interfaces import IViewView
+from plone.app.layout.navigation.root import getNavigationRootObject
 from plone.protect.utils import addTokenToUrl
 
 
@@ -206,7 +207,8 @@ class GlobalSectionsViewlet(ViewletBase):
         self.selected_portal_tab = self.selected_tabs['portal']
 
     def selectedTabs(self, default_tab='index_html', portal_tabs=()):
-        plone_url = getToolByName(self.context, 'portal_url')()
+        portal = getToolByName(self.context, 'portal_url').getPortalObject()
+        plone_url = getNavigationRootObject(self.context, portal).absolute_url()
         plone_url_len = len(plone_url)
         request = self.request
         valid_actions = []
