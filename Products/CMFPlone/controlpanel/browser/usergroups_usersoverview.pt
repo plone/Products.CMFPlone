@@ -68,7 +68,7 @@
           </a>
         </p>
         <form action=""
-              class="enableAutoFocus"
+              class="pat-formautofocus"
               name="users_search"
               method="post"
               tal:attributes="action string:$portal_url/$template_id"

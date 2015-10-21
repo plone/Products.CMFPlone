@@ -45,7 +45,7 @@
     <form action=""
           name="emaillogin-migrate"
           method="post"
-          class="enableUnloadProtection enableAutoFocus">
+          class="enableUnloadProtection pat-formautofocus">
       <div class="formControls">
         <input type="hidden" name="submitted" value="submitted" id="submitted" />
         <input class="context"

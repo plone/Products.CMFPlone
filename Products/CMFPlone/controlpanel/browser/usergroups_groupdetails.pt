@@ -80,7 +80,7 @@
                 id="createGroup"
                 name="groups"
                 method="post"
-                class="enableUnloadProtection enableAutoFocus"
+                class="enableUnloadProtection pat-formautofocus"
                 tal:attributes="action string:$portal_url/$template_id"
                 tal:define="targetobject context/portal_groupdata;
                             targetGetProperty nocall:view/group/getProperty | nocall:context/returnNone;">

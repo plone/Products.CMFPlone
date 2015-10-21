@@ -64,7 +64,7 @@
             </div>
 
             <form tal:attributes="action python:context.absolute_url()+'/'+template.id"
-                  class="enableAutoFocus"
+                  class="pat-formautofocus"
                   method="post"
                   id="login_form"
                   tal:condition="use_normal">
@@ -200,7 +200,7 @@
             </form>
 
             <form tal:attributes="action external_login_url"
-                  class="enableAutoFocus"
+                  class="pat-formautofocus"
                   method="get"
                   id="login_form"
                   tal:condition="use_external">
