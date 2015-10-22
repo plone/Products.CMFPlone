@@ -582,6 +582,7 @@ class ITinyMCEPluginSchema(Interface):
         title=_('label_tinymce_menu', 'Menu'),
         description=_('hint_tinymce_menu',
                       default='JSON formatted Menu configuration.'),
+        constraint=validate_json,
         default=json.dumps({
             'edit': {
                 'title': 'Edit',
@@ -607,7 +608,8 @@ class ITinyMCEPluginSchema(Interface):
             u"Enter the list of templates in json format \
                 http://www.tinymce.com/wiki.php/Plugin:template")),
         required=False,
-        default=u"")
+        constraint=validate_json,
+        default=json.dumps({}).decode('utf8'))
 
     toolbar = schema.Text(
         title=_("label_tinymce_toolbar", default=u"Toolbar"),
@@ -787,7 +789,8 @@ class ITinyMCEAdvancedSchema(Interface):
         description=_('hint_tinymce_other_settings',
                       default='Other TinyMCE configuration formatted as JSON.'),
         required=False,
-        default=u"{}",
+        constraint=validate_json,
+        default=json.dumps({}).decode('utf8'),
     )
 
 

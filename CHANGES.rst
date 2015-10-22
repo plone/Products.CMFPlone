@@ -8,6 +8,9 @@ Changelog
 5.0.1 (unreleased)
 ------------------
 
+- prevent breaking Plone when TinyMCE JSON settings fields contain
+  invalid JSON
+  [petschki]
 - Fix #1199 prevent throwing error with mis-configured bundle
   [vangheem]
 
