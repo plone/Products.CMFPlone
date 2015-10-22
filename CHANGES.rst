@@ -8,9 +8,13 @@ Changelog
 5.0.1 (unreleased)
 ------------------
 
+- set Reply-to address in contact-info emails so you can reply to them
+  [tkimnguyen]
+
 - prevent breaking Plone when TinyMCE JSON settings fields contain
   invalid JSON
   [petschki]
+
 - Fix #1199 prevent throwing error with mis-configured bundle
   [vangheem]
 
