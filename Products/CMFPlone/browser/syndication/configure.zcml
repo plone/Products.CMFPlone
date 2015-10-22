@@ -19,6 +19,8 @@
   <adapter factory=".adapters.CollectionFeed"
     for="Products.ATContentTypes.interfaces.topic.IATTopic"
     zcml:condition="installed Products.ATContentTypes" />
+  <adapter factory=".adapters.CollectionFeed"
+    for="plone.app.contenttypes.interfaces.ICollection" />
   <adapter factory=".adapters.SearchFeed"
     for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
     provides="Products.CMFPlone.interfaces.syndication.ISearchFeed" />

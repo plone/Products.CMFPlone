@@ -8,8 +8,8 @@
       i18n:domain="plone">
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title i18n:translate="">Create a Plone site</title>
   <link rel="stylesheet" type="text/css"
         tal:attributes="href string:${context/absolute_url}/++resource++plone-admin-ui.css"
@@ -91,7 +91,7 @@
       </div>
 
       <div class="field">
-        <label for="portal_timezone" i18n:translate="Default timezone">
+        <label for="portal_timezone" i18n:translate="">
           Default timezone
         </label>
 

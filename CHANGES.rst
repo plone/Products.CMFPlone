@@ -11,6 +11,20 @@ Changelog
 - prevent breaking Plone when TinyMCE JSON settings fields contain
   invalid JSON
   [petschki]
+- Fix #1199 prevent throwing error with mis-configured bundle
+  [vangheem]
+
+- Fix wrong sentence in front page, there is no "Site Setup entry in the menu
+  in the top right corner", replace it by "Site Setup entry in the user menu".
+  [vincentfretin]
+
+- Fix some i18n issues.
+  [vincentfretin]
+
+- Add syndication for plone.app.contenttypes collections.
+  [do3cc]
+- Use unique traverser for stable resources to set proper cache headers.
+  [alecm]
 
 - fix "contains object" tinymce setting not getting passed into pattern
   correctly Fixes #1023
@@ -42,6 +56,8 @@ Changelog
 - Allow all TinyMCE settings to be set from control panel.
   [Gagaro]
 
+- Added missing_value parameter to controlpanel list and touple fields
+  [tomgross]
 
 5.0 (2015-09-27)
 ----------------

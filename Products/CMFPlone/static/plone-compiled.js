@@ -12021,13 +12021,17 @@ define('mockup-utils',[
       options = {};
     }
     self.options = $.extend({}, defaults, options);
-    self.$el = $('.' + self.className);
-    if(self.$el.length === 0){
-      self.$el = $('<div><div></div></div>');
-      self.$el.addClass(self.className).hide().appendTo('body');
-    }
+
+    self.init = function(){
+      self.$el = $('.' + self.className);
+      if(self.$el.length === 0){
+        self.$el = $('<div><div></div></div>');
+        self.$el.addClass(self.className).hide().appendTo('body');
+      }
+    };
 
     self.show = function(closable){
+      self.init();
       self.$el.show();
       var zIndex = self.options.zIndex;
       if (typeof(zIndex) === 'function') {
@@ -12055,6 +12059,7 @@ define('mockup-utils',[
     };
 
     self.hide = function(){
+      self.init();
       self.$el.hide();
     };
 
@@ -13095,9 +13100,9 @@ define('mockup-patterns-formautofocus',[
     init: function() {
       var self = this;
       if ($(self.options.condition, self.$el).size() !== 0) {
-        $(self.options.target, self.$el).focusin();
+        $(self.options.target, self.$el).focus();
       } else {
-        $(self.options.always, self.$el).focusin();
+        $(self.options.always, self.$el).focus();
       }
 
     }
@@ -16457,10 +16462,7 @@ define('mockup-patterns-modal',[
         if (self.options.automaticallyAddButtonActions) {
           actions[self.options.buttons] = {};
         }
-
-        if (self.options.loadLinksWithinModal) {
-          actions.a = {};
-        }
+        actions.a = {};
 
         $.each(actions, function(action, options) {
           var actionKeys = _.union(_.keys(self.options.actionOptions), ['templateOptions']);
@@ -16739,16 +16741,6 @@ define('mockup-patterns-modal',[
 
         self.$modal
           .addClass(self.options.templateOptions.className)
-          .on('click', function(e) {
-            e.stopPropagation();
-            if ($.nodeName(e.target, 'a')) {
-              e.preventDefault();
-
-              // TODO: open links inside modal
-              // and slide modal body
-            }
-            self.$modal.trigger('modal-click');
-          })
           .on('destroy.plone-modal.patterns', function(e) {
             e.stopPropagation();
             self.hide();
@@ -16759,8 +16751,19 @@ define('mockup-patterns-modal',[
             self.positionModal();
           })
           .appendTo(self.$wrapperInner);
-        self.$modal.data('pattern-' + self.name, self);
 
+        if (self.options.loadLinksWithinModal) {
+          self.$modal.on('click', function(e) {
+            e.stopPropagation();
+            if ($.nodeName(e.target, 'a')) {
+              e.preventDefault();
+              // TODO: open links inside modal
+              // and slide modal body
+            }
+            self.$modal.trigger('modal-click');
+          });
+        }
+        self.$modal.data('pattern-' + self.name, self);
         self.emit('after-render');
       }
     },
@@ -16769,37 +16772,7 @@ define('mockup-patterns-modal',[
     },
     init: function() {
       var self = this;
-
-      self.backdrop = new Backdrop(
-          self.$el.parents(self.options.backdrop),
-          self.options.backdropOptions);
-
-      self.$wrapper = $('> .' + self.options.templateOptions.classWrapperName, self.backdrop.$el);
-      if (self.$wrapper.size() === 0) {
-        var zIndex = self.options.backdropOptions.zIndex !== null ? parseInt(self.options.backdropOptions.zIndex, 10) + 1 : 1041;
-        self.$wrapper = $('<div/>')
-          .hide()
-          .css({
-            'z-index': zIndex,
-            'overflow-y': 'auto',
-            'position': 'fixed',
-            'height': '100%',
-            'width': '100%',
-            'bottom': '0',
-            'left': '0',
-            'right': '0',
-            'top': '0'
-          })
-          .addClass(self.options.templateOptions.classWrapperName)
-          .insertBefore(self.backdrop.$backdrop)
-          .on('click', function(e) {
-            e.stopPropagation();
-            e.preventDefault();
-            if (self.options.backdropOptions.closeOnClick) {
-              self.backdrop.hide();
-            }
-          });
-      }
+      self.options.loadLinksWithinModal = $.parseJSON(self.options.loadLinksWithinModal);
 
       // Router
       if (self.options.routerOptions.id !== null) {
@@ -16807,12 +16780,6 @@ define('mockup-patterns-modal',[
           this.show();
         }, self, self.options.routerOptions.pathExp, self.options.routerOptions.expReplace);
       }
-
-      self.backdrop.on('hidden', function(e) {
-        if (self.$modal !== undefined && self.$modal.hasClass(self.options.templateOptions.classActiveName)) {
-          self.hide();
-        }
-      });
 
       if (self.options.backdropOptions.closeOnEsc === true) {
         $(document).on('keydown', function(e, data) {
@@ -16824,23 +16791,8 @@ define('mockup-patterns-modal',[
         });
       }
 
-      self.$wrapperInner = $('> .' + self.options.templateOptions.classWrapperInnerName, self.$wrapper);
-      if (self.$wrapperInner.size() === 0) {
-        self.$wrapperInner = $('<div/>')
-          .addClass(self.options.classWrapperInnerName)
-          .css({
-            'position': 'absolute',
-            'bottom': '0',
-            'left': '0',
-            'right': '0',
-            'top': '0'
-          })
-          .appendTo(self.$wrapper);
-      }
 
-      self.loading = new utils.Loading({
-        backdrop: self.backdrop
-      });
+
 
       $(window.parent).resize(function() {
         self.positionModal();
@@ -17015,31 +16967,28 @@ define('mockup-patterns-modal',[
         }
         returnpos.top = absTop;
       }
-
       return returnpos;
     },
+
     modalInitialized: function() {
       var self = this;
       return self.$modal !== null && self.$modal !== undefined;
     },
-    // re-position modal at any point.
-    //
-    // Uses:
-    //  options.margin
-    //  options.width
-    //  options.height
-    //  options.position
-    positionModal: function() {
-      var self = this;
 
+    positionModal: function() {
+      /* re-position modal at any point.
+       *
+       * Uses:
+       *  options.margin
+       *  options.width
+       *  options.height
+       *  options.position
+       */
+      var self = this;
       // modal isn't initialized
       if (!self.modalInitialized()) { return; }
-
       // clear out any previously set styling
       self.$modal.removeAttr('style');
-
-      // make sure the (inner) wrapper fills it's container
-      //self.$wrapperInner.css({height:'100%', width:'100%'});
 
       // if backdrop wrapper is set on body, then wrapper should have height of
       // the window, so we can do scrolling of inner wrapper
@@ -17069,7 +17018,6 @@ define('mockup-patterns-modal',[
       var modalHeight = self.$modalDialog.outerHeight(true);
       var wrapperInnerWidth = self.$wrapperInner.width();
       var wrapperInnerHeight = self.$wrapperInner.height();
-
       var pos = self.findPosition(
         horpos, vertpos, margin, modalWidth, modalHeight,
         wrapperInnerWidth, wrapperInnerHeight
@@ -17078,16 +17026,71 @@ define('mockup-patterns-modal',[
         self.$modalDialog.css(key, pos[key]);
       }
     },
+
     render: function(options) {
       var self = this;
       self.emit('render');
       self.options.render.apply(self, [options]);
       self.emit('rendered');
     },
+
     show: function() {
       var self = this;
+      self.backdrop = self.createBackdrop();
       self.createModal();
     },
+
+    createBackdrop: function() {
+      var self = this,
+          backdrop = new Backdrop(
+            self.$el.parents(self.options.backdrop),
+            self.options.backdropOptions
+          ),
+          zIndex = self.options.backdropOptions.zIndex !== null ? parseInt(self.options.backdropOptions.zIndex, 10) + 1 : 1041;
+
+      self.$wrapper = $('<div/>')
+        .hide()
+        .css({
+          'z-index': zIndex,
+          'overflow-y': 'auto',
+          'position': 'fixed',
+          'height': '100%',
+          'width': '100%',
+          'bottom': '0',
+          'left': '0',
+          'right': '0',
+          'top': '0'
+        })
+        .addClass(self.options.templateOptions.classWrapperName)
+        .insertBefore(backdrop.$backdrop)
+        .on('click', function(e) {
+          if (self.options.backdropOptions.closeOnClick) {
+            e.stopPropagation();
+            e.preventDefault();
+            backdrop.hide();
+          }
+        });
+      backdrop.on('hidden', function(e) {
+        if (self.$modal !== undefined && self.$modal.hasClass(self.options.templateOptions.classActiveName)) {
+          self.hide();
+        }
+      });
+      self.loading = new utils.Loading({
+        'backdrop': backdrop
+      });
+      self.$wrapperInner = $('<div/>')
+        .addClass(self.options.classWrapperInnerName)
+        .css({
+          'position': 'absolute',
+          'bottom': '0',
+          'left': '0',
+          'right': '0',
+          'top': '0'
+        })
+        .appendTo(self.$wrapper);
+      return backdrop;
+    },
+
     _show: function() {
       var self = this;
       self.render.apply(self, [ self.options ]);
@@ -17095,7 +17098,6 @@ define('mockup-patterns-modal',[
       self.backdrop.show();
       self.$wrapper.show();
       self.loading.hide();
-      self.$wrapper.parent().css('overflow', 'hidden');
       self.$el.addClass(self.options.templateOptions.classActiveName);
       self.$modal.addClass(self.options.templateOptions.classActiveName);
       registry.scan(self.$modal);
@@ -17122,8 +17124,7 @@ define('mockup-patterns-modal',[
       }
       if ($('.plone-modal', self.$wrapper).size() < 2) {
         self.backdrop.hide();
-        self.$wrapper.hide();
-        self.$wrapper.parent().css('overflow', 'visible');
+        self.$wrapper.remove();
         $('body').removeClass('plone-modal-open');
       }
       self.loading.hide();
@@ -17135,6 +17136,7 @@ define('mockup-patterns-modal',[
       $(window.parent).off('resize.plone-modal.patterns');
       self.emit('hidden');
     },
+
     redraw: function(response, options) {
       var self = this;
       self.emit('beforeDraw');
@@ -17149,7 +17151,6 @@ define('mockup-patterns-modal',[
   });
 
   return Modal;
-
 });
 
 /* Livesearch
