@@ -67,12 +67,13 @@ class ContactForm(form.Form):
 
         try:
             # This actually sends out the mail
-            host.send(
+            host.secureSend(
                 self.generate_mail(data, encoding),
                 send_to_address,
                 from_address,
                 subject=subject,
-                charset=encoding
+                charset=encoding,
+                **{'Reply-to':data['sender_from_address']}
             )
         except (SMTPException, RuntimeError), e:
             log.error(e)
