@@ -29,7 +29,7 @@
     <form name="searchform"
           action="@@search"
           role="search"
-          class="searchPage enableAutoFocus"
+          class="searchPage pat-formautofocus"
           tal:define="portal context/@@plone_portal_state/portal;
                       first_call not:request/advanced_search|nothing;
                       st python:request.get('SearchableText', '');

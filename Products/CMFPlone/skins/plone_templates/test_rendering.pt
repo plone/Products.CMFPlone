@@ -431,7 +431,7 @@ Table of class <code>vertical listing</code>
 
 <div>
     <h2>Collapsible form</h2>
-    <form id="searchform" name="search" method="get" class="enableAutoFocus" action="search">
+    <form id="searchform" name="search" method="get" class="pat-formautofocus" action="search">
 
         <div class="field collapsible">
             <label class="collapser collapsed" for="created">New items since</label>
@@ -480,7 +480,7 @@ Table of class <code>vertical listing</code>
 
 <div>
     <h2>Select All/None</h2>
-    <form id="searchform" name="search" method="get" class="enableAutoFocus" action="search">
+    <form id="searchform" name="search" method="get" class="pat-formautofocus" action="search">
         <div>
             <label>Item type</label>
         </div>
