@@ -28,6 +28,8 @@ Changelog
 - Add syndication for plone.app.contenttypes collections.
   [do3cc]
 
+- Add CSRF authenticator in createObject script
+  [ebrehault]
 
 4.3.7 (2015-09-27)
 ------------------
