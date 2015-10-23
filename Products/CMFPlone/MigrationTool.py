@@ -272,54 +272,52 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
                         transaction.abort()
                         break
 
-            logger.info("Starting upgrade of core addons.")
-            ADDON_LIST.upgrade_all(self)
-            logger.info("Done upgrading core addons.")
-
-            logger.info("End of upgrade path, migration has finished")
+            logger.info("End of upgrade path, main migration has finished.")
 
             if self.needUpgrading():
-                logger.error("The upgrade path did NOT reach current version")
+                logger.error("The upgrade path did NOT reach current version.")
                 logger.error("Migration has failed")
             else:
-                logger.info("Your Plone instance is now up-to-date.")
+                logger.info("Starting upgrade of core addons.")
+                ADDON_LIST.upgrade_all(self)
+                logger.info("Done upgrading core addons.")
 
-            # do this once all the changes have been done
-            if self.needRecatalog():
-                logger.info("Please wait while we recatalog.")
-                try:
-                    catalog = self.portal_catalog
-                    # Reduce threshold for the reindex run
-                    old_threshold = catalog.threshold
-                    pg_threshold = getattr(catalog, 'pgthreshold', 0)
-                    catalog.pgthreshold = 300
-                    catalog.threshold = 2000
-                    catalog.refreshCatalog(clear=1)
-                    catalog.threshold = old_threshold
-                    catalog.pgthreshold = pg_threshold
-                    self._needRecatalog = 0
-                except (ConflictError, KeyboardInterrupt):
-                    raise
-                except:
-                    logger.error("Exception was thrown while cataloging:\n",
-                                 exc_info=True)
-                    if not swallow_errors:
+                # do this once all the changes have been done
+                if self.needRecatalog():
+                    logger.info("Recatalog needed. This may take a while...")
+                    try:
+                        catalog = self.portal_catalog
+                        # Reduce threshold for the reindex run
+                        old_threshold = catalog.threshold
+                        pg_threshold = getattr(catalog, 'pgthreshold', 0)
+                        catalog.pgthreshold = 300
+                        catalog.threshold = 2000
+                        catalog.refreshCatalog(clear=1)
+                        catalog.threshold = old_threshold
+                        catalog.pgthreshold = pg_threshold
+                        self._needRecatalog = 0
+                    except (ConflictError, KeyboardInterrupt):
                         raise
-                logger.info("Done with recatalog.")
+                    except:
+                        logger.error("Exception was thrown while cataloging:\n",
+                                     exc_info=True)
+                        if not swallow_errors:
+                            raise
+                    logger.info("Done with recatalog.")
 
-            if self.needUpdateRole():
-                logger.info("Please wait while we update role mappings.")
-                try:
-                    self.portal_workflow.updateRoleMappings()
-                    self._needUpdateRole = 0
-                except (ConflictError, KeyboardInterrupt):
-                    raise
-                except:
-                    logger.error("Exception was thrown while updating role "
-                                 "mappings", exc_info=True)
-                    if not swallow_errors:
+                if self.needUpdateRole():
+                    logger.info("Role update needed. This may take a while...")
+                    try:
+                        self.portal_workflow.updateRoleMappings()
+                        self._needUpdateRole = 0
+                    except (ConflictError, KeyboardInterrupt):
                         raise
-                logger.info("Done updating role mappings.")
+                    except:
+                        logger.error("Exception was thrown while updating role "
+                                     "mappings", exc_info=True)
+                        if not swallow_errors:
+                            raise
+                    logger.info("Done updating role mappings.")
 
             if dry_run:
                 logger.info("Dry run selected, transaction aborted")

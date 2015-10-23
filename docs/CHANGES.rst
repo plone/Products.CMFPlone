@@ -8,6 +8,10 @@ Changelog
 4.3.8 (unreleased)
 ------------------
 
+- When migration fails, do not upgrade addons or recatalog or
+  update roles.
+  [maurits]
+
 - Let plone-final import step also depend on the workflow step.
   Otherwise the plone-final step installs plone.app.discussion with an
   extra workflow, and then our own workflow step throws it away again.
