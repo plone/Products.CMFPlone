@@ -96,3 +96,12 @@ class IBundleRegistry(zope.interface.Interface):
     develop_css = schema.Bool(
         title=_(u'Develop CSS'),
         default=False)
+
+    stub_js_modules = schema.List(
+        title=_(u'Stub JavaScript modules'),
+        description=_(u'Define list of modules that will be not be defined empty '
+                      u'on RequireJS build steps to prevent loading modules multiple times.'),
+        value_type=schema.ASCIILine(title=_(u"Resource name")),
+        required=False,
+        missing_value=[],
+        default=[])

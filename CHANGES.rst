@@ -8,6 +8,10 @@ Changelog
 5.0.1 (unreleased)
 ------------------
 
+- be able to stub JavaScript modules to prevent including the same
+  javascript twice
+  [vangheem]
+
 - set Reply-to address in contact-info emails so you can reply to them
   [tkimnguyen]
 
