@@ -1,18 +1,21 @@
-from xml.dom.minidom import parseString
-from Products.CMFPlone.tests import PloneTestCase
-from Products.CMFPlone.resources.browser.cook import cookWhenChangingSettings
-from zope.component import getUtility
-from plone.registry.interfaces import IRegistry
+import json
+
 from Products.CMFCore.utils import getToolByName
-from Products.GenericSetup.context import SetupEnviron
+from Products.CMFPlone.controlpanel.browser.resourceregistry import OverrideFolderManager
+from Products.CMFPlone.controlpanel.browser.resourceregistry import ResourceRegistryControlPanelView
 from Products.CMFPlone.interfaces import IBundleRegistry
 from Products.CMFPlone.interfaces import IResourceRegistry
-from Products.CMFPlone.controlpanel.browser.resourceregistry import OverrideFolderManager
-from plone.subrequest import subrequest
 from Products.CMFPlone.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME
+from Products.CMFPlone.resources.browser.cook import cookWhenChangingSettings
 from Products.CMFPlone.resources.exportimport.resourceregistry import (
     ResourceRegistryNodeAdapter)
+from Products.CMFPlone.tests import PloneTestCase
+from Products.GenericSetup.context import SetupEnviron
+from plone.registry.interfaces import IRegistry
 from plone.resource.interfaces import IResourceDirectory
+from plone.subrequest import subrequest
+from xml.dom.minidom import parseString
+from zope.component import getUtility
 
 
 class TestResourceRegistries(PloneTestCase.PloneTestCase):
@@ -276,3 +279,9 @@ class TestControlPanel(PloneTestCase.PloneTestCase):
     background-image: url("../foo/bar/foobar.css");
 }"""
         self.assertEquals(str(value), match)
+
+    def test_get_require_js_config_uses_stub_modules(self):
+        view = ResourceRegistryControlPanelView(self.portal, self.layer['request'])
+        self.layer['request'].form['bundle'] = 'plone-logged-in'
+        config = json.loads(view.js_build_config())
+        self.assertEquals(config['paths']['jquery'], 'empty:')

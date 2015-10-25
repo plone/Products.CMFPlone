@@ -300,6 +300,9 @@ class ResourceRegistryControlPanelView(RequireJsView):
                 except KeyError:
                     # skip if missing
                     pass
+            if bundle_obj.stub_js_modules:
+                for module in bundle_obj.stub_js_modules:
+                    paths[module] = 'empty:'
         return json.dumps({
             'include': includes,
             'shim': shims,

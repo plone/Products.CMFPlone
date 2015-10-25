@@ -320,6 +320,7 @@ watch_files = []
 sed_count = 0
 bundle_grunt_tasks = ""
 
+
 for bkey, bundle in bundles.items():
     css_target_path = css_target_name = ''
     js_target_path = js_target_name = ''
@@ -355,9 +356,13 @@ for bkey, bundle in bundles.items():
                     target_path = resource_to_dir(portal.unrestrictedTraverse(res_obj.js))
                     target_path = '/'.join(target_path.split('/')[:-1])
                     watch_files.append(main_js_path)
+                    rjs_paths = paths.copy()
+                    if bundle.stub_js_modules:
+                        for stub in bundle.stub_js_modules:
+                            rjs_paths[stub] = 'empty:'
                     rc = requirejs_config.format(
                         bkey=resource,
-                        paths=json.dumps(paths),
+                        paths=json.dumps(rjs_paths),
                         shims=json.dumps(shims),
                         name=main_js_path,
                         out=target_path + '/' + resource + '-compiled.js'
