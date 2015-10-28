@@ -4,13 +4,15 @@ Changelog
 2.5.16 (unreleased)
 -------------------
 
-- Remove Chrome Frame from ``X-UA-Compatible`` HTTP header as it's deprecated.
+Fixes:
+
+- Removed Chrome Frame from ``X-UA-Compatible`` HTTP header as it's deprecated.
   [hvelarde]
 
-- fix icon rendering ... CMFPlone#1151
+- Fixed icon rendering.  Issue `CMFPlone#1151`_.
   [fgrcon]
 
-- fix global sections tabs ... CMFPlone#1178
+- Fixed global sections tabs.  Issue `CMFPlone#1178`_.
   [tomgross]
 
 
@@ -23,10 +25,10 @@ Changelog
   [esteele]
 
 - Respect @@site_controlpanel configuration to show publication date
-  in document_byline (closes `#1037`_).
+  in document_byline.  Closes `CMFPlone#1037`_.
   [rodfersou]
 
-- Fuzzy dates for document_byline (closes `#1000`_).
+- Implemented fuzzy dates for document_byline.  Closes `CMFPlone#1000`_.
   [rodfersou]
 
 
@@ -52,7 +54,7 @@ Changelog
 2.5.12 (2015-09-08)
 -------------------
 
-- Bring back document byline (closes `#741`_).
+- Bring back document byline.  Closes `CMFPlone#741`_.
   [rodfersou]
 
 
@@ -726,7 +728,8 @@ Changelog
   Added navigation_root_title to portal_state view.
   [thomasdesvenain]
 
-- Fix missing workflow history entry for content creation. Closes #11305.
+- Fix missing workflow history entry for content creation.
+  Closes http://dev.plone.org/plone/ticket/11305.
   [rossp]
 
 - Respect typesUseViewActionInListings in sitemap.xml.
@@ -1616,6 +1619,8 @@ Changelog
   http://dev.plone.org/plone/ticket/6810
   [wichert]
 
-.. _`#741`: https://github.com/plone/Products.CMFPlone/issues/741
-.. _`#1000`: https://github.com/plone/Products.CMFPlone/issues/1000
-.. _`#1037`: https://github.com/plone/Products.CMFPlone/issues/1037
+.. _`CMFPlone#741`: https://github.com/plone/Products.CMFPlone/issues/741
+.. _`CMFPlone#1000`: https://github.com/plone/Products.CMFPlone/issues/1000
+.. _`CMFPlone#1037`: https://github.com/plone/Products.CMFPlone/issues/1037
+.. _`CMFPlone#1151`: https://github.com/plone/Products.CMFPlone/issues/1151
+.. _`CMFPlone#1178`: https://github.com/plone/Products.CMFPlone/issues/1178
