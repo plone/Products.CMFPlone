@@ -12,6 +12,9 @@ Fixes:
 
 - *add item here*
 
+- fix relatedItemBox: show thumbs, title and desc correctly
+  https://github.com/plone/Products.CMFPlone/issues/1226
+  [fgrcon]
 
 2.5.16 (2015-10-28)
 -------------------
