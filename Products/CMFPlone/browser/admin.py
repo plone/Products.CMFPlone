@@ -206,7 +206,7 @@ class AddPloneSite(BrowserView):
         data = sorted(grouped.values(), key=lambda k: k['label'])
         for item in data:
             item['languages'] = sorted(
-                item['languages'], key=lambda k: k['langcode'])
+                item['languages'], key=lambda k: k['label'].lower())
         return data
 
     def timezones(self):
