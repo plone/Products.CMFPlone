@@ -6,6 +6,8 @@ from Products.CMFPlone.browser.interfaces import IContactForm
 from Products.CMFPlone.interfaces.controlpanel import IMailSchema
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.statusmessages.interfaces import IStatusMessage
+from email.Header import Header
+from email.MIMEText import MIMEText
 from plone.registry.interfaces import IRegistry
 from smtplib import SMTPException
 from z3c.form import form, field, button
@@ -64,11 +66,14 @@ class ContactForm(form.Form):
         host = getToolByName(self.context, 'MailHost')
 
         data['url'] = portal.absolute_url()
+        message = self.generate_mail(data, encoding)
+        message = MIMEText(message, 'plain', encoding)
+        message['Reply-To'] = Header(data['sender_from_address'], encoding)
 
         try:
             # This actually sends out the mail
             host.send(
-                self.generate_mail(data, encoding),
+                message,
                 send_to_address,
                 from_address,
                 subject=subject,

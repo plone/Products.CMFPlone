@@ -14,7 +14,7 @@ def migrate_to_email_login(context):
     # names immediately, but we want to do that explicitly ourselves
     # and set the lowercase email address as login name, instead of
     # the lower case user id.
-    #pas.manage_changeProperties(login_transform='lower')
+    # pas.manage_changeProperties(login_transform='lower')
     pas.login_transform = 'lower'
 
     # Update the users.

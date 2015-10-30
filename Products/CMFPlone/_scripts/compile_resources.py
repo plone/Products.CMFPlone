@@ -17,6 +17,8 @@ parser.add_argument('--instance', dest='instance',
                          'instance or client1')
 parser.add_argument('--bundle', dest='bundle', default='all',
                     help='Name of bundle to compile. Defaults to all of them.')
+parser.add_argument('--compile-dir', dest='compile_dir', default='',
+                    help='Output directory for the compiled bundle files.')
 
 this_dir = os.path.dirname(os.path.realpath(__file__))
 

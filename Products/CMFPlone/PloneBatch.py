@@ -15,16 +15,16 @@ class Batch(QuantumBatch):
                  b_start_str='b_start'):
         super(Batch, self).__init__(sequence, size, start,
                                     end, orphan, overlap,
-              pagerange, quantumleap)
+                                    pagerange, quantumleap)
         self.b_start_str = b_start_str
 
     def __len__(self):
         return self.length
     __len__ = deprecated(__len__,
-        ('Using len() is deprecated. Use the `length` attribute for the '
-         'size of the current page, which is what we return now. '
-         'Use the `sequence_length` attribute for the size of the '
-         'entire sequence. '))
+                         ('Using len() is deprecated. Use the `length` attribute for the '
+                          'size of the current page, which is what we return now. '
+                          'Use the `sequence_length` attribute for the size of the '
+                          'entire sequence. '))
 
     def __nonzero__(self):
         # Without __nonzero__ a bool(self) would call len(self), which
@@ -50,7 +50,7 @@ class Batch(QuantumBatch):
         if not navlist:
             navlist = self.navlist
         return map(lambda x, formvariables=formvariables:
-                (x, self.pageurl(formvariables, x)), navlist)
+                   (x, self.pageurl(formvariables, x)), navlist)
 
     def prevurls(self, formvariables):
         """ Helper method to get prev navigation list from templates """

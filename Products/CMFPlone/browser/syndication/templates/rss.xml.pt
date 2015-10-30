@@ -5,7 +5,7 @@
   xmlns:atom="http://www.w3.org/2005/Atom"
   tal:define="feed view/feed">
   <channel>
-    <atom:link rel="self" 
+    <atom:link rel="self"
                type="application/rss+xml"
                tal:attributes="href request/ACTUAL_URL" />
     <title tal:content="feed/title" />
@@ -21,7 +21,7 @@
       <content:encoded xmlns:content="http://purl.org/rss/1.0/modules/content/"
           tal:condition="feed/settings/render_body">
           <tal:opencdata tal:replace="structure python:'&lt;![CDATA['" />
-          <tal:block tal:replace="structure item/render_content_core"/>          
+          <tal:block tal:replace="structure item/render_content_core"/>
           <tal:closecdata tal:replace="structure python:']]&gt;'" />
       </content:encoded>
       <pubDate tal:content="item/published/rfc822|item/modified/rfc822" />

@@ -20,8 +20,8 @@ class TestPloneTestCase(PloneTestCase.PloneTestCase):
         self.setRoles(['Reviewer'])
         self.workflow.doActionFor(self.folder.new, 'publish')
         self.assertEqual(
-                self.workflow.getInfoFor(self.folder.new, 'review_state'),
-                'published')
+            self.workflow.getInfoFor(self.folder.new, 'review_state'),
+            'published')
         self.assertTrue(self.catalog(id='new', review_state='published'))
 
     def testRetractDocument(self):
@@ -29,13 +29,13 @@ class TestPloneTestCase(PloneTestCase.PloneTestCase):
         self.setRoles(['Reviewer'])
         self.workflow.doActionFor(self.folder.new, 'publish')
         self.assertEqual(
-                self.workflow.getInfoFor(self.folder.new, 'review_state'),
-                'published')
+            self.workflow.getInfoFor(self.folder.new, 'review_state'),
+            'published')
         self.setRoles(['Member'])
         self.workflow.doActionFor(self.folder.new, 'retract')
         self.assertEqual(
-                self.workflow.getInfoFor(self.folder.new, 'review_state'),
-                'visible')
+            self.workflow.getInfoFor(self.folder.new, 'review_state'),
+            'visible')
 
     def testEditDocument(self):
         self.folder.invokeFactory('Document', id='new')

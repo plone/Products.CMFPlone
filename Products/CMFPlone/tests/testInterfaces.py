@@ -72,8 +72,8 @@ class InterfaceTest(TestCase):
 
         # is the class really implemented by the given interface?
         self.assertTrue(interface.implementedBy(klass),
-            'The class %s does not implement %s' % (dottedName(klass),
-                                                    dottedName(interface)))
+                        'The class %s does not implement %s' % (dottedName(klass),
+                                                                dottedName(interface)))
         # verify if the implementation is correct
         try:
             verifyClass(interface, klass)
@@ -91,8 +91,8 @@ class InterfaceTest(TestCase):
 
         # is the class really implemented by the given interface?
         self.assertTrue(interface.providedBy(instance),
-            'The instance of %s does not implement %s'
-                % (dottedName(instance), dottedName(interface)))
+                        'The instance of %s does not implement %s'
+                        % (dottedName(instance), dottedName(interface)))
         # verify if the implementation is correct
         try:
             verifyObject(interface, instance)
@@ -101,7 +101,7 @@ class InterfaceTest(TestCase):
                 BrokenMethodImplementation), errmsg:
             self.fail(
                 'The instance of %s does not implement %s correctly: \n%s'
-                    % (dottedName(instance), dottedName(interface), errmsg))
+                % (dottedName(instance), dottedName(interface), errmsg))
 
     def getImplementsOfInstanceOf(self, klass):
         """ returns the interfaces implemented by the klass (flat)"""
@@ -131,7 +131,7 @@ class InterfaceTest(TestCase):
             self.assertTrue(
                 interface in impl,
                 'The instance of %s does not implement %s'
-                    % (dottedName(instance), dottedName(interface)))
+                % (dottedName(instance), dottedName(interface)))
 
     def _testStuff(self):
         """ test self.klass and self.instance """
@@ -178,8 +178,8 @@ class zope_interface_test(TestCase):
 
         # is the class really implemented by the given interface?
         self.assertTrue(interface.implementedBy(klass),
-            'The class %s does not implement %s' % (dottedName(klass),
-                                                    dottedName(interface)))
+                        'The class %s does not implement %s' % (dottedName(klass),
+                                                                dottedName(interface)))
         # verify if the implementation is correct
         try:
             verifyClass(interface, klass)
@@ -197,8 +197,8 @@ class zope_interface_test(TestCase):
 
         # is the class really implemented by the given interface?
         self.assertTrue(interface.providedBy(instance),
-            'The instance of %s does not provide %s' % (dottedName(instance),
-                                                        dottedName(interface)))
+                        'The instance of %s does not provide %s' % (dottedName(instance),
+                                                                    dottedName(interface)))
         # verify if the implementation is correct
         try:
             verifyObject(interface, instance)
@@ -233,7 +233,7 @@ class zope_interface_test(TestCase):
             self.assertTrue(
                 interface in impl,
                 'The instance of %s does not provide %s'
-                    % (dottedName(instance), dottedName(interface)))
+                % (dottedName(instance), dottedName(interface)))
 
     def _testStuff(self):
         """ test self.klass and self.instance """

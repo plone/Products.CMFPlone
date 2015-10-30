@@ -20,13 +20,13 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
     def afterSetUp(self):
         self.registration = self.portal.portal_registration
         self.portal.acl_users.userFolderAddUser("userid", "password",
-                (), (), ())
+                                                (), (), ())
         self.portal.acl_users._doAddGroup("groupid", ())
 
     def testJoinCreatesUser(self):
         self.registration.addMember(member_id, 'secret',
-                          properties={'username': member_id,
-                                      'email': 'foo@bar.com'})
+                                    properties={'username': member_id,
+                                                'email': 'foo@bar.com'})
         user = self.portal.acl_users.getUserById(member_id)
         self.assertTrue(user, 'addMember failed to create user')
 
@@ -40,8 +40,8 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
 
     def testJoinWithUppercaseEmailCreatesUser(self):
         self.registration.addMember(member_id, 'secret',
-                          properties={'username': member_id,
-                                      'email': 'FOO@BAR.COM'})
+                                    properties={'username': member_id,
+                                                'email': 'FOO@BAR.COM'})
         user = self.portal.acl_users.getUserById(member_id)
         self.assertTrue(user, 'addMember failed to create user')
 
@@ -56,8 +56,8 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
                           self.registration.addMember,
                           member_id, 'secret',
                           properties={
-                            'username': member_id,
-                            'email': 'foo@bar.com, fred@bedrock.com'})
+                              'username': member_id,
+                              'email': 'foo@bar.com, fred@bedrock.com'})
 
     def testJoinAsExistingMemberRaisesValueError(self):
         self.assertRaises(ValueError,
@@ -117,8 +117,8 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
         sm.registerUtility(mails, IMailHost)
         # Register a user
         self.registration.addMember(member_id, 'secret',
-                          properties={'username': member_id,
-                                      'email': 'foo@bar.com'})
+                                    properties={'username': member_id,
+                                                'email': 'foo@bar.com'})
 
         registry = getUtility(IRegistry)
         site_settings = registry.forInterface(ISiteSchema, prefix='plone')
@@ -147,8 +147,8 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
         sm.registerUtility(mails, IMailHost)
         # Register a user
         self.registration.addMember(member_id, 'secret',
-                          properties={'username': member_id,
-                                      'email': 'foo@bar.com'})
+                                    properties={'username': member_id,
+                                                'email': 'foo@bar.com'})
         registry = getUtility(IRegistry)
         site_settings = registry.forInterface(ISiteSchema, prefix='plone')
         site_settings.site_title = u'Test Portal'
@@ -176,8 +176,8 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
         sm.registerUtility(mails, IMailHost)
         # Register a user
         self.registration.addMember(member_id, 'secret',
-                          properties={'username': member_id,
-                                      'email': 'foo@bar.com'})
+                                    properties={'username': member_id,
+                                                'email': 'foo@bar.com'})
 
         registry = getUtility(IRegistry)
         site_settings = registry.forInterface(ISiteSchema, prefix='plone')
@@ -207,8 +207,8 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
         sm.registerUtility(mails, IMailHost)
         # Register a user
         self.registration.addMember(member_id, 'secret',
-                          properties={'username': member_id,
-                                      'email': 'foo@bar.com'})
+                                    properties={'username': member_id,
+                                                'email': 'foo@bar.com'})
         registry = getUtility(IRegistry)
         site_settings = registry.forInterface(ISiteSchema, prefix='plone')
         site_settings.site_title = u'Tëst Portal'
@@ -260,7 +260,7 @@ class TestPasswordGeneration(PloneTestCase.PloneTestCase):
     def testGeneratePassword(self):
         pw = self.registration.generatePassword()
         # default password is now very long as it's never seen by the user
-        self.assertTrue(len(pw)>=20)
+        self.assertTrue(len(pw) >= 20)
 
     def testGenerateResetCode(self):
         salt = 'foo'

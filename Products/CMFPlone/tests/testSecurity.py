@@ -13,7 +13,7 @@ class TestAttackVectorsUnit(unittest.TestCase):
     def test_gtbn_funcglobals(self):
         from Products.CMFPlone.utils import getToolByName
         try:
-            getToolByName(self.assertTrue,'func_globals')['__builtins__']
+            getToolByName(self.assertTrue, 'func_globals')['__builtins__']
         except TypeError:
             pass
         else:
@@ -55,30 +55,37 @@ allow_module('os')
 
     def test_get_request_var_or_attr_disallowed(self):
         import App.Undo
-        self.assertFalse(hasattr(App.Undo.UndoSupport, 'get_request_var_or_attr'))
+        self.assertFalse(hasattr(App.Undo.UndoSupport,
+                                 'get_request_var_or_attr'))
 
 
 class TestAttackVectorsFunctional(PloneTestCase):
 
     def test_widget_traversal_1(self):
-        res = self.publish('/plone/@@discussion-settings/++widget++moderator_email')
+        res = self.publish(
+            '/plone/@@discussion-settings/++widget++moderator_email')
         self.assertEqual(302, res.status)
-        self.assertTrue(res.headers['location'].startswith('http://nohost/plone/acl_users/credentials_cookie_auth/require_login'))
+        self.assertTrue(res.headers['location'].startswith(
+            'http://nohost/plone/acl_users/credentials_cookie_auth/require_login'))
 
     def test_widget_traversal_2(self):
-        res = self.publish('/plone/@@discussion-settings/++widget++captcha/terms/field/interface/setTaggedValue?tag=cake&value=lovely')
+        res = self.publish(
+            '/plone/@@discussion-settings/++widget++captcha/terms/field/interface/setTaggedValue?tag=cake&value=lovely')
         self.assertEqual(302, res.status)
-        self.assertTrue(res.headers['location'].startswith('http://nohost/plone/acl_users/credentials_cookie_auth/require_login'))
+        self.assertTrue(res.headers['location'].startswith(
+            'http://nohost/plone/acl_users/credentials_cookie_auth/require_login'))
 
     def test_registerConfiglet_1(self):
         VECTOR = "/plone/portal_controlpanel/registerConfiglet?id=cake&name=Cakey&action=woo&permission=View&icon_expr="
         res = self.publish(VECTOR)
-        self.assertTrue(res.headers['location'].startswith('http://nohost/plone/acl_users/credentials_cookie_auth/require_login'))
+        self.assertTrue(res.headers['location'].startswith(
+            'http://nohost/plone/acl_users/credentials_cookie_auth/require_login'))
 
     def test_registerConfiglet_2(self):
         VECTOR = "/plone/portal_controlpanel/registerConfiglet?id=cake&name=Cakey&action=woo&permission=View&icon_expr="
         self.publish(VECTOR)
-        action_ids = [action.id for action in self.portal.portal_controlpanel._actions]
+        action_ids = [
+            action.id for action in self.portal.portal_controlpanel._actions]
         self.assertTrue('cake' not in action_ids)
 
     def _get_authenticator(self, basic=None):
@@ -92,13 +99,16 @@ class TestAttackVectorsFunctional(PloneTestCase):
     def test_gtbn_faux_archetypes_tool(self):
         from Products.CMFCore.utils import FauxArchetypeTool
         from Products.CMFPlone.utils import getToolByName
-        self.portal.portal_factory.archetype_tool = FauxArchetypeTool(self.portal.archetype_tool)
-        self.assertEqual(self.portal.portal_factory.archetype_tool, getToolByName(self.portal.portal_factory, 'archetype_tool'))
+        self.portal.portal_factory.archetype_tool = FauxArchetypeTool(
+            self.portal.archetype_tool)
+        self.assertEqual(self.portal.portal_factory.archetype_tool, getToolByName(
+            self.portal.portal_factory, 'archetype_tool'))
 
     def test_searchForMembers(self):
         res = self.publish('/plone/portal_membership/searchForMembers')
         self.assertEqual(302, res.status)
-        self.assertTrue(res.headers['location'].startswith('http://nohost/plone/acl_users/credentials_cookie_auth/require_login'))
+        self.assertTrue(res.headers['location'].startswith(
+            'http://nohost/plone/acl_users/credentials_cookie_auth/require_login'))
 
     def test_getMemberInfo(self):
         res = self.publish('/plone/portal_membership/getMemberInfo?id=admin')
@@ -114,17 +124,20 @@ class TestAttackVectorsFunctional(PloneTestCase):
 
     def test_at_download(self):
         self.setRoles(['Manager'])
-        self.portal.portal_workflow.setChainForPortalTypes(['File'], 'plone_workflow')
+        self.portal.portal_workflow.setChainForPortalTypes(
+            ['File'], 'plone_workflow')
         self.portal.invokeFactory('File', 'test')
         self.portal.portal_workflow.doActionFor(self.portal.test, 'publish')
 
         # give it a more restricted read_permission
         self.portal.test.Schema()['file'].read_permission = 'Manage portal'
 
-        # make sure at_download disallows even though the user has View permission
+        # make sure at_download disallows even though the user has View
+        # permission
         res = self.publish('/plone/test/at_download/file')
         self.assertEqual(res.status, 302)
-        self.assertTrue(res.headers['location'].startswith('http://nohost/plone/acl_users/credentials_cookie_auth/require_login'))
+        self.assertTrue(res.headers['location'].startswith(
+            'http://nohost/plone/acl_users/credentials_cookie_auth/require_login'))
 
     def test_ftp(self):
         self.setRoles(['Manager', 'Owner'])
@@ -134,7 +147,8 @@ class TestAttackVectorsFunctional(PloneTestCase):
         self.portal.portal_workflow.doActionFor(self.portal.news, 'hide')
         self.setRoles(['Member'])
         from zExceptions import Unauthorized
-        self.assertRaises(Unauthorized, self.portal.news.manage_FTPlist, self.portal.REQUEST)
+        self.assertRaises(
+            Unauthorized, self.portal.news.manage_FTPlist, self.portal.REQUEST)
 
     def test_atat_does_not_return_anything(self):
         res = self.publish('/plone/@@')
@@ -142,7 +156,7 @@ class TestAttackVectorsFunctional(PloneTestCase):
 
     def test_go_back(self):
         res = self.publish('/plone/front-page/go_back?last_referer=http://${request}',
-            basic=SITE_OWNER_NAME + ':' + SITE_OWNER_PASSWORD)
+                           basic=SITE_OWNER_NAME + ':' + SITE_OWNER_PASSWORD)
         self.assertEqual(302, res.status)
         self.assertEqual('http://${request}', res.headers['location'][:17])
 
@@ -161,7 +175,8 @@ class TestAttackVectorsFunctional(PloneTestCase):
     def test_createObject(self):
         res = self.publish('/plone/createObject?type_name=File&id=${foo}')
         self.assertEqual(302, res.status)
-        self.assertTrue(res.headers['location'].startswith('http://nohost/plone/portal_factory/File/${foo}/edit?_authenticator='))
+        self.assertTrue(res.headers['location'].startswith(
+            'http://nohost/plone/portal_factory/File/${foo}/edit?_authenticator='))
 
     def test_formatColumns(self):
         res = self.publish('/plone/formatColumns?items:list=')

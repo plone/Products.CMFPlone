@@ -56,7 +56,7 @@ setup(
         'Products.DCWorkflow',
         'Products.ExtendedPathIndex',
         'Products.ExternalEditor',
-        'Products.GenericSetup >=1.4',
+        'Products.GenericSetup >= 1.8.0',
         'Products.MimetypesRegistry',
         'Products.PasswordResetTool',
         'Products.PlacelessTranslationService',

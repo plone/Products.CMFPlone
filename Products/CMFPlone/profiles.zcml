@@ -28,5 +28,5 @@
       for="Products.CMFPlone.interfaces.ITestCasePloneSiteRoot"
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
- 
+
 </configure>

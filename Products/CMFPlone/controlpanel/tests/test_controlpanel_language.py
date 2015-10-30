@@ -73,5 +73,3 @@ class LanguageRegistryIntegrationTest(unittest.TestCase):
 
     def test_use_request_negotiation(self):
         self.assertTrue(hasattr(self.settings, 'use_request_negotiation'))
-
-

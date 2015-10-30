@@ -36,7 +36,7 @@ class ControlPanelXMLAdapterTests(BodyAdapterTestCase):
             visible=True,
             appId='QuickInstaller',
             icon_expr='string:${portal_url}/product_icon.png',
-          )
+        )
 
     def setUp(self):
         from Products.GenericSetup.interfaces import ISetupEnviron
@@ -44,7 +44,8 @@ class ControlPanelXMLAdapterTests(BodyAdapterTestCase):
         self.site = Folder('site')
         self.site.portal_control_panel = PloneControlPanel()
         provideUtility(self.site.portal_control_panel, IControlPanel)
-        provideAdapter(self._getTargetClass(), (IControlPanel, ISetupEnviron), IBody)
+        provideAdapter(self._getTargetClass(),
+                       (IControlPanel, ISetupEnviron), IBody)
         self._obj = self.site.portal_control_panel
         self._BODY = _CONTROLPANEL_XML
 

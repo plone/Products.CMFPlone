@@ -77,6 +77,7 @@ class WorkflowTool(PloneBaseTool, BaseTool):
         return tuple(transitions[:])
 
     security.declarePublic('getTransitionsFor')
+
     def getTransitionsFor(self, obj=None, container=None, REQUEST=None):
         if type(obj) is type([]):
             return self.flattenTransitions(objs=obj, container=container)
@@ -95,15 +96,15 @@ class WorkflowTool(PloneBaseTool, BaseTool):
                            wf._checkTransitionGuard(tdef, obj) and \
                            not tdef.id in result:
                             result[tdef.id] = {
-                                    'id': tdef.id,
-                                    'title': tdef.title,
-                                    'title_or_id': tdef.title_or_id(),
-                                    'description': tdef.description,
-                                    'name': tdef.actbox_name,
-                                    'url': tdef.actbox_url %
-                                           {'content_url': obj.absolute_url(),
-                                            'portal_url': '',
-                                            'folder_url': ''}}
+                                'id': tdef.id,
+                                'title': tdef.title,
+                                'title_or_id': tdef.title_or_id(),
+                                'description': tdef.description,
+                                'name': tdef.actbox_name,
+                                'url': tdef.actbox_url %
+                                {'content_url': obj.absolute_url(),
+                                 'portal_url': '',
+                                 'folder_url': ''}}
         return tuple(result.values())
 
     def workflows_in_use(self):
@@ -121,6 +122,7 @@ class WorkflowTool(PloneBaseTool, BaseTool):
         return tuple(in_use[:])
 
     security.declarePublic('getWorklists')
+
     def getWorklists(self):
         """ instead of manually scraping actions_box, lets:
             query for all worklists in all workflow definitions.
@@ -185,6 +187,7 @@ class WorkflowTool(PloneBaseTool, BaseTool):
         return wf_with_wlists
 
     security.declarePublic('getWorklistsResults')
+
     def getWorklistsResults(self):
         """Return all the objects concerned by one or more worklists
 
@@ -244,6 +247,7 @@ class WorkflowTool(PloneBaseTool, BaseTool):
         return tuple([obj[1] for obj in results])
 
     security.declareProtected(ManagePortal, 'getChainForPortalType')
+
     def getChainForPortalType(self, pt_name, managescreen=0):
         """ Get a chain for a specific portal type.
         """
@@ -258,12 +262,14 @@ class WorkflowTool(PloneBaseTool, BaseTool):
                 return self._default_chain
 
     security.declareProtected(ManagePortal, 'listWorkflows')
+
     def listWorkflows(self):
         """ Return the list of workflows
         """
         return self.keys()
 
     security.declarePublic('getTitleForStateOnType')
+
     def getTitleForStateOnType(self, state_name, p_type):
         """Returns the workflow state title for a given state name,
            uses a portal_type to determine which workflow to use
@@ -277,10 +283,11 @@ class WorkflowTool(PloneBaseTool, BaseTool):
                     state = getattr(states, state_name, None)
                     if state is not None:
                         return getattr(aq_base(state), 'title', None) \
-                                or state_name
+                            or state_name
         return state_name
 
     security.declarePublic('getTitleForTransitionOnType')
+
     def getTitleForTransitionOnType(self, trans_name, p_type):
         """Returns the workflow transition title for a given transition name,
            uses a portal_type to determine which workflow to use
@@ -294,10 +301,11 @@ class WorkflowTool(PloneBaseTool, BaseTool):
                     trans = getattr(transitions, trans_name, None)
                     if trans is not None:
                         return getattr(aq_base(trans), 'actbox_name', None) \
-                                or trans_name
+                            or trans_name
         return trans_name
 
     security.declarePublic('listWFStatesByTitle')
+
     def listWFStatesByTitle(self, filter_similar=False):
         """Returns the states of all available workflows, optionally filtering
            out states with matching title and id"""
@@ -326,8 +334,8 @@ class WorkflowTool(PloneBaseTool, BaseTool):
         return getMultiAdapter((ob, self), IWorkflowChain)
 
     security.declarePrivate('listActions')
-    def listActions(self, info=None, object=None):
 
+    def listActions(self, info=None, object=None):
         """ Returns a list of actions to be displayed to the user.
 
         o Invoked by the portal_actions tool.

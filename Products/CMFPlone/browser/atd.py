@@ -17,7 +17,8 @@ class ATDProxyView(object):
             See http://www.afterthedeadline.com/api.slp for more info.
         """
         registry = getUtility(IRegistry)
-        settings = registry.forInterface(ITinyMCESchema, prefix="plone", check=False)
+        settings = registry.forInterface(
+            ITinyMCESchema, prefix="plone", check=False)
         if settings.libraries_spellchecker_choice != 'AtD':
             return 'atd not enabled'
 

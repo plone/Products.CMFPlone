@@ -4,7 +4,7 @@
                     date python:feed.published or view.current_date;
                     published_iso python:date.asdatetime().strftime('%Y%m%dT%H%M%S%z');
                     logo feed/logo;">
-                    
+
     <tal:comment replace="nothing">
         <!--
         This NewsML implementation is done to be used by MSN to provide news feeds.
@@ -86,7 +86,7 @@
                         </media-reference>
                         <media-caption tal:content="item/context/imageCaption|nothing"></media-caption>
                         </media>
-                        <tal:block tal:replace="structure item/render_content_core"/>          
+                        <tal:block tal:replace="structure item/render_content_core"/>
                     </body.content>
                 </body>
                 </nitf>

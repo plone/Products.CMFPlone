@@ -14,8 +14,10 @@ class SSOLoginTestCase(PloneTestCase):
         PloneTestCase.afterSetUp(self)
 
         self.setRoles(['Manager'])
-        addPloneSite(self.app, 'login_portal', content_profile_id='Products.ATContentTypes:default')
-        addPloneSite(self.app, 'another_portal', content_profile_id='Products.ATContentTypes:default')
+        addPloneSite(self.app, 'login_portal',
+                     content_profile_id='Products.ATContentTypes:default')
+        addPloneSite(self.app, 'another_portal',
+                     content_profile_id='Products.ATContentTypes:default')
 
         self.browser = Browser(self.app)
         self.browser.handleErrors = False  # Don't get HTTP 500 pages
@@ -30,7 +32,8 @@ class SSOLoginTestCase(PloneTestCase):
                 TEST_USER_NAME,
                 TEST_USER_PASSWORD)
         for role in TEST_USER_ROLES:
-            portal.acl_users.portal_role_manager.doAssignRoleToPrincipal(TEST_USER_ID, role)
+            portal.acl_users.portal_role_manager.doAssignRoleToPrincipal(
+                TEST_USER_ID, role)
 
         registry = self.login_portal.portal_registry
 
@@ -138,7 +141,7 @@ class TestSSOLoginIframe(SSOLoginTestCase):
         form.submit()
         # We are now inside the iframe
         self.assertTrue(
-                browser.url.startswith(self.login_portal.absolute_url()))
+            browser.url.startswith(self.login_portal.absolute_url()))
         # The Link to get  a new password points back to self.portal
         link = browser.getLink('we can send you a new one')
         self.assertTrue(link.url.startswith(self.portal.absolute_url()))
@@ -168,7 +171,7 @@ class TestSSOLoginIframe(SSOLoginTestCase):
         form.submit()
         # We are now inside the iframe
         self.assertTrue(
-                browser.url.startswith(self.login_portal.absolute_url()))
+            browser.url.startswith(self.login_portal.absolute_url()))
         browser.getForm('external_login_form').submit()
         self.assertEqual(self.browser.cookies.getinfo('__ac')['path'],
                          self.another_portal.absolute_url_path())

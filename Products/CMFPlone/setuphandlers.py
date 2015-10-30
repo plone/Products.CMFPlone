@@ -65,7 +65,7 @@ class HiddenProducts(object):
             'plone.protect',
             'plone.resource',
             'plonetheme.barceloneta',
-            ]
+        ]
 
 
 def addCacheHandlers(portal):
@@ -97,14 +97,14 @@ def addCacheForResourceRegistry(portal):
     reg = getToolByName(portal, 'portal_css', None)
     if reg is not None \
             and getattr(aq_base(reg), 'ZCacheable_setManagerId', None) \
-                is not None:
+    is not None:
         reg.ZCacheable_setManagerId(ram_cache_id)
         reg.ZCacheable_setEnabled(1)
 
     reg = getToolByName(portal, 'portal_javascripts', None)
     if reg is not None \
             and getattr(aq_base(reg), 'ZCacheable_setManagerId', None) \
-                is not None:
+    is not None:
         reg.ZCacheable_setManagerId(ram_cache_id)
         reg.ZCacheable_setEnabled(1)
 
@@ -130,42 +130,42 @@ def setProfileVersion(portal):
 
 def assignTitles(portal):
     titles = {
-     'acl_users': 'User / Group storage and authentication settings',
-     'archetype_tool': 'Archetypes specific settings',
-     'caching_policy_manager': 'Settings related to proxy caching',
-     'content_type_registry': 'MIME type settings',
-     'error_log': 'Error and exceptions log viewer',
-     'MailHost': 'Mail server settings for outgoing mail',
-     'mimetypes_registry': 'MIME types recognized by Plone',
-     'plone_utils': 'Various utility methods',
-     'portal_actions': 'Contains custom tabs and buttons',
-     'portal_calendar': 'Controls how events are shown',
-     'portal_catalog': 'Indexes all content in the site',
-     'portal_controlpanel': 'Registry of control panel screen',
-     'portal_css': 'Registry of CSS files',
-     'portal_diff': 'Settings for content version comparisions',
-     'portal_groupdata': 'Handles properties on groups',
-     'portal_groups': 'Handles group related functionality',
-     'portal_javascripts': 'Registry of JavaScript files',
-     'portal_languages': 'Language specific settings',
-     'portal_membership': 'Handles membership policies',
-     'portal_memberdata': 'Handles the available properties on members',
-     'portal_migration': 'Upgrades to newer Plone versions',
-     'portal_password_reset': 'Handles password retention policy',
-     'portal_properties': 'General settings registry',
-     'portal_quickinstaller': 'Allows to install/uninstall products',
-     'portal_registration': 'Handles registration of new users',
-     'portal_setup': 'Add-on and configuration management',
-     'portal_skins': 'Controls skin behaviour (search order etc)',
-     'portal_transforms': 'Handles data conversion between MIME types',
-     'portal_types': 'Controls the available content types in your portal',
-     'portal_url': 'Methods to anchor you to the root of your Plone site',
-     'portal_view_customizations': 'Template customizations',
-     'portal_workflow': 'Contains workflow definitions for your portal',
-     'reference_catalog': 'Catalog of content references',
-     'translation_service': 'Provides access to the translation machinery',
-     'uid_catalog': 'Catalog of unique content identifiers',
-     }
+        'acl_users': 'User / Group storage and authentication settings',
+        'archetype_tool': 'Archetypes specific settings',
+        'caching_policy_manager': 'Settings related to proxy caching',
+        'content_type_registry': 'MIME type settings',
+        'error_log': 'Error and exceptions log viewer',
+        'MailHost': 'Mail server settings for outgoing mail',
+        'mimetypes_registry': 'MIME types recognized by Plone',
+        'plone_utils': 'Various utility methods',
+        'portal_actions': 'Contains custom tabs and buttons',
+        'portal_calendar': 'Controls how events are shown',
+        'portal_catalog': 'Indexes all content in the site',
+        'portal_controlpanel': 'Registry of control panel screen',
+        'portal_css': 'Registry of CSS files',
+        'portal_diff': 'Settings for content version comparisions',
+        'portal_groupdata': 'Handles properties on groups',
+        'portal_groups': 'Handles group related functionality',
+        'portal_javascripts': 'Registry of JavaScript files',
+        'portal_languages': 'Language specific settings',
+        'portal_membership': 'Handles membership policies',
+        'portal_memberdata': 'Handles the available properties on members',
+        'portal_migration': 'Upgrades to newer Plone versions',
+        'portal_password_reset': 'Handles password retention policy',
+        'portal_properties': 'General settings registry',
+        'portal_quickinstaller': 'Allows to install/uninstall products',
+        'portal_registration': 'Handles registration of new users',
+        'portal_setup': 'Add-on and configuration management',
+        'portal_skins': 'Controls skin behaviour (search order etc)',
+        'portal_transforms': 'Handles data conversion between MIME types',
+        'portal_types': 'Controls the available content types in your portal',
+        'portal_url': 'Methods to anchor you to the root of your Plone site',
+        'portal_view_customizations': 'Template customizations',
+        'portal_workflow': 'Contains workflow definitions for your portal',
+        'reference_catalog': 'Catalog of content references',
+        'translation_service': 'Provides access to the translation machinery',
+        'uid_catalog': 'Catalog of unique content identifiers',
+    }
     for oid, obj in portal.items():
         title = titles.get(oid, None)
         if title:

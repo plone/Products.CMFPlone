@@ -24,7 +24,8 @@ class UserMembershipControlPanel(UsersGroupsControlPanelView):
             delete = form.get('delete', [])
             if delete:
                 for groupname in delete:
-                    self.gtool.removePrincipalFromGroup(self.userid, groupname, self.request)
+                    self.gtool.removePrincipalFromGroup(
+                        self.userid, groupname, self.request)
                 self.context.plone_utils.addPortalMessage(_(u'Changes made.'))
 
             add = form.get('add', [])
@@ -34,11 +35,13 @@ class UserMembershipControlPanel(UsersGroupsControlPanelView):
                     if 'Manager' in group.getRoles() and not self.is_zope_manager:
                         raise Forbidden
 
-                    self.gtool.addPrincipalToGroup(self.userid, groupname, self.request)
+                    self.gtool.addPrincipalToGroup(
+                        self.userid, groupname, self.request)
                 self.context.plone_utils.addPortalMessage(_(u'Changes made.'))
 
         search = form.get('form.button.Search', None) is not None
-        findAll = form.get('form.button.FindAll', None) is not None and not self.many_groups
+        findAll = form.get('form.button.FindAll',
+                           None) is not None and not self.many_groups
         self.searchString = not findAll and form.get('searchstring', '') or ''
 
         if findAll or not self.many_groups or self.searchString != '':
@@ -54,8 +57,10 @@ class UserMembershipControlPanel(UsersGroupsControlPanelView):
         return self.index()
 
     def getGroups(self):
-        groupResults = [self.gtool.getGroupById(m) for m in self.gtool.getGroupsForPrincipal(self.member)]
-        groupResults.sort(key=lambda x: x is not None and normalizeString(x.getGroupTitleOrName()))
+        groupResults = [self.gtool.getGroupById(
+            m) for m in self.gtool.getGroupsForPrincipal(self.member)]
+        groupResults.sort(key=lambda x: x is not None and normalizeString(
+            x.getGroupTitleOrName()))
         return filter(None, groupResults)
 
     def getPotentialGroups(self, searchString):

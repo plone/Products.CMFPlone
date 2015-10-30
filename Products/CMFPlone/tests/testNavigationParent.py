@@ -58,26 +58,26 @@ class TestNavigationParent(PloneTestCase.PloneTestCase):
         self.f2.invokeFactory('Document', 'index_html', title='Document 1')
         d1 = getattr(self.f2, 'index_html')
         self.assertEqual(d1.navigationParent(fallThroughDefaultPage=False),
-                            self.f2.absolute_url())
+                         self.f2.absolute_url())
 
     def testNoFallThroughDefaultPageInFolder(self):
         self.f2.invokeFactory('Document', 'd1', title='Document 1')
         d1 = getattr(self.f2, 'd1')
         self.f2.setDefaultPage('d1')
         self.assertEqual(d1.navigationParent(fallThroughDefaultPage=False),
-                            self.f2.absolute_url())
+                         self.f2.absolute_url())
 
     def testNoFallThroughFolderishIndexHtmlInFolder(self):
         self.f2.invokeFactory('Folder', 'index_html', title='Index folder')
         ih = getattr(self.f2, 'index_html')
         self.assertEqual(ih.navigationParent(fallThroughDefaultPage=False),
-                            self.f2.absolute_url())
+                         self.f2.absolute_url())
 
     def testNoFallThroughFolderishDefaultPageInFolder(self):
         self.f1.setDefaultPage('f2')
         self.assertEqual(self.f2.navigationParent(
-                            fallThroughDefaultPage=False),
-                            self.f1.absolute_url())
+            fallThroughDefaultPage=False),
+            self.f1.absolute_url())
 
     # Very special case - if you have an index_html inside an index_html...
     def testRecursiveDefaultPage(self):
@@ -116,4 +116,4 @@ class TestNavigationParent(PloneTestCase.PloneTestCase):
         self.setRoles(['Member'])
 
         self.assertTrue(lf.navigationParent(
-                checkPermissions=['List folder contents']) is None)
+            checkPermissions=['List folder contents']) is None)

@@ -398,7 +398,7 @@ class TestCatalogSearching(PloneTestCase):
         self.assertEqual(len(results), 2)
 
     def testSearchIgnoresAccents(self):
-        #plip 12110
+        # plip 12110
         self.folder.invokeFactory(
             'Document', id='docwithaccents1', description='Econométrie')
         self.folder.invokeFactory(
@@ -540,8 +540,8 @@ class TestCatalogSorting(PloneTestCase):
         self.assertEqual(wrapped.sortable_title, '0012 document 0025')
 
     def testSortableNonASCIITitles(self):
-        #test a utf-8 encoded string gets properly unicode converted
-        #sort must ignore accents
+        # test a utf-8 encoded string gets properly unicode converted
+        # sort must ignore accents
         title = 'La Pe\xc3\xb1a'
         doc = self.folder.doc
         doc.setTitle(title)
@@ -636,7 +636,7 @@ class TestFolderCataloging(PloneTestCase):
         title = 'Test Folder - Snooze!'
         self.assertTrue(self.catalog(getId='foo'))
         self.folder.foo.setTitle(title)
-        #Title is a TextIndex
+        # Title is a TextIndex
         self.assertFalse(self.catalog(Title='Snooze'))
 
 
@@ -644,10 +644,14 @@ class TestCatalogOrdering(PloneTestCase):
 
     def afterSetUp(self):
         self.catalog = self.portal.portal_catalog
-        self.folder.invokeFactory('Document', id='doc1', text='foo', title='First')
-        self.folder.invokeFactory('Document', id='doc2', text='bar', title='Second')
-        self.folder.invokeFactory('Document', id='doc3', text='bloo', title='Third')
-        self.folder.invokeFactory('Document', id='doc4', text='blee', title='Fourth')
+        self.folder.invokeFactory(
+            'Document', id='doc1', text='foo', title='First')
+        self.folder.invokeFactory(
+            'Document', id='doc2', text='bar', title='Second')
+        self.folder.invokeFactory(
+            'Document', id='doc3', text='bloo', title='Third')
+        self.folder.invokeFactory(
+            'Document', id='doc4', text='blee', title='Fourth')
 
     def testInitialOrder(self):
         self.assertEqual(self.folder.getObjectPosition('doc1'), 0)
@@ -660,9 +664,9 @@ class TestCatalogOrdering(PloneTestCase):
         # give no complaints and have no effect.
         folder_position(self.folder)
         folder_docs = self.catalog(
-                            portal_type='Document',
-                            path='/'.join(self.folder.getPhysicalPath()),
-                            sort_on='getObjPositionInParent')
+            portal_type='Document',
+            path='/'.join(self.folder.getPhysicalPath()),
+            sort_on='getObjPositionInParent')
         expected = ['doc1', 'doc2', 'doc3', 'doc4']
         self.assertEqual([b.getId for b in folder_docs], expected)
 
@@ -709,27 +713,28 @@ class TestCatalogOrdering(PloneTestCase):
     def testOrderIsUpdatedOnSort(self):
         folder_position(self.folder, position='ordered', id='Title')
         folder_docs = self.catalog(
-                            portal_type='Document',
-                            path='/'.join(self.folder.getPhysicalPath()),
-                            sort_on='getObjPositionInParent')
+            portal_type='Document',
+            path='/'.join(self.folder.getPhysicalPath()),
+            sort_on='getObjPositionInParent')
         expected = ['doc1', 'doc4', 'doc2', 'doc3']
         self.assertEqual([b.getId for b in folder_docs], expected)
 
     def testOrderIsUpdatedOnReverse(self):
-        folder_position(self.folder, position='ordered', id='Title', reverse=True)
+        folder_position(self.folder, position='ordered',
+                        id='Title', reverse=True)
         folder_docs = self.catalog(
-                            portal_type='Document',
-                            path='/'.join(self.folder.getPhysicalPath()),
-                            sort_on='getObjPositionInParent')
+            portal_type='Document',
+            path='/'.join(self.folder.getPhysicalPath()),
+            sort_on='getObjPositionInParent')
         expected = ['doc3', 'doc2', 'doc4', 'doc1']
         self.assertEqual([b.getId for b in folder_docs], expected)
 
     def testOrderIsUpdatedOnSimpleReverse(self):
         folder_position(self.folder, position='ordered', reverse=True)
         folder_docs = self.catalog(
-                            portal_type='Document',
-                            path='/'.join(self.folder.getPhysicalPath()),
-                            sort_on='getObjPositionInParent')
+            portal_type='Document',
+            path='/'.join(self.folder.getPhysicalPath()),
+            sort_on='getObjPositionInParent')
         expected = ['doc4', 'doc3', 'doc2', 'doc1']
         self.assertEqual([b.getId for b in folder_docs], expected)
 
@@ -800,9 +805,9 @@ class TestCatalogOrdering(PloneTestCase):
         self.assertEqual([b.getId for b in folder_docs], expected)
 
     def testAllObjectsHaveOrder(self):
-        #Make sure that a query with sort_on='getObjPositionInParent'
-        #returns the same number of results as one without, make sure
-        #the Members folder is in the catalog and has getObjPositionInParent
+        # Make sure that a query with sort_on='getObjPositionInParent'
+        # returns the same number of results as one without, make sure
+        # the Members folder is in the catalog and has getObjPositionInParent
         all_objs = self.catalog()
         sorted_objs = self.catalog(sort_on='getObjPositionInParent')
         self.assertEqual(len(all_objs), len(sorted_objs))

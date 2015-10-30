@@ -328,5 +328,3 @@ class LanguageControlPanelFunctionalTest(unittest.TestCase):
         self.browser.getControl('Save').click()
 
         self.assertEqual(settings.use_request_negotiation, True)
-
-

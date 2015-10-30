@@ -8,18 +8,73 @@ Changelog
 5.0.1 (unreleased)
 ------------------
 
-- fix issue where clicking tabs would cause odd scroll movement
+New:
+
+- Be able to stub JavaScript modules to prevent including the same
+  javascript twice.
   [vangheem]
 
-- upgrade to patternslib 2.0.11
+- Set Reply-to address in contact-info emails so you can reply to them.
+  [tkimnguyen, maurits, davisagli]
+
+- Added syndication for plone.app.contenttypes collections.
+  [do3cc]
+
+- Compress generated bundle css file when running plone-compile-resource.
+  [petschki]
+
+- Added new commandline argument to plone-compile-resource: --compile-dir
+  [petschki]
+
+- Upgraded to patternslib 2.0.11.
   [vangheem]
 
-- When migration fails, do not upgrade addons or recatalog or
-  update roles.
+- Allowed all TinyMCE settings to be set from control panel.
+  [Gagaro]
+
+- Added missing_value parameter to controlpanel list and tuple fields.
+  [tomgross]
+
+Fixes:
+
+- Fixed white space pep8 warnings.
   [maurits]
 
-- Allow all TinyMCE settings to be set from control panel.
-  [Gagaro]
+- Prevented breaking Plone when TinyMCE JSON settings fields contain
+  invalid JSON.
+  [petschki]
+
+- Fixed #1199: prevent throwing error with mis-configured bundle.
+  [vangheem]
+
+- Fixed wrong sentence in front page.  There is no "Site Setup entry
+  in the menu in the top right corner".  Replaced it by "Site Setup
+  entry in the user menu".
+  [vincentfretin]
+
+- Fixed some i18n issues.
+  [vincentfretin]
+
+- Used unique traverser for stable resources to set proper cache headers.
+  [alecm]
+
+- Fixed "contains object" tinymce setting not getting passed into pattern
+  correctly.  Fixes #1023.
+  [vangheem]
+
+- Fixed issue when csscompilation and/or jscompilation are missing in
+  bundle registry record.
+  [peschki]
+
+- Fixed #1131: Allow to compile bundle with more than one resource.
+  [timitos]
+
+- Fixed issue where clicking tabs would cause odd scroll movement.
+  [vangheem]
+
+- When migration fails, do not upgrade addons or recatalog or update
+  roles.
+  [maurits]
 
 
 5.0 (2015-09-27)
@@ -27,7 +82,7 @@ Changelog
 
 - Update hero text. Remove "rocks" line, more descriptive link button.
   [esteele]
-  
+
 - Be able to provide table styles in tinymce configuration
   [vangheem]
 

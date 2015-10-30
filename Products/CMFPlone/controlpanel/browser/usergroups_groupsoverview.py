@@ -40,19 +40,22 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
         acl = getToolByName(self, 'acl_users')
         rolemakers = acl.plugins.listPlugins(IRolesPlugin)
 
-        searchView = getMultiAdapter((aq_inner(self.context), self.request), name='pas_search')
+        searchView = getMultiAdapter(
+            (aq_inner(self.context), self.request), name='pas_search')
 
         # First, search for inherited roles assigned to each group.
         # We push this in the request so that IRoles plugins are told provide
         # the roles inherited from the groups to which the principal belongs.
         self.request.set('__ignore_group_roles__', False)
         self.request.set('__ignore_direct_roles__', True)
-        inheritance_enabled_groups = searchView.merge(chain(*[searchView.searchGroups(**{field: searchString}) for field in ['id', 'title']]), 'id')
+        inheritance_enabled_groups = searchView.merge(chain(
+            *[searchView.searchGroups(**{field: searchString}) for field in ['id', 'title']]), 'id')
         allInheritedRoles = {}
         for group_info in inheritance_enabled_groups:
             groupId = group_info['id']
             group = acl.getGroupById(groupId)
-            group_info['title'] = group.getProperty('title', group_info['title'])
+            group_info['title'] = group.getProperty(
+                'title', group_info['title'])
             allAssignedRoles = []
             for rolemaker_id, rolemaker in rolemakers:
                 # getRolesForPrincipal can return None
@@ -65,15 +68,18 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
         # the roles inherited from the groups to which the principal belongs.
         self.request.set('__ignore_group_roles__', True)
         self.request.set('__ignore_direct_roles__', False)
-        explicit_groups = searchView.merge(chain(*[searchView.searchGroups(**{field: searchString}) for field in ['id', 'title']]), 'id')
+        explicit_groups = searchView.merge(chain(
+            *[searchView.searchGroups(**{field: searchString}) for field in ['id', 'title']]), 'id')
 
         # Tack on some extra data, including whether each role is explicitly
-        # assigned ('explicit'), inherited ('inherited'), or not assigned at all (None).
+        # assigned ('explicit'), inherited ('inherited'), or not assigned at
+        # all (None).
         results = []
         for group_info in explicit_groups:
             groupId = group_info['id']
             group = acl.getGroupById(groupId)
-            group_info['title'] = group.getProperty('title', group_info['title'])
+            group_info['title'] = group.getProperty(
+                'title', group_info['title'])
 
             explicitlyAssignedRoles = []
             for rolemaker_id, rolemaker in rolemakers:
@@ -86,13 +92,13 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
                 canAssign = group.canAssignRole(role)
                 if role == 'Manager' and not self.is_zope_manager:
                     canAssign = False
-                roleList[role]={'canAssign': canAssign,
-                                'explicit': role in explicitlyAssignedRoles,
-                                'inherited': role in allInheritedRoles.get(groupId, [])}
+                roleList[role] = {'canAssign': canAssign,
+                                  'explicit': role in explicitlyAssignedRoles,
+                                  'inherited': role in allInheritedRoles.get(groupId, [])}
 
             canDelete = group.canDelete()
             if ('Manager' in explicitlyAssignedRoles or
-                'Manager' in allInheritedRoles.get(groupId, [])):
+                    'Manager' in allInheritedRoles.get(groupId, [])):
                 if not self.is_zope_manager:
                     canDelete = False
 
@@ -114,14 +120,14 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
         CheckAuthenticator(self.request)
         context = aq_inner(self.context)
 
-        groupstool=context.portal_groups
+        groupstool = context.portal_groups
         utils = getToolByName(context, 'plone_utils')
         groupstool = getToolByName(context, 'portal_groups')
 
         message = _(u'No changes made.')
 
         for group in groups:
-            roles=[r for r in self.request.form['group_' + group] if r]
+            roles = [r for r in self.request.form['group_' + group] if r]
             group_obj = groupstool.getGroupById(group)
             current_roles = group_obj.getRoles()
             if not self.is_zope_manager:
@@ -139,6 +145,6 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
                     raise Forbidden
 
             groupstool.removeGroups(delete)
-            message=_(u'Group(s) deleted.')
+            message = _(u'Group(s) deleted.')
 
         utils.addPortalMessage(message)

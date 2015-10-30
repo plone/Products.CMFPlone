@@ -73,6 +73,7 @@ class MaintenanceControlPanelFunctionalTest(unittest.TestCase):
         """
         self.browser.open(self.portal_url + '/@@maintenance-controlpanel')
         original_pack = ApplicationManager.manage_pack
+
         def manage_pack(self, days=0, REQUEST=None, _when=None):
             pass
         ApplicationManager.manage_pack = manage_pack

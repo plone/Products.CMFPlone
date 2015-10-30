@@ -1,4 +1,5 @@
 from urlparse import urlparse
+from urllib import quote
 
 from Products.CMFPlone.resources.browser.cook import cookWhenChangingSettings
 from Products.CMFPlone.resources.browser.resource import ResourceView
@@ -60,15 +61,28 @@ class StylesView(ResourceView):
                     cookWhenChangingSettings(self.context, bundle)
 
             if bundle.csscompilation:
+                css_path = bundle.csscompilation
+                if '++plone++' in css_path:
+                    resource_path = css_path.split('++plone++')[-1]
+                    resource_name, resource_filepath = resource_path.split(
+                        '/', 1)
+                    css_location = '%s/++plone++%s/++unique++%s/%s' % (
+                        self.site_url,
+                        resource_name,
+                        quote(str(bundle.last_compilation)),
+                        resource_filepath
+                    )
+                else:
+                    css_location = '%s/%s?version=%s' % (
+                        self.site_url,
+                        bundle.csscompilation,
+                        quote(str(bundle.last_compilation))
+                    )
                 result.append({
                     'bundle': bundle_name,
                     'rel': 'stylesheet',
                     'conditionalcomment': bundle.conditionalcomment,
-                    'src': '%s/%s?version=%s' % (
-                        self.site_url,
-                        bundle.csscompilation,
-                        bundle.last_compilation
-                    )
+                    'src': css_location
                 })
 
     def styles(self):

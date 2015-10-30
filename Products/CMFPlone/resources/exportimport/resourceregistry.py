@@ -113,7 +113,8 @@ class ResourceRegistryNodeAdapter(XMLAdapterBase):
                 elif self.resource_type == 'stylesheet':
                     proxy.css = [data['url']]
                 if 'enabled' in data and not data['enabled']:
-                    # if we are disabling it, we need to remove from legacy resources
+                    # if we are disabling it, we need to remove from legacy
+                    # resources
                     if res_id in legacy.resources:
                         legacy.resources.remove(res_id)
                     continue
@@ -160,5 +161,6 @@ class ResourceRegistryNodeAdapter(XMLAdapterBase):
             try:
                 cookWhenChangingSettings(self.context, legacy)
             except (AssertionError, ComponentLookupError):
-                # zope.globalrequest and the site might not be setup, don't error out
+                # zope.globalrequest and the site might not be setup, don't
+                # error out
                 pass

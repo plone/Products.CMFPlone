@@ -21,7 +21,7 @@ Before you start exploring your newly created Plone site, please do the followin
 
 <ol>
     <li>Make sure you are logged in as an admin/manager user.
-        <span class="discreet">(You should have a Site Setup entry in the menu in the top right corner)</span></li>
+        <span class="discreet">(You should have a Site Setup entry in the user menu)</span></li>
     <li><a href="@@mail-controlpanel" target="_blank">Set up your mail server</a>. <span class="discreet">(Plone needs a valid SMTP server to verify users and send out password reminders)</span></li>
     <li><a href="@@security-controlpanel" target="_blank">Decide what security level you want on your site</a>. <span class="discreet">(Allow self registration, password policies, etc)</span></li>
 </ol>

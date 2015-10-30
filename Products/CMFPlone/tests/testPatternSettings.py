@@ -11,7 +11,8 @@ import json
 class TestTinyMCESettings(PloneTestCase.PloneTestCase):
 
     def get_conf(self):
-        adapter = PloneSettingsAdapter(self.portal, self.layer['request'], None)
+        adapter = PloneSettingsAdapter(
+            self.portal, self.layer['request'], None)
         return json.loads(adapter.tinymce()['data-pat-tinymce'])
 
     def test_atd_included(self):

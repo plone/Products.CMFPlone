@@ -48,8 +48,8 @@ class PloneSite(PortalObjectBase, DefaultDublinCoreImpl, OrderedContainer,
         (ReplyToItem, ()),
         (View, ('isEffective',)),
         (ModifyPortalContent, ('manage_cutObjects', 'manage_pasteObjects',
-            'manage_renameForm', 'manage_renameObject',
-            'manage_renameObjects')))
+                               'manage_renameForm', 'manage_renameObject',
+                               'manage_renameObjects')))
 
     security.declareProtected(Permissions.copy_or_move, 'manage_copyObjects')
 
@@ -66,7 +66,7 @@ class PloneSite(PortalObjectBase, DefaultDublinCoreImpl, OrderedContainer,
     _properties = (
         {'id': 'title', 'type': 'string', 'mode': 'w'},
         {'id': 'description', 'type': 'text', 'mode': 'w'},
-        )
+    )
     title = ''
     description = ''
     icon = 'misc_/CMFPlone/tool.gif'
@@ -107,6 +107,7 @@ class PloneSite(PortalObjectBase, DefaultDublinCoreImpl, OrderedContainer,
                                                             item)
 
     security.declareProtected(permissions.DeleteObjects, 'manage_delObjects')
+
     def manage_delObjects(self, ids=None, REQUEST=None):
         """We need to enforce security."""
         if ids is None:
@@ -139,6 +140,7 @@ class PloneSite(PortalObjectBase, DefaultDublinCoreImpl, OrderedContainer,
         return self.listFolderContents(contentFilter)
 
     security.declarePublic('availableLanguages')
+
     def availableLanguages(self):
         util = queryUtility(IMetadataLanguageAvailability)
         languages = util.getLanguageListing()
@@ -147,6 +149,7 @@ class PloneSite(PortalObjectBase, DefaultDublinCoreImpl, OrderedContainer,
         languages.insert(0, (u'', _(u'Language neutral (site default)')))
 
         return languages
+
     def isEffective(self, date):
         """ Override DefaultDublinCoreImpl's test, since we are always viewable.
         """

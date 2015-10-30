@@ -15,6 +15,7 @@ class TypesTool(PloneBaseTool, BaseTool):
     toolicon = 'skins/plone_images/document_icon.png'
 
     security.declarePublic('listTypeTitles')
+
     def listTypeTitles(self, container=None):
         """ Return a dictionary of id/Title combinations """
         typenames = {}
@@ -26,6 +27,7 @@ class TypesTool(PloneBaseTool, BaseTool):
         return typenames
 
     security.declarePrivate('listActions')
+
     def listActions(self, info=None, object=None, category=None):
         """ List all the actions defined by a provider.
         """
@@ -43,12 +45,13 @@ class TypesTool(PloneBaseTool, BaseTool):
 
         if category == 'folder/add':
             add_actions = [ti for ti in self.values()
-                            if IAction.providedBy(ti)]
+                           if IAction.providedBy(ti)]
             actions.extend(add_actions)
 
         return actions
 
     security.declarePublic('listActionInfos')
+
     def listActionInfos(self, action_chain=None, object=None,
                         check_visibility=1, check_permissions=1,
                         check_condition=1, max=-1, category=None):

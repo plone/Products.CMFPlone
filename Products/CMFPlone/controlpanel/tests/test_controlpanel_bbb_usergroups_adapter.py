@@ -31,7 +31,8 @@ class UserGroupsControlPanelAdapterTest(unittest.TestCase):
     def test_many_groups(self):
         getAdapter(self.portal, IUserGroupsSettingsSchema).set_many_groups(True)
         self.assertEqual(
-            getAdapter(self.portal, IUserGroupsSettingsSchema).get_many_groups(),
+            getAdapter(
+                self.portal, IUserGroupsSettingsSchema).get_many_groups(),
             True
         )
 

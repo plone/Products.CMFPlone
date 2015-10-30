@@ -11,6 +11,7 @@ from zope.component import getSiteManager
 
 
 class DummyFolder(DummyFolder):
+
     def absolute_url(self):
         return '/'.join([aq_parent(self).absolute_url(), self.getId()])
 
@@ -21,10 +22,10 @@ class DummyLoginSettings():
         'http://external2/',
         'http://external3/site',
         'http://external4/site/'
-        ]
+    ]
+
 
 class DummyRegistry(DummyContent):
-
 
     def __getitem__(self, name, default=None):
         if name == 'plone.allow_external_login_sites':
@@ -32,9 +33,8 @@ class DummyRegistry(DummyContent):
         return default
 
     def forInterface(self, iface, prefix=''):
-    	if iface == ILoginSchema:
-    		return DummyLoginSettings()
-
+        if iface == ILoginSchema:
+            return DummyLoginSettings()
 
 
 class TestURLTool(unittest.TestCase):
@@ -69,7 +69,7 @@ class TestURLTool(unittest.TestCase):
         url_tool = self._makeOne()
         iURLiP = url_tool.isURLInPortal
 
-        #non-root relative urls will need a current context to be passed in
+        # non-root relative urls will need a current context to be passed in
         self.assertTrue(iURLiP('images/img1.jpg'))
         self.assertTrue(iURLiP('./images/img1.jpg'))
 

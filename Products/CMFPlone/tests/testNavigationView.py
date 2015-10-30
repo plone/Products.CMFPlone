@@ -184,7 +184,7 @@ class TestBaseNavTree(PloneTestCase.PloneTestCase):
         id = self.portal.generateUniqueId('Document')
         typeName = 'Document'
         newObject = self.portal.folder1.restrictedTraverse(
-                                'portal_factory/' + typeName + '/' + id)
+            'portal_factory/' + typeName + '/' + id)
         # Will raise a KeyError unless bug is fixed
         view = self.view_class(newObject, self.request)
         view.navigationTree()

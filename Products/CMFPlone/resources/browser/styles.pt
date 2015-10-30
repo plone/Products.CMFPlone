@@ -1,7 +1,7 @@
 <tal:styles repeat="style view/styles"
   ><tal:block define="condcomment style/conditionalcomment"
     ><tal:wcondcomment tal:condition="condcomment">
-        <tal:opencc tal:replace="structure string:&lt;!--[if ${condcomment}]&gt;" />    
+        <tal:opencc tal:replace="structure string:&lt;!--[if ${condcomment}]&gt;" />
     </tal:wcondcomment
     ><link rel="style"
           type="text/css"

@@ -14,7 +14,7 @@ zope.deferredimport.deprecated(
     "It has been moved to plone.app.layout.navigation.interfaces. "
     "This alias will be removed in Plone 5.0",
     INavigationRoot='plone.app.layout.navigation.interfaces:INavigationRoot',
-    )
+)
 
 
 class INavigationBreadcrumbs(Interface):
@@ -380,6 +380,7 @@ class IContactForm(Interface):
         required=False
     )
 
+
 class IAuthorFeedbackForm(Interface):
     """ Interface describing the author feedback form """
 
@@ -395,4 +396,3 @@ class IAuthorFeedbackForm(Interface):
 
     author = schema.TextLine()
     referer = schema.TextLine(required=False)
-

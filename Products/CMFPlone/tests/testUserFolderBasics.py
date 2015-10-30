@@ -21,7 +21,7 @@ class TestUserFolder(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.uf = self.portal.acl_users
         self.basic = \
             'Basic %s' % base64.encodestring(
-                            '%s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD))
+                '%s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD))
         # Set up a published object accessible to the default user
         self.folder.addDTMLMethod('doc', file='')
         self.folder.doc.manage_permission('View', [user_role], acquire=0)

@@ -35,11 +35,11 @@
         <section tal:define="products view/get_upgrades;
                          num_products python:len(products)"
              id="upgrade-products" class="portlet">
-          <header class="portletHeader">Upgrades</header>
+          <header class="portletHeader" i18n:translate="">Upgrades</header>
           <section tal:condition="not:products" class="portletContent">
             <div id="up-to-date-message" class="portalMessage info">
-                 <strong>No upgrades in this corner</strong>
-                 <span>You are up to date. High fives.</span>
+                 <strong i18n:translate="">No upgrades in this corner</strong>
+                 <span i18n:translate="">You are up to date. High fives.</span>
              </div>
           </section>
           <section class="portletContent" tal:condition="products">
@@ -50,23 +50,20 @@
                   <input type="hidden"
                                      name="prefs_reinstallProducts:list"
                                      tal:attributes="value pid;" />
-                  <span i18n:translate="label_product_upgrade_action">
-                    <span i18n:name="reinstall_button">
-                    <input class="standalone"
-                                     type="submit"
-                                     value="product"
-                                     name="form.submitted"
-                                     tal:attributes="value string:Upgrade ${pid};"/>
-                    </span>
-                  </span>
+                  <input class="standalone"
+                         type="submit"
+                         value="Upgrade ${pid}"
+                         name="form.submitted"
+                         i18n:attributes="value"
+                         tal:attributes="value string:Upgrade ${pid};"/>
                 </form>
                 <h3>
-                  <span tal:replace="product/title">
+                  <span tal:replace="product/title" i18n:translate="">
                     Add-on Name
                   </span>
                 </h3>
                 <p class="configletDescription discreet">
-                  <tal:span tal:condition="product/description" tal:content="product/description">add-on description</tal:span>
+                  <tal:span tal:condition="product/description" tal:content="product/description" i18n:translate="">add-on description</tal:span>
                   <em class="discreet"> – (<tal:span tal:content="string:${pid}"> plugin.app.name </tal:span>)</em>
                 </p>
                 <ul class="configletDetails">
@@ -105,14 +102,13 @@
                           name="prefs_reinstallProducts:list"
                           tal:attributes="value product/id;" />
                    </tal:products>
-                   <span i18n:translate="label_product_upgrade_all_action">
-                     <div>The question is, do you feel lucky, punk?</div>
-                     <span i18n:name="reinstall_all_button">
-                              <input class="context"
-                                     type="submit"
-                                     value="Upgrade them ALL!"
-                                     name="form.submitted" />
-                     </span>
+                   <span>
+                     <div i18n:translate="label_product_upgrade_all_action">The question is, do you feel lucky, punk?</div>
+                     <input class="context"
+                            type="submit"
+                            i18n:attributes="value"
+                            value="Upgrade them ALL!"
+                            name="form.submitted" />
                    </span>
                 </form>
                </li>
@@ -132,24 +128,22 @@
                    <input type="hidden"
                            name="install_products:list"
                            tal:attributes="value pid;" />
-                   <span i18n:translate="label_product_install_action">
-                      <span i18n:name="install_button">
-                         <input class="context"
+                   <input class="context"
                            type="submit"
-                           value="product"
+                           value="Install"
                            name="form.submitted"
-                           tal:attributes="value string:Install"/>
-                       </span>
-                   </span>
+                           i18n:attributes="value"/>
                 </form>
 
                 <h3>
-                  <span tal:replace="product/title">
+                  <span tal:replace="product/title" i18n:translate="">
                     Add-on Name
                   </span>
                 </h3>
                 <p class="configletDescription discreet">
-                  <tal:span tal:condition="product/description" tal:content="product/description">add-on description</tal:span>
+                  <tal:span tal:condition="product/description"
+                    i18n:translate=""
+                    tal:content="product/description">add-on description</tal:span>
                   <em class="discreet"> – (<tal:span tal:content="string:${pid}"> plugin.app.name </tal:span>)</em>
                 </p>
               </tal:product>
@@ -170,23 +164,21 @@
                     <input type="hidden"
                           name="uninstall_products:list"
                           tal:attributes="value pid;" />
-                      <span i18n:translate="label_product_uninstall_action">
-                        <span i18n:name="uninstall_button">
-                           <input class="destructive"
-                             type="submit"
-                             value="product"
-                             name="form.submitted"
-                             tal:attributes="value string:Uninstall;"/>
-                         </span>
-                     </span>
+                    <input class="destructive"
+                           type="submit"
+                           value="Uninstall"
+                           name="form.submitted"
+                           i18n:attributes="value"/>
                   </form>
                     <h3>
-                      <span tal:replace="product/title">
+                      <span tal:replace="product/title" i18n:translate="">
                         Add-on Name
                       </span>
                     </h3>
                     <p class="configletDescription discreet">
-                      <tal:span tal:condition="product/description" tal:content="product/description">add-on description</tal:span>
+                      <tal:span tal:condition="product/description"
+                        i18n:translate=""
+                        tal:content="product/description">add-on description</tal:span>
                       <em class="discreet"> – (<tal:span tal:content="string:${pid}"> plugin.app.name </tal:span>)</em>
                     </p>
                 </tal:product>
@@ -204,13 +196,13 @@
             <ul class="configlets">
               <li tal:repeat="product products">
                 <h3>
-                  <span tal:replace="product/productname">
+                  <span tal:replace="product/productname" i18n:translate="">
                     Add-on Name
                   </span>
                 </h3>
                 <p class="configletDescription discreet">
-                  <span tal:content="product/type">Error Type</span>
-                  <em class="discreet"> - <tal:span tal:content="product/value">Error Reason</tal:span></em>
+                  <span tal:content="product/type" i18n:translate="">Error Type</span>
+                  <em class="discreet"> - <tal:span tal:content="product/value" i18n:translate="">Error Reason</tal:span></em>
                 </p>
               </li>
             </ul>

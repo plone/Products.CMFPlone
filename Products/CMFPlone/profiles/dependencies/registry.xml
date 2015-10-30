@@ -1061,7 +1061,9 @@
     <value key="jscompilation">++plone++static/plone-compiled.min.js</value>
     <value key="csscompilation">++plone++static/plone-compiled.css</value>
     <value key="last_compilation">2015-05-02 00:00:00</value>
-    <value key="depends">plone-logged-in</value>
+    <value key="stub_js_modules">
+      <element>jquery</element>
+    </value>
   </records>
 
   <records prefix="plone.bundles/plone-logged-in"
@@ -1074,6 +1076,35 @@
     <value key="jscompilation">++plone++static/plone-logged-in-compiled.min.js</value>
     <value key="csscompilation">++plone++static/plone-logged-in-compiled.css</value>
     <value key="last_compilation">2015-05-07 00:00:00</value>
+    <value key="depends">plone</value>
+    <value key="stub_js_modules">
+      <element>backbone</element>
+      <element>bootstrap-dropdown</element>
+      <element>bootstrap-tooltip</element>
+      <element>jquery.cookie</element>
+      <element>jquery.event.drag</element>
+      <element>jquery.event.drop</element>
+      <element>jquery.form</element>
+      <element>jquery</element>
+      <element>mockup-i18n</element>
+      <element>mockup-patterns-autotoc</element>
+      <element>mockup-patterns-backdrop</element>
+      <element>mockup-patterns-base</element>
+      <element>mockup-patterns-modal</element>
+      <element>mockup-patterns-pickadate</element>
+      <element>mockup-patterns-select2</element>
+      <element>mockup-router</element>
+      <element>mockup-utils</element>
+      <element>pat-base</element>
+      <element>pat-compat</element>
+      <element>pat-logger</element>
+      <element>pat-mockup-parser</element>
+      <element>pat-registry</element>
+      <element>pat-utils</element>
+      <element>select2</element>
+      <element>translate</element>
+      <element>underscore</element>
+    </value>
   </records>
 
   <records prefix="plone.bundles/plone-legacy"
@@ -1098,6 +1129,9 @@
     <value key="jscompilation">++plone++static/resourceregistry-compiled.min.js</value>
     <value key="csscompilation">++plone++static/resourceregistry-compiled.css</value>
     <value key="last_compilation">2015-05-01 00:00:00</value>
+    <value key="stub_js_modules">
+      <element>jquery</element>
+    </value>
   </records>
 
 

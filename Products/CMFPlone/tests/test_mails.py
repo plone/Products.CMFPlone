@@ -38,11 +38,11 @@ def test_suite():
             optionflags=OPTIONFLAGS,
             package='Products.CMFPlone.tests',
             test_class=MockMailHostTestCase,
-            ),
+        ),
         ZopeDocFileSuite(
             'emaillogin.txt',
             optionflags=OPTIONFLAGS,
             package='Products.CMFPlone.tests',
             test_class=MockMailHostTestCase
-            ),
-        ))
+        ),
+    ))

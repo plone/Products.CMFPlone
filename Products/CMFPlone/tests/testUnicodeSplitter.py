@@ -51,7 +51,8 @@ class TestSplitter(unittest.TestCase):
 
     def testProcessGreek(self):
         # Greek letters
-        input = [u'\u039d\u03af\u03ba\u03bf\u03c2 \u03a4\u03b6\u03ac\u03bd\u03bf\u03c2 foo']
+        input = [
+            u'\u039d\u03af\u03ba\u03bf\u03c2 \u03a4\u03b6\u03ac\u03bd\u03bf\u03c2 foo']
         output = [u'\u039d\u03af\u03ba\u03bf\u03c2',
                   u'\u03a4\u03b6\u03ac\u03bd\u03bf\u03c2', u'foo']
         output = [t.encode('utf-8') for t in output]
@@ -136,10 +137,10 @@ class TestQuery(PloneTestCase.PloneTestCase):
         setDeprecatedManageAddDelete(DummyContent)
         self.catalog = getToolByName(self.portal, 'portal_catalog')
         self.folder._setObject('doc1',
-            DummyContent('doc1', catalog=self.catalog))
+                               DummyContent('doc1', catalog=self.catalog))
         self.doc1 = self.folder.doc1
         self.folder._setObject('doc2',
-            DummyContent('doc2', catalog=self.catalog))
+                               DummyContent('doc2', catalog=self.catalog))
         self.doc2 = self.folder.doc2
 
     def testQueryByUmlaut(self):
@@ -241,8 +242,8 @@ class TestQuery(PloneTestCase.PloneTestCase):
 
 # adding UnicodeSplitterPatcth
 from Products.CMFPlone.UnicodeSplitter \
-     import process_str, process_str_post, process_str_glob,\
-     process_unicode, process_unicode_glob
+    import process_str, process_str_post, process_str_glob,\
+    process_unicode, process_unicode_glob
 
 
 class TestBigramFunctions(unittest.TestCase):
@@ -254,7 +255,7 @@ class TestBigramFunctions(unittest.TestCase):
             ("日本語", ["日本", "本語", "語"]),
             ("日本語python", ["日本", "本語", "語", "python"]),
             ("日本語12345", ["日本", "本語", "語", "12345"]),
-            ]
+        ]
         for lst, rst in lsts:
             self.assertEqual(rst, process_str(lst, "utf8"))
 
@@ -265,7 +266,7 @@ class TestBigramFunctions(unittest.TestCase):
             (u"日本語", [u"日本", u"本語", u"語"]),
             (u"日本語python", [u"日本", u"本語", u"語", u"python"]),
             (u"日本語12345", [u"日本", u"本語", u"語", u"12345"]),
-            ]
+        ]
         for lst, rst in lsts:
             self.assertEqual(rst, list(process_unicode(lst)))
 
@@ -276,7 +277,7 @@ class TestBigramFunctions(unittest.TestCase):
             ("日", ["日*"]),
             ("日本語", ["日本", "本語"]),
             ("日本語python", ["日本", "本語", "語", "python"]),
-            ]
+        ]
         for lst, rst in lsts:
             self.assertEqual(rst, process_str_glob(lst, enc))
             for x, y in zip(rst, process_str_glob(lst, enc)):
@@ -289,7 +290,7 @@ class TestBigramFunctions(unittest.TestCase):
             (u"日", [u"日*"]),
             (u"日本語", [u"日本", u"本語"]),
             (u"日本語python", [u"日本", u"本語", u"語", u"python"]),
-            ]
+        ]
         for lst, rst in lsts:
             self.assertEqual(rst, list(process_unicode_glob(lst)))
             for x, y in zip(rst, process_unicode_glob(lst)):
@@ -301,7 +302,7 @@ class TestBigramFunctions(unittest.TestCase):
         lsts = [
             ("日本", "日本"),
             ("日本*", "日本"),
-            ]
+        ]
         for lst, rst in lsts:
             self.assertEqual(rst, process_str_post(lst, enc))
 
@@ -339,6 +340,7 @@ class TestSearchingJapanese(PloneTestCase.PloneTestCase):
 
 class TestSearchingUnicodeJapanese(PloneTestCase.PloneTestCase):
     """ Install Unicode Japanese test """
+
     def afterSetUp(self):
         self.setRoles(('Manager',))
         self.portal.invokeFactory('Document', 'doc1')

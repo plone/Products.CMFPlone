@@ -80,17 +80,24 @@ class UsersGroupsControlPanelView(BrowserView):
         gtool = getToolByName(self, 'portal_groups')
         mtool = getToolByName(self, 'portal_membership')
 
-        searchView = getMultiAdapter((aq_inner(self.context), self.request), name='pas_search')
+        searchView = getMultiAdapter(
+            (aq_inner(self.context), self.request), name='pas_search')
 
         if searchGroups:
-            groupResults = searchView.merge(chain(*[searchView.searchGroups(**{field: searchString}) for field in ['id', 'title']]), 'groupid')
-            groupResults = [gtool.getGroupById(g['id']) for g in groupResults if g['id'] not in ignore]
-            groupResults.sort(key=lambda x: x is not None and normalizeString(x.getGroupTitleOrName()))
+            groupResults = searchView.merge(chain(
+                *[searchView.searchGroups(**{field: searchString}) for field in ['id', 'title']]), 'groupid')
+            groupResults = [gtool.getGroupById(g['id']) for g in groupResults if g[
+                'id'] not in ignore]
+            groupResults.sort(key=lambda x: x is not None and normalizeString(
+                x.getGroupTitleOrName()))
 
         if searchUsers:
-            userResults = searchView.merge(chain(*[searchView.searchUsers(**{field: searchString}) for field in ['login', 'fullname', 'email']]), 'userid')
-            userResults = [mtool.getMemberById(u['id']) for u in userResults if u['id'] not in ignore]
-            userResults.sort(key=lambda x: x is not None and x.getProperty('fullname') is not None and normalizeString(x.getProperty('fullname')) or '')
+            userResults = searchView.merge(chain(*[searchView.searchUsers(
+                **{field: searchString}) for field in ['login', 'fullname', 'email']]), 'userid')
+            userResults = [mtool.getMemberById(u['id']) for u in userResults if u[
+                'id'] not in ignore]
+            userResults.sort(key=lambda x: x is not None and x.getProperty(
+                'fullname') is not None and normalizeString(x.getProperty('fullname')) or '')
 
         return groupResults + userResults
 
@@ -117,7 +124,8 @@ class UsersGroupsControlPanelView(BrowserView):
     # True              True            True                    Show matching
 
     # TODO: Maybe have these methods return a text message (instead of a bool)
-    # corresponding to the actual result, e.g. "Too many to list", "Lists unavailable"
+    # corresponding to the actual result, e.g. "Too many to list", "Lists
+    # unavailable"
 
     @property
     def show_group_listing_warning(self):

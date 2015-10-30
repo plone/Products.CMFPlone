@@ -16,15 +16,15 @@ class TestExternalEditorEnabled(PloneTestCase.PloneTestCase):
         member.setMemberProperties({'ext_editor': 1})
 
         self.lockbody = ('<?xml version="1.0" encoding="utf-8"?>\n'
-                '<d:lockinfo xmlns:d="DAV:">\n'
-                '  <d:lockscope><d:exclusive/></d:lockscope>\n'
-                '  <d:locktype><d:write/></d:locktype>\n'
-                '  <d:depth>infinity</d:depth>\n'
-                '  <d:owner>\n'
-                '  <d:href>Zope External Editor</d:href>\n'
-                '  </d:owner>\n'
-                '</d:lockinfo>'
-                )
+                         '<d:lockinfo xmlns:d="DAV:">\n'
+                         '  <d:lockscope><d:exclusive/></d:lockscope>\n'
+                         '  <d:locktype><d:write/></d:locktype>\n'
+                         '  <d:depth>infinity</d:depth>\n'
+                         '  <d:owner>\n'
+                         '  <d:href>Zope External Editor</d:href>\n'
+                         '  </d:owner>\n'
+                         '</d:lockinfo>'
+                         )
 
     def testFailForAnonymous(self):
         self.assertTrue(self.doc.externalEditorEnabled())

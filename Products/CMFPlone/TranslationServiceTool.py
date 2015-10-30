@@ -34,10 +34,12 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
     implements(ITranslationServiceTool)
 
     security.declarePublic('utranslate')
+
     def utranslate(self, *args, **kw):
         return self.translate(*args, **kw)
 
     security.declarePublic('translate')
+
     def translate(self, msgid, domain=None, mapping=None, context=None,
                   target_language=None, default=None):
         # Translate method for resticted code like skins.
@@ -50,6 +52,7 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
                          default=default)
 
     security.declarePublic('encode')
+
     def encode(self, m, input_encoding=None, output_encoding=None,
                errors='strict'):
         # encode a give unicode type or string type to string type in encoding
@@ -68,6 +71,7 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
         return m.encode(output_encoding, errors)
 
     security.declarePublic('asunicodetype')
+
     def asunicodetype(self, m, input_encoding=None, errors='strict'):
         # create type unicode from type string
 
@@ -81,6 +85,7 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
         return unicode(str(m), input_encoding, errors)
 
     security.declarePublic('ulocalized_time')
+
     def ulocalized_time(self, time, long_format=None, time_only=None,
                         context=None, domain='plonelocales', request=None):
         # get some context if none is passed
@@ -90,6 +95,7 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
                                context, domain, request)
 
     security.declarePublic('day_msgid')
+
     def day_msgid(self, number, format=None):
         """ Returns the msgid which can be passed to the translation service
         for l10n of weekday names. Format is either None, 'a' or 's'.
@@ -121,6 +127,7 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
         return method(number)
 
     security.declarePublic('month_msgid')
+
     def month_msgid(self, number, format=None):
         """ Returns the msgid which can be passed to the translation service
         for l10n of month names. Format is either '' or 'a' (long or
@@ -142,6 +149,7 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
                or monthname_msgid(number)
 
     security.declarePublic('month_english')
+
     def month_english(self, number, format=None):
         """ Returns the english name of month by number. Format is either '' or
         'a' (long or abbreviation).
@@ -157,6 +165,7 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
         return monthname_english(number, format=format)
 
     security.declarePublic('month')
+
     def month(self, number, format=None, default=None):
         """ Returns a Message with the month name, that can be translated by
         the TAL engine. Format is either None or 'a' (long or abbreviation).
@@ -169,6 +178,7 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
         return PLMF(value, default=default)
 
     security.declarePublic('weekday_english')
+
     def weekday_english(self, number, format=None):
         """ Returns the english name of a week by number. Format is
         either None, 'a' or 'p'.

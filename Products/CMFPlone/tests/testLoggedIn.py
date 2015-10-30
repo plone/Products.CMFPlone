@@ -54,7 +54,7 @@ class TestLogin(PloneTestCase.PloneTestCase):
         # login_time did change
         member = self.membership.getAuthenticatedMember()
         self.assertTrue(
-			DateTime(member.getProperty('login_time')) > login_time)
+            DateTime(member.getProperty('login_time')) > login_time)
 
     def testInitialLoginTimeWithString(self):
         member = self.membership.getAuthenticatedMember()

@@ -15,7 +15,7 @@ class TestCSSRegistry(PloneTestCase):
             IResourceRegistry, prefix="plone.resources")
         expected = [
             '++plone++static/plone.less',
-            ]
+        ]
         css_files = [y for x in installedResources.values() for y in x.css]
         for e in expected:
             self.assertTrue(e in css_files, e)
@@ -26,7 +26,7 @@ class TestCSSRegistry(PloneTestCase):
         expected = [
             'plone',
             'plone-legacy'
-            ]
+        ]
         for e in expected:
             self.assertTrue(e in installedBundles.keys(), e)
 
@@ -56,7 +56,7 @@ class TestJSRegistry(PloneTestCase):
         expected = [
             '++resource++plone.js',
             'jquery.highlightsearchterms.js'
-            ]
+        ]
         js_files = [x.js for x in installedResources.values()]
         for e in expected:
             self.assertTrue(e in js_files, e)

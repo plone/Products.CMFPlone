@@ -209,7 +209,7 @@ class TestPUTObjects(PloneTestCase.PloneTestCase):
             self.folder['test.ico'].portal_type,
             'Image',
             'If you are on a Mac and this fails, please see: '
-                'http://plone.org/documentation/error/unittest to fix.')
+            'http://plone.org/documentation/error/unittest to fix.')
         self.assertEqual(str(self.folder['test.ico'].getImage().data),
                          dummy.GIF)
 

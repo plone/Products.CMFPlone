@@ -79,6 +79,7 @@ class IEditingSchema(Interface):
         description=_(u"Available editors in the portal."),
         default=['TinyMCE', 'None'],
         value_type=schema.TextLine(),
+        missing_value=[],
         required=True
     )
 
@@ -157,6 +158,7 @@ class ILanguageSchema(Interface):
                               u"translatable."),
         required=True,
         default=['en'],
+        missing_value=[],
         value_type=schema.Choice(
             vocabulary="plone.app.vocabularies.AvailableContentLanguages"
         )
@@ -211,8 +213,8 @@ class ILanguageSchema(Interface):
             'use_subdomain_negotiation',
             'use_cctld_negotiation',
             'use_request_negotiation',
-            ],
-        )
+        ],
+    )
     use_content_negotiation = schema.Bool(
         title=_(u"heading_language_of_the_content",
                 default=u"Use the language of the content item"),
@@ -264,7 +266,7 @@ class ILanguageSchema(Interface):
             default=(u"i.e. also when the 'set_language' request parameter is absent")),
         default=False,
         required=False,
-        )
+    )
 
     use_subdomain_negotiation = schema.Bool(
         title=_(u"heading_use_subdomain",
@@ -273,7 +275,7 @@ class ILanguageSchema(Interface):
                       default=u"e.g.: de.plone.org"),
         default=False,
         required=False,
-        )
+    )
 
     use_cctld_negotiation = schema.Bool(
         title=_(u"heading_top_level_domain",
@@ -282,7 +284,7 @@ class ILanguageSchema(Interface):
                       default=u"e.g.: www.plone.de"),
         default=False,
         required=False,
-        )
+    )
 
     use_request_negotiation = schema.Bool(
         title=_(u"heading_browser_language_request_negotiation",
@@ -291,7 +293,7 @@ class ILanguageSchema(Interface):
                       default=u"Use browser language request negotiation."),
         default=False,
         required=False,
-        )
+    )
 
 
 class ITagAttrPair(Interface):
@@ -436,6 +438,7 @@ class ITinyMCELayoutSchema(Interface):
                       "the plone bundle CSS and diazo themes using the "
                       "tinymce-content-css setting are also added."),
         value_type=schema.TextLine(),
+        missing_value=[],
         default=[
             u'++plone++static/components/tinymce/skins/lightgray/content.min.css',
         ],
@@ -445,6 +448,7 @@ class ITinyMCELayoutSchema(Interface):
         title=_(u"Header styles"),
         description=_('Name|tag'),
         value_type=schema.TextLine(),
+        missing_value=[],
         default=[
             u'Header 1|h1',
             u"Header 2|h2",
@@ -458,6 +462,7 @@ class ITinyMCELayoutSchema(Interface):
         title=_(u"Inline styles"),
         description=_('Name|format|icon'),
         value_type=schema.TextLine(),
+        missing_value=[],
         default=[
             u"Bold|bold|bold",
             u"Italic|italic|italic",
@@ -471,6 +476,7 @@ class ITinyMCELayoutSchema(Interface):
         title=_(u"Block styles"),
         description=_('Name|format'),
         value_type=schema.TextLine(),
+        missing_value=[],
         default=[
             u"Paragraph|p",
             u"Blockquote|blockquote",
@@ -481,6 +487,7 @@ class ITinyMCELayoutSchema(Interface):
         title=_(u"Alignment styles"),
         description=_('Name|format|icon'),
         value_type=schema.TextLine(),
+        missing_value=[],
         default=[
             u"Left|alignleft|alignleft",
             u"Center|aligncenter|aligncenter",
@@ -491,6 +498,7 @@ class ITinyMCELayoutSchema(Interface):
         title=_(u"Table styles"),
         description=_('Name|class'),
         value_type=schema.TextLine(),
+        missing_value=[],
         default=[
             u"Listing|listing"
         ])
@@ -556,6 +564,7 @@ class ITinyMCEPluginSchema(Interface):
                  'nonbreaking', 'noneditable', 'pagebreak', 'paste', 'preview',
                  'print', 'searchreplace', 'tabfocus', 'table',
                  'visualchars', 'wordcount', 'code'],
+        missing_value=[],
         required=False)
 
     menubar = schema.List(
@@ -564,6 +573,7 @@ class ITinyMCEPluginSchema(Interface):
             u"Enter what items you would like in the menu bar.")),
         required=True,
         value_type=schema.TextLine(),
+        missing_value=[],
         default=[
             u'edit', u'table', u'format',
             u'tools' u'view', u'insert'])
@@ -572,6 +582,7 @@ class ITinyMCEPluginSchema(Interface):
         title=_('label_tinymce_menu', 'Menu'),
         description=_('hint_tinymce_menu',
                       default='JSON formatted Menu configuration.'),
+        constraint=validate_json,
         default=json.dumps({
             'edit': {
                 'title': 'Edit',
@@ -597,7 +608,8 @@ class ITinyMCEPluginSchema(Interface):
             u"Enter the list of templates in json format \
                 http://www.tinymce.com/wiki.php/Plugin:template")),
         required=False,
-        default=u"")
+        constraint=validate_json,
+        default=json.dumps({}).decode('utf8'))
 
     toolbar = schema.Text(
         title=_("label_tinymce_toolbar", default=u"Toolbar"),
@@ -616,13 +628,16 @@ class ITinyMCEPluginSchema(Interface):
                       "pluginname|location, one per line."),
         required=False,
         value_type=schema.TextLine(),
+        missing_value=[],
         default=[])
 
     custom_buttons = schema.List(
         title=_(u"Custom buttons"),
-        description=_(u"Enter a list of custom buttons which will be added to toolbar"),
+        description=_(
+            u"Enter a list of custom buttons which will be added to toolbar"),
         required=False,
         value_type=schema.TextLine(),
+        missing_value=[],
         default=[])
 ITinyMCELibrariesSchema = ITinyMCEPluginSchema  # bw compat
 
@@ -657,6 +672,7 @@ class ITinyMCESpellCheckerSchema(Interface):
             u"Plone",
             u"TinyMCE"],
         value_type=schema.TextLine(),
+        missing_value=[],
         required=False)
 
     libraries_atd_show_types = schema.List(
@@ -679,6 +695,7 @@ class ITinyMCESpellCheckerSchema(Interface):
             u"Passive voice",
             u"Phrases to Avoid",
             u"Redundant Expression"],
+        missing_value=[],
         required=False)
 
     libraries_atd_service_url = schema.TextLine(
@@ -715,6 +732,7 @@ class ITinyMCEResourceTypesSchema(Interface):
             u"Folder",
             u"Large Plone Folder",
             u"Plone Site"],
+        missing_value=[],
         required=False)
 
     # XXX not implements
@@ -743,6 +761,7 @@ class ITinyMCEResourceTypesSchema(Interface):
                       "images. Format is one contenttype per line."),
         default=[u"Image"],
         value_type=schema.TextLine(),
+        missing_value=[],
         required=False)
 
     entity_encoding = schema.Choice(
@@ -771,7 +790,8 @@ class ITinyMCEAdvancedSchema(Interface):
         description=_('hint_tinymce_other_settings',
                       default='Other TinyMCE configuration formatted as JSON.'),
         required=False,
-        default=u"{}",
+        constraint=validate_json,
+        default=json.dumps({}).decode('utf8'),
     )
 
 
@@ -872,6 +892,7 @@ class INavigationSchema(Interface):
             'Document',
             'Event'
         ),
+        missing_value=(),
         value_type=schema.Choice(
             source="plone.app.vocabularies.ReallyUserFriendlyTypes"
         ))
@@ -887,6 +908,7 @@ class INavigationSchema(Interface):
     workflow_states_to_show = schema.Tuple(
         required=False,
         default=(),
+        missing_value=(),
         value_type=schema.Choice(
             source="plone.app.vocabularies.WorkflowStates"))
 
@@ -921,9 +943,11 @@ class INavigationSchema(Interface):
 
     parent_types_not_to_query = schema.List(
         title=_(u"Hide children of these types"),
-        description=_(u"Hide content inside the following types in Navigation."),
+        description=_(
+            u"Hide content inside the following types in Navigation."),
         default=[u'TempFolder'],
         value_type=schema.TextLine(),
+        missing_value=(),
         required=False,
     )
 
@@ -954,6 +978,7 @@ class ISearchSchema(Interface):
             'Plone Site',
             'TempFolder',
         ),
+        missing_value=(),
         value_type=schema.Choice(
             source="plone.app.vocabularies.PortalTypes"
         ),
@@ -1076,7 +1101,8 @@ class ISiteSchema(Interface):
 
     display_publication_date_in_byline = schema.Bool(
         title=_(u'Display publication date'),
-        description=_(u'Show the date a content item was published in the byline.'),
+        description=_(
+            u'Show the date a content item was published in the byline.'),
         default=False,
         required=False)
 
@@ -1135,6 +1161,7 @@ class ISiteSchema(Interface):
                  u'index.html',
                  u'index.htm',
                  u'FrontPage'],
+        missing_value=[],
         value_type=schema.TextLine()
     )
 
@@ -1149,6 +1176,7 @@ class ISiteSchema(Interface):
             u"Site Administrator",
             u"Reviewer",
         ],
+        missing_value=[],
         value_type=schema.Choice(vocabulary="plone.app.vocabularies.Roles"),
     )
 
@@ -1176,6 +1204,7 @@ class IDateAndTimeSchema(Interface):
                     u"portal. Can be set for users and events"),
         required=False,
         default=[],
+        missing_value=[],
         value_type=schema.Choice(
             vocabulary="plone.app.vocabularies.Timezones"))
 
@@ -1203,6 +1232,7 @@ class ITypesSchema(Interface):
         required=False,
         default=[u'Image',
                  u'File'],
+        missing_value=[],
         value_type=schema.TextLine(),
     )
 
@@ -1223,6 +1253,7 @@ class ITypesSchema(Interface):
             u"The content types that should be available for selection "
             u"when setting a default page."),
         required=False,
+        missing_value=[],
         default=[
             u'Document',
             u'Event',
@@ -1333,6 +1364,7 @@ class IMarkupSchema(Interface):
         ),
         required=True,
         default=('text/html', 'text/x-web-textile'),
+        missing_value=(),
         value_type=schema.Choice(
             vocabulary="plone.app.vocabularies.AllowableContentTypes"
         )
@@ -1385,7 +1417,8 @@ class ISocialMediaSchema(Interface):
 
     facebook_app_id = schema.TextLine(
         title=_(u'Facebook app id'),
-        description=_(u'To be used with some integrations like open graph data'),
+        description=_(
+            u'To be used with some integrations like open graph data'),
         required=False,
         default=u'')
 
@@ -1411,6 +1444,7 @@ class IImagingSchema(Interface):
             "tile 64:64",
             "icon 32:32",
             "listing 16:16"],
+        missing_value=[],
         required=False,
     )
 

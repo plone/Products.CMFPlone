@@ -21,7 +21,7 @@ class BaseSyndicationTest(PloneTestCase.PloneTestCase):
         self.doc1 = self.folder.doc1
         self.doc2 = self.folder.doc2
         self.file = self.folder.file
-        #Enable syndication on folder
+        # Enable syndication on folder
         registry = getUtility(IRegistry)
         self.site_settings = registry.forInterface(ISiteSyndicationSettings)
         settings = IFeedSettings(self.folder)
@@ -143,12 +143,12 @@ class TestSyndicationViews(BaseSyndicationTest):
     def test_search_feed_view_raises_404(self):
         self.site_settings.search_rss_enabled = False
         self.assertRaises(NotFound,
-            self.portal.restrictedTraverse('@@search_rss'))
+                          self.portal.restrictedTraverse('@@search_rss'))
 
     def test_search_feed_view_raises_404_not_site_root(self):
         self.site_settings.search_rss_enabled = True
         self.assertRaises(NotFound,
-            self.folder.restrictedTraverse('@@search_rss'))
+                          self.folder.restrictedTraverse('@@search_rss'))
 
 
 class TestSyndicationFeedAdapter(BaseSyndicationTest):
@@ -164,7 +164,7 @@ class TestSyndicationFeedAdapter(BaseSyndicationTest):
 
     def test_link_on_file(self):
         self.assertEqual(self.feeddatafile.link,
-            self.file.absolute_url() + '/view')
+                         self.file.absolute_url() + '/view')
 
     def test_items(self):
         self.assertEqual(len(self.feed._brains()), 3)
@@ -173,7 +173,7 @@ class TestSyndicationFeedAdapter(BaseSyndicationTest):
     def test_max_items(self):
         self.feed.settings.max_items = 2
         self.assertEqual(len([i for i in self.feed.items][:self.feed.limit]),
-                                                                           2)
+                         2)
 
     def test_has_enclosure(self):
         self.assertEqual(self.feeddatadoc.has_enclosure, False)
@@ -211,7 +211,7 @@ class TestRenderBody(BaseSyndicationTest):
         self.news2 = self.folder.news2
         self.news2.setTitle('News 2')
         self.news2.setText(ROOTED_BODY_TEXT)
-        #Enable syndication on folder
+        # Enable syndication on folder
         registry = getUtility(IRegistry)
         self.site_settings = registry.forInterface(ISiteSyndicationSettings)
         settings = IFeedSettings(self.folder)
@@ -247,12 +247,14 @@ class TestRenderBody(BaseSyndicationTest):
         news_feed = '<item rdf:about="{0}">\s*<title>News 1</title>\s*' \
                     '<link>{0}</link>\s*' \
                     '<description>The news item #1</description>\s*' \
-                    '<content:encoded xmlns:content="http://purl.org/rss/1.0/modules/content/"'.format(self.news1.absolute_url())
+                    '<content:encoded xmlns:content="http://purl.org/rss/1.0/modules/content/"'.format(
+                        self.news1.absolute_url())
         self.assertTrue(re.search(news_feed, xml) is not None)
         news_feed = '<item rdf:about="{0}">\s*<title>News 2</title>\s*' \
                     '<link>{0}</link>\s*' \
                     '<description></description>\s*' \
-                    '<content:encoded xmlns:content="http://purl.org/rss/1.0/modules/content/"'.format(self.news2.absolute_url())
+                    '<content:encoded xmlns:content="http://purl.org/rss/1.0/modules/content/"'.format(
+                        self.news2.absolute_url())
         self.assertTrue(re.search(news_feed, xml) is not None)
 
     def test_rss2(self):
@@ -283,7 +285,7 @@ class TestNewsML(BaseSyndicationTest):
         self.news2 = self.folder.news2
         self.news2.setText(ROOTED_BODY_TEXT)
         self.file = self.folder.file
-        #Enable syndication on folder
+        # Enable syndication on folder
         registry = getUtility(IRegistry)
         self.site_settings = registry.forInterface(ISiteSyndicationSettings)
         settings = IFeedSettings(self.folder)

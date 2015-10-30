@@ -52,9 +52,9 @@ class TestPrefsUserManage(PloneTestCase):
         self.membership.addMember(username, 'secret', roles, [])
         member = self.membership.getMemberById(username)
         member.setMemberProperties({
-                        'fullname': fullname,
-                        'email': email,
-                        'last_login_time': DateTime(last_login_time), })
+            'fullname': fullname,
+            'email': email,
+            'last_login_time': DateTime(last_login_time), })
 
     def test_ploneChangePasswordPostOnly(self):
         self.login(TEST_USER_NAME)

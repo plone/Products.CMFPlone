@@ -64,16 +64,16 @@ class TestWorkflowTool(PloneTestCase.PloneTestCase):
     def testGetTitleForStateOnType(self):
         state_id = self.workflow.getInfoFor(self.doc, 'review_state', '')
         state_title = self.workflow.getTitleForStateOnType(
-                        state_id,
-                        self.doc.portal_type)
+            state_id,
+            self.doc.portal_type)
         self.assertEqual(state_id, 'visible')
         self.assertEqual(state_title.lower(), 'public draft')
 
     def testGetTitleForStateOnTypeFallsBackOnStateId(self):
         state_id = 'nonsense'
         state_title = self.workflow.getTitleForStateOnType(
-                        state_id,
-                        self.doc.portal_type)
+            state_id,
+            self.doc.portal_type)
         self.assertEqual(state_title, 'nonsense')
 
     def testGetTitleForStateOnTypeSucceedsWithNonString(self):
@@ -81,22 +81,22 @@ class TestWorkflowTool(PloneTestCase.PloneTestCase):
         # Non content objects can pass None or MissingValue.
         state_id = None
         state_title = self.workflow.getTitleForStateOnType(
-                        state_id,
-                        self.doc.portal_type)
+            state_id,
+            self.doc.portal_type)
         self.assertEqual(state_title, state_id)
 
     def testGetTitleForTransitionOnType(self):
         state_id = 'hide'
         state_title = self.workflow.getTitleForTransitionOnType(
-                        state_id,
-                        self.doc.portal_type)
+            state_id,
+            self.doc.portal_type)
         self.assertEqual(state_title, 'Make private')
 
     def testGetTitleForTransitionOnTypeFallsBackOnTransitionId(self):
         state_id = 'nonsense'
         state_title = self.workflow.getTitleForTransitionOnType(
-                        state_id,
-                        self.doc.portal_type)
+            state_id,
+            self.doc.portal_type)
         self.assertEqual(state_title, 'nonsense')
 
     def testGetTitleForTransitionOnTypeSucceedsWithNonString(self):
@@ -104,8 +104,8 @@ class TestWorkflowTool(PloneTestCase.PloneTestCase):
         # Non content objects can pass None or MissingValue.
         state_id = None
         state_title = self.workflow.getTitleForTransitionOnType(
-                        state_id,
-                        self.doc.portal_type)
+            state_id,
+            self.doc.portal_type)
         self.assertEqual(state_title, state_id)
 
     def testListWFStatesByTitle(self):
@@ -118,7 +118,7 @@ class TestWorkflowTool(PloneTestCase.PloneTestCase):
         external_states = [s for s in states if s[1] == 'external']
         internal_states = [s for s in states if s[1] == 'internal']
         internal_pub_states = [s for s in states
-                                 if s[1] == 'internally_published']
+                               if s[1] == 'internally_published']
 
         self.assertEqual(len(pub_states), all_states.count('published'))
         self.assertEqual(len(priv_states), all_states.count('private'))
@@ -135,7 +135,7 @@ class TestWorkflowTool(PloneTestCase.PloneTestCase):
         content = Dummy()
         directlyProvides(content, IDocument)
         provideAdapter(DummyWorkflowChainAdapter,
-                        adapts=(IDocument, IWorkflowTool))
+                       adapts=(IDocument, IWorkflowTool))
         self.assertEqual(self.workflow.getChainFor(content),
                          ('Static Workflow',))
         # undo our registration so we don't break tests

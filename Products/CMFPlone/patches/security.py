@@ -6,6 +6,8 @@ AccessControl.allow_module.__roles__ = ()
 from zope.traversing import namespace
 from zope.traversing.interfaces import TraversalError
 old_traverse = namespace.view.traverse
+
+
 def traverse(self, name, ignored):
     if not name:
         raise TraversalError(self.context, name)
@@ -17,6 +19,8 @@ from AccessControl import getSecurityManager
 from zExceptions import Unauthorized
 from OFS.ObjectManager import ObjectManager
 ObjectManager.__old_manage_FTPlist = ObjectManager.manage_FTPlist
+
+
 def manage_FTPlist(self, REQUEST):
     """Returns a directory listing consisting of a tuple of
     (id,stat) tuples, marshaled to a string. Note, the listing it
@@ -35,6 +39,8 @@ ObjectManager.manage_FTPlist = manage_FTPlist
 # 4. Make sure z3c.form widgets don't get declared as public
 from Products.Five.metaconfigure import ClassDirective
 old_require = ClassDirective.require
+
+
 def require(self, *args, **kw):
     if self._ClassDirective__class.__module__.startswith('z3c.form.browser'):
         return

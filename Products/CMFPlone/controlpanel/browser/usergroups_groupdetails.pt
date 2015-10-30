@@ -54,7 +54,7 @@
 
       <h1 class="documentFirstHeading"
           i18n:translate="heading_edit_groupproperties"
-          metal:define-slot="content-title">Group: ${view/grouptitle|nothing}</h1>
+          metal:define-slot="content-title">Group: <span i18n:name="groupname" tal:replace="view/grouptitle|nothing"/></h1>
 
       <div metal:use-macro="context/global_statusmessage/macros/portal_message">
         Portal status message
@@ -80,7 +80,7 @@
                 id="createGroup"
                 name="groups"
                 method="post"
-                class="enableUnloadProtection enableAutoFocus"
+                class="enableUnloadProtection pat-formautofocus"
                 tal:attributes="action string:$portal_url/$template_id"
                 tal:define="targetobject context/portal_groupdata;
                             targetGetProperty nocall:view/group/getProperty | nocall:context/returnNone;">
