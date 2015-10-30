@@ -15,7 +15,7 @@ New:
   [vangheem]
 
 - Set Reply-to address in contact-info emails so you can reply to them.
-  [tkimnguyen]
+  [tkimnguyen, maurits, davisagli]
 
 - Added syndication for plone.app.contenttypes collections.
   [do3cc]
