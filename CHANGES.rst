@@ -8,64 +8,71 @@ Changelog
 5.0.1 (unreleased)
 ------------------
 
-- be able to stub JavaScript modules to prevent including the same
-  javascript twice
+New:
+
+- Be able to stub JavaScript modules to prevent including the same
+  javascript twice.
   [vangheem]
 
-- set Reply-to address in contact-info emails so you can reply to them
+- Set Reply-to address in contact-info emails so you can reply to them.
   [tkimnguyen]
 
-- prevent breaking Plone when TinyMCE JSON settings fields contain
-  invalid JSON
+- Added syndication for plone.app.contenttypes collections.
+  [do3cc]
+
+- Compress generated bundle css file when running plone-compile-resource.
   [petschki]
 
-- Fix #1199 prevent throwing error with mis-configured bundle
+- Added new commandline argument to plone-compile-resource: --compile-dir
+  [petschki]
+
+- Upgraded to patternslib 2.0.11.
   [vangheem]
 
-- Fix wrong sentence in front page, there is no "Site Setup entry in the menu
-  in the top right corner", replace it by "Site Setup entry in the user menu".
+- Allowed all TinyMCE settings to be set from control panel.
+  [Gagaro]
+
+- Added missing_value parameter to controlpanel list and tuple fields.
+  [tomgross]
+
+Fixes:
+
+- Prevented breaking Plone when TinyMCE JSON settings fields contain
+  invalid JSON.
+  [petschki]
+
+- Fixed #1199: prevent throwing error with mis-configured bundle.
+  [vangheem]
+
+- Fixed wrong sentence in front page.  There is no "Site Setup entry
+  in the menu in the top right corner".  Replaced it by "Site Setup
+  entry in the user menu".
   [vincentfretin]
 
-- Fix some i18n issues.
+- Fixed some i18n issues.
   [vincentfretin]
 
-- Add syndication for plone.app.contenttypes collections.
-  [do3cc]
-- Use unique traverser for stable resources to set proper cache headers.
+- Used unique traverser for stable resources to set proper cache headers.
   [alecm]
 
-- fix "contains object" tinymce setting not getting passed into pattern
-  correctly Fixes #1023
+- Fixed "contains object" tinymce setting not getting passed into pattern
+  correctly.  Fixes #1023.
   [vangheem]
 
-- compress generated bundle css file when running plone-compile-resource
-  [petschki]
-
-- Add new commandline argument to plone-compile-resource: --compile-dir
-  [petschki]
-
-- Fix issue when csscompilation and/or jscompilation are missing in
+- Fixed issue when csscompilation and/or jscompilation are missing in
   bundle registry record.
   [peschki]
 
-- Fix #1131: Allow to compile bundle with more than one resource
+- Fixed #1131: Allow to compile bundle with more than one resource.
   [timitos]
 
-- fix issue where clicking tabs would cause odd scroll movement
+- Fixed issue where clicking tabs would cause odd scroll movement.
   [vangheem]
 
-- upgrade to patternslib 2.0.11
-  [vangheem]
-
-- When migration fails, do not upgrade addons or recatalog or
-  update roles.
+- When migration fails, do not upgrade addons or recatalog or update
+  roles.
   [maurits]
 
-- Allow all TinyMCE settings to be set from control panel.
-  [Gagaro]
-
-- Added missing_value parameter to controlpanel list and touple fields
-  [tomgross]
 
 5.0 (2015-09-27)
 ----------------
