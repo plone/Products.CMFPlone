@@ -64,7 +64,8 @@ class LanguageControlPanelAdapterTest(unittest.TestCase):
             self.settings.available_languages,
             ['en']
         )
-        getAdapter(self.portal, ILanguageSchema).available_languages = ['de', 'en']
+        getAdapter(self.portal, ILanguageSchema).available_languages = [
+            'de', 'en']
         self.assertEquals(
             self.settings.available_languages,
             ['de', 'en']
@@ -78,7 +79,8 @@ class LanguageControlPanelAdapterTest(unittest.TestCase):
         )
         self.settings.use_combined_language_codes = False
         self.assertEquals(
-            getAdapter(self.portal, ILanguageSchema).use_combined_language_codes,
+            getAdapter(
+                self.portal, ILanguageSchema).use_combined_language_codes,
             False
         )
 
@@ -88,7 +90,7 @@ class LanguageControlPanelAdapterTest(unittest.TestCase):
             True
         )
         getAdapter(
-              self.portal, ILanguageSchema).use_combined_language_codes = False
+            self.portal, ILanguageSchema).use_combined_language_codes = False
         self.assertEquals(
             self.settings.use_combined_language_codes,
             False
@@ -309,4 +311,3 @@ class LanguageControlPanelAdapterTest(unittest.TestCase):
             self.settings.use_request_negotiation,
             True
         )
-

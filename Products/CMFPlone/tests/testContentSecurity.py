@@ -62,14 +62,14 @@ class TestContentSecurity(PloneTestCase):
         folder.manage_addLocalRoles('user2', ('Owner',))
 
         sharingView = self.folder.unrestrictedTraverse('@@sharing')
-        sharingView.update_role_settings([{'id':'user2',
-                                           'type':'user',
-                                           'roles':['Owner']}])
+        sharingView.update_role_settings([{'id': 'user2',
+                                           'type': 'user',
+                                           'roles': ['Owner']}])
 
         folder.invokeFactory('Folder', id='subfolder')
-        #Turn off local role acquisition
+        # Turn off local role acquisition
         folder.subfolder.unrestrictedTraverse('@@sharing') \
-                .update_inherit(False)
+            .update_inherit(False)
 
         self.login('user2')
         # This should now raise ValueError
@@ -84,7 +84,7 @@ class TestContentSecurity(PloneTestCase):
         folder.manage_addLocalRoles('user2', ('Owner',))
         folder.invokeFactory('Folder', id='subfolder')
         subfolder = folder.subfolder
-        #Turn off local role acquisition
+        # Turn off local role acquisition
         subfolder.unrestrictedTraverse('@@sharing').update_inherit(False)
         subfolder.invokeFactory('Folder', id='subsubfolder')
         subfolder.subsubfolder.manage_addLocalRoles('user2', ('Owner',))
@@ -104,7 +104,7 @@ class TestContentSecurity(PloneTestCase):
         folder.invokeFactory('Folder', id='subfolder')
         subfolder = folder.subfolder
         subfolder.unrestrictedTraverse('@@sharing').update_inherit(False)
-        #Turn off local role acquisition
+        # Turn off local role acquisition
         subfolder.invokeFactory('Document', id='new')
         subfolder.new.content_status_modify(workflow_action='publish')
         subfolder.new.manage_addLocalRoles('user2', ('Member',))

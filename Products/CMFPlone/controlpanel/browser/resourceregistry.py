@@ -26,6 +26,7 @@ CSS_URL_REGEX = re.compile('url\(([^)]+)\)')
 
 
 class JSONEncoder(json.JSONEncoder):
+
     def default(self, obj):
         if hasattr(obj, 'isoformat'):
             return obj.isoformat()
@@ -125,7 +126,8 @@ class OverrideFolderManager(object):
             css_url = css_url.lstrip('url(').rstrip(')').\
                 strip('"').strip("'")
             if css_url.startswith(site_url):
-                data = data.replace(css_url, self._rewrite_url(full_resource_url, css_url))
+                data = data.replace(css_url, self._rewrite_url(
+                    full_resource_url, css_url))
 
         return data
 
@@ -191,7 +193,8 @@ class ResourceRegistryControlPanelView(RequireJsView):
         return getUtility(IRegistry)
 
     def update_registry_collection(self, itype, prefix, newdata):
-        rdata = self.registry.collectionOfInterface(itype, prefix=prefix, check=False)
+        rdata = self.registry.collectionOfInterface(
+            itype, prefix=prefix, check=False)
         for key, data in newdata.items():
             if key not in rdata:
                 record = rdata.add(key)
@@ -220,7 +223,8 @@ class ResourceRegistryControlPanelView(RequireJsView):
         # it'd be difficult to know if the legacy bundle settings
         # changed or not so we need to just set the last import date
         # back so it gets re-built
-        self.registry.records['plone.resources.last_legacy_import'].value = datetime.now()
+        self.registry.records[
+            'plone.resources.last_legacy_import'].value = datetime.now()
         cookWhenChangingSettings(self.context)
 
         return json.dumps({

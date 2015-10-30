@@ -77,7 +77,7 @@ class TestCheckId(PloneTestCase):
         portal_membership = getToolByName(self.portal, 'portal_membership')
         have_permission = portal_membership.checkPermission
         self.assertTrue(have_permission('Search ZCatalog',
-                        self.portal.portal_catalog),
+                                        self.portal.portal_catalog),
                         'Expected permission "Search ZCatalog"')
 
         r = self.folder.check_id('created')

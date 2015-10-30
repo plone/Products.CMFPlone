@@ -51,7 +51,7 @@ def applyPatches():
         GroupsTool.removePrincipalFromGroup)
 
     from Products.PluggableAuthService.PluggableAuthService import \
-         PluggableAuthService as PAS
+        PluggableAuthService as PAS
     PAS.userFolderAddUser = patch(PAS.userFolderAddUser)
     PAS.userFolderEditUser = patch(PAS.userFolderEditUser)
     PAS.userFolderDelUsers = patch(PAS.userFolderDelUsers)

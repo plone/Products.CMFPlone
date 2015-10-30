@@ -112,9 +112,11 @@ try{
             # Storing css if defined
             resource_path = css_path.split('++plone++')[-1]
             resource_name, resource_filepath = resource_path.split('/', 1)
-            persistent_directory = getUtility(IResourceDirectory, name="persistent")
+            persistent_directory = getUtility(
+                IResourceDirectory, name="persistent")
             if OVERRIDE_RESOURCE_DIRECTORY_NAME not in persistent_directory:
-                persistent_directory.makeDirectory(OVERRIDE_RESOURCE_DIRECTORY_NAME)
+                persistent_directory.makeDirectory(
+                    OVERRIDE_RESOURCE_DIRECTORY_NAME)
             container = persistent_directory[OVERRIDE_RESOURCE_DIRECTORY_NAME]
             if resource_name not in container:
                 container.makeDirectory(resource_name)

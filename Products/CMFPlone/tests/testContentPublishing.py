@@ -149,8 +149,8 @@ class TestContentPublishing(PloneTestCase):
         self.assertEqual(self.workflow.getInfoFor(self.folder, 'review_state'),
                          'visible')
         self.assertEqual(
-                    self.workflow.getInfoFor(self.folder.d1, 'review_state'),
-                    'published')
+            self.workflow.getInfoFor(self.folder.d1, 'review_state'),
+            'published')
 
     def testPublishingDefaultPagePublishesFolder(self):
         self.setRoles(['Manager'])  # Make sure we can publish directly
@@ -160,8 +160,8 @@ class TestContentPublishing(PloneTestCase):
         self.assertEqual(self.workflow.getInfoFor(self.folder, 'review_state'),
                          'published')
         self.assertEqual(
-                    self.workflow.getInfoFor(self.folder.d1, 'review_state'),
-                    'published')
+            self.workflow.getInfoFor(self.folder.d1, 'review_state'),
+            'published')
 
     def testPublishingDefaultPageWhenFolderCannotBePublished(self):
         self.setRoles(['Manager'])  # Make sure we can publish directly
@@ -176,8 +176,8 @@ class TestContentPublishing(PloneTestCase):
         self.assertEqual(self.workflow.getInfoFor(self.folder, 'review_state'),
                          'published')
         self.assertEqual(
-                    self.workflow.getInfoFor(self.folder.d1, 'review_state'),
-                    'published')
+            self.workflow.getInfoFor(self.folder.d1, 'review_state'),
+            'published')
 
     # test setting effective/expiration date and isExpired script
 

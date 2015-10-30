@@ -31,4 +31,5 @@ class TestBrowserLayerPrecedence(PloneTestCase):
         iro = self._get_request_interfaces()
         unregister_layer('Plone.testlayer')
 
-        self.assertTrue(iro.index(IAdditiveLayer) < iro.index(IDefaultBrowserLayer))
+        self.assertTrue(iro.index(IAdditiveLayer) <
+                        iro.index(IDefaultBrowserLayer))

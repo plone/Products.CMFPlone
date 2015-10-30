@@ -73,17 +73,17 @@ METADATA_DCNAME = {
     # The first two rows are handle in a special way
     # 'Description'      : 'description',
     # 'Subject'          : 'keywords',
-    'Description'      : 'DC.description',
-    'Subject'          : 'DC.subject',
-    'Creator'          : 'DC.creator',
-    'Contributors'     : 'DC.contributors',
-    'Publisher'        : 'DC.publisher',
-    'CreationDate'     : 'DC.date.created',
-    'ModificationDate' : 'DC.date.modified',
-    'Type'             : 'DC.type',
-    'Format'           : 'DC.format',
-    'Language'         : 'DC.language',
-    'Rights'           : 'DC.rights',
+    'Description': 'DC.description',
+    'Subject': 'DC.subject',
+    'Creator': 'DC.creator',
+    'Contributors': 'DC.contributors',
+    'Publisher': 'DC.publisher',
+    'CreationDate': 'DC.date.created',
+    'ModificationDate': 'DC.date.modified',
+    'Type': 'DC.type',
+    'Format': 'DC.format',
+    'Language': 'DC.language',
+    'Rights': 'DC.rights',
 }
 METADATA_DC_AUTHORFIELDS = ('Creator', 'Contributors', 'Publisher')
 
@@ -302,7 +302,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         )
         if not msg:
             msg = relative_path + '/' + obj.title_or_id() \
-                    + ' has been modified.'
+                + ' has been modified.'
         if isinstance(msg, UnicodeType):
             # Convert unicode to a regular string for the backend write IO.
             # UTF-8 is the only reasonable choice, as using unicode means
@@ -955,7 +955,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         mt = getToolByName(self, 'portal_membership')
 
         registry = getUtility(IRegistry)
-        site_settings = registry.forInterface(ISiteSchema, prefix="plone", check=False)
+        site_settings = registry.forInterface(
+            ISiteSchema, prefix="plone", check=False)
         use_all = site_settings.exposeDCMetaTags
 
         try:

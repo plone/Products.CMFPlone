@@ -64,14 +64,14 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
             ('Member', _(u'My Preferences')),
         ],
         site=[
-              ('plone-general', _(u'General')),
-              ('plone-content', _(u'Content')),
-              ('plone-users', _(u'Users')),
-              ('plone-security', _(u'Security')),
-              ('plone-advanced', _(u'Advanced')),
-              ('Plone', _(u'Plone Configuration')),
-              ('Products', _(u'Add-on Configuration')),
-             ]
+            ('plone-general', _(u'General')),
+            ('plone-content', _(u'Content')),
+            ('plone-users', _(u'Users')),
+            ('plone-security', _(u'Security')),
+            ('plone-advanced', _(u'Advanced')),
+            ('Plone', _(u'Plone Configuration')),
+            ('Products', _(u'Add-on Configuration')),
+        ]
     )
 
     def __init__(self, **kw):
@@ -79,21 +79,25 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
             self.__dict__.update(**kw)
 
     security.declareProtected(ManagePortal, 'registerConfiglets')
+
     def registerConfiglets(self, configlets):
         for conf in configlets:
             self.registerConfiglet(**conf)
 
     security.declareProtected(ManagePortal, 'getGroupIds')
+
     def getGroupIds(self, category='site'):
         groups = self.group.get(category, [])
         return [g[0] for g in groups if g]
 
     security.declareProtected(View, 'getGroups')
+
     def getGroups(self, category='site'):
         groups = self.group.get(category, [])
         return [{'id': g[0], 'title': g[1]} for g in groups if g]
 
     security.declarePrivate('listActions')
+
     def listActions(self, info=None, object=None):
         # This exists here to shut up a deprecation warning about old-style
         # actions in CMFCore's ActionProviderBase.  It was decided not to
@@ -103,6 +107,7 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
         return self._actions or ()
 
     security.declarePublic('maySeeSomeConfiglets')
+
     def maySeeSomeConfiglets(self):
         groups = self.getGroups('site')
 
@@ -113,6 +118,7 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
         return len(all) != 0
 
     security.declarePublic('enumConfiglets')
+
     def enumConfiglets(self, group=None):
         portal = getToolByName(self, 'portal_url').getPortalObject()
         context = createExprContext(self, portal, self)
@@ -140,6 +146,7 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
         return res
 
     security.declareProtected(ManagePortal, 'unregisterConfiglet')
+
     def unregisterConfiglet(self, id):
         actids = [o.id for o in self.listActions()]
         selection = [actids.index(a) for a in actids if a == id]
@@ -148,6 +155,7 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
         self.deleteActions(selection)
 
     security.declareProtected(ManagePortal, 'unregisterApplication')
+
     def unregisterApplication(self, appId):
         acts = list(self.listActions())
         selection = [acts.index(a) for a in acts if a.appId == appId]
@@ -203,6 +211,7 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
                               )
 
     security.declareProtected(ManagePortal, 'addAction')
+
     def addAction(self,
                   id,
                   name,
@@ -252,6 +261,7 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
     registerConfiglet = addAction
 
     security.declareProtected(ManagePortal, 'manage_editActionsForm')
+
     def manage_editActionsForm(self, REQUEST, manage_tabs_message=None):
         """ Show the 'Actions' management tab.
         """
@@ -285,7 +295,7 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
             possible_permissions=pp,
             management_view='Actions',
             manage_tabs_message=manage_tabs_message,
-            )
+        )
 
 InitializeClass(PloneControlPanel)
 registerToolInterface('portal_controlpanel', IControlPanel)

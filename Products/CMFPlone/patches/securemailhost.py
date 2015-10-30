@@ -26,17 +26,17 @@ except ImportError:
 fake_module = ModuleProxy(smh_module or sys.modules[__name__])
 deferred = fake_module.__deferred_definitions__
 deferred['EMAIL_RE'] = DeferredAndDeprecated(
-                'EMAIL_RE',
-                'Products.CMFPlone.PloneTool:EMAIL_RE',
-                'EMAIL_RE has been moved from SecureMailHost, which is no '
-                'longer shipped with Plone.  It can be imported from '
-                'Products.CMFPlone.utils.EMAIL_RE')
+    'EMAIL_RE',
+    'Products.CMFPlone.PloneTool:EMAIL_RE',
+    'EMAIL_RE has been moved from SecureMailHost, which is no '
+    'longer shipped with Plone.  It can be imported from '
+    'Products.CMFPlone.utils.EMAIL_RE')
 deferred['EMAIL_CUTOFF_RE'] = DeferredAndDeprecated(
-                     'EMAIL_CUTOFF_RE',
-                     'Products.CMFPlone.PloneTool:EMAIL_CUTOFF_RE',
-                     'EMAIL_CUTOFF_RE has been moved from SecureMailHost, '
-                     'which is no longer shipped with Plone.  It can be '
-                     'imported from Products.CMFPlone.utils.EMAIL_CUTOFF_RE')
+    'EMAIL_CUTOFF_RE',
+    'Products.CMFPlone.PloneTool:EMAIL_CUTOFF_RE',
+    'EMAIL_CUTOFF_RE has been moved from SecureMailHost, '
+    'which is no longer shipped with Plone.  It can be '
+    'imported from Products.CMFPlone.utils.EMAIL_CUTOFF_RE')
 
 
 # We can't depend on SecureMailHost, so we have to reimplement

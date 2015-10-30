@@ -189,6 +189,7 @@ class UpgradeProductsView(BrowserView):
     """
     Upgrade a product... or twenty
     """
+
     def __call__(self):
         qi = ManageProductsView(self.context, self.request)
         products = self.request.get('prefs_reinstallProducts', None)
@@ -218,6 +219,7 @@ class InstallProductsView(BrowserView):
 
 
 class UninstallProductsView(BrowserView):
+
     def __call__(self):
         qi = getToolByName(self.context, 'portal_quickinstaller')
         products = self.request.get('uninstall_products')
@@ -228,11 +230,13 @@ class UninstallProductsView(BrowserView):
             for product in products:
                 try:
                     qi.uninstallProducts(products=[product, ])
-                    msg = _(u'Uninstalled ${product}.', mapping={'product': product})
+                    msg = _(u'Uninstalled ${product}.',
+                            mapping={'product': product})
                 except Exception, e:
                     logging.error("Could not uninstall %s: %s" % (product, e))
                     msg_type = 'error'
-                    msg = _(u'Error uninstalling ${product}.', mapping={'product': product})
+                    msg = _(u'Error uninstalling ${product}.', mapping={
+                            'product': product})
                 messages.addStatusMessage(msg, type=msg_type)
 
         purl = getToolByName(self.context, 'portal_url')()

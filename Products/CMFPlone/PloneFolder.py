@@ -17,11 +17,11 @@ from webdav.interfaces import IWriteLock
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.CMFCatalogAware import CatalogAware, WorkflowAware, \
-                    OpaqueItemManager
+    OpaqueItemManager
 from Products.CMFCore.PortalFolder import PortalFolderBase
 from Products.CMFCore.permissions import AccessContentsInformation, \
-                    AddPortalContent, AddPortalFolders, ListFolderContents, \
-                    ModifyPortalContent
+    AddPortalContent, AddPortalFolders, ListFolderContents, \
+    ModifyPortalContent
 from Products.CMFPlone.DublinCore import DefaultDublinCoreImpl
 
 from zope.interface import implements
@@ -45,6 +45,7 @@ class OrderedContainer(Folder, OrderSupport):
     security = ClassSecurityInfo()
 
     security.declareProtected(ModifyPortalContent, 'moveObject')
+
     def moveObject(self, id, position):
         obj_idx = self.getObjectPosition(id)
         if obj_idx == position:
@@ -58,17 +59,19 @@ class OrderedContainer(Folder, OrderSupport):
         self._objects = tuple(metadata)
 
     security.declarePrivate('getIdsSubset')
+
     def getIdsSubset(self, objs):
         """Get the ids of only cmf objects (used for moveObjectsByDelta)."""
         ttool = getToolByName(self, 'portal_types')
         cmf_meta_types = [ti.Metatype() for ti in ttool.listTypeInfo()]
         return [obj['id'] for obj in objs
-                    if obj['meta_type'] in cmf_meta_types]
+                if obj['meta_type'] in cmf_meta_types]
 
     # BBB
     getCMFObjectsSubsetIds = getIdsSubset
 
     security.declareProtected(ModifyPortalContent, 'getObjectPosition')
+
     def getObjectPosition(self, id):
         try:
             pos = OrderSupport.getObjectPosition(self, id)
@@ -100,7 +103,7 @@ class BasePloneFolder(CatalogAware, WorkflowAware, OpaqueItemManager,
     implements(IWriteLock)
 
     manage_options = Folder.manage_options + \
-                     WorkflowAware.manage_options
+        WorkflowAware.manage_options
 
     # Fix permissions set by CopySupport.py
     __ac_permissions__ = (
@@ -108,7 +111,7 @@ class BasePloneFolder(CatalogAware, WorkflowAware, OpaqueItemManager,
          ('manage_cutObjects', 'manage_pasteObjects',
           'manage_renameForm', 'manage_renameObject',
           'manage_renameObjects', )),
-        )
+    )
 
     security.declareProtected(Permissions.copy_or_move, 'manage_copyObjects')
 
@@ -130,7 +133,7 @@ class BasePloneFolder(CatalogAware, WorkflowAware, OpaqueItemManager,
                 return method()
         else:
             raise NotFound('Cannot find default view for "%s"' %
-                            '/'.join(self.getPhysicalPath()))
+                           '/'.join(self.getPhysicalPath()))
 
     security.declareProtected(Permissions.view, 'view')
     view = __call__
@@ -156,6 +159,7 @@ class BasePloneFolder(CatalogAware, WorkflowAware, OpaqueItemManager,
     index_html = ComputedAttribute(index_html, 1)
 
     security.declareProtected(AddPortalFolders, 'manage_addPloneFolder')
+
     def manage_addPloneFolder(self, id, title='', REQUEST=None):
         """Adds a new PloneFolder."""
         ob = PloneFolder(id, title)
@@ -168,6 +172,7 @@ class BasePloneFolder(CatalogAware, WorkflowAware, OpaqueItemManager,
     manage_renameObject = PortalFolderBase.manage_renameObject
 
     security.declareProtected(Permissions.delete_objects, 'manage_delObjects')
+
     def manage_delObjects(self, ids=None, REQUEST=None):
         """We need to enforce security."""
         if ids is None:
@@ -188,6 +193,7 @@ class BasePloneFolder(CatalogAware, WorkflowAware, OpaqueItemManager,
         return getToolByName(self, 'plone_utils').browserDefault(self)
 
     security.declarePublic('contentValues')
+
     def contentValues(self, filter=None, sort_on=None, reverse=0):
         """Able to sort on field."""
         values = PortalFolderBase.contentValues(self, filter=filter)
@@ -201,19 +207,21 @@ class BasePloneFolder(CatalogAware, WorkflowAware, OpaqueItemManager,
         return values
 
     security.declareProtected(ListFolderContents, 'listFolderContents')
+
     def listFolderContents(self, contentFilter=None,
                            suppressHiddenFiles=0):
         """Optionally you can suppress "hidden" files, or files that
         begin with .
         """
         contents = PortalFolderBase.listFolderContents(self,
-                                                  contentFilter=contentFilter)
+                                                       contentFilter=contentFilter)
         if suppressHiddenFiles:
             contents = [obj for obj in contents if obj.getId()[:1] != '.']
         return contents
 
     security.declareProtected(AccessContentsInformation,
                               'folderlistingFolderContents')
+
     def folderlistingFolderContents(self, contentFilter=None,
                                     suppressHiddenFiles=0):
         """Calls listFolderContents in protected only by ACI so that
@@ -224,6 +232,7 @@ class BasePloneFolder(CatalogAware, WorkflowAware, OpaqueItemManager,
     # Override CMFCore's invokeFactory to return the id returned by the
     # factory in case the factory modifies the id
     security.declareProtected(AddPortalContent, 'invokeFactory')
+
     def invokeFactory(self, type_name, id, RESPONSE=None, *args, **kw):
         """Invokes the portal_types tool."""
         pt = getToolByName(self, 'portal_types')

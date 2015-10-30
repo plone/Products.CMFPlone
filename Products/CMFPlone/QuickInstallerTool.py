@@ -18,6 +18,7 @@ class QuickInstallerTool(PloneBaseTool, BaseTool):
     toolicon = 'skins/plone_images/product_icon.png'
 
     security.declareProtected(ManagePortal, 'upgradeInfo')
+
     def upgradeInfo(self, pid):
         """Returns a dict with two booleans values, stating if an upgrade
         is required and available.
@@ -37,7 +38,7 @@ class QuickInstallerTool(PloneBaseTool, BaseTool):
                 hasProfile=False,
                 installedVersion=installed_product_version,
                 newVersion=product_version,
-                )
+            )
         profile_id = profile['id']
         setup = getToolByName(self, 'portal_setup')
         profile_version = str(setup.getVersionForProfile(profile_id))
@@ -57,9 +58,10 @@ class QuickInstallerTool(PloneBaseTool, BaseTool):
             hasProfile=True,
             installedVersion=installed_profile_version,
             newVersion=profile_version,
-            )
+        )
 
     security.declareProtected(ManagePortal, 'getLatestUpgradeStep')
+
     def getLatestUpgradeStep(self, profile_id):
         '''
         Get the highest ordered upgrade step available to
@@ -75,13 +77,14 @@ class QuickInstallerTool(PloneBaseTool, BaseTool):
             if available:  # could return empty sequence
                 latest = available[-1]
                 profile_version = max(latest['dest'],
-                        key=pkg_resources.parse_version)
+                                      key=pkg_resources.parse_version)
         except Exception:
             pass
 
         return profile_version
 
     security.declareProtected(ManagePortal, 'upgradeProduct')
+
     def upgradeProduct(self, pid):
         profile = self.getInstallProfile(pid)
         if profile is None:

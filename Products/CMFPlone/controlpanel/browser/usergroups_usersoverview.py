@@ -69,7 +69,8 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
             user = acl.getUserById(userId)
             # play safe, though this should never happen
             if user is None:
-                logger.warn('Skipped user without principal object: %s' % userId)
+                logger.warn(
+                    'Skipped user without principal object: %s' % userId)
                 continue
             allAssignedRoles = []
             for rolemaker_id, rolemaker in rolemakers:
@@ -81,7 +82,8 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
         self.request.set('__ignore_group_roles__', True)
         self.request.set('__ignore_direct_roles__', False)
         explicit_users = searchView.merge(
-            chain(*[searchView.searchUsers(**{field: searchString}) for field in ['login', 'fullname', 'email']]), 'userid'
+            chain(*[searchView.searchUsers(**{field: searchString})
+                    for field in ['login', 'fullname', 'email']]), 'userid'
         )
 
         # Tack on some extra data, including whether each role is explicitly
@@ -93,20 +95,22 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
             user = mtool.getMemberById(userId)
             # play safe, though this should never happen
             if user is None:
-                logger.warn('Skipped user without principal object: %s' % userId)
+                logger.warn(
+                    'Skipped user without principal object: %s' % userId)
                 continue
             explicitlyAssignedRoles = []
             for rolemaker_id, rolemaker in rolemakers:
-                explicitlyAssignedRoles.extend(rolemaker.getRolesForPrincipal(user))
+                explicitlyAssignedRoles.extend(
+                    rolemaker.getRolesForPrincipal(user))
 
             roleList = {}
             for role in self.portal_roles:
                 canAssign = user.canAssignRole(role)
                 if role == 'Manager' and not self.is_zope_manager:
                     canAssign = False
-                roleList[role]={'canAssign': canAssign,
-                                'explicit': role in explicitlyAssignedRoles,
-                                'inherited': role in allInheritedRoles[userId]}
+                roleList[role] = {'canAssign': canAssign,
+                                  'explicit': role in explicitlyAssignedRoles,
+                                  'inherited': role in allInheritedRoles[userId]}
 
             canDelete = user.canDelete()
             canPasswordSet = user.canPasswordSet()
@@ -124,7 +128,8 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
             results.append(user_info)
 
         # Sort the users by fullname
-        results.sort(key=lambda x: x is not None and x['fullname'] is not None and normalizeString(x['fullname']) or '')
+        results.sort(key=lambda x: x is not None and x[
+                     'fullname'] is not None and normalizeString(x['fullname']) or '')
 
         # Reset the request variable, just in case.
         self.request.set('__ignore_group_roles__', False)
@@ -155,7 +160,8 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
                     # If the email field was disabled (ie: non-writeable), the
                     # property might not exist.
                     if user.email != member.getProperty('email'):
-                        utils.setMemberProperties(member, REQUEST=context.REQUEST, email=user.email)
+                        utils.setMemberProperties(
+                            member, REQUEST=context.REQUEST, email=user.email)
                         utils.addPortalMessage(_(u'Changes applied.'))
 
                 # If reset password has been checked email user a new password
@@ -166,7 +172,8 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
                     if not context.unrestrictedTraverse('@@overview-controlpanel').mailhost_warning():
                         pw = regtool.generatePassword()
                     else:
-                        utils.addPortalMessage(_(u'No mailhost defined. Unable to reset passwords.'), type='error')
+                        utils.addPortalMessage(
+                            _(u'No mailhost defined. Unable to reset passwords.'), type='error')
 
                 roles = user.get('roles', [])
                 if not self.is_zope_manager:
@@ -174,7 +181,8 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
                     if ('Manager' in roles) != ('Manager' in current_roles):
                         raise Forbidden
 
-                acl_users.userFolderEditUser(user.id, pw, roles, member.getDomains(), REQUEST=context.REQUEST)
+                acl_users.userFolderEditUser(
+                    user.id, pw, roles, member.getDomains(), REQUEST=context.REQUEST)
                 if pw:
                     context.REQUEST.form['new_password'] = pw
                     regtool.mailPassword(user.id, context.REQUEST)
@@ -187,9 +195,9 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
                     u"reset_passwords_msg",
                     default=u"The following users have been sent an e-mail with link to reset their password: ${user_ids}",
                     mapping={
-                        u"user_ids" : ', '.join(users_with_reset_passwords),
-                        },
-                    )
+                        u"user_ids": ', '.join(users_with_reset_passwords),
+                    },
+                )
                 utils.addPortalMessage(reset_passwords_message)
             utils.addPortalMessage(_(u'Changes applied.'))
 
@@ -217,7 +225,7 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
             acl_users.userFolderDelUsers(member_ids)
         except (AttributeError, NotImplementedError):
             raise NotImplementedError('The underlying User Folder '
-                                     'doesn\'t support deleting members.')
+                                      'doesn\'t support deleting members.')
 
         # Delete member data in portal_memberdata.
         mdtool = getToolByName(context, 'portal_memberdata', None)

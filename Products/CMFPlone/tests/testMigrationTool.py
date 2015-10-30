@@ -17,15 +17,15 @@ class TestMigrationTool(PloneTestCase.PloneTestCase):
 
     def testMigrationNeedsUpgrading(self):
         self.assertFalse(self.migration.needUpgrading(),
-                    'Migration needs upgrading')
+                         'Migration needs upgrading')
 
     def testMigrationNeedsUpdateRole(self):
         self.assertFalse(self.migration.needUpdateRole(),
-                    'Migration needs role update')
+                         'Migration needs role update')
 
     def testMigrationNeedsRecatalog(self):
         self.assertFalse(self.migration.needRecatalog(),
-                    'Migration needs recataloging')
+                         'Migration needs recataloging')
 
     def testListUpgradeSteps(self):
         # There should be no upgrade steps from the current version
@@ -113,7 +113,7 @@ class TestAddonList(PloneTestCase.PloneTestCase):
             discussion,
             dexterity,
             foo
-            ])
+        ])
         # Calling it should give no errors.
         addonlist.upgrade_all(self.portal)
 

@@ -64,7 +64,7 @@ class MailControlPanelFunctionalTest(unittest.TestCase):
             name='form.widgets.email_from_name').value = 'John'
         self.browser.getControl(
             name='form.widgets.email_from_address').value = \
-                'john@example.com'
+            'john@example.com'
         self.browser.getControl(name='form.buttons.save').click()
 
         registry = getUtility(IRegistry)
@@ -80,7 +80,7 @@ class MailControlPanelFunctionalTest(unittest.TestCase):
             name='form.widgets.email_from_name').value = 'John'
         self.browser.getControl(
             name='form.widgets.email_from_address').value = \
-                'john@example.com'
+            'john@example.com'
         self.browser.getControl(name='form.buttons.save').click()
 
         registry = getUtility(IRegistry)
@@ -96,7 +96,7 @@ class MailControlPanelFunctionalTest(unittest.TestCase):
             name='form.widgets.email_from_name').value = 'John'
         self.browser.getControl(
             name='form.widgets.email_from_address').value = \
-                'john@example.com'
+            'john@example.com'
         self.browser.getControl(name='form.buttons.save').click()
 
         registry = getUtility(IRegistry)
@@ -112,7 +112,7 @@ class MailControlPanelFunctionalTest(unittest.TestCase):
             name='form.widgets.email_from_name').value = 'John'
         self.browser.getControl(
             name='form.widgets.email_from_address').value = \
-                'john@example.com'
+            'john@example.com'
         self.browser.getControl(name='form.buttons.save').click()
 
         registry = getUtility(IRegistry)
@@ -130,7 +130,7 @@ class MailControlPanelFunctionalTest(unittest.TestCase):
             name='form.widgets.email_from_name').value = 'John'
         self.browser.getControl(
             name='form.widgets.email_from_address').value = \
-                'john@example.com'
+            'john@example.com'
         self.browser.getControl(name='form.buttons.save').click()
         self.browser.getControl(name='form.buttons.save').click()
 
@@ -145,7 +145,7 @@ class MailControlPanelFunctionalTest(unittest.TestCase):
             name='form.widgets.email_from_name').value = 'John'
         self.browser.getControl(
             name='form.widgets.email_from_address').value = \
-                'john@example.com'
+            'john@example.com'
         self.browser.getControl(name='form.buttons.save').click()
 
         registry = getUtility(IRegistry)
@@ -159,7 +159,7 @@ class MailControlPanelFunctionalTest(unittest.TestCase):
             name='form.widgets.email_from_name').value = 'John'
         self.browser.getControl(
             name='form.widgets.email_from_address').value = \
-                'john@example.com'
+            'john@example.com'
         self.browser.getControl(name='form.buttons.save').click()
 
         registry = getUtility(IRegistry)
@@ -173,7 +173,7 @@ class MailControlPanelFunctionalTest(unittest.TestCase):
             name='form.widgets.email_from_name').value = 'John'
         self.browser.getControl(
             name='form.widgets.email_from_address').value = \
-                'john@example.com'
+            'john@example.com'
         self.browser.getControl(name='form.buttons.save').click()
 
         self.browser.open(
@@ -191,7 +191,7 @@ class MailControlPanelFunctionalTest(unittest.TestCase):
             name='form.widgets.email_from_name').value = 'John'
         self.browser.getControl(
             name='form.widgets.email_from_address').value = \
-                'john@example.com'
+            'john@example.com'
         self.browser.getControl(name='form.buttons.save').click()
 
         self.browser.open(

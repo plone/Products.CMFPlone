@@ -13,6 +13,6 @@ def test_suite():
         DocTestSuite('Products.CMFPlone.TranslationServiceTool'),
         DocTestSuite('Products.CMFPlone.utils'),
         DocTestSuite('Products.CMFPlone.workflow'),
-        )
+    )
 
     return TestSuite(suites)

@@ -31,7 +31,8 @@ class ScriptsView(ResourceView):
                         result.append(data)
         else:
             if bundle.compile is False:
-                # Its a legacy css bundle OR compiling is happening outside of plone
+                # Its a legacy css bundle OR compiling is happening outside of
+                # plone
                 if ((not bundle.last_compilation
                         or self.last_legacy_import > bundle.last_compilation)
                         and bundle.resources):
@@ -42,7 +43,8 @@ class ScriptsView(ResourceView):
                 js_path = bundle.jscompilation
                 if '++plone++' in js_path:
                     resource_path = js_path.split('++plone++')[-1]
-                    resource_name, resource_filepath = resource_path.split('/', 1)
+                    resource_name, resource_filepath = resource_path.split(
+                        '/', 1)
                     js_location = '%s/++plone++%s/++unique++%s/%s' % (
                         self.site_url,
                         resource_name,

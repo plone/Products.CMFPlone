@@ -22,7 +22,7 @@ class DateTimeTests(PloneTestCase):
         modified = obj.ModificationDate()   # the string representation...
         modified = DateTime(modified)       # is usually parsed again in Plone
         self.assertTrue(int(before) <= int(modified) <= int(after),
-            (before, modified, after))
+                        (before, modified, after))
 
     def testCreationDate(self):
         before = DateTime()
@@ -31,7 +31,7 @@ class DateTimeTests(PloneTestCase):
         creation = obj.CreationDate()       # the string representation...
         creation = DateTime(creation)       # is usually parsed again in Plone
         self.assertTrue(int(before) <= int(creation) <= int(after),
-            (before, creation, after))
+                        (before, creation, after))
 
     def testEffectiveDate(self):
         obj = self.folder

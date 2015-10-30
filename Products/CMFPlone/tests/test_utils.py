@@ -49,6 +49,7 @@ class DefaultUtilsTests(unittest.TestCase):
 
 
 class LogoTests(PloneTestCase.PloneTestCase):
+
     def test_getSiteLogo_with_setting(self):
         from Products.CMFPlone.utils import getSiteLogo
         registry = getUtility(IRegistry)

@@ -150,6 +150,7 @@ class RegistrationTool(PloneBaseTool, BaseTool):
             return password
 
     security.declarePublic('isValidEmail')
+
     def isValidEmail(self, email):
         """ checks for valid email """
         if EMAIL_RE.search(email) == None:
@@ -164,9 +165,9 @@ class RegistrationTool(PloneBaseTool, BaseTool):
     #
     #   'portal_registration' interface
     #
-    security.declarePublic( 'testPasswordValidity' )
-    def testPasswordValidity(self, password, confirm=None):
+    security.declarePublic('testPasswordValidity')
 
+    def testPasswordValidity(self, password, confirm=None):
         """ Verify that the password satisfies the portal's requirements.
 
         o If the password is valid, return None.
@@ -193,17 +194,17 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         for validator_id, validator in validators:
             user = None
             set_id = ''
-            set_info = {property:password}
-            errors = validator.validateUserInfo( user, set_id, set_info )
+            set_info = {property: password}
+            errors = validator.validateUserInfo(user, set_id, set_info)
             # We will assume that the PASPlugin returns a list of error
             # strings that have already been translated.
             # We just need to join them in an i18n friendly way
-            for error in [info['error'] for info in errors if info['id'] == property ]:
+            for error in [info['error'] for info in errors if info['id'] == property]:
                 if not err:
                     err = error
                 else:
                     msgid = _(u'${sentances}. ${sentance}',
-                            mapping={'sentances': err, 'sentance':error})
+                              mapping={'sentances': err, 'sentance': error})
                     err = self.translate(msgid)
         if not err:
             return None
@@ -211,8 +212,8 @@ class RegistrationTool(PloneBaseTool, BaseTool):
             return err
 
     security.declarePublic('testPropertiesValidity')
-    def testPropertiesValidity(self, props, member=None):
 
+    def testPropertiesValidity(self, props, member=None):
         """ Verify that the properties supplied satisfy portal's requirements.
 
         o If the properties are valid, return None.
@@ -261,6 +262,7 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         return None
 
     security.declareProtected(AddPortalMember, 'isMemberIdAllowed')
+
     def isMemberIdAllowed(self, id):
         if len(id) < 1 or id == 'Anonymous User':
             return 0
@@ -301,6 +303,7 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         return 1
 
     security.declarePublic('generatePassword')
+
     def generatePassword(self):
         """Generate a strong default password. The user never gets sent
         this so we can make it very long."""
@@ -308,12 +311,14 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         return self.getPassword(56)
 
     security.declarePublic('generateResetCode')
+
     def generateResetCode(self, salt, length=14):
         """Generates a reset code which is guaranteed to return the
         same value for a given length and salt, every time."""
         return self.getPassword(length, salt)
 
     security.declarePublic('mailPassword')
+
     def mailPassword(self, login, REQUEST, immediate=False):
         """ Wrapper around mailPassword """
         membership = getToolByName(self, 'portal_membership')
@@ -391,6 +396,7 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         return self.mail_password_response(self, REQUEST)
 
     security.declarePublic('registeredNotify')
+
     def registeredNotify(self, new_member_id):
         """ Wrapper around registeredNotify """
         membership = getToolByName(self, 'portal_membership')
@@ -435,8 +441,8 @@ class RegistrationTool(PloneBaseTool, BaseTool):
 
         return self.mail_password_response(self, self.REQUEST)
 
-
     security.declareProtected(ManagePortal, 'editMember')
+
     @postonly
     def editMember(self, member_id, properties=None, password=None,
                    roles=None, domains=None, REQUEST=None):
@@ -450,7 +456,7 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         mtool = getToolByName(self, 'portal_membership')
         member = mtool.getMemberById(member_id)
         member.setMemberProperties(properties)
-        member.setSecurityProfile(password,roles,domains)
+        member.setSecurityProfile(password, roles, domains)
 
         return member
 
@@ -459,24 +465,25 @@ InitializeClass(RegistrationTool)
 
 _TESTS = (
     (re.compile("^[0-9a-zA-Z\.\-\_\+\']+\@[0-9a-zA-Z\.\-]+$"),
-      True, "Failed a"),
+     True, "Failed a"),
     (re.compile("^[^0-9a-zA-Z]|[^0-9a-zA-Z]$"),
-      False, "Failed b"),
+     False, "Failed b"),
     (re.compile("([0-9a-zA-Z_]{1})\@."),
-      True, "Failed c"),
+     True, "Failed c"),
     (re.compile(".\@([0-9a-zA-Z]{1})"),
      True, "Failed d"),
     (re.compile(".\.\-.|.\-\..|.\.\..|.!(xn)\-\-."),
-      False, "Failed e"),
+     False, "Failed e"),
     (re.compile(".\.\_.|.\-\_.|.\_\..|.\_\-.|.\_\_."),
-      False, "Failed f"),
+     False, "Failed f"),
     (re.compile("(.\.([a-zA-Z]{2,}))$|(.\.(xn--[0-9a-z]+))$"),
-      True, "Failed g"),
-      )
+     True, "Failed g"),
+)
 
 
 class EmailAddressInvalid(ValidationError):
     __doc__ = _(u'Invalid email address.')
+
 
 def _checkEmail(address):
     for pattern, expected, message in _TESTS:
@@ -490,15 +497,15 @@ def _checkEmail(address):
 # characters allowed in atom: A-Za-z0-9!#$%&'*+-/=?^_`{|}~
 # RFC 2821 domain: max 255 characters
 _LOCAL_RE = re.compile(r'([A-Za-z0-9!#$%&\'*+\-/=?^_`{|}~]+'
-                     r'(\.[A-Za-z0-9!#$%&\'*+\-/=?^_`{|}~]+)*|'
-                     r'"[^(\|")]*")@[^@]{3,255}$')
+                       r'(\.[A-Za-z0-9!#$%&\'*+\-/=?^_`{|}~]+)*|'
+                       r'"[^(\|")]*")@[^@]{3,255}$')
 
 # RFC 2821 local-part: max 64 characters
 # RFC 2821 domain: sequence of dot-separated labels
 # characters allowed in label: A-Za-z0-9-, first is a letter
 # Even though the RFC does not allow it all-numeric domains do exist
 _DOMAIN_RE = re.compile(r'[^@]{1,64}@[A-Za-z0-9][A-Za-z0-9-]*'
-                                r'(\.[A-Za-z0-9][A-Za-z0-9-]*)+$')
+                        r'(\.[A-Za-z0-9][A-Za-z0-9-]*)+$')
 
 
 def checkEmailAddress(address):

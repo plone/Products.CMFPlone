@@ -20,7 +20,7 @@ def new__call__(self, econtext):
     except UnicodeDecodeError:
         pass
     return self._expr % tuple([_unicode_replace(var(econtext))
-                                for var in self._vars])
+                               for var in self._vars])
 
 
 class FasterStringIO(list):

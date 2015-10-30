@@ -37,6 +37,9 @@ New:
 
 Fixes:
 
+- Fixed white space pep8 warnings.
+  [maurits]
+
 - Prevented breaking Plone when TinyMCE JSON settings fields contain
   invalid JSON.
   [petschki]

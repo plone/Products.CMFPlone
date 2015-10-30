@@ -22,7 +22,8 @@ class GroupDetailsControlPanel(UsersGroupsControlPanelView):
         if self.group is not None:
             self.grouptitle = self.group.getGroupTitleOrName()
 
-        self.request.set('grouproles', self.group.getRoles() if self.group else [])
+        self.request.set('grouproles', self.group.getRoles()
+                         if self.group else [])
 
         submitted = self.request.form.get('form.submitted', False)
         if submitted:
@@ -46,13 +47,13 @@ class GroupDetailsControlPanel(UsersGroupsControlPanelView):
                                               REQUEST=self.request)
                 if not success:
                     msg = _(u'Could not add group ${name}, perhaps a user or group with '
-                            u'this name already exists.', mapping={u'name' : addname})
+                            u'this name already exists.', mapping={u'name': addname})
                     IStatusMessage(self.request).add(msg, 'error')
                     return self.index()
 
                 self.group = self.gtool.getGroupById(addname)
                 msg = _(u'Group ${name} has been added.',
-                        mapping={u'name' : addname})
+                        mapping={u'name': addname})
 
             elif self.groupname:
                 self.gtool.editGroup(self.groupname, roles=None, groups=None,
@@ -69,12 +70,15 @@ class GroupDetailsControlPanel(UsersGroupsControlPanelView):
                 processed[id] = self.request.get(id, None)
 
             if self.group:
-                # for what reason ever, the very first group created does not exist
+                # for what reason ever, the very first group created does not
+                # exist
                 self.group.setGroupProperties(processed)
 
-            IStatusMessage(self.request).add(msg, type=self.group and 'info' or 'error')
+            IStatusMessage(self.request).add(
+                msg, type=self.group and 'info' or 'error')
             if self.group and not self.groupname:
-                target_url = '%s/%s' % (self.context.absolute_url(), '@@usergroup-groupprefs')
+                target_url = '%s/%s' % (self.context.absolute_url(),
+                                        '@@usergroup-groupprefs')
                 self.request.response.redirect(target_url)
                 return ''
 

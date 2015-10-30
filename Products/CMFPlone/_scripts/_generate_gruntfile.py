@@ -353,7 +353,8 @@ for bkey, bundle in bundles.items():
                 js_object = portal.unrestrictedTraverse(res_obj.js, None)
                 if js_object:
                     main_js_path = resource_to_dir(js_object)
-                    target_path = resource_to_dir(portal.unrestrictedTraverse(res_obj.js))
+                    target_path = resource_to_dir(
+                        portal.unrestrictedTraverse(res_obj.js))
                     target_path = '/'.join(target_path.split('/')[:-1])
                     watch_files.append(main_js_path)
                     rjs_paths = paths.copy()
@@ -368,7 +369,8 @@ for bkey, bundle in bundles.items():
                         out=target_path + '/' + resource + '-compiled.js'
                     )
                     require_configs += rc
-                    js_files.append(target_path + '/' + resource + '-compiled.js')
+                    js_files.append(target_path + '/' +
+                                    resource + '-compiled.js')
                     js_resources.append(resource)
 
             if res_obj.css:
@@ -440,7 +442,8 @@ for bkey, bundle in bundles.items():
 
         requirejs_tasks = ''
         if js_resources:
-            requirejs_tasks = ','.join(['"requirejs:' + r + '"' for r in js_resources]) + ','
+            requirejs_tasks = ','.join(
+                ['"requirejs:' + r + '"' for r in js_resources]) + ','
         bundle_grunt_tasks += (
             "\ngrunt.registerTask('compile-%s',"
             "[%s 'less:%s', %s, 'uglify:%s']);"

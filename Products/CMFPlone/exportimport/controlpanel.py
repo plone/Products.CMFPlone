@@ -130,7 +130,7 @@ class ControlPanelXMLAdapter(XMLAdapterBase):
                 if permNode.nodeName == 'permission':
                     for textNode in permNode.childNodes:
                         if textNode.nodeName != '#text' or \
-                               not textNode.nodeValue.strip():
+                                not textNode.nodeValue.strip():
                             continue
                         permission = str(textNode.nodeValue)
                         break  # only one permission is allowed

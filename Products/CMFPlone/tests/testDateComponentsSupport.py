@@ -17,15 +17,17 @@ class TestDateComponentsSupport(PloneTestCase):
 
     def testElements(self):
         self.assertEqual(sortTuple(self.d.keys()),
-                ('ampm', 'days', 'hours', 'minutes', 'months', 'years'))
+                         ('ampm', 'days', 'hours', 'minutes', 'months', 'years'))
 
     def testYears(self):
         this_year = DateTime().year()
         from plone.registry.interfaces import IRegistry
         from zope.component import getUtility
         registry = getUtility(IRegistry)
-        min_year = registry.get('Products.Archetypes.calendar_starting_year', 1999)
-        max_year = registry.get('Products.Archetypes.calendar_future_years_available', 5) + this_year
+        min_year = registry.get(
+            'Products.Archetypes.calendar_starting_year', 1999)
+        max_year = registry.get(
+            'Products.Archetypes.calendar_future_years_available', 5) + this_year
 
         data = [
             {'selected': None, 'id': '--', 'value': '0000'}
@@ -173,15 +175,17 @@ class TestDateComponentsSupportDefault(PloneTestCase):
 
     def testElements(self):
         self.assertEqual(sortTuple(self.d.keys()),
-                ('ampm', 'days', 'hours', 'minutes', 'months', 'years'))
+                         ('ampm', 'days', 'hours', 'minutes', 'months', 'years'))
 
     def testYears(self):
         this_year = DateTime().year()
         from plone.registry.interfaces import IRegistry
         from zope.component import getUtility
         registry = getUtility(IRegistry)
-        min_year = registry.get('Products.Archetypes.calendar_starting_year', 1999)
-        max_year = registry.get('Products.Archetypes.calendar_future_years_available', 5) + this_year
+        min_year = registry.get(
+            'Products.Archetypes.calendar_starting_year', 1999)
+        max_year = registry.get(
+            'Products.Archetypes.calendar_future_years_available', 5) + this_year
 
         data = [
             {'selected': None, 'id': '--', 'value': '0000'}
@@ -325,7 +329,7 @@ class TestDateComponentsSupportAMPM(PloneTestCase):
 
     def testElements(self):
         self.assertEqual(sortTuple(self.d.keys()),
-                ('ampm', 'days', 'hours', 'minutes', 'months', 'years'))
+                         ('ampm', 'days', 'hours', 'minutes', 'months', 'years'))
 
     def testHours(self):
         data = [
@@ -381,7 +385,7 @@ class TestDateComponentsSupportAMPMDefault(PloneTestCase):
 
     def testElements(self):
         self.assertEqual(sortTuple(self.d.keys()),
-                ('ampm', 'days', 'hours', 'minutes', 'months', 'years'))
+                         ('ampm', 'days', 'hours', 'minutes', 'months', 'years'))
 
     def testHours(self):
         data = [

@@ -213,8 +213,8 @@ class ILanguageSchema(Interface):
             'use_subdomain_negotiation',
             'use_cctld_negotiation',
             'use_request_negotiation',
-            ],
-        )
+        ],
+    )
     use_content_negotiation = schema.Bool(
         title=_(u"heading_language_of_the_content",
                 default=u"Use the language of the content item"),
@@ -266,7 +266,7 @@ class ILanguageSchema(Interface):
             default=(u"i.e. also when the 'set_language' request parameter is absent")),
         default=False,
         required=False,
-        )
+    )
 
     use_subdomain_negotiation = schema.Bool(
         title=_(u"heading_use_subdomain",
@@ -275,7 +275,7 @@ class ILanguageSchema(Interface):
                       default=u"e.g.: de.plone.org"),
         default=False,
         required=False,
-        )
+    )
 
     use_cctld_negotiation = schema.Bool(
         title=_(u"heading_top_level_domain",
@@ -284,7 +284,7 @@ class ILanguageSchema(Interface):
                       default=u"e.g.: www.plone.de"),
         default=False,
         required=False,
-        )
+    )
 
     use_request_negotiation = schema.Bool(
         title=_(u"heading_browser_language_request_negotiation",
@@ -293,7 +293,7 @@ class ILanguageSchema(Interface):
                       default=u"Use browser language request negotiation."),
         default=False,
         required=False,
-        )
+    )
 
 
 class ITagAttrPair(Interface):
@@ -633,7 +633,8 @@ class ITinyMCEPluginSchema(Interface):
 
     custom_buttons = schema.List(
         title=_(u"Custom buttons"),
-        description=_(u"Enter a list of custom buttons which will be added to toolbar"),
+        description=_(
+            u"Enter a list of custom buttons which will be added to toolbar"),
         required=False,
         value_type=schema.TextLine(),
         missing_value=[],
@@ -942,7 +943,8 @@ class INavigationSchema(Interface):
 
     parent_types_not_to_query = schema.List(
         title=_(u"Hide children of these types"),
-        description=_(u"Hide content inside the following types in Navigation."),
+        description=_(
+            u"Hide content inside the following types in Navigation."),
         default=[u'TempFolder'],
         value_type=schema.TextLine(),
         missing_value=(),
@@ -1099,7 +1101,8 @@ class ISiteSchema(Interface):
 
     display_publication_date_in_byline = schema.Bool(
         title=_(u'Display publication date'),
-        description=_(u'Show the date a content item was published in the byline.'),
+        description=_(
+            u'Show the date a content item was published in the byline.'),
         default=False,
         required=False)
 
@@ -1414,7 +1417,8 @@ class ISocialMediaSchema(Interface):
 
     facebook_app_id = schema.TextLine(
         title=_(u'Facebook app id'),
-        description=_(u'To be used with some integrations like open graph data'),
+        description=_(
+            u'To be used with some integrations like open graph data'),
         required=False,
         default=u'')
 

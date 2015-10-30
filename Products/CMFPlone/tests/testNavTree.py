@@ -87,20 +87,30 @@ class TestFolderTree(PloneTestCase.PloneTestCase):
         self.assertEqual(tree[2]['item'].getPath(), rootPath + '/doc3')
         self.assertEqual(tree[3]['item'].getPath(), rootPath + '/folder1')
         self.assertEqual(len(tree[3]['children']), 3)
-        self.assertEqual(tree[3]['children'][0]['item'].getPath(), rootPath + '/folder1/doc11')
-        self.assertEqual(tree[3]['children'][1]['item'].getPath(), rootPath + '/folder1/doc12')
-        self.assertEqual(tree[3]['children'][2]['item'].getPath(), rootPath + '/folder1/doc13')
+        self.assertEqual(tree[3]['children'][0][
+                         'item'].getPath(), rootPath + '/folder1/doc11')
+        self.assertEqual(tree[3]['children'][1][
+                         'item'].getPath(), rootPath + '/folder1/doc12')
+        self.assertEqual(tree[3]['children'][2][
+                         'item'].getPath(), rootPath + '/folder1/doc13')
         self.assertEqual(tree[4]['item'].getPath(), rootPath + '/link1')
         self.assertEqual(tree[5]['item'].getPath(), rootPath + '/folder2')
         self.assertEqual(len(tree[5]['children']), 5)
-        self.assertEqual(tree[5]['children'][0]['item'].getPath(), rootPath + '/folder2/doc21')
-        self.assertEqual(tree[5]['children'][1]['item'].getPath(), rootPath + '/folder2/doc22')
-        self.assertEqual(tree[5]['children'][2]['item'].getPath(), rootPath + '/folder2/doc23')
-        self.assertEqual(tree[5]['children'][3]['item'].getPath(), rootPath + '/folder2/file21')
-        self.assertEqual(tree[5]['children'][4]['item'].getPath(), rootPath + '/folder2/folder21')
+        self.assertEqual(tree[5]['children'][0][
+                         'item'].getPath(), rootPath + '/folder2/doc21')
+        self.assertEqual(tree[5]['children'][1][
+                         'item'].getPath(), rootPath + '/folder2/doc22')
+        self.assertEqual(tree[5]['children'][2][
+                         'item'].getPath(), rootPath + '/folder2/doc23')
+        self.assertEqual(tree[5]['children'][3][
+                         'item'].getPath(), rootPath + '/folder2/file21')
+        self.assertEqual(tree[5]['children'][4][
+                         'item'].getPath(), rootPath + '/folder2/folder21')
         self.assertEqual(len(tree[5]['children'][4]['children']), 2)
-        self.assertEqual(tree[5]['children'][4]['children'][0]['item'].getPath(), rootPath + '/folder2/folder21/doc211')
-        self.assertEqual(tree[5]['children'][4]['children'][1]['item'].getPath(), rootPath + '/folder2/folder21/doc212')
+        self.assertEqual(tree[5]['children'][4]['children'][0][
+                         'item'].getPath(), rootPath + '/folder2/folder21/doc211')
+        self.assertEqual(tree[5]['children'][4]['children'][1][
+                         'item'].getPath(), rootPath + '/folder2/folder21/doc212')
 
     def testGetFromRootWithSpecifiedRoot(self):
         rootPath = '/'.join(self.portal.getPhysicalPath())
@@ -108,12 +118,16 @@ class TestFolderTree(PloneTestCase.PloneTestCase):
         strategy.rootPath = rootPath + '/folder1'
         tree = buildFolderTree(self.portal, strategy=strategy)['children']
         self.assertEqual(len(tree), 3)
-        self.assertEqual(tree[0]['item'].getPath(), rootPath + '/folder1/doc11')
-        self.assertEqual(tree[1]['item'].getPath(), rootPath + '/folder1/doc12')
-        self.assertEqual(tree[2]['item'].getPath(), rootPath + '/folder1/doc13')
+        self.assertEqual(tree[0]['item'].getPath(),
+                         rootPath + '/folder1/doc11')
+        self.assertEqual(tree[1]['item'].getPath(),
+                         rootPath + '/folder1/doc12')
+        self.assertEqual(tree[2]['item'].getPath(),
+                         rootPath + '/folder1/doc13')
 
     def testGetFromRootWithNodeFilter(self):
         class Strategy(NavtreeStrategyBase):
+
             def nodeFilter(self, node):
                 return ('doc' not in node['item'].getId)
         tree = buildFolderTree(self.portal, strategy=Strategy())['children']
@@ -124,12 +138,15 @@ class TestFolderTree(PloneTestCase.PloneTestCase):
         self.assertEqual(tree[1]['item'].getPath(), rootPath + '/link1')
         self.assertEqual(tree[2]['item'].getPath(), rootPath + '/folder2')
         self.assertEqual(len(tree[2]['children']), 2)
-        self.assertEqual(tree[2]['children'][0]['item'].getPath(), rootPath + '/folder2/file21')
-        self.assertEqual(tree[2]['children'][1]['item'].getPath(), rootPath + '/folder2/folder21')
+        self.assertEqual(tree[2]['children'][0][
+                         'item'].getPath(), rootPath + '/folder2/file21')
+        self.assertEqual(tree[2]['children'][1][
+                         'item'].getPath(), rootPath + '/folder2/folder21')
         self.assertEqual(len(tree[2]['children'][1]['children']), 0)
 
     def testGetFromRootWithNodeFilterOnFolder(self):
         class Strategy(NavtreeStrategyBase):
+
             def nodeFilter(self, node):
                 return ('folder' not in node['item'].getId)
         tree = buildFolderTree(self.portal, strategy=Strategy())['children']
@@ -142,6 +159,7 @@ class TestFolderTree(PloneTestCase.PloneTestCase):
 
     def testGetFromRootWithSubtreeFilter(self):
         class Strategy(NavtreeStrategyBase):
+
             def subtreeFilter(self, node):
                 return ('folder2' != node['item'].getId)
         tree = buildFolderTree(self.portal, strategy=Strategy())['children']
@@ -152,9 +170,12 @@ class TestFolderTree(PloneTestCase.PloneTestCase):
         self.assertEqual(tree[2]['item'].getPath(), rootPath + '/doc3')
         self.assertEqual(tree[3]['item'].getPath(), rootPath + '/folder1')
         self.assertEqual(len(tree[3]['children']), 3)
-        self.assertEqual(tree[3]['children'][0]['item'].getPath(), rootPath + '/folder1/doc11')
-        self.assertEqual(tree[3]['children'][1]['item'].getPath(), rootPath + '/folder1/doc12')
-        self.assertEqual(tree[3]['children'][2]['item'].getPath(), rootPath + '/folder1/doc13')
+        self.assertEqual(tree[3]['children'][0][
+                         'item'].getPath(), rootPath + '/folder1/doc11')
+        self.assertEqual(tree[3]['children'][1][
+                         'item'].getPath(), rootPath + '/folder1/doc12')
+        self.assertEqual(tree[3]['children'][2][
+                         'item'].getPath(), rootPath + '/folder1/doc13')
         self.assertEqual(tree[4]['item'].getPath(), rootPath + '/link1')
         self.assertEqual(tree[5]['item'].getPath(), rootPath + '/folder2')
         self.assertEqual(len(tree[5]['children']), 0)
@@ -187,7 +208,8 @@ class TestFolderTree(PloneTestCase.PloneTestCase):
         rootPath = '/'.join(self.portal.getPhysicalPath())
         self.assertEqual(tree[-1]['item'].getPath(), rootPath + '/ns_folder')
         self.assertEqual(len(tree[-1]['children']), 1)
-        self.assertEqual(tree[-1]['children'][0]['item'].getPath(), rootPath + '/ns_folder/doc')
+        self.assertEqual(tree[-1]['children'][0]
+                         ['item'].getPath(), rootPath + '/ns_folder/doc')
 
     def testGetWithRootContext(self):
         tree = buildFolderTree(self.portal, obj=self.portal)['children']
@@ -198,40 +220,58 @@ class TestFolderTree(PloneTestCase.PloneTestCase):
         self.assertEqual(tree[2]['item'].getPath(), rootPath + '/doc3')
         self.assertEqual(tree[3]['item'].getPath(), rootPath + '/folder1')
         self.assertEqual(len(tree[3]['children']), 3)
-        self.assertEqual(tree[3]['children'][0]['item'].getPath(), rootPath + '/folder1/doc11')
-        self.assertEqual(tree[3]['children'][1]['item'].getPath(), rootPath + '/folder1/doc12')
-        self.assertEqual(tree[3]['children'][2]['item'].getPath(), rootPath + '/folder1/doc13')
+        self.assertEqual(tree[3]['children'][0][
+                         'item'].getPath(), rootPath + '/folder1/doc11')
+        self.assertEqual(tree[3]['children'][1][
+                         'item'].getPath(), rootPath + '/folder1/doc12')
+        self.assertEqual(tree[3]['children'][2][
+                         'item'].getPath(), rootPath + '/folder1/doc13')
         self.assertEqual(tree[4]['item'].getPath(), rootPath + '/link1')
         self.assertEqual(tree[5]['item'].getPath(), rootPath + '/folder2')
         self.assertEqual(len(tree[5]['children']), 5)
-        self.assertEqual(tree[5]['children'][0]['item'].getPath(), rootPath + '/folder2/doc21')
-        self.assertEqual(tree[5]['children'][1]['item'].getPath(), rootPath + '/folder2/doc22')
-        self.assertEqual(tree[5]['children'][2]['item'].getPath(), rootPath + '/folder2/doc23')
-        self.assertEqual(tree[5]['children'][3]['item'].getPath(), rootPath + '/folder2/file21')
-        self.assertEqual(tree[5]['children'][4]['item'].getPath(), rootPath + '/folder2/folder21')
+        self.assertEqual(tree[5]['children'][0][
+                         'item'].getPath(), rootPath + '/folder2/doc21')
+        self.assertEqual(tree[5]['children'][1][
+                         'item'].getPath(), rootPath + '/folder2/doc22')
+        self.assertEqual(tree[5]['children'][2][
+                         'item'].getPath(), rootPath + '/folder2/doc23')
+        self.assertEqual(tree[5]['children'][3][
+                         'item'].getPath(), rootPath + '/folder2/file21')
+        self.assertEqual(tree[5]['children'][4][
+                         'item'].getPath(), rootPath + '/folder2/folder21')
         self.assertEqual(len(tree[5]['children'][4]['children']), 2)
-        self.assertEqual(tree[5]['children'][4]['children'][0]['item'].getPath(), rootPath + '/folder2/folder21/doc211')
-        self.assertEqual(tree[5]['children'][4]['children'][1]['item'].getPath(), rootPath + '/folder2/folder21/doc212')
+        self.assertEqual(tree[5]['children'][4]['children'][0][
+                         'item'].getPath(), rootPath + '/folder2/folder21/doc211')
+        self.assertEqual(tree[5]['children'][4]['children'][1][
+                         'item'].getPath(), rootPath + '/folder2/folder21/doc212')
 
     def testGetFromFixed(self):
         rootPath = '/'.join(self.portal.getPhysicalPath())
         query = {'path': rootPath + '/folder1'}
         tree = buildFolderTree(self.portal, query=query)['children']
         self.assertEqual(len(tree), 3)
-        self.assertEqual(tree[0]['item'].getPath(), rootPath + '/folder1/doc11')
-        self.assertEqual(tree[1]['item'].getPath(), rootPath + '/folder1/doc12')
-        self.assertEqual(tree[2]['item'].getPath(), rootPath + '/folder1/doc13')
+        self.assertEqual(tree[0]['item'].getPath(),
+                         rootPath + '/folder1/doc11')
+        self.assertEqual(tree[1]['item'].getPath(),
+                         rootPath + '/folder1/doc12')
+        self.assertEqual(tree[2]['item'].getPath(),
+                         rootPath + '/folder1/doc13')
 
     def testGetFromFixedAndDepth(self):
         rootPath = '/'.join(self.portal.getPhysicalPath())
         query = {'path': rootPath + '/folder2', 'depth': 1}
         tree = buildFolderTree(self.portal, query=query)['children']
         self.assertEqual(len(tree), 5)
-        self.assertEqual(tree[0]['item'].getPath(), rootPath + '/folder2/doc21')
-        self.assertEqual(tree[1]['item'].getPath(), rootPath + '/folder2/doc22')
-        self.assertEqual(tree[2]['item'].getPath(), rootPath + '/folder2/doc23')
-        self.assertEqual(tree[3]['item'].getPath(), rootPath + '/folder2/file21')
-        self.assertEqual(tree[4]['item'].getPath(), rootPath + '/folder2/folder21')
+        self.assertEqual(tree[0]['item'].getPath(),
+                         rootPath + '/folder2/doc21')
+        self.assertEqual(tree[1]['item'].getPath(),
+                         rootPath + '/folder2/doc22')
+        self.assertEqual(tree[2]['item'].getPath(),
+                         rootPath + '/folder2/doc23')
+        self.assertEqual(tree[3]['item'].getPath(),
+                         rootPath + '/folder2/file21')
+        self.assertEqual(tree[4]['item'].getPath(),
+                         rootPath + '/folder2/folder21')
 
     def testGetFromRootWithCurrent(self):
         context = self.portal.folder2.doc21
@@ -263,18 +303,26 @@ class TestFolderTree(PloneTestCase.PloneTestCase):
         self.assertEqual(tree[2]['item'].getPath(), rootPath + '/doc3')
         self.assertEqual(tree[3]['item'].getPath(), rootPath + '/folder1')
         self.assertEqual(len(tree[3]['children']), 2)
-        self.assertEqual(tree[3]['children'][0]['item'].getPath(), rootPath + '/folder1/doc11')
-        self.assertEqual(tree[3]['children'][1]['item'].getPath(), rootPath + '/folder1/doc13')
+        self.assertEqual(tree[3]['children'][0][
+                         'item'].getPath(), rootPath + '/folder1/doc11')
+        self.assertEqual(tree[3]['children'][1][
+                         'item'].getPath(), rootPath + '/folder1/doc13')
         self.assertEqual(tree[4]['item'].getPath(), rootPath + '/link1')
         self.assertEqual(tree[5]['item'].getPath(), rootPath + '/folder2')
         self.assertEqual(len(tree[5]['children']), 4)
-        self.assertEqual(tree[5]['children'][0]['item'].getPath(), rootPath + '/folder2/doc22')
-        self.assertEqual(tree[5]['children'][1]['item'].getPath(), rootPath + '/folder2/doc23')
-        self.assertEqual(tree[5]['children'][2]['item'].getPath(), rootPath + '/folder2/file21')
-        self.assertEqual(tree[5]['children'][3]['item'].getPath(), rootPath + '/folder2/folder21')
+        self.assertEqual(tree[5]['children'][0][
+                         'item'].getPath(), rootPath + '/folder2/doc22')
+        self.assertEqual(tree[5]['children'][1][
+                         'item'].getPath(), rootPath + '/folder2/doc23')
+        self.assertEqual(tree[5]['children'][2][
+                         'item'].getPath(), rootPath + '/folder2/file21')
+        self.assertEqual(tree[5]['children'][3][
+                         'item'].getPath(), rootPath + '/folder2/folder21')
         self.assertEqual(len(tree[5]['children'][3]['children']), 2)
-        self.assertEqual(tree[5]['children'][3]['children'][0]['item'].getPath(), rootPath + '/folder2/folder21/doc211')
-        self.assertEqual(tree[5]['children'][3]['children'][1]['item'].getPath(), rootPath + '/folder2/folder21/doc212')
+        self.assertEqual(tree[5]['children'][3]['children'][0][
+                         'item'].getPath(), rootPath + '/folder2/folder21/doc211')
+        self.assertEqual(tree[5]['children'][3]['children'][1][
+                         'item'].getPath(), rootPath + '/folder2/folder21/doc212')
 
     def testGetFromRootWithCurrentIsDefaultPage(self):
         self.portal.folder2.setDefaultPage('doc21')
@@ -302,6 +350,7 @@ class TestFolderTree(PloneTestCase.PloneTestCase):
 
     def testGetFromRootWithDecoratorFactory(self):
         class Strategy(NavtreeStrategyBase):
+
             def decoratorFactory(self, node):
                 node['foo'] = True
                 return node
@@ -319,10 +368,12 @@ class TestFolderTree(PloneTestCase.PloneTestCase):
         self.assertEqual(len(tree), 2)
         self.assertEqual(tree[0]['item'].getPath(), rootPath + '/folder1')
         self.assertEqual(len(tree[0]['children']), 1)
-        self.assertEqual(tree[0]['children'][0]['item'].getPath(), rootPath + '/folder1/doc11')
+        self.assertEqual(tree[0]['children'][0][
+                         'item'].getPath(), rootPath + '/folder1/doc11')
         self.assertEqual(tree[1]['item'].getPath(), rootPath + '/folder2')
         self.assertEqual(len(tree[1]['children']), 1)
-        self.assertEqual(tree[1]['children'][0]['item'].getPath(), rootPath + '/folder2/folder21')
+        self.assertEqual(tree[1]['children'][0][
+                         'item'].getPath(), rootPath + '/folder2/folder21')
 
     def testShowAllParentsWithRestrictedParent(self):
         strategy = NavtreeStrategyBase()
@@ -338,10 +389,12 @@ class TestFolderTree(PloneTestCase.PloneTestCase):
         self.assertEqual(len(tree), 2)
         self.assertEqual(tree[0]['item'].getPath(), rootPath + '/folder1')
         self.assertEqual(len(tree[0]['children']), 1)
-        self.assertEqual(tree[0]['children'][0]['item'].getPath(), rootPath + '/folder1/doc11')
+        self.assertEqual(tree[0]['children'][0][
+                         'item'].getPath(), rootPath + '/folder1/doc11')
         self.assertEqual(tree[1]['item'].getPath(), rootPath + '/folder2')
         self.assertEqual(len(tree[1]['children']), 1)
-        self.assertEqual(tree[1]['children'][0]['item'].getPath(), rootPath + '/folder2/folder21')
+        self.assertEqual(tree[1]['children'][0][
+                         'item'].getPath(), rootPath + '/folder2/folder21')
 
     def testShowAllParentsWithParentNotInCatalog(self):
         strategy = NavtreeStrategyBase()
@@ -370,7 +423,8 @@ class TestFolderTree(PloneTestCase.PloneTestCase):
         self.assertEqual(len(tree[0]['children']), 0)
         self.assertEqual(tree[1]['item'].getPath(), rootPath + '/folder2')
         self.assertEqual(len(tree[1]['children']), 1)
-        self.assertEqual(tree[1]['children'][0]['item'].getPath(), rootPath + '/folder2/folder21')
+        self.assertEqual(tree[1]['children'][0][
+                         'item'].getPath(), rootPath + '/folder2/folder21')
 
     def testGetFromRootWithCurrentNavtree(self):
         context = self.portal.folder1.doc11
@@ -384,9 +438,12 @@ class TestFolderTree(PloneTestCase.PloneTestCase):
         self.assertEqual(tree[2]['item'].getPath(), rootPath + '/doc3')
         self.assertEqual(tree[3]['item'].getPath(), rootPath + '/folder1')
         self.assertEqual(len(tree[3]['children']), 3)
-        self.assertEqual(tree[3]['children'][0]['item'].getPath(), rootPath + '/folder1/doc11')
-        self.assertEqual(tree[3]['children'][1]['item'].getPath(), rootPath + '/folder1/doc12')
-        self.assertEqual(tree[3]['children'][2]['item'].getPath(), rootPath + '/folder1/doc13')
+        self.assertEqual(tree[3]['children'][0][
+                         'item'].getPath(), rootPath + '/folder1/doc11')
+        self.assertEqual(tree[3]['children'][1][
+                         'item'].getPath(), rootPath + '/folder1/doc12')
+        self.assertEqual(tree[3]['children'][2][
+                         'item'].getPath(), rootPath + '/folder1/doc13')
         self.assertEqual(tree[4]['item'].getPath(), rootPath + '/link1')
         self.assertEqual(tree[5]['item'].getPath(), rootPath + '/folder2')
         self.assertEqual(len(tree[5]['children']), 0)
@@ -399,13 +456,18 @@ class TestFolderTree(PloneTestCase.PloneTestCase):
         rootPath = '/'.join(self.portal.getPhysicalPath())
         tree = buildFolderTree(self.portal, query=query)['children']
         self.assertEqual(len(tree), 3)
-        self.assertEqual(tree[0]['item'].getPath(), rootPath + '/folder1/doc11')
-        self.assertEqual(tree[1]['item'].getPath(), rootPath + '/folder1/doc12')
-        self.assertEqual(tree[2]['item'].getPath(), rootPath + '/folder1/doc13')
+        self.assertEqual(tree[0]['item'].getPath(),
+                         rootPath + '/folder1/doc11')
+        self.assertEqual(tree[1]['item'].getPath(),
+                         rootPath + '/folder1/doc12')
+        self.assertEqual(tree[2]['item'].getPath(),
+                         rootPath + '/folder1/doc13')
 
     def testGetFromRootWithCurrentNavtreePruned(self):
         context = self.portal.folder1.doc11
+
         class Strategy(NavtreeStrategyBase):
+
             def subtreeFilter(self, node):
                 return (node['item'].getId != 'folder1')
             showAllParents = True
@@ -413,14 +475,16 @@ class TestFolderTree(PloneTestCase.PloneTestCase):
         query = {'path': {'query': '/'.join(context.getPhysicalPath()),
                           'navtree': 1}}
         rootPath = '/'.join(self.portal.getPhysicalPath())
-        tree = buildFolderTree(self.portal, query=query, obj=context, strategy=Strategy())['children']
+        tree = buildFolderTree(self.portal, query=query,
+                               obj=context, strategy=Strategy())['children']
         self.assertEqual(len(tree), 6)
         self.assertEqual(tree[0]['item'].getPath(), rootPath + '/doc1')
         self.assertEqual(tree[1]['item'].getPath(), rootPath + '/doc2')
         self.assertEqual(tree[2]['item'].getPath(), rootPath + '/doc3')
         self.assertEqual(tree[3]['item'].getPath(), rootPath + '/folder1')
         self.assertEqual(len(tree[3]['children']), 1)
-        self.assertEqual(tree[3]['children'][0]['item'].getPath(), rootPath + '/folder1/doc11')
+        self.assertEqual(tree[3]['children'][0][
+                         'item'].getPath(), rootPath + '/folder1/doc11')
         self.assertEqual(tree[4]['item'].getPath(), rootPath + '/link1')
         self.assertEqual(tree[5]['item'].getPath(), rootPath + '/folder2')
         self.assertEqual(len(tree[5]['children']), 0)
@@ -429,6 +493,7 @@ class TestFolderTree(PloneTestCase.PloneTestCase):
         context = self.portal.folder2.folder21
 
         class Strategy(NavtreeStrategyBase):
+
             def subtreeFilter(self, node):
                 return (node['item'].getId != 'folder2')
             showAllParents = True
@@ -436,7 +501,8 @@ class TestFolderTree(PloneTestCase.PloneTestCase):
         query = {'path': {'query': '/'.join(context.getPhysicalPath()),
                           'navtree': 1}}
         rootPath = '/'.join(self.portal.getPhysicalPath())
-        tree = buildFolderTree(self.portal, query=query, obj=context, strategy=Strategy())['children']
+        tree = buildFolderTree(self.portal, query=query,
+                               obj=context, strategy=Strategy())['children']
         self.assertEqual(len(tree), 6)
         self.assertEqual(tree[0]['item'].getPath(), rootPath + '/doc1')
         self.assertEqual(tree[1]['item'].getPath(), rootPath + '/doc2')
@@ -446,10 +512,13 @@ class TestFolderTree(PloneTestCase.PloneTestCase):
         self.assertEqual(tree[4]['item'].getPath(), rootPath + '/link1')
         self.assertEqual(tree[5]['item'].getPath(), rootPath + '/folder2')
         self.assertEqual(len(tree[5]['children']), 1)
-        self.assertEqual(tree[5]['children'][0]['item'].getPath(), rootPath + '/folder2/folder21')
+        self.assertEqual(tree[5]['children'][0][
+                         'item'].getPath(), rootPath + '/folder2/folder21')
         self.assertEqual(len(tree[5]['children'][0]['children']), 2)
-        self.assertEqual(tree[5]['children'][0]['children'][0]['item'].getPath(), rootPath + '/folder2/folder21/doc211')
-        self.assertEqual(tree[5]['children'][0]['children'][1]['item'].getPath(), rootPath + '/folder2/folder21/doc212')
+        self.assertEqual(tree[5]['children'][0]['children'][0][
+                         'item'].getPath(), rootPath + '/folder2/folder21/doc211')
+        self.assertEqual(tree[5]['children'][0]['children'][1][
+                         'item'].getPath(), rootPath + '/folder2/folder21/doc212')
 
     def testCurrentParent(self):
         self.loginAsPortalOwner()
@@ -470,13 +539,13 @@ class TestNavigationRoot(PloneTestCase.PloneTestCase):
 
     def testGetNavigationRootPropertyEmptyNoVirtualHost(self):
         self.portal.portal_properties.navtree_properties \
-                .manage_changeProperties(root='')
+            .manage_changeProperties(root='')
         root = getNavigationRoot(self.portal)
         self.assertEqual(root, '/'.join(self.portal.getPhysicalPath()))
 
     def testGetNavigationRootPropertyIsRoot(self):
         self.portal.portal_properties.navtree_properties \
-                .manage_changeProperties(root='/')
+            .manage_changeProperties(root='/')
         root = getNavigationRoot(self.portal)
         self.assertEqual(root, '/'.join(self.portal.getPhysicalPath()))
 

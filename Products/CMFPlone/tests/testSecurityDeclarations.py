@@ -180,8 +180,8 @@ class TestSecurityDeclarations(RestrictedPythonTest):
 
     def testRaise_ConflictError(self):
         self.assertRaises(ConflictError,
-            self.check, 'from ZODB.POSException import ConflictError;'
-                        'raise ConflictError')
+                          self.check, 'from ZODB.POSException import ConflictError;'
+                          'raise ConflictError')
 
     def testCatch_ConflictErrorRaisedByRestrictedCode(self):
         try:
@@ -302,7 +302,8 @@ except CopyError: pass
                                'print utils.getToolByName')
 
     def testUse_getToolByName(self):
-        self.layer['app'].manage_addFolder('portal_membership')  # Fake a portal tool
+        self.layer['app'].manage_addFolder(
+            'portal_membership')  # Fake a portal tool
         self.check('from Products.CMFCore.utils import getToolByName;'
                    'print getToolByName(context, "portal_membership")')
 

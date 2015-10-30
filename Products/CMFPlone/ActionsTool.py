@@ -18,6 +18,7 @@ class ActionsTool(PloneBaseTool, BaseTool):
     #   ActionProvider interface
     #
     security.declarePrivate('listActions')
+
     def listActions(self, info=None, object=None,
                     categories=None, ignore_categories=None):
         """ List all the actions defined by a provider.
@@ -29,10 +30,10 @@ class ActionsTool(PloneBaseTool, BaseTool):
 
         if categories is None:
             categories = [cat for cat in self
-                              if cat not in ignore_categories]
+                          if cat not in ignore_categories]
         else:
             categories = [cat for cat in self
-                              if cat in categories]
+                          if cat in categories]
 
         for category in categories:
             if IActionCategory.providedBy(self[category]):
@@ -40,6 +41,7 @@ class ActionsTool(PloneBaseTool, BaseTool):
         return tuple(actions)
 
     security.declarePublic('listActionInfos')
+
     def listActionInfos(self, action_chain=None, object=None,
                         check_visibility=1, check_permissions=1,
                         check_condition=1, max=-1,
@@ -69,7 +71,7 @@ class ActionsTool(PloneBaseTool, BaseTool):
 
         if ignore_categories is not None:
             actions = [ai for ai in actions
-                          if ai['category'] not in ignore_categories]
+                       if ai['category'] not in ignore_categories]
 
         action_infos = []
         for ai in actions:
@@ -88,6 +90,7 @@ class ActionsTool(PloneBaseTool, BaseTool):
     #   'portal_actions' interface methods
     #
     security.declarePublic('listFilteredActionsFor')
+
     def listFilteredActionsFor(self, object=None,
                                ignore_providers=(),
                                ignore_categories=None):
@@ -96,7 +99,7 @@ class ActionsTool(PloneBaseTool, BaseTool):
         actions = []
 
         providers = [name for name in self.listActionProviders()
-                          if name not in ignore_providers]
+                     if name not in ignore_providers]
 
         # Include actions from specific tools.
         for provider_name in providers:
@@ -124,7 +127,7 @@ class ActionsTool(PloneBaseTool, BaseTool):
                             'object': [],
                             'global': [],
                             'workflow': [],
-                           }
+                            }
 
         for action in actions:
             catlist = filtered_actions.setdefault(action['category'], [])

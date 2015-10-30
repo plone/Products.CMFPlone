@@ -56,7 +56,7 @@ class TestEmailLogin(PloneTestCase.PloneTestCase):
         # PLIP9214: the next test actually passes with the original
         # pattern but fails with the new one as email addresses cannot
         # end in a number:
-        #self.assertTrue(pattern.match('maurits76'))
+        # self.assertTrue(pattern.match('maurits76'))
         self.assertTrue(pattern.match('MAURITS'))
 
     def testEmailMemberIdsAllowed(self):

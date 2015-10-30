@@ -32,13 +32,13 @@ class PropertiesTool(PloneBaseTool, Folder, UniqueObject):
     meta_types = ((
         {'name': 'Plone Property Sheet',
          'action': 'manage_addPropertySheetForm'},
-        ))
+    ))
 
     implements(IPropertiesTool)
 
     manage_options = ((Folder.manage_options[0], ) +
                       ({'label': 'Overview',
-                       'action': 'manage_overview'},) +
+                        'action': 'manage_overview'},) +
                       SimpleItem.manage_options)
 
     manage_addPropertySheetForm = PageTemplateFile('www/addPropertySheet',
@@ -47,12 +47,13 @@ class PropertiesTool(PloneBaseTool, Folder, UniqueObject):
     security = ClassSecurityInfo()
 
     security.declareProtected(ManagePortal, 'manage_overview')
-    manage_overview = DTMLFile('explainPropertiesTool', WWW_DIR )
+    manage_overview = DTMLFile('explainPropertiesTool', WWW_DIR)
 
     def all_meta_types(self, interfaces=None):
         return self.meta_types
 
     security.declareProtected(ManagePortal, 'addPropertySheet')
+
     def addPropertySheet(self, id, title='', propertysheet=None):
         """ Add a new PropertySheet
         """
@@ -73,6 +74,7 @@ class PropertiesTool(PloneBaseTool, Folder, UniqueObject):
         self._setObject(id, o)
 
     security.declareProtected(ManagePortal, 'manage_addPropertySheet')
+
     def manage_addPropertySheet(self, id, title='',
                                 propertysheet=None, REQUEST=None):
         """ Add a instance of a Property Sheet if handed a
@@ -87,6 +89,7 @@ class PropertiesTool(PloneBaseTool, Folder, UniqueObject):
     #   'portal_properties' interface methods
     #
     security.declareProtected(ManagePortal, 'editProperties')
+
     def editProperties(self, props):
         """Change portal settings
         """
@@ -124,6 +127,6 @@ class SimpleItemWithProperties (PropertyManager, SimpleItem):
     meta_type = 'Plone Property Sheet'
 
     manage_options = (PropertyManager.manage_options
-                     + SimpleItem.manage_options)
+                      + SimpleItem.manage_options)
 
 InitializeClass(SimpleItemWithProperties)

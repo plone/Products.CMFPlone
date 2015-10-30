@@ -48,7 +48,7 @@ def exportPloneProperties(context):
         return
 
     exporter = queryMultiAdapter((ptool, context), IBody)
-    #IBody(ptool)
+    # IBody(ptool)
     if exporter is None:
         logger.warning('Export adapter missing.')
         return
@@ -107,10 +107,10 @@ class PlonePropertiesToolXMLAdapter(XMLAdapterBase, ObjectManagerHelpers):
 
     def _initObjects(self, node):
         """Import subobjects"""
-        ## XXX: We could just use the _initObjects() from
-        ## ObjectManagerHelpers except that it looks up the object
-        ## constructor from Products.meta_type and
-        ## SimpleItemWithProperties doesn't get registered there.
+        # XXX: We could just use the _initObjects() from
+        # ObjectManagerHelpers except that it looks up the object
+        # constructor from Products.meta_type and
+        # SimpleItemWithProperties doesn't get registered there.
         for child in node.childNodes:
             if child.nodeName != 'object':
                 continue

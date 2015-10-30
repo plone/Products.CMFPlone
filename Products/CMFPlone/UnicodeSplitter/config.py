@@ -8,7 +8,7 @@ import re
 
 STOP_WORD = []
 
-## Setting, adding langs.
+# Setting, adding langs.
 rangetable = dict(
     # ascii=u"a-zA-Z0-9_",
     # digit=u"\d",
@@ -29,15 +29,15 @@ rangetable = dict(
 
     cj=u"\u3040-\u30FF\u4E00-\u9FFF\u3400-\u4DBF\uF900-\uFAFF",
     thai=u"\u0E00-\u0E7F",  # U+0E00-0E7F Thai タイ文字
-    )
-## End of setting.
+)
+# End of setting.
 
 
-## Splitting core.
+# Splitting core.
 ps = rangetable.values()
 allp = u"".join(ps)
 glob_true = u"[^%s]([^%s]|[\*\?])*|" \
-                % (allp, allp) + u"|".join([u"[%s]+" % (x, ) for x in ps])
+    % (allp, allp) + u"|".join([u"[%s]+" % (x, ) for x in ps])
 
 glob_false = u"[^%s]+|" % allp + u"|".join(u"[%s]+" % x for x in ps)
 

@@ -203,7 +203,7 @@ class TestSiteAdministratorRole(PloneTestCase.PloneTestCase):
             'WebDAV access':                                            1,
             'plone.portlet.collection: Add collection portlet':         1,
             'plone.portlet.static: Add static portlet':                 1,
-            }
+        }
         if 'products.kupu' in pkg_resources.working_set.by_key:
             expected.update({
                 'Add kupu Library Tools':                               0,
@@ -232,4 +232,4 @@ class TestSiteAdministratorRole(PloneTestCase.PloneTestCase):
         if errors:
             self.fail('Unexpected permissions for Site Administrator role:\n' +
                       ''.join(['\t%s\n' % msg for msg in errors])
-                     )
+                      )

@@ -15,6 +15,7 @@ portal_name = PloneTestCase.portal_name
 
 
 class DummyTitle(Implicit):
+
     def Title(self):
         # Should just return 'portal_catalog'
         tool = getToolByName(self, 'portal_catalog')
@@ -49,7 +50,8 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
             'user@example.org\n\rfoo',
             'user@example.org\r\nfoo',
             'user@example.org\r\rfoo',
-            'user@example.org\nfoo@example.org',  # only single address allowed, even if given one per line
+            # only single address allowed, even if given one per line
+            'user@example.org\nfoo@example.org',
             'user@example.org\nBcc: user@example.org',
             'user@example.org\nCc: user@example.org',
             'user@example.org\nSubject: Spam',
@@ -178,6 +180,7 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
     def testReindexOnReorder(self):
         gsm = getGlobalSiteManager()
         reordered_parents = []
+
         def my_handler(obj, event):
             reordered_parents.append(obj)
         gsm.registerHandler(my_handler, (Interface, IReorderedEvent))
@@ -187,6 +190,7 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
         finally:
             gsm.unregisterHandler(my_handler, (Interface, IReorderedEvent))
         self.assertEqual(["fake_context"], reordered_parents)
+
 
 class TestOwnershipStuff(PloneTestCase.PloneTestCase):
 
@@ -217,7 +221,7 @@ class TestOwnershipStuff(PloneTestCase.PloneTestCase):
 
         self.utils.changeOwnershipOf(self.folder1, 'new_owner')
         self.assertEqual(self.folder1.getOwnerTuple()[0], [portal_name,
-                         'acl_users'])
+                                                           'acl_users'])
         self.assertEqual(self.folder1.getOwnerTuple()[1], 'new_owner')
         self.assertList(self.folder1.get_local_roles_for_userid('new_owner'),
                         ['Owner'])
@@ -284,10 +288,10 @@ class TestOwnershipStuff(PloneTestCase.PloneTestCase):
         self.folder1.manage_addLocalRoles('new_owner', ('Reviewer',))
         # Test Normal role acquisition is returned
         filtered_roles = [r for r in gILR(self.folder2)
-                             if r[0] == 'new_owner'][0]
+                          if r[0] == 'new_owner'][0]
         self.assertList(filtered_roles[1], ['Reviewer'])
         filtered_roles = [r for r in gILR(self.folder3)
-                             if r[0] == 'new_owner'][0]
+                          if r[0] == 'new_owner'][0]
         self.assertList(filtered_roles[1], ['Reviewer'])
 
     def testGetInheritedLocalRolesMultiLevel(self):
@@ -299,12 +303,12 @@ class TestOwnershipStuff(PloneTestCase.PloneTestCase):
 
         # folder2 should have only the inherited role
         filtered_roles = [r for r in gILR(self.folder2)
-                             if r[0] == 'new_owner'][0]
+                          if r[0] == 'new_owner'][0]
         self.assertList(filtered_roles[1], ['Reviewer'])
 
         # folder3 should have roles inherited from parent and grand-parent
         filtered_roles = [r for r in gILR(self.folder3)
-                             if r[0] == 'new_owner'][0]
+                          if r[0] == 'new_owner'][0]
         self.assertList(filtered_roles[1], ['Owner', 'Reviewer'])
 
 
@@ -401,12 +405,12 @@ class TestEditMetadata(PloneTestCase.PloneTestCase):
     def testSetEffectiveDate(self):
         self.assertEqual(self.doc.EffectiveDate(), 'None')
         self.utils.editMetadata(self.doc, effective_date='2001-01-01')
-        self.assertTrue(self.doc.effective_date.ISO8601() \
+        self.assertTrue(self.doc.effective_date.ISO8601()
                             .startswith('2001-01-01T00:00:00'))
 
     def testClearEffectiveDate(self):
         self.utils.editMetadata(self.doc, effective_date='2001-01-01')
-        self.assertTrue(self.doc.effective_date.ISO8601() \
+        self.assertTrue(self.doc.effective_date.ISO8601()
                             .startswith('2001-01-01T00:00:00'))
         self.utils.editMetadata(self.doc, effective_date='None')
         self.assertEqual(self.doc.EffectiveDate(), 'None')
@@ -415,12 +419,12 @@ class TestEditMetadata(PloneTestCase.PloneTestCase):
     def testSetExpirationDate(self):
         self.assertEqual(self.doc.ExpirationDate(), 'None')
         self.utils.editMetadata(self.doc, expiration_date='2001-01-01')
-        self.assertTrue(self.doc.expiration_date.ISO8601() \
+        self.assertTrue(self.doc.expiration_date.ISO8601()
                             .startswith('2001-01-01T00:00:00'))
 
     def testClearExpirationDate(self):
         self.utils.editMetadata(self.doc, expiration_date='2001-01-01')
-        self.assertTrue(self.doc.expiration_date.ISO8601() \
+        self.assertTrue(self.doc.expiration_date.ISO8601()
                             .startswith('2001-01-01T00:00:00'))
         self.utils.editMetadata(self.doc, expiration_date='None')
         self.assertEqual(self.doc.ExpirationDate(), 'None')
@@ -474,7 +478,7 @@ class TestEditMetadataIndependence(PloneTestCase.PloneTestCase):
                                 format='text/html',
                                 language='de',
                                 rights='Copyleft',
-                               )
+                                )
 
     def testEditTitleOnly(self):
         self.utils.editMetadata(self.doc, title='Oh Happy Day')
@@ -483,9 +487,9 @@ class TestEditMetadataIndependence(PloneTestCase.PloneTestCase):
         self.assertEqual(self.doc.Subject(), ('Bar',))
         self.assertEqual(self.doc.Description(), 'Baz')
         self.assertEqual(self.doc.Contributors(), ('Fred',))
-        self.assertTrue(self.doc.effective_date.ISO8601() \
+        self.assertTrue(self.doc.effective_date.ISO8601()
                             .startswith('2001-01-01T00:00:00'))
-        self.assertTrue(self.doc.expiration_date.ISO8601() \
+        self.assertTrue(self.doc.expiration_date.ISO8601()
                             .startswith('2003-01-01T00:00:00'))
         self.assertEqual(self.doc.Format(), 'text/html')
         self.assertEqual(self.doc.Language(), 'de')
@@ -498,9 +502,9 @@ class TestEditMetadataIndependence(PloneTestCase.PloneTestCase):
         self.assertEqual(self.doc.Title(), 'Foo')
         self.assertEqual(self.doc.Description(), 'Baz')
         self.assertEqual(self.doc.Contributors(), ('Fred',))
-        self.assertTrue(self.doc.effective_date.ISO8601() \
+        self.assertTrue(self.doc.effective_date.ISO8601()
                             .startswith('2001-01-01T00:00:00'))
-        self.assertTrue(self.doc.expiration_date.ISO8601() \
+        self.assertTrue(self.doc.expiration_date.ISO8601()
                             .startswith('2003-01-01T00:00:00'))
         self.assertEqual(self.doc.Format(), 'text/html')
         self.assertEqual(self.doc.Language(), 'de')
@@ -508,14 +512,14 @@ class TestEditMetadataIndependence(PloneTestCase.PloneTestCase):
 
     def testEditEffectiveDateOnly(self):
         self.utils.editMetadata(self.doc, effective_date='2001-12-31')
-        self.assertTrue(self.doc.effective_date.ISO8601() \
+        self.assertTrue(self.doc.effective_date.ISO8601()
                             .startswith('2001-12-31T00:00:00'))
         # Other elements must not change
         self.assertEqual(self.doc.Title(), 'Foo')
         self.assertEqual(self.doc.Subject(), ('Bar',))
         self.assertEqual(self.doc.Description(), 'Baz')
         self.assertEqual(self.doc.Contributors(), ('Fred',))
-        self.assertTrue(self.doc.expiration_date.ISO8601() \
+        self.assertTrue(self.doc.expiration_date.ISO8601()
                             .startswith('2003-01-01T00:00:00'))
         self.assertEqual(self.doc.Format(), 'text/html')
         self.assertEqual(self.doc.Language(), 'de')
@@ -529,9 +533,9 @@ class TestEditMetadataIndependence(PloneTestCase.PloneTestCase):
         self.assertEqual(self.doc.Subject(), ('Bar',))
         self.assertEqual(self.doc.Description(), 'Baz')
         self.assertEqual(self.doc.Contributors(), ('Fred',))
-        self.assertTrue(self.doc.effective_date.ISO8601() \
+        self.assertTrue(self.doc.effective_date.ISO8601()
                             .startswith('2001-01-01T00:00:00'))
-        self.assertTrue(self.doc.expiration_date.ISO8601() \
+        self.assertTrue(self.doc.expiration_date.ISO8601()
                             .startswith('2003-01-01T00:00:00'))
         self.assertEqual(self.doc.Format(), 'text/html')
         self.assertEqual(self.doc.Rights(), 'Copyleft')
@@ -610,7 +614,7 @@ class TestIDGenerationMethods(PloneTestCase.PloneTestCase):
         self.assertEqual(self.utils.pretty_title_or_id(self.folder),
                          self.utils.getEmptyTitle())
         self.assertEqual(self.utils.pretty_title_or_id(self.folder, 'Marker'),
-                                'Marker')
+                         'Marker')
 
     def test_pretty_title_or_id_works_with_method_that_needs_context(self):
         self.setRoles(['Manager', 'Member'])
@@ -630,7 +634,7 @@ class TestIDGenerationMethods(PloneTestCase.PloneTestCase):
         results = cat(Subject='foobar')
         self.assertEqual(len(results), 1)
         self.assertEqual(self.utils.pretty_title_or_id(results[0]),
-                                                        'My pretty title')
+                         'My pretty title')
 
     def test_pretty_title_or_id_on_catalog_brain_returns_id(self):
         cat = self.portal.portal_catalog
@@ -639,7 +643,7 @@ class TestIDGenerationMethods(PloneTestCase.PloneTestCase):
         results = cat(Subject='foobar')
         self.assertEqual(len(results), 1)
         self.assertEqual(self.utils.pretty_title_or_id(results[0]),
-                                                        self.folder.getId())
+                         self.folder.getId())
 
     def test_pretty_title_or_id_on_catalog_brain_autogenerated(self):
         cat = self.portal.portal_catalog
@@ -649,7 +653,7 @@ class TestIDGenerationMethods(PloneTestCase.PloneTestCase):
         results = cat(Subject='foobar')
         self.assertEqual(len(results), 1)
         self.assertEqual(self.utils.pretty_title_or_id(results[0], 'Marker'),
-                                                        'Marker')
+                         'Marker')
 
     def test_pretty_title_or_id_on_catalog_brain_no_title(self):
         cat = self.portal.portal_catalog
@@ -664,7 +668,7 @@ class TestIDGenerationMethods(PloneTestCase.PloneTestCase):
         # failure
         self.portal.title = 'This is not the title you are looking for'
         self.assertEqual(self.utils.pretty_title_or_id(results[0]),
-                                                        self.folder.getId())
+                         self.folder.getId())
 
     def testGetMethodAliases(self):
         fti = self.folder.getTypeInfo()

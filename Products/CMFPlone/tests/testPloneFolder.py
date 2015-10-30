@@ -25,7 +25,7 @@ class TestPloneFolder(PloneTestCase.PloneTestCase):
 
     def testSortOrder(self):
         self.assertEqual(self.folder.objectIds(),
-            ['sub1', 'sub2', 'sub3'])
+                         ['sub1', 'sub2', 'sub3'])
 
     def testCanViewManagementScreen(self):
         # Make sure the ZMI management screen works

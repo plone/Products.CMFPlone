@@ -22,8 +22,8 @@ from ZPublisher.HTTPRequest import FileUpload
 TEXT = 'file data'
 UTEXT = u'file data'
 GIF = open(os.path.join(os.path.dirname(__file__),
-           os.pardir,
-           'tool.gif')).read()
+                        os.pardir,
+                        'tool.gif')).read()
 
 
 class Dummy:
@@ -62,6 +62,7 @@ class SizedItem(Item):
 
 
 class FieldStorage(object):
+
     def __init__(self, file, filename='testfile', headers=None):
         self.file = file
         if headers is None:

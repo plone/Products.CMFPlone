@@ -35,9 +35,11 @@ class TestResourceRegistries(PloneTestCase.PloneTestCase):
         resource.js = '++plone++static/foobar.js'
         bundle.resources = ['foobar']
 
-        persistent_directory = getUtility(IResourceDirectory, name="persistent")
+        persistent_directory = getUtility(
+            IResourceDirectory, name="persistent")
         if OVERRIDE_RESOURCE_DIRECTORY_NAME not in persistent_directory:
-            persistent_directory.makeDirectory(OVERRIDE_RESOURCE_DIRECTORY_NAME)
+            persistent_directory.makeDirectory(
+                OVERRIDE_RESOURCE_DIRECTORY_NAME)
         container = persistent_directory[OVERRIDE_RESOURCE_DIRECTORY_NAME]
         container.makeDirectory('static')
         directory = container['static']
@@ -85,9 +87,11 @@ class TestResourceRegistries(PloneTestCase.PloneTestCase):
         resource.js = '++plone++static/foobar.js'
         bundle.resources = ['foobar']
 
-        persistent_directory = getUtility(IResourceDirectory, name="persistent")
+        persistent_directory = getUtility(
+            IResourceDirectory, name="persistent")
         if OVERRIDE_RESOURCE_DIRECTORY_NAME not in persistent_directory:
-            persistent_directory.makeDirectory(OVERRIDE_RESOURCE_DIRECTORY_NAME)
+            persistent_directory.makeDirectory(
+                OVERRIDE_RESOURCE_DIRECTORY_NAME)
         container = persistent_directory[OVERRIDE_RESOURCE_DIRECTORY_NAME]
         container.makeDirectory('static')
         directory = container['static']
@@ -145,7 +149,8 @@ class TestResourceNodeImporter(PloneTestCase.PloneTestCase):
         importer._importNode(dom.documentElement)
         js_files = [x.js for x in self._get_resources().values()]
         self.assertTrue("++resource++/resource.js" in js_files)
-        self.assertTrue("resource-resource-js" in self._get_legacy_bundle().resources)
+        self.assertTrue(
+            "resource-resource-js" in self._get_legacy_bundle().resources)
 
     def test_insert_again(self):
         importer = self._get_importer()
@@ -194,7 +199,8 @@ class TestResourceNodeImporter(PloneTestCase.PloneTestCase):
             """)
         importer._importNode(foobar.documentElement)
         resources = self._get_legacy_bundle().resources
-        self.assertTrue(resources.index('one') + 1, resources.index('foobar-js'))
+        self.assertTrue(resources.index('one') + 1,
+                        resources.index('foobar-js'))
 
     def test_insert_before(self):
         importer = self._get_importer()
@@ -213,7 +219,8 @@ class TestResourceNodeImporter(PloneTestCase.PloneTestCase):
             """)
         importer._importNode(foobar.documentElement)
         resources = self._get_legacy_bundle().resources
-        self.assertTrue(resources.index('one') - 1, resources.index('foobar-js'))
+        self.assertTrue(resources.index('one') - 1,
+                        resources.index('foobar-js'))
 
     def test_be_able_to_disable_but_not_remove(self):
         importer = self._get_importer()
@@ -281,7 +288,8 @@ class TestControlPanel(PloneTestCase.PloneTestCase):
         self.assertEquals(str(value), match)
 
     def test_get_require_js_config_uses_stub_modules(self):
-        view = ResourceRegistryControlPanelView(self.portal, self.layer['request'])
+        view = ResourceRegistryControlPanelView(
+            self.portal, self.layer['request'])
         self.layer['request'].form['bundle'] = 'plone-logged-in'
         config = json.loads(view.js_build_config())
         self.assertEquals(config['paths']['jquery'], 'empty:')

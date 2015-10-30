@@ -134,7 +134,7 @@ class FolderFeed(BaseFeedData):
         return catalog(path={
             'query': '/'.join(self.context.getPhysicalPath()),
             'depth': 1
-            })
+        })
 
     def _items(self):
         """
@@ -163,6 +163,7 @@ class FolderFeed(BaseFeedData):
 
 
 class CollectionFeed(FolderFeed):
+
     def _brains(self):
         return self.context.queryCatalog(batch=False)[:self.limit]
 

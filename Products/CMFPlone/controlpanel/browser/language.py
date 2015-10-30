@@ -55,7 +55,7 @@ class LanguageControlPanel(controlpanel.ControlPanelFormWrapper):
     form = LanguageControlPanelForm
 
 
-#class LanguageControlPanel(ControlPanelForm):
+# class LanguageControlPanel(ControlPanelForm):
 #    form_fields = FormFields(ILanguageSchema)
 #    form_fields['default_language'].custom_widget = \
 #       LanguageDropdownChoiceWidget

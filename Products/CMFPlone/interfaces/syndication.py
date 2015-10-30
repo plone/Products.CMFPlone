@@ -8,6 +8,7 @@ class ISyndicatable(Interface):
 
 
 class IFeedData(Interface):
+
     def link():
         """
         Link to item

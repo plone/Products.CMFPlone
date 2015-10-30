@@ -13,7 +13,7 @@ from Products.ZCTextIndex.ISplitter import ISplitter
 from Products.ZCTextIndex.PipelineFactory import element_factory
 
 from Products.CMFPlone.UnicodeSplitter.config import rx_U, rxGlob_U, \
-            rx_L, rxGlob_L, rx_all, pattern, pattern_g
+    rx_L, rxGlob_L, rx_all, pattern, pattern_g
 from plone.i18n.normalizer.base import baseNormalize
 
 
@@ -150,7 +150,7 @@ class Splitter(object):
 
 try:
     element_factory.registerFactory('Word Splitter',
-        'Unicode Whitespace splitter', Splitter)
+                                    'Unicode Whitespace splitter', Splitter)
 except ValueError:
     # In case the splitter is already registered, ValueError is raised
     pass
@@ -176,7 +176,7 @@ class CaseNormalizer(object):
 
 try:
     element_factory.registerFactory('Case Normalizer',
-        'Unicode Case Normalizer', CaseNormalizer)
+                                    'Unicode Case Normalizer', CaseNormalizer)
 except ValueError:
     # In case the normalizer is already registered, ValueError is raised
     pass
@@ -206,7 +206,7 @@ class I18NNormalizer(object):
 
 try:
     element_factory.registerFactory('Case Normalizer',
-        'Unicode Ignoring Accents Case Normalizer', I18NNormalizer)
+                                    'Unicode Ignoring Accents Case Normalizer', I18NNormalizer)
 except ValueError:
     # In case the normalizer is already registered, ValueError is raised
     pass

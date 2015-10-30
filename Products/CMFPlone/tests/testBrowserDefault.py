@@ -238,7 +238,7 @@ class TestPloneToolBrowserDefault(unittest.TestCase):
         self.assertEqual(
             default,
             [u'index_html', u'index.html', u'index.htm', u'FrontPage']
-            )
+        )
 
 
 class TestPortalBrowserDefault(unittest.TestCase):

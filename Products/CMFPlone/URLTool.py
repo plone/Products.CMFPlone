@@ -17,6 +17,7 @@ class URLTool(PloneBaseTool, BaseTool):
     toolicon = 'skins/plone_images/link_icon.png'
 
     security.declarePublic('isURLInPortal')
+
     def isURLInPortal(self, url, context=None):
         """ Check if a given url is on the same host and contains the portal
             path.  Used to ensure that login forms can determine relevant

@@ -64,7 +64,8 @@ class StylesView(ResourceView):
                 css_path = bundle.csscompilation
                 if '++plone++' in css_path:
                     resource_path = css_path.split('++plone++')[-1]
-                    resource_name, resource_filepath = resource_path.split('/', 1)
+                    resource_name, resource_filepath = resource_path.split(
+                        '/', 1)
                     css_location = '%s/++plone++%s/++unique++%s/%s' % (
                         self.site_url,
                         resource_name,

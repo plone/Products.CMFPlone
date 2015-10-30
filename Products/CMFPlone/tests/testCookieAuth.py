@@ -36,7 +36,8 @@ class TestCookieAuth(PloneTestCase):
 
     def testSetSessionCookie(self):
         # The __ac cookie should be set for the session only
-        form = {'__ac_name': TEST_USER_NAME, '__ac_password': TEST_USER_PASSWORD}
+        form = {'__ac_name': TEST_USER_NAME,
+                '__ac_password': TEST_USER_PASSWORD}
 
         response = self.publish(self.portal_path + '/logged_in',
                                 env={'QUERY_STRING': urlencode(form)})

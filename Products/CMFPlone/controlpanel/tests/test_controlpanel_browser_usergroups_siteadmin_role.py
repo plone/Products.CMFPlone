@@ -38,9 +38,9 @@ class UserGroupsControlPanelTestCase(FunctionalTestCase):
         super(UserGroupsControlPanelTestCase, self).afterSetUp()
         members = [
             {
-              'username': 'DIispfuF',
-              'fullname': 'Kevin Hughes',
-              'email': 'DIispfuF@example.com'
+                'username': 'DIispfuF',
+                'fullname': 'Kevin Hughes',
+                'email': 'DIispfuF@example.com'
             },
         ]
         regtool = getToolByName(self.portal, 'portal_registration')
@@ -122,7 +122,7 @@ class TestSiteAdministratorRoleFunctional(UserGroupsControlPanelTestCase):
             'users.roles:list:records': 'Manager',
             'form.button.Modify': 'Save',
             'form.submitted': 1,
-            }
+        }
         post_data = StringIO(urlencode(form))
         res = self.publish('/plone/@@usergroup-userprefs',
                            request_method='POST', stdin=post_data,
@@ -139,7 +139,7 @@ class TestSiteAdministratorRoleFunctional(UserGroupsControlPanelTestCase):
             'users.roles:list:records': 'Manager',
             'form.button.Modify': 'Save',
             'form.submitted': 1,
-            }
+        }
         post_data = StringIO(urlencode(form))
         res = self.publish('/plone/@@usergroup-userprefs',
                            request_method='POST', stdin=post_data,
@@ -157,7 +157,7 @@ class TestSiteAdministratorRoleFunctional(UserGroupsControlPanelTestCase):
             'users.roles:list:records': ('Member', 'Manager'),
             'form.button.Modify': 'Save',
             'form.submitted': 1,
-            }
+        }
         post_data = StringIO(urlencode(form, doseq=True))
         res = self.publish('/plone/@@usergroup-userprefs',
                            request_method='POST', stdin=post_data,
@@ -183,7 +183,7 @@ class TestSiteAdministratorRoleFunctional(UserGroupsControlPanelTestCase):
             'group_Reviewers:list': ('', 'Manager'),
             'form.button.Modify': 'Save',
             'form.submitted': 1,
-            }
+        }
         post_data = StringIO(urlencode(form, doseq=True))
         res = self.publish('/plone/@@usergroup-groupprefs',
                            request_method='POST', stdin=post_data,
@@ -199,7 +199,7 @@ class TestSiteAdministratorRoleFunctional(UserGroupsControlPanelTestCase):
             'group_Reviewers:list': ('', 'Manager'),
             'form.button.Modify': 'Save',
             'form.submitted': 1,
-            }
+        }
         post_data = StringIO(urlencode(form, doseq=True))
         res = self.publish('/plone/@@usergroup-groupprefs',
                            request_method='POST', stdin=post_data,
@@ -216,7 +216,7 @@ class TestSiteAdministratorRoleFunctional(UserGroupsControlPanelTestCase):
             'group_Administrators:list': ('', 'Member', 'Manager'),
             'form.button.Modify': 'Save',
             'form.submitted': 1,
-            }
+        }
         post_data = StringIO(urlencode(form, doseq=True))
         res = self.publish('/plone/@@usergroup-groupprefs',
                            request_method='POST', stdin=post_data,
@@ -243,7 +243,7 @@ class TestSiteAdministratorRoleFunctional(UserGroupsControlPanelTestCase):
             '_authenticator': self.siteadmin_token,
             'add:list': 'Administrators',
             'form.submitted': 1,
-            }
+        }
         post_data = StringIO(urlencode(form))
         res = self.publish(
             '/plone/@@usergroup-usermembership?userid=%s' % self.normal_user,
@@ -269,7 +269,7 @@ class TestSiteAdministratorRoleFunctional(UserGroupsControlPanelTestCase):
             '_authenticator': self.siteadmin_token,
             'add:list': self.normal_user,
             'form.submitted': 1,
-            }
+        }
         post_data = StringIO(urlencode(form))
         res = self.publish(
             '/plone/@@usergroup-groupmembership?groupname=Administrators',
@@ -301,7 +301,7 @@ class TestSiteAdministratorRoleFunctional(UserGroupsControlPanelTestCase):
             'form.widgets.groups:list': 'Administrators',
             'form.widgets.groups-empty-marker': '1',
             'form.buttons.register': 'Register',
-            }
+        }
         post_data = StringIO(urlencode(form))
         res = self.publish('/plone/@@new-user',
                            request_method='POST', stdin=post_data,
@@ -312,7 +312,8 @@ class TestSiteAdministratorRoleFunctional(UserGroupsControlPanelTestCase):
     def test_users_overview_blocks_deleting_managers(self):
         # a user without the Manager role cannot delete a user with the
         # Manager role
-        res = self.publish('/plone/@@usergroup-userprefs', basic='siteadmin:secret')
+        res = self.publish('/plone/@@usergroup-userprefs',
+                           basic='siteadmin:secret')
         contents = self._simplify_white_space(res.getOutput())
         self.assertTrue('<input type="checkbox" class="noborder notify" '
                         'name="delete:list" value="root" disabled="disabled" />'
@@ -324,7 +325,7 @@ class TestSiteAdministratorRoleFunctional(UserGroupsControlPanelTestCase):
             'delete:list': 'root',
             'form.button.Modify': 'Save',
             'form.submitted': 1,
-            }
+        }
         post_data = StringIO(urlencode(form))
         res = self.publish('/plone/@@usergroup-userprefs',
                            request_method='POST', stdin=post_data,
@@ -352,7 +353,7 @@ class TestSiteAdministratorRoleFunctional(UserGroupsControlPanelTestCase):
             'delete:list': 'Administrators',
             'form.button.Modify': 'Save',
             'form.submitted': 1,
-            }
+        }
         post_data = StringIO(urlencode(form))
         res = self.publish('/plone/@@usergroup-groupprefs',
                            request_method='POST', stdin=post_data,
