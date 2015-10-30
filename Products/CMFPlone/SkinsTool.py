@@ -20,7 +20,7 @@ class SkinsTool(PloneBaseTool, BaseTool):
     security.declareProtected(ManagePortal, 'addSkinSelection')
 
     def addSkinSelection(self, skinname, skinpath, test=0, make_default=0):
-        """ adds a skin selection 
+        """ adds a skin selection
         """
         super(SkinsTool, self).addSkinSelection(skinname, skinpath,
                                                 test=test, make_default=make_default)

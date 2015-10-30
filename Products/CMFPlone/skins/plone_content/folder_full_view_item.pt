@@ -65,9 +65,9 @@
 
         <p class="more" tal:condition="python:not(item_macro) or rendering_error">
             <a href=""
-               tal:attributes="href python:test(item_type in use_view_action, item_url+'/view', item_url);"> 
-               <span class="hiddenStructure"><span tal:replace="context/Title" /> - </span> 
-               <span i18n:translate="read_more">Read More&hellip;</span> 
+               tal:attributes="href python:test(item_type in use_view_action, item_url+'/view', item_url);">
+               <span class="hiddenStructure"><span tal:replace="context/Title" /> - </span>
+               <span i18n:translate="read_more">Read More&hellip;</span>
             </a>
         </p>
 

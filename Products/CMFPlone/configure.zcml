@@ -37,7 +37,7 @@
   <include package="plone.session" />
   <include package="plone.protect" />
   <include package="plone.indexer" />
-  
+
   <!-- mockup -->
   <include package="mockup" />
 

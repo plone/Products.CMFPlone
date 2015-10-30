@@ -16,7 +16,7 @@
         type="application/atom+xml"
         tal:attributes="href request/ACTUAL_URL" />
   <title type="html" tal:content="feed/title" />
-  <subtitle tal:content="feed/description" 
+  <subtitle tal:content="feed/description"
             tal:condition="feed/description" />
   <updated tal:content="python:feed.modified.ISO8601()" />
   <link href="atom.xml"
@@ -27,7 +27,7 @@
   <logo tal:content="feed/logo" />
   <icon tal:content="feed/icon" />
   <generator uri="http://www.plone.org" version="1.0">plone</generator>
-  <rights tal:content="feed/rights" 
+  <rights tal:content="feed/rights"
           tal:condition="feed/rights"/>
   <author tal:condition="python:feed.show_about and feed.author_name and feed.author_email">
     <name tal:content="feed/author_name" />
@@ -62,7 +62,7 @@
               tal:content="author_name" />
         <name tal:condition="python: not author_name"
               tal:content="creator" />
-        <email tal:condition="author_email" 
+        <email tal:condition="author_email"
                tal:content="author_email" />
       </author>
 

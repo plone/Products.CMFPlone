@@ -39,7 +39,7 @@
     </tal:ifnogroups>
 
     <tal:ifgroups tal:condition="view/group | nothing">
-      <tal:defs 
+      <tal:defs
         tal:define="showAll python:request.get('showAll', '') and not view.newSearch and 'y';
                     Batch python:modules['Products.CMFPlone'].Batch;
                     resultcount python:len(view.searchResults);
@@ -61,7 +61,7 @@
                tal:define="token context/@@authenticator/token">
 
             <div class="autotabs">
-             
+
               <nav class="autotoc-nav">
                 <a class="active"
                    href="${portal_url}/@@usergroup-groupmembership?${groupquery}"

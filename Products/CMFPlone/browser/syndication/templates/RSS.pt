@@ -36,7 +36,7 @@
     <content:encoded xmlns:content="http://purl.org/rss/1.0/modules/content/"
         tal:condition="feed/settings/render_body">
         <tal:opencdata tal:replace="structure python:'&lt;![CDATA['" />
-        <tal:block tal:replace="structure item/render_content_core"/>          
+        <tal:block tal:replace="structure item/render_content_core"/>
         <tal:closecdata tal:replace="structure python:']]&gt;'" />
     </content:encoded>
     <dc:publisher tal:content="item/publisher" />

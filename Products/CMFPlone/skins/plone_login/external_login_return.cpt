@@ -78,7 +78,7 @@
   <metal:invalid tal:condition="not:valid">
       <div metal:use-macro="context/login_failed/macros/login_failed" />
   </metal:invalid>
- 
+
 </metal:main>
 
 </body>

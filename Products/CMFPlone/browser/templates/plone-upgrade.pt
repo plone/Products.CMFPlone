@@ -169,7 +169,7 @@
 
         <div class="field">
           <label for="dry_run"><input id="dry_run" name="dry_run" type="checkbox" value="1:int" /> <span i18n:translate="">Dry run mode</span></label>
-          
+
           <div class="formHelp"  i18n:translate="">
             Run the upgrade and show the result without actually writing
             anything to the database.
