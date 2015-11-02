@@ -92,13 +92,6 @@ class ScriptsView(ResourceView):
                 'conditionalcomment': None,
                 'bundle': 'basic'
             })
-            # result.append({
-            #     'src': '%s/%s' % (
-            #         self.site_url,
-            #         self.registry.records['plone.resources.less-modify'].value),
-            #     'conditionalcomment': None,
-            #     'bundle': 'basic'
-            # })
         result.append({
             'src': '%s/%s' % (
                 self.site_url,
