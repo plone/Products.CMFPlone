@@ -10,6 +10,10 @@ Changelog
 
 New:
 
+- Explicitly provide id on search form and not depend on diazo magic
+  adding the id in.
+  [vangheem]
+
 - Be able to stub JavaScript modules to prevent including the same
   javascript twice.
   [vangheem]

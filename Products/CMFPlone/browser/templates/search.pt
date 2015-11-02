@@ -27,6 +27,7 @@
   <div id="content-core" metal:fill-slot="main">
 
     <form name="searchform"
+          id="searchform"
           action="@@search"
           role="search"
           class="searchPage pat-formautofocus"
