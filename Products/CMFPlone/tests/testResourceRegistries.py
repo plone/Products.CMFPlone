@@ -1,4 +1,5 @@
 import json
+import mock
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.controlpanel.browser.resourceregistry import OverrideFolderManager
@@ -7,10 +8,13 @@ from Products.CMFPlone.interfaces import IBundleRegistry
 from Products.CMFPlone.interfaces import IResourceRegistry
 from Products.CMFPlone.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME
 from Products.CMFPlone.resources.browser.cook import cookWhenChangingSettings
+from Products.CMFPlone.resources import add_resource_on_request
+from Products.CMFPlone.resources.browser.scripts import ScriptsView
 from Products.CMFPlone.resources.exportimport.resourceregistry import (
     ResourceRegistryNodeAdapter)
 from Products.CMFPlone.tests import PloneTestCase
 from Products.GenericSetup.context import SetupEnviron
+from plone.app.testing import logout
 from plone.registry.interfaces import IRegistry
 from plone.resource.interfaces import IResourceDirectory
 from plone.subrequest import subrequest
@@ -293,3 +297,47 @@ class TestControlPanel(PloneTestCase.PloneTestCase):
         self.layer['request'].form['bundle'] = 'plone-logged-in'
         config = json.loads(view.js_build_config())
         self.assertEquals(config['paths']['jquery'], 'empty:')
+
+
+class DummyResource(object):
+
+    def __init__(self, js):
+        self.js = js
+
+
+class TestScriptsViewlet(PloneTestCase.PloneTestCase):
+
+    def test_scripts_viewlet(self):
+        scripts = ScriptsView(self.layer['portal'], self.layer['request'], None)
+        scripts.update()
+        results = scripts.scripts()
+        self.assertEqual(
+            results[0],
+            {'src': 'http://nohost/plone/++plone++static/components/jquery/dist/jquery.min.js',
+             'conditionalcomment': None, 'bundle': 'basic'})
+        self.assertEqual(len(results), 6)
+
+    def test_scripts_viewlet_anonymous(self):
+        logout()
+        scripts = ScriptsView(self.layer['portal'], self.layer['request'], None)
+        scripts.update()
+        results = scripts.scripts()
+        self.assertEqual(
+            results[0],
+            {'src': 'http://nohost/plone/++plone++static/components/jquery/dist/jquery.min.js',
+             'conditionalcomment': None, 'bundle': 'basic'})
+        self.assertEqual(len(results), 5)
+
+    @mock.patch.object(ScriptsView,
+                       'get_resources',
+                       new=lambda self: {'foo': DummyResource('++resource++foo.js')})
+    def test_request_resources(self):
+        add_resource_on_request(self.layer['request'], 'foo')
+        scripts = ScriptsView(self.layer['portal'], self.layer['request'], None)
+        scripts.update()
+        results = scripts.scripts()
+        self.assertEqual(
+            results[-1], {'src': 'http://nohost/plone/++resource++foo.js',
+                          'conditionalcomment': '',
+                          'bundle': 'none'})
+

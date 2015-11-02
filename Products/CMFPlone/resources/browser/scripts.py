@@ -63,9 +63,8 @@ class ScriptsView(ResourceView):
                     'src': js_location
                 })
 
-    def scripts(self):
-        """The requirejs scripts, the ones that are not resources are loaded on
-        configjs.py
+    def default_resources(self):
+        """ Default resources used by Plone itself
         """
         result = []
         # We always add jquery resource
@@ -106,6 +105,13 @@ class ScriptsView(ResourceView):
             'conditionalcomment': None,
             'bundle': 'basic'
         })
+        return result
+
+    def scripts(self):
+        """The requirejs scripts, the ones that are not resources are loaded on
+        configjs.py
+        """
+        result = self.default_resources()
         result.extend(self.ordered_bundles_result())
 
         # Add manual added resources
