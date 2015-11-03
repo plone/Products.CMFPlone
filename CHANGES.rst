@@ -80,6 +80,10 @@ Fixes:
   roles.
   [maurits]
 
+- Default values for interfaces.controlpanel.IImagingSchema.allowed_sizes
+  should be unicode.
+  [kuetrzi]
+
 
 5.0 (2015-09-27)
 ----------------
