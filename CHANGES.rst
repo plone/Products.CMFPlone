@@ -39,6 +39,10 @@ New:
 - Added missing_value parameter to controlpanel list and tuple fields.
   [tomgross]
 
+- Split hard coded JavaScript resources into seperate method for easier
+  customization.
+  [tomgross]
+
 Fixes:
 
 - Fixed white space pep8 warnings.
