@@ -53,7 +53,6 @@
                                    item_type_title item/Type;
                                    item_modified item/ModificationDate;
                                    item_created item/CreationDate;
-                                   item_icon python:layout_view.getIcon(item);
                                    item_type_class python:'contenttype-' + normalizeString(item_type);
                                    item_wf_state item/review_state|python: context.portal_workflow.getInfoFor(item, 'review_state', '');
                                    item_wf_state_class python:'state-' + normalizeString(item_wf_state);
@@ -67,7 +66,7 @@
                     tal:attributes="class python:test(item_type == 'Event', 'vevent', '')">
 
                     <span class="summary">
-                        <img tal:replace="structure item_icon/html_tag" />
+                        
                         <a href="#"
                            tal:attributes="href python:test(item_type in use_view_action, item_url+'/view', item_url);
                                            class string:$item_type_class $item_wf_state_class url"
@@ -77,7 +76,7 @@
                     </span>
 
                     <span class="documentByLine">
-                        <span tal:condition="python: item_type == 'Event' and item_sametime"
+                    	 <span tal:condition="python: item_type == 'Event' and item_sametime"
                               i18n:translate="label_event_byline_onlyfrom">
                              <abbr class="dtstart"
                                    tal:attributes="title python:item_start"
