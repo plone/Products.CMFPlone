@@ -18,15 +18,20 @@
                               item_wf_state       item/review_state|python: context_state.workflow_state();
                               item_wf_state_class python: 'state-' + normalizeString(item_wf_state);
                               item_url            item/getURL|item/absolute_url;
-                              item_url            python:(item_type in use_view_action) and item_url+'/view' or item_url"
-                  tal:attributes="class item_type_class">
-              <a href="" class=""
-                 tal:attributes="href  item_url;
-                                 title desc;
-                                 class string:$item_wf_state_class"
-                 tal:content="item/pretty_title_or_id">
-                  Related Item
-              </a>
+                              item_url            python:(item_type in use_view_action) and item_url+'/view' or item_url;
+                              item_has_image      python:item.getIcon"
+                              tal:attributes="title item_type">
+              <a >
+                 <img class="image-icon"
+                      tal:define="getIcon python:item.getURL() +'/@@images/image/icon'"
+                      tal:condition="item_has_image"                          
+                      tal:attributes="src  string:$getIcon">                                         
+                  <span tal:attributes="class string:$item_type_class $item_wf_state_class url;"                         	
+                        tal:content="item/pretty_title_or_id">
+                          Item Title</span>
+                  <span class="discreet"
+                  	    tal:content="item/Description">        
+               </a>            
             </span>
           </li>
         </ul>
