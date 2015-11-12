@@ -47260,10 +47260,10 @@ define('mockup-patterns-tinymce-url/js/links',[
         self.$upload.on('uploadAllCompleted', function(evt, data) {
           if(self.linkTypes.image){
             self.linkTypes.image.set(data.data.UID);
-            $('#tinylink-image' , self.modal.$modal).trigger('click');
+            $('#' + $('#tinylink-image' , self.modal.$modal).data('navref')).trigger('click');
           }else{
             self.linkTypes.internal.set(data.data.UID);
-            $('#tinylink-internal', self.modal.$modal).trigger('click');
+            $('#' + $('#tinylink-internal' , self.modal.$modal).data('navref')).trigger('click');
           }
         });
       }
@@ -47273,7 +47273,32 @@ define('mockup-patterns-tinymce-url/js/links',[
         e.stopPropagation();
         self.linkType = self.modal.$modal.find('fieldset.active').data('linktype');
 
-        var href = self.getLinkUrl();
+        if(self.linkType === 'uploadImage' || self.linkType === 'upload'){
+            var patUpload = self.$upload.data().patternUpload;
+            if(patUpload.dropzone.files.length > 0){
+                patUpload.processUpload();
+                self.$upload.on('uploadAllCompleted', function(evt, data) {
+                    var counter = 0;
+                    var checkUpload = function(){
+                        if(counter < 5 && !self.linkTypes[self.linkType].value()){
+                            counter += 1;
+                            setTimeout(checkUpload, 100);
+                            return
+                        }else{
+                            var href = self.getLinkUrl();
+                            self.updateImage(href);
+                            self.hide();
+                        }
+                    }
+                    checkUpload();
+                });
+            }
+        }
+        try{
+            var href = self.getLinkUrl();
+        }catch(e){
+            return // just cut out if no url
+        }
         if (!href) {
           return; // just cut out if no url
         }
@@ -72867,5 +72892,5 @@ require([
   'use strict';
 });
 
-define("/Users/nathan/code/coredev5/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
+define("/home/gagaro/plone/sources/buildout.coredev/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
 
