@@ -1,6 +1,9 @@
 from zope.interface import implements
 from zope.component import getUtility
+from zope.component import providedBy
+from zope.component.hooks import getSite
 from plone.registry.interfaces import IRegistry
+from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFPlone.interfaces import ISiteSchema
 from plone.memoize.view import memoize_contextless
 from plone.memoize.view import memoize
@@ -27,8 +30,12 @@ class PortalState(BrowserView):
 
     @memoize_contextless
     def portal(self):
-        context = aq_inner(self.context)
-        return getToolByName(context, 'portal_url').getPortalObject()
+        closest_site = getSite()
+        if closest_site is not None:
+            for potential_portal in closest_site.aq_chain:
+                if ISiteRoot in providedBy(potential_portal):
+                    return potential_portal
+        return None
 
     @memoize_contextless
     def portal_title(self):
