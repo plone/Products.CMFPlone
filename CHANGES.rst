@@ -43,6 +43,9 @@ New:
   customization.
   [tomgross]
 
+- Add icon fallback for addons in Site Setup
+  [davilima6]
+
 Fixes:
 
 - Fixed white space pep8 warnings.
