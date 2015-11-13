@@ -31431,18 +31431,18 @@ define('mockup-patterns-modal',[
           return;
         }
       }
-      if ($('.plone-modal', self.$wrapper).size() < 2) {
-        self.backdrop.hide();
-        self.$wrapper.remove();
-        $('body').removeClass('plone-modal-open');
-      }
       self.loading.hide();
       self.$el.removeClass(self.options.templateOptions.classActiveName);
       if (self.$modal !== undefined) {
         self.$modal.remove();
         self.initModal();
       }
-      $(window.parent).off('resize.plone-modal.patterns');
+      self.$wrapper.remove();
+      if ($('.plone-modal', $('body')).size() < 1) {
+        self.backdrop.hide();
+        $('body').removeClass('plone-modal-open');
+        $(window.parent).off('resize.plone-modal.patterns');
+      }
       self.emit('hidden');
     },
 
@@ -32172,7 +32172,7 @@ define('mockup-patterns-resourceregistry-url/js/registry',[
 
   var RegistryView = BaseResourcesPane.extend({
     template: _.template(
-      '<div class="buttons-container">' +
+      '<div class="row buttons-container">' +
         '<div class="plone-btn-group pull-right">' +
           '<button class="plone-btn plone-btn-primary save"><%- _t("Save") %></button>' +
           '<button class="plone-btn plone-btn-default cancel"><%- _t("Cancel") %></button>' +
