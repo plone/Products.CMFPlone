@@ -3215,7 +3215,11 @@ define('mockup-patterns-tree',[
  *    cached. (true)
  *    closeOnSelect(boolean): Select2 option. Whether or not the drop down should be closed when an item is selected. (false)
  *    dropdownCssClass(string): Select2 option. CSS class to add to the drop down element. ('pattern-relateditems-dropdown')
- *    folderTypes(array): Types which should be considered browsable. (["Folder"])
+ *  
+ * #this does not respect custom dx types which are also folderish:
+ * --> folderTypes(array): Types which should be considered browsable. (["Folder"])
+ * #   needs to be implemented with meta data field: is_folderish from vocabulary
+ * 
  *    homeText(string): Text to display in the initial breadcrumb item. (home)
  *    maximumSelectionSize(integer): The maximum number of items that can be selected in a multi-select control. If this number is less than 1 selection is not limited. (-1)
  *    multiple(boolean): Do not change this option. (true)
@@ -3299,29 +3303,30 @@ define('mockup-patterns-relateditems',[
       closeOnSelect: false,
       basePath: '/',
       homeText: _t('home'),
-      folderTypes: ['Folder'],
+      //folderTypes: ['Folder'],   
       selectableTypes: null, // null means everything is selectable, otherwise a list of strings to match types that are selectable
-      attributes: ['UID', 'Title', 'portal_type', 'path', 'getIcon'],
+      attributes: ['UID', 'Title', 'portal_type', 'path','getURL', 'getIcon','is_folderish','review_state'],
       dropdownCssClass: 'pattern-relateditems-dropdown',
       maximumSelectionSize: -1,
       resultTemplate: '' +
-        '<div class="pattern-relateditems-result pattern-relateditems-type-<%= portal_type %> <% if (selected) { %>pattern-relateditems-active<% } %>">' +
-        '  <a href="#" class="pattern-relateditems-result-select <% if (selectable) { %>selectable<% } %> contenttype-<%= portal_type.toLowerCase() %>">' +
-        '    <% if (typeof getIcon !== "undefined" && getIcon) { %><span class="pattern-relateditems-result-icon"><img src="<%= getIcon %>" /></span><% } %>' +
-        '    <span class="pattern-relateditems-result-title"><%= Title %></span>' +
+        '<div class="   pattern-relateditems-result  <% if (selected) { %>pattern-relateditems-active<% } %>">' +
+        '  <a href="#" class=" pattern-relateditems-result-select <% if (selectable) { %>selectable<% } %>">' +
+        '    <% if (typeof getIcon !== "undefined" && getIcon) { %><img src="<%= getURL %>/@@images/image/icon "> <% } %>' +
+        '    <span class="pattern-relateditems-result-title  <% if (typeof review_state !== "undefined") { %> state-<%= review_state %> <% } %>  " /span>' +
+        '    <span class="pattern-relateditems contenttype-<%- portal_type.toLowerCase() %>"><%= Title %></span>' +
         '    <span class="pattern-relateditems-result-path"><%= path %></span>' +
         '  </a>' +
         '  <span class="pattern-relateditems-buttons">' +
-        '  <% if (folderish) { %>' +
+        '  <% if (is_folderish) { %>' +
         '     <a class="pattern-relateditems-result-browse" href="#" data-path="<%= path %>"></a>' +
         '   <% } %>' +
         ' </span>' +
         '</div>',
       resultTemplateSelector: null,
       selectionTemplate: '' +
-        '<span class="pattern-relateditems-item pattern-relateditems-type-<%= portal_type %>">' +
-        ' <% if (typeof getIcon !== "undefined" && getIcon) { %><span class="pattern-relateditems-result-icon"><img src="<%= getIcon %>" /></span><% } %>' +
-        ' <span class="pattern-relateditems-item-title"><%= Title %></span>' +
+        '<span class="pattern-relateditems-item">' +
+        ' <% if (typeof getIcon !== "undefined" && getIcon) { %> <img src="<%= getURL %>/@@images/image/icon"> <% } %>' +
+        ' <span class="pattern-relateditems-item-title contenttype-<%- portal_type.toLowerCase() %> <% if (typeof review_state !== "undefined") { %> state-<%= review_state  %> <% } %>" ><%= Title %></span>' +
         ' <span class="pattern-relateditems-item-path"><%= path %></span>' +
         '</span>',
       selectionTemplateSelector: null,
@@ -3445,7 +3450,7 @@ define('mockup-patterns-relateditems',[
               label: item.Title,
               id: item.UID,
               path: item.path,
-              folder: self.options.folderTypes.indexOf(item.portal_type) !== -1
+              folder: item.is_folderish
             };
             nodes.push(node);
           });
@@ -3545,7 +3550,6 @@ define('mockup-patterns-relateditems',[
     },
     init: function() {
       var self = this;
-
       self.query = new utils.QueryHelper(
         $.extend(true, {}, self.options, {pattern: self})
       );
@@ -3553,9 +3557,9 @@ define('mockup-patterns-relateditems',[
         $.extend(true, {}, self.options, {
           pattern: self,
           baseCriteria: [{
-            i: 'portal_type',
-            o: 'plone.app.querystring.operation.list.contains',
-            v: self.options.folderTypes
+            i: 'is_folderish',
+            o: 'plone.app.querystring.operation.selection.is',
+            v: 'True'
           }]
         })
       );
@@ -3574,13 +3578,14 @@ define('mockup-patterns-relateditems',[
       };
 
       Select2.prototype.initializeOrdering.call(self);
-
       self.options.formatResult = function(item) {
-        if (!item.portal_type || _.indexOf(self.options.folderTypes, item.portal_type) === -1) {
-          item.folderish = false;
-        } else {
-          item.folderish = true;
-        }
+        if (item.is_folderish){
+            item.folderish = true;
+           }
+         else {
+               item.folderish = false;
+           }
+      
 
         item.selectable = self.isSelectable(item);
 
@@ -47260,10 +47265,10 @@ define('mockup-patterns-tinymce-url/js/links',[
         self.$upload.on('uploadAllCompleted', function(evt, data) {
           if(self.linkTypes.image){
             self.linkTypes.image.set(data.data.UID);
-            $('#tinylink-image' , self.modal.$modal).trigger('click');
+            $('#' + $('#tinylink-image' , self.modal.$modal).data('navref')).trigger('click');
           }else{
             self.linkTypes.internal.set(data.data.UID);
-            $('#tinylink-internal', self.modal.$modal).trigger('click');
+            $('#' + $('#tinylink-internal' , self.modal.$modal).data('navref')).trigger('click');
           }
         });
       }
@@ -47273,7 +47278,32 @@ define('mockup-patterns-tinymce-url/js/links',[
         e.stopPropagation();
         self.linkType = self.modal.$modal.find('fieldset.active').data('linktype');
 
-        var href = self.getLinkUrl();
+        if(self.linkType === 'uploadImage' || self.linkType === 'upload'){
+            var patUpload = self.$upload.data().patternUpload;
+            if(patUpload.dropzone.files.length > 0){
+                patUpload.processUpload();
+                self.$upload.on('uploadAllCompleted', function(evt, data) {
+                    var counter = 0;
+                    var checkUpload = function(){
+                        if(counter < 5 && !self.linkTypes[self.linkType].value()){
+                            counter += 1;
+                            setTimeout(checkUpload, 100);
+                            return
+                        }else{
+                            var href = self.getLinkUrl();
+                            self.updateImage(href);
+                            self.hide();
+                        }
+                    }
+                    checkUpload();
+                });
+            }
+        }
+        try{
+            var href = self.getLinkUrl();
+        }catch(e){
+            return // just cut out if no url
+        }
         if (!href) {
           return; // just cut out if no url
         }
@@ -62891,7 +62921,7 @@ define('mockup-patterns-tinymce',[
       },
       relatedItems: {
         // UID attribute is required here since we're working with related items
-        attributes: ['UID', 'Title', 'Description', 'getURL', 'portal_type', 'path', 'ModificationDate', 'getIcon'],
+        attributes: ['UID', 'Title', 'portal_type', 'path','getURL', 'getIcon','is_folderish','review_state'],
         batchSize: 20,
         basePath: '/',
         vocabularyUrl: null,
@@ -65203,7 +65233,7 @@ define('mockup-patterns-structure-url/js/views/actionmenu',[
 });
 
 
-define('text!mockup-patterns-structure-url/templates/tablerow.xml',[],function () { return '<td class="selection"><input type="checkbox" <% if(selected){ %> checked="checked" <% } %>/></td>\n<td class="title">\n  <a href="<%- getURL %>" class="manage state-<%- review_state %> contenttype-<%- portal_type.toLowerCase() %>"><%- Title %></a>\n  <div class="icon-group-right">\n    <a href="<%- getURL %>/view" title="<%- _t(\'View\') %>"><span class="glyphicon glyphicon-new-window"></span></a>\n  </div>\n</td>\n<% _.each(activeColumns, function(column){ %>\n  <% if(_.has(availableColumns, column)) { %>\n    <td class="<%- column %>"><%- attributes[column] %></td>\n  <% } %>\n<% }); %>\n<td class="actionmenu-container">\n</td>\n';});
+define('text!mockup-patterns-structure-url/templates/tablerow.xml',[],function () { return '<td class="selection"><input type="checkbox" <% if(selected){ %> checked="checked" <% } %>/></td>\n\n<td class="title">\n  <a href="<%- getURL %>" class="manage state-<%- review_state %> contenttype-<%- portal_type.toLowerCase() %>"\n  title="<%- portal_type %>" >\n  <% if(attributes["getIcon"] ){ %> <img class="image-icon" src="<%- getURL %>/@@images/image/icon"><% } %>\n   <%- Title %></a>\n  <div class="icon-group-right">\n    <a href="<%- getURL %>/view" title="<%- _t(\'View\') %>"><span class="glyphicon glyphicon-new-window"></span></a>\n  </div>\n</td>\n<% _.each(activeColumns, function(column){ %>\n  <% if(_.has(availableColumns, column)) { %>    \n       <td class="<%- column %>"><%- attributes[column] %></td>        \n   <% } %>\n<% }); %>\n<td class="actionmenu-container">\n</td>\n';});
 
 define('mockup-patterns-structure-url/js/views/tablerow',[
   'jquery',
@@ -68518,7 +68548,7 @@ define('mockup-patterns-structure-url/js/views/app',[
  *                             moveUrl:/moveitem;
  *                             indexOptionsUrl:/tests/json/queryStringCriteria.json;
  *                             contextInfoUrl:{path}/context-info;"></div>
- *
+ * 
  */
 
 
@@ -68552,7 +68582,7 @@ define('mockup-patterns-structure',[
         'UID', 'Title', 'portal_type', 'path', 'review_state',
         'ModificationDate', 'EffectiveDate', 'CreationDate',
         'is_folderish', 'Subject', 'getURL', 'id', 'exclude_from_nav',
-        'getObjSize', 'last_comment_date', 'total_comments'
+        'getObjSize', 'last_comment_date', 'total_comments','getIcon'
       ],
       activeColumns: [
         'ModificationDate',
