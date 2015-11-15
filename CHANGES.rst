@@ -10,6 +10,10 @@ Changelog
 
 New:
 
+- Add option to show/hide thumbs in site-controlpanel
+  https://github.com/plone/Products.CMFPlone/issues/1241
+  [fgrcon]
+  
 - Explicitly provide id on search form and not depend on diazo magic
   adding the id in.
   [vangheem]
