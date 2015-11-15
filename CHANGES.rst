@@ -12,6 +12,9 @@ Fixes:
 
 - *add item here*
 
+- Fix missing closed span in document_relateditems.pt
+  [vincentfretin]
+
 - fix relatedItemBox: show thumbs, title and desc correctly
   https://github.com/plone/Products.CMFPlone/issues/1226
   [fgrcon]

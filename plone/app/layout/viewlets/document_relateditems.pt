@@ -12,7 +12,7 @@
         <header i18n:translate="label_related_items">Related content</header>
         <ul>
           <li tal:repeat="item related">
-            <span tal:define="desc                item/Description;                              
+            <span tal:define="desc                item/Description;
                               item_type           item/portal_type;
                               item_type_class     python:'contenttype-' + normalizeString(item_type);
                               item_wf_state       item/review_state|python: context_state.workflow_state();
@@ -21,17 +21,17 @@
                               item_url            python:(item_type in use_view_action) and item_url+'/view' or item_url;
                               item_has_image      python:item.getIcon"
                               tal:attributes="title item_type">
-              <a >
+              <a>
                  <img class="image-icon"
                       tal:define="getIcon python:item.getURL() +'/@@images/image/icon'"
-                      tal:condition="item_has_image"                          
-                      tal:attributes="src  string:$getIcon">                                         
-                  <span tal:attributes="class string:$item_type_class $item_wf_state_class url;"                         	
+                      tal:condition="item_has_image"
+                      tal:attributes="src  string:$getIcon">
+                  <span tal:attributes="class string:$item_type_class $item_wf_state_class url;"
                         tal:content="item/pretty_title_or_id">
                           Item Title</span>
                   <span class="discreet"
-                  	    tal:content="item/Description">        
-               </a>            
+                        tal:content="item/Description">description</span>
+               </a>
             </span>
           </li>
         </ul>
