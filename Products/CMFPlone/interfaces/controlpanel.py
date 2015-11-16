@@ -1116,7 +1116,18 @@ class ISiteSchema(Interface):
             SimpleTerm('authenticated', 'authenticated',
                        _('For authenticated users only'))]),
         required=True)
-
+    
+    thumb_visibility = schema.Choice(
+        title=_(u'Thumb visibility'),
+        description=_(u'Show thumbs in listings'),
+        default=u'enabled',
+        vocabulary=SimpleVocabulary([
+            SimpleTerm('false', 'false', _(u'Never')),
+            SimpleTerm('enabled', 'enabled', _(u'Always')),
+            SimpleTerm('authenticated', 'authenticated',
+                       _(u'For authenticated users only'))]),
+        required=True)
+    
     toolbar_position = schema.Choice(
         title=_(u'Position where the toolbar is displayed'),
         description=_(
