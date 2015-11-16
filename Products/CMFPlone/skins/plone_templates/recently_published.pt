@@ -16,7 +16,8 @@
                  Batch python:modules['Products.CMFPlone'].Batch;
                  DateTime python:modules['DateTime'].DateTime;
                  b_start python:request.get('b_start',0);
-                 toLocalizedTime nocall:context/@@plone/toLocalizedTime;">
+                 toLocalizedTime nocall:context/@@plone/toLocalizedTime;
+                 normalize nocall:context/@@plone/normalizeString;">
 
     <h1 class="documentFirstHeading"
         i18n:translate="heading_recently_published">
@@ -37,15 +38,17 @@
             <tal:results tal:repeat="result batch">
 
                 <article>
-                    <header>
-                        <img src="" alt="" style="border: 0"
-                             tal:attributes="src result/getIcon;
-                                             alt result/Type" />
-
-                        <a href="/view"
-                           tal:content="result/pretty_title_or_id"
-                           tal:attributes="href result/getURL">
-                        Title
+                    <header
+                    	tal:define="item_class python:'contenttype-' + normalize(result.portal_type);
+                    	            item_wf_state result/review_state;
+                    	            item_wf_state_class python:'state-' + normalize(item_wf_state);">                    	            
+                        <a tal:attributes="href result/getURL">
+                        	<img  class = "image-tile"                  		  
+                        		  tal:condition="python:result.getIcon"
+                        		  tal:attributes="src python:result.getURL()+'/@@images/image/tile'">
+                        	<span tal:content="result/pretty_title_or_id"
+                                  tal:attributes="class string:$item_class $item_wf_state_class">
+                                  Title</span>
                         </a>
 
                         <span class="discreet" i18n:translate="text_creator_date" tal:condition="show_about">
@@ -62,7 +65,7 @@
                         </span>
                     </header>
 
-                    <p class="link">
+                    <p class="discreet">
                         <a href="/view"
                            tal:content="result/Description"
                            tal:attributes="href result/getURL">

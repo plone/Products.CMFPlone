@@ -292,13 +292,6 @@ class IPlone(Interface):
            page of a folder, and checks if the user has relevant permissions.
         """
 
-    def getIcon(item):
-        """Returns an object which implements the IContentIcon interface and
-           provides the informations necessary to render an icon.
-           The item parameter needs to be adaptable to IContentIcon.
-           Icons can be disabled globally or just for anonymous users with
-           the icon_visibility property in site_properties."""
-
     def cropText(text, length, ellipsis):
         """ Crop text on a word boundary """
 
