@@ -6,7 +6,9 @@ Changelog
 
 New:
 
-- *add item here*
+- Add option to show/hide thumbs in site-controlpanel
+  https://github.com/plone/Products.CMFPlone/issues/1241
+  [fgrcon]
 
 Fixes:
 

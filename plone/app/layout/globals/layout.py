@@ -98,6 +98,24 @@ class LayoutPolicy(BrowserView):
         else:
             return False
 
+    @memoize
+    def thumb_visible(self):
+        """Returns True if thumbs should be shown or False otherwise.
+        """
+        context = self.context
+        membership = getToolByName(context, "portal_membership")
+        anon = membership.isAnonymousUser()
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(ISiteSchema, prefix="plone", check=False)
+        thumb_visibility = settings.thumb_visibility
+
+        if thumb_visibility == 'enabled':
+            return True
+        elif thumb_visibility == 'authenticated' and not anon:
+            return True
+        else:
+            return False
+
     def getIcon(self, item):
         """Returns an object which implements the IContentIcon interface and
         provides the informations necessary to render an icon. The item
@@ -178,6 +196,12 @@ class LayoutPolicy(BrowserView):
             body_classes.append('icons-on')
         else:
             body_classes.append('icons-off')
+
+        # class for hiding thumbs (optional)
+        if self.thumb_visible():
+            body_classes.append('thumbs-on')
+        else:
+            body_classes.append('thumbs-off')
 
         # permissions required. Useful to theme frontend and backend
         # differently
