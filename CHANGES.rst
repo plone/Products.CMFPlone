@@ -48,6 +48,10 @@ New:
 
 Fixes:
 
+- remove deprecated icons ...
+  https://github.com/plone/Products.CMFPlone/issues/1226
+  [fgrcon]
+  
 - Fixed white space pep8 warnings.
   [maurits]
 

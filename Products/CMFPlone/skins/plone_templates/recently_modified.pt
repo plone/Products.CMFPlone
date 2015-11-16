@@ -39,18 +39,17 @@
             <tal:results tal:repeat="result batch">
 
                 <li tal:define="description result/Description">
-                    <header tal:define="item_icon python:plone_view.getIcon(result);
-                                    item_wf_state result/review_state;
-                                    item_wf_state_class python:'state-' + normalizeString(item_wf_state);">
-                        <span tal:attributes="class python:'contenttype-' + normalizeString(result.portal_type)">
-                          <img tal:replace="structure item_icon/html_tag" />
-                          <a href="/view"
-                             tal:content="result/pretty_title_or_id"
-                             tal:attributes="href result/getURL;
-                                             class string:$item_wf_state_class">
-                          Title
+                    <header tal:define="item_wf_state result/review_state;
+                                        item_wf_state_class python:'state-' + normalizeString(item_wf_state);
+                                        item_type_class python:'contenttype-' + normalizeString(result.portal_type)">
+                          <a tal:attributes="href result/getURL">
+                        	<img  class = "image-tile"
+                        		  tal:condition="python:result.getIcon"
+                        		  tal:attributes="src python:result.getURL()+'/@@images/image/tile'">
+                        	<span tal:content="result/pretty_title_or_id"
+                                  tal:attributes="class string:$item_type_class $item_wf_state_class"  >
+                                  Title</span>
                           </a>
-                        </span>
 
                         <span class="discreet" i18n:translate="text_creator_date" tal:condition="show_about">
                             by
