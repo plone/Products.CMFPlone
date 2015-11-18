@@ -52,6 +52,10 @@ New:
 
 Fixes:
 
+- Avoid AttributeError if registry is not yet there for the 
+  JSRegistryNodeAdapter while migrating from older versions
+  [frapell]
+
 - remove deprecated icons ...
   https://github.com/plone/Products.CMFPlone/issues/1226
   [fgrcon]
