@@ -7,7 +7,7 @@
 <body>
 <!-- BBB -->
 <tal:block i18n:domain="plone" metal:define-macro="portal_message">
-  <tal:message tal:content="provider:plone.globalstatusmessage"/>
+  <tal:message tal:content="structure provider:plone.globalstatusmessage"/>
 </tal:block>
 
 </body>

@@ -61,6 +61,9 @@ Fixes:
   https://github.com/plone/Products.CMFPlone/issues/1226
   [fgrcon]
   
+- Fix bbb global status message template rendering escaped html
+  [vangheem]
+
 - Fixed white space pep8 warnings.
   [maurits]
 
