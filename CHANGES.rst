@@ -52,6 +52,9 @@ New:
 
 Fixes:
 
+- Fix bbb global status message template rendering escaped html
+  [vangheem]
+
 - Avoid AttributeError if registry is not yet there for the 
   JSRegistryNodeAdapter while migrating from older versions
   https://github.com/plone/Products.CMFPlone/pull/1246
@@ -60,9 +63,6 @@ Fixes:
 - remove deprecated icons ...
   https://github.com/plone/Products.CMFPlone/issues/1226
   [fgrcon]
-  
-- Fix bbb global status message template rendering escaped html
-  [vangheem]
 
 - Fixed white space pep8 warnings.
   [maurits]
