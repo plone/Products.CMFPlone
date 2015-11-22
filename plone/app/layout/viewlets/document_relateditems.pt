@@ -21,7 +21,7 @@
                               item_url            python:(item_type in use_view_action) and item_url+'/view' or item_url;
                               item_has_image      python:item.getIcon"
                               tal:attributes="title item_type">
-              <a>
+              <a tal:attributes="href  item_url">
                  <img class="image-icon"
                       tal:define="getIcon python:item.getURL() +'/@@images/image/icon'"
                       tal:condition="item_has_image"
