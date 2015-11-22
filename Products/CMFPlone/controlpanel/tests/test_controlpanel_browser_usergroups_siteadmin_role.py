@@ -98,7 +98,7 @@ class TestSiteAdministratorRoleFunctional(UserGroupsControlPanelTestCase):
     def testControlPanelOverview(self):
         # make sure we can view the Site Setup page,
         # at both old and new URLs
-        res = self.publish('/plone/plone_control_panel', 'siteadmin:secret')
+        res = self.publish('/plone/@@overview-controlpanel', 'siteadmin:secret')
         self.assertEqual(200, res.status)
         res = self.publish(
             '/plone/@@overview-controlpanel', 'siteadmin:secret'
