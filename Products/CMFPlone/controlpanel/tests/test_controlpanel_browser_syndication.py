@@ -87,12 +87,12 @@ class SyndicationControlPanelFunctionalTest(unittest.TestCase):
         self.portal.collection.query = [
             {
                 "i": "portal_type",
-                "o": "plone.app.querystring.operation.selection.is",
+                "o": "plone.app.querystring.operation.selection.any",
                 "v": ["News Item"]
             },
             {
                 "i": "review_state",
-                "o": "plone.app.querystring.operation.selection.is",
+                "o": "plone.app.querystring.operation.selection.any",
                 "v": ["published"]
             }
         ]
