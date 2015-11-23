@@ -52,6 +52,9 @@ New:
 
 Fixes:
 
+- Add authenticator token to group portlet links
+  [vangheem]
+
 - Fix bbb global status message template rendering escaped html
   [vangheem]
 
