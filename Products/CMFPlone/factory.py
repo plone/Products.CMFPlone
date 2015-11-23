@@ -59,7 +59,6 @@ class HiddenProfiles(object):
                 u'plone.app.theming:default',
                 u'plone.app.users:default',
                 u'plone.app.versioningbehavior:default',
-                u'plone.app.widgets:default',
                 u'plone.app.z3cform:default',
                 u'plone.formwidget.recurrence:default',
                 u'plone.resource:default',

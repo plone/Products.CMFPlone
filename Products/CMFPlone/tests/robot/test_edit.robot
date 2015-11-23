@@ -33,7 +33,6 @@ Scenario: Switch tabs
       and no other tab is shown
 
 Scenario: Adding a related item
-    Pass Execution  Disabled until plone.app.widgets is merged
     # Order of the next two lines is important
     # First we're creating a new item and then editing the original page
     Given a logged-in site administrator
@@ -48,7 +47,6 @@ Scenario: Adding a related item
      Then the related item is shown in the page
 
 Scenario: DateTime widget follows form dropdowns values
-    Pass Execution  Disabled until plone.app.widgets is merged
     Given a logged-in site administrator
       and an edited page
      When i click the Dates tab
@@ -57,7 +55,6 @@ Scenario: DateTime widget follows form dropdowns values
      Then popup calendar should have the same date
 
 Scenario: Form dropdowns follows DateTime widget values
-    Pass Execution  Disabled until plone.app.widgets is merged
     Given a logged-in site administrator
       and an edited page
      When i click the Dates tab

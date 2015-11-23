@@ -100,7 +100,6 @@ setup(
         'plone.app.uuid',
         'plone.app.viewletmanager',
         'plone.app.vocabularies',
-        'plone.app.widgets',
         'plone.app.workflow',
         'plone.batching',
         'plone.browserlayer >= 1.0rc4',

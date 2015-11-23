@@ -13,7 +13,7 @@ New:
 - Add option to show/hide thumbs in site-controlpanel
   https://github.com/plone/Products.CMFPlone/issues/1241
   [fgrcon]
-  
+
 - Explicitly provide id on search form and not depend on diazo magic
   adding the id in.
   [vangheem]
@@ -58,7 +58,7 @@ Fixes:
 - Fix bbb global status message template rendering escaped html
   [vangheem]
 
-- Avoid AttributeError if registry is not yet there for the 
+- Avoid AttributeError if registry is not yet there for the
   JSRegistryNodeAdapter while migrating from older versions
   https://github.com/plone/Products.CMFPlone/pull/1246
   [frapell]
@@ -109,6 +109,10 @@ Fixes:
 - Default values for interfaces.controlpanel.IImagingSchema.allowed_sizes
   should be unicode.
   [kuetrzi]
+
+- Don't depend on and install plone.app.widgets. plone.app.z3cform does it for
+  us.
+  [thet]
 
 
 5.0 (2015-09-27)
