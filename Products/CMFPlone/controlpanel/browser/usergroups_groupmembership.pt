@@ -70,7 +70,7 @@
                    i18n:translate="label_group_properties">Group Properties</a>
                 <a href="${portal_url}/@@manage-group-portlets?${groupkeyquery}&_authenticator=${token}"
                    i18n:translate="label_group_portlets">Group Portlets</a>
-                <a href="${portal_url}/@@manage-group-dashboard?${groupkeyquery}"
+                <a href="${portal_url}/@@manage-group-dashboard?${groupkeyquery}&_authenticator=${token}"
                    i18n:translate="label_group_dashboard">Group Dashboard</a>
               </nav>
 
