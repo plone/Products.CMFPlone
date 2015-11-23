@@ -3558,7 +3558,7 @@ define('mockup-patterns-relateditems',[
           pattern: self,
           baseCriteria: [{
             i: 'is_folderish',
-            o: 'plone.app.querystring.operation.selection.is',
+            o: 'plone.app.querystring.operation.selection.any',
             v: 'True'
           }]
         })
