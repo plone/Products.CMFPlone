@@ -55,6 +55,11 @@ Fixes:
 - Update Site Setup link in all control panels (fixes .. _`#1255`)
   [davilima6]
 
+- In tests, use ``selection.any`` in querystrings.  And expect this in
+  the default news and events collections.
+  Issue https://github.com/plone/Products.CMFPlone/issues/1040
+  [maurits]
+
 - Add authenticator token to group portlet links
   [vangheem]
 

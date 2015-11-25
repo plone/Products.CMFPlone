@@ -309,10 +309,10 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.assertEqual(collection._getPortalTypeName(), 'Collection')
         query = collection.query
         self.assertTrue({'i': 'portal_type',
-                         'o': 'plone.app.querystring.operation.selection.is',
+                         'o': 'plone.app.querystring.operation.selection.any',
                          'v': ['News Item']} in query)
         self.assertTrue({'i': 'review_state',
-                         'o': 'plone.app.querystring.operation.selection.is',
+                         'o': 'plone.app.querystring.operation.selection.any',
                          'v': ['published']} in query)
         self.assertEqual(collection.getLayout(), 'folder_summary_view')
         self.assertEqual(collection.checkCreationFlag(), False)
@@ -326,10 +326,10 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.assertEqual(collection._getPortalTypeName(), 'Collection')
         query = collection.query
         self.assertTrue({'i': 'portal_type',
-                         'o': 'plone.app.querystring.operation.selection.is',
+                         'o': 'plone.app.querystring.operation.selection.any',
                          'v': ['Event']} in query)
         self.assertTrue({'i': 'review_state',
-                         'o': 'plone.app.querystring.operation.selection.is',
+                         'o': 'plone.app.querystring.operation.selection.any',
                          'v': ['published']} in query)
         self.assertTrue({
             'i': 'start',
