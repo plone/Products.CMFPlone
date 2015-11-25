@@ -14,6 +14,9 @@ New:
   https://github.com/plone/Products.CMFPlone/issues/1241
   [fgrcon]
 
+- Add icon fallback for addons in Site Setup (fixes .. _`#1232`)
+  [davilima6]
+
 - Explicitly provide id on search form and not depend on diazo magic
   adding the id in.
   [vangheem]
@@ -47,10 +50,10 @@ New:
   customization.
   [tomgross]
 
-- Add icon fallback for addons in Site Setup
-  [davilima6]
-
 Fixes:
+
+- Update Site Setup link in all control panels (fixes .. _`#1255`)
+  [davilima6]
 
 - Add authenticator token to group portlet links
   [vangheem]
@@ -1001,3 +1004,5 @@ Fixes:
 .. _`#1015`: https://github.com/plone/Products.CMFPlone/issues/1015
 .. _`#1041`: https://github.com/plone/Products.CMFPlone/issues/1041
 .. _`#1053`: https://github.com/plone/Products.CMFPlone/issues/1053
+.. _`#1232`: https://github.com/plone/Products.CMFPlone/issues/1232
+.. _`#1255`: https://github.com/plone/Products.CMFPlone/issues/1255
