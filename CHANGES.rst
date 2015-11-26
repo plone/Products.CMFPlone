@@ -6,20 +6,19 @@ Changelog
 
 New:
 
-- Add option to show/hide thumbs in site-controlpanel
+- Added option to show/hide thumbs in site-controlpanel.
   https://github.com/plone/Products.CMFPlone/issues/1241
   [fgrcon]
 
 Fixes:
 
-- *add item here*
-
-- Fix missing closed span in document_relateditems.pt
+- Fixed missing closed span in document_relateditems.pt.
   [vincentfretin]
 
-- fix relatedItemBox: show thumbs, title and desc correctly
+- Fixed relatedItemBox: show thumbs, title and description correctly.
   https://github.com/plone/Products.CMFPlone/issues/1226
   [fgrcon]
+
 
 2.5.16 (2015-10-28)
 -------------------
