@@ -256,8 +256,16 @@ def is_default_page(obj):
 
 @indexer(Interface)
 def getIcon(obj):
-    """Make sure we index icon relative to portal"""
-    return obj.getIcon(True)
+    """
+    geticon redefined in Plone > 5.0
+    see https://github.com/plone/Products.CMFPlone/issues/1226
+
+    reuse of metadata field,
+    now used for showing thumbs in content listings etc.
+    when obj is an image or has a lead image
+    or has an image field with name 'image': true else false
+    """
+    return bool(getattr(obj.aq_base, 'image', False))
 
 
 @indexer(Interface)

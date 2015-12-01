@@ -75,6 +75,9 @@ Fixes:
   https://github.com/plone/Products.CMFPlone/issues/1226
   [fgrcon]
 
+- Also remove deprecated icons for archetypes
+  [Gagaro]
+
 - Fixed white space pep8 warnings.
   [maurits]
 
