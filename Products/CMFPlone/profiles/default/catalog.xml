@@ -110,7 +110,6 @@
  <column value="Creator"/>
  <column value="Date"/>
  <column value="Description"/>
- <column value="ModificationDate"/>
  <column value="Subject"/>
  <column value="Title"/>
  <column value="UID"/>
