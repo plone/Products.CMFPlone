@@ -122,7 +122,6 @@
  <column value="exclude_from_nav"/>
  <column value="expires"/>
  <column value="getIcon"/>
- <column value="getId"/>
  <column value="getObjSize"/>
  <column value="getRemoteUrl"/>
  <column value="id"/>
