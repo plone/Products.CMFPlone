@@ -115,7 +115,6 @@
  <column value="ModificationDate"/>
  <column value="Subject"/>
  <column value="Title"/>
- <column value="Type"/>
  <column value="UID"/>
  <column value="created"/>
  <column value="effective"/>
@@ -130,7 +129,6 @@
  <column value="is_folderish"/>
  <column value="listCreators"/>
  <column value="location"/>
- <column value="meta_type"/>
  <column value="modified"/>
  <column value="portal_type"/>
  <column value="review_state"/>
