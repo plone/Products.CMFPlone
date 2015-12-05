@@ -110,7 +110,6 @@
  <column value="Creator"/>
  <column value="Date"/>
  <column value="Description"/>
- <column value="EffectiveDate"/>
  <column value="ExpirationDate"/>
  <column value="ModificationDate"/>
  <column value="Subject"/>
