@@ -26,6 +26,7 @@ class TinyMCESettingsGenerator(object):
         self.settings = registry.forInterface(
             ITinyMCESchema, prefix="plone", check=False)
         self.portal_url = get_portal_url(self.portal)
+        self.portal_url_path = self.portal.absolute_url_path()
 
     def get_theme(self):
         return theming_policy().get_theme()
@@ -261,7 +262,7 @@ class PloneSettingsAdapter(object):
             'tiny': generator.get_tiny_config(),
             # This is for loading the languages on tinymce
             'loadingBaseUrl': '%s/++plone++static/components/tinymce-builded/js/tinymce' % generator.portal_url,  # noqa
-            'prependToUrl': '{0}/resolveuid/'.format(generator.portal_url),
+            'prependToUrl': '{0}/resolveuid/'.format(generator.portal_url_path),
             'linkAttribute': 'UID',
             'prependToScalePart': '/@@images/image/',
             'imageTypes': image_types
