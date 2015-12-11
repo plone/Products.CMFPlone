@@ -52,6 +52,9 @@ New:
 
 Fixes:
 
+- Fix internal links and images src to not include the domain.
+  [Gagaro]
+
 - Update Site Setup link in all control panels (fixes .. _`#1255`)
   [davilima6]
 
