@@ -32,19 +32,11 @@ class TestPloneToolBrowserDefault(PloneTestCase.FunctionalTestCase):
         # make sure the test request gets marked with the default theme layer
         notify(BeforeTraverseEvent(self.portal, self.app.REQUEST))
 
-        # disable auto-CSRF
-        from plone.protect import auto
-        auto.CSRF_DISABLED = True
-
         _createObjectByType('Folder',       self.portal, 'atctfolder')
         _createObjectByType('Document',     self.portal, 'atctdocument')
         _createObjectByType('File',         self.portal, 'atctfile')
 
         self.putils = getToolByName(self.portal, "plone_utils")
-
-    def tearDown(self):
-        from plone.protect import auto
-        auto.CSRF_DISABLED = False
 
     def compareLayoutVsView(self, obj, path="", viewaction=None):
         if viewaction is None:

@@ -17,8 +17,6 @@ response = REQUEST.response
 response.setHeader('Expires', 'Sat, 01 Jan 2000 00:00:00 GMT')
 response.setHeader('Cache-Control', 'no-cache')
 
-authenticator = context.restrictedTraverse("@@authenticator")
-
 if id is None:
     id = context.generateUniqueId(type_name)
 else:
@@ -39,7 +37,7 @@ if not fti.queryMethodID('edit'):
 if type_name in context.portal_factory.getFactoryTypes():
     new_url = 'portal_factory/' + type_name + '/' + id
     if state.getStatus() != 'success_no_edit':
-        new_url = new_url + '/edit?_authenticator='  + authenticator.token()
+        new_url = new_url + '/edit'
     state.set(status='factory', next_action='redirect_to:string:%s' % new_url)
     # If there's an issue with object creation, let the factory handle it
     return state
