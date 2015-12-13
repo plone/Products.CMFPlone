@@ -90,19 +90,19 @@ class TestEmailLogin(PloneTestCase.PloneTestCase):
 
         # Login name and user name start out the same
         found = get_member_by_login_name(context, PloneTestCase.default_user)
-        self.assertEqual(member, found)
+        self.assertEqual(member.id, found.id)
 
         # Change the login name:
         set_own_login_name(member, 'vanrees')
         # A member with this user name is still returned:
         found = get_member_by_login_name(context, PloneTestCase.default_user)
-        self.assertEqual(member, found)
+        self.assertEqual(member.id, found.id)
         # With the changed login name we can find the member:
         found = get_member_by_login_name(context, 'vanrees')
-        self.assertEqual(member, found)
+        self.assertEqual(member.id, found.id)
 
         # Demonstrate that we can find other members than just the
         # default user:
         found = get_member_by_login_name(context, 'portal_owner')
         member = memship.getMemberById('portal_owner')
-        self.assertEqual(member, found)
+        self.assertEqual(member.id, found.id)
