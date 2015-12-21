@@ -8,7 +8,15 @@ Changelog
 5.0.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+New:
+
+- *add item here*
+
+Fixes:
+
+- Fixed Unauthorized error in folder_full_view for anonymous users.
+  Fixes issue https://github.com/plone/Products.CMFPlone/issues/1292
+  [maurits]
 
 
 5.0.1 (2015-12-17)
