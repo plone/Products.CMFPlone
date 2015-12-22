@@ -14,6 +14,12 @@ New:
 
 Fixes:
 
+- Fixed Forbidden error when using the users and groups overview as
+  Site Administrator.  This could happen when there are users that
+  inherit the Manager role from the Administrators group.
+  Fixes issue https://github.com/plone/Products.CMFPlone/issues/1293
+  [maurits]
+
 - Fixed Unauthorized error in folder_full_view for anonymous users.
   Fixes issue https://github.com/plone/Products.CMFPlone/issues/1292
   [maurits]

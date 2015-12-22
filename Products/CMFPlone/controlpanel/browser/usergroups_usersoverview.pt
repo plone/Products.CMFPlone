@@ -146,7 +146,7 @@
                             <input type="hidden"
                                 name="users.roles:list:records"
                                 value="Manager"
-                                tal:condition="python:explicit and not enabled and not inherited"
+                                tal:condition="python:inherited"
                                 tal:attributes="value portal_role" />
                             <img tal:condition="inherited" tal:replace="structure context/site_icon.png" />
                           </tal:block>
@@ -238,4 +238,3 @@
 
 </body>
 </html>
-
