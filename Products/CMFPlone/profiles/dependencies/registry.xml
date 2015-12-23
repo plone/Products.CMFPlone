@@ -1054,6 +1054,7 @@
   <!-- Bundles -->
   <records prefix="plone.bundles/plone"
             interface='Products.CMFPlone.interfaces.IBundleRegistry'>
+    <value key="merge_with">default</value>
     <value key="resources">
       <element>plone</element>
     </value>
@@ -1068,6 +1069,7 @@
 
   <records prefix="plone.bundles/plone-logged-in"
             interface='Products.CMFPlone.interfaces.IBundleRegistry'>
+    <value key="merge_with">logged-in</value>
     <value key="resources">
       <element>plone-logged-in</element>
     </value>
@@ -1111,6 +1113,7 @@
 
   <records prefix="plone.bundles/plone-legacy"
             interface='Products.CMFPlone.interfaces.IBundleRegistry'>
+    <value key="merge_with">default</value>
     <value key="resources" purge="false">
       <element>jquery-highlightsearchterms</element>
     </value>
