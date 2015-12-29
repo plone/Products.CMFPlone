@@ -63410,10 +63410,11 @@ define('mockup-patterns-querystring',[
   'pat-base',
   'mockup-patterns-select2',
   'mockup-patterns-pickadate',
+  'mockup-patterns-relateditems',
   'select2',
   'translate',
   'underscore'
-], function($, Base, Select2, PickADate, undefined, _t, _) {
+], function($, Base, Select2, PickADate, relatedItems, undefined, _t, _) {
   'use strict';
 
   var Criteria = function() { this.init.apply(this, arguments); };
@@ -63428,15 +63429,18 @@ define('mockup-patterns-querystring',[
       classValueName: 'querystring-criteria-value',
       classRemoveName: 'querystring-criteria-remove',
       classResultsName: 'querystring-criteria-results',
-      classClearName: 'querystring-criteria-clear'
+      classClearName: 'querystring-criteria-clear',
+      classDepthName: 'querystring-criteria-depth'
     },
-    init: function($el, options, indexes, index, operator, value) {
+    init: function($el, options, indexes, index, operator, value, baseUrl) {
       var self = this;
 
       self.options = $.extend(true, {}, self.defaults, options);
       self.indexes = indexes;
       self.indexGroups = {};
-
+      self.baseUrl = baseUrl;
+      self.advanced = false;
+      self.initial = value;
       // create wrapper criteria and append it to DOM
       self.$wrapper = $('<div/>')
               .addClass(self.options.classWrapperName)
@@ -63498,10 +63502,9 @@ define('mockup-patterns-querystring',[
 
       self.trigger('create-criteria');
     },
-    createOperator: function(index, operator, value) {
+    appendOperators: function(index) {
       var self = this;
 
-      self.removeOperator();
       self.$operator = $('<select/>');
 
       if (self.indexes[index]) {
@@ -63529,6 +63532,83 @@ define('mockup-patterns-querystring',[
           self.createClear();
           self.trigger('operator-changed');
         });
+    },
+    convertPathOperators: function(oval) {
+      var self = this;
+
+      if( self.advanced ) {
+        return oval;
+      }
+      //This allows us to use the same query operation for multiple dropdown options.
+      oval = oval
+        .replace('advanced', 'relativePath')
+        .replace('path', 'relativePath');
+      return oval;
+    },
+    createPathOperators: function() {
+      var self = this;
+
+      if( self.advanced ) {
+        self.resetPathOperators();
+        return;
+      }
+      var newOperator = "plone.app.querystring.operation.string.advanced";
+
+      if( self.indexes.path.operators[newOperator] === undefined ) {
+        self.indexes.path.operations.push(newOperator);
+        self.indexes.path.operators[newOperator] = {
+          title: 'Advanced',
+          widget: 'AdvancedPathWidget',
+          description: 'Enter a custom path string',
+          operation: 'plone.app.querystring.queryparser._relativePath'
+        };
+      }
+
+      $.each(self.indexes.path.operators, function(key, value) {
+        var options = value;
+        if( key.indexOf('absolute') > 0 ) {
+          options.title = "Custom";
+        }
+        else if( key.indexOf('relative') > 0 ) {
+          options.title = "Parent (../)";
+        }
+        else if( key.indexOf('advanced') > 0 ) {
+          options.title = "Advanced Mode";
+        }
+        else {
+          options.title = "Current (./)";
+          options.widget = "RelativePathWidget";
+        }
+      });
+    },
+    resetPathOperators: function() {
+      var self = this;
+      $.each(self.indexes.path.operators, function(key, value) {
+        var options = value;
+        if( key.indexOf('absolute') > 0 ) {
+          options.title = "Absolute Path";
+        }
+        else if( key.indexOf('relative') > 0 ) {
+          options.title = "Relative Path";
+        }
+        else if( key.indexOf('advanced') > 0 ) {
+          options.title = "Simple Mode";
+        }
+        else {
+          options.title = "Navigation Path";
+          options.widget = "ReferenceWidget";
+        }
+      });
+
+      return;
+    },
+    createOperator: function(index, operator, value) {
+      var self = this;
+
+      self.removeOperator();
+      self.createPathOperators();
+
+      self.appendOperators(index);
 
       if (operator === undefined) {
         operator = self.$operator.select2('val');
@@ -63547,6 +63627,28 @@ define('mockup-patterns-querystring',[
             .appendTo(self.$wrapper);
 
       self.removeValue();
+
+      var createDepthSelect = function(selected) {
+        var select =
+          "<div class='depth-select-box'>" +
+            "<label for='depth-select'>Depth</label>" +
+            "<select name='depth-select' class='"+self.options.classDepthName+"'>" +
+              "<option value='-1' selected='selected'>Unlimited</option>";
+
+              for(var i = 0; i <= 10; i+=1) {
+                select += "<option value="+i+" ";
+                if( ""+i === selected ) {
+                  select += "selected='selected' ";
+                }
+                select += ">" + i + "</option>";
+              }
+            select += "</select>" +
+          "</div>";
+
+          return $(select).change(function() {
+            self.trigger('depth-changed');
+          });
+      };
 
       if (widget === 'StringWidget') {
         self.$value = $('<input type="text"/>')
@@ -63616,24 +63718,69 @@ define('mockup-patterns-querystring',[
                   self.trigger('value-changed');
                 });
 
-      } else if (widget === 'ReferenceWidget') {
-        self.$value = $('<input type="text"/>')
-                .addClass(self.options.classValueName + '-' + widget)
-                .val(value)
-                .appendTo($wrapper)
-                .change(function() {
-                  self.trigger('value-changed');
-                });
-
+      } else if (widget === 'AdvancedPathWidget') {
+        if( self.advanced ) {
+          self.advanced = false;
+        }
+        else {
+          self.advanced = true;
+        }
+        self.createPathOperators();
+        self.removeOperator();
+        self.appendOperators(index);
+        self.createValue(index);
       } else if (widget === 'RelativePathWidget') {
-        self.$value = $('<input type="text"/>')
-                .addClass(self.options.classValueName + '-' + widget)
-                .appendTo($wrapper)
-                .val(value)
-                .change(function() {
-                  self.trigger('value-changed');
-                });
 
+        if( self.advanced ) {
+          self.$value = $('<input type="text"/>')
+            .addClass(self.options.classValueName + '-' + widget)
+            .appendTo($wrapper)
+            .val(value)
+            .change(function() {
+              self.trigger('value-changed');
+            });
+        }else{
+          //These 2 hard-coded values correspond to the "Current (./)" and "Parent (../)" options
+          //under the location index.
+          var val = ".::1";
+          if ( self.$operator.val().indexOf('relativePath') > 0 ) {
+            val = "..::1";
+          }
+          self.$value = $('<input type="hidden"/>')
+          .addClass(self.options.classValueName + '-' + widget)
+          .appendTo($wrapper)
+          .val(val);
+        }
+      } else if (widget === 'ReferenceWidget') {
+        if( self.advanced ) {
+          self.$value = $('<input type="text"/>')
+            .addClass(self.options.classValueName + '-' + widget)
+            .val(value)
+            .appendTo($wrapper)
+            .change(function() {
+              self.trigger('value-changed');
+            });
+        }else{
+          var pathAndDepth = ['', -1];
+          if( value !== undefined ) {
+              pathAndDepth = value.split('::');
+          }
+          self.$value = $('<input type="text"/>')
+          .addClass(self.options.classValueName + '-' + widget)
+          .appendTo($wrapper)
+          .val(pathAndDepth[0])
+          .patternRelateditems({
+            "vocabularyUrl": self.baseUrl + "@@getVocabulary?name=plone.app.vocabularies.Catalog&field=relatedItems",
+            "folderTypes": ["Folder"],
+            "maximumSelectionSize": 1,
+            "width": "400px"
+          })
+          .change(function() {
+            self.trigger('value-changed');
+          });
+          self.$value.parent().after(createDepthSelect(pathAndDepth[1]));
+          self.$value.parents('.' + self.options.classValueName).addClass('break-line');
+        }
       } else if (widget === 'MultipleSelectionWidget') {
         self.$value = $('<select/>').prop('multiple', true)
                 .addClass(self.options.classValueName + '-' + widget)
@@ -63659,7 +63806,11 @@ define('mockup-patterns-querystring',[
           });
         }
         else {
-          self.$value.select2('val', value);
+          var trimmedValue = value;
+          if( typeof value === "string" ) {
+            trimmedValue = value.replace(/::[0-9]+/, '');
+          }
+          self.$value.select2('val', trimmedValue);
         }
       }
 
@@ -63725,8 +63876,16 @@ define('mockup-patterns-querystring',[
       if (typeof self.$operator === 'undefined') { // no operator, no query
         return '';
       }
-      var oval = self.$operator.val(),
-          ostr = 'query.o:records=' + oval;
+      var oval = self.$operator.val();
+
+      if( ival === "path" ) {
+        if( oval.indexOf('advanced') > 0 ) {
+          return '';
+        }
+        oval = self.convertPathOperators(oval);
+      }
+
+      var ostr = 'query.o:records=' + oval;
 
       // value(s)
       var vstrbase = 'query.v:records=',
@@ -63746,7 +63905,17 @@ define('mockup-patterns-querystring',[
         });
       }
       else {
-        vstr.push(vstrbase + self.$value.val());
+        var str = vstrbase + self.$value.val();
+        if( ival === "path" && self.$value.val() !== '') {
+          str += self.getDepthString();
+        }
+        else if( self.initial !== undefined ) {
+          str = vstrbase + self.initial;
+          //Sometimes the RelatedItemsWidget won't be loaded by this point.
+          //This only should happen on the initial page load.
+          delete self.initial;
+        }
+        vstr.push(str);
       }
 
       return istr + '&' + ostr + '&' + vstr.join('&');
@@ -63766,6 +63935,14 @@ define('mockup-patterns-querystring',[
       }
       var oval = self.$operator.val();
 
+      if( ival === "path" ) {
+        if( oval.indexOf('advanced') > 0 ) {
+          //The advanced function is just a placeholder,
+          //We don't want to send an actual query
+          return '';
+        }
+        oval = self.convertPathOperators(oval);
+      }
       // value(s)
       var varr = [];
       if ($.isArray(self.$value)) { // handles only datepickers from the 'between' operator right now
@@ -63774,7 +63951,9 @@ define('mockup-patterns-querystring',[
         });
       }
       else if (typeof self.$value !== 'undefined') {
-        varr.push(self.$value.val());
+        var value = self.$value.val();
+        value += self.getDepthString();
+        varr.push(value);
       }
       var vval;
       if (varr.length > 1) {
@@ -63787,7 +63966,21 @@ define('mockup-patterns-querystring',[
         vval = '""';
       }
 
+      if( self.indexes[ival].operators[oval] === undefined ) {
+        return;
+      }
+
       return '{"i":"' + ival + '", "o":"' + oval + '", "v":' + vval + '}';
+    },
+    getDepthString: function() {
+      var self = this,
+          out = "",
+          depth = $('.'+self.options.classDepthName).val();
+
+      if( depth !== "" && depth !== undefined ) {
+        out += '::' + depth;
+      }
+      return out;
     },
     trigger: function(name) {
       this.$wrapper.trigger(name + '-criteria.querystring.patterns', [ this ]);
@@ -63902,8 +64095,9 @@ define('mockup-patterns-querystring',[
     },
     createCriteria: function(index, operator, value) {
       var self = this,
+          baseUrl = self.options.indexOptionsUrl.replace(/(@@.*)/g, ''),
           criteria = new Criteria(self.$criteriaWrapper, self.options.criteria,
-            self.options.indexes, index, operator, value);
+            self.options.indexes, index, operator, value, baseUrl);
 
       criteria.on('remove', function(e) {
         if (self.criterias[self.criterias.length - 1] === criteria) {
@@ -63917,9 +64111,15 @@ define('mockup-patterns-querystring',[
         }
       });
 
-      var doupdates = function() {
+      //This prevents multiple requests from going off after making a single change
+      var _doupdates = function(){
         self.refreshPreviewEvent();
         self.updateValue();
+      };
+      var _updateTimeout = -1;
+      var doupdates = function() {
+        clearTimeout(_updateTimeout);
+        _updateTimeout = setTimeout(_doupdates, 100);
       };
 
       criteria.on('remove', function(e, criteria) {
@@ -63937,6 +64137,7 @@ define('mockup-patterns-querystring',[
       criteria.on('create-operator', doupdates);
       criteria.on('create-value', doupdates);
       criteria.on('value-changed', doupdates);
+      criteria.on('depth-changed', doupdates);
 
       self.criterias.push(criteria);
     },
@@ -64005,7 +64206,7 @@ define('mockup-patterns-querystring',[
         $(existingSortOrder).hide();
       }
     },
-    refreshPreviewEvent: function() {
+    refreshPreviewEvent: function(value) {
       var self = this;
 
       if (!self.options.showPreviews) {
@@ -64031,9 +64232,9 @@ define('mockup-patterns-querystring',[
 
       var query = [], querypart;
       $.each(self.criterias, function(i, criteria) {
-        querypart = criteria.buildQueryPart();
+        var querypart = criteria.buildQueryPart();
         if (querypart !== '') {
-          query.push(criteria.buildQueryPart());
+          query.push(querypart);
         }
       });
 
@@ -65233,7 +65434,7 @@ define('mockup-patterns-structure-url/js/views/actionmenu',[
 });
 
 
-define('text!mockup-patterns-structure-url/templates/tablerow.xml',[],function () { return '<td class="selection"><input type="checkbox" <% if(selected){ %> checked="checked" <% } %>/></td>\n\n<td class="title">\n  <a href="<%- getURL %>" class="manage state-<%- review_state %> contenttype-<%- portal_type.toLowerCase() %>"\n  title="<%- portal_type %>" >\n \n   <%- Title %></a>\n  <div class="icon-group-right">\n    <% if(attributes["getIcon"] ){ %> <img class="image-icon" src="<%- getURL %>/@@images/image/icon"><span> &nbsp;</span><% } %>\n    <a href="<%- getURL %>/view" title="<%- _t(\'View\') %>"><span class="glyphicon glyphicon-new-window"></span></a>\n\n  </div>\n   \n<% _.each(activeColumns, function(column){ %>\n  <% if(_.has(availableColumns, column)) { %>    \n       <td class="<%- column %>"><%- attributes[column] %></td>        \n   <% } %>\n<% }); %>\n<td class="actionmenu-container">\n</td>\n';});
+define('text!mockup-patterns-structure-url/templates/tablerow.xml',[],function () { return '<td class="selection"><input type="checkbox" <% if(selected){ %> checked="checked" <% } %>/></td>\n\n<td class="title">\n  <a href="<%- getURL %>" class="manage state-<%- review_state %> contenttype-<%- portal_type.toLowerCase().replace(/\\.| /g, \'-\') %>"\n  title="<%- portal_type %>" >\n \n   <%- Title %></a>\n  <div class="icon-group-right">\n    <% if(attributes["getIcon"] ){ %> <img class="image-icon" src="<%- getURL %>/@@images/image/icon"><span> &nbsp;</span><% } %>\n    <a href="<%- getURL %>/view" title="<%- _t(\'View\') %>"><span class="glyphicon glyphicon-new-window"></span></a>\n\n  </div>\n   \n<% _.each(activeColumns, function(column){ %>\n  <% if(_.has(availableColumns, column)) { %>    \n       <td class="<%- column %>"><%- attributes[column] %></td>        \n   <% } %>\n<% }); %>\n<td class="actionmenu-container">\n</td>\n';});
 
 define('mockup-patterns-structure-url/js/views/tablerow',[
   'jquery',
@@ -72897,5 +73098,5 @@ require([
   'use strict';
 });
 
-define("/usr/local/p5dev/buildout.coredev/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
+define("/Users/nathan/code/coredev5/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
 

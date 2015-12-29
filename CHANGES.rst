@@ -14,6 +14,10 @@ New:
 
 Fixes:
 
+- build resources with latest mockup that provides better path criteria
+  widget for the querystring pattern
+  [vangheem]
+
 - Fixed Forbidden error when using the users and groups overview as
   Site Administrator.  This could happen when there are users that
   inherit the Manager role from the Administrators group.
