@@ -58,6 +58,7 @@ I search for ${NAME} in the related items widget
     #way to focus on it.
     Press Key   jquery=:focus   \\09
     Press Key    jquery=:focus   ${NAME}
+    Wait Until Element Is Visible    css=.select2-highlighted a
     Click Element  css=.select2-highlighted a
 
 I expect to be in Advanced mode
