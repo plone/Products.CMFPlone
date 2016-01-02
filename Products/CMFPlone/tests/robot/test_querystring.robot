@@ -21,7 +21,7 @@ Scenario: Location query
     When I open the Parent operator in the Location criteria
     Then we expect 4 hits
     When I open the Custom operator in the Location criteria
-    and I search for B in the related items widget
+    and I search in A subfolder in the related items widget
     Then we expect 3 hits
     When I open the Advanced operator in the Location criteria
     Then I expect to be in Advanced mode
@@ -53,11 +53,9 @@ I open the ${OPERATOR} operator in the ${CRITERIA} criteria
     open the select box titled operator
     select index type ${OPERATOR}
 
-I search for ${NAME} in the related items widget
-    #TAB-ing into the related items widget is the least painful
-    #way to focus on it.
-    Press Key   jquery=:focus   \\09
-    Press Key    jquery=:focus   ${NAME}
+I search in ${NAME} subfolder in the related items widget
+    Click Element  jquery=.pattern-relateditems-tree-select
+    Click Element  jquery=.pat-tree li.jqtree_common:contains("${NAME}") .pattern-relateditems-result-browse
     Wait Until Element Is Visible    css=.select2-highlighted a
     Click Element  css=.select2-highlighted a
 
