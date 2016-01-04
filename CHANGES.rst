@@ -14,6 +14,10 @@ New:
 
 Fixes:
 
+- Fix url generation for tinymce when using virtual hosting. This fixing
+  images not rendering properly in tinymce.
+  [vangheem]
+
 - build resources with latest mockup that provides better path criteria
   widget for the querystring pattern
   [vangheem]
