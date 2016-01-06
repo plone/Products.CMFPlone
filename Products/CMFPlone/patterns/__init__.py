@@ -242,7 +242,8 @@ class PloneSettingsAdapter(object):
         image_types = settings.image_objects or []
         folder_types = settings.contains_objects or []
 
-        site_path = generator.portal_url.replace(self.request['SERVER_URL'], '')
+        server_url = self.request.get('SERVER_URL', '')
+        site_path = generator.portal_url[len(server_url):]
         configuration = {
             'relatedItems': {
                 'vocabularyUrl':
@@ -263,7 +264,7 @@ class PloneSettingsAdapter(object):
             'tiny': generator.get_tiny_config(),
             # This is for loading the languages on tinymce
             'loadingBaseUrl': '%s/++plone++static/components/tinymce-builded/js/tinymce' % generator.portal_url,  # noqa
-            'prependToUrl': '{0}/resolveuid/'.format(site_path),
+            'prependToUrl': '{0}/resolveuid/'.format(site_path.rstrip('/')),
             'linkAttribute': 'UID',
             'prependToScalePart': '/@@images/image/',
             'imageTypes': image_types
