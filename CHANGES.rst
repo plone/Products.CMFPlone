@@ -6,7 +6,8 @@ Changelog
 
 New:
 
-- *add item here*
+- Switches deprecated ``listingBar`` CSS class to ``pagination``.
+  [davilima6]
 
 Fixes:
 
