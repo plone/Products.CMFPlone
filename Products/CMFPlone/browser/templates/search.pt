@@ -226,9 +226,11 @@
                                                  show_about python:not isAnon or allowAnonymousViewAbout;">
                         <ol class="searchResults">
                           <tal:results repeat="item batch">
-                            <li>
-                              <span>
-                                <img tal:replace="structure item/getIcon" />
+                            <li tal:define="hasIcon item/getIcon">
+                              <span class="result-title">
+                                <img class="image-icon"
+                                     tal:condition="hasIcon"
+                                     tal:attributes="src string:${item/getURL}/@@images/image/icon;">
                                 <a href="#"
                                    tal:define="item_url item/getURL;
                                                item_type item/PortalType"
