@@ -22,12 +22,12 @@
 
 // Button
 @btn-text:                       @text;
-@btn-text-shadow:                none; 
+@btn-text-shadow:                none;
 @btn-border-top:                 transparent;
 @btn-border-right:               transparent;
 @btn-border-bottom:              transparent;
 @btn-border-left:                transparent;
-@btn-caret-border:               @btn-text;   
+@btn-caret-border:               @btn-text;
 @btn-text-disabled:              @text-disabled;
 @btn-box-shadow:                 inset 0 1px 0 rgba(255, 255, 255, .2), 0 1px 2px rgba(0, 0, 0, .05);
 @btn-box-shadow-active:          inset 0 2px 4px rgba(0, 0, 0, .15), 0 1px 2px rgba(0, 0, 0, .05);
@@ -94,6 +94,24 @@
 @tooltip-text:                   white;
 @tooltip-font-size:              11px;
 
+// Notification
+@notification-font-size:         14px;
+@notification-bg:                #F0F0F0;
+@notification-border:            #CCCCCC;
+@notification-text:              #333333;
+@notification-success-bg:        #dff0d8;
+@notification-success-border:    #d6e9c6;
+@notification-success-text:      #3c763d;
+@notification-info-bg:           #d9edf7;
+@notification-info-border:       #779ECB;
+@notification-info-text:         #31708f;
+@notification-warning-bg:        #fcf8e3;
+@notification-warning-border:    #faebcc;
+@notification-warning-text:      #8a6d3b;
+@notification-error-bg:          #f2dede;
+@notification-error-border:      #ebccd1;
+@notification-error-text:        #a94442;
+
 // Window
 @window-border:                  #c5c5c5;
 @window-head-border:             @window-border;
@@ -137,6 +155,10 @@
 @textbox-border:                 #c5c5c5;
 @textbox-border-focus:           #3498db;
 
+// Selectbox
+@selectbox-bg:                   @textbox-bg;
+@selectbox-border:               @textbox-border;
+
 // Throbber
 @throbber-bg:                    #fff url('img/loader.gif') no-repeat center center;
 
@@ -162,6 +184,13 @@
 @slider-bg:                      #EEE;
 @slider-handle-border:           #BBB;
 @slider-handle-bg:               #DDD;
+
+// Progress
+@progress-border:                #ccc;
+@progress-bar-bg:                #dfdfdf;
+@progress-bar-bg-hlight:         #cccccc;
+@progress-text:                  @text;
+@progress-text-shadow:           @btn-text-shadow;
 
 // Flow layout
 @flow-layout-spacing:            2px;

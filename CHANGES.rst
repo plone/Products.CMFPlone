@@ -14,6 +14,9 @@ New:
 
 Fixes:
 
+- Upgrade TinyMCE to 4.3
+  [vangheem]
+
 - Fix use of icons in search results
   [vangheem]
 

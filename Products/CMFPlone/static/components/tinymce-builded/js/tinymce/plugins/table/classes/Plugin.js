@@ -19,15 +19,16 @@ define("tinymce/tableplugin/Plugin", [
 	"tinymce/tableplugin/Quirks",
 	"tinymce/tableplugin/CellSelection",
 	"tinymce/tableplugin/Dialogs",
+	"tinymce/tableplugin/ResizeBars",
 	"tinymce/util/Tools",
 	"tinymce/dom/TreeWalker",
 	"tinymce/Env",
 	"tinymce/PluginManager"
-], function(TableGrid, Quirks, CellSelection, Dialogs, Tools, TreeWalker, Env, PluginManager) {
+], function(TableGrid, Quirks, CellSelection, Dialogs, ResizeBars, Tools, TreeWalker, Env, PluginManager) {
 	var each = Tools.each;
 
 	function Plugin(editor) {
-		var clipboardRows, self = this, dialogs = new Dialogs(editor);
+		var clipboardRows, self = this, dialogs = new Dialogs(editor), resizeBars = ResizeBars(editor);
 
 		function cmd(command) {
 			return function() {
@@ -300,6 +301,7 @@ define("tinymce/tableplugin/Plugin", [
 
 		editor.on('Init', function() {
 			self.cellSelection = new CellSelection(editor);
+			self.resizeBars = resizeBars;
 		});
 
 		editor.on('PreInit', function() {
@@ -375,6 +377,7 @@ define("tinymce/tableplugin/Plugin", [
 			},
 
 			mceTableDelete: function(grid) {
+				resizeBars.clearBars();
 				grid.deleteTable();
 			}
 		}, function(func, name) {
@@ -402,6 +405,115 @@ define("tinymce/tableplugin/Plugin", [
 				func(val);
 			});
 		});
+
+		function addButtons() {
+			editor.addButton('tableprops', {
+				title: 'Table properties',
+				onclick: dialogs.tableProps,
+				icon: 'table'
+			});
+
+			editor.addButton('tabledelete', {
+				title: 'Delete table',
+				onclick: cmd('mceTableDelete')
+			});
+
+			editor.addButton('tablecellprops', {
+				title: 'Cell properties',
+				onclick: cmd('mceTableCellProps')
+			});
+
+			editor.addButton('tablemergecells', {
+				title: 'Merge cells',
+				onclick: cmd('mceTableMergeCells')
+			});
+
+			editor.addButton('tablesplitcells', {
+				title: 'Split cell',
+				onclick: cmd('mceTableSplitCells')
+			});
+
+			editor.addButton('tableinsertrowbefore', {
+				title: 'Insert row before',
+				onclick: cmd('mceTableInsertRowBefore')
+			});
+
+			editor.addButton('tableinsertrowafter', {
+				title: 'Insert row after',
+				onclick: cmd('mceTableInsertRowAfter')
+			});
+
+			editor.addButton('tabledeleterow', {
+				title: 'Delete row',
+				onclick: cmd('mceTableDeleteRow')
+			});
+
+			editor.addButton('tablerowprops', {
+				title: 'Row properties',
+				onclick: cmd('mceTableRowProps')
+			});
+
+			editor.addButton('tablecutrow', {
+				title: 'Cut row',
+				onclick: cmd('mceTableCutRow')
+			});
+
+			editor.addButton('tablecopyrow', {
+				title: 'Copy row',
+				onclick: cmd('mceTableCopyRow')
+			});
+
+			editor.addButton('tablepasterowbefore', {
+				title: 'Paste row before',
+				onclick: cmd('mceTablePasteRowBefore')
+			});
+
+			editor.addButton('tablepasterowafter', {
+				title: 'Paste row after',
+				onclick: cmd('mceTablePasteRowAfter')
+			});
+
+			editor.addButton('tableinsertcolbefore', {
+				title: 'Insert column before',
+				onclick: cmd('mceTableInsertColBefore')
+			});
+
+			editor.addButton('tableinsertcolafter', {
+				title: 'Insert column after',
+				onclick: cmd('mceTableInsertColAfter')
+			});
+
+			editor.addButton('tabledeletecol', {
+				title: 'Delete column',
+				onclick: cmd('mceTableDeleteCol')
+			});
+
+		}
+
+		function isTable(table) {
+
+			var selectorMatched = editor.dom.is(table, 'table');
+
+			return selectorMatched;
+		}
+
+		function addToolbars() {
+			var toolbarItems = editor.settings.table_toolbar;
+
+			if (!toolbarItems) {
+				toolbarItems = 'tableprops tabledelete | ' +
+					'tableinsertrowbefore tableinsertrowafter tabledeleterow | ' +
+					'tableinsertcolbefore tableinsertcolafter tabledeletecol';
+			}
+
+			editor.addContextToolbar(
+				isTable,
+				toolbarItems
+			);
+		}
+
+		addButtons();
+		addToolbars();
 
 		// Enable tab key cell navigation
 		if (editor.settings.table_tab_navigation !== false) {

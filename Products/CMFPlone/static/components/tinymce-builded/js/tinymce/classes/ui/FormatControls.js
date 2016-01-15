@@ -229,6 +229,25 @@ define("tinymce/ui/FormatControls", [
 
 		formatMenu = createFormatMenu();
 
+		function initOnPostRender(name) {
+			return function() {
+				var self = this;
+
+				// TODO: Fix this
+				if (editor.formatter) {
+					editor.formatter.formatChanged(name, function(state) {
+						self.active(state);
+					});
+				} else {
+					editor.on('init', function() {
+						editor.formatter.formatChanged(name, function(state) {
+							self.active(state);
+						});
+					});
+				}
+			};
+		}
+
 		// Simple format controls <control/format>:<UI text>
 		each({
 			bold: 'Bold',
@@ -240,22 +259,7 @@ define("tinymce/ui/FormatControls", [
 		}, function(text, name) {
 			editor.addButton(name, {
 				tooltip: text,
-				onPostRender: function() {
-					var self = this;
-
-					// TODO: Fix this
-					if (editor.formatter) {
-						editor.formatter.formatChanged(name, function(state) {
-							self.active(state);
-						});
-					} else {
-						editor.on('init', function() {
-							editor.formatter.formatChanged(name, function(state) {
-								self.active(state);
-							});
-						});
-					}
-				},
+				onPostRender: initOnPostRender(name),
 				onclick: function() {
 					toggleFormat(name);
 				}
@@ -297,22 +301,7 @@ define("tinymce/ui/FormatControls", [
 			editor.addButton(name, {
 				tooltip: item[0],
 				cmd: item[1],
-				onPostRender: function() {
-					var self = this;
-
-					// TODO: Fix this
-					if (editor.formatter) {
-						editor.formatter.formatChanged(name, function(state) {
-							self.active(state);
-						});
-					} else {
-						editor.on('init', function() {
-							editor.formatter.formatChanged(name, function(state) {
-								self.active(state);
-							});
-						});
-					}
-				}
+				onPostRender: initOnPostRender(name)
 			});
 		});
 
@@ -327,8 +316,8 @@ define("tinymce/ui/FormatControls", [
 				}
 
 				self.disabled(!checkState());
-				editor.on('Undo Redo AddUndo TypingUndo ClearUndos', function() {
-					self.disabled(!checkState());
+				editor.on('Undo Redo AddUndo TypingUndo ClearUndos SwitchMode', function() {
+					self.disabled(editor.readonly || !checkState());
 				});
 			};
 		}

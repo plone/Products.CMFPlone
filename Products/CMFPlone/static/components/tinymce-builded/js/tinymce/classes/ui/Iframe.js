@@ -20,8 +20,9 @@
  * @extends tinymce.ui.Widget
  */
 define("tinymce/ui/Iframe", [
-	"tinymce/ui/Widget"
-], function(Widget) {
+	"tinymce/ui/Widget",
+	"tinymce/util/Delay"
+], function(Widget, Delay) {
 	"use strict";
 
 	return Widget.extend({
@@ -40,7 +41,7 @@ define("tinymce/ui/Iframe", [
 			/*eslint no-script-url:0 */
 			return (
 				'<iframe id="' + self._id + '" class="' + self.classes + '" tabindex="-1" src="' +
-				(self.settings.url || "javascript:\'\'") + '" frameborder="0"></iframe>'
+				(self.settings.url || "javascript:''") + '" frameborder="0"></iframe>'
 			);
 		},
 
@@ -67,9 +68,9 @@ define("tinymce/ui/Iframe", [
 
 			// Wait for iframe to initialize IE 10 takes time
 			if (!body) {
-				setTimeout(function() {
+				Delay.setTimeout(function() {
 					self.html(html);
-				}, 0);
+				});
 			} else {
 				body.innerHTML = html;
 

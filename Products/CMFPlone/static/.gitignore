@@ -76,6 +76,7 @@ components/tinymce-builded/tests/manual/skin.html
 components/tinymce-builded/tests/tinymce/EditorUpload.js
 components/tinymce-builded/tests/tinymce/data/
 components/tinymce-builded/tests/tinymce/file/
+components/tinymce-builded/tests
 
 components/jquery.recurrenceinput.js/.*
 components/jquery.recurrenceinput.js/*.rst
