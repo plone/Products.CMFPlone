@@ -14,7 +14,9 @@ New:
 
 Fixes:
 
-- *add item here*
+- Fix use of icons in search results
+  [vangheem]
+
 
 
 5.0.2 (2016-01-08)
