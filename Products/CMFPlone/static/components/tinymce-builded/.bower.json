@@ -1,6 +1,6 @@
 {
   "name": "tinymce-builded",
-  "version": "4.2.5",
+  "version": "4.3.0",
   "homepage": "https://github.com/artursmirnov/tinymce_builded",
   "authors": [
     "Artur Smirnov <mail@artursmirnov.com>"
@@ -14,13 +14,13 @@
     "builded"
   ],
   "license": "GNU / Lesser GPL",
-  "_release": "4.2.5",
+  "_release": "4.3.0",
   "_resolution": {
     "type": "version",
-    "tag": "4.2.5",
-    "commit": "31e6a29305d6854d92f5ab3384e7c3374c5ec8f1"
+    "tag": "4.3.0",
+    "commit": "300f67b7f8273e4953e58e889898fde12601c7c9"
   },
   "_source": "git://github.com/artursmirnov/tinymce_builded.git",
-  "_target": "4.2.5",
+  "_target": "4.3.0",
   "_originalSource": "tinymce-builded"
 }

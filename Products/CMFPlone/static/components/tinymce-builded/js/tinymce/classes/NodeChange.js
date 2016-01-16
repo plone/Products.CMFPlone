@@ -16,8 +16,9 @@
  */
 define("tinymce/NodeChange", [
 	"tinymce/dom/RangeUtils",
-	"tinymce/Env"
-], function(RangeUtils, Env) {
+	"tinymce/Env",
+	"tinymce/util/Delay"
+], function(RangeUtils, Env, Delay) {
 	return function(editor) {
 		var lastRng, lastPath = [];
 
@@ -101,9 +102,9 @@ define("tinymce/NodeChange", [
 				// Delay nodeChanged call for WebKit edge case issue where the range
 				// isn't updated until after you click outside a selected image
 				if (editor.selection.getNode().nodeName == 'IMG') {
-					setTimeout(function() {
+					Delay.setEditorTimeout(editor, function() {
 						editor.nodeChanged();
-					}, 0);
+					});
 				} else {
 					editor.nodeChanged();
 				}
@@ -121,7 +122,7 @@ define("tinymce/NodeChange", [
 			var selection = editor.selection, node, parents, root;
 
 			// Fix for bug #1896577 it seems that this can not be fired while the editor is loading
-			if (editor.initialized && selection && !editor.settings.disable_nodechange && !editor.settings.readonly) {
+			if (editor.initialized && selection && !editor.settings.disable_nodechange && !editor.readonly) {
 				// Get start node
 				root = editor.getBody();
 				node = selection.getStart() || root;

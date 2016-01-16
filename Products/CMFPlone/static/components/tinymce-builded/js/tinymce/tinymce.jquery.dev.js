@@ -128,8 +128,11 @@
 	exports.define = define;
 	exports.require = require;
 
-	expose(["tinymce/dom/EventUtils","tinymce/dom/Sizzle","tinymce/Env","tinymce/util/Tools","tinymce/dom/DomQuery","tinymce/html/Styles","tinymce/dom/TreeWalker","tinymce/html/Entities","tinymce/dom/DOMUtils","tinymce/dom/ScriptLoader","tinymce/AddOnManager","tinymce/dom/RangeUtils","tinymce/html/Node","tinymce/html/Schema","tinymce/html/SaxParser","tinymce/html/DomParser","tinymce/html/Writer","tinymce/html/Serializer","tinymce/dom/Serializer","tinymce/util/VK","tinymce/dom/ControlSelection","tinymce/dom/BookmarkManager","tinymce/dom/Selection","tinymce/Formatter","tinymce/UndoManager","tinymce/EditorCommands","tinymce/util/URI","tinymce/util/Class","tinymce/util/EventDispatcher","tinymce/util/Observable","tinymce/ui/Selector","tinymce/ui/Collection","tinymce/ui/ReflowQueue","tinymce/ui/Control","tinymce/ui/Factory","tinymce/ui/KeyboardNavigation","tinymce/ui/Container","tinymce/ui/DragHelper","tinymce/ui/Scrollable","tinymce/ui/Panel","tinymce/ui/Movable","tinymce/ui/Resizable","tinymce/ui/FloatPanel","tinymce/ui/Window","tinymce/ui/MessageBox","tinymce/WindowManager","tinymce/EditorObservable","tinymce/Shortcuts","tinymce/util/Promise","tinymce/Editor","tinymce/util/I18n","tinymce/FocusManager","tinymce/EditorManager","tinymce/util/XHR","tinymce/util/JSON","tinymce/util/JSONRequest","tinymce/util/JSONP","tinymce/util/LocalStorage","tinymce/Compat","tinymce/ui/Layout","tinymce/ui/AbsoluteLayout","tinymce/ui/Tooltip","tinymce/ui/Widget","tinymce/ui/Button","tinymce/ui/ButtonGroup","tinymce/ui/Checkbox","tinymce/ui/ComboBox","tinymce/ui/ColorBox","tinymce/ui/PanelButton","tinymce/ui/ColorButton","tinymce/util/Color","tinymce/ui/ColorPicker","tinymce/ui/Path","tinymce/ui/ElementPath","tinymce/ui/FormItem","tinymce/ui/Form","tinymce/ui/FieldSet","tinymce/ui/FilePicker","tinymce/ui/FitLayout","tinymce/ui/FlexLayout","tinymce/ui/FlowLayout","tinymce/ui/FormatControls","tinymce/ui/GridLayout","tinymce/ui/Iframe","tinymce/ui/Label","tinymce/ui/Toolbar","tinymce/ui/MenuBar","tinymce/ui/MenuButton","tinymce/ui/MenuItem","tinymce/ui/Menu","tinymce/ui/ListBox","tinymce/ui/Radio","tinymce/ui/Rect","tinymce/ui/ResizeHandle","tinymce/ui/Slider","tinymce/ui/Spacer","tinymce/ui/SplitButton","tinymce/ui/StackLayout","tinymce/ui/TabPanel","tinymce/ui/TextBox","tinymce/ui/Throbber"]);
+	expose(["tinymce/geom/Rect","tinymce/util/Promise","tinymce/util/Delay","tinymce/dom/EventUtils","tinymce/dom/Sizzle","tinymce/Env","tinymce/util/Tools","tinymce/dom/DomQuery","tinymce/html/Styles","tinymce/dom/TreeWalker","tinymce/html/Entities","tinymce/dom/DOMUtils","tinymce/dom/ScriptLoader","tinymce/AddOnManager","tinymce/dom/RangeUtils","tinymce/html/Node","tinymce/html/Schema","tinymce/html/SaxParser","tinymce/html/DomParser","tinymce/html/Writer","tinymce/html/Serializer","tinymce/dom/Serializer","tinymce/util/VK","tinymce/dom/ControlSelection","tinymce/dom/BookmarkManager","tinymce/dom/Selection","tinymce/Formatter","tinymce/UndoManager","tinymce/EditorCommands","tinymce/util/URI","tinymce/util/Class","tinymce/util/EventDispatcher","tinymce/util/Observable","tinymce/ui/Selector","tinymce/ui/Collection","tinymce/ui/ReflowQueue","tinymce/ui/Control","tinymce/ui/Factory","tinymce/ui/KeyboardNavigation","tinymce/ui/Container","tinymce/ui/DragHelper","tinymce/ui/Scrollable","tinymce/ui/Panel","tinymce/ui/Movable","tinymce/ui/Resizable","tinymce/ui/FloatPanel","tinymce/ui/Window","tinymce/ui/MessageBox","tinymce/WindowManager","tinymce/ui/Tooltip","tinymce/ui/Widget","tinymce/ui/Progress","tinymce/ui/Notification","tinymce/NotificationManager","tinymce/EditorObservable","tinymce/Shortcuts","tinymce/Editor","tinymce/util/I18n","tinymce/FocusManager","tinymce/EditorManager","tinymce/util/XHR","tinymce/util/JSON","tinymce/util/JSONRequest","tinymce/util/JSONP","tinymce/util/LocalStorage","tinymce/Compat","tinymce/ui/Layout","tinymce/ui/AbsoluteLayout","tinymce/ui/Button","tinymce/ui/ButtonGroup","tinymce/ui/Checkbox","tinymce/ui/ComboBox","tinymce/ui/ColorBox","tinymce/ui/PanelButton","tinymce/ui/ColorButton","tinymce/util/Color","tinymce/ui/ColorPicker","tinymce/ui/Path","tinymce/ui/ElementPath","tinymce/ui/FormItem","tinymce/ui/Form","tinymce/ui/FieldSet","tinymce/ui/FilePicker","tinymce/ui/FitLayout","tinymce/ui/FlexLayout","tinymce/ui/FlowLayout","tinymce/ui/FormatControls","tinymce/ui/GridLayout","tinymce/ui/Iframe","tinymce/ui/Label","tinymce/ui/Toolbar","tinymce/ui/MenuBar","tinymce/ui/MenuButton","tinymce/ui/MenuItem","tinymce/ui/Menu","tinymce/ui/ListBox","tinymce/ui/Radio","tinymce/ui/ResizeHandle","tinymce/ui/SelectBox","tinymce/ui/Slider","tinymce/ui/Spacer","tinymce/ui/SplitButton","tinymce/ui/StackLayout","tinymce/ui/TabPanel","tinymce/ui/TextBox","tinymce/ui/Throbber"]);
 
+	load('classes/geom/Rect.js');
+	load('classes/util/Promise.js');
+	load('classes/util/Delay.js');
 	load('classes/dom/EventUtils.js');
 	load('classes/dom/Sizzle.jQuery.js');
 	load('classes/Env.js');
@@ -144,6 +147,9 @@
 	load('classes/dom/DOMUtils.js');
 	load('classes/dom/ScriptLoader.js');
 	load('classes/AddOnManager.js');
+	load('classes/dom/NodeType.js');
+	load('classes/text/Zwsp.js');
+	load('classes/caret/CaretContainer.js');
 	load('classes/dom/RangeUtils.js');
 	load('classes/NodeChange.js');
 	load('classes/html/Node.js');
@@ -156,6 +162,12 @@
 	load('classes/dom/TridentSelection.js');
 	load('classes/util/VK.js');
 	load('classes/dom/ControlSelection.js');
+	load('classes/util/Fun.js');
+	load('classes/caret/CaretCandidate.js');
+	load('classes/geom/ClientRect.js');
+	load('classes/text/ExtendingChar.js');
+	load('classes/caret/CaretPosition.js');
+	load('classes/caret/CaretBookmark.js');
 	load('classes/dom/BookmarkManager.js');
 	load('classes/dom/Selection.js');
 	load('classes/dom/ElementUtils.js');
@@ -190,16 +202,29 @@
 	load('classes/ui/Window.js');
 	load('classes/ui/MessageBox.js');
 	load('classes/WindowManager.js');
+	load('classes/ui/Tooltip.js');
+	load('classes/ui/Widget.js');
+	load('classes/ui/Progress.js');
+	load('classes/ui/Notification.js');
+	load('classes/NotificationManager.js');
+	load('classes/dom/NodePath.js');
 	load('classes/util/Quirks.js');
 	load('classes/EditorObservable.js');
+	load('classes/Mode.js');
 	load('classes/Shortcuts.js');
-	load('classes/util/Promise.js');
-	load('classes/util/Fun.js');
 	load('classes/file/Uploader.js');
 	load('classes/file/Conversions.js');
 	load('classes/file/ImageScanner.js');
 	load('classes/file/BlobCache.js');
 	load('classes/EditorUpload.js');
+	load('classes/caret/CaretUtils.js');
+	load('classes/caret/CaretWalker.js');
+	load('classes/caret/FakeCaret.js');
+	load('classes/dom/Dimensions.js');
+	load('classes/caret/LineWalker.js');
+	load('classes/caret/LineUtils.js');
+	load('classes/DragDropOverrides.js');
+	load('classes/SelectionOverrides.js');
 	load('classes/Editor.js');
 	load('classes/util/I18n.js');
 	load('classes/FocusManager.js');
@@ -213,8 +238,6 @@
 	load('classes/Compat.js');
 	load('classes/ui/Layout.js');
 	load('classes/ui/AbsoluteLayout.js');
-	load('classes/ui/Tooltip.js');
-	load('classes/ui/Widget.js');
 	load('classes/ui/Button.js');
 	load('classes/ui/ButtonGroup.js');
 	load('classes/ui/Checkbox.js');
@@ -244,8 +267,8 @@
 	load('classes/ui/Menu.js');
 	load('classes/ui/ListBox.js');
 	load('classes/ui/Radio.js');
-	load('classes/ui/Rect.js');
 	load('classes/ui/ResizeHandle.js');
+	load('classes/ui/SelectBox.js');
 	load('classes/ui/Slider.js');
 	load('classes/ui/Spacer.js');
 	load('classes/ui/SplitButton.js');
@@ -257,4 +280,4 @@
 	writeScripts();
 })(this);
 
-// $hash: a898ed7245c7e3d8a62e3044f3cf3e23
+// $hash: 8fdc90f4c05d4217c849d9a9bb7b7e26

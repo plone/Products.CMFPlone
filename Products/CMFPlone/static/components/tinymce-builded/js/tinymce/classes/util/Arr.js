@@ -75,8 +75,8 @@ define("tinymce/util/Arr", [], function() {
 	function filter(a, f) {
 		var o = [];
 
-		each(a, function(v) {
-			if (!f || f(v)) {
+		each(a, function(v, index) {
+			if (!f || f(v, index, a)) {
 				o.push(v);
 			}
 		});
@@ -103,7 +103,6 @@ define("tinymce/util/Arr", [], function() {
 
 		if (arguments.length < 3) {
 			accumulator = collection[0];
-			i = 1;
 		}
 
 		for (; i < collection.length; i++) {
@@ -113,6 +112,32 @@ define("tinymce/util/Arr", [], function() {
 		return accumulator;
 	}
 
+	function findIndex(array, predicate, thisArg) {
+		var i, l;
+
+		for (i = 0, l = array.length; i < l; i++) {
+			if (predicate.call(thisArg, array[i], i, array)) {
+				return i;
+			}
+		}
+
+		return -1;
+	}
+
+	function find(array, predicate, thisArg) {
+		var idx = findIndex(array, predicate, thisArg);
+
+		if (idx !== -1) {
+			return array[idx];
+		}
+
+		return undefined;
+	}
+
+	function last(collection) {
+		return collection[collection.length - 1];
+	}
+
 	return {
 		isArray: isArray,
 		toArray: toArray,
@@ -120,6 +145,9 @@ define("tinymce/util/Arr", [], function() {
 		map: map,
 		filter: filter,
 		indexOf: indexOf,
-		reduce: reduce
+		reduce: reduce,
+		findIndex: findIndex,
+		find: find,
+		last: last
 	};
 });

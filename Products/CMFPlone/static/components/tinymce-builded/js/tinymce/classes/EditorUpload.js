@@ -21,7 +21,17 @@ define("tinymce/EditorUpload", [
 	"tinymce/file/BlobCache"
 ], function(Arr, Uploader, ImageScanner, BlobCache) {
 	return function(editor) {
-		var blobCache = new BlobCache(), uploader, imageScanner;
+		var blobCache = new BlobCache(), uploader, imageScanner, settings = editor.settings;
+
+		function aliveGuard(callback) {
+			return function(result) {
+				if (editor.selection) {
+					return callback(result);
+				}
+
+				return [];
+			};
+		}
 
 		// Replaces strings without regexps to avoid FF regexp to big issue
 		function replaceString(content, search, replace) {
@@ -52,24 +62,33 @@ define("tinymce/EditorUpload", [
 			});
 		}
 
+		function openNotification() {
+			return editor.notificationManager.open({
+				text: editor.translate('Image uploading...'),
+				type: 'info',
+				timeout: -1,
+				progressBar: true
+			});
+		}
+
 		function uploadImages(callback) {
 			if (!uploader) {
 				uploader = new Uploader({
-					url: editor.settings.images_upload_url,
-					basePath: editor.settings.images_upload_base_path,
-					credentials: editor.settings.images_upload_credentials,
-					handler: editor.settings.images_upload_handler
+					url: settings.images_upload_url,
+					basePath: settings.images_upload_base_path,
+					credentials: settings.images_upload_credentials,
+					handler: settings.images_upload_handler
 				});
 			}
 
-			return scanForImages().then(function(imageInfos) {
+			return scanForImages().then(aliveGuard(function(imageInfos) {
 				var blobInfos;
 
 				blobInfos = Arr.map(imageInfos, function(imageInfo) {
 					return imageInfo.blobInfo;
 				});
 
-				return uploader.upload(blobInfos).then(function(result) {
+				return uploader.upload(blobInfos, openNotification).then(aliveGuard(function(result) {
 					result = Arr.map(result, function(uploadInfo, index) {
 						var image = imageInfos[index].image;
 
@@ -91,8 +110,14 @@ define("tinymce/EditorUpload", [
 					}
 
 					return result;
-				});
-			});
+				}));
+			}));
+		}
+
+		function uploadImagesAuto(callback) {
+			if (settings.automatic_uploads !== false) {
+				return uploadImages(callback);
+			}
 		}
 
 		function scanForImages() {
@@ -100,14 +125,14 @@ define("tinymce/EditorUpload", [
 				imageScanner = new ImageScanner(blobCache);
 			}
 
-			return imageScanner.findAll(editor.getBody()).then(function(result) {
+			return imageScanner.findAll(editor.getBody(), settings.images_dataimg_filter).then(aliveGuard(function(result) {
 				Arr.each(result, function(resultItem) {
 					replaceUrlInUndoStack(resultItem.image.src, resultItem.blobInfo.blobUri());
 					resultItem.image.src = resultItem.blobInfo.blobUri();
 				});
 
 				return result;
-			});
+			}));
 		}
 
 		function destroy() {
@@ -129,11 +154,17 @@ define("tinymce/EditorUpload", [
 					return 'src="data:' + blobInfo.blob().type + ';base64,' + blobInfo.base64() + '"';
 				}
 
-				return match[0];
+				return match;
 			});
 		}
 
-		editor.on('setContent paste', scanForImages);
+		editor.on('setContent', function() {
+			if (editor.settings.automatic_uploads !== false) {
+				uploadImagesAuto();
+			} else {
+				scanForImages();
+			}
+		});
 
 		editor.on('RawSaveContent', function(e) {
 			e.content = replaceBlobWithBase64(e.content);
@@ -150,6 +181,7 @@ define("tinymce/EditorUpload", [
 		return {
 			blobCache: blobCache,
 			uploadImages: uploadImages,
+			uploadImagesAuto: uploadImagesAuto,
 			scanForImages: scanForImages,
 			destroy: destroy
 		};

@@ -26,6 +26,10 @@ define("tinymce/tableplugin/TableGrid", [
 	return function(editor, table) {
 		var grid, gridWidth, startPos, endPos, selectedCell, selection = editor.selection, dom = selection.dom;
 
+		function isEditorBody(node) {
+			return node === editor.getBody();
+		}
+
 		function buildGrid() {
 			var startY = 0;
 
@@ -126,6 +130,10 @@ define("tinymce/tableplugin/TableGrid", [
 
 		function deleteTable() {
 			var rng = dom.createRng();
+
+			if (isEditorBody(table)) {
+				return;
+			}
 
 			rng.setStartAfter(table);
 			rng.setEndAfter(table);
@@ -498,8 +506,34 @@ define("tinymce/tableplugin/TableGrid", [
 			});
 		}
 
+		function getSelectedCells(grid) {
+			return Tools.grep(getAllCells(grid), isCellSelected);
+		}
+
+		function getAllCells(grid) {
+			var cells = [];
+
+			each(grid, function(row) {
+				each(row, function(cell) {
+					cells.push(cell);
+				});
+			});
+
+			return cells;
+		}
+
 		function deleteCols() {
 			var cols = [];
+
+			if (isEditorBody(table)) {
+				if (grid[0].length == 1) {
+					return;
+				}
+
+				if (getSelectedCells(grid).length == getAllCells(grid).length) {
+					return;
+				}
+			}
 
 			// Get selected column indexes
 			each(grid, function(row) {
@@ -566,6 +600,10 @@ define("tinymce/tableplugin/TableGrid", [
 			// Get selected rows and move selection out of scope
 			rows = getSelectedRows();
 
+			if (isEditorBody(table) && rows.length == table.rows.length) {
+				return;
+			}
+
 			// Delete all selected rows
 			each(rows.reverse(), function(tr) {
 				deleteRow(tr);
@@ -576,6 +614,10 @@ define("tinymce/tableplugin/TableGrid", [
 
 		function cutRows() {
 			var rows = getSelectedRows();
+
+			if (isEditorBody(table) && rows.length == table.rows.length) {
+				return;
+			}
 
 			dom.remove(rows);
 			cleanup();
@@ -827,11 +869,12 @@ define("tinymce/tableplugin/TableGrid", [
 			return false;
 		}
 
-		table = table || dom.getParent(selection.getStart(), 'table');
+		table = table || dom.getParent(selection.getStart(true), 'table');
 
 		buildGrid();
 
-		selectedCell = dom.getParent(selection.getStart(), 'th,td');
+		selectedCell = dom.getParent(selection.getStart(true), 'th,td');
+
 		if (selectedCell) {
 			startPos = getPos(selectedCell);
 			endPos = findEndPos();
