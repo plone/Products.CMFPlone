@@ -78,7 +78,7 @@ should show warning when deleting page
   Go To  ${PLONE_URL}/foo
   Click Link  css=#plone-contentmenu-actions a
   Click Link  css=#plone-contentmenu-actions-delete
-  Page should contain element  css=.breach-container .breach-item
+  Wait until page contains element  css=.breach-container .breach-item
 
 
 should show warning when deleting page from folder_contents

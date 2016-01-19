@@ -34,7 +34,7 @@ Scenario: Location query
 the querystring pattern
     #We go the /a to give more useful query results
     Go to  ${PLONE_URL}/a/++add++Collection
-    Page should contain element  css=.pat-querystring
+    Wait until page contains element  css=.pat-querystring
     Given querystring pattern loaded
 
 querystring pattern loaded
