@@ -14,6 +14,9 @@ New:
 
 Fixes:
 
+- Fix timing problem with robot framework tests.
+  [jensens]
+
 - Upgrade TinyMCE to 4.3
   [vangheem]
 
