@@ -29,7 +29,7 @@ package_json_contents = """{
   "private": true,
   "devDependencies": {
     "grunt": "~0.4.4",
-    "grunt-contrib-less": "^1.0.0",
+    "grunt-contrib-less": "1.0.1",
     "less-plugin-inline-urls": "^1.1.0",
     "grunt-contrib-requirejs": "~0.4.3",
     "grunt-contrib-uglify": "",
