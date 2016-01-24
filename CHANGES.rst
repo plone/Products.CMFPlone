@@ -9,6 +9,11 @@ Changelog
 ------------------
 
 New:
+
+- *add item here*
+
+Fixes:
+
 - Changes for Zope 4 compatibility in maintenance controlpanel.
   [thet]
 
