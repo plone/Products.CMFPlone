@@ -15,6 +15,8 @@ misc_ = {'plone_icon': ImageFile(
     os.path.join('skins', 'plone_images', 'logoIcon.png'),
     cmfplone_globals)}
 
+DISCUSSION_ANNOTATION_KEY = 'plone.app.discussion:conversation'
+
 
 def initialize(context):
 
