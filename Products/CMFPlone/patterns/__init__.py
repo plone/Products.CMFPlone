@@ -30,14 +30,16 @@ class TinyMCESettingsGenerator(object):
     def get_theme(self):
         return theming_policy().get_theme()
 
-    def get_content_css(self):
+    def get_content_css(self, style_css=''):
         files = [
-            '%s/++plone++static/plone-compiled.css' % self.portal_url,
-            '%s/++plone++static/tinymce-styles.css' % self.portal_url
+            '%s/++plone++static/plone-compiled.css' % self.portal_url
         ]
+        if style_css:
+            files.extend(style_css.split(','))
         content_css = self.settings.content_css or []
         for url in content_css:
-            files.append('%s/%s' % (self.portal_url, url))
+            if url and url.strip():
+                files.append('%s/%s' % (self.portal_url, url.strip()))
         theme = self.get_theme()
         if (theme and hasattr(theme, 'tinymce_content_css') and
                 theme.tinymce_content_css):
@@ -88,16 +90,24 @@ class TinyMCESettingsGenerator(object):
     def get_tiny_config(self):
         settings = self.settings
 
+        importcss_file_filter = '%s/++plone++static/tinymce-styles.css' % (
+            self.portal_url)
+
+        theme = self.get_theme()
+        if theme and getattr(theme, 'tinymce_styles_css', None):
+            importcss_file_filter += ',%s/%s' % (
+                self.portal_url,
+                theme.tinymce_styles_css.lstrip('/'))
+
         tiny_config = {
             'resize': settings.resizing and 'both' or False,
-            'content_css': self.get_content_css(),
+            'content_css': self.get_content_css(importcss_file_filter),
             'plugins': ['plonelink', 'ploneimage', 'importcss'] + settings.plugins,
             'external_plugins': {},
             'toolbar': settings.toolbar,
             'entity_encoding': settings.entity_encoding,
             'importcss_append': True,
-            'importcss_file_filter': '%s/++plone++static/tinymce-styles.css' % (
-                self.portal_url)
+            'importcss_file_filter': importcss_file_filter
         }
         toolbar_additions = settings.custom_buttons or []
 
@@ -112,12 +122,6 @@ class TinyMCESettingsGenerator(object):
         # specific plugin options
         if 'contextmenu' in settings.plugins:
             tiny_config['contextmenu'] = "plonelink ploneimage inserttable | cell row column deletetable"  # noqa
-
-        theme = self.get_theme()
-        if theme and getattr(theme, 'tinymce_styles_css', None):
-            tiny_config['importcss_file_filter'] += ',%s/%s' % (
-                self.portal_url,
-                theme.tinymce_styles_css.lstrip('/'))
 
         if settings.libraries_spellchecker_choice == 'AtD':
             mtool = getToolByName(self.portal, 'portal_membership')

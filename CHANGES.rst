@@ -14,6 +14,9 @@ New:
 
 Fixes:
 
+- Fix custom tinymce content styles not getting included correctly
+  [vangheem]
+
 - Fix timing problem with robot framework tests.
   [jensens]
 
