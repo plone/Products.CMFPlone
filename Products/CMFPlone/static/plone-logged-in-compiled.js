@@ -68917,6 +68917,20 @@ define('mockup-patterns-tinymce',[
           self.$el.hide();
         }
 
+        if(tinyOptions.importcss_file_filter && tinyOptions.importcss_file_filter.indexOf(',') !== -1){
+          // need a custom function to check now
+          var files = tinyOptions.importcss_file_filter.split(',');
+          
+          tinyOptions.importcss_file_filter = function(value) {
+            for(var i=0; i<files.length; i++){
+              if(value.indexOf(files[i]) !== -1){
+                return true;
+              }
+            }
+            return false;
+          };
+        }
+
         tinymce.init(tinyOptions);
         self.tiny = tinymce.get(self.tinyId);
 
