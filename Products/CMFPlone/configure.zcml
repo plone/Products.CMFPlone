@@ -92,10 +92,7 @@
     <implements interface=".interfaces.IHideFromBreadcrumbs" />
   </class>
 
-  <utility factory=".factory.HiddenProfiles"
-           name="Products.CMFPlone" />
-
-  <utility factory=".setuphandlers.HiddenProducts"
+  <utility factory=".factory.NonInstallable"
            name="Products.CMFPlone" />
 
   <!-- Adapter for default workflow lookup -->

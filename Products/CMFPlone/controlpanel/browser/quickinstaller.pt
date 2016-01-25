@@ -126,7 +126,7 @@
               <tal:product define="pid product/id">
                 <form action="install_products" method="post" class="pull-right">
                    <input type="hidden"
-                           name="install_products:list"
+                           name="install_product"
                            tal:attributes="value pid;" />
                    <input class="context"
                            type="submit"
@@ -146,6 +146,11 @@
                     tal:content="product/description">add-on description</tal:span>
                   <em class="discreet"> – (<tal:span tal:content="string:${pid}"> plugin.app.name </tal:span>)</em>
                 </p>
+                <dl class="portalMessage warning"
+                   tal:condition="not:product/uninstall_profile">
+                  <dt i18n:translate="">Warning</dt>
+                  <dd i18n:translate="">This product cannot be uninstalled!</dd>
+                </dl>
               </tal:product>
               </li>
             </ul>
@@ -162,12 +167,13 @@
                 <tal:product define="pid product/id">
                   <form action="uninstall_products" method="post" class="pull-right">
                     <input type="hidden"
-                          name="uninstall_products:list"
+                          name="uninstall_product"
                           tal:attributes="value pid;" />
                     <input class="destructive"
                            type="submit"
                            value="Uninstall"
                            name="form.submitted"
+                           tal:condition="product/uninstall_profile"
                            i18n:attributes="value"/>
                   </form>
                     <h3>
@@ -181,6 +187,11 @@
                         tal:content="product/description">add-on description</tal:span>
                       <em class="discreet"> – (<tal:span tal:content="string:${pid}"> plugin.app.name </tal:span>)</em>
                     </p>
+                    <dl class="portalMessage info"
+                        tal:condition="not:product/uninstall_profile">
+                      <dt i18n:translate="">Info</dt>
+                      <dd i18n:translate="">This product cannot be uninstalled!</dd>
+                    </dl>
                 </tal:product>
                 </li>
               </ul>

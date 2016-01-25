@@ -3,7 +3,6 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.factory import _DEFAULT_PROFILE
 from Products.CMFPlone.interfaces import IMigrationTool
 from Products.CMFPlone.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME
-from Products.CMFQuickInstallerTool.interfaces import INonInstallable
 from Products.StandardCacheManagers.AcceleratedHTTPCacheManager \
     import AcceleratedHTTPCacheManager
 from Products.StandardCacheManagers.RAMCacheManager import RAMCacheManager
@@ -15,57 +14,6 @@ from zope.component import queryUtility
 from zope.component.hooks import getSite
 from zope.i18n.locales import LoadLocaleError
 from zope.i18n.locales import locales
-from zope.interface import implementer
-
-
-@implementer(INonInstallable)
-class HiddenProducts(object):
-
-    def getNonInstallableProducts(self):
-        return [
-            'Archetypes', 'Products.Archetypes',
-            'CMFDefault', 'Products.CMFDefault',
-            'CMFPlone', 'Products.CMFPlone', 'Products.CMFPlone.migrations',
-            'CMFTopic', 'Products.CMFTopic',
-            'CMFUid', 'Products.CMFUid',
-            'DCWorkflow', 'Products.DCWorkflow',
-            'PasswordResetTool', 'Products.PasswordResetTool',
-            'PlonePAS', 'Products.PlonePAS',
-            'wicked.at',
-            'PloneLanguageTool', 'Products.PloneLanguageTool',
-            'CMFFormController', 'Products.CMFFormController',
-            'MimetypesRegistry', 'Products.MimetypesRegistry',
-            'PortalTransforms', 'Products.PortalTransforms',
-            'CMFDiffTool', 'Products.CMFDiffTool',
-            'CMFEditions', 'Products.CMFEditions',
-            'Products.NuPlone',
-            'borg.localrole',
-            'plone.app.blob',
-            'plone.app.caching',
-            'plone.app.collection',
-            'plone.app.dexterity',
-            'plone.app.discussion',
-            'plone.app.event',
-            'plone.app.folder',
-            'plone.app.imaging',
-            'plone.app.intid',
-            'plone.app.linkintegrity',
-            'plone.app.registry',
-            'plone.app.referenceablebehavior',
-            'plone.app.relationfield',
-            'plone.app.theming',
-            'plone.app.users',
-            'plone.app.widgets',
-            'plone.app.z3cform',
-            'plone.formwidget.recurrence',
-            'plone.keyring',
-            'plone.outputfilters',
-            'plone.portlet.static',
-            'plone.portlet.collection',
-            'plone.protect',
-            'plone.resource',
-            'plonetheme.barceloneta',
-        ]
 
 
 def addCacheHandlers(portal):
