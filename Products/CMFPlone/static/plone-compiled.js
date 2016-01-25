@@ -17047,7 +17047,11 @@ define('mockup-patterns-modal',[
             self.$el.parents(self.options.backdrop),
             self.options.backdropOptions
           ),
-          zIndex = self.options.backdropOptions.zIndex !== null ? parseInt(self.options.backdropOptions.zIndex, 10) + 1 : 1041;
+          zIndex = 1041;
+
+      $('.plone-modal-wrapper,.plone-modal-backdrop').each(function(){
+        zIndex = Math.max(zIndex, $(this).css('zIndex') || 1041);
+      });
 
       self.$wrapper = $('<div/>')
         .hide()
