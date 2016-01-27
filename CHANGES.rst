@@ -14,6 +14,10 @@ New:
 
 Fixes:
 
+- Fallback for missing date in DefaultDublinCoreImpl no longer relies on
+  bobobase_modification_time.
+  [pbauer]
+
 - Changes for Zope 4 compatibility in maintenance controlpanel.
   [thet]
 
