@@ -274,6 +274,9 @@ Bug fixes:
 - Skip one test for zope4.
   [pbauer]
 
+- Fix csrf-test where @@authenticator was called in the browser.
+  [pbauer]
+
 
 5.1a2 (2016-08-19)
 ------------------
@@ -574,8 +577,8 @@ New:
 Fixes:
 
 - Toolbar cleanup: more less and less css, typo corrected in less variable,
-- better readability with a darker background in submenu, use font fallback
-- chain as in barcelonetta (works also w/o the theme).
+  better readability with a darker background in submenu, use font fallback
+  chain as in barcelonetta (works also w/o the theme).
   [jensens]
 
 - Fix browser spell checking not working with TinyMCE
