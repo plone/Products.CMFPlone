@@ -874,6 +874,36 @@ New:
 
 - Add custom navigation root in TinyMCE configuration.
   [alecm]
+- *add item here*
+
+Fixes:
+
+- Fix csrf-test where @@authenticator was called in the browser.
+  [pbauer]
+
+- Fallback for missing date in DefaultDublinCoreImpl no longer relies on
+  bobobase_modification_time.
+  [pbauer]
+
+- Changes for Zope 4 compatibility in maintenance controlpanel.
+  [thet]
+
+- Fix some i18n issues.
+  [vincentfretin]
+
+- *add item here*
+
+Fixes:
+
+- Fallback for missing date in DefaultDublinCoreImpl no longer relies on
+  bobobase_modification_time.
+  [pbauer]
+
+- Changes for Zope 4 compatibility in maintenance controlpanel.
+  [thet]
+
+- Fix some i18n issues.
+  [vincentfretin]
 
 - Add barceloneta theme path in less configuration.
   [Gagaro]
