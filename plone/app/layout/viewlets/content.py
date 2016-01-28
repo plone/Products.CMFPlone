@@ -511,8 +511,9 @@ class ContentHistoryViewlet(WorkflowHistoryViewlet):
 
 class ContentHistoryView(ContentHistoryViewlet):
 
-    index = ViewPageTemplateFile("content_history.pt")
-
     def __init__(self, context, request):
         super(ContentHistoryView, self).__init__(context, request, None, None)
         self.update()
+
+    def __call__(self):
+        return self.index()
