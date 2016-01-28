@@ -14,6 +14,9 @@ New:
 
 Fixes:
 
+- Fix csrf-test where @@authenticator was called in the browser.
+  [pbauer]
+
 - Fallback for missing date in DefaultDublinCoreImpl no longer relies on
   bobobase_modification_time.
   [pbauer]
