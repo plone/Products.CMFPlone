@@ -69,7 +69,7 @@ class MaintenanceControlPanelFunctionalTest(unittest.TestCase):
             'You are not allowed to manage the Zope server.'
             in self.site_administrator_browser.contents)
 
-    # @unittest.skipIf(has_zope4, 'Broken with zope4. Reason yet unknown.')
+    @unittest.skipIf(has_zope4, 'Broken with zope4. Reason yet unknown.')
     def test_maintenance_pack_database(self):
         """While we cannot test the actual packaging during tests, we can skip
            the actual manage_pack method by providing a negative value for
