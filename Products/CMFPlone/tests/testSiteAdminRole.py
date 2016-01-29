@@ -33,7 +33,8 @@ class TestSiteAdministratorRole(unittest.TestCase):
             'ATContentTypes: Add Document':                             1,
             'ATContentTypes: Add Event':                                1,
             'ATContentTypes: Add File':                                 1,
-            'ATContentTypes: Add Folder':                               1,
+            # see p.a.folder.__init__ as to why AT Add Folder is disabled
+            'ATContentTypes: Add Folder':                               0,
             'ATContentTypes: Add Image':                                1,
             'ATContentTypes: Add Large Plone Folder':                   1,
             'ATContentTypes: Add Link':                                 1,
