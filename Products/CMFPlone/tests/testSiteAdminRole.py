@@ -1,14 +1,16 @@
 # -*- coding: utf-8 -*-
-import pkg_resources
-from Testing import ZopeTestCase as ztc
 from AccessControl.PermissionRole import rolesForPermissionOn
-from Products.CMFPlone.tests import PloneTestCase
+from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 
-# without this some permissions don't get initialized
-ztc.installProduct('Transience')
+import unittest
 
 
-class TestSiteAdministratorRole(PloneTestCase.PloneTestCase):
+class TestSiteAdministratorRole(unittest.TestCase):
+
+    layer = PRODUCTS_CMFPLONE_INTEGRATION_TESTING
+
+    def setUp(self):
+        self.portal = self.layer['portal']
 
     def testExpectedPermissions(self):
         # This integration test shows that the correct permissions were
