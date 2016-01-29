@@ -271,6 +271,9 @@ Bug fixes:
 - Fix imports from package Globals (removed in Zope4).
   [pbauer]
 
+- Skip one test for zope4.
+  [pbauer]
+
 
 5.1a2 (2016-08-19)
 ------------------
