@@ -207,12 +207,6 @@ class TestSiteAdministratorRole(unittest.TestCase):
             'plone.portlet.collection: Add collection portlet':         1,
             'plone.portlet.static: Add static portlet':                 1,
         }
-        if 'products.kupu' in pkg_resources.working_set.by_key:
-            expected.update({
-                'Add kupu Library Tools':                               0,
-                'Kupu: Manage libraries':                               1,
-                'Kupu: Query libraries':                                1,
-            })
         try:
             import plone.app.iterate
             plone.app.iterate  # pyflakes
