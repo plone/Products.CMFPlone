@@ -26,6 +26,8 @@ Fixes:
 - Fix use of icons in search results
   [vangheem]
 
+- Mock MailHost on testing.py so that tests relying on mails can use it.
+  [gforcada]
 
 
 5.0.2 (2016-01-08)
