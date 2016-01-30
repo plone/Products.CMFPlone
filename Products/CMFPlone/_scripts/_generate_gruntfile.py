@@ -15,6 +15,8 @@ from plone.resource.directory import FilesystemResourceDirectory
 from plone.resource.file import FilesystemFile
 
 from plone.subrequest import subrequest
+from plonetheme import barceloneta
+
 import uuid
 from zope.component import getUtility
 
@@ -241,6 +243,9 @@ globalVars["isMockup"] = "false"
 globalVars['staticPath'] = "'" + os.path.join(
     os.path.dirname(CMFPlone.__file__),
     'static') + "'"
+globalVars['barcelonetaPath'] = "'" + os.path.join(
+    os.path.dirname(barceloneta.__file__),
+    'theme') + "'"
 
 less_vars_params = {
     'site_url': 'LOCAL',

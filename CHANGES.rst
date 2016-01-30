@@ -10,7 +10,8 @@ Changelog
 
 New:
 
-- *add item here*
+- Add barceloneta theme path in less configuration.
+  [Gagaro]
 
 Fixes:
 
