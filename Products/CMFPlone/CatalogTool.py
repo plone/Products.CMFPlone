@@ -22,6 +22,7 @@ from Products.CMFCore.permissions import AccessInactivePortalContent
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import _getAuthenticatedUser
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone import DISCUSSION_ANNOTATION_KEY
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.interfaces import INonStructuralFolder
 from Products.CMFPlone.interfaces import IPloneCatalogTool
@@ -32,6 +33,7 @@ from Products.ZCatalog.ZCatalog import ZCatalog
 from plone.i18n.normalizer.base import mapUnicode
 from plone.indexer import indexer
 from plone.indexer.interfaces import IIndexableObject
+from zope.annotation.interfaces import IAnnotations
 from zope.component import queryMultiAdapter
 from zope.interface import Interface
 from zope.interface import implementer
@@ -425,6 +427,21 @@ class CatalogTool(PloneBaseTool, BaseTool):
                     safe_callable(obj.indexObject)):
                 try:
                     obj.indexObject()
+
+                    # index conversions from plone.app.discussion
+                    annotions = IAnnotations(obj)
+                    catalog = getToolByName(obj, "portal_catalog")
+                    if DISCUSSION_ANNOTATION_KEY in annotions:
+                        conversation = annotions[DISCUSSION_ANNOTATION_KEY]
+                        conversation = conversation.__of__(obj)
+                        for comment in conversation.getComments():
+                            try:
+                                if catalog:
+                                    catalog.indexObject(comment)
+                            except StopIteration:  # pragma: no cover
+                                pass
+
+
                 except TypeError:
                     # Catalogs have 'indexObject' as well, but they
                     # take different args, and will fail

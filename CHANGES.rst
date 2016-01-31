@@ -15,6 +15,11 @@ New:
 
 Fixes:
 
+- Move p.a.discussion monkey patch for reindexing conversations to
+  CatalogTool.py as p.a.discussion is part of Plone core.
+  Issue https://github.com/plone/Products.CMFPlone/issues/1332
+  [fredvd, staeff]
+
 - Fix custom tinymce content styles not getting included correctly
   [vangheem]
 
