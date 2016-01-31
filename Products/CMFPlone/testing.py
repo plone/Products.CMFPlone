@@ -1,3 +1,4 @@
+from Acquisition import aq_base
 from plone.app.contenttypes.testing import PLONE_APP_CONTENTTYPES_FIXTURE
 from plone.app.robotframework import AutoLogin
 from plone.app.robotframework import Content
@@ -11,7 +12,11 @@ from plone.app.testing.layers import FunctionalTesting
 from plone.app.testing.layers import IntegrationTesting
 from plone.testing import z2
 from Products.CMFPlone.tests.robot.robot_setup import CMFPloneRemoteKeywords
+from Products.CMFPlone.tests.utils import MockMailHost
+from Products.MailHost.interfaces import IMailHost
+from zope.component import getSiteManager
 from zope.configuration import xmlconfig
+
 import doctest
 
 
@@ -52,10 +57,27 @@ class ProductsCMFPloneLayer(PloneSandboxLayer):
                 title=u"Members"
             )
 
+        portal._original_MailHost = portal.MailHost
+        mail_host = MockMailHost('MailHost')
+        mail_host.smtp_host = 'localhost'
+        portal.MailHost = mail_host
+        site_manager = getSiteManager(portal)
+        site_manager.unregisterUtility(provided=IMailHost)
+        site_manager.registerUtility(mail_host, IMailHost)
+
+
     def tearDownPloneSite(self, portal):
         login(portal, 'admin')
         setRoles(portal, TEST_USER_ID, ['Manager'])
         portal.manage_delObjects(['test-folder'])
+
+        portal.MailHost = portal._original_MailHost
+        sm = getSiteManager(context=portal)
+        sm.unregisterUtility(provided=IMailHost)
+        sm.registerUtility(
+            aq_base(portal._original_MailHost),
+            provided=IMailHost
+        )
 
 
 PRODUCTS_CMFPLONE_FIXTURE = ProductsCMFPloneLayer()
