@@ -15,6 +15,10 @@ New:
 
 Fixes:
 
+- No longer rely on deprecated ``bobobase_modification_time`` from
+  ``Persistence.Persistent``.
+  [thet]
+
 - Move p.a.discussion monkey patch for reindexing conversations to
   CatalogTool.py as p.a.discussion is part of Plone core.
   Issue https://github.com/plone/Products.CMFPlone/issues/1332
@@ -86,15 +90,10 @@ New:
 - Added syndication for plone.app.contenttypes collections.
   [do3cc]
 
-- Compress generated bundle css file when running plone-compile-resource.
+- Compress generated bundle CSS file when running ``plone-compile-resource``.
   [petschki]
 
-- Added new commandline argument to plone-compile-resource: --compile-dir
-- No longer rely on deprecated ``bobobase_modification_time`` from
-  ``Persistence.Persistent``.
-  [thet]
-
-- compress generated bundle css file when running plone-compile-resource
+- Added new commandline argument to plone-compile-resource: ``--compile-dir``.
   [petschki]
 
 - Upgraded to patternslib 2.0.11.
