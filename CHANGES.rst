@@ -90,6 +90,11 @@ New:
   [petschki]
 
 - Added new commandline argument to plone-compile-resource: --compile-dir
+- No longer rely on deprecated ``bobobase_modification_time`` from
+  ``Persistence.Persistent``.
+  [thet]
+
+- compress generated bundle css file when running plone-compile-resource
   [petschki]
 
 - Upgraded to patternslib 2.0.11.

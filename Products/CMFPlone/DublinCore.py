@@ -350,7 +350,7 @@ class DefaultDublinCoreImpl(PropertyManager):
         date = self.modification_date
         if date is None:
             # Upgrade.
-            date = self.bobobase_modification_time()
+            date = DateTime(self._p_mtime)
             self.modification_date = date
         return date
 
