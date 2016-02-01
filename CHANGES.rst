@@ -10,10 +10,6 @@ Changelog
 
 New:
 
-- Fixed validation error for social media viewlet: added ``itemscope
-  itemtype="http://schema.org/WebPage"`` to main template html tag.
-  Fixes https://github.com/plone/Products.CMFPlone/issues/1087  [maurits]
-
 - Add barceloneta theme path in less configuration.
   [Gagaro]
 
