@@ -111,8 +111,28 @@ class ScriptsView(ResourceView):
         """The requirejs scripts, the ones that are not resources are loaded on
         configjs.py
         """
-        result = self.default_resources()
-        result.extend(self.ordered_bundles_result())
+        if self.development:
+            result = self.default_resources()
+            result.extend(self.ordered_bundles_result())
+        else:
+            result = [{
+                'src': '%s/++plone++%s' % (
+                    self.site_url,
+                    self.production_path + '/default.js'
+                ),
+                'conditionalcomment': None,
+                'bundle': 'production'
+            }, ]
+            if not self.anonymous:
+                result.append({
+                    'src': '%s/++plone++%s' % (
+                        self.site_url,
+                        self.production_path + '/logged-in.js'
+                    ),
+                    'conditionalcomment': None,
+                    'bundle': 'production'
+                })
+            result.extend(self.ordered_bundles_result(production=True))
 
         # Add manual added resources
         if hasattr(self.request, 'enabled_resources'):

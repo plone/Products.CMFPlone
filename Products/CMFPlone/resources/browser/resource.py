@@ -15,10 +15,18 @@ from Products.CMFCore.utils import _getAuthenticatedUser
 from plone.memoize.view import memoize
 from Products.CMFPlone.resources import RESOURCE_DEVELOPMENT_MODE
 
+from .combine import get_production_resource_directory
+
 
 class ResourceView(ViewletBase):
     """Information for script rendering.
     """
+
+    @property
+    @memoize
+    def anonymous(self):
+        return _getAuthenticatedUser(
+            self.context).getUserName() == 'Anonymous User'
 
     @property
     @memoize
@@ -32,7 +40,7 @@ class ResourceView(ViewletBase):
         """
         if RESOURCE_DEVELOPMENT_MODE:
             return True
-        if _getAuthenticatedUser(self.context).getUserName() == 'Anonymous User':
+        if self.anonymous:
             return False
         return self.registry.records['plone.resources.development'].value
 
@@ -83,6 +91,25 @@ class ResourceView(ViewletBase):
         self.site_url = self.portal_state.portal_url()
         self.registry = getUtility(IRegistry)
 
+        self.production_path = get_production_resource_directory()
+
+        self.diazo_production_css = None
+        self.diazo_development_css = None
+        self.diazo_development_js = None
+        self.diazo_production_js = None
+        self.themeObj = None
+
+        # Check if its Diazo enabled
+        policy = theming_policy(self.request)
+        if policy.isThemeEnabled():
+            self.themeObj = policy.get_theme()
+            if self.themeObj:
+                if hasattr(self.themeObj, 'production_css'):
+                    self.diazo_production_css = self.themeObj.production_css
+                    self.diazo_development_css = self.themeObj.development_css
+                    self.diazo_development_js = self.themeObj.development_js
+                    self.diazo_production_js = self.themeObj.production_js
+
     def get_bundles(self):
         return self.registry.collectionOfInterface(
             IBundleRegistry, prefix="plone.bundles", check=False)
@@ -97,26 +124,13 @@ class ResourceView(ViewletBase):
         """
         cache = component.queryUtility(ram.IRAMCache)
         bundles = self.get_bundles()
-        policy = theming_policy(self.request)
 
         enabled_diazo_bundles = []
         disabled_diazo_bundles = []
-        self.diazo_production_css = None
-        self.diazo_development_css = None
-        self.diazo_development_js = None
-        self.diazo_production_js = None
 
-        # Check if its Diazo enabled
-        if policy.isThemeEnabled():
-            themeObj = policy.get_theme()
-            if themeObj:
-                enabled_diazo_bundles = themeObj.enabled_bundles
-                disabled_diazo_bundles = themeObj.disabled_bundles
-                if hasattr(themeObj, 'production_css'):
-                    self.diazo_production_css = themeObj.production_css
-                    self.diazo_development_css = themeObj.development_css
-                    self.diazo_development_js = themeObj.development_js
-                    self.diazo_production_js = themeObj.production_js
+        if self.themeObj:
+            enabled_diazo_bundles = self.themeObj.enabled_bundles
+            disabled_diazo_bundles = self.themeObj.disabled_bundles
 
         # Request set bundles
         enabled_request_bundles = []
@@ -157,7 +171,7 @@ class ResourceView(ViewletBase):
                         continue
                 yield key, bundle
 
-    def ordered_bundles_result(self):
+    def ordered_bundles_result(self, production=False):
         """
         It gets the ordered result of bundles
         """
@@ -168,7 +182,8 @@ class ResourceView(ViewletBase):
         for key, bundle in self.get_cooked_bundles():
             if bundle.depends is None or bundle.depends == '':
                 # its the first one
-                self.get_data(bundle, result)
+                if not(production and bundle.merge_with):
+                    self.get_data(bundle, result)
                 inserted.append(key)
             else:
                 name = bundle.depends.strip()
@@ -184,7 +199,8 @@ class ResourceView(ViewletBase):
                 if key in inserted:
                     found = True
                     for bundle in bundles_to_add:
-                        self.get_data(bundle, result)
+                        if not(production and bundle.merge_with):
+                            self.get_data(bundle, result)
                         inserted.append(
                             bundle.__prefix__.split('/', 1)[1].rstrip('.'))
                     del depends_on[key]
@@ -194,6 +210,7 @@ class ResourceView(ViewletBase):
         # THe ones that does not get the dependencies
         for bundles_to_add in depends_on.values():
             for bundle in bundles_to_add:
-                self.get_data(bundle, result)
+                if not(production and bundle.merge_with):
+                    self.get_data(bundle, result)
 
         return result
