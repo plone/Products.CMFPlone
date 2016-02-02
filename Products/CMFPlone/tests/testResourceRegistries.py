@@ -311,22 +311,26 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
         scripts = ScriptsView(self.layer['portal'], self.layer['request'], None)
         scripts.update()
         results = scripts.scripts()
-        self.assertEqual(
-            results[0],
-            {'src': 'http://nohost/plone/++plone++static/components/jquery/dist/jquery.min.js',
-             'conditionalcomment': None, 'bundle': 'basic'})
-        self.assertEqual(len(results), 6)
+        self.assertEqual(results[0]['bundle'], 'production')
+        self.assertTrue(results[0]['src'].startswith(
+            'http://nohost/plone/++plone++production/++unique++'))
+        self.assertTrue(results[0]['src'].endswith('/default.js'))
+        self.assertEqual(results[1]['bundle'], 'production')
+        self.assertTrue(results[1]['src'].startswith(
+            'http://nohost/plone/++plone++production/++unique++'))
+        self.assertTrue(results[1]['src'].endswith('/logged-in.js'))
+        self.assertEqual(len(results), 2)
 
     def test_scripts_viewlet_anonymous(self):
         logout()
         scripts = ScriptsView(self.layer['portal'], self.layer['request'], None)
         scripts.update()
         results = scripts.scripts()
-        self.assertEqual(
-            results[0],
-            {'src': 'http://nohost/plone/++plone++static/components/jquery/dist/jquery.min.js',
-             'conditionalcomment': None, 'bundle': 'basic'})
-        self.assertEqual(len(results), 5)
+        self.assertEqual(results[0]['bundle'], 'production')
+        self.assertTrue(results[0]['src'].startswith(
+            'http://nohost/plone/++plone++production/++unique++'))
+        self.assertTrue(results[0]['src'].endswith('/default.js'))
+        self.assertEqual(len(results), 1)
 
     @mock.patch.object(ScriptsView,
                        'get_resources',
