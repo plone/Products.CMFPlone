@@ -19,6 +19,10 @@ New:
 - Add barceloneta theme path in less configuration.
   [Gagaro]
 
+- Merge JS and CSS bundles into meta-bundles to reduce the number of requests
+  when loading a page (PLIP #1277)
+  [ebrehault]
+
 Fixes:
 
 - Get ``email_from_name`` from the mail settings registry.
