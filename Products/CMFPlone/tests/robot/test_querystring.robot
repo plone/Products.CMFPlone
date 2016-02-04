@@ -19,7 +19,7 @@ Scenario: Location query
     When I open the Current operator in the Location criteria
     Then we expect 1 hits
     When I open the Parent operator in the Location criteria
-    Then we expect 4 hits
+    Then we expect 3 hits
     When I open the Custom operator in the Location criteria
     and I search in A subfolder in the related items widget
     Then we expect 3 hits
