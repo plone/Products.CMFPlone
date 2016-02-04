@@ -63,7 +63,7 @@ the security control panel
   Go to  ${PLONE_URL}/@@security-controlpanel
 
 a published test folder
-  Go to  ${PLONE_URL}/robot-test-folder
+  Go to  ${PLONE_URL}/test-folder
   Click link  xpath=//li[@id='plone-contentmenu-workflow']/a
   Wait until element is visible  id=workflow-transition-publish
   Click link  id=workflow-transition-publish
