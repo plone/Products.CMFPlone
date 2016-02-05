@@ -14,7 +14,7 @@ class PloneBundlesTraverser(ResourceTraverser):
     def traverse(self, name, remaining):
         # in case its not a request get the default one
         req = getRequest()
-        if 'PATH_INFO' not in req.environ:
+        if not req or 'PATH_INFO' not in req.environ:
             return super(PloneBundlesTraverser, self).traverse(name, remaining)
 
         resource_path = req.environ['PATH_INFO'].split('++plone++')[-1]
