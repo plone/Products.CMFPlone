@@ -12,15 +12,7 @@ should have been set up. This can be checked indirectly by making
 sure the authenticator view exists:
 
   >>> portal.restrictedTraverse('@@authenticator')
-  <Products.Five.metaclass.AuthenticatorView object at ...>
-
-The same can be checked again from a testbrowser:
-
-  >>> from plone.testing.z2 import Browser
-  >>> browser = Browser(app)
-  >>> browser.open('http://nohost/plone/@@authenticator')
-  >>> browser.contents
-  '<Products.Five.metaclass.AuthenticatorView object at ...>'
+  <Products.Five...AuthenticatorView object at ...>
 
 So far, so good, but the important bit about this is that it should protect
 Plone from CSRF attacks, so we try to test that. A CSRF attack works by
@@ -42,6 +34,8 @@ So first we need a logged in user with manager rights:
   >>> from plone.app.testing import TEST_USER_ID
   >>> from plone.app.testing import TEST_USER_NAME
   >>> from plone.app.testing import TEST_USER_PASSWORD
+  >>> from plone.testing.z2 import Browser
+  >>> browser = Browser(app)
   >>> browser.open('http://nohost/plone/login_form')
   >>> browser.getControl(name='__ac_name').value = TEST_USER_NAME
   >>> browser.getControl(name='__ac_password').value = TEST_USER_PASSWORD
