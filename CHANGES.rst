@@ -915,6 +915,8 @@ New:
 - Add custom navigation root in TinyMCE configuration.
   [alecm]
 - *add item here*
+- Add barceloneta theme path in less configuration.
+  [Gagaro]
 
 Fixes:
 
