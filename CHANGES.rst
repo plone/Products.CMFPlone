@@ -10,6 +10,9 @@ Changelog
 
 New:
 
+- Add custom navigation root in TinyMCE configuration.
+  [alecm]
+
 - Add barceloneta theme path in less configuration.
   [Gagaro]
 

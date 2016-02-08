@@ -11,6 +11,7 @@ from Products.CMFCore.interfaces._content import IFolderish
 from plone.uuid.interfaces import IUUID
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Acquisition import aq_parent, aq_inner
+from plone.app.layout.navigation.root import getNavigationRootObject
 from plone.app.theming.utils import theming_policy
 from Products.CMFCore.utils import getToolByName
 from zope.component.hooks import getSite
@@ -241,7 +242,10 @@ class PloneSettingsAdapter(object):
             initial = None
         else:
             initial = IUUID(folder, None)
-        current_path = folder.absolute_url()[len(generator.portal_url):]
+
+        nav_root = getNavigationRootObject(folder, generator.portal)
+        root_url = get_portal_url(folder)
+        current_path = folder.absolute_url()[len(root_url):]
 
         image_types = settings.image_objects or []
         folder_types = settings.contains_objects or []
@@ -252,8 +256,10 @@ class PloneSettingsAdapter(object):
             'relatedItems': {
                 'vocabularyUrl':
                     '%s/@@getVocabulary?name=plone.app.vocabularies.Catalog' % (
-                        generator.portal_url),
-                'folderTypes': folder_types
+                        root_url),
+                'folderTypes': folder_types,
+                'rootPath': '/'.join(nav_root.getPhysicalPath()) if nav_root
+                            else '/',
             },
             'upload': {
                 'initialFolder': initial,
