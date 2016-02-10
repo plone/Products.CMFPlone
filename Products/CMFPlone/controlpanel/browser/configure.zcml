@@ -1,13 +1,13 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
-    xmlns:five="http://namespaces.zope.org/five"
     xmlns:browser="http://namespaces.zope.org/browser">
 
   <!-- needed for control panel permission -->
   <include package="plone.app.imaging" />
 
-  <permission id="plone.app.controlpanel.TinyMCE"
-              title="Plone Site Setup: TinyMCE">
+  <permission
+      id="plone.app.controlpanel.TinyMCE"
+      title="Plone Site Setup: TinyMCE">
     <role name="Manager"/>
     <role name="Site Administrator"/>
   </permission>
@@ -22,155 +22,155 @@
 
   <!-- Editing Control Panel -->
   <browser:page
-    name="editing-controlpanel"
-    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-    class=".editing.EditingControlPanel"
-    permission="plone.app.controlpanel.Editing"
-    />
+      name="editing-controlpanel"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".editing.EditingControlPanel"
+      permission="plone.app.controlpanel.Editing"
+      />
 
   <!-- Filter Control Panel -->
   <browser:page
-    name="filter-controlpanel"
-    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-    class=".filter.FilterControlPanelView"
-    permission="plone.app.controlpanel.Filtering"
-    />
+      name="filter-controlpanel"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".filter.FilterControlPanelView"
+      permission="plone.app.controlpanel.Filtering"
+      />
 
   <!-- TinyMCE Control Panel -->
   <browser:page
-    name="tinymce-controlpanel"
-    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-    class=".tinymce.TinyMCEControlPanel"
-    permission="plone.app.controlpanel.TinyMCE"
-    />
+      name="tinymce-controlpanel"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".tinymce.TinyMCEControlPanel"
+      permission="plone.app.controlpanel.TinyMCE"
+      />
 
   <!-- Language Control Panel -->
   <browser:page
-    name="language-controlpanel"
-    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-    class=".language.LanguageControlPanel"
-    permission="plone.app.controlpanel.Language"
-    />
+      name="language-controlpanel"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".language.LanguageControlPanel"
+      permission="plone.app.controlpanel.Language"
+      />
 
   <!-- Maintenance Control Panel -->
   <browser:page
-    name="maintenance-controlpanel"
-    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-    class=".maintenance.MaintenanceControlPanel"
-    permission="cmf.ManagePortal"
-    />
+      name="maintenance-controlpanel"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".maintenance.MaintenanceControlPanel"
+      permission="cmf.ManagePortal"
+      />
 
   <!-- Mail Control Panel -->
   <browser:page
-    name="mail-controlpanel"
-    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-    class=".mail.MailControlPanel"
-    permission="cmf.ManagePortal"
-    />
+      name="mail-controlpanel"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".mail.MailControlPanel"
+      permission="cmf.ManagePortal"
+      />
 
   <!-- Navigation Control Panel -->
   <browser:page
-    name="navigation-controlpanel"
-    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-    class=".navigation.NavigationControlPanel"
-    permission="plone.app.controlpanel.Navigation"
-    />
+      name="navigation-controlpanel"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".navigation.NavigationControlPanel"
+      permission="plone.app.controlpanel.Navigation"
+      />
 
   <!-- Search Control Panel -->
   <browser:page
-    name="search-controlpanel"
-    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-    class=".search.SearchControlPanel"
-    permission="plone.app.controlpanel.Search"
-    />
+      name="search-controlpanel"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".search.SearchControlPanel"
+      permission="plone.app.controlpanel.Search"
+      />
 
   <!-- Security Control Panel -->
   <browser:page
-    name="security-controlpanel"
-    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-    class=".security.SecurityControlPanel"
-    permission="plone.app.controlpanel.Security"
-    />
+      name="security-controlpanel"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".security.SecurityControlPanel"
+      permission="plone.app.controlpanel.Security"
+      />
 
   <!-- Security Control Panel - EMail Login -->
   <browser:page
-    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-    name="migrate-to-emaillogin"
-    class=".security.EmailLogin"
-    template="emaillogin.pt"
-    permission="cmf.ManagePortal"
-    />
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      name="migrate-to-emaillogin"
+      class=".security.EmailLogin"
+      template="emaillogin.pt"
+      permission="cmf.ManagePortal"
+      />
 
   <!-- Site Control Panel -->
   <browser:page
-    name="site-controlpanel"
-    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-    class=".site.SiteControlPanel"
-    permission="plone.app.controlpanel.Site"
-    />
+      name="site-controlpanel"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".site.SiteControlPanel"
+      permission="plone.app.controlpanel.Site"
+      />
 
   <!-- Date and Time Control panel -->
   <browser:page
-    name="dateandtime-controlpanel"
-    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-    class=".dateandtime.DateAndTimeControlPanel"
-    permission="plone.app.controlpanel.Site"
-    />
+      name="dateandtime-controlpanel"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".dateandtime.DateAndTimeControlPanel"
+      permission="plone.app.controlpanel.Site"
+      />
 
   <!-- Types Control panel -->
   <browser:page
-    name="content-controlpanel"
-    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-    class=".types.TypesControlPanel"
-    permission="plone.app.controlpanel.Types"
-    />
+      name="content-controlpanel"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".types.TypesControlPanel"
+      permission="plone.app.controlpanel.Types"
+      />
 
   <!-- Resource Registry -->
   <browser:page
-    name="resourceregistry-controlpanel"
-    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-    class=".resourceregistry.ResourceRegistryControlPanelView"
-    permission="plone.app.controlpanel.Site"
-    template="resourceregistry.pt"
-    />
+      name="resourceregistry-controlpanel"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".resourceregistry.ResourceRegistryControlPanelView"
+      permission="plone.app.controlpanel.Site"
+      template="resourceregistry.pt"
+      />
 
   <!-- Markup Control Panel -->
   <browser:page
-    name="markup-controlpanel"
-    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-    class=".markup.MarkupControlPanel"
-    permission="plone.app.controlpanel.Markup"
-    />
+      name="markup-controlpanel"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".markup.MarkupControlPanel"
+      permission="plone.app.controlpanel.Markup"
+      />
 
   <!-- Syndication Control Panel -->
   <browser:page
-    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-    name="syndication-controlpanel"
-    class=".syndication.SyndicationControlPanel"
-    permission="cmf.ManagePortal"
-    />
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      name="syndication-controlpanel"
+      class=".syndication.SyndicationControlPanel"
+      permission="cmf.ManagePortal"
+      />
   <browser:page
-    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-    name="syndication-settings"
-    class=".syndication.SyndicationControlPanel"
-    permission="cmf.ManagePortal"
-    />
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      name="syndication-settings"
+      class=".syndication.SyndicationControlPanel"
+      permission="cmf.ManagePortal"
+      />
 
   <!-- Usergroup Control Panel -->
   <browser:page
-    name="usergroup-controlpanel"
-    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-    class=".usergroups.UserGroupsSettingsPanelView"
-    permission="plone.app.controlpanel.UsersAndGroups"
-    />
+      name="usergroup-controlpanel"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".usergroups.UserGroupsSettingsPanelView"
+      permission="plone.app.controlpanel.UsersAndGroups"
+      />
 
   <browser:page
-    name="usergroup-userprefs"
-    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-    class=".usergroups_usersoverview.UsersOverviewControlPanel"
-    permission="plone.app.controlpanel.UsersAndGroups"
-    template="usergroups_usersoverview.pt"
-    />
+      name="usergroup-userprefs"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".usergroups_usersoverview.UsersOverviewControlPanel"
+      permission="plone.app.controlpanel.UsersAndGroups"
+      template="usergroups_usersoverview.pt"
+      />
 
   <browser:page
       name="usergroup-groupprefs"
@@ -207,46 +207,46 @@
   <!-- Quick Installer -->
 
   <browser:page
-    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-    name="prefs_install_products_form"
-    class=".quickinstaller.ManageProductsView"
-    permission="cmf.ManagePortal"
-    template="quickinstaller.pt"
-    />
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      name="prefs_install_products_form"
+      class=".quickinstaller.ManageProductsView"
+      permission="cmf.ManagePortal"
+      template="quickinstaller.pt"
+      />
 
- <browser:page
-    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-    name="upgrade_products"
-    class=".quickinstaller.UpgradeProductsView"
-    permission="cmf.ManagePortal"
-    />
+  <browser:page
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      name="upgrade_products"
+      class=".quickinstaller.UpgradeProductsView"
+      permission="cmf.ManagePortal"
+      />
 
- <browser:page
-    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-    name="install_products"
-    class=".quickinstaller.InstallProductsView"
-    permission="cmf.ManagePortal"
-    />
+  <browser:page
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      name="install_products"
+      class=".quickinstaller.InstallProductsView"
+      permission="cmf.ManagePortal"
+      />
 
- <browser:page
-    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-    name="uninstall_products"
-    class=".quickinstaller.UninstallProductsView"
-    permission="cmf.ManagePortal"
-    />
+  <browser:page
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      name="uninstall_products"
+      class=".quickinstaller.UninstallProductsView"
+      permission="cmf.ManagePortal"
+      />
 
   <!-- Social Media Control Panel -->
   <browser:page
-    name="social-controlpanel"
-    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-    class=".socialmedia.SocialControlPanel"
-    permission="plone.app.controlpanel.Site"
-    />
- <browser:page
-    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-    name="imaging-controlpanel"
-    class=".imaging.ImagingControlPanel"
-    permission="plone.app.controlpanel.Imaging"
-    />
+      name="social-controlpanel"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".socialmedia.SocialControlPanel"
+      permission="plone.app.controlpanel.Site"
+      />
+  <browser:page
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      name="imaging-controlpanel"
+      class=".imaging.ImagingControlPanel"
+      permission="plone.app.controlpanel.Imaging"
+      />
 
 </configure>
