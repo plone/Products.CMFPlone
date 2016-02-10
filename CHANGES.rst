@@ -21,6 +21,10 @@ Fixes:
 - Fix issue where incorrectly configured formats would cause TinyMCE to error
   [vangheem]
 
+New:
+
+- Supported ``remove`` keyword for configlets in controlpanel.xml.  [maurits]
+
 - Fixed displaying the body text of a feed item.  This is when
   ``render_body`` is switched on in the Syndication settings.
   [maurits]
