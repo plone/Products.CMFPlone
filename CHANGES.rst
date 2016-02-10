@@ -37,6 +37,8 @@ Incompatibilities:
 
 New:
 
+- Supported ``remove`` keyword for configlets in controlpanel.xml.  [maurits]
+
 - Upgrade to tinymce to 4.3.4
   [vangheem]
 
