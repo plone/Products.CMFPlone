@@ -242,6 +242,8 @@
       class=".socialmedia.SocialControlPanel"
       permission="plone.app.controlpanel.Site"
       />
+
+  <!-- Imaging Control Panel -->
   <browser:page
       name="imaging-controlpanel"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
