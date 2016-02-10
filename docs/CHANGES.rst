@@ -11,6 +11,9 @@ Changelog
 
 Bug fixes:
 
+- Support 'remove' keyword for configlets in controlpanel.xml.
+  [maurits]
+
 - Add data-base-url attribute in body tag.
   Closes `issue 2051 <https://github.com/plone/Products.CMFPlone/issues/2051>`_
   [rodfersou]
