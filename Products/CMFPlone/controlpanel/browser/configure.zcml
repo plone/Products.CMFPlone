@@ -94,8 +94,8 @@
 
   <!-- Security Control Panel - EMail Login -->
   <browser:page
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       name="migrate-to-emaillogin"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".security.EmailLogin"
       template="emaillogin.pt"
       permission="cmf.ManagePortal"
@@ -144,14 +144,14 @@
 
   <!-- Syndication Control Panel -->
   <browser:page
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       name="syndication-controlpanel"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".syndication.SyndicationControlPanel"
       permission="cmf.ManagePortal"
       />
   <browser:page
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       name="syndication-settings"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".syndication.SyndicationControlPanel"
       permission="cmf.ManagePortal"
       />
@@ -207,30 +207,30 @@
   <!-- Quick Installer -->
 
   <browser:page
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       name="prefs_install_products_form"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".quickinstaller.ManageProductsView"
       permission="cmf.ManagePortal"
       template="quickinstaller.pt"
       />
 
   <browser:page
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       name="upgrade_products"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".quickinstaller.UpgradeProductsView"
       permission="cmf.ManagePortal"
       />
 
   <browser:page
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       name="install_products"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".quickinstaller.InstallProductsView"
       permission="cmf.ManagePortal"
       />
 
   <browser:page
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       name="uninstall_products"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".quickinstaller.UninstallProductsView"
       permission="cmf.ManagePortal"
       />
@@ -243,8 +243,8 @@
       permission="plone.app.controlpanel.Site"
       />
   <browser:page
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       name="imaging-controlpanel"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".imaging.ImagingControlPanel"
       permission="plone.app.controlpanel.Imaging"
       />
