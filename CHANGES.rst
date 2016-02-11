@@ -6,13 +6,14 @@ Changelog
 
 New:
 
-- Switches deprecated ``listingBar`` CSS class to ``pagination``.
+- Switched deprecated ``listingBar`` CSS class to ``pagination``.
   [davilima6]
 
 Fixes:
 
-- Adapt to changed Zope 4 ``broser:view`` semantics. We either need a ``template`` ZCML argument or a ``__call__`` method on the class.
-  [thet]
+- Adapted to changed Zope 4 ``browser:view`` semantics.  We either
+  need a ``template`` ZCML argument or a ``__call__`` method on the
+  class.  [thet]
 
 
 2.5.17 (2015-11-26)
