@@ -3206,10 +3206,11 @@ define('mockup-patterns-tree',[
  *    vocabularyUrl(string): This is a URL to a JSON-formatted file used to populate the list (null)
  *    attributes(array): This list is passed to the server during an AJAX request to specify the attributes which should be included on each item. (['UID', 'Title', 'portal_type', 'path'])
  *    basePath(string): If this is set the widget will start in "Browse" mode and will pass the path to the server to filter the results. ('/')
+ *    rootPath(string): If this is set the widget will only display breadcrumb path elements deeprt than this path.
  *    mode(string): Possible values: 'search', 'browse'. If set to 'search', the catalog is searched for a searchterm. If set to 'browse', browsing starts at basePath. Default: 'search'.
- *    breadCrumbTemplate(string): Template to use for a single item in the breadcrumbs. ('/<a href="<%= path %>"><%= text %></a>')
+ *    breadCrumbTemplate(string): Template to use for a single item in the breadcrumbs. ('/<a href="<%- path %>"><%- text %></a>')
  *    breadCrumbTemplateSelector(string): Select an element from the DOM from which to grab the breadCrumbTemplate. (null)
- *    breadCrumbsTemplate(string): Template for element to which breadCrumbs will be appended. ('<span><span class="pattern-relateditems-path-label"><%= searchText %></span><a class="icon-home" href="/"></a><%= items %></span>')
+ *    breadCrumbsTemplate(string): Template for element to which breadCrumbs will be appended. ('<span><span class="pattern-relateditems-path-label"><%- searchText %></span><a class="icon-home" href="/"></a><%- items %></span>')
  *    breadCrumbsTemplateSelector(string): Select an element from the DOM from which to grab the breadCrumbsTemplate. (null)
  *    cache(boolean): Whether or not results from the server should be
  *    cached. (true)
@@ -3302,6 +3303,7 @@ define('mockup-patterns-relateditems',[
       mode: 'search', // possible values are search and browse
       closeOnSelect: false,
       basePath: '/',
+      rootPath: '/',
       homeText: _t('home'),
       //folderTypes: ['Folder'],   
       selectableTypes: null, // null means everything is selectable, otherwise a list of strings to match types that are selectable
@@ -3311,23 +3313,23 @@ define('mockup-patterns-relateditems',[
       resultTemplate: '' +
         '<div class="   pattern-relateditems-result  <% if (selected) { %>pattern-relateditems-active<% } %>">' +
         '  <a href="#" class=" pattern-relateditems-result-select <% if (selectable) { %>selectable<% } %>">' +
-        '    <% if (typeof getIcon !== "undefined" && getIcon) { %><img src="<%= getURL %>/@@images/image/icon "> <% } %>' +
-        '    <span class="pattern-relateditems-result-title  <% if (typeof review_state !== "undefined") { %> state-<%= review_state %> <% } %>  " /span>' +
-        '    <span class="pattern-relateditems contenttype-<%- portal_type.toLowerCase() %>"><%= Title %></span>' +
-        '    <span class="pattern-relateditems-result-path"><%= path %></span>' +
+        '    <% if (typeof getIcon !== "undefined" && getIcon) { %><img src="<%- getURL %>/@@images/image/icon "> <% } %>' +
+        '    <span class="pattern-relateditems-result-title  <% if (typeof review_state !== "undefined") { %> state-<%- review_state %> <% } %>  " /span>' +
+        '    <span class="pattern-relateditems contenttype-<%- portal_type.toLowerCase() %>"><%- Title %></span>' +
+        '    <span class="pattern-relateditems-result-path"><%- path %></span>' +
         '  </a>' +
         '  <span class="pattern-relateditems-buttons">' +
         '  <% if (is_folderish) { %>' +
-        '     <a class="pattern-relateditems-result-browse" href="#" data-path="<%= path %>"></a>' +
+        '     <a class="pattern-relateditems-result-browse" href="#" data-path="<%- path %>"></a>' +
         '   <% } %>' +
         ' </span>' +
         '</div>',
       resultTemplateSelector: null,
       selectionTemplate: '' +
         '<span class="pattern-relateditems-item">' +
-        ' <% if (typeof getIcon !== "undefined" && getIcon) { %> <img src="<%= getURL %>/@@images/image/icon"> <% } %>' +
-        ' <span class="pattern-relateditems-item-title contenttype-<%- portal_type.toLowerCase() %> <% if (typeof review_state !== "undefined") { %> state-<%= review_state  %> <% } %>" ><%= Title %></span>' +
-        ' <span class="pattern-relateditems-item-path"><%= path %></span>' +
+        ' <% if (typeof getIcon !== "undefined" && getIcon) { %> <img src="<%- getURL %>/@@images/image/icon"> <% } %>' +
+        ' <span class="pattern-relateditems-item-title contenttype-<%- portal_type.toLowerCase() %> <% if (typeof review_state !== "undefined") { %> state-<%- review_state  %> <% } %>" ><%- Title %></span>' +
+        ' <span class="pattern-relateditems-item-path"><%- path %></span>' +
         '</span>',
       selectionTemplateSelector: null,
       breadCrumbsTemplate: '<span>' +
@@ -3344,12 +3346,15 @@ define('mockup-patterns-relateditems',[
           '</div>' +
         '</span>' +
         '<span class="pattern-relateditems-path-label">' +
-          '<%= searchText %></span><a class="crumb" href="/"><span class="glyphicon glyphicon-home"></span></a><%= items %>' +
+          '<%- searchText %></span><a class="crumb" href="<%- rootPath %>">' +
+          '<span class="glyphicon glyphicon-home"></span></a>' +
+          // ``items assumed to be santized html``
+          '<%= items %>' +
         '</span>' +
       '</span>',
       breadCrumbsTemplateSelector: null,
       breadCrumbTemplate: '' +
-        '/<a href="<%= path %>" class="crumb"><%= text %></a>',
+        '/<a href="<%- path %>" class="crumb"><%- text %></a>',
       breadCrumbTemplateSelector: null,
       escapeMarkup: function(text) {
         return text;
@@ -3405,7 +3410,10 @@ define('mockup-patterns-relateditems',[
     setBreadCrumbs: function() {
       var self = this;
       var path = self.currentPath ? self.currentPath : self.options.basePath;
+      var root = self.options.rootPath.replace(/\/$/, '');
       var html;
+      // strip site root from path
+      path = path.indexOf(root) === 0 ? path.slice(root.length) : path;
       if (path === '/') {
         var searchText = '';
         if (self.options.mode === 'search') {
@@ -3413,11 +3421,12 @@ define('mockup-patterns-relateditems',[
         }
         html = self.applyTemplate('breadCrumbs', {
           items: searchText,
-          searchText: _t('Search:')
+          searchText: _t('Search:'),
+          rootPath: self.options.rootPath
         });
       } else {
         var paths = path.split('/');
-        var itemPath = '';
+        var itemPath = root;
         var itemsHtml = '';
         _.each(paths, function(node) {
           if (node !== '') {
@@ -3428,7 +3437,9 @@ define('mockup-patterns-relateditems',[
             itemsHtml = itemsHtml + self.applyTemplate('breadCrumb', item);
           }
         });
-        html = self.applyTemplate('breadCrumbs', {items: itemsHtml, searchText: _t('Search:') });
+        html = self.applyTemplate('breadCrumbs', {items: itemsHtml,
+                                                  searchText: _t('Search:'),
+                                                  rootPath: self.options.rootPath});
       }
       var $crumbs = $(html);
       $('a.crumb', $crumbs).on('click', function(e) {
@@ -71318,7 +71329,7 @@ define('mockup-patterns-structure-url/js/views/tablerow',[
 });
 
 
-define('text!mockup-patterns-structure-url/templates/table.xml',[],function () { return '<div class="alert alert-<%= statusType %> status">\n    <%= status %>\n</div>\n<table class="table table-striped table-bordered">\n  <thead>\n    <tr class="fc-breadcrumbs-container">\n      <td colspan="<%= activeColumns.length + 3 %>">\n        <% if(pathParts.length > 0) { %>\n          <div class="input-group context-buttons" style="display:none">\n            <span class="input-group-addon">\n              <input type="checkbox" />\n            </span>\n            <div class="input-group-btn">\n            </div>\n          </div>\n        <% } %>\n        <div class="fc-breadcrumbs">\n          <a href="#" data-path="/">\n            <span class="glyphicon glyphicon-home"></span> /\n          </a>\n          <% _.each(pathParts, function(part, idx, list){\n            if(part){\n              if(idx > 0){ %>\n                /\n              <% } %>\n              <a href="#" class="crumb" data-path="<%- part %>"><%- part %></a>\n            <% }\n          }); %>\n        </div>\n      </td>\n    </tr>\n    <tr>\n      <th class="selection"><input type="checkbox" class="select-all" /></th>\n      <th class="title">Title</th>\n      <% _.each(activeColumns, function(column){ %>\n        <% if(_.has(availableColumns, column)) { %>\n          <th><%- availableColumns[column] %></th>\n        <% } %>\n      <% }); %>\n      <th class="actions"><%- _t("Actions") %></th>\n    </tr>\n  </thead>\n  <tbody>\n  </tbody>\n</table>\n';});
+define('text!mockup-patterns-structure-url/templates/table.xml',[],function () { return '<div class="alert alert-<%- statusType %> status">\n    <%- status %>\n</div>\n<table class="table table-striped table-bordered">\n  <thead>\n    <tr class="fc-breadcrumbs-container">\n      <td colspan="<%- activeColumns.length + 3 %>">\n        <% if(pathParts.length > 0) { %>\n          <div class="input-group context-buttons" style="display:none">\n            <span class="input-group-addon">\n              <input type="checkbox" />\n            </span>\n            <div class="input-group-btn">\n            </div>\n          </div>\n        <% } %>\n        <div class="fc-breadcrumbs">\n          <a href="#" data-path="/">\n            <span class="glyphicon glyphicon-home"></span> /\n          </a>\n          <% _.each(pathParts, function(part, idx, list){\n            if(part){\n              if(idx > 0){ %>\n                /\n              <% } %>\n              <a href="#" class="crumb" data-path="<%- part %>"><%- part %></a>\n            <% }\n          }); %>\n        </div>\n      </td>\n    </tr>\n    <tr>\n      <th class="selection"><input type="checkbox" class="select-all" /></th>\n      <th class="title">Title</th>\n      <% _.each(activeColumns, function(column){ %>\n        <% if(_.has(availableColumns, column)) { %>\n          <th><%- availableColumns[column] %></th>\n        <% } %>\n      <% }); %>\n      <th class="actions"><%- _t("Actions") %></th>\n    </tr>\n  </thead>\n  <tbody>\n  </tbody>\n</table>\n';});
 
 /* Sortable pattern.
  *
@@ -72206,7 +72217,7 @@ define('mockup-ui-url/views/popover',[
 
 
 
-define('text!mockup-patterns-structure-url/templates/selection_item.xml',[],function () { return '<span class="selected-item">\r  <a href="#" data-uid="<%= UID %>" title="remove" class="remove">\r    <span class="glyphicon glyphicon-remove-circle"></span>\r  </a>\r  <%= Title %>\r</span>\r';});
+define('text!mockup-patterns-structure-url/templates/selection_item.xml',[],function () { return '<span class="selected-item">\n  <a href="#" data-uid="<%- UID %>" title="remove" class="remove">\n    <span class="glyphicon glyphicon-remove-circle"></span>\n  </a>\n  <%- Title %>\n</span>\n';});
 
 define('mockup-patterns-structure-url/js/views/selectionwell',[
   'jquery',
@@ -72454,7 +72465,7 @@ define('mockup-patterns-structure-url/js/views/rearrange',[
 });
 
 
-define('text!mockup-patterns-structure-url/templates/selection_button.xml',[],function () { return '<span class="glyphicon glyphicon-list"></span>\r<%= title %> \r<span class="label<% if (length > 0) { %> label-success<% } else { %> label-default<% } %>">\r  <%= length %>\r</span>\r';});
+define('text!mockup-patterns-structure-url/templates/selection_button.xml',[],function () { return '<span class="glyphicon glyphicon-list"></span>\r\n  <%- title %>\r\n<span class="label<% if (length > 0) { %> label-success<% } else { %> label-default<% } %>">\r\n  <%- length %>\r\n</span>\r\n';});
 
 define('mockup-patterns-structure-url/js/views/selectionbutton',[
   'jquery',
@@ -72498,7 +72509,7 @@ define('mockup-patterns-structure-url/js/views/selectionbutton',[
 });
 
 
-define('text!mockup-patterns-structure-url/templates/paging.xml',[],function () { return '  <ul class="pagination pagination-sm pagination-centered">\n    <li class="<% if (currentPage === 1) { %>disabled<% } %>">\n      <a href="#" class="serverfirst">\n        &laquo;\n      </a>\n    </li>\n    <li class="<% if (currentPage === 1) { %>disabled<% } %>">\n      <a href="#" class="serverprevious">\n        &lt;\n      </a>\n    </li>\n    <% _.each(pages, function(p){ %>\n    <li class="<% if (currentPage == p) { %>active<% } %>">\n      <a href="#" class="page"><%= p %></a>\n    </li>\n    <% }); %>\n    <li class="<% if (currentPage === lastPage) { %>disabled<% } %>">\n      <a href="#" class="servernext">\n        &gt;\n      </a>\n    </li>\n    <li class="<% if (currentPage === lastPage) { %>disabled<% } %>">\n      <a href="#" class="serverlast">\n        &raquo;\n      </a>\n    </li>\n  </ul>\n\n  <ul class="pagination pagination-sm">\n    <li class="disabled"><a href="#"><%- _t("Show:") %></a></li>\n    <li class="serverhowmany serverhowmany15 <% if(perPage == 15){ %>disabled<% } %>">\n      <a href="#" class="">15</a>\n    </li>\n    <li class="serverhowmany serverhowmany30 <% if(perPage == 30){ %>disabled<% } %>">\n      <a href="#" class="">30</a>\n    </li>\n    <li class="serverhowmany serverhowmany50 <% if(perPage == 50){ %>disabled<% } %>">\n      <a href="#" class="">50</a>\n    </li>\n  </ul>\n\n  <ul class="pagination pagination-sm">\n    <li class="disabled">\n      <a href="#">\n        <%- _t("Page:") %> <span class="current"><%= currentPage %></span>\n        <%- _t("of") %>\n        <span class="total"><%= totalPages %></span>\n              <%- _t("shown") %>\n      </a>\n    </li>\n  </ul>\n';});
+define('text!mockup-patterns-structure-url/templates/paging.xml',[],function () { return '  <ul class="pagination pagination-sm pagination-centered">\n    <li class="<% if (currentPage === 1) { %>disabled<% } %>">\n      <a href="#" class="serverfirst">\n        &laquo;\n      </a>\n    </li>\n    <li class="<% if (currentPage === 1) { %>disabled<% } %>">\n      <a href="#" class="serverprevious">\n        &lt;\n      </a>\n    </li>\n    <% _.each(pages, function(p){ %>\n    <li class="<% if (currentPage == p) { %>active<% } %>">\n      <a href="#" class="page"><%- p %></a>\n    </li>\n    <% }); %>\n    <li class="<% if (currentPage === lastPage) { %>disabled<% } %>">\n      <a href="#" class="servernext">\n        &gt;\n      </a>\n    </li>\n    <li class="<% if (currentPage === lastPage) { %>disabled<% } %>">\n      <a href="#" class="serverlast">\n        &raquo;\n      </a>\n    </li>\n  </ul>\n\n  <ul class="pagination pagination-sm">\n    <li class="disabled"><a href="#"><%- _t("Show:") %></a></li>\n    <li class="serverhowmany serverhowmany15 <% if(perPage == 15){ %>disabled<% } %>">\n      <a href="#" class="">15</a>\n    </li>\n    <li class="serverhowmany serverhowmany30 <% if(perPage == 30){ %>disabled<% } %>">\n      <a href="#" class="">30</a>\n    </li>\n    <li class="serverhowmany serverhowmany50 <% if(perPage == 50){ %>disabled<% } %>">\n      <a href="#" class="">50</a>\n    </li>\n  </ul>\n\n  <ul class="pagination pagination-sm">\n    <li class="disabled">\n      <a href="#">\n        <%- _t("Page:") %> <span class="current"><%- currentPage %></span>\n        <%- _t("of") %>\n        <span class="total"><%- totalPages %></span>\n              <%- _t("shown") %>\n      </a>\n    </li>\n  </ul>\n';});
 
 define('mockup-patterns-structure-url/js/views/paging',[
   'jquery',
