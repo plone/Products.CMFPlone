@@ -656,6 +656,11 @@ def set_own_login_name(member, loginname):
     name of another member too, though the name of this function is a
     bit weird then.  Historical accident.
     """
+    if member.getUserName() == loginname:
+        # Bail out early as there is nothing to do.  Also this avoids
+        # an Unauthorized error when this is a member that has just
+        # been registered.
+        return
     pas = getToolByName(member, 'acl_users')
     mt = getToolByName(member, 'portal_membership')
     if member.getId() == mt.getAuthenticatedMember().getId():
