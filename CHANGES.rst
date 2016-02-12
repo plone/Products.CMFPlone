@@ -18,6 +18,10 @@ New:
 
 Fixes:
 
+- Get ``email_from_name`` from the mail settings registry.
+  Fixes https://github.com/plone/Products.CMFPlone/issues/1382
+  [tmog]
+
 - No longer rely on deprecated ``bobobase_modification_time`` from
   ``Persistence.Persistent``.
   [thet]
