@@ -237,8 +237,10 @@ class TestCreateObjectByURL(PloneTestCase.FunctionalTestCase):
         location = response.getHeader('Location')
         self.assertTrue(location.startswith(
                                 self.folder_url + '/portal_factory/Document/'))
-        # CMFFormController redirects should not do alias translation
-        self.assertTrue(location.endswith('/edit'))
+        # CMFFormController redirects should not do alias translation.
+        # Check the path instead of the entire location, to avoid getting the
+        # csrf _authenticator query parameter.
+        self.assertTrue(urlparse.urlsplit(location).path.endswith('/edit'))
 
         # Perform the redirect
         edit_form_path = location[len(self.app.REQUEST.SERVER_URL):]
@@ -260,7 +262,7 @@ class TestCreateObjectByURL(PloneTestCase.FunctionalTestCase):
         location = response.getHeader('Location')
         self.assertTrue(location.startswith(
                                 self.folder_url + '/portal_factory/Document/'))
-        self.assertTrue(location.endswith('/edit'))
+        self.assertTrue(urlparse.urlsplit(location).path.endswith('/edit'))
 
         # Perform the redirect
         edit_form_path = location[len(self.app.REQUEST.SERVER_URL):]
