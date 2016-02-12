@@ -104,7 +104,8 @@ class AuthorFeedbackForm(form.Form):
             message = self.feedback_template(
                 self, send_from_address=send_from_address,
                 sender_id=sender_id, url=referer, subject=subject,
-                message=message, encoding=email_charset
+                message=message, encoding=email_charset,
+                email_from_name=mail_settings.email_from_name
             )
 
             message = message.encode(email_charset)
