@@ -8,6 +8,8 @@ Changelog
 4.3.8 (unreleased)
 ------------------
 
+- Disabled CSRF protection on site creation form and upgrade form.  [maurits]
+
 - When migration fails, do not upgrade addons or recatalog or
   update roles.
   [maurits]
