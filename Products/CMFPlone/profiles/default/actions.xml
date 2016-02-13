@@ -5,7 +5,7 @@
  <action-provider name="portal_types"/>
  <action-provider name="portal_actions" />
  <object name="document_actions" meta_type="CMF Action Category">
-  <property name="title"></property>
+  <property name="title" i18n:translate="">Document actions</property>
   <object name="rss" meta_type="CMF Action" i18n:domain="plone">
    <property name="title" i18n:translate="">RSS feed</property>
    <property name="description" i18n:translate=""></property>
@@ -43,7 +43,7 @@
   </object>
  </object>
  <object name="site_actions" meta_type="CMF Action Category">
-  <property name="title"></property>
+  <property name="title" i18n:translate="">Site actions</property>
   <object name="sitemap" meta_type="CMF Action" i18n:domain="plone">
    <property name="title" i18n:translate="">Site Map</property>
    <property name="description" i18n:translate=""></property>
@@ -81,7 +81,7 @@
   </object>
  </object>
  <object name="object" meta_type="CMF Action Category">
-  <property name="title"></property>
+  <property name="title" i18n:translate="">Object actions</property>
   <object name="folderContents" meta_type="CMF Action" i18n:domain="plone">
    <property name="title" i18n:translate="">Contents</property>
    <property name="description" i18n:translate=""></property>
@@ -143,7 +143,7 @@
   </object>
  </object>
  <object name="object_buttons" meta_type="CMF Action Category">
-  <property name="title"></property>
+  <property name="title" i18n:translate="">Object buttons</property>
   <object name="cut" meta_type="CMF Action" i18n:domain="plone">
    <property name="title" i18n:translate="">Cut</property>
    <property name="description" i18n:translate=""></property>
@@ -207,7 +207,7 @@
   </object>
  </object>
  <object name="portal_tabs" meta_type="CMF Action Category">
-  <property name="title"></property>
+  <property name="title" i18n:translate="">Portal tabs</property>
   <object name="index_html" meta_type="CMF Action" i18n:domain="plone">
    <property name="title" i18n:translate="">Home</property>
    <property name="description" i18n:translate=""></property>
@@ -222,7 +222,7 @@
   </object>
  </object>
  <object name="user" meta_type="CMF Action Category">
-  <property name="title"></property>
+  <property name="title" i18n:translate="">User actions</property>
   <object name="preferences" meta_type="CMF Action" i18n:domain="plone">
    <property name="title" i18n:translate="">Preferences</property>
    <property name="description" i18n:translate=""></property>
