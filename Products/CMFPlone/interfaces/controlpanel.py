@@ -1524,3 +1524,69 @@ class ILinkSchema(Interface):
         description=_(u'Marks external or special protocol links with class.'),
         default=True,
         required=False)
+
+
+class IActionSchema(Interface):
+
+    category = schema.Choice(
+        title=_(u'Category'),
+        vocabulary="plone.app.vocabularies.PortalActionCategories",
+        required=True)
+
+    title = schema.TextLine(
+        title=_(u'Title'),
+        required=True)
+
+    description = schema.Text(
+        title=_(u'Description'),
+        required=False)
+
+    i18n_domain = schema.TextLine(
+        title=_(u"i18n_domain_heading", default=u'I18n domain'),
+        default=u'plone',
+        required=False)
+
+    url_expr = schema.ASCIILine(
+        title=_(u"action_url_heading", default=u'Action URL'),
+        description=_(u"action_url_description",
+            default=u'An expression producing the called URL'),
+        required=True)
+
+    available_expr = schema.ASCIILine(
+        title=_(u"action_condition_heading", default=u'Condition'),
+        description=_(u"action_condition_description",
+            default=u'A boolean expression'),
+        required=False)
+
+    permissions = schema.List(
+        title=_(u"action_permissions_heading", default=u"Permissions"),
+        required=True,
+        default=['View'],
+        missing_value=[],
+        value_type=schema.Choice(
+            vocabulary="plone.app.vocabularies.Permissions"
+        )
+    )
+
+    visible = schema.Bool(
+        title=_(u"action_visibility_heading", default=u'Visible?'),
+        default=True,
+        required=False)
+
+    position = schema.Int(
+        title=_(u"action_position_heading", default=u'Position'),
+        default=1,
+        min=1,
+        required=True)
+
+
+class INewActionSchema(Interface):
+
+    category = schema.Choice(
+        title=_(u'Category'),
+        vocabulary="plone.app.vocabularies.PortalActionCategories",
+        required=True)
+
+    id = schema.ASCIILine(
+        title=_(u'Id'),
+        required=True)

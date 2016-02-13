@@ -29,6 +29,8 @@ from controlpanel import ITypesSchema
 from controlpanel import IUserGroupsSettingsSchema
 from controlpanel import ISocialMediaSchema
 from controlpanel import IImagingSchema
+from controlpanel import IActionSchema
+from controlpanel import INewActionSchema
 from events import IConfigurationChangedEvent
 from events import IReorderedEvent
 from events import ISiteManagerCreatedEvent
