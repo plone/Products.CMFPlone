@@ -38,6 +38,7 @@ require([
   'mockup-patterns-modal',
   'mockup-patterns-livesearch',
   'mockup-patterns-contentloader',
+  'mockup-patterns-moment',
   'bootstrap-dropdown',
   'bootstrap-collapse',
   'bootstrap-tooltip',
