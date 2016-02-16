@@ -10,6 +10,9 @@ Changelog
 
 New:
 
+- Include pat-moment for public javascript
+  [vangheem]
+
 - Add custom navigation root in TinyMCE configuration.
   [alecm]
 
