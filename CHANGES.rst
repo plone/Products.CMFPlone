@@ -10,6 +10,9 @@ Changelog
 
 New:
 
+- Build resource registry JavaScript for fix in not being able to develop js/css
+  [vangheem]
+
 - Include pat-moment for public javascript
   [vangheem]
 
