@@ -48,6 +48,10 @@ Fixes:
 
 - Mock MailHost on testing.py so that tests relying on mails can use it.
   [gforcada]
+  
+- Fix `aria-hidden` attribute control problem on toolbar
+  https://github.com/plone/Products.CMFPlone/issues/866
+  [terapyon]
 
 
 5.0.2 (2016-01-08)

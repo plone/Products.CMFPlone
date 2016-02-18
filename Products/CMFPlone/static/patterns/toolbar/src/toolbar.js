@@ -128,6 +128,7 @@ define([
         }
         else {
           // close existing opened contentmenus
+          $('.' + active_class + '> ul', that.$container).attr("aria-hidden", "true");
           $('.' + active_class, that.$container).removeClass(active_class);
           // we need to close the more subset as well not just the content-menus
           // when we click on the personal bar
@@ -177,6 +178,7 @@ define([
       $content.css({
         'margin-top': Math.min(itemLocation, height - insideHeight)
       });
+      $content.attr("aria-hidden", "false");
     },
     isDesktop: function(){
       return $(window).width() > '768';
