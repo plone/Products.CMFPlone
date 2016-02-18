@@ -8,7 +8,7 @@ zope.deferredimport.deprecated(
     "It has been moved to plone.app.layout.navigation.interfaces. "
     "This alias will be removed in Plone 5.0",
     INavigationRoot='plone.app.layout.navigation.interfaces:INavigationRoot',
-    )
+)
 
 
 class INavigationBreadcrumbs(Interface):
