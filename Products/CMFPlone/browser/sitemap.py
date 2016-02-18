@@ -29,7 +29,7 @@ class SitemapView(BrowserView):
             if len(children):
                 output += \
                     '<ul class="navTree navTreeLevel%d">\n%s\n</ul>\n' % (
-                        level, self._renderLevel(children, level + 1))
+                        level, self._renderLevel(children, level+1))
             output += '</li>\n'
 
         return output

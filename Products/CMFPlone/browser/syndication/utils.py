@@ -20,7 +20,7 @@ class SyndicationUtil(BrowserView):
     def allowed_feed_types(self):
         settings = IFeedSettings(self.context)
         factory = getUtility(IVocabularyFactory,
-                             "plone.app.vocabularies.SyndicationFeedTypes")
+            "plone.app.vocabularies.SyndicationFeedTypes")
         vocabulary = factory(self.context)
         types = []
         for typ in settings.feed_types:

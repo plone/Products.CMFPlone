@@ -86,8 +86,8 @@ class CatalogNavigationTree(BrowserView):
             if len(contextSubPathElements) < topLevel:
                 return None
             rootPath = rootPath \
-                + '/' \
-                + '/'.join(contextSubPathElements[:topLevel])
+                        + '/' \
+                        + '/'.join(contextSubPathElements[:topLevel])
 
         return rootPath
 
@@ -147,7 +147,7 @@ class CatalogNavigationTabs(BrowserView):
 
         if navtree_properties.getProperty('enable_wf_state_filtering', False):
             query['review_state'] = navtree_properties.getProperty(
-                'wf_states_to_show', [])
+                                                    'wf_states_to_show', [])
 
         query['is_default_page'] = False
 
@@ -268,7 +268,7 @@ class PhysicalNavigationBreadcrumbs(BrowserView):
         if container is None:
             return ({'absolute_url': item_url,
                      'Title': utils.pretty_title_or_id(context, context), },
-                    )
+                   )
 
         view = getMultiAdapter((container, request), name='breadcrumbs_view')
         base = tuple(view.breadcrumbs())
@@ -289,7 +289,7 @@ class PhysicalNavigationBreadcrumbs(BrowserView):
                 and not rootPath.startswith(itemPath):
             base += ({'absolute_url': item_url,
                       'Title': utils.pretty_title_or_id(context, context), },
-                     )
+                    )
 
         return base
 

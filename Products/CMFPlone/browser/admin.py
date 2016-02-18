@@ -33,7 +33,7 @@ class AppTraverser(DefaultPublishTraverse):
     def publishTraverse(self, request, name):
         if name == 'index_html':
             view = queryMultiAdapter((self.context, request),
-                                     Interface, 'plone-overview')
+                        Interface, 'plone-overview')
             if view is not None:
                 return view
         return DefaultPublishTraverse.publishTraverse(self, request, name)
@@ -113,7 +113,7 @@ class AddPloneSite(BrowserView):
     default_extension_profiles = (
         'plonetheme.classic:default',
         'plonetheme.sunburst:default',
-    )
+        )
 
     def profiles(self):
         base_profiles = []
@@ -206,7 +206,7 @@ class AddPloneSite(BrowserView):
                 extension_ids=form.get('extension_ids', ()),
                 setup_content=form.get('setup_content', False),
                 default_language=form.get('default_language', 'en'),
-            )
+                )
             self.request.response.redirect(site.absolute_url())
 
         return self.index()
@@ -239,7 +239,7 @@ class Upgrade(BrowserView):
             report = pm.upgrade(
                 REQUEST=self.request,
                 dry_run=form.get('dry_run', False),
-            )
+                )
             return self.index(report=report)
 
         return self.index()

@@ -40,7 +40,6 @@ class FeedView(BrowserView):
 
 
 class SearchFeedView(FeedView):
-
     def feed(self):
         f = queryAdapter(self.context, ISearchFeed)
         if f is None:
