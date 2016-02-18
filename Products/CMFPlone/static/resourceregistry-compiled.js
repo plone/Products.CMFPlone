@@ -30675,6 +30675,7 @@ define('mockup-patterns-modal',[
       margin: 20,
       position: 'center middle', // format: '<horizontal> <vertical>' -- allowed values: top, bottom, left, right, center, middle
       triggers: [],
+      zIndexSelector: '.plone-modal-wrapper,.plone-modal-backdrop',
       backdrop: 'body', // Element to initiate the Backdrop on.
       backdropOptions: {
         zIndex: '1040',
@@ -31355,7 +31356,11 @@ define('mockup-patterns-modal',[
             self.$el.parents(self.options.backdrop),
             self.options.backdropOptions
           ),
-          zIndex = self.options.backdropOptions.zIndex !== null ? parseInt(self.options.backdropOptions.zIndex, 10) + 1 : 1041;
+          zIndex = 1041;
+
+      $(self.options.zIndexSelector).each(function(){
+        zIndex = Math.max(zIndex, parseInt($(this).css('zIndex')) + 1 || 1041);
+      });
 
       self.$wrapper = $('<div/>')
         .hide()
@@ -31885,7 +31890,7 @@ define('mockup-patterns-resourceregistry-url/js/registry',[
       view: fields.ResourceSortableListFieldView
     },{
       name: 'init',
-      title: _t('Init'), 
+      title: _t('Init'),
       description: _t('Init instruction for requirejs shim')
     }, {
       name: 'deps',
@@ -32054,12 +32059,14 @@ define('mockup-patterns-resourceregistry-url/js/registry',[
       this.options.data.develop_javascript = !this.options.data.develop_javascript;
       this.options.registryView.dirty = true;
       this.options.registryView.render();
+      this.render();
     },
     developCSSClicked: function(e){
       e.preventDefault();
       this.options.data.develop_css = !this.options.data.develop_css;
       this.options.registryView.dirty = true;
       this.options.registryView.render();
+      this.render();
     },
     afterRender: function(){
       RegistryResourceListItem.prototype.afterRender.apply(this);
@@ -32097,7 +32104,7 @@ define('mockup-patterns-resourceregistry-url/js/registry',[
         this.options.registryView.render();
       }
     },
-    
+
     buildClicked: function(e){
       e.preventDefault();
       var self = this;
@@ -32285,8 +32292,12 @@ define('mockup-patterns-resourceregistry-url/js/registry',[
       };
       _.each(bundles, function(resourceName){
         var item;
-        if(self.activeResource && self.activeResource.type === 'bundle' && self.activeResource.item.options.name === resourceName){
-          item = self.activeResource.item;
+        if(self.activeResource && self.activeResource.type === 'bundle' &&
+           self.activeResource.item.options.name === resourceName){
+          item = new RegistryBundleListItem({
+            data: self.activeResource.item.data,
+            name: resourceName,
+            registryView: self});
         }else{
           item = new RegistryBundleListItem({
             data: data.bundles[resourceName],
@@ -32299,8 +32310,12 @@ define('mockup-patterns-resourceregistry-url/js/registry',[
       var resources = _.sortBy(_.keys(data.resources), function(v){ return v.toLowerCase(); });
       _.each(resources, function(resourceName){
         var item;
-        if(self.activeResource && self.activeResource.type === 'resource' && self.activeResource.item.options.name === resourceName){
-          item = self.activeResource.item;
+        if(self.activeResource && self.activeResource.type === 'resource' &&
+           self.activeResource.item.options.name === resourceName){
+          item = new RegistryResourceListItem({
+            data: self.activeResource.item.data,
+            name: resourceName,
+            registryView: self});
         } else {
           item = new RegistryResourceListItem({
             data: data.resources[resourceName],
@@ -32748,5 +32763,5 @@ require([
   'use strict';
 });
 
-define("/usr/local/p5dev/buildout.coredev/src/Products.CMFPlone/Products/CMFPlone/static/resourceregistry.js", function(){});
+define("/Users/nathan/code/coredev5/src/Products.CMFPlone/Products/CMFPlone/static/resourceregistry.js", function(){});
 
