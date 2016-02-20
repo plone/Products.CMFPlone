@@ -7,7 +7,7 @@ Library  Remote  ${PLONE_URL}/RobotRemote
 
 Resource  keywords.robot
 
-Test Setup  Open SauceLabs test browser
+Test Setup  Run keywords  Open SauceLabs test browser  Refresh JS/CSS resources
 Test Teardown  Run keywords  Report test status  Close all browsers
 
 
@@ -39,7 +39,6 @@ Scenario: Select All items
 #     Then the order should be 1 > 2 > 3 > 4
 #     When I reorder the elements
 #     Then the new order should be 4 > 3 > 2 > 1
-
 
 *** Keywords *****************************************************************
 
