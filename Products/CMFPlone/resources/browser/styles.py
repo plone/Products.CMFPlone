@@ -89,7 +89,30 @@ class StylesView(ResourceView):
         """
         Get all the styles
         """
-        result = self.ordered_bundles_result()
+        if self.development:
+            result = self.ordered_bundles_result()
+        else:
+            result = [{
+                'src': '%s/++plone++%s' % (
+                    self.site_url,
+                    self.production_path + '/default.css'
+                ),
+                'conditionalcomment': None,
+                'rel': 'stylesheet',
+                'bundle': 'production'
+            }, ]
+            if not self.anonymous:
+                result.append({
+                    'src': '%s/++plone++%s' % (
+                        self.site_url,
+                        self.production_path + '/logged-in.css'
+                    ),
+                    'conditionalcomment': None,
+                    'rel': 'stylesheet',
+                    'bundle': 'production'
+                })
+            result.extend(self.ordered_bundles_result(production=True))
+
         # Add manual added resources
         resources = self.get_resources()
         if hasattr(self.request, 'enabled_resources'):

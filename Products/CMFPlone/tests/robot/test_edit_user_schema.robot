@@ -17,7 +17,7 @@ Library  Remote  ${PLONE_URL}/RobotRemote
 
 Resource  keywords.robot
 
-Test Setup  Open SauceLabs test browser
+Test Setup  Run keywords  Open SauceLabs test browser  Refresh JS/CSS resources
 Test Teardown  Run keywords  Report test status  Close all browsers
 
 

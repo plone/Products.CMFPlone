@@ -7,7 +7,7 @@ Library  Remote  ${PLONE_URL}/RobotRemote
 
 Resource  keywords.robot
 
-Test Setup  Run keywords  Open SauceLabs test browser
+Test Setup  Run keywords  Open SauceLabs test browser  Refresh JS/CSS resources
 Test Teardown  Run keywords  Report test status  Close all browsers
 
 
@@ -26,7 +26,7 @@ Scenario: A page is opened to edit
       and text inserted into wysiwyg
       and insert link
       and insert image
-    
+
     Click Button  css=#form-buttons-save
     Element Should Be Visible  css=#parent-fieldname-text img[alt="SomeAlt"]
     Element Should Be Visible  css=#parent-fieldname-text img[title="SomeTitle"]

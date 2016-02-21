@@ -208,12 +208,13 @@ class ResourceRegistryControlPanelView(RequireJsView):
     def save_registry(self):
         req = self.request
 
-        self.update_registry_collection(
-            IResourceRegistry, "plone.resources",
-            json.loads(req.get('resources')))
-        self.update_registry_collection(
-            IBundleRegistry, "plone.bundles",
-            json.loads(req.get('bundles')))
+        if req.get('resources') and req.get('bundles'):
+            self.update_registry_collection(
+                IResourceRegistry, "plone.resources",
+                json.loads(req.get('resources')))
+            self.update_registry_collection(
+                IBundleRegistry, "plone.bundles",
+                json.loads(req.get('bundles')))
 
         if self.request.form.get('development', '').lower() == 'true':
             self.registry['plone.resources.development'] = True

@@ -3,6 +3,7 @@ import logging
 from Products.CMFPlone.interfaces.resources import IResourceRegistry
 from Products.CMFPlone.interfaces.resources import IBundleRegistry
 from Products.CMFPlone.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME  # noqa
+from Products.CMFPlone.resources.browser.combine import combine_bundles
 from StringIO import StringIO
 from cssmin import cssmin
 from datetime import datetime
@@ -127,5 +128,9 @@ try{
         # setRequest(original_request)
     except NotFound:
         logger.info('Error compiling js/css for the bundle')
+
+    # refresh production meta bundles
+    combine_bundles(context)
+
     # Disable CSRF protection on this request
     alsoProvides(request, IDisableCSRFProtection)

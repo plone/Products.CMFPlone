@@ -100,6 +100,14 @@
       description="Import CMFDiffTool settings">
   </genericsetup:importStep>
 
+  <genericsetup:importStep
+      name="combine-bundles"
+      title="Bundle combination"
+      description="Combine JS/CSS bundles together"
+      handler="Products.CMFPlone.resources.exportimport.bundles.combine">
+    <depends name="plone.app.registry" />
+  </genericsetup:importStep>
+
   <genericsetup:exportStep
       name="content"
       title="Content"

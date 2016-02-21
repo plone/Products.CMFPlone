@@ -13,7 +13,7 @@ Library  Remote  ${PLONE_URL}/RobotRemote
 
 Resource  common.robot
 
-Test Setup  Run keywords  Open SauceLabs test browser  Background
+Test Setup  Run keywords  Open SauceLabs test browser  Refresh JS/CSS resources  Background
 Test Teardown  Run keywords  Report test status  Close all browsers
 
 
@@ -196,7 +196,7 @@ Scenario: New user overlay closes on valid data
 #      When I click the 'Content Info' link
 #       And I click the 'History' link
 #      Then overlay should open
-# 
+#
 # Scenario: History overlay closes
 #     Given a logged-in site administrator
 #       And the test folder
@@ -204,7 +204,7 @@ Scenario: New user overlay closes on valid data
 #       And I click the 'History' link
 #      When I close the overlay
 #      Then overlay should close
-# 
+#
 *** Keywords ***
 
 Background
