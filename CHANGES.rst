@@ -28,6 +28,10 @@ New:
 
 Fixes:
 
+- Move hero on welcome page from theme into managed content.
+  Issue https://github.com/plone/Products.CMFPlone/issues/974
+  [gyst]
+
 - Get ``email_from_name`` from the mail settings registry.
   Fixes https://github.com/plone/Products.CMFPlone/issues/1382
   [tmog]
