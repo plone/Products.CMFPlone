@@ -1,12 +1,14 @@
 from operator import itemgetter
 
 from plone.i18n.locales.interfaces import IContentLanguageAvailability
+from plone.protect.interfaces import IDisableCSRFProtection
 from zope.component import adapts
 from zope.component import getAllUtilitiesRegisteredFor
 from zope.component import queryMultiAdapter
 from zope.component import queryUtility
 from zope.i18n.interfaces import IUserPreferredLanguages
 from zope.i18n.locales import locales, LoadLocaleError
+from zope.interface import alsoProvides
 from zope.interface import Interface
 from zope.publisher.interfaces import IRequest
 from zope.publisher.browser import BrowserView
@@ -198,6 +200,7 @@ class AddPloneSite(BrowserView):
         form = self.request.form
         submitted = form.get('form.submitted', False)
         if submitted:
+            alsoProvides(self.request, IDisableCSRFProtection)
             site_id = form.get('site_id', 'Plone')
             site = addPloneSite(
                 context, site_id,
@@ -235,6 +238,7 @@ class Upgrade(BrowserView):
         form = self.request.form
         submitted = form.get('form.submitted', False)
         if submitted:
+            alsoProvides(self.request, IDisableCSRFProtection)
             pm = getattr(self.context, 'portal_migration')
             report = pm.upgrade(
                 REQUEST=self.request,

@@ -40,7 +40,7 @@ browser.
     >>> browser.getControl('Add').click()
     >>> #'Edit Page' in browser.contents # ouch, Plone has <span> around 'Page'
     >>> browser.url
-    'http://nohost/plone/Members/test_user_1_/portal_factory/Document/.../edit'
+    'http://nohost/plone/Members/test_user_1_/portal_factory/Document/.../edit?_authenticator=...'
 
 Now that the document has been added, we can edit it, but we pretend
 we don't know better and forget to type in a Title:

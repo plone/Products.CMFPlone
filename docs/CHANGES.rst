@@ -8,6 +8,8 @@ Changelog
 4.3.8 (unreleased)
 ------------------
 
+- Disabled CSRF protection on site creation form and upgrade form.  [maurits]
+
 - When migration fails, do not upgrade addons or recatalog or
   update roles.
   [maurits]
@@ -28,6 +30,12 @@ Changelog
 - Add syndication for plone.app.contenttypes collections.
   [do3cc]
 
+- Add CSRF authenticator in createObject script
+  [ebrehault]
+
+- Let set_own_login_name use the update(Own)LoginName method from PAS.
+  Part of PLIP 13419.
+  [maurits]
 
 4.3.7 (2015-09-27)
 ------------------
