@@ -28,6 +28,12 @@ New:
 
 Fixes:
 
+- Do not fail when viewing any page, or during migration, when Diazo
+  is not installed and the persistent resource directory is not
+  registered.  Fixes
+  https://github.com/plone/Products.CMFPlone/issues/1187
+  [maurits]
+
 - Move hero on welcome page from theme into managed content.
   Issue https://github.com/plone/Products.CMFPlone/issues/974
   [gyst]
@@ -59,7 +65,7 @@ Fixes:
 
 - Mock MailHost on testing.py so that tests relying on mails can use it.
   [gforcada]
-  
+
 - Fix `aria-hidden` attribute control problem on toolbar
   https://github.com/plone/Products.CMFPlone/issues/866
   [terapyon]

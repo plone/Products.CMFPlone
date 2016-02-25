@@ -9,12 +9,15 @@ from Products.CMFPlone.interfaces.resources import (
 )
 from StringIO import StringIO
 from zope.component import getUtility
+from zope.component import queryUtility
 
 PRODUCTION_RESOURCE_DIRECTORY = "production"
 
 
 def get_production_resource_directory():
-    persistent_directory = getUtility(IResourceDirectory, name="persistent")
+    persistent_directory = queryUtility(IResourceDirectory, name="persistent")
+    if persistent_directory is None:
+        return ''
     container = persistent_directory[OVERRIDE_RESOURCE_DIRECTORY_NAME]
     production_folder = container[PRODUCTION_RESOURCE_DIRECTORY]
     timestamp = production_folder.readFile('timestamp.txt')
@@ -81,7 +84,9 @@ def write_css(context, folder, meta_bundle):
 
 
 def combine_bundles(context):
-    persistent_directory = getUtility(IResourceDirectory, name="persistent")
+    persistent_directory = queryUtility(IResourceDirectory, name="persistent")
+    if persistent_directory is None:
+        return
     if OVERRIDE_RESOURCE_DIRECTORY_NAME not in persistent_directory:
         persistent_directory.makeDirectory(OVERRIDE_RESOURCE_DIRECTORY_NAME)
     container = persistent_directory[OVERRIDE_RESOURCE_DIRECTORY_NAME]
