@@ -260,6 +260,8 @@ class PloneSettingsAdapter(object):
                 'folderTypes': folder_types,
                 'rootPath': '/'.join(nav_root.getPhysicalPath()) if nav_root
                             else '/',
+                'sort_on': 'sortable_title',
+                'sort_order': 'ascending',
             },
             'upload': {
                 'initialFolder': initial,

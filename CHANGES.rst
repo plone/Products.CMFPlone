@@ -64,6 +64,9 @@ Fixes:
   https://github.com/plone/Products.CMFPlone/issues/866
   [terapyon]
 
+- Sort relateditems tree by sortable_title in tinymce.
+  [Gagaro]
+
 
 5.0.2 (2016-01-08)
 ------------------
