@@ -63,9 +63,9 @@
 
   <genericsetup:importStep
       name="plone-final"
-      handler="Products.CMFPlone.setuphandlers.importFinalSteps"
-      title="Final Plone Config"
-      description="Final Plone configuration.">
+      handler="Products.CMFPlone.setuphandlers.dummy_import_step"
+      title="Final Plone Config (old)"
+      description="Dummy import step for backwards compatibility. The old import step is now used as a post_handler.">
    <depends name="portlets" />
    <depends name="rolemap" />
    <depends name="catalog" />

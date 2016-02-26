@@ -10,6 +10,13 @@ Changelog
 
 New:
 
+- Registered post_handler instead of plone-final.  The plone-final
+  import step now does nothing.  Instead, we redefined the old handler
+  as a post_handler explicitly for our main profile.  This is
+  guaranteed to really run after all other import steps, which was
+  never possible in the old way.  The plone-final step is kept for
+  backwards compatibility.  [maurits]
+
 - If a bundle does not provide any resources, do not attempt to compile it
   [vangheem]
 

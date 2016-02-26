@@ -9,6 +9,7 @@
       directory="profiles/default"
       description="Profile for a default Plone."
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      post_handler="Products.CMFPlone.setuphandlers.importFinalSteps"
       />
 
   <genericsetup:registerProfile
