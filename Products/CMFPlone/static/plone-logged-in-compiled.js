@@ -3310,6 +3310,7 @@ define('mockup-patterns-relateditems',[
       attributes: ['UID', 'Title', 'portal_type', 'path','getURL', 'getIcon','is_folderish','review_state'],
       dropdownCssClass: 'pattern-relateditems-dropdown',
       maximumSelectionSize: -1,
+      treeVocabularyUrl: null,
       resultTemplate: '' +
         '<div class="   pattern-relateditems-result  <% if (selected) { %>pattern-relateditems-active<% } %>">' +
         '  <a href="#" class=" pattern-relateditems-result-select <% if (selectable) { %>selectable<% } %>">' +
@@ -3567,6 +3568,7 @@ define('mockup-patterns-relateditems',[
       self.treeQuery = new utils.QueryHelper(
         $.extend(true, {}, self.options, {
           pattern: self,
+          vocabularyUrl: self.options.treeVocabularyUrl || self.options.vocabularyUrl,
           baseCriteria: [{
             i: 'is_folderish',
             o: 'plone.app.querystring.operation.selection.any',
@@ -51499,7 +51501,7 @@ define('mockup-patterns-tinymce-url/js/links',[
     },
 
     value: function() {
-      return this.getEl().val();
+      return $.trim(this.getEl().val());
     },
 
     toUrl: function() {
@@ -71810,7 +71812,7 @@ define('mockup-ui-url/views/popover',[
       this.bindTriggerEvents();
 
       this.on('render', function() {
-        this.$el.attr('role', 'tooltip').attr('aria-hidden', 'true');
+        this.$el.attr('role', 'tooltip').attr('aria-hidden', 'false');
         this.renderTitle();
         this.renderContent();
       }, this);
@@ -71954,6 +71956,7 @@ define('mockup-ui-url/views/popover',[
       this.$el.removeClass('active');
       if (this.triggerView) {
         this.triggerView.$el.removeClass('active');
+        this.triggerView.$el.attr('aria-hidden', 'true');
       }
       this.uiEventTrigger('hide', this);
       this.$el.attr('aria-hidden', 'true');
@@ -78646,5 +78649,5 @@ require([
   'use strict';
 });
 
-define("/Users/nathan/code/coredev5/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
+define("/home/workspacejensens/coredev5/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
 

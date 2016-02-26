@@ -16,8 +16,7 @@ body.userrole-authenticated {
     left:0;
     z-index: 3;
     font-weight: 400;
-    /*font-family: 'Roboto', sans-serif;*/
-    font-family: sans-serif;
+    font-family: @plone-toolbar-font-primary;
     color: @plone-toolbar-text-color;
     background: @plone-toolbar-bg;
     a {
@@ -165,7 +164,7 @@ body.userrole-authenticated {
     background: @plone-toolbar-submenu-bg;
     top: 0;
     overflow-y: auto;
-    li {width: 180px}
+    li {width: @plone-left-toolbar-level-two}
     li > a, li > span {padding: 5px 15px; height: auto; line-height: 20px;}
     li:not(.plone-toolbar-submenu-header) > a, li:not(.plone-toolbar-submenu-header) > span {padding: 5px 15px 5px 30px; height: auto;}
     li:not(.plone-toolbar-submenu-header) > span { color: @plone-toolbar-text-color;}
@@ -204,7 +203,7 @@ body.userrole-authenticated {
         height: 100%;
     }
 }
-.plone-toolbar-top #edit-zone nav > ul ul {height: 0; max-height: 0; width: 180px}
+.plone-toolbar-top #edit-zone nav > ul ul {height: 0; max-height: 0; width: @plone-left-toolbar-level-two}
 
 
 .plone-toolbar-expanded #edit-zone {
@@ -275,7 +274,7 @@ body.userrole-authenticated {
     > a.label-state-pending {background: @plone-toolbar-pending-color;}
     > a.label-state-draft, > a.label-state-internal {background: @plone-toolbar-draft-color;}
     > a.label-state-private {background: @plone-toolbar-private-color;}
-    ul {display: block; width: 180px;}
+    ul {display: block; width: @plone-left-toolbar-level-two;}
     }
 
 
@@ -475,7 +474,7 @@ body.userrole-authenticated {
         width: 0;
     }
     #edit-zone nav ul li.active ul {
-        width: 180px;
+        width: @plone-left-toolbar-level-two;
     }
 
     .plone-toolbar-left-default { padding-left: 0px; }
