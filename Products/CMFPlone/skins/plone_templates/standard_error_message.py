@@ -27,6 +27,10 @@ error_tb = kwargs.get('error_tb', None)
 error_traceback = kwargs.get('error_traceback', None)
 error_value = kwargs.get('error_value', None)
 
+if "text/html" not in context.REQUEST.getHeader('Accept', ''):
+    context.REQUEST.RESPONSE.setHeader("Content-Type", "application/json")
+    return '{"error_type": "{0:s}"}'.format(error_type)
+
 if error_log_url:
     error_log_id = error_log_url.split('?id=')[1]
 else:

@@ -31,5 +31,16 @@ But it should not give an error while rendering the default error page:
 
   >>> "the following error occurred while attempting to render the standard error message" in browser.contents
   False
+
+As it is an image, it should return a JSON message
+  >>> '{"error_type": "NotFound"}' in browser.contents
+  True
+
+A non-existing page would return a human readable error page
+  >>> browser.addHeader('Accept', 'text/html')
+  >>> browser.open('http://nohost/plone/non-existing-page')
+  Traceback (most recent call last):
+  ...
+  HTTPError: HTTP Error 404: Not Found
   >>> "This page does not seem to exist" in browser.contents
   True
