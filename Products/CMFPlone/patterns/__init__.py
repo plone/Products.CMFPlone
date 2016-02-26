@@ -108,7 +108,8 @@ class TinyMCESettingsGenerator(object):
             'toolbar': settings.toolbar,
             'entity_encoding': settings.entity_encoding,
             'importcss_append': True,
-            'importcss_file_filter': importcss_file_filter
+            'importcss_file_filter': importcss_file_filter,
+            'browser_spellcheck': True
         }
         toolbar_additions = settings.custom_buttons or []
 

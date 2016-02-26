@@ -28,6 +28,9 @@ New:
 
 Fixes:
 
+- Fix browser spell checking not working with TinyMCE
+  [vangheem]
+
 - Do not fail when viewing any page, or during migration, when Diazo
   is not installed and the persistent resource directory is not
   registered.  Fixes

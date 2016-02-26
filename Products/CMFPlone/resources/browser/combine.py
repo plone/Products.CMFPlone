@@ -1,3 +1,4 @@
+from zExceptions import NotFound
 from Acquisition import aq_base
 from datetime import datetime
 from plone.registry.interfaces import IRegistry
@@ -19,7 +20,10 @@ def get_production_resource_directory():
     if persistent_directory is None:
         return ''
     container = persistent_directory[OVERRIDE_RESOURCE_DIRECTORY_NAME]
-    production_folder = container[PRODUCTION_RESOURCE_DIRECTORY]
+    try:
+        production_folder = container[PRODUCTION_RESOURCE_DIRECTORY]
+    except NotFound:
+        return "%s/++unique++1" % PRODUCTION_RESOURCE_DIRECTORY
     timestamp = production_folder.readFile('timestamp.txt')
     return "%s/++unique++%s" % (
         PRODUCTION_RESOURCE_DIRECTORY, timestamp)
