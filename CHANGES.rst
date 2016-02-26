@@ -10,6 +10,9 @@ Changelog
 
 New:
 
+- If a bundle does not provide any resources, do not attempt to compile it
+  [vangheem]
+
 - Build resource registry JavaScript for fix in not being able to develop js/css
   [vangheem]
 

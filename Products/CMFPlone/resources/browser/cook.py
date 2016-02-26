@@ -37,6 +37,12 @@ def cookWhenChangingSettings(context, bundle=None):
             bundle = bundles.setdefault('plone-legacy')
             bundle.resources = []
 
+
+    if not bundle.resources:
+        # you can have a bundle without any resources defined and it's just shipped
+        # as a legacy compiled js file
+        return
+
     # Let's join all css and js
     css_file = ""
     cooked_js = """
