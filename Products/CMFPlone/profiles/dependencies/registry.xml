@@ -1014,6 +1014,7 @@
 
       <element key="plone-left-toolbar-expanded">120px</element>
       <element key="plone-left-toolbar">60px</element>
+      <element key="plone-left-toolbar-level-two">180px</element>
 
       <element key="plone-container-sm">750px</element>
       <element key="plone-container-md">970px</element>

@@ -10,6 +10,10 @@ Changelog
 
 New:
 
+- Introduce new less variable ``plone-left-toolbar-level-two`` to control the 
+  width of second row of toolbar.
+  [jensens]
+
 - Build resource registry JavaScript for fix in not being able to develop js/css
   [vangheem]
 
