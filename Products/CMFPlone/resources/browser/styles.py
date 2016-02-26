@@ -89,7 +89,7 @@ class StylesView(ResourceView):
         """
         Get all the styles
         """
-        if self.development:
+        if self.development or not self.production_path:
             result = self.ordered_bundles_result()
         else:
             result = [{
