@@ -10,6 +10,10 @@ Changelog
 
 New:
 
+- new less variable to configure the width of the toolbars submenu called
+  ``plone-toolbar-submenu-width``.
+  [jensens]
+
 - If a bundle does not provide any resources, do not attempt to compile it
   [vangheem]
 
@@ -30,6 +34,11 @@ New:
   [ebrehault]
 
 Fixes:
+
+- Toolbar cleanup: more less and less css, typo corrected in less variable,
+- better readability with a darker background in submenu, use font fallback
+- chain as in barcelonetta (works also w/o the theme).
+  [jensens]
 
 - Fix browser spell checking not working with TinyMCE
   [vangheem]
