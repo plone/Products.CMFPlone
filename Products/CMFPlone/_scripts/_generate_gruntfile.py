@@ -1,25 +1,20 @@
-from Products.CMFCore.FSFile import FSFile
-from Products import CMFPlone
-from Products.CMFPlone.interfaces import (
-    IBundleRegistry,
-    IResourceRegistry)
-
-from Products.Five.browser.resource import FileResource
-from Products.Five.browser.resource import DirectoryResource
-
-import os
-import json
+# -*- coding: utf-8 -*-
 from plone.registry.interfaces import IRegistry
-
 from plone.resource.directory import FilesystemResourceDirectory
 from plone.resource.file import FilesystemFile
-
 from plone.subrequest import subrequest
-from plonetheme import barceloneta
-
-import uuid
+from Products import CMFPlone
+from Products.CMFCore.FSFile import FSFile
+from Products.CMFPlone.interfaces import IBundleRegistry
+from Products.CMFPlone.interfaces import IResourceRegistry
+from Products.Five.browser.resource import DirectoryResource
+from Products.Five.browser.resource import FileResource
 from zope.component import getUtility
+from zope.site.hooks import setSite
 
+import json
+import os
+import uuid
 
 # some initial script setup
 if 'SITE_ID' in os.environ:
@@ -28,12 +23,11 @@ else:
     site_id = 'Plone'
 print('Using site id: ' + site_id)
 
-compile_dir = ''
+compile_path = ''
 if 'COMPILE_DIR' in os.environ:
     compile_path = os.environ['COMPILE_DIR']
 
 portal = app[site_id]  # noqa
-from zope.site.hooks import setSite
 setSite(portal)
 
 # start the juicy stuff
@@ -121,9 +115,11 @@ uglify_config = """
 
 less_config = """
             "{name}": {{
+                files: [
+                    {files}
+                ],
                 options: {{
                     compress: true,
-                    paths: {less_paths},
                     strictMath: false,
                     sourceMap: true,
                     outputSourceFiles: true,
@@ -134,13 +130,11 @@ less_config = """
                     plugins: [
                         new require('less-plugin-inline-urls'),
                     ],
+                    paths: {less_paths},
                     modifyVars: {{
-                      {globalVars}
+{globalVars}
                     }}
-                }},
-                files: [
-                    {files}
-                ]
+                }}
             }}
 """
 
@@ -160,7 +154,8 @@ def resource_to_dir(resource, file_type='.js'):
                             os.mkdir(temp_resource_folder)
                         except OSError:
                             pass
-                        full_file_name = temp_resource_folder + '/' + file_name + file_type  # noqa
+                        full_file_name = temp_resource_folder + \
+                            '/' + file_name + file_type
                         temp_file = open(full_file_name, 'w')
                         temp_file.write(resource().encode('utf-8'))
                         temp_file.close()
@@ -231,7 +226,9 @@ for requirejs, script in resources.items():
             print "No file found: " + script.js
     if script.url:
         # Resources available under name-url name
-        paths[requirejs + '-url'] = resource_to_dir(portal.unrestrictedTraverse(script.url))  # noqa
+        paths[requirejs + '-url'] = resource_to_dir(
+            portal.unrestrictedTraverse(script.url)
+        )
 
 
 # LESS CONFIGURATION
@@ -243,9 +240,6 @@ globalVars["isMockup"] = "false"
 globalVars['staticPath'] = "'" + os.path.join(
     os.path.dirname(CMFPlone.__file__),
     'static') + "'"
-globalVars['barcelonetaPath'] = "'" + os.path.join(
-    os.path.dirname(barceloneta.__file__),
-    'theme') + "'"
 
 less_vars_params = {
     'site_url': 'LOCAL',
@@ -258,13 +252,17 @@ for name, value in lessvariables.items():
 for name, value in lessvariables.items():
     t = value.format(**less_vars_params)
     if 'LOCAL' in t:
-        t_object = portal.unrestrictedTraverse(str(t.replace('LOCAL/', '').replace('\\"', '')), None)  # noqa
+        t_object = portal.unrestrictedTraverse(
+            str(t.replace('LOCAL/', '').replace('\\"', '')),
+            None
+        )
         if t_object:
             t_file = resource_to_dir(t_object)
             t_file = t_file.replace(os.getcwd() + '/', '')
             globalVars[name] = "'%s/'" % t_file
         else:
-            print "No file found: " + str(t.replace('LOCAL/', '').replace('\\"', ''))  # noqa
+            print "No file found: " + \
+                str(t.replace('LOCAL/', '').replace('\\"', ''))  #
     else:
         globalVars[name] = t
 
@@ -298,21 +296,28 @@ for name, value in resources.items():
                 temp_file.close()
 
         if local_file:
-            less_directories[css.rsplit('/', 1)[0]] = local_file.rsplit('/', 1)[0].replace(os.getcwd() + '/', '')  # noqa
+            ld_key = css.rsplit('/', 1)[0]
+            less_directories[ld_key] = local_file.rsplit('/', 1)[0].replace(
+                os.getcwd() + '/',
+                ''
+            )
             # local_file = local_file.replace(os.getcwd(), '')
             # relative = ''
             # for i in range(len(local_file.split('/'))):
             #     relative += '../'
             # globalVars[name.replace('.', '_')] = "'%s'" % local_file  # noqa
-            globalVars[name.replace('.', '_')] = "'%s'" % local_file.split('/')[-1]  # noqa
+            globalVars[name.replace('.', '_')] = "'{0}'".format(
+                local_file.split('/')[-1]
+            )
             if '/'.join(local_file.split('/')[:-1]) not in less_paths:
                 less_paths.append('/'.join(local_file.split('/')[:-1]))
         else:
             print "No file found: " + css
 
 globalVars_string = ""
-for g, src in globalVars.items():
-    globalVars_string += "\"%s\": \"%s\",\n" % (g, src)
+for key, value in sorted(globalVars.items()):
+    globalVars_string += '{0}"{1}": "{2}",\n'.format(22*' ', key, value)
+
 
 # BUNDLE LOOP
 
@@ -428,7 +433,7 @@ for bkey, bundle in bundles.items():
                 name=bkey,
                 globalVars=globalVars_string,
                 files=json.dumps(less_files),
-                less_paths=json.dumps(less_paths),
+                less_paths=json.dumps(sorted(less_paths), indent=22),
                 sourcemap_url=sourceMap_url,
                 base_path=os.getcwd()))
 
@@ -455,13 +460,14 @@ for bkey, bundle in bundles.items():
         ) % (bkey, requirejs_tasks, bkey, ', '.join(sed_task_ids), bkey)
 
 
-gruntfile = open('Gruntfile.js', 'w')
-gruntfile.write(gruntfile_template.format(
-    less=','.join(less_configs),
-    requirejs=require_configs,
-    uglify=uglify_configs,
-    sed=sed_config_final,
-    files=json.dumps(watch_files),
-    bundleTasks=bundle_grunt_tasks)
-)
-gruntfile.close()
+with open('Gruntfile.js', 'w') as gruntfile:
+    gruntfile.write(
+        gruntfile_template.format(
+            less=','.join(less_configs),
+            requirejs=require_configs,
+            uglify=uglify_configs,
+            sed=sed_config_final,
+            files=json.dumps(watch_files),
+            bundleTasks=bundle_grunt_tasks
+        )
+    )
