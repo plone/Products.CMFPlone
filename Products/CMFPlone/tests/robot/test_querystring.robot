@@ -55,6 +55,7 @@ I open the ${OPERATOR} operator in the ${CRITERIA} criteria
 
 I search in ${NAME} subfolder in the related items widget
     Click Element  jquery=.pattern-relateditems-tree-select
+    Wait Until Element Is Visible  jquery=.pat-tree li.jqtree_common:contains("${NAME}") .pattern-relateditems-result-browse
     Click Element  jquery=.pat-tree li.jqtree_common:contains("${NAME}") .pattern-relateditems-result-browse
     Wait Until Element Is Visible    css=.select2-highlighted a
     Click Element  css=.select2-highlighted a
