@@ -26,6 +26,7 @@ else:
         """ Dexterity test type
         """
 
+
 class TestDocumentBylineViewletView(ViewletsTestCase):
     """
     Test the document by line viewlet
@@ -208,23 +209,31 @@ class TestDexterityRelatedItemsViewlet(ViewletsTestCase):
             return
         self.setRoles(('Manager',))
         fti = DexterityFTI('Dexterity Item with relatedItems behavior')
-        self.portal.portal_types._setObject('Dexterity Item with relatedItems behavior', fti)
+        self.portal.portal_types._setObject(
+            'Dexterity Item with relatedItems behavior', fti)
         fti.klass = 'plone.dexterity.content.Item'
-        fti.schema = 'plone.app.layout.viewlets.tests.test_content.IMyDexterityItem'
+        test_module = 'plone.app.layout.viewlets.tests.test_content'
+        fti.schema = test_module + '.IMyDexterityItem'
         fti.behaviors = ('plone.app.relationfield.behavior.IRelatedItems',)
         fti = DexterityFTI('Dexterity Item without relatedItems behavior')
-        self.portal.portal_types._setObject('Dexterity Item without relatedItems behavior', fti)
+        self.portal.portal_types._setObject(
+            'Dexterity Item without relatedItems behavior', fti)
         fti.klass = 'plone.dexterity.content.Item'
-        fti.schema = 'plone.app.layout.viewlets.tests.test_content.IMyDexterityItem'
+        fti.schema = test_module + '.IMyDexterityItem'
         self.folder.invokeFactory('Document', 'doc1', title='Document 1')
         self.folder.invokeFactory('Document', 'doc2', title='Document 2')
-        self.folder.invokeFactory('Dexterity Item with relatedItems behavior', 'dex1')
-        self.folder.invokeFactory('Dexterity Item with relatedItems behavior', 'dex2')
-        self.folder.invokeFactory('Dexterity Item without relatedItems behavior', 'dex3')
+        self.folder.invokeFactory(
+            'Dexterity Item with relatedItems behavior', 'dex1')
+        self.folder.invokeFactory(
+            'Dexterity Item with relatedItems behavior', 'dex2')
+        self.folder.invokeFactory(
+            'Dexterity Item without relatedItems behavior', 'dex3')
         self.portal.portal_quickinstaller.installProduct('plone.app.intid')
         intids = getUtility(IIntIds)
-        self.folder.dex1.relatedItems = [RelationValue(intids.getId(self.folder.doc1)),
-                                         RelationValue(intids.getId(self.folder.doc2))]
+        self.folder.dex1.relatedItems = [
+            RelationValue(intids.getId(self.folder.doc1)),
+            RelationValue(intids.getId(self.folder.doc2)),
+        ]
 
     def testDexterityRelatedItems(self):
         request = self.app.REQUEST

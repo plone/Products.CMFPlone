@@ -86,6 +86,7 @@ class IPortalFooter(IViewletManager):
     """A viewlet manager that sits in the portal footer
     """
 
+
 class IScripts(IViewletManager):
     """A viewlet manager that stores the script tags
     """

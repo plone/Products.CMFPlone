@@ -43,7 +43,8 @@ class SocialTagsViewlet(TitleViewlet):
         if settings.facebook_username:
             self.tags.append(
                 dict(property="og:article:publisher",
-                     content="https://www.facebook.com/" + settings.facebook_username))
+                     content="https://www.facebook.com/" +
+                     settings.facebook_username))
 
         # reuse syndication since that packages the data
         # the way we'd prefer likely
@@ -71,8 +72,8 @@ class SocialTagsViewlet(TitleViewlet):
                     dict(itemprop="image", content=item.file_url),
                     dict(property="og:image:type", content=item.file_type)
                 ])
-            elif (item.file_type.startswith('video')
-                    or item.file_type == "application/x-shockwave-flash"):
+            elif (item.file_type.startswith('video') or
+                    item.file_type == "application/x-shockwave-flash"):
                 self.tags.extend([
                     dict(property="og:video", content=item.file_url),
                     dict(property="og:video:type", content=item.file_type)

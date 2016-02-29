@@ -32,11 +32,14 @@ class TestSocialViewlet(ViewletsTestCase):
     def testBasicTags(self):
         viewlet = SocialTagsViewlet(self.folder, self.app.REQUEST, None)
         viewlet.update()
-        self.assertTrue(self.tagFound(viewlet, 'name', 'twitter:card', "summary"))
-        self.assertTrue(self.tagFound(viewlet, 'name', 'twitter:title',
-                                      viewlet.page_title))
-        self.assertTrue(self.tagFound(viewlet, 'property', 'og:site_name',
-                                      viewlet.site_title_setting))
+        self.assertTrue(
+            self.tagFound(viewlet, 'name', 'twitter:card', "summary"))
+        self.assertTrue(
+            self.tagFound(viewlet, 'name', 'twitter:title',
+                          viewlet.page_title))
+        self.assertTrue(
+            self.tagFound(viewlet, 'property', 'og:site_name',
+                          viewlet.site_title_setting))
 
     def testDisabled(self):
         registry = getUtility(IRegistry)
@@ -57,11 +60,14 @@ class TestSocialViewlet(ViewletsTestCase):
 
         viewlet = SocialTagsViewlet(self.folder, self.app.REQUEST, None)
         viewlet.update()
-        self.assertTrue(self.tagFound(viewlet, 'name', 'twitter:site', "@foobar"))
-        self.assertTrue(self.tagFound(viewlet, 'property', 'fb:app_id', 'foobar'))
+        self.assertTrue(
+            self.tagFound(viewlet, 'name', 'twitter:site', "@foobar"))
+        self.assertTrue(
+            self.tagFound(viewlet, 'property', 'fb:app_id', 'foobar'))
         self.assertTrue(
             self.tagFound(viewlet, 'property',
-                          'og:article:publisher', 'https://www.facebook.com/foobar'))
+                          'og:article:publisher',
+                          'https://www.facebook.com/foobar'))
 
     def testLogo(self):
         viewlet = SocialTagsViewlet(self.news, self.app.REQUEST, None)
