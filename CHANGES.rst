@@ -10,7 +10,11 @@ New:
 
 Fixes:
 
-- *add item here*
+- Fix test isolation problems: if a test calls transaction.commit() directly or
+  indirectly it can not be an integration test, either avoid the commit or
+  change the layer into a functional one.
+  Fixes: https://github.com/plone/plone.app.layout/issues/79
+  [gforcada]
 
 
 2.5.18 (2016-02-11)
