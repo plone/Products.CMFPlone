@@ -15,6 +15,12 @@ Fixes:
 - Fixed html validation: element nav does not need a role attribute.
   [maurits]
 
+- Fixed invalid html of social viewlet by moving the schema.org tags
+  to the body in a new viewlet ``plone.abovecontenttitle.socialtags``
+  and adding ``itemScope`` and ``itemType`` there.
+  Fixes https://github.com/plone/Products.CMFPlone/issues/1087
+  [maurits]
+
 - Fix test isolation problems: if a test calls transaction.commit() directly or
   indirectly it can not be an integration test, either avoid the commit or
   change the layer into a functional one.
