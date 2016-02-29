@@ -79,6 +79,10 @@ Fixes:
 - Sort relateditems tree by sortable_title in tinymce.
   [Gagaro]
 
+- Return a JSON error instead of a the Plone error page when the requested
+  resource is not text/html (fix #637).
+  [ebrehault]
+
 
 5.0.2 (2016-01-08)
 ------------------
