@@ -10,7 +10,12 @@ Changelog
 
 Incompatibilities:
 
-- *add item here*
+- Changed these ``section`` elements to ``div`` elements:
+  ``#portal-colophon``, ``#portal-footer-signature``,
+  ``#viewlet-above-content``, ``#viewlet-above-content-body``,
+  ``#content-core``, ``#viewlet-below-content-body``.  This might
+  affect your custom styling or javascript.
+  [maurits]
 
 New:
 
@@ -32,14 +37,19 @@ New:
   never possible in the old way.  The plone-final step is kept for
   backwards compatibility.
   [maurits]
-  
-- Remove Zope mention in logout form 
+
+- Remove Zope mention in logout form
   [tkimnguyen]
 
 Fixes:
 
 - Do not break background images relative urls in CSS when concatening bundles
   [ebrehault]
+- Fixed html validation: element nav does not need a role attribute.
+  [maurits]
+
+- Fixed html validation: section lacks heading.
+  [maurits]
 
 
 5.0.3 (2016-03-??)
@@ -87,11 +97,6 @@ Fixes:
 - better readability with a darker background in submenu, use font fallback
 - chain as in barcelonetta (works also w/o the theme).
   [jensens]
-- Fixed html validation: element nav does not need a role attribute.
-  [maurits]
-
-- Fixed html validation: section lacks heading.
-  [maurits]
 
 - Fix browser spell checking not working with TinyMCE
   [vangheem]
