@@ -8,6 +8,9 @@ Changelog
 4.3.8 (unreleased)
 ------------------
 
+- Add dl.portalMessage.warning to common_content_filter in popupforms.js so
+  warnings get also pulled into the popup. [pcdummy]
+
 - Disabled CSRF protection on site creation form and upgrade form.  [maurits]
 
 - When migration fails, do not upgrade addons or recatalog or
