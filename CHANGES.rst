@@ -87,6 +87,9 @@ Fixes:
 - better readability with a darker background in submenu, use font fallback
 - chain as in barcelonetta (works also w/o the theme).
   [jensens]
+- Fixed html validation: element nav does not need a role attribute.
+  [maurits]
+
 - Fixed html validation: section lacks heading.
   [maurits]
 
