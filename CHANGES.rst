@@ -87,6 +87,8 @@ Fixes:
 - better readability with a darker background in submenu, use font fallback
 - chain as in barcelonetta (works also w/o the theme).
   [jensens]
+- Fixed html validation: section lacks heading.
+  [maurits]
 
 - Fix browser spell checking not working with TinyMCE
   [vangheem]
