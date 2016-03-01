@@ -740,27 +740,6 @@ Fixes:
   it is controled by the `Allow anyone to view 'about' information` option in the `Security Settings` of `Site Setup` (closes `#1556`_).
   [hvelarde]
 
-- Removed docstrings from some methods to avoid publishing them.  From
-  Products.PloneHotfix20160419.  [maurits]
-
-- Fix issue where incorrectly configured formats would cause TinyMCE to error
-  [vangheem]
-
-- Closes #1513 'Wrong portal_url used for TinyMCE in multilingual site',
-  also refactors the patterns settings and cleans it up.
-  [jensens]
-
-- Removed inconsistency in the display of `Site Setup` links under 'Users and Groups'
-  control panel.
-  [kkhan]
-
-- Only encode JS body if unicode in gruntfile generation script to avoid
-  unicode error.
-  [jensens]
-
-- Only encode CSS body if unicode in gruntfile generation script to avoid
-  unicode error.
-  [rnix]
 - Do not attempt to wrap types-controlpanel based on AutoExtensibleForm and
   EditForm in Acquisition using __of__ since
   Products.Five.browser.metaconfigure.simple no longer has
@@ -782,6 +761,40 @@ Fixes:
 
 - Changes for Zope 4 compatibility in maintenance controlpanel.
   [thet]
+
+- Removed docstrings from some methods to avoid publishing them.  From
+  Products.PloneHotfix20160419.  [maurits]
+
+- Fix issue where incorrectly configured formats would cause TinyMCE to error
+  [vangheem]
+
+- Closes #1513 'Wrong portal_url used for TinyMCE in multilingual site',
+  also refactors the patterns settings and cleans it up.
+  [jensens]
+
+- Removed inconsistency in the display of `Site Setup` links under 'Users and Groups'
+  control panel.
+  [kkhan]
+
+- Only encode JS body if unicode in gruntfile generation script to avoid
+  unicode error.
+  [jensens]
+
+- Only encode CSS body if unicode in gruntfile generation script to avoid
+  unicode error.
+  [rnix]
+
+- Closes #1513 'Wrong portal_url used for TinyMCE in multilingual site',
+  also refactors the patterns settings and cleans it up.
+  [jensens]
+
+- Only encode JS body if unicode in gruntfile generation script to avoid
+  unicode error.
+  [jensens]
+
+- Only encode CSS body if unicode in gruntfile generation script to avoid
+  unicode error.
+  [rnix]
 
 - Gruntfile failed if only css or only javascripts were registered.
   [jensens]
@@ -914,50 +927,6 @@ New:
 
 - Add custom navigation root in TinyMCE configuration.
   [alecm]
-- *add item here*
-- Add barceloneta theme path in less configuration.
-  [Gagaro]
-
-Fixes:
-
-- Do not attempt to wrap types-controlpanel based on AutoExtensibleForm and
-  EditForm in Acquisition using __of__ since
-  Products.Five.browser.metaconfigure.simple no longer has
-  Products.Five.bbb.AcquisitionBBB as a parent-class and thus no __of__.
-  Anyway __of__ in AcquisitionBBB always only returned self since
-  Products.Five.browser.metaconfigure.xxx-classes are always aq-wrapped
-  using location and __parent__. As a alternative you could use
-  plone.app.registry.browser.controlpanel.ControlPanelFormWrapper as
-  base-class for a controlpanel since ControlPanelFormWrapper subclasses
-  Products.Five.BrowserView which again has AcquisitionBBB.
-  [pbauer]
-
-- Fix csrf-test where @@authenticator was called in the browser.
-  [pbauer]
-
-- Fallback for missing date in DefaultDublinCoreImpl no longer relies on
-  bobobase_modification_time.
-  [pbauer]
-
-- Changes for Zope 4 compatibility in maintenance controlpanel.
-  [thet]
-
-- Fix some i18n issues.
-  [vincentfretin]
-
-- *add item here*
-
-Fixes:
-
-- Fallback for missing date in DefaultDublinCoreImpl no longer relies on
-  bobobase_modification_time.
-  [pbauer]
-
-- Changes for Zope 4 compatibility in maintenance controlpanel.
-  [thet]
-
-- Fix some i18n issues.
-  [vincentfretin]
 
 - Add barceloneta theme path in less configuration.
   [Gagaro]
