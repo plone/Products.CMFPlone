@@ -5,8 +5,10 @@
 Changelog
 =========
 
-4.3.8 (unreleased)
-------------------
+4.3.8c1 (2016-03-01)
+--------------------
+
+Fixes:
 
 - Add dl.portalMessage.warning to common_content_filter in popupforms.js so
   warnings get also pulled into the popup. [pcdummy]
