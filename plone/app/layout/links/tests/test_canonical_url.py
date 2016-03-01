@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from plone.app.layout.testing import INTEGRATION_TESTING
+from plone.app.layout.testing import FUNCTIONAL_TESTING
 from plone.testing.z2 import Browser
 
 import unittest
@@ -8,7 +8,7 @@ import unittest
 
 class ViewletTestCase(unittest.TestCase):
 
-    layer = INTEGRATION_TESTING
+    layer = FUNCTIONAL_TESTING
 
     def setUp(self):
         self.portal = self.layer['portal']
