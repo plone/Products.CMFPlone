@@ -133,7 +133,7 @@ New:
   https://github.com/plone/Products.CMFPlone/issues/1241
   [fgrcon]
 
-- Add icon fallback for addons in Site Setup (fixes .. _`#1232`)
+- Add icon fallback for addons in Site Setup (fixes `#1232`_)
   [davilima6]
 
 - Explicitly provide id on search form and not depend on diazo magic
@@ -174,7 +174,7 @@ Fixes:
 - Fix internal links and images src to not include the domain.
   [Gagaro]
 
-- Update Site Setup link in all control panels (fixes .. _`#1255`)
+- Update Site Setup link in all control panels (fixes `#1255`_)
   [davilima6]
 
 - In tests, use ``selection.any`` in querystrings.  And expect this in
