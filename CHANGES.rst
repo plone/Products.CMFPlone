@@ -18,7 +18,11 @@ New:
 
 Fixes:
 
-- *add item here*
+- In the ``combine-bundles`` import step, make sure the Content Type
+  header is not set to ``application/javascript``.  This would result
+  in the ``plone-upgrade`` result page being shown in plain text.
+  Fixes https://github.com/plone/Products.CMFPlone/issues/1436
+  [maurits]
 
 
 5.0.3 (2016-03-16)
