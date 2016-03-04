@@ -121,3 +121,7 @@ class TestActionsTool(PloneTestCase):
         except:
             self.fail_tb('Should not fail if item exists w/o IActionCategory '
                          'interface')
+
+    def testDashboardActionExists(self):
+        actions = self.actions.listActions()
+        self.assertTrue('dashboard' in [a.id for a in actions])
