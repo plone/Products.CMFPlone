@@ -14,7 +14,8 @@ Incompatibilities:
 
 New:
 
-- *add item here*
+- new zcml feature "plone-51" added.
+  [jensens]
 
 Fixes:
 
