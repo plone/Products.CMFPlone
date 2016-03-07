@@ -6,7 +6,9 @@ Changelog
 
 New:
 
-- *add item here*
+- Construct the site logo URL to be rooted at ISite instances returned by ``zope.component.hooks.getSite`` and not only rootet at portal root.
+  This makes it possible to have sub sites with local registries which return a different logo.
+  [thet]
 
 Fixes:
 

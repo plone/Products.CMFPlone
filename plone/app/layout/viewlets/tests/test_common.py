@@ -115,31 +115,72 @@ class TestContentViewsViewlet(ViewletsTestCase):
         self.assertEqual(viewlet.site_title,
                          u'Add Page &mdash; Folder')
 
-    def testLogoViewletDefault(self):
-        """Logo links towards navigation root
-        """
-        self._invalidateRequestMemoizations()
-        self.loginAsPortalOwner()
-        self.app.REQUEST['ACTUAL_URL'] = self.folder.test.absolute_url()
-        directlyProvides(self.folder, INavigationRoot)
-        viewlet = LogoViewlet(self.folder.test, self.app.REQUEST, None)
-        viewlet.update()
-        self.assertEqual(viewlet.navigation_root_title, "Folder")
-        # there is no theme yet in Plone 5, so we see the old png logo
-        self.assertTrue("logo.png" in viewlet.img_src)
 
-    def testLogoViewletRegistry(self):
-        """If logo is defined in plone.app.registry, use that one.
+class TestLogoViewlet(ViewletsTestCase):
+    """Test the site logo viewlet.
+    """
+
+    def _set_site(self, context):
+        """Set context as a site.
+        """
+        from zope.component.hooks import setSite
+        # Set the portal's getSiteManager method on context.
+        # This is a hackish way to make setSite work without creating a site
+        # with five.localsitemanager.
+        # ATTENTION: this works only for the purpose of this test.
+        context.getSiteManager = self.portal.getSiteManager
+        setSite(context)
+
+    def test_logo_viewlet_portal_root_default(self):
+        """When no logo is set, and viewlet is opened on a non-navigation root,
+        obtain the default one from the portal.
+        """
+        viewlet = LogoViewlet(self.folder, self.app.REQUEST, None)
+        viewlet.update()
+        self.assertEqual(
+            viewlet.img_src, '{0}/logo.png'.format(self.portal.absolute_url()))
+
+    def test_logo_viewlet_portal_root_registry(self):
+        """When a logo is set, and viewlet is opened on a non-navigation root,
+        obtain the registry logo from the portal.
         """
         registry = getUtility(IRegistry)
         settings = registry.forInterface(ISiteSchema, prefix='plone')
         settings.site_logo = SITE_LOGO_BASE64
 
-        viewlet = LogoViewlet(self.folder.test, self.app.REQUEST, None)
+        viewlet = LogoViewlet(self.folder, self.app.REQUEST, None)
         viewlet.update()
         self.assertTrue(
-            'http://nohost/plone/@@site-logo/pixel.png'
-            in viewlet.img_src)
+            viewlet.img_src,
+            '{0}/@@site-logo/pixel.png'.format(self.portal.absolute_url())
+        )
+
+    def test_logo_viewlet_navigation_root_default(self):
+        """When no logo is set, and viewlet is opened on a navigation root,
+        obtain the default one from the navigation root.
+        """
+        self._set_site(self.folder)
+        viewlet = LogoViewlet(self.folder, self.app.REQUEST, None)
+        viewlet.update()
+        self.assertEqual(
+            viewlet.img_src, '{0}/logo.png'.format(self.folder.absolute_url()))
+
+    def test_viewlet_navigation_root_registry(self):
+        """When a logo is set, and viewlet is opened on a navigation root,
+        obtain the registry logo from the navigation root.
+        """
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(ISiteSchema, prefix='plone')
+        settings.site_logo = SITE_LOGO_BASE64
+
+        # Set fake site after registry setup...
+        self._set_site(self.folder)
+        viewlet = LogoViewlet(self.folder, self.app.REQUEST, None)
+        viewlet.update()
+        self.assertTrue(
+            viewlet.img_src,
+            '{0}/@@site-logo/pixel.png'.format(self.folder.absolute_url())
+        )
 
 
 class TestGlobalSectionsViewlet(ViewletsTestCase):
