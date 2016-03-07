@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-from Products.CMFPlone.interfaces import INonStructuralFolder
-from Products.CMFPlone.interfaces import ISiteSchema
 from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.app.layout.viewlets.common import ContentViewsViewlet
 from plone.app.layout.viewlets.common import GlobalSectionsViewlet
@@ -10,7 +8,10 @@ from plone.app.layout.viewlets.common import ViewletBase
 from plone.app.layout.viewlets.tests.base import ViewletsTestCase
 from plone.protect import authenticator as auth
 from plone.registry.interfaces import IRegistry
+from Products.CMFPlone.interfaces import INonStructuralFolder
+from Products.CMFPlone.interfaces import ISiteSchema
 from zope.component import getUtility
+from zope.component.hooks import setSite
 from zope.interface import alsoProvides
 from zope.interface import directlyProvides
 from zope.interface import noLongerProvides
@@ -54,7 +55,7 @@ class TestContentViewsViewlet(ViewletsTestCase):
         except AttributeError:
             pass
 
-    def testSet1OnPortalRoot(self):
+    def test_set1_on_portal_root(self):
         self._invalidateRequestMemoizations()
         self.loginAsPortalOwner()
         self.app.REQUEST['ACTUAL_URL'] = self.portal.absolute_url()
@@ -62,7 +63,7 @@ class TestContentViewsViewlet(ViewletsTestCase):
         view.update()
         self.assertEqual(view.tabSet1[0]['id'], 'folderContents')
 
-    def testSet1NonStructuralFolder(self):
+    def test_set1_NonStructuralFolder(self):
         self._invalidateRequestMemoizations()
         self.loginAsPortalOwner()
         self.app.REQUEST['ACTUAL_URL'] = self.folder.absolute_url()
@@ -73,7 +74,7 @@ class TestContentViewsViewlet(ViewletsTestCase):
         self.assertEqual(1, len([t for t in view.tabSet1 if t[
                          'id'] == 'folderContents']))
 
-    def testSet1(self):
+    def test_set1(self):
         self._invalidateRequestMemoizations()
         self.loginAsPortalOwner()
         self.app.REQUEST['ACTUAL_URL'] = '%s/edit?_authenticator=%s' % (
@@ -82,11 +83,29 @@ class TestContentViewsViewlet(ViewletsTestCase):
         )
         view = ContentViewsViewlet(self.folder.test, self.app.REQUEST, None)
         view.update()
-        self.assertEqual(1, len([t for t in view.tabSet1 if t[
-                         'id'] == 'folderContents']))
-        self.assertEqual(['edit'], [t['id'] for t in view.tabSet1 if t['selected']])
+        self.assertEqual(
+            1, len([t for t in view.tabSet1 if t['id'] == 'folderContents']))
+        self.assertEqual(
+            ['edit'], [t['id'] for t in view.tabSet1 if t['selected']])
 
-    def testTitleViewlet(self):
+
+class TestTitleViewsViewlet(ViewletsTestCase):
+    """Test the title viewlet.
+    """
+
+    def afterSetUp(self):
+        self.folder.invokeFactory('Document', 'test',
+                                  title='Test default page')
+        self.folder.test.unmarkCreationFlag()
+        self.folder.setTitle(u"Folder")
+
+    def _invalidateRequestMemoizations(self):
+        try:
+            del self.app.REQUEST.__annotations__
+        except AttributeError:
+            pass
+
+    def test_title_viewlet(self):
         """Title viewlet renders navigation root title
         """
         self._invalidateRequestMemoizations()
@@ -98,7 +117,7 @@ class TestContentViewsViewlet(ViewletsTestCase):
         self.assertEqual(viewlet.site_title,
                          "Test default page &mdash; Folder")
 
-    def testTitleViewletInPortalfactory(self):
+    def test_title_viewlet_in_portal_factory(self):
         """Title viewlet renders navigation root title in portal factory
         """
         self._invalidateRequestMemoizations()
@@ -115,31 +134,71 @@ class TestContentViewsViewlet(ViewletsTestCase):
         self.assertEqual(viewlet.site_title,
                          u'Add Page &mdash; Folder')
 
-    def testLogoViewletDefault(self):
-        """Logo links towards navigation root
-        """
-        self._invalidateRequestMemoizations()
-        self.loginAsPortalOwner()
-        self.app.REQUEST['ACTUAL_URL'] = self.folder.test.absolute_url()
-        directlyProvides(self.folder, INavigationRoot)
-        viewlet = LogoViewlet(self.folder.test, self.app.REQUEST, None)
-        viewlet.update()
-        self.assertEqual(viewlet.navigation_root_title, "Folder")
-        # there is no theme yet in Plone 5, so we see the old png logo
-        self.assertTrue("logo.png" in viewlet.img_src)
 
-    def testLogoViewletRegistry(self):
-        """If logo is defined in plone.app.registry, use that one.
+class TestLogoViewlet(ViewletsTestCase):
+    """Test the site logo viewlet.
+    """
+
+    def _set_site(self, context):
+        """Set context as a site.
+        """
+        # Set the portal's getSiteManager method on context.
+        # This is a hackish way to make setSite work without creating a site
+        # with five.localsitemanager.
+        # ATTENTION: this works only for the purpose of this test.
+        context.getSiteManager = self.portal.getSiteManager
+        setSite(context)
+
+    def test_logo_viewlet_portal_root_default(self):
+        """When no logo is set, and viewlet is opened on a non-navigation root,
+        obtain the default one from the portal.
+        """
+        viewlet = LogoViewlet(self.folder, self.app.REQUEST, None)
+        viewlet.update()
+        self.assertEqual(
+            viewlet.img_src, '{0}/logo.png'.format(self.portal.absolute_url()))
+
+    def test_logo_viewlet_portal_root_registry(self):
+        """When a logo is set, and viewlet is opened on a non-navigation root,
+        obtain the registry logo from the portal.
         """
         registry = getUtility(IRegistry)
         settings = registry.forInterface(ISiteSchema, prefix='plone')
         settings.site_logo = SITE_LOGO_BASE64
 
-        viewlet = LogoViewlet(self.folder.test, self.app.REQUEST, None)
+        viewlet = LogoViewlet(self.folder, self.app.REQUEST, None)
         viewlet.update()
         self.assertTrue(
-            'http://nohost/plone/@@site-logo/pixel.png'
-            in viewlet.img_src)
+            viewlet.img_src,
+            '{0}/@@site-logo/pixel.png'.format(self.portal.absolute_url())
+        )
+
+    def test_logo_viewlet_navigation_root_default(self):
+        """When no logo is set, and viewlet is opened on a navigation root,
+        obtain the default one from the navigation root.
+        """
+        self._set_site(self.folder)
+        viewlet = LogoViewlet(self.folder, self.app.REQUEST, None)
+        viewlet.update()
+        self.assertEqual(
+            viewlet.img_src, '{0}/logo.png'.format(self.folder.absolute_url()))
+
+    def test_viewlet_navigation_root_registry(self):
+        """When a logo is set, and viewlet is opened on a navigation root,
+        obtain the registry logo from the navigation root.
+        """
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(ISiteSchema, prefix='plone')
+        settings.site_logo = SITE_LOGO_BASE64
+
+        # Set fake site after registry setup...
+        self._set_site(self.folder)
+        viewlet = LogoViewlet(self.folder, self.app.REQUEST, None)
+        viewlet.update()
+        self.assertTrue(
+            viewlet.img_src,
+            '{0}/@@site-logo/pixel.png'.format(self.folder.absolute_url())
+        )
 
 
 class TestGlobalSectionsViewlet(ViewletsTestCase):

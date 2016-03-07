@@ -191,7 +191,7 @@ class LogoViewlet(ViewletBase):
                                          prefix="plone",
                                          check=False)
         self.logo_title = settings.site_title
-        self.img_src = getSiteLogo(self.portal_state.portal())
+        self.img_src = getSiteLogo()
 
 
 class GlobalSectionsViewlet(ViewletBase):
