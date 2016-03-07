@@ -1,4 +1,4 @@
-<tal:block tal:define="view context/defaultView;"
+<tal:block tal:define="default_view_template context/defaultView;"
            tal:on-error="nothing">
-   <div metal:use-macro="here/?view/macros/content-core"/>
+   <div metal:use-macro="here/?default_view_template/macros/content-core"/>
 </tal:block>

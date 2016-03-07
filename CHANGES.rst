@@ -45,6 +45,9 @@ Fixes:
 --------------------
 
 Fixes:
+- Fixed displaying the body text of a feed item.  This is when
+  ``render_body`` is switched on in the Syndication settings.
+  [maurits]
 
 - In the ``combine-bundles`` import step, make sure the Content Type
   header is not set to ``application/javascript``.  This would result
