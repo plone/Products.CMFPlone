@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-from Products.CMFPlone.interfaces import INonStructuralFolder
-from Products.CMFPlone.interfaces import ISiteSchema
 from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.app.layout.viewlets.common import ContentViewsViewlet
 from plone.app.layout.viewlets.common import GlobalSectionsViewlet
@@ -10,7 +8,10 @@ from plone.app.layout.viewlets.common import ViewletBase
 from plone.app.layout.viewlets.tests.base import ViewletsTestCase
 from plone.protect import authenticator as auth
 from plone.registry.interfaces import IRegistry
+from Products.CMFPlone.interfaces import INonStructuralFolder
+from Products.CMFPlone.interfaces import ISiteSchema
 from zope.component import getUtility
+from zope.component.hooks import setSite
 from zope.interface import alsoProvides
 from zope.interface import directlyProvides
 from zope.interface import noLongerProvides
@@ -54,7 +55,7 @@ class TestContentViewsViewlet(ViewletsTestCase):
         except AttributeError:
             pass
 
-    def testSet1OnPortalRoot(self):
+    def test_set1_on_portal_root(self):
         self._invalidateRequestMemoizations()
         self.loginAsPortalOwner()
         self.app.REQUEST['ACTUAL_URL'] = self.portal.absolute_url()
@@ -62,7 +63,7 @@ class TestContentViewsViewlet(ViewletsTestCase):
         view.update()
         self.assertEqual(view.tabSet1[0]['id'], 'folderContents')
 
-    def testSet1NonStructuralFolder(self):
+    def test_set1_NonStructuralFolder(self):
         self._invalidateRequestMemoizations()
         self.loginAsPortalOwner()
         self.app.REQUEST['ACTUAL_URL'] = self.folder.absolute_url()
@@ -73,7 +74,7 @@ class TestContentViewsViewlet(ViewletsTestCase):
         self.assertEqual(1, len([t for t in view.tabSet1 if t[
                          'id'] == 'folderContents']))
 
-    def testSet1(self):
+    def test_set1(self):
         self._invalidateRequestMemoizations()
         self.loginAsPortalOwner()
         self.app.REQUEST['ACTUAL_URL'] = '%s/edit?_authenticator=%s' % (
@@ -82,11 +83,29 @@ class TestContentViewsViewlet(ViewletsTestCase):
         )
         view = ContentViewsViewlet(self.folder.test, self.app.REQUEST, None)
         view.update()
-        self.assertEqual(1, len([t for t in view.tabSet1 if t[
-                         'id'] == 'folderContents']))
-        self.assertEqual(['edit'], [t['id'] for t in view.tabSet1 if t['selected']])
+        self.assertEqual(
+            1, len([t for t in view.tabSet1 if t['id'] == 'folderContents']))
+        self.assertEqual(
+            ['edit'], [t['id'] for t in view.tabSet1 if t['selected']])
 
-    def testTitleViewlet(self):
+
+class TestTitleViewsViewlet(ViewletsTestCase):
+    """Test the title viewlet.
+    """
+
+    def afterSetUp(self):
+        self.folder.invokeFactory('Document', 'test',
+                                  title='Test default page')
+        self.folder.test.unmarkCreationFlag()
+        self.folder.setTitle(u"Folder")
+
+    def _invalidateRequestMemoizations(self):
+        try:
+            del self.app.REQUEST.__annotations__
+        except AttributeError:
+            pass
+
+    def test_title_viewlet(self):
         """Title viewlet renders navigation root title
         """
         self._invalidateRequestMemoizations()
@@ -98,7 +117,7 @@ class TestContentViewsViewlet(ViewletsTestCase):
         self.assertEqual(viewlet.site_title,
                          "Test default page &mdash; Folder")
 
-    def testTitleViewletInPortalfactory(self):
+    def test_title_viewlet_in_portal_factory(self):
         """Title viewlet renders navigation root title in portal factory
         """
         self._invalidateRequestMemoizations()
@@ -123,7 +142,6 @@ class TestLogoViewlet(ViewletsTestCase):
     def _set_site(self, context):
         """Set context as a site.
         """
-        from zope.component.hooks import setSite
         # Set the portal's getSiteManager method on context.
         # This is a hackish way to make setSite work without creating a site
         # with five.localsitemanager.
