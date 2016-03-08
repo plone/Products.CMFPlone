@@ -1,25 +1,25 @@
+# -*- coding: utf-8 -*-
 from Acquisition import aq_base
-from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.factory import _DEFAULT_PROFILE
-from Products.CMFPlone.interfaces import IMigrationTool
-from Products.CMFPlone.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME
-from Products.CMFQuickInstallerTool.interfaces import INonInstallable
-from Products.StandardCacheManagers.AcceleratedHTTPCacheManager \
-    import AcceleratedHTTPCacheManager
-from Products.StandardCacheManagers.RAMCacheManager import RAMCacheManager
 from borg.localrole.utils import replace_local_role_manager
 from plone.registry.interfaces import IRegistry
 from plone.resource.interfaces import IResourceDirectory
+from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.factory import _DEFAULT_PROFILE
+from Products.CMFPlone.interfaces import IMigrationTool
+from Products.CMFPlone.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME  # noqa
+from Products.CMFQuickInstallerTool.interfaces import INonInstallable
+from Products.StandardCacheManagers.AcceleratedHTTPCacheManager import AcceleratedHTTPCacheManager  # noqa
+from Products.StandardCacheManagers.RAMCacheManager import RAMCacheManager
 from zope.component import getUtility
 from zope.component import queryUtility
 from zope.component.hooks import getSite
 from zope.i18n.locales import LoadLocaleError
 from zope.i18n.locales import locales
-from zope.interface import implements
+from zope.interface import implementer
 
 
+@implementer(INonInstallable)
 class HiddenProducts(object):
-    implements(INonInstallable)
 
     def getNonInstallableProducts(self):
         return [
@@ -95,16 +95,18 @@ def addCacheForResourceRegistry(portal):
         cache.manage_editProps('Cache for saved ResourceRegistry files',
                                settings)
     reg = getToolByName(portal, 'portal_css', None)
-    if reg is not None \
-            and getattr(aq_base(reg), 'ZCacheable_setManagerId', None) \
-    is not None:
+    if (
+        reg is not None and
+        getattr(aq_base(reg), 'ZCacheable_setManagerId', None)is not None
+    ):
         reg.ZCacheable_setManagerId(ram_cache_id)
         reg.ZCacheable_setEnabled(1)
 
     reg = getToolByName(portal, 'portal_javascripts', None)
-    if reg is not None \
-            and getattr(aq_base(reg), 'ZCacheable_setManagerId', None) \
-    is not None:
+    if (
+        reg is not None and
+        getattr(aq_base(reg), 'ZCacheable_setManagerId', None) is not None
+    ):
         reg.ZCacheable_setManagerId(ram_cache_id)
         reg.ZCacheable_setEnabled(1)
 
