@@ -900,16 +900,8 @@ class TestPortalBugs(PloneTestCase.PloneTestCase):
         self.loginAsPortalOwner()
         portal = self.portal
         portal.manage_delObjects(['Members'])
-
-        class FakeContext:
-
-            def getSite(self):
-                return portal
-
-            def readDataFile(self, filename):
-                return True  # Anything other than None runs the step
-
-        setuphandlers.importFinalSteps(FakeContext())  # raises error if fail
+        setup_tool = getToolByName(self.portal, 'portal_setup')
+        setuphandlers.importFinalSteps(setup_tool)  # raises error if fail
         self.assertTrue(1 == 1)
 
 

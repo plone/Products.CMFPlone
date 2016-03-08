@@ -172,14 +172,30 @@ def assignTitles(portal):
             setattr(aq_base(obj), 'title', title)
 
 
+def dummy_import_step(context):
+    """Dummy import step.
+
+    The plone-final import step used to call importFinalSteps below.
+    But plone-final was never guaranteed to be run as final step.  So
+    more and more import steps were added to its dependencies to let it
+    run later and later.  Not nice.
+
+    With Products.GenericSetup 1.8.2, we can add a post_handler to a
+    profile (and a pre_handler).  We now do that.  So the plone-final
+    import step is no longer needed.  But others may depend on it, so we
+    keep it for now.  This dummy import step handler is meant for
+    that.
+    """
+    pass
+
+
 def importFinalSteps(context):
+    """Final Plone import steps.
+
+    This was an import step, but is now registered as post_handler
+    specifically for our main 'plone' (profiles/default) profile.
     """
-    Final Plone import steps.
-    """
-    # Only run step if a flag file is present (e.g. not an extension profile)
-    if context.readDataFile('plone-final.txt') is None:
-        return
-    site = context.getSite()
+    site = getSite()
 
     # Unset all profile upgrade versions in portal_setup.  Our default
     # profile should only be applied when creating a new site, so this
