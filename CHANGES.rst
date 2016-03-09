@@ -14,7 +14,12 @@ Incompatibilities:
 
 New:
 
-- new zcml feature "plone-51" added.
+- new less variable to configure the width of the toolbars submenu called
+  ``plone-toolbar-submenu-width``.
+  [jensens]
+
+- new zcml feature "plone-51" added. Profile version set to 5101.
+  Version references set to 5.1.0.
   [jensens]
 
 - Registered post_handler instead of plone-final.  The plone-final
@@ -46,10 +51,6 @@ Fixes:
 --------------------
 
 New:
-
-- new less variable to configure the width of the toolbars submenu called
-  ``plone-toolbar-submenu-width``.
-  [jensens]
 
 - If a bundle does not provide any resources, do not attempt to compile it
   [vangheem]
