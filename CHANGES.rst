@@ -29,6 +29,9 @@ New:
   never possible in the old way.  The plone-final step is kept for
   backwards compatibility.
   [maurits]
+  
+- Remove Zope mention in logout form 
+  [tkimnguyen]
 
 Fixes:
 
