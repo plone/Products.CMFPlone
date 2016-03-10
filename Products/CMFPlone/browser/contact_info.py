@@ -68,7 +68,7 @@ class ContactForm(form.Form):
         data['url'] = portal.absolute_url()
         message = self.generate_mail(data, encoding)
         message = MIMEText(message, 'plain', encoding)
-        message['Reply-To'] = Header(data['sender_from_address'], encoding)
+        message['Reply-To'] = data['sender_from_address']
 
         try:
             # This actually sends out the mail

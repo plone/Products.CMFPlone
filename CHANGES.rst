@@ -33,6 +33,9 @@ New:
 - Remove Zope mention in logout form 
   [tkimnguyen]
 
+- Do not encode reply-to email address for contact-info form
+  [tkimnguyen]
+
 Fixes:
 
 - *add item here*
