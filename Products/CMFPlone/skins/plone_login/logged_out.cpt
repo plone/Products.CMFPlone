@@ -31,10 +31,10 @@
 
 <tal:notloggedoutafterall tal:condition="not: isAnon">
     <h1 class="documentFirstHeading"
-        i18n:translate="heading_quit_to_log_out">Still logged in as a Zope user</h1>
+        i18n:translate="heading_quit_to_log_out">Still logged in</h1>
 
     <div class="documentDescription" i18n:translate="description_quit_to_log_out">
-        You are logged in via HTTP authentication (i.e. the Zope Management
+        You are logged in via HTTP authentication (i.e. the Management
         Interface). In order to log out, you must:
     </div>
 
