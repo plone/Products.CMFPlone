@@ -1,12 +1,14 @@
-from Products.CMFPlone.Portal import PloneSite
+# -*- coding: utf-8 -*-
+from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.events import SiteManagerCreatedEvent
 from Products.CMFPlone.interfaces import INonInstallable
+from Products.CMFPlone.Portal import PloneSite
 from Products.GenericSetup.tool import SetupTool
-from plone.registry.interfaces import IRegistry
 from zope.component import queryUtility
 from zope.event import notify
-from zope.interface import implements
+from zope.interface import implementer
 from zope.site.hooks import setSite
+
 
 _TOOL_ID = 'portal_setup'
 _DEFAULT_PROFILE = 'Products.CMFPlone:plone'
@@ -16,8 +18,8 @@ _CONTENT_PROFILE = 'plone.app.contenttypes:plone-content'
 _IMREALLYPLONE5 = True
 
 
+@implementer(INonInstallable)
 class HiddenProfiles(object):
-    implements(INonInstallable)
 
     def getNonInstallableProfiles(self):
         return [_DEFAULT_PROFILE,
