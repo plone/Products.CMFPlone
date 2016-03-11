@@ -12,6 +12,9 @@ New:
 
 Fixes:
 
+- Fixed html validation: element nav does not need a role attribute.
+  [maurits]
+
 - Fix test isolation problems: if a test calls transaction.commit() directly or
   indirectly it can not be an integration test, either avoid the commit or
   change the layer into a functional one.

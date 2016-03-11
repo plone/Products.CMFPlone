@@ -1,4 +1,4 @@
-<nav id="portal-breadcrumbs" class="plone-breadcrumb" role="navigation"
+<nav id="portal-breadcrumbs" class="plone-breadcrumb"
          i18n:domain="plone"
          tal:define="breadcrumbs view/breadcrumbs">
   <div class="container">
