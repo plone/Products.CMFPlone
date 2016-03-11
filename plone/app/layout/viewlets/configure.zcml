@@ -222,6 +222,16 @@
         name="plone.htmlhead.socialtags"
         manager=".interfaces.IHtmlHead"
         class=".social.SocialTagsViewlet"
+        template="social_tags.pt"
+        permission="zope2.View"
+        />
+
+    <!-- Render the social media body tags -->
+    <browser:viewlet
+        name="plone.abovecontenttitle.socialtags"
+        manager=".interfaces.IAboveContentTitle"
+        class=".social.SocialTagsViewlet"
+        template="social_tags_body.pt"
         permission="zope2.View"
         />
 
