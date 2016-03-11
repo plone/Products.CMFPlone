@@ -30,7 +30,7 @@ class SiteRegistryIntegrationTest(unittest.TestCase):
 
     def test_site_in_controlpanel(self):
         self.controlpanel = getToolByName(self.portal, "portal_controlpanel")
-        self.assertTrue('SiteSettings' in [
+        self.assertTrue('PloneReconfig' in [
             a.getAction(self)['id']
             for a in self.controlpanel.listActions()
         ])
