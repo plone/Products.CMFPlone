@@ -25,6 +25,10 @@ New:
   [thet]
 
 - Control panel to mange portal actions.
+- added invisible-grid table styles
+  [agitator]
+
+- Control panel to mange portal actions
   [ebrehault]
 
 - new less variable to configure the width of the toolbars submenu called
