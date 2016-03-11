@@ -38,7 +38,10 @@ New:
 
 Fixes:
 
-- *add item here*
+- Fixes `Can't add content after adding Plone 5 site without Example content <https://github.com/plone/Products.CMFPlone/issues/1113>`_
+  To achieve this introduce a new kwargs ``types_profile_id`` defaulting to
+  p.a.ct default profile on ``Product.CMFPlone.factory.addPloneSite`` function.
+  [jensens]
 
 
 5.0.3 (2016-03-??)

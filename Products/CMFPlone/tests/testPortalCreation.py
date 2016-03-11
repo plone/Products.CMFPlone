@@ -1,40 +1,36 @@
-from Products.CMFPlone.tests import PloneTestCase
-from Products.CMFPlone.tests import dummy
-from Products.CMFCore.tests.base.testcase import WarningInterceptor
-
-from zope.component import getGlobalSiteManager
-from zope.component import getSiteManager
-from zope.component import getMultiAdapter
-from zope.component import getUtility
-from zope.component import queryUtility
-from zope.component.interfaces import IComponentLookup
-from zope.component.interfaces import IComponentRegistry
-from zope.location.interfaces import ISite
-from zope.site.hooks import setSite, clearSite
-
+# -*- coding: utf-8 -*-
 from Acquisition import aq_base
-
+from plone.portlets.constants import CONTEXT_CATEGORY as CONTEXT_PORTLETS
+from plone.portlets.interfaces import ILocalPortletAssignmentManager
+from plone.portlets.interfaces import IPortletAssignmentMapping
+from plone.portlets.interfaces import IPortletManager
+from plone.registry.interfaces import IRegistry
 from Products.CMFCore.CachingPolicyManager import CachingPolicyManager
 from Products.CMFCore.permissions import AccessInactivePortalContent
+from Products.CMFCore.tests.base.testcase import WarningInterceptor
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import setuphandlers
 from Products.CMFPlone.factory import _DEFAULT_PROFILE
 from Products.CMFPlone.interfaces import INavigationSchema
 from Products.CMFPlone.interfaces import ISearchSchema
-from Products.CMFPlone.UnicodeSplitter import Splitter, I18NNormalizer
+from Products.CMFPlone.tests import dummy
+from Products.CMFPlone.tests import PloneTestCase
+from Products.CMFPlone.UnicodeSplitter import I18NNormalizer
+from Products.CMFPlone.UnicodeSplitter import Splitter
 from Products.GenericSetup.browser.manage import ExportStepsView
 from Products.GenericSetup.browser.manage import ImportStepsView
-
-from Products.StandardCacheManagers.AcceleratedHTTPCacheManager import \
-    AcceleratedHTTPCacheManager
-from Products.StandardCacheManagers.RAMCacheManager import \
-    RAMCacheManager
-
-from plone.portlets.interfaces import IPortletAssignmentMapping
-from plone.portlets.interfaces import IPortletManager
-from plone.portlets.interfaces import ILocalPortletAssignmentManager
-from plone.portlets.constants import CONTEXT_CATEGORY as CONTEXT_PORTLETS
-from plone.registry.interfaces import IRegistry
+from Products.StandardCacheManagers.AcceleratedHTTPCacheManager import AcceleratedHTTPCacheManager  # noqa
+from Products.StandardCacheManagers.RAMCacheManager import RAMCacheManager
+from zope.component import getGlobalSiteManager
+from zope.component import getMultiAdapter
+from zope.component import getSiteManager
+from zope.component import getUtility
+from zope.component import queryUtility
+from zope.component.interfaces import IComponentLookup
+from zope.component.interfaces import IComponentRegistry
+from zope.location.interfaces import ISite
+from zope.site.hooks import clearSite
+from zope.site.hooks import setSite
 
 
 class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
@@ -188,7 +184,10 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.assertFalse(
             self.properties.navtree_properties.hasProperty('showAllParents'))
         self.assertFalse(
-            self.properties.navtree_properties.hasProperty('metaTypesNotToList'))
+            self.properties.navtree_properties.hasProperty(
+                'metaTypesNotToList'
+            )
+        )
         self.assertFalse(
             self.properties.navtree_properties.hasProperty('sortAttribute'))
         self.assertFalse(
@@ -553,8 +552,10 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.assertEqual(len(buttons), 4)
         urls = [a['url'] for a in buttons]
         for url in urls:
-            self.assertFalse('index_html' not in url,
-                             'Action wrongly applied to parent object %s' % url)
+            self.assertFalse(
+                'index_html' not in url,
+                'Action wrongly applied to parent object %s' % url
+            )
 
     def testObjectButtonActionsPerformCorrectAction(self):
         # only a manager would have proper permissions
