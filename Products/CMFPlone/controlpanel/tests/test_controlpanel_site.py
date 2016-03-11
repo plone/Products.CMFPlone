@@ -22,15 +22,15 @@ class SiteRegistryIntegrationTest(unittest.TestCase):
         self.settings = registry.forInterface(
             ISiteSchema, prefix="plone")
 
-    def test_search_controlpanel_view(self):
+    def test_site_controlpanel_view(self):
         view = getMultiAdapter((self.portal, self.portal.REQUEST),
-                               name="search-controlpanel")
+                               name="site-controlpanel")
         view = view.__of__(self.portal)
         self.assertTrue(view())
 
-    def test_search_in_controlpanel(self):
+    def test_site_in_controlpanel(self):
         self.controlpanel = getToolByName(self.portal, "portal_controlpanel")
-        self.assertTrue('SearchSettings' in [
+        self.assertTrue('SiteSettings' in [
             a.getAction(self)['id']
             for a in self.controlpanel.listActions()
         ])
