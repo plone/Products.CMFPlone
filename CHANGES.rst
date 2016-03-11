@@ -14,6 +14,9 @@ Incompatibilities:
 
 New:
 
+- Control panel to mange portal actions
+  [ebrehault]
+
 - new less variable to configure the width of the toolbars submenu called
   ``plone-toolbar-submenu-width``.
   [jensens]
@@ -72,7 +75,6 @@ New:
 
 - Merge JS and CSS bundles into meta-bundles to reduce the number of requests
   when loading a page (PLIP #1277)
-  [ebrehault]
 
 Fixes:
 

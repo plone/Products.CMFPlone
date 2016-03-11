@@ -251,4 +251,28 @@
       permission="plone.app.controlpanel.Imaging"
       />
 
+  <!-- Portal actions -->
+  <browser:page
+      name="actions-controlpanel"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".actions.ActionListControlPanel"
+      permission="cmf.ManagePortal"
+      />
+
+  <adapter factory=".actions.ActionControlPanelAdapter"/>
+
+  <browser:page
+      name="action-form"
+      for="Products.CMFCore.interfaces.IAction"
+      class=".actions.ActionControlPanel"
+      permission="cmf.ManagePortal"
+      />
+
+  <browser:page
+      name="new-action"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".actions.NewActionControlPanel"
+      permission="cmf.ManagePortal"
+      />
+
 </configure>

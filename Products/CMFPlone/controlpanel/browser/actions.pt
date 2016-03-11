@@ -1,0 +1,56 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/prefs_main_template/macros/master">
+
+<body>
+
+
+<metal:main metal:fill-slot="prefs_configlet_main" i18n:domain="plone">
+
+    <h1 class="documentFirstHeading"
+        i18n:translate="portal_actions_controlpanel_header">Portal actions</h1>
+
+    <div class="documentDescription"
+       i18n:translate="portal_actions_controlpanel_description">
+      This is the portal actions configuration section, you can manage the
+      actions contained in the different action categories.
+    </div>
+
+    <div id="content-core">
+        <p class="addAction">
+            <a href="@@new-action"
+                class="context pat-plone-modal pull-right"
+                i18n:translate="">Add new action</a>
+        </p>
+        <section tal:repeat="category view/actions" class="portlet">
+            <header tal:content="category/title" class="portletHeader" />
+            <section class="portletContent">
+                <ol class="configlets">
+                    <li tal:repeat="action category/actions">
+                        <span tal:content="action/title" i18n:translate="" />
+                        <form action="@@actions-controlpanel" class="pull-right"
+                            method="POST"
+                            confirm-message="Delete the action?"
+                            i18n:attributes="confirm-message"
+                            onsubmit="return confirm(this.getAttribute('confirm-message'));">
+                            <input type="hidden" name="deleteaction"
+                                tal:attributes="value action/id" />
+                            <input type="hidden" name="category"
+                                tal:attributes="value category/id" />
+                            <a class="pat-plone-modal standalone"
+                            tal:attributes="href string:${action/url}/@@action-form"
+                            i18n:translate="">Edit</a>
+                            <input type="submit" class="destructive" value="Delete"
+                                i18n:attributes="value" />
+                        </form>
+                    </li>
+                </ol>
+            </section>
+        </section>
+    </div>
+</metal:main>
+</body>
+</html>
