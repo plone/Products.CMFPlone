@@ -45,6 +45,7 @@ Fixes:
 
 - Do not break background images relative urls in CSS when concatening bundles
   [ebrehault]
+
 - Fixed html validation: element nav does not need a role attribute.
   [maurits]
 
