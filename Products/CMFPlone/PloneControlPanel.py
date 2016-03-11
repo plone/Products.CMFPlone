@@ -14,6 +14,7 @@ from Products.CMFCore.utils import UniqueObject
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import IControlPanel
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
+from zope.component.hooks import getSite
 from zope.i18n import translate
 from zope.i18nmessageid import Message
 from zope.interface import implements
@@ -296,6 +297,16 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
             management_view='Actions',
             manage_tabs_message=manage_tabs_message,
         )
+
+    @property
+    def site_url(self):
+        """Return the absolute URL to the current site, which is likely not
+        necessarily the portal root.
+        Used by ``portlet_prefs`` to construct the URL to
+        ``@@overview-controlpanel``.
+        """
+        return getSite().absolute_url()
+
 
 InitializeClass(PloneControlPanel)
 registerToolInterface('portal_controlpanel', IControlPanel)

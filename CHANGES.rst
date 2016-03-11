@@ -19,7 +19,11 @@ Incompatibilities:
 
 New:
 
-- Control panel to mange portal actions
+- For the controlpanel portlets, use the nearest site url as a base for the overview-controlpanel.
+  This gives more flexibility for sub site controlpanels.
+  [thet]
+
+- Control panel to mange portal actions.
   [ebrehault]
 
 - new less variable to configure the width of the toolbars submenu called
