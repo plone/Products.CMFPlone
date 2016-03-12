@@ -1,3 +1,4 @@
+import re
 from zExceptions import NotFound
 from Acquisition import aq_base
 from datetime import datetime
@@ -79,7 +80,15 @@ def write_css(context, folder, meta_bundle):
         IBundleRegistry, prefix="plone.bundles", check=False)
     for bundle in bundles.values():
         if bundle.merge_with == meta_bundle:
-            resources.append(get_resource(context, bundle.csscompilation))
+            css = get_resource(context, bundle.csscompilation)
+            # Preserve relative urls:
+            # we prefix with '../'' any url not starting with '/'
+            # or http: or data:
+            css = re.sub(
+                r"""(url\(['"]?(?!['"]?([a-z]+:|\/)))""",
+                r'\1../',
+                css)
+            resources.append(css)
 
     fi = StringIO()
     for script in resources:
