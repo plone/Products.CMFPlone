@@ -38,7 +38,8 @@ New:
 
 Fixes:
 
-- *add item here*
+- Do not break background images relative urls in CSS when concatening bundles
+  [ebrehault]
 
 
 5.0.3 (2016-03-??)
