@@ -41,6 +41,9 @@ New:
 - Remove Zope mention in logout form
   [tkimnguyen]
 
+- Do not encode reply-to email address for contact-info form
+  [tkimnguyen]
+
 Fixes:
 
 - Do not break background images relative urls in CSS when concatening bundles
