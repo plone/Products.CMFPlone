@@ -6,7 +6,7 @@
       tal:omit-tag=""
       i18n:domain="plone">
 
-  <section class="portlet portletClassic" id="portal-footer-signature" metal:define-macro="portlet">
+  <aside class="portlet portletClassic" id="portal-footer-signature" metal:define-macro="portlet">
     <div class="portletContent">
       <span i18n:translate="description_copyright" tal:omit-tag="">
       The
@@ -31,5 +31,5 @@
                 <a href="http://creativecommons.org/licenses/GPL/2.0/" i18n:translate="label_gnu_gpl_licence">GNU GPL license</a></span>.
       </span>
     </div>
-  </section>
+  </aside>
 </html>

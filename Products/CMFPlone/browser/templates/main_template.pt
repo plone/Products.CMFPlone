@@ -67,7 +67,7 @@
       </div>
     </aside>
 
-    <section id="viewlet-above-content" tal:content="structure provider:plone.abovecontent" />
+    <div id="viewlet-above-content" tal:content="structure provider:plone.abovecontent" />
 
     <article id="portal-column-content">
 
@@ -102,13 +102,13 @@
             </metal:description>
           </header>
 
-          <section id="viewlet-above-content-body" tal:content="structure provider:plone.abovecontentbody" />
-          <section id="content-core">
+          <div id="viewlet-above-content-body" tal:content="structure provider:plone.abovecontentbody" />
+          <div id="content-core">
             <metal:text define-slot="content-core" tal:content="nothing">
               Page body text
             </metal:text>
-          </section>
-          <section id="viewlet-below-content-body" tal:content="structure provider:plone.belowcontentbody" />
+          </div>
+          <div id="viewlet-below-content-body" tal:content="structure provider:plone.belowcontentbody" />
 
           </metal:bodytext>
         </article>

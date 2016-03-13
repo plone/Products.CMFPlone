@@ -6,7 +6,7 @@
       tal:omit-tag=""
       i18n:domain="plone">
 
-  <section class="portlet portletClassic" id="portal-colophon" metal:define-macro="portlet">
+  <aside class="portlet portletClassic" id="portal-colophon" metal:define-macro="portlet">
     <div class="portletContent">
       <a href="http://plone.com" target="_blank"
          title="This site was built using the Plone Open Source CMS/WCM."
@@ -14,5 +14,5 @@
          i18n:translate="label_powered_by_plone">
         Powered by Plone &amp; Python</a>
     </div>
-  </section>
+  </aside>
 </html>
