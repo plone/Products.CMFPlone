@@ -10,11 +10,9 @@ Changelog
 
 Incompatibilities:
 
-- Changed these ``section`` elements to ``div`` elements:
-  ``#portal-colophon``, ``#portal-footer-signature``,
-  ``#viewlet-above-content``, ``#viewlet-above-content-body``,
-  ``#content-core``, ``#viewlet-below-content-body``.  This might
-  affect your custom styling or javascript.
+- Changed these ``section`` elements to ``div`` elements: ``#viewlet-above-content``, ``#viewlet-above-content-body``, ``#content-core``, ``#viewlet-below-content-body``.
+  And these portlets ``section`` elements to ``aside`` elements: ``#portal-colophon``, ``#portal-footer-signature``.
+  This might affect your custom styling or javascript.
   [maurits]
 
 New:
