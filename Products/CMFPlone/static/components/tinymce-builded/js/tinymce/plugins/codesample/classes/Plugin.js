@@ -52,7 +52,11 @@ define("tinymce/codesampleplugin/Plugin", [
 
 					$elm.attr('class', $.trim($elm.attr('class')));
 					$elm.removeAttr('contentEditable');
-					$elm.empty().append($('<code></code>').text(code));
+
+					$elm.empty().append($('<code></code>').each(function() {
+						// Needs to be textContent since innerText produces BR:s
+						this.textContent = code;
+					}));
 				});
 		});
 
@@ -83,7 +87,7 @@ define("tinymce/codesampleplugin/Plugin", [
 
 		editor.addButton('codesample', {
 			cmd: 'codesample',
-			title: 'Insert/edit code sample'
+			title: 'Insert/Edit code sample'
 		});
 
 		editor.on('init', loadCss);

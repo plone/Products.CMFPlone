@@ -80,7 +80,7 @@
 
 			target[fragments[fragments.length - 1]] = modules[id];
 		}
-
+		
 		// Expose private modules for unit tests
 		if (exports.AMDLC_TESTS) {
 			privateModules = exports.privateModules || {};
@@ -123,8 +123,10 @@ define("tinymce/tableplugin/Utils", [
 	}
 
 	function paddCell(cell) {
-		if (!Env.ie || Env.ie > 10) {
-			cell.innerHTML = '<br data-mce-bogus="1" />';
+		if (!Env.ie || Env.ie > 9) {
+			if (!cell.hasChildNodes()) {
+				cell.innerHTML = '<br data-mce-bogus="1" />';
+			}
 		}
 	}
 
@@ -161,11 +163,29 @@ define("tinymce/tableplugin/TableGrid", [
 ], function(Tools, Env, Utils) {
 	var each = Tools.each, getSpanVal = Utils.getSpanVal;
 
-	return function(editor, table) {
-		var grid, gridWidth, startPos, endPos, selectedCell, selection = editor.selection, dom = selection.dom;
+	return function(editor, table, selectedCell) {
+		var grid, gridWidth, startPos, endPos, selection = editor.selection, dom = selection.dom;
+
+		function removeCellSelection() {
+			editor.$('td[data-mce-selected],th[data-mce-selected]').removeAttr('data-mce-selected');
+		}
 
 		function isEditorBody(node) {
 			return node === editor.getBody();
+		}
+
+		function getChildrenByName(node, names) {
+			if (!node) {
+				return [];
+			}
+
+			names = Tools.map(names.split(','), function(name) {
+				return name.toLowerCase();
+			});
+
+			return Tools.grep(node.childNodes, function(node) {
+				return Tools.inArray(names, node.nodeName.toLowerCase()) !== -1;
+			});
 		}
 
 		function buildGrid() {
@@ -175,12 +195,13 @@ define("tinymce/tableplugin/TableGrid", [
 			gridWidth = 0;
 
 			each(['thead', 'tbody', 'tfoot'], function(part) {
-				var rows = dom.select('> ' + part + ' tr', table);
+				var partElm = getChildrenByName(table, part)[0];
+				var rows = getChildrenByName(partElm, 'tr');
 
 				each(rows, function(tr, y) {
 					y += startY;
 
-					each(dom.select('> td, > th', tr), function(td, x) {
+					each(getChildrenByName(tr, 'td,th'), function(td, x) {
 						var x2, y2, rowspan, colspan;
 
 						// Skip over existing cells produced by rowspan
@@ -219,6 +240,22 @@ define("tinymce/tableplugin/TableGrid", [
 			});
 		}
 
+		function fireNewRow(node) {
+			editor.fire('newrow', {
+				node: node
+			});
+
+			return node;
+		}
+
+		function fireNewCell(node) {
+			editor.fire('newcell', {
+				node: node
+			});
+
+			return node;
+		}
+
 		function cloneNode(node, children) {
 			node = node.cloneNode(children);
 			node.removeAttribute('id');
@@ -248,7 +285,7 @@ define("tinymce/tableplugin/TableGrid", [
 		}
 
 		function isCellSelected(cell) {
-			return cell && (dom.hasClass(cell.elm, 'mce-item-selected') || cell == selectedCell);
+			return cell && (!!dom.getAttrib(cell.elm, 'data-mce-selected') || cell == selectedCell);
 		}
 
 		function getSelectedRows() {
@@ -256,7 +293,7 @@ define("tinymce/tableplugin/TableGrid", [
 
 			each(table.rows, function(row) {
 				each(row.cells, function(cell) {
-					if (dom.hasClass(cell, 'mce-item-selected') || (selectedCell && cell == selectedCell.elm)) {
+					if (dom.getAttrib(cell, 'data-mce-selected') || (selectedCell && cell == selectedCell.elm)) {
 						rows.push(row);
 						return false;
 					}
@@ -314,7 +351,7 @@ define("tinymce/tableplugin/TableGrid", [
 
 					// Add something to the inner node
 					if (curNode) {
-						curNode.innerHTML = Env.ie ? '&nbsp;' : '<br data-mce-bogus="1" />';
+						curNode.innerHTML = Env.ie && Env.ie < 10 ? '&nbsp;' : '<br data-mce-bogus="1" />';
 					}
 
 					return false;
@@ -322,6 +359,8 @@ define("tinymce/tableplugin/TableGrid", [
 			}, 'childNodes');
 
 			cell = cloneNode(cell, false);
+			fireNewCell(cell);
+
 			setSpanVal(cell, 'rowSpan', 1);
 			setSpanVal(cell, 'colSpan', 1);
 
@@ -505,7 +544,7 @@ define("tinymce/tableplugin/TableGrid", [
 								children = Tools.grep(startCell.childNodes);
 								count = 0;
 								each(children, function(node) {
-									if (node.nodeName == 'BR' && dom.getAttrib(node, 'data-mce-bogus') && count++ < children.length - 1) {
+									if (node.nodeName == 'BR' && count++ < children.length - 1) {
 										startCell.removeChild(node);
 									}
 								});
@@ -530,7 +569,7 @@ define("tinymce/tableplugin/TableGrid", [
 					if (isCellSelected(cell)) {
 						cell = cell.elm;
 						rowElm = cell.parentNode;
-						newRow = cloneNode(rowElm, false);
+						newRow = fireNewRow(cloneNode(rowElm, false));
 						posY = y;
 
 						if (before) {
@@ -810,16 +849,20 @@ define("tinymce/tableplugin/TableGrid", [
 			each(rows, function(row) {
 				var i, cellCount = row.cells.length, cell;
 
+				fireNewRow(row);
+
 				// Remove col/rowspans
 				for (i = 0; i < cellCount; i++) {
 					cell = row.cells[i];
+
+					fireNewCell(cell);
 					setSpanVal(cell, 'colSpan', 1);
 					setSpanVal(cell, 'rowSpan', 1);
 				}
 
 				// Needs more cells
 				for (i = cellCount; i < targetCellCount; i++) {
-					row.appendChild(cloneCell(row.cells[cellCount - 1]));
+					row.appendChild(fireNewCell(cloneCell(row.cells[cellCount - 1])));
 				}
 
 				// Needs less cells
@@ -835,8 +878,7 @@ define("tinymce/tableplugin/TableGrid", [
 				}
 			});
 
-			// Remove current selection
-			dom.removeClass(dom.select('td.mce-item-selected,th.mce-item-selected'), 'mce-item-selected');
+			removeCellSelection();
 		}
 
 		function getPos(target) {
@@ -915,7 +957,7 @@ define("tinymce/tableplugin/TableGrid", [
 				endX = Math.max(startPos.x, endPos.x);
 				endY = Math.max(startPos.y, endPos.y);
 
-				// Expand end positon to include spans
+				// Expand end position to include spans
 				maxX = endX;
 				maxY = endY;
 
@@ -965,14 +1007,13 @@ define("tinymce/tableplugin/TableGrid", [
 					}
 				}
 
-				// Remove current selection
-				dom.removeClass(dom.select('td.mce-item-selected,th.mce-item-selected'), 'mce-item-selected');
+				removeCellSelection();
 
 				// Add new selection
 				for (y = startY; y <= maxY; y++) {
 					for (x = startX; x <= maxX; x++) {
 						if (grid[y][x]) {
-							dom.addClass(grid[y][x].elm, 'mce-item-selected');
+							dom.setAttrib(grid[y][x].elm, 'data-mce-selected', '1');
 						}
 					}
 				}
@@ -1011,7 +1052,7 @@ define("tinymce/tableplugin/TableGrid", [
 
 		buildGrid();
 
-		selectedCell = dom.getParent(selection.getStart(true), 'th,td');
+		selectedCell = selectedCell || dom.getParent(selection.getStart(true), 'th,td');
 
 		if (selectedCell) {
 			startPos = getPos(selectedCell);
@@ -1290,7 +1331,7 @@ define("tinymce/tableplugin/Quirks", [
 							editor.getBody(),
 							editor.settings.forced_root_block,
 							editor.settings.forced_root_block_attrs,
-							Env.ie && Env.ie < 11 ? '&nbsp;' : '<br data-mce-bogus="1" />'
+							Env.ie && Env.ie < 10 ? '&nbsp;' : '<br data-mce-bogus="1" />'
 						);
 					} else {
 						editor.dom.add(editor.getBody(), 'br', {'data-mce-bogus': '1'});
@@ -1393,7 +1434,7 @@ define("tinymce/tableplugin/Quirks", [
 					if (table) {
 						tableCells = editor.dom.select('td,th', table);
 						selectedTableCells = Tools.grep(tableCells, function(cell) {
-							return editor.dom.hasClass(cell, 'mce-item-selected');
+							return !!editor.dom.getAttrib(cell, 'data-mce-selected');
 						});
 
 						if (selectedTableCells.length === 0) {
@@ -1435,7 +1476,7 @@ define("tinymce/tableplugin/Quirks", [
 			fixTableCaretPos();
 		}
 
-		if (Env.ie > 10) {
+		if (Env.ie > 9) {
 			fixBeforeTableCaretBug();
 			fixTableCaretPos();
 		}
@@ -1467,59 +1508,79 @@ define("tinymce/tableplugin/CellSelection", [
 	"tinymce/util/Tools"
 ], function(TableGrid, TreeWalker, Tools) {
 	return function(editor) {
-		var dom = editor.dom, tableGrid, startCell, startTable, hasCellSelection = true, resizing;
+		var dom = editor.dom, tableGrid, startCell, startTable, lastMouseOverTarget, hasCellSelection = true, resizing;
 
 		function clear(force) {
 			// Restore selection possibilities
 			editor.getBody().style.webkitUserSelect = '';
 
 			if (force || hasCellSelection) {
-				editor.dom.removeClass(
-					editor.dom.select('td.mce-item-selected,th.mce-item-selected'),
-					'mce-item-selected'
-				);
-
+				editor.$('td[data-mce-selected],th[data-mce-selected]').removeAttr('data-mce-selected');
 				hasCellSelection = false;
 			}
 		}
 
+		function isCellInTable(table, cell) {
+			if (!table || !cell) {
+				return false;
+			}
+
+			return table === dom.getParent(cell, 'table');
+		}
+
 		function cellSelectionHandler(e) {
-			var sel, table, target = e.target;
+			var sel, target = e.target, currentCell;
 
 			if (resizing) {
 				return;
 			}
 
-			if (startCell && (tableGrid || target != startCell) && (target.nodeName == 'TD' || target.nodeName == 'TH')) {
-				table = dom.getParent(target, 'table');
-				if (table == startTable) {
-					if (!tableGrid) {
-						tableGrid = new TableGrid(editor, table);
-						tableGrid.setStartCell(startCell);
+			// Fake mouse enter by keeping track of last mouse over
+			if (target === lastMouseOverTarget) {
+				return;
+			}
 
+			lastMouseOverTarget = target;
+
+			if (startTable && startCell) {
+				currentCell = dom.getParent(target, 'td,th');
+
+				if (!isCellInTable(startTable, currentCell)) {
+					currentCell = dom.getParent(startTable, 'td,th');
+				}
+
+				if (isCellInTable(startTable, currentCell)) {
+					e.preventDefault();
+
+					if (!tableGrid) {
+						tableGrid = new TableGrid(editor, startTable, startCell);
 						editor.getBody().style.webkitUserSelect = 'none';
 					}
 
-					tableGrid.setEndCell(target);
+					tableGrid.setEndCell(currentCell);
 					hasCellSelection = true;
-				}
 
-				// Remove current selection
-				sel = editor.selection.getSel();
+					// Remove current selection
+					sel = editor.selection.getSel();
 
-				try {
-					if (sel.removeAllRanges) {
-						sel.removeAllRanges();
-					} else {
-						sel.empty();
+					try {
+						if (sel.removeAllRanges) {
+							sel.removeAllRanges();
+						} else {
+							sel.empty();
+						}
+					} catch (ex) {
+						// IE9 might throw errors here
 					}
-				} catch (ex) {
-					// IE9 might throw errors here
 				}
-
-				e.preventDefault();
 			}
 		}
+
+		editor.on('SelectionChange', function(e) {
+			if (hasCellSelection) {
+				e.stopImmediatePropagation();
+			}
+		}, true);
 
 		// Add cell selection logic
 		editor.on('MouseDown', function(e) {
@@ -1535,6 +1596,7 @@ define("tinymce/tableplugin/CellSelection", [
 
 		editor.on('remove', function() {
 			dom.unbind(editor.getDoc(), 'mouseover', cellSelectionHandler);
+			clear();
 		});
 
 		editor.on('MouseUp', function() {
@@ -1575,7 +1637,7 @@ define("tinymce/tableplugin/CellSelection", [
 				}
 
 				// Try to expand text selection as much as we can only Gecko supports cell selection
-				selectedCells = dom.select('td.mce-item-selected,th.mce-item-selected');
+				selectedCells = dom.select('td[data-mce-selected],th[data-mce-selected]');
 				if (selectedCells.length > 0) {
 					rng = dom.createRng();
 					node = selectedCells[0];
@@ -1587,7 +1649,7 @@ define("tinymce/tableplugin/CellSelection", [
 
 					do {
 						if (node.nodeName == 'TD' || node.nodeName == 'TH') {
-							if (!dom.hasClass(node, 'mce-item-selected')) {
+							if (!dom.getAttrib(node, 'data-mce-selected')) {
 								break;
 							}
 
@@ -1601,13 +1663,13 @@ define("tinymce/tableplugin/CellSelection", [
 				}
 
 				editor.nodeChanged();
-				startCell = tableGrid = startTable = null;
+				startCell = tableGrid = startTable = lastMouseOverTarget = null;
 			}
 		});
 
 		editor.on('KeyUp Drop SetContent', function(e) {
 			clear(e.type == 'setcontent');
-			startCell = tableGrid = startTable = null;
+			startCell = tableGrid = startTable = lastMouseOverTarget = null;
 			resizing = false;
 		});
 
@@ -2112,7 +2174,7 @@ define("tinymce/tableplugin/Dialogs", [
 			}
 
 			// Get selected cells or the current cell
-			cells = editor.dom.select('td.mce-item-selected,th.mce-item-selected');
+			cells = editor.dom.select('td[data-mce-selected],th[data-mce-selected]');
 			cellElm = editor.dom.getParent(editor.selection.getStart(), 'td,th');
 			if (!cells.length && cellElm) {
 				cells.push(cellElm);
@@ -2335,7 +2397,7 @@ define("tinymce/tableplugin/Dialogs", [
 
 			each(tableElm.rows, function(row) {
 				each(row.cells, function(cell) {
-					if (dom.hasClass(cell, 'mce-item-selected') || cell == cellElm) {
+					if (dom.getAttrib(cell, 'data-mce-selected') || cell == cellElm) {
 						rows.push(row);
 						return false;
 					}
@@ -2468,8 +2530,11 @@ define("tinymce/tableplugin/Dialogs", [
  * @private
  */
 define("tinymce/tableplugin/ResizeBars", [
-	"tinymce/util/Tools"
-], function(Tools) {
+	"tinymce/util/Tools",
+	"tinymce/util/VK"
+], function(Tools, VK) {
+	var hoverTable;
+
 	return function(editor) {
 		var RESIZE_BAR_CLASS = 'mce-resize-bar',
 			RESIZE_BAR_ROW_CLASS = 'mce-resize-bar-row',
@@ -2488,8 +2553,7 @@ define("tinymce/tableplugin/ResizeBars", [
 		var percentageBasedSizeRegex = new RegExp(/(\d+(\.\d+)?%)/),
 			pixelBasedSizeRegex = new RegExp(/px|em/);
 
-		var delayDrop, dragging, blockerElement, dragBar, lastX, lastY, hoverTable,
-			objectResizeTarget, objectResizeStartWidth, objectResizeStartHeight;
+		var delayDrop, dragging, blockerElement, dragBar, lastX, lastY;
 
 		// Get the absolute position's top edge.
 		function getTopEdge(index, row) {
@@ -2579,6 +2643,7 @@ define("tinymce/tableplugin/ResizeBars", [
 			for (var i = 1; i < thingsToMeasure.length; i++) {
 				// Get the element from the details
 				var item = thingsToMeasure[i].element;
+
 				// We need to zero index this again
 				tablePositions.push(getInner(i - 1, item));
 			}
@@ -2786,15 +2851,15 @@ define("tinymce/tableplugin/ResizeBars", [
 			var rows = range(0, tableGrid.grid.maxRows);
 
 			return Tools.map(cols, function(col) {
-
 				function getBlock() {
 					var details = [];
 					for (var i = 0; i < rows.length; i++) {
 						var detail = tableGrid.getAt(i, col);
-						if (detail.colIndex === col) {
+						if (detail && detail.colIndex === col) {
 							details.push(detail);
 						}
 					}
+
 					return details;
 				}
 
@@ -2803,27 +2868,33 @@ define("tinymce/tableplugin/ResizeBars", [
 				}
 
 				function getFallback() {
-					return tableGrid.getAt(0, col);
+					var item;
+
+					for (var i = 0; i < rows.length; i++) {
+						item = tableGrid.getAt(i, col);
+						if (item) {
+							return item;
+						}
+					}
+
+					return null;
 				}
 
 				return decide(getBlock, isSingle, getFallback);
-
 			});
 		}
 
 		// Attempt to get representative blocks for the height of each row.
 		function getRowBlocks(tableGrid) {
-
 			var cols = range(0, tableGrid.grid.maxCols);
 			var rows = range(0, tableGrid.grid.maxRows);
 
 			return Tools.map(rows, function(row) {
-
 				function getBlock() {
 					var details = [];
 					for (var i = 0; i < cols.length; i++) {
 						var detail = tableGrid.getAt(row, i);
-						if (detail.rowIndex === row) {
+						if (detail && detail.rowIndex === row) {
 							details.push(detail);
 						}
 					}
@@ -2835,7 +2906,7 @@ define("tinymce/tableplugin/ResizeBars", [
 				}
 
 				function getFallback() {
-					tableGrid.getAt(row, 0);
+					return tableGrid.getAt(row, 0);
 				}
 
 				return decide(getBlock, isSingle, getFallback);
@@ -2905,22 +2976,6 @@ define("tinymce/tableplugin/ResizeBars", [
 			var extras = next.delta - current.delta;
 			var pixelWidth = Math.abs(next.value - current.value) / extras;
 			return isPercentageBased ? pixelWidth / getComputedStyleSize(table, 'width') * 100 : pixelWidth;
-		}
-
-		// Attempt to get the pixel width of a cell but only if it's a defined static value.
-		function getNonPercentagePixelWidth(element) {
-
-			var widthString = editor.dom.getStyle(element, 'width');
-
-			if (!widthString) {
-				widthString = editor.dom.getAttrib(element, 'width');
-			}
-			if (!widthString) {
-				return false;
-			}
-			var widthNumber = parseInt(widthString, 10);
-			return widthString.indexOf('%', widthString.length - 1) > 0 ?
-				false : widthNumber;
 		}
 
 		function getStyleOrAttrib(element, property) {
@@ -3156,8 +3211,13 @@ define("tinymce/tableplugin/ResizeBars", [
 			}
 
 			function getNewTablePercentWidth() {
-				return index < tableGrid.maxCols - 1 ? getCurrentTablePercentWidth(table) :
+				return index < tableGrid.grid.maxCols - 1 ? getCurrentTablePercentWidth(table) :
 					getCurrentTablePercentWidth(table) + getTablePercentDelta(table, delta);
+			}
+
+			function getNewTablePixelWidth() {
+				return index < tableGrid.grid.maxCols - 1 ? getComputedStyleSize(table, 'width') :
+					getComputedStyleSize(table, 'width') + delta;
 			}
 
 			function setTableSize(newTableWidth, styleExtension, isPercentBased) {
@@ -3175,22 +3235,21 @@ define("tinymce/tableplugin/ResizeBars", [
 			var step = percentageBased ? getCellPercentDelta(table, delta) : delta;
 			// TODO: change the min for percentage maybe?
 			var deltas = determineDeltas(widths, index, step, RESIZE_MINIMUM_WIDTH, percentageBased, table);
-			var newWidths = [], newTotalWidth = 0;
+			var newWidths = [];
 
 			for (var i = 0; i < deltas.length; i++) {
 				newWidths.push(deltas[i] + widths[i]);
-				newTotalWidth += newWidths[i];
 			}
 
 			var newSizes = recalculateWidths(tableGrid, newWidths);
 			var styleExtension = percentageBased ? '%' : 'px';
-			setSizes(newSizes, styleExtension);
-
 			var newTableWidth = percentageBased ? getNewTablePercentWidth() :
-			newTotalWidth;
+				getNewTablePixelWidth();
 
-			setTableSize(newTableWidth, styleExtension, percentageBased);
-
+			editor.undoManager.transact(function() {
+				setSizes(newSizes, styleExtension);
+				setTableSize(newTableWidth, styleExtension, percentageBased);
+			});
 		}
 
 		// Adjust the height of the row of table at index, with delta.
@@ -3210,18 +3269,21 @@ define("tinymce/tableplugin/ResizeBars", [
 			var newCellSizes = recalculateCellHeights(tableGrid, newHeights);
 			var newRowSizes = recalculateRowHeights(tableGrid, newHeights);
 
-			Tools.each(newRowSizes, function(row) {
-				editor.dom.setStyle(row.element, 'height', row.height + 'px');
-				editor.dom.setAttrib(row.element, 'height', null);
-			});
+			editor.undoManager.transact(function() {
 
-			Tools.each(newCellSizes, function(cell) {
-				editor.dom.setStyle(cell.element, 'height', cell.height + 'px');
-				editor.dom.setAttrib(cell.element, 'height', null);
-			});
+				Tools.each(newRowSizes, function(row) {
+					editor.dom.setStyle(row.element, 'height', row.height + 'px');
+					editor.dom.setAttrib(row.element, 'height', null);
+				});
 
-			editor.dom.setStyle(table, 'height', newTotalHeight + 'px');
-			editor.dom.setAttrib(table, 'height', null);
+				Tools.each(newCellSizes, function(cell) {
+					editor.dom.setStyle(cell.element, 'height', cell.height + 'px');
+					editor.dom.setAttrib(cell.element, 'height', null);
+				});
+
+				editor.dom.setStyle(table, 'height', newTotalHeight + 'px');
+				editor.dom.setAttrib(table, 'height', null);
+			});
 		}
 
 		function scheduleDelayedDropEvent() {
@@ -3291,6 +3353,7 @@ define("tinymce/tableplugin/ResizeBars", [
 					adjustHeight(hoverTable, delta, index);
 				}
 				refreshBars(hoverTable);
+				editor.nodeChanged();
 			}
 		}
 
@@ -3337,56 +3400,50 @@ define("tinymce/tableplugin/ResizeBars", [
 			setupBaseDrag(bar, rowDragHandler);
 		}
 
+		function mouseDownHandler(e) {
+			var target = e.target, body = editor.getBody();
+
+			// Since this code is working on global events we need to work on a global hoverTable state
+			// and make sure that the state is correct according to the events fired
+			if (!editor.$.contains(body, hoverTable) && hoverTable !== body) {
+				return;
+			}
+
+			if (isCol(target)) {
+				e.preventDefault();
+				var initialLeft = editor.dom.getPos(target).x;
+				editor.dom.setAttrib(target, RESIZE_BAR_COL_DATA_INITIAL_LEFT_ATTRIBUTE, initialLeft);
+				setupColDrag(target);
+			} else if (isRow(target)) {
+				e.preventDefault();
+				var initialTop = editor.dom.getPos(target).y;
+				editor.dom.setAttrib(target, RESIZE_BAR_ROW_DATA_INITIAL_TOP_ATTRIBUTE, initialTop);
+				setupRowDrag(target);
+			}
+		}
+
 		editor.on('init', function() {
 			// Needs to be like this for inline mode, editor.on does not bind to elements in the document body otherwise
-			editor.dom.bind(getBody(), 'mousedown', function(e) {
-				var target = e.target;
-
-				if (isCol(target)) {
-					e.preventDefault();
-					var initialLeft = editor.dom.getPos(target).x;
-					editor.dom.setAttrib(target, RESIZE_BAR_COL_DATA_INITIAL_LEFT_ATTRIBUTE, initialLeft);
-					setupColDrag(target);
-				} else if (isRow(target)) {
-					e.preventDefault();
-					var initialTop = editor.dom.getPos(target).y;
-					editor.dom.setAttrib(target, RESIZE_BAR_ROW_DATA_INITIAL_TOP_ATTRIBUTE, initialTop);
-					setupRowDrag(target);
-				}
-			});
-		});
-
-		editor.on('ObjectResizeStart', function(e) {
-			if (e.target.nodeName === 'TABLE') {
-				objectResizeTarget = e.target;
-				objectResizeStartWidth = e.width;
-				objectResizeStartHeight = e.height;
-			}
+			editor.dom.bind(getBody(), 'mousedown', mouseDownHandler);
 		});
 
 		// If we're updating the table width via the old mechanic, we need to update the constituent cells' widths/heights too.
 		editor.on('ObjectResized', function(e) {
-			if (objectResizeTarget === e.target) {
-				var objectResizeEndWidth = e.width,
-					objectResizeEndHeight = e.height,
-					widthRatio = objectResizeEndWidth / objectResizeStartWidth,
-					heightRatio = objectResizeEndHeight / objectResizeStartHeight;
-
-				Tools.each(objectResizeTarget.rows, function(row) {
+			var table = e.target;
+			if (table.nodeName === 'TABLE') {
+				var newCellSizes = [];
+				Tools.each(table.rows, function(row) {
 					Tools.each(row.cells, function(cell) {
-						var width = getNonPercentagePixelWidth(cell);
-						if (width) {
-							width = Math.round(width * widthRatio);
-							editor.dom.setStyle(cell, 'width', width + 'px');
-							editor.dom.setAttrib(cell, 'width', null);
-						}
-						var height = getPixelHeight(cell);
-						if (height) {
-							height = Math.round(height * heightRatio);
-							editor.dom.setStyle(cell, 'height', height + 'px');
-							editor.dom.setAttrib(cell, 'height', null);
-						}
+						var width = editor.dom.getStyle(cell, 'width', true);
+						newCellSizes.push({
+							cell: cell,
+							width: width
+						});
 					});
+				});
+				Tools.each(newCellSizes, function(newCellSize) {
+					editor.dom.setStyle(newCellSize.cell, 'width', newCellSize.width);
+					editor.dom.setAttrib(newCellSize.cell, 'width', null);
 				});
 			}
 		});
@@ -3395,11 +3452,30 @@ define("tinymce/tableplugin/ResizeBars", [
 			if (!dragging) {
 				var tableElement = editor.dom.getParent(e.target, 'table');
 
-				if (e.target.nodeName === 'table' || tableElement) {
+				if (e.target.nodeName === 'TABLE' || tableElement) {
 					hoverTable = tableElement;
 					refreshBars(tableElement);
 				}
 			}
+		});
+
+		// Prevents the user from moving the caret inside the resize bars on Chrome
+		// Only does it on arrow keys since clearBars might be an epxensive operation
+		// since it's querying the DOM
+		editor.on('keydown', function(e) {
+			switch (e.keyCode) {
+				case VK.LEFT:
+				case VK.RIGHT:
+				case VK.UP:
+				case VK.DOWN:
+					clearBars();
+					break;
+			}
+		});
+
+		editor.on('remove', function() {
+			clearBars();
+			editor.dom.unbind(getBody(), 'mousedown', mouseDownHandler);
 		});
 
 		return {
@@ -3453,7 +3529,12 @@ define("tinymce/tableplugin/Plugin", [
 	var each = Tools.each;
 
 	function Plugin(editor) {
-		var clipboardRows, self = this, dialogs = new Dialogs(editor), resizeBars = ResizeBars(editor);
+		var clipboardRows, self = this, dialogs = new Dialogs(editor), resizeBars;
+
+		if (editor.settings.object_resizing && editor.settings.table_resize_bars !== false &&
+			(editor.settings.object_resizing === true || editor.settings.object_resizing === 'table')) {
+			resizeBars = ResizeBars(editor);
+		}
 
 		function cmd(command) {
 			return function() {
@@ -3470,7 +3551,7 @@ define("tinymce/tableplugin/Plugin", [
 				html += '<tr>';
 
 				for (x = 0; x < cols; x++) {
-					html += '<td>' + (Env.ie ? " " : '<br>') + '</td>';
+					html += '<td>' + (Env.ie && Env.ie < 10 ? '&nbsp;' : '<br>') + '</td>';
 				}
 
 				html += '</tr>';
@@ -3484,6 +3565,18 @@ define("tinymce/tableplugin/Plugin", [
 				tableElm = editor.dom.get('__mce');
 				editor.dom.setAttrib(tableElm, 'id', null);
 
+				editor.$('tr', tableElm).each(function(index, row) {
+					editor.fire('newrow', {
+						node: row
+					});
+
+					editor.$('th,td', row).each(function(index, cell) {
+						editor.fire('newcell', {
+							node: cell
+						});
+					});
+				});
+
 				editor.dom.setAttribs(tableElm, editor.settings.table_default_attributes || {});
 				editor.dom.setStyles(tableElm, editor.settings.table_default_styles || {});
 			});
@@ -3491,9 +3584,32 @@ define("tinymce/tableplugin/Plugin", [
 			return tableElm;
 		}
 
-		function handleDisabledState(ctrl, selector) {
+		function handleDisabledState(ctrl, selector, sameParts) {
 			function bindStateListener() {
-				ctrl.disabled(!editor.dom.getParent(editor.selection.getStart(), selector));
+				var selectedElm, selectedCells, parts = {}, sum = 0, state;
+
+				selectedCells = editor.dom.select('td[data-mce-selected],th[data-mce-selected]');
+				selectedElm = selectedCells[0];
+				if (!selectedElm) {
+					selectedElm = editor.selection.getStart();
+				}
+
+				// Make sure that we don't have a selection inside thead and tbody at the same time
+				if (sameParts && selectedCells.length > 0) {
+					each(selectedCells, function(cell) {
+						return parts[cell.parentNode.parentNode.nodeName] = 1;
+					});
+
+					each(parts, function(value) {
+						sum += value;
+					});
+
+					state = sum !== 1;
+				} else {
+					state = !editor.dom.getParent(selectedElm, selector);
+				}
+
+				ctrl.disabled(state);
 
 				editor.selection.selectorChanged(selector, function(state) {
 					ctrl.disabled(!state);
@@ -3515,6 +3631,11 @@ define("tinymce/tableplugin/Plugin", [
 		function postRenderCell() {
 			/*jshint validthis:true*/
 			handleDisabledState(this, 'td,th');
+		}
+
+		function postRenderMergeCell() {
+			/*jshint validthis:true*/
+			handleDisabledState(this, 'td,th', true);
 		}
 
 		function generateTableGrid() {
@@ -3664,7 +3785,7 @@ define("tinymce/tableplugin/Plugin", [
 			context: 'table',
 			menu: [
 				{text: 'Cell properties', onclick: cmd('mceTableCellProps'), onPostRender: postRenderCell},
-				{text: 'Merge cells', onclick: cmd('mceTableMergeCells'), onPostRender: postRenderCell},
+				{text: 'Merge cells', onclick: cmd('mceTableMergeCells'), onPostRender: postRenderMergeCell},
 				{text: 'Split cell', onclick: cmd('mceTableSplitCells'), onPostRender: postRenderCell}
 			]
 		});
@@ -3754,7 +3875,7 @@ define("tinymce/tableplugin/Plugin", [
 
 				cell = editor.dom.getParent(editor.selection.getStart(), 'th,td');
 
-				if (!editor.dom.select('td.mce-item-selected,th.mce-item-selected').length) {
+				if (!editor.dom.select('td[data-mce-selected],th[data-mce-selected]').length) {
 					dialogs.merge(grid, cell);
 				} else {
 					grid.merge();
@@ -3802,7 +3923,9 @@ define("tinymce/tableplugin/Plugin", [
 			},
 
 			mceTableDelete: function(grid) {
-				resizeBars.clearBars();
+				if (resizeBars) {
+					resizeBars.clearBars();
+				}
 				grid.deleteTable();
 			}
 		}, function(func, name) {
@@ -3917,13 +4040,17 @@ define("tinymce/tableplugin/Plugin", [
 
 		function isTable(table) {
 
-			var selectorMatched = editor.dom.is(table, 'table');
+			var selectorMatched = editor.dom.is(table, 'table') && editor.getBody().contains(table);
 
 			return selectorMatched;
 		}
 
 		function addToolbars() {
 			var toolbarItems = editor.settings.table_toolbar;
+
+			if (toolbarItems === '' || toolbarItems === false) {
+				return;
+			}
 
 			if (!toolbarItems) {
 				toolbarItems = 'tableprops tabledelete | ' +
@@ -3971,4 +4098,4 @@ define("tinymce/tableplugin/Plugin", [
 
 	PluginManager.add('table', Plugin);
 });
-})(window);
+})(this);
