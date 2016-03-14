@@ -7,14 +7,14 @@
 <metal:portlet define-macro="portlet"
    tal:define="controlPanel python:modules['Products.CMFCore.utils'].getToolByName(here, 'portal_controlpanel');
                groups python:controlPanel.getGroups('site');
-               portal_url context/portal_url;">
+               site_url controlPanel/site_url">
 
 <section class="portlet portletNavigationTree portletSiteSetup" role="section"
     id="portlet-prefs"
     tal:condition="controlPanel/maySeeSomeConfiglets">
   <header class="portletHeader">
         <a href=""
-           tal:attributes="href string:${portal_url}/@@overview-controlpanel"
+           tal:attributes="href string:${site_url}/@@overview-controlpanel"
            i18n:translate="">Site Setup</a>
   </header>
 
