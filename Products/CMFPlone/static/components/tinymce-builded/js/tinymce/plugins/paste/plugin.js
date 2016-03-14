@@ -80,7 +80,7 @@
 
 			target[fragments[fragments.length - 1]] = modules[id];
 		}
-
+		
 		// Expose private modules for unit tests
 		if (exports.AMDLC_TESTS) {
 			privateModules = exports.privateModules || {};
@@ -1713,4 +1713,4 @@ define("tinymce/pasteplugin/Plugin", [
 });
 
 expose(["tinymce/pasteplugin/Utils"]);
-})(window);
+})(this);

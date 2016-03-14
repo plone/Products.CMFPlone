@@ -14,7 +14,8 @@ Incompatibilities:
 
 New:
 
-- *add item here*
+- Upgrade TinyMCE to 4.3.4
+  [vangheem]
 
 Fixes:
 

@@ -46,6 +46,12 @@ figure.align-right {
 	float: right;
 }
 
+figure.image.align-center {
+	display: table;
+	margin-left: auto;
+	margin-right: auto;
+}
+
 figure.image {
 	display: inline-block;
 	border: 1px solid gray;
@@ -134,7 +140,7 @@ hr {
 	border: 1px dashed #BBB;
 }
 
-td.mce-item-selected, th.mce-item-selected {
+td[data-mce-selected], th[data-mce-selected] {
 	background-color: #3399ff !important;
 }
 
