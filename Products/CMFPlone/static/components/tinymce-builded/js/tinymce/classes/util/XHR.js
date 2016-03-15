@@ -63,6 +63,8 @@ define("tinymce/util/XHR", [
 			settings.async = settings.async === false ? false : true;
 			settings.data = settings.data || '';
 
+			XHR.fire('beforeInitialize', {settings: settings});
+
 			xhr = new XMLHttpRequest();
 
 			if (xhr) {

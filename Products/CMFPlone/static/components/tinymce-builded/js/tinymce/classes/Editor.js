@@ -152,7 +152,7 @@ define("tinymce/Editor", [
 			url_converter: self.convertURL,
 			url_converter_scope: self,
 			ie7_compat: true
-		}, settings);
+		}, editorManager.defaultSettings, settings);
 
 		AddOnManager.language = settings.language || 'en';
 		AddOnManager.languageLoad = settings.language_load;
@@ -528,6 +528,10 @@ define("tinymce/Editor", [
 						initPlugin(dep);
 					});
 
+					if (self.plugins[plugin]) {
+						return;
+					}
+
 					pluginInstance = new Plugin(self, pluginUrl, self.$);
 
 					self.plugins[plugin] = pluginInstance;
@@ -630,14 +634,17 @@ define("tinymce/Editor", [
 			self.iframeHTML += '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />';
 
 			// Load the CSS by injecting them into the HTML this will reduce "flicker"
-			for (i = 0; i < self.contentCSS.length; i++) {
-				var cssUrl = self.contentCSS[i];
-				self.iframeHTML += (
-					'<link type="text/css" ' +
-						'rel="stylesheet" ' +
-						'href="' + Tools._addCacheSuffix(cssUrl) + '" />'
-				);
-				self.loadedCSS[cssUrl] = true;
+			// However we can't do that on Chrome since # will scroll to the editor for some odd reason see #2427
+			if (!/#$/.test(document.location.href)) {
+				for (i = 0; i < self.contentCSS.length; i++) {
+					var cssUrl = self.contentCSS[i];
+					self.iframeHTML += (
+						'<link type="text/css" ' +
+							'rel="stylesheet" ' +
+							'href="' + Tools._addCacheSuffix(cssUrl) + '" />'
+					);
+					self.loadedCSS[cssUrl] = true;
+				}
 			}
 
 			bodyId = settings.body_id || 'tinymce';
@@ -2179,7 +2186,7 @@ define("tinymce/Editor", [
 		_refreshContentEditable: function() {
 			var self = this, body, parent;
 
-			// Check if the editor was hidden and the re-initalize contentEditable mode by removing and adding the body again
+			// Check if the editor was hidden and the re-initialize contentEditable mode by removing and adding the body again
 			if (self._isHidden()) {
 				body = self.getBody();
 				parent = body.parentNode;

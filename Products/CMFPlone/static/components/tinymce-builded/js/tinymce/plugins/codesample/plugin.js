@@ -80,7 +80,7 @@
 
 			target[fragments[fragments.length - 1]] = modules[id];
 		}
-
+		
 		// Expose private modules for unit tests
 		if (exports.AMDLC_TESTS) {
 			privateModules = exports.privateModules || {};
@@ -1253,7 +1253,11 @@ define("tinymce/codesampleplugin/Plugin", [
 
 					$elm.attr('class', $.trim($elm.attr('class')));
 					$elm.removeAttr('contentEditable');
-					$elm.empty().append($('<code></code>').text(code));
+
+					$elm.empty().append($('<code></code>').each(function() {
+						// Needs to be textContent since innerText produces BR:s
+						this.textContent = code;
+					}));
 				});
 		});
 
@@ -1284,7 +1288,7 @@ define("tinymce/codesampleplugin/Plugin", [
 
 		editor.addButton('codesample', {
 			cmd: 'codesample',
-			title: 'Insert/edit code sample'
+			title: 'Insert/Edit code sample'
 		});
 
 		editor.on('init', loadCss);
@@ -1292,4 +1296,4 @@ define("tinymce/codesampleplugin/Plugin", [
 });
 
 expose(["tinymce/codesampleplugin/Prism","tinymce/codesampleplugin/Utils","tinymce/codesampleplugin/Dialog","tinymce/codesampleplugin/Plugin"]);
-})(window);
+})(this);

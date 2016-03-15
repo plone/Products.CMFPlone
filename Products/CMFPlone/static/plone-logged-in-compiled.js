@@ -3697,7 +3697,7 @@ define('mockup-patterns-relateditems',[
 (function(root) {
 define("tinymce", [], function() {
   return (function() {
-// 4.3.0 (2015-11-23)
+// 4.3.4 (2016-02-11)
 
 /**
  * Compiled inline version. (Library mode)
@@ -3781,7 +3781,7 @@ define("tinymce", [], function() {
 
 			target[fragments[fragments.length - 1]] = modules[id];
 		}
-
+		
 		// Expose private modules for unit tests
 		if (exports.AMDLC_TESTS) {
 			privateModules = exports.privateModules || {};
@@ -4367,6 +4367,34 @@ define("tinymce/util/Delay", [
 		},
 
 		/**
+		 * Creates throttled callback function that only gets executed once within the specified time.
+		 *
+		 * @method throttle
+		 * @param {function} callback Callback to execute when timer finishes.
+		 * @param {Number} time Optional time to wait before the callback is executed, defaults to 0.
+		 * @return {Function} Throttled function callback.
+		 */
+		throttle: function(callback, time) {
+			var timer, func;
+
+			func = function() {
+				var args = arguments;
+
+				clearTimeout(timer);
+
+				timer = wrappedSetTimeout(function() {
+					callback.apply(this, args);
+				}, time);
+			};
+
+			func.stop = function() {
+				clearTimeout(timer);
+			};
+
+			return func;
+		},
+
+		/**
 		 * Clears an interval timer so it won't execute.
 		 *
 		 * @method clearInterval
@@ -4462,6 +4490,19 @@ define("tinymce/dom/EventUtils", [
 		// Normalize target IE uses srcElement
 		if (!event.target) {
 			event.target = event.srcElement || document;
+		}
+
+		// When target element is inside Shadow DOM we need to take first element from path
+		// otherwise we'll get Shadow Root parent, not actual target element
+
+		// Normalize target for WebComponents v0 implementation (in Chrome)
+		if (event.path) {
+			event.target = event.path[0];
+		}
+
+		// Normalize target for WebComponents v1 implementation (standard)
+		if (event.deepPath) {
+			event.target = event.deepPath[0];
 		}
 
 		// Calculate pageX/Y if missing and clientX/Y available
@@ -7021,7 +7062,11 @@ return Sizzle;
  */
 define("tinymce/Env", [], function() {
 	var nav = navigator, userAgent = nav.userAgent;
-	var opera, webkit, ie, ie11, ie12, gecko, mac, iDevice, android, fileApi;
+	var opera, webkit, ie, ie11, ie12, gecko, mac, iDevice, android, fileApi, phone, tablet, windowsPhone;
+
+	function matchMediaQuery(query) {
+		return "matchMedia" in window ? matchMedia(query).matches : false;
+	}
 
 	opera = window.opera && window.opera.buildNumber;
 	android = /Android/.test(userAgent);
@@ -7035,6 +7080,9 @@ define("tinymce/Env", [], function() {
 	mac = userAgent.indexOf('Mac') != -1;
 	iDevice = /(iPad|iPhone)/.test(userAgent);
 	fileApi = "FormData" in window && "FileReader" in window && "URL" in window && !!URL.createObjectURL;
+	phone = matchMediaQuery("only screen and (max-device-width: 480px)") && (android || iDevice);
+	tablet = matchMediaQuery("only screen and (min-width: 800px)") && (android || iDevice);
+	windowsPhone = userAgent.indexOf('Windows Phone') != -1;
 
 	if (ie12) {
 		webkit = false;
@@ -7165,7 +7213,10 @@ define("tinymce/Env", [], function() {
 		 * @property ceFalse
 		 * @type Boolean
 		 */
-		ceFalse: (ie === false || ie > 8)
+		ceFalse: (ie === false || ie > 8),
+
+		desktop: !phone && !tablet,
+		windowsPhone: windowsPhone
 	};
 });
 
@@ -7414,7 +7465,7 @@ define("tinymce/util/Tools", [
 	 * More details on this method can be found in the Wiki.
 	 *
 	 * @method create
-	 * @param {String} s Class name, inheritage and prefix.
+	 * @param {String} s Class name, inheritance and prefix.
 	 * @param {Object} p Collection of methods to add to the class.
 	 * @param {Object} root Optional root object defaults to the global window object.
 	 * @example
@@ -8417,7 +8468,8 @@ define("tinymce/dom/DomQuery", [
 		 */
 		append: function() {
 			return domManipulate(this, arguments, function(node) {
-				if (this.nodeType === 1) {
+				// Either element or Shadow Root
+				if (this.nodeType === 1 || (this.host && this.host.nodeType === 1)) {
 					this.appendChild(node);
 				}
 			});
@@ -8432,7 +8484,8 @@ define("tinymce/dom/DomQuery", [
 		 */
 		prepend: function() {
 			return domManipulate(this, arguments, function(node) {
-				if (this.nodeType === 1) {
+				// Either element or Shadow Root
+				if (this.nodeType === 1 || (this.host && this.host.nodeType === 1)) {
 					this.insertBefore(node, this.firstChild);
 				}
 			}, true);
@@ -9639,7 +9692,7 @@ define("tinymce/html/Styles", [], function() {
 					}
 
 					// IE 11 will produce a border-image: none when getting the style attribute from <p style="border: 1px solid red"></p>
-					// So lets asume it shouldn't be there
+					// So let us assume it shouldn't be there
 					if (styles['border-image'] === 'none') {
 						delete styles['border-image'];
 					}
@@ -9777,6 +9830,35 @@ define("tinymce/dom/TreeWalker", [], function() {
 			}
 		}
 
+		function findPreviousNode(node, startName, siblingName, shallow) {
+			var sibling, parent, child;
+
+			if (node) {
+				sibling = node[siblingName];
+				if (rootNode && sibling === rootNode) {
+					return;
+				}
+
+				if (sibling) {
+					if (!shallow) {
+						// Walk up the parents to look for siblings
+						for (child = sibling[startName]; child; child = child[startName]) {
+							if (!child[startName]) {
+								return child;
+							}
+						}
+					}
+
+					return sibling;
+				}
+
+				parent = node.parentNode;
+				if (parent && parent !== rootNode) {
+					return parent;
+				}
+			}
+		}
+
 		/**
 		 * Returns the current node.
 		 *
@@ -9806,6 +9888,11 @@ define("tinymce/dom/TreeWalker", [], function() {
 		 */
 		this.prev = function(shallow) {
 			node = findSibling(node, 'lastChild', 'previousSibling', shallow);
+			return node;
+		};
+
+		this.prev2 = function(shallow) {
+			node = findPreviousNode(node, 'lastChild', 'previousSibling', shallow);
 			return node;
 		};
 	};
@@ -10554,7 +10641,7 @@ define("tinymce/dom/Range", [
 		}
 
 		extend(self, {
-			// Inital states
+			// Initial states
 			startContainer: doc,
 			startOffset: 0,
 			endContainer: doc,
@@ -13810,7 +13897,7 @@ define("tinymce/dom/RangeUtils", [
 
 			// Handle table cell selection the table plugin enables
 			// you to fake select table cells and perform formatting actions on them
-			nodes = dom.select('td.mce-item-selected,th.mce-item-selected');
+			nodes = dom.select('td[data-mce-selected],th[data-mce-selected]');
 			if (nodes.length > 0) {
 				each(nodes, function(node) {
 					callback([node]);
@@ -17740,11 +17827,7 @@ define("tinymce/dom/Serializer", [
 	"tinymce/text/Zwsp"
 ], function(DOMUtils, DomParser, SaxParser, Entities, Serializer, Node, Schema, Env, Tools, Zwsp) {
 	var each = Tools.each, trim = Tools.trim;
-	var DOM = DOMUtils.DOM;
-	var trimContentRegExp = new RegExp([
-		'<span[^>]+data-mce-bogus[^>]+>[\u200B\uFEFF]+<\\/span>', // Trim bogus spans like caret containers
-		'\\s?data-mce-selected="[^"]+"' // Trim temporaty data-mce prefixed attributes like data-mce-selected
-	].join('|'), 'gi');
+	var DOM = DOMUtils.DOM, tempAttrs = ["data-mce-selected"];
 
 	/**
 	 * IE 11 has a fantastic bug where it will produce two trailing BR elements to iframe bodies when
@@ -17789,6 +17872,17 @@ define("tinymce/dom/Serializer", [
 			schema = editor.schema;
 		}
 
+		function trimHtml(html) {
+			var trimContentRegExp = new RegExp([
+				'<span[^>]+data-mce-bogus[^>]+>[\u200B\uFEFF]+<\\/span>', // Trim bogus spans like caret containers
+				'\\s?(' + tempAttrs.join('|') + ')="[^"]+"' // Trim temporaty data-mce prefixed attributes like data-mce-selected
+			].join('|'), 'gi');
+
+			html = Zwsp.trim(html.replace(trimContentRegExp, ''));
+
+			return html;
+		}
+
 		/**
 		 * Returns a trimmed version of the editor contents to be used for the undo level. This
 		 * will remove any data-mce-bogus="all" marked elements since these are used for UI it will also
@@ -17804,7 +17898,7 @@ define("tinymce/dom/Serializer", [
 			var bogusAllRegExp = /<(\w+) [^>]*data-mce-bogus="all"[^>]*>/g;
 			var endTagIndex, index, matchLength, matches, shortEndedElements, schema = editor.schema;
 
-			content = Zwsp.trim(content.replace(trimContentRegExp, ''));
+			content = trimHtml(content);
 			shortEndedElements = schema.getShortEndedElements();
 
 			// Remove all bogus elements marked with "all"
@@ -17823,6 +17917,20 @@ define("tinymce/dom/Serializer", [
 			}
 
 			return trim(content);
+		}
+
+		function addTempAttr(name) {
+			if (Tools.inArray(tempAttrs, name) === -1) {
+				htmlParser.addAttributeFilter(name, function(nodes, name) {
+					var i = nodes.length;
+
+					while (i--) {
+						nodes[i].attr(name, null);
+					}
+				});
+
+				tempAttrs.push(name);
+			}
 		}
 
 		// Default DOM and Schema if they are undefined
@@ -18181,6 +18289,17 @@ define("tinymce/dom/Serializer", [
 				}
 			},
 
+			/**
+			 * Adds a temporary internal attribute these attributes will get removed on undo and
+			 * when getting contents out of the editor.
+			 *
+			 * @method addTempAttr
+			 * @param {String} name string
+			 */
+			addTempAttr: addTempAttr,
+
+			// Internal
+			trimHtml: trimHtml,
 			getTrimmedContent: getTrimmedContent
 		};
 	};
@@ -18417,8 +18536,9 @@ define("tinymce/dom/TridentSelection", [], function() {
 				}
 			} catch (ex) {
 				// IE has a nasty bug where text nodes might throw "invalid argument" when you
-				// access the nodeValue or other properties of text nodes. This seems to happend when
-				// text nodes are split into two nodes by a delete/backspace call. So lets detect it and try to fix it.
+				// access the nodeValue or other properties of text nodes. This seems to happen when
+				// text nodes are split into two nodes by a delete/backspace call.
+				// So let us detect and try to fix it.
 				if (ex.number == -2147024809) {
 					// Get the current selection
 					bookmark = self.getBookmark(2);
@@ -18798,7 +18918,7 @@ define("tinymce/dom/ControlSelection", [
 			rootClass + ' .mce-resizehandle:hover {' +
 				'background: #000' +
 			'}' +
-			rootClass + ' *[data-mce-selected] {' +
+			rootClass + ' img[data-mce-selected],' + rootClass + ' hr[data-mce-selected] {' +
 				'outline: 1px solid black;' +
 				'resize: none' + // Have been talks about implementing this in browsers
 			'}' +
@@ -18972,6 +19092,7 @@ define("tinymce/dom/ControlSelection", [
 		function showResizeRect(targetElm, mouseDownHandleName, mouseDownEvent) {
 			var position, targetWidth, targetHeight, e, rect;
 
+			hideResizeRect();
 			unbindResizeHandleEvents();
 
 			// Get position and size of target
@@ -19328,16 +19449,14 @@ define("tinymce/dom/ControlSelection", [
 				}
 			}
 
-			editor.on('nodechange ResizeEditor ResizeWindow drop', function(e) {
-				Delay.requestAnimationFrame(function() {
-					updateResizeRect(e);
-				});
-			});
+			var throttledUpdateResizeRect = Delay.throttle(updateResizeRect);
+
+			editor.on('nodechange ResizeEditor ResizeWindow drop', throttledUpdateResizeRect);
 
 			// Update resize rect while typing in a table
 			editor.on('keydown keyup', function(e) {
 				if (selectedElm && selectedElm.nodeName == "TABLE") {
-					updateResizeRect(e);
+					throttledUpdateResizeRect(e);
 				}
 			});
 
@@ -19665,6 +19784,15 @@ define("tinymce/geom/ClientRect", [], function() {
 		return 0;
 	}
 
+	function containsXY(clientRect, clientX, clientY) {
+		return (
+			clientX >= clientRect.left &&
+			clientX <= clientRect.right &&
+			clientY >= clientRect.top &&
+			clientY <= clientRect.bottom
+		);
+	}
+
 	return {
 		clone: clone,
 		collapse: collapse,
@@ -19673,7 +19801,8 @@ define("tinymce/geom/ClientRect", [], function() {
 		isBelow: isBelow,
 		isLeft: isLeft,
 		isRight: isRight,
-		compare: compare
+		compare: compare,
+		containsXY: containsXY
 	};
 });
 
@@ -22118,6 +22247,75 @@ define("tinymce/fmt/Preview", [
 	};
 });
 
+// Included from: js/tinymce/classes/fmt/Hooks.js
+
+/**
+ * Hooks.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2016 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+/**
+ * Internal class for overriding formatting.
+ *
+ * @private
+ * @class tinymce.fmt.Hooks
+ */
+define("tinymce/fmt/Hooks", [
+	"tinymce/util/Arr",
+	"tinymce/dom/NodeType",
+	"tinymce/dom/DomQuery"
+], function(Arr, NodeType, $) {
+	var postProcessHooks = [], filter = Arr.filter, each = Arr.each;
+
+	function addPostProcessHook(name, hook) {
+		var hooks = postProcessHooks[name];
+
+		if (!hooks) {
+			postProcessHooks[name] = hooks = [];
+		}
+
+		postProcessHooks[name].push(hook);
+	}
+
+	function postProcess(name, editor) {
+		each(postProcessHooks[name], function(hook) {
+			hook(editor);
+		});
+	}
+
+	addPostProcessHook("pre", function(editor) {
+		var rng = editor.selection.getRng(), isPre, blocks;
+
+		function hasPreSibling(pre) {
+			return isPre(pre.previousSibling) && Arr.indexOf(blocks, pre.previousSibling) != -1;
+		}
+
+		function joinPre(pre1, pre2) {
+			$(pre2).remove();
+			$(pre1).append('<br><br>').append(pre2.childNodes);
+		}
+
+		isPre = NodeType.matchNodeNames('pre');
+
+		if (!rng.collapsed) {
+			blocks = editor.selection.getSelectedBlocks();
+
+			each(filter(filter(blocks, isPre), hasPreSibling), function(pre) {
+				joinPre(pre.previousSibling, pre);
+			});
+		}
+	});
+
+	return {
+		postProcess: postProcess
+	};
+});
+
 // Included from: js/tinymce/classes/Formatter.js
 
 /**
@@ -22150,8 +22348,9 @@ define("tinymce/Formatter", [
 	"tinymce/dom/BookmarkManager",
 	"tinymce/dom/ElementUtils",
 	"tinymce/util/Tools",
-	"tinymce/fmt/Preview"
-], function(TreeWalker, RangeUtils, BookmarkManager, ElementUtils, Tools, Preview) {
+	"tinymce/fmt/Preview",
+	"tinymce/fmt/Hooks"
+], function(TreeWalker, RangeUtils, BookmarkManager, ElementUtils, Tools, Preview, Hooks) {
 	/**
 	 * Constructs a new formatter instance.
 	 *
@@ -22229,6 +22428,7 @@ define("tinymce/Formatter", [
 
 				aligncenter: [
 					{selector: 'figure,p,h1,h2,h3,h4,h5,h6,td,th,tr,div,ul,ol,li', styles: {textAlign: 'center'}, defaultBlock: 'div'},
+					{selector: 'figure.image', collapsed: false, classes: 'align-center', ceFalseOverride: true},
 					{selector: 'img', collapsed: false, styles: {display: 'block', marginLeft: 'auto', marginRight: 'auto'}},
 					{selector: 'table', collapsed: false, styles: {marginLeft: 'auto', marginRight: 'auto'}}
 				],
@@ -22750,7 +22950,7 @@ define("tinymce/Formatter", [
 						applyRngStyle(node, null, true);
 					}
 				} else {
-					if (!isCollapsed || !format.inline || dom.select('td.mce-item-selected,th.mce-item-selected').length) {
+					if (!isCollapsed || !format.inline || dom.select('td[data-mce-selected],th[data-mce-selected]').length) {
 						// Obtain selection node before selection is unselected by applyRngStyle()
 						var curSelNode = ed.selection.getNode();
 
@@ -22779,6 +22979,8 @@ define("tinymce/Formatter", [
 						performCaretAction('apply', name, vars);
 					}
 				}
+
+				Hooks.postProcess(name, ed);
 			}
 		}
 
@@ -23028,7 +23230,7 @@ define("tinymce/Formatter", [
 				return;
 			}
 
-			if (!selection.isCollapsed() || !format.inline || dom.select('td.mce-item-selected,th.mce-item-selected').length) {
+			if (!selection.isCollapsed() || !format.inline || dom.select('td[data-mce-selected],th[data-mce-selected]').length) {
 				bookmark = selection.getBookmark();
 				removeRngStyle(selection.getRng(TRUE));
 				selection.moveToBookmark(bookmark);
@@ -24243,7 +24445,7 @@ define("tinymce/Formatter", [
 				}
 			}
 
-			// Applies formatting to the caret postion
+			// Applies formatting to the caret position
 			function applyCaretFormat() {
 				var rng, caretContainer, textNode, offset, bookmark, container, text;
 
@@ -24363,7 +24565,7 @@ define("tinymce/Formatter", [
 						// Replace formatNode with caretContainer when removing format from empty block like <p><b>|</b></p>
 						formatNode.parentNode.replaceChild(caretContainer, formatNode);
 					} else {
-						// Insert caret container after the formated node
+						// Insert caret container after the formatted node
 						dom.insertAfter(caretContainer, formatNode);
 					}
 
@@ -25494,6 +25696,8 @@ define("tinymce/EnterKey", [
 					emptyBlock(parentBlock);
 				}
 
+				newBlock.normalize();
+
 				// New block might become empty if it's <p><b>a |</b></p>
 				if (dom.isEmpty(newBlock)) {
 					dom.remove(newBlock);
@@ -26291,6 +26495,9 @@ define("tinymce/EditorCommands", [
 
 				// Insert node maker where we will insert the new HTML and get it's parent
 				if (!selection.isCollapsed()) {
+					// Fix for #2595 seems that delete removes one extra character on
+					// WebKit for some odd reason if you double click select a word
+					editor.selection.setRng(editor.selection.getRng());
 					editor.getDoc().execCommand('Delete', false, null);
 					trimNbspAfterDeleteAndPaddValue();
 				}
@@ -27113,7 +27320,7 @@ define("tinymce/util/URI", [
  */
 
 /**
- * This utilitiy class is used for easier inheritage.
+ * This utilitiy class is used for easier inheritance.
  *
  * Features:
  * * Exposed super functions: this._super();
@@ -29170,7 +29377,7 @@ define("tinymce/ui/ClassList", [
 
 /**
  * This class will automatically reflow controls on the next animation frame within a few milliseconds on older browsers.
- * If the user manually reflows then the automatic reflow will be cancelled. This class is unsed internally when various control states
+ * If the user manually reflows then the automatic reflow will be cancelled. This class is used internally when various control states
  * changes that triggers a reflow.
  *
  * @class tinymce.ui.ReflowQueue
@@ -32372,7 +32579,7 @@ define("tinymce/ui/FloatPanel", [
 			}
 		}
 
-		var modalBlockEl = document.getElementById(ctrl.classPrefix + 'modal-block');
+		var modalBlockEl = $('#' + ctrl.classPrefix + 'modal-block', ctrl.getContainerElm())[0];
 
 		if (topModal) {
 			$(modalBlockEl).css('z-index', topModal.zIndex - 1);
@@ -32422,7 +32629,7 @@ define("tinymce/ui/FloatPanel", [
 					var $modalBlockEl, prefix = self.classPrefix;
 
 					if (self.modal && !hasModal) {
-						$modalBlockEl = $('#' + prefix + 'modal-block');
+						$modalBlockEl = $('#' + prefix + 'modal-block', self.getContainerElm());
 						if (!$modalBlockEl[0]) {
 							$modalBlockEl = $(
 								'<div id="' + prefix + 'modal-block" class="' + prefix + 'reset ' + prefix + 'fade"></div>'
@@ -32685,7 +32892,7 @@ define("tinymce/ui/Window", [
 
 				$(window).trigger('resize');
 			}
-		});
+		}, 100);
 
 		function reposition() {
 			var i, rect = DomUtils.getWindowSize(), layoutRect;
@@ -33330,6 +33537,18 @@ define("tinymce/WindowManager", [
 			}
 		}
 
+		function fireOpenEvent(win) {
+			editor.fire('OpenWindow', {
+				win: win
+			});
+		}
+
+		function fireCloseEvent(win) {
+			editor.fire('CloseWindow', {
+				win: win
+			});
+		}
+
 		self.windows = windows;
 
 		editor.on('remove', function() {
@@ -33403,6 +33622,8 @@ define("tinymce/WindowManager", [
 				if (!windows.length) {
 					editor.focus();
 				}
+
+				fireCloseEvent(win);
 			});
 
 			// Handle data
@@ -33427,7 +33648,11 @@ define("tinymce/WindowManager", [
 				editor.nodeChanged();
 			}
 
-			return win.renderTo().reflow();
+			win = win.renderTo().reflow();
+
+			fireOpenEvent(win);
+
+			return win;
 		};
 
 		/**
@@ -33443,13 +33668,21 @@ define("tinymce/WindowManager", [
 		 * tinymce.activeEditor.windowManager.alert('Hello world!');
 		 */
 		self.alert = function(message, callback, scope) {
-			MessageBox.alert(message, function() {
+			var win;
+
+			win = MessageBox.alert(message, function() {
 				if (callback) {
 					callback.call(scope || this);
 				} else {
 					editor.focus();
 				}
 			});
+
+			win.on('close', function() {
+				fireCloseEvent(win);
+			});
+
+			fireOpenEvent(win);
 		};
 
 		/**
@@ -33470,9 +33703,17 @@ define("tinymce/WindowManager", [
 		 * });
 		 */
 		self.confirm = function(message, callback, scope) {
-			MessageBox.confirm(message, function(state) {
+			var win;
+
+			win = MessageBox.confirm(message, function(state) {
 				callback.call(scope || this, state);
 			});
+
+			win.on('close', function() {
+				fireCloseEvent(win);
+			});
+
+			fireOpenEvent(win);
 		};
 
 		/**
@@ -34126,6 +34367,19 @@ define("tinymce/NotificationManager", [
 			return notifications;
 		};
 
+		editor.on('SkinLoaded', function() {
+			var serviceMessage = editor.settings.service_message;
+
+			if (serviceMessage) {
+				editor.notificationManager.open({
+					text: serviceMessage,
+					type: 'warning',
+					timeout: 0,
+					icon: ''
+				});
+			}
+		});
+
 		//self.positionNotifications = positionNotifications;
 	};
 });
@@ -34747,7 +35001,7 @@ define("tinymce/util/Quirks", [
 						}
 					}
 
-					// Remove all spans that isn't maked and retain selection
+					// Remove all spans that aren't marked and retain selection
 					Tools.each(record.addedNodes, function(node) {
 						if (node.nodeName == "SPAN" && !node.getAttribute('mce-data-marked')) {
 							var offset, container;
@@ -35822,7 +36076,12 @@ define("tinymce/util/Quirks", [
 		// All browsers
 		removeBlockQuoteOnBackSpace();
 		emptyEditorWhenDeleting();
-		normalizeSelection();
+
+		// Windows phone will return a range like [body, 0] on mousedown so
+		// it will always normalize to the wrong location
+		if (!Env.windowsPhone) {
+			normalizeSelection();
+		}
 
 		// WebKit
 		if (isWebKit) {
@@ -38138,11 +38397,16 @@ define("tinymce/caret/LineUtils", [
  * @class tinymce.DragDropOverrides
  */
 define("tinymce/DragDropOverrides", [
-	"tinymce/dom/NodeType"
+	"tinymce/dom/NodeType",
+	"tinymce/util/Arr",
+	"tinymce/util/Fun"
 ], function(
-	NodeType
+	NodeType,
+	Arr,
+	Fun
 ) {
-	var isContentEditableFalse = NodeType.isContentEditableFalse;
+	var isContentEditableFalse = NodeType.isContentEditableFalse,
+		isContentEditableTrue = NodeType.isContentEditableTrue;
 
 	function init(editor) {
 		var $ = editor.$, rootDocument = document,
@@ -38264,10 +38528,18 @@ define("tinymce/DragDropOverrides", [
 		}
 
 		function start(e) {
+			var ceElm;
+
 			stop();
 
-			if (isDraggable(e.target)) {
-				if (editor.fire('dragstart', {target: e.target}).isDefaultPrevented()) {
+			if (e.button !== 0) {
+				return;
+			}
+
+			ceElm = Arr.find(editor.dom.getParents(e.target), Fun.or(isContentEditableFalse, isContentEditableTrue));
+
+			if (isDraggable(ceElm)) {
+				if (editor.fire('dragstart', {target: ceElm}).isDefaultPrevented()) {
 					return;
 				}
 
@@ -38284,7 +38556,7 @@ define("tinymce/DragDropOverrides", [
 					screenY: e.screenY,
 					clientX: e.clientX,
 					clientY: e.clientY,
-					element: e.target
+					element: ceElm
 				};
 			}
 		}
@@ -38305,6 +38577,15 @@ define("tinymce/DragDropOverrides", [
 		}
 
 		editor.on('mousedown', start);
+
+		// Blocks drop inside cE=false on IE
+		editor.on('drop', function(e) {
+			var realTarget = editor.getDoc().elementFromPoint(e.clientX, e.clientY);
+
+			if (isContentEditableFalse(realTarget) || isContentEditableFalse(editor.dom.getContentEditableParent(realTarget))) {
+				e.preventDefault();
+			}
+		});
 	}
 
 	return {
@@ -38348,6 +38629,7 @@ define("tinymce/SelectionOverrides", [
 	"tinymce/caret/LineUtils",
 	"tinymce/dom/NodeType",
 	"tinymce/dom/RangeUtils",
+	"tinymce/geom/ClientRect",
 	"tinymce/util/VK",
 	"tinymce/util/Fun",
 	"tinymce/util/Arr",
@@ -38355,7 +38637,7 @@ define("tinymce/SelectionOverrides", [
 	"tinymce/DragDropOverrides"
 ], function(
 	Env, CaretWalker, CaretPosition, CaretContainer, CaretUtils, FakeCaret, LineWalker,
-	LineUtils, NodeType, RangeUtils, VK, Fun, Arr, Delay, DragDropOverrides
+	LineUtils, NodeType, RangeUtils, ClientRect, VK, Fun, Arr, Delay, DragDropOverrides
 ) {
 	var curry = Fun.curry,
 		isContentEditableTrue = NodeType.isContentEditableTrue,
@@ -38380,7 +38662,7 @@ define("tinymce/SelectionOverrides", [
 		var getNextVisualCaretPosition = curry(getVisualCaretPosition, caretWalker.next);
 		var getPrevVisualCaretPosition = curry(getVisualCaretPosition, caretWalker.prev),
 			fakeCaret = new FakeCaret(editor.getBody(), isBlock),
-			realSelectionId = editor.dom.uniqueId(),
+			realSelectionId = 'sel-' + editor.dom.uniqueId(),
 			selectedContentEditableNode, $ = editor.$;
 
 		function isBlock(node) {
@@ -38389,7 +38671,9 @@ define("tinymce/SelectionOverrides", [
 
 		function setRange(range) {
 			//console.log('setRange', range);
-			editor.selection.setRng(range);
+			if (range) {
+				editor.selection.setRng(range);
+			}
 		}
 
 		function getRange() {
@@ -38649,16 +38933,8 @@ define("tinymce/SelectionOverrides", [
 			}
 		}
 
-		function renderRangeCaret(range) {
+		function renderCaretAtRange(range) {
 			var caretPosition;
-
-			if (!range) {
-				return range;
-			}
-
-			if (!range.collapsed) {
-				return range;
-			}
 
 			range = CaretUtils.normalizeRange(1, rootNode, range);
 			caretPosition = CaretPosition.fromRangeStart(range);
@@ -38672,6 +38948,21 @@ define("tinymce/SelectionOverrides", [
 			}
 
 			fakeCaret.hide();
+
+			return null;
+		}
+
+		function renderRangeCaret(range) {
+			var caretRange;
+
+			if (!range || !range.collapsed) {
+				return range;
+			}
+
+			caretRange = renderCaretAtRange(range);
+			if (caretRange) {
+				return caretRange;
+			}
 
 			return range;
 		}
@@ -38751,15 +39042,13 @@ define("tinymce/SelectionOverrides", [
 			var up = curry(moveV, -1, LineWalker.upUntil);
 			var down = curry(moveV, 1, LineWalker.downUntil);
 
-			function override(moveFn) {
+			function override(evt, moveFn) {
 				var range = moveFn(getRange());
 
-				if (range) {
+				if (range && !evt.isDefaultPrevented()) {
+					evt.preventDefault();
 					setRange(range);
-					return true;
 				}
-
-				return false;
 			}
 
 			function getContentEditableRoot(node) {
@@ -38776,13 +39065,23 @@ define("tinymce/SelectionOverrides", [
 				return null;
 			}
 
+			function isXYWithinRange(clientX, clientY, range) {
+				if (range.collapsed) {
+					return false;
+				}
+
+				return Arr.reduce(range.getClientRects(), function(state, rect) {
+					return state || ClientRect.containsXY(rect, clientX, clientY);
+				}, false);
+			}
+
 			// Some browsers (Chrome) lets you place the caret after a cE=false
 			// Make sure we render the caret container in this case
 			editor.on('mouseup', function() {
 				var range = getRange();
 
 				if (range.collapsed) {
-					setRange(renderRangeCaret(range));
+					setRange(renderCaretAtRange(range));
 				}
 			});
 
@@ -38795,7 +39094,9 @@ define("tinymce/SelectionOverrides", [
 						e.preventDefault();
 						setContentEditableSelection(selectNode(contentEditableRoot), false);
 					} else {
-						editor.selection.placeCaretAt(e.clientX, e.clientY);
+						if (!isXYWithinRange(e.clientX, e.clientY, editor.selection.getRng())) {
+							editor.selection.placeCaretAt(e.clientX, e.clientY);
+						}
 					}
 				} else {
 					clearContentEditableSelection();
@@ -38811,44 +39112,40 @@ define("tinymce/SelectionOverrides", [
 			});
 
 			editor.on('keydown', function(e) {
-				var prevent;
-
 				if (VK.modifierPressed(e)) {
 					return;
 				}
 
 				switch (e.keyCode) {
 					case VK.RIGHT:
-						prevent = override(right);
+						override(e, right);
 						break;
 
 					case VK.DOWN:
-						prevent = override(down);
+						override(e, down);
 						break;
 
 					case VK.LEFT:
-						prevent = override(left);
+						override(e, left);
 						break;
 
 					case VK.UP:
-						prevent = override(up);
+						override(e, up);
 						break;
 
 					case VK.DELETE:
-						prevent = override(deleteForward);
+						override(e, deleteForward);
 						break;
 
 					case VK.BACKSPACE:
-						prevent = override(backspace);
+						override(e, backspace);
 						break;
 
 					default:
-						prevent = isContentEditableFalse(editor.selection.getNode());
+						if (isContentEditableFalse(editor.selection.getNode())) {
+							e.preventDefault();
+						}
 						break;
-				}
-
-				if (prevent) {
-					e.preventDefault();
 				}
 			});
 
@@ -39246,7 +39543,7 @@ define("tinymce/Editor", [
 			url_converter: self.convertURL,
 			url_converter_scope: self,
 			ie7_compat: true
-		}, settings);
+		}, editorManager.defaultSettings, settings);
 
 		AddOnManager.language = settings.language || 'en';
 		AddOnManager.languageLoad = settings.language_load;
@@ -39622,6 +39919,10 @@ define("tinymce/Editor", [
 						initPlugin(dep);
 					});
 
+					if (self.plugins[plugin]) {
+						return;
+					}
+
 					pluginInstance = new Plugin(self, pluginUrl, self.$);
 
 					self.plugins[plugin] = pluginInstance;
@@ -39724,14 +40025,17 @@ define("tinymce/Editor", [
 			self.iframeHTML += '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />';
 
 			// Load the CSS by injecting them into the HTML this will reduce "flicker"
-			for (i = 0; i < self.contentCSS.length; i++) {
-				var cssUrl = self.contentCSS[i];
-				self.iframeHTML += (
-					'<link type="text/css" ' +
-						'rel="stylesheet" ' +
-						'href="' + Tools._addCacheSuffix(cssUrl) + '" />'
-				);
-				self.loadedCSS[cssUrl] = true;
+			// However we can't do that on Chrome since # will scroll to the editor for some odd reason see #2427
+			if (!/#$/.test(document.location.href)) {
+				for (i = 0; i < self.contentCSS.length; i++) {
+					var cssUrl = self.contentCSS[i];
+					self.iframeHTML += (
+						'<link type="text/css" ' +
+							'rel="stylesheet" ' +
+							'href="' + Tools._addCacheSuffix(cssUrl) + '" />'
+					);
+					self.loadedCSS[cssUrl] = true;
+				}
 			}
 
 			bodyId = settings.body_id || 'tinymce';
@@ -41273,7 +41577,7 @@ define("tinymce/Editor", [
 		_refreshContentEditable: function() {
 			var self = this, body, parent;
 
-			// Check if the editor was hidden and the re-initalize contentEditable mode by removing and adding the body again
+			// Check if the editor was hidden and the re-initialize contentEditable mode by removing and adding the body again
 			if (self._isHidden()) {
 				body = self.getBody();
 				parent = body.parentNode;
@@ -41602,7 +41906,7 @@ define("tinymce/FocusManager", [
 				Delay.setEditorTimeout(editor, function() {
 					var focusedEditor = editorManager.focusedEditor;
 
-					// Still the same editor the the blur was outside any editor UI
+					// Still the same editor the blur was outside any editor UI
 					if (!isUIElement(getActiveElement()) && focusedEditor == editor) {
 						editor.fire('blur', {focusedEditor: null});
 						editorManager.focusedEditor = null;
@@ -41720,10 +42024,11 @@ define("tinymce/EditorManager", [
 	"tinymce/util/URI",
 	"tinymce/Env",
 	"tinymce/util/Tools",
+	"tinymce/util/Promise",
 	"tinymce/util/Observable",
 	"tinymce/util/I18n",
 	"tinymce/FocusManager"
-], function(Editor, $, DOMUtils, URI, Env, Tools, Observable, I18n, FocusManager) {
+], function(Editor, $, DOMUtils, URI, Env, Tools, Promise, Observable, I18n, FocusManager) {
 	var DOM = DOMUtils.DOM;
 	var explode = Tools.explode, each = Tools.each, extend = Tools.extend;
 	var instanceCounter = 0, beforeUnloadDelegate, EditorManager, boundGlobalEvents = false;
@@ -41807,7 +42112,7 @@ define("tinymce/EditorManager", [
 		 * @property minorVersion
 		 * @type String
 		 */
-		minorVersion: '3.0',
+		minorVersion: '3.4',
 
 		/**
 		 * Release date of TinyMCE build.
@@ -41815,7 +42120,7 @@ define("tinymce/EditorManager", [
 		 * @property releaseDate
 		 * @type String
 		 */
-		releaseDate: '2015-11-23',
+		releaseDate: '2016-02-11',
 
 		/**
 		 * Collection of editor instances.
@@ -41938,23 +42243,49 @@ define("tinymce/EditorManager", [
 		},
 
 		/**
+		 * Overrides the default settings for editor instances.
+		 *
+		 * @method overrideDefaults
+		 * @param {Object} defaultSettings Defaults settings object.
+		 */
+		overrideDefaults: function(defaultSettings) {
+			var baseUrl, suffix;
+
+			baseUrl = defaultSettings.base_url;
+			if (baseUrl) {
+				this.baseURL = new URI(this.documentBaseURL).toAbsolute(baseUrl.replace(/\/+$/, ''));
+				this.baseURI = new URI(this.baseURL);
+			}
+
+			suffix = defaultSettings.suffix;
+			if (defaultSettings.suffix) {
+				this.suffix = suffix;
+			}
+
+			this.defaultSettings = defaultSettings;
+		},
+
+		/**
 		 * Initializes a set of editors. This method will create editors based on various settings.
 		 *
 		 * @method init
 		 * @param {Object} settings Settings object to be passed to each editor instance.
+		 * @return {tinymce.util.Promise} Promise that gets resolved with an array of editors when all editor instances are initialized.
 		 * @example
 		 * // Initializes a editor using the longer method
 		 * tinymce.EditorManager.init({
 		 *    some_settings : 'some value'
 		 * });
 		 *
-		 * // Initializes a editor instance using the shorter version
-		 * tinyMCE.init({
+		 * // Initializes a editor instance using the shorter version and with a promise
+		 * tinymce.init({
 		 *    some_settings : 'some value'
+		 * }).then(function(editors) {
+		 *    ...
 		 * });
 		 */
 		init: function(settings) {
-			var self = this, editors = [];
+			var self = this;
 
 			function createId(elm) {
 				var id = elm.id;
@@ -41976,16 +42307,6 @@ define("tinymce/EditorManager", [
 				return id;
 			}
 
-			function createEditor(id, settings, targetElm) {
-				if (!purgeDestroyedEditor(self.get(id))) {
-					var editor = new Editor(id, settings, self);
-
-					editor.targetElm = editor.targetElm || targetElm;
-					editors.push(editor);
-					editor.render();
-				}
-			}
-
 			function execCallback(name) {
 				var callback = settings[name];
 
@@ -42000,31 +42321,17 @@ define("tinymce/EditorManager", [
 				return className.constructor === RegExp ? className.test(elm.className) : DOM.hasClass(elm, className);
 			}
 
-			function readyHandler() {
-				var l, co;
-
-				DOM.unbind(window, 'ready', readyHandler);
-
-				execCallback('onpageload');
+			function findTargets(settings) {
+				var l, targets = [];
 
 				if (settings.types) {
-					// Process type specific selector
 					each(settings.types, function(type) {
-						each(DOM.select(type.selector), function(elm) {
-							createEditor(createId(elm), extend({}, settings, type), elm);
-						});
+						targets = targets.concat(DOM.select(type.selector));
 					});
-
-					return;
 				} else if (settings.selector) {
-					// Process global selector
-					each(DOM.select(settings.selector), function(elm) {
-						createEditor(createId(elm), settings, elm);
-					});
-
-					return;
+					targets = DOM.select(settings.selector);
 				} else if (settings.target) {
-					createEditor(createId(settings.target), settings);
+					targets = [settings.target];
 				}
 
 				// Fallback to old setting
@@ -42037,14 +42344,14 @@ define("tinymce/EditorManager", [
 								var elm;
 
 								if ((elm = DOM.get(id))) {
-									createEditor(id, settings, elm);
+									targets.push(elm);
 								} else {
 									each(document.forms, function(f) {
 										each(f.elements, function(e) {
 											if (e.name === id) {
 												id = 'mce_editor_' + instanceCounter++;
 												DOM.setAttrib(e, 'id', id);
-												createEditor(id, settings, e);
+												targets.push(e);
 											}
 										});
 									});
@@ -42061,44 +42368,70 @@ define("tinymce/EditorManager", [
 							}
 
 							if (!settings.editor_selector || hasClass(elm, settings.editor_selector)) {
-								createEditor(createId(elm), settings, elm);
+								targets.push(elm);
 							}
 						});
 						break;
 				}
 
-				// Call onInit when all editors are initialized
-				if (settings.oninit) {
-					l = co = 0;
+				return targets;
+			}
 
-					each(editors, function(ed) {
-						co++;
+			function initEditors(resolve, readyHandler) {
+				var initCount = 0, editors = [], targets;
 
-						if (!ed.initialized) {
-							// Wait for it
-							ed.on('init', function() {
-								l++;
+				function createEditor(id, settings, targetElm) {
+					if (!purgeDestroyedEditor(self.get(id))) {
+						var editor = new Editor(id, settings, self);
 
-								// All done
-								if (l == co) {
-									execCallback('oninit');
-								}
-							});
-						} else {
-							l++;
-						}
+						editors.push(editor);
 
-						// All done
-						if (l == co) {
-							execCallback('oninit');
-						}
-					});
+						editor.on('init', function() {
+							if (++initCount === targets.length) {
+								resolve(editors);
+							}
+						});
+
+						editor.targetElm = editor.targetElm || targetElm;
+						editor.render();
+					}
 				}
+
+				DOM.unbind(window, 'ready', readyHandler);
+				execCallback('onpageload');
+
+				targets = findTargets(settings);
+
+				// TODO: Deprecate this one
+				if (settings.types) {
+					each(settings.types, function(type) {
+						Tools.each(targets, function(elm) {
+							if (DOM.is(elm, type.selector)) {
+								createEditor(createId(elm), extend({}, settings, type), elm);
+								return false;
+							}
+
+							return true;
+						});
+					});
+
+					return;
+				}
+
+				each(targets, function(elm) {
+					createEditor(createId(elm), settings, elm);
+				});
 			}
 
 			self.settings = settings;
 
-			DOM.bind(window, 'ready', readyHandler);
+			return new Promise(function(resolve) {
+				var readyHandler = function() {
+					initEditors(resolve, readyHandler);
+				};
+
+				DOM.bind(window, 'ready', readyHandler);
+			});
 		},
 
 		/**
@@ -42522,6 +42855,8 @@ define("tinymce/util/XHR", [
 			settings.error_scope = settings.error_scope || settings.scope;
 			settings.async = settings.async === false ? false : true;
 			settings.data = settings.data || '';
+
+			XHR.fire('beforeInitialize', {settings: settings});
 
 			xhr = new XMLHttpRequest();
 
@@ -47138,8 +47473,9 @@ define("tinymce/ui/MenuButton", [
 define("tinymce/ui/MenuItem", [
 	"tinymce/ui/Widget",
 	"tinymce/ui/Factory",
-	"tinymce/Env"
-], function(Widget, Factory, Env) {
+	"tinymce/Env",
+	"tinymce/util/Delay"
+], function(Widget, Factory, Env, Delay) {
 	"use strict";
 
 	return Widget.extend({
@@ -47399,7 +47735,11 @@ define("tinymce/ui/MenuItem", [
 				if (e.control === self) {
 					if (!settings.menu && e.type === 'click') {
 						self.fire('select');
-						self.parent().hideAll();
+
+						// Edge will crash if you stress it see #2660
+						Delay.requestAnimationFrame(function() {
+							self.parent().hideAll();
+						});
 					} else {
 						self.showMenu();
 
@@ -47411,6 +47751,18 @@ define("tinymce/ui/MenuItem", [
 			});
 
 			self._super();
+
+			return self;
+		},
+
+		hover: function() {
+			var self = this;
+
+			self.parent().items().each(function(ctrl) {
+				ctrl.classes.remove('selected');
+			});
+
+			self.classes.toggle('selected', true);
 
 			return self;
 		},
@@ -47438,6 +47790,97 @@ define("tinymce/ui/MenuItem", [
 	});
 });
 
+// Included from: js/tinymce/classes/ui/Throbber.js
+
+/**
+ * Throbber.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2015 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+/**
+ * This class enables you to display a Throbber for any element.
+ *
+ * @-x-less Throbber.less
+ * @class tinymce.ui.Throbber
+ */
+define("tinymce/ui/Throbber", [
+	"tinymce/dom/DomQuery",
+	"tinymce/ui/Control",
+	"tinymce/util/Delay"
+], function($, Control, Delay) {
+	"use strict";
+
+	/**
+	 * Constructs a new throbber.
+	 *
+	 * @constructor
+	 * @param {Element} elm DOM Html element to display throbber in.
+	 * @param {Boolean} inline Optional true/false state if the throbber should be appended to end of element for infinite scroll.
+	 */
+	return function(elm, inline) {
+		var self = this, state, classPrefix = Control.classPrefix, timer;
+
+		/**
+		 * Shows the throbber.
+		 *
+		 * @method show
+		 * @param {Number} [time] Time to wait before showing.
+		 * @param {function} [callback] Optional callback to execute when the throbber is shown.
+		 * @return {tinymce.ui.Throbber} Current throbber instance.
+		 */
+		self.show = function(time, callback) {
+			function render() {
+					if (state) {
+						$(elm).append(
+							'<div class="' + classPrefix + 'throbber' + (inline ? ' ' + classPrefix + 'throbber-inline' : '') + '"></div>'
+						);
+
+						if (callback) {
+							callback();
+						}
+					}
+			}
+
+			self.hide();
+
+			state = true;
+
+			if (time) {
+				timer = Delay.setTimeout(render, time);
+			} else {
+				render();
+			}
+
+			return self;
+		};
+
+		/**
+		 * Hides the throbber.
+		 *
+		 * @method hide
+		 * @return {tinymce.ui.Throbber} Current throbber instance.
+		 */
+		self.hide = function() {
+			var child = elm.lastChild;
+
+			Delay.clearTimeout(timer);
+
+			if (child && child.className.indexOf('throbber') != -1) {
+				child.parentNode.removeChild(child);
+			}
+
+			state = false;
+
+			return self;
+		};
+	};
+});
+
 // Included from: js/tinymce/classes/ui/Menu.js
 
 /**
@@ -47460,8 +47903,9 @@ define("tinymce/ui/MenuItem", [
 define("tinymce/ui/Menu", [
 	"tinymce/ui/FloatPanel",
 	"tinymce/ui/MenuItem",
+	"tinymce/ui/Throbber",
 	"tinymce/util/Tools"
-], function(FloatPanel, MenuItem, Tools) {
+], function(FloatPanel, MenuItem, Throbber, Tools) {
 	"use strict";
 
 	return FloatPanel.extend({
@@ -47485,6 +47929,11 @@ define("tinymce/ui/Menu", [
 
 			settings.autohide = true;
 			settings.constrainToViewport = true;
+
+			if (typeof settings.items === 'function') {
+				settings.itemsFactory = settings.items;
+				settings.items = [];
+			}
 
 			if (settings.itemDefaults) {
 				var items = settings.items, i = items.length;
@@ -47527,6 +47976,67 @@ define("tinymce/ui/Menu", [
 		},
 
 		/**
+		 * Loads new items from the factory items function.
+		 *
+		 * @method load
+		 */
+		load: function() {
+			var self = this, time, factory;
+
+			function hideThrobber() {
+				if (self.throbber) {
+					self.throbber.hide();
+					self.throbber = null;
+				}
+			}
+
+			factory = self.settings.itemsFactory;
+			if (!factory) {
+				return;
+			}
+
+			if (!self.throbber) {
+				self.throbber = new Throbber(self.getEl('body'), true);
+
+				if (self.items().length === 0) {
+					self.throbber.show();
+					self.fire('loading');
+				} else {
+					self.throbber.show(100, function() {
+						self.items().remove();
+						self.fire('loading');
+					});
+				}
+
+				self.on('hide close', hideThrobber);
+			}
+
+			self.requestTime = time = new Date().getTime();
+
+			self.settings.itemsFactory(function(items) {
+				if (items.length === 0) {
+					self.hide();
+					return;
+				}
+
+				if (self.requestTime !== time) {
+					return;
+				}
+
+				self.getEl().style.width = '';
+				self.getEl('body').style.width = '';
+
+				hideThrobber();
+				self.items().remove();
+				self.getEl('body').innerHTML = '';
+
+				self.add(items);
+				self.renderNew();
+				self.fire('loaded');
+			});
+		},
+
+		/**
 		 * Hide menu and all sub menus.
 		 *
 		 * @method hideAll
@@ -47555,6 +48065,14 @@ define("tinymce/ui/Menu", [
 					return false;
 				}
 			});
+
+			if (self.settings.itemsFactory) {
+				self.on('postrender', function() {
+					if (self.settings.itemsFactory) {
+						self.load();
+					}
+				});
+			}
 
 			return self._super();
 		}
@@ -48730,91 +49248,8 @@ define("tinymce/ui/TextBox", [
 	});
 });
 
-// Included from: js/tinymce/classes/ui/Throbber.js
-
-/**
- * Throbber.js
- *
- * Released under LGPL License.
- * Copyright (c) 1999-2015 Ephox Corp. All rights reserved
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-/**
- * This class enables you to display a Throbber for any element.
- *
- * @-x-less Throbber.less
- * @class tinymce.ui.Throbber
- */
-define("tinymce/ui/Throbber", [
-	"tinymce/dom/DomQuery",
-	"tinymce/ui/Control",
-	"tinymce/util/Delay"
-], function($, Control, Delay) {
-	"use strict";
-
-	/**
-	 * Constructs a new throbber.
-	 *
-	 * @constructor
-	 * @param {Element} elm DOM Html element to display throbber in.
-	 * @param {Boolean} inline Optional true/false state if the throbber should be appended to end of element for infinite scroll.
-	 */
-	return function(elm, inline) {
-		var self = this, state, classPrefix = Control.classPrefix;
-
-		/**
-		 * Shows the throbber.
-		 *
-		 * @method show
-		 * @param {Number} [time] Time to wait before showing.
-		 * @param {function} [callback] Optional callback to execute when the throbber is shown.
-		 * @return {tinymce.ui.Throbber} Current throbber instance.
-		 */
-		self.show = function(time, callback) {
-			self.hide();
-
-			state = true;
-
-			Delay.setTimeout(function() {
-				if (state) {
-					$(elm).append(
-						'<div class="' + classPrefix + 'throbber' + (inline ? ' ' + classPrefix + 'throbber-inline' : '') + '"></div>'
-					);
-
-					if (callback) {
-						callback();
-					}
-				}
-			}, time);
-
-			return self;
-		};
-
-		/**
-		 * Hides the throbber.
-		 *
-		 * @method hide
-		 * @return {tinymce.ui.Throbber} Current throbber instance.
-		 */
-		self.hide = function() {
-			var child = elm.lastChild;
-
-			if (child && child.className.indexOf('throbber') != -1) {
-				child.parentNode.removeChild(child);
-			}
-
-			state = false;
-
-			return self;
-		};
-	};
-});
-
-expose(["tinymce/geom/Rect","tinymce/util/Promise","tinymce/util/Delay","tinymce/dom/EventUtils","tinymce/dom/Sizzle","tinymce/Env","tinymce/util/Tools","tinymce/dom/DomQuery","tinymce/html/Styles","tinymce/dom/TreeWalker","tinymce/html/Entities","tinymce/dom/DOMUtils","tinymce/dom/ScriptLoader","tinymce/AddOnManager","tinymce/dom/RangeUtils","tinymce/html/Node","tinymce/html/Schema","tinymce/html/SaxParser","tinymce/html/DomParser","tinymce/html/Writer","tinymce/html/Serializer","tinymce/dom/Serializer","tinymce/util/VK","tinymce/dom/ControlSelection","tinymce/dom/BookmarkManager","tinymce/dom/Selection","tinymce/Formatter","tinymce/UndoManager","tinymce/EditorCommands","tinymce/util/URI","tinymce/util/Class","tinymce/util/EventDispatcher","tinymce/util/Observable","tinymce/ui/Selector","tinymce/ui/Collection","tinymce/ui/ReflowQueue","tinymce/ui/Control","tinymce/ui/Factory","tinymce/ui/KeyboardNavigation","tinymce/ui/Container","tinymce/ui/DragHelper","tinymce/ui/Scrollable","tinymce/ui/Panel","tinymce/ui/Movable","tinymce/ui/Resizable","tinymce/ui/FloatPanel","tinymce/ui/Window","tinymce/ui/MessageBox","tinymce/WindowManager","tinymce/ui/Tooltip","tinymce/ui/Widget","tinymce/ui/Progress","tinymce/ui/Notification","tinymce/NotificationManager","tinymce/EditorObservable","tinymce/Shortcuts","tinymce/Editor","tinymce/util/I18n","tinymce/FocusManager","tinymce/EditorManager","tinymce/util/XHR","tinymce/util/JSON","tinymce/util/JSONRequest","tinymce/util/JSONP","tinymce/util/LocalStorage","tinymce/Compat","tinymce/ui/Layout","tinymce/ui/AbsoluteLayout","tinymce/ui/Button","tinymce/ui/ButtonGroup","tinymce/ui/Checkbox","tinymce/ui/ComboBox","tinymce/ui/ColorBox","tinymce/ui/PanelButton","tinymce/ui/ColorButton","tinymce/util/Color","tinymce/ui/ColorPicker","tinymce/ui/Path","tinymce/ui/ElementPath","tinymce/ui/FormItem","tinymce/ui/Form","tinymce/ui/FieldSet","tinymce/ui/FilePicker","tinymce/ui/FitLayout","tinymce/ui/FlexLayout","tinymce/ui/FlowLayout","tinymce/ui/FormatControls","tinymce/ui/GridLayout","tinymce/ui/Iframe","tinymce/ui/Label","tinymce/ui/Toolbar","tinymce/ui/MenuBar","tinymce/ui/MenuButton","tinymce/ui/MenuItem","tinymce/ui/Menu","tinymce/ui/ListBox","tinymce/ui/Radio","tinymce/ui/ResizeHandle","tinymce/ui/SelectBox","tinymce/ui/Slider","tinymce/ui/Spacer","tinymce/ui/SplitButton","tinymce/ui/StackLayout","tinymce/ui/TabPanel","tinymce/ui/TextBox","tinymce/ui/Throbber"]);
-})(window);
+expose(["tinymce/geom/Rect","tinymce/util/Promise","tinymce/util/Delay","tinymce/dom/EventUtils","tinymce/dom/Sizzle","tinymce/Env","tinymce/util/Tools","tinymce/dom/DomQuery","tinymce/html/Styles","tinymce/dom/TreeWalker","tinymce/html/Entities","tinymce/dom/DOMUtils","tinymce/dom/ScriptLoader","tinymce/AddOnManager","tinymce/dom/RangeUtils","tinymce/html/Node","tinymce/html/Schema","tinymce/html/SaxParser","tinymce/html/DomParser","tinymce/html/Writer","tinymce/html/Serializer","tinymce/dom/Serializer","tinymce/util/VK","tinymce/dom/ControlSelection","tinymce/dom/BookmarkManager","tinymce/dom/Selection","tinymce/Formatter","tinymce/UndoManager","tinymce/EditorCommands","tinymce/util/URI","tinymce/util/Class","tinymce/util/EventDispatcher","tinymce/util/Observable","tinymce/ui/Selector","tinymce/ui/Collection","tinymce/ui/ReflowQueue","tinymce/ui/Control","tinymce/ui/Factory","tinymce/ui/KeyboardNavigation","tinymce/ui/Container","tinymce/ui/DragHelper","tinymce/ui/Scrollable","tinymce/ui/Panel","tinymce/ui/Movable","tinymce/ui/Resizable","tinymce/ui/FloatPanel","tinymce/ui/Window","tinymce/ui/MessageBox","tinymce/WindowManager","tinymce/ui/Tooltip","tinymce/ui/Widget","tinymce/ui/Progress","tinymce/ui/Notification","tinymce/NotificationManager","tinymce/EditorObservable","tinymce/Shortcuts","tinymce/Editor","tinymce/util/I18n","tinymce/FocusManager","tinymce/EditorManager","tinymce/util/XHR","tinymce/util/JSON","tinymce/util/JSONRequest","tinymce/util/JSONP","tinymce/util/LocalStorage","tinymce/Compat","tinymce/ui/Layout","tinymce/ui/AbsoluteLayout","tinymce/ui/Button","tinymce/ui/ButtonGroup","tinymce/ui/Checkbox","tinymce/ui/ComboBox","tinymce/ui/ColorBox","tinymce/ui/PanelButton","tinymce/ui/ColorButton","tinymce/util/Color","tinymce/ui/ColorPicker","tinymce/ui/Path","tinymce/ui/ElementPath","tinymce/ui/FormItem","tinymce/ui/Form","tinymce/ui/FieldSet","tinymce/ui/FilePicker","tinymce/ui/FitLayout","tinymce/ui/FlexLayout","tinymce/ui/FlowLayout","tinymce/ui/FormatControls","tinymce/ui/GridLayout","tinymce/ui/Iframe","tinymce/ui/Label","tinymce/ui/Toolbar","tinymce/ui/MenuBar","tinymce/ui/MenuButton","tinymce/ui/MenuItem","tinymce/ui/Throbber","tinymce/ui/Menu","tinymce/ui/ListBox","tinymce/ui/Radio","tinymce/ui/ResizeHandle","tinymce/ui/SelectBox","tinymce/ui/Slider","tinymce/ui/Spacer","tinymce/ui/SplitButton","tinymce/ui/StackLayout","tinymce/ui/TabPanel","tinymce/ui/TextBox"]);
+})(this);
 return (function () { this.tinyMCE.DOM.events.domLoaded = true; return this.tinyMCE; }.apply(this, arguments)) || window.tinyMCE;
   }).apply(root, arguments);
 });
@@ -52773,6 +53208,7 @@ tinymce.ThemeManager.add('modern', function(editor) {
 
 				match = findFrontMostMatch(editor.selection.getNode());
 				if (match) {
+					hideAllContextToolbars();
 					showContextToolbar(match);
 				} else {
 					hideAllContextToolbars();
@@ -52923,7 +53359,9 @@ tinymce.ThemeManager.add('modern', function(editor) {
 
 		// Preload skin css
 		if (args.skinUiCss) {
-			tinymce.DOM.styleSheetLoader.load(args.skinUiCss);
+			tinymce.DOM.styleSheetLoader.load(args.skinUiCss, function() {
+				editor.fire('SkinLoaded');
+			});
 		}
 
 		return {};
@@ -52949,7 +53387,9 @@ tinymce.ThemeManager.add('modern', function(editor) {
 		}
 
 		if (args.skinUiCss) {
-			tinymce.DOM.loadCSS(args.skinUiCss);
+			tinymce.DOM.styleSheetLoader.load(args.skinUiCss, function() {
+				editor.fire('SkinLoaded');
+			});
 		}
 
 		// Basic UI layout
@@ -53269,6 +53709,11 @@ define("tinymce-autolink", ["tinymce"], function() {
 
 tinymce.PluginManager.add('autolink', function(editor) {
 	var AutoUrlDetectState;
+	var AutoLinkPattern = /^(https?:\/\/|ssh:\/\/|ftp:\/\/|file:\/|www\.|(?:mailto:)?[A-Z0-9._%+\-]+@)(.+)$/i;
+
+	if (editor.settings.autolink_pattern) {
+		AutoLinkPattern = editor.settings.autolink_pattern;
+	}
 
 	editor.on("keydown", function(e) {
 		if (e.keyCode == 13) {
@@ -53361,7 +53806,7 @@ tinymce.PluginManager.add('autolink', function(editor) {
 		// hence, at minimum, five characters from the beginning of the line.
 		rng = editor.selection.getRng(true).cloneRange();
 		if (rng.startOffset < 5) {
-			// During testing, the caret is placed inbetween two text nodes.
+			// During testing, the caret is placed between two text nodes.
 			// The previous text node contains the URL.
 			prev = rng.endContainer.previousSibling;
 			if (!prev) {
@@ -53436,7 +53881,7 @@ tinymce.PluginManager.add('autolink', function(editor) {
 		}
 
 		text = rng.toString();
-		matches = text.match(/^(https?:\/\/|ssh:\/\/|ftp:\/\/|file:\/|www\.|(?:mailto:)?[A-Z0-9._%+\-]+@)(.+)$/i);
+		matches = text.match(AutoLinkPattern);
 
 		if (matches) {
 			if (matches[1] == 'www.') {
@@ -53951,266 +54396,311 @@ define("tinymce-charmap", ["tinymce"], function() {
 /*global tinymce:true */
 
 tinymce.PluginManager.add('charmap', function(editor) {
-	var charmap = [
-		['160', 'no-break space'],
-		['173', 'soft hyphen'],
-		['34', 'quotation mark'],
-	// finance
-		['162', 'cent sign'],
-		['8364', 'euro sign'],
-		['163', 'pound sign'],
-		['165', 'yen sign'],
-	// signs
-		['169', 'copyright sign'],
-		['174', 'registered sign'],
-		['8482', 'trade mark sign'],
-		['8240', 'per mille sign'],
-		['181', 'micro sign'],
-		['183', 'middle dot'],
-		['8226', 'bullet'],
-		['8230', 'three dot leader'],
-		['8242', 'minutes / feet'],
-		['8243', 'seconds / inches'],
-		['167', 'section sign'],
-		['182', 'paragraph sign'],
-		['223', 'sharp s / ess-zed'],
-	// quotations
-		['8249', 'single left-pointing angle quotation mark'],
-		['8250', 'single right-pointing angle quotation mark'],
-		['171', 'left pointing guillemet'],
-		['187', 'right pointing guillemet'],
-		['8216', 'left single quotation mark'],
-		['8217', 'right single quotation mark'],
-		['8220', 'left double quotation mark'],
-		['8221', 'right double quotation mark'],
-		['8218', 'single low-9 quotation mark'],
-		['8222', 'double low-9 quotation mark'],
-		['60', 'less-than sign'],
-		['62', 'greater-than sign'],
-		['8804', 'less-than or equal to'],
-		['8805', 'greater-than or equal to'],
-		['8211', 'en dash'],
-		['8212', 'em dash'],
-		['175', 'macron'],
-		['8254', 'overline'],
-		['164', 'currency sign'],
-		['166', 'broken bar'],
-		['168', 'diaeresis'],
-		['161', 'inverted exclamation mark'],
-		['191', 'turned question mark'],
-		['710', 'circumflex accent'],
-		['732', 'small tilde'],
-		['176', 'degree sign'],
-		['8722', 'minus sign'],
-		['177', 'plus-minus sign'],
-		['247', 'division sign'],
-		['8260', 'fraction slash'],
-		['215', 'multiplication sign'],
-		['185', 'superscript one'],
-		['178', 'superscript two'],
-		['179', 'superscript three'],
-		['188', 'fraction one quarter'],
-		['189', 'fraction one half'],
-		['190', 'fraction three quarters'],
-	// math / logical
-		['402', 'function / florin'],
-		['8747', 'integral'],
-		['8721', 'n-ary sumation'],
-		['8734', 'infinity'],
-		['8730', 'square root'],
-		['8764', 'similar to'],
-		['8773', 'approximately equal to'],
-		['8776', 'almost equal to'],
-		['8800', 'not equal to'],
-		['8801', 'identical to'],
-		['8712', 'element of'],
-		['8713', 'not an element of'],
-		['8715', 'contains as member'],
-		['8719', 'n-ary product'],
-		['8743', 'logical and'],
-		['8744', 'logical or'],
-		['172', 'not sign'],
-		['8745', 'intersection'],
-		['8746', 'union'],
-		['8706', 'partial differential'],
-		['8704', 'for all'],
-		['8707', 'there exists'],
-		['8709', 'diameter'],
-		['8711', 'backward difference'],
-		['8727', 'asterisk operator'],
-		['8733', 'proportional to'],
-		['8736', 'angle'],
-	// undefined
-		['180', 'acute accent'],
-		['184', 'cedilla'],
-		['170', 'feminine ordinal indicator'],
-		['186', 'masculine ordinal indicator'],
-		['8224', 'dagger'],
-		['8225', 'double dagger'],
-	// alphabetical special chars
-		['192', 'A - grave'],
-		['193', 'A - acute'],
-		['194', 'A - circumflex'],
-		['195', 'A - tilde'],
-		['196', 'A - diaeresis'],
-		['197', 'A - ring above'],
-		['198', 'ligature AE'],
-		['199', 'C - cedilla'],
-		['200', 'E - grave'],
-		['201', 'E - acute'],
-		['202', 'E - circumflex'],
-		['203', 'E - diaeresis'],
-		['204', 'I - grave'],
-		['205', 'I - acute'],
-		['206', 'I - circumflex'],
-		['207', 'I - diaeresis'],
-		['208', 'ETH'],
-		['209', 'N - tilde'],
-		['210', 'O - grave'],
-		['211', 'O - acute'],
-		['212', 'O - circumflex'],
-		['213', 'O - tilde'],
-		['214', 'O - diaeresis'],
-		['216', 'O - slash'],
-		['338', 'ligature OE'],
-		['352', 'S - caron'],
-		['217', 'U - grave'],
-		['218', 'U - acute'],
-		['219', 'U - circumflex'],
-		['220', 'U - diaeresis'],
-		['221', 'Y - acute'],
-		['376', 'Y - diaeresis'],
-		['222', 'THORN'],
-		['224', 'a - grave'],
-		['225', 'a - acute'],
-		['226', 'a - circumflex'],
-		['227', 'a - tilde'],
-		['228', 'a - diaeresis'],
-		['229', 'a - ring above'],
-		['230', 'ligature ae'],
-		['231', 'c - cedilla'],
-		['232', 'e - grave'],
-		['233', 'e - acute'],
-		['234', 'e - circumflex'],
-		['235', 'e - diaeresis'],
-		['236', 'i - grave'],
-		['237', 'i - acute'],
-		['238', 'i - circumflex'],
-		['239', 'i - diaeresis'],
-		['240', 'eth'],
-		['241', 'n - tilde'],
-		['242', 'o - grave'],
-		['243', 'o - acute'],
-		['244', 'o - circumflex'],
-		['245', 'o - tilde'],
-		['246', 'o - diaeresis'],
-		['248', 'o slash'],
-		['339', 'ligature oe'],
-		['353', 's - caron'],
-		['249', 'u - grave'],
-		['250', 'u - acute'],
-		['251', 'u - circumflex'],
-		['252', 'u - diaeresis'],
-		['253', 'y - acute'],
-		['254', 'thorn'],
-		['255', 'y - diaeresis'],
-		['913', 'Alpha'],
-		['914', 'Beta'],
-		['915', 'Gamma'],
-		['916', 'Delta'],
-		['917', 'Epsilon'],
-		['918', 'Zeta'],
-		['919', 'Eta'],
-		['920', 'Theta'],
-		['921', 'Iota'],
-		['922', 'Kappa'],
-		['923', 'Lambda'],
-		['924', 'Mu'],
-		['925', 'Nu'],
-		['926', 'Xi'],
-		['927', 'Omicron'],
-		['928', 'Pi'],
-		['929', 'Rho'],
-		['931', 'Sigma'],
-		['932', 'Tau'],
-		['933', 'Upsilon'],
-		['934', 'Phi'],
-		['935', 'Chi'],
-		['936', 'Psi'],
-		['937', 'Omega'],
-		['945', 'alpha'],
-		['946', 'beta'],
-		['947', 'gamma'],
-		['948', 'delta'],
-		['949', 'epsilon'],
-		['950', 'zeta'],
-		['951', 'eta'],
-		['952', 'theta'],
-		['953', 'iota'],
-		['954', 'kappa'],
-		['955', 'lambda'],
-		['956', 'mu'],
-		['957', 'nu'],
-		['958', 'xi'],
-		['959', 'omicron'],
-		['960', 'pi'],
-		['961', 'rho'],
-		['962', 'final sigma'],
-		['963', 'sigma'],
-		['964', 'tau'],
-		['965', 'upsilon'],
-		['966', 'phi'],
-		['967', 'chi'],
-		['968', 'psi'],
-		['969', 'omega'],
-	// symbols
-		['8501', 'alef symbol'],
-		['982', 'pi symbol'],
-		['8476', 'real part symbol'],
-		['978', 'upsilon - hook symbol'],
-		['8472', 'Weierstrass p'],
-		['8465', 'imaginary part'],
-	// arrows
-		['8592', 'leftwards arrow'],
-		['8593', 'upwards arrow'],
-		['8594', 'rightwards arrow'],
-		['8595', 'downwards arrow'],
-		['8596', 'left right arrow'],
-		['8629', 'carriage return'],
-		['8656', 'leftwards double arrow'],
-		['8657', 'upwards double arrow'],
-		['8658', 'rightwards double arrow'],
-		['8659', 'downwards double arrow'],
-		['8660', 'left right double arrow'],
-		['8756', 'therefore'],
-		['8834', 'subset of'],
-		['8835', 'superset of'],
-		['8836', 'not a subset of'],
-		['8838', 'subset of or equal to'],
-		['8839', 'superset of or equal to'],
-		['8853', 'circled plus'],
-		['8855', 'circled times'],
-		['8869', 'perpendicular'],
-		['8901', 'dot operator'],
-		['8968', 'left ceiling'],
-		['8969', 'right ceiling'],
-		['8970', 'left floor'],
-		['8971', 'right floor'],
-		['9001', 'left-pointing angle bracket'],
-		['9002', 'right-pointing angle bracket'],
-		['9674', 'lozenge'],
-		['9824', 'black spade suit'],
-		['9827', 'black club suit'],
-		['9829', 'black heart suit'],
-		['9830', 'black diamond suit'],
-		['8194', 'en space'],
-		['8195', 'em space'],
-		['8201', 'thin space'],
-		['8204', 'zero width non-joiner'],
-		['8205', 'zero width joiner'],
-		['8206', 'left-to-right mark'],
-		['8207', 'right-to-left mark']
-	];
+	var isArray = tinymce.util.Tools.isArray;
+
+	function getDefaultCharMap() {
+		return [
+			['160', 'no-break space'],
+			['173', 'soft hyphen'],
+			['34', 'quotation mark'],
+		// finance
+			['162', 'cent sign'],
+			['8364', 'euro sign'],
+			['163', 'pound sign'],
+			['165', 'yen sign'],
+		// signs
+			['169', 'copyright sign'],
+			['174', 'registered sign'],
+			['8482', 'trade mark sign'],
+			['8240', 'per mille sign'],
+			['181', 'micro sign'],
+			['183', 'middle dot'],
+			['8226', 'bullet'],
+			['8230', 'three dot leader'],
+			['8242', 'minutes / feet'],
+			['8243', 'seconds / inches'],
+			['167', 'section sign'],
+			['182', 'paragraph sign'],
+			['223', 'sharp s / ess-zed'],
+		// quotations
+			['8249', 'single left-pointing angle quotation mark'],
+			['8250', 'single right-pointing angle quotation mark'],
+			['171', 'left pointing guillemet'],
+			['187', 'right pointing guillemet'],
+			['8216', 'left single quotation mark'],
+			['8217', 'right single quotation mark'],
+			['8220', 'left double quotation mark'],
+			['8221', 'right double quotation mark'],
+			['8218', 'single low-9 quotation mark'],
+			['8222', 'double low-9 quotation mark'],
+			['60', 'less-than sign'],
+			['62', 'greater-than sign'],
+			['8804', 'less-than or equal to'],
+			['8805', 'greater-than or equal to'],
+			['8211', 'en dash'],
+			['8212', 'em dash'],
+			['175', 'macron'],
+			['8254', 'overline'],
+			['164', 'currency sign'],
+			['166', 'broken bar'],
+			['168', 'diaeresis'],
+			['161', 'inverted exclamation mark'],
+			['191', 'turned question mark'],
+			['710', 'circumflex accent'],
+			['732', 'small tilde'],
+			['176', 'degree sign'],
+			['8722', 'minus sign'],
+			['177', 'plus-minus sign'],
+			['247', 'division sign'],
+			['8260', 'fraction slash'],
+			['215', 'multiplication sign'],
+			['185', 'superscript one'],
+			['178', 'superscript two'],
+			['179', 'superscript three'],
+			['188', 'fraction one quarter'],
+			['189', 'fraction one half'],
+			['190', 'fraction three quarters'],
+		// math / logical
+			['402', 'function / florin'],
+			['8747', 'integral'],
+			['8721', 'n-ary sumation'],
+			['8734', 'infinity'],
+			['8730', 'square root'],
+			['8764', 'similar to'],
+			['8773', 'approximately equal to'],
+			['8776', 'almost equal to'],
+			['8800', 'not equal to'],
+			['8801', 'identical to'],
+			['8712', 'element of'],
+			['8713', 'not an element of'],
+			['8715', 'contains as member'],
+			['8719', 'n-ary product'],
+			['8743', 'logical and'],
+			['8744', 'logical or'],
+			['172', 'not sign'],
+			['8745', 'intersection'],
+			['8746', 'union'],
+			['8706', 'partial differential'],
+			['8704', 'for all'],
+			['8707', 'there exists'],
+			['8709', 'diameter'],
+			['8711', 'backward difference'],
+			['8727', 'asterisk operator'],
+			['8733', 'proportional to'],
+			['8736', 'angle'],
+		// undefined
+			['180', 'acute accent'],
+			['184', 'cedilla'],
+			['170', 'feminine ordinal indicator'],
+			['186', 'masculine ordinal indicator'],
+			['8224', 'dagger'],
+			['8225', 'double dagger'],
+		// alphabetical special chars
+			['192', 'A - grave'],
+			['193', 'A - acute'],
+			['194', 'A - circumflex'],
+			['195', 'A - tilde'],
+			['196', 'A - diaeresis'],
+			['197', 'A - ring above'],
+			['198', 'ligature AE'],
+			['199', 'C - cedilla'],
+			['200', 'E - grave'],
+			['201', 'E - acute'],
+			['202', 'E - circumflex'],
+			['203', 'E - diaeresis'],
+			['204', 'I - grave'],
+			['205', 'I - acute'],
+			['206', 'I - circumflex'],
+			['207', 'I - diaeresis'],
+			['208', 'ETH'],
+			['209', 'N - tilde'],
+			['210', 'O - grave'],
+			['211', 'O - acute'],
+			['212', 'O - circumflex'],
+			['213', 'O - tilde'],
+			['214', 'O - diaeresis'],
+			['216', 'O - slash'],
+			['338', 'ligature OE'],
+			['352', 'S - caron'],
+			['217', 'U - grave'],
+			['218', 'U - acute'],
+			['219', 'U - circumflex'],
+			['220', 'U - diaeresis'],
+			['221', 'Y - acute'],
+			['376', 'Y - diaeresis'],
+			['222', 'THORN'],
+			['224', 'a - grave'],
+			['225', 'a - acute'],
+			['226', 'a - circumflex'],
+			['227', 'a - tilde'],
+			['228', 'a - diaeresis'],
+			['229', 'a - ring above'],
+			['230', 'ligature ae'],
+			['231', 'c - cedilla'],
+			['232', 'e - grave'],
+			['233', 'e - acute'],
+			['234', 'e - circumflex'],
+			['235', 'e - diaeresis'],
+			['236', 'i - grave'],
+			['237', 'i - acute'],
+			['238', 'i - circumflex'],
+			['239', 'i - diaeresis'],
+			['240', 'eth'],
+			['241', 'n - tilde'],
+			['242', 'o - grave'],
+			['243', 'o - acute'],
+			['244', 'o - circumflex'],
+			['245', 'o - tilde'],
+			['246', 'o - diaeresis'],
+			['248', 'o slash'],
+			['339', 'ligature oe'],
+			['353', 's - caron'],
+			['249', 'u - grave'],
+			['250', 'u - acute'],
+			['251', 'u - circumflex'],
+			['252', 'u - diaeresis'],
+			['253', 'y - acute'],
+			['254', 'thorn'],
+			['255', 'y - diaeresis'],
+			['913', 'Alpha'],
+			['914', 'Beta'],
+			['915', 'Gamma'],
+			['916', 'Delta'],
+			['917', 'Epsilon'],
+			['918', 'Zeta'],
+			['919', 'Eta'],
+			['920', 'Theta'],
+			['921', 'Iota'],
+			['922', 'Kappa'],
+			['923', 'Lambda'],
+			['924', 'Mu'],
+			['925', 'Nu'],
+			['926', 'Xi'],
+			['927', 'Omicron'],
+			['928', 'Pi'],
+			['929', 'Rho'],
+			['931', 'Sigma'],
+			['932', 'Tau'],
+			['933', 'Upsilon'],
+			['934', 'Phi'],
+			['935', 'Chi'],
+			['936', 'Psi'],
+			['937', 'Omega'],
+			['945', 'alpha'],
+			['946', 'beta'],
+			['947', 'gamma'],
+			['948', 'delta'],
+			['949', 'epsilon'],
+			['950', 'zeta'],
+			['951', 'eta'],
+			['952', 'theta'],
+			['953', 'iota'],
+			['954', 'kappa'],
+			['955', 'lambda'],
+			['956', 'mu'],
+			['957', 'nu'],
+			['958', 'xi'],
+			['959', 'omicron'],
+			['960', 'pi'],
+			['961', 'rho'],
+			['962', 'final sigma'],
+			['963', 'sigma'],
+			['964', 'tau'],
+			['965', 'upsilon'],
+			['966', 'phi'],
+			['967', 'chi'],
+			['968', 'psi'],
+			['969', 'omega'],
+		// symbols
+			['8501', 'alef symbol'],
+			['982', 'pi symbol'],
+			['8476', 'real part symbol'],
+			['978', 'upsilon - hook symbol'],
+			['8472', 'Weierstrass p'],
+			['8465', 'imaginary part'],
+		// arrows
+			['8592', 'leftwards arrow'],
+			['8593', 'upwards arrow'],
+			['8594', 'rightwards arrow'],
+			['8595', 'downwards arrow'],
+			['8596', 'left right arrow'],
+			['8629', 'carriage return'],
+			['8656', 'leftwards double arrow'],
+			['8657', 'upwards double arrow'],
+			['8658', 'rightwards double arrow'],
+			['8659', 'downwards double arrow'],
+			['8660', 'left right double arrow'],
+			['8756', 'therefore'],
+			['8834', 'subset of'],
+			['8835', 'superset of'],
+			['8836', 'not a subset of'],
+			['8838', 'subset of or equal to'],
+			['8839', 'superset of or equal to'],
+			['8853', 'circled plus'],
+			['8855', 'circled times'],
+			['8869', 'perpendicular'],
+			['8901', 'dot operator'],
+			['8968', 'left ceiling'],
+			['8969', 'right ceiling'],
+			['8970', 'left floor'],
+			['8971', 'right floor'],
+			['9001', 'left-pointing angle bracket'],
+			['9002', 'right-pointing angle bracket'],
+			['9674', 'lozenge'],
+			['9824', 'black spade suit'],
+			['9827', 'black club suit'],
+			['9829', 'black heart suit'],
+			['9830', 'black diamond suit'],
+			['8194', 'en space'],
+			['8195', 'em space'],
+			['8201', 'thin space'],
+			['8204', 'zero width non-joiner'],
+			['8205', 'zero width joiner'],
+			['8206', 'left-to-right mark'],
+			['8207', 'right-to-left mark']
+		];
+	}
+
+	function charmapFilter(charmap) {
+		return tinymce.util.Tools.grep(charmap, function(item) {
+			return isArray(item) && item.length == 2;
+		});
+	}
+
+	function getCharsFromSetting(settingValue) {
+		if (isArray(settingValue)) {
+			return [].concat(charmapFilter(settingValue));
+		}
+
+		if (typeof settingValue == "function") {
+			return settingValue();
+		}
+
+		return [];
+	}
+
+	function extendCharMap(charmap) {
+		var settings = editor.settings;
+
+		if (settings.charmap) {
+			charmap = getCharsFromSetting(settings.charmap);
+		}
+
+		if (settings.charmap_append) {
+			return [].concat(charmap).concat(getCharsFromSetting(settings.charmap_append));
+		}
+
+		return charmap;
+	}
+
+	function getCharMap() {
+		return extendCharMap(getDefaultCharMap());
+	}
+
+	function insertChar(chr) {
+		editor.fire('insertCustomChar', {chr: chr}).chr;
+		editor.execCommand('mceInsertContent', false, chr);
+	}
 
 	function showDialog() {
 		var gridHtml, x, y, win;
@@ -54227,7 +54717,8 @@ tinymce.PluginManager.add('charmap', function(editor) {
 
 		gridHtml = '<table role="presentation" cellspacing="0" class="mce-charmap"><tbody>';
 
-		var width = 25;
+		var charmap = getCharMap();
+		var width = Math.min(charmap.length, 25);
 		var height = Math.ceil(charmap.length / width);
 		for (y = 0; y < height; y++) {
 			gridHtml += '<tr>';
@@ -54254,9 +54745,10 @@ tinymce.PluginManager.add('charmap', function(editor) {
 			html: gridHtml,
 			onclick: function(e) {
 				var target = e.target;
+
 				if (/^(TD|DIV)$/.test(target.nodeName)) {
 					if (getParentTd(target).firstChild) {
-						editor.execCommand('mceInsertContent', false, tinymce.trim(target.innerText || target.textContent));
+						insertChar(tinymce.trim(target.innerText || target.textContent));
 
 						if (!e.ctrlKey) {
 							win.close();
@@ -54335,7 +54827,13 @@ tinymce.PluginManager.add('charmap', function(editor) {
 		cmd: 'mceShowCharmap',
 		context: 'insert'
 	});
+
+	return {
+		getCharMap: getCharMap,
+		insertChar: insertChar
+	};
 });
+
 
   }).apply(root, arguments);
 });
@@ -55287,7 +55785,7 @@ define("tinymce-fullscreen", ["tinymce"], function() {
 
 tinymce.PluginManager.add('fullscreen', function(editor) {
 	var fullscreenState = false, DOM = tinymce.DOM, iframeWidth, iframeHeight, resizeHandler;
-	var containerWidth, containerHeight;
+	var containerWidth, containerHeight, scrollPos;
 
 	if (editor.settings.inline) {
 		return;
@@ -55312,6 +55810,19 @@ tinymce.PluginManager.add('fullscreen', function(editor) {
 		return {w: w, h: h};
 	}
 
+	function getScrollPos() {
+		var vp = tinymce.DOM.getViewPort();
+
+		return {
+			x: vp.x,
+			y: vp.y
+		};
+	}
+
+	function setScrollPos(pos) {
+		scrollTo(pos.x, pos.y);
+	}
+
 	function toggleFullscreen() {
 		var body = document.body, documentElement = document.documentElement, editorContainerStyle;
 		var editorContainer, iframe, iframeStyle;
@@ -55328,6 +55839,7 @@ tinymce.PluginManager.add('fullscreen', function(editor) {
 		iframeStyle = iframe.style;
 
 		if (fullscreenState) {
+			scrollPos = getScrollPos();
 			iframeWidth = iframeStyle.width;
 			iframeHeight = iframeStyle.height;
 			iframeStyle.width = iframeStyle.height = '100%';
@@ -55358,6 +55870,7 @@ tinymce.PluginManager.add('fullscreen', function(editor) {
 			DOM.removeClass(documentElement, 'mce-fullscreen');
 			DOM.removeClass(editorContainer, 'mce-fullscreen');
 			DOM.unbind(window, 'resize', resizeHandler);
+			setScrollPos(scrollPos);
 		}
 
 		editor.fire('FullscreenStateChanged', {state: fullscreenState});
@@ -55409,6 +55922,7 @@ tinymce.PluginManager.add('fullscreen', function(editor) {
 		}
 	};
 });
+
 
   }).apply(root, arguments);
 });
@@ -56110,6 +56624,16 @@ define("tinymce-importcss", ["tinymce"], function() {
 tinymce.PluginManager.add('importcss', function(editor) {
 	var self = this, each = tinymce.each;
 
+	function removeCacheSuffix(url) {
+		var cacheSuffix = tinymce.Env.cacheSuffix;
+
+		if (typeof url == 'string') {
+			url = url.replace('?' + cacheSuffix, '').replace('&' + cacheSuffix, '');
+		}
+
+		return url;
+	}
+
 	function isSkinContentCss(href) {
 		var settings = editor.settings, skin = settings.skin !== false ? settings.skin || 'lightgray' : false;
 
@@ -56147,6 +56671,8 @@ tinymce.PluginManager.add('importcss', function(editor) {
 
 		function append(styleSheet, imported) {
 			var href = styleSheet.href, rules;
+
+			href = removeCacheSuffix(href);
 
 			if (!href || !fileFilter(href, imported) || isSkinContentCss(href)) {
 				return;
@@ -57331,8 +57857,16 @@ define("tinymce-lists", ["tinymce"], function() {
 tinymce.PluginManager.add('lists', function(editor) {
 	var self = this;
 
+	function isChildOfBody(elm) {
+		return editor.$.contains(editor.getBody(), elm);
+	}
+
+	function isBr(node) {
+		return node && node.nodeName == 'BR';
+	}
+
 	function isListNode(node) {
-		return node && (/^(OL|UL|DL)$/).test(node.nodeName);
+		return node && (/^(OL|UL|DL)$/).test(node.nodeName) && isChildOfBody(node);
 	}
 
 	function isFirstChild(node) {
@@ -57875,8 +58409,8 @@ tinymce.PluginManager.add('lists', function(editor) {
 						return;
 					}
 
-					if (dom.isBlock(node) || node.nodeName == 'BR') {
-						if (node.nodeName == 'BR') {
+					if (dom.isBlock(node) || isBr(node)) {
+						if (isBr(node)) {
 							dom.remove(node);
 						}
 
@@ -57982,6 +58516,18 @@ tinymce.PluginManager.add('lists', function(editor) {
 			};
 		}
 
+		function isBogusBr(node) {
+			if (!isBr(node)) {
+				return false;
+			}
+
+			if (dom.isBlock(node.nextSibling) && !isBr(node.previousSibling)) {
+				return true;
+			}
+
+			return false;
+		}
+
 		self.backspaceDelete = function(isForward) {
 			function findNextCaretContainer(rng, isForward) {
 				var node = rng.startContainer, offset = rng.startOffset;
@@ -57992,9 +58538,16 @@ tinymce.PluginManager.add('lists', function(editor) {
 				}
 
 				nonEmptyBlocks = editor.schema.getNonEmptyElements();
-				walker = new tinymce.dom.TreeWalker(rng.startContainer);
+				walker = new tinymce.dom.TreeWalker(rng.startContainer, editor.getBody());
 
-				while ((node = walker[isForward ? 'next' : 'prev']())) {
+				// Delete at <li>|<br></li> then jump over the bogus br
+				if (isForward) {
+					if (isBogusBr(tinymce.dom.RangeUtils.getNode(rng.startContainer, rng.startOffset))) {
+						walker.next();
+					}
+				}
+
+				while ((node = walker[isForward ? 'next' : 'prev2']())) {
 					if (node.nodeName == 'LI' && !node.hasChildNodes()) {
 						return node;
 					}
@@ -58012,12 +58565,22 @@ tinymce.PluginManager.add('lists', function(editor) {
 			function mergeLiElements(fromElm, toElm) {
 				var node, listNode, ul = fromElm.parentNode;
 
+				if (!isChildOfBody(fromElm) || !isChildOfBody(toElm)) {
+					return;
+				}
+
 				if (isListNode(toElm.lastChild)) {
 					listNode = toElm.lastChild;
 				}
 
+				if (ul == toElm.lastChild) {
+					if (isBr(ul.previousSibling)) {
+						dom.remove(ul.previousSibling);
+					}
+				}
+
 				node = toElm.lastChild;
-				if (node && node.nodeName == 'BR' && fromElm.hasChildNodes()) {
+				if (node && isBr(node) && fromElm.hasChildNodes()) {
 					dom.remove(node);
 				}
 
@@ -58190,7 +58753,7 @@ tinymce.PluginManager.add('media', function(editor, url) {
 	var urlPatterns = [
 		{regex: /youtu\.be\/([\w\-.]+)/, type: 'iframe', w: 560, h: 314, url: '//www.youtube.com/embed/$1', allowFullscreen: true},
 		{regex: /youtube\.com(.+)v=([^&]+)/, type: 'iframe', w: 560, h: 314, url: '//www.youtube.com/embed/$2', allowFullscreen: true},
-		{regex: /youtube.com\/embed\/([a-z0-9]+)/i, type: 'iframe', w: 560, h: 314, url: '//www.youtube.com/embed/$1', allowFullscreen: true},
+		{regex: /youtube.com\/embed\/([a-z0-9\-_]+)/i, type: 'iframe', w: 560, h: 314, url: '//www.youtube.com/embed/$1', allowFullscreen: true},
 		{regex: /vimeo\.com\/([0-9]+)/, type: 'iframe', w: 425, h: 350, url: '//player.vimeo.com/video/$1?title=0&byline=0&portrait=0&color=8dc7dc', allowfullscreen: true},
 		{regex: /vimeo\.com\/(.*)\/([0-9]+)/, type: "iframe", w: 425, h: 350, url: "//player.vimeo.com/video/$2?title=0&amp;byline=0", allowfullscreen: true},
 		{regex: /maps\.google\.([a-z]{2,3})\/maps\/(.+)msid=(.+)/, type: 'iframe', w: 425, h: 350, url: '//maps.google.com/maps/ms?msid=$2&output=embed"', allowFullscreen: false}
@@ -58397,43 +58960,6 @@ tinymce.PluginManager.add('media', function(editor, url) {
 		if (elm.getAttribute('data-mce-object')) {
 			return editor.selection.getContent();
 		}
-	}
-
-	function getEmbedHtmlFromUrl(url) {
-		var data = {};
-
-		tinymce.each(urlPatterns, function(pattern) {
-			var match, i, patternUrl;
-
-			if ((match = pattern.regex.exec(url))) {
-				patternUrl = pattern.url;
-
-				for (i = 0; match[i]; i++) {
-					/*jshint loopfunc:true*/
-					/*eslint no-loop-func:0 */
-					patternUrl = patternUrl.replace('$' + i, function() {
-						return match[i];
-					});
-				}
-
-				data.url = patternUrl;
-				data.type = pattern.type;
-				data.allowFullscreen = pattern.allowFullscreen;
-				data.width = pattern.w;
-				data.height = pattern.h;
-			}
-		});
-
-		if (!data.url) {
-			return null;
-		}
-
-		return editor.dom.createHTML('iframe', {
-			src: data.url,
-			width: data.width,
-			height: data.height,
-			allowFullscreen: data.allowFullscreen ? '1' : null
-		}, '');
 	}
 
 	function dataToHtml(data) {
@@ -58950,7 +59476,7 @@ tinymce.PluginManager.add('media', function(editor, url) {
 					}
 				}
 
-				if (node.name == 'iframe' && editor.settings.live_embeds !== false && tinymce.Env.ceFalse) {
+				if (node.name == 'iframe' && editor.settings.media_live_embeds !== false && tinymce.Env.ceFalse) {
 					placeHolder = createPreviewNode(node);
 				} else {
 					placeHolder = createPlaceholderNode(node);
@@ -59018,14 +59544,6 @@ tinymce.PluginManager.add('media', function(editor, url) {
 				}
 
 				node.replace(realElm);
-			}
-		});
-
-		editor.on('PastePreProcess', function(e) {
-			var html = getEmbedHtmlFromUrl(e.content);
-
-			if (html) {
-				e.content = html;
 			}
 		});
 	});
@@ -59432,7 +59950,7 @@ define("tinymce-paste", ["tinymce"], function() {
 
 			target[fragments[fragments.length - 1]] = modules[id];
 		}
-
+		
 		// Expose private modules for unit tests
 		if (exports.AMDLC_TESTS) {
 			privateModules = exports.privateModules || {};
@@ -61065,7 +61583,7 @@ define("tinymce/pasteplugin/Plugin", [
 });
 
 expose(["tinymce/pasteplugin/Utils"]);
-})(window);
+})(this);
 
   }).apply(root, arguments);
 });
@@ -61601,13 +62119,12 @@ define("tinymce-searchreplace", ["tinymce"], function() {
 			}
 
 			function notFoundAlert() {
-				tinymce.ui.MessageBox.alert('Could not find the specified string.', function() {
+				editor.windowManager.alert('Could not find the specified string.', function() {
 					win.find('#find')[0].focus();
 				});
 			}
 
-			var win = tinymce.ui.Factory.create({
-				type: 'window',
+			var win = editor.windowManager.open({
 				layout: "flex",
 				pack: "center",
 				align: "center",
@@ -61694,7 +62211,7 @@ define("tinymce-searchreplace", ["tinymce"], function() {
 						{type: 'checkbox', name: 'words', text: 'Whole words', label: ' '}
 					]
 				}
-			}).renderTo().reflow();
+			});
 		}
 
 		self.init = function(ed) {
@@ -62020,7 +62537,7 @@ define("tinymce-spellchecker", ["tinymce"], function() {
 
 			target[fragments[fragments.length - 1]] = modules[id];
 		}
-
+		
 		// Expose private modules for unit tests
 		if (exports.AMDLC_TESTS) {
 			privateModules = exports.privateModules || {};
@@ -62963,7 +63480,7 @@ define("tinymce/spellcheckerplugin/Plugin", [
 });
 
 expose(["tinymce/spellcheckerplugin/DomTextMatcher"]);
-})(window);
+})(this);
 
   }).apply(root, arguments);
 });
@@ -63183,7 +63700,7 @@ define("tinymce-table", ["tinymce"], function() {
 
 			target[fragments[fragments.length - 1]] = modules[id];
 		}
-
+		
 		// Expose private modules for unit tests
 		if (exports.AMDLC_TESTS) {
 			privateModules = exports.privateModules || {};
@@ -63226,8 +63743,10 @@ define("tinymce/tableplugin/Utils", [
 	}
 
 	function paddCell(cell) {
-		if (!Env.ie || Env.ie > 10) {
-			cell.innerHTML = '<br data-mce-bogus="1" />';
+		if (!Env.ie || Env.ie > 9) {
+			if (!cell.hasChildNodes()) {
+				cell.innerHTML = '<br data-mce-bogus="1" />';
+			}
 		}
 	}
 
@@ -63264,11 +63783,29 @@ define("tinymce/tableplugin/TableGrid", [
 ], function(Tools, Env, Utils) {
 	var each = Tools.each, getSpanVal = Utils.getSpanVal;
 
-	return function(editor, table) {
-		var grid, gridWidth, startPos, endPos, selectedCell, selection = editor.selection, dom = selection.dom;
+	return function(editor, table, selectedCell) {
+		var grid, gridWidth, startPos, endPos, selection = editor.selection, dom = selection.dom;
+
+		function removeCellSelection() {
+			editor.$('td[data-mce-selected],th[data-mce-selected]').removeAttr('data-mce-selected');
+		}
 
 		function isEditorBody(node) {
 			return node === editor.getBody();
+		}
+
+		function getChildrenByName(node, names) {
+			if (!node) {
+				return [];
+			}
+
+			names = Tools.map(names.split(','), function(name) {
+				return name.toLowerCase();
+			});
+
+			return Tools.grep(node.childNodes, function(node) {
+				return Tools.inArray(names, node.nodeName.toLowerCase()) !== -1;
+			});
 		}
 
 		function buildGrid() {
@@ -63278,12 +63815,13 @@ define("tinymce/tableplugin/TableGrid", [
 			gridWidth = 0;
 
 			each(['thead', 'tbody', 'tfoot'], function(part) {
-				var rows = dom.select('> ' + part + ' tr', table);
+				var partElm = getChildrenByName(table, part)[0];
+				var rows = getChildrenByName(partElm, 'tr');
 
 				each(rows, function(tr, y) {
 					y += startY;
 
-					each(dom.select('> td, > th', tr), function(td, x) {
+					each(getChildrenByName(tr, 'td,th'), function(td, x) {
 						var x2, y2, rowspan, colspan;
 
 						// Skip over existing cells produced by rowspan
@@ -63322,6 +63860,22 @@ define("tinymce/tableplugin/TableGrid", [
 			});
 		}
 
+		function fireNewRow(node) {
+			editor.fire('newrow', {
+				node: node
+			});
+
+			return node;
+		}
+
+		function fireNewCell(node) {
+			editor.fire('newcell', {
+				node: node
+			});
+
+			return node;
+		}
+
 		function cloneNode(node, children) {
 			node = node.cloneNode(children);
 			node.removeAttribute('id');
@@ -63351,7 +63905,7 @@ define("tinymce/tableplugin/TableGrid", [
 		}
 
 		function isCellSelected(cell) {
-			return cell && (dom.hasClass(cell.elm, 'mce-item-selected') || cell == selectedCell);
+			return cell && (!!dom.getAttrib(cell.elm, 'data-mce-selected') || cell == selectedCell);
 		}
 
 		function getSelectedRows() {
@@ -63359,7 +63913,7 @@ define("tinymce/tableplugin/TableGrid", [
 
 			each(table.rows, function(row) {
 				each(row.cells, function(cell) {
-					if (dom.hasClass(cell, 'mce-item-selected') || (selectedCell && cell == selectedCell.elm)) {
+					if (dom.getAttrib(cell, 'data-mce-selected') || (selectedCell && cell == selectedCell.elm)) {
 						rows.push(row);
 						return false;
 					}
@@ -63417,7 +63971,7 @@ define("tinymce/tableplugin/TableGrid", [
 
 					// Add something to the inner node
 					if (curNode) {
-						curNode.innerHTML = Env.ie ? '&nbsp;' : '<br data-mce-bogus="1" />';
+						curNode.innerHTML = Env.ie && Env.ie < 10 ? '&nbsp;' : '<br data-mce-bogus="1" />';
 					}
 
 					return false;
@@ -63425,6 +63979,8 @@ define("tinymce/tableplugin/TableGrid", [
 			}, 'childNodes');
 
 			cell = cloneNode(cell, false);
+			fireNewCell(cell);
+
 			setSpanVal(cell, 'rowSpan', 1);
 			setSpanVal(cell, 'colSpan', 1);
 
@@ -63608,7 +64164,7 @@ define("tinymce/tableplugin/TableGrid", [
 								children = Tools.grep(startCell.childNodes);
 								count = 0;
 								each(children, function(node) {
-									if (node.nodeName == 'BR' && dom.getAttrib(node, 'data-mce-bogus') && count++ < children.length - 1) {
+									if (node.nodeName == 'BR' && count++ < children.length - 1) {
 										startCell.removeChild(node);
 									}
 								});
@@ -63633,7 +64189,7 @@ define("tinymce/tableplugin/TableGrid", [
 					if (isCellSelected(cell)) {
 						cell = cell.elm;
 						rowElm = cell.parentNode;
-						newRow = cloneNode(rowElm, false);
+						newRow = fireNewRow(cloneNode(rowElm, false));
 						posY = y;
 
 						if (before) {
@@ -63913,16 +64469,20 @@ define("tinymce/tableplugin/TableGrid", [
 			each(rows, function(row) {
 				var i, cellCount = row.cells.length, cell;
 
+				fireNewRow(row);
+
 				// Remove col/rowspans
 				for (i = 0; i < cellCount; i++) {
 					cell = row.cells[i];
+
+					fireNewCell(cell);
 					setSpanVal(cell, 'colSpan', 1);
 					setSpanVal(cell, 'rowSpan', 1);
 				}
 
 				// Needs more cells
 				for (i = cellCount; i < targetCellCount; i++) {
-					row.appendChild(cloneCell(row.cells[cellCount - 1]));
+					row.appendChild(fireNewCell(cloneCell(row.cells[cellCount - 1])));
 				}
 
 				// Needs less cells
@@ -63938,8 +64498,7 @@ define("tinymce/tableplugin/TableGrid", [
 				}
 			});
 
-			// Remove current selection
-			dom.removeClass(dom.select('td.mce-item-selected,th.mce-item-selected'), 'mce-item-selected');
+			removeCellSelection();
 		}
 
 		function getPos(target) {
@@ -64018,7 +64577,7 @@ define("tinymce/tableplugin/TableGrid", [
 				endX = Math.max(startPos.x, endPos.x);
 				endY = Math.max(startPos.y, endPos.y);
 
-				// Expand end positon to include spans
+				// Expand end position to include spans
 				maxX = endX;
 				maxY = endY;
 
@@ -64068,14 +64627,13 @@ define("tinymce/tableplugin/TableGrid", [
 					}
 				}
 
-				// Remove current selection
-				dom.removeClass(dom.select('td.mce-item-selected,th.mce-item-selected'), 'mce-item-selected');
+				removeCellSelection();
 
 				// Add new selection
 				for (y = startY; y <= maxY; y++) {
 					for (x = startX; x <= maxX; x++) {
 						if (grid[y][x]) {
-							dom.addClass(grid[y][x].elm, 'mce-item-selected');
+							dom.setAttrib(grid[y][x].elm, 'data-mce-selected', '1');
 						}
 					}
 				}
@@ -64114,7 +64672,7 @@ define("tinymce/tableplugin/TableGrid", [
 
 		buildGrid();
 
-		selectedCell = dom.getParent(selection.getStart(true), 'th,td');
+		selectedCell = selectedCell || dom.getParent(selection.getStart(true), 'th,td');
 
 		if (selectedCell) {
 			startPos = getPos(selectedCell);
@@ -64393,7 +64951,7 @@ define("tinymce/tableplugin/Quirks", [
 							editor.getBody(),
 							editor.settings.forced_root_block,
 							editor.settings.forced_root_block_attrs,
-							Env.ie && Env.ie < 11 ? '&nbsp;' : '<br data-mce-bogus="1" />'
+							Env.ie && Env.ie < 10 ? '&nbsp;' : '<br data-mce-bogus="1" />'
 						);
 					} else {
 						editor.dom.add(editor.getBody(), 'br', {'data-mce-bogus': '1'});
@@ -64496,7 +65054,7 @@ define("tinymce/tableplugin/Quirks", [
 					if (table) {
 						tableCells = editor.dom.select('td,th', table);
 						selectedTableCells = Tools.grep(tableCells, function(cell) {
-							return editor.dom.hasClass(cell, 'mce-item-selected');
+							return !!editor.dom.getAttrib(cell, 'data-mce-selected');
 						});
 
 						if (selectedTableCells.length === 0) {
@@ -64538,7 +65096,7 @@ define("tinymce/tableplugin/Quirks", [
 			fixTableCaretPos();
 		}
 
-		if (Env.ie > 10) {
+		if (Env.ie > 9) {
 			fixBeforeTableCaretBug();
 			fixTableCaretPos();
 		}
@@ -64570,59 +65128,79 @@ define("tinymce/tableplugin/CellSelection", [
 	"tinymce/util/Tools"
 ], function(TableGrid, TreeWalker, Tools) {
 	return function(editor) {
-		var dom = editor.dom, tableGrid, startCell, startTable, hasCellSelection = true, resizing;
+		var dom = editor.dom, tableGrid, startCell, startTable, lastMouseOverTarget, hasCellSelection = true, resizing;
 
 		function clear(force) {
 			// Restore selection possibilities
 			editor.getBody().style.webkitUserSelect = '';
 
 			if (force || hasCellSelection) {
-				editor.dom.removeClass(
-					editor.dom.select('td.mce-item-selected,th.mce-item-selected'),
-					'mce-item-selected'
-				);
-
+				editor.$('td[data-mce-selected],th[data-mce-selected]').removeAttr('data-mce-selected');
 				hasCellSelection = false;
 			}
 		}
 
+		function isCellInTable(table, cell) {
+			if (!table || !cell) {
+				return false;
+			}
+
+			return table === dom.getParent(cell, 'table');
+		}
+
 		function cellSelectionHandler(e) {
-			var sel, table, target = e.target;
+			var sel, target = e.target, currentCell;
 
 			if (resizing) {
 				return;
 			}
 
-			if (startCell && (tableGrid || target != startCell) && (target.nodeName == 'TD' || target.nodeName == 'TH')) {
-				table = dom.getParent(target, 'table');
-				if (table == startTable) {
-					if (!tableGrid) {
-						tableGrid = new TableGrid(editor, table);
-						tableGrid.setStartCell(startCell);
+			// Fake mouse enter by keeping track of last mouse over
+			if (target === lastMouseOverTarget) {
+				return;
+			}
 
+			lastMouseOverTarget = target;
+
+			if (startTable && startCell) {
+				currentCell = dom.getParent(target, 'td,th');
+
+				if (!isCellInTable(startTable, currentCell)) {
+					currentCell = dom.getParent(startTable, 'td,th');
+				}
+
+				if (isCellInTable(startTable, currentCell)) {
+					e.preventDefault();
+
+					if (!tableGrid) {
+						tableGrid = new TableGrid(editor, startTable, startCell);
 						editor.getBody().style.webkitUserSelect = 'none';
 					}
 
-					tableGrid.setEndCell(target);
+					tableGrid.setEndCell(currentCell);
 					hasCellSelection = true;
-				}
 
-				// Remove current selection
-				sel = editor.selection.getSel();
+					// Remove current selection
+					sel = editor.selection.getSel();
 
-				try {
-					if (sel.removeAllRanges) {
-						sel.removeAllRanges();
-					} else {
-						sel.empty();
+					try {
+						if (sel.removeAllRanges) {
+							sel.removeAllRanges();
+						} else {
+							sel.empty();
+						}
+					} catch (ex) {
+						// IE9 might throw errors here
 					}
-				} catch (ex) {
-					// IE9 might throw errors here
 				}
-
-				e.preventDefault();
 			}
 		}
+
+		editor.on('SelectionChange', function(e) {
+			if (hasCellSelection) {
+				e.stopImmediatePropagation();
+			}
+		}, true);
 
 		// Add cell selection logic
 		editor.on('MouseDown', function(e) {
@@ -64638,6 +65216,7 @@ define("tinymce/tableplugin/CellSelection", [
 
 		editor.on('remove', function() {
 			dom.unbind(editor.getDoc(), 'mouseover', cellSelectionHandler);
+			clear();
 		});
 
 		editor.on('MouseUp', function() {
@@ -64678,7 +65257,7 @@ define("tinymce/tableplugin/CellSelection", [
 				}
 
 				// Try to expand text selection as much as we can only Gecko supports cell selection
-				selectedCells = dom.select('td.mce-item-selected,th.mce-item-selected');
+				selectedCells = dom.select('td[data-mce-selected],th[data-mce-selected]');
 				if (selectedCells.length > 0) {
 					rng = dom.createRng();
 					node = selectedCells[0];
@@ -64690,7 +65269,7 @@ define("tinymce/tableplugin/CellSelection", [
 
 					do {
 						if (node.nodeName == 'TD' || node.nodeName == 'TH') {
-							if (!dom.hasClass(node, 'mce-item-selected')) {
+							if (!dom.getAttrib(node, 'data-mce-selected')) {
 								break;
 							}
 
@@ -64704,13 +65283,13 @@ define("tinymce/tableplugin/CellSelection", [
 				}
 
 				editor.nodeChanged();
-				startCell = tableGrid = startTable = null;
+				startCell = tableGrid = startTable = lastMouseOverTarget = null;
 			}
 		});
 
 		editor.on('KeyUp Drop SetContent', function(e) {
 			clear(e.type == 'setcontent');
-			startCell = tableGrid = startTable = null;
+			startCell = tableGrid = startTable = lastMouseOverTarget = null;
 			resizing = false;
 		});
 
@@ -65215,7 +65794,7 @@ define("tinymce/tableplugin/Dialogs", [
 			}
 
 			// Get selected cells or the current cell
-			cells = editor.dom.select('td.mce-item-selected,th.mce-item-selected');
+			cells = editor.dom.select('td[data-mce-selected],th[data-mce-selected]');
 			cellElm = editor.dom.getParent(editor.selection.getStart(), 'td,th');
 			if (!cells.length && cellElm) {
 				cells.push(cellElm);
@@ -65438,7 +66017,7 @@ define("tinymce/tableplugin/Dialogs", [
 
 			each(tableElm.rows, function(row) {
 				each(row.cells, function(cell) {
-					if (dom.hasClass(cell, 'mce-item-selected') || cell == cellElm) {
+					if (dom.getAttrib(cell, 'data-mce-selected') || cell == cellElm) {
 						rows.push(row);
 						return false;
 					}
@@ -65571,8 +66150,11 @@ define("tinymce/tableplugin/Dialogs", [
  * @private
  */
 define("tinymce/tableplugin/ResizeBars", [
-	"tinymce/util/Tools"
-], function(Tools) {
+	"tinymce/util/Tools",
+	"tinymce/util/VK"
+], function(Tools, VK) {
+	var hoverTable;
+
 	return function(editor) {
 		var RESIZE_BAR_CLASS = 'mce-resize-bar',
 			RESIZE_BAR_ROW_CLASS = 'mce-resize-bar-row',
@@ -65591,8 +66173,7 @@ define("tinymce/tableplugin/ResizeBars", [
 		var percentageBasedSizeRegex = new RegExp(/(\d+(\.\d+)?%)/),
 			pixelBasedSizeRegex = new RegExp(/px|em/);
 
-		var delayDrop, dragging, blockerElement, dragBar, lastX, lastY, hoverTable,
-			objectResizeTarget, objectResizeStartWidth, objectResizeStartHeight;
+		var delayDrop, dragging, blockerElement, dragBar, lastX, lastY;
 
 		// Get the absolute position's top edge.
 		function getTopEdge(index, row) {
@@ -65682,6 +66263,7 @@ define("tinymce/tableplugin/ResizeBars", [
 			for (var i = 1; i < thingsToMeasure.length; i++) {
 				// Get the element from the details
 				var item = thingsToMeasure[i].element;
+
 				// We need to zero index this again
 				tablePositions.push(getInner(i - 1, item));
 			}
@@ -65889,15 +66471,15 @@ define("tinymce/tableplugin/ResizeBars", [
 			var rows = range(0, tableGrid.grid.maxRows);
 
 			return Tools.map(cols, function(col) {
-
 				function getBlock() {
 					var details = [];
 					for (var i = 0; i < rows.length; i++) {
 						var detail = tableGrid.getAt(i, col);
-						if (detail.colIndex === col) {
+						if (detail && detail.colIndex === col) {
 							details.push(detail);
 						}
 					}
+
 					return details;
 				}
 
@@ -65906,27 +66488,33 @@ define("tinymce/tableplugin/ResizeBars", [
 				}
 
 				function getFallback() {
-					return tableGrid.getAt(0, col);
+					var item;
+
+					for (var i = 0; i < rows.length; i++) {
+						item = tableGrid.getAt(i, col);
+						if (item) {
+							return item;
+						}
+					}
+
+					return null;
 				}
 
 				return decide(getBlock, isSingle, getFallback);
-
 			});
 		}
 
 		// Attempt to get representative blocks for the height of each row.
 		function getRowBlocks(tableGrid) {
-
 			var cols = range(0, tableGrid.grid.maxCols);
 			var rows = range(0, tableGrid.grid.maxRows);
 
 			return Tools.map(rows, function(row) {
-
 				function getBlock() {
 					var details = [];
 					for (var i = 0; i < cols.length; i++) {
 						var detail = tableGrid.getAt(row, i);
-						if (detail.rowIndex === row) {
+						if (detail && detail.rowIndex === row) {
 							details.push(detail);
 						}
 					}
@@ -65938,7 +66526,7 @@ define("tinymce/tableplugin/ResizeBars", [
 				}
 
 				function getFallback() {
-					tableGrid.getAt(row, 0);
+					return tableGrid.getAt(row, 0);
 				}
 
 				return decide(getBlock, isSingle, getFallback);
@@ -66008,22 +66596,6 @@ define("tinymce/tableplugin/ResizeBars", [
 			var extras = next.delta - current.delta;
 			var pixelWidth = Math.abs(next.value - current.value) / extras;
 			return isPercentageBased ? pixelWidth / getComputedStyleSize(table, 'width') * 100 : pixelWidth;
-		}
-
-		// Attempt to get the pixel width of a cell but only if it's a defined static value.
-		function getNonPercentagePixelWidth(element) {
-
-			var widthString = editor.dom.getStyle(element, 'width');
-
-			if (!widthString) {
-				widthString = editor.dom.getAttrib(element, 'width');
-			}
-			if (!widthString) {
-				return false;
-			}
-			var widthNumber = parseInt(widthString, 10);
-			return widthString.indexOf('%', widthString.length - 1) > 0 ?
-				false : widthNumber;
 		}
 
 		function getStyleOrAttrib(element, property) {
@@ -66259,8 +66831,13 @@ define("tinymce/tableplugin/ResizeBars", [
 			}
 
 			function getNewTablePercentWidth() {
-				return index < tableGrid.maxCols - 1 ? getCurrentTablePercentWidth(table) :
+				return index < tableGrid.grid.maxCols - 1 ? getCurrentTablePercentWidth(table) :
 					getCurrentTablePercentWidth(table) + getTablePercentDelta(table, delta);
+			}
+
+			function getNewTablePixelWidth() {
+				return index < tableGrid.grid.maxCols - 1 ? getComputedStyleSize(table, 'width') :
+					getComputedStyleSize(table, 'width') + delta;
 			}
 
 			function setTableSize(newTableWidth, styleExtension, isPercentBased) {
@@ -66278,22 +66855,21 @@ define("tinymce/tableplugin/ResizeBars", [
 			var step = percentageBased ? getCellPercentDelta(table, delta) : delta;
 			// TODO: change the min for percentage maybe?
 			var deltas = determineDeltas(widths, index, step, RESIZE_MINIMUM_WIDTH, percentageBased, table);
-			var newWidths = [], newTotalWidth = 0;
+			var newWidths = [];
 
 			for (var i = 0; i < deltas.length; i++) {
 				newWidths.push(deltas[i] + widths[i]);
-				newTotalWidth += newWidths[i];
 			}
 
 			var newSizes = recalculateWidths(tableGrid, newWidths);
 			var styleExtension = percentageBased ? '%' : 'px';
-			setSizes(newSizes, styleExtension);
-
 			var newTableWidth = percentageBased ? getNewTablePercentWidth() :
-			newTotalWidth;
+				getNewTablePixelWidth();
 
-			setTableSize(newTableWidth, styleExtension, percentageBased);
-
+			editor.undoManager.transact(function() {
+				setSizes(newSizes, styleExtension);
+				setTableSize(newTableWidth, styleExtension, percentageBased);
+			});
 		}
 
 		// Adjust the height of the row of table at index, with delta.
@@ -66313,18 +66889,21 @@ define("tinymce/tableplugin/ResizeBars", [
 			var newCellSizes = recalculateCellHeights(tableGrid, newHeights);
 			var newRowSizes = recalculateRowHeights(tableGrid, newHeights);
 
-			Tools.each(newRowSizes, function(row) {
-				editor.dom.setStyle(row.element, 'height', row.height + 'px');
-				editor.dom.setAttrib(row.element, 'height', null);
-			});
+			editor.undoManager.transact(function() {
 
-			Tools.each(newCellSizes, function(cell) {
-				editor.dom.setStyle(cell.element, 'height', cell.height + 'px');
-				editor.dom.setAttrib(cell.element, 'height', null);
-			});
+				Tools.each(newRowSizes, function(row) {
+					editor.dom.setStyle(row.element, 'height', row.height + 'px');
+					editor.dom.setAttrib(row.element, 'height', null);
+				});
 
-			editor.dom.setStyle(table, 'height', newTotalHeight + 'px');
-			editor.dom.setAttrib(table, 'height', null);
+				Tools.each(newCellSizes, function(cell) {
+					editor.dom.setStyle(cell.element, 'height', cell.height + 'px');
+					editor.dom.setAttrib(cell.element, 'height', null);
+				});
+
+				editor.dom.setStyle(table, 'height', newTotalHeight + 'px');
+				editor.dom.setAttrib(table, 'height', null);
+			});
 		}
 
 		function scheduleDelayedDropEvent() {
@@ -66394,6 +66973,7 @@ define("tinymce/tableplugin/ResizeBars", [
 					adjustHeight(hoverTable, delta, index);
 				}
 				refreshBars(hoverTable);
+				editor.nodeChanged();
 			}
 		}
 
@@ -66440,56 +67020,50 @@ define("tinymce/tableplugin/ResizeBars", [
 			setupBaseDrag(bar, rowDragHandler);
 		}
 
+		function mouseDownHandler(e) {
+			var target = e.target, body = editor.getBody();
+
+			// Since this code is working on global events we need to work on a global hoverTable state
+			// and make sure that the state is correct according to the events fired
+			if (!editor.$.contains(body, hoverTable) && hoverTable !== body) {
+				return;
+			}
+
+			if (isCol(target)) {
+				e.preventDefault();
+				var initialLeft = editor.dom.getPos(target).x;
+				editor.dom.setAttrib(target, RESIZE_BAR_COL_DATA_INITIAL_LEFT_ATTRIBUTE, initialLeft);
+				setupColDrag(target);
+			} else if (isRow(target)) {
+				e.preventDefault();
+				var initialTop = editor.dom.getPos(target).y;
+				editor.dom.setAttrib(target, RESIZE_BAR_ROW_DATA_INITIAL_TOP_ATTRIBUTE, initialTop);
+				setupRowDrag(target);
+			}
+		}
+
 		editor.on('init', function() {
 			// Needs to be like this for inline mode, editor.on does not bind to elements in the document body otherwise
-			editor.dom.bind(getBody(), 'mousedown', function(e) {
-				var target = e.target;
-
-				if (isCol(target)) {
-					e.preventDefault();
-					var initialLeft = editor.dom.getPos(target).x;
-					editor.dom.setAttrib(target, RESIZE_BAR_COL_DATA_INITIAL_LEFT_ATTRIBUTE, initialLeft);
-					setupColDrag(target);
-				} else if (isRow(target)) {
-					e.preventDefault();
-					var initialTop = editor.dom.getPos(target).y;
-					editor.dom.setAttrib(target, RESIZE_BAR_ROW_DATA_INITIAL_TOP_ATTRIBUTE, initialTop);
-					setupRowDrag(target);
-				}
-			});
-		});
-
-		editor.on('ObjectResizeStart', function(e) {
-			if (e.target.nodeName === 'TABLE') {
-				objectResizeTarget = e.target;
-				objectResizeStartWidth = e.width;
-				objectResizeStartHeight = e.height;
-			}
+			editor.dom.bind(getBody(), 'mousedown', mouseDownHandler);
 		});
 
 		// If we're updating the table width via the old mechanic, we need to update the constituent cells' widths/heights too.
 		editor.on('ObjectResized', function(e) {
-			if (objectResizeTarget === e.target) {
-				var objectResizeEndWidth = e.width,
-					objectResizeEndHeight = e.height,
-					widthRatio = objectResizeEndWidth / objectResizeStartWidth,
-					heightRatio = objectResizeEndHeight / objectResizeStartHeight;
-
-				Tools.each(objectResizeTarget.rows, function(row) {
+			var table = e.target;
+			if (table.nodeName === 'TABLE') {
+				var newCellSizes = [];
+				Tools.each(table.rows, function(row) {
 					Tools.each(row.cells, function(cell) {
-						var width = getNonPercentagePixelWidth(cell);
-						if (width) {
-							width = Math.round(width * widthRatio);
-							editor.dom.setStyle(cell, 'width', width + 'px');
-							editor.dom.setAttrib(cell, 'width', null);
-						}
-						var height = getPixelHeight(cell);
-						if (height) {
-							height = Math.round(height * heightRatio);
-							editor.dom.setStyle(cell, 'height', height + 'px');
-							editor.dom.setAttrib(cell, 'height', null);
-						}
+						var width = editor.dom.getStyle(cell, 'width', true);
+						newCellSizes.push({
+							cell: cell,
+							width: width
+						});
 					});
+				});
+				Tools.each(newCellSizes, function(newCellSize) {
+					editor.dom.setStyle(newCellSize.cell, 'width', newCellSize.width);
+					editor.dom.setAttrib(newCellSize.cell, 'width', null);
 				});
 			}
 		});
@@ -66498,11 +67072,30 @@ define("tinymce/tableplugin/ResizeBars", [
 			if (!dragging) {
 				var tableElement = editor.dom.getParent(e.target, 'table');
 
-				if (e.target.nodeName === 'table' || tableElement) {
+				if (e.target.nodeName === 'TABLE' || tableElement) {
 					hoverTable = tableElement;
 					refreshBars(tableElement);
 				}
 			}
+		});
+
+		// Prevents the user from moving the caret inside the resize bars on Chrome
+		// Only does it on arrow keys since clearBars might be an epxensive operation
+		// since it's querying the DOM
+		editor.on('keydown', function(e) {
+			switch (e.keyCode) {
+				case VK.LEFT:
+				case VK.RIGHT:
+				case VK.UP:
+				case VK.DOWN:
+					clearBars();
+					break;
+			}
+		});
+
+		editor.on('remove', function() {
+			clearBars();
+			editor.dom.unbind(getBody(), 'mousedown', mouseDownHandler);
 		});
 
 		return {
@@ -66556,7 +67149,12 @@ define("tinymce/tableplugin/Plugin", [
 	var each = Tools.each;
 
 	function Plugin(editor) {
-		var clipboardRows, self = this, dialogs = new Dialogs(editor), resizeBars = ResizeBars(editor);
+		var clipboardRows, self = this, dialogs = new Dialogs(editor), resizeBars;
+
+		if (editor.settings.object_resizing && editor.settings.table_resize_bars !== false &&
+			(editor.settings.object_resizing === true || editor.settings.object_resizing === 'table')) {
+			resizeBars = ResizeBars(editor);
+		}
 
 		function cmd(command) {
 			return function() {
@@ -66573,7 +67171,7 @@ define("tinymce/tableplugin/Plugin", [
 				html += '<tr>';
 
 				for (x = 0; x < cols; x++) {
-					html += '<td>' + (Env.ie ? " " : '<br>') + '</td>';
+					html += '<td>' + (Env.ie && Env.ie < 10 ? '&nbsp;' : '<br>') + '</td>';
 				}
 
 				html += '</tr>';
@@ -66587,6 +67185,18 @@ define("tinymce/tableplugin/Plugin", [
 				tableElm = editor.dom.get('__mce');
 				editor.dom.setAttrib(tableElm, 'id', null);
 
+				editor.$('tr', tableElm).each(function(index, row) {
+					editor.fire('newrow', {
+						node: row
+					});
+
+					editor.$('th,td', row).each(function(index, cell) {
+						editor.fire('newcell', {
+							node: cell
+						});
+					});
+				});
+
 				editor.dom.setAttribs(tableElm, editor.settings.table_default_attributes || {});
 				editor.dom.setStyles(tableElm, editor.settings.table_default_styles || {});
 			});
@@ -66594,9 +67204,32 @@ define("tinymce/tableplugin/Plugin", [
 			return tableElm;
 		}
 
-		function handleDisabledState(ctrl, selector) {
+		function handleDisabledState(ctrl, selector, sameParts) {
 			function bindStateListener() {
-				ctrl.disabled(!editor.dom.getParent(editor.selection.getStart(), selector));
+				var selectedElm, selectedCells, parts = {}, sum = 0, state;
+
+				selectedCells = editor.dom.select('td[data-mce-selected],th[data-mce-selected]');
+				selectedElm = selectedCells[0];
+				if (!selectedElm) {
+					selectedElm = editor.selection.getStart();
+				}
+
+				// Make sure that we don't have a selection inside thead and tbody at the same time
+				if (sameParts && selectedCells.length > 0) {
+					each(selectedCells, function(cell) {
+						return parts[cell.parentNode.parentNode.nodeName] = 1;
+					});
+
+					each(parts, function(value) {
+						sum += value;
+					});
+
+					state = sum !== 1;
+				} else {
+					state = !editor.dom.getParent(selectedElm, selector);
+				}
+
+				ctrl.disabled(state);
 
 				editor.selection.selectorChanged(selector, function(state) {
 					ctrl.disabled(!state);
@@ -66618,6 +67251,11 @@ define("tinymce/tableplugin/Plugin", [
 		function postRenderCell() {
 			/*jshint validthis:true*/
 			handleDisabledState(this, 'td,th');
+		}
+
+		function postRenderMergeCell() {
+			/*jshint validthis:true*/
+			handleDisabledState(this, 'td,th', true);
 		}
 
 		function generateTableGrid() {
@@ -66767,7 +67405,7 @@ define("tinymce/tableplugin/Plugin", [
 			context: 'table',
 			menu: [
 				{text: 'Cell properties', onclick: cmd('mceTableCellProps'), onPostRender: postRenderCell},
-				{text: 'Merge cells', onclick: cmd('mceTableMergeCells'), onPostRender: postRenderCell},
+				{text: 'Merge cells', onclick: cmd('mceTableMergeCells'), onPostRender: postRenderMergeCell},
 				{text: 'Split cell', onclick: cmd('mceTableSplitCells'), onPostRender: postRenderCell}
 			]
 		});
@@ -66857,7 +67495,7 @@ define("tinymce/tableplugin/Plugin", [
 
 				cell = editor.dom.getParent(editor.selection.getStart(), 'th,td');
 
-				if (!editor.dom.select('td.mce-item-selected,th.mce-item-selected').length) {
+				if (!editor.dom.select('td[data-mce-selected],th[data-mce-selected]').length) {
 					dialogs.merge(grid, cell);
 				} else {
 					grid.merge();
@@ -66905,7 +67543,9 @@ define("tinymce/tableplugin/Plugin", [
 			},
 
 			mceTableDelete: function(grid) {
-				resizeBars.clearBars();
+				if (resizeBars) {
+					resizeBars.clearBars();
+				}
 				grid.deleteTable();
 			}
 		}, function(func, name) {
@@ -67020,13 +67660,17 @@ define("tinymce/tableplugin/Plugin", [
 
 		function isTable(table) {
 
-			var selectorMatched = editor.dom.is(table, 'table');
+			var selectorMatched = editor.dom.is(table, 'table') && editor.getBody().contains(table);
 
 			return selectorMatched;
 		}
 
 		function addToolbars() {
 			var toolbarItems = editor.settings.table_toolbar;
+
+			if (toolbarItems === '' || toolbarItems === false) {
+				return;
+			}
 
 			if (!toolbarItems) {
 				toolbarItems = 'tableprops tabledelete | ' +
@@ -67074,7 +67718,7 @@ define("tinymce/tableplugin/Plugin", [
 
 	PluginManager.add('table', Plugin);
 });
-})(window);
+})(this);
 
   }).apply(root, arguments);
 });
@@ -67101,6 +67745,11 @@ tinymce.PluginManager.add('template', function(editor) {
 	function createTemplateList(callback) {
 		return function() {
 			var templateList = editor.settings.templates;
+
+			if (typeof templateList == "function") {
+				templateList(callback);
+				return;
+			}
 
 			if (typeof templateList == "string") {
 				tinymce.util.XHR.send({
@@ -67348,6 +67997,7 @@ tinymce.PluginManager.add('template', function(editor) {
 		});
 	});
 });
+
 
   }).apply(root, arguments);
 });
@@ -78649,5 +79299,5 @@ require([
   'use strict';
 });
 
-define("/Users/nathan/code/coredev5/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
+define("Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
 
