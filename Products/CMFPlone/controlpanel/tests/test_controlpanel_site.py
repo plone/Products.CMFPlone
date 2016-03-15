@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces import ISiteSchema
-from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
+from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 from plone.registry.interfaces import IRegistry
 from zope.component import getMultiAdapter
 from zope.component import getUtility
@@ -13,18 +13,22 @@ class SiteRegistryIntegrationTest(unittest.TestCase):
     settings.
     """
 
-    layer = PRODUCTS_CMFPLONE_INTEGRATION_TESTING
+    layer = PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 
     def setUp(self):
         self.portal = self.layer['portal']
         self.request = self.layer['request']
         registry = getUtility(IRegistry)
         self.settings = registry.forInterface(
-            ISiteSchema, prefix="plone")
+            ISiteSchema,
+            prefix="plone"
+        )
 
     def test_site_controlpanel_view(self):
-        view = getMultiAdapter((self.portal, self.portal.REQUEST),
-                               name="site-controlpanel")
+        view = getMultiAdapter(
+            (self.portal, self.portal.REQUEST),
+            name="site-controlpanel"
+        )
         view = view.__of__(self.portal)
         self.assertTrue(view())
 

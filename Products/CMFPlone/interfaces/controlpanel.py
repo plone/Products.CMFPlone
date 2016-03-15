@@ -501,6 +501,7 @@ class ITinyMCELayoutSchema(Interface):
         missing_value=[],
         default=[
             u"Listing|listing"
+            u"Invisible Grid|invisible-grid"
         ])
 
     formats = schema.Text(
