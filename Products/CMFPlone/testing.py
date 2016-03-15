@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from Acquisition import aq_base
 from plone.app.contenttypes.testing import PLONE_APP_CONTENTTYPES_FIXTURE
 from plone.app.robotframework import AutoLogin
@@ -64,7 +65,6 @@ class ProductsCMFPloneLayer(PloneSandboxLayer):
         site_manager = getSiteManager(portal)
         site_manager.unregisterUtility(provided=IMailHost)
         site_manager.registerUtility(mail_host, IMailHost)
-
 
     def tearDownPloneSite(self, portal):
         login(portal, 'admin')

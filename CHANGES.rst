@@ -24,7 +24,6 @@ New:
   This gives more flexibility for sub site controlpanels.
   [thet]
 
-- Control panel to mange portal actions.
 - added invisible-grid table styles
   [agitator]
 
@@ -55,6 +54,9 @@ New:
 
 Fixes:
 
+- Fixed test error in ``test_controlpanel_site.py`` failed with random error.
+  [jensens]
+
 - Do not break background images relative urls in CSS when concatening bundles
   [ebrehault]
 
@@ -63,6 +65,7 @@ Fixes:
 
 - Fixed html validation: section lacks heading.
   [maurits]
+
 
 
 5.0.3 (2016-03-??)
