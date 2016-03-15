@@ -17,6 +17,9 @@ Incompatibilities:
 
 New:
 
+- Upgrade to tinymce to 4.3.4
+  [vangheem]
+
 - For the controlpanel portlets, use the nearest site url as a base for the overview-controlpanel.
   This gives more flexibility for sub site controlpanels.
   [thet]
@@ -60,6 +63,7 @@ Fixes:
 
 5.0.3 (2016-03-??)
 ------------------
+
 
 Fixes:
 

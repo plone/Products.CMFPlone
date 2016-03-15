@@ -191,7 +191,6 @@
 @progress-bar-bg:                #dfdfdf;
 @progress-bar-bg-hlight:         #cccccc;
 @progress-text:                  @text;
-@progress-text-shadow:           @btn-text-shadow;
 
 // Flow layout
 @flow-layout-spacing:            2px;
@@ -958,7 +957,6 @@ div.@{prefix}-fullscreen {
 	font-size: 14px;
 	width: 40px;
 	color: @progress-text;
-	text-shadow: 1px 1px @progress-text-shadow;
 }
 
 .@{prefix}-bar {
@@ -1996,6 +1994,27 @@ div.@{prefix}-menu .@{prefix}-menu-item-sep, .@{prefix}-menu-item-sep:hover {
 }
 
 
+// Throbber
+
+.@{prefix}-throbber {
+	position: absolute;
+	top: 0; left: 0;
+	width: 100%; height: 100%;
+	.opacity(0.6);
+	background: @throbber-bg;
+}
+
+.@{prefix}-throbber-inline {
+	position: static;
+	height: 50px;
+}
+
+.@{prefix}-menu .@{prefix}-throbber-inline {
+	height: 25px;
+	background-size: contain;
+}
+
+
 // Menu
 
 .@{prefix}-menu {
@@ -2273,22 +2292,6 @@ i.@{prefix}-i-resize {
 .@{prefix}-rtl .@{prefix}-textbox {
 	text-align: right;
 	direction: rtl;
-}
-
-
-// Throbber
-
-.@{prefix}-throbber {
-	position: absolute;
-	top: 0; left: 0;
-	width: 100%; height: 100%;
-	.opacity(0.6);
-	background: @throbber-bg;
-}
-
-.@{prefix}-throbber-inline {
-	position: static;
-	height: 50px;
 }
 
 

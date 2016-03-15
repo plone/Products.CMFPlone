@@ -18720,5 +18720,5 @@ require([
 
 });
 
-define("/Users/nathan/code/coredev5/src/Products.CMFPlone/Products/CMFPlone/static/plone.js", function(){});
+define("Products.CMFPlone/Products/CMFPlone/static/plone.js", function(){});
 
