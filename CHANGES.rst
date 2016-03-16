@@ -5,27 +5,14 @@
 Changelog
 =========
 
-5.0.3 (unreleased)
+5.0.3 (2016-03-16)
 ------------------
 
-Incompatibilities:
-
-- *add item here*
 
 New:
 
 - Upgrade TinyMCE to 4.3.4
   [vangheem]
-
-Fixes:
-
-- *add item here*
-
-
-5.0.3c1 (2016-03-02)
---------------------
-
-New:
 
 - If a bundle does not provide any resources, do not attempt to compile it
   [vangheem]
