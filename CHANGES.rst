@@ -5,6 +5,22 @@
 Changelog
 =========
 
+5.0.4 (unreleased)
+------------------
+
+Incompatibilities:
+
+- *add item here*
+
+New:
+
+- *add item here*
+
+Fixes:
+
+- *add item here*
+
+
 5.0.3 (2016-03-16)
 ------------------
 
