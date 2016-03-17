@@ -34,6 +34,7 @@ setup(
             'Products.ATContentTypes',
         ],
         test=[
+            'mock',
             'lxml',
             'plone.app.robotframework',
             'plone.app.testing',
