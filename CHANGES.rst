@@ -18,7 +18,9 @@ New:
 
 Fixes:
 
-- *add item here*
+- The word "Collection" runs over the collection icon, all the other icons and names are aligned properly (fixed)
+  [jordnV]
+
 
 
 5.0.3c1 (2016-03-02)
