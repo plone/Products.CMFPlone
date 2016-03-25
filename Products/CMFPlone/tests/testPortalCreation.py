@@ -34,6 +34,7 @@ from plone.portlets.interfaces import IPortletAssignmentMapping
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import ILocalPortletAssignmentManager
 from plone.portlets.constants import CONTEXT_CATEGORY as CONTEXT_PORTLETS
+from plone.protect import createToken
 from plone.registry.interfaces import IRegistry
 
 
@@ -914,3 +915,32 @@ class TestManagementPageCharset(PloneTestCase.PloneTestCase):
         manage_charset = getattr(self.portal, 'management_page_charset', None)
         self.assertTrue(manage_charset)
         self.assertEqual(manage_charset, 'utf-8')
+
+
+class TestAddPloneSite(PloneTestCase.PloneTestCase):
+
+    def afterSetUp(self):
+        self.request = self.app.REQUEST
+
+    def addsite(self):
+        self.loginAsPortalOwner()
+        # Set up a request for the plone-addsite view.
+        form = self.request.form
+        form['form.submitted'] = 1
+        form['site_id'] = 'plonesite1'
+        form['setup_content'] = 1
+        self.request['_authenticator'] = createToken()
+        addsite = self.app.restrictedTraverse('@@plone-addsite')
+        addsite()
+
+    def test_addsite_en_as_nl(self):
+        # Add an English site with a Dutch browser.
+        self.request['HTTP_ACCEPT_LANGUAGE'] = 'nl'
+        self.request.form['default_language'] = 'en'
+        self.addsite()
+        plonesite = self.app.plonesite1
+        fp = plonesite['front-page']
+        # Unfortunately, the next test passes even without the fix (overriding
+        # HTTP_ACCEPT_LANGUAGE on the request in factory.py).  This seems to be
+        # because translations are not available in the tests.
+        self.assertIn('Learn more about Plone', fp.text.raw)
