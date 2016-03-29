@@ -8,17 +8,7 @@ Changelog
 4.3.9 (unreleased)
 ------------------
 
-Incompatibilities:
-
-- *add item here*
-
-New:
-
-- *add item here*
-
-Fixes:
-
-- *add item here*
+- No changes
 
 
 4.3.8 (2016-03-08)
