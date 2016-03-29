@@ -21,11 +21,12 @@ if 'SITE_ID' in os.environ:
     site_id = os.environ['SITE_ID']
 else:
     site_id = 'Plone'
-print('Using site id: ' + site_id)
+print('Using site id: {0}'.format(site_id))
 
 compile_path = ''
 if 'COMPILE_DIR' in os.environ:
     compile_path = os.environ['COMPILE_DIR']
+print('Target compile path: {0}'.format(compile_path or 'fetch from bundles'))
 
 portal = app[site_id]  # noqa
 setSite(portal)
@@ -341,17 +342,24 @@ for bkey, bundle in bundles.items():
         js_target_name = target_name + 'min.js'
         css_target_path = js_target_path = os.path.abspath(compile_path)
     else:
+        print('"{0}" bundles compiles paths/filename'.format(bkey))
         if bundle.csscompilation:
             css_compilation = bundle.csscompilation.split('/')
             css_target_name = css_compilation[-1]
             css_target_path = resource_to_dir(portal.unrestrictedTraverse(
                 '/'.join(css_compilation[:-1])))
+            print('- css path: {0}'.format(css_target_path))
+            print('- css name: {0}'.format(css_target_name))
         if bundle.jscompilation:
             js_compilation = bundle.jscompilation.split('/')
             js_target_name = js_compilation[-1]
-            js_target_path = resource_to_dir(portal.unrestrictedTraverse(
-                '/'.join(js_compilation[:-1])))
-
+            js_target_path = resource_to_dir(
+                portal.unrestrictedTraverse(
+                    '/'.join(js_compilation[:-1])
+                )
+            )
+            print('- js path:  {0}'.format(js_target_path))
+            print('- js name:  {0}'.format(js_target_name))
     if bundle.compile:
         less_files = {}
         js_files = []
