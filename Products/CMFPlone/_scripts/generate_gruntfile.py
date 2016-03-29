@@ -8,7 +8,7 @@ import sys
 import subprocess
 
 parser = argparse.ArgumentParser(
-    description='Generate Gruntfile.js from Plone site')
+    description='Generate Gruntfile.js from a Plone site configuration')
 parser.add_argument('--site-id', dest='site_id',
                     default='Plone', help='ID for the plone site id')
 parser.add_argument('--instance', dest='instance',
@@ -43,3 +43,4 @@ def main(argv=sys.argv):
 
     print('Running command: %s' % ' '.join(cmd))
     subprocess.check_call(cmd, env=os.environ)
+    print('Grunfile generated.')

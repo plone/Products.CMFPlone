@@ -54,6 +54,13 @@ New:
 
 Fixes:
 
+- Make Gruntfile.js generation script a bit more verbose to show the effective 
+  locations of the generated bundles. This helps in case of non-working setups 
+  also as if bundle compilation was started in browser at a first run a and  
+  next run was run using the script and files were generated at different 
+  places than expected.
+  [jensens]
+
 - Ensured front-page is English when creating an English site.
   Previously, when creating an English site with a browser that
   prefers a different language, the body text ended up being in the
