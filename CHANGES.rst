@@ -8,17 +8,10 @@ Changelog
 5.0.4 (unreleased)
 ------------------
 
-Incompatibilities:
-
-- *add item here*
-
-New:
-
-- *add item here*
-
 Fixes:
 
-- *add item here*
+- Bump profile version.
+  [esteele]
 
 
 5.0.3.1 (2016-03-29)
