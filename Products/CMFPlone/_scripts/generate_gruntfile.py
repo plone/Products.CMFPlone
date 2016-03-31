@@ -1,11 +1,12 @@
-#
+# -*- coding: utf-8 -*-
+# DEPRECATED
 # This is more of a script runner for the _generate_gruntfile.py
 # script. Just a wrapper so that script can be simply called
 # from the bin directory
-import os
+from Products.CMFPlone._scripts.compile_resources import generate_gruntfile
 import argparse
+import os
 import sys
-import subprocess
 
 parser = argparse.ArgumentParser(
     description='Generate Gruntfile.js from a Plone site configuration')
@@ -18,29 +19,26 @@ parser.add_argument('--instance', dest='instance',
 parser.add_argument('--compile-dir', dest='compile_dir', default='',
                     help='Output directory for the compiled bundle files.')
 
-this_dir = os.path.dirname(os.path.realpath(__file__))
-
 
 def main(argv=sys.argv):
+    print ('-' * 80)
+    print(
+        'DEPRECATED: {0}\n'
+        'Use "bin/plone-compile-resources -IC [other params]" instead.\n'
+        'For more information use "bin/plone-compile-resources --help"'.format(
+            argv[0]
+        )
+    )
+    print ('-' * 80)
     args, _ = parser.parse_known_args()
-    instance = args.instance
-    if not instance:
-        # look for it, get bin directory, search for plone instance
-        bin_path = os.path.sep.join(
-            os.path.abspath(sys.argv[0]).split(os.path.sep)[:-1])
-        files = os.listdir(bin_path)
-        if 'instance' in files:
-            instance = os.path.join(bin_path, 'instance')
-        elif 'client1' in files:
-            instance = os.path.join(bin_path, 'client1')
-    if not instance:
-        print("Could not find plone instance to run command against.")
-        sys.exit()
-    script_path = os.path.join(this_dir, '_generate_gruntfile.py')
-    cmd = [instance, 'run', script_path]
-    os.environ['SITE_ID'] = args.site_id
-    os.environ['COMPILE_DIR'] = args.compile_dir
+    # XXX is this a good way to do it?
+    base_path = os.path.sep.join(
+        os.path.abspath(sys.argv[0]).split(os.path.sep)[:-2])
 
-    print('Running command: %s' % ' '.join(cmd))
-    subprocess.check_call(cmd, env=os.environ)
-    print('Grunfile generated.')
+    generate_gruntfile(
+        base_path,
+        args.instance,
+        args.site_id,
+        args.compile_dir
+    )
+    print('DONE DEPRECATED {0} (see above)'.format(argv[0]))

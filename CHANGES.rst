@@ -14,11 +14,15 @@ Incompatibilities:
 
 New:
 
-- *add item here*
+- Deprecated Gruntfile generation script ``plone-generate-gruntfile``. 
+  Modified the ``plone-compile-resources`` script to support more parameters in order to take over that single task too. 
+  Also clean up of parameters, better help and refactored parts of the code.
+  [jensens]
 
 Fixes:
 
-- *add item here*
+- Gruntfile failed if only css or only javascripts were registered.
+  [jensens]
 
 
 5.1a1 (2016-03-31)
@@ -46,8 +50,7 @@ New:
 - Control panel to mange portal actions
   [ebrehault]
 
-- new less variable to configure the width of the toolbars submenu called
-  ``plone-toolbar-submenu-width``.
+- new less variable to configure the width of the toolbars submenu called ``plone-toolbar-submenu-width``.
   [jensens]
 
 - new zcml feature "plone-51" added. Profile version set to 5101.
