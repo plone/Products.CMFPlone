@@ -5,7 +5,7 @@
 Changelog
 =========
 
-5.1.0 (unreleased)
+5.1a1 (2016-03-31)
 ------------------
 
 Incompatibilities:
