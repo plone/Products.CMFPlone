@@ -5,6 +5,22 @@
 Changelog
 =========
 
+5.1a2 (unreleased)
+------------------
+
+Incompatibilities:
+
+- *add item here*
+
+New:
+
+- *add item here*
+
+Fixes:
+
+- *add item here*
+
+
 5.1a1 (2016-03-31)
 ------------------
 
