@@ -14,11 +14,15 @@ Incompatibilities:
 
 New:
 
-- *add item here*
+- Deprecated Gruntfile generation script ``plone-generate-gruntfile``. 
+  Modified the ``plone-compile-resources`` script to support more parameters in order to take over that single task too. 
+  Also clean up of parameters, better help and refactored parts of the code.
+  [jensens]
 
 Fixes:
 
-- *add item here*
+- Gruntfile failed if only css or only javascripts were registered.
+  [jensens]
 
 
 5.1a1 (2016-03-31)
@@ -32,11 +36,6 @@ Incompatibilities:
   [maurits]
 
 New:
-
-- Deprecated Gruntfile generation script ``plone-generate-gruntfile``. 
-  Modified the ``plone-compile-resources`` script to support more parameters in order to take over that single task too. 
-  Also clean up of parameters, better help and refactored parts of the code.
-  [jensens]
 
 - Upgrade to tinymce to 4.3.4
   [vangheem]

@@ -40,7 +40,7 @@ resources = registry.collectionOfInterface(
     IResourceRegistry, prefix="plone.resources", check=False)  # noqa
 lessvariables = registry.records['plone.lessvariables'].value
 
-gruntfile_template = """
+GRUNTFILE_TEMPLATE = """
 module.exports = function(grunt) {{
     'use strict';
     grunt.initConfig({{
@@ -73,11 +73,12 @@ module.exports = function(grunt) {{
 
     grunt.registerTask('default', ['watch']);
     grunt.registerTask('compile-all', ['requirejs', 'less', 'sed', 'uglify']);
-    {bundleTasks}
+
+{bundleTasks}
 }}
 """
 
-sed_config = """
+SED_CONFIG_TEMPLATE = """
     {name}: {{
       path: '{path}',
       pattern: '{pattern}',
@@ -85,7 +86,7 @@ sed_config = """
     }},
 """
 
-requirejs_config = """
+REQUIREJS_CONFIG_TEMPLATE = """
             "{bkey}": {{
                 options: {{
                     baseUrl: '/',
@@ -101,7 +102,7 @@ requirejs_config = """
                 }}
             }},
 """
-uglify_config = """
+UGLIFY_CONFIG_TEMPLATE = """
         "{bkey}": {{
           options: {{
             sourceMap: true,
@@ -114,7 +115,7 @@ uglify_config = """
         }},
 """
 
-less_config = """
+LESS_CONFIG_TEMPLATE = """
             "{name}": {{
                 files: [
                     {files}
@@ -138,6 +139,8 @@ less_config = """
                 }}
             }}
 """
+
+COMPILE_TASK_TEMPLATE = "    grunt.registerTask('compile-{name}', {tasks})\n"
 
 
 def resource_to_dir(resource, file_type='.js'):
@@ -323,10 +326,10 @@ for key, value in sorted(globalVars.items()):
 # BUNDLE LOOP
 
 require_configs = ""
-uglify_configs = ""
-less_configs = []
+uglify_cfgs_final = ""
+less_cfgs_final = []
 sourceMap_url = ""
-sed_config_final = ""
+sed_cfg_final = ""
 watch_files = []
 sed_count = 0
 bundle_grunt_tasks = ""
@@ -379,7 +382,7 @@ for bkey, bundle in bundles.items():
                     if bundle.stub_js_modules:
                         for stub in bundle.stub_js_modules:
                             rjs_paths[stub] = 'empty:'
-                    rc = requirejs_config.format(
+                    rc = REQUIREJS_CONFIG_TEMPLATE.format(
                         bkey=resource,
                         paths=json.dumps(rjs_paths),
                         shims=json.dumps(shims),
@@ -399,45 +402,44 @@ for bkey, bundle in bundles.items():
 
                 for css_file in res_obj.css:
                     css = portal.unrestrictedTraverse(css_file, None)
-                    if css:
-                        # We count how many folders to bundle to plone
-                        elements = len(css_file.split('/'))
-                        relative_paths = '../' * (elements - 1)
+                    if not css:
+                        print "No file found: " + css_file
+                        continue
+                    # We count how many folders to bundle to plone
+                    elements = len(css_file.split('/'))
+                    relative_paths = '../' * (elements - 1)
 
-                        main_css_path = resource_to_dir(css)
-                        dest_path = '{}/{}'.format(
-                            css_target_path, css_target_name)
-                        less_files.setdefault(dest_path, [])
-                        less_files[dest_path].append(main_css_path)
-                        sourceMap_url = css_target_name + '.map'
-                        watch_files.append(main_css_path)
-                        # replace urls
+                    main_css_path = resource_to_dir(css)
+                    dest_path = '{}/{}'.format(
+                        css_target_path, css_target_name)
+                    less_files.setdefault(dest_path, [])
+                    less_files[dest_path].append(main_css_path)
+                    sourceMap_url = css_target_name + '.map'
+                    watch_files.append(main_css_path)
+                    # replace urls
 
-                        for webpath, direc in less_directories.items():
-                            sed_id = 'sed' + str(sed_count)
-                            sed_task_ids.append("'sed:%s'" % sed_id)
-                            sed_config_final += sed_config.format(
-                                path=css_target_path + '/' + css_target_name,
-                                name=sed_id,
-                                pattern=direc,
-                                destination=relative_paths + webpath)
-                            sed_count += 1
-
-                        # replace the final missing paths
+                    for webpath, direc in less_directories.items():
                         sed_id = 'sed' + str(sed_count)
-                        sed_task_ids.append("'sed:%s'" % sed_id)
-                        sed_config_final += sed_config.format(
+                        sed_task_ids.append('sed:{0}'.format(sed_id))
+                        sed_cfg_final += SED_CONFIG_TEMPLATE.format(
                             path=css_target_path + '/' + css_target_name,
                             name=sed_id,
-                            pattern=os.getcwd(),
-                            destination='')
+                            pattern=direc,
+                            destination=relative_paths + webpath)
                         sed_count += 1
 
-                    else:
-                        print "No file found: " + script.js
+                    # replace the final missing paths
+                    sed_id = 'sed' + str(sed_count)
+                    sed_task_ids.append('sed:{0}'.format(sed_id))
+                    sed_cfg_final += SED_CONFIG_TEMPLATE.format(
+                        path=css_target_path + '/' + css_target_name,
+                        name=sed_id,
+                        pattern=os.getcwd(),
+                        destination='')
+                    sed_count += 1
 
         if less_files:
-            less_configs.append(less_config.format(
+            less_cfgs_final.append(LESS_CONFIG_TEMPLATE.format(
                 name=bkey,
                 globalVars=globalVars_string,
                 files=json.dumps(less_files),
@@ -451,30 +453,40 @@ for bkey, bundle in bundles.items():
                     'Missing or empty <value key="jscompilation" /> '
                     'in {}'.format(bundle.__prefix__))
 
-            uc = uglify_config.format(
+            uc = UGLIFY_CONFIG_TEMPLATE.format(
                 bkey=bkey,
                 destination=js_target_path + '/' + js_target_name,
                 files=json.dumps(js_files)
             )
-            uglify_configs += uc
+            uglify_cfgs_final += uc
 
         requirejs_tasks = ''
         if js_resources:
             requirejs_tasks = ','.join(
-                ['"requirejs:' + r + '"' for r in js_resources]) + ','
-        bundle_grunt_tasks += (
-            "\ngrunt.registerTask('compile-%s',"
-            "[%s 'less:%s', %s, 'uglify:%s']);"
-        ) % (bkey, requirejs_tasks, bkey, ', '.join(sed_task_ids), bkey)
+                ['"requirejs:' + r + '"' for r in js_resources]
+            )
 
+        # collect tasks in order
+        tasks = []
+        for js_res in js_resources:
+            tasks.append('requirejs:{0}'.format(js_res))
+        if less_files:
+            tasks.append('less:{0}'.format(bkey))
+        tasks += sed_task_ids
+        if js_files:
+            tasks.append('uglify:{0}'.format(bkey))
+        bundle_grunt_tasks += COMPILE_TASK_TEMPLATE.format(
+            name=bkey,
+            tasks=json.dumps(tasks)
+        )
 
 with open('Gruntfile.js', 'w') as gruntfile:
     gruntfile.write(
-        gruntfile_template.format(
-            less=','.join(less_configs),
+        GRUNTFILE_TEMPLATE.format(
+            less=','.join(less_cfgs_final),
             requirejs=require_configs,
-            uglify=uglify_configs,
-            sed=sed_config_final,
+            uglify=uglify_cfgs_final,
+            sed=sed_cfg_final,
             files=json.dumps(watch_files),
             bundleTasks=bundle_grunt_tasks
         )
