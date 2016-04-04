@@ -23,6 +23,10 @@ New:
 
 Fixes:
 
+- Fixes #1113 can't add content after adding Plone 5 site without Example 
+  content.
+  [jensens]
+
 - Gruntfile failed if only css or only javascripts were registered.
   [jensens]
 
@@ -100,10 +104,6 @@ Fixes:
 
 - Fixed html validation: section lacks heading.
   [maurits]
-
-- Fixes #1113 can't add content after adding Plone 5 site without Example 
-  content.
-  [jensens]
 
 
 5.0.3 (2016-03-??)
