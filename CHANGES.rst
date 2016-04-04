@@ -14,6 +14,8 @@ Incompatibilities:
 
 New:
 
+- Supported ``remove`` keyword for configlets in controlpanel.xml.  [maurits]
+
 - Deprecated Gruntfile generation script ``plone-generate-gruntfile``. 
   Modified the ``plone-compile-resources`` script to support more parameters in order to take over that single task too. 
   Also clean up of parameters, better help and refactored parts of the code.
