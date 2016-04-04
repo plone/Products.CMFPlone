@@ -1009,7 +1009,7 @@
       <element key="plone-screen-md-min">992px</element>
       <element key="plone-screen-lg-min">1200px</element>
 
-      <element key="plone-left-toolbar-expanded">180px</element>
+      <element key="plone-left-toolbar-expanded">120px</element>
       <element key="plone-left-toolbar">60px</element>
 
       <element key="plone-container-sm">750px</element>
