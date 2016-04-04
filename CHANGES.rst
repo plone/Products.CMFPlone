@@ -16,12 +16,15 @@ New:
 
 - Supported ``remove`` keyword for configlets in controlpanel.xml.  [maurits]
 
-- Deprecated Gruntfile generation script ``plone-generate-gruntfile``. 
-  Modified the ``plone-compile-resources`` script to support more parameters in order to take over that single task too. 
+- Deprecated Gruntfile generation script ``plone-generate-gruntfile``.
+  Modified the ``plone-compile-resources`` script to support more parameters in order to take over that single task too.
   Also clean up of parameters, better help and refactored parts of the code.
   [jensens]
 
 Fixes:
+
+- Fixed versioning for File and Image.
+  [iham]
 
 - Gruntfile failed if only css or only javascripts were registered.
   [jensens]
@@ -75,10 +78,10 @@ New:
 
 Fixes:
 
-- Make Gruntfile.js generation script a bit more verbose to show the effective 
-  locations of the generated bundles. This helps in case of non-working setups 
-  also as if bundle compilation was started in browser at a first run a and  
-  next run was run using the script and files were generated at different 
+- Make Gruntfile.js generation script a bit more verbose to show the effective
+  locations of the generated bundles. This helps in case of non-working setups
+  also as if bundle compilation was started in browser at a first run a and
+  next run was run using the script and files were generated at different
   places than expected.
   [jensens]
 
