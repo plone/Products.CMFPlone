@@ -1,11 +1,5 @@
 //*// TOOLBAR EDIT ZONE PLONE //*//
 
-html, #edit-zone {
-
-}
-body.userrole-authenticated {
-}
-
 @test-color: @plone-toolbar-link;
 
 #edit-zone {
@@ -60,15 +54,20 @@ body.userrole-authenticated {
             &:hover > span {margin-top: -50px; transition: margin-top .35s; -webkit-transition: margin-top .35s;}
             &:hover > span.plone-toolbar-caret {opacity: 1;}
             > span {
-                display: block; text-align: center; height: 50px; width:@plone-left-toolbar;
+                display: block;
+                text-align: center;
+                height: 50px;
+                width: @plone-left-toolbar;
+                min-width: @plone-left-toolbar;
                 &:before {line-height: 50px;}
             }
             > span + span {
                 display: table-cell;
-                text-align: center;
-                padding: 0 8px;
-                height: 50px;
                 width: @plone-left-toolbar;
+                min-width: @plone-left-toolbar;
+                text-align: center;
+                padding: 0 4px;
+                height: 50px;
                 vertical-align: middle;
                 background: @plone-toolbar-link;
                 line-height: 1em;
@@ -206,37 +205,47 @@ body.userrole-authenticated {
     }
 }
 
-.plone-toolbar-left #edit-zone{
+.plone-toolbar-left #edit-zone {
     z-index: 5;
     nav > ul ul {
         width: 0;
         height: 100%;
+        left: @plone-left-toolbar;
     }
     .plone-toolbar-container{
         height: 100%;
     }
 }
+
 .plone-toolbar-top #edit-zone nav > ul ul {height: 0; max-height: 0; width: @plone-toolbar-submenu-width}
 
 
 .plone-toolbar-expanded #edit-zone {
-    width:@plone-left-toolbar-expanded;
-    nav > ul ul { left: @plone-left-toolbar-expanded;}
-    nav > ul a > [class^="icon"] {
-        display: table-cell;
-        width: 40px;
-        padding-left: 10px;
-    }
-    nav > ul a > .icon-logout {
-        margin:0;
-        padding:0;
-    }
-    nav > ul a > span + span {
-        background: none;
-        width: @plone-left-toolbar-expanded - 40px;
-        text-align: left;
-        word-wrap: break-word;
-        word-break: break-word;
+    width: @plone-left-toolbar-expanded;
+    min-width: @plone-left-toolbar-expanded;
+    nav > ul {
+        ul { left: @plone-left-toolbar-expanded;}
+        a {
+            &> [class^="icon"] {
+                display: table-cell;
+                min-width: @plone-left-toolbar;
+                width: @plone-left-toolbar;
+                text-align: center;
+                vertical-align: middle;
+            }
+            &> .icon-logout {
+                margin:0;
+                padding:0;
+            }
+            &> span + span {
+                background: none;
+                width: (@plone-left-toolbar-expanded - @plone-left-toolbar);
+                min-width: (@plone-left-toolbar-expanded - @plone-left-toolbar);
+                text-align: left;
+                word-wrap: break-word;
+                word-break: break-word;
+            }
+        }
     }
     .plone-toolbar-caret {width: 0;}
     li:not(.active) a:hover > span {background: @plone-toolbar-link;}
