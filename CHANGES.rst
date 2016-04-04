@@ -140,6 +140,7 @@ New:
 
 - Merge JS and CSS bundles into meta-bundles to reduce the number of requests
   when loading a page (PLIP #1277)
+  [ebrehault]
 
 Fixes:
 
