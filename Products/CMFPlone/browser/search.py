@@ -41,12 +41,7 @@ class Search(BrowserView):
     valid_keys = ('sort_on', 'sort_order', 'sort_limit', 'fq', 'fl', 'facet')
 
     def munge_search_term(self, q):
-        for char in BAD_CHARS:
-            q = q.replace(char, ' ')
-        r = q.split()
-        r = " AND ".join(r)
-        r = quote_chars(r) + '*'
-        return r
+        return q
 
     def results(self, query=None, batch=True, b_size=10, b_start=0,
                 use_content_listing=True):
@@ -228,6 +223,14 @@ class AjaxSearch(Search):
             'total': len(results),
             'items': items
         })
+
+    def munge_search_term(self, q):
+        for char in BAD_CHARS:
+            q = q.replace(char, ' ')
+        r = q.split()
+        r = " AND ".join(r)
+        r = quote_chars(r) + '*'
+        return r
 
 
 class SortOption(object):
