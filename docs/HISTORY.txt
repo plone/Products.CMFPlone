@@ -6,10 +6,6 @@ For what's new in this release, see CHANGES.txt.
 5.0.0 (unreleased)
 ------------------
 
-- Only encode CSS body if unicode in gruntfile generation script to avoid
-  unicode error.
-  [rnix]
-
 - Plone's javascript is now developed as part of the Plone mockup
   (http://github.com/plone/mockup) and is included as a compiled
   bundle.

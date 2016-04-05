@@ -23,6 +23,10 @@ New:
 
 Fixes:
 
+- Only encode CSS body if unicode in gruntfile generation script to avoid
+  unicode error.
+  [rnix]
+
 - Gruntfile failed if only css or only javascripts were registered.
   [jensens]
 
