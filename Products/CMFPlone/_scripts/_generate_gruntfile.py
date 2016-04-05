@@ -296,7 +296,9 @@ for name, value in resources.items():
                     pass
                 local_file = temp_resource_folder + '/' + file_name + '.js'
                 temp_file = open(local_file, 'w')
-                temp_file.write(css_body.encode('utf-8'))
+                if isinstance(css_body, unicode):
+                    css_body = css_body.encode('utf-8')
+                temp_file.write(css_body)
                 temp_file.close()
 
         if local_file:
