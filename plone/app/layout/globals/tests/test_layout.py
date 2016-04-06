@@ -1,10 +1,11 @@
-from plone.registry.interfaces import IRegistry
-from plone.portlets.interfaces import IPortletType
-from zope.component import getUtility
-import zope.interface
-
 from plone.app.layout.globals.tests.base import GlobalsTestCase
 from plone.app.layout.navigation.interfaces import INavigationRoot
+from plone.portlets.interfaces import IPortletType
+from plone.registry.interfaces import IRegistry
+from Products.CMFPlone.interfaces.controlpanel import ILinkSchema
+from zope.component import getUtility
+
+import zope.interface
 
 
 class TestLayoutView(GlobalsTestCase):
@@ -116,3 +117,39 @@ class TestLayoutView(GlobalsTestCase):
         assert 'subsection-folder2 subsection-folder2-folder3' \
             not in body_class
         assert ' subsection-folder2-folder3-page' not in body_class
+
+    def testBodyClassWithMarkSpecialLinksOnOff(self):
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(
+            ILinkSchema,
+            prefix="plone",
+            check=False
+        )
+
+        context = self.portal['front-page']
+        template = context.document_view
+        view = context.restrictedTraverse('@@plone_layout')
+
+        # Case 1
+        settings.mark_special_links = False
+        settings.external_links_open_new_window = False
+        body_class = view.bodyClass(template, view)
+        self.assertTrue('pat-markspeciallinks' not in body_class)
+
+        # Case 2
+        settings.mark_special_links = True
+        settings.external_links_open_new_window = False
+        body_class = view.bodyClass(template, view)
+        self.assertTrue('pat-markspeciallinks' in body_class)
+
+        # Case 3
+        settings.mark_special_links = False
+        settings.external_links_open_new_window = True
+        body_class = view.bodyClass(template, view)
+        self.assertTrue('pat-markspeciallinks' in body_class)
+
+        # Case 4
+        settings.mark_special_links = True
+        settings.external_links_open_new_window = True
+        body_class = view.bodyClass(template, view)
+        self.assertTrue('pat-markspeciallinks' in body_class)

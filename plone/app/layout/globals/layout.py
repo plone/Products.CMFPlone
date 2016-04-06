@@ -265,7 +265,7 @@ class LayoutPolicy(BrowserView):
 
         msl = settings.mark_special_links
         elonw = settings.external_links_open_new_window
-        if msl == 'true' or elonw == 'true':
+        if msl or elonw:
             body_classes.append('pat-markspeciallinks')
 
         return ' '.join(body_classes)
