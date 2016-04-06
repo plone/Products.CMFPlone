@@ -34,6 +34,9 @@ Fixes:
 - Gruntfile failed if only css or only javascripts were registered.
   [jensens]
 
+- Bundle aggregation must use ++plone++static overrided versions if any.
+  [ebrehault]
+
 
 5.1a1 (2016-03-31)
 ------------------
