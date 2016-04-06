@@ -20,6 +20,59 @@ Fixes:
 
 - Fixed displaying the body text of a feed item.  This is when
   ``render_body`` is switched on in the Syndication settings.
+- Only encode JS body if unicode in gruntfile generation script to avoid
+  unicode error.
+  [jensens]
+
+- Only encode CSS body if unicode in gruntfile generation script to avoid
+  unicode error.
+  [rnix]
+
+- Gruntfile failed if only css or only javascripts were registered.
+  [jensens]
+
+- Bundle aggregation must use ++plone++static overrided versions if any.
+  [ebrehault]
+
+
+5.1a1 (2016-03-31)
+------------------
+
+Incompatibilities:
+
+- Changed these ``section`` elements to ``div`` elements: ``#viewlet-above-content``, ``#viewlet-above-content-body``, ``#content-core``, ``#viewlet-below-content-body``.
+  And these portlets ``section`` elements to ``aside`` elements: ``#portal-colophon``, ``#portal-footer-signature``.
+  This might affect your custom styling or javascript.
+  [maurits]
+
+New:
+
+- Upgrade to tinymce to 4.3.4
+  [vangheem]
+
+- For the controlpanel portlets, use the nearest site url as a base for the overview-controlpanel.
+  This gives more flexibility for sub site controlpanels.
+  [thet]
+
+- added invisible-grid table styles
+  [agitator]
+
+- Control panel to mange portal actions
+  [ebrehault]
+
+- new less variable to configure the width of the toolbars submenu called ``plone-toolbar-submenu-width``.
+  [jensens]
+
+- new zcml feature "plone-51" added. Profile version set to 5101.
+  Version references set to 5.1.0.
+  [jensens]
+
+- Registered post_handler instead of plone-final.  The plone-final
+  import step now does nothing.  Instead, we redefined the old handler
+  as a post_handler explicitly for our main profile.  This is
+  guaranteed to really run after all other import steps, which was
+  never possible in the old way.  The plone-final step is kept for
+  backwards compatibility.
   [maurits]
 
 
