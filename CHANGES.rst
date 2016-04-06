@@ -20,6 +20,9 @@ Fixes:
 
 - *add item here*
 
+- Bundle aggregation must use ++plone++static overrided versions if any.
+  [ebrehault]
+
 
 5.0.4 (2016-04-06)
 ------------------
