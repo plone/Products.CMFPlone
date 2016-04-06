@@ -5,24 +5,8 @@
 Changelog
 =========
 
-5.0.4 (unreleased)
+5.0.4 (2016-04-06)
 ------------------
-
-Incompatibilities:
-
-- *add item here*
-
-New:
-
-- *add item here*
-
-Fixes:
-
-- *add item here*
-
-
-5.0.4c1 (2016-03-31)
---------------------
 
 Fixes:
 
