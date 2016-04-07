@@ -44,15 +44,6 @@
         allowed_interface=".interfaces.IPortalState"
         />
 
-    <browser:page
-        name="plone_patterns_settings"
-        for="*"
-        permission="zope.Public"
-        class=".patterns_settings.PatternsSettings"
-        allowed_interface="Products.CMFPlone.interfaces.IPatternsSettings"
-        />
-
-
     <!-- We need to make the request annotatable for this to work -->
 
     <class class="ZPublisher.BaseRequest.BaseRequest">

@@ -6,7 +6,11 @@ Changelog
 
 Incompatibilities:
 
-- *add item here*
+- Deprecated ``plone.app.layout.globals.pattern_settings``. 
+  Moved view to ``Products.CMFPlone.patterns.view``.
+  Deprecated also pointless interface for this view.
+  Addresses https://github.com/plone/Products.CMFPlone/issues/1513 and goes together with https://github.com/plone/Products.CMFPlone/issues/1514.
+  [jensens]
 
 New:
 
