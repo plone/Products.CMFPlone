@@ -10,6 +10,9 @@ from App.Common import package_home
 from App.ImageFile import ImageFile
 from DateTime import DateTime
 from DateTime.interfaces import DateTimeError
+from log import log
+from log import log_deprecated
+from log import log_exc
 from os.path import join, abspath, split
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.registry.interfaces import IRegistry
@@ -17,11 +20,13 @@ from Products.CMFCore.permissions import ManageUsers
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.utils import ToolInit as CMFCoreToolInit
 from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
 from types import ClassType
 from webdav.interfaces import IWriteLock
 from zope import schema
 from zope.component import getMultiAdapter
 from zope.component import getUtility
+from zope.component import providedBy
 from zope.component import queryUtility
 from zope.component.hooks import getSite
 from zope.deferredimport import deprecated as deprecated_import
@@ -55,7 +60,6 @@ security.declarePrivate('CMFCoreToolInit')
 security.declarePrivate('transaction')
 security.declarePrivate('zope')
 
-
 # Canonical way to get at CMFPlone directory
 PACKAGE_HOME = package_home(globals())
 security.declarePrivate('PACKAGE_HOME')
@@ -67,12 +71,21 @@ QUALITY_DEFAULT = 88
 pattern = re.compile(r'^(.*)\s+(\d+)\s*:\s*(\d+)$')
 
 # Log methods
-from log import log
-from log import log_exc
-from log import log_deprecated
-
 log_exc  # pyflakes.  Keep this, as someone may import it.
 _marker = []
+
+
+def get_portal():
+    """get the Plone portal object.
+
+    It fetched w/o any further context by using the last registered site.
+    So this work only after traversal time.
+    """
+    closest_site = getSite()
+    if closest_site is not None:
+        for potential_portal in closest_site.aq_chain:
+            if IPloneSiteRoot in providedBy(potential_portal):
+                return potential_portal
 
 
 def parent(obj):
