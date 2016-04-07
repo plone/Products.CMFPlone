@@ -38,3 +38,16 @@ class ProductsCMFPloneSetupTest(PloneTestCase):
             "jQuery",
             self.production_folder.readFile('default.js')
         )
+
+    def test_overrides(self):
+        persistent_directory = getUtility(
+            IResourceDirectory, name="persistent")
+        container = persistent_directory[OVERRIDE_RESOURCE_DIRECTORY_NAME]
+        container.makeDirectory('static')
+        static = container['static']
+        static.writeFile('plone-legacy-compiled.js', 'alert("Overrided legacy!");')
+        combine_bundles(self.portal)
+        self.assertIn(
+            'alert("Overrided legacy!");',
+            self.production_folder.readFile('default.js')
+        )
