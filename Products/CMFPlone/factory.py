@@ -81,6 +81,12 @@ def addPloneSite(context, site_id, title='Plone site', description='',
     context._setObject(site_id, PloneSite(site_id))
     site = context._getOb(site_id)
     site.setLanguage(default_language)
+    # Set the accepted language for the rest of the request.  This makes sure
+    # the front-page text gets the correct translation also when your browser
+    # prefers non-English and you choose English as language for the Plone
+    # Site.
+    request = context.REQUEST
+    request['HTTP_ACCEPT_LANGUAGE'] = default_language
 
     site[_TOOL_ID] = SetupTool(_TOOL_ID)
     setup_tool = site[_TOOL_ID]

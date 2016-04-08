@@ -18,7 +18,12 @@ New:
 
 Fixes:
 
-- *add item here*
+- Ensured front-page is English when creating an English site.
+  Previously, when creating an English site with a browser that
+  prefers a different language, the body text ended up being in the
+  browser language.  For languages without a front-page text
+  translation the same happened: they got the other language instead
+  of English.  [maurits]
 
 - Bundle aggregation must use ++plone++static overrided versions if any.
   [ebrehault]
