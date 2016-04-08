@@ -40,6 +40,7 @@ import OFS
 import pkg_resources
 import re
 import transaction
+import warnings
 import zope.interface
 
 deprecated_import(
@@ -629,6 +630,11 @@ def ajax_load_url(url):
 
 
 def validate_json(value):
+    warnings.warn(
+        'Moved to the only place where it was used in order to avoid circular '
+        'imports between ./interfaces/* and ./utils. Now relocated to '
+        '"./interfaces/controlpanel.py"',
+        DeprecationWarning)
     try:
         json.loads(value)
     except ValueError, exc:
