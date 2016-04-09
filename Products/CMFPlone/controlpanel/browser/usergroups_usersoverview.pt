@@ -22,7 +22,7 @@
     <a id="setup-link" class="link-parent"
        tal:attributes="href string:$portal_url/@@overview-controlpanel"
        i18n:translate="">
-        Sites Setup
+        Site Setup
     </a>
 
     <h1 class="documentFirstHeading"
