@@ -10,12 +10,11 @@
 
 <div metal:fill-slot="prefs_configlet_main">
 
-  <a href=""
-     id="setup-link"
-     tal:attributes="href string:$portal_url/@@overview-controlpanel"
-     i18n:translate="">
-      Site Setup
-  </a>
+  <a id="setup-link" class="link-parent"
+       tal:attributes="href string:$portal_url/@@overview-controlpanel"
+       i18n:translate="">
+        Site Setup
+    </a>
 
   <h1 class="documentFirstHeading"
       i18n:translate="">Users and Groups</h1>
