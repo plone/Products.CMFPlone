@@ -1116,7 +1116,7 @@ class ISiteSchema(Interface):
             SimpleTerm('authenticated', 'authenticated',
                        _('For authenticated users only'))]),
         required=True)
-    
+
     thumb_visibility = schema.Choice(
         title=_(u'Thumb visibility'),
         description=_(u'Show thumbs in listings'),
@@ -1127,7 +1127,7 @@ class ISiteSchema(Interface):
             SimpleTerm('authenticated', 'authenticated',
                        _(u'For authenticated users only'))]),
         required=True)
-    
+
     toolbar_position = schema.Choice(
         title=_(u'Position where the toolbar is displayed'),
         description=_(
@@ -1440,7 +1440,7 @@ class ISocialMediaSchema(Interface):
         default=u'')
 
 
-class IImagingSchema(Interface):
+class IDefaultImagingSchema(Interface):
     allowed_sizes = schema.List(
         title=_(u'Allowed image sizes'),
         description=_(u'Specify all allowed maximum image dimensions, '
@@ -1469,6 +1469,25 @@ class IImagingSchema(Interface):
         max=95,
         default=88
     )
+
+
+class ILeadImagingSchema(Interface):
+    scale_name = schema.Choice(
+        title=_(u"Image scale"),
+        description=_(u'Please select scale which will be used.'),
+        required=True,
+        default='mini',
+        vocabulary=u"plone.app.vocabularies.ImagesScales",
+    )
+
+    is_visible = schema.Bool(
+        title=_(u'Show image in content'),
+        default=True,
+    )
+
+
+class IImagingSchema(IDefaultImagingSchema, ILeadImagingSchema):
+    """Imaging Schema"""
 
 
 class ILoginSchema(Interface):

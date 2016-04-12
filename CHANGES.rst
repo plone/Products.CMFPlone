@@ -14,7 +14,8 @@ Incompatibilities:
 
 New:
 
-- *add item here*
+- Add lead imaging schema.
+  [bsuttor]
 
 Fixes:
 
