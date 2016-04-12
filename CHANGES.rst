@@ -31,6 +31,10 @@ Fixes:
   also refactors the patterns settings and cleans it up.
   [jensens]
 
+- Removed inconsistency in the display of `Site Setup` links under 'Users and Groups' 
+  control panel.
+  [kkhan]
+ 
 - Only encode JS body if unicode in gruntfile generation script to avoid
   unicode error.
   [jensens]
