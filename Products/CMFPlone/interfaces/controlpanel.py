@@ -1661,6 +1661,19 @@ class IImagingSchema(Interface):
         default=51,
     )
 
+    lead_scale_name = schema.Choice(
+        title=_(u"Leadimage scale"),
+        description=_(u'Please select scale which will be used.'),
+        required=True,
+        default='mini',
+        vocabulary=u"plone.app.vocabularies.ImagesScales",
+    )
+
+    is_lead_visible = schema.Bool(
+        title=_(u'Show Leadimage in content'),
+        default=True,
+    )
+
 
 class ILoginSchema(Interface):
 
