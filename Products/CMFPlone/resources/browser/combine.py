@@ -70,7 +70,7 @@ def write_js(context, folder, meta_bundle):
     bundles = registry.collectionOfInterface(
         IBundleRegistry, prefix="plone.bundles", check=False)
     for bundle in bundles.values():
-        if bundle.merge_with == meta_bundle:
+        if bundle.merge_with == meta_bundle and bundle.jscompilation:
             resources.append(get_resource(context, bundle.jscompilation))
 
     fi = StringIO()
@@ -86,7 +86,7 @@ def write_css(context, folder, meta_bundle):
     bundles = registry.collectionOfInterface(
         IBundleRegistry, prefix="plone.bundles", check=False)
     for bundle in bundles.values():
-        if bundle.merge_with == meta_bundle:
+        if bundle.merge_with == meta_bundle and bundle.csscompilation:
             resources.append(get_resource(context, bundle.csscompilation))
 
     fi = StringIO()
