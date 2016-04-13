@@ -31,6 +31,14 @@ def get_production_resource_directory():
 
 
 def get_resource(context, path):
+    if path.startswith('++plone++'):
+        # ++plone++ resources can be customized, we return their override
+        # value if any
+        overrides = get_override_directory(context)
+        filepath = path[9:]
+        if overrides.isFile(filepath):
+            return overrides.readFile(filepath)
+
     resource = context.unrestrictedTraverse(path)
     if isinstance(resource, FilesystemFile):
         (directory, sep, filename) = path.rpartition('/')
@@ -63,7 +71,7 @@ def write_js(context, folder, meta_bundle):
     bundles = registry.collectionOfInterface(
         IBundleRegistry, prefix="plone.bundles", check=False)
     for bundle in bundles.values():
-        if bundle.merge_with == meta_bundle:
+        if bundle.merge_with == meta_bundle and bundle.jscompilation:
             resources.append(get_resource(context, bundle.jscompilation))
 
     fi = StringIO()
@@ -79,7 +87,7 @@ def write_css(context, folder, meta_bundle):
     bundles = registry.collectionOfInterface(
         IBundleRegistry, prefix="plone.bundles", check=False)
     for bundle in bundles.values():
-        if bundle.merge_with == meta_bundle:
+        if bundle.merge_with == meta_bundle and bundle.csscompilation:
             css = get_resource(context, bundle.csscompilation)
             # Preserve relative urls:
             # we prefix with '../'' any url not starting with '/'
@@ -96,13 +104,17 @@ def write_css(context, folder, meta_bundle):
     folder.writeFile(meta_bundle + ".css", fi)
 
 
-def combine_bundles(context):
+def get_override_directory(context):
     persistent_directory = queryUtility(IResourceDirectory, name="persistent")
     if persistent_directory is None:
         return
     if OVERRIDE_RESOURCE_DIRECTORY_NAME not in persistent_directory:
         persistent_directory.makeDirectory(OVERRIDE_RESOURCE_DIRECTORY_NAME)
-    container = persistent_directory[OVERRIDE_RESOURCE_DIRECTORY_NAME]
+    return persistent_directory[OVERRIDE_RESOURCE_DIRECTORY_NAME]
+
+
+def combine_bundles(context):
+    container = get_override_directory(context)
     if PRODUCTION_RESOURCE_DIRECTORY not in container:
         container.makeDirectory(PRODUCTION_RESOURCE_DIRECTORY)
     production_folder = container[PRODUCTION_RESOURCE_DIRECTORY]

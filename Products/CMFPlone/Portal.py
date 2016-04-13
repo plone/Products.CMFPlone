@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from AccessControl import ClassSecurityInfo
 from AccessControl import Permissions
 from AccessControl import Unauthorized
@@ -13,7 +14,7 @@ from Products.CMFCore.utils import UniqueObject
 from Products.CMFDynamicViewFTI.browserdefault import BrowserDefaultMixin
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.DublinCore import DefaultDublinCoreImpl
-from Products.CMFPlone.interfaces import IPloneSiteRoot
+from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
 from Products.CMFPlone.interfaces.syndication import ISyndicatable
 from Products.CMFPlone.permissions import AddPortalContent
 from Products.CMFPlone.permissions import AddPortalFolders
@@ -25,17 +26,16 @@ from Products.CMFPlone.PloneFolder import OrderedContainer
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper
 from webdav.NullResource import NullResource
 from zope.component import queryUtility
-from zope.interface import implements
+from zope.interface import implementer
 
 
+@implementer(IPloneSiteRoot, ISyndicatable)
 class PloneSite(PortalObjectBase, DefaultDublinCoreImpl, OrderedContainer,
                 BrowserDefaultMixin, UniqueObject):
     """ The Plone site object. """
 
     security = ClassSecurityInfo()
     meta_type = portal_type = 'Plone Site'
-
-    implements(IPloneSiteRoot, ISyndicatable)
 
     manage_options = (
         PortalObjectBase.manage_options[:2] +

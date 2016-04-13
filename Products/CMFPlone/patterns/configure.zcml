@@ -1,11 +1,26 @@
-<configure xmlns="http://namespaces.zope.org/zope"
-           i18n_domain="plone">
-
+<configure
+    i18n_domain="plone"
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser">
+  <!-- helper view -->
+  <browser:page
+      class=".view.PatternsSettingsView"
+      for="*"
+      name="plone_patterns_settings"
+      permission="zope.Public"
+  />
   <!-- Adapters for patterns settings -->
-
-  <adapter for="* * *"
-      factory=".PloneSettingsAdapter"
+  <adapter
+      factory=".settings.PatternSettingsAdapter"
+      for="* * *"
+      name="pattern_settings"
       provides="Products.CMFPlone.interfaces.IPatternsSettings"
-      name="plone_settings" />
-
+  />
+  <!-- deprecated name -->
+  <adapter
+      factory=".settings.PatternSettingsAdapter"
+      for="* * *"
+      name="plone_settings"
+      provides="Products.CMFPlone.interfaces.IPatternsSettings"
+  />
 </configure>

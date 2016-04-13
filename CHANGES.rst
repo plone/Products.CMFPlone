@@ -10,7 +10,11 @@ Changelog
 
 Incompatibilities:
 
-- *add item here*
+- Moved code around and deprecated old locations in ``Products/CMFPlone/patterns/__init__``. 
+  This goes together with same pattern settings changes in ``plone.app.layout.globals.pattern_settings``.
+  Also moved general usable ``./patterns/utils/get_portal`` to ``./utils/.get_portal``. 
+  Depreacted ``./patterns/utils/get_portal`` and ``./patterns/utils/get_portal``.
+  [jensens]
 
 New:
 
@@ -23,8 +27,30 @@ New:
 
 Fixes:
 
+- Closes #1513 'Wrong portal_url used for TinyMCE in multilingual site',
+  also refactors the patterns settings and cleans it up.
+  [jensens]
+
+- Removed inconsistency in the display of `Site Setup` links under 'Users and Groups' 
+  control panel.
+  [kkhan]
+ 
+- Only encode JS body if unicode in gruntfile generation script to avoid
+  unicode error.
+  [jensens]
+
+- Only encode CSS body if unicode in gruntfile generation script to avoid
+  unicode error.
+  [rnix]
+
 - Gruntfile failed if only css or only javascripts were registered.
   [jensens]
+
+- Bundle aggregation must use ++plone++static overrided versions if any.
+  [ebrehault]
+
+- Fix bundle aggregation when bundle has no CSS (or no JS)
+  [ebrehault]
 
 
 5.1a1 (2016-03-31)

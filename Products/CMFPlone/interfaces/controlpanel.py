@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
-import json
-
-from Products.CMFPlone import PloneMessageFactory as _  # NOQA
-from Products.CMFPlone.utils import validate_json
 from basetool import IPloneBaseTool
 from plone.supermodel import model
+from Products.CMFPlone import PloneMessageFactory as _  # NOQA
 from zope import schema
-from zope.interface import Interface, implements
+from zope.interface import Interface
+from zope.interface import implementer
 from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
+
+import json
 
 
 ROBOTS_TXT = u"""Sitemap: {portal_url}/sitemap.xml.gz
@@ -45,6 +45,20 @@ Disallow: /*summary_view$
 Disallow: /*thumbnail_view$
 Disallow: /*view$
 """
+
+
+def validate_json(value):
+    try:
+        json.loads(value)
+    except ValueError, exc:
+        class JSONError(schema.ValidationError):
+            __doc__ = _(u"Must be empty or a valid JSON-formatted "
+                        u"configuration – ${message}.", mapping={
+                            'message': unicode(exc)})
+
+        raise JSONError(value)
+
+    return True
 
 
 class IControlPanel(IPloneBaseTool):
@@ -240,7 +254,9 @@ class ILanguageSchema(Interface):
                 default=(u"Use cookie for manual override")),
         description=_(
             u"description_cookie_manual_override",
-            default=(u"Required for the language selector viewlet to be rendered.")
+            default=(
+                u"Required for the language selector viewlet to be rendered."
+            )
         ),
         default=False,
         required=False,
@@ -263,7 +279,11 @@ class ILanguageSchema(Interface):
             default=(u"Set the language cookie always")),
         description=_(
             u"description_set_language_cookie_always",
-            default=(u"i.e. also when the 'set_language' request parameter is absent")),
+            default=(
+                u"i.e. also when the 'set_language' request parameter is "
+                u"absent"
+            )
+        ),
         default=False,
         required=False,
     )
@@ -301,9 +321,8 @@ class ITagAttrPair(Interface):
     attributes = schema.TextLine(title=u"attributes")
 
 
+@implementer(ITagAttrPair)
 class TagAttrPair(object):
-
-    implements(ITagAttrPair)
 
     def __init__(self, tags='', attributes=''):
         self.tags = tags
@@ -1117,7 +1136,7 @@ class ISiteSchema(Interface):
             SimpleTerm('authenticated', 'authenticated',
                        _('For authenticated users only'))]),
         required=True)
-    
+
     thumb_visibility = schema.Choice(
         title=_(u'Thumb visibility'),
         description=_(u'Show thumbs in listings'),
@@ -1128,7 +1147,7 @@ class ISiteSchema(Interface):
             SimpleTerm('authenticated', 'authenticated',
                        _(u'For authenticated users only'))]),
         required=True)
-    
+
     toolbar_position = schema.Choice(
         title=_(u'Position where the toolbar is displayed'),
         description=_(

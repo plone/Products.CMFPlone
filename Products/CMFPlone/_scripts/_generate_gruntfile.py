@@ -208,9 +208,10 @@ for requirejs, script in resources.items():
                 except OSError:
                     pass
                 local_file = temp_resource_folder + '/' + file_name + '.js'
-                temp_file = open(local_file, 'w')
-                temp_file.write(js_body.encode('utf-8'))
-                temp_file.close()
+                if isinstance(js_body, unicode):
+                    js_body = js_body.encode('utf-8')
+                with open(local_file, 'w') as temp_file:
+                    temp_file.write(js_body)
 
         if local_file:
             # Extract .js
@@ -296,7 +297,9 @@ for name, value in resources.items():
                     pass
                 local_file = temp_resource_folder + '/' + file_name + '.js'
                 temp_file = open(local_file, 'w')
-                temp_file.write(css_body.encode('utf-8'))
+                if isinstance(css_body, unicode):
+                    css_body = css_body.encode('utf-8')
+                temp_file.write(css_body)
                 temp_file.close()
 
         if local_file:
