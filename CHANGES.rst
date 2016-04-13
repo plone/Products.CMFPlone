@@ -28,6 +28,9 @@ Fixes:
 - Bundle aggregation must use ++plone++static overrided versions if any.
   [ebrehault]
 
+- Fix bundle aggregation when bundle has no CSS (or no JS)
+  [ebrehault]
+
 
 5.0.4 (2016-04-06)
 ------------------
