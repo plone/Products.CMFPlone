@@ -37,6 +37,9 @@ Fixes:
 - Fix bundle aggregation when bundle has no CSS (or no JS)
   [ebrehault]
 
+- Fix relative url in CSS in bundle aggregation
+  [ebrehault]
+
 
 5.1a1 (2016-03-31)
 ------------------
