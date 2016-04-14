@@ -89,12 +89,13 @@ def write_css(context, folder, meta_bundle):
     for bundle in bundles.values():
         if bundle.merge_with == meta_bundle and bundle.csscompilation:
             css = get_resource(context, bundle.csscompilation)
-            # Preserve relative urls:
-            # we prefix with '../'' any url not starting with '/'
-            # or http: or data:
+            (path, sep, filename) = bundle.csscompilation.rpartition('/')
+            # Process relative urls:
+            # we prefix with current resource path any url not starting with
+            # '/' or http: or data:
             css = re.sub(
                 r"""(url\(['"]?(?!['"]?([a-z]+:|\/)))""",
-                r'\1../',
+                r'\1%s/' % path,
                 css)
             resources.append(css)
 
