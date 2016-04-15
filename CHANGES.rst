@@ -594,6 +594,7 @@ New features:
 
 - Update npm package depencies.
   [thet]
+
 - Added 2 imaging schema: ``plone.lead_scale_name`` and ``plone.is_lead_visible``.
   [bsuttor]
 

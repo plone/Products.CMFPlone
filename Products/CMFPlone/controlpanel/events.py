@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
+from plone import api
+from plone.registry.interfaces import IRecordModifiedEvent
 from Products.CMFCore.ActionInformation import Action
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
-from Products.CMFPlone.controlpanel.utils import migrate_to_email_login
 from Products.CMFPlone.controlpanel.utils import migrate_from_email_login
+from Products.CMFPlone.controlpanel.utils import migrate_to_email_login
 from Products.CMFPlone.interfaces import IConfigurationChangedEvent
+from Products.CMFPlone.interfaces import IImagingSchema
 from Products.CMFPlone.interfaces import ISecuritySchema
 from Products.CMFPlone.utils import safe_hasattr
-from plone.registry.interfaces import IRecordModifiedEvent
+from re import compile
 from zope.component import adapter
 from zope.component import queryUtility
 from zope.interface import implementer
@@ -127,3 +130,31 @@ def handle_use_email_as_login(obj, event):
         migrate_to_email_login(context)
     else:
         migrate_from_email_login(context)
+
+
+@adapter(IImagingSchema, IRecordModifiedEvent)
+def detect_imaging_change(obj, event):
+    """This method prevent deleting a scale from allowed_sizes image
+    if this scale is selected for leadimage.
+    """
+    if event.record.fieldName == 'allowed_sizes':
+        lead_scale_name = api.portal.get_registry_record(
+            'plone.lead_scale_name')
+        is_in_allowed_size = False
+        pattern = compile(r'^(.*)\s+(\d+)\s*:\s*(\d+)$')
+        for value in event.newValue:
+            name, width, height = pattern.match(value).groups()
+            name = name.strip().replace(' ', '_')
+            if name == lead_scale_name:
+                is_in_allowed_size = True
+                break
+        if not is_in_allowed_size:
+            event.record.value = event.oldValue
+            translated = _(u"You can't remove allowed_sizes ${scale_name} "
+                u"because it's used to leadimage.",
+                mapping={'scale_name': unicode(lead_scale_name)})
+            request = api.portal.get().REQUEST
+            api.portal.show_message(
+                message=translated,
+                request=request,
+                type='error')

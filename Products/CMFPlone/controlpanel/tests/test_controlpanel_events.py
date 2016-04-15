@@ -3,9 +3,11 @@ from Products.CMFPlone.testing import \
     PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces import ISecuritySchema
+from plone import api
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import setRoles
 from zope.component import getAdapter
+from zope.schema.interfaces import ConstraintNotSatisfied
 
 import unittest
 
@@ -140,3 +142,20 @@ class SecurityControlPanelEventsTest(unittest.TestCase):
         self.security_settings.use_email_as_login = False
         self.assertEquals(len(pas.searchUsers(name='joe@test.com')), 0)
         self.assertEquals(len(pas.searchUsers(name='joe')), 1)
+
+    def test_detect_imaging_change(self):
+        registry = api.portal.get_tool('portal_registry')
+        # provideUtility(provides=IRegistry, component=registry)
+        lsn = registry.records['plone.lead_scale_name']
+        allowed_sizes = registry.records['plone.allowed_sizes']
+        with self.assertRaises(ConstraintNotSatisfied):
+            api.portal.set_registry_record('plone.lead_scale_name', 'test')
+        api.portal.set_registry_record('plone.lead_scale_name', 'thumb')
+        registry.records['plone.allowed_sizes'].value = [u'test 5:10', u'thumb 128:128']
+        api.portal.set_registry_record('plone.lead_scale_name', 'test')
+
+        api.portal.set_registry_record('plone.allowed_sizes', [u'image 15:15'])
+        self.assertEqual(api.portal.get_registry_record('plone.allowed_sizes'), [u'test 5:10', u'thumb 128:128'])
+
+        api.portal.set_registry_record('plone.allowed_sizes', [u'test2 250:250'])
+        self.assertEqual(api.portal.get_registry_record('plone.allowed_sizes'), [u'test 5:10', u'thumb 128:128'])
