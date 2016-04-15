@@ -287,7 +287,7 @@ class ResourceRegistryControlPanelView(RequireJsView):
         })
 
     def js_build_config(self):
-        (baseUrl, paths, shims) = self.get_requirejs_config()
+        (paths, shims) = self.get_requirejs_config()
         bundles = self.get_bundles()
         resources = self.get_resources()
 

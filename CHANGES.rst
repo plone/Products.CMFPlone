@@ -55,6 +55,9 @@ Fixes:
 - Fix relative url in CSS in bundle aggregation
   [ebrehault]
 
+- Do not hard-code baseUrl in bundle to avoid bad URL when switching domains.
+  [ebrehault]
+
 
 5.1a1 (2016-03-31)
 ------------------
