@@ -27,6 +27,9 @@ New:
 
 Fixes:
 
+- Removed docstrings from some methods to avoid publishing them.  From
+  Products.PloneHotfix20160419.  [maurits]
+
 - Fix issue where incorrectly configured formats would cause TinyMCE to error
   [vangheem]
 
