@@ -224,8 +224,7 @@ class DefaultDublinCoreImpl(PropertyManager):
     security.declareProtected(View, 'EffectiveDate')
 
     def EffectiveDate(self, zone=None):
-        """ Dublin Core Date element - date resource becomes effective.
-        """
+        # Dublin Core Date element - date resource becomes effective.
         if zone is None:
             zone = _zone
         ed = getattr(self, 'effective_date', None)
@@ -234,8 +233,7 @@ class DefaultDublinCoreImpl(PropertyManager):
     security.declareProtected(View, 'ExpirationDate')
 
     def ExpirationDate(self, zone=None):
-        """ Dublin Core Date element - date resource expires.
-        """
+        # Dublin Core Date element - date resource expires.
         if zone is None:
             zone = _zone
         ed = getattr(self, 'expiration_date', None)
@@ -253,8 +251,7 @@ class DefaultDublinCoreImpl(PropertyManager):
     security.declareProtected(View, 'Type')
 
     def Type(self):
-        """ Dublin Core Type element - resource type.
-        """
+        # Dublin Core Type element - resource type.
         ti = self.getTypeInfo()
         return ti is not None and ti.Title() or 'Unknown'
 

@@ -22,6 +22,8 @@ Fixes:
   ``render_body`` is switched on in the Syndication settings.
   [maurits]
 
+- Removed docstrings from some methods to avoid publishing them.  From
+  Products.PloneHotfix20160419.  [maurits]
 
 - Ensured front-page is English when creating an English site.
   Previously, when creating an English site with a browser that
