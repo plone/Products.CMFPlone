@@ -19,17 +19,17 @@ class URLTool(PloneBaseTool, BaseTool):
     security.declarePublic('isURLInPortal')
 
     def isURLInPortal(self, url, context=None):
-        """ Check if a given url is on the same host and contains the portal
-            path.  Used to ensure that login forms can determine relevant
-            referrers (i.e. in portal).  Also return true for some relative
-            urls if context is passed in to allow for url parsing. When context
-            is not provided, assume that relative urls are in the portal. It is
-            assumed that http://portal is the same portal as https://portal.
+        # Check if a given url is on the same host and contains the portal
+        # path.  Used to ensure that login forms can determine relevant
+        # referrers (i.e. in portal).  Also return true for some relative
+        # urls if context is passed in to allow for url parsing. When context
+        # is not provided, assume that relative urls are in the portal. It is
+        # assumed that http://portal is the same portal as https://portal.
 
-            External sites listed in 'allow_external_login_sites' of
-            site_properties are also considered within the portal to allow for
-            single sign on.
-        """
+        # External sites listed in 'allow_external_login_sites' of
+        # site_properties are also considered within the portal to allow for
+        # single sign on.
+
         # sanitize url
         url = re.sub('^[\x00-\x20]+', '', url).strip()
         if ('<script' in url or '%3Cscript' in url or 'javascript:' in url or
