@@ -18,6 +18,11 @@ New:
 
 Fixes:
 
+- Fixed displaying the body text of a feed item.  This is when
+  ``render_body`` is switched on in the Syndication settings.
+  [maurits]
+
+
 - Ensured front-page is English when creating an English site.
   Previously, when creating an English site with a browser that
   prefers a different language, the body text ended up being in the
@@ -45,9 +50,6 @@ Fixes:
 --------------------
 
 Fixes:
-- Fixed displaying the body text of a feed item.  This is when
-  ``render_body`` is switched on in the Syndication settings.
-  [maurits]
 
 - In the ``combine-bundles`` import step, make sure the Content Type
   header is not set to ``application/javascript``.  This would result
