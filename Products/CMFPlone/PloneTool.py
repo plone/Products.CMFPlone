@@ -197,9 +197,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declarePublic('validateSingleNormalizedEmailAddress')
     def validateSingleNormalizedEmailAddress(self, address):
-        """Lower-level function to validate a single normalized email address,
-        see validateEmailAddress.
-        """
+        # Lower-level function to validate a single normalized email address,
+        # see validateEmailAddress.
         if not isinstance(address, basestring):
             return False
 
@@ -216,7 +215,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declarePublic('validateSingleEmailAddress')
     def validateSingleEmailAddress(self, address):
-        """Validate a single email address, see also validateEmailAddresses."""
+        # Validate a single email address, see also validateEmailAddresses.
         if not isinstance(address, basestring):
             return False
 
@@ -238,9 +237,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declarePublic('validateEmailAddresses')
     def validateEmailAddresses(self, addresses):
-        """Validate a list of possibly several email addresses, see also
-        validateSingleEmailAddress.
-        """
+        # Validate a list of possibly several email addresses, see also
+        # validateSingleEmailAddress.
         if not isinstance(addresses, basestring):
             return False
 
@@ -261,10 +259,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                      subject=None, description=None, contributors=None,
                      effective_date=None, expiration_date=None, format=None,
                      language=None, rights=None, **kwargs):
-        """Responsible for setting metadata on a content object.
-
-        We assume the obj implements IDublinCoreMetadata.
-        """
+        # Responsible for setting metadata on a content object.
+        # We assume the obj implements IDublinCoreMetadata.
         mt = getToolByName(self, 'portal_membership')
         if not mt.checkPermission(ModifyPortalContent, obj):
             # FIXME: Some scripts rely on this being string?
@@ -368,7 +364,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declarePublic('contentEdit')
     def contentEdit(self, obj, **kwargs):
-        """Encapsulates how the editing of content occurs."""
+        # Encapsulates how the editing of content occurs.
         try:
             self.editMetadata(obj, **kwargs)
         except AttributeError, msg:
@@ -380,18 +376,15 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declarePublic('availableMIMETypes')
     def availableMIMETypes(self):
-        """Returns a map of mimetypes.
-
-        Requires mimetype registry from Archetypes >= 1.3.
-        """
+        # Returns a map of mimetypes.
+        # Requires mimetype registry from Archetypes >= 1.3.
         mtr = getToolByName(self, 'mimetypes_registry')
         return mtr.list_mimetypes()
 
     security.declareProtected(View, 'getWorkflowChainFor')
     def getWorkflowChainFor(self, object):
-        """Proxy the request for the chain to the workflow tool, as
-        this method is private there.
-        """
+        # Proxy the request for the chain to the workflow tool, as
+        # this method is private there.
         wftool = getToolByName(self, 'portal_workflow')
         wfs = ()
         try:
@@ -404,10 +397,9 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declareProtected(View, 'getIconFor')
     def getIconFor(self, category, id, default=_marker, context=None):
-        """Get an icon for an action. Prefer the icon_expr on the action
-        itself and if not specified fall back to the icon from the
-        action icons tool.
-        """
+        # Get an icon for an action. Prefer the icon_expr on the action
+        # itself and if not specified fall back to the icon from the
+        # action icons tool.
         if context is None:
             context = aq_parent(self)
         if category == 'controlpanel':
@@ -577,21 +569,18 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     # Provide a way of dumping an exception to the log even if we
     # catch it and otherwise ignore it
     def logException(self):
-        """Dumps most recent exception to the log.
-        """
+        # Dumps most recent exception to the log.
         log_exc()
 
     security.declarePublic('createSitemap')
     def createSitemap(self, context, request=None):
-        """Returns a sitemap navtree structure.
-        """
+        # Returns a sitemap navtree structure.
         if request is None:
             request = self.REQUEST
         return utils.createSiteMap(context, request)
 
     def _addToNavTreeResult(self, result, data):
-        """Adds a piece of content to the result tree.
-        """
+        # Adds a piece of content to the result tree.
         return utils.addToNavTreeResult(result, data)
 
     security.declareProtected(AccessContentsInformation, 'typesToList')
@@ -608,15 +597,14 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declarePublic('createBreadCrumbs')
     def createBreadCrumbs(self, context, request=None):
-        """Returns a structure for the portal breadcumbs.
-        """
+        # Returns a structure for the portal breadcumbs.
         if request is None:
             request = self.REQUEST
         return utils.createBreadCrumbs(context, request)
 
     security.declarePublic('good_id')
     def good_id(self, id):
-        """Exposes ObjectManager's bad_id test to skin scripts."""
+        # Exposes ObjectManager's bad_id test to skin scripts.
         m = bad_id(id)
         if m is not None:
             return 0
@@ -624,12 +612,12 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declarePublic('bad_chars')
     def bad_chars(self, id):
-        """Returns a list of the Bad characters."""
+        # Returns a list of the Bad characters.
         return BAD_CHARS(id)
 
     security.declarePublic('getInheritedLocalRoles')
     def getInheritedLocalRoles(self, context):
-        """Returns a tuple with the acquired local roles."""
+        # Returns a tuple with the acquired local roles.
         portal = getToolByName(context, 'portal_url').getPortalObject()
         result = []
         cont = 1
@@ -683,33 +671,31 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declarePublic('isDefaultPage')
     def isDefaultPage(self, obj, request=None):
-        """Finds out if the given obj is the default page in its parent folder.
-
-        Only considers explicitly contained objects, either set as index_html,
-        with the default_page property, or using IBrowserDefault.
-        """
+        # Finds out if the given obj is the default page in its parent folder.
+        # Only considers explicitly contained objects, either set as index_html,
+        # with the default_page property, or using IBrowserDefault.
         if request is None:
             request = self.REQUEST
         return utils.isDefaultPage(obj, request)
 
     security.declarePublic('getDefaultPage')
     def getDefaultPage(self, obj, request=None):
-        """Given a folderish item, find out if it has a default-page using
-        the following lookup rules:
+        # Given a folderish item, find out if it has a default-page using
+        # the following lookup rules:
 
-            1. A content object called 'index_html' wins
-            2. If the folder implements IBrowserDefault, query this
-            3. Else, look up the property default_page on the object
-                - Note that in this case, the returned id may *not* be of an
-                  object in the folder, since it could be acquired from a
-                  parent folder or skin layer
-            4. Else, look up the property default_page in site_properties for
-                magic ids and test these
+        #     1. A content object called 'index_html' wins
+        #     2. If the folder implements IBrowserDefault, query this
+        #     3. Else, look up the property default_page on the object
+        #         - Note that in this case, the returned id may *not* be of an
+        #           object in the folder, since it could be acquired from a
+        #           parent folder or skin layer
+        #     4. Else, look up the property default_page in site_properties for
+        #         magic ids and test these
 
-        The id of the first matching item is then used to lookup a translation
-        and if found, its id is returned. If no default page is set, None is
-        returned. If a non-folderish item is passed in, return None always.
-        """
+        # The id of the first matching item is then used to lookup a translation
+        # and if found, its id is returned. If no default page is set, None is
+        # returned. If a non-folderish item is passed in, return None always.
+
         if request is None:
             request = self.REQUEST
         return utils.getDefaultPage(obj, request)
@@ -755,14 +741,11 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declarePublic('showPortalMessages')
     def showPortalMessages(self, request=None):
-        """\
-        Return portal status messages that will be displayed when the
-        response web page is rendered. Portal status messages are by default
-        rendered by the global_statusmessage.pt page template. They will be
-        removed after they have been shown.
-
-        See addPortalMessages for examples.
-        """
+        # Return portal status messages that will be displayed when the
+        # response web page is rendered. Portal status messages are by default
+        # rendered by the global_statusmessage.pt page template. They will be
+        # removed after they have been shown.
+        # See addPortalMessages for examples.
         if request is None:
             request = self.REQUEST
         return IStatusMessage(request).show()
@@ -942,12 +925,10 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declarePublic('acquireLocalRoles')
     def acquireLocalRoles(self, obj, status=1, REQUEST=None):
-        """If status is 1, allow acquisition of local roles (regular
-        behaviour).
-
-        If it's 0, prohibit it (it will allow some kind of local role
-        blacklisting).
-        """
+        # If status is 1, allow acquisition of local roles (regular
+        # behaviour).
+        # If it's 0, prohibit it (it will allow some kind of local role
+        # blacklisting).
         mt = getToolByName(self, 'portal_membership')
         if not mt.checkPermission(ModifyPortalContent, obj):
             raise Unauthorized
@@ -966,10 +947,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declarePublic('isLocalRoleAcquired')
     def isLocalRoleAcquired(self, obj):
-        """Returns local role acquisition blocking status.
-
-        True if normal, false if blocked.
-        """
+        # Returns local role acquisition blocking status.
+        # True if normal, false if blocked.
         if getattr(obj, '__ac_local_roles_block__', None):
             return False
         return True
@@ -1048,10 +1027,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declarePublic('listMetaTags')
     def listMetaTags(self, context):
-        """Lists meta tags helper.
-
-        Creates a mapping of meta tags -> values for the listMetaTags script.
-        """
+        # Lists meta tags helper.
+        # Creates a mapping of meta tags -> values for the listMetaTags script.
         result = {}
         site_props = getToolByName(self, 'portal_properties').site_properties
         mt = getToolByName(self, 'portal_membership')
@@ -1158,15 +1135,15 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declarePublic('getUserFriendlyTypes')
     def getUserFriendlyTypes(self, typesList=None):
-        """Get a list of types which are considered "user friendly" for search
-        and selection purposes.
-
-        This is the list of types available in the portal, minus those defined
-        in the types_not_searched property in site_properties, if it exists.
-
-        If typesList is given, this is used as the base list; else all types
-        from portal_types are used.
-        """
+        # Get a list of types which are considered "user friendly" for search
+        # and selection purposes.
+        #
+        # This is the list of types available in the portal, minus those
+        # defined in the types_not_searched property in site_properties, if it
+        # exists.
+        #
+        # If typesList is given, this is used as the base list; else all types
+        # from portal_types are used.
         if typesList is None:
             typesList = []
         ptool = getToolByName(self, 'portal_properties')
@@ -1185,13 +1162,13 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declarePublic('reindexOnReorder')
     def reindexOnReorder(self, parent):
-        """ reindexing of "gopip" isn't needed any longer,
-        but some extensions might need the info anyway :("""
+        # Reindexing of "gopip" isn't needed any longer,
+        # but some extensions might need the info anyway. :(
         notify(ReorderedEvent(parent))
 
     security.declarePublic('isIDAutoGenerated')
     def isIDAutoGenerated(self, id):
-        """Determine if an id is autogenerated"""
+        # Determine if an id is autogenerated.
         return utils.isIDAutoGenerated(self, id)
 
     security.declarePublic('getEmptyTitle')
@@ -1207,17 +1184,16 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declarePublic('pretty_title_or_id')
     def pretty_title_or_id(self, obj, empty_value=_marker):
-        """Return the best possible title or id of an item, regardless
-        of whether obj is a catalog brain or an object, but returning an
-        empty title marker if the id is not set (i.e. it's auto-generated).
-        """
+        # Return the best possible title or id of an item, regardless
+        # of whether obj is a catalog brain or an object, but returning an
+        # empty title marker if the id is not set (i.e. it's auto-generated).
         return utils.pretty_title_or_id(self, obj, empty_value=empty_value)
 
     security.declarePublic('getMethodAliases')
     def getMethodAliases(self, typeInfo):
-        """Given an FTI, return the dict of method aliases defined on that
-        FTI. If there are no method aliases (i.e. this FTI doesn't support it),
-        return None"""
+        # Given an FTI, return the dict of method aliases defined on that
+        # FTI. If there are no method aliases (i.e. this FTI doesn't support
+        # it), return None.
         getMethodAliases = getattr(typeInfo, 'getMethodAliases', None)
         if getMethodAliases is not None \
                 and utils.safe_callable(getMethodAliases):

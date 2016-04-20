@@ -14,6 +14,8 @@ Changelog
 
 Fixes:
 
+- Removed docstrings from some methods to avoid publishing them.  [maurits]
+
 - Ensured front-page is English when creating an English site.
   Previously, when creating an English site with a browser that
   prefers a different language, the body text ended up being in the
