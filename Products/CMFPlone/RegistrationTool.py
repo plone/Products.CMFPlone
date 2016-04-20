@@ -152,7 +152,7 @@ class RegistrationTool(PloneBaseTool, BaseTool):
     security.declarePublic('isValidEmail')
 
     def isValidEmail(self, email):
-        """ checks for valid email """
+        # Checks for valid email.
         if EMAIL_RE.search(email) == None:
             return 0
         try:
@@ -168,11 +168,10 @@ class RegistrationTool(PloneBaseTool, BaseTool):
     security.declarePublic('testPasswordValidity')
 
     def testPasswordValidity(self, password, confirm=None):
-        """ Verify that the password satisfies the portal's requirements.
-
-        o If the password is valid, return None.
-        o If not, return a string explaining why.
-        """
+        # Verify that the password satisfies the portal's requirements.
+        #
+        # o If the password is valid, return None.
+        # o If not, return a string explaining why.
         err = self.pasValidation('password', password)
         if err and (password == '' or not _checkPermission(ManagePortal, self)):
             return err
@@ -183,7 +182,7 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         return None
 
     def pasValidation(self, property, password):
-        """ @return None if no PAS password validators exist or a list of errors """
+        # @return None if no PAS password validators exist or a list of errors.
         portal = getUtility(ISiteRoot)
         pas_instance = portal.acl_users
         validators = pas_instance.plugins.listPlugins(IValidationPlugin)
@@ -214,13 +213,13 @@ class RegistrationTool(PloneBaseTool, BaseTool):
     security.declarePublic('testPropertiesValidity')
 
     def testPropertiesValidity(self, props, member=None):
-        """ Verify that the properties supplied satisfy portal's requirements.
+        # Verify that the properties supplied satisfy portal's requirements.
 
-        o If the properties are valid, return None.
-        o If not, return a string explaining why.
+        # o If the properties are valid, return None.
+        # o If not, return a string explaining why.
 
-        We also check if the email property is writable before verifying it.
-        """
+        # We also check if the email property is writable before verifying it.
+
         if member is None:  # New member.
 
             username = props.get('username', '')
@@ -305,16 +304,16 @@ class RegistrationTool(PloneBaseTool, BaseTool):
     security.declarePublic('generatePassword')
 
     def generatePassword(self):
-        """Generate a strong default password. The user never gets sent
-        this so we can make it very long."""
+        # Generate a strong default password. The user never gets sent
+        # this so we can make it very long.
 
         return self.getPassword(56)
 
     security.declarePublic('generateResetCode')
 
     def generateResetCode(self, salt, length=14):
-        """Generates a reset code which is guaranteed to return the
-        same value for a given length and salt, every time."""
+        # Generates a reset code which is guaranteed to return the
+        # same value for a given length and salt, every time.
         return self.getPassword(length, salt)
 
     security.declarePublic('mailPassword')
@@ -398,7 +397,7 @@ class RegistrationTool(PloneBaseTool, BaseTool):
     security.declarePublic('registeredNotify')
 
     def registeredNotify(self, new_member_id):
-        """ Wrapper around registeredNotify """
+        # Wrapper around registeredNotify.
         membership = getToolByName(self, 'portal_membership')
         utils = getToolByName(self, 'plone_utils')
         member = membership.getMemberById(new_member_id)

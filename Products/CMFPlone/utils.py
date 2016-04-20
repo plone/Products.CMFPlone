@@ -280,7 +280,7 @@ class ToolInit(CMFCoreToolInit):
         return icon
 
     def initialize(self, context):
-        """ Wrap the CMFCore Tool Init method """
+        # Wrap the CMFCore Tool Init method.
         CMFCoreToolInit.initialize(self, context)
         for tool in self.tools:
             # Get the icon path from the tool

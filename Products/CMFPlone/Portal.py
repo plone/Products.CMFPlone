@@ -101,7 +101,7 @@ class PloneSite(PortalObjectBase, DefaultDublinCoreImpl, OrderedContainer,
     index_html = ComputedAttribute(index_html, 1)
 
     def manage_beforeDelete(self, container, item):
-        """ Should send out an Event before Site is being deleted """
+        # Should send out an Event before Site is being deleted.
         self.removal_inprogress = 1
         PloneSite.inheritedAttribute('manage_beforeDelete')(self, container,
                                                             item)
@@ -151,8 +151,7 @@ class PloneSite(PortalObjectBase, DefaultDublinCoreImpl, OrderedContainer,
         return languages
 
     def isEffective(self, date):
-        """ Override DefaultDublinCoreImpl's test, since we are always viewable.
-        """
+        # Override DefaultDublinCoreImpl's test, since we are always viewable.
         return 1
 
     # Ensure portals don't get cataloged.
