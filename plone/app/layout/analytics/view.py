@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
-from Products.CMFPlone.interfaces import ISiteSchema
 from plone.registry.interfaces import IRegistry
-
+from Products.CMFPlone.interfaces import ISiteSchema
+from Products.Five.browser import BrowserView
 from zope.component import getUtility
 from zope.interface import implements
 from zope.viewlet.interfaces import IViewlet
-
-from Products.Five.browser import BrowserView
 
 
 class AnalyticsViewlet(BrowserView):

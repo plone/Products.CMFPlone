@@ -1,16 +1,14 @@
 # -*- coding: utf-8 -*-
-from plone.memoize.instance import memoize
-from plone.memoize import view
-from zope.component import getMultiAdapter
-from zope.interface import implements
-from zope.i18n import translate
-
 from Acquisition import aq_inner
 from Acquisition import aq_parent
+from plone.app.layout.icons.interfaces import IContentIcon
+from plone.memoize import view
+from plone.memoize.instance import memoize
 from Products.CMFCore.Expression import createExprContext
 from Products.CMFCore.utils import getToolByName
-
-from plone.app.layout.icons.interfaces import IContentIcon
+from zope.component import getMultiAdapter
+from zope.i18n import translate
+from zope.interface import implements
 
 
 class BaseIcon(object):

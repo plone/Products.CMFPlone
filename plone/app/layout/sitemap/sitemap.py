@@ -1,19 +1,16 @@
 # -*- coding: utf-8 -*-
 from BTrees.OOBTree import OOBTree
-from Products.Five import BrowserView
-from zope.publisher.interfaces import NotFound
+from cStringIO import StringIO
+from gzip import GzipFile
+from plone.memoize import ram
+from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces import IPloneSiteRoot
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-
-from zope.component import getUtility
-from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.interfaces import ISiteSchema
-
-from gzip import GzipFile
-from cStringIO import StringIO
-
-from plone.memoize import ram
+from Products.Five import BrowserView
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from zope.component import getUtility
+from zope.publisher.interfaces import NotFound
 
 
 def _render_cachekey(fun, self):

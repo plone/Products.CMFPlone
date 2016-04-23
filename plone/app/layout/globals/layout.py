@@ -1,11 +1,4 @@
 # -*- coding: utf-8 -*-
-import json
-
-from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.interfaces.controlpanel import ILinkSchema
-from Products.CMFPlone.interfaces.controlpanel import ISiteSchema
-from Products.Five.browser.metaconfigure import ViewMixinForTemplates
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from plone.app.layout.globals.interfaces import ILayoutPolicy
 from plone.app.layout.globals.interfaces import IViewView
 from plone.app.layout.icons.interfaces import IContentIcon
@@ -14,9 +7,12 @@ from plone.memoize.view import memoize
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPortletManagerRenderer
 from plone.registry.interfaces import IRegistry
-from zope.browserpage.viewpagetemplatefile import (
-    ViewPageTemplateFile as ZopeViewPageTemplateFile
-)
+from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.interfaces.controlpanel import ILinkSchema
+from Products.CMFPlone.interfaces.controlpanel import ISiteSchema
+from Products.Five.browser.metaconfigure import ViewMixinForTemplates
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile as ZopeViewPageTemplateFile
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.component import queryMultiAdapter
@@ -24,6 +20,8 @@ from zope.component import queryUtility
 from zope.interface import alsoProvides
 from zope.interface import implements
 from zope.publisher.browser import BrowserView
+
+import json
 
 
 class LayoutPolicy(BrowserView):

@@ -1,25 +1,22 @@
 # -*- coding: utf-8 -*-
-from zope.interface import implements
-from zope.component import getUtility
-from zope.component import providedBy
-from zope.component.hooks import getSite
+from Acquisition import aq_inner
+from interfaces import IPortalState
+from plone.app.layout.navigation.root import getNavigationRoot
+from plone.app.layout.navigation.root import getNavigationRootObject
+from plone.memoize.view import memoize
+from plone.memoize.view import memoize_contextless
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.interfaces import ISiteRoot
-from Products.CMFPlone.interfaces import ISiteSchema
-from plone.memoize.view import memoize_contextless
-from plone.memoize.view import memoize
-
-from Acquisition import aq_inner
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces import ILanguageSchema
 from Products.CMFPlone.interfaces import ISearchSchema
+from Products.CMFPlone.interfaces import ISiteSchema
 from Products.Five.browser import BrowserView
+from zope.component import getUtility
+from zope.component import providedBy
+from zope.component.hooks import getSite
+from zope.interface import implements
 
-from plone.app.layout.navigation.root import getNavigationRoot
-from plone.app.layout.navigation.root import getNavigationRootObject
-
-
-from interfaces import IPortalState
 
 RIGHT_TO_LEFT = ['ar', 'fa', 'he', 'ps']
 

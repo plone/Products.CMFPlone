@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
-from zope.component import getUtility
 from plone.app.layout.testing import INTEGRATION_TESTING
 from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.registry.interfaces import IRegistry
+from zope.component import getUtility
+
 import unittest
 
 

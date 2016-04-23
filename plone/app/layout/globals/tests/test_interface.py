@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
-import unittest
+from zope.interface import Attribute
+from zope.interface import Interface
+
 import doctest
+import unittest
+
 
 optionflags = doctest.REPORT_ONLY_FIRST_FAILURE | doctest.ELLIPSIS
 
 # Used in tests
 
-from zope.interface import Attribute, Interface
 
 
 class IZero(Interface):

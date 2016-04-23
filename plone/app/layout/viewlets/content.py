@@ -1,16 +1,13 @@
 # -*- coding: utf-8 -*-
-import logging
-
-from plone.memoize.instance import memoize
-from zope.component import getMultiAdapter, queryMultiAdapter
-
 from AccessControl import getSecurityManager
 from Acquisition import aq_inner
 from DateTime import DateTime
+from plone.app.content.browser.interfaces import IFolderContentsView
+from plone.app.layout.globals.interfaces import IViewView
+from plone.app.layout.viewlets import ViewletBase
+from plone.memoize.instance import memoize
 from plone.protect.authenticator import createToken
 from plone.registry.interfaces import IRegistry
-from Products.Five.browser import BrowserView
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.WorkflowCore import WorkflowException
@@ -20,13 +17,15 @@ from Products.CMFPlone.interfaces import ISecuritySchema
 from Products.CMFPlone.interfaces import ISiteSchema
 from Products.CMFPlone.utils import base_hasattr
 from Products.CMFPlone.utils import log
+from Products.Five.browser import BrowserView
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from zope.component import getMultiAdapter
 from zope.component import getUtility
+from zope.component import queryMultiAdapter
 
-from plone.app.layout.globals.interfaces import IViewView
-from plone.app.layout.viewlets import ViewletBase
-from plone.app.content.browser.interfaces import IFolderContentsView
-
+import logging
 import pkg_resources
+
 
 try:
     pkg_resources.get_distribution('plone.app.relationfield')

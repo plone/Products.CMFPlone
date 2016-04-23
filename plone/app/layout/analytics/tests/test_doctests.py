@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
-import unittest
-import doctest
+from plone.app.layout.analytics.tests import base
 from Testing import ZopeTestCase as ztc
 
-from plone.app.layout.analytics.tests import base
+import doctest
+import unittest
+
 
 OPTIONFLAGS = (doctest.REPORT_ONLY_FIRST_FAILURE |
                doctest.ELLIPSIS |

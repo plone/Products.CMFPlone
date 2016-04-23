@@ -2,14 +2,11 @@
 # This module contains a function to help build navigation-tree-like structures
 # from catalog queries.
 
-from zope.interface import implements
-
+from plone.app.layout.navigation.interfaces import INavtreeStrategy
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
-
 from types import StringType
-
-from plone.app.layout.navigation.interfaces import INavtreeStrategy
+from zope.interface import implements
 
 
 class NavtreeStrategyBase(object):

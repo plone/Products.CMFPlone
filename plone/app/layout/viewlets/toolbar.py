@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-from plone.app.viewletmanager.manager import OrderedViewletManager
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from zope.component import getMultiAdapter
-from plone.memoize.instance import memoize
 from plone.app.layout.viewlets.common import PersonalBarViewlet
-from zope.component import getUtility
+from plone.app.viewletmanager.manager import OrderedViewletManager
+from plone.memoize.instance import memoize
 from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.interfaces.controlpanel import ISiteSchema
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from zope.component import getMultiAdapter
+from zope.component import getUtility
 
 
 class ToolbarViewletManager(OrderedViewletManager):

@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
 from plone.app.layout.globals.tests.base import GlobalsTestCase
 from plone.app.testing import TEST_USER_ID
-
-from zope.interface import directlyProvides
+from plone.locking.interfaces import ILockable
 from Products.CMFDynamicViewFTI.interfaces import IBrowserDefault
 from Products.CMFPlone.interfaces import INonStructuralFolder
 from Products.CMFPlone.utils import _createObjectByType
-
-from plone.locking.interfaces import ILockable
+from zope.interface import directlyProvides
 
 
 class TestContextStateView(GlobalsTestCase):

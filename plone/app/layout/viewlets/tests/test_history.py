@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-from plone.app.layout.viewlets.tests.base import ViewletsTestCase
-from plone.app.layout.viewlets.content import WorkflowHistoryViewlet
 from plone.app.layout.viewlets.content import ContentHistoryViewlet
+from plone.app.layout.viewlets.content import WorkflowHistoryViewlet
+from plone.app.layout.viewlets.tests.base import ViewletsTestCase
 
 
 class TestWorkflowHistoryViewlet(ViewletsTestCase):

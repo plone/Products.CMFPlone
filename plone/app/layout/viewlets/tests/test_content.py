@@ -13,6 +13,7 @@ from zope.component import getUtility
 from zope.interface import Interface
 from zope.intid.interfaces import IIntIds
 
+
 try:
     import pkg_resources
     pkg_resources.get_distribution('plone.app.relationfield')

@@ -3,11 +3,12 @@
 
    These test are only triggered when Plone 4 (and plone.testing) is installed.
 """
+from plone.app.contenttypes.testing import PLONE_APP_CONTENTTYPES_FUNCTIONAL_TESTING
+from plone.testing import layered
+
 import doctest
 import unittest
 
-from plone.testing import layered
-from plone.app.contenttypes.testing import PLONE_APP_CONTENTTYPES_FUNCTIONAL_TESTING
 
 optionflags = (doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE)
 normal_testfiles = [

@@ -1,19 +1,16 @@
 # -*- coding: utf-8 -*-
-from zope.component import getUtility
-from zope import interface
-
 from AccessControl import getSecurityManager
-from Products.Five.browser import BrowserView
-
-from plone.portlets.interfaces import IPortletManager
-from plone.portlets.constants import USER_CATEGORY, GROUP_CATEGORY
-
 from plone.memoize.instance import memoize
-
-from Products.CMFCore.utils import getToolByName
-from Products.statusmessages.interfaces import IStatusMessage
-from Products.CMFPlone import PloneMessageFactory as _
+from plone.portlets.constants import GROUP_CATEGORY
+from plone.portlets.constants import USER_CATEGORY
+from plone.portlets.interfaces import IPortletManager
 from plone.protect.authenticator import createToken
+from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone import PloneMessageFactory as _
+from Products.Five.browser import BrowserView
+from Products.statusmessages.interfaces import IStatusMessage
+from zope import interface
+from zope.component import getUtility
 
 
 class IDashboard(interface.Interface):

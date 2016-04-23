@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
-from zope.interface import implements
-from plone.memoize.view import memoize_contextless
-
-from Products.Five.browser import BrowserView
-from Products.CMFCore.utils import getToolByName
-
 from interfaces import ITools
+from plone.memoize.view import memoize_contextless
+from Products.CMFCore.utils import getToolByName
+from Products.Five.browser import BrowserView
+from zope.interface import implements
 
 
 class Tools(BrowserView):
