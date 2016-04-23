@@ -5,6 +5,9 @@ from DateTime import DateTime
 from plone.app.content.browser.interfaces import IFolderContentsView
 from plone.app.layout.globals.interfaces import IViewView
 from plone.app.layout.viewlets import ViewletBase
+from plone.app.multilingual.browser.vocabularies import translated_languages
+from plone.app.multilingual.interfaces import ITranslatable
+from plone.app.multilingual.interfaces import ITranslationManager
 from plone.memoize.instance import memoize
 from plone.protect.authenticator import createToken
 from plone.registry.interfaces import IRegistry
@@ -35,15 +38,8 @@ else:
     from plone.app.relationfield.behavior import IRelatedItems
     HAS_RELATIONFIELD = True
 
-try:
-    pkg_resources.get_distribution('plone.app.multilingual')
-except pkg_resources.DistributionNotFound:
-    HAS_PAM = False
-else:
-    HAS_PAM = True
-    from plone.app.multilingual.interfaces import ITranslatable
-    from plone.app.multilingual.interfaces import ITranslationManager
-    from plone.app.multilingual.browser.vocabularies import translated_languages
+# XXX needs refactoring, since Plone 5 we have PAM in core.
+HAS_PAM = True
 
 
 class DocumentActionsViewlet(ViewletBase):
@@ -165,9 +161,12 @@ class DocumentBylineViewlet(ViewletBase):
             context_translations = ITranslationManager(
                 self.context).get_translations()
             for lang in t_langs:
-                cts.append(dict(lang_native=lang.title,
-                                url=context_translations[lang.value].absolute_url()))
-
+                cts.append(
+                    dict(
+                        lang_native=lang.title,
+                        url=context_translations[lang.value].absolute_url()
+                    )
+                )
         return cts
 
 
@@ -286,8 +285,12 @@ class HistoryByLineView(BrowserView):
             context_translations = ITranslationManager(
                 self.context).get_translations()
             for lang in t_langs:
-                cts.append(dict(lang_native=lang.title,
-                                url=context_translations[lang.value].absolute_url()))
+                cts.append(
+                    dict(
+                        lang_native=lang.title,
+                        url=context_translations[lang.value].absolute_url()
+                    )
+                )
 
         return cts
 
@@ -506,10 +509,15 @@ class ContentHistoryViewlet(WorkflowHistoryViewlet):
     def toLocalizedTime(self, time, long_format=None, time_only=None):
         """Convert time to localized time
         """
-        # util = getToolByName(self.context, 'translation_service')
         return DateTime(time).ISO()
-        # return util.ulocalized_time(time, long_format, time_only, self.context,
-        #                             domain='plonelocales')
+        # util = getToolByName(self.context, 'translation_service')
+        # return util.ulocalized_time(
+        #     time,
+        #     long_format,
+        #     time_only,
+        #     self.context,
+        #     domain='plonelocales'
+        # )
 
 
 class ContentHistoryView(ContentHistoryViewlet):

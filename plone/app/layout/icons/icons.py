@@ -8,7 +8,7 @@ from Products.CMFCore.Expression import createExprContext
 from Products.CMFCore.utils import getToolByName
 from zope.component import getMultiAdapter
 from zope.i18n import translate
-from zope.interface import implements
+from zope.interface import implementer
 
 
 class BaseIcon(object):
@@ -36,8 +36,8 @@ class BaseIcon(object):
         return tag
 
 
+@implementer(IContentIcon)
 class CatalogBrainContentIcon(BaseIcon):
-    implements(IContentIcon)
 
     def __init__(self, context, request, brain):
         self.context = context
@@ -100,8 +100,8 @@ class CatalogBrainContentIcon(BaseIcon):
         return extensions
 
 
+@implementer(IContentIcon)
 class CMFContentIcon(BaseIcon):
-    implements(IContentIcon)
 
     def __init__(self, context, request, obj):
         self.context = context
@@ -132,8 +132,8 @@ class CMFContentIcon(BaseIcon):
             return self.obj.portal_type
 
 
+@implementer(IContentIcon)
 class FTIContentIcon(BaseIcon):
-    implements(IContentIcon)
 
     def __init__(self, context, request, obj):
         self.context = context
@@ -162,8 +162,8 @@ class FTIContentIcon(BaseIcon):
         return self.obj.Title()
 
 
+@implementer(IContentIcon)
 class PloneSiteContentIcon(BaseIcon):
-    implements(IContentIcon)
 
     def __init__(self, context, request, obj):
         self.context = context
@@ -189,8 +189,8 @@ class PloneSiteContentIcon(BaseIcon):
         return self.obj.Title()
 
 
+@implementer(IContentIcon)
 class DefaultContentIcon(BaseIcon):
-    implements(IContentIcon)
 
     def __init__(self, context, request, obj):
         self.context = context

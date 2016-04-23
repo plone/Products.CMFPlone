@@ -9,18 +9,19 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.Five.browser import BrowserView
 from Products.statusmessages.interfaces import IStatusMessage
-from zope import interface
 from zope.component import getUtility
+from zope.interface import implementer
+from zope.interface import Interface
 
 
-class IDashboard(interface.Interface):
+class IDashboard(Interface):
     """the dashboard display columns of portlet to the loggedin user"""
 
 
+@implementer(IDashboard)
 class DashboardView(BrowserView):
     """Power the dashboard
     """
-    interface.implements(IDashboard)
 
     def __call__(self):
         self.request.set('disable_border', 1)

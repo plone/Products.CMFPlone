@@ -4,7 +4,7 @@ from interfaces import IInterfaceInformation
 from plone.memoize.view import memoize
 from Products.Five.browser import BrowserView
 from zope.dottedname.resolve import resolve
-from zope.interface import implements
+from zope.interface import implementer
 from zope.interface import Interface
 from zope.interface import providedBy
 from zope.interface.interfaces import IMethod
@@ -49,8 +49,8 @@ def visitBaseInterfaces(iface, lst):
         visitBaseInterfaces(iface, lst)
 
 
+@implementer(IInterfaceInformation)
 class InterfaceInformation(BrowserView):
-    implements(IInterfaceInformation)
 
     @memoize
     def provides(self, dotted_name):

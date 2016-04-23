@@ -24,14 +24,14 @@ from zope.component import queryMultiAdapter
 from zope.deprecation.deprecation import deprecate
 from zope.i18n import translate
 from zope.interface import alsoProvides
-from zope.interface import implements
+from zope.interface import implementer
 from zope.viewlet.interfaces import IViewlet
 
 
+@implementer(IViewlet)
 class ViewletBase(BrowserView):
     """ Base class with common functions for link viewlets.
     """
-    implements(IViewlet)
 
     def __init__(self, context, request, view, manager=None):
         super(ViewletBase, self).__init__(context, request)
@@ -258,7 +258,7 @@ class PersonalBarViewlet(ViewletBase):
                 'title': action['title'],
                 'href': action['url'],
                 'id': 'personaltools-{}'.format(action['id']),
-                'target': 'link_target' in action and action['link_target'] or None,
+                'target': action.get('link_target', None),
             }
             modal = action.get('modal')
             if modal:
@@ -469,13 +469,15 @@ class FooterViewlet(ViewletBase):
         You might ask, why is this necessary. Well, let me tell you a story...
 
         plone.app.portlets, in order to provide @@manage-portlets on a context,
-        overrides the IPortletRenderer for the IManageContextualPortletsView view.
+        overrides the IPortletRenderer for the IManageContextualPortletsView
+        view.
         See plone.portlets and plone.app.portlets
 
-        Seems fine right? Well, most of the time it is. Except, here. Previously,
-        we were just using the syntax like `provider:plone.footerportlets` to
-        render the footer portlets. Since this tal expression was inside
-        a viewlet, the view is no longer IManageContextualPortletsView when
+        Seems fine right? Well, most of the time it is. Except, here.
+        Previously, we were just using the syntax like
+        `provider:plone.footerportlets` to render the footer portlets.
+        Since this tal expression was inside a viewlet,
+        the view is no longer IManageContextualPortletsView when
         visiting @@manage-portlets. Instead, it was IViewlet.
         See zope.contentprovider
 
@@ -485,6 +487,8 @@ class FooterViewlet(ViewletBase):
         See zope.contentprovider
         """
         portlet_manager = getMultiAdapter(
-            (self.context, self.request, self.__parent__), name='plone.footerportlets')
+            (self.context, self.request, self.__parent__),
+            name='plone.footerportlets'
+        )
         portlet_manager.update()
         return portlet_manager.render()

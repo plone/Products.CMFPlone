@@ -17,18 +17,17 @@ from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.component import queryAdapter
 from zope.component import queryMultiAdapter
-from zope.interface import implements
+from zope.interface import implementer
 
 
 BLACKLISTED_PROVIDERS = ('portal_workflow', )
 BLACKLISTED_CATEGORIES = ('folder_buttons', 'object_buttons', )
 
 
+@implementer(IContextState)
 class ContextState(BrowserView):
     """Information about the state of the current context
     """
-
-    implements(IContextState)
 
     @memoize
     def current_page_url(self):

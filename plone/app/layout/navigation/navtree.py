@@ -6,14 +6,13 @@ from plone.app.layout.navigation.interfaces import INavtreeStrategy
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
 from types import StringType
-from zope.interface import implements
+from zope.interface import implementer
 
 
+@implementer(INavtreeStrategy)
 class NavtreeStrategyBase(object):
     """Basic navigation tree strategy that does nothing.
     """
-
-    implements(INavtreeStrategy)
 
     __allow_access_to_unprotected_subobjects__ = 1
 

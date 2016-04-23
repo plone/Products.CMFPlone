@@ -15,16 +15,16 @@ from Products.Five.browser import BrowserView
 from zope.component import getUtility
 from zope.component import providedBy
 from zope.component.hooks import getSite
-from zope.interface import implements
+from zope.interface import implementer
 
 
 RIGHT_TO_LEFT = ['ar', 'fa', 'he', 'ps']
 
 
+@implementer(IPortalState)
 class PortalState(BrowserView):
     """Information about the state of the portal
     """
-    implements(IPortalState)
 
     @memoize_contextless
     def portal(self):

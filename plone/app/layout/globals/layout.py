@@ -12,23 +12,22 @@ from Products.CMFPlone.interfaces.controlpanel import ILinkSchema
 from Products.CMFPlone.interfaces.controlpanel import ISiteSchema
 from Products.Five.browser.metaconfigure import ViewMixinForTemplates
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile as ZopeViewPageTemplateFile
+from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile as ZopeViewPageTemplateFile  # noqa
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.component import queryMultiAdapter
 from zope.component import queryUtility
 from zope.interface import alsoProvides
-from zope.interface import implements
+from zope.interface import implementer
 from zope.publisher.browser import BrowserView
 
 import json
 
 
+@implementer(ILayoutPolicy)
 class LayoutPolicy(BrowserView):
     """A view that gives access to various layout related functions.
     """
-
-    implements(ILayoutPolicy)
 
     def mark_view(self, view):
         """Adds a marker interface to the view if it is "the" view for the

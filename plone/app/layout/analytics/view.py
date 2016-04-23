@@ -3,12 +3,12 @@ from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.interfaces import ISiteSchema
 from Products.Five.browser import BrowserView
 from zope.component import getUtility
-from zope.interface import implements
+from zope.interface import implementer
 from zope.viewlet.interfaces import IViewlet
 
 
+@implementer(IViewlet)
 class AnalyticsViewlet(BrowserView):
-    implements(IViewlet)
 
     def __init__(self, context, request, view, manager):
         super(AnalyticsViewlet, self).__init__(context, request)
@@ -29,6 +29,6 @@ class AnalyticsViewlet(BrowserView):
         try:
             if site_settings.webstats_js:
                 return site_settings.webstats_js
-            return ''
         except AttributeError:
-            return ''
+            pass
+        return ''
