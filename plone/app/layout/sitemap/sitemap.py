@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from BTrees.OOBTree import OOBTree
 from Products.Five import BrowserView
 from zope.publisher.interfaces import NotFound

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from plone.app.layout.globals.tests.base import GlobalsTestCase
 from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.portlets.interfaces import IPortletType

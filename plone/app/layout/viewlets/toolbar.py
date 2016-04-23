@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from plone.app.viewletmanager.manager import OrderedViewletManager
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.component import getMultiAdapter

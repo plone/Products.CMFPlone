@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # This module contains a function to help build navigation-tree-like structures
 # from catalog queries.
 

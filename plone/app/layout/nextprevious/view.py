@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from zope.component import getMultiAdapter
 
 from plone.app.layout.viewlets import ViewletBase

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from cgi import escape
 from datetime import date
 from urllib import unquote

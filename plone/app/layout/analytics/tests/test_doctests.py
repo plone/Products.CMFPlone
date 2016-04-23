@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import unittest
 import doctest
 from Testing import ZopeTestCase as ztc
