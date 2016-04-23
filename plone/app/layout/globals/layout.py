@@ -1,10 +1,4 @@
-import json
-
-from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.interfaces.controlpanel import ILinkSchema
-from Products.CMFPlone.interfaces.controlpanel import ISiteSchema
-from Products.Five.browser.metaconfigure import ViewMixinForTemplates
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+# -*- coding: utf-8 -*-
 from plone.app.layout.globals.interfaces import ILayoutPolicy
 from plone.app.layout.globals.interfaces import IViewView
 from plone.app.layout.icons.interfaces import IContentIcon
@@ -13,23 +7,27 @@ from plone.memoize.view import memoize
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPortletManagerRenderer
 from plone.registry.interfaces import IRegistry
-from zope.browserpage.viewpagetemplatefile import (
-    ViewPageTemplateFile as ZopeViewPageTemplateFile
-)
+from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.interfaces.controlpanel import ILinkSchema
+from Products.CMFPlone.interfaces.controlpanel import ISiteSchema
+from Products.Five.browser.metaconfigure import ViewMixinForTemplates
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile as ZopeViewPageTemplateFile  # noqa
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.component import queryMultiAdapter
 from zope.component import queryUtility
 from zope.interface import alsoProvides
-from zope.interface import implements
+from zope.interface import implementer
 from zope.publisher.browser import BrowserView
 
+import json
 
+
+@implementer(ILayoutPolicy)
 class LayoutPolicy(BrowserView):
     """A view that gives access to various layout related functions.
     """
-
-    implements(ILayoutPolicy)
 
     def mark_view(self, view):
         """Adds a marker interface to the view if it is "the" view for the
@@ -88,7 +86,8 @@ class LayoutPolicy(BrowserView):
         anon = membership.isAnonymousUser()
 
         registry = getUtility(IRegistry)
-        settings = registry.forInterface(ISiteSchema, prefix="plone", check=False)
+        settings = registry.forInterface(
+            ISiteSchema, prefix="plone", check=False)
         icon_visibility = settings.icon_visibility
 
         if icon_visibility == 'enabled':
@@ -106,7 +105,8 @@ class LayoutPolicy(BrowserView):
         membership = getToolByName(context, "portal_membership")
         anon = membership.isAnonymousUser()
         registry = getUtility(IRegistry)
-        settings = registry.forInterface(ISiteSchema, prefix="plone", check=False)
+        settings = registry.forInterface(
+            ISiteSchema, prefix="plone", check=False)
         thumb_visibility = settings.thumb_visibility
 
         if thumb_visibility == 'enabled':
@@ -223,10 +223,12 @@ class LayoutPolicy(BrowserView):
         else:
             user = membership.getAuthenticatedMember()
             for role in user.getRolesInContext(self.context):
-                body_classes.append('userrole-' + role.lower().replace(' ', '-'))
+                body_classes.append(
+                    'userrole-' + role.lower().replace(' ', '-'))
 
             registry = getUtility(IRegistry)
-            settings = registry.forInterface(ISiteSchema, prefix='plone', check=False)
+            settings = registry.forInterface(
+                ISiteSchema, prefix='plone', check=False)
 
             # toolbar classes
             try:

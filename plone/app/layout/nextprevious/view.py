@@ -1,11 +1,11 @@
-from zope.component import getMultiAdapter
-
-from plone.app.layout.viewlets import ViewletBase
+# -*- coding: utf-8 -*-
+from Acquisition import aq_inner
+from Acquisition import aq_parent
 from plone.app.layout.nextprevious.interfaces import INextPreviousProvider
-
+from plone.app.layout.viewlets import ViewletBase
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
-from Acquisition import aq_inner, aq_parent
+from zope.component import getMultiAdapter
 
 
 class NextPreviousView(BrowserView):

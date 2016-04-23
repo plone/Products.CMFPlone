@@ -1,14 +1,16 @@
-from Products.CMFPlone.interfaces import ILanguageSchema
-from Products.CMFPlone.interfaces import ISearchSchema
-from Products.CMFPlone.interfaces import ISiteSchema
+# -*- coding: utf-8 -*-
 from plone.app.layout.globals.tests.base import GlobalsTestCase
 from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.app.layout.navigation.root import getNavigationRoot
 from plone.registry.interfaces import IRegistry
+from Products.CMFPlone.interfaces import ILanguageSchema
+from Products.CMFPlone.interfaces import ISearchSchema
+from Products.CMFPlone.interfaces import ISiteSchema
 from zope.component import getUtility
 from zope.event import notify
 from zope.i18n.locales import locales
 from zope.traversing.interfaces import BeforeTraverseEvent
+
 import zope.interface
 
 

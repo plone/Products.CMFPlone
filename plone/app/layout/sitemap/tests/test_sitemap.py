@@ -1,21 +1,17 @@
-from plone.registry.interfaces import IRegistry
-from zope.component import getUtility
-from Products.CMFPlone.interfaces import ISiteSchema
-from Products.CMFPlone.interfaces import ISearchSchema
-
-from gzip import GzipFile
-from StringIO import StringIO
-
+# -*- coding: utf-8 -*-
 from DateTime import DateTime
+from gzip import GzipFile
+from plone.app.layout.navigation.interfaces import INavigationRoot
+from plone.app.testing.bbb import PloneTestCase
+from plone.registry.interfaces import IRegistry
+from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.interfaces import ISearchSchema
+from Products.CMFPlone.interfaces import ISiteSchema
+from StringIO import StringIO
 from zope.component import getMultiAdapter
+from zope.component import getUtility
 from zope.interface import alsoProvides
 from zope.publisher.interfaces import INotFound
-
-from plone.app.layout.navigation.interfaces import INavigationRoot
-
-from Products.CMFCore.utils import getToolByName
-
-from plone.app.testing.bbb import PloneTestCase
 
 
 class SiteMapTestCase(PloneTestCase):

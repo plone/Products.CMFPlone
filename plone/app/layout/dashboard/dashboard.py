@@ -1,38 +1,37 @@
-from zope.component import getUtility
-from zope import interface
-
+# -*- coding: utf-8 -*-
 from AccessControl import getSecurityManager
-from Products.Five.browser import BrowserView
-
-from plone.portlets.interfaces import IPortletManager
-from plone.portlets.constants import USER_CATEGORY, GROUP_CATEGORY
-
 from plone.memoize.instance import memoize
-
-from Products.CMFCore.utils import getToolByName
-from Products.statusmessages.interfaces import IStatusMessage
-from Products.CMFPlone import PloneMessageFactory as _
+from plone.portlets.constants import GROUP_CATEGORY
+from plone.portlets.constants import USER_CATEGORY
+from plone.portlets.interfaces import IPortletManager
 from plone.protect.authenticator import createToken
+from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone import PloneMessageFactory as _
+from Products.Five.browser import BrowserView
+from Products.statusmessages.interfaces import IStatusMessage
+from zope.component import getUtility
+from zope.interface import implementer
+from zope.interface import Interface
 
 
-class IDashboard(interface.Interface):
+class IDashboard(Interface):
     """the dashboard display columns of portlet to the loggedin user"""
 
 
+@implementer(IDashboard)
 class DashboardView(BrowserView):
     """Power the dashboard
     """
-    interface.implements(IDashboard)
 
     def __call__(self):
-        self.request.set('disable_border',1)
-        self.request.set('disable_plone.leftcolumn',1)
-        self.request.set('disable_plone.rightcolumn',1)
+        self.request.set('disable_border', 1)
+        self.request.set('disable_plone.leftcolumn', 1)
+        self.request.set('disable_plone.rightcolumn', 1)
         if self.can_edit() and self.empty():
             message = _(u"info_empty_dashboard",
-                    default=u"Your dashboard is currently empty. Click the"
-                             " <em>edit</em> tab to assign some personal"
-                             " portlets.")
+                        default=u"Your dashboard is currently empty. Click the"
+                        " <em>edit</em> tab to assign some personal"
+                        " portlets.")
             IStatusMessage(self.request).add(message)
         return self.index()
 

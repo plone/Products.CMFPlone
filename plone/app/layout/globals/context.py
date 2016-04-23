@@ -1,34 +1,33 @@
-from zope.interface import implements
+# -*- coding: utf-8 -*-
+from Acquisition import aq_base
+from Acquisition import aq_inner
+from Acquisition import aq_parent
+from interfaces import IContextState
+from plone.memoize.view import memoize
+from plone.portlets.interfaces import ILocalPortletAssignable
+from plone.registry.interfaces import IRegistry
+from Products.CMFCore.interfaces import IDynamicType
+from Products.CMFCore.interfaces import ISiteRoot
+from Products.CMFCore.utils import getToolByName
+from Products.CMFDynamicViewFTI.interfaces import IBrowserDefault
+from Products.CMFPlone import utils
+from Products.CMFPlone.interfaces import INonStructuralFolder
+from Products.Five.browser import BrowserView
 from zope.component import getMultiAdapter
+from zope.component import getUtility
 from zope.component import queryAdapter
 from zope.component import queryMultiAdapter
-from zope.component import getUtility
-from plone.memoize.view import memoize
+from zope.interface import implementer
 
-from Acquisition import aq_base, aq_inner, aq_parent
-from Products.Five.browser import BrowserView
-
-from Products.CMFCore.interfaces import ISiteRoot, IDynamicType
-from Products.CMFDynamicViewFTI.interfaces import IBrowserDefault
-from Products.CMFPlone.interfaces import INonStructuralFolder
-
-from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import utils
-from plone.registry.interfaces import IRegistry
-
-from interfaces import IContextState
-
-from plone.portlets.interfaces import ILocalPortletAssignable
 
 BLACKLISTED_PROVIDERS = ('portal_workflow', )
 BLACKLISTED_CATEGORIES = ('folder_buttons', 'object_buttons', )
 
 
+@implementer(IContextState)
 class ContextState(BrowserView):
     """Information about the state of the current context
     """
-
-    implements(IContextState)
 
     @memoize
     def current_page_url(self):
@@ -73,7 +72,8 @@ class ContextState(BrowserView):
         view_url = self.object_url()
         portal_type = getattr(aq_base(self.context), 'portal_type', None)
         registry = getUtility(IRegistry)
-        use_view_action = registry.get('plone.types_use_view_action_in_listings', [])
+        use_view_action = registry.get(
+            'plone.types_use_view_action_in_listings', [])
         if portal_type in use_view_action:
             view_url = view_url + '/view'
         return view_url

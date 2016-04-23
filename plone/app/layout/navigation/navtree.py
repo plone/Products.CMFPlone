@@ -1,21 +1,18 @@
+# -*- coding: utf-8 -*-
 # This module contains a function to help build navigation-tree-like structures
 # from catalog queries.
 
-from zope.interface import implements
-
+from plone.app.layout.navigation.interfaces import INavtreeStrategy
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
-
 from types import StringType
+from zope.interface import implementer
 
-from plone.app.layout.navigation.interfaces import INavtreeStrategy
 
-
+@implementer(INavtreeStrategy)
 class NavtreeStrategyBase(object):
     """Basic navigation tree strategy that does nothing.
     """
-
-    implements(INavtreeStrategy)
 
     __allow_access_to_unprotected_subobjects__ = 1
 
@@ -158,12 +155,12 @@ def buildFolderTree(context, obj=None, query={},
                 if navtreeLevel > 1:
                     navtreeContextPath = pathQuery['query']
                     navtreeContextPathElements = navtreeContextPath[
-                        len(portalPath)+1:].split('/')
+                        len(portalPath) + 1:].split('/')
                     # Short-circuit if we won't be able to find this path
                     if len(navtreeContextPathElements) < (navtreeLevel - 1):
                         return {'children': []}
                     rootPath = portalPath + '/' + '/'.join(
-                        navtreeContextPathElements[:navtreeLevel-1])
+                        navtreeContextPathElements[:navtreeLevel - 1])
                 else:
                     rootPath = portalPath
             else:
@@ -317,7 +314,7 @@ def buildFolderTree(context, obj=None, query={},
     # context. Note that we use an unrestricted query: things we don't normally
     # have permission to see will be included in the tree.
     if strategy.showAllParents and objPath is not None:
-        objSubPathElements = objPath[len(rootPath)+1:].split('/')
+        objSubPathElements = objPath[len(rootPath) + 1:].split('/')
         parentPaths = []
 
         haveNode = (itemPaths.get(rootPath, {}).get('item', None) is None)
@@ -326,7 +323,7 @@ def buildFolderTree(context, obj=None, query={},
 
         parentPath = rootPath
         for i in range(len(objSubPathElements)):
-            nodePath = rootPath + '/' + '/'.join(objSubPathElements[:i+1])
+            nodePath = rootPath + '/' + '/'.join(objSubPathElements[:i + 1])
             node = itemPaths.get(nodePath, None)
 
             # If we don't have this node, we'll have to get it, if we have it

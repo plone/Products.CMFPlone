@@ -1,21 +1,19 @@
-from StringIO import StringIO
-
+# -*- coding: utf-8 -*-
+from Acquisition import aq_inner
+from plone.app.layout.viewlets import ViewletBase
+from plone.app.uuid.utils import uuidToObject
 from plone.memoize import ram
 from plone.memoize import view
 from plone.memoize.compress import xhtml_compress
-from zope.component import getMultiAdapter
-
-from Acquisition import aq_inner
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-
-from plone.app.layout.viewlets import ViewletBase
-from plone.app.uuid.utils import uuidToObject
-from zope.schema.interfaces import IVocabularyFactory
-from zope.component import getUtility
 from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.interfaces import ISecuritySchema
 from Products.CMFPlone.interfaces.syndication import IFeedSettings
 from Products.CMFPlone.interfaces.syndication import ISiteSyndicationSettings
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from StringIO import StringIO
+from zope.component import getMultiAdapter
+from zope.component import getUtility
+from zope.schema.interfaces import IVocabularyFactory
 
 
 def get_language(context, request):
@@ -119,7 +117,8 @@ class RSSViewlet(ViewletBase):
                             continue
                         obj = uuidToObject(uid)
                         if obj is None and uid[0] == '/':
-                            obj = portal.restrictedTraverse(uid.lstrip('/'), None)
+                            obj = portal.restrictedTraverse(
+                                uid.lstrip('/'), None)
                         if obj is not None:
                             self.rsslinks.extend(self.getRssLinks(obj))
                 self.rsslinks.extend(self.getRssLinks(portal))

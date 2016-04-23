@@ -1,5 +1,5 @@
+# -*- coding: utf-8 -*-
 from plone.app.layout.navigation.root import getNavigationRootObject
-
 from plone.app.testing.bbb import PloneTestCase
 
 

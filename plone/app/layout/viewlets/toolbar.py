@@ -1,11 +1,12 @@
-from plone.app.viewletmanager.manager import OrderedViewletManager
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from zope.component import getMultiAdapter
-from plone.memoize.instance import memoize
+# -*- coding: utf-8 -*-
 from plone.app.layout.viewlets.common import PersonalBarViewlet
-from zope.component import getUtility
+from plone.app.viewletmanager.manager import OrderedViewletManager
+from plone.memoize.instance import memoize
 from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.interfaces.controlpanel import ISiteSchema
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from zope.component import getMultiAdapter
+from zope.component import getUtility
 
 
 class ToolbarViewletManager(OrderedViewletManager):
@@ -20,16 +21,21 @@ class ToolbarViewletManager(OrderedViewletManager):
     @property
     @memoize
     def portal_state(self):
-        return getMultiAdapter((self.context, self.request), name='plone_portal_state')
+        return getMultiAdapter(
+            (self.context, self.request),
+            name='plone_portal_state'
+        )
 
     def get_personal_bar(self):
-        viewlet = PersonalBarViewlet(self.context, self.request, self.__parent__, self)
+        viewlet = PersonalBarViewlet(
+            self.context, self.request, self.__parent__, self)
         viewlet.update()
         return viewlet
 
     def get_toolbar_logo(self):
         registry = getUtility(IRegistry)
-        settings = registry.forInterface(ISiteSchema, prefix='plone', check=False)
+        settings = registry.forInterface(
+            ISiteSchema, prefix='plone', check=False)
         portal_url = self.portal_state.portal_url()
         try:
             logo = settings.toolbar_logo

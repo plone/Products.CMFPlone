@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-from Products.CMFPlone.interfaces import ISocialMediaSchema
 from plone.app.layout.viewlets.social import SocialTagsViewlet
 from plone.app.layout.viewlets.tests.base import ViewletsTestCase
 from plone.registry.interfaces import IRegistry
+from Products.CMFPlone.interfaces import ISocialMediaSchema
 from zope.component import getUtility
 
 

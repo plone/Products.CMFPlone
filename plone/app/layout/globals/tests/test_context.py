@@ -1,12 +1,11 @@
+# -*- coding: utf-8 -*-
 from plone.app.layout.globals.tests.base import GlobalsTestCase
 from plone.app.testing import TEST_USER_ID
-
-from zope.interface import directlyProvides
+from plone.locking.interfaces import ILockable
 from Products.CMFDynamicViewFTI.interfaces import IBrowserDefault
 from Products.CMFPlone.interfaces import INonStructuralFolder
 from Products.CMFPlone.utils import _createObjectByType
-
-from plone.locking.interfaces import ILockable
+from zope.interface import directlyProvides
 
 
 class TestContextStateView(GlobalsTestCase):
@@ -223,8 +222,8 @@ class TestContextStateView(GlobalsTestCase):
         self.assertEqual(self.dview.is_locked(), False)
         ILockable(self.folder.d1).lock()
         self.logout()
-                    # The object is not "locked" if it was locked by the
-                    # current user
+        # The object is not "locked" if it was locked by the
+        # current user
         del self.app.REQUEST.__annotations__
         self.assertEqual(self.dview.is_locked(), True)
 

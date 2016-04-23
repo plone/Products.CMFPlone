@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from DateTime import DateTime
 from plone.app.layout.viewlets.content import ContentRelatedItems
 from plone.app.layout.viewlets.content import DocumentBylineViewlet
@@ -11,6 +12,7 @@ from z3c.relationfield import RelationValue
 from zope.component import getUtility
 from zope.interface import Interface
 from zope.intid.interfaces import IIntIds
+
 
 try:
     import pkg_resources
@@ -31,6 +33,7 @@ class TestDocumentBylineViewletView(ViewletsTestCase):
     """
     Test the document by line viewlet
     """
+
     def afterSetUp(self):
         self.folder.invokeFactory('Document', 'doc1', title='Document 1')
         self.context = self.folder['doc1']
@@ -96,6 +99,7 @@ class TestHistoryBylineViewletView(ViewletsTestCase):
     """
     Test the document by line viewlet
     """
+
     def afterSetUp(self):
         self.folder.invokeFactory('Document', 'doc1', title='Document 1')
         self.context = self.folder['doc1']

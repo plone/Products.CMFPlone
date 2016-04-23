@@ -1,15 +1,16 @@
-import logging
-
-from plone.memoize.instance import memoize
-from zope.component import getMultiAdapter, queryMultiAdapter
-
+# -*- coding: utf-8 -*-
 from AccessControl import getSecurityManager
 from Acquisition import aq_inner
 from DateTime import DateTime
+from plone.app.content.browser.interfaces import IFolderContentsView
+from plone.app.layout.globals.interfaces import IViewView
+from plone.app.layout.viewlets import ViewletBase
+from plone.app.multilingual.browser.vocabularies import translated_languages
+from plone.app.multilingual.interfaces import ITranslatable
+from plone.app.multilingual.interfaces import ITranslationManager
+from plone.memoize.instance import memoize
 from plone.protect.authenticator import createToken
 from plone.registry.interfaces import IRegistry
-from Products.Five.browser import BrowserView
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.WorkflowCore import WorkflowException
@@ -19,13 +20,15 @@ from Products.CMFPlone.interfaces import ISecuritySchema
 from Products.CMFPlone.interfaces import ISiteSchema
 from Products.CMFPlone.utils import base_hasattr
 from Products.CMFPlone.utils import log
+from Products.Five.browser import BrowserView
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from zope.component import getMultiAdapter
 from zope.component import getUtility
+from zope.component import queryMultiAdapter
 
-from plone.app.layout.globals.interfaces import IViewView
-from plone.app.layout.viewlets import ViewletBase
-from plone.app.content.browser.interfaces import IFolderContentsView
-
+import logging
 import pkg_resources
+
 
 try:
     pkg_resources.get_distribution('plone.app.relationfield')
@@ -35,15 +38,8 @@ else:
     from plone.app.relationfield.behavior import IRelatedItems
     HAS_RELATIONFIELD = True
 
-try:
-    pkg_resources.get_distribution('plone.app.multilingual')
-except pkg_resources.DistributionNotFound:
-    HAS_PAM = False
-else:
-    HAS_PAM = True
-    from plone.app.multilingual.interfaces import ITranslatable
-    from plone.app.multilingual.interfaces import ITranslationManager
-    from plone.app.multilingual.browser.vocabularies import translated_languages
+# XXX needs refactoring, since Plone 5 we have PAM in core.
+HAS_PAM = True
 
 
 class DocumentActionsViewlet(ViewletBase):
@@ -162,11 +158,15 @@ class DocumentBylineViewlet(ViewletBase):
         cts = []
         if ITranslatable.providedBy(self.context):
             t_langs = translated_languages(self.context)
-            context_translations = ITranslationManager(self.context).get_translations()
+            context_translations = ITranslationManager(
+                self.context).get_translations()
             for lang in t_langs:
-                cts.append(dict(lang_native=lang.title,
-                                url=context_translations[lang.value].absolute_url()))
-
+                cts.append(
+                    dict(
+                        lang_native=lang.title,
+                        url=context_translations[lang.value].absolute_url()
+                    )
+                )
         return cts
 
 
@@ -282,10 +282,15 @@ class HistoryByLineView(BrowserView):
         cts = []
         if ITranslatable.providedBy(self.context):
             t_langs = translated_languages(self.context)
-            context_translations = ITranslationManager(self.context).get_translations()
+            context_translations = ITranslationManager(
+                self.context).get_translations()
             for lang in t_langs:
-                cts.append(dict(lang_native=lang.title,
-                                url=context_translations[lang.value].absolute_url()))
+                cts.append(
+                    dict(
+                        lang_native=lang.title,
+                        url=context_translations[lang.value].absolute_url()
+                    )
+                )
 
         return cts
 
@@ -438,7 +443,8 @@ class ContentHistoryViewlet(WorkflowHistoryViewlet):
         portal_diff = getToolByName(context, "portal_diff", None)
         can_diff = portal_diff is not None \
             and len(portal_diff.getDiffForPortalType(context.portal_type)) > 0
-        can_revert = _checkPermission('CMFEditions: Revert to previous versions', context)
+        can_revert = _checkPermission(
+            'CMFEditions: Revert to previous versions', context)
 
         def morphVersionDataToHistoryFormat(vdata, version_id):
             meta = vdata["metadata"]["sys_metadata"]
@@ -503,10 +509,15 @@ class ContentHistoryViewlet(WorkflowHistoryViewlet):
     def toLocalizedTime(self, time, long_format=None, time_only=None):
         """Convert time to localized time
         """
-        # util = getToolByName(self.context, 'translation_service')
         return DateTime(time).ISO()
-        # return util.ulocalized_time(time, long_format, time_only, self.context,
-        #                             domain='plonelocales')
+        # util = getToolByName(self.context, 'translation_service')
+        # return util.ulocalized_time(
+        #     time,
+        #     long_format,
+        #     time_only,
+        #     self.context,
+        #     domain='plonelocales'
+        # )
 
 
 class ContentHistoryView(ContentHistoryViewlet):

@@ -1,17 +1,15 @@
-from zope.interface import implements
-from plone.memoize.view import memoize_contextless
-
-from Products.Five.browser import BrowserView
-from Products.CMFCore.utils import getToolByName
-
+# -*- coding: utf-8 -*-
 from interfaces import ITools
+from plone.memoize.view import memoize_contextless
+from Products.CMFCore.utils import getToolByName
+from Products.Five.browser import BrowserView
+from zope.interface import implementer
 
 
+@implementer(ITools)
 class Tools(BrowserView):
     """Common tools
     """
-
-    implements(ITools)
 
     @memoize_contextless
     def actions(self):

@@ -1,18 +1,16 @@
+# -*- coding: utf-8 -*-
 from BTrees.OOBTree import OOBTree
-from Products.Five import BrowserView
-from zope.publisher.interfaces import NotFound
+from cStringIO import StringIO
+from gzip import GzipFile
+from plone.memoize import ram
+from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces import IPloneSiteRoot
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-
-from zope.component import getUtility
-from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.interfaces import ISiteSchema
-
-from gzip import GzipFile
-from cStringIO import StringIO
-
-from plone.memoize import ram
+from Products.Five import BrowserView
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from zope.component import getUtility
+from zope.publisher.interfaces import NotFound
 
 
 def _render_cachekey(fun, self):
@@ -74,9 +72,9 @@ class SiteMapView(BrowserView):
             yield {
                 'loc': loc,
                 'lastmod': lastmod,
-                #'changefreq': 'always',
-                # hourly/daily/weekly/monthly/yearly/never
-                #'prioriy': 0.5, # 0.0 to 1.0
+                # 'changefreq': 'always',
+                #  hourly/daily/weekly/monthly/yearly/never
+                # 'prioriy': 0.5, # 0.0 to 1.0
             }
 
         query['is_default_page'] = False
@@ -94,9 +92,9 @@ class SiteMapView(BrowserView):
             yield {
                 'loc': loc,
                 'lastmod': lastmod,
-                #'changefreq': 'always',
-                # hourly/daily/weekly/monthly/yearly/never
-                #'prioriy': 0.5, # 0.0 to 1.0
+                # 'changefreq': 'always',
+                #  hourly/daily/weekly/monthly/yearly/never
+                # 'prioriy': 0.5, # 0.0 to 1.0
             }
 
     @ram.cache(_render_cachekey)
@@ -118,6 +116,8 @@ class SiteMapView(BrowserView):
         if not settings.enable_sitemap:
             raise NotFound(self.context, self.filename, self.request)
 
-        self.request.response.setHeader('Content-Type',
-                                        'application/octet-stream')
+        self.request.response.setHeader(
+            'Content-Type',
+            'application/octet-stream'
+        )
         return self.generate()

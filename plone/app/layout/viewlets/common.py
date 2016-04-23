@@ -1,38 +1,37 @@
+# -*- coding: utf-8 -*-
+from AccessControl import getSecurityManager
+from Acquisition import aq_base
+from Acquisition import aq_inner
 from cgi import escape
 from datetime import date
-from urllib import unquote
-
-from plone.registry.interfaces import IRegistry
-
-from plone.memoize.view import memoize
-from zope.component import getMultiAdapter
-from zope.component import queryMultiAdapter
-from zope.component import getUtility
-from zope.deprecation.deprecation import deprecate
-from zope.i18n import translate
-from zope.interface import implements, alsoProvides
-from zope.viewlet.interfaces import IViewlet
-
-from AccessControl import getSecurityManager
-from Acquisition import aq_base, aq_inner
-
-from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.interfaces import ISiteSchema
-from Products.CMFPlone.interfaces import ISearchSchema
-from Products.CMFPlone.utils import safe_unicode, getSiteLogo
-from Products.CMFPlone.interfaces import IPloneSiteRoot
-from Products.Five.browser import BrowserView
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-
 from plone.app.layout.globals.interfaces import IViewView
 from plone.app.layout.navigation.root import getNavigationRootObject
+from plone.memoize.view import memoize
 from plone.protect.utils import addTokenToUrl
+from plone.registry.interfaces import IRegistry
+from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.interfaces import IPloneSiteRoot
+from Products.CMFPlone.interfaces import ISearchSchema
+from Products.CMFPlone.interfaces import ISiteSchema
+from Products.CMFPlone.utils import getSiteLogo
+from Products.CMFPlone.utils import safe_unicode
+from Products.Five.browser import BrowserView
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from urllib import unquote
+from zope.component import getMultiAdapter
+from zope.component import getUtility
+from zope.component import queryMultiAdapter
+from zope.deprecation.deprecation import deprecate
+from zope.i18n import translate
+from zope.interface import alsoProvides
+from zope.interface import implementer
+from zope.viewlet.interfaces import IViewlet
 
 
+@implementer(IViewlet)
 class ViewletBase(BrowserView):
     """ Base class with common functions for link viewlets.
     """
-    implements(IViewlet)
 
     def __init__(self, context, request, view, manager=None):
         super(ViewletBase, self).__init__(context, request)
@@ -208,7 +207,8 @@ class GlobalSectionsViewlet(ViewletBase):
 
     def selectedTabs(self, default_tab='index_html', portal_tabs=()):
         portal = getToolByName(self.context, 'portal_url').getPortalObject()
-        plone_url = getNavigationRootObject(self.context, portal).absolute_url()
+        plone_url = getNavigationRootObject(
+            self.context, portal).absolute_url()
         plone_url_len = len(plone_url)
         request = self.request
         valid_actions = []
@@ -258,8 +258,8 @@ class PersonalBarViewlet(ViewletBase):
                 'title': action['title'],
                 'href': action['url'],
                 'id': 'personaltools-{}'.format(action['id']),
-                'target': 'link_target' in action and action['link_target'] or None,
-                }
+                'target': action.get('link_target', None),
+            }
             modal = action.get('modal')
             if modal:
                 info['class'] = 'pat-plone-modal'
@@ -469,13 +469,15 @@ class FooterViewlet(ViewletBase):
         You might ask, why is this necessary. Well, let me tell you a story...
 
         plone.app.portlets, in order to provide @@manage-portlets on a context,
-        overrides the IPortletRenderer for the IManageContextualPortletsView view.
+        overrides the IPortletRenderer for the IManageContextualPortletsView
+        view.
         See plone.portlets and plone.app.portlets
 
-        Seems fine right? Well, most of the time it is. Except, here. Previously,
-        we were just using the syntax like `provider:plone.footerportlets` to
-        render the footer portlets. Since this tal expression was inside
-        a viewlet, the view is no longer IManageContextualPortletsView when
+        Seems fine right? Well, most of the time it is. Except, here.
+        Previously, we were just using the syntax like
+        `provider:plone.footerportlets` to render the footer portlets.
+        Since this tal expression was inside a viewlet,
+        the view is no longer IManageContextualPortletsView when
         visiting @@manage-portlets. Instead, it was IViewlet.
         See zope.contentprovider
 
@@ -485,6 +487,8 @@ class FooterViewlet(ViewletBase):
         See zope.contentprovider
         """
         portlet_manager = getMultiAdapter(
-            (self.context, self.request, self.__parent__), name='plone.footerportlets')
+            (self.context, self.request, self.__parent__),
+            name='plone.footerportlets'
+        )
         portlet_manager.update()
         return portlet_manager.render()

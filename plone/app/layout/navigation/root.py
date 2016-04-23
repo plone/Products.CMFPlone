@@ -3,9 +3,9 @@ from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
 from plone.app.layout.navigation.interfaces import INavigationRoot
+from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from zope.component import getUtility
-from plone.registry.interfaces import IRegistry
 
 
 def getNavigationRoot(context, relativeRoot=None):

@@ -1,8 +1,9 @@
-from zope.component import getUtility
+# -*- coding: utf-8 -*-
+from plone.app.layout.links.viewlets import RSSViewlet
+from plone.app.layout.viewlets.tests.base import ViewletsTestCase
 from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.interfaces.syndication import ISiteSyndicationSettings
-from plone.app.layout.viewlets.tests.base import ViewletsTestCase
-from plone.app.layout.links.viewlets import RSSViewlet
+from zope.component import getUtility
 
 
 class TestRSSViewletView(ViewletsTestCase):
