@@ -117,7 +117,8 @@ class RSSViewlet(ViewletBase):
                             continue
                         obj = uuidToObject(uid)
                         if obj is None and uid[0] == '/':
-                            obj = portal.restrictedTraverse(uid.lstrip('/'), None)
+                            obj = portal.restrictedTraverse(
+                                uid.lstrip('/'), None)
                         if obj is not None:
                             self.rsslinks.extend(self.getRssLinks(obj))
                 self.rsslinks.extend(self.getRssLinks(portal))

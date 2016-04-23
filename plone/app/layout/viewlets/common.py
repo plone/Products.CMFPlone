@@ -207,7 +207,8 @@ class GlobalSectionsViewlet(ViewletBase):
 
     def selectedTabs(self, default_tab='index_html', portal_tabs=()):
         portal = getToolByName(self.context, 'portal_url').getPortalObject()
-        plone_url = getNavigationRootObject(self.context, portal).absolute_url()
+        plone_url = getNavigationRootObject(
+            self.context, portal).absolute_url()
         plone_url_len = len(plone_url)
         request = self.request
         valid_actions = []
@@ -258,7 +259,7 @@ class PersonalBarViewlet(ViewletBase):
                 'href': action['url'],
                 'id': 'personaltools-{}'.format(action['id']),
                 'target': 'link_target' in action and action['link_target'] or None,
-                }
+            }
             modal = action.get('modal')
             if modal:
                 info['class'] = 'pat-plone-modal'

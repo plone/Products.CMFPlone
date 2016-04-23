@@ -162,7 +162,8 @@ class DocumentBylineViewlet(ViewletBase):
         cts = []
         if ITranslatable.providedBy(self.context):
             t_langs = translated_languages(self.context)
-            context_translations = ITranslationManager(self.context).get_translations()
+            context_translations = ITranslationManager(
+                self.context).get_translations()
             for lang in t_langs:
                 cts.append(dict(lang_native=lang.title,
                                 url=context_translations[lang.value].absolute_url()))
@@ -282,7 +283,8 @@ class HistoryByLineView(BrowserView):
         cts = []
         if ITranslatable.providedBy(self.context):
             t_langs = translated_languages(self.context)
-            context_translations = ITranslationManager(self.context).get_translations()
+            context_translations = ITranslationManager(
+                self.context).get_translations()
             for lang in t_langs:
                 cts.append(dict(lang_native=lang.title,
                                 url=context_translations[lang.value].absolute_url()))
@@ -438,7 +440,8 @@ class ContentHistoryViewlet(WorkflowHistoryViewlet):
         portal_diff = getToolByName(context, "portal_diff", None)
         can_diff = portal_diff is not None \
             and len(portal_diff.getDiffForPortalType(context.portal_type)) > 0
-        can_revert = _checkPermission('CMFEditions: Revert to previous versions', context)
+        can_revert = _checkPermission(
+            'CMFEditions: Revert to previous versions', context)
 
         def morphVersionDataToHistoryFormat(vdata, version_id):
             meta = vdata["metadata"]["sys_metadata"]

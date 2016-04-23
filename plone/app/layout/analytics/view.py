@@ -24,7 +24,8 @@ class AnalyticsViewlet(BrowserView):
     def render(self):
         """render the webstats snippet"""
         registry = getUtility(IRegistry)
-        site_settings = registry.forInterface(ISiteSchema, prefix="plone", check=False)
+        site_settings = registry.forInterface(
+            ISiteSchema, prefix="plone", check=False)
         try:
             if site_settings.webstats_js:
                 return site_settings.webstats_js

@@ -33,6 +33,7 @@ class TestDocumentBylineViewletView(ViewletsTestCase):
     """
     Test the document by line viewlet
     """
+
     def afterSetUp(self):
         self.folder.invokeFactory('Document', 'doc1', title='Document 1')
         self.context = self.folder['doc1']
@@ -98,6 +99,7 @@ class TestHistoryBylineViewletView(ViewletsTestCase):
     """
     Test the document by line viewlet
     """
+
     def afterSetUp(self):
         self.folder.invokeFactory('Document', 'doc1', title='Document 1')
         self.context = self.folder['doc1']

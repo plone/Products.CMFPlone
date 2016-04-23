@@ -222,8 +222,8 @@ class TestContextStateView(GlobalsTestCase):
         self.assertEqual(self.dview.is_locked(), False)
         ILockable(self.folder.d1).lock()
         self.logout()
-                    # The object is not "locked" if it was locked by the
-                    # current user
+        # The object is not "locked" if it was locked by the
+        # current user
         del self.app.REQUEST.__annotations__
         self.assertEqual(self.dview.is_locked(), True)
 

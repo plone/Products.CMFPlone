@@ -24,13 +24,15 @@ class ToolbarViewletManager(OrderedViewletManager):
         return getMultiAdapter((self.context, self.request), name='plone_portal_state')
 
     def get_personal_bar(self):
-        viewlet = PersonalBarViewlet(self.context, self.request, self.__parent__, self)
+        viewlet = PersonalBarViewlet(
+            self.context, self.request, self.__parent__, self)
         viewlet.update()
         return viewlet
 
     def get_toolbar_logo(self):
         registry = getUtility(IRegistry)
-        settings = registry.forInterface(ISiteSchema, prefix='plone', check=False)
+        settings = registry.forInterface(
+            ISiteSchema, prefix='plone', check=False)
         portal_url = self.portal_state.portal_url()
         try:
             logo = settings.toolbar_logo
