@@ -337,14 +337,14 @@ class IFilterSchema(Interface):
 
     disable_filtering = schema.Bool(
         title=_(u'Disable html filtering'),
-        description=_(u'Warning, disabling can be potentially dangereous. '
+        description=_(u'Warning: disabling this can be dangerous. '
                       u'Only disable if you know what you are doing.'),
         default=False,
         required=False)
 
     nasty_tags = schema.List(
         title=_(u'Nasty tags'),
-        description=_(u"These tags, and their content are completely blocked "
+        description=_(u"These tags and their content are completely blocked "
                       "when a page is saved or rendered."),
         default=[u'style', u'object', u'embed', u'applet', u'script', u'meta'],
         value_type=schema.TextLine(),
