@@ -3,6 +3,7 @@ from urllib import quote
 
 from Products.CMFPlone.resources.browser.cook import cookWhenChangingSettings
 from Products.CMFPlone.resources.browser.resource import ResourceView
+from zope.component import getMultiAdapter
 
 
 class ScriptsView(ResourceView):
@@ -106,6 +107,12 @@ class ScriptsView(ResourceView):
             'bundle': 'basic'
         })
         return result
+
+    def base_url(self):
+        portal_state = getMultiAdapter((self.context, self.request),
+                                       name=u'plone_portal_state')
+        site_url = portal_state.portal_url()
+        return site_url
 
     def scripts(self):
         """The requirejs scripts, the ones that are not resources are loaded on

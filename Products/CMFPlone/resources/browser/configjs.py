@@ -4,12 +4,11 @@ import re
 from Products.CMFPlone.interfaces import IResourceRegistry
 from Products.Five.browser import BrowserView
 from plone.registry.interfaces import IRegistry
-from zope.component import getMultiAdapter
 from zope.component import getUtility
 
 
 configjs = """requirejs.config({
-    baseUrl: '%s',
+    baseUrl: PORTAL_URL,
     paths: %s,
     shim: %s,
     optimize: 'uglify',
@@ -52,12 +51,6 @@ class RequireJsView(BrowserView):
         return self.registry.collectionOfInterface(
             IResourceRegistry, prefix="plone.resources", check=False)
 
-    def base_url(self):
-        portal_state = getMultiAdapter((self.context, self.request),
-                                       name=u'plone_portal_state')
-        site_url = portal_state.portal_url()
-        return site_url
-
     def get_requirejs_config(self):
         """
         Returns the information for requirejs configuration
@@ -85,18 +78,17 @@ class RequireJsView(BrowserView):
                 # Resources available under name-url name
                 src = script.url
                 paths[name + '-url'] = src
-        return (self.base_url(), paths, shims)
+        return (paths, shims)
 
 
 class ConfigJsView(RequireJsView):
     """ config.js for requirejs for script rendering. """
 
     def __call__(self):
-        (baseUrl, paths, shims) = self.get_requirejs_config()
+        (paths, shims) = self.get_requirejs_config()
         self.request.response.setHeader("Content-Type",
                                         "application/javascript")
         return configjs % (
-            baseUrl,
             json.dumps(paths, indent=4),
             _format_shims(shims)
         )

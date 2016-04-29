@@ -36,6 +36,9 @@ Fixes:
 - Fix bundle aggregation when bundle has no CSS (or no JS)
   [ebrehault]
 
+- Do not hard-code baseUrl in bundle to avoid bad URL when switching domains.
+  [ebrehault]
+
 
 5.0.4 (2016-04-06)
 ------------------
