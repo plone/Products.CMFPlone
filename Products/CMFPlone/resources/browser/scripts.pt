@@ -1,3 +1,4 @@
+<script type="text/javascript" tal:content="string:PORTAL_URL = '${view/base_url}';"></script>
 <tal:scripts repeat="script view/scripts"
   ><tal:block define="condcomment script/conditionalcomment"
     ><tal:wcondcomment tal:condition="condcomment">
