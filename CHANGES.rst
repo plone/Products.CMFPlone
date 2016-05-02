@@ -508,6 +508,10 @@ Fixes:
 
 - Fix issue where incorrectly configured formats would cause TinyMCE to error
   [vangheem]
+- Make use of plone.namedfile's tag() function to generate img tags. Part of plip 1483.
+  [didrix]
+
+Fixes:
 
 - Closes #1513 'Wrong portal_url used for TinyMCE in multilingual site',
   also refactors the patterns settings and cleans it up.

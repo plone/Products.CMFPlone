@@ -43,9 +43,9 @@
                     	            item_wf_state result/review_state;
                     	            item_wf_state_class python:'state-' + normalize(item_wf_state);">                    	            
                         <a tal:attributes="href result/getURL">
-                        	<img  class = "image-tile"                  		  
-                        		  tal:condition="python:result.getIcon"
-                        		  tal:attributes="src python:result.getURL()+'/@@images/image/tile'">
+                        	<img tal:condition="python:result.getIcon"
+                                     tal:define="obj result/getObject; images obj/@@images"
+                                     tal:replace="structure python:images.scale('image', scale='tile').tag(css_class='image-tile')">
                         	<span tal:content="result/pretty_title_or_id"
                                   tal:attributes="class string:$item_class $item_wf_state_class">
                                   Title</span>
