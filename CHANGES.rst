@@ -44,6 +44,10 @@ Fixes:
 - Fixed versioning for File and Image.
    [iham]
 
+- Do not hide document byline viewlet by default;
+  it is controled by the `Allow anyone to view 'about' information` option in the `Security Settings` of `Site Setup` (closes `#1556`_).
+  [hvelarde]
+
 - Removed docstrings from some methods to avoid publishing them.  From
   Products.PloneHotfix20160419.  [maurits]
 
@@ -1296,3 +1300,4 @@ Fixes:
 .. _`#1053`: https://github.com/plone/Products.CMFPlone/issues/1053
 .. _`#1232`: https://github.com/plone/Products.CMFPlone/issues/1232
 .. _`#1255`: https://github.com/plone/Products.CMFPlone/issues/1255
+.. _`#1556`: https://github.com/plone/Products.CMFPlone/issues/1556
