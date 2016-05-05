@@ -63,6 +63,8 @@ Fixes:
 
 - Do not hard-code baseUrl in bundle to avoid bad URL when switching domains.
   [ebrehault]
+  
+- fix typo and comma splice error in HTML filtering control panel [tkimnguyen]
 
 
 5.1a1 (2016-03-31)
