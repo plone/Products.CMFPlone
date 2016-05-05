@@ -73,42 +73,6 @@ class DocumentBylineViewlet(ViewletBase):
         )
         return self.anonymous and settings.allow_anon_views_about
 
-    def show_history(self):
-        has_access_preview_versions_permission = _checkPermission(
-            'CMFEditions: Access previous versions',
-            self.context
-        )
-        if not has_access_preview_versions_permission:
-            return False
-        if IViewView.providedBy(self.__parent__):
-            return True
-        if IFolderContentsView.providedBy(self.__parent__):
-            return True
-        return False
-
-    def locked_icon(self):
-        if not getSecurityManager().checkPermission('Modify portal content',
-                                                    self.context):
-            return ""
-
-        locked = False
-        lock_info = queryMultiAdapter((self.context, self.request),
-                                      name='plone_lock_info')
-        if lock_info is not None:
-            locked = lock_info.is_locked()
-        else:
-            context = aq_inner(self.context)
-            lockable = getattr(
-                context.aq_explicit, 'wl_isLocked', None) is not None
-            locked = lockable and context.wl_isLocked()
-
-        if not locked:
-            return ""
-
-        portal = self.portal_state.portal()
-        icon = portal.restrictedTraverse('lock_icon.png')
-        return icon.tag(title='Locked')
-
     def creator(self):
         return self.context.Creator()
 

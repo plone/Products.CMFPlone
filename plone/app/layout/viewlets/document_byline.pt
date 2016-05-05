@@ -2,12 +2,6 @@
      id="plone-document-byline"
      i18n:domain="plone"
      tal:condition="view/show">
-  <span id="lock-icon"
-        tal:define="lock_icon view/locked_icon"
-        tal:condition="python:lock_icon">
-      <img tal:replace="structure lock_icon" />
-  </span>
-
   <tal:creator tal:define="creator_short_form view/creator;"
                tal:condition="creator_short_form">
   <tal:name tal:define="creator_long_form string:?author=${creator_short_form};
@@ -57,14 +51,6 @@
     <span class="state-expired"
           i18n:translate="time_expired">expired</span>
   </tal:expired>
-
-  <span class="contentHistory" id="content-history"
-        tal:condition="view/show_history">
-    —
-    <a href="#"
-       tal:attributes="href string:${here/absolute_url}/@@historyview"
-       i18n:translate="label_history">History</a>
-  </span>
 
   <div class="documentContributors"
        tal:define="contributors context/Contributors"

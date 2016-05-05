@@ -50,23 +50,6 @@ class TestDocumentBylineViewletView(ViewletsTestCase):
         viewlet.update()
         return viewlet
 
-    def test_anonymous_locked_icon(self):
-        viewlet = self._get_viewlet()
-        ILockable(self.context).lock()
-        self.logout()
-        viewlet = self._get_viewlet()
-        self.assertEqual(viewlet.locked_icon(), '')
-
-    def test_locked_icon(self):
-        viewlet = self._get_viewlet()
-        self.assertEqual(viewlet.locked_icon(), "")
-        ILockable(self.context).lock()
-        lockIconUrl = (
-            '<img src="http://nohost/plone/lock_icon.png" alt="" '
-            'title="Locked" height="16" width="16" />'
-        )
-        self.assertEqual(viewlet.locked_icon(), lockIconUrl)
-
     def test_pub_date(self):
         # configure our portal to enable publication date on pages globally on
         # the site
