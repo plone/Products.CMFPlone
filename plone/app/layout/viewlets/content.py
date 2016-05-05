@@ -71,7 +71,7 @@ class DocumentBylineViewlet(ViewletBase):
             ISecuritySchema,
             prefix='plone',
         )
-        return not self.anonymous or settings.allow_anon_views_about
+        return self.anonymous and settings.allow_anon_views_about
 
     def show_history(self):
         has_access_preview_versions_permission = _checkPermission(
