@@ -12,10 +12,6 @@ Incompatibilities:
   Addresses https://github.com/plone/Products.CMFPlone/issues/1513 and goes together with https://github.com/plone/Products.CMFPlone/issues/1514.
   [jensens]
 
-New:
-
-- *add item here*
-
 Fixes:
 
 - Fix body class ``pat-markspeciallinks`` not set.
