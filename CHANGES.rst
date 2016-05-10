@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.6.0 (unreleased)
+2.6.0 (2016-05-10)
 ------------------
 
 Incompatibilities:
