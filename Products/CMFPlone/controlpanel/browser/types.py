@@ -94,7 +94,12 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
         behaviors = list(fti.behaviors)
         if self.behavior_name not in behaviors:
             behaviors.append(self.behavior_name)
-            fti.behaviors = behaviors
+        # locking must be turned on for versioning support on the type
+        locking = 'plone.app.lockingbehavior.behaviors.ILocking'
+        if locking not in behaviors:
+            behaviors.append(locking)
+
+        fti.behaviors = behaviors
 
     def remove_versioning_behavior(self, fti):
         if not IDexterityFTI.providedBy(fti):
@@ -102,7 +107,8 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
         behaviors = list(fti.behaviors)
         if self.behavior_name in behaviors:
             behaviors.remove(self.behavior_name)
-            fti.behaviors = behaviors
+        # TODO: remove locking if it wasn't set in first place
+        fti.behaviors = behaviors
 
     def __call__(self):
         """Perform the update and redirect if necessary, or render the page

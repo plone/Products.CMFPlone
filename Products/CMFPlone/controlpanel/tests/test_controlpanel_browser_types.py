@@ -115,9 +115,10 @@ class TypesControlPanelFunctionalTest(unittest.TestCase):
         portal_types = self.portal.portal_types
         doc_type = portal_types.Document
         self.assertTrue(
-            'plone.app.versioningbehavior.behaviors.IVersionable' not in doc_type.behaviors)  # noqa
+            'plone.app.versioningbehavior.behaviors.IVersionable'
+            not in doc_type.behaviors)  # noqa
 
-    def test_enable_versioning_behavior(self):
+    def test_enable_versioning_behavior_on_document(self):
         self.browser.open(self.types_url)
         self.browser.getControl(name='type_id').value = ['Document']
         self.browser.getForm(action=self.types_url).submit()
@@ -127,10 +128,40 @@ class TypesControlPanelFunctionalTest(unittest.TestCase):
         portal_types = self.portal.portal_types
         doc_type = portal_types.Document
         self.assertTrue(
-            'plone.app.versioningbehavior.behaviors.IVersionable' not in doc_type.behaviors)  # noqa
+            'plone.app.versioningbehavior.behaviors.IVersionable'
+            not in doc_type.behaviors)  # noqa
 
         self.browser.getControl(name='versionpolicy').value = ['manual']
         self.browser.getForm(action=self.types_url).submit()
 
         self.assertTrue(
-            'plone.app.versioningbehavior.behaviors.IVersionable' in doc_type.behaviors)
+            'plone.app.versioningbehavior.behaviors.IVersionable'
+            in doc_type.behaviors)
+
+    def test_enable_versioning_behavior_on_file(self):
+        self.browser.open(self.types_url)
+        self.browser.getControl(name='type_id').value = ['File']
+        self.browser.getForm(action=self.types_url).submit()
+        self.browser.getControl(name='versionpolicy').value = ['off']
+        self.browser.getForm(action=self.types_url).submit()
+
+        portal_types = self.portal.portal_types
+        file_type = portal_types.File
+
+        # File has no Versioning and no Locking on default, but needs it
+        self.assertTrue(
+            'plone.app.versioningbehavior.behaviors.IVersionable'
+            not in file_type.behaviors)  # noqa
+        self.assertTrue(
+            'plone.app.lockingbehavior.behaviors.ILocking'
+            not in file_type.behaviors)  # noqa
+
+        self.browser.getControl(name='versionpolicy').value = ['manual']
+        self.browser.getForm(action=self.types_url).submit()
+
+        self.assertTrue(
+            'plone.app.versioningbehavior.behaviors.IVersionable'
+            in file_type.behaviors)
+        self.assertTrue(
+            'plone.app.lockingbehavior.behaviors.ILocking'
+            in file_type.behaviors)

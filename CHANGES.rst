@@ -27,6 +27,9 @@ New:
 
 Fixes:
 
+- Fixed versioning for File and Image.
+  [iham]
+
 - Removed docstrings from some methods to avoid publishing them.  From
   Products.PloneHotfix20160419.  [maurits]
 
@@ -63,7 +66,7 @@ Fixes:
 
 - Do not hard-code baseUrl in bundle to avoid bad URL when switching domains.
   [ebrehault]
-  
+
 - fix typo and comma splice error in HTML filtering control panel [tkimnguyen]
 
 
