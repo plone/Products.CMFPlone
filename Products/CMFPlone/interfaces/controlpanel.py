@@ -1517,6 +1517,39 @@ class IImagingSchema(Interface):
         default=88
     )
 
+    retina_scales=schema.Choice(
+        title=_(u'Retina mode'),
+        description=_(u''),
+        default='disabled',
+        vocabulary=SimpleVocabulary([
+            SimpleTerm('disabled', 'disabled', u'Disabled'),
+            SimpleTerm('2x', '2x', u'Enabled (2x)'),
+            SimpleTerm('3x', '3x', u'Enabled (2x, 3x)')
+        ]),
+    )
+
+    quality_2x = schema.Int(
+        title=_(u'Image quality at 2x'),
+        description=_(u'A value for the quality of 2x retina images, from 1 '
+                      '(lowest) to 95 (highest). A value of 0 will mean '
+                      'plone.scaling\'s default will be used, which is '
+                      'currently 62.'),
+        min=0,
+        max=95,
+        default=62,
+    )
+
+    quality_3x = schema.Int(
+        title=_(u'Image quality at 3x'),
+        description=_(u'A value for the quality of 3x retina images, from 1 '
+                      '(lowest) to 95 (highest). A value of 0 will mean '
+                      'plone.scaling\'s default will be used, which is '
+                      'currently 51.'),
+        min=0,
+        max=95,
+        default=51,
+    )
+
 
 class ILoginSchema(Interface):
 

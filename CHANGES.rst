@@ -511,6 +511,9 @@ Fixes:
 - Make use of plone.namedfile's tag() function to generate img tags. Part of plip 1483.
   [didrix]
 
+- Add retina scales settings in image handling. Part of plip 1483
+  [didrix]
+
 Fixes:
 
 - Closes #1513 'Wrong portal_url used for TinyMCE in multilingual site',
