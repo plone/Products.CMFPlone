@@ -18,6 +18,9 @@ Incompatibilities:
 
 New:
 
+- Recompile `plone-logged-in` bundle after adding jumplist support across portlet managers.
+  Fixes https://github.com/plone/plone.app.portlets/issues/70 [davilima6]
+
 - Supported ``remove`` keyword for configlets in controlpanel.xml.  [maurits]
 
 - Deprecated Gruntfile generation script ``plone-generate-gruntfile``.
