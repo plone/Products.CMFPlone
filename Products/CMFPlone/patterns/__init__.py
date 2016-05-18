@@ -64,6 +64,15 @@ class TinyMCESettingsGenerator(object):
             val['icon'] = parts[2]
         return val
 
+    def get_styles(self, styles, _type='format', base=None):
+        result = []
+        for style in styles:
+            style = self.get_style_format(style, _type, base)
+            if not style:
+                continue
+            result.append(style)
+        return result
+
     def get_all_style_formats(self):
         header_styles = self.settings.header_styles or []
         block_styles = self.settings.block_styles or []
@@ -72,20 +81,19 @@ class TinyMCESettingsGenerator(object):
         table_styles = self.settings.table_styles or []
         return [{
             'title': 'Headers',
-            'items': [self.get_style_format(t) for t in header_styles]
+            'items': self.get_styles(header_styles)
         }, {
             'title': 'Block',
-            'items': [self.get_style_format(t) for t in block_styles]
+            'items': self.get_styles(block_styles)
         }, {
             'title': 'Inline',
-            'items': [self.get_style_format(t) for t in inline_styles]
+            'items': self.get_styles(inline_styles)
         }, {
             'title': 'Alignment',
-            'items': [self.get_style_format(t) for t in alignment_styles]
+            'items': self.get_styles(alignment_styles)
         }, {
             'title': 'Tables',
-            'items': [self.get_style_format(t, 'classes', {'selector': 'table'})
-                      for t in table_styles]
+            'items': self.get_styles(table_styles)
         }]
 
     def get_tiny_config(self):
