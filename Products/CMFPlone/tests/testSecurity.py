@@ -78,8 +78,7 @@ class TestAttackVectorsFunctional(PloneTestCase):
     def test_registerConfiglet_1(self):
         VECTOR = "/plone/portal_controlpanel/registerConfiglet?id=cake&name=Cakey&action=woo&permission=View&icon_expr="
         res = self.publish(VECTOR)
-        self.assertTrue(res.headers['location'].startswith(
-            'http://nohost/plone/acl_users/credentials_cookie_auth/require_login'))
+        self.assertEqual(404, res.status)
 
     def test_registerConfiglet_2(self):
         VECTOR = "/plone/portal_controlpanel/registerConfiglet?id=cake&name=Cakey&action=woo&permission=View&icon_expr="

@@ -55,8 +55,7 @@ class PropertiesTool(PloneBaseTool, Folder, UniqueObject):
     security.declareProtected(ManagePortal, 'addPropertySheet')
 
     def addPropertySheet(self, id, title='', propertysheet=None):
-        """ Add a new PropertySheet
-        """
+        # Add a new PropertySheet.
         o = SimpleItemWithProperties(id, title)
 
         # copy the propertysheet values onto the new instance
@@ -91,8 +90,7 @@ class PropertiesTool(PloneBaseTool, Folder, UniqueObject):
     security.declareProtected(ManagePortal, 'editProperties')
 
     def editProperties(self, props):
-        """Change portal settings
-        """
+        # Change portal settings.
         aq_parent(aq_inner(self)).manage_changeProperties(props)
         if hasattr(self, 'propertysheets'):
             ps = self.propertysheets

@@ -23,7 +23,7 @@ class WorkflowTool(PloneBaseTool, BaseTool):
     # TODO this should not make it into 1.0
     # Refactor me, my maker was tired
     def flattenTransitions(self, objs, container=None):
-        """ this is really hokey - hold on!!"""
+        # This is really hokey - hold on!!
         if hasattr(objs, 'startswith'):
             return ()
 
@@ -52,7 +52,7 @@ class WorkflowTool(PloneBaseTool, BaseTool):
         return tuple(transitions[:])
 
     def flattenTransitionsForPaths(self, paths):
-        """ this is even more hokey!!"""
+        # This is even more hokey!!
         if hasattr(paths, 'startswith'):
             return ()
 
@@ -108,9 +108,8 @@ class WorkflowTool(PloneBaseTool, BaseTool):
         return tuple(result.values())
 
     def workflows_in_use(self):
-        """ gathers all the available workflow chains (sequence
-        of workflow ids).
-        """
+        # Gathers all the available workflow chains (sequence
+        # of workflow ids).
         in_use = []
 
         in_use.append(self._default_chain)
@@ -124,17 +123,17 @@ class WorkflowTool(PloneBaseTool, BaseTool):
     security.declarePublic('getWorklists')
 
     def getWorklists(self):
-        """ instead of manually scraping actions_box, lets:
-            query for all worklists in all workflow definitions.
-            Returns a dictionary whos value is sequence of dictionaries
+        # Instead of manually scraping actions_box, let's
+        # query for all worklists in all workflow definitions.
+        # Returns a dictionary whose value is a sequence of dictionaries.
 
-            i.e. map[workflow_id]=(workflow definition map, )
-            each workflow defintion map contains the following:
-            (worklist)id, guard (Guard instance), guard_permissions (permission
-            of Guard instance), guard_roles (roles of Guard instance),
-            catalog_vars (mapping), actbox_name (actions box label),
-            actbox_url (actions box url) and types (list of portal types)
-        """
+        # i.e. map[workflow_id]=(workflow definition map, )
+        # each workflow defintion map contains the following:
+        # (worklist)id, guard (Guard instance), guard_permissions (permission
+        # of Guard instance), guard_roles (roles of Guard instance),
+        # catalog_vars (mapping), actbox_name (actions box label),
+        # actbox_url (actions box url) and types (list of portal types)
+
         # We want to know which types use the workflows with worklists
         # This for example avoids displaying 'pending' of multiple workflows in
         # the same worklist
@@ -189,13 +188,12 @@ class WorkflowTool(PloneBaseTool, BaseTool):
     security.declarePublic('getWorklistsResults')
 
     def getWorklistsResults(self):
-        """Return all the objects concerned by one or more worklists
-
-        This method replace 'getWorklists' by implementing the whole worklists
-        work for the script.
-        An object is returned only once, even if is return by several
-        worklists. Make the whole work as expensive it is.
-        """
+        # Return all the objects concerned by one or more worklists.
+        #
+        # This method replace 'getWorklists' by implementing the whole
+        # worklists work for the script.  An object is returned only once, even
+        # if is return by several worklists. Make the whole work as expensive
+        # it is.
         sm = getSecurityManager()
         # We want to know which types use the workflows with worklists
         # This for example avoids displaying 'pending' of multiple workflows in
@@ -249,8 +247,7 @@ class WorkflowTool(PloneBaseTool, BaseTool):
     security.declareProtected(ManagePortal, 'getChainForPortalType')
 
     def getChainForPortalType(self, pt_name, managescreen=0):
-        """ Get a chain for a specific portal type.
-        """
+        # Get a chain for a specific portal type.
         if pt_name in self._chains_by_type:
             return self._chains_by_type[pt_name]
         else:
@@ -264,16 +261,14 @@ class WorkflowTool(PloneBaseTool, BaseTool):
     security.declareProtected(ManagePortal, 'listWorkflows')
 
     def listWorkflows(self):
-        """ Return the list of workflows
-        """
+        # Return the list of workflows.
         return self.keys()
 
     security.declarePublic('getTitleForStateOnType')
 
     def getTitleForStateOnType(self, state_name, p_type):
-        """Returns the workflow state title for a given state name,
-           uses a portal_type to determine which workflow to use
-        """
+        # Returns the workflow state title for a given state name,
+        # uses a portal_type to determine which workflow to use.
         if state_name and p_type is not None:
             chain = self.getChainForPortalType(p_type)
             for wf_id in chain:
@@ -289,9 +284,8 @@ class WorkflowTool(PloneBaseTool, BaseTool):
     security.declarePublic('getTitleForTransitionOnType')
 
     def getTitleForTransitionOnType(self, trans_name, p_type):
-        """Returns the workflow transition title for a given transition name,
-           uses a portal_type to determine which workflow to use
-        """
+        # Returns the workflow transition title for a given transition name,
+        # uses a portal_type to determine which workflow to use.
         if trans_name and p_type is not None:
             chain = self.getChainForPortalType(p_type)
             for wf_id in chain:
@@ -307,8 +301,8 @@ class WorkflowTool(PloneBaseTool, BaseTool):
     security.declarePublic('listWFStatesByTitle')
 
     def listWFStatesByTitle(self, filter_similar=False):
-        """Returns the states of all available workflows, optionally filtering
-           out states with matching title and id"""
+        # Returns the states of all available workflows, optionally filtering
+        # out states with matching title and id.
         states = []
         dup_list = {}
         for wf in self.values():
@@ -326,11 +320,9 @@ class WorkflowTool(PloneBaseTool, BaseTool):
 
     # PLIP 217 Workflow by adaptation
     def getChainFor(self, ob):
-        """
-        Returns the chain that applies to the given object.
-        If we get a string as the ob parameter, use it as
-        the portal_type.
-        """
+        # Returns the chain that applies to the given object.
+        # If we get a string as the ob parameter, use it as
+        # the portal_type.
         return getMultiAdapter((ob, self), IWorkflowChain)
 
     security.declarePrivate('listActions')

@@ -10,9 +10,9 @@ Changelog
 
 Incompatibilities:
 
-- Moved code around and deprecated old locations in ``Products/CMFPlone/patterns/__init__``. 
+- Moved code around and deprecated old locations in ``Products/CMFPlone/patterns/__init__``.
   This goes together with same pattern settings changes in ``plone.app.layout.globals.pattern_settings``.
-  Also moved general usable ``./patterns/utils/get_portal`` to ``./utils/.get_portal``. 
+  Also moved general usable ``./patterns/utils/get_portal`` to ``./utils/.get_portal``.
   Depreacted ``./patterns/utils/get_portal`` and ``./patterns/utils/get_portal``.
   [jensens]
 
@@ -20,21 +20,27 @@ New:
 
 - Supported ``remove`` keyword for configlets in controlpanel.xml.  [maurits]
 
-- Deprecated Gruntfile generation script ``plone-generate-gruntfile``. 
-  Modified the ``plone-compile-resources`` script to support more parameters in order to take over that single task too. 
+- Deprecated Gruntfile generation script ``plone-generate-gruntfile``.
+  Modified the ``plone-compile-resources`` script to support more parameters in order to take over that single task too.
   Also clean up of parameters, better help and refactored parts of the code.
   [jensens]
 
 Fixes:
 
+- Removed docstrings from some methods to avoid publishing them.  From
+  Products.PloneHotfix20160419.  [maurits]
+
+- Fix issue where incorrectly configured formats would cause TinyMCE to error
+  [vangheem]
+
 - Closes #1513 'Wrong portal_url used for TinyMCE in multilingual site',
   also refactors the patterns settings and cleans it up.
   [jensens]
 
-- Removed inconsistency in the display of `Site Setup` links under 'Users and Groups' 
+- Removed inconsistency in the display of `Site Setup` links under 'Users and Groups'
   control panel.
   [kkhan]
- 
+
 - Only encode JS body if unicode in gruntfile generation script to avoid
   unicode error.
   [jensens]
@@ -51,6 +57,14 @@ Fixes:
 
 - Fix bundle aggregation when bundle has no CSS (or no JS)
   [ebrehault]
+
+- Fix relative url in CSS in bundle aggregation
+  [ebrehault]
+
+- Do not hard-code baseUrl in bundle to avoid bad URL when switching domains.
+  [ebrehault]
+  
+- fix typo and comma splice error in HTML filtering control panel [tkimnguyen]
 
 
 5.1a1 (2016-03-31)
@@ -101,10 +115,10 @@ New:
 
 Fixes:
 
-- Make Gruntfile.js generation script a bit more verbose to show the effective 
-  locations of the generated bundles. This helps in case of non-working setups 
-  also as if bundle compilation was started in browser at a first run a and  
-  next run was run using the script and files were generated at different 
+- Make Gruntfile.js generation script a bit more verbose to show the effective
+  locations of the generated bundles. This helps in case of non-working setups
+  also as if bundle compilation was started in browser at a first run a and
+  next run was run using the script and files were generated at different
   places than expected.
   [jensens]
 

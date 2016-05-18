@@ -165,8 +165,7 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
         self.deleteActions(selection)
 
     def _extractAction(self, properties, index):
-        """ Extract an ActionInformation from the funky form properties.
-        """
+        # Extract an ActionInformation from the funky form properties.
         id = str(properties.get('id_%d' % index, ''))
         name = str(properties.get('name_%d' % index, ''))
         action = str(properties.get('action_%d' % index, ''))
@@ -226,8 +225,7 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
                   description='',
                   REQUEST=None,
                   ):
-        """ Add an action to our list.
-        """
+        # Add an action to our list.
         if not name:
             raise ValueError('A name is required.')
 
