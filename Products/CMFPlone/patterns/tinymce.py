@@ -42,7 +42,10 @@ class TinyMCESettingsGenerator(object):
         theme = self.get_theme()
         tinymce_content_css = getattr(theme, 'tinymce_content_css', None)
         if tinymce_content_css is not None:
-            files.append(self.nav_root_url + theme.tinymce_content_css)
+            files.extend([
+                self.nav_root_url + _
+                for _ in theme.tinymce_content_css.split(',')
+            ])
 
         return ','.join(files)
 

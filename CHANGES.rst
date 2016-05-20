@@ -20,6 +20,8 @@ New:
 
 - Add link to training.plone.org
   [svx]
+- Allow to define multiple ``tinymce-content-css`` in theme ``manifest.cfg`` files, seperated by a comma.
+  [thet]
 
 - Update npm package depencies.
   [thet]
