@@ -18,6 +18,9 @@ Incompatibilities:
 
 New:
 
+- Update npm package depencies.
+  [thet]
+
 - Supported ``remove`` keyword for configlets in controlpanel.xml.  [maurits]
 
 - Deprecated Gruntfile generation script ``plone-generate-gruntfile``.
