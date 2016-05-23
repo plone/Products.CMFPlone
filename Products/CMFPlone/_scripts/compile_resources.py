@@ -8,11 +8,11 @@ this_dir = os.path.dirname(os.path.realpath(__file__))
 
 package_json_contents = """{
   "name": "gruntrunner",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "private": true,
   "devDependencies": {
-    "grunt": "~0.4.5",
-    "grunt-contrib-less": "1.2.0",
+    "grunt": "~1.0.1",
+    "grunt-contrib-less": "~1.3.0",
     "grunt-contrib-requirejs": "~1.0.0",
     "grunt-contrib-uglify": "~1.0.1",
     "grunt-contrib-watch": "~1.0.0",
