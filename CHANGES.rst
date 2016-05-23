@@ -28,7 +28,7 @@ New:
 Fixes:
 
 - Fixed versioning for File and Image.
-  [iham]
+   [iham]
 
 - Removed docstrings from some methods to avoid publishing them.  From
   Products.PloneHotfix20160419.  [maurits]
