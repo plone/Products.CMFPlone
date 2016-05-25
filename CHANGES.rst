@@ -127,6 +127,10 @@ New:
 
 Fixes:
 
+- Fixed displaying the body text of a feed item.  This is when
+  ``render_body`` is switched on in the Syndication settings.
+  [maurits]
+
 - Make Gruntfile.js generation script a bit more verbose to show the effective
   locations of the generated bundles. This helps in case of non-working setups
   also as if bundle compilation was started in browser at a first run a and
@@ -158,12 +162,7 @@ Fixes:
 5.0.3 (2016-03-??)
 ------------------
 
-
 Fixes:
-
-- Fixed displaying the body text of a feed item.  This is when
-  ``render_body`` is switched on in the Syndication settings.
-  [maurits]
 
 - In the ``combine-bundles`` import step, make sure the Content Type
   header is not set to ``application/javascript``.  This would result
