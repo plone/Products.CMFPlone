@@ -18,6 +18,9 @@ Incompatibilities:
 
 New:
 
+- Add link to training.plone.org
+  [svx]
+
 - Update npm package depencies.
   [thet]
 
@@ -29,6 +32,9 @@ New:
   [jensens]
 
 Fixes:
+
+- Remove whitespaces in ``Products/CMFPlone/browser/templates/plone-frontpage.pt``.
+  [svx]
 
 - Fixed versioning for File and Image.
    [iham]
