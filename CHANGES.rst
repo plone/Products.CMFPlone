@@ -18,6 +18,9 @@ Incompatibilities:
 
 New:
 
+- Make login modal dialog follow any redirects set while processing the login request.
+  [fulv]
+  
 - Add link to training.plone.org
   [svx]
 
