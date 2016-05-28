@@ -42,12 +42,6 @@
            class="Products.CMFPlone.SkinsTool.SkinsTool"/>
  <required tool_id="portal_types"
            class="Products.CMFPlone.TypesTool.TypesTool"/>
- <required tool_id="portal_uidannotation"
-           class="Products.CMFUid.UniqueIdAnnotationTool.UniqueIdAnnotationTool"/>
- <required tool_id="portal_uidgenerator"
-           class="Products.CMFUid.UniqueIdGeneratorTool.UniqueIdGeneratorTool"/>
- <required tool_id="portal_uidhandler"
-           class="Products.CMFUid.UniqueIdHandlerTool.UniqueIdHandlerTool"/>
  <required tool_id="portal_diff"
            class="Products.CMFDiffTool.CMFDiffTool.CMFDiffTool"/>
  <required tool_id="portal_url"

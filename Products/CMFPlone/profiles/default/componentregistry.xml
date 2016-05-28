@@ -30,12 +30,6 @@
      interface="Products.CMFCore.interfaces.ISiteRoot"
      object=""/>
   <utility
-     interface="Products.CMFUid.interfaces.IUniqueIdAnnotationManagement"
-     object="portal_uidannotation"/>
-  <utility
-     interface="Products.CMFUid.interfaces.IUniqueIdGenerator"
-     object="portal_uidgenerator"/>
-  <utility
      interface="Products.CMFDiffTool.interfaces.IDiffTool"
      object="portal_diff"/>
   <utility
