@@ -22,13 +22,17 @@ Bug fixes:
 
 Incompatibilities:
 
-- Deprecated ``plone.app.layout.globals.pattern_settings``. 
+- Deprecated ``plone.app.layout.globals.pattern_settings``.
   Moved view to ``Products.CMFPlone.patterns.view``.
   Deprecated also pointless interface for this view.
   Addresses https://github.com/plone/Products.CMFPlone/issues/1513 and goes together with https://github.com/plone/Products.CMFPlone/issues/1514.
   [jensens]
 
 Fixes:
+
+- Document byline viewlet is now displayed only to anonymous users if permited by the `Allow anyone to view 'about' information` option in the `Security Settings` of `Site Setup` (closes `CMFPlone#1556`_).
+  Code used to show the lock status and history view was removed from the document byline as this information was not available to anonymous users anyway.
+  [hvelarde]
 
 - Fix body class ``pat-markspeciallinks`` not set.
   Fixes #84.
@@ -1720,3 +1724,4 @@ Fixes:
 .. _`CMFPlone#1037`: https://github.com/plone/Products.CMFPlone/issues/1037
 .. _`CMFPlone#1151`: https://github.com/plone/Products.CMFPlone/issues/1151
 .. _`CMFPlone#1178`: https://github.com/plone/Products.CMFPlone/issues/1178
+.. _`CMFPlone#1556`: https://github.com/plone/Products.CMFPlone/issues/1556
