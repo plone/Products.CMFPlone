@@ -36,6 +36,9 @@ New:
   Also clean up of parameters, better help and refactored parts of the code.
   [jensens]
 
+- Allow to hide/show actions directly from the Actions control panel list
+  [ebrehault]
+
 Fixes:
 
 - Remove whitespaces in ``Products/CMFPlone/browser/templates/plone-frontpage.pt``.

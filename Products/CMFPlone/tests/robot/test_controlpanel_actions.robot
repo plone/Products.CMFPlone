@@ -32,6 +32,16 @@ Scenario: Create a new action in Actions Control Panel
    When I add a new action
    Then logged-in users can see the new action
 
+Scenario: Hide/show an action in Actions Control Panel
+  Given a logged-in administrator
+    and the actions control panel
+   When I hide an action
+   Then anonymous users cannot see the action anymore
+  Given a logged-in administrator
+    and the actions control panel
+   When I unhide the action
+   Then anonymous users can see the action again
+
 Scenario: Delete an action in Actions Control Panel
   Given a logged-in administrator
     and the actions control panel
@@ -76,8 +86,14 @@ I add a new action
   Click Element  css=.pattern-modal-buttons > input
 
 I delete an action
-  Click Button    css=section:nth-child(3) li:first-child input[type=submit]
+  Click Button    css=section:nth-child(3) li:first-child input[name=delete]
   Confirm Action
+
+I hide an action
+  Click Button    css=section:nth-child(3) li:first-child input[name=hide]
+
+I unhide the action
+  Click Button    css=section:nth-child(3) li:first-child input[name=show]
 
 # --- THEN -------------------------------------------------------------------
 
@@ -101,4 +117,9 @@ logged-in users can see the new action
 anonymous users cannot see the action anymore
   Disable autologin
   Go to  ${PLONE_URL}
-  Page Should Not Contain  Site map
+  Page Should Not Contain  Site Map
+
+anonymous users can see the action again
+  Disable autologin
+  Go to  ${PLONE_URL}
+  Page Should Contain  Site Map

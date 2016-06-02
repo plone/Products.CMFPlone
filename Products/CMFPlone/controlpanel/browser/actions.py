@@ -41,6 +41,7 @@ class ActionListControlPanel(BrowserView):
                         'id': action.id,
                         'title': action.title,
                         'url': action.absolute_url(),
+                        'visible': action.visible,
                     })
             cat_infos['actions'] = action_list
             actions.append(cat_infos)
@@ -49,10 +50,20 @@ class ActionListControlPanel(BrowserView):
         return self.template()
 
     def __call__(self):
-        if self.request.get('deleteaction'):
-            action_id = self.request['deleteaction']
+        if self.request.get('delete'):
+            action_id = self.request['actionid']
             category = self.portal_actions[self.request['category']]
             category.manage_delObjects([action_id])
+            self.request.RESPONSE.redirect('@@actions-controlpanel')
+        if self.request.get('hide'):
+            action_id = self.request['actionid']
+            category = self.portal_actions[self.request['category']]
+            category[action_id].visible = False
+            self.request.RESPONSE.redirect('@@actions-controlpanel')
+        if self.request.get('show'):
+            action_id = self.request['actionid']
+            category = self.portal_actions[self.request['category']]
+            category[action_id].visible = True
             self.request.RESPONSE.redirect('@@actions-controlpanel')
         return self.display()
 

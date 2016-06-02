@@ -32,19 +32,25 @@
                     <li tal:repeat="action category/actions">
                         <span tal:content="action/title" i18n:translate="" />
                         <form action="@@actions-controlpanel" class="pull-right"
-                            method="POST"
-                            confirm-message="Delete the action?"
-                            i18n:attributes="confirm-message"
-                            onsubmit="return confirm(this.getAttribute('confirm-message'));">
-                            <input type="hidden" name="deleteaction"
+                            method="POST">
+                            <input type="hidden" name="actionid"
                                 tal:attributes="value action/id" />
+                            <input tal:condition="action/visible"
+                                type="submit" class="standalone" name="hide"
+                                value="Hide" i18n:attributes="value" />
+                            <input tal:condition="not:action/visible"
+                                type="submit" class="standalone" name="show"
+                                value="Show" i18n:attributes="value" />
                             <input type="hidden" name="category"
                                 tal:attributes="value category/id" />
                             <a class="pat-plone-modal standalone"
                             tal:attributes="href string:${action/url}/@@action-form"
                             i18n:translate="">Edit</a>
-                            <input type="submit" class="destructive" value="Delete"
-                                i18n:attributes="value" />
+                            <input type="submit" class="destructive" name="delete"
+                                value="Delete" i18n:attributes="value"
+                                confirm-message="Delete the action?"
+                                i18n:attributes="confirm-message"
+                                onclick="return confirm(this.getAttribute('confirm-message'));"/>
                         </form>
                     </li>
                 </ol>
