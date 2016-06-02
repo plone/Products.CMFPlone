@@ -18,6 +18,9 @@ Incompatibilities:
 
 New:
 
+- Build js/css from latest mockup
+  [vangheem]
+
 - Make login modal dialog follow any redirects set while processing the login request.
   [fulv]
   
