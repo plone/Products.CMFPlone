@@ -23,6 +23,9 @@ Fixes:
 
 New:
 
+- Build latest mockup fixes
+  [vangheem]
+
 - Supported ``remove`` keyword for configlets in controlpanel.xml.  [maurits]
 
 - Fixed displaying the body text of a feed item.  This is when
