@@ -53,7 +53,6 @@ setup(
         'Products.CMFDynamicViewFTI',
         'Products.CMFEditions',
         'Products.CMFQuickInstallerTool',
-        'Products.CMFUid',
         'Products.DCWorkflow',
         'Products.ExtendedPathIndex',
         'Products.ExternalEditor',

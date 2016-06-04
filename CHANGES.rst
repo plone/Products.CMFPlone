@@ -12,8 +12,11 @@ Incompatibilities:
 
 - Moved code around and deprecated old locations in ``Products/CMFPlone/patterns/__init__``.
   This goes together with same pattern settings changes in ``plone.app.layout.globals.pattern_settings``.
-  Also moved general usable ``./patterns/utils/get_portal`` to ``./utils/.get_portal``.
+  Also moved general usable ``./patterns/utils/get_portal`` to ``./utils/get_portal``.
   Depreacted ``./patterns/utils/get_portal`` and ``./patterns/utils/get_portal``.
+  [jensens]
+
+- Remove Products.CMFUid dependency. This was not used in core Plone anymore and needs now to be installed as an addon.
   [jensens]
 
 New:

@@ -27,7 +27,6 @@ class HiddenProducts(object):
             'CMFDefault', 'Products.CMFDefault',
             'CMFPlone', 'Products.CMFPlone', 'Products.CMFPlone.migrations',
             'CMFTopic', 'Products.CMFTopic',
-            'CMFUid', 'Products.CMFUid',
             'DCWorkflow', 'Products.DCWorkflow',
             'PasswordResetTool', 'Products.PasswordResetTool',
             'PlonePAS', 'Products.PlonePAS',
