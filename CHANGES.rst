@@ -41,8 +41,12 @@ New features:
 
 Bug fixes:
 
+- Added publishing patch from Products.PloneHotfix20160419.
+  This avoids publishing some methods inherited from Zope or CMF.  [maurits]
+
 - Fix issue where incorrectly configured formats would cause TinyMCE to error
   [vangheem]
+
 
 
 5.0.4 (2016-04-06)

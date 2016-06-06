@@ -27,3 +27,5 @@ sendmail.applyPatches()
 
 import templatecookcheck        # Make sure templates aren't re-read in
 # production sites
+
+import publishing
