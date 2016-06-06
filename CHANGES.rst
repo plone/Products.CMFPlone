@@ -38,6 +38,9 @@ New features:
 
 Bug fixes:
 
+- Added publishing patch from Products.PloneHotfix20160419.
+  This avoids publishing some methods inherited from Zope or CMF.  [maurits]
+
 - Remove whitespaces in ``Products/CMFPlone/browser/templates/plone-frontpage.pt``.
   [svx]
 
