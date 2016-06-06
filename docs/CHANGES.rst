@@ -14,6 +14,9 @@ Changelog
 
 Fixes:
 
+- Added publishing patch from Products.PloneHotfix20160419.
+  This avoids publishing some methods inherited from Zope or CMF.  [maurits]
+
 - Removed docstrings from some methods to avoid publishing them.  [maurits]
 
 - Ensured front-page is English when creating an English site.
