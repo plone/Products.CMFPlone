@@ -8,20 +8,11 @@ Changelog
 5.0.5 (unreleased)
 ------------------
 
-Incompatibilities:
+Breaking changes:
 
 - *add item here*
 
-New:
-
-- *add item here*
-
-Fixes:
-
-- Fix issue where incorrectly configured formats would cause TinyMCE to error
-  [vangheem]
-
-New:
+New features:
 
 - Supported ``remove`` keyword for configlets in controlpanel.xml.  [maurits]
 
@@ -47,6 +38,11 @@ New:
 
 - Do not hard-code baseUrl in bundle to avoid bad URL when switching domains.
   [ebrehault]
+
+Bug fixes:
+
+- Fix issue where incorrectly configured formats would cause TinyMCE to error
+  [vangheem]
 
 
 5.0.4 (2016-04-06)
