@@ -32,3 +32,4 @@ except ImportError:
     pass
 
 import addMember
+import publishing
