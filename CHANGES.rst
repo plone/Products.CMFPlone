@@ -8,7 +8,7 @@ Changelog
 5.1a2 (unreleased)
 ------------------
 
-Incompatibilities:
+Breaking changes:
 
 - Moved code around and deprecated old locations in ``Products/CMFPlone/patterns/__init__``.
   This goes together with same pattern settings changes in ``plone.app.layout.globals.pattern_settings``.
@@ -16,11 +16,11 @@ Incompatibilities:
   Depreacted ``./patterns/utils/get_portal`` and ``./patterns/utils/get_portal``.
   [jensens]
 
-New:
+New features:
 
 - Make login modal dialog follow any redirects set while processing the login request.
   [fulv]
-  
+
 - Add link to training.plone.org
   [svx]
 - Allow to define multiple ``tinymce-content-css`` in theme ``manifest.cfg`` files, seperated by a comma.
@@ -36,7 +36,7 @@ New:
   Also clean up of parameters, better help and refactored parts of the code.
   [jensens]
 
-Fixes:
+Bug fixes:
 
 - Remove whitespaces in ``Products/CMFPlone/browser/templates/plone-frontpage.pt``.
   [svx]
