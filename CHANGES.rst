@@ -8,7 +8,7 @@ Changelog
 5.1a2 (unreleased)
 ------------------
 
-Incompatibilities:
+Breaking changes:
 
 - Moved code around and deprecated old locations in ``Products/CMFPlone/patterns/__init__``.
   This goes together with same pattern settings changes in ``plone.app.layout.globals.pattern_settings``.
@@ -16,11 +16,11 @@ Incompatibilities:
   Depreacted ``./patterns/utils/get_portal`` and ``./patterns/utils/get_portal``.
   [jensens]
 
-New:
+New features:
 
 - Make login modal dialog follow any redirects set while processing the login request.
   [fulv]
-  
+
 - Add link to training.plone.org
   [svx]
 - Allow to define multiple ``tinymce-content-css`` in theme ``manifest.cfg`` files, seperated by a comma.
@@ -40,12 +40,20 @@ New:
   [ebrehault]
 
 Fixes:
+Bug fixes:
+
+- Added publishing patch from Products.PloneHotfix20160419.
+  This avoids publishing some methods inherited from Zope or CMF.  [maurits]
 
 - Remove whitespaces in ``Products/CMFPlone/browser/templates/plone-frontpage.pt``.
   [svx]
 
 - Fixed versioning for File and Image.
    [iham]
+
+- Do not hide document byline viewlet by default;
+  it is controled by the `Allow anyone to view 'about' information` option in the `Security Settings` of `Site Setup` (closes `#1556`_).
+  [hvelarde]
 
 - Removed docstrings from some methods to avoid publishing them.  From
   Products.PloneHotfix20160419.  [maurits]
@@ -1299,3 +1307,4 @@ Fixes:
 .. _`#1053`: https://github.com/plone/Products.CMFPlone/issues/1053
 .. _`#1232`: https://github.com/plone/Products.CMFPlone/issues/1232
 .. _`#1255`: https://github.com/plone/Products.CMFPlone/issues/1255
+.. _`#1556`: https://github.com/plone/Products.CMFPlone/issues/1556
