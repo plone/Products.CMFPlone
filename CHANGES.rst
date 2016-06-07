@@ -14,7 +14,9 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Document byline viewlet is now displayed only to anonymous users if permited by the `Allow anyone to view 'about' information` option in the `Security Settings` of `Site Setup` (closes `CMFPlone#1556`_).
+  Code used to show the lock status and history view was removed from the document byline as this information was not available to anonymous users anyway.
+  [hvelarde]
 
 
 2.6.0 (2016-05-10)
@@ -29,10 +31,6 @@ Incompatibilities:
   [jensens]
 
 Fixes:
-
-- Document byline viewlet is now displayed only to anonymous users if permited by the `Allow anyone to view 'about' information` option in the `Security Settings` of `Site Setup` (closes `CMFPlone#1556`_).
-  Code used to show the lock status and history view was removed from the document byline as this information was not available to anonymous users anyway.
-  [hvelarde]
 
 - Fix body class ``pat-markspeciallinks`` not set.
   Fixes #84.
