@@ -138,6 +138,18 @@ class IEditingSchema(Interface):
         default=True,
         required=False)
 
+    subjects_of_navigation_root = schema.Bool(
+        title=_(u'Limit tags/keywords to the current navigation root'),
+        description=_(
+            u'Limit tags aka keywords vocabulary used for Tags field and '
+            u'in searches to the terms used inside the subtree of the current '
+            u'navigation root. This can be used together with Plones '
+            u'multilingual extension plone.app.multilingual to only offer '
+            u'keywords of the current selected language. Other addons may '
+            u'utilize this feature for its specific purposes.'),
+        default=False,
+        required=False)
+
 
 class ILanguageSchema(Interface):
     model.fieldset(
