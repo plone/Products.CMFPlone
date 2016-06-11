@@ -1,4 +1,6 @@
 # From Products.PloneHotfix20160419
+# Plus extras for properties.
+from OFS.PropertyManager import PropertyManager
 from OFS.ZDOM import Document
 from OFS.ZDOM import Node
 from Products.CMFPlone.Portal import PloneSite
@@ -62,3 +64,21 @@ for klass in klasses:
         if (method is not None and hasattr(method, 'im_func') and
                 hasattr(method.im_func, '__doc__')):
             del method.im_func.__doc__
+
+property_methods = (
+    'getProperty',
+    'propertyValues',
+    'propertyItems',
+    'propertyMap',
+    'hasProperty',
+    'getPropertyType',
+    'propertyIds',
+    'propertyLabel',
+    'propertyDescription'
+)
+
+for method_name in property_methods:
+    method = getattr(PropertyManager, method_name, None)
+    if (method is not None and hasattr(method, 'im_func') and
+            hasattr(method.im_func, '__doc__')):
+        del method.im_func.__doc__
