@@ -39,6 +39,10 @@ New features:
   Also clean up of parameters, better help and refactored parts of the code.
   [jensens]
 
+- Allow to hide/show actions directly from the Actions control panel list
+  [ebrehault]
+
+Fixes:
 Bug fixes:
 
 - Removed docstrings from PropertyManager methods to avoid publishing them.  [maurits]
