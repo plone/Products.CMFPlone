@@ -41,6 +41,8 @@ New features:
 
 Bug fixes:
 
+- Removed docstrings from PropertyManager methods to avoid publishing them.  [maurits]
+
 - Added publishing patch from Products.PloneHotfix20160419.
   This avoids publishing some methods inherited from Zope or CMF.  [maurits]
 
