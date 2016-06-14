@@ -8,10 +8,11 @@ this_dir = os.path.dirname(os.path.realpath(__file__))
 
 package_json_contents = """{
   "name": "gruntrunner",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "private": true,
   "devDependencies": {
-    "grunt": "~1.0.1",
+    "grunt": "~0.4.5",
+    "grunt-cli": "~1.2.0",
     "grunt-contrib-less": "~1.3.0",
     "grunt-contrib-requirejs": "~1.0.0",
     "grunt-contrib-uglify": "~1.0.1",
@@ -65,7 +66,7 @@ def main(argv=sys.argv):
         help='path to instance executable. If not provided, '
              'will look in bin this was executed from for '
              'instance or client1'
-        )
+    )
     parser.add_argument(
         '-s',
         '--site-id',
@@ -88,13 +89,6 @@ def main(argv=sys.argv):
         help='Output directory for the compiled bundle files. '
              'Used only while Gruntfile generation. '
              'If not given the directory is looked up from Plone registry. '
-    )
-    parser.add_argument(
-        '-g',
-        '--grunt',
-        dest='grunt_bin',
-        help='path to grunt executable. If not provided, '
-             'will look in system path.'
     )
     parser.add_argument(
         '-d',
@@ -128,29 +122,20 @@ def main(argv=sys.argv):
 
     args = parser.parse_args()
 
-    grunt = args.grunt_bin
-
-    if not grunt:
-        if 'PATH' in os.environ:
-            path = os.environ['PATH']
-            path = path.split(os.pathsep)
-        else:
-            path = ['/bin', '/usr/bin', '/usr/local/bin']
-
-        for directory in path:
-            fullname = os.path.join(directory, 'grunt')
-            if os.path.exists(fullname):
-                grunt = fullname
-                break
-
-    if not grunt:
-        print('Error: no grunt executable found. Exiting')
-        sys.exit(0)
-
     base_path = args.base_dir
     if base_path == '.':
         base_path = os.getcwd()
 
+    # generates only if not already there
+    generate_package_json(base_path)
+    if not args.skip_npminstall:
+        cmd = ['npm', 'install']
+        print('Setup npm env')
+        print('Running command: %s' % ' '.join(cmd))
+        subprocess.check_call(cmd)
+
+    # Generate Gruntfile
+    grunt = os.path.join(base_path, 'node_modules', 'grunt-cli', 'bin', 'grunt')
     if not args.skip_gruntfile:
         generate_gruntfile(
             base_path,
@@ -158,24 +143,13 @@ def main(argv=sys.argv):
             args.site_id,
             args.compile_dir
         )
-
     gruntfile = os.path.join(base_path, 'Gruntfile.js')
-
     if not os.path.exists(gruntfile):
         print(
             "Error, no Gruntfile.js generated at {0} where expected".format(
                 gruntfile
             )
         )
-
-    # generates only if not already there
-    generate_package_json(base_path)
-
-    if not args.skip_npminstall:
-        cmd = ['npm', 'install']
-        print('Setup npm env')
-        print('Running command: %s' % ' '.join(cmd))
-        subprocess.check_call(cmd)
 
     if not args.skip_compile:
         print('Compile {0}'.format(args.bundle))
