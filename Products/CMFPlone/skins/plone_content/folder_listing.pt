@@ -164,10 +164,11 @@
 
                 </dt>
 
-                <dd tal:condition="item_description">
+                <dd>
                     <span class="description"
-                           tal:content="item_description">
-                        description
+                        tal:condition="item_description"
+                        tal:content="item_description">
+                        Description
                     </span>
                 </dd>
             </metal:block>
