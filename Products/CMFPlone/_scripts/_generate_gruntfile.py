@@ -323,7 +323,7 @@ for name, value in resources.items():
 
 globalVars_string = ""
 for key, value in sorted(globalVars.items()):
-    globalVars_string += '{0}"{1}": "{2}",\n'.format(22*' ', key, value)
+    globalVars_string += '{0}"{1}": "{2}",\n'.format(22 * ' ', key, value)
 
 
 # BUNDLE LOOP

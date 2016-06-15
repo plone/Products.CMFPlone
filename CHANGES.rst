@@ -10,11 +10,17 @@ Changelog
 
 Breaking changes:
 
+- ``plone-compile-resources``: Install ``grunt-cli`` instead of depending on an installed ``grunt`` executable.
+  If you already have a auto-generated ``package.json`` file in buildout directory, remove it.
+  [thet]
+
+
 - Moved code around and deprecated old locations in ``Products/CMFPlone/patterns/__init__``.
   This goes together with same pattern settings changes in ``plone.app.layout.globals.pattern_settings``.
   Also moved general usable ``./patterns/utils/get_portal`` to ``./utils/.get_portal``.
   Deprecated ``./patterns/utils/get_portal`` and ``./patterns/utils/get_portal``.
   [jensens]
+
 
 New features:
 
