@@ -14,6 +14,9 @@ Changelog
 
 Fixes:
 
+- Render an empty ``<dd>`` tag on ``folder_listing`` template when no description is available to avoid validation issues.
+  [hvelarde]
+
 - Removed docstrings from PropertyManager methods to avoid publishing them.  [maurits]
 
 - Added publishing patch from Products.PloneHotfix20160419.
