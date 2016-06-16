@@ -34,7 +34,7 @@
           <strong i18n:translate="">Info</strong>
           <span i18n:translate="">If you see this, it is because there was an error rendering the resource registry
           configuration. It's possible you saved a bundle that gives a JavaScript error
-          and it is prevening the resource registry from loading.</span>
+          and it is preventing the resource registry from loading.</span>
         </div>
         <h2 i18n:translate="">Available Options</h2>
         <ul>
