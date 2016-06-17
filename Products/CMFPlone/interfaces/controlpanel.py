@@ -219,10 +219,7 @@ class ILanguageSchema(Interface):
             u'label_always_show_selector',
             default=u'Always show language selector'
         ),
-        description=_(
-            u'help_always_show_selector',
-            default=u""
-        ),
+        description=u'',
         default=False,
         required=False
     )
