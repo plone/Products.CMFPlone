@@ -345,7 +345,7 @@ class IFilterSchema(Interface):
     # class IFilterTagsSchema(Interface):
 
     disable_filtering = schema.Bool(
-        title=_(u'Disable html filtering'),
+        title=_(u'Disable HTML filtering'),
         description=_(u'Warning: disabling this can be dangerous. '
                       u'Only disable if you know what you are doing.'),
         default=False,
