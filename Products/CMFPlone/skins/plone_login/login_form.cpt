@@ -24,7 +24,7 @@
         <metal:login define-macro="login"
             tal:define="auth nocall:context/acl_users/credentials_cookie_auth|context/cookie_authentication|nothing;
                         plone context/@@plone;
-                        nav_root plone/navigationRootPath;
+                        nav_root plone/navigationRootUrl;
                         isURLInPortal nocall:context/portal_url/isURLInPortal;
                         login_template_ids python:'login login_success login_password login_failed login_form logged_in logout logged_out registered mail_password mail_password_form register require_login member_search_results pwreset_finish localhost'.split();
                         came_from request/came_from|request/HTTP_REFERER|nothing;

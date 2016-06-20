@@ -19,9 +19,8 @@ class QuickInstallerTool(PloneBaseTool, BaseTool):
 
     security.declareProtected(ManagePortal, 'upgradeInfo')
     def upgradeInfo(self, pid):
-        """Returns a dict with two booleans values, stating if an upgrade
-        is required and available.
-        """
+        # Returns a dict with two booleans values, stating if an upgrade
+        # required and available.
         available = self.isProductAvailable(pid)
         if not available:
             return False

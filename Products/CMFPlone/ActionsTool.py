@@ -91,8 +91,7 @@ class ActionsTool(PloneBaseTool, BaseTool):
     def listFilteredActionsFor(self, object=None,
                                ignore_providers=(),
                                ignore_categories=None):
-        """ List all actions available to the user.
-        """
+        # List all actions available to the user.
         actions = []
 
         providers = [name for name in self.listActionProviders()

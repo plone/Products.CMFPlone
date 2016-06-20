@@ -23,7 +23,7 @@ function msieversion() {
     }
 }
 
-var common_content_filter = '#content>*:not(div.configlet),dl.portalMessage.error,dl.portalMessage.info';
+var common_content_filter = '#content>*:not(div.configlet),dl.portalMessage.error,dl.portalMessage.warning,dl.portalMessage.info';
 
 jQuery.extend(jQuery.tools.overlay.conf,
     {

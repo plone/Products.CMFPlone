@@ -66,5 +66,5 @@ class ITranslatable(Interface):
         """
 
 deprecated("ITranslatable",
-        "Please use Products.LinguaPlone.interfaces.ITranslatable instead. "
-        "This interface will be removed in Plone 5.0")
+           "Please use Products.LinguaPlone.interfaces.ITranslatable instead. "
+           "This interface will be removed in Plone 5.0")

@@ -5,8 +5,174 @@
 Changelog
 =========
 
-4.3.4 (unreleased)
+4.3.10 (unreleased)
+-------------------
+
+- New:
+
+- *add item here*
+
+Fixes:
+
+- Render an empty ``<dd>`` tag on ``folder_listing`` template when no description is available to avoid validation issues.
+  [hvelarde]
+
+- Removed docstrings from PropertyManager methods to avoid publishing them.  [maurits]
+
+- Added publishing patch from Products.PloneHotfix20160419.
+  This avoids publishing some methods inherited from Zope or CMF.  [maurits]
+
+- Removed docstrings from some methods to avoid publishing them.  [maurits]
+
+- Ensured front-page is English when creating an English site.
+  Previously, when creating an English site with a browser that
+  prefers a different language, the body text ended up being in the
+  browser language.  For languages without a front-page text
+  translation the same happened: they got the other language instead
+  of English.  [maurits]
+
+
+4.3.9 (2016-03-29)
 ------------------
+
+- No changes
+
+
+4.3.8 (2016-03-08)
+------------------
+
+Fixes:
+
+- Add dl.portalMessage.warning to common_content_filter in popupforms.js so
+  warnings get also pulled into the popup. [pcdummy]
+
+- Disabled CSRF protection on site creation form and upgrade form.  [maurits]
+
+- When migration fails, do not upgrade addons or recatalog or
+  update roles.
+  [maurits]
+
+- Let plone-final import step also depend on the workflow step.
+  Otherwise the plone-final step installs plone.app.discussion with an
+  extra workflow, and then our own workflow step throws it away again.
+  Closes `#1041`_.
+  [maurits]
+
+- Purge profile upgrade versions from portal_setup when applying our
+  default CMFPlone:plone profile.  This signals that nothing has been
+  installed yet, so depencies will get reapplied instead of possibly
+  upgraded.  This could cause problems mostly in tests.  Closes
+  `#1041`_.
+  [maurits]
+
+- Add syndication for plone.app.contenttypes collections.
+  [do3cc]
+
+- Add CSRF authenticator in createObject script
+  [ebrehault]
+
+- Let set_own_login_name use the update(Own)LoginName method from PAS.
+  Part of PLIP 13419.
+  [maurits]
+
+4.3.7 (2015-09-27)
+------------------
+
+- Remove Chrome Frame from ``X-UA-Compatible`` HTTP header as it's deprecated.
+  [hvelarde]
+
+- Apply hotfixes from https://pypi.python.org/pypi/Products.PloneHotfix20150910
+  [vangheem]
+
+- Do not throw a 404 on site root RSS feeds
+  [vangheem]
+
+- Upgrade known core packages at the end of the Plone migration.
+  [maurits]
+
+- Require ``POST`` request for various forms that send email.
+  [maurits]
+
+- Make the `formUnload.js` protection works while using CKEditor
+  as it is the case with TinyMCE.
+  [gbastien]
+
+- Properly hide ``plone.app.jquery`` and ``plone.app.jquerytools``
+  from products.
+  [maurits]
+
+- Fix email validation of long domain names.
+  [gotcha]
+
+
+4.3.6 (2015-06-02)
+------------------
+
+- Release Plone 4.3.6 to correct some version incompatibilities in 4.3.5. No upgrades to run.
+  [esteele]
+
+- fix syndication settings to not write on read
+  [vangheem]
+
+4.3.5 (2015-05-13)
+------------------
+
+- Implement new feed syndication using `NewsML 1 <http://iptc.org/standards/newsml-1/>`_,
+  an IPTC standard that provides a media-type-independent, structural framework for multi-media news.
+  [frapell, jpgimenez, tcurvelo]
+
+- Add tests for configuring encoding of user registration or
+  forgotten password emails.
+  [davidjb]
+
+- Pass email encoding to forgotten password email template.
+  [davidjb]
+
+- Pass mail ``Content-Type`` to mailhost when sending forgotten password
+  emails.
+  [davidjb]
+
+- Fix: If a user "deletes" the same item twice (ex.: having two different tabs
+  open and not realising it's already been deleted) any higher level item with
+  the same short name will be deleted without trace.
+  [gotcha]
+
+- Extended ulocalized_time for target_language
+  [agitator]
+
+- Allow search_rss view on subsites (implementing INavigationRoot, not only
+  IPloneSiteRoot) like it was the case in Plone 4.1.6.
+  [vincentfretin]
+
+- jQuery 1.9 compatibility for the toggleSelect function (Select all checkbox)
+  [vincentfretin]
+
+- Sharing view javascript now works with jQuery 1.9.
+  [vincentfretin]
+
+
+4.3.4.1 (2014-11-13)
+--------------------
+
+- Make inline validation of AT multiple selection widget work.
+  [gbastien]
+
+
+4.3.4 (2014-10-22)
+------------------
+
+- Fix getFolderContents to no longer ignore 'show_inactive' in contentFilter.
+  This is part of a fix for https://dev.plone.org/ticket/8353.
+  [pbauer]
+
+- Fix link to the mail_password_form on the login_form for sites using VHM
+  [fRiSi]
+
+- folder_position script: make position and id optional.  Default
+  position to 'ordered' and id to None, which means: do nothing.
+  plone.folder 1.0.5 allows this, making it possible to simply reverse
+  the current sort order by using reverse=False.
+  [maurits]
 
 - Abstract the search form and livesearch action URLs making it easier to
   extend the search portlet with custom views or other actions.
@@ -18,7 +184,7 @@ Changelog
 - Fix JavaScript to work with recent jQuery (>= 1.9) versions.
   [thet]
 
-- Improve event_view - do not show time when user specifies the same start and 
+- Improve event_view - do not show time when user specifies the same start and
   end time for an event.
   [spereverde]
 
@@ -41,6 +207,10 @@ Changelog
 - Fixed plone.css and plone.session integration. Do not break when not found
   resources are registered in the portal_css tool
   [keul]
+
+- Small scoping fix in locking js code
+  [do3cc]
+
 
 4.3.3 (2014-02-19)
 ------------------
@@ -121,6 +291,9 @@ Changelog
 - Catch missing userid on mail_password form, and treat is as
   an empty userid. That way the user gets a helpful message.
   [do3cc]
+
+- If a page is renamed and the page is a default page, default page setting is corrected
+  [hoka]
 
 
 4.3.2 (2013-08-14)
@@ -215,7 +388,7 @@ Changelog
 - Test for #7627 (https://dev.plone.org/ticket/7627)
 
 4.3rc1 (released)
--------------------
+-----------------
 
 - add overlay for folder default page folder factories link
   [vangheem]
@@ -490,3 +663,5 @@ Changelog
 - Use configuration registry to override translation of date format,
   or fall back to ISO style as last resort. Fixes http://dev.plone.org/ticket/11171
   [kleist]
+
+.. _`#1041`: https://github.com/plone/Products.CMFPlone/issues/1041

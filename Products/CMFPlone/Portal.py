@@ -94,7 +94,7 @@ class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin, UniqueObject):
     index_html = ComputedAttribute(index_html, 1)
 
     def manage_beforeDelete(self, container, item):
-        """ Should send out an Event before Site is being deleted """
+        # Should send out an Event before Site is being deleted.
         self.removal_inprogress = 1
         PloneSite.inheritedAttribute('manage_beforeDelete')(self, container,
                                                             item)

@@ -80,7 +80,7 @@ $(document).ready(function(){
 
     /* sharing related kss */
     function updateSharing(data){
-        var sharing = $(data.body);
+        var sharing = data.body;
         var messages = $(data.messages).filter(function(){ return this.tagName == 'DL'; });
         $('.portalMessage').remove();
         $('#user-group-sharing').replaceWith(sharing);

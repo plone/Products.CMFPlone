@@ -9,6 +9,9 @@
 ##title=Send an URL to a friend
 
 REQUEST = context.REQUEST
+if REQUEST.get('REQUEST_METHOD', '').upper() != 'POST':
+    from zExceptions import Forbidden
+    raise Forbidden('Use POST please.')
 
 from Products.CMFPlone.utils import transaction_note
 from Products.CMFPlone.PloneTool import AllowSendto

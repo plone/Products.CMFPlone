@@ -81,8 +81,8 @@ class Plone(BrowserView):
         checkPerm = portal_membership.checkPermission
 
         if checkPerm('Modify portal content', context) or \
-               checkPerm('Add portal content', context) or \
-               checkPerm('Review portal content', context):
+                checkPerm('Add portal content', context) or \
+                checkPerm('Review portal content', context):
             return True
 
         if portal_membership.isAnonymousUser():
@@ -112,7 +112,7 @@ class Plone(BrowserView):
             idActions[obj.get('id', '')] = 1
 
         if 'edit' in idActions:
-            if (template_id in idActions or \
+            if (template_id in idActions or
                 template_id in ['synPropertiesForm', 'folder_contents',
                                 'folder_listing']):
                 return True

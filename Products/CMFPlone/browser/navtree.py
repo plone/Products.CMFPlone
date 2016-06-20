@@ -27,6 +27,7 @@ security = ModuleSecurityInfo()
 security.declarePrivate('plone')
 security.declarePrivate('utils')
 
+
 class NavtreeQueryBuilder(object):
     """Build a navtree query based on the settings in navtree_properties
     """
@@ -105,7 +106,7 @@ class SitemapNavtreeStrategy(NavtreeStrategyBase):
     navtree_properties
     """
     implements(INavtreeStrategy)
-    #adapts(*, ISiteMap)
+    # adapts(*, ISiteMap)
 
     def __init__(self, context, view=None):
         self.context = context
@@ -190,7 +191,7 @@ class SitemapNavtreeStrategy(NavtreeStrategyBase):
         newNode['getRemoteUrl'] = getattr(item, 'getRemoteUrl', None)
         newNode['useRemoteUrl'] = useRemoteUrl
         newNode['link_remote'] = newNode['getRemoteUrl'] \
-                                 and newNode['Creator'] != self.memberId
+            and newNode['Creator'] != self.memberId
 
         idnormalizer = queryUtility(IIDNormalizer)
         newNode['normalized_portal_type'] = idnormalizer.normalize(portalType)
@@ -213,7 +214,7 @@ class DefaultNavtreeStrategy(SitemapNavtreeStrategy):
     """The navtree strategy used for the default navigation portlet
     """
     implements(INavtreeStrategy)
-    #adapts(*, INavigationTree)
+    # adapts(*, INavigationTree)
 
     def __init__(self, context, view=None):
         SitemapNavtreeStrategy.__init__(self, context, view)

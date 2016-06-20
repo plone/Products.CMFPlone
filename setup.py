@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os.path
 
-version = '4.3.4.dev0'
+version = '4.3.10.dev0'
 
 setup(name='Products.CMFPlone',
       version=version,
@@ -59,7 +59,7 @@ setup(name='Products.CMFPlone',
           'Products.DCWorkflow',
           'Products.ExtendedPathIndex',
           'Products.ExternalEditor',
-          'Products.GenericSetup >=1.4',
+          'Products.GenericSetup >= 1.8.0',
           'Products.MimetypesRegistry',
           'Products.PasswordResetTool',
           'Products.PlacelessTranslationService',
@@ -121,6 +121,7 @@ setup(name='Products.CMFPlone',
           'plone.registry',
           'plone.session',
           'plone.theme',
+          # 'plone4.csrffixes',
           'plonetheme.classic',
           'plonetheme.sunburst',
           'transaction',

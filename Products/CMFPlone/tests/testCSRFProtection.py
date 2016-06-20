@@ -63,9 +63,18 @@ class AuthenticatorTestCase(ptc.FunctionalTestCase):
         self.assertTrue(self.portal.get('foo', None))
 
     def test_RegistrationTool_addMember(self):
-        self.checkAuthenticator(
-            '/portal_registration/addMember',
-            'id=john&password=y0d4Wg')
+        # self.checkAuthenticator(
+        #    '/portal_registration/addMember',
+        #    'id=john&password=y0d4Wg')
+        # instead of authenticator, with latest patch, addMember should not
+        # be published
+        path = '/portal_registration/addMember'
+        path = '/' + self.portal.absolute_url(relative=True) + path
+        query = 'id=john&password=y0d4Wg'
+        data = StringIO(query)
+        response = self.publish(path=path, env={},
+                                request_method='POST', stdin=data)
+        self.assertEqual(response.getStatus(), 404)
 
     def test_RegistrationTool_editMember(self):
         self.checkAuthenticator(

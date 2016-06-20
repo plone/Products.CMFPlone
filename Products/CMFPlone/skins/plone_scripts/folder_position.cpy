@@ -6,7 +6,7 @@
 ##bind script=script
 ##bind state=state
 ##bind subpath=traverse_subpath
-##parameters=position, id, template_id='folder_contents', delta=1, reverse=None 
+##parameters=position='ordered', id=None, template_id='folder_contents', delta=1, reverse=None
 
 from Products.CMFPlone import PloneMessageFactory as _
 delta = int(delta)

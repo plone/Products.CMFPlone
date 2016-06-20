@@ -1,5 +1,6 @@
 import re
 import unittest
+import urlparse
 from urllib import urlencode
 from Testing.makerequest import makerequest
 from Products.PloneTestCase import PloneTestCase as ptc
@@ -10,7 +11,7 @@ ptc.setupPloneSite()
 
 
 class TestAttackVectorsUnit(unittest.TestCase):
-    
+
     def test_gtbn_funcglobals(self):
         from Products.CMFPlone.utils import getToolByName
         try:
@@ -42,7 +43,7 @@ Products.PlacelessTranslationService.allow_module('os')
         script._filepath = 'script'
         script.write(src)
         self.assertRaises((ImportError, Unauthorized), script)
-    
+
     def test_PT_allow_module_not_available_in_RestrictedPython_2(self):
         src = '''
 from Products.PlacelessTranslationService import allow_module
@@ -60,7 +61,7 @@ allow_module('os')
 
 
 class TestAttackVectorsFunctional(ptc.FunctionalTestCase):
-    
+
     def test_widget_traversal_1(self):
         res = self.publish('/plone/@@discussion-settings/++widget++moderator_email')
         self.assertEqual(302, res.status)
@@ -70,12 +71,12 @@ class TestAttackVectorsFunctional(ptc.FunctionalTestCase):
         res = self.publish('/plone/@@discussion-settings/++widget++captcha/terms/field/interface/setTaggedValue?tag=cake&value=lovely')
         self.assertEqual(302, res.status)
         self.assertTrue(res.headers['location'].startswith('http://nohost/plone/acl_users/credentials_cookie_auth/require_login'))
-    
+
     def test_registerConfiglet_1(self):
         VECTOR = "/plone/portal_controlpanel/registerConfiglet?id=cake&name=Cakey&action=woo&permission=View&icon_expr="
         res = self.publish(VECTOR)
-        self.assertTrue(res.headers['location'].startswith('http://nohost/plone/acl_users/credentials_cookie_auth/require_login'))
-    
+        self.assertEqual(404, res.status)
+
     def test_registerConfiglet_2(self):
         VECTOR = "/plone/portal_controlpanel/registerConfiglet?id=cake&name=Cakey&action=woo&permission=View&icon_expr="
         self.publish(VECTOR)
@@ -89,7 +90,7 @@ class TestAttackVectorsFunctional(ptc.FunctionalTestCase):
         if m:
             return m.group(1)
         return ''
-    
+
     def test_renameObjectsByPaths(self):
         PAYLOAD = {
             'paths:list': '/plone/news',
@@ -135,7 +136,7 @@ class TestAttackVectorsFunctional(ptc.FunctionalTestCase):
         self.portal.plone_utils.renameObjectsByPaths(paths=['/plone/news'], new_ids=['news'], new_titles=['EVIL'])
         self.assertEqual('EVIL', self.portal.news.Title())
         self.portal.news.setTitle('News')
-        
+
         self.setRoles(['Member'])
         self.portal.plone_utils.renameObjectsByPaths(paths=['/plone/news'], new_ids=['news'], new_titles=['EVIL'])
         self.assertEqual('News', self.portal.news.Title())
@@ -158,7 +159,7 @@ class TestAttackVectorsFunctional(ptc.FunctionalTestCase):
     def test_queryCatalog(self):
         res = self.publish('/plone/news/aggregator/queryCatalog')
         self.assertEqual(404, res.status)
-    
+
     def test_resolve_url(self):
         res = self.publish("/plone/uid_catalog/resolve_url?path=/evil")
         self.assertEqual(404, res.status)
@@ -212,7 +213,13 @@ class TestAttackVectorsFunctional(ptc.FunctionalTestCase):
     def test_createObject(self):
         res = self.publish('/plone/createObject?type_name=File&id=${foo}')
         self.assertEqual(302, res.status)
-        self.assertEqual('http://nohost/plone/portal_factory/File/${foo}/edit', res.headers['location'])
+        loc = urlparse.urlsplit(res.headers['location'])
+        # http://nohost/plone/portal_factory/File/${foo}/edit?_authenticator=..
+        self.assertEqual(loc.scheme, 'http')
+        self.assertEqual(loc.netloc, 'nohost')
+        self.assertEqual(loc.path, '/plone/portal_factory/File/${foo}/edit')
+        self.assertTrue(loc.query.startswith('_authenticator'))
+        self.assertEqual(loc.fragment, '')
 
     def test_formatColumns(self):
         res = self.publish('/plone/formatColumns?items:list=')

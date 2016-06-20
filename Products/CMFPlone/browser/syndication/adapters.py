@@ -8,6 +8,7 @@ from DateTime import DateTime
 from OFS.interfaces import IItem
 
 from Products.CMFCore.utils import getToolByName
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 from Products.CMFPlone.interfaces.syndication import IFeed
 from Products.CMFPlone.interfaces.syndication import IFeedItem
@@ -136,7 +137,7 @@ class FolderFeed(BaseFeedData):
         return catalog(path={
             'query': '/'.join(self.context.getPhysicalPath()),
             'depth': 1
-            })
+        })
 
     def _items(self):
         """
@@ -165,6 +166,7 @@ class FolderFeed(BaseFeedData):
 
 
 class CollectionFeed(FolderFeed):
+
     def _brains(self):
         return self.context.queryCatalog(batch=False)[:self.limit]
 
@@ -191,6 +193,11 @@ class BaseItem(BaseFeedData):
     def __init__(self, context, feed):
         self.context = context
         self.feed = feed
+
+    @lazy_property
+    def creator(self):
+        if hasattr(self.context, 'Creator'):
+            return self.context.Creator()
 
     @lazy_property
     def author(self):
@@ -224,6 +231,12 @@ class BaseItem(BaseFeedData):
                 # could be RichTextValue object, needs transform
                 value = value.output
         return value
+
+    content_core_template = ViewPageTemplateFile("templates/content_core.pt")
+
+    def render_content_core(self):
+        self.request = self.context.REQUEST
+        return self.content_core_template()
 
     @property
     def link(self):

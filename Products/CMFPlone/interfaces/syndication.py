@@ -8,6 +8,7 @@ class ISyndicatable(Interface):
 
 
 class IFeedData(Interface):
+
     def link():
         """
         Link to item
@@ -170,11 +171,18 @@ class ISiteSyndicationSettings(Interface):
         description=_(u'Should feeds include author information'),
         default=True)
 
+    render_body = schema.Bool(
+        title=_(u'Render Body'),
+        description=_(u'help_render_body',
+                      default=u'If body text available for item, '
+                      u'render it, otherwise use description.'),
+        default=False)
+
     max_items = schema.Int(
         title=_(u'label_syndication_max_items',
                 default=u'Maximum Items'),
         description=_(u'help_syndication_max_items',
-                default=u'Maximum number of items that will be syndicated.'),
+                      default=u'Maximum number of items that will be syndicated.'),
         default=15)
 
     allowed_feed_types = schema.Tuple(
@@ -229,15 +237,15 @@ class IFeedSettings(Interface):
     render_body = schema.Bool(
         title=_(u'Render Body'),
         description=_(u'help_render_body',
-                default=u'If body text available for item, '
-                        u'render it, otherwise use description.'),
+                      default=u'If body text available for item, '
+                      u'render it, otherwise use description.'),
         default=False)
 
     max_items = schema.Int(
         title=_(u'label_syndication_max_items',
                 default=u'Maximum Items'),
         description=_(u'help_syndication_max_items',
-                default=u'Maximum number of items that will be syndicated.'),
+                      default=u'Maximum number of items that will be syndicated.'),
         default=15)
 
 

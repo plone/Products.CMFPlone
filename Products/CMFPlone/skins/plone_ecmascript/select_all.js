@@ -45,5 +45,5 @@ function toggleSelect(selectbutton, id, initialState, formName) {
     selectbutton.isSelected = !state;
     jQuery(selectbutton).attr('src', portal_url+'/select_'+(state?'all':'none')+'_icon.png');
     base = formName ? jQuery(document.forms[formName]) : jQuery(document);
-    base.find('input[name="' + fid + '"]:checkbox').attr('checked', !state);
+    base.find('input[name="' + fid + '"]:checkbox').prop('checked', !state);
 }

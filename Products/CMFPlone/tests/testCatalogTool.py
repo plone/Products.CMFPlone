@@ -625,16 +625,27 @@ class TestCatalogOrdering(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         self.catalog = self.portal.portal_catalog
-        self.folder.invokeFactory('Document', id='doc1', text='foo')
-        self.folder.invokeFactory('Document', id='doc2', text='bar')
-        self.folder.invokeFactory('Document', id='doc3', text='bloo')
-        self.folder.invokeFactory('Document', id='doc4', text='blee')
+        self.folder.invokeFactory('Document', id='doc1', text='foo', title='First')
+        self.folder.invokeFactory('Document', id='doc2', text='bar', title='Second')
+        self.folder.invokeFactory('Document', id='doc3', text='bloo', title='Third')
+        self.folder.invokeFactory('Document', id='doc4', text='blee', title='Fourth')
 
     def testInitialOrder(self):
         self.assertEqual(self.folder.getObjectPosition('doc1'), 0)
         self.assertEqual(self.folder.getObjectPosition('doc2'), 1)
         self.assertEqual(self.folder.getObjectPosition('doc3'), 2)
         self.assertEqual(self.folder.getObjectPosition('doc4'), 3)
+
+    def testOrderIsUnchangedOnDefaultFolderPosition(self):
+        # Calling the folder_position script with no arguments should
+        # give no complaints and have no effect.
+        self.folder.folder_position()
+        folder_docs = self.catalog(
+                            portal_type='Document',
+                            path='/'.join(self.folder.getPhysicalPath()),
+                            sort_on='getObjPositionInParent')
+        expected = ['doc1', 'doc2', 'doc3', 'doc4']
+        self.assertEqual([b.getId for b in folder_docs], expected)
 
     def testOrderIsUpdatedOnMoveDown(self):
         self.folder.folder_position('down', 'doc1')
@@ -670,6 +681,33 @@ class TestCatalogOrdering(PloneTestCase.PloneTestCase):
                             path='/'.join(self.folder.getPhysicalPath()),
                             sort_on='getObjPositionInParent')
         expected = ['doc1', 'doc2', 'doc4', 'doc3']
+        self.assertEqual([b.getId for b in folder_docs], expected)
+
+    def testOrderIsUpdatedOnSort(self):
+        self.folder.folder_position(id='Title')
+        folder_docs = self.catalog(
+                            portal_type='Document',
+                            path='/'.join(self.folder.getPhysicalPath()),
+                            sort_on='getObjPositionInParent')
+        expected = ['doc1', 'doc4', 'doc2', 'doc3']
+        self.assertEqual([b.getId for b in folder_docs], expected)
+
+    def testOrderIsUpdatedOnReverse(self):
+        self.folder.folder_position(id='Title', reverse=True)
+        folder_docs = self.catalog(
+                            portal_type='Document',
+                            path='/'.join(self.folder.getPhysicalPath()),
+                            sort_on='getObjPositionInParent')
+        expected = ['doc3', 'doc2', 'doc4', 'doc1']
+        self.assertEqual([b.getId for b in folder_docs], expected)
+
+    def testOrderIsUpdatedOnSimpleReverse(self):
+        self.folder.folder_position(reverse=True)
+        folder_docs = self.catalog(
+                            portal_type='Document',
+                            path='/'.join(self.folder.getPhysicalPath()),
+                            sort_on='getObjPositionInParent')
+        expected = ['doc4', 'doc3', 'doc2', 'doc1']
         self.assertEqual([b.getId for b in folder_docs], expected)
 
     def testOrderIsFineWithObjectCreation(self):

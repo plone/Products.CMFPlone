@@ -34,8 +34,11 @@
     <link tal:content="item/link" />
     <description tal:content="item/description" />
     <content:encoded xmlns:content="http://purl.org/rss/1.0/modules/content/"
-        tal:condition="feed/settings/render_body"
-        tal:content="structure python:'&lt;![CDATA[' + item.body + ']]&gt;'">Content</content:encoded>
+        tal:condition="feed/settings/render_body">
+        <tal:opencdata tal:replace="structure python:'&lt;![CDATA['" />
+        <tal:block tal:replace="structure item/render_content_core"/>          
+        <tal:closecdata tal:replace="structure python:']]&gt;'" />
+    </content:encoded>
     <dc:publisher tal:content="item/publisher" />
     <dc:creator tal:condition="feed/show_about" tal:content="item/author_name">Creator</dc:creator>
     <dc:rights tal:content="item/rights">Rights</dc:rights>

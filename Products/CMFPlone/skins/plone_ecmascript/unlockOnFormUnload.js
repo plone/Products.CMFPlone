@@ -33,12 +33,12 @@ plone.UnlockHandler = {
         // (formUnload.js) and signifies that we are in the
         // form submit process. This means: no unlock needed,
         // and it also would be harmful (ConflictError)
-        if (this.submitting) {return;}
+        if (plone.UnlockHandler.submitting) {return;}
         $.ajax({url: plone.UnlockHandler._baseUrl() + '/@@plone_lock_operations/safe_unlock', async: false});
     },
     
     refresh: function() {
-        if (this.submitting) {return;}
+        if (plone.UnlockHandler.submitting) {return;}
         $.get(plone.UnlockHandler._baseUrl() + '/@@plone_lock_operations/refresh_lock');
     },
     

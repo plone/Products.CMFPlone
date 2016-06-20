@@ -38,7 +38,7 @@
                         use_view_action site_properties/typesUseViewActionInListings|python:();
                         Batch python:modules['Products.CMFPlone'].Batch;
                         b_start python:request.get('b_start', 0);
-                        batch python:isinstance(folderContents, Batch) and folderContents or Batch(folderContents, limit_display or 100, int(b_start), orphan=1);
+                        batch python:folderContents if isinstance(folderContents, Batch) else Batch(folderContents, limit_display or 100, int(b_start), orphan=1);
                         isAnon context/@@plone_portal_state/anonymous;
                         normalizeString nocall: context/plone_utils/normalizeString;
                         toLocalizedTime nocall: context/@@plone/toLocalizedTime;
@@ -164,10 +164,11 @@
 
                 </dt>
 
-                <dd tal:condition="item_description">
+                <dd>
                     <span class="description"
-                           tal:content="item_description">
-                        description
+                        tal:condition="item_description"
+                        tal:content="item_description">
+                        Description
                     </span>
                 </dd>
             </metal:block>

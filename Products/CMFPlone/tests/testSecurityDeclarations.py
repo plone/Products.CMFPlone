@@ -115,7 +115,7 @@ class TestSecurityDeclarations(RestrictedPythonTest):
 
     def testUse_Batch(self):
         self.check('from Products.CMFPlone import Batch;'
-                   'print Batch([], 0).nexturls')
+                   'print Batch([], 10).nexturls')
 
     # utils
 
@@ -391,7 +391,7 @@ class TestAllowSendtoSecurity(PloneTestCase.PloneTestCase):
 
         self.assertFalse(checkPermission(AllowSendto, self.portal))
 
-    def test_sendto_script_failes(self):
+    def test_sendto_script_fails(self):
         # set permission to Manager only
         self.setRoles(['Manager'])
         self.portal.manage_permission(AllowSendto, roles=('Manager',),
@@ -399,11 +399,25 @@ class TestAllowSendtoSecurity(PloneTestCase.PloneTestCase):
         self.setRoles(['Member'])
         # get sendto script in context of folder
         sendto = self.folder.sendto
-        # should faile with the not allowed msg check if the msg
-        # contains the string
-        msg = sendto()
-        errormsg = "You%20are%20not%20allowed%20to%20send%20this%20link"
-        self.assertFalse(str(msg).find(errormsg) != -1, str(msg))
+        # Set the parameters on the request, so that the validation
+        # script is happy.
+        request = self.folder.REQUEST
+        request['send_to_address'] = 'target@example.org'
+        request['send_from_address'] = 'sender@example.org'
+        from Products.statusmessages.interfaces import IStatusMessage
+        # Clean out any current status messages.
+        IStatusMessage(request).show()
+        # First, a GET request will fail.
+        from zExceptions import Forbidden
+        self.assertRaises(Forbidden, sendto)
+        # So use a POST.
+        request['REQUEST_METHOD'] = 'POST'
+        # Should fail with the not allowed msg as status message.
+        sendto()
+        status_messages = IStatusMessage(request).show()
+        self.assertEqual(len(status_messages), 1)
+        self.assertEqual(status_messages[0].message,
+                         "You are not allowed to send this link.")
 
 
 class TestSkinSecurity(PloneTestCase.PloneTestCase):
