@@ -21,7 +21,7 @@ Fixes:
 - jquery.highlightsearchterms.js was skipping words that simply *contains* reserved ``filterTerms`` terms.
   [keul]
 
-- Render an empty ``<dd>`` tag on ``folder_listing`` template when no description is available to avoid validation issues.
+- Render an empty ``<dd>`` tag on ``folder_listing`` template when no description is available to avoid validation issue.
   [hvelarde]
 
 - Removed docstrings from PropertyManager methods to avoid publishing them.  [maurits]
