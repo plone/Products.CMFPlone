@@ -14,6 +14,9 @@ Changelog
 
 Fixes:
 
+- Render correct links in form-tabs, so they can be opened with right-mouse-click and
+  correct tab is selected, when using anchor-hashes. Fixes #1640. [ida]
+
 - jquery.highlightsearchterms.js was skipping words that simply *contains* reserved ``filterTerms`` terms.
   [keul]
 
