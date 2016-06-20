@@ -224,8 +224,8 @@
                               <span class="result-title">
                                 <img class="image-icon"
                                      tal:condition="hasIcon"
-                                     tal:define="images portal/@@images"
-                                     tal:replace="structure python: images.tag(item, 'image', scale='icon', css_class='image-icon')">
+                                     tal:define="image_scale portal/@@image_scale"
+                                     tal:replace="structure python: images_scale.tag(item, 'image', scale='icon', css_class='image-icon')">
                                 <a href="#"
                                    tal:define="item_url item/getURL;
                                                item_type item/PortalType"
