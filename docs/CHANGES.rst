@@ -14,6 +14,10 @@ Changelog
 
 Fixes:
 
+- Render correct links in form-tabs, so they can be opened with a
+  right mouse-click and regard if hash is in URL. Fixes #1640.
+  [ida]
+
 - jquery.highlightsearchterms.js was skipping words that simply *contains* reserved ``filterTerms`` terms.
    [keul]
 
