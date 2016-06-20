@@ -51,7 +51,8 @@ ploneFormTabbing._buildTabs = function(container, legends) {
             tab = '<option '+className+' id="'+lid+'" value="'+lid+'">';
             tab += $(legend).text()+'</option>';
         } else {
-            tab = '<li '+className+'><a id="'+lid+'" href="#'+lid+'"><span>';
+            tab = '<li ' + className + '><a id="'+ lid + '" href="';
+            tab += window.location.href + '#' + lid + '"><span>';
             tab += $(legend).text()+'</span></a></li>';
         }
 
@@ -159,7 +160,7 @@ $.fn.ploneTabInit = function(pbo) {
         item.find("dl.enableFormTabbing").each(ploneFormTabbing.initializeDL);
 
         //Select tab if it's part of the URL or designated in a hidden input
-        var targetPane = item.find('.enableFormTabbing input[name="fieldset"]').val() || window.location.hash;
+        var targetPane = window.location.hash || item.find('.enableFormTabbing input[name="fieldset"]').val();
         if (targetPane) {
             item.find('.enableFormTabbing .formTabs [id="' +
              targetPane.replace('#','').replace('"', '').replace(/^fieldset-/, "fieldsetlegend-") + '"]').click();
