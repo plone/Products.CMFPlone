@@ -5,8 +5,7 @@ var oop = require("../lib/oop");
 var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
 
 var XmlHighlightRules = function(normalize) {
-
-    var tagRegex = "[a-zA-Z][-_a-zA-Z0-9]*";
+    var tagRegex = "[_:a-zA-Z\xc0-\uffff][-_:.a-zA-Z0-9\xc0-\uffff]*";
 
     this.$rules = {
         start : [
@@ -17,7 +16,7 @@ var XmlHighlightRules = function(normalize) {
             },
             {
                 token : ["punctuation.instruction.xml", "keyword.instruction.xml"],
-                regex : "(<\\?)(" + tagRegex + ")", next : "processing_instruction",
+                regex : "(<\\?)(" + tagRegex + ")", next : "processing_instruction"
             },
             {token : "comment.xml", regex : "<\\!--", next : "comment"},
             {
@@ -640,7 +639,7 @@ oop.inherits(Mode, TextMode);
 
     this.blockComment = {start: "<!--", end: "-->"};
 
-     this.createWorker = function(session) {
+    this.createWorker = function(session) {
         var worker = new WorkerClient(["ace"], "ace/mode/xml_worker", "Worker");
         worker.attachToDocument(session.getDocument());
 

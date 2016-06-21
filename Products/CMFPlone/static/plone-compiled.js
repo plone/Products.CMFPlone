@@ -1801,8 +1801,195 @@ define('pat-logger',[
     return log;
 });
 
+/*!
+ * jQuery Browser Plugin 0.0.8
+ * https://github.com/gabceb/jquery-browser-plugin
+ *
+ * Original jquery-browser code Copyright 2005, 2015 jQuery Foundation, Inc. and other contributors
+ * http://jquery.org/license
+ *
+ * Modifications Copyright 2015 Gabriel Cebrian
+ * https://github.com/gabceb
+ *
+ * Released under the MIT license
+ *
+ * Date: 05-07-2015
+ */
+/*global window: false */
+
+(function (factory) {
+  if (typeof define === 'function' && define.amd) {
+    // AMD. Register as an anonymous module.
+    define('jquery.browser',['jquery'], function ($) {
+      return factory($);
+    });
+  } else if (typeof module === 'object' && typeof module.exports === 'object') {
+    // Node-like environment
+    module.exports = factory(require('jquery'));
+  } else {
+    // Browser globals
+    factory(window.jQuery);
+  }
+}(function(jQuery) {
+  "use strict";
+
+  function uaMatch( ua ) {
+    // If an UA is not provided, default to the current browser UA.
+    if ( ua === undefined ) {
+      ua = window.navigator.userAgent;
+    }
+    ua = ua.toLowerCase();
+
+    var match = /(edge)\/([\w.]+)/.exec( ua ) ||
+        /(opr)[\/]([\w.]+)/.exec( ua ) ||
+        /(chrome)[ \/]([\w.]+)/.exec( ua ) ||
+        /(version)(applewebkit)[ \/]([\w.]+).*(safari)[ \/]([\w.]+)/.exec( ua ) ||
+        /(webkit)[ \/]([\w.]+).*(version)[ \/]([\w.]+).*(safari)[ \/]([\w.]+)/.exec( ua ) ||
+        /(webkit)[ \/]([\w.]+)/.exec( ua ) ||
+        /(opera)(?:.*version|)[ \/]([\w.]+)/.exec( ua ) ||
+        /(msie) ([\w.]+)/.exec( ua ) ||
+        ua.indexOf("trident") >= 0 && /(rv)(?::| )([\w.]+)/.exec( ua ) ||
+        ua.indexOf("compatible") < 0 && /(mozilla)(?:.*? rv:([\w.]+)|)/.exec( ua ) ||
+        [];
+
+    var platform_match = /(ipad)/.exec( ua ) ||
+        /(ipod)/.exec( ua ) ||
+        /(iphone)/.exec( ua ) ||
+        /(kindle)/.exec( ua ) ||
+        /(silk)/.exec( ua ) ||
+        /(android)/.exec( ua ) ||
+        /(windows phone)/.exec( ua ) ||
+        /(win)/.exec( ua ) ||
+        /(mac)/.exec( ua ) ||
+        /(linux)/.exec( ua ) ||
+        /(cros)/.exec( ua ) ||
+        /(playbook)/.exec( ua ) ||
+        /(bb)/.exec( ua ) ||
+        /(blackberry)/.exec( ua ) ||
+        [];
+
+    var browser = {},
+        matched = {
+          browser: match[ 5 ] || match[ 3 ] || match[ 1 ] || "",
+          version: match[ 2 ] || match[ 4 ] || "0",
+          versionNumber: match[ 4 ] || match[ 2 ] || "0",
+          platform: platform_match[ 0 ] || ""
+        };
+
+    if ( matched.browser ) {
+      browser[ matched.browser ] = true;
+      browser.version = matched.version;
+      browser.versionNumber = parseInt(matched.versionNumber, 10);
+    }
+
+    if ( matched.platform ) {
+      browser[ matched.platform ] = true;
+    }
+
+    // These are all considered mobile platforms, meaning they run a mobile browser
+    if ( browser.android || browser.bb || browser.blackberry || browser.ipad || browser.iphone ||
+      browser.ipod || browser.kindle || browser.playbook || browser.silk || browser[ "windows phone" ]) {
+      browser.mobile = true;
+    }
+
+    // These are all considered desktop platforms, meaning they run a desktop browser
+    if ( browser.cros || browser.mac || browser.linux || browser.win ) {
+      browser.desktop = true;
+    }
+
+    // Chrome, Opera 15+ and Safari are webkit based browsers
+    if ( browser.chrome || browser.opr || browser.safari ) {
+      browser.webkit = true;
+    }
+
+    // IE11 has a new token so we will assign it msie to avoid breaking changes
+    // IE12 disguises itself as Chrome, but adds a new Edge token.
+    if ( browser.rv || browser.edge ) {
+      var ie = "msie";
+
+      matched.browser = ie;
+      browser[ie] = true;
+    }
+
+    // Blackberry browsers are marked as Safari on BlackBerry
+    if ( browser.safari && browser.blackberry ) {
+      var blackberry = "blackberry";
+
+      matched.browser = blackberry;
+      browser[blackberry] = true;
+    }
+
+    // Playbook browsers are marked as Safari on Playbook
+    if ( browser.safari && browser.playbook ) {
+      var playbook = "playbook";
+
+      matched.browser = playbook;
+      browser[playbook] = true;
+    }
+
+    // BB10 is a newer OS version of BlackBerry
+    if ( browser.bb ) {
+      var bb = "blackberry";
+
+      matched.browser = bb;
+      browser[bb] = true;
+    }
+
+    // Opera 15+ are identified as opr
+    if ( browser.opr ) {
+      var opera = "opera";
+
+      matched.browser = opera;
+      browser[opera] = true;
+    }
+
+    // Stock Android browsers are marked as Safari on Android.
+    if ( browser.safari && browser.android ) {
+      var android = "android";
+
+      matched.browser = android;
+      browser[android] = true;
+    }
+
+    // Kindle browsers are marked as Safari on Kindle
+    if ( browser.safari && browser.kindle ) {
+      var kindle = "kindle";
+
+      matched.browser = kindle;
+      browser[kindle] = true;
+    }
+
+     // Kindle Silk browsers are marked as Safari on Kindle
+    if ( browser.safari && browser.silk ) {
+      var silk = "silk";
+
+      matched.browser = silk;
+      browser[silk] = true;
+    }
+
+    // Assign the name and platform variable
+    browser.name = matched.browser;
+    browser.platform = matched.platform;
+    return browser;
+  }
+
+  // Run the matching process, also assign the function to the returned object
+  // for manual, jQuery-free use if desired
+  window.jQBrowser = uaMatch( window.navigator.userAgent );
+  window.jQBrowser.uaMatch = uaMatch;
+
+  // Only assign to jQuery.browser if jQuery is loaded
+  if ( jQuery ) {
+    jQuery.browser = window.jQBrowser;
+  }
+
+  return window.jQBrowser;
+}));
+
 define('pat-utils',[
-    "jquery"
+    "jquery",
+    "jquery.browser",
+    "underscore"
 ], function($) {
 
     $.fn.safeClone = function () {
@@ -2115,6 +2302,97 @@ define('pat-utils',[
         return newURL;
     }
 
+    function removeDuplicateObjects(objs) {
+        /* Given an array of objects, remove any duplicate objects which might
+         * be present.
+         */
+        var comparator = function(v, k) {
+            return this[k] === v;
+        };
+        return _.reduce(objs, function(list, next_obj) {
+            var is_duplicate = false;
+            _.each(list, function(obj) {
+                is_duplicate = (
+                    (_.keys(obj).length === _.keys(next_obj).length) &&
+                    (!_.chain(obj).omit(comparator.bind(next_obj)).keys().value().length)
+                );
+            });
+            if (!is_duplicate) {
+                list.push(next_obj);
+            }
+            return list;
+        }, []);
+    }
+
+    function mergeStack(stack, length) {
+        /* Given a list of lists of objects (which for brevity we call a stack),
+         * return a list of objects where each object is the merge of all the
+         * corresponding original objects at that particular index.
+         *
+         * If a certain sub-list doesn't have an object at that particular
+         * index, the last object in that list is merged.
+         */
+        var results = [];
+        for (var i=0; i<length; i++) {
+            results.push({});
+        }
+        _.each(stack, function(frame) {
+            var frame_length = frame.length-1;
+            for (var x=0; x<length; x++) {
+                results[x] = $.extend(results[x] || {}, frame[(x>frame_length) ? frame_length : x]);
+            }
+        });
+        return results;
+    }
+
+    isElementInViewport = function (el, partial, offset) { 
+        /* returns true if element is visible to the user ie. is in the viewport. 
+         * Setting partial parameter to true, will only check if a part of the element is visible
+         * in the viewport, specifically that some part of that element is touching the top part 
+         * of the viewport. This only applies to the vertical direction, ie. doesnt check partial
+         * visibility for horizontal scrolling
+         * some code taken from:
+         * http://stackoverflow.com/questions/123999/how-to-tell-if-a-dom-element-is-visible-in-the-current-viewport/7557433#7557433         
+         */
+        if (el === []) {
+            return false;
+        }
+        if (el instanceof $) {
+            el = el[0];
+        }
+        var rec = el.getBoundingClientRect(),
+            rec_values = [rec.top, rec.bottom, rec.left, rec.right];
+        if ( _.every(rec_values, function zero(v) { if ( v === 0 ){ return true;}}) ) {
+            // if every property of rec is 0, the element is invisible;
+            return false;            
+        } else if (partial) {
+            // when using getBoundingClientRect() (in the vertical case)
+            // negative means above top of viewport, positive means below top of viewport
+            // therefore for part of the element to be touching or crossing the top of the viewport
+            // rec.top must <= 0 and rec.bottom must >= 0 
+            // an optional tolerance offset can be added for when the desired element is not exactly 
+            // toucing the top of the viewport but needs to be considered as touching. 
+            if (offset === undefined) {
+                offset = 0;
+            }
+            return (
+                (rec.top <= 0+offset && rec.bottom >= 0+offset)
+                //(rec.top >= 0+offset && rec.top <= window.innerHeight) // this checks if the element
+                                                                       // touches bottom part of viewport
+                // XXX do we want to include a check for the padding of an element?
+                // using window.getComputedStyle(target).paddingTop
+            );
+        } else {           
+            // this will return true if the entire element is completely in the viewport 
+            return ( 
+                rec.top >= 0 &&
+                rec.left >= 0 &&
+                rec.bottom <= (window.innerHeight || document.documentElement.clientHeight) && /*or $(window).height() */
+                rec.right <= (window.innerWidth || document.documentElement.clientWidth) /*or $(window).width() */
+            );        
+        }
+    };
+
     var utils = {
         // pattern pimping - own module?
         jqueryPlugin: jqueryPlugin,
@@ -2127,7 +2405,10 @@ define('pat-utils',[
         elementInViewport: elementInViewport,
         removeWildcardClass: removeWildcardClass,
         hideOrShow: hideOrShow,
-        addURLQueryParameter: addURLQueryParameter
+        addURLQueryParameter: addURLQueryParameter,
+        removeDuplicateObjects: removeDuplicateObjects,
+        mergeStack: mergeStack,
+        isElementInViewport: isElementInViewport
     };
     return utils;
 });
@@ -2922,11 +3203,8 @@ define('pat-registry',[
     "pat-compat",
     "pat-jquery-ext"
 ], function($, _, logger, utils) {
-    var TEXT_NODE = 3;
-    var COMMENT_NODE = 8;
-    var log = logger.getLogger("registry");
-
-    var disable_re = /patterns-disable=([^&]+)/g,
+    var log = logger.getLogger("registry"),
+        disable_re = /patterns-disable=([^&]+)/g,
         dont_catch_re = /patterns-dont-catch/g,
         dont_catch = false,
         disabled = {}, match;
@@ -3069,15 +3347,6 @@ define('pat-registry',[
             return true;
         }
     };
-
-    $(document).on("patterns-injected.patterns",
-        function registry_onInject(ev, config, trigger_el, injected_el) {
-            if (injected_el.nodeType !== TEXT_NODE && injected_el !== COMMENT_NODE) {
-                registry.scan(injected_el, null, {type: "injection", element: trigger_el});
-                $(injected_el).trigger("patterns-injected-scanned");
-            }
-        }
-    );
     return registry;
 });
 // jshint indent: 4, browser: true, jquery: true, quotmark: double
@@ -3252,9 +3521,8 @@ define('pat-base',[
  */
 
 define('mockup-patterns-base',[
-  'jquery',
   'pat-base',
-], function($, Base) {
+], function(Base) {
   'use strict';
 
   var MockupBase = function MockupBaseWrapper() {
@@ -3280,13 +3548,355 @@ define('mockup-patterns-base',[
   return MockupBase;
 });
 
+/* Pattern utils
+ */
+
+
+define('mockup-utils',[
+  'jquery'
+], function($) {
+  'use strict';
+
+  var QueryHelper = function(options) {
+    /* if pattern argument provided, it can implement the interface of:
+      *    - browsing: boolean if currently browsing
+      *    - currentPath: string of current path to apply to search if browsing
+      *    - basePath: default path to provide if no subpath used
+      */
+
+    var self = this;
+    var defaults = {
+      pattern: null, // must be passed in
+      vocabularyUrl: null,
+      searchParam: 'SearchableText', // query string param to pass to search url
+      attributes: ['UID', 'Title', 'Description', 'getURL', 'portal_type'],
+      batchSize: 10, // number of results to retrive
+      baseCriteria: [],
+      sort_on: 'is_folderish',
+      sort_order: 'reverse',
+      pathDepth: 1
+    };
+    self.options = $.extend({}, defaults, options);
+    self.pattern = self.options.pattern;
+    if (self.pattern === undefined || self.pattern === null) {
+      self.pattern = {
+        browsing: false,
+        basePath: '/'
+      };
+    }
+
+    if (self.options.url && !self.options.vocabularyUrl) {
+      self.options.vocabularyUrl = self.options.url;
+    } else if (self.pattern.vocabularyUrl) {
+      self.options.vocabularyUrl = self.pattern.vocabularyUrl;
+    }
+    if (self.options.vocabularyUrl !== undefined &&
+        self.options.vocabularyUrl !== null) {
+      self.valid = true;
+    } else {
+      self.valid = false;
+    }
+
+    self.getCurrentPath = function() {
+      var pattern = self.pattern;
+      var currentPath;
+      /* If currentPath is set on the QueryHelper object, use that first.
+       * Then, check on the pattern.
+       * Finally, see if it is a function and call it if it is.
+       */
+      if (self.currentPath) {
+        currentPath = self.currentPath;
+      } else {
+        currentPath = pattern.currentPath;
+      }
+      if (typeof currentPath  === 'function') {
+        currentPath = currentPath();
+      }
+      var path = currentPath;
+      if (!path) {
+        if (pattern.basePath) {
+          path = pattern.basePath;
+        } else if (pattern.options.basePath) {
+          path = pattern.options.basePath;
+        } else {
+          path = '/';
+        }
+      }
+      return path;
+    };
+
+    self.getCriterias = function(term, options) {
+      if (options === undefined) {
+        options = {};
+      }
+      options = $.extend({}, {
+        useBaseCriteria: true,
+        additionalCriterias: []
+      }, options);
+
+      var criterias = [];
+      if (options.useBaseCriteria) {
+        criterias = self.options.baseCriteria.slice(0);
+      }
+      if (term) {
+        term += '*';
+        criterias.push({
+          i: self.options.searchParam,
+          o: 'plone.app.querystring.operation.string.contains',
+          v: term
+        });
+      }
+      if(options.searchPath){
+        criterias.push({
+          i: 'path',
+          o: 'plone.app.querystring.operation.string.path',
+          v: options.searchPath + '::' + self.options.pathDepth
+        });
+      }else if (self.pattern.browsing) {
+        criterias.push({
+          i: 'path',
+          o: 'plone.app.querystring.operation.string.path',
+          v: self.getCurrentPath() + '::' + self.options.pathDepth
+        });
+      }
+      criterias = criterias.concat(options.additionalCriterias);
+      return criterias;
+    };
+
+    self.getBatch = function(page) {
+      if (!page) {
+        page = 1;
+      }
+      return {
+        page: page,
+        size: self.options.batchSize
+      };
+    };
+
+    self.selectAjax = function() {
+      return {
+        url: self.options.vocabularyUrl,
+        dataType: 'JSON',
+        quietMillis: 100,
+        data: function(term, page) {
+          return self.getQueryData(term, page);
+        },
+        results: function (data, page) {
+          var more = (page * 10) < data.total; // whether or not there are more results available
+          // notice we return the value of more so Select2 knows if more results can be loaded
+          return {results: data.results, more: more};
+        }
+      };
+    };
+
+    self.getUrl = function() {
+      var url = self.options.vocabularyUrl;
+      if (url.indexOf('?') === -1) {
+        url += '?';
+      } else {
+        url += '&';
+      }
+      return url + $.param(self.getQueryData());
+    };
+
+    self.getQueryData = function(term, page) {
+      var data = {
+        query: JSON.stringify({
+          criteria: self.getCriterias(term),
+          sort_on: self.options.sort_on,
+          sort_order: self.options.sort_order
+        }),
+        attributes: JSON.stringify(self.options.attributes)
+      };
+      if (page) {
+        data.batch = JSON.stringify(self.getBatch(page));
+      }
+      return data;
+    };
+
+    self.search = function(term, operation, value, callback, useBaseCriteria, type) {
+      if (useBaseCriteria === undefined) {
+        useBaseCriteria = true;
+      }
+      if(type === undefined){
+        type = 'GET';
+      }
+      var criteria = [];
+      if (useBaseCriteria) {
+        criteria = self.options.baseCriteria.slice(0);
+      }
+      criteria.push({
+        i: term,
+        o: operation,
+        v: value
+      });
+      var data = {
+        query: JSON.stringify({ criteria: criteria }),
+        attributes: JSON.stringify(self.options.attributes)
+      };
+      $.ajax({
+        url: self.options.vocabularyUrl,
+        dataType: 'JSON',
+        data: data,
+        type: type,
+        success: callback
+      });
+    };
+
+    return self;
+  };
+
+  var Loading = function(options){
+    /*
+     * Options:
+     *   backdrop(pattern): if you want to have the progress indicator work
+     *                      seamlessly with backdrop pattern
+     *   zIndex(integer or function): to override default z-index used
+     */
+    var self = this;
+    self.className = 'plone-loader';
+    var defaults = {
+      backdrop: null,
+      zIndex: 10005 // can be a function
+    };
+    if(!options){
+      options = {};
+    }
+    self.options = $.extend({}, defaults, options);
+
+    self.init = function(){
+      self.$el = $('.' + self.className);
+      if(self.$el.length === 0){
+        self.$el = $('<div><div></div></div>');
+        self.$el.addClass(self.className).hide().appendTo('body');
+      }
+    };
+
+    self.show = function(closable){
+      self.init();
+      self.$el.show();
+      var zIndex = self.options.zIndex;
+      if (typeof(zIndex) === 'function') {
+        zIndex = Math.max(zIndex(), 10005);
+      }else{
+        // go through all modals and backdrops and make sure we have a higher
+        // z-index to use
+        zIndex = 10005;
+        $('.plone-modal-wrapper,.plone-modal-backdrop').each(function(){
+          zIndex = Math.max(zIndex, $(this).css('zIndex') || 10005);
+        });
+        zIndex += 1;
+      }
+      self.$el.css('zIndex', zIndex);
+
+      if (closable === undefined) {
+        closable = true;
+      }
+      if (self.options.backdrop) {
+        self.options.backdrop.closeOnClick = closable;
+        self.options.backdrop.closeOnEsc = closable;
+        self.options.backdrop.init();
+        self.options.backdrop.show();
+      }
+    };
+
+    self.hide = function(){
+      self.init();
+      self.$el.hide();
+    };
+
+    return self;
+  };
+
+  var generateId = function(prefix){
+    if (prefix === undefined) {
+      prefix = 'id';
+    }
+    return prefix + (Math.floor((1 + Math.random()) * 0x10000)
+        .toString(16).substring(1));
+  };
+
+  var getWindow = function() {
+    var win = window;
+    if (win.parent !== window) {
+      win = win.parent;
+    }
+    return win;
+  };
+
+  return {
+    generateId: generateId,
+    parseBodyTag: function(txt) {
+      return $((/<body[^>]*>((.|[\n\r])*)<\/body>/im).exec(txt)[0]
+          .replace('<body', '<div').replace('</body>', '</div>')).eq(0).html();
+    },
+    setId: function($el, prefix) {
+      if (prefix === undefined) {
+        prefix = 'id';
+      }
+      var id = $el.attr('id');
+      if (id === undefined) {
+        id = generateId(prefix);
+      } else {
+        /* hopefully we don't screw anything up here... changing the id
+         * in some cases so we get a decent selector */
+        id = id.replace(/\./g, '-');
+      }
+      $el.attr('id', id);
+      return id;
+    },
+    bool: function(val) {
+      if (typeof val === 'string') {
+        val = $.trim(val).toLowerCase();
+      }
+      return ['true', true, 1].indexOf(val) !== -1;
+    },
+    QueryHelper: QueryHelper,
+    Loading: Loading,
+    // provide default loader
+    loading: new Loading(),
+    getAuthenticator: function() {
+      var $el = $('input[name="_authenticator"]');
+      if($el.length === 0){
+        $el = $('a[href*="_authenticator"]');
+        if($el.length > 0){
+          return $el.attr('href').split('_authenticator=')[1];
+        }
+        return '';
+      }else{
+        return $el.val();
+      }
+    },
+    getWindow: getWindow,
+    featureSupport: {
+      /*
+        well tested feature support for things we use in mockup.
+        All gathered from: http://diveintohtml5.info/everything.html
+        Alternative to using some form of modernizr.
+      */
+      dragAndDrop: function(){
+        return 'draggable' in document.createElement('span');
+      },
+      fileApi: function(){
+        return typeof FileReader != 'undefined'; // jshint ignore:line
+      },
+      history: function(){
+        return !!(window.history && window.history.pushState);
+      }
+    },
+    escapeHTML: function(val){
+      return $("<div/>").text(val).html();
+    }
+  };
+});
+
 (function(root) {
 define("select2", [], function() {
   return (function() {
 /*
 Copyright 2012 Igor Vaynberg
 
-Version: 3.5.1 Timestamp: Tue Jul 22 18:58:56 EDT 2014
+Version: 3.5.4 Timestamp: Sun Aug 30 13:30:32 EDT 2015
 
 This software is licensed under the Apache License, Version 2.0 (the "Apache License") or the GNU
 General Public License version 2 (the "GPL License"). You may choose either license to govern your
@@ -3331,7 +3941,7 @@ the specific language governing permissions and limitations under the Apache Lic
         return;
     }
 
-    var KEY, AbstractSelect2, SingleSelect2, MultiSelect2, nextUid, sizer,
+    var AbstractSelect2, SingleSelect2, MultiSelect2, nextUid, sizer,
         lastMousePosition={x:0,y:0}, $document, scrollBarDimensions,
 
     KEY = {
@@ -3417,7 +4027,7 @@ the specific language governing permissions and limitations under the Apache Lic
 
     function measureScrollbar () {
         var $template = $( MEASURE_SCROLLBAR_TEMPLATE );
-        $template.appendTo('body');
+        $template.appendTo(document.body);
 
         var dim = {
             width: $template.width() - $template[0].clientWidth,
@@ -3445,16 +4055,16 @@ the specific language governing permissions and limitations under the Apache Lic
     }
 
     /**
-     * Splits the string into an array of values, trimming each value. An empty array is returned for nulls or empty
+     * Splits the string into an array of values, transforming each value. An empty array is returned for nulls or empty
      * strings
      * @param string
      * @param separator
      */
-    function splitVal(string, separator) {
+    function splitVal(string, separator, transform) {
         var val, i, l;
         if (string === null || string.length < 1) return [];
         val = string.split(separator);
-        for (i = 0, l = val.length; i < l; i = i + 1) val[i] = $.trim(val[i]);
+        for (i = 0, l = val.length; i < l; i = i + 1) val[i] = transform(val[i]);
         return val;
     }
 
@@ -3596,7 +4206,7 @@ the specific language governing permissions and limitations under the Apache Lic
                 whiteSpace: "nowrap"
             });
             sizer.attr("class","select2-sizer");
-            $("body").append(sizer);
+            $(document.body).append(sizer);
         }
         sizer.text(e.val());
         return sizer.width();
@@ -3735,7 +4345,7 @@ the specific language governing permissions and limitations under the Apache Lic
                             hasError: true,
                             jqXHR: jqXHR,
                             textStatus: textStatus,
-                            errorThrown: errorThrown,
+                            errorThrown: errorThrown
                         };
 
                         query.callback(results);
@@ -3984,12 +4594,15 @@ the specific language governing permissions and limitations under the Apache Lic
 
             this.container = this.createContainer();
 
-            this.liveRegion = $("<span>", {
-                    role: "status",
-                    "aria-live": "polite"
-                })
-                .addClass("select2-hidden-accessible")
-                .appendTo(document.body);
+            this.liveRegion = $('.select2-hidden-accessible');
+            if (this.liveRegion.length == 0) {
+                this.liveRegion = $("<span>", {
+                        role: "status",
+                        "aria-live": "polite"
+                    })
+                    .addClass("select2-hidden-accessible")
+                    .appendTo(document.body);
+            }
 
             this.containerId="s2id_"+(opts.element.attr("id") || "autogen"+nextUid());
             this.containerEventName= this.containerId
@@ -3999,7 +4612,7 @@ the specific language governing permissions and limitations under the Apache Lic
 
             this.container.attr("title", opts.element.attr("title"));
 
-            this.body = $("body");
+            this.body = $(document.body);
 
             syncCssClasses(this.container, this.opts.element, this.opts.adaptContainerCssClass);
 
@@ -4096,7 +4709,7 @@ the specific language governing permissions and limitations under the Apache Lic
             // focusin can cause focus wars between modals and select2 since the dropdown is outside the modal.
             this.dropdown.on("click mouseup mousedown touchstart touchend focusin", function (e) { e.stopPropagation(); });
 
-            this.nextSearchTerm = undefined;
+            this.lastSearchTerm = undefined;
 
             if ($.isFunction(this.opts.initSelection)) {
                 // initialize selection based on the current value of the source element
@@ -4135,9 +4748,11 @@ the specific language governing permissions and limitations under the Apache Lic
 
             this.close();
 
-            if (element.length && element[0].detachEvent) {
+            if (element.length && element[0].detachEvent && self._sync) {
                 element.each(function () {
-                    this.detachEvent("onpropertychange", self._sync);
+                    if (self._sync) {
+                        this.detachEvent("onpropertychange", self._sync);
+                    }
                 });
             }
             if (this.propertyObserver) {
@@ -4150,17 +4765,21 @@ the specific language governing permissions and limitations under the Apache Lic
                 select2.container.remove();
                 select2.liveRegion.remove();
                 select2.dropdown.remove();
-                element
-                    .removeClass("select2-offscreen")
-                    .removeData("select2")
-                    .off(".select2")
-                    .prop("autofocus", this.autofocus || false);
-                if (this.elementTabIndex) {
-                    element.attr({tabindex: this.elementTabIndex});
+                element.removeData("select2")
+                    .off(".select2");
+                if (!element.is("input[type='hidden']")) {
+                    element
+                        .show()
+                        .prop("autofocus", this.autofocus || false);
+                    if (this.elementTabIndex) {
+                        element.attr({tabindex: this.elementTabIndex});
+                    } else {
+                        element.removeAttr("tabindex");
+                    }
+                    element.show();
                 } else {
-                    element.removeAttr("tabindex");
+                    element.css("display", "");
                 }
-                element.show();
             }
 
             cleanupJQueryElements.call(this,
@@ -4212,6 +4831,155 @@ the specific language governing permissions and limitations under the Apache Lic
                 });
             }
 
+            opts.debug = opts.debug || $.fn.select2.defaults.debug;
+
+            // Warnings for options renamed/removed in Select2 4.0.0
+            // Only when it's enabled through debug mode
+            if (opts.debug && console && console.warn) {
+                // id was removed
+                if (opts.id != null) {
+                    console.warn(
+                        'Select2: The `id` option has been removed in Select2 4.0.0, ' +
+                        'consider renaming your `id` property or mapping the property before your data makes it to Select2. ' +
+                        'You can read more at https://select2.github.io/announcements-4.0.html#changed-id'
+                    );
+                }
+
+                // text was removed
+                if (opts.text != null) {
+                    console.warn(
+                        'Select2: The `text` option has been removed in Select2 4.0.0, ' +
+                        'consider renaming your `text` property or mapping the property before your data makes it to Select2. ' +
+                        'You can read more at https://select2.github.io/announcements-4.0.html#changed-id'
+                    );
+                }
+
+                // sortResults was renamed to results
+                if (opts.sortResults != null) {
+                    console.warn(
+                        'Select2: the `sortResults` option has been renamed to `sorter` in Select2 4.0.0. '
+                    );
+                }
+
+                // selectOnBlur was renamed to selectOnClose
+                if (opts.selectOnBlur != null) {
+                    console.warn(
+                        'Select2: The `selectOnBlur` option has been renamed to `selectOnClose` in Select2 4.0.0.'
+                    );
+                }
+
+                // ajax.results was renamed to ajax.processResults
+                if (opts.ajax != null && opts.ajax.results != null) {
+                    console.warn(
+                        'Select2: The `ajax.results` option has been renamed to `ajax.processResults` in Select2 4.0.0.'
+                    );
+                }
+
+                // format* options were renamed to language.*
+                if (opts.formatNoResults != null) {
+                    console.warn(
+                        'Select2: The `formatNoResults` option has been renamed to `language.noResults` in Select2 4.0.0.'
+                    );
+                }
+                if (opts.formatSearching != null) {
+                    console.warn(
+                        'Select2: The `formatSearching` option has been renamed to `language.searching` in Select2 4.0.0.'
+                    );
+                }
+                if (opts.formatInputTooShort != null) {
+                    console.warn(
+                        'Select2: The `formatInputTooShort` option has been renamed to `language.inputTooShort` in Select2 4.0.0.'
+                    );
+                }
+                if (opts.formatInputTooLong != null) {
+                    console.warn(
+                        'Select2: The `formatInputTooLong` option has been renamed to `language.inputTooLong` in Select2 4.0.0.'
+                    );
+                }
+                if (opts.formatLoading != null) {
+                    console.warn(
+                        'Select2: The `formatLoading` option has been renamed to `language.loadingMore` in Select2 4.0.0.'
+                    );
+                }
+                if (opts.formatSelectionTooBig != null) {
+                    console.warn(
+                        'Select2: The `formatSelectionTooBig` option has been renamed to `language.maximumSelected` in Select2 4.0.0.'
+                    );
+                }
+
+                if (opts.element.data('select2Tags')) {
+                    console.warn(
+                        'Select2: The `data-select2-tags` attribute has been renamed to `data-tags` in Select2 4.0.0.'
+                    );
+                }
+            }
+
+            // Aliasing options renamed in Select2 4.0.0
+
+            // data-select2-tags -> data-tags
+            if (opts.element.data('tags') != null) {
+                var elemTags = opts.element.data('tags');
+
+                // data-tags should actually be a boolean
+                if (!$.isArray(elemTags)) {
+                    elemTags = [];
+                }
+
+                opts.element.data('select2Tags', elemTags);
+            }
+
+            // sortResults -> sorter
+            if (opts.sorter != null) {
+                opts.sortResults = opts.sorter;
+            }
+
+            // selectOnBlur -> selectOnClose
+            if (opts.selectOnClose != null) {
+                opts.selectOnBlur = opts.selectOnClose;
+            }
+
+            // ajax.results -> ajax.processResults
+            if (opts.ajax != null) {
+                if ($.isFunction(opts.ajax.processResults)) {
+                    opts.ajax.results = opts.ajax.processResults;
+                }
+            }
+
+            // Formatters/language options
+            if (opts.language != null) {
+                var lang = opts.language;
+
+                // formatNoMatches -> language.noMatches
+                if ($.isFunction(lang.noMatches)) {
+                    opts.formatNoMatches = lang.noMatches;
+                }
+
+                // formatSearching -> language.searching
+                if ($.isFunction(lang.searching)) {
+                    opts.formatSearching = lang.searching;
+                }
+
+                // formatInputTooShort -> language.inputTooShort
+                if ($.isFunction(lang.inputTooShort)) {
+                    opts.formatInputTooShort = lang.inputTooShort;
+                }
+
+                // formatInputTooLong -> language.inputTooLong
+                if ($.isFunction(lang.inputTooLong)) {
+                    opts.formatInputTooLong = lang.inputTooLong;
+                }
+
+                // formatLoading -> language.loadingMore
+                if ($.isFunction(lang.loadingMore)) {
+                    opts.formatLoading = lang.loadingMore;
+                }
+
+                // formatSelectionTooBig -> language.maximumSelected
+                if ($.isFunction(lang.maximumSelected)) {
+                    opts.formatSelectionTooBig = lang.maximumSelected;
+                }
+            }
+
             opts = $.extend({}, {
                 populateResults: function(container, results, query) {
                     var populate, id=this.opts.id, liveRegion=this.liveRegion;
@@ -4255,7 +5023,6 @@ the specific language governing permissions and limitations under the Apache Lic
 
 
                             if (compound) {
-
                                 innerContainer=$("<ul></ul>");
                                 innerContainer.addClass("select2-result-sub");
                                 populate(result.children, innerContainer, depth+1);
@@ -4326,7 +5093,6 @@ the specific language governing permissions and limitations under the Apache Lic
                 opts.id=function(e) { return e.id; };
             } else {
                 if (!("query" in opts)) {
-
                     if ("ajax" in opts) {
                         ajaxUrl = opts.element.data("ajax-url");
                         if (ajaxUrl && ajaxUrl.length > 0) {
@@ -4343,7 +5109,7 @@ the specific language governing permissions and limitations under the Apache Lic
                         if (opts.initSelection === undefined) {
                             opts.initSelection = function (element, callback) {
                                 var data = [];
-                                $(splitVal(element.val(), opts.separator)).each(function () {
+                                $(splitVal(element.val(), opts.separator, opts.transformVal)).each(function () {
                                     var obj = { id: this, text: this },
                                         tags = opts.tags;
                                     if ($.isFunction(tags)) tags=tags();
@@ -4398,11 +5164,15 @@ the specific language governing permissions and limitations under the Apache Lic
                 if (readonly === undefined) readonly = false;
                 this.readonly(readonly);
 
-                syncCssClasses(this.container, this.opts.element, this.opts.adaptContainerCssClass);
-                this.container.addClass(evaluate(this.opts.containerCssClass, this.opts.element));
+                if (this.container) {
+                    syncCssClasses(this.container, this.opts.element, this.opts.adaptContainerCssClass);
+                    this.container.addClass(evaluate(this.opts.containerCssClass, this.opts.element));
+                }
 
-                syncCssClasses(this.dropdown, this.opts.element, this.opts.adaptDropdownCssClass);
-                this.dropdown.addClass(evaluate(this.opts.dropdownCssClass, this.opts.element));
+                if (this.dropdown) {
+                    syncCssClasses(this.dropdown, this.opts.element, this.opts.adaptDropdownCssClass);
+                    this.dropdown.addClass(evaluate(this.opts.dropdownCssClass, this.opts.element));
+                }
 
             });
 
@@ -4507,9 +5277,10 @@ the specific language governing permissions and limitations under the Apache Lic
         // abstract
         positionDropdown: function() {
             var $dropdown = this.dropdown,
-                offset = this.container.offset(),
-                height = this.container.outerHeight(false),
-                width = this.container.outerWidth(false),
+                container = this.container,
+                offset = container.offset(),
+                height = container.outerHeight(false),
+                width = container.outerWidth(false),
                 dropHeight = $dropdown.outerHeight(false),
                 $window = $(window),
                 windowWidth = $window.width(),
@@ -4521,7 +5292,12 @@ the specific language governing permissions and limitations under the Apache Lic
                 enoughRoomBelow = dropTop + dropHeight <= viewportBottom,
                 enoughRoomAbove = (offset.top - dropHeight) >= $window.scrollTop(),
                 dropWidth = $dropdown.outerWidth(false),
-                enoughRoomOnRight = dropLeft + dropWidth <= viewPortRight,
+                enoughRoomOnRight = function() {
+                    return dropLeft + dropWidth <= viewPortRight;
+                },
+                enoughRoomOnLeft = function() {
+                    return offset.left + viewPortRight + container.outerWidth(false)  > dropWidth;
+                },
                 aboveNow = $dropdown.hasClass("select2-drop-above"),
                 bodyOffset,
                 above,
@@ -4556,7 +5332,6 @@ the specific language governing permissions and limitations under the Apache Lic
                 dropTop = offset.top + height;
                 dropLeft = offset.left;
                 dropWidth = $dropdown.outerWidth(false);
-                enoughRoomOnRight = dropLeft + dropWidth <= viewPortRight;
                 $dropdown.show();
 
                 // fix so the cursor does not move to the left within the search-textbox in IE
@@ -4571,7 +5346,6 @@ the specific language governing permissions and limitations under the Apache Lic
                 dropWidth = $dropdown.outerWidth(false) + (resultsListNode.scrollHeight === resultsListNode.clientHeight ? 0 : scrollBarDimensions.width);
                 dropWidth > width ? width = dropWidth : dropWidth = width;
                 dropHeight = $dropdown.outerHeight(false);
-                enoughRoomOnRight = dropLeft + dropWidth <= viewPortRight;
             }
             else {
                 this.container.removeClass('select2-drop-auto-width');
@@ -4587,7 +5361,7 @@ the specific language governing permissions and limitations under the Apache Lic
                 dropLeft -= bodyOffset.left;
             }
 
-            if (!enoughRoomOnRight) {
+            if (!enoughRoomOnRight() && enoughRoomOnLeft()) {
                 dropLeft = offset.left + this.container.outerWidth(false) - dropWidth;
             }
 
@@ -4597,10 +5371,11 @@ the specific language governing permissions and limitations under the Apache Lic
             };
 
             if (above) {
-                css.top = offset.top - dropHeight;
-                css.bottom = 'auto';
                 this.container.addClass("select2-drop-above");
                 $dropdown.addClass("select2-drop-above");
+                dropHeight = $dropdown.outerHeight(false);
+                css.top = offset.top - dropHeight;
+                css.bottom = 'auto';
             }
             else {
                 css.top = dropTop;
@@ -4676,7 +5451,7 @@ the specific language governing permissions and limitations under the Apache Lic
 
             // create the dropdown mask if doesn't already exist
             mask = $("#select2-drop-mask");
-            if (mask.length == 0) {
+            if (mask.length === 0) {
                 mask = $(document.createElement("div"));
                 mask.attr("id","select2-drop-mask").attr("class","select2-drop-mask");
                 mask.hide();
@@ -4753,6 +5528,9 @@ the specific language governing permissions and limitations under the Apache Lic
 
             this.clearSearch();
             this.search.removeClass("select2-active");
+
+            // Remove the aria active descendant for highlighted element
+            this.search.removeAttr("aria-activedescendant");
             this.opts.element.trigger($.Event("select2-close"));
         },
 
@@ -4769,6 +5547,27 @@ the specific language governing permissions and limitations under the Apache Lic
         // abstract
         clearSearch: function () {
 
+        },
+
+        /**
+         * @return {Boolean} Whether or not search value was changed.
+         * @private
+         */
+        prefillNextSearchTerm: function () {
+            // initializes search's value with nextSearchTerm (if defined by user)
+            // ignore nextSearchTerm if the dropdown is opened by the user pressing a letter
+            if(this.search.val() !== "") {
+                return false;
+            }
+
+            var nextSearchTerm = this.opts.nextSearchTerm(this.data(), this.lastSearchTerm);
+            if(nextSearchTerm !== undefined){
+                this.search.val(nextSearchTerm);
+                this.search.select();
+                return true;
+            }
+
+            return false;
         },
 
         //abstract
@@ -4810,7 +5609,7 @@ the specific language governing permissions and limitations under the Apache Lic
                 }
             }
 
-            rb = results.offset().top + results.outerHeight(true);
+            rb = results.offset().top + results.outerHeight(false);
             if (hb > rb) {
                 results.scrollTop(results.scrollTop() + (hb - rb));
             }
@@ -4933,7 +5732,7 @@ the specific language governing permissions and limitations under the Apache Lic
                     self.postprocessResults(data, false, false);
 
                     if (data.more===true) {
-                        more.detach().appendTo(results).text(evaluate(self.opts.formatLoadMore, self.opts.element, page+1));
+                        more.detach().appendTo(results).html(self.opts.escapeMarkup(evaluate(self.opts.formatLoadMore, self.opts.element, page+1)));
                         window.setTimeout(function() { self.loadMoreIfNeeded(); }, 10);
                     } else {
                         more.remove();
@@ -4986,7 +5785,7 @@ the specific language governing permissions and limitations under the Apache Lic
                     self.liveRegion.text(results.text());
                 }
                 else {
-                    self.liveRegion.text(self.opts.formatMatches(results.find('.select2-result-selectable').length));
+                    self.liveRegion.text(self.opts.formatMatches(results.find('.select2-result-selectable:not(".select2-selected")').length));
                 }
             }
 
@@ -5084,6 +5883,9 @@ the specific language governing permissions and limitations under the Apache Lic
 
                 if (data.results.length === 0 && checkFormatter(opts.formatNoMatches, "formatNoMatches")) {
                     render("<li class='select2-no-results'>" + evaluate(opts.formatNoMatches, opts.element, search.val()) + "</li>");
+                    if(this.showSearch){
+                        this.showSearch(search.val());
+                    }
                     return;
                 }
 
@@ -5188,7 +5990,7 @@ the specific language governing permissions and limitations under the Apache Lic
                 } else if (this.opts.width === "copy" || this.opts.width === "resolve") {
                     // check if there is inline style on the element that contains width
                     style = this.opts.element.attr('style');
-                    if (style !== undefined) {
+                    if (typeof(style) === "string") {
                         attrs = style.split(';');
                         for (i = 0, l = attrs.length; i < l; i = i + 1) {
                             attr = attrs[i].replace(/\s/g, '');
@@ -5287,14 +6089,7 @@ the specific language governing permissions and limitations under the Apache Lic
                 }
             }
 
-            // initializes search's value with nextSearchTerm (if defined by user)
-            // ignore nextSearchTerm if the dropdown is opened by the user pressing a letter
-            if(this.search.val() === "") {
-                if(this.nextSearchTerm != undefined){
-                    this.search.val(this.nextSearchTerm);
-                    this.search.select();
-                }
-            }
+            this.prefillNextSearchTerm();
 
             this.focusser.prop("disabled", true).val("");
             this.updateResults(true);
@@ -5381,6 +6176,7 @@ the specific language governing permissions and limitations under the Apache Lic
             this.focusser.attr("id", "s2id_autogen"+idSuffix);
 
             elementLabel = $("label[for='" + this.opts.element.attr("id") + "']");
+            this.opts.element.on('focus.select2', this.bind(function () { this.focus(); }));
 
             this.focusser.prev()
                 .text(elementLabel.text())
@@ -5436,7 +6232,7 @@ the specific language governing permissions and limitations under the Apache Lic
                 // without this the search field loses focus which is annoying
                 if (document.activeElement === this.body.get(0)) {
                     window.setTimeout(this.bind(function() {
-                        if (this.opened()) {
+                        if (this.opened() && this.results && this.results.length > 1) {
                             this.search.focus();
                         }
                     }), 0);
@@ -5485,11 +6281,17 @@ the specific language governing permissions and limitations under the Apache Lic
             }));
 
             selection.on("mousedown touchstart", "abbr", this.bind(function (e) {
-                if (!this.isInterfaceEnabled()) return;
+                if (!this.isInterfaceEnabled()) {
+                    return;
+                }
+
                 this.clear();
                 killEventImmediately(e);
                 this.close();
-                this.selection.focus();
+
+                if (this.selection) {
+                    this.selection.focus();
+                }
             }));
 
             selection.on("mousedown touchstart", this.bind(function (e) {
@@ -5538,7 +6340,7 @@ the specific language governing permissions and limitations under the Apache Lic
             }));
 
             this.initContainerWidth();
-            this.opts.element.addClass("select2-offscreen");
+            this.opts.element.hide();
             this.setPlaceholder();
 
         },
@@ -5582,7 +6384,7 @@ the specific language governing permissions and limitations under the Apache Lic
                         self.updateSelection(selected);
                         self.close();
                         self.setPlaceholder();
-                        self.nextSearchTerm = self.opts.nextSearchTerm(selected, self.search.val());
+                        self.lastSearchTerm = self.search.val();
                     }
                 });
             }
@@ -5719,7 +6521,7 @@ the specific language governing permissions and limitations under the Apache Lic
 
             this.opts.element.trigger({ type: "select2-selected", val: this.id(data), choice: data });
 
-            this.nextSearchTerm = this.opts.nextSearchTerm(data, this.search.val());
+            this.lastSearchTerm = this.search.val();
             this.close();
 
             if ((!options || !options.noFocus) && this.opts.shouldFocusInput(this)) {
@@ -5773,9 +6575,23 @@ the specific language governing permissions and limitations under the Apache Lic
 
             if (arguments.length > 1) {
                 triggerChange = arguments[1];
+
+                if (this.opts.debug && console && console.warn) {
+                    console.warn(
+                        'Select2: The second option to `select2("val")` is not supported in Select2 4.0.0. ' +
+                        'The `change` event will always be triggered in 4.0.0.'
+                    );
+                }
             }
 
             if (this.select) {
+                if (this.opts.debug && console && console.warn) {
+                    console.warn(
+                        'Select2: Setting the value on a <select> using `select2("val")` is no longer supported in 4.0.0. ' +
+                        'You can use the `.val(newValue).trigger("change")` method provided by jQuery instead.'
+                    );
+                }
+
                 this.select
                     .val(val)
                     .find("option").filter(function() { return this.selected }).each2(function (i, elm) {
@@ -5824,6 +6640,13 @@ the specific language governing permissions and limitations under the Apache Lic
                 if (data == undefined) data = null;
                 return data;
             } else {
+                if (this.opts.debug && console && console.warn) {
+                    console.warn(
+                        'Select2: The `select2("data")` method can no longer set selected values in 4.0.0, ' +
+                        'consider using the `.val()` method instead.'
+                    );
+                }
+
                 if (arguments.length > 1) {
                     triggerChange = arguments[1];
                 }
@@ -5867,7 +6690,6 @@ the specific language governing permissions and limitations under the Apache Lic
                 self=this;
 
             // TODO validate placeholder is a string if specified
-
             if (opts.element.get(0).tagName.toLowerCase() === "select") {
                 // install the selection initializer
                 opts.initSelection = function (element, callback) {
@@ -5882,7 +6704,7 @@ the specific language governing permissions and limitations under the Apache Lic
             } else if ("data" in opts) {
                 // install default initSelection when applied to hidden input and data is local
                 opts.initSelection = opts.initSelection || function (element, callback) {
-                    var ids = splitVal(element.val(), opts.separator);
+                    var ids = splitVal(element.val(), opts.separator, opts.transformVal);
                     //search in data by array of ids, storing matching items in a list
                     var matches = [];
                     opts.query({
@@ -5959,8 +6781,7 @@ the specific language governing permissions and limitations under the Apache Lic
             this.selection = selection = this.container.find(selector);
 
             var _this = this;
-            this.selection.on("click", ".select2-search-choice:not(.select2-locked)", function (e) {
-                //killEvent(e);
+            this.selection.on("click", ".select2-container:not(.select2-container-disabled) .select2-search-choice:not(.select2-locked)", function (e) {
                 _this.search[0].focus();
                 _this.selectChoice($(this));
             });
@@ -5971,6 +6792,7 @@ the specific language governing permissions and limitations under the Apache Lic
             this.search.prev()
                 .text($("label[for='" + this.opts.element.attr("id") + "']").text())
                 .attr('for', this.search.attr('id'));
+            this.opts.element.on('focus.select2', this.bind(function () { this.focus(); }));
 
             this.search.on("input paste", this.bind(function() {
                 if (this.search.attr('placeholder') && this.search.val().length == 0) return;
@@ -6122,7 +6944,7 @@ the specific language governing permissions and limitations under the Apache Lic
             }));
 
             this.initContainerWidth();
-            this.opts.element.addClass("select2-offscreen");
+            this.opts.element.hide();
 
             // set the placeholder if necessary
             this.clearSearch();
@@ -6188,16 +7010,9 @@ the specific language governing permissions and limitations under the Apache Lic
 
             this.focusSearch();
 
-            // initializes search's value with nextSearchTerm (if defined by user)
-            // ignore nextSearchTerm if the dropdown is opened by the user pressing a letter
-            if(this.search.val() === "") {
-                if(this.nextSearchTerm != undefined){
-                    this.search.val(this.nextSearchTerm);
-                    this.search.select();
-                }
-            }
-
+            this.prefillNextSearchTerm();
             this.updateResults(true);
+
             if (this.opts.shouldFocusInput(this)) {
                 this.search.focus();
             }
@@ -6223,21 +7038,18 @@ the specific language governing permissions and limitations under the Apache Lic
 
         // multi
         updateSelection: function (data) {
-            var ids = [], filtered = [], self = this;
+            var ids = {}, filtered = [], self = this;
 
             // filter out duplicates
             $(data).each(function () {
-                if (indexOf(self.id(this), ids) < 0) {
-                    ids.push(self.id(this));
+                if (!(self.id(this) in ids)) {
+                    ids[self.id(this)] = 0;
                     filtered.push(this);
                 }
             });
-            data = filtered;
 
             this.selection.find(".select2-search-choice").remove();
-            $(data).each(function () {
-                self.addSelectedChoice(this);
-            });
+            this.addSelectedChoice(filtered);
             self.postprocessResults();
         },
 
@@ -6264,7 +7076,7 @@ the specific language governing permissions and limitations under the Apache Lic
             this.opts.element.trigger({ type: "selected", val: this.id(data), choice: data });
 
             // keep track of the search's value before it gets cleared
-            this.nextSearchTerm = this.opts.nextSearchTerm(data, this.search.val());
+            this.lastSearchTerm = this.search.val();
 
             this.clearSearch();
             this.updateResults();
@@ -6284,10 +7096,8 @@ the specific language governing permissions and limitations under the Apache Lic
                         this.updateResults(true);
                     } else {
                         // initializes search's value with nextSearchTerm and update search result
-                        if(this.nextSearchTerm != undefined){
-                            this.search.val(this.nextSearchTerm);
+                        if (this.prefillNextSearchTerm()) {
                             this.updateResults();
-                            this.search.select();
                         }
                     }
                     this.positionDropdown();
@@ -6313,6 +7123,14 @@ the specific language governing permissions and limitations under the Apache Lic
         },
 
         addSelectedChoice: function (data) {
+            var val = this.getVal(), self = this;
+            $(data).each(function () {
+                val.push(self.createChoice(this));
+            });
+            this.setVal(val);
+        },
+
+        createChoice: function (data) {
             var enableChoice = !data.locked,
                 enabledItem = $(
                     "<li class='select2-search-choice'>" +
@@ -6325,13 +7143,12 @@ the specific language governing permissions and limitations under the Apache Lic
                     "</li>");
             var choice = enableChoice ? enabledItem : disabledItem,
                 id = this.id(data),
-                val = this.getVal(),
                 formatted,
                 cssClass;
 
             formatted=this.opts.formatSelection(data, choice.find("div"), this.opts.escapeMarkup);
             if (formatted != undefined) {
-                choice.find("div").replaceWith("<div>"+formatted+"</div>");
+                choice.find("div").replaceWith($("<div></div>").html(formatted));
             }
             cssClass=this.opts.formatSelectionCssClass(data, choice.find("div"));
             if (cssClass != undefined) {
@@ -6359,8 +7176,7 @@ the specific language governing permissions and limitations under the Apache Lic
             choice.data("select2-data", data);
             choice.insertBefore(this.searchContainer);
 
-            val.push(id);
-            this.setVal(val);
+            return id;
         },
 
         // multi
@@ -6429,7 +7245,7 @@ the specific language governing permissions and limitations under the Apache Lic
                 }
             });
 
-            if (this.highlight() == -1 && noHighlightUpdate !== false){
+            if (this.highlight() == -1 && noHighlightUpdate !== false && this.opts.closeOnSelect === true){
                 self.highlight(0);
             }
 
@@ -6486,20 +7302,22 @@ the specific language governing permissions and limitations under the Apache Lic
                 return val === null ? [] : val;
             } else {
                 val = this.opts.element.val();
-                return splitVal(val, this.opts.separator);
+                return splitVal(val, this.opts.separator, this.opts.transformVal);
             }
         },
 
         // multi
         setVal: function (val) {
-            var unique;
             if (this.select) {
                 this.select.val(val);
             } else {
-                unique = [];
+                var unique = [], valMap = {};
                 // filter out duplicates
                 $(val).each(function () {
-                    if (indexOf(this, unique) < 0) unique.push(this);
+                    if (!(this in valMap)) {
+                        unique.push(this);
+                        valMap[this] = 0;
+                    }
                 });
                 this.opts.element.val(unique.length === 0 ? "" : unique.join(this.opts.separator));
             }
@@ -6515,11 +7333,9 @@ the specific language governing permissions and limitations under the Apache Lic
                 for (var j = 0; j < old.length; j++) {
                     if (equal(this.opts.id(current[i]), this.opts.id(old[j]))) {
                         current.splice(i, 1);
-                        if(i>0){
-                        	i--;
-                        }
+                        i--;
                         old.splice(j, 1);
-                        j--;
+                        break;
                     }
                 }
             }
@@ -6689,6 +7505,7 @@ the specific language governing permissions and limitations under the Apache Lic
 
     // plugin defaults, accessible to users
     $.fn.select2.defaults = {
+        debug: false,
         width: "copy",
         loadMorePadding: 0,
         closeOnSelect: true,
@@ -6699,11 +7516,14 @@ the specific language governing permissions and limitations under the Apache Lic
         dropdownCssClass: "",
         formatResult: function(result, container, query, escapeMarkup) {
             var markup=[];
-            markMatch(result.text, query.term, markup, escapeMarkup);
+            markMatch(this.text(result), query.term, markup, escapeMarkup);
             return markup.join("");
         },
+        transformVal: function(val) {
+            return $.trim(val);
+        },
         formatSelection: function (data, container, escapeMarkup) {
-            return data ? escapeMarkup(data.text) : undefined;
+            return data ? escapeMarkup(this.text(data)) : undefined;
         },
         sortResults: function (results, container, query) {
             return results;
@@ -6715,6 +7535,17 @@ the specific language governing permissions and limitations under the Apache Lic
         maximumInputLength: null,
         maximumSelectionSize: 0,
         id: function (e) { return e == undefined ? null : e.id; },
+        text: function (e) {
+          if (e && this.data && this.data.text) {
+            if ($.isFunction(this.data.text)) {
+              return this.data.text(e);
+            } else {
+              return e[this.data.text];
+            }
+          } else {
+            return e.text;
+          }
+        },
         matcher: function(term, text) {
             return stripDiacritics(''+text).toUpperCase().indexOf(stripDiacritics(''+term).toUpperCase()) >= 0;
         },
@@ -6758,7 +7589,7 @@ the specific language governing permissions and limitations under the Apache Lic
          formatInputTooLong: function (input, max) { var n = input.length - max; return "Please delete " + n + " character" + (n == 1 ? "" : "s"); },
          formatSelectionTooBig: function (limit) { return "You can only select " + limit + " item" + (limit == 1 ? "" : "s"); },
          formatLoadMore: function (pageNumber) { return "Loading more results…"; },
-         formatSearching: function () { return "Searching…"; },
+         formatSearching: function () { return "Searching…"; }
     };
 
     $.extend($.fn.select2.defaults, $.fn.select2.locales['en']);
@@ -7584,10 +8415,11 @@ return $.drop;
 define('mockup-patterns-select2',[
   'jquery',
   'pat-base',
+  'mockup-utils',
   'select2',
   'jquery.event.drag',
   'jquery.event.drop'
-], function($, Base) {
+], function($, Base, utils) {
   'use strict';
 
   var Select2 = Base.extend({
@@ -7635,7 +8467,7 @@ define('mockup-patterns-select2',[
             if (seldefaults[this]) {
               text = seldefaults[this];
             }
-            data.push({id: this, text: text});
+            data.push({id: utils.escapeHTML(this), text: utils.escapeHTML(text)});
           });
           callback(data);
         };
@@ -7741,7 +8573,8 @@ define('mockup-patterns-select2',[
           self.options.initSelection = function ($el, callback) {
             var data = [], value = $el.val();
             $(value.split(self.options.separator)).each(function () {
-              data.push({id: this, text: this});
+              var val = utils.escapeHTML(this);
+              data.push({id: val, text: val});
             });
             callback(data);
           };
@@ -7769,6 +8602,7 @@ define('mockup-patterns-select2',[
 
               var haveResult = queryTerm === '' || $.inArray(queryTerm, dataIds) >= 0;
               if (self.options.allowNewItems && !haveResult) {
+                queryTerm = utils.escapeHTML(queryTerm);
                 results.push({id: queryTerm, text: queryTerm});
               }
 
@@ -7804,6 +8638,148 @@ define('mockup-patterns-select2',[
 
   return Select2;
 
+});
+
+/* i18n integration. This is forked from jarn.jsi18n
+ *
+ * This is a singleton.
+ * Configuration is done on the body tag data-i18ncatalogurl attribute
+ *     <body data-i18ncatalogurl="/plonejsi18n">
+ *
+ *  Or, it'll default to "/plonejsi18n"
+ */
+define('mockup-i18n',[
+  'jquery'
+], function($) {
+  'use strict';
+
+  var I18N = function() {
+    var self = this;
+    self.baseUrl = $('body').attr('data-i18ncatalogurl');
+
+    if (!self.baseUrl) {
+      self.baseUrl = '/plonejsi18n';
+    }
+    self.currentLanguage = $('html').attr('lang') || 'en-us';
+    self.storage = null;
+    self.catalogs = {};
+    self.ttl = 24 * 3600 * 1000;
+
+    // Internet Explorer 8 does not know Date.now() which is used in e.g. loadCatalog, so we "define" it
+    if (!Date.now) {
+      Date.now = function() {
+        return new Date().valueOf();
+      };
+    }
+
+    try {
+      if ('localStorage' in window && window.localStorage !== null && 'JSON' in window && window.JSON !== null) {
+        self.storage = window.localStorage;
+      }
+    } catch (e) {}
+
+    self.configure = function(config) {
+      for (var key in config){
+        self[key] = config[key];
+      }
+    };
+
+    self._setCatalog = function (domain, language, catalog) {
+      if (domain in self.catalogs) {
+        self.catalogs[domain][language] = catalog;
+      } else {
+        self.catalogs[domain] = {};
+        self.catalogs[domain][language] = catalog;
+      }
+    };
+
+    self._storeCatalog = function (domain, language, catalog) {
+      var key = domain + '-' + language;
+      if (self.storage !== null && catalog !== null) {
+        self.storage.setItem(key, JSON.stringify(catalog));
+        self.storage.setItem(key + '-updated', Date.now());
+      }
+    };
+
+    self.getUrl = function(domain, language) {
+      return self.baseUrl + '?domain=' + domain + '&language=' + language;
+    };
+
+    self.loadCatalog = function (domain, language) {
+      if (language === undefined) {
+        language = self.currentLanguage;
+      }
+      if (self.storage !== null) {
+        var key = domain + '-' + language;
+        if (key in self.storage) {
+          if ((Date.now() - parseInt(self.storage.getItem(key + '-updated'), 10)) < self.ttl) {
+            var catalog = JSON.parse(self.storage.getItem(key));
+            self._setCatalog(domain, language, catalog);
+            return;
+          }
+        }
+      }
+      $.getJSON(self.getUrl(domain, language), function (catalog) {
+        if (catalog === null) {
+          return;
+        }
+        self._setCatalog(domain, language, catalog);
+        self._storeCatalog(domain, language, catalog);
+      });
+    };
+
+    self.MessageFactory = function (domain, language) {
+      language = language || self.currentLanguage;
+      return function translate (msgid, keywords) {
+        var msgstr;
+        if ((domain in self.catalogs) && (language in self.catalogs[domain]) && (msgid in self.catalogs[domain][language])) {
+          msgstr = self.catalogs[domain][language][msgid];
+        } else {
+          msgstr = msgid;
+        }
+        if (keywords) {
+          var regexp, keyword;
+          for (keyword in keywords) {
+            if (keywords.hasOwnProperty(keyword)) {
+              regexp = new RegExp('\\$\\{' + keyword + '\\}', 'g');
+              msgstr = msgstr.replace(regexp, keywords[keyword]);
+            }
+          }
+        }
+        return msgstr;
+      };
+    };
+  };
+
+  return I18N;
+});
+
+/* i18n integration.
+ *
+ * This is a singleton.
+ * Configuration is done on the body tag data-i18ncatalogurl attribute
+ *     <body data-i18ncatalogurl="/plonejsi18n">
+ *
+ *  Or, it'll default to "/plonejsi18n"
+ */
+
+define('translate',[
+  'mockup-i18n'
+], function(I18N) {
+  'use strict';
+
+  // we're creating a singleton here so we can potentially
+  // delay the initialization of the translate catalog
+  // until after the dom is available
+  var _t = null;
+  return function(msgid, keywords) {
+    if (_t === null) {
+      var i18n = new I18N();
+      i18n.loadCatalog('widgets');
+      _t = i18n.MessageFactory('widgets');
+    }
+    return _t(msgid, keywords);
+  };
 });
 
 /*!
@@ -11339,152 +12315,6 @@ Picker.extend( 'pickatime', TimePicker )
 
 
 
-/* i18n integration. This is forked from jarn.jsi18n
- *
- * This is a singleton.
- * Configuration is done on the body tag data-i18ncatalogurl attribute
- *     <body data-i18ncatalogurl="/plonejsi18n">
- *
- *  Or, it'll default to "/plonejsi18n"
- */
-
-/* global portal_url:true */
-
-
-define('mockup-i18n',[
-  'jquery'
-], function($) {
-  'use strict';
-
-  var I18N = function() {
-    var self = this;
-    self.baseUrl = $('body').attr('data-i18ncatalogurl');
-
-    if (!self.baseUrl) {
-      self.baseUrl = '/plonejsi18n';
-    }
-    self.currentLanguage = $('html').attr('lang') || 'en-us';
-    self.storage = null;
-    self.catalogs = {};
-    self.ttl = 24 * 3600 * 1000;
-
-    // Internet Explorer 8 does not know Date.now() which is used in e.g. loadCatalog, so we "define" it
-    if (!Date.now) {
-      Date.now = function() {
-        return new Date().valueOf();
-      };
-    }
-
-    try {
-      if ('localStorage' in window && window.localStorage !== null && 'JSON' in window && window.JSON !== null) {
-        self.storage = window.localStorage;
-      }
-    } catch (e) {}
-
-    self.configure = function(config) {
-      for (var key in config){
-        self[key] = config[key];
-      }
-    };
-
-    self._setCatalog = function (domain, language, catalog) {
-      if (domain in self.catalogs) {
-        self.catalogs[domain][language] = catalog;
-      } else {
-        self.catalogs[domain] = {};
-        self.catalogs[domain][language] = catalog;
-      }
-    };
-
-    self._storeCatalog = function (domain, language, catalog) {
-      var key = domain + '-' + language;
-      if (self.storage !== null && catalog !== null) {
-        self.storage.setItem(key, JSON.stringify(catalog));
-        self.storage.setItem(key + '-updated', Date.now());
-      }
-    };
-
-    self.getUrl = function(domain, language) {
-      return self.baseUrl + '?domain=' + domain + '&language=' + language;
-    };
-
-    self.loadCatalog = function (domain, language) {
-      if (language === undefined) {
-        language = self.currentLanguage;
-      }
-      if (self.storage !== null) {
-        var key = domain + '-' + language;
-        if (key in self.storage) {
-          if ((Date.now() - parseInt(self.storage.getItem(key + '-updated'), 10)) < self.ttl) {
-            var catalog = JSON.parse(self.storage.getItem(key));
-            self._setCatalog(domain, language, catalog);
-            return;
-          }
-        }
-      }
-      $.getJSON(self.getUrl(domain, language), function (catalog) {
-        if (catalog === null) {
-          return;
-        }
-        self._setCatalog(domain, language, catalog);
-        self._storeCatalog(domain, language, catalog);
-      });
-    };
-
-    self.MessageFactory = function (domain, language) {
-      language = language || self.currentLanguage;
-      return function translate (msgid, keywords) {
-        var msgstr;
-        if ((domain in self.catalogs) && (language in self.catalogs[domain]) && (msgid in self.catalogs[domain][language])) {
-          msgstr = self.catalogs[domain][language][msgid];
-        } else {
-          msgstr = msgid;
-        }
-        if (keywords) {
-          var regexp, keyword;
-          for (keyword in keywords) {
-            if (keywords.hasOwnProperty(keyword)) {
-              regexp = new RegExp('\\$\\{' + keyword + '\\}', 'g');
-              msgstr = msgstr.replace(regexp, keywords[keyword]);
-            }
-          }
-        }
-        return msgstr;
-      };
-    };
-  };
-
-  return I18N;
-});
-
-/* i18n integration.
- *
- * This is a singleton.
- * Configuration is done on the body tag data-i18ncatalogurl attribute
- *     <body data-i18ncatalogurl="/plonejsi18n">
- *
- *  Or, it'll default to "/plonejsi18n"
- */
-
-define('translate',[
-  'mockup-i18n'
-], function(I18N) {
-  'use strict';
-
-  // we're creating a singleton here so we can potentially
-  // delay the initialization of the translate catalog
-  // until after the dom is available
-  var _t = null;
-  return function(msgid, keywords){
-    if(_t === null){
-      var i18n = new I18N();
-      i18n.loadCatalog('widgets');
-      _t = i18n.MessageFactory('widgets');
-    }
-    return _t(msgid, keywords);
-  };
-});
-
 /* PickADate pattern.
  *
  * Options:
@@ -11572,12 +12402,12 @@ define('translate',[
 define('mockup-patterns-pickadate',[
   'jquery',
   'pat-base',
+  'translate',
   'picker',
   'picker.date',
   'picker.time',
-  'mockup-patterns-select2',
-  'translate'
-], function($, Base, Picker, PickerDate, PickerTime, Select2, _t) {
+  'mockup-patterns-select2'
+], function($, Base, _t) {
   'use strict';
 
   var PickADate = Base.extend({
@@ -11806,336 +12636,6 @@ define('mockup-patterns-pickadate',[
 
 });
 
-/* Pattern utils
- */
-
-
-define('mockup-utils',[
-  'jquery'
-], function($) {
-  'use strict';
-
-  var QueryHelper = function(options) {
-    /* if pattern argument provided, it can implement the interface of:
-      *    - browsing: boolean if currently browsing
-      *    - currentPath: string of current path to apply to search if browsing
-      *    - basePath: default path to provide if no subpath used
-      */
-
-    var self = this;
-    var defaults = {
-      pattern: null, // must be passed in
-      vocabularyUrl: null,
-      searchParam: 'SearchableText', // query string param to pass to search url
-      attributes: ['UID', 'Title', 'Description', 'getURL', 'portal_type'],
-      batchSize: 10, // number of results to retrive
-      baseCriteria: [],
-      sort_on: 'is_folderish',
-      sort_order: 'reverse',
-      pathDepth: 1
-    };
-    self.options = $.extend({}, defaults, options);
-    self.pattern = self.options.pattern;
-    if (self.pattern === undefined || self.pattern === null) {
-      self.pattern = {
-        browsing: false,
-        basePath: '/'
-      };
-    }
-
-    if (self.options.url && !self.options.vocabularyUrl) {
-      self.options.vocabularyUrl = self.options.url;
-    } else if (self.pattern.vocabularyUrl) {
-      self.options.vocabularyUrl = self.pattern.vocabularyUrl;
-    }
-    if (self.options.vocabularyUrl !== undefined &&
-        self.options.vocabularyUrl !== null) {
-      self.valid = true;
-    } else {
-      self.valid = false;
-    }
-
-    self.getCurrentPath = function() {
-      var pattern = self.pattern;
-      var currentPath;
-      /* If currentPath is set on the QueryHelper object, use that first.
-       * Then, check on the pattern.
-       * Finally, see if it is a function and call it if it is.
-       */
-      if (self.currentPath) {
-        currentPath = self.currentPath;
-      } else {
-        currentPath = pattern.currentPath;
-      }
-      if (typeof currentPath  === 'function') {
-        currentPath = currentPath();
-      }
-      var path = currentPath;
-      if (!path) {
-        if (pattern.basePath) {
-          path = pattern.basePath;
-        } else if (pattern.options.basePath) {
-          path = pattern.options.basePath;
-        } else {
-          path = '/';
-        }
-      }
-      return path;
-    };
-
-    self.getCriterias = function(term, options) {
-      if (options === undefined) {
-        options = {};
-      }
-      options = $.extend({}, {
-        useBaseCriteria: true,
-        additionalCriterias: []
-      }, options);
-
-      var criterias = [];
-      if (options.useBaseCriteria) {
-        criterias = self.options.baseCriteria.slice(0);
-      }
-      if (term) {
-        term += '*';
-        criterias.push({
-          i: self.options.searchParam,
-          o: 'plone.app.querystring.operation.string.contains',
-          v: term
-        });
-      }
-      if(options.searchPath){
-        criterias.push({
-          i: 'path',
-          o: 'plone.app.querystring.operation.string.path',
-          v: options.searchPath + '::' + self.options.pathDepth
-        });
-      }else if (self.pattern.browsing) {
-        criterias.push({
-          i: 'path',
-          o: 'plone.app.querystring.operation.string.path',
-          v: self.getCurrentPath() + '::' + self.options.pathDepth
-        });
-      }
-      criterias = criterias.concat(options.additionalCriterias);
-      return criterias;
-    };
-
-    self.getBatch = function(page) {
-      if (!page) {
-        page = 1;
-      }
-      return {
-        page: page,
-        size: self.options.batchSize
-      };
-    };
-
-    self.selectAjax = function() {
-      return {
-        url: self.options.vocabularyUrl,
-        dataType: 'JSON',
-        quietMillis: 100,
-        data: function(term, page) {
-          return self.getQueryData(term, page);
-        },
-        results: function (data, page) {
-          var more = (page * 10) < data.total; // whether or not there are more results available
-          // notice we return the value of more so Select2 knows if more results can be loaded
-          return {results: data.results, more: more};
-        }
-      };
-    };
-
-    self.getUrl = function() {
-      var url = self.options.vocabularyUrl;
-      if (url.indexOf('?') === -1) {
-        url += '?';
-      } else {
-        url += '&';
-      }
-      return url + $.param(self.getQueryData());
-    };
-
-    self.getQueryData = function(term, page) {
-      var data = {
-        query: JSON.stringify({
-          criteria: self.getCriterias(term),
-          sort_on: self.options.sort_on,
-          sort_order: self.options.sort_order
-        }),
-        attributes: JSON.stringify(self.options.attributes)
-      };
-      if (page) {
-        data.batch = JSON.stringify(self.getBatch(page));
-      }
-      return data;
-    };
-
-    self.search = function(term, operation, value, callback, useBaseCriteria, type) {
-      if (useBaseCriteria === undefined) {
-        useBaseCriteria = true;
-      }
-      if(type === undefined){
-        type = 'GET';
-      }
-      var criteria = [];
-      if (useBaseCriteria) {
-        criteria = self.options.baseCriteria.slice(0);
-      }
-      criteria.push({
-        i: term,
-        o: operation,
-        v: value
-      });
-      var data = {
-        query: JSON.stringify({ criteria: criteria }),
-        attributes: JSON.stringify(self.options.attributes)
-      };
-      $.ajax({
-        url: self.options.vocabularyUrl,
-        dataType: 'JSON',
-        data: data,
-        type: type,
-        success: callback
-      });
-    };
-
-    return self;
-  };
-
-  var Loading = function(options){
-    /*
-     * Options:
-     *   backdrop(pattern): if you want to have the progress indicator work
-     *                      seamlessly with backdrop pattern
-     *   zIndex(integer or function): to override default z-index used
-     */
-    var self = this;
-    self.className = 'plone-loader';
-    var defaults = {
-      backdrop: null,
-      zIndex: 10005 // can be a function
-    };
-    if(!options){
-      options = {};
-    }
-    self.options = $.extend({}, defaults, options);
-
-    self.init = function(){
-      self.$el = $('.' + self.className);
-      if(self.$el.length === 0){
-        self.$el = $('<div><div></div></div>');
-        self.$el.addClass(self.className).hide().appendTo('body');
-      }
-    };
-
-    self.show = function(closable){
-      self.init();
-      self.$el.show();
-      var zIndex = self.options.zIndex;
-      if (typeof(zIndex) === 'function') {
-        zIndex = Math.max(zIndex(), 10005);
-      }else{
-        // go through all modals and backdrops and make sure we have a higher
-        // z-index to use
-        zIndex = 10005;
-        $('.plone-modal-wrapper,.plone-modal-backdrop').each(function(){
-          zIndex = Math.max(zIndex, $(this).css('zIndex') || 10005);
-        });
-        zIndex += 1;
-      }
-      self.$el.css('zIndex', zIndex);
-
-      if (closable === undefined) {
-        closable = true;
-      }
-      if (self.options.backdrop) {
-        self.options.backdrop.closeOnClick = closable;
-        self.options.backdrop.closeOnEsc = closable;
-        self.options.backdrop.init();
-        self.options.backdrop.show();
-      }
-    };
-
-    self.hide = function(){
-      self.init();
-      self.$el.hide();
-    };
-
-    return self;
-  };
-
-  var generateId = function(prefix){
-    if (prefix === undefined) {
-      prefix = 'id';
-    }
-    return prefix + (Math.floor((1 + Math.random()) * 0x10000)
-        .toString(16).substring(1));
-  };
-
-  return {
-    generateId: generateId,
-    parseBodyTag: function(txt) {
-      return $((/<body[^>]*>((.|[\n\r])*)<\/body>/im).exec(txt)[0]
-          .replace('<body', '<div').replace('</body>', '</div>')).eq(0).html();
-    },
-    setId: function($el, prefix) {
-      if (prefix === undefined) {
-        prefix = 'id';
-      }
-      var id = $el.attr('id');
-      if (id === undefined) {
-        id = generateId(prefix);
-      } else {
-        /* hopefully we don't screw anything up here... changing the id
-         * in some cases so we get a decent selector */
-        id = id.replace(/\./g, '-');
-      }
-      $el.attr('id', id);
-      return id;
-    },
-    bool: function(val) {
-      if (typeof val === 'string') {
-        val = $.trim(val).toLowerCase();
-      }
-      return ['true', true, 1].indexOf(val) !== -1;
-    },
-    QueryHelper: QueryHelper,
-    Loading: Loading,
-    // provide default loader
-    loading: new Loading(),
-    getAuthenticator: function() {
-      var $el = $('input[name="_authenticator"]');
-      if($el.length === 0){
-        $el = $('a[href*="_authenticator"]');
-        if($el.length > 0){
-          return $el.attr('href').split('_authenticator=')[1];
-        }
-        return '';
-      }else{
-        return $el.val();
-      }
-    },
-    featureSupport: {
-      /*
-        well tested feature support for things we use in mockup.
-        All gathered from: http://diveintohtml5.info/everything.html
-        Alternative to using some form of modernizr.
-      */
-      dragAndDrop: function(){
-        return 'draggable' in document.createElement('span');
-      },
-      fileApi: function(){
-        return typeof FileReader != 'undefined'; // jshint ignore:line
-      },
-      history: function(){
-        return !!(window.history && window.history.pushState);
-      }
-    }
-  };
-});
-
 /*!
  * jQuery Cookie Plugin v1.4.1
  * https://github.com/carhartl/jquery-cookie
@@ -12256,7 +12756,7 @@ define('mockup-utils',[
 
 define('plone-patterns-toolbar',[
   'jquery',
-  'mockup-patterns-base',
+  'pat-base',
   'pat-registry',
   'mockup-utils',
   'translate',
@@ -12267,6 +12767,7 @@ define('plone-patterns-toolbar',[
   var Toolbar = Base.extend({
     name: 'toolbar',
     trigger: '.pat-toolbar',
+    parser: 'mockup',
     defaults: {
       containerSelector: '#edit-zone',
       classNames: {
@@ -12282,7 +12783,7 @@ define('plone-patterns-toolbar',[
       },
       cookieName: 'plone-toolbar'
     },
-    setupMobile: function(){
+    setupMobile: function() {
       var that = this;
       that.$container.css('right', '-120px');
       // make sure we are in expanded mode
@@ -12325,11 +12826,11 @@ define('plone-patterns-toolbar',[
         }
       });
     },
-    setupDesktop: function(){
+    setupDesktop: function() {
       var that = this;
-      if(that.state.expanded){
+      if (that.state.expanded){
         $('body').addClass(that.options.classNames.expanded);
-      }else{
+      }else {
         $('body').removeClass(that.options.classNames.expanded);
       }
 
@@ -12377,18 +12878,18 @@ define('plone-patterns-toolbar',[
         event.preventDefault();
         event.stopPropagation();
         var hasClass = $this.hasClass(active_class);
-        var $more_subset = $this.parent("#plone-toolbar-more-subset");
+        var $more_subset = $this.parent('#plone-toolbar-more-subset');
         if ($more_subset.length) {
           // close only the content menus from the subset, keeping the toolbar more list active
           $more_subset.find('li').filter('[id*="contentmenu-"]').removeClass(active_class);
         }
         else {
           // close existing opened contentmenus
-          $('.' + active_class + '> ul', that.$container).attr("aria-hidden", "true");
+          $('.' + active_class + '> ul', that.$container).attr('aria-hidden', 'true');
           $('.' + active_class, that.$container).removeClass(active_class);
           // we need to close the more subset as well not just the content-menus
           // when we click on the personal bar
-          $("#plone-toolbar-more-subset").hide();
+          $('#plone-toolbar-more-subset').hide();
         }
         $('nav li > ul', $(this)).css({'margin-top': ''}); // unset this so we get fly-in affect
         if (!hasClass) {
@@ -12405,19 +12906,19 @@ define('plone-patterns-toolbar',[
         // is visible which enlarges the nav. In this case we want to hide the
         // active lists because the user assumes that he targeted an element outside
         // the edit-bar
-        if (!$el.length || $el.prop("tagName") === "NAV") {
-          $('nav > ul > li', that.$container).each(function(key, element){
+        if (!$el.length || $el.prop('tagName') === 'NAV') {
+          $('nav > ul > li', that.$container).each(function(key, element) {
             $(element).removeClass(that.options.classNames.active);
           });
           // we need to close the more subset as well not just the content-menus
           // when we click on the body area
-          $("#plone-toolbar-more-subset").hide();
+          $('#plone-toolbar-more-subset').hide();
         }
       });
       that.setHeight();
     },
-    padPulloutContent: function($li){
-      if(!this.state.left || !this.isDesktop()){
+    padPulloutContent: function($li) {
+      if (!this.state.left || !this.isDesktop()){
         // only when on left
         return;
       }
@@ -12434,12 +12935,12 @@ define('plone-patterns-toolbar',[
       $content.css({
         'margin-top': Math.min(itemLocation, height - insideHeight)
       });
-      $content.attr("aria-hidden", "false");
+      $content.attr('aria-hidden', 'false');
     },
-    isDesktop: function(){
+    isDesktop: function() {
       return $(window).width() > '768';
     },
-    _setHeight: function(){
+    _setHeight: function() {
       var $items = $('.plone-toolbar-main', this.$container);
       $items.css({height: ''});
       var natualHeight = $items.outerHeight();
@@ -12451,7 +12952,7 @@ define('plone-patterns-toolbar',[
       var height = $(window).height() - $('#personal-bar-container').height() -
         $('.plone-toolbar-logo').height();
 
-      if(height < natualHeight){
+      if (height < natualHeight) {
         /* add scroll buttons */
         var $scrollUp = $('<li class="scroll-btn up"><a href="#"><span class="icon-up"></span><span>&nbsp;</span></a></li>');
         var $scrollDown = $('<li class="scroll-btn down"><a href="#"><span class="icon-down"></span><span>&nbsp;</span></a></li>');
@@ -12462,33 +12963,33 @@ define('plone-patterns-toolbar',[
         $items.css({
           'padding-top': $scrollUp.height()
         });
-        $scrollUp.click(function(e){
+        $scrollUp.click(function(e) {
           e.preventDefault();
           $items.scrollTop($items.scrollTop() - 50);
         });
-        $scrollDown.click(function(e){
+        $scrollDown.click(function(e) {
           e.preventDefault();
           $items.scrollTop($items.scrollTop() + 50);
         });
       }
       /* if there is active, make sure to reposition */
       var $active = $('li.active ul:visible', this.$container);
-      if($active.size() > 0){
+      if ($active.size() > 0){
         this.padPulloutContent($active);
       }
     },
-    setHeight: function(){
-      if(!this.state.left || !this.isDesktop()){
+    setHeight: function() {
+      if (!this.state.left || !this.isDesktop()){
         // only when on left
         return;
       }
       var that = this;
       clearTimeout(that.heightTimeout);
-      that.heightTimeout = setTimeout(function(){
+      that.heightTimeout = setTimeout(function() {
         that._setHeight();
       }, 50);
     },
-    setState: function(state){
+    setState: function(state) {
       var that = this;
       that.state = $.extend({}, that.state, state);
       /* only cookie configurable attribute is expanded or contracted */
@@ -12505,7 +13006,7 @@ define('plone-patterns-toolbar',[
       if (view_should_move) {
         for (i = length; length >= 0; length -= 1) {
           $content_view = $views.eq(i);
-          if ($content_view.is(":hidden")) {
+          if ($content_view.is(':hidden')) {
             continue;
           }
           $content_view.hide().clone(true, true).appendTo($subset).show();
@@ -12515,19 +13016,19 @@ define('plone-patterns-toolbar',[
         }
       }
     },
-    hideElements: function(){
+    hideElements: function() {
       var that = this;
-      if(this.state.left){
+      if (this.state.left){
         // only when on top
         return;
       }
       var w = $('.plone-toolbar-container').width(),
           wtc = $('.plone-toolbar-logo').width();
-      var $plone_toolbar_main =  $( ".plone-toolbar-main");
-      var $toolbar_menus = $plone_toolbar_main.find("> li" );
+      var $plone_toolbar_main =  $( '.plone-toolbar-main');
+      var $toolbar_menus = $plone_toolbar_main.find('> li' );
       $toolbar_menus.each(function() {
           wtc += $(this).width();
-      });
+        });
       var $pers_bar_container = $('#personal-bar-container');
       $pers_bar_container.find('> li').each(function() {
         wtc += $(this).width();
@@ -12538,7 +13039,7 @@ define('plone-patterns-toolbar',[
       var $content_views = $toolbar_menus.filter('[id^="contentview-"]');
       if (w < wtc) {
         if (!($toolbar_more_options.length)) {
-          (function(){
+          (function() {
             $content_menus.hide();
             $toolbar_more_options = $('<li id="plone-toolbar-more-options"><a href="#"><span class="icon-moreOptions" aria-hidden="true"></span><span>' + _t('More') + '</span><span class="plone-toolbar-caret"></span></a></li>');
             $plone_toolbar_main.append($toolbar_more_options);
@@ -12552,13 +13053,13 @@ define('plone-patterns-toolbar',[
 
             that.cloneViewsIntoSubset($pers_bar_container, $content_views, $toolbar_more_subset);
             var active_class = that.options.classNames.active;
-            $toolbar_more_options.find('a').on('click', function(event){
+            $toolbar_more_options.find('a').on('click', function(event) {
               // close existing opened contentmenus
               $('.' + active_class, that.$container).removeClass(active_class);
 
               var $more_list = $(this).parent();
               // properly toggle active class for toolbar_more list item
-              $more_list.toggleClass('active', $toolbar_more_subset.is(":hidden"));
+              $more_list.toggleClass('active', $toolbar_more_subset.is(':hidden'));
               $toolbar_more_subset.toggle();
               event.preventDefault();
             });
@@ -12572,7 +13073,7 @@ define('plone-patterns-toolbar',[
       // check if the personal toolbar is not offseted if there isn't enough space
       // and we already have the plone-toolbar-more-options added to the page.
       if ($pers_bar_container[0].offsetTop !== 0) {
-        that.cloneViewsIntoSubset($pers_bar_container, $content_views, $("#plone-toolbar-more-subset"));
+        that.cloneViewsIntoSubset($pers_bar_container, $content_views, $('#plone-toolbar-more-subset'));
       }
     },
     init: function () {
@@ -12584,10 +13085,10 @@ define('plone-patterns-toolbar',[
         expanded: true,
         left: $('body').hasClass(that.options.classNames.left)
       };
-      if(toolbar_cookie){
-        try{
+      if (toolbar_cookie){
+        try {
           that.state = $.extend({}, that.state, $.parseJSON(toolbar_cookie));
-        }catch(e){
+        }catch (e){
           // ignore
         }
       }
@@ -12609,14 +13110,14 @@ define('plone-patterns-toolbar',[
       $('body').off('structure-url-changed').on('structure-url-changed', function (e, path) {
         $.ajax({
           url: $('body').attr('data-portal-url') + path + '/@@render-toolbar'
-        }).done(function(data){
+        }).done(function(data) {
           var $el = $(utils.parseBodyTag(data));
           that.$el.replaceWith($el);
           Registry.scan($el);
         });
       });
 
-      $(window).on('resize', function(){
+      $(window).on('resize', function() {
         if (that.isDesktop()){
           that.setupDesktop();
           if (!that.state.left) {
@@ -12841,9 +13342,8 @@ define('mockup-patterns-autotoc',[
  */
 
 define('mockup-patterns-cookietrigger',[
-  'jquery',
   'pat-base'
-], function ($, Base) {
+], function (Base) {
   'use strict';
 
   var CookieTrigger = Base.extend({
@@ -14970,13 +15470,10 @@ define('mockup-patterns-backdrop',[
 
 /* Pattern router
  */
-
-
 define('mockup-router',[
-  'jquery',
   'underscore',
   'backbone'
-], function($, _, Backbone) {
+], function(_, Backbone) {
   'use strict';
 
   var regexEscape = function(s) {
@@ -16735,9 +17232,6 @@ define('mockup-patterns-modal',[
             $(e.target).trigger('destroy.plone-modal.patterns');
           });
 
-        // cleanup html
-        $('.row', self.$modal).removeClass('row');
-
         // form
         if (options.form) {
           options.form.apply(self, [options.actions]);
@@ -17190,7 +17684,7 @@ define('mockup-patterns-livesearch',[
   'pat-base',
   'underscore',
   'translate'
-], function ($, Base, _, _t){
+], function ($, Base, _, _t) {
   'use strict';
 
   var Livesearch = Base.extend({
@@ -17740,6 +18234,9 @@ define('mockup-patterns-moment',[
       if (!date) {
         date = $.trim($el.html());
       }
+      if (!date || date === 'None') {
+        return;
+      }
       moment.locale([(new i18n()).currentLanguage, 'en']);
       date = moment(date);
       if (!date.isValid()) {
@@ -17779,7 +18276,7 @@ define('mockup-patterns-moment',[
 define("bootstrap-dropdown", ["jquery"], function() {
   return (function() {
 /* ========================================================================
- * Bootstrap: dropdown.js v3.3.4
+ * Bootstrap: dropdown.js v3.3.6
  * http://getbootstrap.com/javascript/#dropdowns
  * ========================================================================
  * Copyright 2011-2015 Twitter, Inc.
@@ -17799,7 +18296,41 @@ define("bootstrap-dropdown", ["jquery"], function() {
     $(element).on('click.bs.dropdown', this.toggle)
   }
 
-  Dropdown.VERSION = '3.3.4'
+  Dropdown.VERSION = '3.3.6'
+
+  function getParent($this) {
+    var selector = $this.attr('data-target')
+
+    if (!selector) {
+      selector = $this.attr('href')
+      selector = selector && /#[A-Za-z]/.test(selector) && selector.replace(/.*(?=#[^\s]*$)/, '') // strip for ie7
+    }
+
+    var $parent = selector && $(selector)
+
+    return $parent && $parent.length ? $parent : $this.parent()
+  }
+
+  function clearMenus(e) {
+    if (e && e.which === 3) return
+    $(backdrop).remove()
+    $(toggle).each(function () {
+      var $this         = $(this)
+      var $parent       = getParent($this)
+      var relatedTarget = { relatedTarget: this }
+
+      if (!$parent.hasClass('open')) return
+
+      if (e && e.type == 'click' && /input|textarea/i.test(e.target.tagName) && $.contains($parent[0], e.target)) return
+
+      $parent.trigger(e = $.Event('hide.bs.dropdown', relatedTarget))
+
+      if (e.isDefaultPrevented()) return
+
+      $this.attr('aria-expanded', 'false')
+      $parent.removeClass('open').trigger($.Event('hidden.bs.dropdown', relatedTarget))
+    })
+  }
 
   Dropdown.prototype.toggle = function (e) {
     var $this = $(this)
@@ -17814,7 +18345,10 @@ define("bootstrap-dropdown", ["jquery"], function() {
     if (!isActive) {
       if ('ontouchstart' in document.documentElement && !$parent.closest('.navbar-nav').length) {
         // if mobile we use a backdrop because click events don't delegate
-        $('<div class="dropdown-backdrop"/>').insertAfter($(this)).on('click', clearMenus)
+        $(document.createElement('div'))
+          .addClass('dropdown-backdrop')
+          .insertAfter($(this))
+          .on('click', clearMenus)
       }
 
       var relatedTarget = { relatedTarget: this }
@@ -17828,7 +18362,7 @@ define("bootstrap-dropdown", ["jquery"], function() {
 
       $parent
         .toggleClass('open')
-        .trigger('shown.bs.dropdown', relatedTarget)
+        .trigger($.Event('shown.bs.dropdown', relatedTarget))
     }
 
     return false
@@ -17847,55 +18381,23 @@ define("bootstrap-dropdown", ["jquery"], function() {
     var $parent  = getParent($this)
     var isActive = $parent.hasClass('open')
 
-    if ((!isActive && e.which != 27) || (isActive && e.which == 27)) {
+    if (!isActive && e.which != 27 || isActive && e.which == 27) {
       if (e.which == 27) $parent.find(toggle).trigger('focus')
       return $this.trigger('click')
     }
 
     var desc = ' li:not(.disabled):visible a'
-    var $items = $parent.find('[role="menu"]' + desc + ', [role="listbox"]' + desc)
+    var $items = $parent.find('.dropdown-menu' + desc)
 
     if (!$items.length) return
 
     var index = $items.index(e.target)
 
-    if (e.which == 38 && index > 0)                 index--                        // up
-    if (e.which == 40 && index < $items.length - 1) index++                        // down
-    if (!~index)                                      index = 0
+    if (e.which == 38 && index > 0)                 index--         // up
+    if (e.which == 40 && index < $items.length - 1) index++         // down
+    if (!~index)                                    index = 0
 
     $items.eq(index).trigger('focus')
-  }
-
-  function clearMenus(e) {
-    if (e && e.which === 3) return
-    $(backdrop).remove()
-    $(toggle).each(function () {
-      var $this         = $(this)
-      var $parent       = getParent($this)
-      var relatedTarget = { relatedTarget: this }
-
-      if (!$parent.hasClass('open')) return
-
-      $parent.trigger(e = $.Event('hide.bs.dropdown', relatedTarget))
-
-      if (e.isDefaultPrevented()) return
-
-      $this.attr('aria-expanded', 'false')
-      $parent.removeClass('open').trigger('hidden.bs.dropdown', relatedTarget)
-    })
-  }
-
-  function getParent($this) {
-    var selector = $this.attr('data-target')
-
-    if (!selector) {
-      selector = $this.attr('href')
-      selector = selector && /#[A-Za-z]/.test(selector) && selector.replace(/.*(?=#[^\s]*$)/, '') // strip for ie7
-    }
-
-    var $parent = selector && $(selector)
-
-    return $parent && $parent.length ? $parent : $this.parent()
   }
 
 
@@ -17935,8 +18437,7 @@ define("bootstrap-dropdown", ["jquery"], function() {
     .on('click.bs.dropdown.data-api', '.dropdown form', function (e) { e.stopPropagation() })
     .on('click.bs.dropdown.data-api', toggle, Dropdown.prototype.toggle)
     .on('keydown.bs.dropdown.data-api', toggle, Dropdown.prototype.keydown)
-    .on('keydown.bs.dropdown.data-api', '[role="menu"]', Dropdown.prototype.keydown)
-    .on('keydown.bs.dropdown.data-api', '[role="listbox"]', Dropdown.prototype.keydown)
+    .on('keydown.bs.dropdown.data-api', '.dropdown-menu', Dropdown.prototype.keydown)
 
 }(jQuery);
 
@@ -17949,7 +18450,7 @@ define("bootstrap-dropdown", ["jquery"], function() {
 define("bootstrap-collapse", ["jquery"], function() {
   return (function() {
 /* ========================================================================
- * Bootstrap: collapse.js v3.3.4
+ * Bootstrap: collapse.js v3.3.6
  * http://getbootstrap.com/javascript/#collapse
  * ========================================================================
  * Copyright 2011-2015 Twitter, Inc.
@@ -17979,7 +18480,7 @@ define("bootstrap-collapse", ["jquery"], function() {
     if (this.options.toggle) this.toggle()
   }
 
-  Collapse.VERSION  = '3.3.4'
+  Collapse.VERSION  = '3.3.6'
 
   Collapse.TRANSITION_DURATION = 350
 
@@ -18169,7 +18670,7 @@ return window.jQuery.fn.collapse.Constructor;
 define("bootstrap-tooltip", ["jquery"], function() {
   return (function() {
 /* ========================================================================
- * Bootstrap: tooltip.js v3.3.4
+ * Bootstrap: tooltip.js v3.3.6
  * http://getbootstrap.com/javascript/#tooltip
  * Inspired by the original jQuery.tipsy by Jason Frame
  * ========================================================================
@@ -18191,11 +18692,12 @@ define("bootstrap-tooltip", ["jquery"], function() {
     this.timeout    = null
     this.hoverState = null
     this.$element   = null
+    this.inState    = null
 
     this.init('tooltip', element, options)
   }
 
-  Tooltip.VERSION  = '3.3.4'
+  Tooltip.VERSION  = '3.3.6'
 
   Tooltip.TRANSITION_DURATION = 150
 
@@ -18220,7 +18722,8 @@ define("bootstrap-tooltip", ["jquery"], function() {
     this.type      = type
     this.$element  = $(element)
     this.options   = this.getOptions(options)
-    this.$viewport = this.options.viewport && $(this.options.viewport.selector || this.options.viewport)
+    this.$viewport = this.options.viewport && $($.isFunction(this.options.viewport) ? this.options.viewport.call(this, this.$element) : (this.options.viewport.selector || this.options.viewport))
+    this.inState   = { click: false, hover: false, focus: false }
 
     if (this.$element[0] instanceof document.constructor && !this.options.selector) {
       throw new Error('`selector` option must be specified when initializing ' + this.type + ' on the window.document object!')
@@ -18279,14 +18782,18 @@ define("bootstrap-tooltip", ["jquery"], function() {
     var self = obj instanceof this.constructor ?
       obj : $(obj.currentTarget).data('bs.' + this.type)
 
-    if (self && self.$tip && self.$tip.is(':visible')) {
-      self.hoverState = 'in'
-      return
-    }
-
     if (!self) {
       self = new this.constructor(obj.currentTarget, this.getDelegateOptions())
       $(obj.currentTarget).data('bs.' + this.type, self)
+    }
+
+    if (obj instanceof $.Event) {
+      self.inState[obj.type == 'focusin' ? 'focus' : 'hover'] = true
+    }
+
+    if (self.tip().hasClass('in') || self.hoverState == 'in') {
+      self.hoverState = 'in'
+      return
     }
 
     clearTimeout(self.timeout)
@@ -18300,6 +18807,14 @@ define("bootstrap-tooltip", ["jquery"], function() {
     }, self.options.delay.show)
   }
 
+  Tooltip.prototype.isInStateTrue = function () {
+    for (var key in this.inState) {
+      if (this.inState[key]) return true
+    }
+
+    return false
+  }
+
   Tooltip.prototype.leave = function (obj) {
     var self = obj instanceof this.constructor ?
       obj : $(obj.currentTarget).data('bs.' + this.type)
@@ -18308,6 +18823,12 @@ define("bootstrap-tooltip", ["jquery"], function() {
       self = new this.constructor(obj.currentTarget, this.getDelegateOptions())
       $(obj.currentTarget).data('bs.' + this.type, self)
     }
+
+    if (obj instanceof $.Event) {
+      self.inState[obj.type == 'focusout' ? 'focus' : 'hover'] = false
+    }
+
+    if (self.isInStateTrue()) return
 
     clearTimeout(self.timeout)
 
@@ -18355,6 +18876,7 @@ define("bootstrap-tooltip", ["jquery"], function() {
         .data('bs.' + this.type, this)
 
       this.options.container ? $tip.appendTo(this.options.container) : $tip.insertAfter(this.$element)
+      this.$element.trigger('inserted.bs.' + this.type)
 
       var pos          = this.getPosition()
       var actualWidth  = $tip[0].offsetWidth
@@ -18362,13 +18884,12 @@ define("bootstrap-tooltip", ["jquery"], function() {
 
       if (autoPlace) {
         var orgPlacement = placement
-        var $container   = this.options.container ? $(this.options.container) : this.$element.parent()
-        var containerDim = this.getPosition($container)
+        var viewportDim = this.getPosition(this.$viewport)
 
-        placement = placement == 'bottom' && pos.bottom + actualHeight > containerDim.bottom ? 'top'    :
-                    placement == 'top'    && pos.top    - actualHeight < containerDim.top    ? 'bottom' :
-                    placement == 'right'  && pos.right  + actualWidth  > containerDim.width  ? 'left'   :
-                    placement == 'left'   && pos.left   - actualWidth  < containerDim.left   ? 'right'  :
+        placement = placement == 'bottom' && pos.bottom + actualHeight > viewportDim.bottom ? 'top'    :
+                    placement == 'top'    && pos.top    - actualHeight < viewportDim.top    ? 'bottom' :
+                    placement == 'right'  && pos.right  + actualWidth  > viewportDim.width  ? 'left'   :
+                    placement == 'left'   && pos.left   - actualWidth  < viewportDim.left   ? 'right'  :
                     placement
 
         $tip
@@ -18409,8 +18930,8 @@ define("bootstrap-tooltip", ["jquery"], function() {
     if (isNaN(marginTop))  marginTop  = 0
     if (isNaN(marginLeft)) marginLeft = 0
 
-    offset.top  = offset.top  + marginTop
-    offset.left = offset.left + marginLeft
+    offset.top  += marginTop
+    offset.left += marginLeft
 
     // $.fn.offset doesn't round pixel values
     // so we use setOffset directly with our own function B-0
@@ -18492,7 +19013,7 @@ define("bootstrap-tooltip", ["jquery"], function() {
 
   Tooltip.prototype.fixTitle = function () {
     var $e = this.$element
-    if ($e.attr('title') || typeof ($e.attr('data-original-title')) != 'string') {
+    if ($e.attr('title') || typeof $e.attr('data-original-title') != 'string') {
       $e.attr('data-original-title', $e.attr('title') || '').attr('title', '')
     }
   }
@@ -18547,7 +19068,7 @@ define("bootstrap-tooltip", ["jquery"], function() {
       var rightEdgeOffset = pos.left + viewportPadding + actualWidth
       if (leftEdgeOffset < viewportDimensions.left) { // left overflow
         delta.left = viewportDimensions.left - leftEdgeOffset
-      } else if (rightEdgeOffset > viewportDimensions.width) { // right overflow
+      } else if (rightEdgeOffset > viewportDimensions.right) { // right overflow
         delta.left = viewportDimensions.left + viewportDimensions.width - rightEdgeOffset
       }
     }
@@ -18573,7 +19094,13 @@ define("bootstrap-tooltip", ["jquery"], function() {
   }
 
   Tooltip.prototype.tip = function () {
-    return (this.$tip = this.$tip || $(this.options.template))
+    if (!this.$tip) {
+      this.$tip = $(this.options.template)
+      if (this.$tip.length != 1) {
+        throw new Error(this.type + ' `template` option must consist of exactly 1 top-level element!')
+      }
+    }
+    return this.$tip
   }
 
   Tooltip.prototype.arrow = function () {
@@ -18602,7 +19129,13 @@ define("bootstrap-tooltip", ["jquery"], function() {
       }
     }
 
-    self.tip().hasClass('in') ? self.leave(self) : self.enter(self)
+    if (e) {
+      self.inState.click = !self.inState.click
+      if (self.isInStateTrue()) self.enter(self)
+      else self.leave(self)
+    } else {
+      self.tip().hasClass('in') ? self.leave(self) : self.enter(self)
+    }
   }
 
   Tooltip.prototype.destroy = function () {
@@ -18610,6 +19143,12 @@ define("bootstrap-tooltip", ["jquery"], function() {
     clearTimeout(this.timeout)
     this.hide(function () {
       that.$element.off('.' + that.type).removeData('bs.' + that.type)
+      if (that.$tip) {
+        that.$tip.detach()
+      }
+      that.$tip = null
+      that.$arrow = null
+      that.$viewport = null
     })
   }
 
@@ -18720,5 +19259,5 @@ require([
 
 });
 
-define("Products.CMFPlone/Products/CMFPlone/static/plone.js", function(){});
+define("/home/thet-data/data/dev/plone/buildout.coredev/src/Products.CMFPlone/Products/CMFPlone/static/plone.js", function(){});
 

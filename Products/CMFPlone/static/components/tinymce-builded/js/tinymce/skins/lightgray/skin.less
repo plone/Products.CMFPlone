@@ -19,7 +19,9 @@
 @text-inverse:                   white;
 @text-disabled:                  #aaa;
 @text-shadow:                    0 1px 1px hsla(hue(@text-inverse), saturation(@text-inverse), lightness(@text-inverse), 0.75);
-@text-error:                     #aa0000;
+@text-error:                     #b94a48;
+@text-warning:                   #c09853;
+@text-success:                   #468847;
 
 // Button
 @btn-text:                       @text;
@@ -113,6 +115,23 @@
 @notification-error-border:      #ebccd1;
 @notification-error-text:        #a94442;
 
+// Infobox
+@infobox-bg:                     @notification-bg;
+@infobox-border:                 @notification-border;
+@infobox-text:                   @notification-text;
+@infobox-success-bg:             @notification-success-bg;
+@infobox-success-border:         @notification-success-border;
+@infobox-success-text:           @notification-success-text;
+@infobox-info-bg:                @notification-info-bg;
+@infobox-info-border:            @notification-info-border;
+@infobox-info-text:              @notification-info-text;
+@infobox-warning-bg:             @notification-warning-bg;
+@infobox-warning-border:         @notification-warning-border;
+@infobox-warning-text:           @notification-warning-text;
+@infobox-error-bg:               @notification-error-bg;
+@infobox-error-border:           @notification-error-border;
+@infobox-error-text:             @notification-error-text;
+
 // Window
 @window-border:                  #c5c5c5;
 @window-head-border:             @window-border;
@@ -185,6 +204,7 @@
 @slider-bg:                      #EEE;
 @slider-handle-border:           #BBB;
 @slider-handle-bg:               #DDD;
+@slider-handle-bg-focus:         #BBB;
 
 // Progress
 @progress-border:                #ccc;
@@ -514,6 +534,14 @@ div.@{prefix}-tinymce-inline {
 	background: black;
 }
 
+.@{prefix}-croprect-handle:focus {
+	border-color: @textbox-border-focus;
+}
+
+.@{prefix}-croprect-handle-move:focus {
+	outline: 1px solid @textbox-border-focus;
+}
+
 
 // ImagePanel
 
@@ -534,6 +562,83 @@ div.@{prefix}-tinymce-inline {
 	line-height: 20px;
 	font-size: 20px;
 	padding: 5px;
+}
+
+
+// Arrows
+
+.@{prefix}-arrow-up {
+	margin-top: 3px;
+}
+
+.@{prefix}-arrow-down {
+	margin-top: -3px;
+}
+
+.@{prefix}-arrow:before,
+.@{prefix}-arrow:after {
+	position: absolute;
+	left: 50%;
+	display: block;
+	width: 0;
+	height: 0;
+	border-style: solid;
+	border-color: transparent;
+	content: "";
+}
+
+.@{prefix}-arrow.@{prefix}-arrow-up:before {
+	top: -9px;
+	border-bottom-color: @panel-border;
+	border-width: 0 9px 9px;
+	margin-left: -9px;
+}
+
+.@{prefix}-arrow.@{prefix}-arrow-down:before {
+	bottom: -9px;
+	border-top-color: @panel-border;
+	border-width: 9px 9px 0;
+	margin-left: -9px;
+}
+
+.@{prefix}-arrow.@{prefix}-arrow-up:after {
+	top: -8px;
+	border-bottom-color: mix(@panel-bg, @panel-bg-hlight, 60%);
+	border-width: 0 8px 8px;
+	margin-left: -8px;
+}
+
+.@{prefix}-arrow.@{prefix}-arrow-down:after {
+	bottom: -8px;
+	border-top-color: mix(@panel-bg, @panel-bg-hlight, 60%);
+	border-width: 8px 8px 0;
+	margin-left: -8px;
+}
+
+.@{prefix}-arrow.@{prefix}-arrow-left:before,
+.@{prefix}-arrow.@{prefix}-arrow-left:after {
+	margin: 0;
+}
+
+.@{prefix}-arrow.@{prefix}-arrow-left:before {
+	left: 20px;
+}
+.@{prefix}-arrow.@{prefix}-arrow-left:after {
+	left: 21px;
+}
+
+.@{prefix}-arrow.@{prefix}-arrow-right:before,
+.@{prefix}-arrow.@{prefix}-arrow-right:after {
+	left: auto;
+	margin: 0;
+}
+
+.@{prefix}-arrow.@{prefix}-arrow-right:before {
+	right: 20px;
+}
+
+.@{prefix}-arrow.@{prefix}-arrow-right:after {
+	right: 21px;
 }
 
 
@@ -710,10 +815,12 @@ div.@{prefix}-fullscreen {
 	position: fixed;
 	top: 0; left: 0;
 	opacity: 0;
-	.transition(opacity 150ms ease-in);
+	transform: scale(0.1);
+	transition: transform 100ms ease-in, opacity 150ms ease-in;
 }
 
 .@{prefix}-window.@{prefix}-in {
+	transform: scale(1);
 	opacity: 1;
 }
 
@@ -725,20 +832,19 @@ div.@{prefix}-fullscreen {
 
 .@{prefix}-window-head .@{prefix}-close {
 	position: absolute;
-	right: 15px;
-	top: 9px;
-	font-size: 20px;
-	font-weight: bold;
-	line-height: 20px;
-	color: @window-head-close;
+	right: 0;
+	top: 0;
+	height: 38px;
+	width: 38px;
+	text-align: center;
 	cursor: pointer;
 
-	// IE7
-	height: 20px;
-	overflow: hidden;
+	i {
+		color: @window-head-close;
+	}
 }
 
-.@{prefix}-close:hover {
+.@{prefix}-close:hover i {
 	color: @window-head-close-hover;
 }
 
@@ -747,7 +853,7 @@ div.@{prefix}-fullscreen {
 	font-size: @window-title-font-size;
 	font-weight: bold;
 	text-rendering: optimizelegibility;
-	padding-right: 10px;
+	padding-right: 20px;
 }
 
 .@{prefix}-window .@{prefix}-container-body {
@@ -975,10 +1081,17 @@ div.@{prefix}-fullscreen {
 	background-color: @notification-bg;
 	padding: 5px;
 	margin-top: 5px;
-	.opacity(0.8);
 	border-width: 1px;
 	border-style: solid;
 	border-color: @notification-border;
+	transform: scale(0.1);
+	transition: transform 100ms ease-in, opacity 150ms ease-in;
+	opacity: 0;
+}
+
+.@{prefix}-notification.@{prefix}-in {
+	opacity: 1;
+	transform: scale(1);
 }
 
 .@{prefix}-notification-success {
@@ -1748,6 +1861,79 @@ i.@{prefix}-i-checkbox {
 }
 
 
+// InfoBox
+
+.@{prefix}-infobox {
+	.inline-block();
+	text-shadow: @text-shadow;
+	overflow: hidden;
+  border: 1px solid red;
+
+  div {
+    display: block;
+    margin: 5px;
+
+    button {
+      position: absolute;
+      top: 50%; right: 4px;
+      cursor: pointer;
+      margin-top: -8px;
+      display: none;
+    }
+
+		button:focus {
+      outline: 2px solid @btn-border-hover;
+    }
+  }
+}
+
+.@{prefix}-infobox.@{prefix}-has-help {
+  div {
+    margin-right: 25px;
+  }
+
+  button {
+    display: block;
+  }
+}
+
+.@{prefix}-infobox.@{prefix}-success {
+  background: @infobox-success-bg;
+  border-color: @infobox-success-border;
+
+  div {
+    color: @infobox-success-text;
+  }
+}
+
+.@{prefix}-infobox.@{prefix}-warning {
+  background: @infobox-warning-bg;
+  border-color: @infobox-warning-border;
+
+  div {
+    color: @infobox-warning-text;
+  }
+}
+
+.@{prefix}-infobox.@{prefix}-error {
+  background: @infobox-error-bg;
+  border-color: @infobox-error-border;
+
+  div {
+    color: @infobox-error-text;
+  }
+}
+
+// RTL
+
+.@{prefix}-rtl .@{prefix}-infobox {
+  div {
+  	text-align: right;
+  	direction: rtl;
+  }
+}
+
+
 // Label
 
 .@{prefix}-label {
@@ -1766,6 +1952,14 @@ i.@{prefix}-i-checkbox {
 
 .@{prefix}-label.@{prefix}-multiline {
 	white-space: pre-wrap;
+}
+
+.@{prefix}-label.@{prefix}-success {
+	color: @text-success;
+}
+
+.@{prefix}-label.@{prefix}-warning {
+	color: @text-warning;
 }
 
 .@{prefix}-label.@{prefix}-error {
@@ -2140,6 +2334,10 @@ i.@{prefix}-i-resize {
 	margin-top: -2px;
 }
 
+.@{prefix}-slider-handle:focus {
+	background: @slider-handle-bg-focus;
+}
+
 
 // Spacer
 
@@ -2388,7 +2586,6 @@ i.@{prefix}-i-resize {
 .@{prefix}-i-template:before             { content: "\e026"; }
 .@{prefix}-i-pagebreak:before            { content: "\e027"; }
 .@{prefix}-i-restoredraft:before         { content: "\e028"; }
-.@{prefix}-i-untitled:before             { content: "\e029"; }
 .@{prefix}-i-bold:before                 { content: "\e02a"; }
 .@{prefix}-i-italic:before               { content: "\e02b"; }
 .@{prefix}-i-underline:before            { content: "\e02c"; }
@@ -2404,7 +2601,7 @@ i.@{prefix}-i-resize {
 .@{prefix}-i-rotateleft:before           { content: "\eaa8"; }
 .@{prefix}-i-rotateright:before          { content: "\eaa9"; }
 .@{prefix}-i-crop:before                 { content: "\ee78"; }
-.@{prefix}-i-editimage:before            { content: "\e914"; }
+.@{prefix}-i-editimage:before            { content: "\e915"; }
 .@{prefix}-i-options:before              { content: "\ec6a"; }
 .@{prefix}-i-flipv:before                { content: "\eaaa"; }
 .@{prefix}-i-fliph:before                { content: "\eaac"; }
@@ -2413,11 +2610,10 @@ i.@{prefix}-i-resize {
 .@{prefix}-i-sun:before                  { content: "\eccc"; }
 .@{prefix}-i-moon:before                 { content: "\eccd"; }
 .@{prefix}-i-arrowleft:before            { content: "\edc0"; }
-.@{prefix}-i-arrowright:before           { content: "\edb8"; }
-.@{prefix}-i-drop:before                 { content: "\e934"; }
+.@{prefix}-i-arrowright:before           { content: "\e93c"; }
+.@{prefix}-i-drop:before                 { content: "\e935"; }
 .@{prefix}-i-contrast:before             { content: "\ecd4"; }
 .@{prefix}-i-sharpen:before              { content: "\eba7"; }
-.@{prefix}-i-palette:before              { content: "\e92a"; }
 .@{prefix}-i-resize2:before              { content: "\edf9"; }
 .@{prefix}-i-orientation:before          { content: "\e601"; }
 .@{prefix}-i-invert:before               { content: "\e602"; }
@@ -2438,6 +2634,36 @@ i.@{prefix}-i-resize {
 .@{prefix}-i-tabledeleterow:before       { content: "\e800"; }
 .@{prefix}-i-tabledeletecol:before       { content: "\e801"; }
 .@{prefix}-i-codesample:before           { content: "\e603"; }
+.@{prefix}-i-fill:before                 { content: "\e902"; }
+.@{prefix}-i-borderwidth:before          { content: "\e903"; }
+.@{prefix}-i-line:before                 { content: "\e904"; }
+.@{prefix}-i-count:before                { content: "\e905"; }
+.@{prefix}-i-translate:before            { content: "\e907"; }
+.@{prefix}-i-drag:before                 { content: "\e908"; }
+.@{prefix}-i-home:before                 { content: "\e90b"; }
+.@{prefix}-i-upload:before               { content: "\e914"; }
+.@{prefix}-i-bubble:before               { content: "\e91c"; }
+.@{prefix}-i-user:before                 { content: "\e91d"; }
+.@{prefix}-i-lock:before                 { content: "\e926"; }
+.@{prefix}-i-unlock:before               { content: "\e927"; }
+.@{prefix}-i-settings:before             { content: "\e928"; }
+.@{prefix}-i-remove2:before              { content: "\e92a"; }
+.@{prefix}-i-menu:before                 { content: "\e92d"; }
+.@{prefix}-i-warning:before              { content: "\e930"; }
+.@{prefix}-i-question:before             { content: "\e931"; }
+.@{prefix}-i-pluscircle:before           { content: "\e932"; }
+.@{prefix}-i-info:before                 { content: "\e933"; }
+.@{prefix}-i-notice:before               { content: "\e934"; }
+.@{prefix}-i-arrowup:before              { content: "\e93b"; }
+.@{prefix}-i-arrowdown:before            { content: "\e93d"; }
+.@{prefix}-i-arrowup2:before             { content: "\e93f"; }
+.@{prefix}-i-arrowdown2:before           { content: "\e940"; }
+.@{prefix}-i-menu2:before                { content: "\e941"; }
+.@{prefix}-i-newtab:before               { content: "\e961"; }
+.@{prefix}-i-a11y:before                 { content: "\e900"; }
+.@{prefix}-i-plus:before                 { content: "\e93a"; }
+.@{prefix}-i-minus:before                { content: "\e939"; }
+.@{prefix}-i-books:before                { content: "\e911"; }
 .@{prefix}-i-checkbox:before, .@{prefix}-i-selected:before {
 	content: "\e033";
 }

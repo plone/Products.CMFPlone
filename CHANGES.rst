@@ -28,9 +28,12 @@ Breaking changes:
 
 New features:
 
+- Updated components directory, recompiled bundles.
+  [thet]
+
 - Align bower components with newest mockup + documentation updates on mockup update process.
   [thet]
-    
+
 - Ignore a bit more in ``.gitignores`` for CMPlones bower components.
   [thet]
 
