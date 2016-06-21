@@ -48,8 +48,15 @@ New features:
 - Allow to hide/show actions directly from the Actions control panel list
   [ebrehault]
 
-Fixes:
+
 Bug fixes:
+
+- Toolbar fixes:
+  - Autoformat with cssbrush and js-beautify,
+  - Remove ``git diff`` in line 105, which broke compilation.
+  - Use patternslib ``pat-base`` instead of ``mockup-patterns-base``.
+  - Remove dependency on deprecated ``mockup-core``.
+  [thet]
 
 - Removed docstrings from PropertyManager methods to avoid publishing them.  [maurits]
 

@@ -11,9 +11,8 @@ require.config({
         'requirejs-text': '../components/requirejs-text/text',
         selectivizr: '../components/selectivizr/selectivizr',
         underscore: '../components/underscore/underscore',
-        'mockup-core': '../components/mockup-core/Gruntfile',
         'pat-registry': '../components/patternslib/src/core/registry',
-        'mockup-patterns-base': '../components/mockup-core/js/pattern',
+        'pat-base': '../components/patternslib/src/core/base',
         'plone-patterns-toolbar': 'toolbar'
     }
 });
