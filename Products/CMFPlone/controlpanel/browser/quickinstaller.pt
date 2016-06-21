@@ -103,7 +103,7 @@
                           tal:attributes="value product/id;" />
                    </tal:products>
                    <span>
-                     <div i18n:translate="label_product_upgrade_all_action">This can be risky, Are you sure you want to do this?</div>
+                     <div i18n:translate="label_product_upgrade_all_action">This can be risky, are you sure you want to do this?</div>
                      <input class="context"
                             type="submit"
                             i18n:attributes="value"
