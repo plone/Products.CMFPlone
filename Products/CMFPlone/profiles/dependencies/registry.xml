@@ -143,14 +143,6 @@
   </record>
 
   <!-- mockup core reqs -->
-  <records prefix="plone.resources/mockup-registry"
-            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++plone++static/components/mockup-core/js/registry.js</value>
-  </records>
-  <records prefix="plone.resources/mockup-parser"
-            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++plone++static/components/mockup-core/js/parser.js</value>
-  </records>
   <records prefix="plone.resources/mockup-patterns-base"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/base/pattern.js</value>
@@ -919,6 +911,11 @@
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/logging/src/logging.js</value>
   </records>
+  <records prefix="plone.resources/jquery.browser"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/jquery.browser/dist/jquery.browser.js</value>
+      <value key="deps">jquery</value>
+  </records>
 
 
   <!-- recurrence widget registrations -->
@@ -1058,7 +1055,7 @@
     <value key="enabled">True</value>
     <value key="jscompilation">++plone++static/plone-compiled.min.js</value>
     <value key="csscompilation">++plone++static/plone-compiled.css</value>
-    <value key="last_compilation">2015-02-16 00:00:00</value>
+    <value key="last_compilation">2016-06-21 00:00:00</value>
     <value key="stub_js_modules">
       <element>jquery</element>
     </value>
@@ -1074,7 +1071,7 @@
     <value key="expression">python: member is not None</value>
     <value key="jscompilation">++plone++static/plone-logged-in-compiled.min.js</value>
     <value key="csscompilation">++plone++static/plone-logged-in-compiled.css</value>
-    <value key="last_compilation">2015-02-16 00:00:00</value>
+    <value key="last_compilation">2016-06-21 00:00:00</value>
     <value key="depends">plone</value>
     <value key="stub_js_modules">
       <element>backbone</element>

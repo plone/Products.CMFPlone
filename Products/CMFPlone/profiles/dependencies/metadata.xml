@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <metadata>
-  <version>3.1</version>
+  <version>4</version>
   <dependencies>
     <dependency>profile-Products.CMFFormController:CMFFormController</dependency>
     <dependency>profile-Products.MimetypesRegistry:MimetypesRegistry</dependency>

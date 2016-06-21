@@ -10,6 +10,10 @@ Changelog
 
 Breaking changes:
 
+- Remove deprecated resource registrations for ``mockup-parser`` and ``mockup-registry`` from mockup-core.
+  Use those from patternslib instead.
+  [thet]
+
 - ``plone-compile-resources``: Install ``grunt-cli`` instead of depending on an installed ``grunt`` executable.
   If you already have a auto-generated ``package.json`` file in buildout directory, remove it.
   [thet]
@@ -24,6 +28,12 @@ Breaking changes:
 
 New features:
 
+- Align bower components with newest mockup + documentation updates on mockup update process.
+  [thet]
+    
+- Ignore a bit more in ``.gitignores`` for CMPlones bower components.
+  [thet]
+
 - Added setting to editing controlpanel to enable limit of keywords to the current navigation root.
   [jensens]
 
@@ -32,6 +42,7 @@ New features:
 
 - Add link to training.plone.org
   [svx]
+
 - Allow to define multiple ``tinymce-content-css`` in theme ``manifest.cfg`` files, seperated by a comma.
   [thet]
 
@@ -50,6 +61,9 @@ New features:
 
 
 Bug fixes:
+
+- Add missing ``jquery.browser`` dependency which is needed by patternslib.
+  [thet]
 
 - Toolbar fixes:
   - Autoformat with cssbrush and js-beautify,
