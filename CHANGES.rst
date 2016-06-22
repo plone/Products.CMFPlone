@@ -65,6 +65,9 @@ New features:
 
 Bug fixes:
 
+- Fix select2 related robot test failures and give the test_tinymce.robot scenario a more unique name.
+  [thet]
+
 - Add missing ``jquery.browser`` dependency which is needed by patternslib.
   [thet]
 

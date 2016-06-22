@@ -25,8 +25,7 @@ Scenario: Location query
     Then we expect 3 hits
     When I open the Advanced operator in the Location criteria
     Then I expect to be in Advanced mode
-    When open the select box titled operator
-    and I open the Simple operator in the Location criteria
+    When I open the Simple operator in the Location criteria
     Then I expect to be in Simple mode
 
 *** Keywords ****************************************************************
@@ -57,8 +56,8 @@ I search in ${NAME} subfolder in the related items widget
     Click Element  jquery=.pattern-relateditems-tree-select
     Wait Until Element Is Visible  jquery=.pat-tree li.jqtree_common:contains("${NAME}") .pattern-relateditems-result-browse
     Click Element  jquery=.pat-tree li.jqtree_common:contains("${NAME}") .pattern-relateditems-result-browse
-    Wait Until Element Is Visible    css=.select2-highlighted a
-    Click Element  css=.select2-highlighted a
+    Wait Until Element Is Visible  css=li.select2-result-selectable a
+    Click Element  css=.select2-result-selectable
 
 I expect to be in Advanced mode
     open the select box titled operator
@@ -66,6 +65,8 @@ I expect to be in Advanced mode
     Element Should Contain  jquery=.select2-drop-active[style*="display: block;"]   Absolute Path
     Element Should Contain  jquery=.select2-drop-active[style*="display: block;"]   Relative Path
     Element Should Contain  jquery=.select2-drop-active[style*="display: block;"]   Simple Mode
+    Click Element  css=body
+    Sleep  1
 
 I expect to be in Simple mode
     open the select box titled operator
@@ -73,9 +74,10 @@ I expect to be in Simple mode
     Element Should Contain  jquery=.select2-drop-active[style*="display: block;"]   Parent (../)
     Element Should Contain  jquery=.select2-drop-active[style*="display: block;"]   Current (./)
     Element Should Contain  jquery=.select2-drop-active[style*="display: block;"]   Advanced Mode
+    Click Element  css=body
 
 open the select box titled ${NAME}
-    Click Element   css=.querystring-criteria-${NAME} .select2-container a
+    Click Element  css=.querystring-criteria-${NAME} .select2-container a
 
 select index type ${INDEX}
     Input Text  jquery=.select2-drop-active[style*="display: block;"] input   text=${INDEX}
