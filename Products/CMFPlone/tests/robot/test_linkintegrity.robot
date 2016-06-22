@@ -124,9 +124,9 @@ a link in rich text
   Click Button  css=div[aria-label="Insert/edit link"] button
   Wait until element is visible  css=.select2-input.select2-default
   Click Element  css=.select2-input.select2-default
-  Input text  css=.select2-dropdown-open .select2-input  foo
-  Wait until element is visible  jquery=.select2-highlighted .pattern-relateditems-result-select.selectable:contains(Foo)
-  Click Link  jquery=.select2-highlighted .pattern-relateditems-result-select.selectable:contains(Foo)
+  Input text  css=.select2-dropdown-open .select2-input  Foo
+  Wait until element is visible  jquery=.select2-result-selectable .pattern-relateditems-result-select.selectable:contains(Foo)
+  Click Link  jquery=.select2-result-selectable .pattern-relateditems-result-select.selectable:contains(Foo)
   Click Button  css=.plone-modal-footer .plone-btn-primary
   Click Button  css=#form-buttons-save
 

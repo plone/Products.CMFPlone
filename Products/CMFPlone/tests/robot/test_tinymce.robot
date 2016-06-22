@@ -19,7 +19,7 @@ ${PAGE_ID}  an-edited-page
 
 *** Test cases ***************************************************************
 
-Scenario: A page is opened to edit
+Scenario: A page is opened to edit in TinyMCE
     Given a logged-in site administrator
       and an uploaded image
       and an edited page
@@ -61,6 +61,7 @@ insert link
     Select Frame  css=.mce-edit-area iframe
     Execute Javascript  window.getSelection().removeAllRanges()
     UnSelect Frame
+    Wait Until Element Is Not Visible  css=.plone-modal-footer .plone-btn-primary
 
 insert image
     Click Button  css=div[aria-label="Insert/edit image"] button
@@ -69,3 +70,4 @@ insert image
     Input Text  css=.plone-modal-body [name="title"]  SomeTitle
     Input Text  css=.plone-modal-body [name="alt"]  SomeAlt
     Click Button  css=.plone-modal-footer .plone-btn-primary
+    Wait Until Element Is Not Visible  css=.plone-modal-footer .plone-btn-primary
