@@ -56,8 +56,8 @@ I search in ${NAME} subfolder in the related items widget
     Click Element  jquery=.pattern-relateditems-tree-select
     Wait Until Element Is Visible  jquery=.pat-tree li.jqtree_common:contains("${NAME}") .pattern-relateditems-result-browse
     Click Element  jquery=.pat-tree li.jqtree_common:contains("${NAME}") .pattern-relateditems-result-browse
-    Wait Until Element Is Visible  css=li.select2-result-selectable a
-    Click Element  css=.select2-result-selectable
+    Wait Until Element Is Visible  css=.pattern-relateditems-result-select
+    Click Element  css=.pattern-relateditems-result-select
 
 I expect to be in Advanced mode
     open the select box titled operator
