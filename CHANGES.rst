@@ -10,6 +10,10 @@ Changelog
 
 Breaking changes:
 
+- Remove deprecated resource registrations for ``mockup-parser`` and ``mockup-registry`` from mockup-core.
+  Use those from patternslib instead.
+  [thet]
+
 - ``plone-compile-resources``: Install ``grunt-cli`` instead of depending on an installed ``grunt`` executable.
   If you already have a auto-generated ``package.json`` file in buildout directory, remove it.
   [thet]
@@ -24,6 +28,15 @@ Breaking changes:
 
 New features:
 
+- Updated components directory, recompiled bundles.
+  [thet]
+
+- Align bower components with newest mockup + documentation updates on mockup update process.
+  [thet]
+
+- Ignore a bit more in ``.gitignores`` for CMPlones bower components.
+  [thet]
+
 - Added setting to editing controlpanel to enable limit of keywords to the current navigation root.
   [jensens]
 
@@ -32,6 +45,7 @@ New features:
 
 - Add link to training.plone.org
   [svx]
+
 - Allow to define multiple ``tinymce-content-css`` in theme ``manifest.cfg`` files, seperated by a comma.
   [thet]
 
@@ -48,8 +62,25 @@ New features:
 - Allow to hide/show actions directly from the Actions control panel list
   [ebrehault]
 
-Fixes:
+
 Bug fixes:
+
+- Workaround a test problem with outdated Firefox 34 used at jenkins.plone.org. 
+  This Workaround can be removed once https://github.com/plone/jenkins.plone.org/issues/179 was solved.
+  [jensens]
+
+- Fix select2 related robot test failures and give the test_tinymce.robot scenario a more unique name.
+  [thet]
+
+- Add missing ``jquery.browser`` dependency which is needed by patternslib.
+  [thet]
+
+- Toolbar fixes:
+  - Autoformat with cssbrush and js-beautify,
+  - Remove ``git diff`` in line 105, which broke compilation.
+  - Use patternslib ``pat-base`` instead of ``mockup-patterns-base``.
+  - Remove dependency on deprecated ``mockup-core``.
+  [thet]
 
 - Removed docstrings from PropertyManager methods to avoid publishing them.  [maurits]
 

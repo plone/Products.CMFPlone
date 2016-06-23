@@ -20,13 +20,16 @@ define("tinymce/EditorCommands", [
 	"tinymce/util/Tools",
 	"tinymce/dom/ElementUtils",
 	"tinymce/dom/RangeUtils",
-	"tinymce/dom/TreeWalker"
-], function(Serializer, Env, Tools, ElementUtils, RangeUtils, TreeWalker) {
+	"tinymce/dom/TreeWalker",
+	"tinymce/caret/CaretWalker",
+	"tinymce/caret/CaretPosition",
+	"tinymce/dom/NodeType"
+], function(Serializer, Env, Tools, ElementUtils, RangeUtils, TreeWalker, CaretWalker, CaretPosition, NodeType) {
 	// Added for compression purposes
 	var each = Tools.each, extend = Tools.extend;
 	var map = Tools.map, inArray = Tools.inArray, explode = Tools.explode;
 	var isIE = Env.ie, isOldIE = Env.ie && Env.ie < 11;
-	var TRUE = true, FALSE = false;
+	var TRUE = true, FALSE = false, isTableCell = NodeType.matchNodeNames('td th');
 
 	return function(editor) {
 		var dom, selection, formatter,
@@ -115,7 +118,7 @@ define("tinymce/EditorCommands", [
 			var func;
 
 			// Is hidden then return undefined
-			if (editor._isHidden()) {
+			if (editor.quirks.isHidden()) {
 				return;
 			}
 
@@ -145,7 +148,7 @@ define("tinymce/EditorCommands", [
 			var func;
 
 			// Is hidden then return undefined
-			if (editor._isHidden()) {
+			if (editor.quirks.isHidden()) {
 				return;
 			}
 
@@ -292,6 +295,11 @@ define("tinymce/EditorCommands", [
 				} catch (ex) {
 					// Command failed
 					failed = TRUE;
+				}
+
+				// Chrome reports the paste command as supported however older IE:s will return false for cut/paste
+				if (command === 'paste' && !doc.queryCommandEnabled(command)) {
+					failed = true;
 				}
 
 				// Present alert message about clipboard access not being available
@@ -523,8 +531,32 @@ define("tinymce/EditorCommands", [
 					}
 				}
 
+				function markFragmentElements(fragment) {
+					var node = fragment;
+
+					while ((node = node.walk())) {
+						if (node.type === 1) {
+							node.attr('data-mce-fragment', '1');
+						}
+					}
+				}
+
+				function umarkFragmentElements(elm) {
+					Tools.each(elm.getElementsByTagName('*'), function(elm) {
+						elm.removeAttribute('data-mce-fragment');
+					});
+				}
+
+				function isPartOfFragment(node) {
+					return !!node.getAttribute('data-mce-fragment');
+				}
+
+				function canHaveChildren(node) {
+					return node && !editor.schema.getShortEndedElements()[node.nodeName];
+				}
+
 				function moveSelectionToMarker(marker) {
-					var parentEditableFalseElm;
+					var parentEditableFalseElm, parentBlock, nextRng;
 
 					function getContentEditableFalseParent(node) {
 						var root = editor.getBody();
@@ -574,8 +606,34 @@ define("tinymce/EditorCommands", [
 						rng.setEndBefore(marker);
 					}
 
+					function findNextCaretRng(rng) {
+						var caretPos = CaretPosition.fromRangeStart(rng);
+						var caretWalker = new CaretWalker(editor.getBody());
+
+						caretPos = caretWalker.next(caretPos);
+						if (caretPos) {
+							return caretPos.toRange();
+						}
+					}
+
 					// Remove the marker node and set the new range
+					parentBlock = dom.getParent(marker, dom.isBlock);
 					dom.remove(marker);
+
+					if (parentBlock && dom.isEmpty(parentBlock)) {
+						editor.$(parentBlock).empty();
+
+						rng.setStart(parentBlock, 0);
+						rng.setEnd(parentBlock, 0);
+
+						if (!isTableCell(parentBlock) && !isPartOfFragment(parentBlock) && (nextRng = findNextCaretRng(rng))) {
+							rng = nextRng;
+							dom.remove(parentBlock);
+						} else {
+							dom.add(parentBlock, dom.create('br', {'data-mce-bogus': '1'}));
+						}
+					}
+
 					selection.setRng(rng);
 				}
 
@@ -615,7 +673,7 @@ define("tinymce/EditorCommands", [
 				var caretElement = rng.startContainer || (rng.parentElement ? rng.parentElement() : null);
 				var body = editor.getBody();
 				if (caretElement === body && selection.isCollapsed()) {
-					if (dom.isBlock(body.firstChild) && dom.isEmpty(body.firstChild)) {
+					if (dom.isBlock(body.firstChild) && canHaveChildren(body.firstChild) && dom.isEmpty(body.firstChild)) {
 						rng = dom.createRng();
 						rng.setStart(body.firstChild, 0);
 						rng.setEnd(body.firstChild, 0);
@@ -637,6 +695,7 @@ define("tinymce/EditorCommands", [
 				// Parse the fragment within the context of the parent node
 				var parserArgs = {context: parentNode.nodeName.toLowerCase(), data: data};
 				fragment = parser.parse(value, parserArgs);
+				markFragmentElements(fragment);
 
 				markInlineFormatElements(fragment);
 
@@ -712,6 +771,7 @@ define("tinymce/EditorCommands", [
 
 				reduceInlineTextElements();
 				moveSelectionToMarker(dom.get('mce_marker'));
+				umarkFragmentElements(editor.getBody());
 				editor.fire('SetContent', args);
 				editor.addVisual();
 			},

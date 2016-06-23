@@ -1,519 +1,903 @@
 //*// TOOLBAR EDIT ZONE PLONE //*//
 
-html, #edit-zone {
-
-}
-body.userrole-authenticated {
-}
-
-@test-color: @plone-toolbar-link;
-
 #edit-zone {
-    position: fixed;
-    height: 100%;
+  font-family: @plone-toolbar-font-primary;
+  font-weight: 400;
+  position: fixed;
+  z-index: 3;
+  top: 0;
+  left: 0;
+  width: @plone-left-toolbar;
+  height: 100%;
+  color: @plone-toolbar-text-color;
+  background: @plone-toolbar-bg;
+
+  a {
+    display: block;
+    text-decoration: none;
+    color: @plone-toolbar-link;
+    outline: 0;
+  }
+
+  /*logo*/
+
+  .plone-toolbar-logo {
+    display: table-cell;
     width: @plone-left-toolbar;
-    top:0;
-    left:0;
-    z-index: 3;
-    font-weight: 400;
+    height: 50px;
+    padding-right: 18px;
+    padding-left: 18px;
+    cursor: pointer;
+    vertical-align: middle;
+    background: darken(@plone-toolbar-link, 10%);
+
+    &:after {
+      position: absolute;
+      top: 50px;
+      left: 25px;
+      content: '';
+      border-top: 4px solid darken(@plone-toolbar-link, 10%);
+      border-right: 4px solid transparent;
+      border-left: 4px solid transparent;
+    }
+
+    &:hover {
+      -webkit-transition: background .25s;
+      transition: background .35s;
+      background: @plone-toolbar-link;
+
+      &:after {
+        -webkit-transition: border-top .25s;
+        transition: border-top .35s;
+        border-top: 4px solid @plone-toolbar-link;
+      }
+    }
+  }
+
+  /*first-level*/
+
+  nav > ul {
     font-family: @plone-toolbar-font-primary;
-    color: @plone-toolbar-text-color;
-    background: @plone-toolbar-bg;
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    [class^='icon'] {
+      font-size: 20px;
+    }
+
     a {
-        color: @plone-toolbar-link;
-        text-decoration: none;
+      position: relative;
+      overflow: hidden;
+      height: 50px;
+      color: @plone-toolbar-text-color;
+
+      &:hover > span {
+        margin-top: -50px;
+        -webkit-transition: margin-top .35s;
+        transition: margin-top .35s;
+      }
+
+      &:hover > span.plone-toolbar-caret {
+        opacity: 1;
+      }
+
+      > span {
         display: block;
-        outline: 0;
-    }
-
-    /*logo*/
-    .plone-toolbar-logo {
-        background: darken(@plone-toolbar-link, 10%);
-        height: 50px;
-        padding-left: 18px;
-        padding-right: 18px;
-        cursor: pointer;
-        display: table-cell;
-        vertical-align: middle;
         width: @plone-left-toolbar;
-        &:after {
-            content: "";
-            border-top: 4px solid darken(@plone-toolbar-link, 10%);
-            border-left: 4px solid transparent;
-            border-right: 4px solid transparent;
-            position: absolute;
-            left: 25px;
-            top:50px;
+        height: 50px;
+        text-align: center;
+
+        &:before {
+          line-height: 50px;
         }
+      }
+
+      > span + span {
+        line-height: 1em;
+        display: table-cell;
+        width: @plone-left-toolbar;
+        height: 50px;
+        padding: 0 8px;
+        text-align: center;
+        vertical-align: middle;
+        background: @plone-toolbar-link;
+      }
+    }
+
+    .scroll-btn {
+      position: fixed;
+      z-index: 10;
+      left: 0;
+      background-color: black;
+
+      &.up {
+        top: 50px;
+      }
+
+      &.down {
+        bottom: 50px;
+      }
+
+      a {
+        height: 20px;
+
+        [class^='icon'] {
+          font-size: 12px;
+        }
+
+        > span {
+          height: 20px;
+        }
+
+        span:before {
+          line-height: 26px;
+        }
+
+        span.icon-down:before {
+          line-height: 20px;
+        }
+
+        &:hover > span {
+          margin-top: 0;
+          -webkit-transition: none;
+          transition: none;
+          background: #007bb3;
+        }
+      }
+    }
+    /*states on first level*/
+
+    a.label-state-published > span:before,
+    a.label-state-external > span:before {
+      color: @plone-toolbar-published-color;
+    }
+
+    a.label-state-published > span + span,
+    a.label-state-external > span:before {
+      background: @plone-toolbar-published-color;
+    }
+
+    a.label-state-internally_published > span:before {
+      color: @plone-toolbar-internally-published-color;
+    }
+
+    a.label-state-internally_published > span + span {
+      background: @plone-toolbar-internally-published-color;
+    }
+
+    a.label-state-pending > span:before {
+      color: @plone-toolbar-pending-color;
+    }
+
+    a.label-state-pending > span + span {
+      background: @plone-toolbar-pending-color;
+    }
+
+    li.active a.label-state-pending > span,
+    a.label-state-pending > span:hover {
+      color: (#fff - @plone-toolbar-text-color) !important;
+    } //contrast
+
+    a.label-state-draft > span:before,
+    a.label-state-internal > span:before {
+      color: @plone-toolbar-draft-color;
+    }
+
+    a.label-state-draft > span + span,
+    a.label-state-internal > span + span {
+      background: @plone-toolbar-draft-color;
+    }
+
+    a.label-state-private > span:before {
+      color: @plone-toolbar-private-color;
+    }
+
+    a.label-state-private > span + span {
+      background: @plone-toolbar-private-color;
+    }
+
+    /*second-level*/
+
+    ul {
+      font-family: @plone-toolbar-font-secondary;
+      font-size: 14px;
+      line-height: 30px;
+      position: absolute;
+      top: 0;
+      left: @plone-left-toolbar;
+      overflow-y: auto;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      background: @plone-toolbar-submenu-bg;
+
+      //prepare icon
+
+      [class^='icon'] {
+        line-height: 0;
+        display: inline !important;
+
+        &:before {
+          font-size: 10px;
+          line-height: 18px;
+          position: absolute;
+          top: 0;
+          right: 10px;
+          margin-top: 7px;
+          color: @plone-toolbar-private-color;
+        }
+      }
+
+      //states
+
+      .state-published:after,
+      .state-external:after,
+      #workflow-transition-publish:after {
+        font-size: 20px;
+        position: absolute;
+        right: 15px;
+        content: '•';
+        color: @plone-toolbar-published-color;
+      }
+
+      .state-internally_published:after,
+      #workflow-transition-show_internally:after {
+        font-size: 20px;
+        position: absolute;
+        right: 15px;
+        content: '•';
+        color: @plone-toolbar-internally-published-color;
+      }
+
+      .state-pending:after,
+      #workflow-transition-submit:after {
+        font-size: 20px;
+        position: absolute;
+        right: 15px;
+        content: '•';
+        color: @plone-toolbar-pending-color;
+      }
+
+      .state-draft:after,
+      .state-internal:after,
+      #workflow-transition-hide:after {
+        font-size: 20px;
+        position: absolute;
+        right: 15px;
+        content: '•';
+        color: @plone-toolbar-draft-color;
+      }
+
+      .state-private:after,
+      #workflow-transition-reject:after {
+        font-size: 20px;
+        position: absolute;
+        right: 15px;
+        content: '•';
+        color: @plone-toolbar-private-color;
+      }
+
+      //submenu styles
+
+      a {
+        color: @plone-toolbar-submenu-text-color;
+
         &:hover {
-            background: @plone-toolbar-link; transition: background .35s; -webkit-transition: background .25s;
-            &:after {border-top: 4px solid @plone-toolbar-link; transition: border-top .35s; -webkit-transition: border-top .25s;}
+          color: darken(@plone-toolbar-submenu-text-color, 15%);
+          background: lighten(@plone-toolbar-bg, 10%);
         }
+      }
+
+      li {
+        width: @plone-toolbar-submenu-width;
+
+        &:last-child {
+          padding-bottom: 5px;
+        }
+
+        > span {
+          line-height: 20px;
+          display: block;
+          height: auto;
+          padding: 5px 15px;
+        }
+
+        > a {
+          line-height: 20px;
+          height: auto;
+          padding: 5px 15px;
+        }
+
+        &.plone-toolbar-submenu-header {
+          margin: 5px 0 0;
+          padding: 5px 0 0;
+          border-top: 1px solid @plone-toolbar-separator-color;
+
+          &:first-child {
+            margin: 0;
+            border-top: 0;
+          }
+
+          &:after {
+            font-size: 30px;
+            right: 13px;
+          }
+
+          > a {
+            font-weight: 400;
+            color: @plone-toolbar-link;
+
+            &:hover {
+              color: darken(@plone-toolbar-link, 15%);
+            }
+          }
+
+          > span {
+            font-weight: 400;
+            color: @plone-toolbar-submenu-header-color;
+          }
+        }
+
+        &:not(.plone-toolbar-submenu-header) {
+          > :before {
+            position: absolute;
+            left: 15px;
+            content: '•';
+            color: @plone-toolbar-link;
+          }
+
+          > span {
+            height: auto;
+            padding: 5px 15px 5px 30px;
+            color: @plone-toolbar-text-color;
+          }
+
+          > a {
+            height: auto;
+            padding: 5px 15px 5px 30px;
+
+            &:hover:before {
+              color: lighten(@plone-toolbar-link, 25%);
+            }
+
+            &.actionMenuSelected {
+              &:hover {
+                cursor: default;
+                color: @plone-toolbar-text-color;
+                background: none;
+              }
+
+              &:before {
+                color: @plone-toolbar-text-color;
+              }
+            }
+          }
+
+          > .actionMenuSelected {
+            font-weight: 500;
+            color: @plone-toolbar-text-color;
+
+            &:before {
+              color: darken(@plone-toolbar-text-color,15%);
+            }
+
+            &:before {
+              margin-left: -3px;
+              content: '✓' !important;
+            }
+          }
+        }
+      }
     }
 
-    /*first-level*/
-    nav > ul {
-        font-family: @plone-toolbar-font-primary; font-size: 12px; list-style: none; margin:0; padding: 0;
-        [class^="icon"] {font-size: 20px;}
-        a {
-            position:relative; color: @plone-toolbar-text-color; overflow: hidden; height: 50px;
-            &:hover > span {margin-top: -50px; transition: margin-top .35s; -webkit-transition: margin-top .35s;}
-            &:hover > span.plone-toolbar-caret {opacity: 1;}
-            > span {
-                display: block; text-align: center; height: 50px; width:@plone-left-toolbar;
-                &:before {line-height: 50px;}
-            }
-            > span + span {
-                display: table-cell;
-                text-align: center;
-                padding: 0 8px;
-                height: 50px;
-                width: @plone-left-toolbar;
-                vertical-align: middle;
-                background: @plone-toolbar-link;
-                line-height: 1em;
-            }
-        }
-        .scroll-btn {
-            z-index:10;
-            background-color: black;
-            position: fixed;
-            left: 0;
-            &.up{
-                top: 50px;
-            }
-            &.down{
-                bottom: 50px;
-            }
-            a {
-                [class^="icon"] { font-size: 12px; }
-                height: 20px;
-                > span { height: 20px; }
-                span:before { line-height: 26px;}
-                span.icon-down:before { line-height: 20px;}
-                &:hover > span {margin-top: 0; transition: none; -webkit-transition: none; background: #007bb3;}
-            }
-        }
-        /*states on first level*/
-        a.label-state-published > span:before, a.label-state-external > span:before {color: @plone-toolbar-published-color; }
-        a.label-state-published > span + span, a.label-state-external > span:before { background: @plone-toolbar-published-color; }
-
-        a.label-state-internally_published > span:before {color: @plone-toolbar-internally-published-color; }
-        a.label-state-internally_published > span + span { background: @plone-toolbar-internally-published-color; }
-
-        a.label-state-pending > span:before {color: @plone-toolbar-pending-color; }
-        a.label-state-pending > span + span { background: @plone-toolbar-pending-color; }
-        li.active a.label-state-pending > span, a.label-state-pending > span:hover { color:(#fff - @plone-toolbar-text-color) !important;} //contrast
-
-        a.label-state-draft > span:before, a.label-state-internal > span:before {color: @plone-toolbar-draft-color; }
-        a.label-state-draft > span + span, a.label-state-internal > span + span  { background: @plone-toolbar-draft-color; }
-
-        a.label-state-private > span:before {color: @plone-toolbar-private-color; }
-        a.label-state-private > span + span { background: @plone-toolbar-private-color; }git diff
-
-        /*second-level*/
-        ul {
-            font-family:@plone-toolbar-font-secondary; font-size: 14px; list-style: none; padding:0; margin:0; line-height: 30px;
-            position: absolute;
-            left: @plone-left-toolbar;
-            background: @plone-toolbar-submenu-bg;
-            top: 0;
-            overflow-y: auto;
-
-            //prepare icon
-            [class^="icon"] {
-                display: inline !important; line-height: 0;
-                &:before {font-size: 10px;line-height: 18px;position: absolute;right: 10px;color: @plone-toolbar-private-color; margin-top: 7px; top:0;}
-            }
-            /*state marker*/
-            //dictionary translate flow into state
-            @flow-private: workflow-transition-reject;
-            @flow-published: workflow-transition-publish;
-            @flow-pending: workflow-transition-submit;
-            @flow-internally_published: workflow-transition-show_internally;
-            @flow-internal: workflow-transition-hide;
-
-            //states
-            .state-published:after, .state-external:after, #@{flow-published}:after  {right:15px; content:"•"; color:@plone-toolbar-published-color; position: absolute; font-size: 20px;}
-            .state-internally_published:after, #@{flow-internally_published}:after {right:15px; content:"•"; color:@plone-toolbar-internally-published-color; position: absolute; font-size: 20px;}
-            .state-pending:after, #@{flow-pending}:after {right:15px; content:"•"; color:@plone-toolbar-pending-color; position: absolute; font-size: 20px;}
-            .state-draft:after, .state-internal:after, #@{flow-internal}:after {right:15px; content:"•"; color:@plone-toolbar-draft-color; position: absolute; font-size: 20px;}
-            .state-private:after, #@{flow-private}:after {right:15px; content:"•"; color:@plone-toolbar-private-color; position: absolute; font-size: 20px;}
-
-            //submenu styles
-            a {
-                color: @plone-toolbar-submenu-text-color;
-                &:hover {
-                    color: darken(@plone-toolbar-submenu-text-color, 15%);
-                    background: lighten(@plone-toolbar-bg, 10%);
-                }
-            }
-            li {
-                width: @plone-toolbar-submenu-width;
-                &:last-child {padding-bottom: 5px; }
-                > span {display: block; padding: 5px 15px; height: auto; line-height: 20px;}
-                > a {padding: 5px 15px; height: auto; line-height: 20px;}
-                &.plone-toolbar-submenu-header {
-                    border-top: 1px solid @plone-toolbar-separator-color;
-                    padding: 5px 0 0;
-                    margin: 5px 0 0;
-                    &:first-child {border-top:0; margin:0;}
-                    &:after {font-size: 30px; right:13px;}
-                    > a {
-                        color: @plone-toolbar-link; font-weight: 400;
-                        &:hover {color: darken(@plone-toolbar-link, 15%);}
-                    }
-                    > span {font-weight: 400; color: @plone-toolbar-submenu-header-color;}
-                }
-                &:not(.plone-toolbar-submenu-header) {
-                    > :before {content:"•"; left: 15px; color: @plone-toolbar-link; position: absolute;}
-                    > span {color: @plone-toolbar-text-color; padding: 5px 15px 5px 30px; height: auto;}
-                    > a {
-                        padding: 5px 15px 5px 30px; height: auto;
-                        &:hover:before {color: lighten(@plone-toolbar-link, 25%);}
-                        &.actionMenuSelected {
-                            &:hover {color: @plone-toolbar-text-color; background: none; cursor: default;}
-                            &:before {color: @plone-toolbar-text-color;}
-                        }
-                    }
-                    > .actionMenuSelected {
-                        color: @plone-toolbar-text-color;
-                        font-weight: 500;
-                        &:before {color: darken(@plone-toolbar-text-color,15%);}
-                        &:before {content:"✓" !important; margin-left: -3px;}
-                    }
-                }
-            }
-        }
-        .plone-toolbar-separator {border-bottom: 1px solid @plone-toolbar-separator-color;}
-        .plone-toolbar-caret {
-            border-left: 4px solid;
-            border-bottom: 4px solid transparent;
-            border-top: 4px solid transparent;
-            position: absolute;
-            right: 0;
-            background: transparent !important;
-            margin-top: 0 !important;
-            top: 21px;
-            opacity: .67;
-            display: inline-block;
-            width: 0;
-            height: 0;
-            right: 2px;
-            padding: 0;
-            vertical-align: middle;
-        }
+    .plone-toolbar-separator {
+      border-bottom: 1px solid @plone-toolbar-separator-color;
     }
+
+    .plone-toolbar-caret {
+      position: absolute;
+      top: 21px;
+      right: 0;
+      right: 2px;
+      display: inline-block;
+      width: 0;
+      height: 0;
+      margin-top: 0 !important;
+      padding: 0;
+      vertical-align: middle;
+      opacity: .67;
+      border-top: 4px solid transparent;
+      border-bottom: 4px solid transparent;
+      border-left: 4px solid;
+      background: transparent !important;
+    }
+  }
 }
 
-.plone-toolbar-left #edit-zone{
-    z-index: 5;
-    nav > ul ul {
-        width: 0;
-        height: 100%;
-    }
-    .plone-toolbar-container{
-        height: 100%;
-    }
-}
-.plone-toolbar-top #edit-zone nav > ul ul {height: 0; max-height: 0; width: @plone-toolbar-submenu-width}
+.plone-toolbar-left #edit-zone {
+  z-index: 5;
 
+  nav > ul ul {
+    width: 0;
+    height: 100%;
+  }
+
+  .plone-toolbar-container {
+    height: 100%;
+  }
+}
+
+.plone-toolbar-top #edit-zone nav > ul ul {
+  width: @plone-toolbar-submenu-width;
+  height: 0;
+  max-height: 0;
+}
 
 .plone-toolbar-expanded #edit-zone {
-    width:@plone-left-toolbar-expanded;
-    nav > ul ul { left: @plone-left-toolbar-expanded;}
-    nav > ul a > [class^="icon"] {
-        display: table-cell;
-        width: 40px;
-        padding-left: 10px;
-    }
-    nav > ul a > .icon-logout {
-        margin:0;
-        padding:0;
-    }
-    nav > ul a > span + span {
-        background: none;
-        width: @plone-left-toolbar-expanded - 40px;
-        text-align: left;
-        word-wrap: break-word;
-        word-break: break-word;
-    }
-    .plone-toolbar-caret {width: 0;}
-    li:not(.active) a:hover > span {background: @plone-toolbar-link;}
+  width: @plone-left-toolbar-expanded;
 
-    /*states*/
-    li {
-        a.label-state-published:hover > span, li a.label-state-external:hover > span  {
-            background: @plone-toolbar-published-color;
-            &:first-child:before {color:@plone-toolbar-text-color;}
-        }
-        a.label-state-internally_published:hover > span {
-            background: @plone-toolbar-internally-published-color;
-            &:first-child:before {color:@plone-toolbar-text-color;}
-        }
-        a.label-state-pending:hover > span {
-            background: @plone-toolbar-pending-color;
-            &:first-child:before {color:@plone-toolbar-text-color;}
-        }
-        a.label-state-draft:hover > span, li a.label-state-internal:hover > span {
-            background: @plone-toolbar-draft-color;
-            &:first-child:before {color:@plone-toolbar-text-color;}
-        }
-        a.label-state-private:hover > span {
-            background: @plone-toolbar-private-color;
-            &:first-child:before {color:@plone-toolbar-text-color;}
-        }
+  nav > ul ul {
+    left: @plone-left-toolbar-expanded;
+  }
+
+  nav > ul a > [class^='icon'] {
+    display: table-cell;
+    width: 40px;
+    padding-left: 10px;
+  }
+
+  nav > ul a > .icon-logout {
+    margin: 0;
+    padding: 0;
+  }
+
+  nav > ul a > span + span {
+    width: @plone-left-toolbar-expanded - 40px;
+    text-align: left;
+    word-wrap: break-word;
+    word-break: break-word;
+    background: none;
+  }
+
+  .plone-toolbar-caret {
+    width: 0;
+  }
+
+  li:not(.active) a:hover > span {
+    background: @plone-toolbar-link;
+  }
+
+  /*states*/
+
+  li {
+    a.label-state-published:hover > span,
+    li a.label-state-external:hover > span {
+      background: @plone-toolbar-published-color;
+
+      &:first-child:before {
+        color: @plone-toolbar-text-color;
+      }
     }
-    .plone-toolbar-logo {
-        width: @plone-left-toolbar-expanded;
-        span {display: inline;}
+
+    a.label-state-internally_published:hover > span {
+      background: @plone-toolbar-internally-published-color;
+
+      &:first-child:before {
+        color: @plone-toolbar-text-color;
+      }
     }
+
+    a.label-state-pending:hover > span {
+      background: @plone-toolbar-pending-color;
+
+      &:first-child:before {
+        color: @plone-toolbar-text-color;
+      }
+    }
+
+    a.label-state-draft:hover > span,
+    li a.label-state-internal:hover > span {
+      background: @plone-toolbar-draft-color;
+
+      &:first-child:before {
+        color: @plone-toolbar-text-color;
+      }
+    }
+
+    a.label-state-private:hover > span {
+      background: @plone-toolbar-private-color;
+
+      &:first-child:before {
+        color: @plone-toolbar-text-color;
+      }
+    }
+  }
+
+  .plone-toolbar-logo {
+    width: @plone-left-toolbar-expanded;
+
+    span {
+      display: inline;
+    }
+  }
 }
 
 #edit-zone nav > ul > li.active {
-    ul {display: block; width: @plone-toolbar-submenu-width;}
-    a > span {margin-top: -50px; }
-    > a {
-        background: @plone-toolbar-link;
-        &:after {
-            content:"";
-            border-right: 10px solid #2a2a2a;
-            border-bottom: 10px solid transparent;
-            border-top: 10px solid transparent;
-            position: absolute;
-            right: 0;
-            margin-top: -35px;
-        }
-        span:before {color:@plone-toolbar-text-color !important;} /*state icon on white*/
-        &.label-state-published,
-        &.label-state-external {background: @plone-toolbar-published-color;}
-        &.label-state-internally_published {background: @plone-toolbar-internally-published-color;}
-        &.label-state-pending {background: @plone-toolbar-pending-color;}
-        &.label-state-draft,
-        &.label-state-internal {background: @plone-toolbar-draft-color;}
-        &.label-state-private {background: @plone-toolbar-private-color;}
+  ul {
+    display: block;
+    width: @plone-toolbar-submenu-width;
+  }
+
+  a > span {
+    margin-top: -50px;
+  }
+
+  > a {
+    background: @plone-toolbar-link;
+
+    &:after {
+      position: absolute;
+      right: 0;
+      margin-top: -35px;
+      content: '';
+      border-top: 10px solid transparent;
+      border-right: 10px solid #2a2a2a;
+      border-bottom: 10px solid transparent;
     }
+
+    span:before {
+      color: @plone-toolbar-text-color !important;
+    } /*state icon on white*/
+
+    &.label-state-published,
+    &.label-state-external {
+      background: @plone-toolbar-published-color;
+    }
+
+    &.label-state-internally_published {
+      background: @plone-toolbar-internally-published-color;
+    }
+
+    &.label-state-pending {
+      background: @plone-toolbar-pending-color;
+    }
+
+    &.label-state-draft,
+    &.label-state-internal {
+      background: @plone-toolbar-draft-color;
+    }
+
+    &.label-state-private {
+      background: @plone-toolbar-private-color;
+    }
+  }
 }
 
 /*plone-toolbar-top*/
-.plone-toolbar-top #edit-zone {
-    position: fixed;
-    height: 50px;
-    width: 100%;
-    .plone-toolbar-container{
-        margin-right: auto;
-        margin-left: auto;
-        @media (min-width: @plone-screen-sm-min) {
-          width: @plone-container-sm;
-        }
-        @media (min-width: @plone-screen-md-min) {
-          width: @plone-container-md;
-        }
-        @media (min-width: @plone-screen-lg-min) {
-          width: @plone-container-lg;
-        }
-    }
-    .plone-toolbar-logo:after {
-        border-left: 4px solid darken(@plone-toolbar-link, 10%);
-        border-top: 4px solid transparent;
-        border-bottom: 4px solid transparent;
-        left: @plone-left-toolbar;
-        top:20px;
-    }
-    .plone-toolbar-logo:hover:after {
-        border-left: 4px solid @plone-toolbar-link;
-        transition: border-top .35s; -webkit-transition: border-top .25s;
-    }
-    .plone-toolbar-logo, nav, nav > ul {display: inline-block;}
-    nav > ul > li {display: inline-block; width: @plone-left-toolbar; float: left;}
-    .plone-toolbar-logo {
-        position: absolute; top:0;
-        img {margin-top: 13px;}
-    }
-    nav {padding-left: @plone-left-toolbar; width: 100%;}
-    .plone-toolbar-caret {
-        border-top: 4px solid;
-        border-left: 4px solid transparent;
-        border-right: 4px solid transparent;
-        left: 26px;
-        top: 43px;
-        right: inherit;
-        padding: 0 !important;
-    }
-    nav > ul ul {
-        left: auto;
-        top:50px;
-        overflow-y: auto;
-        height: 0;
-    }
-    nav > ul li.active ul {
-        height: inherit;
-        max-height: 1000px; // trick to activate transition
-        top: auto;
-    }
-    li.active > a:after {
-        border-bottom: 10px solid #2a2a2a;
-        border-left: 10px solid transparent;
-        border-right: 10px solid transparent;
-        right: inherit;
-        margin-top: -20px;
-        margin-left: 20px;
-    }
-    #personal-bar-container {
-        float: right;
-    }
-    #plone-toolbar-more-subset {
-        background: rgba(0, 0, 0, 0.9);
-        float: right;
-    }
-}
-.plone-toolbar-top.plone-toolbar-expanded #edit-zone{
-    .plone-toolbar-logo {width: @plone-left-toolbar;}
-    nav > ul > li {
-        width: inherit;
-        border-right: 1px solid #353535;
-    }
-    nav > ul a > span + span {
-        width: inherit;
-        padding: 0 8px 0 0;
-    }
-    nav > ul a > [class^="icon"] {padding-left: 0;}
-    .plone-toolbar-caret {left:16px;}
-    li.active > a:after {margin-left: 10px;}
 
-    #contentview-history {
-        max-width: 135px;
+.plone-toolbar-top #edit-zone {
+  position: fixed;
+  width: 100%;
+  height: 50px;
+
+  .plone-toolbar-container {
+    margin-right: auto;
+    margin-left: auto;
+
+    @media (min-width: @plone-screen-sm-min) {
+      width: @plone-container-sm;
     }
+
+    @media (min-width: @plone-screen-md-min) {
+      width: @plone-container-md;
+    }
+
+    @media (min-width: @plone-screen-lg-min) {
+      width: @plone-container-lg;
+    }
+  }
+
+  .plone-toolbar-logo:after {
+    top: 20px;
+    left: @plone-left-toolbar;
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    border-left: 4px solid darken(@plone-toolbar-link, 10%);
+  }
+
+  .plone-toolbar-logo:hover:after {
+    -webkit-transition: border-top .25s;
+    transition: border-top .35s;
+    border-left: 4px solid @plone-toolbar-link;
+  }
+
+  .plone-toolbar-logo,
+  nav,
+  nav > ul {
+    display: inline-block;
+  }
+
+  nav > ul > li {
+    display: inline-block;
+    float: left;
+    width: @plone-left-toolbar;
+  }
+
+  .plone-toolbar-logo {
+    position: absolute;
+    top: 0;
+
+    img {
+      margin-top: 13px;
+    }
+  }
+
+  nav {
+    width: 100%;
+    padding-left: @plone-left-toolbar;
+  }
+
+  .plone-toolbar-caret {
+    top: 43px;
+    right: inherit;
+    left: 26px;
+    padding: 0 !important;
+    border-top: 4px solid;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
+  }
+
+  nav > ul ul {
+    top: 50px;
+    left: auto;
+    overflow-y: auto;
+    height: 0;
+  }
+
+  nav > ul li.active ul {
+    top: auto;
+    height: inherit;
+    max-height: 1000px; // trick to activate transition
+  }
+
+  li.active > a:after {
+    right: inherit;
+    margin-top: -20px;
+    margin-left: 20px;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid #2a2a2a;
+    border-left: 10px solid transparent;
+  }
+
+  #personal-bar-container {
+    float: right;
+  }
+
+  #plone-toolbar-more-subset {
+    float: right;
+    background: rgba(0, 0, 0, .9);
+  }
+}
+
+.plone-toolbar-top.plone-toolbar-expanded #edit-zone {
+  .plone-toolbar-logo {
+    width: @plone-left-toolbar;
+  }
+
+  nav > ul > li {
+    width: inherit;
+    border-right: 1px solid #353535;
+  }
+
+  nav > ul a > span + span {
+    width: inherit;
+    padding: 0 8px 0 0;
+  }
+
+  nav > ul a > [class^='icon'] {
+    padding-left: 0;
+  }
+
+  .plone-toolbar-caret {
+    left: 16px;
+  }
+
+  li.active > a:after {
+    margin-left: 10px;
+  }
+
+  #contentview-history {
+    max-width: 135px;
+  }
 }
 
 /*container*/
 /*moved to barceloneta grid.plone.less, needs to match grid system used on theme*/
 
 /*switcher*/
+
 #edit-zone .plone-toolbar-switcher {
-    position: absolute;
-    width: 10px; height: 10px;
-    background: rgba(0,0,0,.2);
-    border-radius: 0 0 100% 0;
-    top: 0;
-    cursor: pointer;
-    span {font-size: 0;}
+  position: absolute;
+  top: 0;
+  width: 10px;
+  height: 10px;
+  cursor: pointer;
+  border-radius: 0 0 100% 0;
+  background: rgba(0,0,0,.2);
+
+  span {
+    font-size: 0;
+  }
 }
 
 // Space left by the body for the toolbar
-.plone-toolbar-left-default { padding-left: @plone-left-toolbar; }
-.plone-toolbar-left-expanded { padding-left: @plone-left-toolbar-expanded; }
-.plone-toolbar-top-default { margin-top: @plone-left-toolbar; }
-.plone-toolbar-top-expanded { margin-top: @plone-left-toolbar; }
 
+.plone-toolbar-left-default {
+  padding-left: @plone-left-toolbar;
+}
+
+.plone-toolbar-left-expanded {
+  padding-left: @plone-left-toolbar-expanded;
+}
+
+.plone-toolbar-top-default {
+  margin-top: @plone-left-toolbar;
+}
+
+.plone-toolbar-top-expanded {
+  margin-top: @plone-left-toolbar;
+}
 
 /* NOT mobile styles here */
 @media (min-width: @plone-screen-xs-max) {
-    .plone-toolbar-main{
-        overflow-y: auto;
+  .plone-toolbar-main {
+    overflow-y: auto;
+  }
+
+  .plone-toolbar-left #edit-zone {
+    z-index: 5;
+
+    nav {
+      overflow-x: hidden;
     }
-    .plone-toolbar-left #edit-zone{
-        z-index: 5;
-        nav{
-            overflow-x: hidden;
-        }
-        nav > ul ul {
-            width: 0;
-            height: 100%;
-            background-color: transparent;
-            > *{
-                background-color: @plone-toolbar-submenu-bg;
-            }
-            .plone-toolbar-submenu-header{
-                margin: 0;
-            }
-        }
-        .plone-toolbar-container{
-            height: 100%;
-            position: relative;
-        }
-        #personal-bar-container{
-            position: absolute;
-            bottom: 0;
-            background-color: black;
-            border-top: 1px solid #DDDDDD;
-            box-shadow: -6px 2px 6px 2px #DDD;
-            ul{
-                position: fixed;
-                height: 100%;
-                top: 0;
-            }
-        }
-        .plone-toolbar-main{
-            width: @plone-left-toolbar-expanded+18px; /* hide scroll bar */
-            padding-right: 18px;
-        }
+
+    nav > ul ul {
+      width: 0;
+      height: 100%;
+      background-color: transparent;
+
+      > * {
+        background-color: @plone-toolbar-submenu-bg;
+      }
+
+      .plone-toolbar-submenu-header {
+        margin: 0;
+      }
     }
-    .plone-toolbar-left-default #edit-zone{
-        .plone-toolbar-main{
-            width: @plone-left-toolbar+18px; /* hide scroll bar */
-        }
+
+    .plone-toolbar-container {
+      position: relative;
+      height: 100%;
     }
+
+    #personal-bar-container {
+      position: absolute;
+      bottom: 0;
+      border-top: 1px solid #ddd;
+      background-color: black;
+      box-shadow: -6px 2px 6px 2px #ddd;
+
+      ul {
+        position: fixed;
+        top: 0;
+        height: 100%;
+      }
+    }
+
+    .plone-toolbar-main {
+      width: @plone-left-toolbar-expanded+18px; /* hide scroll bar */
+      padding-right: 18px;
+    }
+  }
+
+  .plone-toolbar-left-default #edit-zone {
+    .plone-toolbar-main {
+      width: @plone-left-toolbar+18px; /* hide scroll bar */
+    }
+  }
 }
 
 /*mobile*/
 @media (max-width: @plone-screen-xs-max) {
-    #edit-zone, .plone-toolbar-expanded #edit-zone {
-        .plone-toolbar-logo {
-            position: absolute;
-            width: @plone-left-toolbar;
-            left: -60px;
-            &:after {
-                content: none;
-            }
-            img {margin-top: 12px}
-        }
-    }
-    #edit-zone {
-        .plone-toolbar-expanded #edit-zone(); /*default view users left-expanded as a reference*/
-        /*width: 100%;*/
-        right: 0;
-        left: inherit;
-        nav ul  ul {width: 200px;}
-        nav {
-            overflow-y: scroll;
+  #edit-zone,
+  .plone-toolbar-expanded #edit-zone {
+    .plone-toolbar-logo {
+      position: absolute;
+      left: -60px;
+      width: @plone-left-toolbar;
 
-        }
+      &:after {
+        content: none;
+      }
+
+      img {
+        margin-top: 12px;
+      }
     }
-    body.userrole-authenticated {
-        right: 0;
-        width: 100%;
-        height: 100%;
-        left: inherit;
-    }
-    #edit-zone nav ul li ul {
-        width: 0;
-    }
-    #edit-zone nav ul li.active ul {
-        width:@plone-toolbar-submenu-width;
+  }
+
+  #edit-zone {
+    .plone-toolbar-expanded #edit-zone(); /*default view users left-expanded as a reference*/
+    /*width: 100%;*/
+
+    right: 0;
+    left: inherit;
+
+    nav ul  ul {
+      width: 200px;
     }
 
-    .plone-toolbar-left-default { padding-left: 0px; }
-    .plone-toolbar-left-expanded { padding-left: 0px; }
-    .plone-toolbar-top-default { margin-top: 0px; }
-    .plone-toolbar-top-expanded { margin-top: 0px; }
-
-    .plone-toolbar-container nav{
-        height: 100%;
-        overflow-y: scroll;
+    nav {
+      overflow-y: scroll;
     }
+  }
+
+  body.userrole-authenticated {
+    right: 0;
+    left: inherit;
+    width: 100%;
+    height: 100%;
+  }
+
+  #edit-zone nav ul li ul {
+    width: 0;
+  }
+
+  #edit-zone nav ul li.active ul {
+    width: @plone-toolbar-submenu-width;
+  }
+
+  .plone-toolbar-left-default {
+    padding-left: 0;
+  }
+
+  .plone-toolbar-left-expanded {
+    padding-left: 0;
+  }
+
+  .plone-toolbar-top-default {
+    margin-top: 0;
+  }
+
+  .plone-toolbar-top-expanded {
+    margin-top: 0;
+  }
+
+  .plone-toolbar-container nav {
+    overflow-y: scroll;
+    height: 100%;
+  }
 }
 @media (min-width: @plone-screen-xs-min) {
-
 }
 
-
 /* transitions for menu openings*/
-#edit-zone, body  { }
-#edit-zone nav > ul ul { }
-#edit-zone nav > ul li.active ul { display: block;}
-.plone-toolbar-top #edit-zone nav > ul li.active ul {}
 
+#edit-zone,
+body {
+}
+
+#edit-zone nav > ul ul {
+}
+
+#edit-zone nav > ul li.active ul {
+  display: block;
+}
+
+.plone-toolbar-top #edit-zone nav > ul li.active ul {
+}
 
 /* small height devices <480 apanyo*/
 // @media (max-height: 480px) {

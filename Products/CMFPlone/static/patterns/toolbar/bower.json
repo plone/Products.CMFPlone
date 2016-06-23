@@ -8,12 +8,10 @@
   ],
   "dependencies": {
     "jquery": "~2.0.0",
-    "requirejs": "~2.1.6",
-    "mockup-core": "",
-    "patternslib": "2.0.9"
+    "requirejs": "",
+    "patternslib": "2.0.13"
   },
   "resolutions": {
     "jquery": "~2.0.0",
-    "patternslib": "2.0.9"
   }
 }

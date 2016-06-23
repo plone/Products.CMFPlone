@@ -36,16 +36,20 @@ define("tinymce/EditorManager", [
 
 	function globalEventDelegate(e) {
 		each(EditorManager.editors, function(editor) {
-			editor.fire('ResizeWindow', e);
+			if (e.type === 'scroll') {
+				editor.fire('ScrollWindow', e);
+			} else {
+				editor.fire('ResizeWindow', e);
+			}
 		});
 	}
 
 	function toggleGlobalEvents(editors, state) {
 		if (state !== boundGlobalEvents) {
 			if (state) {
-				$(window).on('resize', globalEventDelegate);
+				$(window).on('resize scroll', globalEventDelegate);
 			} else {
-				$(window).off('resize', globalEventDelegate);
+				$(window).off('resize scroll', globalEventDelegate);
 			}
 
 			boundGlobalEvents = state;
@@ -84,6 +88,7 @@ define("tinymce/EditorManager", [
 			removeEditorFromList(editor);
 			editor.unbindAllNativeEvents();
 			editor.destroy(true);
+			editor.removed = true;
 			editor = null;
 		}
 
@@ -157,7 +162,7 @@ define("tinymce/EditorManager", [
 			var self = this, baseURL, documentBaseURL, suffix = "", preInit, src;
 
 			// Get base URL for the current document
-			documentBaseURL = document.location.href;
+			documentBaseURL = URI.getDocumentBaseUrl(document.location);
 
 			// Check if the URL is a document based format like: http://site/dir/file and file:///
 			// leave other formats like applewebdata://... intact
@@ -286,7 +291,7 @@ define("tinymce/EditorManager", [
 		 * });
 		 */
 		init: function(settings) {
-			var self = this;
+			var self = this, result;
 
 			function createId(elm) {
 				var id = elm.id;
@@ -329,10 +334,12 @@ define("tinymce/EditorManager", [
 					each(settings.types, function(type) {
 						targets = targets.concat(DOM.select(type.selector));
 					});
+
+					return targets;
 				} else if (settings.selector) {
-					targets = DOM.select(settings.selector);
+					return DOM.select(settings.selector);
 				} else if (settings.target) {
-					targets = [settings.target];
+					return [settings.target];
 				}
 
 				// Fallback to old setting
@@ -378,7 +385,11 @@ define("tinymce/EditorManager", [
 				return targets;
 			}
 
-			function initEditors(resolve, readyHandler) {
+			var provideResults = function(editors) {
+				result = editors;
+			};
+
+			function initEditors() {
 				var initCount = 0, editors = [], targets;
 
 				function createEditor(id, settings, targetElm) {
@@ -389,7 +400,7 @@ define("tinymce/EditorManager", [
 
 						editor.on('init', function() {
 							if (++initCount === targets.length) {
-								resolve(editors);
+								provideResults(editors);
 							}
 						});
 
@@ -398,10 +409,10 @@ define("tinymce/EditorManager", [
 					}
 				}
 
-				DOM.unbind(window, 'ready', readyHandler);
+				DOM.unbind(window, 'ready', initEditors);
 				execCallback('onpageload');
 
-				targets = findTargets(settings);
+				targets = $.unique(findTargets(settings));
 
 				// TODO: Deprecate this one
 				if (settings.types) {
@@ -425,13 +436,16 @@ define("tinymce/EditorManager", [
 			}
 
 			self.settings = settings;
+			DOM.bind(window, 'ready', initEditors);
 
 			return new Promise(function(resolve) {
-				var readyHandler = function() {
-					initEditors(resolve, readyHandler);
-				};
-
-				DOM.bind(window, 'ready', readyHandler);
+				if (result) {
+					resolve(result);
+				} else {
+					provideResults = function(editors) {
+						resolve(editors);
+					};
+				}
 			});
 		},
 

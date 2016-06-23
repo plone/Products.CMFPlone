@@ -1,6 +1,6 @@
 define([
   'jquery',
-  'mockup-patterns-base',
+  'pat-base',
   'pat-registry',
   'mockup-utils',
   'translate',
@@ -11,6 +11,7 @@ define([
   var Toolbar = Base.extend({
     name: 'toolbar',
     trigger: '.pat-toolbar',
+    parser: 'mockup',
     defaults: {
       containerSelector: '#edit-zone',
       classNames: {
@@ -26,7 +27,7 @@ define([
       },
       cookieName: 'plone-toolbar'
     },
-    setupMobile: function(){
+    setupMobile: function() {
       var that = this;
       that.$container.css('right', '-120px');
       // make sure we are in expanded mode
@@ -69,11 +70,11 @@ define([
         }
       });
     },
-    setupDesktop: function(){
+    setupDesktop: function() {
       var that = this;
-      if(that.state.expanded){
+      if (that.state.expanded){
         $('body').addClass(that.options.classNames.expanded);
-      }else{
+      }else {
         $('body').removeClass(that.options.classNames.expanded);
       }
 
@@ -121,18 +122,18 @@ define([
         event.preventDefault();
         event.stopPropagation();
         var hasClass = $this.hasClass(active_class);
-        var $more_subset = $this.parent("#plone-toolbar-more-subset");
+        var $more_subset = $this.parent('#plone-toolbar-more-subset');
         if ($more_subset.length) {
           // close only the content menus from the subset, keeping the toolbar more list active
           $more_subset.find('li').filter('[id*="contentmenu-"]').removeClass(active_class);
         }
         else {
           // close existing opened contentmenus
-          $('.' + active_class + '> ul', that.$container).attr("aria-hidden", "true");
+          $('.' + active_class + '> ul', that.$container).attr('aria-hidden', 'true');
           $('.' + active_class, that.$container).removeClass(active_class);
           // we need to close the more subset as well not just the content-menus
           // when we click on the personal bar
-          $("#plone-toolbar-more-subset").hide();
+          $('#plone-toolbar-more-subset').hide();
         }
         $('nav li > ul', $(this)).css({'margin-top': ''}); // unset this so we get fly-in affect
         if (!hasClass) {
@@ -149,19 +150,19 @@ define([
         // is visible which enlarges the nav. In this case we want to hide the
         // active lists because the user assumes that he targeted an element outside
         // the edit-bar
-        if (!$el.length || $el.prop("tagName") === "NAV") {
-          $('nav > ul > li', that.$container).each(function(key, element){
+        if (!$el.length || $el.prop('tagName') === 'NAV') {
+          $('nav > ul > li', that.$container).each(function(key, element) {
             $(element).removeClass(that.options.classNames.active);
           });
           // we need to close the more subset as well not just the content-menus
           // when we click on the body area
-          $("#plone-toolbar-more-subset").hide();
+          $('#plone-toolbar-more-subset').hide();
         }
       });
       that.setHeight();
     },
-    padPulloutContent: function($li){
-      if(!this.state.left || !this.isDesktop()){
+    padPulloutContent: function($li) {
+      if (!this.state.left || !this.isDesktop()){
         // only when on left
         return;
       }
@@ -178,12 +179,12 @@ define([
       $content.css({
         'margin-top': Math.min(itemLocation, height - insideHeight)
       });
-      $content.attr("aria-hidden", "false");
+      $content.attr('aria-hidden', 'false');
     },
-    isDesktop: function(){
+    isDesktop: function() {
       return $(window).width() > '768';
     },
-    _setHeight: function(){
+    _setHeight: function() {
       var $items = $('.plone-toolbar-main', this.$container);
       $items.css({height: ''});
       var natualHeight = $items.outerHeight();
@@ -195,7 +196,7 @@ define([
       var height = $(window).height() - $('#personal-bar-container').height() -
         $('.plone-toolbar-logo').height();
 
-      if(height < natualHeight){
+      if (height < natualHeight) {
         /* add scroll buttons */
         var $scrollUp = $('<li class="scroll-btn up"><a href="#"><span class="icon-up"></span><span>&nbsp;</span></a></li>');
         var $scrollDown = $('<li class="scroll-btn down"><a href="#"><span class="icon-down"></span><span>&nbsp;</span></a></li>');
@@ -206,33 +207,33 @@ define([
         $items.css({
           'padding-top': $scrollUp.height()
         });
-        $scrollUp.click(function(e){
+        $scrollUp.click(function(e) {
           e.preventDefault();
           $items.scrollTop($items.scrollTop() - 50);
         });
-        $scrollDown.click(function(e){
+        $scrollDown.click(function(e) {
           e.preventDefault();
           $items.scrollTop($items.scrollTop() + 50);
         });
       }
       /* if there is active, make sure to reposition */
       var $active = $('li.active ul:visible', this.$container);
-      if($active.size() > 0){
+      if ($active.size() > 0){
         this.padPulloutContent($active);
       }
     },
-    setHeight: function(){
-      if(!this.state.left || !this.isDesktop()){
+    setHeight: function() {
+      if (!this.state.left || !this.isDesktop()){
         // only when on left
         return;
       }
       var that = this;
       clearTimeout(that.heightTimeout);
-      that.heightTimeout = setTimeout(function(){
+      that.heightTimeout = setTimeout(function() {
         that._setHeight();
       }, 50);
     },
-    setState: function(state){
+    setState: function(state) {
       var that = this;
       that.state = $.extend({}, that.state, state);
       /* only cookie configurable attribute is expanded or contracted */
@@ -249,7 +250,7 @@ define([
       if (view_should_move) {
         for (i = length; length >= 0; length -= 1) {
           $content_view = $views.eq(i);
-          if ($content_view.is(":hidden")) {
+          if ($content_view.is(':hidden')) {
             continue;
           }
           $content_view.hide().clone(true, true).appendTo($subset).show();
@@ -259,19 +260,19 @@ define([
         }
       }
     },
-    hideElements: function(){
+    hideElements: function() {
       var that = this;
-      if(this.state.left){
+      if (this.state.left){
         // only when on top
         return;
       }
       var w = $('.plone-toolbar-container').width(),
           wtc = $('.plone-toolbar-logo').width();
-      var $plone_toolbar_main =  $( ".plone-toolbar-main");
-      var $toolbar_menus = $plone_toolbar_main.find("> li" );
+      var $plone_toolbar_main =  $( '.plone-toolbar-main');
+      var $toolbar_menus = $plone_toolbar_main.find('> li' );
       $toolbar_menus.each(function() {
           wtc += $(this).width();
-      });
+        });
       var $pers_bar_container = $('#personal-bar-container');
       $pers_bar_container.find('> li').each(function() {
         wtc += $(this).width();
@@ -282,7 +283,7 @@ define([
       var $content_views = $toolbar_menus.filter('[id^="contentview-"]');
       if (w < wtc) {
         if (!($toolbar_more_options.length)) {
-          (function(){
+          (function() {
             $content_menus.hide();
             $toolbar_more_options = $('<li id="plone-toolbar-more-options"><a href="#"><span class="icon-moreOptions" aria-hidden="true"></span><span>' + _t('More') + '</span><span class="plone-toolbar-caret"></span></a></li>');
             $plone_toolbar_main.append($toolbar_more_options);
@@ -296,13 +297,13 @@ define([
 
             that.cloneViewsIntoSubset($pers_bar_container, $content_views, $toolbar_more_subset);
             var active_class = that.options.classNames.active;
-            $toolbar_more_options.find('a').on('click', function(event){
+            $toolbar_more_options.find('a').on('click', function(event) {
               // close existing opened contentmenus
               $('.' + active_class, that.$container).removeClass(active_class);
 
               var $more_list = $(this).parent();
               // properly toggle active class for toolbar_more list item
-              $more_list.toggleClass('active', $toolbar_more_subset.is(":hidden"));
+              $more_list.toggleClass('active', $toolbar_more_subset.is(':hidden'));
               $toolbar_more_subset.toggle();
               event.preventDefault();
             });
@@ -316,7 +317,7 @@ define([
       // check if the personal toolbar is not offseted if there isn't enough space
       // and we already have the plone-toolbar-more-options added to the page.
       if ($pers_bar_container[0].offsetTop !== 0) {
-        that.cloneViewsIntoSubset($pers_bar_container, $content_views, $("#plone-toolbar-more-subset"));
+        that.cloneViewsIntoSubset($pers_bar_container, $content_views, $('#plone-toolbar-more-subset'));
       }
     },
     init: function () {
@@ -328,10 +329,10 @@ define([
         expanded: true,
         left: $('body').hasClass(that.options.classNames.left)
       };
-      if(toolbar_cookie){
-        try{
+      if (toolbar_cookie){
+        try {
           that.state = $.extend({}, that.state, $.parseJSON(toolbar_cookie));
-        }catch(e){
+        }catch (e){
           // ignore
         }
       }
@@ -353,14 +354,14 @@ define([
       $('body').off('structure-url-changed').on('structure-url-changed', function (e, path) {
         $.ajax({
           url: $('body').attr('data-portal-url') + path + '/@@render-toolbar'
-        }).done(function(data){
+        }).done(function(data) {
           var $el = $(utils.parseBodyTag(data));
           that.$el.replaceWith($el);
           Registry.scan($el);
         });
       });
 
-      $(window).on('resize', function(){
+      $(window).on('resize', function() {
         if (that.isDesktop()){
           that.setupDesktop();
           if (!that.state.left) {
