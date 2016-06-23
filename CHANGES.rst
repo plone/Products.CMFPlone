@@ -65,6 +65,10 @@ New features:
 
 Bug fixes:
 
+- Workaround a test problem with outdated Firefox 34 used at jenkins.plone.org. 
+  This Workaround can be removed once https://github.com/plone/jenkins.plone.org/issues/179 was solved.
+  [jensens]
+
 - Fix select2 related robot test failures and give the test_tinymce.robot scenario a more unique name.
   [thet]
 
