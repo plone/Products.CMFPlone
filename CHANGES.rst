@@ -65,7 +65,11 @@ New features:
 
 Bug fixes:
 
-- Workaround a test problem with outdated Firefox 34 used at jenkins.plone.org. 
+- Don't fail, when combining bundles and the target resource files (``BUNLDE-compiled.[min.js|css]``) do not yet exist on the filesystem.
+  Fixes GenericSetup failing silently on import with when a to-be-compiled bundle which exists only as registry entry is processed in the ``combine-bundle`` step.
+  [thet]
+
+- Workaround a test problem with outdated Firefox 34 used at jenkins.plone.org.
   This Workaround can be removed once https://github.com/plone/jenkins.plone.org/issues/179 was solved.
   [jensens]
 

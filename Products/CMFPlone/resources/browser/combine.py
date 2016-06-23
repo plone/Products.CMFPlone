@@ -1,19 +1,20 @@
-import re
-from zExceptions import NotFound
 from Acquisition import aq_base
 from datetime import datetime
 from plone.registry.interfaces import IRegistry
 from plone.resource.file import FilesystemFile
 from plone.resource.interfaces import IResourceDirectory
 from Products.CMFPlone.interfaces import IBundleRegistry
-from Products.CMFPlone.interfaces.resources import (
-    OVERRIDE_RESOURCE_DIRECTORY_NAME,
-)
+from Products.CMFPlone.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME  # noqa
 from StringIO import StringIO
+from zExceptions import NotFound
 from zope.component import getUtility
 from zope.component import queryUtility
 
+import logging
+import re
+
 PRODUCTION_RESOURCE_DIRECTORY = "production"
+logger = logging.getLogger(__name__)
 
 
 def get_production_resource_directory():
@@ -39,7 +40,12 @@ def get_resource(context, path):
         if overrides.isFile(filepath):
             return overrides.readFile(filepath)
 
-    resource = context.unrestrictedTraverse(path)
+    try:
+        resource = context.unrestrictedTraverse(path)
+    except NotFound:
+        logger.warn(u"Could not find resource {0}. You may have to create it first.".format(path))  # noqa
+        return
+
     if isinstance(resource, FilesystemFile):
         (directory, sep, filename) = path.rpartition('/')
         return context.unrestrictedTraverse(directory).readFile(filename)
@@ -72,7 +78,10 @@ def write_js(context, folder, meta_bundle):
         IBundleRegistry, prefix="plone.bundles", check=False)
     for bundle in bundles.values():
         if bundle.merge_with == meta_bundle and bundle.jscompilation:
-            resources.append(get_resource(context, bundle.jscompilation))
+            resource = get_resource(context, bundle.jscompilation)
+            if not resource:
+                continue
+            resources.append(resource)
 
     fi = StringIO()
     for script in resources:
@@ -89,6 +98,8 @@ def write_css(context, folder, meta_bundle):
     for bundle in bundles.values():
         if bundle.merge_with == meta_bundle and bundle.csscompilation:
             css = get_resource(context, bundle.csscompilation)
+            if not css:
+                continue
             (path, sep, filename) = bundle.csscompilation.rpartition('/')
             # Process relative urls:
             # we prefix with current resource path any url not starting with
