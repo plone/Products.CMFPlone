@@ -40,3 +40,6 @@ class SearchRegistryIntegrationTest(unittest.TestCase):
 
     def test_types_not_searched(self):
         self.assertTrue(hasattr(self.settings, 'types_not_searched'))
+
+    def test_sort_on(self):
+        self.assertTrue(hasattr(self.settings, 'sort_on'))

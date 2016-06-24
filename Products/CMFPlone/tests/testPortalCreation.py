@@ -226,6 +226,13 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.assertTrue('plone.types_not_searched' in registry)
         self.assertTrue('Plone Site' in settings.types_not_searched)
 
+    def testDefaultSortOrderProperty(self):
+        # We should have an sort_on property
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(ISearchSchema, prefix="plone")
+        self.assertIn('plone.sort_on', registry)
+        self.assertEqual(settings.sort_on, 'relevance')
+
     def testNonDefaultPageTypes(self):
         # We should have a default_page_types setting
         registry = self.portal.portal_registry
