@@ -76,7 +76,7 @@ class IBundleRegistry(zope.interface.Interface):
     resources = schema.List(
         title=_(u"Loaded resources"),
         description=_(
-            u"The resources that is going to be loaded on this bundle in order"),
+            u"The resources that are going to be loaded on this bundle in order"),
         value_type=schema.ASCIILine(title=_(u"Resource name")),
         required=False)
 

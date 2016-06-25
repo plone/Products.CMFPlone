@@ -8,15 +8,49 @@ Changelog
 5.1a2 (unreleased)
 ------------------
 
-Incompatibilities:
+Breaking changes:
+
+- Remove deprecated resource registrations for ``mockup-parser`` and ``mockup-registry`` from mockup-core.
+  Use those from patternslib instead.
+  [thet]
+
+- ``plone-compile-resources``: Install ``grunt-cli`` instead of depending on an installed ``grunt`` executable.
+  If you already have a auto-generated ``package.json`` file in buildout directory, remove it.
+  [thet]
+
 
 - Moved code around and deprecated old locations in ``Products/CMFPlone/patterns/__init__``.
   This goes together with same pattern settings changes in ``plone.app.layout.globals.pattern_settings``.
   Also moved general usable ``./patterns/utils/get_portal`` to ``./utils/.get_portal``.
-  Depreacted ``./patterns/utils/get_portal`` and ``./patterns/utils/get_portal``.
+  Deprecated ``./patterns/utils/get_portal`` and ``./patterns/utils/get_portal``.
   [jensens]
 
-New:
+
+New features:
+
+- Updated components directory, recompiled bundles.
+  [thet]
+
+- Align bower components with newest mockup + documentation updates on mockup update process.
+  [thet]
+
+- Ignore a bit more in ``.gitignores`` for CMPlones bower components.
+  [thet]
+
+- Added setting to editing controlpanel to enable limit of keywords to the current navigation root.
+  [jensens]
+
+- Make login modal dialog follow any redirects set while processing the login request.
+  [fulv]
+
+- Add link to training.plone.org
+  [svx]
+
+- Allow to define multiple ``tinymce-content-css`` in theme ``manifest.cfg`` files, seperated by a comma.
+  [thet]
+
+- Update npm package depencies.
+  [thet]
 
 - Supported ``remove`` keyword for configlets in controlpanel.xml.  [maurits]
 
@@ -25,7 +59,43 @@ New:
   Also clean up of parameters, better help and refactored parts of the code.
   [jensens]
 
-Fixes:
+- Allow to hide/show actions directly from the Actions control panel list
+  [ebrehault]
+
+
+Bug fixes:
+
+- Workaround a test problem with outdated Firefox 34 used at jenkins.plone.org. 
+  This Workaround can be removed once https://github.com/plone/jenkins.plone.org/issues/179 was solved.
+  [jensens]
+
+- Fix select2 related robot test failures and give the test_tinymce.robot scenario a more unique name.
+  [thet]
+
+- Add missing ``jquery.browser`` dependency which is needed by patternslib.
+  [thet]
+
+- Toolbar fixes:
+  - Autoformat with cssbrush and js-beautify,
+  - Remove ``git diff`` in line 105, which broke compilation.
+  - Use patternslib ``pat-base`` instead of ``mockup-patterns-base``.
+  - Remove dependency on deprecated ``mockup-core``.
+  [thet]
+
+- Removed docstrings from PropertyManager methods to avoid publishing them.  [maurits]
+
+- Added publishing patch from Products.PloneHotfix20160419.
+  This avoids publishing some methods inherited from Zope or CMF.  [maurits]
+
+- Remove whitespaces in ``Products/CMFPlone/browser/templates/plone-frontpage.pt``.
+  [svx]
+
+- Fixed versioning for File and Image.
+   [iham]
+
+- Do not hide document byline viewlet by default;
+  it is controled by the `Allow anyone to view 'about' information` option in the `Security Settings` of `Site Setup` (closes `#1556`_).
+  [hvelarde]
 
 - Removed docstrings from some methods to avoid publishing them.  From
   Products.PloneHotfix20160419.  [maurits]
@@ -63,7 +133,7 @@ Fixes:
 
 - Do not hard-code baseUrl in bundle to avoid bad URL when switching domains.
   [ebrehault]
-  
+
 - fix typo and comma splice error in HTML filtering control panel [tkimnguyen]
 
 
@@ -115,6 +185,10 @@ New:
 
 Fixes:
 
+- Fixed displaying the body text of a feed item.  This is when
+  ``render_body`` is switched on in the Syndication settings.
+  [maurits]
+
 - Make Gruntfile.js generation script a bit more verbose to show the effective
   locations of the generated bundles. This helps in case of non-working setups
   also as if bundle compilation was started in browser at a first run a and
@@ -146,12 +220,7 @@ Fixes:
 5.0.3 (2016-03-??)
 ------------------
 
-
 Fixes:
-
-- Fixed displaying the body text of a feed item.  This is when
-  ``render_body`` is switched on in the Syndication settings.
-  [maurits]
 
 - In the ``combine-bundles`` import step, make sure the Content Type
   header is not set to ``application/javascript``.  This would result
@@ -1280,3 +1349,4 @@ Fixes:
 .. _`#1053`: https://github.com/plone/Products.CMFPlone/issues/1053
 .. _`#1232`: https://github.com/plone/Products.CMFPlone/issues/1232
 .. _`#1255`: https://github.com/plone/Products.CMFPlone/issues/1255
+.. _`#1556`: https://github.com/plone/Products.CMFPlone/issues/1556

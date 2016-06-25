@@ -35,6 +35,7 @@ setup(
         ],
         test=[
             'lxml',
+            'mock',
             'plone.app.robotframework',
             'plone.app.testing',
             'zope.globalrequest',

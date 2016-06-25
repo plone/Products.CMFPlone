@@ -7,8 +7,9 @@
 define([
     "jquery",
     "underscore",
+    "pat-utils",
     "pat-logger"
-], function($, _, logger) {
+], function($, _, utils, logger) {
     "use strict";
 
     function ArgumentParser(name, opts) {
@@ -228,8 +229,10 @@ define([
 
         _parseExtendedNotation: function argParserParseExtendedNotation(argstring) {
             var opts = {};
-            var parts = argstring.replace(";;", "\xff").split(";")
-                        .map(function(el) { return el.replace("\xff", ";"); });
+            var parts = argstring.replace(/;;/g, "\0x1f").replace(/&amp;/g, "&amp\0x1f").split(/;/)
+                        .map(function(el) {
+                            return el.replace(new RegExp("\0x1f", 'g'), ";");
+                        });
             _.each(parts, function (part, i) {
                 if (!part) { return; }
                 var matches = part.match(this.named_param_pattern);
@@ -263,23 +266,22 @@ define([
             var parts = this._split(parameter),
                 opts = {},
                 positional = true,
-                i, part, flag, sense;
+                i=0, part, flag, sense;
 
-            i=0;
             while (parts.length) {
                 part=parts.shift().trim();
                 if (part.slice(0, 3)==="no-") {
-                    sense=false;
+                    sense = false;
                     flag=part.slice(3);
                 } else {
-                    sense=true;
-                    flag=part;
+                    sense = true;
+                    flag = part;
                 }
                 if (flag in this.parameters && this.parameters[flag].type==="boolean") {
-                    positional=false;
+                    positional = false;
                     this._set(opts, flag, sense);
                 } else if (flag in this.enum_values) {
-                    positional=false;
+                    positional = false;
                     this._set(opts, this.enum_values[flag], flag);
                 } else if (positional)
                     this._set(opts, this.order[i], part);
@@ -288,8 +290,9 @@ define([
                     break;
                 }
                 i++;
-                if (i>=this.order.length)
+                if (i >= this.order.length) {
                     break;
+                }
             }
             if (parts.length)
                 this.log.warn("Ignore extra arguments: " + parts.join(" "));
@@ -310,7 +313,7 @@ define([
                 return this._parseExtendedNotation(parameter);
             }
             sep = parameter.indexOf(";");
-            if (sep===-1) {
+            if (sep === -1) {
                 return this._parseShorthandNotation(parameter);
             }
             opts = this._parseShorthandNotation(parameter.slice(0, sep));
@@ -323,15 +326,15 @@ define([
         _defaults: function argParserDefaults($el) {
             var result = {};
             for (var name in this.parameters)
-                if (typeof this.parameters[name].value==="function")
+                if (typeof this.parameters[name].value === "function")
                     try {
-                        result[name]=this.parameters[name].value($el, name);
+                        result[name] = this.parameters[name].value($el, name);
                         this.parameters[name].type=typeof result[name];
                     } catch(e) {
                         this.log.error("Default function for " + name + " failed.");
                     }
                 else
-                    result[name]=this.parameters[name].value;
+                    result[name] = this.parameters[name].value;
             return result;
         },
 
@@ -341,37 +344,39 @@ define([
 
             // Resolve references
             for (i=0; i<keys.length; i++) {
-                name=keys[i];
-                spec=this.parameters[name];
-                if (spec===undefined)
+                name = keys[i];
+                spec = this.parameters[name];
+                if (spec === undefined)
                     continue;
 
-                if (options[name]===spec.value &&
+                if (options[name] === spec.value &&
                         typeof spec.value==="string" && spec.value.slice(0, 1)==="$")
-                    options[name]=options[spec.value.slice(1)];
+                    options[name] = options[spec.value.slice(1)];
             }
-
             // Move options into groups and do renames
-            keys=Object.keys(options);
+            keys = Object.keys(options);
             for (i=0; i<keys.length; i++) {
-                name=keys[i];
-                spec=this.parameters[name];
-                if (spec===undefined)
+                name = keys[i];
+                spec = this.parameters[name];
+                if (spec === undefined)
                     continue;
 
                 if (spec.group)  {
                     if (typeof options[spec.group]!=="object")
-                        options[spec.group]={};
-                    target=options[spec.group];
-                } else
-                    target=options;
+                        options[spec.group] = {};
+                    target = options[spec.group];
+                } else {
+                    target = options;
+                }
 
-                if (spec.dest!==name) {
-                    target[spec.dest]=options[name];
+                if (spec.dest !== name) {
+                    target[spec.dest] = options[name];
                     delete options[name];
                 }
             }
+            return options;
         },
+
 
         parse: function argParserParse($el, options, multiple, inherit) {
             if (typeof options==="boolean" && multiple===undefined) {
@@ -381,47 +386,32 @@ define([
             inherit = (inherit!==false);
             var stack = inherit ? [[this._defaults($el)]] : [[{}]];
             var $possible_config_providers = inherit ? $el.parents().andSelf() : $el,
-                final_length = 1,
-                i, data, frame;
-            for (i=0; i<$possible_config_providers.length; i++) {
-                data = $possible_config_providers.eq(i).attr(this.attribute);
+                final_length = 1;
+
+            _.each($possible_config_providers, function (provider) {
+                var data = $(provider).attr(this.attribute), frame, _parse;
                 if (data) {
-                    var _parse = this._parse.bind(this); // Needed to fix binding in map call
+                    _parse = this._parse.bind(this);
                     if (data.match(/&&/))
-                        frame=data.split(/\s*&&\s*/).map(_parse);
+                        frame = data.split(/\s*&&\s*/).map(_parse);
                     else
-                        frame=[_parse(data)];
+                        frame = [_parse(data)];
                     final_length = Math.max(frame.length, final_length);
                     stack.push(frame);
                 }
-            }
+            }.bind(this));
             if (typeof options==="object") {
                 if (Array.isArray(options)) {
                     stack.push(options);
-                    final_length=Math.max(options.length, final_length);
+                    final_length = Math.max(options.length, final_length);
                 } else
                     stack.push([options]);
             }
-
-            if (!multiple) {
-                final_length=1;
-            }
-            var results=[], frame_length, x, xf;
-            for (i=0; i<final_length; i++)
-                results.push({});
-
-            for (i=0; i<stack.length; i++) {
-                frame=stack[i];
-                frame_length=frame.length-1;
-
-                for (x=0; x<final_length; x++) {
-                    xf=(x>frame_length) ? frame_length : x;
-                    results[x]=$.extend(results[x], frame[xf]);
-                }
-            }
-            for (i=0; i<results.length; i++)
-                this._cleanupOptions(results[i]);
-
+            if (!multiple) { final_length = 1; }
+            var results = _.map(
+                _.compose(utils.removeDuplicateObjects, _.partial(utils.mergeStack, _, final_length))(stack),
+                this._cleanupOptions.bind(this)
+            );
             return multiple ? results : results[0];
         }
     };

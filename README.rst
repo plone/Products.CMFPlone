@@ -18,7 +18,7 @@ Installing Plone
 
 Plone is available on Microsoft Windows, Linux, OSX and BSD platforms.
 
-`Install Plone by downloading an installer from plone.org <http://plone.org/products>`_.
+`Install Plone by downloading an installer from plone.org <https://plone.org/download>`_.
 
 What is Plone?
 --------------
