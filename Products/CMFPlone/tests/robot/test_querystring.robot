@@ -77,6 +77,7 @@ I expect to be in Simple mode
     Click Element  css=body
 
 open the select box titled ${NAME}
+    Click Element  css=body
     Click Element  css=.querystring-criteria-${NAME} .select2-container a
 
 select index type ${INDEX}
