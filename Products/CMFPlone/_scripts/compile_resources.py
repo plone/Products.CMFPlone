@@ -23,6 +23,11 @@ package_json_contents = """{
   }
 }"""
 
+if os.name == 'nt':
+    NPM_CMD = 'npm.cmd'
+else:
+    NPM_CMD = 'npm'
+
 
 def generate_package_json(base_path):
     # generate package.json file here if not exists...
@@ -129,13 +134,19 @@ def main(argv=sys.argv):
     # generates only if not already there
     generate_package_json(base_path)
     if not args.skip_npminstall:
-        cmd = ['npm', 'install']
+        cmd = [NPM_CMD, 'install']
         print('Setup npm env')
         print('Running command: %s' % ' '.join(cmd))
         subprocess.check_call(cmd)
 
     # Generate Gruntfile
-    grunt = os.path.join(base_path, 'node_modules', 'grunt-cli', 'bin', 'grunt')
+    grunt = os.path.join(
+        base_path,
+        'node_modules',
+        'grunt-cli',
+        'bin',
+        'grunt'
+    )
     if not args.skip_gruntfile:
         generate_gruntfile(
             base_path,
