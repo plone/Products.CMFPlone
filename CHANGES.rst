@@ -19,6 +19,8 @@ New features:
 
 Bug fixes:
 
+- Use ``Plone Test Setup`` and ``Plone Test Teardown`` from ``plone.app.robotframework`` master.  [maurits]
+
 - Fix select2 related robot test failures and give the test_tinymce.robot scenario a more unique name.
   [thet]
 
