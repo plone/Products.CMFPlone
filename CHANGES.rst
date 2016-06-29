@@ -66,6 +66,10 @@ New features:
 Bug fixes:
 
 - Use ``Plone Test Setup`` and ``Plone Test Teardown`` from ``plone.app.robotframework`` master.  [maurits]
+- The group membership page should filter search results based on
+  group membership test. This fixes an issue where all members would
+  be shown regardless of membership to the selected group.
+  [malthe]
 
 - Don't fail, when combining bundles and the target resource files (``BUNLDE-compiled.[min.js|css]``) do not yet exist on the filesystem.
   Fixes GenericSetup failing silently on import with when a to-be-compiled bundle which exists only as registry entry is processed in the ``combine-bundle`` step.

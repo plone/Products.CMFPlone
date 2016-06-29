@@ -64,8 +64,19 @@ class GroupMembershipControlPanel(UsersGroupsControlPanelView):
                 form['searchstring'] = ''
             self.searchString = form.get('searchstring', '')
             if findAll or bool(self.searchString):
-                self.searchResults = self.getPotentialMembers(
-                    self.searchString)
+                members = self.getPotentialMembers(self.searchString)
+                acl = getToolByName(self, 'acl_users')
+                plugins = acl.plugins.listPlugins(IGroupsPlugin)
+                results = self.searchResults = []
+                for member in members:
+                    for gid, plugin in plugins:
+                        groups = plugin.getGroupsForPrincipal(
+                            member,
+                            self.request
+                        )
+                        if self.groupname in groups:
+                            results.append(member)
+                            break
 
             if search or findAll:
                 self.newSearch = True
