@@ -10,6 +10,9 @@ Changelog
 
 Breaking changes:
 
+- Remove discontinued module ``grunt-debug-task`` from ``plone-compile-resources``.
+  [jensens]
+
 - Remove deprecated resource registrations for ``mockup-parser`` and ``mockup-registry`` from mockup-core.
   Use those from patternslib instead.
   [thet]
@@ -66,6 +69,7 @@ New features:
 Bug fixes:
 
 - Use ``Plone Test Setup`` and ``Plone Test Teardown`` from ``plone.app.robotframework`` master.  [maurits]
+
 - Let npm install work on windows for plone-compile-resources.
   [jensens]
 

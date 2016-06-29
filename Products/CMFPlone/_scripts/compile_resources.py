@@ -17,7 +17,6 @@ package_json_contents = """{
     "grunt-contrib-requirejs": "~1.0.0",
     "grunt-contrib-uglify": "~1.0.1",
     "grunt-contrib-watch": "~1.0.0",
-    "grunt-debug-task": "~0.1.8",
     "grunt-sed": "~0.1.1",
     "less-plugin-inline-urls": "^1.1.0"
   }
