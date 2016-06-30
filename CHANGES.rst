@@ -68,6 +68,9 @@ New features:
 
 Bug fixes:
 
+- Marked two robot tests as unstable, non-critical.
+  Refs https://github.com/plone/Products.CMFPlone/issues/1656  [maurits]
+
 - Use ``Plone Test Setup`` and ``Plone Test Teardown`` from ``plone.app.robotframework`` master.  [maurits]
 
 - Let npm install work on windows for plone-compile-resources.
