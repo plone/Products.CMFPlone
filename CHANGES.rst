@@ -19,6 +19,9 @@ New features:
 
 Bug fixes:
 
+- Marked two robot tests as unstable, non-critical.
+  Refs https://github.com/plone/Products.CMFPlone/issues/1656  [maurits]
+
 - Use ``Plone Test Setup`` and ``Plone Test Teardown`` from ``plone.app.robotframework`` master.  [maurits]
 
 - Fix select2 related robot test failures and give the test_tinymce.robot scenario a more unique name.
