@@ -15,7 +15,7 @@ Test Teardown  Run keywords  Plone Test Teardown
 Scenario: Location query
     [Tags]  unstable
     [Documentation]  This sometimes fails with: Element locator 'jquery=:focus' did not match any elements.
-    [Documentation]  This sometimes fails with: Element locator 'jquery=.pattern-relateditems-tree-select' did not match any elements.
+                     This sometimes fails with: Element locator 'jquery=.pattern-relateditems-tree-select' did not match any elements.
     Given a logged-in site administrator
     and a bunch of folders
     and the querystring pattern

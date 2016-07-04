@@ -68,6 +68,8 @@ New features:
 
 Bug fixes:
 
+- Fixed syntaxerror for duplicate tag in robot tests.  [maurits]
+
 - Marked two robot tests as unstable, non-critical.
   Refs https://github.com/plone/Products.CMFPlone/issues/1656  [maurits]
 
