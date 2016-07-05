@@ -9,13 +9,13 @@ from Products.CMFPlone.utils import safe_hasattr
 from plone.registry.interfaces import IRecordModifiedEvent
 from zope.component import adapter
 from zope.component import queryUtility
-from zope.interface import implements
+from zope.interface import implementer
 from zope.ramcache.interfaces.ram import IRAMCache
 from zope.site.hooks import getSite
 
 
+@implementer(IConfigurationChangedEvent)
 class ConfigurationChangedEvent(object):
-    implements(IConfigurationChangedEvent)
 
     def __init__(self, context, data):
         self.context = context

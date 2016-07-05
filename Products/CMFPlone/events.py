@@ -1,4 +1,4 @@
-from zope.interface import implements
+from zope.interface import implementer
 from zope.component.interfaces import ObjectEvent
 
 from Products.CMFCore.utils import getToolByName
@@ -7,13 +7,15 @@ from interfaces import ISiteManagerCreatedEvent
 from interfaces import IReorderedEvent
 
 
+@implementer(ISiteManagerCreatedEvent)
 class SiteManagerCreatedEvent(ObjectEvent):
 
-    implements(ISiteManagerCreatedEvent)
+    pass
 
 
+@implementer(IReorderedEvent)
 class ReorderedEvent(ObjectEvent):
-    implements(IReorderedEvent)
+    pass
 
 
 def profileImportedEventHandler(event):

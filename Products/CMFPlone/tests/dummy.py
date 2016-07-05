@@ -7,7 +7,7 @@
 import os
 
 from zope.interface import implementer
-from zope.interface import implements
+from zope.interface import implementer
 from zope.interface import Interface
 
 from Products.CMFPlone.interfaces import INonStructuralFolder
@@ -124,9 +124,9 @@ class Folder(SimpleFolder):
             self.title = title
 
 
+@implementer(INonStructuralFolder)
 class NonStructuralFolder(Folder):
     '''Folder implementing the INonStructuralFolder interface'''
-    implements(INonStructuralFolder)
 
 
 class Error(Exception):
@@ -171,8 +171,9 @@ class IDummyUtility(Interface):
     pass
 
 
+@implementer(IDummyUtility)
 class DummyUtility(SimpleItem):
-    implements(IDummyUtility)
+    pass
 
 
 class ICantBeDeleted(Interface):

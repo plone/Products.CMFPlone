@@ -1,4 +1,4 @@
-from zope.interface import implements
+from zope.interface import implementer
 
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -6,9 +6,9 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFPlone.browser.interfaces import IGlobalStatusMessage
 
 
+@implementer(IGlobalStatusMessage)
 class GlobalStatusMessage(BrowserView):
     """Display messages to the current user"""
-    implements(IGlobalStatusMessage)
 
     index = ViewPageTemplateFile('templates/global_statusmessage.pt')
 

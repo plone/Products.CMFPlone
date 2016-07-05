@@ -9,7 +9,7 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from z3c.form import form
 from zope.component import adapts
 from zope.event import notify
-from zope.interface import implements
+from zope.interface import implementer
 from zope.lifecycleevent import ObjectCreatedEvent
 
 
@@ -68,11 +68,11 @@ class ActionListControlPanel(BrowserView):
         return self.display()
 
 
+@implementer(IActionSchema)
 class ActionControlPanelAdapter(object):
     """Adapter for action form."""
 
     adapts(IAction)
-    implements(IActionSchema)
 
     def __init__(self, context):
         self.context = context

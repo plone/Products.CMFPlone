@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
 from zope.component import adapts
 from Products.CMFPlone.interfaces import ILanguageSchema
-from zope.interface import implements
+from zope.interface import implementer
 from zope.component import getUtility
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 
 from plone.registry.interfaces import IRegistry
 
 
+@implementer(ILanguageSchema)
 class LanguageControlPanelAdapter(object):
 
     adapts(IPloneSiteRoot)
-    implements(ILanguageSchema)
 
     def __init__(self, context):
         self.context = context

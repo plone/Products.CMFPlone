@@ -7,7 +7,7 @@ Created by Mikio Hokari, CMScom and Manabu Terada, CMScom on 2009-09-30.
 """
 import unicodedata
 
-from zope.interface import implements
+from zope.interface import implementer
 
 from Products.ZCTextIndex.ISplitter import ISplitter
 from Products.ZCTextIndex.PipelineFactory import element_factory
@@ -123,9 +123,8 @@ def process_unicode_glob(uni):
                     yield x
 
 
+@implementer(ISplitter)
 class Splitter(object):
-
-    implements(ISplitter)
 
     def process(self, lst):
         """ Will be called when indexing.

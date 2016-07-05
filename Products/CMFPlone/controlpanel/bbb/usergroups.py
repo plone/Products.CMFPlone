@@ -1,16 +1,16 @@
 from zope.component import adapts
 from zope.component import getUtility
-from zope.interface import implements
+from zope.interface import implementer
 from zope.site.hooks import getSite
 from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.interfaces import IUserGroupsSettingsSchema
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 
 
+@implementer(IUserGroupsSettingsSchema)
 class UserGroupsSettingsControlPanelAdapter(object):
 
     adapts(IPloneSiteRoot)
-    implements(IUserGroupsSettingsSchema)
 
     def __init__(self, context):
         self.context = context

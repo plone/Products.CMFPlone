@@ -9,7 +9,7 @@ from plone.app.layout.navigation.navtree import buildFolderTree
 from plone.app.layout.navigation.root import getNavigationRoot
 
 from zope.interface import directlyProvides
-from zope.interface import implements
+from zope.interface import implementer
 
 default_user = PloneTestCase.default_user
 
@@ -17,8 +17,9 @@ from Products.CMFPlone.PloneFolder import PloneFolder
 from Products.CMFPlone.interfaces import INonStructuralFolder
 
 
+@implementer(INonStructuralFolder)
 class DummyNonStructuralFolder(PloneFolder):
-    implements(INonStructuralFolder)
+    pass
 
 
 class TestFolderTree(PloneTestCase.PloneTestCase):

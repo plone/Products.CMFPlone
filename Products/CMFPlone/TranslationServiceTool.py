@@ -20,10 +20,11 @@ from Products.CMFPlone import PloneLocalesMessageFactory as PLMF
 from Products.CMFPlone.interfaces import ITranslationServiceTool
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from zope.i18n import translate
-from zope.interface import implements
+from zope.interface import implementer
 from zope.publisher.interfaces.browser import IBrowserRequest
 
 
+@implementer(ITranslationServiceTool)
 class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
     """ Utility methods to access the translation machinery """
 
@@ -31,7 +32,6 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
     meta_type = 'Portal Translation Service Tool'
     toolicon = 'skins/plone_images/site_icon.png'
     security = ClassSecurityInfo()
-    implements(ITranslationServiceTool)
 
     security.declarePublic('utranslate')
 

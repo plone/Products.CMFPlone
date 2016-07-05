@@ -17,7 +17,7 @@ from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from zope.component.hooks import getSite
 from zope.i18n import translate
 from zope.i18nmessageid import Message
-from zope.interface import implements
+from zope.interface import implementer
 
 
 class PloneConfiglet(ActionInformation):
@@ -41,13 +41,12 @@ class PloneConfiglet(ActionInformation):
         return res
 
 
+@implementer(IControlPanel)
 class PloneControlPanel(PloneBaseTool, UniqueObject,
                         Folder, ActionProviderBase, PropertyManager):
     """Weave together the various sources of "actions" which
     are apropos to the current user and context.
     """
-
-    implements(IControlPanel)
 
     security = ClassSecurityInfo()
 

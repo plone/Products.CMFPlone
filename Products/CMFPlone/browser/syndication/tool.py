@@ -2,7 +2,7 @@ from Acquisition import aq_parent
 from AccessControl import Unauthorized
 
 from zope.component import getAdapter
-from zope.interface import implements
+from zope.interface import implementer
 from zope.component import getUtility
 
 from Products.CMFCore.interfaces import ISyndicationTool
@@ -18,13 +18,13 @@ from Products.CMFPlone.interfaces.syndication import IFeedSettings
 from plone.registry.interfaces import IRegistry
 
 
+@implementer(ISyndicationTool)
 class SyndicationTool(object):
     """
     Backward compatible tool. This just implements
     what some other packages use for now to provide
     backwards compatibility.
     """
-    implements(ISyndicationTool)
 
     def editProperties(self, updatePeriod=None, updateFrequency=None,
                        updateBase=None, isAllowed=None, max_items=None):
