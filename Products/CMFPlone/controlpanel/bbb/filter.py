@@ -3,13 +3,13 @@ from Products.CMFPlone.interfaces import IPloneSiteRoot
 from plone.registry.interfaces import IRegistry
 from zope.component import adapts
 from zope.component import getUtility
-from zope.interface import implements
+from zope.interface import implementer
 
 
+@implementer(IFilterSchema)
 class FilterControlPanelAdapter(object):
 
     adapts(IPloneSiteRoot)
-    implements(IFilterSchema)
 
     def __init__(self, context):
         registry = getUtility(IRegistry)

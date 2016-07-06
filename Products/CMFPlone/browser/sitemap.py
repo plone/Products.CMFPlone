@@ -1,6 +1,6 @@
 from Acquisition import aq_inner
 from zope.component import getMultiAdapter
-from zope.interface import implements
+from zope.interface import implementer
 
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -8,8 +8,8 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFPlone.browser.interfaces import ISitemapView
 
 
+@implementer(ISitemapView)
 class SitemapView(BrowserView):
-    implements(ISitemapView)
 
     item_template = ViewPageTemplateFile('templates/sitemap-item.pt')
 

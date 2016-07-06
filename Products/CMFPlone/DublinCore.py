@@ -19,7 +19,7 @@ from App.class_init import InitializeClass
 from App.special_dtml import DTMLFile
 from DateTime.DateTime import DateTime
 from OFS.PropertyManager import PropertyManager
-from zope.interface import implements
+from zope.interface import implementer
 
 from Products.CMFCore.interfaces import ICatalogableDublinCore
 from Products.CMFCore.interfaces import IDublinCore
@@ -62,12 +62,11 @@ def tuplize(valueName, value, splitter=lambda x: x.split()):
     raise ValueError, "%s of unsupported type" % valueName
 
 
+@implementer(IDublinCore, ICatalogableDublinCore, IMutableDublinCore)
 class DefaultDublinCoreImpl(PropertyManager):
 
     """ Mix-in class which provides Dublin Core methods.
     """
-
-    implements(IDublinCore, ICatalogableDublinCore, IMutableDublinCore)
 
     security = ClassSecurityInfo()
 

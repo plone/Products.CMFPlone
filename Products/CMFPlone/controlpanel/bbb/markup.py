@@ -3,13 +3,13 @@ from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
 from plone.registry.interfaces import IRegistry
 from zope.component import adapts
 from zope.component import getUtility
-from zope.interface import implements
+from zope.interface import implementer
 
 
+@implementer(IMarkupSchema)
 class MarkupControlPanelAdapter(object):
 
     adapts(IPloneSiteRoot)
-    implements(IMarkupSchema)
 
     def __init__(self, context):
         registry = getUtility(IRegistry)

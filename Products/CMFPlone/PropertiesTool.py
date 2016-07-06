@@ -6,7 +6,7 @@ from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from OFS.Folder import Folder
 from App.class_init import InitializeClass
 from App.special_dtml import DTMLFile
-from zope.interface import implements
+from zope.interface import implementer
 
 from OFS.PropertyManager import PropertyManager
 from OFS.SimpleItem import SimpleItem
@@ -21,6 +21,7 @@ from zope.component import queryUtility
 from Products.CMFCore.interfaces import ISiteRoot
 
 
+@implementer(IPropertiesTool)
 class PropertiesTool(PloneBaseTool, Folder, UniqueObject):
     """ Plone properties tool
     """
@@ -33,8 +34,6 @@ class PropertiesTool(PloneBaseTool, Folder, UniqueObject):
         {'name': 'Plone Property Sheet',
          'action': 'manage_addPropertySheetForm'},
     ))
-
-    implements(IPropertiesTool)
 
     manage_options = ((Folder.manage_options[0], ) +
                       ({'label': 'Overview',
@@ -110,13 +109,12 @@ class PropertiesTool(PloneBaseTool, Folder, UniqueObject):
 InitializeClass(PropertiesTool)
 
 
+@implementer(ISimpleItemWithProperties)
 class SimpleItemWithProperties (PropertyManager, SimpleItem):
     """
     A common base class for objects with configurable
     properties in a fixed schema.
     """
-
-    implements(ISimpleItemWithProperties)
 
     def __init__(self, id, title=''):
         self.id = id

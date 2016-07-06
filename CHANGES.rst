@@ -153,6 +153,8 @@ Bug fixes:
 
 - fix typo and comma splice error in HTML filtering control panel [tkimnguyen]
 
+- Use zope.interface decorator.
+  [gforcada]
 
 5.1a1 (2016-03-31)
 ------------------
