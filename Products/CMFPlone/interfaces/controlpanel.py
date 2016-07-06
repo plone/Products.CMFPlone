@@ -1096,7 +1096,7 @@ class ISiteSchema(Interface):
 
     site_logo = schema.ASCII(
         title=_(u'Site Logo'),
-        description=_(u'This shows a custom Logo on your Site.'),
+        description=_(u'This shows a custom logo on your site.'),
         required=False,
     )
 
@@ -1110,7 +1110,9 @@ class ISiteSchema(Interface):
         title=_(u'Expose sitemap.xml.gz'),
         description=_(
             u'Exposes your content as a file '
-            u'according to the sitemaps.org standard. You '
+            u'according to the '
+            u'<a href=\'http://sitemaps.org\'>sitemaps.org</a> '
+            u'standard. You '
             u'can submit this to compliant search engines '
             u'like Google, Yahoo and Microsoft. It allows '
             u'these search engines to more intelligently '
@@ -1122,9 +1124,9 @@ class ISiteSchema(Interface):
         title=_(u'JavaScript for web statistics support'),
         description=_(
             u'For enabling web statistics support '
-            u'from external providers (for e.g. Google '
-            u'Analytics). Paste the code snippets provided. '
-            u'It will be included in the rendered HTML as '
+            u'from external providers (e.g. Google '
+            u'Analytics). Paste the provided code snippet here. '
+            u'It will be rendered as '
             u'entered near the end of the page.'),
         default=u'',
         required=False)
@@ -1132,7 +1134,7 @@ class ISiteSchema(Interface):
     display_publication_date_in_byline = schema.Bool(
         title=_(u'Display publication date'),
         description=_(
-            u'Show the date a content item was published in the byline.'),
+            u'Show in the byline the date a content item was published.'),
         default=False,
         required=False)
 
@@ -1149,7 +1151,7 @@ class ISiteSchema(Interface):
 
     thumb_visibility = schema.Choice(
         title=_(u'Thumb visibility'),
-        description=_(u'Show thumbs in listings'),
+        description=_(u'Show thumbnail images in listings'),
         default=u'enabled',
         vocabulary=SimpleVocabulary([
             SimpleTerm('false', 'false', _(u'Never')),
@@ -1159,10 +1161,10 @@ class ISiteSchema(Interface):
         required=True)
 
     toolbar_position = schema.Choice(
-        title=_(u'Position where the toolbar is displayed'),
+        title=_(u'Toolbar position'),
         description=_(
-            u'It can be in the side vertical mode '
-            u'or in the top horizontal mode'),
+            u'It can be on the side (vertical mode) '
+            u'or on the top (horizontal mode)'),
         default=u'side',
         vocabulary=SimpleVocabulary([
             SimpleTerm('side', 'side', _(u'Side')),
@@ -1170,10 +1172,10 @@ class ISiteSchema(Interface):
         required=True)
 
     toolbar_logo = schema.TextLine(
-        title=_(u'Site based relative url for toolbar logo'),
+        title=_(u'Relative URL for the toolbar logo'),
         description=_(
-            u'This must be a relative url to portal root site. '
-            u'By default its /++plone++static/plone-toolbarlogo.svg'),
+            u'This must be a URL relative to the site root. '
+            u'By default it is /++plone++static/plone-toolbarlogo.svg'),
         default=u'/++plone++static/plone-toolbarlogo.svg',
         required=False,
     )
@@ -1182,19 +1184,19 @@ class ISiteSchema(Interface):
         title=_('robots.txt'),
         description=_(
             u'help_robots_txt',
-            default=u'robots.txt is read by search-engines to '
+            default=u'robots.txt is read by search engines to '
                     u'determine how to index your site. '
                     u'For details see <a href=\'http://www.robotstxt.org\'>'
                     u'http://www.robotstxt.org</a>. '
-                    u'\'{portal_url}\' is replaced by the sites url.'),
+                    u'Use \'{portal_url}\' for the site URL.'),
         default=ROBOTS_TXT,
         required=False,
     )
 
     default_page = schema.List(
-        title=_(u'Default page ids'),
+        title=_(u'Default page IDs'),
         description=_(
-            u'Select which ids can act as fallback default pages for',
+            u'Select which IDs (short names) can act as fallback default pages for',
             u'a container.'
         ),
         required=True,
