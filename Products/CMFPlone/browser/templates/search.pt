@@ -37,7 +37,6 @@
                       DateTime python:modules['DateTime'].DateTime;
                       navigation_root_url view/navroot_url;">
 
-        <input type="hidden" name="advanced_search" value="False" />
         <input type="hidden" name="sort_on" value="" />
         <input type="hidden" name="sort_order" value="" />
 
