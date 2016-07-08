@@ -68,6 +68,8 @@ New features:
 
 Bug fixes:
 
+- Rewording of some Site control panel text [tkimnguyen]
+
 - Fixed syntaxerror for duplicate tag in robot tests.  [maurits]
 
 - Marked two robot tests as unstable, non-critical.
