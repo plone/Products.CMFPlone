@@ -76,6 +76,8 @@ New features:
 Bug fixes:
 
 - Fixed missing keyword in robot tests due to wrong documentation lines.  [maurits]
+- TinyMCE default table styles were broken after install due to a wrong default value.
+  [jensens]
 
 - Rewording of some Site control panel text [tkimnguyen]
 

@@ -534,7 +534,7 @@ class ITinyMCELayoutSchema(Interface):
         value_type=schema.TextLine(),
         missing_value=[],
         default=[
-            u'Listing|listing'
+            u'Listing|listing',
             u'Invisible Grid|invisible-grid'
         ])
 
