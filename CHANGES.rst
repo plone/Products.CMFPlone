@@ -68,6 +68,8 @@ New features:
 
 Bug fixes:
 
+- Fixed missing keyword in robot tests due to wrong documentation lines.  [maurits]
+
 - Rewording of some Site control panel text [tkimnguyen]
 
 - Fixed syntaxerror for duplicate tag in robot tests.  [maurits]
