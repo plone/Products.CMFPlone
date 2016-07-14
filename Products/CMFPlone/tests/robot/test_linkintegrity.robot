@@ -48,7 +48,7 @@ Scenario: After you fix linked page no longer show warning
 Scenario: Show warning when deleting linked item from folder_contents
   [Tags]  unstable
   [Documentation]  This sometimes fails with: StaleElementReferenceException: Message: Element not found in the cache.
-                   This one seems to fail more often than the others.
+  ...              This one seems to fail more often than the others.
   Given a logged-in site administrator
   a page to link to
     and a page to edit
