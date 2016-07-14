@@ -19,6 +19,8 @@ New features:
 
 Bug fixes:
 
+- Fixed missing keyword in robot tests due to wrong documentation lines.  [maurits]
+
 - Marked two robot tests as unstable, non-critical.
   Refs https://github.com/plone/Products.CMFPlone/issues/1656  [maurits]
 
