@@ -78,6 +78,8 @@ New features:
 
 Bug fixes:
 
+- Have more patience in the thememapper robot test.  [maurits]
+
 - Upgrade ``less-plugin-inline-urls`` to ``1.2.0`` to properly handle VML url node values in CSS.
   [thet]
 
