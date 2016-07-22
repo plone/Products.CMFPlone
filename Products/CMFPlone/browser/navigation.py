@@ -155,7 +155,8 @@ class CatalogNavigationTabs(BrowserView):
                 'name': utils.pretty_title_or_id(context, item),
                 'id': item.getId,
                 'url': item_url,
-                'description': item.Description
+                'description': item.Description,
+                'review_state': item.review_state
             }
             result.append(data)
 

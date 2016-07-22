@@ -10,6 +10,10 @@ Changelog
 
 Breaking changes:
 
+- Add ``review_state`` to ``CatalogNavigationTabs.topLevelTabs`` results.
+  This allows for exposing the items workflow state in portal navigation tabs.
+  [thet]
+
 - Remove discontinued module ``grunt-debug-task`` from ``plone-compile-resources``.
   [jensens]
 

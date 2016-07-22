@@ -565,6 +565,23 @@ class TestBasePortalTabs(PloneTestCase.PloneTestCase):
         # Should only contain the published folder
         self.assertEqual(len(tabs), 1)
 
+    def testTabInfo(self):
+        self.portal._delObject('Members')
+        self.portal._delObject('news')
+        self.portal._delObject('events')
+
+        view = self.view_class(self.portal, self.request)
+        tabs = view.topLevelTabs(actions=[])
+
+        self.assertEqual(len(tabs), 5)
+
+        tab = tabs[0]
+        self.assertTrue('url' in tab and tab['url'])  # url must not be empty
+        self.assertTrue('description' in tab)  # our description is empty
+        self.assertTrue('name' in tab and tab['name'])
+        self.assertTrue('id' in tab and tab['id'])
+        self.assertTrue('review_state' in tab and tab['review_state'])
+
     def testDisableFolderTabs(self):
         # Setting the site_property disable_folder_sections should remove
         # all folder based tabs
