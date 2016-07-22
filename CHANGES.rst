@@ -164,6 +164,9 @@ Bug fixes:
 - Use zope.interface decorator.
   [gforcada]
 
+- Remove advanced_search input which is in double.
+  [Gagaro]
+
 5.1a1 (2016-03-31)
 ------------------
 
