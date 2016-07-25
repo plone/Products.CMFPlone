@@ -4,6 +4,13 @@ FONT_DIR      ?= ./fonts
 
 ### Don't edit below ###
 
+UNAME := $(shell uname)
+ifeq ($(UNAME), Darwin)
+BROWSEROPEN = open
+else
+BROWSEROPEN = x-www-browser
+endif
+
 FONTELLO_HOST ?= http://fontello.com
 
 fontopen:
@@ -14,8 +21,7 @@ fontopen:
 	curl --silent --show-error --fail --output .fontello \
 		--form "config=@${FONT_DIR}/config.json" \
 		${FONTELLO_HOST}
-	open ${FONTELLO_HOST}/`cat .fontello`
-
+	${BROWSEROPEN} ${FONTELLO_HOST}/`cat .fontello`
 
 fontsave:
 	@if test ! `which unzip` ; then \
