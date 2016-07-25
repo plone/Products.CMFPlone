@@ -1,8 +1,4 @@
-# Edit here - set path to you directory with config.json & fonts
-
 FONT_DIR      ?= ./fonts
-
-### Don't edit below ###
 
 UNAME := $(shell uname)
 ifeq ($(UNAME), Darwin)
@@ -37,12 +33,9 @@ fontsave:
 		${FONTELLO_HOST}/`cat .fontello`/get
 	unzip .fontello.zip -d .fontello.src
 	mkdir -p ${FONT_DIR}
-	mv `find ./.fontello.src -maxdepth 1 -name 'fontello-*'`/config.json ${FONT_DIR}/config.json
-	mv `find ./.fontello.src -maxdepth 1 -name 'fontello-*'`/font/fontello.eot ${FONT_DIR}/plone-fontello.eot
-	mv `find ./.fontello.src -maxdepth 1 -name 'fontello-*'`/font/fontello.woff ${FONT_DIR}/plone-fontello.woff
-	mv `find ./.fontello.src -maxdepth 1 -name 'fontello-*'`/font/fontello.ttf ${FONT_DIR}/plone-fontello.ttf
-	mv `find ./.fontello.src -maxdepth 1 -name 'fontello-*'`/font/fontello.svg ${FONT_DIR}/plone-fontello.svg
-	mv `find ./.fontello.src -maxdepth 1 -name 'fontello-*'`/css/fontello.css ${FONT_DIR}/plone-fontello.less
-	sed -i.bak 's/\.\.\/font\//\@\{fontsPrefix\}plone-/g' ${FONT_DIR}/plone-fontello.less
-	rm -rf ${FONT_DIR}/plone-fontello.less.bak
-	rm -rf .fontello.src .fontello.zip
+	$(eval BASEDIR := $(shell find ./.fontello.src -maxdepth 1 -name 'fontello-*'))
+	cp ${BASEDIR}/config.json ${FONT_DIR}/config.json
+	cp ${BASEDIR}/font/* ${FONT_DIR}/
+	cp ${BASEDIR}/css/fontello.css ${FONT_DIR}/fontello.less 
+	sed -i.bak 's/\.\.\/font\//\@\{fontsPrefix\}plone-/g' fonts/plone-fontello.less
+	rm -rf .fontello.src .fontello.zip .fontello
