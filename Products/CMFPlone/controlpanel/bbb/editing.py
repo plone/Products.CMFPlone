@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from zope.component import adapts
-from zope.interface import implements
+from zope.interface import implementer
 from zope.component import getUtility
 from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.interfaces import IPloneSiteRoot
@@ -8,10 +8,10 @@ from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.CMFPlone.interfaces import IEditingSchema
 
 
+@implementer(IEditingSchema)
 class EditingControlPanelAdapter(object):
 
     adapts(IPloneSiteRoot)
-    implements(IEditingSchema)
 
     def __init__(self, context):
         registry = getUtility(IRegistry)

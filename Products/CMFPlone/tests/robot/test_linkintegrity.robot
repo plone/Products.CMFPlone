@@ -17,13 +17,15 @@ Library  Remote  ${PLONE_URL}/RobotRemote
 
 Resource  keywords.robot
 
-Test Setup  Run keywords  Open SauceLabs test browser  Refresh JS/CSS resources
-Test Teardown  Run keywords  Report test status  Close all browsers
+Test Setup  Run keywords  Plone Test Setup
+Test Teardown  Run keywords  Plone Test Teardown
 
 
 *** Test Cases ***************************************************************
 
 Scenario: When page is linked show warning
+  [Tags]  unstable
+  [Documentation]  This sometimes fails with: StaleElementReferenceException: Message: Element not found in the cache.
   Given a logged-in site administrator
     a page to link to
     and a page to edit
@@ -32,6 +34,8 @@ Scenario: When page is linked show warning
 
 
 Scenario: After you fix linked page no longer show warning
+  [Tags]  unstable
+  [Documentation]  This sometimes fails with: StaleElementReferenceException: Message: Element not found in the cache.
   Given a logged-in site administrator
   a page to link to
     and a page to edit
@@ -42,6 +46,9 @@ Scenario: After you fix linked page no longer show warning
 
 
 Scenario: Show warning when deleting linked item from folder_contents
+  [Tags]  unstable
+  [Documentation]  This sometimes fails with: StaleElementReferenceException: Message: Element not found in the cache.
+  ...              This one seems to fail more often than the others.
   Given a logged-in site administrator
   a page to link to
     and a page to edit

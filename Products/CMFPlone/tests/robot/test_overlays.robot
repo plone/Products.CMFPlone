@@ -13,8 +13,8 @@ Library  Remote  ${PLONE_URL}/RobotRemote
 
 Resource  common.robot
 
-Test Setup  Run keywords  Open SauceLabs test browser  Refresh JS/CSS resources  Background
-Test Teardown  Run keywords  Report test status  Close all browsers
+Test Setup  Run keywords  Plone Test Setup  Background
+Test Teardown  Run keywords  Plone Test Teardown
 
 
 *** Test cases ***

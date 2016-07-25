@@ -1,4 +1,4 @@
-from zope.interface import implements
+from zope.interface import implementer
 
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -6,8 +6,8 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFPlone.browser.interfaces import IMainTemplate
 
 
+@implementer(IMainTemplate)
 class MainTemplate(BrowserView):
-    implements(IMainTemplate)
 
     ajax_template = ViewPageTemplateFile('templates/ajax_main_template.pt')
     main_template = ViewPageTemplateFile('templates/main_template.pt')

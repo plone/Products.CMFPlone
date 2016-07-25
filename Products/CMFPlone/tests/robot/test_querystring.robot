@@ -7,12 +7,15 @@ Library  Remote  ${PLONE_URL}/RobotRemote
 
 Resource  keywords.robot
 
-Test Setup  Run keywords  Open SauceLabs test browser  Refresh JS/CSS resources
-Test Teardown  Run keywords  Report test status  Close all browsers
+Test Setup  Run keywords  Plone Test Setup
+Test Teardown  Run keywords  Plone Test Teardown
 
 *** Test Cases **************************************************************
 
 Scenario: Location query
+    [Tags]  unstable
+    [Documentation]  This sometimes fails with: Element locator 'jquery=:focus' did not match any elements.
+    ...              This sometimes fails with: Element locator 'jquery=.pattern-relateditems-tree-select' did not match any elements.
     Given a logged-in site administrator
     and a bunch of folders
     and the querystring pattern
@@ -77,6 +80,7 @@ I expect to be in Simple mode
     Click Element  css=body
 
 open the select box titled ${NAME}
+    Click Element  css=body
     Click Element  css=.querystring-criteria-${NAME} .select2-container a
 
 select index type ${INDEX}

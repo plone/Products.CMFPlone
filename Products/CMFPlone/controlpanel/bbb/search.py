@@ -4,14 +4,14 @@ from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
 from plone.registry.interfaces import IRegistry
 from zope.component import adapts
 from zope.component import getUtility
-from zope.interface import implements
+from zope.interface import implementer
 from zope.site.hooks import getSite
 
 
+@implementer(ISearchSchema)
 class SearchControlPanelAdapter(object):
 
     adapts(IPloneSiteRoot)
-    implements(ISearchSchema)
 
     def __init__(self, context):
         self.portal = getSite()

@@ -4,14 +4,14 @@ from Products.CMFPlone.utils import safe_hasattr
 from plone.registry.interfaces import IRegistry
 from zope.component import adapts
 from zope.component import getUtility
-from zope.interface import implements
+from zope.interface import implementer
 from zope.site.hooks import getSite
 
 
+@implementer(IMailSchema)
 class MailControlPanelAdapter(object):
 
     adapts(IPloneSiteRoot)
-    implements(IMailSchema)
 
     def __init__(self, context):
         self.context = context

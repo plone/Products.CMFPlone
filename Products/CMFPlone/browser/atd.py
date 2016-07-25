@@ -4,13 +4,13 @@ from plone.registry.interfaces import IRegistry
 import httplib
 from Products.CMFPlone.interfaces import ITinyMCESchema
 from Products.CMFPlone.interfaces.atd import IATDProxyView
-from zope.interface import implements
+from zope.interface import implementer
 
 
+@implementer(IATDProxyView)
 class ATDProxyView(object):
     """ Proxy for the 'After the Deadline' spellchecker
     """
-    implements(IATDProxyView)
 
     def checkDocument(self):
         """ Proxy for the AtD service's checkDocument function

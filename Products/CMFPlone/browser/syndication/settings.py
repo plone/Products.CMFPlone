@@ -1,5 +1,5 @@
 from zope.component import adapts
-from zope.interface import implements
+from zope.interface import implementer
 from Products.CMFPlone.interfaces.syndication import IFeedSettings
 from Products.CMFPlone.interfaces.syndication import ISyndicatable
 from zope.annotation.interfaces import IAnnotations
@@ -11,8 +11,8 @@ from plone.registry.interfaces import IRegistry
 FEED_SETTINGS_KEY = 'syndication_settings'
 
 
+@implementer(IFeedSettings)
 class FeedSettings(object):
-    implements(IFeedSettings)
     adapts(ISyndicatable)
 
     def __init__(self, context):

@@ -4,13 +4,13 @@ from Products.CMFPlone.interfaces import IPloneSiteRoot
 from plone.registry.interfaces import IRegistry
 from zope.component import adapts
 from zope.component import getUtility
-from zope.interface import implements
+from zope.interface import implementer
 
 
+@implementer(IMaintenanceSchema)
 class MaintenanceControlPanelAdapter(object):
 
     adapts(IPloneSiteRoot)
-    implements(IMaintenanceSchema)
 
     def __init__(self, context):
         self.context = context

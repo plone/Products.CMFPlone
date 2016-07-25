@@ -2,7 +2,7 @@ from zExceptions import NotFound
 from Products.Five import BrowserView
 
 from zope.schema.interfaces import IVocabularyFactory
-from zope.interface import implements
+from zope.interface import implementer
 from zope.component import getUtility
 
 from Products.CMFPlone.interfaces.syndication import ISyndicationUtil
@@ -14,8 +14,8 @@ from plone.registry.interfaces import IRegistry
 from plone.memoize.view import memoize
 
 
+@implementer(ISyndicationUtil)
 class SyndicationUtil(BrowserView):
-    implements(ISyndicationUtil)
 
     def allowed_feed_types(self):
         settings = IFeedSettings(self.context)

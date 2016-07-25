@@ -1126,8 +1126,9 @@ class TestObjectProvidedIndexExtender(unittest.TestCase):
         class IDummy(zope.interface.Interface):
             pass
 
+        @zope.interface.implementer(IDummy)
         class Dummy(object):
-            zope.interface.implements(IDummy)
+            pass
         self.assertEqual(
             self._index(Dummy()),
             ('Products.CMFPlone.tests.testCatalogTool.IDummy', )

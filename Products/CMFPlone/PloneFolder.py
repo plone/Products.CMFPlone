@@ -24,7 +24,7 @@ from Products.CMFCore.permissions import AccessContentsInformation, \
     ModifyPortalContent
 from Products.CMFPlone.DublinCore import DefaultDublinCoreImpl
 
-from zope.interface import implements
+from zope.interface import implementer
 
 
 class ReplaceableWrapper:
@@ -93,14 +93,13 @@ class OrderedContainer(Folder, OrderSupport):
 InitializeClass(OrderedContainer)
 
 
+@implementer(IWriteLock)
 class BasePloneFolder(CatalogAware, WorkflowAware, OpaqueItemManager,
                       PortalFolderBase, DefaultDublinCoreImpl):
     """Implements basic Plone folder functionality except ordering support.
     """
 
     security = ClassSecurityInfo()
-
-    implements(IWriteLock)
 
     manage_options = Folder.manage_options + \
         WorkflowAware.manage_options

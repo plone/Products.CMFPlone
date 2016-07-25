@@ -5,14 +5,14 @@ from Products.CMFPlone.interfaces import ISecuritySchema
 from plone.registry.interfaces import IRegistry
 from zope.component import adapts
 from zope.component import getUtility
-from zope.interface import implements
+from zope.interface import implementer
 from zope.site.hooks import getSite
 
 
+@implementer(ISecuritySchema)
 class SecurityControlPanelAdapter(object):
 
     adapts(IPloneSiteRoot)
-    implements(ISecuritySchema)
 
     def __init__(self, context):
         self.portal = getSite()

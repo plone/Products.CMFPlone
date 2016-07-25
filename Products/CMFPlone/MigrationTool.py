@@ -4,7 +4,7 @@ from StringIO import StringIO
 
 import pkg_resources
 import transaction
-from zope.interface import implements
+from zope.interface import implementer
 
 from AccessControl import ClassSecurityInfo
 from AccessControl.requestmethod import postonly
@@ -104,10 +104,9 @@ ADDON_LIST = AddonList([
 ])
 
 
+@implementer(IMigrationTool)
 class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     """Handles migrations between Plone releases"""
-
-    implements(IMigrationTool)
 
     id = 'portal_migration'
     meta_type = 'Plone Migration Tool'

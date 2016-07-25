@@ -15,11 +15,11 @@ from zope.component import queryUtility
 from zope.component.hooks import getSite
 from zope.i18n.locales import LoadLocaleError
 from zope.i18n.locales import locales
-from zope.interface import implements
+from zope.interface import implementer
 
 
+@implementer(INonInstallable)
 class HiddenProducts(object):
-    implements(INonInstallable)
 
     def getNonInstallableProducts(self):
         return [
