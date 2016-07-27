@@ -10,6 +10,9 @@ Changelog
 
 Breaking changes:
 
+- Don't fail, if ``timestamp.txt`` was deleted from the resource registries production folder.
+  [thet]
+
 - Add ``review_state`` to ``CatalogNavigationTabs.topLevelTabs`` results.
   This allows for exposing the items workflow state in portal navigation tabs.
   [thet]

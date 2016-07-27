@@ -26,6 +26,8 @@ def get_production_resource_directory():
         production_folder = container[PRODUCTION_RESOURCE_DIRECTORY]
     except NotFound:
         return "%s/++unique++1" % PRODUCTION_RESOURCE_DIRECTORY
+    if 'timestamp.txt' not in production_folder:
+        return "%s/++unique++1" % PRODUCTION_RESOURCE_DIRECTORY
     timestamp = production_folder.readFile('timestamp.txt')
     return "%s/++unique++%s" % (
         PRODUCTION_RESOURCE_DIRECTORY, timestamp)
