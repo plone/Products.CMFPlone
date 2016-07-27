@@ -105,7 +105,7 @@
                           <a href=""
                              tal:define="icon action/icon"
                              tal:attributes="href action/url">
-                             <span tal:attributes="class python:'icon-controlpanel-' + action['id'].replace('.', '_')"></span>
+                             <span tal:attributes="class python:'plone-icon-controlpanel-' + action['id'].replace('.', '_')"></span>
                               <tal:title tal:content="action/title"
                                          i18n:translate="">
                                   Title
