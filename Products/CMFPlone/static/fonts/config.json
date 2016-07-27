@@ -3,8 +3,8 @@
   "units_per_em": 1000,
   "hinting": true,
   "css_use_suffix": false,
-  "css_prefix_text": "icon-plone-",
-  "name": "plone-icons",
+  "css_prefix_text": "plone-icon-",
+  "name": "plonefontello",
   "glyphs": [
     {
       "search": [
