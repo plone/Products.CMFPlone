@@ -38,6 +38,9 @@ Breaking changes:
 
 New features:
 
+- Expanded icon font for missing generic icons.
+  [agitator]
+
 - Updated components directory, recompiled bundles.
   [thet]
 
@@ -74,6 +77,9 @@ New features:
 
 
 Bug fixes:
+
+- Fixed Plone icon fontname to plone-icons.
+  [agitator]
 
 - Fixed missing keyword in robot tests due to wrong documentation lines.  [maurits]
 

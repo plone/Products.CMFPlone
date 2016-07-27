@@ -198,8 +198,8 @@ define([
 
       if (height < natualHeight) {
         /* add scroll buttons */
-        var $scrollUp = $('<li class="scroll-btn up"><a href="#"><span class="icon-up"></span><span>&nbsp;</span></a></li>');
-        var $scrollDown = $('<li class="scroll-btn down"><a href="#"><span class="icon-down"></span><span>&nbsp;</span></a></li>');
+        var $scrollUp = $('<li class="scroll-btn up"><a href="#"><span class="plone-icon-up"></span><span>&nbsp;</span></a></li>');
+        var $scrollDown = $('<li class="scroll-btn down"><a href="#"><span class="plone-icon-down"></span><span>&nbsp;</span></a></li>');
         $items.prepend($scrollUp);
         $items.append($scrollDown);
         height = height - $scrollDown.height();
@@ -285,7 +285,7 @@ define([
         if (!($toolbar_more_options.length)) {
           (function() {
             $content_menus.hide();
-            $toolbar_more_options = $('<li id="plone-toolbar-more-options"><a href="#"><span class="icon-moreOptions" aria-hidden="true"></span><span>' + _t('More') + '</span><span class="plone-toolbar-caret"></span></a></li>');
+            $toolbar_more_options = $('<li id="plone-toolbar-more-options"><a href="#"><span class="plone-icon-moreOptions" aria-hidden="true"></span><span>' + _t('More') + '</span><span class="plone-toolbar-caret"></span></a></li>');
             $plone_toolbar_main.append($toolbar_more_options);
             var $toolbar_more_subset = $('<ul id="plone-toolbar-more-subset" style="display: none"></ul>');
             $pers_bar_container.after($toolbar_more_subset);

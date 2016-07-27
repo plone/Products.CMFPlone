@@ -39,6 +39,6 @@ fontsave:
 	echo Unzipped font in $$BASEDIR;\
 	cp $$BASEDIR/config.json ${FONT_DIR}/config.json;\
 	cp $$BASEDIR/font/* ${FONT_DIR}/;\
-	sed 's/\.\.\/font\//\@\{fontsPrefix\}plone-/g' $$BASEDIR/css/fontello.css >${FONT_DIR}/fontello.less;\
+	sed 's/\.\.\/font\//\@\{fontsPrefix\}/g' $$BASEDIR/css/plonefontello.css >${FONT_DIR}/plonefontello.less;\
 	rm -rf .fontello.src .fontello.zip ;\
         }
