@@ -2,7 +2,7 @@
  * CropRect.js
  *
  * Released under LGPL License.
- * Copyright (c) 1999-2015 Ephox Corp. All rights reserved
+ * Copyright (c) 1999-2016 Ephox Corp. All rights reserved
  *
  * License: http://www.tinymce.com/license
  * Contributing: http://www.tinymce.com/contributing
@@ -12,23 +12,24 @@
  * ...
  */
 define("tinymce/imagetoolsplugin/CropRect", [
-	"tinymce/dom/DomQuery",
-	"tinymce/ui/DragHelper",
-	"tinymce/geom/Rect",
-	"tinymce/util/Tools",
-	"tinymce/util/Observable"
-], function($, DragHelper, Rect, Tools, Observable) {
+	"global!tinymce.dom.DomQuery",
+	"global!tinymce.ui.DragHelper",
+	"global!tinymce.geom.Rect",
+	"global!tinymce.util.Tools",
+	"global!tinymce.util.Observable",
+	"global!tinymce.util.VK"
+], function($, DragHelper, Rect, Tools, Observable, VK) {
 	var count = 0;
 
-	return function(currentRect, viewPortRect, clampRect, containerElm) {
+	return function(currentRect, viewPortRect, clampRect, containerElm, action) {
 		var instance, handles, dragHelpers, blockers, prefix = 'mce-', id = prefix + 'crid-' + (count++);
 
 		handles = [
-			{name: 'move', xMul: 0, yMul: 0, deltaX: 1, deltaY: 1, deltaW: 0, deltaH: 0},
-			{name: 'nw', xMul: 0, yMul: 0, deltaX: 1, deltaY: 1, deltaW: -1, deltaH: -1},
-			{name: 'ne', xMul: 1, yMul: 0, deltaX: 0, deltaY: 1, deltaW: 1, deltaH: -1},
-			{name: 'sw', xMul: 0, yMul: 1, deltaX: 1, deltaY: 0, deltaW: -1, deltaH: 1},
-			{name: 'se', xMul: 1, yMul: 1, deltaX: 0, deltaY: 0, deltaW: 1, deltaH: 1}
+			{name: 'move', xMul: 0, yMul: 0, deltaX: 1, deltaY: 1, deltaW: 0, deltaH: 0, label: 'Crop Mask'},
+			{name: 'nw', xMul: 0, yMul: 0, deltaX: 1, deltaY: 1, deltaW: -1, deltaH: -1, label: 'Top Left Crop Handle'},
+			{name: 'ne', xMul: 1, yMul: 0, deltaX: 0, deltaY: 1, deltaW: 1, deltaH: -1, label: 'Top Right Crop Handle'},
+			{name: 'sw', xMul: 0, yMul: 1, deltaX: 1, deltaY: 0, deltaW: -1, deltaH: 1, label: 'Bottom Left Crop Handle'},
+			{name: 'se', xMul: 1, yMul: 1, deltaX: 0, deltaY: 0, deltaW: 1, deltaH: 1, label: 'Bottom Right Crop Handle'}
 		];
 
 		blockers = ["top", "right", "bottom", "left"];
@@ -55,6 +56,34 @@ define("tinymce/imagetoolsplugin/CropRect", [
 			return getRelativeRect(clampRect, currentRect);
 		}
 
+		function moveRect(handle, startRect, deltaX, deltaY) {
+			var x, y, w, h, rect;
+
+			x = startRect.x;
+			y = startRect.y;
+			w = startRect.w;
+			h = startRect.h;
+
+			x += deltaX * handle.deltaX;
+			y += deltaY * handle.deltaY;
+			w += deltaX * handle.deltaW;
+			h += deltaY * handle.deltaH;
+
+			if (w < 20) {
+				w = 20;
+			}
+
+			if (h < 20) {
+				h = 20;
+			}
+
+			rect = currentRect = Rect.clamp({x: x, y: y, w: w, h: h}, clampRect, handle.name == 'move');
+			rect = getRelativeRect(clampRect, rect);
+
+			instance.fire('updateRect', {rect: rect});
+			setInnerRect(rect);
+		}
+
 		function render() {
 			function createDragHelper(handle) {
 				var startRect;
@@ -68,36 +97,15 @@ define("tinymce/imagetoolsplugin/CropRect", [
 					},
 
 					drag: function(e) {
-						var x, y, w, h, rect;
-
-						x = startRect.x;
-						y = startRect.y;
-						w = startRect.w;
-						h = startRect.h;
-
-						x += e.deltaX * handle.deltaX;
-						y += e.deltaY * handle.deltaY;
-						w += e.deltaX * handle.deltaW;
-						h += e.deltaY * handle.deltaH;
-
-						if (w < 20) {
-							w = 20;
-						}
-
-						if (h < 20) {
-							h = 20;
-						}
-
-						rect = currentRect = Rect.clamp({x: x, y: y, w: w, h: h}, clampRect, handle.name == 'move');
-						rect = getRelativeRect(clampRect, rect);
-
-						instance.fire('updateRect', {rect: rect});
-						setInnerRect(rect);
+						moveRect(handle, startRect, e.deltaX, e.deltaY);
 					}
 				});
 			}
 
-			$('<div id="' + id + '" class="' + prefix + 'croprect-container" data-mce-bogus="all">').appendTo(containerElm);
+			$(
+				'<div id="' + id + '" class="' + prefix + 'croprect-container"' +
+				' role="grid" aria-dropeffect="execute">'
+			).appendTo(containerElm);
 
 			Tools.each(blockers, function(blocker) {
 				$('#' + id, containerElm).append(
@@ -108,13 +116,61 @@ define("tinymce/imagetoolsplugin/CropRect", [
 			Tools.each(handles, function(handle) {
 				$('#' + id, containerElm).append(
 					'<div id="' + id + '-' + handle.name + '" class="' + prefix +
-						'croprect-handle ' + prefix + 'croprect-handle-' + handle.name + '" style="display: none" data-mce-bogus="all">'
+						'croprect-handle ' + prefix + 'croprect-handle-' + handle.name + '"' +
+						'style="display: none" data-mce-bogus="all" role="gridcell" tabindex="-1"' +
+						' aria-label="' + handle.label + '" aria-grabbed="false">'
 				);
 			});
 
 			dragHelpers = Tools.map(handles, createDragHelper);
 
 			repaint(currentRect);
+
+			$(containerElm).on('focusin focusout', function(e) {
+				$(e.target).attr('aria-grabbed', e.type === 'focus');
+			});
+
+			$(containerElm).on('keydown', function(e) {
+				var activeHandle;
+
+				Tools.each(handles, function(handle) {
+					if (e.target.id == id + '-' + handle.name) {
+						activeHandle = handle;
+						return false;
+					}
+				});
+
+				function moveAndBlock(evt, handle, startRect, deltaX, deltaY) {
+					evt.stopPropagation();
+					evt.preventDefault();
+
+					moveRect(activeHandle, startRect, deltaX, deltaY);
+				}
+
+				switch (e.keyCode) {
+					case VK.LEFT:
+						moveAndBlock(e, activeHandle, currentRect, -10, 0);
+						break;
+
+					case VK.RIGHT:
+						moveAndBlock(e, activeHandle, currentRect, 10, 0);
+						break;
+
+					case VK.UP:
+						moveAndBlock(e, activeHandle, currentRect, 0, -10);
+						break;
+
+					case VK.DOWN:
+						moveAndBlock(e, activeHandle, currentRect, 0, 10);
+						break;
+
+					case VK.ENTER:
+					case VK.SPACEBAR:
+						e.preventDefault();
+						action();
+						break;
+				}
+			});
 		}
 
 		function toggleVisibility(state) {
