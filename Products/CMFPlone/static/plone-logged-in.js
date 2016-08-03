@@ -29,7 +29,8 @@ require([
   'mockup-patterns-inlinevalidation',
   'mockup-patterns-structure',
   'mockup-patterns-recurrence',
-  'plone-patterns-portletmanager'
+  'plone-patterns-portletmanager',
+  'plone-patterns-toolbar',
 ], function() {
   'use strict';
 });
