@@ -5,10 +5,8 @@
 @import url("@{mockup-patterns-autotoc}");
 @import url("@{mockup-patterns-modal}");
 @import url("@{mockup-patterns-markspeciallinks}");
-@import url("@{plone-patterns-toolbar}");
 @import (less) "@{tinymce-default-styles}";
 @import "@{mockup-patterns-livesearch}";
-
 
 @import "@{bowerPath}bootstrap/less/variables.less";
 @icon-font-path: "@{bowerPath}bootstrap/dist/fonts/";
@@ -31,17 +29,18 @@
 /* icons-off styles to hide icons from
    site setting */
 body#visual-portal-wrapper.pat-plone.icons-off .outer-wrapper [class*="contenttype-"]:before {
-  display:none;
+  display: none;
 }
 
 /* thumbs-off styles to hide thumbs from
    site setting */
-body#visual-portal-wrapper.pat-plone.thumbs-off .outer-wrapper .image-icon {
-  display:none;
-}  
-body#visual-portal-wrapper.pat-plone.thumbs-off .outer-wrapper .image-tile {
-  display:none;  
+body#visual-portal-wrapper.pat-plone.thumbs-off .outer-wrapper {
+  .image-icon,
+  .image-tile {
+    display: none;
+  }
 }
+
 /* error message styles */
 body.template-default_error_message #content-core p {
   white-space: pre;

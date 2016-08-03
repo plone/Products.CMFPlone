@@ -10,6 +10,9 @@ Changelog
 
 Breaking changes:
 
+- Move toolbar resources to plone-logged-in bundle and recompile bundles.
+  [davilima6]
+
 - Don't fail, if ``timestamp.txt`` was deleted from the resource registries production folder.
   [thet]
 
@@ -170,6 +173,7 @@ Bug fixes:
 - Remove advanced_search input which is in double.
   [Gagaro]
 
+
 5.1a1 (2016-03-31)
 ------------------
 
@@ -247,7 +251,6 @@ Fixes:
 
 - Fixed html validation: section lacks heading.
   [maurits]
-
 
 
 5.0.3 (2016-03-??)
@@ -632,6 +635,7 @@ Fixes:
 - Give some padding at the bottom of the toolbar menu dropdowns
   [sneridagh]
 
+
 5.0rc2 (2015-09-11)
 -------------------
 
@@ -702,6 +706,7 @@ Fixes:
 
 - Fix error to allow site navigation if TinyMCE content_css setting is None
   [Gagaro]
+
 
 5.0b4 (2015-08-23)
 ------------------
