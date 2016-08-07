@@ -78,6 +78,9 @@ New features:
 
 Bug fixes:
 
+- Upgrade ``less-plugin-inline-urls`` to ``1.2.0`` to properly handle VML url node values in CSS.
+  [thet]
+
 - Fixed missing keyword in robot tests due to wrong documentation lines.
   [maurits]
 
