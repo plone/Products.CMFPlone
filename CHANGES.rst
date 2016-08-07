@@ -80,6 +80,10 @@ Bug fixes:
 
 Breaking changes:
 
+- Rename the global `define` function after all plone resource registries are
+  added. This is to implement #1529 plip.
+  [vangheem]
+
 - Move toolbar resources to plone-logged-in bundle and recompile bundles.
   [davilima6]
 

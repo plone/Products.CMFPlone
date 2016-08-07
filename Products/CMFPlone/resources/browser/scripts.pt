@@ -9,3 +9,19 @@
      </tal:wcondcomment
     ></tal:block
 ></tal:scripts>
+
+<tal:comment tal:replace="nothing">
+Plone resets the RequireJS global "define" function after all the bundles
+are delivered.
+
+The reason for this is to help integrators have less issues dealing with
+RequireJS and 3rd party scripts.
+
+The cases this mostly helps are:
+  - adding a 3rd script manually to a page template with the script tag
+  - adding a 3rd script manually to a theme with the script tag
+</tal:comment>
+<script>
+plone_define = define;
+define = undefined;
+</script>
