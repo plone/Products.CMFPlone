@@ -154,12 +154,6 @@
   </records>
 
 
-  <records prefix="plone.resources/JSXTransformer"
-            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++plone++static/components/react/JSXTransformer.js</value>
-      <value key="export">window.JSXTransformer</value>
-  </records>
-
   <records prefix="plone.resources/underscore"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/underscore/underscore.js</value>
@@ -351,9 +345,18 @@
       <value key="deps">picker</value>
   </records>
 
+  <!-- react resources -->
   <records prefix="plone.resources/react"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/react/react.js</value>
+  </records>
+  <records prefix="plone.resources/react-dom"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/react/react-dom.js</value>
+  </records>
+  <records prefix="plone.resources/react-with-addons"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/react/react-with-addons.js</value>
   </records>
 
   <records prefix="plone.resources/select2"
