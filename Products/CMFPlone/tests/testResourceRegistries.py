@@ -1,26 +1,26 @@
 # -*- coding: utf-8 -*-
-import json
-import mock
-
+from plone.app.testing import logout
+from plone.registry.interfaces import IRegistry
+from plone.resource.interfaces import IResourceDirectory
+from plone.subrequest import subrequest
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.controlpanel.browser.resourceregistry import OverrideFolderManager
 from Products.CMFPlone.controlpanel.browser.resourceregistry import ResourceRegistryControlPanelView
 from Products.CMFPlone.interfaces import IBundleRegistry
 from Products.CMFPlone.interfaces import IResourceRegistry
 from Products.CMFPlone.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME
-from Products.CMFPlone.resources.browser.cook import cookWhenChangingSettings
+from Products.CMFPlone.resources import add_bundle_on_request
 from Products.CMFPlone.resources import add_resource_on_request
+from Products.CMFPlone.resources.browser.cook import cookWhenChangingSettings
 from Products.CMFPlone.resources.browser.scripts import ScriptsView
-from Products.CMFPlone.resources.exportimport.resourceregistry import (
-    ResourceRegistryNodeAdapter)
+from Products.CMFPlone.resources.exportimport.resourceregistry import ResourceRegistryNodeAdapter
 from Products.CMFPlone.tests import PloneTestCase
 from Products.GenericSetup.context import SetupEnviron
-from plone.app.testing import logout
-from plone.registry.interfaces import IRegistry
-from plone.resource.interfaces import IResourceDirectory
-from plone.subrequest import subrequest
 from xml.dom.minidom import parseString
 from zope.component import getUtility
+
+import json
+import mock
 
 
 class TestResourceRegistries(PloneTestCase.PloneTestCase):
@@ -346,3 +346,16 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
                           'conditionalcomment': '',
                           'bundle': 'none'})
 
+    def test_request_resources_not_add_same_twice(self):
+        req = self.layer['request']
+        add_resource_on_request(req, 'foo')
+        add_resource_on_request(req, 'foo')
+
+        self.assertEqual(len(req.enabled_resources), 1)
+
+    def test_request_bundles_not_add_same_twice(self):
+        req = self.layer['request']
+        add_bundle_on_request(req, 'foo')
+        add_bundle_on_request(req, 'foo')
+
+        self.assertEqual(len(req.enabled_bundles), 1)
