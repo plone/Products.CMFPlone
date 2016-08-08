@@ -19,6 +19,8 @@ New features:
 
 Bug fixes:
 
+- Fixed adding same resource/bundle to the request multiple times. [vangheem]
+
 - Fixed missing keyword in robot tests due to wrong documentation lines.  [maurits]
 
 - Marked two robot tests as unstable, non-critical.
