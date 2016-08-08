@@ -46680,3783 +46680,746 @@ define('text',['module'], function (module) {
 });
 
 
-define('text!mockup-patterns-tinymce-url/templates/result.xml',[],function () { return '<div class="pattern-relateditems-result pattern-relateditems-type-<%= portal_type %> <% if (selected) { %>pattern-active<% } %>">\n  <a href="#" class="pattern-relateditems-result-select <% if (selectable) { %>selectable<% } %>">\n    <% if (!folderish) { %>\n    <span class="pattern-relateditems-result-image">\n      <img src="<%= generateImageUrl(_item, \'thumb\') %>" />\n    </span>\n    <% } %>\n    <span class="pattern-relateditems-result-title"><%= Title %></span>\n    <span class="pattern-relateditems-result-path"><%= path %></span>\n  </a>\n  <span class="pattern-relateditems-buttons">\n    <% if (folderish) { %>\n      <a class="pattern-relateditems-result-browse" href="#" data-path="<%= path %>"></a>\n    <% } %>\n  </span>\n</div>\n';});
-
-
-define('text!mockup-patterns-tinymce-url/templates/selection.xml',[],function () { return '<span class="pattern-relateditems-item pattern-relateditems-type-<%= portal_type %>">\n <span class="pattern-relateditems-result-image">\n   <img src="<%= generateImageUrl(_item, \'thumb\') %>" />\n </span>\n <span class="pattern-relateditems-item-title"><%= Title %></span>\n <span class="pattern-relateditems-item-path"><%= path %></span>\n</span>\'\n';});
-
-
 define('text!mockup-patterns-tinymce-url/templates/link.xml',[],function () { return '<div>\n  <div class="linkModal">\n    <h1><%- insertHeading %></h1>\n    <% if(upload){ %>\n    <p class="info">Specify the object to link to. It can be on this site already ("Internal"), an object you upload ("Upload"), from an external site ("External"), an email address ("Email"), or an anchor on this page ("Anchor").</p>\n    <% } %>\n\n    <div class="linkTypes pat-autotoc autotabs"\n         data-pat-autotoc="section:fieldset;levels:legend;IDPrefix:tinymce-autotoc-">\n\n      <fieldset class="linkType internal" data-linkType="internal">\n        <legend id="tinylink-internal">Internal</legend>\n        <div>\n          <div class="form-group main">\n            <!-- this gives the name to the "linkType" -->\n            <input type="text" name="internal" />\n          </div>\n        </div>\n      </fieldset>\n\n      <% if(upload){ %>\n      <fieldset class="linkType upload" data-linkType="upload">\n        <legend id="tinylink-upload">Upload</legend>\n        <div class="uploadify-me"></div>\n      </fieldset>\n      <% } %>\n\n      <fieldset class="linkType external" data-linkType="external">\n        <legend id="tinylink-external">External</legend>\n        <div class="form-group main">\n          <label for="external"><%- externalText %></label>\n          <input type="text" name="external" />\n        </div>\n      </fieldset>\n\n      <fieldset class="linkType email" data-linkType="email">\n        <legend id="tinylink-email">Email</legend>\n        <div class="form-inline">\n          <div class="form-group main">\n            <label><%- emailText %></label>\n            <input type="text" name="email" />\n          </div>\n          <div class="form-group">\n            <label><%- subjectText %></label>\n            <input type="text" name="subject" />\n          </div>\n        </div>\n      </fieldset>\n\n      <fieldset class="linkType anchor" data-linkType="anchor">\n        <legend id="tinylink-anchor">Anchor</legend>\n        <div>\n          <div class="form-group main">\n            <label>Select an anchor</label>\n            <div class="input-wrapper">\n              <select name="anchor" class="pat-select2" data-pat-select2="width:500px" />\n            </div>\n          </div>\n        </div>\n      </fieldset>\n\n    </div><!-- / tabs -->\n\n    <div class="common-controls">\n      <div class="form-group">\n        <label>Target</label>\n        <select name="target">\n          <% _.each(targetList, function(target){ %>\n            <option value="<%- target.value %>"><%- target.text %></option>\n          <% }); %>\n        </select>\n      </div>\n      <div class="form-group">\n        <label><%- titleText %></label>\n        <input type="text" name="title" />\n      </div>\n    </div>\n\n    <input type="submit" class="plone-btn" name="cancel" value="<%- cancelBtn %>" />\n    <input type="submit" class="plone-btn plone-btn-primary context" name="insert" value="<%- insertBtn %>" />\n  </div>\n</div>\n';});
 
 
 define('text!mockup-patterns-tinymce-url/templates/image.xml',[],function () { return '<div>\n  <div class="linkModal">\n    <h1><%- insertHeading %></h1>\n    <% if(_.contains(linkTypes, \'uploadImage\')){ %>\n    <p class="info">Specify an image. It can be on this site already ("Internal Image"), an image you upload ("Upload"), or from an external site ("External Image").</p>\n    <% } %>\n\n    <div class="linkTypes pat-autotoc autotabs"\n         data-pat-autotoc="section:fieldset;levels:legend;IDPrefix:tinymce-autotoc-">\n\n        <% if(_.contains(linkTypes, \'image\')){ %>\n      <fieldset class="linkType image" data-linkType="image">\n        <legend id="tinylink-image">Internal Image</legend>\n        <div class="form-inline">\n          <div class="form-group main">\n            <input type="text" name="image" />\n          </div>\n          <div class="form-group scale">\n            <label><%- scaleText %></label>\n            <select name="scale">\n              <option value="">Original</option>\n                <% _.each(scales, function(scale){ %>\n                  <option value="<%- scale.part %>" <% if(scale.name === options.defaultScale){ %>selected<% } %> >\n                    <%- scale.label %>\n                  </option>\n                <% }); %>\n            </select>\n          </div>\n        </div>\n      </fieldset>\n        <% } %>\n\n      <% if(_.contains(linkTypes, \'uploadImage\')){ %>\n      <fieldset class="linkType uploadImage" data-linkType="uploadImage">\n        <legend id="tinylink-uploadImage">Upload</legend>\n        <div class="uploadify-me"></div>\n      </fieldset>\n      <% } %>\n\n      <% if(_.contains(linkTypes, \'externalImage\')){ %>\n      <fieldset class="linkType externalImage" data-linkType="externalImage">\n        <legend id="tinylink-externalImage">External Image</legend>\n        <div>\n          <div class="form-group main">\n            <label><%- externalImageText %></label>\n            <input type="text" name="externalImage" />\n          </div>\n        </div>\n      </fieldset>\n      <% } %>\n\n    </div><!-- / tabs -->\n\n    <div class="common-controls">\n      <div class="form-group title">\n        <label><%- titleText %></label>\n        <input type="text" name="title" />\n      </div>\n      <div class="form-group text">\n        <label><%- altText %></label>\n        <input type="text" name="alt" />\n      </div>\n      <div class="form-group align">\n        <label><%- imageAlignText %></label>\n        <select name="align">\n          <% _.each([\'inline\', \'right\', \'left\'], function(align){ %>\n              <option value="<%- align %>">\n              <%- align.charAt(0).toUpperCase() + align.slice(1) %>\n              </option>\n          <% }); %>\n        <select>\n      </div>\n    </div>\n\n    <input type="submit" class="plone-btn" name="cancel" value="<%- cancelBtn %>" />\n    <input type="submit" class="plone-btn plone-btn-primary context" name="insert" value="<%- insertBtn %>" />\n\n  </div>\n</div>\n';});
 
-(function(root) {
-define("jqtree", ["jquery"], function() {
-  return (function() {
-/*
-JqTree 1.3.3
-
-Copyright 2015 Marco Braak
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var $, DragAndDropHandler, DragElement, HitAreasGenerator, Position, VisibleNodeIterator, node_module,
-  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-  hasProp = {}.hasOwnProperty;
-
-node_module = require('./node');
-
-Position = node_module.Position;
-
-$ = jQuery;
-
-DragAndDropHandler = (function() {
-  function DragAndDropHandler(tree_widget) {
-    this.tree_widget = tree_widget;
-    this.hovered_area = null;
-    this.$ghost = null;
-    this.hit_areas = [];
-    this.is_dragging = false;
-    this.current_item = null;
-  }
-
-  DragAndDropHandler.prototype.mouseCapture = function(position_info) {
-    var $element, node_element;
-    $element = $(position_info.target);
-    if (!this.mustCaptureElement($element)) {
-      return null;
-    }
-    if (this.tree_widget.options.onIsMoveHandle && !this.tree_widget.options.onIsMoveHandle($element)) {
-      return null;
-    }
-    node_element = this.tree_widget._getNodeElement($element);
-    if (node_element && this.tree_widget.options.onCanMove) {
-      if (!this.tree_widget.options.onCanMove(node_element.node)) {
-        node_element = null;
-      }
-    }
-    this.current_item = node_element;
-    return this.current_item !== null;
-  };
-
-  DragAndDropHandler.prototype.mouseStart = function(position_info) {
-    var offset;
-    this.refresh();
-    offset = $(position_info.target).offset();
-    this.drag_element = new DragElement(this.current_item.node, position_info.page_x - offset.left, position_info.page_y - offset.top, this.tree_widget.element);
-    this.is_dragging = true;
-    this.current_item.$element.addClass('jqtree-moving');
-    return true;
-  };
-
-  DragAndDropHandler.prototype.mouseDrag = function(position_info) {
-    var area, can_move_to;
-    this.drag_element.move(position_info.page_x, position_info.page_y);
-    area = this.findHoveredArea(position_info.page_x, position_info.page_y);
-    can_move_to = this.canMoveToArea(area);
-    if (can_move_to && area) {
-      if (!area.node.isFolder()) {
-        this.stopOpenFolderTimer();
-      }
-      if (this.hovered_area !== area) {
-        this.hovered_area = area;
-        if (this.mustOpenFolderTimer(area)) {
-          this.startOpenFolderTimer(area.node);
-        } else {
-          this.stopOpenFolderTimer();
-        }
-        this.updateDropHint();
-      }
-    } else {
-      this.removeHover();
-      this.removeDropHint();
-      this.stopOpenFolderTimer();
-    }
-    if (!area) {
-      if (this.tree_widget.options.onDragMove != null) {
-        this.tree_widget.options.onDragMove(this.current_item.node, position_info.original_event);
-      }
-    }
-    return true;
-  };
-
-  DragAndDropHandler.prototype.mustCaptureElement = function($element) {
-    return !$element.is('input,select');
-  };
-
-  DragAndDropHandler.prototype.canMoveToArea = function(area) {
-    var position_name;
-    if (!area) {
-      return false;
-    } else if (this.tree_widget.options.onCanMoveTo) {
-      position_name = Position.getName(area.position);
-      return this.tree_widget.options.onCanMoveTo(this.current_item.node, area.node, position_name);
-    } else {
-      return true;
-    }
-  };
-
-  DragAndDropHandler.prototype.mouseStop = function(position_info) {
-    var current_item;
-    this.moveItem(position_info);
-    this.clear();
-    this.removeHover();
-    this.removeDropHint();
-    this.removeHitAreas();
-    current_item = this.current_item;
-    if (this.current_item) {
-      this.current_item.$element.removeClass('jqtree-moving');
-      this.current_item = null;
-    }
-    this.is_dragging = false;
-    if (!this.hovered_area && current_item) {
-      if (this.tree_widget.options.onDragStop != null) {
-        this.tree_widget.options.onDragStop(current_item.node, position_info.original_event);
-      }
-    }
-    return false;
-  };
-
-  DragAndDropHandler.prototype.refresh = function() {
-    this.removeHitAreas();
-    if (this.current_item) {
-      this.generateHitAreas();
-      this.current_item = this.tree_widget._getNodeElementForNode(this.current_item.node);
-      if (this.is_dragging) {
-        return this.current_item.$element.addClass('jqtree-moving');
-      }
-    }
-  };
-
-  DragAndDropHandler.prototype.removeHitAreas = function() {
-    return this.hit_areas = [];
-  };
-
-  DragAndDropHandler.prototype.clear = function() {
-    this.drag_element.remove();
-    return this.drag_element = null;
-  };
-
-  DragAndDropHandler.prototype.removeDropHint = function() {
-    if (this.previous_ghost) {
-      return this.previous_ghost.remove();
-    }
-  };
-
-  DragAndDropHandler.prototype.removeHover = function() {
-    return this.hovered_area = null;
-  };
-
-  DragAndDropHandler.prototype.generateHitAreas = function() {
-    var hit_areas_generator;
-    hit_areas_generator = new HitAreasGenerator(this.tree_widget.tree, this.current_item.node, this.getTreeDimensions().bottom);
-    return this.hit_areas = hit_areas_generator.generate();
-  };
-
-  DragAndDropHandler.prototype.findHoveredArea = function(x, y) {
-    var area, dimensions, high, low, mid;
-    dimensions = this.getTreeDimensions();
-    if (x < dimensions.left || y < dimensions.top || x > dimensions.right || y > dimensions.bottom) {
-      return null;
-    }
-    low = 0;
-    high = this.hit_areas.length;
-    while (low < high) {
-      mid = (low + high) >> 1;
-      area = this.hit_areas[mid];
-      if (y < area.top) {
-        high = mid;
-      } else if (y > area.bottom) {
-        low = mid + 1;
-      } else {
-        return area;
-      }
-    }
-    return null;
-  };
-
-  DragAndDropHandler.prototype.mustOpenFolderTimer = function(area) {
-    var node;
-    node = area.node;
-    return node.isFolder() && !node.is_open && area.position === Position.INSIDE;
-  };
-
-  DragAndDropHandler.prototype.updateDropHint = function() {
-    var node_element;
-    if (!this.hovered_area) {
-      return;
-    }
-    this.removeDropHint();
-    node_element = this.tree_widget._getNodeElementForNode(this.hovered_area.node);
-    return this.previous_ghost = node_element.addDropHint(this.hovered_area.position);
-  };
-
-  DragAndDropHandler.prototype.startOpenFolderTimer = function(folder) {
-    var openFolder;
-    openFolder = (function(_this) {
-      return function() {
-        return _this.tree_widget._openNode(folder, _this.tree_widget.options.slide, function() {
-          _this.refresh();
-          return _this.updateDropHint();
-        });
-      };
-    })(this);
-    this.stopOpenFolderTimer();
-    return this.open_folder_timer = setTimeout(openFolder, this.tree_widget.options.openFolderDelay);
-  };
-
-  DragAndDropHandler.prototype.stopOpenFolderTimer = function() {
-    if (this.open_folder_timer) {
-      clearTimeout(this.open_folder_timer);
-      return this.open_folder_timer = null;
-    }
-  };
-
-  DragAndDropHandler.prototype.moveItem = function(position_info) {
-    var doMove, event, moved_node, position, previous_parent, target_node;
-    if (this.hovered_area && this.hovered_area.position !== Position.NONE && this.canMoveToArea(this.hovered_area)) {
-      moved_node = this.current_item.node;
-      target_node = this.hovered_area.node;
-      position = this.hovered_area.position;
-      previous_parent = moved_node.parent;
-      if (position === Position.INSIDE) {
-        this.hovered_area.node.is_open = true;
-      }
-      doMove = (function(_this) {
-        return function() {
-          _this.tree_widget.tree.moveNode(moved_node, target_node, position);
-          _this.tree_widget.element.empty();
-          return _this.tree_widget._refreshElements();
-        };
-      })(this);
-      event = this.tree_widget._triggerEvent('tree.move', {
-        move_info: {
-          moved_node: moved_node,
-          target_node: target_node,
-          position: Position.getName(position),
-          previous_parent: previous_parent,
-          do_move: doMove,
-          original_event: position_info.original_event
-        }
-      });
-      if (!event.isDefaultPrevented()) {
-        return doMove();
-      }
-    }
-  };
-
-  DragAndDropHandler.prototype.getTreeDimensions = function() {
-    var offset;
-    offset = this.tree_widget.element.offset();
-    return {
-      left: offset.left,
-      top: offset.top,
-      right: offset.left + this.tree_widget.element.width(),
-      bottom: offset.top + this.tree_widget.element.height() + 16
-    };
-  };
-
-  return DragAndDropHandler;
-
-})();
-
-VisibleNodeIterator = (function() {
-  function VisibleNodeIterator(tree) {
-    this.tree = tree;
-  }
-
-  VisibleNodeIterator.prototype.iterate = function() {
-    var _iterateNode, is_first_node;
-    is_first_node = true;
-    _iterateNode = (function(_this) {
-      return function(node, next_node) {
-        var $element, child, children_length, i, j, len, must_iterate_inside, ref;
-        must_iterate_inside = (node.is_open || !node.element) && node.hasChildren();
-        if (node.element) {
-          $element = $(node.element);
-          if (!$element.is(':visible')) {
-            return;
-          }
-          if (is_first_node) {
-            _this.handleFirstNode(node, $element);
-            is_first_node = false;
-          }
-          if (!node.hasChildren()) {
-            _this.handleNode(node, next_node, $element);
-          } else if (node.is_open) {
-            if (!_this.handleOpenFolder(node, $element)) {
-              must_iterate_inside = false;
-            }
-          } else {
-            _this.handleClosedFolder(node, next_node, $element);
-          }
-        }
-        if (must_iterate_inside) {
-          children_length = node.children.length;
-          ref = node.children;
-          for (i = j = 0, len = ref.length; j < len; i = ++j) {
-            child = ref[i];
-            if (i === (children_length - 1)) {
-              _iterateNode(node.children[i], null);
-            } else {
-              _iterateNode(node.children[i], node.children[i + 1]);
-            }
-          }
-          if (node.is_open) {
-            return _this.handleAfterOpenFolder(node, next_node, $element);
-          }
-        }
-      };
-    })(this);
-    return _iterateNode(this.tree, null);
-  };
-
-  VisibleNodeIterator.prototype.handleNode = function(node, next_node, $element) {};
-
-  VisibleNodeIterator.prototype.handleOpenFolder = function(node, $element) {};
-
-  VisibleNodeIterator.prototype.handleClosedFolder = function(node, next_node, $element) {};
-
-  VisibleNodeIterator.prototype.handleAfterOpenFolder = function(node, next_node, $element) {};
-
-  VisibleNodeIterator.prototype.handleFirstNode = function(node, $element) {};
-
-  return VisibleNodeIterator;
-
-})();
-
-HitAreasGenerator = (function(superClass) {
-  extend(HitAreasGenerator, superClass);
-
-  function HitAreasGenerator(tree, current_node, tree_bottom) {
-    HitAreasGenerator.__super__.constructor.call(this, tree);
-    this.current_node = current_node;
-    this.tree_bottom = tree_bottom;
-  }
-
-  HitAreasGenerator.prototype.generate = function() {
-    this.positions = [];
-    this.last_top = 0;
-    this.iterate();
-    return this.generateHitAreas(this.positions);
-  };
-
-  HitAreasGenerator.prototype.getTop = function($element) {
-    return $element.offset().top;
-  };
-
-  HitAreasGenerator.prototype.addPosition = function(node, position, top) {
-    var area;
-    area = {
-      top: top,
-      node: node,
-      position: position
-    };
-    this.positions.push(area);
-    return this.last_top = top;
-  };
-
-  HitAreasGenerator.prototype.handleNode = function(node, next_node, $element) {
-    var top;
-    top = this.getTop($element);
-    if (node === this.current_node) {
-      this.addPosition(node, Position.NONE, top);
-    } else {
-      this.addPosition(node, Position.INSIDE, top);
-    }
-    if (next_node === this.current_node || node === this.current_node) {
-      return this.addPosition(node, Position.NONE, top);
-    } else {
-      return this.addPosition(node, Position.AFTER, top);
-    }
-  };
-
-  HitAreasGenerator.prototype.handleOpenFolder = function(node, $element) {
-    if (node === this.current_node) {
-      return false;
-    }
-    if (node.children[0] !== this.current_node) {
-      this.addPosition(node, Position.INSIDE, this.getTop($element));
-    }
-    return true;
-  };
-
-  HitAreasGenerator.prototype.handleClosedFolder = function(node, next_node, $element) {
-    var top;
-    top = this.getTop($element);
-    if (node === this.current_node) {
-      return this.addPosition(node, Position.NONE, top);
-    } else {
-      this.addPosition(node, Position.INSIDE, top);
-      if (next_node !== this.current_node) {
-        return this.addPosition(node, Position.AFTER, top);
-      }
-    }
-  };
-
-  HitAreasGenerator.prototype.handleFirstNode = function(node, $element) {
-    if (node !== this.current_node) {
-      return this.addPosition(node, Position.BEFORE, this.getTop($(node.element)));
-    }
-  };
-
-  HitAreasGenerator.prototype.handleAfterOpenFolder = function(node, next_node, $element) {
-    if (node === this.current_node.node || next_node === this.current_node.node) {
-      return this.addPosition(node, Position.NONE, this.last_top);
-    } else {
-      return this.addPosition(node, Position.AFTER, this.last_top);
-    }
-  };
-
-  HitAreasGenerator.prototype.generateHitAreas = function(positions) {
-    var group, hit_areas, j, len, position, previous_top;
-    previous_top = -1;
-    group = [];
-    hit_areas = [];
-    for (j = 0, len = positions.length; j < len; j++) {
-      position = positions[j];
-      if (position.top !== previous_top && group.length) {
-        if (group.length) {
-          this.generateHitAreasForGroup(hit_areas, group, previous_top, position.top);
-        }
-        previous_top = position.top;
-        group = [];
-      }
-      group.push(position);
-    }
-    this.generateHitAreasForGroup(hit_areas, group, previous_top, this.tree_bottom);
-    return hit_areas;
-  };
-
-  HitAreasGenerator.prototype.generateHitAreasForGroup = function(hit_areas, positions_in_group, top, bottom) {
-    var area_height, area_top, i, position, position_count;
-    position_count = Math.min(positions_in_group.length, 4);
-    area_height = Math.round((bottom - top) / position_count);
-    area_top = top;
-    i = 0;
-    while (i < position_count) {
-      position = positions_in_group[i];
-      hit_areas.push({
-        top: area_top,
-        bottom: area_top + area_height,
-        node: position.node,
-        position: position.position
-      });
-      area_top += area_height;
-      i += 1;
-    }
-    return null;
-  };
-
-  return HitAreasGenerator;
-
-})(VisibleNodeIterator);
-
-DragElement = (function() {
-  function DragElement(node, offset_x, offset_y, $tree) {
-    this.offset_x = offset_x;
-    this.offset_y = offset_y;
-    this.$element = $("<span class=\"jqtree-title jqtree-dragging\">" + node.name + "</span>");
-    this.$element.css("position", "absolute");
-    $tree.append(this.$element);
-  }
-
-  DragElement.prototype.move = function(page_x, page_y) {
-    return this.$element.offset({
-      left: page_x - this.offset_x,
-      top: page_y - this.offset_y
-    });
-  };
-
-  DragElement.prototype.remove = function() {
-    return this.$element.remove();
-  };
-
-  return DragElement;
-
-})();
-
-module.exports = {
-  DragAndDropHandler: DragAndDropHandler,
-  DragElement: DragElement,
-  HitAreasGenerator: HitAreasGenerator
-};
-
-},{"./node":5}],2:[function(require,module,exports){
-var $, ElementsRenderer, NodeElement, html_escape, node_element, util;
-
-node_element = require('./node_element');
-
-NodeElement = node_element.NodeElement;
-
-util = require('./util');
-
-html_escape = util.html_escape;
-
-$ = jQuery;
-
-ElementsRenderer = (function() {
-  function ElementsRenderer(tree_widget) {
-    this.tree_widget = tree_widget;
-    this.opened_icon_element = this.createButtonElement(tree_widget.options.openedIcon);
-    this.closed_icon_element = this.createButtonElement(tree_widget.options.closedIcon);
-  }
-
-  ElementsRenderer.prototype.render = function(from_node) {
-    if (from_node && from_node.parent) {
-      return this.renderFromNode(from_node);
-    } else {
-      return this.renderFromRoot();
-    }
-  };
-
-  ElementsRenderer.prototype.renderFromRoot = function() {
-    var $element;
-    $element = this.tree_widget.element;
-    $element.empty();
-    return this.createDomElements($element[0], this.tree_widget.tree.children, true, true, 1);
-  };
-
-  ElementsRenderer.prototype.renderFromNode = function(node) {
-    var $previous_li, li;
-    $previous_li = $(node.element);
-    li = this.createLi(node, node.getLevel());
-    this.attachNodeData(node, li);
-    $previous_li.after(li);
-    $previous_li.remove();
-    if (node.children) {
-      return this.createDomElements(li, node.children, false, false, node.getLevel() + 1);
-    }
-  };
-
-  ElementsRenderer.prototype.createDomElements = function(element, children, is_root_node, is_open, level) {
-    var child, i, len, li, ul;
-    ul = this.createUl(is_root_node);
-    element.appendChild(ul);
-    for (i = 0, len = children.length; i < len; i++) {
-      child = children[i];
-      li = this.createLi(child, level);
-      ul.appendChild(li);
-      this.attachNodeData(child, li);
-      if (child.hasChildren()) {
-        this.createDomElements(li, child.children, false, child.is_open, level + 1);
-      }
-    }
-    return null;
-  };
-
-  ElementsRenderer.prototype.attachNodeData = function(node, li) {
-    node.element = li;
-    return $(li).data('node', node);
-  };
-
-  ElementsRenderer.prototype.createUl = function(is_root_node) {
-    var class_string, role, ul;
-    if (!is_root_node) {
-      class_string = '';
-      role = 'group';
-    } else {
-      class_string = 'jqtree-tree';
-      role = 'tree';
-      if (this.tree_widget.options.rtl) {
-        class_string += ' jqtree-rtl';
-      }
-    }
-    ul = document.createElement('ul');
-    ul.className = "jqtree_common " + class_string;
-    ul.setAttribute('role', role);
-    return ul;
-  };
-
-  ElementsRenderer.prototype.createLi = function(node, level) {
-    var is_selected, li;
-    is_selected = this.tree_widget.select_node_handler && this.tree_widget.select_node_handler.isNodeSelected(node);
-    if (node.isFolder()) {
-      li = this.createFolderLi(node, level, is_selected);
-    } else {
-      li = this.createNodeLi(node, level, is_selected);
-    }
-    if (this.tree_widget.options.onCreateLi) {
-      this.tree_widget.options.onCreateLi(node, $(li));
-    }
-    return li;
-  };
-
-  ElementsRenderer.prototype.createFolderLi = function(node, level, is_selected) {
-    var button_classes, button_link, div, folder_classes, icon_element, is_folder, li;
-    button_classes = this.getButtonClasses(node);
-    folder_classes = this.getFolderClasses(node, is_selected);
-    if (node.is_open) {
-      icon_element = this.opened_icon_element;
-    } else {
-      icon_element = this.closed_icon_element;
-    }
-    li = document.createElement('li');
-    li.className = "jqtree_common " + folder_classes;
-    li.setAttribute('role', 'presentation');
-    div = document.createElement('div');
-    div.className = "jqtree-element jqtree_common";
-    div.setAttribute('role', 'presentation');
-    li.appendChild(div);
-    button_link = document.createElement('a');
-    button_link.className = button_classes;
-    button_link.appendChild(icon_element.cloneNode(false));
-    button_link.setAttribute('role', 'presentation');
-    button_link.setAttribute('aria-hidden', 'true');
-    if (this.tree_widget.options.buttonLeft) {
-      div.appendChild(button_link);
-    }
-    div.appendChild(this.createTitleSpan(node.name, level, is_selected, node.is_open, is_folder = true));
-    if (!this.tree_widget.options.buttonLeft) {
-      div.appendChild(button_link);
-    }
-    return li;
-  };
-
-  ElementsRenderer.prototype.createNodeLi = function(node, level, is_selected) {
-    var class_string, div, is_folder, li, li_classes;
-    li_classes = ['jqtree_common'];
-    if (is_selected) {
-      li_classes.push('jqtree-selected');
-    }
-    class_string = li_classes.join(' ');
-    li = document.createElement('li');
-    li.className = class_string;
-    li.setAttribute('role', 'presentation');
-    div = document.createElement('div');
-    div.className = "jqtree-element jqtree_common";
-    div.setAttribute('role', 'presentation');
-    li.appendChild(div);
-    div.appendChild(this.createTitleSpan(node.name, level, is_selected, node.is_open, is_folder = false));
-    return li;
-  };
-
-  ElementsRenderer.prototype.createTitleSpan = function(node_name, level, is_selected, is_open, is_folder) {
-    var classes, title_span;
-    title_span = document.createElement('span');
-    classes = "jqtree-title jqtree_common";
-    if (is_folder) {
-      classes += " jqtree-title-folder";
-    }
-    title_span.className = classes;
-    title_span.setAttribute('role', 'treeitem');
-    title_span.setAttribute('aria-level', level);
-    title_span.setAttribute('aria-selected', util.getBoolString(is_selected));
-    title_span.setAttribute('aria-expanded', util.getBoolString(is_open));
-    if (is_selected) {
-      title_span.setAttribute('tabindex', 0);
-    }
-    title_span.innerHTML = this.escapeIfNecessary(node_name);
-    return title_span;
-  };
-
-  ElementsRenderer.prototype.getButtonClasses = function(node) {
-    var classes;
-    classes = ['jqtree-toggler', 'jqtree_common'];
-    if (!node.is_open) {
-      classes.push('jqtree-closed');
-    }
-    if (this.tree_widget.options.buttonLeft) {
-      classes.push('jqtree-toggler-left');
-    } else {
-      classes.push('jqtree-toggler-right');
-    }
-    return classes.join(' ');
-  };
-
-  ElementsRenderer.prototype.getFolderClasses = function(node, is_selected) {
-    var classes;
-    classes = ['jqtree-folder'];
-    if (!node.is_open) {
-      classes.push('jqtree-closed');
-    }
-    if (is_selected) {
-      classes.push('jqtree-selected');
-    }
-    if (node.is_loading) {
-      classes.push('jqtree-loading');
-    }
-    return classes.join(' ');
-  };
-
-  ElementsRenderer.prototype.escapeIfNecessary = function(value) {
-    if (this.tree_widget.options.autoEscape) {
-      return html_escape(value);
-    } else {
-      return value;
-    }
-  };
-
-  ElementsRenderer.prototype.createButtonElement = function(value) {
-    var div;
-    if (typeof value === 'string') {
-      div = document.createElement('div');
-      div.innerHTML = value;
-      return document.createTextNode(div.innerHTML);
-    } else {
-      return $(value)[0];
-    }
-  };
-
-  return ElementsRenderer;
-
-})();
-
-module.exports = ElementsRenderer;
-
-},{"./node_element":6,"./util":12}],3:[function(require,module,exports){
-var $, KeyHandler,
-  bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-
-$ = jQuery;
-
-KeyHandler = (function() {
-  var DOWN, LEFT, RIGHT, UP;
-
-  LEFT = 37;
-
-  UP = 38;
-
-  RIGHT = 39;
-
-  DOWN = 40;
-
-  function KeyHandler(tree_widget) {
-    this.selectNode = bind(this.selectNode, this);
-    this.tree_widget = tree_widget;
-    if (tree_widget.options.keyboardSupport) {
-      $(document).bind('keydown.jqtree', $.proxy(this.handleKeyDown, this));
-    }
-  }
-
-  KeyHandler.prototype.deinit = function() {
-    return $(document).unbind('keydown.jqtree');
-  };
-
-  KeyHandler.prototype.moveDown = function() {
-    var node;
-    node = this.tree_widget.getSelectedNode();
-    if (node) {
-      return this.selectNode(node.getNextNode());
-    } else {
-      return false;
-    }
-  };
-
-  KeyHandler.prototype.moveUp = function() {
-    var node;
-    node = this.tree_widget.getSelectedNode();
-    if (node) {
-      return this.selectNode(node.getPreviousNode());
-    } else {
-      return false;
-    }
-  };
-
-  KeyHandler.prototype.moveRight = function() {
-    var node;
-    node = this.tree_widget.getSelectedNode();
-    if (!node) {
-      return true;
-    } else if (!node.isFolder()) {
-      return true;
-    } else {
-      if (node.is_open) {
-        return this.selectNode(node.getNextNode());
-      } else {
-        this.tree_widget.openNode(node);
-        return false;
-      }
-    }
-  };
-
-  KeyHandler.prototype.moveLeft = function() {
-    var node;
-    node = this.tree_widget.getSelectedNode();
-    if (!node) {
-      return true;
-    } else if (node.isFolder() && node.is_open) {
-      this.tree_widget.closeNode(node);
-      return false;
-    } else {
-      return this.selectNode(node.getParent());
-    }
-  };
-
-  KeyHandler.prototype.handleKeyDown = function(e) {
-    var key;
-    if (!this.tree_widget.options.keyboardSupport) {
-      return true;
-    }
-    if ($(document.activeElement).is('textarea,input,select')) {
-      return true;
-    }
-    if (!this.tree_widget.getSelectedNode()) {
-      return true;
-    }
-    key = e.which;
-    switch (key) {
-      case DOWN:
-        return this.moveDown();
-      case UP:
-        return this.moveUp();
-      case RIGHT:
-        return this.moveRight();
-      case LEFT:
-        return this.moveLeft();
-    }
-    return true;
-  };
-
-  KeyHandler.prototype.selectNode = function(node) {
-    if (!node) {
-      return true;
-    } else {
-      this.tree_widget.selectNode(node);
-      if (this.tree_widget.scroll_handler && (!this.tree_widget.scroll_handler.isScrolledIntoView($(node.element).find('.jqtree-element')))) {
-        this.tree_widget.scrollToNode(node);
-      }
-      return false;
-    }
-  };
-
-  return KeyHandler;
-
-})();
-
-module.exports = KeyHandler;
-
-},{}],4:[function(require,module,exports){
-
-/*
-This widget does the same a the mouse widget in jqueryui.
- */
-var $, MouseWidget, SimpleWidget,
-  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-  hasProp = {}.hasOwnProperty;
-
-SimpleWidget = require('./simple.widget');
-
-$ = jQuery;
-
-MouseWidget = (function(superClass) {
-  extend(MouseWidget, superClass);
-
-  function MouseWidget() {
-    return MouseWidget.__super__.constructor.apply(this, arguments);
-  }
-
-  MouseWidget.is_mouse_handled = false;
-
-  MouseWidget.prototype._init = function() {
-    this.$el.bind('mousedown.mousewidget', $.proxy(this._mouseDown, this));
-    this.$el.bind('touchstart.mousewidget', $.proxy(this._touchStart, this));
-    this.is_mouse_started = false;
-    this.mouse_delay = 0;
-    this._mouse_delay_timer = null;
-    this._is_mouse_delay_met = true;
-    return this.mouse_down_info = null;
-  };
-
-  MouseWidget.prototype._deinit = function() {
-    var $document;
-    this.$el.unbind('mousedown.mousewidget');
-    this.$el.unbind('touchstart.mousewidget');
-    $document = $(document);
-    $document.unbind('mousemove.mousewidget');
-    return $document.unbind('mouseup.mousewidget');
-  };
-
-  MouseWidget.prototype._mouseDown = function(e) {
-    var result;
-    if (e.which !== 1) {
-      return;
-    }
-    result = this._handleMouseDown(e, this._getPositionInfo(e));
-    if (result) {
-      e.preventDefault();
-    }
-    return result;
-  };
-
-  MouseWidget.prototype._handleMouseDown = function(e, position_info) {
-    if (MouseWidget.is_mouse_handled) {
-      return;
-    }
-    if (this.is_mouse_started) {
-      this._handleMouseUp(position_info);
-    }
-    this.mouse_down_info = position_info;
-    if (!this._mouseCapture(position_info)) {
-      return;
-    }
-    this._handleStartMouse();
-    this.is_mouse_handled = true;
-    return true;
-  };
-
-  MouseWidget.prototype._handleStartMouse = function() {
-    var $document;
-    $document = $(document);
-    $document.bind('mousemove.mousewidget', $.proxy(this._mouseMove, this));
-    $document.bind('touchmove.mousewidget', $.proxy(this._touchMove, this));
-    $document.bind('mouseup.mousewidget', $.proxy(this._mouseUp, this));
-    $document.bind('touchend.mousewidget', $.proxy(this._touchEnd, this));
-    if (this.mouse_delay) {
-      return this._startMouseDelayTimer();
-    }
-  };
-
-  MouseWidget.prototype._startMouseDelayTimer = function() {
-    if (this._mouse_delay_timer) {
-      clearTimeout(this._mouse_delay_timer);
-    }
-    this._mouse_delay_timer = setTimeout((function(_this) {
-      return function() {
-        return _this._is_mouse_delay_met = true;
-      };
-    })(this), this.mouse_delay);
-    return this._is_mouse_delay_met = false;
-  };
-
-  MouseWidget.prototype._mouseMove = function(e) {
-    return this._handleMouseMove(e, this._getPositionInfo(e));
-  };
-
-  MouseWidget.prototype._handleMouseMove = function(e, position_info) {
-    if (this.is_mouse_started) {
-      this._mouseDrag(position_info);
-      return e.preventDefault();
-    }
-    if (this.mouse_delay && !this._is_mouse_delay_met) {
-      return true;
-    }
-    this.is_mouse_started = this._mouseStart(this.mouse_down_info) !== false;
-    if (this.is_mouse_started) {
-      this._mouseDrag(position_info);
-    } else {
-      this._handleMouseUp(position_info);
-    }
-    return !this.is_mouse_started;
-  };
-
-  MouseWidget.prototype._getPositionInfo = function(e) {
-    return {
-      page_x: e.pageX,
-      page_y: e.pageY,
-      target: e.target,
-      original_event: e
-    };
-  };
-
-  MouseWidget.prototype._mouseUp = function(e) {
-    return this._handleMouseUp(this._getPositionInfo(e));
-  };
-
-  MouseWidget.prototype._handleMouseUp = function(position_info) {
-    var $document;
-    $document = $(document);
-    $document.unbind('mousemove.mousewidget');
-    $document.unbind('touchmove.mousewidget');
-    $document.unbind('mouseup.mousewidget');
-    $document.unbind('touchend.mousewidget');
-    if (this.is_mouse_started) {
-      this.is_mouse_started = false;
-      this._mouseStop(position_info);
-    }
-  };
-
-  MouseWidget.prototype._mouseCapture = function(position_info) {
-    return true;
-  };
-
-  MouseWidget.prototype._mouseStart = function(position_info) {
-    return null;
-  };
-
-  MouseWidget.prototype._mouseDrag = function(position_info) {
-    return null;
-  };
-
-  MouseWidget.prototype._mouseStop = function(position_info) {
-    return null;
-  };
-
-  MouseWidget.prototype.setMouseDelay = function(mouse_delay) {
-    return this.mouse_delay = mouse_delay;
-  };
-
-  MouseWidget.prototype._touchStart = function(e) {
-    var touch;
-    if (e.originalEvent.touches.length > 1) {
-      return;
-    }
-    touch = e.originalEvent.changedTouches[0];
-    return this._handleMouseDown(e, this._getPositionInfo(touch));
-  };
-
-  MouseWidget.prototype._touchMove = function(e) {
-    var touch;
-    if (e.originalEvent.touches.length > 1) {
-      return;
-    }
-    touch = e.originalEvent.changedTouches[0];
-    return this._handleMouseMove(e, this._getPositionInfo(touch));
-  };
-
-  MouseWidget.prototype._touchEnd = function(e) {
-    var touch;
-    if (e.originalEvent.touches.length > 1) {
-      return;
-    }
-    touch = e.originalEvent.changedTouches[0];
-    return this._handleMouseUp(this._getPositionInfo(touch));
-  };
-
-  return MouseWidget;
-
-})(SimpleWidget);
-
-module.exports = MouseWidget;
-
-},{"./simple.widget":10}],5:[function(require,module,exports){
-var $, Node, Position;
-
-$ = jQuery;
-
-Position = {
-  getName: function(position) {
-    return Position.strings[position - 1];
-  },
-  nameToIndex: function(name) {
-    var i, j, ref;
-    for (i = j = 1, ref = Position.strings.length; 1 <= ref ? j <= ref : j >= ref; i = 1 <= ref ? ++j : --j) {
-      if (Position.strings[i - 1] === name) {
-        return i;
-      }
-    }
-    return 0;
-  }
-};
-
-Position.BEFORE = 1;
-
-Position.AFTER = 2;
-
-Position.INSIDE = 3;
-
-Position.NONE = 4;
-
-Position.strings = ['before', 'after', 'inside', 'none'];
-
-Node = (function() {
-  function Node(o, is_root, node_class) {
-    if (is_root == null) {
-      is_root = false;
-    }
-    if (node_class == null) {
-      node_class = Node;
-    }
-    this.name = '';
-    this.setData(o);
-    this.children = [];
-    this.parent = null;
-    if (is_root) {
-      this.id_mapping = {};
-      this.tree = this;
-      this.node_class = node_class;
-    }
-  }
-
-  Node.prototype.setData = function(o) {
-
-    /*
-    Set the data of this node.
-    
-    setData(string): set the name of the node
-    setdata(object): set attributes of the node
-    
-    Examples:
-        setdata('node1')
-    
-        setData({ name: 'node1', id: 1});
-    
-        setData({ name: 'node2', id: 2, color: 'green'});
-    
-    * This is an internal function; it is not in the docs
-    * Does not remove existing node values
-     */
-    var key, setName, value;
-    setName = (function(_this) {
-      return function(name) {
-        if (name !== null) {
-          return _this.name = name;
-        }
-      };
-    })(this);
-    if (typeof o !== 'object') {
-      setName(o);
-    } else {
-      for (key in o) {
-        value = o[key];
-        if (key === 'label') {
-          setName(value);
-        } else if (key !== 'children') {
-          this[key] = value;
-        }
-      }
-    }
-    return null;
-  };
-
-  Node.prototype.initFromData = function(data) {
-    var addChildren, addNode;
-    addNode = (function(_this) {
-      return function(node_data) {
-        _this.setData(node_data);
-        if (node_data.children) {
-          return addChildren(node_data.children);
-        }
-      };
-    })(this);
-    addChildren = (function(_this) {
-      return function(children_data) {
-        var child, j, len, node;
-        for (j = 0, len = children_data.length; j < len; j++) {
-          child = children_data[j];
-          node = new _this.tree.node_class('');
-          node.initFromData(child);
-          _this.addChild(node);
-        }
-        return null;
-      };
-    })(this);
-    addNode(data);
-    return null;
-  };
-
-
-  /*
-  Create tree from data.
-  
-  Structure of data is:
-  [
-      {
-          label: 'node1',
-          children: [
-              { label: 'child1' },
-              { label: 'child2' }
-          ]
-      },
-      {
-          label: 'node2'
-      }
-  ]
-   */
-
-  Node.prototype.loadFromData = function(data) {
-    var j, len, node, o;
-    this.removeChildren();
-    for (j = 0, len = data.length; j < len; j++) {
-      o = data[j];
-      node = new this.tree.node_class(o);
-      this.addChild(node);
-      if (typeof o === 'object' && o.children) {
-        node.loadFromData(o.children);
-      }
-    }
-    return null;
-  };
-
-
-  /*
-  Add child.
-  
-  tree.addChild(
-      new Node('child1')
-  );
-   */
-
-  Node.prototype.addChild = function(node) {
-    this.children.push(node);
-    return node._setParent(this);
-  };
-
-
-  /*
-  Add child at position. Index starts at 0.
-  
-  tree.addChildAtPosition(
-      new Node('abc'),
-      1
-  );
-   */
-
-  Node.prototype.addChildAtPosition = function(node, index) {
-    this.children.splice(index, 0, node);
-    return node._setParent(this);
-  };
-
-  Node.prototype._setParent = function(parent) {
-    this.parent = parent;
-    this.tree = parent.tree;
-    return this.tree.addNodeToIndex(this);
-  };
-
-
-  /*
-  Remove child. This also removes the children of the node.
-  
-  tree.removeChild(tree.children[0]);
-   */
-
-  Node.prototype.removeChild = function(node) {
-    node.removeChildren();
-    return this._removeChild(node);
-  };
-
-  Node.prototype._removeChild = function(node) {
-    this.children.splice(this.getChildIndex(node), 1);
-    return this.tree.removeNodeFromIndex(node);
-  };
-
-
-  /*
-  Get child index.
-  
-  var index = getChildIndex(node);
-   */
-
-  Node.prototype.getChildIndex = function(node) {
-    return $.inArray(node, this.children);
-  };
-
-
-  /*
-  Does the tree have children?
-  
-  if (tree.hasChildren()) {
-      //
-  }
-   */
-
-  Node.prototype.hasChildren = function() {
-    return this.children.length !== 0;
-  };
-
-  Node.prototype.isFolder = function() {
-    return this.hasChildren() || this.load_on_demand;
-  };
-
-
-  /*
-  Iterate over all the nodes in the tree.
-  
-  Calls callback with (node, level).
-  
-  The callback must return true to continue the iteration on current node.
-  
-  tree.iterate(
-      function(node, level) {
-         console.log(node.name);
-  
-         // stop iteration after level 2
-         return (level <= 2);
-      }
-  );
-   */
-
-  Node.prototype.iterate = function(callback) {
-    var _iterate;
-    _iterate = function(node, level) {
-      var child, j, len, ref, result;
-      if (node.children) {
-        ref = node.children;
-        for (j = 0, len = ref.length; j < len; j++) {
-          child = ref[j];
-          result = callback(child, level);
-          if (result && child.hasChildren()) {
-            _iterate(child, level + 1);
-          }
-        }
-        return null;
-      }
-    };
-    _iterate(this, 0);
-    return null;
-  };
-
-
-  /*
-  Move node relative to another node.
-  
-  Argument position: Position.BEFORE, Position.AFTER or Position.Inside
-  
-  // move node1 after node2
-  tree.moveNode(node1, node2, Position.AFTER);
-   */
-
-  Node.prototype.moveNode = function(moved_node, target_node, position) {
-    if (moved_node.isParentOf(target_node)) {
-      return;
-    }
-    moved_node.parent._removeChild(moved_node);
-    if (position === Position.AFTER) {
-      return target_node.parent.addChildAtPosition(moved_node, target_node.parent.getChildIndex(target_node) + 1);
-    } else if (position === Position.BEFORE) {
-      return target_node.parent.addChildAtPosition(moved_node, target_node.parent.getChildIndex(target_node));
-    } else if (position === Position.INSIDE) {
-      return target_node.addChildAtPosition(moved_node, 0);
-    }
-  };
-
-
-  /*
-  Get the tree as data.
-   */
-
-  Node.prototype.getData = function(include_parent) {
-    var getDataFromNodes;
-    if (include_parent == null) {
-      include_parent = false;
-    }
-    getDataFromNodes = function(nodes) {
-      var data, j, k, len, node, tmp_node, v;
-      data = [];
-      for (j = 0, len = nodes.length; j < len; j++) {
-        node = nodes[j];
-        tmp_node = {};
-        for (k in node) {
-          v = node[k];
-          if ((k !== 'parent' && k !== 'children' && k !== 'element' && k !== 'tree') && Object.prototype.hasOwnProperty.call(node, k)) {
-            tmp_node[k] = v;
-          }
-        }
-        if (node.hasChildren()) {
-          tmp_node.children = getDataFromNodes(node.children);
-        }
-        data.push(tmp_node);
-      }
-      return data;
-    };
-    if (include_parent) {
-      return getDataFromNodes([this]);
-    } else {
-      return getDataFromNodes(this.children);
-    }
-  };
-
-  Node.prototype.getNodeByName = function(name) {
-    var result;
-    result = null;
-    this.iterate(function(node) {
-      if (node.name === name) {
-        result = node;
-        return false;
-      } else {
-        return true;
-      }
-    });
-    return result;
-  };
-
-  Node.prototype.addAfter = function(node_info) {
-    var child_index, node;
-    if (!this.parent) {
-      return null;
-    } else {
-      node = new this.tree.node_class(node_info);
-      child_index = this.parent.getChildIndex(this);
-      this.parent.addChildAtPosition(node, child_index + 1);
-      if (typeof node_info === 'object' && node_info.children && node_info.children.length) {
-        node.loadFromData(node_info.children);
-      }
-      return node;
-    }
-  };
-
-  Node.prototype.addBefore = function(node_info) {
-    var child_index, node;
-    if (!this.parent) {
-      return null;
-    } else {
-      node = new this.tree.node_class(node_info);
-      child_index = this.parent.getChildIndex(this);
-      this.parent.addChildAtPosition(node, child_index);
-      if (typeof node_info === 'object' && node_info.children && node_info.children.length) {
-        node.loadFromData(node_info.children);
-      }
-      return node;
-    }
-  };
-
-  Node.prototype.addParent = function(node_info) {
-    var child, j, len, new_parent, original_parent, ref;
-    if (!this.parent) {
-      return null;
-    } else {
-      new_parent = new this.tree.node_class(node_info);
-      new_parent._setParent(this.tree);
-      original_parent = this.parent;
-      ref = original_parent.children;
-      for (j = 0, len = ref.length; j < len; j++) {
-        child = ref[j];
-        new_parent.addChild(child);
-      }
-      original_parent.children = [];
-      original_parent.addChild(new_parent);
-      return new_parent;
-    }
-  };
-
-  Node.prototype.remove = function() {
-    if (this.parent) {
-      this.parent.removeChild(this);
-      return this.parent = null;
-    }
-  };
-
-  Node.prototype.append = function(node_info) {
-    var node;
-    node = new this.tree.node_class(node_info);
-    this.addChild(node);
-    if (typeof node_info === 'object' && node_info.children && node_info.children.length) {
-      node.loadFromData(node_info.children);
-    }
-    return node;
-  };
-
-  Node.prototype.prepend = function(node_info) {
-    var node;
-    node = new this.tree.node_class(node_info);
-    this.addChildAtPosition(node, 0);
-    if (typeof node_info === 'object' && node_info.children && node_info.children.length) {
-      node.loadFromData(node_info.children);
-    }
-    return node;
-  };
-
-  Node.prototype.isParentOf = function(node) {
-    var parent;
-    parent = node.parent;
-    while (parent) {
-      if (parent === this) {
-        return true;
-      }
-      parent = parent.parent;
-    }
-    return false;
-  };
-
-  Node.prototype.getLevel = function() {
-    var level, node;
-    level = 0;
-    node = this;
-    while (node.parent) {
-      level += 1;
-      node = node.parent;
-    }
-    return level;
-  };
-
-  Node.prototype.getNodeById = function(node_id) {
-    return this.id_mapping[node_id];
-  };
-
-  Node.prototype.addNodeToIndex = function(node) {
-    if (node.id != null) {
-      return this.id_mapping[node.id] = node;
-    }
-  };
-
-  Node.prototype.removeNodeFromIndex = function(node) {
-    if (node.id != null) {
-      return delete this.id_mapping[node.id];
-    }
-  };
-
-  Node.prototype.removeChildren = function() {
-    this.iterate((function(_this) {
-      return function(child) {
-        _this.tree.removeNodeFromIndex(child);
-        return true;
-      };
-    })(this));
-    return this.children = [];
-  };
-
-  Node.prototype.getPreviousSibling = function() {
-    var previous_index;
-    if (!this.parent) {
-      return null;
-    } else {
-      previous_index = this.parent.getChildIndex(this) - 1;
-      if (previous_index >= 0) {
-        return this.parent.children[previous_index];
-      } else {
-        return null;
-      }
-    }
-  };
-
-  Node.prototype.getNextSibling = function() {
-    var next_index;
-    if (!this.parent) {
-      return null;
-    } else {
-      next_index = this.parent.getChildIndex(this) + 1;
-      if (next_index < this.parent.children.length) {
-        return this.parent.children[next_index];
-      } else {
-        return null;
-      }
-    }
-  };
-
-  Node.prototype.getNodesByProperty = function(key, value) {
-    return this.filter(function(node) {
-      return node[key] === value;
-    });
-  };
-
-  Node.prototype.filter = function(f) {
-    var result;
-    result = [];
-    this.iterate(function(node) {
-      if (f(node)) {
-        result.push(node);
-      }
-      return true;
-    });
-    return result;
-  };
-
-  Node.prototype.getNextNode = function(include_children) {
-    var next_sibling;
-    if (include_children == null) {
-      include_children = true;
-    }
-    if (include_children && this.hasChildren() && this.is_open) {
-      return this.children[0];
-    } else {
-      if (!this.parent) {
-        return null;
-      } else {
-        next_sibling = this.getNextSibling();
-        if (next_sibling) {
-          return next_sibling;
-        } else {
-          return this.parent.getNextNode(false);
-        }
-      }
-    }
-  };
-
-  Node.prototype.getPreviousNode = function() {
-    var previous_sibling;
-    if (!this.parent) {
-      return null;
-    } else {
-      previous_sibling = this.getPreviousSibling();
-      if (previous_sibling) {
-        if (!previous_sibling.hasChildren() || !previous_sibling.is_open) {
-          return previous_sibling;
-        } else {
-          return previous_sibling.getLastChild();
-        }
-      } else {
-        return this.getParent();
-      }
-    }
-  };
-
-  Node.prototype.getParent = function() {
-    if (!this.parent) {
-      return null;
-    } else if (!this.parent.parent) {
-      return null;
-    } else {
-      return this.parent;
-    }
-  };
-
-  Node.prototype.getLastChild = function() {
-    var last_child;
-    if (!this.hasChildren()) {
-      return null;
-    } else {
-      last_child = this.children[this.children.length - 1];
-      if (!last_child.hasChildren() || !last_child.is_open) {
-        return last_child;
-      } else {
-        return last_child.getLastChild();
-      }
-    }
-  };
-
-  return Node;
-
-})();
-
-module.exports = {
-  Node: Node,
-  Position: Position
-};
-
-},{}],6:[function(require,module,exports){
-var $, BorderDropHint, FolderElement, GhostDropHint, NodeElement, Position, node,
-  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-  hasProp = {}.hasOwnProperty;
-
-node = require('./node');
-
-Position = node.Position;
-
-$ = jQuery;
-
-NodeElement = (function() {
-  function NodeElement(node, tree_widget) {
-    this.init(node, tree_widget);
-  }
-
-  NodeElement.prototype.init = function(node, tree_widget) {
-    this.node = node;
-    this.tree_widget = tree_widget;
-    if (!node.element) {
-      node.element = this.tree_widget.element;
-    }
-    return this.$element = $(node.element);
-  };
-
-  NodeElement.prototype.getUl = function() {
-    return this.$element.children('ul:first');
-  };
-
-  NodeElement.prototype.getSpan = function() {
-    return this.$element.children('.jqtree-element').find('span.jqtree-title');
-  };
-
-  NodeElement.prototype.getLi = function() {
-    return this.$element;
-  };
-
-  NodeElement.prototype.addDropHint = function(position) {
-    if (position === Position.INSIDE) {
-      return new BorderDropHint(this.$element);
-    } else {
-      return new GhostDropHint(this.node, this.$element, position);
-    }
-  };
-
-  NodeElement.prototype.select = function() {
-    var $li, $span;
-    $li = this.getLi();
-    $li.addClass('jqtree-selected');
-    $li.attr('aria-selected', 'true');
-    $span = this.getSpan();
-    return $span.attr('tabindex', 0);
-  };
-
-  NodeElement.prototype.deselect = function() {
-    var $li, $span;
-    $li = this.getLi();
-    $li.removeClass('jqtree-selected');
-    $li.attr('aria-selected', 'false');
-    $span = this.getSpan();
-    return $span.attr('tabindex', -1);
-  };
-
-  return NodeElement;
-
-})();
-
-FolderElement = (function(superClass) {
-  extend(FolderElement, superClass);
-
-  function FolderElement() {
-    return FolderElement.__super__.constructor.apply(this, arguments);
-  }
-
-  FolderElement.prototype.open = function(on_finished, slide) {
-    var $button, doOpen;
-    if (slide == null) {
-      slide = true;
-    }
-    if (!this.node.is_open) {
-      this.node.is_open = true;
-      $button = this.getButton();
-      $button.removeClass('jqtree-closed');
-      $button.html('');
-      $button.append(this.tree_widget.renderer.opened_icon_element.cloneNode(false));
-      doOpen = (function(_this) {
-        return function() {
-          var $li, $span;
-          $li = _this.getLi();
-          $li.removeClass('jqtree-closed');
-          $span = _this.getSpan();
-          $span.attr('aria-expanded', 'true');
-          if (on_finished) {
-            on_finished();
-          }
-          return _this.tree_widget._triggerEvent('tree.open', {
-            node: _this.node
-          });
-        };
-      })(this);
-      if (slide) {
-        return this.getUl().slideDown('fast', doOpen);
-      } else {
-        this.getUl().show();
-        return doOpen();
-      }
-    }
-  };
-
-  FolderElement.prototype.close = function(slide) {
-    var $button, doClose;
-    if (slide == null) {
-      slide = true;
-    }
-    if (this.node.is_open) {
-      this.node.is_open = false;
-      $button = this.getButton();
-      $button.addClass('jqtree-closed');
-      $button.html('');
-      $button.append(this.tree_widget.renderer.closed_icon_element.cloneNode(false));
-      doClose = (function(_this) {
-        return function() {
-          var $li, $span;
-          $li = _this.getLi();
-          $li.addClass('jqtree-closed');
-          $span = _this.getSpan();
-          $span.attr('aria-expanded', 'false');
-          return _this.tree_widget._triggerEvent('tree.close', {
-            node: _this.node
-          });
-        };
-      })(this);
-      if (slide) {
-        return this.getUl().slideUp('fast', doClose);
-      } else {
-        this.getUl().hide();
-        return doClose();
-      }
-    }
-  };
-
-  FolderElement.prototype.getButton = function() {
-    return this.$element.children('.jqtree-element').find('a.jqtree-toggler');
-  };
-
-  FolderElement.prototype.addDropHint = function(position) {
-    if (!this.node.is_open && position === Position.INSIDE) {
-      return new BorderDropHint(this.$element);
-    } else {
-      return new GhostDropHint(this.node, this.$element, position);
-    }
-  };
-
-  return FolderElement;
-
-})(NodeElement);
-
-BorderDropHint = (function() {
-  function BorderDropHint($element) {
-    var $div, width;
-    $div = $element.children('.jqtree-element');
-    width = $element.width() - 4;
-    this.$hint = $('<span class="jqtree-border"></span>');
-    $div.append(this.$hint);
-    this.$hint.css({
-      width: width,
-      height: $div.outerHeight() - 4
-    });
-  }
-
-  BorderDropHint.prototype.remove = function() {
-    return this.$hint.remove();
-  };
-
-  return BorderDropHint;
-
-})();
-
-GhostDropHint = (function() {
-  function GhostDropHint(node, $element, position) {
-    this.$element = $element;
-    this.node = node;
-    this.$ghost = $('<li class="jqtree_common jqtree-ghost"><span class="jqtree_common jqtree-circle"></span><span class="jqtree_common jqtree-line"></span></li>');
-    if (position === Position.AFTER) {
-      this.moveAfter();
-    } else if (position === Position.BEFORE) {
-      this.moveBefore();
-    } else if (position === Position.INSIDE) {
-      if (node.isFolder() && node.is_open) {
-        this.moveInsideOpenFolder();
-      } else {
-        this.moveInside();
-      }
-    }
-  }
-
-  GhostDropHint.prototype.remove = function() {
-    return this.$ghost.remove();
-  };
-
-  GhostDropHint.prototype.moveAfter = function() {
-    return this.$element.after(this.$ghost);
-  };
-
-  GhostDropHint.prototype.moveBefore = function() {
-    return this.$element.before(this.$ghost);
-  };
-
-  GhostDropHint.prototype.moveInsideOpenFolder = function() {
-    return $(this.node.children[0].element).before(this.$ghost);
-  };
-
-  GhostDropHint.prototype.moveInside = function() {
-    this.$element.after(this.$ghost);
-    return this.$ghost.addClass('jqtree-inside');
-  };
-
-  return GhostDropHint;
-
-})();
-
-module.exports = {
-  BorderDropHint: BorderDropHint,
-  FolderElement: FolderElement,
-  GhostDropHint: GhostDropHint,
-  NodeElement: NodeElement
-};
-
-},{"./node":5}],7:[function(require,module,exports){
-var $, SaveStateHandler, indexOf, isInt, util;
-
-util = require('./util');
-
-indexOf = util.indexOf;
-
-isInt = util.isInt;
-
-$ = jQuery;
-
-SaveStateHandler = (function() {
-  function SaveStateHandler(tree_widget) {
-    this.tree_widget = tree_widget;
-  }
-
-  SaveStateHandler.prototype.saveState = function() {
-    var state;
-    state = JSON.stringify(this.getState());
-    if (this.tree_widget.options.onSetStateFromStorage) {
-      return this.tree_widget.options.onSetStateFromStorage(state);
-    } else if (this.supportsLocalStorage()) {
-      return localStorage.setItem(this.getCookieName(), state);
-    } else if ($.cookie) {
-      $.cookie.raw = true;
-      return $.cookie(this.getCookieName(), state, {
-        path: '/'
-      });
-    }
-  };
-
-  SaveStateHandler.prototype.getStateFromStorage = function() {
-    var json_data;
-    json_data = this._loadFromStorage();
-    if (json_data) {
-      return this._parseState(json_data);
-    } else {
-      return null;
-    }
-  };
-
-  SaveStateHandler.prototype._parseState = function(json_data) {
-    var state;
-    state = $.parseJSON(json_data);
-    if (state && state.selected_node && isInt(state.selected_node)) {
-      state.selected_node = [state.selected_node];
-    }
-    return state;
-  };
-
-  SaveStateHandler.prototype._loadFromStorage = function() {
-    if (this.tree_widget.options.onGetStateFromStorage) {
-      return this.tree_widget.options.onGetStateFromStorage();
-    } else if (this.supportsLocalStorage()) {
-      return localStorage.getItem(this.getCookieName());
-    } else if ($.cookie) {
-      $.cookie.raw = true;
-      return $.cookie(this.getCookieName());
-    } else {
-      return null;
-    }
-  };
-
-  SaveStateHandler.prototype.getState = function() {
-    var getOpenNodeIds, getSelectedNodeIds;
-    getOpenNodeIds = (function(_this) {
-      return function() {
-        var open_nodes;
-        open_nodes = [];
-        _this.tree_widget.tree.iterate(function(node) {
-          if (node.is_open && node.id && node.hasChildren()) {
-            open_nodes.push(node.id);
-          }
-          return true;
-        });
-        return open_nodes;
-      };
-    })(this);
-    getSelectedNodeIds = (function(_this) {
-      return function() {
-        var n;
-        return (function() {
-          var i, len, ref, results;
-          ref = this.tree_widget.getSelectedNodes();
-          results = [];
-          for (i = 0, len = ref.length; i < len; i++) {
-            n = ref[i];
-            results.push(n.id);
-          }
-          return results;
-        }).call(_this);
-      };
-    })(this);
-    return {
-      open_nodes: getOpenNodeIds(),
-      selected_node: getSelectedNodeIds()
-    };
-  };
-
-  SaveStateHandler.prototype.setInitialState = function(state) {
-    var must_load_on_demand;
-    if (!state) {
-      return false;
-    } else {
-      must_load_on_demand = this._openInitialNodes(state.open_nodes);
-      this._selectInitialNodes(state.selected_node);
-      return must_load_on_demand;
-    }
-  };
-
-  SaveStateHandler.prototype._openInitialNodes = function(node_ids) {
-    var i, len, must_load_on_demand, node, node_id;
-    must_load_on_demand = false;
-    for (i = 0, len = node_ids.length; i < len; i++) {
-      node_id = node_ids[i];
-      node = this.tree_widget.getNodeById(node_id);
-      if (node) {
-        if (!node.load_on_demand) {
-          node.is_open = true;
-        } else {
-          must_load_on_demand = true;
-        }
-      }
-    }
-    return must_load_on_demand;
-  };
-
-  SaveStateHandler.prototype._selectInitialNodes = function(node_ids) {
-    var i, len, node, node_id, select_count;
-    select_count = 0;
-    for (i = 0, len = node_ids.length; i < len; i++) {
-      node_id = node_ids[i];
-      node = this.tree_widget.getNodeById(node_id);
-      if (node) {
-        select_count += 1;
-        this.tree_widget.select_node_handler.addToSelection(node);
-      }
-    }
-    return select_count !== 0;
-  };
-
-  SaveStateHandler.prototype.setInitialStateOnDemand = function(state, cb_finished) {
-    if (state) {
-      return this._setInitialStateOnDemand(state.open_nodes, state.selected_node, cb_finished);
-    } else {
-      return cb_finished();
-    }
-  };
-
-  SaveStateHandler.prototype._setInitialStateOnDemand = function(node_ids, selected_nodes, cb_finished) {
-    var loadAndOpenNode, loading_count, openNodes;
-    loading_count = 0;
-    openNodes = (function(_this) {
-      return function() {
-        var i, len, new_nodes_ids, node, node_id;
-        new_nodes_ids = [];
-        for (i = 0, len = node_ids.length; i < len; i++) {
-          node_id = node_ids[i];
-          node = _this.tree_widget.getNodeById(node_id);
-          if (!node) {
-            new_nodes_ids.push(node_id);
-          } else {
-            if (!node.is_loading) {
-              if (node.load_on_demand) {
-                loadAndOpenNode(node);
-              } else {
-                _this.tree_widget._openNode(node, false);
-              }
-            }
-          }
-        }
-        node_ids = new_nodes_ids;
-        if (_this._selectInitialNodes(selected_nodes)) {
-          _this.tree_widget._refreshElements();
-        }
-        if (loading_count === 0) {
-          return cb_finished();
-        }
-      };
-    })(this);
-    loadAndOpenNode = (function(_this) {
-      return function(node) {
-        loading_count += 1;
-        return _this.tree_widget._openNode(node, false, function() {
-          loading_count -= 1;
-          return openNodes();
-        });
-      };
-    })(this);
-    return openNodes();
-  };
-
-  SaveStateHandler.prototype.getCookieName = function() {
-    if (typeof this.tree_widget.options.saveState === 'string') {
-      return this.tree_widget.options.saveState;
-    } else {
-      return 'tree';
-    }
-  };
-
-  SaveStateHandler.prototype.supportsLocalStorage = function() {
-    var testSupport;
-    testSupport = function() {
-      var error, error1, key;
-      if (typeof localStorage === "undefined" || localStorage === null) {
-        return false;
-      } else {
-        try {
-          key = '_storage_test';
-          sessionStorage.setItem(key, true);
-          sessionStorage.removeItem(key);
-        } catch (error1) {
-          error = error1;
-          return false;
-        }
-        return true;
-      }
-    };
-    if (this._supportsLocalStorage == null) {
-      this._supportsLocalStorage = testSupport();
-    }
-    return this._supportsLocalStorage;
-  };
-
-  SaveStateHandler.prototype.getNodeIdToBeSelected = function() {
-    var state;
-    state = this.getStateFromStorage();
-    if (state && state.selected_node) {
-      return state.selected_node[0];
-    } else {
-      return null;
-    }
-  };
-
-  return SaveStateHandler;
-
-})();
-
-module.exports = SaveStateHandler;
-
-},{"./util":12}],8:[function(require,module,exports){
-var $, ScrollHandler;
-
-$ = jQuery;
-
-ScrollHandler = (function() {
-  function ScrollHandler(tree_widget) {
-    this.tree_widget = tree_widget;
-    this.previous_top = -1;
-    this.is_initialized = false;
-    this._initScrollParent();
-  }
-
-  ScrollHandler.prototype._initScrollParent = function() {
-    var $scroll_parent, getParentWithOverflow, setDocumentAsScrollParent;
-    getParentWithOverflow = (function(_this) {
-      return function() {
-        var css_values, el, hasOverFlow, i, len, ref;
-        css_values = ['overflow', 'overflow-y'];
-        hasOverFlow = function(el) {
-          var css_value, i, len, ref;
-          for (i = 0, len = css_values.length; i < len; i++) {
-            css_value = css_values[i];
-            if ((ref = $.css(el, css_value)) === 'auto' || ref === 'scroll') {
-              return true;
-            }
-          }
-          return false;
-        };
-        if (hasOverFlow(_this.tree_widget.$el[0])) {
-          return _this.tree_widget.$el;
-        }
-        ref = _this.tree_widget.$el.parents();
-        for (i = 0, len = ref.length; i < len; i++) {
-          el = ref[i];
-          if (hasOverFlow(el)) {
-            return $(el);
-          }
-        }
-        return null;
-      };
-    })(this);
-    setDocumentAsScrollParent = (function(_this) {
-      return function() {
-        _this.scroll_parent_top = 0;
-        return _this.$scroll_parent = null;
-      };
-    })(this);
-    if (this.tree_widget.$el.css('position') === 'fixed') {
-      setDocumentAsScrollParent();
-    }
-    $scroll_parent = getParentWithOverflow();
-    if ($scroll_parent && $scroll_parent.length && $scroll_parent[0].tagName !== 'HTML') {
-      this.$scroll_parent = $scroll_parent;
-      this.scroll_parent_top = this.$scroll_parent.offset().top;
-    } else {
-      setDocumentAsScrollParent();
-    }
-    return this.is_initialized = true;
-  };
-
-  ScrollHandler.prototype._ensureInit = function() {
-    if (!this.is_initialized) {
-      return this._initScrollParent();
-    }
-  };
-
-  ScrollHandler.prototype.checkScrolling = function() {
-    var hovered_area;
-    this._ensureInit();
-    hovered_area = this.tree_widget.dnd_handler.hovered_area;
-    if (hovered_area && hovered_area.top !== this.previous_top) {
-      this.previous_top = hovered_area.top;
-      if (this.$scroll_parent) {
-        return this._handleScrollingWithScrollParent(hovered_area);
-      } else {
-        return this._handleScrollingWithDocument(hovered_area);
-      }
-    }
-  };
-
-  ScrollHandler.prototype._handleScrollingWithScrollParent = function(area) {
-    var distance_bottom;
-    distance_bottom = this.scroll_parent_top + this.$scroll_parent[0].offsetHeight - area.bottom;
-    if (distance_bottom < 20) {
-      this.$scroll_parent[0].scrollTop += 20;
-      this.tree_widget.refreshHitAreas();
-      return this.previous_top = -1;
-    } else if ((area.top - this.scroll_parent_top) < 20) {
-      this.$scroll_parent[0].scrollTop -= 20;
-      this.tree_widget.refreshHitAreas();
-      return this.previous_top = -1;
-    }
-  };
-
-  ScrollHandler.prototype._handleScrollingWithDocument = function(area) {
-    var distance_top;
-    distance_top = area.top - $(document).scrollTop();
-    if (distance_top < 20) {
-      return $(document).scrollTop($(document).scrollTop() - 20);
-    } else if ($(window).height() - (area.bottom - $(document).scrollTop()) < 20) {
-      return $(document).scrollTop($(document).scrollTop() + 20);
-    }
-  };
-
-  ScrollHandler.prototype.scrollTo = function(top) {
-    var tree_top;
-    this._ensureInit();
-    if (this.$scroll_parent) {
-      return this.$scroll_parent[0].scrollTop = top;
-    } else {
-      tree_top = this.tree_widget.$el.offset().top;
-      return $(document).scrollTop(top + tree_top);
-    }
-  };
-
-  ScrollHandler.prototype.isScrolledIntoView = function(element) {
-    var $element, element_bottom, element_top, view_bottom, view_top;
-    this._ensureInit();
-    $element = $(element);
-    if (this.$scroll_parent) {
-      view_top = 0;
-      view_bottom = this.$scroll_parent.height();
-      element_top = $element.offset().top - this.scroll_parent_top;
-      element_bottom = element_top + $element.height();
-    } else {
-      view_top = $(window).scrollTop();
-      view_bottom = view_top + $(window).height();
-      element_top = $element.offset().top;
-      element_bottom = element_top + $element.height();
-    }
-    return (element_bottom <= view_bottom) && (element_top >= view_top);
-  };
-
-  return ScrollHandler;
-
-})();
-
-module.exports = ScrollHandler;
-
-},{}],9:[function(require,module,exports){
-var $, SelectNodeHandler;
-
-$ = jQuery;
-
-SelectNodeHandler = (function() {
-  function SelectNodeHandler(tree_widget) {
-    this.tree_widget = tree_widget;
-    this.clear();
-  }
-
-  SelectNodeHandler.prototype.getSelectedNode = function() {
-    var selected_nodes;
-    selected_nodes = this.getSelectedNodes();
-    if (selected_nodes.length) {
-      return selected_nodes[0];
-    } else {
-      return false;
-    }
-  };
-
-  SelectNodeHandler.prototype.getSelectedNodes = function() {
-    var id, node, selected_nodes;
-    if (this.selected_single_node) {
-      return [this.selected_single_node];
-    } else {
-      selected_nodes = [];
-      for (id in this.selected_nodes) {
-        node = this.tree_widget.getNodeById(id);
-        if (node) {
-          selected_nodes.push(node);
-        }
-      }
-      return selected_nodes;
-    }
-  };
-
-  SelectNodeHandler.prototype.getSelectedNodesUnder = function(parent) {
-    var id, node, selected_nodes;
-    if (this.selected_single_node) {
-      if (parent.isParentOf(this.selected_single_node)) {
-        return [this.selected_single_node];
-      } else {
-        return [];
-      }
-    } else {
-      selected_nodes = [];
-      for (id in this.selected_nodes) {
-        node = this.tree_widget.getNodeById(id);
-        if (node && parent.isParentOf(node)) {
-          selected_nodes.push(node);
-        }
-      }
-      return selected_nodes;
-    }
-  };
-
-  SelectNodeHandler.prototype.isNodeSelected = function(node) {
-    if (node.id) {
-      return this.selected_nodes[node.id];
-    } else if (this.selected_single_node) {
-      return this.selected_single_node.element === node.element;
-    } else {
-      return false;
-    }
-  };
-
-  SelectNodeHandler.prototype.clear = function() {
-    this.selected_nodes = {};
-    return this.selected_single_node = null;
-  };
-
-  SelectNodeHandler.prototype.removeFromSelection = function(node, include_children) {
-    if (include_children == null) {
-      include_children = false;
-    }
-    if (!node.id) {
-      if (this.selected_single_node && node.element === this.selected_single_node.element) {
-        return this.selected_single_node = null;
-      }
-    } else {
-      delete this.selected_nodes[node.id];
-      if (include_children) {
-        return node.iterate((function(_this) {
-          return function(n) {
-            delete _this.selected_nodes[node.id];
-            return true;
-          };
-        })(this));
-      }
-    }
-  };
-
-  SelectNodeHandler.prototype.addToSelection = function(node) {
-    if (node.id) {
-      return this.selected_nodes[node.id] = true;
-    } else {
-      return this.selected_single_node = node;
-    }
-  };
-
-  return SelectNodeHandler;
-
-})();
-
-module.exports = SelectNodeHandler;
-
-},{}],10:[function(require,module,exports){
-
-/*
-Copyright 2013 Marco Braak
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
- */
-var $, SimpleWidget,
-  slice = [].slice;
-
-$ = jQuery;
-
-SimpleWidget = (function() {
-  SimpleWidget.prototype.defaults = {};
-
-  function SimpleWidget(el, options) {
-    this.$el = $(el);
-    this.options = $.extend({}, this.defaults, options);
-  }
-
-  SimpleWidget.prototype.destroy = function() {
-    return this._deinit();
-  };
-
-  SimpleWidget.prototype._init = function() {
-    return null;
-  };
-
-  SimpleWidget.prototype._deinit = function() {
-    return null;
-  };
-
-  SimpleWidget.register = function(widget_class, widget_name) {
-    var callFunction, createWidget, destroyWidget, getDataKey, getWidgetData;
-    getDataKey = function() {
-      return "simple_widget_" + widget_name;
-    };
-    getWidgetData = function(el, data_key) {
-      var widget;
-      widget = $.data(el, data_key);
-      if (widget && (widget instanceof SimpleWidget)) {
-        return widget;
-      } else {
-        return null;
-      }
-    };
-    createWidget = function($el, options) {
-      var data_key, el, existing_widget, i, len, widget;
-      data_key = getDataKey();
-      for (i = 0, len = $el.length; i < len; i++) {
-        el = $el[i];
-        existing_widget = getWidgetData(el, data_key);
-        if (!existing_widget) {
-          widget = new widget_class(el, options);
-          if (!$.data(el, data_key)) {
-            $.data(el, data_key, widget);
-          }
-          widget._init();
-        }
-      }
-      return $el;
-    };
-    destroyWidget = function($el) {
-      var data_key, el, i, len, results, widget;
-      data_key = getDataKey();
-      results = [];
-      for (i = 0, len = $el.length; i < len; i++) {
-        el = $el[i];
-        widget = getWidgetData(el, data_key);
-        if (widget) {
-          widget.destroy();
-        }
-        results.push($.removeData(el, data_key));
-      }
-      return results;
-    };
-    callFunction = function($el, function_name, args) {
-      var el, i, len, result, widget, widget_function;
-      result = null;
-      for (i = 0, len = $el.length; i < len; i++) {
-        el = $el[i];
-        widget = $.data(el, getDataKey());
-        if (widget && (widget instanceof SimpleWidget)) {
-          widget_function = widget[function_name];
-          if (widget_function && (typeof widget_function === 'function')) {
-            result = widget_function.apply(widget, args);
-          }
-        }
-      }
-      return result;
-    };
-    return $.fn[widget_name] = function() {
-      var $el, args, argument1, function_name, options;
-      argument1 = arguments[0], args = 2 <= arguments.length ? slice.call(arguments, 1) : [];
-      $el = this;
-      if (argument1 === void 0 || typeof argument1 === 'object') {
-        options = argument1;
-        return createWidget($el, options);
-      } else if (typeof argument1 === 'string' && argument1[0] !== '_') {
-        function_name = argument1;
-        if (function_name === 'destroy') {
-          return destroyWidget($el);
-        } else if (function_name === 'get_widget_class') {
-          return widget_class;
-        } else {
-          return callFunction($el, function_name, args);
-        }
-      }
-    };
-  };
-
-  return SimpleWidget;
-
-})();
-
-module.exports = SimpleWidget;
-
-},{}],11:[function(require,module,exports){
-var $, BorderDropHint, DragAndDropHandler, DragElement, ElementsRenderer, FolderElement, GhostDropHint, HitAreasGenerator, JqTreeWidget, KeyHandler, MouseWidget, Node, NodeElement, Position, SaveStateHandler, ScrollHandler, SelectNodeHandler, SimpleWidget, __version__, node_module, ref, ref1, util_module,
-  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-  hasProp = {}.hasOwnProperty;
-
-__version__ = require('./version');
-
-ref = require('./drag_and_drop_handler'), DragAndDropHandler = ref.DragAndDropHandler, DragElement = ref.DragElement, HitAreasGenerator = ref.HitAreasGenerator;
-
-ElementsRenderer = require('./elements_renderer');
-
-KeyHandler = require('./key_handler');
-
-MouseWidget = require('./mouse.widget');
-
-SaveStateHandler = require('./save_state_handler');
-
-ScrollHandler = require('./scroll_handler');
-
-SelectNodeHandler = require('./select_node_handler');
-
-SimpleWidget = require('./simple.widget');
-
-node_module = require('./node');
-
-Node = node_module.Node;
-
-Position = node_module.Position;
-
-util_module = require('./util');
-
-ref1 = require('./node_element'), BorderDropHint = ref1.BorderDropHint, FolderElement = ref1.FolderElement, GhostDropHint = ref1.GhostDropHint, NodeElement = ref1.NodeElement;
-
-$ = jQuery;
-
-JqTreeWidget = (function(superClass) {
-  extend(JqTreeWidget, superClass);
-
-  function JqTreeWidget() {
-    return JqTreeWidget.__super__.constructor.apply(this, arguments);
-  }
-
-  JqTreeWidget.prototype.BorderDropHint = BorderDropHint;
-
-  JqTreeWidget.prototype.DragElement = DragElement;
-
-  JqTreeWidget.prototype.DragAndDropHandler = DragAndDropHandler;
-
-  JqTreeWidget.prototype.ElementsRenderer = ElementsRenderer;
-
-  JqTreeWidget.prototype.GhostDropHint = GhostDropHint;
-
-  JqTreeWidget.prototype.HitAreasGenerator = HitAreasGenerator;
-
-  JqTreeWidget.prototype.Node = Node;
-
-  JqTreeWidget.prototype.SaveStateHandler = SaveStateHandler;
-
-  JqTreeWidget.prototype.ScrollHandler = ScrollHandler;
-
-  JqTreeWidget.prototype.SelectNodeHandler = SelectNodeHandler;
-
-  JqTreeWidget.prototype.defaults = {
-    autoOpen: false,
-    saveState: false,
-    dragAndDrop: false,
-    selectable: true,
-    useContextMenu: true,
-    onCanSelectNode: null,
-    onSetStateFromStorage: null,
-    onGetStateFromStorage: null,
-    onCreateLi: null,
-    onIsMoveHandle: null,
-    onCanMove: null,
-    onCanMoveTo: null,
-    onLoadFailed: null,
-    autoEscape: true,
-    dataUrl: null,
-    closedIcon: null,
-    openedIcon: '&#x25bc;',
-    slide: true,
-    nodeClass: Node,
-    dataFilter: null,
-    keyboardSupport: true,
-    openFolderDelay: 500,
-    rtl: null,
-    onDragMove: null,
-    onDragStop: null,
-    buttonLeft: true,
-    onLoading: null
-  };
-
-  JqTreeWidget.prototype.toggle = function(node, slide) {
-    if (slide == null) {
-      slide = null;
-    }
-    if (slide === null) {
-      slide = this.options.slide;
-    }
-    if (node.is_open) {
-      this.closeNode(node, slide);
-    } else {
-      this.openNode(node, slide);
-    }
-    return this.element;
-  };
-
-  JqTreeWidget.prototype.getTree = function() {
-    return this.tree;
-  };
-
-  JqTreeWidget.prototype.selectNode = function(node) {
-    this._selectNode(node, false);
-    return this.element;
-  };
-
-  JqTreeWidget.prototype._selectNode = function(node, must_toggle) {
-    var canSelect, deselected_node, openParents, saveState;
-    if (must_toggle == null) {
-      must_toggle = false;
-    }
-    if (!this.select_node_handler) {
-      return;
-    }
-    canSelect = (function(_this) {
-      return function() {
-        if (_this.options.onCanSelectNode) {
-          return _this.options.selectable && _this.options.onCanSelectNode(node);
-        } else {
-          return _this.options.selectable;
-        }
-      };
-    })(this);
-    openParents = (function(_this) {
-      return function() {
-        var parent;
-        parent = node.parent;
-        if (parent && parent.parent && !parent.is_open) {
-          return _this.openNode(parent, false);
-        }
-      };
-    })(this);
-    saveState = (function(_this) {
-      return function() {
-        if (_this.options.saveState) {
-          return _this.save_state_handler.saveState();
-        }
-      };
-    })(this);
-    if (!node) {
-      this._deselectCurrentNode();
-      saveState();
-      return;
-    }
-    if (!canSelect()) {
-      return;
-    }
-    if (this.select_node_handler.isNodeSelected(node)) {
-      if (must_toggle) {
-        this._deselectCurrentNode();
-        this._triggerEvent('tree.select', {
-          node: null,
-          previous_node: node
-        });
-      }
-    } else {
-      deselected_node = this.getSelectedNode();
-      this._deselectCurrentNode();
-      this.addToSelection(node);
-      this._triggerEvent('tree.select', {
-        node: node,
-        deselected_node: deselected_node
-      });
-      openParents();
-    }
-    return saveState();
-  };
-
-  JqTreeWidget.prototype.getSelectedNode = function() {
-    if (this.select_node_handler) {
-      return this.select_node_handler.getSelectedNode();
-    } else {
-      return null;
-    }
-  };
-
-  JqTreeWidget.prototype.toJson = function() {
-    return JSON.stringify(this.tree.getData());
-  };
-
-  JqTreeWidget.prototype.loadData = function(data, parent_node) {
-    this._loadData(data, parent_node);
-    return this.element;
-  };
-
-
-  /*
-  signatures:
-  - loadDataFromUrl(url, parent_node=null, on_finished=null)
-      loadDataFromUrl('/my_data');
-      loadDataFromUrl('/my_data', node1);
-      loadDataFromUrl('/my_data', node1, function() { console.log('finished'); });
-      loadDataFromUrl('/my_data', null, function() { console.log('finished'); });
-  
-  - loadDataFromUrl(parent_node=null, on_finished=null)
-      loadDataFromUrl();
-      loadDataFromUrl(node1);
-      loadDataFromUrl(null, function() { console.log('finished'); });
-      loadDataFromUrl(node1, function() { console.log('finished'); });
-   */
-
-  JqTreeWidget.prototype.loadDataFromUrl = function(param1, param2, param3) {
-    if ($.type(param1) === 'string') {
-      this._loadDataFromUrl(param1, param2, param3);
-    } else {
-      this._loadDataFromUrl(null, param1, param2);
-    }
-    return this.element;
-  };
-
-  JqTreeWidget.prototype.reload = function(on_finished) {
-    this._loadDataFromUrl(null, null, on_finished);
-    return this.element;
-  };
-
-  JqTreeWidget.prototype._loadDataFromUrl = function(url_info, parent_node, on_finished) {
-    var $el, addLoadingClass, handeLoadData, handleError, handleSuccess, loadDataFromUrlInfo, parseUrlInfo, removeLoadingClass;
-    $el = null;
-    addLoadingClass = (function(_this) {
-      return function() {
-        if (parent_node) {
-          $el = $(parent_node.element);
-        } else {
-          $el = _this.element;
-        }
-        $el.addClass('jqtree-loading');
-        return _this._notifyLoading(true, parent_node, $el);
-      };
-    })(this);
-    removeLoadingClass = (function(_this) {
-      return function() {
-        if ($el) {
-          $el.removeClass('jqtree-loading');
-          return _this._notifyLoading(false, parent_node, $el);
-        }
-      };
-    })(this);
-    parseUrlInfo = function() {
-      if ($.type(url_info) === 'string') {
-        return {
-          url: url_info
-        };
-      }
-      if (!url_info.method) {
-        url_info.method = 'get';
-      }
-      return url_info;
-    };
-    handeLoadData = (function(_this) {
-      return function(data) {
-        removeLoadingClass();
-        _this._loadData(data, parent_node);
-        if (on_finished && $.isFunction(on_finished)) {
-          return on_finished();
-        }
-      };
-    })(this);
-    handleSuccess = (function(_this) {
-      return function(response) {
-        var data;
-        if ($.isArray(response) || typeof response === 'object') {
-          data = response;
-        } else if (data != null) {
-          data = $.parseJSON(response);
-        } else {
-          data = [];
-        }
-        if (_this.options.dataFilter) {
-          data = _this.options.dataFilter(data);
-        }
-        return handeLoadData(data);
-      };
-    })(this);
-    handleError = (function(_this) {
-      return function(response) {
-        removeLoadingClass();
-        if (_this.options.onLoadFailed) {
-          return _this.options.onLoadFailed(response);
-        }
-      };
-    })(this);
-    loadDataFromUrlInfo = function() {
-      url_info = parseUrlInfo();
-      return $.ajax($.extend({}, url_info, {
-        method: url_info.method != null ? url_info.method.toUpperCase() : 'GET',
-        cache: false,
-        dataType: 'json',
-        success: handleSuccess,
-        error: handleError
-      }));
-    };
-    if (!url_info) {
-      url_info = this._getDataUrlInfo(parent_node);
-    }
-    addLoadingClass();
-    if (!url_info) {
-      removeLoadingClass();
-    } else if ($.isArray(url_info)) {
-      handeLoadData(url_info);
-    } else {
-      loadDataFromUrlInfo();
-    }
-  };
-
-  JqTreeWidget.prototype._loadData = function(data, parent_node) {
-    var deselectNodes, loadSubtree;
-    if (parent_node == null) {
-      parent_node = null;
-    }
-    deselectNodes = (function(_this) {
-      return function() {
-        var i, len, n, selected_nodes_under_parent;
-        if (_this.select_node_handler) {
-          selected_nodes_under_parent = _this.select_node_handler.getSelectedNodesUnder(parent_node);
-          for (i = 0, len = selected_nodes_under_parent.length; i < len; i++) {
-            n = selected_nodes_under_parent[i];
-            _this.select_node_handler.removeFromSelection(n);
-          }
-        }
-        return null;
-      };
-    })(this);
-    loadSubtree = (function(_this) {
-      return function() {
-        parent_node.loadFromData(data);
-        parent_node.load_on_demand = false;
-        parent_node.is_loading = false;
-        return _this._refreshElements(parent_node);
-      };
-    })(this);
-    if (!data) {
-      return;
-    }
-    this._triggerEvent('tree.load_data', {
-      tree_data: data
-    });
-    if (!parent_node) {
-      this._initTree(data);
-    } else {
-      deselectNodes();
-      loadSubtree();
-    }
-    if (this.isDragging()) {
-      return this.dnd_handler.refresh();
-    }
-  };
-
-  JqTreeWidget.prototype.getNodeById = function(node_id) {
-    return this.tree.getNodeById(node_id);
-  };
-
-  JqTreeWidget.prototype.getNodeByName = function(name) {
-    return this.tree.getNodeByName(name);
-  };
-
-  JqTreeWidget.prototype.getNodesByProperty = function(key, value) {
-    return this.tree.getNodesByProperty(key, value);
-  };
-
-  JqTreeWidget.prototype.openNode = function(node, slide) {
-    if (slide == null) {
-      slide = null;
-    }
-    if (slide === null) {
-      slide = this.options.slide;
-    }
-    this._openNode(node, slide);
-    return this.element;
-  };
-
-  JqTreeWidget.prototype._openNode = function(node, slide, on_finished) {
-    var doOpenNode, parent;
-    if (slide == null) {
-      slide = true;
-    }
-    doOpenNode = (function(_this) {
-      return function(_node, _slide, _on_finished) {
-        var folder_element;
-        folder_element = new FolderElement(_node, _this);
-        return folder_element.open(_on_finished, _slide);
-      };
-    })(this);
-    if (node.isFolder()) {
-      if (node.load_on_demand) {
-        return this._loadFolderOnDemand(node, slide, on_finished);
-      } else {
-        parent = node.parent;
-        while (parent) {
-          if (parent.parent) {
-            doOpenNode(parent, false, null);
-          }
-          parent = parent.parent;
-        }
-        doOpenNode(node, slide, on_finished);
-        return this._saveState();
-      }
-    }
-  };
-
-  JqTreeWidget.prototype._loadFolderOnDemand = function(node, slide, on_finished) {
-    if (slide == null) {
-      slide = true;
-    }
-    node.is_loading = true;
-    return this._loadDataFromUrl(null, node, (function(_this) {
-      return function() {
-        return _this._openNode(node, slide, on_finished);
-      };
-    })(this));
-  };
-
-  JqTreeWidget.prototype.closeNode = function(node, slide) {
-    if (slide == null) {
-      slide = null;
-    }
-    if (slide === null) {
-      slide = this.options.slide;
-    }
-    if (node.isFolder()) {
-      new FolderElement(node, this).close(slide);
-      this._saveState();
-    }
-    return this.element;
-  };
-
-  JqTreeWidget.prototype.isDragging = function() {
-    if (this.dnd_handler) {
-      return this.dnd_handler.is_dragging;
-    } else {
-      return false;
-    }
-  };
-
-  JqTreeWidget.prototype.refreshHitAreas = function() {
-    this.dnd_handler.refresh();
-    return this.element;
-  };
-
-  JqTreeWidget.prototype.addNodeAfter = function(new_node_info, existing_node) {
-    var new_node;
-    new_node = existing_node.addAfter(new_node_info);
-    this._refreshElements(existing_node.parent);
-    return new_node;
-  };
-
-  JqTreeWidget.prototype.addNodeBefore = function(new_node_info, existing_node) {
-    var new_node;
-    new_node = existing_node.addBefore(new_node_info);
-    this._refreshElements(existing_node.parent);
-    return new_node;
-  };
-
-  JqTreeWidget.prototype.addParentNode = function(new_node_info, existing_node) {
-    var new_node;
-    new_node = existing_node.addParent(new_node_info);
-    this._refreshElements(new_node.parent);
-    return new_node;
-  };
-
-  JqTreeWidget.prototype.removeNode = function(node) {
-    var parent;
-    parent = node.parent;
-    if (parent) {
-      this.select_node_handler.removeFromSelection(node, true);
-      node.remove();
-      this._refreshElements(parent);
-    }
-    return this.element;
-  };
-
-  JqTreeWidget.prototype.appendNode = function(new_node_info, parent_node) {
-    var node;
-    parent_node = parent_node || this.tree;
-    node = parent_node.append(new_node_info);
-    this._refreshElements(parent_node);
-    return node;
-  };
-
-  JqTreeWidget.prototype.prependNode = function(new_node_info, parent_node) {
-    var node;
-    if (!parent_node) {
-      parent_node = this.tree;
-    }
-    node = parent_node.prepend(new_node_info);
-    this._refreshElements(parent_node);
-    return node;
-  };
-
-  JqTreeWidget.prototype.updateNode = function(node, data) {
-    var id_is_changed;
-    id_is_changed = data.id && data.id !== node.id;
-    if (id_is_changed) {
-      this.tree.removeNodeFromIndex(node);
-    }
-    node.setData(data);
-    if (id_is_changed) {
-      this.tree.addNodeToIndex(node);
-    }
-    if (typeof data === 'object' && data.children && data.children.length) {
-      node.removeChildren();
-      node.loadFromData(data.children);
-    }
-    this.renderer.renderFromNode(node);
-    this._selectCurrentNode();
-    return this.element;
-  };
-
-  JqTreeWidget.prototype.moveNode = function(node, target_node, position) {
-    var position_index;
-    position_index = Position.nameToIndex(position);
-    this.tree.moveNode(node, target_node, position_index);
-    this._refreshElements();
-    return this.element;
-  };
-
-  JqTreeWidget.prototype.getStateFromStorage = function() {
-    return this.save_state_handler.getStateFromStorage();
-  };
-
-  JqTreeWidget.prototype.addToSelection = function(node) {
-    if (node) {
-      this.select_node_handler.addToSelection(node);
-      this._getNodeElementForNode(node).select();
-      this._saveState();
-    }
-    return this.element;
-  };
-
-  JqTreeWidget.prototype.getSelectedNodes = function() {
-    return this.select_node_handler.getSelectedNodes();
-  };
-
-  JqTreeWidget.prototype.isNodeSelected = function(node) {
-    return this.select_node_handler.isNodeSelected(node);
-  };
-
-  JqTreeWidget.prototype.removeFromSelection = function(node) {
-    this.select_node_handler.removeFromSelection(node);
-    this._getNodeElementForNode(node).deselect();
-    this._saveState();
-    return this.element;
-  };
-
-  JqTreeWidget.prototype.scrollToNode = function(node) {
-    var $element, top;
-    $element = $(node.element);
-    top = $element.offset().top - this.$el.offset().top;
-    this.scroll_handler.scrollTo(top);
-    return this.element;
-  };
-
-  JqTreeWidget.prototype.getState = function() {
-    return this.save_state_handler.getState();
-  };
-
-  JqTreeWidget.prototype.setState = function(state) {
-    this.save_state_handler.setInitialState(state);
-    this._refreshElements();
-    return this.element;
-  };
-
-  JqTreeWidget.prototype.setOption = function(option, value) {
-    this.options[option] = value;
-    return this.element;
-  };
-
-  JqTreeWidget.prototype.moveDown = function() {
-    if (this.key_handler) {
-      this.key_handler.moveDown();
-    }
-    return this.element;
-  };
-
-  JqTreeWidget.prototype.moveUp = function() {
-    if (this.key_handler) {
-      this.key_handler.moveUp();
-    }
-    return this.element;
-  };
-
-  JqTreeWidget.prototype.getVersion = function() {
-    return __version__;
-  };
-
-  JqTreeWidget.prototype._init = function() {
-    JqTreeWidget.__super__._init.call(this);
-    this.element = this.$el;
-    this.mouse_delay = 300;
-    this.is_initialized = false;
-    this.options.rtl = this._getRtlOption();
-    if (!this.options.closedIcon) {
-      this.options.closedIcon = this._getDefaultClosedIcon();
-    }
-    this.renderer = new ElementsRenderer(this);
-    if (SaveStateHandler != null) {
-      this.save_state_handler = new SaveStateHandler(this);
-    } else {
-      this.options.saveState = false;
-    }
-    if (SelectNodeHandler != null) {
-      this.select_node_handler = new SelectNodeHandler(this);
-    }
-    if (DragAndDropHandler != null) {
-      this.dnd_handler = new DragAndDropHandler(this);
-    } else {
-      this.options.dragAndDrop = false;
-    }
-    if (ScrollHandler != null) {
-      this.scroll_handler = new ScrollHandler(this);
-    }
-    if ((KeyHandler != null) && (SelectNodeHandler != null)) {
-      this.key_handler = new KeyHandler(this);
-    }
-    this._initData();
-    this.element.click($.proxy(this._click, this));
-    this.element.dblclick($.proxy(this._dblclick, this));
-    if (this.options.useContextMenu) {
-      return this.element.bind('contextmenu', $.proxy(this._contextmenu, this));
-    }
-  };
-
-  JqTreeWidget.prototype._deinit = function() {
-    this.element.empty();
-    this.element.unbind();
-    if (this.key_handler) {
-      this.key_handler.deinit();
-    }
-    this.tree = null;
-    return JqTreeWidget.__super__._deinit.call(this);
-  };
-
-  JqTreeWidget.prototype._initData = function() {
-    if (this.options.data) {
-      return this._loadData(this.options.data);
-    } else {
-      return this._loadDataFromUrl(this._getDataUrlInfo());
-    }
-  };
-
-  JqTreeWidget.prototype._getDataUrlInfo = function(node) {
-    var data_url, getUrlFromString;
-    data_url = this.options.dataUrl || this.element.data('url');
-    getUrlFromString = (function(_this) {
-      return function() {
-        var data, selected_node_id, url_info;
-        url_info = {
-          url: data_url
-        };
-        if (node && node.id) {
-          data = {
-            node: node.id
-          };
-          url_info['data'] = data;
-        } else {
-          selected_node_id = _this._getNodeIdToBeSelected();
-          if (selected_node_id) {
-            data = {
-              selected_node: selected_node_id
-            };
-            url_info['data'] = data;
-          }
-        }
-        return url_info;
-      };
-    })(this);
-    if ($.isFunction(data_url)) {
-      return data_url(node);
-    } else if ($.type(data_url) === 'string') {
-      return getUrlFromString();
-    } else {
-      return data_url;
-    }
-  };
-
-  JqTreeWidget.prototype._getNodeIdToBeSelected = function() {
-    if (this.options.saveState) {
-      return this.save_state_handler.getNodeIdToBeSelected();
-    } else {
-      return null;
-    }
-  };
-
-  JqTreeWidget.prototype._initTree = function(data) {
-    var doInit, must_load_on_demand;
-    doInit = (function(_this) {
-      return function() {
-        if (!_this.is_initialized) {
-          _this.is_initialized = true;
-          return _this._triggerEvent('tree.init');
-        }
-      };
-    })(this);
-    this.tree = new this.options.nodeClass(null, true, this.options.nodeClass);
-    if (this.select_node_handler) {
-      this.select_node_handler.clear();
-    }
-    this.tree.loadFromData(data);
-    must_load_on_demand = this._setInitialState();
-    this._refreshElements();
-    if (!must_load_on_demand) {
-      return doInit();
-    } else {
-      return this._setInitialStateOnDemand(doInit);
-    }
-  };
-
-  JqTreeWidget.prototype._setInitialState = function() {
-    var autoOpenNodes, is_restored, must_load_on_demand, ref2, restoreState;
-    restoreState = (function(_this) {
-      return function() {
-        var must_load_on_demand, state;
-        if (!(_this.options.saveState && _this.save_state_handler)) {
-          return [false, false];
-        } else {
-          state = _this.save_state_handler.getStateFromStorage();
-          if (!state) {
-            return [false, false];
-          } else {
-            must_load_on_demand = _this.save_state_handler.setInitialState(state);
-            return [true, must_load_on_demand];
-          }
-        }
-      };
-    })(this);
-    autoOpenNodes = (function(_this) {
-      return function() {
-        var max_level, must_load_on_demand;
-        if (_this.options.autoOpen === false) {
-          return false;
-        }
-        max_level = _this._getAutoOpenMaxLevel();
-        must_load_on_demand = false;
-        _this.tree.iterate(function(node, level) {
-          if (node.load_on_demand) {
-            must_load_on_demand = true;
-            return false;
-          } else if (!node.hasChildren()) {
-            return false;
-          } else {
-            node.is_open = true;
-            return level !== max_level;
-          }
-        });
-        return must_load_on_demand;
-      };
-    })(this);
-    ref2 = restoreState(), is_restored = ref2[0], must_load_on_demand = ref2[1];
-    if (!is_restored) {
-      must_load_on_demand = autoOpenNodes();
-    }
-    return must_load_on_demand;
-  };
-
-  JqTreeWidget.prototype._setInitialStateOnDemand = function(cb_finished) {
-    var autoOpenNodes, restoreState;
-    restoreState = (function(_this) {
-      return function() {
-        var state;
-        if (!(_this.options.saveState && _this.save_state_handler)) {
-          return false;
-        } else {
-          state = _this.save_state_handler.getStateFromStorage();
-          if (!state) {
-            return false;
-          } else {
-            _this.save_state_handler.setInitialStateOnDemand(state, cb_finished);
-            return true;
-          }
-        }
-      };
-    })(this);
-    autoOpenNodes = (function(_this) {
-      return function() {
-        var loadAndOpenNode, loading_count, max_level, openNodes;
-        max_level = _this._getAutoOpenMaxLevel();
-        loading_count = 0;
-        loadAndOpenNode = function(node) {
-          loading_count += 1;
-          return _this._openNode(node, false, function() {
-            loading_count -= 1;
-            return openNodes();
-          });
-        };
-        openNodes = function() {
-          _this.tree.iterate(function(node, level) {
-            if (node.load_on_demand) {
-              if (!node.is_loading) {
-                loadAndOpenNode(node);
-              }
-              return false;
-            } else {
-              _this._openNode(node, false);
-              return level !== max_level;
-            }
-          });
-          if (loading_count === 0) {
-            return cb_finished();
-          }
-        };
-        return openNodes();
-      };
-    })(this);
-    if (!restoreState()) {
-      return autoOpenNodes();
-    }
-  };
-
-  JqTreeWidget.prototype._getAutoOpenMaxLevel = function() {
-    if (this.options.autoOpen === true) {
-      return -1;
-    } else {
-      return parseInt(this.options.autoOpen);
-    }
-  };
-
-
-  /*
-  Redraw the tree or part of the tree.
-   * from_node: redraw this subtree
-   */
-
-  JqTreeWidget.prototype._refreshElements = function(from_node) {
-    if (from_node == null) {
-      from_node = null;
-    }
-    this.renderer.render(from_node);
-    return this._triggerEvent('tree.refresh');
-  };
-
-  JqTreeWidget.prototype._click = function(e) {
-    var click_target, event, node;
-    click_target = this._getClickTarget(e.target);
-    if (click_target) {
-      if (click_target.type === 'button') {
-        this.toggle(click_target.node, this.options.slide);
-        e.preventDefault();
-        return e.stopPropagation();
-      } else if (click_target.type === 'label') {
-        node = click_target.node;
-        event = this._triggerEvent('tree.click', {
-          node: node,
-          click_event: e
-        });
-        if (!event.isDefaultPrevented()) {
-          return this._selectNode(node, true);
-        }
-      }
-    }
-  };
-
-  JqTreeWidget.prototype._dblclick = function(e) {
-    var click_target;
-    click_target = this._getClickTarget(e.target);
-    if (click_target && click_target.type === 'label') {
-      return this._triggerEvent('tree.dblclick', {
-        node: click_target.node,
-        click_event: e
-      });
-    }
-  };
-
-  JqTreeWidget.prototype._getClickTarget = function(element) {
-    var $button, $el, $target, node;
-    $target = $(element);
-    $button = $target.closest('.jqtree-toggler');
-    if ($button.length) {
-      node = this._getNode($button);
-      if (node) {
-        return {
-          type: 'button',
-          node: node
-        };
-      }
-    } else {
-      $el = $target.closest('.jqtree-element');
-      if ($el.length) {
-        node = this._getNode($el);
-        if (node) {
-          return {
-            type: 'label',
-            node: node
-          };
-        }
-      }
-    }
-    return null;
-  };
-
-  JqTreeWidget.prototype._getNode = function($element) {
-    var $li;
-    $li = $element.closest('li.jqtree_common');
-    if ($li.length === 0) {
-      return null;
-    } else {
-      return $li.data('node');
-    }
-  };
-
-  JqTreeWidget.prototype._getNodeElementForNode = function(node) {
-    if (node.isFolder()) {
-      return new FolderElement(node, this);
-    } else {
-      return new NodeElement(node, this);
-    }
-  };
-
-  JqTreeWidget.prototype._getNodeElement = function($element) {
-    var node;
-    node = this._getNode($element);
-    if (node) {
-      return this._getNodeElementForNode(node);
-    } else {
-      return null;
-    }
-  };
-
-  JqTreeWidget.prototype._contextmenu = function(e) {
-    var $div, node;
-    $div = $(e.target).closest('ul.jqtree-tree .jqtree-element');
-    if ($div.length) {
-      node = this._getNode($div);
-      if (node) {
-        e.preventDefault();
-        e.stopPropagation();
-        this._triggerEvent('tree.contextmenu', {
-          node: node,
-          click_event: e
-        });
-        return false;
-      }
-    }
-  };
-
-  JqTreeWidget.prototype._saveState = function() {
-    if (this.options.saveState) {
-      return this.save_state_handler.saveState();
-    }
-  };
-
-  JqTreeWidget.prototype._mouseCapture = function(position_info) {
-    if (this.options.dragAndDrop) {
-      return this.dnd_handler.mouseCapture(position_info);
-    } else {
-      return false;
-    }
-  };
-
-  JqTreeWidget.prototype._mouseStart = function(position_info) {
-    if (this.options.dragAndDrop) {
-      return this.dnd_handler.mouseStart(position_info);
-    } else {
-      return false;
-    }
-  };
-
-  JqTreeWidget.prototype._mouseDrag = function(position_info) {
-    var result;
-    if (this.options.dragAndDrop) {
-      result = this.dnd_handler.mouseDrag(position_info);
-      if (this.scroll_handler) {
-        this.scroll_handler.checkScrolling();
-      }
-      return result;
-    } else {
-      return false;
-    }
-  };
-
-  JqTreeWidget.prototype._mouseStop = function(position_info) {
-    if (this.options.dragAndDrop) {
-      return this.dnd_handler.mouseStop(position_info);
-    } else {
-      return false;
-    }
-  };
-
-  JqTreeWidget.prototype._triggerEvent = function(event_name, values) {
-    var event;
-    event = $.Event(event_name);
-    $.extend(event, values);
-    this.element.trigger(event);
-    return event;
-  };
-
-  JqTreeWidget.prototype.testGenerateHitAreas = function(moving_node) {
-    this.dnd_handler.current_item = this._getNodeElementForNode(moving_node);
-    this.dnd_handler.generateHitAreas();
-    return this.dnd_handler.hit_areas;
-  };
-
-  JqTreeWidget.prototype._selectCurrentNode = function() {
-    var node, node_element;
-    node = this.getSelectedNode();
-    if (node) {
-      node_element = this._getNodeElementForNode(node);
-      if (node_element) {
-        return node_element.select();
-      }
-    }
-  };
-
-  JqTreeWidget.prototype._deselectCurrentNode = function() {
-    var node;
-    node = this.getSelectedNode();
-    if (node) {
-      return this.removeFromSelection(node);
-    }
-  };
-
-  JqTreeWidget.prototype._getDefaultClosedIcon = function() {
-    if (this.options.rtl) {
-      return '&#x25c0;';
-    } else {
-      return '&#x25ba;';
-    }
-  };
-
-  JqTreeWidget.prototype._getRtlOption = function() {
-    var data_rtl;
-    if (this.options.rtl !== null) {
-      return this.options.rtl;
-    } else {
-      data_rtl = this.element.data('rtl');
-      if ((data_rtl != null) && data_rtl !== false) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-  };
-
-  JqTreeWidget.prototype._notifyLoading = function(is_loading, node, $el) {
-    if (this.options.onLoading) {
-      return this.options.onLoading(is_loading, node, $el);
-    }
-  };
-
-  return JqTreeWidget;
-
-})(MouseWidget);
-
-JqTreeWidget.getModule = function(name) {
-  var modules;
-  modules = {
-    'node': node_module,
-    'util': util_module
-  };
-  return modules[name];
-};
-
-SimpleWidget.register(JqTreeWidget, 'tree');
-
-},{"./drag_and_drop_handler":1,"./elements_renderer":2,"./key_handler":3,"./mouse.widget":4,"./node":5,"./node_element":6,"./save_state_handler":7,"./scroll_handler":8,"./select_node_handler":9,"./simple.widget":10,"./util":12,"./version":13}],12:[function(require,module,exports){
-var _indexOf, getBoolString, html_escape, indexOf, isInt;
-
-_indexOf = function(array, item) {
-  var i, j, len, value;
-  for (i = j = 0, len = array.length; j < len; i = ++j) {
-    value = array[i];
-    if (value === item) {
-      return i;
-    }
-  }
-  return -1;
-};
-
-indexOf = function(array, item) {
-  if (array.indexOf) {
-    return array.indexOf(item);
-  } else {
-    return _indexOf(array, item);
-  }
-};
-
-isInt = function(n) {
-  return typeof n === 'number' && n % 1 === 0;
-};
-
-html_escape = function(string) {
-  return ('' + string).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#x27;').replace(/\//g, '&#x2F;');
-};
-
-getBoolString = function(value) {
-  if (value) {
-    return 'true';
-  } else {
-    return 'false';
-  }
-};
-
-module.exports = {
-  _indexOf: _indexOf,
-  getBoolString: getBoolString,
-  html_escape: html_escape,
-  indexOf: indexOf,
-  isInt: isInt
-};
-
-},{}],13:[function(require,module,exports){
-module.exports = '1.3.3';
-
-},{}]},{},[11]);
-
-
-  }).apply(root, arguments);
-});
-}(this));
-
-/* Tree pattern.
- *
- * Options:
- * data(jSON): load data structure directly into tree (undefined)
- * dataUrl(jSON): Load data from remote url (undefined)
- * autoOpen(boolean): auto open tree contents (false)
- * dragAndDrop(boolean): node drag and drop support (false)
- * selectable(boolean): if nodes can be selectable (true)
- * keyboardSupport(boolean): if keyboard naviation is allowed (true)
- *
- * Documentation: # JSON node data
- *
- *    {{ example-1 }}
- *
- *    # Remote data URL
- *
- *    {{ example-2 }}
- *
- *    # Drag and drop
- *
- *    {{ example-3 }}
- *
- * Example: example-1
- *    <div class="pat-tree"
- *         data-pat-tree='data:[
- *          { "label": "node1",
- *            "children": [
- *              { "label": "child1" },
- *              { "label": "child2" }
- *            ]
- *          },
- *          { "label": "node2",
- *            "children": [
- *              { "label": "child3" }
- *            ]
- *          }
- *        ];'> </div>
- *
- * Example: example-2
- *    <div class="pat-tree"
- *         data-pat-tree="dataUrl:/docs/dev/tests/json/fileTree.json;
- *                        autoOpen:true"></div>
- *
- * Example: example-3
- *    <div class="pat-tree"
- *         data-pat-tree="dataUrl:/docs/dev/tests/json/fileTree.json;
- *                        dragAndDrop: true;
- *                        autoOpen: true"></div>
- *
- */
-
-
-define('mockup-patterns-tree',[
+define('mockup-ui-url/views/base',[
   'jquery',
-  'pat-base',
-  'mockup-utils',
-  'jqtree'
-], function($, Base, utils) {
+  'underscore',
+  'backbone',
+  'translate'
+], function($, _, Backbone, _t) {
   'use strict';
 
-  var Tree = Base.extend({
-    name: 'tree',
-    trigger: '.pat-tree',
-    parser: 'mockup',
-    defaults: {
-      dragAndDrop: false,
-      autoOpen: false,
-      selectable: true,
-      keyboardSupport: true,
-      onLoad: null
+  var BaseView = Backbone.View.extend({
+    isUIView: true,
+    eventPrefix: 'ui',
+    template: null,
+    idPrefix: 'base-',
+    appendInContainer: true,
+    initialize: function(options) {
+      this.options = options;
+      for (var key in this.options) {
+        this[key] = this.options[key];
+      }
+      this.options._t = _t;
     },
-    init: function() {
-      var self = this;
-      /* convert all bool options */
-      for (var optionKey in self.options) {
-        var def = self.defaults[optionKey];
-        if (def !== undefined && typeof(def) === 'boolean') {
-          self.options[optionKey] = utils.bool(self.options[optionKey]);
+    render: function() {
+      this.applyTemplate();
+
+      this.trigger('render', this);
+      this.afterRender();
+
+      if (this.options.id) {
+        // apply id to element
+        this.$el.attr('id', this.idPrefix + this.options.id);
+      }
+      return this;
+    },
+    afterRender: function() {
+
+    },
+    serializedModel: function() {
+      return this.options;
+    },
+    applyTemplate: function() {
+      if (this.template !== null) {
+        var data = $.extend({_t: _t}, this.options, this.serializedModel());
+        var template = this.template;
+        if(typeof(template) === 'string'){
+          template = _.template(template);
+        }
+        this.$el.html(template(data));
+      }
+    },
+    propagateEvent: function(eventName) {
+      if (eventName.indexOf(':') > 0) {
+        var eventId = eventName.split(':')[0];
+        if (this.eventPrefix !== '') {
+          if (eventId === this.eventPrefix ||
+              eventId === this.eventPrefix + '.' + this.id) { return true; }
         }
       }
+      return false;
+    },
+    uiEventTrigger: function(name) {
+      var args = [].slice.call(arguments, 0);
 
-      if (self.options.dragAndDrop && self.options.onCanMoveTo === undefined) {
-        self.options.onCanMoveTo = function(moved, target, position) {
-          /* if not using folder option, just allow, otherwise, only allow if folder */
-          return target.folder === undefined || target.folder === true;
-        };
-      }
-
-      if (self.options.data && typeof(self.options.data) === 'string') {
-        self.options.data = $.parseJSON(self.options.data);
-      }
-      if (self.options.onLoad !== null){
-        // delay generating tree...
-        var options = $.extend({}, self.options);
-        $.getJSON(options.dataUrl, function(data) {
-          options.data = data;
-          delete options.dataUrl;
-          self.tree = self.$el.tree(options);
-          self.options.onLoad(self);
-        });
-      } else {
-        self.tree = self.$el.tree(self.options);
+      if (this.eventPrefix !== '') {
+        args[0] = this.eventPrefix + ':' + name;
+        Backbone.View.prototype.trigger.apply(this, args);
+        if (this.id) {
+          args[0] =  this.eventPrefix + '.' + this.id + ':' + name;
+          Backbone.View.prototype.trigger.apply(this, args);
+        }
       }
     }
   });
 
+  return BaseView;
+});
 
-  return Tree;
+/* Tooltip pattern.
+ *
+ * Options:
+ *    enterEvent(string): Event used to trigger tooltip. ('mouseenter')
+ *    exitEvent(string): Event used to dismiss tooltip. ('mouseleave')
+ *
+ * Documentation:
+ *    # Directions
+ *
+ *    You can use this inside Plone or on any static page. Please check below
+ *    for additional directions for non-Plone sites as there are some lines
+ *    of code you need to add to the header of your webpage.
+ *
+ *    # Adding tooltip using Plone
+ *
+ *    - Make sure your viewing the page you want to add the tool tip too.
+ *    - Log in
+ *    - Create some text that you want to be the link that will reveal the
+ *      tooltip.
+ *    - Select the view html button
+ *    - Find your text, and surround it with an HTML tag. Any normal tag works fine.
+ *    - It should look like:
+ *      <span class="pat-tooltip" data-toggle="tooltip" title="Tooltip text">My link text</span>
+ *    - Choose Save
+ *
+ *    # Example
+ *
+ *    {{ example-1 }}
+ *
+ * Example: example-1
+ *      <a href="#" data-toggle="tooltip" class="pat-tooltip"
+ *            title="Setting the data-toggle and title makes this show up">
+ *            Hover over this line to see a tooltip
+ *      </a>
+ *
+ */
+
+define('mockup-patterns-tooltip',[
+  'jquery',
+  'pat-base'
+], function($, Base, undefined) {
+  'use strict';
+
+  var Tooltip = Base.extend({
+    name: 'tooltip',
+    trigger: '.pat-tooltip',
+    parser: 'mockup',
+    defaults: {
+      html: false
+    },
+    init: function() {
+        if (this.options.html === 'true') {
+          // TODO: fix the parser!
+          this.options.html = true;
+        } else {
+          this.options.html = false;
+        }
+        this.data = new bootstrapTooltip(this.$el[0], this.options);
+    },
+  });
+
+  //This is pulled almost directly from the Bootstrap Tooltip
+  //extension. We rename it just to differentiate from the pattern.
+  var bootstrapTooltip = function (element, options) {
+    this.type       =
+    this.options    =
+    this.enabled    =
+    this.timeout    =
+    this.hoverState =
+    this.$element   = null
+
+    this.init('tooltip', element, options)
+  }
+
+  bootstrapTooltip.VERSION  = '3.2.0'
+
+  bootstrapTooltip.DEFAULTS = {
+    animation: true,
+    placement: 'top',
+    selector: false,
+    template: '<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
+    trigger: 'hover focus',
+    title: '',
+    delay: 0,
+    html: true,  // TODO: fix bug, where this setting overwrites whatever is set in options
+    container: false,
+    viewport: {
+      selector: 'body',
+      padding: 0
+    }
+  }
+
+  bootstrapTooltip.prototype.init = function (type, element, options) {
+    this.enabled   = true
+    this.type      = type
+    this.$element  = $(element)
+    this.options   = this.getOptions(options)
+    this.$viewport = this.options.viewport && $(this.options.viewport.selector || this.options.viewport)
+
+    var triggers = this.options.trigger.split(' ')
+
+    for (var i = triggers.length; i--;) {
+      var trigger = triggers[i]
+
+      if (trigger == 'click') {
+        this.$element.on('click.' + this.type, this.options.selector, $.proxy(this.toggle, this))
+      } else if (trigger != 'manual') {
+        var eventIn  = trigger == 'hover' ? 'mouseenter' : 'focusin'
+        var eventOut = trigger == 'hover' ? 'mouseleave' : 'focusout'
+
+        this.$element.on(eventIn  + '.' + this.type, this.options.selector, $.proxy(this.enter, this))
+        this.$element.on(eventOut + '.' + this.type, this.options.selector, $.proxy(this.leave, this))
+      }
+    }
+
+    this.options.selector ?
+      (this._options = $.extend({}, this.options, { trigger: 'manual', selector: '' })) :
+      this.fixTitle()
+  }
+
+  bootstrapTooltip.prototype.getDefaults = function () {
+    return bootstrapTooltip.DEFAULTS
+  }
+
+  bootstrapTooltip.prototype.getOptions = function (options) {
+    options = $.extend({}, this.getDefaults(), this.$element.data(), options)
+
+    if (options.delay && typeof options.delay == 'number') {
+      options.delay = {
+        show: options.delay,
+        hide: options.delay
+      }
+    }
+
+    return options
+  }
+
+  bootstrapTooltip.prototype.getDelegateOptions = function () {
+    var options  = {}
+    var defaults = this.getDefaults()
+
+    this._options && $.each(this._options, function (key, value) {
+      if (defaults[key] != value) options[key] = value
+    })
+
+    return options
+  }
+
+  bootstrapTooltip.prototype.enter = function (obj) {
+    var self = obj instanceof this.constructor ?
+      obj : $(obj.currentTarget).data('bs.' + this.type)
+
+    if (!self) {
+      self = new this.constructor(obj.currentTarget, this.getDelegateOptions())
+      $(obj.currentTarget).data('bs.' + this.type, self)
+    }
+
+    clearTimeout(self.timeout)
+
+    self.hoverState = 'in'
+
+    if (!self.options.delay || !self.options.delay.show) return self.show()
+
+    self.timeout = setTimeout(function () {
+      if (self.hoverState == 'in') self.show()
+    }, self.options.delay.show)
+  }
+
+  bootstrapTooltip.prototype.leave = function (obj) {
+    var self = obj instanceof this.constructor ?
+      obj : $(obj.currentTarget).data('bs.' + this.type)
+
+    if (!self) {
+      self = new this.constructor(obj.currentTarget, this.getDelegateOptions())
+      $(obj.currentTarget).data('bs.' + this.type, self)
+    }
+
+    clearTimeout(self.timeout)
+
+    self.hoverState = 'out'
+
+    if (!self.options.delay || !self.options.delay.hide) return self.hide()
+
+    self.timeout = setTimeout(function () {
+      if (self.hoverState == 'out') self.hide()
+    }, self.options.delay.hide)
+  }
+
+  bootstrapTooltip.prototype.show = function () {
+    var e = $.Event('show.bs.' + this.type)
+
+    if (this.hasContent() && this.enabled) {
+      this.$element.trigger(e)
+
+      var inDom = $.contains(document.documentElement, this.$element[0])
+      if (e.isDefaultPrevented() || !inDom) return
+      var that = this
+
+      var $tip = this.tip()
+
+      var tipId = this.getUID(this.type)
+
+      this.setContent()
+      $tip.attr('id', tipId)
+      this.$element.attr('aria-describedby', tipId)
+
+      if (this.options.animation) $tip.addClass('fade')
+
+      var placement = typeof this.options.placement == 'function' ?
+        this.options.placement.call(this, $tip[0], this.$element[0]) :
+        this.options.placement
+
+      var autoToken = /\s?auto?\s?/i
+      var autoPlace = autoToken.test(placement)
+      if (autoPlace) placement = placement.replace(autoToken, '') || 'top'
+
+      $tip
+        .detach()
+        .css({ top: 0, left: 0, display: 'block' })
+        .addClass(placement)
+        .data('bs.' + this.type, this)
+
+      this.options.container ? $tip.appendTo(this.options.container) : $tip.insertAfter(this.$element)
+
+      var pos          = this.getPosition()
+      var actualWidth  = $tip[0].offsetWidth
+      var actualHeight = $tip[0].offsetHeight
+
+      if (autoPlace) {
+        var orgPlacement = placement
+        var $parent      = this.$element.parent()
+        var parentDim    = this.getPosition($parent)
+
+        placement = placement == 'bottom' && pos.top   + pos.height       + actualHeight - parentDim.scroll > parentDim.height ? 'top'    :
+                    placement == 'top'    && pos.top   - parentDim.scroll - actualHeight < 0                                   ? 'bottom' :
+                    placement == 'right'  && pos.right + actualWidth      > parentDim.width                                    ? 'left'   :
+                    placement == 'left'   && pos.left  - actualWidth      < parentDim.left                                     ? 'right'  :
+                    placement
+
+        $tip
+          .removeClass(orgPlacement)
+          .addClass(placement)
+      }
+
+      var calculatedOffset = this.getCalculatedOffset(placement, pos, actualWidth, actualHeight)
+
+      this.applyPlacement(calculatedOffset, placement)
+
+      var complete = function () {
+        that.$element.trigger('shown.bs.' + that.type)
+        that.hoverState = null
+      }
+
+      $.support.transition && this.$tip.hasClass('fade') ?
+        $tip
+          .one('bsTransitionEnd', complete)
+          .emulateTransitionEnd(150) :
+        complete()
+    }
+  }
+
+  bootstrapTooltip.prototype.applyPlacement = function (offset, placement) {
+    var $tip   = this.tip()
+    var width  = $tip[0].offsetWidth
+    var height = $tip[0].offsetHeight
+
+    // manually read margins because getBoundingClientRect includes difference
+    var marginTop = parseInt($tip.css('margin-top'), 10)
+    var marginLeft = parseInt($tip.css('margin-left'), 10)
+
+    // we must check for NaN for ie 8/9
+    if (isNaN(marginTop))  marginTop  = 0
+    if (isNaN(marginLeft)) marginLeft = 0
+
+    offset.top  = offset.top  + marginTop
+    offset.left = offset.left + marginLeft
+
+    // $.fn.offset doesn't round pixel values
+    // so we use setOffset directly with our own function B-0
+    $.offset.setOffset($tip[0], $.extend({
+      using: function (props) {
+        $tip.css({
+          top: Math.round(props.top),
+          left: Math.round(props.left)
+        })
+      }
+    }, offset), 0)
+
+    $tip.addClass('in')
+
+    // check to see if placing tip in new offset caused the tip to resize itself
+    var actualWidth  = $tip[0].offsetWidth
+    var actualHeight = $tip[0].offsetHeight
+
+    if (placement == 'top' && actualHeight != height) {
+      offset.top = offset.top + height - actualHeight
+    }
+
+    var delta = this.getViewportAdjustedDelta(placement, offset, actualWidth, actualHeight)
+
+    if (delta.left) offset.left += delta.left
+    else offset.top += delta.top
+
+    var arrowDelta          = delta.left ? delta.left * 2 - width + actualWidth : delta.top * 2 - height + actualHeight
+    var arrowPosition       = delta.left ? 'left'        : 'top'
+    var arrowOffsetPosition = delta.left ? 'offsetWidth' : 'offsetHeight'
+
+    $tip.offset(offset)
+    this.replaceArrow(arrowDelta, $tip[0][arrowOffsetPosition], arrowPosition)
+  }
+
+  bootstrapTooltip.prototype.replaceArrow = function (delta, dimension, position) {
+    this.arrow().css(position, delta ? (50 * (1 - delta / dimension) + '%') : '')
+  }
+
+  bootstrapTooltip.prototype.setContent = function () {
+    var $tip  = this.tip()
+    var title = this.getTitle()
+
+    $tip.find('.tooltip-inner')[this.options.html ? 'html' : 'text'](title)
+    $tip.removeClass('fade in top bottom left right')
+  }
+
+  bootstrapTooltip.prototype.hide = function () {
+    var that = this
+    var $tip = this.tip()
+    var e    = $.Event('hide.bs.' + this.type)
+
+    this.$element.removeAttr('aria-describedby')
+
+    function complete() {
+      if (that.hoverState != 'in') $tip.detach()
+      that.$element.trigger('hidden.bs.' + that.type)
+    }
+
+    this.$element.trigger(e)
+
+    if (e.isDefaultPrevented()) return
+
+    $tip.removeClass('in')
+
+    $.support.transition && this.$tip.hasClass('fade') ?
+      $tip
+        .one('bsTransitionEnd', complete)
+        .emulateTransitionEnd(150) :
+      complete()
+
+    this.hoverState = null
+
+    return this
+  }
+
+  bootstrapTooltip.prototype.fixTitle = function () {
+    var $e = this.$element
+    if ($e.attr('title') || typeof ($e.attr('data-original-title')) != 'string') {
+      $e.attr('data-original-title', $e.attr('title') || '').attr('title', '')
+    }
+  }
+
+  bootstrapTooltip.prototype.hasContent = function () {
+    return this.getTitle()
+  }
+
+  bootstrapTooltip.prototype.getPosition = function ($element) {
+    $element   = $element || this.$element
+    var el     = $element[0]
+    var isBody = el.tagName == 'BODY'
+    return $.extend({}, (typeof el.getBoundingClientRect == 'function') ? el.getBoundingClientRect() : null, {
+      scroll: isBody ? document.documentElement.scrollTop || document.body.scrollTop : $element.scrollTop(),
+      width:  isBody ? $(window).width()  : $element.outerWidth(),
+      height: isBody ? $(window).height() : $element.outerHeight()
+    }, isBody ? { top: 0, left: 0 } : $element.offset())
+  }
+
+  bootstrapTooltip.prototype.getCalculatedOffset = function (placement, pos, actualWidth, actualHeight) {
+    return placement == 'bottom' ? { top: pos.top + pos.height,   left: pos.left + pos.width / 2 - actualWidth / 2  } :
+           placement == 'top'    ? { top: pos.top - actualHeight, left: pos.left + pos.width / 2 - actualWidth / 2  } :
+           placement == 'left'   ? { top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left - actualWidth } :
+        /* placement == 'right' */ { top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left + pos.width   }
+
+  }
+
+  bootstrapTooltip.prototype.getViewportAdjustedDelta = function (placement, pos, actualWidth, actualHeight) {
+    var delta = { top: 0, left: 0 }
+    if (!this.$viewport) return delta
+
+    var viewportPadding = this.options.viewport && this.options.viewport.padding || 0
+    var viewportDimensions = this.getPosition(this.$viewport)
+
+    if (/right|left/.test(placement)) {
+      var topEdgeOffset    = pos.top - viewportPadding - viewportDimensions.scroll
+      var bottomEdgeOffset = pos.top + viewportPadding - viewportDimensions.scroll + actualHeight
+      if (topEdgeOffset < viewportDimensions.top) { // top overflow
+        delta.top = viewportDimensions.top - topEdgeOffset
+      } else if (bottomEdgeOffset > viewportDimensions.top + viewportDimensions.height) { // bottom overflow
+        delta.top = viewportDimensions.top + viewportDimensions.height - bottomEdgeOffset
+      }
+    } else {
+      var leftEdgeOffset  = pos.left - viewportPadding
+      var rightEdgeOffset = pos.left + viewportPadding + actualWidth
+      if (leftEdgeOffset < viewportDimensions.left) { // left overflow
+        delta.left = viewportDimensions.left - leftEdgeOffset
+      } else if (rightEdgeOffset > viewportDimensions.width) { // right overflow
+        delta.left = viewportDimensions.left + viewportDimensions.width - rightEdgeOffset
+      }
+    }
+
+    return delta
+  }
+
+  bootstrapTooltip.prototype.getTitle = function () {
+    var title
+    var $e = this.$element
+    var o  = this.options
+
+    title = $e.attr('data-original-title')
+      || (typeof o.title == 'function' ? o.title.call($e[0]) :  o.title)
+
+    return title
+  }
+
+  bootstrapTooltip.prototype.getUID = function (prefix) {
+    do prefix += ~~(Math.random() * 1000000)
+    while (document.getElementById(prefix))
+    return prefix
+  }
+
+  bootstrapTooltip.prototype.tip = function () {
+    return (this.$tip = this.$tip || $(this.options.template))
+  }
+
+  bootstrapTooltip.prototype.arrow = function () {
+    return (this.$arrow = this.$arrow || this.tip().find('.tooltip-arrow'))
+  }
+
+  bootstrapTooltip.prototype.validate = function () {
+    if (!this.$element[0].parentNode) {
+      this.hide()
+      this.$element = null
+      this.options  = null
+    }
+  }
+
+  bootstrapTooltip.prototype.enable = function () {
+    this.enabled = true
+  }
+
+  bootstrapTooltip.prototype.disable = function () {
+    this.enabled = false
+  }
+
+  bootstrapTooltip.prototype.toggleEnabled = function () {
+    this.enabled = !this.enabled
+  }
+
+  bootstrapTooltip.prototype.toggle = function (e) {
+    var self = this
+    if (e) {
+      self = $(e.currentTarget).data('bs.' + this.type)
+      if (!self) {
+        self = new this.constructor(e.currentTarget, this.getDelegateOptions())
+        $(e.currentTarget).data('bs.' + this.type, self)
+      }
+    }
+
+    self.tip().hasClass('in') ? self.leave(self) : self.enter(self)
+  }
+
+  bootstrapTooltip.prototype.destroy = function () {
+    clearTimeout(this.timeout)
+    this.hide().$element.off('.' + this.type).removeData('bs.' + this.type)
+  }
+
+  return Tooltip;
 
 });
+
+define('mockup-ui-url/views/button',[
+  'underscore',
+  'mockup-ui-url/views/base',
+  'mockup-patterns-tooltip'
+], function(_, BaseView, Tooltip) {
+  'use strict';
+
+  var ButtonView = BaseView.extend({
+    tagName: 'a',
+    className: 'btn',
+    eventPrefix: 'button',
+    context: 'default',
+    idPrefix: 'btn-',
+    attributes: {
+      'href': '#'
+    },
+    extraClasses: [],
+    tooltip: null,
+    template: '<% if (icon) { %><span class="glyphicon glyphicon-<%= icon %>"></span><% } %> <%= title %>',
+    events: {
+      'click': 'handleClick'
+    },
+    initialize: function(options) {
+      if (!options.id) {
+        var title = options.title || '';
+        options.id = title !== '' ? title.toLowerCase().replace(' ', '-') : this.cid;
+      }
+      BaseView.prototype.initialize.apply(this, [options]);
+
+      this.on('disable', function() {
+        this.disable();
+      }, this);
+
+      this.on('enable', function() {
+        this.enable();
+      }, this);
+
+      this.on('render', function() {
+        this.$el.attr('title', this.options.title || '');
+        this.$el.attr('aria-label', this.options.title || this.options.tooltip || '');
+        if (this.context !== null) {
+          this.$el.addClass('btn-' + this.context);
+        }
+        _.each(this.extraClasses, function(klass){
+          this.$el.addClass(klass);
+        });
+
+        if (this.tooltip !== null) {
+
+          this.$el.attr('title', this.tooltip);
+          var tooltipPattern = new Tooltip(this.$el);
+          // XXX since tooltip triggers hidden
+          // suppress so it plays nice with modals, backdrops, etc
+          this.$el.on('hidden', function(e) {
+            if (e.type === 'hidden') {
+              e.stopPropagation();
+            }
+          });
+        }
+      }, this);
+    },
+    handleClick: function(e) {
+      e.preventDefault();
+      if (!this.$el.is('.disabled')) {
+        this.uiEventTrigger('click', this, e);
+      }
+    },
+    serializedModel: function() {
+      return _.extend({'icon': '', 'title': ''}, this.options);
+    },
+    disable: function() {
+      this.options.disabled = true;
+      this.$el.addClass('disabled');
+    },
+    enable: function() {
+      this.options.disabled = false;
+      this.$el.removeClass('disabled');
+    }
+  });
+
+  return ButtonView;
+});
+
+
+define('text!mockup-patterns-relateditems-url/templates/breadcrumb.xml',[],function () { return '<span class="separator">/<span>\n<a href="<%- path %>" class="crumb"><%- text %></a>\n';});
+
+
+define('text!mockup-patterns-relateditems-url/templates/favorite.xml',[],function () { return '<li><a href="<%- path %>" class="fav" aria-labelledby="blip"><%- title %></a></li>\n';});
+
+
+define('text!mockup-patterns-relateditems-url/templates/result.xml',[],function () { return '<div class="pattern-relateditems-result">\n  <a href="#" class=" pattern-relateditems-result-select <% if (selectable) { %>selectable<% } %>">\n    <% if (typeof getIcon !== "undefined" && getIcon) { %><img src="<%- getURL %>/@@images/image/icon "> <% } %>\n    <span class="pattern-relateditems-result-title <% if (typeof review_state !== "undefined") { %> state-<%- review_state %> <% } %>  " /span>\n    <span class="pattern-relateditems contenttype-<%- portal_type.toLowerCase() %>"><%- Title %></span>\n    <span class="pattern-relateditems-result-path"><%- path %></span>\n  </a>\n  <span class="pattern-relateditems-buttons">\n  <% if (mode !== "search" && is_folderish) { %>\n     <a class="pattern-relateditems-result-browse" href="#" data-path="<%- path %>"></a>\n   <% } %>\n </span>\n</div>\n';});
+
+
+define('text!mockup-patterns-relateditems-url/templates/selection.xml',[],function () { return '<span class="pattern-relateditems-item">\n  <% if (typeof getIcon !== "undefined" && getIcon) { %> <img src="<%- getURL %>/@@images/image/icon"> <% } %>\n  <span class="pattern-relateditems-item-title contenttype-<%- portal_type.toLowerCase() %> <% if (typeof review_state !== "undefined") { %> state-<%- review_state  %> <% } %>" ><%- Title %></span>\n  <span class="pattern-relateditems-item-path"><%- path %></span>\n</span>\n';});
+
+
+define('text!mockup-patterns-relateditems-url/templates/toolbar.xml',[],function () { return '<div class="btn-group mode-selector" role="group">\n  <button type="button" class="mode search btn <% if (mode=="search") { %>btn-primary<% } else {%>btn-default<% } %>"><%- searchModeText %></button>\n  <button type="button" class="mode browse btn <% if (mode=="browse") { %>btn-primary<% } else {%>btn-default<% } %>"><%- browseModeText %></button>\n</div>\n<div class="path-wrapper">\n  <span class="pattern-relateditems-path-label"><%- searchText %></span>\n  <a class="crumb" href="<%- rootPath %>"><span class="glyphicon glyphicon-home"/></a>\n  <%= items %>\n</div>\n<div class="controls pull-right">\n  <% if (favorites.length > 0) { %>\n  <div class="favorites dropdown pull-right">\n    <button class="favorites dropdown-toggle btn btn-primary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">\n      <span class="glyphicon glyphicon-star"/>\n      <%- favText %>\n      <span class="caret"/>\n    </button>\n    <ul class="dropdown-menu">\n      <%= favItems %>\n    </ul>\n  </div>\n  <% } %>\n</div>\n';});
 
 /* Related items pattern.
  *
  * Options:
  *    vocabularyUrl(string): This is a URL to a JSON-formatted file used to populate the list (null)
  *    attributes(array): This list is passed to the server during an AJAX request to specify the attributes which should be included on each item. (['UID', 'Title', 'portal_type', 'path'])
- *    basePath(string): If this is set the widget will start in "Browse" mode and will pass the path to the server to filter the results. ('/')
- *    rootPath(string): If this is set the widget will only display breadcrumb path elements deeprt than this path.
- *    mode(string): Possible values: 'search', 'browse'. If set to 'search', the catalog is searched for a searchterm. If set to 'browse', browsing starts at basePath. Default: 'search'.
- *    breadCrumbTemplate(string): Template to use for a single item in the breadcrumbs. ('/<a href="<%- path %>"><%- text %></a>')
- *    breadCrumbTemplateSelector(string): Select an element from the DOM from which to grab the breadCrumbTemplate. (null)
- *    breadCrumbsTemplate(string): Template for element to which breadCrumbs will be appended. ('<span><span class="pattern-relateditems-path-label"><%- searchText %></span><a class="icon-home" href="/"></a><%- items %></span>')
- *    breadCrumbsTemplateSelector(string): Select an element from the DOM from which to grab the breadCrumbsTemplate. (null)
- *    cache(boolean): Whether or not results from the server should be
- *    cached. (true)
- *    closeOnSelect(boolean): Select2 option. Whether or not the drop down should be closed when an item is selected. (false)
+ *    basePath(string): Start browse/search in this path. Default: set to rootPath.
+ *    closeOnSelect(boolean): Select2 option. Whether or not the drop down should be closed when an item is selected. (true)
  *    dropdownCssClass(string): Select2 option. CSS class to add to the drop down element. ('pattern-relateditems-dropdown')
- *  
- * #this does not respect custom dx types which are also folderish:
- * --> folderTypes(array): Types which should be considered browsable. (["Folder"])
- * #   needs to be implemented with meta data field: is_folderish from vocabulary
- * 
- *    homeText(string): Text to display in the initial breadcrumb item. (home)
+ *    favorites(array): Array of objects. These are favorites, which can be used to quickly jump to different locations. Objects have the attributes "title" and "path". Default: []
+ *    mode(string): Initial widget mode. Possible values: 'search', 'browse'. If set to 'search', the catalog is searched for a searchterm. If set to 'browse', browsing starts at basePath. Default: 'search'.
  *    maximumSelectionSize(integer): The maximum number of items that can be selected in a multi-select control. If this number is less than 1 selection is not limited. (-1)
- *    multiple(boolean): Do not change this option. (true)
+ *    minimumInputLength: Select2 option. Number of characters necessary to start a search. Default: 0.
  *    orderable(boolean): Whether or not items should be drag-and-drop sortable. (true)
+ *    rootPath(string): Only display breadcrumb path elements deeper than this path. Default: "/"
+ *    selectableTypes(array): If the value is null all types are selectable. Otherwise, provide a list of strings to match item types that are selectable. (null)
+ *    separator(string): Select2 option. String which separates multiple items. (',')
+ *    tokenSeparators(array): Select2 option, refer to select2 documentation. ([",", " "])
+ *    width(string): Specify a width for the widget. ('100%')
+ *    breadcrumbTemplate(string): Template to use for a single item in the breadcrumbs.
+ *    breadcrumbTemplateSelector(string): Select an element from the DOM from which to grab the breadcrumbTemplate. (null)
+ *    toolbarTemplate(string): Template for element to which toolbar items will be appended.
+ *    toolbarTemplateSelector(string): Select an element from the DOM from which to grab the toolbarTemplate. (null)
  *    resultTemplate(string): Template for an item in the in the list of results. Refer to source for default. (Refer to source)
  *    resultTemplateSelector(string): Select an element from the DOM from which to grab the resultTemplate. (null)
- *    selectableTypes(array): If the value is null all types are selectable. Otherwise, provide a list of strings to match item types that are selectable. (null)
  *    selectionTemplate(string): Template for element that will be used to construct a selected item. (Refer to source)
  *    selectionTemplateSelector(string): Select an element from the DOM from which to grab the selectionTemplate. (null)
- *    separator(string): Select2 option. String which separates multiple items. (',')
- *    tokenSeparators(array): Select2 option, refer to select2 documentation.
- *    ([",", " "])
- *    width(string): Specify a width for the widget. ('100%')
+ *    upload(boolen): Allow file and image uploads from within the related items widget.
+ *    uploadAllowView(string): View, which returns a JSON response in the form of {allowUpload: true}, if upload is allowed in the current context.
  *
  * Documentation:
  *    The Related Items pattern is based on Select2 so many of the same options will work here as well.
  *
- *    # Default
+ *    # Default, mode "search"
  *
  *    {{ example-1 }}
  *
- *    # Existing values, some bad
+ *    # Default, mode "browse"
  *
  *    {{ example-2 }}
  *
- *    # Selectable Types
+ *    # Existing values, some bad
  *
  *    {{ example-3 }}
  *
- *    # Select a single item
+ *    # Selectable Types
  *
  *    {{ example-4 }}
+ *
+ *    # Select a single item
+ *
+ *    {{ example-5 }}
+ *
+ *    # Mode "browse", Upload
+ *
+ *    {{ example-6 }}
  *
  * Example: example-1
  *    <input type="text" class="pat-relateditems"
  *           data-pat-relateditems="width:30em;
+ *                                  mode:search;
  *                                  vocabularyUrl:/relateditems-test.json" />
  *
  * Example: example-2
  *    <input type="text" class="pat-relateditems"
- *           value="asdf1234gsad,sdfbsfdh345,asdlfkjasdlfkjasdf,kokpoius98"
- *           data-pat-relateditems="width:30em; vocabularyUrl:/relateditems-test.json" />
+ *           data-pat-relateditems="width:30em;
+ *                                  mode:browse;
+ *                                  vocabularyUrl:/relateditems-test.json" />
  *
  * Example: example-3
  *    <input type="text" class="pat-relateditems"
-             data-pat-relateditems='{"selectableTypes": ["Document"], "vocabularyUrl": "/relateditems-test.json"}' />
+ *           value="asdf1234gsad,sdfbsfdh345,asdlfkjasdlfkjasdf,kokpoius98"
+ *           data-pat-relateditems="width:30em; vocabularyUrl:/relateditems-test.json" />
  *
  * Example: example-4
  *    <input type="text" class="pat-relateditems"
-             data-pat-relateditems='{"selectableTypes": ["Document"], "vocabularyUrl": "/relateditems-test.json", "maximumSelectionSize": 1}' />
+ *           data-pat-relateditems='{"selectableTypes": ["Document"], "vocabularyUrl": "/relateditems-test.json"}' />
+ *
+ * Example: example-5
+ *    <input type="text" class="pat-relateditems"
+ *           data-pat-relateditems='{"selectableTypes": ["Document"], "vocabularyUrl": "/relateditems-test.json", "maximumSelectionSize": 1}' />
+ *
+ * Example: example-6
+ *    <input type="text" class="pat-relateditems"
+ *           data-pat-relateditems='{"selectableTypes": ["Image", "File"], "vocabularyUrl": "/relateditems-test.json", "upload": true}' />
  *
  */
 
@@ -50466,95 +47429,69 @@ define('mockup-patterns-relateditems',[
   'underscore',
   'pat-base',
   'mockup-patterns-select2',
+  'mockup-ui-url/views/button',
   'mockup-utils',
-  'mockup-patterns-tree',
-  'translate'
-], function($, _, Base, Select2, utils, Tree, _t) {
+  'translate',
+  'text!mockup-patterns-relateditems-url/templates/breadcrumb.xml',
+  'text!mockup-patterns-relateditems-url/templates/favorite.xml',
+  'text!mockup-patterns-relateditems-url/templates/result.xml',
+  'text!mockup-patterns-relateditems-url/templates/selection.xml',
+  'text!mockup-patterns-relateditems-url/templates/toolbar.xml',
+  'bootstrap-dropdown'
+], function($, _, Base, Select2, ButtonView, utils, _t,
+            BreadcrumbTemplate,
+            FavoriteTemplate,
+            ResultTemplate,
+            SelectionTemplate,
+            ToolbarTemplate
+) {
   'use strict';
 
   var RelatedItems = Base.extend({
     name: 'relateditems',
     trigger: '.pat-relateditems',
     parser: 'mockup',
-    browsing: false,
-    currentPath: null,
+    currentPath: undefined,
+    openAfterInit: undefined,
     defaults: {
-      vocabularyUrl: null, // must be set to work
-      width: '100%',
-      multiple: true,
-      tokenSeparators: [',', ' '],
-      separator: ',',
-      orderable: true,
-      cache: true,
-      mode: 'search', // possible values are search and browse
-      closeOnSelect: false,
-      basePath: '/',
-      rootPath: '/',
-      homeText: _t('home'),
-      //folderTypes: ['Folder'],   
-      selectableTypes: null, // null means everything is selectable, otherwise a list of strings to match types that are selectable
-      attributes: ['UID', 'Title', 'portal_type', 'path','getURL', 'getIcon','is_folderish','review_state'],
+      // main option
+      vocabularyUrl: null,  // must be set to work
+
+      // more options
+      upload: false,
+      attributes: ['UID', 'Title', 'portal_type', 'path', 'getURL', 'getIcon', 'is_folderish', 'review_state'],  // used by utils.QueryHelper
+      basePath: undefined,
+      closeOnSelect: true,
       dropdownCssClass: 'pattern-relateditems-dropdown',
+      favorites: [],
       maximumSelectionSize: -1,
-      treeVocabularyUrl: null,
-      resultTemplate: '' +
-        '<div class="   pattern-relateditems-result  <% if (selected) { %>pattern-relateditems-active<% } %>">' +
-        '  <a href="#" class=" pattern-relateditems-result-select <% if (selectable) { %>selectable<% } %>">' +
-        '    <% if (typeof getIcon !== "undefined" && getIcon) { %><img src="<%- getURL %>/@@images/image/icon "> <% } %>' +
-        '    <span class="pattern-relateditems-result-title  <% if (typeof review_state !== "undefined") { %> state-<%- review_state %> <% } %>  " /span>' +
-        '    <span class="pattern-relateditems contenttype-<%- portal_type.toLowerCase() %>"><%- Title %></span>' +
-        '    <span class="pattern-relateditems-result-path"><%- path %></span>' +
-        '  </a>' +
-        '  <span class="pattern-relateditems-buttons">' +
-        '  <% if (is_folderish) { %>' +
-        '     <a class="pattern-relateditems-result-browse" href="#" data-path="<%- path %>"></a>' +
-        '   <% } %>' +
-        ' </span>' +
-        '</div>',
+      minimumInputLength: 0,
+      mode: 'search', // possible values are search and browse
+      browsing: undefined,
+      orderable: true,  // mockup-patterns-select2
+      rootPath: '/',
+      selectableTypes: null, // null means everything is selectable, otherwise a list of strings to match types that are selectable
+      separator: ',',
+      tokenSeparators: [',', ' '],
+      width: '100%',
+
+      // templates
+      breadcrumbTemplate: BreadcrumbTemplate,
+      breadcrumbTemplateSelector: null,
+      favoriteTemplate: FavoriteTemplate,
+      favoriteTemplateSelector: null,
+      resultTemplate: ResultTemplate,
       resultTemplateSelector: null,
-      selectionTemplate: '' +
-        '<span class="pattern-relateditems-item">' +
-        ' <% if (typeof getIcon !== "undefined" && getIcon) { %> <img src="<%- getURL %>/@@images/image/icon"> <% } %>' +
-        ' <span class="pattern-relateditems-item-title contenttype-<%- portal_type.toLowerCase() %> <% if (typeof review_state !== "undefined") { %> state-<%- review_state  %> <% } %>" ><%- Title %></span>' +
-        ' <span class="pattern-relateditems-item-path"><%- path %></span>' +
-        '</span>',
+      selectionTemplate: SelectionTemplate,
       selectionTemplateSelector: null,
-      breadCrumbsTemplate: '<span>' +
-        '<span class="pattern-relateditems-tree">' +
-          '<a href="#" class="pattern-relateditems-tree-select"><span class="glyphicon glyphicon-indent-left"></span></a> ' +
-          '<div class="tree-container">' +
-            '<div class="title-container">' +
-              '<a href="#" class="btn close pattern-relateditems-tree-cancel">' +
-                '<span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>' +
-              '</a>' +
-              '<span class="select-folder-label">Select folder</span>' +
-            '</div>' +
-            '<div class="pat-tree" />' +
-          '</div>' +
-        '</span>' +
-        '<span class="pattern-relateditems-path-label">' +
-          '<%- searchText %></span><a class="crumb" href="<%- rootPath %>">' +
-          '<span class="glyphicon glyphicon-home"></span></a>' +
-          // ``items assumed to be santized html``
-          '<%= items %>' +
-        '</span>' +
-      '</span>',
-      breadCrumbsTemplateSelector: null,
-      breadCrumbTemplate: '' +
-        '/<a href="<%- path %>" class="crumb"><%- text %></a>',
-      breadCrumbTemplateSelector: null,
-      escapeMarkup: function(text) {
-        return text;
-      },
-      setupAjax: function() {
-        // Setup the ajax object to use during requests
-        var self = this;
-        if (self.query.valid) {
-          return self.query.selectAjax();
-        }
-        return {};
-      }
+      toolbarTemplate: ToolbarTemplate,
+      toolbarTemplateSelector: null,
+
+      // needed
+      multiple: true,
+
     },
+
     applyTemplate: function(tpl, item) {
       var self = this;
       var template;
@@ -50571,160 +47508,211 @@ define('mockup-patterns-relateditems',[
       options._item = item;
       return _.template(template)(options);
     },
-    activateBrowsing: function() {
-      var self = this;
-      self.browsing = true;
-      self.setBreadCrumbs();
+
+    setQuery: function () {
+
+      var baseCriteria = [];
+
+      if (this.options.mode == 'search') {
+        // MODE SEARCH
+
+        // restrict to given types
+        if (this.options.selectableTypes) {
+          baseCriteria.push({
+            i: 'portal_type',
+            o: 'plone.app.querystring.operation.selection.any',
+            v: this.options.selectableTypes
+          });
+        }
+
+        baseCriteria.push({
+          i: 'path',
+          o: 'plone.app.querystring.operation.string.path',
+          v: this.currentPath
+        });
+
+      }
+
+      // set query object
+      this.query = new utils.QueryHelper(
+        $.extend(true, {}, this.options, {
+          pattern: this,
+          baseCriteria: baseCriteria
+        })
+      );
+
+      var ajax = {};
+      if (this.query.valid) {
+        ajax = this.query.selectAjax();
+      }
+      this.options.ajax = ajax;
+      this.$el.select2(this.options);
     },
-    deactivateBrowsing: function() {
+
+    setBreadCrumbs: function () {
       var self = this;
-      self.browsing = false;
-      self.setBreadCrumbs();
+      var path = self.currentPath;
+      var root = self.options.rootPath.replace(/\/$/, '');
+      var html;
+
+      // strip site root from path
+      path = path.indexOf(root) === 0 ? path.slice(root.length) : path;
+
+      var paths = path.split('/');
+      var itemPath = root;
+      var itemsHtml = '';
+      _.each(paths, function(node) {
+        if (node !== '') {
+          var item = {};
+          itemPath = itemPath + '/' + node;
+          item.text = node;
+          item.path = itemPath;
+          itemsHtml = itemsHtml + self.applyTemplate('breadcrumb', item);
+        }
+      });
+
+      // favorites
+      var favoritesHtml = '';
+      _.each(self.options.favorites, function (item) {
+        favoritesHtml = favoritesHtml + self.applyTemplate('favorite', item);
+      });
+
+      html = self.applyTemplate('toolbar', {
+        items: itemsHtml,
+        favItems: favoritesHtml,
+        favText: _t('Favorites'),
+        searchText: _t('Current path:'),
+        searchModeText: _t('Search'),
+        browseModeText: _t('Browse'),
+        rootPath: self.options.rootPath
+      });
+
+      self.$toolbar.html(html);
+
+      $('.dropdown-toggle', self.$toolbar).dropdown();
+
+      $('button.mode.search', self.$toolbar).on('click', function(e) {
+        e.preventDefault();
+        if (self.browsing) {
+          $('button.mode.search', self.$toolbar).toggleClass('btn-primary btn-default');
+          $('button.mode.browse', self.$toolbar).toggleClass('btn-primary btn-default');
+          self.options.mode = 'search';
+          self.browsing = false;
+          if (self.$el.select2('data').length > 0) {
+            // Have to call after initialization
+            self.openAfterInit = true;
+          }
+          self.setQuery();
+          if (!self.openAfterInit) {
+            self.$el.select2('close');
+            self.$el.select2('open');
+          }
+        } else {
+          // just open result list
+          self.$el.select2('close');
+          self.$el.select2('open');
+        }
+      });
+
+      $('button.mode.browse', self.$toolbar).on('click', function(e) {
+        e.preventDefault();
+        if (!self.browsing) {
+          $('button.mode.search', self.$toolbar).toggleClass('btn-primary btn-default');
+          $('button.mode.browse', self.$toolbar).toggleClass('btn-primary btn-default');
+          self.options.mode = 'browse';
+          self.browsing = true;
+          if (self.$el.select2('data').length > 0) {
+            // Have to call after initialization
+            self.openAfterInit = true;
+          }
+          self.setQuery();
+          if (!self.openAfterInit) {
+            self.$el.select2('close');
+            self.$el.select2('open');
+          }
+        } else {
+          // just open result list
+          self.$el.select2('close');
+          self.$el.select2('open');
+        }
+      });
+
+      $('a.crumb', self.$toolbar).on('click', function(e) {
+        e.preventDefault();
+        self.browseTo($(this).attr('href'));
+      });
+
+      $('a.fav', self.$toolbar).on('click', function(e) {
+        e.preventDefault();
+        self.browseTo($(this).attr('href'));
+      });
+
+      function initUploadView(UploadView, disabled) {
+        var uploadButtonId = 'upload-' + utils.generateId();
+        var uploadButton = new ButtonView({
+          id:  uploadButtonId,
+          title: _t('Upload'),
+          tooltip: _t('Upload files'),
+          icon: 'upload',
+        });
+        if (disabled) {
+          uploadButton.disable();
+        }
+        $('.controls', self.$toolbar).prepend(uploadButton.render().el);
+        self.uploadView = new UploadView({
+          triggerView: uploadButton,
+          app: self
+        });
+        $('#btn-' +  uploadButtonId, self.$toolbar).append(self.uploadView.render().el);
+      }
+
+      // upload
+      if (self.options.upload && utils.featureSupport.dragAndDrop() && utils.featureSupport.fileApi()) {
+
+        var UploadView = require('mockup-patterns-relateditems-upload');
+
+        if (self.options.uploadAllowView) {
+          // Check, if uploads are allowed in current context
+          $.ajax({
+            url: self.options.uploadAllowView,
+            // url: self.currentUrl() + self.options.uploadAllowView,  // not working yet
+            dataType: 'JSON',
+            data: {
+              path: self.currentPath
+            },
+            type: 'GET',
+            success: function (result) {
+              initUploadView(UploadView, !result.allowUpload);
+            }
+          });
+        } else {
+          // just initialize upload view without checking, if uploads are allowed.
+          initUploadView(UploadView);
+        }
+
+      }
+
     },
-    browseTo: function(path) {
+
+    browseTo: function (path) {
       var self = this;
       self.emit('before-browse');
       self.currentPath = path;
-      if (path === '/' && self.options.mode === 'search') {
-        self.deactivateBrowsing();
-      } else {
-        self.activateBrowsing();
-      }
       self.$el.select2('close');
       self.$el.select2('open');
       self.emit('after-browse');
+      self.setBreadCrumbs();
     },
-    setBreadCrumbs: function() {
-      var self = this;
-      var path = self.currentPath ? self.currentPath : self.options.basePath;
-      var root = self.options.rootPath.replace(/\/$/, '');
-      var html;
-      // strip site root from path
-      path = path.indexOf(root) === 0 ? path.slice(root.length) : path;
-      if (path === '/') {
-        var searchText = '';
-        if (self.options.mode === 'search') {
-          searchText = '<em>' + _t('entire site') + '</em>';
-        }
-        html = self.applyTemplate('breadCrumbs', {
-          items: searchText,
-          searchText: _t('Search:'),
-          rootPath: self.options.rootPath
-        });
-      } else {
-        var paths = path.split('/');
-        var itemPath = root;
-        var itemsHtml = '';
-        _.each(paths, function(node) {
-          if (node !== '') {
-            var item = {};
-            itemPath = itemPath + '/' + node;
-            item.text = node;
-            item.path = itemPath;
-            itemsHtml = itemsHtml + self.applyTemplate('breadCrumb', item);
-          }
-        });
-        html = self.applyTemplate('breadCrumbs', {items: itemsHtml,
-                                                  searchText: _t('Search:'),
-                                                  rootPath: self.options.rootPath});
-      }
-      var $crumbs = $(html);
-      $('a.crumb', $crumbs).on('click', function(e) {
-        e.preventDefault();
-        self.browseTo($(this).attr('href'));
-        return false;
-      });
-      var $treeSelect = $('.pattern-relateditems-tree-select', $crumbs);
-      var $container = $treeSelect.parent();
-      var $treeContainer = $('.tree-container', $container);
-      var $tree = $('.pat-tree', $container);
-      var selectedNode = null;
-      var treePattern = new Tree($tree, {
-        data: [],
-        dataFilter: function(data) {
-          var nodes = [];
-          _.each(data.results, function(item) {
-            var node = {
-              label: item.Title,
-              id: item.UID,
-              path: item.path,
-              folder: item.is_folderish
-            };
-            nodes.push(node);
-          });
-          return nodes;
-        },
-        onCreateLi: function(node, $li) {
-          if(node._loaded){
-            if(node.children.length === 0){
-              $li.find('.jqtree-title').append('<span class="tree-node-empty">' + _t('(empty)') + '</span>');
-            }
-          }
-          $li.append('<span class="pattern-relateditems-buttons"><a class="pattern-relateditems-result-browse" href="#"></a></span>');
-          $li.find('.pattern-relateditems-result-browse').click(function(e){
-            e.preventDefault();
-            self.currentPath = node.path;
-            self.browseTo(self.currentPath);
-            $treeContainer.fadeOut();
-          });
-        }
-      });
-      treePattern.$el.bind('tree.select', function(e) {
-        var node = e.node;
-        if (node && !node._loaded) {
-          self.currentPath = node.path;
-          selectedNode = node;
-          treePattern.$el.tree('loadDataFromUrl', self.treeQuery.getUrl(), node, function(){
-            treePattern.$el.tree('openNode', node);
-          });
-          node._loaded = true;
-        }
-      });
-      treePattern.$el.bind('tree.dblclick', function(e){
-        if(e.node){
-          self.currentPath = e.node.path;
-          self.browseTo(self.currentPath);
-          $treeContainer.fadeOut();
-        }
-      });
-      treePattern.$el.bind('tree.refresh', function() {
-        /* the purpose of this is that when new data is loaded, the selected
-         * node is cleared. This re-selects it as a user browses structure of site */
-        if (selectedNode) {
-          treePattern.$el.tree('selectNode', selectedNode);
-        }
-      });
-      $('a.pattern-relateditems-tree-cancel', $treeContainer).click(function(e) {
-        e.preventDefault();
-        $treeContainer.fadeOut();
-        return false;
-      });
 
-      $treeSelect.on('click', function(e) {
-        e.preventDefault();
-        self.browsing = true;
-        self.currentPath = '/';
-        self.$el.select2('close');
-        $treeContainer.fadeIn();
-        treePattern.$el.tree('loadDataFromUrl', self.treeQuery.getUrl());
-        return false;
-      });
-
-      self.$el.on('select2-opening', function(){
-        $treeContainer.fadeOut();
-      });
-
-      self.$browsePath.html($crumbs);
-    },
     selectItem: function(item) {
       var self = this;
       self.emit('selecting');
       var data = self.$el.select2('data');
       data.push(item);
       self.$el.select2('data', data, true);
-      item.selected = true;
       self.emit('selected');
     },
+
     deselectItem: function(item) {
       var self = this;
       self.emit('deselecting');
@@ -50735,9 +47723,9 @@ define('mockup-patterns-relateditems',[
         }
       });
       self.$el.select2('data', data, true);
-      item.selected = false;
       self.emit('deselected');
     },
+
     isSelectable: function(item) {
       var self = this;
       if (self.options.selectableTypes === null) {
@@ -50746,24 +47734,14 @@ define('mockup-patterns-relateditems',[
         return _.indexOf(self.options.selectableTypes, item.portal_type) > -1;
       }
     },
+
     init: function() {
       var self = this;
-      self.query = new utils.QueryHelper(
-        $.extend(true, {}, self.options, {pattern: self})
-      );
-      self.treeQuery = new utils.QueryHelper(
-        $.extend(true, {}, self.options, {
-          pattern: self,
-          vocabularyUrl: self.options.treeVocabularyUrl || self.options.vocabularyUrl,
-          baseCriteria: [{
-            i: 'is_folderish',
-            o: 'plone.app.querystring.operation.selection.any',
-            v: 'True'
-          }]
-        })
-      );
 
-      self.options.ajax = self.options.setupAjax.apply(self);
+      self.browsing = self.options.mode === 'browse';
+      self.currentPath = self.options.basePath || self.options.rootPath;
+
+      self.setQuery();
 
       self.$el.wrap('<div class="pattern-relateditems-container" />');
       self.$container = self.$el.parents('.pattern-relateditems-container');
@@ -50777,25 +47755,16 @@ define('mockup-patterns-relateditems',[
       };
 
       Select2.prototype.initializeOrdering.call(self);
+
       self.options.formatResult = function(item) {
-        if (item.is_folderish){
-            item.folderish = true;
-           }
-         else {
-               item.folderish = false;
-           }
-      
-
         item.selectable = self.isSelectable(item);
+        var data = self.$el.select2('data');
 
-        if (item.selected === undefined) {
-          var data = self.$el.select2('data');
-          item.selected = false;
-          _.each(data, function(obj) {
-            if (obj.UID === item.UID) {
-              item.selected = true;
-            }
-          });
+        for (var i = 0; i < data.length; i = i + 1) {
+          if (data[i].UID === item.UID) {
+            // Exclude already selected items in result list.
+            return;
+          }
         }
 
         var result = $(self.applyTemplate('result', item));
@@ -50811,10 +47780,13 @@ define('mockup-patterns-relateditems',[
               self.selectItem(item);
               $parent.addClass('pattern-relateditems-active');
               if (self.options.maximumSelectionSize > 0) {
-                var items = self.$select2.select2('data');
+                var items = self.$el.select2('data');
                 if (items.length >= self.options.maximumSelectionSize) {
-                  self.$select2.select2('close');
+                  self.$el.select2('close');
                 }
+              }
+              if (self.options.closeOnSelect) {
+                self.$el.select2('close');
               }
             }
           }
@@ -50829,12 +47801,18 @@ define('mockup-patterns-relateditems',[
 
         return $(result);
       };
+
       self.options.initSelection = function(element, callback) {
         var data = [];
         var value = $(element).val();
         if (value !== '') {
           var ids = value.split(self.options.separator);
-          self.query.search(
+          var query = new utils.QueryHelper(
+            $.extend(true, {}, self.options, {
+              pattern: self
+            })
+          );
+          query.search(
             'UID', 'plone.app.querystring.operation.list.contains', ids,
             function(data) {
               var results = data.results.reduce(function(prev, item) {
@@ -50843,13 +47821,25 @@ define('mockup-patterns-relateditems',[
               }, {});
               callback(
                 ids
-                  .map(function(uid) { return results[uid]; })
-                  .filter(function(item) { return item !== undefined; })
+                .map(function(uid) {
+                  return results[uid];
+                })
+                .filter(function(item) {
+                  return item !== undefined;
+                })
               );
+
+              if (self.openAfterInit) {
+                // open after initialization
+                self.$el.select2('open');
+                self.openAfterInit = undefined;
+              }
+
             },
             false
           );
         }
+
       };
 
       self.options.id = function(item) {
@@ -50858,20 +47848,14 @@ define('mockup-patterns-relateditems',[
 
       Select2.prototype.initializeSelect2.call(self);
 
-      self.$browsePath = $('<span class="pattern-relateditems-path" />');
-      self.$container.prepend(self.$browsePath);
-
-      if (self.options.mode === 'search') {
-        self.deactivateBrowsing();
-        self.browsing = false;
-      } else {
-        self.activateBrowsing();
-        self.browsing = true;
-      }
+      self.$toolbar = $('<div class="toolbar ui-offset-parent" />');
+      self.$container.prepend(self.$toolbar);
 
       self.$el.on('select2-selecting', function(event) {
         event.preventDefault();
       });
+
+      self.setBreadCrumbs();
 
     }
   });
@@ -52663,7 +49647,7 @@ define('mockup-patterns-relateditems',[
     return module.exports;
 }));
 
-define('text!mockup-patterns-upload-url/templates/upload.xml',[],function () { return '<div class="upload-container upload-multiple">\n    <h2 class="title"><%- _t("Upload here") %></h2>\n    <p class="help">\n        <%- _t(\'Drag and drop files from your computer onto the area below or click the "Browse" button.\') %>\n    </p>\n    <div class="upload-area">\n        <div class="fallback">\n            <input name="file" type="file" multiple />\n        </div>\n        <div class="dz-message"><p><%-_t("Drop files here...")%></p></div>\n        <div class="row browse-select">\n            <div class="col-md-9">\n                <input\n                    id="fakeUploadFile"\n                    placeholder="<%- _t("Choose File") %>"\n                    disabled="disabled"\n                    />\n            </div>\n            <div class="col-md-3">\n                <button\n                    type="button"\n                    class="btn btn-primary browse">\n                    Browse\n                </button>\n            </div>\n        </div>\n        <div class="upload-queue">\n            <div class="previews">\n            </div>\n            <div class="controls">\n                <div class="path">\n                    <label><%- _t("Upload to...") %></label>\n                    <p class="form-help">\n                        <%- _t("Select another destination folder or leave blank to add files to the current location.") %>\n                    </p>\n                    <input\n                        type="text"\n                        name="location"\n                        />\n                </div>\n                <div class="actions row">\n                    <div class="col-md-9">\n                        <div class="progress progress-striped active">\n                            <div class="progress-bar progress-bar-success"\n                                 role="progressbar"\n                                 aria-valuenow="0"\n                                 aria-valuemin="0"\n                                 aria-valuemax="100"\n                                 style="width: 0%">\n                                <span class="sr-only">40% Complete (success)</span>\n                            </div>\n                        </div>\n                    </div>\n                    <div class="col-md-3 align-right">\n                        <button\n                            type="button"\n                            class="btn btn-primary upload-all">\n                            <%- _t("Upload") %>\n                        </button>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n';});
+define('text!mockup-patterns-upload-url/templates/upload.xml',[],function () { return '<div class="upload-container upload-multiple">\n    <h2 class="title"><%- _t("Upload here") %></h2>\n    <p class="help">\n        <%- _t(\'Drag and drop files from your computer onto the area below or click the "Browse" button.\') %>\n    </p>\n    <div class="upload-area">\n        <div class="fallback">\n            <input name="file" type="file" multiple />\n        </div>\n        <div class="dz-message"><p><%-_t("Drop files here...")%></p></div>\n        <div class="row browse-select">\n            <div class="col-md-9">\n                <input\n                    id="fakeUploadFile"\n                    placeholder="<%- _t("Choose File") %>"\n                    disabled="disabled"\n                    />\n            </div>\n            <div class="col-md-3">\n                <button\n                    type="button"\n                    class="btn btn-primary browse">\n                    Browse\n                </button>\n            </div>\n        </div>\n        <div class="upload-queue">\n            <div class="previews">\n            </div>\n            <div class="controls">\n                <% if (allowPathSelection) { %>\n                <div class="path">\n                    <label><%- _t("Upload to...") %></label>\n                    <p class="form-help">\n                        <%- _t("Select another destination folder or leave blank to add files to the current location.") %>\n                    </p>\n                    <input\n                        type="text"\n                        name="location"\n                        />\n                </div>\n                <% } %>\n                <div class="actions row">\n                    <div class="col-md-9">\n                        <div class="progress progress-striped active">\n                            <div class="progress-bar progress-bar-success"\n                                 role="progressbar"\n                                 aria-valuenow="0"\n                                 aria-valuemin="0"\n                                 aria-valuemax="100"\n                                 style="width: 0%">\n                                <span class="sr-only">40% Complete (success)</span>\n                            </div>\n                        </div>\n                    </div>\n                    <div class="col-md-3 align-right">\n                        <button\n                            type="button"\n                            class="btn btn-primary upload-all">\n                            <%- _t("Upload") %>\n                        </button>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n';});
 
 
 define('text!mockup-patterns-upload-url/templates/preview.xml',[],function () { return '<div class="row item form-inline">\n    <div class="col-md-1 action">\n        <button\n            type="button"\n            class="btn btn-danger btn-xs remove-item"\n            data-dz-remove=""\n            href="javascript:undefined;">\n            <span class="glyphicon glyphicon-remove"></span>\n        </button>\n    </div>\n    <div class="col-md-8 title">\n        <div class="dz-preview">\n          <div class="dz-details">\n            <div class="dz-filename"><span data-dz-name></span></div>\n          </div>\n          <div class="dz-error-message"><span data-dz-errormessage></span></div>\n        </div>\n        <div class="dz-progress">\n            <span class="dz-upload" data-dz-uploadprogress></span>\n        </div>\n    </div>\n    <div class="col-md-3 info">\n        <div class="dz-size" data-dz-size></div>\n        <img data-dz-thumbnail />\n    </div>\n</div>\n';});
@@ -52686,7 +49670,8 @@ define('text!mockup-patterns-upload-url/templates/preview.xml',[],function () { 
  *    autoCleanResults(boolean): condition value for the file preview in div element to fadeout after file upload is completed. (true)
  *    previewsContainer(selector): JavaScript selector for file preview in div element. (.upload-previews)
  *    container(selector): JavaScript selector for where to put upload stuff into in case of form. If not provided it will be place before the first submit button. ('')
- *    relatedItems(object): Related items pattern options. Will only use only if relativePath is used to use correct upload destination ({ attributes: ["UID", "Title", "Description", "getURL", "portal_type", "path", "ModificationDate"], batchSize: 20, basePath: "/", vocabularyUrl: null, width: 500, maximumSelectionSize: 1, placeholder: "Search for item on site..." })
+ *    allowPathSelection(boolean): Use relatedItems to set a different path from the current path. (true, if baseUrl and relativePath are set)
+ *    relatedItems(object): Related items pattern options. Will only be used if allowPathSelection is true. ({ attributes: ["UID", "Title", "Description", "getURL", "portal_type", "path", "ModificationDate"], batchSize: 20, basePath: "/", vocabularyUrl: null, width: 500, maximumSelectionSize: 1, placeholder: "Search for item on site..." })
  *
  * Documentation:
  *
@@ -52748,6 +49733,7 @@ define('mockup-patterns-upload',[
       maxFiles: null,
       maxFilesize: 99999999, // let's not have a max by default...
 
+      allowPathSelection: undefined,
       relatedItems: {
         // UID attribute is required here since we're working with related items
         attributes: ['UID', 'Title', 'Description', 'getURL', 'portal_type', 'path', 'ModificationDate'],
@@ -52764,8 +49750,13 @@ define('mockup-patterns-upload',[
       var self = this,
           template = UploadTemplate;
 
+      if (typeof self.options.allowPathSelection === 'undefined') {
+        // Set allowPathSelection to true, if we can use path based urls.
+        self.options.allowPathSelection = self.options.baseUrl && self.options.relativePath;
+      }
+
       // TODO: find a way to make this work in firefox (and IE)
-      $(document).bind('paste', function(e){
+      $(document).bind('paste', function(e) {
         var oe = e.originalEvent;
         var items = oe.clipboardData.items;
         if (items) {
@@ -52781,7 +49772,10 @@ define('mockup-patterns-upload',[
       self.currentPath = self.options.currentPath;
       self.currentFile = 0;
 
-      template = _.template(template)({_t: _t});
+      template = _.template(template)({
+        _t: _t,
+        allowPathSelection: self.options.allowPathSelection
+      });
       self.$el.addClass(self.options.className);
       self.$el.append(template);
 
@@ -52806,8 +49800,8 @@ define('mockup-patterns-upload',[
         self.$el = self.$el.parent();
       }
 
-      if (self.options.baseUrl && self.options.relativePath){
-        // only use related items if we can generate paths based urls
+      if (self.options.allowPathSelection) {
+        // only use related items if we can generate path based urls and if it's not turned off.
         self.$pathInput = $('input[name="location"]', self.$el);
         self.relatedItems = self.setupRelatedItems(self.$pathInput);
       } else {
@@ -53145,6 +50139,7 @@ define('mockup-patterns-upload',[
     setupRelatedItems: function($input) {
       var self = this;
       var options = self.options.relatedItems;
+      options.upload = false;  // ensure that related items upload is off.
       if (self.options.initialFolder){
         $input.attr('value', self.options.initialFolder);
       }
@@ -53252,8 +50247,9 @@ define('mockup-patterns-tinymce-url/js/links',[
     },
 
     createRelatedItems: function() {
-      this.relatedItems = new RelatedItems(this.getEl(),
-        this.linkModal.options.relatedItems);
+      var options = this.tinypattern.options.relatedItems;
+      options.upload = false;  // ensure that related items upload is off.
+      this.relatedItems = new RelatedItems(this.getEl(), options);
     },
 
     value: function() {
@@ -70727,8 +67723,6 @@ define('mockup-patterns-tinymce',[
   'underscore',
   'pat-base',
   'tinymce',
-  'text!mockup-patterns-tinymce-url/templates/result.xml',
-  'text!mockup-patterns-tinymce-url/templates/selection.xml',
   'mockup-utils',
   'mockup-patterns-tinymce-url/js/links',
   'mockup-i18n',
@@ -70775,10 +67769,7 @@ define('mockup-patterns-tinymce',[
   'tinymce-visualchars',
   'tinymce-wordcount',
   'tinymce-compat3x'
-], function($, _,
-            Base, tinymce,
-            ResultTemplate, SelectionTemplate,
-            utils, LinkModal, I18n, _t) {
+], function($, _, Base, tinymce, utils, LinkModal, I18n, _t) {
   'use strict';
 
   var TinyMCE = Base.extend({
@@ -70893,9 +67884,7 @@ define('mockup-patterns-tinymce',[
               o: 'plone.app.querystring.operation.list.contains',
               v: self.options.imageTypes.concat(self.options.folderTypes)
             }],
-            selectableTypes: self.options.imageTypes,
-            resultTemplate: ResultTemplate,
-            selectionTemplate: SelectionTemplate
+            selectableTypes: self.options.imageTypes
           }
         });
         var $el = $('<div/>').insertAfter(self.$el);
@@ -71022,11 +68011,6 @@ define('mockup-patterns-tinymce',[
       // XXX: disabled skin means it wont load css files which we already
       // include in widgets.min.css
       tinyOptions.skin = false;
-      self.options.relatedItems.generateImageUrl = function(data, scale) {
-        // this is so, in our result and selection template, we can
-        // access getting actual urls from related items
-        return self.generateImageUrl.apply(self, [data, scale]);
-      };
 
       tinyOptions.init_instance_callback = function(editor) {
         if (self.tiny === undefined || self.tiny === null) {
@@ -72344,82 +69328,6 @@ define('mockup-patterns-inlinevalidation',[
   return InlineValidation;
 });
 
-define('mockup-ui-url/views/base',[
-  'jquery',
-  'underscore',
-  'backbone',
-  'translate'
-], function($, _, Backbone, _t) {
-  'use strict';
-
-  var BaseView = Backbone.View.extend({
-    isUIView: true,
-    eventPrefix: 'ui',
-    template: null,
-    idPrefix: 'base-',
-    appendInContainer: true,
-    initialize: function(options) {
-      this.options = options;
-      for (var key in this.options) {
-        this[key] = this.options[key];
-      }
-      this.options._t = _t;
-    },
-    render: function() {
-      this.applyTemplate();
-
-      this.trigger('render', this);
-      this.afterRender();
-
-      if (this.options.id) {
-        // apply id to element
-        this.$el.attr('id', this.idPrefix + this.options.id);
-      }
-      return this;
-    },
-    afterRender: function() {
-
-    },
-    serializedModel: function() {
-      return this.options;
-    },
-    applyTemplate: function() {
-      if (this.template !== null) {
-        var data = $.extend({_t: _t}, this.options, this.serializedModel());
-        var template = this.template;
-        if(typeof(template) === 'string'){
-          template = _.template(template);
-        }
-        this.$el.html(template(data));
-      }
-    },
-    propagateEvent: function(eventName) {
-      if (eventName.indexOf(':') > 0) {
-        var eventId = eventName.split(':')[0];
-        if (this.eventPrefix !== '') {
-          if (eventId === this.eventPrefix ||
-              eventId === this.eventPrefix + '.' + this.id) { return true; }
-        }
-      }
-      return false;
-    },
-    uiEventTrigger: function(name) {
-      var args = [].slice.call(arguments, 0);
-
-      if (this.eventPrefix !== '') {
-        args[0] = this.eventPrefix + ':' + name;
-        Backbone.View.prototype.trigger.apply(this, args);
-        if (this.id) {
-          args[0] =  this.eventPrefix + '.' + this.id + ':' + name;
-          Backbone.View.prototype.trigger.apply(this, args);
-        }
-      }
-    }
-  });
-
-  return BaseView;
-});
-
 define('mockup-ui-url/views/container',[
   'jquery',
   'underscore',
@@ -72550,566 +69458,6 @@ define('mockup-ui-url/views/buttongroup',[
   });
 
   return ButtonGroup;
-});
-
-/* Tooltip pattern.
- *
- * Options:
- *    enterEvent(string): Event used to trigger tooltip. ('mouseenter')
- *    exitEvent(string): Event used to dismiss tooltip. ('mouseleave')
- *
- * Documentation:
- *    # Directions
- *
- *    You can use this inside Plone or on any static page. Please check below
- *    for additional directions for non-Plone sites as there are some lines
- *    of code you need to add to the header of your webpage.
- *
- *    # Adding tooltip using Plone
- *
- *    - Make sure your viewing the page you want to add the tool tip too.
- *    - Log in
- *    - Create some text that you want to be the link that will reveal the
- *      tooltip.
- *    - Select the view html button
- *    - Find your text, and surround it with an HTML tag. Any normal tag works fine.
- *    - It should look like:
- *      <span class="pat-tooltip" data-toggle="tooltip" title="Tooltip text">My link text</span>
- *    - Choose Save
- *
- *    # Example
- *
- *    {{ example-1 }}
- *
- * Example: example-1
- *      <a href="#" data-toggle="tooltip" class="pat-tooltip"
- *            title="Setting the data-toggle and title makes this show up">
- *            Hover over this line to see a tooltip
- *      </a>
- *
- */
-
-define('mockup-patterns-tooltip',[
-  'jquery',
-  'pat-base'
-], function($, Base, undefined) {
-  'use strict';
-
-  var Tooltip = Base.extend({
-    name: 'tooltip',
-    trigger: '.pat-tooltip',
-    parser: 'mockup',
-    defaults: {
-      html: false
-    },
-    init: function() {
-        if (this.options.html === 'true') {
-          // TODO: fix the parser!
-          this.options.html = true;
-        } else {
-          this.options.html = false;
-        }
-        this.data = new bootstrapTooltip(this.$el[0], this.options);
-    },
-  });
-
-  //This is pulled almost directly from the Bootstrap Tooltip
-  //extension. We rename it just to differentiate from the pattern.
-  var bootstrapTooltip = function (element, options) {
-    this.type       =
-    this.options    =
-    this.enabled    =
-    this.timeout    =
-    this.hoverState =
-    this.$element   = null
-
-    this.init('tooltip', element, options)
-  }
-
-  bootstrapTooltip.VERSION  = '3.2.0'
-
-  bootstrapTooltip.DEFAULTS = {
-    animation: true,
-    placement: 'top',
-    selector: false,
-    template: '<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
-    trigger: 'hover focus',
-    title: '',
-    delay: 0,
-    html: true,  // TODO: fix bug, where this setting overwrites whatever is set in options
-    container: false,
-    viewport: {
-      selector: 'body',
-      padding: 0
-    }
-  }
-
-  bootstrapTooltip.prototype.init = function (type, element, options) {
-    this.enabled   = true
-    this.type      = type
-    this.$element  = $(element)
-    this.options   = this.getOptions(options)
-    this.$viewport = this.options.viewport && $(this.options.viewport.selector || this.options.viewport)
-
-    var triggers = this.options.trigger.split(' ')
-
-    for (var i = triggers.length; i--;) {
-      var trigger = triggers[i]
-
-      if (trigger == 'click') {
-        this.$element.on('click.' + this.type, this.options.selector, $.proxy(this.toggle, this))
-      } else if (trigger != 'manual') {
-        var eventIn  = trigger == 'hover' ? 'mouseenter' : 'focusin'
-        var eventOut = trigger == 'hover' ? 'mouseleave' : 'focusout'
-
-        this.$element.on(eventIn  + '.' + this.type, this.options.selector, $.proxy(this.enter, this))
-        this.$element.on(eventOut + '.' + this.type, this.options.selector, $.proxy(this.leave, this))
-      }
-    }
-
-    this.options.selector ?
-      (this._options = $.extend({}, this.options, { trigger: 'manual', selector: '' })) :
-      this.fixTitle()
-  }
-
-  bootstrapTooltip.prototype.getDefaults = function () {
-    return bootstrapTooltip.DEFAULTS
-  }
-
-  bootstrapTooltip.prototype.getOptions = function (options) {
-    options = $.extend({}, this.getDefaults(), this.$element.data(), options)
-
-    if (options.delay && typeof options.delay == 'number') {
-      options.delay = {
-        show: options.delay,
-        hide: options.delay
-      }
-    }
-
-    return options
-  }
-
-  bootstrapTooltip.prototype.getDelegateOptions = function () {
-    var options  = {}
-    var defaults = this.getDefaults()
-
-    this._options && $.each(this._options, function (key, value) {
-      if (defaults[key] != value) options[key] = value
-    })
-
-    return options
-  }
-
-  bootstrapTooltip.prototype.enter = function (obj) {
-    var self = obj instanceof this.constructor ?
-      obj : $(obj.currentTarget).data('bs.' + this.type)
-
-    if (!self) {
-      self = new this.constructor(obj.currentTarget, this.getDelegateOptions())
-      $(obj.currentTarget).data('bs.' + this.type, self)
-    }
-
-    clearTimeout(self.timeout)
-
-    self.hoverState = 'in'
-
-    if (!self.options.delay || !self.options.delay.show) return self.show()
-
-    self.timeout = setTimeout(function () {
-      if (self.hoverState == 'in') self.show()
-    }, self.options.delay.show)
-  }
-
-  bootstrapTooltip.prototype.leave = function (obj) {
-    var self = obj instanceof this.constructor ?
-      obj : $(obj.currentTarget).data('bs.' + this.type)
-
-    if (!self) {
-      self = new this.constructor(obj.currentTarget, this.getDelegateOptions())
-      $(obj.currentTarget).data('bs.' + this.type, self)
-    }
-
-    clearTimeout(self.timeout)
-
-    self.hoverState = 'out'
-
-    if (!self.options.delay || !self.options.delay.hide) return self.hide()
-
-    self.timeout = setTimeout(function () {
-      if (self.hoverState == 'out') self.hide()
-    }, self.options.delay.hide)
-  }
-
-  bootstrapTooltip.prototype.show = function () {
-    var e = $.Event('show.bs.' + this.type)
-
-    if (this.hasContent() && this.enabled) {
-      this.$element.trigger(e)
-
-      var inDom = $.contains(document.documentElement, this.$element[0])
-      if (e.isDefaultPrevented() || !inDom) return
-      var that = this
-
-      var $tip = this.tip()
-
-      var tipId = this.getUID(this.type)
-
-      this.setContent()
-      $tip.attr('id', tipId)
-      this.$element.attr('aria-describedby', tipId)
-
-      if (this.options.animation) $tip.addClass('fade')
-
-      var placement = typeof this.options.placement == 'function' ?
-        this.options.placement.call(this, $tip[0], this.$element[0]) :
-        this.options.placement
-
-      var autoToken = /\s?auto?\s?/i
-      var autoPlace = autoToken.test(placement)
-      if (autoPlace) placement = placement.replace(autoToken, '') || 'top'
-
-      $tip
-        .detach()
-        .css({ top: 0, left: 0, display: 'block' })
-        .addClass(placement)
-        .data('bs.' + this.type, this)
-
-      this.options.container ? $tip.appendTo(this.options.container) : $tip.insertAfter(this.$element)
-
-      var pos          = this.getPosition()
-      var actualWidth  = $tip[0].offsetWidth
-      var actualHeight = $tip[0].offsetHeight
-
-      if (autoPlace) {
-        var orgPlacement = placement
-        var $parent      = this.$element.parent()
-        var parentDim    = this.getPosition($parent)
-
-        placement = placement == 'bottom' && pos.top   + pos.height       + actualHeight - parentDim.scroll > parentDim.height ? 'top'    :
-                    placement == 'top'    && pos.top   - parentDim.scroll - actualHeight < 0                                   ? 'bottom' :
-                    placement == 'right'  && pos.right + actualWidth      > parentDim.width                                    ? 'left'   :
-                    placement == 'left'   && pos.left  - actualWidth      < parentDim.left                                     ? 'right'  :
-                    placement
-
-        $tip
-          .removeClass(orgPlacement)
-          .addClass(placement)
-      }
-
-      var calculatedOffset = this.getCalculatedOffset(placement, pos, actualWidth, actualHeight)
-
-      this.applyPlacement(calculatedOffset, placement)
-
-      var complete = function () {
-        that.$element.trigger('shown.bs.' + that.type)
-        that.hoverState = null
-      }
-
-      $.support.transition && this.$tip.hasClass('fade') ?
-        $tip
-          .one('bsTransitionEnd', complete)
-          .emulateTransitionEnd(150) :
-        complete()
-    }
-  }
-
-  bootstrapTooltip.prototype.applyPlacement = function (offset, placement) {
-    var $tip   = this.tip()
-    var width  = $tip[0].offsetWidth
-    var height = $tip[0].offsetHeight
-
-    // manually read margins because getBoundingClientRect includes difference
-    var marginTop = parseInt($tip.css('margin-top'), 10)
-    var marginLeft = parseInt($tip.css('margin-left'), 10)
-
-    // we must check for NaN for ie 8/9
-    if (isNaN(marginTop))  marginTop  = 0
-    if (isNaN(marginLeft)) marginLeft = 0
-
-    offset.top  = offset.top  + marginTop
-    offset.left = offset.left + marginLeft
-
-    // $.fn.offset doesn't round pixel values
-    // so we use setOffset directly with our own function B-0
-    $.offset.setOffset($tip[0], $.extend({
-      using: function (props) {
-        $tip.css({
-          top: Math.round(props.top),
-          left: Math.round(props.left)
-        })
-      }
-    }, offset), 0)
-
-    $tip.addClass('in')
-
-    // check to see if placing tip in new offset caused the tip to resize itself
-    var actualWidth  = $tip[0].offsetWidth
-    var actualHeight = $tip[0].offsetHeight
-
-    if (placement == 'top' && actualHeight != height) {
-      offset.top = offset.top + height - actualHeight
-    }
-
-    var delta = this.getViewportAdjustedDelta(placement, offset, actualWidth, actualHeight)
-
-    if (delta.left) offset.left += delta.left
-    else offset.top += delta.top
-
-    var arrowDelta          = delta.left ? delta.left * 2 - width + actualWidth : delta.top * 2 - height + actualHeight
-    var arrowPosition       = delta.left ? 'left'        : 'top'
-    var arrowOffsetPosition = delta.left ? 'offsetWidth' : 'offsetHeight'
-
-    $tip.offset(offset)
-    this.replaceArrow(arrowDelta, $tip[0][arrowOffsetPosition], arrowPosition)
-  }
-
-  bootstrapTooltip.prototype.replaceArrow = function (delta, dimension, position) {
-    this.arrow().css(position, delta ? (50 * (1 - delta / dimension) + '%') : '')
-  }
-
-  bootstrapTooltip.prototype.setContent = function () {
-    var $tip  = this.tip()
-    var title = this.getTitle()
-
-    $tip.find('.tooltip-inner')[this.options.html ? 'html' : 'text'](title)
-    $tip.removeClass('fade in top bottom left right')
-  }
-
-  bootstrapTooltip.prototype.hide = function () {
-    var that = this
-    var $tip = this.tip()
-    var e    = $.Event('hide.bs.' + this.type)
-
-    this.$element.removeAttr('aria-describedby')
-
-    function complete() {
-      if (that.hoverState != 'in') $tip.detach()
-      that.$element.trigger('hidden.bs.' + that.type)
-    }
-
-    this.$element.trigger(e)
-
-    if (e.isDefaultPrevented()) return
-
-    $tip.removeClass('in')
-
-    $.support.transition && this.$tip.hasClass('fade') ?
-      $tip
-        .one('bsTransitionEnd', complete)
-        .emulateTransitionEnd(150) :
-      complete()
-
-    this.hoverState = null
-
-    return this
-  }
-
-  bootstrapTooltip.prototype.fixTitle = function () {
-    var $e = this.$element
-    if ($e.attr('title') || typeof ($e.attr('data-original-title')) != 'string') {
-      $e.attr('data-original-title', $e.attr('title') || '').attr('title', '')
-    }
-  }
-
-  bootstrapTooltip.prototype.hasContent = function () {
-    return this.getTitle()
-  }
-
-  bootstrapTooltip.prototype.getPosition = function ($element) {
-    $element   = $element || this.$element
-    var el     = $element[0]
-    var isBody = el.tagName == 'BODY'
-    return $.extend({}, (typeof el.getBoundingClientRect == 'function') ? el.getBoundingClientRect() : null, {
-      scroll: isBody ? document.documentElement.scrollTop || document.body.scrollTop : $element.scrollTop(),
-      width:  isBody ? $(window).width()  : $element.outerWidth(),
-      height: isBody ? $(window).height() : $element.outerHeight()
-    }, isBody ? { top: 0, left: 0 } : $element.offset())
-  }
-
-  bootstrapTooltip.prototype.getCalculatedOffset = function (placement, pos, actualWidth, actualHeight) {
-    return placement == 'bottom' ? { top: pos.top + pos.height,   left: pos.left + pos.width / 2 - actualWidth / 2  } :
-           placement == 'top'    ? { top: pos.top - actualHeight, left: pos.left + pos.width / 2 - actualWidth / 2  } :
-           placement == 'left'   ? { top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left - actualWidth } :
-        /* placement == 'right' */ { top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left + pos.width   }
-
-  }
-
-  bootstrapTooltip.prototype.getViewportAdjustedDelta = function (placement, pos, actualWidth, actualHeight) {
-    var delta = { top: 0, left: 0 }
-    if (!this.$viewport) return delta
-
-    var viewportPadding = this.options.viewport && this.options.viewport.padding || 0
-    var viewportDimensions = this.getPosition(this.$viewport)
-
-    if (/right|left/.test(placement)) {
-      var topEdgeOffset    = pos.top - viewportPadding - viewportDimensions.scroll
-      var bottomEdgeOffset = pos.top + viewportPadding - viewportDimensions.scroll + actualHeight
-      if (topEdgeOffset < viewportDimensions.top) { // top overflow
-        delta.top = viewportDimensions.top - topEdgeOffset
-      } else if (bottomEdgeOffset > viewportDimensions.top + viewportDimensions.height) { // bottom overflow
-        delta.top = viewportDimensions.top + viewportDimensions.height - bottomEdgeOffset
-      }
-    } else {
-      var leftEdgeOffset  = pos.left - viewportPadding
-      var rightEdgeOffset = pos.left + viewportPadding + actualWidth
-      if (leftEdgeOffset < viewportDimensions.left) { // left overflow
-        delta.left = viewportDimensions.left - leftEdgeOffset
-      } else if (rightEdgeOffset > viewportDimensions.width) { // right overflow
-        delta.left = viewportDimensions.left + viewportDimensions.width - rightEdgeOffset
-      }
-    }
-
-    return delta
-  }
-
-  bootstrapTooltip.prototype.getTitle = function () {
-    var title
-    var $e = this.$element
-    var o  = this.options
-
-    title = $e.attr('data-original-title')
-      || (typeof o.title == 'function' ? o.title.call($e[0]) :  o.title)
-
-    return title
-  }
-
-  bootstrapTooltip.prototype.getUID = function (prefix) {
-    do prefix += ~~(Math.random() * 1000000)
-    while (document.getElementById(prefix))
-    return prefix
-  }
-
-  bootstrapTooltip.prototype.tip = function () {
-    return (this.$tip = this.$tip || $(this.options.template))
-  }
-
-  bootstrapTooltip.prototype.arrow = function () {
-    return (this.$arrow = this.$arrow || this.tip().find('.tooltip-arrow'))
-  }
-
-  bootstrapTooltip.prototype.validate = function () {
-    if (!this.$element[0].parentNode) {
-      this.hide()
-      this.$element = null
-      this.options  = null
-    }
-  }
-
-  bootstrapTooltip.prototype.enable = function () {
-    this.enabled = true
-  }
-
-  bootstrapTooltip.prototype.disable = function () {
-    this.enabled = false
-  }
-
-  bootstrapTooltip.prototype.toggleEnabled = function () {
-    this.enabled = !this.enabled
-  }
-
-  bootstrapTooltip.prototype.toggle = function (e) {
-    var self = this
-    if (e) {
-      self = $(e.currentTarget).data('bs.' + this.type)
-      if (!self) {
-        self = new this.constructor(e.currentTarget, this.getDelegateOptions())
-        $(e.currentTarget).data('bs.' + this.type, self)
-      }
-    }
-
-    self.tip().hasClass('in') ? self.leave(self) : self.enter(self)
-  }
-
-  bootstrapTooltip.prototype.destroy = function () {
-    clearTimeout(this.timeout)
-    this.hide().$element.off('.' + this.type).removeData('bs.' + this.type)
-  }
-
-  return Tooltip;
-
-});
-
-define('mockup-ui-url/views/button',[
-  'underscore',
-  'mockup-ui-url/views/base',
-  'mockup-patterns-tooltip'
-], function(_, BaseView, Tooltip) {
-  'use strict';
-
-  var ButtonView = BaseView.extend({
-    tagName: 'a',
-    className: 'btn',
-    eventPrefix: 'button',
-    context: 'default',
-    idPrefix: 'btn-',
-    attributes: {
-      'href': '#'
-    },
-    extraClasses: [],
-    tooltip: null,
-    template: '<% if (icon) { %><span class="glyphicon glyphicon-<%= icon %>"></span><% } %> <%= title %>',
-    events: {
-      'click': 'handleClick'
-    },
-    initialize: function(options) {
-      if (!options.id) {
-        var title = options.title || '';
-        options.id = title !== '' ? title.toLowerCase().replace(' ', '-') : this.cid;
-      }
-      BaseView.prototype.initialize.apply(this, [options]);
-
-      this.on('disable', function() {
-        this.disable();
-      }, this);
-
-      this.on('enable', function() {
-        this.enable();
-      }, this);
-
-      this.on('render', function() {
-        this.$el.attr('title', this.options.title || '');
-        this.$el.attr('aria-label', this.options.title || this.options.tooltip || '');
-        if (this.context !== null) {
-          this.$el.addClass('btn-' + this.context);
-        }
-        _.each(this.extraClasses, function(klass){
-          this.$el.addClass(klass);
-        });
-
-        if (this.tooltip !== null) {
-
-          this.$el.attr('title', this.tooltip);
-          var tooltipPattern = new Tooltip(this.$el);
-          // XXX since tooltip triggers hidden
-          // suppress so it plays nice with modals, backdrops, etc
-          this.$el.on('hidden', function(e) {
-            if (e.type === 'hidden') {
-              e.stopPropagation();
-            }
-          });
-        }
-      }, this);
-    },
-    handleClick: function(e) {
-      e.preventDefault();
-      if (!this.$el.is('.disabled')) {
-        this.uiEventTrigger('click', this, e);
-      }
-    },
-    serializedModel: function() {
-      return _.extend({'icon': '', 'title': ''}, this.options);
-    },
-    disable: function() {
-      this.options.disabled = true;
-      this.$el.addClass('disabled');
-    },
-    enable: function() {
-      this.options.disabled = false;
-      this.$el.removeClass('disabled');
-    }
-  });
-
-  return ButtonView;
 });
 
 define('mockup-patterns-structure-url/js/navigation',[
@@ -73410,7 +69758,7 @@ define('mockup-patterns-structure-url/js/actionmenu',['underscore'], function(_)
 });
 
 
-define('text!mockup-patterns-structure-url/templates/actionmenu.xml',[],function () { return '<% _.each(menuOptions.button, function(menuOption){ %>\n<a class="action <%- menuOption.name %> <%- menuOption.idx %> pat-tooltip <% if (menuOption.modal) { %>pat-plone-modal<% } %>"\n    href="<%- menuOption.url %>"\n    title="<%- _t(menuOption.title) %>">\n  <% if (menuOption.iconCSS) { %>\n  <span class="<%- menuOption.iconCSS %>"></span>\n  <% } else { %>\n  <%- _t(menuOption.title) %> \n  <% } %>\n</a>&nbsp;\n<% }); %>\n\n\n<% if (menuOptions.dropdown) { %>\n<a class="dropdown-toggle"\n    data-toggle="dropdown"\n    href="#"\n    aria-haspopup="true"\n    aria-expanded="true"\n    id="<%- id %>"\n    title="Actions">\n  <span class="glyphicon glyphicon-cog"></span><span class="caret"></span>\n</a>\n<ul class="dropdown-menu pull-right" aria-labelledby="<%- id %>">\n  <% if (header) { %>\n    <li class="dropdown-header"><%- header %></li>\n    <li class="divider"></li>\n  <% } %>\n\n  <% _.each(menuOptions.dropdown, function(menuOption){ %>\n  <li>\n    <a class="action <%- menuOption.name %> <%- menuOption.idx %> <% if (menuOption.modal) { %>pat-plone-modal<% } %>"\n        href="<%- menuOption.url %>">\n      <% if (menuOption.iconCSS) { %>\n      <span class="<%- menuOption.iconCSS %>"></span>\n      <% } %>\n      <%- _t(menuOption.title) %>\n    </a>\n  </li>\n  <% }); %>\n</ul>\n<% } %>\n';});
+define('text!mockup-patterns-structure-url/templates/actionmenu.xml',[],function () { return '<% _.each(menuOptions.button, function(menuOption){ %>\n<a class="action <%- menuOption.name %> <%- menuOption.idx %> pat-tooltip <%- menuOption.patternClasses %>"\n    href="<%- menuOption.url %>"\n    title="<%- _t(menuOption.title) %>">\n  <% if (menuOption.iconCSS) { %>\n  <span class="<%- menuOption.iconCSS %>"></span>\n  <% } else { %>\n  <%- _t(menuOption.title) %> \n  <% } %>\n</a>&nbsp;\n<% }); %>\n\n\n<% if (menuOptions.dropdown) { %>\n<a class="dropdown-toggle"\n    data-toggle="dropdown"\n    href="#"\n    aria-haspopup="true"\n    aria-expanded="true"\n    id="<%- id %>"\n    title="Actions">\n  <span class="glyphicon glyphicon-cog"></span><span class="caret"></span>\n</a>\n<ul class="dropdown-menu pull-right" aria-labelledby="<%- id %>">\n  <% if (header) { %>\n    <li class="dropdown-header"><%- header %></li>\n    <li class="divider"></li>\n  <% } %>\n\n  <% _.each(menuOptions.dropdown, function(menuOption){ %>\n  <li>\n    <a class="action <%- menuOption.name %> <%- menuOption.idx %> <%- menuOption.patternClasses %>"\n        href="<%- menuOption.url %>">\n      <% if (menuOption.iconCSS) { %>\n      <span class="<%- menuOption.iconCSS %>"></span>\n      <% } %>\n      <%- _t(menuOption.title) %>\n    </a>\n  </li>\n  <% }); %>\n</ul>\n<% } %>\n';});
 
 define('mockup-patterns-structure-url/js/views/actionmenu',[
   'jquery',
@@ -73423,7 +69771,6 @@ define('mockup-patterns-structure-url/js/views/actionmenu',[
   'text!mockup-patterns-structure-url/templates/actionmenu.xml',
   'pat-registry',
   'translate',
-  'mockup-patterns-modal',
   'mockup-patterns-tooltip',
   'bootstrap-dropdown'
 ], function($, _, BaseView, utils, Result, Actions, ActionMenu, ActionMenuTemplate, registry, _t) {
@@ -73437,7 +69784,6 @@ define('mockup-patterns-structure-url/js/views/actionmenu',[
     menuOptions: null,
     // Dynamic menu options
     menuGenerator: 'mockup-patterns-structure-url/js/actionmenu',
-    needsRescan: false,
 
     eventConstructor: function(definition) {
       var self = this;
@@ -73474,11 +69820,17 @@ define('mockup-patterns-structure-url/js/views/actionmenu',[
               menuOptionsCategorized[category] = [];
           }
           menuOptionsCategorized[category].push(menuOption);
-          if (menuOption.modal || menuOption.category === 'button') {
-            self.needsRescan = true;
+          if (!menuOption.patternClasses) {
+            // set default to empty string
+            menuOption.patternClasses = '';
+          }
+          if (menuOption.modal === true) {
+            // add standard pat-plone-modal.
+            // If you want another modal implementation, don't use modal=true but only set patternClasses.
+            menuOption.patternClasses += ' pat-plone-modal';
           }
 
-		      // Create event handler and add it to the results object.
+          // Create event handler and add it to the results object.
           var e = self.eventConstructor(menuOption);
           if (e) {
             result['click a.' + idx] = e;
@@ -73517,7 +69869,6 @@ define('mockup-patterns-structure-url/js/views/actionmenu',[
       var data = this.model.toJSON();
       data.header = self.options.header || null;
       data.menuOptions = self.menuOptionsCategorized;
-
       self.$el.html(self.template($.extend({
         _t: _t,
         id: utils.generateId()
@@ -73532,9 +69883,7 @@ define('mockup-patterns-structure-url/js/views/actionmenu',[
         self.$el.addClass(self.options.className);
       }
 
-      if (this.needsRescan) {
-        registry.scan(this.$el);
-      }
+      registry.scan(this.$el);
 
       return this;
     }
@@ -74807,7 +71156,21 @@ define('mockup-patterns-structure-url/js/views/columns',[
     afterRender: function() {
       var self = this;
 
+      var objKeySortCmp = function (a, b) {
+        // object key sort compare function
+        var ca = self.app.availableColumns[a];
+        var cb = self.app.availableColumns[b];
+        if (ca < cb) {
+          return -1;
+        } else if (ca == cb) {
+          return 0;
+        } else {
+          return 1;
+        }
+      }
+
       self.$container = self.$('ul');
+
       _.each(self.app.activeColumns, function(id) {
         var $el = $(self.itemTemplate({
           title: self.app.availableColumns[id],
@@ -74816,10 +71179,11 @@ define('mockup-patterns-structure-url/js/views/columns',[
         $el.find('input')[0].checked = true;
         self.$container.append($el);
       });
-      _.each(_.omit(self.app.availableColumns, self.app.activeColumns),
-        function(name, id) {
+
+      var availableKeys = _.keys(_.omit(self.app.availableColumns, self.app.activeColumns)).sort(objKeySortCmp);
+      _.each(availableKeys, function(id) {
           var $el = $(self.itemTemplate({
-            title: name,
+            title: self.app.availableColumns[id],
             id: id
           }));
           self.$container.append($el);
@@ -74981,10 +71345,8 @@ define('mockup-patterns-structure-url/js/views/upload',[
       options.success = function() {
         self.app.collection.pager();
       };
-      options.relatedItems = {
-        vocabularyUrl: self.app.options.vocabularyUrl
-      };
       options.currentPath = self.app.getCurrentPath();
+      options.allowPathSelection = false;
       self.upload = new Upload(self.$('.uploadify-me').addClass('pat-upload'), options);
       return this;
     },
@@ -74997,13 +71359,7 @@ define('mockup-patterns-structure-url/js/views/upload',[
         return;
       }
       var currentPath = self.app.getCurrentPath();
-      var relatedItems = self.upload.relatedItems;
-      if (self.currentPathData && relatedItems && currentPath !== self.upload.currentPath){
-        if (currentPath === '/'){
-          relatedItems.$el.select2('data', []);
-        } else {
-          relatedItems.$el.select2('data', [self.currentPathData.object]);
-        }
+      if (self.currentPathData && currentPath !== self.upload.currentPath){
         self.upload.setPath(currentPath);
       }
     }
@@ -76262,7 +72618,7 @@ define('mockup-patterns-structure-url/js/views/app',[
       /* close popovers when clicking away */
       $(document).click(function(e) {
         var $el = $(e.target);
-        if (!$el.is(':visible')) {
+        if (!$el.is(':visible') || $el.css('visibility') === 'hidden' || $el.css('opacity') === '0') {
           // ignore this, fake event trigger to element that is not visible
           return;
         }
@@ -76887,7 +73243,6 @@ define('mockup-patterns-structure',[
         },
         url: '/rearrange'
       },
-      basePath: '/',
       moveUrl: null,
 
       buttons: null,
@@ -81615,5 +77970,5 @@ require([
   'use strict';
 });
 
-define("/home/davi/Projetos/plone/buildout.coredev/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
+define("/home/thet-data/data/dev/aaf/buildout-aaf/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
 
