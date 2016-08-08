@@ -14,11 +14,15 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- Include mockup 2.4.0.
+  [thet]
 
 Bug fixes:
 
 - Enable unload protection by using pattern class ``pat-formunloadalert`` instead ``enableUnloadProtection``.
+- *add item here*
+- Provide the image scale settings in TinyMCE image dialog.
+  Needs mockup 2.4.0.
   [thet]
 
 
