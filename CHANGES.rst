@@ -41,6 +41,9 @@ Breaking changes:
 
 New features:
 
+- Include mockup 2.3.0.
+  [thet]
+
 - Updated components directory, recompiled bundles.
   [thet]
 

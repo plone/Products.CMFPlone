@@ -757,6 +757,7 @@
       <value key="css">
         <element>++resource++mockup/relateditems/pattern.relateditems.less</element>
       </value>
+      <value key="url">++resource++mockup/relateditems</value>
   </records>
 
   <records prefix="plone.resources/mockup-patterns-select2"
