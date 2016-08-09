@@ -13,6 +13,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper
 
+RE_REMOVE_BASE = re.compile('<base.*/base>')
 RE_REMOVE_DOCCONT = re.compile('\s*href="http://.*?#content"')
 RE_REMOVE_SKIPNAV = re.compile('\s*href="http://.*?#portal-globalnav"')
 RE_REMOVE_TABS = re.compile('<ul id="portal-globalnav".*?</ul>', re.S)
@@ -68,10 +69,12 @@ class TestPloneToolBrowserDefault(PloneTestCase.FunctionalTestCase):
         body = response.getBody().decode('utf-8')
 
         # request/ACTUAL_URL is fubar in tests, remove lines that depend on it
+        resolved = RE_REMOVE_BASE.sub('', resolved)
         resolved = RE_REMOVE_DOCCONT.sub('', resolved)
         resolved = RE_REMOVE_SKIPNAV.sub('', resolved)
         resolved = RE_REMOVE_TABS.sub('', resolved)
 
+        body = RE_REMOVE_BASE.sub('', body)
         body = RE_REMOVE_DOCCONT.sub('', body)
         body = RE_REMOVE_SKIPNAV.sub('', body)
         body = RE_REMOVE_TABS.sub('', body)
