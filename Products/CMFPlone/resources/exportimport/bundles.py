@@ -16,7 +16,6 @@ def combine(context):
 
     body = context.readDataFile('registry.xml')
     if body and "IBundleRegistry" in body:
-        site = context.getSite()
         # Calling combine_bundles will have as side effect that the
         # Content-Type header of the response is set to application/javascript,
         # which we do not want.  So we reset it to the original at the end.
