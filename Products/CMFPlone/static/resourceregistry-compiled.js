@@ -28947,6 +28947,7 @@ define('mockup-patterns-texteditor',[
         'xml': 'xml',
         'less': 'less',
         'py': 'python',
+        'pt': 'xml',
         'cfg': 'ini'
       };
 
@@ -32763,5 +32764,5 @@ require([
   'use strict';
 });
 
-define("Products.CMFPlone/Products/CMFPlone/static/resourceregistry.js", function(){});
+define("/Users/nathan/code/coredev5/src/Products.CMFPlone/Products/CMFPlone/static/resourceregistry.js", function(){});
 
