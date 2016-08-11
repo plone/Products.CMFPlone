@@ -61,6 +61,7 @@ I open ${NAME}
     Click Element   jquery=.jqtree-element:contains("${NAME}")
 
 I expect ${NUM} tabs to be open
+    Sleep  1
     ${hits}=    Execute Javascript  return $('.navbar-nav li').length.toString();
     Should Be Equal     ${hits}     ${NUM}
 
