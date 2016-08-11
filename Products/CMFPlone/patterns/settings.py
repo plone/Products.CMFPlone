@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from Acquisition import aq_parent, aq_inner
+from Acquisition import aq_inner
+from Acquisition import aq_parent
 from borg.localrole.interfaces import IFactoryTempFolder
 from plone.app.layout.navigation.root import getNavigationRootObject
 from plone.registry.interfaces import IRegistry
@@ -8,10 +9,11 @@ from Products.CMFCore.interfaces._content import IFolderish
 from Products.CMFPlone.interfaces import ILinkSchema
 from Products.CMFPlone.interfaces import IPatternsSettings
 from Products.CMFPlone.interfaces import IPloneSiteRoot
-from Products.CMFPlone.utils import get_portal
 from Products.CMFPlone.patterns.tinymce import TinyMCESettingsGenerator
+from Products.CMFPlone.utils import get_portal
 from zope.component import getUtility
 from zope.interface import implementer
+from zope.schema.interfaces import IVocabularyFactory
 
 import json
 
@@ -51,6 +53,17 @@ class PatternSettingsAdapter(object):
                 )
             }
         return result
+
+    @property
+    def image_scales(self):
+        factory = getUtility(
+            IVocabularyFactory,
+            'plone.app.vocabularies.ImagesScales'
+        )
+        vocabulary = factory(self.context)
+        ret = [{'title': it.title, 'value': it.value} for it in vocabulary]
+        ret = sorted(ret, key=lambda it: it['title'])
+        return json.dumps(ret)
 
     def tinymce(self):
         """
@@ -95,6 +108,7 @@ class PatternSettingsAdapter(object):
         configuration = {
             'base_url': self.context.absolute_url(),
             'imageTypes': image_types,
+            'imageScales': self.image_scales,
             'linkAttribute': 'UID',
             # This is for loading the languages on tinymce
             'loadingBaseUrl': '{0}/++plone++static/components/tinymce-builded/'
