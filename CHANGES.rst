@@ -78,6 +78,9 @@ New features:
 
 Bug fixes:
 
+- TinyMCE uses the image-scales registered in imaging-controlpanel. Fixes #1717
+  [pbauer]
+
 - Have more patience in the thememapper robot test.  [maurits]
 
 - Upgrade ``less-plugin-inline-urls`` to ``1.2.0`` to properly handle VML url node values in CSS.
