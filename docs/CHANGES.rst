@@ -6,6 +6,22 @@ Changelog
 =========
 
 
+4.3.12 (unreleased)
+-------------------
+
+Breaking changes:
+
+- *add item here*
+
+New features:
+
+- *add item here*
+
+Bug fixes:
+
+- *add item here*
+
+
 4.3.11 (2016-08-15)
 -------------------
 
