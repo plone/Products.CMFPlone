@@ -6,7 +6,7 @@ Changelog
 =========
 
 
-4.3.11 (unreleased)
+4.3.11 (2016-08-15)
 -------------------
 
 - Nothing changed yet.
