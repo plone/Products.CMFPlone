@@ -33,6 +33,9 @@ Bug fixes:
 - Fix select2 related robot test failures and give the test_tinymce.robot scenario a more unique name.
   [thet]
 
+- Updated TinyMCE to fix a bug caused by a jQuery conflict that prevented controls working on some Chrome borwser.
+  [MatthewWilkes]
+
 
 5.0.5c2 (2016-06-22)
 --------------------
