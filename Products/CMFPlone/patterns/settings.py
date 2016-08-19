@@ -5,10 +5,12 @@ from plone.app.layout.navigation.root import getNavigationRootObject
 from plone.registry.interfaces import IRegistry
 from plone.uuid.interfaces import IUUID
 from Products.CMFCore.interfaces._content import IFolderish
+from Products.CMFPlone.interfaces import IImagingSchema
 from Products.CMFPlone.interfaces import ILinkSchema
 from Products.CMFPlone.interfaces import IPatternsSettings
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.CMFPlone.utils import get_portal
+from Products.CMFPlone.utils import safe_unicode
 from Products.CMFPlone.patterns.tinymce import TinyMCESettingsGenerator
 from zope.component import getUtility
 from zope.interface import implementer
@@ -52,6 +54,24 @@ class PatternSettingsAdapter(object):
             }
         return result
 
+    def get_scales(self):
+        """Format the list of scales ['mini 200:200', ...] into a string like
+        'Mini (200x200):mini,...'  as expected by the tinymce-pattern.
+        """
+        results = []
+
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(
+            IImagingSchema, prefix="plone", check=False)
+
+        for scale in settings.allowed_sizes:
+            parts = scale.split()
+            name = parts[0].capitalize()
+            size = parts[1].replace(':', 'x')
+            scale_id = parts[0]
+            results.append('{0} ({1}):{2}'.format(name, size, scale_id))
+        return ','.join(results)
+
     def tinymce(self):
         """
         data-pat-tinymce : JSON.stringify({
@@ -89,6 +109,7 @@ class PatternSettingsAdapter(object):
 
         image_types = settings.image_objects or []
         folder_types = settings.contains_objects or []
+        scales = self.get_scales()
 
         server_url = self.request.get('SERVER_URL', '')
         site_path = portal_url[len(server_url):]
@@ -111,6 +132,7 @@ class PatternSettingsAdapter(object):
             },
             'prependToScalePart': '/@@images/image/',
             'prependToUrl': '{0}/resolveuid/'.format(site_path.rstrip('/')),
+            'scales': scales,
             'tiny': generator.get_tiny_config(),
             'upload': {
                 'baseUrl': portal_url,
