@@ -25,7 +25,10 @@ Bug fixes:
 4.3.11 (2016-08-15)
 -------------------
 
-- Nothing changed yet.
+Fixes:
+
+- Release Plone 4.3.11
+  [esteele]
 
 
 4.3.10 (2016-07-04)
@@ -61,7 +64,10 @@ Fixes:
 4.3.9 (2016-03-29)
 ------------------
 
-- No changes
+Fixes:
+
+- Release Plone 4.3.9
+  [esteele]
 
 
 4.3.8 (2016-03-08)
