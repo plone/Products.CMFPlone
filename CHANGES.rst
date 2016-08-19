@@ -5,7 +5,7 @@
 Changelog
 =========
 
-5.1a2 (unreleased)
+5.1b1 (2016-08-19)
 ------------------
 
 Breaking changes:
