@@ -1,7 +1,7 @@
 tinymce-builded
 ===============
 
->Biulded version of [TinyMCE](https://github.com/tinymce/tinymce) editor.
+>Builded version of [TinyMCE](https://github.com/tinymce/tinymce) editor.
 
 Also available as a Bower package `tinymce-builded`. You can install it by `bower install tinymce-builded`
 
