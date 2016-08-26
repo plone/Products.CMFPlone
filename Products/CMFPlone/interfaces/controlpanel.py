@@ -51,7 +51,7 @@ Disallow: /*view$
 def validate_json(value):
     try:
         json.loads(value)
-    except ValueError, exc:
+    except ValueError as exc:
         class JSONError(schema.ValidationError):
             __doc__ = _(u"Must be empty or a valid JSON-formatted "
                         u"configuration – ${message}.", mapping={
@@ -688,6 +688,8 @@ class ITinyMCEPluginSchema(Interface):
         value_type=schema.TextLine(),
         missing_value=[],
         default=[])
+
+
 ITinyMCELibrariesSchema = ITinyMCEPluginSchema  # bw compat
 
 
@@ -1024,7 +1026,7 @@ class ISearchSchema(Interface):
 
     sort_on = schema.Choice(
         title=_(u'label_sort_on', default=u'Sort on'),
-        description=_(u"Sort the default search on this index"),
+        description=_(u'Sort the default search on this index'),
         vocabulary=SimpleVocabulary([
             SimpleTerm(u'relevance', u'relevance', _(u'relevance')),
             SimpleTerm(u'Date', u'Date', _(u'date (newest first)')),
@@ -1173,6 +1175,66 @@ class ISiteSchema(Interface):
                        _(u'For authenticated users only'))]),
         required=True)
 
+    no_thumbs_portlet = schema.Bool(
+        title=_(u'No Thumbs in portlets'),
+        description=_(
+            u'Suppress thumbs in all portlets;'
+            u' this default can be overridden individually '
+            u'in selected portlets'),
+        default=False,
+        required=False)
+
+    no_thumbs_lists = schema.Bool(
+        title=_(u'No thumbs in list views'),
+        description=_(u'Suppress thumbs in all list views; '
+                      u'this default can be overriden individually'),
+        default=False,
+        required=False)
+
+    no_thumbs_summary = schema.Bool(
+        title=_(u'No thumbs in summary views'),
+        description=_(u'Suppress thumbs in all summary views; '
+                      u'this default can be overriden individually'),
+        default=False,
+        required=False)
+
+    no_thumbs_tables = schema.Bool(
+        title=_(u'No thumbs in table views'), description=_(
+            u'Suppress thumbs in all tableviews and in folder contents view; '
+            u'this default can be overriden individually'),
+        default=False,
+        required=False)
+
+    thumb_size_portlet = schema.Choice(
+        title=_(u'Thumb size for portlets'),
+        description=_(u'this default can be overriden individually'),
+        default=u'icon',
+        vocabulary='plone.app.vocabularies.ImagesScales',
+        required=True)
+
+    thumb_size_listing = schema.Choice(
+        title=_(u'Thumb size for listings '),
+        description=_(u'e.g. standard view;'
+                      u' this default can be overriden individually'),
+        default=u'thumb',
+        vocabulary='plone.app.vocabularies.ImagesScales',
+        required=True)
+
+    thumb_size_table = schema.Choice(
+        title=_(u'Thumb size for tables '),
+        description=_(u'e.g., tabular view, folder content listing;'
+                      u' this default can be overriden individually'),
+        default=u'tile',
+        vocabulary='plone.app.vocabularies.ImagesScales',
+        required=True)
+
+    thumb_size_summary = schema.Choice(
+        title=_(u'Thumb size for summary view  '),
+        description=_(u'this default can be overriden individually'),
+        default=u'mini',
+        vocabulary='plone.app.vocabularies.ImagesScales',
+        required=True)
+
     toolbar_position = schema.Choice(
         title=_(u'Toolbar position'),
         description=_(
@@ -1210,16 +1272,15 @@ class ISiteSchema(Interface):
         title=_(u'Default page IDs'),
         description=_(
             u'Select which IDs (short names) can act as fallback default pages for',
-            u'a container.'
-        ),
+            u'a container.'),
         required=True,
-        default=[u'index_html',
-                 u'index.html',
-                 u'index.htm',
-                 u'FrontPage'],
+        default=[
+            u'index_html',
+            u'index.html',
+            u'index.htm',
+            u'FrontPage'],
         missing_value=[],
-        value_type=schema.TextLine()
-    )
+        value_type=schema.TextLine())
 
     roles_allowed_to_add_keywords = schema.List(
         title=_(u'Roles that can add keywords'),
@@ -1530,7 +1591,7 @@ class IImagingSchema(Interface):
         default=88
     )
 
-    retina_scales=schema.Choice(
+    retina_scales = schema.Choice(
         title=_(u'Retina mode'),
         description=_(u''),
         default='disabled',
