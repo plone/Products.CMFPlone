@@ -127,7 +127,7 @@
 
         <form action="prefs_error_log_setProperties"
               method="post"
-              class="enableUnloadProtection">
+              class="pat-formunloadalert">
 
             <fieldset tal:define="props context/error_log/getProperties">
 
