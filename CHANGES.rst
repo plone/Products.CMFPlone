@@ -13,6 +13,12 @@ Breaking changes:
 - The related items widget has changed a lot.
   See the Mockup changelog for 2.4.0 here: https://github.com/plone/mockup/blob/master/CHANGES.rst
 
+- All css classes named ``enableUnloadProtection`` were changed to ``pat-formunloadalert`` to trigger that pattern.
+  Templates using ``enableUnloadProtection`` should change to ``pat-formunloadalert`` too.
+  This change shouldn't impact too much, because the form unload protection didn't work at all in Plone 5 until now.
+  [thet]
+
+
 New features:
 
 - Include mockup 2.4.0.
@@ -67,6 +73,7 @@ New features:
   [thet]
 
 - Align bower components with newest mockup + documentation updates on mockup update process.
+ 
   [thet]
 
 - Ignore a bit more in ``.gitignores`` for CMPlones bower components.
