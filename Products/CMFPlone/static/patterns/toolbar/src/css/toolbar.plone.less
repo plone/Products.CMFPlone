@@ -62,6 +62,7 @@
     margin: 0;
     padding: 0;
     list-style: none;
+    overflow: hidden;  // scrolling done via buttons
 
     [class^='icon'] {
       font-size: 20px;
@@ -110,6 +111,7 @@
       position: fixed;
       z-index: 10;
       left: 0;
+      width: @plone-left-toolbar;
       background-color: black;
 
       &.up {
@@ -129,6 +131,7 @@
 
         > span {
           height: 20px;
+          width: 100% !important;
         }
 
         span:before {
@@ -453,6 +456,10 @@
     left: @plone-left-toolbar-expanded;
   }
 
+  .scroll-btn {
+      width: @plone-left-toolbar-expanded;
+  }
+
   nav > ul a > [class^='icon'] {
     display: table-cell;
     width: 40px;
@@ -465,7 +472,7 @@
   }
 
   nav > ul a > span + span {
-    width: @plone-left-toolbar-expanded - 40px;
+    width: auto;
     text-align: left;
     word-wrap: break-word;
     word-break: break-word;
@@ -493,7 +500,7 @@
         span:after {
             right: 5px; // workflow status icon
         }
-    } 
+    }
   }
 
   li {
@@ -827,17 +834,8 @@
       }
     }
 
-    .plone-toolbar-main {
-      width: @plone-left-toolbar-expanded+18px; /* hide scroll bar */
-      padding-right: 18px;
-    }
   }
 
-  .plone-toolbar-left-default #edit-zone {
-    .plone-toolbar-main {
-      width: @plone-left-toolbar+18px; /* hide scroll bar */
-    }
-  }
 }
 
 /*mobile*/
