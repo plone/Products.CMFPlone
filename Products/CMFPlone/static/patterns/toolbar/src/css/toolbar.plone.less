@@ -139,11 +139,13 @@
           line-height: 20px;
         }
 
-        &:hover > span {
-          margin-top: 0;
-          -webkit-transition: none;
-          transition: none;
+        &:hover {
           background: #007bb3;
+          & > span {
+              margin-top: 0;
+              -webkit-transition: none;
+              transition: none;
+          }
         }
       }
     }
@@ -175,8 +177,8 @@
       background: @plone-toolbar-pending-color;
     }
 
-    li.active a.label-state-pending > span,
-    a.label-state-pending > span:hover {
+    li.active a.label-state-pending,
+    a.label-state-pending:hover {
       color: (#fff - @plone-toolbar-text-color) !important;
     } //contrast
 
@@ -474,7 +476,7 @@
     width: 0;
   }
 
-  li:not(.active) a:hover > span {
+  li:not(.active) a:hover {
     background: @plone-toolbar-link;
   }
 
@@ -495,8 +497,8 @@
   }
 
   li {
-    a.label-state-published:hover > span,
-    li a.label-state-external:hover > span {
+    a.label-state-published:hover,
+    li a.label-state-external:hover {
       background: @plone-toolbar-published-color;
 
       &:first-child:before {
@@ -504,7 +506,7 @@
       }
     }
 
-    a.label-state-internally_published:hover > span {
+    a.label-state-internally_published:hover {
       background: @plone-toolbar-internally-published-color;
 
       &:first-child:before {
@@ -512,7 +514,7 @@
       }
     }
 
-    a.label-state-pending:hover > span {
+    a.label-state-pending:hover {
       background: @plone-toolbar-pending-color;
 
       &:first-child:before {
@@ -520,8 +522,8 @@
       }
     }
 
-    a.label-state-draft:hover > span,
-    li a.label-state-internal:hover > span {
+    a.label-state-draft:hover,
+    li a.label-state-internal:hover {
       background: @plone-toolbar-draft-color;
 
       &:first-child:before {
@@ -529,7 +531,7 @@
       }
     }
 
-    a.label-state-private:hover > span {
+    a.label-state-private:hover {
       background: @plone-toolbar-private-color;
 
       &:first-child:before {
