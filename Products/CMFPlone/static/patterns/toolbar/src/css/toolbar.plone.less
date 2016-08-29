@@ -483,6 +483,15 @@
 
   /*states*/
 
+  ul#plone-contentmenu-workflow {
+     li span {
+        white-space: nowrap;
+        span:after {
+            right: 5px; // workflow status icon
+        }
+    } 
+  }
+
   li {
     a.label-state-published:hover > span,
     li a.label-state-external:hover > span {

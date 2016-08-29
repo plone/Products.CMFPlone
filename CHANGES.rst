@@ -49,6 +49,11 @@ New features:
 - Prevent workflow menu overflowing in toolbar [MatthewWilkes]
 
 - Add default icon for top-level contentview and contentmenu toolbar entries [alecm]
+- Toolbar styles:
+
+  - Don't break workflow contentmenu header and better place the current status icon.
+
+  [thet]
 
 Bug fixes:
 
