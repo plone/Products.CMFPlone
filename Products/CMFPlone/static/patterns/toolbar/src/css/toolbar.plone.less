@@ -826,7 +826,7 @@
       border-top: 1px solid #ddd;
       background-color: black;
       box-shadow: -6px 2px 6px 2px #ddd;
-
+      width: @plone-left-toolbar;
       ul {
         position: fixed;
         top: 0;
@@ -834,6 +834,12 @@
       }
     }
 
+  }
+
+  .plone-toolbar-left.plone-toolbar-expanded #edit-zone {
+    #personal-bar-container {
+      width: @plone-left-toolbar-expanded;
+    }
   }
 
 }
