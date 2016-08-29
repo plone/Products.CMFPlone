@@ -10,15 +10,20 @@ Changelog
 
 Breaking changes:
 
-- *add item here*
+- The related items widget has changed a lot.
+  See the Mockup changelog for 2.4.0 here: https://github.com/plone/mockup/blob/master/CHANGES.rst
 
 New features:
 
-- *add item here*
+- Include mockup 2.4.0.
+  [thet]
 
 Bug fixes:
 
 - Enable unload protection by using pattern class ``pat-formunloadalert`` instead ``enableUnloadProtection``.
+  [thet]
+
+- Provide the image scale settings in TinyMCE image dialog.
   [thet]
 
 
@@ -95,7 +100,8 @@ New features:
 
 Bug fixes:
 
-- Have more patience in the thememapper robot test.  [maurits]
+- Have more patience in the thememapper robot test.
+  [maurits]
 
 - Upgrade ``less-plugin-inline-urls`` to ``1.2.0`` to properly handle VML url node values in CSS.
   [thet]
