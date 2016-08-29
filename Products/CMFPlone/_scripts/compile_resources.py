@@ -54,7 +54,7 @@ def generate_gruntfile(base_path, instance, site_id, compile_dir):
     os.environ['COMPILE_DIR'] = compile_dir
     print('Running command: %s' % ' '.join(cmd))
     subprocess.check_call(cmd, env=os.environ)
-    print('Grunfile generated.')
+    print('Gruntfile generated.')
 
 
 def main(argv=sys.argv):
