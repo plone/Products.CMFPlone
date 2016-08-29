@@ -291,7 +291,8 @@
       }
 
       li {
-        width: @plone-toolbar-submenu-width;
+        min-width: @plone-toolbar-submenu-width;
+        width: auto;
 
         &:last-child {
           padding-bottom: 5px;
@@ -430,7 +431,8 @@
 }
 
 .plone-toolbar-top #edit-zone nav > ul ul {
-  width: @plone-toolbar-submenu-width;
+  min-width: @plone-toolbar-submenu-width;
+  width: auto;
   height: 0;
   max-height: 0;
 }
@@ -548,7 +550,8 @@
 #edit-zone nav > ul > li.active {
   ul {
     display: block;
-    width: @plone-toolbar-submenu-width;
+    min-width: @plone-toolbar-submenu-width;
+    width: auto;
   }
 
   a > span {
@@ -882,7 +885,8 @@
   }
 
   #edit-zone nav ul li.active ul {
-    width: @plone-toolbar-submenu-width;
+    min-width: @plone-toolbar-submenu-width;
+    width: auto;
   }
 
   .plone-toolbar-left-default {

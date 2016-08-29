@@ -53,6 +53,8 @@ New features:
 
   - Don't break workflow contentmenu header and better place the current status icon.
 
+  - Let the toolbar submenus be as wide as they need by setting a ``min-width`` and ``width: auto;``.
+
   [thet]
 
 Bug fixes:
