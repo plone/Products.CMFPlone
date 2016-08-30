@@ -19,7 +19,7 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Apply security hotfix 20160830 for ``isURLInPortal``.  [maurits]
 
 
 5.0.6rc1 (2016-08-23)
