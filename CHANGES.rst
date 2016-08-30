@@ -26,6 +26,8 @@ New features:
 
 Bug fixes:
 
+- Apply security hotfix 20160830 for ``isURLInPortal``.  [maurits]
+
 - Enable unload protection by using pattern class ``pat-formunloadalert`` instead ``enableUnloadProtection``.
   [thet]
 
@@ -73,7 +75,6 @@ New features:
   [thet]
 
 - Align bower components with newest mockup + documentation updates on mockup update process.
- 
   [thet]
 
 - Ignore a bit more in ``.gitignores`` for CMPlones bower components.
