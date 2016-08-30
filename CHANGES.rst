@@ -26,6 +26,8 @@ New features:
 
 Bug fixes:
 
+- Apply security hotfix 20160830 for ``@@plone-root-login``.  [maurits]
+
 - Apply security hotfix 20160830 for ``isURLInPortal``.  [maurits]
 
 - Enable unload protection by using pattern class ``pat-formunloadalert`` instead ``enableUnloadProtection``.
