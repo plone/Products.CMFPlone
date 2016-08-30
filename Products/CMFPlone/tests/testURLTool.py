@@ -43,6 +43,11 @@ class TestURLTool(unittest.TestCase):
         return url_tool.__of__(self.site)
 
     def test_isURLInPortal(self):
+        # First test what the absolute url of the site is, otherwise these
+        # tests look really weird.  Apparently our domain is www.foobar.com.
+        self.assertEqual(self.site.absolute_url(),
+                         'http://www.foobar.com/bar/foo')
+
         url_tool = self._makeOne()
         iURLiP = url_tool.isURLInPortal
         self.assertTrue(iURLiP('http://www.foobar.com/bar/foo/folder'))
@@ -101,11 +106,21 @@ class TestURLTool(unittest.TestCase):
         url_tool = self._makeOne()
         iURLiP = url_tool.isURLInPortal
         self.assertFalse(iURLiP('<script>alert("hi");</script>'))
+        self.assertFalse(iURLiP('<sCript>alert("hi");</script>'))
         self.assertFalse(
             iURLiP('%3Cscript%3Ealert(%22hi%22)%3B%3C%2Fscript%3E'))
+        self.assertFalse(
+            iURLiP('%3CsCript%3Ealert(%22hi%22)%3B%3C%2Fscript%3E'))
 
     def test_inline_url_not_in_portal(self):
         url_tool = self._makeOne()
         iURLiP = url_tool.isURLInPortal
         self.assertFalse(iURLiP('javascript%3Aalert(3)'))
+        self.assertFalse(iURLiP('jaVascript%3Aalert(3)'))
         self.assertFalse(iURLiP('javascript:alert(3)'))
+        self.assertFalse(iURLiP('jaVascript:alert(3)'))
+
+    def test_double_back_slash(self):
+        url_tool = self._makeOne()
+        iURLiP = url_tool.isURLInPortal
+        self.assertFalse(iURLiP('\\\\www.example.com'))
