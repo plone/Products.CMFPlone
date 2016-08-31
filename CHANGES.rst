@@ -19,7 +19,9 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Apply security hotfix 20160830 for ``@@plone-root-login``.  [maurits]
+
+- Apply security hotfix 20160830 for ``isURLInPortal``.  [maurits]
 
 
 5.0.6rc1 (2016-08-23)

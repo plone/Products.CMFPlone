@@ -32,8 +32,12 @@ class URLTool(PloneBaseTool, BaseTool):
 
         # sanitize url
         url = re.sub('^[\x00-\x20]+', '', url).strip()
-        if ('<script' in url or '%3Cscript' in url or 'javascript:' in url or
-                'javascript%3A' in url):
+        cmp_url = url.lower()
+        if ('\\\\' in cmp_url or
+                '<script' in cmp_url or
+                '%3cscript' in cmp_url or
+                'javascript:' in cmp_url or
+                'javascript%3a' in cmp_url):
             return False
 
         p_url = self()
