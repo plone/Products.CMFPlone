@@ -195,8 +195,17 @@ class TestAttackVectorsFunctional(ptc.FunctionalTestCase):
     def test_go_back(self):
         res = self.publish('/plone/front-page/go_back?last_referer=http://${request}',
             basic=ptc.portal_owner + ':' + ptc.default_password)
+        # This used to show the request as location, so something like:
+        # http://<h3>form</h3><table>... and then all kinds of data from the
+        # request.  This was fixed in PloneHotfix20121106.  For this request
+        # you then got redirected to url http://${request} which your browser
+        # obviously does not know how to handle.
+        #
+        # In PloneHotfix20160830 this fix was kept, but additionally Plone
+        # refuses to redirect to external sites by default.
         self.assertEqual(302, res.status)
-        self.assertEqual('http://${request}', res.headers['location'][:17])
+        self.assertEqual(res.headers['location'],
+                         self.portal.absolute_url() + '/front-page')
 
     def test_getFolderContents(self):
         res = self.publish('/plone/getFolderContents')

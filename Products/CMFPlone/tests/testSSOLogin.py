@@ -30,6 +30,15 @@ class SSOLoginTestCase(ptc.FunctionalTestCase):
                 self.another_portal.absolute_url(),
                 ]
             )
+        # The normal portal needs to allow logins from the login portal,
+        # otherwise the redirect_to action on login or logout will refuse to
+        # redirect externally.  This may need to be done on another_portal too,
+        # but for the current tests this is not needed.
+        self.portal.portal_properties.site_properties._updateProperty(
+            'allow_external_login_sites', [
+                self.login_portal.absolute_url(),
+                ]
+            )
 
         # Configure our sites to use the login portal for logins and logouts
         login_portal_url = self.login_portal.absolute_url()
