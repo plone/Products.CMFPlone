@@ -35,11 +35,19 @@ class SSOLoginTestCase(PloneTestCase):
             portal.acl_users.portal_role_manager.doAssignRoleToPrincipal(
                 TEST_USER_ID, role)
 
-        registry = self.login_portal.portal_registry
-
         # Configure the login portal to allow logins from our sites.
-        registry['plone.allow_external_login_sites'] = (self.portal.absolute_url(),
-                                                        self.another_portal.absolute_url())
+        login_registry = self.login_portal.portal_registry
+        login_registry['plone.allow_external_login_sites'] = (
+            self.portal.absolute_url(),
+            self.another_portal.absolute_url())
+
+        # The normal portal needs to allow logins from the login portal,
+        # otherwise the redirect_to action on login or logout will refuse to
+        # redirect externally.  This may need to be done on another_portal too,
+        # but for the current tests this is not needed.
+        portal_registry = self.portal.portal_registry
+        portal_registry['plone.allow_external_login_sites'] = (
+            self.login_portal.absolute_url(), )
 
         # Configure our sites to use the login portal for logins and logouts
         login_portal_url = self.login_portal.absolute_url()
