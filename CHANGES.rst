@@ -38,6 +38,8 @@ Bug fixes:
 - Provide the image scale settings in TinyMCE image dialog.
   [thet]
 
+- Fix link on ``@@plone-upgrade``
+  [gforcada]
 
 5.1a2 (2016-08-19)
 ------------------
