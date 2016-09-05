@@ -43,7 +43,7 @@
   <p class="upgrade-info" i18n:translate="">
     More information about the upgrade procedure can be found in the
     documentation section of plone.org in the
-    <a href="http://plone.org/upgrade"
+    <a href="http://docs.plone.org/manage/upgrading"
        target="_new"
        i18n:name="upgrade_guide"
        i18n:translate="">Upgrade Guide</a>.
