@@ -1,20 +1,24 @@
+from Acquisition import aq_inner
+from Acquisition import aq_parent
 from borg.localrole.interfaces import IFactoryTempFolder
-from Products.CMFPlone.interfaces import IPatternsSettings
-from Products.CMFPlone.interfaces import ITinyMCESchema
-from Products.CMFPlone.interfaces import ILinkSchema
-from zope.interface import implements
-from plone.registry.interfaces import IRegistry
-from zope.component import getUtility
-import json
-from Products.CMFPlone.patterns.utils import get_portal_url
-from Products.CMFCore.interfaces._content import IFolderish
-from plone.uuid.interfaces import IUUID
-from Products.CMFPlone.interfaces import IPloneSiteRoot
-from Acquisition import aq_parent, aq_inner
+from plone.app.imaging.utils import getAllowedSizes
 from plone.app.layout.navigation.root import getNavigationRootObject
 from plone.app.theming.utils import theming_policy
+from plone.memoize import view
+from plone.registry.interfaces import IRegistry
+from plone.uuid.interfaces import IUUID
+from Products.CMFCore.interfaces._content import IFolderish
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.interfaces import ILinkSchema
+from Products.CMFPlone.interfaces import IPatternsSettings
+from Products.CMFPlone.interfaces import IPloneSiteRoot
+from Products.CMFPlone.interfaces import ITinyMCESchema
+from Products.CMFPlone.patterns.utils import get_portal_url
+from zope.component import getUtility
 from zope.component.hooks import getSite
+from zope.interface import implements
+
+import json
 
 
 class TinyMCESettingsGenerator(object):
@@ -97,6 +101,7 @@ class TinyMCESettingsGenerator(object):
                 table_styles, 'classes', {'selector': 'table'})
         }]
 
+    @view.memoize
     def get_tiny_config(self):
         settings = self.settings
 
@@ -224,6 +229,20 @@ class PloneSettingsAdapter(object):
         data.update(self.mark_special_links())
         return data
 
+    @view.memoize
+    def get_image_scales(self):
+        scales = []
+        for name, info in sorted(getAllowedSizes().items(), key=lambda x: x[1][0]):
+
+            scales.append(
+                '{} ({}x{}):{}'.format(
+                    name.capitalize(),
+                    info[0],
+                    info[1],
+                    name
+                ))
+        return ','.join(scales)
+
     def tinymce(self):
         """
         data-pat-tinymce : JSON.stringify({
@@ -237,7 +256,6 @@ class PloneSettingsAdapter(object):
             prependToScalePart: '/@@images/image/'
           })
         """
-
         generator = TinyMCESettingsGenerator(self.context, self.request)
         settings = generator.settings
 
@@ -289,8 +307,8 @@ class PloneSettingsAdapter(object):
             'prependToUrl': '{0}/resolveuid/'.format(site_path.rstrip('/')),
             'linkAttribute': 'UID',
             'prependToScalePart': '/@@images/image/',
-            'imageTypes': image_types
-            # 'anchorSelector': utility.anchor_selector,
+            'imageTypes': image_types,
+            'scales': self.get_image_scales()
         }
 
         return {'data-pat-tinymce': json.dumps(configuration)}
