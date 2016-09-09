@@ -29,7 +29,6 @@
   <layer name="custom"/>
   <layer name="mimetypes_icons"/>
   <layer name="PasswordReset"/>
-  <layer name="LanguageTool"/>
   <layer name="plone_ecmascript"/>
   <layer name="plone_wysiwyg"/>
   <layer name="plone_prefs"/>
