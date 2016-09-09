@@ -41,6 +41,9 @@ Bug fixes:
 - Fix link on ``@@plone-upgrade``
   [gforcada]
 
+- Remove LanguageTool layer.
+  [gforcada]
+
 5.1a2 (2016-08-19)
 ------------------
 
