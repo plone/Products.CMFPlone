@@ -1,15 +1,18 @@
-from Products.CMFPlone.Portal import PloneSite
+# -*- coding: utf-8 -*-
+from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.events import SiteManagerCreatedEvent
 from Products.CMFPlone.interfaces import INonInstallable
+from Products.CMFPlone.Portal import PloneSite
 from Products.GenericSetup.tool import SetupTool
-from plone.registry.interfaces import IRegistry
 from zope.component import queryUtility
 from zope.event import notify
 from zope.interface import implementer
 from zope.site.hooks import setSite
 
+
 _TOOL_ID = 'portal_setup'
 _DEFAULT_PROFILE = 'Products.CMFPlone:plone'
+_TYPES_PROFILE = 'plone.app.contenttypes:default'
 _CONTENT_PROFILE = 'plone.app.contenttypes:plone-content'
 
 # A little hint for PloneTestCase
@@ -72,11 +75,20 @@ def zmi_constructor(context):
     return request.response.redirect(url + '/@@plone-addsite?site_id=Plone')
 
 
-def addPloneSite(context, site_id, title='Plone site', description='',
-                 profile_id=_DEFAULT_PROFILE,
-                 content_profile_id=_CONTENT_PROFILE, snapshot=False,
-                 extension_ids=(), setup_content=True,
-                 default_language='en', portal_timezone='UTC'):
+def addPloneSite(
+    context,
+    site_id,
+    title='Plone site',
+    description='',
+    profile_id=_DEFAULT_PROFILE,
+    content_profile_id=_CONTENT_PROFILE,
+    types_profile_id=_TYPES_PROFILE,
+    snapshot=False,
+    extension_ids=(),
+    setup_content=True,
+    default_language='en',
+    portal_timezone='UTC'
+):
     """Add a PloneSite to the context."""
     context._setObject(site_id, PloneSite(site_id))
     site = context._getOb(site_id)
@@ -105,7 +117,12 @@ def addPloneSite(context, site_id, title='Plone site', description='',
 
     if setup_content:
         setup_tool.runAllImportStepsFromProfile(
-            'profile-%s' % content_profile_id)
+            'profile-{0}'.format(content_profile_id)
+        )
+    else:
+        setup_tool.runAllImportStepsFromProfile(
+            'profile-{0}'.format(types_profile_id)
+        )
 
     props = dict(
         title=title,

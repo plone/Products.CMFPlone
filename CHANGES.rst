@@ -199,6 +199,10 @@ Bug fixes:
   unicode error.
   [rnix]
 
+- Fixes #1113 can't add content after adding Plone 5 site without Example 
+  content.
+  [jensens]
+
 - Gruntfile failed if only css or only javascripts were registered.
   [jensens]
 
