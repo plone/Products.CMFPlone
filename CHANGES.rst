@@ -5,133 +5,25 @@
 Changelog
 =========
 
-5.0.5 (unreleased)
+
+5.0.6 (unreleased)
 ------------------
 
-Incompatibilities:
 Breaking changes:
 
-- Don't fail, if ``timestamp.txt`` was deleted from the resource registries production folder.
-  [thet]
-
-- Add ``review_state`` to ``CatalogNavigationTabs.topLevelTabs`` results.
-  This allows for exposing the items workflow state in portal navigation tabs.
-  [thet]
-
-- Remove discontinued module ``grunt-debug-task`` from ``plone-compile-resources``.
-  [jensens]
-
-- Remove deprecated resource registrations for ``mockup-parser`` and ``mockup-registry`` from mockup-core.
-  Use those from patternslib instead.
-  [thet]
-
-- ``plone-compile-resources``: Install ``grunt-cli`` instead of depending on an installed ``grunt`` executable.
-  If you already have a auto-generated ``package.json`` file in buildout directory, remove it.
-  [thet]
-
-
-- Moved code around and deprecated old locations in ``Products/CMFPlone/patterns/__init__``.
-  This goes together with same pattern settings changes in ``plone.app.layout.globals.pattern_settings``.
-  Also moved general usable ``./patterns/utils/get_portal`` to ``./utils/.get_portal``.
-  Deprecated ``./patterns/utils/get_portal`` and ``./patterns/utils/get_portal``.
-  [jensens]
-
+- *add item here*
 
 New features:
 
-- Updated components directory, recompiled bundles.
-  [thet]
-
-- Align bower components with newest mockup + documentation updates on mockup update process.
-  [thet]
-
-- Ignore a bit more in ``.gitignores`` for CMPlones bower components.
-  [thet]
-
-- Added setting to editing controlpanel to enable limit of keywords to the current navigation root.
-  [jensens]
-
-- Make login modal dialog follow any redirects set while processing the login request.
-  [fulv]
-
-- Add link to training.plone.org
-  [svx]
-
-- Allow to define multiple ``tinymce-content-css`` in theme ``manifest.cfg`` files, seperated by a comma.
-  [thet]
-
-- Update npm package depencies.
-  [thet]
-
-- Supported ``remove`` keyword for configlets in controlpanel.xml.  [maurits]
-
-- Deprecated Gruntfile generation script ``plone-generate-gruntfile``.
-  Modified the ``plone-compile-resources`` script to support more parameters in order to take over that single task too.
-  Also clean up of parameters, better help and refactored parts of the code.
-  [jensens]
-
-- Allow to hide/show actions directly from the Actions control panel list
-  [ebrehault]
-
+- *add item here*
 
 Bug fixes:
 
-- Don't fail, when combining bundles and the target resource files (``BUNLDE-compiled.[min.js|css]``) do not yet exist on the filesystem.
-  Fixes GenericSetup failing silently on import with when a to-be-compiled bundle which exists only as registry entry is processed in the ``combine-bundle`` step.
-  [thet]
+- Fixed tests in combination with newer CMFFormController which has the hotfix.  [maurits]
 
-- Workaround a test problem with outdated Firefox 34 used at jenkins.plone.org.
-  This Workaround can be removed once https://github.com/plone/jenkins.plone.org/issues/179 was solved.
-  [jensens]
+- Apply security hotfix 20160830 for ``@@plone-root-login``.  [maurits]
 
-- Fix select2 related robot test failures and give the test_tinymce.robot scenario a more unique name.
-  [thet]
-
-- Add missing ``jquery.browser`` dependency which is needed by patternslib.
-  [thet]
-
-- Toolbar fixes:
-  - Autoformat with cssbrush and js-beautify,
-  - Remove ``git diff`` in line 105, which broke compilation.
-  - Use patternslib ``pat-base`` instead of ``mockup-patterns-base``.
-  - Remove dependency on deprecated ``mockup-core``.
-  [thet]
-
-- Removed docstrings from PropertyManager methods to avoid publishing them.  [maurits]
-
-- Added publishing patch from Products.PloneHotfix20160419.
-  This avoids publishing some methods inherited from Zope or CMF.  [maurits]
-
-- Remove whitespaces in ``Products/CMFPlone/browser/templates/plone-frontpage.pt``.
-  [svx]
-
-- Fixed versioning for File and Image.
-   [iham]
-
-- Do not hide document byline viewlet by default;
-  it is controled by the `Allow anyone to view 'about' information` option in the `Security Settings` of `Site Setup` (closes `#1556`_).
-  [hvelarde]
-
-- *add item here*
-
-New:
-
-- *add item here*
-
-Fixes:
-
-- Fixed displaying the body text of a feed item.  This is when
-  ``render_body`` is switched on in the Syndication settings.
-- Only encode JS body if unicode in gruntfile generation script to avoid
-  unicode error.
-  [jensens]
-
-- Only encode CSS body if unicode in gruntfile generation script to avoid
-  unicode error.
-  [rnix]
-
-- Gruntfile failed if only css or only javascripts were registered.
-  [jensens]
+- Apply security hotfix 20160830 for ``isURLInPortal``.  [maurits]
 
 - Bundle aggregation must use ++plone++static overrided versions if any.
   [ebrehault]
@@ -142,47 +34,50 @@ Fixes:
 - Fix relative url in CSS in bundle aggregation
   [ebrehault]
 
-
-5.1a1 (2016-03-31)
-------------------
-
-Incompatibilities:
-
-- Changed these ``section`` elements to ``div`` elements: ``#viewlet-above-content``, ``#viewlet-above-content-body``, ``#content-core``, ``#viewlet-below-content-body``.
-  And these portlets ``section`` elements to ``aside`` elements: ``#portal-colophon``, ``#portal-footer-signature``.
-  This might affect your custom styling or javascript.
-  [maurits]
-
-New:
-
-- Upgrade to tinymce to 4.3.4
-  [vangheem]
-
-- For the controlpanel portlets, use the nearest site url as a base for the overview-controlpanel.
-  This gives more flexibility for sub site controlpanels.
+- Don't fail, when combining bundles and the target resource files (``BUNLDE-compiled.[min.js|css]``) do not yet exist on the filesystem.
+  Fixes GenericSetup failing silently on import with when a to-be-compiled bundle which exists only as registry entry is processed in the ``combine-bundle`` step.
   [thet]
 
-- added invisible-grid table styles
-  [agitator]
+- Don't fail, if ``timestamp.txt`` was deleted from the resource registries production folder.
+  [thet]
 
-- Control panel to mange portal actions
-  [ebrehault]
 
-- new less variable to configure the width of the toolbars submenu called ``plone-toolbar-submenu-width``.
-  [jensens]
+5.0.6rc1 (2016-08-23)
+---------------------
 
-- new zcml feature "plone-51" added. Profile version set to 5101.
-  Version references set to 5.1.0.
-  [jensens]
+Bug fixes:
 
-- Registered post_handler instead of plone-final.  The plone-final
-  import step now does nothing.  Instead, we redefined the old handler
-  as a post_handler explicitly for our main profile.  This is
-  guaranteed to really run after all other import steps, which was
-  never possible in the old way.  The plone-final step is kept for
-  backwards compatibility.
+- Have more patience in the thememapper robot test.  [maurits]
+
+- Fixed adding same resource/bundle to the request multiple times. [vangheem]
+
+- Fixed missing keyword in robot tests due to wrong documentation lines.  [maurits]
+
+- Marked two robot tests as unstable, non-critical.
+  Refs https://github.com/plone/Products.CMFPlone/issues/1656  [maurits]
+
+- Use ``Plone Test Setup`` and ``Plone Test Teardown`` from ``plone.app.robotframework`` master.  [maurits]
+
+- Fix select2 related robot test failures and give the test_tinymce.robot scenario a more unique name.
+  [thet]
+
+- Updated TinyMCE to fix a bug caused by a jQuery conflict that prevented controls working on some Chrome borwser.
+  [MatthewWilkes]
+
+
+5.0.5c2 (2016-06-22)
+--------------------
+
+New features:
+
+- Supported ``remove`` keyword for configlets in controlpanel.xml.  [maurits]
+
+- Fixed displaying the body text of a feed item.  This is when
+  ``render_body`` is switched on in the Syndication settings.
   [maurits]
 
+- Removed docstrings from some methods to avoid publishing them.  From
+  Products.PloneHotfix20160419.  [maurits]
 
 - Ensured front-page is English when creating an English site.
   Previously, when creating an English site with a browser that
@@ -196,6 +91,20 @@ New:
 
 - Fix bundle aggregation when bundle has no CSS (or no JS)
   [ebrehault]
+
+- Do not hard-code baseUrl in bundle to avoid bad URL when switching domains.
+  [ebrehault]
+
+Bug fixes:
+
+- Removed docstrings from PropertyManager methods to avoid publishing them.  [maurits]
+
+- Added publishing patch from Products.PloneHotfix20160419.
+  This avoids publishing some methods inherited from Zope or CMF.  [maurits]
+
+- Fix issue where incorrectly configured formats would cause TinyMCE to error
+  [vangheem]
+
 
 
 5.0.4 (2016-04-06)
