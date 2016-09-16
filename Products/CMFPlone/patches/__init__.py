@@ -29,3 +29,5 @@ import templatecookcheck        # Make sure templates aren't re-read in
 # production sites
 
 import publishing
+
+import z3c_form
