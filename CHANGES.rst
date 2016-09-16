@@ -25,6 +25,22 @@ Bug fixes:
 
 - Apply security hotfix 20160830 for ``isURLInPortal``.  [maurits]
 
+- Bundle aggregation must use ++plone++static overrided versions if any.
+  [ebrehault]
+
+- Fix bundle aggregation when bundle has no CSS (or no JS)
+  [ebrehault]
+
+- Fix relative url in CSS in bundle aggregation
+  [ebrehault]
+
+- Don't fail, when combining bundles and the target resource files (``BUNLDE-compiled.[min.js|css]``) do not yet exist on the filesystem.
+  Fixes GenericSetup failing silently on import with when a to-be-compiled bundle which exists only as registry entry is processed in the ``combine-bundle`` step.
+  [thet]
+
+- Don't fail, if ``timestamp.txt`` was deleted from the resource registries production folder.
+  [thet]
+
 
 5.0.6rc1 (2016-08-23)
 ---------------------
