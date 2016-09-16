@@ -33,3 +33,5 @@ except ImportError:
 
 import addMember
 import publishing
+
+import z3c_form
