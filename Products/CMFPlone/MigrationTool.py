@@ -53,16 +53,16 @@ class Addon(object):
             self.__class__.__name__, self.profile_id)
 
     def safe(self):
-        """Is this addon safe to upgrade?
+        # Is this addon safe to upgrade?
 
-        Is it safe to pass its profile id to
-        portal_setup.upgradeProfile?  That method checks if the
-        profile is 'unknown' and in this case does nothing.
+        # Is it safe to pass its profile id to
+        # portal_setup.upgradeProfile?  That method checks if the
+        # profile is 'unknown' and in this case does nothing.
 
-        But in some cases the profile may have been applied, but the
-        package is gone.  For that case, you can set
-        self.check_module.
-        """
+        # But in some cases the profile may have been applied, but the
+        # package is gone.  For that case, you can set
+        # self.check_module.
+
         if self.check_module:
             # Can we import a module, as evidence that the code is
             # available?  Note that some modules may have been faked,
@@ -125,7 +125,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     security.declareProtected(ManagePortal, 'getInstanceVersion')
 
     def getInstanceVersion(self):
-        """ The version this instance of plone is on """
+        # The version this instance of plone is on.
         setup = getToolByName(self, 'portal_setup')
         version = setup.getLastVersionForProfile(_DEFAULT_PROFILE)
         if isinstance(version, tuple):
@@ -153,7 +153,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     security.declareProtected(ManagePortal, 'setInstanceVersion')
 
     def setInstanceVersion(self, version):
-        """ The version this instance of plone is on """
+        # The version this instance of plone is on.
         setup = getToolByName(self, 'portal_setup')
         setup.setLastVersionForProfile(_DEFAULT_PROFILE, version)
         self._version = False
@@ -161,7 +161,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     security.declareProtected(ManagePortal, 'getFileSystemVersion')
 
     def getFileSystemVersion(self):
-        """ The version this instance of plone is on """
+        # The version this instance of plone is on.
         setup = getToolByName(self, 'portal_setup')
         try:
             return setup.getVersionForProfile(_DEFAULT_PROFILE)
@@ -172,20 +172,20 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     security.declareProtected(ManagePortal, 'getSoftwareVersion')
 
     def getSoftwareVersion(self):
-        """ The software version."""
+        # The software version.
         dist = pkg_resources.get_distribution('Products.CMFPlone')
         return dist.version
 
     security.declareProtected(ManagePortal, 'needUpgrading')
 
     def needUpgrading(self):
-        """ Need upgrading? """
+        # Need upgrading?
         return self.getInstanceVersion() != self.getFileSystemVersion()
 
     security.declareProtected(ManagePortal, 'coreVersions')
 
     def coreVersions(self):
-        """ Useful core information """
+        # Useful core information.
         vars = {}
         get_dist = pkg_resources.get_distribution
         vars['Zope'] = get_dist('Zope2').version
@@ -217,7 +217,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     security.declareProtected(ManagePortal, 'coreVersionsList')
 
     def coreVersionsList(self):
-        """ Useful core information """
+        # Useful core information.
         res = self.coreVersions().items()
         res.sort()
         return res
@@ -225,19 +225,19 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     security.declareProtected(ManagePortal, 'needUpdateRole')
 
     def needUpdateRole(self):
-        """ Do roles need to be updated? """
+        # Do roles need to be updated?
         return self._needUpdateRole
 
     security.declareProtected(ManagePortal, 'needRecatalog')
 
     def needRecatalog(self):
-        """ Does this thing now need recataloging? """
+        # Does this thing now need recataloging?
         return self._needRecatalog
 
     security.declareProtected(ManagePortal, 'upgrade')
 
     def upgrade(self, REQUEST=None, dry_run=None, swallow_errors=True):
-        """ perform the upgrade """
+        # Perform the upgrade.
         setup = getToolByName(self, 'portal_setup')
 
         # This sets the profile version if it wasn't set yet

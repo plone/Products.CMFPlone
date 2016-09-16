@@ -61,7 +61,7 @@ class OrderedContainer(Folder, OrderSupport):
     security.declarePrivate('getIdsSubset')
 
     def getIdsSubset(self, objs):
-        """Get the ids of only cmf objects (used for moveObjectsByDelta)."""
+        # Get the ids of only cmf objects (used for moveObjectsByDelta).
         ttool = getToolByName(self, 'portal_types')
         cmf_meta_types = [ti.Metatype() for ti in ttool.listTypeInfo()]
         return [obj['id'] for obj in objs
@@ -195,7 +195,7 @@ class BasePloneFolder(CatalogAware, WorkflowAware, OpaqueItemManager,
     security.declarePublic('contentValues')
 
     def contentValues(self, filter=None, sort_on=None, reverse=0):
-        """Able to sort on field."""
+        # Able to sort on field.
         values = PortalFolderBase.contentValues(self, filter=filter)
         if sort_on is not None:
             values.sort(lambda x, y,
@@ -210,9 +210,8 @@ class BasePloneFolder(CatalogAware, WorkflowAware, OpaqueItemManager,
 
     def listFolderContents(self, contentFilter=None,
                            suppressHiddenFiles=0):
-        """Optionally you can suppress "hidden" files, or files that
-        begin with .
-        """
+        # Optionally you can suppress "hidden" files, or files that
+        # begin with '.'
         contents = PortalFolderBase.listFolderContents(self,
                                                        contentFilter=contentFilter)
         if suppressHiddenFiles:
@@ -224,9 +223,8 @@ class BasePloneFolder(CatalogAware, WorkflowAware, OpaqueItemManager,
 
     def folderlistingFolderContents(self, contentFilter=None,
                                     suppressHiddenFiles=0):
-        """Calls listFolderContents in protected only by ACI so that
-        folder_listing can work without the List folder contents permission
-        """
+        # Calls listFolderContents in protected only by ACI so that
+        # folder_listing can work without the List folder contents permission.
         return self.listFolderContents(contentFilter, suppressHiddenFiles)
 
     # Override CMFCore's invokeFactory to return the id returned by the
@@ -234,7 +232,7 @@ class BasePloneFolder(CatalogAware, WorkflowAware, OpaqueItemManager,
     security.declareProtected(AddPortalContent, 'invokeFactory')
 
     def invokeFactory(self, type_name, id, RESPONSE=None, *args, **kw):
-        """Invokes the portal_types tool."""
+        # Invokes the portal_types tool.
         pt = getToolByName(self, 'portal_types')
         myType = pt.getTypeInfo(self)
         if myType is not None:

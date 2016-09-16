@@ -17,7 +17,7 @@ class TypesTool(PloneBaseTool, BaseTool):
     security.declarePublic('listTypeTitles')
 
     def listTypeTitles(self, container=None):
-        """ Return a dictionary of id/Title combinations """
+        # Return a dictionary of id/Title combinations.
         typenames = {}
         for t in self.listTypeInfo(container):
             name = t.getId()
@@ -29,8 +29,7 @@ class TypesTool(PloneBaseTool, BaseTool):
     security.declarePrivate('listActions')
 
     def listActions(self, info=None, object=None, category=None):
-        """ List all the actions defined by a provider.
-        """
+        # List all the actions defined by a provider.
         actions = []
         if object is None and info is not None:
             object = info.object

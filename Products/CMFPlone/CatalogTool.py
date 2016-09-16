@@ -301,16 +301,14 @@ class CatalogTool(PloneBaseTool, BaseTool):
         ZCatalog.__init__(self, self.getId())
 
     def _removeIndex(self, index):
-        """Safe removal of an index.
-        """
+        # Safe removal of an index.
         try:
             self.manage_delIndex(index)
         except:
             pass
 
     def _listAllowedRolesAndUsers(self, user):
-        """Makes sure the list includes the user's groups.
-        """
+        # Makes sure the list includes the user's groups.
         result = user.getRoles()
         if 'Anonymous' in result:
             # The anonymous user has no further roles
@@ -327,11 +325,9 @@ class CatalogTool(PloneBaseTool, BaseTool):
 
     @security.private
     def indexObject(self, object, idxs=None):
-        """Add object to catalog.
-
-        The optional idxs argument is a list of specific indexes
-        to populate (all of them by default).
-        """
+        # Add object to catalog.
+        # The optional idxs argument is a list of specific indexes
+        # to populate (all of them by default).
         if idxs is None:
             idxs = []
         self.reindexObject(object, idxs)
@@ -370,15 +366,15 @@ class CatalogTool(PloneBaseTool, BaseTool):
 
     @security.protected(SearchZCatalog)
     def searchResults(self, REQUEST=None, **kw):
-        """Calls ZCatalog.searchResults with extra arguments that
-        limit the results to what the user is allowed to see.
+        # Calls ZCatalog.searchResults with extra arguments that
+        # limit the results to what the user is allowed to see.
+        #
+        # This version uses the 'effectiveRange' DateRangeIndex.
+        #
+        # It also accepts a keyword argument show_inactive to disable
+        # effectiveRange checking entirely even for those without portal
+        # wide AccessInactivePortalContent permission.
 
-        This version uses the 'effectiveRange' DateRangeIndex.
-
-        It also accepts a keyword argument show_inactive to disable
-        effectiveRange checking entirely even for those without portal
-        wide AccessInactivePortalContent permission.
-        """
         kw = kw.copy()
         show_inactive = kw.get('show_inactive', False)
         if isinstance(REQUEST, dict) and not show_inactive:
@@ -418,10 +414,10 @@ class CatalogTool(PloneBaseTool, BaseTool):
 
     @security.protected(ManageZCatalogEntries)
     def clearFindAndRebuild(self):
-        """Empties catalog, then finds all contentish objects (i.e. objects
-           with an indexObject method), and reindexes them.
-           This may take a long time.
-        """
+        # Empties catalog, then finds all contentish objects (i.e. objects
+        # with an indexObject method), and reindexes them.
+        # This may take a long time.
+
         def indexObject(obj, path):
             if (base_hasattr(obj, 'indexObject') and
                     safe_callable(obj.indexObject)):

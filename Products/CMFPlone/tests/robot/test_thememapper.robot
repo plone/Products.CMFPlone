@@ -7,8 +7,8 @@ Library  Remote  ${PLONE_URL}/RobotRemote
 
 Resource  keywords.robot
 
-Test Setup  Run keywords  Open SauceLabs test browser  Refresh JS/CSS resources
-Test Teardown  Run keywords  Report test status  Close all browsers
+Test Setup  Run keywords  Plone Test Setup
+Test Teardown  Run keywords  Plone Test Teardown
 
 *** Variables ***
 
@@ -61,6 +61,7 @@ I open ${NAME}
     Click Element   jquery=.jqtree-element:contains("${NAME}")
 
 I expect ${NUM} tabs to be open
+    Sleep  1
     ${hits}=    Execute Javascript  return $('.navbar-nav li').length.toString();
     Should Be Equal     ${hits}     ${NUM}
 

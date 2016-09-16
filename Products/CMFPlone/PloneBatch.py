@@ -37,14 +37,14 @@ class Batch(QuantumBatch):
             calculate_pagerange(self.pagenumber, self.numpages, self.pagerange)
 
     def pageurl(self, formvariables, pagenumber=-1):
-        """ Makes the url for a given page """
+        # Makes the url for a given page.
         if pagenumber == -1:
             pagenumber = self.pagenumber
         b_start = pagenumber * (self.pagesize - self.overlap) - self.pagesize
         return make_query(formvariables, {self.b_start_str: b_start})
 
     def navurls(self, formvariables, navlist=None):
-        """ Returns the page number and url for the navigation quick links """
+        # Returns the page number and url for the navigation quick links.
         if navlist is None:
             navlist = []
         if not navlist:
@@ -53,11 +53,11 @@ class Batch(QuantumBatch):
                    (x, self.pageurl(formvariables, x)), navlist)
 
     def prevurls(self, formvariables):
-        """ Helper method to get prev navigation list from templates """
+        # Helper method to get prev navigation list from templates.
         return self.navurls(formvariables, self.previous_pages)
 
     def nexturls(self, formvariables):
-        """ Helper method to get next navigation list from templates """
+        # Helper method to get next navigation list from templates.
         return self.navurls(formvariables, self.next_pages)
 
     prevlist = QuantumBatch.previous_pages

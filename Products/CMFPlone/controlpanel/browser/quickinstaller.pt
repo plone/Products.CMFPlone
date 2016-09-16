@@ -26,7 +26,7 @@
           configuration, run buildout, and restart the server process.
           For detailed instructions see
           <span i18n:name="third_party_product">
-          <a i18n:translate="" href="http://plone.org/documentation/kb/installing-add-ons-quick-how-to">
+          <a i18n:translate="" href="http://docs.plone.org/manage/installing/installing_addons.html">
             Installing a third party add-on
           </a>
           </span>.
