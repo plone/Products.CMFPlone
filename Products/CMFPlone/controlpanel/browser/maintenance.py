@@ -8,6 +8,7 @@ from z3c.form import form
 from AccessControl import getSecurityManager
 from AccessControl.Permissions import view_management_screens
 from Acquisition import aq_inner
+from Globals import DevelopmentMode
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import IMaintenanceSchema
@@ -96,8 +97,7 @@ class MaintenanceControlPanel(AutoExtensibleForm, form.EditForm):
         return False
 
     def isDevelopmentMode(self):
-        qi = getToolByName(self.context, 'portal_quickinstaller')
-        return qi.isDevelopmentMode()
+        return bool(DevelopmentMode)
 
     def coreVersions(self):
         mt = getToolByName(self.context, 'portal_migration')

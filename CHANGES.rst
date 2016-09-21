@@ -21,6 +21,11 @@ Breaking changes:
 
 New features:
 
+- PLIP 1340: Deprecate portal_quickinstaller.
+  You should no longer use CMFQuickInstallerTool methods, but GenericSetup profiles.
+  See https://github.com/plone/Products.CMFPlone/issues/1340
+  [maurits]
+
 - Include mockup 2.4.0.
   [thet]
 

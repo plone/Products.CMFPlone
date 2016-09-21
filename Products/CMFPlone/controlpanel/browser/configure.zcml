@@ -206,6 +206,16 @@
 
   <!-- Quick Installer -->
 
+  <!-- First register an easy to remember browser view '@@installer'.
+       Maybe we want this as utility instead.  It is intended as
+       replacement for any use of the portal_quickinstaller. -->
+  <browser:page
+    for="*"
+    name="installer"
+    class=".quickinstaller.InstallerView"
+    permission="cmf.ManagePortal"
+    />
+
   <browser:page
       name="prefs_install_products_form"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"

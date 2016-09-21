@@ -692,3 +692,10 @@ def getSiteLogo(site=None):
             site_url, filename)
     else:
         return '%s/logo.png' % site_url
+
+
+def get_installer(context, request=None):
+    if request is None:
+        request = aq_get(context, 'REQUEST', None)
+    view = getMultiAdapter((context, request), name='installer')
+    return view

@@ -17,12 +17,59 @@ _IMREALLYPLONE5 = True
 
 
 @implementer(INonInstallable)
-class HiddenProfiles(object):
+class NonInstallable(object):
+
+    def getNonInstallableProducts(self):
+        return [
+            'Archetypes', 'Products.Archetypes',
+            'CMFDefault', 'Products.CMFDefault',
+            'CMFPlone', 'Products.CMFPlone', 'Products.CMFPlone.migrations',
+            'CMFTopic', 'Products.CMFTopic',
+            'CMFUid', 'Products.CMFUid',
+            'DCWorkflow', 'Products.DCWorkflow',
+            'PasswordResetTool', 'Products.PasswordResetTool',
+            'PlonePAS', 'Products.PlonePAS',
+            'wicked.at',
+            'PloneLanguageTool', 'Products.PloneLanguageTool',
+            'CMFFormController', 'Products.CMFFormController',
+            'MimetypesRegistry', 'Products.MimetypesRegistry',
+            'PortalTransforms', 'Products.PortalTransforms',
+            'CMFDiffTool', 'Products.CMFDiffTool',
+            'CMFEditions', 'Products.CMFEditions',
+            'Products.NuPlone',
+            'borg.localrole',
+            'plone.app.blob',
+            'plone.app.caching',
+            'plone.app.collection',
+            'plone.app.dexterity',
+            'plone.app.discussion',
+            'plone.app.event',
+            'plone.app.folder',
+            'plone.app.imaging',
+            'plone.app.intid',
+            'plone.app.linkintegrity',
+            'plone.app.registry',
+            'plone.app.referenceablebehavior',
+            'plone.app.relationfield',
+            'plone.app.theming',
+            'plone.app.users',
+            'plone.app.widgets',
+            'plone.app.z3cform',
+            'plone.formwidget.recurrence',
+            'plone.keyring',
+            'plone.outputfilters',
+            'plone.portlet.static',
+            'plone.portlet.collection',
+            'plone.protect',
+            'plone.resource',
+            'plonetheme.barceloneta',
+        ]
 
     def getNonInstallableProfiles(self):
         return [_DEFAULT_PROFILE,
                 _CONTENT_PROFILE,
                 u'Products.Archetypes:Archetypes',
+                u'Products.ATContentTypes:default',
                 u'Products.CMFDiffTool:CMFDiffTool',
                 u'Products.CMFEditions:CMFEditions',
                 u'Products.CMFFormController:CMFFormController',

@@ -1,5 +1,6 @@
 from AccessControl import getSecurityManager
 from Acquisition import aq_inner
+from Globals import DevelopmentMode
 from Products.CMFPlone.interfaces.controlpanel import IMailSchema
 from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.utils import getToolByName
@@ -57,10 +58,8 @@ class OverviewControlPanel(controlpanel.RegistryEditForm):
             versions.append('PIL ' + pil)
         return versions
 
-    @memoize
     def is_dev_mode(self):
-        qi = getToolByName(aq_inner(self.context), 'portal_quickinstaller')
-        return qi.isDevelopmentMode()
+        return bool(DevelopmentMode)
 
     def upgrade_warning(self):
         mt = getToolByName(aq_inner(self.context), 'portal_migration')
