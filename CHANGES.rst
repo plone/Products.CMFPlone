@@ -10,6 +10,11 @@ Changelog
 
 Breaking changes:
 
+- Removed our patch that added ``secureSend`` to the ``MailHost``.
+  This was originally scheduled for removal in Plone 5.0.  See `issue
+  965 <https://github.com/plone/Products.CMFPlone/issues/965>`_.
+  [maurits]
+
 - The related items widget has changed a lot.
   See the Mockup changelog for 2.4.0 here: https://github.com/plone/mockup/blob/master/CHANGES.rst
 

@@ -15,9 +15,6 @@ csrf.applyPatches()             # CSRF attacks
 
 import speed                    # Various caching patches to improve speed
 
-import securemailhost           # SecureMailHost BBB, remove in Plone 5.0
-securemailhost.applyPatches()
-
 import iso8601                  # use `DateTime.ISO8601` for `DateTime.ISO`
 iso8601.applyPatches()
 
