@@ -6,7 +6,7 @@ Changelog
 =========
 
 
-5.0.6 (unreleased)
+5.0.7 (unreleased)
 ------------------
 
 Breaking changes:
@@ -44,8 +44,8 @@ Bug fixes:
   [thet]
 
 
-5.0.6rc1 (2016-08-23)
----------------------
+5.0.6 (2016-09-23)
+------------------
 
 Bug fixes:
 
