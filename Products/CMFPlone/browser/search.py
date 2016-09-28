@@ -240,7 +240,7 @@ class SortOption(object):
 
     def selected(self):
         sort_on = self.request.get('sort_on', '')
-        return sort_on == self.sortkey
+        return sort_on == self.sortkey and sort_on != ''
 
     def url(self):
         q = {}
