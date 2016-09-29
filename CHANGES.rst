@@ -58,6 +58,10 @@ Bug fixes:
 - Add utf8 headers to all Python source files. [jensens]
 
 - Add default icon for top-level contentview and contentmenu toolbar entries [alecm]
+- Reset and re-enable ``define`` and ``require`` for the ``plone-legacy`` bundle in development mode.
+  Fixes issues with legacy scripts having RequireJS integration in development mode.
+  In Production mode, resetting  and re-enabling is done in the compiled bundle.
+  [thet]
 
 - Apply security hotfix 20160830 for ``z3c.form`` widgets.  [maurits]
 
