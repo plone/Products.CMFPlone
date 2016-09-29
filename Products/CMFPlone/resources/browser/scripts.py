@@ -14,6 +14,7 @@ class ScriptsView(ResourceView):
     def get_data(self, bundle, result):
         bundle_name = bundle.__prefix__.split('/', 1)[1].rstrip('.')
         if self.develop_bundle(bundle, 'develop_javascript'):
+            # Bundle development mode
             resources = self.get_resources()
             for resource in bundle.resources:
                 if resource in resources:
@@ -29,7 +30,12 @@ class ScriptsView(ResourceView):
                         data = {
                             'bundle': bundle_name,
                             'conditionalcomment': bundle.conditionalcomment,  # noqa
-                            'src': src}
+                            'src': src,
+                            # Reset RequireJS if bundle is in non-compile to
+                            # avoid "Mismatched anonymous define()" in legacy
+                            # scripts.
+                            'resetrjs': bundle.compile is False
+                        }
                         result.append(data)
         else:
             if bundle.compile is False:
