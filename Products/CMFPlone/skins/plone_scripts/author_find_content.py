@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 ## Script (Python) "author_find_content"
 ##bind container=container
 ##bind context=context

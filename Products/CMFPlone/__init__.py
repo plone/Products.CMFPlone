@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from App.ImageFile import ImageFile
 import os
 import sys

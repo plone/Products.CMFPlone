@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from Products.CMFPlone.exportimport.tests.base import BodyAdapterTestCase
 from Products.CMFPlone.PropertiesTool import PropertiesTool
 from Products.CMFPlone.PropertiesTool import SimpleItemWithProperties

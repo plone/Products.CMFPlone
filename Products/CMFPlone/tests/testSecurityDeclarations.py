@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Tests the security declarations Plone makes on resources
 # for access by restricted code (aka PythonScripts)
 

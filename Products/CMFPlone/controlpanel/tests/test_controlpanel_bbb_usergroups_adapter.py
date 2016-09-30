@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from plone.app.testing import setRoles
 from Products.CMFPlone.interfaces import IUserGroupsSettingsSchema
 from zope.component import getAdapter

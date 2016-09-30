@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from Products.CMFCore.permissions import ManagePortal
 from ZTUtils import make_query
 from itertools import chain

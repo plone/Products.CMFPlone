@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 ## Script (Python) "browserDefault"
 ##bind container=container
 ##bind context=context

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 ##parameters=items,columns=3
 ##title=format a list of items into columns for better display
 

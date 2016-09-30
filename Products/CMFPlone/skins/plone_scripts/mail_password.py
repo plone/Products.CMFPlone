@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 ## Script (Python) "mail_password"
 ##bind container=container
 ##bind context=context

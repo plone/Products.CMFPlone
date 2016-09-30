@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 ## Script (Python) "prefs_error_log_setProperties"
 ##bind container=container
 ##bind context=context

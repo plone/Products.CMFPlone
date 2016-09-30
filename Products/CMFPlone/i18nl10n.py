@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Collection of i18n and l10n utility methods.
 """

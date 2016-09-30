@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from Acquisition import aq_inner, aq_base, aq_parent
 from Products.CMFCore.Expression import Expression
 from Products.CMFCore.Expression import createExprContext

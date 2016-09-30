@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from Acquisition import aq_base
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME

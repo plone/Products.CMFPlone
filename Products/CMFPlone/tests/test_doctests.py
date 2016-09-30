@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from doctest import DocTestSuite, DocFileSuite
 from Products.CMFPlone.tests.PloneTestCase import FunctionalTestCase
 from Testing.ZopeTestCase import ZopeDocTestSuite

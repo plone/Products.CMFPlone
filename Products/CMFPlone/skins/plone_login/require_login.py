@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 ## Script (Python) "require_login"
 ##bind container=container
 ##bind context=context

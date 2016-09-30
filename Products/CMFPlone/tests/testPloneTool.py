@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from Acquisition import Implicit
 from plone.app.testing import SITE_OWNER_NAME
 from plone.registry.interfaces import IRegistry

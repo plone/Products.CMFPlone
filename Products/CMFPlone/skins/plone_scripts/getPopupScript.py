@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 ##parameters=input_id
 
 from zExceptions import Forbidden

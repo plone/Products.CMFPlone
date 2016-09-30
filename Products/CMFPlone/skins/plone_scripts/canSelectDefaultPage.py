@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 ## Script (Python) "canSelectDefaultPage"
 ##title=Find out if a default page can be selected on this folderish item
 ##bind container=container

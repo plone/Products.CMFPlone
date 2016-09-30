@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 ## Script (Python) "prefs_error_log_update"
 ## Giorgio, Lorty - Plone Castle Sprint
 

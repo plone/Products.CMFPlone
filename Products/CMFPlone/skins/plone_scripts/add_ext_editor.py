@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 ## Script (Python) "add_ext_editor"
 ##bind container=container
 ##bind context=context

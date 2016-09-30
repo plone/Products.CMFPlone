@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 ## Script (Python) "pretty_title_or_id"
 ##bind container=container
 ##bind context=context
