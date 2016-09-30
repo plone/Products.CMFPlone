@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 ## Script (Python) "raiseUnauthorized"
 ##bind container=container
 ##bind context=context

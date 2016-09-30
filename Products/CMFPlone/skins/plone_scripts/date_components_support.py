@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 ## Script (Python) "date_components_support"
 ##bind container=container
 ##bind context=context

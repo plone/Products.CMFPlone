@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from zope.interface import Interface
 from zope import schema
 from Products.CMFPlone import PloneMessageFactory as _

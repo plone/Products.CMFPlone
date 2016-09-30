@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # The implementation in zope.pagetemplate always checks for
 # updated files unless python is run with -O, but we want to
 # base this on the Zope2 debug mode flag.

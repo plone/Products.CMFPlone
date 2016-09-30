@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from Products.CMFPlone.interfaces import ISiteSchema
 from plone.formwidget.namedfile.converter import b64decode_file
 from plone.namedfile.browser import Download

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """ CMFPlone product permissions """
 from AccessControl import ModuleSecurityInfo
 

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 ## Script (Python) "plone_change_password"
 ##bind container=container
 ##bind context=context

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 ## Script (Python) "create_query_string"
 ##bind container=container
 ##bind context=context

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Tests security of content publishing operations
 # code inspired by Ween
 

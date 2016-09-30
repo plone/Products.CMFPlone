@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 ## Script (Python) "hasIndexHtml"
 ##title=Find out if this folder has an index_html page
 ##bind container=container

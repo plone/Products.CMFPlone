@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
 from Testing.makerequest import makerequest
 from plone.app.testing import SITE_OWNER_NAME

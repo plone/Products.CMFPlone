@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD

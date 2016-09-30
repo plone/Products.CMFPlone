@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 ## Script (Python) "standard_error_message"
 ##bind container=container
 ##bind context=context

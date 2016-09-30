@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from plone.testing.z2 import Browser
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME

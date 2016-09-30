@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_ROBOT_TESTING
 from plone.app.testing import ROBOT_TEST_LEVEL
 from plone.testing import layered

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from plone.resource.traversal import ResourceTraverser
 from zope.component import queryUtility
 from plone.resource.interfaces import IResourceDirectory

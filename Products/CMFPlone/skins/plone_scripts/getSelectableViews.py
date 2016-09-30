@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 ## Script (Python) "getSelectableViews"
 ##title=Get the view templates available from IBrowserDefault on the context
 ##bind container=container

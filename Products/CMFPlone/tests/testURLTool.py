@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import unittest
 
 from Products.CMFCore.tests.base.dummy import DummySite

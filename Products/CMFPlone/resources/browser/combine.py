@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from Acquisition import aq_base
 from datetime import datetime
 from plone.registry.interfaces import IRegistry

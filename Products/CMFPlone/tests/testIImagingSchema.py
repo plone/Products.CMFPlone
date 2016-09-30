@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from plone.app.testing.bbb import PloneTestCase
 from Products.CMFPlone.interfaces.controlpanel import IImagingSchema
 from plone.registry.interfaces import IRegistry

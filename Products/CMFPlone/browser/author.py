@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from AccessControl import Unauthorized
 
 from Products.CMFCore.interfaces import IPropertiesTool

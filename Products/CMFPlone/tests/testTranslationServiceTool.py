@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Test toLocalizedTime script and TranslationServiceTool.
 
 from Products.CMFPlone.tests import PloneTestCase

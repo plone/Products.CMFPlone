@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from OFS.role import RoleManager
 
 ADD_SECURITY_WARNING = '''
