@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from DateTime import DateTime
 from uuid import uuid3
 from uuid import NAMESPACE_OID

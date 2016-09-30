@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from AccessControl import Unauthorized
 from plone.app.testing.bbb import PloneTestCase
 from Products.CMFCore.utils import getToolByName

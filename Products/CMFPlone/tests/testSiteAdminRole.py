@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import pkg_resources
 from Testing import ZopeTestCase as ztc
 from AccessControl.PermissionRole import rolesForPermissionOn

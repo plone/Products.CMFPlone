@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from zope.interface.common.sequence import IReadSequence
 
 

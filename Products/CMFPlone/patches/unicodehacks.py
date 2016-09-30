@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 def _unicode_replace(structure):
     if isinstance(structure, str):
         text = structure.decode('utf-8', 'replace')

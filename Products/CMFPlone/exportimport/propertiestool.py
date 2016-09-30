@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Plone Properties tool setup handlers.
 
 $Id:$

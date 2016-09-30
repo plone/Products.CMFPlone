@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from plone.autoform.form import AutoExtensibleForm
 from Products.CMFCore.ActionInformation import Action
 from Products.CMFCore.interfaces import IAction, IActionCategory

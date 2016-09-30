@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import re
 from Products.CMFCore.utils import getToolByName
 from AccessControl import Unauthorized

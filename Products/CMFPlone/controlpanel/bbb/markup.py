@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from Products.CMFPlone.interfaces import IMarkupSchema
 from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
 from plone.registry.interfaces import IRegistry

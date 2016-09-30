@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Helper objects for the Plone test suite
 #

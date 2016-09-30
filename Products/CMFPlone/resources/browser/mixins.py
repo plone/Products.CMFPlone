@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from Products.CMFPlone.interfaces import IResourceRegistry
 from Products.Five.browser import BrowserView
 from plone.registry.interfaces import IRegistry

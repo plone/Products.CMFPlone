@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from Products.CMFPlone.browser.ploneview import Plone
 from Products.CMFPlone.tests import dummy
 from Products.CMFPlone.tests import PloneTestCase

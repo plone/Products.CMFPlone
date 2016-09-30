@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from plone.testing.zca import UNIT_TESTING
 from Products.GenericSetup.testing import BodyAdapterTestCase
 from Products.GenericSetup.testing import NodeAdapterTestCase

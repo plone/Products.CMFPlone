@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from plone.app.testing.bbb import PloneTestCase
 from Products.CMFPlone.PloneBatch import Batch
 from Products.ZCatalog.Lazy import LazyMap
