@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # flake8: noqa
 from basetool import IPloneBaseTool
 from basetool import IPloneCatalogTool

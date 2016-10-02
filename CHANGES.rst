@@ -31,6 +31,8 @@ New features:
 
 Bug fixes:
 
+- Add utf8 headers to all Python source files. [jensens]
+
 - Apply security hotfix 20160830 for ``z3c.form`` widgets.  [maurits]
 
 - Fixed tests in combination with newer CMFFormController which has the hotfix.  [maurits]

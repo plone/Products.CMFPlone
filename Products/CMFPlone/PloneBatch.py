@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from ZTUtils import make_query
 
 from plone.batching.batch import QuantumBatch

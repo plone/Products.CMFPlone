@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from Products.CMFPlone.resources.exportimport.resourceregistry import \
     ResourceRegistryNodeAdapter
 from Products.CMFPlone.resources.exportimport.resourceregistry import \

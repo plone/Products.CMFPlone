@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """This module provides backwards compatiblity for products using the
 SecureMailHost API.  It should be removed entirely for Plone 5.0."""
 import sys

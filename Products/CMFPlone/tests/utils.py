@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from persistent.list import PersistentList
 import re
 

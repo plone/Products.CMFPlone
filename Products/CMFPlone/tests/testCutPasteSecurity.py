@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from AccessControl import Unauthorized
 from Acquisition import aq_base
 from Products.CMFPlone.tests.PloneTestCase import PloneTestCase

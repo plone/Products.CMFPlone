@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from Products.CMFPlone.tests import PloneTestCase
 from plone.app.layout.nextprevious.interfaces import INextPreviousProvider
 

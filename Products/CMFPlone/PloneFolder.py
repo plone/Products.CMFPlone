@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from plone.memoize import view
 from App.class_init import InitializeClass
 from zExceptions import NotFound

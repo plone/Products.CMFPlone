@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from zope.interface import directlyProvides, Interface
 from zope.component import provideAdapter, getGlobalSiteManager
 

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from Products.ResourceRegistries.interfaces.registries import IResourceRegistry
 from Products.ResourceRegistries.interfaces.registries import ICSSRegistry
 from Products.ResourceRegistries.interfaces.registries import IKSSRegistry
