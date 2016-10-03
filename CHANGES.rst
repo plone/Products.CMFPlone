@@ -53,6 +53,9 @@ Bug fixes:
 - Remove LanguageTool layer.
   [gforcada]
 
+- Use fork of grunt-sed which is compatible with newer grunt version.
+  [gforcada]
+
 5.1a2 (2016-08-19)
 ------------------
 
