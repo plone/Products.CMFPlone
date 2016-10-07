@@ -4,7 +4,7 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=q,limit=10,path=None
+##parameters=q,limit=10,path=None,sortOn=None
 ##title=Determine whether to show an id in an edit form
 
 from Products.CMFCore.utils import getToolByName
@@ -72,6 +72,12 @@ searchterms = url_quote_plus(r)
 REQUEST = context.REQUEST
 params = {'SearchableText': r,
           'sort_limit': limit + 1}
+if sortOn is None:
+    sortOn = siteProperties.getProperty('sort_on', 'relevance')
+if sortOn != 'relevance':
+    params['sort_on'] = sortOn
+if sortOn == 'Date':
+    params['sort_order'] = 'reverse'
 if 'portal_type' not in REQUEST:
     params['portal_type'] = friendly_types
 

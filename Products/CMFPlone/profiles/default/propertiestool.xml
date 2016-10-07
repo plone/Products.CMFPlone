@@ -157,5 +157,6 @@
   <property name="external_login_url" type="string"/>
   <property name="external_logout_url" type="string"/>
   <property name="external_login_iframe" type="boolean"/>
+  <property name="sort_on" type="string">relevance</property>
  </object>
 </object>
