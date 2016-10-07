@@ -211,7 +211,8 @@
                       </span>
                     </nav>
                     <div id="search-results"
-                         tal:define="navigation_root_url context/@@plone_portal_state/navigation_root_url;">
+                         tal:define="navigation_root_url context/@@plone_portal_state/navigation_root_url;"
+                         tal:attributes="data-default-sort request/sort_on">
 
                       <metal:noresults tal:condition="not: batch">
                         <p i18n:domain="plone"><strong i18n:translate="description_no_results_found">No results were found.</strong></p>

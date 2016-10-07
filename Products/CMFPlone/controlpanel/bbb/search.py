@@ -40,3 +40,11 @@ class SearchControlPanelAdapter(object):
         get_types_not_searched,
         set_types_not_searched
     )
+
+    @property
+    def sort_on(self):
+        return self.search_settings.sort_on
+
+    @sort_on.setter
+    def sort_on(self, value):
+        self.search_settings.sort_on = value

@@ -21,6 +21,9 @@ Breaking changes:
 
 New features:
 
+- Add sort_on field to search controlpanel.
+  [rodfersou]
+
 - PLIP 1340: Deprecate portal_quickinstaller.
   You should no longer use CMFQuickInstallerTool methods, but GenericSetup profiles.
   See https://github.com/plone/Products.CMFPlone/issues/1340

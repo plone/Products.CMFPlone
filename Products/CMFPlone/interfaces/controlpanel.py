@@ -1021,6 +1021,18 @@ class ISearchSchema(Interface):
         default=160,
     )
 
+    sort_on = schema.Choice(
+        title=_(u'label_sort_on', default=u'Sort on'),
+        description=_(u"Sort the default search on this index"),
+        vocabulary=SimpleVocabulary([
+            SimpleTerm(u'relevance', u'relevance', _(u'relevance')),
+            SimpleTerm(u'Date', u'Date', _(u'date (newest first)')),
+            SimpleTerm(u'sortable_title', u'sortable_title',
+                       _(u'alphabetically'))]),
+        default=u'relevance',
+        required=True
+    )
+
 
 class ISecuritySchema(Interface):
 
