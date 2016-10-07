@@ -55,7 +55,7 @@ class TinyMCESettingsGenerator(object):
         if base is None:
             val = {}
         else:
-            val = base
+            val = base.copy()
         val.update({
             'title': parts[0],
             _type: parts[1]
@@ -93,7 +93,8 @@ class TinyMCESettingsGenerator(object):
             'items': self.get_styles(alignment_styles)
         }, {
             'title': 'Tables',
-            'items': self.get_styles(table_styles)
+            'items': self.get_styles(
+                table_styles, 'classes', {'selector': 'table'})
         }]
 
     def get_tiny_config(self):
