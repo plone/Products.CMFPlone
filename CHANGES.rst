@@ -52,6 +52,7 @@ New features:
 Bug fixes:
 
 - Avoid dependency on plone.app.imaging. [davisagli]
+- Fix TinyMCE table styles [vangheem]
 
 - Add utf8 headers to all Python source files. [jensens]
 
