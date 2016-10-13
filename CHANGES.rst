@@ -34,6 +34,8 @@ New features:
 
 Bug fixes:
 
+- Restore ability to include head when loading via ajax [displacedaussie]
+
 - Add utf8 headers to all Python source files. [jensens]
 
 - Apply security hotfix 20160830 for ``z3c.form`` widgets.  [maurits]

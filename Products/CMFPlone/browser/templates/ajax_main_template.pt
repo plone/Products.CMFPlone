@@ -12,6 +12,7 @@
         portal_url portal_state/portal_url;
         checkPermission nocall: context/portal_membership/checkPermission;
         site_properties context/portal_properties/site_properties;
+        ajax_include_head request/ajax_include_head | nothing;
         ajax_load python:True;"
     i18n:domain="plone"
     tal:attributes="lang lang;">
@@ -20,6 +21,23 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <tal:ajaxhead condition="ajax_include_head">
+    <div tal:replace="structure provider:plone.htmlhead" />
+
+    <tal:comment replace="nothing">
+        Various slots where you can insert elements in the header from a template.
+    </tal:comment>
+    <metal:topslot define-slot="top_slot" />
+    <metal:headslot define-slot="head_slot" />
+    <metal:styleslot define-slot="style_slot" />
+
+    <div tal:replace="structure provider:plone.scripts" />
+    <metal:javascriptslot define-slot="javascript_head_slot" />
+
+    <link tal:replace="structure provider:plone.htmlhead.links" />
+    <meta name="generator" content="Plone - http://plone.com" />
+    </tal:ajaxhead>
 
 </head>
 
