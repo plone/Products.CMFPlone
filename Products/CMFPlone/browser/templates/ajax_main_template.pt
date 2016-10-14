@@ -55,7 +55,7 @@
 
     <header id="portal-top" i18n:domain="plone"/>
     <aside id="global_statusmessage">
-      <tal:message tal:content="provider:plone.globalstatusmessage"/>
+      <tal:message tal:content="structure provider:plone.globalstatusmessage"/>
       <div metal:define-slot="global_statusmessage">
       </div>
     </aside>
