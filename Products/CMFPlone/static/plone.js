@@ -46,7 +46,8 @@ require([
   'use strict';
 
   // initialize only if we are in top frame
-  if (window.parent === window) {
+  if ((window.parent === window) ||
+        (window.frameElement.nodeName === 'IFRAME')) {
     $(document).ready(function() {
       $('body').addClass('pat-plone');
       if (!registry.initialized) {
