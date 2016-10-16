@@ -666,15 +666,31 @@ def bodyfinder(text):
     return text[bodystart:bodyend]
 
 
-# XXX nasty? better than re-writting same method. Circular import issues here
 def getAllowedSizes():
-    from plone.app.imaging.utils import getAllowedSizes as func
-    return func()
+    registry = queryUtility(IRegistry)
+    if not registry:
+        return None
+    settings = registry.forInterface(
+        IImagingSchema, prefix="plone", check=False)
+    if not settings.allowed_sizes:
+        return None
+    sizes = {}
+    for line in settings.allowed_sizes:
+        line = line.strip()
+        if line:
+            name, width, height = pattern.match(line).groups()
+            name = name.strip().replace(' ', '_')
+            sizes[name] = int(width), int(height)
+    return sizes
 
 
 def getQuality():
-    from plone.app.imaging.utils import getQuality as func
-    return func()
+    registry = queryUtility(IRegistry)
+    if registry:
+        settings = registry.forInterface(
+            IImagingSchema, prefix="plone", check=False)
+        return settings.quality or QUALITY_DEFAULT
+    return QUALITY_DEFAULT
 
 
 def getSiteLogo(site=None):

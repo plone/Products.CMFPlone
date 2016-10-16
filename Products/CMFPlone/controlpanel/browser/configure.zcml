@@ -2,8 +2,13 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser">
 
-  <!-- needed for control panel permission -->
-  <include package="plone.app.imaging" />
+  <!-- the condition is to avoid a conflict with the
+       older permission that is registered by plone.app.imaging -->
+  <configure zcml:condition="not-installed plone.app.imaging">
+    <permission
+        id="plone.app.controlpanel.Imaging"
+        title="Plone Site Setup: Imaging" />
+  </configure>
 
   <permission
       id="plone.app.controlpanel.TinyMCE"
