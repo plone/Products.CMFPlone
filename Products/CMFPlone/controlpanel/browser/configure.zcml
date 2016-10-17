@@ -1,6 +1,7 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
-    xmlns:browser="http://namespaces.zope.org/browser">
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:zcml="http://namespaces.zope.org/zcml">
 
   <!-- the condition is to avoid a conflict with the
        older permission that is registered by plone.app.imaging -->
