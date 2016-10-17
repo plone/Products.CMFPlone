@@ -20,6 +20,7 @@ from Products.CMFCore.permissions import ManageUsers
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.utils import ToolInit as CMFCoreToolInit
 from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone.interfaces.controlpanel import IImagingSchema
 from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
 from types import ClassType
 from webdav.interfaces import IWriteLock
