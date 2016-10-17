@@ -34,6 +34,8 @@ New features:
 
 Bug fixes:
 
+- Avoid dependency on plone.app.imaging. [davisagli]
+
 - Add utf8 headers to all Python source files. [jensens]
 
 - Apply security hotfix 20160830 for ``z3c.form`` widgets.  [maurits]
