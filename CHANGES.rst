@@ -18,6 +18,7 @@ Breaking changes:
   This change shouldn't impact too much, because the form unload protection didn't work at all in Plone 5 until now.
   [thet]
 
+-
 
 New features:
 
@@ -58,6 +59,10 @@ Bug fixes:
 
 - Use fork of grunt-sed which is compatible with newer grunt version.
   [gforcada]
+
+- Fixed setuphandlers for "first_weekday_setup" to use strings.
+  (depends on https://github.com/plone/plone.app.vocabularies/tree/issue_41)
+  [iham]
 
 5.1a2 (2016-08-19)
 ------------------

@@ -203,7 +203,7 @@ def first_weekday_setup(context):
         # don't overwrite if it's already set
         return
 
-    first = 6
+    first = '6'
     try:
         site = getSite()
         # find the locale implied by the portal's language
@@ -214,7 +214,7 @@ def first_weekday_setup(context):
         gregorian_calendar = locale.dates.calendars.get(u'gregorian', None)
         if gregorian_calendar is not None:
             day = gregorian_calendar.week.get('firstDay', 7)
-            first = 6 if day == 0 else day - 1
+            first = '6' if day == 0 else str(day - 1)
     except LoadLocaleError:
         # If we cannot get the locale, just Sunday as first weekday
         pass
