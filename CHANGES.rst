@@ -18,6 +18,8 @@ Breaking changes:
   This change shouldn't impact too much, because the form unload protection didn't work at all in Plone 5 until now.
   [thet]
 
+- MimetypesRegistry icons are now a browser resource directory instead of skins folder.
+  [jensens]
 
 New features:
 
