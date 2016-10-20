@@ -27,11 +27,9 @@ from DateTime import DateTime
 from zope.component import getUtility
 from zope.interface import implementer
 
-module_security = ModuleSecurityInfo('Products.PasswordResetTool.PasswordResetTool')
+module_security = ModuleSecurityInfo('Products.CMFPlone.PasswordResetTool')
 
 module_security.declarePublic('InvalidRequestError')
-
-
 class InvalidRequestError(Exception):
     def __init__(self, value=''):
         self.value = value
@@ -40,8 +38,6 @@ class InvalidRequestError(Exception):
         return repr(self.value)
 
 module_security.declarePublic('ExpiredRequestError')
-
-
 class ExpiredRequestError(Exception):
     def __init__(self, value=''):
         self.value = value

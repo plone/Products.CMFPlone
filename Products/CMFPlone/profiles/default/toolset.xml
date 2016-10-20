@@ -31,7 +31,7 @@
  <required tool_id="portal_migration"
            class="Products.CMFPlone.MigrationTool.MigrationTool"/>
  <required tool_id="portal_password_reset"
-           class="Products.PasswordResetTool.PasswordResetTool.PasswordResetTool"/>
+           class="Products.CMFPlone.PasswordResetTool.PasswordResetTool"/>
  <required tool_id="portal_properties"
            class="Products.CMFPlone.PropertiesTool.PropertiesTool"/>
  <required tool_id="portal_quickinstaller"
@@ -58,6 +58,4 @@
            class="Products.CMFPlone.WorkflowTool.WorkflowTool"/>
  <required tool_id="translation_service"
            class="Products.CMFPlone.TranslationServiceTool.TranslationServiceTool"/>
-  <required tool_id="portal_password_reset"
-           class="Products.CMFPlone.PasswordResetTool.PasswordResetTool"/>
 </tool-setup>
