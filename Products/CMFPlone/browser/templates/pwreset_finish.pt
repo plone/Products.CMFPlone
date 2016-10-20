@@ -1,0 +1,19 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
+      lang="en-US"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="passwordresettool">
+<body>
+
+<metal:main fill-slot="main">
+    <h1 class="documentFirstHeading"
+        i18n:translate="heading_pwreset_success">Password set</h1>
+
+    <div class="documentDescription" i18n:translate="message_pwreset_success">
+        Your password has been set successfully. You may now log in with your
+        new password.
+    </div>
+
+</metal:main>
+
+</body>
+</html>

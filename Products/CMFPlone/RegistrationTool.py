@@ -23,6 +23,7 @@ from Products.PluggableAuthService.interfaces.plugins import IValidationPlugin
 from Products.PluggableAuthService.permissions import SetOwnPassword
 from smtplib import SMTPException, SMTPRecipientsRefused
 from zope.component import getUtility
+from zope.component import getMultiAdapter
 from zope.i18nmessageid import MessageFactory
 from zope.schema import ValidationError
 import random
@@ -368,8 +369,10 @@ class RegistrationTool(PloneBaseTool, BaseTool):
 
         registry = getUtility(IRegistry)
         encoding = registry.get('plone.email_charset', 'utf-8')
-        mail_text = self.mail_password_template(
-            self, REQUEST, member=member, reset=reset,
+        mail_password_template = getMultiAdapter(
+            (self, self.REQUEST), name='mail_password_template')
+        mail_text = mail_password_template(
+            member=member, reset=reset,
             password=member.getPassword(), charset=encoding)
         # The mail headers are not properly encoded we need to extract
         # them and let MailHost manage the encoding.
@@ -391,12 +394,11 @@ class RegistrationTool(PloneBaseTool, BaseTool):
                 _(u'Recipient address rejected by server.'))
         except SMTPException as e:
             raise(e)
-        # return the rendered template "mail_password_response.pt"
-        # (in Products.PasswordResetTool)
-        return self.mail_password_response(self, REQUEST)
+        mail_password_response = getMultiAdapter(
+            (self, self.REQUEST), name='mail_password_response')
+        return mail_password_response()
 
     security.declarePublic('registeredNotify')
-
     def registeredNotify(self, new_member_id):
         # Wrapper around registeredNotify.
         membership = getToolByName(self, 'portal_membership')
@@ -439,7 +441,9 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         host.send(mail_text, m_to, m_from, subject=subject, charset=encoding,
                   msg_type=msg_type, immediate=True)
 
-        return self.mail_password_response(self, self.REQUEST)
+        mail_password_response = getMultiAdapter(
+            (self, self.REQUEST), name='mail_password_response')
+        return mail_password_response()
 
     security.declareProtected(ManagePortal, 'editMember')
 

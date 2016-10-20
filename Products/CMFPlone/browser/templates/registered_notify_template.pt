@@ -1,0 +1,38 @@
+<tal:root define="lt string:&lt;;gt string:&gt;;
+                  member python:options['member'];
+                  portal_properties context/@@plone_tools/properties;
+                  view context/@@passwordreset_view;
+                  reset python:options.get('reset', None) or here.portal_password_reset.requestReset(member.getId());
+                  email_from_name python:context.portal_registry['plone.email_from_name'];"
+>From: <span tal:replace="structure view/encoded_mail_sender" />
+To: <span tal:replace="python:member.getProperty('email')" />
+Subject: <span tal:replace="view/registered_notify_subject" />
+Content-Type: text/plain
+Precedence: bulk
+
+<div i18n:domain="passwordresettool"
+     i18n:translate="mailtemplate_registered_user_body"
+     tal:omit-tag=""
+     tal:define="fullname python:member.getProperty('fullname')">
+    Welcome <span i18n:name="fullname" tal:replace="fullname" />,
+  
+    Your user account has been created.
+  Your username is <span i18n:name="member" tal:replace="python:member.getUserName()" />.
+  Please activate it by visiting
+
+    <span i18n:name="set_password" tal:replace="python:here.pwreset_constructURL(reset['randomstring'])+'?userid='+member.getUserName()" />
+
+    Please activate your account before <span i18n:name="expirationdate" tal:replace="python:
+    context.toLocalizedTime(reset['expires'], long_format=1)" />
+
+</div>
+
+<div i18n:domain="passwordresettool"
+     i18n:translate="greetings"
+     tal:omit-tag="">
+    With kind regards,
+</div>
+--
+
+<span tal:replace="email_from_name" />
+</tal:root>
