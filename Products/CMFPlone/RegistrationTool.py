@@ -18,13 +18,13 @@ from Products.CMFPlone.interfaces import ISecuritySchema
 from Products.CMFPlone.permissions import ManagePortal
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.PloneTool import EMAIL_RE
+from Products.CMFPlone import PloneMessageFactory as _
 from Products.PluggableAuthService.interfaces.authservice import IPluggableAuthService
 from Products.PluggableAuthService.interfaces.plugins import IValidationPlugin
 from Products.PluggableAuthService.permissions import SetOwnPassword
 from smtplib import SMTPException, SMTPRecipientsRefused
 from zope.component import getUtility
 from zope.component import getMultiAdapter
-from zope.i18nmessageid import MessageFactory
 from zope.schema import ValidationError
 import random
 import re
@@ -33,8 +33,6 @@ import re
 # - remove '0', 'O', and 'Q' to avoid confusion
 # - remove vowels to avoid spelling words
 invalid_password_chars = ['a', 'e', 'i', 'o', 'u', 'y', 'l', 'q']
-
-_ = MessageFactory('plone')
 
 
 def getValidPasswordChars():
@@ -424,9 +422,10 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         # don't need to worry about 'UseMailHost' permissions).
         registry = getUtility(IRegistry)
         encoding = registry.get('plone.email_charset', 'utf-8')
-        mail_text = self.registered_notify_template(
-            self, self.REQUEST, member=member, reset=reset, email=email,
-            charset=encoding)
+        registered_notify_template = getMultiAdapter(
+            (self, self.REQUEST), name='registered_notify_template')
+        mail_text = registered_notify_template(
+            member=member, reset=reset, email=email, charset=encoding)
 
         # The mail headers are not properly encoded we need to extract
         # them and let MailHost manage the encoding.

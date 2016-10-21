@@ -31,6 +31,7 @@ module_security = ModuleSecurityInfo('Products.CMFPlone.PasswordResetTool')
 
 module_security.declarePublic('InvalidRequestError')
 class InvalidRequestError(Exception):
+    """ Request reset URL is invalid """
     def __init__(self, value=''):
         self.value = value
 
@@ -38,12 +39,8 @@ class InvalidRequestError(Exception):
         return repr(self.value)
 
 module_security.declarePublic('ExpiredRequestError')
-class ExpiredRequestError(Exception):
-    def __init__(self, value=''):
-        self.value = value
-
-    def __str__(self):
-        return repr(self.value)
+class ExpiredRequestError(InvalidRequestError):
+    """ Request reset URL is expired """
 
 
 @implementer(IPWResetTool)

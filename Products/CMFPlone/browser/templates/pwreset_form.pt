@@ -7,10 +7,9 @@
          tal:define="errors view/getErrors">
 
         <h1 class="documentFirstHeading"
-            i18n:domain="passwordresettool"
             i18n:translate="heading_reset_password">Set your password</h1>
 
-        <div class="documentDescription" i18n:domain="passwordresettool"
+        <div class="documentDescription"
            i18n:translate="description_reset_password">
             Please fill out the form below to set your password.
         </div>
@@ -21,9 +20,7 @@
                   method="post"
                   tal:attributes="action request/getURL">
                 <fieldset>
-                    <legend i18n:domain="passwordresettool"
-                            i18n:translate="legend_new_password">New Password</legend>
-
+                    <legend i18n:translate="legend_new_password">New Password</legend>
                     <input type="hidden"
                            name="randomstring"
                            value=""
@@ -37,25 +34,19 @@
 
                       <tal:username tal:condition="not:use_email_as_login">
                         <label for="userid"
-                               i18n:domain="passwordresettool"
                                i18n:translate="label_my_user_name_is">My user name is</label>
                         <div tal:content="error">Validation error output</div>
 
-                        <div class="formHelp"
-                             i18n:domain="passwordresettool"
-                             i18n:translate="help_userid">
+                        <div class="formHelp" i18n:translate="help_userid">
                             Enter your user name for verification.
                         </div>
                       </tal:username>
                       <tal:email tal:condition="use_email_as_login">
                         <label for="userid"
-                               i18n:domain="passwordresettool"
                                i18n:translate="label_my_email_address_is">My email address is</label>
                         <div tal:content="error">Validation error output</div>
 
-                        <div class="formHelp"
-                             i18n:domain="passwordresettool"
-                             i18n:translate="help_verify_email">
+                        <div class="formHelp" i18n:translate="help_verify_email">
                             Enter your email address for verification.
                         </div>
                       </tal:email>
@@ -86,12 +77,10 @@
                          tal:define="error errors/password | nothing;"
                          tal:attributes="class python:error and 'field error' or 'field'">
 
-                        <label for="password2"
-                               i18n:translate="label_confirm_password">Confirm password</label>
+                        <label for="password2" i18n:translate="label_confirm_password">Confirm password</label>
                         <div tal:content="error">Validation error output</div>
 
-                        <div class="formHelp"
-                             i18n:translate="help_confirm_password">
+                        <div class="formHelp" i18n:translate="help_confirm_password">
                             Re-enter the password. Make sure the passwords are identical.
                         </div>
 
@@ -109,7 +98,6 @@
                             <input class="context"
                                    type="submit"
                                    value="Set my password"
-                                   i18n:domain="passwordresettool"
                                    i18n:attributes="value"
                                    />
                         </div>

@@ -1,14 +1,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
       metal:use-macro="here/main_template/macros/master"
-      i18n:domain="passwordresettool">
+      i18n:domain="plone">
 <body>
-
     <metal:main fill-slot="main">
-
         <h1 class="documentFirstHeading"
             i18n:translate="heading_pwreset_expired">Password request expired</h1>
-
         <div id="content-core">
             <p i18n:translate="message_pwreset_expired">
                 For your security, password reset URLs are only valid for
@@ -19,7 +16,6 @@
                       i18n:translate="message_request_new">request a new one</a></span>.
             </p>
         </div>
-
     </metal:main>
 </body>
 </html>

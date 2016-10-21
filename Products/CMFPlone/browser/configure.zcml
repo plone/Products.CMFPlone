@@ -234,6 +234,14 @@
       />
 
   <browser:page
+      name="registered_notify_template"
+      for="*"
+      class=".password_reset.PasswordResetToolView"
+      template="templates/registered_notify_template.pt"
+      permission="zope.Public"
+      />
+
+  <browser:page
       name="mail_password_form"
       for="*"
       template="templates/mail_password_form.pt"

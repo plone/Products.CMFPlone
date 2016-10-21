@@ -70,15 +70,14 @@ class PasswordResetView(BrowserView):
     subpath = None
 
     def __call__(self):
-        # Try traverse subpath first:
         if self.subpath:
+            # Try traverse subpath first:
             randomstring = self.subpath[0]
         else:
             randomstring = self.request.get('key', None)
 
         pw_tool = getToolByName(self.context, 'portal_password_reset')
         if self.request.method == 'POST':
-            status = "success"
             userid = self.request.form.get('userid')
             password = self.request.form.get('password')
             try:
@@ -97,7 +96,7 @@ class PasswordResetView(BrowserView):
                 return self.invalid()
             except ExpiredRequestError:
                 return self.expired()
-            return self.success()
+            return self.form()
 
     def publishTraverse(self, request, name):
         if self.subpath is None:

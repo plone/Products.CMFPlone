@@ -217,8 +217,6 @@ We can now login using our new password:
 
   >>> "Your password has been set successfully." in browser.contents
   True
-  >>> browser.url
-  'http://nohost/plone/pwreset_finish'
   >>> browser.open('http://nohost/plone/login')
   >>> browser.getControl(name='__ac_name').value = 'jsmith'
   >>> browser.getControl(name='__ac_password').value = 'secretion'
@@ -515,9 +513,17 @@ Test passwordreset BrowserView
     Setup Plone email sender
 
     >>> portal = layer['portal']
-    >>> layer.set_email_from_name(u'Old\u0159ich a Bo\u017eena')
-    >>> layer.set_email_from_address('smith@example.com')
-    >>> layer.set_portal_title(u'Koko\u0159\xedn Portal')
+    >>> from plone.registry.interfaces import IRegistry
+    >>> from zope.component import getUtility
+    >>> registry = getUtility(IRegistry)
+
+    >>> from Products.CMFPlone.interfaces.controlpanel import IMailSchema
+    >>> mail_settings = registry.forInterface(IMailSchema, prefix="plone")
+    >>> mail_settings.email_from_name(u'Old\u0159ich a Bo\u017eena')
+    >>> mail_settings.email_from_address('smith@example.com')
+    >>> from Products.CMFPlone.interfaces.controlpanel import ISiteSchema
+    >>> site_settings = registry.forInterface(ISiteSchema, prefix='plone')
+    >>> site_settings.site_title = u'Koko\u0159\xedn Portal'
 
     Check view methods
 
@@ -530,4 +536,3 @@ Test passwordreset BrowserView
 
     >>> view.mail_password_subject()
     u'Password reset request'
-
