@@ -21,6 +21,18 @@ Breaking changes:
 - MimetypesRegistry icons are now a browser resource directory instead of skins folder.
   [jensens]
 
+- Remove unused ``plone_scripts`` (not used nor tested anywhere in coredev) [jensens]
+
+    - ``add_ext_editor.py``
+    - ``author_find_content.py``
+    - ``create_query_string.py``
+    - ``getGlobalPortalRoles.py``
+    - ``getPopupScript.py``
+    - ``getPortalTypeList.py``
+    - ``getPortalTypes.py``
+    - ``plone_log.py``
+    - ``sort_modified_ascending.py``
+
 New features:
 
 - Add sort_on field to search controlpanel.
