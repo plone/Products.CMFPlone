@@ -125,8 +125,15 @@ class PasswordResetView(BrowserView):
             state['userid'] = _('This field is required, please provide some information.')
         if state:
             state['status'] = 'failure'
-            state['portal_status_message'] = 'Please correct the indicated errors.'
+            state['portal_status_message'] = _('Please correct the indicated errors.')
         return state
+
+    def login_url(self):
+        portal_state = getMultiAdapter((self.context, self.request),
+                                       name=u"plone_portal_state")
+        return '{0}/login?__ac_name={1}'.format(
+            portal_state.navigation_root_url(),
+            self.request.form.get('userid', ''))
 
 
 class ExplainPWResetToolView(BrowserView):

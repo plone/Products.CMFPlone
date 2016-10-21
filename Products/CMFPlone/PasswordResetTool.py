@@ -57,12 +57,6 @@ class PasswordResetTool (UniqueObject, SimpleItem):
 
     security = ClassSecurityInfo()
 
-    manage_options = (({'label': 'Overview'
-                        , 'action': 'manage_overview'
-                        },
-                      ) + SimpleItem.manage_options
-                    )
-
     security.declareProtected(ManagePortal, 'manage_setTimeout')
 
     def manage_setTimeout(self, hours=168, REQUEST=None):

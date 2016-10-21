@@ -9,7 +9,9 @@
         i18n:translate="heading_pwreset_success">Password set</h1>
 
     <div class="documentDescription" i18n:translate="message_pwreset_success">
-        Your password has been set successfully. You may now log in with your
+        Your password has been set successfully. You may now
+        <a href="#" tal:attributes="href view/login_url"
+         i18n:name="login_url">log in</a> with your
         new password.
     </div>
 
