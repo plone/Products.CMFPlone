@@ -9,20 +9,17 @@ from Products.CMFCore.utils import UniqueObject
 from Products.CMFCore.utils import getToolByName
 from OFS.SimpleItem import SimpleItem
 from App.class_init import InitializeClass
-from App.special_dtml import DTMLFile
 from AccessControl import ClassSecurityInfo
 from AccessControl import ModuleSecurityInfo
+from plone.uuid.interfaces import IUUIDGenerator
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.permissions import ManagePortal
 from Products.CMFPlone.interfaces import IPWResetTool
 from Products.CMFPlone.interfaces import ISecuritySchema
 from Products.CMFPlone.RegistrationTool import get_member_by_login_name
-from Products.CMFPlone import django_random
-
 
 import datetime
 import time
-import socket
 from DateTime import DateTime
 from zope.component import getUtility
 from zope.interface import implementer
@@ -65,10 +62,6 @@ class PasswordResetTool (UniqueObject, SimpleItem):
                         },
                       ) + SimpleItem.manage_options
                     )
-
-    ##   ZMI methods
-    security.declareProtected(ManagePortal, 'manage_overview')
-    manage_overview = DTMLFile('dtml/explainPWResetTool', globals())
 
     security.declareProtected(ManagePortal, 'manage_setTimeout')
 
@@ -281,20 +274,10 @@ class PasswordResetTool (UniqueObject, SimpleItem):
 
         This implementation ignores userid and simply generates a
         UUID. That parameter is for convenience of extenders, and
-        will be passed properly in the default implementation."""
-        # this is the informal UUID algorithm of
-        # http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/213761
-        # by Carl Free Jr
-        t = long(time.time() * 1000)
-        r = django_random.get_random_string(64)
-        try:
-            a = socket.gethostbyname(socket.gethostname())
-        except:
-            # if we can't get a network address, just imagine one
-            a = django_random.get_random_string(64)
-        data = str(t) + ' ' + str(r) + ' ' + str(a)
-        data = md5(data).hexdigest()
-        return str(data)
+        will be passed properly in the default implementation.
+        """
+        uuid_generator = getUtility(IUUIDGenerator)
+        return uuid_generator()
 
     security.declarePrivate('expirationDate')
 

@@ -11,6 +11,16 @@ assumptions that are not true for Plone forms.
   >>> from plone.testing.z2 import Browser
   >>> from plone.app.testing import TEST_USER_NAME, TEST_USER_PASSWORD
   >>> browser = Browser(layer['app'])
+  >>> from plone.registry.interfaces import IRegistry
+  >>> from zope.component import getUtility
+  >>> registry = getUtility(IRegistry, context=layer['portal'])
+
+  >>> from Products.CMFPlone.interfaces.controlpanel import IMailSchema
+  >>> mail_settings = registry.forInterface(IMailSchema, prefix="plone")
+  >>> mail_settings.smtp_host = u'localhost'
+  >>> mail_settings.email_from_address = 'smith@example.com'
+  >>> import transaction
+  >>> transaction.commit()
 
 Assumptions
 -----------
@@ -513,14 +523,7 @@ Test passwordreset BrowserView
     Setup Plone email sender
 
     >>> portal = layer['portal']
-    >>> from plone.registry.interfaces import IRegistry
-    >>> from zope.component import getUtility
-    >>> registry = getUtility(IRegistry)
-
-    >>> from Products.CMFPlone.interfaces.controlpanel import IMailSchema
-    >>> mail_settings = registry.forInterface(IMailSchema, prefix="plone")
-    >>> mail_settings.email_from_name(u'Old\u0159ich a Bo\u017eena')
-    >>> mail_settings.email_from_address('smith@example.com')
+    >>> mail_settings.email_from_name = u'Old\u0159ich a Bo\u017eena'
     >>> from Products.CMFPlone.interfaces.controlpanel import ISiteSchema
     >>> site_settings = registry.forInterface(ISiteSchema, prefix='plone')
     >>> site_settings.site_title = u'Koko\u0159\xedn Portal'
