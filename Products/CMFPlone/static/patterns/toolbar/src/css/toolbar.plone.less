@@ -435,6 +435,13 @@
   max-height: 0;
 }
 
+.plone-toolbar-default #edit-zone {
+    /* Short title support */
+    .plone-toolbar-title, .plone-toolbar-state-title {
+        display: none;
+    }
+}
+
 .plone-toolbar-expanded #edit-zone {
   width: @plone-left-toolbar-expanded;
 
@@ -467,6 +474,11 @@
 
   li:not(.active) a:hover > span {
     background: @plone-toolbar-link;
+  }
+
+  /* Short title support */
+  .plone-toolbar-short-title {
+      display: none;
   }
 
   /*states*/

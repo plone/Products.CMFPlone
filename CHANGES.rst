@@ -48,6 +48,9 @@ New features:
 
 - PasswordResetTool moved from its own package to here
   [tomgross]
+- Prevent workflow menu overflowing in toolbar [MatthewWilkes]
+
+- Add default icon for top-level contentview and contentmenu toolbar entries [alecm]
 
 Bug fixes:
 
