@@ -268,6 +268,9 @@ Bug fixes:
 - Fix atom.xml feed not paying attention for setting to show about information
   [vangheem]
 
+- Fix imports from package Globals (removed in Zope4).
+  [pbauer]
+
 
 5.1a2 (2016-08-19)
 ------------------
