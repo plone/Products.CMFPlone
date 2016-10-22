@@ -26,11 +26,16 @@ Breaking changes:
     - ``add_ext_editor.py``
     - ``author_find_content.py``
     - ``create_query_string.py``
+    - ``formatColumns.py`` with tests
     - ``getGlobalPortalRoles.py``
     - ``getPopupScript.py``
     - ``getPortalTypeList.py``
     - ``getPortalTypes.py``
+    - ``getSelectableViews.py`` with tests
+    - ``hasIndexHtml.py`` with tests
+    - ``navigationParent.py`` with test
     - ``plone_log.py``
+    - ``returnNone.py`` with occurence refactored
     - ``sort_modified_ascending.py``
 
 New features:
