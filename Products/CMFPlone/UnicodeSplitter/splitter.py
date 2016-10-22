@@ -10,7 +10,7 @@ import unicodedata
 
 from zope.interface import implementer
 
-from Products.ZCTextIndex.ISplitter import ISplitter
+from Products.ZCTextIndex.interfaces import ISplitter
 from Products.ZCTextIndex.PipelineFactory import element_factory
 
 from Products.CMFPlone.UnicodeSplitter.config import rx_U, rxGlob_U, \
