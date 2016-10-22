@@ -64,6 +64,8 @@ New features:
 
   - dont force scoll buttons to be left, when toolbar is right.
 
+  - nicer toolbar submenus
+
   [thet]
 
 Bug fixes:
