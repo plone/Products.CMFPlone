@@ -14,6 +14,9 @@ New features:
 
 Bug fixes:
 
+- Removed ZopeTestCase from the tests.
+  [ivanteoh, maurits]
+
 - Add default icon for top-level contentview toolbar entries
   [alecm]
 
