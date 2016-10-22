@@ -49,6 +49,7 @@ New features:
 - Prevent workflow menu overflowing in toolbar [MatthewWilkes]
 
 - Add default icon for top-level contentview and contentmenu toolbar entries [alecm]
+
 - Toolbar styles:
 
   - Don't break workflow contentmenu header and better place the current status icon.
@@ -60,6 +61,8 @@ New features:
   - Make menu hover background fit whole menu width.
 
   - Don't show toolbar scroll bars for bigger screens and make scroll buttons full-width.
+
+  - dont force scoll buttons to be left, when toolbar is right.
 
   [thet]
 
