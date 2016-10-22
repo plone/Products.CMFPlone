@@ -21,6 +21,7 @@ define([
         top: 'plone-toolbar-top',
         topDefault: 'plone-toolbar-top-default',
         topExpanded: 'plone-toolbar-top-expanded',
+        default: 'plone-toolbar-default',
         expanded: 'plone-toolbar-expanded',
         active: 'active'
       },
@@ -36,6 +37,7 @@ define([
       $('body').removeClass(that.options.classNames.topExpanded);
       $('body').removeClass(that.options.classNames.top);
       $('body').removeClass(that.options.classNames.topDefault);
+      $('body').removeClass(that.options.classNames.default);
       $('.' + that.options.classNames.logo, that.$container).off('click').on('click', function() {
         var $el = $(this);
         if ($el.hasClass('open')){
@@ -73,7 +75,9 @@ define([
       var that = this;
       if(that.state.expanded){
         $('body').addClass(that.options.classNames.expanded);
+        $('body').removeClass(that.options.classNames.default);
       }else{
+        $('body').addClass(that.options.classNames.default);
         $('body').removeClass(that.options.classNames.expanded);
       }
 
@@ -84,6 +88,7 @@ define([
             expanded: false
           });
           $('body').removeClass(that.options.classNames.expanded);
+          $('body').addClass(that.options.classNames.default);
           $('nav li', that.$container).removeClass(that.options.classNames.active);
           if (that.state.left) {
             $('body').addClass(that.options.classNames.leftDefault);
@@ -98,6 +103,7 @@ define([
           });
           // Switch to expanded
           $('body').addClass(that.options.classNames.expanded);
+          $('body').removeClass(that.options.classNames.default);
           $('nav li', that.$container).removeClass(that.options.classNames.active);
           if (that.state.left) {
             $('body').addClass(that.options.classNames.leftExpanded);

@@ -206,6 +206,12 @@ body.userrole-authenticated {
 }
 .plone-toolbar-top #edit-zone nav > ul ul {height: 0; max-height: 0; width: 180px}
 
+.plone-toolbar-default #edit-zone {
+    /* Short title support */
+    .plone-toolbar-title, .plone-toolbar-state-title {
+        display: none;
+    }
+}
 
 .plone-toolbar-expanded #edit-zone {
     width:@plone-left-toolbar-expanded;
@@ -228,6 +234,11 @@ body.userrole-authenticated {
     }
     .plone-toolbar-caret {width: 0;}
     li:not(.active) a:hover > span {background: @plone-toolbar-link;}
+
+    /* Short title support */
+    .plone-toolbar-short-title {
+        display: none;
+    }
 
     /*states*/
     li a.label-state-published:hover > span, li a.label-state-external:hover > span  {

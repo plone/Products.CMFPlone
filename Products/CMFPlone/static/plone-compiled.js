@@ -12283,6 +12283,7 @@ define('plone-patterns-toolbar',[
         top: 'plone-toolbar-top',
         topDefault: 'plone-toolbar-top-default',
         topExpanded: 'plone-toolbar-top-expanded',
+        default: 'plone-toolbar-default',
         expanded: 'plone-toolbar-expanded',
         active: 'active'
       },
