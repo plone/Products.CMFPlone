@@ -46,6 +46,10 @@ New features:
 - Include mockup 2.4.0.
   [thet]
 
+- Prevent workflow menu overflowing in toolbar [MatthewWilkes]
+
+- Add default icon for top-level contentview and contentmenu toolbar entries [alecm]
+
 Bug fixes:
 
 - Avoid dependency on plone.app.imaging. [davisagli]
