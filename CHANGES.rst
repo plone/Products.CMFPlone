@@ -14,7 +14,8 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Add default icon for top-level contentview toolbar entries
+  [alecm]
 
 
 2.6.1 (2016-06-07)
