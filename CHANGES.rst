@@ -26,6 +26,7 @@ Bug fixes:
 - Fix TinyMCE table styles [vangheem]
 
 - Apply security hotfix 20160830 for ``z3c.form`` widgets.  [maurits]
+- Get scale settings from configuration for tinymce[vangheem]
 
 - Fixed tests in combination with newer CMFFormController which has the hotfix.  [maurits]
 
