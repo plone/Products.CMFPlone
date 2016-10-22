@@ -112,50 +112,22 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     @deprecate(('`getSiteEncoding` is deprecated. Plone only supports UTF-8 '
                 'currently. This method always returns "utf-8"'))
     def getSiteEncoding(self):
-        """ Get the the site encoding, which is utf-8.
-
-        >>> ptool = self.portal.plone_utils
-
-        >>> ptool.getSiteEncoding()
-        'utf-8'
-        """
+        """ Get the the site encoding, which is utf-8."""
         return 'utf-8'
 
     @security.public
     def portal_utf8(self, str, errors='strict'):
-        """ Transforms an string in portal encoding to utf8.
-
-        >>> ptool = self.portal.plone_utils
-        >>> text = u'Eksempel \xe6\xf8\xe5'
-        >>> sitetext = text.encode('utf-8')
-
-        >>> ptool.portal_utf8(sitetext) == text.encode('utf-8')
-        True
-        """
+        """Transforms an string in portal encoding to utf8."""
         return utils.portal_utf8(self, str, errors)
 
     @security.public
     def utf8_portal(self, str, errors='strict'):
-        """ Transforms an utf8 string to portal encoding.
-
-        >>> ptool = self.portal.plone_utils
-        >>> text = u'Eksempel \xe6\xf8\xe5'
-        >>> utf8text = text.encode('utf-8')
-
-        >>> ptool.utf8_portal(utf8text) == text.encode('utf-8')
-        True
-        """
+        """Transforms an utf8 string to portal encoding."""
         return utils.utf8_portal(self, str, errors)
 
     @security.private
     def getMailHost(self):
-        """ Gets the MailHost.
-
-        >>> ptool = self.portal.plone_utils
-
-        >>> ptool.getMailHost()
-        <MailHost ...>
-        """
+        """Gets the MailHost."""
         return getattr(aq_parent(self), 'MailHost')
 
     @security.public
@@ -371,11 +343,6 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         object's review_state.
 
         Returns None if no review_state found.
-
-        >>> ptool = self.portal.plone_utils
-
-        >>> ptool.getReviewStateTitleFor(self.folder).lower()
-        'public draft'
         """
         wf_tool = getToolByName(self, 'portal_workflow')
         wfs = ()
@@ -445,16 +412,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     def urlparse(self, url):
         """Returns the pieces of url in a six-part tuple.
 
-        See Python standard library urlparse.urlparse:
-        http://python.org/doc/lib/module-urlparse.html
-
-        >>> ptool = self.portal.plone_utils
-
-        >>> url = 'http://dev.plone.org/plone/query?milestone=2.1#foo'
-        >>> tuple(ptool.urlparse(url))
-        ('http', 'dev.plone.org', '/plone/query', '', 'milestone=2.1', 'foo')
-
-        New in Python 2.6: urlparse now returns a ParseReusult object.
+        Since Python 2.6: urlparse now returns a ParseResult object.
         We just need the tuple form which is tuple(result).
         """
         return tuple(urlparse.urlparse(url))
@@ -463,15 +421,6 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     def urlunparse(self, url_tuple):
         """Puts a url back together again, in the manner that
         urlparse breaks it.
-
-        See also Python standard library: urlparse.urlunparse:
-        http://python.org/doc/lib/module-urlparse.html
-
-        >>> ptool = self.portal.plone_utils
-
-        >>> ptool.urlunparse(
-        ...     ('http', 'plone.org', '/support', '', '', 'users'))
-        'http://plone.org/support#users'
         """
         return urlparse.urlunparse(url_tuple)
 
@@ -608,15 +557,6 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         """\
         Call this once or more to add messages to be displayed at the
         top of the web page.
-
-        Examples:
-
-        >>> ptool = self.portal.plone_utils
-
-        >>> ptool.addPortalMessage(u'A random warning message', 'warning')
-
-        If no type is given it defaults to 'info'
-        >>> ptool.addPortalMessage(u'A random info message')
 
         The arguments are:
             message:   a string, with the text message you want to show,
@@ -811,11 +751,6 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         That is, a folderish item which does not explicitly implement
         INonStructuralFolder to declare that it doesn't wish to be treated
         as a folder by the navtree, the tab generation etc.
-
-        >>> ptool = self.portal.plone_utils
-
-        >>> ptool.isStructuralFolder(self.folder)
-        True
         """
         return (
             obj.isPrincipiaFolderish
@@ -854,14 +789,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     @security.public
     def getOwnerName(self, obj):
-        """ Returns the userid of the owner of an object.
-
-        >>> ptool = self.portal.plone_utils
-        >>> from plone.app.testing import TEST_USER_ID
-
-        >>> ptool.getOwnerName(self.folder) == TEST_USER_ID
-        True
-        """
+        """ Returns the userid of the owner of an object."""
         mt = getToolByName(self, 'portal_membership')
         if not mt.checkPermission(View, obj):
             raise Unauthorized
@@ -876,51 +804,6 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         normalizeString() converts a whole string to a normalized form that
         should be safe to use as in a url, as a css id, etc.
-
-        >>> ptool = self.portal.plone_utils
-
-        >>> ptool.normalizeString("Foo bar")
-        'foo-bar'
-
-        >>> ptool.normalizeString("Some!_are allowed, others&?:are not")
-        'some-_are-allowed-others-are-not'
-
-        >>> ptool.normalizeString("Some!_are allowed, others&?:are not")
-        'some-_are-allowed-others-are-not'
-
-        all punctuation and spacing is removed and replaced with a '-':
-
-        >>> ptool.normalizeString("a string with spaces")
-        'a-string-with-spaces'
-
-        >>> ptool.normalizeString("p.u,n;c(t)u!a@t#i$o%n")
-        'p-u-n-c-t-u-a-t-i-o-n'
-
-        strings are lowercased:
-
-        >>> ptool.normalizeString("UppERcaSE")
-        'uppercase'
-
-        punctuation, spaces, etc. are trimmed and multiples are reduced to just
-        one:
-
-        >>> ptool.normalizeString(" a string    ")
-        'a-string'
-        >>> ptool.normalizeString(">here's another!")
-        'heres-another'
-
-        >>> ptool.normalizeString("one with !@#$!@#$ stuff in the middle")
-        'one-with-stuff-in-the-middle'
-
-        the exception to all this is that if there is something that looks like
-        a filename with an extension at the end, it will preserve the last
-        period.
-
-        >>> ptool.normalizeString("this is a file.gif")
-        'this-is-a-file-gif'
-
-        >>> ptool.normalizeString("this is. also. a file.html")
-        'this-is-also-a-file-html'
         """
         return utils.normalizeString(text, context=self)
 
@@ -1081,13 +964,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     @security.public
     def getEmptyTitle(self, translated=True):
-        """ Returns string to be used for objects with no title or id.
-
-        >>> ptool = self.portal.plone_utils
-
-        >>> ptool.getEmptyTitle(translated=False) == u'[\xb7\xb7\xb7]'
-        True
-        """
+        """Returns string to be used for objects with no title or id."""
         return utils.getEmptyTitle(self, translated)
 
     @security.public

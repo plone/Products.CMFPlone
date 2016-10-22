@@ -82,6 +82,9 @@ Bug fixes:
 - Use fork of grunt-sed which is compatible with newer grunt version.
   [gforcada]
 
+- Move some tests from ZopeTestCase to plone.app.testing.
+  [gforcada]
+
 5.1a2 (2016-08-19)
 ------------------
 
