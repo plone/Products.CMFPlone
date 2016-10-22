@@ -19,6 +19,8 @@ New features:
 
 Bug fixes:
 
+- Prevent workflow menu overflowing in toolbar [MatthewWilkes]
+
 - Add default icon for top-level contentview and contentmenu toolbar entries [alecm]
 
 - Fix TinyMCE table styles [vangheem]
