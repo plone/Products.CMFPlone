@@ -1,49 +1,52 @@
 # -*- coding: utf-8 -*-
+from plone.app.testing import FunctionalTesting
+from plone.app.testing import MOCK_MAILHOST_FIXTURE
+from plone.app.testing import PLONE_FIXTURE
+from plone.app.testing import PloneSandboxLayer
+from plone.registry.interfaces import IRegistry
+from plone.testing import layered
+from Products.CMFPlone.interfaces.controlpanel import IMailSchema
+from zope.component import getUtility
+
 import doctest
 import unittest
 
-from plone.app.testing.bbb import PloneTestCase
-from zope.component import getSiteManager
-from Acquisition import aq_base
-from Products.MailHost.interfaces import IMailHost
-from Testing.ZopeTestCase import ZopeDocFileSuite
-
-from Products.CMFPlone.tests.utils import MockMailHost
-import transaction
 
 OPTIONFLAGS = (doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE)
 
 
-class MockMailHostTestCase(PloneTestCase):
+class MockConfiguredMailHostLayer(PloneSandboxLayer):
+    defaultBases = (
+        MOCK_MAILHOST_FIXTURE,
+        PLONE_FIXTURE,
+    )
 
-    def afterSetUp(self):
-        self.portal._original_MailHost = self.portal.MailHost
-        self.portal.MailHost = mailhost = MockMailHost('MailHost')
-        sm = getSiteManager(context=self.portal)
-        sm.unregisterUtility(provided=IMailHost)
-        sm.registerUtility(mailhost, provided=IMailHost)
-        transaction.commit()
+    def setUpPloneSite(self, portal):
+        # We need to fake a valid mail setup:
+        registry = getUtility(IRegistry)
+        mail_settings = registry.forInterface(IMailSchema, prefix='plone')
+        mail_settings.email_from_address = "mail@plone.test"
 
-    def beforeTearDown(self):
-        self.portal.MailHost = self.portal._original_MailHost
-        sm = getSiteManager(context=self.portal)
-        sm.unregisterUtility(provided=IMailHost)
-        sm.registerUtility(aq_base(self.portal._original_MailHost),
-                           provided=IMailHost)
+
+MOCK_CONFIGURED_MAILHOST_FIXTURE = MockConfiguredMailHostLayer()
+MOCK_MAILHOST_FUNCTIONAL_TESTING = FunctionalTesting(
+    bases=(
+        MOCK_CONFIGURED_MAILHOST_FIXTURE,
+    ),
+    name="MockMailHostFixture:Functional"
+)
 
 
 def test_suite():
     return unittest.TestSuite((
-        ZopeDocFileSuite(
+        layered(doctest.DocFileSuite(
             'mails.txt',
             optionflags=OPTIONFLAGS,
             package='Products.CMFPlone.tests',
-            test_class=MockMailHostTestCase,
-        ),
-        ZopeDocFileSuite(
+        ), layer=MOCK_MAILHOST_FUNCTIONAL_TESTING),
+        layered(doctest.DocFileSuite(
             'emaillogin.txt',
             optionflags=OPTIONFLAGS,
             package='Products.CMFPlone.tests',
-            test_class=MockMailHostTestCase
-        ),
+        ), layer=MOCK_MAILHOST_FUNCTIONAL_TESTING),
     ))
