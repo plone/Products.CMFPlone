@@ -10,7 +10,8 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- Do not render social metadata if you are a logged user.
+  [bsuttor]
 
 Bug fixes:
 

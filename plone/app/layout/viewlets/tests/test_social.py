@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 from plone.app.layout.viewlets.social import SocialTagsViewlet
 from plone.app.layout.viewlets.tests.base import ViewletsTestCase
+from plone.app.testing import logout
 from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.interfaces import ISocialMediaSchema
+from zope.annotation.interfaces import IAnnotations
 from zope.component import getUtility
 
 
@@ -15,6 +17,7 @@ class TestSocialViewlet(ViewletsTestCase):
         self.folder.invokeFactory('News Item', 'news-item',
                                   title='News Item')
         self.news = self.folder['news-item']
+        logout()
 
     def _tagFound(self, tags, attr, name=None, value=None):
         for meta in tags:
@@ -85,6 +88,19 @@ class TestSocialViewlet(ViewletsTestCase):
         viewlet.update()
         self.assertEquals(len(viewlet.tags), 0)
 
+    def testDisabledForLoggedUser(self):
+        self.loginAsPortalOwner()
+        viewlet = SocialTagsViewlet(self.folder, self.app.REQUEST, None)
+        viewlet.update()
+        self.assertEquals(len(viewlet.tags), 0)
+        # clear cache to prevent memoize
+        cache = IAnnotations(self.app.REQUEST)
+        key = 'plone.memoize'
+        cache[key] = {}
+        logout()
+        viewlet.update()
+        self.assertEquals(len(viewlet.tags), 12)
+
     def testIncludeSocialSettings(self):
         registry = getUtility(IRegistry)
         settings = registry.forInterface(
@@ -92,7 +108,6 @@ class TestSocialViewlet(ViewletsTestCase):
         settings.twitter_username = u'foobar'
         settings.facebook_app_id = u'foobar'
         settings.facebook_username = u'foobar'
-
         viewlet = SocialTagsViewlet(self.folder, self.app.REQUEST, None)
         viewlet.update()
         self.assertTrue(self.tagFound(

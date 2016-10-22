@@ -32,6 +32,7 @@ setup(name='plone.app.layout',
       install_requires=[
           'Acquisition',
           'DateTime',
+          'plone.api',
           'plone.app.content',
           'plone.app.portlets',
           'plone.app.viewletmanager >=1.2',
