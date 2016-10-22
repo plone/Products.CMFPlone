@@ -46809,7 +46809,8 @@ define('mockup-patterns-tooltip',[
     trigger: '.pat-tooltip',
     parser: 'mockup',
     defaults: {
-      html: false
+      html: false,
+      placement: 'top'
     },
     init: function() {
         if (this.options.html === 'true') {
@@ -46819,7 +46820,7 @@ define('mockup-patterns-tooltip',[
           this.options.html = false;
         }
         this.data = new bootstrapTooltip(this.$el[0], this.options);
-    },
+      },
   });
 
   //This is pulled almost directly from the Bootstrap Tooltip
@@ -46841,7 +46842,7 @@ define('mockup-patterns-tooltip',[
     animation: true,
     placement: 'top',
     selector: false,
-    template: '<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
+    template: '<div class="tooltip mockup-tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
     trigger: 'hover focus',
     title: '',
     delay: 0,
@@ -69895,7 +69896,7 @@ define('mockup-patterns-structure-url/js/views/actionmenu',[
 });
 
 
-define('text!mockup-patterns-structure-url/templates/tablerow.xml',[],function () { return '<td class="selection"><input type="checkbox" <% if(selected){ %> checked="checked" <% } %>/></td>\n\n<td class="title">\n  <div class="pull-left">\n    <a href="<%- viewURL %>"\n        class="manage state-<%- review_state %> contenttype-<%- contenttype %>"\n        title="<%- portal_type %>">\n      <%- Title %>\n    </a>\n  </div>\n  <% if(attributes["getIcon"] ){ %>\n  <img class="image-<%- iconSize %> pull-right" src="<%- getURL %>/@@images/image/<%- iconSize %>">\n  <% } %>\n</td>\n\n<% _.each(activeColumns, function(column) { %>\n  <% if(_.has(availableColumns, column)) { %>\n    <td class="<%- column %>"><%- attributes[column] %></td>\n  <% } %>\n<% }); %>\n\n<td class="actionmenu-container"></td>\n';});
+define('text!mockup-patterns-structure-url/templates/tablerow.xml',[],function () { return '<td class="selection"><input type="checkbox" <% if(selected){ %> checked="checked" <% } %>/></td>\n\n<td class="title">\n  <div class="pull-left">\n    <a href="<%- viewURL %>"\n        class="manage state-<%- review_state %> contenttype-<%- contenttype %>"\n        title="<%- portal_type %>">\n      <%- Title %>\n    </a>\n    <% if(expired){ %>\n      <span class="plone-item-expired"><%- _t(\'Expired\') %></span>\n    <% } %>\n  </div>\n  <% if(attributes["getIcon"] ){ %>\n  <img class="image-<%- iconSize %> pull-right" src="<%- getURL %>/@@images/image/<%- iconSize %>">\n  <% } %>\n</td>\n\n<% _.each(activeColumns, function(column) { %>\n  <% if(_.has(availableColumns, column)) { %>\n    <td class="<%- column %>"><%- attributes[column] %></td>\n  <% } %>\n<% }); %>\n\n<td class="actionmenu-container"></td>\n';});
 
 define('mockup-patterns-structure-url/js/views/tablerow',[
   'jquery',
@@ -69905,8 +69906,10 @@ define('mockup-patterns-structure-url/js/views/tablerow',[
   'mockup-patterns-structure-url/js/views/actionmenu',
   'text!mockup-patterns-structure-url/templates/tablerow.xml',
   'mockup-utils',
-  'translate'
-], function($, _, Backbone, Nav, ActionMenuView, TableRowTemplate, utils, _t) {
+  'translate',
+  'moment'
+], function($, _, Backbone, Nav, ActionMenuView, TableRowTemplate, utils, _t,
+            moment) {
   'use strict';
 
   var TableRowView = Backbone.View.extend({
@@ -69922,7 +69925,17 @@ define('mockup-patterns-structure-url/js/views/tablerow',[
       this.app = options.app;
       this.selectedCollection = this.app.selectedCollection;
       this.table = this.options.table;
+      this.now = moment();
     },
+
+    expired: function(data){
+      if(!data.attributes.ExpirationDate){
+        return false;
+      }
+      var dt = moment(data.attributes.ExpirationDate);
+      return dt.diff(this.now, 'seconds') < 0;
+    },
+
     render: function() {
       var self = this;
       var data = this.model.toJSON();
@@ -69942,6 +69955,7 @@ define('mockup-patterns-structure-url/js/views/tablerow',[
       data.viewURL = data.attributes.getURL + viewAction;
 
       data._t = _t;
+      data.expired = this.expired(data);
       self.$el.html(self.template(data));
       var attrs = self.model.attributes;
       self.$el.addClass('state-' + attrs['review_state']).addClass('type-' + attrs.portal_type); // jshint ignore:line
@@ -69953,6 +69967,11 @@ define('mockup-patterns-structure-url/js/views/tablerow',[
       self.$el.attr('data-id', data.id);
       self.$el.attr('data-type', data.portal_type);
       self.$el.attr('data-folderish', data['is_folderish']); // jshint ignore:line
+      self.$el.removeClass('expired');
+
+      if(data.expired){
+        self.$el.addClass('expired');
+      }
 
       self.el.model = this.model;
 
@@ -69991,8 +70010,8 @@ define('mockup-patterns-structure-url/js/views/tablerow',[
       if (!((typeof libName === 'string') && (typeof key === 'string'))) {
         return null;
       }
-      var clsLib = require(libName);
-      var lib = new clsLib(self);
+      var ClsLib = require(libName);
+      var lib = new ClsLib(self);
       return lib[method] && lib[method](e);
     },
     itemSelected: function() {
@@ -73179,6 +73198,7 @@ define('mockup-patterns-structure',[
       _default_attributes: [
         'CreationDate',
         'EffectiveDate',
+        'ExpirationDate',
         'exclude_from_nav',
         'getIcon',
         'getObjSize',
@@ -73325,8 +73345,6 @@ define('mockup-patterns-structure',[
   return Structure;
 
 });
-
-
 
 (function(root) {
 define("resource-plone-app-jquerytools-js", ["jquery"], function() {
@@ -77578,6 +77596,7 @@ define('plone-patterns-toolbar',[
         top: 'plone-toolbar-top',
         topDefault: 'plone-toolbar-top-default',
         topExpanded: 'plone-toolbar-top-expanded',
+        default: 'plone-toolbar-default',
         expanded: 'plone-toolbar-expanded',
         active: 'active'
       },
@@ -77593,6 +77612,7 @@ define('plone-patterns-toolbar',[
       $('body').removeClass(that.options.classNames.topExpanded);
       $('body').removeClass(that.options.classNames.top);
       $('body').removeClass(that.options.classNames.topDefault);
+      $('body').removeClass(that.options.classNames.default);
       $('.' + that.options.classNames.logo, that.$container).off('click').on('click', function() {
         var $el = $(this);
         if ($el.hasClass('open')){
@@ -77630,7 +77650,9 @@ define('plone-patterns-toolbar',[
       var that = this;
       if (that.state.expanded){
         $('body').addClass(that.options.classNames.expanded);
+        $('body').removeClass(that.options.classNames.default);
       }else {
+        $('body').addClass(that.options.classNames.default);
         $('body').removeClass(that.options.classNames.expanded);
       }
 
@@ -77641,6 +77663,7 @@ define('plone-patterns-toolbar',[
             expanded: false
           });
           $('body').removeClass(that.options.classNames.expanded);
+          $('body').addClass(that.options.classNames.default);
           $('nav li', that.$container).removeClass(that.options.classNames.active);
           if (that.state.left) {
             $('body').addClass(that.options.classNames.leftDefault);
@@ -77655,6 +77678,7 @@ define('plone-patterns-toolbar',[
           });
           // Switch to expanded
           $('body').addClass(that.options.classNames.expanded);
+          $('body').removeClass(that.options.classNames.default);
           $('nav li', that.$container).removeClass(that.options.classNames.active);
           if (that.state.left) {
             $('body').addClass(that.options.classNames.leftExpanded);
@@ -77972,5 +77996,5 @@ require([
   'use strict';
 });
 
-define("/home/thet-data/data/dev/aaf/buildout-aaf/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
+define("/Users/matthewwilkes/work/plone/repos/5.1/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
 
