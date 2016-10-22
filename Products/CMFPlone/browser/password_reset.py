@@ -5,6 +5,7 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from plone.memoize import view
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import safe_unicode
+from Products.CMFPlone.utils import safeToInt
 from Products.CMFPlone.PasswordResetTool import ExpiredRequestError
 from Products.CMFPlone.PasswordResetTool import InvalidRequestError
 from zope.i18n import translate
@@ -138,3 +139,29 @@ class PasswordResetView(BrowserView):
 
 class ExplainPWResetToolView(BrowserView):
     """ """
+
+    def timeout_days(self):
+        return self.context.getExpirationTimeout()
+
+    def user_check(self):
+        return self.context._user_check and 'checked' or None
+
+    @property
+    def stats(self):
+        """Return a dictionary like so:
+            {"open":3, "expired":0}
+        about the number of open and expired reset requests.
+        """
+        # count expired reset requests
+        bad = len([1 for expiry in self.context._requests.values()
+                   if self.context.expired(expiry)])
+        # open reset requests are all requests without the expired ones
+        good = len(self.context._requests) - bad
+        return {"open": good, "expired": bad}
+
+    def __call__(self):
+        if self.request.method == 'POST':
+            timeout_days = safeToInt(self.request.get('timeout_days'), 7)
+            self.context.setExpirationTimeout(timeout_days)
+            self.context._user_check = bool(self.request.get('user_check', False))
+        return self.index()

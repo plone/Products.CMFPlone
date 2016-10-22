@@ -3,14 +3,13 @@
 Mailback password reset product for CMF.
 Author: J Cameron Cooper, Sept 2003
 """
-from hashlib import md5
-
 from Products.CMFCore.utils import UniqueObject
 from Products.CMFCore.utils import getToolByName
 from OFS.SimpleItem import SimpleItem
 from App.class_init import InitializeClass
 from AccessControl import ClassSecurityInfo
 from AccessControl import ModuleSecurityInfo
+from BTrees.OOBTree import OOBTree
 from plone.uuid.interfaces import IUUIDGenerator
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.permissions import ManagePortal
@@ -19,8 +18,6 @@ from Products.CMFPlone.interfaces import ISecuritySchema
 from Products.CMFPlone.RegistrationTool import get_member_by_login_name
 
 import datetime
-import time
-from DateTime import DateTime
 from zope.component import getUtility
 from zope.interface import implementer
 
@@ -57,28 +54,12 @@ class PasswordResetTool (UniqueObject, SimpleItem):
 
     security = ClassSecurityInfo()
 
-    security.declareProtected(ManagePortal, 'manage_setTimeout')
-
-    def manage_setTimeout(self, hours=168, REQUEST=None):
-        """ZMI method for setting the expiration timeout in hours."""
-        self.setExpirationTimeout(int(hours))
-        return self.manage_overview(manage_tabs_message="Timeout set to %s hours" % hours)
-
-    security.declareProtected(ManagePortal, 'manage_toggleUserCheck')
-
-    def manage_toggleUserCheck(self, REQUEST=None):
-        """ZMI method for toggling the flag for checking user names on return.
-        """
-        self.toggleUserCheck()
-        m = self.checkUser() and 'on' or 'off'
-        return self.manage_overview(manage_tabs_message="Returning username check turned %s" % m)
-
     def __init__(self):
-        self._requests = {}
+        self._requests = OOBTree()
 
     ## Internal attributes
-    _user_check = 1
-    _timedelta = 168  # misleading name, the number of hours are actually stored as int
+    _user_check = True
+    _timedelta = 7   # DAYS
 
     ## Interface fulfillment ##
     security.declareProtected(ManagePortal, 'requestReset')
@@ -89,7 +70,7 @@ class PasswordResetTool (UniqueObject, SimpleItem):
 
         Returns a dictionary with the random string that must be
         used to reset the password in 'randomstring', the expiration date
-        as a DateTime in 'expires', and the userid (for convenience) in
+        as a datetime in 'expires', and the userid (for convenience) in
         'userid'. Returns None if no such user.
         """
         if not self.getValidUser(userid):
@@ -147,16 +128,7 @@ class PasswordResetTool (UniqueObject, SimpleItem):
         # actually change password
         user = member.getUser()
         uf = getToolByName(self, 'acl_users')
-        if getattr(uf, 'userSetPassword', None) is not None:
-            uf.userSetPassword(user.getUserId(), password)  # GRUF 3
-        else:
-            try:
-                user.changePassword(password)  # GRUF 2
-            except AttributeError:
-                # this sets __ directly (via MemberDataTool) which is the usual
-                # (and stupid!) way to change a password in Zope
-                member.setSecurityProfile(password=password)
-
+        uf.userSetPassword(user.getUserId(), password)
         member.setMemberProperties(dict(must_change_password=0))
 
         # clean out the request
@@ -169,46 +141,22 @@ class PasswordResetTool (UniqueObject, SimpleItem):
     security.declareProtected(ManagePortal, 'setExpirationTimeout')
 
     def setExpirationTimeout(self, timedelta):
-        """Set the length of time a reset request will be valid.
-
-        Takes a 'datetime.timedelta' object (if available, since it's
-        new in Python 2.3) or a number of hours, possibly
-        fractional. Since a negative delta makes no sense, the
-        timedelta's absolute value will be used."""
+        """Set the length of time a reset request will be valid in days.
+        """
         self._timedelta = abs(timedelta)
 
     security.declarePublic('getExpirationTimeout')
 
     def getExpirationTimeout(self):
         """Get the length of time a reset request will be valid.
-
-        In hours, possibly fractional. Ignores seconds and shorter."""
-        try:
-            if isinstance(self._timedelta, datetime.timedelta):
-                return self._timedelta.days * 24
-        except NameError:
-            pass  # that's okay, it must be a number of hours...
+        """
         return self._timedelta
-
-    security.declareProtected(ManagePortal, 'toggleUserCheck')
-
-    def toggleUserCheck(self):
-        """Changes whether or not the tool requires someone to give the uerid
-        they're trying to change on a 'password reset' page. Highly recommended
-        to LEAVE THIS ON."""
-        if not hasattr(self, '_user_check'):
-            self._user_check = 1
-
-        self._user_check = not self._user_check
 
     security.declarePublic('checkUser')
 
     def checkUser(self):
         """Returns a boolean representing the state of 'user check' as described
         in 'toggleUserCheck'. True means on, and is the default."""
-        if not hasattr(self, '_user_check'):
-            self._user_check = 1
-
         return self._user_check
 
     security.declarePublic('verifyKey')
@@ -229,20 +177,6 @@ class PasswordResetTool (UniqueObject, SimpleItem):
 
     security.declareProtected(ManagePortal, 'getStats')
 
-    def getStats(self):
-        """Return a dictionary like so:
-            {"open":3, "expired":0}
-        about the number of open and expired reset requests.
-        """
-        good = 0
-        bad = 0
-        for stored_user, expiry in self._requests.values():
-            if self.expired(expiry):
-                bad += 1
-            else:
-                good += 1
-
-        return {"open": good, "expired": bad}
 
     security.declarePrivate('clearExpired')
 
@@ -250,9 +184,10 @@ class PasswordResetTool (UniqueObject, SimpleItem):
         """Destroys all expired reset request records.
         Parameter controls how many days past expired it must be to disappear.
         """
+        now = datetime.datetime.utcnow()
         for key, record in self._requests.items():
             stored_user, expiry = record
-            if self.expired(expiry, DateTime() - days):
+            if self.expired(expiry, now - datetime.timedelta(days=days)):
                 del self._requests[key]
                 self._p_changed = 1
     # customization points
@@ -281,19 +216,7 @@ class PasswordResetTool (UniqueObject, SimpleItem):
 
         This is used by housekeeping methods (like clearEpired)
         and stored in reset request records."""
-        if not hasattr(self, '_timedelta'):
-            self._timedelta = 168
-        if isinstance(self._timedelta, datetime.timedelta):
-            expire = datetime.datetime.utcnow() + self._timedelta
-            return DateTime(expire.year,
-                            expire.month,
-                            expire.day,
-                            expire.hour,
-                            expire.minute,
-                            expire.second,
-                            'UTC')
-        expire = time.time() + self._timedelta * 3600  # 60 min/hr * 60 sec/min
-        return DateTime(expire)
+        return datetime.datetime.utcnow() + datetime.timedelta(days=self._timedelta)
 
     security.declarePrivate('getValidUser')
 
@@ -308,16 +231,17 @@ class PasswordResetTool (UniqueObject, SimpleItem):
                     self, userid, raise_exceptions=False)
         membertool = getToolByName(self, 'portal_membership')
         return membertool.getMemberById(userid)
-    # internal
+
 
     security.declarePrivate('expired')
 
-    def expired(self, datetime, now=None):
+    def expired(self, dt, now=None):
         """Tells whether a DateTime or timestamp 'datetime' is expired
         with regards to either 'now', if provided, or the current
         time."""
         if not now:
-            now = DateTime()
-        return now.greaterThanEqualTo(datetime)
+            now = datetime.datetime.utcnow()
+        return now >= dt
+
 
 InitializeClass(PasswordResetTool)
