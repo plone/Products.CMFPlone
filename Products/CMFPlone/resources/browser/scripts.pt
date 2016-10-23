@@ -1,11 +1,21 @@
 <script type="text/javascript" tal:content="string:PORTAL_URL = '${view/base_url}';"></script>
-<tal:scripts repeat="script view/scripts"
-  ><tal:block define="condcomment script/conditionalcomment"
-    ><tal:wcondcomment tal:condition="condcomment">
-       <tal:opencc tal:replace="structure string:&lt;!--[if ${condcomment}]&gt;" />
-     </tal:wcondcomment
-        ><script type="text/javascript" tal:attributes="src script/src; data-bundle script/bundle"></script><tal:wcondcomment tal:condition="condcomment">
-       <tal:closecc tal:replace="structure string:&lt;![endif]--&gt;" />
-     </tal:wcondcomment
-    ></tal:block
-></tal:scripts>
+<tal:scripts repeat="script view/scripts"><tal:block define="condcomment script/conditionalcomment; resetrjs script/resetrjs|nothing"><tal:if condition="resetrjs">
+  <tal:openreset content='structure string:&lt;script type="text/javascript"&gt;'/>
+      /* reset requirejs definitions so that people who put requirejs in legacy compilation do not get errors */
+      var _old_define = define;
+      var _old_require = require;
+      define = undefined;
+      require = undefined;
+  <tal:endreset content='structure string:&lt;/script&gt;'/>
+</tal:if><tal:if condition="condcomment">
+    <tal:opencc tal:replace="structure string:&lt;!--[if ${condcomment}]&gt;" />
+</tal:if>
+  <script type="text/javascript" tal:attributes="src script/src; data-bundle script/bundle"></script>
+<tal:if condition="condcomment">
+  <tal:closecc tal:condition="condcomment" tal:replace="structure string:&lt;![endif]--&gt;" />
+</tal:if><tal:if condition="resetrjs">
+  <tal:openredefine content='structure string:&lt;script type="text/javascript"&gt;'/>
+      define = _old_define;
+      require = _old_require;
+  <tal:endredefine content='structure string:&lt;/script&gt;'/>
+</tal:if></tal:block></tal:scripts>
