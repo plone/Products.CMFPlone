@@ -176,7 +176,7 @@ Bug fixes:
   [gforcada]
 
 - Move some tests from ZopeTestCase to plone.app.testing.
-  [gforcada, ivonteoh, maurits]
+  [gforcada, ivanteoh, maurits]
 
 
 5.1a2 (2016-08-19)

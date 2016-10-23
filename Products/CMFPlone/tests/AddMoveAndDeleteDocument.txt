@@ -4,11 +4,8 @@ Adding, Editing, Moving and Deleting a Document
 Does what the title says, really.  Plus some assertions.
 
     >>> from plone.testing.z2 import Browser
-    >>> from plone.app.testing import TEST_USER_NAME
     >>> from plone.app.testing import SITE_OWNER_NAME
-    >>> from plone.app.testing import TEST_USER_PASSWORD
     >>> from plone.app.testing import SITE_OWNER_PASSWORD
-    >>> from plone.app.testing import setRoles
     >>> app = layer['app']
     >>> portal = layer['portal']
     >>> browser = Browser(app)
@@ -46,7 +43,6 @@ Note that this is slightly different to how the testrecorder result
 looks like because we're navigating the page with a JavaScript- less
 browser.
 
-    >>> from plone.app.testing import TEST_USER_ID
     >>> browser.getLink('Page').click()
     >>> #'Edit Page' in browser.contents # ouch, Plone has <span> around 'Page'
     >>> browser.url
