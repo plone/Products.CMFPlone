@@ -20,7 +20,8 @@ UNITTESTS = ['messages.txt', 'mails.txt', 'emaillogin.txt', 'translate.txt',
 CONTENT_TESTS = [
     'AddMoveAndDeleteDocument.txt',
     'base_tag_not_present.txt',
-    'browser.txt']
+    'browser.txt',
+    'browser_collection_views.txt']
 OPTIONFLAGS = (doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE)
 
 from Products.GenericSetup import EXTENSION, profile_registry
