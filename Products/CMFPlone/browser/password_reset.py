@@ -152,7 +152,7 @@ class ExplainPWResetToolView(BrowserView):
             {"open":3, "expired":0}
         about the number of open and expired reset requests.
         """
-        # count expired reset requests
+        # count expired reset requests by creating a list of it
         bad = len([1 for expiry in self.context._requests.values()
                    if self.context.expired(expiry)])
         # open reset requests are all requests without the expired ones
