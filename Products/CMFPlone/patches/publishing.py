@@ -2,8 +2,8 @@
 # From Products.PloneHotfix20160419
 # Plus extras for properties.
 from OFS.PropertyManager import PropertyManager
-from OFS.ZDOM import Document
-from OFS.ZDOM import Node
+#from OFS.ZDOM import Document
+#from OFS.ZDOM import Node
 from Products.CMFPlone.Portal import PloneSite
 
 
@@ -30,8 +30,8 @@ except ImportError:
 
 
 klasses = (
-    Node,
-    Document,
+#    Node,
+#    Document,
     PloneSite,
     Item,
     Container,
