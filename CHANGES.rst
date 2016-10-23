@@ -62,6 +62,8 @@ Bug fixes:
 
 - Fix various layout issues in toolbar [alecm]
 
+- Style display menu headings differently from actions [alecm]
+
 - Avoid dependency on plone.app.imaging. [davisagli]
 - Fix TinyMCE table styles [vangheem]
 
