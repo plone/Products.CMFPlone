@@ -4,26 +4,6 @@ Test for scripts
 This test suite tests various python scripts. Ultimately these tests should be
 doctests provided directly in the implementation (as utilities for example).
 
-Tests for returnNone.py
------------------------
-
-This should be self-explanatory:
-
-  >>> self.portal.returnNone() is None
-  True
-
-Tests for reverseList.py
-------------------------
-
-Test with a list:
-
-  >>> self.portal.reverseList([1, 2, 3])
-  [3, 2, 1]
-
-Test with a dict:
-
-  >>> self.portal.reverseList((1, 2, 3))
-  [3, 2, 1]
 
 Tests for unique.py
 -------------------
