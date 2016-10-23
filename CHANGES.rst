@@ -34,6 +34,9 @@ New features:
 - Include mockup 2.4.0.
   [thet]
 
+- PasswordResetTool moved from its own package to here
+  [tomgross]
+
 Bug fixes:
 
 - Avoid dependency on plone.app.imaging. [davisagli]
