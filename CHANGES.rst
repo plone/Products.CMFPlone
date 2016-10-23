@@ -289,6 +289,9 @@ Bug fixes:
   Products.Five.BrowserView which again has AcquisitionBBB.
   [pbauer]
 
+- Remove eNotSupported (not available in Zope 4)
+  [tschorr]
+
 
 5.1a2 (2016-08-19)
 ------------------
