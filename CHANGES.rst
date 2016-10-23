@@ -60,6 +60,8 @@ New features:
 
 Bug fixes:
 
+- Fix various layout issues in toolbar [alecm]
+
 - Avoid dependency on plone.app.imaging. [davisagli]
 - Fix TinyMCE table styles [vangheem]
 
