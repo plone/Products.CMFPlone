@@ -36,6 +36,7 @@ Breaking changes:
     - ``navigationParent.py`` with test
     - ``plone_log.py``
     - ``returnNone.py`` with occurence refactored
+    - ``reverseList.py`` with test
     - ``sort_modified_ascending.py``
 
 New features:
