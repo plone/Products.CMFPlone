@@ -1,0 +1,30 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+<body>
+
+<metal:main fill-slot="main"
+     tal:define="use_email_as_login python:context.portal_registry['plone.use_email_as_login'];">
+
+    <h1 class="documentFirstHeading" i18n:translate="heading_pwreset_invalid">Error setting password</h1>
+
+    <div id="content-core">
+        <p i18n:translate="message_pwreset_invalid"
+           tal:condition="not:use_email_as_login">
+           Sorry, this appears to be an invalid request. Please make sure you copied
+           the URL exactly as it appears in your email and that you entered your
+           user name correctly.
+        </p>
+        <p i18n:translate="message_pwreset_invalid_with_email"
+           tal:condition="use_email_as_login">
+           Sorry, this appears to be an invalid request. Please make sure you copied
+           the URL exactly as it appears in your email and that you entered your
+           email address correctly.
+        </p>
+    </div>
+
+</metal:main>
+
+</body>
+</html>

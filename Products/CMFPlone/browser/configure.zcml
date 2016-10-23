@@ -225,4 +225,49 @@
       template="templates/colophon.pt"
       />
 
+  <browser:page
+      name="mail_password_template"
+      for="*"
+      class=".password_reset.PasswordResetToolView"
+      template="templates/mail_password_template.pt"
+      permission="zope.Public"
+      />
+
+  <browser:page
+      name="registered_notify_template"
+      for="*"
+      class=".password_reset.PasswordResetToolView"
+      template="templates/registered_notify_template.pt"
+      permission="zope.Public"
+      />
+
+  <browser:page
+      name="mail_password_form"
+      for="*"
+      template="templates/mail_password_form.pt"
+      permission="zope.Public"
+      />
+
+  <browser:page
+      name="mail_password_response"
+      for="*"
+      template="templates/mail_password_response.pt"
+      permission="zope.Public"
+      />
+
+  <browser:page
+      name="passwordreset"
+      for="*"
+      class=".password_reset.PasswordResetView"
+      permission="zope.Public"
+      />
+
+  <browser:page
+      name="explainPWResetTool"
+      for="Products.CMFPlone.interfaces.IPWResetTool"
+      class=".password_reset.ExplainPWResetToolView"
+      template="templates/explainPWResetTool.pt"
+      permission="zope2.ViewManagementScreens"
+      />
+
 </configure>

@@ -59,7 +59,6 @@ setup(
         'Products.ExternalEditor',
         'Products.GenericSetup >= 1.8.2',
         'Products.MimetypesRegistry',
-        'Products.PasswordResetTool',
         'Products.PlacelessTranslationService',
         # 'Products.PloneLanguageTool',
         'Products.PlonePAS',

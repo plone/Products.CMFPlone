@@ -40,6 +40,8 @@ from interface import IInterfaceTool
 from language import ILanguage
 from migration import IMigrationTool
 from patterns import IPatternsSettings
+from password_reset import IPasswordResetToolView
+from password_reset import IPWResetTool
 from properties import IPropertiesTool
 from properties import ISimpleItemWithProperties
 from resources import IBundleRegistry
