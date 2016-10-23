@@ -3,13 +3,40 @@ Browser tests
 Test the presence of the "title" tag in html page
 
     >>> from plone.testing.z2 import Browser
+    >>> from plone.app.testing import SITE_OWNER_NAME
+    >>> from plone.app.testing import SITE_OWNER_PASSWORD
     >>> from plone.app.testing import TEST_USER_NAME
     >>> from plone.app.testing import TEST_USER_PASSWORD
+    >>> app = layer['app']
+    >>> portal = layer['portal']
     >>> browser = Browser(app)
-    >>> browser.open('http://nohost/plone/front-page')
-    >>> "<title>%s" % self.portal['front-page'].Title() in browser.contents
-    True
 
+Create object
+
+    >>> browser.open('http://nohost/plone/login_form')
+    >>> browser.getControl('Login Name').value = SITE_OWNER_NAME
+    >>> browser.getControl('Password').value = SITE_OWNER_PASSWORD
+    >>> browser.getControl('Log in').click()
+
+    >>> browser.getLink('Page').click()
+    >>> browser.getControl('Title').value = 'Front Page'
+    >>> browser.getControl('Save').click()
+    >>> browser.getLink('Publish').click()
+
+    >>> browser.open('http://nohost/plone')
+    >>> browser.getLink('Collection').click()
+    >>> browser.getControl(name='form.widgets.IDublinCore.title').value = 'News'
+    >>> browser.getControl('Save').click()
+    >>> browser.getLink('Summary view').click()
+    >>> browser.getLink('Publish').click()
+
+    >>> browser.getLink('Log out').click()
+
+Test title tag
+
+    >>> browser.open('http://nohost/plone/front-page')
+    >>> "<title>%s" % portal['front-page'].Title() in browser.contents
+    True
 
 Test for "template id" in <body> tag. See tickets #9111/#8777
 
@@ -18,7 +45,7 @@ Test for "template id" in <body> tag. See tickets #9111/#8777
     '...<body ... class="template-document_view portaltype-document site-plone section-front-page...'
     >>> browser.open('http://nohost/plone/news')
     >>> browser.contents
-    '...<body ... class="template-folder_summary_view portaltype-collection site-plone section-news...'
+    '...<body ... class="template-summary_view portaltype-collection site-plone section-news...'
 
 Login
 
