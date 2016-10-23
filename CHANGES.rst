@@ -23,6 +23,10 @@ Bug fixes:
 
 - Add default icon for top-level contentview and contentmenu toolbar entries [alecm]
 
+Bug fixes:
+
+- Fix various layout issues in toolbar [alecm]
+
 - Fix TinyMCE table styles [vangheem]
 
 - Apply security hotfix 20160830 for ``z3c.form`` widgets.  [maurits]
