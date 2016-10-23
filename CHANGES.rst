@@ -27,7 +27,9 @@ Breaking changes:
     - ``author_find_content.py``
     - ``create_query_string.py``
     - ``formatColumns.py`` with tests
+    - ``getAllowedTypes.py``
     - ``getGlobalPortalRoles.py``
+    - ``getNotAddableTypes.py``
     - ``getPopupScript.py``
     - ``getPortalTypeList.py``
     - ``getPortalTypes.py``
