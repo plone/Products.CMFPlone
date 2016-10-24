@@ -10,7 +10,8 @@ from Products.CMFPlone.tests.PloneTestCase import FunctionalTestCase
 from Testing.ZopeTestCase import ZopeDocFileSuite
 
 
-UNITTESTS = ['messages.txt', 'mails.txt', 'emaillogin.txt', 'translate.txt']
+UNITTESTS = ['messages.txt', 'mails.txt', 'emaillogin.txt', 'translate.txt',
+             'pwreset_browser.txt']
 OPTIONFLAGS = (doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE)
 
 from Products.GenericSetup import EXTENSION, profile_registry

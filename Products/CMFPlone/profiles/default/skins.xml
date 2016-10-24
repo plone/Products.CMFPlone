@@ -3,8 +3,6 @@
    cookie_persistence="False" default_skin="Plone Default"
    request_varname="plone_skin">
  <object name="custom" meta_type="Folder"/>
- <object name="PasswordReset" meta_type="Filesystem Directory View"
-    directory="Products.PasswordResetTool:skins/PasswordReset"/>
  <object name="plone_content" meta_type="Filesystem Directory View"
     directory="Products.CMFPlone:skins/plone_content"/>
  <object name="plone_ecmascript" meta_type="Filesystem Directory View"
@@ -25,7 +23,6 @@
     directory="Products.CMFPlone:skins/plone_wysiwyg"/>
  <skin-path name="Plone Default">
   <layer name="custom"/>
-  <layer name="PasswordReset"/>
   <layer name="plone_ecmascript"/>
   <layer name="plone_wysiwyg"/>
   <layer name="plone_prefs"/>
