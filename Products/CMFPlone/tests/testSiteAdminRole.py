@@ -1,14 +1,16 @@
 # -*- coding: utf-8 -*-
-import pkg_resources
-from Testing import ZopeTestCase as ztc
 from AccessControl.PermissionRole import rolesForPermissionOn
-from Products.CMFPlone.tests import PloneTestCase
+from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 
-# without this some permissions don't get initialized
-ztc.installProduct('Transience')
+import unittest
 
 
-class TestSiteAdministratorRole(PloneTestCase.PloneTestCase):
+class TestSiteAdministratorRole(unittest.TestCase):
+
+    layer = PRODUCTS_CMFPLONE_INTEGRATION_TESTING
+
+    def setUp(self):
+        self.portal = self.layer['portal']
 
     def testExpectedPermissions(self):
         # This integration test shows that the correct permissions were
@@ -31,7 +33,8 @@ class TestSiteAdministratorRole(PloneTestCase.PloneTestCase):
             'ATContentTypes: Add Document':                             1,
             'ATContentTypes: Add Event':                                1,
             'ATContentTypes: Add File':                                 1,
-            'ATContentTypes: Add Folder':                               1,
+            # see p.a.folder.__init__ as to why AT Add Folder is disabled
+            'ATContentTypes: Add Folder':                               0,
             'ATContentTypes: Add Image':                                1,
             'ATContentTypes: Add Large Plone Folder':                   1,
             'ATContentTypes: Add Link':                                 1,
@@ -175,7 +178,6 @@ class TestSiteAdministratorRole(PloneTestCase.PloneTestCase):
             'Portlets: Manage portlets':                                1,
             'Portlets: View dashboard':                                 1,
             'Query Vocabulary':                                         0,
-            'Reply to item':                                            1,
             'Request review':                                           1,
             'Review portal content':                                    1,
             'Search ZCatalog':                                          1,
@@ -205,12 +207,6 @@ class TestSiteAdministratorRole(PloneTestCase.PloneTestCase):
             'plone.portlet.collection: Add collection portlet':         1,
             'plone.portlet.static: Add static portlet':                 1,
         }
-        if 'products.kupu' in pkg_resources.working_set.by_key:
-            expected.update({
-                'Add kupu Library Tools':                               0,
-                'Kupu: Manage libraries':                               1,
-                'Kupu: Query libraries':                                1,
-            })
         try:
             import plone.app.iterate
             plone.app.iterate  # pyflakes

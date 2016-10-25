@@ -310,7 +310,7 @@
           padding: 5px 15px;
         }
 
-        &.plone-toolbar-submenu-header {
+        &.plone-toolbar-submenu-header, &.plonetoolbar-display-view.actionSeparator {
           margin: 5px 0 0;
           padding: 5px 0 0;
           border-top: 1px solid @plone-toolbar-separator-color;
@@ -340,7 +340,11 @@
           }
         }
 
-        &:not(.plone-toolbar-submenu-header) {
+        &.plonetoolbar-display-view.actionSeparator {
+            margin: 0;
+        }
+
+        &:not(.plone-toolbar-submenu-header, .plonetoolbar-display-view.actionSeparator) {
           > :before {
             position: absolute;
             left: 15px;
@@ -435,6 +439,13 @@
   max-height: 0;
 }
 
+.plone-toolbar-default #edit-zone {
+    /* Short title support */
+    .plone-toolbar-title, .plone-toolbar-state-title {
+        display: none;
+    }
+}
+
 .plone-toolbar-expanded #edit-zone {
   width: @plone-left-toolbar-expanded;
 
@@ -467,6 +478,11 @@
 
   li:not(.active) a:hover > span {
     background: @plone-toolbar-link;
+  }
+
+  /* Short title support */
+  .plone-toolbar-short-title {
+      display: none;
   }
 
   /*states*/

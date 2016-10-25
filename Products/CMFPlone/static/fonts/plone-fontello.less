@@ -54,6 +54,9 @@
   /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
 }
  
+/* Default Menu Icon */
+.toolbar-menu-icon:before { content: '\e834'; }
+
 .icon-user:before { content: '\e800'; } /* '' */
 .icon-folderContents:before { content: '\e801'; } /* '' */
 .icon-edit:before { content: '\e802'; } /* '' */
@@ -131,3 +134,10 @@
 .icon-controlpanel-Maintenance:before { content: '\e849'; } /* '' */
 .icon-up:before { content: '\e84a'; } /* '' */
 .icon-down:before { content: '\e84b'; } /* '' */
+
+/* Unicode icons used in the same places */
+.icon-parent:before {
+    content: '↩';
+    position: relative;
+    top: 3px;
+}

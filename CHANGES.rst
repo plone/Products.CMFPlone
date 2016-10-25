@@ -18,6 +18,28 @@ Breaking changes:
   This change shouldn't impact too much, because the form unload protection didn't work at all in Plone 5 until now.
   [thet]
 
+- MimetypesRegistry icons are now a browser resource directory instead of skins folder.
+  [jensens]
+
+- Remove unused ``plone_scripts`` (not used nor tested anywhere in coredev) [jensens]
+
+    - ``add_ext_editor.py``
+    - ``author_find_content.py``
+    - ``create_query_string.py``
+    - ``formatColumns.py`` with tests
+    - ``getAllowedTypes.py``
+    - ``getGlobalPortalRoles.py``
+    - ``getNotAddableTypes.py``
+    - ``getPopupScript.py``
+    - ``getPortalTypeList.py``
+    - ``getPortalTypes.py``
+    - ``getSelectableViews.py`` with tests
+    - ``hasIndexHtml.py`` with tests
+    - ``navigationParent.py`` with test
+    - ``plone_log.py``
+    - ``returnNone.py`` with occurence refactored
+    - ``reverseList.py`` with test
+    - ``sort_modified_ascending.py``
 
 New features:
 
@@ -32,11 +54,26 @@ New features:
 - Include mockup 2.4.0.
   [thet]
 
+- Prevent workflow menu overflowing in toolbar [MatthewWilkes]
+
+- Add default icon for top-level contentview and contentmenu toolbar entries [alecm]
+
 Bug fixes:
 
+- Fix various layout issues in toolbar [alecm]
+
+- Style display menu headings differently from actions [alecm]
+
 - Avoid dependency on plone.app.imaging. [davisagli]
+- Fix TinyMCE table styles [vangheem]
 
 - Add utf8 headers to all Python source files. [jensens]
+
+- Add default icon for top-level contentview and contentmenu toolbar entries [alecm]
+- Reset and re-enable ``define`` and ``require`` for the ``plone-legacy`` bundle in development mode.
+  Fixes issues with legacy scripts having RequireJS integration in development mode.
+  In Production mode, resetting  and re-enabling is done in the compiled bundle.
+  [thet]
 
 - Apply security hotfix 20160830 for ``z3c.form`` widgets.  [maurits]
 
@@ -59,6 +96,9 @@ Bug fixes:
   [gforcada]
 
 - Use fork of grunt-sed which is compatible with newer grunt version.
+  [gforcada]
+
+- Move some tests from ZopeTestCase to plone.app.testing.
   [gforcada]
 
 5.1a2 (2016-08-19)
@@ -139,6 +179,8 @@ Bug fixes:
 
 - Upgrade ``less-plugin-inline-urls`` to ``1.2.0`` to properly handle VML url node values in CSS.
   [thet]
+- Fixed adding same resource/bundle to the request multiple times.
+  [vangheem]
 
 - Fixed missing keyword in robot tests due to wrong documentation lines.
   [maurits]

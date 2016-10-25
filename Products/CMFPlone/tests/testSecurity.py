@@ -185,9 +185,14 @@ class TestAttackVectorsFunctional(PloneTestCase):
     def test_createObject(self):
         res = self.publish('/plone/createObject?type_name=File&id=${foo}')
         self.assertEqual(302, res.status)
-        self.assertTrue(res.headers['location'].startswith(
-            'http://nohost/plone/portal_factory/File/${foo}/edit?_authenticator='))
+        self.assertTrue(
+            res.headers['location'].startswith(
+                'http://nohost/plone/portal_factory/File/${foo}/'
+                'edit?_authenticator='
+            )
+        )
 
     def test_formatColumns(self):
+        # formatColumns is unused and was removed
         res = self.publish('/plone/formatColumns?items:list=')
-        self.assertEqual(403, res.status)
+        self.assertIn(res.status, [403, 404])
