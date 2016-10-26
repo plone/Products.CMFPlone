@@ -58,6 +58,9 @@ New features:
 
 - Add default icon for top-level contentview and contentmenu toolbar entries [alecm]
 
+- Make menu hover background fit whole menu width.
+  [thet]
+
 Bug fixes:
 
 - Fix various layout issues in toolbar [alecm]

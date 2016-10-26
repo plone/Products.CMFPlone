@@ -139,11 +139,13 @@
           line-height: 20px;
         }
 
-        &:hover > span {
-          margin-top: 0;
-          -webkit-transition: none;
-          transition: none;
+        &:hover {
           background: #007bb3;
+          & > span {
+            margin-top: 0;
+            -webkit-transition: none;
+            transition: none;
+          }
         }
       }
     }
