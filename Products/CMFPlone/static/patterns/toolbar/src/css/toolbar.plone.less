@@ -292,7 +292,10 @@
       }
 
       li {
-        width: @plone-toolbar-submenu-width;
+        min-width: @plone-toolbar-submenu-width;
+        width: auto;
+        white-space: nowrap;
+        padding-right: 1em;
 
         &:last-child {
           padding-bottom: 5px;
@@ -569,7 +572,8 @@
 #edit-zone nav > ul > li.active {
   ul {
     display: block;
-    width: @plone-toolbar-submenu-width;
+    min-width: @plone-toolbar-submenu-width;
+    width: auto;
   }
 
   a > span {
@@ -898,7 +902,8 @@
   }
 
   #edit-zone nav ul li.active ul {
-    width: @plone-toolbar-submenu-width;
+    min-width: @plone-toolbar-submenu-width;
+    width: auto;
   }
 
   .plone-toolbar-left-default {

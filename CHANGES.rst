@@ -66,6 +66,8 @@ New features:
 
 - Toolbar: Make scroll buttons exand whole toolbar width. [thet]
 
+- Toolbar: Let the toolbar submenus be as wide as they need to be and do not break entries into multiple lines. [thet]
+
 
 Bug fixes:
 
