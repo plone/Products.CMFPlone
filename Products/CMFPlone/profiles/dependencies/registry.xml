@@ -1078,7 +1078,6 @@
       <element>backbone</element>
       <element>bootstrap-dropdown</element>
       <element>bootstrap-tooltip</element>
-      <element>jquery.cookie</element>
       <element>jquery.event.drag</element>
       <element>jquery.event.drop</element>
       <element>jquery.form</element>
