@@ -62,6 +62,7 @@
     margin: 0;
     padding: 0;
     list-style: none;
+    overflow: hidden;  // scrolling done via buttons
 
     [class^='icon'] {
       font-size: 20px;
@@ -109,7 +110,7 @@
     .scroll-btn {
       position: fixed;
       z-index: 10;
-      left: 0;
+      width: @plone-left-toolbar;
       background-color: black;
 
       &.up {
@@ -129,6 +130,7 @@
 
         > span {
           height: 20px;
+          width: 100% !important;
         }
 
         span:before {
@@ -139,11 +141,13 @@
           line-height: 20px;
         }
 
-        &:hover > span {
-          margin-top: 0;
-          -webkit-transition: none;
-          transition: none;
+        &:hover {
           background: #007bb3;
+          & > span {
+              margin-top: 0;
+              -webkit-transition: none;
+              transition: none;
+          }
         }
       }
     }
@@ -175,8 +179,8 @@
       background: @plone-toolbar-pending-color;
     }
 
-    li.active a.label-state-pending > span,
-    a.label-state-pending > span:hover {
+    li.active a.label-state-pending,
+    a.label-state-pending:hover {
       color: (#fff - @plone-toolbar-text-color) !important;
     } //contrast
 
@@ -291,7 +295,10 @@
       }
 
       li {
-        width: @plone-toolbar-submenu-width;
+        min-width: @plone-toolbar-submenu-width;
+        width: auto;
+        white-space: nowrap;
+        padding-right: 1em;
 
         &:last-child {
           padding-bottom: 5px;
@@ -434,7 +441,8 @@
 }
 
 .plone-toolbar-top #edit-zone nav > ul ul {
-  width: @plone-toolbar-submenu-width;
+  min-width: @plone-toolbar-submenu-width;
+  width: auto;
   height: 0;
   max-height: 0;
 }
@@ -453,6 +461,10 @@
     left: @plone-left-toolbar-expanded;
   }
 
+  .scroll-btn {
+      width: @plone-left-toolbar-expanded;
+  }
+
   nav > ul a > [class^='icon'] {
     display: table-cell;
     width: 40px;
@@ -465,7 +477,7 @@
   }
 
   nav > ul a > span + span {
-    width: @plone-left-toolbar-expanded - 40px;
+    width: auto;
     text-align: left;
     word-wrap: break-word;
     word-break: break-word;
@@ -476,7 +488,7 @@
     width: 0;
   }
 
-  li:not(.active) a:hover > span {
+  li:not(.active) a:hover {
     background: @plone-toolbar-link;
   }
 
@@ -487,9 +499,18 @@
 
   /*states*/
 
+  ul#plone-contentmenu-workflow {
+     li span {
+        white-space: nowrap;
+        span:after {
+            right: 5px; // workflow status icon
+        }
+    }
+  }
+
   li {
-    a.label-state-published:hover > span,
-    li a.label-state-external:hover > span {
+    a.label-state-published:hover,
+    li a.label-state-external:hover {
       background: @plone-toolbar-published-color;
 
       &:first-child:before {
@@ -497,7 +518,7 @@
       }
     }
 
-    a.label-state-internally_published:hover > span {
+    a.label-state-internally_published:hover {
       background: @plone-toolbar-internally-published-color;
 
       &:first-child:before {
@@ -505,7 +526,7 @@
       }
     }
 
-    a.label-state-pending:hover > span {
+    a.label-state-pending:hover {
       background: @plone-toolbar-pending-color;
 
       &:first-child:before {
@@ -513,8 +534,8 @@
       }
     }
 
-    a.label-state-draft:hover > span,
-    li a.label-state-internal:hover > span {
+    a.label-state-draft:hover,
+    li a.label-state-internal:hover {
       background: @plone-toolbar-draft-color;
 
       &:first-child:before {
@@ -522,7 +543,7 @@
       }
     }
 
-    a.label-state-private:hover > span {
+    a.label-state-private:hover {
       background: @plone-toolbar-private-color;
 
       &:first-child:before {
@@ -543,7 +564,8 @@
 #edit-zone nav > ul > li.active {
   ul {
     display: block;
-    width: @plone-toolbar-submenu-width;
+    min-width: @plone-toolbar-submenu-width;
+    width: auto;
   }
 
   a > span {
@@ -804,7 +826,7 @@
       border-top: 1px solid #ddd;
       background-color: black;
       box-shadow: -6px 2px 6px 2px #ddd;
-
+      width: @plone-left-toolbar;
       ul {
         position: fixed;
         top: 0;
@@ -812,17 +834,14 @@
       }
     }
 
-    .plone-toolbar-main {
-      width: @plone-left-toolbar-expanded+18px; /* hide scroll bar */
-      padding-right: 18px;
+  }
+
+  .plone-toolbar-left.plone-toolbar-expanded #edit-zone {
+    #personal-bar-container {
+      width: @plone-left-toolbar-expanded;
     }
   }
 
-  .plone-toolbar-left-default #edit-zone {
-    .plone-toolbar-main {
-      width: @plone-left-toolbar+18px; /* hide scroll bar */
-    }
-  }
 }
 
 /*mobile*/
@@ -872,7 +891,8 @@
   }
 
   #edit-zone nav ul li.active ul {
-    width: @plone-toolbar-submenu-width;
+    min-width: @plone-toolbar-submenu-width;
+    width: auto;
   }
 
   .plone-toolbar-left-default {

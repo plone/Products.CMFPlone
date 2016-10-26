@@ -58,6 +58,24 @@ New features:
 
 - Add default icon for top-level contentview and contentmenu toolbar entries [alecm]
 
+- Toolbar styles:
+
+  - Don't break workflow contentmenu header and better place the current status icon.
+
+  - Let the toolbar submenus be as wide as they need by setting a ``min-width`` and ``width: auto;``.
+
+  - Raise the width of the expanded toolbar from ``120px`` to ``180px``.
+
+  - Make menu hover background fit whole menu width.
+
+  - Don't show toolbar scroll bars for bigger screens and make scroll buttons full-width.
+
+  - dont force scoll buttons to be left, when toolbar is right.
+
+  - nicer toolbar submenus
+
+  [thet]
+
 Bug fixes:
 
 - Fix various layout issues in toolbar [alecm]
