@@ -421,6 +421,31 @@
   }
 }
 
+.plone-toolbar-left {
+    // expand fist level list items to full width
+    &.plone-toolbar-expanded {
+        ul.plone-toolbar-main > li {
+            width: @plone-left-toolbar-expanded;
+        }
+    }
+    &.plone-toolbar-default {
+        ul.plone-toolbar-main > li {
+            width: @plone-left-toolbar;
+        }
+    }
+
+    #edit-zone ul.plone-toolbar-main > li > a {
+        // this selector, to be most specific
+        & > .icon-up,
+        & > .icon-down {
+            // make them full width, icon in middle.
+            width: 100%;
+            display: block;
+            padding-left: 0;
+        }
+    }
+}
+
 .plone-toolbar-left #edit-zone {
   z-index: 5;
 

@@ -58,9 +58,14 @@ New features:
 
 - Add default icon for top-level contentview and contentmenu toolbar entries [alecm]
 
-- Make menu hover background fit whole menu width. [thet]
+- Toolbar: Make menu hover background fit whole menu width. [thet]
 
-- Don't force scoll buttons to be left, when toolbar is right. [thet]
+- Toolbar: Don't force scoll buttons to be left, when toolbar is right. [thet]
+
+- Toolbar: Make first level list items exand the whole toolbar width - also when scroll buttons are shown. [thet]
+
+- Toolbar: Make scroll buttons exand whole toolbar width. [thet]
+
 
 Bug fixes:
 
