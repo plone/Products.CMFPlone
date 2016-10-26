@@ -41,6 +41,9 @@ Breaking changes:
     - ``reverseList.py`` with test
     - ``sort_modified_ascending.py``
 
+- Move script ``datecomponents.py`` to Archetypes 
+  [jensens]
+
 New features:
 
 - Add sort_on field to search controlpanel.
@@ -70,6 +73,11 @@ New features:
 
 
 Bug fixes:
+
+- Remove jquery.cookie from plone-logged-in bundle's stub_js_modules.
+  The toolbar, which has a dependency on jquery.cookie,
+  was moved from the plone bundle to plone-logged-in in CMPlone 5.1a2.
+  [thet]
 
 - Fix various layout issues in toolbar [alecm]
 
