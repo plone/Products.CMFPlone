@@ -41,6 +41,9 @@ Breaking changes:
     - ``reverseList.py`` with test
     - ``sort_modified_ascending.py``
 
+- Move script ``datecomponents.py`` to Archetypes 
+  [jensens]
+
 New features:
 
 - Add sort_on field to search controlpanel.
