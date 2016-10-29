@@ -1,8 +1,9 @@
 We need a view on the content.
 
-    >>> request = self.app.REQUEST
+    >>> request = layer['request']
+    >>> portal = layer['portal']
     >>> from zope.publisher.browser import BrowserView
-    >>> view = BrowserView(self.portal, request)
+    >>> view = BrowserView(portal, request)
 
     >>> from plone.app.layout.viewlets.interfaces import IPortalFooter
     >>> from Products.Five.viewlet.manager import ViewletManager
@@ -10,7 +11,7 @@ We need a view on the content.
 
 Now we can instantiate the manager.
 
-    >>> manager = Footer(self.portal, request, view)
+    >>> manager = Footer(portal, request, view)
 
 Set analytics (webstats_js) code through the controlpanel
 
