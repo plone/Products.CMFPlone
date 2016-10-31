@@ -50,7 +50,6 @@ So first we need a logged in user with manager rights:
   >>> browser.getControl('Log in').click()
   >>> browser.getLink('Site Setup')
   <Link text='Site Setup' url='http://nohost/plone/@@overview-controlpanel'>
-  >>> open('/tmp/temp.html', 'w').write(browser.contents)
 
 Coincidentally the portal happens to be configured for users to get to pick
 their own passwords. Again, this is only relevant for this test as otherwise
