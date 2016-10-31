@@ -49,6 +49,11 @@ New features:
 - Add utility method to retrieve the top most parent request from a sub request.
   [thet]
 
+- Move ``get_top_site_from_url`` from plone.app.content to ``utils.py``.
+  This function allows in virtual hosting environments to acquire the top most visible portal object to operate on.
+  It is used for example to calculate the correct virtual root objects for Mockup's related items and structure pattern.
+  [thet]
+
 - Add sort_on field to search controlpanel.
   [rodfersou]
 
