@@ -47,6 +47,7 @@ Breaking changes:
 New features:
 
 - Add utility method to retrieve the top most parent request from a sub request.
+- Add ``mockup-patterns-relateditems-upload`` resource, which can be used in custom bundles to add the upload feature in the related items widget.
   [thet]
 
 - Move ``get_top_site_from_url`` from plone.app.content to ``utils.py``.
