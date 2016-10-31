@@ -11,6 +11,8 @@ packages implemented for `PLIP 224: CSRF protection framework
 should have been set up. This can be checked indirectly by making
 sure the authenticator view exists:
 
+  >>> app = layer['app']
+  >>> portal = layer['portal']
   >>> portal.restrictedTraverse('@@authenticator')
   <Products.Five.metaclass.AuthenticatorView object at ...>
 
@@ -37,17 +39,18 @@ framework actually works.
 
 So first we need a logged in user with manager rights:
 
-  >>> self.setRoles(('Manager',))
   >>> import transaction; transaction.commit()
-  >>> from plone.app.testing import TEST_USER_ID
+  >>> from plone.app.testing import SITE_OWNER_NAME
+  >>> from plone.app.testing import SITE_OWNER_PASSWORD
   >>> from plone.app.testing import TEST_USER_NAME
   >>> from plone.app.testing import TEST_USER_PASSWORD
   >>> browser.open('http://nohost/plone/login_form')
-  >>> browser.getControl(name='__ac_name').value = TEST_USER_NAME
-  >>> browser.getControl(name='__ac_password').value = TEST_USER_PASSWORD
+  >>> browser.getControl(name='__ac_name').value = SITE_OWNER_NAME
+  >>> browser.getControl(name='__ac_password').value = SITE_OWNER_PASSWORD
   >>> browser.getControl('Log in').click()
   >>> browser.getLink('Site Setup')
   <Link text='Site Setup' url='http://nohost/plone/@@overview-controlpanel'>
+  >>> open('/tmp/temp.html', 'w').write(browser.contents)
 
 Coincidentally the portal happens to be configured for users to get to pick
 their own passwords. Again, this is only relevant for this test as otherwise
@@ -90,7 +93,8 @@ unsuspectingly even clicks the button presented:
   Traceback (most recent call last):
   ...
   HTTPError: HTTP Error 403: Forbidden
-  >>> self.assertFalse(portal.acl_users.getUser('john'), 'user found?')
+  >>> bool(portal.acl_users.getUser('john'))
+  False
 
 So, he was protected from the attack — phew.  But of course, he should still
 be able to add new users himself if he wishes so:
@@ -107,7 +111,9 @@ be able to add new users himself if he wishes so:
   >>> browser.getControl('Register').click()
   >>> browser.contents
   '...Welcome!...You have been registered...'
-  >>> self.assertTrue(portal.acl_users.getUser('john'), 'user not found?')
+  >>> bool(portal.acl_users.getUser('john'))
+  True
+  >>> browser.open('http://nohost/plone/logout')
 
 
 More tests: User Preferences
@@ -118,6 +124,10 @@ of this test will try to swiftly cover all forms that need protection, or
 rather all of them which are supposed to get it at the moment.  Let's start
 with the personal preferences:
 
+  >>> browser.open('http://nohost/plone/login_form')
+  >>> browser.getControl(name='__ac_name').value = TEST_USER_NAME
+  >>> browser.getControl(name='__ac_password').value = TEST_USER_PASSWORD
+  >>> browser.getControl('Log in').click()
   >>> browser.open('http://nohost/plone/@@personal-information')
   >>> browser.getControl('Full Name').value = 'John Doe'
   >>> browser.getControl('E-mail').value = 'john@foo-security.com'
@@ -145,7 +155,9 @@ know the current passwort to exploit this, but we'll check nevertheless:
   >>> browser.getControl('Current password').value = TEST_USER_PASSWORD
   >>> browser.getControl('New password').value = 'y0d4Wg'
   >>> browser.getControl('Confirm password').value = 'y0d4Wg'
+  >>> # import pdb; pdb.set_trace()
   >>> browser.getControl('Change Password').click()
+  >>> # import pdb; pdb.set_trace()
   >>> browser.contents
   '...Info...Password changed...'
 
@@ -158,12 +170,16 @@ know the current passwort to exploit this, but we'll check nevertheless:
   Traceback (most recent call last):
   ...
   HTTPError: HTTP Error 403: Forbidden
+  >>> browser.open('http://nohost/plone/logout')
 
 On the admin side of things there's also the user preferences
 as its z3cform the portrait gets always modified because is IObject:
 
-  >>> self.setRoles(('Manager'),)
-  >>> browser.open('http://nohost/plone/@@user-information?userid=%s' % TEST_USER_ID)
+  >>> browser.open('http://nohost/plone/login_form')
+  >>> browser.getControl(name='__ac_name').value = SITE_OWNER_NAME
+  >>> browser.getControl(name='__ac_password').value = SITE_OWNER_PASSWORD
+  >>> browser.getControl('Log in').click()
+  >>> browser.open('http://nohost/plone/@@user-information?userid=%s' % SITE_OWNER_NAME)
   >>> browser.getControl('Full Name').value = 'John Doe'
   >>> browser.getControl('E-mail').value = 'john@foo-security.com'
   >>> browser.getControl('Save').click()
@@ -274,11 +290,11 @@ Plone's "object actions" should also be protected.  Let's check renaming
 first:
 
   >>> browser.open('http://nohost/plone/')
-  >>> browser.getLink(url='createObject?type_name=Folder').click()
+  >>> browser.getLink(url='++add++Folder').click()
   >>> browser.getControl('Title').value = 'a folder'
   >>> browser.getControl('Save').click()
   >>> browser.url
-  'http://nohost/plone/a-folder/'
+  'http://nohost/plone/a-folder/view'
 
 Reopen URL to clean up HTTP_REFERRER
 
@@ -354,11 +370,11 @@ Changing the workflow state of object, i.e. submitting and publishing them etc
 also needs to be protected.  Let's create a folder again to test this:
 
   >>> browser.open('http://nohost/plone/')
-  >>> browser.getLink(url='createObject?type_name=Folder').click()
+  >>> browser.getLink(url='++add++Folder').click()
   >>> browser.getControl('Title').value = 'another folder'
   >>> browser.getControl('Save').click()
   >>> browser.url
-  'http://nohost/plone/another-folder/'
+  'http://nohost/plone/another-folder/view'
 
 Reopen URL to clean up HTTP_REFERRER
 
@@ -416,7 +432,7 @@ Exceptions to the rule is the "Maintenance" configlet, which is tested
 separately. The "Maintenance" configlet has some special security
 limitations, which is why we need to log in as the portal owner first:
 
-  >>> app_browser = Browser(self.app)
+  >>> app_browser = Browser(app)
   >>> app_browser.handleErrors = False
   >>> app.acl_users.userFolderAddUser('app', 'secret', ['Manager'], [])
   >>> from plone.testing import z2

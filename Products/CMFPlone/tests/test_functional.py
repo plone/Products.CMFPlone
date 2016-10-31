@@ -21,7 +21,8 @@ CONTENT_TESTS = [
     'AddMoveAndDeleteDocument.txt',
     'base_tag_not_present.txt',
     'browser.txt',
-    'browser_collection_views.txt']
+    'browser_collection_views.txt',
+    'csrf.txt']
 OPTIONFLAGS = (doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE)
 
 from Products.GenericSetup import EXTENSION, profile_registry
