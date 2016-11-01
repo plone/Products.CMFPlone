@@ -48,8 +48,6 @@ So first we need a logged in user with manager rights:
   >>> browser.getControl(name='__ac_name').value = SITE_OWNER_NAME
   >>> browser.getControl(name='__ac_password').value = SITE_OWNER_PASSWORD
   >>> browser.getControl('Log in').click()
-  >>> browser.getLink('Site Setup')
-  <Link text='Site Setup' url='http://nohost/plone/@@overview-controlpanel'>
 
 Coincidentally the portal happens to be configured for users to get to pick
 their own passwords. Again, this is only relevant for this test as otherwise
@@ -71,7 +69,7 @@ complicated:
 We need to know what the register button is called, it might vary with form
 frameworks:
 
-  >>> browser.open('http://nohost/plone/@@register')
+  >>> browser.open('http://nohost/plone/@@new-user')
   >>> buttonName = browser.getControl('Register').name
 
 Also, the form used for the attack needs to be created. Normally this would
@@ -86,9 +84,9 @@ unsuspectingly even clicks the button presented:
   ...     'form.widgets.email=john@spam-factory.com',
   ...     'form.widgets.password=johnnyrulez',
   ...     'form.widgets.password_ctl=johnnyrulez',
-  ...     'form.buttons.register=Register',
-  ...     'form.submitted=1'])
-  >>> browser.open('http://nohost/plone/@@register', data)
+  ...     '{}=Register',
+  ...     'form.submitted=1']).format(buttonName)
+  >>> browser.open('http://nohost/plone/@@new-user', data)
   Traceback (most recent call last):
   ...
   HTTPError: HTTP Error 403: Forbidden
@@ -98,7 +96,7 @@ unsuspectingly even clicks the button presented:
 So, he was protected from the attack — phew.  But of course, he should still
 be able to add new users himself if he wishes so:
 
-  >>> browser.open('http://nohost/plone/@@register')
+  >>> browser.open('http://nohost/plone/@@new-user')
   >>> browser.getControl(name='_authenticator', index=0)
   <Control name='_authenticator' type='hidden'>
 
@@ -108,8 +106,8 @@ be able to add new users himself if he wishes so:
   >>> browser.getControl('Password').value = 'y0d4Wg'
   >>> browser.getControl('Confirm password').value = 'y0d4Wg'
   >>> browser.getControl('Register').click()
-  >>> browser.contents
-  '...Welcome!...You have been registered...'
+  >>> 'User added.' in browser.contents
+  True
   >>> bool(portal.acl_users.getUser('john'))
   True
   >>> browser.open('http://nohost/plone/logout')
@@ -447,4 +445,3 @@ limitations, which is why we need to log in as the portal owner first:
   Traceback (most recent call last):
   ...
   Forbidden: Form authenticator is invalid.
-
