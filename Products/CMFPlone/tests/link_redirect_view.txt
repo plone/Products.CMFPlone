@@ -7,18 +7,26 @@ make sure this behaves properly...
 
 First create a demo link::
 
-  >>> self.setRoles(['Manager'])
-  >>> _ = self.portal.invokeFactory('Link', 'link')
-  >>> link = self.portal.link
-  >>> link.setRemoteUrl('http://nohost/plone')
+  >>> from plone.app.testing import setRoles
+  >>> app = layer['app']
+  >>> portal = layer['portal']
+  >>> from plone.app.testing import TEST_USER_ID
+  >>> setRoles(portal, TEST_USER_ID, ['Manager'])
+  >>> _ = portal.invokeFactory('Link', 'link')
+  >>> link = portal.link
+  >>> link.remoteUrl = 'http://nohost/plone'
+  >>> portal.portal_workflow.doActionFor(portal.link, 'publish')
+  >>> _ = portal.invokeFactory('Folder', 'news')
+  >>> news = portal.news
+  >>> portal.portal_workflow.doActionFor(portal.news, 'publish')
   >>> import transaction; transaction.commit()
 
 Now let's visit the link in the test browser.  Nothing should happen, because
 the 'redirect_links' property is on by default::
 
   >>> from plone.testing.z2 import Browser
-  >>> from plone.app.testing import TEST_USER_NAME
-  >>> from plone.app.testing import TEST_USER_PASSWORD
+  >>> from plone.app.testing import SITE_OWNER_NAME
+  >>> from plone.app.testing import SITE_OWNER_PASSWORD
   >>> browser = Browser(app)
   >>> browser.open('http://nohost/plone/link')
   >>> browser.url
@@ -26,10 +34,9 @@ the 'redirect_links' property is on by default::
   >>> 'This link will immediately redirect' in browser.contents
   False
 
-But if we turn off 'redirect_links', visiting the link should redirect us to
-plone.org::
+But if we turn off 'redirect_links', visiting the link should let us stay on the page::
 
-  >>> self.portal.portal_registry['plone.redirect_links'] = False
+  >>> portal.portal_registry['plone.redirect_links'] = False
   >>> transaction.commit()
   >>> browser.open('http://nohost/plone/link')
   >>> browser.url
@@ -38,11 +45,11 @@ plone.org::
 Now let's log in as someone who is allowed to edit the link.  They won't get
 redirected, even though 'redirect_links' is re-enabled::
 
-  >>> self.portal.portal_registry['plone.redirect_links'] = True
+  >>> portal.portal_registry['plone.redirect_links'] = True
   >>> transaction.commit()
   >>> browser.open('http://nohost/plone/login')
-  >>> browser.getControl('Login Name').value = TEST_USER_NAME
-  >>> browser.getControl('Password').value = TEST_USER_PASSWORD
+  >>> browser.getControl('Login Name').value = SITE_OWNER_NAME
+  >>> browser.getControl('Password').value = SITE_OWNER_PASSWORD
   >>> browser.getControl('Log in').click()
   >>> browser.open('http://nohost/plone/link')
   >>> browser.url
@@ -51,12 +58,13 @@ redirected, even though 'redirect_links' is re-enabled::
 The manager should get a message to help clarify that the link will redirect
 for anonymous users::
 
+  >>> open('/tmp/test.html', 'w').write(browser.contents)
   >>> "You see this page because you have permission to edit this link." in browser.contents
   True
 
 If we turn redirect_links back off, that message should not be present::
 
-  >>> self.portal.portal_registry['plone.redirect_links'] = False
+  >>> portal.portal_registry['plone.redirect_links'] = False
   >>> transaction.commit()
   >>> browser.open('http://nohost/plone/link')
   >>> browser.url
@@ -73,14 +81,13 @@ using a link set as the default page of a folder.
 
 Therefore we change the location of the link and set it as default view for the portal.
 
-  >>> self.setRoles(['Manager'])
-  >>> link = self.portal.link
-  >>> link.setRemoteUrl('./news')
-  >>> self.portal.setDefaultPage('link')
+  >>> link = portal.link
+  >>> link.remoteUrl = './news'
+  >>> portal.setDefaultPage('link')
 
 We turn on the redirect_link option again and create a browser for anonymous users:
 
-  >>> self.portal.portal_registry['plone.redirect_links'] = True
+  >>> portal.portal_registry['plone.redirect_links'] = True
   >>> transaction.commit()
   >>> anon = Browser(app)
   >>> anon.handleErrors = False

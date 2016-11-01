@@ -22,7 +22,9 @@ CONTENT_TESTS = [
     'base_tag_not_present.txt',
     'browser.txt',
     'browser_collection_views.txt',
-    'csrf.txt']
+    'csrf.txt',
+    'link_redirect_view.txt',
+]
 OPTIONFLAGS = (doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE)
 
 from Products.GenericSetup import EXTENSION, profile_registry
