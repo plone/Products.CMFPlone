@@ -58,7 +58,6 @@ redirected, even though 'redirect_links' is re-enabled::
 The manager should get a message to help clarify that the link will redirect
 for anonymous users::
 
-  >>> open('/tmp/test.html', 'w').write(browser.contents)
   >>> "You see this page because you have permission to edit this link." in browser.contents
   True
 
