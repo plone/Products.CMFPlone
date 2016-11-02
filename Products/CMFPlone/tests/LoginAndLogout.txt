@@ -5,11 +5,18 @@ A very simple and underdocumented testbrowser test.  This is all about
 logging in and out.
 
     >>> from plone.testing.z2 import Browser
+    >>> from plone.testing.z2 import login
+    >>> from plone.testing.z2 import logout
+    >>> from plone.app.testing import setRoles
+    >>> from plone.app.testing import SITE_OWNER_NAME
     >>> from plone.app.testing import TEST_USER_ID
     >>> from plone.app.testing import TEST_USER_NAME
     >>> from plone.app.testing import TEST_USER_PASSWORD
     >>> import transaction
     >>> app = layer['app']
+    >>> portal = layer['portal']
+    >>> setRoles(portal, TEST_USER_ID, ['Manager'])
+    >>> transaction.commit()
     >>> browser = Browser(app)
 
 Using the Login Form
@@ -51,15 +58,15 @@ Using the Login Portlet
 
 Let's first add the login portlet
 
-    >>> self.loginAsPortalOwner()
+    >>> login(app['acl_users'], SITE_OWNER_NAME)
     >>> from zope.component import getUtility
     >>> from plone.portlets.interfaces import IPortletType
     >>> portlet = getUtility(IPortletType, name='portlets.Login')
-    >>> mapping = self.portal.restrictedTraverse('++contextportlets++plone.leftcolumn')
+    >>> mapping = portal.restrictedTraverse('++contextportlets++plone.leftcolumn')
     >>> addview = mapping.restrictedTraverse('+/' + portlet.addview)
     >>> addview()
     ''
-    >>> self.logout()
+    >>> logout()
     >>> transaction.commit()
 
 First we try to log in with bad credentials:
@@ -108,7 +115,7 @@ A user defined in the root user folder should be able to log in into
 the site:
 
     >>> browser.getLink('Home').click()
-    >>> self.app.acl_users.userFolderAddUser('rootuser', 'secret', [], [])
+    >>> app.acl_users.userFolderAddUser('rootuser', 'secret', [], [])
     >>> transaction.commit()
     >>> browser.open('http://nohost/plone/login_form')
     >>> browser.getControl('Login Name').value = 'rootuser'
@@ -120,22 +127,22 @@ the site:
 Redirection to login page on unauthorized exception
 ---------------------------------------------------
 
-Let's logout again and then try editing the personal member folder
+Let's logout again and then try viewing folder contents page
 of test_user_1_:
 
     >>> browser.reload()
     >>> browser.getLink('Log out').click()
-    >>> browser.open(folder.absolute_url() + '/edit')
+    >>> browser.open('http://nohost/plone/folder_contents')
     >>> 'require_login' in browser.url
     True
 
     >>> browser.getControl('Login Name').value = TEST_USER_NAME
     >>> browser.getControl('Password').value = TEST_USER_PASSWORD
     >>> browser.getControl('Log in').click()
-    >>> browser.open(folder.absolute_url())
-    >>> browser.getLink('Edit').click()
+    >>> browser.open('http://nohost/plone')
+    >>> browser.getLink('Contents').click()
     >>> browser.url
-    'http://nohost/plone/Members/test_user_1_/...edit...'
+    'http://nohost/plone/folder_contents...'
 
 We were automatically redirected to the page that triggered the
 login request.
@@ -154,9 +161,9 @@ Start with a fresh testbrowser
 
 Configure must_change_password (not enabled by default).
 
-    >>> memberdata = self.portal.portal_memberdata
+    >>> memberdata = portal.portal_memberdata
     >>> memberdata.manage_addProperty('must_change_password', True, 'boolean')
-    >>> member = self.portal.portal_membership.getMemberById(TEST_USER_ID)
+    >>> member = portal.portal_membership.getMemberById(TEST_USER_ID)
 
 We want to make sure that the property "must_change_password" was properly
 configured.
@@ -194,14 +201,14 @@ In the past this error message would come up erroneously.
 
 After submitting the password change the user is now logged in.
 
-    >>> 'Welcome to Plone' in browser.contents
+    >>> 'Plone site' in browser.contents
     True
 
 Reload the page so we can ensure the login sticks around.  There was problem
 in the past where the cookie did not persist on the client side.
 
     >>> browser.reload()
-    >>> 'Welcome to Plone' in browser.contents
+    >>> 'Plone site' in browser.contents
     True
 
 Logout.  This would fail if the user lost their login session for example.
