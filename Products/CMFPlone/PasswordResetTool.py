@@ -1,29 +1,31 @@
+# -*- coding: utf-8 -*-
 """PasswordResetTool.py
 
 Mailback password reset product for CMF.
 Author: J Cameron Cooper, Sept 2003
 """
-from Products.CMFCore.utils import UniqueObject
-from Products.CMFCore.utils import getToolByName
-from OFS.SimpleItem import SimpleItem
-from App.class_init import InitializeClass
 from AccessControl import ClassSecurityInfo
 from AccessControl import ModuleSecurityInfo
+from App.class_init import InitializeClass
 from BTrees.OOBTree import OOBTree
-from plone.uuid.interfaces import IUUIDGenerator
+from OFS.SimpleItem import SimpleItem
 from plone.registry.interfaces import IRegistry
+from plone.uuid.interfaces import IUUIDGenerator
 from Products.CMFCore.permissions import ManagePortal
+from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.utils import UniqueObject
 from Products.CMFPlone.interfaces import IPWResetTool
 from Products.CMFPlone.interfaces import ISecuritySchema
 from Products.CMFPlone.RegistrationTool import get_member_by_login_name
-
-import datetime
 from zope.component import getUtility
 from zope.interface import implementer
+import datetime
+
 
 module_security = ModuleSecurityInfo('Products.CMFPlone.PasswordResetTool')
 
-module_security.declarePublic('InvalidRequestError')
+
+@module_security.public
 class InvalidRequestError(Exception):
     """ Request reset URL is invalid """
     def __init__(self, value=''):
@@ -32,7 +34,8 @@ class InvalidRequestError(Exception):
     def __str__(self):
         return repr(self.value)
 
-module_security.declarePublic('ExpiredRequestError')
+
+@module_security.public
 class ExpiredRequestError(InvalidRequestError):
     """ Request reset URL is expired """
 
@@ -57,13 +60,12 @@ class PasswordResetTool (UniqueObject, SimpleItem):
     def __init__(self):
         self._requests = OOBTree()
 
-    ## Internal attributes
+    # Internal attributes
     _user_check = True
     _timedelta = 7   # DAYS
 
-    ## Interface fulfillment ##
-    security.declareProtected(ManagePortal, 'requestReset')
-
+    # Interface fulfillment ##
+    @security.protected(ManagePortal)
     def requestReset(self, userid):
         """Ask the system to start the password reset procedure for
         user 'userid'.
@@ -79,7 +81,9 @@ class PasswordResetTool (UniqueObject, SimpleItem):
         expiry = self.expirationDate()
         self._requests[randomstring] = (userid, expiry)
 
-        self.clearExpired(10)   # clear out untouched records more than 10 days old
+        # clear out untouched records more than 10 days old
+        self.clearExpired(10)
+
         # this is a cheap sort of "automatic" clearing
         self._p_changed = 1
 
@@ -89,8 +93,7 @@ class PasswordResetTool (UniqueObject, SimpleItem):
         retval['userid'] = userid
         return retval
 
-    security.declarePublic('resetPassword')
-
+    @security.public
     def resetPassword(self, userid, randomstring, password):
         """Set the password (in 'password') for the user who maps to
         the string in 'randomstring' iff the entered 'userid' is equal
@@ -134,33 +137,26 @@ class PasswordResetTool (UniqueObject, SimpleItem):
         # clean out the request
         del self._requests[randomstring]
         self._p_changed = 1
-    ## Implementation ##
 
-    # external
-
-    security.declareProtected(ManagePortal, 'setExpirationTimeout')
-
+    @security.protected(ManagePortal)
     def setExpirationTimeout(self, timedelta):
         """Set the length of time a reset request will be valid in days.
         """
         self._timedelta = abs(timedelta)
 
-    security.declarePublic('getExpirationTimeout')
-
+    @security.public
     def getExpirationTimeout(self):
         """Get the length of time a reset request will be valid.
         """
         return self._timedelta
 
-    security.declarePublic('checkUser')
-
+    @security.public
     def checkUser(self):
         """Returns a boolean representing the state of 'user check' as described
         in 'toggleUserCheck'. True means on, and is the default."""
         return self._user_check
 
-    security.declarePublic('verifyKey')
-
+    @security.public
     def verifyKey(self, key):
         """Verify a key. Raises an exception if the key is invalid or expired.
         """
@@ -175,11 +171,7 @@ class PasswordResetTool (UniqueObject, SimpleItem):
         if not self.getValidUser(u):
             raise InvalidRequestError('No such user')
 
-    security.declareProtected(ManagePortal, 'getStats')
-
-
-    security.declarePrivate('clearExpired')
-
+    @security.private
     def clearExpired(self, days=0):
         """Destroys all expired reset request records.
         Parameter controls how many days past expired it must be to disappear.
@@ -190,10 +182,10 @@ class PasswordResetTool (UniqueObject, SimpleItem):
             if self.expired(expiry, now - datetime.timedelta(days=days)):
                 del self._requests[key]
                 self._p_changed = 1
+
     # customization points
 
-    security.declarePrivate('uniqueString')
-
+    @security.private
     def uniqueString(self, userid):
         """Returns a string that is random and unguessable, or at
         least as close as possible.
@@ -208,33 +200,34 @@ class PasswordResetTool (UniqueObject, SimpleItem):
         uuid_generator = getUtility(IUUIDGenerator)
         return uuid_generator()
 
-    security.declarePrivate('expirationDate')
-
+    @security.private
     def expirationDate(self):
         """Returns a DateTime for exipiry of a request from the
         current time.
 
         This is used by housekeeping methods (like clearEpired)
         and stored in reset request records."""
-        return datetime.datetime.utcnow() + datetime.timedelta(days=self._timedelta)
+        return (
+            datetime.datetime.utcnow() +
+            datetime.timedelta(days=self._timedelta)
+        )
 
-    security.declarePrivate('getValidUser')
-
+    @security.private
     def getValidUser(self, userid):
         """Returns the member with 'userid' if available and None otherwise."""
         if get_member_by_login_name:
             registry = getUtility(IRegistry)
             settings = registry.forInterface(ISecuritySchema, prefix='plone')
-
             if settings.use_email_as_login:
                 return get_member_by_login_name(
-                    self, userid, raise_exceptions=False)
+                    self,
+                    userid,
+                    raise_exceptions=False
+                )
         membertool = getToolByName(self, 'portal_membership')
         return membertool.getMemberById(userid)
 
-
-    security.declarePrivate('expired')
-
+    @security.private
     def expired(self, dt, now=None):
         """Tells whether a DateTime or timestamp 'datetime' is expired
         with regards to either 'now', if provided, or the current
