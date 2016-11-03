@@ -41,7 +41,7 @@ Breaking changes:
     - ``reverseList.py`` with test
     - ``sort_modified_ascending.py``
 
-- Move script ``datecomponents.py`` to Archetypes 
+- Move script ``datecomponents.py`` to Archetypes
   [jensens]
 
 New features:
@@ -58,7 +58,9 @@ New features:
   [thet]
 
 - PasswordResetTool moved from its own package to here
+  (includes cleanup and removal of ``getStats``).
   [tomgross]
+
 - Prevent workflow menu overflowing in toolbar [MatthewWilkes]
 
 - Add default icon for top-level contentview and contentmenu toolbar entries [alecm]
