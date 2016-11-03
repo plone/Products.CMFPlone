@@ -24,7 +24,9 @@ from Products.CMFCore.tests.base.content import STX_WITH_HTML
 
 from Products.CMFPlone.interfaces import ISiteSchema
 from zope.component import getUtility
+from zope.interface import alsoProvides
 from plone.registry.interfaces import IRegistry
+from plone.subrequest.interfaces import ISubRequest
 
 
 SITE_LOGO_BASE64 = 'filenameb64:cGl4ZWwucG5n;datab64:iVBORw0KGgoAAAANSUhEUgAA'\
@@ -47,6 +49,31 @@ class DefaultUtilsTests(unittest.TestCase):
                          '\n  <h1>Not a lot here</h1>\n ')
         self.assertEqual(bodyfinder(STX_WITH_HTML),
                          '<p>Hello world, I am Bruce.</p>')
+
+    def test_get_top_request(self):
+        """If in a subrequest, ``get_top_request`` should always return the top
+        most request.
+        """
+        from Products.CMFPlone.utils import get_top_request
+
+        class MockRequest(object):
+
+            def __init__(self, parent_request=None):
+                self._dict = {}
+                if parent_request:
+                    self._dict['PARENT_REQUEST'] = parent_request
+                    alsoProvides(self, ISubRequest)
+
+            def get(self, key, default=None):
+                return self._dict.get(key, default)
+
+        req0 = MockRequest()
+        req1 = MockRequest(req0)
+        req2 = MockRequest(req1)
+
+        self.assertEqual(get_top_request(req0), req0)
+        self.assertEqual(get_top_request(req1), req0)
+        self.assertEqual(get_top_request(req2), req0)
 
 
 class LogoTests(PloneTestCase.PloneTestCase):

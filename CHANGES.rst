@@ -46,6 +46,9 @@ Breaking changes:
 
 New features:
 
+- Add utility method to retrieve the top most parent request from a sub request.
+  [thet]
+
 - Add sort_on field to search controlpanel.
   [rodfersou]
 

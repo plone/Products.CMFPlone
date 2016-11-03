@@ -117,6 +117,7 @@ setup(
         'plone.registry',
         'plone.schema',
         'plone.session',
+        'plone.subrequest',
         'plone.theme',
         'plonetheme.barceloneta',
         'slimit',
