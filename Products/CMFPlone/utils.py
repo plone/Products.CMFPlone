@@ -16,7 +16,6 @@ from log import log_exc
 from os.path import join, abspath, split
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.registry.interfaces import IRegistry
-from plone.subrequest.interfaces import ISubRequest
 from Products.CMFCore.permissions import ManageUsers
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.utils import ToolInit as CMFCoreToolInit
@@ -722,8 +721,8 @@ def get_installer(context, request=None):
 def get_top_request(request):
     """Get highest request from a subrequest.
     """
+
     def _top_request(req):
-        if ISubRequest.providedBy(req):
-            return _top_request(req.get('PARENT_REQUEST', None))
-        return req
+        parent_request = req.get('PARENT_REQUEST', None)
+        return _top_request(parent_request) if parent_request else req
     return _top_request(request)

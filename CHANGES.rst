@@ -81,6 +81,9 @@ New features:
 
 Bug fixes:
 
+- Support adding or removing bundles and resources on a request when working with resource tiles in a subrequest.
+  [thet]
+
 - Remove jquery.cookie from plone-logged-in bundle's stub_js_modules.
   The toolbar, which has a dependency on jquery.cookie,
   was moved from the plone bundle to plone-logged-in in CMPlone 5.1a2.
