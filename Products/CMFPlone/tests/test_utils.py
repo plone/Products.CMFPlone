@@ -1,32 +1,19 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-#
-# Copyright (c) 2002 Zope Foundation and Contributors.
-#
-# This software is subject to the provisions of the Zope Public License,
-# Version 2.1 (ZPL).  A copy of the ZPL should accompany this distribution.
-# THIS SOFTWARE IS PROVIDED "AS IS" AND ANY AND ALL EXPRESS OR IMPLIED
-# WARRANTIES ARE DISCLAIMED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-# WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
-# FOR A PARTICULAR PURPOSE.
-#
-##############################################################################
 """ Unit tests for utils module. """
 
-import unittest
-from Products.CMFPlone.tests import PloneTestCase
-
+from plone.registry.interfaces import IRegistry
 from Products.CMFCore.tests.base.content import FAUX_HTML_LEADING_TEXT
 from Products.CMFCore.tests.base.content import SIMPLE_HTML
 from Products.CMFCore.tests.base.content import SIMPLE_STRUCTUREDTEXT
 from Products.CMFCore.tests.base.content import SIMPLE_XHTML
 from Products.CMFCore.tests.base.content import STX_WITH_HTML
-
 from Products.CMFPlone.interfaces import ISiteSchema
+from Products.CMFPlone.tests import PloneTestCase
 from zope.component import getUtility
 from zope.interface import alsoProvides
-from plone.registry.interfaces import IRegistry
 from plone.subrequest.interfaces import ISubRequest
+
+import unittest
 
 
 SITE_LOGO_BASE64 = 'filenameb64:cGl4ZWwucG5n;datab64:iVBORw0KGgoAAAANSUhEUgAA'\
@@ -93,3 +80,79 @@ class LogoTests(PloneTestCase.PloneTestCase):
         self.assertTrue(
             'http://nohost/plone/logo.png'
             in getSiteLogo())
+
+
+class TestTopSiteFromUrl(unittest.TestCase):
+
+    def test_get_top_site_from_url(self):
+        """Unit test for ``get_top_site_from_url`` with context and request
+        mocks.
+
+        Test content structure:
+        /approot/PloneSite/folder/SubSite/folder
+        PloneSite and SubSite implement ISite
+        """
+        from plone.app.content.browser.contents import get_top_site_from_url
+        from zope.component.interfaces import ISite
+        from zope.interface import alsoProvides
+        from urlparse import urlparse
+
+        class MockContext(object):
+            vh_url = 'http://nohost'
+            vh_root = ''
+
+            def __init__(self, physical_path):
+                self.physical_path = physical_path
+                if self.physical_path.split('/')[-1] in ('PloneSite', 'SubSite'):  # noqa
+                    alsoProvides(self, ISite)
+
+            @property
+            def id(self):
+                return self.physical_path.split('/')[-1]
+
+            def absolute_url(self):
+                return self.vh_url + self.physical_path[len(self.vh_root):] or '/'  # noqa
+
+            def restrictedTraverse(self, path):
+                return MockContext(self.vh_root + path)
+
+        class MockRequest(object):
+            vh_url = 'http://nohost'
+            vh_root = ''
+
+            def physicalPathFromURL(self, url):
+                # Return the physical path from a URL.
+                # The outer right '/' is not part of the path.
+                path = self.vh_root + urlparse(url).path.rstrip('/')
+                return path.split('/')
+
+        # NO VIRTUAL HOSTING
+
+        req = MockRequest()
+
+        # Case 1:
+        ctx = MockContext('/approot/PloneSite')
+        self.assertEqual(get_top_site_from_url(ctx, req).id, 'PloneSite')
+
+        # Case 2
+        ctx = MockContext('/approot/PloneSite/folder')
+        self.assertEqual(get_top_site_from_url(ctx, req).id, 'PloneSite')
+
+        # Case 3:
+        ctx = MockContext('/approot/PloneSite/folder/SubSite/folder')
+        self.assertEqual(get_top_site_from_url(ctx, req).id, 'PloneSite')
+
+        # VIRTUAL HOSTING ON SUBSITE
+
+        req = MockRequest()
+        req.vh_root = '/approot/PloneSite/folder/SubSite'
+
+        # Case 4:
+        ctx = MockContext('/approot/PloneSite/folder/SubSite')
+        ctx.vh_root = '/approot/PloneSite/folder/SubSite'
+        self.assertEqual(get_top_site_from_url(ctx, req).id, 'SubSite')
+
+        # Case 5:
+        ctx = MockContext('/approot/PloneSite/folder/SubSite/folder')
+        ctx.vh_root = '/approot/PloneSite/folder/SubSite'
+        self.assertEqual(get_top_site_from_url(ctx, req).id, 'SubSite')
