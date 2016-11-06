@@ -15,15 +15,16 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- Move ``get_top_site_from_url`` from plone.app.content to ``utils.py``.
+  This function allows in virtual hosting environments to acquire the top most visible portal object to operate on.
+  It is used for example to calculate the correct virtual root objects for Mockup's related items and structure pattern.
+  [thet]
 
 Bug fixes:
 
 - Prevent workflow menu overflowing in toolbar [MatthewWilkes]
 
 - Add default icon for top-level contentview and contentmenu toolbar entries [alecm]
-
-Bug fixes:
 
 - Fix various layout issues in toolbar [alecm]
 

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from AccessControl import ClassSecurityInfo
 from AccessControl import getSecurityManager
 from AccessControl import ModuleSecurityInfo
 from AccessControl import Unauthorized
@@ -7,23 +8,34 @@ from Acquisition import aq_get
 from Acquisition import aq_inner
 from Acquisition import aq_parent
 from App.Common import package_home
+from App.Dialogs import MessageDialog
 from App.ImageFile import ImageFile
+from cgi import escape
 from DateTime import DateTime
 from DateTime.interfaces import DateTimeError
-from os.path import join, abspath, split
+from log import log
+from log import log_deprecated
+from log import log_exc
+from OFS.CopySupport import CopyError
+from OFS.CopySupport import eNotSupported
+from os.path import abspath
+from os.path import join
+from os.path import split
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.permissions import ManageUsers
-from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.utils import ToolInit as CMFCoreToolInit
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from types import ClassType
+from urlparse import urlparse
 from webdav.interfaces import IWriteLock
 from zope import schema
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.component import queryUtility
 from zope.component.hooks import getSite
+from zope.component.interfaces import ISite
 from zope.deferredimport import deprecated as deprecated_import
 from zope.deprecation import deprecated
 from zope.i18n import translate
@@ -34,8 +46,10 @@ import json
 import OFS
 import pkg_resources
 import re
+import sys
 import transaction
 import zope.interface
+
 
 deprecated_import(
     "Import from Products.CMFPlone.defaultpage instead",
@@ -506,11 +520,6 @@ def webdav_enabled(obj, container):
 # Copied 'unrestricted_rename' from ATCT migrations to avoid
 # a dependency.
 
-from App.Dialogs import MessageDialog
-from OFS.CopySupport import CopyError
-from OFS.CopySupport import eNotSupported
-from cgi import escape
-import sys
 
 security.declarePrivate('sys')
 
@@ -557,7 +566,6 @@ def _unrestricted_rename(container, id, new_id):
 
 # Copied '_getSecurity' from Archetypes.utils to avoid a dependency.
 
-from AccessControl import ClassSecurityInfo
 security.declarePrivate('ClassSecurityInfo')
 
 
@@ -673,3 +681,42 @@ def getSiteLogo(site=None):
             site_url, filename)
     else:
         return '%s/logo.png' % site_url
+
+
+def get_top_site_from_url(context, request):
+    """Find the top-most site, which is still in the url path.
+
+    If the current context is within a subsite within a PloneSiteRoot and no
+    virtual hosting is in place, the PloneSiteRoot is returned.
+    When at the same context but in a virtual hosting environment with the
+    virtual host root pointing to the subsite, it returns the subsite instead
+    the PloneSiteRoot.
+
+    For this given content structure:
+
+    /Plone/Subsite
+
+    It should return the following in these cases:
+
+    - No virtual hosting, URL path: /Plone, Returns: Plone Site
+    - No virtual hosting, URL path: /Plone/Subsite, Returns: Plone
+    - Virtual hosting roots to Subsite, URL path: /, Returns: Subsite
+    """
+    url_path = urlparse(context.absolute_url()).path.split('/')
+
+    site = getSite()
+    try:
+        for idx in range(len(url_path)):
+            _path = '/'.join(url_path[:idx + 1]) or '/'
+            site_path = request.physicalPathFromURL(_path)
+            _site = context.restrictedTraverse('/'.join(site_path) or '/')
+            if ISite.providedBy(_site):
+                break
+        if _site:
+            site = _site
+    except (ValueError, AttributeError):
+        # On error, just return getSite.
+        # Refs: https://github.com/plone/plone.app.content/issues/103
+        # Also, TestRequest doesn't have physicalPathFromURL
+        pass
+    return site
