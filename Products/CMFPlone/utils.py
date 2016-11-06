@@ -716,3 +716,13 @@ def get_installer(context, request=None):
         request = aq_get(context, 'REQUEST', None)
     view = getMultiAdapter((context, request), name='installer')
     return view
+
+
+def get_top_request(request):
+    """Get highest request from a subrequest.
+    """
+
+    def _top_request(req):
+        parent_request = req.get('PARENT_REQUEST', None)
+        return _top_request(parent_request) if parent_request else req
+    return _top_request(request)

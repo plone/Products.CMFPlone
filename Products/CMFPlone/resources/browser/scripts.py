@@ -4,6 +4,7 @@ from urllib import quote
 
 from Products.CMFPlone.resources.browser.cook import cookWhenChangingSettings
 from Products.CMFPlone.resources.browser.resource import ResourceView
+from Products.CMFPlone.utils import get_top_request
 from zope.component import getMultiAdapter
 
 
@@ -149,9 +150,10 @@ class ScriptsView(ResourceView):
             result.extend(self.ordered_bundles_result(production=True))
 
         # Add manual added resources
-        if hasattr(self.request, 'enabled_resources'):
+        request = get_top_request(self.request)  # might be a subrequest
+        if hasattr(request, 'enabled_resources'):
             resources = self.get_resources()
-            for resource in self.request.enabled_resources:
+            for resource in request.enabled_resources:
                 if resource in resources:
                     data = resources[resource]
                     if data.js:

@@ -4,6 +4,7 @@ from urllib import quote
 
 from Products.CMFPlone.resources.browser.cook import cookWhenChangingSettings
 from Products.CMFPlone.resources.browser.resource import ResourceView
+from Products.CMFPlone.utils import get_top_request
 
 
 class StylesView(ResourceView):
@@ -116,8 +117,9 @@ class StylesView(ResourceView):
 
         # Add manual added resources
         resources = self.get_resources()
-        if hasattr(self.request, 'enabled_resources'):
-            for resource in self.request.enabled_resources:
+        request = get_top_request(self.request)  # might be a subrequest
+        if hasattr(request, 'enabled_resources'):
+            for resource in request.enabled_resources:
                 if resource in resources:
                     for data in self.get_urls(resources[resource], None):
                         result.append(data)

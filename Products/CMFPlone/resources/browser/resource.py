@@ -15,6 +15,7 @@ from zope.ramcache.interfaces import ram
 from Products.CMFCore.utils import _getAuthenticatedUser
 from plone.memoize.view import memoize
 from Products.CMFPlone.resources import RESOURCE_DEVELOPMENT_MODE
+from Products.CMFPlone.utils import get_top_request
 
 from .combine import get_production_resource_directory
 
@@ -134,13 +135,14 @@ class ResourceView(ViewletBase):
             disabled_diazo_bundles = self.themeObj.disabled_bundles
 
         # Request set bundles
+        request = get_top_request(self.request)  # might be a subrequest
         enabled_request_bundles = []
         disabled_request_bundles = []
-        if hasattr(self.request, 'enabled_bundles'):
-            enabled_request_bundles.extend(self.request.enabled_bundles)
+        if hasattr(request, 'enabled_bundles'):
+            enabled_request_bundles.extend(request.enabled_bundles)
 
-        if hasattr(self.request, 'disabled_bundles'):
-            disabled_request_bundles.extend(self.request.disabled_bundles)
+        if hasattr(request, 'disabled_bundles'):
+            disabled_request_bundles.extend(request.disabled_bundles)
 
         for key, bundle in bundles.items():
             # The diazo manifest and request bundles are more important than

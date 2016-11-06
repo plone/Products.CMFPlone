@@ -46,6 +46,9 @@ Breaking changes:
 
 New features:
 
+- Add utility method to retrieve the top most parent request from a sub request.
+  [thet]
+
 - Add sort_on field to search controlpanel.
   [rodfersou]
 
@@ -77,6 +80,9 @@ New features:
 
 
 Bug fixes:
+
+- Support adding or removing bundles and resources on a request when working with resource tiles in a subrequest.
+  [thet]
 
 - Remove jquery.cookie from plone-logged-in bundle's stub_js_modules.
   The toolbar, which has a dependency on jquery.cookie,
