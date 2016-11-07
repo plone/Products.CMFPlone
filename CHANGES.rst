@@ -46,7 +46,12 @@ Breaking changes:
 
 New features:
 
+- The password reset templates were changed to make use of ``content-core`` macros.
+  [thet]
+
 - Add utility method to retrieve the top most parent request from a sub request.
+  [thet]
+
 - Add ``mockup-patterns-relateditems-upload`` resource, which can be used in custom bundles to add the upload feature in the related items widget.
   [thet]
 
@@ -66,8 +71,7 @@ New features:
 - Include mockup 2.4.0.
   [thet]
 
-- PasswordResetTool moved from its own package to here
-  (includes cleanup and removal of ``getStats``).
+- PasswordResetTool moved from its own package to here (includes cleanup and removal of ``getStats``).
   [tomgross]
 
 - Prevent workflow menu overflowing in toolbar [MatthewWilkes]

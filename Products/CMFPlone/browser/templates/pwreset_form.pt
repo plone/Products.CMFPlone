@@ -1,20 +1,27 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       lang="en"
-      metal:use-macro="here/main_template/macros/master"
+      metal:use-macro="context/main_template/macros/master"
       i18n:domain="plone">
 <body>
-    <metal:main fill-slot="main"
-         tal:define="errors view/getErrors">
 
+<metal:custom_title fill-slot="content-title">
         <h1 class="documentFirstHeading"
             i18n:translate="heading_reset_password">Set your password</h1>
+</metal:custom_title>
 
+<metal:custom_desc fill-slot="content-description">
         <div class="documentDescription"
            i18n:translate="description_reset_password">
             Please fill out the form below to set your password.
         </div>
+</metal:custom_desc>
 
-        <div id="content-core">
+<metal:content-core fill-slot="content-core">
+<metal:content-core define-macro="content-core" tal:define="errors view/getErrors">
+
             <form class="enableAutoFocus"
                   name="pwreset_action"
                   method="post"
@@ -105,7 +112,9 @@
                     <input type="hidden" name="form.submitted" value="1" />
                 </fieldset>
             </form>
-        </div>
-    </metal:main>
+
+</metal:content-core>
+</metal:content-core>
+
 </body>
 </html>
