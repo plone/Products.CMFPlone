@@ -1,31 +1,30 @@
 # -*- coding: utf-8 -*-
-from z3c.form import button
-import os
-from cgi import escape
-
-from z3c.form import form
-
 from AccessControl import getSecurityManager
 from AccessControl.Permissions import view_management_screens
 from Acquisition import aq_inner
+from cgi import escape
 from Globals import DevelopmentMode
+from plone.autoform.form import AutoExtensibleForm
+from plone.protect import CheckAuthenticator
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import IMaintenanceSchema
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from plone.autoform.form import AutoExtensibleForm
-from plone.protect import CheckAuthenticator
+from z3c.form import button
+from z3c.form import form
+
+import os
 
 
 class MaintenanceControlPanel(AutoExtensibleForm, form.EditForm):
     """A simple form to pack the databases."""
 
     schema = IMaintenanceSchema
-    id = "maintenance-control-panel"
+    id = 'maintenance-control-panel'
     label = _(u'Maintenance Settings')
-    description = _(u"Zope server and site maintenance options.")
+    description = _(u'Zope server and site maintenance options.')
     form_name = _(u'Zope Database Packing')
-    control_panel_view = "maintenance-controlpanel"
+    control_panel_view = 'maintenance-controlpanel'
     template = ViewPageTemplateFile('maintenance.pt')
 
     @button.buttonAndHandler(_(u'Pack database now'), name='pack')

@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 from Acquisition import aq_inner
-from Products.CMFPlone.controlpanel.browser.usergroups import \
-    UsersGroupsControlPanelView
 from plone.protect import CheckAuthenticator
-from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone.controlpanel.browser.usergroups import UsersGroupsControlPanelView  # noqa
 from Products.statusmessages.interfaces import IStatusMessage
 
 
@@ -85,7 +84,9 @@ class GroupDetailsControlPanel(UsersGroupsControlPanelView):
                 self.group.setGroupProperties(processed)
 
             IStatusMessage(self.request).add(
-                msg, type=self.group and 'info' or 'error')
+                msg,
+                type=self.group and 'info' or 'error'
+            )
             if self.group and not self.groupname:
                 target_url = '%s/%s' % (self.context.absolute_url(),
                                         '@@usergroup-groupprefs')

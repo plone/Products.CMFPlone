@@ -1,19 +1,20 @@
 # -*- coding: utf-8 -*-
+from plone.memoize import view
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import INonInstallable
-from Products.CMFQuickInstallerTool.interfaces import INonInstallable as \
-    QINonInstallable
+from Products.CMFQuickInstallerTool.interfaces import INonInstallable as QINonInstallable  # noqa
 from Products.Five.browser import BrowserView
 from Products.GenericSetup import EXTENSION
 from Products.GenericSetup.tool import UNKNOWN
 from Products.statusmessages.interfaces import IStatusMessage
-from plone.memoize import view
 from zope.component import getAllUtilitiesRegisteredFor
+
 import logging
 import pkg_resources
 import transaction
 import warnings
+
 
 logger = logging.getLogger('Plone')
 
@@ -44,9 +45,7 @@ class InstallerView(BrowserView):
 
     def is_product_installed(self, product_id):
         profile = self.get_install_profile(product_id, allow_hidden=True)
-        if not profile:
-            return False
-        return self.is_profile_installed(profile['id'])
+        return profile and self.is_profile_installed(profile['id'])
 
     def isProductInstalled(self, product_name):
         warnings.warn(
@@ -617,27 +616,24 @@ class ManageProductsView(InstallerView):
             all_broken = self.errors.values()
             for broken in all_broken:
                 filtered[broken['productname']] = broken
-        else:
-            for product_id, addon in addons.items():
-                if product_name and addon['id'] != product_name:
+            return filtered
+        for product_id, addon in addons.items():
+            if product_name and addon['id'] != product_name:
+                continue
+            installed = addon['is_installed']
+            if apply_filter in ['installed', 'upgrades'] and not installed:
+                continue
+            elif apply_filter == 'available':
+                if installed:
                     continue
-
-                installed = addon['is_installed']
-                if apply_filter in ['installed', 'upgrades'] and not installed:
+                # filter out upgrade profiles
+                if addon['profile_type'] != 'default':
                     continue
-                elif apply_filter == 'available':
-                    if installed:
-                        continue
-                    # filter out upgrade profiles
-                    if addon['profile_type'] != 'default':
-                        continue
-                elif apply_filter == 'upgrades':
-                    upgrade_info = addon['upgrade_info']
-                    if not upgrade_info.get('available'):
-                        continue
-
-                filtered[product_id] = addon
-
+            elif apply_filter == 'upgrades':
+                upgrade_info = addon['upgrade_info']
+                if not upgrade_info.get('available'):
+                    continue
+            filtered[product_id] = addon
         return filtered
 
     def get_upgrades(self):
@@ -670,13 +666,13 @@ class UpgradeProductsView(InstallerView):
                 if not result:
                     messages.addStatusMessage(
                         _(u'Error upgrading ${product}.',
-                          mapping={'product': product_id}), type="error")
+                          mapping={'product': product_id}), type='error')
                     # Abort changes for all upgrades.
                     transaction.abort()
                     break
             else:
                 messages.addStatusMessage(
-                    _(u'Upgraded products.'), type="info")
+                    _(u'Upgraded products.'), type='info')
 
         purl = getToolByName(self.context, 'portal_url')()
         self.request.response.redirect(purl + '/prefs_install_products_form')
@@ -715,7 +711,7 @@ class UninstallProductsView(InstallerView):
             try:
                 result = self.uninstall_product(product_id)
             except Exception, e:
-                logger.error("Could not uninstall %s: %s", product_id, e)
+                logger.error('Could not uninstall %s: %s', product_id, e)
                 msg_type = 'error'
                 msg = _(u'Error uninstalling ${product}.', mapping={
                         'product': product_id})

@@ -1,23 +1,22 @@
 # -*- coding: utf-8 -*-
-from Products.CMFCore.permissions import ManagePortal
-from ZTUtils import make_query
-from itertools import chain
-from Acquisition import aq_inner
-from Products.CMFPlone.utils import normalizeString
-from zope.component import getAdapter
-from Products.CMFPlone.interfaces import ISecuritySchema
-from zope.component import getMultiAdapter
 from AccessControl import getSecurityManager
-from Products.Five.browser import BrowserView
-from Products.CMFCore.utils import getToolByName
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from plone.z3cform import layout
+from Acquisition import aq_inner
+from itertools import chain
 from plone.autoform.form import AutoExtensibleForm
+from plone.z3cform import layout
+from Products.CMFCore.permissions import ManagePortal
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
-from z3c.form import form
-
+from Products.CMFPlone.interfaces import ISecuritySchema
 from Products.CMFPlone.interfaces import IUserGroupsSettingsSchema
+from Products.CMFPlone.utils import normalizeString
+from Products.Five.browser import BrowserView
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from z3c.form import button
+from z3c.form import form
+from zope.component import getAdapter
+from zope.component import getMultiAdapter
+from ZTUtils import make_query
 
 
 class UserGroupsSettingsControlPanel(AutoExtensibleForm, form.EditForm):
@@ -47,7 +46,8 @@ class ControlPanelFormWrapper(layout.FormWrapper):
 
 
 UserGroupsSettingsPanelView = layout.wrap_form(
-    UserGroupsSettingsControlPanel, ControlPanelFormWrapper
+    UserGroupsSettingsControlPanel,
+    ControlPanelFormWrapper
 )
 
 
@@ -60,20 +60,35 @@ class UsersGroupsControlPanelView(BrowserView):
 
     @property
     def many_users(self):
-        return getAdapter(aq_inner(self.context), IUserGroupsSettingsSchema).many_users
+        return getAdapter(
+            aq_inner(self.context),
+            IUserGroupsSettingsSchema
+        ).many_users
 
     @property
     def many_groups(self):
-        return getAdapter(aq_inner(self.context), IUserGroupsSettingsSchema).many_groups
+        return getAdapter(
+            aq_inner(self.context),
+            IUserGroupsSettingsSchema
+        ).many_groups
 
     @property
     def email_as_username(self):
-        return getAdapter(aq_inner(self.context), ISecuritySchema).get_use_email_as_login()
+        return getAdapter(
+            aq_inner(self.context),
+            ISecuritySchema
+        ).get_use_email_as_login()
 
     def makeQuery(self, **kw):
         return make_query(**kw)
 
-    def membershipSearch(self, searchString='', searchUsers=True, searchGroups=True, ignore=[]):
+    def membershipSearch(
+        self,
+        searchString='',
+        searchUsers=True,
+        searchGroups=True,
+        ignore=[]
+    ):
         """Search for users and/or groups, returning actual member and group items
            Replaces the now-deprecated prefs_user_groups_search.py script"""
         groupResults = userResults = []
@@ -85,20 +100,50 @@ class UsersGroupsControlPanelView(BrowserView):
             (aq_inner(self.context), self.request), name='pas_search')
 
         if searchGroups:
-            groupResults = searchView.merge(chain(
-                *[searchView.searchGroups(**{field: searchString}) for field in ['id', 'title']]), 'groupid')
-            groupResults = [gtool.getGroupById(g['id']) for g in groupResults if g[
-                'id'] not in ignore]
-            groupResults.sort(key=lambda x: x is not None and normalizeString(
-                x.getGroupTitleOrName()))
+            groupResults = searchView.merge(
+                chain(
+                    *[
+                        searchView.searchGroups(**{field: searchString})
+                        for field in ['id', 'title']
+                    ]
+                ),
+                'groupid'
+            )
+            groupResults = [
+                gtool.getGroupById(g['id']) for g in groupResults
+                if g['id'] not in ignore
+            ]
+
+            def sort_key_group(group):
+                if group is None:
+                    return False
+                return normalizeString(group.getGroupTitleOrName())
+
+            groupResults.sort(key=sort_key_group)
 
         if searchUsers:
-            userResults = searchView.merge(chain(*[searchView.searchUsers(
-                **{field: searchString}) for field in ['login', 'fullname', 'email']]), 'userid')
-            userResults = [mtool.getMemberById(u['id']) for u in userResults if u[
-                'id'] not in ignore]
-            userResults.sort(key=lambda x: x is not None and x.getProperty(
-                'fullname') is not None and normalizeString(x.getProperty('fullname')) or '')
+            userResults = searchView.merge(
+                chain(
+                    *[
+                        searchView.searchUsers(**{field: searchString})
+                        for field in ['login', 'fullname', 'email']
+                    ]
+                ),
+                'userid'
+            )
+            userResults = [
+                mtool.getMemberById(u['id']) for u in userResults
+                if u['id'] not in ignore
+            ]
+
+            def sort_key_user(user):
+                if (
+                    user is not None and
+                    user.getProperty('fullname') is not None
+                ):
+                    return normalizeString(user.getProperty('fullname')) or ''
+                return ''
+            userResults.sort(key=sort_key_user)
 
         return groupResults + userResults
 
@@ -114,15 +159,15 @@ class UsersGroupsControlPanelView(BrowserView):
 
     # The next two class methods implement the following truth table:
     #
-    # MANY USERS/GROUPS SEARCHING       CAN LIST USERS/GROUPS   RESULT
-    # False             False           False                   Lists unavailable
-    # False             False           True                    Show all
-    # False             True            False                   Show matching
-    # False             True            True                    Show matching
-    # True              False           False                   Too many to list
-    # True              False           True                    Lists unavailable
-    # True              True            False                   Show matching
-    # True              True            True                    Show matching
+    # MANY USERS/GROUPS SEARCHING  CAN LIST USERS/GROUPS   RESULT
+    # False             False      False                   Lists unavailable
+    # False             False      True                    Show all
+    # False             True       False                   Show matching
+    # False             True       True                    Show matching
+    # True              False      False                   Too many to list
+    # True              False      True                    Lists unavailable
+    # True              True       False                   Show matching
+    # True              True       True                    Show matching
 
     # TODO: Maybe have these methods return a text message (instead of a bool)
     # corresponding to the actual result, e.g. "Too many to list", "Lists
@@ -132,9 +177,7 @@ class UsersGroupsControlPanelView(BrowserView):
     def show_group_listing_warning(self):
         if not self.searchString:
             acl = getToolByName(self, 'acl_users')
-            if acl.canListAllGroups():
-                if self.many_groups:
-                    return True
+            return acl.canListAllGroups() and self.many_groups
         return False
 
     @property
@@ -142,7 +185,5 @@ class UsersGroupsControlPanelView(BrowserView):
         if not self.searchString:
             acl = getToolByName(self, 'acl_users')
             # XXX Huh? Is canListAllUsers broken?
-            if not acl.canListAllUsers():
-                if self.many_users:
-                    return True
+            return not acl.canListAllUsers() and self.many_users
         return False

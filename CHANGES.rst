@@ -183,6 +183,9 @@ Bug fixes:
   [gforcada, ivanteoh, maurits]
 
 
+- Cleanup all controlpanel related code (pep7, utf8headers, style, readability)
+  [jensens]
+
 5.1a2 (2016-08-19)
 ------------------
 

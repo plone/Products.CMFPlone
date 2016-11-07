@@ -1,21 +1,19 @@
 # -*- coding: utf-8 -*-
-from itertools import chain
 from Acquisition import aq_inner
-from Products.CMFPlone.controlpanel.browser.usergroups import \
-    UsersGroupsControlPanelView
-from Products.PluggableAuthService.interfaces.plugins import IRolesPlugin
+from itertools import chain
 from plone.protect import CheckAuthenticator
-from zope.component import getMultiAdapter
-from zExceptions import Forbidden
-from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone.controlpanel.browser.usergroups import UsersGroupsControlPanelView  # noqa
+from Products.PluggableAuthService.interfaces.plugins import IRolesPlugin
+from zExceptions import Forbidden
+from zope.component import getMultiAdapter
 
 
 class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
 
     def __call__(self):
         form = self.request.form
-        submitted = form.get('form.submitted', False)
         search = form.get('form.button.Search', None) is not None
         findAll = form.get('form.button.FindAll', None) is not None
         self.searchString = not findAll and form.get('searchstring', '') or ''
@@ -25,10 +23,15 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
         if search or findAll:
             self.newSearch = True
 
-        if submitted:
+        if form.get('form.submitted', False):
             if form.get('form.button.Modify', None) is not None:
-                self.manageGroup([group[len('group_'):] for group in self.request.keys() if group.startswith('group_')],
-                                 form.get('delete', []))
+                self.manageGroup(
+                    [
+                        group[len('group_'):] for group in self.request.keys()
+                        if group.startswith('group_')
+                    ],
+                    form.get('delete', [])
+                )
 
         # Only search for all ('') if the many_users flag is not set.
         if not(self.many_groups) or bool(self.searchString):
@@ -49,8 +52,15 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
         # the roles inherited from the groups to which the principal belongs.
         self.request.set('__ignore_group_roles__', False)
         self.request.set('__ignore_direct_roles__', True)
-        inheritance_enabled_groups = searchView.merge(chain(
-            *[searchView.searchGroups(**{field: searchString}) for field in ['id', 'title']]), 'id')
+        inheritance_enabled_groups = searchView.merge(
+            chain(
+                *[
+                    searchView.searchGroups(**{field: searchString})
+                    for field in ['id', 'title']
+                ]
+            ),
+            'id'
+        )
         allInheritedRoles = {}
         for group_info in inheritance_enabled_groups:
             groupId = group_info['id']
@@ -69,8 +79,15 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
         # the roles inherited from the groups to which the principal belongs.
         self.request.set('__ignore_group_roles__', True)
         self.request.set('__ignore_direct_roles__', False)
-        explicit_groups = searchView.merge(chain(
-            *[searchView.searchGroups(**{field: searchString}) for field in ['id', 'title']]), 'id')
+        explicit_groups = searchView.merge(
+            chain(
+                *[
+                    searchView.searchGroups(**{field: searchString})
+                    for field in ['id', 'title']
+                ]
+            ),
+            'id'
+        )
 
         # Tack on some extra data, including whether each role is explicitly
         # assigned ('explicit'), inherited ('inherited'), or not assigned at
@@ -93,9 +110,11 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
                 canAssign = group.canAssignRole(role)
                 if role == 'Manager' and not self.is_zope_manager:
                     canAssign = False
-                roleList[role] = {'canAssign': canAssign,
-                                  'explicit': role in explicitlyAssignedRoles,
-                                  'inherited': role in allInheritedRoles.get(groupId, [])}
+                roleList[role] = {
+                    'canAssign': canAssign,
+                    'explicit': role in explicitlyAssignedRoles,
+                    'inherited': role in allInheritedRoles.get(groupId, [])
+                }
 
             canDelete = group.canDelete()
             if ('Manager' in explicitlyAssignedRoles or

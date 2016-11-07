@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
-from Products.CMFPlone import PloneMessageFactory as _
-from zExceptions import Forbidden
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.controlpanel.browser.usergroups import \
-    UsersGroupsControlPanelView
+from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone.controlpanel.browser.usergroups import UsersGroupsControlPanelView  # noqa
 from Products.CMFPlone.utils import normalizeString
+from zExceptions import Forbidden
 
 
 class GroupMembershipControlPanel(UsersGroupsControlPanelView):
@@ -22,7 +21,10 @@ class GroupMembershipControlPanel(UsersGroupsControlPanelView):
         self.request.set('grouproles', self.group.getRoles()
                          if self.group else [])
         self.canAddUsers = True
-        if 'Manager' in self.request.get('grouproles') and not self.is_zope_manager:
+        if (
+            'Manager' in self.request.get('grouproles') and
+            not self.is_zope_manager
+        ):
             self.canAddUsers = False
 
         self.groupquery = self.makeQuery(groupname=self.groupname)
@@ -88,13 +90,22 @@ class GroupMembershipControlPanel(UsersGroupsControlPanelView):
             x.getGroupTitleOrName()))
 
         userResults = [self.mtool.getMemberById(m) for m in searchResults]
-        userResults.sort(key=lambda x: x is not None and x.getProperty(
-            'fullname') is not None and normalizeString(x.getProperty('fullname')) or '')
+
+        def sort_key_user(user):
+            if (
+                user is not None and
+                user.getProperty('fullname') is not None
+            ):
+                return normalizeString(user.getProperty('fullname')) or ''
+            return ''
+        userResults.sort(key=sort_key_user)
 
         mergedResults = groupResults + userResults
         return filter(None, mergedResults)
 
     def getPotentialMembers(self, searchString):
         ignoredUsersGroups = [
-            x.id for x in self.getMembers() + [self.group, ] if x is not None]
+            x.id for x in self.getMembers() + [self.group, ]
+            if x is not None
+        ]
         return self.membershipSearch(searchString, ignore=ignoredUsersGroups)

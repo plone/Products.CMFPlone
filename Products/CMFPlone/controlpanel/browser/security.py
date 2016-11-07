@@ -1,25 +1,26 @@
 # -*- coding: utf-8 -*-
 from Acquisition import aq_inner
-from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import PloneMessageFactory as _
-from Products.CMFPlone.controlpanel.utils import migrate_to_email_login
-from Products.CMFPlone.controlpanel.utils import migrate_from_email_login
-from Products.CMFPlone.interfaces import ISecuritySchema
-from Products.Five.browser import BrowserView
 from collections import defaultdict
 from plone.app.registry.browser import controlpanel
+from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone.controlpanel.utils import migrate_from_email_login
+from Products.CMFPlone.controlpanel.utils import migrate_to_email_login
+from Products.CMFPlone.interfaces import ISecuritySchema
+from Products.Five.browser import BrowserView
 
 import logging
+
 
 logger = logging.getLogger('Products.CMFPlone')
 
 
 class SecurityControlPanelForm(controlpanel.RegistryEditForm):
 
-    id = "SecurityControlPanel"
-    label = _(u"Security Settings")
+    id = 'SecurityControlPanel'
+    label = _(u'Security Settings')
     schema = ISecuritySchema
-    schema_prefix = "plone"
+    schema_prefix = 'plone'
 
 
 class SecurityControlPanel(controlpanel.ControlPanelFormWrapper):
@@ -75,7 +76,7 @@ class EmailLogin(BrowserView):
         duplicates = []
         for email, userids in self._email_list.items():
             if len(userids) > 1:
-                logger.warn("Duplicate accounts for email address %s: %r",
+                logger.warn('Duplicate accounts for email address %s: %r',
                             email, userids)
                 duplicates.append((email, userids))
 

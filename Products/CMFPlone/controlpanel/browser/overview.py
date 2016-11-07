@@ -2,21 +2,14 @@
 from AccessControl import getSecurityManager
 from Acquisition import aq_inner
 from Globals import DevelopmentMode
-from Products.CMFPlone.interfaces.controlpanel import IMailSchema
-from Products.CMFCore.permissions import ManagePortal
-from Products.CMFCore.utils import getToolByName
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from plone.app.registry.browser import controlpanel
 from plone.memoize.instance import memoize
 from plone.registry.interfaces import IRegistry
+from Products.CMFCore.permissions import ManagePortal
+from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.interfaces.controlpanel import IMailSchema
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.component import getUtility
-
-try:
-    import plone.app.event
-    plone.app.event  # pyflakes
-    HAS_PAE = True
-except ImportError:
-    HAS_PAE = False
 
 
 class OverviewControlPanel(controlpanel.RegistryEditForm):
@@ -78,20 +71,11 @@ class OverviewControlPanel(controlpanel.RegistryEditForm):
             IMailSchema, prefix='plone', check=False)
         mailhost = mail_settings.smtp_host
         email = mail_settings.email_from_address
-        if mailhost and email:
-            return False
-        return True
+        return not(mailhost and email)
 
     def timezone_warning(self):
         """Returns true, if the portal_timezone is not set in the registry.
         """
-        if not HAS_PAE:
-            # No point of having a portal timezone configured without
-            # plone.app.event installed.
-            # TODO: Above applies to situation at time of writing. If other
-            # datetimes outside plone.app.event use proper timezones too, the
-            # HAS_PAE should be removed.
-            return False
         # check if 'plone.portal_timezone' is in registry
         registry = getUtility(IRegistry)
         reg_key = "plone.portal_timezone"
@@ -102,9 +86,7 @@ class OverviewControlPanel(controlpanel.RegistryEditForm):
         if reg_key not in registry:
             return True
         portal_timezone = registry[reg_key]
-        if portal_timezone:
-            return False
-        return True  # No portal_timezone found.
+        return not bool(portal_timezone)
 
     def categories(self):
         return self.cptool().getGroups()

@@ -1,5 +1,11 @@
 # -*- coding: utf-8 -*-
 from Acquisition import aq_inner
+from operator import itemgetter
+from plone.app.workflow.remap import remap_workflow
+from plone.autoform.form import AutoExtensibleForm
+from plone.dexterity.interfaces import IDexterityFTI
+from plone.memoize.instance import memoize
+from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.controlpanel.events import ConfigurationChangedEvent
@@ -8,18 +14,12 @@ from Products.CMFPlone.interfaces import ITypesSchema
 from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.statusmessages.interfaces import IStatusMessage
-from operator import itemgetter
-from plone.app.workflow.remap import remap_workflow
-from plone.autoform.form import AutoExtensibleForm
-from plone.memoize.instance import memoize
-from plone.registry.interfaces import IRegistry
 from z3c.form import button
 from z3c.form import form
 from zope.component import getUtility
 from zope.event import notify
 from zope.i18n import translate
 from zope.schema.interfaces import IVocabularyFactory
-from plone.dexterity.interfaces import IDexterityFTI
 
 
 def format_description(text, request=None):
@@ -30,30 +30,27 @@ def format_description(text, request=None):
 
 # These are convenient / user friendly versioning policies.
 VERSION_POLICIES = [
-    dict(id="off",
+    dict(id='off',
          policy=(),
-         title=_(u"versioning_off",
-                 default=u"No versioning")),
+         title=_(u'versioning_off', default=u'No versioning')),
 
-    dict(id="manual",
-         policy=("version_on_revert",),
-         title=_(u"versioning_manual",
-                 default=u"Manual")),
+    dict(id='manual',
+         policy=('version_on_revert',),
+         title=_(u'versioning_manual', default=u'Manual')),
 
-    dict(id="automatic",
-         policy=("at_edit_autoversion", "version_on_revert"),
-         title=_(u"versioning_automatic",
-                 default=u"Automatic")),
+    dict(id='automatic',
+         policy=('at_edit_autoversion', 'version_on_revert'),
+         title=_(u'versioning_automatic', default=u'Automatic')),
 ]
 
 
 class TypesControlPanel(AutoExtensibleForm, form.EditForm):
     schema = ITypesSchema
-    id = "types-control-panel"
-    label = _("Types Settings")
-    description = _("General types settings.")
-    form_name = _("Types settings")
-    control_panel_view = "content-controlpanel"
+    id = 'types-control-panel'
+    label = _('Types Settings')
+    description = _('General types settings.')
+    form_name = _('Types settings')
+    control_panel_view = 'content-controlpanel'
     template = ViewPageTemplateFile('types.pt')
     behavior_name = 'plone.app.versioningbehavior.behaviors.IVersionable'
 
@@ -64,21 +61,23 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
             self.status = self.formErrorsMessage
             return
         IStatusMessage(self.request).addStatusMessage(
-            _(u"Changes saved"), "info")
-        self.request.response.redirect("@@content-controlpanel")
+            _(u'Changes saved'),
+            'info'
+        )
+        self.request.response.redirect('@@content-controlpanel')
 
-    @button.buttonAndHandler(_(u"Cancel"), name='cancel')
+    @button.buttonAndHandler(_(u'Cancel'), name='cancel')
     def handleCancel(self, action):
         IStatusMessage(self.request).addStatusMessage(
-            _(u"Changes canceled."), "info")
-        self.request.response.redirect("@@overview-controlpanel")
+            _(u'Changes canceled.'),
+            'info'
+        )
+        self.request.response.redirect('@@overview-controlpanel')
 
     @property
     @memoize
     def type_id(self):
-        type_id = self.request.get('type_id', None)
-        if type_id is None:
-            type_id = ''
+        type_id = self.request.get('type_id', None) or ''
         return type_id
 
     @property
@@ -95,7 +94,7 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
         if self.behavior_name not in behaviors:
             behaviors.append(self.behavior_name)
         # locking must be turned on for versioning support on the type
-        locking = 'plone.app.lockingbehavior.behaviors.ILocking'
+        locking = 'plone.locking'
         if locking not in behaviors:
             behaviors.append(locking)
 
@@ -125,31 +124,29 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
         if submitted and not cancel_button:
             if type_id:
                 portal_types = getToolByName(self.context, 'portal_types')
-                portal_repository = getToolByName(self.context,
-                                                  'portal_repository')
-
+                portal_repository = getToolByName(
+                    self.context,
+                    'portal_repository'
+                )
                 fti = getattr(portal_types, type_id)
 
                 # Set FTI properties
-
-                addable = form.get('addable', False)
-                allow_discussion = form.get('allow_discussion', False)
-
                 fti.manage_changeProperties(
-                    global_allow=bool(addable),
-                    allow_discussion=bool(allow_discussion)
+                    global_allow=bool(form.get('addable', False)),
+                    allow_discussion=bool(form.get('allow_discussion', False))
                 )
 
-                version_policy = form.get('versionpolicy', "off")
+                version_policy = form.get('versionpolicy', 'off')
                 if version_policy != self.current_versioning_policy():
                     newpolicy = [
                         p for p in VERSION_POLICIES
-                        if p["id"] == version_policy][0]
+                        if p['id'] == version_policy
+                    ][0]
 
                     versionable_types = list(
                         portal_repository.getVersionableContentTypes()
                     )
-                    if not newpolicy["policy"]:
+                    if not newpolicy['policy']:
                         # check if we need to remove
                         if type_id in versionable_types:
                             versionable_types.remove(type_id)
@@ -162,7 +159,7 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
 
                     for policy in portal_repository.listPolicies():
                         policy_id = policy.getId()
-                        if policy_id in newpolicy["policy"]:
+                        if policy_id in newpolicy['policy']:
                             portal_repository.addPolicyForContentType(
                                 type_id,
                                 policy_id
@@ -172,7 +169,6 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
                                 type_id,
                                 policy_id
                             )
-
                     portal_repository.setVersionableContentTypes(
                         versionable_types
                     )
@@ -182,7 +178,9 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
 
                 searchable = form.get('searchable', False)
                 site_settings = registry.forInterface(
-                    ISearchSchema, prefix="plone")
+                    ISearchSchema,
+                    prefix='plone'
+                )
                 blacklisted = [i for i in site_settings.types_not_searched]
                 if searchable and type_id in blacklisted:
                     blacklisted.remove(type_id)
@@ -192,22 +190,27 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
 
                 default_page_type = form.get('default_page_type', False)
                 types_settings = registry.forInterface(
-                    ITypesSchema, prefix="plone")
+                    ITypesSchema,
+                    prefix='plone'
+                )
                 default_page_types = [
-                    safe_unicode(i) for i in types_settings.default_page_types]
+                    safe_unicode(i) for i in types_settings.default_page_types
+                ]
                 if default_page_type and type_id not in default_page_types:
                     default_page_types.append(safe_unicode(type_id))
                 elif not default_page_type and type_id in default_page_types:
                     default_page_types.remove(type_id)
                 types_settings.default_page_types = default_page_types
-
-                redirect_links = form.get('redirect_links', False)
-                types_settings.redirect_links = redirect_links
+                types_settings.redirect_links = bool(
+                    form.get('redirect_links', False)
+                )
 
             # Update workflow
-            if self.have_new_workflow() \
-                    and form.get('form.workflow.submitted', False) \
-                    and save_button:
+            if (
+                self.have_new_workflow() and
+                form.get('form.workflow.submitted', False) and
+                save_button
+            ):
                 if self.new_workflow_is_different():
                     new_wf = self.new_workflow()
                     if new_wf == '[none]':
@@ -286,7 +289,7 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
     def selectable_types(self):
         vocab_factory = getUtility(
             IVocabularyFactory,
-            name="plone.app.vocabularies.ReallyUserFriendlyTypes"
+            name='plone.app.vocabularies.ReallyUserFriendlyTypes'
         )
         types = []
         for v in vocab_factory(self.context):
@@ -318,28 +321,28 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
     def current_versioning_policy(self):
         portal_repository = getToolByName(self.context, 'portal_repository')
         if self.type_id not in portal_repository.getVersionableContentTypes():
-            return "off"
+            return 'off'
         policy = set(portal_repository.getPolicyMap().get(self.type_id, ()))
         for info in VERSION_POLICIES:
-            if set(info["policy"]) == policy:
-                return info["id"]
+            if set(info['policy']) == policy:
+                return info['id']
         return None
 
     def is_searchable(self):
         registry = getUtility(IRegistry)
-        settings = registry.forInterface(ISearchSchema, prefix="plone")
+        settings = registry.forInterface(ISearchSchema, prefix='plone')
         blacklisted = settings.types_not_searched
         return (self.type_id not in blacklisted)
 
     def is_default_page_type(self):
         registry = getUtility(IRegistry)
-        settings = registry.forInterface(ITypesSchema, prefix="plone")
+        settings = registry.forInterface(ITypesSchema, prefix='plone')
         return self.type_id in settings.default_page_types
 
     def is_redirect_links_enabled(self):
         if self.type_id == 'Link':
             registry = getUtility(IRegistry)
-            settings = registry.forInterface(ITypesSchema, prefix="plone")
+            settings = registry.forInterface(ITypesSchema, prefix='plone')
             return settings.redirect_links
         return False
 
@@ -352,34 +355,33 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
         chain = portal_workflow.getChainForPortalType(self.type_id)
         empty_workflow_dict = dict(
             id='[none]',
-            title=_(u"label_no_workflow"),
+            title=_(u'label_no_workflow'),
             description=[_(
-                u"description_no_workflow",
-                default=u"This type has no workflow. The visibilty "
-                        u"of items of this type is determined by "
-                        u"the folder they are in.")
+                u'description_no_workflow',
+                default=u'This type has no workflow. The visibilty '
+                        u'of items of this type is determined by '
+                        u'the folder they are in.')
             ]
         )
 
         if self.type_id in nondefault:
-            if chain:
-                wf_id = chain[0]
-                wf = getattr(portal_workflow, wf_id)
-                title = translate(
-                    safe_unicode(wf.title),
-                    domain='plone',
-                    context=self.request
-                )
-                return dict(
-                    id=wf.id,
-                    title=title,
-                    description=format_description(
-                        safe_unicode(wf.description),
-                        self.request
-                    )
-                )
-            else:
+            if not chain:
                 return empty_workflow_dict
+            wf_id = chain[0]
+            wf = getattr(portal_workflow, wf_id)
+            title = translate(
+                safe_unicode(wf.title),
+                domain='plone',
+                context=self.request
+            )
+            return dict(
+                id=wf.id,
+                title=title,
+                description=format_description(
+                    safe_unicode(wf.description),
+                    self.request
+                )
+            )
 
         if default_workflow == '[none]':
             return empty_workflow_dict
@@ -391,8 +393,8 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
         )
         return dict(id='(Default)',
                     title=_(
-                        u"label_default_workflow_title",
-                        default=u"Default workflow (${title})",
+                        u'label_default_workflow_title',
+                        default=u'Default workflow (${title})',
                         mapping=dict(title=default_title)),
                     description=format_description(
                         default_workflow.description,
@@ -401,7 +403,7 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
 
     def available_workflows(self):
         vocab_factory = getUtility(IVocabularyFactory,
-                                   name="plone.app.vocabularies.Workflows")
+                                   name='plone.app.vocabularies.Workflows')
         workflows = []
         for v in vocab_factory(self.context):
             if v.title:
@@ -429,8 +431,8 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
                 0,
                 dict(
                     id='(Default)',
-                    title=_(u"label_default_workflow_title",
-                            default=u"Default workflow (${title})",
+                    title=_(u'label_default_workflow_title',
+                            default=u'Default workflow (${title})',
                             mapping=dict(title=default_title)),
                     description=format_description(
                         default_workflow.description,
@@ -497,10 +499,10 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
         if self.new_workflow_is_different():
             if self.new_workflow_is_none():
                 return [_(
-                    u"description_no_workflow",
-                    default=u"This type has no workflow. The visibilty of "
-                            u"items of this type is determined by the "
-                            u"folder they are in.")]
+                    u'description_no_workflow',
+                    default=u'This type has no workflow. The visibilty of '
+                            u'items of this type is determined by the '
+                            u'folder they are in.')]
             new_workflow = self.real_workflow(self.new_workflow())
             wf = getattr(portal_workflow, new_workflow)
             return format_description(wf.description, self.request)
@@ -534,7 +536,7 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
             new_wf = getattr(portal_workflow, new_workflow)
             default_state = new_wf.initial_state
             return [dict(old_id='[none]',
-                         old_title=_(u"No workflow"),
+                         old_title=_(u'No workflow'),
                          suggested_id=default_state)]
 
         elif self.new_workflow_is_different():
@@ -557,5 +559,4 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
                     suggested_id=(old.id in new_states and
                                   old.id or default_state)))
             return states
-        else:
-            return []
+        return []
