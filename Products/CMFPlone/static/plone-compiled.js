@@ -3883,9 +3883,14 @@ define('mockup-utils',[
     return $('<div/>').text(val).html();
   };
 
+  var removeHTML = function(val) {
+    return val.replace(/<[^>]+>/ig, "");
+  };
+
   return {
     bool: bool,
     escapeHTML: escapeHTML,
+    removeHTML: removeHTML,
     featureSupport: featureSupport,
     generateId: generateId,
     getAuthenticator: getAuthenticator,
@@ -8475,7 +8480,7 @@ define('mockup-patterns-select2',[
             if (seldefaults[this]) {
               text = seldefaults[this];
             }
-            data.push({id: utils.escapeHTML(this), text: utils.escapeHTML(text)});
+            data.push({id: utils.removeHTML(this), text: utils.removeHTML(text)});
           });
           callback(data);
         };
@@ -8559,6 +8564,11 @@ define('mockup-patterns-select2',[
     },
     initializeSelect2: function() {
       var self = this;
+      self.options.formatResultCssClass = function(ob){
+        if(ob.id){
+          return 'select2-option-' + ob.id.toLowerCase().replace(/[ \:\)\(\[\]\{\}\_\+\=\&\*\%\#]/g, '-');
+        }
+      };
       self.$el.select2(self.options);
       self.$select2 = self.$el.parent().find('.select2-container');
       self.$el.parent().off('close.plone-modal.patterns');
@@ -8581,7 +8591,7 @@ define('mockup-patterns-select2',[
           self.options.initSelection = function ($el, callback) {
             var data = [], value = $el.val();
             $(value.split(self.options.separator)).each(function () {
-              var val = utils.escapeHTML(this);
+              var val = utils.removeHTML(this);
               data.push({id: val, text: val});
             });
             callback(data);
@@ -8610,7 +8620,7 @@ define('mockup-patterns-select2',[
 
               var haveResult = queryTerm === '' || $.inArray(queryTerm, dataIds) >= 0;
               if (self.options.allowNewItems && !haveResult) {
-                queryTerm = utils.escapeHTML(queryTerm);
+                queryTerm = utils.removeHTML(queryTerm);
                 results.push({id: queryTerm, text: queryTerm});
               }
 
@@ -18797,5 +18807,5 @@ require([
 
 });
 
-define("/home/thet-data/data/dev/plone/buildout.coredev/src/Products.CMFPlone/Products/CMFPlone/static/plone.js", function(){});
+define("/home/_thet/data/dev/plone/buildout.coredev-all/src/Products.CMFPlone/Products/CMFPlone/static/plone.js", function(){});
 
