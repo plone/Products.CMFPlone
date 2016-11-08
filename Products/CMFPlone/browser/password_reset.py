@@ -59,6 +59,11 @@ class PasswordResetToolView(BrowserView):
         return "%s/passwordreset/%s" % (
             self.portal_state().navigation_root_url(), randomstring)
 
+    def expiration_timeout(self):
+        pw_tool = getToolByName(self.context, 'portal_password_reset')
+        timeout = int(pw_tool.getExpirationTimeout() or 0)
+        return timeout * 24  # timeout is in days, but templates want in hours.
+
 
 @implementer(IPublishTraverse)
 class PasswordResetView(BrowserView):
@@ -135,6 +140,11 @@ class PasswordResetView(BrowserView):
         return '{0}/login?__ac_name={1}'.format(
             portal_state.navigation_root_url(),
             self.request.form.get('userid', ''))
+
+    def expiration_timeout(self):
+        pw_tool = getToolByName(self.context, 'portal_password_reset')
+        timeout = int(pw_tool.getExpirationTimeout() or 0)
+        return timeout * 24  # timeout is in days, but templates want in hours.
 
 
 class ExplainPWResetToolView(BrowserView):

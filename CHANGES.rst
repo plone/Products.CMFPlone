@@ -91,6 +91,9 @@ New features:
 
 Bug fixes:
 
+- Let the ``mail_password_template`` and ``passwordreset`` views retrieve the expiry timeout from the view, in hours.
+  [thet]
+
 - Fix i18n of the explainPWResetTool.pt template.
   [vincentfretin]
 
