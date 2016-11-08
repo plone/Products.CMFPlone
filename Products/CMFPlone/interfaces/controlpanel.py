@@ -143,7 +143,7 @@ class IEditingSchema(Interface):
         description=_(
             u'Limit tags aka keywords vocabulary used for Tags field and '
             u'in searches to the terms used inside the subtree of the current '
-            u'navigation root. This can be used together with Plones '
+            u"navigation root. This can be used together with Plone's "
             u'multilingual extension plone.app.multilingual to only offer '
             u'keywords of the current selected language. Other addons may '
             u'utilize this feature for its specific purposes.'),
