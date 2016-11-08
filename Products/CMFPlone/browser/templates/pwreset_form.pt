@@ -71,7 +71,7 @@
 
                         <div class="formHelp"
                              i18n:translate="help_new_password">
-                            Enter your new password. Minimum 5 characters.
+                            Enter your new password.
                         </div>
 
                         <input type="password"

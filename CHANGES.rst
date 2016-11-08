@@ -91,6 +91,10 @@ New features:
 
 Bug fixes:
 
+- Remove "Minimum 5 characters" in help_new_password in pwreset_form.pt like
+  in other templates.
+  [vincentfretin]
+
 - Fix duplicate i18n attribute 'attributes' in controlpanel/browser/actions.pt
   [vincentfretin]
 
