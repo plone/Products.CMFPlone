@@ -91,6 +91,9 @@ New features:
 
 Bug fixes:
 
+- Fix i18n of the explainPWResetTool.pt template.
+  [vincentfretin]
+
 - Remove "Minimum 5 characters" in help_new_password in pwreset_form.pt like
   in other templates.
   [vincentfretin]
