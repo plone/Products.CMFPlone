@@ -91,6 +91,9 @@ New features:
 
 Bug fixes:
 
+- Fix duplicate i18n attribute 'attributes' in controlpanel/browser/actions.pt
+  [vincentfretin]
+
 - Support adding or removing bundles and resources on a request when working with resource tiles in a subrequest.
   [thet]
 
