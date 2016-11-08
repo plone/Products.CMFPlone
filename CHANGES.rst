@@ -94,6 +94,10 @@ Bug fixes:
 - Fix duplicate i18n attribute 'attributes' in controlpanel/browser/actions.pt
   [vincentfretin]
 
+- Use "site administration" in lower case in accessibility-info.pt and
+  default_error_message.pt like in other templates.
+  [vincentfretin]
+
 - Support adding or removing bundles and resources on a request when working with resource tiles in a subrequest.
   [thet]
 
