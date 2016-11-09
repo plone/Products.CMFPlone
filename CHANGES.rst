@@ -20,6 +20,8 @@ Bug fixes:
 - Add default icon for top-level contentview toolbar entries
   [alecm]
 
+- Remove commented out viewlet (meant for Plone 3) and its related template.
+  [gforcada]
 
 2.6.1 (2016-06-07)
 ------------------
