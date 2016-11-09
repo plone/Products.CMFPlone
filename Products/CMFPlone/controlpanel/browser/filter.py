@@ -12,6 +12,12 @@ from Products.PortalTransforms.transforms.safe_html import VALID_TAGS
 from Products.PortalTransforms.transforms.safe_html import NASTY_TAGS
 
 
+# convert NASTY_TAGS to old format used by CMF to make collecting values work
+# {'object': 1, 'embed': 1, ...}
+if isinstance(NASTY_TAGS, frozenset):
+    NASTY_TAGS = {tag: 1 for tag in NASTY_TAGS}
+
+
 class FilterControlPanel(AutoExtensibleForm, form.EditForm):
     id = "FilterControlPanel"
     label = _(u"HTML Filtering Settings")
