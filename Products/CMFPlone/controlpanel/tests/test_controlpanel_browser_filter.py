@@ -85,7 +85,7 @@ class FilterControlPanelFunctionalTest(unittest.TestCase):
 
         # test that <a> is filtered
         self.assertFalse(self.safe_html._config['disable_transform'])
-        good_html = '<a href="http://example.com">harmless link</a>'
+        good_html = '<p><a href="http://example.com">harmless link</a></p>'
         ds = datastream('dummy_name')
         self.assertEqual(
             str(self.safe_html.convert(good_html, ds)),
