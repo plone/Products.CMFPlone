@@ -252,17 +252,6 @@
         permission="zope2.View"
         />
 
-    <!-- Render the workflow history viewlet;
-         BBB: this is the Plone < 4 viewlet
-    <browser:viewlet
-        name="plone.belowcontentbody.inlinecontenthistory"
-        manager=".interfaces.IBelowContentBody"
-        class=".content.ContentHistoryViewlet"
-        template="inline_content_history.pt"
-        permission="zope2.View"
-        />
-     -->
-
     <!-- Render the workflow history as a view -->
     <browser:view
         for="*"
