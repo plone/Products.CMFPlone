@@ -42,7 +42,7 @@ class TestPloneView(PloneTestCase.PloneTestCase):
     def testIsDefaultPageInFolder(self):
         view = Plone(self.folder.test, self.app.REQUEST)
         self.assertFalse(view.isDefaultPageInFolder())
-        self.assertTrue(self.folder.canSelectDefaultPage())
+        self.assertTrue(self.folder.canSetDefaultPage())
         self.folder.setDefaultPage('test')
         # re-create the view, because the old value is cached
         self._invalidateRequestMemoizations()
