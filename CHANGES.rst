@@ -25,6 +25,7 @@ Breaking changes:
 
     - ``add_ext_editor.py``
     - ``author_find_content.py``
+    - ``canSelectDefaultPage.py`` with tests
     - ``create_query_string.py``
     - ``formatColumns.py`` with tests
     - ``getAllowedTypes.py``
