@@ -43,8 +43,8 @@ Breaking changes:
     - ``reverseList.py`` with test
     - ``sort_modified_ascending.py``
 
-- Move script ``datecomponents.py`` to Archetypes
-  [jensens]
+- Move scripts ``datecomponents.py`` and ``show_id.py`` to Archetypes
+  [jensens, davisagli]
 
 New features:
 
