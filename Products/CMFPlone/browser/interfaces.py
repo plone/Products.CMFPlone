@@ -287,12 +287,6 @@ class IPlone(Interface):
         """Returns true if the editable border should be shown
         """
 
-    def displayContentsTab():
-        """Returns true if the contents tab should be displayed in the current
-           context.  Evaluates whether the object is a folder or the default
-           page of a folder, and checks if the user has relevant permissions.
-        """
-
     def cropText(text, length, ellipsis):
         """ Crop text on a word boundary """
 
