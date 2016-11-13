@@ -23,6 +23,10 @@ Bug fixes:
 - Remove commented out viewlet (meant for Plone 3) and its related template.
   [gforcada]
 
+- Adapt code to some deprecated methods getting finally removed.
+  [gforcada]
+
+
 2.6.1 (2016-06-07)
 ------------------
 
