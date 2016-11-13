@@ -85,20 +85,15 @@
                              i18n:translate="label_toggle">Select All/None</label>
                     </div>
                     <div class="search-type-options">
-                      <tal:div tal:define="typeLists python:context.createMultiColumnList(types_list, numCols=2, sort_on='self');"
-                               tal:repeat="sublist typeLists">
-                        <tal:items repeat="type sublist">
-                          <div>
-                            <input type="checkbox" name="portal_type:list" value="#" class="noborder" checked="checked"
-                                   tal:attributes="value type;
-                                                   id string:portal_type_${repeat/sublist/number}_${repeat/type/number};
-                                                   checked python:((type in request.get('portal_type', [])) or first_call) and 'checked' or ''"/>
-                              <label for="" i18n:translate=""
-                                     tal:attributes="for string:portal_type_${repeat/sublist/number}_${repeat/type/number}"
-                                     tal:content="python: portal_types.getTypeInfo(type).Title()" />
-                          </div>
-                        </tal:items>
-                      </tal:div>
+                      <div tal:repeat="type types_list">
+                        <input type="checkbox" name="portal_type:list" value="#" class="noborder" checked="checked"
+                               tal:attributes="value type;
+                                               id string:portal_type_${repeat/type/number};
+                                               checked python:((type in request.get('portal_type', [])) or first_call) and 'checked' or ''"/>
+                          <label for="" i18n:translate=""
+                                 tal:attributes="for string:portal_type_${repeat/type/number}"
+                                 tal:content="python: portal_types.getTypeInfo(type).Title()" />
+                      </div>
                     </div>
                   </div>
                 </fieldset>
