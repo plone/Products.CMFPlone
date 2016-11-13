@@ -32,7 +32,7 @@ Breaking changes:
     - ``getGlobalPortalRoles.py``
     - ``getNotAddableTypes.py``
     - ``getPopupScript.py``
-    - ``getPortalTypeList.py``
+    - ``getPortalTypeList.py`` and metadata
     - ``getPortalTypes.py``
     - ``getSelectableViews.py`` with tests
     - ``hasIndexHtml.py`` with tests
