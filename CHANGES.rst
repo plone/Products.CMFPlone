@@ -38,6 +38,7 @@ Breaking changes:
     - ``hasIndexHtml.py`` with tests
     - ``navigationParent.py`` with test
     - ``plone_log.py``
+    - ``plone.css.py``
     - ``returnNone.py`` with occurence refactored
     - ``reverseList.py`` with test
     - ``sort_modified_ascending.py``
