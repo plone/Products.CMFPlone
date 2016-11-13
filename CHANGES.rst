@@ -27,6 +27,7 @@ Breaking changes:
     - ``author_find_content.py``
     - ``canSelectDefaultPage.py`` with tests
     - ``create_query_string.py``
+    - ``createMultiColumnList.py``
     - ``formatColumns.py`` with tests
     - ``getAllowedTypes.py``
     - ``getGlobalPortalRoles.py``
