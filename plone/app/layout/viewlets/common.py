@@ -420,12 +420,14 @@ class ManagePortletsFallbackViewlet(ViewletBase):
     def update(self):
         ploneview = getMultiAdapter((
             self.context, self.request), name=u'plone')
+        plonelayout = getMultiAdapter((
+            self.context, self.request), name=u'plone_layout')
         context_state = getMultiAdapter((self.context, self.request),
                                         name=u'plone_context_state')
 
         self.portlet_assignable = context_state.portlet_assignable()
-        self.sl = ploneview.have_portlets('plone.leftcolumn', self.context)
-        self.sr = ploneview.have_portlets('plone.rightcolumn', self.context)
+        self.sl = plonelayout.have_portlets('plone.leftcolumn', self.context)
+        self.sr = plonelayout.have_portlets('plone.rightcolumn', self.context)
         self.object_url = context_state.object_url()
 
     def available(self):

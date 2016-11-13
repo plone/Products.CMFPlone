@@ -1,5 +1,5 @@
 <tal:contentviews tal:define="ploneview context/@@plone;"
-                  tal:condition="ploneview/showEditableBorder"
+                  tal:condition="ploneview/showToolbar"
                   i18n:domain="plone">
   <tal:actions tal:repeat="action options/actions">
     <li tal:attributes="id string:contentview-${action/id};
