@@ -21,13 +21,14 @@ Breaking changes:
 - MimetypesRegistry icons are now a browser resource directory instead of skins folder.
   [jensens]
 
-- Remove unused ``plone_scripts`` (not used nor tested anywhere in coredev) [jensens]
+- Remove unused ``plone_scripts`` (not used nor tested anywhere in coredev) [jensens, davisagli]
 
     - ``add_ext_editor.py``
     - ``author_find_content.py``
     - ``canSelectDefaultPage.py`` with tests
     - ``create_query_string.py``
     - ``createMultiColumnList.py``
+    - ``displayContentsTab.py``
     - ``formatColumns.py`` with tests
     - ``getAllowedTypes.py``
     - ``getGlobalPortalRoles.py``
