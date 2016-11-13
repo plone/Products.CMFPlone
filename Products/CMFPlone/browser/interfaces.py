@@ -232,11 +232,6 @@ class IPlone(Interface):
         as a folder by the navtree, the tab generation etc.
         """
 
-    def hide_columns(self, column_left, column_right):
-        """ Returns the CSS class used by the page layout hide empty
-            portlet columns.
-        """
-
     def navigationRootPath():
         """Get the current navigation root path
         """
@@ -290,21 +285,8 @@ class IPlone(Interface):
     def cropText(text, length, ellipsis):
         """ Crop text on a word boundary """
 
-    def have_portlets(manager_name, view=None):
-        """Determine whether a column should be shown."""
-
-    def mark_view(view):
-        """ Adds a marker interface to the view if it is "the" view for the context
-            May only be called from a template.
-        """
-
     def site_encoding():
         """ returns site encoding """
-
-    def bodyClass(template, view):
-        """ returns template or view name to mark body tag with
-            template-${template_id} CSS class
-        """
 
 
 class ISendToForm(Interface):

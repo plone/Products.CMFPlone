@@ -48,6 +48,16 @@ Breaking changes:
 - Move scripts ``datecomponents.py`` and ``show_id.py`` to Archetypes
   [jensens, davisagli]
 
+- Remove methods of the ``@@plone`` view that were marked for deprecation:
+  - ``showEditableBorder`` (use ``@@plone/showToolbar``)
+  - ``mark_view`` (use ``@@plone_layout/mark_view``)
+  - ``hide_columns`` (use ``@@plone_layout/hide_columns``)
+  - ``icons_visible`` (use ``@@plone_layout/icons_visible``)
+  - ``getIcon`` (use ``@@plone_layout/getIcon``)
+  - ``have_portlets`` (use ``@@plone_layout/have_portlets``)
+  - ``bodyClass`` (use ``@@plone_layout/bodyClass``)
+  [davisagli]
+
 New features:
 
 - The password reset templates were changed to make use of ``content-core`` macros.
