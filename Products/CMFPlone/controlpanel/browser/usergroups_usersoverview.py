@@ -111,7 +111,7 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
                     canAssign = False
                 roleList[role] = {'canAssign': canAssign,
                                   'explicit': role in explicitlyAssignedRoles,
-                                  'inherited': role in allInheritedRoles[userId]}
+                                  'inherited': role in allInheritedRoles.get(userId, ())}
 
             canDelete = user.canDelete()
             canPasswordSet = user.canPasswordSet()
