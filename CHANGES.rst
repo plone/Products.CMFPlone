@@ -60,6 +60,9 @@ Bug fixes:
 
 Bug fixes:
 
+- Fix potential KeyError: admin in doSearch in Users/Groups controlpanel.
+  [vincentfretin]
+
 - Have more patience in the thememapper robot test.  [maurits]
 
 - Fixed adding same resource/bundle to the request multiple times. [vangheem]
