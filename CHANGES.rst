@@ -22,6 +22,10 @@ New features:
 
 Bug fixes:
 
+- Fix Search RSS link condition to use search_rss_enabled option and use
+  rss.png instead of rss.gif that doesn't exist anymore.
+  [vincentfretin]
+
 - Prevent workflow menu overflowing in toolbar [MatthewWilkes]
 
 - Add default icon for top-level contentview and contentmenu toolbar entries [alecm]

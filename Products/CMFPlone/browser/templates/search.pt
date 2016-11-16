@@ -164,10 +164,9 @@
             </h1>
 
             <p id="rss-subscription" i18n:domain="plone"
-               tal:define="syndication context/@@tools/syndication|nothing"
-               tal:condition="syndication/isSiteSyndicationAllowed|nothing">
+               tal:condition="context/@@syndication-util/search_rss_enabled">
                <img src="" alt="RSS"
-                    tal:attributes="src string:${portal_url}/rss.gif"/>
+                    tal:attributes="src string:${portal_url}/rss.png"/>
                 <a href=""
                    class="link-feed"
                    tal:define="here_url context/@@plone_context_state/object_url"
