@@ -105,6 +105,10 @@ New features:
 
 Bug fixes:
 
+- Fix Search RSS link condition to use search_rss_enabled option and use
+  rss.png instead of rss.gif that doesn't exist anymore.
+  [vincentfretin]
+
 - Fix potential KeyError: admin in doSearch in Users/Groups controlpanel.
   [vincentfretin]
 
