@@ -176,6 +176,9 @@ class LayoutPolicy(BrowserView):
             template_name = view.__name__
         elif template is not None:
             template_name = template.getId()
+        elif view:
+            # E.g. mosaic, which doesn't pass a template
+            template_name = view.__name__
         if template_name:
             template_name = normalizer.normalize(template_name)
             body_classes.append('template-%s' % template_name)
