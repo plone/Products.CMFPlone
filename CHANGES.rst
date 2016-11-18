@@ -4,14 +4,6 @@ Changelog
 2.6.2 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - Removed ZopeTestCase from the tests.
