@@ -58,6 +58,9 @@ Breaking changes:
   - ``bodyClass`` (use ``@@plone_layout/bodyClass``)
   [davisagli]
 
+- Move plone_content skin templates into Products.ATContentTypes as browser views.
+  [gforcada]
+
 New features:
 
 - The password reset templates were changed to make use of ``content-core`` macros.
