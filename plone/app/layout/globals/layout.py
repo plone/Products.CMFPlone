@@ -134,38 +134,54 @@ class LayoutPolicy(BrowserView):
         """
         Returns the CSS class to be used on the body tag.
 
-        Included body classes
-        - template name: template-{}
-        - portal type: portaltype-{}
-        - navigation root: site-{}
-        - section: section-{}
-            - only the first section
-        - section structure
-            - a class for every container in the tree
-        - hide icons: icons-on
-        - markspeciallinks: pat-markspeciallinks
-        - userrole-{} for each role the user has in this context
-        - min-view-role: role required to view context
-        - default-view: if view is the default view
+        Included body classes:
+        - template-{}: template name
+        - portaltype-{}: portal type
+        - site-{}: navigation root
+        - section-{}: first section name
+        - subsection-{}: subsection names until configured depth
+        - icons-on: show icons
+        - icons-off: hide icons
+        - thumbs-on: show thumbnails
+        - thumbs-off: hide thumbnails
+        - frontend: user without privileges, no admin interfaces shown
+        - viewpermission-{}: minimum permission needed to view context
+        - userrole-anonymous: anonymous user
+        - userrole-{}: user roles for current user
+        - plone-toolbar-left: toolbar is shown on left side
+        - plone-toolbar-top: toolbar is shown on top
+        - plone-toolbar-expanded: toolbar is in expanded state
+        - plone-toolbar-left-expanded: left toolbar is expanded
+        - plone-toolbar-top-expanded: top toolbar is expanded
+        - plone-toolbar-left-default: left toolbar is not expanded
+        - plone-toolbar-top-default: top toolbar is not expanded
+        - pat-markspeciallinks: mark special links is set
         """
         context = self.context
         portal_state = getMultiAdapter(
-            (context, self.request), name=u'plone_portal_state')
+            (context, self.request),
+            name=u'plone_portal_state'
+        )
         normalizer = queryUtility(IIDNormalizer)
+        registry = getUtility(IRegistry)
 
         body_classes = []
+
         # template class (required)
-        name = ''
+        template_name = ''
         if isinstance(template, ViewPageTemplateFile) or \
            isinstance(template, ZopeViewPageTemplateFile) or \
            isinstance(template, ViewMixinForTemplates):
             # Browser view
-            name = view.__name__
+            template_name = view.__name__
         elif template is not None:
-            name = template.getId()
-        if name:
-            name = normalizer.normalize(name)
-            body_classes.append('template-%s' % name)
+            template_name = template.getId()
+        elif view:
+            # E.g. mosaic, which doesn't pass a template
+            template_name = view.__name__
+        if template_name:
+            template_name = normalizer.normalize(template_name)
+            body_classes.append('template-%s' % template_name)
 
         # portal type class (optional)
         portal_type = normalizer.normalize(context.portal_type)
@@ -182,7 +198,6 @@ class LayoutPolicy(BrowserView):
             body_classes.append("section-%s" % contentPath[0])
             # skip first section since we already have that...
             if len(contentPath) > 1:
-                registry = getUtility(IRegistry)
                 depth = registry.get(
                     'plone.app.layout.globals.bodyClass.depth', 4)
                 if depth > 1:
@@ -217,7 +232,6 @@ class LayoutPolicy(BrowserView):
 
         # class for user roles
         membership = getToolByName(context, "portal_membership")
-
         if membership.isAnonymousUser():
             body_classes.append('userrole-anonymous')
         else:
@@ -226,13 +240,12 @@ class LayoutPolicy(BrowserView):
                 body_classes.append(
                     'userrole-' + role.lower().replace(' ', '-'))
 
-            registry = getUtility(IRegistry)
-            settings = registry.forInterface(
-                ISiteSchema, prefix='plone', check=False)
-
             # toolbar classes
+            site_settings = registry.forInterface(
+                ISiteSchema, prefix='plone', check=False
+            )
             try:
-                left = settings.toolbar_position == 'side'
+                left = site_settings.toolbar_position == 'side'
             except KeyError:
                 left = True
             if left:
@@ -260,13 +273,11 @@ class LayoutPolicy(BrowserView):
                 pass
 
         # class for markspeciallinks pattern
-        registry = getUtility(IRegistry)
-        settings = registry.forInterface(ILinkSchema,
-                                         prefix="plone",
-                                         check=False)
-
-        msl = settings.mark_special_links
-        elonw = settings.external_links_open_new_window
+        link_settings = registry.forInterface(
+            ILinkSchema, prefix="plone", check=False
+        )
+        msl = link_settings.mark_special_links
+        elonw = link_settings.external_links_open_new_window
         if msl or elonw:
             body_classes.append('pat-markspeciallinks')
 

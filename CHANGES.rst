@@ -14,7 +14,9 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Include the ``template`` body class also, when a view but no template is passed.
+  Fixes missing template class with plone.app.blocks based layouts in Mosaic.
+  [thet]
 
 
 2.6.2 (2016-11-18)
