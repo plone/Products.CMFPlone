@@ -26,6 +26,9 @@ Bug fixes:
   rss.png instead of rss.gif that doesn't exist anymore.
   [vincentfretin]
 
+- Fix potential KeyError: admin in doSearch in Users/Groups controlpanel.
+  [vincentfretin]
+
 - Prevent workflow menu overflowing in toolbar [MatthewWilkes]
 
 - Add default icon for top-level contentview and contentmenu toolbar entries [alecm]
@@ -63,9 +66,6 @@ Bug fixes:
 ------------------
 
 Bug fixes:
-
-- Fix potential KeyError: admin in doSearch in Users/Groups controlpanel.
-  [vincentfretin]
 
 - Have more patience in the thememapper robot test.  [maurits]
 
