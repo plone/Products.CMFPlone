@@ -10,15 +10,16 @@ Tests for unique.py
 
 Test a list of numbers which contains duplicates:
 
-  >>> self.portal.unique([1,2,3,1,2,3])
+  >>> portal = layer['portal']
+  >>> portal.unique([1,2,3,1,2,3])
   [1, 2, 3]
 
 Test a string sequence:
 
-  >>> self.portal.unique('abcabc')
+  >>> portal.unique('abcabc')
   ['a', 'c', 'b']
 
 And finally a tuple of lists:
 
-  >>> self.portal.unique(([1, 2], [2, 3], [1, 2]))
+  >>> portal.unique(([1, 2], [2, 3], [1, 2]))
   [[1, 2], [2, 3]]

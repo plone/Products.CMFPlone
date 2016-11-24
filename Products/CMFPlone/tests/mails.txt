@@ -4,19 +4,9 @@ Mail related functional tests
 Some initial setup:
 
   >>> from plone.testing.z2 import Browser
+  >>> app = layer['app']
   >>> browser = Browser(app)
 
-We need to fake a valid mail setup:
-
-  >>> from Products.CMFPlone.interfaces.controlpanel import IMailSchema
-  >>> from plone.registry.interfaces import IRegistry
-  >>> from zope.component import getUtility
-
-  >>> registry = getUtility(IRegistry)
-  >>> mail_settings = registry.forInterface(IMailSchema, prefix='plone')
-  >>> mail_settings.email_from_address = "mail@plone.test"
-  >>> mailhost = self.portal.MailHost
-  >>> import transaction; transaction.commit()
 
 Contact form
 ------------
@@ -50,6 +40,7 @@ As part of our test setup, we replaced the original MailHost with our
 own version.  Our version doesn't mail messages, it just collects them
 in a list called ``messages``:
 
+  >>> mailhost = layer['portal'].MailHost
   >>> len(mailhost.messages)
   1
   >>> msg = mailhost.messages[0]
