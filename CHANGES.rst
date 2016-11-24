@@ -142,7 +142,12 @@ Bug fixes:
 - Style display menu headings differently from actions [alecm]
 
 - Avoid dependency on plone.app.imaging. [davisagli]
+
 - Fix TinyMCE table styles [vangheem]
+
+- Fix TinyMCE content CSS support to allow themes to define
+  external content CSS URLs (as with CDN like setup).
+  [datakurre]
 
 - Add utf8 headers to all Python source files. [jensens]
 
