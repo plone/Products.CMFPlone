@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
-import doctest
-import os
-import glob
-import unittest
-
-import pkg_resources
-from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
-from Products.CMFPlone.tests.PloneTestCase import FunctionalTestCase
-from plone.app.contenttypes.testing import (
-    PLONE_APP_CONTENTTYPES_FUNCTIONAL_TESTING
-)
+from plone.app.contenttypes.testing import PLONE_APP_CONTENTTYPES_FUNCTIONAL_TESTING  # noqa
 from plone.app.testing import PLONE_FUNCTIONAL_TESTING
 from plone.testing import layered
+from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
+from Products.GenericSetup import EXTENSION
+from Products.GenericSetup import profile_registry
 from Testing.ZopeTestCase import ZopeDocFileSuite
+
+import doctest
+import glob
+import os
+import pkg_resources
+import unittest
 
 
 UNITTESTS = ['messages.txt', 'mails.txt', 'emaillogin.txt', 'translate.txt',
@@ -26,11 +26,6 @@ CONTENT_TESTS = [
     'link_redirect_view.txt',
 ]
 OPTIONFLAGS = (doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE)
-
-from Products.GenericSetup import EXTENSION, profile_registry
-
-from Products.CMFCore.utils import getToolByName
-
 at_root = pkg_resources.resource_filename('Products.Archetypes', '')
 
 
@@ -73,12 +68,14 @@ def test_suite():
         glob.glob(os.path.sep.join([os.path.dirname(__file__), '*.txt']))
         if os.path.basename(filename) in CONTENT_TESTS]
     suites.extend(
-        [layered(doctest.DocFileSuite(
-            os.path.basename(filename),
-            optionflags=OPTIONFLAGS,
-            package='Products.CMFPlone.tests',
-            ), layer=PLONE_APP_CONTENTTYPES_FUNCTIONAL_TESTING)
-        for filename in content_filenames])
+        [layered(
+            doctest.DocFileSuite(
+                os.path.basename(filename),
+                optionflags=OPTIONFLAGS,
+                package='Products.CMFPlone.tests',
+            ),
+            layer=PLONE_APP_CONTENTTYPES_FUNCTIONAL_TESTING)
+            for filename in content_filenames])
 
     # And some use Archetypes.
     suites.extend(
