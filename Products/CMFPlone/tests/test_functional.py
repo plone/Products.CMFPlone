@@ -2,16 +2,10 @@
 from plone.app.contenttypes.testing import PLONE_APP_CONTENTTYPES_FUNCTIONAL_TESTING  # noqa
 from plone.app.testing import PLONE_FUNCTIONAL_TESTING
 from plone.testing import layered
-from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
-from Products.GenericSetup import EXTENSION
-from Products.GenericSetup import profile_registry
-from Testing.ZopeTestCase import ZopeDocFileSuite
 
 import doctest
 import glob
 import os
-import pkg_resources
 import unittest
 
 
@@ -26,26 +20,6 @@ CONTENT_TESTS = [
     'link_redirect_view.txt',
 ]
 OPTIONFLAGS = (doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE)
-at_root = pkg_resources.resource_filename('Products.Archetypes', '')
-
-
-class PloneAtTestCase(PloneTestCase):
-    """ Test case for #7627 (https://dev.plone.org/ticket/7627)
-        Run archetypes tests in a Plone setup """
-
-    def afterSetUp(self):
-        profile_registry.registerProfile(
-            'Archetypes_sampletypes',
-            'Archetypes Sample Content Types',
-            'Extension profile incl. Archetypes sample content types',
-            os.path.join(at_root, 'profiles/sample_types'),
-            'Products.Archetypes',
-            EXTENSION
-        )
-        setup = getToolByName(self.portal, 'portal_setup')
-        setup.runAllImportStepsFromProfile(
-            'profile-Products.Archetypes:'
-            'Archetypes_sampletypes')
 
 
 def test_suite():
@@ -77,12 +51,4 @@ def test_suite():
             layer=PLONE_APP_CONTENTTYPES_FUNCTIONAL_TESTING)
             for filename in content_filenames])
 
-    # And some use Archetypes.
-    suites.extend(
-        [ZopeDocFileSuite(
-         os.path.basename(filename),
-         optionflags=OPTIONFLAGS,
-         package='Products.CMFPlone.tests',
-         test_class=PloneAtTestCase)
-         for filename in ['translate.txt']])
     return unittest.TestSuite(suites)
