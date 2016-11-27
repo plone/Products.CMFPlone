@@ -62,6 +62,9 @@ Bug fixes:
   Fixes missing template class with plone.app.blocks based layouts in Mosaic.
   [thet]
 
+- prevent extra '@' in twitter:site meta tag
+  [tkimnguyen]
+
 
 2.6.2 (2016-11-18)
 ------------------
