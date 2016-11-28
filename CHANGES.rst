@@ -185,6 +185,9 @@ Bug fixes:
 - wording changes for social media settings panel
   [tkimnguyen]
 
+- URL change for bug tracker, wording tweaks to UPGRADE.txt
+  [tkimnguyen]
+
 
 5.1a2 (2016-08-19)
 ------------------
