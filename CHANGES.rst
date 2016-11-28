@@ -181,6 +181,9 @@ Bug fixes:
 
 - Move some tests from ZopeTestCase to plone.app.testing.
   [gforcada, ivanteoh, maurits]
+  
+- wording changes for social media settings panel
+  [tkimnguyen]
 
 
 5.1a2 (2016-08-19)
