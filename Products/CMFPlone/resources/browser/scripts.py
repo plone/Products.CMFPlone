@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
-from urlparse import urlparse
-from urllib import quote
-
 from Products.CMFPlone.resources.browser.cook import cookWhenChangingSettings
 from Products.CMFPlone.resources.browser.resource import ResourceView
 from Products.CMFPlone.utils import get_top_request
+from urllib import quote
+from urlparse import urlparse
 from zope.component import getMultiAdapter
 
 

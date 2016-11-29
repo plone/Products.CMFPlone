@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-import json
-import re
-
+from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.interfaces import IResourceRegistry
 from Products.Five.browser import BrowserView
-from plone.registry.interfaces import IRegistry
 from zope.component import getUtility
+
+import json
+import re
 
 
 configjs = """requirejs.config({

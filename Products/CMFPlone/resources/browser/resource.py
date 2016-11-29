@@ -1,23 +1,24 @@
 # -*- coding: utf-8 -*-
-from Acquisition import aq_inner, aq_base, aq_parent
-from Products.CMFCore.Expression import Expression
+from .combine import get_production_resource_directory
+from Acquisition import aq_base
+from Acquisition import aq_inner
+from Acquisition import aq_parent
+from plone.app.layout.viewlets.common import ViewletBase
+from plone.app.theming.utils import theming_policy
+from plone.memoize.view import memoize
+from plone.registry.interfaces import IRegistry
 from Products.CMFCore.Expression import createExprContext
+from Products.CMFCore.Expression import Expression
+from Products.CMFCore.utils import _getAuthenticatedUser
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces import IBundleRegistry
 from Products.CMFPlone.interfaces import IResourceRegistry
-from plone.app.layout.viewlets.common import ViewletBase
-from plone.app.theming.utils import theming_policy
-from plone.registry.interfaces import IRegistry
+from Products.CMFPlone.resources import RESOURCE_DEVELOPMENT_MODE
+from Products.CMFPlone.utils import get_top_request
 from zope import component
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.ramcache.interfaces import ram
-from Products.CMFCore.utils import _getAuthenticatedUser
-from plone.memoize.view import memoize
-from Products.CMFPlone.resources import RESOURCE_DEVELOPMENT_MODE
-from Products.CMFPlone.utils import get_top_request
-
-from .combine import get_production_resource_directory
 
 
 class ResourceView(ViewletBase):

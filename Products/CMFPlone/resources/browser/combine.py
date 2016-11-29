@@ -14,6 +14,7 @@ from zope.component import queryUtility
 import logging
 import re
 
+
 PRODUCTION_RESOURCE_DIRECTORY = "production"
 logger = logging.getLogger(__name__)
 
