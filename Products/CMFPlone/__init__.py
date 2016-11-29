@@ -114,9 +114,6 @@ def initialize(context):
     # Make cgi.escape available TTW
     ModuleSecurityInfo('cgi').declarePublic('escape')
 
-    # Apply monkey patches
-    from Products.CMFPlone import patches  # noqa
-
     # Register unicode splitter w/ ZCTextIndex
     # pipeline registry
     from Products.CMFPlone import UnicodeSplitter  # noqa
@@ -209,3 +206,7 @@ PloneMessageFactory = MessageFactory('plone')
 # plonelocales domain
 from zope.i18nmessageid import MessageFactory
 PloneLocalesMessageFactory = MessageFactory('plonelocales')
+
+# Apply monkey patches.  If we do this in the initialize method,
+# it is too late for some of them.
+from Products.CMFPlone import patches  # noqa
