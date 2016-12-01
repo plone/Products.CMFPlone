@@ -1,4 +1,4 @@
-<script type="text/javascript" tal:content="string:PORTAL_URL = '${view/base_url}';"></script>
+<script type="text/javascript" tal:content="string:PORTAL_URL = '${view/site_url}';"></script>
 <tal:scripts repeat="script view/scripts"><tal:block define="condcomment script/conditionalcomment; resetrjs script/resetrjs|nothing"><tal:if condition="resetrjs">
   <tal:openreset content='structure string:&lt;script type="text/javascript"&gt;'/>
       /* reset requirejs definitions so that people who put requirejs in legacy compilation do not get errors */

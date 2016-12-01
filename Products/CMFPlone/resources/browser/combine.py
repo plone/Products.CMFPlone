@@ -14,23 +14,24 @@ from zope.component import queryUtility
 import logging
 import re
 
-PRODUCTION_RESOURCE_DIRECTORY = "production"
+
+PRODUCTION_RESOURCE_DIRECTORY = 'production'
 logger = logging.getLogger(__name__)
 
 
 def get_production_resource_directory():
-    persistent_directory = queryUtility(IResourceDirectory, name="persistent")
+    persistent_directory = queryUtility(IResourceDirectory, name='persistent')
     if persistent_directory is None:
         return ''
     container = persistent_directory[OVERRIDE_RESOURCE_DIRECTORY_NAME]
     try:
         production_folder = container[PRODUCTION_RESOURCE_DIRECTORY]
     except NotFound:
-        return "%s/++unique++1" % PRODUCTION_RESOURCE_DIRECTORY
+        return '%s/++unique++1' % PRODUCTION_RESOURCE_DIRECTORY
     if 'timestamp.txt' not in production_folder:
-        return "%s/++unique++1" % PRODUCTION_RESOURCE_DIRECTORY
+        return '%s/++unique++1' % PRODUCTION_RESOURCE_DIRECTORY
     timestamp = production_folder.readFile('timestamp.txt')
-    return "%s/++unique++%s" % (
+    return '%s/++unique++%s' % (
         PRODUCTION_RESOURCE_DIRECTORY, timestamp)
 
 
@@ -46,7 +47,7 @@ def get_resource(context, path):
     try:
         resource = context.unrestrictedTraverse(path)
     except NotFound:
-        logger.warn(u"Could not find resource {0}. You may have to create it first.".format(path))  # noqa
+        logger.warn(u'Could not find resource {0}. You may have to create it first.'.format(path))  # noqa
         return
 
     if isinstance(resource, FilesystemFile):
@@ -66,19 +67,35 @@ def write_js(context, folder, meta_bundle):
     resources = []
 
     # default resources
-    if meta_bundle == 'default' and registry.records.get(
-        'plone.resources/jquery.js'
+    if (
+        meta_bundle == 'default' and
+        registry.records.get('plone.resources/jquery.js')
     ):
-        resources.append(get_resource(context,
-            registry.records['plone.resources/jquery.js'].value))
-        resources.append(get_resource(context,
-            registry.records['plone.resources.requirejs'].value))
-        resources.append(get_resource(context,
-            registry.records['plone.resources.configjs'].value))
+        resources.append(
+            get_resource(
+                context,
+                registry.records['plone.resources/jquery.js'].value
+            )
+        )
+        resources.append(
+            get_resource(
+                context,
+                registry.records['plone.resources.requirejs'].value
+            )
+        )
+        resources.append(
+            get_resource(
+                context,
+                registry.records['plone.resources.configjs'].value
+            )
+        )
 
     # bundles
     bundles = registry.collectionOfInterface(
-        IBundleRegistry, prefix="plone.bundles", check=False)
+        IBundleRegistry,
+        prefix='plone.bundles',
+        check=False
+    )
     for bundle in bundles.values():
         if bundle.merge_with == meta_bundle and bundle.jscompilation:
             resource = get_resource(context, bundle.jscompilation)
@@ -89,7 +106,7 @@ def write_js(context, folder, meta_bundle):
     fi = StringIO()
     for script in resources:
         fi.write(script + '\n')
-    folder.writeFile(meta_bundle + ".js", fi)
+    folder.writeFile(meta_bundle + '.js', fi)
 
 
 def write_css(context, folder, meta_bundle):
@@ -97,7 +114,10 @@ def write_css(context, folder, meta_bundle):
     resources = []
 
     bundles = registry.collectionOfInterface(
-        IBundleRegistry, prefix="plone.bundles", check=False)
+        IBundleRegistry,
+        prefix='plone.bundles',
+        check=False
+    )
     for bundle in bundles.values():
         if bundle.merge_with == meta_bundle and bundle.csscompilation:
             css = get_resource(context, bundle.csscompilation)
@@ -116,11 +136,11 @@ def write_css(context, folder, meta_bundle):
     fi = StringIO()
     for script in resources:
         fi.write(script + '\n')
-    folder.writeFile(meta_bundle + ".css", fi)
+    folder.writeFile(meta_bundle + '.css', fi)
 
 
 def get_override_directory(context):
-    persistent_directory = queryUtility(IResourceDirectory, name="persistent")
+    persistent_directory = queryUtility(IResourceDirectory, name='persistent')
     if persistent_directory is None:
         return
     if OVERRIDE_RESOURCE_DIRECTORY_NAME not in persistent_directory:
@@ -137,7 +157,7 @@ def combine_bundles(context):
     # store timestamp
     fi = StringIO()
     fi.write(datetime.now().isoformat())
-    production_folder.writeFile("timestamp.txt", fi)
+    production_folder.writeFile('timestamp.txt', fi)
 
     # generate new combined bundles
     write_js(context, production_folder, 'default')

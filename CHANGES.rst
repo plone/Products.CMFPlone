@@ -111,6 +111,17 @@ New features:
 
 - Toolbar: Let the toolbar submenus be as wide as they need to be and do not break entries into multiple lines. [thet]
 
+- Resource Registry:
+  In ``debug-mode`` (zope.conf, buildout) do not load cache the production bundle.
+  [jensens]
+
+- Resource Registry:
+  In ``debug-mode`` (zope.conf, buildout) do not ignore development mode for anonymous users.
+  [jensens]
+
+- Resource Registry: If file system version is newer than ``last_compilation`` date of a bundle, use this as ``last_compilation`` date.
+  [jensens]
+
 
 Bug fixes:
 
@@ -197,6 +208,8 @@ Bug fixes:
 - URL change for bug tracker, wording tweaks to UPGRADE.txt
   [tkimnguyen]
 
+- Cleanup code of resource registry.
+  [jensens]
 
 5.1a2 (2016-08-19)
 ------------------

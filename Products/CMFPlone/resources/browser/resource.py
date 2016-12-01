@@ -1,34 +1,42 @@
 # -*- coding: utf-8 -*-
-from Acquisition import aq_inner, aq_base, aq_parent
-from Products.CMFCore.Expression import Expression
+from Acquisition import aq_base
+from Acquisition import aq_inner
+from Acquisition import aq_parent
+from App.config import getConfiguration
+from copy import copy
+from plone.app.layout.viewlets.common import ViewletBase
+from plone.app.theming.utils import theming_policy
+from plone.memoize.view import memoize
+from plone.registry.interfaces import IRegistry
 from Products.CMFCore.Expression import createExprContext
+from Products.CMFCore.Expression import Expression
+from Products.CMFCore.utils import _getAuthenticatedUser
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces import IBundleRegistry
 from Products.CMFPlone.interfaces import IResourceRegistry
-from plone.app.layout.viewlets.common import ViewletBase
-from plone.app.theming.utils import theming_policy
-from plone.registry.interfaces import IRegistry
+from Products.CMFPlone.resources import RESOURCE_DEVELOPMENT_MODE
+from Products.CMFPlone.resources.browser.combine import get_production_resource_directory  # noqa
+from Products.CMFPlone.resources.bundle import Bundle
+from Products.CMFPlone.utils import get_top_request
 from zope import component
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.ramcache.interfaces import ram
-from Products.CMFCore.utils import _getAuthenticatedUser
-from plone.memoize.view import memoize
-from Products.CMFPlone.resources import RESOURCE_DEVELOPMENT_MODE
-from Products.CMFPlone.utils import get_top_request
-
-from .combine import get_production_resource_directory
 
 
-class ResourceView(ViewletBase):
+class ResourceBase(object):
     """Information for script rendering.
+
+    This is a mixin base class for a browser view, a viewlet or a tile
+    or anything similar with a context and a request set on initialization.
     """
 
     @property
     @memoize
     def anonymous(self):
         return _getAuthenticatedUser(
-            self.context).getUserName() == 'Anonymous User'
+            self.context
+        ).getUserName() == 'Anonymous User'
 
     @property
     @memoize
@@ -42,14 +50,19 @@ class ResourceView(ViewletBase):
         """
         if RESOURCE_DEVELOPMENT_MODE:
             return True
-        if self.anonymous:
+        if self.anonymous and not self.debug_mode:
             return False
         return self.registry.records['plone.resources.development'].value
 
+    @property
+    def debug_mode(self):
+        return getConfiguration().debug_mode
+
     def develop_bundle(self, bundle, attr):
-        if RESOURCE_DEVELOPMENT_MODE:
-            return True
-        return self.development and getattr(bundle, attr, False)
+        return (
+            RESOURCE_DEVELOPMENT_MODE or
+            (self.development and getattr(bundle, attr, False))
+        )
 
     @property
     def last_legacy_import(self):
@@ -88,98 +101,101 @@ class ResourceView(ViewletBase):
             return True
 
     def update(self):
-        self.portal_state = getMultiAdapter((self.context, self.request),
-                                            name=u'plone_portal_state')
+        self.portal_state = getMultiAdapter(
+            (self.context, self.request),
+            name=u'plone_portal_state'
+        )
         self.site_url = self.portal_state.portal_url()
         self.registry = getUtility(IRegistry)
-
         self.production_path = get_production_resource_directory()
 
-        self.diazo_production_css = None
-        self.diazo_development_css = None
-        self.diazo_development_js = None
-        self.diazo_production_js = None
-        self.themeObj = None
-
-        # Check if its Diazo enabled
+        theme = None
         policy = theming_policy(self.request)
         if policy.isThemeEnabled():
-            self.themeObj = policy.get_theme()
-            if self.themeObj:
-                if hasattr(self.themeObj, 'production_css'):
-                    self.diazo_production_css = self.themeObj.production_css
-                    self.diazo_development_css = self.themeObj.development_css
-                    self.diazo_development_js = self.themeObj.development_js
-                    self.diazo_production_js = self.themeObj.production_js
+            # Check if Diazo is enabled
+            theme = policy.get_theme() or None
+
+        self.diazo_production_css = getattr(theme, 'production_css', None)
+        self.diazo_development_css = getattr(theme, 'development_css', None)
+        self.diazo_production_js = getattr(theme, 'production_js', None)
+        self.diazo_development_js = getattr(theme, 'development_js', None)
+        self.theme_enabled_bundles = getattr(theme, 'enabled_bundles', [])
+        self.theme_disabled_bundles = getattr(theme, 'disabled_bundles', [])
 
     def get_bundles(self):
-        return self.registry.collectionOfInterface(
-            IBundleRegistry, prefix="plone.bundles", check=False)
+        result = {}
+        records = self.registry.collectionOfInterface(
+            IBundleRegistry,
+            prefix="plone.bundles",
+            check=False
+        )
+        for name, record in records.items():
+            result[name] = Bundle(record)
+        return result
 
     def get_resources(self):
         return self.registry.collectionOfInterface(
-            IResourceRegistry, prefix="plone.resources", check=False)
+            IResourceRegistry,
+            prefix="plone.resources",
+            check=False
+        )
+
+    def eval_expression(self, expression, bundle_name):
+        if not expression:
+            return True
+        cache = component.queryUtility(ram.IRAMCache)
+        cooked_expression = None
+        if cache is not None:
+            cooked_expression = cache.query(
+                'plone.bundles.cooked_expressions',
+                key=dict(prefix=bundle_name),
+                default=None
+            )
+        if (
+            cooked_expression is None or
+            cooked_expression.text != expression
+        ):
+            cooked_expression = Expression(expression)
+            if cache is not None:
+                cache.set(
+                    cooked_expression,
+                    'plone.bundles.cooked_expressions',
+                    key=dict(prefix=bundle_name)
+                )
+        return self.evaluateExpression(cooked_expression, self.context)
 
     def get_cooked_bundles(self):
         """
         Get the cooked bundles
         """
-        cache = component.queryUtility(ram.IRAMCache)
-        bundles = self.get_bundles()
+        request = get_top_request(self.request)  # might be a subrequest
 
-        enabled_diazo_bundles = []
-        disabled_diazo_bundles = []
-
-        if self.themeObj:
-            enabled_diazo_bundles = self.themeObj.enabled_bundles
-            disabled_diazo_bundles = self.themeObj.disabled_bundles
+        # theme specific set bundles
+        enabled_bundles = set(self.theme_enabled_bundles)
+        disabled_bundles = set(self.theme_disabled_bundles)
 
         # Request set bundles
-        request = get_top_request(self.request)  # might be a subrequest
-        enabled_request_bundles = []
-        disabled_request_bundles = []
-        if hasattr(request, 'enabled_bundles'):
-            enabled_request_bundles.extend(request.enabled_bundles)
+        enabled_bundles.update(getattr(request, 'enabled_bundles', []))
+        disabled_bundles.update(getattr(request, 'disabled_bundles', []))
 
-        if hasattr(request, 'disabled_bundles'):
-            disabled_request_bundles.extend(request.disabled_bundles)
-
-        for key, bundle in bundles.items():
+        for key, bundle in self.get_bundles().items():
             # The diazo manifest and request bundles are more important than
             # the disabled bundle on registry.
             # We can access the site with diazo.off=1 without diazo bundles
-            if (bundle.enabled
-                    or key in enabled_request_bundles
-                    or key in enabled_diazo_bundles) and\
-                    (key not in disabled_diazo_bundles
-                        and key not in disabled_request_bundles):
-                # check expression
-                if bundle.expression:
-                    cooked_expression = None
-                    if cache is not None:
-                        cooked_expression = cache.query(
-                            'plone.bundles.cooked_expressions',
-                            key=dict(prefix=bundle.__prefix__), default=None)
-                    if (
-                            cooked_expression is None or
-                            cooked_expression.text != bundle.expression):
-                        cooked_expression = Expression(bundle.expression)
-                        if cache is not None:
-                            cache.set(
-                                cooked_expression,
-                                'plone.bundles.cooked_expressions',
-                                key=dict(prefix=bundle.__prefix__))
-                    if not self.evaluateExpression(
-                            cooked_expression, self.context):
-                        continue
-                yield key, bundle
+            if (
+                key in disabled_bundles or
+                (key not in enabled_bundles and not bundle.enabled) or
+                not self.eval_expression(bundle.expression, bundle.name)
+            ):
+                continue
+
+            yield key, bundle
 
     def ordered_bundles_result(self, production=False):
         """
         It gets the ordered result of bundles
         """
         result = []
-        # The first one
         inserted = []
         depends_on = {}
         for key, bundle in self.get_cooked_bundles():
@@ -199,21 +215,25 @@ class ResourceView(ViewletBase):
         while len(depends_on) > 0:
             found = False
             for key, bundles_to_add in depends_on.items():
-                if key in inserted:
-                    found = True
-                    for bundle in bundles_to_add:
-                        if not(production and bundle.merge_with):
-                            self.get_data(bundle, result)
-                        inserted.append(
-                            bundle.__prefix__.split('/', 1)[1].rstrip('.'))
-                    del depends_on[key]
+                if key not in inserted:
+                    continue
+                found = True
+                for bundle in bundles_to_add:
+                    if not(production and bundle.merge_with):
+                        self.get_data(bundle, result)
+                    inserted.append(bundle.name)
+                del depends_on[key]
             if not found:
                 break
 
-        # THe ones that does not get the dependencies
+        # The ones that does not get the dependencies
         for bundles_to_add in depends_on.values():
             for bundle in bundles_to_add:
                 if not(production and bundle.merge_with):
                     self.get_data(bundle, result)
-
         return result
+
+
+class ResourceView(ResourceBase, ViewletBase):
+    """Viewlet Information for script rendering.
+    """

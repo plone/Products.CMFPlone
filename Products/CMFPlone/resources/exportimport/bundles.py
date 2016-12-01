@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
+from ..browser.combine import combine_bundles
 from plone.registry.interfaces import IRegistry
 from zope.component import queryUtility
 from zope.globalrequest import getRequest
-
-from ..browser.combine import combine_bundles
 
 
 def combine(context):
