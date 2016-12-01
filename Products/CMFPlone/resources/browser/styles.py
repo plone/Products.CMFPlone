@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
+from plone.app.layout.viewlets.common import ViewletBase
 from Products.CMFPlone.resources.browser.cook import cookWhenChangingSettings
-from Products.CMFPlone.resources.browser.resource import ResourceView
+from Products.CMFPlone.resources.browser.resource import ResourceBase
 from Products.CMFPlone.utils import get_top_request
 from urllib import quote
 from urlparse import urlparse
 
 
-class StylesView(ResourceView):
+class StylesBase(ResourceBase):
 
     """ Information for style rendering. """
 
@@ -14,9 +15,6 @@ class StylesView(ResourceView):
         """
         Extracts the urls for the specific resource
         """
-        bundle_name = bundle.__prefix__.split(
-            '/',
-            1)[1].rstrip('.') if bundle else 'none'
         for css in style.css:
             url = urlparse(css)
             if url.netloc == '':
@@ -32,8 +30,9 @@ class StylesView(ResourceView):
 
             data = {
                 'rel': rel,
-                'bundle': bundle_name,
-                'conditionalcomment': bundle.conditionalcomment if bundle else '',  # noqa
+                'bundle': bundle.name if bundle else 'none',
+                'conditionalcomment':
+                    bundle.conditionalcomment if bundle else '',
                 'src': src}
             yield data
 
@@ -42,9 +41,6 @@ class StylesView(ResourceView):
         Gets the needed information for the bundle
         and stores it on the result list
         """
-        bundle_name = bundle.__prefix__.split(
-            '/',
-            1)[1].rstrip('.') if bundle else 'none'
         if self.develop_bundle(bundle, 'develop_css'):
             self.resources = self.get_resources()
             # The bundle resources
@@ -80,7 +76,7 @@ class StylesView(ResourceView):
                         quote(str(bundle.last_compilation))
                     )
                 result.append({
-                    'bundle': bundle_name,
+                    'bundle': bundle.name,
                     'rel': 'stylesheet',
                     'conditionalcomment': bundle.conditionalcomment,
                     'src': css_location
@@ -90,7 +86,7 @@ class StylesView(ResourceView):
         """
         Get all the styles
         """
-        if self.development or not self.production_path:
+        if self.development or self.debug_mode or not self.production_path:
             result = self.ordered_bundles_result()
         else:
             result = [{
@@ -149,3 +145,8 @@ class StylesView(ResourceView):
 
             result.append(data)
         return result
+
+
+class StylesView(StylesBase, ViewletBase):
+    """Styles Viewlet
+    """

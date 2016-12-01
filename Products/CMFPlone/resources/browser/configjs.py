@@ -87,8 +87,10 @@ class ConfigJsView(RequireJsView):
 
     def __call__(self):
         (paths, shims) = self.get_requirejs_config()
-        self.request.response.setHeader("Content-Type",
-                                        "application/javascript")
+        self.request.response.setHeader(
+            'Content-Type',
+            'application/javascript'
+        )
         return configjs % (
             json.dumps(paths, indent=4),
             _format_shims(shims)
