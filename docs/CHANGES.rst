@@ -20,6 +20,10 @@ New features:
 
 Bug fixes:
 
+- Load some patches earlier, instead of in our initialize method.
+  This is part of PloneHotfix20161129.
+  [maurits]
+
 - Apply security hotfix 20160830 for ``z3c.form`` widgets.  [maurits]
 
 - Fixed tests in combination with newer CMFFormController which has the hotfix.  [maurits]
