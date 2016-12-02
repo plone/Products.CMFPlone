@@ -22,6 +22,10 @@ New features:
 
 Bug fixes:
 
+- Load some patches earlier, instead of in our initialize method.
+  This is part of PloneHotfix20161129.
+  [maurits]
+
 - Fix Search RSS link condition to use search_rss_enabled option and use
   rss.png instead of rss.gif that doesn't exist anymore.
   [vincentfretin]
