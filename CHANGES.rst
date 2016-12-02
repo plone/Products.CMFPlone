@@ -10,7 +10,7 @@ Changelog
 
 Breaking changes:
 
-- Load Products.CMFPlone.patches earlier, instead of in our initialize method.
+- Load some Products.CMFPlone.patches earlier, instead of in our initialize method.
   This is part of PloneHotfix20161129.
   [maurits]
 
