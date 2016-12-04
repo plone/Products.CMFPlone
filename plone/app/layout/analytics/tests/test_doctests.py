@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
-from plone.app.layout.analytics.tests import base
 from plone.testing import layered
 from plone.app.layout.testing import FUNCTIONAL_TESTING
-from Testing import ZopeTestCase as ztc
 
 import doctest
 import unittest
