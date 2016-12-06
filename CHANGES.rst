@@ -121,6 +121,8 @@ New features:
 
 Bug fixes:
 
+- Fixed sometimes failing search order tests.  [maurits]
+
 - Load some Products.CMFPlone.patches earlier, instead of in our initialize method.
   This is part of PloneHotfix20161129.
   [maurits]
