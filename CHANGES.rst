@@ -10,10 +10,6 @@ Changelog
 
 Breaking changes:
 
-- Load some Products.CMFPlone.patches earlier, instead of in our initialize method.
-  This is part of PloneHotfix20161129.
-  [maurits]
-
 - Removed our patch that added ``secureSend`` to the ``MailHost``.
   This was originally scheduled for removal in Plone 5.0.  See `issue
   965 <https://github.com/plone/Products.CMFPlone/issues/965>`_.
@@ -124,6 +120,10 @@ New features:
 
 
 Bug fixes:
+
+- Load some Products.CMFPlone.patches earlier, instead of in our initialize method.
+  This is part of PloneHotfix20161129.
+  [maurits]
 
 - Depend on CMFFormController directly, because our whole login process is based on it and its installed in the GenericSetup profile.
   Before it was installed indeirectly due to a dependency in some other package which is gone.
