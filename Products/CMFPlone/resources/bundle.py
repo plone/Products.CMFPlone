@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
 from plone.resource.directory import FilesystemResourceDirectory
 from plone.resource.file import FilesystemFile
 from Products.CMFCore.FSFile import FSFile
 from Products.Five.browser.resource import DirectoryResource
 from Products.Five.browser.resource import FileResource
+from zExceptions import NotFound
 from zope.component.hooks import getSite
-from datetime import datetime
 
 import os
 
@@ -31,7 +32,10 @@ class Bundle(object):
             resource_path = self.data.jscompilation
         else:
             resource_path = self.data.csscompilation
-        resource = getSite().restrictedTraverse(resource_path)
+        try:
+            resource = getSite().restrictedTraverse(resource_path)
+        except NotFound:
+            return None, None
         if resource.__module__ == 'Products.Five.metaclass':
             try:
                 return 'fs', resource.chooseContext().path
