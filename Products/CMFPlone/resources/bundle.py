@@ -81,7 +81,7 @@ class Bundle(object):
                 mods.append(datetime.fromtimestamp(os.path.getmtime(path)))
             elif loc == 'zodb':
                 self.data.last_compilation
-        if self.data.last_compilation:
+        if self.data.last_compilation and mods:
             if self.data.last_compilation > max(mods):
                 return self.data.last_compilation
             else:
