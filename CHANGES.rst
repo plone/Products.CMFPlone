@@ -118,6 +118,9 @@ New features:
 - Resource Registry: If file system version is newer than ``last_compilation`` date of a bundle, use this as ``last_compilation`` date.
   [jensens]
 
+- Simplify generated Gruntfile.js (DRY)
+  [jensens]
+
 
 Bug fixes:
 
