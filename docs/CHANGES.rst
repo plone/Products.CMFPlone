@@ -32,6 +32,7 @@ Bug fixes:
 
 - Apply security hotfix 20160830 for ``isURLInPortal``.  [maurits]
 
+- Include inactive content in worklists.  [sebasgo]
 
 4.3.11 (2016-08-15)
 -------------------
