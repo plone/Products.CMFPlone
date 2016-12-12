@@ -260,10 +260,10 @@ modify_vars['staticPath'] = '\'' + os.path.join(
     os.path.dirname(CMFPlone.__file__),
     'static') + '\''
 if HAS_BARCELONETA:
-    modify_vars['barcelonetaPath'] = os.path.join(
+    modify_vars['barcelonetaPath'] = '\'' + os.path.join(
         os.path.dirname(plonetheme.barceloneta.__file__),
         'theme',
-    )
+    ) + '\''
 
 less_vars_params = {
     'site_url': 'LOCAL',
