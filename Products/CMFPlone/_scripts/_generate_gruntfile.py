@@ -500,7 +500,11 @@ with open('Gruntfile.js', 'w') as gruntfile:
         GRUNTFILE_TEMPLATE.format(
             less=','.join(less_cfgs_final),
             lesspaths=json.dumps(sorted(less_paths), indent=12),
-            modifyvars=json.dumps(modify_vars, indent=12, sort_keys=True),
+            modifyvars=json.dumps(
+                modify_vars,
+                indent=12,
+                sort_keys=True
+            ).replace('\\\\\\', '\\'),  # replace 3 backslash by one.
             requirejs=require_configs,
             uglify=uglify_cfgs_final,
             sed=sed_cfg_final,
