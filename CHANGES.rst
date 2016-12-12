@@ -221,6 +221,8 @@ Bug fixes:
   Define ``barcelonetaPath`` if ``plonetheme.barceloneta`` is available (but not necessarily installed).
   [jensens]
 
+- Include inactive content in worklists.  [sebasgo]
+
 5.1a2 (2016-08-19)
 ------------------
 
