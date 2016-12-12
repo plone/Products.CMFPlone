@@ -216,6 +216,11 @@ Bug fixes:
 - Cleanup code of resource registry.
   [jensens]
 
+- Fix plone-compile-resources: 
+  Toolbar variable override only possible if prior defined.
+  Define ``barcelonetaPath`` if ``plonetheme.barceloneta`` is available (but not necessarily installed).
+  [jensens]
+
 5.1a2 (2016-08-19)
 ------------------
 
