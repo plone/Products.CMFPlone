@@ -14,7 +14,17 @@ from zope.site.hooks import setSite
 
 import json
 import os
+import pkg_resources
 import uuid
+
+
+try:
+    pkg_resources.get_distribution('plonetheme.barceloneta')
+except pkg_resources.DistributionNotFound:
+    HAS_BARCELONETA = False
+else:
+    HAS_BARCELONETA = True
+    import plonetheme.barceloneta
 
 # some initial script setup
 if 'SITE_ID' in os.environ:
@@ -82,11 +92,11 @@ module.exports = function(grunt) {{
 """
 
 SED_CONFIG_TEMPLATE = """
-    {name}: {{
-      path: "{path}",
-      pattern: "{pattern}",
-      replacement: "{destination}",
-    }},
+            {name}: {{
+              path: "{path}",
+              pattern: "{pattern}",
+              replacement: "{destination}",
+            }},
 """
 
 REQUIREJS_CONFIG_TEMPLATE = """
@@ -249,6 +259,11 @@ modify_vars['isMockup'] = 'false'
 modify_vars['staticPath'] = '\'' + os.path.join(
     os.path.dirname(CMFPlone.__file__),
     'static') + '\''
+if HAS_BARCELONETA:
+    modify_vars['barcelonetaPath'] = os.path.join(
+        os.path.dirname(plonetheme.barceloneta.__file__),
+        'theme',
+    )
 
 less_vars_params = {
     'site_url': 'LOCAL',
@@ -323,7 +338,7 @@ for name, value in resources.items():
             if '/'.join(local_file.split('/')[:-1]) not in less_paths:
                 less_paths.append('/'.join(local_file.split('/')[:-1]))
         else:
-            print "No file found: " + css
+            print 'No file found: ' + css
 
 # BUNDLE LOOP
 
@@ -386,7 +401,7 @@ for bkey, bundle in bundles.items():
                             rjs_paths[stub] = 'empty:'
                     rc = REQUIREJS_CONFIG_TEMPLATE.format(
                         bkey=resource,
-                        paths=json.dumps(rjs_paths),
+                        paths=json.dumps(rjs_paths, indent=22, sort_keys=True),
                         shims=json.dumps(shims),
                         name=main_js_path,
                         out=target_path + '/' + resource + '-compiled.js'
@@ -443,7 +458,7 @@ for bkey, bundle in bundles.items():
         if less_files:
             less_cfgs_final.append(LESS_CONFIG_TEMPLATE.format(
                 name=bkey,
-                files=json.dumps(less_files),
+                files=json.dumps(less_files, indent=16),
                 sourcemap_url=sourceMap_url,
                 base_path=os.getcwd()))
 
