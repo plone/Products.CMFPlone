@@ -223,6 +223,9 @@ Bug fixes:
 
 - Include inactive content in worklists.  [sebasgo]
 
+- Fix #1846 plone-compile-resources: Missing Support for Sites in Mountpoints
+  [jensens]
+
 5.1a2 (2016-08-19)
 ------------------
 

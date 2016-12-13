@@ -38,7 +38,11 @@ if 'COMPILE_DIR' in os.environ:
     compile_path = os.environ['COMPILE_DIR']
 print('Target compile path: {0}'.format(compile_path or 'fetch from bundles'))
 
-portal = app[site_id]  # noqa
+# app was injected by the script calling instance
+current = app  # noqa
+for part in site_id.split('/'):
+    current = current[part]
+portal = current
 setSite(portal)
 
 # start the juicy stuff
