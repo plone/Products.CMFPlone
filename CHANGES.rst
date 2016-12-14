@@ -14,7 +14,8 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Fix import location for Products.ATContentTypes.interfaces.
+  [thet]
 
 
 2.6.4 (2017-01-17)

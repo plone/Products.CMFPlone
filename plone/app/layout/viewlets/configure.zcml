@@ -339,7 +339,7 @@
     <browser:viewlet
         zcml:condition="installed Products.ATContentTypes"
         name="plone.tableofcontents"
-        for="Products.ATContentTypes.interface.IATDocument"
+        for="Products.ATContentTypes.interfaces.IATDocument"
         manager=".interfaces.IAboveContentBody"
         class=".common.TableOfContentsViewlet"
         permission="zope2.View"
