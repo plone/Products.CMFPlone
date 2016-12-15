@@ -20,6 +20,9 @@ New features:
 
 Bug fixes:
 
+- Fix base tag differs from actual URL (fixes `#86`_).
+  [rodfersou]
+
 - Load some patches earlier, instead of in our initialize method.
   This is part of PloneHotfix20161129.
   [maurits]
@@ -34,6 +37,7 @@ Bug fixes:
 
 - Include inactive content in worklists.  [sebasgo]
 
+  
 4.3.11 (2016-08-15)
 -------------------
 
@@ -709,3 +713,4 @@ Fixes:
   [kleist]
 
 .. _`#1041`: https://github.com/plone/Products.CMFPlone/issues/1041
+.. _`#86`: https://github.com/plone/plone.app.layout/issues/86
