@@ -15,12 +15,27 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- Add sort_on field to search controlpanel.
+  [rodfersou]
 
 Bug fixes:
 
 - Fix base tag differs from actual URL (fixes `#86`_).
   [rodfersou]
+
+- Load some patches earlier, instead of in our initialize method.
+  This is part of PloneHotfix20161129.
+  [maurits]
+
+- Apply security hotfix 20160830 for ``z3c.form`` widgets.  [maurits]
+
+- Fixed tests in combination with newer CMFFormController which has the hotfix.  [maurits]
+
+- Apply security hotfix 20160830 for ``@@plone-root-login``.  [maurits]
+
+- Apply security hotfix 20160830 for ``isURLInPortal``.  [maurits]
+
+- Include inactive content in worklists.  [sebasgo]
 
   
 4.3.11 (2016-08-15)

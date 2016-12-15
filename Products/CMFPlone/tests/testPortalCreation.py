@@ -439,6 +439,11 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.assertEquals(True,
                           self.properties.site_properties.lock_on_ttw_edit)
 
+    def testSortOnProperty(self):
+        # site_properties should have sort_on property
+        self.assertTrue(
+            self.properties.site_properties.hasProperty('sort_on'))
+
     def testPortalFTIIsDynamicFTI(self):
         # Plone Site FTI should be a DynamicView FTI
         fti = self.portal.getTypeInfo()

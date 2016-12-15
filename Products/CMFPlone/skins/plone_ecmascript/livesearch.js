@@ -36,6 +36,7 @@ var livesearch = (function () {
             $shadow = $form.find('div.LSShadow'),
             $path = $form.find('input[name="path"]');
 
+        
         function _hide() {
             // hides the result window
             $$result.hide();
@@ -56,6 +57,25 @@ var livesearch = (function () {
         }
 
         function _search() {
+            var sort_on = function() {
+                var parameters = location.search,
+                    sorton_position = parameters.indexOf('sort_on');
+                if (sorton_position === -1) {
+                    // return default sort
+                    var $searchResults = $('#search-results');
+                    if ($searchResults.length > 0) {
+                        return $searchResults.attr('data-default-sort');
+                    }
+                    return '';
+                }
+                // cut string before sort_on parameter
+                var sort_on = parameters.substring(sorton_position);
+                // cut other parameters
+                sort_on = sort_on.split('&')[0];
+                // get just the value
+                sort_on = sort_on.split('=')[1];
+                return sort_on;
+            }();
             // does the actual search
             if ($lastsearch === $inputnode.value) {
                 // do nothing if the input didn't change
@@ -78,6 +98,9 @@ var livesearch = (function () {
             var $$query = { q: $inputnode.value };
             if ($path.length && $path[0].checked) {
                 $$query.path = $path.val();
+            }
+            if (sort_on !== '') {
+                $$query.sortOn = sort_on;
             }
             // turn into a string for use as a cache key
             $$query = jQuery.param($$query);
