@@ -65,6 +65,10 @@ Breaking changes:
 
 New features:
 
+- Add ``safe_encode`` utility function to ``utils`` to safely encode unicode to a specified encoding.
+  The encoding defaults to ``utf-8``.
+  [thet]
+
 - The password reset templates were changed to make use of ``content-core`` macros.
   [thet]
 
@@ -74,7 +78,7 @@ New features:
 - Add ``mockup-patterns-relateditems-upload`` resource, which can be used in custom bundles to add the upload feature in the related items widget.
   [thet]
 
-- Move ``get_top_site_from_url`` from plone.app.content to ``utils.py``.
+- Move ``get_top_site_from_url`` from plone.app.content to ``utils.py`` and make it robust against unicode paths.
   This function allows in virtual hosting environments to acquire the top most visible portal object to operate on.
   It is used for example to calculate the correct virtual root objects for Mockup's related items and structure pattern.
   [thet]
@@ -216,7 +220,7 @@ Bug fixes:
 - Cleanup code of resource registry.
   [jensens]
 
-- Fix plone-compile-resources: 
+- Fix plone-compile-resources:
   Toolbar variable override only possible if prior defined.
   Define ``barcelonetaPath`` if ``plonetheme.barceloneta`` is available (but not necessarily installed).
   [jensens]

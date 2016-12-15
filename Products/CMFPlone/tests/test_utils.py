@@ -37,6 +37,15 @@ class DefaultUtilsTests(unittest.TestCase):
         self.assertEqual(bodyfinder(STX_WITH_HTML),
                          '<p>Hello world, I am Bruce.</p>')
 
+    def test_safe_encode(self):
+        """safe_encode should always encode unicode to the specified encoding.
+        """
+        from Products.CMFPlone.utils import safe_encode
+        self.assertEqual(safe_encode(u'späm'), 'sp\xc3\xa4m')
+        self.assertEqual(safe_encode(u'späm', 'utf-8'), 'sp\xc3\xa4m')
+        self.assertEqual(safe_encode(u'späm', encoding='latin-1'), 'sp\xe4m')
+        self.assertEqual(('spam'), 'spam')
+
     def test_get_top_request(self):
         """If in a subrequest, ``get_top_request`` should always return the top
         most request.
@@ -61,28 +70,6 @@ class DefaultUtilsTests(unittest.TestCase):
         self.assertEqual(get_top_request(req0), req0)
         self.assertEqual(get_top_request(req1), req0)
         self.assertEqual(get_top_request(req2), req0)
-
-
-class LogoTests(PloneTestCase.PloneTestCase):
-
-    def test_getSiteLogo_with_setting(self):
-        from Products.CMFPlone.utils import getSiteLogo
-        registry = getUtility(IRegistry)
-        settings = registry.forInterface(ISiteSchema, prefix='plone')
-        settings.site_logo = SITE_LOGO_BASE64
-
-        self.assertTrue(
-            'http://nohost/plone/@@site-logo/pixel.png'
-            in getSiteLogo())
-
-    def test_getSiteLogo_with_no_setting(self):
-        from Products.CMFPlone.utils import getSiteLogo
-        self.assertTrue(
-            'http://nohost/plone/logo.png'
-            in getSiteLogo())
-
-
-class TestTopSiteFromUrl(unittest.TestCase):
 
     def test_get_top_site_from_url(self):
         """Unit test for ``get_top_site_from_url`` with context and request
@@ -142,6 +129,10 @@ class TestTopSiteFromUrl(unittest.TestCase):
         ctx = MockContext('/approot/PloneSite/folder/SubSite/folder')
         self.assertEqual(get_top_site_from_url(ctx, req).id, 'PloneSite')
 
+        # Case 4, using unicode paths accidentially:
+        ctx = MockContext(u'/approot/PloneSite/folder/SubSite/folder')
+        self.assertEqual(get_top_site_from_url(ctx, req).id, 'PloneSite')
+
         # VIRTUAL HOSTING ON SUBSITE
 
         req = MockRequest()
@@ -156,3 +147,22 @@ class TestTopSiteFromUrl(unittest.TestCase):
         ctx = MockContext('/approot/PloneSite/folder/SubSite/folder')
         ctx.vh_root = '/approot/PloneSite/folder/SubSite'
         self.assertEqual(get_top_site_from_url(ctx, req).id, 'SubSite')
+
+
+class LogoTests(PloneTestCase.PloneTestCase):
+
+    def test_getSiteLogo_with_setting(self):
+        from Products.CMFPlone.utils import getSiteLogo
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(ISiteSchema, prefix='plone')
+        settings.site_logo = SITE_LOGO_BASE64
+
+        self.assertTrue(
+            'http://nohost/plone/@@site-logo/pixel.png'
+            in getSiteLogo())
+
+    def test_getSiteLogo_with_no_setting(self):
+        from Products.CMFPlone.utils import getSiteLogo
+        self.assertTrue(
+            'http://nohost/plone/logo.png'
+            in getSiteLogo())
