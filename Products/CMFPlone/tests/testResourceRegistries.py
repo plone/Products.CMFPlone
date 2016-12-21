@@ -41,6 +41,7 @@ class TestResourceRegistries(PloneTestCase.PloneTestCase):
         resource = resources.add('foobar')
 
         resource.js = '++plone++static/foobar.js'
+        resource.css = ['++plone++static/foobar.css']
         bundle.resources = ['foobar']
 
         persistent_directory = getUtility(
@@ -51,16 +52,67 @@ class TestResourceRegistries(PloneTestCase.PloneTestCase):
         container = persistent_directory[OVERRIDE_RESOURCE_DIRECTORY_NAME]
         container.makeDirectory('static')
         directory = container['static']
-        directory.writeFile('foobar.js', 'alert("Hi!");')
+        directory.writeFile('foobar.js', 'alert("Hi!");\n\nalert("Ho!");')
+        directory.writeFile('foobar.css', 'body {\ncolor: blue;\n}')
 
         cookWhenChangingSettings(self.portal, bundle)
-        resp = subrequest(
+
+        resp_js = subrequest(
             '{0}/++plone++static/foobar-compiled.js'.format(
                 self.portal.absolute_url()
             )
         )
+        self.assertTrue('alert("Hi!");alert("Ho!");' in resp_js.getBody())
 
-        self.assertTrue('alert(' in resp.getBody())
+        resp_css = subrequest(
+            '{0}/++plone++static/foobar-compiled.css'.format(
+                self.portal.absolute_url()
+            )
+        )
+        self.assertTrue('body{color:blue}' in resp_css.getBody())
+
+    def test_dont_minify_already_minified(self):
+        registry = getUtility(IRegistry)
+        bundles = registry.collectionOfInterface(IBundleRegistry,
+                                                 prefix="plone.bundles")
+        bundle = bundles.add('foobar')
+        bundle.jscompilation = '++plone++static/foobar-compiled.js'
+        bundle.csscompilation = '++plone++static/foobar-compiled.css'
+
+        resources = registry.collectionOfInterface(IResourceRegistry,
+                                                   prefix="plone.resources")
+        resource = resources.add('foobar')
+
+        resource.js = '++plone++static/foobar.min.js'
+        resource.css = ['++plone++static/foobar.min.css']
+        bundle.resources = ['foobar']
+
+        persistent_directory = getUtility(
+            IResourceDirectory, name="persistent")
+        if OVERRIDE_RESOURCE_DIRECTORY_NAME not in persistent_directory:
+            persistent_directory.makeDirectory(
+                OVERRIDE_RESOURCE_DIRECTORY_NAME)
+        container = persistent_directory[OVERRIDE_RESOURCE_DIRECTORY_NAME]
+        container.makeDirectory('static')
+        directory = container['static']
+        directory.writeFile('foobar.min.js', 'alert("Hi!");\n\nalert("Ho!");')
+        directory.writeFile('foobar.min.css', 'body {\ncolor: blue;\n}')
+
+        cookWhenChangingSettings(self.portal, bundle)
+
+        resp_js = subrequest(
+            '{0}/++plone++static/foobar-compiled.js'.format(
+                self.portal.absolute_url()
+            )
+        )
+        self.assertTrue('alert("Hi!");\n\nalert("Ho!");' in resp_js.getBody())
+
+        resp_css = subrequest(
+            '{0}/++plone++static/foobar-compiled.css'.format(
+                self.portal.absolute_url()
+            )
+        )
+        self.assertTrue('body {\ncolor: blue;\n}' in resp_css.getBody())
 
     def test_cooking_missing(self):
         registry = getUtility(IRegistry)

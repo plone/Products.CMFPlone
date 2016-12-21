@@ -60,8 +60,7 @@ class ScriptsView(ResourceView):
             ) and
             bundle.resources
         ):
-            # Its a legacy css bundle OR compiling is happening outside of
-            # plone
+            # Its a legacy bundle OR compiling is happening outside of plone
 
             # We need to combine files. It's possible no resources are
             # defined because the compiling is done outside of plone
