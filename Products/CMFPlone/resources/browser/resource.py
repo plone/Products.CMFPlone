@@ -3,7 +3,6 @@ from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
 from App.config import getConfiguration
-from copy import copy
 from plone.app.layout.viewlets.common import ViewletBase
 from plone.app.theming.utils import theming_policy
 from plone.memoize.view import memoize
