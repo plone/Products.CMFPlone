@@ -238,6 +238,9 @@ Bug fixes:
 - Fix #1846 plone-compile-resources: Missing Support for Sites in Mountpoints
   [jensens]
 
+- Do not use unittest2 (superfluos since part of Python 2.7).
+  [jensens]
+
 5.1a2 (2016-08-19)
 ------------------
 

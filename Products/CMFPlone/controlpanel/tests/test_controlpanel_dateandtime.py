@@ -3,7 +3,7 @@ from Products.CMFPlone.interfaces import IDateAndTimeSchema
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import setRoles
-import unittest2 as unittest
+import unittest
 
 
 class DateAndTimeRegistryIntegrationTest(unittest.TestCase):

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import sys
 import time
-import unittest2 as unittest
+import unittest
 
 from DateTime import DateTime
 

@@ -8,7 +8,7 @@ from Products.CMFPlone.interfaces import ILanguageSchema
 from Products.CMFPlone.testing import \
     PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 
-import unittest2 as unittest
+import unittest
 
 
 class LanguageRegistryIntegrationTest(unittest.TestCase):
