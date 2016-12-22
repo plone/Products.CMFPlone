@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from Products.CMFPlone.interfaces import IUserGroupsSettingsSchema
-import unittest2 as unittest
+import unittest
 
 from zope.component import getMultiAdapter
 from zope.component import getUtility

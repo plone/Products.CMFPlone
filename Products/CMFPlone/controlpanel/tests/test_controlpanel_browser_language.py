@@ -10,7 +10,7 @@ from Products.CMFPlone.interfaces import ILanguageSchema
 from Products.CMFPlone.testing import \
     PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 
-import unittest2 as unittest
+import unittest
 
 
 class LanguageControlPanelFunctionalTest(unittest.TestCase):

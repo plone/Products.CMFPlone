@@ -5,7 +5,7 @@ from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 from plone.registry.interfaces import IRegistry
 from zope.component import getMultiAdapter
 from zope.component import getUtility
-import unittest2 as unittest
+import unittest
 
 
 class SiteRegistryIntegrationTest(unittest.TestCase):

@@ -6,7 +6,7 @@ from Products.PortalTransforms.data import datastream
 from plone.app.testing import SITE_OWNER_NAME, SITE_OWNER_PASSWORD
 from plone.testing.z2 import Browser
 from zope.component import getMultiAdapter
-import unittest2 as unittest
+import unittest
 
 
 class FilterControlPanelFunctionalTest(unittest.TestCase):

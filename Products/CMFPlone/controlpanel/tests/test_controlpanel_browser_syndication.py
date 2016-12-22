@@ -4,7 +4,7 @@ from plone.testing.z2 import Browser
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 from zope.component import getMultiAdapter
 import transaction
-import unittest2 as unittest
+import unittest
 
 
 class SyndicationControlPanelFunctionalTest(unittest.TestCase):
