@@ -66,7 +66,7 @@ def cookWhenChangingSettings(context, bundle=None):
         return
 
     # Let's join all css and js
-    css_file = ''
+    cooked_css = ''
     cooked_js = REQUIREJS_RESET_PREFIX
     siteUrl = getSite().absolute_url()
     request = getRequest()
@@ -74,33 +74,44 @@ def cookWhenChangingSettings(context, bundle=None):
         if package not in resources:
             continue
         resource = resources[package]
-        for css in resource.css:
-            url = siteUrl + '/' + css
-            response = subrequest(url)
+
+        for css_resource in resource.css:
+            css_url = siteUrl + '/' + css_resource
+            response = subrequest(css_url)
             if response.status == 200:
-                css_file += response.getBody()
-                css_file += '\n'
+                css = response.getBody()
+                cooked_css += '\n/* Resource: {0} */\n{1}\n'.format(
+                    css_resource,
+                    css if '.min.css' == css_resource[-8:] else cssmin(css)
+                )
             else:
-                css_file += '\n/* Could not find resource: %s */\n\n' % url
+                cooked_css += '\n/* Could not find resource: {0} */\n\n'.format(  # noqa
+                    css_resource
+                )
+
         if not resource.js:
             continue
-        url = siteUrl + '/' + resource.js
-        response = subrequest(url)
+        js_url = siteUrl + '/' + resource.js
+        response = subrequest(js_url)
         if response.status == 200:
             js = response.getBody()
             try:
-                cooked_js += '\n/* resource: %s */\n%s' % (
+                cooked_js += '\n/* resource: {0} */\n{1}'.format(
                     resource.js,
+                    js if '.min.js' == resource.js[-7:] else
                     minify(js, mangle=False, mangle_toplevel=False)
                 )
             except SyntaxError:
-                cooked_js += '\n/* resource(error cooking): %s */\n%s' % (
-                    resource.js, js)
+                cooked_js += '\n/* resource(error cooking): {0} */\n{1}'.format(  # noqa
+                    resource.js,
+                    js
+                )
         else:
-            cooked_js += '\n/* Could not find resource: %s */\n\n' % url
+            cooked_js += '\n/* Could not find resource: {0} */\n\n'.format(
+                js_url
+            )
 
     cooked_js += REQUIREJS_RESET_POSTFIX
-    cooked_css = cssmin(css_file)
 
     js_path = bundle.jscompilation
     css_path = bundle.csscompilation

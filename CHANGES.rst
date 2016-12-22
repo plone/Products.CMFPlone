@@ -65,6 +65,9 @@ Breaking changes:
 
 New features:
 
+- Don't minify CSS or JavaScript resources if they end with ``.min.css`` resp. ``.min.js``.
+  [thet]
+
 - Add ``safe_encode`` utility function to ``utils`` to safely encode unicode to a specified encoding.
   The encoding defaults to ``utf-8``.
   [thet]
