@@ -48,7 +48,7 @@ class ScriptsView(ResourceView):
                 bundle.resources,
                 result,
                 bundle_name=bundle.name,
-                resetrjs=bundle.compile,
+                resetrjs=bundle.compile is False,
                 conditionalcomment=bundle.conditionalcomment,
             )
             return
