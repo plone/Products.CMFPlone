@@ -15,6 +15,9 @@ Breaking changes:
 
 New features:
 
+- Include a new release of mockup.
+  [thet]
+
 - Move ``get_top_site_from_url`` from plone.app.content to ``utils.py``.
   This function allows in virtual hosting environments to acquire the top most visible portal object to operate on.
   It is used for example to calculate the correct virtual root objects for Mockup's related items and structure pattern.
