@@ -241,6 +241,13 @@ Bug fixes:
 - Do not use unittest2 (superfluos since part of Python 2.7).
   [jensens]
 
+- Fix security test assertion: 
+  TestAttackVectorsFunctional test_widget_traversal_2 assumed a 302 http return code when accessing some private API.
+  Meanwhile it changed to return a 404 on the URL. 
+  Reflect this in the test and expect a 404.
+  [jensens]
+
+
 5.1a2 (2016-08-19)
 ------------------
 
