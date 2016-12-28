@@ -71,9 +71,7 @@ class TestAttackVectorsFunctional(PloneTestCase):
     def test_widget_traversal_2(self):
         res = self.publish(
             '/plone/@@discussion-settings/++widget++captcha/terms/field/interface/setTaggedValue?tag=cake&value=lovely')
-        self.assertEqual(302, res.status)
-        self.assertTrue(res.headers['location'].startswith(
-            'http://nohost/plone/acl_users/credentials_cookie_auth/require_login'))
+        self.assertEqual(404, res.status)
 
     def test_registerConfiglet_1(self):
         VECTOR = "/plone/portal_controlpanel/registerConfiglet?id=cake&name=Cakey&action=woo&permission=View&icon_expr="

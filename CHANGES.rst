@@ -68,6 +68,12 @@ Bug fixes:
 - Don't fail, if ``timestamp.txt`` was deleted from the resource registries production folder.
   [thet]
 
+- Fix security test assertion: 
+  TestAttackVectorsFunctional test_widget_traversal_2 assumed a 302 http return code when accessing some private API.
+  Meanwhile it changed to return a 404 on the URL. 
+  Reflect this in the test and expect a 404.
+  [jensens]
+
 
 5.0.6 (2016-09-23)
 ------------------
