@@ -6,7 +6,11 @@ Changelog
 
 Breaking changes:
 
-- *add item here*
+- Fix sitemap.xml.gz for plone.app.multilingual (>= 2.x) but breaks it for 
+  LinguaPlone and plone.app.multilingual 1.x
+  If this is a problem then please see bedbfeb67 on 2.5.x branch for how to 
+  maintain compatibility with these products.
+  [djowett]
 
 New features:
 

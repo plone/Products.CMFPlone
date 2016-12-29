@@ -54,7 +54,7 @@ class SiteMapView(BrowserView):
 
         query['is_default_page'] = True
         default_page_modified = OOBTree()
-        for item in catalog.searchResults(query, Language='all'):
+        for item in catalog.searchResults(query):
             key = item.getURL().rsplit('/', 1)[0]
             value = (item.modified.micros(), item.modified.ISO8601())
             default_page_modified[key] = value
@@ -78,7 +78,7 @@ class SiteMapView(BrowserView):
             }
 
         query['is_default_page'] = False
-        for item in catalog.searchResults(query, Language='all'):
+        for item in catalog.searchResults(query):
             loc = item.getURL()
             date = item.modified
             # Comparison must be on GMT value
