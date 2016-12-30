@@ -4,19 +4,13 @@ Changelog
 2.6.3 (unreleased)
 ------------------
 
-Breaking changes:
+Bug fixes:
 
-- Fix sitemap.xml.gz for plone.app.multilingual (>= 2.x) but breaks it for 
+- Fix sitemap.xml.gz for plone.app.multilingual (>= 2.x) but breaks it for
   LinguaPlone and plone.app.multilingual 1.x
-  If this is a problem then please see bedbfeb67 on 2.5.x branch for how to 
+  If this is a problem then please see bedbfeb67 on 2.5.x branch for how to
   maintain compatibility with these products.
   [djowett]
-
-New features:
-
-- *add item here*
-
-Bug fixes:
 
 - Include the ``template`` body class also, when a view but no template is passed.
   Fixes missing template class with plone.app.blocks based layouts in Mosaic.
