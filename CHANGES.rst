@@ -65,6 +65,9 @@ Breaking changes:
 
 New features:
 
+- Make contact form extensible. This fixes https://github.com/plone/Products.CMFPlone/issues/1879.
+  [timo]
+
 - Don't minify CSS or JavaScript resources if they end with ``.min.css`` resp. ``.min.js``.
   [thet]
 
@@ -241,9 +244,9 @@ Bug fixes:
 - Do not use unittest2 (superfluos since part of Python 2.7).
   [jensens]
 
-- Fix security test assertion: 
+- Fix security test assertion:
   TestAttackVectorsFunctional test_widget_traversal_2 assumed a 302 http return code when accessing some private API.
-  Meanwhile it changed to return a 404 on the URL. 
+  Meanwhile it changed to return a 404 on the URL.
   Reflect this in the test and expect a 404.
   [jensens]
 

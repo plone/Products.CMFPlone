@@ -8,6 +8,7 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.statusmessages.interfaces import IStatusMessage
 from email.Header import Header
 from email.MIMEText import MIMEText
+from plone.autoform.form import AutoExtensibleForm
 from plone.registry.interfaces import IRegistry
 from smtplib import SMTPException
 from z3c.form import form, field, button
@@ -18,7 +19,7 @@ import logging
 log = logging.getLogger(__name__)
 
 
-class ContactForm(form.Form):
+class ContactForm(AutoExtensibleForm, form.Form):
 
     template = ViewPageTemplateFile('templates/contact-info.pt')
     template_mailview = '@@contact-info-email'
