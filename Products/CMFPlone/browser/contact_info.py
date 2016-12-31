@@ -25,7 +25,6 @@ class ContactForm(AutoExtensibleForm, form.Form):
     template_mailview = '@@contact-info-email'
 
     schema = IContactForm
-    fields = field.Fields(IContactForm)
     ignoreContext = True
     success = False
 
