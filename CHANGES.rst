@@ -250,6 +250,9 @@ Bug fixes:
   Reflect this in the test and expect a 404.
   [jensens]
 
+- Fix atom.xml feed not paying attention for setting to show about information
+  [vangheem]
+
 
 5.1a2 (2016-08-19)
 ------------------
