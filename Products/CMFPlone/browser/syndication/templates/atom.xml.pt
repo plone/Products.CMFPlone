@@ -57,7 +57,7 @@
       <author tal:define="creator item/creator;
                           author_name item/author_name;
                           author_email item/author_email"
-              tal:condition="python:creator or author_name">
+              tal:condition="python:feed.show_about and (creator or author_name)">
         <name tal:condition="author_name"
               tal:content="author_name" />
         <name tal:condition="python: not author_name"
