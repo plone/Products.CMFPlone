@@ -21,7 +21,7 @@ Please use the labels at Github, at least one of the types: bug, regression, que
 
 Read http://docs.plone.org/develop/coredev/docs/plips.html first!
 
-Set "01 type: feature: plip" as label.
+Set "03 type: feature: plip" as label.
 
 Mention the @plone/framework-team when the PLIP is information complete!
 
