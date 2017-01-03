@@ -1,50 +1,62 @@
-(this is a template for either a BUG or PROBLEM REPORT or for PLIP - Plone Improvement Proposal)
+<!--
+this is a template for either a BUG or PROBLEM REPORT or for PLIP - Plone Improvement Proposal
 
-(take either one out of the BUG/PROBLEM or depended on the section and REMOVE THE OTHER)
+Take either one out of the BUG/PROBLEM or depended on the section and REMOVE THE OTHER.
+-->
 
-(remove and replace all text in brackets)
 
 ## BUG/PROBLEM REPORT (OR OTHER COMMON ISSUE)
 
-(please read https://plone.org/support/bugs first)
+<!--
 
-()
+please read https://plone.org/support/bugs first
+
+Please also use the labels at github as good as you can.
+
+-->
 
 ## PLIP (Plone Improvement Proposal)
 
-(see http://docs.plone.org/develop/coredev/docs/plips.html)
+<!--
+see http://docs.plone.org/develop/coredev/docs/plips.html)
+
+Use PLIP as label.
+
+Mention the @plone/framework-team when the PLIP is information complete!
+
+-->
 
 ## Responsible Persons
 
-### Proposer: (NAME)
+### Proposer: <!-- full NAME of the proposer, should lead the PLIP - if not possible tell us about it -->
 
-### Seconder: (NAME)
+### Seconder: <!-- NAME of another person supporting this PLIP -->
 
 ## Abstract
 
-(replace with a comprehensive overview of the subject)
+<!-- a comprehensive overview of the subject -->
 
 ## Motivation
 
-(reason or motivation this proposal was created)
+<!-- reason or motivation this proposal was created -->
 
 ## Assumptions
 
-(aka preconditions)
+<!-- preconditions -->
 
 ## Proposal & Implementation
 
-(detailed proposal with implementation details and - if needed possible variants)
+<!-- detailed proposal with implementation details and - if needed possible variants to be discussed -->
 
 ## Deliverables
 
-(packages and documentation chapters involved, includes )
+<!-- packages and documentation chapters involved, includes also third party if needed -->
 
 ## Risks
 
-(what will break/ affect existing installations of Plone after upgrade, including end user point of view, training efforts etc.)
+<!-- what will break/ affect existing installations of Plone after upgrade, including end user point of view, training efforts etc.
+-->
 
 ## Participants
 
-- (persons and roles)
-- (including other persons than proposer/seconder)
+<!-- list of persons and roles known -->
