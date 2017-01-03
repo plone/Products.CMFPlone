@@ -1,7 +1,7 @@
 <!--
-this is a template for either a BUG or PROBLEM REPORT or for PLIP - Plone Improvement Proposal
+This is a template for either a BUG/ PROBLEM REPORT or for a PLIP - a Plone Improvement Proposal.
 
-Take either one out of the BUG/PROBLEM or depended on the section and REMOVE THE OTHER.
+Take either one out of the main sections and REMOVE THE OTHER (BUG/PROBLEM xor PLIP).
 -->
 
 
@@ -9,18 +9,19 @@ Take either one out of the BUG/PROBLEM or depended on the section and REMOVE THE
 
 <!--
 
-please read https://plone.org/support/bugs first
+Read https://plone.org/support/bugs first!
 
-Please also use the labels at github as good as you can.
+Please use the labels at Github, at least one of the types: bug, regression, question, enhancement.
 
 -->
 
 ## PLIP (Plone Improvement Proposal)
 
 <!--
-see http://docs.plone.org/develop/coredev/docs/plips.html)
 
-Use PLIP as label.
+Read http://docs.plone.org/develop/coredev/docs/plips.html first!
+
+Set "01 type: feature: plip" as label.
 
 Mention the @plone/framework-team when the PLIP is information complete!
 
@@ -28,7 +29,7 @@ Mention the @plone/framework-team when the PLIP is information complete!
 
 ## Responsible Persons
 
-### Proposer: <!-- full NAME of the proposer, should lead the PLIP - if not possible tell us about it -->
+### Proposer: <!-- full NAME of the proposer, should lead the PLIP - if not possible, tell about it! -->
 
 ### Seconder: <!-- NAME of another person supporting this PLIP -->
 
@@ -38,25 +39,34 @@ Mention the @plone/framework-team when the PLIP is information complete!
 
 ## Motivation
 
-<!-- reason or motivation this proposal was created -->
+<!-- 
+Reason or motivation this proposal was created 
+-->
 
 ## Assumptions
 
-<!-- preconditions -->
+<!-- Preconditions -->
 
 ## Proposal & Implementation
 
-<!-- detailed proposal with implementation details and - if needed possible variants to be discussed -->
+<!-- 
+Detailed proposal with implementation details and - if needed - possible variants to be discussed.
+-->
 
 ## Deliverables
 
-<!-- packages and documentation chapters involved, includes also third party if needed -->
+<!-- 
+Packages and documentation chapters involved, includes also third party if needed. 
+-->
 
 ## Risks
 
-<!-- what will break/ affect existing installations of Plone after upgrade, including end user point of view, training efforts etc.
+<!-- 
+What will break/ affect existing installations of Plone after upgrade, including end user point of view, training efforts etc.
 -->
 
 ## Participants
 
-<!-- list of persons and roles known -->
+<!-- 
+list of persons and roles known 
+-->
