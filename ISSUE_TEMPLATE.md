@@ -13,8 +13,24 @@ Read https://plone.org/support/bugs first!
 
 Please use the labels at Github, at least one of the types: bug, regression, question, enhancement.
 
+Please include tracebacks, screenshots, code of debugging sessions or code that reproduces the issue if possible. 
+The best reproductions are in plain Plone installations without addons or at least with minimal needed addons installed.
+
 -->
 
+### What I did:
+
+<!-- Please a reproducable description, including preconditions. -->
+
+### What I expect to happen:
+
+### What actually happened:
+
+### What version of Plone/ Addons I am using:
+
+<!-- HERE ENDS THE SECTION RELEVANT FOR BUG/PROBLEM reports -->
+
+<!-- HERE STARTS THE SECTION RELEVANT FOR PLIPS -->
 ## PLIP (Plone Improvement Proposal)
 
 <!--
