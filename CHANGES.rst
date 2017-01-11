@@ -77,6 +77,8 @@ Bug fixes:
 - Fix atom.xml feed not paying attention for setting to show about information
   [vangheem]
 
+- Do not encode reply-to email address for contact-info form
+  [tkimnguyen]
 
 5.0.6 (2016-09-23)
 ------------------
