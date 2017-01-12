@@ -165,6 +165,13 @@
       permission="zope.Public"
       />
 
+  <browser:page
+      for="*"
+      name="ok"
+      class=".okay.OK"
+      permission="zope.Public"
+      />
+
   <!-- Useful for cross domain iframe proxying -->
   <browser:resource
       file="static/blank.html"
