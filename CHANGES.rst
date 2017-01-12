@@ -15,6 +15,11 @@ Breaking changes:
 
 New features:
 
+- Added ``ok`` view.  This is useful for automated checks, for example
+  httpok, to see if the site is still available.  It returns the text
+  ``OK`` and sets headers to avoid caching.
+  [maurits]
+
 - Include a new release of mockup.
   [thet]
 
