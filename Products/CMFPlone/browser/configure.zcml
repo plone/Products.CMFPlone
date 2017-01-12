@@ -86,6 +86,13 @@
             factory=".navtree.SitemapNavtreeStrategy"
             provides="plone.app.layout.navigation.interfaces.INavtreeStrategy" />
 
+  <browser:page
+      for="*"
+      name="ok"
+      class=".okay.OK"
+      permission="zope.Public"
+      />
+
   <!-- Useful for cross domain iframe proxying -->
   <browser:resource
       file="blank.html"

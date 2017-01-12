@@ -15,6 +15,11 @@ Breaking changes:
 
 New features:
 
+- Added ``ok`` view.  This is useful for automated checks, for example
+  httpok, to see if the site is still available.  It returns the text
+  ``OK`` and sets headers to avoid caching.
+  [maurits]
+
 - Add sort_on field to search controlpanel.
   [rodfersou]
 
@@ -37,7 +42,7 @@ Bug fixes:
 
 - Include inactive content in worklists.  [sebasgo]
 
-  
+
 4.3.11 (2016-08-15)
 -------------------
 
