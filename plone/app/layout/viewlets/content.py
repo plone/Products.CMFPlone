@@ -305,6 +305,10 @@ class ContentRelatedItems(ViewletBase):
         brains = []
         for r in related:
             path = r.to_path
+            if path is None:
+                # Item was deleted.  The related item should have been cleaned
+                # up, but apparently this does not happen.
+                continue
             # the query will return an empty list if the user
             # has no permission to see the target object
             brains.extend(catalog(path=dict(query=path, depth=0)))
