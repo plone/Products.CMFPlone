@@ -25,6 +25,8 @@ New features:
 
 Bug fixes:
 
+- Fixed workflow tests for new ``comment_one_state_workflow``.  [maurits]
+
 - Fix base tag differs from actual URL (fixes `#86`_).
   [rodfersou]
 
