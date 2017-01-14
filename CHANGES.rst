@@ -139,6 +139,8 @@ New features:
 
 Bug fixes:
 
+- Fixed workflow tests for new ``comment_one_state_workflow``.  [maurits]
+
 - Fixed sometimes failing search order tests.  [maurits]
 
 - Load some Products.CMFPlone.patches earlier, instead of in our initialize method.
