@@ -10,6 +10,11 @@ Changelog
 
 Breaking changes:
 
+- Removed our patch that added ``secureSend`` to the ``MailHost``.
+  This was originally scheduled for removal in Plone 5.0.  See `issue
+  965 <https://github.com/plone/Products.CMFPlone/issues/965>`_.
+  [maurits]
+
 - The related items widget has changed a lot.
   See the Mockup changelog for 2.4.0 here: https://github.com/plone/mockup/blob/master/CHANGES.rst
 
@@ -63,6 +68,21 @@ Breaking changes:
 
 New features:
 
+- Added ``ok`` view.  This is useful for automated checks, for example
+  httpok, to see if the site is still available.  It returns the text
+  ``OK`` and sets headers to avoid caching.
+  [maurits]
+
+- Make contact form extensible. This fixes https://github.com/plone/Products.CMFPlone/issues/1879.
+  [timo]
+
+- Don't minify CSS or JavaScript resources if they end with ``.min.css`` resp. ``.min.js``.
+  [thet]
+
+- Add ``safe_encode`` utility function to ``utils`` to safely encode unicode to a specified encoding.
+  The encoding defaults to ``utf-8``.
+  [thet]
+
 - The password reset templates were changed to make use of ``content-core`` macros.
   [thet]
 
@@ -72,7 +92,7 @@ New features:
 - Add ``mockup-patterns-relateditems-upload`` resource, which can be used in custom bundles to add the upload feature in the related items widget.
   [thet]
 
-- Move ``get_top_site_from_url`` from plone.app.content to ``utils.py``.
+- Move ``get_top_site_from_url`` from plone.app.content to ``utils.py`` and make it robust against unicode paths.
   This function allows in virtual hosting environments to acquire the top most visible portal object to operate on.
   It is used for example to calculate the correct virtual root objects for Mockup's related items and structure pattern.
   [thet]
@@ -105,8 +125,39 @@ New features:
 
 - Toolbar: Let the toolbar submenus be as wide as they need to be and do not break entries into multiple lines. [thet]
 
+- Resource Registry:
+  In ``debug-mode`` (zope.conf, buildout) do not load cache the production bundle.
+  [jensens]
+
+- Resource Registry:
+  In ``debug-mode`` (zope.conf, buildout) do not ignore development mode for anonymous users.
+  [jensens]
+
+- Resource Registry: If file system version is newer than ``last_compilation`` date of a bundle, use this as ``last_compilation`` date.
+  [jensens]
+
+- Simplify generated Gruntfile.js (DRY)
+  [jensens]
+
 
 Bug fixes:
+
+- Fixed sometimes failing search order tests.  [maurits]
+
+- Load some Products.CMFPlone.patches earlier, instead of in our initialize method.
+  This is part of PloneHotfix20161129.
+  [maurits]
+
+- Depend on CMFFormController directly, because our whole login process is based on it and its installed in the GenericSetup profile.
+  Before it was installed indeirectly due to a dependency in some other package which is gone.
+  [jensens]
+
+- Fix Search RSS link condition to use search_rss_enabled option and use
+  rss.png instead of rss.gif that doesn't exist anymore.
+  [vincentfretin]
+
+- Fix potential KeyError: admin in doSearch in Users/Groups controlpanel.
+  [vincentfretin]
 
 - Let the ``mail_password_template`` and ``passwordreset`` views retrieve the expiry timeout from the view, in hours.
   [thet]
@@ -138,7 +189,12 @@ Bug fixes:
 - Style display menu headings differently from actions [alecm]
 
 - Avoid dependency on plone.app.imaging. [davisagli]
+
 - Fix TinyMCE table styles [vangheem]
+
+- Fix TinyMCE content CSS support to allow themes to define
+  external content CSS URLs (as with CDN like setup).
+  [datakurre]
 
 - Add utf8 headers to all Python source files. [jensens]
 
@@ -172,7 +228,39 @@ Bug fixes:
   [gforcada]
 
 - Move some tests from ZopeTestCase to plone.app.testing.
-  [gforcada]
+  [gforcada, ivanteoh, maurits]
+
+- wording changes for social media settings panel
+  [tkimnguyen]
+
+- URL change for bug tracker, wording tweaks to UPGRADE.txt
+  [tkimnguyen]
+
+- Cleanup code of resource registry.
+  [jensens]
+
+- Fix plone-compile-resources:
+  Toolbar variable override only possible if prior defined.
+  Define ``barcelonetaPath`` if ``plonetheme.barceloneta`` is available (but not necessarily installed).
+  [jensens]
+
+- Include inactive content in worklists.  [sebasgo]
+
+- Fix #1846 plone-compile-resources: Missing Support for Sites in Mountpoints
+  [jensens]
+
+- Do not use unittest2 (superfluos since part of Python 2.7).
+  [jensens]
+
+- Fix security test assertion:
+  TestAttackVectorsFunctional test_widget_traversal_2 assumed a 302 http return code when accessing some private API.
+  Meanwhile it changed to return a 404 on the URL.
+  Reflect this in the test and expect a 404.
+  [jensens]
+
+- Fix atom.xml feed not paying attention for setting to show about information
+  [vangheem]
+
 
 5.1a2 (2016-08-19)
 ------------------

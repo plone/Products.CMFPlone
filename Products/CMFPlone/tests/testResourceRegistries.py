@@ -15,6 +15,7 @@ from Products.CMFPlone.resources import remove_bundle_on_request
 from Products.CMFPlone.resources.browser.cook import cookWhenChangingSettings
 from Products.CMFPlone.resources.browser.scripts import ScriptsView
 from Products.CMFPlone.resources.browser.styles import StylesView
+from Products.CMFPlone.resources.bundle import Bundle
 from Products.CMFPlone.resources.exportimport.resourceregistry import ResourceRegistryNodeAdapter
 from Products.CMFPlone.tests import PloneTestCase
 from Products.GenericSetup.context import SetupEnviron
@@ -40,6 +41,7 @@ class TestResourceRegistries(PloneTestCase.PloneTestCase):
         resource = resources.add('foobar')
 
         resource.js = '++plone++static/foobar.js'
+        resource.css = ['++plone++static/foobar.css']
         bundle.resources = ['foobar']
 
         persistent_directory = getUtility(
@@ -50,13 +52,67 @@ class TestResourceRegistries(PloneTestCase.PloneTestCase):
         container = persistent_directory[OVERRIDE_RESOURCE_DIRECTORY_NAME]
         container.makeDirectory('static')
         directory = container['static']
-        directory.writeFile('foobar.js', 'alert("Hi!");')
+        directory.writeFile('foobar.js', 'alert("Hi!");\n\nalert("Ho!");')
+        directory.writeFile('foobar.css', 'body {\ncolor: blue;\n}')
 
         cookWhenChangingSettings(self.portal, bundle)
-        resp = subrequest(
-            '%s/++plone++static/foobar-compiled.js' % self.portal.absolute_url())
 
-        self.assertTrue('alert(' in resp.getBody())
+        resp_js = subrequest(
+            '{0}/++plone++static/foobar-compiled.js'.format(
+                self.portal.absolute_url()
+            )
+        )
+        self.assertTrue('alert("Hi!");alert("Ho!");' in resp_js.getBody())
+
+        resp_css = subrequest(
+            '{0}/++plone++static/foobar-compiled.css'.format(
+                self.portal.absolute_url()
+            )
+        )
+        self.assertTrue('body{color:blue}' in resp_css.getBody())
+
+    def test_dont_minify_already_minified(self):
+        registry = getUtility(IRegistry)
+        bundles = registry.collectionOfInterface(IBundleRegistry,
+                                                 prefix="plone.bundles")
+        bundle = bundles.add('foobar')
+        bundle.jscompilation = '++plone++static/foobar-compiled.js'
+        bundle.csscompilation = '++plone++static/foobar-compiled.css'
+
+        resources = registry.collectionOfInterface(IResourceRegistry,
+                                                   prefix="plone.resources")
+        resource = resources.add('foobar')
+
+        resource.js = '++plone++static/foobar.min.js'
+        resource.css = ['++plone++static/foobar.min.css']
+        bundle.resources = ['foobar']
+
+        persistent_directory = getUtility(
+            IResourceDirectory, name="persistent")
+        if OVERRIDE_RESOURCE_DIRECTORY_NAME not in persistent_directory:
+            persistent_directory.makeDirectory(
+                OVERRIDE_RESOURCE_DIRECTORY_NAME)
+        container = persistent_directory[OVERRIDE_RESOURCE_DIRECTORY_NAME]
+        container.makeDirectory('static')
+        directory = container['static']
+        directory.writeFile('foobar.min.js', 'alert("Hi!");\n\nalert("Ho!");')
+        directory.writeFile('foobar.min.css', 'body {\ncolor: blue;\n}')
+
+        cookWhenChangingSettings(self.portal, bundle)
+
+        resp_js = subrequest(
+            '{0}/++plone++static/foobar-compiled.js'.format(
+                self.portal.absolute_url()
+            )
+        )
+        self.assertTrue('alert("Hi!");\n\nalert("Ho!");' in resp_js.getBody())
+
+        resp_css = subrequest(
+            '{0}/++plone++static/foobar-compiled.css'.format(
+                self.portal.absolute_url()
+            )
+        )
+        self.assertTrue('body {\ncolor: blue;\n}' in resp_css.getBody())
 
     def test_cooking_missing(self):
         registry = getUtility(IRegistry)
@@ -73,10 +129,14 @@ class TestResourceRegistries(PloneTestCase.PloneTestCase):
         resource.js = '++plone++static/foobar.js'
         bundle.resources = ['foobar']
 
+        bundle = Bundle(bundle)
+
         cookWhenChangingSettings(self.portal, bundle)
         resp = subrequest(
-            '%s/++plone++static/foobar-compiled.js' % self.portal.absolute_url())
-
+            '{0}/++plone++static/foobar-compiled.js'.format(
+                self.portal.absolute_url()
+            )
+        )
         self.assertTrue('Could not find resource' in resp.getBody())
 
     def test_error(self):
@@ -106,8 +166,10 @@ class TestResourceRegistries(PloneTestCase.PloneTestCase):
 
         cookWhenChangingSettings(self.portal, bundle)
         resp = subrequest(
-            '%s/++plone++static/foobar-compiled.js' % self.portal.absolute_url())
-
+            '{0}/++plone++static/foobar-compiled.js'.format(
+                self.portal.absolute_url()
+            )
+        )
         self.assertTrue('error cooking' in resp.getBody())
 
 
@@ -130,7 +192,10 @@ class TestResourceNodeImporter(PloneTestCase.PloneTestCase):
 
     def _get_legacy_bundle(self):
         return getUtility(IRegistry).collectionOfInterface(
-            IBundleRegistry, prefix="plone.bundles", check=False)['plone-legacy']
+            IBundleRegistry,
+            prefix="plone.bundles",
+            check=False
+        )['plone-legacy']
 
     def _get_resource_dom(self, name='++resource++/resource.js',
                           remove=False, enabled=True):
@@ -148,7 +213,8 @@ class TestResourceNodeImporter(PloneTestCase.PloneTestCase):
         js_files = [x.js for x in self._get_resources().values()]
         self.assertTrue("++resource++/bad_resource.js" not in js_files)
         self.assertTrue(
-            "resource-bad_resource-js" not in self._get_legacy_bundle().resources)
+            "resource-bad_resource-js" not in
+            self._get_legacy_bundle().resources)
 
     def test_resource_no_blacklist(self):
         importer = self._get_importer()
@@ -221,7 +287,7 @@ class TestResourceNodeImporter(PloneTestCase.PloneTestCase):
         # now, insert
         foobar = parseString("""
             <object>
-                <javascript id="foobar.js" insert-before="one" enabled="true" />
+              <javascript id="foobar.js" insert-before="one" enabled="true" />
             </object>
             """)
         importer._importNode(foobar.documentElement)
@@ -325,7 +391,11 @@ class DummyBundle(object):
 class TestScriptsViewlet(PloneTestCase.PloneTestCase):
 
     def test_scripts_viewlet(self):
-        scripts = ScriptsView(self.layer['portal'], self.layer['request'], None)
+        scripts = ScriptsView(
+            self.layer['portal'],
+            self.layer['request'],
+            None
+        )
         scripts.update()
         results = scripts.scripts()
         self.assertEqual(results[0]['bundle'], 'production')
@@ -340,7 +410,11 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
 
     def test_scripts_viewlet_anonymous(self):
         logout()
-        scripts = ScriptsView(self.layer['portal'], self.layer['request'], None)
+        scripts = ScriptsView(
+            self.layer['portal'],
+            self.layer['request'],
+            None
+        )
         scripts.update()
         results = scripts.scripts()
         self.assertEqual(results[0]['bundle'], 'production')
@@ -349,17 +423,24 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
         self.assertTrue(results[0]['src'].endswith('/default.js'))
         self.assertEqual(len(results), 1)
 
-    @mock.patch.object(ScriptsView,
-                       'get_resources',
-                       new=lambda self: {'foo': DummyResource('++resource++foo.js')})
+    @mock.patch.object(
+        ScriptsView,
+        'get_resources',
+        new=lambda self: {'foo': DummyResource('++resource++foo.js')}
+    )
     def test_request_resources(self):
         add_resource_on_request(self.layer['request'], 'foo')
-        scripts = ScriptsView(self.layer['portal'], self.layer['request'], None)
+        scripts = ScriptsView(
+            self.layer['portal'],
+            self.layer['request'],
+            None
+        )
         scripts.update()
         results = scripts.scripts()
         self.assertEqual(
             results[-1], {'src': 'http://nohost/plone/++resource++foo.js',
                           'conditionalcomment': '',
+                          'resetrjs': False,
                           'bundle': 'none'})
 
     def test_request_resources_not_add_same_twice(self):
@@ -379,7 +460,7 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
     @mock.patch.object(
         ScriptsView,
         'get_bundles',
-        new=lambda self: {'foo': DummyBundle('foo', enabled=False)}
+        new=lambda self: {'foo': Bundle(DummyBundle('foo', enabled=False))}
     )
     def test_add_bundle_on_request_with_subrequest(self):
         req = self.layer['request']
@@ -423,7 +504,7 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
     @mock.patch.object(
         ScriptsView,
         'get_bundles',
-        new=lambda self: {'foo': DummyBundle('foo', enabled=True)}
+        new=lambda self: {'foo': Bundle(DummyBundle('foo', enabled=True))}
     )
     def test_remove_bundle_on_request_with_subrequest(self):
         req = self.layer['request']
@@ -491,7 +572,8 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
             {
                 'src': 'http://nohost/plone/++resource++foo.js',
                 'conditionalcomment': '',
-                'bundle': 'none'
+                'resetrjs': False,
+                'bundle': 'none',
             }
         )
 

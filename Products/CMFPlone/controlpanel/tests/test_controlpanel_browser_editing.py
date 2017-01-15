@@ -7,7 +7,7 @@ from plone.app.testing import SITE_OWNER_PASSWORD
 from plone.registry.interfaces import IRegistry
 from plone.testing.z2 import Browser
 from zope.component import getUtility
-import unittest2 as unittest
+import unittest
 
 
 class EditingControlPanelFunctionalTest(unittest.TestCase):

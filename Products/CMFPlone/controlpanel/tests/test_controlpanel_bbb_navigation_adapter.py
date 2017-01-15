@@ -5,7 +5,7 @@ from plone.app.testing import TEST_USER_ID, setRoles
 from plone.registry.interfaces import IRegistry
 from zope.component import getAdapter
 from zope.component import getUtility
-import unittest2 as unittest
+import unittest
 
 
 class NavigationControlPanelAdapterTest(unittest.TestCase):

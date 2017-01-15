@@ -480,6 +480,14 @@ def safe_unicode(value, encoding='utf-8'):
     return value
 
 
+def safe_encode(value, encoding='utf-8'):
+    """Convert unicode to the specified encoding.
+    """
+    if isinstance(value, unicode):
+        value = value.encode(encoding)
+    return value
+
+
 def tuplize(value):
     if isinstance(value, tuple):
         return value
@@ -759,7 +767,8 @@ def get_top_site_from_url(context, request):
         for idx in range(len(url_path)):
             _path = '/'.join(url_path[:idx + 1]) or '/'
             site_path = request.physicalPathFromURL(_path)
-            _site = context.restrictedTraverse('/'.join(site_path) or '/')
+            site_path = safe_encode('/'.join(site_path)) or '/'
+            _site = context.restrictedTraverse(site_path)
             if ISite.providedBy(_site):
                 break
         if _site:

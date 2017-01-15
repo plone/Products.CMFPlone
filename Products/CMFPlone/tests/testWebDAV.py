@@ -260,6 +260,65 @@ class TestPUTObjects(PloneTestCase.PloneTestCase):
         self.assertEqual(self.portal._getOb('index_html').EditableBody(), html)
 
 
+class TestPUTIndexHtml(PloneTestCase.PloneTestCase):
+    """Move the webdav_index_html_put.txt doctest to here.
+
+    There used to be a problem when creating an object named 'index_html'
+    in Plone using WebDAV.
+
+    The problem occurred because Plone Folder's 'index_html' was a
+    ComputedAttribute used to acquire index_html from skins when there was
+    no index_html Document on the portal root.
+
+    However, this ComputedAttribute didn't handle WebDAV 'PUT' request
+    correctly. This test ensures that the fix doesn't regress.
+
+    It could be duplicate with the tests above.
+    """
+
+    def afterSetUp(self):
+        self.basic_auth = '%s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD)
+        self.portal_path = self.portal.absolute_url(1)
+        self.folder_path = self.folder.absolute_url(1)
+        self.body = 'I am the walrus'
+        self.length = len(self.body)
+
+    def testPUTIndexHtml(self):
+        # Create an index_html document via FTP/DAV
+        self.assertFalse('index_html' in self.folder)
+
+        response = self.publish(
+            self.folder_path + '/index_html',
+            basic=self.basic_auth,
+            env={'Content-Length': self.length},
+            stdin=StringIO(self.body),
+            request_method='PUT',
+            handle_errors=False)
+
+        self.assertEqual(response.getStatus(), 201)
+        self.assertTrue('index_html' in self.folder)
+        self.assertEqual(self.folder.index_html.meta_type, 'ATDocument')
+
+    def testPUTIndexHtmlIntoPortal(self):
+        # Create an index_html document in the portal via FTP/DAV
+        self.assertFalse('index_html' in self.portal)
+        self.assertEqual(self.portal.index_html.meta_type,
+                         'Filesystem Page Template')
+        self.setRoles(['Manager'])
+
+        response = self.publish(
+            self.portal_path + '/index_html',
+            basic=self.basic_auth,
+            env={'Content-Length': self.length},
+            stdin=StringIO(self.body),
+            request_method='PUT',
+            handle_errors=False)
+
+        self.assertEqual(response.getStatus(), 201)
+        self.assertTrue('index_html' in self.portal)
+        self.assertEqual(self.portal.index_html.meta_type, 'ATDocument')
+
+
 class TestDAVOperations(PloneTestCase.FunctionalTestCase):
 
     def afterSetUp(self):
@@ -395,5 +454,6 @@ def test_suite():
     suite = TestSuite()
     suite.addTest(makeSuite(TestDAVProperties))
     suite.addTest(makeSuite(TestPUTObjects))
+    suite.addTest(makeSuite(TestPUTIndexHtml))
     suite.addTest(makeSuite(TestDAVOperations))
     return suite

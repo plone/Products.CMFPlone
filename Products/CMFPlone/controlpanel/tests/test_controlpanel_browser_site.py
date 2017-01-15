@@ -7,7 +7,7 @@ from plone.registry.interfaces import IRegistry
 from plone.testing.z2 import Browser
 from zope.component import getMultiAdapter
 from zope.component import getUtility
-import unittest2 as unittest
+import unittest
 
 # Red pixel with filename pixel.png
 SITE_LOGO_BASE64 = 'filenameb64:cGl4ZWwucG5n;datab64:iVBORw0KGgoAAAANSUhEUgAA'\

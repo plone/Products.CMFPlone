@@ -210,3 +210,7 @@ PloneMessageFactory = MessageFactory('plone')
 # plonelocales domain
 from zope.i18nmessageid import MessageFactory
 PloneLocalesMessageFactory = MessageFactory('plonelocales')
+
+# Apply early monkey patches.  For these patches, it is too late if we do this
+# in the initialize method.
+from Products.CMFPlone import earlypatches  # noqa

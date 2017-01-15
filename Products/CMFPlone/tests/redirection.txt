@@ -12,6 +12,7 @@ getTypeInfo.
 We test this by starting up a test browser:
 
     >>> from plone.testing.z2 import Browser
+    >>> app = layer['app']
     >>> browser = Browser(app)
 
 Let's check what happens when we get a file from a resourceDirectory.
