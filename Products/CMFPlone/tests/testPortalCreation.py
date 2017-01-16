@@ -631,10 +631,10 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.assertTrue(member_has_permission['selected'])
 
     def testDiscussionItemWorkflow(self):
-        # By default the discussion item has the one_state_workflow
+        # By default the discussion item has the comment_one_state_workflow
         self.assertEqual(
             self.workflow.getChainForPortalType('Discussion Item'),
-            ('one_state_workflow',))
+            ('comment_one_state_workflow',))
 
     def testFolderHasFolderListingView(self):
         # Folder type should allow 'folder_listing'
