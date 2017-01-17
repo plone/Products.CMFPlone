@@ -3,8 +3,6 @@
    cookie_persistence="False" default_skin="Plone Default"
    request_varname="plone_skin">
  <object name="custom" meta_type="Folder"/>
- <object name="plone_content" meta_type="Filesystem Directory View"
-    directory="Products.CMFPlone:skins/plone_content"/>
  <object name="plone_ecmascript" meta_type="Filesystem Directory View"
     directory="Products.CMFPlone:skins/plone_ecmascript"/>
  <object name="plone_form_scripts" meta_type="Filesystem Directory View"
@@ -30,7 +28,6 @@
   <layer name="plone_form_scripts"/>
   <layer name="plone_scripts"/>
   <layer name="plone_images"/>
-  <layer name="plone_content"/>
   <layer name="plone_login"/>
  </skin-path>
 </object>

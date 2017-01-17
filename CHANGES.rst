@@ -63,6 +63,9 @@ Breaking changes:
   - ``bodyClass`` (use ``@@plone_layout/bodyClass``)
   [davisagli]
 
+- Move plone_content skin templates into Products.ATContentTypes as browser views.
+  [gforcada]
+
 New features:
 
 - Added ``ok`` view.  This is useful for automated checks, for example
