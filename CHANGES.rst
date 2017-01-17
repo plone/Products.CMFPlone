@@ -4,14 +4,6 @@ Changelog
 2.6.4 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - Fix error in viewlet when related dexterity item has been deleted.
