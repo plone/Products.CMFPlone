@@ -25,6 +25,8 @@ New features:
 
 Bug fixes:
 
+- Added security checks for ``str.format``.  Part of PloneHotfix20170117.  [maurits]
+
 - Fixed workflow tests for new ``comment_one_state_workflow``.  [maurits]
 
 - Fix base tag differs from actual URL (fixes `#86`_).
