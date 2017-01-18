@@ -30,7 +30,10 @@ New features:
 
 Bug fixes:
 
-- Load some patches earlier, instead of in our initialize method.
+- Added security checks for ``str.format``.  Part of PloneHotfix20170117.  [maurits]
+
+- Load some patches earlier, instead of in our initialize method.  [maurits]
+
 - Fixed workflow tests for new ``comment_one_state_workflow``.  [maurits]
 
 - Fixed sometimes failing search order tests.  [maurits]
