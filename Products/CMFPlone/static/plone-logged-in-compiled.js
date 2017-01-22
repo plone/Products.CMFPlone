@@ -46804,25 +46804,6 @@ define('mockup-patterns-tooltip',[
 ], function($, Base, undefined) {
   'use strict';
 
-  var Tooltip = Base.extend({
-    name: 'tooltip',
-    trigger: '.pat-tooltip',
-    parser: 'mockup',
-    defaults: {
-      html: false,
-      placement: 'top'
-    },
-    init: function() {
-        if (this.options.html === 'true') {
-          // TODO: fix the parser!
-          this.options.html = true;
-        } else {
-          this.options.html = false;
-        }
-        this.data = new bootstrapTooltip(this.$el[0], this.options);
-      },
-  });
-
   //This is pulled almost directly from the Bootstrap Tooltip
   //extension. We rename it just to differentiate from the pattern.
   var bootstrapTooltip = function (element, options) {
@@ -47234,6 +47215,25 @@ define('mockup-patterns-tooltip',[
     clearTimeout(this.timeout)
     this.hide().$element.off('.' + this.type).removeData('bs.' + this.type)
   }
+
+  var Tooltip = Base.extend({
+    name: 'tooltip',
+    trigger: '.pat-tooltip',
+    parser: 'mockup',
+    defaults: {
+      html: false,
+      placement: 'top'
+    },
+    init: function() {
+        if (this.options.html === 'true') {
+          // TODO: fix the parser!
+          this.options.html = true;
+        } else {
+          this.options.html = false;
+        }
+        this.data = new bootstrapTooltip(this.$el[0], this.options);
+      },
+  });
 
   return Tooltip;
 
@@ -68056,6 +68056,23 @@ define('mockup-patterns-tinymce',[
           };
         }
 
+        if (tinyOptions.importcss_selector_filter &&
+            tinyOptions.importcss_selector_filter.length) {
+          tinyOptions.importcss_selector_filter =
+            new RegExp(tinyOptions.importcss_selector_filter);
+        }
+
+        if (tinyOptions.importcss_groups &&
+            tinyOptions.importcss_groups.length) {
+          for(var i=0; i<tinyOptions.importcss_groups.length; i++){
+            if (tinyOptions.importcss_groups[i].filter &&
+                tinyOptions.importcss_groups[i].filter.length) {
+              tinyOptions.importcss_groups[i].filter =
+                new RegExp(tinyOptions.importcss_groups[i].filter);
+            }
+          }
+        }
+
         tinymce.init(tinyOptions);
         self.tiny = tinymce.get(self.tinyId);
 
@@ -78131,5 +78148,5 @@ require([
   'use strict';
 });
 
-define("/home/_thet/data/dev/plone/buildout.coredev-all/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
+define("/home/_thet/data/dev/fhnw/plone/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
 
