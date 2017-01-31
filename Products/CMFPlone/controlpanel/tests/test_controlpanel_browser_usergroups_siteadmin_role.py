@@ -16,7 +16,6 @@ from plone.app.testing.bbb import PloneTestCaseFixture
 from plone.app import testing
 from Products.CMFCore.utils import getToolByName
 
-
 class ControlPanelFixture(PloneTestCaseFixture):
 
     def setUpPloneSite(self, portal):
@@ -50,6 +49,11 @@ class UserGroupsControlPanelTestCase(FunctionalTestCase):
                 'somepassword',
                 properties=member
             )
+        from five.pt.engine import Program
+        from zope.pagetemplate.interfaces import IPageTemplateEngine
+        from zope.component import getSiteManager
+        sm = getSiteManager()
+        sm.registerUtility(Program, IPageTemplateEngine)
         transaction.commit()
 
 
