@@ -139,6 +139,9 @@ New features:
 - Simplify generated Gruntfile.js (DRY)
   [jensens]
 
+- Make five.pt optional, this is no longer needed, since Products.PageTemplates uses Chameleon directly.
+  [jensens]
+
 
 Bug fixes:
 
