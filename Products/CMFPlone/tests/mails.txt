@@ -60,8 +60,8 @@ We expect the headers to be properly header encoded (7-bit):
 
 The output should be encoded in a reasonable manner (in this case
 quoted-printable).  There may be some small differences in where
-exactly the lines are cut off, depending on whether you use five.pt or
-not, so we turn the message into one line first:
+exactly the lines are cut off, depending on whether you use five.pt 
+(in Zope 2.13) or not, so we turn the message into one line first:
 
   >>> msg.replace('=\n', '').replace('\n', ' ')
   '...Another t=C3=A4st message...You are receiving this mail because T=C3=A4st user test@plone.test...is sending feedback about the site you administer at...
