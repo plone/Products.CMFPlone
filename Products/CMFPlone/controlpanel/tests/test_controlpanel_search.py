@@ -25,7 +25,6 @@ class SearchRegistryIntegrationTest(unittest.TestCase):
     def test_search_controlpanel_view(self):
         view = getMultiAdapter((self.portal, self.portal.REQUEST),
                                name="search-controlpanel")
-        view = view.__of__(self.portal)
         self.assertTrue(view())
 
     def test_search_in_controlpanel(self):

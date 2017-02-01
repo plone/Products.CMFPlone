@@ -25,7 +25,6 @@ class NavigationRegistryIntegrationTest(unittest.TestCase):
     def test_navigation_controlpanel_view(self):
         view = getMultiAdapter((self.portal, self.portal.REQUEST),
                                name="navigation-controlpanel")
-        view = view.__of__(self.portal)
         self.assertTrue(view())
 
     def test_navigation_in_controlpanel(self):

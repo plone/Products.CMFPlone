@@ -10,6 +10,14 @@ Changelog
 
 Breaking changes:
 
+- Add helper method to get all catalog entries from a given catalog: ``Products.CMFPlone.CatalogTool.catalog_get_all``.
+  In Products.ZCatalog before 4.0 a catalog call without a query returned all catalog brains.
+  This can be used as a replacement where it is needed, for exampe in tests.
+  [thet, gogobd]
+
+- Remove ``query_request`` from CatalogTool's search method, as it isn't supported in Products.ZCatalog 4 anymore.
+  [thet]
+
 - Removed our patch that added ``secureSend`` to the ``MailHost``.
   This was originally scheduled for removal in Plone 5.0.  See `issue
   965 <https://github.com/plone/Products.CMFPlone/issues/965>`_.
