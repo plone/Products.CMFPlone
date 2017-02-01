@@ -282,6 +282,7 @@ Breaking changes:
 - Remove ``query_request`` from CatalogTool's search method, as it isn't supported in Products.ZCatalog 4 anymore.
   [thet]
 - Remove ``query_request`` from CatalogTool's search method, as it isn't supported in Products.ZCatalog 4 anymore.
+  [thet]
 
 - Removed our patch that added ``secureSend`` to the ``MailHost``.
   This was originally scheduled for removal in Plone 5.0.  See `issue
