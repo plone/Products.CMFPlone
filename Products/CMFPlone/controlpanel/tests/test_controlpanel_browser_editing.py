@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from zExceptions import Redirect
 from Products.CMFPlone.interfaces import IEditingSchema
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 from plone.app.linkintegrity.utils import linkintegrity_enabled
@@ -59,7 +60,7 @@ class EditingControlPanelFunctionalTest(unittest.TestCase):
         self.browser.open(
             "%s/@@editing-controlpanel" % self.portal_url)
         self.browser.getControl("Default editor").value = ["None"]
-        self.browser.getControl('Save').click()
+        self.assertRaises(Redirect, self.browser.getControl('Save').click)
 
         self.assertEqual(self.settings.default_editor, "None")
 
@@ -77,7 +78,7 @@ class EditingControlPanelFunctionalTest(unittest.TestCase):
             "%s/@@editing-controlpanel" % self.portal_url)
         self.browser.getControl("Enable External Editor feature")\
             .selected = True
-        self.browser.getControl('Save').click()
+        self.assertRaises(Redirect, self.browser.getControl('Save').click)
 
         self.assertEqual(self.settings.ext_editor, True)
 
@@ -90,7 +91,7 @@ class EditingControlPanelFunctionalTest(unittest.TestCase):
             "%s/@@editing-controlpanel" % self.portal_url)
         self.browser.getControl("Enable link integrity checks")\
             .selected = True
-        self.browser.getControl('Save').click()
+        self.assertRaises(Redirect, self.browser.getControl('Save').click)
 
         self.assertEqual(self.settings.enable_link_integrity_checks, True)
 
@@ -99,7 +100,7 @@ class EditingControlPanelFunctionalTest(unittest.TestCase):
             "%s/@@editing-controlpanel" % self.portal_url)
         self.browser.getControl("Enable link integrity checks")\
             .selected = True
-        self.browser.getControl('Save').click()
+        self.assertRaises(Redirect, self.browser.getControl('Save').click)
         self.assertTrue(linkintegrity_enabled())
 
     def test_lock_on_ttw_edit(self):
@@ -107,7 +108,7 @@ class EditingControlPanelFunctionalTest(unittest.TestCase):
             "%s/@@editing-controlpanel" % self.portal_url)
         self.browser.getControl("Enable locking for through-the-web edits")\
             .selected = True
-        self.browser.getControl('Save').click()
+        self.assertRaises(Redirect, self.browser.getControl('Save').click)
 
         self.assertEqual(self.settings.lock_on_ttw_edit, True)
 
