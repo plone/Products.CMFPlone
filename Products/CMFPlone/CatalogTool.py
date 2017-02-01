@@ -462,19 +462,11 @@ class CatalogTool(PloneBaseTool, BaseTool):
 
     __call__ = searchResults
 
-    def search(self, *args, **kw):
+    def search(self, query={}, **kw):
         # Wrap search() the same way that searchResults() is
 
         # Make sure any pending index tasks have been processed
         processQueue()
-
-        query = {}
-        if args:
-            query = args[0]
-        elif 'query_request' in kw:
-            query = kw.get('query_request')
-
-        kw['query_request'] = query.copy()
 
         user = _getAuthenticatedUser(self)
         query['allowedRolesAndUsers'] = self._listAllowedRolesAndUsers(user)
@@ -482,9 +474,7 @@ class CatalogTool(PloneBaseTool, BaseTool):
         if not self.allow_inactive(kw):
             query['effectiveRange'] = DateTime()
 
-        kw['query_request'] = query
-
-        return super(CatalogTool, self).search(**kw)
+        return super(CatalogTool, self).search(query, **kw)
 
     @security.protected(ManageZCatalogEntries)
     def clearFindAndRebuild(self):
