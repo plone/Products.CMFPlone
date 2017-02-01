@@ -292,6 +292,8 @@ Bug fixes:
 - Remove eNotSupported (not available in Zope 4)
   [tschorr]
 
+- Remove deprecated __of__ calls on BrowserViews
+  [MrTango]
 
 5.1a2 (2016-08-19)
 ------------------
