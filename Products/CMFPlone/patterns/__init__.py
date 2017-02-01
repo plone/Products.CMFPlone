@@ -26,7 +26,7 @@ class TinyMCESettingsGenerator(object):
         registry = getUtility(IRegistry)
         self.settings = registry.forInterface(
             ITinyMCESchema, prefix="plone", check=False)
-        self.portal_url = get_portal_url(self.portal)
+        self.portal_url = get_portal_url(self.context)
 
     def get_theme(self):
         return theming_policy().get_theme()
