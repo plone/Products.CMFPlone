@@ -133,9 +133,6 @@ class MaintenanceControlPanel(AutoExtensibleForm, form.EditForm):
         versions['Instance'] = versions['Plone Instance']
         return versions
 
-    def processTime(self):
-        return App.ApplicationManager.ApplicationManager().process_time()
-
     def dbName(self):
         return self.portal()._p_jar.db().database_name
 
