@@ -30,6 +30,8 @@ New features:
 
 Bug fixes:
 
+- Fix wrong TinyMCE configuration for multilingual sites [erral]
+
 - Added security checks for ``str.format``.  Part of PloneHotfix20170117.  [maurits]
 
 - Load some patches earlier, instead of in our initialize method.  [maurits]
