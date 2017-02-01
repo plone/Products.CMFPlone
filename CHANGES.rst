@@ -142,6 +142,8 @@ New features:
 
 Bug fixes:
 
+- Added security checks for ``str.format``.  Part of PloneHotfix20170117.  [maurits]
+
 - Fixed workflow tests for new ``comment_one_state_workflow``.  [maurits]
 
 - Fixed sometimes failing search order tests.  [maurits]
