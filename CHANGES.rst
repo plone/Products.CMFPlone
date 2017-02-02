@@ -265,6 +265,12 @@ Bug fixes:
 - Fix atom.xml feed not paying attention for setting to show about information
   [vangheem]
 
+- Simplify (DRY) combine bundles and make error handling more explicit.
+  [jensens]
+
+- Raise Error if combine bundles modifies the Content-Type header.
+  [jensens]
+
 
 5.1a2 (2016-08-19)
 ------------------
