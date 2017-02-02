@@ -53,13 +53,19 @@ def get_resource(context, path):
     if isinstance(resource, FilesystemFile):
         (directory, sep, filename) = path.rpartition('/')
         return context.unrestrictedTraverse(directory).readFile(filename)
+
+    # calling the resource may modify the header, i.e. the content-type.
+    # we do not want this, so keep the original header intact.
+    response_before = context.REQUEST.response
+    context.REQUEST.response = response_before.__class__()
+    if hasattr(aq_base(resource), 'GET'):
+        # for FileResource
+        result = resource.GET()
     else:
-        if hasattr(aq_base(resource), 'GET'):
-            # for FileResource
-            return resource.GET()
-        else:
-            # any BrowserView
-            return resource()
+        # any BrowserView
+        result = resource()
+    context.REQUEST.response = response_before
+    return result
 
 
 def write_js(context, folder, meta_bundle):
