@@ -18,6 +18,12 @@ import re
 PRODUCTION_RESOURCE_DIRECTORY = 'production'
 logger = logging.getLogger(__name__)
 
+DEFAULT_RESOURCES_KEYS = [
+    'plone.resources/jquery.js',
+    'plone.resources/require.js',
+    'plone.resources/configjs',
+]
+
 
 def get_production_resource_directory():
     persistent_directory = queryUtility(IResourceDirectory, name='persistent')
@@ -42,24 +48,25 @@ def get_resource(context, path):
         overrides = get_override_directory(context)
         filepath = path[9:]
         if overrides.isFile(filepath):
-            return overrides.readFile(filepath)
-
+            result = overrides.readFile(filepath)
+            return result
     try:
         resource = context.unrestrictedTraverse(path)
     except NotFound:
-        logger.warn(u'Could not find resource {0}. You may have to create it first.'.format(path))  # noqa
+        logger.warn(
+            u'Could not find resource {0}. '
+            u'You may have to create it first.'.format(path)
+        )
         return
 
     if isinstance(resource, FilesystemFile):
         (directory, sep, filename) = path.rpartition('/')
         return context.unrestrictedTraverse(directory).readFile(filename)
-    else:
-        if hasattr(aq_base(resource), 'GET'):
-            # for FileResource
-            return resource.GET()
-        else:
-            # any BrowserView
-            return resource()
+
+    if hasattr(aq_base(resource), 'GET'):
+        # for FileResource
+        return resource.GET()
+    return resource()
 
 
 def write_js(context, folder, meta_bundle):
@@ -67,28 +74,30 @@ def write_js(context, folder, meta_bundle):
     resources = []
 
     # default resources
-    if (
-        meta_bundle == 'default' and
-        registry.records.get('plone.resources/jquery.js')
-    ):
-        resources.append(
-            get_resource(
-                context,
-                registry.records['plone.resources/jquery.js'].value
-            )
-        )
-        resources.append(
-            get_resource(
-                context,
-                registry.records['plone.resources.requirejs'].value
-            )
-        )
-        resources.append(
-            get_resource(
-                context,
-                registry.records['plone.resources.configjs'].value
-            )
-        )
+    if meta_bundle == 'default':
+        for resource_key in DEFAULT_RESOURCES_KEYS:
+            try:
+                record = registry.records[resource_key]
+            except KeyError:
+                # we may have a key error, on Plone install time in
+                # GenericSetup, which is fine.
+                pass
+            else:
+                before = context.REQUEST.response.headers.get(
+                    'Content-Type',
+                    None
+                )
+                resource = get_resource(context, record.value)
+                after = context.REQUEST.response.headers.get(
+                    'Content-Type',
+                    None
+                )
+                if before != after:
+                    raise RuntimeError(
+                        'get_resource must not modify the Content-Type header'
+                        'while combine bundles.'
+                    )
+                resources.append(resource)
 
     # bundles
     bundles = registry.collectionOfInterface(
