@@ -418,6 +418,9 @@ New features:
 
 - Remove five.pt for Zope 4
   [jensens]
+- Fix: Do not modify the Content-Type header on bundle combine.
+  [jensens]
+
 
 Bug fixes:
 
