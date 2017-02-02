@@ -69,21 +69,21 @@ class MaintenanceControlPanelFunctionalTest(unittest.TestCase):
             'You are not allowed to manage the Zope server.'
             in self.site_administrator_browser.contents)
 
-    # @unittest.skipIf(has_zope4, 'Broken with zope4. Reason yet unknown.')
     def test_maintenance_pack_database(self):
         """While we cannot test the actual packaging during tests, we can skip
            the actual manage_pack method by providing a negative value for
            days.
         """
         self.browser.open(self.portal_url + '/@@maintenance-controlpanel')
-        original_pack = ApplicationManager.manage_pack
+        db = self.portal._p_jar.db()
+        original_pack = db.pack
 
-        def manage_pack(self, days=0, REQUEST=None, _when=None):
+        def pack(self, t=None, days=0):
             pass
-        ApplicationManager.manage_pack = manage_pack
+        db.pack = pack
 
         self.browser.getControl(name='form.widgets.days').value = '0'
         self.browser.getControl(name="form.buttons.pack").click()
         self.assertTrue(self.browser.url.endswith('maintenance-controlpanel'))
         self.assertTrue('Packed the database.' in self.browser.contents)
-        ApplicationManager.manage_pack = original_pack
+        db.pack = original_pack
