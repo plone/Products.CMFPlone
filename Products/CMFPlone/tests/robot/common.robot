@@ -61,7 +61,7 @@ there should be '${count}' livesearch results
     Wait until keyword succeeds  5s  1s  Xpath Should Match X Times  //div[@id = 'LSResult']/descendant::li  ${count}
 
 patterns are loaded
-    Wait For Condition  return $('body.patterns-loaded').size() > 0
+    Wait For Condition  return window.jQuery('body.patterns-loaded').size() > 0
 
 Refresh JS/CSS resources
     # Not needed anymore, and it is breaking the Plone Zope 4 tests.
