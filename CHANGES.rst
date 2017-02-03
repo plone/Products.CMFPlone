@@ -139,6 +139,9 @@ New features:
 - Simplify generated Gruntfile.js (DRY)
   [jensens]
 
+- Fix: Do not modify the Content-Type header on bundle combine.
+  [jensens]
+
 
 Bug fixes:
 
