@@ -7,6 +7,8 @@ Refresh JS/CSS resources
   # config.js is http://foo/plone. We need to trigger the meta-bundles
   # generation from the browser so baseUrl gets the proper value.
   Enable autologin as  Manager
+  Go to  ${PLONE_URL}
+  Sleep  2
   Execute Javascript    jQuery.post(jQuery('body').attr('data-portal-url')+'/@@resourceregistry-controlpanel', {action: 'save-registry', _authenticator: jQuery('input[name="_authenticator"]').val()});
   Disable Autologin
 
