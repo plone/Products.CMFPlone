@@ -29,7 +29,7 @@ a folder '${foldername}' with a document '${documentname}'
     Given patterns are loaded
     Execute Javascript  $('#form-widgets-IDublinCore-title').val('${foldername}'); return 0;
     Click Button  Save
-    Go to  ${PLONE_URL}/${TEST_FOLDER}/folder/edit
+    Go to  ${PLONE_URL}/${TEST_FOLDER}/${foldername}/++add++Document
     Given patterns are loaded
     Execute Javascript  $('#form-widgets-IDublinCore-title').val('${documentname}'); return 0;
     Click Button  Save
