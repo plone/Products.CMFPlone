@@ -40,7 +40,7 @@ the querystring pattern
     Given querystring pattern loaded
 
 querystring pattern loaded
-    Wait For Condition  return $('.querystring-criteria-remove').size() > 0
+    Wait For Condition  return window.jQuery('.querystring-criteria-remove').size() > 0
 
 a bunch of folders
     #We create enough items to give meaningful test results
@@ -91,5 +91,5 @@ we expect ${NUM} hits
     #This assumes we have the 2 "Test document" and "Test folder" items from the
     #robot setup, as well as the 4 additional items from the "a bunch of folders" macro
     Sleep   1
-    ${hits}=    Execute Javascript  return $('.searchResults > dd').size().toString();
+    ${hits}=    Execute Javascript  return window.jQuery('.searchResults > dd').size().toString();
     Should Be Equal     ${hits}     ${NUM}
