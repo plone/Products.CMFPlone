@@ -71959,24 +71959,6 @@ define('mockup-patterns-tooltip',[
 ], function($, Base, undefined) {
   'use strict';
 
-  var Tooltip = Base.extend({
-    name: 'tooltip',
-    trigger: '.pat-tooltip',
-    parser: 'mockup',
-    defaults: {
-      html: false
-    },
-    init: function() {
-        if (this.options.html === 'true') {
-          // TODO: fix the parser!
-          this.options.html = true;
-        } else {
-          this.options.html = false;
-        }
-        this.data = new bootstrapTooltip(this.$el[0], this.options);
-    },
-  });
-
   //This is pulled almost directly from the Bootstrap Tooltip
   //extension. We rename it just to differentiate from the pattern.
   var bootstrapTooltip = function (element, options) {
@@ -72388,6 +72370,24 @@ define('mockup-patterns-tooltip',[
     clearTimeout(this.timeout)
     this.hide().$element.off('.' + this.type).removeData('bs.' + this.type)
   }
+
+  var Tooltip = Base.extend({
+    name: 'tooltip',
+    trigger: '.pat-tooltip',
+    parser: 'mockup',
+    defaults: {
+      html: false
+    },
+    init: function() {
+        if (this.options.html === 'true') {
+          // TODO: fix the parser!
+          this.options.html = true;
+        } else {
+          this.options.html = false;
+        }
+        this.data = new bootstrapTooltip(this.$el[0], this.options);
+    },
+  });
 
   return Tooltip;
 
@@ -80138,5 +80138,5 @@ require([
   'use strict';
 });
 
-define("/Users/alec/Development/bundles/buildout.coredev/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
+define("/home/_thet/data/dev/fhnw/plone-5.0/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
 
