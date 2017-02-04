@@ -46,9 +46,9 @@ class FilterControlPanelFunctionalTest(unittest.TestCase):
         self.browser.open(
             "%s/@@filter-controlpanel" % self.portal_url)
         self.browser.getLink('Site Setup').click()
-        self.assertEqual(
-            self.browser.url,
-            'http://nohost/plone/@@overview-controlpanel')
+        self.assertTrue(
+            self.browser.url.endswith('/plone/@@overview-controlpanel')
+        )
 
     def test_filter_controlpanel_view(self):
         view = getMultiAdapter((self.portal, self.portal.REQUEST),
