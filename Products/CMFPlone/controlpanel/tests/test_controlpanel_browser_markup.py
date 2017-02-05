@@ -41,9 +41,9 @@ class MarkupControlPanelFunctionalTest(unittest.TestCase):
         self.browser.open(
             "%s/@@markup-controlpanel" % self.portal_url)
         self.browser.getLink('Site Setup').click()
-        self.assertEqual(
-            self.browser.url,
-            'http://nohost/plone/@@overview-controlpanel')
+        self.assertTrue(
+            self.browser.url.endswith('/plone/@@overview-controlpanel')
+        )
 
     def test_markup_controlpanel_view(self):
         view = getMultiAdapter((self.portal, self.portal.REQUEST),

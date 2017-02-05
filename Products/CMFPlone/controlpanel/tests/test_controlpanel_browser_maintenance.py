@@ -58,9 +58,9 @@ class MaintenanceControlPanelFunctionalTest(unittest.TestCase):
         self.browser.open(
             "%s/@@maintenance-controlpanel" % self.portal_url)
         self.browser.getLink('Site Setup').click()
-        self.assertEqual(
-            self.browser.url,
-            'http://nohost/plone/@@overview-controlpanel')
+        self.assertTrue(
+            self.browser.url.endswith('/plone/@@overview-controlpanel')
+        )
 
     def test_maintenance_control_panel_raises_unauthorized(self):
         self.site_administrator_browser.open(

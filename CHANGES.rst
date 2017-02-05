@@ -303,6 +303,10 @@ Bug fixes:
 - Remove deprecated __of__ calls on BrowserViews
   [MrTango]
 
+- Test fix (Zope 4 related): More General test if controlpanel back link URL is ok.
+  [jensens]
+
+
 5.1a2 (2016-08-19)
 ------------------
 
