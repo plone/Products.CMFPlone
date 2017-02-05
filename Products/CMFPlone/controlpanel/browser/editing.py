@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
+from plone.app.registry.browser import controlpanel
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import IEditingSchema
-from plone.app.registry.browser import controlpanel
 from z3c.form import interfaces
 
 
 class EditingControlPanelForm(controlpanel.RegistryEditForm):
 
-    id = "EditingControlPanel"
-    label = _(u"Editing Settings")
+    id = 'EditingControlPanel'
+    label = _(u'Editing Settings')
     schema = IEditingSchema
-    schema_prefix = "plone"
+    schema_prefix = 'plone'
 
     def updateWidgets(self):
         super(EditingControlPanelForm, self).updateWidgets()

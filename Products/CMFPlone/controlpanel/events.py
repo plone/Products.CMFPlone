@@ -51,13 +51,16 @@ def handle_enable_self_reg(obj, event):
     for app_perm in app_perms:
         if app_perm['selected'] == 'SELECTED':
             reg_roles.append(app_perm['name'])
-    if value is True and 'Anonymous' not in reg_roles:
+    if value and 'Anonymous' not in reg_roles:
         reg_roles.append('Anonymous')
-    if value is False and 'Anonymous' in reg_roles:
+    if not value and 'Anonymous' in reg_roles:
         reg_roles.remove('Anonymous')
 
-    portal.manage_permission('Add portal member', roles=reg_roles,
-                             acquire=0)
+    portal.manage_permission(
+        'Add portal member',
+        roles=reg_roles,
+        acquire=0
+    )
 
 
 @adapter(ISecuritySchema, IRecordModifiedEvent)

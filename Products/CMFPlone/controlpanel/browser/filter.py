@@ -1,32 +1,32 @@
 # -*- coding: utf-8 -*-
+from plone.autoform.form import AutoExtensibleForm
+from plone.z3cform import layout
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _  # NOQA
 from Products.CMFPlone.interfaces import IFilterSchema
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from Products.PortalTransforms.transforms.safe_html import NASTY_TAGS
+from Products.PortalTransforms.transforms.safe_html import VALID_TAGS
 from Products.statusmessages.interfaces import IStatusMessage
-from plone.autoform.form import AutoExtensibleForm
-from plone.z3cform import layout
 from z3c.form import button
 from z3c.form import form
-from Products.PortalTransforms.transforms.safe_html import VALID_TAGS
-from Products.PortalTransforms.transforms.safe_html import NASTY_TAGS
 
 
 class FilterControlPanel(AutoExtensibleForm, form.EditForm):
-    id = "FilterControlPanel"
-    label = _(u"HTML Filtering Settings")
-    description = ""
+    id = 'FilterControlPanel'
+    label = _(u'HTML Filtering Settings')
+    description = ''
     schema = IFilterSchema
-    form_name = _(u"HTML Filtering Settings")
-    control_panel_view = "filter-controlpanel"
+    form_name = _(u'HTML Filtering Settings')
+    control_panel_view = 'filter-controlpanel'
 
     def updateActions(self):  # NOQA
         """Have to override this because we only have Save, not Cancel
         """
         super(FilterControlPanel, self).updateActions()
-        self.actions['save'].addClass("context")
+        self.actions['save'].addClass('context')
 
-    @button.buttonAndHandler(_(u"Save"), name='save')
+    @button.buttonAndHandler(_(u'Save'), name='save')
     def handleSave(self, action):  # NOQA
         data, errors = self.extractData()
         if errors:
@@ -85,13 +85,13 @@ class FilterControlPanel(AutoExtensibleForm, form.EditForm):
 
         self.applyChanges(data)
         IStatusMessage(self.request).addStatusMessage(
-            _(u"Changes saved."),
-            "info")
+            _(u'Changes saved.'),
+            'info')
         IStatusMessage(self.request).addStatusMessage(
-            _(u"HTML generation is heavily cached across Plone. You may "
-              u"have to edit existing content or restart your server to see "
-              u"the changes."),
-            "warning")
+            _(u'HTML generation is heavily cached across Plone. You may '
+              u'have to edit existing content or restart your server to see '
+              u'the changes.'),
+            'warning')
         self.request.response.redirect(self.request.getURL())
 
 

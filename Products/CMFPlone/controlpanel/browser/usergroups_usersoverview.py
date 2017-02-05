@@ -1,20 +1,19 @@
 # -*- coding: utf-8 -*-
-import logging
 from Acquisition import aq_inner
-from zExceptions import Forbidden
 from itertools import chain
-
-from Products.PluggableAuthService.interfaces.plugins import IRolesPlugin
-from zope.component import getUtility
 from plone.protect import CheckAuthenticator
-from zope.component import getMultiAdapter
 from Products.CMFCore.interfaces import ISiteRoot
-from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFCore.utils import getToolByName
-
+from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone.controlpanel.browser.usergroups import UsersGroupsControlPanelView  # noqa
 from Products.CMFPlone.utils import normalizeString
-from Products.CMFPlone.controlpanel.browser.usergroups import \
-    UsersGroupsControlPanelView
+from Products.PluggableAuthService.interfaces.plugins import IRolesPlugin
+from zExceptions import Forbidden
+from zope.component import getMultiAdapter
+from zope.component import getUtility
+
+import logging
+
 
 logger = logging.getLogger('Products.CMFPlone')
 
@@ -63,7 +62,14 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
         self.request.set('__ignore_group_roles__', False)
         self.request.set('__ignore_direct_roles__', True)
         inheritance_enabled_users = searchView.merge(
-            chain(*[searchView.searchUsers(**{field: searchString}) for field in ['login', 'fullname', 'email']]), 'userid')
+            chain(
+                *[
+                    searchView.searchUsers(**{field: searchString})
+                    for field in ['login', 'fullname', 'email']
+                ]
+            ),
+            'userid'
+        )
         allInheritedRoles = {}
         for user_info in inheritance_enabled_users:
             userId = user_info['id']
@@ -109,13 +115,18 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
                 canAssign = user.canAssignRole(role)
                 if role == 'Manager' and not self.is_zope_manager:
                     canAssign = False
-                roleList[role] = {'canAssign': canAssign,
-                                  'explicit': role in explicitlyAssignedRoles,
-                                  'inherited': role in allInheritedRoles.get(userId, ())}
+                roleList[role] = {
+                    'canAssign': canAssign,
+                    'explicit': role in explicitlyAssignedRoles,
+                    'inherited': role in allInheritedRoles.get(userId, ())
+                }
 
             canDelete = user.canDelete()
             canPasswordSet = user.canPasswordSet()
-            if roleList['Manager']['explicit'] or roleList['Manager']['inherited']:
+            if (
+                roleList['Manager']['explicit'] or
+                roleList['Manager']['inherited']
+            ):
                 if not self.is_zope_manager:
                     canDelete = False
                     canPasswordSet = False
@@ -129,8 +140,14 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
             results.append(user_info)
 
         # Sort the users by fullname
-        results.sort(key=lambda x: x is not None and x[
-                     'fullname'] is not None and normalizeString(x['fullname']) or '')
+        def sort_key_user(user):
+            if (
+                user is not None and
+                user.getProperty('fullname') is not None
+            ):
+                return normalizeString(user.getProperty('fullname')) or ''
+            return ''
+        results.sort(key=sort_key_user)
 
         # Reset the request variable, just in case.
         self.request.set('__ignore_group_roles__', False)
@@ -170,11 +187,19 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
                 if hasattr(user, 'resetpassword'):
                     if 'Manager' in current_roles and not self.is_zope_manager:
                         raise Forbidden
-                    if not context.unrestrictedTraverse('@@overview-controlpanel').mailhost_warning():
+                    ovcp = context.unrestrictedTraverse(
+                        '@@overview-controlpanel'
+                    )
+                    if not ovcp.mailhost_warning():
                         pw = regtool.generatePassword()
                     else:
                         utils.addPortalMessage(
-                            _(u'No mailhost defined. Unable to reset passwords.'), type='error')
+                            _(
+                                u'No mailhost defined. Unable to reset '
+                                u'passwords.'
+                            ),
+                            type='error'
+                        )
 
                 roles = user.get('roles', [])
                 if not self.is_zope_manager:
@@ -183,7 +208,12 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
                         raise Forbidden
 
                 acl_users.userFolderEditUser(
-                    user.id, pw, roles, member.getDomains(), REQUEST=context.REQUEST)
+                    user.id,
+                    pw,
+                    roles,
+                    member.getDomains(),
+                    REQUEST=context.REQUEST
+                )
                 if pw:
                     context.REQUEST.form['new_password'] = pw
                     regtool.mailPassword(user.id, context.REQUEST)
@@ -193,10 +223,11 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
                 self.deleteMembers(delete)
             if users_with_reset_passwords:
                 reset_passwords_message = _(
-                    u"reset_passwords_msg",
-                    default=u"The following users have been sent an e-mail with link to reset their password: ${user_ids}",
+                    u'reset_passwords_msg',
+                    default=u'The following users have been sent an e-mail '
+                            u'with link to reset their password: ${user_ids}',
                     mapping={
-                        u"user_ids": ', '.join(users_with_reset_passwords),
+                        u'user_ids': ', '.join(users_with_reset_passwords),
                     },
                 )
                 utils.addPortalMessage(reset_passwords_message)

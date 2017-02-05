@@ -1,24 +1,25 @@
-from setuptools import setup
+# -*- coding: utf-8 -*-
 from setuptools import find_packages
+from setuptools import setup
 
 version = '5.1b1.dev0'
 
 setup(
     name='Products.CMFPlone',
     version=version,
-    description="The Plone Content Management System (core)",
+    description='The Plone Content Management System (core)',
     long_description=open("README.rst").read() + "\n" +
-    open("CHANGES.rst").read(),
+    open('CHANGES.rst').read(),
     classifiers=[
-        "Environment :: Web Environment",
-        "Framework :: Plone",
-        "Framework :: Plone :: 5.1",
-        "Framework :: Zope2",
-        "License :: OSI Approved :: GNU General Public License (GPL)",
-        "Operating System :: OS Independent",
-        "Programming Language :: Python",
-        "Programming Language :: Python :: 2.7",
-        "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+        'Environment :: Web Environment',
+        'Framework :: Plone',
+        'Framework :: Plone :: 5.1',
+        'Framework :: Zope2',
+        'License :: OSI Approved :: GNU General Public License (GPL)',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 2.7',
+        'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
     ],
     keywords='Plone CMF python Zope',
     author='Plone Foundation',
@@ -61,7 +62,6 @@ setup(
         'Products.GenericSetup >= 1.8.2',
         'Products.MimetypesRegistry',
         'Products.PlacelessTranslationService',
-        # 'Products.PloneLanguageTool',
         'Products.PlonePAS',
         'Products.PluggableAuthService',
         'Products.PluginRegistry',

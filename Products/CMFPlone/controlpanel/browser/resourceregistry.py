@@ -1,25 +1,25 @@
 # -*- coding:utf-8
 from datetime import datetime
-import json
-import re
-from urlparse import urlparse
-
-from Products.CMFPlone.interfaces import IBundleRegistry
-from Products.CMFPlone.interfaces import IResourceRegistry
-from Products.CMFPlone.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME  # noqa
-from Products.CMFPlone.resources import RESOURCE_DEVELOPMENT_MODE
-from Products.CMFPlone.resources import add_bundle_on_request
-from Products.CMFPlone.resources.browser.configjs import RequireJsView
-from Products.CMFPlone.resources.browser.cook import cookWhenChangingSettings
-from Products.statusmessages.interfaces import IStatusMessage
 from plone.memoize.view import memoize
 from plone.registry import field
 from plone.registry.interfaces import IRegistry
 from plone.registry.record import Record
 from plone.resource.interfaces import IResourceDirectory
-import posixpath
+from Products.CMFPlone.interfaces import IBundleRegistry
+from Products.CMFPlone.interfaces import IResourceRegistry
+from Products.CMFPlone.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME  # noqa
+from Products.CMFPlone.resources import add_bundle_on_request
+from Products.CMFPlone.resources import RESOURCE_DEVELOPMENT_MODE
+from Products.CMFPlone.resources.browser.configjs import RequireJsView
+from Products.CMFPlone.resources.browser.cook import cookWhenChangingSettings
+from Products.statusmessages.interfaces import IStatusMessage
+from urlparse import urlparse
 from zExceptions import NotFound
 from zope.component import getUtility
+
+import json
+import posixpath
+import re
 
 
 CSS_URL_REGEX = re.compile('url\(([^)]+)\)')
@@ -76,9 +76,14 @@ class OverrideFolderManager(object):
 
     def __init__(self, context):
         self.context = context
-        persistent_directory = getUtility(IResourceDirectory, name="persistent")  # noqa
+        persistent_directory = getUtility(
+            IResourceDirectory,
+            name='persistent'
+        )
         if OVERRIDE_RESOURCE_DIRECTORY_NAME not in persistent_directory:
-            persistent_directory.makeDirectory(OVERRIDE_RESOURCE_DIRECTORY_NAME)  # noqa
+            persistent_directory.makeDirectory(
+                OVERRIDE_RESOURCE_DIRECTORY_NAME
+            )
         self.container = persistent_directory[OVERRIDE_RESOURCE_DIRECTORY_NAME]
 
     def save_file(self, filepath, data):
@@ -109,7 +114,8 @@ class OverrideFolderManager(object):
         """
         make sure we don't write out any full urls.
         filepath will be something like foo/bar.css
-        and the full real url will be something like http://site-url/++plone++foo/bar.css
+        and the full real url will be something like
+        http://site-url/++plone++foo/bar.css
 
         So we'll be everything relative the resource path.
 
@@ -118,9 +124,9 @@ class OverrideFolderManager(object):
         site_url = self.context.absolute_url()
         full_resource_url = '%s/++plone++%s' % (site_url, filepath)
         for css_url in CSS_URL_REGEX.findall(data):
-            if css_url.startswith("data:"):
+            if css_url.startswith('data:'):
                 continue
-            if css_url.find("data:image") > 0:
+            if css_url.find('data:image') > 0:
                 continue
 
             css_url = css_url.lstrip('url(').rstrip(')').\
@@ -172,20 +178,23 @@ class ResourceRegistryControlPanelView(RequireJsView):
         if req.REQUEST_METHOD == 'POST':
             action = req.get('action', '')
             method = action.replace('-', '_')
-            if hasattr(self, method):
-                return getattr(self, method)()
+            method = getattr(self, method, None)
+            if method:
+                return method()
             else:
                 return json.dumps({
                     'success': False,
                     'msg': 'Invalid action: ' + action
                 })
-        else:
-            if RESOURCE_DEVELOPMENT_MODE:
-                messages = IStatusMessage(self.request)
-                messages.add(u"The FEDEV environment variable is set. No matter "
-                             u"what settings are done here, all bundles will "
-                             u"always be in development mode.", type=u"warn")
-            return self.index()
+        elif RESOURCE_DEVELOPMENT_MODE:
+            messages = IStatusMessage(self.request)
+            messages.add(
+                u'The FEDEV environment variable is set. No matter '
+                u'what settings are done here, all bundles will '
+                u'always be in development mode.',
+                type=u'warn'
+            )
+        return self.index()
 
     @property
     @memoize
@@ -194,7 +203,10 @@ class ResourceRegistryControlPanelView(RequireJsView):
 
     def update_registry_collection(self, itype, prefix, newdata):
         rdata = self.registry.collectionOfInterface(
-            itype, prefix=prefix, check=False)
+            itype,
+            prefix=prefix,
+            check=False
+        )
         for key, data in newdata.items():
             if key not in rdata:
                 record = rdata.add(key)
@@ -216,16 +228,15 @@ class ResourceRegistryControlPanelView(RequireJsView):
                 IBundleRegistry, "plone.bundles",
                 json.loads(req.get('bundles')))
 
-        if self.request.form.get('development', '').lower() == 'true':
-            self.registry['plone.resources.development'] = True
-        else:
-            self.registry['plone.resources.development'] = False
+        dev = self.request.form.get('development', '').lower() == 'true'
+        self.registry['plone.resources.development'] = dev
 
         # it'd be difficult to know if the legacy bundle settings
         # changed or not so we need to just set the last import date
         # back so it gets re-built
         self.registry.records[
-            'plone.resources.last_legacy_import'].value = datetime.now()
+            'plone.resources.last_legacy_import'
+        ].value = datetime.now()
         cookWhenChangingSettings(self.context)
 
         return json.dumps({
@@ -255,11 +266,17 @@ class ResourceRegistryControlPanelView(RequireJsView):
 
     def get_bundles(self):
         return self.registry.collectionOfInterface(
-            IBundleRegistry, prefix="plone.bundles", check=False)
+            IBundleRegistry,
+            prefix='plone.bundles',
+            check=False
+        )
 
     def get_resources(self):
         return self.registry.collectionOfInterface(
-            IResourceRegistry, prefix="plone.resources", check=False)
+            IResourceRegistry,
+            prefix='plone.resources',
+            check=False
+        )
 
     def less_build_config(self):
         site_url = self.context.portal_url()
@@ -270,18 +287,19 @@ class ResourceRegistryControlPanelView(RequireJsView):
         if bundle and bundle in bundles:
             bundle_obj = bundles[bundle]
             for resource in bundle_obj.resources:
-                if resource in resources:
-                    for css in resources[resource].css:
-                        url = urlparse(css)
-                        if url.netloc == '':
-                            # Local
-                            src = "%s/%s" % (site_url, css)
-                        else:
-                            src = "%s" % (css)
+                if resource not in resources:
+                    continue
+                for css in resources[resource].css:
+                    url = urlparse(css)
+                    if url.netloc == '':
+                        # Local
+                        src = '%s/%s' % (site_url, css)
+                    else:
+                        src = '%s' % (css)
 
-                        extension = url.path.split('.')[-1]
-                        if extension == 'less':
-                            less_files.append(src)
+                    extension = url.path.split('.')[-1]
+                    if extension == 'less':
+                        less_files.append(src)
         return json.dumps({
             'less': less_files,
         })
@@ -322,7 +340,7 @@ class ResourceRegistryControlPanelView(RequireJsView):
         """
         overrides = OverrideFolderManager(self.context)
         req = self.request
-        filepath = 'static/%s-compiled.js' % req.form['bundle']
+        filepath = 'static/{0}-compiled.js'.format(req.form['bundle'])
 
         data = req.form['data']
         overrides.save_file(filepath, data)
@@ -338,7 +356,7 @@ class ResourceRegistryControlPanelView(RequireJsView):
     def save_less_build(self):
         overrides = OverrideFolderManager(self.context)
         req = self.request
-        filepath = 'static/%s-compiled.css' % req.form['bundle']
+        filepath = 'static/{0}-compiled.css'.format(req.form['bundle'])
         data = ''
         for key, value in req.form.items():
             if not key.startswith('data-'):

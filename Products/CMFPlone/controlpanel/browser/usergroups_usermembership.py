@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
-from Products.CMFPlone import PloneMessageFactory as _
-from zExceptions import Forbidden
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.controlpanel.browser.usergroups import \
-    UsersGroupsControlPanelView
+from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone.controlpanel.browser.usergroups import UsersGroupsControlPanelView  # noqa
 from Products.CMFPlone.utils import normalizeString
+from zExceptions import Forbidden
 
 
 class UserMembershipControlPanel(UsersGroupsControlPanelView):
@@ -33,7 +32,10 @@ class UserMembershipControlPanel(UsersGroupsControlPanelView):
             if add:
                 for groupname in add:
                     group = self.gtool.getGroupById(groupname)
-                    if 'Manager' in group.getRoles() and not self.is_zope_manager:
+                    if (
+                        'Manager' in group.getRoles() and
+                        not self.is_zope_manager
+                    ):
                         raise Forbidden
 
                     self.gtool.addPrincipalToGroup(
@@ -66,4 +68,8 @@ class UserMembershipControlPanel(UsersGroupsControlPanelView):
 
     def getPotentialGroups(self, searchString):
         ignoredGroups = [x.id for x in self.getGroups() if x is not None]
-        return self.membershipSearch(searchString, searchUsers=False, ignore=ignoredGroups)
+        return self.membershipSearch(
+            searchString,
+            searchUsers=False,
+            ignore=ignoredGroups
+        )
