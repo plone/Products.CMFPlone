@@ -2,6 +2,7 @@
 from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.interfaces import IResourceRegistry
 from Products.CMFPlone.utils import safe_format
+from Products.CMFPlone.utils import SafeFormatter
 from Products.Five.browser import BrowserView
 from urlparse import urlparse
 from zope.component import getMultiAdapter
