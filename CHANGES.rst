@@ -268,6 +268,9 @@ Bug fixes:
 - Fix atom.xml feed not paying attention for setting to show about information
   [vangheem]
 
+- Test fix (Zope 4 related): More General test if controlpanle back link URL is ok.
+  [jensens]
+
 
 5.1a2 (2016-08-19)
 ------------------
