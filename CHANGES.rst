@@ -10,6 +10,14 @@ Changelog
 
 Breaking changes:
 
+- Add helper method to get all catalog entries from a given catalog: ``Products.CMFPlone.CatalogTool.catalog_get_all``.
+  In Products.ZCatalog before 4.0 a catalog call without a query returned all catalog brains.
+  This can be used as a replacement where it is needed, for exampe in tests.
+  [thet, gogobd]
+
+- Remove ``query_request`` from CatalogTool's search method, as it isn't supported in Products.ZCatalog 4 anymore.
+  [thet]
+
 - Removed our patch that added ``secureSend`` to the ``MailHost``.
   This was originally scheduled for removal in Plone 5.0.  See `issue
   965 <https://github.com/plone/Products.CMFPlone/issues/965>`_.
@@ -268,7 +276,34 @@ Bug fixes:
 - Fix atom.xml feed not paying attention for setting to show about information
   [vangheem]
 
-- Test fix (Zope 4 related): More General test if controlpanle back link URL is ok.
+- Fix imports from package Globals (removed in Zope4).
+  [pbauer]
+
+- Skip one test for zope4.
+  [pbauer]
+
+- Fix csrf-test where @@authenticator was called in the browser.
+  [pbauer]
+
+- Do not attempt to wrap types-controlpanel based on AutoExtensibleForm and
+  EditForm in Acquisition using __of__ since
+  Products.Five.browser.metaconfigure.simple no longer has
+  Products.Five.bbb.AcquisitionBBB as a parent-class and thus no __of__.
+  Anyway __of__ in AcquisitionBBB always only returned self since
+  Products.Five.browser.metaconfigure.xxx-classes are always aq-wrapped
+  using location and __parent__. As a alternative you could use
+  plone.app.registry.browser.controlpanel.ControlPanelFormWrapper as
+  base-class for a controlpanel since ControlPanelFormWrapper subclasses
+  Products.Five.BrowserView which again has AcquisitionBBB.
+  [pbauer]
+
+- Remove eNotSupported (not available in Zope 4)
+  [tschorr]
+
+- Remove deprecated __of__ calls on BrowserViews
+  [MrTango]
+
+- Test fix (Zope 4 related): More General test if controlpanel back link URL is ok.
   [jensens]
 
 
@@ -571,8 +606,8 @@ New:
 Fixes:
 
 - Toolbar cleanup: more less and less css, typo corrected in less variable,
-- better readability with a darker background in submenu, use font fallback
-- chain as in barcelonetta (works also w/o the theme).
+  better readability with a darker background in submenu, use font fallback
+  chain as in barcelonetta (works also w/o the theme).
   [jensens]
 
 - Fix browser spell checking not working with TinyMCE

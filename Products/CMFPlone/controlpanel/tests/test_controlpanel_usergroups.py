@@ -29,7 +29,6 @@ class TypesRegistryIntegrationTest(unittest.TestCase):
     def test_usergroups_controlpanel_view(self):
         view = getMultiAdapter((self.portal, self.portal.REQUEST),
                                name="usergroup-controlpanel")
-        view = view.__of__(self.portal)
         self.assertTrue(view())
 
     def test_usergroups_in_controlpanel(self):

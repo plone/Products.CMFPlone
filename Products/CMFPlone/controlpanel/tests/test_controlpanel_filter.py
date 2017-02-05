@@ -25,7 +25,6 @@ class FilterRegistryIntegrationTest(unittest.TestCase):
     def test_filter_controlpanel_view(self):
         view = getMultiAdapter((self.portal, self.portal.REQUEST),
                                name="filter-controlpanel")
-        view = view.__of__(self.portal)
         self.assertTrue(view())
 
     def test_filter_in_controlpanel(self):

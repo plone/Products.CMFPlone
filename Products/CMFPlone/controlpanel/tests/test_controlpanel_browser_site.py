@@ -59,7 +59,6 @@ class SiteControlPanelFunctionalTest(unittest.TestCase):
     def test_site_controlpanel_view(self):
         view = getMultiAdapter((self.portal, self.portal.REQUEST),
                                name="site-controlpanel")
-        view = view.__of__(self.portal)
         self.assertTrue(view())
 
     def test_site_title_is_stored_in_registry(self):

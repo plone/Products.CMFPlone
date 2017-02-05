@@ -43,7 +43,6 @@ class SyndicationControlPanelFunctionalTest(unittest.TestCase):
     def test_syndication_controlpanel_view(self):
         view = getMultiAdapter((self.portal, self.portal.REQUEST),
                                name="syndication-controlpanel")
-        view = view.__of__(self.portal)
         self.assertTrue(view())
 
     def test_syndication_controlpanel_enabled(self):

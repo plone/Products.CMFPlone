@@ -29,7 +29,6 @@ class SiteRegistryIntegrationTest(unittest.TestCase):
             (self.portal, self.portal.REQUEST),
             name="site-controlpanel"
         )
-        view = view.__of__(self.portal)
         self.assertTrue(view())
 
     def test_site_in_controlpanel(self):

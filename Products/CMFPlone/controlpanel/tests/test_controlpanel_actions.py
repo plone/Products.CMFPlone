@@ -18,7 +18,6 @@ class PortalActionsIntegrationTest(unittest.TestCase):
     def test_actions_controlpanel_view(self):
         view = getMultiAdapter((self.portal, self.portal.REQUEST),
                                name="actions-controlpanel")
-        view = view.__of__(self.portal)
         self.assertTrue(view())
 
     def test_actions_in_controlpanel(self):
@@ -32,11 +31,9 @@ class PortalActionsIntegrationTest(unittest.TestCase):
         action = self.portal_actions.site_actions.sitemap
         view = getMultiAdapter((action, self.portal.REQUEST),
                                name="action-form")
-        view = view.__of__(self.portal)
         self.assertTrue(view())
 
     def test_new_action_controlpanel_view(self):
         view = getMultiAdapter((self.portal, self.portal.REQUEST),
                                name="new-action")
-        view = view.__of__(self.portal)
         self.assertTrue(view())

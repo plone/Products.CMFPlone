@@ -19,7 +19,6 @@ from log import log
 from log import log_deprecated
 from log import log_exc
 from OFS.CopySupport import CopyError
-from OFS.CopySupport import eNotSupported
 from os.path import abspath
 from os.path import join
 from os.path import split
@@ -566,7 +565,7 @@ def _unrestricted_rename(container, id, new_id):
             action='manage_main'))
     ob = container._getOb(id)
     if not ob.cb_isMoveable():
-        raise CopyError(eNotSupported % escape(id))
+        raise CopyError('Not Supported {}'.format(escape(id)))
     try:
         ob._notifyOfCopyTo(container, op=1)
     except:

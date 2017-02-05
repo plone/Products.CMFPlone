@@ -4,14 +4,14 @@
 # base this on the Zope2 debug mode flag.
 
 
+from App.config import getConfiguration
 from zope.pagetemplate.pagetemplatefile import PageTemplateFile
-import Globals
 import logging
 import os
 
 
 def _cook_check(self):
-    if self._v_last_read and not Globals.DevelopmentMode:  # was 'not __debug__'
+    if self._v_last_read and not getConfiguration().debug_mode:
         return
     __traceback_info__ = self.filename
     try:

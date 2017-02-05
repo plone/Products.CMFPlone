@@ -48,7 +48,6 @@ class MarkupControlPanelFunctionalTest(unittest.TestCase):
     def test_markup_controlpanel_view(self):
         view = getMultiAdapter((self.portal, self.portal.REQUEST),
                                name="markup-controlpanel")
-        view = view.__of__(self.portal)
         self.assertTrue(view())
 
     def test_default_type(self):

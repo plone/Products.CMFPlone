@@ -28,7 +28,6 @@ class MailRegistryIntegrationTest(unittest.TestCase):
     def test_mail_controlpanel_view(self):
         view = getMultiAdapter((self.portal, self.portal.REQUEST),
                                name="mail-controlpanel")
-        view = view.__of__(self.portal)
         self.assertTrue(view())
 
     def test_mail_in_controlpanel(self):
