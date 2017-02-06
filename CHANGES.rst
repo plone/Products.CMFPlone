@@ -153,6 +153,9 @@ New features:
 
 Bug fixes:
 
+
+- Restore ability to include head when loading via ajax [displacedaussie]
+
 - Added security checks for ``str.format``.  Part of PloneHotfix20170117.  [maurits]
 
 - Fixed workflow tests for new ``comment_one_state_workflow``.  [maurits]
@@ -210,6 +213,7 @@ Bug fixes:
 - Fix TinyMCE content CSS support to allow themes to define
   external content CSS URLs (as with CDN like setup).
   [datakurre]
+
 
 - Add utf8 headers to all Python source files. [jensens]
 
