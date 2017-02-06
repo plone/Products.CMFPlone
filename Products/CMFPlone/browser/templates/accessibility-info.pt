@@ -47,7 +47,7 @@
         If this web site does not validate correctly, please contact the
         <span i18n:name="site_admin"><a href="/contact-info"
               tal:attributes="href string:${context/portal_url}/contact-info"
-              i18n:translate="label_site_admin">Site Administration</a></span>.
+              i18n:translate="label_site_admin">site administration</a></span>.
         </p>
 
         <p i18n:translate="description_wcag_aa_rating">

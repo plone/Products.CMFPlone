@@ -85,20 +85,15 @@
                              i18n:translate="label_toggle">Select All/None</label>
                     </div>
                     <div class="search-type-options">
-                      <tal:div tal:define="typeLists python:context.createMultiColumnList(types_list, numCols=2, sort_on='self');"
-                               tal:repeat="sublist typeLists">
-                        <tal:items repeat="type sublist">
-                          <div>
-                            <input type="checkbox" name="portal_type:list" value="#" class="noborder" checked="checked"
-                                   tal:attributes="value type;
-                                                   id string:portal_type_${repeat/sublist/number}_${repeat/type/number};
-                                                   checked python:((type in request.get('portal_type', [])) or first_call) and 'checked' or ''"/>
-                              <label for="" i18n:translate=""
-                                     tal:attributes="for string:portal_type_${repeat/sublist/number}_${repeat/type/number}"
-                                     tal:content="python: portal_types.getTypeInfo(type).Title()" />
-                          </div>
-                        </tal:items>
-                      </tal:div>
+                      <div tal:repeat="type types_list">
+                        <input type="checkbox" name="portal_type:list" value="#" class="noborder" checked="checked"
+                               tal:attributes="value type;
+                                               id string:portal_type_${repeat/type/number};
+                                               checked python:((type in request.get('portal_type', [])) or first_call) and 'checked' or ''"/>
+                          <label for="" i18n:translate=""
+                                 tal:attributes="for string:portal_type_${repeat/type/number}"
+                                 tal:content="python: portal_types.getTypeInfo(type).Title()" />
+                      </div>
                     </div>
                   </div>
                 </fieldset>
@@ -163,10 +158,9 @@
             </h1>
 
             <p id="rss-subscription" i18n:domain="plone"
-               tal:define="syndication context/@@tools/syndication|nothing"
-               tal:condition="syndication/isSiteSyndicationAllowed|nothing">
+               tal:condition="context/@@syndication-util/search_rss_enabled">
                <img src="" alt="RSS"
-                    tal:attributes="src string:${portal_url}/rss.gif"/>
+                    tal:attributes="src string:${portal_url}/rss.png"/>
                 <a href=""
                    class="link-feed"
                    tal:define="here_url context/@@plone_context_state/object_url"

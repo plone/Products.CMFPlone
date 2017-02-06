@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-from Products.CMFPlone.resources.exportimport.resourceregistry import \
-    ResourceRegistryNodeAdapter
-from Products.CMFPlone.resources.exportimport.resourceregistry import \
-    importResRegistry
+from Products.CMFPlone.resources.exportimport.resourceregistry import importResRegistry
+from Products.CMFPlone.resources.exportimport.resourceregistry import ResourceRegistryNodeAdapter
 from Products.ResourceRegistries.interfaces import ICSSRegistry
+
 
 _FILENAME = 'cssregistry.xml'
 _REG_ID = 'portal_css'

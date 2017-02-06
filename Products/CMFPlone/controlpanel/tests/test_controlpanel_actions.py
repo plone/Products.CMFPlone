@@ -2,7 +2,7 @@
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 from zope.component import getMultiAdapter
-import unittest2 as unittest
+import unittest
 
 
 class PortalActionsIntegrationTest(unittest.TestCase):
@@ -18,7 +18,6 @@ class PortalActionsIntegrationTest(unittest.TestCase):
     def test_actions_controlpanel_view(self):
         view = getMultiAdapter((self.portal, self.portal.REQUEST),
                                name="actions-controlpanel")
-        view = view.__of__(self.portal)
         self.assertTrue(view())
 
     def test_actions_in_controlpanel(self):
@@ -32,11 +31,9 @@ class PortalActionsIntegrationTest(unittest.TestCase):
         action = self.portal_actions.site_actions.sitemap
         view = getMultiAdapter((action, self.portal.REQUEST),
                                name="action-form")
-        view = view.__of__(self.portal)
         self.assertTrue(view())
 
     def test_new_action_controlpanel_view(self):
         view = getMultiAdapter((self.portal, self.portal.REQUEST),
                                name="new-action")
-        view = view.__of__(self.portal)
         self.assertTrue(view())

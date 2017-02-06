@@ -10,6 +10,19 @@ Changelog
 
 Breaking changes:
 
+- Add helper method to get all catalog entries from a given catalog: ``Products.CMFPlone.CatalogTool.catalog_get_all``.
+  In Products.ZCatalog before 4.0 a catalog call without a query returned all catalog brains.
+  This can be used as a replacement where it is needed, for exampe in tests.
+  [thet, gogobd]
+
+- Remove ``query_request`` from CatalogTool's search method, as it isn't supported in Products.ZCatalog 4 anymore.
+  [thet]
+
+- Removed our patch that added ``secureSend`` to the ``MailHost``.
+  This was originally scheduled for removal in Plone 5.0.  See `issue
+  965 <https://github.com/plone/Products.CMFPlone/issues/965>`_.
+  [maurits]
+
 - The related items widget has changed a lot.
   See the Mockup changelog for 2.4.0 here: https://github.com/plone/mockup/blob/master/CHANGES.rst
 
@@ -18,8 +31,79 @@ Breaking changes:
   This change shouldn't impact too much, because the form unload protection didn't work at all in Plone 5 until now.
   [thet]
 
+- MimetypesRegistry icons are now a browser resource directory instead of skins folder.
+  [jensens]
+
+- Remove unused ``plone_scripts`` (not used nor tested anywhere in coredev) [jensens, davisagli]
+
+    - ``add_ext_editor.py``
+    - ``author_find_content.py``
+    - ``canSelectDefaultPage.py`` with tests
+    - ``create_query_string.py``
+    - ``createMultiColumnList.py``
+    - ``displayContentsTab.py``
+    - ``formatColumns.py`` with tests
+    - ``getAllowedTypes.py``
+    - ``getGlobalPortalRoles.py``
+    - ``getNotAddableTypes.py``
+    - ``getPopupScript.py``
+    - ``getPortalTypeList.py`` and metadata
+    - ``getPortalTypes.py``
+    - ``getSelectableViews.py`` with tests
+    - ``hasIndexHtml.py`` with tests
+    - ``navigationParent.py`` with test
+    - ``plone_log.py``
+    - ``plone.css.py``
+    - ``returnNone.py`` with occurence refactored
+    - ``reverseList.py`` with test
+    - ``sort_modified_ascending.py``
+
+- Move scripts ``datecomponents.py`` and ``show_id.py`` to Archetypes
+  [jensens, davisagli]
+
+- Remove methods of the ``@@plone`` view that were marked for deprecation:
+  - ``showEditableBorder`` (use ``@@plone/showToolbar``)
+  - ``mark_view`` (use ``@@plone_layout/mark_view``)
+  - ``hide_columns`` (use ``@@plone_layout/hide_columns``)
+  - ``icons_visible`` (use ``@@plone_layout/icons_visible``)
+  - ``getIcon`` (use ``@@plone_layout/getIcon``)
+  - ``have_portlets`` (use ``@@plone_layout/have_portlets``)
+  - ``bodyClass`` (use ``@@plone_layout/bodyClass``)
+  [davisagli]
+
+- Move plone_content skin templates into Products.ATContentTypes as browser views.
+  [gforcada]
 
 New features:
+
+- Added ``ok`` view.  This is useful for automated checks, for example
+  httpok, to see if the site is still available.  It returns the text
+  ``OK`` and sets headers to avoid caching.
+  [maurits]
+
+- Make contact form extensible. This fixes https://github.com/plone/Products.CMFPlone/issues/1879.
+  [timo]
+
+- Don't minify CSS or JavaScript resources if they end with ``.min.css`` resp. ``.min.js``.
+  [thet]
+
+- Add ``safe_encode`` utility function to ``utils`` to safely encode unicode to a specified encoding.
+  The encoding defaults to ``utf-8``.
+  [thet]
+
+- The password reset templates were changed to make use of ``content-core`` macros.
+  [thet]
+
+- Add utility method to retrieve the top most parent request from a sub request.
+  [thet]
+
+- Add ``mockup-patterns-relateditems-upload`` resource, which can be used in custom bundles to add the upload feature in the related items widget.
+  [thet]
+
+- Move ``get_top_site_from_url`` from plone.app.content to ``utils.py`` and make it robust against unicode paths.
+  This function allows in virtual hosting environments to acquire the top most visible portal object to operate on.
+  It is used for example to calculate the correct virtual root objects for Mockup's related items and structure pattern.
+  [thet]
 
 - Add sort_on field to search controlpanel.
   [rodfersou]
@@ -32,11 +116,112 @@ New features:
 - Include mockup 2.4.0.
   [thet]
 
+- PasswordResetTool moved from its own package to here (includes cleanup and removal of ``getStats``).
+  [tomgross]
+
+- Prevent workflow menu overflowing in toolbar [MatthewWilkes]
+
+- Add default icon for top-level contentview and contentmenu toolbar entries [alecm]
+
+- Toolbar: Make menu hover background fit whole menu width. [thet]
+
+- Toolbar: Don't force scoll buttons to be left, when toolbar is right. [thet]
+
+- Toolbar: Make first level list items exand the whole toolbar width - also when scroll buttons are shown. [thet]
+
+- Toolbar: Make scroll buttons exand whole toolbar width. [thet]
+
+- Toolbar: Let the toolbar submenus be as wide as they need to be and do not break entries into multiple lines. [thet]
+
+- Resource Registry:
+  In ``debug-mode`` (zope.conf, buildout) do not load cache the production bundle.
+  [jensens]
+
+- Resource Registry:
+  In ``debug-mode`` (zope.conf, buildout) do not ignore development mode for anonymous users.
+  [jensens]
+
+- Resource Registry: If file system version is newer than ``last_compilation`` date of a bundle, use this as ``last_compilation`` date.
+  [jensens]
+
+- Simplify generated Gruntfile.js (DRY)
+  [jensens]
+
+- Fix: Do not modify the Content-Type header on bundle combine.
+  [jensens]
+
+
 Bug fixes:
+
 
 - Restore ability to include head when loading via ajax [displacedaussie]
 
+- Added security checks for ``str.format``.  Part of PloneHotfix20170117.  [maurits]
+
+- Fixed workflow tests for new ``comment_one_state_workflow``.  [maurits]
+
+- Fixed sometimes failing search order tests.  [maurits]
+
+- Load some Products.CMFPlone.patches earlier, instead of in our initialize method.
+  This is part of PloneHotfix20161129.
+  [maurits]
+
+- Depend on CMFFormController directly, because our whole login process is based on it and its installed in the GenericSetup profile.
+  Before it was installed indeirectly due to a dependency in some other package which is gone.
+  [jensens]
+
+- Fix Search RSS link condition to use search_rss_enabled option and use
+  rss.png instead of rss.gif that doesn't exist anymore.
+  [vincentfretin]
+
+- Fix potential KeyError: admin in doSearch in Users/Groups controlpanel.
+  [vincentfretin]
+
+- Let the ``mail_password_template`` and ``passwordreset`` views retrieve the expiry timeout from the view, in hours.
+  [thet]
+
+- Fix i18n of the explainPWResetTool.pt template.
+  [vincentfretin]
+
+- Remove "Minimum 5 characters" in help_new_password in pwreset_form.pt like
+  in other templates.
+  [vincentfretin]
+
+- Fix duplicate i18n attribute 'attributes' in controlpanel/browser/actions.pt
+  [vincentfretin]
+
+- Use "site administration" in lower case in accessibility-info.pt and
+  default_error_message.pt like in other templates.
+  [vincentfretin]
+
+- Support adding or removing bundles and resources on a request when working with resource tiles in a subrequest.
+  [thet]
+
+- Remove jquery.cookie from plone-logged-in bundle's stub_js_modules.
+  The toolbar, which has a dependency on jquery.cookie,
+  was moved from the plone bundle to plone-logged-in in CMPlone 5.1a2.
+  [thet]
+
+- Fix various layout issues in toolbar [alecm]
+
+- Style display menu headings differently from actions [alecm]
+
+- Avoid dependency on plone.app.imaging. [davisagli]
+
+- Fix TinyMCE table styles [vangheem]
+
+- Fix TinyMCE content CSS support to allow themes to define
+  external content CSS URLs (as with CDN like setup).
+  [datakurre]
+
+
 - Add utf8 headers to all Python source files. [jensens]
+
+- Add default icon for top-level contentview and contentmenu toolbar entries [alecm]
+- Reset and re-enable ``define`` and ``require`` for the ``plone-legacy`` bundle in development mode.
+  Fixes issues with legacy scripts having RequireJS integration in development mode.
+  In Production mode, resetting  and re-enabling is done in the compiled bundle.
+  [thet]
 
 - Apply security hotfix 20160830 for ``z3c.form`` widgets.  [maurits]
 
@@ -60,6 +245,71 @@ Bug fixes:
 
 - Use fork of grunt-sed which is compatible with newer grunt version.
   [gforcada]
+
+- Move some tests from ZopeTestCase to plone.app.testing.
+  [gforcada, ivanteoh, maurits]
+
+- wording changes for social media settings panel
+  [tkimnguyen]
+
+- URL change for bug tracker, wording tweaks to UPGRADE.txt
+  [tkimnguyen]
+
+- Cleanup code of resource registry.
+  [jensens]
+
+- Fix plone-compile-resources:
+  Toolbar variable override only possible if prior defined.
+  Define ``barcelonetaPath`` if ``plonetheme.barceloneta`` is available (but not necessarily installed).
+  [jensens]
+
+- Include inactive content in worklists.  [sebasgo]
+
+- Fix #1846 plone-compile-resources: Missing Support for Sites in Mountpoints
+  [jensens]
+
+- Do not use unittest2 (superfluos since part of Python 2.7).
+  [jensens]
+
+- Fix security test assertion:
+  TestAttackVectorsFunctional test_widget_traversal_2 assumed a 302 http return code when accessing some private API.
+  Meanwhile it changed to return a 404 on the URL.
+  Reflect this in the test and expect a 404.
+  [jensens]
+
+- Fix atom.xml feed not paying attention for setting to show about information
+  [vangheem]
+
+- Fix imports from package Globals (removed in Zope4).
+  [pbauer]
+
+- Skip one test for zope4.
+  [pbauer]
+
+- Fix csrf-test where @@authenticator was called in the browser.
+  [pbauer]
+
+- Do not attempt to wrap types-controlpanel based on AutoExtensibleForm and
+  EditForm in Acquisition using __of__ since
+  Products.Five.browser.metaconfigure.simple no longer has
+  Products.Five.bbb.AcquisitionBBB as a parent-class and thus no __of__.
+  Anyway __of__ in AcquisitionBBB always only returned self since
+  Products.Five.browser.metaconfigure.xxx-classes are always aq-wrapped
+  using location and __parent__. As a alternative you could use
+  plone.app.registry.browser.controlpanel.ControlPanelFormWrapper as
+  base-class for a controlpanel since ControlPanelFormWrapper subclasses
+  Products.Five.BrowserView which again has AcquisitionBBB.
+  [pbauer]
+
+- Remove eNotSupported (not available in Zope 4)
+  [tschorr]
+
+- Remove deprecated __of__ calls on BrowserViews
+  [MrTango]
+
+- Test fix (Zope 4 related): More General test if controlpanel back link URL is ok.
+  [jensens]
+
 
 5.1a2 (2016-08-19)
 ------------------
@@ -139,6 +389,8 @@ Bug fixes:
 
 - Upgrade ``less-plugin-inline-urls`` to ``1.2.0`` to properly handle VML url node values in CSS.
   [thet]
+- Fixed adding same resource/bundle to the request multiple times.
+  [vangheem]
 
 - Fixed missing keyword in robot tests due to wrong documentation lines.
   [maurits]
@@ -358,8 +610,8 @@ New:
 Fixes:
 
 - Toolbar cleanup: more less and less css, typo corrected in less variable,
-- better readability with a darker background in submenu, use font fallback
-- chain as in barcelonetta (works also w/o the theme).
+  better readability with a darker background in submenu, use font fallback
+  chain as in barcelonetta (works also w/o the theme).
   [jensens]
 
 - Fix browser spell checking not working with TinyMCE

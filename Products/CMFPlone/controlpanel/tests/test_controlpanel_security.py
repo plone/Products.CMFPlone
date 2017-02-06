@@ -8,7 +8,7 @@ from plone.registry.interfaces import IRegistry
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 
-import unittest2 as unittest
+import unittest
 
 
 class SecurityRegistryIntegrationTest(unittest.TestCase):
@@ -29,13 +29,14 @@ class SecurityRegistryIntegrationTest(unittest.TestCase):
     def test_security_controlpanel_view(self):
         view = getMultiAdapter((self.portal, self.portal.REQUEST),
                                name="security-controlpanel")
-        view = view.__of__(self.portal)
         self.assertTrue(view())
 
     def test_plone_app_registry_in_controlpanel(self):
         self.controlpanel = getToolByName(self.portal, "portal_controlpanel")
-        self.assertTrue('plone.app.registry' in [a.getAction(self)['id']
-                                                 for a in self.controlpanel.listActions()])
+        self.assertTrue(
+            'plone.app.registry' in [
+                a.getAction(self)['id']
+                for a in self.controlpanel.listActions()])
 
     def test_enable_self_reg_setting(self):
         self.assertTrue(hasattr(self.settings, 'enable_self_reg'))

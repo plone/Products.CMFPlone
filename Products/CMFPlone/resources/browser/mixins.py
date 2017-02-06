@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
-from Products.CMFPlone.interfaces import IResourceRegistry
-from Products.Five.browser import BrowserView
 from plone.registry.interfaces import IRegistry
+from Products.CMFPlone.interfaces import IResourceRegistry
+from Products.CMFPlone.utils import safe_format
+from Products.CMFPlone.utils import SafeFormatter
+from Products.Five.browser import BrowserView
 from urlparse import urlparse
 from zope.component import getMultiAdapter
 from zope.component import getUtility
@@ -68,7 +70,7 @@ class LessConfiguration(BrowserView):
             less_vars_params[name] = value
 
         for name, value in registry.items():
-            t = value.format(**less_vars_params)
+            t = SafeFormatter(value).safe_format(**less_vars_params)
             result += "'%s': \"%s\",\n" % (name, t)
 
         # Adding all plone.resource entries css values as less vars
@@ -117,7 +119,7 @@ class LessModifyConfiguration(LessConfiguration):
             less_vars_params[name] = value
 
         for name, value in registry.items():
-            t = value.format(**less_vars_params)
+            t = SafeFormatter(value).safe_format(**less_vars_params)
             result2 += "'@%s': \"%s\",\n" % (name, t)
 
         self.request.response.setHeader("Content-Type",

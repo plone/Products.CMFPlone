@@ -10,7 +10,7 @@ from zope.interface import implementer
 from AccessControl import ClassSecurityInfo
 from AccessControl.requestmethod import postonly
 from App.class_init import InitializeClass
-import Globals
+from App.config import getConfiguration
 from OFS.SimpleItem import SimpleItem
 from ZODB.POSException import ConflictError
 
@@ -195,7 +195,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
         vars['Plone Instance'] = self.getInstanceVersion()
         vars['Plone File System'] = self.getFileSystemVersion()
         vars['CMF'] = get_dist('Products.CMFCore').version
-        vars['Debug mode'] = Globals.DevelopmentMode and 'Yes' or 'No'
+        vars['Debug mode'] = getConfiguration().debug_mode and 'Yes' or 'No'
         try:
             vars['PIL'] = get_dist('PIL').version
         except pkg_resources.DistributionNotFound:

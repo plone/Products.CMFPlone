@@ -6,7 +6,6 @@ from Products.CMFPlone import utils
 from Products.CMFPlone.browser.interfaces import IPlone
 from Products.Five import BrowserView
 from zope.component import getMultiAdapter
-from zope.deprecation import deprecate
 from zope.i18n import translate
 from zope.interface import implementer
 from zope.size import byteDisplay
@@ -100,11 +99,6 @@ class Plone(BrowserView):
             return True
 
         return False
-
-    @deprecate('showEditableBorder is renamed to showToolbar')
-    def showEditableBorder(self):
-        # remove in 5.1
-        return self.showToolbar()
 
     def normalizeString(self, text):
         """Normalizes a title to an id.
@@ -212,81 +206,9 @@ class Plone(BrowserView):
             name=u'plone_context_state')
         return context_state.view_template_id()
 
-    @deprecate(
-        "@@plone_view/mark_view as been deprecated, you should use "
-        "@@plone_layout/mark_view"
-    )
-    def mark_view(self, view):
-        """Adds a marker interface to the view if it is "the" view for the
-        context May only be called from a template.
-        """
-        context = aq_inner(self.context)
-        layout = getMultiAdapter((context, self.request), name=u'plone_layout')
-        layout.mark_view(view)
-
     @memoize
     def patterns_settings(self):
         context = aq_inner(self.context)
         return getMultiAdapter(
             (context, self.request),
             name=u'plone_patterns_settings')()
-
-    @deprecate(  # remove in Plone 5.1
-        "@@plone_view/hide_columns as been deprecated, you should use "
-        "@@plone_layout/hide_columns"
-    )
-    def hide_columns(self, column_left, column_right):
-        """Returns a CSS class matching the current column status.
-        """
-        context = aq_inner(self.context)
-        layout = getMultiAdapter((context, self.request), name=u'plone_layout')
-        return layout.hide_columns(column_left, column_right)
-
-    @deprecate(  # remove in Plone 5.1
-        "@@plone_view/icons_visible as been deprecated, you should use "
-        "@@plone_layout/icons_visible"
-    )
-    def icons_visible(self):
-        """Returns True if icons should be shown or False otherwise.
-        """
-        context = aq_inner(self.context)
-        layout = getMultiAdapter((context, self.request), name=u'plone_layout')
-        return layout.icons_visible()
-
-    @deprecate(  # remove in Plone 5.1
-        "@@plone_view/getIcon as been deprecated, you should use "
-        "@@plone_layout/getIcon"
-    )
-    def getIcon(self, item):
-        """Returns an object which implements the IContentIcon interface and
-        provides the informations necessary to render an icon. The item
-        parameter needs to be adaptable to IContentIcon. Icons can be disabled
-        globally or just for anonymous users with the icon_visibility site
-        setting.
-        """
-        context = aq_inner(self.context)
-        layout = getMultiAdapter((context, self.request), name=u'plone_layout')
-        return layout.getIcon(item)
-
-    @deprecate(  # remove in Plone 5.1
-        "@@plone_view/have_portlets as been deprecated, you should "
-        "use @@plone_layout/have_portlets"
-    )
-    def have_portlets(self, manager_name, view=None):
-        """Determine whether a column should be shown. The left column is
-        called plone.leftcolumn; the right column is called plone.rightcolumn.
-        """
-        context = aq_inner(self.context)
-        layout = getMultiAdapter((context, self.request), name=u'plone_layout')
-        return layout.have_portlets(manager_name, view=view)
-
-    @deprecate(  # remove in Plone 5.1
-        "@@plone_view/bodyClass as been deprecated, you should use "
-        "@@plone_layout/bodyClass"
-    )
-    def bodyClass(self, template, view):
-        """Returns the CSS class to be used on the body tag.
-        """
-        context = aq_inner(self.context)
-        layout = getMultiAdapter((context, self.request), name=u'plone_layout')
-        return layout.bodyClass(template, view)

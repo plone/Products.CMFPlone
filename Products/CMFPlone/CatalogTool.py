@@ -125,6 +125,18 @@ BLACKLISTED_INTERFACES = frozenset((
 ))
 
 
+def catalog_get_all(catalog, unique_idx='UID'):
+    """Get all brains from the catalog.
+    """
+    res = [
+        catalog({
+            unique_idx: catalog._catalog.getIndexDataForRID(it)[unique_idx]
+        })[0]
+        for it in catalog._catalog.data
+    ]
+    return res
+
+
 @indexer(Interface)
 def allowedRolesAndUsers(obj):
     """Return a list of roles and users with View permission.

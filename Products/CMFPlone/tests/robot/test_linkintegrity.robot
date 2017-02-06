@@ -4,7 +4,7 @@
 #
 # $ bin/robot-server --reload-path src/Products.CMFPlone/Products/CMFPlone/ Products.CMFPlone.testing.PRODUCTS_CMFPLONE_ROBOT_TESTING
 #
-# $ bin/robot src/Products.CMFPlone/Products/CMFPlone/tests/robot/test_controlpanel_usergroups.robot
+# $ bin/robot src/Products.CMFPlone/Products/CMFPlone/tests/robot/test_linkintegrity.robot
 #
 # ============================================================================
 
@@ -17,6 +17,7 @@ Library  Remote  ${PLONE_URL}/RobotRemote
 
 Resource  keywords.robot
 
+#Suite setup  Set Selenium speed  0.5s
 Test Setup  Run keywords  Plone Test Setup
 Test Teardown  Run keywords  Plone Test Teardown
 
@@ -27,7 +28,7 @@ Scenario: When page is linked show warning
   [Tags]  unstable
   [Documentation]  This sometimes fails with: StaleElementReferenceException: Message: Element not found in the cache.
   Given a logged-in site administrator
-    a page to link to
+    and a page to link to
     and a page to edit
     and a link in rich text
     should show warning when deleting page
@@ -66,18 +67,30 @@ a logged-in site administrator
   Enable autologin as  Site Administrator
 
 
-a page to edit
-  Go To  ${PLONE_URL}
-  Click Link  css=#plone-contentmenu-factories a
-  Click Link  css=.plonetoolbar-contenttype .contenttype-document
-  Input Text  css=#formfield-form-widgets-IDublinCore-title input  Bar
-
-
 a page to link to
-  Go To  ${PLONE_URL}
-  Click Link  css=#plone-contentmenu-factories a
-  Click Link  css=.plonetoolbar-contenttype .contenttype-document
-  Input Text  css=#formfield-form-widgets-IDublinCore-title input  Foo
+  Create content  type=Document  id=foo  title=Foo
+
+a page to edit
+  Create content  type=Document  id=bar  title=Bar
+
+
+a link in rich text
+  Go To  ${PLONE_URL}/bar/edit
+  Wait until element is visible  css=.mce-edit-area iframe
+  Select Frame  css=.mce-edit-area iframe
+  Input text  css=.mce-content-body  foo
+  Execute Javascript    function selectElementContents(el) {var range = document.createRange(); range.selectNodeContents(el); var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);} var el = document.getElementById("tinymce"); selectElementContents(el);
+  UnSelect Frame
+  Click Button  css=div[aria-label="Insert/edit link"] button
+
+  Given patterns are loaded
+  Wait until element is visible  css=.pat-relateditems .select2-input.select2-default
+  Click Element  css=.pat-relateditems .select2-input.select2-default
+  Wait until element is visible  xpath=(//span[contains(., 'Foo')])
+  Click Element  xpath=(//span[contains(., 'Foo')])
+  Wait until page contains  Foo
+
+  Click Button  css=.plone-modal-footer .plone-btn-primary
   Click Button  css=#form-buttons-save
 
 
@@ -94,10 +107,10 @@ should show warning when deleting page from folder_contents
   Click Element  css=tr[data-id="foo"] input
   Checkbox Should Be Selected  css=tr[data-id="foo"] input
   Wait until keyword succeeds  30  1  Page should not contain element  css=#btn-delete.disabled
-  Click Link  Delete
+  Click Element  css=#btngroup-mainbuttons #btn-delete
   Wait until page contains element  css=.popover-content .btn-danger
   Page should contain element  css=.breach-container .breach-item
-  Click Button  No
+  Click Element  css=#popover-delete .closeBtn
   Checkbox Should Be Selected  css=tr[data-id="foo"] input
 
 
@@ -107,10 +120,10 @@ should not show warning when deleting page from folder_contents
   Click Element  css=tr[data-id="foo"] input
   Checkbox Should Be Selected  css=tr[data-id="foo"] input
   Wait until keyword succeeds  30  1  Page should not contain element  css=#btn-delete.disabled
-  Click Link  Delete
+  Click Element  css=#btngroup-mainbuttons #btn-delete
   Wait until page contains element  css=.popover-content .btn-danger
   Page should not contain element  css=.breach-container .breach-item
-  Click Button  Yes
+  Click Element  css=#popover-delete .applyBtn
   Wait until page contains  Successfully delete items
   Wait until keyword succeeds  30  1  Page should not contain Element  css=tr[data-id="foo"] input
 
@@ -120,22 +133,6 @@ should not show warning when deleting page
   Click Link  css=#plone-contentmenu-actions a
   Click Link  css=#plone-contentmenu-actions-delete
   Page should not contain element  css=.breach-container .breach-item
-
-
-a link in rich text
-  Wait until element is visible  css=.mce-edit-area iframe
-  Select Frame  css=.mce-edit-area iframe
-  Input text  css=.mce-content-body  foo
-  Execute Javascript    function selectElementContents(el) {var range = document.createRange(); range.selectNodeContents(el); var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);} var el = document.getElementById("tinymce"); selectElementContents(el);
-  UnSelect Frame
-  Click Button  css=div[aria-label="Insert/edit link"] button
-  Wait until element is visible  css=.select2-input.select2-default
-  Click Element  css=.select2-input.select2-default
-  Input text  css=.select2-dropdown-open .select2-input  Foo
-  Wait until element is visible  jquery=.select2-result-selectable .pattern-relateditems-result-select.selectable:contains(Foo)
-  Click Link  jquery=.select2-result-selectable .pattern-relateditems-result-select.selectable:contains(Foo)
-  Click Button  css=.plone-modal-footer .plone-btn-primary
-  Click Button  css=#form-buttons-save
 
 
 remove link to page

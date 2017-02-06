@@ -49,7 +49,7 @@
                         contact the <span i18n:name="site_admin">
                         <a href="#"
                            i18n:translate="label_site_admin"
-                           tal:attributes="href string:${context/portal_url}/contact-info">Site Administration</a></span>.
+                           tal:attributes="href string:${context/portal_url}/contact-info">site administration</a></span>.
                     </p>
 
                     <p i18n:translate="description_site_error_thank_you">
@@ -125,7 +125,7 @@
                     <span i18n:name="site_admin">
                     <a href="#"
                        i18n:translate="label_site_admin"
-                       tal:attributes="href string:${context/portal_url}/contact-info">Site Administration</a></span>,
+                       tal:attributes="href string:${context/portal_url}/contact-info">site administration</a></span>,
                     please include this entry number in your message.
                     </p>
 
@@ -149,7 +149,7 @@
                     contact the <span i18n:name="site_admin">
                     <a href="#"
                        i18n:translate="label_site_admin"
-                       tal:attributes="href string:${context/portal_url}/contact-info">Site Administration</a></span>.
+                       tal:attributes="href string:${context/portal_url}/contact-info">site administration</a></span>.
                     </p>
                 </tal:noentry>
             </div>

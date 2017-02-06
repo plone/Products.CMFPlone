@@ -2,7 +2,7 @@
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 from plone.app.testing import SITE_OWNER_NAME, SITE_OWNER_PASSWORD
 from plone.testing.z2 import Browser
-import unittest2 as unittest
+import unittest
 
 
 class TypesControlPanelFunctionalTest(unittest.TestCase):

@@ -1,5 +1,8 @@
 //*// TOOLBAR EDIT ZONE PLONE //*//
 
+// might get overridden later by plone registry stored variables!
+@import url("variables.less");
+
 #edit-zone {
   font-family: @plone-toolbar-font-primary;
   font-weight: 400;
@@ -109,7 +112,6 @@
     .scroll-btn {
       position: fixed;
       z-index: 10;
-      left: 0;
       background-color: black;
 
       &.up {
@@ -139,11 +141,13 @@
           line-height: 20px;
         }
 
-        &:hover > span {
-          margin-top: 0;
-          -webkit-transition: none;
-          transition: none;
+        &:hover {
           background: #007bb3;
+          & > span {
+            margin-top: 0;
+            -webkit-transition: none;
+            transition: none;
+          }
         }
       }
     }
@@ -291,7 +295,10 @@
       }
 
       li {
-        width: @plone-toolbar-submenu-width;
+        min-width: @plone-toolbar-submenu-width;
+        width: auto;
+        white-space: nowrap;
+        padding-right: 1em;
 
         &:last-child {
           padding-bottom: 5px;
@@ -310,7 +317,7 @@
           padding: 5px 15px;
         }
 
-        &.plone-toolbar-submenu-header {
+        &.plone-toolbar-submenu-header, &.plonetoolbar-display-view.actionSeparator {
           margin: 5px 0 0;
           padding: 5px 0 0;
           border-top: 1px solid @plone-toolbar-separator-color;
@@ -340,7 +347,11 @@
           }
         }
 
-        &:not(.plone-toolbar-submenu-header) {
+        &.plonetoolbar-display-view.actionSeparator {
+            margin: 0;
+        }
+
+        &:not(.plone-toolbar-submenu-header, .plonetoolbar-display-view.actionSeparator) {
           > :before {
             position: absolute;
             left: 15px;
@@ -416,6 +427,31 @@
   }
 }
 
+.plone-toolbar-left {
+    // expand fist level list items to full width
+    &.plone-toolbar-expanded {
+        ul.plone-toolbar-main > li {
+            width: @plone-left-toolbar-expanded;
+        }
+    }
+    &.plone-toolbar-default {
+        ul.plone-toolbar-main > li {
+            width: @plone-left-toolbar;
+        }
+    }
+
+    #edit-zone ul.plone-toolbar-main > li > a {
+        // this selector, to be most specific
+        & > .icon-up,
+        & > .icon-down {
+            // make them full width, icon in middle.
+            width: 100%;
+            display: block;
+            padding-left: 0;
+        }
+    }
+}
+
 .plone-toolbar-left #edit-zone {
   z-index: 5;
 
@@ -433,6 +469,13 @@
   width: @plone-toolbar-submenu-width;
   height: 0;
   max-height: 0;
+}
+
+.plone-toolbar-default #edit-zone {
+    /* Short title support */
+    .plone-toolbar-title, .plone-toolbar-state-title {
+        display: none;
+    }
 }
 
 .plone-toolbar-expanded #edit-zone {
@@ -467,6 +510,11 @@
 
   li:not(.active) a:hover > span {
     background: @plone-toolbar-link;
+  }
+
+  /* Short title support */
+  .plone-toolbar-short-title {
+      display: none;
   }
 
   /*states*/
@@ -527,7 +575,8 @@
 #edit-zone nav > ul > li.active {
   ul {
     display: block;
-    width: @plone-toolbar-submenu-width;
+    min-width: @plone-toolbar-submenu-width;
+    width: auto;
   }
 
   a > span {
@@ -856,7 +905,8 @@
   }
 
   #edit-zone nav ul li.active ul {
-    width: @plone-toolbar-submenu-width;
+    min-width: @plone-toolbar-submenu-width;
+    width: auto;
   }
 
   .plone-toolbar-left-default {

@@ -26,6 +26,7 @@ workflow_dict = {
     'one_state_workflow': ('published',),
     'plone_workflow': ('pending', 'private', 'published', 'visible',),
     'simple_publication_workflow': ('private', 'published', 'pending',),
+    'comment_one_state_workflow': ('published',),
     'comment_review_workflow': ('pending', 'published',)
 }
 # then we join all states into one master list

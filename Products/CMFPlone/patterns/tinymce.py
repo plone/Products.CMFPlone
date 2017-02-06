@@ -42,10 +42,11 @@ class TinyMCESettingsGenerator(object):
         theme = self.get_theme()
         tinymce_content_css = getattr(theme, 'tinymce_content_css', None)
         if tinymce_content_css is not None:
-            files.extend([
-                self.nav_root_url + _
-                for _ in theme.tinymce_content_css.split(',')
-            ])
+            for path in theme.tinymce_content_css.split(','):
+                if path.startswith('http://') or path.startswith('https://'):
+                    files.append(path)
+                else:
+                    files.append(self.nav_root_url + path)
 
         return ','.join(files)
 
@@ -56,7 +57,7 @@ class TinyMCESettingsGenerator(object):
         if base is None:
             val = {}
         else:
-            val = base
+            val = base.copy()
         val.update({
             'title': parts[0],
             _type: parts[1]
@@ -94,7 +95,8 @@ class TinyMCESettingsGenerator(object):
             'items': self.get_styles(alignment_styles)
         }, {
             'title': 'Tables',
-            'items': self.get_styles(table_styles)
+            'items': self.get_styles(
+                table_styles, 'classes', {'selector': 'table'})
         }]
 
     def get_tiny_config(self):
