@@ -847,8 +847,10 @@ class SafeFormatter(string.Formatter):
         return self.vformat(self.value, args, kwargs)
 
 
-def safe_format(inst, method):
-    """
-    Use our SafeFormatter that uses guarded_getattr for attribute access
+def _safe_format(inst, method):
+    """Use our SafeFormatter that uses guarded_getattr for attribute access.
+
+    This is for use with AccessControl.allow_type,
+    as we do in CMFPlone/__init__.py.
     """
     return SafeFormatter(inst).safe_format
