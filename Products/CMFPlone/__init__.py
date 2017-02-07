@@ -117,14 +117,14 @@ def initialize(context):
 
     # We want to allow all methods on string type except 'format'.
     # That one needs special handling to avoid access to attributes.
-    from Products.CMFPlone.utils import safe_format
+    from Products.CMFPlone.utils import _safe_format
     rules = dict([(m, True) for m in dir(str) if not m.startswith('_')])
-    rules['format'] = safe_format
+    rules['format'] = _safe_format
     allow_type(str, rules)
 
     # Same for unicode instead of str.
     rules = dict([(m, True) for m in dir(unicode) if not m.startswith('_')])
-    rules['format'] = safe_format
+    rules['format'] = _safe_format
     allow_type(unicode, rules)
 
     # Apply monkey patches
