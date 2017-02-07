@@ -1,5 +1,5 @@
 from Products.CMFPlone.interfaces import IResourceRegistry
-from Products.CMFPlone.utils import safe_format
+from Products.CMFPlone.utils import SafeFormatter
 from Products.Five.browser import BrowserView
 from plone.registry.interfaces import IRegistry
 from urlparse import urlparse
