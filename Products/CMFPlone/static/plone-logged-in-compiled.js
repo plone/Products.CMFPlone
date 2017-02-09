@@ -49816,7 +49816,7 @@ define('mockup-patterns-upload',[
 
       self.$dropzone = $('.upload-area', self.$el);
 
-      $('button.browse', self.$el).click(function(e) {
+      $('div.browse-select button.browse', self.$el).click(function(e) {
         e.preventDefault();
         e.stopPropagation();
         if(!self.options.maxFiles || self.dropzone.files.length < self.options.maxFiles){
@@ -78148,5 +78148,5 @@ require([
   'use strict';
 });
 
-define("/home/_thet/data/dev/fhnw/plone/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
+define("/home/_thet/data/dev/plone/buildout.coredev/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
 

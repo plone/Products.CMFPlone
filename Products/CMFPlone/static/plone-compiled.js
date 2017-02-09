@@ -3876,7 +3876,7 @@ define('mockup-utils',[
     if (typeof val === 'string') {
       val = $.trim(val).toLowerCase();
     }
-    return ['true', true, 1].indexOf(val) !== -1;
+    return ['false', false, '0', 0, '', undefined, null].indexOf(val) === -1;
   };
 
   var escapeHTML = function(val) {
@@ -7644,14 +7644,16 @@ the specific language governing permissions and limitations under the Apache Lic
 (function(root) {
 define("jquery.event.drag", ["jquery"], function() {
   return (function() {
-/*! 
+/*!
  * jquery.event.drag - v 2.2
  * Copyright (c) 2010 Three Dub Media - http://threedubmedia.com
  * Open Source MIT License - http://threedubmedia.com/code/license
  */
-// Created: 2008-06-04 
+// Created: 2008-06-04
 // Updated: 2012-05-21
 // REQUIRES: jquery 1.7.x
+
+// UPDATED FROM https://github.com/sutoiku/jquery.event.drag-drop
 
 ;(function( $ ){
 
@@ -7662,7 +7664,7 @@ $.fn.drag = function( str, arg, opts ){
 	// figure out the event handler...
 	fn = $.isFunction( str ) ? str : $.isFunction( arg ) ? arg : null;
 	// fix the event type
-	if ( type.indexOf("drag") !== 0 ) 
+	if ( type.indexOf("drag") !== 0 )
 		type = "drag"+ type;
 	// were options passed
 	opts = ( str == fn ? arg : opts ) || {};
@@ -7671,11 +7673,11 @@ $.fn.drag = function( str, arg, opts ){
 };
 
 // local refs (increase compression)
-var $event = $.event, 
+var $event = $.event,
 $special = $event.special,
-// configure the drag special event 
+// configure the drag special event
 drag = $special.drag = {
-	
+
 	// these are the default settings
 	defaults: {
 		which: 1, // mouse button pressed to start drag sequence
@@ -7686,38 +7688,38 @@ drag = $special.drag = {
 		drop: true, // false to suppress drop events, true or selector to allow
 		click: false // false to suppress click events after dragend (no proxy)
 	},
-	
+
 	// the key name for stored drag data
 	datakey: "dragdata",
-	
+
 	// prevent bubbling for better performance
 	noBubble: true,
-	
+
 	// count bound related events
-	add: function( obj ){ 
+	add: function( obj ){
 		// read the interaction data
 		var data = $.data( this, drag.datakey ),
-		// read any passed options 
+		// read any passed options
 		opts = obj.data || {};
 		// count another realted event
 		data.related += 1;
 		// extend data options bound with this event
-		// don't iterate "opts" in case it is a node 
+		// don't iterate "opts" in case it is a node
 		$.each( drag.defaults, function( key, def ){
 			if ( opts[ key ] !== undefined )
 				data[ key ] = opts[ key ];
 		});
 	},
-	
+
 	// forget unbound related events
 	remove: function(){
 		$.data( this, drag.datakey ).related -= 1;
 	},
-	
+
 	// configure interaction, capture settings
 	setup: function(){
 		// check for related events
-		if ( $.data( this, drag.datakey ) ) 
+		if ( $.data( this, drag.datakey ) )
 			return;
 		// initialize the drag data with copied defaults
 		var data = $.extend({ related:0 }, drag.defaults );
@@ -7726,42 +7728,42 @@ drag = $special.drag = {
 		// bind the mousedown event, which starts drag interactions
 		$event.add( this, "touchstart mousedown", drag.init, data );
 		// prevent image dragging in IE...
-		if ( this.attachEvent ) 
-			this.attachEvent("ondragstart", drag.dontstart ); 
+		if ( this.attachEvent )
+			this.attachEvent("ondragstart", drag.dontstart );
 	},
-	
+
 	// destroy configured interaction
 	teardown: function(){
 		var data = $.data( this, drag.datakey ) || {};
 		// check for related events
-		if ( data.related ) 
+		if ( data.related )
 			return;
 		// remove the stored data
 		$.removeData( this, drag.datakey );
 		// remove the mousedown event
 		$event.remove( this, "touchstart mousedown", drag.init );
 		// enable text selection
-		drag.textselect( true ); 
+		drag.textselect( true );
 		// un-prevent image dragging in IE...
-		if ( this.detachEvent ) 
-			this.detachEvent("ondragstart", drag.dontstart ); 
+		if ( this.detachEvent )
+			this.detachEvent("ondragstart", drag.dontstart );
 	},
-		
+
 	// initialize the interaction
-	init: function( event ){ 
+	init: function( event ){
 		// sorry, only one touch at a time
-		if ( drag.touched ) 
+		if ( drag.touched )
 			return;
 		// the drag/drop interaction data
 		var dd = event.data, results;
 		// check the which directive
-		if ( event.which != 0 && dd.which > 0 && event.which != dd.which ) 
-			return; 
+		if ( event.which != 0 && dd.which > 0 && event.which != dd.which )
+			return;
 		// check for suppressed selector
-		if ( $( event.target ).is( dd.not ) ) 
+		if ( $( event.target ).is( dd.not ) )
 			return;
 		// check for handle selector
-		if ( dd.handle && !$( event.target ).closest( dd.handle, event.currentTarget ).length ) 
+		if ( dd.handle && !$( event.target ).closest( dd.handle, event.currentTarget ).length )
 			return;
 
 		drag.touched = event.type == 'touchstart' ? this : null;
@@ -7772,7 +7774,7 @@ drag = $special.drag = {
 		dd.pageX = event.pageX;
 		dd.pageY = event.pageY;
 		dd.dragging = null;
-		// handle draginit event... 
+		// handle draginit event...
 		results = drag.hijack( event, "draginit", dd );
 		// early cancel
 		if ( !dd.propagates )
@@ -7789,43 +7791,43 @@ drag = $special.drag = {
 		// remember how many interactions are propagating
 		dd.propagates = dd.interactions.length;
 		// locate and init the drop targets
-		if ( dd.drop !== false && $special.drop ) 
+		if ( dd.drop !== false && $special.drop )
 			$special.drop.handler( event, dd );
 		// disable text selection
-		drag.textselect( false ); 
+		drag.textselect( false );
 		// bind additional events...
 		if ( drag.touched )
 			$event.add( drag.touched, "touchmove touchend", drag.handler, dd );
-		else 
+		else
 			$event.add( document, "mousemove mouseup", drag.handler, dd );
 		// helps prevent text selection or scrolling
 		if ( !drag.touched || dd.live )
 			return false;
-	},	
-	
+	},
+
 	// returns an interaction object
 	interaction: function( elem, dd ){
 		var offset = $( elem )[ dd.relative ? "position" : "offset" ]() || { top:0, left:0 };
 		return {
-			drag: elem, 
-			callback: new drag.callback(), 
+			drag: elem,
+			callback: new drag.callback(),
 			droppable: [],
 			offset: offset
 		};
 	},
-	
+
 	// handle drag-releatd DOM events
-	handler: function( event ){ 
+	handler: function( event ){
 		// read the data before hijacking anything
-		var dd = event.data;	
+		var dd = event.data;
 		// handle various events
 		switch ( event.type ){
 			// mousemove, check distance, start dragging
-			case !dd.dragging && 'touchmove': 
+			case !dd.dragging && 'touchmove':
 				event.preventDefault();
 			case !dd.dragging && 'mousemove':
-				//  drag tolerance, x� + y� = distance�
-				if ( Math.pow(  event.pageX-dd.pageX, 2 ) + Math.pow(  event.pageY-dd.pageY, 2 ) < Math.pow( dd.distance, 2 ) ) 
+				//  drag tolerance, x² + y² = distance²
+				if ( Math.pow(  event.pageX-dd.pageX, 2 ) + Math.pow(  event.pageY-dd.pageY, 2 ) < Math.pow( dd.distance, 2 ) )
 					break; // distance tolerance not reached
 				event.target = dd.target; // force target from "mousedown" event (fix distance issue)
 				drag.hijack( event, "dragstart", dd ); // trigger "dragstart"
@@ -7836,42 +7838,42 @@ drag = $special.drag = {
 				event.preventDefault();
 			case 'mousemove':
 				if ( dd.dragging ){
-					// trigger "drag"		
+					// trigger "drag"
 					drag.hijack( event, "drag", dd );
 					if ( dd.propagates ){
 						// manage drop events
 						if ( dd.drop !== false && $special.drop )
-							$special.drop.handler( event, dd ); // "dropstart", "dropend"							
-						break; // "drag" not rejected, stop		
+							$special.drop.handler( event, dd ); // "dropstart", "dropend"
+						break; // "drag" not rejected, stop
 					}
 					event.type = "mouseup"; // helps "drop" handler behave
 				}
 			// mouseup, stop dragging
-			case 'touchend': 
-			case 'mouseup': 
+			case 'touchend':
+			case 'mouseup':
 			default:
 				if ( drag.touched )
 					$event.remove( drag.touched, "touchmove touchend", drag.handler ); // remove touch events
-				else 
-					$event.remove( document, "mousemove mouseup", drag.handler ); // remove page events	
+				else
+					$event.remove( document, "mousemove mouseup", drag.handler ); // remove page events
 				if ( dd.dragging ){
 					if ( dd.drop !== false && $special.drop )
 						$special.drop.handler( event, dd ); // "drop"
-					drag.hijack( event, "dragend", dd ); // trigger "dragend"	
+					drag.hijack( event, "dragend", dd ); // trigger "dragend"
 				}
 				drag.textselect( true ); // enable text selection
 				// if suppressing click events...
 				if ( dd.click === false && dd.dragging )
 					$.data( dd.mousedown, "suppress.click", new Date().getTime() + 5 );
-				dd.dragging = drag.touched = false; // deactivate element	
+				dd.dragging = drag.touched = false; // deactivate element
 				break;
 		}
 	},
-		
+
 	// re-use event object for custom events
 	hijack: function( event, type, dd, x, elem ){
 		// not configured
-		if ( !dd ) 
+		if ( !dd )
 			return;
 		// remember the original event and type
 		var orig = { event:event.originalEvent, type:event.type },
@@ -7901,7 +7903,7 @@ drag = $special.drag = {
 				callback.target = subject;
 				// force propagtion of the custom event
 				event.isPropagationStopped = function(){ return false; };
-				// handle the event	
+				// handle the event
 				result = subject ? $event.dispatch.call( subject, event, callback ) : null;
 				// stop the drag interaction for this element
 				if ( result === false ){
@@ -7916,25 +7918,25 @@ drag = $special.drag = {
 				// assign any dropinit elements
 				else if ( type == "dropinit" )
 					ia.droppable.push( drag.element( result ) || subject );
-				// accept a returned proxy element 
+				// accept a returned proxy element
 				if ( type == "dragstart" )
 					ia.proxy = $( drag.element( result ) || ia.drag )[0];
-				// remember this result	
+				// remember this result
 				ia.results.push( result );
 				// forget the event result, for recycling
 				delete event.result;
 				// break on cancelled handler
 				if ( type !== "dropinit" )
 					return result;
-			});	
-			// flatten the results	
-			dd.results[ i ] = drag.flatten( ia.results );	
+			});
+			// flatten the results
+			dd.results[ i ] = drag.flatten( ia.results );
 			// accept a set of valid drop targets
 			if ( type == "dropinit" )
 				ia.droppable = drag.flatten( ia.droppable );
 			// locate drop targets
 			if ( type == "dragstart" && !ia.cancelled )
-				callback.update(); 
+				callback.update();
 		}
 		while ( ++i < len )
 		// restore the original event & type
@@ -7943,9 +7945,9 @@ drag = $special.drag = {
 		// return all handler results
 		return drag.flatten( dd.results );
 	},
-		
+
 	// extend the callback object with drag/drop properties...
-	properties: function( event, dd, ia ){		
+	properties: function( event, dd, ia ){
 		var obj = ia.callback;
 		// elements
 		obj.drag = ia.drag;
@@ -7960,44 +7962,44 @@ drag = $special.drag = {
 		obj.originalX = ia.offset.left;
 		obj.originalY = ia.offset.top;
 		// adjusted element position
-		obj.offsetX = obj.originalX + obj.deltaX; 
+		obj.offsetX = obj.originalX + obj.deltaX;
 		obj.offsetY = obj.originalY + obj.deltaY;
 		// assign the drop targets information
 		obj.drop = drag.flatten( ( ia.drop || [] ).slice() );
 		obj.available = drag.flatten( ( ia.droppable || [] ).slice() );
-		return obj;	
+		return obj;
 	},
-	
+
 	// determine is the argument is an element or jquery instance
 	element: function( arg ){
 		if ( arg && ( arg.jquery || arg.nodeType == 1 ) )
 			return arg;
 	},
-	
+
 	// flatten nested jquery objects and arrays into a single dimension array
 	flatten: function( arr ){
 		return $.map( arr, function( member ){
-			return member && member.jquery ? $.makeArray( member ) : 
+			return member && member.jquery ? $.makeArray( member ) :
 				member && member.length ? drag.flatten( member ) : member;
 		});
 	},
-	
+
 	// toggles text selection attributes ON (true) or OFF (false)
-	textselect: function( bool ){ 
+	textselect: function( bool ){
 		$( document )[ bool ? "unbind" : "bind" ]("selectstart", drag.dontstart )
 			.css("MozUserSelect", bool ? "" : "none" );
 		// .attr("unselectable", bool ? "off" : "on" )
-		document.unselectable = bool ? "off" : "on"; 
+		document.unselectable = bool ? "off" : "on";
 	},
-	
+
 	// suppress "selectstart" and "ondragstart" events
-	dontstart: function(){ 
-		return false; 
+	dontstart: function(){
+		return false;
 	},
-	
+
 	// a callback instance contructor
 	callback: function(){}
-	
+
 };
 
 // callback methods
@@ -8021,9 +8023,9 @@ $event.dispatch = function( event ){
 };
 
 // event fix hooks for touch events...
-var touchHooks = 
-$event.fixHooks.touchstart = 
-$event.fixHooks.touchmove = 
+var touchHooks =
+$event.fixHooks.touchstart =
+$event.fixHooks.touchmove =
 $event.fixHooks.touchend =
 $event.fixHooks.touchcancel = {
 	props: "clientX clientY pageX pageY screenX screenY".split( " " ),
@@ -8031,9 +8033,9 @@ $event.fixHooks.touchcancel = {
 		if ( orig ){
 			var touched = ( orig.touches && orig.touches[0] )
 				|| ( orig.changedTouches && orig.changedTouches[0] )
-				|| null; 
+				|| null;
 			// iOS webkit: touchstart, touchmove, touchend
-			if ( touched ) 
+			if ( touched )
 				$.each( touchHooks.props, function( i, prop ){
 					event[ prop ] = touched[ prop ];
 				});
@@ -8043,9 +8045,10 @@ $event.fixHooks.touchcancel = {
 };
 
 // share the same special event configuration with related events...
-$special.draginit = $special.dragstart = $special.dragend = drag;
+//$special.draginit = $special.dragstart = $special.dragend = drag;
 
 })( jQuery );
+
 
   }).apply(root, arguments);
 });
@@ -12338,6 +12341,8 @@ Picker.extend( 'pickatime', TimePicker )
  * Options:
  *    date(object): Date widget options described here. If false is selected date picker wont be shown. ({{selectYears: true, selectMonths: true })
  *    time(object): Time widget options described here. If false is selected time picker wont be shown. ({})
+ *    today(String/Boolean): Title text for today button. Set to a falsy value to hide the button ("Today").
+ *    clear(String/Boolean): Title text for the clear button. Set to a falsy value to hide the button ("Clear").
  *    autoSetTimeOnDateChange(string): Automatically set the time when a date is set. You can specify an offset with a special syntax - a stringified JSON Array in the form of "[H,M]" will set it to hour:minute. If you prepend an "+" or "-", this will added or subscracted to the current time. It does not go beyond 12:00am. ("+[0,0]").
  *    separator(string): Separator between date and time if both are enabled.
  *    (' ')
@@ -12385,7 +12390,7 @@ Picker.extend( 'pickatime', TimePicker )
  *
  *    {{ example-8 }}
  *
- *    # Date and time with one timezone
+ *    # Date and time with one timezone and no today and clear buttons
  *
  *    {{ example-9 }}
  *
@@ -12414,7 +12419,7 @@ Picker.extend( 'pickatime', TimePicker )
  *    <input class="pat-pickadate" data-pat-pickadate='{"timezone": {"default": "Europe/Vienna", "data": [{"id":"Europe/Berlin","text":"Europe/Berlin"},{"id":"Europe/Vienna","text":"Europe/Vienna"}]}}'/>
  *
  * Example: example-9
- *    <input class="pat-pickadate" data-pat-pickadate='{"timezone": {"data": [{"id":"Europe/Berlin","text":"Europe/Berlin"}]}}'/>
+ *    <input class="pat-pickadate" data-pat-pickadate='{"timezone": {"data": [{"id":"Europe/Berlin","text":"Europe/Berlin"}]}, "today": false, "clear": false}'/>
  *
  */
 
@@ -12422,12 +12427,13 @@ Picker.extend( 'pickatime', TimePicker )
 define('mockup-patterns-pickadate',[
   'jquery',
   'pat-base',
+  'mockup-utils',
   'translate',
   'picker',
   'picker.date',
   'picker.time',
   'mockup-patterns-select2'
-], function($, Base, _t) {
+], function($, Base, utils, _t) {
   'use strict';
 
   var PickADate = Base.extend({
@@ -12441,20 +12447,21 @@ define('mockup-patterns-pickadate',[
         selectMonths: true,
         formatSubmit: 'yyyy-mm-dd',
         format: 'yyyy-mm-dd',
-        clear: false,
-        close: _t('Close'),
-        today: _t('Today'),
         labelMonthNext: _t('Next month'),
         labelMonthPrev: _t('Previous month'),
         labelMonthSelect: _t('Select a month'),
-        labelYearSelect: _t('Select a year')
+        labelYearSelect: _t('Select a year'),
+        // hide buttons
+        clear: false,
+        close: false,
+        today: false
       },
       time: {
-        clear: false
+        clear: false  // hide button
       },
+      today: _t('Today'),
+      clear: _t('Clear'),
       timezone: null,
-      titleClear: _t('Clear'),
-      titleNow: _t('Today'),
       autoSetTimeOnDateChange: '+[0,0]',
       classWrapperName: 'pattern-pickadate-wrapper',
       classSeparatorName: 'pattern-pickadate-separator',
@@ -12469,12 +12476,6 @@ define('mockup-patterns-pickadate',[
       placeholderDate: _t('Enter date...'),
       placeholderTime: _t('Enter time...'),
       placeholderTimezone: _t('Enter timezone...')
-    },
-    isFalse: function(value) {
-      if (typeof(value) === 'string' && value === 'false') {
-        return false;
-      }
-      return value;
     },
     parseTimeOffset: function(timeOffset) {
       var op = undefined;
@@ -12533,8 +12534,12 @@ define('mockup-patterns-pickadate',[
         dateValue = value[0] || '',
         timeValue = value[1] || '';
 
-      self.options.date = self.isFalse(self.options.date);
-      self.options.time = self.isFalse(self.options.time);
+      if (utils.bool(self.options.date) === false) {
+        self.options.date = false;
+      }
+      if (utils.bool(self.options.time) === false) {
+        self.options.time = false;
+      }
       self.options.autoSetTimeOnDateChange = self.parseTimeOffset(self.options.autoSetTimeOnDateChange);
 
       if (self.options.date === false) {
@@ -12671,25 +12676,28 @@ define('mockup-patterns-pickadate',[
         }
       }
 
-      self.$now = $('<button class="btn btn-xs btn-info" title="' + self.options.titleNow + '"><span class="glyphicon glyphicon-time"></span></button>')
-        .addClass(self.options.classNowName)
-        .on('click', function (e) {
-            e.preventDefault();
-            var now = new Date();
-            if (self.$date) { self.$date.data('pickadate').set('select', now); }
-            if (self.$time) { self.$time.data('pickatime').set('select', now); }
-        })
-        .appendTo(self.$wrapper);
+      if (utils.bool(self.options.today)) {
+        self.$now = $('<button class="btn btn-xs btn-info" title="' + self.options.today + '"><span class="glyphicon glyphicon-time"></span></button>')
+          .addClass(self.options.classNowName)
+          .on('click', function (e) {
+              e.preventDefault();
+              var now = new Date();
+              if (self.$date) { self.$date.data('pickadate').set('select', now); }
+              if (self.$time) { self.$time.data('pickatime').set('select', now); }
+          })
+          .appendTo(self.$wrapper);
+      }
 
-      self.$clear = $('<button class="btn btn-xs btn-danger" title="' + self.options.titleClear + '"><span class="glyphicon glyphicon-trash"></span></button>')
-        .addClass(self.options.classClearName)
-        .on('click', function (e) {
-            e.preventDefault();
-            if (self.$date) { self.$date.data('pickadate').clear(); }
-            if (self.$time) { self.$time.data('pickatime').clear(); }
-        })
-        .appendTo(self.$wrapper);
-
+      if (utils.bool(self.options.clear)) {
+        self.$clear = $('<button class="btn btn-xs btn-danger" title="' + self.options.clear + '"><span class="glyphicon glyphicon-trash"></span></button>')
+          .addClass(self.options.classClearName)
+          .on('click', function (e) {
+              e.preventDefault();
+              if (self.$date) { self.$date.data('pickadate').clear(); }
+              if (self.$time) { self.$time.data('pickatime').clear(); }
+          })
+          .appendTo(self.$wrapper);
+      }
     },
     updateValue: function() {
       var self = this,
@@ -17302,6 +17310,7 @@ define('mockup-patterns-livesearch',[
     resultsClass: 'livesearch-results',
     defaults: {
       ajaxUrl: null,
+      defaultSortOn: '',
       perPage: 7,
       quietMillis: 350,
       minimumInputLength: 4,
@@ -17329,7 +17338,7 @@ define('mockup-patterns-livesearch',[
           if($searchResults.length > 0){
             return $searchResults.attr('data-default-sort');
           }
-          return '';
+          return self.options.defaultSortOn;
         }
         // cut string before sort_on parameter
         var sort_on = parameters.substring(sorton_position);
@@ -18893,5 +18902,5 @@ require([
 
 });
 
-define("/home/_thet/data/dev/fhnw/plone/src/Products.CMFPlone/Products/CMFPlone/static/plone.js", function(){});
+define("/home/_thet/data/dev/plone/buildout.coredev/src/Products.CMFPlone/Products/CMFPlone/static/plone.js", function(){});
 
