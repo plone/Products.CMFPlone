@@ -6,26 +6,13 @@
       metal:use-macro="context/main_template/macros/master"
       i18n:domain="plone">
 
-<head>
-    <metal:block fill-slot="top_slot"
-                 tal:define="dummy python:request.set('disable_border',1);
-                             disable_column_one python:request.set('disable_plone.leftcolumn',1);
-                             disable_column_two python:request.set('disable_plone.rightcolumn',1);" />
-</head>
-
 <body>
 <metal:main fill-slot="main"
      tal:define="err_type options/error_type|nothing;
-                 err_message options/error_message|nothing;
                  err_tb options/error_tb|nothing;
-                 err_value options/error_value|nothing;
-                 err_traceback options/error_traceback|nothing;
-                 err_log_url options/error_log_url|nothing;
-                 err_log_id options/error_log_id|nothing;
-                 isAnon context/@@plone_portal_state/anonymous;
-                 toLocalizedTime nocall: context/@@plone/toLocalizedTime;">
+                 err_log_id options/error_log_id|nothing">
 
-        <metal:notfound tal:condition="python:err_type=='NotFound'">
+        <metal:notfound tal:condition="python:err_type == 'NotFound'">
 
             <tal:redirect define="redirection_view context/@@plone_redirector_view">
 
@@ -102,9 +89,8 @@
 
         </metal:notfound>
 
-        <metal:othererror tal:condition="python: err_type!='NotFound'"
-             tal:define="checkPermission nocall: context/portal_membership/checkPermission;
-                         isManager python: checkPermission('Manage portal', here)">
+        <metal:othererror tal:condition="python: err_type != 'NotFound'"
+             tal:define="isManager view/is_manager">
 
             <h1 class="documentFirstHeading"
                 i18n:translate="heading_site_error_sorry">
@@ -112,38 +98,15 @@
             </h1>
 
             <div id="content-core">
-                <tal:hasentry condition="err_log_id">
-                    <p tal:condition="not: isManager"
-                       i18n:translate="description_error_has_been_logged">
-                    The error has been logged as entry number
-                    <code i18n:name="entryid" tal:content="err_log_id">1174791474.310.489098092344</code>.
-                    </p>
+                <div tal:condition="isManager">
+                   <p i18n:translate="description_site_admin_full_error">
+                   Here is the full error message:
+                   </p>
 
-                    <p tal:condition="not: isManager"
-                       i18n:translate="description_include_error_in_admin_message">
-                    If you need to report this to the
-                    <span i18n:name="site_admin">
-                    <a href="#"
-                       i18n:translate="label_site_admin"
-                       tal:attributes="href string:${context/portal_url}/contact-info">site administration</a></span>,
-                    please include this entry number in your message.
-                    </p>
+                   <div tal:replace="structure err_tb"/>
+                </div>
 
-                    <div tal:condition="isManager">
-                       <p i18n:translate="description_site_admin_full_error">
-                       Here is the full error message:
-                       </p>
-
-                       <p ><a href="" tal:attributes="href
-                                      string:error_log/getLogEntryAsText?id=${err_log_id}"
-                                      i18n:translate="label_traceback_as_text">Display traceback as text</a></p>
-
-                       <div tal:replace="structure err_tb"/>
-                    </div>
-
-                </tal:hasentry>
-
-                <tal:noentry condition="not:err_log_id">
+                <tal:noentry condition="not:isManager">
                     <p i18n:translate="description_site_error_mail_site_admin">
                     If you are certain you have the correct web address but are encountering an error, please
                     contact the <span i18n:name="site_admin">
@@ -155,9 +118,6 @@
             </div>
 
         </metal:othererror>
-        <tal:ksserrors
-                tal:define="kss_view kss_view | context/@@kss_view | nothing;
-                            dummy python: kss_view and kss_view.attach_error(err_type, err_value);"/>
 
 </metal:main>
 </body>

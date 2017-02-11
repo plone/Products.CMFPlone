@@ -1,0 +1,19 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      i18n:domain="plone">
+
+<head>
+  <title>${options/error_type}</title>
+</head>
+
+<body>
+  <p>We're sorry, but there seems to be an error.</p>
+
+  <tal:block condition="view/is_manager"
+             replace="structure options/error_tb" />
+</body>
+
+</html>
