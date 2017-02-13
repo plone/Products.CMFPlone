@@ -153,6 +153,7 @@ New features:
 
 Bug fixes:
 
+- Include JS Patterns when loading a page via ajax or an iframe [displacedaussie]
 
 - Restore ability to include head when loading via ajax [displacedaussie]
 
