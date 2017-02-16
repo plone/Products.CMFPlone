@@ -46,7 +46,7 @@
                                         item_type_class python:'contenttype-' + normalizeString(result.portal_type)">
                           <a tal:attributes="href result/getURL">
                             <img tal:condition="python:result.getIcon"
-                                 tal:replace="structure python: image_scale.tag(item, 'image', scale='tile', css_class='image-tile')">
+                                 tal:replace="structure python: image_scale.tag(result, 'image', scale='tile', css_class='image-tile')">
                         	<span tal:content="result/pretty_title_or_id"
                                   tal:attributes="class string:$item_type_class $item_wf_state_class"  >
                                   Title</span>
