@@ -32,7 +32,8 @@
          tal:define="site_properties context/portal_properties/site_properties;
                      isAnon context/@@plone_portal_state/anonymous;
                      portal context/@@plone_portal_state/portal
-                     show_about python:not isAnon or context.portal_registry['plone.allow_anon_views_about'];">
+                     show_about python:not isAnon or context.portal_registry['plone.allow_anon_views_about'];
+                     image_scale portal/@@image_scale">
         <form name="searchresults" action="" method="post" tal:condition="results"
                           tal:define="batch python:Batch(results, 20, int(b_start), orphan=1)">
 
@@ -45,7 +46,6 @@
                                    item_wf_state_class python:'state-' + normalize(item_wf_state);">
                         <a tal:attributes="href result/getURL">
                             <img tal:condition="python:result.getIcon"
-                                 tal:define="image_scale portal/@@image_scale"
                                  tal:replace="structure python: image_scale.tag(item, 'image', scale='tile', css_class='image-tile')">
                             <span tal:content="result/pretty_title_or_id"
                                   tal:attributes="class string:$item_class $item_wf_state_class">
