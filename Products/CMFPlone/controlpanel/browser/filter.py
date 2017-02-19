@@ -12,12 +12,6 @@ from Products.PortalTransforms.transforms.safe_html import VALID_TAGS
 from Products.PortalTransforms.transforms.safe_html import NASTY_TAGS
 
 
-# convert NASTY_TAGS to old format used by CMF to make collecting values work
-# {'object': 1, 'embed': 1, ...}
-if isinstance(NASTY_TAGS, frozenset):
-    NASTY_TAGS = {tag: 1 for tag in NASTY_TAGS}
-
-
 class FilterControlPanel(AutoExtensibleForm, form.EditForm):
     id = "FilterControlPanel"
     label = _(u"HTML Filtering Settings")
@@ -65,9 +59,7 @@ class FilterControlPanel(AutoExtensibleForm, form.EditForm):
                 valid[tag] = VALID_TAGS[tag]
 
         # nasty tags are simple, just set the value here
-        nasty_value = {}
-        for tag in nasty_tags:
-            nasty_value[tag] = NASTY_TAGS.get(tag, VALID_TAGS.get(tag, 1))
+        nasty_value = {tag: NASTY_TAGS.get(tag, VALID_TAGS.get(tag, 1)) for tag in nasty_tags}
         safe_html._config['nasty_tags'] = nasty_value
 
         disable_filtering = int(data['disable_filtering'])
