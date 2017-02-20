@@ -6,7 +6,7 @@ Changelog
 =========
 
 
-5.0.7 (unreleased)
+5.0.6 (2017-02-20)
 ------------------
 
 New features:
