@@ -6,6 +6,22 @@ Changelog
 =========
 
 
+5.0.8 (unreleased)
+------------------
+
+Breaking changes:
+
+- *add item here*
+
+New features:
+
+- *add item here*
+
+Bug fixes:
+
+- *add item here*
+
+
 5.0.7 (2017-02-20)
 ------------------
 
