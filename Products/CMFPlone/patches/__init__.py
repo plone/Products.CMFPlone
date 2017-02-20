@@ -27,3 +27,5 @@ import templatecookcheck        # Make sure templates aren't re-read in
 import publishing
 
 import z3c_form
+
+import gtbn

@@ -153,6 +153,12 @@ New features:
 
 Bug fixes:
 
+
+- Moved getToolByName early patch to the later patches.
+  This fixes a circular import.
+  See `issue #1950 <https://github.com/plone/Products.CMFPlone/issues/1950>`_.
+  [maurits]
+
 - Include JS Patterns when loading a page via ajax or an iframe [displacedaussie]
 
 - Restore ability to include head when loading via ajax [displacedaussie]
