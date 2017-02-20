@@ -6,12 +6,8 @@ Changelog
 =========
 
 
-4.3.12 (unreleased)
+4.3.12 (2017-02-20)
 -------------------
-
-Breaking changes:
-
-- *add item here*
 
 New features:
 
