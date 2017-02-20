@@ -5,6 +5,14 @@
 Changelog
 =========
 
+5.1b2 (Unreleased)
+------------------
+
+Bug fixes:
+
+- Fix packaging error.
+  [esteele]
+
 5.1b1 (2017-02-20)
 ------------------
 
