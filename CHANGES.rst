@@ -9,10 +9,6 @@ Changelog
 5.0.7 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
 New features:
 
 - Added ``ok`` view.  This is useful for automated checks, for example
