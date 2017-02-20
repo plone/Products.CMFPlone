@@ -5,7 +5,7 @@
 Changelog
 =========
 
-5.1b2 (Unreleased)
+5.1b2 (2017-02-20)
 ------------------
 
 Bug fixes:
