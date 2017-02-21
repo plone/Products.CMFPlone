@@ -40,6 +40,7 @@ from zope.interface import Interface
 from zope.interface import implementer
 from zope.interface import providedBy
 
+from Products.CMFCore.indexing import processQueue
 
 logger = logging.getLogger('Plone')
 
@@ -375,6 +376,7 @@ class CatalogTool(PloneBaseTool, BaseTool):
 
     @security.private
     def getCounter(self):
+        processQueue()
         return self._counter is not None and self._counter() or 0
 
     @security.protected(SearchZCatalog)
@@ -388,6 +390,7 @@ class CatalogTool(PloneBaseTool, BaseTool):
         # effectiveRange checking entirely even for those without portal
         # wide AccessInactivePortalContent permission.
 
+        processQueue()
         kw = kw.copy()
         show_inactive = kw.get('show_inactive', False)
         if isinstance(REQUEST, dict) and not show_inactive:
