@@ -415,6 +415,8 @@ New features:
   Also clean up of parameters, better help and refactored parts of the code.
   [jensens]
 
+- Make filter control panel work with new version of safe HTML transform
+  [tomgross]
 - Allow to hide/show actions directly from the Actions control panel list
   [ebrehault]
 
@@ -472,6 +474,8 @@ Bug fixes:
 
 - Added publishing patch from Products.PloneHotfix20160419.
   This avoids publishing some methods inherited from Zope or CMF.  [maurits]
+
+Fixes:
 
 - Remove whitespaces in ``Products/CMFPlone/browser/templates/plone-frontpage.pt``.
   [svx]
