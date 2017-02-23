@@ -949,6 +949,9 @@ class TestCatalogExpirationFiltering(PloneTestCase):
         self.catalog = self.portal.portal_catalog
         self.folder.invokeFactory('Document', id='doc')
 
+        # Create unprivileged user
+        self.portal.acl_users._doAddUser(user2, 'secret', ['Member'], [])
+
     def nofx(self):
         # Removes effective and expires to make sure we only test
         # the DateRangeIndex.
@@ -978,6 +981,7 @@ class TestCatalogExpirationFiltering(PloneTestCase):
         self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
         self.folder.doc.reindexObject()
         self.nofx()
+        self.login(user2)
         res = self.catalog.searchResults()
         self.assertResults(res, base_content[:-1])
 
@@ -985,6 +989,7 @@ class TestCatalogExpirationFiltering(PloneTestCase):
         self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
         self.folder.doc.reindexObject()
         self.nofx()
+        self.login(user2)
         res = self.catalog()
         self.assertResults(res, base_content[:-1])
 
@@ -992,6 +997,7 @@ class TestCatalogExpirationFiltering(PloneTestCase):
         self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
         self.folder.doc.reindexObject()
         self.nofx()
+        self.login(user2)
         res = self.catalog.searchResults(dict(show_inactive=True))
         self.assertResults(res, base_content)
 
@@ -999,6 +1005,7 @@ class TestCatalogExpirationFiltering(PloneTestCase):
         self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
         self.folder.doc.reindexObject()
         self.nofx()
+        self.login(user2)
         res = self.catalog(show_inactive=True)
         self.assertResults(res, base_content)
 
@@ -1006,6 +1013,7 @@ class TestCatalogExpirationFiltering(PloneTestCase):
         self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
         self.folder.doc.reindexObject()
         self.nofx()
+        self.login(user2)
         self.setPermissions([AccessInactivePortalContent])
         res = self.catalog.searchResults()
         self.assertResults(res, base_content)
@@ -1017,6 +1025,91 @@ class TestCatalogExpirationFiltering(PloneTestCase):
         self.setPermissions([AccessInactivePortalContent])
         res = self.catalog()
         self.assertResults(res, base_content)
+
+    def testExpiredWithPermissionOnSubpath(self):
+        self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
+        self.folder.doc.reindexObject()
+        self.nofx()
+
+        # Login as unprivileged user
+        self.login(user2)
+
+        self.folder.manage_role('Member', [AccessInactivePortalContent])
+
+        expected_result = ['doc', 'test_user_1_']
+
+        query = {
+            'path': '/'.join(self.folder.getPhysicalPath())
+        }
+        res = self.catalog.searchResults(**query)
+        self.assertResults(res, expected_result)
+        res = self.catalog(**query)
+        self.assertResults(res, expected_result)
+
+        query = {
+            'path': {
+                'query': '/'.join(self.folder.getPhysicalPath())
+            }
+        }
+        res = self.catalog.searchResults(**query)
+        self.assertResults(res, expected_result)
+        res = self.catalog(**query)
+        self.assertResults(res, expected_result)
+
+        query = {
+            'path': {
+                'query': [
+                    '/'.join(self.folder.getPhysicalPath()),
+                    '/'.join(self.folder.doc.getPhysicalPath()),
+                ]
+            }
+        }
+        res = self.catalog.searchResults(**query)
+        self.assertResults(res, expected_result)
+        res = self.catalog(**query)
+        self.assertResults(res, expected_result)
+
+    def testExpiredWithoutPermissionOnSubpath(self):
+        self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
+        self.folder.doc.reindexObject()
+        self.nofx()
+
+        # Login as unprivileged user
+        self.login(user2)
+
+        # Inactive content isn't shown without the required permission.
+        expected_result = ['test_user_1_']
+
+        query = {
+            'path': '/'.join(self.folder.getPhysicalPath())
+        }
+        res = self.catalog.searchResults(**query)
+        self.assertResults(res, expected_result)
+        res = self.catalog(**query)
+        self.assertResults(res, expected_result)
+
+        query = {
+            'path': {
+                'query': '/'.join(self.folder.getPhysicalPath())
+            }
+        }
+        res = self.catalog.searchResults(**query)
+        self.assertResults(res, expected_result)
+        res = self.catalog(**query)
+        self.assertResults(res, expected_result)
+
+        query = {
+            'path': {
+                'query': [
+                    '/'.join(self.folder.getPhysicalPath()),
+                    '/'.join(self.folder.doc.getPhysicalPath()),
+                ]
+            }
+        }
+        res = self.catalog.searchResults(**query)
+        self.assertResults(res, expected_result)
+        res = self.catalog(**query)
+        self.assertResults(res, expected_result)
 
     def testSearchResultsWithAdditionalExpiryFilter(self):
         # For this test we want the expires and effective indices in place,
