@@ -435,7 +435,9 @@ class CatalogTool(PloneBaseTool, BaseTool):
         # effectiveRange checking entirely even for those without portal
         # wide AccessInactivePortalContent permission.
 
+        # Make sure any pending index tasks have been processed
         processQueue()
+
         kw = kw.copy()
         show_inactive = kw.get('show_inactive', False)
         if isinstance(REQUEST, dict) and not show_inactive:
@@ -453,8 +455,11 @@ class CatalogTool(PloneBaseTool, BaseTool):
 
     def search(self, *args, **kw):
         # Wrap search() the same way that searchResults() is
-        query = {}
 
+        # Make sure any pending index tasks have been processed
+        processQueue()
+
+        query = {}
         if args:
             query = args[0]
         elif 'query_request' in kw:
