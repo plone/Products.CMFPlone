@@ -47473,6 +47473,7 @@ define('mockup-patterns-relateditems',[
       orderable: true,  // mockup-patterns-select2
       rootPath: '/',
       rootUrl: '',  // default to be relative.
+      pathOperator: 'plone.app.querystring.operation.string.path',
       selectableTypes: null, // null means everything is selectable, otherwise a list of strings to match types that are selectable
       separator: ',',
       tokenSeparators: [',', ' '],
@@ -47530,7 +47531,7 @@ define('mockup-patterns-relateditems',[
 
         baseCriteria.push({
           i: 'path',
-          o: 'plone.app.querystring.operation.string.path',
+          o: this.options.pathOperator,
           v: this.options.rootPath + this.currentPath
         });
 
@@ -78148,5 +78149,5 @@ require([
   'use strict';
 });
 
-define("/home/_thet/data/dev/plone/buildout.coredev/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
+define("/home/workspacejensens/cdev/plone5/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
 
