@@ -3569,6 +3569,7 @@ define('mockup-utils',[
       pattern: null, // must be passed in
       vocabularyUrl: null,
       searchParam: 'SearchableText', // query string param to pass to search url
+      pathOperator: 'plone.app.querystring.operation.string.path',
       attributes: ['UID', 'Title', 'Description', 'getURL', 'portal_type'],
       batchSize: 10, // number of results to retrive
       baseCriteria: [],
@@ -3652,13 +3653,13 @@ define('mockup-utils',[
       if (searchOptions.searchPath) {
         criterias.push({
           i: 'path',
-          o: 'plone.app.querystring.operation.string.path',
+          o: self.options.pathOperator,
           v: searchOptions.searchPath + '::' + self.options.pathDepth
         });
       } else if (self.pattern.browsing) {
         criterias.push({
           i: 'path',
-          o: 'plone.app.querystring.operation.string.path',
+          o: self.options.pathOperator,
           v: self.getCurrentPath() + '::' + self.options.pathDepth
         });
       }
@@ -12582,14 +12583,6 @@ define('mockup-patterns-pickadate',[
               }));
       }
 
-      if (self.options.date !== false && self.options.time !== false) {
-        self.$separator = $('<span/>')
-              .addClass(self.options.classSeparatorName)
-              .html(self.options.separator === ' ' ? '&nbsp;'
-                                                   : self.options.separator)
-              .appendTo(self.$wrapper);
-      }
-
       if (self.options.time !== false) {
         self.options.time.formatSubmit = 'HH:i';
         self.$time = $('<input type="text"/>')
@@ -16990,8 +16983,9 @@ define('mockup-patterns-modal',[
       var self = this;
       self.$wrapper.addClass('image-modal');
       var src = self.$el.attr('href');
+      var srcset = self.$el.attr('data-modal-srcset') || '';
       // XXX aria?
-      self.$raw = $('<div><h1>Image</h1><div id="content"><div class="modal-image"><img src="' + src + '" /></div></div></div>');
+      self.$raw = $('<div><h1>Image</h1><div id="content"><div class="modal-image"><img src="' + src + '" srcset="' + srcset + '" /></div></div></div>');
       self._show();
     },
 
@@ -18880,7 +18874,8 @@ require([
   'use strict';
 
   // initialize only if we are in top frame
-  if (window.parent === window) {
+  if ((window.parent === window) ||
+      (window.frameElement.nodeName === 'IFRAME')) {
     $(document).ready(function() {
       $('body').addClass('pat-plone');
       if (!registry.initialized) {
@@ -18902,5 +18897,5 @@ require([
 
 });
 
-define("/home/_thet/data/dev/plone/buildout.coredev/src/Products.CMFPlone/Products/CMFPlone/static/plone.js", function(){});
+define("/home/workspacejensens/cdev/plone5/src/Products.CMFPlone/Products/CMFPlone/static/plone.js", function(){});
 
