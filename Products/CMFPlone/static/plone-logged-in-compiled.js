@@ -70329,7 +70329,7 @@ define('mockup-patterns-structure-url/js/views/table',[
   'translate',
   'bootstrap-alert'
 ], function($, _, TableRowView, TableTemplate, BaseView, Sortable,
-            Moment, Result, ActionMenuView, _t) {
+            patMoment, Result, ActionMenuView, _t) {
   'use strict';
 
   var TableView = BaseView.extend({
@@ -70416,7 +70416,7 @@ define('mockup-patterns-structure-url/js/views/table',[
           container.append(view.el);
         });
       }
-      self.moment = new Moment(self.$el, {
+      self.moment = new patMoment(self.$el, {
         selector: '.' + self.dateColumns.join(',.'),
         format: self.options.app.momentFormat
       });
@@ -73395,7 +73395,7 @@ define('mockup-patterns-structure',[
       collectionConstructor:
         'mockup-patterns-structure-url/js/collections/result',
 
-      momentFormat: 'relative',
+      momentFormat: 'L LT',
       rearrange: {
         properties: {
           'id': 'ID',
