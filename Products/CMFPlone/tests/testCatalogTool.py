@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # -*- encoding: utf-8 -*-
 from Acquisition import aq_base
 from DateTime import DateTime
@@ -8,6 +9,7 @@ from plone.indexer.wrapper import IndexableObjectWrapper
 from plone.uuid.interfaces import IAttributeUUID
 from plone.uuid.interfaces import IUUID
 from Products.CMFCore.permissions import AccessInactivePortalContent
+from Products.CMFCore.indexing import processQueue
 from Products.CMFPlone.CatalogTool import CatalogTool
 from Products.CMFPlone.CatalogTool import is_folderish
 from Products.CMFPlone.tests import dummy
@@ -153,6 +155,7 @@ class TestCatalogIndexing(PloneTestCase):
         self.folder.invokeFactory('Document', id='doc',
                                   title='Foo', description='Bar')
         self.catalog.unindexObject(self.folder.doc)
+        processQueue()
 
     def assertResults(self, result, expect):
         # Verifies ids of catalog results against expected ids
@@ -213,6 +216,7 @@ class TestCatalogIndexing(PloneTestCase):
     def testReindexObjectSkipsMetadata(self):
         # Reindexing should not update metadata when update_metadata=0
         self.catalog.indexObject(self.folder.doc)
+        processQueue()
         self.folder.doc.setTitle('Fred')
         self.folder.doc.setDescription('BamBam')
         self.catalog.reindexObject(self.folder.doc, update_metadata=0)
@@ -225,6 +229,7 @@ class TestCatalogIndexing(PloneTestCase):
     def testReindexTitleOnly(self):
         # Reindexing should only index the Title
         self.catalog.indexObject(self.folder.doc)
+        processQueue()
         self.folder.doc.setTitle('Fred')
         self.folder.doc.setDescription('BamBam')
         self.catalog.reindexObject(self.folder.doc, idxs=['Title'])
@@ -248,6 +253,7 @@ class TestCatalogIndexing(PloneTestCase):
     def testReindexTitleOnlySkipsMetadata(self):
         # Reindexing Title should not update metadata when update_metadata=0
         self.catalog.indexObject(self.folder.doc)
+        processQueue()
         self.folder.doc.setTitle('Fred')
         self.folder.doc.setDescription('BamBam')
         self.catalog.reindexObject(self.folder.doc, idxs=['Title'],
@@ -266,6 +272,7 @@ class TestCatalogIndexing(PloneTestCase):
         # by searchResults()!?
         #
         self.catalog.indexObject(self.folder.doc, idxs=['Title'])
+        processQueue()
         # The document is cataloged
         path = self.catalog._CatalogTool__url(self.folder.doc)
         self.assertTrue(path in self.catalog._catalog.paths.values())
@@ -281,6 +288,7 @@ class TestCatalogIndexing(PloneTestCase):
         # of index type.
         #
         self.catalog.indexObject(self.folder.doc, idxs=['getId'])
+        processQueue()
         # The document is cataloged
         path = self.catalog._CatalogTool__url(self.folder.doc)
         self.assertTrue(path in self.catalog._catalog.paths.values())
@@ -941,6 +949,9 @@ class TestCatalogExpirationFiltering(PloneTestCase):
         self.catalog = self.portal.portal_catalog
         self.folder.invokeFactory('Document', id='doc')
 
+        # Create unprivileged user
+        self.portal.acl_users._doAddUser(user2, 'secret', ['Member'], [])
+
     def nofx(self):
         # Removes effective and expires to make sure we only test
         # the DateRangeIndex.
@@ -970,6 +981,7 @@ class TestCatalogExpirationFiltering(PloneTestCase):
         self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
         self.folder.doc.reindexObject()
         self.nofx()
+        self.login(user2)
         res = self.catalog.searchResults()
         self.assertResults(res, base_content[:-1])
 
@@ -977,6 +989,7 @@ class TestCatalogExpirationFiltering(PloneTestCase):
         self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
         self.folder.doc.reindexObject()
         self.nofx()
+        self.login(user2)
         res = self.catalog()
         self.assertResults(res, base_content[:-1])
 
@@ -984,6 +997,7 @@ class TestCatalogExpirationFiltering(PloneTestCase):
         self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
         self.folder.doc.reindexObject()
         self.nofx()
+        self.login(user2)
         res = self.catalog.searchResults(dict(show_inactive=True))
         self.assertResults(res, base_content)
 
@@ -991,6 +1005,7 @@ class TestCatalogExpirationFiltering(PloneTestCase):
         self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
         self.folder.doc.reindexObject()
         self.nofx()
+        self.login(user2)
         res = self.catalog(show_inactive=True)
         self.assertResults(res, base_content)
 
@@ -998,6 +1013,7 @@ class TestCatalogExpirationFiltering(PloneTestCase):
         self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
         self.folder.doc.reindexObject()
         self.nofx()
+        self.login(user2)
         self.setPermissions([AccessInactivePortalContent])
         res = self.catalog.searchResults()
         self.assertResults(res, base_content)
@@ -1009,6 +1025,91 @@ class TestCatalogExpirationFiltering(PloneTestCase):
         self.setPermissions([AccessInactivePortalContent])
         res = self.catalog()
         self.assertResults(res, base_content)
+
+    def testExpiredWithPermissionOnSubpath(self):
+        self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
+        self.folder.doc.reindexObject()
+        self.nofx()
+
+        # Login as unprivileged user
+        self.login(user2)
+
+        self.folder.manage_role('Member', [AccessInactivePortalContent])
+
+        expected_result = ['doc', 'test_user_1_']
+
+        query = {
+            'path': '/'.join(self.folder.getPhysicalPath())
+        }
+        res = self.catalog.searchResults(**query)
+        self.assertResults(res, expected_result)
+        res = self.catalog(**query)
+        self.assertResults(res, expected_result)
+
+        query = {
+            'path': {
+                'query': '/'.join(self.folder.getPhysicalPath())
+            }
+        }
+        res = self.catalog.searchResults(**query)
+        self.assertResults(res, expected_result)
+        res = self.catalog(**query)
+        self.assertResults(res, expected_result)
+
+        query = {
+            'path': {
+                'query': [
+                    '/'.join(self.folder.getPhysicalPath()),
+                    '/'.join(self.folder.doc.getPhysicalPath()),
+                ]
+            }
+        }
+        res = self.catalog.searchResults(**query)
+        self.assertResults(res, expected_result)
+        res = self.catalog(**query)
+        self.assertResults(res, expected_result)
+
+    def testExpiredWithoutPermissionOnSubpath(self):
+        self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
+        self.folder.doc.reindexObject()
+        self.nofx()
+
+        # Login as unprivileged user
+        self.login(user2)
+
+        # Inactive content isn't shown without the required permission.
+        expected_result = ['test_user_1_']
+
+        query = {
+            'path': '/'.join(self.folder.getPhysicalPath())
+        }
+        res = self.catalog.searchResults(**query)
+        self.assertResults(res, expected_result)
+        res = self.catalog(**query)
+        self.assertResults(res, expected_result)
+
+        query = {
+            'path': {
+                'query': '/'.join(self.folder.getPhysicalPath())
+            }
+        }
+        res = self.catalog.searchResults(**query)
+        self.assertResults(res, expected_result)
+        res = self.catalog(**query)
+        self.assertResults(res, expected_result)
+
+        query = {
+            'path': {
+                'query': [
+                    '/'.join(self.folder.getPhysicalPath()),
+                    '/'.join(self.folder.doc.getPhysicalPath()),
+                ]
+            }
+        }
+        res = self.catalog.searchResults(**query)
+        self.assertResults(res, expected_result)
+        res = self.catalog(**query)
+        self.assertResults(res, expected_result)
 
     def testSearchResultsWithAdditionalExpiryFilter(self):
         # For this test we want the expires and effective indices in place,

@@ -5,7 +5,7 @@ from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 from plone.registry.interfaces import IRegistry
 from zope.component import getMultiAdapter
 from zope.component import getUtility
-import unittest2 as unittest
+import unittest
 
 
 class MarkupRegistryIntegrationTest(unittest.TestCase):
@@ -23,7 +23,6 @@ class MarkupRegistryIntegrationTest(unittest.TestCase):
     def test_markup_controlpanel_view(self):
         view = getMultiAdapter((self.portal, self.portal.REQUEST),
                                name="markup-controlpanel")
-        view = view.__of__(self.portal)
         self.assertTrue(view())
 
     def test_markup_in_controlpanel(self):

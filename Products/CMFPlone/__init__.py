@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from App.ImageFile import ImageFile
 import os
 import sys
@@ -29,6 +30,7 @@ def initialize(context):
     from AccessControl import ModuleSecurityInfo
     from AccessControl import allow_class
     from AccessControl import allow_module
+    from AccessControl import allow_type
 
     # protect OFS.ObjectManager
     ModuleSecurityInfo('OFS.ObjectManager').setDefaultAccess(0)
@@ -113,6 +115,18 @@ def initialize(context):
 
     # Make cgi.escape available TTW
     ModuleSecurityInfo('cgi').declarePublic('escape')
+
+    # We want to allow all methods on string type except 'format'.
+    # That one needs special handling to avoid access to attributes.
+    from Products.CMFPlone.utils import _safe_format
+    rules = dict([(m, True) for m in dir(str) if not m.startswith('_')])
+    rules['format'] = _safe_format
+    allow_type(str, rules)
+
+    # Same for unicode instead of str.
+    rules = dict([(m, True) for m in dir(unicode) if not m.startswith('_')])
+    rules['format'] = _safe_format
+    allow_type(unicode, rules)
 
     # Apply monkey patches
     from Products.CMFPlone import patches  # noqa
@@ -209,3 +223,7 @@ PloneMessageFactory = MessageFactory('plone')
 # plonelocales domain
 from zope.i18nmessageid import MessageFactory
 PloneLocalesMessageFactory = MessageFactory('plonelocales')
+
+# Apply early monkey patches.  For these patches, it is too late if we do this
+# in the initialize method.
+from Products.CMFPlone import earlypatches  # noqa

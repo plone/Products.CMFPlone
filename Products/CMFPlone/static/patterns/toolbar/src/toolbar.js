@@ -22,6 +22,7 @@ define([
         top: 'plone-toolbar-top',
         topDefault: 'plone-toolbar-top-default',
         topExpanded: 'plone-toolbar-top-expanded',
+        default: 'plone-toolbar-default',
         expanded: 'plone-toolbar-expanded',
         active: 'active'
       },
@@ -37,6 +38,7 @@ define([
       $('body').removeClass(that.options.classNames.topExpanded);
       $('body').removeClass(that.options.classNames.top);
       $('body').removeClass(that.options.classNames.topDefault);
+      $('body').removeClass(that.options.classNames.default);
       $('.' + that.options.classNames.logo, that.$container).off('click').on('click', function() {
         var $el = $(this);
         if ($el.hasClass('open')){
@@ -52,6 +54,9 @@ define([
           $( 'html' ).css('margin-right', '120px');
         }
       });
+      // Remove desktop event binding
+      $('nav > ul > li', that.$container).has( 'a .plone-toolbar-caret' ).off('click');
+      // Add sub-menu events
       $('nav li a', that.$container).has('.plone-toolbar-caret').off('click').on('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
@@ -74,8 +79,18 @@ define([
       var that = this;
       if (that.state.expanded){
         $('body').addClass(that.options.classNames.expanded);
+        $('body').removeClass(that.options.classNames.default);
       }else {
+        $('body').addClass(that.options.classNames.default);
         $('body').removeClass(that.options.classNames.expanded);
+      }
+
+      if (!that.state.left) {
+        $('body').addClass(that.options.classNames.top);
+        $('body').addClass(that.state.expanded ? that.options.classNames.topExpanded : that.options.classNames.topDefault);
+        $('body').removeClass(that.options.classNames.left);
+        $('body').removeClass(that.options.classNames.leftDefault);
+        $('body').removeClass(that.options.classNames.leftExpanded);
       }
 
       $('.' + that.options.classNames.logo, that.$container).off('click').on('click', function() {
@@ -85,6 +100,7 @@ define([
             expanded: false
           });
           $('body').removeClass(that.options.classNames.expanded);
+          $('body').addClass(that.options.classNames.default);
           $('nav li', that.$container).removeClass(that.options.classNames.active);
           if (that.state.left) {
             $('body').addClass(that.options.classNames.leftDefault);
@@ -99,6 +115,7 @@ define([
           });
           // Switch to expanded
           $('body').addClass(that.options.classNames.expanded);
+          $('body').removeClass(that.options.classNames.default);
           $('nav li', that.$container).removeClass(that.options.classNames.active);
           if (that.state.left) {
             $('body').addClass(that.options.classNames.leftExpanded);
@@ -115,6 +132,8 @@ define([
         event.stopImmediatePropagation();
       });
 
+      // Remove mobile event binding
+      $('nav li a', that.$container).has('.plone-toolbar-caret').off('click');
       // content menu activated
       $('nav > ul > li', that.$container).has( 'a .plone-toolbar-caret' ).off('click').on('click', function(event) {
         var $this = $(this);
@@ -174,7 +193,9 @@ define([
       var insideHeight = ($last.position().top - $first.position().top) + $last.outerHeight();
       var height = $content.outerHeight();
 
-      var itemLocation = $li.position().top || $li.offset().top;  // depends on positioning
+      // WebKit seems to set top position to very very small float value when zoomed,
+      // so check if the position top is less than 1px rather than 0.
+      var itemLocation = $li.position().top > 1 ? $li.position().top : $li.offset().top;  // depends on positioning
       // margin-top + insideHeight should equal total height
       $content.css({
         'margin-top': Math.min(itemLocation, height - insideHeight)

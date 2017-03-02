@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from Products.CMFPlone.interfaces import IUserGroupsSettingsSchema
-import unittest2 as unittest
+import unittest
 
 from zope.component import getMultiAdapter
 from zope.component import getUtility
@@ -29,7 +29,6 @@ class TypesRegistryIntegrationTest(unittest.TestCase):
     def test_usergroups_controlpanel_view(self):
         view = getMultiAdapter((self.portal, self.portal.REQUEST),
                                name="usergroup-controlpanel")
-        view = view.__of__(self.portal)
         self.assertTrue(view())
 
     def test_usergroups_in_controlpanel(self):

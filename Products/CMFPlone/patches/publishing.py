@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # From Products.PloneHotfix20160419
 # Plus extras for properties.
 from OFS.PropertyManager import PropertyManager

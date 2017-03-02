@@ -47,9 +47,9 @@
                             tal:attributes="href string:${action/url}/@@action-form"
                             i18n:translate="">Edit</a>
                             <input type="submit" class="destructive" name="delete"
-                                value="Delete" i18n:attributes="value"
+                                value="Delete"
                                 confirm-message="Delete the action?"
-                                i18n:attributes="confirm-message"
+                                i18n:attributes="value; confirm-message"
                                 onclick="return confirm(this.getAttribute('confirm-message'));"/>
                         </form>
                     </li>

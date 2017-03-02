@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 This tool requires a translation service which supports
 the translate method and the default parameter.

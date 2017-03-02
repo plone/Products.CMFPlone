@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from zExceptions import NotFound
 from Products.Five import BrowserView
 

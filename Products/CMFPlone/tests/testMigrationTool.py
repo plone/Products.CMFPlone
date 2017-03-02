@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from Products.CMFPlone.tests import PloneTestCase
 
 from Products.CMFPlone.factory import _DEFAULT_PROFILE

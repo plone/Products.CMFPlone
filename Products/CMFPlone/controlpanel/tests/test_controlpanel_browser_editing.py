@@ -7,7 +7,7 @@ from plone.app.testing import SITE_OWNER_PASSWORD
 from plone.registry.interfaces import IRegistry
 from plone.testing.z2 import Browser
 from zope.component import getUtility
-import unittest2 as unittest
+import unittest
 
 
 class EditingControlPanelFunctionalTest(unittest.TestCase):
@@ -47,9 +47,9 @@ class EditingControlPanelFunctionalTest(unittest.TestCase):
         self.browser.open(
             "%s/@@editing-controlpanel" % self.portal_url)
         self.browser.getLink('Site Setup').click()
-        self.assertEqual(
-            self.browser.url,
-            'http://nohost/plone/@@overview-controlpanel')
+        self.assertTrue(
+            self.browser.url.endswith('/plone/@@overview-controlpanel')
+        )
 
     @unittest.skip("TODO: Not implemented yet.")
     def test_visible_ids_active(self):

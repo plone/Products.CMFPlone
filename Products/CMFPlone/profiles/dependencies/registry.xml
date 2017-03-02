@@ -760,6 +760,11 @@
       <value key="url">++resource++mockup/relateditems</value>
   </records>
 
+  <records prefix="plone.resources/mockup-patterns-relateditems-upload"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockup/relateditems/upload.js</value>
+  </records>
+
   <records prefix="plone.resources/mockup-patterns-select2"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/select2/pattern.js</value>
@@ -1056,7 +1061,7 @@
     <value key="enabled">True</value>
     <value key="jscompilation">++plone++static/plone-compiled.min.js</value>
     <value key="csscompilation">++plone++static/plone-compiled.css</value>
-    <value key="last_compilation">2016-08-27 00:00:00</value>
+    <value key="last_compilation">2017-03-02 15:52:00</value>
     <value key="stub_js_modules">
       <element>jquery</element>
     </value>
@@ -1072,13 +1077,12 @@
     <value key="expression">python: member is not None</value>
     <value key="jscompilation">++plone++static/plone-logged-in-compiled.min.js</value>
     <value key="csscompilation">++plone++static/plone-logged-in-compiled.css</value>
-    <value key="last_compilation">2016-08-27 00:00:00</value>
+    <value key="last_compilation">2017-02-27 17:34:00</value>
     <value key="depends">plone</value>
     <value key="stub_js_modules">
       <element>backbone</element>
       <element>bootstrap-dropdown</element>
       <element>bootstrap-tooltip</element>
-      <element>jquery.cookie</element>
       <element>jquery.event.drag</element>
       <element>jquery.event.drop</element>
       <element>jquery.form</element>

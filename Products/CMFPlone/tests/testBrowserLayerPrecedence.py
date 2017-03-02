@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # This test confirms that views assigned to theme-specific layers (a la
 # plone.theme) take precedence over views assigned to layers from other
 # add-on products (a la plone.browserlayer).

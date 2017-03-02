@@ -1,12 +1,7 @@
-import logging
-import re
-import time
-import urllib
-
+# -*- coding: utf-8 -*-
 from AccessControl import ClassSecurityInfo
 from AccessControl.PermissionRole import rolesForPermissionOn
-from AccessControl.Permissions import (
-    manage_zcatalog_entries as ManageZCatalogEntries)
+from AccessControl.Permissions import manage_zcatalog_entries as ManageZCatalogEntries  # noqa
 from AccessControl.Permissions import search_zcatalog as SearchZCatalog
 from Acquisition import aq_base
 from Acquisition import aq_inner
@@ -16,28 +11,35 @@ from App.special_dtml import DTMLFile
 from BTrees.Length import Length
 from DateTime import DateTime
 from OFS.interfaces import IOrderedContainer
+from plone.i18n.normalizer.base import mapUnicode
+from plone.indexer import indexer
+from plone.indexer.interfaces import IIndexableObject
 from Products.CMFCore.CatalogTool import CatalogTool as BaseTool
 from Products.CMFCore.CatalogTool import _mergedLocalRoles
+from Products.CMFCore.indexing import processQueue
 from Products.CMFCore.permissions import AccessInactivePortalContent
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import _getAuthenticatedUser
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import DISCUSSION_ANNOTATION_KEY
-from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.interfaces import INonStructuralFolder
 from Products.CMFPlone.interfaces import IPloneCatalogTool
+from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.utils import base_hasattr
 from Products.CMFPlone.utils import safe_callable
 from Products.CMFPlone.utils import safe_unicode
 from Products.ZCatalog.ZCatalog import ZCatalog
-from plone.i18n.normalizer.base import mapUnicode
-from plone.indexer import indexer
-from plone.indexer.interfaces import IIndexableObject
 from zope.annotation.interfaces import IAnnotations
 from zope.component import queryMultiAdapter
-from zope.interface import Interface
+from zope.component.hooks import getSite
 from zope.interface import implementer
+from zope.interface import Interface
 from zope.interface import providedBy
+
+import logging
+import re
+import time
+import urllib
 
 
 logger = logging.getLogger('Plone')
@@ -122,6 +124,18 @@ BLACKLISTED_INTERFACES = frozenset((
     'zope.interface.common.mapping.IReadMapping',
     'zope.interface.Interface',
 ))
+
+
+def catalog_get_all(catalog, unique_idx='UID'):
+    """Get all brains from the catalog.
+    """
+    res = [
+        catalog({
+            unique_idx: catalog._catalog.getIndexDataForRID(it)[unique_idx]
+        })[0]
+        for it in catalog._catalog.data
+    ]
+    return res
 
 
 @indexer(Interface)
@@ -362,7 +376,53 @@ class CatalogTool(PloneBaseTool, BaseTool):
 
     @security.private
     def getCounter(self):
+        processQueue()
         return self._counter is not None and self._counter() or 0
+
+    @security.private
+    def allow_inactive(self, query_kw):
+        """Check, if the user is allowed to see inactive content.
+        First, check if the user is allowed to see inactive content site-wide.
+        Second, if there is a 'path' key in the query, check if the user is
+        allowed to see inactive content for these paths.
+        Conservative check: as soon as one path is disallowed, return False.
+        If a path cannot be traversed, ignore it.
+        """
+        allow_inactive = _checkPermission(AccessInactivePortalContent, self)
+        if allow_inactive:
+            return True
+
+        paths = query_kw.get('path', False)
+        if not paths:
+            return False
+
+        if isinstance(paths, dict):
+            # Like: {'path': {'depth': 0, 'query': ['/Plone/events/']}}
+            # Or: {'path': {'depth': 0, 'query': '/Plone/events/'}}
+            paths = paths.get('query', [])
+
+        if isinstance(paths, basestring):
+            paths = [paths]
+
+        objs = []
+        site = getSite()
+        for path in list(paths):
+            path = path.encode('utf-8')  # paths must not be unicode
+            try:
+                objs.append(site.restrictedTraverse(path))
+            except (KeyError, AttributeError):
+                # When no object is found don't raise an error
+                pass
+
+        if not objs:
+            return False
+
+        allow = True
+        for ob in objs:
+            allow = allow and\
+                _checkPermission(AccessInactivePortalContent, ob)
+
+        return allow
 
     @security.protected(SearchZCatalog)
     def searchResults(self, REQUEST=None, **kw):
@@ -375,6 +435,9 @@ class CatalogTool(PloneBaseTool, BaseTool):
         # effectiveRange checking entirely even for those without portal
         # wide AccessInactivePortalContent permission.
 
+        # Make sure any pending index tasks have been processed
+        processQueue()
+
         kw = kw.copy()
         show_inactive = kw.get('show_inactive', False)
         if isinstance(REQUEST, dict) and not show_inactive:
@@ -383,8 +446,7 @@ class CatalogTool(PloneBaseTool, BaseTool):
         user = _getAuthenticatedUser(self)
         kw['allowedRolesAndUsers'] = self._listAllowedRolesAndUsers(user)
 
-        if not show_inactive \
-           and not _checkPermission(AccessInactivePortalContent, self):
+        if not show_inactive and not self.allow_inactive(kw):
             kw['effectiveRange'] = DateTime()
 
         return ZCatalog.searchResults(self, REQUEST, **kw)
@@ -393,8 +455,11 @@ class CatalogTool(PloneBaseTool, BaseTool):
 
     def search(self, *args, **kw):
         # Wrap search() the same way that searchResults() is
-        query = {}
 
+        # Make sure any pending index tasks have been processed
+        processQueue()
+
+        query = {}
         if args:
             query = args[0]
         elif 'query_request' in kw:
@@ -405,7 +470,7 @@ class CatalogTool(PloneBaseTool, BaseTool):
         user = _getAuthenticatedUser(self)
         query['allowedRolesAndUsers'] = self._listAllowedRolesAndUsers(user)
 
-        if not _checkPermission(AccessInactivePortalContent, self):
+        if not self.allow_inactive(kw):
             query['effectiveRange'] = DateTime()
 
         kw['query_request'] = query

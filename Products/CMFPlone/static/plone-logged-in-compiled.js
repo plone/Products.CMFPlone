@@ -46804,24 +46804,6 @@ define('mockup-patterns-tooltip',[
 ], function($, Base, undefined) {
   'use strict';
 
-  var Tooltip = Base.extend({
-    name: 'tooltip',
-    trigger: '.pat-tooltip',
-    parser: 'mockup',
-    defaults: {
-      html: false
-    },
-    init: function() {
-        if (this.options.html === 'true') {
-          // TODO: fix the parser!
-          this.options.html = true;
-        } else {
-          this.options.html = false;
-        }
-        this.data = new bootstrapTooltip(this.$el[0], this.options);
-    },
-  });
-
   //This is pulled almost directly from the Bootstrap Tooltip
   //extension. We rename it just to differentiate from the pattern.
   var bootstrapTooltip = function (element, options) {
@@ -46841,7 +46823,7 @@ define('mockup-patterns-tooltip',[
     animation: true,
     placement: 'top',
     selector: false,
-    template: '<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
+    template: '<div class="tooltip mockup-tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
     trigger: 'hover focus',
     title: '',
     delay: 0,
@@ -47234,6 +47216,25 @@ define('mockup-patterns-tooltip',[
     this.hide().$element.off('.' + this.type).removeData('bs.' + this.type)
   }
 
+  var Tooltip = Base.extend({
+    name: 'tooltip',
+    trigger: '.pat-tooltip',
+    parser: 'mockup',
+    defaults: {
+      html: false,
+      placement: 'top'
+    },
+    init: function() {
+        if (this.options.html === 'true') {
+          // TODO: fix the parser!
+          this.options.html = true;
+        } else {
+          this.options.html = false;
+        }
+        this.data = new bootstrapTooltip(this.$el[0], this.options);
+      },
+  });
+
   return Tooltip;
 
 });
@@ -47328,13 +47329,13 @@ define('text!mockup-patterns-relateditems-url/templates/breadcrumb.xml',[],funct
 define('text!mockup-patterns-relateditems-url/templates/favorite.xml',[],function () { return '<li><a href="<%- path %>" class="fav" aria-labelledby="blip"><%- title %></a></li>\n';});
 
 
-define('text!mockup-patterns-relateditems-url/templates/result.xml',[],function () { return '<div class="pattern-relateditems-result">\n  <a href="#" class=" pattern-relateditems-result-select <% if (selectable) { %>selectable<% } %>">\n    <% if (typeof getURL !== \'undefined\' && ((typeof getIcon !== \'undefined\' && getIcon === true) || portal_type === "Image")) { %><img src="<%- getURL %>/@@images/image/icon "> <% } %>\n    <span class="pattern-relateditems-result-title <% if (typeof review_state !== "undefined") { %> state-<%- review_state %> <% } %>  " /span>\n    <span class="pattern-relateditems contenttype-<%- portal_type.toLowerCase() %>"><%- Title %></span>\n    <span class="pattern-relateditems-result-path"><%- path %></span>\n  </a>\n  <span class="pattern-relateditems-buttons">\n  <% if (mode !== "search" && is_folderish) { %>\n     <a class="pattern-relateditems-result-browse" href="#" data-path="<%- path %>"></a>\n   <% } %>\n </span>\n</div>\n';});
+define('text!mockup-patterns-relateditems-url/templates/result.xml',[],function () { return '<div class="pattern-relateditems-result">\n  <a href="#" class=" pattern-relateditems-result-select <% if (selectable) { %>selectable<% } %>">\n    <% if (typeof getURL !== \'undefined\' && ((typeof getIcon !== \'undefined\' && getIcon === true) || portal_type === "Image")) { %><img src="<%- getURL %>/@@images/image/icon "><br><% } %>\n    <span class="pattern-relateditems-result-title <% if (typeof review_state !== "undefined") { %> state-<%- review_state %> <% } %>  " /span>\n    <span class="pattern-relateditems contenttype-<%- portal_type.toLowerCase() %>"><%- Title %></span>\n    <span class="pattern-relateditems-result-path"><%- path %></span>\n  </a>\n  <span class="pattern-relateditems-buttons">\n  <% if (mode !== "search" && is_folderish) { %>\n     <a class="pattern-relateditems-result-browse" href="#" data-path="<%- path %>"></a>\n   <% } %>\n </span>\n</div>\n';});
 
 
-define('text!mockup-patterns-relateditems-url/templates/selection.xml',[],function () { return '<span class="pattern-relateditems-item">\n  <% if (typeof getURL !== \'undefined\' && ((typeof getIcon !== \'undefined\' && getIcon === true) || portal_type === "Image")) { %> <img src="<%- getURL %>/@@images/image/icon"> <% } %>\n  <span class="pattern-relateditems-item-title contenttype-<%- portal_type.toLowerCase() %> <% if (typeof review_state !== "undefined") { %> state-<%- review_state  %> <% } %>" ><%- Title %></span>\n  <span class="pattern-relateditems-item-path"><%- path %></span>\n</span>\n';});
+define('text!mockup-patterns-relateditems-url/templates/selection.xml',[],function () { return '<span class="pattern-relateditems-item">\n  <% if (typeof getURL !== \'undefined\' && ((typeof getIcon !== \'undefined\' && getIcon === true) || portal_type === "Image")) { %><img src="<%- getURL %>/@@images/image/icon"><br><% } %>\n  <span class="pattern-relateditems-item-title contenttype-<%- portal_type.toLowerCase() %> <% if (typeof review_state !== "undefined") { %> state-<%- review_state  %> <% } %>" ><%- Title %></span>\n  <span class="pattern-relateditems-item-path"><%- path %></span>\n</span>\n';});
 
 
-define('text!mockup-patterns-relateditems-url/templates/toolbar.xml',[],function () { return '<div class="btn-group mode-selector" role="group">\n  <button type="button" class="mode search btn <% if (mode=="search") { %>btn-primary<% } else {%>btn-default<% } %>"><%- searchModeText %></button>\n  <button type="button" class="mode browse btn <% if (mode=="browse") { %>btn-primary<% } else {%>btn-default<% } %>"><%- browseModeText %></button>\n</div>\n<div class="path-wrapper">\n  <span class="pattern-relateditems-path-label"><%- searchText %></span>\n  <a class="crumb" href="<%- rootPath %>"><span class="glyphicon glyphicon-home"/></a>\n  <%= items %>\n</div>\n<div class="controls pull-right">\n  <% if (favorites.length > 0) { %>\n  <div class="favorites dropdown pull-right">\n    <button class="favorites dropdown-toggle btn btn-primary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">\n      <span class="glyphicon glyphicon-star"/>\n      <%- favText %>\n      <span class="caret"/>\n    </button>\n    <ul class="dropdown-menu">\n      <%= favItems %>\n    </ul>\n  </div>\n  <% } %>\n</div>\n';});
+define('text!mockup-patterns-relateditems-url/templates/toolbar.xml',[],function () { return '<div class="btn-group mode-selector" role="group">\n  <button type="button" class="mode search btn <% if (mode=="search") { %>btn-primary<% } else {%>btn-default<% } %>"><%- searchModeText %></button>\n  <button type="button" class="mode browse btn <% if (mode=="browse") { %>btn-primary<% } else {%>btn-default<% } %>"><%- browseModeText %></button>\n</div>\n<div class="path-wrapper">\n  <span class="pattern-relateditems-path-label"><%- searchText %></span>\n  <a class="crumb" href="/"><span class="glyphicon glyphicon-home"/></a>\n  <%= items %>\n</div>\n<div class="controls pull-right">\n  <% if (favorites.length > 0) { %>\n  <div class="favorites dropdown pull-right">\n    <button type="button" class="favorites dropdown-toggle btn btn-primary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">\n      <span class="glyphicon glyphicon-star"/>\n      <%- favText %>\n      <span class="caret"/>\n    </button>\n    <ul class="dropdown-menu">\n      <%= favItems %>\n    </ul>\n  </div>\n  <% } %>\n</div>\n';});
 
 /* Related items pattern.
  *
@@ -47350,6 +47351,7 @@ define('text!mockup-patterns-relateditems-url/templates/toolbar.xml',[],function
  *    minimumInputLength: Select2 option. Number of characters necessary to start a search. Default: 0.
  *    orderable(boolean): Whether or not items should be drag-and-drop sortable. (true)
  *    rootPath(string): Only display breadcrumb path elements deeper than this path. Default: "/"
+ *    rootUrl(string): Visible URL up to the rootPath. This is prepended to the currentPath to generate submission URLs.
  *    selectableTypes(array): If the value is null all types are selectable. Otherwise, provide a list of strings to match item types that are selectable. (null)
  *    separator(string): Select2 option. String which separates multiple items. (',')
  *    tokenSeparators(array): Select2 option, refer to select2 documentation. ([",", " "])
@@ -47460,7 +47462,7 @@ define('mockup-patterns-relateditems',[
       // more options
       upload: false,
       attributes: ['UID', 'Title', 'portal_type', 'path', 'getURL', 'getIcon', 'is_folderish', 'review_state'],  // used by utils.QueryHelper
-      basePath: undefined,
+      basePath: '',
       closeOnSelect: true,
       dropdownCssClass: 'pattern-relateditems-dropdown',
       favorites: [],
@@ -47470,6 +47472,8 @@ define('mockup-patterns-relateditems',[
       browsing: undefined,
       orderable: true,  // mockup-patterns-select2
       rootPath: '/',
+      rootUrl: '',  // default to be relative.
+      pathOperator: 'plone.app.querystring.operation.string.path',
       selectableTypes: null, // null means everything is selectable, otherwise a list of strings to match types that are selectable
       separator: ',',
       tokenSeparators: [',', ' '],
@@ -47527,8 +47531,8 @@ define('mockup-patterns-relateditems',[
 
         baseCriteria.push({
           i: 'path',
-          o: 'plone.app.querystring.operation.string.path',
-          v: this.currentPath
+          o: this.options.pathOperator,
+          v: this.options.rootPath + this.currentPath
         });
 
       }
@@ -47552,14 +47556,10 @@ define('mockup-patterns-relateditems',[
     setBreadCrumbs: function () {
       var self = this;
       var path = self.currentPath;
-      var root = self.options.rootPath.replace(/\/$/, '');
       var html;
 
-      // strip site root from path
-      path = path.indexOf(root) === 0 ? path.slice(root.length) : path;
-
       var paths = path.split('/');
-      var itemPath = root;
+      var itemPath = '';
       var itemsHtml = '';
       _.each(paths, function(node) {
         if (node !== '') {
@@ -47574,7 +47574,9 @@ define('mockup-patterns-relateditems',[
       // favorites
       var favoritesHtml = '';
       _.each(self.options.favorites, function (item) {
-        favoritesHtml = favoritesHtml + self.applyTemplate('favorite', item);
+        var item_copy = _.clone(item)
+        item_copy.path = item_copy.path.substr(self.options.rootPath.length) || '/';
+        favoritesHtml = favoritesHtml + self.applyTemplate('favorite', item_copy);
       });
 
       html = self.applyTemplate('toolbar', {
@@ -47584,7 +47586,6 @@ define('mockup-patterns-relateditems',[
         searchText: _t('Current path:'),
         searchModeText: _t('Search'),
         browseModeText: _t('Browse'),
-        rootPath: self.options.rootPath
       });
 
       self.$toolbar.html(html);
@@ -47677,7 +47678,7 @@ define('mockup-patterns-relateditems',[
               // url: self.currentUrl() + self.options.uploadAllowView,  // not working yet
               dataType: 'JSON',
               data: {
-                path: self.currentPath
+                path: self.options.rootPath + self.currentPath
               },
               type: 'GET',
               success: function (result) {
@@ -47699,10 +47700,10 @@ define('mockup-patterns-relateditems',[
       self.emit('before-browse');
       self.currentPath = path;
       self.$el.select2('close');
-      self.$el.select2('open');
-      self.emit('after-browse');
       self.setBreadCrumbs();
       self.setQuery();
+      self.$el.select2('open');
+      self.emit('after-browse');
     },
 
     selectItem: function(item) {
@@ -47740,7 +47741,11 @@ define('mockup-patterns-relateditems',[
       var self = this;
 
       self.browsing = self.options.mode === 'browse';
-      self.currentPath = self.options.basePath || self.options.rootPath;
+
+      // Remove trailing slash
+      self.options.rootPath = self.options.rootPath.replace(/\/$/, '');
+      // Substract rootPath from basePath with is the relative currentPath. Has a leading slash. Or use '/'
+      self.currentPath = self.options.basePath.substr(self.options.rootPath.length) || '/';
 
       self.setQuery();
 
@@ -49812,7 +49817,7 @@ define('mockup-patterns-upload',[
 
       self.$dropzone = $('.upload-area', self.$el);
 
-      $('button.browse', self.$el).click(function(e) {
+      $('div.browse-select button.browse', self.$el).click(function(e) {
         e.preventDefault();
         e.stopPropagation();
         if(!self.options.maxFiles || self.dropzone.files.length < self.options.maxFiles){
@@ -67669,7 +67674,6 @@ define("tinymce-compat3x", ["tinymce"], function() {
  *    targetList(array): TODO ([ {text: "Open in this window / frame", value: ""}, {text: "Open in new window", value: "_blank"}, {text: "Open in parent window / frame", value: "_parent"}, {text: "Open in top frame (replaces all frames)", value: "_top"}])
  *    imageTypes(string): TODO ('Image')
  *    folderTypes(string): TODO ('Folder,Plone Site')
- *    linkableTypes(string): TODO ('Document,Event,File,Folder,Image,News Item,Topic')
  *    tiny(object): TODO ({ plugins: [ "advlist autolink lists charmap print preview anchor", "usearchreplace visualblocks code fullscreen autoresize", "insertdatetime media table contextmenu paste plonelink ploneimage" ], menubar: "edit table format tools view insert",
  toolbar: "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | unlink plonelink ploneimage", autoresize_max_height: 1500 })
  *    prependToUrl(string): Text to prepend to generated internal urls. ('')
@@ -68051,6 +68055,23 @@ define('mockup-patterns-tinymce',[
             }
             return false;
           };
+        }
+
+        if (tinyOptions.importcss_selector_filter &&
+            tinyOptions.importcss_selector_filter.length) {
+          tinyOptions.importcss_selector_filter =
+            new RegExp(tinyOptions.importcss_selector_filter);
+        }
+
+        if (tinyOptions.importcss_groups &&
+            tinyOptions.importcss_groups.length) {
+          for(var i=0; i<tinyOptions.importcss_groups.length; i++){
+            if (tinyOptions.importcss_groups[i].filter &&
+                tinyOptions.importcss_groups[i].filter.length) {
+              tinyOptions.importcss_groups[i].filter =
+                new RegExp(tinyOptions.importcss_groups[i].filter);
+            }
+          }
         }
 
         tinymce.init(tinyOptions);
@@ -69895,7 +69916,7 @@ define('mockup-patterns-structure-url/js/views/actionmenu',[
 });
 
 
-define('text!mockup-patterns-structure-url/templates/tablerow.xml',[],function () { return '<td class="selection"><input type="checkbox" <% if(selected){ %> checked="checked" <% } %>/></td>\n\n<td class="title">\n  <div class="pull-left">\n    <a href="<%- viewURL %>"\n        class="manage state-<%- review_state %> contenttype-<%- contenttype %>"\n        title="<%- portal_type %>">\n      <%- Title %>\n    </a>\n  </div>\n  <% if(attributes["getIcon"] ){ %>\n  <img class="image-<%- iconSize %> pull-right" src="<%- getURL %>/@@images/image/<%- iconSize %>">\n  <% } %>\n</td>\n\n<% _.each(activeColumns, function(column) { %>\n  <% if(_.has(availableColumns, column)) { %>\n    <td class="<%- column %>"><%- attributes[column] %></td>\n  <% } %>\n<% }); %>\n\n<td class="actionmenu-container"></td>\n';});
+define('text!mockup-patterns-structure-url/templates/tablerow.xml',[],function () { return '<td class="selection"><input type="checkbox" <% if(selected){ %> checked="checked" <% } %>/></td>\n\n<td class="title">\n  <div class="pull-left">\n    <a href="<%- viewURL %>"\n        class="manage state-<%- review_state %> contenttype-<%- contenttype %>"\n        title="<%- portal_type %>">\n      <%- Title %>\n    </a>\n    <% if(expired){ %>\n      <span class="plone-item-expired"><%- _t(\'Expired\') %></span>\n    <% } %>\n  </div>\n  <% if(attributes["getIcon"] ){ %>\n  <img class="image-<%- iconSize %> pull-right" src="<%- getURL %>/@@images/image/<%- iconSize %>">\n  <% } %>\n</td>\n\n<% _.each(activeColumns, function(column) { %>\n  <% if(_.has(availableColumns, column)) { %>\n    <td class="<%- column %>"><%- attributes[column] %></td>\n  <% } %>\n<% }); %>\n\n<td class="actionmenu-container"></td>\n';});
 
 define('mockup-patterns-structure-url/js/views/tablerow',[
   'jquery',
@@ -69905,8 +69926,10 @@ define('mockup-patterns-structure-url/js/views/tablerow',[
   'mockup-patterns-structure-url/js/views/actionmenu',
   'text!mockup-patterns-structure-url/templates/tablerow.xml',
   'mockup-utils',
-  'translate'
-], function($, _, Backbone, Nav, ActionMenuView, TableRowTemplate, utils, _t) {
+  'translate',
+  'moment'
+], function($, _, Backbone, Nav, ActionMenuView, TableRowTemplate, utils, _t,
+            moment) {
   'use strict';
 
   var TableRowView = Backbone.View.extend({
@@ -69922,7 +69945,17 @@ define('mockup-patterns-structure-url/js/views/tablerow',[
       this.app = options.app;
       this.selectedCollection = this.app.selectedCollection;
       this.table = this.options.table;
+      this.now = moment();
     },
+
+    expired: function(data){
+      if(!data.attributes.ExpirationDate){
+        return false;
+      }
+      var dt = moment(data.attributes.ExpirationDate);
+      return dt.diff(this.now, 'seconds') < 0;
+    },
+
     render: function() {
       var self = this;
       var data = this.model.toJSON();
@@ -69942,6 +69975,7 @@ define('mockup-patterns-structure-url/js/views/tablerow',[
       data.viewURL = data.attributes.getURL + viewAction;
 
       data._t = _t;
+      data.expired = this.expired(data);
       self.$el.html(self.template(data));
       var attrs = self.model.attributes;
       self.$el.addClass('state-' + attrs['review_state']).addClass('type-' + attrs.portal_type); // jshint ignore:line
@@ -69953,6 +69987,11 @@ define('mockup-patterns-structure-url/js/views/tablerow',[
       self.$el.attr('data-id', data.id);
       self.$el.attr('data-type', data.portal_type);
       self.$el.attr('data-folderish', data['is_folderish']); // jshint ignore:line
+      self.$el.removeClass('expired');
+
+      if(data.expired){
+        self.$el.addClass('expired');
+      }
 
       self.el.model = this.model;
 
@@ -69991,8 +70030,8 @@ define('mockup-patterns-structure-url/js/views/tablerow',[
       if (!((typeof libName === 'string') && (typeof key === 'string'))) {
         return null;
       }
-      var clsLib = require(libName);
-      var lib = new clsLib(self);
+      var ClsLib = require(libName);
+      var lib = new ClsLib(self);
       return lib[method] && lib[method](e);
     },
     itemSelected: function() {
@@ -70290,7 +70329,7 @@ define('mockup-patterns-structure-url/js/views/table',[
   'translate',
   'bootstrap-alert'
 ], function($, _, TableRowView, TableTemplate, BaseView, Sortable,
-            Moment, Result, ActionMenuView, _t) {
+            patMoment, Result, ActionMenuView, _t) {
   'use strict';
 
   var TableView = BaseView.extend({
@@ -70377,7 +70416,7 @@ define('mockup-patterns-structure-url/js/views/table',[
           container.append(view.el);
         });
       }
-      self.moment = new Moment(self.$el, {
+      self.moment = new patMoment(self.$el, {
         selector: '.' + self.dateColumns.join(',.'),
         format: self.options.app.momentFormat
       });
@@ -72567,6 +72606,124 @@ define('mockup-patterns-structure-url/js/collections/selected',[
   return SelectedCollection;
 });
 
+/*!
+ * jQuery Cookie Plugin v1.4.1
+ * https://github.com/carhartl/jquery-cookie
+ *
+ * Copyright 2013 Klaus Hartl
+ * Released under the MIT license
+ */
+(function (factory) {
+	if (typeof define === 'function' && define.amd) {
+		// AMD
+		define('jquery.cookie',['jquery'], factory);
+	} else if (typeof exports === 'object') {
+		// CommonJS
+		factory(require('jquery'));
+	} else {
+		// Browser globals
+		factory(jQuery);
+	}
+}(function ($) {
+
+	var pluses = /\+/g;
+
+	function encode(s) {
+		return config.raw ? s : encodeURIComponent(s);
+	}
+
+	function decode(s) {
+		return config.raw ? s : decodeURIComponent(s);
+	}
+
+	function stringifyCookieValue(value) {
+		return encode(config.json ? JSON.stringify(value) : String(value));
+	}
+
+	function parseCookieValue(s) {
+		if (s.indexOf('"') === 0) {
+			// This is a quoted cookie as according to RFC2068, unescape...
+			s = s.slice(1, -1).replace(/\\"/g, '"').replace(/\\\\/g, '\\');
+		}
+
+		try {
+			// Replace server-side written pluses with spaces.
+			// If we can't decode the cookie, ignore it, it's unusable.
+			// If we can't parse the cookie, ignore it, it's unusable.
+			s = decodeURIComponent(s.replace(pluses, ' '));
+			return config.json ? JSON.parse(s) : s;
+		} catch(e) {}
+	}
+
+	function read(s, converter) {
+		var value = config.raw ? s : parseCookieValue(s);
+		return $.isFunction(converter) ? converter(value) : value;
+	}
+
+	var config = $.cookie = function (key, value, options) {
+
+		// Write
+
+		if (value !== undefined && !$.isFunction(value)) {
+			options = $.extend({}, config.defaults, options);
+
+			if (typeof options.expires === 'number') {
+				var days = options.expires, t = options.expires = new Date();
+				t.setTime(+t + days * 864e+5);
+			}
+
+			return (document.cookie = [
+				encode(key), '=', stringifyCookieValue(value),
+				options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
+				options.path    ? '; path=' + options.path : '',
+				options.domain  ? '; domain=' + options.domain : '',
+				options.secure  ? '; secure' : ''
+			].join(''));
+		}
+
+		// Read
+
+		var result = key ? undefined : {};
+
+		// To prevent the for loop in the first place assign an empty array
+		// in case there are no cookies at all. Also prevents odd result when
+		// calling $.cookie().
+		var cookies = document.cookie ? document.cookie.split('; ') : [];
+
+		for (var i = 0, l = cookies.length; i < l; i++) {
+			var parts = cookies[i].split('=');
+			var name = decode(parts.shift());
+			var cookie = parts.join('=');
+
+			if (key && key === name) {
+				// If second argument (value) is a function it's a converter...
+				result = read(cookie, value);
+				break;
+			}
+
+			// Prevent storing a cookie that we couldn't decode.
+			if (!key && (cookie = read(cookie)) !== undefined) {
+				result[name] = cookie;
+			}
+		}
+
+		return result;
+	};
+
+	config.defaults = {};
+
+	$.removeCookie = function (key, options) {
+		if ($.cookie(key) === undefined) {
+			return false;
+		}
+
+		// Must not alter options, thus extending a fresh object...
+		$.cookie(key, '', $.extend({}, options, { expires: -1 }));
+		return !$.cookie(key);
+	};
+
+}));
+
 define('mockup-patterns-structure-url/js/views/app',[
   'jquery',
   'underscore',
@@ -73179,6 +73336,7 @@ define('mockup-patterns-structure',[
       _default_attributes: [
         'CreationDate',
         'EffectiveDate',
+        'ExpirationDate',
         'exclude_from_nav',
         'getIcon',
         'getObjSize',
@@ -73237,7 +73395,7 @@ define('mockup-patterns-structure',[
       collectionConstructor:
         'mockup-patterns-structure-url/js/collections/result',
 
-      momentFormat: 'relative',
+      momentFormat: 'L LT',
       rearrange: {
         properties: {
           'id': 'ID',
@@ -73325,8 +73483,6 @@ define('mockup-patterns-structure',[
   return Structure;
 
 });
-
-
 
 (function(root) {
 define("resource-plone-app-jquerytools-js", ["jquery"], function() {
@@ -77578,6 +77734,7 @@ define('plone-patterns-toolbar',[
         top: 'plone-toolbar-top',
         topDefault: 'plone-toolbar-top-default',
         topExpanded: 'plone-toolbar-top-expanded',
+        default: 'plone-toolbar-default',
         expanded: 'plone-toolbar-expanded',
         active: 'active'
       },
@@ -77593,6 +77750,7 @@ define('plone-patterns-toolbar',[
       $('body').removeClass(that.options.classNames.topExpanded);
       $('body').removeClass(that.options.classNames.top);
       $('body').removeClass(that.options.classNames.topDefault);
+      $('body').removeClass(that.options.classNames.default);
       $('.' + that.options.classNames.logo, that.$container).off('click').on('click', function() {
         var $el = $(this);
         if ($el.hasClass('open')){
@@ -77608,6 +77766,9 @@ define('plone-patterns-toolbar',[
           $( 'html' ).css('margin-right', '120px');
         }
       });
+      // Remove desktop event binding
+      $('nav > ul > li', that.$container).has( 'a .plone-toolbar-caret' ).off('click');
+      // Add sub-menu events
       $('nav li a', that.$container).has('.plone-toolbar-caret').off('click').on('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
@@ -77630,8 +77791,18 @@ define('plone-patterns-toolbar',[
       var that = this;
       if (that.state.expanded){
         $('body').addClass(that.options.classNames.expanded);
+        $('body').removeClass(that.options.classNames.default);
       }else {
+        $('body').addClass(that.options.classNames.default);
         $('body').removeClass(that.options.classNames.expanded);
+      }
+
+      if (!that.state.left) {
+        $('body').addClass(that.options.classNames.top);
+        $('body').addClass(that.state.expanded ? that.options.classNames.topExpanded : that.options.classNames.topDefault);
+        $('body').removeClass(that.options.classNames.left);
+        $('body').removeClass(that.options.classNames.leftDefault);
+        $('body').removeClass(that.options.classNames.leftExpanded);
       }
 
       $('.' + that.options.classNames.logo, that.$container).off('click').on('click', function() {
@@ -77641,6 +77812,7 @@ define('plone-patterns-toolbar',[
             expanded: false
           });
           $('body').removeClass(that.options.classNames.expanded);
+          $('body').addClass(that.options.classNames.default);
           $('nav li', that.$container).removeClass(that.options.classNames.active);
           if (that.state.left) {
             $('body').addClass(that.options.classNames.leftDefault);
@@ -77655,6 +77827,7 @@ define('plone-patterns-toolbar',[
           });
           // Switch to expanded
           $('body').addClass(that.options.classNames.expanded);
+          $('body').removeClass(that.options.classNames.default);
           $('nav li', that.$container).removeClass(that.options.classNames.active);
           if (that.state.left) {
             $('body').addClass(that.options.classNames.leftExpanded);
@@ -77671,6 +77844,8 @@ define('plone-patterns-toolbar',[
         event.stopImmediatePropagation();
       });
 
+      // Remove mobile event binding
+      $('nav li a', that.$container).has('.plone-toolbar-caret').off('click');
       // content menu activated
       $('nav > ul > li', that.$container).has( 'a .plone-toolbar-caret' ).off('click').on('click', function(event) {
         var $this = $(this);
@@ -77730,7 +77905,9 @@ define('plone-patterns-toolbar',[
       var insideHeight = ($last.position().top - $first.position().top) + $last.outerHeight();
       var height = $content.outerHeight();
 
-      var itemLocation = $li.position().top || $li.offset().top;  // depends on positioning
+      // WebKit seems to set top position to very very small float value when zoomed,
+      // so check if the position top is less than 1px rather than 0.
+      var itemLocation = $li.position().top > 1 ? $li.position().top : $li.offset().top;  // depends on positioning
       // margin-top + insideHeight should equal total height
       $content.css({
         'margin-top': Math.min(itemLocation, height - insideHeight)
@@ -77972,5 +78149,5 @@ require([
   'use strict';
 });
 
-define("/home/thet-data/data/dev/aaf/buildout-aaf/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
+define("/home/workspacejensens/cdev/plone5/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
 

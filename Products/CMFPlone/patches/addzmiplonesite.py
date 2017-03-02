@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from OFS.ObjectManager import ObjectManager
 
 ADD_PLONE_SITE_HTML = '''

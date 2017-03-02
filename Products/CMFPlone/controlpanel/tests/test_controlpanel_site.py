@@ -5,7 +5,7 @@ from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 from plone.registry.interfaces import IRegistry
 from zope.component import getMultiAdapter
 from zope.component import getUtility
-import unittest2 as unittest
+import unittest
 
 
 class SiteRegistryIntegrationTest(unittest.TestCase):
@@ -29,7 +29,6 @@ class SiteRegistryIntegrationTest(unittest.TestCase):
             (self.portal, self.portal.REQUEST),
             name="site-controlpanel"
         )
-        view = view.__of__(self.portal)
         self.assertTrue(view())
 
     def test_site_in_controlpanel(self):

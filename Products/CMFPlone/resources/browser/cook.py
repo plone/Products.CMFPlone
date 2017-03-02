@@ -1,24 +1,47 @@
-import logging
-
-from Products.CMFPlone.interfaces.resources import IResourceRegistry
-from Products.CMFPlone.interfaces.resources import IBundleRegistry
-from Products.CMFPlone.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME  # noqa
-from Products.CMFPlone.resources.browser.combine import combine_bundles
-from StringIO import StringIO
+# -*- coding: utf-8 -*-
 from cssmin import cssmin
 from datetime import datetime
 from plone.protect.interfaces import IDisableCSRFProtection
 from plone.registry.interfaces import IRegistry
 from plone.resource.interfaces import IResourceDirectory
 from plone.subrequest import subrequest
+from Products.CMFPlone.interfaces.resources import IBundleRegistry
+from Products.CMFPlone.interfaces.resources import IResourceRegistry
+from Products.CMFPlone.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME  # noqa
+from Products.CMFPlone.resources.browser.combine import combine_bundles
 from slimit import minify
+from StringIO import StringIO
+from zExceptions import NotFound
 from zope.component import getUtility
 from zope.component.hooks import getSite
 from zope.globalrequest import getRequest
 from zope.interface import alsoProvides
-from zExceptions import NotFound
+
+import logging
+
 
 logger = logging.getLogger('Products.CMFPlone')
+
+REQUIREJS_RESET_PREFIX = """
+/* reset requirejs definitions so that people who
+   put requirejs in legacy compilation do not get errors */
+var _old_define = define;
+var _old_require = require;
+define = undefined;
+require = undefined;
+try{
+"""
+REQUIREJS_RESET_POSTFIX = """
+}catch(e){
+    // log it
+    if (typeof console !== "undefined"){
+        console.log('Error loading javascripts!' + e);
+    }
+}finally{
+    define = _old_define;
+    require = _old_require;
+}
+"""
 
 
 def cookWhenChangingSettings(context, bundle=None):
@@ -37,61 +60,58 @@ def cookWhenChangingSettings(context, bundle=None):
             bundle = bundles.setdefault('plone-legacy')
             bundle.resources = []
 
-
     if not bundle.resources:
-        # you can have a bundle without any resources defined and it's just shipped
-        # as a legacy compiled js file
+        # you can have a bundle without any resources defined and it's just
+        # shipped as a legacy compiled js file
         return
 
     # Let's join all css and js
-    css_file = ""
-    cooked_js = """
-/* reset requirejs definitions so that people who
-   put requirejs in legacy compilation do not get errors */
-var _old_define = define;
-var _old_require = require;
-define = undefined;
-require = undefined;
-try{
-"""
+    cooked_css = ''
+    cooked_js = REQUIREJS_RESET_PREFIX
     siteUrl = getSite().absolute_url()
     request = getRequest()
     for package in bundle.resources or []:
-        if package in resources:
-            resource = resources[package]
-            for css in resource.css:
-                response = subrequest(siteUrl + '/' + css)
-                if response.status == 200:
-                    css_file += response.getBody()
-                    css_file += '\n'
+        if package not in resources:
+            continue
+        resource = resources[package]
 
-            if resource.js:
-                response = subrequest(siteUrl + '/' + resource.js)
-                if response.status == 200:
-                    js = response.getBody()
-                    try:
-                        cooked_js += '\n/* resource: %s */\n%s' % (
-                            resource.js,
-                            minify(js, mangle=False, mangle_toplevel=False)
-                        )
-                    except SyntaxError:
-                        cooked_js += '\n/* resource(error cooking): %s */\n%s' % (
-                            resource.js, js)
-                else:
-                    cooked_js += '\n/* Could not find resource: %s */\n\n' % resource.js
+        for css_resource in resource.css:
+            css_url = siteUrl + '/' + css_resource
+            response = subrequest(css_url)
+            if response.status == 200:
+                css = response.getBody()
+                cooked_css += '\n/* Resource: {0} */\n{1}\n'.format(
+                    css_resource,
+                    css if '.min.css' == css_resource[-8:] else cssmin(css)
+                )
+            else:
+                cooked_css += '\n/* Could not find resource: {0} */\n\n'.format(  # noqa
+                    css_resource
+                )
 
-    cooked_js += """
-}catch(e){
-    // log it
-    if (typeof console !== "undefined"){
-        console.log('Error loading javascripts!' + e);
-    }
-}finally{
-    define = _old_define;
-    require = _old_require;
-}
-"""
-    cooked_css = cssmin(css_file)
+        if not resource.js:
+            continue
+        js_url = siteUrl + '/' + resource.js
+        response = subrequest(js_url)
+        if response.status == 200:
+            js = response.getBody()
+            try:
+                cooked_js += '\n/* resource: {0} */\n{1}'.format(
+                    resource.js,
+                    js if '.min.js' == resource.js[-7:] else
+                    minify(js, mangle=False, mangle_toplevel=False)
+                )
+            except SyntaxError:
+                cooked_js += '\n/* resource(error cooking): {0} */\n{1}'.format(  # noqa
+                    resource.js,
+                    js
+                )
+        else:
+            cooked_js += '\n/* Could not find resource: {0} */\n\n'.format(
+                js_url
+            )
+
+    cooked_js += REQUIREJS_RESET_POSTFIX
 
     js_path = bundle.jscompilation
     css_path = bundle.csscompilation

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from Products.CMFCore.utils import getToolByName
 from zope.i18nmessageid import MessageFactory
 from Products.CMFPlone.interfaces.syndication import ISiteSyndicationSettings

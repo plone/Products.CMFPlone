@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from zope.component import getMultiAdapter
 
 from Products.CMFCore.utils import getToolByName
@@ -231,6 +232,10 @@ class WorkflowTool(PloneBaseTool, BaseTool):
                     # content in *all* languages
                     if 'Language' not in catalog_vars:
                         catalog_vars['Language'] = 'all'
+                    # Include inactive content in result list. This is
+                    # especially important for content scheduled to go public
+                    # in the future, but needs to be reviewed before this.
+                    catalog_vars['show_inactive'] = True
                     for result in catalog.searchResults(catalog_vars):
                         o = result.getObject()
                         if o \

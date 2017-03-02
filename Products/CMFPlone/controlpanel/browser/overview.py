@@ -1,6 +1,7 @@
+# -*- coding: utf-8 -*-
 from AccessControl import getSecurityManager
 from Acquisition import aq_inner
-from Globals import DevelopmentMode
+from App.config import getConfiguration
 from Products.CMFPlone.interfaces.controlpanel import IMailSchema
 from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.utils import getToolByName
@@ -59,7 +60,7 @@ class OverviewControlPanel(controlpanel.RegistryEditForm):
         return versions
 
     def is_dev_mode(self):
-        return bool(DevelopmentMode)
+        return getConfiguration().debug_mode
 
     def upgrade_warning(self):
         mt = getToolByName(aq_inner(self.context), 'portal_migration')

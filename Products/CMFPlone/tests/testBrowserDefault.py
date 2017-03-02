@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from Acquisition import aq_base
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
@@ -14,7 +15,7 @@ from zope.component import getUtility
 import difflib
 import re
 import transaction
-import unittest2 as unittest
+import unittest
 
 RE_REMOVE_DOCCONT = re.compile('\s*href="http://.*?#content"')
 RE_REMOVE_SKIPNAV = re.compile('\s*href="http://.*?#portal-globalnav-wrapper"')

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
 from Testing.makerequest import makerequest
 from plone.app.testing import SITE_OWNER_NAME
@@ -71,9 +72,9 @@ class TestAttackVectorsFunctional(PloneTestCase):
     def test_widget_traversal_2(self):
         res = self.publish(
             '/plone/@@discussion-settings/++widget++captcha/terms/field/interface/setTaggedValue?tag=cake&value=lovely')
-        self.assertEqual(302, res.status)
-        self.assertTrue(res.headers['location'].startswith(
-            'http://nohost/plone/acl_users/credentials_cookie_auth/require_login'))
+        self.assertEqual(404, res.status)
+        # self.assertTrue(res.headers['location'].startswith(
+        #     'http://nohost/plone/acl_users/credentials_cookie_auth/require_login'))
 
     def test_registerConfiglet_1(self):
         VECTOR = "/plone/portal_controlpanel/registerConfiglet?id=cake&name=Cakey&action=woo&permission=View&icon_expr="
@@ -184,9 +185,14 @@ class TestAttackVectorsFunctional(PloneTestCase):
     def test_createObject(self):
         res = self.publish('/plone/createObject?type_name=File&id=${foo}')
         self.assertEqual(302, res.status)
-        self.assertTrue(res.headers['location'].startswith(
-            'http://nohost/plone/portal_factory/File/${foo}/edit?_authenticator='))
+        self.assertTrue(
+            res.headers['location'].startswith(
+                'http://nohost/plone/portal_factory/File/${foo}/'
+                'edit?_authenticator='
+            )
+        )
 
     def test_formatColumns(self):
+        # formatColumns is unused and was removed
         res = self.publish('/plone/formatColumns?items:list=')
-        self.assertEqual(403, res.status)
+        self.assertIn(res.status, [403, 404])

@@ -3,7 +3,7 @@ from Products.CMFPlone.interfaces import ISiteSchema
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 from plone.registry.interfaces import IRegistry
 from zope.component import getUtility
-import unittest2 as unittest
+import unittest
 
 
 class RobotsTxtFunctionalTest(unittest.TestCase):

@@ -1,7 +1,7 @@
 from setuptools import setup
 from setuptools import find_packages
 
-version = '5.1b1.dev0'
+version = '5.1b3.dev0'
 
 setup(
     name='Products.CMFPlone',
@@ -52,6 +52,7 @@ setup(
         'Products.CMFDiffTool',
         'Products.CMFDynamicViewFTI',
         'Products.CMFEditions',
+        'Products.CMFFormController',
         'Products.CMFQuickInstallerTool',
         'Products.CMFUid',
         'Products.DCWorkflow',
@@ -59,7 +60,6 @@ setup(
         'Products.ExternalEditor',
         'Products.GenericSetup >= 1.8.2',
         'Products.MimetypesRegistry',
-        'Products.PasswordResetTool',
         'Products.PlacelessTranslationService',
         # 'Products.PloneLanguageTool',
         'Products.PlonePAS',
@@ -118,6 +118,7 @@ setup(
         'plone.registry',
         'plone.schema',
         'plone.session',
+        'plone.subrequest',
         'plone.theme',
         'plonetheme.barceloneta',
         'slimit',

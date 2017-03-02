@@ -4,7 +4,7 @@ from plone.testing.z2 import Browser
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 from zope.component import getMultiAdapter
 import transaction
-import unittest2 as unittest
+import unittest
 
 
 class SyndicationControlPanelFunctionalTest(unittest.TestCase):
@@ -36,14 +36,13 @@ class SyndicationControlPanelFunctionalTest(unittest.TestCase):
         self.browser.open(
             "%s/@@syndication-controlpanel" % self.portal_url)
         self.browser.getLink('Site Setup').click()
-        self.assertEqual(
-            self.browser.url,
-            'http://nohost/plone/@@overview-controlpanel')
+        self.assertTrue(
+            self.browser.url.endswith('/plone/@@overview-controlpanel')
+        )
 
     def test_syndication_controlpanel_view(self):
         view = getMultiAdapter((self.portal, self.portal.REQUEST),
                                name="syndication-controlpanel")
-        view = view.__of__(self.portal)
         self.assertTrue(view())
 
     def test_syndication_controlpanel_enabled(self):

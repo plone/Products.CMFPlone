@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 from Products.CMFCore.tests.base.testcase import WarningInterceptor
@@ -224,6 +225,13 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         settings = registry.forInterface(ISearchSchema, prefix="plone")
         self.assertTrue('plone.types_not_searched' in registry)
         self.assertTrue('Plone Site' in settings.types_not_searched)
+
+    def testDefaultSortOrderProperty(self):
+        # We should have an sort_on property
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(ISearchSchema, prefix="plone")
+        self.assertIn('plone.sort_on', registry)
+        self.assertEqual(settings.sort_on, 'relevance')
 
     def testNonDefaultPageTypes(self):
         # We should have a default_page_types setting
@@ -614,10 +622,10 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.assertTrue(member_has_permission['selected'])
 
     def testDiscussionItemWorkflow(self):
-        # By default the discussion item has the one_state_workflow
+        # By default the discussion item has the comment_one_state_workflow
         self.assertEqual(
             self.workflow.getChainForPortalType('Discussion Item'),
-            ('one_state_workflow',))
+            ('comment_one_state_workflow',))
 
     def testFolderHasFolderListingView(self):
         # Folder type should allow 'folder_listing'

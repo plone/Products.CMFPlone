@@ -65,17 +65,26 @@ require([
     timeout = setTimeout(search, 200);
   };
 
+  // for sorme reason the backend always flag with active class the sorting options
+  var updateSortingState = function($el){
+    $('a', $sortingContainer).removeClass('active');
+    $el.addClass('active');
+  };
+  var default_sort = $('#search-results').attr('data-default-sort');
+  updateSortingState($('a[data-sort='+default_sort+']'));
+
   /* sorting */
   $('a', $sortingContainer).click(function(e){
     e.preventDefault();
-    $('a', $sortingContainer).removeClass('active');
-    $(this).addClass('active');
+    updateSortingState($(this));
     var sort = $(this).attr('data-sort');
     var order = $(this).attr('data-order');
     if(sort){
       $('[name="sort_on"]').attr('value', sort);
       if(order && order == 'reverse'){
         $('[name="sort_order"]').attr('value', 'reverse');
+      }else{
+        $('[name="sort_order"]').attr('value', '');
       }
     }else{
       $('[name="sort_on"]').attr('value', '');

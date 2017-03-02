@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
-
 from DateTime import DateTime
-from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.PloneBatch import Batch
-from Products.CMFPlone.browser.navtree import getNavigationRoot
-from Products.ZCTextIndex.ParseTree import ParseError
-from ZTUtils import make_query
 from plone.app.contentlisting.interfaces import IContentListing
 from plone.registry.interfaces import IRegistry
+from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.browser.navtree import getNavigationRoot
+from Products.CMFPlone.interfaces import ISearchSchema
+from Products.CMFPlone.PloneBatch import Batch
+from Products.ZCTextIndex.ParseTree import ParseError
 from zope.component import getMultiAdapter
-from zope.component import queryUtility
 from zope.component import getUtility
+from zope.component import queryUtility
 from zope.i18nmessageid import MessageFactory
 from zope.publisher.browser import BrowserView
+from ZTUtils import make_query
 
 import json
 
@@ -76,7 +76,7 @@ class Search(BrowserView):
             results = Batch(results, b_size, b_start)
         return results
 
-    def filter_query(self, query):
+    def _filter_query(self, query):
         request = self.request
 
         catalog = getToolByName(self.context, 'portal_catalog')
@@ -124,6 +124,27 @@ class Search(BrowserView):
             del query['sort_order']
         return query
 
+    def filter_query(self, query):
+        query = self._filter_query(query)
+        if query is None:
+            query = {}
+        # explicitly set a sort; if no `sort_on` is present, the catalog sorts
+        # by relevance
+        if 'sort_on' not in query:
+            registry = getUtility(IRegistry)
+            search_settings = registry.forInterface(ISearchSchema, prefix='plone')
+            if search_settings.sort_on != 'relevance':
+                query['sort_on'] = search_settings.sort_on
+        elif query['sort_on'] == 'relevance':
+            del query['sort_on']
+        if query.get('sort_on', '') == 'Date':
+            query['sort_order'] = 'reverse'
+        elif 'sort_order' in query:
+            del query['sort_order']
+        if not query:
+            return None
+        return query
+
     def filter_types(self, types):
         plone_utils = getToolByName(self.context, 'plone_utils')
         if not isinstance(types, list):
@@ -138,11 +159,14 @@ class Search(BrowserView):
 
     def sort_options(self):
         """ Sorting options for search results view. """
+        if 'sort_on' not in self.request.form:
+            registry = getUtility(IRegistry)
+            search_settings = registry.forInterface(ISearchSchema, prefix="plone")
+            self.request.form['sort_on'] = search_settings.sort_on
         return (
-            SortOption(self.request, _(u'relevance'), ''),
+            SortOption(self.request, _(u'relevance'), 'relevance'),
             SortOption(
-                self.request, _(u'date (newest first)'),
-                'Date', reverse=True
+                self.request, _(u'date (newest first)'), 'Date', reverse=True
             ),
             SortOption(self.request, _(u'alphabetically'), 'sortable_title'),
         )

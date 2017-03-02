@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from Products.CMFPlone import PloneMessageFactory as _
 from zExceptions import Forbidden
 from Products.CMFCore.utils import getToolByName

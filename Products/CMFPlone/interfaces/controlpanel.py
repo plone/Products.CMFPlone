@@ -143,7 +143,7 @@ class IEditingSchema(Interface):
         description=_(
             u'Limit tags aka keywords vocabulary used for Tags field and '
             u'in searches to the terms used inside the subtree of the current '
-            u'navigation root. This can be used together with Plones '
+            u"navigation root. This can be used together with Plone's "
             u'multilingual extension plone.app.multilingual to only offer '
             u'keywords of the current selected language. Other addons may '
             u'utilize this feature for its specific purposes.'),
@@ -1021,6 +1021,18 @@ class ISearchSchema(Interface):
         default=160,
     )
 
+    sort_on = schema.Choice(
+        title=_(u'label_sort_on', default=u'Sort on'),
+        description=_(u"Sort the default search on this index"),
+        vocabulary=SimpleVocabulary([
+            SimpleTerm(u'relevance', u'relevance', _(u'relevance')),
+            SimpleTerm(u'Date', u'Date', _(u'date (newest first)')),
+            SimpleTerm(u'sortable_title', u'sortable_title',
+                       _(u'alphabetically'))]),
+        default=u'relevance',
+        required=True
+    )
+
 
 class ISecuritySchema(Interface):
 
@@ -1450,26 +1462,26 @@ class ISocialMediaSchema(Interface):
     share_social_data = schema.Bool(
         title=_(u'Share social data'),
         description=_(u'Include meta tags on pages to give hints to '
-                      u'social media on how to render your pages better '
+                      u'social media on how to better render your pages '
                       u'when shared'),
         default=True)
 
     twitter_username = schema.TextLine(
         title=_(u'Twitter Username'),
-        description=_(u'To idenitify things like Twitter Cards'),
+        description=_(u'To identify things like Twitter Cards. Do not include the \'@\' prefix character.'),
         required=False,
         default=u'')
 
     facebook_app_id = schema.TextLine(
-        title=_(u'Facebook app id'),
+        title=_(u'Facebook App ID'),
         description=_(
-            u'To be used with some integrations like open graph data'),
+            u'To be used with some integrations like Open Graph data'),
         required=False,
         default=u'')
 
     facebook_username = schema.TextLine(
         title=_(u'Facebook username'),
-        description=_(u'For linking open graph data to a facebook account'),
+        description=_(u'For linking Open Graph data to a Facebook account'),
         required=False,
         default=u'')
 

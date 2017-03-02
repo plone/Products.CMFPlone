@@ -9,6 +9,8 @@ unique across the site.
 Some bootstrapping::
 
     >>> from plone.testing.z2 import Browser
+    >>> app = layer['app']
+    >>> portal = layer['portal']
     >>> browser = Browser(app)
 
 First we login as admin.
@@ -27,16 +29,8 @@ their own passwords to ease testing.
     >>> browser.getControl(name='form.widgets.enable_self_reg:list').value = True
     >>> browser.getControl(name='form.widgets.enable_user_pwd_choice:list').value = True
     >>> browser.getControl('Save').click()
-    >>> self.assertTrue('Changes saved' in browser.contents)
-
-    >>> from zope.component import getUtility
-    >>> from Products.CMFPlone.interfaces import IMailSchema
-    >>> from plone.registry.interfaces import IRegistry
-    >>> registry = getUtility(IRegistry)
-    >>> mail_settings = registry.forInterface(IMailSchema, prefix='plone')
-    >>> mail_settings.smtp_host = u'localhost'
-    >>> mail_settings.email_from_address = 'foo@bar.com'
-    >>> import transaction; transaction.commit()
+    >>> 'Changes saved' in browser.contents
+    True
 
 We logout:
 
@@ -55,7 +49,8 @@ there:
     >>> browser.getControl('Password').value = SITE_OWNER_PASSWORD
     >>> browser.getControl('Confirm password').value = SITE_OWNER_PASSWORD
     >>> browser.getControl('Register').click()
-    >>> self.assertTrue('You have been registered.' in browser.contents)
+    >>> 'You have been registered.' in browser.contents
+    True
 
 So that still works. Now we become admin again.
 
@@ -69,14 +64,18 @@ We switch on using the email address as login name.
     >>> browser.open('http://nohost/plone/@@security-controlpanel')
     >>> browser.getControl(name='form.widgets.use_email_as_login:list').value = ['selected']
     >>> browser.getControl('Save').click()
-    >>> self.assertTrue('Changes saved' in browser.contents)
+    >>> 'Changes saved' in browser.contents
+    True
     >>> browser.open('http://nohost/plone/logout')
 
 Now we visit the registration form. The user name field is no longer
 there:
 
     >>> browser.open('http://nohost/plone/@@register')
-    >>> self.assertRaises(LookupError, browser.getControl, 'User Name')
+    >>> browser.getControl('User Name')
+    Traceback (most recent call last):
+    ...
+    LookupError: label 'User Name'
 
 We fill in the rest of the form:
 
@@ -84,7 +83,9 @@ We fill in the rest of the form:
     >>> browser.getControl('Password').value = SITE_OWNER_PASSWORD
     >>> browser.getControl('Confirm password').value = SITE_OWNER_PASSWORD
     >>> browser.getControl('Register').click()
-    >>> self.assertTrue('You have been registered.' in browser.contents)
+    >>> 'You have been registered.' in browser.contents
+    True
+
 
 Login
 -----
@@ -95,7 +96,8 @@ We can now login with this email address:
     >>> browser.getControl('E-mail').value = 'email@example.org'
     >>> browser.getControl('Password').value = SITE_OWNER_PASSWORD
     >>> browser.getControl('Log in').click()
-    >>> self.assertTrue('You are now logged in' in browser.contents)
+    >>> 'You are now logged in' in browser.contents
+    True
 
 Due to some subtlety the message 'You are now logged in' can appear in
 the browser even when the user is not actually logged in: the text
@@ -105,7 +107,8 @@ but visiting another page will show that the user does not remain
 logged it. This test should be enough:
 
     >>> browser.open('http://nohost/plone')
-    >>> self.assertFalse('Log in' in browser.contents)
+    >>> 'Log in' in browser.contents
+    False
     >>> browser.open('http://nohost/plone/logout')
 
 The first registered user might still be able to login with his
@@ -115,7 +118,7 @@ used. A future Plone version may solve that automatically. For now,
 this can be remedied by running the provided migration.
 
     >>> from zope.component import getMultiAdapter
-    >>> migrationView = getMultiAdapter((self.portal, self.portal.REQUEST), name='migrate-to-emaillogin')
+    >>> migrationView = getMultiAdapter((portal, portal.REQUEST), name='migrate-to-emaillogin')
     >>> result = migrationView.switch_to_email()
     >>> import transaction; transaction.commit()
 
@@ -127,7 +130,8 @@ Now we try logging out and in again with the given email address.
     >>> browser.getControl('Password').value = SITE_OWNER_PASSWORD
     >>> browser.getControl('Log in').click()
     >>> browser.open('http://nohost/plone')
-    >>> self.assertFalse('Log in' in browser.contents)
+    >>> 'Log in' in browser.contents
+    False
 
 Logging in with the initial user name no longer works.
 This may be fixable by changing PluggableAuthService if we
@@ -145,14 +149,16 @@ switched on.
     >>> browser.getControl('Password').value = SITE_OWNER_PASSWORD
     >>> browser.getControl('Log in').click()
     >>> browser.open('http://nohost/plone')
-    >>> self.assertFalse('Log in' in browser.contents)
+    >>> 'Log in' in browser.contents
+    False
 
 We change the email address.
 
     >>> browser.open('http://nohost/plone/@@personal-information')
     >>> browser.getControl('E-mail').value = 'email2@example.org'
     >>> browser.getControl('Save').click()
-    >>> self.assertTrue('Changes saved.' in browser.contents)
+    >>> 'Changes saved.' in browser.contents
+    True
     >>> browser.getControl('E-mail').value
     'email2@example.org'
 
@@ -165,7 +171,8 @@ want. (See PLIP9214 notes.)
     >>> browser.getControl('E-mail').value = 'email1@example.org'
     >>> browser.getControl('Password').value = SITE_OWNER_PASSWORD
     >>> browser.getControl('Log in').click()
-    >>> self.assertTrue('Login failed' in browser.contents)
+    >>> 'Login failed' in browser.contents
+    True
 
 The current email address of course works fine for logging in:
 
@@ -175,14 +182,16 @@ The current email address of course works fine for logging in:
     >>> browser.getControl('Password').value = SITE_OWNER_PASSWORD
     >>> browser.getControl('Log in').click()
     >>> browser.open('http://nohost/plone')
-    >>> self.assertFalse('Log in' in browser.contents)
+    >>> 'Log in' in browser.contents
+    False
 
 Picking the e-mail address of another user should of course fail:
 
     >>> browser.open('http://nohost/plone/@@personal-information')
     >>> browser.getControl('E-mail').value = 'username@example.org'
     >>> browser.getControl('Save').click()
-    >>> self.assertFalse('Changes saved.' in browser.contents)
+    >>> 'Changes saved.' in browser.contents
+    False
     >>> browser.open('http://nohost/plone/logout')
 
 Resetting the password
@@ -203,13 +212,14 @@ in our current email address:
     True
     >>> form.getControl(name='userid').value = 'email2@example.org'
     >>> form.getControl('Start password reset').click()
-    >>> self.assertTrue('Password reset confirmation sent' in browser.contents)
+    >>> 'Password reset confirmation sent' in browser.contents
+    True
 
 As part of our test setup, we replaced the original MailHost with our
 own version. Our version doesn't mail messages, it just collects them
 in a list called ``messages``:
 
-    >>> mailhost = self.portal.MailHost
+    >>> mailhost = portal.MailHost
     >>> len(mailhost.messages)
     1
     >>> msg = mailhost.messages[0]
@@ -247,7 +257,8 @@ We can now login using our new password:
     >>> browser.getControl('Password').value = 'secretion'
     >>> browser.getControl('Log in').click()
     >>> browser.open('http://nohost/plone')
-    >>> self.assertFalse('Log in' in browser.contents)
+    >>> 'Log in' in browser.contents
+    False
     >>> browser.open('http://nohost/plone/logout')
 
 The first user can still reset his password with his user id:
@@ -256,7 +267,8 @@ The first user can still reset his password with his user id:
     >>> form = browser.getForm(name='mail_password')
     >>> form.getControl(name='userid').value = 'username'
     >>> form.getControl('Start password reset').click()
-    >>> self.assertTrue('Password reset confirmation sent' in browser.contents)
+    >>> 'Password reset confirmation sent' in browser.contents
+    True
 
 The email is sent to the correct email address:
 
@@ -294,5 +306,6 @@ is our login name:
     >>> browser.getControl('Password').value = 'secretion'
     >>> browser.getControl('Log in').click()
     >>> browser.open('http://nohost/plone')
-    >>> self.assertFalse('Log in' in browser.contents)
+    >>> 'Log in' in browser.contents
+    False
     >>> browser.open('http://nohost/plone/logout')

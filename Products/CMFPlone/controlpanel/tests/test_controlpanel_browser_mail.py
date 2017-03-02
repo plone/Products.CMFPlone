@@ -10,7 +10,7 @@ from Products.CMFPlone.interfaces import IMailSchema
 from Products.CMFPlone.testing import \
     PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 
-import unittest2 as unittest
+import unittest
 
 
 class MailControlPanelFunctionalTest(unittest.TestCase):
@@ -45,14 +45,13 @@ class MailControlPanelFunctionalTest(unittest.TestCase):
         self.browser.open(
             "%s/@@mail-controlpanel" % self.portal_url)
         self.browser.getLink('Site Setup').click()
-        self.assertEqual(
-            self.browser.url,
-            'http://nohost/plone/@@overview-controlpanel')
+        self.assertTrue(
+            self.browser.url.endswith('/plone/@@overview-controlpanel')
+        )
 
     def test_mail_controlpanel_view(self):
         view = getMultiAdapter((self.portal, self.portal.REQUEST),
                                name="mail-controlpanel")
-        view = view.__of__(self.portal)
         self.assertTrue(view())
 
     def test_mail_controlpanel_smtp_host(self):

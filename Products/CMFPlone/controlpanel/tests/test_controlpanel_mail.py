@@ -8,7 +8,7 @@ from Products.CMFPlone.interfaces import IMailSchema
 from Products.CMFPlone.testing import \
     PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 
-import unittest2 as unittest
+import unittest
 
 
 class MailRegistryIntegrationTest(unittest.TestCase):
@@ -28,7 +28,6 @@ class MailRegistryIntegrationTest(unittest.TestCase):
     def test_mail_controlpanel_view(self):
         view = getMultiAdapter((self.portal, self.portal.REQUEST),
                                name="mail-controlpanel")
-        view = view.__of__(self.portal)
         self.assertTrue(view())
 
     def test_mail_in_controlpanel(self):

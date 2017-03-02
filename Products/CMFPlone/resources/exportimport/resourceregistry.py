@@ -1,12 +1,12 @@
+# -*- coding: utf-8 -*-
 from datetime import datetime
-
+from plone.i18n.normalizer.interfaces import IIDNormalizer
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces import IBundleRegistry
 from Products.CMFPlone.interfaces import IResourceRegistry
 from Products.CMFPlone.resources.browser.cook import cookWhenChangingSettings
 from Products.GenericSetup.interfaces import IBody
 from Products.GenericSetup.utils import XMLAdapterBase
-from plone.i18n.normalizer.interfaces import IIDNormalizer
 from zope.component import queryMultiAdapter
 from zope.component import queryUtility
 from zope.component.interfaces import ComponentLookupError

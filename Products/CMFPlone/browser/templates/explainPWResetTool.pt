@@ -1,0 +1,52 @@
+<html lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+<body>
+
+<metal:main fill-slot="main">
+  <h2 i18n:translate="title_pw_reset_tool">Password Reset Tool</h2>
+
+  <p i18n:translate="desc_pw_reset_tool">This tool enables a mechanism for securely resetting user's forgotten passwords.</p>
+
+  <h3 i18n:translate="title_set_exp_interval">Expiration Interval</h3>
+  <p i18n:translate="desc_set_exp_interval">
+    Specify the time until timeout of password reset requests in hours. This interval,
+    added to the time a user makes a request, will decide the expiration of the request.
+  </p>
+  <p i18n:translate="desc2_set_exp_interval">
+    The default is <em>7 days</em>. If you leave the field blank, the timeout interval
+    will reset to the default.
+  </p>
+  <form action="#" method="post"
+        tal:attributes="action request/getURL">
+    <p>Set timeout interval to
+      <input type="text" name="timeout_days" value="${view/timeout_days}" size="10"
+             style="display: inline; width: auto;"/> days.</p>
+
+  <h3 i18n:translate="title_username_check">Username Check</h3>
+  <p>
+    If "username check" is on, users following the confirmation link from their email
+    will be required to re-enter their username. This is to combat anonymous email
+    sniffing attacks and it is <strong>highly recommended</strong> that you leave
+    this <strong>ON</strong> if the portal is publicly accesible.
+  </p>
+    <p>
+    <input type="checkbox" name="user_check" checked="${view/user_check}" />
+    <label for="user_check" i18n:translate="">Username check</label>
+    </p>
+    <input type="submit" value="Change" i18n:attributes="value" />
+  </form>
+
+  <h3 i18n:translate="">Information</h3>
+
+  <p i18n:translate="">Open reset requests: <i18n:span name="n">${view/stats/open}</i18n:span></p>
+  <p i18n:translate="">Expired reset requests: <i18n:span name="n">${view/stats/expired}</i18n:span> (expired requests deleted after 10 days)</p>
+
+</metal:main>
+
+</body>
+</html>
+
+
+
+

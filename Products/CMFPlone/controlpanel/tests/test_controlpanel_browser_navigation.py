@@ -6,7 +6,7 @@ from plone.registry.interfaces import IRegistry
 from plone.testing.z2 import Browser
 from zope.component import getMultiAdapter
 from zope.component import getUtility
-import unittest2 as unittest
+import unittest
 
 
 class NavigationControlPanelFunctionalTest(unittest.TestCase):
@@ -42,14 +42,13 @@ class NavigationControlPanelFunctionalTest(unittest.TestCase):
         self.browser.open(
             "%s/@@navigation-controlpanel" % self.portal_url)
         self.browser.getLink('Site Setup').click()
-        self.assertEqual(
-            self.browser.url,
-            'http://nohost/plone/@@overview-controlpanel')
+        self.assertTrue(
+            self.browser.url.endswith('/plone/@@overview-controlpanel')
+        )
 
     def test_navigation_controlpanel_view(self):
         view = getMultiAdapter((self.portal, self.portal.REQUEST),
                                name="navigation-controlpanel")
-        view = view.__of__(self.portal)
         self.assertTrue(view())
 
     def test_generate_tabs(self):

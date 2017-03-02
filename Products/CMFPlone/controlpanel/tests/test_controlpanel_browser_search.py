@@ -6,7 +6,7 @@ from plone.registry.interfaces import IRegistry
 from plone.testing.z2 import Browser
 from zope.component import getMultiAdapter
 from zope.component import getUtility
-import unittest2 as unittest
+import unittest
 
 
 class SearchControlPanelFunctionalTest(unittest.TestCase):
@@ -41,14 +41,13 @@ class SearchControlPanelFunctionalTest(unittest.TestCase):
         self.browser.open(
             "%s/@@search-controlpanel" % self.portal_url)
         self.browser.getLink('Site Setup').click()
-        self.assertEqual(
-            self.browser.url,
-            'http://nohost/plone/@@overview-controlpanel')
+        self.assertTrue(
+            self.browser.url.endswith('/plone/@@overview-controlpanel')
+        )
 
     def test_search_controlpanel_view(self):
         view = getMultiAdapter((self.portal, self.portal.REQUEST),
                                name="search-controlpanel")
-        view = view.__of__(self.portal)
         self.assertTrue(view())
 
     def test_enable_livesearch(self):

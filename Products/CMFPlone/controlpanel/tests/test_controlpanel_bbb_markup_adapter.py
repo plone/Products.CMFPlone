@@ -3,7 +3,7 @@ from Products.CMFPlone.interfaces import IMarkupSchema
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 from plone.registry.interfaces import IRegistry
 from zope.component import getUtility
-import unittest2 as unittest
+import unittest
 from plone.app.testing import TEST_USER_ID, setRoles
 from zope.component import getAdapter
 

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from plone.protect import protect, CheckAuthenticator
 
 # apply csrf-protection decorator to the given callable

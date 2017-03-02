@@ -3,7 +3,7 @@ from Products.CMFPlone.interfaces import ISiteSchema
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 from plone.registry.interfaces import IRegistry
 from zope.component import getUtility
-import unittest2 as unittest
+import unittest
 
 # Red pixel with filename pixel.png
 SITE_LOGO_BASE64 = 'filenameb64:cGl4ZWwucG5n;datab64:iVBORw0KGgoAAAANSUhEUgAA'\
@@ -28,12 +28,12 @@ class SiteLogoFunctionalTest(unittest.TestCase):
         settings = registry.forInterface(ISiteSchema, prefix='plone')
         settings.site_logo = SITE_LOGO_BASE64
         view = self.portal.restrictedTraverse('@@site-logo')
-        self.assertTrue(view(), SITE_LOGO_HEX)
+        self.assertEqual(view(), SITE_LOGO_HEX)
         view.request.response
         headers = view.request.response
-        self.assertTrue(headers['content-type'], 'image/png')
-        self.assertTrue(headers['content-length'], '69')
-        self.assertTrue(
+        self.assertEqual(headers['content-type'], 'image/png')
+        self.assertEqual(headers['content-length'], '69')
+        self.assertEqual(
             headers['content-disposition'],
             "attachment; filename*=UTF-8''pixel.png"
         )

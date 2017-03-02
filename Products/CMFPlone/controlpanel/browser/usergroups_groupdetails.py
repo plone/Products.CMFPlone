@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from Acquisition import aq_inner
 from Products.CMFPlone.controlpanel.browser.usergroups import \
     UsersGroupsControlPanelView
@@ -8,6 +9,12 @@ from Products.statusmessages.interfaces import IStatusMessage
 
 
 class GroupDetailsControlPanel(UsersGroupsControlPanelView):
+
+    def get_group_property(self, prop_id):
+        try:
+            self.group.getProperty(prop_id, None)
+        except AttributeError:
+            pass
 
     def __call__(self):
         context = aq_inner(self.context)
@@ -46,8 +53,11 @@ class GroupDetailsControlPanel(UsersGroupsControlPanelView):
                                               description=description,
                                               REQUEST=self.request)
                 if not success:
-                    msg = _(u'Could not add group ${name}, perhaps a user or group with '
-                            u'this name already exists.', mapping={u'name': addname})
+                    msg = _(
+                        u'Could not add group ${name}, perhaps a user or '
+                        u'group with this name already exists.',
+                        mapping={u'name': addname}
+                    )
                     IStatusMessage(self.request).add(msg, 'error')
                     return self.index()
 
