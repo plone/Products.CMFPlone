@@ -9,7 +9,9 @@ Changelog
 4.3.13 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fixed ``NotFound`` error when adding controlpanel action through the ZMI.
+  See `issue 1959 <https://github.com/plone/Products.CMFPlone/issues/1959>`_.
+  [maurits]
 
 
 4.3.12 (2017-02-20)
