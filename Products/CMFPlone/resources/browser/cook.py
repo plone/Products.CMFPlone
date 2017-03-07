@@ -65,6 +65,15 @@ def cookWhenChangingSettings(context, bundle=None):
         # shipped as a legacy compiled js file
         return
 
+    js_path = bundle.jscompilation
+    css_path = bundle.csscompilation
+
+    if not js_path and not css_path:
+        logger.warn(
+            'No js_path or css_path found. We need a plone.resource '
+            'based resource path in order to store the compiled JS and CSS.'
+        )
+
     # Let's join all css and js
     cooked_css = ''
     cooked_js = REQUIREJS_RESET_PREFIX
@@ -75,86 +84,79 @@ def cookWhenChangingSettings(context, bundle=None):
             continue
         resource = resources[package]
 
-        for css_resource in resource.css:
-            css_url = siteUrl + '/' + css_resource
-            response = subrequest(css_url)
-            if response.status == 200:
-                css = response.getBody()
-                cooked_css += '\n/* Resource: {0} */\n{1}\n'.format(
-                    css_resource,
-                    css if '.min.css' == css_resource[-8:] else cssmin(css)
-                )
-            else:
-                cooked_css += '\n/* Could not find resource: {0} */\n\n'.format(  # noqa
-                    css_resource
-                )
-
-        if not resource.js:
+        if css_path:
+            for css_resource in resource.css:
+                css_url = siteUrl + '/' + css_resource
+                response = subrequest(css_url)
+                if response.status == 200:
+                    logger.warn('Cooking css {0}'.format(css_resource))
+                    css = response.getBody()
+                    cooked_css += '\n/* Resource: {0} */\n{1}\n'.format(
+                        css_resource,
+                        css if '.min.css' == css_resource[-8:] else cssmin(css)
+                    )
+                else:
+                    cooked_css +=\
+                        '\n/* Could not find resource: {0} */\n\n'.format(
+                            css_resource
+                        )
+                    logger.warn(
+                        'Could not find resource: {0}'.format(css_resource)
+                    )
+        if not resource.js or not js_path:
             continue
         js_url = siteUrl + '/' + resource.js
         response = subrequest(js_url)
         if response.status == 200:
             js = response.getBody()
             try:
+                logger.warn('Cooking js {0}'.format(resource.js))
                 cooked_js += '\n/* resource: {0} */\n{1}'.format(
                     resource.js,
                     js if '.min.js' == resource.js[-7:] else
                     minify(js, mangle=False, mangle_toplevel=False)
                 )
             except SyntaxError:
-                cooked_js += '\n/* resource(error cooking): {0} */\n{1}'.format(  # noqa
-                    resource.js,
-                    js
-                )
+                cooked_js +=\
+                    '\n/* Resource (error cooking): {0} */\n{1}'.format(
+                        resource.js,
+                        js
+                    )
+                logger.warn('Error cooking resource: {0}'.format(resource.js))
         else:
+            logger.warn('Could not find resource: {0}'.format(resource.js))
             cooked_js += '\n/* Could not find resource: {0} */\n\n'.format(
                 js_url
             )
 
     cooked_js += REQUIREJS_RESET_POSTFIX
 
-    js_path = bundle.jscompilation
-    css_path = bundle.csscompilation
-
-    if not js_path:
-        logger.warn('Could not compile js/css for bundle as there is '
-                    'no jscompilation setting')
-        return
-
-    # Storing js
-    resource_path = js_path.split('++plone++')[-1]
-    resource_name, resource_filepath = resource_path.split('/', 1)
     persistent_directory = getUtility(IResourceDirectory, name="persistent")
     if OVERRIDE_RESOURCE_DIRECTORY_NAME not in persistent_directory:
         persistent_directory.makeDirectory(OVERRIDE_RESOURCE_DIRECTORY_NAME)
     container = persistent_directory[OVERRIDE_RESOURCE_DIRECTORY_NAME]
-    if resource_name not in container:
-        container.makeDirectory(resource_name)
-    try:
-        folder = container[resource_name]
-        fi = StringIO(cooked_js)
-        folder.writeFile(resource_filepath, fi)
 
-        if css_path:
-            # Storing css if defined
-            resource_path = css_path.split('++plone++')[-1]
-            resource_name, resource_filepath = resource_path.split('/', 1)
-            persistent_directory = getUtility(
-                IResourceDirectory, name="persistent")
-            if OVERRIDE_RESOURCE_DIRECTORY_NAME not in persistent_directory:
-                persistent_directory.makeDirectory(
-                    OVERRIDE_RESOURCE_DIRECTORY_NAME)
-            container = persistent_directory[OVERRIDE_RESOURCE_DIRECTORY_NAME]
-            if resource_name not in container:
-                container.makeDirectory(resource_name)
+    def _write_resource(resource_path, cooked_string):
+        if not resource_path:
+            return
+        resource_path = resource_path.split('++plone++')[-1]
+        resource_name, resource_filepath = resource_path.split('/', 1)
+        if resource_name not in container:
+            container.makeDirectory(resource_name)
+        try:
             folder = container[resource_name]
-            fi = StringIO(cooked_css)
+            fi = StringIO(cooked_string)
             folder.writeFile(resource_filepath, fi)
-        bundle.last_compilation = datetime.now()
-        # setRequest(original_request)
-    except NotFound:
-        logger.info('Error compiling js/css for the bundle')
+            logger.info('Writing cooked resource: {0}'.format(resource_path))
+        except NotFound:
+            logger.warn('Error writing cooked resource: {0}'.format(
+                resource_path)
+            )
 
+    _write_resource(js_path, cooked_js)
+    _write_resource(css_path, cooked_css)
+
+    bundle.last_compilation = datetime.now()
     # refresh production meta bundles
     combine_bundles(context)
 

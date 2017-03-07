@@ -4,11 +4,11 @@ from plone.registry.interfaces import IRegistry
 from plone.resource.interfaces import IResourceDirectory
 from plone.subrequest import subrequest
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.controlpanel.browser.resourceregistry import OverrideFolderManager
-from Products.CMFPlone.controlpanel.browser.resourceregistry import ResourceRegistryControlPanelView
+from Products.CMFPlone.controlpanel.browser.resourceregistry import OverrideFolderManager  # noqa
+from Products.CMFPlone.controlpanel.browser.resourceregistry import ResourceRegistryControlPanelView  # noqa
 from Products.CMFPlone.interfaces import IBundleRegistry
 from Products.CMFPlone.interfaces import IResourceRegistry
-from Products.CMFPlone.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME
+from Products.CMFPlone.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME  # noqa
 from Products.CMFPlone.resources import add_bundle_on_request
 from Products.CMFPlone.resources import add_resource_on_request
 from Products.CMFPlone.resources import remove_bundle_on_request
@@ -16,7 +16,7 @@ from Products.CMFPlone.resources.browser.cook import cookWhenChangingSettings
 from Products.CMFPlone.resources.browser.scripts import ScriptsView
 from Products.CMFPlone.resources.browser.styles import StylesView
 from Products.CMFPlone.resources.bundle import Bundle
-from Products.CMFPlone.resources.exportimport.resourceregistry import ResourceRegistryNodeAdapter
+from Products.CMFPlone.resources.exportimport.resourceregistry import ResourceRegistryNodeAdapter  # noqa
 from Products.CMFPlone.tests import PloneTestCase
 from Products.GenericSetup.context import SetupEnviron
 from xml.dom.minidom import parseString
@@ -113,6 +113,40 @@ class TestResourceRegistries(PloneTestCase.PloneTestCase):
             )
         )
         self.assertTrue('body {\ncolor: blue;\n}' in resp_css.getBody())
+
+    def test_cook_only_css(self):
+        registry = getUtility(IRegistry)
+        bundles = registry.collectionOfInterface(IBundleRegistry,
+                                                 prefix="plone.bundles")
+        bundle = bundles.add('foobar')
+        bundle.jscompilation = ''
+        bundle.csscompilation = '++plone++static/foobar-compiled.css'
+
+        resources = registry.collectionOfInterface(IResourceRegistry,
+                                                   prefix="plone.resources")
+        resource = resources.add('foobar')
+
+        resource.css = ['++plone++static/foobar.min.css']
+        bundle.resources = ['foobar']
+
+        persistent_directory = getUtility(
+            IResourceDirectory, name="persistent")
+        if OVERRIDE_RESOURCE_DIRECTORY_NAME not in persistent_directory:
+            persistent_directory.makeDirectory(
+                OVERRIDE_RESOURCE_DIRECTORY_NAME)
+        container = persistent_directory[OVERRIDE_RESOURCE_DIRECTORY_NAME]
+        container.makeDirectory('static')
+        directory = container['static']
+        directory.writeFile('foobar.min.css', 'body {\ncolor: red;\n}')
+
+        cookWhenChangingSettings(self.portal, bundle)
+
+        resp_css = subrequest(
+            '{0}/++plone++static/foobar-compiled.css'.format(
+                self.portal.absolute_url()
+            )
+        )
+        self.assertTrue('body {\ncolor: red;\n}' in resp_css.getBody())
 
     def test_cooking_missing(self):
         registry = getUtility(IRegistry)
