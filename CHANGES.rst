@@ -20,13 +20,18 @@ New features:
 
 Bug fixes:
 
+- Resource registry legacy bundle cooking: Exit early with a warning, if preconditions to build are not given (no compilation paths).
+  Allow cooking CSS, even if no JS is defined.
+  Log all important steps of the cooking process.
+  [thet]
+
 - Remove unused ``plone.css`` from static repository.
   [thet]
 
 - Check for ``AccessInactivePortalContent`` for each path in a catalog query.
   This solves a problem, where Editors couldn't see inactive content, even though they had the required permission on a subpath of the portal (e.g. a subsite).
   [thet]
-  
+
 
 5.1b2 (2017-02-20)
 ------------------
