@@ -73,6 +73,7 @@ def cookWhenChangingSettings(context, bundle=None):
             'No js_path or css_path found. We need a plone.resource '
             'based resource path in order to store the compiled JS and CSS.'
         )
+        return
 
     # Let's join all css and js
     cooked_css = ''
@@ -89,7 +90,7 @@ def cookWhenChangingSettings(context, bundle=None):
                 css_url = siteUrl + '/' + css_resource
                 response = subrequest(css_url)
                 if response.status == 200:
-                    logger.warn('Cooking css {0}'.format(css_resource))
+                    logger.info('Cooking css {0}'.format(css_resource))
                     css = response.getBody()
                     cooked_css += '\n/* Resource: {0} */\n{1}\n'.format(
                         css_resource,
@@ -110,7 +111,7 @@ def cookWhenChangingSettings(context, bundle=None):
         if response.status == 200:
             js = response.getBody()
             try:
-                logger.warn('Cooking js {0}'.format(resource.js))
+                logger.info('Cooking js {0}'.format(resource.js))
                 cooked_js += '\n/* resource: {0} */\n{1}'.format(
                     resource.js,
                     js if '.min.js' == resource.js[-7:] else
