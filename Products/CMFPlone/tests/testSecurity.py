@@ -72,9 +72,15 @@ class TestAttackVectorsFunctional(ptc.FunctionalTestCase):
         self.assertEqual(404, res.status)
 
     def test_registerConfiglet_1(self):
+        # A permission check was missing, fixed in PloneHotfix20121106.
         VECTOR = "/plone/portal_controlpanel/registerConfiglet?id=cake&name=Cakey&action=woo&permission=View&icon_expr="
         res = self.publish(VECTOR)
-        self.assertEqual(404, res.status)
+        # The docstring for addAction, which is an alias of registerConfiglet,
+        # was removed, resulting in a 404.  But that is wrong, because it
+        # means that you cannot add an action/configlet in the ZMI.
+        # So we want a 302 instead, redirecting to the login form.
+        # See https://github.com/plone/Products.CMFPlone/issues/1959
+        self.assertEqual(302, res.status)
 
     def test_registerConfiglet_2(self):
         VECTOR = "/plone/portal_controlpanel/registerConfiglet?id=cake&name=Cakey&action=woo&permission=View&icon_expr="
