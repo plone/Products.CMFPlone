@@ -20,6 +20,10 @@ New features:
 
 Bug fixes:
 
+- Show version of products in Add-ons control panel configlet.
+  This fixes https://github.com/plone/Products.CMFPlone/issues/1472.
+  [hvelarde]
+
 - Resource registry legacy bundle cooking: Exit early with a warning, if preconditions to build are not given (no compilation paths).
   Allow cooking CSS, even if no JS is defined.
   Log all important steps of the cooking process.

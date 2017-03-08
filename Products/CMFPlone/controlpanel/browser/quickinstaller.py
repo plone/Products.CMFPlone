@@ -556,6 +556,7 @@ class ManageProductsView(InstallerView):
                     continue
                 addons[product_id] = {
                     'id': product_id,
+                    'version': self.get_product_version(product_id),
                     'title': product_id,
                     'description': '',
                     'upgrade_profiles': {},
