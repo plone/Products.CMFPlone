@@ -1071,14 +1071,8 @@
       <value key="js">++plone++static/components/jquery.recurrenceinput.js/lib/jquery.tmpl.js</value>
       <value key="deps">jquery</value>
   </records>
-  <!-- legacy js -->
-
-
-  <records prefix="plone.resources/jquery-highlightsearchterms"
-            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">jquery.highlightsearchterms.js</value>
-  </records>
-
+  
+<!-- legacy js -->
   <record name="plone.resources.last_legacy_import">
     <field type="plone.registry.field.Datetime">
       <title>Last legacy js/css import date</title>
@@ -1230,7 +1224,6 @@
             interface='Products.CMFPlone.interfaces.IBundleRegistry'>
     <value key="merge_with">default</value>
     <value key="resources" purge="false">
-      <element>jquery-highlightsearchterms</element>
     </value>
     <value key="depends">plone</value>
     <value key="jscompilation">++plone++static/plone-legacy-compiled.js</value>
