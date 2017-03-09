@@ -19,7 +19,9 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Show version of products in Add-ons control panel configlet.
+  This fixes https://github.com/plone/Products.CMFPlone/issues/1472.
+  [hvelarde]
 
 
 5.0.7 (2017-02-20)
