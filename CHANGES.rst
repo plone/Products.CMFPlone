@@ -39,6 +39,9 @@ Bug fixes:
 - Test: Wrong use of assertTrue in testResourceRegistries.
   [jensens]
 
+- Fix issue popped iup after fix of use of assertTrue in testResourceRegistries: insert-before in legacy resource import was broken.
+  [jensens]
+
 
 5.1b2 (2017-02-20)
 ------------------
