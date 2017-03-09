@@ -41,7 +41,7 @@ class ResourceRegistryNodeAdapter(XMLAdapterBase):
 
     resource_blacklist = set()
     registry = None
-    
+
     def _importNode(self, node):
         """Import the object from the DOM node.
         """
@@ -140,12 +140,12 @@ class ResourceRegistryNodeAdapter(XMLAdapterBase):
                 elif position[0] == 'before':
                     if position[1] in legacy.resources:
                         legacy.resources.insert(
-                            legacy.resources.index(position[1]) + 1,
+                            legacy.resources.index(position[1]),
                             res_id)
                     else:
                         legacy.resources.append(res_id)
 
-            if remove:
+            elif remove:
                 if res_id in legacy.resources:
                     legacy.resources.remove(res_id)
                 if res_id in resources:

@@ -306,8 +306,10 @@ class TestResourceNodeImporter(PloneTestCase.PloneTestCase):
             """)
         importer._importNode(foobar.documentElement)
         resources = self._get_legacy_bundle().resources
-        self.assertTrue(resources.index('one') + 1,
-                        resources.index('foobar-js'))
+        self.assertEqual(
+            resources.index('one') + 1,
+            resources.index('foobar-js')
+        )
 
     def test_insert_before(self):
         importer = self._get_importer()
@@ -326,8 +328,10 @@ class TestResourceNodeImporter(PloneTestCase.PloneTestCase):
             """)
         importer._importNode(foobar.documentElement)
         resources = self._get_legacy_bundle().resources
-        self.assertTrue(resources.index('one') - 1,
-                        resources.index('foobar-js'))
+        self.assertEqual(
+            resources.index('one') - 1,
+            resources.index('foobar-js')
+        )
 
     def test_be_able_to_disable_but_not_remove(self):
         importer = self._get_importer()
