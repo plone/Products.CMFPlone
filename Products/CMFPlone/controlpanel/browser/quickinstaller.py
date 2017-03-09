@@ -7,6 +7,7 @@ from Products.statusmessages.interfaces import IStatusMessage
 from plone.memoize import view
 from zope.component import getAllUtilitiesRegisteredFor
 import logging
+import pkg_resources
 
 
 class ManageProductsView(BrowserView):
@@ -22,6 +23,18 @@ class ManageProductsView(BrowserView):
 
     def __call__(self):
         return self.index()
+
+    def get_product_version(self, product_id):
+        """Return the version of the product (package).
+        From CMFQuickInstallerTool/QuickInstallerTool
+        getProductVersion
+        That implementation used to fall back to getting the version.txt.
+        """
+        try:
+            dist = pkg_resources.get_distribution(product_id)
+            return dist.version
+        except pkg_resources.DistributionNotFound:
+            return ''
 
     @view.memoize
     def marshall_addons(self):
@@ -74,6 +87,7 @@ class ManageProductsView(BrowserView):
 
                 addons[product_id] = {
                     'id': product_id,
+                    'version': self.get_product_version(product_id),
                     'title': product_id,
                     'description': '',
                     'product_file': product_file,
