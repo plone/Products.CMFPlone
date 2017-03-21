@@ -18,6 +18,12 @@ New features:
   Part of PLIP 1343: https://github.com/plone/Products.CMFPlone/issues/1343
   [gforcada]
 
+- Make use of plone.namedfile's tag() function to generate img tags. Part of plip 1483.
+  [didrix]
+
+- Add retina scales settings in image handling. Part of plip 1483
+  [didrix]
+
 Bug fixes:
 
 - Show version of products in Add-ons control panel configlet.
