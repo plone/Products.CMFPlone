@@ -17,6 +17,12 @@ Bug fixes:
 - Fix import location for Products.ATContentTypes.interfaces.
   [thet]
 
+- Remove redundant Twitter card tags. If og:title, og:description, og:image and
+  og:url are defined Twitter will recognise and use those on the card.
+  See: `Twitter getting started <https://dev.twitter.com/cards/getting-started>`_ section on
+  Twitter Cards and Open Graph. Fixes `issue 119 <https://github.com/plone/plone.app.layout/issues/119>`_.
+  [jladage]
+
 
 2.6.4 (2017-01-17)
 ------------------
