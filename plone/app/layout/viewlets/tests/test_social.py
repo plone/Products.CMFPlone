@@ -43,8 +43,6 @@ class TestSocialViewlet(ViewletsTestCase):
         # Twitter
         self.assertTrue(self.tagFound(
             viewlet, 'name', 'twitter:card', "summary"))
-        self.assertTrue(self.tagFound(
-            viewlet, 'name', 'twitter:url', folder_url))
         # OpenGraph/Facebook
         self.assertTrue(self.tagFound(
             viewlet, 'property', 'og:site_name', viewlet.site_title_setting))
