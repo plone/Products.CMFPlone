@@ -47,7 +47,7 @@ class TestSocialViewlet(ViewletsTestCase):
         self.assertTrue(self.tagFound(
             viewlet, 'property', 'og:site_name', viewlet.site_title_setting))
         self.assertTrue(self.tagFound(
-            viewlet, 'name', 'og:title', viewlet.page_title))
+            viewlet, 'property', 'og:title', viewlet.page_title))
         self.assertTrue(self.tagFound(
             viewlet, 'property', 'og:description', description))
         self.assertTrue(self.tagFound(
