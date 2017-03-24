@@ -44,14 +44,12 @@ class TestSocialViewlet(ViewletsTestCase):
         self.assertTrue(self.tagFound(
             viewlet, 'name', 'twitter:card', "summary"))
         self.assertTrue(self.tagFound(
-            viewlet, 'name', 'twitter:title', viewlet.page_title))
-        self.assertTrue(self.tagFound(
-            viewlet, 'name', 'twitter:description', description))
-        self.assertTrue(self.tagFound(
             viewlet, 'name', 'twitter:url', folder_url))
         # OpenGraph/Facebook
         self.assertTrue(self.tagFound(
             viewlet, 'property', 'og:site_name', viewlet.site_title_setting))
+        self.assertTrue(self.tagFound(
+            viewlet, 'name', 'og:title', viewlet.page_title))
         self.assertTrue(self.tagFound(
             viewlet, 'property', 'og:description', description))
         self.assertTrue(self.tagFound(
@@ -108,8 +106,6 @@ class TestSocialViewlet(ViewletsTestCase):
         viewlet.update()
         self.assertTrue(self.tagFound(
             viewlet, 'property', 'og:image', 'http://nohost/plone/logo.png'))
-        self.assertTrue(self.tagFound(
-            viewlet, 'name', 'twitter:image', 'http://nohost/plone/logo.png'))
         self.assertFalse(self.tagFound(viewlet, 'itemprop'))
         self.assertTrue(self.bodyTagFound(
             viewlet, 'itemprop', 'image', 'http://nohost/plone/logo.png'))

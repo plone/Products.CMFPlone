@@ -46,7 +46,6 @@ class SocialTagsViewlet(TitleViewlet):
         tags = [
             dict(itemprop="name", content=self.page_title),
             dict(name="twitter:card", content="summary"),
-            dict(name="twitter:title", content=self.page_title),
             dict(property="og:site_name", content=self.site_title_setting),
             dict(property="og:title", content=self.page_title),
             dict(property="og:type", content="website"),
@@ -74,8 +73,6 @@ class SocialTagsViewlet(TitleViewlet):
         tags.extend([
             dict(itemprop="description", content=item.description),
             dict(itemprop="url", content=item.link),
-            dict(name="twitter:description", content=item.description),
-            dict(name="twitter:url", content=item.link),
             dict(property="og:description", content=item.description),
             dict(property="og:url", content=item.link),
         ])
@@ -85,7 +82,6 @@ class SocialTagsViewlet(TitleViewlet):
             if item.file_type.startswith('image'):
                 found_image = True
                 tags.extend([
-                    dict(name="twitter:image", content=item.file_url),
                     dict(property="og:image", content=item.file_url),
                     dict(itemprop="image", content=item.file_url),
                     dict(property="og:image:type", content=item.file_type)
@@ -105,7 +101,6 @@ class SocialTagsViewlet(TitleViewlet):
         if not found_image:
             url = getSiteLogo()
             tags.extend([
-                dict(name="twitter:image", content=url),
                 dict(property="og:image", content=url),
                 dict(itemprop="image", content=url),
                 dict(property="og:image:type", content='image/png')

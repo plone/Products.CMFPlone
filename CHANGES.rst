@@ -17,6 +17,12 @@ Bug fixes:
 - Fix import location for Products.ATContentTypes.interfaces.
   [thet]
 
+- Remove redundant Twitter card tags. If og:title, og:description and
+  og:url are defined Twitter will recognise and use those on the card.
+  See: https://dev.twitter.com/cards/getting-started section on
+  Twitter Cards and Open Graph.
+  [jladage]
+
 
 2.6.4 (2017-01-17)
 ------------------
