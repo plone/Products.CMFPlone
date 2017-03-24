@@ -20,7 +20,7 @@ Bug fixes:
 - Remove redundant Twitter card tags. If og:title, og:description and
   og:url are defined Twitter will recognise and use those on the card.
   See: https://dev.twitter.com/cards/getting-started section on
-  Twitter Cards and Open Graph.
+  Twitter Cards and Open Graph. fixes #119.
   [jladage]
 
 
