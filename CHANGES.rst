@@ -14,6 +14,9 @@ New features:
 
 Bug fixes:
 
+- Fix tests for social media viewlet.
+  [hvelarde]
+
 - Fix import location for Products.ATContentTypes.interfaces.
   [thet]
 
