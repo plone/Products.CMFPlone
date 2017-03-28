@@ -85,14 +85,14 @@ class TestSocialViewlet(ViewletsTestCase):
         registry = getUtility(IRegistry)
         settings = registry.forInterface(
             ISocialMediaSchema, prefix='plone', check=False)
-        settings.twitter_username = u'foobar'
-        settings.facebook_app_id = u'foobar'
-        settings.facebook_username = u'foobar'
+        settings.twitter_username = 'foobar'
+        settings.facebook_app_id = 'foobar'
+        settings.facebook_username = 'foobar'
 
         viewlet = SocialTagsViewlet(self.folder, self.app.REQUEST, None)
         viewlet.update()
         self.assertTrue(self.tagFound(
-            viewlet, 'name', 'twitter:site', "@foobar"))
+            viewlet, 'name', 'twitter:site', '@foobar'))
         self.assertTrue(self.tagFound(
             viewlet, 'property', 'fb:app_id', 'foobar'))
         self.assertTrue(self.tagFound(
