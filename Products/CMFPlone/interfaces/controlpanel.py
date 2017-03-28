@@ -1466,24 +1466,24 @@ class ISocialMediaSchema(Interface):
                       u'when shared'),
         default=True)
 
-    twitter_username = schema.TextLine(
+    twitter_username = schema.ASCIILine(
         title=_(u'Twitter Username'),
         description=_(u'To identify things like Twitter Cards. Do not include the \'@\' prefix character.'),
         required=False,
-        default=u'')
+        default='')
 
-    facebook_app_id = schema.TextLine(
+    facebook_app_id = schema.ASCIILine(
         title=_(u'Facebook App ID'),
         description=_(
             u'To be used with some integrations like Open Graph data'),
         required=False,
-        default=u'')
+        default='')
 
-    facebook_username = schema.TextLine(
+    facebook_username = schema.ASCIILine(
         title=_(u'Facebook username'),
         description=_(u'For linking Open Graph data to a Facebook account'),
         required=False,
-        default=u'')
+        default='')
 
 
 class IImagingSchema(Interface):

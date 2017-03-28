@@ -26,6 +26,9 @@ New features:
 
 Bug fixes:
 
+- Fix social media schema field types of ``twitter_username``, ``facebook_app_id`` and ``facebook_username`` to be ``ASCIILine`` instead of ``TextLine``.
+  [hvelarde]
+
 - Show version of products in Add-ons control panel configlet.
   This fixes https://github.com/plone/Products.CMFPlone/issues/1472.
   [hvelarde]
