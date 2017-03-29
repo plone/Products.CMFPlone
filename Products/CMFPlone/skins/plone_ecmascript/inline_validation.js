@@ -29,6 +29,8 @@ jQuery(function ($) {
             $field = $input.closest('.field'),
             uid = $field.attr('data-uid'),
             fname = $field.attr('data-fieldname'),
+            url = '',
+            index = -1,
             value = $input.val();
 
         // value is null for empty multiSelection select, turn it into a [] instead
@@ -42,7 +44,14 @@ jQuery(function ($) {
         params = $.param({uid: uid, fname: fname, value: value}, traditional = true);
 
         if ($field && uid && fname) {
-            $.post($('base').attr('href') + '/at_validate_field', params, function (data) {
+            url = $('base').attr('href');
+            index = url.lastIndexOf('/');
+            if (index > -1 && url.lastIndexOf('edit') > index) {
+                // The url is for an edit page, so we strip the last part,
+                // otherwise we wrongly get context-url/edit/at_validate_field.
+                url = url.slice(0, index);
+            }
+            $.post(url + '/at_validate_field', params, function (data) {
                 render_error($field, data.errmsg);
             });
         }

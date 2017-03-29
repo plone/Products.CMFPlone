@@ -19,7 +19,10 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Fixed inline validation for Archetypes content.
+  Every field was shown as having an error, without showing an error message.
+  Fixes `issue 1982 <https://github.com/plone/Products.CMFPlone/issues/1982>`_.
+  [maurits]
 
 
 4.3.13 (2017-03-27)
