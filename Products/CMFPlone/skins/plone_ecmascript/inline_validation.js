@@ -29,6 +29,9 @@ jQuery(function ($) {
             $field = $input.closest('.field'),
             uid = $field.attr('data-uid'),
             fname = $field.attr('data-fieldname'),
+            $form = $field.closest('form'),
+            url = '',
+            index = -1,
             value = $input.val();
 
         // value is null for empty multiSelection select, turn it into a [] instead
@@ -42,7 +45,21 @@ jQuery(function ($) {
         params = $.param({uid: uid, fname: fname, value: value}, traditional = true);
 
         if ($field && uid && fname) {
-            $.post($('base').attr('href') + '/at_validate_field', params, function (data) {
+            url = $form.attr('action');
+            index = url.lastIndexOf('/');
+            if (index > -1 && url.lastIndexOf('edit') > index) {
+                // The url is for an edit page, so we strip the last part,
+                // otherwise we wrongly get context-url/edit/at_validate_field.
+                // 'edit' can be 'atct_edit' too.
+                url = url.slice(0, index);
+            }
+            $.post(url + '/at_validate_field', params, function (data) {
+                if (data.errmsg === undefined) {
+                  // If we ask at the wrong url, like edit/at_validate_field,
+                  // we get the html of the edit page back.
+                  // It is best not to do anything then.
+                  return;
+                };
                 render_error($field, data.errmsg);
             });
         }
