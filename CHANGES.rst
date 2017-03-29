@@ -4,14 +4,6 @@ Changelog
 2.6.5 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - Fix tests for social media viewlet.
