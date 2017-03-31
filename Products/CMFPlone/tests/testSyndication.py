@@ -167,6 +167,14 @@ class TestSyndicationFeedAdapter(BaseSyndicationTest):
         self.assertEqual(self.feeddatafile.link,
                          self.file.absolute_url() + '/view')
 
+    def test_link_on_document(self):
+        self.assertEqual(self.feeddatadoc.link, self.doc1.absolute_url())
+
+    def test_link_on_default_page(self):
+        self.folder._setProperty('default_page', 'doc2')
+        feeddatadoc2 = BaseItem(self.doc2, self.feed)
+        self.assertEqual(feeddatadoc2.link, self.folder.absolute_url())
+
     def test_items(self):
         self.assertEqual(len(self.feed._brains()), 3)
         self.assertEqual(len([i for i in self.feed.items]), 3)

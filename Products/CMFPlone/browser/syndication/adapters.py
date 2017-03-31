@@ -3,6 +3,7 @@ from zope.component.hooks import getSite
 from zope.component import adapts
 from zope.interface import implementer
 from zope.interface import Interface
+from zope.component import getMultiAdapter
 from zope.component import queryMultiAdapter
 from zope.component import getUtility
 
@@ -54,11 +55,17 @@ class BaseFeedData(object):
 
     @property
     def link(self):
-        return self.base_url
+        return self.canonical_url
 
     @lazy_property
     def base_url(self):
         return self.context.absolute_url()
+
+    @lazy_property
+    def canonical_url(self):
+        pcs = getMultiAdapter(
+            (self.context, self.context.REQUEST), name='plone_context_state')
+        return pcs.canonical_object_url()
 
     @property
     def title(self):
@@ -241,6 +248,8 @@ class BaseItem(BaseFeedData):
         url = self.base_url
         if self.context.portal_type in self.feed.view_action_types:
             url = url + '/view'
+        else:
+            url = self.canonical_url
         return url
 
     guid = link
