@@ -26,6 +26,12 @@ New features:
 
 Bug fixes:
 
+- Use canonical url instead of absolute url for RSS feed items.
+  This code is used for the social viewlet too.
+  So default pages are reported with their parent url.
+  Fixes `layout issue 118 <https://github.com/plone/plone.app.layout/issues/118>`_.
+  [maurits]
+
 - Fix social media schema field types of ``twitter_username``, ``facebook_app_id`` and ``facebook_username`` to be ``ASCIILine`` instead of ``TextLine``.
   [hvelarde]
 
