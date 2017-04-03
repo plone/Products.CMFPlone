@@ -6,16 +6,8 @@ Changelog
 =========
 
 
-4.3.14 (unreleased)
+4.3.14 (2017-04-03)
 -------------------
-
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
 
 Bug fixes:
 
