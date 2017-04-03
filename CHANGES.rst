@@ -8,10 +8,6 @@ Changelog
 5.1b3 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
 New features:
 
 - Adapt code and tests to the new indexing operations queueing.
