@@ -1,5 +1,5 @@
 <div class="contentActions"
      tal:define="ploneview context/@@plone"
-     tal:condition="ploneview/showEditableBorder">
+     tal:condition="ploneview/showToolbar">
 
 </div>

@@ -1,5 +1,5 @@
 <tal:contentviews tal:define="ploneview context/@@plone;"
-                  tal:condition="ploneview/showEditableBorder"
+                  tal:condition="ploneview/showToolbar"
                   i18n:domain="plone">
   <tal:actions tal:repeat="action options/actions">
     <li tal:attributes="id string:contentview-${action/id};
@@ -11,7 +11,7 @@
            tal:attributes="href action/url;
                            target action/link_target|nothing;
                            class action/cssClass|nothing;">
-          <span tal:attributes="class string:icon-${action/id}${action/cssClass|nothing};"
+          <span tal:attributes="class string:icon-${action/id}${action/cssClass|nothing}  toolbar-menu-icon;"
                 class="icon-folderContents" aria-hidden="true">
           </span>
           <span tal:content="action/title" i18n:translate="">View name</span>
@@ -29,7 +29,7 @@
                            target action/link_target|nothing;
                            class action/cssClass|nothing">
           <span tal:attributes="class python:locked and 'icon-lock' or 'icon-history'"
-                class="icon-folderContents" aria-hidden="true">
+                class="icon-folderContents toolbar-menu-icon" aria-hidden="true">
           </span>
           <span class="pat-moment" data-pat-moment="format:relative;"
                 tal:content="context/ModificationDate">Modified</span>

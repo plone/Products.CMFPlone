@@ -46,15 +46,11 @@ class TestSocialViewlet(ViewletsTestCase):
         # Twitter
         self.assertTrue(self.tagFound(
             viewlet, 'name', 'twitter:card', "summary"))
-        self.assertTrue(self.tagFound(
-            viewlet, 'name', 'twitter:title', viewlet.page_title))
-        self.assertTrue(self.tagFound(
-            viewlet, 'name', 'twitter:description', description))
-        self.assertTrue(self.tagFound(
-            viewlet, 'name', 'twitter:url', folder_url))
         # OpenGraph/Facebook
         self.assertTrue(self.tagFound(
             viewlet, 'property', 'og:site_name', viewlet.site_title_setting))
+        self.assertTrue(self.tagFound(
+            viewlet, 'property', 'og:title', viewlet.page_title))
         self.assertTrue(self.tagFound(
             viewlet, 'property', 'og:description', description))
         self.assertTrue(self.tagFound(
@@ -99,7 +95,8 @@ class TestSocialViewlet(ViewletsTestCase):
         cache[key] = {}
         logout()
         viewlet.update()
-        self.assertEquals(len(viewlet.tags), 12)
+        import ipdb; ipdb.set_trace()
+        self.assertEquals(len(viewlet.tags), 8)
 
     def testIncludeSocialSettings(self):
         registry = getUtility(IRegistry)
@@ -111,7 +108,7 @@ class TestSocialViewlet(ViewletsTestCase):
         viewlet = SocialTagsViewlet(self.folder, self.app.REQUEST, None)
         viewlet.update()
         self.assertTrue(self.tagFound(
-            viewlet, 'name', 'twitter:site', "@foobar"))
+            viewlet, 'name', 'twitter:site', '@foobar'))
         self.assertTrue(self.tagFound(
             viewlet, 'property', 'fb:app_id', 'foobar'))
         self.assertTrue(self.tagFound(
@@ -123,8 +120,6 @@ class TestSocialViewlet(ViewletsTestCase):
         viewlet.update()
         self.assertTrue(self.tagFound(
             viewlet, 'property', 'og:image', 'http://nohost/plone/logo.png'))
-        self.assertTrue(self.tagFound(
-            viewlet, 'name', 'twitter:image', 'http://nohost/plone/logo.png'))
         self.assertFalse(self.tagFound(viewlet, 'itemprop'))
         self.assertTrue(self.bodyTagFound(
             viewlet, 'itemprop', 'image', 'http://nohost/plone/logo.png'))

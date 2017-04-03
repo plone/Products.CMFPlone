@@ -187,6 +187,15 @@ class TestRelatedItemsViewlet(ViewletsTestCase):
         self.assertEqual([x.Title for x in related], [
                          'Document 2', 'Document 3'])
 
+    def testDeletedRelatedItems(self):
+        # Deleted related items should not cause problems.
+        self.folder._delObject('doc2')
+        request = self.app.REQUEST
+        viewlet = ContentRelatedItems(self.folder.doc1, request, None, None)
+        viewlet.update()
+        related = viewlet.related_items()
+        self.assertEqual([x.Title for x in related], ['Document 3'])
+
 
 class TestDexterityRelatedItemsViewlet(ViewletsTestCase):
 
@@ -263,3 +272,12 @@ class TestDexterityRelatedItemsViewlet(ViewletsTestCase):
         viewlet.update()
         related = viewlet.related_items()
         self.assertEqual(len(related), 1)
+
+    def testDexterityDeletedRelatedItems(self):
+        # Deleted related items should not cause problems.
+        self.folder._delObject('doc1')
+        request = self.app.REQUEST
+        viewlet = ContentRelatedItems(self.folder.dex1, request, None, None)
+        viewlet.update()
+        related = viewlet.related_items()
+        self.assertEqual([x.id for x in related], ['doc2'])

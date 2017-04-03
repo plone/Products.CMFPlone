@@ -252,17 +252,6 @@
         permission="zope2.View"
         />
 
-    <!-- Render the workflow history viewlet;
-         BBB: this is the Plone < 4 viewlet
-    <browser:viewlet
-        name="plone.belowcontentbody.inlinecontenthistory"
-        manager=".interfaces.IBelowContentBody"
-        class=".content.ContentHistoryViewlet"
-        template="inline_content_history.pt"
-        permission="zope2.View"
-        />
-     -->
-
     <!-- Render the workflow history as a view -->
     <browser:view
         for="*"
@@ -350,7 +339,7 @@
     <browser:viewlet
         zcml:condition="installed Products.ATContentTypes"
         name="plone.tableofcontents"
-        for="Products.ATContentTypes.interface.IATDocument"
+        for="Products.ATContentTypes.interfaces.IATDocument"
         manager=".interfaces.IAboveContentBody"
         class=".common.TableOfContentsViewlet"
         permission="zope2.View"

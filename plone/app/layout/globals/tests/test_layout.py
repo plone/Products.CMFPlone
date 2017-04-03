@@ -76,6 +76,21 @@ class TestLayoutView(GlobalsTestCase):
         body_class = view.bodyClass(template, view)
         assert 'section-front-page' in body_class
 
+    def testBodyClassTemplate(self):
+        context = self.portal['front-page']
+
+        template = context.document_view
+        view = context.restrictedTraverse('@@plone_layout')
+
+        body_class = view.bodyClass(template, view)
+        assert 'template-document_view' in body_class
+
+        body_class = view.bodyClass(template, None)
+        assert 'template-document_view' in body_class
+
+        body_class = view.bodyClass(None, view)
+        assert 'template-plone_layout' in body_class
+
     def testBodyClassWithNavigationRoot(self):
         # mark a folder "between" self.folder and self.portal with
         # INavigationRoot
