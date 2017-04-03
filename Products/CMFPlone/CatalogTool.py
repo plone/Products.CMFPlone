@@ -472,7 +472,7 @@ class CatalogTool(PloneBaseTool, BaseTool):
         user = _getAuthenticatedUser(self)
         query['allowedRolesAndUsers'] = self._listAllowedRolesAndUsers(user)
 
-        if not self.allow_inactive(kw):
+        if not self.allow_inactive(query):
             query['effectiveRange'] = DateTime()
 
         return super(CatalogTool, self).search(
