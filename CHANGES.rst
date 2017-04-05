@@ -18,7 +18,8 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Add constraint to avoid filling ``twitter_username`` field with strings starting with a "@" character.
+  [hvelarde]
 
 
 5.1b3 (2017-04-03)
