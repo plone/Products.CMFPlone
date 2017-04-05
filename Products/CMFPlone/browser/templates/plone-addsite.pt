@@ -46,8 +46,8 @@
         </label>
 
         <div class="formHelp" i18n:translate="">
-          The id of the site. This ends up as part of the URL.<br />
-          No special characters are allowed.
+          The ID of the site. This ends up as part of the URL.<br />
+          No special characters or spaces are allowed.
         </div>
 
         <input type="text" name="site_id" size="20" id="site_id"
