@@ -1026,6 +1026,34 @@ class TestCatalogExpirationFiltering(PloneTestCase):
         res = self.catalog()
         self.assertResults(res, base_content)
 
+    def testPathWithPrivateMidLevel(self):
+        # This test was added to test issue where allow_inactive-check raised
+        # Unauthorized-exception with the search conditions of this test.
+
+        # Be anonymous to enable allow_inactive -check
+        self.logout()
+
+        # Check that search shows both self.folder and self.folder.doc
+        path = '/'.join(self.folder.aq_parent.getPhysicalPath())
+        results = [b.getPath() for b in self.catalog(path=path)]
+        self.assertIn('/'.join(self.folder.getPhysicalPath()), results)
+        self.assertIn('/'.join(self.folder.doc.getPhysicalPath()), results)
+
+        # Hide self.folder from anonymous, but leave self.folder.doc visible
+        self.login(TEST_USER_NAME)
+        self.portal.portal_workflow.doActionFor(self.folder, 'hide')
+        self.logout()
+
+        # Check that self.folder.doc is still visible while self.folder is not
+        results = [b.getPath() for b in self.catalog(path=path)]
+        self.assertNotIn('/'.join(self.folder.getPhysicalPath()), results)
+        self.assertIn('/'.join(self.folder.doc.getPhysicalPath()), results)
+
+        # Check that direct search for self.folder.doc can be made
+        path = '/'.join(self.folder.doc.getPhysicalPath())
+        results = [b.getPath() for b in self.catalog(path=path)]
+        self.assertIn('/'.join(self.folder.doc.getPhysicalPath()), results)
+
     def testExpiredWithPermissionOnSubpath(self):
         self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
         self.folder.doc.reindexObject()

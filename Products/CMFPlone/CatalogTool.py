@@ -409,7 +409,9 @@ class CatalogTool(PloneBaseTool, BaseTool):
         for path in list(paths):
             path = path.encode('utf-8')  # paths must not be unicode
             try:
-                objs.append(site.restrictedTraverse(path))
+                parts = path.split('/')
+                parent = site.unrestrictedTraverse('/'.join(parts[:-1]))
+                objs.append(parent.restrictedTraverse(parts[-1]))
             except (KeyError, AttributeError):
                 # When no object is found don't raise an error
                 pass
