@@ -19,6 +19,10 @@ New features:
 
 Bug fixes:
 
+- Fix issue where catalog search with path failed when path had inaccessible
+  (private) levels
+  [datakurre]
+
 - Add constraint to avoid filling ``twitter_username`` field with strings starting with a "@" character.
   [hvelarde]
   
