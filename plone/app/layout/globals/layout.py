@@ -17,6 +17,7 @@ from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.component import queryMultiAdapter
 from zope.component import queryUtility
+from zope.deprecation import deprecate
 from zope.interface import alsoProvides
 from zope.interface import implementer
 from zope.publisher.browser import BrowserView
@@ -115,7 +116,9 @@ class LayoutPolicy(BrowserView):
             return True
         else:
             return False
-
+    @deprecate('deprecated since Plone 4, ContentIcons are rendered \
+    as Fonts now see \
+    https://docs.plone.org/develop/addons/index.html#upgrading-to-plone-5-1.')
     def getIcon(self, item):
         """Returns an object which implements the IContentIcon interface and
         provides the informations necessary to render an icon. The item
