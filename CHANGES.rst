@@ -17,6 +17,10 @@ New features:
 - Update mockup to latest version.
   [thet]
 
+- new metadata catalog column mime_type
+  https://github.com/plone/Products.CMFPlone/issues/1995
+  [fgrcon]
+
 Bug fixes:
 
 - Adapt tests to render social metadata only if you are anonymous.

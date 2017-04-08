@@ -285,6 +285,11 @@ def getIcon(obj):
 
 
 @indexer(Interface)
+def mime_type(obj):
+    return aq_base(obj).getPrimaryField().getContentType(obj)
+
+
+@indexer(Interface)
 def location(obj):
     return obj.getField('location').get(obj)
 
