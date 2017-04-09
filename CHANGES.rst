@@ -14,7 +14,9 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Deprecating getIcon() in @@plone_layout
+  see https://github.com/plone/Products.CMFPlone/issues/1734
+  [fgrcon]
 
 
 2.6.5 (2017-03-29)
