@@ -41,7 +41,7 @@ Before you start exploring your newly created Plone site, please do the followin
     <li>Find out <a class="link-plain" href="http://plone.com/features/" target="_blank">What's new in Plone</a>.</li>
     <li>Read the <a class="link-plain" href="http://docs.plone.org" target="_blank">documentation</a>.</li>
     <li>Follow a <a class="link-plain" href="https://training.plone.org" target="_blank">training</a>.</li>
-    <li>Explore the <a class="link-plain" href="http://plone.org/products" target="_blank">available add-ons</a> for Plone.</li>
+    <li>Explore the <a class="link-plain" href="https://plone.org/download/add-ons" target="_blank">available add-ons</a> for Plone.</li>
     <li>Read and/or subscribe to the <a class="link-plain" href="http://plone.org/support" target="_blank">support channels</a>.</li>
     <li>Find out <a class="link-plain" href="http://plone.com/success-stories" target="_blank">how others are using Plone</a>.</li>
 </ul>
@@ -90,10 +90,6 @@ solutions?
 </p>
 
 <ul>
-    <li>Add your sites to the <a class="link-plain"
-        href="http://plone.org/support/sites" target="_blank">Plone site listing</a>.
-        <span class="discreet">(Or see what sites are already out there!)</span>
-    </li>
     <li>Add your company as a <a class="link-plain"
         href="http://plone.com/providers" target="_blank">Plone provider</a>.</li>
     <li>Add a <a class="link-plain"
@@ -127,7 +123,7 @@ individuals and hundreds of companies. The Plone Foundation:
     <li>…protects and promotes Plone.</li>
     <li>…is a registered 501(c)(3) charitable organization.</li>
     <li>…donations are tax-deductible.</li>
-    <li><a href="http://plone.org/foundation/foundation-donations" target="_blank">Support the Foundation and help make Plone better!</a></li>
+    <li><a href="https://plone.org/sponsors/be-a-hero" target="_blank">Support the Foundation and help make Plone better!</a></li>
 </ul>
 
 <p>Thanks for using our product; we hope you like it!</p>

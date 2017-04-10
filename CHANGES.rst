@@ -21,7 +21,9 @@ Bug fixes:
 
 - Add constraint to avoid filling ``twitter_username`` field with strings starting with a "@" character.
   [hvelarde]
-
+  
+- Fixed addons/donations links, removed dead "add your site" link 
+  [sgrepos]
 
 5.1b3 (2017-04-03)
 ------------------
