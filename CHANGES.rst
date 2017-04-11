@@ -19,14 +19,17 @@ New features:
 
 Bug fixes:
 
+- Adapt tests to render social metadata only if you are anonymous.
+  [bsuttor]
+
 - Fix issue where catalog search with path failed when path had inaccessible
   (private) levels
   [datakurre]
 
 - Add constraint to avoid filling ``twitter_username`` field with strings starting with a "@" character.
   [hvelarde]
-  
-- Fixed addons/donations links, removed dead "add your site" link 
+
+- Fixed addons/donations links, removed dead "add your site" link
   [sgrepos]
 
 5.1b3 (2017-04-03)
