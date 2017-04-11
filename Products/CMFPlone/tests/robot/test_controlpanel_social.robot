@@ -58,6 +58,7 @@ I provide social settings
 # --- THEN -------------------------------------------------------------------
 
 social tags should exist for anonymous
+  Go to  ${PLONE_URL}
   Page should not contain element  css=meta[name="twitter:site"]
   Page should not contain element  css=meta[property="og:article:publisher"]
   Page should not contain element  css=meta[property="fb:app_id"]
