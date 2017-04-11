@@ -23,6 +23,8 @@ Bug fixes:
   This fixes https://github.com/plone/Products.CMFPlone/issues/1472.
   [hvelarde]
 
+- Removed "change portal events" permission
+  [kakshay21]
 
 5.0.7 (2017-02-20)
 ------------------
