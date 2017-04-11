@@ -15,7 +15,8 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- Add lead imaging schema.
+  [bsuttor]
 
 Bug fixes:
 
