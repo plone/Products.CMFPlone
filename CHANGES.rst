@@ -19,6 +19,9 @@ New features:
 
 Bug fixes:
 
+- Fix search term munging with queries that include and, or and not.
+  [malthe]
+
 - Fix issue where catalog search with path failed when path had inaccessible
   (private) levels
   [datakurre]
@@ -32,6 +35,12 @@ Bug fixes:
 - Removed "change portal events" permission
   [kakshay21]
   
+
+- Fix isssue where collapsed toolbar was not initialized properly on page
+  refresh, resulting wide blank space between collapsed toolbar and page
+  content
+  [datakurre]
+
 
 5.1b3 (2017-04-03)
 ------------------

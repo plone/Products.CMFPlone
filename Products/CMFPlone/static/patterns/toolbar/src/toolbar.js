@@ -79,10 +79,16 @@ define([
       var that = this;
       if (that.state.expanded){
         $('body').addClass(that.options.classNames.expanded);
+        $('body').addClass(that.state.left ? that.options.classNames.leftExpanded : that.options.classNames.topExpanded);
         $('body').removeClass(that.options.classNames.default);
+        $('body').removeClass(that.options.classNames.leftDefault);
+        $('body').removeClass(that.options.classNames.topDefault);
       }else {
         $('body').addClass(that.options.classNames.default);
+        $('body').addClass(that.state.left ? that.options.classNames.leftDefault : that.options.classNames.topDefault);
         $('body').removeClass(that.options.classNames.expanded);
+        $('body').removeClass(that.options.classNames.leftExpanded);
+        $('body').removeClass(that.options.classNames.topExpanded);
       }
 
       if (!that.state.left) {
