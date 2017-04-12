@@ -19,6 +19,9 @@ New features:
 
 Bug fixes:
 
+- Fix search term munging with queries that include and, or and not.
+  [malthe]
+
 - Fix issue where catalog search with path failed when path had inaccessible
   (private) levels
   [datakurre]
