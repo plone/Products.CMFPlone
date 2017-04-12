@@ -29,6 +29,12 @@ Bug fixes:
 - Fixed addons/donations links, removed dead "add your site" link 
   [sgrepos]
 
+- Fix isssue where collapsed toolbar was not initialized properly on page
+  refresh, resulting wide blank space between collapsed toolbar and page
+  content
+  [datakurre]
+
+
 5.1b3 (2017-04-03)
 ------------------
 
