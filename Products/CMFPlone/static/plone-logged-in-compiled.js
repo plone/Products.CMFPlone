@@ -47268,14 +47268,6 @@ define('mockup-ui-url/views/button',[
       }
       BaseView.prototype.initialize.apply(this, [options]);
 
-      this.on('disable', function() {
-        this.disable();
-      }, this);
-
-      this.on('enable', function() {
-        this.enable();
-      }, this);
-
       this.on('render', function() {
         this.$el.attr('title', this.options.title || '');
         this.$el.attr('aria-label', this.options.title || this.options.tooltip || '');
@@ -47327,13 +47319,13 @@ define('text!mockup-patterns-relateditems-url/templates/breadcrumb.xml',[],funct
 define('text!mockup-patterns-relateditems-url/templates/favorite.xml',[],function () { return '<li><a href="<%- path %>" class="fav" aria-labelledby="blip"><%- title %></a></li>\n';});
 
 
-define('text!mockup-patterns-relateditems-url/templates/result.xml',[],function () { return '<div class="pattern-relateditems-result">\n  <a href="#" class=" pattern-relateditems-result-select <% if (selectable) { %>selectable<% } %>">\n    <% if (typeof getURL !== \'undefined\' && ((typeof getIcon !== \'undefined\' && getIcon === true) || portal_type === "Image")) { %><img src="<%- getURL %>/@@images/image/icon "><br><% } %>\n    <span class="pattern-relateditems-result-title <% if (typeof review_state !== "undefined") { %> state-<%- review_state %> <% } %>  " /span>\n    <span class="pattern-relateditems contenttype-<%- portal_type.toLowerCase() %>"><%- Title %></span>\n    <span class="pattern-relateditems-result-path"><%- path %></span>\n  </a>\n  <span class="pattern-relateditems-buttons">\n  <% if (mode !== "search" && is_folderish) { %>\n     <a class="pattern-relateditems-result-browse" href="#" data-path="<%- path %>"></a>\n   <% } %>\n </span>\n</div>\n';});
+define('text!mockup-patterns-relateditems-url/templates/result.xml',[],function () { return '<div class="pattern-relateditems-result">\n  <span class="pattern-relateditems-buttons">\n  <% if (is_folderish) { %>\n    <a class="pattern-relateditems-result-browse" data-path="<%- path %>" title="Open folder"></a>\n  <% } %>\n  </span>\n  <a class="pattern-relateditems-result-select<% if (selectable) { %> selectable<% } else if (browsing && is_folderish) { %> pattern-relateditems-result-browse<% } %><% if (typeof oneLevelUp !== \'undefined\' && oneLevelUp) { %> one-level-up<% } %>" data-path="<%- path %>">\n    <% if (typeof getURL !== \'undefined\' && ((typeof getIcon !== \'undefined\' && getIcon === true) || portal_type === "Image")) { %><img src="<%- getURL %>/@@images/image/icon "><br><% } %>\n  \t<span class="pattern-relateditems-result-title contenttype-<%- portal_type.toLowerCase() %><% if (typeof review_state !== \'undefined\') { %> state-<%- review_state %><% } %>"><%- Title %></span>\n    <span class="pattern-relateditems-result-path"><%- path %></span>\n  </a>\n</div>\n';});
 
 
-define('text!mockup-patterns-relateditems-url/templates/selection.xml',[],function () { return '<span class="pattern-relateditems-item">\n  <% if (typeof getURL !== \'undefined\' && ((typeof getIcon !== \'undefined\' && getIcon === true) || portal_type === "Image")) { %><img src="<%- getURL %>/@@images/image/icon"><br><% } %>\n  <span class="pattern-relateditems-item-title contenttype-<%- portal_type.toLowerCase() %> <% if (typeof review_state !== "undefined") { %> state-<%- review_state  %> <% } %>" ><%- Title %></span>\n  <span class="pattern-relateditems-item-path"><%- path %></span>\n</span>\n';});
+define('text!mockup-patterns-relateditems-url/templates/selection.xml',[],function () { return '<span class="pattern-relateditems-item">\n  <% if (typeof getURL !== \'undefined\' && ((typeof getIcon !== \'undefined\' && getIcon === true) || portal_type === "Image")) { %><img src="<%- getURL %>/@@images/image/icon"><br><% } %>\n  <span class="pattern-relateditems-item-title contenttype-<%- portal_type.toLowerCase() %><% if (typeof review_state !== \'undefined\') { %> state-<%- review_state %><% } %>"><%- Title %></span>\n  <span class="pattern-relateditems-item-path"><%- path %></span>\n</span>\n';});
 
 
-define('text!mockup-patterns-relateditems-url/templates/toolbar.xml',[],function () { return '<div class="btn-group mode-selector" role="group">\n  <button type="button" class="mode search btn <% if (mode=="search") { %>btn-primary<% } else {%>btn-default<% } %>"><%- searchModeText %></button>\n  <button type="button" class="mode browse btn <% if (mode=="browse") { %>btn-primary<% } else {%>btn-default<% } %>"><%- browseModeText %></button>\n</div>\n<div class="path-wrapper">\n  <span class="pattern-relateditems-path-label"><%- searchText %></span>\n  <a class="crumb" href="/"><span class="glyphicon glyphicon-home"/></a>\n  <%= items %>\n</div>\n<div class="controls pull-right">\n  <% if (favorites.length > 0) { %>\n  <div class="favorites dropdown pull-right">\n    <button type="button" class="favorites dropdown-toggle btn btn-primary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">\n      <span class="glyphicon glyphicon-star"/>\n      <%- favText %>\n      <span class="caret"/>\n    </button>\n    <ul class="dropdown-menu">\n      <%= favItems %>\n    </ul>\n  </div>\n  <% } %>\n</div>\n';});
+define('text!mockup-patterns-relateditems-url/templates/toolbar.xml',[],function () { return '<% if (mode!==\'auto\') { %>\n<div class="btn-group mode-selector" role="group">\n  <button type="button" class="mode search btn <% if (mode==\'search\') { %>btn-primary<% } else {%>btn-default<% } %>"><%- searchModeText %></button>\n  <button type="button" class="mode browse btn <% if (mode==\'browse\') { %>btn-primary<% } else {%>btn-default<% } %>"><%- browseModeText %></button>\n</div>\n<% } %>\n<div class="path-wrapper">\n  <span class="pattern-relateditems-path-label"><%- searchText %></span>\n  <a class="crumb" href="/"><span class="glyphicon glyphicon-home"/></a>\n  <%= items %>\n</div>\n<div class="controls pull-right">\n  <% if (favorites.length > 0) { %>\n  <div class="favorites dropdown pull-right">\n    <button type="button" class="favorites dropdown-toggle btn btn-primary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">\n      <span class="glyphicon glyphicon-star"/>\n      <%- favText %>\n      <span class="caret"/>\n    </button>\n    <ul class="dropdown-menu">\n      <%= favItems %>\n    </ul>\n  </div>\n  <% } %>\n</div>\n';});
 
 /* Related items pattern.
  *
@@ -47341,18 +47333,23 @@ define('text!mockup-patterns-relateditems-url/templates/toolbar.xml',[],function
  *    vocabularyUrl(string): This is a URL to a JSON-formatted file used to populate the list (null)
  *    attributes(array): This list is passed to the server during an AJAX request to specify the attributes which should be included on each item. (['UID', 'Title', 'portal_type', 'path'])
  *    basePath(string): Start browse/search in this path. Default: set to rootPath.
+ *    contextPath(string): Path of the object, which is currently edited. If this path is given, this object will not be selectable.
  *    closeOnSelect(boolean): Select2 option. Whether or not the drop down should be closed when an item is selected. (true)
  *    dropdownCssClass(string): Select2 option. CSS class to add to the drop down element. ('pattern-relateditems-dropdown')
  *    favorites(array): Array of objects. These are favorites, which can be used to quickly jump to different locations. Objects have the attributes "title" and "path". Default: []
- *    mode(string): Initial widget mode. Possible values: 'search', 'browse'. If set to 'search', the catalog is searched for a searchterm. If set to 'browse', browsing starts at basePath. Default: 'search'.
  *    maximumSelectionSize(integer): The maximum number of items that can be selected in a multi-select control. If this number is less than 1 selection is not limited. (-1)
  *    minimumInputLength: Select2 option. Number of characters necessary to start a search. Default: 0.
+ *    mode(string): Initial widget mode. Possible values: 'search', 'browse'. If set to 'search', the catalog is searched for a searchterm. If set to 'browse', browsing starts at basePath. Default: 'search'.
  *    orderable(boolean): Whether or not items should be drag-and-drop sortable. (true)
+ *    pageSize(int): Batch size to break down big result sets into multiple pages. (10).
  *    rootPath(string): Only display breadcrumb path elements deeper than this path. Default: "/"
  *    rootUrl(string): Visible URL up to the rootPath. This is prepended to the currentPath to generate submission URLs.
+ *    scanSelection(boolean): Scan the list of selected elements for other patterns.
  *    selectableTypes(array): If the value is null all types are selectable. Otherwise, provide a list of strings to match item types that are selectable. (null)
  *    separator(string): Select2 option. String which separates multiple items. (',')
  *    tokenSeparators(array): Select2 option, refer to select2 documentation. ([",", " "])
+ *    upload(boolen): Allow file and image uploads from within the related items widget.
+ *    uploadAllowView(string): View, which returns a JSON response in the form of {allowUpload: true}, if upload is allowed in the current context.
  *    width(string): Specify a width for the widget. ('100%')
  *    breadcrumbTemplate(string): Template to use for a single item in the breadcrumbs.
  *    breadcrumbTemplateSelector(string): Select an element from the DOM from which to grab the breadcrumbTemplate. (null)
@@ -47362,8 +47359,6 @@ define('text!mockup-patterns-relateditems-url/templates/toolbar.xml',[],function
  *    resultTemplateSelector(string): Select an element from the DOM from which to grab the resultTemplate. (null)
  *    selectionTemplate(string): Template for element that will be used to construct a selected item. (Refer to source)
  *    selectionTemplateSelector(string): Select an element from the DOM from which to grab the selectionTemplate. (null)
- *    upload(boolen): Allow file and image uploads from within the related items widget.
- *    uploadAllowView(string): View, which returns a JSON response in the form of {allowUpload: true}, if upload is allowed in the current context.
  *
  * Documentation:
  *    The Related Items pattern is based on Select2 so many of the same options will work here as well.
@@ -47423,7 +47418,6 @@ define('text!mockup-patterns-relateditems-url/templates/toolbar.xml',[],function
  *
  */
 
-
 define('mockup-patterns-relateditems',[
   'jquery',
   'underscore',
@@ -47431,6 +47425,7 @@ define('mockup-patterns-relateditems',[
   'mockup-patterns-select2',
   'mockup-ui-url/views/button',
   'mockup-utils',
+  'pat-registry',
   'translate',
   'text!mockup-patterns-relateditems-url/templates/breadcrumb.xml',
   'text!mockup-patterns-relateditems-url/templates/favorite.xml',
@@ -47438,7 +47433,7 @@ define('mockup-patterns-relateditems',[
   'text!mockup-patterns-relateditems-url/templates/selection.xml',
   'text!mockup-patterns-relateditems-url/templates/toolbar.xml',
   'bootstrap-dropdown'
-], function($, _, Base, Select2, ButtonView, utils, _t,
+], function($, _, Base, Select2, ButtonView, utils, registry, _t,
             BreadcrumbTemplate,
             FavoriteTemplate,
             ResultTemplate,
@@ -47458,23 +47453,27 @@ define('mockup-patterns-relateditems',[
       vocabularyUrl: null,  // must be set to work
 
       // more options
-      upload: false,
       attributes: ['UID', 'Title', 'portal_type', 'path', 'getURL', 'getIcon', 'is_folderish', 'review_state'],  // used by utils.QueryHelper
       basePath: '',
+      pageSize: 10,
+      browsing: undefined,
       closeOnSelect: true,
+      contextPath: undefined,
       dropdownCssClass: 'pattern-relateditems-dropdown',
       favorites: [],
       maximumSelectionSize: -1,
       minimumInputLength: 0,
-      mode: 'search', // possible values are search and browse
-      browsing: undefined,
+      mode: 'auto', // possible values are search and browse
       orderable: true,  // mockup-patterns-select2
+      pathOperator: 'plone.app.querystring.operation.string.path',
       rootPath: '/',
       rootUrl: '',  // default to be relative.
-      pathOperator: 'plone.app.querystring.operation.string.path',
+      scanSelection: false,  // False, to no unnecessarily use CPU time on this.
       selectableTypes: null, // null means everything is selectable, otherwise a list of strings to match types that are selectable
       separator: ',',
       tokenSeparators: [',', ' '],
+      upload: false,
+      uploadAllowView: undefined,
       width: '100%',
 
       // templates
@@ -47506,49 +47505,105 @@ define('mockup-patterns-relateditems',[
         template = self.options[tpl + 'Template'];
       }
       // let's give all the options possible to the template generation
-      var options = $.extend(true, {}, self.options, item);
+      var options = $.extend(true, {}, self.options, item, {'browsing': self.browsing});
       options._item = item;
       return _.template(template)(options);
     },
 
-    setQuery: function () {
+    setAjax: function () {
 
-      var baseCriteria = [];
+      var ajax = {
 
-      if (this.options.mode == 'search') {
-        // MODE SEARCH
+        url: this.options.vocabularyUrl,
+        dataType: 'JSON',
+        quietMillis: 100,
 
-        // restrict to given types
-        if (this.options.selectableTypes) {
-          baseCriteria.push({
-            i: 'portal_type',
-            o: 'plone.app.querystring.operation.selection.any',
-            v: this.options.selectableTypes
+        data: function (term, page) {
+
+          var criterias = [];
+          if (term) {
+            term = '*' + term + '*';
+            criterias.push({
+              i: 'SearchableText',
+              o: 'plone.app.querystring.operation.string.contains',
+              v: term
+            });
+          }
+
+          // We don't restrict for selectable types while browsing...
+          if (!this.browsing && this.options.selectableTypes) {
+            criterias.push({
+              i: 'portal_type',
+              o: 'plone.app.querystring.operation.selection.any',
+              v: this.options.selectableTypes
+            });
+          }
+
+          criterias.push({
+            i: 'path',
+            o: this.options.pathOperator,
+            v: this.options.rootPath + this.currentPath + (this.browsing ? '::1' : '')
           });
-        }
 
-        baseCriteria.push({
-          i: 'path',
-          o: this.options.pathOperator,
-          v: this.options.rootPath + this.currentPath
-        });
+          var data = {
+            query: JSON.stringify({
+              criteria: criterias,
+              sort_on: 'path',
+              sort_order: 'ascending'
+            }),
+            attributes: JSON.stringify(this.options.attributes),
+            batch: JSON.stringify({
+              page: page ? page : 1,
+              size: this.options.pageSize
+            })
+          };
+          return data;
+        }.bind(this),
 
-      }
+        results: function (data, page) {
 
-      // set query object
-      this.query = new utils.QueryHelper(
-        $.extend(true, {}, this.options, {
-          pattern: this,
-          baseCriteria: baseCriteria
-        })
-      );
+          var more = (page * this.options.pageSize) < data.total;
+          var results = data.results;
 
-      var ajax = {};
-      if (this.query.valid) {
-        ajax = this.query.selectAjax();
-      }
+          // Filter out non-selectable and non-folderish while browsing.
+          if (this.browsing) {
+            results = results.filter(
+              function (item) {
+                if (!item.is_folderish && !this.isSelectable(item)) {
+                  return false;
+                }
+                return true;
+              }.bind(this)
+            );
+          }
+
+          // Extend ``data`` with a ``oneLevelUp`` item when browsing
+          var path = this.currentPath.split('/');
+          if (page === 1 &&           // Show level up only on top.
+            this.browsing  &&         // only level up when browsing
+            path.length > 1 &&        // do not try to level up one level under root.
+            this.currentPath !== '/'  // do not try to level up beyond root
+          ) {
+            results = [{
+              'oneLevelUp': true,
+              'Title': _('One level up'),
+              'path': path.slice(0, path.length - 1).join('/') || '/',
+              'portal_type': 'Folder',
+              'is_folderish': true,
+              'selectable': false
+            }].concat(results);
+          }
+          return {
+            results: results,
+            more: more
+          };
+        }.bind(this)
+
+      };
+
       this.options.ajax = ajax;
       this.$el.select2(this.options);
+
     },
 
     setBreadCrumbs: function () {
@@ -47562,9 +47617,8 @@ define('mockup-patterns-relateditems',[
       _.each(paths, function(node) {
         if (node !== '') {
           var item = {};
-          itemPath = itemPath + '/' + node;
+          item.path = itemPath = itemPath + '/' + node;
           item.text = node;
-          item.path = itemPath;
           itemsHtml = itemsHtml + self.applyTemplate('breadcrumb', item);
         }
       });
@@ -47572,7 +47626,7 @@ define('mockup-patterns-relateditems',[
       // favorites
       var favoritesHtml = '';
       _.each(self.options.favorites, function (item) {
-        var item_copy = _.clone(item)
+        var item_copy = _.clone(item);
         item_copy.path = item_copy.path.substr(self.options.rootPath.length) || '/';
         favoritesHtml = favoritesHtml + self.applyTemplate('favorite', item_copy);
       });
@@ -47595,13 +47649,11 @@ define('mockup-patterns-relateditems',[
         if (self.browsing) {
           $('button.mode.search', self.$toolbar).toggleClass('btn-primary btn-default');
           $('button.mode.browse', self.$toolbar).toggleClass('btn-primary btn-default');
-          self.options.mode = 'search';
           self.browsing = false;
           if (self.$el.select2('data').length > 0) {
             // Have to call after initialization
             self.openAfterInit = true;
           }
-          self.setQuery();
           if (!self.openAfterInit) {
             self.$el.select2('close');
             self.$el.select2('open');
@@ -47618,13 +47670,11 @@ define('mockup-patterns-relateditems',[
         if (!self.browsing) {
           $('button.mode.search', self.$toolbar).toggleClass('btn-primary btn-default');
           $('button.mode.browse', self.$toolbar).toggleClass('btn-primary btn-default');
-          self.options.mode = 'browse';
           self.browsing = true;
           if (self.$el.select2('data').length > 0) {
             // Have to call after initialization
             self.openAfterInit = true;
           }
-          self.setQuery();
           if (!self.openAfterInit) {
             self.$el.select2('close');
             self.$el.select2('open');
@@ -47699,7 +47749,6 @@ define('mockup-patterns-relateditems',[
       self.currentPath = path;
       self.$el.select2('close');
       self.setBreadCrumbs();
-      self.setQuery();
       self.$el.select2('open');
       self.emit('after-browse');
     },
@@ -47728,6 +47777,12 @@ define('mockup-patterns-relateditems',[
 
     isSelectable: function(item) {
       var self = this;
+      if (item.selectable === false) {
+        return false;
+      }
+      if (self.options.contextPath === this.options.rootPath + item.path) {
+        return false;
+      }
       if (self.options.selectableTypes === null) {
         return true;
       } else {
@@ -47738,14 +47793,14 @@ define('mockup-patterns-relateditems',[
     init: function() {
       var self = this;
 
-      self.browsing = self.options.mode === 'browse';
+      self.browsing = self.options.mode !== 'search';
 
       // Remove trailing slash
       self.options.rootPath = self.options.rootPath.replace(/\/$/, '');
       // Substract rootPath from basePath with is the relative currentPath. Has a leading slash. Or use '/'
       self.currentPath = self.options.basePath.substr(self.options.rootPath.length) || '/';
 
-      self.setQuery();
+      self.setAjax();
 
       self.$el.wrap('<div class="pattern-relateditems-container" />');
       self.$container = self.$el.parents('.pattern-relateditems-container');
@@ -47754,8 +47809,13 @@ define('mockup-patterns-relateditems',[
       Select2.prototype.initializeValues.call(self);
       Select2.prototype.initializeTags.call(self);
 
-      self.options.formatSelection = function(item, $container) {
-        return self.applyTemplate('selection', item);
+      self.options.formatSelection = function(item) {
+        // activate petterns on the result set.
+        var $selection = $(self.applyTemplate('selection', item));
+        if (self.options.scanSelection) {
+          registry.scan($selection);
+        }
+        return $selection;
       };
 
       Select2.prototype.initializeOrdering.call(self);
@@ -47770,7 +47830,6 @@ define('mockup-patterns-relateditems',[
             return;
           }
         }
-
         var result = $(self.applyTemplate('result', item));
 
         $('.pattern-relateditems-result-select', result).on('click', function(event) {
@@ -47807,7 +47866,6 @@ define('mockup-patterns-relateditems',[
       };
 
       self.options.initSelection = function(element, callback) {
-        var data = [];
         var value = $(element).val();
         if (value !== '') {
           var ids = value.split(self.options.separator);
@@ -47845,6 +47903,16 @@ define('mockup-patterns-relateditems',[
         }
 
       };
+
+      self.options.tokenizer = function (input) {
+        if (this.options.mode === 'auto') {
+          if (input) {
+            this.browsing = false;
+          } else {
+            this.browsing = true;
+          }
+        }
+      }.bind(this);
 
       self.options.id = function(item) {
         return item.UID;
@@ -69462,12 +69530,12 @@ define('mockup-ui-url/views/buttongroup',[
     idPrefix: 'btngroup-',
     disable: function() {
       _.each(this.items, function(button) {
-        button.trigger('disable');
+        button.disable();
       });
     },
     enable: function() {
       _.each(this.items, function(button) {
-        button.trigger('enable');
+        button.enable();
       });
     }
   });
