@@ -135,4 +135,5 @@
  <column value="portal_type"/>
  <column value="review_state"/>
  <column value="start"/>
+ <column value="mime_type"/>
 </object>

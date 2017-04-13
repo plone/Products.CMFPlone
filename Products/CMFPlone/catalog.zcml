@@ -18,5 +18,6 @@
     <adapter factory=".CatalogTool.is_default_page"        name="is_default_page" />
     <adapter factory=".CatalogTool.getIcon"                name="getIcon" />
     <adapter factory=".CatalogTool.location"               name="location" />
+    <adapter factory=".CatalogTool.mime_type"              name="mime_type" />
 
 </configure>
