@@ -19,6 +19,9 @@ New features:
 
 Bug fixes:
 
+- Adapt tests to render social metadata only if you are anonymous.
+  [bsuttor]
+
 - Fix search term munging with queries that include and, or and not.
   [malthe]
 
@@ -28,8 +31,8 @@ Bug fixes:
 
 - Add constraint to avoid filling ``twitter_username`` field with strings starting with a "@" character.
   [hvelarde]
-  
-- Fixed addons/donations links, removed dead "add your site" link 
+
+- Fixed addons/donations links, removed dead "add your site" link
   [sgrepos]
 
 - Fix isssue where collapsed toolbar was not initialized properly on page
