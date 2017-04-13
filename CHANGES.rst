@@ -23,6 +23,9 @@ New features:
 
 Bug fixes:
 
+- Remove references to Products.CMFDefault on meta.zcml
+  [gforcada]
+  
 - Adapt tests to render social metadata only if you are anonymous.
   [bsuttor]
 
@@ -43,9 +46,6 @@ Bug fixes:
   refresh, resulting wide blank space between collapsed toolbar and page
   content
   [datakurre]
-
-- Remove references to Products.CMFDefault on meta.zcml
-  [gforcada]
 
 5.1b3 (2017-04-03)
 ------------------
