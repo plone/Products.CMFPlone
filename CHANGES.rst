@@ -17,8 +17,15 @@ New features:
 - Update mockup to latest version.
   [thet]
 
+- new metadata catalog column mime_type
+  https://github.com/plone/Products.CMFPlone/issues/1995
+  [fgrcon]
+
 Bug fixes:
 
+- Remove references to Products.CMFDefault on meta.zcml
+  [gforcada]
+  
 - Adapt tests to render social metadata only if you are anonymous.
   [bsuttor]
 
@@ -43,7 +50,6 @@ Bug fixes:
   refresh, resulting wide blank space between collapsed toolbar and page
   content
   [datakurre]
-
 
 5.1b3 (2017-04-03)
 ------------------
