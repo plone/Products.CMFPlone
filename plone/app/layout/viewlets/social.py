@@ -2,6 +2,7 @@
 from plone.app.layout.viewlets.common import TitleViewlet
 from plone.memoize.view import memoize
 from plone.registry.interfaces import IRegistry
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.browser.syndication.adapters import BaseItem
 from Products.CMFPlone.browser.syndication.adapters import FolderFeed
 from Products.CMFPlone.interfaces import ISocialMediaSchema
@@ -36,11 +37,17 @@ class SocialTagsViewlet(TitleViewlet):
 
     @memoize
     def _get_tags(self):
+        site = getSite()
         registry = getUtility(IRegistry)
         settings = registry.forInterface(ISocialMediaSchema, prefix="plone",
                                          check=False)
 
         if not settings.share_social_data:
+            return []
+
+        portal_membership = getToolByName(site, 'portal_membership')
+        is_anonymous = bool(portal_membership.isAnonymousUser())
+        if not is_anonymous:
             return []
 
         tags = [
@@ -64,7 +71,6 @@ class SocialTagsViewlet(TitleViewlet):
 
         # reuse syndication since that packages the data
         # the way we'd prefer likely
-        site = getSite()
         feed = FolderFeed(site)
         item = queryMultiAdapter((self.context, feed), IFeedItem, default=None)
         if item is None:
