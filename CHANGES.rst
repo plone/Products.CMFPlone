@@ -40,6 +40,8 @@ Bug fixes:
   content
   [datakurre]
 
+- Remove references to Products.CMFDefault on meta.zcml
+  [gforcada]
 
 5.1b3 (2017-04-03)
 ------------------
