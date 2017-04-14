@@ -59,7 +59,7 @@ class SocialTagsViewlet(TitleViewlet):
         ]
         if settings.twitter_username:
             tags.append(dict(name="twitter:site",
-                             content="@" + settings.twitter_username))
+                             content="@" + settings.twitter_username.lstrip('@')))
         if settings.facebook_app_id:
             tags.append(dict(property="fb:app_id",
                              content=settings.facebook_app_id))
