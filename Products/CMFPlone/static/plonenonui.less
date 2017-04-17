@@ -1,0 +1,91 @@
+@fontsPrefix: './fonts/';
+
+@import url("@{mockup-patterns-autotoc}");
+@import url("@{mockup-patterns-modal}");
+@import url("@{plone-patterns-toolbar}");
+
+
+@import "@{bowerPath}bootstrap/less/variables.less";
+@icon-font-path: "@{bowerPath}/bootstrap/dist/fonts/";
+@import "@{bowerPath}bootstrap/less/mixins.less";
+@import "@{bowerPath}bootstrap/less/utilities.less";
+@import "@{bowerPath}bootstrap/less/forms.less";
+@import "@{bowerPath}bootstrap/less/buttons.less";
+@import "@{bowerPath}bootstrap/less/scaffolding.less";
+@import "@{bowerPath}bootstrap/less/dropdowns.less";
+@import "@{bowerPath}bootstrap/less/button-groups.less";
+@import "@{bowerPath}bootstrap/less/input-groups.less";
+@import "@{bowerPath}bootstrap/less/navs.less";
+@import "@{bowerPath}bootstrap/less/navbar.less";
+@import "@{bowerPath}bootstrap/less/tooltip.less";
+
+
+@font-face {
+  font-family: 'fontello';
+  src: url('@{fontsPrefix}plone-fontello.eot?44831494');
+  src: url('@{fontsPrefix}plone-fontello.eot?44831494#iefix') format('embedded-opentype'),
+       url('@{fontsPrefix}plone-fontello.woff?44831494') format('woff'),
+       url('@{fontsPrefix}plone-fontello.ttf?44831494') format('truetype'),
+       url('@{fontsPrefix}plone-fontello.svg?44831494#fontello') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+// Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. 
+// Note, that will break hinting! In other OS-es font will be not as sharp as it could be 
+
+// @media screen and (-webkit-min-device-pixel-ratio:0) {
+//   @font-face {
+//     font-family: 'fontello';
+//     src: url('../font/fontello.svg?13758537#fontello') format('svg');
+//   }
+// }
+
+// fix navbar height, for twitter bootstrap
+@navbar-height: 29px;
+
+ [class^="icon-"]:before, [class*=" icon-"]:before {
+  font-family: "fontello";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: .2em;
+  text-align: center;
+  // opacity: .8;
+
+  // For safety - reset parent styles, that can break glyph codes
+  font-variant: normal;
+  text-transform: none;
+
+  // fix buttons height, for twitter bootstrap
+  line-height: 1em;
+
+  // Animation center compensation - margins should be symmetric
+  // remove if not needed 
+  margin-left: .2em;
+
+  // you can be more comfortable with increased icons size 
+  // font-size: 120%; 
+
+  // Uncomment for 3D effect 
+  // text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3);
+}
+
+// Albert: I do not know if this is longer needed
+.icon-plus:before { content: '\e807'; } // ''
+.icon-resize-horizontal:before { content: '\e804'; } // ''
+.icon-down-dir:before { content: '\e800'; } // ''
+.icon-up-dir:before { content: '\e801'; } // '' 
+.icon-right-dir:before { content: '\e80a'; } // '' 
+.icon-ellipsis:before { content: '\e80c'; } // '' 
+.icon-dot-circled:before { content: '\e809'; } // '' 
+.icon-pencil:before { content: '\e806'; } // '' 
+.icon-user:before { content: '\e802'; } // '' 
+.icon-group:before { content: '\e808'; } // ''
+.icon-view-mode:before { content: '\e80d'; } // ''
+.icon-folder-open:before { content: '\e803'; } // ''
+.icon-resize-vertical:before { content: '\e80b'; } // ''
+.icon-eye:before { content: '\e805'; } // ''
