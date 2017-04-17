@@ -38,7 +38,7 @@ Disallow: /*folder_factories$
 Disallow: /*folder_summary_view$
 Disallow: /*login_form$
 Disallow: /*mail_password_form$
-Disallow: /*search
+Disallow: /@@search
 Disallow: /*search_rss$
 Disallow: /*sendto_form$
 Disallow: /*summary_view$
@@ -1116,7 +1116,7 @@ class ISiteSchema(Interface):
             SimpleTerm('authenticated', 'authenticated',
                        _('For authenticated users only'))]),
         required=True)
-    
+
     thumb_visibility = schema.Choice(
         title=_(u'Thumb visibility'),
         description=_(u'Show thumbs in listings'),
@@ -1127,7 +1127,7 @@ class ISiteSchema(Interface):
             SimpleTerm('authenticated', 'authenticated',
                        _(u'For authenticated users only'))]),
         required=True)
-    
+
     toolbar_position = schema.Choice(
         title=_(u'Position where the toolbar is displayed'),
         description=_(
