@@ -73,7 +73,6 @@ class NonInstallable(object):
                 u'Products.ATContentTypes:default',
                 u'Products.CMFDiffTool:CMFDiffTool',
                 u'Products.CMFEditions:CMFEditions',
-                u'Products.CMFFormController:CMFFormController',
                 u'Products.CMFPlone:dependencies',
                 u'Products.CMFPlone:testfixture',
                 u'Products.CMFQuickInstallerTool:CMFQuickInstallerTool',
