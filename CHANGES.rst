@@ -47,6 +47,9 @@ Bug fixes:
   content
   [datakurre]
 
+- Removed "change portal events" permission
+  [kakshay21]
+
 5.1b3 (2017-04-03)
 ------------------
 
