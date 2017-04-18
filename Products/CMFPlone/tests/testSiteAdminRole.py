@@ -132,7 +132,6 @@ class TestSiteAdministratorRole(PloneTestCase.PloneTestCase):
             'Change configuration':                                     0,
             'Change local roles':                                       1,
             'Change permissions':                                       0,
-            'Change portal events':                                     1,
             'Change portal topics':                                     1,
             'Change proxy roles':                                       0,
             'Content rules: Manage rules':                              1,
