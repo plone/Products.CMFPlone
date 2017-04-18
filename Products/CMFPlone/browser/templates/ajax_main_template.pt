@@ -24,7 +24,7 @@
     <metal:cache tal:replace="structure provider:plone.httpheaders" />
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
 
     <tal:ajaxhead condition="ajax_include_head">
     <div tal:replace="structure provider:plone.htmlhead" />
