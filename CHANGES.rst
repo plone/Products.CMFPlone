@@ -19,6 +19,9 @@ New features:
 
 Bug fixes:
 
+- Fix default value for ``robots.txt`` to avoid issues with content containing "search" in the id.
+  [hvelarde]
+
 - Show version of products in Add-ons control panel configlet.
   This fixes https://github.com/plone/Products.CMFPlone/issues/1472.
   [hvelarde]
