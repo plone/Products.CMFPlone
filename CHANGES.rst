@@ -53,6 +53,9 @@ Bug fixes:
 - Removed "change portal events" permission
   [kakshay21]
 
+- Updated dead link to error reference docs 
+  [sgrepos]
+
 5.1b3 (2017-04-03)
 ------------------
 

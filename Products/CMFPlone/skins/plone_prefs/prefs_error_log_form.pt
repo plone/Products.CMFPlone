@@ -30,7 +30,7 @@
     <div id="content-core">
 
         <p>
-            <a href="http://plone.org/documentation/error"
+            <a href="https://docs.plone.org/appendices/error-reference.html"
                i18n:translate="description_error_rerference_link">
                 Refer to the plone.org error reference for more information about
                 these exceptions.
