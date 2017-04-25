@@ -12,7 +12,6 @@
              i18n:attributes="title; description">
 
  <permission>Access contents information</permission>
- <permission>Change portal events</permission>
  <permission>Modify portal content</permission>
  <permission>View</permission>
 
@@ -30,12 +29,6 @@
    <permission-role>Editor</permission-role>
    <permission-role>Reader</permission-role>
    <permission-role>Contributor</permission-role>
-   <permission-role>Reviewer</permission-role>
-   <permission-role>Site Administrator</permission-role>
-  </permission-map>
-  <permission-map name="Change portal events"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
    <permission-role>Reviewer</permission-role>
    <permission-role>Site Administrator</permission-role>
   </permission-map>
@@ -71,13 +64,6 @@
    <permission-role>Contributor</permission-role>
    <permission-role>Site Administrator</permission-role>
   </permission-map>
-  <permission-map name="Change portal events"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>Owner</permission-role>
-   <permission-role>Editor</permission-role>
-   <permission-role>Site Administrator</permission-role>
-  </permission-map>
   <permission-map name="Modify portal content"
                   acquired="False">
    <permission-role>Manager</permission-role>
@@ -103,13 +89,6 @@
   <permission-map name="Access contents information"
                   acquired="False">
    <permission-role>Anonymous</permission-role>
-  </permission-map>
-  <permission-map name="Change portal events"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>Owner</permission-role>
-   <permission-role>Editor</permission-role>
-   <permission-role>Site Administrator</permission-role>
   </permission-map>
   <permission-map name="Modify portal content"
                   acquired="False">

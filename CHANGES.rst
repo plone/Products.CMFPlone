@@ -23,9 +23,12 @@ New features:
 
 Bug fixes:
 
+- Fix default value for ``robots.txt`` to avoid issues with content containing "search" in the id.
+  [hvelarde]
+
 - Remove references to Products.CMFDefault on meta.zcml
   [gforcada]
-  
+
 - Adapt tests to render social metadata only if you are anonymous.
   [bsuttor]
 
@@ -46,6 +49,12 @@ Bug fixes:
   refresh, resulting wide blank space between collapsed toolbar and page
   content
   [datakurre]
+
+- Removed "change portal events" permission
+  [kakshay21]
+
+- Updated dead link to the error reference docs
+  [sgrepos]
 
 5.1b3 (2017-04-03)
 ------------------
