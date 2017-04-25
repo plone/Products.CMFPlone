@@ -47319,7 +47319,7 @@ define('text!mockup-patterns-relateditems-url/templates/breadcrumb.xml',[],funct
 define('text!mockup-patterns-relateditems-url/templates/favorite.xml',[],function () { return '<li><a href="<%- path %>" class="fav" aria-labelledby="blip"><%- title %></a></li>\n';});
 
 
-define('text!mockup-patterns-relateditems-url/templates/result.xml',[],function () { return '<div class="pattern-relateditems-result">\n  <span class="pattern-relateditems-buttons">\n  <% if (is_folderish) { %>\n    <a class="pattern-relateditems-result-browse" data-path="<%- path %>" title="Open folder"></a>\n  <% } %>\n  </span>\n  <a class="pattern-relateditems-result-select<% if (selectable) { %> selectable<% } else if (browsing && is_folderish) { %> pattern-relateditems-result-browse<% } %><% if (typeof oneLevelUp !== \'undefined\' && oneLevelUp) { %> one-level-up<% } %>" data-path="<%- path %>">\n    <% if (typeof getURL !== \'undefined\' && ((typeof getIcon !== \'undefined\' && getIcon === true) || portal_type === "Image")) { %><img src="<%- getURL %>/@@images/image/icon "><br><% } %>\n  \t<span class="pattern-relateditems-result-title contenttype-<%- portal_type.toLowerCase() %><% if (typeof review_state !== \'undefined\') { %> state-<%- review_state %><% } %>"><%- Title %></span>\n    <span class="pattern-relateditems-result-path"><%- path %></span>\n  </a>\n</div>\n';});
+define('text!mockup-patterns-relateditems-url/templates/result.xml',[],function () { return '<div class="pattern-relateditems-result<% if (typeof oneLevelUp !== \'undefined\' && oneLevelUp) { %> one-level-up<% } %>">\n  <span class="pattern-relateditems-buttons">\n  <% if (is_folderish) { %>\n    <a class="pattern-relateditems-result-browse" data-path="<%- path %>" title="<%- open_folder %>"></a>\n  <% } %>\n  </span>\n  <a class="pattern-relateditems-result-select<% if (selectable) { %> selectable<% } else if (browsing && is_folderish) { %> pattern-relateditems-result-browse<% } %><% if (typeof oneLevelUp !== \'undefined\' && oneLevelUp) { %> one-level-up<% } %>" data-path="<%- path %>">\n    <% if (typeof getURL !== \'undefined\' && ((typeof getIcon !== \'undefined\' && getIcon === true) || portal_type === "Image")) { %><img src="<%- getURL %>/@@images/image/icon "><br><% } %>\n  \t<span class="pattern-relateditems-result-title contenttype-<%- portal_type.toLowerCase() %><% if (typeof review_state !== \'undefined\') { %> state-<%- review_state %><% } %>"><%- Title %></span>\n    <span class="pattern-relateditems-result-path"><%- path %></span>\n  </a>\n</div>\n';});
 
 
 define('text!mockup-patterns-relateditems-url/templates/selection.xml',[],function () { return '<span class="pattern-relateditems-item">\n  <% if (typeof getURL !== \'undefined\' && ((typeof getIcon !== \'undefined\' && getIcon === true) || portal_type === "Image")) { %><img src="<%- getURL %>/@@images/image/icon"><br><% } %>\n  <span class="pattern-relateditems-item-title contenttype-<%- portal_type.toLowerCase() %><% if (typeof review_state !== \'undefined\') { %> state-<%- review_state %><% } %>"><%- Title %></span>\n  <span class="pattern-relateditems-item-path"><%- path %></span>\n</span>\n';});
@@ -47505,7 +47505,10 @@ define('mockup-patterns-relateditems',[
         template = self.options[tpl + 'Template'];
       }
       // let's give all the options possible to the template generation
-      var options = $.extend(true, {}, self.options, item, {'browsing': self.browsing});
+      var options = $.extend(true, {}, self.options, item, {
+        'browsing': self.browsing,
+        'open_folder': _t('Open folder')
+      });
       options._item = item;
       return _.template(template)(options);
     },
@@ -47586,7 +47589,7 @@ define('mockup-patterns-relateditems',[
           ) {
             results = [{
               'oneLevelUp': true,
-              'Title': _('One level up'),
+              'Title': _t('One level up'),
               'path': path.slice(0, path.length - 1).join('/') || '/',
               'portal_type': 'Folder',
               'is_folderish': true,
