@@ -14,6 +14,9 @@ Breaking changes:
 
 New features:
 
+- Integrate ``mockup-patterns-structureupdater`` for updating title and description depending on the current context on the folder contents page.
+  [thet]
+
 - Update mockup to latest version.
   [thet]
 

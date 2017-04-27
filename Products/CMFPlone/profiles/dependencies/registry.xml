@@ -799,6 +799,11 @@
       </value>
   </records>
 
+  <records prefix="plone.resources/mockup-patterns-structureupdater"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockup/structure/pattern-structureupdater.js</value>
+  </records>
+
   <records prefix="plone.resources/mockup-patterns-upload"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/upload/pattern.js</value>

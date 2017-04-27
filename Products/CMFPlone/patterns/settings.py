@@ -2,6 +2,7 @@
 from Acquisition import aq_inner
 from Acquisition import aq_parent
 from borg.localrole.interfaces import IFactoryTempFolder
+from plone.app.content.browser.interfaces import IFolderContentsView
 from plone.app.layout.navigation.root import getNavigationRootObject
 from plone.registry.interfaces import IRegistry
 from plone.uuid.interfaces import IUUID
@@ -32,6 +33,22 @@ class PatternSettingsAdapter(object):
     def __call__(self):
         data = self.tinymce()
         data.update(self.mark_special_links())
+        data.update(self.structure_updater())
+        return data
+
+    def structure_updater(self):
+        """Generate the options for the structure updater pattern.
+        If we're not in folder contents view, do not expose these options.
+        """
+        data = {}
+        view = self.request.get('PUBLISHED', None)
+        if IFolderContentsView.providedBy(view):
+            data = {
+                'data-pat-structureupdater': json.dumps({
+                    'titleSelector': '.documentFirstHeading',
+                    'descriptionSelector': '.documentDescription'
+                })
+            }
         return data
 
     def mark_special_links(self):
