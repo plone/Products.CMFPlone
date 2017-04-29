@@ -799,6 +799,11 @@
       </value>
   </records>
 
+  <records prefix="plone.resources/mockup-patterns-structureupdater"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockup/structure/pattern-structureupdater.js</value>
+  </records>
+
   <records prefix="plone.resources/mockup-patterns-upload"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/upload/pattern.js</value>
@@ -1077,7 +1082,7 @@
     <value key="expression">python: member is not None</value>
     <value key="jscompilation">++plone++static/plone-logged-in-compiled.min.js</value>
     <value key="csscompilation">++plone++static/plone-logged-in-compiled.css</value>
-    <value key="last_compilation">2017-04-11 16:10:00</value>
+    <value key="last_compilation">2017-04-28 02:00:00</value>
     <value key="depends">plone</value>
     <value key="stub_js_modules">
       <element>backbone</element>

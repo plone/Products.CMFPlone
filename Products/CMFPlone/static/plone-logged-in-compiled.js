@@ -70430,7 +70430,7 @@ define('mockup-patterns-structure-url/js/views/table',[
       self.subsetIds = [];
       self.contextInfo = null;
 
-      self.app.on('context-info-loaded', function(data) {
+      $('body').on('context-info-loaded', function(data) {
         self.contextInfo = data;
         /* set default page info */
         self.setContextInfo();
@@ -71457,7 +71457,7 @@ define('mockup-patterns-structure-url/js/views/upload',[
       self.app = options.app;
       PopoverView.prototype.initialize.apply(self, [options]);
       self.currentPathData = null;
-      self.app.on('context-info-loaded', function(data) {
+      $('body').on('context-info-loaded', function(data) {
         self.currentPathData = data;
       });
     },
@@ -72919,7 +72919,7 @@ define('mockup-patterns-structure-url/js/views/app',[
             url: self.getAjaxUrl(self.contextInfoUrl),
             dataType: 'json',
             success: function(data) {
-              self.trigger('context-info-loaded', data);
+              $('body').trigger('context-info-loaded', data);
             },
             error: function(response) {
               // XXX handle error?
@@ -73564,6 +73564,47 @@ define('mockup-patterns-structure',[
   });
 
   return Structure;
+
+});
+
+/* Structure Updater pattern.
+ *
+ * Options:
+ *    titleSelector(string): CSS selector to match title elements for the current context ('').
+ *    descriptionSelector(string): CSS selector to match description elements of the current context to be updated ('').
+ *
+ * Documentation:
+ *    The Structure Updater pattern updates the information of the current context after a user navigated to a new folder.
+ *
+ */
+
+define('mockup-patterns-structureupdater',[
+  'jquery',
+  'pat-base'
+], function($, Base) {
+  'use strict';
+
+  var StructureUpdater = Base.extend({
+    name: 'structureupdater',
+    trigger: '.template-folder_contents',
+    parser: 'mockup',
+    defaults: {
+      titleSelector: '',
+      descriptionSelector: ''
+    },
+
+    init: function() {
+
+      $('body').on('context-info-loaded', function (e, data) {
+        $(this.options.titleSelector, this.$el).html(data.object && data.object.Title || '&nbsp;');
+        $(this.options.descriptionSelector, this.$el).html(data.object && data.object.Description || '&nbsp;');
+      }.bind(this));
+
+    }
+
+  });
+
+  return StructureUpdater;
 
 });
 
@@ -78231,6 +78272,7 @@ require([
   'mockup-patterns-tinymce',
   'mockup-patterns-inlinevalidation',
   'mockup-patterns-structure',
+  'mockup-patterns-structureupdater',
   'mockup-patterns-recurrence',
   'plone-patterns-portletmanager',
   'plone-patterns-toolbar',
@@ -78238,5 +78280,5 @@ require([
   'use strict';
 });
 
-define("/home/_thet/data/dev/plone/buildout.coredev/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
+define("/home/_thet/data/dev/fhnw/plone/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
 
