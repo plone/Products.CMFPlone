@@ -171,6 +171,7 @@ Bug fixes:
   [thet]
 
 - CMFCore ``WarningInterceptor`` test base class was gone and is not needed in Plone, so removed.
+- CMFCore ``WarningInterceptor`` test base class was gone and not needed in Plone, so removed.
   [jensens]
 
 - Fix default value for ``robots.txt`` to avoid issues with content containing "search" in the id.
