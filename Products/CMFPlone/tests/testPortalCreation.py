@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
-from Products.CMFCore.tests.base.testcase import WarningInterceptor
 
 from zope.component import getGlobalSiteManager
 from zope.component import getSiteManager
@@ -39,7 +38,7 @@ from plone.protect import createToken
 from plone.registry.interfaces import IRegistry
 
 
-class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
+class TestPortalCreation(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         self.membership = self.portal.portal_membership
@@ -56,9 +55,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.transforms = self.portal.portal_transforms
         self.javascripts = self.portal.portal_javascripts
         self.setup = self.portal.portal_setup
-
-    def beforeTearDown(self):
-        self._free_warning_output()
 
     def testInstanceVersion(self):
         # Test if the version of the instance has been set
@@ -360,7 +356,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
                 self.assertTrue(a.visible)
 
     def testDefaultGroupsAdded(self):
-        self._trap_warning_output()
         self.assertTrue('Administrators' in self.groups.listGroupIds())
         self.assertTrue('Reviewers' in self.groups.listGroupIds())
 
