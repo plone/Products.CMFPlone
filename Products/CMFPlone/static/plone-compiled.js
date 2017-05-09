@@ -13057,8 +13057,8 @@ define('mockup-patterns-formunloadalert',[
 
       var $modal = self.$el.parents('.plone-modal');
       if ($modal.size() !== 0) {
-        $modal.data('pattern-modal').on('hide', function(e) {
-          var modal = $modal.data('pattern-modal');
+        $modal.data('patternPloneModal').on('hide', function(e) {
+          var modal = $modal.data('patternPloneModal');
           if (modal) {
             modal._suppressHide = self._handleUnload.apply(self, e);
           }
@@ -16920,7 +16920,10 @@ define('mockup-patterns-modal',[
             self.options.content = '';
           }
           if (!self.options.ajaxUrl && self.$el.attr('href').substr(0, 1) !== '#') {
-            self.options.ajaxUrl = self.$el.attr('href');
+            self.options.ajaxUrl = function () {
+              // Resolve ``href`` attribute later, when modal is shown.
+              return self.$el.attr('href');
+            };
           }
         }
         self.$el.on('click', function(e) {
@@ -16936,8 +16939,14 @@ define('mockup-patterns-modal',[
       var self = this;
       self.emit('before-ajax');
       self.loading.show();
+
+      var ajaxUrl = self.options.ajaxUrl;
+      if (typeof ajaxUrl === 'function') {
+        ajaxUrl = ajaxUrl.apply(self, [self.options]);
+      }
+
       self.ajaxXHR = $.ajax({
-        url: self.options.ajaxUrl,
+        url: ajaxUrl,
         type: self.options.ajaxType
       }).done(function(response, textStatus, xhr) {
         self.ajaxXHR = undefined;
@@ -18928,5 +18937,5 @@ require([
 
 });
 
-define("/home/_thet/data/dev/plone/buildout.coredev/src/Products.CMFPlone/Products/CMFPlone/static/plone.js", function(){});
+define("/home/_thet/data/dev/fhnw/plone/src/Products.CMFPlone/Products/CMFPlone/static/plone.js", function(){});
 
