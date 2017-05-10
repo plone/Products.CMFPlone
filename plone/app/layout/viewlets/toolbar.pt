@@ -1,7 +1,7 @@
 <section id="edit-bar" role="toolbar"
          tal:define="portal_state view/portal_state;
                      personal_bar python: view.get_personal_bar()"
-         tal:condition="not: portal_state/anonymous"
+         tal:condition="view/show"
          i18n:domain="plone">
   <div id="edit-zone" role="toolbar" class="pat-toolbar">
     <div class="plone-toolbar-container">

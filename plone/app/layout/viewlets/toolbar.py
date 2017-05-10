@@ -18,6 +18,9 @@ class ToolbarViewletManager(OrderedViewletManager):
     def render(self):
         return self.custom_template()
 
+    def show(self):
+        return not self.portal_state.anonymous()
+
     @property
     @memoize
     def portal_state(self):

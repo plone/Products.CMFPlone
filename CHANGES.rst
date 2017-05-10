@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.6.6 (unreleased)
+2.7.0 (unreleased)
 ------------------
 
 Breaking changes:
@@ -12,6 +12,9 @@ New features:
 
 - Do not render social metadata if you are a logged user.
   [bsuttor]
+
+- Make condition wether to show or hide toolbar viewletmanager a method of its class.
+  [jensens]
 
 Bug fixes:
 
