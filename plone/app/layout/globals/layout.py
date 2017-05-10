@@ -25,6 +25,13 @@ from zope.publisher.browser import BrowserView
 import json
 
 
+TEMPLATE_CLASSES = (
+    ViewPageTemplateFile,
+    ZopeViewPageTemplateFile,
+    ViewMixinForTemplates
+)
+
+
 @implementer(ILayoutPolicy)
 class LayoutPolicy(BrowserView):
     """A view that gives access to various layout related functions.
@@ -116,9 +123,12 @@ class LayoutPolicy(BrowserView):
             return True
         else:
             return False
-    @deprecate('deprecated since Plone 4, ContentIcons are rendered \
-    as Fonts now see \
-    https://docs.plone.org/develop/addons/index.html#upgrading-to-plone-5-1.')
+
+    @deprecate(
+        'deprecated since Plone 4, ContentIcons are rendered as Fonts now see'
+        'https://docs.plone.org/develop/addons/index.html'
+        '#upgrading-to-plone-5-1.'
+    )
     def getIcon(self, item):
         """Returns an object which implements the IContentIcon interface and
         provides the informations necessary to render an icon. The item
@@ -132,6 +142,47 @@ class LayoutPolicy(BrowserView):
         else:
             icon = getMultiAdapter((context, self.request, item), IContentIcon)
         return icon
+
+    def _toolbar_classes(self):
+        """current toolbar controlling classes
+        """
+        toolbar_classes = []
+        membership = getToolByName(self.context, "portal_membership")
+        if membership.isAnonymousUser():
+            return toolbar_classes
+        registry = getUtility(IRegistry)
+        site_settings = registry.forInterface(
+            ISiteSchema,
+            prefix='plone',
+            check=False
+        )
+        try:
+            left = site_settings.toolbar_position == 'side'
+        except KeyError:
+            left = True
+        if left:
+            toolbar_classes.append('plone-toolbar-left')
+        else:
+            toolbar_classes.append('plone-toolbar-top')
+        try:
+            toolbar_state = {}
+            toolbar_state_cookie = self.request.cookies.get('plone-toolbar')
+            if toolbar_state_cookie:
+                toolbar_state = json.loads(toolbar_state_cookie)
+            if toolbar_state.get('expanded', True):
+                toolbar_classes.append('plone-toolbar-expanded')
+                if left:
+                    toolbar_classes.append('plone-toolbar-left-expanded')
+                else:
+                    toolbar_classes.append('plone-toolbar-top-expanded')
+            else:
+                if left:
+                    toolbar_classes.append('plone-toolbar-left-default')
+                else:
+                    toolbar_classes.append('plone-toolbar-top-default')
+        except Exception:
+            pass
+        return toolbar_classes
 
     def bodyClass(self, template, view):
         """
@@ -160,21 +211,18 @@ class LayoutPolicy(BrowserView):
         - plone-toolbar-top-default: top toolbar is not expanded
         - pat-markspeciallinks: mark special links is set
         """
-        context = self.context
         portal_state = getMultiAdapter(
-            (context, self.request),
+            (self.context, self.request),
             name=u'plone_portal_state'
         )
         normalizer = queryUtility(IIDNormalizer)
         registry = getUtility(IRegistry)
 
-        body_classes = []
+        body_classes = self._toolbar_classes()
 
         # template class (required)
         template_name = ''
-        if isinstance(template, ViewPageTemplateFile) or \
-           isinstance(template, ZopeViewPageTemplateFile) or \
-           isinstance(template, ViewMixinForTemplates):
+        if isinstance(template, TEMPLATE_CLASSES):
             # Browser view
             template_name = view.__name__
         elif template is not None:
@@ -187,7 +235,7 @@ class LayoutPolicy(BrowserView):
             body_classes.append('template-%s' % template_name)
 
         # portal type class (optional)
-        portal_type = normalizer.normalize(context.portal_type)
+        portal_type = normalizer.normalize(self.context.portal_type)
         if portal_type:
             body_classes.append("portaltype-%s" % portal_type)
 
@@ -195,14 +243,16 @@ class LayoutPolicy(BrowserView):
         navroot = portal_state.navigation_root()
         body_classes.append("site-%s" % navroot.getId())
 
-        contentPath = context.getPhysicalPath()[
+        contentPath = self.context.getPhysicalPath()[
             len(navroot.getPhysicalPath()):]
         if contentPath:
             body_classes.append("section-%s" % contentPath[0])
             # skip first section since we already have that...
             if len(contentPath) > 1:
                 depth = registry.get(
-                    'plone.app.layout.globals.bodyClass.depth', 4)
+                    'plone.app.layout.globals.bodyClass.depth',
+                    4
+                )
                 if depth > 1:
                     classes = ['subsection-%s' % contentPath[1]]
                     for section in contentPath[2:depth]:
@@ -234,54 +284,25 @@ class LayoutPolicy(BrowserView):
             body_classes.append('viewpermission-' + permission)
 
         # class for user roles
-        membership = getToolByName(context, "portal_membership")
+        membership = getToolByName(self.context, "portal_membership")
         if membership.isAnonymousUser():
             body_classes.append('userrole-anonymous')
         else:
             user = membership.getAuthenticatedMember()
             for role in user.getRolesInContext(self.context):
                 body_classes.append(
-                    'userrole-' + role.lower().replace(' ', '-'))
-
-            # toolbar classes
-            site_settings = registry.forInterface(
-                ISiteSchema, prefix='plone', check=False
-            )
-            try:
-                left = site_settings.toolbar_position == 'side'
-            except KeyError:
-                left = True
-            if left:
-                body_classes.append('plone-toolbar-left')
-            else:
-                body_classes.append('plone-toolbar-top')
-            try:
-                toolbar_state = self.request.cookies.get('plone-toolbar')
-                if toolbar_state:
-                    toolbar_state = json.loads(toolbar_state)
-                else:
-                    toolbar_state = {'expanded': True}
-                if toolbar_state.get('expanded', True):
-                    body_classes.append('plone-toolbar-expanded')
-                    if left:
-                        body_classes.append('plone-toolbar-left-expanded')
-                    else:
-                        body_classes.append('plone-toolbar-top-expanded')
-                else:
-                    if left:
-                        body_classes.append('plone-toolbar-left-default')
-                    else:
-                        body_classes.append('plone-toolbar-top-default')
-            except:
-                pass
+                    'userrole-' + role.lower().replace(' ', '-')
+                )
 
         # class for markspeciallinks pattern
         link_settings = registry.forInterface(
-            ILinkSchema, prefix="plone", check=False
+            ILinkSchema,
+            prefix="plone",
+            check=False
         )
         msl = link_settings.mark_special_links
         elonw = link_settings.external_links_open_new_window
         if msl or elonw:
             body_classes.append('pat-markspeciallinks')
 
-        return ' '.join(body_classes)
+        return ' '.join(sorted(body_classes))

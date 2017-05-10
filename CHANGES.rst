@@ -19,6 +19,10 @@ Bug fixes:
   see https://github.com/plone/Products.CMFPlone/issues/1734
   [fgrcon]
 
+- Factor toolbar classes out to own method. 
+  Includes minor cleanup.
+  [jensens]
+
 
 2.6.5 (2017-03-29)
 ------------------
