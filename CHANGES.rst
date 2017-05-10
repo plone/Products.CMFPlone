@@ -62,6 +62,9 @@ Bug fixes:
 - Updated dead link to the error reference docs
   [sgrepos]
 
+- Do not rely on order in test of generated body classes ``browser.txt``.
+  [jensens]
+
 5.1b3 (2017-04-03)
 ------------------
 
