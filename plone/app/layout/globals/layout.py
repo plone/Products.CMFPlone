@@ -36,6 +36,13 @@ TEMPLATE_CLASSES = (
 class LayoutPolicy(BrowserView):
     """A view that gives access to various layout related functions.
     """
+    @property
+    @memoize
+    def _context_state(self):
+        return getMultiAdapter(
+            (self.context, self.request),
+            name='plone_context_state'
+        )
 
     def mark_view(self, view):
         """Adds a marker interface to the view if it is "the" view for the
@@ -43,11 +50,10 @@ class LayoutPolicy(BrowserView):
         """
         if not view:
             return
-
-        context_state = getMultiAdapter(
-            (self.context, self.request), name=u'plone_context_state')
-
-        if context_state.is_view_template() and not IViewView.providedBy(view):
+        if (
+            self._context_state.is_view_template() and
+            not IViewView.providedBy(view)
+        ):
             alsoProvides(view, IViewView)
 
     def hide_columns(self, column_left, column_right):
@@ -146,10 +152,10 @@ class LayoutPolicy(BrowserView):
     def _toolbar_classes(self):
         """current toolbar controlling classes
         """
+        if not self._context_state.is_toolbar_visible():
+            return []
+
         toolbar_classes = []
-        membership = getToolByName(self.context, "portal_membership")
-        if membership.isAnonymousUser():
-            return toolbar_classes
         registry = getUtility(IRegistry)
         site_settings = registry.forInterface(
             ISiteSchema,

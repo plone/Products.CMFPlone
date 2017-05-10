@@ -18,8 +18,13 @@ class ToolbarViewletManager(OrderedViewletManager):
     def render(self):
         return self.custom_template()
 
-    def show(self):
-        return not self.portal_state.anonymous()
+    @property
+    @memoize
+    def context_state(self):
+        return getMultiAdapter(
+            (self.context, self.request),
+            name='plone_context_state'
+        )
 
     @property
     @memoize
@@ -31,7 +36,10 @@ class ToolbarViewletManager(OrderedViewletManager):
 
     def get_personal_bar(self):
         viewlet = PersonalBarViewlet(
-            self.context, self.request, self.__parent__, self)
+            self.context,
+            self.request,
+            self.__parent__, self
+        )
         viewlet.update()
         return viewlet
 

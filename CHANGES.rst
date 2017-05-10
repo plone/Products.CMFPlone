@@ -13,7 +13,9 @@ New features:
 - Do not render social metadata if you are a logged user.
   [bsuttor]
 
-- Make condition wether to show or hide toolbar viewletmanager a method of its class.
+- Add method ``is_toolbar_visible`` to context state.
+  It uses a whitelist and defaults to authenticated users.
+  Use new method it in toolbar viewlet manager and layout body classes.
   [jensens]
 
 Bug fixes:
@@ -22,7 +24,7 @@ Bug fixes:
   see https://github.com/plone/Products.CMFPlone/issues/1734
   [fgrcon]
 
-- Factor toolbar classes out to own method. 
+- Factor toolbar classes out to own method.
   Includes minor cleanup.
   [jensens]
 
