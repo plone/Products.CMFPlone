@@ -68,7 +68,8 @@ class ILayoutPolicy(Interface):
 
     def getIcon(item):
         """
-        deprecated for Plone > 5.0 see https://github.com/plone/Products.CMFPlone/issues/1151
+        deprecated for Plone > 5.0 see
+        https://github.com/plone/Products.CMFPlone/issues/1151
         Returns an object which implements the IContentIcon interface and
         provides the informations necessary to render an icon. The item
         parameter needs to be adaptable to IContentIcon. Icons can be disabled
@@ -260,6 +261,10 @@ class IContextState(Interface):
         """Whether or not the current object is locked
         """
 
+    def is_toolbar_visible():
+        """Wether toolbar is visible or not in the actual context
+        """
+
     def actions(category):
         """The filtered actions in the context. You can restrict the actions
         to just one category.
@@ -282,6 +287,7 @@ class IPatternsSettingsRenderer(Interface):
 
     DEPRECATED
     """
+
 
 IPatternsSettingsRenderer = deprecated(
     IPatternsSettingsRenderer,

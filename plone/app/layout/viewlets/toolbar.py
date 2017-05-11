@@ -20,6 +20,14 @@ class ToolbarViewletManager(OrderedViewletManager):
 
     @property
     @memoize
+    def context_state(self):
+        return getMultiAdapter(
+            (self.context, self.request),
+            name='plone_context_state'
+        )
+
+    @property
+    @memoize
     def portal_state(self):
         return getMultiAdapter(
             (self.context, self.request),
@@ -28,7 +36,10 @@ class ToolbarViewletManager(OrderedViewletManager):
 
     def get_personal_bar(self):
         viewlet = PersonalBarViewlet(
-            self.context, self.request, self.__parent__, self)
+            self.context,
+            self.request,
+            self.__parent__, self
+        )
         viewlet.update()
         return viewlet
 

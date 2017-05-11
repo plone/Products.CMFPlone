@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.6.6 (unreleased)
+2.7.0 (unreleased)
 ------------------
 
 Breaking changes:
@@ -13,11 +13,20 @@ New features:
 - Do not render social metadata if you are a logged user.
   [bsuttor]
 
+- Add method ``is_toolbar_visible`` to context state.
+  It uses a whitelist and defaults to authenticated users.
+  Use new method it in toolbar viewlet manager and layout body classes.
+  [jensens]
+
 Bug fixes:
 
 - Deprecating getIcon() in @@plone_layout
   see https://github.com/plone/Products.CMFPlone/issues/1734
   [fgrcon]
+
+- Factor toolbar classes out to own method.
+  Includes minor cleanup.
+  [jensens]
 
 
 2.6.5 (2017-03-29)
