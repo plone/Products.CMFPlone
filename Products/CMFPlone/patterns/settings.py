@@ -4,6 +4,8 @@ from Acquisition import aq_parent
 from borg.localrole.interfaces import IFactoryTempFolder
 from plone.app.content.browser.interfaces import IFolderContentsView
 from plone.app.layout.navigation.root import getNavigationRootObject
+from plone.app.widgets.utils import get_relateditems_options
+from plone.app.z3cform.utils import call_callables
 from plone.registry.interfaces import IRegistry
 from plone.uuid.interfaces import IUUID
 from Products.CMFCore.interfaces._content import IFolderish
@@ -113,15 +115,26 @@ class PatternSettingsAdapter(object):
 
         portal = get_portal()
         portal_url = portal.absolute_url()
-        nav_root = getNavigationRootObject(folder, portal)
-        nav_root_url = nav_root.absolute_url()
         current_path = folder.absolute_url()[len(portal_url):]
 
         image_types = settings.image_objects or []
-        folder_types = settings.contains_objects or []
 
         server_url = self.request.get('SERVER_URL', '')
         site_path = portal_url[len(server_url):]
+
+        related_items_config = get_relateditems_options(
+            context=self.context,
+            value=None,
+            separator=';',
+            vocabulary_name='plone.app.vocabularies.Catalog',
+            vocabulary_view='@@getVocabulary',
+            field_name=None
+        )
+        related_items_config = call_callables(
+            related_items_config,
+            self.context
+        )
+
         configuration = {
             'base_url': self.context.absolute_url(),
             'imageTypes': image_types,
@@ -130,16 +143,7 @@ class PatternSettingsAdapter(object):
             # This is for loading the languages on tinymce
             'loadingBaseUrl': '{0}/++plone++static/components/tinymce-builded/'
                               'js/tinymce'.format(portal_url),
-            'relatedItems': {
-                'folderTypes': folder_types,
-                'rootPath': '/'.join(nav_root.getPhysicalPath())
-                            if nav_root else '/',
-                'sort_on': 'sortable_title',
-                'sort_order': 'ascending',
-                'vocabularyUrl':
-                    '{0}/@@getVocabulary?name=plone.app.vocabularies.'
-                    'Catalog'.format(nav_root_url),
-            },
+            'relatedItems': related_items_config,
             'prependToScalePart': '/@@images/image/',
             'prependToUrl': '{0}/resolveuid/'.format(site_path.rstrip('/')),
             'tiny': generator.get_tiny_config(),
