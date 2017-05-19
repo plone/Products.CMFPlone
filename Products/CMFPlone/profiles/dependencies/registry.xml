@@ -484,9 +484,14 @@
       <value key="js">++plone++static/components/tinymce-builded/js/tinymce/plugins/insertdatetime/plugin.js</value>
       <value key="deps">tinymce</value>
   </records>
-  <records prefix="plone.resources/tinymce-layer"
+  <records prefix="plone.resources/tinymce-help"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++plone++static/components/tinymce-builded/js/tinymce/plugins/layer/plugin.js</value>
+      <value key="js">++plone++static/components/tinymce-builded/js/tinymce/plugins/help/plugin.js</value>
+      <value key="deps">tinymce</value>
+  </records>
+  <records prefix="plone.resources/tinymce-toc"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/tinymce-builded/js/tinymce/plugins/toc/plugin.js</value>
       <value key="deps">tinymce</value>
   </records>
   <records prefix="plone.resources/tinymce-legacyoutput"
