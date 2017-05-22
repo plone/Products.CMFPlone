@@ -50411,7 +50411,7 @@ define('mockup-patterns-relateditems',[
       favorites: [],
       maximumSelectionSize: -1,
       minimumInputLength: 0,
-      mode: 'auto', // possible values are search and browse
+      mode: 'auto', // possible values are 'auto', 'search' and 'browse'.
       orderable: true,  // mockup-patterns-select2
       pathOperator: 'plone.app.querystring.operation.string.path',
       rootPath: '/',
@@ -50515,18 +50515,6 @@ define('mockup-patterns-relateditems',[
 
           var more = (page * this.options.pageSize) < data.total;
           var results = data.results;
-
-          // Filter out non-selectable and non-folderish while browsing.
-          if (this.browsing) {
-            results = results.filter(
-              function (item) {
-                if (!item.is_folderish && !this.isSelectable(item)) {
-                  return false;
-                }
-                return true;
-              }.bind(this)
-            );
-          }
 
           // Extend ``data`` with a ``oneLevelUp`` item when browsing
           var path = this.currentPath.split('/');
@@ -50732,6 +50720,7 @@ define('mockup-patterns-relateditems',[
         return false;
       }
       if (self.options.contextPath === this.options.rootPath + item.path) {
+        // filter out current item
         return false;
       }
       if (self.options.selectableTypes === null) {
@@ -50777,9 +50766,20 @@ define('mockup-patterns-relateditems',[
 
         for (var i = 0; i < data.length; i = i + 1) {
           if (data[i].UID === item.UID) {
-            // Exclude already selected items in result list.
-            return;
+            // do not allow already selected items to be selected again.
+            item.selectable = false;
           }
+        }
+        if (
+          !item.selectable && (
+            !self.browsing ||
+            self.browsing && !item.is_folderish
+          )
+        ) {
+          // Filter out non-selectable and non-folderish while browsing.
+          // or
+          // Exclude already selected items while searching.
+          return;
         }
         var result = $(self.applyTemplate('result', item));
 
@@ -84057,5 +84057,5 @@ require([
   'use strict';
 });
 
-define("/trabajo/plone/buildout.coredev/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
+define("/home/_thet/data/dev/fhnw/plone/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
 
