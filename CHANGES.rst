@@ -24,6 +24,9 @@ New features:
   https://github.com/plone/Products.CMFPlone/issues/1995
   [fgrcon]
 
+- Include TinyMCE 4.5.6
+  [frapell]
+
 Bug fixes:
 
 - CMFCore ``WarningInterceptor`` test base class was gone and is not needed in Plone, so removed.

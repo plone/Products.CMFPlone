@@ -129,6 +129,7 @@
 	exports.require = require;
 
 	load('classes/Utils.js');
+	load('classes/SplitCols.js');
 	load('classes/TableGrid.js');
 	load('classes/Quirks.js');
 	load('classes/CellSelection.js');
@@ -139,4 +140,4 @@
 	writeScripts();
 })(this);
 
-// $hash: c6969688d3c9f5ff32989f692750639b
+// $hash: 65534c0376b7b17e2cd90c997257722e
