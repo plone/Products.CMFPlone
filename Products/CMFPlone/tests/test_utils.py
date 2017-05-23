@@ -81,7 +81,6 @@ class DefaultUtilsTests(unittest.TestCase):
         """
         from plone.app.content.browser.contents import get_top_site_from_url
         from zope.component.interfaces import ISite
-        from zope.interface import alsoProvides
         from urlparse import urlparse
 
         class MockContext(object):

@@ -484,11 +484,6 @@
       <value key="js">++plone++static/components/tinymce-builded/js/tinymce/plugins/insertdatetime/plugin.js</value>
       <value key="deps">tinymce</value>
   </records>
-  <records prefix="plone.resources/tinymce-layer"
-            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++plone++static/components/tinymce-builded/js/tinymce/plugins/layer/plugin.js</value>
-      <value key="deps">tinymce</value>
-  </records>
   <records prefix="plone.resources/tinymce-legacyoutput"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/tinymce-builded/js/tinymce/plugins/legacyoutput/plugin.js</value>
@@ -1066,7 +1061,7 @@
     <value key="enabled">True</value>
     <value key="jscompilation">++plone++static/plone-compiled.min.js</value>
     <value key="csscompilation">++plone++static/plone-compiled.css</value>
-    <value key="last_compilation">2017-03-02 15:52:00</value>
+    <value key="last_compilation">2017-05-23 00:45:00</value>
     <value key="stub_js_modules">
       <element>jquery</element>
     </value>
@@ -1082,7 +1077,7 @@
     <value key="expression">python: member is not None</value>
     <value key="jscompilation">++plone++static/plone-logged-in-compiled.min.js</value>
     <value key="csscompilation">++plone++static/plone-logged-in-compiled.css</value>
-    <value key="last_compilation">2017-04-28 02:00:00</value>
+    <value key="last_compilation">2017-05-23 00:45:00</value>
     <value key="depends">plone</value>
     <value key="stub_js_modules">
       <element>backbone</element>
