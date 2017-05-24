@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.7.0 (unreleased)
+2.7.0 (2017-05-24)
 ------------------
 
 New features:
