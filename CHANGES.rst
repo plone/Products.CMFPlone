@@ -4,10 +4,6 @@ Changelog
 2.7.0 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
 New features:
 
 - Do not render social metadata if you are a logged user.
