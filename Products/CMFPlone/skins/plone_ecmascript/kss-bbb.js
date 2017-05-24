@@ -1,5 +1,18 @@
 (function($){
 
+function createURL(view){
+    // using this method we keep the get parameters used with plone protect
+    // https://gist.github.com/jlong/2428561
+    if (typeof view === 'undefined') {
+        view = '';
+    }
+    var parser = document.createElement('a');
+    parser.href = location.href;
+    parser.pathname = parser.pathname.replace(/\/@@.*/, '');
+    parser.pathname += view;
+    return parser.href;
+}
+
 function refreshPortlet(hash, _options){
     var options = {
         data: {},
@@ -9,7 +22,7 @@ function refreshPortlet(hash, _options){
     $.extend(options, _options);
     options.data.portlethash = hash;
     ajaxOptions = options.ajaxOptions;
-    ajaxOptions.url = $('base').attr('href') + '/@@render-portlet';
+    ajaxOptions.url = createURL('/@@render-portlet');
     ajaxOptions.success = function(data){
         var container = $('[data-portlethash="' + hash + '"]');
         var portlet = $(data);
@@ -103,7 +116,7 @@ $(document).ready(function(){
 
     $('#content-core').delegate('#sharing-search-button', 'click', function(){
         $.ajax({
-            url: $('base').attr('href') + '/@@updateSharingInfo',
+            url: createURL('/@@updateSharingInfo'),
             data: {
                 search_term: $('#sharing-user-group-search').val(),
                 'form.button.Search': 'Search'
@@ -122,7 +135,7 @@ $(document).ready(function(){
         var data = form.serializeArray();
         data.push({name: 'form.button.Save', value: 'Save'});
         $.ajax({
-            url: $('base').attr('href') + '/@@updateSharingInfo',
+            url: createURL('/@@updateSharingInfo'),
             data: data,
             type: 'POST',
             dataType: 'json',
