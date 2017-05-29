@@ -33,7 +33,7 @@ class PatternSettingsAdapter(object):
         self.field = field
 
     def __call__(self):
-        data = self.tinymce()
+        data = {}
         data.update(self.mark_special_links())
         data.update(self.structure_updater())
         return data
