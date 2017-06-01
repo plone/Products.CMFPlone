@@ -19,6 +19,15 @@ New features:
 
 - Update mockup to latest version.
   [thet]
+  
+- add registry settings for thumb and icon handling  in tables, lists and portlets
+  https://github.com/plone/Products.CMFPlone/issues/1734 (PLIP) 
+  recompiled bundle plone-logged-in
+  requires upgrade step (reapply profile)
+  [fgrcon]
+  
+- Update mockup to latest version.
+  [thet]
 
 - new metadata catalog column mime_type
   https://github.com/plone/Products.CMFPlone/issues/1995
