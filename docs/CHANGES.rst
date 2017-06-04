@@ -19,7 +19,9 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Review context url for @@render-portlet and @@updateSharingInfo ajax calls.
+  Fixes `issue 2053 <https://github.com/plone/Products.CMFPlone/issues/2053>`_.
+  [rodfersou]
 
 
 4.3.14 (2017-04-03)
