@@ -9,14 +9,6 @@ Changelog
 5.0.8 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - Fix default value for ``robots.txt`` to avoid issues with content containing "search" in the id.
