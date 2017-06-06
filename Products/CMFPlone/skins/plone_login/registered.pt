@@ -31,7 +31,7 @@
             <p tal:condition="not: enable_user_pwd_choice"
                tal:define="expire_length context/portal_password_reset/getExpirationTimeout;
                            toLocalizedTime nocall:context/@@plone/toLocalizedTime;
-                           expire_date python:toLocalizedTime(DateTime() + expire_length / 24.0, long_format=1)"
+                           expire_date python:toLocalizedTime(DateTime() + expire_length, long_format=1)"
                i18n:translate="description_password_reset_or_registered">
                 You will receive an e-mail shortly containing a URL that will allow you to
                 set your password. When you receive this e-mail, please follow the link to

@@ -38,6 +38,9 @@ New features:
 
 Bug fixes:
 
+- Fix expiration date when displaying in registered form.
+  [allusa]
+
 - Remove TinyMCE pattern options from the body, as these are always set on the richtext fields mimetype selector or - if not there - on the textfield itself.
   Refs: https://github.com/plone/Products.CMFPlone/pull/2059
   [thet]
