@@ -53270,7 +53270,7 @@ define('mockup-patterns-tinymce-url/js/links',[
     },
 
     createRelatedItems: function() {
-      var options = this.tinypattern.options.relatedItems;
+      var options = this.linkModal.options.relatedItems;
       options.upload = false;  // ensure that related items upload is off.
       this.relatedItems = new RelatedItems(this.getEl(), options);
     },
@@ -73736,11 +73736,6 @@ define('mockup-patterns-tinymce',[
             insertHeading: _t('Insert Image')
           },
           relatedItems: {
-            baseCriteria: [{
-              i: 'portal_type',
-              o: 'plone.app.querystring.operation.list.contains',
-              v: self.options.imageTypes.concat(self.options.folderTypes)
-            }],
             selectableTypes: self.options.imageTypes
           }
         });
@@ -84056,5 +84051,5 @@ require([
   'use strict';
 });
 
-define("/plone/plip1734thumbs/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
+define("/home/_thet/data/dev/fhnw/plone/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
 
