@@ -57,7 +57,8 @@ insert link
     Execute Javascript    function selectElementContents(el) {var range = document.createRange(); range.selectNodeContents(el); var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);} var el = document.getElementById("tinymce"); selectElementContents(el);
     UnSelect Frame
     Click Button  css=div[aria-label="Insert/edit link"] button
-    Click Element  css=.select2-input.select2-default
+    Click Button  css=.pattern-relateditems-container button.favorites
+    Click Link  css=.pattern-relateditems-container .favorites a.fav[href='/']
     Click Link  css=.pattern-relateditems-result-select.selectable
     Input Text  css=.plone-modal-body [name="title"]  SomeTitle
     Click Button  css=.plone-modal-footer .plone-btn-primary
@@ -68,7 +69,8 @@ insert link
 
 insert image
     Click Button  css=div[aria-label="Insert/edit image"] button
-    Click Element  css=.select2-input.select2-default
+    Click Button  css=.pattern-relateditems-container button.favorites
+    Click Link  css=.pattern-relateditems-container .favorites a.fav[href='/']
     Click Link  css=.pattern-relateditems-result-select.selectable
     Input Text  css=.plone-modal-body [name="title"]  SomeTitle
     Input Text  css=.plone-modal-body [name="alt"]  SomeAlt

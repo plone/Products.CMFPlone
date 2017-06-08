@@ -19,13 +19,13 @@ New features:
 
 - Update mockup to latest version.
   [thet]
-  
+
 - add registry settings for thumb and icon handling  in tables, lists and portlets
-  https://github.com/plone/Products.CMFPlone/issues/1734 (PLIP) 
+  https://github.com/plone/Products.CMFPlone/issues/1734 (PLIP)
   recompiled bundle plone-logged-in
   requires upgrade step (reapply profile)
   [fgrcon]
-  
+
 - Update mockup to latest version.
   [thet]
 
@@ -37,6 +37,9 @@ New features:
   [frapell]
 
 Bug fixes:
+
+- Fix ``test_tinymce.robot`` test to work with latest related items changes.
+  [thet]
 
 - Fix expiration date when displaying in registered form.
   [allusa]
