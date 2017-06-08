@@ -74,6 +74,10 @@ Bug fixes:
 
 - Fixed addons/donations links, removed dead "add your site" link
   [sgrepos]
+  
+- Removed "change portal events" permission
+  [kakshay21]
+  
 
 - Fix isssue where collapsed toolbar was not initialized properly on page
   refresh, resulting wide blank space between collapsed toolbar and page
