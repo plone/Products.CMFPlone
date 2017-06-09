@@ -207,7 +207,7 @@
             <ul class="configlets">
               <li tal:repeat="product products">
                 <h3>
-                  <span tal:replace="product/productname" i18n:translate="">
+                  <span tal:replace="product/product_id" i18n:translate="">
                     Add-on Name
                   </span>
                 </h3>
