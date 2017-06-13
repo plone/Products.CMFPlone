@@ -12,7 +12,7 @@ class GroupDetailsControlPanel(UsersGroupsControlPanelView):
 
     def get_group_property(self, prop_id):
         try:
-            self.group.getProperty(prop_id, None)
+            return self.group.getProperty(prop_id, None)
         except AttributeError:
             pass
 

@@ -38,6 +38,9 @@ New features:
 
 Bug fixes:
 
+- Fix current value in group details edit form.
+  [Gagaro]
+
 - Fixed KeyError ``productname`` when there is a broken add-on in the add-ons control panel.
   Fixes `issue 2065 <https://github.com/plone/Products.CMFPlone/issues/2065>`_.
   [maurits]
