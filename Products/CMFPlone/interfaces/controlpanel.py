@@ -277,7 +277,7 @@ class ILanguageSchema(Interface):
                 default=u'Authenticated users only'),
         description=_(
             u'description_auth_ookie_manual_override',
-            default=(u'Related to Use cookie for manual override')
+            default=(u'Related to: use cookie for manual override')
         ),
         default=False,
         required=False,
@@ -871,7 +871,7 @@ class INavigationSchema(Interface):
         description=_(
             u'By default, any content item in the root of the portal will '
             u'appear as a tab. If you turn this option off, only folders '
-            u'will be shown. This only has an effect if \'Automatically '
+            u'will be shown. This only has an effect if \'automatically '
             u'generate tabs\' is enabled.'),
         default=True,
         required=False)
