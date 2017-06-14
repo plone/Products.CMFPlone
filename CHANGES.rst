@@ -15,7 +15,8 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- Include JS Patterns when loading a page via ajax or an iframe
+  [displacedaussie, instification]
 
 Bug fixes:
 
