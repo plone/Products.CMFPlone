@@ -2,6 +2,9 @@
 <tal:doctype tal:replace="structure string:&lt;!DOCTYPE html&gt;" />
 
 <html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
     tal:define="portal_state context/@@plone_portal_state;
         context_state context/@@plone_context_state;
         plone_view context/@@plone;
@@ -12,6 +15,7 @@
         portal_url portal_state/portal_url;
         checkPermission nocall: context/portal_membership/checkPermission;
         site_properties context/portal_properties/site_properties;
+        ajax_include_head request/ajax_include_head | nothing;
         ajax_load python:True;"
     i18n:domain="plone"
     tal:attributes="lang lang;">
@@ -21,6 +25,23 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
+    <tal:ajaxhead condition="ajax_include_head">
+        <div tal:replace="structure provider:plone.htmlhead" />
+
+        <tal:comment replace="nothing">
+            Various slots where you can insert elements in the header from a template.
+        </tal:comment>
+        <metal:topslot define-slot="top_slot" />
+        <metal:headslot define-slot="head_slot" />
+        <metal:styleslot define-slot="style_slot" />
+
+        <div tal:replace="structure provider:plone.scripts" />
+        <metal:javascriptslot define-slot="javascript_head_slot" />
+
+        <link tal:replace="structure provider:plone.htmlhead.links" />
+        <meta name="generator" content="Plone - http://plone.com" />
+    </tal:ajaxhead>
+
 </head>
 
 <body tal:define="isRTL portal_state/is_rtl;
@@ -28,10 +49,13 @@
                   sr python:plone_layout.have_portlets('plone.rightcolumn', view);
                   body_class python:plone_layout.bodyClass(template, view);"
     tal:attributes="class string: ${body_class} ajax_load;
-                    dir python:isRTL and 'rtl' or 'ltr'">
+                    dir python:isRTL and 'rtl' or 'ltr';
+                    python:plone_view.patterns_settings()"
+            id="visual-portal-wrapper">
 
+    <header id="portal-top" i18n:domain="plone"/>
     <aside id="global_statusmessage">
-      <tal:message tal:content="provider:plone.globalstatusmessage"/>
+      <tal:message tal:content="structure provider:plone.globalstatusmessage"/>
       <div metal:define-slot="global_statusmessage">
       </div>
     </aside>
