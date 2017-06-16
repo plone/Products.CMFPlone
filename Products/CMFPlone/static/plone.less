@@ -26,21 +26,16 @@
   float: none;
 }
 
-/* icons-off styles to hide icons from
-   site setting */
-body#visual-portal-wrapper.pat-plone.icons-off .outer-wrapper [class*="contenttype-"]:before {
+
+//supress fontello icons and mime type icons when globally turned off
+body#visual-portal-wrapper.pat-plone.icons-off .outer-wrapper [class*="contenttype-"]:before,
+.icons-off .mime-icon {
+  display:none;
+}
+
+//supress thumbs when globally turned off
+.thumbs-off img[class*='thumb-'] {
   display: none;
-}
-body.icons-off .mime-icon{
-	display: none;
-}
-/* thumbs-off styles to hide thumbs from
-   site setting */
-body#visual-portal-wrapper.pat-plone.thumbs-off .outer-wrapper {
-  .image-icon,
-  .image-tile {
-    display: none;
-  }
 }
 
 /* error message styles */
