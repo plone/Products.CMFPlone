@@ -277,7 +277,7 @@ class ILanguageSchema(Interface):
                 default=u'Authenticated users only'),
         description=_(
             u'description_auth_ookie_manual_override',
-            default=(u'Related to Use cookie for manual override')
+            default=(u'Related to: use cookie for manual override')
         ),
         default=False,
         required=False,
@@ -871,7 +871,7 @@ class INavigationSchema(Interface):
         description=_(
             u'By default, any content item in the root of the portal will '
             u'appear as a tab. If you turn this option off, only folders '
-            u'will be shown. This only has an effect if \'Automatically '
+            u'will be shown. This only has an effect if \'automatically '
             u'generate tabs\' is enabled.'),
         default=True,
         required=False)
@@ -1205,32 +1205,32 @@ class ISiteSchema(Interface):
         default=False,
         required=False)
 
-    thumb_size_portlet = schema.Choice(
-        title=_(u'Thumb size for portlets'),
-        description=_(u'this default can be overriden individually'),
+    thumb_scale_portlet = schema.Choice(
+        title=_(u'Thumb scale for portlets'),
+        description=_(u'This default can be overriden individually.'),
         default=u'icon',
         vocabulary='plone.app.vocabularies.ImagesScales',
         required=True)
 
-    thumb_size_listing = schema.Choice(
-        title=_(u'Thumb size for listings '),
-        description=_(u'e.g. standard view;'
-                      u' this default can be overriden individually'),
+    thumb_scale_listing = schema.Choice(
+        title=_(u'Thumb scale for listings'),
+        description=_(u'E.g. standard view;'
+                      u' This default can be overriden individually.'),
         default=u'thumb',
         vocabulary='plone.app.vocabularies.ImagesScales',
         required=True)
 
-    thumb_size_table = schema.Choice(
-        title=_(u'Thumb size for tables '),
-        description=_(u'e.g., tabular view, folder content listing;'
-                      u' this default can be overriden individually'),
+    thumb_scale_table = schema.Choice(
+        title=_(u'Thumb scale for tables'),
+        description=_(u'E.g., tabular view, folder content listing;'
+                      u' This default can be overriden individually.'),
         default=u'tile',
         vocabulary='plone.app.vocabularies.ImagesScales',
         required=True)
 
-    thumb_size_summary = schema.Choice(
-        title=_(u'Thumb size for summary view  '),
-        description=_(u'this default can be overriden individually'),
+    thumb_scale_summary = schema.Choice(
+        title=_(u'Thumb scale for summary view'),
+        description=_(u'This default can be overriden individually.'),
         default=u'mini',
         vocabulary='plone.app.vocabularies.ImagesScales',
         required=True)

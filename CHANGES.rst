@@ -99,6 +99,9 @@ Bug fixes:
 - Do not rely on order in test of generated body classes ``browser.txt``.
   [jensens]
 
+- Fix possible ``mechanize.AmbiguityError`` in controlpanel tests.
+  [jensens] 
+
 5.1b3 (2017-04-03)
 ------------------
 
