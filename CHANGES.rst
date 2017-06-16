@@ -20,6 +20,10 @@ New features:
 
 Bug fixes:
 
+- fixed css-classes for thumb scales ...
+  https://github.com/plone/Products.CMFPlone/issues/2077
+  [fgrcon]
+
 - Deprecating getIcon() in @@plone_layout
   see https://github.com/plone/Products.CMFPlone/issues/1734
   [fgrcon]
