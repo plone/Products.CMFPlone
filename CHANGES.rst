@@ -38,6 +38,10 @@ New features:
 
 Bug fixes:
 
+- fixed css-classes for thumb scales ...
+  https://github.com/plone/Products.CMFPlone/issues/2077
+  [fgrcon]
+   
 - Fix current value in group details edit form.
   [Gagaro]
 
