@@ -32825,6 +32825,7 @@ define('mockup-patterns-modal',[
       }
       self.$wrapper.remove();
       if ($('.plone-modal', $('body')).size() < 1) {
+        self._suppressHide = undefined;
         self.backdrop.hide();
         $('body').removeClass('plone-modal-open');
         $(window.parent).off('resize.plone-modal.patterns');
