@@ -38,6 +38,12 @@ New features:
 
 Bug fixes:
 
+- Gruntfile generation no longer fails on introspecting resourceDirectory
+  configurations using a plone.browserlayer layer, by loading all layers
+  configured for the site used during generation.
+  Fixes Issue `#2080`_.
+  [seanupton]
+
 - fixed css-classes for thumb scales ...
   https://github.com/plone/Products.CMFPlone/issues/2077
   [fgrcon]
