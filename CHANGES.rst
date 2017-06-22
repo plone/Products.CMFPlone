@@ -17,6 +17,9 @@ New features:
 - Integrate ``mockup-patterns-structureupdater`` for updating title and description depending on the current context on the folder contents page.
   [thet]
 
+- Updated jqtree to 1.4.1 from 1.3.3
+  [b4oshany]
+
 - Update mockup to latest version.
   [thet]
 
@@ -50,7 +53,7 @@ Bug fixes:
 - fixed css-classes for thumb scales ...
   https://github.com/plone/Products.CMFPlone/issues/2077
   [fgrcon]
-   
+
 - Fix current value in group details edit form.
   [Gagaro]
 
@@ -113,7 +116,7 @@ Bug fixes:
   [jensens]
 
 - Fix possible ``mechanize.AmbiguityError`` in controlpanel tests.
-  [jensens] 
+  [jensens]
 
 5.1b3 (2017-04-03)
 ------------------
