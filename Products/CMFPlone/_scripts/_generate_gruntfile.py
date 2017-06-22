@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from Acquisition import aq_acquire
+from plone.browserlayer.interfaces import ILocalBrowserLayerType
 from plone.registry.interfaces import IRegistry
 from plone.resource.directory import FilesystemResourceDirectory
 from plone.resource.file import FilesystemFile
@@ -10,6 +12,8 @@ from Products.CMFPlone.interfaces import IResourceRegistry
 from Products.Five.browser.resource import DirectoryResource
 from Products.Five.browser.resource import FileResource
 from zope.component import getUtility
+from zope.component import getSiteManager
+from zope.interface import alsoProvides
 from zope.site.hooks import setSite
 
 import json
@@ -25,6 +29,15 @@ except pkg_resources.DistributionNotFound:
 else:
     HAS_BARCELONETA = True
     import plonetheme.barceloneta
+
+
+def applyBrowserLayers(site):
+    request = aq_acquire(site, 'REQUEST')
+    sm = getSiteManager(site)
+    layers = sm.getAllUtilitiesRegisteredFor(ILocalBrowserLayerType)
+    for layer in layers:
+        alsoProvides(request, layer)
+
 
 # some initial script setup
 if 'SITE_ID' in os.environ:
@@ -44,6 +57,8 @@ for part in site_id.split('/'):
     current = current[part]
 portal = current
 setSite(portal)
+applyBrowserLayers(portal)
+
 
 # start the juicy stuff
 temp_resource_folder = 'temp_resources'
