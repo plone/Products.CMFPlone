@@ -17,6 +17,8 @@ New features:
 
 - Include JS Patterns when loading a page via ajax or an iframe
   [displacedaussie, instification]
+- Update jqtree to 1.4.1
+  [b4oshany]
 
 Bug fixes:
 
