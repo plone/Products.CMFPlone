@@ -38,6 +38,9 @@ New features:
 
 Bug fixes:
 
+- Translate image scales in patterns.
+  [Gagaro]
+
 - Gruntfile generation no longer fails on introspecting resourceDirectory
   configurations using a plone.browserlayer layer, by loading all layers
   configured for the site used during generation.
