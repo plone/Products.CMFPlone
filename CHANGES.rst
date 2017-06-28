@@ -15,6 +15,12 @@ Breaking changes:
 
 New features:
 
+- Add more ignores to static/.gitignore.
+  [thet]
+
+- Update jqtree to 1.4.1
+  [b4oshany]
+
 - Include JS Patterns when loading a page via ajax or an iframe
   [displacedaussie, instification]
 
