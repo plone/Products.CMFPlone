@@ -4,17 +4,10 @@ Changelog
 2.7.1 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
-- *add item here*
+- Fix issue preventing disabling icons and/or thumbs globally.
+  [fgrcon]
 
 
 2.7.0 (2017-05-24)
