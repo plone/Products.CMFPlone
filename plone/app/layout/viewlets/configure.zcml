@@ -177,6 +177,15 @@
         template="anontools.pt"
         />
 
+    <!-- The member panel (logout, user actions) -->
+    <browser:viewlet
+        name="plone.membertools"
+        manager=".interfaces.IPortalHeader"
+        class=".common.PersonalBarViewlet"
+        permission="zope2.View"
+        template="membertools.pt"
+        />
+
     <!-- The logo -->
     <browser:viewlet
         name="plone.logo"

@@ -10,7 +10,8 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- Added membertools viewlet. If user is not anonymous and toolbar is not visible according to ``is_toolbar_visible`` the viewlet will show at the location of anontools.
+  [agitator]
 
 Bug fixes:
 
