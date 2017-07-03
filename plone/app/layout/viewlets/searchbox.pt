@@ -13,7 +13,22 @@
         <label class="hiddenStructure"
                for="searchGadget"
                i18n:translate="text_search">Search Site</label>
-
+             
+        <div class="searchSection">
+            <input id="searchbox_currentfolder_only"
+                   class="noborder"
+                   type="checkbox"
+                   name="path"
+                   tal:attributes="value view/folder_path;
+                                   checked request/form/path|nothing"
+                   />
+            <label for="searchbox_currentfolder_only"
+                   i18n:translate="label_searchbox_currentfolder_only"
+                   style="cursor: pointer">
+                only in current section
+            </label>
+        </div>
+             
         <input name="SearchableText"
                type="text"
                size="18"
@@ -31,21 +46,7 @@
                value="Search"
                i18n:attributes="value label_search;" />
 
-        <div class="searchSection">
-            <input id="searchbox_currentfolder_only"
-                   class="noborder"
-                   type="checkbox"
-                   name="path"
-                   tal:attributes="value view/folder_path;
-                                   checked request/form/path|nothing"
-                   />
-            <label for="searchbox_currentfolder_only"
-                   i18n:translate="label_searchbox_currentfolder_only"
-                   style="cursor: pointer">
-                only in current section
-            </label>
-        </div>
-        </div>
+         </div>
     </form>
 
     <div id="portal-advanced-search"
