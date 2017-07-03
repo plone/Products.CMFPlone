@@ -1,5 +1,5 @@
-<div id='portal-anontools'>
-  <ul tal:condition="python:view.user_actions and view.anonymous">
+<div id="portal-anontools" tal:condition="python:view.user_actions and view.anonymous">
+  <ul>
     <li>
       <tal:actions repeat="action view/user_actions">
           <a href=""
