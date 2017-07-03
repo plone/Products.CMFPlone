@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from plone.app.layout.globals.interfaces import IBodyClassAdapter
 from plone.app.layout.globals.interfaces import ILayoutPolicy
 from plone.app.layout.globals.interfaces import IViewView
 from plone.app.layout.icons.interfaces import IContentIcon
@@ -13,6 +14,8 @@ from Products.CMFPlone.interfaces.controlpanel import ISiteSchema
 from Products.Five.browser.metaconfigure import ViewMixinForTemplates
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile as ZopeViewPageTemplateFile  # noqa
+from zope.component import adapter
+from zope.component import getAdapters
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.component import queryMultiAdapter
@@ -20,6 +23,7 @@ from zope.component import queryUtility
 from zope.deprecation import deprecate
 from zope.interface import alsoProvides
 from zope.interface import implementer
+from zope.interface import Interface
 from zope.publisher.browser import BrowserView
 
 import json
@@ -153,9 +157,9 @@ class LayoutPolicy(BrowserView):
         """current toolbar controlling classes
         """
         if not self._context_state.is_toolbar_visible():
-            return []
+            return set()
 
-        toolbar_classes = []
+        toolbar_classes = set()
         registry = getUtility(IRegistry)
         site_settings = registry.forInterface(
             ISiteSchema,
@@ -167,25 +171,25 @@ class LayoutPolicy(BrowserView):
         except KeyError:
             left = True
         if left:
-            toolbar_classes.append('plone-toolbar-left')
+            toolbar_classes.add('plone-toolbar-left')
         else:
-            toolbar_classes.append('plone-toolbar-top')
+            toolbar_classes.add('plone-toolbar-top')
         try:
             toolbar_state = {}
             toolbar_state_cookie = self.request.cookies.get('plone-toolbar')
             if toolbar_state_cookie:
                 toolbar_state = json.loads(toolbar_state_cookie)
             if toolbar_state.get('expanded', True):
-                toolbar_classes.append('plone-toolbar-expanded')
+                toolbar_classes.add('plone-toolbar-expanded')
                 if left:
-                    toolbar_classes.append('plone-toolbar-left-expanded')
+                    toolbar_classes.add('plone-toolbar-left-expanded')
                 else:
-                    toolbar_classes.append('plone-toolbar-top-expanded')
+                    toolbar_classes.add('plone-toolbar-top-expanded')
             else:
                 if left:
-                    toolbar_classes.append('plone-toolbar-left-default')
+                    toolbar_classes.add('plone-toolbar-left-default')
                 else:
-                    toolbar_classes.append('plone-toolbar-top-default')
+                    toolbar_classes.add('plone-toolbar-top-default')
         except Exception:
             pass
         return toolbar_classes
@@ -238,21 +242,21 @@ class LayoutPolicy(BrowserView):
             template_name = view.__name__
         if template_name:
             template_name = normalizer.normalize(template_name)
-            body_classes.append('template-%s' % template_name)
+            body_classes.add('template-%s' % template_name)
 
         # portal type class (optional)
         portal_type = normalizer.normalize(self.context.portal_type)
         if portal_type:
-            body_classes.append("portaltype-%s" % portal_type)
+            body_classes.add("portaltype-%s" % portal_type)
 
         # section class (optional)
         navroot = portal_state.navigation_root()
-        body_classes.append("site-%s" % navroot.getId())
+        body_classes.add("site-%s" % navroot.getId())
 
         contentPath = self.context.getPhysicalPath()[
             len(navroot.getPhysicalPath()):]
         if contentPath:
-            body_classes.append("section-%s" % contentPath[0])
+            body_classes.add("section-%s" % contentPath[0])
             # skip first section since we already have that...
             if len(contentPath) > 1:
                 depth = registry.get(
@@ -263,19 +267,19 @@ class LayoutPolicy(BrowserView):
                     classes = ['subsection-%s' % contentPath[1]]
                     for section in contentPath[2:depth]:
                         classes.append('-'.join([classes[-1], section]))
-                    body_classes.extend(classes)
+                    body_classes.update(classes)
 
         # class for hiding icons (optional)
         if self.icons_visible():
-            body_classes.append('icons-on')
+            body_classes.add('icons-on')
         else:
-            body_classes.append('icons-off')
+            body_classes.add('icons-off')
 
         # class for hiding thumbs (optional)
         if self.thumb_visible():
-            body_classes.append('thumbs-on')
+            body_classes.add('thumbs-on')
         else:
-            body_classes.append('thumbs-off')
+            body_classes.add('thumbs-off')
 
         # permissions required. Useful to theme frontend and backend
         # differently
@@ -285,18 +289,18 @@ class LayoutPolicy(BrowserView):
         for permission, roles in getattr(view, '__ac_permissions__', tuple()):
             permissions.append(normalizer.normalize(permission))
         if 'none' in permissions or 'view' in permissions:
-            body_classes.append('frontend')
+            body_classes.add('frontend')
         for permission in permissions:
-            body_classes.append('viewpermission-' + permission)
+            body_classes.add('viewpermission-' + permission)
 
         # class for user roles
         membership = getToolByName(self.context, "portal_membership")
         if membership.isAnonymousUser():
-            body_classes.append('userrole-anonymous')
+            body_classes.add('userrole-anonymous')
         else:
             user = membership.getAuthenticatedMember()
             for role in user.getRolesInContext(self.context):
-                body_classes.append(
+                body_classes.add(
                     'userrole-' + role.lower().replace(' ', '-')
                 )
 
@@ -309,6 +313,31 @@ class LayoutPolicy(BrowserView):
         msl = link_settings.mark_special_links
         elonw = link_settings.external_links_open_new_window
         if msl or elonw:
-            body_classes.append('pat-markspeciallinks')
+            body_classes.add('pat-markspeciallinks')
+
+        # Add externally defined extra body classes
+        body_class_adapters = getAdapters(
+            (self.context, self.request),
+            IBodyClassAdapter
+        )
+        for name, body_class_adapter in body_class_adapters:
+            extra_classes = body_class_adapter.get_classes() or []
+            if isinstance(extra_classes, basestring):
+                extra_classes = extra_classes.split(' ')
+            body_classes.update(extra_classes)
 
         return ' '.join(sorted(body_classes))
+
+
+@adapter(Interface)
+@implementer(IBodyClassAdapter)
+class DefaultBodyClasses(object):
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def get_classes(self):
+        """Default body classes adapter.
+        """
+        return []
