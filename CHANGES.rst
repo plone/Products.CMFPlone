@@ -14,7 +14,7 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- show 'in current section only' before seach input field for a11y reasons [polyester]
 
 
 2.7.1 (2017-07-03)
