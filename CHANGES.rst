@@ -8,10 +8,6 @@ Changelog
 5.1b4 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
 New features:
 
 - Integrate ``mockup-patterns-structureupdater`` for updating title and description depending on the current context on the folder contents page.
