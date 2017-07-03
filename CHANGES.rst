@@ -14,7 +14,7 @@ New features:
 
 Bug fixes:
 
-- show 'in current section only' before seach input field for a11y reasons [polyester]
+- show 'in current section only' before seach input field for a11y reasons. https://github.com/plone/Products.CMFPlone/issues/1619 [polyester]
 
 
 2.7.1 (2017-07-03)
