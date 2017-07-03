@@ -5,7 +5,7 @@
 Changelog
 =========
 
-5.1b4 (unreleased)
+5.1b4 (2017-07-03)
 ------------------
 
 New features:
