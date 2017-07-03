@@ -6,16 +6,8 @@ Changelog
 =========
 
 
-4.3.15 (unreleased)
+4.3.15 (2017-07-03)
 -------------------
-
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
 
 Bug fixes:
 
