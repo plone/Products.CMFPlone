@@ -1,0 +1,31 @@
+<div id="portal-membertools-wrapper"
+     i18n:domain="plone"
+     tal:define="toolbar_visible here/@@plone_context_state/is_toolbar_visible;
+                 isAnon view/anonymous;"
+     tal:condition="python:not isAnon and not toolbar_visible">
+
+  <p class="hiddenStructure" i18n:translate="heading_member_tools">Member tools</p>
+
+  <div class="dropdown pull-right" id="portal-membertools"
+      tal:condition="python:view.user_actions and not view.anonymous">
+      <a id="user-name"
+         class="dropdown-toggle" data-toggle="dropdown"
+         tal:attributes="href view/homelink_url">
+         <span tal:replace="view/user_name">John</span>
+         <span class="caret"></span>
+      </a>
+      <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+          <li tal:repeat="action view/user_actions"
+              tal:attributes="id string:membertools-${action/id}">
+              <a href=""
+                 tal:attributes="href action/href;
+                                 target action/link_target|nothing"
+                 tal:content="action/title"
+                 i18n:translate="">
+                  action title
+              </a>
+          </li>
+      </ul>
+  </div>
+
+</div>
