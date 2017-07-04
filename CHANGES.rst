@@ -4,10 +4,6 @@ Changelog
 2.7.2 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
 New features:
 
 - Added membertools viewlet. If user is not anonymous and toolbar is not visible according to ``is_toolbar_visible`` the viewlet will show at the location of anontools.
