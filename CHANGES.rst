@@ -14,7 +14,9 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Put "search in this section" checkbox where assistive tech users have a fair chance of finding and using it
+  https://github.com/plone/Products.CMFPlone/issues/1619
+  [polyester]
 
 
 2.7.2 (2017-07-04)
