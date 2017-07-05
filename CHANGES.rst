@@ -5,12 +5,25 @@
 Changelog
 =========
 
-5.1b4 (unreleased)
+5.1b5 (unreleased)
 ------------------
 
 Breaking changes:
 
 - *add item here*
+
+New features:
+
+- *add item here*
+
+Bug fixes:
+
+- add :focus class on toolbar for keyboard users  (https://github.com/plone/Products.CMFPlone/issues/1620) 
+  [polyester]
+
+
+5.1b4 (2017-07-03)
+------------------
 
 New features:
 
