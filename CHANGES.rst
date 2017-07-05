@@ -41,6 +41,9 @@ New features:
 
 Bug fixes:
 
+- Use explicit @@footer view for footer portlet.
+  [agitator]
+
 - Translate image scales in patterns.
   [Gagaro]
 
