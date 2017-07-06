@@ -7,7 +7,6 @@ Suite Teardown  Common Suite Teardown
 
 *** Variables ***
 
-${FIXTURE}  plone.app.robotframework.PLONE_ROBOT_TESTING
 @{CONFIGURE_PACKAGES}  plone.app.iterate
 @{APPLY_PROFILES}  plone.app.contenttypes:plone-content  plone.app.iterate:plone.app.iterate
 # ${REGISTER_TRANSLATIONS}  ${CURDIR}/../../_locales
