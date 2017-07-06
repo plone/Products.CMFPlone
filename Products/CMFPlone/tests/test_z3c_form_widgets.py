@@ -24,7 +24,7 @@ class FakeForm(object):
 class TestAttackVector(unittest.TestCase):
     layer = PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
     _widgets_to_test = WIDGETS_TO_TEST
-    _attack = '</textarea><script>alert("form.widgets.class_blacklist")</script>'  # noqa
+    _attack = '</textarea><script>alert("form.widgets")</script>'  # noqa
 
     def _terms(self):
         # For the SequenceWidget we need basic terms.

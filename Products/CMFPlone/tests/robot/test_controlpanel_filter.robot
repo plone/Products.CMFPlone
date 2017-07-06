@@ -36,38 +36,22 @@ Scenario: Configure Filter Control Panel to strip out tags
    Then the 'h1' tag is stripped when a document is saved
 
 Scenario: Configure Filter Control Panel to allow custom tags
-  Pass Execution  This test currently fails because TinyMCE filters out the marquee tag and ignores the filter control panel settings.
   Given a logged-in site administrator
     and the filter control panel
    When I add 'marquee' to the custom tags list
    Then the 'marquee' tag is preserved when a document is saved
 
 Scenario: Configure Filter Control Panel to strip out attributes
-  Pass Execution  Functionality is broken. Maybe even in Plone 4.3?
   Given a logged-in site administrator
     and the filter control panel
    When I add 'data-stripme' to the stripped attributes list
    Then the 'data-stripme' attribute is stripped when a document is saved
-
-Scenario: Configure Filter Control Panel to strip out combinations
-  Pass Execution  Functionality is broken. Maybe even in Plone 4.3?
-  Given a logged-in site administrator
-    and the filter control panel
-   When I add 'div h3' and 'data-foo' to the stripped out combinations
-   Then the 'data-foo' attribute of a 'div h3' combination is stripped when a document is saved
 
 Scenario: Configure Filter Control Panel to allow style attributes
   Given a logged-in site administrator
     and the filter control panel
    When I add 'display' to the allowed style attributes
    Then the 'display' style attribute is preserved when a document is saved
-
-Scenario: Configure Filter Control Panel to filter out classes
-  Pass Execution  Functionality is broken. Maybe even in Plone 4.3?
-  Given a logged-in site administrator
-    and the filter control panel
-   When I add 'foobar' to the filtered classes
-   Then the 'foobar' class is filtered out when a document is saved
 
 Scenario: Filter Control Panel displays information regarding caching when saved
   Given a logged-in site administrator
@@ -113,19 +97,8 @@ I add '${tag}' to the stripped attributes list
   Click Button  Save
   Wait until page contains  Changes saved
 
-I add '${tag}' to the filtered classes
-  Input Text  name=form.widgets.class_blacklist  ${tag}
-  Click Button  Save
-  Wait until page contains  Changes saved
-
 I add '${tag}' to the allowed style attributes
   Input text  name=form.widgets.style_whitelist  ${tag}
-  Click Button  Save
-  Wait until page contains  Changes saved
-
-I add '${tags}' and '${attributes}' to the stripped out combinations
-  Input text  name=form.stripped_combinations.1.tags  ${tags}
-  Input text  name=form.stripped_combinations.1.attributes  ${attributes}
   Click Button  Save
   Wait until page contains  Changes saved
 
@@ -187,18 +160,6 @@ the 'foobar' class is filtered out when a document is saved
 
   XPath Should Match X Times  //*[@id='content-core']//h4  1  message=h4 tag should be present
   XPath Should Match X Times  //*[@id='content-core']//h4[@class='foobar']  0  message=class foobar should have been filtered out
-
-the 'data-foo' attribute of a 'div h3' combination is stripped when a document is saved
-  ${doc1_uid}=  Create content  id=doc1  title=Document 1  type=Document
-  Go To  ${PLONE_URL}/doc1/edit
-  patterns are loaded
-  Input RichText  <div><h3 data-foo="50">lorem ipsum</h3></div>
-  Click Button  Save
-  Wait until page contains  Changes saved
-  Page should contain  lorem ipsum
-  XPath Should Match X Times  //*[@id='content-core']//div/h3  1  message=h4 tag should be present
-  XPath Should Match X Times  //*[@id='content-core']//div/h3[@data-foo]  0  message=the data-foo attribute class should have been filtered out
-
 
 the 'display' style attribute is preserved when a document is saved
   ${doc1_uid}=  Create content  id=doc1  title=Document 1  type=Document

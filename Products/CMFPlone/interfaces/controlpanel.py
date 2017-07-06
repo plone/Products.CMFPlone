@@ -361,69 +361,105 @@ class IFilterSchema(Interface):
         missing_value=[],
         required=False)
 
-    stripped_tags = schema.List(
-        title=_(u'Stripped tags'),
-        description=_(u'These tags are stripped when saving or rendering, '
-                      'but any content is preserved.'),
-        default=[u'font', ],
-        value_type=schema.TextLine(),
-        missing_value=[],
-        required=False)
-
-    custom_tags = schema.List(
-        title=_(u'Custom tags'),
-        description=_(u'Add tag names here for tags which are not part of '
-                      'XHTML but which should be permitted.'),
-        default=[],
-        value_type=schema.TextLine(),
-        missing_value=[],
-        required=False)
-
-    # class IFilterAttributesSchema(Interface):
-
-    stripped_attributes = schema.List(
-        title=_(u'Stripped attributes'),
-        description=_(u'These attributes are stripped from any tag when '
-                      'saving.'),
-        default=(u'dir lang valign halign border frame rules cellspacing '
-                 'cellpadding bgcolor').split(),
-        value_type=schema.TextLine(),
-        missing_value=[],
-        required=False)
-
-    stripped_combinations = schema.Dict(
-        title=_(u'Stripped combinations'),
-        description=_(u'These attributes are stripped from those tags when '
-                      'saving.'),
-        key_type=schema.TextLine(title=u'tags'),
-        value_type=schema.TextLine(title=u'attributes'),
-        default={'table th td': 'width height'},
-        missing_value={},
-        required=False)
-
-    # class IFilterEditorSchema(Interface):
-
-    style_whitelist = schema.List(
-        title=_(u'Permitted properties'),
-        description=_(
-            u'These CSS properties are allowed in style attributes.'),
+    valid_tags = schema.List(
+        title=_(u'Valid tags'),
+        description=_(u'A list of valid tags which will be not filtered out.'),
         default=[
-            u'text-align',
-            u'list-style-type',
-            u'float padding-left',
-            u'text-decoration'
+            'a',
+            'abbr',
+            'acronym',
+            'address',
+            'article',
+            'aside',
+            'audio',
+            'b',
+            'bdo',
+            'big',
+            'blockquote',
+            'body',
+            'br',
+            'canvas',
+            'caption',
+            'cite',
+            'code',
+            'col',
+            'colgroup',
+            'command',
+            'datalist',
+            'dd',
+            'del',
+            'details',
+            'dfn',
+            'dialog',
+            'div',
+            'dl',
+            'dt',
+            'em',
+            'figure',
+            'footer',
+            'h1',
+            'h2',
+            'h3',
+            'h4',
+            'h5',
+            'h6',
+            'head',
+            'header',
+            'hgroup',
+            'html',
+            'i',
+            'iframe',
+            'img',
+            'ins',
+            'kbd',
+            'keygen',
+            'li',
+            'map',
+            'mark',
+            'meter',
+            'nav',
+            'ol',
+            'output',
+            'p',
+            'pre',
+            'progress',
+            'q',
+            'rp',
+            'rt',
+            'ruby',
+            'samp',
+            'section',
+            'small',
+            'source',
+            'span',
+            'strong',
+            'sub',
+            'sup',
+            'table',
+            'tbody',
+            'td',
+            'tfoot',
+            'th',
+            'thead',
+            'time',
+            'title',
+            'tr',
+            'tt',
+            'u',
+            'ul',
+            'var',
+            'video',
         ],
         value_type=schema.TextLine(),
         missing_value=[],
         required=False)
 
-    class_blacklist = schema.List(
-        title=_(u'Filtered classes'),
-        description=_(u'These class names are not allowed in class '
-                      'attributes.'),
+    custom_attributes = schema.List(
+        title=_(u'Custom attributes'),
+        description=_(u'These attributes are additionally allowed.'),
         default=[],
-        missing_value=[],
         value_type=schema.TextLine(),
+        missing_value=[],
         required=False)
 
 
@@ -1271,8 +1307,8 @@ class ISiteSchema(Interface):
     default_page = schema.List(
         title=_(u'Default page IDs'),
         description=_(
-            u'Select which IDs (short names) can act as fallback default pages for',
-            u'a container.'),
+            u'Select which IDs (short names) can act as fallback '
+            u'default pages for a container.'),
         required=True,
         default=[
             u'index_html',
