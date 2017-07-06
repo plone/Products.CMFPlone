@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
+from lxml import html
 from plone.app.layout.navigation.root import getNavigationRootObject
 from plone.app.theming.utils import theming_policy
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.interfaces import IFilterSchema
 from Products.CMFPlone.interfaces import ITinyMCESchema
 from Products.CMFPlone.utils import get_portal
 from zope.component import getUtility
@@ -17,6 +19,11 @@ class TinyMCESettingsGenerator(object):
         self.request = request
         self.settings = getUtility(IRegistry).forInterface(
             ITinyMCESchema,
+            prefix="plone",
+            check=False
+        )
+        self.filter_settings = getUtility(IRegistry).forInterface(
+            IFilterSchema,
             prefix="plone",
             check=False
         )
@@ -196,6 +203,19 @@ class TinyMCESettingsGenerator(object):
                 tiny_config['templates'] = json.loads(settings.templates)
             except ValueError:
                 pass
+
+        # add safe_html settings, which are useed in backend for filtering:
+        if not self.filter_settings.disable_filtering:
+            valid_tags = self.filter_settings.valid_tags
+            custom_attributes = self.filter_settings.custom_attributes
+            safe_attributes = [attr.decode() for attr in html.defs.safe_attrs]
+            valid_attributes = safe_attributes + custom_attributes
+            # valid_elements : 'a[href|target=_blank],strong/b,div[align],br'
+            tiny_valid_elements = []
+            for tag in valid_tags:
+                tag_str = "%s[%s]" % (tag, "|".join(valid_attributes))
+                tiny_valid_elements.append(tag_str)
+            tiny_config['valid_elements'] = ",".join(tiny_valid_elements)
 
         if settings.other_settings:
             try:

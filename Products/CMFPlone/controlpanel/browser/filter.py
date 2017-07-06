@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
+from plone.app.registry.browser import controlpanel
 from plone.z3cform import layout
 from Products.CMFPlone import PloneMessageFactory as _  # NOQA
 from Products.CMFPlone.interfaces import IFilterSchema
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from plone.app.registry.browser import controlpanel
 from Products.statusmessages.interfaces import IStatusMessage
 from z3c.form import button
 

@@ -3,7 +3,6 @@ from Acquisition import aq_inner
 from Acquisition import aq_parent
 from borg.localrole.interfaces import IFactoryTempFolder
 from plone.app.content.browser.interfaces import IFolderContentsView
-from plone.app.layout.navigation.root import getNavigationRootObject
 from plone.app.widgets.utils import get_relateditems_options
 from plone.app.z3cform.utils import call_callables
 from plone.registry.interfaces import IRegistry
@@ -81,7 +80,9 @@ class PatternSettingsAdapter(object):
             'plone.app.vocabularies.ImagesScales'
         )
         vocabulary = factory(self.context)
-        ret = [{'title': translate(it.title), 'value': it.value} for it in vocabulary]
+        ret = [{
+            'title': translate(it.title), 'value': it.value}
+            for it in vocabulary]
         ret = sorted(ret, key=lambda it: it['title'])
         return json.dumps(ret)
 
