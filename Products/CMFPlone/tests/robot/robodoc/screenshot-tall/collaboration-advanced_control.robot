@@ -1,40 +1,44 @@
-.. include:: _robot-tall.rst
+*** Settings ***
 
+Resource  ../common.robot
 
-.. code:: robotframework
-   :class: hidden
+Suite Setup  Common Suite Setup
+Suite Teardown  Common Suite Teardown
 
-   *** Test Cases ***
+*** Variables ***
 
-   Create sample content
-       Go to  ${PLONE_URL}
+@{DIMENSIONS}  1024  1200
 
-       ${item} =  Create content  type=Folder
-       ...  id=documentation  title=Documentation
-       ...  description=Here you can find the documentation on our new product
+*** Test Cases ***
 
+Create sample content
+    Go to  ${PLONE_URL}
+    Capture page screenshot
 
-   Show state menu
-       Go to  ${PLONE_URL}/documentation
+    ${item} =  Create content  type=Folder
+    ...  id=documentation  title=Documentation
+    ...  description=Here you can find the documentation on our new product
 
-       Click link  css=#plone-contentmenu-workflow a
+Show state menu
+    Go to  ${PLONE_URL}/documentation
 
-       Wait until element is visible
-       ...  css=#plone-contentmenu-workflow li.plone-toolbar-submenu-header
+    Click link  css=#plone-contentmenu-workflow a
 
-       Mouse over  workflow-transition-advanced
-       Update element style  portal-footer  display  none
+    Wait until element is visible
+    ...  css=#plone-contentmenu-workflow li.plone-toolbar-submenu-header
 
-       Capture and crop page screenshot
-       ...  ${CURDIR}/_robot/workflow-advanced-menu.png
-               ...  css=#content-header
-               ...  css=div.plone-toolbar-container
+    Mouse over  workflow-transition-advanced
+    Update element style  portal-footer  display  none
 
-       Click link  workflow-transition-advanced
-       Wait until element is visible
-       ...   css=div.plone-modal-content
+    Capture and crop page screenshot
+    ...  ${CURDIR}/_robot/workflow-advanced-menu.png
+    ...  css=#content-header
+    ...  css=div.plone-toolbar-container
 
+    Click link  workflow-transition-advanced
+    Wait until element is visible
+    ...   css=div.plone-modal-content
 
-       Capture and crop page screenshot
-       ...  ${CURDIR}/_robot/workflow-advanced.png
-               ...  css=div.plone-modal-wrapper
+    Capture and crop page screenshot
+    ...  ${CURDIR}/_robot/workflow-advanced.png
+    ...  css=div.plone-modal-wrapper
