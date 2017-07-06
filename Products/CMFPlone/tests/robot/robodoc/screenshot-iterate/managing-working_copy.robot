@@ -1,124 +1,115 @@
-.. include:: _robot_iterate.rst
+*** Settings ***
 
+Resource  ../common.robot
 
-.. code:: robotframework
-   :class: hidden
+Suite Setup  Common Suite Setup
+Suite Teardown  Common Suite Teardown
 
-   *** Test Cases ***
+*** Variables ***
 
+${FIXTURE}  plone.app.robotframework.PLONE_ROBOT_TESTING
+@{CONFIGURE_PACKAGES}  plone.app.iterate
+@{APPLY_PROFILES}  plone.app.contenttypes:plone-content  plone.app.iterate:plone.app.iterate
+# ${REGISTER_TRANSLATIONS}  ${CURDIR}/../../_locales
 
+*** Test Cases ***
 
-   Show how to checkout
-          Go to  ${PLONE_URL}/front-page
+Show how to checkout
+    Go to  ${PLONE_URL}/front-page
 
-       Wait until element is visible
-       ...  css=span.icon-plone-contentmenu-actions
-       Click element  css=span.icon-plone-contentmenu-actions
-          Wait until element is visible
-          ...  css=#plone-contentmenu-actions li.plone-toolbar-submenu-header
+    Wait until element is visible
+    ...  css=span.icon-plone-contentmenu-actions
+    Click element  css=span.icon-plone-contentmenu-actions
+    Wait until element is visible
+    ...  css=#plone-contentmenu-actions li.plone-toolbar-submenu-header
 
-          Mouse over  css=#plone-contentmenu-actions-iterate_checkout
-          Update element style  portal-footer  display  none
+    Mouse over  css=#plone-contentmenu-actions-iterate_checkout
+    Update element style  portal-footer  display  none
 
-          Capture and crop page screenshot
-               ...  ${CURDIR}/_robot/working-copy_checkout.png
-               ...  css=#content-header
-               ...  css=div.plone-toolbar-container
+    Capture and crop page screenshot
+    ...  ${CURDIR}/_robot/working-copy_checkout.png
+    ...  css=#content-header
+    ...  css=div.plone-toolbar-container
 
-   Show checkout notification
+Show checkout notification
+    Go to  ${PLONE_URL}/front-page
 
-          Go to  ${PLONE_URL}/front-page
+    Wait until element is visible
+    ...  css=span.icon-plone-contentmenu-actions
+    Click element  css=span.icon-plone-contentmenu-actions
+    Wait until element is visible
+    ...  css=#plone-contentmenu-actions li.plone-toolbar-submenu-header
+    Click link  css=#plone-contentmenu-actions-iterate_checkout
+    Wait until element is visible
+    ...  name=form.button.Checkout
+    Click button  name=form.button.Checkout
+    Element should be visible  css=.portalMessage
+    Update element style  portal-footer  display  none
 
-       Wait until element is visible
-       ...  css=span.icon-plone-contentmenu-actions
-       Click element  css=span.icon-plone-contentmenu-actions
-          Wait until element is visible
-          ...  css=#plone-contentmenu-actions li.plone-toolbar-submenu-header
-          Click link  css=#plone-contentmenu-actions-iterate_checkout
-          Wait until element is visible
-          ...  name=form.button.Checkout
-          Click button  name=form.button.Checkout
-          Element should be visible  css=.portalMessage
-          Update element style  portal-footer  display  none
+    Capture and crop page screenshot
+    ...  ${CURDIR}/_robot/working-copy_checkout-notification.png
+    ...  css=#content-header
+    ...  css=div.plone-toolbar-container
 
-          Capture and crop page screenshot
-               ...  ${CURDIR}/_robot/working-copy_checkout-notification.png
-               ...  css=#content-header
-               ...  css=div.plone-toolbar-container
+Show locked original
+    Go to  ${PLONE_URL}/front-page
 
+    Element should be visible  css=#plone-lock-status
+    Update element style  portal-footer  display  none
 
+    Capture and crop page screenshot
+    ...  ${CURDIR}/_robot/working-copy_locked.png
+    ...  css=#content-header
+    ...  css=div.plone-toolbar-container
 
+Show check-in option
+    Go to  ${PLONE_URL}/copy_of_front-page
 
+    Wait until element is visible
+    ...  css=span.icon-plone-contentmenu-actions
+    Click element  css=span.icon-plone-contentmenu-actions
+    Wait until element is visible
+    ...  css=#plone-contentmenu-actions li.plone-toolbar-submenu-header
 
-.. code:: robotframework
+    Mouse over  css=#plone-contentmenu-actions-iterate_checkin
+    Update element style  portal-footer  display  none
+    Capture and crop page screenshot
+    ...  ${CURDIR}/_robot/working-copy_checkin.png
+    ...  css=#content-header
+    ...  css=div.plone-toolbar-container
 
-     Show locked original
-         Go to  ${PLONE_URL}/front-page
+    Click link  css=#plone-contentmenu-actions-iterate_checkin
 
-         Element should be visible  css=#plone-lock-status
-         Update element style  portal-footer  display  none
+    Element should be visible  css=#checkin_message
+    Update element style  portal-footer  display  none
 
-         Capture and crop page screenshot
-           ...  ${CURDIR}/_robot/working-copy_locked.png
-           ...  css=#content-header
-           ...  css=div.plone-toolbar-container
+    Capture and crop page screenshot
+    ...  ${CURDIR}/_robot/working-copy_checkin-form.png
+    ...  css=#content-header
+    ...  css=div.plone-toolbar-container
 
+Show cancel checkout
+    Go to  ${PLONE_URL}/copy_of_front-page
 
+    Wait until element is visible
+    ...  css=span.icon-plone-contentmenu-actions
+    Click element  css=span.icon-plone-contentmenu-actions
+    Wait until element is visible
+    ...  css=#plone-contentmenu-actions li.plone-toolbar-submenu-header
 
-.. code:: robotframework
+    Mouse over  css=#plone-contentmenu-actions-iterate_checkout_cancel
+    Update element style  portal-footer  display  none
+    Capture and crop page screenshot
+    ...  ${CURDIR}/_robot/working-copy_cancel-checkout.png
+    ...  css=#content-header
+    ...  css=div.plone-toolbar-container
 
-     Show check-in option
-         Go to  ${PLONE_URL}/copy_of_front-page
+    Click link  css=#plone-contentmenu-actions-iterate_checkout_cancel
 
-          Wait until element is visible
-          ...  css=span.icon-plone-contentmenu-actions
-          Click element  css=span.icon-plone-contentmenu-actions
-          Wait until element is visible
-          ...  css=#plone-contentmenu-actions li.plone-toolbar-submenu-header
+    Element should be visible  css=.destructive
+    Update element style  portal-footer  display  none
 
-          Mouse over  css=#plone-contentmenu-actions-iterate_checkin
-          Update element style  portal-footer  display  none
-          Capture and crop page screenshot
-               ...  ${CURDIR}/_robot/working-copy_checkin.png
-               ...  css=#content-header
-               ...  css=div.plone-toolbar-container
-
-          Click link  css=#plone-contentmenu-actions-iterate_checkin
-
-          Element should be visible  css=#checkin_message
-          Update element style  portal-footer  display  none
-
-          Capture and crop page screenshot
-               ...  ${CURDIR}/_robot/working-copy_checkin-form.png
-               ...  css=#content-header
-               ...  css=div.plone-toolbar-container
-
-
-.. code:: robotframework
-
-     Show cancel checkout
-         Go to  ${PLONE_URL}/copy_of_front-page
-
-          Wait until element is visible
-          ...  css=span.icon-plone-contentmenu-actions
-          Click element  css=span.icon-plone-contentmenu-actions
-          Wait until element is visible
-          ...  css=#plone-contentmenu-actions li.plone-toolbar-submenu-header
-
-          Mouse over  css=#plone-contentmenu-actions-iterate_checkout_cancel
-          Update element style  portal-footer  display  none
-          Capture and crop page screenshot
-               ...  ${CURDIR}/_robot/working-copy_cancel-checkout.png
-               ...  css=#content-header
-               ...  css=div.plone-toolbar-container
-
-          Click link  css=#plone-contentmenu-actions-iterate_checkout_cancel
-
-          Element should be visible  css=.destructive
-          Update element style  portal-footer  display  none
-
-          Capture and crop page screenshot
-               ...  ${CURDIR}/_robot/working-copy_cancel-checkout-form.png
-               ...  css=#content-header
-               ...  css=div.plone-toolbar-container
-
+    Capture and crop page screenshot
+    ...  ${CURDIR}/_robot/working-copy_cancel-checkout-form.png
+    ...  css=#content-header
+    ...  css=div.plone-toolbar-container
