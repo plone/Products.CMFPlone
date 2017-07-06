@@ -43,13 +43,8 @@ Common Suite Teardown
     Run keyword if  not ${ROBOT_SERVER}  Teardown Plone site
 
 Setup Plone site
-    [Arguments]  ${zope_layer_dotted_name}  @{extra_layers_dotted_names}
-
+    [Arguments]  ${zope_layer_dotted_name}
     Start Zope server  ${zope_layer_dotted_name}
-    :FOR  ${extra_layer_dotted_name}  IN  @{extra_layers_dotted_names}
-    \     Amend Zope server  ${extra_layer_dotted_name}
-    Set Zope layer  ${zope_layer_dotted_name}
-
     Wait until keyword succeeds  2min  0s  Setup Plone keywords
 
 Setup Plone keywords
