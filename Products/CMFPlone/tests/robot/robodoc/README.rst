@@ -44,6 +44,14 @@ The second option is to first start a robot server and only then, in parallel, t
 
    $ APPLY_PROFILES=plone.app.contenttypes:plone-content bin/robot-server plone.app.robotframework.PLONE_ROBOT_TESTING
 
+or
+
+.. code:: bash
+
+   $ CONFIGURE_PACKAGES=plone.app.iterate APPLY_PROFILES=plone.app.contenttypes:plone-content,plone.app.iterate:plone.app.iterate bin/robot-server plone.app.robotframework.PLONE_ROBOT_TESTING
+
+and
+
    $ bin/pybot -v ROBOT_SERVER:True -v BROWSER:phantomjs src/Products.CMFPlone/Products/CMFPlone/tests/robot/robodoc/screenshot-tall/collaboration-advanced_control.robot
 
 This option will be faster for subsequent runs.
