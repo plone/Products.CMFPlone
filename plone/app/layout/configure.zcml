@@ -13,4 +13,6 @@
     <include package=".dashboard" />
     <include package=".analytics" />
 
+    <include file="permissions.zcml" />
+
 </configure>

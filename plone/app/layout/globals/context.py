@@ -22,7 +22,6 @@ from zope.interface import implementer
 
 BLACKLISTED_PROVIDERS = ('portal_workflow', )
 BLACKLISTED_CATEGORIES = ('folder_buttons', 'object_buttons', )
-WHITELISTED_TOOLBAR_ROLES = set(('Authenticated', ))
 
 
 @implementer(IContextState)
@@ -224,10 +223,11 @@ class ContextState(BrowserView):
 
     @memoize
     def is_toolbar_visible(self):
-        portal_membership = getToolByName(self.context, 'portal_membership')
-        user = portal_membership.getAuthenticatedMember()
-        roles = set(user.getRolesInContext(self.context))
-        return bool(roles & WHITELISTED_TOOLBAR_ROLES)
+        tool = getToolByName(self.context, 'portal_membership')
+        return bool(tool.checkPermission(
+            'Show Toolbar',
+            aq_inner(self.context)
+        ))
 
     @memoize
     def actions(self, category=None, max=-1):
