@@ -207,12 +207,18 @@ class TinyMCESettingsGenerator(object):
         # add safe_html settings, which are useed in backend for filtering:
         if not self.filter_settings.disable_filtering:
             valid_tags = self.filter_settings.valid_tags
+            nasty_tags = self.filter_settings.nasty_tags
             custom_attributes = self.filter_settings.custom_attributes
             safe_attributes = [attr.decode() for attr in html.defs.safe_attrs]
             valid_attributes = safe_attributes + custom_attributes
             # valid_elements : 'a[href|target=_blank],strong/b,div[align],br'
             tiny_valid_elements = []
             for tag in valid_tags:
+                tag_str = "%s[%s]" % (tag, "|".join(valid_attributes))
+                tiny_valid_elements.append(tag_str)
+            # We want to remove the nasty tag including the content in the
+            # backend, so TinyMCE should allow them here.
+            for tag in nasty_tags:
                 tag_str = "%s[%s]" % (tag, "|".join(valid_attributes))
                 tiny_valid_elements.append(tag_str)
             tiny_config['valid_elements'] = ",".join(tiny_valid_elements)

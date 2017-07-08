@@ -86,6 +86,11 @@ class FilterControlPanelFunctionalTest(unittest.TestCase):
         self.browser.getControl(
             name='form.widgets.nasty_tags'
         ).value = 'div\r\na'
+        valid_tags = self.browser.getControl(
+            name='form.widgets.valid_tags').value
+        valid_tags = valid_tags.replace('a\r\n', '')
+        valid_tags = self.browser.getControl(
+            name='form.widgets.valid_tags').value = valid_tags
         self.browser.getControl('Save').click()
 
         # test that <a> is filtered
@@ -94,5 +99,5 @@ class FilterControlPanelFunctionalTest(unittest.TestCase):
         ds = datastream('dummy_name')
         self.assertEqual(
             str(self.safe_html.convert(good_html, ds)),
-            ''
+            '<p/>'
         )

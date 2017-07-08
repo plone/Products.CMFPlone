@@ -27,7 +27,7 @@ Test Teardown  Run keywords  Plone Test Teardown
 Scenario: Configure Filter Control Panel to filter out nasty tags
   Given a logged-in site administrator
     and the filter control panel
-   When I add 'h1' to the nasty tags list
+   When I add 'h1' to the nasty tags list and remove it from the valid tags list
    Then the 'h1' tag is filtered out when a document is saved
 
 Scenario: Configure Filter Control Panel to strip out tags
@@ -72,8 +72,9 @@ Input RichText
 
 # --- WHEN -------------------------------------------------------------------
 
-I add '${tag}' to the nasty tags list
+I add '${tag}' to the nasty tags list and remove it from the valid tags list
   Input Text  name=form.widgets.nasty_tags  ${tag}
+  Remove line from textarea  form.widgets.valid_tags  ${tag}
   Click Button  Save
   Wait until page contains  Changes saved
 
