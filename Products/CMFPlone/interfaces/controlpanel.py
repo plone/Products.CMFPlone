@@ -355,7 +355,8 @@ class IFilterSchema(Interface):
     nasty_tags = schema.List(
         title=_(u'Nasty tags'),
         description=_(u'These tags and their content are completely blocked '
-                      'when a page is saved or rendered.'),
+                      'when a page is saved or rendered. They are only deleted'
+                      ' if they are not marked as valid_tags'),
         default=[u'style', u'object', u'embed', u'applet', u'script', u'meta'],
         value_type=schema.TextLine(),
         missing_value=[],
