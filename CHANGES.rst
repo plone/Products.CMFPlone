@@ -10,7 +10,7 @@ Breaking changes:
 
 New features:
 
-- Added ‘Show Toolbar’ permission.
+- Added ``Show Toolbar`` permission.
   [agitator]
 
 Bug fixes:
