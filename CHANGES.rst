@@ -14,11 +14,12 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- Added ``Show Toolbar`` permission.
+  [agitator]
 
 Bug fixes:
 
-- add :focus class on toolbar for keyboard users  (https://github.com/plone/Products.CMFPlone/issues/1620) 
+- add :focus class on toolbar for keyboard users  (https://github.com/plone/Products.CMFPlone/issues/1620)
   [polyester]
 
 
