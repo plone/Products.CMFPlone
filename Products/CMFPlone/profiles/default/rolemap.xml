@@ -217,5 +217,9 @@
       <role name="Manager" />
       <role name="Site Administrator"/>
     </permission>
+    <permission name="Show Toolbar"
+                acquire="False">
+      <role name="Authenticated"/>
+    </permission>
   </permissions>
 </rolemap>
