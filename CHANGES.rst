@@ -10,7 +10,8 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- Added ``Show Toolbar`` permission.
+  [agitator]
 
 Bug fixes:
 
