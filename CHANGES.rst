@@ -22,6 +22,9 @@ Bug fixes:
 - add :focus class on toolbar for keyboard users  (https://github.com/plone/Products.CMFPlone/issues/1620)
   [polyester]
 
+- Fix empty DX add_forms if formlib is also installed thru addon dependencies
+  [MrTango]
+
 
 5.1b4 (2017-07-03)
 ------------------
