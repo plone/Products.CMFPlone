@@ -13060,7 +13060,7 @@ define('mockup-patterns-formunloadalert',[
         $modal.data('patternPloneModal').on('hide', function(e) {
           var modal = $modal.data('patternPloneModal');
           if (modal) {
-            modal._suppressHide = self._handleUnload.apply(self, e);
+            modal._suppressHide = self._handleUnload.call(self, e);
           }
         });
       } else {
@@ -17307,6 +17307,7 @@ define('mockup-patterns-modal',[
       }
       self.$wrapper.remove();
       if ($('.plone-modal', $('body')).size() < 1) {
+        self._suppressHide = undefined;
         self.backdrop.hide();
         $('body').removeClass('plone-modal-open');
         $(window.parent).off('resize.plone-modal.patterns');
@@ -18997,5 +18998,5 @@ require([
 
 });
 
-define("/home/_thet/data/dev/fhnw/plone/src/Products.CMFPlone/Products/CMFPlone/static/plone.js", function(){});
+define("/Users/sean/projects/buildout.coredev/src/Products.CMFPlone/Products/CMFPlone/static/plone.js", function(){});
 
