@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from cssmin import cssmin
 from datetime import datetime
 from plone.protect.interfaces import IDisableCSRFProtection
 from plone.registry.interfaces import IRegistry
@@ -9,6 +8,7 @@ from Products.CMFPlone.interfaces.resources import IBundleRegistry
 from Products.CMFPlone.interfaces.resources import IResourceRegistry
 from Products.CMFPlone.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME  # noqa
 from Products.CMFPlone.resources.browser.combine import combine_bundles
+from PyScss import compiler
 from slimit import minify
 from StringIO import StringIO
 from zExceptions import NotFound
@@ -76,6 +76,7 @@ def cookWhenChangingSettings(context, bundle=None):
         return
 
     # Let's join all css and js
+    css_compiler = Compiler(output_style='compressed')
     cooked_css = ''
     cooked_js = REQUIREJS_RESET_PREFIX
     siteUrl = getSite().absolute_url()
@@ -94,7 +95,7 @@ def cookWhenChangingSettings(context, bundle=None):
                     css = response.getBody()
                     cooked_css += '\n/* Resource: {0} */\n{1}\n'.format(
                         css_resource,
-                        css if '.min.css' == css_resource[-8:] else cssmin(css)
+                        css if '.min.css' == css_resource[-8:] else css_compiler.compile_string(css)  # NOQA: E501
                     )
                 else:
                     cooked_css +=\

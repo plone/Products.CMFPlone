@@ -10,7 +10,11 @@ Changelog
 
 Breaking changes:
 
-- *add item here*
+- Replaced cssmin with PyScss to ensure Python 3 compatibility and maintainability. 
+  Removed dependency to cssmin, so could break dependency for third party addons that depend on it.
+  Introduced PyScss as a drop in replacement that could also do more things.
+  Discussion on that at https://github.com/plone/Products.CMFPlone/issues/1800
+  [loechel]
 
 New features:
 
@@ -41,7 +45,7 @@ Bug fixes:
 - fixed css-classes for thumb scales ...
   https://github.com/plone/Products.CMFPlone/issues/2077
   [fgrcon]
-   
+
 - Fix current value in group details edit form.
   [Gagaro]
 
@@ -104,7 +108,7 @@ Bug fixes:
   [jensens]
 
 - Fix possible ``mechanize.AmbiguityError`` in controlpanel tests.
-  [jensens] 
+  [jensens]
 
 5.1b3 (2017-04-03)
 ------------------
