@@ -8,7 +8,7 @@ from Products.CMFPlone.interfaces.resources import IBundleRegistry
 from Products.CMFPlone.interfaces.resources import IResourceRegistry
 from Products.CMFPlone.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME  # noqa
 from Products.CMFPlone.resources.browser.combine import combine_bundles
-from scss import compiler
+from scss import Compiler
 from slimit import minify
 from StringIO import StringIO
 from zExceptions import NotFound
