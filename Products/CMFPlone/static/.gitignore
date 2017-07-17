@@ -3,6 +3,7 @@ components/**/*.map
 components/**/*.md
 components/**/*.sass
 components/**/*.scss
+components/**/*.ts
 components/**/*.yml
 components/**/*bower.json
 components/**/.*

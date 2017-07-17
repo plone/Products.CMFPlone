@@ -151,7 +151,7 @@
      type="portlets.Classic"
      name="footer"
      >
-    <property name="template">footer</property>
+    <property name="template">@@footer</property>
     <property name="macro"></property>
  </assignment>
 
