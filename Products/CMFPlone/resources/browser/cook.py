@@ -148,6 +148,8 @@ def cookWhenChangingSettings(context, bundle=None):
         resource_name, resource_filepath = resource_path.split('/', 1)
         if resource_name not in container:
             container.makeDirectory(resource_name)
+        if not isinstance(cooked_string, str):  # handle Error of OFS.Image
+            cooked_string = cooked_string.encode('ascii', errors='ignore')
         try:
             folder = container[resource_name]
             fi = StringIO(cooked_string)
