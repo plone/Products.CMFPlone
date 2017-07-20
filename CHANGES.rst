@@ -19,6 +19,10 @@ New features:
 
 Bug fixes:
 
+- fix role map for `Show Toolbar Permission` 
+  see end of discussion of https://github.com/plone/Products.CMFPlone/issues/1570
+  [fgrcon]
+
 - add :focus class on toolbar for keyboard users  (https://github.com/plone/Products.CMFPlone/issues/1620)
   [polyester]
 

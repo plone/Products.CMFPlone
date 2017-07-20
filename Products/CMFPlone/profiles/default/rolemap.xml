@@ -219,7 +219,12 @@
     </permission>
     <permission name="Show Toolbar"
                 acquire="False">
-      <role name="Authenticated"/>
+        <role name="Manager"/>
+        <role name="Site Administrator"/>
+        <role name="Owner"/>
+        <role name="Reviewer"/>
+        <role name="Editor" />
+        <role name="Contributor" />
     </permission>
   </permissions>
 </rolemap>
