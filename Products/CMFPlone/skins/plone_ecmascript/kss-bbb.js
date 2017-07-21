@@ -1,5 +1,35 @@
 (function($){
 
+/**
+* Polyfill to add data attributes as fallback if main_template.pt is customized
+*/
+$(document).ready(function(){
+    if (typeof($('body').attr('data-portal-url')) !== 'undefined' &&
+        typeof($('body').attr('data-base-url')) !== 'undefined') {
+        return;
+    }
+    $('body').attr('data-portal-url', portal_url);
+
+    // Try to guess context url
+    //
+    // using this method we keep the get parameters used with plone protect     
+    // https://gist.github.com/jlong/2428561
+    var parser = document.createElement('a');       
+    parser.href = location.href;
+
+    // Remove views that we know Plone has from the URL
+    var knownViews = [
+        /\/folder_contents/,  // Plone folder_contents view
+        /\/edit/,             // Plone edit page
+        /\/@@.*/              // All other browser views
+    ];
+    knownViews.forEach(function(viewRegex){
+        parser.pathname = parser.pathname.replace(viewRegex, '');
+    });
+
+    $('body').attr('data-base-url', parser.href);
+});
+
 function refreshPortlet(hash, _options){
     var options = {
         data: {},
