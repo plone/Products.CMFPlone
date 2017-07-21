@@ -18,7 +18,6 @@ from zope.globalrequest import getRequest
 from zope.interface import alsoProvides
 
 import logging
-import sys
 
 
 logger = logging.getLogger('Products.CMFPlone')
@@ -95,8 +94,6 @@ def cookWhenChangingSettings(context, bundle=None):
                     logger.info('Cooking css %s', css_resource)
                     css = response.getBody()
                     if css_resource[-8:] != '.min.css':
-                        if sys.version_info == (2):
-                            css = unicode(css)  # Python 2 only function
                         css = css_compiler.compile_string(css)
                     cooked_css += u'\n/* Resource: {0} */\n{1}\n'.format(
                         css_resource,
