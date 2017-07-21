@@ -10,7 +10,11 @@ Changelog
 
 Breaking changes:
 
-- *add item here*
+- Replaced cssmin with PyScss to ensure Python 3 compatibility and maintainability. 
+  Removed dependency to cssmin, so could break dependency for third party addons that depend on it.
+  Introduced PyScss as a drop in replacement that could also do more things.
+  Discussion on that at https://github.com/plone/Products.CMFPlone/issues/1800
+  [loechel]
 
 New features:
 

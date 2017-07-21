@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from cssmin import cssmin
 from datetime import datetime
 from plone.protect.interfaces import IDisableCSRFProtection
 from plone.registry.interfaces import IRegistry
@@ -9,6 +8,7 @@ from Products.CMFPlone.interfaces.resources import IBundleRegistry
 from Products.CMFPlone.interfaces.resources import IResourceRegistry
 from Products.CMFPlone.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME  # noqa
 from Products.CMFPlone.resources.browser.combine import combine_bundles
+from scss import Compiler
 from slimit import minify
 from StringIO import StringIO
 from zExceptions import NotFound
@@ -76,7 +76,8 @@ def cookWhenChangingSettings(context, bundle=None):
         return
 
     # Let's join all css and js
-    cooked_css = ''
+    css_compiler = Compiler(output_style='compressed')
+    cooked_css = u''
     cooked_js = REQUIREJS_RESET_PREFIX
     siteUrl = getSite().absolute_url()
     request = getRequest()
@@ -90,20 +91,20 @@ def cookWhenChangingSettings(context, bundle=None):
                 css_url = siteUrl + '/' + css_resource
                 response = subrequest(css_url)
                 if response.status == 200:
-                    logger.info('Cooking css {0}'.format(css_resource))
+                    logger.info('Cooking css %s', css_resource)
                     css = response.getBody()
-                    cooked_css += '\n/* Resource: {0} */\n{1}\n'.format(
+                    if css_resource[-8:] != '.min.css':
+                        css = css_compiler.compile_string(css)
+                    cooked_css += u'\n/* Resource: {0} */\n{1}\n'.format(
                         css_resource,
-                        css if '.min.css' == css_resource[-8:] else cssmin(css)
+                        css
                     )
                 else:
                     cooked_css +=\
-                        '\n/* Could not find resource: {0} */\n\n'.format(
+                        u'\n/* Could not find resource: {0} */\n\n'.format(
                             css_resource
                         )
-                    logger.warn(
-                        'Could not find resource: {0}'.format(css_resource)
-                    )
+                    logger.warn('Could not find resource: %s' , css_resource)
         if not resource.js or not js_path:
             continue
         js_url = siteUrl + '/' + resource.js
@@ -111,7 +112,7 @@ def cookWhenChangingSettings(context, bundle=None):
         if response.status == 200:
             js = response.getBody()
             try:
-                logger.info('Cooking js {0}'.format(resource.js))
+                logger.info('Cooking js %s', resource.js)
                 cooked_js += '\n/* resource: {0} */\n{1}'.format(
                     resource.js,
                     js if '.min.js' == resource.js[-7:] else
@@ -123,9 +124,9 @@ def cookWhenChangingSettings(context, bundle=None):
                         resource.js,
                         js
                     )
-                logger.warn('Error cooking resource: {0}'.format(resource.js))
+                logger.warn('Error cooking resource: %s', resource.js)
         else:
-            logger.warn('Could not find resource: {0}'.format(resource.js))
+            logger.warn('Could not find resource: %s', resource.js)
             cooked_js += '\n/* Could not find resource: {0} */\n\n'.format(
                 js_url
             )
@@ -144,15 +145,15 @@ def cookWhenChangingSettings(context, bundle=None):
         resource_name, resource_filepath = resource_path.split('/', 1)
         if resource_name not in container:
             container.makeDirectory(resource_name)
+        if not isinstance(cooked_string, str):  # handle Error of OFS.Image
+            cooked_string = cooked_string.encode('ascii', errors='ignore')
         try:
             folder = container[resource_name]
             fi = StringIO(cooked_string)
             folder.writeFile(resource_filepath, fi)
-            logger.info('Writing cooked resource: {0}'.format(resource_path))
+            logger.info('Writing cooked resource: %s', resource_path)
         except NotFound:
-            logger.warn('Error writing cooked resource: {0}'.format(
-                resource_path)
-            )
+            logger.warn('Error writing cooked resource: %s', resource_path)
 
     _write_resource(js_path, cooked_js)
     _write_resource(css_path, cooked_css)
