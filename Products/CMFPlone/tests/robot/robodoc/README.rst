@@ -2,13 +2,18 @@
 ROBODOC README
 ==============
 
-``robodoc`` folder contains Robot Framework tests moved from Plone documentation project. Because they are designed to be run as test suite level stories (sandbox is cleared only when changing a robot file), they are not integrated with zope.testrunner (``./bin/test``), but are designed to be run with Robot Framework test runner (``pybot``).
+The ``robodoc`` folder contains Robot Framework tests moved from the Plone documentation project.
+Because they are designed to be run as test suite level stories (sandbox is cleared only when changing a robot file),
+they are not integrated with zope.testrunner (``./bin/test``), but are designed to be run with Robot Framework test runner (``pybot``).
 
 
 Installing Robot Framework
 ==========================
 
-Minimal buildout to generate a good enouhg Robot Framework test runner would look like the following:
+Most tools needed to run the tests and generate the screenshots are available from within a standard Plone buildout.coredev environment.
+The only extra piece of software needed is `webdriver` for your operating system and browser of choice, and that browser.
+
+Minimal buildout to generate a good enough Robot Framework test runner would look like the following:
 
 .. code:: ini
 
@@ -34,9 +39,18 @@ The first option is to run them with a single command:
 
 .. code:: bash
 
-   $ bin/pybot -v BROWSER:phantomjs src/Products.CMFPlone/Products/CMFPlone/tests/robot/robodoc/screenshot-tall/collaboration-advanced_control.robot
+   $ bin/pybot -v BROWSER:phantomjs src/Products.CMFPlone/Products/CMFPlone/tests/robot/robodoc/collaboration-advanced_control.robot
 
-This command will 1) start up a Plone site, 2) run the defined test suite and 3) shut down the Plone site. It will take some time. ``-v BROWSER:phantomjs`` is optional will define a Robot Framework variable named ``BROWSER`` with value ``phantomjs``, effectively running the test suite using headless PhantomJS browser.
+This command will 1) start up a Plone site, 2) run the defined test suite and 3) shut down the Plone site. It will take some time.
+``-v BROWSER:phantomjs`` is optional, and will define a Robot Framework variable named ``BROWSER`` with value ``phantomjs``, effectively running the test suite using headless PhantomJS browser.
+
+You can run multiple test suites in the same directory,
+
+.. code:: bash
+
+   $ bin/pybot -v BROWSER:phantomjs src/Products.CMFPlone/Products/CMFPlone/tests/robot/robodoc
+
+will run all tests and generate all screenshots.
 
 The second option is to first start a robot server and only then, in parallel, to execute the desired test suite:
 
