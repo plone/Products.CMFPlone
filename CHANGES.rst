@@ -10,7 +10,7 @@ Changelog
 
 Breaking changes:
 
-- Replaced cssmin with PyScss to ensure Python 3 compatibility and maintainability. 
+- Replaced cssmin with PyScss to ensure Python 3 compatibility and maintainability.
   Removed dependency to cssmin, so could break dependency for third party addons that depend on it.
   Introduced PyScss as a drop in replacement that could also do more things.
   Discussion on that at https://github.com/plone/Products.CMFPlone/issues/1800
@@ -28,6 +28,9 @@ New features:
   [datakurre, polyester]
 
 Bug fixes:
+
+- Do not open links on a new tab as this is against basic usability guidelines.
+  [hvelarde]
 
 - add :focus class on toolbar for keyboard users  (https://github.com/plone/Products.CMFPlone/issues/1620)
   [polyester]
