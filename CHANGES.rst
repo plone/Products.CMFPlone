@@ -35,6 +35,9 @@ Bug fixes:
 - Fix empty DX add_forms if formlib is also installed thru addon dependencies
   [MrTango]
 
+- Fix ``utils.get_top_site_from_url`` to work with non-OFS contexts.
+  [thet]
+
 
 5.1b4 (2017-07-03)
 ------------------
