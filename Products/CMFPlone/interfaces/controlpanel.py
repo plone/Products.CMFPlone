@@ -653,7 +653,7 @@ class ITinyMCEPluginSchema(Interface):
             'help_tinymce_templates',
             default=(
                 u'Enter the list of templates in json format '
-                u'https://www.tinymce.com/wiki.php/Plugin:template'
+                u'https://www.tinymce.com/docs/plugins/template/'
             )
         ),
         required=False,
