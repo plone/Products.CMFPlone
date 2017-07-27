@@ -29,6 +29,8 @@ Bug fixes:
 - Fix empty DX add_forms if formlib is also installed thru addon dependencies
   [MrTango]
 
+- Update TinyMCE links (tinymce-controlpanel) to https
+  [svx]
 
 5.1b4 (2017-07-03)
 ------------------

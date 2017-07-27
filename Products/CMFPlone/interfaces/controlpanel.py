@@ -545,7 +545,7 @@ class ITinyMCELayoutSchema(Interface):
             u'Enter a JSON-formatted style format configuration. '
             u'A format is for example the style that get applied when '
             u'you press the bold button inside the editor. '
-            u'See http://www.tinymce.com/wiki.php/Configuration:formats'),
+            u'See https://www.tinymce.com/wiki.php/Configuration:formats'),
         constraint=validate_json,
         default=json.dumps({
             'discreet': {'inline': 'span', 'classes': 'discreet'},
@@ -653,7 +653,7 @@ class ITinyMCEPluginSchema(Interface):
             'help_tinymce_templates',
             default=(
                 u'Enter the list of templates in json format '
-                u'http://www.tinymce.com/wiki.php/Plugin:template'
+                u'https://www.tinymce.com/wiki.php/Plugin:template'
             )
         ),
         required=False,
