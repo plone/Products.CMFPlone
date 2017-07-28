@@ -37,6 +37,7 @@ setup(
             'lxml',
             'mock',
             'plone.app.robotframework>0.9.16',
+            'robotframework-debuglibrary',
             'plone.app.testing',
             'zope.globalrequest',
             'zope.testing',

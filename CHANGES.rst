@@ -15,6 +15,9 @@ Breaking changes:
   Introduced PyScss as a drop in replacement that could also do more things.
   Discussion on that at https://github.com/plone/Products.CMFPlone/issues/1800
   [loechel]
+- Fix and migrate safe_html filter completly into Plone registry and sync settings with TinyMCE.
+  Also some unused options in controlpanel where removed, like stripped_combinations and class_blacklist.
+  [MrTango]
 
 New features:
 

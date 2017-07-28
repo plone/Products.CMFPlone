@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
+from plone.app.testing import SITE_OWNER_NAME, SITE_OWNER_PASSWORD
+from plone.registry.interfaces import IRegistry
+from plone.testing.z2 import Browser
 from Products.CMFCore.utils import getToolByName
-# from Products.CMFPlone.interfaces import IFilterSchema
+from Products.CMFPlone.interfaces import IFilterSchema
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 from Products.PortalTransforms.data import datastream
-from plone.app.testing import SITE_OWNER_NAME, SITE_OWNER_PASSWORD
-from plone.testing.z2 import Browser
 from zope.component import getMultiAdapter
+from zope.component import getUtility
 import unittest
 
 
@@ -21,6 +23,9 @@ class FilterControlPanelFunctionalTest(unittest.TestCase):
         self.portal = self.layer['portal']
         self.request = self.layer['request']
         self.portal_url = self.portal.absolute_url()
+        registry = getUtility(IRegistry)
+        self.settings = registry.forInterface(
+            IFilterSchema, prefix="plone")
         self.browser = Browser(self.app)
         self.browser.handleErrors = False
         self.browser.addHeader(
@@ -64,7 +69,7 @@ class FilterControlPanelFunctionalTest(unittest.TestCase):
 
         # test that the transform is disabled
         self.assertEqual(
-            self.safe_html._config['disable_transform'],
+            self.settings.disable_filtering,
             1)
 
         # anything passes
@@ -81,49 +86,18 @@ class FilterControlPanelFunctionalTest(unittest.TestCase):
         self.browser.getControl(
             name='form.widgets.nasty_tags'
         ).value = 'div\r\na'
+        valid_tags = self.browser.getControl(
+            name='form.widgets.valid_tags').value
+        valid_tags = valid_tags.replace('a\r\n', '')
+        valid_tags = self.browser.getControl(
+            name='form.widgets.valid_tags').value = valid_tags
         self.browser.getControl('Save').click()
 
         # test that <a> is filtered
-        self.assertFalse(self.safe_html._config['disable_transform'])
+        self.assertFalse(self.settings.disable_filtering)
         good_html = '<p><a href="http://example.com">harmless link</a></p>'
         ds = datastream('dummy_name')
         self.assertEqual(
             str(self.safe_html.convert(good_html, ds)),
-            ''
+            '<p/>'
         )
-
-    @unittest.skip('This functionality was broken with formlib already. Needs fix.')  # noqa
-    def test_stripped_combinations(self):
-        # test a combination that isn't normally filtered
-        self.assertFalse(self.safe_html._config['disable_transform'])
-        html = '<p class="wow">lala</p>'
-        ds = datastream('dummy_name')
-        self.assertEqual(
-            str(self.safe_html.convert(html, ds)),
-            html)
-
-        # we can set stripped combinations
-        self.browser.open(
-            "%s/@@filter-controlpanel" % self.portal_url)
-        self.browser.getControl(
-            name='form.widgets.stripped_combinations.buttons.add').click()
-        self.browser.getControl(
-            name='form.widgets.stripped_combinations.key.0'
-        ).value = 'mytag1 p'
-        self.browser.getControl(
-            name='form.widgets.stripped_combinations.0'
-        ).value = 'myattr1 class'
-        self.browser.getControl('Save').click()
-
-        # stripped combinations are stored on the transform
-        self.assertIn(
-            'mytag1 p',
-            self.safe_html._config['stripped_combinations'])
-        self.assertEqual(
-            'myattr1 class',
-            self.safe_html._config['stripped_combinations']['mytag1 p'])
-
-        # test that combination is now filtered
-        self.assertEqual(
-            str(self.safe_html.convert(html, ds)),
-            '<p>lala</p>')
