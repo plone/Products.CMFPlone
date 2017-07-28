@@ -24,6 +24,9 @@ New features:
 - Added ``Show Toolbar`` permission.
   [agitator]
 
+- Add RobotFramework screenshot tests for the Plone documentation.
+  [datakurre, polyester]
+
 Bug fixes:
 
 - add :focus class on toolbar for keyboard users  (https://github.com/plone/Products.CMFPlone/issues/1620)
