@@ -37,78 +37,32 @@ class FilterControlPanelAdapterTest(unittest.TestCase):
             [u'foo', u'bar']
         )
 
-    def test_get_stripped_tags(self):
-        self.settings.stripped_tags = [u'foo', u'bar']
+    def test_get_valid_tags(self):
+        self.settings.valid_tags = [u'foo', u'bar']
         self.assertEquals(
-            getAdapter(self.portal, IFilterSchema).stripped_tags,
+            getAdapter(self.portal, IFilterSchema).valid_tags,
             [u'foo', u'bar']
         )
 
-    def test_set_stripped_tags(self):
-        getAdapter(self.portal, IFilterSchema).stripped_tags = [u'foo', u'bar']
+    def test_set_valid_tags(self):
+        getAdapter(self.portal, IFilterSchema).valid_tags = [u'foo', u'bar']
         self.assertEquals(
-            self.settings.stripped_tags,
+            self.settings.valid_tags,
             [u'foo', u'bar']
         )
 
-    def test_get_custom_tags(self):
-        self.settings.custom_tags = [u'foo', u'bar']
+    def test_get_custom_attributes(self):
+        self.settings.custom_attributes = [u'foo', u'bar']
         self.assertEquals(
-            getAdapter(self.portal, IFilterSchema).custom_tags,
+            getAdapter(self.portal, IFilterSchema).custom_attributes,
             [u'foo', u'bar']
         )
 
-    def test_set_custom_tags(self):
-        getAdapter(self.portal, IFilterSchema).custom_tags = [u'foo', u'bar']
-        self.assertEquals(
-            self.settings.custom_tags,
-            [u'foo', u'bar']
-        )
-
-    def test_get_stripped_attributes(self):
-        self.settings.stripped_attributes = [u'foo', u'bar']
-        self.assertEquals(
-            getAdapter(self.portal, IFilterSchema).stripped_attributes,
-            [u'foo', u'bar']
-        )
-
-    def test_set_stripped_attributes(self):
-        getAdapter(self.portal, IFilterSchema).stripped_attributes = [
+    def test_set_custom_attributes(self):
+        getAdapter(self.portal, IFilterSchema).custom_attributes = [
             u'foo', u'bar'
         ]
         self.assertEquals(
-            self.settings.stripped_attributes,
-            [u'foo', u'bar']
-        )
-
-    def test_get_style_whitelist(self):
-        self.settings.style_whitelist = [u'foo', u'bar']
-        self.assertEquals(
-            getAdapter(self.portal, IFilterSchema).style_whitelist,
-            [u'foo', u'bar']
-        )
-
-    def test_set_style_whitelist(self):
-        getAdapter(self.portal, IFilterSchema).style_whitelist = [
-            u'foo', u'bar'
-        ]
-        self.assertEquals(
-            self.settings.style_whitelist,
-            [u'foo', u'bar']
-        )
-
-    def test_get_class_blacklist(self):
-        self.settings.class_blacklist = [u'foo', u'bar']
-        self.assertEquals(
-            getAdapter(self.portal, IFilterSchema).class_blacklist,
-            [u'foo', u'bar']
-        )
-
-    def test_set_class_blacklist(self):
-        getAdapter(self.portal, IFilterSchema).class_blacklist = [
-            u'foo', u'bar'
-        ]
-        self.assertEquals(
-            self.settings.class_blacklist,
+            self.settings.custom_attributes,
             [u'foo', u'bar']
         )
