@@ -1,17 +1,17 @@
 (function($){
 
-function createURL(view){
-    // using this method we keep the get parameters used with plone protect
-    // https://gist.github.com/jlong/2428561
-    if (typeof view === 'undefined') {
-        view = '';
+/**
+* Polyfill to add data attributes as fallback if main_template.pt is customized
+*/
+$(function(){
+    if (typeof($('body').attr('data-portal-url')) !== 'undefined' &&
+        typeof($('body').attr('data-base-url')) !== 'undefined') {
+        // Data attributes already processed by backend
+        return;
     }
-    var parser = document.createElement('a');
-    parser.href = location.href;
-    parser.pathname = parser.pathname.replace(/\/@@.*/, '');
-    parser.pathname += view;
-    return parser.href;
-}
+    $('body').attr('data-portal-url', portal_url);
+    $('body').attr('data-base-url', base_url);
+});
 
 function refreshPortlet(hash, _options){
     var options = {
@@ -22,7 +22,7 @@ function refreshPortlet(hash, _options){
     $.extend(options, _options);
     options.data.portlethash = hash;
     ajaxOptions = options.ajaxOptions;
-    ajaxOptions.url = createURL('/@@render-portlet');
+    ajaxOptions.url = $('body').attr('data-base-url') + '/@@render-portlet';
     ajaxOptions.success = function(data){
         var container = $('[data-portlethash="' + hash + '"]');
         var portlet = $(data);
@@ -116,7 +116,7 @@ $(document).ready(function(){
 
     $('#content-core').delegate('#sharing-search-button', 'click', function(){
         $.ajax({
-            url: createURL('/@@updateSharingInfo'),
+            url: $('body').attr('data-base-url') + '/@@updateSharingInfo',
             data: {
                 search_term: $('#sharing-user-group-search').val(),
                 'form.button.Search': 'Search'
@@ -135,7 +135,7 @@ $(document).ready(function(){
         var data = form.serializeArray();
         data.push({name: 'form.button.Save', value: 'Save'});
         $.ajax({
-            url: createURL('/@@updateSharingInfo'),
+            url: $('body').attr('data-base-url') + '/@@updateSharingInfo',
             data: data,
             type: 'POST',
             dataType: 'json',

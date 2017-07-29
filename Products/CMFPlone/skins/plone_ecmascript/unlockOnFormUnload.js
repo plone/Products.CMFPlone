@@ -34,24 +34,15 @@ plone.UnlockHandler = {
         // form submit process. This means: no unlock needed,
         // and it also would be harmful (ConflictError)
         if (plone.UnlockHandler.submitting) {return;}
-        $.ajax({url: plone.UnlockHandler._baseUrl() + '/@@plone_lock_operations/safe_unlock', async: false});
+        $.ajax({
+            url: $('body').attr('data-base-url') + '/@@plone_lock_operations/safe_unlock',
+            async: false
+        });
     },
     
     refresh: function() {
         if (plone.UnlockHandler.submitting) {return;}
-        $.get(plone.UnlockHandler._baseUrl() + '/@@plone_lock_operations/refresh_lock');
-    },
-    
-    _baseUrl: function() {
-        var baseUrl, pieces;
-
-        baseUrl = $('base').attr('href');
-        if (!baseUrl) {
-            pieces = window.location.href.split('/');
-            pieces.pop();
-            baseUrl = pieces.join('/');
-        }
-        return baseUrl;
+        $.get($('body').attr('data-base-url') + '/@@plone_lock_operations/refresh_lock');
     }
 };
 

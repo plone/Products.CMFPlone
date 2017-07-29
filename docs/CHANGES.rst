@@ -9,7 +9,19 @@ Changelog
 4.3.16 (unreleased)
 -------------------
 
-- Nothing changed yet.
+Bug fixes:
+
+- Add data-base-url attribute in body tag.
+  Closes `issue 2051 <https://github.com/plone/Products.CMFPlone/issues/2051>`_
+  [rodfersou]
+
+- Fix @@plone_lock_operations.
+  Fixes `issue 2061 <https://github.com/plone/Products.CMFPlone/issues/2061>`_
+  [rodfersou]
+
+- Review @@sharing
+  Fixes `issue 2053 <https://github.com/plone/Products.CMFPlone/issues/2053>`_.
+  [rodfersou]
 
 
 4.3.15 (2017-07-03)

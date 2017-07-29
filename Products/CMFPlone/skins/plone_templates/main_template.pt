@@ -63,7 +63,9 @@
                     sr python:plone_view.have_portlets('plone.rightcolumn', view);
                     body_class python:plone_view.bodyClass(template, view);"
         tal:attributes="class body_class;
-                        dir python: isRTL and 'rtl' or 'ltr'">
+                        dir python: isRTL and 'rtl' or 'ltr';
+                        data-portal-url portal_url;
+                        data-base-url context/absolute_url">
     <div id="visual-portal-wrapper">
 
       <div id="portal-top" i18n:domain="plone">
