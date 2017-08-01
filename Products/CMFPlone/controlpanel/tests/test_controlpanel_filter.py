@@ -40,20 +40,8 @@ class FilterRegistryIntegrationTest(unittest.TestCase):
     def test_nasty_tags_setting(self):
         self.assertTrue(hasattr(self.settings, 'nasty_tags'))
 
-    def test_stripped_tags_setting(self):
-        self.assertTrue(hasattr(self.settings, 'stripped_tags'))
+    def test_valid_tags_setting(self):
+        self.assertTrue(hasattr(self.settings, 'valid_tags'))
 
-    def test_custom_tags_setting(self):
-        self.assertTrue(hasattr(self.settings, 'custom_tags'))
-
-    def test_stripped_attributes_setting(self):
-        self.assertTrue(hasattr(self.settings, 'stripped_attributes'))
-
-    # def test_stripped_combinations_setting(self):
-    #     self.assertTrue(hasattr(self.settings, 'stripped_combinations'))
-
-    def test_style_whitelist_setting(self):
-        self.assertTrue(hasattr(self.settings, 'style_whitelist'))
-
-    def test_class_blacklist_setting(self):
-        self.assertTrue(hasattr(self.settings, 'class_blacklist'))
+    def test_custom_attributes_setting(self):
+        self.assertTrue(hasattr(self.settings, 'custom_attributes'))

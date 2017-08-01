@@ -19,6 +19,7 @@ from Products.CMFCore.permissions import AccessInactivePortalContent
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import setuphandlers
 from Products.CMFPlone.factory import _DEFAULT_PROFILE
+from Products.CMFPlone.interfaces import IFilterSchema
 from Products.CMFPlone.interfaces import INavigationSchema
 from Products.CMFPlone.interfaces import ISearchSchema
 from Products.CMFPlone.UnicodeSplitter import Splitter, I18NNormalizer
@@ -186,7 +187,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.assertFalse(
             self.properties.navtree_properties.hasProperty('showAllParents'))
         self.assertFalse(
-            self.properties.navtree_properties.hasProperty('metaTypesNotToList'))
+            self.properties.navtree_properties.hasProperty('metaTypesNotToList'))  # noqa
         self.assertFalse(
             self.properties.navtree_properties.hasProperty('sortAttribute'))
         self.assertFalse(
@@ -558,7 +559,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         urls = [a['url'] for a in buttons]
         for url in urls:
             self.assertFalse('index_html' not in url,
-                             'Action wrongly applied to parent object %s' % url)
+                             'Action wrongly applied to parent object %s' % url)  # noqa
 
     def testObjectButtonActionsPerformCorrectAction(self):
         # only a manager would have proper permissions
@@ -641,11 +642,14 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.assertTrue('atct_album_view' in self.types.Folder.view_methods)
 
     def testConfigurableSafeHtmlTransform(self):
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(
+            IFilterSchema, prefix="plone")
         # The safe_html transformation should be configurable
         try:
-            self.transforms.safe_html.get_parameter_value('disable_transform')
+            settings.disable_filtering
         except (AttributeError, KeyError):
-            self.fail('safe_html transformation not updated')
+            self.fail('Disabling of safe_html should be possible!')
 
     def testvcXMLRPCRemoved(self):
         # vcXMLRPC.js should no longer be registered
