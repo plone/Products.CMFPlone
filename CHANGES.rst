@@ -29,6 +29,9 @@ New features:
 
 Bug fixes:
 
+- Fixed accidentally removing permissions when saving the ``portal_controlpanel`` settings in the ZMI.
+  Fixes `issue 1376 <https://github.com/plone/Products.CMFPlone/issues/1376>`_.  [maurits]
+
 - Do not open links on a new tab as this is against basic usability guidelines.
   [hvelarde]
 
