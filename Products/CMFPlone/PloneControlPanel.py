@@ -195,7 +195,7 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
             except ValueError:
                 visible = 0
 
-        if not isinstance(permissions, basestring):
+        if isinstance(permissions, basestring):
             permissions = (permissions, )
 
         return PloneConfiglet(id=id,
