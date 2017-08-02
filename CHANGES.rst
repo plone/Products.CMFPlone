@@ -26,7 +26,8 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Fixed accidentally removing permissions when saving the ``portal_controlpanel`` settings in the ZMI.
+  Fixes `issue 1376 <https://github.com/plone/Products.CMFPlone/issues/1376>`_.  [maurits]
 
 
 5.0.8 (2017-06-04)
