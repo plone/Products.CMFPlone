@@ -15,12 +15,19 @@ Breaking changes:
 
 New features:
 
+- Add more ignores to static/.gitignore.
+  [thet]
+
+- Update jqtree to 1.4.1
+  [b4oshany]
+
 - Include JS Patterns when loading a page via ajax or an iframe
   [displacedaussie, instification]
 
 Bug fixes:
 
-- *add item here*
+- Fixed accidentally removing permissions when saving the ``portal_controlpanel`` settings in the ZMI.
+  Fixes `issue 1376 <https://github.com/plone/Products.CMFPlone/issues/1376>`_.  [maurits]
 
 
 5.0.8 (2017-06-04)

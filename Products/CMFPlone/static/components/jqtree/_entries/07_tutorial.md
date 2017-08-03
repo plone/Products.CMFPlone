@@ -21,12 +21,6 @@ Include jqtree.css:
 <link rel="stylesheet" href="jqtree.css">
 {% endhighlight %}
 
-Optionally, for saveState include [jquery-cookie](https://github.com/carhartl/jquery-cookie):
-
-{% highlight html %}
-<script src="jquery.cookie.js"></script>
-{% endhighlight %}
-
 Create a div.
 
 {% highlight html %}
@@ -38,16 +32,16 @@ Create tree data.
 {% highlight js %}
 var data = [
     {
-        label: 'node1',
+        name: 'node1',
         children: [
-            { label: 'child1' },
-            { label: 'child2' }
+            { name: 'child1' },
+            { name: 'child2' }
         ]
     },
     {
-        label: 'node2',
+        name: 'node2',
         children: [
-            { label: 'child3' }
+            { name: 'child3' }
         ]
     }
 ];

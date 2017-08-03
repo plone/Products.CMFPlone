@@ -1,27 +1,63 @@
-[![Travis Status](https://secure.travis-ci.org/mbraak/jqTree.png)](http://travis-ci.org/mbraak/jqTree) [![Coverage Status](https://coveralls.io/repos/mbraak/jqTree/badge.png?branch=dev)](https://coveralls.io/r/mbraak/jqTree?branch=dev) [![Bower version](https://badge.fury.io/bo/jqtree.png)](http://badge.fury.io/bo/jqtree)
+[![Travis Status](https://api.travis-ci.org/mbraak/jqTree.svg)](http://travis-ci.org/mbraak/jqTree) [![Coverage Status](https://img.shields.io/coveralls/mbraak/jqTree.svg)](https://coveralls.io/r/mbraak/jqTree)
 
-#jqTree
+[![Bower version](https://img.shields.io/bower/v/jqtree.svg)](https://mbraak.github.io/jqTree/) [![NPM version](https://img.shields.io/npm/v/jqtree.svg)](https://www.npmjs.com/package/jqtree)
 
-JqTree is a tree widget. Read more in the [documentation](http://mbraak.github.io/jqTree/).
+# jqTree
+
+JqTree is a tree widget. Read more in the [documentation](https://mbraak.github.io/jqTree/).
 
 ![screenshot](https://raw.github.com/mbraak/jqTree/master/screenshot.png)
 
-##Features
+## Features
 
 * Create a tree from JSON data
 * Drag and drop
-* Works on ie7+, firefox 3.6+, chrome and safari
-* Written in Coffeescript
+* Works on ie9+, firefox, chrome and safari
+* Written in Typescript
 
 The project is hosted on [github](https://github.com/mbraak/jqTree), has a [test suite](http://mbraak.github.io/jqTree/test/test.html).
 
-See index.html for the full documentation. The documentation is also on [github](http://mbraak.github.io/jqTree/)
+## Examples
 
-##Thanks
+Example with ajax data:
+
+```html
+<div id="tree1" data-url="/example_data/"></div>
+```
+
+```js
+$('#tree1').tree();
+```
+
+Example with static data:
+
+```js
+var data = [
+    {
+        label: 'node1', id: 1,
+        children: [
+            { label: 'child1', id: 2 },
+            { label: 'child2', id: 3 }
+        ]
+    },
+    {
+        label: 'node2', id: 4,
+        children: [
+            { label: 'child3', id: 5 }
+        ]
+    }
+];
+$('#tree1').tree({
+    data: data,
+    autoOpen: true,
+    dragAndDrop: true
+});
+```
+
+## Documentation
+
+The documentation is on http://mbraak.github.io/jqTree/.
+
+## Thanks
 
 The code for the mouse widget is heavily inspired by the mouse widget from jquery ui.
-Tree graphic designed by Hernan D. Schlosman from The Noun Project.
-
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/mbraak/jqtree/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
