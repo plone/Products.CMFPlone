@@ -20,7 +20,9 @@ New features:
 
 Bug fixes:
 
-- Fix controlpanel quickinstaller view: 
+- Fixed bug in ajax standard_error_message.  [djay, maurits]
+
+- Fix controlpanel quickinstaller view:
   A not yet installed product must not return any upgrade info.
   [jensens]
 

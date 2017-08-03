@@ -31,7 +31,7 @@ if "text/html" not in context.REQUEST.getHeader('Accept', ''):
     context.REQUEST.RESPONSE.setHeader("Content-Type", "application/json")
     # Note: using %s instead of .format to avoid possibly expensive guarded
     # attribute check.
-    return '{{"error_type": "%s"}}' % error_type
+    return '{"error_type": "%s"}' % error_type
 
 if error_log_url:
     error_log_id = error_log_url.split('?id=')[1]
