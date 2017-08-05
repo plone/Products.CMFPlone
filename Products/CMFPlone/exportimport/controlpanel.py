@@ -113,6 +113,12 @@ class ControlPanelXMLAdapter(XMLAdapterBase):
                 domain = default_domain
 
             action_id = str(child.getAttribute('action_id'))
+            # Remove previous action with same id and category.
+            controlpanel.unregisterConfiglet(action_id)
+            remove = str(child.getAttribute('remove'))
+            if remove.lower() == 'true':
+                continue
+
             title = Message(str(child.getAttribute('title')), domain=domain)
             url_expr = str(child.getAttribute('url_expr'))
             condition_expr = str(child.getAttribute('condition_expr'))
@@ -136,9 +142,6 @@ class ControlPanelXMLAdapter(XMLAdapterBase):
                         break  # only one permission is allowed
                     if permission:
                         break
-
-            # Remove previous action with same id and category.
-            controlpanel.unregisterConfiglet(action_id)
 
             controlpanel.registerConfiglet(id=action_id,
                                            name=title,
