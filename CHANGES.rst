@@ -9,10 +9,6 @@ Changelog
 5.0.9 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
 New features:
 
 - Add more ignores to static/.gitignore.
