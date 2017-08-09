@@ -29,6 +29,10 @@ New features:
 
 Bug fixes:
 
+- Recover missing dashboard (user actions)
+  https://github.com/plone/Products.CMFPlone/issues/1132
+  [fgrcon]
+ 
 - Fixed accidentally removing permissions when saving the ``portal_controlpanel`` settings in the ZMI.
   Fixes `issue 1376 <https://github.com/plone/Products.CMFPlone/issues/1376>`_.  [maurits]
 
