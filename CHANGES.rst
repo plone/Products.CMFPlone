@@ -27,6 +27,9 @@ New features:
 - Add RobotFramework screenshot tests for the Plone documentation.
   [datakurre, polyester]
 
+- Add jqtree-contextual-menu js-shortcuts package for keyboard shortcuts
+  [b4oshany]
+
 Bug fixes:
 
 - Fixed accidentally removing permissions when saving the ``portal_controlpanel`` settings in the ZMI.
