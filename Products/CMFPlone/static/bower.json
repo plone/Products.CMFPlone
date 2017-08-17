@@ -27,7 +27,9 @@
     "tinymce-builded": "4.3.12",
     "requirejs": "",
     "less": "2.1.2",
-    "r.js": "2.1.15"
+    "r.js": "2.1.15",
+    "cs-jqtree-contextmenu": "^0.1.0",
+    "js-shortcuts": "^1.0.1"
   },
   "resolutions": {
     "jquery": "1.11.3",

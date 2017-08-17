@@ -21,6 +21,7 @@
 /.mr.developer.cfg
 /src/*
 *.mo
+*.orig
 docs/Makefile
 docs/make.bat
 docs/doctrees
