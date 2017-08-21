@@ -88,7 +88,7 @@ class TinyMCESettingsGenerator(object):
         inline_styles = self.settings.inline_styles or []
         alignment_styles = self.settings.alignment_styles or []
         table_styles = self.settings.table_styles or []
-        return [{
+        all_styles = [{
             'title': 'Headers',
             'items': self.get_styles(header_styles)
         }, {
@@ -105,6 +105,8 @@ class TinyMCESettingsGenerator(object):
             'items': self.get_styles(
                 table_styles, 'classes', {'selector': 'table'})
         }]
+        # remove empty styles configurations
+        return filter(lambda x: x.get('items', []), all_styles)
 
     def get_tiny_config(self):
         settings = self.settings
