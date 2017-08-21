@@ -44,6 +44,8 @@ Bug fixes:
 - Fix ``utils.get_top_site_from_url`` to work with non-OFS contexts.
   [thet]
 
+- Fix how to get ``email_from_name`` information in sendto_form.
+  [cekk]
 
 5.1b4 (2017-07-03)
 ------------------
