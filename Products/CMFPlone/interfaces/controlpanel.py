@@ -545,7 +545,7 @@ class ITinyMCELayoutSchema(Interface):
             u'Enter a JSON-formatted style format configuration. '
             u'A format is for example the style that get applied when '
             u'you press the bold button inside the editor. '
-            u'See https://www.tinymce.com/wiki.php/Configuration:formats'),
+            u'See https://www.tinymce.com/docs/configure/content-formatting/#formats'),  # NOQA: E501
         constraint=validate_json,
         default=json.dumps({
             'discreet': {'inline': 'span', 'classes': 'discreet'},
