@@ -30,3 +30,4 @@ docs/html
 /Products/CMFPlone/controlpanel/.ropeproject/history
 /Products/CMFPlone/controlpanel/.ropeproject/objectdb
 /Products/CMFPlone/static/.fontello
+/Products/CMFPlone/tests/robot/robodoc/_robot

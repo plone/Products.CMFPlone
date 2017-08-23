@@ -10,18 +10,30 @@ Changelog
 
 Breaking changes:
 
-- Replaced cssmin with PyScss to ensure Python 3 compatibility and maintainability. 
+- Replaced cssmin with PyScss to ensure Python 3 compatibility and maintainability.
   Removed dependency to cssmin, so could break dependency for third party addons that depend on it.
   Introduced PyScss as a drop in replacement that could also do more things.
   Discussion on that at https://github.com/plone/Products.CMFPlone/issues/1800
   [loechel]
+- Fix and migrate safe_html filter completly into Plone registry and sync settings with TinyMCE.
+  Also some unused options in controlpanel where removed, like stripped_combinations and class_blacklist.
+  [MrTango]
 
 New features:
 
 - Added ``Show Toolbar`` permission.
   [agitator]
 
+- Add RobotFramework screenshot tests for the Plone documentation.
+  [datakurre, polyester]
+
 Bug fixes:
+
+- Fixed accidentally removing permissions when saving the ``portal_controlpanel`` settings in the ZMI.
+  Fixes `issue 1376 <https://github.com/plone/Products.CMFPlone/issues/1376>`_.  [maurits]
+
+- Do not open links on a new tab as this is against basic usability guidelines.
+  [hvelarde]
 
 - add :focus class on toolbar for keyboard users  (https://github.com/plone/Products.CMFPlone/issues/1620)
   [polyester]
@@ -31,6 +43,9 @@ Bug fixes:
 
 - Update TinyMCE links (tinymce-controlpanel) to https
   [svx]
+
+- Fix ``utils.get_top_site_from_url`` to work with non-OFS contexts.
+  [thet]
 
 5.1b4 (2017-07-03)
 ------------------

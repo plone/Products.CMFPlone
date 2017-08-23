@@ -152,7 +152,6 @@
       <span i18n:translate="label_plone_org_description"> For documentation, add-ons, support, community, visit</span>
       <a href="http://plone.org"
         title="Plone Community Home"
-        target="_new"
         i18n:attributes="title label_plone_org_title;">plone.org</a>.
     </p>
   </footer>
