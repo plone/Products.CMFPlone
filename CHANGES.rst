@@ -27,7 +27,10 @@ New features:
 - Add RobotFramework screenshot tests for the Plone documentation.
   [datakurre, polyester]
 
-- Add jqtree-contextual-menu js-shortcuts package for keyboard shortcuts
+- Add jqtree-contextmenu to the resource registry
+  [b4oshany]
+
+- Add js-shortcuts to the resource registry
   [b4oshany]
 
 Bug fixes:
