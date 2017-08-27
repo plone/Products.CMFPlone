@@ -15,7 +15,11 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- Add jqtree-contextmenu to the resource registry
+  [b4oshany]
+
+- Add js-shortcuts to the resource registry
+  [b4oshany]
 
 Bug fixes:
 
