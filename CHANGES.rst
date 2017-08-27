@@ -4,10 +4,6 @@ Changelog
 2.7.3 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
 New features:
 
 - Added ``Show Toolbar`` permission.
