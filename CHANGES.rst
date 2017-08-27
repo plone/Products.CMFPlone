@@ -15,12 +15,15 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- Add jqtree-contextmenu to the resource registry
+  [b4oshany]
+
+- Add js-shortcuts to the resource registry
+  [b4oshany]
 
 Bug fixes:
 
 - *add item here*
-
 
 
 5.0.9 (2017-08-05)
@@ -28,22 +31,8 @@ Bug fixes:
 
 New features:
 
-- Add js-shortcuts package for keyboard shortcuts
-  [b4oshany]
-
-- Update package version to 5021 from 5020.
-  [b4oshany]
-
-- Create an upgrade step to 5020 from 5019.
-  [b4oshany]
 - Add more ignores to static/.gitignore.
   [thet]
-
-- Add jqtree contextual menu to the file tree.
-  [b4oshany]
-
-- Include JS Patterns when loading a page via ajax or an iframe
-  [displacedaussie, instification]
 
 - Update jqtree to 1.4.1
   [b4oshany]
