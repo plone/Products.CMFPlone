@@ -27,6 +27,12 @@ New features:
 - Add RobotFramework screenshot tests for the Plone documentation.
   [datakurre, polyester]
 
+- Add jqtree-contextmenu to the resource registry
+  [b4oshany]
+
+- Add js-shortcuts to the resource registry
+  [b4oshany]
+
 Bug fixes:
 
 - Fixed accidentally removing permissions when saving the ``portal_controlpanel`` settings in the ZMI.
