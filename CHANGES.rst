@@ -14,7 +14,9 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Use the site-title in the meta-attribute title unless the navigation_root is not the portal.
+  Fixes https://github.com/plone/Products.CMFPlone/issues/2117
+  [pbauer]
 
 
 2.7.3 (2017-08-27)

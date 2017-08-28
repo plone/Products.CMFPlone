@@ -113,8 +113,11 @@ class TitleViewlet(ViewletBase):
             return
         portal_state = getMultiAdapter((self.context, self.request),
                                        name=u'plone_portal_state')
-        portal_title = escape(safe_unicode(portal_state
-                                           .navigation_root_title()))
+        if IPloneSiteRoot.providedBy(portal_state.navigation_root()):
+            portal_title = self.site_title_setting
+        else:
+            portal_title = escape(
+                safe_unicode(portal_state.navigation_root_title()))
         if self.page_title == portal_title:
             self.site_title = portal_title
         else:
