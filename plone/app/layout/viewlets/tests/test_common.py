@@ -105,7 +105,43 @@ class TestTitleViewsViewlet(ViewletsTestCase):
         except AttributeError:
             pass
 
-    def test_title_viewlet(self):
+    def test_title_viewlet_on_portal(self):
+        """Title viewlet renders navigation root title
+        """
+        self._invalidateRequestMemoizations()
+        self.loginAsPortalOwner()
+        self.app.REQUEST['ACTUAL_URL'] = self.portal.absolute_url()
+        viewlet = TitleViewlet(self.portal, self.app.REQUEST, None)
+        viewlet.update()
+        self.assertEqual(viewlet.site_title, 'Plone site')
+        registry = getUtility(IRegistry)
+        site_settings = registry.forInterface(
+            ISiteSchema, prefix='plone', check=False)
+        site_settings.site_title = u'Süper Site'
+        self._invalidateRequestMemoizations()
+        viewlet.update()
+        self.assertEqual(viewlet.site_title, u'S\xfcper Site')
+
+    def test_title_viewlet_on_content(self):
+        """Title viewlet renders navigation root title
+        """
+        self._invalidateRequestMemoizations()
+        self.loginAsPortalOwner()
+        self.app.REQUEST['ACTUAL_URL'] = self.folder.test.absolute_url()
+        viewlet = TitleViewlet(self.folder.test, self.app.REQUEST, None)
+        viewlet.update()
+        self.assertEqual(viewlet.site_title,
+                         'Test default page &mdash; Plone site')
+        registry = getUtility(IRegistry)
+        site_settings = registry.forInterface(
+            ISiteSchema, prefix="plone", check=False)
+        site_settings.site_title = u'Süper Site'
+        self._invalidateRequestMemoizations()
+        viewlet.update()
+        self.assertEqual(viewlet.site_title,
+                         u'Test default page &mdash; S\xfcper Site')
+
+    def test_title_viewlet_with_navigation_root(self):
         """Title viewlet renders navigation root title
         """
         self._invalidateRequestMemoizations()
@@ -115,7 +151,7 @@ class TestTitleViewsViewlet(ViewletsTestCase):
         viewlet = TitleViewlet(self.folder.test, self.app.REQUEST, None)
         viewlet.update()
         self.assertEqual(viewlet.site_title,
-                         "Test default page &mdash; Folder")
+                         u'Test default page &mdash; Folder')
 
     def test_title_viewlet_in_portal_factory(self):
         """Title viewlet renders navigation root title in portal factory
