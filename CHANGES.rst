@@ -21,6 +21,9 @@ Breaking changes:
 
 New features:
 
+- Update ``plone-legacy-compiled.js`` and ``plone-legacy-compiled.css``.
+  [thet]
+
 - Added ``Show Toolbar`` permission.
   [agitator]
 
