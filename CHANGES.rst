@@ -94,6 +94,9 @@ Bug fixes:
 - Fix ``utils.get_top_site_from_url`` to work with non-OFS contexts.
   [thet]
 
+- Add basic tests for all main zmi management screens.
+  [pbauer]
+
 5.1b4 (2017-07-03)
 ------------------
 
