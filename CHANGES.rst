@@ -4,14 +4,6 @@ Changelog
 2.7.4 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - Use the site-title in the meta-attribute title unless the navigation_root is not the portal.
