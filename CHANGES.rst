@@ -22,6 +22,9 @@ Breaking changes:
 
 New features:
 
+- Update ``plone-legacy-compiled.js`` and ``plone-legacy-compiled.css``.
+  [thet]
+  
 - Update mockup to latest version.
   [thet]
 
