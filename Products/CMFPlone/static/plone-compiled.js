@@ -12677,6 +12677,7 @@ define('mockup-patterns-pickadate',[
               var now = new Date();
               if (self.$date) { self.$date.data('pickadate').set('select', now); }
               if (self.$time) { self.$time.data('pickatime').set('select', now); }
+              self.emit('updated');
           })
           .appendTo(self.$wrapper);
       }
@@ -12688,6 +12689,7 @@ define('mockup-patterns-pickadate',[
               e.preventDefault();
               if (self.$date) { self.$date.data('pickadate').clear(); }
               if (self.$time) { self.$time.data('pickatime').clear(); }
+              self.emit('updated');
           })
           .appendTo(self.$wrapper);
       }
@@ -18998,5 +19000,5 @@ require([
 
 });
 
-define("/Users/sean/projects/buildout.coredev/src/Products.CMFPlone/Products/CMFPlone/static/plone.js", function(){});
+define("/home/_thet/data/dev/plone/buildout.coredev/src/Products.CMFPlone/Products/CMFPlone/static/plone.js", function(){});
 

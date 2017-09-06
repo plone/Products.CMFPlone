@@ -15,11 +15,18 @@ Breaking changes:
   Introduced PyScss as a drop in replacement that could also do more things.
   Discussion on that at https://github.com/plone/Products.CMFPlone/issues/1800
   [loechel]
+
 - Fix and migrate safe_html filter completly into Plone registry and sync settings with TinyMCE.
   Also some unused options in controlpanel where removed, like stripped_combinations and class_blacklist.
   [MrTango]
 
 New features:
+
+- Update ``plone-legacy-compiled.js`` and ``plone-legacy-compiled.css``.
+  [thet]
+  
+- Update mockup to latest version.
+  [thet]
 
 - Added ``Show Toolbar`` permission.
   [agitator]
@@ -27,12 +34,22 @@ New features:
 - Add RobotFramework screenshot tests for the Plone documentation.
   [datakurre, polyester]
 
+- Add jqtree-contextmenu to the resource registry
+  [b4oshany]
+
+- Add js-shortcuts to the resource registry
+  [b4oshany]
+
 Bug fixes:
 
 - Recover missing dashboard (user actions)
   https://github.com/plone/Products.CMFPlone/issues/1132
   [fgrcon]
  
+- Remove the right padding on toolbar submenu entries.
+  That looked a bit weird.
+  [thet]
+
 - Fixed accidentally removing permissions when saving the ``portal_controlpanel`` settings in the ZMI.
   Fixes `issue 1376 <https://github.com/plone/Products.CMFPlone/issues/1376>`_.  [maurits]
 
@@ -45,9 +62,11 @@ Bug fixes:
 - Fix empty DX add_forms if formlib is also installed thru addon dependencies
   [MrTango]
 
+- Update TinyMCE links (tinymce-controlpanel) to https
+  [svx]
+
 - Fix ``utils.get_top_site_from_url`` to work with non-OFS contexts.
   [thet]
-
 
 5.1b4 (2017-07-03)
 ------------------
