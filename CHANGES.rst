@@ -42,6 +42,10 @@ New features:
 
 Bug fixes:
 
+- Remove the right padding on toolbar submenu entries.
+  That looked a bit weird.
+  [thet]
+
 - Fixed accidentally removing permissions when saving the ``portal_controlpanel`` settings in the ZMI.
   Fixes `issue 1376 <https://github.com/plone/Products.CMFPlone/issues/1376>`_.  [maurits]
 
