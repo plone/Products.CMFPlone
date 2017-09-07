@@ -42,6 +42,10 @@ New features:
 
 Bug fixes:
 
+- Recover missing dashboard (user actions)
+  https://github.com/plone/Products.CMFPlone/issues/1132
+  [fgrcon]
+ 
 - Remove the right padding on toolbar submenu entries.
   That looked a bit weird.
   [thet]
