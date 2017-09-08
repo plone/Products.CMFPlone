@@ -418,6 +418,7 @@ class CatalogTool(PloneBaseTool, BaseTool):
         # This may take a long time.
 
         def indexObject(obj, path):
+            __traceback_info__ = path
             if (base_hasattr(obj, 'indexObject') and
                 safe_callable(obj.indexObject)):
                 try:
