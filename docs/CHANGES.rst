@@ -26,6 +26,10 @@ Bug fixes:
   Fixes `issue 2053 <https://github.com/plone/Products.CMFPlone/issues/2053>`_.
   [rodfersou]
 
+- During a catalog rebuild, identify the object being reindexed in the traceback
+  when there is an error.
+  [davisagli]
+
 
 4.3.15 (2017-07-03)
 -------------------
