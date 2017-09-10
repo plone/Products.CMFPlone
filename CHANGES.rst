@@ -5,8 +5,8 @@
 Changelog
 =========
 
-5.1b5 (unreleased)
-------------------
+5.1rc1 (2017-09-10)
+-------------------
 
 Breaking changes:
 
