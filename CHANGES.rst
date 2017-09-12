@@ -18,7 +18,8 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Don't raise Unauthorized on show_inactive check in catalog search
+  [tomgross]
 
 
 5.1rc1 (2017-09-10)
