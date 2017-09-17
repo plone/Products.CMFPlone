@@ -18,6 +18,9 @@ New features:
 
 Bug fixes:
 
+- Don't raise Unauthorized on show_inactive check in catalog search
+  [tomgross]
+
 - Bump metadata.xml version.
   [thet]
 

@@ -29,6 +29,7 @@ from Products.CMFPlone.utils import base_hasattr
 from Products.CMFPlone.utils import safe_callable
 from Products.CMFPlone.utils import safe_unicode
 from Products.ZCatalog.ZCatalog import ZCatalog
+from zExceptions import Unauthorized
 from zope.annotation.interfaces import IAnnotations
 from zope.component import queryMultiAdapter
 from zope.component.hooks import getSite
@@ -417,7 +418,7 @@ class CatalogTool(PloneBaseTool, BaseTool):
                 parts = path.split('/')
                 parent = site.unrestrictedTraverse('/'.join(parts[:-1]))
                 objs.append(parent.restrictedTraverse(parts[-1]))
-            except (KeyError, AttributeError):
+            except (KeyError, AttributeError, Unauthorized):
                 # When no object is found don't raise an error
                 pass
 

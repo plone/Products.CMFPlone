@@ -3,6 +3,7 @@
 from Acquisition import aq_base
 from DateTime import DateTime
 from OFS.ObjectManager import REPLACEABLE
+from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.indexer.wrapper import IndexableObjectWrapper
@@ -1053,6 +1054,36 @@ class TestCatalogExpirationFiltering(PloneTestCase):
         path = '/'.join(self.folder.doc.getPhysicalPath())
         results = [b.getPath() for b in self.catalog(path=path)]
         self.assertIn('/'.join(self.folder.doc.getPhysicalPath()), results)
+
+    def testUnauthorizedIsNotRaisedOnShowInactive(self):
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
+        wf_tool = self.portal.portal_workflow
+        self.portal.invokeFactory('Folder', id='folder1')
+        folder = self.portal['folder1']
+        wf_tool.doActionFor(folder, 'publish', comment='')
+        folder.reindexObject()
+
+        folder.invokeFactory('Folder', id='folder2')
+        folder2 = folder['folder2']
+        wf_tool.doActionFor(folder2, 'hide', comment='')
+        folder2.reindexObject()
+
+        folder2.invokeFactory('Document', id='doc1')
+        doc = folder2['doc1']
+        wf_tool.doActionFor(doc, 'publish', comment='')
+        doc.reindexObject()
+
+        folder2.invokeFactory('Document', id='doc2')
+        doc2 = folder2['doc2']
+        wf_tool.doActionFor(doc2, 'hide', comment='')
+        doc2.reindexObject()
+
+        self.logout()
+        path = '/' + folder2.absolute_url(1)
+        results = self.catalog.searchResults(path=path)
+        self.assertEqual(
+            results[0].getPath(), '/plone/folder1/folder2/doc1')
+        self.assertEqual(len(results), 1)
 
     def testExpiredWithPermissionOnSubpath(self):
         self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
