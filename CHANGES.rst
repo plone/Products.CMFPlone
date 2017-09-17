@@ -21,6 +21,9 @@ Bug fixes:
 - Don't raise Unauthorized on show_inactive check in catalog search
   [tomgross]
 
+- Bump metadata.xml version.
+  [thet]
+
 
 5.1rc1 (2017-09-10)
 -------------------
@@ -41,7 +44,7 @@ New features:
 
 - Update ``plone-legacy-compiled.js`` and ``plone-legacy-compiled.css``.
   [thet]
-  
+
 - Update mockup to latest version.
   [thet]
 
@@ -62,7 +65,7 @@ Bug fixes:
 - Recover missing dashboard (user actions)
   https://github.com/plone/Products.CMFPlone/issues/1132
   [fgrcon]
- 
+
 - Remove the right padding on toolbar submenu entries.
   That looked a bit weird.
   [thet]
