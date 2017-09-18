@@ -190,7 +190,6 @@ Bug fixes:
   [thet]
 
 - CMFCore ``WarningInterceptor`` test base class was gone and is not needed in Plone, so removed.
-- CMFCore ``WarningInterceptor`` test base class was gone and not needed in Plone, so removed.
   [jensens]
 
 - Fix default value for ``robots.txt`` to avoid issues with content containing "search" in the id.
@@ -279,50 +278,6 @@ Bug fixes:
 
 - Fix issue popped iup after fix of use of assertTrue in testResourceRegistries: insert-before in legacy resource import was broken.
   [jensens]
-
-- Remove five.pt for Zope 4
-  [jensens]
-
-- Fix: Do not modify the Content-Type header on bundle combine.
-  [jensens]
-
-- Remove deprecated __of__ calls on BrowserViews
-  [MrTango]
-
-
-- Only encode JS body if unicode in gruntfile generation script to avoid
-  unicode error.
-  [jensens]
-
-- Only encode CSS body if unicode in gruntfile generation script to avoid
-  unicode error.
-  [rnix]
-
-- Closes #1513 'Wrong portal_url used for TinyMCE in multilingual site',
-  also refactors the patterns settings and cleans it up.
-  [jensens]
-
-- Do not attempt to wrap types-controlpanel based on AutoExtensibleForm and
-  EditForm in Acquisition using __of__ since
-  Products.Five.browser.metaconfigure.simple no longer has
-  Products.Five.bbb.AcquisitionBBB as a parent-class and thus no __of__.
-  Anyway __of__ in AcquisitionBBB always only returned self since
-  Products.Five.browser.metaconfigure.xxx-classes are always aq-wrapped
-  using location and __parent__. As a alternative you could use
-  plone.app.registry.browser.controlpanel.ControlPanelFormWrapper as
-  base-class for a controlpanel since ControlPanelFormWrapper subclasses
-  Products.Five.BrowserView which again has AcquisitionBBB.
-  [pbauer]
-
-- Fix csrf-test where @@authenticator was called in the browser.
-  [pbauer]
-
-- Fallback for missing date in DefaultDublinCoreImpl no longer relies on
-  bobobase_modification_time.
-  [pbauer]
-
-- Changes for Zope 4 compatibility in maintenance controlpanel.
-  [thet]
 
 
 5.1b2 (2017-02-20)
