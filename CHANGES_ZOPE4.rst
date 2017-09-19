@@ -6,6 +6,9 @@ to master always ruins the changelog.
 When merging changes to master move them to CHANGES.txt!
 
 
+- Some tools from CMFCore are now utilities
+  [pbauer]
+
 - Remove five.pt for Zope 4
   [jensens]
 
