@@ -3,6 +3,36 @@
  <adapters/>
  <utilities>
   <utility
+     interface="Products.CMFCore.interfaces.ITypesTool"
+     object="portal_types"/>
+  <utility
+     interface="Products.CMFCore.interfaces.IActionsTool"
+     object="portal_actions"/>
+  <utility
+     interface="Products.CMFCore.interfaces.ISkinsTool"
+     object="portal_skins"/>
+  <utility
+     interface="Products.CMFCore.interfaces.IWorkflowTool"
+     object="portal_workflow"/>
+  <utility
+     interface="Products.CMFCore.interfaces.ICachingPolicyManager"
+     object="caching_policy_manager"/>
+  <utility
+     interface="Products.CMFCore.interfaces.ICatalogTool"
+     object="portal_catalog"/>
+  <utility
+     interface="Products.CMFCore.interfaces.IContentTypeRegistry"
+     object="content_type_registry"/>
+  <utility
+     interface="Products.MailHost.interfaces.IMailHost"
+     object="MailHost"/>
+  <utility
+     interface="Products.CMFCore.interfaces.IMemberDataTool"
+     object="portal_memberdata"/>
+  <utility
+     interface="Products.CMFCore.interfaces.IMembershipTool"
+     object="portal_membership"/>
+  <utility
      interface="five.customerize.interfaces.IViewTemplateContainer"
      object="portal_view_customizations"/>
   <utility
