@@ -1170,6 +1170,35 @@ class TestCatalogExpirationFiltering(PloneTestCase):
         res = self.catalog(**query)
         self.assertResults(res, expected_result)
 
+    def testExpiredWithSameNameAsSite(self):
+        # Create an expired folder with the same name as the site
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
+        self.portal.invokeFactory('Folder', id=self.portal.id)
+
+        # Add the AccessInactivePortalContent permission in the plone folder
+        # The user should NOT have this permission in self.folder
+        self.portal.plone.manage_role('Member', [AccessInactivePortalContent])
+
+        # Expire a document
+        self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
+        self.folder.doc.reindexObject()
+        self.nofx()
+
+        # Inactive content isn't shown without the required permission.
+        expected_result = [content for content in base_content if content != 'doc'] + ['plone']
+
+        # Login as unprivileged user
+        self.login(user2)
+
+        # Path is the site's one
+        query = {
+            'path': '/'.join(self.portal.getPhysicalPath())
+        }
+        res = self.catalog.searchResults(**query)
+        self.assertResults(res, expected_result)
+        res = self.catalog(**query)
+        self.assertResults(res, expected_result)
+
     def testSearchResultsWithAdditionalExpiryFilter(self):
         # For this test we want the expires and effective indices in place,
         # let's make sure everything still works
