@@ -18,6 +18,9 @@ New features:
 
 Bug fixes:
 
+- Remove site path from path in show_inactive in catalog search
+  [Gagaro]
+
 - Don't raise Unauthorized on show_inactive check in catalog search
   [tomgross]
 
