@@ -33,6 +33,21 @@
      interface="Products.CMFCore.interfaces.IMembershipTool"
      object="portal_membership"/>
   <utility
+     interface="Products.CMFCore.interfaces.IURLTool"
+     object="portal_url"/>
+  <utility
+     interface="Products.CMFCore.interfaces.IMetadataTool"
+     object="portal_metadata"/>
+  <utility
+     interface="Products.CMFCore.interfaces.IRegistrationTool"
+     object="portal_registration"/>
+  <utility
+     interface="Products.CMFCore.interfaces.ISyndicationTool"
+     object="portal_syndication"/>
+  <utility
+     interface="Products.CMFCore.interfaces.IUndoTool"
+     object="portal_undo"/>
+  <utility
      interface="five.customerize.interfaces.IViewTemplateContainer"
      object="portal_view_customizations"/>
   <utility
