@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<registry>
+
+  <records interface="Products.CMFPlone.interfaces.IEditingSchema"
+           prefix="plone" />
+  <records interface="Products.CMFPlone.interfaces.ILanguageSchema"
+           prefix="plone" />
+  <records interface="Products.CMFPlone.interfaces.IFilterSchema"
+           prefix="plone" />
+  <records interface="Products.CMFPlone.interfaces.IMaintenanceSchema"
+           prefix="plone" />
+  <records interface="Products.CMFPlone.interfaces.IMailSchema"
+           prefix="plone" />
+  <records interface="Products.CMFPlone.interfaces.INavigationSchema"
+           prefix="plone" />
+  <records interface="Products.CMFPlone.interfaces.ISearchSchema"
+           prefix="plone" />
+  <records interface="Products.CMFPlone.interfaces.ISecuritySchema"
+           prefix="plone" />
+  <records interface="Products.CMFPlone.interfaces.ISiteSchema"
+           prefix="plone" />
+  <records interface="Products.CMFPlone.interfaces.IDateAndTimeSchema"
+           prefix="plone" />
+  <records interface="Products.CMFPlone.interfaces.IMarkupSchema"
+           prefix="plone" />
+  <records interface="Products.CMFPlone.interfaces.IUserGroupsSettingsSchema"
+           prefix="plone" />
+  <records interface="Products.CMFPlone.interfaces.ISocialMediaSchema"
+           prefix="plone" />
+  <records interface="Products.CMFPlone.interfaces.ITypesSchema"
+           prefix="plone" />
+  <records interface="Products.CMFPlone.interfaces.IImagingSchema"
+           prefix="plone" />
+  <records interface="Products.CMFPlone.interfaces.ILoginSchema"
+           prefix="plone" />
+  <records interface="Products.CMFPlone.interfaces.ILinkSchema"
+           prefix="plone" />
+  <records interface="Products.CMFPlone.interfaces.syndication.ISiteSyndicationSettings" />
+
+</registry>

@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<registry>
+  <record name="Products.CMFPlone.i18nl10n.override_dateformat.Enabled">
+    <field type="plone.registry.field.Bool">
+      <title>Enabled</title>
+      <description>Override the translation machinery</description>
+    </field>
+    <value>False</value>
+  </record>
+  <record name="Products.CMFPlone.i18nl10n.override_dateformat.date_format_long">
+    <field type="plone.registry.field.ASCIILine">
+      <title>old ZMI property: localLongTimeFormat</title>
+      <description>Default value: %Y-%m-%d %H:%M (2038-01-19 03:14)</description>
+    </field>
+    <value>%Y-%m-%d %H:%M</value>
+  </record>
+  <record name="Products.CMFPlone.i18nl10n.override_dateformat.date_format_short">
+    <field type="plone.registry.field.ASCIILine">
+      <title>old ZMI property: localTimeFormat</title>
+      <description>Default value: %Y-%m-%d (2038-01-19)</description>
+    </field>
+    <value>%Y-%m-%d</value>
+  </record>
+  <record name="Products.CMFPlone.i18nl10n.override_dateformat.time_format">
+    <field type="plone.registry.field.ASCIILine">
+      <title>old ZMI property: localTimeOnlyFormat</title>
+      <description>Default value: %H:%M (03:14)</description>
+    </field>
+    <value>%H:%M</value>
+  </record>
+  <record name="plone.app.layout.globals.bodyClass.depth">
+    <field type="plone.registry.field.Int">
+      <title>Body class path depth</title>
+      <description>Depth relative the site root that body class are generated for.
+      </description>
+    </field>
+    <value>4</value>
+  </record>
+  <record name="plone.app.portlets.PortletManagerBlacklist">
+    <field type="plone.registry.field.List">
+      <title>Toolbar Portlet Manager Blacklist</title>
+      <description>A list of portlet manager names that will not be shown in the toolbar dropdown</description>
+      <value_type type="plone.registry.field.TextLine" />
+    </field>
+    <value purge="false">
+      <element>plone.dashboard1</element>
+      <element>plone.dashboard2</element>
+      <element>plone.dashboard3</element>
+      <element>plone.dashboard4</element>
+    </value>
+  </record>
+  <records interface="Products.CMFPlone.interfaces.ITinyMCESchema"
+           prefix="plone">
+    <value key="content_css">
+      <element>++plone++static/components/tinymce-builded/js/tinymce/skins/lightgray/content.min.css</element>
+    </value>
+  </records>
+</registry>

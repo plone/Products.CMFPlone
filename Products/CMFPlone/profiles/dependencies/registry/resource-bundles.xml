@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<registry>
+
+  <!-- Plone bundle resources -->
+  <records prefix="plone.resources/plone"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++plone.js</value>
+      <value key="css">
+        <element>++plone++static/plone.less</element>
+      </value>
+  </records>
+  <records prefix="plone.resources/plone-logged-in"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++plone-logged-in.js</value>
+      <value key="css">
+        <element>++plone++static/plone-logged-in.less</element>
+      </value>
+  </records>
+  <records prefix="plone.resources/resourceregistry"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/resourceregistry.js</value>
+      <value key="css">
+        <element>++plone++static/resourceregistry.less</element>
+      </value>
+  </records>
+
+
+  <!-- Bundles -->
+  <records prefix="plone.bundles/plone"
+            interface='Products.CMFPlone.interfaces.IBundleRegistry'>
+    <value key="merge_with">default</value>
+    <value key="resources">
+      <element>plone</element>
+    </value>
+    <value key="enabled">True</value>
+    <value key="jscompilation">++plone++static/plone-compiled.min.js</value>
+    <value key="csscompilation">++plone++static/plone-compiled.css</value>
+    <value key="last_compilation">2017-06-19 15:12:00</value>
+    <value key="stub_js_modules">
+      <element>jquery</element>
+    </value>
+  </records>
+
+  <records prefix="plone.bundles/plone-logged-in"
+            interface='Products.CMFPlone.interfaces.IBundleRegistry'>
+    <value key="merge_with">logged-in</value>
+    <value key="resources">
+      <element>plone-logged-in</element>
+    </value>
+    <value key="enabled">True</value>
+    <value key="expression">python: member is not None</value>
+    <value key="jscompilation">++plone++static/plone-logged-in-compiled.min.js</value>
+    <value key="csscompilation">++plone++static/plone-logged-in-compiled.css</value>
+    <value key="last_compilation">2017-06-18 00:31:00</value>
+    <value key="depends">plone</value>
+    <value key="stub_js_modules">
+      <element>backbone</element>
+      <element>bootstrap-dropdown</element>
+      <element>bootstrap-tooltip</element>
+      <element>jquery.event.drag</element>
+      <element>jquery.event.drop</element>
+      <element>jquery.form</element>
+      <element>jquery</element>
+      <element>mockup-i18n</element>
+      <element>mockup-patterns-autotoc</element>
+      <element>mockup-patterns-backdrop</element>
+      <element>mockup-patterns-base</element>
+      <element>mockup-patterns-modal</element>
+      <element>mockup-patterns-moment</element>
+      <element>mockup-patterns-pickadate</element>
+      <element>mockup-patterns-select2</element>
+      <element>mockup-router</element>
+      <element>mockup-utils</element>
+      <element>pat-base</element>
+      <element>pat-compat</element>
+      <element>pat-logger</element>
+      <element>pat-mockup-parser</element>
+      <element>pat-registry</element>
+      <element>pat-utils</element>
+      <element>select2</element>
+      <element>translate</element>
+      <element>underscore</element>
+      <element>moment</element>
+    </value>
+  </records>
+
+  <records prefix="plone.bundles/plone-legacy"
+            interface='Products.CMFPlone.interfaces.IBundleRegistry'>
+    <value key="merge_with">default</value>
+    <value key="resources" purge="false">
+      <element>jquery-highlightsearchterms</element>
+    </value>
+    <value key="depends">plone</value>
+    <value key="jscompilation">++plone++static/plone-legacy-compiled.js</value>
+    <value key="csscompilation">++plone++static/plone-legacy-compiled.css</value>
+    <value key="last_compilation">2014-08-14 00:00:00</value>
+    <value key="compile">False</value>
+    <value key="enabled">True</value>
+  </records>
+
+  <records prefix="plone.bundles/resourceregistry"
+            interface='Products.CMFPlone.interfaces.IBundleRegistry'>
+    <value key="resources">
+      <element>resourceregistry</element>
+    </value>
+    <value key="enabled">False</value>
+    <value key="jscompilation">++plone++static/resourceregistry-compiled.min.js</value>
+    <value key="csscompilation">++plone++static/resourceregistry-compiled.css</value>
+    <value key="last_compilation">2015-05-01 00:00:00</value>
+    <value key="stub_js_modules">
+      <element>jquery</element>
+    </value>
+  </records>
+
+</registry>

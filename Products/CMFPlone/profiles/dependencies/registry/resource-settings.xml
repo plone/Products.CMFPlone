@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+<registry>
+  <record interface="Products.ResourceRegistries.interfaces.settings.IResourceRegistriesSettings" field="resourceBundlesForThemes">
+    <value purge="false">
+      <element key="(default)">
+        <element>jquery</element>
+        <element>default</element>
+      </element>
+    </value>
+  </record>
+  <record name="plone.resources.development">
+    <field type="plone.registry.field.Bool">
+      <title>Frontend development mode</title>
+    </field>
+    <value>False</value>
+  </record>
+  <record name="plone.resources.requirejs">
+    <field type="plone.registry.field.ASCII">
+      <title>URL of require.js</title>
+    </field>
+    <value>++plone++static/components/requirejs/require.js</value>
+  </record>
+  <record name="plone.resources.configjs">
+    <field type="plone.registry.field.ASCII">
+      <title>config.js</title>
+    </field>
+    <value>config.js</value>
+  </record>
+  <record name="plone.resources.lessc">
+    <field type="plone.registry.field.ASCII">
+      <title>URL of less.js</title>
+    </field>
+    <value>++plone++static/components/less/dist/less.js</value>
+  </record>
+  <record name="plone.resources.less-modify">
+    <field type="plone.registry.field.ASCII">
+      <title>less-modify js</title>
+    </field>
+    <value>less-modify.js</value>
+  </record>
+
+  <!-- Mixins vars for less with the paths -->
+  <record name="plone.lessvariables">
+    <field type="plone.registry.field.Dict">
+      <title>Less variables</title>
+      <description>Variables that are going to be compiled on less</description>
+      <key_type type="plone.registry.field.ASCIILine" />
+      <value_type type="plone.registry.field.TextLine" />
+    </field>
+    <value>
+      <element key="icon-font-path">\"../fonts/\"</element>
+      <element key="bowerPath">\"{site_url}/++plone++static/components/\"</element>
+      <element key="mockupPath">\"{site_url}/++resource++mockup/\"</element>
+      <element key="mockuplessPath">\"{site_url}/++resource++mockupless/\"</element>
+
+      <element key="plone-link-color">rgba(0,123,179,1)</element>
+      <element key="plone-gray-lighter">lighten(#000, 80%)</element>
+      <element key="plone-gray-light">lighten(#000, 46.5%)</element>
+
+      <element key="plone-toolbar-bg">rgba(0,0,0,.9)</element>
+      <element key="plone-toolbar-submenu-bg">rgba(45,45,45,.96)</element>
+      <element key="plone-toolbar-submenu-width">180px</element>
+      <element key="plone-toolbar-font-primary">Roboto, \"Helvetica Neue\", Helvetica, Arial, sans-serif</element>
+      <element key="plone-toolbar-font-secondary">Roboto, \"Helvetica Neue\", Helvetica, Arial, sans-serif</element>
+      <element key="plone-toolbar-separator-color">rgba(255,255,255,.17)</element>
+      <element key="plone-toolbar-link">{plone-link-color}</element>
+      <element key="plone-toolbar-text-color">rgba(255,255,255,1)</element>
+      <element key="plone-toolbar-submenu-text-color">lighten(#000, 90%)</element>
+      <element key="plone-toolbar-submenu-header-color">lighten(#000, 80%)</element>
+      <element key="plone-toolbar-published-color">{plone-link-color}</element>
+      <element key="plone-toolbar-draft-color">rgb(250,184,42)</element>
+      <element key="plone-toolbar-pending-color">rgb(226,231,33)</element>
+      <element key="plone-toolbar-private-color">rgb(196,24,60)</element>
+      <element key="plone-toolbar-internal-color">rgb(250,184,42)</element>
+      <element key="plone-toolbar-internally-published-color">rgb(136,61,250)</element>
+
+      <element key="plone-screen-xs-min">480px</element>
+      <element key="plone-screen-sm-min">768px</element>
+      <element key="plone-screen-md-min">992px</element>
+      <element key="plone-screen-lg-min">1200px</element>
+
+      <element key="plone-left-toolbar-expanded">120px</element>
+      <element key="plone-left-toolbar">60px</element>
+
+      <element key="plone-container-sm">750px</element>
+      <element key="plone-container-md">970px</element>
+      <element key="plone-container-lg">1170px</element>
+
+      <element key="plone-screen-xs-max">(@plone-screen-sm-min + 1)</element>
+      <element key="plone-screen-sm-max">(@plone-screen-md-min + 1)</element>
+      <element key="plone-screen-md-max">(@plone-screen-lg-min + 1)</element>
+
+    </value>
+  </record>
+
+
+  <record name="plone.patternoptions">
+    <field type="plone.registry.field.Dict">
+      <title>Patterns configuration</title>
+      <description>Base pattern configuration options</description>
+      <key_type type="plone.registry.field.ASCIILine" />
+      <value_type type="plone.registry.field.Text" />
+    </field>
+    <value>
+      <element key="pickadate">{"date": {"selectYears": 200}, "time": {"interval": 5 } }</element>
+      <element key="plone-modal">{"actionOptions": {"displayInModal": false}}</element>
+    </value>
+  </record>
+
+</registry>
