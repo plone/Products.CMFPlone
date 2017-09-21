@@ -76022,7 +76022,7 @@ define('text!mockup-patterns-structure-url/templates/table.xml',[],function () {
  *    selector(string): Selector to use to draggable items in pattern ('li')
  *    dragClass(string): Class to apply to original item that is being dragged. ('item-dragging')
  *    cloneClass(string): Class to apply to cloned item that is dragged. ('dragging')
- *    drop(string): Name of callback function in global namespace to be called when item is dropped ('')
+ *    drop(function, string): Callback function or name of callback function in global namespace to be called when item is dropped ('')
  *
  * Documentation:
  *    # Default
@@ -76083,7 +76083,7 @@ define('mockup-patterns-sortable',[
           addClass(pattern.options.cloneClass).
           css({opacity: 0.75, position: 'absolute'}).appendTo(document.body);
       },
-      drop: ''  // name of global function to handle drop event.
+      drop: undefined  // callback function or name of global function
     },
     init: function() {
       var self = this;
@@ -76127,8 +76127,12 @@ define('mockup-patterns-sortable',[
         var $el = $(this);
         $el.removeClass(self.options.dragClass);
         $(dd.proxy).remove();
-        if (self.options.drop) {
-          window[self.options.drop]($el, $el.index() - start);
+          if (self.options.drop) {
+            if (typeof self.options.drop === 'string') {
+              window[self.options.drop]($el, $el.index() - start);
+            } else {
+              self.options.drop($el, $el.index() - start);
+            }
         }
       })
       .drop('init', function(e, dd ) {

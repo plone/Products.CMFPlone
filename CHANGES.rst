@@ -18,6 +18,9 @@ New features:
 
 Bug fixes:
 
+- Mockup update to fix a bug where folder contents' sorting was broken.
+  [thet]
+
 - Remove site path from path in show_inactive in catalog search
   [Gagaro]
 
