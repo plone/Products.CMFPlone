@@ -30,6 +30,9 @@ Bug fixes:
 - Bump metadata.xml version.
   [thet]
 
+- Extract CMFDefault specific config from `meta.zcml` into `meta-bbb.zcml`
+  to allow AT free and AT included sites.
+  [tomgross]
 
 5.1rc1 (2017-09-10)
 -------------------
