@@ -34,6 +34,9 @@ Bug fixes:
   to allow AT free and AT included sites.
   [tomgross]
 
+- Add basic tests for all main zmi management screens.
+  [pbauer]
+
 5.1rc1 (2017-09-10)
 -------------------
 
