@@ -30,6 +30,9 @@ Bug fixes:
 - Bump metadata.xml version.
   [thet]
 
+- Add basic tests for all main zmi management screens.
+  [pbauer]
+
 
 5.1rc1 (2017-09-10)
 -------------------
