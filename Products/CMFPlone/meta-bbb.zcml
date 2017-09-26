@@ -1,0 +1,13 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
+    xmlns:meta="http://namespaces.zope.org/meta">
+
+    <configure zcml:condition="installed Products.CMFDefault.browser">
+        <exclude package="Products.CMFDefault.browser" file="configure.zcml" />
+        <exclude package="Products.CMFDefault.formlib" file="configure.zcml" />
+        <exclude package="Products.CMFDefault.upgrade" file="configure.zcml" />
+    </configure>
+
+</configure>
+
