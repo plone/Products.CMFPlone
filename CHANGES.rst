@@ -14,7 +14,8 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- Update npm dependencies.
+  [thet]
 
 Bug fixes:
 
