@@ -17,7 +17,7 @@ Scenario: Social settings are provided
   Given a logged-in site administrator
     and the social control panel
    When I provide social settings
-   Then social tags should exist
+   Then social tags should exist for anonymous
 
 Scenario: Social tags are disabled
   Given a logged-in site administrator
@@ -57,7 +57,12 @@ I provide social settings
 
 # --- THEN -------------------------------------------------------------------
 
-social tags should exist
+social tags should exist for anonymous
+  Go to  ${PLONE_URL}
+  Page should not contain element  css=meta[name="twitter:site"]
+  Page should not contain element  css=meta[property="og:article:publisher"]
+  Page should not contain element  css=meta[property="fb:app_id"]
+  Disable autologin
   Go to  ${PLONE_URL}
   Page should contain element  css=meta[name="twitter:site"]
   Page should contain element  css=meta[property="og:article:publisher"]

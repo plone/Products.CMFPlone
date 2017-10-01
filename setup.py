@@ -1,7 +1,7 @@
 from setuptools import setup
 from setuptools import find_packages
 
-version = '5.1b3.dev0'
+version = '5.1rc2.dev0'
 
 setup(
     name='Products.CMFPlone',
@@ -37,6 +37,7 @@ setup(
             'lxml',
             'mock',
             'plone.app.robotframework>0.9.16',
+            'robotframework-debuglibrary',
             'plone.app.testing',
             'zope.globalrequest',
             'zope.testing',
@@ -72,7 +73,6 @@ setup(
         'ZODB3',
         'Zope2 > 2.13.0',
         'borg.localrole',
-        'cssmin',
         'five.customerize',
         'five.localsitemanager',
         'five.pt',
@@ -121,6 +121,7 @@ setup(
         'plone.subrequest',
         'plone.theme',
         'plonetheme.barceloneta',
+        'pyScss',
         'slimit',
         'transaction',
         'z3c.autoinclude',

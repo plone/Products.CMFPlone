@@ -217,14 +217,15 @@
                                                  toLocalizedTime nocall: context/@@plone/toLocalizedTime;
                                                  use_view_action python:context.portal_registry.get('plone.types_use_view_action_in_listings', []);
                                                  allowAnonymousViewAbout python:context.portal_registry['plone.allow_anon_views_about'];
-                                                 show_about python:not isAnon or allowAnonymousViewAbout;">
+                                                 show_about python:not isAnon or allowAnonymousViewAbout;
+                                                 image_scale portal/@@image_scale">
                         <ol class="searchResults">
                           <tal:results repeat="item batch">
                             <li tal:define="hasIcon item/getIcon">
                               <span class="result-title">
-                                <img class="image-icon"
+                                <img class="thumb-icon"
                                      tal:condition="hasIcon"
-                                     tal:attributes="src string:${item/getURL}/@@images/image/icon;">
+                                     tal:replace="structure python: image_scale.tag(item, 'image', scale='icon', css_class='thumb-icon')">
                                 <a href="#"
                                    tal:define="item_url item/getURL;
                                                item_type item/PortalType"

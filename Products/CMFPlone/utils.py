@@ -709,6 +709,11 @@ def getQuality():
     return QUALITY_DEFAULT
 
 
+def getRetinaScales():
+    from plone.namedfile.utils import getRetinaScales as func
+    return func()
+
+
 def getSiteLogo(site=None):
     from Products.CMFPlone.interfaces import ISiteSchema
     from plone.formwidget.namedfile.converter import b64decode_file
@@ -762,10 +767,9 @@ def get_top_site_from_url(context, request):
     - No virtual hosting, URL path: /Plone/Subsite, Returns: Plone
     - Virtual hosting roots to Subsite, URL path: /, Returns: Subsite
     """
-    url_path = urlparse(context.absolute_url()).path.split('/')
-
     site = getSite()
     try:
+        url_path = urlparse(context.absolute_url()).path.split('/')
         for idx in range(len(url_path)):
             _path = '/'.join(url_path[:idx + 1]) or '/'
             site_path = request.physicalPathFromURL(_path)

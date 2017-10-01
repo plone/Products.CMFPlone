@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
-from Products.CMFCore.tests.base.testcase import WarningInterceptor
 
 from zope.component import getGlobalSiteManager
 from zope.component import getSiteManager
@@ -20,6 +19,7 @@ from Products.CMFCore.permissions import AccessInactivePortalContent
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import setuphandlers
 from Products.CMFPlone.factory import _DEFAULT_PROFILE
+from Products.CMFPlone.interfaces import IFilterSchema
 from Products.CMFPlone.interfaces import INavigationSchema
 from Products.CMFPlone.interfaces import ISearchSchema
 from Products.CMFPlone.UnicodeSplitter import Splitter, I18NNormalizer
@@ -39,7 +39,7 @@ from plone.protect import createToken
 from plone.registry.interfaces import IRegistry
 
 
-class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
+class TestPortalCreation(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         self.membership = self.portal.portal_membership
@@ -56,9 +56,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.transforms = self.portal.portal_transforms
         self.javascripts = self.portal.portal_javascripts
         self.setup = self.portal.portal_setup
-
-    def beforeTearDown(self):
-        self._free_warning_output()
 
     def testInstanceVersion(self):
         # Test if the version of the instance has been set
@@ -190,7 +187,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.assertFalse(
             self.properties.navtree_properties.hasProperty('showAllParents'))
         self.assertFalse(
-            self.properties.navtree_properties.hasProperty('metaTypesNotToList'))
+            self.properties.navtree_properties.hasProperty('metaTypesNotToList'))  # noqa
         self.assertFalse(
             self.properties.navtree_properties.hasProperty('sortAttribute'))
         self.assertFalse(
@@ -360,7 +357,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
                 self.assertTrue(a.visible)
 
     def testDefaultGroupsAdded(self):
-        self._trap_warning_output()
         self.assertTrue('Administrators' in self.groups.listGroupIds())
         self.assertTrue('Reviewers' in self.groups.listGroupIds())
 
@@ -563,7 +559,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         urls = [a['url'] for a in buttons]
         for url in urls:
             self.assertFalse('index_html' not in url,
-                             'Action wrongly applied to parent object %s' % url)
+                             'Action wrongly applied to parent object %s' % url)  # noqa
 
     def testObjectButtonActionsPerformCorrectAction(self):
         # only a manager would have proper permissions
@@ -646,11 +642,14 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.assertTrue('atct_album_view' in self.types.Folder.view_methods)
 
     def testConfigurableSafeHtmlTransform(self):
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(
+            IFilterSchema, prefix="plone")
         # The safe_html transformation should be configurable
         try:
-            self.transforms.safe_html.get_parameter_value('disable_transform')
+            settings.disable_filtering
         except (AttributeError, KeyError):
-            self.fail('safe_html transformation not updated')
+            self.fail('Disabling of safe_html should be possible!')
 
     def testvcXMLRPCRemoved(self):
         # vcXMLRPC.js should no longer be registered

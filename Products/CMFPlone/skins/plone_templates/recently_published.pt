@@ -31,7 +31,9 @@
     <div id="content-core"
          tal:define="site_properties context/portal_properties/site_properties;
                      isAnon context/@@plone_portal_state/anonymous;
-                     show_about python:not isAnon or context.portal_registry['plone.allow_anon_views_about'];">
+                     portal context/@@plone_portal_state/portal;
+                     show_about python:not isAnon or context.portal_registry['plone.allow_anon_views_about'];
+                     image_scale portal/@@image_scale">
         <form name="searchresults" action="" method="post" tal:condition="results"
                           tal:define="batch python:Batch(results, 20, int(b_start), orphan=1)">
 
@@ -39,14 +41,13 @@
 
                 <article>
                     <header
-                    	tal:define="item_class python:'contenttype-' + normalize(result.portal_type);
-                    	            item_wf_state result/review_state;
-                    	            item_wf_state_class python:'state-' + normalize(item_wf_state);">                    	            
+                       tal:define="item_class python:'contenttype-' + normalize(result.portal_type);
+                                   item_wf_state result/review_state;
+                                   item_wf_state_class python:'state-' + normalize(item_wf_state);">
                         <a tal:attributes="href result/getURL">
-                        	<img  class = "image-tile"                  		  
-                        		  tal:condition="python:result.getIcon"
-                        		  tal:attributes="src python:result.getURL()+'/@@images/image/tile'">
-                        	<span tal:content="result/pretty_title_or_id"
+                            <img tal:condition="python:result.getIcon"
+                                 tal:replace="structure python: image_scale.tag(result, 'image', scale='tile', css_class='thumb-tile')">
+                            <span tal:content="result/pretty_title_or_id"
                                   tal:attributes="class string:$item_class $item_wf_state_class">
                                   Title</span>
                         </a>

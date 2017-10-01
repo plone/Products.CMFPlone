@@ -20,7 +20,17 @@
     text-decoration: none;
     color: @plone-toolbar-link;
     outline: 0;
+
+    &:focus {
+    background: @plone-toolbar-link;
+    }
+
+    &:hover {
+    background: @plone-toolbar-link;
+    }
   }
+
+
 
   /*logo*/
 
@@ -142,7 +152,7 @@
         }
 
         &:hover {
-          background: #007bb3;
+          background: @plone-toolbar-link;
           & > span {
             margin-top: 0;
             -webkit-transition: none;
@@ -289,8 +299,7 @@
         color: @plone-toolbar-submenu-text-color;
 
         &:hover {
-          color: darken(@plone-toolbar-submenu-text-color, 15%);
-          background: lighten(@plone-toolbar-bg, 10%);
+                    background: @plone-toolbar-link;
         }
       }
 
@@ -298,7 +307,6 @@
         min-width: @plone-toolbar-submenu-width;
         width: auto;
         white-space: nowrap;
-        padding-right: 1em;
 
         &:last-child {
           padding-bottom: 5px;

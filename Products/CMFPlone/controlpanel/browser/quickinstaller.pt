@@ -64,7 +64,7 @@
                 </h3>
                 <p class="configletDescription discreet">
                   <tal:span tal:condition="product/description" tal:content="product/description" i18n:translate="">add-on description</tal:span>
-                  <em class="discreet"> – (<tal:span tal:content="string:${pid}"> plugin.app.name </tal:span>)</em>
+                  <em class="discreet"> – (<span tal:replace="pid">plugin.app.name</span> <span tal:replace="product/version">1.0</span>)</em>
                 </p>
                 <ul class="configletDetails">
                   <li tal:define="upgrade_info product/upgrade_info">
@@ -144,7 +144,7 @@
                   <tal:span tal:condition="product/description"
                     i18n:translate=""
                     tal:content="product/description">add-on description</tal:span>
-                  <em class="discreet"> – (<tal:span tal:content="string:${pid}"> plugin.app.name </tal:span>)</em>
+                  <em class="discreet"> – (<span tal:replace="pid">plugin.app.name</span> <span tal:replace="product/version">1.0</span>)</em>
                 </p>
                 <dl class="portalMessage warning"
                    tal:condition="not:product/uninstall_profile">
@@ -185,7 +185,7 @@
                       <tal:span tal:condition="product/description"
                         i18n:translate=""
                         tal:content="product/description">add-on description</tal:span>
-                      <em class="discreet"> – (<tal:span tal:content="string:${pid}"> plugin.app.name </tal:span>)</em>
+                      <em class="discreet"> – (<span tal:replace="pid">plugin.app.name</span> <span tal:replace="product/version">1.0</span>)</em>
                     </p>
                     <dl class="portalMessage info"
                         tal:condition="not:product/uninstall_profile">
@@ -207,7 +207,7 @@
             <ul class="configlets">
               <li tal:repeat="product products">
                 <h3>
-                  <span tal:replace="product/productname" i18n:translate="">
+                  <span tal:replace="product/product_id" i18n:translate="">
                     Add-on Name
                   </span>
                 </h3>

@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from Acquisition import aq_acquire
+from plone.browserlayer.interfaces import ILocalBrowserLayerType
 from plone.registry.interfaces import IRegistry
 from plone.resource.directory import FilesystemResourceDirectory
 from plone.resource.file import FilesystemFile
@@ -10,6 +12,8 @@ from Products.CMFPlone.interfaces import IResourceRegistry
 from Products.Five.browser.resource import DirectoryResource
 from Products.Five.browser.resource import FileResource
 from zope.component import getUtility
+from zope.component import getSiteManager
+from zope.interface import alsoProvides
 from zope.site.hooks import setSite
 
 import json
@@ -25,6 +29,15 @@ except pkg_resources.DistributionNotFound:
 else:
     HAS_BARCELONETA = True
     import plonetheme.barceloneta
+
+
+def applyBrowserLayers(site):
+    request = aq_acquire(site, 'REQUEST')
+    sm = getSiteManager(site)
+    layers = sm.getAllUtilitiesRegisteredFor(ILocalBrowserLayerType)
+    for layer in layers:
+        alsoProvides(request, layer)
+
 
 # some initial script setup
 if 'SITE_ID' in os.environ:
@@ -44,6 +57,8 @@ for part in site_id.split('/'):
     current = current[part]
 portal = current
 setSite(portal)
+applyBrowserLayers(portal)
+
 
 # start the juicy stuff
 temp_resource_folder = 'temp_resources'
@@ -107,24 +122,25 @@ REQUIREJS_CONFIG_TEMPLATE = """
             "{bkey}": {{
                 options: {{
                     baseUrl: "/",
-                    generateSourceMaps: false,
-                    preserveLicenseComments: false,
-                    paths: {paths},
-                    shim: {shims},
-                    wrapShim: true,
-                    name: "{name}",
                     exclude: ["jquery"],
+                    generateSourceMaps: false,
+                    name: "{name}",
+                    optimize: "none",
                     out: "{out}",
-                    optimize: "none"
+                    paths: {paths},
+                    preserveLicenseComments: false,
+                    shim: {shims},
+                    wrapShim: true
                 }}
             }},
 """
 UGLIFY_CONFIG_TEMPLATE = """
         "{bkey}": {{
           options: {{
-            sourceMap: true,
-            sourceMapName: "{destination}.map",
-            sourceMapIncludeSources: false
+            sourceMap: {{
+              includeSources: false
+            }},
+            sourceMapName: "{destination}.map"
           }},
           files: {{
             "{destination}": {files}
@@ -139,18 +155,16 @@ LESS_CONFIG_TEMPLATE = """
                 ],
                 options: {{
                     compress: true,
-                    strictMath: false,
-                    sourceMap: true,
+                    modifyVars: modifyVars,
                     outputSourceFiles: true,
-                    strictImports: false,
-                    sourceMapURL: "{sourcemap_url}",
-                    sourceMapBasepath: "{base_path}",
-                    relativeUrls: true,
-                    plugins: [
-                        new require("less-plugin-inline-urls"),
-                    ],
                     paths: lessPaths,
-                    modifyVars: modifyVars
+                    plugins: [new require("less-plugin-inline-urls"),],
+                    relativeUrls: true,
+                    sourceMap: true,
+                    sourceMapBasepath: "{base_path}",
+                    sourceMapURL: "{sourcemap_url}",
+                    strictImports: false,
+                    strictMath: false
                 }}
             }}\
 """

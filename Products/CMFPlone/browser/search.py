@@ -36,6 +36,14 @@ def quote_chars(s):
     return s
 
 
+def quote(term):
+    # The terms and, or and not must be wrapped in quotes to avoid
+    # being parsed as logical query atoms.
+    if term.lower() in ('and', 'or', 'not'):
+        term = '"%s"' % term
+    return term
+
+
 class Search(BrowserView):
 
     valid_keys = ('sort_on', 'sort_order', 'sort_limit', 'fq', 'fl', 'facet')
@@ -43,7 +51,7 @@ class Search(BrowserView):
     def munge_search_term(self, q):
         for char in BAD_CHARS:
             q = q.replace(char, ' ')
-        r = q.split()
+        r = map(quote, q.split())
         r = " AND ".join(r)
         r = quote_chars(r) + '*'
         return r

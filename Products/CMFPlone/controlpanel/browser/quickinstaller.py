@@ -556,6 +556,7 @@ class ManageProductsView(InstallerView):
                     continue
                 addons[product_id] = {
                     'id': product_id,
+                    'version': self.get_product_version(product_id),
                     'title': product_id,
                     'description': '',
                     'upgrade_profiles': {},
@@ -616,7 +617,7 @@ class ManageProductsView(InstallerView):
         if apply_filter == 'broken':
             all_broken = self.errors.values()
             for broken in all_broken:
-                filtered[broken['productname']] = broken
+                filtered[broken['product_id']] = broken
         else:
             for product_id, addon in addons.items():
                 if product_name and addon['id'] != product_name:

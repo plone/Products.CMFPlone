@@ -310,6 +310,18 @@
       </value>
   </records>
 
+  <records prefix="plone.resources/jqtree-contextmenu"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/cs-jqtree-contextmenu/src/jqTreeContextMenu.js</value>
+      <value key="deps">jqtree</value>
+  </records>
+
+  <records prefix="plone.resources/js-shortcuts"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/js-shortcuts/js-shortcuts.js</value>
+      <value key="deps">jquery</value>
+  </records>
+
   <records prefix="plone.resources/jquery.form"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/jquery-form/jquery.form.js</value>
@@ -482,11 +494,6 @@
   <records prefix="plone.resources/tinymce-insertdatetime"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/tinymce-builded/js/tinymce/plugins/insertdatetime/plugin.js</value>
-      <value key="deps">tinymce</value>
-  </records>
-  <records prefix="plone.resources/tinymce-layer"
-            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++plone++static/components/tinymce-builded/js/tinymce/plugins/layer/plugin.js</value>
       <value key="deps">tinymce</value>
   </records>
   <records prefix="plone.resources/tinymce-legacyoutput"
@@ -799,6 +806,11 @@
       </value>
   </records>
 
+  <records prefix="plone.resources/mockup-patterns-structureupdater"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockup/structure/pattern-structureupdater.js</value>
+  </records>
+
   <records prefix="plone.resources/mockup-patterns-upload"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/upload/pattern.js</value>
@@ -1061,7 +1073,7 @@
     <value key="enabled">True</value>
     <value key="jscompilation">++plone++static/plone-compiled.min.js</value>
     <value key="csscompilation">++plone++static/plone-compiled.css</value>
-    <value key="last_compilation">2017-03-02 15:52:00</value>
+    <value key="last_compilation">2017-08-30 15:33:00</value>
     <value key="stub_js_modules">
       <element>jquery</element>
     </value>
@@ -1077,7 +1089,7 @@
     <value key="expression">python: member is not None</value>
     <value key="jscompilation">++plone++static/plone-logged-in-compiled.min.js</value>
     <value key="csscompilation">++plone++static/plone-logged-in-compiled.css</value>
-    <value key="last_compilation">2017-02-27 17:34:00</value>
+    <value key="last_compilation">2017-09-21 13:00:00</value>
     <value key="depends">plone</value>
     <value key="stub_js_modules">
       <element>backbone</element>
@@ -1119,7 +1131,7 @@
     <value key="depends">plone</value>
     <value key="jscompilation">++plone++static/plone-legacy-compiled.js</value>
     <value key="csscompilation">++plone++static/plone-legacy-compiled.css</value>
-    <value key="last_compilation">2014-08-14 00:00:00</value>
+    <value key="last_compilation">2017-08-30 15:33:00</value>
     <value key="compile">False</value>
     <value key="enabled">True</value>
   </records>
@@ -1132,7 +1144,7 @@
     <value key="enabled">False</value>
     <value key="jscompilation">++plone++static/resourceregistry-compiled.min.js</value>
     <value key="csscompilation">++plone++static/resourceregistry-compiled.css</value>
-    <value key="last_compilation">2015-05-01 00:00:00</value>
+    <value key="last_compilation">2017-08-30 15:33:00</value>
     <value key="stub_js_modules">
       <element>jquery</element>
     </value>
