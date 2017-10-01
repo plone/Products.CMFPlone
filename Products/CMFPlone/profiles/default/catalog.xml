@@ -106,16 +106,11 @@
  <index name="start" meta_type="DateIndex">
   <property name="index_naive_time_as_local">True</property>
  </index>
- <column value="CreationDate"/>
  <column value="Creator"/>
  <column value="Date"/>
  <column value="Description"/>
- <column value="EffectiveDate"/>
- <column value="ExpirationDate"/>
- <column value="ModificationDate"/>
  <column value="Subject"/>
  <column value="Title"/>
- <column value="Type"/>
  <column value="UID"/>
  <column value="created"/>
  <column value="effective"/>
@@ -123,14 +118,12 @@
  <column value="exclude_from_nav"/>
  <column value="expires"/>
  <column value="getIcon"/>
- <column value="getId"/>
  <column value="getObjSize"/>
  <column value="getRemoteUrl"/>
  <column value="id"/>
  <column value="is_folderish"/>
  <column value="listCreators"/>
  <column value="location"/>
- <column value="meta_type"/>
  <column value="modified"/>
  <column value="portal_type"/>
  <column value="review_state"/>
