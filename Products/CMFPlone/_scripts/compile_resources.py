@@ -8,19 +8,19 @@ this_dir = os.path.dirname(os.path.realpath(__file__))
 
 package_json_contents = """{
   "name": "gruntrunner",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "private": true,
   "devDependencies": {
-    "grunt": "~0.4.5",
+    "grunt": "~1.0.1",
     "grunt-cli": "~1.2.0",
-    "grunt-contrib-less": "~1.3.0",
+    "grunt-contrib-less": "~1.4.1",
     "grunt-contrib-requirejs": "~1.0.0",
-    "grunt-contrib-uglify": "~1.0.1",
+    "grunt-contrib-uglify": "~3.1.0",
     "grunt-contrib-watch": "~1.0.0",
     "grunt-sed": "collective/grunt-sed#e625902539f5c29f1246228270a0330c1097b1e4", 
     "less-plugin-inline-urls": "^1.2.0"
   }
-}"""
+}"""  # noqa
 
 if os.name == 'nt':
     NPM_CMD = 'npm.cmd'
