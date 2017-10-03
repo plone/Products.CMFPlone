@@ -76820,7 +76820,11 @@ define('mockup-patterns-structure-url/js/views/generic-popover',[
       var self = this;
       var data = {};
       _.each(self.$el.find('form').serializeArray(), function(param) {
-        data[param.name] = param.value;
+        if (param.name in data) {
+            data[param.name] += ',' + param.value;
+        } else {
+            data[param.name] = param.value;
+        }
       });
 
       self.app.buttonClickEvent(this.triggerView, data);
@@ -77226,7 +77230,7 @@ define('mockup-patterns-structure-url/js/views/textfilter',[
     render: function() {
       this.$el.html(this.template({_t: _t}));
       this.button = new ButtonView({
-        title: _t('Query'),
+        tooltip: _t('Query'),
         icon: 'search'
       });
       this.popover = new PopoverView({
@@ -79025,6 +79029,7 @@ define('mockup-patterns-structure-url/js/views/app',[
       items.push(new SelectionButtonView({
         title: _t('Selected'),
         id: 'selected-items',
+        tooltip: _t('Manage selection'),
         collection: this.selectedCollection
       }));
 
