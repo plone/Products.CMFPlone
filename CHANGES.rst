@@ -14,6 +14,9 @@ Breaking changes:
 
 New features:
 
+- Toolbar: Allow configuration of the toolbar and submenu width via pattern variables.
+  [thet]
+
 - Update npm dependencies.
   [thet]
 
