@@ -10,7 +10,8 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- Toolbar: Use pattern variavbles to configure the toolbar and submenu widths from plone.lessvariables.
+  [thet]
 
 Bug fixes:
 

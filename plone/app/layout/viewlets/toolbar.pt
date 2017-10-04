@@ -3,7 +3,7 @@
                      personal_bar python: view.get_personal_bar()"
          tal:condition="context_state/is_toolbar_visible"
          i18n:domain="plone">
-  <div id="edit-zone" role="toolbar" class="pat-toolbar">
+  <div id="edit-zone" role="toolbar" class="pat-toolbar" data-pat-toolbar="${view/get_options}">
     <div class="plone-toolbar-container">
       <a class="plone-toolbar-logo">
         <img alt="Plone Toolbar" tal:attributes="src view/get_toolbar_logo" />
