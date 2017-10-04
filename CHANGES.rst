@@ -22,6 +22,10 @@ New features:
 
 Bug fixes:
 
+- Less variables: Fix calculation of screen max sizes.
+  Max sizes were two pixels too high.
+  [thet]
+
 - Mockup update to fix a bug where folder contents' sorting was broken.
   [thet]
 

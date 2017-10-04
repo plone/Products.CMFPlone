@@ -1031,9 +1031,9 @@
       <element key="plone-container-md">970px</element>
       <element key="plone-container-lg">1170px</element>
 
-      <element key="plone-screen-xs-max">(@plone-screen-sm-min + 1)</element>
-      <element key="plone-screen-sm-max">(@plone-screen-md-min + 1)</element>
-      <element key="plone-screen-md-max">(@plone-screen-lg-min + 1)</element>
+      <element key="plone-screen-xs-max">(@plone-screen-sm-min - 1)</element>
+      <element key="plone-screen-sm-max">(@plone-screen-md-min - 1)</element>
+      <element key="plone-screen-md-max">(@plone-screen-lg-min - 1)</element>
 
     </value>
   </record>
