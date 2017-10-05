@@ -14,10 +14,17 @@ Breaking changes:
 
 New features:
 
+- Toolbar: Allow configuration of the toolbar and submenu width via pattern variables.
+  [thet]
+
 - Update npm dependencies.
   [thet]
 
 Bug fixes:
+
+- Less variables: Fix calculation of screen max sizes.
+  Max sizes were two pixels too high.
+  [thet]
 
 - Mockup update to fix a bug where folder contents' sorting was broken.
   [thet]

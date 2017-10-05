@@ -83724,11 +83724,17 @@ define('plone-patterns-toolbar',[
         expanded: 'plone-toolbar-expanded',
         active: 'active'
       },
-      cookieName: 'plone-toolbar'
+      cookieName: 'plone-toolbar',
+      toolbar_width: '120px',
+      submenu_width: '180px',
+      desktop_width: '768px'
+    },
+    pxToInt: function(px) {
+      return parseInt(this.options.desktop_width.split('px')[0], 10);
     },
     setupMobile: function() {
       var that = this;
-      that.$container.css('right', '-120px');
+      that.$container.css('right', '-' + this.options.toolbar_width);
       // make sure we are in expanded mode
       $('body').addClass(that.options.classNames.leftExpanded);
       $('body').addClass(that.options.classNames.expanded);
@@ -83740,7 +83746,7 @@ define('plone-patterns-toolbar',[
       $('.' + that.options.classNames.logo, that.$container).off('click').on('click', function() {
         var $el = $(this);
         if ($el.hasClass('open')){
-          that.$container.css('right', '-120px');
+          that.$container.css('right', '-' + this.options.toolbar_width);
           $('html').css('margin-left', '0');
           $('html').css('margin-right', '0');
           $el.removeClass('open');
@@ -83748,8 +83754,8 @@ define('plone-patterns-toolbar',[
         } else {
           that.$container.css('right', '0');
           $el.addClass('open');
-          $('html').css('margin-left', '-120px');
-          $( 'html' ).css('margin-right', '120px');
+          $('html').css('margin-left', '-' + this.options.toolbar_width);
+          $( 'html' ).css('margin-right', this.options.toolbar_width);
         }
       });
       // Remove desktop event binding
@@ -83761,15 +83767,16 @@ define('plone-patterns-toolbar',[
         var $el = $(this).parent();
         if ($el.hasClass(that.options.classNames.active)) {
           that.$container.css('right', '0');
-          $('html').css('margin-left', '-120px');
-          $('html').css('margin-right', '120px');
+          $('html').css('margin-left', '-' + this.options.toolbar_width);
+          $('html').css('margin-right', this.options.toolbar_width);
           $('nav li', that.$container).removeClass(that.options.classNames.active);
         } else {
           $('nav li', that.$container).removeClass(that.options.classNames.active);
           $el.addClass(that.options.classNames.active);
-          that.$container.css('right', '180px');
-          $('html').css('margin-left', '-300px');
-          $('html').css('margin-right', '300px');
+          that.$container.css('right', this.options.submenu_width);
+          var margin = this.pxToInt(this.options.toolbar_width) + this.pxToInt(this.options.submenu_width);
+          $('html').css('margin-left', '-' + margin + 'px' );
+          $('html').css('margin-right', + margin + 'px');
         }
       });
     },
@@ -83907,7 +83914,7 @@ define('plone-patterns-toolbar',[
       $content.attr('aria-hidden', 'false');
     },
     isDesktop: function() {
-      return $(window).width() > '768';
+      return $(window).width() > this.pxToInt(this.options.desktop_width);
     },
     _setHeight: function() {
       var $items = $('.plone-toolbar-main', this.$container);
