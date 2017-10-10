@@ -64,6 +64,15 @@ class ManageProductsView(BrowserView):
                 installed = False
                 upgrade_info = None
                 p_obj = self.qi._getOb(product_id, None)
+                if p_obj is None and product_id.startswith('Products.'):
+                    # Install Products.CMFPlacefulWorkflow in 4.3, and it will
+                    # create a CMFPlacefulWorkflow object.  But here we look
+                    # for product_id Products.CMFPlacefulWorkflow.  We should
+                    # look for CMFPlacefulWorkflow too.
+                    product_id2 = product_id[len('Products.'):]
+                    p_obj = self.qi._getOb(product_id2, None)
+                    if p_obj is not None:
+                        product_id = product_id2
                 if p_obj:
                     # TODO; if you install then uninstall, the
                     # presence lingers in the qi. Before it is
@@ -85,20 +94,24 @@ class ManageProductsView(BrowserView):
                     # to get CMFPlacefulWorkflow to show up in addons
                     # If it's safe to rename profiles, we can do that too
 
-                addons[product_id] = {
-                    'id': product_id,
-                    'version': self.get_product_version(product_id),
-                    'title': product_id,
-                    'description': '',
-                    'product_file': product_file,
-                    'upgrade_profiles': {},
-                    'other_profiles': [],
-                    'install_profile': None,
-                    'uninstall_profile': None,
-                    'is_installed': installed,
-                    'upgrade_info': upgrade_info,
-                    'profile_type': profile_type,
-                }
+                # product_id might have changed, if it began with 'Products.',
+                # so check again to prevent losing information from a previous
+                # profile.
+                if product_id not in addons:
+                    addons[product_id] = {
+                        'id': product_id,
+                        'version': self.get_product_version(product_id),
+                        'title': product_id,
+                        'description': '',
+                        'product_file': product_file,
+                        'upgrade_profiles': {},
+                        'other_profiles': [],
+                        'install_profile': None,
+                        'uninstall_profile': None,
+                        'is_installed': installed,
+                        'upgrade_info': upgrade_info,
+                        'profile_type': profile_type,
+                    }
             product = addons[product_id]
             if profile_type == 'default':
                 product['title'] = profile['title']
