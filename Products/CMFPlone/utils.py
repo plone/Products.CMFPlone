@@ -710,7 +710,13 @@ def getQuality():
 
 
 def getRetinaScales():
-    from plone.namedfile.utils import getRetinaScales as func
+    warnings.warn(
+        'use getHighPixelDensityScales instead',
+        DeprecationWarning)
+    return getHighPixelDensityScales()
+
+def getHighPixelDensityScales():
+    from plone.namedfile.utils import getHighPixelDensityScales as func
     return func()
 
 

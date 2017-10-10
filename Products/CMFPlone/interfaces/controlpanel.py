@@ -1628,8 +1628,8 @@ class IImagingSchema(Interface):
         default=88
     )
 
-    retina_scales = schema.Choice(
-        title=_(u'Retina mode'),
+    highpixeldensity_scales = schema.Choice(
+        title=_(u'High pixel density mode'),
         description=_(u''),
         default='disabled',
         vocabulary=SimpleVocabulary([
@@ -1641,7 +1641,7 @@ class IImagingSchema(Interface):
 
     quality_2x = schema.Int(
         title=_(u'Image quality at 2x'),
-        description=_(u'A value for the quality of 2x retina images, from 1 '
+        description=_(u'A value for the quality of 2x high pixel density images, from 1 '
                       '(lowest) to 95 (highest). A value of 0 will mean '
                       'plone.scaling\'s default will be used, which is '
                       'currently 62.'),
@@ -1652,7 +1652,7 @@ class IImagingSchema(Interface):
 
     quality_3x = schema.Int(
         title=_(u'Image quality at 3x'),
-        description=_(u'A value for the quality of 3x retina images, from 1 '
+        description=_(u'A value for the quality of 3x high pixel density images, from 1 '
                       '(lowest) to 95 (highest). A value of 0 will mean '
                       'plone.scaling\'s default will be used, which is '
                       'currently 51.'),

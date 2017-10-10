@@ -1,6 +1,6 @@
 // Image Mixins
 // - Responsive image
-// - Retina image
+// - High Pixel Density image
 
 
 // Responsive image
@@ -13,11 +13,11 @@
 }
 
 
-// Retina image
+// High Pixel Density image
 //
-// Short retina mixin for setting background-image and -size. Note that the
+// Short high pixel density mixin for setting background-image and -size. Note that the
 // spelling of `min--moz-device-pixel-ratio` is intentional.
-.img-retina(@file-1x; @file-2x; @width-1x; @height-1x) {
+.img-highpixeldensity(@file-1x; @file-2x; @width-1x; @height-1x) {
   background-image: url("@{file-1x}");
 
   @media

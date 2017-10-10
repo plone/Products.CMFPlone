@@ -108,6 +108,9 @@ Bug fixes:
 - Fix ``utils.get_top_site_from_url`` to work with non-OFS contexts.
   [thet]
 
+- remove mention of "retina" (https://github.com/plone/Products.CMFPlone/issues/2123)
+  [tkimnguyen]
+
 5.1b4 (2017-07-03)
 ------------------
 
