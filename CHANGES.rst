@@ -22,6 +22,10 @@ New features:
 
 Bug fixes:
 
+- Fixed add-on listed as uninstalled when the default profile is not the first alphabetically.
+  Fixes `issue 2166 <https://github.com/plone/Products.CMFPlone/issues/2166>`_.
+  [maurits]
+
 - Less variables: Fix calculation of screen max sizes.
   Max sizes were two pixels too high.
   [thet]
