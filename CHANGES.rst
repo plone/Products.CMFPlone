@@ -23,7 +23,10 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Fixed Products.CMFPlacefulWorkflow being marked as not installed after upgrade from 4.3.
+  This is true for any package in the Products namespace that was installed.
+  Fixes `issue 2103 <https://github.com/plone/Products.CMFPlone/issues/2103>`_.
+  [maurits]
 
 
 5.0.9 (2017-08-05)
