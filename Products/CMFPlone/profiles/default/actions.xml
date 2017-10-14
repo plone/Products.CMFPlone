@@ -235,6 +235,18 @@
    </property>
    <property name="visible">True</property>
   </object>
+  <object name="dashboard" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Dashboard</property>
+   <property name="description" i18n:translate=""></property>
+   <property
+      name="url_expr">string:${portal_url}/dashboard</property>
+   <property name="icon_expr"></property>
+   <property name="available_expr">python:member is not None</property>
+   <property name="permissions">
+    <element value="Portlets: Manage own portlets"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
   <object name="login" meta_type="CMF Action" i18n:domain="plone">
    <property name="title" i18n:translate="">Log in</property>
    <property name="description" i18n:translate=""></property>

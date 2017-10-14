@@ -122,24 +122,25 @@ REQUIREJS_CONFIG_TEMPLATE = """
             "{bkey}": {{
                 options: {{
                     baseUrl: "/",
-                    generateSourceMaps: false,
-                    preserveLicenseComments: false,
-                    paths: {paths},
-                    shim: {shims},
-                    wrapShim: true,
-                    name: "{name}",
                     exclude: ["jquery"],
+                    generateSourceMaps: false,
+                    name: "{name}",
+                    optimize: "none",
                     out: "{out}",
-                    optimize: "none"
+                    paths: {paths},
+                    preserveLicenseComments: false,
+                    shim: {shims},
+                    wrapShim: true
                 }}
             }},
 """
 UGLIFY_CONFIG_TEMPLATE = """
         "{bkey}": {{
           options: {{
-            sourceMap: true,
-            sourceMapName: "{destination}.map",
-            sourceMapIncludeSources: false
+            sourceMap: {{
+              includeSources: false
+            }},
+            sourceMapName: "{destination}.map"
           }},
           files: {{
             "{destination}": {files}
@@ -154,18 +155,16 @@ LESS_CONFIG_TEMPLATE = """
                 ],
                 options: {{
                     compress: true,
-                    strictMath: false,
-                    sourceMap: true,
+                    modifyVars: modifyVars,
                     outputSourceFiles: true,
-                    strictImports: false,
-                    sourceMapURL: "{sourcemap_url}",
-                    sourceMapBasepath: "{base_path}",
-                    relativeUrls: true,
-                    plugins: [
-                        new require("less-plugin-inline-urls"),
-                    ],
                     paths: lessPaths,
-                    modifyVars: modifyVars
+                    plugins: [new require("less-plugin-inline-urls"),],
+                    relativeUrls: true,
+                    sourceMap: true,
+                    sourceMapBasepath: "{base_path}",
+                    sourceMapURL: "{sourcemap_url}",
+                    strictImports: false,
+                    strictMath: false
                 }}
             }}\
 """

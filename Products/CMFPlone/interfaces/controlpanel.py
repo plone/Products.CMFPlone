@@ -582,7 +582,7 @@ class ITinyMCELayoutSchema(Interface):
             u'Enter a JSON-formatted style format configuration. '
             u'A format is for example the style that get applied when '
             u'you press the bold button inside the editor. '
-            u'See http://www.tinymce.com/wiki.php/Configuration:formats'),
+            u'See https://www.tinymce.com/docs/configure/content-formatting/#formats'),  # NOQA: E501
         constraint=validate_json,
         default=json.dumps({
             'discreet': {'inline': 'span', 'classes': 'discreet'},
@@ -690,7 +690,7 @@ class ITinyMCEPluginSchema(Interface):
             'help_tinymce_templates',
             default=(
                 u'Enter the list of templates in json format '
-                u'http://www.tinymce.com/wiki.php/Plugin:template'
+                u'https://www.tinymce.com/docs/plugins/template/'
             )
         ),
         required=False,
@@ -1628,8 +1628,8 @@ class IImagingSchema(Interface):
         default=88
     )
 
-    retina_scales = schema.Choice(
-        title=_(u'Retina mode'),
+    highpixeldensity_scales = schema.Choice(
+        title=_(u'High pixel density mode'),
         description=_(u''),
         default='disabled',
         vocabulary=SimpleVocabulary([
@@ -1641,7 +1641,7 @@ class IImagingSchema(Interface):
 
     quality_2x = schema.Int(
         title=_(u'Image quality at 2x'),
-        description=_(u'A value for the quality of 2x retina images, from 1 '
+        description=_(u'A value for the quality of 2x high pixel density images, from 1 '
                       '(lowest) to 95 (highest). A value of 0 will mean '
                       'plone.scaling\'s default will be used, which is '
                       'currently 62.'),
@@ -1652,7 +1652,7 @@ class IImagingSchema(Interface):
 
     quality_3x = schema.Int(
         title=_(u'Image quality at 3x'),
-        description=_(u'A value for the quality of 3x retina images, from 1 '
+        description=_(u'A value for the quality of 3x high pixel density images, from 1 '
                       '(lowest) to 95 (highest). A value of 0 will mean '
                       'plone.scaling\'s default will be used, which is '
                       'currently 51.'),

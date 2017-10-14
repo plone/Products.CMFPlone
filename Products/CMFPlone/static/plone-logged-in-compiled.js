@@ -50267,10 +50267,10 @@ define('text!mockup-patterns-relateditems-url/templates/breadcrumb.xml',[],funct
 define('text!mockup-patterns-relateditems-url/templates/favorite.xml',[],function () { return '<li><a href="<%- path %>" class="fav" aria-labelledby="blip"><%- title %></a></li>\n';});
 
 
-define('text!mockup-patterns-relateditems-url/templates/result.xml',[],function () { return '<div class="pattern-relateditems-result<% if (typeof oneLevelUp !== \'undefined\' && oneLevelUp) { %> one-level-up<% } %>">\n  <span class="pattern-relateditems-buttons">\n  <% if (is_folderish) { %>\n    <a class="pattern-relateditems-result-browse" data-path="<%- path %>" title="<%- open_folder %>"></a>\n  <% } %>\n  </span>\n  <a class="pattern-relateditems-result-select<% if (selectable) { %> selectable<% } else if (browsing && is_folderish) { %> pattern-relateditems-result-browse<% } %><% if (typeof oneLevelUp !== \'undefined\' && oneLevelUp) { %> one-level-up<% } %>" data-path="<%- path %>">\n    <% if (typeof getURL !== \'undefined\' && ((typeof getIcon !== \'undefined\' && getIcon === true) || portal_type === "Image")) { %><img class="pull-right" src="<%- getURL %>/@@images/image/icon "><br><% } %>\n  \t<span class="pattern-relateditems-result-title contenttype-<%- portal_type.toLowerCase() %><% if (typeof review_state !== \'undefined\') { %> state-<%- review_state %><% } %>"><%- Title %></span>\n    <span class="pattern-relateditems-result-path"><%- path %></span>\n  </a>\n</div>\n';});
+define('text!mockup-patterns-relateditems-url/templates/result.xml',[],function () { return '<div class="pattern-relateditems-result<% if (oneLevelUp) { %> one-level-up<% } %>">\n  <span class="pattern-relateditems-buttons">\n  <% if (is_folderish) { %>\n    <a class="pattern-relateditems-result-browse" data-path="<%- path %>" title="<%- open_folder %>"></a>\n  <% } %>\n  </span>\n  <a class="pattern-relateditems-result-select<% if (selectable) { %> selectable<% } else if (browsing && is_folderish) { %> pattern-relateditems-result-browse<% } %><% if (oneLevelUp) { %> one-level-up<% } %>" data-path="<%- path %>">\n    <% if (getURL && (getIcon || portal_type === "Image")) { %><img src="<%- getURL %>/@@images/image/icon "><br><% } %>\n    <span class="pattern-relateditems-result-title<%- portal_type ? \' contenttype-\' + portal_type.toLowerCase() : \'\' %><%- review_state ? \' state-\' + review_state : \'\' %>" title="<%- portal_type %>"><%- Title %></span>\n    <span class="pattern-relateditems-result-path"><%- path %></span>\n  </a>\n</div>\n';});
 
 
-define('text!mockup-patterns-relateditems-url/templates/selection.xml',[],function () { return '<span class="pattern-relateditems-item">\n  <% if (typeof getURL !== \'undefined\' && ((typeof getIcon !== \'undefined\' && getIcon === true) || portal_type === "Image")) { %><img class="pull-right" src="<%- getURL %>/@@images/image/icon"><br><% } %>\n  <span class="pattern-relateditems-item-title contenttype-<%- portal_type.toLowerCase() %><% if (typeof review_state !== \'undefined\') { %> state-<%- review_state %><% } %>"><%- Title %></span>\n  <span class="pattern-relateditems-item-path"><%- path %></span>\n</span>\n';});
+define('text!mockup-patterns-relateditems-url/templates/selection.xml',[],function () { return '<span class="pattern-relateditems-item">\n  <% if (getURL && (getIcon || portal_type === "Image")) { %><img src="<%- getURL %>/@@images/image/icon"><br><% } %>\n  <span class="pattern-relateditems-item-title<%- portal_type ? \' contenttype-\' + portal_type.toLowerCase() : \'\' %><%- review_state ? \' state-\' + review_state : \'\' %>" title="<%- portal_type %>"><%- Title %></span>\n  <span class="pattern-relateditems-item-path"><%- path %></span>\n</span>\n';});
 
 
 define('text!mockup-patterns-relateditems-url/templates/toolbar.xml',[],function () { return '<% if (mode!==\'auto\') { %>\n<div class="btn-group mode-selector" role="group">\n  <button type="button" class="mode search btn <% if (mode==\'search\') { %>btn-primary<% } else {%>btn-default<% } %>"><%- searchModeText %></button>\n  <button type="button" class="mode browse btn <% if (mode==\'browse\') { %>btn-primary<% } else {%>btn-default<% } %>"><%- browseModeText %></button>\n</div>\n<% } %>\n<div class="path-wrapper">\n  <span class="pattern-relateditems-path-label"><%- searchText %></span>\n  <a class="crumb" href="/"><span class="glyphicon glyphicon-home"/></a>\n  <%= items %>\n</div>\n<div class="controls pull-right">\n  <% if (favorites.length > 0) { %>\n  <div class="favorites dropdown pull-right">\n    <button type="button" class="favorites dropdown-toggle btn btn-primary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">\n      <span class="glyphicon glyphicon-star"/>\n      <%- favText %>\n      <span class="caret"/>\n    </button>\n    <ul class="dropdown-menu">\n      <%= favItems %>\n    </ul>\n  </div>\n  <% } %>\n</div>\n';});
@@ -50395,6 +50395,7 @@ define('mockup-patterns-relateditems',[
     trigger: '.pat-relateditems',
     parser: 'mockup',
     currentPath: undefined,
+    selectedUIDs: [],
     openAfterInit: undefined,
     defaults: {
       // main option
@@ -50516,6 +50517,26 @@ define('mockup-patterns-relateditems',[
           var more = (page * this.options.pageSize) < data.total;
           var results = data.results;
 
+          this.selectedUIDs = (this.$el.select2('data') || []).map(function (el) {
+            // populate current selection. Reuse in formatResult
+            return el.UID;
+          });
+
+          // Filter out items:
+          // While browsing: always include folderish items
+          // Browsing and searching: Only include selectable items, which are not already selected.
+          results = results.filter(
+            function (item) {
+              if (
+                (this.browsing && item.is_folderish) ||
+                (this.isSelectable(item) && this.selectedUIDs.indexOf(item.UID) == -1)
+              ) {
+                return true;
+              }
+              return false;
+            }.bind(this)
+          );
+
           // Extend ``data`` with a ``oneLevelUp`` item when browsing
           var path = this.currentPath.split('/');
           if (page === 1 &&           // Show level up only on top.
@@ -50527,7 +50548,6 @@ define('mockup-patterns-relateditems',[
               'oneLevelUp': true,
               'Title': _t('One level up'),
               'path': path.slice(0, path.length - 1).join('/') || '/',
-              'portal_type': 'Folder',
               'is_folderish': true,
               'selectable': false
             }].concat(results);
@@ -50750,6 +50770,16 @@ define('mockup-patterns-relateditems',[
       Select2.prototype.initializeTags.call(self);
 
       self.options.formatSelection = function(item) {
+
+        item = $.extend(true, {
+            'Title': '',
+            'getIcon': '',
+            'getURL': '',
+            'path': '',
+            'portal_type': '',
+            'review_state': ''
+        }, item);
+
         // activate petterns on the result set.
         var $selection = $(self.applyTemplate('selection', item));
         if (self.options.scanSelection) {
@@ -50762,25 +50792,24 @@ define('mockup-patterns-relateditems',[
 
       self.options.formatResult = function(item) {
         item.selectable = self.isSelectable(item);
-        var data = self.$el.select2('data');
 
-        for (var i = 0; i < data.length; i = i + 1) {
-          if (data[i].UID === item.UID) {
+        item = $.extend(true, {
+            'Title': '',
+            'getIcon': '',
+            'getURL': '',
+            'is_folderish': false,
+            'oneLevelUp': false,
+            'path': '',
+            'portal_type': '',
+            'review_state': '',
+            'selectable': false,
+        }, item);
+
+        if (self.selectedUIDs.indexOf(item.UID) != -1) {
             // do not allow already selected items to be selected again.
             item.selectable = false;
-          }
         }
-        if (
-          !item.selectable && (
-            !self.browsing ||
-            self.browsing && !item.is_folderish
-          )
-        ) {
-          // Filter out non-selectable and non-folderish while browsing.
-          // or
-          // Exclude already selected items while searching.
-          return;
-        }
+
         var result = $(self.applyTemplate('result', item));
 
         $('.pattern-relateditems-result-select', result).on('click', function(event) {
@@ -73889,7 +73918,9 @@ define('mockup-patterns-tinymce',[
           self.$el.hide();
         }
 
-        if(tinyOptions.importcss_file_filter && tinyOptions.importcss_file_filter.indexOf(',') !== -1){
+        if(tinyOptions.importcss_file_filter &&
+           typeof tinyOptions.importcss_file_filter.indexOf === 'function' &&
+           tinyOptions.importcss_file_filter.indexOf(',') !== -1){
           // need a custom function to check now
           var files = tinyOptions.importcss_file_filter.split(',');
 
@@ -74104,6 +74135,9 @@ define('mockup-patterns-textareamimetypeselector',[
  *    indexOptionsUrl(string): URL to grab index option data from. Must contain "sortable_indexes" and "indexes" data in JSON object. (null)
  *    previewURL(string): URL used to pass in a plone.app.querystring-formatted HTTP querystring and get an HTML list of results ('portal_factory/@@querybuilder_html_results')
  *    previewCountURL(string): URL used to pass in a plone.app.querystring-formatted HTTP querystring and get an HTML string of the total number of records found with the query ('portal_factory/@@querybuildernumberofresults')
+ *    patternDateOptions: Options for the Date/Time select widget ({})
+ *    patternAjaxSelectOptions: Options for the AJAX select widget ({})
+ *    patternRelateditemsOptions: Options for the related items widget ({})
  *    classWrapperName(string): CSS class to apply to the wrapper element ('querystring-wrapper')
  *    classSortLabelName(string): CSS class to apply to the sort on label ('querystring-sort-label')
  *    classSortReverseName(string): CSS class to apply to the sort order label and checkbox container ('querystring-sortreverse')
@@ -74165,7 +74199,7 @@ define('mockup-patterns-querystring',[
       classClearName: 'querystring-criteria-clear',
       classDepthName: 'querystring-criteria-depth'
     },
-    init: function($el, options, indexes, index, operator, value, baseUrl) {
+    init: function($el, options, indexes, index, operator, value, baseUrl, patternDateOptions, patternAjaxSelectOptions, patternRelateditemsOptions) {
       var self = this;
 
       self.options = $.extend(true, {}, self.defaults, options);
@@ -74178,6 +74212,19 @@ define('mockup-patterns-querystring',[
       self.$wrapper = $('<div/>')
               .addClass(self.options.classWrapperName)
               .appendTo($el);
+
+      // Sub widgets options
+      self.patternDateOptions = patternDateOptions || {};
+      self.patternAjaxSelectOptions = patternAjaxSelectOptions || {};
+      self.patternRelateditemsOptions = patternRelateditemsOptions || {};
+      // Defaults
+      self.patternAjaxSelectOptions = $.extend({'width': '250px'}, self.patternAjaxSelectOptions);
+      self.patternRelateditemsOptions = $.extend({
+        'vocabularyUrl': self.baseUrl + '@@getVocabulary?name=plone.app.vocabularies.Catalog&field=relatedItems',
+        'width': '400px'
+      }, self.patternRelateditemsOptions);
+      // Force set
+      self.patternRelateditemsOptions['maximumSelectionSize'] = 1;
 
       // Remove button
       self.$remove = $('<div>' + self.options.remove + '</div>')
@@ -74401,7 +74448,7 @@ define('mockup-patterns-querystring',[
       } else if (widget === 'DateWidget') {
         self.$value = $('<input type="text"/>')
                 .addClass(self.options.classValueName + '-' + widget)
-                .attr('data-pat-pickadate', '{"time": false, "date": {"format": "dd/mm/yyyy" }}')
+                .attr('data-pat-pickadate', JSON.stringify(self.patternDateOptions))  // have to pass as attributes otherwise time bool will overwritten to an object by the mockupParser
                 .val(value)
                 .appendTo($wrapper)
                 .patternPickadate()
@@ -74423,7 +74470,7 @@ define('mockup-patterns-querystring',[
         var startdt = $('<input type="text"/>')
           .addClass(self.options.classValueName + '-' + widget)
           .addClass(self.options.classValueName + '-' + widget + '-start')
-          .attr('data-pat-pickadate', '{"time": false, "date": {"format": "dd/mm/yyyy" }}')
+          .attr('data-pat-pickadate', JSON.stringify(self.patternDateOptions))
           .val(val1)
           .appendTo(startwrap)
           .patternPickadate()
@@ -74439,7 +74486,7 @@ define('mockup-patterns-querystring',[
         var enddt = $('<input type="text"/>')
                         .addClass(self.options.classValueName + '-' + widget)
                         .addClass(self.options.classValueName + '-' + widget + '-end')
-                        .attr('data-pat-pickadate', '{"time": false, "date": {"format": "dd/mm/yyyy" }}')
+                        .attr('data-pat-pickadate', JSON.stringify(self.patternDateOptions))
                         .val(val2)
                         .appendTo(endwrap)
                         .patternPickadate()
@@ -74513,12 +74560,7 @@ define('mockup-patterns-querystring',[
           .addClass(self.options.classValueName + '-' + widget)
           .appendTo($wrapper)
           .val(pathAndDepth[0])
-          .patternRelateditems({
-            "vocabularyUrl": self.baseUrl + "@@getVocabulary?name=plone.app.vocabularies.Catalog&field=relatedItems",
-            "folderTypes": ["Folder"],
-            "maximumSelectionSize": 1,
-            "width": "400px"
-          })
+          .patternRelateditems(self.patternRelateditemsOptions)
           .change(function() {
             self.trigger('value-changed');
           });
@@ -74540,7 +74582,7 @@ define('mockup-patterns-querystring',[
                 .appendTo(self.$value);
           });
         }
-        self.$value.patternSelect2({ width: '250px' });
+        self.$value.patternSelect2(self.patternAjaxSelectOptions);
       }
 
       if (typeof value !== 'undefined' && typeof self.$value !== 'undefined') {
@@ -74750,6 +74792,9 @@ define('mockup-patterns-querystring',[
       indexOptionsUrl: null,
       previewURL: 'portal_factory/@@querybuilder_html_results', // base url to use to request preview information from
       previewCountURL: 'portal_factory/@@querybuildernumberofresults',
+      patternDateOptions: {},
+      patternAjaxSelectOptions: {},
+      patternRelateditemsOptions: {},
       classSortLabelName: 'querystring-sort-label',
       classSortReverseName: 'querystring-sortreverse',
       classSortReverseLabelName: 'querystring-sortreverse-label',
@@ -74846,7 +74891,9 @@ define('mockup-patterns-querystring',[
       var self = this,
           baseUrl = self.options.indexOptionsUrl.replace(/(@@.*)/g, ''),
           criteria = new Criteria(self.$criteriaWrapper, self.options.criteria,
-            self.options.indexes, index, operator, value, baseUrl);
+            self.options.indexes, index, operator, value, baseUrl,
+            self.options.patternDateOptions, self.options.patternAjaxSelectOptions, self.options.patternRelateditemsOptions
+          );
 
       criteria.on('remove', function(e) {
         if (self.criterias[self.criterias.length - 1] === criteria) {
@@ -74919,7 +74966,7 @@ define('mockup-patterns-querystring',[
             .html(self.options.indexes[key].title)
         );
       }
-      self.$sortOn.patternSelect2({width: 150});
+      self.$sortOn.patternSelect2({width: '150px'});
 
       self.$sortOrder = $('<input type="checkbox" />')
         .attr('name', 'sort_reversed:boolean')
@@ -75107,6 +75154,14 @@ define('mockup-patterns-inlinevalidation',[
         return ret;
     },
 
+    queue: function (queueName, callback) {
+        if (typeof callback === 'undefined') {
+          callback = queueName;
+          queueName = 'fx';  // 'fx' autoexecutes by default
+        }
+        $(window).queue(queueName, callback);
+    },
+
     validate_archetypes_field: function (input) {
         var $input = $(input),
             $field = $input.closest('.field'),
@@ -75125,9 +75180,19 @@ define('mockup-patterns-inlinevalidation',[
         var traditional;
         var params = $.param({uid: uid, fname: fname, value: value}, traditional = true);
         if ($field && uid && fname) {
-            $.post($('base').attr('href') + '/at_validate_field', params, function (data) {
-                this.render_error($field, data.errmsg);
-            });
+            this.queue($.proxy(function(next) {
+                $.ajax({
+                    type: 'POST',
+                    url: $('base').attr('href') + '/at_validate_field?' + params,
+                    iframe: false,
+                    success: $.proxy(function (data) {
+                      this.render_error($field, data.errmsg);
+                      next();
+                    }, this),
+                    error: function () { next(); },
+                    dataType: 'json'
+                });
+            }, this));
         }
     },
 
@@ -75137,15 +75202,19 @@ define('mockup-patterns-inlinevalidation',[
             $form = $field.closest('form'),
             fname = $field.attr('data-fieldname');
 
-        $form.ajaxSubmit({
-            url: this.append_url_path($form.attr('action'), '@@formlib_validate_field'),
-            data: {fname: fname},
-            iframe: false,
-            success: $.proxy(function (data) {
-                this.render_error($field, data.errmsg);
-            }, this),
-            dataType: 'json'
-        });
+        this.queue($.proxy(function(next) {
+            $form.ajaxSubmit({
+                url: this.append_url_path($form.attr('action'), '@@formlib_validate_field'),
+                data: {fname: fname},
+                iframe: false,
+                success: $.proxy(function (data) {
+                    this.render_error($field, data.errmsg);
+                    next();
+                }, this),
+                error: function () { next(); },
+                dataType: 'json'
+            });
+        }, this));
     },
 
     validate_z3cform_field: function (input) {
@@ -75156,15 +75225,19 @@ define('mockup-patterns-inlinevalidation',[
             fname = $field.attr('data-fieldname');
 
         if (fname) {
-            $form.ajaxSubmit({
-                url: this.append_url_path($form.attr('action'), '@@z3cform_validate_field'),
-                data: {fname: fname, fset: fset},
-                iframe: false,
-                success: $.proxy(function (data) {
-                    this.render_error($field, data.errmsg);
-                }, this),
-                dataType: 'json'
-            });
+          this.queue($.proxy(function(next) {
+              $form.ajaxSubmit({
+                  url: this.append_url_path($form.attr('action'), '@@z3cform_validate_field'),
+                  data: {fname: fname, fset: fset},
+                  iframe: false,
+                  success: $.proxy(function (data) {
+                      this.render_error($field, data.errmsg);
+                      next();
+                  }, this),
+                  error: function () { next(); },
+                  dataType: 'json'
+              });
+          }, this));
         }
     },
 
@@ -75175,7 +75248,7 @@ define('mockup-patterns-inlinevalidation',[
           'input[type="password"], ' +
           'input[type="checkbox"], ' +
           'select, ' +
-          'textarea').on('blur', 
+          'textarea').on('blur',
 
           $.proxy(function (ev) {
             if (this.options.type === 'archetypes') {
@@ -75762,7 +75835,7 @@ define('mockup-patterns-structure-url/js/views/actionmenu',[
 });
 
 
-define('text!mockup-patterns-structure-url/templates/tablerow.xml',[],function () { return '<td class="selection"><input type="checkbox" <% if(selected){ %> checked="checked" <% } %>/></td>\n\n<td class="title">\n  <div class="pull-left">\n    <a href="<%- viewURL %>"\n        class="manage state-<%- review_state %> contenttype-<%- contenttype %>"\n        title="<%- portal_type %>">\n        <% if(attributes["getMimeIcon"] && contenttype == \'file\'){ %>\n           <img class="mime-icon" src="<%- getMimeIcon %>"> <% } %>\n      <% if(Title){ %>\n        <%- Title %>\n      <% } else { %>\n        <em><%- id %></em>\n      <% } %>\n    </a>\n    <% if(expired){ %>\n      <span class="plone-item-expired"><%- _t(\'Expired\') %></span>\n    <% } %>\n    <% if(ineffective){ %>\n      <span class="plone-item-ineffective"><%- _t(\'Before publishing date\') %></span>\n    <% } %>\n    <% if(activeColumns.indexOf(\'Description\') !== -1 && _.has(availableColumns, \'Description\') && Description) { %>\n    <p class="Description">\n      <small>\n        <%- Description %>\n      </small>\n    </p>\n    <% } %>\n  </div>\n  <% if(attributes["getIcon"] && thumb_scale) { %>\n    <img class="image-<%- thumb_scale %> pull-right" src="<%- getURL %>/@@images/image/<%- thumb_scale %>">\n  <% } %>\n</td>\n\n<% _.each(activeColumns, function(column) { %>\n  <% if(column !== \'Description\' && _.has(availableColumns, column)) { %>\n    <td class="<%- column %>"><%- attributes[column] %></td>\n  <% } %>\n<% }); %>\n\n<td class="actionmenu-container"></td>\n';});
+define('text!mockup-patterns-structure-url/templates/tablerow.xml',[],function () { return '<td class="selection"><input type="checkbox" <% if(selected){ %> checked="checked" <% } %>/></td>\n\n<td class="title">\n  <div class="pull-left">\n    <a href="<%- viewURL %>"\n        class="manage state-<%- review_state %> contenttype-<%- contenttype %>"\n        title="<%- portal_type %>">\n        <% if(attributes["getMimeIcon"] && contenttype == \'file\'){ %>\n           <img class="mime-icon" src="<%- getMimeIcon %>"> <% } %>\n      <% if(Title){ %>\n        <%- Title %>\n      <% } else { %>\n        <em><%- id %></em>\n      <% } %>\n    </a>\n    <% if(expired){ %>\n      <span class="plone-item-expired"><%- _t(\'Expired\') %></span>\n    <% } %>\n    <% if(ineffective){ %>\n      <span class="plone-item-ineffective"><%- _t(\'Before publishing date\') %></span>\n    <% } %>\n    <% if(activeColumns.indexOf(\'Description\') !== -1 && _.has(availableColumns, \'Description\') && Description) { %>\n    <p class="Description">\n      <small>\n        <%- Description %>\n      </small>\n    </p>\n    <% } %>\n  </div>\n  <% if(attributes["getIcon"] && thumb_scale) { %>\n    <img class="thumb-<%- thumb_scale %> pull-right" src="<%- getURL %>/@@images/image/<%- thumb_scale %>">\n  <% } %>\n</td>\n\n<% _.each(activeColumns, function(column) { %>\n  <% if(column !== \'Description\' && _.has(availableColumns, column)) { %>\n    <td class="<%- column %>"><%- attributes[column] %></td>\n  <% } %>\n<% }); %>\n\n<td class="actionmenu-container"></td>\n';});
 
 define('mockup-patterns-structure-url/js/views/tablerow',[
   'jquery',
@@ -75941,7 +76014,7 @@ define('mockup-patterns-structure-url/js/views/tablerow',[
 });
 
 
-define('text!mockup-patterns-structure-url/templates/table.xml',[],function () { return '<div class="alert alert-<%- status.type %> status">\n  <strong><%- status.label %></strong>\n  <span><%- status.text %></span>&nbsp;<% // &nbsp; to get correct height for empty alerts %>\n</div>\n\n<table class="table table-striped table-bordered">\n  <thead>\n    <tr class="fc-breadcrumbs-container">\n      <td class="fc-breadcrumbs" colspan="<%- activeColumns.length + 3 %>">\n        <a href="#" data-path="/">\n          <span class="glyphicon glyphicon-home"></span> /\n        </a>\n        <% _.each(pathParts, function(part, idx, list){\n          if(part){\n            if(idx > 0){ %>\n              /\n            <% } %>\n            <a href="#" class="crumb" data-path="<%- part %>"><%- part %></a>\n          <% }\n        }); %>\n      </td>\n    </tr>\n    <tr>\n      <th class="selection"><input type="checkbox" class="select-all" /></th>\n      <th class="title">Title</th>\n      <% _.each(activeColumns, function(column){ %>\n        <% if(column !== \'Description\' && _.has(availableColumns, column)) { %>\n          <th><%- availableColumns[column] %></th>\n        <% } %>\n      <% }); %>\n      <th class="actions"><%- _t("Actions") %></th>\n    </tr>\n  </thead>\n  <tbody>\n  </tbody>\n</table>\n';});
+define('text!mockup-patterns-structure-url/templates/table.xml',[],function () { return '<div class="alert alert-<%- status.type %> status">\n  <strong><%- status.label %></strong>\n  <span><%- status.text %></span>&nbsp;<% // &nbsp; to get correct height for empty alerts %>\n</div>\n\n<table class="table table-striped table-bordered">\n  <thead>\n    <tr class="fc-breadcrumbs-container">\n      <td class="fc-breadcrumbs" colspan="<%- activeColumns.length + 3 %>">\n        <a href="#" data-path="/">\n          <span class="glyphicon glyphicon-home"></span> /\n        </a>\n        <% _.each(pathParts, function(part, idx, list){\n          if(part){\n            if(idx > 0){ %>\n              /\n            <% } %>\n            <a href="#" class="crumb" data-path="<%- part %>"><%- part %></a>\n          <% }\n        }); %>\n      </td>\n    </tr>\n    <tr>\n      <th class="selection"><input type="checkbox" class="select-all" /></th>\n      <th class="title"><%- _t(\'Title\') %></th>\n      <% _.each(activeColumns, function(column){ %>\n        <% if(column !== \'Description\' && _.has(availableColumns, column)) { %>\n          <th><%- availableColumns[column] %></th>\n        <% } %>\n      <% }); %>\n      <th class="actions"><%- _t("Actions") %></th>\n    </tr>\n  </thead>\n  <tbody>\n  </tbody>\n</table>\n';});
 
 /* Sortable pattern.
  *
@@ -75949,7 +76022,7 @@ define('text!mockup-patterns-structure-url/templates/table.xml',[],function () {
  *    selector(string): Selector to use to draggable items in pattern ('li')
  *    dragClass(string): Class to apply to original item that is being dragged. ('item-dragging')
  *    cloneClass(string): Class to apply to cloned item that is dragged. ('dragging')
- *    drop(function): callback function for when item is dropped (null)
+ *    drop(function, string): Callback function or name of callback function in global namespace to be called when item is dropped ('')
  *
  * Documentation:
  *    # Default
@@ -76010,7 +76083,7 @@ define('mockup-patterns-sortable',[
           addClass(pattern.options.cloneClass).
           css({opacity: 0.75, position: 'absolute'}).appendTo(document.body);
       },
-      drop: null // function to handle drop event
+      drop: undefined  // callback function or name of global function
     },
     init: function() {
       var self = this;
@@ -76054,8 +76127,12 @@ define('mockup-patterns-sortable',[
         var $el = $(this);
         $el.removeClass(self.options.dragClass);
         $(dd.proxy).remove();
-        if (self.options.drop) {
-          self.options.drop($el, $el.index() - start);
+          if (self.options.drop) {
+            if (typeof self.options.drop === 'string') {
+              window[self.options.drop]($el, $el.index() - start);
+            } else {
+              self.options.drop($el, $el.index() - start);
+            }
         }
       })
       .drop('init', function(e, dd ) {
@@ -76743,7 +76820,11 @@ define('mockup-patterns-structure-url/js/views/generic-popover',[
       var self = this;
       var data = {};
       _.each(self.$el.find('form').serializeArray(), function(param) {
-        data[param.name] = param.value;
+        if (param.name in data) {
+            data[param.name] += ',' + param.value;
+        } else {
+            data[param.name] = param.value;
+        }
       });
 
       self.app.buttonClickEvent(this.triggerView, data);
@@ -77149,7 +77230,7 @@ define('mockup-patterns-structure-url/js/views/textfilter',[
     render: function() {
       this.$el.html(this.template({_t: _t}));
       this.button = new ButtonView({
-        title: _t('Query'),
+        tooltip: _t('Query'),
         icon: 'search'
       });
       this.popover = new PopoverView({
@@ -78948,6 +79029,7 @@ define('mockup-patterns-structure-url/js/views/app',[
       items.push(new SelectionButtonView({
         title: _t('Selected'),
         id: 'selected-items',
+        tooltip: _t('Manage selection'),
         collection: this.selectedCollection
       }));
 
@@ -79372,8 +79454,12 @@ define('mockup-patterns-structureupdater',[
     init: function() {
 
       $('body').on('context-info-loaded', function (e, data) {
-        $(this.options.titleSelector, this.$el).html(data.object && data.object.Title || '&nbsp;');
-        $(this.options.descriptionSelector, this.$el).html(data.object && data.object.Description || '&nbsp;');
+        if (this.options.titleSelector) {
+            $(this.options.titleSelector, this.$el).html(data.object && data.object.Title || '&nbsp;');
+        }
+        if (this.options.descriptionSelector) {
+            $(this.options.descriptionSelector, this.$el).html(data.object && data.object.Description || '&nbsp;');
+        }
       }.bind(this));
 
     }
@@ -83638,11 +83724,17 @@ define('plone-patterns-toolbar',[
         expanded: 'plone-toolbar-expanded',
         active: 'active'
       },
-      cookieName: 'plone-toolbar'
+      cookieName: 'plone-toolbar',
+      toolbar_width: '120px',
+      submenu_width: '180px',
+      desktop_width: '768px'
+    },
+    pxToInt: function(px) {
+      return parseInt(this.options.desktop_width.split('px')[0], 10);
     },
     setupMobile: function() {
       var that = this;
-      that.$container.css('right', '-120px');
+      that.$container.css('right', '-' + this.options.toolbar_width);
       // make sure we are in expanded mode
       $('body').addClass(that.options.classNames.leftExpanded);
       $('body').addClass(that.options.classNames.expanded);
@@ -83654,7 +83746,7 @@ define('plone-patterns-toolbar',[
       $('.' + that.options.classNames.logo, that.$container).off('click').on('click', function() {
         var $el = $(this);
         if ($el.hasClass('open')){
-          that.$container.css('right', '-120px');
+          that.$container.css('right', '-' + this.options.toolbar_width);
           $('html').css('margin-left', '0');
           $('html').css('margin-right', '0');
           $el.removeClass('open');
@@ -83662,8 +83754,8 @@ define('plone-patterns-toolbar',[
         } else {
           that.$container.css('right', '0');
           $el.addClass('open');
-          $('html').css('margin-left', '-120px');
-          $( 'html' ).css('margin-right', '120px');
+          $('html').css('margin-left', '-' + this.options.toolbar_width);
+          $( 'html' ).css('margin-right', this.options.toolbar_width);
         }
       });
       // Remove desktop event binding
@@ -83675,15 +83767,16 @@ define('plone-patterns-toolbar',[
         var $el = $(this).parent();
         if ($el.hasClass(that.options.classNames.active)) {
           that.$container.css('right', '0');
-          $('html').css('margin-left', '-120px');
-          $('html').css('margin-right', '120px');
+          $('html').css('margin-left', '-' + this.options.toolbar_width);
+          $('html').css('margin-right', this.options.toolbar_width);
           $('nav li', that.$container).removeClass(that.options.classNames.active);
         } else {
           $('nav li', that.$container).removeClass(that.options.classNames.active);
           $el.addClass(that.options.classNames.active);
-          that.$container.css('right', '180px');
-          $('html').css('margin-left', '-300px');
-          $('html').css('margin-right', '300px');
+          that.$container.css('right', this.options.submenu_width);
+          var margin = this.pxToInt(this.options.toolbar_width) + this.pxToInt(this.options.submenu_width);
+          $('html').css('margin-left', '-' + margin + 'px' );
+          $('html').css('margin-right', + margin + 'px');
         }
       });
     },
@@ -83821,7 +83914,7 @@ define('plone-patterns-toolbar',[
       $content.attr('aria-hidden', 'false');
     },
     isDesktop: function() {
-      return $(window).width() > '768';
+      return $(window).width() > this.pxToInt(this.options.desktop_width);
     },
     _setHeight: function() {
       var $items = $('.plone-toolbar-main', this.$container);
@@ -84056,5 +84149,5 @@ require([
   'use strict';
 });
 
-define("/home/_thet/data/dev/fhnw/plone/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
+define("/home/workspacejensens/cdev/plone5/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
 

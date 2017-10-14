@@ -3,6 +3,7 @@
 from Acquisition import aq_base
 from DateTime import DateTime
 from OFS.ObjectManager import REPLACEABLE
+from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.indexer.wrapper import IndexableObjectWrapper
@@ -1054,6 +1055,36 @@ class TestCatalogExpirationFiltering(PloneTestCase):
         results = [b.getPath() for b in self.catalog(path=path)]
         self.assertIn('/'.join(self.folder.doc.getPhysicalPath()), results)
 
+    def testUnauthorizedIsNotRaisedOnShowInactive(self):
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
+        wf_tool = self.portal.portal_workflow
+        self.portal.invokeFactory('Folder', id='folder1')
+        folder = self.portal['folder1']
+        wf_tool.doActionFor(folder, 'publish', comment='')
+        folder.reindexObject()
+
+        folder.invokeFactory('Folder', id='folder2')
+        folder2 = folder['folder2']
+        wf_tool.doActionFor(folder2, 'hide', comment='')
+        folder2.reindexObject()
+
+        folder2.invokeFactory('Document', id='doc1')
+        doc = folder2['doc1']
+        wf_tool.doActionFor(doc, 'publish', comment='')
+        doc.reindexObject()
+
+        folder2.invokeFactory('Document', id='doc2')
+        doc2 = folder2['doc2']
+        wf_tool.doActionFor(doc2, 'hide', comment='')
+        doc2.reindexObject()
+
+        self.logout()
+        path = '/' + folder2.absolute_url(1)
+        results = self.catalog.searchResults(path=path)
+        self.assertEqual(
+            results[0].getPath(), '/plone/folder1/folder2/doc1')
+        self.assertEqual(len(results), 1)
+
     def testExpiredWithPermissionOnSubpath(self):
         self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
         self.folder.doc.reindexObject()
@@ -1133,6 +1164,35 @@ class TestCatalogExpirationFiltering(PloneTestCase):
                     '/'.join(self.folder.doc.getPhysicalPath()),
                 ]
             }
+        }
+        res = self.catalog.searchResults(**query)
+        self.assertResults(res, expected_result)
+        res = self.catalog(**query)
+        self.assertResults(res, expected_result)
+
+    def testExpiredWithSameNameAsSite(self):
+        # Create an expired folder with the same name as the site
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
+        self.portal.invokeFactory('Folder', id=self.portal.id)
+
+        # Add the AccessInactivePortalContent permission in the plone folder
+        # The user should NOT have this permission in self.folder
+        self.portal.plone.manage_role('Member', [AccessInactivePortalContent])
+
+        # Expire a document
+        self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
+        self.folder.doc.reindexObject()
+        self.nofx()
+
+        # Inactive content isn't shown without the required permission.
+        expected_result = [content for content in base_content if content != 'doc'] + ['plone']
+
+        # Login as unprivileged user
+        self.login(user2)
+
+        # Path is the site's one
+        query = {
+            'path': '/'.join(self.portal.getPhysicalPath())
         }
         res = self.catalog.searchResults(**query)
         self.assertResults(res, expected_result)

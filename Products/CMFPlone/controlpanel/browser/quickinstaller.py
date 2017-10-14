@@ -548,7 +548,7 @@ class ManageProductsView(InstallerView):
             profile_type = pid_parts[-1]
             if product_id not in addons:
                 # get some basic information on the product
-                installed = self.is_profile_installed(pid)
+                installed = self.is_product_installed(product_id)
                 upgrade_info = {}
                 if installed:
                     upgrade_info = self.upgrade_info(product_id)
