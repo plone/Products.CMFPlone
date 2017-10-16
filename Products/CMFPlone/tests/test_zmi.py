@@ -36,18 +36,8 @@ class ZMITests(unittest.TestCase):
         view = self.portal.restrictedTraverse(url)
         self.assertTrue(view(), msg='{0} is broken'.format(url))
 
-    def test_manage_UndoForm(self):
-        url = 'manage_UndoForm'
-        view = self.portal.restrictedTraverse(url)
-        self.assertTrue(view(), msg='{0} is broken'.format(url))
-
     def test_manage_owner(self):
         url = 'manage_owner'
-        view = self.portal.restrictedTraverse(url)
-        self.assertTrue(view(), msg='{0} is broken'.format(url))
-
-    def test_manage_interfaces(self):
-        url = 'manage_interfaces'
         view = self.portal.restrictedTraverse(url)
         self.assertTrue(view(), msg='{0} is broken'.format(url))
 
@@ -91,18 +81,8 @@ class ZMITests(unittest.TestCase):
         view = self.portal.restrictedTraverse(url)
         self.assertTrue(view(), msg='{0} is broken'.format(url))
 
-    def test_plone_utils(self):
-        url = 'plone_utils/manage_UndoForm'
-        view = self.portal.restrictedTraverse(url)
-        self.assertTrue(view(), msg='{0} is broken'.format(url))
-
     def test_portal_actions(self):
         url = 'portal_actions/manage_main'
-        view = self.portal.restrictedTraverse(url)
-        self.assertTrue(view(), msg='{0} is broken'.format(url))
-
-    def test_portal_archivist(self):
-        url = 'portal_archivist/manage_UndoForm'
         view = self.portal.restrictedTraverse(url)
         self.assertTrue(view(), msg='{0} is broken'.format(url))
 
@@ -123,16 +103,6 @@ class ZMITests(unittest.TestCase):
 
     def test_portal_form_controller(self):
         url = 'portal_form_controller/manage_overview'
-        view = self.portal.restrictedTraverse(url)
-        self.assertTrue(view(), msg='{0} is broken'.format(url))
-
-    def test_portal_groupdata(self):
-        url = 'portal_groupdata/manage_UndoForm'
-        view = self.portal.restrictedTraverse(url)
-        self.assertTrue(view(), msg='{0} is broken'.format(url))
-
-    def test_portal_groups(self):
-        url = 'portal_groups/manage_UndoForm'
         view = self.portal.restrictedTraverse(url)
         self.assertTrue(view(), msg='{0} is broken'.format(url))
 
@@ -166,11 +136,6 @@ class ZMITests(unittest.TestCase):
         view = self.portal.restrictedTraverse(url)
         self.assertTrue(view(), msg='{0} is broken'.format(url))
 
-    def test_portal_password_reset(self):
-        url = 'portal_password_reset/manage_UndoForm'
-        view = self.portal.restrictedTraverse(url)
-        self.assertTrue(view(), msg='{0} is broken'.format(url))
-
     def test_portal_properties(self):
         url = 'portal_properties/manage_main'
         view = self.portal.restrictedTraverse(url)
@@ -193,11 +158,6 @@ class ZMITests(unittest.TestCase):
 
     def test_portal_registration(self):
         url = 'portal_registration/manage_overview'
-        view = self.portal.restrictedTraverse(url)
-        self.assertTrue(view(), msg='{0} is broken'.format(url))
-
-    def test_portal_registry(self):
-        url = 'portal_registry/manage_UndoForm'
         view = self.portal.restrictedTraverse(url)
         self.assertTrue(view(), msg='{0} is broken'.format(url))
 
@@ -233,11 +193,6 @@ class ZMITests(unittest.TestCase):
 
     def test_portal_uidannotation(self):
         url = 'portal_uidannotation/manage_propertiesForm'
-        view = self.portal.restrictedTraverse(url)
-        self.assertTrue(view(), msg='{0} is broken'.format(url))
-
-    def test_portal_uidgenerator(self):
-        url = 'portal_uidgenerator/manage_UndoForm'
         view = self.portal.restrictedTraverse(url)
         self.assertTrue(view(), msg='{0} is broken'.format(url))
 
