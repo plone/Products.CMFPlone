@@ -49,6 +49,9 @@ Bug fixes:
 - Add basic tests for all main zmi management screens.
   [pbauer]
 
+- Fixes #2105: how to get ``email_from_name`` information in sendto_form.
+  [cekk]
+
 5.1rc1 (2017-09-10)
 -------------------
 
@@ -114,6 +117,7 @@ Bug fixes:
 
 - remove mention of "retina" (https://github.com/plone/Products.CMFPlone/issues/2123)
   [tkimnguyen]
+
 
 5.1b4 (2017-07-03)
 ------------------

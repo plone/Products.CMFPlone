@@ -58,6 +58,7 @@ class SendToForm(form.Form):
         registry = getUtility(IRegistry)
         mail_settings = registry.forInterface(IMailSchema, prefix='plone')
         envelope_from = mail_settings.email_from_address
+        email_from_name = mail_settings.email_from_name
 
         try:
             # Sends a link of a page to someone.
@@ -76,7 +77,8 @@ class SendToForm(form.Form):
                 comment=comment,
                 subject=subject,
                 title=title,
-                description=description
+                description=description,
+                email_from_name=email_from_name
             )
 
             message = message.encode(encoding)
