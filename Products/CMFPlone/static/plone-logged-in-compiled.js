@@ -76284,7 +76284,7 @@ define('mockup-patterns-structure-url/js/views/table',[
       self.subsetIds = [];
       self.contextInfo = null;
 
-      $('body').on('context-info-loaded', function(data) {
+      $('body').on('context-info-loaded', function(event, data) {
         self.contextInfo = data;
         /* set default page info */
         self.setContextInfo();
@@ -77315,7 +77315,7 @@ define('mockup-patterns-structure-url/js/views/upload',[
       self.app = options.app;
       PopoverView.prototype.initialize.apply(self, [options]);
       self.currentPathData = null;
-      $('body').on('context-info-loaded', function(data) {
+      $('body').on('context-info-loaded', function(event, data) {
         self.currentPathData = data;
       });
     },
@@ -78777,7 +78777,7 @@ define('mockup-patterns-structure-url/js/views/app',[
             url: self.getAjaxUrl(self.contextInfoUrl),
             dataType: 'json',
             success: function(data) {
-              $('body').trigger('context-info-loaded', data);
+              $('body').trigger('context-info-loaded', [data]);
             },
             error: function(response) {
               // XXX handle error?
@@ -78836,7 +78836,7 @@ define('mockup-patterns-structure-url/js/views/app',[
           // TODO figure out whether the following event after this is
           // needed at all.
         }
-        $('body').trigger('structure-url-changed', path);
+        $('body').trigger('structure-url-changed', [path]);
 
       });
 
@@ -78870,7 +78870,7 @@ define('mockup-patterns-structure-url/js/views/app',[
             path = '/';
           }
           self.setCurrentPath(path);
-          $('body').trigger('structure-url-changed', path);
+          $('body').trigger('structure-url-changed', [path]);
           // since this next call causes state to be pushed...
           self.doNotPushState = true;
           self.collection.goTo(self.collection.information.firstPage);
@@ -84149,5 +84149,5 @@ require([
   'use strict';
 });
 
-define("/home/workspacejensens/cdev/plone5/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
+define("/home/_thet/data/dev/plone/buildout.coredev/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
 
