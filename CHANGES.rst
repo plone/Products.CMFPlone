@@ -30,7 +30,7 @@ Bug fixes:
   Max sizes were two pixels too high.
   [thet]
 
-- Mockup update to fix a bug where folder contents' sorting was broken.
+- Mockup update.
   [thet]
 
 - Remove site path from path in show_inactive in catalog search
