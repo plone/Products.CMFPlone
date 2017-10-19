@@ -14,6 +14,9 @@ Breaking changes:
 
 New features:
 
+- Split up ``registry.xml``, uses new feature while its not changing anything.
+  [jensens]
+
 - Toolbar: Allow configuration of the toolbar and submenu width via pattern variables.
   [thet]
 
