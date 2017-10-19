@@ -9,7 +9,7 @@ from Products.CMFCore import utils
 # that were imported prior to this patch will still run the patched code.
 code = """
 from Acquisition.interfaces import IAcquirer
-from Acquisition import aq_base, aq_chain
+from Acquisition import aq_base, aq_chain, aq_inner
 from persistent.interfaces import IPersistent
 from OFS.interfaces import IItem
 from ZPublisher.BaseRequest import RequestContainer
@@ -33,7 +33,7 @@ def check_getToolByName(obj, name, default=_marker):
             result is default:
         # Rewrap in request container
         result_chain = aq_chain(result)
-        obj_chain = aq_chain(obj)
+        obj_chain = aq_chain(aq_inner(obj))
         if (IAcquirer.providedBy(result) and
                 not isinstance(result_chain[-1], RequestContainer) and
                 isinstance(obj_chain[-1], RequestContainer)):
