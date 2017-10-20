@@ -1662,11 +1662,11 @@ class IImagingSchema(Interface):
     )
 
     lead_scale_name = schema.Choice(
-        title=_(u"Leadimage scale"),
+        title=_(u'Leadimage scale'),
         description=_(u'Please select scale which will be used.'),
         required=True,
         default='mini',
-        vocabulary=u"plone.app.vocabularies.ImagesScales",
+        vocabulary=u'plone.app.vocabularies.ImagesScales',
     )
 
     is_lead_visible = schema.Bool(
