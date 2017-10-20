@@ -14,6 +14,9 @@ Breaking changes:
 
 New features:
 
+- Added 2 imaging schema: ``plone.lead_scale_name`` and ``plone.is_lead_visible``.
+  [bsuttor]
+
 - Toolbar: Allow configuration of the toolbar and submenu width via pattern variables.
   [thet]
 
@@ -69,8 +72,6 @@ Breaking changes:
 
 New features:
 
-- Added 2 imaging schema: ``plone.lead_scale_name`` and ``plone.is_lead_visible``.
-  [bsuttor]
 - Update ``plone-legacy-compiled.js`` and ``plone-legacy-compiled.css``.
   [thet]
 
