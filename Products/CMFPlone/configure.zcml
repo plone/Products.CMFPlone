@@ -101,12 +101,12 @@
       trusted="y"
       />
 
-    <!-- include plone plugins with z3c.autoinclude -->
-    <includePlugins
-        zcml:condition="not-have disable-autoinclude"
-        package="plone"
-        file="configure.zcml"
-        />
+  <!-- include plone plugins with z3c.autoinclude -->
+  <includePlugins
+      zcml:condition="not-have disable-autoinclude"
+      package="plone"
+      file="configure.zcml"
+      />
 
   <subscriber for="Products.GenericSetup.events.ProfileImportedEvent"
               handler=".events.profileImportedEventHandler"/>

@@ -12677,6 +12677,7 @@ define('mockup-patterns-pickadate',[
               var now = new Date();
               if (self.$date) { self.$date.data('pickadate').set('select', now); }
               if (self.$time) { self.$time.data('pickatime').set('select', now); }
+              self.emit('updated');
           })
           .appendTo(self.$wrapper);
       }
@@ -12688,6 +12689,7 @@ define('mockup-patterns-pickadate',[
               e.preventDefault();
               if (self.$date) { self.$date.data('pickadate').clear(); }
               if (self.$time) { self.$time.data('pickatime').clear(); }
+              self.emit('updated');
           })
           .appendTo(self.$wrapper);
       }
@@ -18969,19 +18971,19 @@ require([
   // TODO: Needs to be moved to controlpanel js as well
   $(document).ready(function() {
       function autohide_quality_fields(animate) {
-        var retina = $('#form-widgets-retina_scales option:selected').attr('value');
+        var highpixeldensity = $('#form-widgets-highpixeldensity_scales option:selected').attr('value');
         var quality_2x = $('div[data-fieldname="form.widgets.quality_2x"]');
         var quality_3x = $('div[data-fieldname="form.widgets.quality_3x"]');
 
-        if (retina == 'disabled') {
+        if (highpixeldensity == 'disabled') {
             quality_2x.fadeOut();
             quality_3x.fadeOut();
         }
-        else if (retina == '2x') {
+        else if (highpixeldensity == '2x') {
             quality_2x.fadeIn();
             quality_3x.fadeOut();
         }
-        else if (retina == '3x') {
+        else if (highpixeldensity == '3x') {
             quality_2x.fadeIn();
             quality_3x.fadeIn();
         }
@@ -18991,12 +18993,12 @@ require([
         $('div[data-fieldname="form.widgets.quality_2x"]').hide();
         $('div[data-fieldname="form.widgets.quality_3x"]').hide();
         autohide_quality_fields();
-        var select = $('#form-widgets-retina_scales');
+        var select = $('#form-widgets-highpixeldensity_scales');
         select.change(autohide_quality_fields);
     }
 });
 
 });
 
-define("/Users/sean/projects/buildout.coredev/src/Products.CMFPlone/Products/CMFPlone/static/plone.js", function(){});
+define("/home/workspacejensens/cdev/plone5/src/Products.CMFPlone/Products/CMFPlone/static/plone.js", function(){});
 

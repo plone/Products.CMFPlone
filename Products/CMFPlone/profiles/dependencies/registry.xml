@@ -1031,9 +1031,9 @@
       <element key="plone-container-md">970px</element>
       <element key="plone-container-lg">1170px</element>
 
-      <element key="plone-screen-xs-max">(@plone-screen-sm-min + 1)</element>
-      <element key="plone-screen-sm-max">(@plone-screen-md-min + 1)</element>
-      <element key="plone-screen-md-max">(@plone-screen-lg-min + 1)</element>
+      <element key="plone-screen-xs-max">(@plone-screen-sm-min - 1)</element>
+      <element key="plone-screen-sm-max">(@plone-screen-md-min - 1)</element>
+      <element key="plone-screen-md-max">(@plone-screen-lg-min - 1)</element>
 
     </value>
   </record>
@@ -1073,7 +1073,7 @@
     <value key="enabled">True</value>
     <value key="jscompilation">++plone++static/plone-compiled.min.js</value>
     <value key="csscompilation">++plone++static/plone-compiled.css</value>
-    <value key="last_compilation">2017-06-19 15:12:00</value>
+    <value key="last_compilation">2017-08-30 15:33:00</value>
     <value key="stub_js_modules">
       <element>jquery</element>
     </value>
@@ -1089,7 +1089,7 @@
     <value key="expression">python: member is not None</value>
     <value key="jscompilation">++plone++static/plone-logged-in-compiled.min.js</value>
     <value key="csscompilation">++plone++static/plone-logged-in-compiled.css</value>
-    <value key="last_compilation">2017-06-18 00:31:00</value>
+    <value key="last_compilation">2017-10-03 22:25:00</value>
     <value key="depends">plone</value>
     <value key="stub_js_modules">
       <element>backbone</element>
@@ -1131,7 +1131,7 @@
     <value key="depends">plone</value>
     <value key="jscompilation">++plone++static/plone-legacy-compiled.js</value>
     <value key="csscompilation">++plone++static/plone-legacy-compiled.css</value>
-    <value key="last_compilation">2014-08-14 00:00:00</value>
+    <value key="last_compilation">2017-08-30 15:33:00</value>
     <value key="compile">False</value>
     <value key="enabled">True</value>
   </records>
@@ -1144,7 +1144,7 @@
     <value key="enabled">False</value>
     <value key="jscompilation">++plone++static/resourceregistry-compiled.min.js</value>
     <value key="csscompilation">++plone++static/resourceregistry-compiled.css</value>
-    <value key="last_compilation">2015-05-01 00:00:00</value>
+    <value key="last_compilation">2017-08-30 15:33:00</value>
     <value key="stub_js_modules">
       <element>jquery</element>
     </value>

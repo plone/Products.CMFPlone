@@ -5,8 +5,55 @@
 Changelog
 =========
 
-5.1b5 (unreleased)
-------------------
+5.1rc2 (unreleased)
+-------------------
+
+Breaking changes:
+
+- *add item here*
+
+New features:
+
+- Toolbar: Allow configuration of the toolbar and submenu width via pattern variables.
+  [thet]
+
+- Update npm dependencies.
+  [thet]
+
+Bug fixes:
+
+- Fixed add-on listed as uninstalled when the default profile is not the first alphabetically.
+  Fixes `issue 2166 <https://github.com/plone/Products.CMFPlone/issues/2166>`_.
+  [maurits]
+
+- Less variables: Fix calculation of screen max sizes.
+  Max sizes were two pixels too high.
+  [thet]
+
+- Mockup update.
+  [thet]
+
+- Remove site path from path in show_inactive in catalog search
+  [Gagaro]
+
+- Don't raise Unauthorized on show_inactive check in catalog search
+  [tomgross]
+
+- Bump metadata.xml version.
+  [thet]
+
+- Extract CMFDefault specific config from `meta.zcml` into `meta-bbb.zcml`
+  to allow AT free and AT included sites.
+  [tomgross]
+
+- Add basic tests for all main zmi management screens.
+  [pbauer]
+
+- Fixes #2105: how to get ``email_from_name`` information in sendto_form.
+  [cekk]
+
+5.1rc1 (2017-09-10)
+-------------------
 
 Breaking changes:
 
@@ -15,6 +62,7 @@ Breaking changes:
   Introduced PyScss as a drop in replacement that could also do more things.
   Discussion on that at https://github.com/plone/Products.CMFPlone/issues/1800
   [loechel]
+
 - Fix and migrate safe_html filter completly into Plone registry and sync settings with TinyMCE.
   Also some unused options in controlpanel where removed, like stripped_combinations and class_blacklist.
   [MrTango]
@@ -23,6 +71,11 @@ New features:
 
 - Added 2 imaging schema: ``plone.lead_scale_name`` and ``plone.is_lead_visible``.
   [bsuttor]
+- Update ``plone-legacy-compiled.js`` and ``plone-legacy-compiled.css``.
+  [thet]
+
+- Update mockup to latest version.
+  [thet]
 
 - Added ``Show Toolbar`` permission.
   [agitator]
@@ -37,6 +90,14 @@ New features:
   [b4oshany]
 
 Bug fixes:
+
+- Recover missing dashboard (user actions)
+  https://github.com/plone/Products.CMFPlone/issues/1132
+  [fgrcon]
+
+- Remove the right padding on toolbar submenu entries.
+  That looked a bit weird.
+  [thet]
 
 - Fixed accidentally removing permissions when saving the ``portal_controlpanel`` settings in the ZMI.
   Fixes `issue 1376 <https://github.com/plone/Products.CMFPlone/issues/1376>`_.  [maurits]
@@ -55,6 +116,10 @@ Bug fixes:
 
 - Fix ``utils.get_top_site_from_url`` to work with non-OFS contexts.
   [thet]
+
+- remove mention of "retina" (https://github.com/plone/Products.CMFPlone/issues/2123)
+  [tkimnguyen]
+
 
 5.1b4 (2017-07-03)
 ------------------
