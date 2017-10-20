@@ -2,4 +2,5 @@
   <subscriber handler=".events.handle_enable_self_reg" />
   <subscriber handler=".events.handle_enable_user_folders" />
   <subscriber handler=".events.handle_use_email_as_login" />
+  <subscriber handler=".events.detect_imaging_change" />
 </configure>
