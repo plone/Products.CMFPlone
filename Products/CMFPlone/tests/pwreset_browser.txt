@@ -384,6 +384,7 @@ We shouldn't be able to fill in our password:
   Traceback (most recent call last):
   ...
   LookupError: label 'Password'
+  ...
 
 Now register:
 

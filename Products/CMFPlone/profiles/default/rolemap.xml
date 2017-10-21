@@ -13,16 +13,9 @@
     <role name="Contributor" />
   </roles>
   <permissions>
-    <permission name="Access arbitrary user session data"
-                acquire="True">
-      <role name="Site Administrator"/>
-    </permission>
     <permission name="Access inactive portal content"
                 acquire="True">
       <role name="Owner"/>
-      <role name="Site Administrator"/>
-    </permission>
-    <permission name="Access session data" acquire="True">
       <role name="Site Administrator"/>
     </permission>
     <permission name="Add portal content" acquire="True">

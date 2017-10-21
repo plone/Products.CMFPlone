@@ -411,16 +411,10 @@ def getFSVersionTuple():
 def transaction_note(note):
     """Write human legible note"""
     T = transaction.get()
-    if isinstance(note, unicode):
-        # Convert unicode to a regular string for the backend write IO.
-        # UTF-8 is the only reasonable choice, as using unicode means
-        # that Latin-1 is probably not enough.
-        note = note.encode('utf-8', 'replace')
-
     if (len(T.description) + len(note)) >= 65533:
         log('Transaction note too large omitting %s' % str(note))
     else:
-        T.note(str(note))
+        T.note(safe_unicode(note))
 
 
 def base_hasattr(obj, name):

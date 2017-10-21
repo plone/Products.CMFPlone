@@ -279,7 +279,7 @@ I trigger the add a new user action
 
 a document '${title}' in the test folder
     Go to  ${PLONE_URL}/${TEST_FOLDER}/++add++Document
-    Wait For Condition  return $('.autotoc-nav .active:visible').size() > 0
+    Wait For Condition  return window.jQuery('.autotoc-nav .active:visible').size() > 0
     Execute Javascript  $('#form-widgets-IDublinCore-title').val('${title}'); return 0;
     Click Button  Save
 
@@ -320,4 +320,4 @@ I confirm deletion of the content
     Wait until keyword succeeds  2  2  Click Element  css=div.plone-modal-footer input#form-buttons-Delete
 
 modals loaded
-    Wait For Condition  return $('.plone-modal-wrapper').size() > 0
+    Wait For Condition  return window.jQuery('.plone-modal-wrapper').size() > 0

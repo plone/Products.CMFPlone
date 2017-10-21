@@ -62,7 +62,7 @@ I open ${NAME}
 
 I expect ${NUM} tabs to be open
     Sleep  1
-    ${hits}=    Execute Javascript  return $('.navbar-nav li').length.toString();
+    ${hits}=    Execute Javascript  return window.jQuery('.navbar-nav li').length.toString();
     Should Be Equal     ${hits}     ${NUM}
 
 I expect a tab labeled "${LABEL}" to be open
@@ -79,16 +79,16 @@ I create a new file called "${NAME}"
 
 I type some code into the editor
     Click Element   css=.ace_content
-    ${ace_id}=     Execute Javascript   return $('.ace_editor').attr('id');
+    ${ace_id}=     Execute Javascript   return window.jQuery('.ace_editor').attr('id');
     Execute Javascript      ace.edit(${ace_id}).setValue("${LESS}");
 
 I expect the editors value to be "${MESSAGE}"
-    ${ace_id}=      Execute Javascript  return $('.ace_editor').attr('id');
+    ${ace_id}=      Execute Javascript  return window.jQuery('.ace_editor').attr('id');
     ${value}=   Execute Javascript      return ace.edit('${ace_id}').getValue();
     Should Be Equal     ${value}    ${MESSAGE}
 
 I expect the editors value to contain "${MESSAGE}"
-    ${ace_id}=      Execute Javascript  return $('.ace_editor').attr('id');
+    ${ace_id}=      Execute Javascript  return window.jQuery('.ace_editor').attr('id');
     ${value}=   Execute Javascript      return ace.edit('${ace_id}').getValue();
     Should Contain  ${value}    ${MESSAGE}
 

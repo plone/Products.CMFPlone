@@ -5,9 +5,9 @@
 
 # $Id$
 
+from StringIO import StringIO
 import os
 
-from zope.interface import implementer
 from zope.interface import implementer
 from zope.interface import Interface
 
@@ -89,6 +89,7 @@ class File(FileUpload):
             self.data = data
         if headers is not None:
             self.headers = headers
+        self.file = StringIO(self.data)
 
     def seek(self, *args):
         pass

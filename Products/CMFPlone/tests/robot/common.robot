@@ -61,12 +61,9 @@ there should be '${count}' livesearch results
     Wait until keyword succeeds  5s  1s  Xpath Should Match X Times  //div[@id = 'LSResult']/descendant::li  ${count}
 
 patterns are loaded
-    Wait For Condition  return $('body.patterns-loaded').size() > 0
+    Wait For Condition  return window.jQuery('body.patterns-loaded').size() > 0
 
 Refresh JS/CSS resources
-    # If we do not regenerate the resources meta-bundles, the baseUrl value in
-    # config.js is http://foo/plone. We need to trigger the meta-bundles
-    # generation from the browser so baseUrl gets the proper value.
-    Enable autologin as  Manager
-    Execute Javascript    $.post($('body').attr('data-portal-url')+'/@@resourceregistry-controlpanel', {action: 'save-registry', _authenticator: $('input[name="_authenticator"]').val()});
-    Disable Autologin
+    # Not needed anymore, and it is breaking the Plone Zope 4 tests.
+    # Keep the keyword for backwards compatibility purposes.
+    Sleep  0.0000001
