@@ -18,3 +18,6 @@ When merging changes to master move them to CHANGES.txt!
 
 - Changes for Zope 4 compatibility in maintenance controlpanel.
   [thet]
+
+- Render exceptions using an exception view instead of standard_error_message.
+  [davisagli]

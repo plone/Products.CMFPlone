@@ -1,9 +1,7 @@
 from AccessControl import getSecurityManager
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from six import reraise
 from zExceptions.ExceptionFormatter import format_exception
-from zope.security.interfaces import IUnauthorized
 import json
 import sys
 
@@ -18,22 +16,10 @@ class ExceptionView(BrowserView):
     def __call__(self):
         exception = self.context
         self.context = self.__parent__
-
-        # If running in the testbrowser with handleErrors=False,
-        # avoid rendering exception view
-        if not self.request.environ.get('wsgi.handleErrors', True):
-            reraise(*sys.exc_info())
+        request = self.request
 
         error_type = exception.__class__.__name__
         error_tb = ''.join(format_exception(*sys.exc_info(), as_html=True))
-
-        request = self.request
-        response = self.request.response
-
-        # Call PAS _unauthorized hook for Unauthorized exceptions
-        is_unauthorized = IUnauthorized.providedBy(exception)
-        if is_unauthorized and hasattr(response, '_unauthorized'):
-            response._unauthorized()
 
         # Indicate exception as JSON
         if "text/html" not in request.getHeader('Accept', ''):
