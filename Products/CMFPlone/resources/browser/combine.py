@@ -4,9 +4,10 @@ from datetime import datetime
 from plone.registry.interfaces import IRegistry
 from plone.resource.file import FilesystemFile
 from plone.resource.interfaces import IResourceDirectory
+from Products.CMFPlone._compat import StringIO
 from Products.CMFPlone.interfaces import IBundleRegistry
 from Products.CMFPlone.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME  # noqa
-from StringIO import StringIO
+
 from zExceptions import NotFound
 from zope.component import getUtility
 from zope.component import queryUtility

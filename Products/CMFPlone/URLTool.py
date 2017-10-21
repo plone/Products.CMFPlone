@@ -6,11 +6,12 @@ from plone.registry.interfaces import IRegistry
 from posixpath import normpath
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.URLTool import URLTool as BaseTool
+from Products.CMFPlone._compat import urlparse
 from Products.CMFPlone.interfaces import ILoginSchema
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.patches.gtbn import rewrap_in_request_container
-from urlparse import urlparse, urljoin
 from zope.component import getUtility
+
 import re
 
 
@@ -46,7 +47,7 @@ class URLTool(PloneBaseTool, BaseTool):
 
         p_url = self()
 
-        _, u_host, u_path, _, _, _ = urlparse(url)
+        _, u_host, u_path, _, _, _ = urlparse.urlparse(url)
         if not u_host and not u_path.startswith('/'):
             if context is None:
                 return True  # old behavior
@@ -60,7 +61,8 @@ class URLTool(PloneBaseTool, BaseTool):
             useurl += '/'
 
         # urljoin to current url to get an absolute path
-        _, u_host, u_path, _, _, _ = urlparse(urljoin(useurl, url))
+        _, u_host, u_path, _, _, _ = urlparse.urlparse(
+            urlparse.urljoin(useurl, url))
 
         # normalise to end with a '/' so /foobar is not considered within /foo
         if not u_path:
@@ -69,7 +71,7 @@ class URLTool(PloneBaseTool, BaseTool):
             u_path = normpath(u_path)
             if not u_path.endswith('/'):
                 u_path += '/'
-        _, host, path, _, _, _ = urlparse(p_url)
+        _, host, path, _, _, _ = urlparse.urlparse(p_url)
         if not path.endswith('/'):
             path += '/'
         if host == u_host and u_path.startswith(path):
@@ -78,7 +80,7 @@ class URLTool(PloneBaseTool, BaseTool):
         registry = getUtility(IRegistry)
         settings = registry.forInterface(ILoginSchema, prefix='plone')
         for external_site in settings.allow_external_login_sites:
-            _, host, path, _, _, _ = urlparse(external_site)
+            _, host, path, _, _, _ = urlparse.urlparse(external_site)
             if not path.endswith('/'):
                 path += '/'
             if host == u_host and u_path.startswith(path):

@@ -9,7 +9,6 @@ from Products.CMFPlone.tests import PloneTestCase
 from Products.PluggableAuthService.interfaces.plugins import IChallengePlugin
 
 import os
-import urlparse
 
 
 class TestPloneRootLoginURL(PloneTestCase.FunctionalTestCase):

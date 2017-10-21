@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
+from Products.CMFPlone._compat import urlparse
 from Products.CMFPlone.resources.browser.cook import cookWhenChangingSettings
 from Products.CMFPlone.resources.browser.resource import ResourceView
 from Products.CMFPlone.utils import get_top_request
 from urllib import quote
-from urlparse import urlparse
 from zope.component import getMultiAdapter
 
 
@@ -24,7 +24,7 @@ class ScriptsView(ResourceView):
             data = resources.get(resource, None)
             if data is None or not data.js:
                 continue
-            url = urlparse(data.js)
+            url = urlparse.urlparse(data.js)
             if url.netloc == '':
                 # Local
                 src = '{0}/{1}'.format(self.site_url, data.js)

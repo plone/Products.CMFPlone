@@ -81,7 +81,7 @@ class DefaultUtilsTests(unittest.TestCase):
         """
         from plone.app.content.browser.contents import get_top_site_from_url
         from zope.component.interfaces import ISite
-        from urlparse import urlparse
+        from urllib.parse import urlparse
 
         class MockContext(object):
             vh_url = 'http://nohost'

@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from plone.app.layout.viewlets.common import ViewletBase
+from Products.CMFPlone._compat import urlparse
 from Products.CMFPlone.resources.browser.cook import cookWhenChangingSettings
 from Products.CMFPlone.resources.browser.resource import ResourceBase
 from Products.CMFPlone.utils import get_top_request
 from urllib import quote
-from urlparse import urlparse
 
 
 class StylesBase(ResourceBase):
@@ -16,7 +16,7 @@ class StylesBase(ResourceBase):
         Extracts the urls for the specific resource
         """
         for css in style.css:
-            url = urlparse(css)
+            url = urlparse.urlparse(css)
             if url.netloc == '':
                 # Local
                 src = "%s/%s" % (self.site_url, css)
@@ -126,7 +126,7 @@ class StylesBase(ResourceBase):
         if self.diazo_development_css and self.development is True:
             origin = self.diazo_development_css
         if origin:
-            url = urlparse(origin)
+            url = urlparse.urlparse(origin)
             if url.netloc == '':
                 # Local
                 src = "%s/%s" % (self.site_url, origin)

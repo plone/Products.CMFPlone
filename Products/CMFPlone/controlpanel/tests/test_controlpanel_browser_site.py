@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
+from Products.CMFPlone._compat import StringIO
 from Products.CMFPlone.interfaces import ISiteSchema
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
-from StringIO import StringIO
 from plone.app.testing import SITE_OWNER_NAME, SITE_OWNER_PASSWORD
 from plone.registry.interfaces import IRegistry
 from plone.testing.z2 import Browser

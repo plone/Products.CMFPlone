@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 from plone.registry.interfaces import IRegistry
+from Products.CMFPlone._compat import urlparse
 from Products.CMFPlone.interfaces import IResourceRegistry
 from Products.CMFPlone.utils import SafeFormatter
 from Products.Five.browser import BrowserView
-from urlparse import urlparse
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 
@@ -76,7 +76,7 @@ class LessConfiguration(BrowserView):
         for name, value in self.resource_registry().items():
             for css in value.css:
 
-                url = urlparse(css)
+                url = urlparse.urlparse(css)
                 if url.netloc == '':
                     # Local
                     src = "%s/%s" % (site_url, css)
@@ -148,7 +148,7 @@ class LessDependency(BrowserView):
         if resource:
             if resource in registry:
                 for css in registry[resource].css:
-                    url = urlparse(css)
+                    url = urlparse.urlparse(css)
                     if url.netloc == '':
                         # Local
                         src = "%s/%s" % (site_url, css)

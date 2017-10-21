@@ -2,7 +2,7 @@
 from datetime import datetime
 import json
 import re
-from urlparse import urlparse
+from Products.CMFPlone._compat import urlparse
 
 from Products.CMFPlone.interfaces import IBundleRegistry
 from Products.CMFPlone.interfaces import IResourceRegistry
@@ -97,8 +97,8 @@ class OverrideFolderManager(object):
         http://stackoverflow.com/questions/7469573/how-to-construct-relative-url-given-two-absolute-urls-in-python
 
         """
-        base = urlparse(css_url)
-        target = urlparse(asset_url)
+        base = urlparse.urlparse(css_url)
+        target = urlparse.urlparse(asset_url)
         if base.netloc != target.netloc:
             return asset_url
         base_dir = '.' + posixpath.dirname(base.path)

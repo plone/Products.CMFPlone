@@ -25,6 +25,7 @@ from Products.CMFCore.utils import UniqueObject
 from Products.CMFCore.WorkflowCore import WorkflowException
 from Products.CMFDynamicViewFTI.interfaces import IBrowserDefault
 from Products.CMFPlone import utils
+from Products.CMFPlone._compat import urlparse
 from Products.CMFPlone.defaultpage import check_default_page_via_view
 from Products.CMFPlone.defaultpage import get_default_page_via_view
 from Products.CMFPlone.events import ReorderedEvent
@@ -54,7 +55,6 @@ from zope.lifecycleevent import ObjectModifiedEvent
 import re
 import sys
 import transaction
-import urlparse
 
 
 _marker = utils._marker

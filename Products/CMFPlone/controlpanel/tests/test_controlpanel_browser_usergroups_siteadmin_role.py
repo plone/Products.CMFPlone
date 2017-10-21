@@ -4,8 +4,6 @@
    comes with its own test fixture. Would be nice to refactor that to use the
    CMFPlone fixture at some point.
 """
-from cStringIO import StringIO
-from urllib import urlencode
 from plone.protect.authenticator import createToken
 
 import re
@@ -15,6 +13,8 @@ from plone.app.testing.bbb import PloneTestCase as FunctionalTestCase
 from plone.app.testing.bbb import PloneTestCaseFixture
 from plone.app import testing
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone._compat import urlencode
+from Products.CMFPlone._compat import StringIO
 
 
 class ControlPanelFixture(PloneTestCaseFixture):

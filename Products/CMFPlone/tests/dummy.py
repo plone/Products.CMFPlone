@@ -5,12 +5,12 @@
 
 # $Id$
 
-from StringIO import StringIO
 import os
 
 from zope.interface import implementer
 from zope.interface import Interface
 
+from Products.CMFPlone._compat import StringIO
 from Products.CMFPlone.interfaces import INonStructuralFolder
 from Products.CMFPlone.interfaces import IWorkflowChain
 

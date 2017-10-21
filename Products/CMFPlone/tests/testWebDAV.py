@@ -4,9 +4,9 @@ from plone.app.testing import SITE_OWNER_PASSWORD
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone._compat import StringIO
 from Products.CMFPlone.tests import dummy
 from Products.CMFPlone.tests import PloneTestCase
-from StringIO import StringIO
 
 
 html = """\

@@ -4,9 +4,9 @@ from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
 from plone.app.testing import SITE_OWNER_NAME
 from plone.app.testing import SITE_OWNER_PASSWORD
+from Products.CMFPlone._compat import StringIO
 from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
 from zExceptions import Forbidden
-from cStringIO import StringIO
 from DateTime import DateTime
 
 
