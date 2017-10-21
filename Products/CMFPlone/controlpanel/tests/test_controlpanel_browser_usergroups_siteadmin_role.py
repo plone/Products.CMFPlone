@@ -98,7 +98,8 @@ class TestSiteAdministratorRoleFunctional(UserGroupsControlPanelTestCase):
     def testControlPanelOverview(self):
         # make sure we can view the Site Setup page,
         # at both old and new URLs
-        res = self.publish('/plone/@@overview-controlpanel', 'siteadmin:secret')
+        res = self.publish(
+            '/plone/@@overview-controlpanel', 'siteadmin:secret')
         self.assertEqual(200, res.status)
         res = self.publish(
             '/plone/@@overview-controlpanel', 'siteadmin:secret'
@@ -315,9 +316,10 @@ class TestSiteAdministratorRoleFunctional(UserGroupsControlPanelTestCase):
         res = self.publish('/plone/@@usergroup-userprefs',
                            basic='siteadmin:secret')
         contents = self._simplify_white_space(res.getOutput())
-        self.assertTrue('<input type="checkbox" class="noborder notify" '
-                        'name="delete:list" value="root" disabled="disabled" />'
-                        in contents)
+        self.assertTrue(
+            '<input type="checkbox" class="noborder notify" '
+            'name="delete:list" value="root" disabled="disabled" />'
+            in contents)
 
         form = {
             '_authenticator': self.siteadmin_token,

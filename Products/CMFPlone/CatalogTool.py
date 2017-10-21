@@ -434,7 +434,7 @@ class CatalogTool(PloneBaseTool, BaseTool):
         return allow
 
     @security.protected(SearchZCatalog)
-    def searchResults(self, REQUEST=None, **kw):
+    def searchResults(self, query=None, **kw):
         # Calls ZCatalog.searchResults with extra arguments that
         # limit the results to what the user is allowed to see.
         #
@@ -449,8 +449,8 @@ class CatalogTool(PloneBaseTool, BaseTool):
 
         kw = kw.copy()
         show_inactive = kw.get('show_inactive', False)
-        if isinstance(REQUEST, dict) and not show_inactive:
-            show_inactive = 'show_inactive' in REQUEST
+        if isinstance(query, dict) and not show_inactive:
+            show_inactive = 'show_inactive' in query
 
         user = _getAuthenticatedUser(self)
         kw['allowedRolesAndUsers'] = self._listAllowedRolesAndUsers(user)
@@ -458,33 +458,25 @@ class CatalogTool(PloneBaseTool, BaseTool):
         if not show_inactive and not self.allow_inactive(kw):
             kw['effectiveRange'] = DateTime()
 
-        return ZCatalog.searchResults(self, REQUEST, **kw)
+        return ZCatalog.searchResults(self, query, **kw)
 
     __call__ = searchResults
 
-    def search(self, *args, **kw):
+    def search(self, query,
+               sort_index=None, reverse=0, limit=None, merge=1):
         # Wrap search() the same way that searchResults() is
 
         # Make sure any pending index tasks have been processed
         processQueue()
 
-        query = {}
-        if args:
-            query = args[0]
-        elif 'query_request' in kw:
-            query = kw.get('query_request')
-
-        kw['query_request'] = query.copy()
-
         user = _getAuthenticatedUser(self)
         query['allowedRolesAndUsers'] = self._listAllowedRolesAndUsers(user)
 
-        if not self.allow_inactive(kw):
+        if not self.allow_inactive(query):
             query['effectiveRange'] = DateTime()
 
-        kw['query_request'] = query
-
-        return super(CatalogTool, self).search(**kw)
+        return super(CatalogTool, self).search(
+            query, sort_index, reverse, limit, merge)
 
     @security.protected(ManageZCatalogEntries)
     def clearFindAndRebuild(self):

@@ -95,10 +95,10 @@ Now opening the portal, will redirect to the `news` section
 
   >>> anon.open('http://nohost/plone')
   >>> anon.url
-  'http://nohost/plone/news'
+  'http://nohost/plone/./news'
 
 Of course opening the link directly will redirect too:
 
   >>> anon.open('http://nohost/plone/link')
   >>> anon.url
-  'http://nohost/plone/news'
+  'http://nohost/plone/./news'

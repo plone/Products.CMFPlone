@@ -79,7 +79,6 @@ setup(
         'borg.localrole',
         'five.customerize',
         'five.localsitemanager',
-        'five.pt',
         'mockup',
         'plone.api >= 1.4.4',
         'plone.app.content',

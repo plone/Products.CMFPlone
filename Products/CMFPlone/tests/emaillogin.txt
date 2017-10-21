@@ -75,7 +75,7 @@ there:
     >>> browser.getControl('User Name')
     Traceback (most recent call last):
     ...
-    LookupError: label 'User Name'
+    LookupError: label 'User Name'...
 
 We fill in the rest of the form:
 

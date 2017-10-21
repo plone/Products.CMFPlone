@@ -40,6 +40,7 @@ from Products.CMFPlone.utils import base_hasattr
 from Products.CMFPlone.utils import log
 from Products.CMFPlone.utils import log_exc
 from Products.CMFPlone.utils import safe_hasattr
+from Products.CMFPlone.utils import safe_unicode
 from Products.CMFPlone.utils import transaction_note
 from Products.statusmessages.interfaces import IStatusMessage
 from types import UnicodeType
@@ -263,7 +264,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             parent = aq_parent(aq_inner(obj))
             parent.manage_renameObject(obj.getId(), id)
 
-    def _makeTransactionNote(self, obj, msg=''):
+    def _makeTransactionNote(self, obj, msg=u''):
         # TODO Why not aq_parent()?
         relative_path = '/'.join(
             getToolByName(self, 'portal_url').getRelativeContentPath(obj)[:-1]
@@ -271,13 +272,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         if not msg:
             msg = relative_path + '/' + obj.title_or_id() \
                 + ' has been modified.'
-        if isinstance(msg, UnicodeType):
-            # Convert unicode to a regular string for the backend write IO.
-            # UTF-8 is the only reasonable choice, as using unicode means
-            # that Latin-1 is probably not enough.
-            msg = msg.encode('utf-8')
         if not transaction.get().description:
-            transaction_note(msg)
+            transaction_note(safe_unicode(msg))
 
     @security.public
     def contentEdit(self, obj, **kwargs):
