@@ -44,11 +44,11 @@ class TestMigrationTool(PloneTestCase.PloneTestCase):
         request.form['profile_id'] = _DEFAULT_PROFILE
 
         steps = []
-        for u in upgrades:
-            if isinstance(u, list):
-                steps.extend([s['id'] for s in u])
+        for upgrade in upgrades:
+            if isinstance(upgrade, list):
+                steps.extend([s['id'] for s in upgrade])
             else:
-                steps.append(u['id'])
+                steps.append(upgrade['id'])
 
         request.form['upgrades'] = steps
         self.setup.manage_doUpgrades(request=request)
