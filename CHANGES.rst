@@ -31,3 +31,6 @@ Bug Fixes:
 - Fallback for missing date in DefaultDublinCoreImpl no longer relies on
   bobobase_modification_time.
   [pbauer]
+
+- Display real version of Zope, not of the empty meta-package Zope2.
+  [pbauer]
