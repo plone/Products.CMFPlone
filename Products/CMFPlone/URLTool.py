@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from AccessControl import ClassSecurityInfo
+from Acquisition import aq_parent, aq_inner
 from App.class_init import InitializeClass
 from plone.registry.interfaces import IRegistry
 from posixpath import normpath
@@ -81,6 +82,10 @@ class URLTool(PloneBaseTool, BaseTool):
             if host == u_host and u_path.startswith(path):
                 return True
         return False
+
+    def getPortalObject(self):
+        # Make sure portal is wrapped properly
+        return aq_parent(aq_inner(self))
 
 
 URLTool.__doc__ = BaseTool.__doc__
