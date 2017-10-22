@@ -2,8 +2,8 @@
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
 from plone.app.testing.bbb import PloneTestCase
-from Products.CMFPlone._compat import urlencode
-from Products.CMFPlone._compat import urlparse
+from six.moves.urllib import parse
+
 import base64
 
 
@@ -24,7 +24,7 @@ class TestCookieAuth(PloneTestCase):
 
         location = response.getHeader('Location')
         self.assertTrue(location.startswith(self.portal_url))
-        self.assertTrue(urlparse.urlparse(location)[2].endswith('/require_login'))
+        self.assertTrue(parse.urlparse(location)[2].endswith('/require_login'))
 
     def testInsufficientPrivileges(self):
         # Should send us to login_form
@@ -33,7 +33,7 @@ class TestCookieAuth(PloneTestCase):
 
         location = response.getHeader('Location')
         self.assertTrue(location.startswith(self.portal_url))
-        self.assertTrue(urlparse.urlparse(location)[2].endswith('/require_login'))
+        self.assertTrue(parse.urlparse(location)[2].endswith('/require_login'))
 
     def testSetSessionCookie(self):
         # The __ac cookie should be set for the session only
@@ -41,7 +41,7 @@ class TestCookieAuth(PloneTestCase):
                 '__ac_password': TEST_USER_PASSWORD}
 
         response = self.publish(self.portal_path + '/logged_in',
-                                env={'QUERY_STRING': urlencode(form)})
+                                env={'QUERY_STRING': parse.urlencode(form)})
 
         self.assertEqual(response.getStatus(), 200)
 

@@ -1,27 +1,24 @@
 # -*- coding: utf-8 -*-
-import logging
-import sys
-
-import pkg_resources
-import transaction
-from zope.interface import implementer
-
 from AccessControl import ClassSecurityInfo
 from AccessControl.requestmethod import postonly
 from App.class_init import InitializeClass
 from App.config import getConfiguration
 from OFS.SimpleItem import SimpleItem
-from ZODB.POSException import ConflictError
-
+from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.utils import registerToolInterface
 from Products.CMFCore.utils import UniqueObject
-from Products.CMFCore.permissions import ManagePortal
-
-from Products.CMFPlone._compat import StringIO
 from Products.CMFPlone.factory import _DEFAULT_PROFILE
 from Products.CMFPlone.interfaces import IMigrationTool
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
+from six import StringIO
+from ZODB.POSException import ConflictError
+from zope.interface import implementer
+
+import logging
+import pkg_resources
+import sys
+import transaction
 
 logger = logging.getLogger('plone.app.upgrade')
 _upgradePaths = {}

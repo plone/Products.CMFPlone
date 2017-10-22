@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 from plone.app.layout.viewlets.common import ViewletBase
-from Products.CMFPlone._compat import urlparse
 from Products.CMFPlone.resources.browser.cook import cookWhenChangingSettings
 from Products.CMFPlone.resources.browser.resource import ResourceBase
 from Products.CMFPlone.utils import get_top_request
-from urllib import quote
+from six.moves.urllib import parse
 
 
 class StylesBase(ResourceBase):
@@ -16,7 +15,7 @@ class StylesBase(ResourceBase):
         Extracts the urls for the specific resource
         """
         for css in style.css:
-            url = urlparse.urlparse(css)
+            url = parse.urlparse(css)
             if url.netloc == '':
                 # Local
                 src = "%s/%s" % (self.site_url, css)
@@ -66,14 +65,14 @@ class StylesBase(ResourceBase):
                     css_location = '%s/++plone++%s/++unique++%s/%s' % (
                         self.site_url,
                         resource_name,
-                        quote(str(bundle.last_compilation)),
+                        parse.quote(str(bundle.last_compilation)),
                         resource_filepath
                     )
                 else:
                     css_location = '%s/%s?version=%s' % (
                         self.site_url,
                         bundle.csscompilation,
-                        quote(str(bundle.last_compilation))
+                        parse.quote(str(bundle.last_compilation))
                     )
                 result.append({
                     'bundle': bundle.name,
@@ -126,7 +125,7 @@ class StylesBase(ResourceBase):
         if self.diazo_development_css and self.development is True:
             origin = self.diazo_development_css
         if origin:
-            url = urlparse.urlparse(origin)
+            url = parse.urlparse(origin)
             if url.netloc == '':
                 # Local
                 src = "%s/%s" % (self.site_url, origin)

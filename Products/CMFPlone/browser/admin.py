@@ -3,7 +3,6 @@ from AccessControl import getSecurityManager
 from AccessControl.Permissions import view as View
 from OFS.interfaces import IApplication
 from Products.CMFCore.permissions import ManagePortal
-from Products.CMFPlone._compat import urlparse
 from Products.CMFPlone.factory import _DEFAULT_PROFILE
 from Products.CMFPlone.factory import addPloneSite
 from Products.CMFPlone.interfaces import INonInstallable
@@ -19,6 +18,7 @@ from plone.i18n.locales.interfaces import IContentLanguageAvailability
 from plone.keyring.interfaces import IKeyManager
 from plone.protect.authenticator import check as checkCSRF
 from plone.protect.interfaces import IDisableCSRFProtection
+from six.moves.urllib import parse
 from zope.component import adapts
 from zope.component import getAllUtilitiesRegisteredFor
 from zope.component import getMultiAdapter
@@ -96,10 +96,10 @@ class RootLoginRedirect(BrowserView):
     def __call__(self, came_from=None):
         if came_from is not None:
             # see if this is a relative url or an absolute
-            if len(urlparse.urlparse(came_from)[1]) == 0:
+            if len(parse.urlparse(came_from)[1]) == 0:
                 # No host specified, so url is relative.  Get an absolute url.
                 # Note: '\\domain.org' is not recognised as host, which is good.
-                came_from = urlparse.urljoin(self.context.absolute_url() + '/', came_from)
+                came_from = parse.urljoin(self.context.absolute_url() + '/', came_from)
             elif not came_from.startswith(self.context.absolute_url()):
                 # Note: we cannot use portal_url.isURLInPortal here, because we are
                 # not in a Plone portal, but in the Zope root.

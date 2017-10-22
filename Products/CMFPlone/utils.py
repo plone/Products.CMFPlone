@@ -30,8 +30,7 @@ from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
 from Products.CMFPlone.log import log
 from Products.CMFPlone.log import log_deprecated
 from Products.CMFPlone.log import log_exc
-from types import ClassType
-from Products.CMFPlone._compat import urlparse
+from six.moves.urllib.parse import urlparse
 from webdav.interfaces import IWriteLock
 from zope import schema
 from zope.component import getMultiAdapter
@@ -776,7 +775,7 @@ def get_top_site_from_url(context, request):
     """
     site = getSite()
     try:
-        url_path = urlparse.urlparse(context.absolute_url()).path.split('/')
+        url_path = urlparse(context.absolute_url()).path.split('/')
         for idx in range(len(url_path)):
             _path = '/'.join(url_path[:idx + 1]) or '/'
             site_path = request.physicalPathFromURL(_path)

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # This is from Products.PloneHotfix20160830.
-from Products.CMFPlone._compat import urlparse
+from six.moves.urllib.parse import urlparse
 from z3c.form import widget
 
 
@@ -38,8 +38,8 @@ def _wrap_update(update):
             env = self.request.environ
             referrer = env.get('HTTP_REFERER', env.get('HTTP_REFERRER'))
             if referrer:
-                req_url_parsed = urlparse.urlparse(self.request.URL)
-                referrer_parsed = urlparse.urlparse(referrer)
+                req_url_parsed = urlparse(self.request.URL)
+                referrer_parsed = urlparse(referrer)
                 if req_url_parsed.netloc != referrer_parsed.netloc:
                     # We do not trust data from outside referrers.
                     self.ignoreRequest = True
