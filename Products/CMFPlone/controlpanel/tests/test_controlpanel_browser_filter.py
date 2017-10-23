@@ -83,15 +83,20 @@ class FilterControlPanelFunctionalTest(unittest.TestCase):
     def test_nasty_tags(self):
         self.browser.open(
             "%s/@@filter-controlpanel" % self.portal_url)
+        self.assertEqual(
+            self.browser.getControl(name='form.widgets.nasty_tags').value,
+            'style\nobject\nembed\napplet\nscript\nmeta')
         self.browser.getControl(
-            name='form.widgets.nasty_tags'
-        ).value = 'div\r\na'
+            name='form.widgets.nasty_tags').value = 'div\na'
         valid_tags = self.browser.getControl(
             name='form.widgets.valid_tags').value
-        valid_tags = valid_tags.replace('a\r\n', '')
+        self.assertTrue(valid_tags.startswith('a\nabbr\nacronym\naddress'))
+        valid_tags = valid_tags.replace('a\n', '')
         valid_tags = self.browser.getControl(
             name='form.widgets.valid_tags').value = valid_tags
         self.browser.getControl('Save').click()
+        self.assertEqual(self.settings.nasty_tags, [u'div', u'a'])
+        self.assertNotIn(u'a', self.settings.valid_tags)
 
         # test that <a> is filtered
         self.assertFalse(self.settings.disable_filtering)
