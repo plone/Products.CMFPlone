@@ -621,8 +621,9 @@ def set_own_login_name(member, loginname):
     name of another member too, though the name of this function is a
     bit weird then.  Historical accident.
     """
-    pas = getToolByName(member, 'acl_users')
-    mt = getToolByName(member, 'portal_membership')
+    portal = getSite()
+    pas = getToolByName(portal, 'acl_users')
+    mt = getToolByName(portal, 'portal_membership')
     if member.getId() == mt.getAuthenticatedMember().getId():
         pas.updateOwnLoginName(loginname)
         return
