@@ -292,7 +292,6 @@
                 If you do not have an account here, head over to the
                 <span i18n:name="registration_form">
                     <a href=""
-                       tal:define="join_url python:test(came_from, join_url+test(join_url.find('?')==-1, '?', '&amp;')+ztu.make_query(came_from=came_from), join_url);"
                        tal:attributes="href join_url; target target;"
                        i18n:translate="description_no_account_registration_linktext"
                         >registration form</a></span>.

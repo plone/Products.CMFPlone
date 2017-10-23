@@ -40,3 +40,9 @@ Bug Fixes:
 
 - Use getSite in set_own_login_name to get the portals acl_users.
   [pbauer]
+
+- Fix test issue with rarely used multi-site SSO feature.
+  ``came_from`` on ``@register`` link would point to wrong site.
+  Completly removed ``came_from`` on ``@@register`` link.
+  It does not make much sense anyway and we test nowhere if there is a came_from on that link.
+  [jensens]
