@@ -295,18 +295,18 @@ class UserGroupsControlPanelFunctionalTest(unittest.TestCase):
         self.browser.getControl(name='searchstring').value = 'group1'
 
         # Check that role is not selected yet and then select it and apply it.
-        self.assertFalse(self.browser.getControl(
-            name='group_group1:list', index=1
-        ).getControl(value='Contributor').selected)
-        self.browser.getControl(
-            name='group_group1:list', index=1
-        ).getControl(value='Contributor').selected = True
+        form = self.browser.getForm(id='groups_search')
+        ctrl = form._form.get('group_group1:list', index=1)
+        self.assertEqual(ctrl._value, 'Site Administrator')
+        self.assertFalse(ctrl.checked)
+        ctrl.checked = True
         self.browser.getControl('Save').click()
 
         # Check that role is now selected
-        self.browser.getControl(
-            name='group_group1:list', index=1
-        ).getControl(value='Contributor').selected
+        form = self.browser.getForm(id='groups_search')
+        ctrl = form._form.get('group_group1:list', index=1)
+        self.assertEqual(ctrl._value, 'Site Administrator')
+        self.assertTrue(ctrl.checked)
 
     def test_groups_delete_group(self):
         self.browser.open(self.groups_url)
