@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-from basetool import IPloneBaseTool
 from plone.supermodel import model
 from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone.interfaces.basetool import IPloneBaseTool
 from zope import schema
 from zope.interface import implementer
 from zope.interface import Interface

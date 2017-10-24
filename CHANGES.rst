@@ -28,6 +28,9 @@ New Features:
 
 Bug Fixes:
 
+- Use absolute imports for Python3 compatibility
+  [ale-rt]
+
 - Fallback for missing date in DefaultDublinCoreImpl no longer relies on
   bobobase_modification_time.
   [pbauer]
