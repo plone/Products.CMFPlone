@@ -19,7 +19,10 @@ class ExceptionView(BrowserView):
         request = self.request
 
         error_type = exception.__class__.__name__
-        error_tb = ''.join(format_exception(*sys.exc_info(), as_html=True))
+        exc_type, value, traceback = sys.exc_info()
+        error_tb = ''.join(
+            format_exception(exc_type, value, traceback, as_html=True))
+        request.response.setStatus(exc_type)
 
         # Indicate exception as JSON
         if "text/html" not in request.getHeader('Accept', ''):

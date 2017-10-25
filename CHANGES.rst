@@ -28,6 +28,10 @@ New Features:
 
 Bug Fixes:
 
+- Set the status of an exception view according to the exception type.
+  Fixes `issue 2187 <https://github.com/plone/Products.CMFPlone/issues/2187>`_.
+  [maurits]
+
 - Use absolute imports for Python3 compatibility
   [ale-rt]
 
