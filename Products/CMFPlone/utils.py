@@ -15,9 +15,6 @@ from cgi import escape
 from collections import Mapping
 from DateTime import DateTime
 from DateTime.interfaces import DateTimeError
-from log import log
-from log import log_deprecated
-from log import log_exc
 from OFS.CopySupport import CopyError
 from os.path import abspath
 from os.path import join
@@ -30,6 +27,9 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces.controlpanel import IImagingSchema
 from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
+from Products.CMFPlone.log import log
+from Products.CMFPlone.log import log_deprecated
+from Products.CMFPlone.log import log_exc
 from types import ClassType
 from urlparse import urlparse
 from webdav.interfaces import IWriteLock
@@ -648,7 +648,7 @@ def validate_json(value):
         DeprecationWarning)
     try:
         json.loads(value)
-    except ValueError, exc:
+    except ValueError as exc:
         class JSONError(schema.ValidationError):
             __doc__ = _(u"Must be empty or a valid JSON-formatted "
                         u"configuration – ${message}.", mapping={
