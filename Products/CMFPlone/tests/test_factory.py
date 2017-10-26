@@ -1,9 +1,15 @@
 # -*- coding: utf-8 -*-
-from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
 from Products.CMFPlone.factory import addPloneSite
+from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 
+import unittest
 
-class TestFactoryPloneSite(PloneTestCase):
+class TestFactoryPloneSite(unittest.TestCase):
+
+    layer = PRODUCTS_CMFPLONE_INTEGRATION_TESTING
+
+    def setUp(self):
+        self.app = self.layer['app']
 
     def testPlonesiteWithUnicodeTitle(self):
         TITLE = 'Ploné'
