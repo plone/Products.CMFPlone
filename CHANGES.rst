@@ -28,6 +28,9 @@ New Features:
 
 Bug Fixes:
 
+- Fix test where you cannot instanciate a PythonScript with the id script.
+  [pbauer]
+
 - Set the status of an exception view according to the exception type.
   Fixes `issue 2187 <https://github.com/plone/Products.CMFPlone/issues/2187>`_.
   [maurits]

@@ -38,8 +38,8 @@ except (ImportError, Unauthorized):
 Products.PlacelessTranslationService.allow_module('os')
 '''
         from Products.PythonScripts.PythonScript import PythonScript
-        script = makerequest(PythonScript('script'))
-        script._filepath = 'script'
+        script = makerequest(PythonScript('fooscript'))
+        script._filepath = 'fooscript'
         script.write(src)
         self.assertRaises((ImportError, Unauthorized), script)
 
@@ -49,8 +49,8 @@ from Products.PlacelessTranslationService import allow_module
 allow_module('os')
 '''
         from Products.PythonScripts.PythonScript import PythonScript
-        script = makerequest(PythonScript('script'))
-        script._filepath = 'script'
+        script = makerequest(PythonScript('barscript'))
+        script._filepath = 'barscript'
         script.write(src)
         self.assertRaises((ImportError, Unauthorized), script)
 
