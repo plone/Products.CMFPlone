@@ -1741,7 +1741,8 @@ class IActionSchema(Interface):
         title=_(u'action_url_heading', default=u'Action URL'),
         description=_(
             u'action_url_description',
-            default=u'An expression producing the called URL'
+            default=u'An expression producing the called URL. '
+            u'Example: string:${globals_view/navigationRootUrl}/page'
         ),
         required=True)
 

@@ -28,6 +28,9 @@ New Features:
 
 Bug Fixes:
 
+- Show example for expression in actions control panel.
+  [maurits]
+
 - Fix test where you cannot instanciate a PythonScript with the id script.
   [pbauer]
 
