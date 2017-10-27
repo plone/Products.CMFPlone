@@ -22,6 +22,9 @@ New features:
 
 Bug fixes:
 
+- Show example for expression in actions control panel.
+  [maurits]
+
 - Fixed add-on listed as uninstalled when the default profile is not the first alphabetically.
   Fixes `issue 2166 <https://github.com/plone/Products.CMFPlone/issues/2166>`_.
   [maurits]
