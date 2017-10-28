@@ -30,7 +30,6 @@ from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
 from Products.CMFPlone.log import log
 from Products.CMFPlone.log import log_deprecated
 from Products.CMFPlone.log import log_exc
-from types import ClassType
 from urlparse import urlparse
 from webdav.interfaces import IWriteLock
 from zope import schema
@@ -55,6 +54,12 @@ import sys
 import transaction
 import warnings
 import zope.interface
+
+
+try:
+    from types import ClassType
+except ImportError:
+    ClassType = type
 
 
 deprecated_import(
