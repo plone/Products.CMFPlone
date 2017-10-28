@@ -65,7 +65,7 @@ I select '${workflow}' workflow
 
 I add new Link '${id}'
   Go to  ${PLONE_URL}
-  Create content  type=Link  id=${id}  title=${id}
+  Create content  type=Link  id=${id}  title=${id}  remoteUrl=http://www.starzel.de
 
 
 # --- THEN -------------------------------------------------------------------
