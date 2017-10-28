@@ -30,6 +30,9 @@ Breaking changes:
 
 New Features:
 
+- Provide an utility ``dump_json_to_text`` that works both on Python 2.7 an Python 3.
+  [ale-rt]
+
 - Fix imports to work with Python 3.
   [pbauer]
 
