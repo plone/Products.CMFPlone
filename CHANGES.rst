@@ -28,6 +28,11 @@ New Features:
 
 Bug Fixes:
 
+- added CSS hyphenation support for toolbar for avoiding ugly
+  text wrapping
+  Fixes `issue 723 <https://github.com/plone/Products.CMFPlone/issues/723>`_.
+  [ajung]
+
 - Show example for expression in actions control panel.
   [maurits]
 
