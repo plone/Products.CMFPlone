@@ -28,6 +28,9 @@ New Features:
 
 Bug Fixes:
 
+- Increase compatibility with Python3.
+  [ale-rt]
+
 - Show example for expression in actions control panel.
   [maurits]
 
