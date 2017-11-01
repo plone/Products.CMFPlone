@@ -32,6 +32,9 @@ Bug Fixes:
   Fixes `issue 723 <https://github.com/plone/Products.CMFPlone/issues/723>`_.
   [ajung]
 
+- Increase compatibility with Python3.
+  [ale-rt]
+
 - Show example for expression in actions control panel.
   [maurits]
 
