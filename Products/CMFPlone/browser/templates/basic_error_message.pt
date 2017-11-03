@@ -10,6 +10,8 @@
 </head>
 
 <body>
+
+  <h1>${options/error_type}</h1>
   <p>We're sorry, but there seems to be an error.</p>
 
   <tal:block condition="view/is_manager"
