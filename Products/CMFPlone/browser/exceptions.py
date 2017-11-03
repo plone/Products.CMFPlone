@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 from AccessControl import getSecurityManager
-from OFS.interfaces import IApplication
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zExceptions.ExceptionFormatter import format_exception
+from zope.component.hooks import getSite
 
 import json
 import sys
@@ -34,8 +34,8 @@ class ExceptionView(BrowserView):
                 'error_type': error_type,
             })
 
-        if IApplication.providedBy(self.context):
-            # The context is the Zope-root, so we cannot render our template
+        if getSite() is None:
+            # We cannot get the site, so we cannot render our nice template
             template = self.basic_template
         else:
             # Use a simplified template if main_template is not available
