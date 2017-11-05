@@ -73,3 +73,13 @@ This option will be faster for subsequent runs.
 Environment variable ``APPLY_PROFILES`` can be set to a comma separated list of Generic Setup profiles and is used by the very special test fixture ``PLONE_ROBOT_TESTING`` to prepare a Plone site with those profiles installed. There's also an another special variable ``CONFIGURE_PACKAGES`` that can be set to a comma separated list of package names (e.g. to ``plone.app.iterate``) to configure more profiles to be available for ``APPLY_PROFILES``.
 
 A special variable ``ROBOT_SERVER:True`` must be set for Robot Framework test runner to fix the test suite to be aware of being executed against long-running robot server.
+
+Screenshots for documentation
+=============================
+
+The screenshots are meant for the Plone documentation.
+
+As there are still browser bugs, it is good to visually inspect them before they are uploaded in the repository
+https://github.com/plone/documentation-roboshots
+
+In there, the tagged releases should contain known-good-sets of screenshots for a particular Plone version.
