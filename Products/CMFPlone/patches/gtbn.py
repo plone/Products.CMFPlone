@@ -1,5 +1,27 @@
 # -*- coding: utf-8 -*-
+from Acquisition import aq_parent, aq_base, aq_inner
+from Acquisition import IAcquirer
 from Products.CMFCore import utils
+from zope.globalrequest import getRequest
+from ZPublisher.BaseRequest import RequestContainer
+
+
+def rewrap_in_request_container(obj, context=None):
+    '''Fix an object's acquisition wrapper to be able to acquire the REQUEST.'''
+    request = getattr(context, 'REQUEST', None) or getRequest()
+    if IAcquirer.providedBy(obj) and request is not None:
+        chain = []
+        parent = obj
+        while 1:
+            chain.append(parent)
+            parent = aq_parent(aq_inner(parent))
+            if parent in chain or parent is None or isinstance(
+                    parent, RequestContainer):
+                break
+        obj = RequestContainer(REQUEST=request)
+        for ob in reversed(chain):
+            obj = aq_base(ob).__of__(obj)
+    return obj
 
 # Check return value of getToolByName
 # this used to be step 5 in earlypatches, but was moved to avoid
@@ -8,12 +30,8 @@ from Products.CMFCore import utils
 # rather than the entire function, to make sure that aliases to the function
 # that were imported prior to this patch will still run the patched code.
 code = """
-from Acquisition.interfaces import IAcquirer
-from Acquisition import aq_base, aq_chain, aq_inner
 from persistent.interfaces import IPersistent
 from OFS.interfaces import IItem
-from ZPublisher.BaseRequest import RequestContainer
-from zope.globalrequest import getRequest
 try:
     from Products.ATContentTypes.tool.factory import FauxArchetypeTool
 except ImportError:
@@ -32,22 +50,7 @@ def check_getToolByName(obj, name, default=_marker):
             result.__class__.__module__ == 'mock' or \
             result is _marker or \
             result is default:
-
-        # Rewrap in request container
-        request = getattr(obj, 'REQUEST', None) or getRequest()
-        if IAcquirer.providedBy(result) and request is not None:
-            chain = []
-            parent = result
-            while 1:
-                chain.append(parent)
-                parent = aq_parent(aq_inner(parent))
-                if parent in chain or parent is None or isinstance(parent, RequestContainer):
-                    break
-            result = RequestContainer(REQUEST=request)
-            for ob in reversed(chain):
-                result = aq_base(ob).__of__(result)
-
-        return result
+        return rewrap_in_request_container(result, context=obj)
     else:
         raise TypeError("Object found is not a portal tool (%s)" % (name,))
     return result
@@ -57,6 +60,8 @@ if '_marker' not in utils.getToolByName.func_globals:
                     "with Products.PloneHotfix20121106, the fixes are "
                     "included already in Products.CMFPlone, please remove "
                     "the hotfix")
+utils.getToolByName.func_globals[
+    'rewrap_in_request_container'] = rewrap_in_request_container
 exec code in utils.getToolByName.func_globals
 utils._getToolByName.func_code = utils.getToolByName.func_code
 utils.getToolByName.func_code = utils.check_getToolByName.func_code
