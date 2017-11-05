@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from AccessControl import ClassSecurityInfo
+from Acquisition import aq_parent, aq_inner
 from App.class_init import InitializeClass
 from plone.registry.interfaces import IRegistry
 from posixpath import normpath
@@ -85,7 +86,9 @@ class URLTool(PloneBaseTool, BaseTool):
         return False
 
     def getPortalObject(self):
-        portal = getUtility(ISiteRoot)
+        portal = aq_parent(aq_inner(self))
+        if portal is None:
+            portal = getUtility(ISiteRoot)
         # Make sure portal can acquire REQUEST
         return rewrap_in_request_container(portal, context=self)
 
