@@ -28,6 +28,9 @@ New Features:
 
 Bug Fixes:
 
+- Fix exception view when called on Zope-root. Fixes #2203.
+  [pbauer]
+
 - added CSS hyphenation support for toolbar for avoiding ugly text wrapping
   Fixes `issue 723 <https://github.com/plone/Products.CMFPlone/issues/723>`_.
   [ajung]

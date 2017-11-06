@@ -1,7 +1,10 @@
+# -*- coding: utf-8 -*-
 from AccessControl import getSecurityManager
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zExceptions.ExceptionFormatter import format_exception
+from zope.component.hooks import getSite
+
 import json
 import sys
 
@@ -31,13 +34,17 @@ class ExceptionView(BrowserView):
                 'error_type': error_type,
             })
 
-        # Use a simplified template if main_template is not available
-        try:
-            self.context.unrestrictedTraverse('main_template')
-        except:
+        if getSite() is None:
+            # We cannot get the site, so we cannot render our nice template
             template = self.basic_template
         else:
-            template = self.index
+            # Use a simplified template if main_template is not available
+            try:
+                self.context.unrestrictedTraverse('main_template')
+            except:
+                template = self.basic_template
+            else:
+                template = self.index
 
         # Render page with user-facing error notice
         request.set('disable_border', True)
