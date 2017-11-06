@@ -813,7 +813,6 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         registry = getUtility(IRegistry)
         site_settings = registry.forInterface(
             ISiteSchema, prefix="plone", check=False)
-        use_all = site_settings.exposeDCMetaTags
 
         try:
             use_all = site_settings.exposeDCMetaTags
