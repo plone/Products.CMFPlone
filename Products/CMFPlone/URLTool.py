@@ -4,9 +4,11 @@ from Acquisition import aq_parent, aq_inner
 from App.class_init import InitializeClass
 from plone.registry.interfaces import IRegistry
 from posixpath import normpath
+from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.URLTool import URLTool as BaseTool
 from Products.CMFPlone.interfaces import ILoginSchema
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
+from Products.CMFPlone.patches.gtbn import rewrap_in_request_container
 from urlparse import urlparse, urljoin
 from zope.component import getUtility
 import re
@@ -84,8 +86,11 @@ class URLTool(PloneBaseTool, BaseTool):
         return False
 
     def getPortalObject(self):
-        # Make sure portal is wrapped properly
-        return aq_parent(aq_inner(self))
+        portal = aq_parent(aq_inner(self))
+        if portal is None:
+            portal = getUtility(ISiteRoot)
+        # Make sure portal can acquire REQUEST
+        return rewrap_in_request_container(portal, context=self)
 
 
 URLTool.__doc__ = BaseTool.__doc__
