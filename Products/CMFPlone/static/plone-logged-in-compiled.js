@@ -50295,6 +50295,8 @@ define('text!mockup-patterns-relateditems-url/templates/toolbar.xml',[],function
  *    scanSelection(boolean): Scan the list of selected elements for other patterns.
  *    selectableTypes(array): If the value is null all types are selectable. Otherwise, provide a list of strings to match item types that are selectable. (null)
  *    separator(string): Select2 option. String which separates multiple items. (',')
+ *    sortOn(string): Index on which to sort on. ('path')
+ *    sortOrder(string): Sort ordering. ('ascending')
  *    tokenSeparators(array): Select2 option, refer to select2 documentation. ([",", " "])
  *    upload(boolen): Allow file and image uploads from within the related items widget.
  *    uploadAllowView(string): View, which returns a JSON response in the form of {allowUpload: true}, if upload is allowed in the current context.
@@ -50420,6 +50422,8 @@ define('mockup-patterns-relateditems',[
       scanSelection: false,  // False, to no unnecessarily use CPU time on this.
       selectableTypes: null, // null means everything is selectable, otherwise a list of strings to match types that are selectable
       separator: ',',
+      sortOn: 'path',
+      sortOrder: 'ascending',
       tokenSeparators: [',', ' '],
       upload: false,
       uploadAllowView: undefined,
@@ -50500,8 +50504,8 @@ define('mockup-patterns-relateditems',[
           var data = {
             query: JSON.stringify({
               criteria: criterias,
-              sort_on: 'path',
-              sort_order: 'ascending'
+              sort_on: this.options.sortOn,
+              sort_order: this.options.sortOrder
             }),
             attributes: JSON.stringify(this.options.attributes),
             batch: JSON.stringify({
@@ -74738,7 +74742,7 @@ define('mockup-patterns-querystring',[
       }
       else if (typeof self.$value !== 'undefined') {
         var value = self.$value.val();
-        if(typeof(value) === 'string'){
+        if(ival === 'path' && value) {
           var depth = self.getDepthString();
           if(depth){
             value += depth;
@@ -84149,5 +84153,5 @@ require([
   'use strict';
 });
 
-define("/home/_thet/data/dev/plone/buildout.coredev/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
+define("/home/_thet/data/dev/plone/buildout.coredev-51/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
 
