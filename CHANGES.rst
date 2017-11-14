@@ -21,6 +21,9 @@ New features:
 - Add js-shortcuts to the resource registry
   [b4oshany]
 
+- Update with latest mockup 2.1.x
+  [frapell]
+
 Bug fixes:
 
 - Fixed Products.CMFPlacefulWorkflow being marked as not installed after upgrade from 4.3.
