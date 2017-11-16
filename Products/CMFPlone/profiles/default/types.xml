@@ -3,7 +3,6 @@
  <property
     name="title">Controls the available content types in your portal</property>
  <object name="Discussion Item" meta_type="Factory-based Type Information"/>
- <object name="Plone Site"
-    meta_type="Factory-based Type Information with dynamic views"/>
+ <object name="Plone Site" meta_type="Dexterity FTI" />
  <object name="TempFolder" meta_type="Factory-based Type Information"/>
 </object>

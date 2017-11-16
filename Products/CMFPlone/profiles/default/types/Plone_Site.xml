@@ -1,34 +1,69 @@
 <?xml version="1.0"?>
-<object name="Plone Site"
-   meta_type="Factory-based Type Information with dynamic views"
-   i18n:domain="plone" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
- <property name="title" i18n:translate=""></property>
- <property name="description"
-      i18n:translate="">The root object in a Plone site.</property>
- <property name="icon_expr"></property>
- <property name="content_meta_type">Plone Site</property>
- <property name="product">CMFPlone</property>
- <property name="factory">manage_addSite</property>
- <property name="immediate_view">folder_listing</property>
- <property name="global_allow">False</property>
- <property name="filter_content_types">False</property>
- <property name="allowed_content_types"/>
- <property name="allow_discussion">False</property>
- <property name="default_view">folder_listing</property>
- <property name="view_methods">
-  <element value="folder_listing"/>
-  <element value="folder_summary_view"/>
-  <element value="folder_full_view"/>
-  <element value="folder_tabular_view"/>
-  <element value="atct_album_view"/>
- </property>
+<object
+    i18n:domain="plone"
+    meta_type="Dexterity FTI"
+    name="Plone Site"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+
+  <!-- Basic properties -->
+  <property
+      i18n:translate=""
+      name="title">Plone Site</property>
+  <property
+      i18n:translate=""
+      name="description"></property>
+
+  <property name="allow_discussion">False</property>
+  <property name="factory">manage_addSite</property>
+  <property name="icon_expr"></property>
+  <property name="link_target"></property>
+
+  <!-- Hierarchy control -->
+  <property name="allowed_content_types"/>
+  <property name="filter_content_types">False</property>
+  <property name="global_allow">False</property>
+
+  <!-- Schema, class and security -->
+  <property name="add_permission">cmf.AddPortalContent</property>
+  <property name="klass">Products.CMFPlone.Portal.PloneSite</property>
+  <property name="model_file">plone.app.contenttypes.schema:folder.xml</property>
+  <property name="model_source"></property>
+  <property name="schema"></property>
+
+  <!-- Enabled behaviors -->
+  <property name="behaviors" purge="false">
+    <element value="plone.app.dexterity.behaviors.metadata.IDublinCore"/>
+    <element value="plone.app.content.interfaces.INameFromTitle"/>
+    <element value="plone.app.dexterity.behaviors.id.IShortName"/>
+    <element value="plone.app.relationfield.behavior.IRelatedItems"/>
+    <element value="plone.app.dexterity.behaviors.nextprevious.INextPreviousToggle"/>
+  </property>
+
+  <!-- View information -->
+  <property name="add_view_expr">string:${folder_url}/++add++Plone Site</property>
+  <property name="default_view">listing_view</property>
+  <property name="default_view_fallback">False</property>
+  <property name="immediate_view">view</property>
+  <property name="view_methods">
+    <element value="album_view"/>
+    <element value="event_listing"/>
+    <element value="full_view"/>
+    <element value="listing_view"/>
+    <element value="summary_view"/>
+    <element value="tabular_view"/>
+  </property>
+
+  <!-- Method aliases -->
  <alias from="(Default)" to="(dynamic view)"/>
  <alias from="edit" to="@@site-controlpanel"/>
  <alias from="sharing" to="@@sharing"/>
  <alias from="view" to="(selected layout)"/>
+
+  <!-- Actions -->
  <action title="View" action_id="view" category="object" condition_expr=""
     url_expr="string:${object_url}" visible="True"
     i18n:attributes="title">
   <permission value="View"/>
  </action>
+
 </object>
