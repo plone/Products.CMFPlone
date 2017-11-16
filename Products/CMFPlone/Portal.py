@@ -163,21 +163,6 @@ class PloneSite(Container, SkinnableObjectManager, UniqueObject):
         PloneSite.inheritedAttribute('manage_beforeDelete')(self, container,
                                                             item)
 
-    security.declareProtected(permissions.DeleteObjects, 'manage_delObjects')
-
-    def manage_delObjects(self, ids=None, REQUEST=None):
-        """We need to enforce security."""
-        if ids is None:
-            ids = []
-        if isinstance(ids, basestring):
-            ids = [ids]
-        for id in ids:
-            item = self._getOb(id)
-            if not _checkPermission(permissions.DeleteObjects, item):
-                raise Unauthorized(
-                    "Do not have permissions to remove this object")
-        return PortalObjectBase.manage_delObjects(self, ids, REQUEST=REQUEST)
-
     def view(self):
         """ Ensure that we get a plain view of the object, via a delegation to
         __call__(), which is defined in BrowserDefaultMixin
