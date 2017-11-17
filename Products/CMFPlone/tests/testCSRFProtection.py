@@ -5,7 +5,7 @@ from plone.app.testing import TEST_USER_PASSWORD
 from plone.app.testing.bbb import PloneTestCase
 from plone.keyring.interfaces import IKeyManager
 from plone.protect.authenticator import AuthenticatorView
-from io import StringIO
+from six import StringIO
 from zope.component import queryUtility
 
 

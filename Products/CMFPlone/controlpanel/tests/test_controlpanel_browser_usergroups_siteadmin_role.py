@@ -9,7 +9,7 @@ from plone.app.testing.bbb import PloneTestCase as FunctionalTestCase
 from plone.app.testing.bbb import PloneTestCaseFixture
 from plone.protect.authenticator import createToken
 from Products.CMFCore.utils import getToolByName
-from io import StringIO
+from six import StringIO
 from six.moves.urllib.parse import urlencode
 
 import re

@@ -70,7 +70,7 @@ def initialize(context):
     this_module.Batch = Batch
 
     ModuleSecurityInfo('StringIO').declarePublic('StringIO')
-    from io import StringIO
+    from six import StringIO
     allow_class(StringIO)
 
     # Make Unauthorized importable TTW

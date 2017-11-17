@@ -6,7 +6,7 @@ from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
 from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
-from io import StringIO
+from six import StringIO
 from zExceptions import Forbidden
 
 

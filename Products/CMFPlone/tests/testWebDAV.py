@@ -6,7 +6,7 @@ from plone.app.testing import TEST_USER_PASSWORD
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.tests import dummy
 from Products.CMFPlone.tests import PloneTestCase
-from io import StringIO
+from six import StringIO
 
 
 html = """\
