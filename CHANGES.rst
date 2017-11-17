@@ -24,6 +24,9 @@ Breaking changes:
 
 New Features:
 
+- Fix imports to work with Python 3.
+  [pbauer]
+
 - Mockup update.
   [thet]
 
