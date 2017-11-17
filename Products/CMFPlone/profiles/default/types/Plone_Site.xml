@@ -65,5 +65,15 @@
     i18n:attributes="title">
   <permission value="View"/>
  </action>
+ <action
+    action_id="edit"
+    category="object"
+    condition_expr=""
+    i18n:attributes="title"
+    title="Edit"
+    url_expr="string:${object_url}/edit"
+    visible="True">
+  <permission value="Modify portal content"/>
+ </action>
 
 </object>
