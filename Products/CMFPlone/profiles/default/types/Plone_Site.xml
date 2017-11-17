@@ -69,7 +69,7 @@
  <action
     action_id="edit"
     category="object"
-    condition_expr=""
+    condition_expr="not:object/@@plone_lock_info/is_locked_for_current_user|python:True"
     i18n:attributes="title"
     title="Edit"
     url_expr="string:${object_url}/edit"
