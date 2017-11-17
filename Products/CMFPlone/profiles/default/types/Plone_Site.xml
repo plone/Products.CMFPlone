@@ -37,6 +37,7 @@
     <element value="plone.app.dexterity.behaviors.id.IShortName"/>
     <element value="plone.app.relationfield.behavior.IRelatedItems"/>
     <element value="plone.app.dexterity.behaviors.nextprevious.INextPreviousToggle"/>
+    <element value="plone.app.lockingbehavior.behaviors.ILocking" />
   </property>
 
   <!-- View information -->
