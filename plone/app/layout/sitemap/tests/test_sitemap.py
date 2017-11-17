@@ -7,7 +7,7 @@ from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces import ISearchSchema
 from Products.CMFPlone.interfaces import ISiteSchema
-from StringIO import StringIO
+from six import StringIO
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.interface import alsoProvides
