@@ -30,7 +30,7 @@ from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
 from Products.CMFPlone.log import log
 from Products.CMFPlone.log import log_deprecated
 from Products.CMFPlone.log import log_exc
-from urlparse import urlparse
+from six.moves.urllib.parse import urlparse
 from webdav.interfaces import IWriteLock
 from zope import schema
 from zope.component import getMultiAdapter

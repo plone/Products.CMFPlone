@@ -4,17 +4,16 @@
    comes with its own test fixture. Would be nice to refactor that to use the
    CMFPlone fixture at some point.
 """
-from cStringIO import StringIO
-from urllib import urlencode
+from plone.app import testing
+from plone.app.testing.bbb import PloneTestCase as FunctionalTestCase
+from plone.app.testing.bbb import PloneTestCaseFixture
 from plone.protect.authenticator import createToken
+from Products.CMFCore.utils import getToolByName
+from six import StringIO
+from six.moves.urllib.parse import urlencode
 
 import re
 import transaction
-
-from plone.app.testing.bbb import PloneTestCase as FunctionalTestCase
-from plone.app.testing.bbb import PloneTestCaseFixture
-from plone.app import testing
-from Products.CMFCore.utils import getToolByName
 
 
 class ControlPanelFixture(PloneTestCaseFixture):

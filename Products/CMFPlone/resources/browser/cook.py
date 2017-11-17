@@ -9,8 +9,8 @@ from Products.CMFPlone.interfaces.resources import IResourceRegistry
 from Products.CMFPlone.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME  # noqa
 from Products.CMFPlone.resources.browser.combine import combine_bundles
 from scss import Compiler
+from six import StringIO
 from slimit import minify
-from StringIO import StringIO
 from zExceptions import NotFound
 from zope.component import getUtility
 from zope.component.hooks import getSite

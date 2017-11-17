@@ -1,25 +1,25 @@
 # -*- coding:utf-8
 from datetime import datetime
-import json
-import re
-from urlparse import urlparse
-
-from Products.CMFPlone.interfaces import IBundleRegistry
-from Products.CMFPlone.interfaces import IResourceRegistry
-from Products.CMFPlone.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME  # noqa
-from Products.CMFPlone.resources import RESOURCE_DEVELOPMENT_MODE
-from Products.CMFPlone.resources import add_bundle_on_request
-from Products.CMFPlone.resources.browser.configjs import RequireJsView
-from Products.CMFPlone.resources.browser.cook import cookWhenChangingSettings
-from Products.statusmessages.interfaces import IStatusMessage
 from plone.memoize.view import memoize
 from plone.registry import field
 from plone.registry.interfaces import IRegistry
 from plone.registry.record import Record
 from plone.resource.interfaces import IResourceDirectory
-import posixpath
+from Products.CMFPlone.interfaces import IBundleRegistry
+from Products.CMFPlone.interfaces import IResourceRegistry
+from Products.CMFPlone.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME  # noqa
+from Products.CMFPlone.resources import add_bundle_on_request
+from Products.CMFPlone.resources import RESOURCE_DEVELOPMENT_MODE
+from Products.CMFPlone.resources.browser.configjs import RequireJsView
+from Products.CMFPlone.resources.browser.cook import cookWhenChangingSettings
+from Products.statusmessages.interfaces import IStatusMessage
+from six.moves.urllib import parse
 from zExceptions import NotFound
 from zope.component import getUtility
+
+import json
+import posixpath
+import re
 
 
 CSS_URL_REGEX = re.compile('url\(([^)]+)\)')
@@ -97,8 +97,8 @@ class OverrideFolderManager(object):
         http://stackoverflow.com/questions/7469573/how-to-construct-relative-url-given-two-absolute-urls-in-python
 
         """
-        base = urlparse(css_url)
-        target = urlparse(asset_url)
+        base = parse.urlparse(css_url)
+        target = parse.urlparse(asset_url)
         if base.netloc != target.netloc:
             return asset_url
         base_dir = '.' + posixpath.dirname(base.path)
@@ -272,7 +272,7 @@ class ResourceRegistryControlPanelView(RequireJsView):
             for resource in bundle_obj.resources:
                 if resource in resources:
                     for css in resources[resource].css:
-                        url = urlparse(css)
+                        url = parse.urlparse(css)
                         if url.netloc == '':
                             # Local
                             src = "%s/%s" % (site_url, css)

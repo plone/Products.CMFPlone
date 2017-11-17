@@ -43,6 +43,7 @@ from Products.CMFPlone.utils import safe_hasattr
 from Products.CMFPlone.utils import safe_unicode
 from Products.CMFPlone.utils import transaction_note
 from Products.statusmessages.interfaces import IStatusMessage
+from six.moves.urllib import parse
 from types import UnicodeType
 from ZODB.POSException import ConflictError
 from zope.component import getUtility
@@ -54,7 +55,6 @@ from zope.lifecycleevent import ObjectModifiedEvent
 import re
 import sys
 import transaction
-import urlparse
 
 
 _marker = utils._marker
@@ -411,14 +411,14 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         Since Python 2.6: urlparse now returns a ParseResult object.
         We just need the tuple form which is tuple(result).
         """
-        return tuple(urlparse.urlparse(url))
+        return tuple(parse.urlparse(url))
 
     @security.public
     def urlunparse(self, url_tuple):
         """Puts a url back together again, in the manner that
         urlparse breaks it.
         """
-        return urlparse.urlunparse(url_tuple)
+        return parse.urlunparse(url_tuple)
 
     # Enable scripts to get the string value of an exception even if the
     # thrown exception is a string and not a subclass of Exception.

@@ -80,8 +80,8 @@ class DefaultUtilsTests(unittest.TestCase):
         PloneSite and SubSite implement ISite
         """
         from plone.app.content.browser.contents import get_top_site_from_url
+        from six.moves.urllib.parse import urlparse
         from zope.component.interfaces import ISite
-        from urlparse import urlparse
 
         class MockContext(object):
             vh_url = 'http://nohost'

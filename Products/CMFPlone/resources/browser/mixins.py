@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 from plone.registry.interfaces import IRegistry
+from six.moves.urllib.parse import urlparse
 from Products.CMFPlone.interfaces import IResourceRegistry
 from Products.CMFPlone.utils import SafeFormatter
 from Products.Five.browser import BrowserView
-from urlparse import urlparse
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 

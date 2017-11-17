@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
+from DateTime import DateTime
+from plone.app.testing import SITE_OWNER_NAME
+from plone.app.testing import SITE_OWNER_PASSWORD
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
-from plone.app.testing import SITE_OWNER_NAME
-from plone.app.testing import SITE_OWNER_PASSWORD
 from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
+from six import StringIO
 from zExceptions import Forbidden
-from cStringIO import StringIO
-from DateTime import DateTime
 
 
 class TestNoGETControlPanel(PloneTestCase):

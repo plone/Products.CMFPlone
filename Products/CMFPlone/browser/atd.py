@@ -2,7 +2,7 @@
 from Products.CMFCore.utils import getToolByName
 from zope.component import getUtility
 from plone.registry.interfaces import IRegistry
-import httplib
+from six.moves import http_client
 from Products.CMFPlone.interfaces import ITinyMCESchema
 from Products.CMFPlone.interfaces.atd import IATDProxyView
 from zope.interface import implementer
@@ -29,12 +29,12 @@ class ATDProxyView(object):
 
         data = self.request._file.read()
         service_url = settings.libraries_atd_service_url
-        service = httplib.HTTPConnection(service_url)
+        service = http_client.HTTPConnection(service_url)
         service.request("POST", "/checkDocument", data)
 
         response = service.getresponse()
 
-        if response.status != httplib.OK:
+        if response.status != http_client.OK:
             service.close()
             raise Exception('Unexpected response code from AtD service %d' %
                             response.status)
