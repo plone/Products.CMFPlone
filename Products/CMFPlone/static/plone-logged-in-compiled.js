@@ -50563,10 +50563,7 @@ define('mockup-patterns-relateditems',[
         }.bind(this)
 
       };
-
       this.options.ajax = ajax;
-      this.$el.select2(this.options);
-
     },
 
     setBreadCrumbs: function () {
@@ -84161,5 +84158,5 @@ require([
   'use strict';
 });
 
-define("/home/_thet/data/dev/plone/buildout.coredev-51/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
+define("/home/_thet/data/dev/agitator/collectionfilter/plone/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
 
