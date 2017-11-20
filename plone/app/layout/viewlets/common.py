@@ -247,6 +247,9 @@ class GlobalSectionsViewlet(ViewletBase):
 
 class PersonalBarViewlet(ViewletBase):
 
+    homelink_url = ''
+    user_name = ''
+
     def update(self):
         super(PersonalBarViewlet, self).update()
         context = aq_inner(self.context)

@@ -17,6 +17,8 @@ Bug fixes:
 - Imports are Python3 compatible
   [ale-rt]
 
+- Fix for situations where pathbar viewlet variables were undefined in toolbar context
+  [tomgross]
 
 2.7.5 (2017-11-26)
 ------------------
