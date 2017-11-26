@@ -4,18 +4,10 @@ Changelog
 2.7.5 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
 New features:
 
-- Toolbar: Use pattern variavbles to configure the toolbar and submenu widths from plone.lessvariables.
+- Toolbar: Use pattern variables to configure the toolbar and submenu widths from plone.lessvariables.
   [thet]
-
-Bug fixes:
-
-- *add item here*
 
 
 2.7.4 (2017-09-03)
