@@ -5,6 +5,22 @@
 Changelog
 =========
 
+5.1rc3 (unreleased)
+-------------------
+
+Breaking changes:
+
+- *add item here*
+
+New features:
+
+- *add item here*
+
+Bug fixes:
+
+- *add item here*
+
+
 5.1rc2 (2017-11-26)
 -------------------
 
