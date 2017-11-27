@@ -8,10 +8,6 @@ Changelog
 5.1rc2 (unreleased)
 -------------------
 
-Breaking changes:
-
-- *add item here*
-
 New features:
 
 - Toolbar: Allow configuration of the toolbar and submenu width via pattern variables.
