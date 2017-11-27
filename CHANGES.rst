@@ -5,7 +5,7 @@
 Changelog
 =========
 
-5.1rc2 (unreleased)
+5.1rc2 (2017-11-26)
 -------------------
 
 New features:
