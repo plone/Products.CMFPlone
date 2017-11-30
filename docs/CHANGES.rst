@@ -19,7 +19,8 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Improved isURLInPortal according to PloneHotfix20171128.
+  Accept only http/https, and doubly check escaped urls.  [maurits]
 
 
 4.3.16 (2017-09-08)
