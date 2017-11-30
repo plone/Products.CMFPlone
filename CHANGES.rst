@@ -32,6 +32,9 @@ New Features:
 
 Bug Fixes:
 
+- Improved isURLInPortal according to PloneHotfix20171128.
+  Accept only http/https, and doubly check escaped urls.  [maurits]
+
 - Fix exception view when called on Zope-root. Fixes #2203.
   [pbauer]
 
