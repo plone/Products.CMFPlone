@@ -9,10 +9,30 @@ from Products.CMFCore.URLTool import URLTool as BaseTool
 from Products.CMFPlone.interfaces import ILoginSchema
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.patches.gtbn import rewrap_in_request_container
+from six.moves.html_parser import HTMLParser
 from six.moves.urllib import parse
 from zope.component import getUtility
 
 import re
+
+
+hp = HTMLParser()
+# These schemas are allowed in full urls to consider them in the portal:
+# A mailto schema is an obvious sign of a url that is not in the portal.
+# This is a whitelist.
+ALLOWED_SCHEMAS = [
+    'https',
+    'http',
+]
+# These bad parts are not allowed in urls that are in the portal:
+# This is a blacklist.
+BAD_URL_PARTS = [
+    '\\\\',
+    '<script',
+    '%3cscript',
+    'javascript:',
+    'javascript%3a',
+]
 
 
 class URLTool(PloneBaseTool, BaseTool):
@@ -38,16 +58,24 @@ class URLTool(PloneBaseTool, BaseTool):
         # sanitize url
         url = re.sub('^[\x00-\x20]+', '', url).strip()
         cmp_url = url.lower()
-        if ('\\\\' in cmp_url or
-                '<script' in cmp_url or
-                '%3cscript' in cmp_url or
-                'javascript:' in cmp_url or
-                'javascript%3a' in cmp_url):
-            return False
+        for bad in BAD_URL_PARTS:
+            if bad in cmp_url:
+                return False
 
         p_url = self()
 
-        _, u_host, u_path, _, _, _ = parse.urlparse(url)
+        schema, u_host, u_path, _, _, _ = parse.urlparse(url)
+        if schema and schema not in ALLOWED_SCHEMAS:
+            # Redirecting to 'data:' may be harmful,
+            # and redirecting to 'mailto:' or 'ftp:' is silly.
+            return False
+
+        # Someone may be doing tricks with escaped html code.
+        unescaped_url = hp.unescape(url)
+        if unescaped_url != url:
+            if not self.isURLInPortal(unescaped_url):
+                return False
+
         if not u_host and not u_path.startswith('/'):
             if context is None:
                 return True  # old behavior
