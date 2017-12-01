@@ -135,3 +135,43 @@ class TestURLTool(unittest.TestCase):
         url_tool = self._makeOne()
         iURLiP = url_tool.isURLInPortal
         self.assertFalse(iURLiP('\\\\www.example.com'))
+
+    def test_regression_absolute_url_in_portal(self):
+        url_tool = self._makeOne()
+        iURLiP = url_tool.isURLInPortal
+        self.assertTrue(iURLiP(url_tool()))
+        self.assertTrue(iURLiP(url_tool() + '/shrubbery?knights=ni#ekki-ekki'))
+
+    def test_mailto_simple_not_in_portal(self):
+        url_tool = self._makeOne()
+        iURLiP = url_tool.isURLInPortal
+        self.assertFalse(iURLiP(
+            'mailto:someone@example.org')
+        )
+
+    def test_mailto_complex_not_in_portal(self):
+        url_tool = self._makeOne()
+        iURLiP = url_tool.isURLInPortal
+        self.assertFalse(iURLiP(
+            'mailto&#58;192&#46;168&#46;163&#46;154&#58;8080&#47;Plone&apos;'
+            '&quot;&gt;&lt;html&gt;&lt;svg&#32;onload&#61;alert&#40;document'
+            '&#46;domain&#41;&gt;&lt;&#47;html&gt;')
+        )
+
+    def test_data_not_in_portal(self):
+        url_tool = self._makeOne()
+        iURLiP = url_tool.isURLInPortal
+        self.assertFalse(iURLiP(
+            'data:text/html%3bbase64,PHNjcmlwdD5hbGVydCgnWFNTJyk8L3NjcmlwdD4K')
+        )
+
+    def test_double_slash(self):
+        # I wondered if this might be a problem after reading
+        # https://bugs.python.org/issue23505
+        # Apparently not, but let's test it.
+        url_tool = self._makeOne()
+        iURLiP = url_tool.isURLInPortal
+        self.assertFalse(iURLiP(
+            '//www.google.com'))
+        self.assertFalse(iURLiP(
+            '////www.google.com'))
