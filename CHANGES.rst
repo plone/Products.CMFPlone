@@ -73,6 +73,9 @@ Bug fixes:
 - Fixes #2105: how to get ``email_from_name`` information in sendto_form.
   [cekk]
 
+- Remove ``type`` from ``style`` and ``link`` tag.
+  [newbazz]
+
 5.1rc1 (2017-09-10)
 -------------------
 
