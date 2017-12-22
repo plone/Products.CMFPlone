@@ -108,6 +108,7 @@ setup(
         'plone.batching',
         'plone.browserlayer >= 1.0rc4',
         'plone.contentrules',
+        'plone.dexterity',
         'plone.i18n',
         'plone.indexer',
         'plone.intelligenttext',
