@@ -35,6 +35,7 @@
     <element value="plone.app.dexterity.behaviors.metadata.IDublinCore"/>
     <element value="plone.app.content.interfaces.INameFromTitle"/>
     <element value="plone.app.dexterity.behaviors.id.IShortName"/>
+    <element value="plone.app.contenttypes.behaviors.richtext.IRichText"/>
     <element value="plone.app.relationfield.behavior.IRelatedItems"/>
     <element value="plone.app.dexterity.behaviors.nextprevious.INextPreviousToggle"/>
     <element value="plone.app.lockingbehavior.behaviors.ILocking" />
