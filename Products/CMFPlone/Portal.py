@@ -27,11 +27,12 @@ from Products.CMFPlone.PloneFolder import ReplaceableWrapper
 from webdav.NullResource import NullResource
 from zope.component import queryUtility
 from zope.interface import implementer
+from zope.interface import classImplementsOnly, implementedBy
 
 # hackydihack
 from plone.dexterity.content import Container
 from five.localsitemanager.registry import PersistentComponents
-from Products.CMFCore.interfaces import ISiteRoot
+from Products.CMFCore.interfaces import ISiteRoot, IContentish
 from Products.Five.component.interfaces import IObjectManagerSite
 from Products.CMFCore.permissions import AddPortalMember
 from Products.CMFCore.permissions import SetOwnPassword
@@ -208,5 +209,14 @@ class PloneSite(Container, SkinnableObjectManager, UniqueObject):
 
     def reindexObjectSecurity(self, skip_self=False):
         pass
+
+
+# Remove the IContentish interface
+# XXX: IMHO a DX Container should not inherit from
+# Products.CMFCore.PortalContent.PortalContent as that is an IContentish
+# class. Hopefully, where not fireing too many events because of this.
+# At least a DX Container has IFolderish via PortalFolderBase.
+classImplementsOnly(PloneSite, implementedBy(PloneSite) - IContentish)
+
 
 InitializeClass(PloneSite)
