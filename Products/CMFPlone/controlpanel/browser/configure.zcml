@@ -291,4 +291,19 @@
       permission="cmf.ManagePortal"
       />
 
+  <browser:page
+      name="redirection-controlpanel"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".redirects.RedirectsControlPanel"
+      permission="cmf.ManagePortal"
+      />
+
+  <browser:page
+      name="manage-aliases"
+      for="Products.CMFCore.interfaces.IContentish"
+      class=".redirects.RedirectsView"
+      permission="cmf.ModifyPortalContent"
+      allowed_attributes="redirects view_url errors"
+      />
+
 </configure>

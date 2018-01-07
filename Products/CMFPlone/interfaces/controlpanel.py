@@ -1426,6 +1426,25 @@ class ITypesSchema(Interface):
         value_type=schema.TextLine()
     )
 
+    redirection_manageable_types = schema.Tuple(
+        title=_(u"Manage redirects for types"),
+        description=_(u"Select the types for which the "
+                      "aliases can be managed"),
+        required=False,
+        default=(
+            'Image',
+            'File',
+            'Link',
+            'News Item',
+            'Folder',
+            'Document',
+            'Event'
+        ),
+        missing_value=(),
+        value_type=schema.Choice(
+            source='plone.app.vocabularies.ReallyUserFriendlyTypes')
+    )
+
 
 class IMailSchema(Interface):
 
