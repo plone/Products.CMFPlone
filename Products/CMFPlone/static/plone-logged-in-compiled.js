@@ -50267,13 +50267,16 @@ define('text!mockup-patterns-relateditems-url/templates/breadcrumb.xml',[],funct
 define('text!mockup-patterns-relateditems-url/templates/favorite.xml',[],function () { return '<li><a href="<%- path %>" class="fav" aria-labelledby="blip"><%- title %></a></li>\n';});
 
 
+define('text!mockup-patterns-relateditems-url/templates/recentlyused.xml',[],function () { return '<div class="pattern-relateditems-recentlyused">\n  <a class="pattern-relateditems-recentlyused-select" data-uid="<%- UID %>">\n    <% if (getURL && (getIcon || portal_type === "Image")) { %><img src="<%- getURL %>/@@images/image/icon "><br><% } %>\n    <span class="pattern-relateditems-recentlyused-title<%- portal_type ? \' contenttype-\' + portal_type.toLowerCase() : \'\' %><%- review_state ? \' state-\' + review_state : \'\' %>" title="<%- portal_type %>"><%- Title %></span>\n    <span class="pattern-relateditems-recentlyused-path"><%- path %></span>\n  </a>\n</div>\n';});
+
+
 define('text!mockup-patterns-relateditems-url/templates/result.xml',[],function () { return '<div class="pattern-relateditems-result<% if (oneLevelUp) { %> one-level-up<% } %>">\n  <span class="pattern-relateditems-buttons">\n  <% if (is_folderish) { %>\n    <a class="pattern-relateditems-result-browse" data-path="<%- path %>" title="<%- open_folder %>"></a>\n  <% } %>\n  </span>\n  <a class="pattern-relateditems-result-select<% if (selectable) { %> selectable<% } else if (browsing && is_folderish) { %> pattern-relateditems-result-browse<% } %><% if (oneLevelUp) { %> one-level-up<% } %>" data-path="<%- path %>">\n    <% if (getURL && (getIcon || portal_type === "Image")) { %><img src="<%- getURL %>/@@images/image/icon "><br><% } %>\n    <span class="pattern-relateditems-result-title<%- portal_type ? \' contenttype-\' + portal_type.toLowerCase() : \'\' %><%- review_state ? \' state-\' + review_state : \'\' %>" title="<%- portal_type %>"><%- Title %></span>\n    <span class="pattern-relateditems-result-path"><%- path %></span>\n  </a>\n</div>\n';});
 
 
 define('text!mockup-patterns-relateditems-url/templates/selection.xml',[],function () { return '<span class="pattern-relateditems-item">\n  <% if (getURL && (getIcon || portal_type === "Image")) { %><img src="<%- getURL %>/@@images/image/icon"><br><% } %>\n  <span class="pattern-relateditems-item-title<%- portal_type ? \' contenttype-\' + portal_type.toLowerCase() : \'\' %><%- review_state ? \' state-\' + review_state : \'\' %>" title="<%- portal_type %>"><%- Title %></span>\n  <span class="pattern-relateditems-item-path"><%- path %></span>\n</span>\n';});
 
 
-define('text!mockup-patterns-relateditems-url/templates/toolbar.xml',[],function () { return '<% if (mode!==\'auto\') { %>\n<div class="btn-group mode-selector" role="group">\n  <button type="button" class="mode search btn <% if (mode==\'search\') { %>btn-primary<% } else {%>btn-default<% } %>"><%- searchModeText %></button>\n  <button type="button" class="mode browse btn <% if (mode==\'browse\') { %>btn-primary<% } else {%>btn-default<% } %>"><%- browseModeText %></button>\n</div>\n<% } %>\n<div class="path-wrapper">\n  <span class="pattern-relateditems-path-label"><%- searchText %></span>\n  <a class="crumb" href="/"><span class="glyphicon glyphicon-home"/></a>\n  <%= items %>\n</div>\n<div class="controls pull-right">\n  <% if (favorites.length > 0) { %>\n  <div class="favorites dropdown pull-right">\n    <button type="button" class="favorites dropdown-toggle btn btn-primary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">\n      <span class="glyphicon glyphicon-star"/>\n      <%- favText %>\n      <span class="caret"/>\n    </button>\n    <ul class="dropdown-menu">\n      <%= favItems %>\n    </ul>\n  </div>\n  <% } %>\n</div>\n';});
+define('text!mockup-patterns-relateditems-url/templates/toolbar.xml',[],function () { return '<% if (mode!==\'auto\') { %>\n<div class="btn-group mode-selector" role="group">\n  <button type="button" class="mode search btn <% if (mode==\'search\') { %>btn-primary<% } else {%>btn-default<% } %>"><%- searchModeText %></button>\n  <button type="button" class="mode browse btn <% if (mode==\'browse\') { %>btn-primary<% } else {%>btn-default<% } %>"><%- browseModeText %></button>\n</div>\n<% } %>\n<div class="path-wrapper">\n  <span class="pattern-relateditems-path-label"><%- searchText %></span>\n  <a class="crumb" href="/"><span class="glyphicon glyphicon-home"/></a>\n  <%= items %>\n</div>\n<div class="controls pull-right">\n\n  <% if (recentlyUsedItems) { %>\n  <div class="recentlyUsed dropdown pull-right">\n    <button type="button" class="recentlyUsed dropdown-toggle btn btn-primary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">\n      <span class="glyphicon glyphicon-time"/>\n      <%- recentlyUsedText %>\n      <span class="caret"/>\n    </button>\n    <ul class="dropdown-menu">\n      <%= recentlyUsedItems %>\n    </ul>\n  </div>\n  <% } %>\n\n  <% if (favorites.length > 0) { %>\n  <div class="favorites dropdown pull-right">\n    <button type="button" class="favorites dropdown-toggle btn btn-primary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">\n      <span class="glyphicon glyphicon-star"/>\n      <%- favText %>\n      <span class="caret"/>\n    </button>\n    <ul class="dropdown-menu">\n      <%= favItems %>\n    </ul>\n  </div>\n  <% } %>\n</div>\n';});
 
 /* Related items pattern.
  *
@@ -50290,6 +50293,8 @@ define('text!mockup-patterns-relateditems-url/templates/toolbar.xml',[],function
  *    mode(string): Initial widget mode. Possible values: 'search', 'browse'. If set to 'search', the catalog is searched for a searchterm. If set to 'browse', browsing starts at basePath. Default: 'search'.
  *    orderable(boolean): Whether or not items should be drag-and-drop sortable. (true)
  *    pageSize(int): Batch size to break down big result sets into multiple pages. (10).
+ *    recentlyUsed(boolen): Show the recently used items dropdown (false).
+ *    recentlyUsedMaxItems(integer): Maximum items to keep in recently used list. 0: no restriction. (20).
  *    rootPath(string): Only display breadcrumb path elements deeper than this path. Default: "/"
  *    rootUrl(string): Visible URL up to the rootPath. This is prepended to the currentPath to generate submission URLs.
  *    scanSelection(boolean): Scan the list of selected elements for other patterns.
@@ -50379,6 +50384,7 @@ define('mockup-patterns-relateditems',[
   'translate',
   'text!mockup-patterns-relateditems-url/templates/breadcrumb.xml',
   'text!mockup-patterns-relateditems-url/templates/favorite.xml',
+  'text!mockup-patterns-relateditems-url/templates/recentlyused.xml',
   'text!mockup-patterns-relateditems-url/templates/result.xml',
   'text!mockup-patterns-relateditems-url/templates/selection.xml',
   'text!mockup-patterns-relateditems-url/templates/toolbar.xml',
@@ -50386,6 +50392,7 @@ define('mockup-patterns-relateditems',[
 ], function($, _, Base, Select2, ButtonView, utils, registry, _t,
             BreadcrumbTemplate,
             FavoriteTemplate,
+            RecentlyUsedTemplate,
             ResultTemplate,
             SelectionTemplate,
             ToolbarTemplate
@@ -50412,6 +50419,9 @@ define('mockup-patterns-relateditems',[
       contextPath: undefined,
       dropdownCssClass: 'pattern-relateditems-dropdown',
       favorites: [],
+      recentlyUsed: false,
+      recentlyUsedMaxItems: 20,
+      recentlyUsedKey: 'relateditems_recentlyused',
       maximumSelectionSize: -1,
       minimumInputLength: 0,
       mode: 'auto', // possible values are 'auto', 'search' and 'browse'.
@@ -50434,6 +50444,8 @@ define('mockup-patterns-relateditems',[
       breadcrumbTemplateSelector: null,
       favoriteTemplate: FavoriteTemplate,
       favoriteTemplateSelector: null,
+      recentlyusedTemplate: RecentlyUsedTemplate,
+      recentlyusedTemplateSelector: null,
       resultTemplate: ResultTemplate,
       resultTemplateSelector: null,
       selectionTemplate: SelectionTemplate,
@@ -50444,6 +50456,26 @@ define('mockup-patterns-relateditems',[
       // needed
       multiple: true,
 
+    },
+
+    recentlyUsed: function (filterSelectable) {
+      var ret = utils.storage.get(this.options.recentlyUsedKey) || [];
+      // hard-limit to 1000 entries
+      ret = ret.slice(ret.length-1000, ret.length);
+      if (filterSelectable) {
+        // Filter out only selectable items.
+        // This is used only to create the list of items to be displayed.
+        // the list to be stored is unfiltered and can be reused among
+        // different instances of this widget with different settings.
+        ret.filter(this.isSelectable.bind(this));
+      }
+      // max is applied AFTER filtering selectable items.
+      var max = parseInt(this.options.recentlyUsedMaxItems, 10);
+      if (max) {
+        // return the slice from the end, as we want to display newest items first.
+        ret = ret.slice(ret.length-max, ret.length);
+      }
+      return ret;
     },
 
     applyTemplate: function(tpl, item) {
@@ -50467,7 +50499,6 @@ define('mockup-patterns-relateditems',[
     },
 
     setAjax: function () {
-
       var ajax = {
 
         url: this.options.vocabularyUrl,
@@ -50566,7 +50597,7 @@ define('mockup-patterns-relateditems',[
       this.options.ajax = ajax;
     },
 
-    setBreadCrumbs: function () {
+    renderToolbar: function () {
       var self = this;
       var path = self.currentPath;
       var html;
@@ -50591,6 +50622,14 @@ define('mockup-patterns-relateditems',[
         favoritesHtml = favoritesHtml + self.applyTemplate('favorite', item_copy);
       });
 
+      var recentlyUsedHtml = '';
+      if (self.options.recentlyUsed) {
+        var recentlyUsed = self.recentlyUsed(true);  // filter out only those items which can actually be selected
+        _.each(recentlyUsed.reverse(), function (item) {  // reverse to get newest first.
+          recentlyUsedHtml = recentlyUsedHtml + self.applyTemplate('recentlyused', item);
+        });
+      }
+
       html = self.applyTemplate('toolbar', {
         items: itemsHtml,
         favItems: favoritesHtml,
@@ -50598,6 +50637,8 @@ define('mockup-patterns-relateditems',[
         searchText: _t('Current path:'),
         searchModeText: _t('Search'),
         browseModeText: _t('Browse'),
+        recentlyUsedItems: recentlyUsedHtml,
+        recentlyUsedText: _t('Recently Used'),
       });
 
       self.$toolbar.html(html);
@@ -50656,6 +50697,26 @@ define('mockup-patterns-relateditems',[
         self.browseTo($(this).attr('href'));
       });
 
+      if (self.options.recentlyUsed) {
+        $('.pattern-relateditems-recentlyused-select', self.$toolbar).on('click', function(event) {
+          event.preventDefault();
+          var uid = $(this).data('uid');
+          var item = self.recentlyUsed().filter(function (it) { return it.UID === uid; });
+          if (item.length > 0) {
+            item = item[0];
+          } else {
+            return;
+          }
+          self.selectItem(item);
+          if (self.options.maximumSelectionSize > 0) {
+            var items = self.$el.select2('data');
+            if (items.length >= self.options.maximumSelectionSize) {
+              return;
+            }
+          }
+        });
+      }
+
       function initUploadView(UploadView, disabled) {
         var uploadButtonId = 'upload-' + utils.generateId();
         var uploadButton = new ButtonView({
@@ -50708,7 +50769,7 @@ define('mockup-patterns-relateditems',[
       self.emit('before-browse');
       self.currentPath = path;
       self.$el.select2('close');
-      self.setBreadCrumbs();
+      self.renderToolbar();
       self.$el.select2('open');
       self.emit('after-browse');
     },
@@ -50719,6 +50780,18 @@ define('mockup-patterns-relateditems',[
       var data = self.$el.select2('data');
       data.push(item);
       self.$el.select2('data', data, true);
+
+      if (self.options.recentlyUsed) {
+        // add to recently added items
+        var recentlyUsed = self.recentlyUsed();  // do not filter for selectable but get all. append to that list the new item.
+        var alreadyPresent = recentlyUsed.filter(function (it) { return it.UID === item.UID; });
+        if (alreadyPresent.length > 0) {
+          recentlyUsed.splice(recentlyUsed.indexOf(alreadyPresent[0]), 1);
+        }
+        recentlyUsed.push(item);
+        utils.storage.set(self.options.recentlyUsedKey, recentlyUsed);
+      }
+
       self.emit('selected');
     },
 
@@ -50821,14 +50894,14 @@ define('mockup-patterns-relateditems',[
               $parent.removeClass('pattern-relateditems-active');
               self.deselectItem(item);
             } else {
-              self.selectItem(item);
-              $parent.addClass('pattern-relateditems-active');
               if (self.options.maximumSelectionSize > 0) {
                 var items = self.$el.select2('data');
                 if (items.length >= self.options.maximumSelectionSize) {
                   self.$el.select2('close');
                 }
               }
+              self.selectItem(item);
+              $parent.addClass('pattern-relateditems-active');
               if (self.options.closeOnSelect) {
                 self.$el.select2('close');
               }
@@ -50916,7 +50989,7 @@ define('mockup-patterns-relateditems',[
         event.preventDefault();
       });
 
-      self.setBreadCrumbs();
+      self.renderToolbar();
 
     }
   });
@@ -53453,7 +53526,7 @@ define('mockup-patterns-tinymce-url/js/links',[
       self.anchorData = [];
       var node, i, j, name, title;
 
-      var nodes = self.tiny.dom.select('a.mceItemAnchor,img.mceItemAnchor,a.mce-item-anchor,img.mce-item-anchor');
+      var nodes = self.tiny.dom.select('.mceItemAnchor,.mce-item-anchor');
       for (i = 0; i < nodes.length; i = i + 1) {
         node = nodes[i];
         name = self.tiny.dom.getAttrib(node, 'name');
@@ -75685,7 +75758,7 @@ define('mockup-patterns-structure-url/js/actionmenu',['underscore'], function(_)
     var app = menu.app;
 
     var result = _.clone(menuOptions);
-    if ( !(app.pasteAllowed && model.is_folderish)) {
+    if ( !(app.pasteAllowed() && model.is_folderish)) {
       delete result.pasteItem;
     }
     if (app.inQueryMode() || menu.options.canMove === false) {
@@ -78712,17 +78785,20 @@ define('mockup-patterns-structure-url/js/views/app',[
       text: '',
       label: ''
     },
-    pasteAllowed: !!$.cookie('__cp'),
     sort_on: 'getObjPositionInParent',
     sort_order: 'ascending',
     additionalCriterias: [],
     cookieSettingPrefix: '_fc_',
+
+    pasteAllowed: function () {
+        return !!$.cookie('__cp');
+    },
+
     initialize: function(options) {
       var self = this;
       BaseView.prototype.initialize.apply(self, [options]);
       self.loading = new utils.Loading();
       self.loading.show();
-      self.pasteAllowed = !!$.cookie('__cp');
 
       /* close popovers when clicking away */
       $(document).click(function(e) {
@@ -78907,8 +78983,7 @@ define('mockup-patterns-structure-url/js/views/app',[
     togglePasteBtn: function(){
       var self = this;
       if (_.find(self.buttons.items, function(btn){ return btn.id === 'paste'; })) {
-        self.pasteAllowed = !!$.cookie('__cp');
-        if (self.pasteAllowed) {
+        if (self.pasteAllowed()) {
           self.buttons.get('paste').enable();
         } else {
           self.buttons.get('paste').disable();
@@ -84158,5 +84233,5 @@ require([
   'use strict';
 });
 
-define("/home/_thet/data/dev/agitator/collectionfilter/plone/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
+define("/home/_thet/data/dev/plone/buildout.coredev-51/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
 
