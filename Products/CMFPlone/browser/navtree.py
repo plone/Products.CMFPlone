@@ -114,8 +114,9 @@ class SitemapNavtreeStrategy(NavtreeStrategyBase):
             'plone.parent_types_not_to_query', [])
         self.viewActionTypes = registry.get(
             'plone.types_use_view_action_in_listings', [])
+        self.showAllParents = registry.get(
+           'plone.show_excluded_items', False)
 
-        self.showAllParents = True
         self.rootPath = getNavigationRoot(context)
 
         membership = getToolByName(context, 'portal_membership')
