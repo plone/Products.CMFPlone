@@ -76,3 +76,7 @@ Bug Fixes:
   Completly removed ``came_from`` on ``@@register`` link.
   It does not make much sense anyway and we test nowhere if there is a came_from on that link.
   [jensens]
+
+- Fix regression in SitemapNavtreeStrategy. Now contents omitted from navigation are skipped in
+  navigation portlet if show_excluded_items flag is set to False.
+  [cekk]
