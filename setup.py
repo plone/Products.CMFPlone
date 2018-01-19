@@ -116,6 +116,7 @@ setup(
         'plone.portlets',
         'plone.protect >= 3.0.0a1',
         'plone.registry',
+        'plone.restapi',
         'plone.schema',
         'plone.session',
         'plone.subrequest',
