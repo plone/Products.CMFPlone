@@ -24,6 +24,9 @@ Breaking changes:
 
 New Features:
 
+- Ship with plone.restapi.
+  [timo]
+
 - Fix imports to work with Python 3.
   [pbauer]
 
