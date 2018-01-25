@@ -45,6 +45,7 @@ setup(
     ),
     install_requires=[
         'setuptools',
+        'AccessControl >= 4.0b1',
         'Acquisition',
         'DateTime',
         'ExtensionClass',
