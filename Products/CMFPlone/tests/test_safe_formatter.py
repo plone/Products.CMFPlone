@@ -8,14 +8,33 @@ from Products.CMFPlone.tests.PloneTestCase import FunctionalTestCase
 from zExceptions import Unauthorized
 
 
-BAD_STR = """
+BAD_ATTR_STR = """
 <p tal:content="python:'class of {0} is {0.__class__}'.format(context)" />
 """
-BAD_UNICODE = """
+BAD_ATTR_UNICODE = """
 <p tal:content="python:u'class of {0} is {0.__class__}'.format(context)" />
+"""
+BAD_KEY_STR = """
+<p tal:content="python:'access by key: {0[secret]}'.format(context)" />
+"""
+BAD_KEY_UNICODE = """
+<p tal:content="python:u'access by key: {0[secret]}'.format(context)" />
+"""
+BAD_ITEM_STR = """
+<p tal:content="python:'access by item: {0[0]}'.format(context)" />
+"""
+BAD_ITEM_UNICODE = """
+<p tal:content="python:u'access by item: {0[0]}'.format(context)" />
 """
 GOOD_STR = '<p tal:content="python:(\'%s\' % context).lower()" />'
 GOOD_UNICODE = '<p tal:content="python:(\'%s\' % context).lower()" />'
+# Attribute access is not completely forbidden, it is simply checked.
+GOOD_FORMAT_ATTR_STR = """
+<p tal:content="python:'title of {0} is {0.title}'.format(context)" />
+"""
+GOOD_FORMAT_ATTR_UNICODE = """
+<p tal:content="python:u'title of {0} is {0.title}'.format(context)" />
+"""
 AQ_TEST = """
 <p tal:content="python:\'parent of {0} is {0.aq_parent}\'.format(context)" />
 """
@@ -33,22 +52,46 @@ def hack_pt(pt, context=None):
     pt.context = context
 
 
+def create_private_document(portal, _id):
+    setRoles(portal, TEST_USER_ID, ['Manager'])
+    login(portal, TEST_USER_ID)
+    wf_tool = portal.portal_workflow
+    wf_tool.setChainForPortalTypes(
+        ['Document'], 'simple_publication_workflow')
+    portal.invokeFactory('Document', _id)
+    setRoles(portal, TEST_USER_ID, ['Member'])
+    logout()
+    return getattr(portal, _id)
+
+
+class UnauthorizedSecurityPolicy:
+    """Policy which denies every access."""
+
+    def validate(self, *args, **kw):
+        from AccessControl.unauthorized import Unauthorized
+        raise Unauthorized('Nothing is allowed!')
+
+
 class TestSafeFormatter(PloneTestCase):
     """The safe formatter.
 
-    This is from PloneHotfix20170117.
+    This is from PloneHotfix20170117 and PloneHotfix20171128.
     """
 
-    def test_cook_zope2_page_templates_bad_str(self):
+    def test_cook_zope2_page_templates_bad_attr_str(self):
         from Products.PageTemplates.ZopePageTemplate import ZopePageTemplate
-        pt = ZopePageTemplate('mytemplate', BAD_STR)
+        pt = ZopePageTemplate('mytemplate', BAD_ATTR_STR)
         hack_pt(pt)
         self.assertRaises(Unauthorized, pt.pt_render)
+        hack_pt(pt, context=self.portal)
+        self.assertRaises(Unauthorized, pt.pt_render)
 
-    def test_cook_zope2_page_templates_bad_unicode(self):
+    def test_cook_zope2_page_templates_bad_attr_unicode(self):
         from Products.PageTemplates.ZopePageTemplate import ZopePageTemplate
-        pt = ZopePageTemplate('mytemplate', BAD_UNICODE)
+        pt = ZopePageTemplate('mytemplate', BAD_ATTR_UNICODE)
         hack_pt(pt)
+        self.assertRaises(Unauthorized, pt.pt_render)
+        hack_pt(pt, context=self.portal)
         self.assertRaises(Unauthorized, pt.pt_render)
 
     def test_cook_zope2_page_templates_good_str(self):
@@ -56,22 +99,34 @@ class TestSafeFormatter(PloneTestCase):
         pt = ZopePageTemplate('mytemplate', GOOD_STR)
         hack_pt(pt)
         self.assertEqual(pt.pt_render().strip(), '<p>none</p>')
+        hack_pt(pt, context=self.portal)
+        self.assertEqual(
+            pt.pt_render().strip(), '<p>&lt;plonesite at plone&gt;</p>')
 
     def test_cook_zope2_page_templates_good_unicode(self):
         from Products.PageTemplates.ZopePageTemplate import ZopePageTemplate
         pt = ZopePageTemplate('mytemplate', unicode(GOOD_UNICODE))
         hack_pt(pt)
         self.assertEqual(pt.pt_render().strip(), '<p>none</p>')
+        hack_pt(pt, self.portal)
+        self.assertEqual(
+            pt.pt_render().strip(), '<p>&lt;plonesite at plone&gt;</p>')
 
-    def test_cook_zope2_page_templates_aq_parent(self):
-        # Accessing aq_parent should be allowed normally.
+    def test_cook_zope2_page_templates_good_format_attr_str(self):
         from Products.PageTemplates.ZopePageTemplate import ZopePageTemplate
-        pt = ZopePageTemplate('mytemplate', AQ_TEST)
-        hack_pt(pt, context=self.portal)
+        pt = ZopePageTemplate('mytemplate', GOOD_FORMAT_ATTR_STR)
+        hack_pt(pt, self.portal)
         self.assertEqual(
             pt.pt_render().strip(),
-            u'<p>parent of &lt;PloneSite at plone&gt; is '
-            u'&lt;Application at &gt;</p>')
+            '<p>title of &lt;PloneSite at plone&gt; is Plone site</p>')
+
+    def test_cook_zope2_page_templates_good_format_attr_unicode(self):
+        from Products.PageTemplates.ZopePageTemplate import ZopePageTemplate
+        pt = ZopePageTemplate('mytemplate', GOOD_FORMAT_ATTR_UNICODE)
+        hack_pt(pt, self.portal)
+        self.assertEqual(
+            pt.pt_render().strip(),
+            '<p>title of &lt;PloneSite at plone&gt; is Plone site</p>')
 
     def test_access_to_private_content_not_allowed_via_rich_text(self):
         try:
@@ -81,46 +136,88 @@ class TestSafeFormatter(PloneTestCase):
         except ImportError:
             return
         from Products.PageTemplates.ZopePageTemplate import ZopePageTemplate
-        setRoles(self.portal, TEST_USER_ID, ['Manager'])
+        foobar = create_private_document(self.portal, 'foobar')
         login(self.portal, TEST_USER_ID)
-        wf_tool = self.portal.portal_workflow
-        wf_tool.setChainForPortalTypes(
-            ['Document'], 'simple_publication_workflow')
-        self.portal.invokeFactory('Document', 'foobar')
-        foobar = self.portal.foobar
         foobar.text = RichTextValue(u'Secret.', 'text/plain', 'text/html')
         self.assertEqual(
             self.portal.portal_workflow.getInfoFor(foobar, 'review_state'),
             'private')
-        logout()
-        pt = ZopePageTemplate('mytemplate', '''
-<p tal:content="structure python:'access {0.foobar.text.output}'.format(context).lower()" />
-''')  # noqa
+        # We could logout(), but that is not even needed.
+        TEMPLATE = '<p tal:content="structure python:%s" />'
+        pt = ZopePageTemplate(
+            'mytemplate', TEMPLATE %
+            "'access {0.foobar.text.output}'.format(context)")
         hack_pt(pt, context=self.portal)
         self.assertRaises(Unauthorized, pt.pt_render)
+        # The simpler access without str.format is not allowed either.
+        pt = ZopePageTemplate(
+            'mytemplate', TEMPLATE %
+            "context.foobar.text.output")
+        hack_pt(pt, context=self.portal)
+        self.assertRaises(Unauthorized, pt.pt_render)
+        logout()
+        self.assertRaises(Unauthorized, pt.pt_render)
 
-    def test_access_to_private_content_not_allowed_via_any_attribute(self):
+    def test_access_to_private_content_not_allowed_in_any_way(self):
         # This is a more general version of the rich text one.
         from Products.PageTemplates.ZopePageTemplate import ZopePageTemplate
-        setRoles(self.portal, TEST_USER_ID, ['Manager'])
+        foobar = create_private_document(self.portal, 'foobar')
         login(self.portal, TEST_USER_ID)
-        wf_tool = self.portal.portal_workflow
-        wf_tool.setChainForPortalTypes(
-            ['Document'], 'simple_publication_workflow')
-        self.portal.invokeFactory('Document', 'foobar')
-        foobar = self.portal.foobar
         self.assertEqual(
             self.portal.portal_workflow.getInfoFor(foobar, 'review_state'),
             'private')
-        logout()
+        TEMPLATE = '<p tal:content="structure python:%s" />'
+
+        # attribute access
         # If access to context.foobar.Title was allowed, it would still only
         # say 'bound method ATDocument.Title', without giving the actual title,
         # but there may be other attributes that give worse info.
-        pt = ZopePageTemplate('mytemplate', '''
-<p tal:content="structure python:'access {0.foobar.Title}'.format(context)" />
-''')
+        pt = ZopePageTemplate(
+            'mytemplate', TEMPLATE %
+            "'access {0.foobar.Title}'.format(context)")
+        hack_pt(pt, context=self.portal)
+        login(self.portal, TEST_USER_ID)
+        # We replace ATDocument with Document to make the tests pass
+        # with ATContentTypes and plone.app.contenttypes.
+        self.assertEqual(
+            pt.pt_render().replace('ATDocument', 'Document'),
+            '<p>access <bound method Document.Title of <Document at /plone/foobar>></p>')  # noqa
+        logout()
+        self.assertRaises(Unauthorized, pt.pt_render)
+
+        # key access
+        pt = ZopePageTemplate(
+            'mytemplate', TEMPLATE %
+            "'{0[foobar]}'.format(context)")
+        hack_pt(pt, context=self.portal)
+        login(self.portal, TEST_USER_ID)
+        self.assertEqual(
+            pt.pt_render().replace('ATDocument', 'Document'),
+            '<p><Document at foobar></p>')
+        logout()
+        self.assertRaises(Unauthorized, pt.pt_render)
+
+        # Prepare a list so we can test item access.
+        self.portal.testlist = [foobar]
+        pt = ZopePageTemplate(
+            'mytemplate', TEMPLATE %
+            "'{0.testlist}'.format(context)")
+        hack_pt(pt, context=self.portal)
+        # If you have such a list, you *can* see an id.
+        self.assertEqual(
+            pt.pt_render().replace('ATDocument', 'Document'),
+            u'<p>[<Document at /plone/foobar>]</p>')
+        # But you cannot access an item.
+        pt = ZopePageTemplate(
+            'mytemplate', TEMPLATE %
+            "'{0.testlist[0]}'.format(context)")
         hack_pt(pt, context=self.portal)
         self.assertRaises(Unauthorized, pt.pt_render)
+        # except as authenticated user
+        login(self.portal, TEST_USER_ID)
+        self.assertEqual(
+            pt.pt_render().replace('ATDocument', 'Document'),
+            '<p><Document at foobar></p>')
 
     # Zope 3 templates are always file system templates.  So we actually have
     # no problems allowing str.format there.
@@ -149,7 +246,12 @@ class TestSafeFormatter(PloneTestCase):
             u"<p>class of &lt;plonesite at plone&gt; is "
             u"&lt;class 'products.cmfplone.portal.plonesite'&gt;</p>\n"
             u"<p>CLASS OF &lt;PLONESITE AT PLONE&gt; IS "
-            u"&lt;CLASS 'PRODUCTS.CMFPLONE.PORTAL.PLONESITE'&gt;</p>")
+            u"&lt;CLASS 'PRODUCTS.CMFPLONE.PORTAL.PLONESITE'&gt;</p>\n"
+            u"<p>{'foo': 42} has foo=42</p>\n"
+            u"<p>{'foo': 42} has foo=42</p>\n"
+            u"<p>['ni'] has first item ni</p>\n"
+            u"<p>['ni'] has first item ni</p>"
+        )
 
     def test_positional_argument_regression(self):
         """
@@ -179,9 +281,22 @@ class TestSafeFormatter(PloneTestCase):
 class TestFunctionalSafeFormatter(FunctionalTestCase):
     """Functional tests for the safe formatter.
 
-    This is from PloneHotfix20170117.
+    This is from PloneHotfix20170117 and PloneHotfix20171128.
     """
 
+    def test_safe_format_properly_applied(self):
+        from AccessControl.SimpleObjectPolicies import ContainerAssertions
+        import types
+        ca = ContainerAssertions
+        self.assertTrue(str in ca)
+        self.assertTrue(isinstance(ca[str], dict))
+        self.assertTrue('format' in ca[str])
+        string_rule = ca[str]['format']
+        self.assertTrue(isinstance(string_rule, types.FunctionType))
+        # Take less steps for unicode.
+        unicode_rule = ca[unicode]['format']
+        self.assertTrue(isinstance(unicode_rule, types.FunctionType))
+        self.assertEqual(string_rule, unicode_rule)
 
     def test_standard_error_message(self):
         # In Plone 5.0 standard_error_message.py has:
@@ -190,6 +305,7 @@ class TestFunctionalSafeFormatter(FunctionalTestCase):
         #
         # So if there is an error and the request does not accept html, then
         # str.format is used.  We don't want this to fail with an Unauthorized.
+        # For good measure we check this in Plone 4.3 too.
 
         response = self.publish(
             '/plone/standard_error_message',
@@ -202,24 +318,80 @@ class TestFunctionalSafeFormatter(FunctionalTestCase):
         # We expect a json string back.
         self.assertTrue(response.body, '{"error_type": "None"}')
 
-    def test_resource_registry_vector(self):
-        for vector in ('less-variables.js', 'less-modify.js'):
-            src = '''
-class ctx:
-  def format(self, *args, **kwargs):
-    self.foo=context
-    return "foo"
+    def test_cook_zope2_page_templates_bad_key_str(self):
+        from Products.PageTemplates.ZopePageTemplate import ZopePageTemplate
+        pt = ZopePageTemplate('mytemplate', BAD_KEY_STR)
+        hack_pt(pt, self.portal)
+        create_private_document(self.portal, 'secret')
+        login(self.portal, TEST_USER_ID)
+        self.assertEqual(
+            pt.pt_render().replace('ATDocument', 'Document'),
+            '<p>access by key: &lt;Document at secret&gt;</p>')
+        logout()
+        self.assertRaises(Unauthorized, pt.pt_render)
 
-context.portal_registry['plone.lessvariables']['foo'] = ctx()
-context.portal_registry['plone.lessvariables']['bar'] = "{foo.foo.__class__}"
-js = context.restrictedTraverse("%s")
-return js()
-''' % vector
-            from Products.PythonScripts.PythonScript import PythonScript
-            script = PythonScript('evil')
-            script._filepath = 'evil'
-            script.write(src)
-            self.portal.evil = script
-            output = self.publish('/plone/evil')
-            self.assertFalse(
-                'Products.CMFPlone.Portal.PloneSite' in output.body)
+    def test_cook_zope2_page_templates_bad_key_unicode(self):
+        from Products.PageTemplates.ZopePageTemplate import ZopePageTemplate
+        pt = ZopePageTemplate('mytemplate', BAD_KEY_UNICODE)
+        hack_pt(pt, self.portal)
+        create_private_document(self.portal, 'secret')
+        login(self.portal, TEST_USER_ID)
+        self.assertEqual(
+            pt.pt_render().replace('ATDocument', 'Document'),
+            '<p>access by key: &lt;Document at secret&gt;</p>')
+        logout()
+        self.assertRaises(Unauthorized, pt.pt_render)
+
+    def test_cook_zope2_page_templates_bad_item_str(self):
+        from Products.PageTemplates.ZopePageTemplate import ZopePageTemplate
+        secret = create_private_document(self.portal, 'secret')
+        login(self.portal, TEST_USER_ID)
+        self.portal.testlist = [secret]
+        pt = ZopePageTemplate('mytemplate', BAD_ITEM_STR)
+        hack_pt(pt, self.portal.testlist)
+        self.assertEqual(
+            pt.pt_render().replace('ATDocument', 'Document'),
+            '<p>access by item: &lt;Document at secret&gt;</p>')
+        logout()
+        self.assertRaises(Unauthorized, pt.pt_render)
+
+    def test_cook_zope2_page_templates_bad_item_unicode(self):
+        from Products.PageTemplates.ZopePageTemplate import ZopePageTemplate
+        secret = create_private_document(self.portal, 'secret')
+        login(self.portal, TEST_USER_ID)
+        self.portal.testlist = [secret]
+        pt = ZopePageTemplate('mytemplate', BAD_ITEM_UNICODE)
+        hack_pt(pt, self.portal.testlist)
+        self.assertEqual(
+            pt.pt_render().replace('ATDocument', 'Document'),
+            '<p>access by item: &lt;Document at secret&gt;</p>')
+        logout()
+        self.assertRaises(Unauthorized, pt.pt_render)
+
+    def assert_is_checked_via_security_manager(self, pt_content):
+        from Products.PageTemplates.ZopePageTemplate import ZopePageTemplate
+        from AccessControl.SecurityManager import setSecurityPolicy
+        from AccessControl.SecurityManagement import noSecurityManager
+
+        pt = ZopePageTemplate('mytemplate', pt_content)
+        noSecurityManager()
+        old_security_policy = setSecurityPolicy(UnauthorizedSecurityPolicy())
+        try:
+            hack_pt(pt, context=self.portal)
+            self.assertRaises(Unauthorized, pt.pt_render)
+        finally:
+            setSecurityPolicy(old_security_policy)
+
+    def test_getattr_access_is_checked_via_security_manager(self):
+        self.assert_is_checked_via_security_manager(
+            """<p tal:content="python:'{0.acl_users}'.format(context)" />""")
+
+    def test_getitem_access_is_checked_via_security_manager(self):
+        self.assert_is_checked_via_security_manager(
+            """<p tal:content="python:'{c[acl_users]}'.format(c=context)" />"""
+        )
+
+    def test_key_access_is_checked_via_security_manager(self):
+        self.assert_is_checked_via_security_manager(
+            """<p tal:content="python:'{c[0]}'.format(c=[context])" />"""
+        )
