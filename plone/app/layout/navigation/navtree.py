@@ -8,6 +8,8 @@ from Products.CMFPlone import utils
 from types import StringType
 from zope.interface import implementer
 
+import six
+
 
 @implementer(INavtreeStrategy)
 class NavtreeStrategyBase(object):
@@ -179,7 +181,7 @@ def buildFolderTree(context, obj=None, query={},
 
     # Allow the strategy to suppliment the query for keys not already
     # present in the query such as sorting and omitting default pages
-    for key, value in strategy.supplimentQuery.iteritems():
+    for key, value in six.iteritems(strategy.supplimentQuery):
         if key not in query:
             query[key] = value
 
