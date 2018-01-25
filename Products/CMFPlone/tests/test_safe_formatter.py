@@ -143,6 +143,8 @@ class TestSafeFormatter(PloneTestCase):
             self.portal.portal_workflow.getInfoFor(foobar, 'review_state'),
             'private')
         # We could logout(), but that is not even needed.
+        from AccessControl.ZopeGuards import guarded_getattr
+        self.assertRaises(Unauthorized, guarded_getattr, self.portal.foobar.text, 'output')
         TEMPLATE = '<p tal:content="structure python:%s" />'
         pt = ZopePageTemplate(
             'mytemplate', TEMPLATE %
@@ -154,6 +156,7 @@ class TestSafeFormatter(PloneTestCase):
             'mytemplate', TEMPLATE %
             "context.foobar.text.output")
         hack_pt(pt, context=self.portal)
+        pt.pt_render()
         self.assertRaises(Unauthorized, pt.pt_render)
         logout()
         self.assertRaises(Unauthorized, pt.pt_render)
