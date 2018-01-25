@@ -45,6 +45,7 @@ setup(
     ),
     install_requires=[
         'setuptools',
+        'AccessControl >= 3.0.14',
         'Acquisition',
         'DateTime',
         'ExtensionClass',
@@ -71,7 +72,7 @@ setup(
         'Products.contentmigration',
         'Products.statusmessages',
         'ZODB3',
-        'Zope2 > 2.13.0',
+        'Zope2 >= 2.13.0',
         'borg.localrole',
         'five.customerize',
         'five.localsitemanager',

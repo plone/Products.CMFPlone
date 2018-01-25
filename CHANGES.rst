@@ -35,7 +35,11 @@ New features:
 
 Bug fixes:
 
+- Require AccessControl 3.0.14 so ``guarded_getitem`` is used.
+  Part of PloneHotfix20171128.  [maurits]
+
 - Show example for expression in actions control panel.
+
 - Improved isURLInPortal according to PloneHotfix20171128.
   Accept only http/https, and doubly check escaped urls.  [maurits]
 
