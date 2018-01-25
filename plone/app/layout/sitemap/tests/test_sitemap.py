@@ -74,7 +74,7 @@ class SiteMapTestCase(PloneTestCase):
         self.site_settings.enable_sitemap = False
         try:
             self.sitemap()
-        except Exception, e:
+        except Exception as e:
             # zope2 and repoze.zope2 use different publishers and raise
             # different exceptions. but both implement INotFound.
             self.assertTrue(INotFound.providedBy(e))

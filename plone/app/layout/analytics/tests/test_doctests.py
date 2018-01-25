@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from plone.testing import layered
 from plone.app.layout.testing import FUNCTIONAL_TESTING
+from plone.testing import layered
 
 import doctest
 import unittest
