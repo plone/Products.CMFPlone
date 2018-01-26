@@ -43,6 +43,7 @@ setup(
     ),
     install_requires=[
         'setuptools',
+        'AccessControl >= 3.0.14',
         'Acquisition',
         'DateTime',
         'ExtensionClass',
