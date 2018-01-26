@@ -21,6 +21,7 @@ from AccessControl import getSecurityManager
 from AccessControl import ModuleSecurityInfo
 from AccessControl import Unauthorized
 from AccessControl.ZopeGuards import guarded_getattr
+from AccessControl.ZopeGuards import guarded_getitem
 from Acquisition import aq_base
 from Acquisition import aq_get
 from Acquisition import aq_inner
@@ -679,8 +680,7 @@ def set_own_login_name(member, loginname):
 
 
 class _MagicFormatMapping(Mapping):
-    """
-    Pulled from Jinja2
+    """Pulled from Jinja2.
 
     This class implements a dummy wrapper to fix a bug in the Python
     standard library for string formatting.
@@ -713,16 +713,14 @@ class _MagicFormatMapping(Mapping):
 
 
 class SafeFormatter(string.Formatter):
+    """Formatter using guarded access."""
 
     def __init__(self, value):
         self.value = value
         super(SafeFormatter, self).__init__()
 
     def get_field(self, field_name, args, kwargs):
-        """
-        Here we're overridding so we can use guarded_getattr instead of
-        regular getattr
-        """
+        """Get the field value using guarded methods."""
         first, rest = field_name._formatter_field_name_split()
 
         obj = self.get_value(first, args, kwargs)
@@ -733,17 +731,16 @@ class SafeFormatter(string.Formatter):
             if is_attr:
                 obj = guarded_getattr(obj, i)
             else:
-                obj = obj[i]
+                obj = guarded_getitem(obj, i)
 
         return obj, first
 
     def safe_format(self, *args, **kwargs):
+        """Safe variant of `format` method."""
         kwargs = _MagicFormatMapping(args, kwargs)
         return self.vformat(self.value, args, kwargs)
 
 
 def safe_format(inst, method):
-    """
-    Use our SafeFormatter that uses guarded_getattr for attribute access
-    """
+    """Use our SafeFormatter that uses guarded_getattr and guarded_getitem."""
     return SafeFormatter(inst).safe_format

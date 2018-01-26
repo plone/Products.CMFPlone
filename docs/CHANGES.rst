@@ -19,6 +19,9 @@ New features:
 
 Bug fixes:
 
+- Use ``guarded_getitem`` in ``SafeFormatter``.
+  Part of PloneHotfix20171128.  Copied from ``AccessControl``.  [maurits]
+
 - Improved isURLInPortal according to PloneHotfix20171128.
   Accept only http/https, and doubly check escaped urls.  [maurits]
 
