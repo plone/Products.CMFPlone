@@ -347,25 +347,6 @@ return js()
             self.assertFalse(
                 'Products.CMFPlone.Portal.PloneSite' in output.body)
 
-    def test_positional_argument_regression(self):
-        """
-        to test http://bugs.python.org/issue13598 issue
-        """
-        from Products.CMFPlone.utils import SafeFormatter
-        self.assertEquals(
-            SafeFormatter('{} {}').safe_format('foo', 'bar'),
-            'foo bar'
-        )
-
-        self.assertEquals(
-            SafeFormatter('{0} {1}').safe_format('foo', 'bar'),
-            'foo bar'
-        )
-        self.assertEquals(
-            SafeFormatter('{1} {0}').safe_format('foo', 'bar'),
-            'bar foo'
-        )
-
     def test_cook_zope2_page_templates_bad_key_str(self):
         from Products.PageTemplates.ZopePageTemplate import ZopePageTemplate
         pt = ZopePageTemplate('mytemplate', BAD_KEY_STR)
