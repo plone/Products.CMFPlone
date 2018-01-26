@@ -1,3 +1,4 @@
+from AccessControl.ZopeGuards import guarded_getattr
 from plone.app.testing import login
 from plone.app.testing import logout
 from plone.app.testing import setRoles
@@ -130,8 +131,6 @@ class TestSafeFormatter(PloneTestCase):
 
     def test_access_to_private_content_not_allowed_via_rich_text(self):
         try:
-            # This is only available for tests if we have plone.app.dexterity,
-            # which in tests is by default only the case for Plone 5.
             from plone.app.textfield.value import RichTextValue
         except ImportError:
             return
@@ -142,22 +141,51 @@ class TestSafeFormatter(PloneTestCase):
         self.assertEqual(
             self.portal.portal_workflow.getInfoFor(foobar, 'review_state'),
             'private')
-        # We could logout(), but that is not even needed.
-        from AccessControl.ZopeGuards import guarded_getattr
-        self.assertRaises(Unauthorized, guarded_getattr, self.portal.foobar.text, 'output')
+
+        # Check that guarded_getattr is happy for the current user.
+        self.assertEqual(guarded_getattr(self.portal, 'foobar'), foobar)
+        self.assertEqual(
+            guarded_getattr(self.portal.foobar, 'text'), foobar.text)
+        # Access to text.output may be more restricted than access to the
+        # text object itself, but this makes no sense, so we switch that
+        # off in this test.
+        # self.assertRaises(
+        #     Unauthorized, guarded_getattr, self.portal.foobar.text, 'output')
+        self.portal.foobar.text.__allow_access_to_unprotected_subobjects__ = 1
+        self.assertEqual(
+            guarded_getattr(self.portal.foobar.text, 'output'),
+            '<p>Secret.</p>')
         TEMPLATE = '<p tal:content="structure python:%s" />'
         pt = ZopePageTemplate(
             'mytemplate', TEMPLATE %
             "'access {0.foobar.text.output}'.format(context)")
         hack_pt(pt, context=self.portal)
+        self.assertEqual(pt.pt_render(), '<p>access <p>Secret.</p></p>')
+
+        # Check the same for anonymous.
+        logout()
+        self.assertRaises(
+            Unauthorized, guarded_getattr, self.portal, 'foobar')
+        self.assertRaises(
+            Unauthorized, guarded_getattr, self.portal.foobar, 'text')
+        # *If* somehow anonymous can access the text, then we have allowed
+        # access to the output as well.
+        self.assertEqual(
+            guarded_getattr(self.portal.foobar.text, 'output'),
+            '<p>Secret.</p>')
+        # But for the template anonymous would need access to everything,
+        # which rightly fails.
         self.assertRaises(Unauthorized, pt.pt_render)
-        # The simpler access without str.format is not allowed either.
+
+        # Test the simpler access without str.format for the current user.
+        login(self.portal, TEST_USER_ID)
         pt = ZopePageTemplate(
             'mytemplate', TEMPLATE %
             "context.foobar.text.output")
         hack_pt(pt, context=self.portal)
-        pt.pt_render()
-        self.assertRaises(Unauthorized, pt.pt_render)
+        self.assertEqual(pt.pt_render(), '<p><p>Secret.</p></p>')
+
+        # and for anonymous
         logout()
         self.assertRaises(Unauthorized, pt.pt_render)
 
