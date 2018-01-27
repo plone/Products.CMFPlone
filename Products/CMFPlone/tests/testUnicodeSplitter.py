@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*-
-import unittest
-from Products.CMFPlone.tests import PloneTestCase
-from Products.CMFPlone.UnicodeSplitter import Splitter
-from Products.CMFPlone.UnicodeSplitter import CaseNormalizer
-
-from Products.CMFCore.utils import getToolByName
-from Products.CMFCore.tests.base.dummy import DummyContent
-
 from OFS.metaconfigure import setDeprecatedManageAddDelete
+from Products.CMFCore.tests.base.dummy import DummyContent
+from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.tests import PloneTestCase
+from Products.CMFPlone.UnicodeSplitter import CaseNormalizer
+from Products.CMFPlone.UnicodeSplitter import Splitter
 
 import locale
+import unittest
+
 LATIN1 = ('en_US.ISO-8859-1', 'en_US.ISO8859-15', 'en_GB.ISO8859-15',
           'de_DE@euro', 'fr_FR@euro', 'nl_NL@euro')
 
@@ -20,7 +19,7 @@ def _setlocale(*names):
         try:
             locale.setlocale(locale.LC_ALL, name)
             break
-        except locale.Error, e:
+        except locale.Error as e:
             pass
     else:
         raise e.__class__("Unsupported locale. These tests need at least one "

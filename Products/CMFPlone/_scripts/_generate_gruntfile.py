@@ -19,8 +19,8 @@ from zope.site.hooks import setSite
 import json
 import os
 import pkg_resources
+import six
 import uuid
-
 
 try:
     pkg_resources.get_distribution('plonetheme.barceloneta')
@@ -197,10 +197,10 @@ def resource_to_dir(resource, file_type='.js'):
 
                         return os.getcwd() + '/' + full_file_name
                     else:
-                        print "Missing resource type"
+                        print("Missing resource type")
                         return None
                 except:
-                    print "Missing resource type"
+                    print("Missing resource type")
                     return None
     elif isinstance(resource, FilesystemFile):
         return resource.path
@@ -213,7 +213,7 @@ def resource_to_dir(resource, file_type='.js'):
     elif isinstance(resource, FSFile):
         return resource._filepath
     else:
-        print "Missing resource type"
+        print("Missing resource type")
         return None
 
 # REQUIRE JS CONFIGURATION
@@ -240,7 +240,7 @@ for requirejs, script in resources.items():
                 except OSError:
                     pass
                 local_file = temp_resource_folder + '/' + file_name + '.js'
-                if isinstance(js_body, unicode):
+                if isinstance(js_body, six.text_type):
                     js_body = js_body.encode('utf-8')
                 with open(local_file, 'w') as temp_file:
                     temp_file.write(js_body)
@@ -260,7 +260,7 @@ for requirejs, script in resources.items():
                 if inits != '' and inits is not None:
                     shims[requirejs]['init'] = inits
         else:
-            print "No file found: " + script.js
+            print("No file found: " + script.js)
     if script.url:
         # Resources available under name-url name
         paths[requirejs + '-url'] = resource_to_dir(
@@ -303,8 +303,8 @@ for name, value in lessvariables.items():
             t_file = t_file.replace(os.getcwd() + '/', '')
             modify_vars[name] = "'%s/'" % t_file
         else:
-            print "No file found: " + \
-                str(t.replace('LOCAL/', '').replace('\\"', ''))  #
+            print("No file found: " +
+                  str(t.replace('LOCAL/', '').replace('\\"', '')))  #
     else:
         modify_vars[name] = t
 
@@ -334,7 +334,7 @@ for name, value in resources.items():
                     pass
                 local_file = temp_resource_folder + '/' + file_name + '.js'
                 temp_file = open(local_file, 'w')
-                if isinstance(css_body, unicode):
+                if isinstance(css_body, six.text_type):
                     css_body = css_body.encode('utf-8')
                 temp_file.write(css_body)
                 temp_file.close()
@@ -356,7 +356,7 @@ for name, value in resources.items():
             if '/'.join(local_file.split('/')[:-1]) not in less_paths:
                 less_paths.append('/'.join(local_file.split('/')[:-1]))
         else:
-            print 'No file found: ' + css
+            print('No file found: ' + css)
 
 # BUNDLE LOOP
 
@@ -438,7 +438,7 @@ for bkey, bundle in bundles.items():
                 for css_file in res_obj.css:
                     css = portal.unrestrictedTraverse(css_file, None)
                     if not css:
-                        print "No file found: " + css_file
+                        print("No file found: " + css_file)
                         continue
                     # We count how many folders to bundle to plone
                     elements = len(css_file.split('/'))

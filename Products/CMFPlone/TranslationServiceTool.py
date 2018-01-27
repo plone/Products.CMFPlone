@@ -24,6 +24,8 @@ from zope.i18n import translate
 from zope.interface import implementer
 from zope.publisher.interfaces.browser import IBrowserRequest
 
+import six
+
 
 @implementer(ITranslationServiceTool)
 class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
@@ -60,10 +62,10 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
         # output_encoding
 
         # check if input is not type unicode
-        if not isinstance(m, unicode):
+        if not isinstance(m, six.text_type):
             if input_encoding is None:
                 input_encoding = 'utf-8'
-            m = unicode(str(m), input_encoding, errors)
+            m = six.text_type(str(m), input_encoding, errors)
 
         if output_encoding is None:
             output_encoding = 'utf-8'
@@ -76,14 +78,14 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
     def asunicodetype(self, m, input_encoding=None, errors='strict'):
         # create type unicode from type string
 
-        if isinstance(m, unicode):
+        if isinstance(m, six.text_type):
             return m
 
         if input_encoding is None:
             input_encoding = 'utf-8'
 
         # return as type unicode
-        return unicode(str(m), input_encoding, errors)
+        return six.text_type(str(m), input_encoding, errors)
 
     security.declarePublic('ulocalized_time')
 

@@ -7,6 +7,8 @@ from Products.CMFCore.interfaces import IActionProvider
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFCore.interfaces import IActionCategory
 
+import six
+
 
 class ActionsTool(PloneBaseTool, BaseTool):
 
@@ -60,7 +62,7 @@ class ActionsTool(PloneBaseTool, BaseTool):
 
         if action_chain:
             filtered_actions = []
-            if isinstance(action_chain, basestring):
+            if isinstance(action_chain, six.string_types):
                 action_chain = (action_chain, )
             for action_ident in action_chain:
                 sep = action_ident.rfind('/')

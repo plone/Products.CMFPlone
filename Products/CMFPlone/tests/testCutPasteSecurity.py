@@ -3,10 +3,12 @@ from AccessControl import Unauthorized
 from Acquisition import aq_base
 from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
 from Products.CMFCore.interfaces import IContentish
-from urllib2 import HTTPError
 from zope.component import provideHandler, getGlobalSiteManager
 from zope.lifecycleevent.interfaces import IObjectMovedEvent
 import transaction
+
+
+from six.moves.urllib.error import HTTPError
 
 
 class TestCutPasteSecurity(PloneTestCase):

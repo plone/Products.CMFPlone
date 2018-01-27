@@ -27,6 +27,8 @@ from Products.CMFPlone.DublinCore import DefaultDublinCoreImpl
 
 from zope.interface import implementer
 
+import six
+
 
 class ReplaceableWrapper:
     """A wrapper around an object to make it replaceable."""
@@ -178,7 +180,7 @@ class BasePloneFolder(CatalogAware, WorkflowAware, OpaqueItemManager,
         if ids is None:
             ids = []
         mt = getToolByName(self, 'portal_membership')
-        if isinstance(ids, basestring):
+        if isinstance(ids, six.string_types):
             ids = [ids]
         for id in ids:
             item = self._getOb(id)
