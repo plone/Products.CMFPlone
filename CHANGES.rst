@@ -19,6 +19,8 @@ New features:
 
 Bug fixes:
 
+- Fixed linkintegrity robot tests.  [maurits]
+
 - Fixed flaky actions controlpanel tests by waiting longer.  [maurits]
 
 - Require AccessControl 3.0.14 so ``guarded_getitem`` is used.
