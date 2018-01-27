@@ -72,7 +72,7 @@ setup(
         'Products.contentmigration',
         'Products.statusmessages',
         'ZODB3',
-        'Zope2 >= 2.13.0',
+        'Zope2 > 2.13.0',
         'borg.localrole',
         'five.customerize',
         'five.localsitemanager',

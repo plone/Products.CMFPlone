@@ -21,6 +21,19 @@ Bug fixes:
 
 - Fixed linkintegrity robot tests.  [maurits]
 
+- Fixed flaky actions controlpanel tests by waiting longer.  [maurits]
+
+- Require AccessControl 3.0.14 so ``guarded_getitem`` is used.
+  Part of PloneHotfix20171128.  [maurits]
+
+- Improved isURLInPortal according to PloneHotfix20171128.
+  Accept only http/https, and doubly check escaped urls.  [maurits]
+
+- Fixed Products.CMFPlacefulWorkflow being marked as not installed after upgrade from 4.3.
+  This is true for any package in the Products namespace that was installed.
+  Fixes `issue 2103 <https://github.com/plone/Products.CMFPlone/issues/2103>`_.
+  [maurits]
+
 
 5.1rc2 (2017-11-26)
 -------------------
@@ -35,17 +48,7 @@ New features:
 
 Bug fixes:
 
-- Require AccessControl 3.0.14 so ``guarded_getitem`` is used.
-  Part of PloneHotfix20171128.  [maurits]
-
 - Show example for expression in actions control panel.
-
-- Improved isURLInPortal according to PloneHotfix20171128.
-  Accept only http/https, and doubly check escaped urls.  [maurits]
-
-- Fixed Products.CMFPlacefulWorkflow being marked as not installed after upgrade from 4.3.
-  This is true for any package in the Products namespace that was installed.
-  Fixes `issue 2103 <https://github.com/plone/Products.CMFPlone/issues/2103>`_.
   [maurits]
 
 - Fixed add-on listed as uninstalled when the default profile is not the first alphabetically.
