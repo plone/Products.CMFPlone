@@ -25,8 +25,6 @@ Test Teardown  Run keywords  Plone Test Teardown
 *** Test Cases ***************************************************************
 
 Scenario: When page is linked show warning
-  [Tags]  unstable
-  [Documentation]  This sometimes fails with: StaleElementReferenceException: Message: Element not found in the cache.
   Given a logged-in site administrator
     and a page to link to
     and a page to edit
@@ -35,8 +33,6 @@ Scenario: When page is linked show warning
 
 
 Scenario: After you fix linked page no longer show warning
-  [Tags]  unstable
-  [Documentation]  This sometimes fails with: StaleElementReferenceException: Message: Element not found in the cache.
   Given a logged-in site administrator
   a page to link to
     and a page to edit
@@ -47,9 +43,6 @@ Scenario: After you fix linked page no longer show warning
 
 
 Scenario: Show warning when deleting linked item from folder_contents
-  [Tags]  unstable
-  [Documentation]  This sometimes fails with: StaleElementReferenceException: Message: Element not found in the cache.
-  ...              This one seems to fail more often than the others.
   Given a logged-in site administrator
   a page to link to
     and a page to edit
@@ -86,6 +79,8 @@ a link in rich text
   Given patterns are loaded
   Wait until element is visible  css=.pat-relateditems .select2-input.select2-default
   Click Element  css=.pat-relateditems .select2-input.select2-default
+  Wait until element is visible  xpath=(//span[contains(., 'One level up')])
+  Click Element  xpath=(//span[contains(., 'One level up')])
   Wait until element is visible  xpath=(//span[contains(., 'Foo')])
   Click Element  xpath=(//span[contains(., 'Foo')])
   Wait until page contains  Foo
