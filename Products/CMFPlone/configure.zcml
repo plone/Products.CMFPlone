@@ -36,9 +36,8 @@
   <include package="plone.session" />
   <include package="plone.protect" />
   <include package="plone.indexer" />
-
-  <!-- mockup -->
   <include package="mockup" />
+  <include package="plone.staticresources" />
 
   <!-- viewlets zope 3 layers support for themes -->
   <include package="plone.browserlayer" />
@@ -75,7 +74,6 @@
   <include file="deprecated.zcml"/>
   <include file="profiles.zcml"/>
   <include file="catalog.zcml" />
-  <include file="static.zcml" />
 
   <cmf:registerDirectory
       name="skins"
@@ -93,6 +91,14 @@
 
   <utility factory=".factory.NonInstallable"
            name="Products.CMFPlone" />
+
+  <!-- Adapter for the ++plone++ bundles traverser -->
+  <adapter
+    name="plone"
+    for="* zope.publisher.interfaces.IRequest"
+    provides="zope.traversing.interfaces.ITraversable"
+    factory=".traversal.PloneBundlesTraverser"
+    />
 
   <!-- Adapter for default workflow lookup -->
   <adapter

@@ -10,6 +10,9 @@ Changelog
 
 Breaking changes:
 
+- Factor out all static resources into plone.staticresources.
+  [thet]
+
 - Some tools from CMFCore are now utilities
   [pbauer]
 

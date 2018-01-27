@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
-from plone.resource.traversal import ResourceTraverser
-from zope.component import queryUtility
 from plone.resource.interfaces import IResourceDirectory
-from plone.resource.interfaces import IUniqueResourceRequest
-from Products.CMFPlone.interfaces.resources import (
-    OVERRIDE_RESOURCE_DIRECTORY_NAME)
+from plone.resource.traversal import ResourceTraverser
+from Products.CMFPlone.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME  # noqa
+from zope.component import queryUtility
 from zope.globalrequest import getRequest
 
 
@@ -28,7 +26,8 @@ class PloneBundlesTraverser(ResourceTraverser):
         if more_traversal:
             resource_filepath = resource_filepath.split('/')[-1]
 
-        persistentDirectory = queryUtility(IResourceDirectory, name="persistent")
+        persistentDirectory = queryUtility(
+            IResourceDirectory, name="persistent")
         directory = None
         if (persistentDirectory is not None and
                 OVERRIDE_RESOURCE_DIRECTORY_NAME in persistentDirectory):
