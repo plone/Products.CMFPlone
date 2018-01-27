@@ -18,10 +18,10 @@
 
         <li class="previous" tal:condition="previous">
           <a title="Go to previous item"
-             i18n:attributes="title title_previous_item"
-             tal:attributes="href previous/url">
-            «
-            <span i18n:translate="label_previous_item" tal:omit-tag="">
+              i18n:attributes="title title_previous_item"
+              tal:attributes="href previous/url">
+            <span class="arrow"></span>
+            <span i18n:translate="label_previous_item" class="label">
               Previous:
               <span i18n:name="itemtitle" tal:replace="previous/title" />
             </span>
@@ -30,13 +30,13 @@
 
         <li class="next" tal:condition="next">
           <a title="Go to next item"
-             i18n:attributes="title title_next_item"
-             tal:attributes="href next/url">
-            <span i18n:translate="label_next_item" tal:omit-tag="">
+              i18n:attributes="title title_next_item"
+              tal:attributes="href next/url">
+            <span i18n:translate="label_next_item" class="label">
               Next:
               <span i18n:name="itemtitle" tal:replace="next/title" />
             </span>
-            »
+            <span class="arrow"></span>
           </a>
         </li>
 
