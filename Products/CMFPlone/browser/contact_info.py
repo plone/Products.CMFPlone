@@ -14,6 +14,7 @@ from smtplib import SMTPException
 from z3c.form import form, field, button
 from zope.component import getUtility
 from zope.site.hooks import getSite
+
 import logging
 
 log = logging.getLogger(__name__)
@@ -80,7 +81,7 @@ class ContactForm(AutoExtensibleForm, form.Form):
                 subject=subject,
                 charset=encoding
             )
-        except (SMTPException, RuntimeError), e:
+        except (SMTPException, RuntimeError) as e:
             log.error(e)
             plone_utils = getToolByName(portal, 'plone_utils')
             exception = plone_utils.exceptionString()

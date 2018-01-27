@@ -14,7 +14,7 @@ REQUEST = context.REQUEST
 try:
     response = context.portal_registration.mailPassword(
                     REQUEST.get('userid', ''), REQUEST)
-except ValueError, e:
+except ValueError as e:
     try:
         msg = pmf(str(e))
     except Unauthorized:

@@ -28,6 +28,8 @@ from webdav.NullResource import NullResource
 from zope.component import queryUtility
 from zope.interface import implementer
 
+import six
+
 
 @implementer(IPloneSiteRoot, ISyndicatable)
 class PloneSite(PortalObjectBase, DefaultDublinCoreImpl, OrderedContainer,
@@ -112,7 +114,7 @@ class PloneSite(PortalObjectBase, DefaultDublinCoreImpl, OrderedContainer,
         """We need to enforce security."""
         if ids is None:
             ids = []
-        if isinstance(ids, basestring):
+        if isinstance(ids, six.string_types):
             ids = [ids]
         for id in ids:
             item = self._getOb(id)

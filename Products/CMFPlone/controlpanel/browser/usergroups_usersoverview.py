@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import logging
 from Acquisition import aq_inner
 from zExceptions import Forbidden
 from itertools import chain
@@ -15,6 +14,9 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import normalizeString
 from Products.CMFPlone.controlpanel.browser.usergroups import \
     UsersGroupsControlPanelView
+
+import logging
+import six
 
 logger = logging.getLogger('Products.CMFPlone')
 
@@ -210,7 +212,7 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
 
         # Delete members in acl_users.
         acl_users = context.acl_users
-        if isinstance(member_ids, basestring):
+        if isinstance(member_ids, six.string_types):
             member_ids = (member_ids,)
         member_ids = list(member_ids)
         for member_id in member_ids[:]:

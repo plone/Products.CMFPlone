@@ -6,6 +6,7 @@ from plone.app.testing import SITE_OWNER_PASSWORD
 from zExceptions import Unauthorized
 
 import re
+import six
 import unittest
 
 
@@ -143,7 +144,7 @@ class TestAttackVectorsFunctional(PloneTestCase):
         self.setRoles(['Manager', 'Owner'])
         self.portal.REQUEST.PARENTS = [self.app]
         res = self.portal.news.manage_FTPlist(self.portal.REQUEST)
-        self.assertTrue(isinstance(res, basestring))
+        self.assertTrue(isinstance(res, six.string_types))
         self.portal.portal_workflow.doActionFor(self.portal.news, 'hide')
         self.setRoles(['Member'])
         from zExceptions import Unauthorized

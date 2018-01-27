@@ -226,7 +226,7 @@ class TestCheckId(PloneTestCase):
         # not defined on the portal root.
         try:
             self.portal.check_id('foo')
-        except AttributeError, e:
+        except AttributeError as e:
             self.fail(e)
 
     def testProxyRoles(self):

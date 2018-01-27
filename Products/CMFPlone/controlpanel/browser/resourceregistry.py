@@ -20,7 +20,7 @@ from zope.component import getUtility
 import json
 import posixpath
 import re
-
+import six
 
 CSS_URL_REGEX = re.compile('url\(([^)]+)\)')
 
@@ -48,12 +48,12 @@ def updateRecordFromDict(record, data):
         if name in data:
             # almost all string data needs to be str, not unicode
             val = data[name]
-            if isinstance(val, unicode):
+            if isinstance(val, six.text_type):
                 val = val.encode('utf-8')
             if isinstance(val, list):
                 newval = []
                 for item in val:
-                    if isinstance(item, unicode):
+                    if isinstance(item, six.text_type):
                         item = item.encode('utf-8')
                     newval.append(item)
                 val = newval
@@ -343,7 +343,7 @@ class ResourceRegistryControlPanelView(RequireJsView):
         for key, value in req.form.items():
             if not key.startswith('data-'):
                 continue
-            if isinstance(value, basestring):
+            if isinstance(value, six.string_types):
                 value = [value]
             data += '\n'.join(value) + '\n'
         overrides.save_file(filepath, data)

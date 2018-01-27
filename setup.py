@@ -125,6 +125,7 @@ setup(
         'plone.theme',
         'plonetheme.barceloneta',
         'pyScss',
+        'six',
         'slimit',
         'transaction',
         'z3c.autoinclude',

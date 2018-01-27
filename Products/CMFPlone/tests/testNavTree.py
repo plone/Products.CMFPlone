@@ -18,6 +18,9 @@ from Products.CMFPlone.PloneFolder import PloneFolder
 from Products.CMFPlone.interfaces import INonStructuralFolder
 
 
+import six
+
+
 @implementer(INonStructuralFolder)
 class DummyNonStructuralFolder(PloneFolder):
     pass
@@ -555,7 +558,7 @@ class TestNavigationRoot(PloneTestCase.PloneTestCase):
         folderPath = '/'.join(self.folder.getPhysicalPath())
         portalPath = '/'.join(self.portal.getPhysicalPath())
         relativePath = folderPath[len(portalPath):]
-        self.portal.portal_registry['plone.root'] = unicode(relativePath)
+        self.portal.portal_registry['plone.root'] = six.text_type(relativePath)
         root = getNavigationRoot(self.portal)
         self.assertEqual(root, folderPath)
 

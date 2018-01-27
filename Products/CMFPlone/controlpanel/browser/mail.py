@@ -10,6 +10,7 @@ from plone.registry.interfaces import IRegistry
 from z3c.form import button
 from zope.component import getUtility
 
+import six
 import smtplib
 import socket
 import sys
@@ -87,7 +88,7 @@ class MailControlPanelForm(controlpanel.RegistryEditForm):
                 log.exception('Unable to send test e-mail.')
                 value = sys.exc_info()[1]
                 msg = _(u'Unable to send test e-mail ${error}.',
-                        mapping={'error': unicode(value)})
+                        mapping={'error': six.text_type(value)})
                 IStatusMessage(self.request).addStatusMessage(
                     msg, type='error')
             else:

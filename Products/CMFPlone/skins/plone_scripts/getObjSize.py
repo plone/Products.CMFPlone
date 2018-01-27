@@ -35,7 +35,7 @@ except (ValueError, TypeError):
 if not size:
     return '0 %s' % smaller
 
-if same_type(size, 0) or same_type(size, 0L):
+if same_type(size, 0) or same_type(size, 0):
     if size < const[smaller]:
         return '1 %s' % smaller
     for c in order:

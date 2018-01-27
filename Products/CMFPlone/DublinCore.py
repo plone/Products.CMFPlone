@@ -30,6 +30,8 @@ from Products.CMFPlone.permissions import ModifyPortalContent
 from Products.CMFPlone.permissions import View
 from Products.CMFPlone.utils import WWW_DIR
 
+import six
+
 _marker = []
 
 # For http://www.zope.org/Collectors/CMF/325
@@ -46,7 +48,7 @@ def seq_strip(seq, stripper=lambda x: x.strip()):
     if isinstance(seq, tuple):
         return tuple(map(stripper, seq))
 
-    raise ValueError, "%s of unsupported sequencetype %s" % (seq, type(seq))
+    raise ValueError("%s of unsupported sequencetype %s" % (seq, type(seq)))
 
 
 def tuplize(valueName, value, splitter=lambda x: x.split()):
@@ -57,10 +59,10 @@ def tuplize(valueName, value, splitter=lambda x: x.split()):
     if isinstance(value, list):
         return seq_strip(tuple(value))
 
-    if isinstance(value, basestring):
+    if isinstance(value, six.string_types):
         return seq_strip(tuple(splitter(value)))
 
-    raise ValueError, "%s of unsupported type" % valueName
+    raise ValueError("%s of unsupported type" % valueName)
 
 
 @implementer(IDublinCore, ICatalogableDublinCore, IMutableDublinCore)
