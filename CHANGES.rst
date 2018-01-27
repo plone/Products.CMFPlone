@@ -19,7 +19,7 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Fixed linkintegrity robot tests.  [maurits]
 
 
 5.1rc2 (2017-11-26)
