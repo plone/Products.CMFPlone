@@ -28,32 +28,6 @@ class TestAttackVectorsUnit(unittest.TestCase):
         self.assertEqual(response.headers['location'],
                          'http://www.ietf.org/rfc/rfc2616.txt')
 
-    def test_PT_allow_module_not_available_in_RestrictedPython_1(self):
-        src = '''
-from AccessControl import Unauthorized
-try:
-    import Products.PlacelessTranslationService
-except (ImportError, Unauthorized):
-    raise AssertionError("Failed to import Products.PTS")
-Products.PlacelessTranslationService.allow_module('os')
-'''
-        from Products.PythonScripts.PythonScript import PythonScript
-        script = makerequest(PythonScript('fooscript'))
-        script._filepath = 'fooscript'
-        script.write(src)
-        self.assertRaises((ImportError, Unauthorized), script)
-
-    def test_PT_allow_module_not_available_in_RestrictedPython_2(self):
-        src = '''
-from Products.PlacelessTranslationService import allow_module
-allow_module('os')
-'''
-        from Products.PythonScripts.PythonScript import PythonScript
-        script = makerequest(PythonScript('barscript'))
-        script._filepath = 'barscript'
-        script.write(src)
-        self.assertRaises((ImportError, Unauthorized), script)
-
     def test_get_request_var_or_attr_disallowed(self):
         import App.Undo
         self.assertFalse(hasattr(App.Undo.UndoSupport,
