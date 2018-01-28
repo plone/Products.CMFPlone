@@ -16,7 +16,7 @@ New features:
 Bug fixes:
 
 - Imports are Python3 compatible
-  [ale-rt]
+  [ale-rt, jensens]
 
 - Fix for situations where pathbar viewlet variables were undefined in toolbar context
   [tomgross]
