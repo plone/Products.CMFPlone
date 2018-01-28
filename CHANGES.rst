@@ -14,6 +14,8 @@ New features:
 
 Bug fixes:
 
+- Use ``get_installer`` in tests.  [maurits]
+
 - Imports are Python3 compatible
   [ale-rt, jensens]
 
