@@ -15,6 +15,9 @@ New features:
 
 Bug fixes:
 
+- More py3 fixes.
+  [pbauer]
+
 - Use ``get_installer`` in tests.  [maurits]
 
 - Imports are Python3 compatible
