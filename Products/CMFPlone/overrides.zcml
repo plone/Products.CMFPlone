@@ -4,6 +4,7 @@
            i18n_domain="plone">
 
     <include package="Products.CMFCore" file="overrides.zcml" />
+    <include package="Products.PlacelessTranslationService" file="overrides.zcml" />
     <include package="plone.app.portlets" file="overrides.zcml" />
 
     <utility

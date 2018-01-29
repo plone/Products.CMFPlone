@@ -22,10 +22,6 @@ Breaking changes:
 - Render exceptions using an exception view instead of standard_error_message.
   [davisagli]
 
-- Remove backward compatibility for Products.PlacelessTranslationService 
-  [ksuess]
-
-
 New Features:
 
 - Fix imports to work with Python 3.
