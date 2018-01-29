@@ -55,14 +55,14 @@
 
   <browser:page
     for="Products.CMFPlone.interfaces.syndication.ISyndicatable"
-    class=".views.FeedView"
+    class=".views.RSSView"
     name="rss.xml"
     permission="zope2.View"
     template="templates/rss.xml.pt"
     />
   <browser:page
     for="Products.CMFPlone.interfaces.syndication.ISyndicatable"
-    class=".views.FeedView"
+    class=".views.RSSView"
     name="RSS"
     permission="zope2.View"
     template="templates/RSS.pt"
@@ -70,7 +70,7 @@
 
   <browser:page
     for="Products.CMFPlone.interfaces.syndication.ISyndicatable"
-    class=".views.FeedView"
+    class=".views.RSSView"
     name="itunes.xml"
     permission="zope2.View"
     template="templates/itunes.xml.pt"

@@ -36,6 +36,9 @@ New Features:
 
 Bug Fixes:
 
+- Update RSS content type.
+  [Gagaro]
+
 - Fixed linkintegrity robot tests.  [maurits]
 
 - Fixed flaky actions controlpanel tests by waiting longer.  [maurits]

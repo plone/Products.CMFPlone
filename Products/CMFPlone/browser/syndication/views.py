@@ -40,6 +40,11 @@ class FeedView(BrowserView):
             return self.index()
 
 
+class RSSView(FeedView):
+
+    content_type = 'application/rss+xml'
+
+
 class SearchFeedView(FeedView):
 
     def feed(self):
@@ -53,7 +58,7 @@ class SearchFeedView(FeedView):
                                name='syndication-util')
         if util.search_rss_enabled(raise404=True):
             self.request.response.setHeader('Content-Type',
-                                            'application/atom+xml')
+                                            'application/rss+xml')
             return self.index()
 
 
