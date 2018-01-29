@@ -22,6 +22,9 @@ Breaking changes:
 - Render exceptions using an exception view instead of standard_error_message.
   [davisagli]
 
+- Remove old PlacelessTranslationService.
+  [jensens, ksuess]
+
 New Features:
 
 - Fix imports to work with Python 3.
