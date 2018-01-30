@@ -35,6 +35,10 @@ New Features:
 
 Bug Fixes:
 
+- Register the ``ExceptionView`` for the unspecific ``zope.interface.Interface`` for easier overloading.
+  Fixes a problem, where plone.rest couldn't overload the ExceptionView with an adapter bound to ``plone.rest.interfaces.IAPIRequest``.
+  [thet]
+
 - Fixed linkintegrity robot tests.  [maurits]
 
 - Fixed flaky actions controlpanel tests by waiting longer.  [maurits]
