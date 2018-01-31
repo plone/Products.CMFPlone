@@ -19,6 +19,11 @@ New features:
 
 Bug fixes:
 
+- Ignore invalid ``sort_on`` parameters in catalog ``searchResults``.
+  Otherwise you get a ``CatalogError``.
+  I get crazy sort_ons like '194' or 'null'.
+  [maurits]
+
 - Use ``guarded_getitem`` in ``SafeFormatter``.
   Part of PloneHotfix20171128.  Copied from ``AccessControl``.  [maurits]
 

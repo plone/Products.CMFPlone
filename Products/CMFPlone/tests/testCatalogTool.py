@@ -403,7 +403,7 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
         # using OR
         results = self.catalog(SearchableText='aaa OR bbb')
         self.assertEqual(len(results), 2)
-    
+
     def testSearchIgnoresAccents(self):
         #plip 12110
         self.folder.invokeFactory('Document', id='docwithaccents1', description='Econométrie')
@@ -515,6 +515,16 @@ class TestCatalogSorting(PloneTestCase.PloneTestCase):
         self.folder.doc4.reindexObject()
         self.folder.doc5.reindexObject()
         self.folder.doc6.reindexObject()
+
+    def testUnknownSortOnIsIgnored(self):
+        # You should not get a CatalogError when an invalid sort_on is passed.
+        # I get crazy sort_ons like '194' or 'null'.
+        self.assertTrue(len(
+            self.catalog(SearchableText='foo', sort_on='194')) > 0)
+        self.assertTrue(len(
+            self.catalog(SearchableText='foo', sort_on='null')) > 0)
+        self.assertTrue(len(
+            self.catalog(SearchableText='foo', sort_on='relevance')) > 0)
 
     def testSortTitleReturnsProperOrderForNumbers(self):
         # Documents should be returned in proper numeric order
