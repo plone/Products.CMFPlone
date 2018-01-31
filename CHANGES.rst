@@ -35,6 +35,8 @@ New Features:
 
 Bug Fixes:
 
+- Changed the members folder from public to private.  [mrsaicharan1]
+
 - Fixed linkintegrity robot tests.  [maurits]
 
 - Fixed flaky actions controlpanel tests by waiting longer.  [maurits]
