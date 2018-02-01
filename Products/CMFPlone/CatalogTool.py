@@ -458,6 +458,11 @@ class CatalogTool(PloneBaseTool, BaseTool):
         if not show_inactive and not self.allow_inactive(kw):
             kw['effectiveRange'] = DateTime()
 
+        sort_on = kw.get('sort_on')
+        if sort_on and sort_on not in self.indexes():
+            # I get crazy sort_ons like '194' or 'null'.
+            kw.pop('sort_on')
+
         return ZCatalog.searchResults(self, query, **kw)
 
     __call__ = searchResults
