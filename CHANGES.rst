@@ -22,6 +22,9 @@ Breaking changes:
 - Render exceptions using an exception view instead of standard_error_message.
   [davisagli]
 
+- Remove old PlacelessTranslationService.
+  [jensens, ksuess]
+
 New Features:
 
 - Ship with plone.restapi.
@@ -34,6 +37,17 @@ New Features:
   [thet]
 
 Bug Fixes:
+
+- Register the ``ExceptionView`` for the unspecific ``zope.interface.Interface`` for easier overloading.
+  Fixes a problem, where plone.rest couldn't overload the ExceptionView with an adapter bound to ``plone.rest.interfaces.IAPIRequest``.
+  [thet]
+
+- Fixed linkintegrity robot tests.  [maurits]
+
+- Fixed flaky actions controlpanel tests by waiting longer.  [maurits]
+
+- Require AccessControl 4.0b1 so ``guarded_getitem`` is used.
+  Part of PloneHotfix20171128.  [maurits]
 
 - Improved isURLInPortal according to PloneHotfix20171128.
   Accept only http/https, and doubly check escaped urls.  [maurits]
