@@ -1054,6 +1054,16 @@ class ISecuritySchema(Interface):
         default=False,
         required=False)
 
+    editing_url = schema.TextLine(
+        title=_(u'Editing URL'),
+        description=_(
+            u"Optional editing URL for this site. "
+            u"If specified, logins will be blocked from other URLs. "
+            u"Use this to require logins and editing from an uncached subdomain, e.g. "
+            u"https://edit.yoursite.com."),
+        default='',
+        required=False)
+
 
 class ISiteSchema(Interface):
 

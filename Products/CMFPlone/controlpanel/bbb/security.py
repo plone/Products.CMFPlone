@@ -76,3 +76,12 @@ class SecurityControlPanelAdapter(object):
 
     use_uuid_as_userid = property(get_use_uuid_as_userid,
                                   set_use_uuid_as_userid)
+
+    def get_editing_url(self):
+        return self.settings.editing_url
+
+    def set_editing_url(self, value):
+        self.settings.editing_url = value
+
+    editing_url = property(get_editing_url,
+                           set_editing_url)
