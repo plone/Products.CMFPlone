@@ -19,6 +19,11 @@ New features:
 
 Bug fixes:
 
+- Ignore invalid ``sort_on`` parameters in catalog ``searchResults``.
+  Otherwise you get a ``CatalogError``.
+  I get crazy sort_ons like '194' or 'null'.
+  [maurits]
+
 - Fixed linkintegrity robot tests.  [maurits]
 
 - Fixed flaky actions controlpanel tests by waiting longer.  [maurits]
