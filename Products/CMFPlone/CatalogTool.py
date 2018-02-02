@@ -387,6 +387,11 @@ class CatalogTool(PloneBaseTool, BaseTool):
            and not _checkPermission(AccessInactivePortalContent, self):
             kw['effectiveRange'] = DateTime()
 
+        sort_on = kw.get('sort_on')
+        if sort_on and sort_on not in self.indexes():
+            # I get crazy sort_ons like '194' or 'null'.
+            kw.pop('sort_on')
+
         return ZCatalog.searchResults(self, REQUEST, **kw)
 
     __call__ = searchResults

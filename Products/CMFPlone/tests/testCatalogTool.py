@@ -519,6 +519,16 @@ class TestCatalogSorting(PloneTestCase):
         self.folder.doc5.reindexObject()
         self.folder.doc6.reindexObject()
 
+    def testUnknownSortOnIsIgnored(self):
+        # You should not get a CatalogError when an invalid sort_on is passed.
+        # I get crazy sort_ons like '194' or 'null'.
+        self.assertTrue(len(
+            self.catalog(SearchableText='foo', sort_on='194')) > 0)
+        self.assertTrue(len(
+            self.catalog(SearchableText='foo', sort_on='null')) > 0)
+        self.assertTrue(len(
+            self.catalog(SearchableText='foo', sort_on='relevance')) > 0)
+
     def testSortTitleReturnsProperOrderForNumbers(self):
         # Documents should be returned in proper numeric order
         results = self.catalog(SearchableText='foo', sort_on='sortable_title')

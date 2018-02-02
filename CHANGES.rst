@@ -26,6 +26,11 @@ New features:
 
 Bug fixes:
 
+- Ignore invalid ``sort_on`` parameters in catalog ``searchResults``.
+  Otherwise you get a ``CatalogError``.
+  I get crazy sort_ons like '194' or 'null'.
+  [maurits]
+
 - Require AccessControl 3.0.14 so ``guarded_getitem`` is used.
   Part of PloneHotfix20171128.  [maurits]
 
