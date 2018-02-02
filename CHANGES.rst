@@ -35,6 +35,11 @@ New Features:
 
 Bug Fixes:
 
+- Ignore invalid ``sort_on`` parameters in catalog ``searchResults``.
+  Otherwise you get a ``CatalogError``.
+  I get crazy sort_ons like '194' or 'null'.
+  [maurits]
+
 - Register the ``ExceptionView`` for the unspecific ``zope.interface.Interface`` for easier overloading.
   Fixes a problem, where plone.rest couldn't overload the ExceptionView with an adapter bound to ``plone.rest.interfaces.IAPIRequest``.
   [thet]
