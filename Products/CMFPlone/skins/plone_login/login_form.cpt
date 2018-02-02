@@ -49,144 +49,207 @@
                         target python:test(target in ('_parent', '_top', '_blank', '_self'), target, None);
                         ztu modules/ZTUtils;
                         editing_url python:context.portal_registry['plone.editing_url'];
-                        bad_domain python: editing_url is not None and editing_url.strip() != '' and portal_url != editing_url.strip();">
+                        bad_domain python: editing_url is not None and editing_url.strip() != '' and portal_url != editing_url.strip();"
+                tal:condition="not: bad_domain">
 
-            <!-- wrap everything with this domain check -->
-            <div tal:condition="not: bad_domain">
-                <div class="portalMessage error pat-cookietrigger" style="display:none">
-                    <strong i18n:translate="">
-                        Error
-                    </strong>
-                    <span tal:omit-tag=""
-                        i18n:translate="enable_cookies_message_before_login">
-                        Cookies are not enabled. You must enable cookies before you can log in.
-                    </span>
-                </div>
+            <div class="portalMessage error pat-cookietrigger" style="display:none">
+                <strong i18n:translate="">
+                    Error
+                </strong>
+                <span tal:omit-tag=""
+                    i18n:translate="enable_cookies_message_before_login">
+                    Cookies are not enabled. You must enable cookies before you can log in.
+                </span>
+            </div>
 
-                <div tal:condition="python: not auth" i18n:translate="login_form_disabled">
-                    Since cookie authentication is disabled, cookie-based login is not available.
-                </div>
+            <div tal:condition="python: not auth" i18n:translate="login_form_disabled">
+                Since cookie authentication is disabled, cookie-based login is not available.
+            </div>
 
-                <form tal:attributes="action python:context.absolute_url()+'/'+template.id"
-                      class="pat-formautofocus"
-                      method="post"
-                      id="login_form"
-                      tal:condition="use_normal">
+            <form tal:attributes="action python:context.absolute_url()+'/'+template.id"
+                  class="pat-formautofocus"
+                  method="post"
+                  id="login_form"
+                  tal:condition="use_normal">
 
-                    <div id="login-form">
+                <div id="login-form">
 
-                        <input type="hidden"
-                            name="came_from"
-                            value=""
-                        tal:attributes="value came_from|nothing" />
+                    <input type="hidden"
+                        name="came_from"
+                        value=""
+                    tal:attributes="value came_from|nothing" />
 
-                        <input type="hidden"
-                            name="next"
-                            value=""
-                        tal:attributes="value next|nothing" />
+                    <input type="hidden"
+                        name="next"
+                        value=""
+                    tal:attributes="value next|nothing" />
 
-                        <input type="hidden"
-                            name="ajax_load"
-                            value=""
-                        tal:attributes="value request/ajax_load|nothing" />
+                    <input type="hidden"
+                        name="ajax_load"
+                        value=""
+                    tal:attributes="value request/ajax_load|nothing" />
 
-                        <input type="hidden"
-                            name="ajax_include_head"
-                            value=""
-                        tal:attributes="value request/ajax_include_head|nothing" />
+                    <input type="hidden"
+                        name="ajax_include_head"
+                        value=""
+                    tal:attributes="value request/ajax_include_head|nothing" />
 
-                        <input type="hidden"
-                            name="target"
-                            value=""
-                        tal:attributes="value request/target|nothing" />
+                    <input type="hidden"
+                        name="target"
+                        value=""
+                    tal:attributes="value request/target|nothing" />
 
-                        <input type="hidden"
-                            name="mail_password_url"
-                            value=""
-                        tal:attributes="value request/mail_password_url|nothing" />
+                    <input type="hidden"
+                        name="mail_password_url"
+                        value=""
+                    tal:attributes="value request/mail_password_url|nothing" />
 
-                        <input type="hidden"
-                            name="join_url"
-                            value=""
-                        tal:attributes="value request/join_url|nothing" />
+                    <input type="hidden"
+                        name="join_url"
+                        value=""
+                    tal:attributes="value request/join_url|nothing" />
 
-                        <input type="hidden" name="form.submitted" value="1" />
-                        <input type="hidden" name="js_enabled" id="js_enabled" value="0" />
-                        <input type="hidden" name="cookies_enabled" id="cookies_enabled" value="" />
-                        <input type="hidden" name="login_name" id="login_name" value="" />
-                        <input type="hidden" name="pwd_empty" id="pwd_empty" value="0" />
-
-                        <div class="field"
-                             tal:define="error python:errors.get(ac_name, None);"
-                             tal:attributes="class python:test(error, 'field error', 'field')">
-
-                            <label i18n:translate="label_login_name"
-                                   tal:condition="not:use_email_as_login"
-                                   tal:attributes="for ac_name">Login Name</label>
-
-                            <label i18n:translate="label_email"
-                                   tal:condition="use_email_as_login"
-                                   tal:attributes="for ac_name">E-mail</label>
-
-                            <div tal:condition="error"
-                                 tal:content="error">Validation error output</div>
-
-                            <input type="text"
-                                   size="15"
-                                   tal:attributes="name ac_name;
-                                                   id ac_name;
-                                                   value login_name;"
-                                   />
-
-                    </div>
+                    <input type="hidden" name="form.submitted" value="1" />
+                    <input type="hidden" name="js_enabled" id="js_enabled" value="0" />
+                    <input type="hidden" name="cookies_enabled" id="cookies_enabled" value="" />
+                    <input type="hidden" name="login_name" id="login_name" value="" />
+                    <input type="hidden" name="pwd_empty" id="pwd_empty" value="0" />
 
                     <div class="field"
-                             tal:define="error python:errors.get(ac_password, None);"
-                             tal:attributes="class python:test(error, 'field error', 'field')">
+                         tal:define="error python:errors.get(ac_name, None);"
+                         tal:attributes="class python:test(error, 'field error', 'field')">
 
-                            <label i18n:translate="label_password"
-                                   tal:attributes="for ac_password">Password</label>
+                        <label i18n:translate="label_login_name"
+                               tal:condition="not:use_email_as_login"
+                               tal:attributes="for ac_name">Login Name</label>
 
-                            <div tal:condition="error"
-                                 tal:content="error">Validation error output</div>
+                        <label i18n:translate="label_email"
+                               tal:condition="use_email_as_login"
+                               tal:attributes="for ac_name">E-mail</label>
 
-                            <input type="password"
-                                   size="15"
-                                   tal:attributes="name ac_password;
-                                                   id ac_password;"
-                                   />
+                        <div tal:condition="error"
+                             tal:content="error">Validation error output</div>
+
+                        <input type="text"
+                               size="15"
+                               tal:attributes="name ac_name;
+                                               id ac_name;
+                                               value login_name;"
+                               />
+
+                </div>
+
+                <div class="field"
+                         tal:define="error python:errors.get(ac_password, None);"
+                         tal:attributes="class python:test(error, 'field error', 'field')">
+
+                        <label i18n:translate="label_password"
+                               tal:attributes="for ac_password">Password</label>
+
+                        <div tal:condition="error"
+                             tal:content="error">Validation error output</div>
+
+                        <input type="password"
+                               size="15"
+                               tal:attributes="name ac_password;
+                                               id ac_password;"
+                               />
+                </div>
+
+                    <div class="field" tal:condition="ac_persist">
+
+                        <input type="checkbox"
+                               class="noborder formRememberName"
+                               value="1"
+                               checked="checked"
+                               id="cb_remember"
+                               tal:attributes="name ac_persist;
+                                               checked python:request.get(ac_name, '') and 'checked' or None;"
+                               />
+
+                        <tal:username tal:condition="not:use_email_as_login">
+                        <label for="cb_remember" i18n:translate="label_remember_my_name">Remember my name.</label>
+
+                        <div i18n:translate="help_remember_my_name"
+                             class="formHelp">
+                            Check this to have your user name filled in automatically when you log in later.
+                        </div>
+                        </tal:username>
+
+                        <tal:email tal:condition="use_email_as_login">
+                        <label for="cb_remember" i18n:translate="label_remember_my_email">Remember my email address.</label>
+
+                        <div i18n:translate="help_remember_my_email"
+                             class="formHelp">
+                            Check this to have your email address filled in automatically when you log in later.
+                        </div>
+                        </tal:email>
+
                     </div>
 
-                        <div class="field" tal:condition="ac_persist">
+                    <div class="formControls">
 
-                            <input type="checkbox"
-                                   class="noborder formRememberName"
-                                   value="1"
-                                   checked="checked"
-                                   id="cb_remember"
-                                   tal:attributes="name ac_persist;
-                                                   checked python:request.get(ac_name, '') and 'checked' or None;"
-                                   />
+                        <input class="context"
+                               type="submit"
+                               name="submit"
+                               value="Log in"
+                               i18n:attributes="value label_log_in;"
+                               />
 
-                            <tal:username tal:condition="not:use_email_as_login">
-                            <label for="cb_remember" i18n:translate="label_remember_my_name">Remember my name.</label>
+                    </div>
 
-                            <div i18n:translate="help_remember_my_name"
-                                 class="formHelp">
-                                Check this to have your user name filled in automatically when you log in later.
-                            </div>
-                            </tal:username>
+                </div>
 
-                            <tal:email tal:condition="use_email_as_login">
-                            <label for="cb_remember" i18n:translate="label_remember_my_email">Remember my email address.</label>
+            </form>
 
-                            <div i18n:translate="help_remember_my_email"
-                                 class="formHelp">
-                                Check this to have your email address filled in automatically when you log in later.
-                            </div>
-                            </tal:email>
+            <form tal:attributes="action external_login_url"
+                  class="pat-formautofocus"
+                  method="get"
+                  id="login_form"
+                  tal:condition="use_external">
 
-                        </div>
+                <div id="login-form">
+
+                    <input type="hidden"
+                        name="next"
+                        value=""
+                    tal:attributes="value string:${request/URL1}/logged_in" />
+
+                    <div class="formControls">
+
+                        <input class="context"
+                               type="submit"
+                               name="submit"
+                               value="Log in"
+                               i18n:attributes="value label_log_in;"
+                               />
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        <tal:use_iframe condition="use_iframe">
+
+            <form action="#"
+                  method="get"
+                  id="login_form"
+                  name="login_form"
+                  class="iframe-wrapper"
+                  tal:define="params python:dict(next=request.URL1+'/logged_in', target='_parent', ajax_load=True, ajax_include_head=True, mail_password_url=mail_password, join_url=join);
+                              dummy python:came_from and params.update(dict(came_from=came_from));
+                              src external_login_url"
+                  tal:attributes="action src">
+
+                <div id="login-form">
+
+                    <iframe name="login-form-iframe"
+                        id="login-form-iframe"
+                        tal:attributes="src python:external_login_url+test(join_url.find('?')==-1, '?', '&amp;')+ztu.make_query(params);"
+                        >
+
+                        <input tal:replace="structure python:ztu.make_hidden_input(params)" />
 
                         <div class="formControls">
 
@@ -199,113 +262,48 @@
 
                         </div>
 
-                    </div>
-
-                </form>
-
-                <form tal:attributes="action external_login_url"
-                      class="pat-formautofocus"
-                      method="get"
-                      id="login_form"
-                      tal:condition="use_external">
-
-                    <div id="login-form">
-
-                        <input type="hidden"
-                            name="next"
-                            value=""
-                        tal:attributes="value string:${request/URL1}/logged_in" />
-
-                        <div class="formControls">
-
-                            <input class="context"
-                                   type="submit"
-                                   name="submit"
-                                   value="Log in"
-                                   i18n:attributes="value label_log_in;"
-                                   />
-
-                        </div>
-
-                    </div>
-
-                </form>
-
-            <tal:use_iframe condition="use_iframe">
-
-                <form action="#"
-                      method="get"
-                      id="login_form"
-                      name="login_form"
-                      class="iframe-wrapper"
-                      tal:define="params python:dict(next=request.URL1+'/logged_in', target='_parent', ajax_load=True, ajax_include_head=True, mail_password_url=mail_password, join_url=join);
-                                  dummy python:came_from and params.update(dict(came_from=came_from));
-                                  src external_login_url"
-                      tal:attributes="action src">
-
-                    <div id="login-form">
-
-                        <iframe name="login-form-iframe"
-                            id="login-form-iframe"
-                            tal:attributes="src python:external_login_url+test(join_url.find('?')==-1, '?', '&amp;')+ztu.make_query(params);"
-                            >
-
-                            <input tal:replace="structure python:ztu.make_hidden_input(params)" />
-
-                            <div class="formControls">
-
-                                <input class="context"
-                                       type="submit"
-                                       name="submit"
-                                       value="Log in"
-                                       i18n:attributes="value label_log_in;"
-                                       />
-
-                            </div>
-
-                        </iframe>
-
-                    </div>
-
-                </form>
-
-            </tal:use_iframe>
-
-                <div id="login-forgotten-password"
-                     tal:condition="python:mail_password_url and use_normal">
-                    <strong i18n:translate="box_forgot_password_option">
-                        Forgot your password?
-                    </strong>
-                    <p class="discreet"
-                       i18n:translate="help_password_retrieval">
-                        If you have forgotten your password,
-                        <span i18n:name="click_here">
-                            <a tal:define="mail_password_url python:mail_password_url+test(mail_password_url.find('?')==-1, '?', '&amp;')+ztu.make_query(userid=login_name)"
-                                tal:attributes="href mail_password_url; target target;"
-                               i18n:translate="label_click_here_to_retrieve">we can send you a new one</a></span>.
-                    </p>
-                </div>
-
-                <div id="login-new-user"
-                   tal:condition="python:join_url and use_normal">
-                    <strong i18n:translate="heading_new_user">
-                    New user?
-                    </strong>
-
-                    <p i18n:translate="description_no_account">
-                    If you do not have an account here, head over to the
-                    <span i18n:name="registration_form">
-                        <a href=""
-                           tal:define="join_url python:test(came_from, join_url+test(join_url.find('?')==-1, '?', '&amp;')+ztu.make_query(came_from=came_from), join_url);"
-                           tal:attributes="href join_url; target target;"
-                           i18n:translate="description_no_account_registration_linktext"
-                            >registration form</a></span>.
-                    </p>
+                    </iframe>
 
                 </div>
 
-            </metal:login>
-        </div> <!-- bad_domain -->
+            </form>
+
+        </tal:use_iframe>
+
+            <div id="login-forgotten-password"
+                 tal:condition="python:mail_password_url and use_normal">
+                <strong i18n:translate="box_forgot_password_option">
+                    Forgot your password?
+                </strong>
+                <p class="discreet"
+                   i18n:translate="help_password_retrieval">
+                    If you have forgotten your password,
+                    <span i18n:name="click_here">
+                        <a tal:define="mail_password_url python:mail_password_url+test(mail_password_url.find('?')==-1, '?', '&amp;')+ztu.make_query(userid=login_name)"
+                            tal:attributes="href mail_password_url; target target;"
+                           i18n:translate="label_click_here_to_retrieve">we can send you a new one</a></span>.
+                </p>
+            </div>
+
+            <div id="login-new-user"
+               tal:condition="python:join_url and use_normal">
+                <strong i18n:translate="heading_new_user">
+                New user?
+                </strong>
+
+                <p i18n:translate="description_no_account">
+                If you do not have an account here, head over to the
+                <span i18n:name="registration_form">
+                    <a href=""
+                       tal:define="join_url python:test(came_from, join_url+test(join_url.find('?')==-1, '?', '&amp;')+ztu.make_query(came_from=came_from), join_url);"
+                       tal:attributes="href join_url; target target;"
+                       i18n:translate="description_no_account_registration_linktext"
+                        >registration form</a></span>.
+                </p>
+
+            </div>
+
+        </metal:login>
     </div>
 
     </metal:main>
