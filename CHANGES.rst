@@ -25,6 +25,9 @@ Breaking changes:
 - Remove old PlacelessTranslationService.
   [jensens, ksuess]
 
+- Remove ``plone-generate-gruntfile`` (it is all available through ``plone-compile-resources``).
+  [jensens]
+
 New Features:
 
 - Fix imports to work with Python 3.
