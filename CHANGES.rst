@@ -35,6 +35,9 @@ New Features:
 
 Bug Fixes:
 
+- Fix bad domain for translating password reset mails.
+  [allusa]
+
 - Ignore invalid ``sort_on`` parameters in catalog ``searchResults``.
   Otherwise you get a ``CatalogError``.
   I get crazy sort_ons like '194' or 'null'.
