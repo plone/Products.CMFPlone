@@ -26,6 +26,10 @@ New features:
 
 Bug fixes:
 
+- Add required ``plone.app.imaging`` as direct dependency.
+  Note, in Plone 5.1 plone.app.imaging is no dependency anymore.
+  [thet]
+
 - Ignore invalid ``sort_on`` parameters in catalog ``searchResults``.
   Otherwise you get a ``CatalogError``.
   I get crazy sort_ons like '194' or 'null'.

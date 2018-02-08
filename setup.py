@@ -89,6 +89,7 @@ setup(
         'plone.app.discussion',
         'plone.app.folder',
         'plone.app.i18n',
+        'plone.app.imaging',
         'plone.app.multilingual',
         'plone.app.layout >=1.1.7dev-r23744',
         'plone.app.linkintegrity >=1.0.3',
