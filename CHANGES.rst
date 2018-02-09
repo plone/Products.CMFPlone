@@ -21,6 +21,11 @@ New features:
 
 Bug fixes:
 
+- Added tests for add-ons control panel.
+  Add a link to the Site Setup.
+  Let ``get_product_version`` work when you call it with ``CMFPlacefulWorkflow`` too.
+  [maurits]
+
 - Fix bad domain for translating password reset mails.
   [allusa]
 
