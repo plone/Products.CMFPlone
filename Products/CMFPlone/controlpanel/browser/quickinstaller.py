@@ -302,16 +302,10 @@ class InstallerView(BrowserView):
             dist = pkg_resources.get_distribution(product_id)
             return dist.version
         except pkg_resources.DistributionNotFound:
-            return ''
-
-        # TODO: check if extra Products check is needed after all.
-        # if "." not in product_id:
-        #     try:
-        #         dist = pkg_resources.get_distribution(
-        #             "Products." + product_id)
-        #         return dist.version
-        #     except pkg_resources.DistributionNotFound:
-        #         pass
+            if '.' in product_id:
+                return ''
+        # For CMFPlacefulWorkflow we need to try Products.CMFPlacefulWorkflow.
+        return self.get_product_version('Products.' + product_id)
 
     def get_latest_upgrade_step(self, profile_id):
         """Get highest ordered upgrade step for profile.
