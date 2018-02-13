@@ -38,6 +38,10 @@ New Features:
 
 Bug Fixes:
 
+- Removed extra methods and tests for CMFQuickInstallerTool.
+  Moved those to the Products.CMFQuickInstallerTool package.
+  [maurits]
+
 - Added tests for add-ons control panel.
   Add a link to the Site Setup.
   Let ``get_product_version`` work when you call it with ``CMFPlacefulWorkflow`` too.
