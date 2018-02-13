@@ -210,11 +210,10 @@
       template="usergroups_groupdetails.pt"
       />
 
-  <!-- Quick Installer -->
+  <!-- Add-ons control panel -->
 
   <!-- First register an easy to remember browser view '@@installer'.
-       Maybe we want this as utility instead.  It is intended as
-       replacement for any use of the portal_quickinstaller. -->
+       It is the replacement for any use of the portal_quickinstaller. -->
   <browser:page
     for="*"
     name="installer"

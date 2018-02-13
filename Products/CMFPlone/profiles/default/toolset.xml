@@ -30,8 +30,6 @@
            class="Products.CMFPlone.PasswordResetTool.PasswordResetTool"/>
  <required tool_id="portal_properties"
            class="Products.CMFPlone.PropertiesTool.PropertiesTool"/>
- <required tool_id="portal_quickinstaller"
-           class="Products.CMFPlone.QuickInstallerTool.QuickInstallerTool"/>
  <required tool_id="portal_registration"
            class="Products.CMFPlone.RegistrationTool.RegistrationTool"/>
  <required tool_id="portal_skins"

@@ -75,7 +75,6 @@ def assignTitles(portal):
         'portal_migration': 'Upgrades to newer Plone versions',
         'portal_password_reset': 'Handles password retention policy',
         'portal_properties': 'General settings registry',
-        'portal_quickinstaller': 'Allows to install/uninstall products',
         'portal_registration': 'Handles registration of new users',
         'portal_setup': 'Add-on and configuration management',
         'portal_skins': 'Controls skin behaviour (search order etc)',
