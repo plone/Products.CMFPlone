@@ -27,8 +27,7 @@ class Addon:
     """A profile or product.
 
     This is meant for core Plone packages, especially packages that
-    are marked as not installable (INonInstallable from
-    CMFQuickInstallerTool).  These are packages that an admin should
+    are marked as not installable.  These are packages that an admin should
     not activate, deactivate or upgrade manually, but that should be
     handled by Plone.
 
