@@ -5,10 +5,8 @@
 Changelog
 =========
 
-5.1rc3 (unreleased)
--------------------
-5.1.1 (unreleased)
-------------------
+5.1.0.1 (2018-02-14)
+--------------------
 
 New features:
 
@@ -44,7 +42,6 @@ Bug fixes:
   This is true for any package in the Products namespace that was installed.
   Fixes `issue 2103 <https://github.com/plone/Products.CMFPlone/issues/2103>`_.
   [maurits]
-- *add item here*
 
 
 5.1.0 (2018-02-05)
@@ -210,7 +207,7 @@ Bug fixes:
 - Gruntfile generation no longer fails on introspecting resourceDirectory
   configurations using a plone.browserlayer layer, by loading all layers
   configured for the site used during generation.
-  Fixes Issue `#2080`_.
+  Fixes Issue `#2080`.
   [seanupton]
 
 - fixed css-classes for thumb scales ...
