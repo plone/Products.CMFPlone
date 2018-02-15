@@ -10,10 +10,6 @@ Changelog
 5.1.1 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
 New features:
 
 - Mockup update.
@@ -48,10 +44,6 @@ Bug fixes:
   This is true for any package in the Products namespace that was installed.
   Fixes `issue 2103 <https://github.com/plone/Products.CMFPlone/issues/2103>`_.
   [maurits]
-- *add item here*
-
-Bug fixes:
-
 - *add item here*
 
 
