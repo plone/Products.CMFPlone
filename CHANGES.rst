@@ -18,7 +18,8 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Some nested `section id="edit-bar"` tag in folder_contents page #2322 [terapyon]
+
 
 
 5.1.0.1 (2018-02-14)
