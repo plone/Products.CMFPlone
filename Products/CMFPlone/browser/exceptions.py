@@ -23,7 +23,7 @@ class ExceptionView(BrowserView):
         error_type = exception.__class__.__name__
         exc_type, value, traceback = sys.exc_info()
         error_tb = ''.join(
-            format_exception(exc_type, value, traceback, as_html=True))
+            format_exception(exc_type, value, traceback, as_html=False))
         request.response.setStatus(exc_type)
 
         # Indicate exception as JSON
