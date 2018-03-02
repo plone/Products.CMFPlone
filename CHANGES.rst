@@ -112,3 +112,4 @@ Bug Fixes:
   [jensens]
 
 - Remove depricated ``type`` attribute from ``script`` and ``link`` tags.
+  [newbazz]
