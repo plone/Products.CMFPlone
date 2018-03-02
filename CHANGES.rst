@@ -38,6 +38,12 @@ New Features:
 
 Bug Fixes:
 
+- Fix Exception-View when main_template can't be rendered. Fixes #2325.
+  [pbauer]
+
+- Render exceptions as text, not html to fix format of infos after traceback.
+  [pbauer]
+
 - Removed extra methods and tests for CMFQuickInstallerTool.
   Moved those to the Products.CMFQuickInstallerTool package.
   [maurits]
