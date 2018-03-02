@@ -14,7 +14,7 @@ setup(
         "Framework :: Plone",
         "Framework :: Plone :: 5.1",
         "Framework :: Zope2",
-        "License :: OSI Approved :: GNU General Public License (GPL)",
+        "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
         "Operating System :: OS Independent",
         "Programming Language :: Python",
         "Programming Language :: Python :: 2.7",
@@ -45,6 +45,7 @@ setup(
     ),
     install_requires=[
         'setuptools',
+        'AccessControl >= 4.0b1',
         'Acquisition',
         'DateTime',
         'ExtensionClass',
@@ -61,7 +62,6 @@ setup(
         'Products.ExternalEditor',
         'Products.GenericSetup >= 1.8.2',
         'Products.MimetypesRegistry',
-        'Products.PlacelessTranslationService',
         # 'Products.PloneLanguageTool',
         'Products.PlonePAS',
         'Products.PluggableAuthService',
@@ -150,7 +150,6 @@ setup(
     ],
     entry_points="""\
       [console_scripts]
-      plone-generate-gruntfile = Products.CMFPlone._scripts.generate_gruntfile:main
       plone-compile-resources = Products.CMFPlone._scripts.compile_resources:main
       """
 )

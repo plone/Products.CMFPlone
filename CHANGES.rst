@@ -22,6 +22,12 @@ Breaking changes:
 - Render exceptions using an exception view instead of standard_error_message.
   [davisagli]
 
+- Remove old PlacelessTranslationService.
+  [jensens, ksuess]
+
+- Remove ``plone-generate-gruntfile`` (it is all available through ``plone-compile-resources``).
+  [jensens]
+
 New Features:
 
 - Fix imports to work with Python 3.
@@ -31,6 +37,34 @@ New Features:
   [thet]
 
 Bug Fixes:
+
+- Removed extra methods and tests for CMFQuickInstallerTool.
+  Moved those to the Products.CMFQuickInstallerTool package.
+  [maurits]
+
+- Added tests for add-ons control panel.
+  Add a link to the Site Setup.
+  Let ``get_product_version`` work when you call it with ``CMFPlacefulWorkflow`` too.
+  [maurits]
+
+- Fix bad domain for translating password reset mails.
+  [allusa]
+
+- Ignore invalid ``sort_on`` parameters in catalog ``searchResults``.
+  Otherwise you get a ``CatalogError``.
+  I get crazy sort_ons like '194' or 'null'.
+  [maurits]
+
+- Register the ``ExceptionView`` for the unspecific ``zope.interface.Interface`` for easier overloading.
+  Fixes a problem, where plone.rest couldn't overload the ExceptionView with an adapter bound to ``plone.rest.interfaces.IAPIRequest``.
+  [thet]
+
+- Fixed linkintegrity robot tests.  [maurits]
+
+- Fixed flaky actions controlpanel tests by waiting longer.  [maurits]
+
+- Require AccessControl 4.0b1 so ``guarded_getitem`` is used.
+  Part of PloneHotfix20171128.  [maurits]
 
 - Improved isURLInPortal according to PloneHotfix20171128.
   Accept only http/https, and doubly check escaped urls.  [maurits]
