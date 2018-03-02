@@ -38,9 +38,10 @@ class ExceptionView(BrowserView):
             # We cannot get the site, so we cannot render our nice template
             template = self.basic_template
         else:
-            # Use a simplified template if main_template is not available
+            # Use a simplified template if main_template is not renderable
             try:
-                self.context.unrestrictedTraverse('main_template')
+                main = self.context.unrestrictedTraverse('main_template')
+                main()
             except:
                 template = self.basic_template
             else:

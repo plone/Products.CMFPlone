@@ -38,6 +38,9 @@ New Features:
 
 Bug Fixes:
 
+- Fix Exception-View when main_template can't be rendered. Fixes #2325.
+  [pbauer]
+
 - Removed extra methods and tests for CMFQuickInstallerTool.
   Moved those to the Products.CMFQuickInstallerTool package.
   [maurits]
