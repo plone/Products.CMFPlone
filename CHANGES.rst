@@ -116,3 +116,6 @@ Bug Fixes:
   Completly removed ``came_from`` on ``@@register`` link.
   It does not make much sense anyway and we test nowhere if there is a came_from on that link.
   [jensens]
+
+- Remove depricated ``type`` attribute from ``script`` and ``link`` tags.
+  [newbazz]
