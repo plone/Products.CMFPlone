@@ -98,9 +98,6 @@ class TinyMCESettingsGenerator(object):
             'title': 'Inline',
             'items': self.get_styles(inline_styles)
         }, {
-            'title': 'Alignment',
-            'items': self.get_styles(alignment_styles)
-        }, {
             'title': 'Tables',
             'items': self.get_styles(
                 table_styles, 'classes', {'selector': 'table'})
