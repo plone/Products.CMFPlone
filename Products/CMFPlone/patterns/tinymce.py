@@ -108,6 +108,7 @@ class TinyMCESettingsGenerator(object):
         }]
         for sf in style_formats:
             if sf['items']:
+                
                 return sf
         
 

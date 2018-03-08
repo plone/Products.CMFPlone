@@ -37,7 +37,7 @@ New Features:
   [thet]
 
 Bug Fixes:
-- Fixed align menu item in TinyMCE for disability issues.  [mrsaicharan1]  
+- Fix for TinyMCE menu items disability issue.  [mrsaicharan1]  
 
 - Fix Exception-View when main_template can't be rendered. Fixes #2325.
   [pbauer]
