@@ -31,6 +31,7 @@ New Features:
   [thet]
 
 Bug Fixes:
+- Fixed align menu item in TinyMCE for disability issues. [mrsaicharan1]  
 
 - Fixed linkintegrity robot tests.  [maurits]
 

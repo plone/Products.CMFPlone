@@ -97,7 +97,7 @@ class TinyMCESettingsGenerator(object):
         }, {
             'title': 'Inline',
             'items': self.get_styles(inline_styles)
-        }, {
+        },{
             'title': 'Tables',
             'items': self.get_styles(
                 table_styles, 'classes', {'selector': 'table'})
