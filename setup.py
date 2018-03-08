@@ -62,7 +62,6 @@ setup(
         'Products.ExternalEditor',
         'Products.GenericSetup >= 1.8.2',
         'Products.MimetypesRegistry',
-        'Products.PlacelessTranslationService',
         # 'Products.PloneLanguageTool',
         'Products.PlonePAS',
         'Products.PluggableAuthService',
@@ -151,7 +150,6 @@ setup(
     ],
     entry_points="""\
       [console_scripts]
-      plone-generate-gruntfile = Products.CMFPlone._scripts.generate_gruntfile:main
       plone-compile-resources = Products.CMFPlone._scripts.compile_resources:main
       """
 )
