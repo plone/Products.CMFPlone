@@ -106,10 +106,7 @@ class TinyMCESettingsGenerator(object):
             'items': self.get_styles(
                 table_styles, 'classes', {'selector': 'table'})
         }]
-        for sf in style_formats:
-            if sf['items']:
-                
-                return sf
+        return [sf for sf in style_formats if sf['items']]
         
 
     def get_tiny_config(self):
