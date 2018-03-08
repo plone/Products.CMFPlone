@@ -1,0 +1,59 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    i18n_domain="plone">
+
+  <genericsetup:registerProfile
+      name="testfixture2"
+      title="Plone Test Fixture 2"
+      directory="profiles/testfixture"
+      for="Products.CMFPlone.interfaces.ITestCasePloneSiteRoot"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
+  <genericsetup:upgradeStep
+      source="*"
+      destination="1"
+      title="Null upgrade step"
+      description=""
+      profile="Products.CMFPlone:testfixture2"
+      handler="Products.CMFPlone.controlpanel.tests.test_controlpanel_installer.dummy_handler"
+      />
+
+  <genericsetup:upgradeStep
+      source="2"
+      destination="3"
+      title="Add pants"
+      description=""
+      handler="Products.CMFPlone.controlpanel.tests.test_controlpanel_installer.dummy_handler"
+      profile="Products.CMFPlone:testfixture2"
+      />
+
+  <genericsetup:upgradeStep
+      source="1"
+      destination="2"
+      title="Remove pants"
+      description=""
+      handler="Products.CMFPlone.controlpanel.tests.test_controlpanel_installer.dummy_handler"
+      profile="Products.CMFPlone:testfixture2"
+      />
+
+  <genericsetup:upgradeStep
+      source="apples"
+      destination="banana"
+      title="Add pants"
+      description=""
+      handler="Products.CMFPlone.controlpanel.tests.test_controlpanel_installer.dummy_handler"
+      profile="Products.CMFPlone:testfixture2"
+      />
+
+  <genericsetup:upgradeStep
+      source="cumquats"
+      destination="dandelions"
+      title="Remove pants"
+      description=""
+      handler="Products.CMFPlone.controlpanel.tests.test_controlpanel_installer.dummy_handler"
+      profile="Products.CMFPlone:testfixture2"
+      />
+
+</configure>

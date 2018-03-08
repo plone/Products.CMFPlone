@@ -22,6 +22,12 @@ Breaking changes:
 - Render exceptions using an exception view instead of standard_error_message.
   [davisagli]
 
+- Remove old PlacelessTranslationService.
+  [jensens, ksuess]
+
+- Remove ``plone-generate-gruntfile`` (it is all available through ``plone-compile-resources``).
+  [jensens]
+
 New Features:
 
 - Fix imports to work with Python 3.
@@ -32,6 +38,33 @@ New Features:
 
 Bug Fixes:
 - Fixed align menu item in TinyMCE for disability issues.  [mrsaicharan1]  
+
+- Fix Exception-View when main_template can't be rendered. Fixes #2325.
+  [pbauer]
+
+- Render exceptions as text, not html to fix format of infos after traceback.
+  [pbauer]
+
+- Removed extra methods and tests for CMFQuickInstallerTool.
+  Moved those to the Products.CMFQuickInstallerTool package.
+  [maurits]
+
+- Added tests for add-ons control panel.
+  Add a link to the Site Setup.
+  Let ``get_product_version`` work when you call it with ``CMFPlacefulWorkflow`` too.
+  [maurits]
+
+- Fix bad domain for translating password reset mails.
+  [allusa]
+
+- Ignore invalid ``sort_on`` parameters in catalog ``searchResults``.
+  Otherwise you get a ``CatalogError``.
+  I get crazy sort_ons like '194' or 'null'.
+  [maurits]
+
+- Register the ``ExceptionView`` for the unspecific ``zope.interface.Interface`` for easier overloading.
+  Fixes a problem, where plone.rest couldn't overload the ExceptionView with an adapter bound to ``plone.rest.interfaces.IAPIRequest``.
+  [thet]
 
 - Fixed linkintegrity robot tests.  [maurits]
 
@@ -84,3 +117,6 @@ Bug Fixes:
   Completly removed ``came_from`` on ``@@register`` link.
   It does not make much sense anyway and we test nowhere if there is a came_from on that link.
   [jensens]
+
+- Remove depricated ``type`` attribute from ``script`` and ``link`` tags.
+  [newbazz]
