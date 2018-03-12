@@ -88,7 +88,7 @@ class TinyMCESettingsGenerator(object):
         inline_styles = self.settings.inline_styles or []
         alignment_styles = self.settings.alignment_styles or []
         table_styles = self.settings.table_styles or []
-        style_formats= [{
+        style_formats = [{
             'title': 'Headers',
             'items': self.get_styles(header_styles)
         }, {
@@ -100,13 +100,13 @@ class TinyMCESettingsGenerator(object):
         }, {
             'title': 'Alignment',
             'items': self.get_styles(alignment_styles)
-        },{
+        }, {
             'title': 'Tables',
             'items': self.get_styles(
                 table_styles, 'classes', {'selector': 'table'})
         }]
         return [sf for sf in style_formats if sf['items']]
-        
+
     def get_tiny_config(self):
         settings = self.settings
         importcss_file_filter = '%s/++plone++static/tinymce-styles.css' % (
