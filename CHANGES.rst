@@ -37,6 +37,8 @@ New Features:
   [thet]
 
 Bug Fixes:
+- Do not show TinyMCE menu items with no subitems, Fixes #2245.
+  [mrsaicharan1]  
 
 - Fix Exception-View when main_template can't be rendered. Fixes #2325.
   [pbauer]
