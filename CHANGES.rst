@@ -5,7 +5,7 @@
 Changelog
 =========
 
-5.1.1 (unreleased)
+5.1.2 (unreleased)
 ------------------
 
 Breaking changes:
@@ -20,6 +20,12 @@ Bug fixes:
 
 - Some nested `section id="edit-bar"` tag in folder_contents page #2322 
   [terapyon]
+
+
+5.1.1 (2018-03-10)
+------------------
+
+Bug fixes:
 
 - Include TinyMCE 4.7.6
   [frapell]
