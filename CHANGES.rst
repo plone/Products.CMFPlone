@@ -14,11 +14,15 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- Enhanced output of Advanced Catalog Clear And Rebuild feature.
+  Better logging with progress and number of objects before and after.
+  [jensens]
 
 Bug fixes:
 
-- *add item here*
+- Advanced Catalog Clear And Rebuild feature showed wrong processing time due to new queue processing.
+  This was fixed bei calling ``processQueue()`` after indexing.
+  [jensens]
 
 
 5.1.1 (2018-03-10)
