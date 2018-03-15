@@ -30,6 +30,9 @@ Breaking changes:
 
 New Features:
 
+- Fix Drag and drop on iPads and other touch interfaces
+  [nehsus]
+
 - Fix imports to work with Python 3.
   [pbauer]
 
@@ -38,7 +41,7 @@ New Features:
 
 Bug Fixes:
 - Do not show TinyMCE menu items with no subitems, Fixes #2245.
-  [mrsaicharan1]  
+  [mrsaicharan1]
 
 - Fix Exception-View when main_template can't be rendered. Fixes #2325.
   [pbauer]
