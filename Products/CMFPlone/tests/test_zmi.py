@@ -146,11 +146,6 @@ class ZMITests(unittest.TestCase):
         view = self.portal.restrictedTraverse(url)
         self.assertTrue(view(), msg='{0} is broken'.format(url))
 
-    def test_portal_quickinstaller(self):
-        url = 'portal_quickinstaller/manage_installProductsForm'
-        view = self.portal.restrictedTraverse(url)
-        self.assertTrue(view(), msg='{0} is broken'.format(url))
-
     def test_portal_referencefactories(self):
         url = 'portal_referencefactories/manage_main'
         view = self.portal.restrictedTraverse(url)

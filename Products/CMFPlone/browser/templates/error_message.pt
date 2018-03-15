@@ -103,7 +103,7 @@
                    Here is the full error message:
                    </p>
 
-                   <div tal:replace="structure err_tb"/>
+                   <pre tal:content="err_tb"/>
                 </div>
 
                 <tal:noentry condition="not:isManager">

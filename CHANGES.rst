@@ -40,6 +40,18 @@ New Features:
   [thet]
 
 Bug Fixes:
+- Do not show TinyMCE menu items with no subitems, Fixes #2245.
+  [mrsaicharan1]  
+
+- Fix Exception-View when main_template can't be rendered. Fixes #2325.
+  [pbauer]
+
+- Render exceptions as text, not html to fix format of infos after traceback.
+  [pbauer]
+
+- Removed extra methods and tests for CMFQuickInstallerTool.
+  Moved those to the Products.CMFQuickInstallerTool package.
+  [maurits]
 
 - Added tests for add-ons control panel.
   Add a link to the Site Setup.
@@ -109,3 +121,6 @@ Bug Fixes:
   Completly removed ``came_from`` on ``@@register`` link.
   It does not make much sense anyway and we test nowhere if there is a came_from on that link.
   [jensens]
+
+- Remove depricated ``type`` attribute from ``script`` and ``link`` tags.
+  [newbazz]
