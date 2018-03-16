@@ -14,9 +14,15 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- Enhanced output of Advanced Catalog Clear And Rebuild feature.
+  Better logging with progress and number of objects before and after.
+  [jensens]
 
 Bug fixes:
+
+- Advanced Catalog Clear And Rebuild feature showed wrong processing time due to new queue processing.
+  This was fixed bei calling ``processQueue()`` after indexing.
+  [jensens]
 
 - Some nested `section id="edit-bar"` tag in folder_contents page #2322 
   [terapyon]

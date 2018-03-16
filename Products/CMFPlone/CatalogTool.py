@@ -177,6 +177,7 @@ def object_provides(obj):
 def zero_fill(matchobj):
     return matchobj.group().zfill(4)
 
+
 num_sort_regex = re.compile('\d+')
 
 
@@ -212,6 +213,7 @@ def getObjPositionInParent(obj):
     if ordered is not None:
         return ordered.getObjectPosition(obj.getId())
     return 0
+
 
 SIZE_CONST = {'KB': 1024, 'MB': 1024 * 1024, 'GB': 1024 * 1024 * 1024}
 SIZE_ORDER = ('GB', 'MB', 'KB')
@@ -295,6 +297,53 @@ def location(obj):
     return obj.getField('location').get(obj)
 
 
+class ContentIndexer(object):
+    """An instance of this class can be passed to ZopeFindAndApply
+    """
+
+    def __init__(self, catalog, queue_interval=100, log_progress=100):
+        self.catalog = catalog
+        self.queue_interval = queue_interval
+        self.log_progress = log_progress
+        self.counter = 0
+
+    def index_discussion(self, obj):
+        # index conversions from plone.app.discussion
+        annotations = IAnnotations(obj)
+        if DISCUSSION_ANNOTATION_KEY not in annotations:
+            return
+        conversation = annotations[DISCUSSION_ANNOTATION_KEY]
+        conversation = conversation.__of__(obj)
+        for comment in conversation.getComments():
+            try:
+                self.catalog.indexObject(comment)
+            except StopIteration:  # pragma: no cover
+                pass
+            self.counter += 1
+
+    def __call__(self, obj, path):
+        if not base_hasattr(obj, 'indexObject'):
+            return
+        if not safe_callable(obj.indexObject):
+            return
+        self.counter += 1
+        try:
+            obj.indexObject()
+            self.index_discussion(obj)
+        except TypeError:
+            # Catalogs have 'indexObject' as well, but they
+            # take different args, and will fail
+            pass
+        except Exception:
+            logger.exception(
+                'Problem indexing {0}'.format(obj.absolute_url())
+            )
+        if self.queue_interval and not(self.counter % self.queue_interval):
+            processQueue()
+        if self.log_progress and not(self.counter % self.log_progress):
+            logger.info('Indexed {0} objects.'.format(self.counter))
+
+
 @implementer(IPloneCatalogTool)
 class CatalogTool(PloneBaseTool, BaseTool):
     """Plone's catalog tool"""
@@ -324,7 +373,7 @@ class CatalogTool(PloneBaseTool, BaseTool):
         # Safe removal of an index.
         try:
             self.manage_delIndex(index)
-        except:
+        except Exception:
             pass
 
     def _listAllowedRolesAndUsers(self, user):
@@ -496,38 +545,15 @@ class CatalogTool(PloneBaseTool, BaseTool):
         # Empties catalog, then finds all contentish objects (i.e. objects
         # with an indexObject method), and reindexes them.
         # This may take a long time.
-
-        def indexObject(obj, path):
-            if (base_hasattr(obj, 'indexObject') and
-                    safe_callable(obj.indexObject)):
-                try:
-                    obj.indexObject()
-
-                    # index conversions from plone.app.discussion
-                    annotions = IAnnotations(obj)
-                    catalog = getToolByName(obj, "portal_catalog")
-                    if DISCUSSION_ANNOTATION_KEY in annotions:
-                        conversation = annotions[DISCUSSION_ANNOTATION_KEY]
-                        conversation = conversation.__of__(obj)
-                        for comment in conversation.getComments():
-                            try:
-                                if catalog:
-                                    catalog.indexObject(comment)
-                            except StopIteration:  # pragma: no cover
-                                pass
-
-
-                except TypeError:
-                    # Catalogs have 'indexObject' as well, but they
-                    # take different args, and will fail
-                    pass
         self.manage_catalogClear()
         portal = aq_parent(aq_inner(self))
+        index_content = ContentIndexer(aq_inner(self))
         portal.ZopeFindAndApply(
             portal,
             search_sub=True,
-            apply_func=indexObject
+            apply_func=index_content,
         )
+        processQueue()
 
     @security.protected(ManageZCatalogEntries)
     def manage_catalogRebuild(self, RESPONSE=None, URL1=None):
@@ -536,20 +562,34 @@ class CatalogTool(PloneBaseTool, BaseTool):
         """
         elapse = time.time()
         c_elapse = time.clock()
+        num_before = len(self._catalog)
 
+        logger.info(
+            'Catalog Rebuilt started. '
+            '{0} objects cataloged before clear'.format(num_before)
+        )
         self.clearFindAndRebuild()
 
         elapse = time.time() - elapse
         c_elapse = time.clock() - c_elapse
 
-        msg = ('Catalog Rebuilt\n'
-               'Total time: %s\n'
-               'Total CPU time: %s' % (repr(elapse), repr(c_elapse)))
+        msg = (
+            'Catalog Rebuilt\n'
+            '    Total time: {0}\n'
+            '    Total CPU time: {1}\n'
+            '    Number of objects changed from {2} to {3}'.format(
+                repr(elapse),
+                repr(c_elapse),
+                num_before,
+                len(self._catalog),
+            )
+        )
         logger.info(msg)
 
         if RESPONSE is not None:
             RESPONSE.redirect(
                 URL1 + '/manage_catalogAdvanced?manage_tabs_message=' +
                 urllib.quote(msg))
+
 
 InitializeClass(CatalogTool)
