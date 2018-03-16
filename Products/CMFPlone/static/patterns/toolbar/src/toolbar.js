@@ -390,7 +390,7 @@ define([
           url: $('body').attr('data-portal-url') + path + '/@@render-toolbar'
         }).done(function(data) {
           var $el = $(utils.parseBodyTag(data));
-          that.$el.replaceWith($el);
+          that.$el.parent.replaceWith($el);
           Registry.scan($el);
         });
       });
