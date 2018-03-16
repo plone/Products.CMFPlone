@@ -24,6 +24,9 @@ Bug fixes:
   This was fixed bei calling ``processQueue()`` after indexing.
   [jensens]
 
+- Some nested `section id="edit-bar"` tag in folder_contents page #2322 
+  [terapyon]
+
 
 5.1.1 (2018-03-10)
 ------------------
