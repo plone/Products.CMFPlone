@@ -23,6 +23,7 @@ from plone.registry.interfaces import IRegistry
 from Products.CMFCore.permissions import ManageUsers
 from Products.CMFCore.utils import ToolInit as CMFCoreToolInit
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone import bbb
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces.controlpanel import IImagingSchema
 from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
@@ -30,7 +31,6 @@ from Products.CMFPlone.log import log
 from Products.CMFPlone.log import log_deprecated
 from Products.CMFPlone.log import log_exc
 from six.moves.urllib.parse import urlparse
-from webdav.interfaces import IWriteLock
 from zope import schema
 from zope.component import getMultiAdapter
 from zope.component import getUtility
@@ -59,6 +59,10 @@ try:
 except ImportError:
     ClassType = type
 
+if bbb.HAS_ZSERVER:
+    from webdav.interfaces import IWriteLock
+else:
+    from OFS.interfaces import IWriteLock
 
 deprecated_import(
     "Import from Products.CMFPlone.defaultpage instead",
