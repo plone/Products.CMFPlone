@@ -8,7 +8,6 @@
 ##title=
 
 from Products.CMFPlone.utils import base_hasattr
-import six
 
 if obj is None:
     obj = context
@@ -36,7 +35,13 @@ except (ValueError, TypeError):
 if not size:
     return '0 %s' % smaller
 
-if isinstance(size, six.integer_types):
+try:
+    integer_types = (int, long)
+except NameError:
+    # Python 3
+    integer_types = (int, )
+
+if isinstance(size, integer_types):
     if size < const[smaller]:
         return '1 %s' % smaller
     for c in order:
