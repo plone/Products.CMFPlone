@@ -262,10 +262,13 @@ class RealIndexIterator(object):
     def __init__(self, pos=0):
         self.pos = pos
 
-    def next(self):
+    def __next__(self):
+        # Python 3
         result = self.pos
         self.pos = self.pos + 1
         return result
+
+    next = __next__  # Python 2
 
 
 @security.private
