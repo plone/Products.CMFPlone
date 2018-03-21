@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from Acquisition import aq_base
-from interfaces import IInterfaceInformation
+from .interfaces import IInterfaceInformation
 from plone.memoize.view import memoize
 from Products.Five.browser import BrowserView
 from zope.dottedname.resolve import resolve
