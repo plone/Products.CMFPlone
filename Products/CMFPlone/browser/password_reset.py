@@ -13,7 +13,7 @@ from zope.publisher.interfaces import IPublishTraverse
 
 from Products.CMFPlone.interfaces import IPasswordResetToolView
 from Products.CMFPlone import PloneMessageFactory as _
-from email.Header import Header
+from email.header import Header
 
 from plone.registry.interfaces import IRegistry
 from zope.component import getUtility

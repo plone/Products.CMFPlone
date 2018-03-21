@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from Products.ResourceRegistries.interfaces import IJSRegistry
-from resourceregistry import importResRegistry
-from resourceregistry import ResourceRegistryNodeAdapter
+from .resourceregistry import importResRegistry
+from .resourceregistry import ResourceRegistryNodeAdapter
 
 
 _FILENAME = 'jsregistry.xml'

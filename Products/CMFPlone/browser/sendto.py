@@ -17,7 +17,7 @@ from z3c.form import form
 from z3c.form import field
 from z3c.form import button
 
-from interfaces import ISendToForm
+from .interfaces import ISendToForm
 
 import logging
 

@@ -6,12 +6,11 @@ from Products.CMFPlone.browser.interfaces import IContactForm
 from Products.CMFPlone.interfaces.controlpanel import IMailSchema
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.statusmessages.interfaces import IStatusMessage
-from email.Header import Header
-from email.MIMEText import MIMEText
+from email.mime.text import MIMEText
 from plone.autoform.form import AutoExtensibleForm
 from plone.registry.interfaces import IRegistry
 from smtplib import SMTPException
-from z3c.form import form, field, button
+from z3c.form import form, button
 from zope.component import getUtility
 from zope.site.hooks import getSite
 
