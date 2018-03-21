@@ -9,7 +9,7 @@ from Acquisition import aq_parent
 from App.class_init import InitializeClass
 from ComputedAttribute import ComputedAttribute
 from DateTime import DateTime
-from email.Utils import getaddresses
+from email.utils import getaddresses
 from OFS.ObjectManager import bad_id
 from OFS.SimpleItem import SimpleItem
 from plone.registry.interfaces import IRegistry
@@ -44,7 +44,6 @@ from Products.CMFPlone.utils import safe_unicode
 from Products.CMFPlone.utils import transaction_note
 from Products.statusmessages.interfaces import IStatusMessage
 from six.moves.urllib import parse
-from types import UnicodeType
 from ZODB.POSException import ConflictError
 from zope.component import getUtility
 from zope.component import queryAdapter
