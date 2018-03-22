@@ -41,12 +41,12 @@ glob_true = u"[^%s]([^%s]|[\*\?])*|" \
 
 glob_false = u"[^%s]+|" % allp + u"|".join(u"[%s]+" % x for x in ps)
 
-rx_all = re.compile(ur"[%s]" % allp, re.UNICODE)
+rx_all = re.compile(r"[%s]" % allp, re.UNICODE)
 rx_U = re.compile(r"\w+", re.UNICODE)
 rxGlob_U = re.compile(r"\w+[\w*?]*", re.UNICODE)
 
-rx_L = re.compile(r"\w+", re.LOCALE)
-rxGlob_L = re.compile(r"\w+[\w*?]*", re.LOCALE)
+rx_L = re.compile(r"\w+")
+rxGlob_L = re.compile(r"\w+[\w*?]*")
 
 # pattern = re.compile(u"[a-zA-Z0-9_]+|[\uac00-\ud7af]+|[\u4E00-\u9FFF\u3400-\u4dbf\uf900-\ufaff\u3040-\u30ff]+", re.UNICODE)
 # pattern_g = re.compile(u"[a-zA-Z0-9_]+[*?]*|[\u4E00-\u9FFF\u3400-\u4dbf\uf900-\ufaff\u3040-\u30ff\uac00-\ud7af]+[*?]*", re.UNICODE)
