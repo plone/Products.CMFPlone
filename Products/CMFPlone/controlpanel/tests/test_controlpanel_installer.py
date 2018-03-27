@@ -152,9 +152,9 @@ class AddonsIntegrationTest(unittest.TestCase):
         # It lists *all* extension profiles.
         # The method seems unneeded.
         self.assertEqual(self.installer.get_install_profiles('foo'), [])
-        self.assertEqual(
-            self.installer.get_install_profiles('plone.session'),
-            ['plone.session:default', 'plone.session:uninstall'])
+        session_profiles = self.installer.get_install_profiles('plone.session')
+        self.assertIn('plone.session:default', session_profiles)
+        self.assertIn('plone.session:uninstall', session_profiles)
         self.assertEqual(
             self.installer.get_install_profiles('plone.app.dexterity'),
             ['plone.app.dexterity:default', 'plone.app.dexterity:testing'])

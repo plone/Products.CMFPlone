@@ -20,11 +20,15 @@ New features:
 
 Bug fixes:
 
+- Fix to make plone/plone.session#11 work:
+  Make test for installation of  plone.session more explicit.
+  [jensens]
+
 - Advanced Catalog Clear And Rebuild feature showed wrong processing time due to new queue processing.
   This was fixed bei calling ``processQueue()`` after indexing.
   [jensens]
 
-- Some nested `section id="edit-bar"` tag in folder_contents page #2322 
+- Some nested `section id="edit-bar"` tag in folder_contents page #2322
   [terapyon]
 
 
