@@ -14,7 +14,6 @@ setup(name='plone.app.layout',
       classifiers=[
           "Environment :: Web Environment",
           "Framework :: Plone",
-          "Framework :: Plone :: 5.0",
           "Framework :: Plone :: 5.1",
           "Framework :: Zope2",
           "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
