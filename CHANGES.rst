@@ -35,6 +35,9 @@ Bug fixes:
 - Some nested `section id="edit-bar"` tag in folder_contents page #2322
   [terapyon]
 
+- Change in TinyMCE css location so bundles can be built without errors
+  [frapell]
+
 
 5.1.1 (2018-03-10)
 ------------------
