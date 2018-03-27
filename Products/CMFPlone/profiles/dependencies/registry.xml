@@ -623,8 +623,8 @@
       <value key="export">window.tinyMCE</value>
       <value key="init">function () { this.tinyMCE.DOM.events.domLoaded = true; return this.tinyMCE; }</value>
       <value key="css">
-        <element>++plone++static/components/tinymce-builded/js/tinymce/skins/lightgray/skin.less</element>
-        <element>++plone++static/components/tinymce-builded/js/tinymce/skins/lightgray/Content.less</element>
+        <element>++plone++static/components/tinymce-builded/js/tinymce/skins/lightgray/skin.min.css</element>
+        <element>++plone++static/components/tinymce-builded/js/tinymce/skins/lightgray/content.min.css</element>
       </value>
   </records>
 
