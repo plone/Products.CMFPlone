@@ -152,9 +152,9 @@ class AddonsIntegrationTest(unittest.TestCase):
         # It lists *all* extension profiles.
         # The method seems unneeded.
         self.assertEqual(self.installer.get_install_profiles('foo'), [])
-        self.assertEqual(
-            self.installer.get_install_profiles('plone.session'),
-            ['plone.session:default', 'plone.session:uninstall'])
+        session_profiles = self.installer.get_install_profiles('plone.session')
+        self.assertIn('plone.session:default', session_profiles)
+        self.assertIn('plone.session:uninstall', session_profiles)
         self.assertEqual(
             self.installer.get_install_profiles('plone.app.dexterity'),
             ['plone.app.dexterity:default', 'plone.app.dexterity:testing'])
@@ -233,11 +233,9 @@ class AddonsIntegrationTest(unittest.TestCase):
     def test_upgrade_info(self):
         # an unknown product
         self.assertEqual(self.installer.upgrade_info('foo'), {})
-        # an uninstalled product
+        # a not yet/ uninstalled product
         info = self.installer.upgrade_info('plone.session')
-        self.assertFalse(info['available'])
-        self.assertTrue(info['required'])
-        self.assertEqual(info['installedVersion'], UNKNOWN)
+        self.assertEqual(self.installer.upgrade_info('plone.session'), {})
         # an installed product
         info = self.installer.upgrade_info('plone.app.dexterity')
         self.assertFalse(info['available'])
@@ -263,10 +261,10 @@ class AddonsIntegrationTest(unittest.TestCase):
         # an unknown product
         self.assertFalse(self.installer.upgrade_product('foo'))
 
-        # We do not complain about an uninstalled product.
+        # We do not complain about a not-yet/ uninstalled product.
         self.assertTrue(self.installer.upgrade_product('plone.session'))
         info = self.installer.upgrade_info('plone.session')
-        self.assertEqual(info['installedVersion'], UNKNOWN)
+        self.assertEqual(info, {})
 
         # We do not complain about an up to date product.
         self.assertTrue(self.installer.upgrade_product('plone.app.dexterity'))
@@ -283,18 +281,19 @@ class AddonsIntegrationTest(unittest.TestCase):
         info = self.installer.upgrade_info('plone.app.dexterity')
         self.assertEqual(info['installedVersion'], info['newVersion'])
 
-        # Try a Product too.
+        # Try a Product too (not yet installed).
         info = self.installer.upgrade_info('Products.CMFPlacefulWorkflow')
-        self.assertEqual(info['installedVersion'], UNKNOWN)
+        self.assertEqual(info, {})
         self.assertTrue(self.installer.upgrade_product(
-            'Products.CMFPlacefulWorkflow'))
+            'Products.CMFPlacefulWorkflow')
+        )
         info = self.installer.upgrade_info('Products.CMFPlacefulWorkflow')
-        self.assertEqual(info['installedVersion'], UNKNOWN)
+        self.assertEqual(info, {})
         info = self.installer.upgrade_info('CMFPlacefulWorkflow')
-        self.assertEqual(info['installedVersion'], UNKNOWN)
+        self.assertEqual(info, {})
         self.assertTrue(self.installer.upgrade_product('CMFPlacefulWorkflow'))
         info = self.installer.upgrade_info('CMFPlacefulWorkflow')
-        self.assertEqual(info['installedVersion'], UNKNOWN)
+        self.assertEqual(info, {})
         # fake a version
         ps = self.portal.portal_setup
         ps.setLastVersionForProfile(

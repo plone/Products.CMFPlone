@@ -25,6 +25,21 @@ Breaking changes:
 - Remove old PlacelessTranslationService.
   [jensens, ksuess]
 
+- Fix controlpanel quickinstaller view: 
+  A not yet installed product must not return any upgrade info.
+  [jensens]
+
+- Fix to make plone/plone.session#11 work:
+  Make test for installation of  plone.session more explicit.
+  [jensens]
+
+- Advanced Catalog Clear And Rebuild feature showed wrong processing time due to new queue processing.
+  This was fixed bei calling ``processQueue()`` after indexing.
+  [jensens]
+
+- Some nested `section id="edit-bar"` tag in folder_contents page #2322
+  [terapyon]
+
 - Remove ``plone-generate-gruntfile`` (it is all available through ``plone-compile-resources``).
   [jensens]
 
@@ -32,6 +47,9 @@ New Features:
 
 - Fix Drag and drop on iPads and other touch interfaces
   [nehsus]
+
+- Provide an utility ``dump_json_to_text`` that works both on Python 2.7 an Python 3.
+  [ale-rt]
 
 - Fix imports to work with Python 3.
   [pbauer]
