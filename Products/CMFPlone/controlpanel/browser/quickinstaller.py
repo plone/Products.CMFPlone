@@ -347,6 +347,8 @@ class InstallerView(BrowserView):
             # No GS profile, not supported.
             return {}
         profile_id = profile['id']
+        if not self.is_profile_installed(profile_id):
+            return {}
         profile_version = str(self.ps.getVersionForProfile(profile_id))
         if profile_version == 'latest':
             profile_version = self.get_latest_upgrade_step(profile_id)
