@@ -36,6 +36,7 @@ Bug fixes:
   [terapyon]
 
 - Change in TinyMCE css location so bundles can be built without errors
+  Fixes `issue 2359 <https://github.com/plone/Products.CMFPlone/issues/2359>`_.
   [frapell]
 
 
