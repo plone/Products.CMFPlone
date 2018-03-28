@@ -27302,6 +27302,16 @@ define('mockup-patterns-relateditems',[
         if (self.options.scanSelection) {
           registry.scan($selection);
         }
+        if (self.options.maximumSelectionSize == 1){
+          // If this related field accepts only 1 item, the breadcrumbs should
+          // reflect the location for this particular item
+          var itemPath = item.path;
+          var path_split = itemPath.split('/');
+          path_split = path_split.slice(0,-1);  // Remove last part of path, we always want the parent path
+          itemPath = path_split.join('/');
+          self.currentPath = itemPath;
+          self.renderToolbar();
+        }
         return $selection;
       };
 
@@ -30499,8 +30509,10 @@ define('mockup-patterns-tinymce-url/js/links',[
           var klasses = className.split(' ');
           for (var i = 0; i < klasses.length; i = i + 1) {
             var klass = klasses[i];
-            if (self.options.imageClasses.indexOf(klass) !== -1) {
-              self.$align.val(klass);
+            for (var availClass in self.options.imageClasses) {
+              if (availClass.indexOf(klass) !== -1) {
+                self.$align.val(klass);
+              }
             }
           }
         }
@@ -66314,7 +66326,9 @@ define('mockup-patterns-tinymce',[
         tinymce.init(tinyOptions);
         self.tiny = tinymce.get(self.tinyId);
 
-        self.tiny.initialized = true;
+        if (self.tiny !== null){
+          self.tiny.initialized = true;
+        }
 
         /* tiny really should be doing this by default
          * but this fixes overlays not saving data */
@@ -68056,7 +68070,7 @@ define('mockup-patterns-structure-url/js/actionmenu',['underscore'], function(_)
     var typeToViewAction = app.options.typeToViewAction;
     var viewAction = typeToViewAction && typeToViewAction[model.portal_type] || '';
     result.openItem.url = model.getURL + viewAction;
-    result.editItem.url = model.getURL + '/@@edit';
+    result.editItem.url = model.getURL + '/edit';
 
     return result;
   };
@@ -76452,7 +76466,7 @@ define('plone-patterns-toolbar',[
           url: $('body').attr('data-portal-url') + path + '/@@render-toolbar'
         }).done(function(data) {
           var $el = $(utils.parseBodyTag(data));
-          that.$el.replaceWith($el);
+          that.$el.parent.replaceWith($el);
           Registry.scan($el);
         });
       });
