@@ -24,6 +24,11 @@ Breaking changes:
 
 - Remove old PlacelessTranslationService.
   [jensens, ksuess]
+
+- Fix controlpanel quickinstaller view: 
+  A not yet installed product must not return any upgrade info.
+  [jensens]
+
 - Fix to make plone/plone.session#11 work:
   Make test for installation of  plone.session more explicit.
   [jensens]
