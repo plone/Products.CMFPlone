@@ -30,7 +30,7 @@ Breaking changes:
 
 New Features:
 
-- Fix Drag and drop on iPads and other touch interfaces
+- Fix Drag and drop on iPads and other interfaces.
   [nehsus]
 
 - Fix imports to work with Python 3.
