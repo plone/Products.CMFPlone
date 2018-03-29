@@ -623,8 +623,8 @@
       <value key="export">window.tinyMCE</value>
       <value key="init">function () { this.tinyMCE.DOM.events.domLoaded = true; return this.tinyMCE; }</value>
       <value key="css">
-        <element>++plone++static/components/tinymce-builded/js/tinymce/skins/lightgray/skin.less</element>
-        <element>++plone++static/components/tinymce-builded/js/tinymce/skins/lightgray/Content.less</element>
+        <element>++plone++static/components/tinymce-builded/js/tinymce/skins/lightgray/skin.min.css</element>
+        <element>++plone++static/components/tinymce-builded/js/tinymce/skins/lightgray/content.min.css</element>
       </value>
   </records>
 
@@ -1073,7 +1073,7 @@
     <value key="enabled">True</value>
     <value key="jscompilation">++plone++static/plone-compiled.min.js</value>
     <value key="csscompilation">++plone++static/plone-compiled.css</value>
-    <value key="last_compilation">2018-01-09 00:00:00</value>
+    <value key="last_compilation">2018-03-28 00:00:00</value>
     <value key="stub_js_modules">
       <element>jquery</element>
     </value>
@@ -1089,7 +1089,7 @@
     <value key="expression">python: member is not None</value>
     <value key="jscompilation">++plone++static/plone-logged-in-compiled.min.js</value>
     <value key="csscompilation">++plone++static/plone-logged-in-compiled.css</value>
-    <value key="last_compilation">2018-02-27 00:00:00</value>
+    <value key="last_compilation">2018-03-28 00:00:00</value>
     <value key="depends">plone</value>
     <value key="stub_js_modules">
       <element>backbone</element>
