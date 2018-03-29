@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from plone.supermodel import model
 from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone._compat import dump_json_to_text
 from Products.CMFPlone.interfaces.basetool import IPloneBaseTool
 from zope import schema
 from zope.interface import implementer
@@ -10,6 +11,7 @@ from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
 
 import json
+import six
 
 
 ROBOTS_TXT = u"""Sitemap: {portal_url}/sitemap.xml.gz
@@ -55,7 +57,7 @@ def validate_json(value):
         class JSONError(schema.ValidationError):
             __doc__ = _(u"Must be empty or a valid JSON-formatted "
                         u"configuration – ${message}.", mapping={
-                            'message': unicode(exc)})
+                            'message': six.text_type(exc)})
 
         raise JSONError(value)
 
@@ -584,10 +586,10 @@ class ITinyMCELayoutSchema(Interface):
             u'you press the bold button inside the editor. '
             u'See https://www.tinymce.com/docs/configure/content-formatting/#formats'),  # NOQA: E501
         constraint=validate_json,
-        default=json.dumps({
+        default=dump_json_to_text({
             'discreet': {'inline': 'span', 'classes': 'discreet'},
             'clearfix': {'block': 'div', 'classes': 'clearfix'}
-        }, indent=4).decode('utf8'),
+        }),
         required=True,
     )
 
@@ -656,7 +658,7 @@ class ITinyMCEPluginSchema(Interface):
         description=_('hint_tinymce_menu',
                       default='JSON formatted Menu configuration.'),
         constraint=validate_json,
-        default=json.dumps({
+        default=dump_json_to_text({
             'edit': {
                 'title': 'Edit',
                 'items': 'undo redo | cut copy paste pastetext | '
@@ -681,7 +683,7 @@ class ITinyMCEPluginSchema(Interface):
                 'items': 'spellchecker charmap emoticons insertdatetime '
                          'layer code'
             }
-        }, indent=4).decode('utf8')
+        })
     )
 
     templates = schema.Text(
@@ -695,7 +697,7 @@ class ITinyMCEPluginSchema(Interface):
         ),
         required=False,
         constraint=validate_json,
-        default=json.dumps({}).decode('utf8'))
+        default=dump_json_to_text({}))
 
     toolbar = schema.Text(
         title=_('label_tinymce_toolbar', default=u'Toolbar'),
@@ -861,7 +863,7 @@ class ITinyMCEAdvancedSchema(Interface):
         ),
         required=False,
         constraint=validate_json,
-        default=json.dumps({}).decode('utf8'),
+        default=dump_json_to_text({}),
     )
 
 
