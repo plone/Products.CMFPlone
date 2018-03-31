@@ -85,6 +85,7 @@ class StylesBase(ResourceBase):
         """
         Get all the styles
         """
+        return
         if self.development or self.debug_mode or not self.production_path:
             result = self.ordered_bundles_result()
         else:
