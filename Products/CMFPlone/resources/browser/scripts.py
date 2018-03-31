@@ -146,8 +146,7 @@ class ScriptsView(ResourceView):
         """The requirejs scripts, the ones that are not resources are loaded on
         configjs.py
         """
-        if six.PY3:
-            return self.default_resources()
+        return self.default_resources()
         if self.debug_mode or self.development or not self.production_path:
             result = self.default_resources()
             result.extend(self.ordered_bundles_result())
