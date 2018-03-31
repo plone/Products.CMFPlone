@@ -476,11 +476,21 @@ def safe_unicode(value, encoding='utf-8'):
         >>> print(safe_unicode(None))
         None
     """
-    if isinstance(value, six.text_type):
+    if six.PY2:
+        if isinstance(value, unicode):
+            return value
+        elif isinstance(value, basestring):
+            try:
+                value = unicode(value, encoding)
+            except (UnicodeDecodeError):
+                value = value.decode('utf-8', 'replace')
         return value
-    elif isinstance(value, six.string_types):
+
+    if isinstance(value, str):
+        return value
+    elif isinstance(value, bytes):
         try:
-            value = six.text_type(value, encoding)
+            value = str(value, encoding)
         except (UnicodeDecodeError):
             value = value.decode('utf-8', 'replace')
     return value
@@ -784,7 +794,10 @@ def get_top_site_from_url(context, request):
         for idx in range(len(url_path)):
             _path = '/'.join(url_path[:idx + 1]) or '/'
             site_path = request.physicalPathFromURL(_path)
-            site_path = safe_encode('/'.join(site_path)) or '/'
+            if six.PY2:
+                site_path = safe_encode('/'.join(site_path)) or '/'
+            else:
+                site_path = '/'.join(site_path) or '/'
             _site = context.restrictedTraverse(site_path)
             if ISite.providedBy(_site):
                 break
