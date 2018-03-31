@@ -4,8 +4,12 @@ from plone.registry.interfaces import IRegistry
 from zope.component import queryUtility
 from zope.globalrequest import getRequest
 
+import six
+
 
 def combine(context):
+    if six.PY3:
+        return
 
     logger = context.getLogger('bundles')
     registry = queryUtility(IRegistry)

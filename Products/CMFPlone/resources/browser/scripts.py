@@ -144,6 +144,7 @@ class ScriptsView(ResourceView):
         """The requirejs scripts, the ones that are not resources are loaded on
         configjs.py
         """
+        return self.default_resources()
         if self.debug_mode or self.development or not self.production_path:
             result = self.default_resources()
             result.extend(self.ordered_bundles_result())
