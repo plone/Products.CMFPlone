@@ -5,6 +5,8 @@ from Products.CMFPlone.resources.browser.resource import ResourceBase
 from Products.CMFPlone.utils import get_top_request
 from six.moves.urllib import parse
 
+import six
+
 
 class StylesBase(ResourceBase):
 
@@ -85,7 +87,8 @@ class StylesBase(ResourceBase):
         """
         Get all the styles
         """
-        return
+        if six.PY3:
+            return
         if self.development or self.debug_mode or not self.production_path:
             result = self.ordered_bundles_result()
         else:
