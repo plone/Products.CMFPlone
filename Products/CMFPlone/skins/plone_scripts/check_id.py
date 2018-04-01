@@ -86,7 +86,7 @@ if plone_utils is not None:
 portal_catalog = getToolByName(container, 'portal_catalog', None)
 if portal_catalog is not None:
     try:
-        if id in portal_catalog.indexes() + portal_catalog.schema():
+        if id in list(portal_catalog.indexes()) + list(portal_catalog.schema()):
             return xlate(
                 _(u'${name} is reserved.',
                   mapping={u'name': id}))
