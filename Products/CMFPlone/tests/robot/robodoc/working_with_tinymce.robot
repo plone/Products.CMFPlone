@@ -8,17 +8,28 @@ Suite Teardown  Common Suite Teardown
 
 *** Test Cases ***
 
-Show TinyMCE
+Create sample content
     Go to  ${PLONE_URL}
+
+    ${item} =  Create content  type=Document
+    ...  id=samplepage  title=Sample Page
+    ...  description=The long wait is now over
+    ...  text=<p>Our new site is built with Plone.</p>
+
+
+Show TinyMCE
+    Go to  ${PLONE_URL}/samplepage
     Click element  css=#contentview-edit a
     Wait until element is visible
     ...  css=#mceu_16-body
+    Click element  css=#mceu_2-open
+    Click element  css=#mceu_2-open
     Capture and crop page screenshot
     ...  ${CURDIR}/_robot/tinymce.png
-    ...  css=div.mce-container
+    ...  css=#mceu_16
 
 Show TinyMCE image
-    Go to  ${PLONE_URL}
+    Go to  ${PLONE_URL}/samplepage
     Click element  css=#contentview-edit a
     Wait until element is visible
     ...  css=#mceu_16-body
@@ -27,12 +38,18 @@ Show TinyMCE image
     ...  css=#mceu_15
 
     Click element  css=#mceu_15 button
+    Wait until element is visible
+    ...  css=h2.plone-modal-title
+    Wait until element is visible
+    ...  css=div.common-controls
+    
     Capture and crop page screenshot
     ...  ${CURDIR}/_robot/tinymce-imgdialog.png
+    ...  css=div.outer-wrapper
     ...  css=div.plone-modal-content
 
 Show TinyMCE insert links
-    Go to  ${PLONE_URL}
+    Go to  ${PLONE_URL}/samplepage
     Click element  css=#contentview-edit a
     Wait until element is visible
     ...  css=#mceu_16-body
@@ -43,16 +60,20 @@ Show TinyMCE insert links
     Click element  css=#mceu_14 button
     Capture and crop page screenshot
     ...  ${CURDIR}/_robot/tinymce-linkdialog.png
+    ...  css=div.outer-wrapper
     ...  css=div.plone-modal-content
 
 Show TinyMCE insert tables
-    Go to  ${PLONE_URL}
+    Go to  ${PLONE_URL}/samplepage
     Click element  css=#contentview-edit a
     Wait until element is visible
     ...  css=#mceu_16-body
 
-    Click element  css=#mceu_21 button
-    Mouse over  css=#mceu_44
+    Click element  css=#mceu_22-open
+    Click element  css=#mceu_42-text
+    Wait until element is visible
+    ...  css=#mceu_42-text
+    Mouse over  css=#mceu_42-text
     Capture and crop page screenshot
     ...  ${CURDIR}/_robot/tinymce-table.png
-    ...  css=#content
+    ...  css=div.outer-wrappper
