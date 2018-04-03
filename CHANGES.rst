@@ -50,6 +50,8 @@ New Features:
   
 - Provide an utility ``dump_json_to_text`` that works both on Python 2.7 an Python 3.
   [ale-rt]
+- Prepare for Python 2 / 3 compatibility.
+  [pbauer]
 
 - Fix imports to work with Python 3.
   [pbauer]

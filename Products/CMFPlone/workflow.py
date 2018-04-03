@@ -5,6 +5,8 @@ from Acquisition import aq_base
 from Products.CMFCore.interfaces import IWorkflowTool
 from Products.CMFPlone.interfaces import IWorkflowChain
 
+import six
+
 
 @adapter(Interface, IWorkflowTool)
 @implementer(IWorkflowChain)
@@ -40,7 +42,7 @@ def ToolWorkflowChain(context, workflow_tool):
       ()
 
     """
-    if isinstance(context, basestring):
+    if isinstance(context, six.string_types):
         pt = context
     elif hasattr(aq_base(context), 'getPortalTypeName'):
         pt = context.getPortalTypeName()

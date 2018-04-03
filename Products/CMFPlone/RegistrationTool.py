@@ -26,8 +26,10 @@ from smtplib import SMTPException, SMTPRecipientsRefused
 from zope.component import getUtility
 from zope.component import getMultiAdapter
 from zope.schema import ValidationError
+
 import random
 import re
+import six
 
 # - remove '1', 'l', and 'I' to avoid confusion
 # - remove '0', 'O', and 'Q' to avoid confusion
@@ -374,7 +376,7 @@ class RegistrationTool(PloneBaseTool, BaseTool):
             password=member.getPassword(), charset=encoding)
         # The mail headers are not properly encoded we need to extract
         # them and let MailHost manage the encoding.
-        if isinstance(mail_text, unicode):
+        if isinstance(mail_text, six.text_type):
             mail_text = mail_text.encode(encoding)
         message_obj = message_from_string(mail_text.strip())
         subject = message_obj['Subject']
@@ -429,7 +431,7 @@ class RegistrationTool(PloneBaseTool, BaseTool):
 
         # The mail headers are not properly encoded we need to extract
         # them and let MailHost manage the encoding.
-        if isinstance(mail_text, unicode):
+        if isinstance(mail_text, six.text_type):
             mail_text = mail_text.encode(encoding)
         message_obj = message_from_string(mail_text.strip())
         subject = message_obj['Subject']

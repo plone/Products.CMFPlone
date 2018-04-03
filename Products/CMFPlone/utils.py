@@ -23,6 +23,7 @@ from plone.registry.interfaces import IRegistry
 from Products.CMFCore.permissions import ManageUsers
 from Products.CMFCore.utils import ToolInit as CMFCoreToolInit
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone import bbb
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces.controlpanel import IImagingSchema
 from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
@@ -30,7 +31,6 @@ from Products.CMFPlone.log import log
 from Products.CMFPlone.log import log_deprecated
 from Products.CMFPlone.log import log_exc
 from six.moves.urllib.parse import urlparse
-from webdav.interfaces import IWriteLock
 from zope import schema
 from zope.component import getMultiAdapter
 from zope.component import getUtility
@@ -48,17 +48,21 @@ import json
 import OFS
 import pkg_resources
 import re
+import six
 import sys
 import transaction
 import warnings
 import zope.interface
-
 
 try:
     from types import ClassType
 except ImportError:
     ClassType = type
 
+if bbb.HAS_ZSERVER:
+    from webdav.interfaces import IWriteLock
+else:
+    from OFS.interfaces import IWriteLock
 
 deprecated_import(
     "Import from Products.CMFPlone.defaultpage instead",
@@ -171,7 +175,7 @@ def isExpired(content):
         expiry = expiry()
 
     # Convert to DateTime if necessary, ExpirationDate may return 'None'
-    if expiry and expiry != 'None' and isinstance(expiry, basestring):
+    if expiry and expiry != 'None' and isinstance(expiry, six.string_types):
         expiry = DateTime(expiry)
 
     if isinstance(expiry, DateTime) and expiry.isPast():
@@ -214,21 +218,21 @@ deprecated('getSiteEncoding',
 # XXX portal_utf8 and utf8_portal probably can go away
 def portal_utf8(context, str, errors='strict'):
     # Test
-    unicode(str, 'utf-8', errors)
+    six.text_type(str, 'utf-8', errors)
     return str
 
 
 # XXX this is the same method as above
 def utf8_portal(context, str, errors='strict'):
     # Test
-    unicode(str, 'utf-8', errors)
+    six.text_type(str, 'utf-8', errors)
     return str
 
 
 def getEmptyTitle(context, translated=True):
     """Returns string to be used for objects with no title or id"""
     # The default is an extra fancy unicode elipsis
-    empty = unicode('\x5b\xc2\xb7\xc2\xb7\xc2\xb7\x5d', 'utf-8')
+    empty = six.text_type('\x5b\xc2\xb7\xc2\xb7\xc2\xb7\x5d', 'utf-8')
     if translated:
         if context is not None:
             if not IBrowserRequest.providedBy(context):
@@ -258,10 +262,13 @@ class RealIndexIterator(object):
     def __init__(self, pos=0):
         self.pos = pos
 
-    def next(self):
+    def __next__(self):
+        # Python 3
         result = self.pos
         self.pos = self.pos + 1
         return result
+
+    next = __next__  # Python 2
 
 
 @security.private
@@ -466,14 +473,14 @@ def safe_unicode(value, encoding='utf-8'):
         u'\u01b5'
         >>> safe_unicode(1)
         1
-        >>> print safe_unicode(None)
+        >>> print(safe_unicode(None))
         None
     """
-    if isinstance(value, unicode):
+    if isinstance(value, six.text_type):
         return value
-    elif isinstance(value, basestring):
+    elif isinstance(value, six.string_types):
         try:
-            value = unicode(value, encoding)
+            value = six.text_type(value, encoding)
         except (UnicodeDecodeError):
             value = value.decode('utf-8', 'replace')
     return value
@@ -482,7 +489,7 @@ def safe_unicode(value, encoding='utf-8'):
 def safe_encode(value, encoding='utf-8'):
     """Convert unicode to the specified encoding.
     """
-    if isinstance(value, unicode):
+    if isinstance(value, six.text_type):
         value = value.encode(encoding)
     return value
 
@@ -655,7 +662,7 @@ def validate_json(value):
         class JSONError(schema.ValidationError):
             __doc__ = _(u"Must be empty or a valid JSON-formatted "
                         u"configuration – ${message}.", mapping={
-                            'message': unicode(exc)})
+                            'message': six.text_type(exc)})
 
         raise JSONError(value)
 

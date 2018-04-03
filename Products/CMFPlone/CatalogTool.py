@@ -29,6 +29,7 @@ from Products.CMFPlone.utils import base_hasattr
 from Products.CMFPlone.utils import safe_callable
 from Products.CMFPlone.utils import safe_unicode
 from Products.ZCatalog.ZCatalog import ZCatalog
+from six.moves import urllib
 from zExceptions import Unauthorized
 from zope.annotation.interfaces import IAnnotations
 from zope.component import queryMultiAdapter
@@ -39,9 +40,8 @@ from zope.interface import providedBy
 
 import logging
 import re
+import six
 import time
-import urllib
-
 
 logger = logging.getLogger('Plone')
 
@@ -189,7 +189,7 @@ def sortable_title(obj):
         if safe_callable(title):
             title = title()
 
-        if isinstance(title, basestring):
+        if isinstance(title, six.string_types):
             # Ignore case, normalize accents, strip spaces
             sortabletitle = mapUnicode(safe_unicode(title)).lower().strip()
             # Replace numbers with zero filled numbers
@@ -238,7 +238,7 @@ def getObjSize(obj):
     if not size:
         return '0 %s' % smaller
 
-    if isinstance(size, (int, long)):
+    if isinstance(size, six.integer_types):
         if size < SIZE_CONST[smaller]:
             return '1 %s' % smaller
         for c in SIZE_ORDER:
@@ -407,7 +407,7 @@ class CatalogTool(PloneBaseTool, BaseTool):
             # Or: {'path': {'depth': 0, 'query': '/Plone/events/'}}
             paths = paths.get('query', [])
 
-        if isinstance(paths, basestring):
+        if isinstance(paths, six.string_types):
             paths = [paths]
 
         objs = []
@@ -542,6 +542,6 @@ class CatalogTool(PloneBaseTool, BaseTool):
         if RESPONSE is not None:
             RESPONSE.redirect(
                 URL1 + '/manage_catalogAdvanced?manage_tabs_message=' +
-                urllib.quote(msg))
+                urllib.parse.quote(msg))
 
 InitializeClass(CatalogTool)

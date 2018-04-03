@@ -35,7 +35,13 @@ except (ValueError, TypeError):
 if not size:
     return '0 %s' % smaller
 
-if same_type(size, 0) or same_type(size, 0L):
+try:
+    integer_types = (int, long)
+except NameError:
+    # Python 3
+    integer_types = (int, )
+
+if isinstance(size, integer_types):
     if size < const[smaller]:
         return '1 %s' % smaller
     for c in order:
