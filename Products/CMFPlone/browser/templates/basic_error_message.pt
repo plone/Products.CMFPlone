@@ -22,8 +22,8 @@
   <h2 class="documentFirstHeading"
       tal:condition="isManager">${options/error_type}</h2>
 
-  <tal:block condition="isManager"
-             replace="structure options/error_tb" />
+  <pre tal:condition="isManager"
+       tal:content="options/error_tb" />
 
   <tal:noentry condition="not:isManager">
       <p i18n:translate="description_site_error_mail_site_admin">
