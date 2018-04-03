@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from Acquisition import aq_inner
-from interfaces import IPortalState
+from .interfaces import IPortalState
 from plone.app.layout.navigation.root import getNavigationRoot
 from plone.app.layout.navigation.root import getNavigationRootObject
 from plone.memoize.view import memoize
