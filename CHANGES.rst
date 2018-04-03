@@ -25,7 +25,7 @@ Breaking changes:
 - Remove old PlacelessTranslationService.
   [jensens, ksuess]
 
-- Fix controlpanel quickinstaller view: 
+- Fix controlpanel quickinstaller view:
   A not yet installed product must not return any upgrade info.
   [jensens]
 
@@ -58,12 +58,13 @@ New Features:
 
 Bug Fixes:
 - Do not show TinyMCE menu items with no subitems, Fixes #2245.
-  [mrsaicharan1]  
+  [mrsaicharan1]
 
 - Fix Exception-View when main_template can't be rendered. Fixes #2325.
   [pbauer]
 
 - Render exceptions as text, not html to fix format of infos after traceback.
+  Display as <pre> for basic and normal error templates.
   [pbauer]
 
 - Removed extra methods and tests for CMFQuickInstallerTool.
