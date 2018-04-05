@@ -91,7 +91,7 @@
     i18n:attributes="title">
   <permission>Plone Site Setup: Markup</permission>
  </configlet>
- <configlet title="Security" action_id="SecuritySettings"
+ <configlet title="Security Settings" action_id="SecuritySettings"
     appId="SecuritySettings" category="plone-security" condition_expr=""
     icon_expr="string:$portal_url/lock_icon.png"
     url_expr="string:${portal_url}/@@security-controlpanel" visible="True"
