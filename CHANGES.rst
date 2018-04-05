@@ -57,6 +57,9 @@ New Features:
   [thet]
 
 Bug Fixes:
+- change Security control panel link title to "Security Settings"
+  [tkimnguyen]
+  
 - Do not show TinyMCE menu items with no subitems, Fixes #2245.
   [mrsaicharan1]
 
