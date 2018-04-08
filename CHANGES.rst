@@ -8,10 +8,6 @@ Changelog
 5.1.2 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
 New features:
 
 - Enhanced output of Advanced Catalog Clear And Rebuild feature.
