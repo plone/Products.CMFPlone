@@ -57,6 +57,10 @@ New Features:
   [thet]
 
 Bug Fixes:
+
+- Unflakied a unit test.
+  [Rotonen]
+
 - Do not show TinyMCE menu items with no subitems, Fixes #2245.
   [mrsaicharan1]
 
