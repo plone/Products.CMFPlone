@@ -66,6 +66,9 @@ class ViewletBase(BrowserView):
 class TitleViewlet(ViewletBase):
     index = ViewPageTemplateFile('title.pt')
 
+    # seperator of page- and portal-title
+    sep = u' &mdash; '
+
     @property
     @memoize
     def site_title_setting(self):
@@ -121,8 +124,7 @@ class TitleViewlet(ViewletBase):
         if self.page_title == portal_title:
             self.site_title = portal_title
         else:
-            self.site_title = u"%s &mdash; %s" % (self.page_title,
-                                                  portal_title)
+            self.site_title = self.sep.join([self.page_title, portal_title])
 
 
 class DublinCoreViewlet(ViewletBase):
