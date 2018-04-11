@@ -10,7 +10,8 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- Make it easier to override seperator in title viewlet
+  [tomgross]
 
 Bug fixes:
 
