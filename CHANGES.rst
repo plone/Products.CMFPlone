@@ -26,6 +26,9 @@ New features:
 
 Bug fixes:
 
+- Unflakied a unit test.
+  [Rotonen]
+
 - Add required ``plone.app.imaging`` as direct dependency.
   Note, in Plone 5.1 plone.app.imaging is no dependency anymore.
   [thet]
