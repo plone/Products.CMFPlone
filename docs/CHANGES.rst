@@ -19,7 +19,8 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Unflakied a unit test.
+  [Rotonen]
 
 
 4.3.17 (2018-03-07)

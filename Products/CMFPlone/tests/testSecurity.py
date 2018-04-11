@@ -12,15 +12,6 @@ ptc.setupPloneSite()
 
 class TestAttackVectorsUnit(unittest.TestCase):
 
-    def test_gtbn_funcglobals(self):
-        from Products.CMFPlone.utils import getToolByName
-        try:
-            getToolByName(self.assertTrue,'func_globals')['__builtins__']
-        except TypeError:
-            pass
-        else:
-            self.fail('getToolByName should block access to non CMF tools')
-
     def test_setHeader_drops_LF(self):
         from ZPublisher.HTTPResponse import HTTPResponse
         response = HTTPResponse()
@@ -61,6 +52,15 @@ allow_module('os')
 
 
 class TestAttackVectorsFunctional(ptc.FunctionalTestCase):
+
+    def test_gtbn_funcglobals(self):
+        from Products.CMFPlone.utils import getToolByName
+        try:
+            getToolByName(self.assertTrue,'func_globals')['__builtins__']
+        except TypeError:
+            pass
+        else:
+            self.fail('getToolByName should block access to non CMF tools')
 
     def test_widget_traversal_1(self):
         res = self.publish('/plone/@@discussion-settings/++widget++moderator_email')
