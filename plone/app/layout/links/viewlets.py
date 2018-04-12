@@ -10,7 +10,6 @@ from Products.CMFPlone.interfaces import ISecuritySchema
 from Products.CMFPlone.interfaces.syndication import IFeedSettings
 from Products.CMFPlone.interfaces.syndication import ISiteSyndicationSettings
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from six import StringIO
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.schema.interfaces import IVocabularyFactory
@@ -23,14 +22,11 @@ def get_language(context, request):
 
 
 def render_cachekey(fun, self):
-    key = StringIO()
-    # Include the name of the viewlet as the underlying cache key only
-    # takes the module and function name into account, but not the class
-    print(self.__name__, file=key)
-    print(self.site_url, file=key)
-    print(get_language(aq_inner(self.context), self.request), file=key)
-
-    return key.getvalue()
+    return '\n'.join([
+        self.__name__,
+        self.site_url,
+        get_language(aq_inner(self.context), self.request),
+    ])
 
 
 class FaviconViewlet(ViewletBase):
