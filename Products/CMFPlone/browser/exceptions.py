@@ -27,8 +27,8 @@ class ExceptionView(BrowserView):
         request.response.setStatus(exc_type)
 
         # Indicate exception as JSON
-        if "text/html" not in request.getHeader('Accept', ''):
-            request.response.setHeader("Content-Type", "application/json")
+        if "text/html" not in (request.getHeader('Accept', '') | context.REQUEST.getHeader('Accept', '')):
+            request.response.writeHead("Content-Type", "application/json")
             return json.dumps({
                 'error_type': error_type,
             })
