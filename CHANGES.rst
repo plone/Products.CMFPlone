@@ -57,8 +57,12 @@ New Features:
   [thet]
 
 Bug Fixes:
+
 - Fix Url-redirect showing Json formatting error, issue #2372
   [nehsus]
+  
+- Unflakied a unit test.
+  [Rotonen]
 
 - Do not show TinyMCE menu items with no subitems, Fixes #2245.
   [mrsaicharan1]
@@ -67,6 +71,7 @@ Bug Fixes:
   [pbauer]
 
 - Render exceptions as text, not html to fix format of infos after traceback.
+  Display as <pre> for basic and normal error templates.
   [pbauer]
 
 - Removed extra methods and tests for CMFQuickInstallerTool.
