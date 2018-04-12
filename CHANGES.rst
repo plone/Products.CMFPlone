@@ -45,9 +45,6 @@ Breaking changes:
 
 New Features:
 
-- Fix Drag and drop on iPads and other interfaces.
-  [nehsus]
-
 - Provide an utility ``dump_json_to_text`` that works both on Python 2.7 an Python 3.
   [ale-rt]
 - Prepare for Python 2 / 3 compatibility.
