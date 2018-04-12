@@ -22,6 +22,8 @@ def get_language(context, request):
 
 
 def render_cachekey(fun, self):
+    # Include the name of the viewlet as the underlying cache key only
+    # takes the module and function name into account, but not the class
     return '\n'.join([
         self.__name__,
         self.site_url,
