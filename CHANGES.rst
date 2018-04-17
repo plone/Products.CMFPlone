@@ -72,9 +72,6 @@ New features:
 
 - Added membertools viewlet. If user is not anonymous and toolbar is not visible according to ``is_toolbar_visible`` the viewlet will show at the location of anontools.
   [agitator]
-- Allow addition of extra body classes via multiple ``IBodyClassAdapter`` adapter registrations without the need to overload the ILayoutPolicy view.
-  RFC / DRAFT / WORK IN PROGRESS
-  [thet]
 
 Bug fixes:
 
