@@ -282,6 +282,11 @@ class IViewView(Interface):
     """
 
 
+class IBodyClassAdapter(Interface):
+    """Adapter interface for retrieving extra body classes.
+    """
+
+
 class IPatternsSettingsRenderer(Interface):
     """ Interface for the adapter that renders the settings for patterns
 
