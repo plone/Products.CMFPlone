@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.7.5 (unreleased)
+2.8.0 (unreleased)
 ------------------
 
 Breaking changes:
@@ -16,10 +16,32 @@ New features:
 - Toolbar: Use pattern variavbles to configure the toolbar and submenu widths from plone.lessvariables.
   [thet]
 
+- Make it easier to override seperator in title viewlet
+  [tomgross]
+
 Bug fixes:
 
+- More py3 fixes.
+  [pbauer]
+
+- Use ``get_installer`` in tests.  [maurits]
+
 - Imports are Python3 compatible
-  [ale-rt]
+  [ale-rt, jensens]
+
+- Fix for situations where pathbar viewlet variables were undefined in toolbar context
+  [tomgross]
+
+2.7.5 (2017-11-26)
+------------------
+
+New features:
+
+- Toolbar: Use pattern variables to configure the toolbar and submenu widths from plone.lessvariables.
+  [thet]
+
+- Imports are Python3 compatible
+  [ale-rt, jensens]
 
 - Fix for situations where pathbar viewlet variables were undefined in toolbar context
   [tomgross]

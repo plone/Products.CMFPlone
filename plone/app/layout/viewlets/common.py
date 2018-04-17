@@ -17,7 +17,7 @@ from Products.CMFPlone.utils import getSiteLogo
 from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from urllib import unquote
+from six.moves.urllib.parse import unquote
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.component import queryMultiAdapter
@@ -65,6 +65,9 @@ class ViewletBase(BrowserView):
 
 class TitleViewlet(ViewletBase):
     index = ViewPageTemplateFile('title.pt')
+
+    # seperator of page- and portal-title
+    sep = u' &mdash; '
 
     @property
     @memoize
@@ -121,8 +124,7 @@ class TitleViewlet(ViewletBase):
         if self.page_title == portal_title:
             self.site_title = portal_title
         else:
-            self.site_title = u"%s &mdash; %s" % (self.page_title,
-                                                  portal_title)
+            self.site_title = self.sep.join([self.page_title, portal_title])
 
 
 class DublinCoreViewlet(ViewletBase):

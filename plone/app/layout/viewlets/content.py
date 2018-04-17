@@ -22,6 +22,7 @@ from Products.CMFPlone.utils import base_hasattr
 from Products.CMFPlone.utils import log
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from six.moves import range
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.component import queryMultiAdapter
@@ -460,7 +461,7 @@ class ContentHistoryViewlet(WorkflowHistoryViewlet):
         retrieve = history.retrieve
         getId = history.getVersionId
         # Count backwards from most recent to least recent
-        for i in xrange(history.getLength(countPurged=False) - 1, -1, -1):
+        for i in range(history.getLength(countPurged=False) - 1, -1, -1):
             version_history.append(
                 morphVersionDataToHistoryFormat(retrieve(i, countPurged=False),
                                                 getId(i, countPurged=False)))

@@ -1,4 +1,6 @@
-from setuptools import setup, find_packages
+from setuptools import find_packages
+from setuptools import setup
+
 
 version = '2.8.0.dev0'
 
@@ -12,10 +14,9 @@ setup(name='plone.app.layout',
       classifiers=[
           "Environment :: Web Environment",
           "Framework :: Plone",
-          "Framework :: Plone :: 5.0",
           "Framework :: Plone :: 5.1",
           "Framework :: Zope2",
-          "License :: OSI Approved :: GNU General Public License (GPL)",
+          "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
           "Operating System :: OS Independent",
           "Programming Language :: Python",
           "Programming Language :: Python :: 2.7",

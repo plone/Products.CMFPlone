@@ -201,6 +201,7 @@ class TestDexterityRelatedItemsViewlet(ViewletsTestCase):
 
     def afterSetUp(self):
         """ create some sample content to test with """
+        from Products.CMFPlone.utils import get_installer
         if not HAS_DEXTERITY:
             return
         self.setRoles(('Manager',))
@@ -224,7 +225,8 @@ class TestDexterityRelatedItemsViewlet(ViewletsTestCase):
             'Dexterity Item with relatedItems behavior', 'dex2')
         self.folder.invokeFactory(
             'Dexterity Item without relatedItems behavior', 'dex3')
-        self.portal.portal_quickinstaller.installProduct('plone.app.intid')
+        qi = get_installer(self.portal)
+        qi.install_product('plone.app.intid')
         intids = getUtility(IIntIds)
         self.folder.dex1.relatedItems = [
             RelationValue(intids.getId(self.folder.doc1)),

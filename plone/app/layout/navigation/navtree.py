@@ -5,8 +5,9 @@
 from plone.app.layout.navigation.interfaces import INavtreeStrategy
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
-from types import StringType
 from zope.interface import implementer
+
+import six
 
 
 @implementer(INavtreeStrategy)
@@ -145,7 +146,7 @@ def buildFolderTree(context, obj=None, query={},
         query['path'] = rootPath
     elif rootPath is None:
         pathQuery = query['path']
-        if type(pathQuery) == StringType:
+        if isinstance(pathQuery, six.string_types):
             rootPath = pathQuery
         else:
             # Adjust for the fact that in a 'navtree' query, the actual path
@@ -179,7 +180,7 @@ def buildFolderTree(context, obj=None, query={},
 
     # Allow the strategy to suppliment the query for keys not already
     # present in the query such as sorting and omitting default pages
-    for key, value in strategy.supplimentQuery.iteritems():
+    for key, value in six.iteritems(strategy.supplimentQuery):
         if key not in query:
             query[key] = value
 
