@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 from Acquisition import aq_base
 from datetime import datetime
+from io import BytesIO
 from plone.registry.interfaces import IRegistry
 from plone.resource.file import FilesystemFile
 from plone.resource.interfaces import IResourceDirectory
 from Products.CMFPlone.interfaces import IBundleRegistry
 from Products.CMFPlone.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME  # noqa
-from six import StringIO
 from zExceptions import NotFound
 from zope.component import getUtility
 from zope.component import queryUtility
@@ -109,9 +109,9 @@ def write_js(context, folder, meta_bundle):
                 continue
             resources.append(resource)
 
-    fi = StringIO()
+    fi = BytesIO()
     for script in resources:
-        fi.write(script + '\n')
+        fi.write((script + '\n').encode())
     folder.writeFile(meta_bundle + '.js', fi)
 
 
@@ -139,9 +139,9 @@ def write_css(context, folder, meta_bundle):
                 css)
             resources.append(css)
 
-    fi = StringIO()
+    fi = BytesIO()
     for script in resources:
-        fi.write(script + '\n')
+        fi.write((script + '\n').encode())
     folder.writeFile(meta_bundle + '.css', fi)
 
 
@@ -161,9 +161,13 @@ def combine_bundles(context):
     production_folder = container[PRODUCTION_RESOURCE_DIRECTORY]
 
     # store timestamp
-    fi = StringIO()
-    fi.write(datetime.now().isoformat())
-    production_folder.writeFile('timestamp.txt', fi)
+    fi = BytesIO()
+    fi.write(datetime.now().isoformat().encode())
+    try:
+        production_folder.writeFile('timestamp.txt', fi)
+    except:
+        import ipdb; ipdb.set_trace()
+        production_folder.writeFile('timestamp.txt', fi)
 
     # generate new combined bundles
     write_js(context, production_folder, 'default')
