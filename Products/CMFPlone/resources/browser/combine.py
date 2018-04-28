@@ -13,7 +13,6 @@ from zope.component import queryUtility
 
 import logging
 import re
-import six
 
 
 PRODUCTION_RESOURCE_DIRECTORY = 'production'
@@ -156,8 +155,6 @@ def get_override_directory(context):
 
 
 def combine_bundles(context):
-    if six.PY3:
-        return
     container = get_override_directory(context)
     if PRODUCTION_RESOURCE_DIRECTORY not in container:
         container.makeDirectory(PRODUCTION_RESOURCE_DIRECTORY)
