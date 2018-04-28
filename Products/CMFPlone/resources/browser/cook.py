@@ -18,7 +18,6 @@ from zope.globalrequest import getRequest
 from zope.interface import alsoProvides
 
 import logging
-import six
 
 
 logger = logging.getLogger('Products.CMFPlone')
@@ -48,8 +47,6 @@ REQUIREJS_RESET_POSTFIX = """
 def cookWhenChangingSettings(context, bundle=None):
     """When our settings are changed, re-cook the not compilable bundles
     """
-    if six.PY3:
-        return
     registry = getUtility(IRegistry)
     resources = registry.collectionOfInterface(
         IResourceRegistry, prefix="plone.resources", check=False)
