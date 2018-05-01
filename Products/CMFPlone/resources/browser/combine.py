@@ -13,6 +13,7 @@ from zope.component import queryUtility
 
 import logging
 import re
+import six
 
 
 PRODUCTION_RESOURCE_DIRECTORY = 'production'
@@ -111,7 +112,9 @@ def write_js(context, folder, meta_bundle):
 
     fi = BytesIO()
     for script in resources:
-        fi.write((script + '\n').encode())
+        if not isinstance(script, six.binary_type):
+            script = script.encode()
+        fi.write((script + '\n'))
     folder.writeFile(meta_bundle + '.js', fi)
 
 
