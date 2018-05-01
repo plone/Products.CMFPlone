@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import print_function
 from AccessControl import ClassSecurityInfo
 from AccessControl import getSecurityManager
 from AccessControl import ModuleSecurityInfo
@@ -23,8 +24,8 @@ from plone.registry.interfaces import IRegistry
 from Products.CMFCore.permissions import ManageUsers
 from Products.CMFCore.utils import ToolInit as CMFCoreToolInit
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import bbb
 from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone import bbb
 from Products.CMFPlone.interfaces.controlpanel import IImagingSchema
 from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
 from Products.CMFPlone.log import log
@@ -53,6 +54,7 @@ import sys
 import transaction
 import warnings
 import zope.interface
+
 
 try:
     from types import ClassType
@@ -459,20 +461,22 @@ def safe_unicode(value, encoding='utf-8'):
 
         >>> from Products.CMFPlone.utils import safe_unicode
 
-        >>> safe_unicode('spam')
-        u'spam'
-        >>> safe_unicode(u'spam')
-        u'spam'
-        >>> safe_unicode(u'spam'.encode('utf-8'))
-        u'spam'
-        >>> safe_unicode('\xc6\xb5')
-        u'\u01b5'
-        >>> safe_unicode(u'\xc6\xb5'.encode('iso-8859-1'))
-        u'\u01b5'
-        >>> safe_unicode('\xc6\xb5', encoding='ascii')
-        u'\u01b5'
-        >>> safe_unicode(1)
-        1
+        >>> safe_unicode('spam') == u'spam'
+        True
+        >>> safe_unicode(b'spam') == u'spam'
+        True
+        >>> safe_unicode(u'spam') == u'spam'
+        True
+        >>> safe_unicode(u'spam'.encode('utf-8')) == u'spam'
+        True
+        >>> safe_unicode('\xc6\xb5') == u'\u01b5'
+        True
+        >>> safe_unicode(u'\xc6\xb5'.encode('iso-8859-1')) == u'\u01b5'
+        True
+        >>> safe_unicode('\xc6\xb5', encoding='ascii') == u'\u01b5'
+        True
+        >>> safe_unicode(1) == 1
+        True
         >>> print(safe_unicode(None))
         None
     """
