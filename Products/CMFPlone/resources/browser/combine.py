@@ -163,11 +163,7 @@ def combine_bundles(context):
     # store timestamp
     fi = BytesIO()
     fi.write(datetime.now().isoformat().encode())
-    try:
-        production_folder.writeFile('timestamp.txt', fi)
-    except:
-        import ipdb; ipdb.set_trace()
-        production_folder.writeFile('timestamp.txt', fi)
+    production_folder.writeFile('timestamp.txt', fi)
 
     # generate new combined bundles
     write_js(context, production_folder, 'default')
