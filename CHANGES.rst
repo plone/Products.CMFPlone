@@ -14,9 +14,13 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- Mockup update.
+  [thet]
 
 Bug fixes:
+
+- Fix bug introduced in 5.1.2, where the toolbar wasn't updated while browsing in folder_contents.
+  [thet]
 
 - Unflakied a unit test.
   [Rotonen]
@@ -47,7 +51,7 @@ Bug fixes:
   This was fixed bei calling ``processQueue()`` after indexing.
   [jensens]
 
-- Some nested `section id="edit-bar"` tag in folder_contents page #2322
+- Fix nesting of `section id="edit-bar"` tags in folder_contents page #2322
   [terapyon]
 
 - Change in TinyMCE css location so bundles can be built without errors

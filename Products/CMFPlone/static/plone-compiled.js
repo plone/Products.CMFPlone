@@ -17365,9 +17365,6 @@ define('mockup-patterns-modal',[
       self.$modal.addClass(self.options.templateOptions.classActiveName);
       registry.scan(self.$modal);
       self.positionModal();
-      $('img', self.$modal).load(function() {
-        self.positionModal();
-      });
       $(window.parent).on('resize.plone-modal.patterns', function() {
         self.positionModal();
       });
@@ -19088,5 +19085,5 @@ require([
 
 });
 
-define("/trabajo/plone/buildout.coredev/src/Products.CMFPlone/Products/CMFPlone/static/plone.js", function(){});
+define("/home/_thet/data/dev/plone/buildout.coredev-51/src/Products.CMFPlone/Products/CMFPlone/static/plone.js", function(){});
 
