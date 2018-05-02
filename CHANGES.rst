@@ -14,7 +14,8 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- Mockup update.
+  [thet]
 
 Bug fixes:
 
