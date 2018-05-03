@@ -14,7 +14,8 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- Optional auto-login after passwort (re-)set.
+  [jensens]
 
 Bug fixes:
 
