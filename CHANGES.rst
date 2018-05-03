@@ -18,6 +18,9 @@ New features:
 
 Bug fixes:
 
+- Move forgotten 'registered' template from skins to plone.app.users, were it belongs to.
+  [jensens]
+
 - Unflakied a unit test.
   [Rotonen]
 
