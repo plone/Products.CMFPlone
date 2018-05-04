@@ -10,7 +10,7 @@
     <li tal:repeat="category categories">
       <a href=""
          class="link-category"
-         rel="tag"
+         rel="nofollow"
          tal:content="category"
          tal:define="quotedCat python:url_quote(category)"
          tal:attributes="href string:${context/@@plone_portal_state/navigation_root_url}/@@search?Subject%3Alist=${quotedCat}">

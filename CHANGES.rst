@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.8.0 (unreleased)
+2.8.1 (unreleased)
 ------------------
 
 Breaking changes:
@@ -13,24 +13,33 @@ New features:
 - Pagination: made label and arrows easier to customise.
   [iham]
 
-- Toolbar: Use pattern variavbles to configure the toolbar and submenu widths from plone.lessvariables.
-  [thet]
+Bug fixes:
+
+- *add item here*
+
+
+2.8.0 (2018-04-24)
+------------------
+
+New features:
+
+- Allow addition of extra body classes via multiple IBodyClassAdapter adapter registrations without the need to overload the ILayoutPolicy view.
+  [thet, jensens, agitator]
 
 - Make it easier to override seperator in title viewlet
   [tomgross]
 
 Bug fixes:
 
+- Do not use ``rel="tag"`` attribute on the keywords viewlet as the referenced document is not a tag definition but a search result;
+  use ``rel="nofollow"`` instead to avoid search crawlers hammering our sites.
+  [hvelarde]
+
 - More py3 fixes.
   [pbauer]
 
-- Use ``get_installer`` in tests.  [maurits]
-
-- Imports are Python3 compatible
-  [ale-rt, jensens]
-
-- Fix for situations where pathbar viewlet variables were undefined in toolbar context
-  [tomgross]
+- Use ``get_installer`` in tests.
+  [maurits]
 
 2.7.5 (2017-11-26)
 ------------------
@@ -42,6 +51,8 @@ New features:
 
 - Imports are Python3 compatible
   [ale-rt, jensens]
+
+Bug fixes:
 
 - Fix for situations where pathbar viewlet variables were undefined in toolbar context
   [tomgross]
