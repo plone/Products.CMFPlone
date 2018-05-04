@@ -114,7 +114,7 @@ def write_js(context, folder, meta_bundle):
     for script in resources:
         if not isinstance(script, six.binary_type):
             script = script.encode()
-        fi.write((script + '\n'))
+        fi.write((script + b'\n'))
     folder.writeFile(meta_bundle + '.js', fi)
 
 
