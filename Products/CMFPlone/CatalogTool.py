@@ -413,7 +413,8 @@ class CatalogTool(PloneBaseTool, BaseTool):
         objs = []
         site = getSite()
         for path in list(paths):
-            path = path.encode('utf-8')  # paths must not be unicode
+            if six.PY2:
+                path = path.encode('utf-8')  # paths must not be unicode
             try:
                 site_path = '/'.join(site.getPhysicalPath())
                 parts = path[len(site_path) + 1:].split('/')
