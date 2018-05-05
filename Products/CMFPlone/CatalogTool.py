@@ -199,7 +199,9 @@ def sortable_title(obj):
                 start = sortabletitle[:(MAX_SORTABLE_TITLE - 13)]
                 end = sortabletitle[-10:]
                 sortabletitle = start + '...' + end
-            return sortabletitle.encode('utf-8')
+            if six.PY2:
+                return sortabletitle.encode('utf-8')
+            return sortabletitle
     return ''
 
 
