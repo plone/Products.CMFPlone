@@ -144,7 +144,9 @@ def write_css(context, folder, meta_bundle):
 
     fi = BytesIO()
     for script in resources:
-        fi.write((script + '\n').encode())
+        if not isinstance(script, six.binary_type):
+            script = script.encode()
+        fi.write((script + b'\n'))
     folder.writeFile(meta_bundle + '.css', fi)
 
 
