@@ -1,36 +1,39 @@
 # -*- coding: utf-8 -*-
-from unittest import TestCase
-
-from types import TupleType, TypeType, ClassType
-from zope.interface.interface import InterfaceClass
 from ExtensionClass import ExtensionClass
-
-from zope.interface import implementedBy, providedBy
-
 from Products.CMFPlone.ActionsTool import ActionsTool
 from Products.CMFPlone.CatalogTool import CatalogTool
 from Products.CMFPlone.MigrationTool import MigrationTool
-from Products.CMFPlone.PloneControlPanel \
-    import PloneControlPanel, PloneConfiglet
-from Products.CMFPlone.PloneFolder \
-    import OrderedContainer, BasePloneFolder, PloneFolder
+from Products.CMFPlone.PloneControlPanel import PloneConfiglet
+from Products.CMFPlone.PloneControlPanel import PloneControlPanel
+from Products.CMFPlone.PloneFolder import BasePloneFolder
+from Products.CMFPlone.PloneFolder import OrderedContainer
+from Products.CMFPlone.PloneFolder import PloneFolder
 from Products.CMFPlone.PloneTool import PloneTool
 from Products.CMFPlone.Portal import PloneSite
-from Products.CMFPlone.PropertiesTool \
-    import PropertiesTool, SimpleItemWithProperties
+from Products.CMFPlone.PropertiesTool import PropertiesTool
+from Products.CMFPlone.PropertiesTool import SimpleItemWithProperties
 from Products.CMFPlone.QuickInstallerTool import QuickInstallerTool
 from Products.CMFPlone.RegistrationTool import RegistrationTool
 from Products.CMFPlone.SkinsTool import SkinsTool
 from Products.CMFPlone.TypesTool import TypesTool
 from Products.CMFPlone.URLTool import URLTool
 from Products.CMFPlone.WorkflowTool import WorkflowTool
+from unittest import TestCase
+from zope.interface import implementedBy, providedBy
+from zope.interface.interface import InterfaceClass
+
+# for Python 2
+try:
+    from types import ClassType
+except ImportError:
+    ClassType = None
 
 
 def className(klass):
     """ get the short class name """
-    if not isinstance(klass, (TypeType, ClassType,
+    if not isinstance(klass, (type, ClassType,
                               ExtensionClass, InterfaceClass)):
-        # Looks like an instance, get it's class.
+        # Looks like an instance, get its class.
         if hasattr(klass, '__class__'):
             klass = klass.__class__
     return klass.__name__
@@ -79,7 +82,7 @@ class InterfaceTest(TestCase):
         try:
             verifyClass(interface, klass)
         except (BrokenImplementation, DoesNotImplement,
-                BrokenMethodImplementation), errmsg:
+                BrokenMethodImplementation) as errmsg:
             self.fail('The class %s does not implement %s correctly: \n%s'
                       % (dottedName(klass), dottedName(interface), errmsg))
 
@@ -99,7 +102,7 @@ class InterfaceTest(TestCase):
             verifyObject(interface, instance)
         except (BrokenImplementation,
                 DoesNotImplement,
-                BrokenMethodImplementation), errmsg:
+                BrokenMethodImplementation) as errmsg:
             self.fail(
                 'The instance of %s does not implement %s correctly: \n%s'
                 % (dottedName(instance), dottedName(interface), errmsg))
@@ -114,7 +117,7 @@ class InterfaceTest(TestCase):
 
     def doesImplementByInstanceOf(self, klass, interfaces):
         """ make sure that the klass implements at least these interfaces"""
-        if type(interfaces) is not TupleType:
+        if type(interfaces) is not tuple:
             interfaces = (interfaces)
         impl = self.getImplementsOfInstanceOf(klass)
         for interface in interfaces:
@@ -125,7 +128,7 @@ class InterfaceTest(TestCase):
 
     def doesImplementBy(self, instance, interfaces):
         """ make sure that the klass implements at least these interfaces"""
-        if type(interfaces) is not TupleType:
+        if type(interfaces) is not tuple:
             interfaces = (interfaces)
         impl = self.getImplementsOf(instance)
         for interface in interfaces:
@@ -185,7 +188,7 @@ class zope_interface_test(TestCase):
         try:
             verifyClass(interface, klass)
         except (BrokenImplementation, DoesNotImplement,
-                BrokenMethodImplementation), errmsg:
+                BrokenMethodImplementation) as errmsg:
             self.fail('The class %s does not implement %s correctly: \n%s'
                       % (dottedName(klass), dottedName(interface), errmsg))
 
@@ -204,7 +207,7 @@ class zope_interface_test(TestCase):
         try:
             verifyObject(interface, instance)
         except (BrokenImplementation, DoesNotImplement,
-                BrokenMethodImplementation), errmsg:
+                BrokenMethodImplementation) as errmsg:
             self.fail('The instance of %s does not provide %s correctly: \n%s'
                       % (dottedName(instance), dottedName(interface), errmsg))
 
