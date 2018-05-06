@@ -36,6 +36,8 @@ Bug fixes:
 - Helper `getNavigationRoot` returns site, if context is not in
   acquisition chain (eg AJAX calls)
   [tomgross]
+- Implement viewlet dummy ordering needed for Python 3 sorting
+  [ale-rt]
 
 
 2.8.0 (2018-04-24)
