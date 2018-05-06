@@ -17,9 +17,10 @@ import os
 
 TEXT = 'file data'
 UTEXT = u'file data'
-GIF = open(os.path.join(os.path.dirname(__file__),
-                        os.pardir,
-                        'tool.gif')).read()
+GIF_FILE = os.path.join(
+    os.path.dirname(__file__), os.pardir, 'tool.gif')
+with open(GIF_FILE, 'rb') as f:
+    GIF = f.read()
 
 
 class Dummy:
