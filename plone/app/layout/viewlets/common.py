@@ -67,7 +67,7 @@ class ViewletBase(BrowserView):
     def __lt__(self, other):
         ''' Sort by name
         '''
-        return self.__name__ < other.__name__
+        return id(self) < id(other)
 
     def __eq__(self, other):
         ''' Check for equality
