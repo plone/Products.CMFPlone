@@ -31,7 +31,6 @@ INSTALL_REQUIRES = [
     'Products.Sessions',
     'Products.SiteErrorLog',
     'Products.TemporaryFolder',
-    'Products.contentmigration',
     'Products.statusmessages',
     'ZODB3',
     'Zope >= 4.0b2',
