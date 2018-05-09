@@ -38,8 +38,10 @@ class NotAnInterface(object):
 def test_interface_view(self):
     """Information about the interfaces of an object
 
-    >>> from zope.interface import Interface, implements
-    >>> from zope.interface import directlyProvides, classProvides
+    >>> from zope.interface import implementer
+    >>> from zope.interface import Interface
+    >>> from zope.interface import directlyProvides
+    >>> from zope.interface import provider
     >>> from zope.component import provideAdapter, getMultiAdapter
     >>> from zope.publisher.interfaces.browser import IBrowserRequest
     >>> from zope.publisher.browser import TestRequest
@@ -50,9 +52,10 @@ def test_interface_view(self):
 
     >>> from plone.app.layout.globals.tests.test_interface import IOne, ITwo
 
-    >>> class One(object):
-    ...     implements(IOne)
-    ...     classProvides(ITwo)
+    >>> @implementer(IOne)
+    ... @provider(ITwo)
+    ... class One(object):
+    ...     pass
 
     >>> from plone.app.layout.globals.interface import InterfaceInformation
     >>> provideAdapter(
