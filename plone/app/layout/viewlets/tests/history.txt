@@ -56,8 +56,10 @@ Create a public page with workflow.
 The history viewlet gracefully handles initial default workflow state.
 
     >>> browser.follow(url='@@historyview')
-    >>> browser.contents
-    '...<span class="historyAction state-private">Create</span>...'
+    >>> from __future__ import print_function
+    >>> print(browser.contents)
+    <...<span class="historyAction state-private">Create</span>...
+
 
 The history viewlet handles revert actions sucessfully. Let's make a revision.
 
