@@ -136,9 +136,11 @@ def write_css(context, folder, meta_bundle):
             # Process relative urls:
             # we prefix with current resource path any url not starting with
             # '/' or http: or data:
+            if not isinstance(path, six.binary_type):
+                path = path.encode()
             css = re.sub(
-                r"""(url\(['"]?(?!['"]?([a-z]+:|\/)))""",
-                r'\1%s/' % path,
+                b"""(url\(['"]?(?!['"]?([a-z]+:|\/)))""",
+                b'\1%s/' % path,
                 css)
             resources.append(css)
 
