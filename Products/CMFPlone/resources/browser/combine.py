@@ -32,6 +32,8 @@ def get_production_resource_directory():
     if 'timestamp.txt' not in production_folder:
         return '%s/++unique++1' % PRODUCTION_RESOURCE_DIRECTORY
     timestamp = production_folder.readFile('timestamp.txt')
+    if not six.PY2 and isinstance(timestamp, six.binary_type):
+        timestamp = timestamp.decode()
     return '%s/++unique++%s' % (
         PRODUCTION_RESOURCE_DIRECTORY, timestamp)
 
