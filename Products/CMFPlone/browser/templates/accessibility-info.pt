@@ -59,6 +59,17 @@
                  i18n:attributes="title title_atag;">ATAG</acronym> 2.0 guidelines are
         subjective; there may be instances where interpretations vary.
         </p>
+
+    	<h3 i18n:translate="heading_vpat">Voluntary Product Accessibility Template (VPAT)</h3>
+        <p i18n:translate="description_vpat">
+          View
+          <a title="Plone's Voluntary Product Accessibility Template (VPAT)"
+             href="http://plone.org/plone-vpat.pdf/view"
+             i18n:attributes="title title_vpat;">
+             Plone's Voluntary Product Accessibility Template (VPAT)
+          </a> (<a href="http://www.state.gov/m/irm/impact/126340.htm">about VPAT</a>)
+        </p>
+
     </div>
 
 </metal:main>
