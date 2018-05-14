@@ -271,6 +271,7 @@ class AddPloneSite(BrowserView):
                 portal_timezone=form.get('portal_timezone', 'UTC')
             )
             self.request.response.redirect(site.absolute_url())
+            return u''
 
         return self.index()
 
