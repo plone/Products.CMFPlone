@@ -57,9 +57,19 @@ New Features:
   [thet]
 
 Bug Fixes:
+
 - change Security control panel link title to "Security Settings"
   [tkimnguyen]
   
+- When adding a Plone Site, do a transaction commit before applying extra profiles.
+  This avoids errors in some cases when selecting add-ons in the advanced Plone Site add form,
+  where installing them right after site creation in the add-ons control panel goes fine.
+  Fixes `issue 2316 <https://github.com/plone/Products.CMFPlone/issues/2316>`_.
+  [maurits]
+
+- Unflakied a unit test.
+  [Rotonen]
+
 - Do not show TinyMCE menu items with no subitems, Fixes #2245.
   [mrsaicharan1]
 
