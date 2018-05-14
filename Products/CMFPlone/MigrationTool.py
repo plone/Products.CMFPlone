@@ -226,6 +226,32 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
         # Does this thing now need recataloging?
         return self._needRecatalog
 
+    security.declareProtected(ManagePortal, 'listUpgrades')
+
+    def listUpgrades(self):
+        # List available upgrade steps for our default profile.
+        # Do not include upgrade steps for too new versions:
+        # using a newer plone.app.upgrade version should not give problems.
+        setup = getToolByName(self, 'portal_setup')
+        fs_version = self.getFileSystemVersion()
+        steps = setup.listUpgrades(_DEFAULT_PROFILE)
+        upgrades = []
+        for upgrade_step in steps:
+            if isinstance(upgrade_step, list):
+                # This is a nested list of upgrade steps,
+                # which must have the same destination.
+                # So take the first one.
+                if not upgrade_step:
+                    # Empty list, not sure if this can happen in practice.
+                    continue
+                dest = upgrade_step[0].get('sdest')
+            else:
+                dest = upgrade_step.get('sdest')
+            if dest > fs_version and dest != 'all':
+                break
+            upgrades.append(upgrade_step)
+        return upgrades
+
     security.declareProtected(ManagePortal, 'upgrade')
     def upgrade(self, REQUEST=None, dry_run=None, swallow_errors=True):
         # Perform the upgrade.
@@ -233,7 +259,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         # This sets the profile version if it wasn't set yet
         version = self.getInstanceVersion()
-        upgrades = setup.listUpgrades(_DEFAULT_PROFILE)
+        upgrades = self.listUpgrades()
         steps = []
         for u in upgrades:
             if isinstance(u, list):

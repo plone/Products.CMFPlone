@@ -27,16 +27,21 @@ class TestMigrationTool(PloneTestCase.PloneTestCase):
         self.assertFalse(self.migration.needRecatalog(),
                     'Migration needs recataloging')
 
-    def testListUpgradeSteps(self):
+    def testListSetupUpgradeSteps(self):
         # There should be no upgrade steps from the current version
         upgrades = self.setup.listUpgrades(_DEFAULT_PROFILE)
-        self.assertTrue(len(upgrades) == 0)
+        self.assertEqual(len(upgrades), 0)
+
+    def testListOwnUpgradeSteps(self):
+        # There should be no upgrade steps from the current version
+        upgrades = self.migration.listUpgrades()
+        self.assertEqual(len(upgrades), 0)
 
     def testDoUpgrades(self):
         self.setRoles(['Manager'])
 
         self.setup.setLastVersionForProfile(_DEFAULT_PROFILE, '2.5')
-        upgrades = self.setup.listUpgrades(_DEFAULT_PROFILE)
+        upgrades = self.migration.listUpgrades()
         self.assertTrue(len(upgrades) > 0)
 
         request = self.portal.REQUEST
@@ -59,8 +64,8 @@ class TestMigrationTool(PloneTestCase.PloneTestCase):
         self.assertEqual(last, current)
 
         # There are no more upgrade steps available
-        upgrades = self.setup.listUpgrades(_DEFAULT_PROFILE)
-        self.assertTrue(len(upgrades) == 0)
+        upgrades = self.migration.listUpgrades()
+        self.assertEqual(len(upgrades), 0)
 
     def testUpgrade(self):
         self.setRoles(['Manager'])
@@ -74,8 +79,69 @@ class TestMigrationTool(PloneTestCase.PloneTestCase):
         self.assertEqual(last, current)
 
         # There are no more upgrade steps available
+        upgrades = self.migration.listUpgrades()
+        self.assertEqual(len(upgrades), 0)
+
+
+class TestMigrationWithExtraUpgrades(PloneTestCase.PloneTestCase):
+    """Test a migration with a too new upgrade available.
+
+    There should be no upgrade steps newer than the current version.
+    If our FS profile version is 5, and there is an upgrade to 6,
+    we do not want to see it.  This just means we have a newer
+    plone.app.upgrade, which is fine.
+    """
+
+    def afterSetUp(self):
+        from Products.GenericSetup.upgrade import _registerUpgradeStep
+        from Products.GenericSetup.upgrade import UpgradeStep
+
+        self.migration = getToolByName(self.portal, "portal_migration")
+        self.setup = getToolByName(self.portal, "portal_setup")
+
+        def failing_upgrade(context):
+            raise AssertionError('Too new upgrade should not be run!')
+
+        # Register a too new upgrade.
+        fs_version = self.migration.getFileSystemVersion()
+        new_version = unicode(int(fs_version) + 1)
+        new_step = UpgradeStep(
+            'Too new upgrade', _DEFAULT_PROFILE,
+            fs_version, new_version,
+            '', failing_upgrade, None, '1')
+        self.step_id = new_step.id
+        _registerUpgradeStep(new_step)
+
+    def beforeTearDown(self):
+        # Remove the extra step from the upgrade registry,
+        # otherwise this bleeds over into other tests.
+        from Products.GenericSetup.upgrade import _upgrade_registry
+        profile_steps = _upgrade_registry.getUpgradeStepsForProfile(
+            _DEFAULT_PROFILE)
+        profile_steps.pop(self.step_id, None)
+
+    def testListUpgradeStepsNotTooNew(self):
+        # portal_setup happily reports the newer upgrade
         upgrades = self.setup.listUpgrades(_DEFAULT_PROFILE)
-        self.assertTrue(len(upgrades) == 0)
+        self.assertTrue(len(upgrades) > 0)
+        # Our migration tool no longer shows it.
+        upgrades = self.migration.listUpgrades()
+        self.assertEqual(len(upgrades), 0)
+
+    def testUpgrade(self):
+        self.setRoles(['Manager'])
+        self.setup.setLastVersionForProfile(_DEFAULT_PROFILE, '2.5')
+        self.migration.upgrade()
+
+        # And we have reached our current profile version
+        current = self.setup.getVersionForProfile(_DEFAULT_PROFILE)
+        current = tuple(current.split('.'))
+        last = self.setup.getLastVersionForProfile(_DEFAULT_PROFILE)
+        self.assertEqual(last, current)
+
+        # There are no more upgrade steps available
+        upgrades = self.migration.listUpgrades()
+        self.assertEqual(len(upgrades), 0)
 
 
 class TestAddonList(PloneTestCase.PloneTestCase):
