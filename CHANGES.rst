@@ -18,13 +18,18 @@ New features:
 
 Bug fixes:
 
+- When adding a Plone Site, do a transaction commit before applying extra profiles.
+  This avoids errors in some cases when selecting add-ons in the advanced Plone Site add form,
+  where installing them right after site creation in the add-ons control panel goes fine.
+  Fixes `issue 2316 <https://github.com/plone/Products.CMFPlone/issues/2316>`_.
+  [maurits]
+
 - Move forgotten 'registered' template from skins to plone.app.users, were it belongs to.
   [jensens]
 
 - Unflakied a unit test.
   [Rotonen]
 
-- *add item here*
 
 5.1.2 (2018-04-08)
 ------------------
