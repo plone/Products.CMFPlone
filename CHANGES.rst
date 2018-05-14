@@ -18,13 +18,15 @@ New features:
 
 Bug fixes:
 
+- After site creation, do not render the add-site template: we redirect anyway.
+  [maurits]
+
 - Move forgotten 'registered' template from skins to plone.app.users, were it belongs to.
   [jensens]
 
 - Unflakied a unit test.
   [Rotonen]
 
-- *add item here*
 
 5.1.2 (2018-04-08)
 ------------------
