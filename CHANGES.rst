@@ -47,6 +47,7 @@ New Features:
 
 - Provide an utility ``dump_json_to_text`` that works both on Python 2.7 an Python 3.
   [ale-rt]
+
 - Prepare for Python 2 / 3 compatibility.
   [pbauer]
 
@@ -55,11 +56,17 @@ New Features:
 
 - Mockup update.
   [thet]
-  
+
 - add link to Plone.org VPAT accessibility statement
   [tkimnguyen]
 
 Bug Fixes:
+
+- Do not include too new upgrades when upgrading Plone Site.
+  Otherwise the Plone Site ends up at a newer version that the filesystem code supports,
+  giving an error when upgrading, and resulting in possibly missed upgrades later.
+  Fixes `issue 2377 <https://github.com/plone/Products.CMFPlone/issues/2377>`_.
+  [maurits]
 
 - After site creation, do not render the add-site template: we redirect anyway.
   [maurits]
