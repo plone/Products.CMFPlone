@@ -9,9 +9,6 @@ from zope.event import notify
 from zope.interface import implementer
 from zope.site.hooks import setSite
 
-import transaction
-
-
 _TOOL_ID = 'portal_setup'
 _DEFAULT_PROFILE = 'Products.CMFPlone:plone'
 _CONTENT_PROFILE = 'plone.app.contenttypes:plone-content'
@@ -165,14 +162,6 @@ def addPloneSite(context, site_id, title='Plone site', description='',
     # Do this before applying extension profiles, so the settings from a
     # properties.xml file are applied and not overwritten by this
     site.manage_changeProperties(**props)
-
-    # In some cases we can get errors when add-ons are installed immediately.
-    # Installing the add-ons separately within the Add-ons control panel
-    # goes fine.
-    # One example is https://github.com/plone/Products.CMFPlone/issues/2316
-    # So it seems helpful to do a transaction commit here.
-    if extension_ids:
-        transaction.commit()
 
     for extension_id in extension_ids:
         setup_tool.runAllImportStepsFromProfile(
