@@ -19,6 +19,12 @@ New features:
 
 Bug fixes:
 
+- Do not include too new upgrades when upgrading Plone Site.
+  Otherwise the Plone Site ends up at a newer version that the filesystem code supports,
+  giving an error when upgrading, and resulting in possibly missed upgrades later.
+  Fixes `issue 2377 <https://github.com/plone/Products.CMFPlone/issues/2377>`_.
+  [maurits]
+
 - Unflakied a unit test.
   [Rotonen]
 
