@@ -55,6 +55,9 @@ New Features:
 
 - Mockup update.
   [thet]
+  
+- add link to Plone.org VPAT accessibility statement
+  [tkimnguyen]
 
 Bug Fixes:
 
