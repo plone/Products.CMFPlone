@@ -61,6 +61,9 @@ New Features:
 
 Bug Fixes:
 
+- After site creation, do not render the add-site template: we redirect anyway.
+  [maurits]
+
 - Unflakied a unit test.
   [Rotonen]
 
