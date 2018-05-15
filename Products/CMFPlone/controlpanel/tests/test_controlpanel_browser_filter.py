@@ -103,6 +103,6 @@ class FilterControlPanelFunctionalTest(unittest.TestCase):
         good_html = '<p><a href="http://example.com">harmless link</a></p>'
         ds = datastream('dummy_name')
         self.assertEqual(
-            str(self.safe_html.convert(good_html, ds)),
+            self.safe_html.convert(good_html, ds).getData(),
             '<p/>'
         )
