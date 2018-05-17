@@ -264,10 +264,10 @@ class TestResourceNodeImporter(PloneTestCase.PloneTestCase):
         dom = self._get_resource_dom()
         num_resources = self._get_legacy_bundle().resources[:]
         importer._importNode(dom.documentElement)
-        self.assertEquals(len(num_resources) + 1,
+        self.assertEqual(len(num_resources) + 1,
                           len(self._get_legacy_bundle().resources))
         importer._importNode(dom.documentElement)
-        self.assertEquals(len(num_resources) + 1,
+        self.assertEqual(len(num_resources) + 1,
                           len(self._get_legacy_bundle().resources))
 
     def test_remove(self):
@@ -284,9 +284,9 @@ class TestResourceNodeImporter(PloneTestCase.PloneTestCase):
         dom = self._get_resource_dom(remove=True)
         importer._importNode(dom.documentElement)
 
-        self.assertEquals(len(resources) - 1,
+        self.assertEqual(len(resources) - 1,
                           len(self._get_legacy_bundle().resources))
-        self.assertEquals(len(js_files) - 1,
+        self.assertEqual(len(js_files) - 1,
                           len([x.js for x in self._get_resources().values()]))
 
     def test_insert_after(self):
@@ -347,9 +347,9 @@ class TestResourceNodeImporter(PloneTestCase.PloneTestCase):
         dom = self._get_resource_dom(enabled=False)
         importer._importNode(dom.documentElement)
 
-        self.assertEquals(len(resources) - 1,
+        self.assertEqual(len(resources) - 1,
                           len(self._get_legacy_bundle().resources))
-        self.assertEquals(len(js_files),
+        self.assertEqual(len(js_files),
                           len([x.js for x in self._get_resources().values()]))
 
 
@@ -368,7 +368,7 @@ class TestControlPanel(PloneTestCase.PloneTestCase):
         mng = OverrideFolderManager(self.portal)
         mng.save_file('foo/bar.css', 'foobar')
         value = self.portal.restrictedTraverse('++plone++foo/bar.css')
-        self.assertEquals(str(value), 'foobar')
+        self.assertEqual(str(value), 'foobar')
 
     def test_override_rewrite_links(self):
         req = self.layer['request']
@@ -396,14 +396,14 @@ class TestControlPanel(PloneTestCase.PloneTestCase):
 .foobar {
     background-image: url("../foo/bar/foobar.css");
 }"""
-        self.assertEquals(str(value), match)
+        self.assertEqual(str(value), match)
 
     def test_get_require_js_config_uses_stub_modules(self):
         view = ResourceRegistryControlPanelView(
             self.portal, self.layer['request'])
         self.layer['request'].form['bundle'] = 'plone-logged-in'
         config = json.loads(view.js_build_config())
-        self.assertEquals(config['paths']['jquery'], 'empty:')
+        self.assertEqual(config['paths']['jquery'], 'empty:')
 
 
 class DummyResource(object):

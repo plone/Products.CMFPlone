@@ -22,7 +22,7 @@ class ProductsCMFPloneSetupTest(PloneTestCase):
         self.production_folder = container[PRODUCTION_RESOURCE_DIRECTORY]
 
     def test_production_directory(self):
-        self.assertEquals(
+        self.assertEqual(
             self.production_folder.listDirectory(),
             [
                 'default.css',

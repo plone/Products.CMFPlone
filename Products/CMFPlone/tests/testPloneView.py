@@ -25,7 +25,7 @@ class TestPloneView(PloneTestCase.PloneTestCase):
     def testToLocalizedSize(self):
         tolocalsize = self.view.toLocalizedSize
         value = tolocalsize(3322)
-        self.assertEquals(value, '3 KB')
+        self.assertEqual(value, '3 KB')
 
     def testIsStructuralFolderWithNonFolder(self):
         i = dummy.Item()
