@@ -29,18 +29,18 @@ class SearchControlPanelAdapterTest(unittest.TestCase):
             True
         )
         self.search_settings.enable_livesearch = False
-        self.assertEquals(
+        self.assertEqual(
             getAdapter(self.portal, ISearchSchema).enable_livesearch,
             False
         )
 
     def test_set_enable_livesearch(self):
-        self.assertEquals(
+        self.assertEqual(
             self.search_settings.enable_livesearch,
             True
         )
         getAdapter(self.portal, ISearchSchema).enable_livesearch = False
-        self.assertEquals(
+        self.assertEqual(
             self.search_settings.enable_livesearch,
             False
         )
