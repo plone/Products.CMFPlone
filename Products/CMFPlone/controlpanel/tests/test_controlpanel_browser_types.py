@@ -54,7 +54,7 @@ class TypesControlPanelFunctionalTest(unittest.TestCase):
         self.browser.getForm(action=self.types_url).submit()
         self.assertIn('Globally addable', self.browser.contents)
         self.assertIn('Allow comments', self.browser.contents)
-        self.assertEquals(
+        self.assertEqual(
             self.browser.getControl('Allow comments').selected,
             True
         )
@@ -84,7 +84,7 @@ class TypesControlPanelFunctionalTest(unittest.TestCase):
         self.assertTrue(
             'Redirect immediately to link target' in self.browser.contents
         )
-        self.assertEquals(
+        self.assertEqual(
             self.browser.getControl(
                 'Redirect immediately to link target').selected,
             True

@@ -31,18 +31,18 @@ class MailControlPanelAdapterTest(unittest.TestCase):
             u'localhost'
         )
         self.mail_settings.smtp_host = u'example.com'
-        self.assertEquals(
+        self.assertEqual(
             getAdapter(self.portal, IMailSchema).smtp_host,
             u'example.com'
         )
 
     def test_set_smtp_host(self):
-        self.assertEquals(
+        self.assertEqual(
             self.mail_settings.smtp_host,
             u'localhost'
         )
         getAdapter(self.portal, IMailSchema).smtp_host = u'example.com'
-        self.assertEquals(
+        self.assertEqual(
             self.mail_settings.smtp_host,
             u'example.com'
         )
@@ -53,18 +53,18 @@ class MailControlPanelAdapterTest(unittest.TestCase):
             25
         )
         self.mail_settings.smtp_port = 88
-        self.assertEquals(
+        self.assertEqual(
             getAdapter(self.portal, IMailSchema).smtp_port,
             88
         )
 
     def test_set_smtp_port(self):
-        self.assertEquals(
+        self.assertEqual(
             self.mail_settings.smtp_port,
             25
         )
         getAdapter(self.portal, IMailSchema).smtp_port = 88
-        self.assertEquals(
+        self.assertEqual(
             self.mail_settings.smtp_port,
             88
         )
@@ -75,18 +75,18 @@ class MailControlPanelAdapterTest(unittest.TestCase):
             None
         )
         self.mail_settings.smtp_userid = u'john@example.com'
-        self.assertEquals(
+        self.assertEqual(
             getAdapter(self.portal, IMailSchema).smtp_userid,
             u'john@example.com'
         )
 
     def test_set_smtp_userid(self):
-        self.assertEquals(
+        self.assertEqual(
             self.mail_settings.smtp_userid,
             None
         )
         getAdapter(self.portal, IMailSchema).smtp_userid = u'john@example.com'
-        self.assertEquals(
+        self.assertEqual(
             self.mail_settings.smtp_userid,
             u'john@example.com'
         )
@@ -97,18 +97,18 @@ class MailControlPanelAdapterTest(unittest.TestCase):
             None
         )
         self.mail_settings.smtp_pass = u'secret'
-        self.assertEquals(
+        self.assertEqual(
             getAdapter(self.portal, IMailSchema).smtp_pass,
             u'secret'
         )
 
     def test_set_smtp_pass(self):
-        self.assertEquals(
+        self.assertEqual(
             self.mail_settings.smtp_pass,
             None
         )
         getAdapter(self.portal, IMailSchema).smtp_pass = u'secret'
-        self.assertEquals(
+        self.assertEqual(
             self.mail_settings.smtp_pass,
             u'secret'
         )
@@ -119,18 +119,18 @@ class MailControlPanelAdapterTest(unittest.TestCase):
             None
         )
         self.mail_settings.email_from_name = u'John'
-        self.assertEquals(
+        self.assertEqual(
             getAdapter(self.portal, IMailSchema).email_from_name,
             u'John'
         )
 
     def test_set_email_from_name(self):
-        self.assertEquals(
+        self.assertEqual(
             self.mail_settings.email_from_name,
             None
         )
         getAdapter(self.portal, IMailSchema).email_from_name = u'John'
-        self.assertEquals(
+        self.assertEqual(
             self.mail_settings.email_from_name,
             u'John'
         )
@@ -141,19 +141,19 @@ class MailControlPanelAdapterTest(unittest.TestCase):
             None
         )
         self.mail_settings.email_from_address = 'john@example.com'
-        self.assertEquals(
+        self.assertEqual(
             getAdapter(self.portal, IMailSchema).email_from_address,
             'john@example.com'
         )
 
     def test_set_email_from_address(self):
-        self.assertEquals(
+        self.assertEqual(
             self.mail_settings.email_from_address,
             None
         )
         getAdapter(self.portal, IMailSchema).email_from_address = \
             'john@example.com'
-        self.assertEquals(
+        self.assertEqual(
             self.mail_settings.email_from_address,
             'john@example.com'
         )

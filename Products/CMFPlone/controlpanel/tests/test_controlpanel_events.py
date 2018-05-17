@@ -114,21 +114,21 @@ class SecurityControlPanelEventsTest(unittest.TestCase):
         self._create_user(user_id='joe', email='joe@test.com')
         pas = getToolByName(self.portal, 'acl_users')
 
-        self.assertEquals(len(pas.searchUsers(name='joe@test.com')), 0)
+        self.assertEqual(len(pas.searchUsers(name='joe@test.com')), 0)
         self.security_settings.use_uuid_as_userid = True
-        self.assertEquals(len(pas.searchUsers(name='joe@test.com')), 0)
+        self.assertEqual(len(pas.searchUsers(name='joe@test.com')), 0)
 
     def test_handle_use_email_as_login_enabled(self):
         self._create_user(user_id='joe', email='joe@test.com')
         pas = getToolByName(self.portal, 'acl_users')
 
-        self.assertEquals(len(pas.searchUsers(name='joe@test.com')), 0)
-        self.assertEquals(len(pas.searchUsers(name='joe')), 1)
+        self.assertEqual(len(pas.searchUsers(name='joe@test.com')), 0)
+        self.assertEqual(len(pas.searchUsers(name='joe')), 1)
 
         # if we enable use_email_as_login, login name should be migrated
         # to email
         self.security_settings.use_email_as_login = True
-        self.assertEquals(len(pas.searchUsers(name='joe@test.com')), 1)
+        self.assertEqual(len(pas.searchUsers(name='joe@test.com')), 1)
 
     def test_handle_use_email_as_login_disabled(self):
         self._create_user(user_id='joe', email='joe@test.com')
@@ -138,5 +138,5 @@ class SecurityControlPanelEventsTest(unittest.TestCase):
         # should be migrated back to user id
         self.security_settings.use_email_as_login = True
         self.security_settings.use_email_as_login = False
-        self.assertEquals(len(pas.searchUsers(name='joe@test.com')), 0)
-        self.assertEquals(len(pas.searchUsers(name='joe')), 1)
+        self.assertEqual(len(pas.searchUsers(name='joe@test.com')), 0)
+        self.assertEqual(len(pas.searchUsers(name='joe')), 1)
