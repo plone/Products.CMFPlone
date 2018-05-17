@@ -10,6 +10,10 @@ Changelog
 
 Breaking changes:
 
+- Adapt tests to `Products.GenericSetup >= 2.0` thus requiring at least that
+  version.
+  [icemac]
+
 - Some tools from CMFCore are now utilities
   [pbauer]
 

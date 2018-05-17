@@ -21,7 +21,7 @@ INSTALL_REQUIRES = [
     'Products.CMFUid',
     'Products.DCWorkflow',
     'Products.ExtendedPathIndex',
-    'Products.GenericSetup >= 1.8.2',
+    'Products.GenericSetup >= 2.0.dev0',
     'Products.MimetypesRegistry',
     'Products.PlonePAS',
     'Products.PluggableAuthService',
