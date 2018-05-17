@@ -3,8 +3,8 @@ define("ace/snippets/io",["require","exports","module"], function(require, expor
 
 exports.snippets = [
     {
-        "content": "assertEquals(${1:expected}, ${2:expr})",
-        "name": "assertEquals",
+        "content": "assertEqual(${1:expected}, ${2:expr})",
+        "name": "assertEqual",
         "scope": "io",
         "tabTrigger": "ae"
     },
