@@ -7,6 +7,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces import IFilterSchema
 from Products.CMFPlone.interfaces import ITinyMCESchema
 from Products.CMFPlone.utils import get_portal
+from Products.CMFPlone.utils import safe_unicode
 from zope.component import getUtility
 
 import json
@@ -210,7 +211,8 @@ class TinyMCESettingsGenerator(object):
             valid_tags = self.filter_settings.valid_tags
             nasty_tags = self.filter_settings.nasty_tags
             custom_attributes = self.filter_settings.custom_attributes
-            safe_attributes = [attr.decode() for attr in html.defs.safe_attrs]
+            safe_attributes = [
+                safe_unicode(attr) for attr in html.defs.safe_attrs]
             valid_attributes = safe_attributes + custom_attributes
             # valid_elements : 'a[href|target=_blank],strong/b,div[align],br'
             tiny_valid_elements = []
