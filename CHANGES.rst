@@ -179,3 +179,6 @@ Bug Fixes:
 
 - Remove depricated ``type`` attribute from ``script`` and ``link`` tags.
   [newbazz]
+
+- Render tinymce attributes correctly in Python3.
+  [sallner]
