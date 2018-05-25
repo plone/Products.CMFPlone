@@ -21,7 +21,7 @@ class SiteControlPanelAdapter(object):
         return self.settings.site_title
 
     def set_site_title(self, value):
-        if isinstance(value, str):
+        if six.PY2 and isinstance(value, binary_type):
             value = value.decode('utf-8')
         self.settings.site_title = value
 
@@ -29,7 +29,7 @@ class SiteControlPanelAdapter(object):
         return self.settings.webstats_js
 
     def set_webstats_js(self, value):
-        if isinstance(value, str):
+        if six.PY2 and isinstance(value, binary_type):
             value = value.decode('utf-8')
         self.settings.webstats_js = value
 
