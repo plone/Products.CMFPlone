@@ -234,7 +234,10 @@ def utf8_portal(context, str, errors='strict'):
 def getEmptyTitle(context, translated=True):
     """Returns string to be used for objects with no title or id"""
     # The default is an extra fancy unicode elipsis
-    empty = six.text_type('\x5b\xc2\xb7\xc2\xb7\xc2\xb7\x5d', 'utf-8')
+    if six.PY2:
+        empty = unicode('\x5b\xc2\xb7\xc2\xb7\xc2\xb7\x5d', 'utf-8')
+    else:
+        empty = b'\x5b\xc2\xb7\xc2\xb7\xc2\xb7\x5d'.decode('utf8')
     if translated:
         if context is not None:
             if not IBrowserRequest.providedBy(context):
