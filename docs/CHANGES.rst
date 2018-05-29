@@ -6,16 +6,8 @@ Changelog
 =========
 
 
-4.3.18 (unreleased)
+4.3.18 (2018-05-29)
 -------------------
-
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
 
 Bug fixes:
 
