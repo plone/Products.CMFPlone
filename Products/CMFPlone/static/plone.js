@@ -30,6 +30,7 @@ require([
   'mockup-patterns-pickadate',
   'mockup-patterns-autotoc',
   'mockup-patterns-cookietrigger',
+  'mockup-patterns-datatables',
   'mockup-patterns-formunloadalert',
   'mockup-patterns-preventdoublesubmit',
   'mockup-patterns-formautofocus',
