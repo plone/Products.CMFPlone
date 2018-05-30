@@ -890,7 +890,7 @@
 
   <records prefix="plone.resources/datatables.net-autofill-bs"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++plone++static/components/datatables.net-autofill-bs/js/dataTables.autoFill.min.js</value>
+      <value key="js">++plone++static/components/datatables.net-autofill-bs/js/autoFill.bootstrap.min.js</value>
   </records>
 
   <records prefix="plone.resources/datatables.net-buttons"
