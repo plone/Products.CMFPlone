@@ -8,6 +8,7 @@ from OFS.SimpleItem import SimpleItem
 from Products.CMFPlone.interfaces import INonStructuralFolder
 from Products.CMFPlone.interfaces import IWorkflowChain
 from six import StringIO
+from six import BytesIO
 from zope.interface import implementer
 from zope.interface import Interface
 from ZPublisher.HTTPRequest import FileUpload
@@ -15,7 +16,7 @@ from ZPublisher.HTTPRequest import FileUpload
 import os
 
 
-TEXT = 'file data'
+TEXT = b'file data'
 UTEXT = u'file data'
 GIF_FILE = os.path.join(
     os.path.dirname(__file__), os.pardir, 'tool.gif')
@@ -85,7 +86,7 @@ class File(FileUpload):
             self.data = data
         if headers is not None:
             self.headers = headers
-        self.file = StringIO(self.data)
+        self.file = BytesIO(self.data)
 
     def seek(self, *args):
         pass
