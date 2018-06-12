@@ -37,6 +37,8 @@ if came_from is not None:
                        # tests won't be able to log in via login_form
                        'localhost']:
         came_from = ''
+    if 'passwordreset' in path:
+        came_from = ''
     # It is probably a good idea in general to filter out urls outside the
     # portal. An added bonus: this fixes some problems with a Zope bug that
     # doesn't properly unmangle the VirtualHostMonster stuff when setting

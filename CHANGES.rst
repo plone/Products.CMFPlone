@@ -18,6 +18,9 @@ New features:
 
 Bug fixes:
 
+- Fix https://github.com/plone/Products.CMFPlone/issues/2394, error on login after password reset.
+  [jensens, agitator]
+
 - Do not include too new upgrades when upgrading Plone Site.
   Otherwise the Plone Site ends up at a newer version that the filesystem code supports,
   giving an error when upgrading, and resulting in possibly missed upgrades later.
