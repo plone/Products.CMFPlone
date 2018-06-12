@@ -107,7 +107,7 @@ type in his initial password, so we need to enable that:
   >>> browser.getLink('Log in').click()
   >>> browser.getControl(name='__ac_name').value = TEST_USER_NAME
   >>> browser.getControl(name='__ac_password').value = TEST_USER_PASSWORD
-  >>> browser.getControl(name='submit').click()
+  >>> browser.getControl(name='buttons.login').click()
   >>> "You are now logged in" in browser.contents
   True
 
@@ -116,7 +116,7 @@ Log out again and then join:
   >>> browser.getLink('Log out').click()
   >>> "You are now logged out" in browser.contents
   True
-  >>> 'New user?' in browser.contents  # Sunburst theme has no Register link
+  >>> 'Register' in browser.contents
   True
 
 Now register a new user:
@@ -144,7 +144,7 @@ We are not logged in yet at this point.  Let's try to log in:
   True
   >>> browser.getControl(name='__ac_name').value = 'jsmith'
   >>> browser.getControl(name='__ac_password').value = 'secret'
-  >>> browser.getControl(name='submit').click()
+  >>> browser.getControl(name='buttons.login').click()
   >>> "You are now logged in" in browser.contents
   True
 
@@ -154,23 +154,22 @@ Log out again:
   >>> "You are now logged out" in browser.contents
   True
 
-Now it is time to forget our password and click the ``Forgot your
-password`` in the login form:
+Now it is time to forget our password and click the ``Get help`` in the login form:
 
   >>> browser.open('http://nohost/plone/login')
-  >>> browser.getLink('we can send you a new one').click()
-  >>> browser.url.startswith('http://nohost/plone/mail_password_form')
+  >>> browser.getLink('Get help').click()
+  >>> browser.url.startswith('http://nohost/plone/@@login-help')
   True
-  >>> form = browser.getForm(name='mail_password')
-  >>> form.getControl(name='userid').value = 'jsmith'
-  >>> form.submit()
+  >>> form = browser.getForm(index=1)
+  >>> form.getControl(name='form.widgets.reset_password').value = 'jsmith'
+  >>> form.submit(name='form.buttons.reset')
 
-We check if the old password always works.
+We check if the old password still works.
 
   >>> browser.open('http://nohost/plone/login')
   >>> browser.getControl(name='__ac_name').value = 'jsmith'
   >>> browser.getControl(name='__ac_password').value = 'secret'
-  >>> browser.getControl(name='submit').click()
+  >>> browser.getControl(name='buttons.login').click()
 
 We should be logged in now:
 
@@ -230,7 +229,7 @@ We can now login using our new password:
   >>> browser.open('http://nohost/plone/login')
   >>> browser.getControl(name='__ac_name').value = 'jsmith'
   >>> browser.getControl(name='__ac_password').value = 'secretion'
-  >>> browser.getControl(name='submit').click()
+  >>> browser.getControl(name='buttons.login').click()
 
 We should be logged in now:
 
@@ -261,7 +260,7 @@ First, we want to login as the portal owner:
   >>> browser.open('http://nohost/plone/login')
   >>> browser.getControl(name='__ac_name').value = SITE_OWNER_NAME
   >>> browser.getControl(name='__ac_password').value = SITE_OWNER_PASSWORD
-  >>> browser.getControl(name='submit').click()
+  >>> browser.getControl(name='buttons.login').click()
   >>> "You are now logged in" in browser.contents
   True
 
@@ -289,7 +288,7 @@ We want to logout and login as the new member:
   >>> browser.open('http://nohost/plone/login')
   >>> browser.getControl(name='__ac_name').value = 'wsmith'
   >>> browser.getControl(name='__ac_password').value = 'supersecret'
-  >>> browser.getControl(name='submit').click()
+  >>> browser.getControl(name='buttons.login').click()
   >>> "You are now logged in" in browser.contents
   True
 
@@ -300,7 +299,7 @@ Again, we want to login as the portal owner:
   >>> browser.open('http://nohost/plone/login')
   >>> browser.getControl(name='__ac_name').value = SITE_OWNER_NAME
   >>> browser.getControl(name='__ac_password').value = SITE_OWNER_PASSWORD
-  >>> browser.getControl(name='submit').click()
+  >>> browser.getControl(name='buttons.login').click()
   >>> "You are now logged in" in browser.contents
   True
 
@@ -310,7 +309,7 @@ We navigate to the Users Overview page and reset a password user:
   >>> browser.getLink('Users and Groups').click()
   >>> resets = browser.getControl(name='users.resetpassword:records')
   >>> reset = resets.getControl(value='wsmith')
-  >>> reset.selected = True  
+  >>> reset.selected = True
   >>> browser.getControl(name="form.button.Modify").click()
   >>> "Changes applied." in browser.contents
   True
@@ -323,7 +322,7 @@ We check if the old password is well changed.
   >>> browser.open('http://nohost/plone/login')
   >>> browser.getControl(name='__ac_name').value = 'wsmith'
   >>> browser.getControl(name='__ac_password').value = 'supersecret'
-  >>> browser.getControl(name='submit').click()
+  >>> browser.getControl(name='buttons.login').click()
 
 We should not be logged in:
 
@@ -358,7 +357,7 @@ First off, we need to set ``validate_mail`` to False:
   >>> browser.open('http://nohost/plone/login')
   >>> browser.getControl(name='__ac_name').value = SITE_OWNER_NAME
   >>> browser.getControl(name='__ac_password').value = SITE_OWNER_PASSWORD
-  >>> browser.getControl(name='submit').click()
+  >>> browser.getControl(name='buttons.login').click()
   >>> "You are now logged in" in browser.contents
   True
 
@@ -453,7 +452,7 @@ First, we want to login as the portal owner:
   >>> browser.open('http://nohost/plone/login')
   >>> browser.getControl(name='__ac_name').value = SITE_OWNER_NAME
   >>> browser.getControl(name='__ac_password').value = SITE_OWNER_PASSWORD
-  >>> browser.getControl(name='submit').click()
+  >>> browser.getControl(name='buttons.login').click()
   >>> "You are now logged in" in browser.contents
   True
 
