@@ -1139,6 +1139,14 @@ class ISecuritySchema(Interface):
         default=False,
         required=False)
 
+    autologin_after_password_reset = schema.Bool(
+        title=_(u'Login user after password reset'),
+        description=_(
+            u'After successful password reset the user will be logged '
+            u'in automatically.'),
+        default=True,
+        required=False)
+
 
 class ISiteSchema(Interface):
 
