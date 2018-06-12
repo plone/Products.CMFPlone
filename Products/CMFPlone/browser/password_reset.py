@@ -1,24 +1,25 @@
-from zope.interface import implementer
-from zope.component import getMultiAdapter
-from Products.Five import BrowserView
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+# -*- coding: utf-8 -*-
+from email.Header import Header
+from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.memoize import view
+from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.utils import safe_unicode
-from Products.CMFPlone.utils import safeToInt
+from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone.interfaces import IPasswordResetToolView
+from Products.CMFPlone.interfaces.controlpanel import IMailSchema
 from Products.CMFPlone.PasswordResetTool import ExpiredRequestError
 from Products.CMFPlone.PasswordResetTool import InvalidRequestError
-from zope.i18n import translate
-from zope.publisher.interfaces import IPublishTraverse
-
-from Products.CMFPlone.interfaces import IPasswordResetToolView
-from Products.CMFPlone import PloneMessageFactory as _
-from email.Header import Header
-
-from plone.registry.interfaces import IRegistry
+from Products.CMFPlone.utils import safe_unicode
+from Products.CMFPlone.utils import safeToInt
+from Products.Five import BrowserView
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from Products.PluggableAuthService.interfaces.plugins import ICredentialsUpdatePlugin  # noqa
+from Products.statusmessages.interfaces import IStatusMessage
+from zope.component import getMultiAdapter
 from zope.component import getUtility
-
-from Products.CMFPlone.interfaces.controlpanel import IMailSchema
+from zope.i18n import translate
+from zope.interface import implementer
+from zope.publisher.interfaces import IPublishTraverse
 
 
 @implementer(IPasswordResetToolView)
@@ -45,15 +46,23 @@ class PasswordResetToolView(BrowserView):
 
     def registered_notify_subject(self):
         portal_name = self.portal_state().portal_title()
-        return translate(_(u"mailtemplate_user_account_info",
-                           default=u"User Account Information for ${portal_name}",
-                           mapping={'portal_name': safe_unicode(portal_name)}),
-                           context=self.request)
+        return translate(
+            _(
+                u"mailtemplate_user_account_info",
+                default=u"User Account Information for ${portal_name}",
+                mapping={'portal_name': safe_unicode(portal_name)},
+            ),
+            context=self.request
+        )
 
     def mail_password_subject(self):
-        return translate(_(u"mailtemplate_subject_resetpasswordrequest",
-                           default=u"Password reset request"),
-                           context=self.request)
+        return translate(
+            _(
+                u'mailtemplate_subject_resetpasswordrequest',
+                default=u'Password reset request',
+            ),
+            context=self.request,
+        )
 
     def construct_url(self, randomstring):
         return "%s/passwordreset/%s" % (
@@ -75,6 +84,41 @@ class PasswordResetView(BrowserView):
     form = ViewPageTemplateFile('templates/pwreset_form.pt')
     subpath = None
 
+    def _reset_password(self, pw_tool, randomstring):
+        userid = self.request.form.get('userid')
+        password = self.request.form.get('password')
+        try:
+            pw_tool.resetPassword(userid, randomstring, password)
+        except ExpiredRequestError:
+            return self.expired()
+        except InvalidRequestError:
+            return self.invalid()
+        except RuntimeError:
+            return self.invalid()
+        registry = getUtility(IRegistry)
+        if registry.get('plone.autologin_after_password_reset', False):
+            aclu = getToolByName(self.context, 'acl_users')
+            cups = aclu.plugins.listPlugins(ICredentialsUpdatePlugin)
+            for name, plugin in cups:
+                plugin.updateCredentials(
+                    self.request,
+                    self.request.response,
+                    userid,
+                    password
+                )
+            IStatusMessage(self.request).addStatusMessage(
+                _(
+                    'password_reset_successful',
+                    default='Password reset successful, '
+                            'you are logged in now!',
+                ),
+                'info',
+            )
+            url = INavigationRoot(self.context).absolute_url()
+            self.request.response.redirect(url)
+            return
+        return self.finish()
+
     def __call__(self):
         if self.subpath:
             # Try traverse subpath first:
@@ -84,25 +128,14 @@ class PasswordResetView(BrowserView):
 
         pw_tool = getToolByName(self.context, 'portal_password_reset')
         if self.request.method == 'POST':
-            userid = self.request.form.get('userid')
-            password = self.request.form.get('password')
-            try:
-                pw_tool.resetPassword(userid, randomstring, password)
-            except ExpiredRequestError:
-                return self.expired()
-            except InvalidRequestError:
-                return self.invalid()
-            except RuntimeError:
-                return self.invalid()
-            return self.finish()
-        else:
-            try:
-                pw_tool.verifyKey(randomstring)
-            except InvalidRequestError:
-                return self.invalid()
-            except ExpiredRequestError:
-                return self.expired()
-            return self.form()
+            return self._reset_password(pw_tool, randomstring)
+        try:
+            pw_tool.verifyKey(randomstring)
+        except InvalidRequestError:
+            return self.invalid()
+        except ExpiredRequestError:
+            return self.expired()
+        return self.form()
 
     def publishTraverse(self, request, name):
         if self.subpath is None:
@@ -128,10 +161,14 @@ class PasswordResetView(BrowserView):
             return state
 
         if not userid:
-            state['userid'] = _('This field is required, please provide some information.')
+            state['userid'] = _(
+                'This field is required, please provide some information.',
+            )
         if state:
             state['status'] = 'failure'
-            state['portal_status_message'] = _('Please correct the indicated errors.')
+            state['portal_status_message'] = _(
+                'Please correct the indicated errors.',
+            )
         return state
 
     def login_url(self):
@@ -173,5 +210,7 @@ class ExplainPWResetToolView(BrowserView):
         if self.request.method == 'POST':
             timeout_days = safeToInt(self.request.get('timeout_days'), 7)
             self.context.setExpirationTimeout(timeout_days)
-            self.context._user_check = bool(self.request.get('user_check', False))
+            self.context._user_check = bool(
+                self.request.get('user_check', False),
+            )
         return self.index()

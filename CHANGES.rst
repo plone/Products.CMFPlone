@@ -14,7 +14,9 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- Optional auto-login after passwort (re-)set.
+  Active if registry key `plone.autologin_after_password_reset` is `True`.
+  [jensens, agitator]
 
 Bug fixes:
 
