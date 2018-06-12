@@ -79,7 +79,8 @@ Breaking changes:
 New features:
 
 - Optional auto-login after passwort (re-)set.
-  [jensens]
+  Active if registry key `plone.autologin_after_password_reset` is `True`.
+  [jensens, agitator]
 
 - Provide an utility ``dump_json_to_text`` that works both on Python 2.7 an Python 3.
   [ale-rt]
