@@ -95,7 +95,8 @@ class PasswordResetView(BrowserView):
             return self.invalid()
         except RuntimeError:
             return self.invalid()
-        if True:  # TODO: get value from registry if we really want this
+        registry = getUtility(IRegistry)
+        if registry.get('plone.autologin_after_password_reset', False):
             aclu = getToolByName(self.context, 'acl_users')
             cups = aclu.plugins.listPlugins(ICredentialsUpdatePlugin)
             for name, plugin in cups:
