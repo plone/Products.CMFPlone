@@ -18,6 +18,10 @@ New features:
 
 Bug fixes:
 
+- Hide ``plone.app.querystring`` from add-ons control panel.
+  Fixes `issue 2426 <https://github.com/plone/Products.CMFPlone/issues/2426>`_.
+  [maurits]
+
 - Fix https://github.com/plone/Products.CMFPlone/issues/2394, error on login after password reset.
   [jensens, agitator]
 
