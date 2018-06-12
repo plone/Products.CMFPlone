@@ -66,6 +66,10 @@ New Features:
 
 Bug Fixes:
 
+- Hide ``plone.app.querystring`` from add-ons control panel.
+  Fixes `issue 2426 <https://github.com/plone/Products.CMFPlone/issues/2426>`_.
+  [maurits]
+
 - Fix tests after changes in disallowed object ids in Zope.
   [pbauer]
 
