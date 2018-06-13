@@ -47,12 +47,12 @@ class TestPortalStateView(unittest.TestCase):
 
     def test_navigation_root(self):
         self.assertEqual(self.view.navigation_root(), self.portal)
-        import pdb; pdb.set_trace() 
         # mark a folder "between" self.folder and self.portal with
         # INavigationRoot
         f1 = self.folder
         zope.interface.alsoProvides(f1, INavigationRoot)
         view = f1.restrictedTraverse('@@plone_portal_state')
+        import pdb; pdb.set_trace()
         self.assertEqual(view.navigation_root(), f1)
 
     def test_navigation_root_path(self):
