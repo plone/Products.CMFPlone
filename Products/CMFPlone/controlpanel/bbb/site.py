@@ -7,6 +7,8 @@ from zope.component import adapts
 from zope.component import getUtility
 from zope.interface import implementer
 
+import six
+
 
 @implementer(ISiteSchema)
 class SiteControlPanelAdapter(object):
@@ -21,7 +23,7 @@ class SiteControlPanelAdapter(object):
         return self.settings.site_title
 
     def set_site_title(self, value):
-        if six.PY2 and isinstance(value, binary_type):
+        if six.PY2 and isinstance(value, six.binary_type):
             value = value.decode('utf-8')
         self.settings.site_title = value
 
