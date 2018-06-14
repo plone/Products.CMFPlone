@@ -4,6 +4,8 @@ from plone.app.testing import FunctionalTesting
 from plone.app.testing import IntegrationTesting
 from plone.app.testing import PloneSandboxLayer
 from plone.app.testing import TEST_USER_ID
+from plone.app.testing import TEST_USER_NAME
+from plone.app.testing import TEST_USER_PASSWORD
 from Products.CMFPlone.utils import _createObjectByType
 
 
@@ -24,8 +26,6 @@ class Fixture(PloneSandboxLayer):
         mtool.createMemberArea(TEST_USER_ID)
         if mtool.getMemberareaCreationFlag():
             mtool.setMemberareaCreationFlag()
-
-        # _createObjectByType('Folder', portal, id='folder')
 
 
 FIXTURE = Fixture()

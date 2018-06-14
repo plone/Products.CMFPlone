@@ -2,6 +2,10 @@
 from plone.app.layout.viewlets.social import SocialTagsViewlet
 from plone.app.layout.viewlets.tests.base import ViewletsTestCase
 from plone.app.testing import logout
+from plone.app.testing import login
+from plone.app.testing import setRoles
+from plone.app.testing import TEST_USER_NAME
+from plone.app.testing import TEST_USER_ID
 from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.interfaces import ISocialMediaSchema
 from zope.annotation.interfaces import IAnnotations
@@ -12,8 +16,10 @@ class TestSocialViewlet(ViewletsTestCase):
     """Test the content views viewlet.
     """
 
-    def afterSetUp(self):
-        self.loginAsPortalOwner()
+    def setUp(self):
+        super(TestSocialViewlet, self).setUp()
+        login(self.portal, TEST_USER_NAME)
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
         self.folder.invokeFactory('News Item', 'news-item',
                                   title='News Item')
         self.news = self.folder['news-item']
@@ -85,7 +91,7 @@ class TestSocialViewlet(ViewletsTestCase):
         self.assertEquals(len(viewlet.tags), 0)
 
     def testDisabledForLoggedUser(self):
-        self.loginAsPortalOwner()
+        login(self.portal, TEST_USER_NAME)
         viewlet = SocialTagsViewlet(self.folder, self.app.REQUEST, None)
         viewlet.update()
         self.assertEquals(len(viewlet.tags), 0)

@@ -19,8 +19,8 @@ class TestLayoutView(unittest.TestCase):
     layer = INTEGRATION_TESTING
 
     def setUp(self):
-        self.portal = self.layer['portal'] 
-        setRoles(self.portal, TEST_USER_ID,['Manager'])             
+        self.portal = self.layer['portal']
+        setRoles(self.portal, TEST_USER_ID,['Manager'])
         self.view = self.portal.restrictedTraverse('@@plone_layout')
         self.portal.invokeFactory('Folder', 'folder1')
         self.portal.invokeFactory('Document', 'front-page')
@@ -94,16 +94,16 @@ class TestLayoutView(unittest.TestCase):
 
         view = context.restrictedTraverse('view')
         layout_view = context.restrictedTraverse('@@plone_layout')
-        
+
         # case 1: name from first parameter, expected a template or view
         from Products.CMFCore.FSPageTemplate import FSPageTemplate
-        template = FSPageTemplate('document_view', 
+        template = FSPageTemplate('document_view',
             os.path.join(os.path.dirname(__file__),'data','bodyclass_nametest.pt')
         )
         body_class = layout_view.bodyClass(template, view)
         self.assertIn('template-document_view', body_class)
 
-        # case 2: even w/o second parameter it has to work         
+        # case 2: even w/o second parameter it has to work
         body_class = layout_view.bodyClass(template, None)
         self.assertIn('template-document_view', body_class)
 
@@ -120,7 +120,7 @@ class TestLayoutView(unittest.TestCase):
         view = context.restrictedTraverse('@@plone_layout')
         template = context.restrictedTraverse('view')
         body_class = view.bodyClass(template, view)
-        assert 'site-%s' % context.getId() in body_class        
+        assert 'site-%s' % context.getId() in body_class
 
     def testBodyClassWithEverySection(self):
         # mark a folder "between" self.folder and self.portal with
@@ -132,13 +132,13 @@ class TestLayoutView(unittest.TestCase):
         context = self.portal.folder1.folder2.folder3.page
         view = context.restrictedTraverse('@@plone_layout')
         template = context.restrictedTraverse('view')
-        body_class = view.bodyClass(template, view)        
+        body_class = view.bodyClass(template, view)
         assert 'section-folder2 site-folder1' in body_class
         assert ' subsection-folder3 subsection-folder3-page' in body_class
 
     def testBodyClassWithEverySectionTurnedOff(self):
         registry = getUtility(IRegistry)
-        registry['plone.app.layout.globals.bodyClass.depth'] = 0        
+        registry['plone.app.layout.globals.bodyClass.depth'] = 0
         zope.interface.alsoProvides(self.portal.folder1, INavigationRoot)
         self.portal.folder1.invokeFactory('Folder', 'folder2')
         self.portal.folder1.folder2.invokeFactory('Folder', 'folder3')
@@ -151,7 +151,7 @@ class TestLayoutView(unittest.TestCase):
             not in body_class
         assert ' subsection-folder2-folder3-page' not in body_class
 
-    def testBodyClassWithMarkSpecialLinksOnOff(self):            
+    def testBodyClassWithMarkSpecialLinksOnOff(self):
         registry = getUtility(IRegistry)
         settings = registry.forInterface(
             ILinkSchema,

@@ -96,13 +96,6 @@ is not a valid Interface.
 'plone.app.layout.globals.tests.test_interface.NotAnInterface' \
 is not a valid Interface.
 
-    >>> view.names_and_descriptions(
-    ...     'plone.app.layout.globals.tests.test_interface.IOne')[0]
-    ('one_function', 'One function for IOne')
-    >>> view.names_and_descriptions(
-    ...     'plone.app.layout.globals.tests.test_interface.IOne')[1]
-    ('one_name', 'One name for IOne')
-
     >>> view.get_base_interface()
     []
     >>> iface_info = view.get_interface_informations(IOne)
@@ -126,6 +119,13 @@ is not a valid Interface.
     'one_function'
     >>> iface_info['methods'][0]['signature']
     '()'
+    >>> view.names_and_descriptions(
+    ...     'plone.app.layout.globals.tests.test_interface.IOne')[0]
+    ('one_function', 'One function for IOne')
+    >>> view.names_and_descriptions(
+    ...     'plone.app.layout.globals.tests.test_interface.IOne')[1]
+    ('one_name', 'One name for IOne')
+
     """
 
 

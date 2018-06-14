@@ -43,6 +43,9 @@ class ViewletBase(BrowserView):
         self.view = view
         self.manager = manager
 
+    def __hash__(self):
+        return id(self) * 16
+
     @property
     @deprecate("Use site_url instead. " +
                "ViewletBase.portal_url will be removed in Plone 4")

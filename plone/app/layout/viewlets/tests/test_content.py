@@ -4,6 +4,9 @@ from plone.app.layout.viewlets.content import ContentRelatedItems
 from plone.app.layout.viewlets.content import DocumentBylineViewlet
 from plone.app.layout.viewlets.content import HistoryByLineView
 from plone.app.layout.viewlets.tests.base import ViewletsTestCase
+from plone.app.testing import logout
+from plone.app.testing import TEST_USER_ID
+from plone.app.testing import setRoles
 from plone.locking.interfaces import ILockable
 from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.interfaces import ISecuritySchema
@@ -34,7 +37,8 @@ class TestDocumentBylineViewletView(ViewletsTestCase):
     Test the document by line viewlet
     """
 
-    def afterSetUp(self):
+    def setUp(self):
+        super(TestDocumentBylineViewletView, self).setUp()
         self.folder.invokeFactory('Document', 'doc1', title='Document 1')
         self.context = self.folder['doc1']
 
@@ -60,7 +64,7 @@ class TestDocumentBylineViewletView(ViewletsTestCase):
 
         settings.display_publication_date_in_byline = True
 
-        self.logout()
+        logout()
         viewlet = self._get_viewlet()
 
         # publication date should be None as there is not Effective date set
@@ -108,7 +112,8 @@ class TestHistoryBylineViewletView(ViewletsTestCase):
     Test the document by line viewlet
     """
 
-    def afterSetUp(self):
+    def setUp(self):
+        super(TestHistoryBylineViewletView, self).setUp()
         self.folder.invokeFactory('Document', 'doc1', title='Document 1')
         self.context = self.folder['doc1']
 
@@ -126,13 +131,13 @@ class TestHistoryBylineViewletView(ViewletsTestCase):
 
     def test_show_anonymous_not_allowed(self):
         self.security_settings.allow_anon_views_about = False
-        self.logout()
+        logout()
         viewlet = self._get_viewlet()
         self.assertFalse(viewlet.show())
 
     def test_show_anonymous_allowed(self):
         self.security_settings.allow_anon_views_about = True
-        self.logout()
+        logout()
         viewlet = self._get_viewlet()
         self.assertTrue(viewlet.show())
 
@@ -147,12 +152,12 @@ class TestHistoryBylineViewletView(ViewletsTestCase):
         self.assertTrue(viewlet.show())
 
     def test_anonymous_locked_icon_not_locked(self):
-        self.logout()
+        logout()
         viewlet = self._get_viewlet()
         self.assertEqual(viewlet.locked_icon(), "")
 
     def test_anonymous_locked_icon_is_locked(self):
-        self.logout()
+        logout()
         ILockable(self.context).lock()
         viewlet = self._get_viewlet()
         self.assertEqual(viewlet.locked_icon(), "")
@@ -178,7 +183,7 @@ title="Locked" height="16" width="16" />'
 
         settings.display_publication_date_in_byline = True
 
-        self.logout()
+        logout()
         viewlet = self._get_viewlet()
 
         # publication date should be None as there is not Effective date set
@@ -198,11 +203,16 @@ title="Locked" height="16" width="16" />'
 
 class TestRelatedItemsViewlet(ViewletsTestCase):
 
-    def afterSetUp(self):
+    def setUp(self):
+        super(TestRelatedItemsViewlet, self).setUp()
         self.folder.invokeFactory('Document', 'doc1', title='Document 1')
         self.folder.invokeFactory('Document', 'doc2', title='Document 2')
         self.folder.invokeFactory('Document', 'doc3', title='Document 3')
-        self.folder.doc1.setRelatedItems([self.folder.doc2, self.folder.doc3])
+        intids = getUtility(IIntIds)
+        self.folder.doc1.relatedItems = [
+            RelationValue(intids.getId(self.folder.doc2)),
+            RelationValue(intids.getId(self.folder.doc3)),
+        ]
 
     def testRelatedItems(self):
         request = self.app.REQUEST
@@ -224,12 +234,11 @@ class TestRelatedItemsViewlet(ViewletsTestCase):
 
 class TestDexterityRelatedItemsViewlet(ViewletsTestCase):
 
-    def afterSetUp(self):
+    def setUp(self):
+        super(TestDexterityRelatedItemsViewlet, self).setUp()
         """ create some sample content to test with """
         from Products.CMFPlone.utils import get_installer
-        if not HAS_DEXTERITY:
-            return
-        self.setRoles(('Manager',))
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
         fti = DexterityFTI('Dexterity Item with relatedItems behavior')
         self.portal.portal_types._setObject(
             'Dexterity Item with relatedItems behavior', fti)

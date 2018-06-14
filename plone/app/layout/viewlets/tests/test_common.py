@@ -6,6 +6,8 @@ from plone.app.layout.viewlets.common import LogoViewlet
 from plone.app.layout.viewlets.common import TitleViewlet
 from plone.app.layout.viewlets.common import ViewletBase
 from plone.app.layout.viewlets.tests.base import ViewletsTestCase
+from plone.app.testing import setRoles
+from plone.app.testing import TEST_USER_ID
 from plone.protect import authenticator as auth
 from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.interfaces import INonStructuralFolder
@@ -28,8 +30,8 @@ class TestViewletBase(ViewletsTestCase):
     """
 
     def test_update(self):
-        request = self.app.REQUEST
-        self.setRoles(['Manager', 'Member'])
+        request = self.layer['request']
+        setRoles(self.portal, TEST_USER_ID, ['Manager', 'Member'])
         self.portal.invokeFactory('Folder', 'f1')
         context = getattr(self.portal, 'f1')
         alsoProvides(context, INavigationRoot)
@@ -43,11 +45,11 @@ class TestContentViewsViewlet(ViewletsTestCase):
     """Test the content views viewlet.
     """
 
-    def afterSetUp(self):
+    def setUp(self):
+        super(TestContentViewsViewlet, self).setUp()
         self.folder.invokeFactory('Document', 'test',
                                   title='Test default page')
-        self.folder.test.unmarkCreationFlag()
-        self.folder.setTitle(u"Folder")
+        self.folder.title = u"Folder"
 
     def _invalidateRequestMemoizations(self):
         try:
@@ -57,7 +59,7 @@ class TestContentViewsViewlet(ViewletsTestCase):
 
     def test_set1_on_portal_root(self):
         self._invalidateRequestMemoizations()
-        self.loginAsPortalOwner()
+        setRoles(self.portal, TEST_USER_ID, ['Manager', 'Member'])
         self.app.REQUEST['ACTUAL_URL'] = self.portal.absolute_url()
         view = ContentViewsViewlet(self.portal, self.app.REQUEST, None)
         view.update()
@@ -65,7 +67,7 @@ class TestContentViewsViewlet(ViewletsTestCase):
 
     def test_set1_NonStructuralFolder(self):
         self._invalidateRequestMemoizations()
-        self.loginAsPortalOwner()
+        setRoles(self.portal, TEST_USER_ID, ['Manager', 'Member'])
         self.app.REQUEST['ACTUAL_URL'] = self.folder.absolute_url()
         directlyProvides(self.folder, INonStructuralFolder)
         view = ContentViewsViewlet(self.folder, self.app.REQUEST, None)
@@ -76,7 +78,7 @@ class TestContentViewsViewlet(ViewletsTestCase):
 
     def test_set1(self):
         self._invalidateRequestMemoizations()
-        self.loginAsPortalOwner()
+        setRoles(self.portal, TEST_USER_ID, ['Manager', 'Member'])
         self.app.REQUEST['ACTUAL_URL'] = '%s/edit?_authenticator=%s' % (
             self.folder.test.absolute_url(),
             auth.createToken()
@@ -93,11 +95,11 @@ class TestTitleViewsViewlet(ViewletsTestCase):
     """Test the title viewlet.
     """
 
-    def afterSetUp(self):
+    def setUp(self):
+        super(TestTitleViewsViewlet, self).setUp()
         self.folder.invokeFactory('Document', 'test',
                                   title='Test default page')
-        self.folder.test.unmarkCreationFlag()
-        self.folder.setTitle(u"Folder")
+        self.folder.title = u"Folder"
 
     def _invalidateRequestMemoizations(self):
         try:
@@ -109,7 +111,7 @@ class TestTitleViewsViewlet(ViewletsTestCase):
         """Title viewlet renders navigation root title
         """
         self._invalidateRequestMemoizations()
-        self.loginAsPortalOwner()
+        setRoles(self.portal, TEST_USER_ID, ['Manager', 'Member'])
         self.app.REQUEST['ACTUAL_URL'] = self.portal.absolute_url()
         viewlet = TitleViewlet(self.portal, self.app.REQUEST, None)
         viewlet.update()
@@ -126,7 +128,7 @@ class TestTitleViewsViewlet(ViewletsTestCase):
         """Title viewlet renders navigation root title
         """
         self._invalidateRequestMemoizations()
-        self.loginAsPortalOwner()
+        setRoles(self.portal, TEST_USER_ID, ['Manager', 'Member'])
         self.app.REQUEST['ACTUAL_URL'] = self.folder.test.absolute_url()
         viewlet = TitleViewlet(self.folder.test, self.app.REQUEST, None)
         viewlet.update()
@@ -145,30 +147,13 @@ class TestTitleViewsViewlet(ViewletsTestCase):
         """Title viewlet renders navigation root title
         """
         self._invalidateRequestMemoizations()
-        self.loginAsPortalOwner()
+        setRoles(self.portal, TEST_USER_ID, ['Manager', 'Member'])
         self.app.REQUEST['ACTUAL_URL'] = self.folder.test.absolute_url()
         directlyProvides(self.folder, INavigationRoot)
         viewlet = TitleViewlet(self.folder.test, self.app.REQUEST, None)
         viewlet.update()
         self.assertEqual(viewlet.site_title,
                          u'Test default page &mdash; Folder')
-
-    def test_title_viewlet_in_portal_factory(self):
-        """Title viewlet renders navigation root title in portal factory
-        """
-        self._invalidateRequestMemoizations()
-        self.loginAsPortalOwner()
-
-        factory_folder = self.folder.portal_factory
-        factory_document = (factory_folder
-                            .restrictedTraverse('Document/document'))
-        self.app.REQUEST['ACTUAL_URL'] = factory_document.absolute_url()
-
-        directlyProvides(self.folder, INavigationRoot)
-        viewlet = TitleViewlet(factory_document, self.app.REQUEST, None)
-        viewlet.update()
-        self.assertEqual(viewlet.site_title,
-                         u'Add Page &mdash; Folder')
 
 
 class TestLogoViewlet(ViewletsTestCase):
@@ -254,7 +239,7 @@ class TestGlobalSectionsViewlet(ViewletsTestCase):
     def test_selectedtabs_navroot(self):
         """ Test selected tabs with a INavigationroot folder involved
         """
-        self.setRoles(('Manager',))
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
         self.portal.invokeFactory('Folder', 'navroot', title='My new root')
         navroot = self.portal['navroot']
         alsoProvides(navroot, INavigationRoot)

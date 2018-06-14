@@ -2,23 +2,33 @@
 from DateTime import DateTime
 from gzip import GzipFile
 from plone.app.layout.navigation.interfaces import INavigationRoot
-from plone.app.testing.bbb import PloneTestCase
+from plone.app.layout.testing import INTEGRATION_TESTING
+from plone.app.testing import login
+from plone.app.testing import logout
+from plone.app.testing import setRoles
+from plone.app.testing import TEST_USER_ID
+from plone.app.testing import TEST_USER_NAME
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces import ISearchSchema
 from Products.CMFPlone.interfaces import ISiteSchema
-from six import StringIO
+from Products.CMFPlone.utils import safe_unicode
+from six import BytesIO
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.interface import alsoProvides
 from zope.publisher.interfaces import INotFound
 
+import unittest
 
-class SiteMapTestCase(PloneTestCase):
+
+class SiteMapTestCase(unittest.TestCase):
     """base test case with convenience methods for all sitemap tests"""
 
-    def afterSetUp(self):
-        super(SiteMapTestCase, self).afterSetUp()
+    layer = INTEGRATION_TESTING
+
+    def setUp(self):
+        self.portal = self.layer['portal']
         registry = getUtility(IRegistry)
         self.site_settings = registry.forInterface(ISiteSchema, prefix="plone")
         self.site_settings.enable_sitemap = True
@@ -39,7 +49,7 @@ class SiteMapTestCase(PloneTestCase):
             self.portal, 'portal_properties').site_properties
 
         # setup private content that isn't accessible for anonymous
-        self.loginAsPortalOwner()
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
         self.portal.invokeFactory(id='private', type_name='Document')
         private = self.portal.private
         self.assertTrue('private' == self.wftool.getInfoFor(private,
@@ -58,14 +68,14 @@ class SiteMapTestCase(PloneTestCase):
         self.wftool.doActionFor(pending, 'submit')
         self.assertTrue('pending' == self.wftool.getInfoFor(pending,
                                                             'review_state'))
-        self.logout()
+        logout()
 
     def uncompress(self, sitemapdata):
-        sio = StringIO(sitemapdata)
+        sio = BytesIO(sitemapdata)
         unziped = GzipFile(fileobj=sio)
         xml = unziped.read()
         unziped.close()
-        return xml
+        return safe_unicode(xml)
 
     def test_disabled(self):
         '''
@@ -89,14 +99,15 @@ class SiteMapTestCase(PloneTestCase):
         '''
 
         # first round as an authenticated (manager)
-        self.loginAsPortalOwner()
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
+        login(self.portal, TEST_USER_NAME)
         xml = self.uncompress(self.sitemap())
         self.assertTrue('<loc>http://nohost/plone/private</loc>' in xml)
         self.assertTrue('<loc>http://nohost/plone/pending</loc>' in xml)
         self.assertTrue('<loc>http://nohost/plone/published</loc>' in xml)
 
         # second round as anonymous
-        self.logout()
+        logout()
         xml = self.uncompress(self.sitemap())
         self.assertFalse('<loc>http://nohost/plone/private</loc>' in xml)
         self.assertFalse('<loc>http://nohost/plone/pending</loc>' in xml)
@@ -116,7 +127,8 @@ class SiteMapTestCase(PloneTestCase):
         self.assertTrue('<loc>http://nohost/plone/published</loc>' in xml)
 
         # second round as an authenticated (manager)
-        self.loginAsPortalOwner()
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
+        login(self.portal, TEST_USER_NAME)
         xml = self.uncompress(self.sitemap())
         self.assertTrue('<loc>http://nohost/plone/private</loc>' in xml)
         self.assertTrue('<loc>http://nohost/plone/pending</loc>' in xml)
@@ -132,18 +144,19 @@ class SiteMapTestCase(PloneTestCase):
         self.assertFalse('<loc>http://nohost/plone/pending</loc>' in xml)
 
         # changing the workflow state
-        self.loginAsPortalOwner()
+        login(self.portal, TEST_USER_NAME)
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
         pending = self.portal.pending
         self.wftool.doActionFor(pending, 'publish')
-        self.logout()
+        logout()
 
         xml = self.uncompress(self.sitemap())
         self.assertTrue('<loc>http://nohost/plone/pending</loc>' in xml)
 
         # removing content
-        self.loginAsPortalOwner()
+        login(self.portal, TEST_USER_NAME)
         self.portal.manage_delObjects(['published', ])
-        self.logout()
+        logout()
 
         xml = self.uncompress(self.sitemap())
         self.assertFalse('<loc>http://nohost/plone/published</loc>' in xml)
@@ -153,7 +166,8 @@ class SiteMapTestCase(PloneTestCase):
         Sitemap generated from an INavigationRoot
         '''
         # setup navroot content that is accessible for anonymous
-        self.loginAsPortalOwner()
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
+        login(self.portal, TEST_USER_NAME)
         self.portal.invokeFactory(id='navroot', type_name='Folder')
         navroot = self.portal.navroot
         self.wftool.doActionFor(navroot, 'publish')
@@ -165,7 +179,7 @@ class SiteMapTestCase(PloneTestCase):
         self.wftool.doActionFor(published, 'publish')
         self.assertTrue('published' == self.wftool.getInfoFor(
             published, 'review_state'))
-        self.logout()
+        logout()
 
         sitemap = getMultiAdapter((self.portal.navroot, self.portal.REQUEST),
                                   name='sitemap.xml.gz')
@@ -180,7 +194,8 @@ class SiteMapTestCase(PloneTestCase):
         Test that types_not_searched is respected
         '''
         # Set News Items not to be searchable (more likely Images)
-        self.loginAsPortalOwner()
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
+        login(self.portal, TEST_USER_NAME)
         self.portal.invokeFactory(id='newsitem', type_name='News Item')
         newsitem = self.portal.newsitem
         self.wftool.doActionFor(newsitem, 'publish')
@@ -189,7 +204,7 @@ class SiteMapTestCase(PloneTestCase):
         registry = getUtility(IRegistry)
         search_settings = registry.forInterface(ISearchSchema, prefix="plone")
         search_settings.types_not_searched = ('News Item',)
-        self.logout()
+        logout()
 
         xml = self.uncompress(self.sitemap())
         self.assertFalse('<loc>http://nohost/plone/newsitem</loc>' in xml)
@@ -199,7 +214,8 @@ class SiteMapTestCase(PloneTestCase):
         Test that typesUseViewActionInListings is respected
         '''
         # Set News Items not to be searchable (more likely Images)
-        self.loginAsPortalOwner()
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
+        login(self.portal, TEST_USER_NAME)
         self.portal.invokeFactory(id='newsitem', type_name='News Item')
         newsitem = self.portal.newsitem
         self.wftool.doActionFor(newsitem, 'publish')
@@ -208,7 +224,7 @@ class SiteMapTestCase(PloneTestCase):
         registry = getUtility(IRegistry)
         registry['plone.types_use_view_action_in_listings'] = [u'News Item']
 
-        self.logout()
+        logout()
 
         xml = self.uncompress(self.sitemap())
         self.assertTrue('<loc>http://nohost/plone/newsitem/view</loc>' in xml)
@@ -219,7 +235,8 @@ class SiteMapTestCase(PloneTestCase):
         their or their parent's modification time.
         '''
 
-        self.loginAsPortalOwner()
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
+        login(self.portal, TEST_USER_NAME)
         self.portal.invokeFactory(id='folder', type_name='Folder')
         folder = self.portal.folder
         folder.default_page = "default"
@@ -233,14 +250,13 @@ class SiteMapTestCase(PloneTestCase):
         self.assertTrue('published' == self.wftool.getInfoFor(
             default, 'review_state'))
         self.assertTrue(self.portal.plone_utils.isDefaultPage(default))
-
         default.modification_date = DateTime("2001-01-01")
         folder.modification_date = DateTime("2000-01-01")
-        self.portal.portal_catalog.reindexObject(folder)
-        self.portal.portal_catalog.reindexObject(default)
+        self.portal.portal_catalog.reindexObject(folder, idxs=['modified', 'is_default_page', 'effective'])
+        self.portal.portal_catalog.reindexObject(default, idxs=['modified', 'is_default_page', 'effective'])
         self.portal.default_page = "published"
-        self.portal.portal_catalog.reindexObject(self.portal.published)
-        self.logout()
+        self.portal.portal_catalog.reindexObject(self.portal.published, idxs=['modified', 'is_default_page', 'effective'])
+        logout()
 
         xml = self.uncompress(self.sitemap())
         self.assertFalse(

@@ -1,15 +1,18 @@
 # -*- coding: utf-8 -*-
 from plone.app.layout.viewlets.content import ContentHistoryViewlet
 from plone.app.layout.viewlets.content import WorkflowHistoryViewlet
-from plone.app.layout.viewlets.tests.base import ViewletsTestCase
+from plone.app.layout.viewlets.tests.base import ViewletsFunctionalTestCase
+from plone.app.testing import login
+from plone.app.testing import logout
+from plone.app.testing import setRoles
+from plone.app.testing import TEST_USER_NAME
+from plone.app.testing import TEST_USER_ID
 
 
-class TestWorkflowHistoryViewlet(ViewletsTestCase):
-    """
-    Test the workflow history viewlet
-    """
+class TestWorkflowHistoryViewlet(ViewletsFunctionalTestCase):
 
-    def afterSetUp(self):
+    def setUp(self):
+        super(TestWorkflowHistoryViewlet, self).setUp()
         # add document, perform transition, set history for non-existent
         # member and also None (anonymous)
         self.folder.invokeFactory('Document', 'd1')
@@ -33,7 +36,8 @@ class TestWorkflowHistoryViewlet(ViewletsTestCase):
         wf_tool = self.portal.portal_workflow
         request = self.app.REQUEST
         context = getattr(self.folder, 'd1')
-        self.loginAsPortalOwner()
+        login(self.portal, TEST_USER_NAME)
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
         wf_tool.doActionFor(context, 'publish')
 
         viewlet = WorkflowHistoryViewlet(context, request, None, None)
@@ -45,11 +49,11 @@ class TestWorkflowHistoryViewlet(ViewletsTestCase):
 
         # add a temporary user to perform a transition
         self.addMember('tempuser', roles=('Member', 'Manager'))
-        self.login('tempuser')
+        login(self.portal, 'tempuser')
         wf_tool.doActionFor(context, action='retract', actor=None)
-        self.logout()
+        logout()
 
-        self.loginAsPortalOwner()
+        login(self.portal, TEST_USER_NAME)
 
         # remove the user
         self.delMember('tempuser')
@@ -64,43 +68,44 @@ class TestWorkflowHistoryViewlet(ViewletsTestCase):
         self.assertEqual(history[0]['actor_home'], '')
 
 
-class TestContentHistoryViewlet(ViewletsTestCase):
-    """
-    Test the workflow history viewlet
-    """
+class TestContentHistoryViewlet(ViewletsFunctionalTestCase):
 
-    def afterSetUp(self):
+    def setUp(self):
+        super(TestContentHistoryViewlet, self).setUp()
         # add document, perform transition, set history for non-existent
         # member and also None (anonymous)
         self.folder.invokeFactory('Document', 'd1')
 
-    def test_emptyHistory(self):
+    def test_initialHistory(self):
         request = self.app.REQUEST
         context = getattr(self.folder, 'd1')
         viewlet = ContentHistoryViewlet(context, request, None, None)
         viewlet.update()
-        self.assertEqual(viewlet.revisionHistory(), [])
+        self.assertEqual(len(viewlet.revisionHistory()), 1)
 
     def test_revisionHistory(self):
         repo_tool = self.portal.portal_repository
         request = self.app.REQUEST
         context = getattr(self.folder, 'd1')
-        self.loginAsPortalOwner()
-        repo_tool.save(context, comment='Initial Revision')
-
         viewlet = ContentHistoryViewlet(context, request, None, None)
         viewlet.update()
 
+        # after creating the item the is a first revision
         history = viewlet.revisionHistory()
         self.assertEqual(len(history), 1)
+
+        repo_tool.save(context, comment='Initial Revision')
+        viewlet.update()
+        history = viewlet.revisionHistory()
+        self.assertEqual(len(history), 2)
         self.assertEqual(history[0]['comments'], 'Initial Revision')
 
         repo_tool.save(context, comment='Second Revision')
         viewlet.update()
         history = viewlet.revisionHistory()
         self.assertTrue(
-            'http://nohost/plone/Members/test_user_1_/d1/@@history?one=1&two=0' in history[
-                0]['diff_previous_url']
+            'http://nohost/plone/Members/test_user_1_/d1/@@history?one=2&two=1'
+            in history[0]['diff_previous_url']
         )
 
         # check diff link does not appear if content is not diffable
@@ -116,7 +121,8 @@ class TestContentHistoryViewlet(ViewletsTestCase):
         repo_tool = self.portal.portal_repository
         request = self.app.REQUEST
         context = getattr(self.folder, 'd1')
-        self.loginAsPortalOwner()
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
+        login(self.portal, TEST_USER_NAME)
         repo_tool.save(context, comment='Initial Revision')
         repo_tool.save(context, comment='Second Revision')
 
