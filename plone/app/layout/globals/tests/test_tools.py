@@ -1,13 +1,19 @@
 # -*- coding: utf-8 -*-
-from plone.app.layout.globals.tests.base import GlobalsTestCase
 from Products.CMFPlone.utils import getToolByName
+from plone.app.layout.testing import INTEGRATION_TESTING
+
+import unittest
 
 
-class TestToolsView(GlobalsTestCase):
+class TestToolsView(unittest.TestCase):
     """Tests the global tools view.
     """
 
-    def afterSetUp(self):
+    layer = INTEGRATION_TESTING
+
+    def setUp(self):
+        self.portal = self.layer['portal']
+        self.folder = self.portal['Members']
         self.view = self.folder.restrictedTraverse('@@plone_tools')
 
     def test_actions(self):
