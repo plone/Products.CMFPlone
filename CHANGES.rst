@@ -170,3 +170,6 @@ Bug Fixes:
 
 - Remove depricated ``type`` attribute from ``script`` and ``link`` tags.
   [newbazz]
+
+- Fix some robotframework warnings.
+  [gforcada]

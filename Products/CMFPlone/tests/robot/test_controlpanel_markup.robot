@@ -89,8 +89,8 @@ With the label
 
 label "${title}"
     [Return]  ${for}
-    ${for}=  Get Element Attribute  xpath=//label[contains(., "${title}")]@for
+    ${for}=  Get Element Attribute  xpath=//label[contains(., "${title}")]  for
 
 label2 "${title}"
     [Return]  ${for}
-    ${for}=  Get Element Attribute  xpath=//label[contains(., "${title}")]//input
+    ${for}=  Get Element Attribute  xpath=//label[contains(., "${title}")]  input
