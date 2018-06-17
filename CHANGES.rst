@@ -15,7 +15,9 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Helper `getNavigationRoot` returns site, if context is not in
+  acquisition chain (eg AJAX calls)
+  [tomgross]
 
 
 2.8.0 (2018-04-24)

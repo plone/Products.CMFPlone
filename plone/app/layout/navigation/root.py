@@ -6,6 +6,7 @@ from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from zope.component import getUtility
+from zope.component.hooks import getSite
 
 
 def getNavigationRoot(context, relativeRoot=None):
@@ -25,7 +26,11 @@ def getNavigationRoot(context, relativeRoot=None):
     through parents, looking for an object implementing INavigationRoot.
     Return the path of that root.
     """
-    portal_url = getToolByName(context, 'portal_url')
+    try:
+        portal_url = getToolByName(context, 'portal_url')
+    except AttributeError:
+        site = getSite()
+        return '/'.join(site.getPhysicalPath())
 
     if relativeRoot is None:
         # fetch from portal_properties
