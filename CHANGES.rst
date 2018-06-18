@@ -4,10 +4,6 @@ Changelog
 2.8.1 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
 New features:
 
 - Pagination: made label and arrows easier to customise.
