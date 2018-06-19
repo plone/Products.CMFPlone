@@ -5,36 +5,30 @@
    CMFPlone fixture at some point.
 """
 from plone.app import testing
-from plone.app.testing.bbb import PloneTestCase as FunctionalTestCase
-from plone.app.testing.bbb import PloneTestCaseFixture
+from plone.app.testing import logout
+from plone.app.testing import TEST_USER_NAME
 from plone.protect.authenticator import createToken
+from plone.testing.z2 import Browser
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 from six import StringIO
 from six.moves.urllib.parse import urlencode
 
 import re
+import six
 import transaction
+import unittest
 
 
-class ControlPanelFixture(PloneTestCaseFixture):
-
-    def setUpPloneSite(self, portal):
-        super(ControlPanelFixture, self).setUpPloneSite(portal)
-        portal.acl_users.userFolderAddUser('root', 'secret', ['Manager'], [])
-
-
-CP_FIXTURE = ControlPanelFixture()
-CP_FUNCTIONAL_LAYER = testing.FunctionalTesting(
-    bases=(CP_FIXTURE,), name='ControlPanel:Functional')
-
-
-class UserGroupsControlPanelTestCase(FunctionalTestCase):
+class UserGroupsControlPanelTestCase(unittest.TestCase):
     """user/groups-specific test case"""
 
-    layer = CP_FUNCTIONAL_LAYER
+    layer = PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 
-    def afterSetUp(self):
-        super(UserGroupsControlPanelTestCase, self).afterSetUp()
+    def setUp(self):
+        self.portal = self.layer['portal']
+        self.portal_url = self.portal.absolute_url()
+        self.request = self.layer['request']
         members = [
             {
                 'username': 'DIispfuF',
@@ -50,12 +44,16 @@ class UserGroupsControlPanelTestCase(FunctionalTestCase):
                 properties=member
             )
         transaction.commit()
+        self.browser =  Browser(self.layer['app'])
+        self.browser.handleErrors = False
+        self.browser.addHeader(
+            'Authorization', 'Basic {0}:{1}'.format(TEST_USER_NAME, 'secret'))
 
 
 class TestSiteAdministratorRoleFunctional(UserGroupsControlPanelTestCase):
 
     def _getauth(self, userName):
-        self.login(userName)
+        # login(self.portal. TEST_USER_NAME)
         return createToken()
 
     def _simplify_white_space(self, text):
@@ -78,8 +76,8 @@ class TestSiteAdministratorRoleFunctional(UserGroupsControlPanelTestCase):
         text = re.sub('\s+', ' ', text)
         return text
 
-    def afterSetUp(self):
-        super(TestSiteAdministratorRoleFunctional, self).afterSetUp()
+    def setUp(self):
+        super(TestSiteAdministratorRoleFunctional, self).setUp()
 
         # add a user with the Site Administrator role
         self.portal.portal_membership.addMember(
@@ -97,19 +95,14 @@ class TestSiteAdministratorRoleFunctional(UserGroupsControlPanelTestCase):
     def testControlPanelOverview(self):
         # make sure we can view the Site Setup page,
         # at both old and new URLs
-        res = self.publish(
-            '/plone/plone_control_panel', 'siteadmin:secret')
-        self.assertEqual(200, res.status)
-        res = self.publish(
-            '/plone/@@overview-controlpanel', 'siteadmin:secret'
-        )
-        self.assertEqual(200, res.status)
+        view = self.portal.restrictedTraverse('plone_control_panel')
+        self.assertTrue(view())
+        view = self.portal.restrictedTraverse('overview-controlpanel')
+        self.assertTrue(view())
 
     def testUserManagerRoleCheckboxIsDisabledForNonManagers(self):
-        res = self.publish(
-            '/plone/@@usergroup-userprefs', basic='siteadmin:secret'
-        )
-        contents = res.getOutput()
+        view = self.portal.restrictedTraverse('@@usergroup-userprefs')
+        contents = view()
         self.assertTrue('<input type="checkbox" class="noborder" '
                         'name="users.roles:list:records" value="Manager" '
                         'disabled="disabled" />' in contents)
@@ -123,16 +116,17 @@ class TestSiteAdministratorRoleFunctional(UserGroupsControlPanelTestCase):
             'form.button.Modify': 'Save',
             'form.submitted': 1,
         }
-        post_data = StringIO(urlencode(form))
-        res = self.publish('/plone/@@usergroup-userprefs',
-                           request_method='POST', stdin=post_data,
-                           basic='root:secret')
-        self.assertEqual(200, res.status)
+        post_data = urlencode(form)
+        self.browser.post(self.portal_url + '/@@usergroup-userprefs', post_data)
+        self.assertIn('Status: 200', str(self.browser.headers))
+
         roles = self.portal.acl_users.getUserById(self.normal_user).getRoles()
         self.assertEqual(['Manager', 'Authenticated'], roles)
 
     def testNonManagersCannotDelegateManagerRoleForUsers(self):
         # a user without the Manager role cannot delegate the Manager role
+        self.browser.addHeader(
+            'Authorization', 'Basic siteadmin:secret')
         form = {
             '_authenticator': self.siteadmin_token,
             'users.id:records': self.normal_user,
@@ -140,11 +134,10 @@ class TestSiteAdministratorRoleFunctional(UserGroupsControlPanelTestCase):
             'form.button.Modify': 'Save',
             'form.submitted': 1,
         }
-        post_data = StringIO(urlencode(form))
-        res = self.publish('/plone/@@usergroup-userprefs',
-                           request_method='POST', stdin=post_data,
-                           basic='siteadmin:secret')
-        self.assertEqual(403, res.status)
+        post_data = urlencode(form)
+        self.browser.handleErrors = True
+        self.browser.post(self.portal_url + '/@@usergroup-userprefs', post_data)
+        self.assertIn('/require_login?', self.browser.url)
         roles = self.portal.acl_users.getUserById(self.normal_user).getRoles()
         self.assertEqual(['Member', 'Authenticated'], roles)
 
