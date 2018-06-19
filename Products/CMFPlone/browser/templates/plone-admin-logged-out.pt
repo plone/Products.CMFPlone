@@ -22,7 +22,7 @@
     tal:attributes="src string:${context/absolute_url}/++resource++plone-logo.png"/>
 
   <h1 i18n:translate="">
-      You have been logged out.
+      You are now logged out.
   </h1>
 
   <p>

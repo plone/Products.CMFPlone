@@ -13,17 +13,17 @@ Some bootstrapping::
     >>> portal = layer['portal']
     >>> browser = Browser(app)
 
-First we login as admin.
+First we login as admin::
 
     >>> from plone.app.testing import SITE_OWNER_NAME
     >>> from plone.app.testing import SITE_OWNER_PASSWORD
     >>> browser.open('http://nohost/plone/login')
-    >>> browser.getControl('Login Name').value = SITE_OWNER_NAME
-    >>> browser.getControl('Password').value = SITE_OWNER_PASSWORD
+    >>> browser.getControl(name='__ac_name').value = SITE_OWNER_NAME
+    >>> browser.getControl(name='__ac_password').value = SITE_OWNER_PASSWORD
     >>> browser.getControl('Log in').click()
 
 Now we allow users to register themselves. We also allow them to pick
-their own passwords to ease testing.
+their own passwords to ease testing::
 
     >>> browser.open('http://nohost/plone/@@security-controlpanel')
     >>> browser.getControl(name='form.widgets.enable_self_reg:list').value = True
@@ -32,7 +32,7 @@ their own passwords to ease testing.
     >>> 'Changes saved' in browser.contents
     True
 
-We logout:
+We logout::
 
     >>> browser.open('http://nohost/plone/logout')
 
@@ -41,7 +41,7 @@ Registration
 ------------
 
 We then visit the registration form. We can fill in a user name
-there:
+there::
 
     >>> browser.open('http://nohost/plone/@@register')
     >>> browser.getControl('User Name').value='username'
@@ -52,14 +52,14 @@ there:
     >>> 'You have been registered.' in browser.contents
     True
 
-So that still works. Now we become admin again.
+So that still works. Now we become admin again::
 
     >>> browser.open('http://nohost/plone/login')
-    >>> browser.getControl('Login Name').value = SITE_OWNER_NAME
-    >>> browser.getControl('Password').value = SITE_OWNER_PASSWORD
+    >>> browser.getControl(name='__ac_name').value = SITE_OWNER_NAME
+    >>> browser.getControl(name='__ac_password').value = SITE_OWNER_PASSWORD
     >>> browser.getControl('Log in').click()
 
-We switch on using the email address as login name.
+We switch on using the email address as login name::
 
     >>> browser.open('http://nohost/plone/@@security-controlpanel')
     >>> browser.getControl(name='form.widgets.use_email_as_login:list').value = ['selected']
@@ -69,7 +69,7 @@ We switch on using the email address as login name.
     >>> browser.open('http://nohost/plone/logout')
 
 Now we visit the registration form. The user name field is no longer
-there:
+there::
 
     >>> browser.open('http://nohost/plone/@@register')
     >>> browser.getControl('User Name')
@@ -77,7 +77,7 @@ there:
     ...
     LookupError: label 'User Name'...
 
-We fill in the rest of the form:
+We fill in the rest of the form::
 
     >>> browser.getControl('E-mail').value='email@example.org'
     >>> browser.getControl('Password').value = SITE_OWNER_PASSWORD
@@ -90,11 +90,11 @@ We fill in the rest of the form:
 Login
 -----
 
-We can now login with this email address:
+We can now login with this email address::
 
     >>> browser.open('http://nohost/plone/login')
-    >>> browser.getControl('E-mail').value = 'email@example.org'
-    >>> browser.getControl('Password').value = SITE_OWNER_PASSWORD
+    >>> browser.getControl(name='__ac_name').value = 'email@example.org'
+    >>> browser.getControl(name='__ac_password').value = SITE_OWNER_PASSWORD
     >>> browser.getControl('Log in').click()
     >>> 'You are now logged in' in browser.contents
     True
@@ -104,7 +104,7 @@ the browser even when the user is not actually logged in: the text
 'Log in' still appears and no link to the user's dashboard is
 available. Or even more subtle: that text and that link are there,
 but visiting another page will show that the user does not remain
-logged it. This test should be enough:
+logged it. This test should be enough::
 
     >>> browser.open('http://nohost/plone')
     >>> 'Log in' in browser.contents
@@ -115,19 +115,19 @@ The first registered user might still be able to login with his
 non-email login name, but cannot login with his email address, as his
 account was created before the policy to use emails as logins was
 used. A future Plone version may solve that automatically. For now,
-this can be remedied by running the provided migration.
+this can be remedied by running the provided migration::
 
     >>> from zope.component import getMultiAdapter
     >>> migrationView = getMultiAdapter((portal, portal.REQUEST), name='migrate-to-emaillogin')
     >>> result = migrationView.switch_to_email()
     >>> import transaction; transaction.commit()
 
-Now we try logging out and in again with the given email address.
+Now we try logging out and in again with the given email address::
 
     >>> browser.open('http://nohost/plone/logout')
     >>> browser.open('http://nohost/plone/login')
-    >>> browser.getControl('E-mail').value = 'username@example.org'
-    >>> browser.getControl('Password').value = SITE_OWNER_PASSWORD
+    >>> browser.getControl(name='__ac_name').value = 'username@example.org'
+    >>> browser.getControl(name='__ac_password').value = SITE_OWNER_PASSWORD
     >>> browser.getControl('Log in').click()
     >>> browser.open('http://nohost/plone')
     >>> 'Log in' in browser.contents
@@ -142,17 +142,17 @@ Changing the email address
 --------------------------
 
 We again log in as the user created after using email as login was
-switched on.
+switched on::
 
     >>> browser.open('http://nohost/plone/login')
-    >>> browser.getControl('E-mail').value = 'email@example.org'
-    >>> browser.getControl('Password').value = SITE_OWNER_PASSWORD
+    >>> browser.getControl(name='__ac_name').value = 'email@example.org'
+    >>> browser.getControl(name='__ac_password').value = SITE_OWNER_PASSWORD
     >>> browser.getControl('Log in').click()
     >>> browser.open('http://nohost/plone')
     >>> 'Log in' in browser.contents
     False
 
-We change the email address.
+We change the email address::
 
     >>> browser.open('http://nohost/plone/@@personal-information')
     >>> browser.getControl('E-mail').value = 'email2@example.org'
@@ -164,28 +164,28 @@ We change the email address.
 
 After those two changes, we can no longer login with our first email
 address. This may be fixable by changing PluggableAuthService if we
-want. (See PLIP9214 notes.)
+want. (See PLIP9214 notes.)::
 
     >>> browser.open('http://nohost/plone/logout')
     >>> browser.open('http://nohost/plone/login')
-    >>> browser.getControl('E-mail').value = 'email1@example.org'
-    >>> browser.getControl('Password').value = SITE_OWNER_PASSWORD
+    >>> browser.getControl(name='__ac_name').value = 'email1@example.org'
+    >>> browser.getControl(name='__ac_password').value = SITE_OWNER_PASSWORD
     >>> browser.getControl('Log in').click()
     >>> 'Login failed' in browser.contents
     True
 
-The current email address of course works fine for logging in:
+The current email address of course works fine for logging in::
 
     >>> browser.open('http://nohost/plone/logout')
     >>> browser.open('http://nohost/plone/login')
-    >>> browser.getControl('E-mail').value = 'email2@example.org'
-    >>> browser.getControl('Password').value = SITE_OWNER_PASSWORD
+    >>> browser.getControl(name='__ac_name').value = 'email2@example.org'
+    >>> browser.getControl(name='__ac_password').value = SITE_OWNER_PASSWORD
     >>> browser.getControl('Log in').click()
     >>> browser.open('http://nohost/plone')
     >>> 'Log in' in browser.contents
     False
 
-Picking the e-mail address of another user should of course fail:
+Picking the e-mail address of another user should of course fail::
 
     >>> browser.open('http://nohost/plone/@@personal-information')
     >>> browser.getControl('E-mail').value = 'username@example.org'
@@ -201,23 +201,21 @@ These tests are partly copied from... PasswordResetTool. (surprise!)
 
 Now it is time to forget our password and click the ``Forgot your
 password`` link in the login form. This should work by just filling
-in our current email address:
+in our current email address::
 
     >>> browser.open('http://nohost/plone/login')
-    >>> browser.getLink('we can send you a new one').click()
-    >>> browser.url.startswith('http://nohost/plone/mail_password_form')
+    >>> browser.getLink('Get help').click()
+    >>> browser.url.startswith('http://nohost/plone/@@login-help')
     True
-    >>> form = browser.getForm(name='mail_password')
-    >>> 'My email address is' in browser.contents
-    True
-    >>> form.getControl(name='userid').value = 'email2@example.org'
-    >>> form.getControl('Start password reset').click()
-    >>> 'Password reset confirmation sent' in browser.contents
+    >>> form = browser.getForm(index=1)
+    >>> form.getControl(name='form.widgets.reset_password').value = 'email2@example.org'
+    >>> form.getControl('Reset your password').click()
+    >>> 'An email has been sent with instructions on how to reset your password.' in browser.contents
     True
 
 As part of our test setup, we replaced the original MailHost with our
 own version. Our version doesn't mail messages, it just collects them
-in a list called ``messages``:
+in a list called ``messages``::
 
     >>> mailhost = portal.MailHost
     >>> len(mailhost.messages)
@@ -225,19 +223,19 @@ in a list called ``messages``:
     >>> msg = mailhost.messages[0]
 
 Now that we have the message, we want to look at its contents, and
-then we extract the address that lets us reset our password:
+then we extract the address that lets us reset our password::
 
     >>> "To: email2@example.org" in msg
     True
 
-Now get the link:
+Now get the link::
 
     >>> import quopri
     >>> msg = quopri.decodestring(msg)
     >>> url_index = msg.index('http://nohost/plone/passwordreset/')
     >>> address = msg[url_index:].split()[0]
 
-Now that we have the address, we will reset our password:
+Now that we have the address, we will reset our password::
 
     >>> browser.open(address)
     >>> "Set your password" in browser.contents
@@ -250,18 +248,18 @@ Now that we have the address, we will reset our password:
     >>> "Your password has been set successfully." in browser.contents
     True
 
-We can now login using our new password:
+We can now login using our new password::
 
     >>> browser.open('http://nohost/plone/login')
-    >>> browser.getControl('E-mail').value = 'email2@example.org'
-    >>> browser.getControl('Password').value = 'secretion'
+    >>> browser.getControl(name='__ac_name').value = 'email2@example.org'
+    >>> browser.getControl(name='__ac_password').value = 'secretion'
     >>> browser.getControl('Log in').click()
     >>> browser.open('http://nohost/plone')
     >>> 'Log in' in browser.contents
     False
     >>> browser.open('http://nohost/plone/logout')
 
-The first user can still reset his password with his user id:
+The first user can still reset his password with his user id::
 
     >>> browser.open('http://nohost/plone/mail_password_form')
     >>> form = browser.getForm(name='mail_password')
@@ -270,7 +268,7 @@ The first user can still reset his password with his user id:
     >>> 'Password reset confirmation sent' in browser.contents
     True
 
-The email is sent to the correct email address:
+The email is sent to the correct email address::
 
     >>> len(mailhost.messages)
     2
@@ -278,13 +276,13 @@ The email is sent to the correct email address:
     >>> "To: username@example.org" in msg
     True
 
-Now get the link:
+Now get the link::
 
     >>> msg = quopri.decodestring(msg)
     >>> url_index = msg.index('http://nohost/plone/passwordreset/')
     >>> address = msg[url_index:].split()[0]
 
-Now that we have the address, we will reset our password:
+Now that we have the address, we will reset our password::
 
     >>> browser.open(address)
     >>> "Set your password" in browser.contents
@@ -299,11 +297,11 @@ Now that we have the address, we will reset our password:
 
 We can now login using our new password. We cannot use the initial
 login name though, but have to use our current email address as that
-is our login name:
+is our login name::
 
     >>> browser.open('http://nohost/plone/login')
-    >>> browser.getControl('E-mail').value = 'username@example.org'
-    >>> browser.getControl('Password').value = 'secretion'
+    >>> browser.getControl(name='__ac_name').value = 'username@example.org'
+    >>> browser.getControl(name='__ac_password').value = 'secretion'
     >>> browser.getControl('Log in').click()
     >>> browser.open('http://nohost/plone')
     >>> 'Log in' in browser.contents

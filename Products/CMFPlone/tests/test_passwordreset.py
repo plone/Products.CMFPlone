@@ -19,7 +19,7 @@ def test_suite():
     return unittest.TestSuite((
         layered(
             doctest.DocFileSuite(
-                'pwreset_browser.txt',
+                'pwreset_browser.rst',
                 optionflags=OPTIONFLAGS,
                 package='Products.CMFPlone.tests',
             ),

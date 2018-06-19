@@ -13,28 +13,14 @@
 </head>
 <body>
 
-  <metal:main fill-slot="main"
-              tal:define="isAnon context/@@plone_portal_state/anonymous">
+<metal:main fill-slot="main">
 
-<tal:reallyloggedout condition="isAnon">
-  <h1 class="documentFirstHeading"
-      i18n:translate="heading_signed_out">You are now logged out</h1>
-
-  <div class="documentDescription"
-     i18n:translate="description_loginagain">You can log in again below.</div>
-
-  <div id="content-core">
-      <metal:login use-macro="context/login_form/macros/login" />
-  </div>
-
-</tal:reallyloggedout>
-
-<tal:notloggedoutafterall tal:condition="not: isAnon">
+<tal:notloggedoutafterall>
     <h1 class="documentFirstHeading"
-        i18n:translate="heading_quit_to_log_out">Still logged in</h1>
+        i18n:translate="heading_quit_to_log_out">Still logged in as a Zope user</h1>
 
     <div class="documentDescription" i18n:translate="description_quit_to_log_out">
-        You are logged in via HTTP authentication (i.e. the Management
+        You are logged in via HTTP authentication (i.e. the Zope Management
         Interface). In order to log out, you must:
     </div>
 
