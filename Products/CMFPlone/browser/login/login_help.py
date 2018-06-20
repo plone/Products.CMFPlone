@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from email import message_from_string
-from email.Header import Header
+from email.header import Header
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
