@@ -96,6 +96,13 @@ is not a valid Interface.
 'plone.app.layout.globals.tests.test_interface.NotAnInterface' \
 is not a valid Interface.
 
+    >>> sorted(view.names_and_descriptions(
+    ...     'plone.app.layout.globals.tests.test_interface.IOne'))[0]
+    ('one_function', 'One function for IOne')
+    >>> sorted(view.names_and_descriptions(
+    ...     'plone.app.layout.globals.tests.test_interface.IOne'))[1]
+    ('one_name', 'One name for IOne')
+
     >>> view.get_base_interface()
     []
     >>> iface_info = view.get_interface_informations(IOne)
@@ -104,12 +111,12 @@ is not a valid Interface.
     >>> iface_info['name']
     'IOne'
     >>> iface_info['doc']
-    'One name for IOne'
+    'One function for IOne'
     >>> iface_info['bases']
     [<InterfaceClass plone.app.layout.globals.tests.test_interface.IZero>]
     >>> iface_info['base_names']
     ['plone.app.layout.globals.tests.test_interface.IOne']
-    >>> iface_info['attrisbutes'][0]['doc']
+    >>> iface_info['attributes'][0]['doc']
     'One name for IOne'
     >>> iface_info['attributes'][0]['name']
     'one_name'
@@ -119,12 +126,6 @@ is not a valid Interface.
     'one_function'
     >>> iface_info['methods'][0]['signature']
     '()'
-    >>> view.names_and_descriptions(
-    ...     'plone.app.layout.globals.tests.test_interface.IOne')[0]
-    ('one_function', 'One function for IOne')
-    >>> view.names_and_descriptions(
-    ...     'plone.app.layout.globals.tests.test_interface.IOne')[1]
-    ('one_name', 'One name for IOne')
 
     """
 
