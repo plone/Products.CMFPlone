@@ -62,6 +62,7 @@ class PloneSite(Container, SkinnableObjectManager, UniqueObject):
     security = ClassSecurityInfo()
     meta_type = portal_type = 'Plone Site'
 
+    # Ensure certain attributes come from the correct base class.
     _checkId = SkinnableObjectManager._checkId
 
     def __getattr__(self, name):
@@ -70,9 +71,10 @@ class PloneSite(Container, SkinnableObjectManager, UniqueObject):
         except AttributeError:
             return super(PloneSite, self).__getattr__(name)
 
+    # Removes the 'Components Folder'
     manage_options = (
-        PortalObjectBase.manage_options[:2] +
-        PortalObjectBase.manage_options[3:])
+        Container.manage_options[:2] +
+        Container.manage_options[3:])
 
     __ac_permissions__ = (
         (AddPortalMember, ()),
@@ -93,11 +95,6 @@ class PloneSite(Container, SkinnableObjectManager, UniqueObject):
     )
 
     security.declareProtected(Permissions.copy_or_move, 'manage_copyObjects')
-
-    manage_renameObject = OrderedContainer.manage_renameObject
-
-    moveObject = OrderedContainer.moveObject
-    moveObjectsByDelta = OrderedContainer.moveObjectsByDelta
 
     # Switch off ZMI ordering interface as it assumes a slightly
     # different functionality
@@ -120,9 +117,11 @@ class PloneSite(Container, SkinnableObjectManager, UniqueObject):
         components.__parent__ = self
         self.setSiteManager(components)
 
+    # From PortalObjectBase.__init__
     def getSkinsFolderName(self):
         return PORTAL_SKINS_TOOL_ID
 
+    # From PortalObjectBase.__init__
     def __before_publishing_traverse__(self, arg1, arg2=None):
         """ Pre-traversal hook.
         """
