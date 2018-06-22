@@ -51,10 +51,6 @@ class EditingControlPanelFunctionalTest(unittest.TestCase):
             self.browser.url.endswith('/plone/@@overview-controlpanel')
         )
 
-    @unittest.skip("TODO: Not implemented yet.")
-    def test_visible_ids_active(self):
-        pass
-
     def test_default_editor(self):
         self.browser.open(
             "%s/@@editing-controlpanel" % self.portal_url)
@@ -62,10 +58,6 @@ class EditingControlPanelFunctionalTest(unittest.TestCase):
         self.browser.getControl('Save').click()
 
         self.assertEqual(self.settings.default_editor, "None")
-
-    @unittest.skip("TODO: Not implemented yet.")
-    def test_default_editor_active(self):
-        pass
 
     def test_available_editors_hidden(self):
         self.browser.open(
@@ -80,10 +72,6 @@ class EditingControlPanelFunctionalTest(unittest.TestCase):
         self.browser.getControl('Save').click()
 
         self.assertEqual(self.settings.ext_editor, True)
-
-    @unittest.skip("TODO: Not implemented yet.")
-    def test_ext_editor_active(self):
-        pass
 
     def test_enable_link_integrity_checks(self):
         self.browser.open(
@@ -110,7 +98,3 @@ class EditingControlPanelFunctionalTest(unittest.TestCase):
         self.browser.getControl('Save').click()
 
         self.assertEqual(self.settings.lock_on_ttw_edit, True)
-
-    @unittest.skip("TODO: Not implemented yet.")
-    def test_lock_on_ttw_edit_active(self):
-        pass
