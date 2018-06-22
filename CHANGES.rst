@@ -31,6 +31,10 @@ Bug fixes:
 
 - Add test for issue #2469.
   [jensens]
+- Fixed tests when IRichText behavior is used.
+  IRichText -> IRichTextBehavior
+  This is a follow up to `issue 476 <https://github.com/plone/plone.app.contenttypes/issues/476>`_.
+  [iham]
 
 
 5.1.3 (2018-06-22)
