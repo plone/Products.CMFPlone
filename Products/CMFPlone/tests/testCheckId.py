@@ -64,14 +64,14 @@ class TestCheckId(PloneTestCase):
         self.assertEqual(r, None)   # success
 
     def testBadId(self):
+        # See https://github.com/zopefoundation/Zope/pull/181
         r = self.folder.check_id('=')
-        self.assertEqual(r, u'= is not a legal name. The following characters '
-                            u'are invalid: =')
+        self.assertEqual(r, None)
 
     def testDecodeId(self):
+        # See https://github.com/zopefoundation/Zope/pull/181
         r = self.folder.check_id('\xc3\xa4')
-        self.assertEqual(r, u'\xe4 is not a legal name. The following '
-                            u'characters are invalid: \xe4')
+        self.assertEqual(r, None)
 
     def testCatalogIndex(self):
         # TODO: Tripwire
@@ -226,7 +226,7 @@ class TestCheckId(PloneTestCase):
         # not defined on the portal root.
         try:
             self.portal.check_id('foo')
-        except AttributeError, e:
+        except AttributeError as e:
             self.fail(e)
 
     def testProxyRoles(self):

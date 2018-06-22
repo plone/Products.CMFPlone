@@ -16,26 +16,28 @@ def traverse(self, name, ignored):
 namespace.view.traverse = traverse
 
 # 3. be sure to check Access contents information permission for FTP users
-from AccessControl import getSecurityManager
-from zExceptions import Unauthorized
-from OFS.ObjectManager import ObjectManager
-ObjectManager.__old_manage_FTPlist = ObjectManager.manage_FTPlist
+from Products.CMFPlone import bbb
+if bbb.HAS_ZSERVER:
+    from AccessControl import getSecurityManager
+    from zExceptions import Unauthorized
+    from OFS.ObjectManager import ObjectManager
+    ObjectManager.__old_manage_FTPlist = ObjectManager.manage_FTPlist
 
 
-def manage_FTPlist(self, REQUEST):
-    """Returns a directory listing consisting of a tuple of
-    (id,stat) tuples, marshaled to a string. Note, the listing it
-    should include '..' if there is a Folder above the current
-    one.
+    def manage_FTPlist(self, REQUEST):
+        """Returns a directory listing consisting of a tuple of
+        (id,stat) tuples, marshaled to a string. Note, the listing it
+        should include '..' if there is a Folder above the current
+        one.
 
-    In the case of non-foldoid objects it should return a single
-    tuple (id,stat) representing itself."""
+        In the case of non-foldoid objects it should return a single
+        tuple (id,stat) representing itself."""
 
-    if not getSecurityManager().checkPermission('Access contents information', self):
-        raise Unauthorized('Not allowed to access contents.')
+        if not getSecurityManager().checkPermission('Access contents information', self):
+            raise Unauthorized('Not allowed to access contents.')
 
-    return self.__old_manage_FTPlist(REQUEST)
-ObjectManager.manage_FTPlist = manage_FTPlist
+        return self.__old_manage_FTPlist(REQUEST)
+    ObjectManager.manage_FTPlist = manage_FTPlist
 
 # 4. Make sure z3c.form widgets don't get declared as public
 from Products.Five.metaconfigure import ClassDirective

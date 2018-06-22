@@ -9,8 +9,7 @@ import os
 import unittest
 
 
-UNITTESTS = ['messages.txt', 'mails.txt', 'emaillogin.txt', 'translate.txt',
-             'pwreset_browser.txt']
+UNITTESTS = ['messages.txt', 'mails.txt', 'emaillogin.rst', 'translate.txt']
 CONTENT_TESTS = [
     'AddMoveAndDeleteDocument.txt',
     'base_tag_not_present.txt',

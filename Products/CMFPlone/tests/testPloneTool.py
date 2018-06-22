@@ -624,7 +624,7 @@ class TestIDGenerationMethods(PloneTestCase.PloneTestCase):
         new_obj = new_obj.__of__(self.folder)
         try:
             title = self.utils.pretty_title_or_id(new_obj)
-        except AttributeError, e:
+        except AttributeError as e:
             self.fail('pretty_title_or_id failed to include context %s' % e)
         self.assertEqual(title, 'portal_catalog')
 

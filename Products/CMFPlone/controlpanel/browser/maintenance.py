@@ -4,7 +4,6 @@ from AccessControl.Permissions import view_management_screens
 from Acquisition import aq_inner
 from App.config import getConfiguration
 from cgi import escape
-from Lifetime import shutdown
 from plone.autoform.form import AutoExtensibleForm
 from plone.memoize.view import memoize
 from plone.protect import CheckAuthenticator
@@ -16,10 +15,15 @@ from z3c.form import button
 from z3c.form import form
 from zope.component import getMultiAdapter
 
-import App
 import logging
 import os
 import time
+
+LIFETIME = True
+try:
+    from Lifetime import shutdown
+except ImportError:
+    LIFETIME = False
 
 
 logger = logging.getLogger(__file__)
@@ -79,7 +83,10 @@ class MaintenanceControlPanel(AutoExtensibleForm, form.EditForm):
         except:
             user = 'unknown user'
         logger.info("Shutdown requested by %s" % user)
-        shutdown(0)
+        if LIFETIME:
+            shutdown(0)
+        else:
+            raise
         # TODO: returning html has no effect in button handlers
         self.request.response.setHeader('X-Theme-Disabled', 'True')
         return """<html><head></head><body>{0}</body></html>""".format(

@@ -36,7 +36,7 @@ class RestrictedPythonTest(TestCase):
         self.addPS('ps', body=psbody)
         try:
             self.folder.ps()
-        except (ImportError, Unauthorized), e:
+        except (ImportError, Unauthorized) as e:
             self.fail(e)
 
     def checkUnauthorized(self, psbody):
@@ -59,21 +59,21 @@ class TestSecurityDeclarations(RestrictedPythonTest):
 
     def testAccess_log(self):
         self.check('from Products.CMFPlone import utils;'
-                   'print utils.log')
+                   'print(utils.log)')
 
     def testImport_log_deprecated(self):
         self.check('from Products.CMFPlone.utils import log_deprecated')
 
     def testAccess_log_deprecated(self):
         self.check('from Products.CMFPlone import utils;'
-                   'print utils.log_deprecated')
+                   'print(utils.log_deprecated)')
 
     def testImport_log_exc(self):
         self.check('from Products.CMFPlone.utils import log_exc')
 
     def testAccess_log_exc(self):
         self.check('from Products.CMFPlone import utils;'
-                   'print utils.log_exc')
+                   'print(utils.log_exc)')
 
     def testImport_getLogger(self):
         self.check('from logging import getLogger')
@@ -88,22 +88,22 @@ class TestSecurityDeclarations(RestrictedPythonTest):
 
     def testAccess_ObjectMoved(self):
         self.check('from Products.CMFCore import WorkflowCore;'
-                   'print WorkflowCore.ObjectMoved')
+                   'print(WorkflowCore.ObjectMoved)')
 
     def testUse_ObjectMoved(self):
         self.check('from Products.CMFCore.WorkflowCore import ObjectMoved;'
-                   'print ObjectMoved("foo").getResult')
+                   'print(ObjectMoved("foo").getResult)')
 
     def testImport_ObjectDeleted(self):
         self.check('from Products.CMFCore.WorkflowCore import ObjectDeleted')
 
     def testAccess_ObjectDeleted(self):
         self.check('from Products.CMFCore import WorkflowCore;'
-                   'print WorkflowCore.ObjectDeleted')
+                   'print(WorkflowCore.ObjectDeleted)')
 
     def testUse_ObjectDeleted(self):
         self.check('from Products.CMFCore.WorkflowCore import ObjectDeleted;'
-                   'print ObjectDeleted().getResult')
+                   'print(ObjectDeleted().getResult)')
 
     def testImport_WorkflowException(self):
         self.check(
@@ -111,23 +111,23 @@ class TestSecurityDeclarations(RestrictedPythonTest):
 
     def testAccess_WorkflowException(self):
         self.check('from Products.CMFCore import WorkflowCore;'
-                   'print WorkflowCore.WorkflowException')
+                   'print(WorkflowCore.WorkflowException)')
 
     def testUse_WorkflowException(self):
         self.check(
             'from Products.CMFCore.WorkflowCore import WorkflowException;'
-            'print WorkflowException().args')
+            'print(WorkflowException().args)')
 
     def testImport_Batch(self):
         self.check('from Products.CMFPlone import Batch')
 
     def testAccess_Batch(self):
         self.check('from Products import CMFPlone;'
-                   'print CMFPlone.Batch')
+                   'print(CMFPlone.Batch)')
 
     def testUse_Batch(self):
         self.check('from Products.CMFPlone import Batch;'
-                   'print Batch([], 10).nexturls')
+                   'print(Batch([], 10).nexturls)')
 
     # utils
 
@@ -136,28 +136,28 @@ class TestSecurityDeclarations(RestrictedPythonTest):
 
     def testAccess_transaction_note(self):
         self.check('import Products.CMFPlone.utils;'
-                   'print Products.CMFPlone.utils.transaction_note')
+                   'print(Products.CMFPlone.utils.transaction_note)')
 
     def testImport_base_hasattr(self):
         self.check('from Products.CMFPlone.utils import base_hasattr')
 
     def testAccess_base_hasattr(self):
         self.check('import Products.CMFPlone.utils;'
-                   'print Products.CMFPlone.utils.base_hasattr')
+                   'print(Products.CMFPlone.utils.base_hasattr)')
 
     def testImport_safe_hasattr(self):
         self.check('from Products.CMFPlone.utils import safe_hasattr')
 
     def testAccess_safe_hasattr(self):
         self.check('import Products.CMFPlone.utils;'
-                   'print Products.CMFPlone.utils.safe_hasattr')
+                   'print(Products.CMFPlone.utils.safe_hasattr)')
 
     def testImport_safe_callable(self):
         self.check('from Products.CMFPlone.utils import safe_callable')
 
     def testAccess_safe_callable(self):
         self.check('import Products.CMFPlone.utils;'
-                   'print Products.CMFPlone.utils.safe_callable')
+                   'print(Products.CMFPlone.utils.safe_callable)')
 
     # Exceptions
 
@@ -166,7 +166,7 @@ class TestSecurityDeclarations(RestrictedPythonTest):
 
     def testAccess_Unauthorized(self):
         self.check('import AccessControl;'
-                   'print AccessControl.Unauthorized')
+                   'print(AccessControl.Unauthorized)')
 
     def testImport_zExceptionsUnauthorized(self):
         # TODO: Note that this is not allowed
@@ -177,7 +177,7 @@ class TestSecurityDeclarations(RestrictedPythonTest):
 
     def testAccess_ConflictError(self):
         self.check('import ZODB.POSException;'
-                   'print ZODB.POSException.ConflictError')
+                   'print(ZODB.POSException.ConflictError)')
 
     def testRaise_ConflictError(self):
         self.assertRaises(ConflictError,
@@ -191,7 +191,7 @@ from ZODB.POSException import ConflictError
 try: raise ConflictError
 except ConflictError: pass
 ''')
-        except Exception, e:
+        except Exception as e:
             self.fail('Failed to catch: %s %s (module %s)' %
                       (e.__class__.__name__, e, e.__module__))
 
@@ -204,7 +204,7 @@ from ZODB.POSException import ConflictError
 try: context.raiseConflictError()
 except ConflictError: pass
 ''')
-        except Exception, e:
+        except Exception as e:
             self.fail('Failed to catch: %s %s (module %s)' %
                       (e.__class__.__name__, e, e.__module__))
 
@@ -213,7 +213,7 @@ except ConflictError: pass
 
     def testAccess_ParseError(self):
         self.check('import Products.ZCTextIndex.ParseTree;'
-                   'print Products.ZCTextIndex.ParseTree.ParseError')
+                   'print(Products.ZCTextIndex.ParseTree.ParseError)')
 
     def testCatch_ParseErrorRaisedByPythonModule(self):
         self.folder._setObject('raiseParseError', dummy.Raiser(ParseError))
@@ -223,7 +223,7 @@ from Products.ZCTextIndex.ParseTree import ParseError
 try: context.raiseParseError()
 except ParseError: pass
 ''')
-        except Exception, e:
+        except Exception as e:
             self.fail('Failed to catch: %s %s (module %s)' %
                       (e.__class__.__name__, e, e.__module__))
 
@@ -235,7 +235,7 @@ except ParseError: pass
 
     def testAccess_DateTimeError(self):
         self.check('import DateTime.interfaces;'
-                   'print DateTime.interfaces.DateTimeError')
+                   'print(DateTime.interfaces.DateTimeError)')
 
     def testCatch_DateTimeErrorRaisedByPythonModule(self):
         self.folder._setObject('raiseDateTimeError',
@@ -246,7 +246,7 @@ from DateTime.interfaces import DateTimeError
 try: context.raiseDateTimeError()
 except DateTimeError: pass
 ''')
-        except Exception, e:
+        except Exception as e:
             self.fail('Failed to catch: %s %s (module %s)' %
                       (e.__class__.__name__, e, e.__module__))
 
@@ -258,7 +258,7 @@ except DateTimeError: pass
 
     def testAccess_SyntaxError(self):
         self.check('import DateTime.interfaces;'
-                   'print DateTime.interfaces.SyntaxError')
+                   'print(DateTime.interfaces.SyntaxError)')
 
     def testCatch_SyntaxErrorRaisedByPythonModule(self):
         self.folder._setObject('raiseSyntaxError',
@@ -269,7 +269,7 @@ from DateTime.interfaces import SyntaxError
 try: context.raiseSyntaxError()
 except SyntaxError: pass
 ''')
-        except Exception, e:
+        except Exception as e:
             self.fail('Failed to catch: %s %s (module %s)' %
                       (e.__class__.__name__, e, e.__module__))
 
@@ -278,7 +278,7 @@ except SyntaxError: pass
 
     def testAccess_CopyError(self):
         self.check('import OFS.CopySupport;'
-                   'print OFS.CopySupport.CopyError')
+                   'print(OFS.CopySupport.CopyError)')
 
     def testCatch_CopyErrorRaisedByPythonModule(self):
         self.folder._setObject('raiseCopyError', dummy.Raiser(CopyError))
@@ -288,7 +288,7 @@ from OFS.CopySupport import CopyError
 try: context.raiseCopyError()
 except CopyError: pass
 ''')
-        except Exception, e:
+        except Exception as e:
             self.fail('Failed to catch: %s %s (module %s)' %
                       (e.__class__.__name__, e, e.__module__))
 
@@ -300,13 +300,13 @@ except CopyError: pass
     def testAccess_getToolByName(self):
         # TODO: Note that this is NOT allowed!
         self.checkUnauthorized('from Products.CMFCore import utils;'
-                               'print utils.getToolByName')
+                               'print(utils.getToolByName)')
 
     def testUse_getToolByName(self):
         self.layer['app'].manage_addFolder(
             'portal_membership')  # Fake a portal tool
         self.check('from Products.CMFCore.utils import getToolByName;'
-                   'print getToolByName(context, "portal_membership")')
+                   'print(getToolByName(context, "portal_membership"))')
 
     # transaction
 
@@ -326,25 +326,25 @@ except CopyError: pass
 class TestAcquisitionMethods(RestrictedPythonTest):
 
     def test_aq_explicit(self):
-        self.check('print context.aq_explicit')
+        self.check('print(context.aq_explicit)')
 
     def test_aq_parent(self):
-        self.check('print context.aq_parent')
+        self.check('print(context.aq_parent)')
 
     def test_aq_inner(self):
-        self.check('print context.aq_inner')
+        self.check('print(context.aq_inner)')
 
     def test_aq_inner_aq_parent(self):
-        self.check('print context.aq_inner.aq_parent')
+        self.check('print(context.aq_inner.aq_parent)')
 
     def test_aq_self(self):
-        self.checkUnauthorized('print context.aq_self')
+        self.checkUnauthorized('print(context.aq_self)')
 
     def test_aq_base(self):
-        self.checkUnauthorized('print context.aq_base')
+        self.checkUnauthorized('print(context.aq_base)')
 
     def test_aq_acquire(self):
-        self.checkUnauthorized('print context.aq_acquire')
+        self.checkUnauthorized('print(context.aq_acquire)')
 
 
 class TestAllowSendtoSecurity(PloneTestCase.PloneTestCase):

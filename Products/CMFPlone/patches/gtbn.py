@@ -55,13 +55,13 @@ def check_getToolByName(obj, name, default=_marker):
         raise TypeError("Object found is not a portal tool (%s)" % (name,))
     return result
 """
-if '_marker' not in utils.getToolByName.func_globals:
+if '_marker' not in utils.getToolByName.__globals__:
     raise Exception("This Version of Products.CMFPlone is not compatible "
                     "with Products.PloneHotfix20121106, the fixes are "
                     "included already in Products.CMFPlone, please remove "
                     "the hotfix")
-utils.getToolByName.func_globals[
+utils.getToolByName.__globals__[
     'rewrap_in_request_container'] = rewrap_in_request_container
-exec code in utils.getToolByName.func_globals
-utils._getToolByName.func_code = utils.getToolByName.func_code
-utils.getToolByName.func_code = utils.check_getToolByName.func_code
+exec(code, utils.getToolByName.__globals__)
+utils._getToolByName.__code__ = utils.getToolByName.__code__
+utils.getToolByName.__code__ = utils.check_getToolByName.__code__

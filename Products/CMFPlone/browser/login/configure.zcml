@@ -1,0 +1,147 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
+    xmlns:five="http://namespaces.zope.org/five"
+    >
+
+    <browser:page
+        name="insufficient-privileges"
+        for="plone.app.layout.navigation.interfaces.INavigationRoot"
+        permission="zope.Public"
+        class=".login.InsufficientPrivilegesView"
+        template="templates/insufficient_privileges.pt"
+        />
+
+
+    <!-- LOGIN: form with plone page around, can be rendered in modal -->
+    <browser:page
+        name="login"
+        for="plone.app.layout.navigation.interfaces.INavigationRoot"
+        permission="zope.Public"
+        class=".login.LoginForm"
+        template="templates/login.pt"
+        />
+
+    <!-- LOGIN: fail safe, simplified and unstyled form -->
+    <browser:page
+        name="failsafe_login"
+        for="plone.app.layout.navigation.interfaces.INavigationRoot"
+        permission="zope.Public"
+        class=".login.FailsafeLoginForm"
+        template="templates/login_failsafe.pt"
+        />
+
+    <!-- LOGIN: BBB name, same as 'login' do not use them to refer to the login -->
+    <browser:page
+        name="login_form"
+        for="plone.app.layout.navigation.interfaces.INavigationRoot"
+        permission="zope.Public"
+        class=".login.LoginForm"
+        template="templates/login.pt"
+        />
+
+    <!-- LOGIN: BBB name, same as 'failsafe_login' do not use it any longer-->
+    <browser:page
+        name="failsafe_login_form"
+        for="plone.app.layout.navigation.interfaces.INavigationRoot"
+        permission="zope.Public"
+        class=".login.FailsafeLoginForm"
+        template="templates/login_failsafe.pt"
+        />
+
+    <browser:page
+        name="login-help"
+        for="plone.app.layout.navigation.interfaces.INavigationRoot"
+        permission="zope.Public"
+        class=".login_help.LoginHelpForm"
+        template="templates/login_help.pt"
+        />
+
+
+    <browser:page
+        name="logout"
+        for="plone.app.layout.navigation.interfaces.INavigationRoot"
+        permission="zope.Public"
+        class=".logout.LogoutView"
+        />
+
+
+    <browser:page
+        name="logged-out"
+        for="plone.app.layout.navigation.interfaces.INavigationRoot"
+        permission="zope.Public"
+        template="templates/logged_out.pt"
+        class=".logout.LoggedOutView"
+        />
+
+    <browser:page
+        name="require_login"
+        for="*"
+        permission="zope.Public"
+        class=".login.RequireLoginView"
+        />
+
+    <browser:page
+        name="initial-login-password-change"
+        for="plone.app.layout.navigation.interfaces.INavigationRoot"
+        class=".login.InitialLoginPasswordChange"
+        permission="cmf.SetOwnPassword"
+        template="templates/initial_login_password_change.pt"
+        />
+
+    <browser:page
+        name="forced-password-change"
+        for="plone.app.layout.navigation.interfaces.INavigationRoot"
+        class=".login.ForcedPasswordChange"
+        permission="cmf.SetOwnPassword"
+        template="templates/forced_password_change.pt"
+        />
+
+    <browser:page
+        name="mail_password_form"
+        for="*"
+        template="templates/mail_password_form.pt"
+        permission="zope.Public"
+        />
+
+    <browser:page
+        name="mail_password_response"
+        for="*"
+        template="templates/mail_password_response.pt"
+        permission="zope.Public"
+        />
+
+    <browser:page
+        name="passwordreset"
+        for="*"
+        class=".password_reset.PasswordResetView"
+        permission="zope.Public"
+        />
+
+    <browser:page
+        name="mail_password_template"
+        for="*"
+        class=".password_reset.PasswordResetToolView"
+        template="templates/mail_password_template.pt"
+        permission="zope.Public"
+        />
+
+    <browser:page
+        name="registered_notify_template"
+        for="*"
+        class=".password_reset.PasswordResetToolView"
+        template="templates/registered_notify_template.pt"
+        permission="zope.Public"
+        />
+
+    <browser:page
+        name="explainPWResetTool"
+        for="Products.CMFPlone.interfaces.IPWResetTool"
+        class=".password_reset.ExplainPWResetToolView"
+        template="templates/explainPWResetTool.pt"
+        permission="zope2.ViewManagementScreens"
+        />
+
+</configure>

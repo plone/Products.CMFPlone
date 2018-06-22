@@ -6,40 +6,7 @@ from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
 from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
-from six import StringIO
 from zExceptions import Forbidden
-
-
-class TestNoGETControlPanel(PloneTestCase):
-
-    def afterSetUp(self):
-        self.folder_path = '/' + self.folder.absolute_url(1)
-        self.setRoles(['Manager'])
-        self.portal.portal_membership.addMember('bribri', 'secret',
-                                                ['Manager'], [])
-        self.login('bribri')
-
-    def _onlyPOST(self, path, qstring='', success=200, rpath=None):
-        qstring += '&%s=%s' % self.getAuthenticator()
-        basic_auth = '%s:%s' % ('bribri', 'secret')
-        env = dict()
-        if rpath:
-            env['HTTP_REFERER'] = self.app.absolute_url() + rpath
-        response = self.publish('%s?%s' % (path, qstring), basic_auth, env,
-                                handle_errors=True)
-        self.assertEqual(response.getStatus(), 403)
-
-        data = StringIO(qstring)
-        if 'QUERY_STRING' in env:
-            del env['QUERY_STRING']
-        response = self.publish(path, basic_auth, env, request_method='POST',
-                                stdin=data)
-        self.assertEqual(response.getStatus(), success)
-
-    def test_loginChangePassword(self):
-        path = self.folder_path + '/login_change_password'
-        qstring = 'password=foo'
-        self._onlyPOST(path, qstring)
 
 
 class TestPrefsUserManage(PloneTestCase):
@@ -60,9 +27,13 @@ class TestPrefsUserManage(PloneTestCase):
     def test_ploneChangePasswordPostOnly(self):
         self.login(TEST_USER_NAME)
         self.setRequestMethod('GET')
-        self.assertRaises(Forbidden, self.portal.plone_change_password,
-                          current=TEST_USER_PASSWORD, password=TEST_USER_PASSWORD,
-                          password_confirm=TEST_USER_PASSWORD)
+        self.assertRaises(
+            Forbidden,
+            self.portal.plone_change_password,
+            current=TEST_USER_PASSWORD,
+            password=TEST_USER_PASSWORD,
+            password_confirm=TEST_USER_PASSWORD
+        )
 
 
 class TestAccessControlPanelScripts(PloneTestCase):
