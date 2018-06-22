@@ -5,12 +5,13 @@
 Changelog
 =========
 
-5.1.3 (unreleased)
+5.1.3 (2018-06-22)
 ------------------
 
 Breaking changes:
 
-- *add item here*
+- 'registered' template from portal_skins' portal_login has been moved to plone.app.users as a browser view.
+  [jensens]
 
 New features:
 
@@ -36,8 +37,6 @@ Bug fixes:
 - After site creation, do not render the add-site template: we redirect anyway.
   [maurits]
 
-- Move forgotten 'registered' template from skins to plone.app.users, were it belongs to.
-  [jensens]
 
 - Unflakied a unit test.
   [Rotonen]
