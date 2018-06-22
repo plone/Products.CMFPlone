@@ -34,19 +34,59 @@ if bbb.HAS_ZSERVER:
     from webdav.NullResource import NullResource
 
 
-@implementer(IPloneSiteRoot, ISyndicatable)
-class PloneSite(PortalObjectBase, DefaultDublinCoreImpl, OrderedContainer,
-                BrowserDefaultMixin, UniqueObject):
+from zope.interface import classImplementsOnly, implementedBy
+
+# hackydihack
+from plone.dexterity.content import Container
+from five.localsitemanager.registry import PersistentComponents
+from Products.CMFCore.interfaces import ISiteRoot, IContentish
+from Products.Five.component.interfaces import IObjectManagerSite
+from Products.CMFCore.permissions import AddPortalMember
+from Products.CMFCore.permissions import SetOwnPassword
+from Products.CMFCore.permissions import SetOwnProperties
+from Products.CMFCore.permissions import MailForgottenPassword
+from Products.CMFCore.permissions import RequestReview
+from Products.CMFCore.permissions import ReviewPortalContent
+from Products.CMFCore.Skinnable import SkinnableObjectManager
+
+from zope.event import notify
+from zope.component.interfaces import ComponentLookupError
+
+from zope.traversing.interfaces import BeforeTraverseEvent
+
+
+PORTAL_SKINS_TOOL_ID = 'portal_skins'
+
+@implementer(IPloneSiteRoot, ISiteRoot, ISyndicatable, IObjectManagerSite)
+class PloneSite(Container, SkinnableObjectManager, UniqueObject):
     """ The Plone site object. """
 
     security = ClassSecurityInfo()
     meta_type = portal_type = 'Plone Site'
 
+    # Ensure certain attributes come from the correct base class.
+    _checkId = SkinnableObjectManager._checkId
+
+    def __getattr__(self, name):
+        try:
+            return SkinnableObjectManager.__getattr__(self, name)
+        except AttributeError:
+            return super(PloneSite, self).__getattr__(name)
+
+    # Removes the 'Components Folder'
+
     manage_options = (
-        PortalObjectBase.manage_options[:2] +
-        PortalObjectBase.manage_options[3:])
+        Container.manage_options[:2] +
+        Container.manage_options[3:])
 
     __ac_permissions__ = (
+        (AddPortalMember, ()),
+        (SetOwnPassword, ()),
+        (SetOwnProperties, ()),
+        (MailForgottenPassword, ()),
+        (RequestReview, ()),
+        (ReviewPortalContent, ()),
+
         (AddPortalContent, ()),
         (AddPortalFolders, ()),
         (ListPortalMembers, ()),
@@ -71,14 +111,36 @@ class PloneSite(PortalObjectBase, DefaultDublinCoreImpl, OrderedContainer,
     _properties = (
         {'id': 'title', 'type': 'string', 'mode': 'w'},
         {'id': 'description', 'type': 'text', 'mode': 'w'},
+        {'id': 'add_permission', 'type': 'text', 'mode': 'w'},
     )
     title = ''
     description = ''
     icon = 'misc_/CMFPlone/tool.gif'
 
+    # From PortalObjectBase.__init__
     def __init__(self, id, title=''):
-        PortalObjectBase.__init__(self, id, title)
-        DefaultDublinCoreImpl.__init__(self)
+        super(PloneSite, self).__init__(id, title=title)
+        components = PersistentComponents('++etc++site')
+        components.__parent__ = self
+        self.setSiteManager(components)
+
+    # From PortalObjectBase.__init__
+    def getSkinsFolderName(self):
+        return PORTAL_SKINS_TOOL_ID
+
+    # From PortalObjectBase.__init__
+    def __before_publishing_traverse__(self, arg1, arg2=None):
+        """ Pre-traversal hook.
+        """
+        # XXX hack around a bug(?) in BeforeTraverse.MultiHook
+        REQUEST = arg2 or arg1
+
+        try:
+            notify(BeforeTraverseEvent(self, REQUEST))
+        except ComponentLookupError:
+            # allow ZMI access, even if the portal's site manager is missing
+            pass
+        self.setupCurrentSkin(REQUEST)
 
     def __browser_default__(self, request):
         """ Set default so we can return whatever we want instead
@@ -110,21 +172,6 @@ class PloneSite(PortalObjectBase, DefaultDublinCoreImpl, OrderedContainer,
         self.removal_inprogress = 1
         PloneSite.inheritedAttribute('manage_beforeDelete')(self, container,
                                                             item)
-
-    security.declareProtected(permissions.DeleteObjects, 'manage_delObjects')
-
-    def manage_delObjects(self, ids=None, REQUEST=None):
-        """We need to enforce security."""
-        if ids is None:
-            ids = []
-        if isinstance(ids, six.string_types):
-            ids = [ids]
-        for id in ids:
-            item = self._getOb(id)
-            if not _checkPermission(permissions.DeleteObjects, item):
-                raise Unauthorized(
-                    "Do not have permissions to remove this object")
-        return PortalObjectBase.manage_delObjects(self, ids, REQUEST=REQUEST)
 
     def view(self):
         """ Ensure that we get a plain view of the object, via a delegation to
