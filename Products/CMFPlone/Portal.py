@@ -69,9 +69,11 @@ class PloneSite(Container, SkinnableObjectManager, UniqueObject):
 
     def __getattr__(self, name):
         try:
-            return SkinnableObjectManager.__getattr__(self, name)
-        except AttributeError:
+            # Try DX
             return super(PloneSite, self).__getattr__(name)
+        except AttributeError:
+            # Check portal_skins
+            return SkinnableObjectManager.__getattr__(self, name)
 
     # Removes the 'Components Folder'
 
@@ -95,13 +97,6 @@ class PloneSite(Container, SkinnableObjectManager, UniqueObject):
         (ModifyPortalContent, ('manage_cutObjects', 'manage_pasteObjects',
                                'manage_renameForm', 'manage_renameObject',
                                'manage_renameObjects')))
-
-    security.declareProtected(Permissions.copy_or_move, 'manage_copyObjects')
-
-    manage_renameObject = OrderedContainer.manage_renameObject
-
-    moveObject = OrderedContainer.moveObject
-    moveObjectsByDelta = OrderedContainer.moveObjectsByDelta
 
     # Switch off ZMI ordering interface as it assumes a slightly
     # different functionality
@@ -218,5 +213,10 @@ class PloneSite(Container, SkinnableObjectManager, UniqueObject):
 
     def reindexObjectSecurity(self, skip_self=False):
         pass
+
+
+# Remove the IContentish interface so we don't listen to events that won't
+# apply to the site root, ie handleUidAnnotationEvent
+classImplementsOnly(PloneSite, implementedBy(PloneSite) - IContentish)
 
 InitializeClass(PloneSite)

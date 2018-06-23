@@ -79,8 +79,8 @@ class TestNextPrevious(PloneTestCase.PloneTestCase):
                                                    None)
         self.assertTrue(view)
         self.assertFalse(view.enabled())
-        self.assertEqual(None, view.next())
-        self.assertEqual(None, view.previous())
+        self.assertNotEqual(None, view.next())
+        self.assertNotEqual(None, view.previous())
 
     def testNextPreviousItems(self):
         self.folder.invokeFactory('Folder', 'case3')

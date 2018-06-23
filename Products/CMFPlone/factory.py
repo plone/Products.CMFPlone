@@ -4,9 +4,11 @@ from Products.CMFPlone.events import SiteManagerCreatedEvent
 from Products.CMFPlone.interfaces import INonInstallable
 from Products.GenericSetup.tool import SetupTool
 from plone.registry.interfaces import IRegistry
+from plone.uuid.handlers import addAttributeUUID
 from zope.component import queryUtility
 from zope.event import notify
 from zope.interface import implementer
+from zope.lifecycleevent import ObjectCreatedEvent
 from zope.site.hooks import setSite
 
 _TOOL_ID = 'portal_setup'
@@ -125,7 +127,11 @@ def addPloneSite(context, site_id, title='Plone site', description='',
                  extension_ids=(), setup_content=True,
                  default_language='en', portal_timezone='UTC'):
     """Add a PloneSite to the context."""
-    context._setObject(site_id, PloneSite(site_id))
+
+    site = PloneSite(site_id)
+    notify(ObjectCreatedEvent(site))
+    context._setObject(site_id, site)
+
     site = context._getOb(site_id)
     site.setLanguage(default_language)
     # Set the accepted language for the rest of the request.  This makes sure

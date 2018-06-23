@@ -1023,8 +1023,10 @@ class TestAddPloneSite(PloneTestCase.PloneTestCase):
         self.request.form['default_language'] = 'en'
         self.addsite()
         plonesite = self.app.plonesite1
-        fp = plonesite['front-page']
         # Unfortunately, the next test passes even without the fix (overriding
         # HTTP_ACCEPT_LANGUAGE on the request in factory.py).  This seems to be
         # because translations are not available in the tests.
-        self.assertIn('Learn more about Plone', fp.text.raw)
+        self.assertIn('Learn more about Plone', plonesite.text.raw)
+
+        # This works around a transaction abort failure.
+        import transaction; transaction.commit()
