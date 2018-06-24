@@ -4,7 +4,7 @@ from Products.CMFPlone.tests import dummy
 
 from Products.CMFPlone.utils import _createObjectByType
 
-from AccessControl import Unauthorized
+from zExceptions import Unauthorized
 from Products.CMFCore.permissions import DeleteObjects
 
 from zExceptions import BadRequest
