@@ -112,18 +112,18 @@ class PloneSite(Container, SkinnableObjectManager, UniqueObject):
     description = ''
     icon = 'misc_/CMFPlone/tool.gif'
 
-    # From PortalObjectBase.__init__
+    # From PortalObjectBase
     def __init__(self, id, title=''):
         super(PloneSite, self).__init__(id, title=title)
         components = PersistentComponents('++etc++site')
         components.__parent__ = self
         self.setSiteManager(components)
 
-    # From PortalObjectBase.__init__
+    # From PortalObjectBase
     def getSkinsFolderName(self):
         return PORTAL_SKINS_TOOL_ID
 
-    # From PortalObjectBase.__init__
+    # From PortalObjectBase
     def __before_publishing_traverse__(self, arg1, arg2=None):
         """ Pre-traversal hook.
         """
@@ -136,6 +136,8 @@ class PloneSite(Container, SkinnableObjectManager, UniqueObject):
             # allow ZMI access, even if the portal's site manager is missing
             pass
         self.setupCurrentSkin(REQUEST)
+
+        super(PloneSite, self).__before_publishing_traverse__(arg1, arg2)
 
     def __browser_default__(self, request):
         """ Set default so we can return whatever we want instead

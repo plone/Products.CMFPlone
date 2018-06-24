@@ -437,7 +437,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         expected_aliases = {
             '(Default)': '(dynamic view)',
             'view': '(selected layout)',
-            'edit': '@@site-controlpanel',
+            'edit': '@@edit',
             'sharing': '@@sharing',
         }
         fti = self.portal.getTypeInfo()
