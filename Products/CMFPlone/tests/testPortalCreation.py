@@ -426,11 +426,9 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.assertEqual(True, registry['plone.lock_on_ttw_edit'])
 
     def testPortalFTIIsDynamicFTI(self):
-        # Plone Site FTI should be a DynamicView FTI
+        # Plone Site FTI should be a Dexterity FTI
         fti = self.portal.getTypeInfo()
-        self.assertEqual(
-            fti.meta_type, 'Factory-based Type Information with dynamic views'
-        )
+        self.assertEqual(fti.meta_type, 'Dexterity FTI')
 
     def testPloneSiteFTIHasMethodAliases(self):
         # Should add method aliases to the Plone Site FTI
