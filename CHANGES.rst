@@ -10,6 +10,15 @@ Changelog
 
 Breaking changes:
 
+- New browser view based login code - merged from plone.login (credits to esteele, pbauer, agitator, jensens, et al).
+  `portal_skins/plone_login` is now gone, see PLIP #2092.
+  Also, password reset view moved to login subfolder to keep things together.
+  Some testbrowser based tests needed changes because of z3c.form based login form .
+  The Plone specific, rarely used cross site __ac cookie SSO feature/hack was removed.
+  In case somebody needs this, please make it an addon package.
+  Better use a field proven, more secure way, like OAuth2, Shibboleth or someting similar.
+  [jensens, et al]
+
 - Adapt tests to `Products.GenericSetup >= 2.0` thus requiring at least that
   version.
   [icemac]
