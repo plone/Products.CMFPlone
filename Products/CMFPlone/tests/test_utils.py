@@ -41,10 +41,9 @@ class DefaultUtilsTests(unittest.TestCase):
         """safe_encode should always encode unicode to the specified encoding.
         """
         from Products.CMFPlone.utils import safe_encode
-        self.assertEqual(safe_encode(u'späm'), 'sp\xc3\xa4m')
-        self.assertEqual(safe_encode(u'späm', 'utf-8'), 'sp\xc3\xa4m')
-        self.assertEqual(safe_encode(u'späm', encoding='latin-1'), 'sp\xe4m')
-        self.assertEqual(('spam'), 'spam')
+        self.assertEqual(safe_encode(u'späm'), b'sp\xc3\xa4m')
+        self.assertEqual(safe_encode(u'späm', 'utf-8'), b'sp\xc3\xa4m')
+        self.assertEqual(safe_encode(u'späm', encoding='latin-1'), b'sp\xe4m')
 
     def test_get_top_request(self):
         """If in a subrequest, ``get_top_request`` should always return the top
