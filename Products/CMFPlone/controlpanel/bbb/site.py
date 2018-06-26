@@ -31,7 +31,7 @@ class SiteControlPanelAdapter(object):
         return self.settings.webstats_js
 
     def set_webstats_js(self, value):
-        if six.PY2 and isinstance(value, binary_type):
+        if six.PY2 and isinstance(value, six.binary_type):
             value = value.decode('utf-8')
         self.settings.webstats_js = value
 
