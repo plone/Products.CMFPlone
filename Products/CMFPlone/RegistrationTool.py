@@ -5,7 +5,7 @@ from AccessControl.requestmethod import postonly
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.SecurityManagement import setSecurityManager
 from Acquisition import aq_base, aq_chain
-from App.class_init import InitializeClass
+from AccessControl.class_init import InitializeClass
 from email import message_from_string
 from hashlib import md5
 from plone.registry.interfaces import IRegistry

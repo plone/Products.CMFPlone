@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from plone.memoize import view
-from App.class_init import InitializeClass
+from AccessControl.class_init import InitializeClass
 from zExceptions import NotFound
 from Acquisition import aq_base
 from Acquisition import aq_inner

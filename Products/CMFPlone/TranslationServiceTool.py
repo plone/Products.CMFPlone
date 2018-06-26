@@ -6,7 +6,7 @@ the translate method and the default parameter.
 
 from AccessControl import ClassSecurityInfo
 from Acquisition import aq_get
-from App.class_init import InitializeClass
+from AccessControl.class_init import InitializeClass
 from .i18nl10n import monthname_english
 from .i18nl10n import monthname_msgid
 from .i18nl10n import monthname_msgid_abbr
