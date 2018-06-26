@@ -464,6 +464,7 @@ def safe_unicode(value, encoding='utf-8'):
 
         >>> from Products.CMFPlone.utils import safe_unicode
 
+        >>> test_bytes = u'\u01b5'.encode('utf-8')
         >>> safe_unicode('spam') == u'spam'
         True
         >>> safe_unicode(b'spam') == u'spam'
@@ -472,11 +473,11 @@ def safe_unicode(value, encoding='utf-8'):
         True
         >>> safe_unicode(u'spam'.encode('utf-8')) == u'spam'
         True
-        >>> safe_unicode('\xc6\xb5') == u'\u01b5'
+        >>> safe_unicode(test_bytes) == u'\u01b5'
         True
         >>> safe_unicode(u'\xc6\xb5'.encode('iso-8859-1')) == u'\u01b5'
         True
-        >>> safe_unicode('\xc6\xb5', encoding='ascii') == u'\u01b5'
+        >>> safe_unicode(test_bytes, encoding='ascii') == u'\u01b5'
         True
         >>> safe_unicode(1) == 1
         True
