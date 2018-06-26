@@ -36,7 +36,7 @@ So first we need a logged in user with manager rights:
   >>> from plone.app.testing import SITE_OWNER_PASSWORD
   >>> from plone.app.testing import TEST_USER_NAME
   >>> from plone.app.testing import TEST_USER_PASSWORD
-  >>> from plone.testing.z2 import Browser
+  >>> from plone.testing.zope import Browser
   >>> browser = Browser(app)
   >>> browser.handleErrors = False
   >>> browser.open('http://nohost/plone/login_form')

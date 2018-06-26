@@ -8,7 +8,7 @@ Note that our usage of testbrowser is unusual and inconsistent, mostly
 because Plone forms have inconsistencies and because testbrowser makes
 assumptions that are not true for Plone forms.
 
-  >>> from plone.testing.z2 import Browser
+  >>> from plone.testing.zope import Browser
   >>> from plone.app.testing import TEST_USER_NAME, TEST_USER_PASSWORD
   >>> browser = Browser(layer['app'])
   >>> from plone.registry.interfaces import IRegistry

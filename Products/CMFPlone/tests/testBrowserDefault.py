@@ -6,7 +6,7 @@ from plone.app.testing import TEST_USER_PASSWORD
 from plone.app.testing import setRoles
 from plone.namedfile.file import NamedBlobFile
 from plone.registry.interfaces import IRegistry
-from plone.testing.z2 import Browser
+from plone.testing.zope import Browser
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 from Products.CMFPlone.utils import _createObjectByType

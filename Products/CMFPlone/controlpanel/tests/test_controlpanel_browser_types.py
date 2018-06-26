@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 from plone.app.testing import SITE_OWNER_NAME, SITE_OWNER_PASSWORD
-from plone.testing.z2 import Browser
+from plone.testing.zope import Browser
 import unittest
 
 

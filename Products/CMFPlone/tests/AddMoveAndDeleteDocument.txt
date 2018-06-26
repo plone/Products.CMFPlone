@@ -3,7 +3,7 @@ Adding, Editing, Moving and Deleting a Document
 
 Does what the title says, really.  Plus some assertions.
 
-    >>> from plone.testing.z2 import Browser
+    >>> from plone.testing.zope import Browser
     >>> from plone.app.testing import SITE_OWNER_NAME
     >>> from plone.app.testing import SITE_OWNER_PASSWORD
     >>> app = layer['app']

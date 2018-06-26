@@ -8,7 +8,7 @@ unique across the site.
 
 Some bootstrapping::
 
-    >>> from plone.testing.z2 import Browser
+    >>> from plone.testing.zope import Browser
     >>> app = layer['app']
     >>> portal = layer['portal']
     >>> browser = Browser(app)
