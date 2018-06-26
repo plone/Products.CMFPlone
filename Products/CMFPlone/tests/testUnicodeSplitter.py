@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 from OFS.metaconfigure import setDeprecatedManageAddDelete
+from plone.app.testing import setRoles
+from plone.app.testing import TEST_USER_ID
+from plone.app.textfield import RichTextValue
 from Products.CMFCore.tests.base.dummy import DummyContent
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.tests import PloneTestCase
+from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 from Products.CMFPlone.UnicodeSplitter import CaseNormalizer
 from Products.CMFPlone.UnicodeSplitter import Splitter
 
@@ -130,9 +133,14 @@ class TestCaseNormalizer(unittest.TestCase):
             _setlocale(saved)
 
 
-class TestQuery(PloneTestCase.PloneTestCase):
+class TestQuery(unittest.TestCase):
 
-    def afterSetUp(self):
+    layer = PRODUCTS_CMFPLONE_INTEGRATION_TESTING
+
+    def setUp(self):
+        self.portal = self.layer['portal']
+        self.portal.invokeFactory('Folder', 'folder1')
+        self.folder = self.portal['folder1']
         setDeprecatedManageAddDelete(DummyContent)
         self.catalog = getToolByName(self.portal, 'portal_catalog')
         self.folder._setObject('doc1',
@@ -306,46 +314,54 @@ class TestBigramFunctions(unittest.TestCase):
             self.assertEqual(rst, process_str_post(lst, enc))
 
 
-class TestSearchingJapanese(PloneTestCase.PloneTestCase):
+class TestSearchingJapanese(unittest.TestCase):
     """Install Japanese test
     """
 
-    def afterSetUp(self):
-        self.setRoles(('Manager', ))
+    layer = PRODUCTS_CMFPLONE_INTEGRATION_TESTING
+
+    def setUp(self):
+        self.portal = self.layer['portal']
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
         self.portal.invokeFactory('Document', 'doc1')
         self.doc1 = getattr(self.portal, 'doc1')
-        self.doc1.setTitle("Ploneは素晴らしい。")
-        self.doc1.setText("このページは予想している通り、テストです。 Pages Testing.")
+        self.doc1.setTitle(u"Ploneは素晴らしい。")
+        text = u"このページは予想している通り、テストです。 Pages Testing."
+        self.doc1.text = RichTextValue(text, 'text/html', 'text/x-html-safe')
         self.doc1.reindexObject()
 
     def testSearch(self):
         catalog = getToolByName(self.portal, 'portal_catalog')
-        items1 = catalog(SearchableText="予想")
+        items1 = catalog(SearchableText=u"予想")
         self.assertEqual(len(items1), 1)
-        items12 = catalog(SearchableText="素晴らしい")
+        items12 = catalog(SearchableText=u"素晴らしい")
         self.assertEqual(len(items12), 1)
-        items13 = catalog(SearchableText="Pages")
+        items13 = catalog(SearchableText=u"Pages")
         self.assertEqual(len(items13), 1)
-        items14 = catalog(SearchableText="ページ")
+        items14 = catalog(SearchableText=u"ページ")
         self.assertEqual(len(items14), 1)
-        items15 = catalog(SearchableText="予想*")
+        items15 = catalog(SearchableText=u"予想*")
         self.assertEqual(len(items15), 1)
         items16 = catalog(SearchableText=u"予想")
         self.assertEqual(len(items16), 1)
         self.portal.manage_delObjects(['doc1'])
-        items2 = catalog(SearchableText="予想")
+        items2 = catalog(SearchableText=u"予想")
         self.assertEqual(len(items2), 0)
 
 
-class TestSearchingUnicodeJapanese(PloneTestCase.PloneTestCase):
+class TestSearchingUnicodeJapanese(unittest.TestCase):
     """ Install Unicode Japanese test """
 
-    def afterSetUp(self):
-        self.setRoles(('Manager',))
+    layer = PRODUCTS_CMFPLONE_INTEGRATION_TESTING
+
+    def setUp(self):
+        self.portal = self.layer['portal']
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
         self.portal.invokeFactory('Document', 'doc1')
         self.doc1 = getattr(self.portal, 'doc1')
         self.doc1.setTitle(u"Ploneは素晴らしい。")
-        self.doc1.setText(u"このページは予想している通り、テストです。 Pages Testing.")
+        text = u"このページは予想している通り、テストです。 Pages Testing."
+        self.doc1.text = RichTextValue(text, 'text/html', 'text/x-html-safe')
         self.doc1.reindexObject()
 
     def testSearch(self):
