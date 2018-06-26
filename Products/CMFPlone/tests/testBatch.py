@@ -1,10 +1,14 @@
 # -*- coding: utf-8 -*-
-from plone.app.testing.bbb import PloneTestCase
 from Products.CMFPlone.PloneBatch import Batch
 from Products.ZCatalog.Lazy import LazyMap
+from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
+
+import unittest
 
 
-class TestBatch(PloneTestCase):
+class TestBatch(unittest.TestCase):
+
+    layer = PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 
     def test_batch_no_lazy(self):
         batch = Batch(range(100), size=10, start=10)
@@ -35,9 +39,7 @@ class TestBatch(PloneTestCase):
         self.assertEqual(batch.nexturls({}), [(10, 'b_start:int=90')])
 
     def test_batch_brains(self):
-        self.loginAsPortalOwner()
-        portal = self.portal
-
+        portal = self.layer['portal']
         for obj_id in ['%stest' % chr(c) for c in range(97, 123)]:
             portal.invokeFactory('Document', obj_id)
 

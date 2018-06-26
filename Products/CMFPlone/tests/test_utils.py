@@ -8,7 +8,7 @@ from Products.CMFCore.tests.base.content import SIMPLE_STRUCTUREDTEXT
 from Products.CMFCore.tests.base.content import SIMPLE_XHTML
 from Products.CMFCore.tests.base.content import STX_WITH_HTML
 from Products.CMFPlone.interfaces import ISiteSchema
-from Products.CMFPlone.tests import PloneTestCase
+from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 from zope.component import getUtility
 from zope.interface import alsoProvides
 from plone.subrequest.interfaces import ISubRequest
@@ -147,7 +147,9 @@ class DefaultUtilsTests(unittest.TestCase):
         self.assertEqual(get_top_site_from_url(ctx, req).id, 'SubSite')
 
 
-class LogoTests(PloneTestCase.PloneTestCase):
+class LogoTests(unittest.TestCase):
+
+    layer = PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 
     def test_getSiteLogo_with_setting(self):
         from Products.CMFPlone.utils import getSiteLogo
