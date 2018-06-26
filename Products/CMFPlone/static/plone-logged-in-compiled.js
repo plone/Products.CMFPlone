@@ -26743,7 +26743,7 @@ define('text!mockup-patterns-relateditems-url/templates/toolbar.xml',[],function
  *    scanSelection(boolean): Scan the list of selected elements for other patterns.
  *    selectableTypes(array): If the value is null all types are selectable. Otherwise, provide a list of strings to match item types that are selectable. (null)
  *    separator(string): Select2 option. String which separates multiple items. (',')
- *    sortOn(string): Index on which to sort on. ('path')
+ *    sortOn(string): Index on which to sort on. If null, will default to term relevance (no sort) when searching and folder order (getObjPositionInParent) when browsing. (null)
  *    sortOrder(string): Sort ordering. ('ascending')
  *    tokenSeparators(array): Select2 option, refer to select2 documentation. ([",", " "])
  *    upload(boolen): Allow file and image uploads from within the related items widget.
@@ -26875,7 +26875,7 @@ define('mockup-patterns-relateditems',[
       scanSelection: false,  // False, to no unnecessarily use CPU time on this.
       selectableTypes: null, // null means everything is selectable, otherwise a list of strings to match types that are selectable
       separator: ',',
-      sortOn: 'path',
+      sortOn: null,
       sortOrder: 'ascending',
       tokenSeparators: [',', ' '],
       upload: false,
@@ -26946,7 +26946,7 @@ define('mockup-patterns-relateditems',[
 
         url: this.options.vocabularyUrl,
         dataType: 'JSON',
-        quietMillis: 100,
+        quietMillis: 500,
 
         data: function (term, page) {
 
@@ -26975,11 +26975,18 @@ define('mockup-patterns-relateditems',[
             v: this.options.rootPath + this.currentPath + (this.browsing ? '::1' : '')
           });
 
+          var sort_on = this.options.sortOn;
+          var sort_order = sort_on ? this.options.sortOrder : null;
+          if (this.browsing && sort_on === null) {
+            sort_on = 'getObjPositionInParent';
+            sort_order = 'ascending';
+          }
+
           var data = {
             query: JSON.stringify({
               criteria: criterias,
-              sort_on: this.options.sortOn,
-              sort_order: this.options.sortOrder
+              sort_on: sort_on,
+              sort_order: sort_order
             }),
             attributes: JSON.stringify(this.options.attributes),
             batch: JSON.stringify({
@@ -27254,10 +27261,6 @@ define('mockup-patterns-relateditems',[
     isSelectable: function(item) {
       var self = this;
       if (item.selectable === false) {
-        return false;
-      }
-      if (self.options.contextPath === this.options.rootPath + item.path) {
-        // filter out current item
         return false;
       }
       if (self.options.selectableTypes === null) {
@@ -30498,9 +30501,7 @@ define('mockup-patterns-tinymce-url/js/links',[
             self.linkType = linkType;
             self.linkTypes[self.linkType].load(self.imgElm);
             var scale = self.dom.getAttrib(self.imgElm, 'data-scale');
-            if(scale){
-              self.$scale.val(scale);
-            }
+            self.$scale.val(scale);
             $('#tinylink-' + self.linkType, self.modal.$modal).trigger('click');
           }else if (src) {
             self.guessImageLink(src);
@@ -76466,7 +76467,7 @@ define('plone-patterns-toolbar',[
           url: $('body').attr('data-portal-url') + path + '/@@render-toolbar'
         }).done(function(data) {
           var $el = $(utils.parseBodyTag(data));
-          that.$el.parent.replaceWith($el);
+          that.$el.replaceWith($el);
           Registry.scan($el);
         });
       });
@@ -76527,5 +76528,5 @@ require([
   'use strict';
 });
 
-define("/trabajo/plone/buildout.coredev/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
+define("/home/maik/develop/plonecore/buildout.coredev/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
 
