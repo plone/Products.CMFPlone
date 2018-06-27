@@ -18,7 +18,7 @@ class TestCookieAuth(unittest.TestCase):
         self.folder = self.portal['test-folder']
         self.browser = Browser(self.layer['app'])
         self.auth_info = '%s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD)
-        self.cookie = base64.encodestring(self.auth_info)[:-1]
+        self.cookie = base64.encodestring(self.auth_info.encode('utf8'))[:-1]
         self.folder.manage_permission('View', ['Manager'], acquire=0)
         logout()
 
