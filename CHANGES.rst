@@ -18,7 +18,7 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- add recompiled resources, to fix #2395
 
 
 5.1.3 (2018-06-22)

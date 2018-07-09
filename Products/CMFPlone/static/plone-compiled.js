@@ -8699,7 +8699,13 @@ define('mockup-i18n',[
     if (!self.baseUrl) {
       self.baseUrl = '/plonejsi18n';
     }
-    self.currentLanguage = $('html').attr('lang') || 'en-us';
+    self.currentLanguage = $('html').attr('lang') || 'en';
+
+    // Fix for country specific languages
+    if (self.currentLanguage.split('-').length > 1) {
+      self.currentLanguage = self.currentLanguage.split('-')[0] + '_' + self.currentLanguage.split('-')[1].toUpperCase();
+    }
+
     self.storage = null;
     self.catalogs = {};
     self.ttl = 24 * 3600 * 1000;
@@ -13425,7 +13431,8 @@ define('mockup-patterns-markspeciallinks',[
       if (elonw) {
           // all http links (without the link-plain class), not within this site
           contentarea.find('a[href^="http"]:not(.link-plain):not([href^="' + url + '"])')
-                     .attr('target', '_blank');
+                     .attr('target', '_blank')
+                     .attr('rel', 'noopener');
       }
 
       if (msl) {
@@ -17365,9 +17372,6 @@ define('mockup-patterns-modal',[
       self.$modal.addClass(self.options.templateOptions.classActiveName);
       registry.scan(self.$modal);
       self.positionModal();
-      $('img', self.$modal).load(function() {
-        self.positionModal();
-      });
       $(window.parent).on('resize.plone-modal.patterns', function() {
         self.positionModal();
       });
@@ -17756,6 +17760,8 @@ define('mockup-patterns-contentloader',[
       if(that.options.url === 'el' && that.$el[0].tagName === 'A'){
         that.options.url = that.$el.attr('href');
       }
+      that.$el.removeClass('loading-content');
+      that.$el.removeClass('content-load-error');
       if(that.options.trigger === 'immediate'){
         that._load();
       }else{
@@ -17795,7 +17801,8 @@ define('mockup-patterns-contentloader',[
             try{
               $el = $(_.template(that.options.template)(data));
             }catch(e){
-              // log this
+              that.$el.removeClass('loading-content');
+              that.$el.addClass('content-load-error');
               log.warn('error rendering template. pat-contentloader will not work');
               return;
             }
@@ -17804,9 +17811,9 @@ define('mockup-patterns-contentloader',[
             $el = $el.find(that.options.content);
           }
           that.loadLocal($el);
-          that.$el.removeClass('loading-content');
         },
         error: function(){
+          that.$el.removeClass('loading-content');
           that.$el.addClass('content-load-error');
         }
       });
@@ -17814,6 +17821,8 @@ define('mockup-patterns-contentloader',[
     loadLocal: function($content){
       var that = this;
       if(!$content && that.options.content === null){
+        that.$el.removeClass('loading-content');
+        that.$el.addClass('content-load-error');
         log.warn('No selector configured');
         return;
       }
@@ -17821,6 +17830,8 @@ define('mockup-patterns-contentloader',[
       if(that.options.target !== null){
         $target = $(that.options.target);
         if($target.size() === 0){
+          that.$el.removeClass('loading-content');
+          that.$el.addClass('content-load-error');
           log.warn('No target nodes found');
           return;
         }
@@ -17829,10 +17840,18 @@ define('mockup-patterns-contentloader',[
       if(!$content){
         $content = $(that.options.content).clone();
       }
-      $content.show();
-      $target.replaceWith($content);
-      Registry.scan($content);
+      if ($content.length) {
+        $content.show();
+        $target.replaceWith($content);
+        Registry.scan($content);
+      } else {
+        // empty target node instead of removing it.
+        // allows for subsequent content loader calls to work sucessfully.
+        $target.empty();
+      }
+
       that.$el.removeClass('loading-content');
+      that.emit('loading-done');
     }
   });
 
@@ -19088,5 +19107,5 @@ require([
 
 });
 
-define("/trabajo/plone/buildout.coredev/src/Products.CMFPlone/Products/CMFPlone/static/plone.js", function(){});
+define("/Volumes/WORKSPACE/buildout.coredev/src/Products.CMFPlone/Products/CMFPlone/static/plone.js", function(){});
 

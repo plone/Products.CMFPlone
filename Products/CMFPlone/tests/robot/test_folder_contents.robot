@@ -22,6 +22,14 @@ Scenario: Select All items
       and the four elements got selected
       and the clear selection link appears
 
+# XXX: Works in Chrome but fails on Jenkins ...?
+#Scenario: Browse into folder and click edit
+#    Given a logged-in site administrator
+#      and a folder with four pages
+#      and the portal contents view
+#     When I browse into My Folder and edit it
+#     Then My Folder edit form is visible
+
 #Scenario: Clear selection
 #    Given a site owner
 #      And four dummy pages on test folder
@@ -49,10 +57,23 @@ a folder with four pages
     Create content  type=Document  title=Doc3  container=${folder_uid}
     Create content  type=Document  title=Doc4  container=${folder_uid}
 
+the portal contents view
+    Go to  ${PLONE_URL}/folder_contents
+    Page should contain element  css=.pat-structure
+    Given folder contents pattern loaded
+
 the folder contents view
     Go to  ${PLONE_URL}/my-folder/folder_contents
     Page should contain element  css=.pat-structure
     Given folder contents pattern loaded
+
+I browse into My Folder and edit it
+    Click Link  xpath=//div[contains(@class, 'pat-structure')]//a[@href='${PLONE_URL}/my-folder']
+    Given folder contents pattern loaded
+    Click link  link=Edit
+
+My Folder edit form is visible
+    Textfield should contain  //input[@id='form-widgets-IDublinCore-title']  My Folder
 
 I click the '${link_name}' link
     Click Link  ${link_name}
