@@ -73932,7 +73932,7 @@ define('mockup-patterns-tinymce',[
       var self = this;
       var i18n = new I18n();
       var lang = i18n.currentLanguage;
-      if (lang !== 'en-us' && self.options.tiny.language !== 'en') {
+      if (lang !== 'en' && self.options.tiny.language !== 'en') {
         tinymce.baseURL = self.options.loadingBaseUrl;
         // does the expected language exist?
         $.ajax({
@@ -75939,7 +75939,7 @@ define('mockup-patterns-structure-url/js/views/actionmenu',[
 });
 
 
-define('text!mockup-patterns-structure-url/templates/tablerow.xml',[],function () { return '<td class="selection"><input type="checkbox" <% if(selected){ %> checked="checked" <% } %>/></td>\n\n<td class="title">\n  <div class="pull-left">\n    <a href="<%- viewURL %>"\n        class="manage state-<%- review_state %> contenttype-<%- contenttype %>"\n        title="<%- portal_type %>">\n        <% if(attributes["getMimeIcon"] && contenttype == \'file\'){ %>\n           <img class="mime-icon" src="<%- getMimeIcon %>"> <% } %>\n      <% if(Title){ %>\n        <%- Title %>\n      <% } else { %>\n        <em><%- id %></em>\n      <% } %>\n    </a>\n    <% if(expired){ %>\n      <span class="plone-item-expired"><%- _t(\'Expired\') %></span>\n    <% } %>\n    <% if(ineffective){ %>\n      <span class="plone-item-ineffective"><%- _t(\'Before publishing date\') %></span>\n    <% } %>\n    <% if(activeColumns.indexOf(\'Description\') !== -1 && _.has(availableColumns, \'Description\') && Description) { %>\n    <p class="Description">\n      <small>\n        <%- Description %>\n      </small>\n    </p>\n    <% } %>\n  </div>\n  <% if(attributes["getIcon"] && thumb_scale) { %>\n    <img class="thumb-<%- thumb_scale %> pull-right" src="<%- getURL %>/@@images/image/<%- thumb_scale %>">\n  <% } %>\n</td>\n\n<% _.each(activeColumns, function(column) { %>\n  <% if(column !== \'Description\' && _.has(availableColumns, column)) { %>\n    <td class="<%- column %>" data-order="<%- attributes[column] %>"><%- attributes[column] %></td>\n  <% } %>\n<% }); %>\n\n<td class="actionmenu-container"></td>\n';});
+define('text!mockup-patterns-structure-url/templates/tablerow.xml',[],function () { return '<td class="selection" data-order="<%- attributes[\'_sort\'] %>"><input type="checkbox" <% if(selected){ %> checked="checked" <% } %>/></td>\n\n<td class="title">\n  <div class="pull-left">\n    <a href="<%- viewURL %>"\n        class="manage state-<%- review_state %> contenttype-<%- contenttype %>"\n        title="<%- portal_type %>">\n        <% if(attributes["getMimeIcon"] && contenttype == \'file\'){ %>\n           <img class="mime-icon" src="<%- getMimeIcon %>"> <% } %>\n      <% if(Title){ %>\n        <%- Title %>\n      <% } else { %>\n        <em><%- id %></em>\n      <% } %>\n    </a>\n    <% if(expired){ %>\n      <span class="plone-item-expired"><%- _t(\'Expired\') %></span>\n    <% } %>\n    <% if(ineffective){ %>\n      <span class="plone-item-ineffective"><%- _t(\'Before publishing date\') %></span>\n    <% } %>\n    <% if(activeColumns.indexOf(\'Description\') !== -1 && _.has(availableColumns, \'Description\') && Description) { %>\n    <p class="Description">\n      <small>\n        <%- Description %>\n      </small>\n    </p>\n    <% } %>\n  </div>\n  <% if(attributes["getIcon"] && thumb_scale) { %>\n    <img class="thumb-<%- thumb_scale %> pull-right" src="<%- getURL %>/@@images/image/<%- thumb_scale %>">\n  <% } %>\n</td>\n\n<% _.each(activeColumns, function(column) { %>\n  <% if(column !== \'Description\' && _.has(availableColumns, column)) { %>\n    <td class="<%- column %>" data-order="<%- attributes[column] %>"><%- attributes[column] %></td>\n  <% } %>\n<% }); %>\n\n<td class="actionmenu-container"></td>\n';});
 
 define('mockup-patterns-structure-url/js/views/tablerow',[
   'jquery',
@@ -92313,6 +92313,7 @@ define('mockup-patterns-datatables',[
     name: 'datatables',
     trigger: '.pat-datatables',
     parser: 'mockup',
+    table: null,
 
     defaults: {
       // Default values for attributes
@@ -92322,7 +92323,7 @@ define('mockup-patterns-datatables',[
       // The init code for your pattern goes here
       var self = this;
       // self.$el contains the html element
-      var table = self.$el.DataTable(self.options);
+      self.table = self.$el.DataTable(self.options);
 
     }
   });
@@ -92704,7 +92705,20 @@ define('mockup-patterns-structure-url/js/views/table',[
       registry.scan(self.$el);
 
       self.$el.find("table").on( 'order.dt', function (e, settings, details) {
-        self.app.setStatus({text: _t('Can not order items while manually sorting a column'), type: 'warning'});
+        var btn = $('<button type="button" class="btn btn-danger btn-xs"></button>')
+                  .text(_t('Reset column sorting'))
+                  .on('click', function(e) {
+                    // Use column 0 to restore ordering and then empty list so it doesn't
+                    // show the icon in the column header
+                    self.$el.find("table.pat-datatables").data('patternDatatables').table
+                        .order([ 0, "asc" ]).draw()
+                        .order([]).draw();
+                    // Restore reordering by drag and drop
+                    self.addReordering();
+                    // Clear the status message
+                    self.app.setStatus();
+                  });
+        self.app.setStatus(_t('Can not drag and drop items to reorder while manually sorting a column'), 'warning', btn = btn);
         $(".pat-datatables tbody").find('tr').off("drag")
         self.$el.removeClass('order-support');
       } );
@@ -93419,27 +93433,33 @@ define('mockup-patterns-structure-url/js/views/paging',[
     },
     nextResultPage: function(e) {
       e.preventDefault();
+      this.app.setStatus();
       this.collection.requestNextPage();
     },
     previousResultPage: function(e) {
       e.preventDefault();
+      this.app.setStatus();
       this.collection.requestPreviousPage();
     },
     gotoFirst: function(e) {
       e.preventDefault();
+      this.app.setStatus();
       this.collection.goTo(this.collection.information.firstPage);
     },
     gotoLast: function(e) {
       e.preventDefault();
+      this.app.setStatus();
       this.collection.goTo(this.collection.information.totalPages);
     },
     gotoPage: function(e) {
       e.preventDefault();
+      this.app.setStatus();
       var page = $(e.target).text();
       this.collection.goTo(page);
     },
     changeCount: function(e) {
       e.preventDefault();
+      this.app.setStatus();
       var per = $(e.target).text();
       this.collection.howManyPer(per);
       this.app.setCookieSetting('perPage', per);
@@ -95480,7 +95500,7 @@ define('mockup-patterns-structure-url/js/views/app',[
         }
       });
     },
-    setStatus: function(msg, type) {
+    setStatus: function(msg, type, btn) {
       if (!msg) {
         // clear it
         this.status.text = '';
@@ -95505,6 +95525,7 @@ define('mockup-patterns-structure-url/js/views/app',[
           var $label = $('<strong></strong>');
           $label.text(this.status.label);
           $status.empty().append($label).append($text);
+          if (btn) { $status.append(btn) }
       }
     },
     render: function() {
@@ -100512,5 +100533,5 @@ require([
   'use strict';
 });
 
-define("/trabajo/plone/buildout.coredev/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
+define("/Volumes/WORKSPACE/buildout.coredev/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
 

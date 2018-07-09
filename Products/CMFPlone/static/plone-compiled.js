@@ -8699,7 +8699,13 @@ define('mockup-i18n',[
     if (!self.baseUrl) {
       self.baseUrl = '/plonejsi18n';
     }
-    self.currentLanguage = $('html').attr('lang') || 'en-us';
+    self.currentLanguage = $('html').attr('lang') || 'en';
+
+    // Fix for country specific languages
+    if (self.currentLanguage.split('-').length > 1) {
+      self.currentLanguage = self.currentLanguage.split('-')[0] + '_' + self.currentLanguage.split('-')[1].toUpperCase();
+    }
+
     self.storage = null;
     self.catalogs = {};
     self.ttl = 24 * 3600 * 1000;
@@ -29271,6 +29277,7 @@ define('mockup-patterns-datatables',[
     name: 'datatables',
     trigger: '.pat-datatables',
     parser: 'mockup',
+    table: null,
 
     defaults: {
       // Default values for attributes
@@ -29280,7 +29287,7 @@ define('mockup-patterns-datatables',[
       // The init code for your pattern goes here
       var self = this;
       // self.$el contains the html element
-      var table = self.$el.DataTable(self.options);
+      self.table = self.$el.DataTable(self.options);
 
     }
   });
@@ -33965,6 +33972,8 @@ define('mockup-patterns-contentloader',[
       if(that.options.url === 'el' && that.$el[0].tagName === 'A'){
         that.options.url = that.$el.attr('href');
       }
+      that.$el.removeClass('loading-content');
+      that.$el.removeClass('content-load-error');
       if(that.options.trigger === 'immediate'){
         that._load();
       }else{
@@ -34004,7 +34013,8 @@ define('mockup-patterns-contentloader',[
             try{
               $el = $(_.template(that.options.template)(data));
             }catch(e){
-              // log this
+              that.$el.removeClass('loading-content');
+              that.$el.addClass('content-load-error');
               log.warn('error rendering template. pat-contentloader will not work');
               return;
             }
@@ -34013,9 +34023,9 @@ define('mockup-patterns-contentloader',[
             $el = $el.find(that.options.content);
           }
           that.loadLocal($el);
-          that.$el.removeClass('loading-content');
         },
         error: function(){
+          that.$el.removeClass('loading-content');
           that.$el.addClass('content-load-error');
         }
       });
@@ -34023,6 +34033,8 @@ define('mockup-patterns-contentloader',[
     loadLocal: function($content){
       var that = this;
       if(!$content && that.options.content === null){
+        that.$el.removeClass('loading-content');
+        that.$el.addClass('content-load-error');
         log.warn('No selector configured');
         return;
       }
@@ -34030,6 +34042,8 @@ define('mockup-patterns-contentloader',[
       if(that.options.target !== null){
         $target = $(that.options.target);
         if($target.size() === 0){
+          that.$el.removeClass('loading-content');
+          that.$el.addClass('content-load-error');
           log.warn('No target nodes found');
           return;
         }
@@ -34049,6 +34063,7 @@ define('mockup-patterns-contentloader',[
       }
 
       that.$el.removeClass('loading-content');
+      that.emit('loading-done');
     }
   });
 
@@ -35305,5 +35320,5 @@ require([
 
 });
 
-define("/trabajo/plone/buildout.coredev/src/Products.CMFPlone/Products/CMFPlone/static/plone.js", function(){});
+define("/Volumes/WORKSPACE/buildout.coredev/src/Products.CMFPlone/Products/CMFPlone/static/plone.js", function(){});
 
