@@ -1131,7 +1131,7 @@
     <value key="depends">plone</value>
     <value key="jscompilation">++plone++static/plone-legacy-compiled.js</value>
     <value key="csscompilation">++plone++static/plone-legacy-compiled.css</value>
-    <value key="last_compilation">2018-06-26 15:33:00</value>
+    <value key="last_compilation">2018-07-09 00:00:00</value>
     <value key="compile">False</value>
     <value key="enabled">True</value>
   </records>
@@ -1144,7 +1144,7 @@
     <value key="enabled">False</value>
     <value key="jscompilation">++plone++static/resourceregistry-compiled.min.js</value>
     <value key="csscompilation">++plone++static/resourceregistry-compiled.css</value>
-    <value key="last_compilation">2018-06-26 15:33:00</value>
+    <value key="last_compilation">2018-07-09 00:00:00</value>
     <value key="stub_js_modules">
       <element>jquery</element>
     </value>
