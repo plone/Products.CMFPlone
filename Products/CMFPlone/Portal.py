@@ -68,6 +68,8 @@ class PloneSite(Container, SkinnableObjectManager, UniqueObject):
     _checkId = SkinnableObjectManager._checkId
 
     def __getattr__(self, name):
+        if not name:
+            raise AttributeError(name)
         try:
             # Try DX
             return super(PloneSite, self).__getattr__(name)
