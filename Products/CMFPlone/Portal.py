@@ -155,7 +155,7 @@ class PloneSite(Container, SkinnableObjectManager, UniqueObject):
                 if bbb.HAS_ZSERVER and method in ('PUT', ):
                     # Very likely a WebDAV client trying to create something
                     return ReplaceableWrapper(NullResource(self, 'index_html'))
-                elif method in ('GET', 'HEAD', 'POST'):
+                elif method in ('GET', 'HEAD', 'POST', 'PROPFIND'):
                     # Do nothing, let it go and acquire.
                     pass
                 else:
