@@ -593,11 +593,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         ids = [(a['id']) for a in buttons]
         self.assertEqual(ids, ['cut', 'copy', 'paste', 'delete', 'rename', ])
 
-    def testPloneLoginLayerInDefault(self):
-        # plone_login layer should exist
-        path = self.skins.getSkinPath('Plone Default')
-        self.assertTrue('plone_login' in path)
-
     def testCustomSkinFolderExists(self):
         # the custom skin needs to be created
         self.assertTrue('custom' in self.skins)

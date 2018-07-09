@@ -45,7 +45,7 @@ def test_suite():
             package='Products.CMFPlone.tests',
         ), layer=MOCK_MAILHOST_FUNCTIONAL_TESTING),
         layered(doctest.DocFileSuite(
-            'emaillogin.txt',
+            'emaillogin.rst',
             optionflags=OPTIONFLAGS,
             package='Products.CMFPlone.tests',
         ), layer=MOCK_MAILHOST_FUNCTIONAL_TESTING),
