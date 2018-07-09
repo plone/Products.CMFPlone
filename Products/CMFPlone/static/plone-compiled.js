@@ -8699,7 +8699,7 @@ define('mockup-i18n',[
     if (!self.baseUrl) {
       self.baseUrl = '/plonejsi18n';
     }
-    self.currentLanguage = $('html').attr('lang') || 'en-us';
+    self.currentLanguage = $('html').attr('lang') || 'en';
 
     // Fix for country specific languages
     if (self.currentLanguage.split('-').length > 1) {
@@ -19107,5 +19107,5 @@ require([
 
 });
 
-define("/home/maik/develop/plonecore/buildout.coredev/src/Products.CMFPlone/Products/CMFPlone/static/plone.js", function(){});
+define("/Volumes/WORKSPACE/buildout.coredev/src/Products.CMFPlone/Products/CMFPlone/static/plone.js", function(){});
 

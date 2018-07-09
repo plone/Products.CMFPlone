@@ -66205,7 +66205,7 @@ define('mockup-patterns-tinymce',[
       var self = this;
       var i18n = new I18n();
       var lang = i18n.currentLanguage;
-      if (lang !== 'en-us' && self.options.tiny.language !== 'en') {
+      if (lang !== 'en' && self.options.tiny.language !== 'en') {
         tinymce.baseURL = self.options.loadingBaseUrl;
         // does the expected language exist?
         $.ajax({
@@ -76528,5 +76528,5 @@ require([
   'use strict';
 });
 
-define("/home/maik/develop/plonecore/buildout.coredev/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
+define("/Volumes/WORKSPACE/buildout.coredev/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
 
