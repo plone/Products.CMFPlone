@@ -14,7 +14,8 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- Update mockup to latest version.
+  [frapell]
 
 Bug fixes:
 
