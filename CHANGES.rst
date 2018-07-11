@@ -23,6 +23,9 @@ Bug fixes:
   This is a follow up to `issue 476 <https://github.com/plone/plone.app.contenttypes/issues/476>`_.
   [iham]
 
+- Add test for issue #2469.
+  [jensens]
+
 
 5.1.3 (2018-06-22)
 ------------------
