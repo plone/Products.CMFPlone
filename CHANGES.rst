@@ -18,7 +18,8 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Add test for issue #2469.
+  [jensens]
 
 
 5.1.3 (2018-06-22)
