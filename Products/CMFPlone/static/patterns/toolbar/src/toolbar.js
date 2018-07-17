@@ -4,8 +4,8 @@ define([
   'pat-registry',
   'mockup-utils',
   'translate',
-  'jquery.cookie'
-], function ($, Base, Registry, utils, _t) {
+  'jquery.cookie',
+], function($, Base, Registry, utils, _t) {
   'use strict';
 
   var Toolbar = Base.extend({
@@ -24,19 +24,19 @@ define([
         topExpanded: 'plone-toolbar-top-expanded',
         default: 'plone-toolbar-default',
         expanded: 'plone-toolbar-expanded',
-        active: 'active'
+        active: 'active',
       },
       cookieName: 'plone-toolbar',
       toolbar_width: '120px',
       submenu_width: '180px',
-      desktop_width: '768px'
+      desktop_width: '768px',
     },
     pxToInt: function(px) {
-      return parseInt(this.options.desktop_width.split('px')[0], 10);
+      return parseInt(px.split('px')[0], 10);
     },
     setupMobile: function() {
       var that = this;
-      that.$container.css('right', '-' + this.options.toolbar_width);
+      that.$container.css('right', '-' + that.options.toolbar_width);
       // make sure we are in expanded mode
       $('body').addClass(that.options.classNames.leftExpanded);
       $('body').addClass(that.options.classNames.expanded);
@@ -45,54 +45,77 @@ define([
       $('body').removeClass(that.options.classNames.top);
       $('body').removeClass(that.options.classNames.topDefault);
       $('body').removeClass(that.options.classNames.default);
-      $('.' + that.options.classNames.logo, that.$container).off('click').on('click', function() {
-        var $el = $(this);
-        if ($el.hasClass('open')){
-          that.$container.css('right', '-' + this.options.toolbar_width);
-          $('html').css('margin-left', '0');
-          $('html').css('margin-right', '0');
-          $el.removeClass('open');
-          $('nav li', that.$container).removeClass(that.options.classNames.active);
-        } else {
-          that.$container.css('right', '0');
-          $el.addClass('open');
-          $('html').css('margin-left', '-' + this.options.toolbar_width);
-          $( 'html' ).css('margin-right', this.options.toolbar_width);
-        }
-      });
+      $('.' + that.options.classNames.logo, that.$container)
+        .off('click')
+        .on('click', function() {
+          var $el = $(that.$el);
+          if ($el.hasClass('open')) {
+            that.$container.css('right', '-' + that.options.toolbar_width);
+            $('html').css('margin-left', '0');
+            $('html').css('margin-right', '0');
+            $el.removeClass('open');
+            $('nav li', that.$container).removeClass(
+              that.options.classNames.active,
+            );
+          } else {
+            that.$container.css('right', '0');
+            $el.addClass('open');
+            $('html').css('margin-left', '-' + that.options.toolbar_width);
+            $('html').css('margin-right', that.options.toolbar_width);
+          }
+        });
       // Remove desktop event binding
-      $('nav > ul > li', that.$container).has( 'a .plone-toolbar-caret' ).off('click');
+      $('nav > ul > li', that.$container)
+        .has('a .plone-toolbar-caret')
+        .off('click');
       // Add sub-menu events
-      $('nav li a', that.$container).has('.plone-toolbar-caret').off('click').on('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        var $el = $(this).parent();
-        if ($el.hasClass(that.options.classNames.active)) {
-          that.$container.css('right', '0');
-          $('html').css('margin-left', '-' + this.options.toolbar_width);
-          $('html').css('margin-right', this.options.toolbar_width);
-          $('nav li', that.$container).removeClass(that.options.classNames.active);
-        } else {
-          $('nav li', that.$container).removeClass(that.options.classNames.active);
-          $el.addClass(that.options.classNames.active);
-          that.$container.css('right', this.options.submenu_width);
-          var margin = this.pxToInt(this.options.toolbar_width) + this.pxToInt(this.options.submenu_width);
-          $('html').css('margin-left', '-' + margin + 'px' );
-          $('html').css('margin-right', + margin + 'px');
-        }
-      });
+      $('nav li a', that.$container)
+        .has('.plone-toolbar-caret')
+        .off('click')
+        .on('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          var $el = $(this).parent();
+          if ($el.hasClass(that.options.classNames.active)) {
+            that.$container.css('right', '0');
+            $('html').css('margin-left', '-' + that.options.toolbar_width);
+            $('html').css('margin-right', that.options.toolbar_width);
+            $('nav li', that.$container).removeClass(
+              that.options.classNames.active,
+            );
+          } else {
+            $('nav li', that.$container).removeClass(
+              that.options.classNames.active,
+            );
+            $el.addClass(that.options.classNames.active);
+            that.$container.css('right', that.options.submenu_width);
+            var margin =
+              that.pxToInt(that.options.toolbar_width) +
+              that.pxToInt(that.options.submenu_width);
+            $('html').css('margin-left', '-' + margin + 'px');
+            $('html').css('margin-right', +margin + 'px');
+          }
+        });
     },
     setupDesktop: function() {
       var that = this;
-      if (that.state.expanded){
+      if (that.state.expanded) {
         $('body').addClass(that.options.classNames.expanded);
-        $('body').addClass(that.state.left ? that.options.classNames.leftExpanded : that.options.classNames.topExpanded);
+        $('body').addClass(
+          that.state.left
+            ? that.options.classNames.leftExpanded
+            : that.options.classNames.topExpanded,
+        );
         $('body').removeClass(that.options.classNames.default);
         $('body').removeClass(that.options.classNames.leftDefault);
         $('body').removeClass(that.options.classNames.topDefault);
-      }else {
+      } else {
         $('body').addClass(that.options.classNames.default);
-        $('body').addClass(that.state.left ? that.options.classNames.leftDefault : that.options.classNames.topDefault);
+        $('body').addClass(
+          that.state.left
+            ? that.options.classNames.leftDefault
+            : that.options.classNames.topDefault,
+        );
         $('body').removeClass(that.options.classNames.expanded);
         $('body').removeClass(that.options.classNames.leftExpanded);
         $('body').removeClass(that.options.classNames.topExpanded);
@@ -100,80 +123,102 @@ define([
 
       if (!that.state.left) {
         $('body').addClass(that.options.classNames.top);
-        $('body').addClass(that.state.expanded ? that.options.classNames.topExpanded : that.options.classNames.topDefault);
+        $('body').addClass(
+          that.state.expanded
+            ? that.options.classNames.topExpanded
+            : that.options.classNames.topDefault,
+        );
         $('body').removeClass(that.options.classNames.left);
         $('body').removeClass(that.options.classNames.leftDefault);
         $('body').removeClass(that.options.classNames.leftExpanded);
       }
 
-      $('.' + that.options.classNames.logo, that.$container).off('click').on('click', function() {
-        if (that.state.expanded) {
-          // currently expanded, need to compress
-          that.setState({
-            expanded: false
-          });
-          $('body').removeClass(that.options.classNames.expanded);
-          $('body').addClass(that.options.classNames.default);
-          $('nav li', that.$container).removeClass(that.options.classNames.active);
-          if (that.state.left) {
-            $('body').addClass(that.options.classNames.leftDefault);
-            $('body').removeClass(that.options.classNames.leftExpanded);
+      $('.' + that.options.classNames.logo, that.$container)
+        .off('click')
+        .on('click', function() {
+          if (that.state.expanded) {
+            // currently expanded, need to compress
+            that.setState({
+              expanded: false,
+            });
+            $('body').removeClass(that.options.classNames.expanded);
+            $('body').addClass(that.options.classNames.default);
+            $('nav li', that.$container).removeClass(
+              that.options.classNames.active,
+            );
+            if (that.state.left) {
+              $('body').addClass(that.options.classNames.leftDefault);
+              $('body').removeClass(that.options.classNames.leftExpanded);
+            } else {
+              $('body').addClass(that.options.classNames.topDefault);
+              $('body').removeClass(that.options.classNames.topExpanded);
+            }
           } else {
-            $('body').addClass(that.options.classNames.topDefault);
-            $('body').removeClass(that.options.classNames.topExpanded);
+            that.setState({
+              expanded: true,
+            });
+            // Switch to expanded
+            $('body').addClass(that.options.classNames.expanded);
+            $('body').removeClass(that.options.classNames.default);
+            $('nav li', that.$container).removeClass(
+              that.options.classNames.active,
+            );
+            if (that.state.left) {
+              $('body').addClass(that.options.classNames.leftExpanded);
+              $('body').removeClass(that.options.classNames.leftDefault);
+            } else {
+              $('body').addClass(that.options.classNames.topExpanded);
+              $('body').removeClass(that.options.classNames.topDefault);
+            }
           }
-        } else {
-          that.setState({
-            expanded: true
-          });
-          // Switch to expanded
-          $('body').addClass(that.options.classNames.expanded);
-          $('body').removeClass(that.options.classNames.default);
-          $('nav li', that.$container).removeClass(that.options.classNames.active);
-          if (that.state.left) {
-            $('body').addClass(that.options.classNames.leftExpanded);
-            $('body').removeClass(that.options.classNames.leftDefault);
-          } else {
-            $('body').addClass(that.options.classNames.topExpanded);
-            $('body').removeClass(that.options.classNames.topDefault);
-          }
-        }
-        that.hideElements();
-      });
+          that.hideElements();
+        });
 
-      $('nav > ul > li li', that.$container).off('click').on('click', function(event) {
-        event.stopImmediatePropagation();
-      });
+      $('nav > ul > li li', that.$container)
+        .off('click')
+        .on('click', function(event) {
+          event.stopImmediatePropagation();
+        });
 
       // Remove mobile event binding
-      $('nav li a', that.$container).has('.plone-toolbar-caret').off('click');
+      $('nav li a', that.$container)
+        .has('.plone-toolbar-caret')
+        .off('click');
       // content menu activated
-      $('nav > ul > li', that.$container).has( 'a .plone-toolbar-caret' ).off('click').on('click', function(event) {
-        var $this = $(this);
-        var active_class = that.options.classNames.active;
-        event.preventDefault();
-        event.stopPropagation();
-        var hasClass = $this.hasClass(active_class);
-        var $more_subset = $this.parent('#plone-toolbar-more-subset');
-        if ($more_subset.length) {
-          // close only the content menus from the subset, keeping the toolbar more list active
-          $more_subset.find('li').filter('[id*="contentmenu-"]').removeClass(active_class);
-        }
-        else {
-          // close existing opened contentmenus
-          $('.' + active_class + '> ul', that.$container).attr('aria-hidden', 'true');
-          $('.' + active_class, that.$container).removeClass(active_class);
-          // we need to close the more subset as well not just the content-menus
-          // when we click on the personal bar
-          $('#plone-toolbar-more-subset').hide();
-        }
-        $('nav li > ul', $(this)).css({'margin-top': ''}); // unset this so we get fly-in affect
-        if (!hasClass) {
-          // open current selected if not already open
-          $this.addClass(active_class);
-          that.padPulloutContent($this);
-        }
-      });
+      $('nav > ul > li', that.$container)
+        .has('a .plone-toolbar-caret')
+        .off('click')
+        .on('click', function(event) {
+          var $this = $(this);
+          var active_class = that.options.classNames.active;
+          event.preventDefault();
+          event.stopPropagation();
+          var hasClass = $this.hasClass(active_class);
+          var $more_subset = $this.parent('#plone-toolbar-more-subset');
+          if ($more_subset.length) {
+            // close only the content menus from the subset, keeping the toolbar more list active
+            $more_subset
+              .find('li')
+              .filter('[id*="contentmenu-"]')
+              .removeClass(active_class);
+          } else {
+            // close existing opened contentmenus
+            $('.' + active_class + '> ul', that.$container).attr(
+              'aria-hidden',
+              'true',
+            );
+            $('.' + active_class, that.$container).removeClass(active_class);
+            // we need to close the more subset as well not just the content-menus
+            // when we click on the personal bar
+            $('#plone-toolbar-more-subset').hide();
+          }
+          $('nav li > ul', $(this)).css({'margin-top': ''}); // unset this so we get fly-in affect
+          if (!hasClass) {
+            // open current selected if not already open
+            $this.addClass(active_class);
+            that.padPulloutContent($this);
+          }
+        });
 
       $('body').on('click', function(event) {
         var $el = that.$container.find(event.target);
@@ -194,7 +239,7 @@ define([
       that.setHeight();
     },
     padPulloutContent: function($li) {
-      if (!this.state.left || !this.isDesktop()){
+      if (!this.state.left || !this.isDesktop()) {
         // only when on left
         return;
       }
@@ -203,15 +248,17 @@ define([
       var $inner = $content.find('> *');
       var $first = $inner.first();
       var $last = $inner.last();
-      var insideHeight = ($last.position().top - $first.position().top) + $last.outerHeight();
+      var insideHeight =
+        $last.position().top - $first.position().top + $last.outerHeight();
       var height = $content.outerHeight();
 
       // WebKit seems to set top position to very very small float value when zoomed,
       // so check if the position top is less than 1px rather than 0.
-      var itemLocation = $li.position().top > 1 ? $li.position().top : $li.offset().top;  // depends on positioning
+      var itemLocation =
+        $li.position().top > 1 ? $li.position().top : $li.offset().top; // depends on positioning
       // margin-top + insideHeight should equal total height
       $content.css({
-        'margin-top': Math.min(itemLocation, height - insideHeight)
+        'margin-top': Math.min(itemLocation, height - insideHeight),
       });
       $content.attr('aria-hidden', 'false');
     },
@@ -225,21 +272,27 @@ define([
       $('.scroll-btn', this.$container).remove();
 
       $items.css({
-        'padding-top': ''
+        'padding-top': '',
       });
-      var height = $(window).height() - $('#personal-bar-container').height() -
+      var height =
+        $(window).height() -
+        $('#personal-bar-container').height() -
         $('.plone-toolbar-logo').height();
 
       if (height < natualHeight) {
         /* add scroll buttons */
-        var $scrollUp = $('<li class="scroll-btn up"><a href="#"><span class="icon-up"></span><span>&nbsp;</span></a></li>');
-        var $scrollDown = $('<li class="scroll-btn down"><a href="#"><span class="icon-down"></span><span>&nbsp;</span></a></li>');
+        var $scrollUp = $(
+          '<li class="scroll-btn up"><a href="#"><span class="icon-up"></span><span>&nbsp;</span></a></li>',
+        );
+        var $scrollDown = $(
+          '<li class="scroll-btn down"><a href="#"><span class="icon-down"></span><span>&nbsp;</span></a></li>',
+        );
         $items.prepend($scrollUp);
         $items.append($scrollDown);
         height = height - $scrollDown.height();
         $items.height(height);
         $items.css({
-          'padding-top': $scrollUp.height()
+          'padding-top': $scrollUp.height(),
         });
         $scrollUp.click(function(e) {
           e.preventDefault();
@@ -252,12 +305,12 @@ define([
       }
       /* if there is active, make sure to reposition */
       var $active = $('li.active ul:visible', this.$container);
-      if ($active.size() > 0){
+      if ($active.size() > 0) {
         this.padPulloutContent($active);
       }
     },
     setHeight: function() {
-      if (!this.state.left || !this.isDesktop()){
+      if (!this.state.left || !this.isDesktop()) {
         // only when on left
         return;
       }
@@ -271,14 +324,19 @@ define([
       var that = this;
       that.state = $.extend({}, that.state, state);
       /* only cookie configurable attribute is expanded or contracted */
-      $.cookie(that.options.cookieName, JSON.stringify({
-        expanded: that.state.expanded
-      }), {path: '/'});
+      $.cookie(
+        that.options.cookieName,
+        JSON.stringify({
+          expanded: that.state.expanded,
+        }),
+        {path: '/'},
+      );
     },
     cloneViewsIntoSubset: function($container, $views, $subset) {
-      var i, $content_view,
-          container = $container[0],
-          length = $views.length - 1;
+      var i,
+        $content_view,
+        container = $container[0],
+        length = $views.length - 1;
 
       var view_should_move = container.offsetTop !== 0;
       if (view_should_move) {
@@ -287,7 +345,11 @@ define([
           if ($content_view.is(':hidden')) {
             continue;
           }
-          $content_view.hide().clone(true, true).appendTo($subset).show();
+          $content_view
+            .hide()
+            .clone(true, true)
+            .appendTo($subset)
+            .show();
           if (container.offsetTop === 0) {
             break;
           }
@@ -296,17 +358,17 @@ define([
     },
     hideElements: function() {
       var that = this;
-      if (this.state.left){
+      if (that.state.left) {
         // only when on top
         return;
       }
       var w = $('.plone-toolbar-container').width(),
-          wtc = $('.plone-toolbar-logo').width();
-      var $plone_toolbar_main =  $( '.plone-toolbar-main');
-      var $toolbar_menus = $plone_toolbar_main.find('> li' );
+        wtc = $('.plone-toolbar-logo').width();
+      var $plone_toolbar_main = $('.plone-toolbar-main');
+      var $toolbar_menus = $plone_toolbar_main.find('> li');
       $toolbar_menus.each(function() {
-          wtc += $(this).width();
-        });
+        wtc += $(this).width();
+      });
       var $pers_bar_container = $('#personal-bar-container');
       $pers_bar_container.find('> li').each(function() {
         wtc += $(this).width();
@@ -316,20 +378,33 @@ define([
       var $content_menus = $toolbar_menus.filter('[id^="plone-contentmenu-"]');
       var $content_views = $toolbar_menus.filter('[id^="contentview-"]');
       if (w < wtc) {
-        if (!($toolbar_more_options.length)) {
+        if (!$toolbar_more_options.length) {
           (function() {
             $content_menus.hide();
-            $toolbar_more_options = $('<li id="plone-toolbar-more-options"><a href="#"><span class="icon-moreOptions" aria-hidden="true"></span><span>' + _t('More') + '</span><span class="plone-toolbar-caret"></span></a></li>');
+            $toolbar_more_options = $(
+              '<li id="plone-toolbar-more-options"><a href="#"><span class="icon-moreOptions" aria-hidden="true"></span><span>' +
+                _t('More') +
+                '</span><span class="plone-toolbar-caret"></span></a></li>',
+            );
             $plone_toolbar_main.append($toolbar_more_options);
-            var $toolbar_more_subset = $('<ul id="plone-toolbar-more-subset" style="display: none"></ul>');
+            var $toolbar_more_subset = $(
+              '<ul id="plone-toolbar-more-subset" style="display: none"></ul>',
+            );
             $pers_bar_container.after($toolbar_more_subset);
             // we want only the list items with id that contains plone-contentmenu and not the children links
             // of these lists therefore we iterate only over the list elements
             $content_menus.each(function() {
-              $(this).clone(true, true).show().appendTo($toolbar_more_subset);
+              $(this)
+                .clone(true, true)
+                .show()
+                .appendTo($toolbar_more_subset);
             });
 
-            that.cloneViewsIntoSubset($pers_bar_container, $content_views, $toolbar_more_subset);
+            that.cloneViewsIntoSubset(
+              $pers_bar_container,
+              $content_views,
+              $toolbar_more_subset,
+            );
             var active_class = that.options.classNames.active;
             $toolbar_more_options.find('a').on('click', function(event) {
               // close existing opened contentmenus
@@ -337,7 +412,10 @@ define([
 
               var $more_list = $(this).parent();
               // properly toggle active class for toolbar_more list item
-              $more_list.toggleClass('active', $toolbar_more_subset.is(':hidden'));
+              $more_list.toggleClass(
+                'active',
+                $toolbar_more_subset.is(':hidden'),
+              );
               $toolbar_more_subset.toggle();
               event.preventDefault();
             });
@@ -351,63 +429,68 @@ define([
       // check if the personal toolbar is not offseted if there isn't enough space
       // and we already have the plone-toolbar-more-options added to the page.
       if ($pers_bar_container[0].offsetTop !== 0) {
-        that.cloneViewsIntoSubset($pers_bar_container, $content_views, $('#plone-toolbar-more-subset'));
+        that.cloneViewsIntoSubset(
+          $pers_bar_container,
+          $content_views,
+          $('#plone-toolbar-more-subset'),
+        );
       }
     },
-    init: function () {
+    init: function() {
       var that = this;
       that.heightTimeout = 0;
       that.$container = $(that.options.containerSelector);
       var toolbar_cookie = $.cookie(that.options.cookieName);
       that.state = {
         expanded: true,
-        left: $('body').hasClass(that.options.classNames.left)
+        left: $('body').hasClass(that.options.classNames.left),
       };
-      if (toolbar_cookie){
+      if (toolbar_cookie) {
         try {
           that.state = $.extend({}, that.state, $.parseJSON(toolbar_cookie));
-        }catch (e){
+        } catch (e) {
           // ignore
         }
       }
 
-      if (that.isDesktop()){
+      if (that.isDesktop()) {
         that.setupDesktop();
         if (!that.state.left) {
           // in case its top lets just hide what is not needed
           that.hideElements();
         }
-      }else {
+      } else {
         that.setupMobile();
       }
-      this.$el.addClass('initialized');
+      that.$el.addClass('initialized');
 
       /* folder contents changes the context.
          This is for usability so the menu changes along with
          the folder contents context */
-      $('body').off('structure-url-changed').on('structure-url-changed', function (e, path) {
-        $.ajax({
-          url: $('body').attr('data-portal-url') + path + '/@@render-toolbar'
-        }).done(function(data) {
-          var $el = $(utils.parseBodyTag(data));
-          that.$el.replaceWith($el);
-          Registry.scan($el);
+      $('body')
+        .off('structure-url-changed')
+        .on('structure-url-changed', function(e, path) {
+          $.ajax({
+            url: $('body').attr('data-portal-url') + path + '/@@render-toolbar',
+          }).done(function(data) {
+            var $el = $(utils.parseBodyTag(data));
+            that.$el.replaceWith($el);
+            Registry.scan($el);
+          });
         });
-      });
 
       $(window).on('resize', function() {
-        if (that.isDesktop()){
+        if (that.isDesktop()) {
           that.setupDesktop();
           if (!that.state.left) {
             // in case its top lets just hide what is not needed
             that.hideElements();
           }
-        }else {
+        } else {
           that.setupMobile();
         }
       });
-    }
-
+    },
   });
 
   return Toolbar;
