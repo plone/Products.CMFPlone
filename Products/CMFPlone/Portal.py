@@ -146,26 +146,6 @@ class PloneSite(Container, SkinnableObjectManager, UniqueObject):
         of index_html """
         return getToolByName(self, 'plone_utils').browserDefault(self)
 
-    def index_html(self):
-        """ Acquire if not present. """
-        request = getattr(self, 'REQUEST', None)
-        if request is not None and 'REQUEST_METHOD' in request:
-            if request.maybe_webdav_client:
-                method = request['REQUEST_METHOD']
-                if bbb.HAS_ZSERVER and method in ('PUT', ):
-                    # Very likely a WebDAV client trying to create something
-                    return ReplaceableWrapper(NullResource(self, 'index_html'))
-                elif method in ('GET', 'HEAD', 'POST', 'PROPFIND'):
-                    # Do nothing, let it go and acquire.
-                    pass
-                else:
-                    raise AttributeError('index_html')
-        # Acquire from skin.
-        _target = self.__getattr__('index_html')
-        return ReplaceableWrapper(aq_base(_target).__of__(self))
-
-    index_html = ComputedAttribute(index_html, 1)
-
     def manage_beforeDelete(self, container, item):
         # Should send out an Event before Site is being deleted.
         self.removal_inprogress = 1
