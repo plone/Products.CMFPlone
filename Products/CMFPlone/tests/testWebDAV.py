@@ -304,8 +304,6 @@ class TestPUTIndexHtml(PloneTestCase.PloneTestCase):
     def testPUTIndexHtmlIntoPortal(self):
         # Create an index_html document in the portal via FTP/DAV
         self.assertFalse('index_html' in self.portal)
-        self.assertEqual(self.portal.index_html.meta_type,
-                         'Filesystem Page Template')
         self.setRoles(['Manager'])
 
         response = self.publish(
