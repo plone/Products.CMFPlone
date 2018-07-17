@@ -130,9 +130,9 @@ def addPloneSite(context, site_id, title='Plone site', description='',
 
     site = PloneSite(site_id)
     notify(ObjectCreatedEvent(site))
-    context._setObject(site_id, site)
+    context[site_id] = site
 
-    site = context._getOb(site_id)
+    site = context[site_id]
     site.setLanguage(default_language)
     # Set the accepted language for the rest of the request.  This makes sure
     # the front-page text gets the correct translation also when your browser

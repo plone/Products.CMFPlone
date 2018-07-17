@@ -39,6 +39,7 @@
     <element value="plone.app.relationfield.behavior.IRelatedItems"/>
     <element value="plone.app.dexterity.behaviors.nextprevious.INextPreviousToggle"/>
     <element value="plone.app.lockingbehavior.behaviors.ILocking" />
+    <element value="plone.app.layout.navigation.interfaces.INavigationRoot" />
   </property>
 
   <!-- View information -->

@@ -57,6 +57,7 @@ from zope.traversing.interfaces import BeforeTraverseEvent
 
 PORTAL_SKINS_TOOL_ID = 'portal_skins'
 
+
 @implementer(IPloneSiteRoot, ISiteRoot, ISyndicatable, IObjectManagerSite)
 class PloneSite(Container, SkinnableObjectManager, UniqueObject):
     """ The Plone site object. """
