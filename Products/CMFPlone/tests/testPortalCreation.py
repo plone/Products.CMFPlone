@@ -51,7 +51,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.memberdata = self.portal.portal_memberdata
         self.catalog = self.portal.portal_catalog
         self.groups = self.portal.portal_groups
-        self.factory = self.portal.portal_factory
         self.skins = self.portal.portal_skins
         self.transforms = self.portal.portal_transforms
         self.javascripts = self.portal.portal_javascripts
@@ -96,9 +95,9 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
             'portal_workflow' in self.actions.listActionProviders())
 
     def testMembersFolderMetaType(self):
-        # Members folder should have meta_type 'ATFolder'
+        # Members folder should have meta_type 'Dexterity Container'
         members = self.membership.getMembersFolder()
-        self.assertEqual(members.meta_type, 'ATFolder')
+        self.assertEqual(members.meta_type, 'Dexterity Container')
 
     def testMembersFolderPortalType(self):
         # Members folder should have portal_type 'Folder'
@@ -320,7 +319,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.assertTrue({'i': 'review_state',
                          'o': 'plone.app.querystring.operation.selection.any',
                          'v': ['published']} in query)
-        self.assertEqual(collection.getLayout(), 'folder_summary_view')
+        self.assertEqual(collection.getLayout(), 'summary_view')
         self.assertEqual(collection.checkCreationFlag(), False)
 
     def testEventsCollection(self):
@@ -359,13 +358,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
     def testDefaultGroupsAdded(self):
         self.assertTrue('Administrators' in self.groups.listGroupIds())
         self.assertTrue('Reviewers' in self.groups.listGroupIds())
-
-    def testDefaultTypesInPortalFactory(self):
-        types = self.factory.getFactoryTypes().keys()
-        for metaType in ('Document', 'Event', 'File', 'Folder', 'Image',
-                         'Folder', 'Link', 'News Item',
-                         'Topic'):
-            self.assertTrue(metaType in types)
 
     def testGenerateTabsSiteProperty(self):
         # The generate_tabs site property should be emtpy
