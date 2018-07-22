@@ -48,3 +48,12 @@ class FunctionalRedirectTest(unittest.TestCase):
         self.assertEqual(
             self.browser.url, self.folder['bar-document'].absolute_url(),
             'Wrong redirect HTTP response location')
+
+    def test_redirect_json(self):
+        """
+        Redirects work for moved content for JSON or unspecified requests.
+        """
+        self.browser.open(self.folder.absolute_url() + '/foo-document')
+        self.assertEqual(
+            self.browser.url, self.folder['bar-document'].absolute_url(),
+            'Wrong redirect HTTP response location')
