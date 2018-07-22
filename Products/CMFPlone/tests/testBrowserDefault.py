@@ -14,13 +14,14 @@ from Products.CMFPlone.PloneFolder import ReplaceableWrapper
 from zope.component import getUtility
 import difflib
 import re
+import six
 import transaction
 import unittest
 
-RE_REMOVE_DOCCONT = re.compile('\s*href="http://.*?#content"')
-RE_REMOVE_SKIPNAV = re.compile('\s*href="http://.*?#portal-globalnav-wrapper"')
-RE_REMOVE_TABS = re.compile('<div id="portal-header".*?</nav>', re.S)
-RE_REMOVE_AUTH = re.compile('\_authenticator\=.*?\"', re.S)
+RE_REMOVE_DOCCONT = re.compile(r'\s*href="http://.*?#content"')
+RE_REMOVE_SKIPNAV = re.compile(r'\s*href="http://.*?#portal-globalnav-wrapper"')
+RE_REMOVE_TABS = re.compile(r'<div id="portal-header".*?</nav>', re.S)
+RE_REMOVE_AUTH = re.compile(r'\_authenticator\=.*?\"', re.S)
 
 
 class TestPloneToolBrowserDefault(unittest.TestCase):
@@ -79,7 +80,9 @@ class TestPloneToolBrowserDefault(unittest.TestCase):
         transaction.commit()
 
         self.browser.open(obj.absolute_url() + path)
-        body = self.browser.contents.decode('utf8')
+        body = self.browser.contents
+        if six.PY3 and isinstance(body, six.binary_type):
+            body = body.decode('utf8')
 
         # request/ACTUAL_URL is fubar in tests, remove lines that depend on it
         resolved = RE_REMOVE_DOCCONT.sub('', resolved)
@@ -161,7 +164,8 @@ class TestPloneToolBrowserDefault(unittest.TestCase):
 
     def testBrowserDefaultMixinFileDumpsContent(self):
         self.browser.open(self.portal.file.absolute_url())
-        self.assertEqual(self.browser.contents, self.portal.file.file.data)
+        data = self.portal.file.file.data
+        self.assertEqual(self.browser.contents.encode('utf8'), data)
 
     # Ensure index_html acquisition and replaceablewrapper
 

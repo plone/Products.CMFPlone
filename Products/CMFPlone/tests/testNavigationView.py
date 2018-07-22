@@ -41,7 +41,7 @@ class TestBaseNavTree(PloneTestCase.PloneTestCase):
         self.portal.invokeFactory('Document', 'doc3')
         self.portal.invokeFactory('Folder', 'folder1')
         self.portal.invokeFactory('Link', 'link1')
-        self.portal.link1.remote_url = 'http://plone.org'
+        self.portal.link1.remoteUrl = 'http://plone.org'
         self.portal.link1.reindexObject()
         folder1 = getattr(self.portal, 'folder1')
         folder1.invokeFactory('Document', 'doc11')
@@ -352,7 +352,7 @@ class TestSiteMap(PloneTestCase.PloneTestCase):
         self.portal.invokeFactory('Document', 'doc3')
         self.portal.invokeFactory('Folder', 'folder1')
         self.portal.invokeFactory('Link', 'link1')
-        self.portal.link1.remote_url = 'http://plone.org'
+        self.portal.link1.remoteUrl = 'http://plone.org'
         self.portal.link1.reindexObject()
         folder1 = getattr(self.portal, 'folder1')
         folder1.invokeFactory('Document', 'doc11')
@@ -663,7 +663,7 @@ class TestBasePortalTabs(PloneTestCase.PloneTestCase):
     def testLinkRemoteUrlsUsedUnlessLinkCreator(self):
         self.setRoles(['Manager'])
         self.portal.invokeFactory('Link', 'link1')
-        self.portal.link1.remote_url = 'http://plone.org'
+        self.portal.link1.remoteUrl = 'http://plone.org'
         self.portal.link1.reindexObject()
         view = self.view_class(self.portal, self.request)
         tabs = view.topLevelTabs(actions=[])
