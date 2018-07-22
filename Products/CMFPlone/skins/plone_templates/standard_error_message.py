@@ -28,6 +28,9 @@ error_traceback = kwargs.get('error_traceback', None)
 error_value = kwargs.get('error_value', None)
 
 if "text/html" not in context.REQUEST.getHeader('Accept', ''):
+    redirection_view = context.restrictedTraverse('@@plone_redirector_view')
+    redirection_view.attempt_redirect()
+
     context.REQUEST.RESPONSE.setHeader("Content-Type", "application/json")
     # Note: using %s instead of .format to avoid possibly expensive guarded
     # attribute check.
