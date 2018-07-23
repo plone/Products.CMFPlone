@@ -55,7 +55,7 @@ define([
             $('html').css('margin-right', '0');
             $el.removeClass('open');
             $('nav li', that.$container).removeClass(
-              that.options.classNames.active,
+              that.options.classNames.active
             );
           } else {
             that.$container.css('right', '0');
@@ -81,11 +81,11 @@ define([
             $('html').css('margin-left', '-' + that.options.toolbar_width);
             $('html').css('margin-right', that.options.toolbar_width);
             $('nav li', that.$container).removeClass(
-              that.options.classNames.active,
+              that.options.classNames.active
             );
           } else {
             $('nav li', that.$container).removeClass(
-              that.options.classNames.active,
+              that.options.classNames.active
             );
             $el.addClass(that.options.classNames.active);
             that.$container.css('right', that.options.submenu_width);
@@ -104,7 +104,7 @@ define([
         $('body').addClass(
           that.state.left
             ? that.options.classNames.leftExpanded
-            : that.options.classNames.topExpanded,
+            : that.options.classNames.topExpanded
         );
         $('body').removeClass(that.options.classNames.default);
         $('body').removeClass(that.options.classNames.leftDefault);
@@ -114,7 +114,7 @@ define([
         $('body').addClass(
           that.state.left
             ? that.options.classNames.leftDefault
-            : that.options.classNames.topDefault,
+            : that.options.classNames.topDefault
         );
         $('body').removeClass(that.options.classNames.expanded);
         $('body').removeClass(that.options.classNames.leftExpanded);
@@ -126,7 +126,7 @@ define([
         $('body').addClass(
           that.state.expanded
             ? that.options.classNames.topExpanded
-            : that.options.classNames.topDefault,
+            : that.options.classNames.topDefault
         );
         $('body').removeClass(that.options.classNames.left);
         $('body').removeClass(that.options.classNames.leftDefault);
@@ -144,7 +144,7 @@ define([
             $('body').removeClass(that.options.classNames.expanded);
             $('body').addClass(that.options.classNames.default);
             $('nav li', that.$container).removeClass(
-              that.options.classNames.active,
+              that.options.classNames.active
             );
             if (that.state.left) {
               $('body').addClass(that.options.classNames.leftDefault);
@@ -161,7 +161,7 @@ define([
             $('body').addClass(that.options.classNames.expanded);
             $('body').removeClass(that.options.classNames.default);
             $('nav li', that.$container).removeClass(
-              that.options.classNames.active,
+              that.options.classNames.active
             );
             if (that.state.left) {
               $('body').addClass(that.options.classNames.leftExpanded);
@@ -205,14 +205,14 @@ define([
             // close existing opened contentmenus
             $('.' + active_class + '> ul', that.$container).attr(
               'aria-hidden',
-              'true',
+              'true'
             );
             $('.' + active_class, that.$container).removeClass(active_class);
             // we need to close the more subset as well not just the content-menus
             // when we click on the personal bar
             $('#plone-toolbar-more-subset').hide();
           }
-          $('nav li > ul', $(this)).css({'margin-top': ''}); // unset this so we get fly-in affect
+          $('nav li > ul', $(this)).css({ 'margin-top': '' }); // unset this so we get fly-in affect
           if (!hasClass) {
             // open current selected if not already open
             $this.addClass(active_class);
@@ -267,7 +267,7 @@ define([
     },
     _setHeight: function() {
       var $items = $('.plone-toolbar-main', this.$container);
-      $items.css({height: ''});
+      $items.css({ height: '' });
       var natualHeight = $items.outerHeight();
       $('.scroll-btn', this.$container).remove();
 
@@ -282,10 +282,10 @@ define([
       if (height < natualHeight) {
         /* add scroll buttons */
         var $scrollUp = $(
-          '<li class="scroll-btn up"><a href="#"><span class="icon-up"></span><span>&nbsp;</span></a></li>',
+          '<li class="scroll-btn up"><a href="#"><span class="icon-up"></span><span>&nbsp;</span></a></li>'
         );
         var $scrollDown = $(
-          '<li class="scroll-btn down"><a href="#"><span class="icon-down"></span><span>&nbsp;</span></a></li>',
+          '<li class="scroll-btn down"><a href="#"><span class="icon-down"></span><span>&nbsp;</span></a></li>'
         );
         $items.prepend($scrollUp);
         $items.append($scrollDown);
@@ -329,7 +329,7 @@ define([
         JSON.stringify({
           expanded: that.state.expanded,
         }),
-        {path: '/'},
+        { path: '/' }
       );
     },
     cloneViewsIntoSubset: function($container, $views, $subset) {
@@ -384,11 +384,11 @@ define([
             $toolbar_more_options = $(
               '<li id="plone-toolbar-more-options"><a href="#"><span class="icon-moreOptions" aria-hidden="true"></span><span>' +
                 _t('More') +
-                '</span><span class="plone-toolbar-caret"></span></a></li>',
+                '</span><span class="plone-toolbar-caret"></span></a></li>'
             );
             $plone_toolbar_main.append($toolbar_more_options);
             var $toolbar_more_subset = $(
-              '<ul id="plone-toolbar-more-subset" style="display: none"></ul>',
+              '<ul id="plone-toolbar-more-subset" style="display: none"></ul>'
             );
             $pers_bar_container.after($toolbar_more_subset);
             // we want only the list items with id that contains plone-contentmenu and not the children links
@@ -403,7 +403,7 @@ define([
             that.cloneViewsIntoSubset(
               $pers_bar_container,
               $content_views,
-              $toolbar_more_subset,
+              $toolbar_more_subset
             );
             var active_class = that.options.classNames.active;
             $toolbar_more_options.find('a').on('click', function(event) {
@@ -414,7 +414,7 @@ define([
               // properly toggle active class for toolbar_more list item
               $more_list.toggleClass(
                 'active',
-                $toolbar_more_subset.is(':hidden'),
+                $toolbar_more_subset.is(':hidden')
               );
               $toolbar_more_subset.toggle();
               event.preventDefault();
@@ -432,7 +432,7 @@ define([
         that.cloneViewsIntoSubset(
           $pers_bar_container,
           $content_views,
-          $('#plone-toolbar-more-subset'),
+          $('#plone-toolbar-more-subset')
         );
       }
     },
