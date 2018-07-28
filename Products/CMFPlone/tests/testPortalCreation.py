@@ -77,10 +77,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         # Plone skins should have been set up
         self.assertTrue(hasattr(self.folder, 'logo.png'))
 
-    def testDefaultSkin(self):
-        # index_html should render
-        self.portal.index_html()
-
     def testNoIndexHtmlDocument(self):
         # The portal should not contain an index_html Document
         self.assertFalse('index_html' in self.portal)
@@ -770,7 +766,9 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
                 'plone.portlet.collection.Collection',
                 'plone.portlet.static.Static',
                 'portlets.Actions',
+                'portlets.Calendar',
                 'portlets.Classic',
+                'portlets.Events',
                 'portlets.Login',
                 'portlets.Navigation',
                 'portlets.News',
@@ -791,7 +789,9 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
                 'plone.portlet.collection.Collection',
                 'plone.portlet.static.Static',
                 'portlets.Actions',
+                'portlets.Calendar',
                 'portlets.Classic',
+                'portlets.Events',
                 'portlets.News',
                 'portlets.Recent',
                 'portlets.Review',
@@ -825,11 +825,12 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.assertTrue('Contributor' in self.portal.acl_users
                         .portal_role_manager.listRoleIds())
         for p in ['Add portal content', 'Add portal folders',
-                  'ATContentTypes: Add Document',
-                  'ATContentTypes: Add Event', 'ATContentTypes: Add File',
-                  'ATContentTypes: Add Folder',
-                  'ATContentTypes: Add Link',
-                  'ATContentTypes: Add News Item', ]:
+                  'plone.app.contenttypes: Add Document',
+                  'plone.app.contenttypes: Add Event',
+                  'plone.app.contenttypes: Add File',
+                  'plone.app.contenttypes: Add Folder',
+                  'plone.app.contenttypes: Add Link',
+                  'plone.app.contenttypes: Add News Item', ]:
             self.assertTrue(p in [r['name'] for r in
                                   self.portal.permissionsOfRole('Contributor')
                                   if r['selected']])
