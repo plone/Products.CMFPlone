@@ -23,6 +23,14 @@ Bug fixes:
   IRichText -> IRichTextBehavior
   This is a follow up to `issue 476 <https://github.com/plone/plone.app.contenttypes/issues/476>`_.
   [iham]
+- Fix plone.app.redirector support for JSON/unspecified requests.
+  [rpatterson]
+
+- Do not include too new upgrades when upgrading Plone Site.
+  Otherwise the Plone Site ends up at a newer version that the filesystem code supports,
+  giving an error when upgrading, and resulting in possibly missed upgrades later.
+  Fixes `issue 2377 <https://github.com/plone/Products.CMFPlone/issues/2377>`_.
+  [maurits]
 
 - Add test for issue #2469.
   [jensens]
