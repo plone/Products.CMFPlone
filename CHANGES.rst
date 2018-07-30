@@ -27,6 +27,11 @@ Bug fixes:
 - Add test for issue #2469.
   [jensens]
 
+- Fix toolbar on mobile:
+    - Clicking on menu links, submenus are not shown
+    - With a opened submenu, html has huge margins and page content disappears
+  [nzambello]
+
 
 5.1.3 (2018-06-22)
 ------------------
