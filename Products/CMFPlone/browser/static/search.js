@@ -76,6 +76,8 @@ require([
       $('[name="sort_on"]').attr('value', sort);
       if(order && order == 'reverse'){
         $('[name="sort_order"]').attr('value', 'reverse');
+      }else{
+        $('[name="sort_order"]').attr('value', '');
       }
     }else{
       $('[name="sort_on"]').attr('value', '');
