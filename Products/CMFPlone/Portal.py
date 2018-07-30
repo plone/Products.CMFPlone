@@ -48,6 +48,7 @@ from Products.CMFCore.permissions import MailForgottenPassword
 from Products.CMFCore.permissions import RequestReview
 from Products.CMFCore.permissions import ReviewPortalContent
 from Products.CMFCore.Skinnable import SkinnableObjectManager
+from plone.app.layout.navigation.interfaces import INavigationRoot
 
 from zope.event import notify
 from zope.component.interfaces import ComponentLookupError
@@ -58,7 +59,7 @@ from zope.traversing.interfaces import BeforeTraverseEvent
 PORTAL_SKINS_TOOL_ID = 'portal_skins'
 
 
-@implementer(IPloneSiteRoot, ISiteRoot, ISyndicatable, IObjectManagerSite)
+@implementer(IPloneSiteRoot, INavigationRoot, ISiteRoot, ISyndicatable, IObjectManagerSite)
 class PloneSite(Container, SkinnableObjectManager, UniqueObject):
     """ The Plone site object. """
 
