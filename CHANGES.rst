@@ -25,12 +25,15 @@ Breaking changes:
 
 - Some tools from CMFCore are now utilities
   [pbauer]
-- *add item here*
 
 Bug fixes:
 
+- Get rid of obsolete ``X-UA-Compatible`` header.
+  [hvelarde]
+
 - Add test for issue #2469.
   [jensens]
+
 - Fixed tests when IRichText behavior is used.
   IRichText -> IRichTextBehavior
   This is a follow up to `issue 476 <https://github.com/plone/plone.app.contenttypes/issues/476>`_.
