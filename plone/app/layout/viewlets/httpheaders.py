@@ -37,10 +37,3 @@ class HTTPCachingHeaders(HeaderViewlet):
             ('Expires', 'Sat, 1 Jan 2000 00:00:00 GMT'),
             ('Content-Language', lang)
         ]
-
-
-class XUACompatible(HeaderViewlet):
-    """set the header ('X-UA-Compatible', 'IE=edge');"""
-
-    def getHeaders(self):
-        return [('X-UA-Compatible', 'IE=edge')]
