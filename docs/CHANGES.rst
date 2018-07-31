@@ -15,13 +15,12 @@ Breaking changes:
 
 New features:
 
-- Add support for ``X-Content-Type-Options`` and ``X-XSS-Protection`` security headers.
+- Add ``X-Content-Type-Options`` and ``X-XSS-Protection`` security headers.
   [hvelarde]
 
 Bug fixes:
 
-- Get rid of obsolete ``X-UA-Compatible`` header.
-  [hvelarde]
+- *add item here*
 
 
 4.3.18 (2018-05-29)
