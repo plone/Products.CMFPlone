@@ -15,7 +15,8 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- Add ``X-Content-Type-Options`` and ``X-XSS-Protection`` security headers.
+  [hvelarde]
 
 Bug fixes:
 
