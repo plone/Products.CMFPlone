@@ -136,14 +136,6 @@
         permission="zope.Public"
         />
 
-    <!-- X-UA-Compatible -->
-    <browser:viewlet
-        name="plone.xuacompatible"
-        manager=".interfaces.IHTTPHeaders"
-        class=".httpheaders.XUACompatible"
-        permission="zope.Public"
-        />
-
     <!-- The portal header -->
     <browser:viewlet
         name="plone.header"

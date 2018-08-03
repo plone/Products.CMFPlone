@@ -14,7 +14,8 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Get rid of obsolete ``X-UA-Compatible`` header.
+  [hvelarde]
 
 
 2.8.1 (2018-06-18)
