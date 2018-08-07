@@ -25,6 +25,13 @@ Bug fixes:
 
 - Show version of products in Add-ons control panel configlet.
   This fixes https://github.com/plone/Products.CMFPlone/issues/1472.
+- Remove last legacy Javascript ``highlight-searchterms.js``. 
+  Removes also the skins folder ``plone_ecmascript``. 
+  It was broken for almost all use cases (Google, other search engines, own live search);
+  JS worked only when coming from Plone detailed search page.
+  [jensens]
+
+- Get rid of obsolete ``X-UA-Compatible`` header.
   [hvelarde]
 
 - Resource registry legacy bundle cooking: Exit early with a warning, if preconditions to build are not given (no compilation paths).
