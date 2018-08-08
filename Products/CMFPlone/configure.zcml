@@ -12,7 +12,6 @@
   <include package="plone.app.content" />
   <include package="plone.app.contentrules" />
   <include package="plone.app.contenttypes" />
-  <include package="plone.app.controlpanel" />
   <include package="plone.app.customerize" />
   <include package="plone.app.discussion" />
   <include package="plone.app.folder" />
