@@ -19,6 +19,9 @@ New features:
 
 Bug fixes:
 
+- Fix registration of ``robots.txt`` browser view to avoid ``AttributeError`` on Zope's root (fixes `#2052 <https://github.com/plone/Products.CMFPlone/issues/2052>`_).
+  [hvelarde]
+
 - Fixed tests when IRichText behavior is used.
   IRichText -> IRichTextBehavior
   This is a follow up to `issue 476 <https://github.com/plone/plone.app.contenttypes/issues/476>`_.
