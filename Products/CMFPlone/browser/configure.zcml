@@ -159,7 +159,7 @@
       />
 
   <browser:page
-      for="*"
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
       name="robots.txt"
       class=".robots.Robots"
       permission="zope.Public"
