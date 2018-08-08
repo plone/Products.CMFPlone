@@ -28,6 +28,9 @@ Breaking changes:
 
 Bug fixes:
 
+- Fix registration of ``robots.txt`` browser view to avoid ``AttributeError`` on Zope's root (fixes `#2052 <https://github.com/plone/Products.CMFPlone/issues/2052>`_).
+  [hvelarde]
+
 - Get rid of obsolete ``X-UA-Compatible`` header.
   [hvelarde]
 
