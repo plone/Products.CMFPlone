@@ -10,6 +10,11 @@ Changelog
 
 Breaking changes:
 
+- Remove all dependencies on plone.app.controlpanel. 
+  Third party code need either to depend on plone.app.controlpanel 4.0,
+  which is a backward compatibilit package only, or also update to not depend on it anymore.
+  [jensens]
+
 - New browser view based login code - merged from plone.login (credits to esteele, pbauer, agitator, jensens, et al).
   `portal_skins/plone_login` is now gone, see PLIP #2092.
   Also, password reset view moved to login subfolder to keep things together.
