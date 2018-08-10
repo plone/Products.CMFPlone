@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from AccessControl.SecurityManagement import getSecurityManager
 from email.header import Header
 from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.memoize import view
@@ -13,10 +14,13 @@ from Products.CMFPlone.utils import safe_unicode
 from Products.CMFPlone.utils import safeToInt
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from Products.PlonePAS.events import UserInitialLoginInEvent
+from Products.PlonePAS.events import UserLoggedInEvent
 from Products.PluggableAuthService.interfaces.plugins import ICredentialsUpdatePlugin  # noqa
 from Products.statusmessages.interfaces import IStatusMessage
 from zope.component import getMultiAdapter
 from zope.component import getUtility
+from zope.event import notify
 from zope.i18n import translate
 from zope.interface import implementer
 from zope.publisher.interfaces import IPublishTraverse
@@ -93,6 +97,13 @@ class PasswordResetView(BrowserView):
                 userid,
                 password
             )
+        user = getSecurityManager().getUser()
+        login_time = user.getProperty('login_time', None)
+        if login_time is None:
+            notify(UserInitialLoginInEvent(user))
+        else:
+            notify(UserLoggedInEvent(user))
+
         IStatusMessage(self.request).addStatusMessage(
             _(
                 'password_reset_successful',
