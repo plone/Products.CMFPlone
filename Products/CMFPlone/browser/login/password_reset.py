@@ -84,6 +84,27 @@ class PasswordResetView(BrowserView):
     form = ViewPageTemplateFile('templates/pwreset_form.pt')
     subpath = None
 
+    def _auto_login(self, userid, password):
+        aclu = getToolByName(self.context, 'acl_users')
+        for name, plugin in aclu.plugins.listPlugins(ICredentialsUpdatePlugin):
+            plugin.updateCredentials(
+                self.request,
+                self.request.response,
+                userid,
+                password
+            )
+        IStatusMessage(self.request).addStatusMessage(
+            _(
+                'password_reset_successful',
+                default='Password reset successful, '
+                        'you are logged in now!',
+            ),
+            'info',
+        )
+        url = INavigationRoot(self.context).absolute_url()
+        self.request.response.redirect(url)
+        return
+
     def _reset_password(self, pw_tool, randomstring):
         userid = self.request.form.get('userid')
         password = self.request.form.get('password')
@@ -97,26 +118,7 @@ class PasswordResetView(BrowserView):
             return self.invalid()
         registry = getUtility(IRegistry)
         if registry.get('plone.autologin_after_password_reset', False):
-            aclu = getToolByName(self.context, 'acl_users')
-            cups = aclu.plugins.listPlugins(ICredentialsUpdatePlugin)
-            for name, plugin in cups:
-                plugin.updateCredentials(
-                    self.request,
-                    self.request.response,
-                    userid,
-                    password
-                )
-            IStatusMessage(self.request).addStatusMessage(
-                _(
-                    'password_reset_successful',
-                    default='Password reset successful, '
-                            'you are logged in now!',
-                ),
-                'info',
-            )
-            url = INavigationRoot(self.context).absolute_url()
-            self.request.response.redirect(url)
-            return
+            return self._auto_login(userid, password)
         return self.finish()
 
     def __call__(self):
