@@ -7,7 +7,7 @@ from Products.CMFPlone.interfaces import IWorkflowChain
 from ZODB.POSException import ConflictError
 from Acquisition import aq_base
 
-from App.class_init import InitializeClass
+from AccessControl.class_init import InitializeClass
 from AccessControl import getSecurityManager, ClassSecurityInfo
 from Products.CMFCore.permissions import ManagePortal
 from Products.DCWorkflow.Transitions import TRIGGER_USER_ACTION

@@ -22,10 +22,16 @@ second_pass = {}
 if REQUEST is None:
     REQUEST = context.REQUEST
 
-# See http://dev.plone.org/plone/ticket/9422 for
-# an explanation of '\u3000'
-multispace = u'\u3000'.encode('utf-8')
-
+# We should accept both a simple space, unicode u'\u0020 but also a
+# multi-space, so called 'waji-kankaku', unicode u'\u3000'
+# Stupid hack to find py-version since importing six or sys is forbidden.
+try:
+    # PY2
+    u'foo'.decode('utf8')
+    multispace = u'\u3000'.encode('utf-8')
+except AttributeError:
+    # PY3
+    multispace = u'\u3000'
 
 def quotestring(s):
     return '"%s"' % s

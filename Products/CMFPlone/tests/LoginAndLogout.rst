@@ -4,7 +4,7 @@ Logging in and out
 A very simple and underdocumented testbrowser test.  This is all about
 logging in and out.
 
-    >>> from plone.testing.z2 import Browser
+    >>> from plone.testing.zope import Browser
     >>> from plone.testing.z2 import login
     >>> from plone.testing.z2 import logout
     >>> from plone.app.testing import setRoles

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from plone.app.testing import SITE_OWNER_NAME, SITE_OWNER_PASSWORD
 from Products.CMFCore.utils import getToolByName
-from plone.testing.z2 import Browser
+from plone.testing.zope import Browser
 from Products.CMFPlone.utils import normalizeString
 
 from Products.CMFPlone.testing import \

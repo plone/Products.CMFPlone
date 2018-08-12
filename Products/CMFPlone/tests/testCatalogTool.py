@@ -6,6 +6,7 @@ from OFS.ObjectManager import REPLACEABLE
 from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
+from plone.app.textfield import RichTextValue
 from plone.indexer.wrapper import IndexableObjectWrapper
 from plone.uuid.interfaces import IAttributeUUID
 from plone.uuid.interfaces import IUUID
@@ -334,7 +335,8 @@ class TestCatalogIndexing(PloneTestCase):
     def testClearFindAndRebuildKeepsModificationDate(self):
         # Index the doc for consistency
         self.catalog.indexObject(self.folder.doc)
-        self.folder.doc.setModificationDate(DateTime(0))
+        self.folder.doc.modification_date = DateTime(0)
+        # FIXME: Index the doc for consistency
         self.catalog.clearFindAndRebuild()
         self.assertEqual(self.folder.doc.modified(), DateTime(0))
         self.assertEqual(len(self.catalog(modified=DateTime(0))), 1)
@@ -1299,7 +1301,8 @@ class TestIndexers(PloneTestCase):
     def test_getObjSize(self):
         from Products.CMFPlone.CatalogTool import getObjSize
         get_size = getObjSize.callable
-        self.doc.setText(u'a' * 1000)
+        # FIXME: getObjSize die not count text in DX
+        self.doc.text = RichTextValue('a' * 1000)
         self.doc.reindexObject()
         self.assertEqual(get_size(self.doc), '1 KB')
 
@@ -1317,11 +1320,11 @@ class TestMetadata(PloneTestCase):
 
     def testLocationAddedToMetdata(self):
         self.folder.invokeFactory(
-            'Document', 'doc', title='document', location="foobar")
+            'Document', 'doc', title='document', location='foobar')
         doc = self.folder.doc
         catalog = self.portal.portal_catalog
         brain = catalog(UID=doc.UID())[0]
-        self.assertEqual(brain.location, doc.getLocation())
+        self.assertEqual(brain.location, doc.location)
 
 
 class TestObjectProvidedIndexExtender(unittest.TestCase):

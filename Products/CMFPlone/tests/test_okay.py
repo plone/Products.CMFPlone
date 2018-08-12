@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from plone.testing.z2 import Browser
+from plone.testing.zope import Browser
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 
 import six

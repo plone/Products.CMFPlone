@@ -3,7 +3,7 @@ Mail related functional tests
 
 Some initial setup:
 
-  >>> from plone.testing.z2 import Browser
+  >>> from plone.testing.zope import Browser
   >>> app = layer['app']
   >>> browser = Browser(app)
 
