@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
 from plone.app.textfield import RichTextValue
 from plone.namedfile.file import NamedFile
+from plone.namedfile.file import NamedImage
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 
@@ -27,12 +29,12 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
     def testEventCreate(self):
         self.folder.invokeFactory('Event', id='event',
                                   title='Foo',
-                                  start_date='2003-09-18',
-                                  end_date='2003-09-19')
+                                  start=datetime(year=2003, month=9, day=18),
+                                  end=datetime(year=2003, month=9, day=19))
         self.assertEqual(self.folder.event.Title(), 'Foo')
-        self.assertTrue(self.folder.event.start.ISO8601()
+        self.assertTrue(self.folder.event.start.isoformat()
                             .startswith('2003-09-18T00:00:00'))
-        self.assertTrue(self.folder.event.end.ISO8601()
+        self.assertTrue(self.folder.event.end.isoformat()
                             .startswith('2003-09-19T00:00:00'))
 
     def testFileCreate(self):
@@ -53,9 +55,9 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
 
     def testLinkCreate(self):
         self.folder.invokeFactory('Link', id='link',
-                                  remote_url='http://foo.com', title='Foo')
+                                  remoteUrl='http://foo.com', title='Foo')
         self.assertEqual(self.folder.link.Title(), 'Foo')
-        self.assertEqual(self.folder.link.remote_url, 'http://foo.com')
+        self.assertEqual(self.folder.link.remoteUrl, 'http://foo.com')
 
     def testNewsItemCreate(self):
         self.folder.invokeFactory('News Item', id='newsitem',
@@ -81,35 +83,36 @@ class TestFileURL(PloneTestCase.PloneTestCase):
 
     def testFileURLWithHost(self):
         self.folder.invokeFactory('Link', id='link',
-                                  remote_url='file://foo.com/baz.txt')
-        self.assertEqual(self.folder.link.remote_url,
+                                  remoteUrl='file://foo.com/baz.txt')
+        self.assertEqual(self.folder.link.remoteUrl,
                          'file://foo.com/baz.txt')
 
     def testFileURLNoHost(self):
         self.folder.invokeFactory('Link', id='link',
-                                  remote_url='file:///foo.txt')
-        self.assertEqual(self.folder.link.remote_url, 'file:///foo.txt')
+                                  remoteUrl='file:///foo.txt')
+        self.assertEqual(self.folder.link.remoteUrl, 'file:///foo.txt')
 
-    def testFileURLFourSlash(self):
-        self.folder.invokeFactory('Link', id='link',
-                                  remote_url='file:////foo.com/baz.txt')
-        # See urlparse.urlparse()
-        self.assertEqual(self.folder.link.remote_url,
-                         'file://foo.com/baz.txt')
+    # DX does not pass url trough urlparse/urlunparse like setRemoteUrl does.
+    # def testFileURLFourSlash(self):
+    #     self.folder.invokeFactory('Link', id='link',
+    #                               remoteUrl='file:////foo.com/baz.txt')
+    #     # See urlparse.urlparse()
+    #     self.assertEqual(self.folder.link.remoteUrl,
+    #                      'file://foo.com/baz.txt')
 
-    def testFileURLFiveSlash(self):
-        self.folder.invokeFactory('Link', id='link',
-                                  remote_url='file://///foo.com/baz.txt')
-        # See urlparse.urlparse()
-        self.assertEqual(self.folder.link.remote_url,
-                         'file:///foo.com/baz.txt')
+    # def testFileURLFiveSlash(self):
+    #     self.folder.invokeFactory('Link', id='link',
+    #                               remoteUrl='file://///foo.com/baz.txt')
+    #     # See urlparse.urlparse()
+    #     self.assertEqual(self.folder.link.remoteUrl,
+    #                      'file:///foo.com/baz.txt')
 
-    def testFileURLSixSlash(self):
-        self.folder.invokeFactory('Link', id='link',
-                                  remote_url='file://////foo.com/baz.txt')
-        # See urlparse.urlparse()
-        self.assertEqual(self.folder.link.remote_url,
-                         'file:////foo.com/baz.txt')
+    # def testFileURLSixSlash(self):
+    #     self.folder.invokeFactory('Link', id='link',
+    #                               remoteUrl='file://////foo.com/baz.txt')
+    #     # See urlparse.urlparse()
+    #     self.assertEqual(self.folder.link.remoteUrl,
+    #                      'file:////foo.com/baz.txt')
 
 
 class TestImageProps(PloneTestCase.PloneTestCase):

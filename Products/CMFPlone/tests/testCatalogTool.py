@@ -103,10 +103,10 @@ class TestCatalogSetup(PloneTestCase):
         self.assertEqual(self.catalog.Indexes['effective'].__class__.__name__,
                          'DateIndex')
 
-    def testEndIsDateIndex(self):
-        # end should be a DateIndex
+    def testEndIsDateRecurringIndex(self):
+        # end should be a DateRecurringIndex
         self.assertEqual(self.catalog.Indexes['end'].__class__.__name__,
-                         'DateIndex')
+                         'DateRecurringIndex')
 
     def testExpiresIsDateIndex(self):
         # expires should be a DateIndex
@@ -118,10 +118,10 @@ class TestCatalogSetup(PloneTestCase):
         self.assertEqual(self.catalog.Indexes['modified'].__class__.__name__,
                          'DateIndex')
 
-    def testStartIsDateIndex(self):
-        # start should be a DateIndex
+    def testStartIsDateRecurringIndex(self):
+        # start should be a DateRecurringIndex
         self.assertEqual(self.catalog.Indexes['start'].__class__.__name__,
-                         'DateIndex')
+                         'DateRecurringIndex')
 
     def testEffectiveRangeIsDateRangeIndex(self):
         # effectiveRange should be a DateRangeIndex
@@ -499,11 +499,18 @@ class TestCatalogSearching(PloneTestCase):
         """PLIP 12110
         """
         self.folder.invokeFactory(
-            'Document', id='docwithaccents-1', text='Econométrie', title='foo')
+            'Document',
+            id='docwithaccents-1',
+            text=RichTextValue('Econométrie', 'text/html', 'text/x-html-safe'),
+            title='foo')
         self.folder.invokeFactory(
-            'Document', id='docwithaccents-2', text='Économétrie')
+            'Document',
+            id='docwithaccents-2',
+            text=RichTextValue('Économétrie', 'text/html', 'text/x-html-safe'))
         self.folder.invokeFactory(
-            'Document', id='docwithout-accents', text='ECONOMETRIE')
+            'Document',
+            id='docwithout-accents',
+            text=RichTextValue('ECONOMETRIE', 'text/html', 'text/x-html-safe'))
 
         self.assertEqual(len(self.catalog(SearchableText='Économétrie')), 3)
         self.assertEqual(len(self.catalog(SearchableText='Econométrie')), 3)
@@ -524,18 +531,18 @@ class TestCatalogSorting(PloneTestCase):
     def afterSetUp(self):
         self.catalog = self.portal.portal_catalog
 
-        self.folder.invokeFactory('Document', id='doc', text='foo')
+        self.folder.invokeFactory('Document', id='doc', text=RichTextValue('foo', 'text/html', 'text/x-html-safe'))
         self.folder.doc.setTitle('12 Document 25')
-        self.folder.invokeFactory('Document', id='doc2', text='foo')
+        self.folder.invokeFactory('Document', id='doc2', text=RichTextValue('foo', 'text/html', 'text/x-html-safe'))
         self.folder.doc2.setTitle('3 Document 4')
-        self.folder.invokeFactory('Document', id='doc3', text='foo')
+        self.folder.invokeFactory('Document', id='doc3', text=RichTextValue('foo', 'text/html', 'text/x-html-safe'))
         self.folder.doc3.setTitle('12 Document 4')
 
-        self.folder.invokeFactory('Document', id='doc4', text='bar')
+        self.folder.invokeFactory('Document', id='doc4', text=RichTextValue('bar', 'text/html', 'text/x-html-safe'))
         self.folder.doc4.setTitle('document 12')
-        self.folder.invokeFactory('Document', id='doc5', text='bar')
+        self.folder.invokeFactory('Document', id='doc5', text=RichTextValue('bar', 'text/html', 'text/x-html-safe'))
         self.folder.doc5.setTitle('Document 2')
-        self.folder.invokeFactory('Document', id='doc6', text='bar')
+        self.folder.invokeFactory('Document', id='doc6', text=RichTextValue('bar', 'text/html', 'text/x-html-safe'))
         self.folder.doc6.setTitle('DOCUMENT 4')
         self.folder.doc.reindexObject()
         self.folder.doc2.reindexObject()
@@ -577,9 +584,9 @@ class TestCatalogSorting(PloneTestCase):
     def testSortableNonASCIITitles(self):
         # test a utf-8 encoded string gets properly unicode converted
         # sort must ignore accents
-        title = 'La Pe\xc3\xb1a'
+        title = b'La Pe\xc3\xb1a'
         doc = self.folder.doc
-        doc.setTitle(title)
+        doc.title = title.decode('utf-8')
         wrapped = IndexableObjectWrapper(doc, self.portal.portal_catalog)
         self.assertEqual(wrapped.sortable_title, 'la pena')
 

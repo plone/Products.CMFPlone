@@ -99,11 +99,13 @@ class TestCheckId(PloneTestCase):
         self.assertEqual(r, u'There is already an item named bar in this '
                             u'folder.')
 
-    def testTempObjectCollision(self):
-        foo = self.folder.restrictedTraverse('portal_factory/Document/foo')
-        self.folder._setObject('bar', dummy.Item('bar'))
-        r = foo.check_id('bar')
-        self.assertEqual(r, u'bar is reserved.')
+    # def testTempObjectCollision(self):
+    #     # foo = self.folder.restrictedTraverse('portal_factory/Document/foo')
+    #     from plone.dexterity.utils import createContent
+    #     foo = createContent('Document', id='foo')
+    #     self.folder._setObject('bar', dummy.Item('bar'))
+    #     r = foo.check_id('bar')
+    #     self.assertEqual(r, u'bar is reserved.')
 
     def testReservedId(self):
         self.folder._setObject('foo', dummy.Item('foo'))
@@ -161,7 +163,8 @@ class TestCheckId(PloneTestCase):
 
     def testMissingFactory(self):
         # check_id should not bomb out if the portal_factory tool is missing
-        self.portal._delObject('portal_factory')
+        if 'portal_factory' in self.portal:
+            self.portal._delObject('portal_factory')
         r = self.folder.check_id('foo')
         self.assertEqual(r, None)   # success
 

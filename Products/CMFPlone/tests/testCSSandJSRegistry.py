@@ -46,7 +46,7 @@ class TestCSSRegistry(PloneTestCase):
     def testJSIsInsertedInPage(self):
         self.registry['plone.resources.development'] = True
         self.registry['plone.bundles/plone.develop_css'] = True
-        page = self.portal.index_html()
+        page = self.portal.view()
         self.assertTrue('++plone++static/plone.less' in page)
 
 
@@ -71,5 +71,5 @@ class TestJSRegistry(PloneTestCase):
     def testJSIsInsertedInPage(self):
         self.registry['plone.resources.development'] = True
         self.registry['plone.bundles/plone.develop_javascript'] = True
-        page = self.portal.index_html()
+        page = self.portal.view()
         self.assertTrue('++resource++plone.js' in page)

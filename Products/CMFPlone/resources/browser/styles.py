@@ -5,8 +5,6 @@ from Products.CMFPlone.resources.browser.resource import ResourceBase
 from Products.CMFPlone.utils import get_top_request
 from six.moves.urllib import parse
 
-import six
-
 
 class StylesBase(ResourceBase):
 
