@@ -44,7 +44,6 @@ INSTALL_REQUIRES = [
     'plone.app.contentmenu >= 1.1.6dev-r22380',
     'plone.app.contentrules',
     'plone.app.contenttypes',
-    'plone.app.controlpanel',
     'plone.app.customerize',
     'plone.app.dexterity',
     'plone.app.discussion',

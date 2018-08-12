@@ -341,6 +341,20 @@ class TestCatalogIndexing(PloneTestCase):
         self.assertEqual(self.folder.doc.modified(), DateTime(0))
         self.assertEqual(len(self.catalog(modified=DateTime(0))), 1)
 
+    def test_acquired_attributes_are_not_indexed(self):
+        # create an index for foo:
+        # from Products.PluginIndexes.FieldIndex.FieldIndex import FieldIndex
+        self.catalog.addIndex('foo', 'FieldIndex')
+
+        # create attribute foo on folder and index on both, folder and
+        # contained
+        self.folder.foo = 'FOO'
+        self.catalog.clearFindAndRebuild()
+
+        # lets see if we have one result for folder, but nothing for doc:
+        brains = self.catalog(foo='FOO')
+        self.assertEqual(len(brains), 1)
+
 
 class TestCatalogSearching(PloneTestCase):
 
