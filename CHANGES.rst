@@ -19,6 +19,9 @@ New features:
 
 Bug fixes:
 
+- Disable installation for broken add-ons in site-creation-form. Fix #2228.
+	[ida]
+
 - Get rid of obsolete ``X-UA-Compatible`` header.
   [hvelarde]
 
