@@ -9,7 +9,7 @@ summary_view (Summary view)
 full_view (All content)
 tabular_view (Tabular view)
 
-    >>> from plone.testing.z2 import Browser
+    >>> from plone.testing.zope import Browser
     >>> from plone.app.testing import SITE_OWNER_NAME
     >>> from plone.app.testing import SITE_OWNER_PASSWORD
     >>> app = layer['app']
@@ -35,8 +35,8 @@ First create a folder and a demo collection:
     >>> collection_description = 'Description. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod.'
     >>> browser.getControl(name='form.widgets.IDublinCore.description').value = collection_description
     >>> collection_text = '<p>Text. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>'
-    >>> browser.getControl(name='form.widgets.IRichText.text').value = collection_text
-    >>> browser.getControl(name='form.widgets.IRichText.text.mimeType').value = ['text/html']
+    >>> browser.getControl(name='form.widgets.IRichTextBehavior.text').value = collection_text
+    >>> browser.getControl(name='form.widgets.IRichTextBehavior.text.mimeType').value = ['text/html']
     >>> browser.getControl('Save').click()
 
 Now let's login and visit the collection in the test browser:

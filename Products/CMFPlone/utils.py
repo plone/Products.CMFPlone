@@ -234,7 +234,10 @@ def utf8_portal(context, str, errors='strict'):
 def getEmptyTitle(context, translated=True):
     """Returns string to be used for objects with no title or id"""
     # The default is an extra fancy unicode elipsis
-    empty = six.text_type('\x5b\xc2\xb7\xc2\xb7\xc2\xb7\x5d', 'utf-8')
+    if six.PY2:
+        empty = unicode('\x5b\xc2\xb7\xc2\xb7\xc2\xb7\x5d', 'utf-8')
+    else:
+        empty = b'\x5b\xc2\xb7\xc2\xb7\xc2\xb7\x5d'.decode('utf8')
     if translated:
         if context is not None:
             if not IBrowserRequest.providedBy(context):
@@ -460,7 +463,6 @@ def safe_unicode(value, encoding='utf-8'):
     """Converts a value to unicode, even it is already a unicode string.
 
         >>> from Products.CMFPlone.utils import safe_unicode
-
         >>> safe_unicode('spam') == u'spam'
         True
         >>> safe_unicode(b'spam') == u'spam'
@@ -469,11 +471,11 @@ def safe_unicode(value, encoding='utf-8'):
         True
         >>> safe_unicode(u'spam'.encode('utf-8')) == u'spam'
         True
-        >>> safe_unicode('\xc6\xb5') == u'\u01b5'
+        >>> safe_unicode(test_bytes) == u'\u01b5'
         True
         >>> safe_unicode(u'\xc6\xb5'.encode('iso-8859-1')) == u'\u01b5'
         True
-        >>> safe_unicode('\xc6\xb5', encoding='ascii') == u'\u01b5'
+        >>> safe_unicode(test_bytes, encoding='ascii') == u'\u01b5'
         True
         >>> safe_unicode(1) == 1
         True

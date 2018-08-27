@@ -10,8 +10,48 @@ Changelog
 
 Breaking changes:
 
+- Remove all dependencies on plone.app.controlpanel. 
+  Third party code need either to depend on plone.app.controlpanel 4.0,
+  which is a backward compatibilit package only, or also update to not depend on it anymore.
+  [jensens]
+
+- New browser view based login code - merged from plone.login (credits to esteele, pbauer, agitator, jensens, et al).
+  `portal_skins/plone_login` is now gone, see PLIP #2092.
+  Also, password reset view moved to login subfolder to keep things together.
+  Some testbrowser based tests needed changes because of z3c.form based login form .
+  The Plone specific, rarely used cross site __ac cookie SSO feature/hack was removed.
+  In case somebody needs this, please make it an addon package.
+  Better use a field proven, more secure way, like OAuth2, Shibboleth or someting similar.
+  [jensens, et al]
+
+- Adapt tests to `Products.GenericSetup >= 2.0` thus requiring at least that
+  version.
+  [icemac]
+
 - Some tools from CMFCore are now utilities
   [pbauer]
+
+Bug fixes:
+
+- Fix registration of ``robots.txt`` browser view to avoid ``AttributeError`` on Zope's root (fixes `#2052 <https://github.com/plone/Products.CMFPlone/issues/2052>`_).
+  [hvelarde]
+
+- Get rid of obsolete ``X-UA-Compatible`` header.
+  [hvelarde]
+
+- Add test for issue #2469.
+  [jensens]
+
+- Fixed tests when IRichText behavior is used.
+  IRichText -> IRichTextBehavior
+  This is a follow up to `issue 476 <https://github.com/plone/plone.app.contenttypes/issues/476>`_.
+  [iham]
+
+
+5.1.3 (2018-06-22)
+------------------
+
+Breaking changes:
 
 - Remove five.pt for Zope 4
   [jensens]
@@ -45,8 +85,12 @@ Breaking changes:
 
 New Features:
 
+- Update to latest mockup
+  [frapell]
+
 - Provide an utility ``dump_json_to_text`` that works both on Python 2.7 an Python 3.
   [ale-rt]
+
 - Prepare for Python 2 / 3 compatibility.
   [pbauer]
 
@@ -56,7 +100,26 @@ New Features:
 - Mockup update.
   [thet]
 
+- add link to Plone.org VPAT accessibility statement
+  [tkimnguyen]
+
 Bug Fixes:
+
+- Hide ``plone.app.querystring`` from add-ons control panel.
+  Fixes `issue 2426 <https://github.com/plone/Products.CMFPlone/issues/2426>`_.
+  [maurits]
+
+- Fix tests after changes in disallowed object ids in Zope.
+  [pbauer]
+
+- Do not include too new upgrades when upgrading Plone Site.
+  Otherwise the Plone Site ends up at a newer version that the filesystem code supports,
+  giving an error when upgrading, and resulting in possibly missed upgrades later.
+  Fixes `issue 2377 <https://github.com/plone/Products.CMFPlone/issues/2377>`_.
+  [maurits]
+
+- After site creation, do not render the add-site template: we redirect anyway.
+  [maurits]
 
 - Unflakied a unit test.
   [Rotonen]
@@ -146,3 +209,6 @@ Bug Fixes:
 
 - Remove depricated ``type`` attribute from ``script`` and ``link`` tags.
   [newbazz]
+
+- Render tinymce attributes correctly in Python3.
+  [sallner]

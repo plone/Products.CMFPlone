@@ -3,18 +3,23 @@ from plone.resource.interfaces import IResourceDirectory
 from Products.CMFPlone.interfaces.resources import (
     OVERRIDE_RESOURCE_DIRECTORY_NAME,
 )
-from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
 from zope.component import getUtility
 
 from Products.CMFPlone.resources.browser.combine import (
     PRODUCTION_RESOURCE_DIRECTORY,
     combine_bundles,
 )
+from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
+
+import unittest
 
 
-class ProductsCMFPloneSetupTest(PloneTestCase):
+class ProductsCMFPloneSetupTest(unittest.TestCase):
 
-    def afterSetUp(self):
+    layer = PRODUCTS_CMFPLONE_INTEGRATION_TESTING
+
+    def setUp(self):
+        self.portal = self.layer['portal']
         combine_bundles(self.portal)
         persistent_directory = getUtility(
             IResourceDirectory, name="persistent")
@@ -35,7 +40,7 @@ class ProductsCMFPloneSetupTest(PloneTestCase):
 
     def test_default_js_bundle(self):
         self.assertIn(
-            "jQuery",
+            b"jQuery",
             self.production_folder.readFile('default.js')
         )
 
@@ -48,6 +53,6 @@ class ProductsCMFPloneSetupTest(PloneTestCase):
         static.writeFile('plone-legacy-compiled.js', 'alert("Overrided legacy!");')
         combine_bundles(self.portal)
         self.assertIn(
-            'alert("Overrided legacy!");',
+            b'alert("Overrided legacy!");',
             self.production_folder.readFile('default.js')
         )

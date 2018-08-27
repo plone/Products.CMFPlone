@@ -49,6 +49,7 @@ class NonInstallable(object):
             'plone.app.imaging',
             'plone.app.intid',
             'plone.app.linkintegrity',
+            'plone.app.querystring',
             'plone.app.registry',
             'plone.app.referenceablebehavior',
             'plone.app.relationfield',

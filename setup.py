@@ -3,7 +3,7 @@ from setuptools import find_packages
 
 import sys
 
-version = '5.1rc2.dev0'
+version = '5.2a1.dev0'
 
 INSTALL_REQUIRES = [
     'setuptools',
@@ -21,7 +21,7 @@ INSTALL_REQUIRES = [
     'Products.CMFUid',
     'Products.DCWorkflow',
     'Products.ExtendedPathIndex',
-    'Products.GenericSetup >= 1.8.2',
+    'Products.GenericSetup >= 2.0.dev0',
     'Products.MimetypesRegistry',
     'Products.PlonePAS',
     'Products.PluggableAuthService',
@@ -44,7 +44,6 @@ INSTALL_REQUIRES = [
     'plone.app.contentmenu >= 1.1.6dev-r22380',
     'plone.app.contentrules',
     'plone.app.contenttypes',
-    'plone.app.controlpanel',
     'plone.app.customerize',
     'plone.app.dexterity',
     'plone.app.discussion',

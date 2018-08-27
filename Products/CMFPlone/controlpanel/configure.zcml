@@ -8,5 +8,6 @@
   <include package=".browser" />
 
   <include file="events.zcml" />
+  <include file="permissions.zcml" />
 
 </configure>

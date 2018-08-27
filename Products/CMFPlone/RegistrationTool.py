@@ -5,7 +5,7 @@ from AccessControl.requestmethod import postonly
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.SecurityManagement import setSecurityManager
 from Acquisition import aq_base, aq_chain
-from App.class_init import InitializeClass
+from AccessControl.class_init import InitializeClass
 from email import message_from_string
 from hashlib import md5
 from plone.registry.interfaces import IRegistry
@@ -431,7 +431,7 @@ class RegistrationTool(PloneBaseTool, BaseTool):
 
         # The mail headers are not properly encoded we need to extract
         # them and let MailHost manage the encoding.
-        if isinstance(mail_text, six.text_type):
+        if six.PY2 and isinstance(mail_text, six.text_type):
             mail_text = mail_text.encode(encoding)
         message_obj = message_from_string(mail_text.strip())
         subject = message_obj['Subject']

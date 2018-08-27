@@ -92,7 +92,7 @@ class GroupMembershipControlPanel(UsersGroupsControlPanelView):
             'fullname') is not None and normalizeString(x.getProperty('fullname')) or '')
 
         mergedResults = groupResults + userResults
-        return filter(None, mergedResults)
+        return [i for i in mergedResults if i]
 
     def getPotentialMembers(self, searchString):
         ignoredUsersGroups = [

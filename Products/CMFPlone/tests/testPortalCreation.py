@@ -51,7 +51,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.memberdata = self.portal.portal_memberdata
         self.catalog = self.portal.portal_catalog
         self.groups = self.portal.portal_groups
-        self.factory = self.portal.portal_factory
         self.skins = self.portal.portal_skins
         self.transforms = self.portal.portal_transforms
         self.javascripts = self.portal.portal_javascripts
@@ -78,10 +77,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         # Plone skins should have been set up
         self.assertTrue(hasattr(self.folder, 'logo.png'))
 
-    def testDefaultSkin(self):
-        # index_html should render
-        self.portal.index_html()
-
     def testNoIndexHtmlDocument(self):
         # The portal should not contain an index_html Document
         self.assertFalse('index_html' in self.portal)
@@ -96,9 +91,9 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
             'portal_workflow' in self.actions.listActionProviders())
 
     def testMembersFolderMetaType(self):
-        # Members folder should have meta_type 'ATFolder'
+        # Members folder should have meta_type 'Dexterity Container'
         members = self.membership.getMembersFolder()
-        self.assertEqual(members.meta_type, 'ATFolder')
+        self.assertEqual(members.meta_type, 'Dexterity Container')
 
     def testMembersFolderPortalType(self):
         # Members folder should have portal_type 'Folder'
@@ -320,7 +315,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.assertTrue({'i': 'review_state',
                          'o': 'plone.app.querystring.operation.selection.any',
                          'v': ['published']} in query)
-        self.assertEqual(collection.getLayout(), 'folder_summary_view')
+        self.assertEqual(collection.getLayout(), 'summary_view')
         self.assertEqual(collection.checkCreationFlag(), False)
 
     def testEventsCollection(self):
@@ -359,13 +354,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
     def testDefaultGroupsAdded(self):
         self.assertTrue('Administrators' in self.groups.listGroupIds())
         self.assertTrue('Reviewers' in self.groups.listGroupIds())
-
-    def testDefaultTypesInPortalFactory(self):
-        types = self.factory.getFactoryTypes().keys()
-        for metaType in ('Document', 'Event', 'File', 'Folder', 'Image',
-                         'Folder', 'Link', 'News Item',
-                         'Topic'):
-            self.assertTrue(metaType in types)
 
     def testGenerateTabsSiteProperty(self):
         # The generate_tabs site property should be emtpy
@@ -593,11 +581,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         ids = [(a['id']) for a in buttons]
         self.assertEqual(ids, ['cut', 'copy', 'paste', 'delete', 'rename', ])
 
-    def testPloneLoginLayerInDefault(self):
-        # plone_login layer should exist
-        path = self.skins.getSkinPath('Plone Default')
-        self.assertTrue('plone_login' in path)
-
     def testCustomSkinFolderExists(self):
         # the custom skin needs to be created
         self.assertTrue('custom' in self.skins)
@@ -783,7 +766,9 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
                 'plone.portlet.collection.Collection',
                 'plone.portlet.static.Static',
                 'portlets.Actions',
+                'portlets.Calendar',
                 'portlets.Classic',
+                'portlets.Events',
                 'portlets.Login',
                 'portlets.Navigation',
                 'portlets.News',
@@ -804,7 +789,9 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
                 'plone.portlet.collection.Collection',
                 'plone.portlet.static.Static',
                 'portlets.Actions',
+                'portlets.Calendar',
                 'portlets.Classic',
+                'portlets.Events',
                 'portlets.News',
                 'portlets.Recent',
                 'portlets.Review',
@@ -838,11 +825,12 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.assertTrue('Contributor' in self.portal.acl_users
                         .portal_role_manager.listRoleIds())
         for p in ['Add portal content', 'Add portal folders',
-                  'ATContentTypes: Add Document',
-                  'ATContentTypes: Add Event', 'ATContentTypes: Add File',
-                  'ATContentTypes: Add Folder',
-                  'ATContentTypes: Add Link',
-                  'ATContentTypes: Add News Item', ]:
+                  'plone.app.contenttypes: Add Document',
+                  'plone.app.contenttypes: Add Event',
+                  'plone.app.contenttypes: Add File',
+                  'plone.app.contenttypes: Add Folder',
+                  'plone.app.contenttypes: Add Link',
+                  'plone.app.contenttypes: Add News Item', ]:
             self.assertTrue(p in [r['name'] for r in
                                   self.portal.permissionsOfRole('Contributor')
                                   if r['selected']])

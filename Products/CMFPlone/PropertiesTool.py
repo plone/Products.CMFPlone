@@ -5,7 +5,7 @@ from Products.CMFCore.utils import UniqueObject
 
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from OFS.Folder import Folder
-from App.class_init import InitializeClass
+from AccessControl.class_init import InitializeClass
 from App.special_dtml import DTMLFile
 from zope.interface import implementer
 

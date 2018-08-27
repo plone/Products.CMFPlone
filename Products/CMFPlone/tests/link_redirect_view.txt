@@ -24,7 +24,7 @@ First create a demo link::
 Now let's visit the link in the test browser.  Nothing should happen, because
 the 'redirect_links' property is on by default::
 
-  >>> from plone.testing.z2 import Browser
+  >>> from plone.testing.zope import Browser
   >>> from plone.app.testing import SITE_OWNER_NAME
   >>> from plone.app.testing import SITE_OWNER_PASSWORD
   >>> browser = Browser(app)

@@ -1,0 +1,59 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      i18n:domain="plone"
+      tal:omit-tag="">
+<body tal:omit-tag="">
+
+    <h1 tal:condition="view/label | nothing">
+        <span tal:replace="view/label">Form title</span>
+    </h1>
+
+    <p tal:condition="view/description | nothing"
+        tal:content="structure view/description">Form description</p>
+
+    <tal:widgets repeat="widget view/widgets/values">
+        <div tal:define="hidden python:widget.mode == 'hidden'"
+             tal:omit-tag="hidden">
+
+            <div class="field"
+                tal:define="error widget/error;
+                            hidden python:widget.mode == 'hidden';"
+                tal:attributes="class python:'field' + (error and ' error' or '')">
+                <label for=""
+                        tal:attributes="for widget/id"
+                        tal:condition="not:hidden">
+                    <span tal:content="widget/label">label</span>
+                    <span class="required horizontal" title="Required"
+                          tal:condition="python:widget.required and not hidden"
+                          i18n:attributes="title title_required;">&nbsp;</span>
+                </label>
+
+                <div class="formHelp"
+                        tal:define="description widget/field/description"
+                        tal:content="description"
+                        tal:condition="python:description and not hidden"
+                        >field description</div>
+
+                <div tal:condition="error"
+                        tal:content="structure error/render">
+                    Error
+                </div>
+
+                <div class="widget">
+                    <input type="text" tal:replace="structure widget/render" />
+                </div>
+            </div>
+        </div>
+    </tal:widgets>
+
+    <div class="formControls">
+        <tal:actions tal:repeat="action view/actions/values|nothing">
+            <input type="submit" tal:replace="structure action/render" />
+        </tal:actions>
+    </div>
+
+</body>
+</html>

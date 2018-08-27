@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
+from plone.app.textfield import RichTextValue
+from plone.namedfile.file import NamedFile
+from plone.namedfile.file import NamedImage
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 
@@ -17,28 +21,31 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
         return [p['name'] for p in perms if p['selected']]
 
     def testDocumentCreate(self):
-        self.folder.invokeFactory('Document', id='doc', text='data')
-        self.assertEqual(self.folder.doc.EditableBody(), 'data')
+        self.folder.invokeFactory(
+            'Document', id='doc', text=RichTextValue(u'data'))
+        self.assertEqual(self.folder.doc.text.raw, 'data')
         self.assertEqual(self.folder.doc.Format(), 'text/plain')
 
     def testEventCreate(self):
         self.folder.invokeFactory('Event', id='event',
                                   title='Foo',
-                                  start_date='2003-09-18',
-                                  end_date='2003-09-19')
+                                  start=datetime(year=2003, month=9, day=18),
+                                  end=datetime(year=2003, month=9, day=19))
         self.assertEqual(self.folder.event.Title(), 'Foo')
-        self.assertTrue(self.folder.event.start().ISO8601()
+        self.assertTrue(self.folder.event.start.isoformat()
                             .startswith('2003-09-18T00:00:00'))
-        self.assertTrue(self.folder.event.end().ISO8601()
+        self.assertTrue(self.folder.event.end.isoformat()
                             .startswith('2003-09-19T00:00:00'))
 
     def testFileCreate(self):
-        self.folder.invokeFactory('File', id='file', file=dummy.File())
-        self.assertEqual(str(self.folder.file), dummy.TEXT)
+        self.folder.invokeFactory(
+            'File', id='file', file=NamedFile(dummy.File()))
+        self.assertEqual(self.folder.file.file.data, dummy.TEXT)
 
     def testImageCreate(self):
-        self.folder.invokeFactory('Image', id='image', file=dummy.Image())
-        self.assertEqual(str(self.folder.image.data), dummy.GIF)
+        self.folder.invokeFactory(
+            'Image', id='image', image=NamedImage(dummy.Image()))
+        self.assertEqual(self.folder.image.image.data, dummy.GIF)
 
     def testFolderCreate(self):
         self.folder.invokeFactory('Folder', id='folder', title='Foo',
@@ -48,14 +55,14 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
 
     def testLinkCreate(self):
         self.folder.invokeFactory('Link', id='link',
-                                  remote_url='http://foo.com', title='Foo')
+                                  remoteUrl='http://foo.com', title='Foo')
         self.assertEqual(self.folder.link.Title(), 'Foo')
-        self.assertEqual(self.folder.link.getRemoteUrl(), 'http://foo.com')
+        self.assertEqual(self.folder.link.remoteUrl, 'http://foo.com')
 
     def testNewsItemCreate(self):
         self.folder.invokeFactory('News Item', id='newsitem',
-                                  text='data', title='Foo')
-        self.assertEqual(self.folder.newsitem.EditableBody(), 'data')
+                                  text=RichTextValue(u'data'), title='Foo')
+        self.assertEqual(self.folder.newsitem.text.raw, 'data')
         self.assertEqual(self.folder.newsitem.Title(), 'Foo')
 
     # Bug tests
@@ -76,42 +83,43 @@ class TestFileURL(PloneTestCase.PloneTestCase):
 
     def testFileURLWithHost(self):
         self.folder.invokeFactory('Link', id='link',
-                                  remote_url='file://foo.com/baz.txt')
-        self.assertEqual(self.folder.link.getRemoteUrl(),
+                                  remoteUrl='file://foo.com/baz.txt')
+        self.assertEqual(self.folder.link.remoteUrl,
                          'file://foo.com/baz.txt')
 
     def testFileURLNoHost(self):
         self.folder.invokeFactory('Link', id='link',
-                                  remote_url='file:///foo.txt')
-        self.assertEqual(self.folder.link.getRemoteUrl(), 'file:///foo.txt')
+                                  remoteUrl='file:///foo.txt')
+        self.assertEqual(self.folder.link.remoteUrl, 'file:///foo.txt')
 
-    def testFileURLFourSlash(self):
-        self.folder.invokeFactory('Link', id='link',
-                                  remote_url='file:////foo.com/baz.txt')
-        # See urlparse.urlparse()
-        self.assertEqual(self.folder.link.getRemoteUrl(),
-                         'file://foo.com/baz.txt')
+    # DX does not pass url trough urlparse/urlunparse like setRemoteUrl does.
+    # def testFileURLFourSlash(self):
+    #     self.folder.invokeFactory('Link', id='link',
+    #                               remoteUrl='file:////foo.com/baz.txt')
+    #     # See urlparse.urlparse()
+    #     self.assertEqual(self.folder.link.remoteUrl,
+    #                      'file://foo.com/baz.txt')
 
-    def testFileURLFiveSlash(self):
-        self.folder.invokeFactory('Link', id='link',
-                                  remote_url='file://///foo.com/baz.txt')
-        # See urlparse.urlparse()
-        self.assertEqual(self.folder.link.getRemoteUrl(),
-                         'file:///foo.com/baz.txt')
+    # def testFileURLFiveSlash(self):
+    #     self.folder.invokeFactory('Link', id='link',
+    #                               remoteUrl='file://///foo.com/baz.txt')
+    #     # See urlparse.urlparse()
+    #     self.assertEqual(self.folder.link.remoteUrl,
+    #                      'file:///foo.com/baz.txt')
 
-    def testFileURLSixSlash(self):
-        self.folder.invokeFactory('Link', id='link',
-                                  remote_url='file://////foo.com/baz.txt')
-        # See urlparse.urlparse()
-        self.assertEqual(self.folder.link.getRemoteUrl(),
-                         'file:////foo.com/baz.txt')
+    # def testFileURLSixSlash(self):
+    #     self.folder.invokeFactory('Link', id='link',
+    #                               remoteUrl='file://////foo.com/baz.txt')
+    #     # See urlparse.urlparse()
+    #     self.assertEqual(self.folder.link.remoteUrl,
+    #                      'file:////foo.com/baz.txt')
 
 
 class TestImageProps(PloneTestCase.PloneTestCase):
 
     def testImageComputedProps(self):
         from OFS.Image import Image
-        tag = Image.tag.im_func
+        tag = Image.tag
         kw = {'_title': 'some title',
               '_alt': 'alt tag',
               'height': 100,

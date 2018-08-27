@@ -6,11 +6,12 @@ from plone.testing import layered
 import doctest
 import glob
 import os
+import re
+import six
 import unittest
 
 
-UNITTESTS = ['messages.txt', 'mails.txt', 'emaillogin.txt', 'translate.txt',
-             'pwreset_browser.txt']
+UNITTESTS = ['messages.txt', 'mails.txt', 'emaillogin.rst', 'translate.txt']
 CONTENT_TESTS = [
     'AddMoveAndDeleteDocument.txt',
     'base_tag_not_present.txt',
@@ -20,6 +21,13 @@ CONTENT_TESTS = [
     'link_redirect_view.txt',
 ]
 OPTIONFLAGS = (doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE)
+
+
+class Py23DocChecker(doctest.OutputChecker):
+    def check_output(self, want, got, optionflags):
+        if six.PY2:
+            want = re.sub('zExceptions.Forbidden', 'Forbidden', want)
+        return doctest.OutputChecker.check_output(self, want, got, optionflags)
 
 
 def test_suite():
@@ -47,6 +55,7 @@ def test_suite():
                 os.path.basename(filename),
                 optionflags=OPTIONFLAGS,
                 package='Products.CMFPlone.tests',
+                checker=Py23DocChecker(),
             ),
             layer=PLONE_APP_CONTENTTYPES_FUNCTIONAL_TESTING)
             for filename in content_filenames])

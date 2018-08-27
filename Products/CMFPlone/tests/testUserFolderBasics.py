@@ -11,8 +11,8 @@ from plone.app.testing import TEST_USER_PASSWORD
 from plone.app.testing import setRoles
 from plone.app.testing.bbb import _createMemberarea
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
+from ZPublisher.utils import basic_auth_encode
 
-import base64
 import unittest
 
 user_role = 'Member'
@@ -27,9 +27,7 @@ class TestUserFolder(unittest.TestCase):
         self.request = self.layer['request']
 
         self.uf = self.portal.acl_users
-        self.basic = \
-            'Basic %s' % base64.encodestring(
-                '%s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD))
+        self.basic = basic_auth_encode(TEST_USER_NAME, TEST_USER_PASSWORD)
 
         _createMemberarea(self.portal, TEST_USER_ID)
         self.folder = self.portal.portal_membership.getHomeFolder(TEST_USER_ID)
