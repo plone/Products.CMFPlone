@@ -172,22 +172,45 @@
 
           <tal:addons tal:repeat="info extension_profiles">
             <div class="addons-group">
-              <tal:info tal:define="selected info/selected|nothing">
+              <tal:info tal:define="selected info/selected|nothing;
+                                    broken_dependencies info/broken_dependencies|nothing;">
                 <tal:normal tal:condition="python: not selected or advanced">
                   <div tal:condition="python: advanced">
                     <label>
-                        <input type="checkbox" name="extension_ids:list" value=""
-                           tal:attributes="value info/id;
-                                           id info/id;
-                                           checked info/selected|nothing;" />
-                        <span
-                          tal:attributes="for info/id"
-                          tal:content="info/title">profile title</span>
+
+                      <input type="checkbox" name="extension_ids:list" value=""
+                             tal:condition="not: broken_dependencies"
+                             tal:attributes="value info/id;
+                                             id info/id;
+                                             checked info/selected|nothing;" />
+
+                      <input type="checkbox" name="extension_ids:dummy" value=""
+                             tal:condition="broken_dependencies" disabled="disabled" />
+
+                      <span tal:attributes="for info/id" tal:content="info/title">
+                        profile-title
+                      </span>
+
+                      <p class="formHelp" tal:content="info/description"
+                        tal:condition="python: advanced and not broken_dependencies">
+                        profile-description
+                      </p>
+
+                      <tal:broken_dependencies tal:condition="broken_dependencies">
+                        <span class="upgrade-warning">
+                          Broken add-on
+                        </span>
+                      <ul class="formHelp">
+                        Missing dependencies:
+                        <li style="list-style-type: disc; list-style-position: inside;"
+                          tal:repeat="broken_dependency broken_dependencies"
+                          tal:content="broken_dependency">
+                          profile-id
+                        </li>
+                      </ul>
+                      </tal:broken_dependencies>
                     </label>
                   </div>
-                  <p class="formHelp" tal:content="info/description" tal:condition="python: advanced">
-                    profile description
-                  </p>
                 </tal:normal>
                 <tal:hidden tal:condition="python: selected and not advanced">
                   <input type="hidden" name="extension_ids:list" value=""

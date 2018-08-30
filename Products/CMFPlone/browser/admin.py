@@ -38,6 +38,19 @@ import logging
 LOGGER = logging.getLogger('Products.CMFPlone')
 
 
+def getBrokenDependencyProfileIds(dependency_profile_ids):
+
+  broken_dependencies = []
+
+  for dependency_profile_id in dependency_profile_ids:
+    try:
+      profile_registry.getProfileInfo(dependency_profile_id)
+    except:
+      broken_dependencies.append(dependency_profile_id)
+
+  return broken_dependencies
+
+
 class AppTraverser(DefaultPublishTraverse):
     adapts(IApplication, IRequest)
 
@@ -138,8 +151,11 @@ class AddPloneSite(BrowserView):
         'plonetheme.barceloneta:default',
     )
 
+
     def profiles(self):
         base_profiles = []
+        broken_dependencies = None
+        dependencies = None
         extension_profiles = []
 
         # profiles available for install/uninstall, but hidden at the time
@@ -152,9 +168,23 @@ class AddPloneSite(BrowserView):
             not_installable.extend(util.getNonInstallableProfiles())
 
         for info in profile_registry.listProfileInfo():
+
+            broken_dependencies = [] # empty of former results
+
             if info.get('type') == EXTENSION and \
                info.get('for') in (IPloneSiteRoot, None):
                 profile_id = info.get('id')
+
+                dependencies = info.get('dependencies')
+
+                if dependencies:
+                  broken_dependencies = getBrokenDependencyProfileIds(dependencies)
+
+                # Set prop 'broken_dependencies' only, if there are results.
+                # No prop then means "has not broken_dependencies" in the template.
+                if len(broken_dependencies) > 0:
+                    info['broken_dependencies'] = broken_dependencies
+
                 if profile_id not in not_installable:
                     if profile_id in self.default_extension_profiles:
                         info['selected'] = 'selected'
