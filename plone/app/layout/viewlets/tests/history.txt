@@ -49,12 +49,33 @@ Create a public page with workflow.
     >>> browser.open(portal_url)
     >>> browser.getLink(id='document').click()
     >>> browser.getControl('Title').value = "Doc2"
+    >>> browser.getControl('Summary').value = "First revision"
     >>> browser.getControl('Save').click()
     >>> urldoc2 = browser.url
 
 The history viewlet gracefully handles initial default workflow state.
 
     >>> browser.getLink(url='@@historyview').click()
-    >>> print browser.contents
-    <...<span class="historyAction state-private">Create</span>...
+    >>> browser.contents
+    '...<span class="historyAction state-private">Create</span>...'
 
+The history viewlet handles revert actions sucessfully. Let's make a revision.
+
+    >>> browser.open(urldoc2)
+    >>> browser.getLink('Edit').click()
+    >>> browser.getControl('Summary').value = "Changed for revision 2"
+    >>> browser.getControl('Save').click()
+
+The history viewlet now shows a Revert button.
+
+    >>> browser.getLink(url='@@historyview').click()
+    >>> browser.contents
+    '...<input class="destructive" type="submit" value="Revert to this revision"...'
+
+After action success, user is redirected to Document, reverted to chosen revision.
+
+    >>> browser.getControl('Revert').click()
+    >>> browser.url in urldoc2
+    True
+    >>> browser.contents
+    '...<div class="documentDescription description">First revision</div>...'
