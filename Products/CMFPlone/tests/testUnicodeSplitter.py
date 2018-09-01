@@ -6,11 +6,18 @@ from plone.app.textfield import RichTextValue
 from Products.CMFCore.tests.base.dummy import DummyContent
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
+# adding UnicodeSplitterPatcth
 from Products.CMFPlone.UnicodeSplitter import CaseNormalizer
+from Products.CMFPlone.UnicodeSplitter import process_str
+from Products.CMFPlone.UnicodeSplitter import process_str_glob
+from Products.CMFPlone.UnicodeSplitter import process_str_post
+from Products.CMFPlone.UnicodeSplitter import process_unicode
+from Products.CMFPlone.UnicodeSplitter import process_unicode_glob
 from Products.CMFPlone.UnicodeSplitter import Splitter
 
 import locale
 import unittest
+
 
 LATIN1 = ('en_US.ISO-8859-1', 'en_US.ISO8859-15', 'en_GB.ISO8859-15',
           'de_DE@euro', 'fr_FR@euro', 'nl_NL@euro')
@@ -25,9 +32,11 @@ def _setlocale(*names):
         except locale.Error as e:
             pass
     else:
-        raise e.__class__("Unsupported locale. These tests need at least one "
-                          "of the following locales available on your system",
-                          str(LATIN1))
+        raise ValueError(
+            "Unsupported locale. "
+            "These tests need at least one of the following locales "
+            "available on your system: %s" % str(LATIN1)
+        )
     return saved
 
 
@@ -78,6 +87,10 @@ class TestSplitter(unittest.TestCase):
         input = [t.encode('utf-8') for t in input]
         self.assertEqual(self.process(input), output)
         self.assertEqual(self.processGlob(input), output)
+
+    def testMissingLocaleRaises(self):
+        with self.assertRaises(ValueError):
+            _setlocale('TLH')  # klingon locale code
 
     def testProcessLatin1(self):
         #
@@ -247,10 +260,6 @@ class TestQuery(unittest.TestCase):
         self.assertEqual(len(brains), 1)
 
 
-# adding UnicodeSplitterPatcth
-from Products.CMFPlone.UnicodeSplitter \
-    import process_str, process_str_post, process_str_glob,\
-    process_unicode, process_unicode_glob
 
 
 class TestBigramFunctions(unittest.TestCase):
