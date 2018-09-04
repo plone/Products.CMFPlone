@@ -10,7 +10,8 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- Add test for Revert to Revision action in History Viewlet
+  [davilima6]
 
 Bug fixes:
 
