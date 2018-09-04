@@ -15,8 +15,12 @@ New features:
 
 Bug fixes:
 
+- Show document byline for logged-in users. Fixes #160
+  [erral]
+
 - Get rid of obsolete ``X-UA-Compatible`` header.
   [hvelarde]
+
 
 
 2.8.1 (2018-06-18)
