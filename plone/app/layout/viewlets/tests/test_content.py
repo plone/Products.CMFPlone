@@ -92,13 +92,11 @@ class TestDocumentBylineViewletView(ViewletsTestCase):
 
     def test_logged_users_see_byline_if_show_enabled(self):
         self.security_settings.allow_anon_views_about = True
-        #self.logout()
         viewlet = self._get_viewlet()
         self.assertTrue(viewlet.show())
 
     def test_logged_users_see_byline_if_show_disabled(self):
         self.security_settings.allow_anon_views_about = False
-        #self.logout()
         viewlet = self._get_viewlet()
         self.assertTrue(viewlet.show())
 
