@@ -72,7 +72,7 @@ class DocumentBylineViewlet(ViewletBase):
             ISecuritySchema,
             prefix='plone',
         )
-        return self.anonymous and settings.allow_anon_views_about
+        return not self.anonymous or settings.allow_anon_views_about
 
     def creator(self):
         return self.context.Creator()
