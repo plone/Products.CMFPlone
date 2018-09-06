@@ -19,6 +19,10 @@ New features:
 
 Bug fixes:
 
+- Let the ``combine-bundles`` import step also work when the ``IBundleRegistry`` keyword is not in ``registry.xml``, but in a ``registry`` directory.
+  `Issue 2520 <https://github.com/plone/Products.CMFPlone/issues/2502>`_.
+  [maurits]
+
 - Get rid of obsolete ``X-UA-Compatible`` header.
   [hvelarde]
 
