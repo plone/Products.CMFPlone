@@ -50,6 +50,12 @@ Bug fixes:
     - With a opened submenu, html has huge margins and page content disappears
   [nzambello]
 
+- Remove last legacy Javascript ``highlight-searchterms.js``.
+  Removes also the skins folder ``plone_ecmascript``.
+  It was broken for almost all use cases (Google, other search engines, own live search);
+  JS worked only when coming from Plone detailed search page.
+  [jensens]
+
 
 5.1.3 (2018-06-22)
 ------------------
