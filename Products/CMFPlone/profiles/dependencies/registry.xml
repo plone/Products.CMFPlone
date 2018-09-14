@@ -1071,7 +1071,7 @@
       <value key="js">++plone++static/components/jquery.recurrenceinput.js/lib/jquery.tmpl.js</value>
       <value key="deps">jquery</value>
   </records>
-  
+
 <!-- legacy js -->
   <record name="plone.resources.last_legacy_import">
     <field type="plone.registry.field.Datetime">
@@ -1187,7 +1187,7 @@
     <value key="expression">python: member is not None</value>
     <value key="jscompilation">++plone++static/plone-logged-in-compiled.min.js</value>
     <value key="csscompilation">++plone++static/plone-logged-in-compiled.css</value>
-    <value key="last_compilation">2018-07-10 00:00:00</value>
+    <value key="last_compilation">2018-09-14 00:00:00</value>
     <value key="depends">plone</value>
     <value key="stub_js_modules">
       <element>backbone</element>
