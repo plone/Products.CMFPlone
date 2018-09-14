@@ -2,9 +2,9 @@
 var autolink = (function () {
   'use strict';
 
-  var PluginManager = tinymce.util.Tools.resolve('tinymce.PluginManager');
+  var global = tinymce.util.Tools.resolve('tinymce.PluginManager');
 
-  var Env = tinymce.util.Tools.resolve('tinymce.Env');
+  var global$1 = tinymce.util.Tools.resolve('tinymce.Env');
 
   var getAutoLinkPattern = function (editor) {
     return editor.getParam('autolink_pattern', /^(https?:\/\/|ssh:\/\/|ftp:\/\/|file:\/|www\.|(?:mailto:)?[A-Z0-9._%+\-]+@)(.+)$/i);
@@ -12,7 +12,7 @@ var autolink = (function () {
   var getDefaultLinkTarget = function (editor) {
     return editor.getParam('default_link_target', '');
   };
-  var $_1u3gta7vjd09evip = {
+  var $_2pqfkt8ijh8lyzs9 = {
     getAutoLinkPattern: getAutoLinkPattern,
     getDefaultLinkTarget: getDefaultLinkTarget
   };
@@ -57,8 +57,8 @@ var autolink = (function () {
   };
   var parseCurrentLine = function (editor, endOffset, delimiter) {
     var rng, end, start, endContainer, bookmark, text, matches, prev, len, rngText;
-    var autoLinkPattern = $_1u3gta7vjd09evip.getAutoLinkPattern(editor);
-    var defaultLinkTarget = $_1u3gta7vjd09evip.getDefaultLinkTarget(editor);
+    var autoLinkPattern = $_2pqfkt8ijh8lyzs9.getAutoLinkPattern(editor);
+    var defaultLinkTarget = $_2pqfkt8ijh8lyzs9.getDefaultLinkTarget(editor);
     if (editor.selection.getNode().tagName === 'A') {
       return;
     }
@@ -143,7 +143,7 @@ var autolink = (function () {
         return handleEnter(editor);
       }
     });
-    if (Env.ie) {
+    if (global$1.ie) {
       editor.on('focus', function () {
         if (!autoUrlDetectState) {
           autoUrlDetectState = true;
@@ -166,10 +166,10 @@ var autolink = (function () {
       }
     });
   };
-  var $_df67k7tjd09evik = { setup: setup };
+  var $_3xb5x88gjh8lyzs3 = { setup: setup };
 
-  PluginManager.add('autolink', function (editor) {
-    $_df67k7tjd09evik.setup(editor);
+  global.add('autolink', function (editor) {
+    $_3xb5x88gjh8lyzs3.setup(editor);
   });
   function Plugin () {
   }
@@ -177,4 +177,4 @@ var autolink = (function () {
   return Plugin;
 
 }());
-})()
+})();

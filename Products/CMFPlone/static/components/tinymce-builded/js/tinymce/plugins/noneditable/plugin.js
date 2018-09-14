@@ -2,9 +2,9 @@
 var noneditable = (function () {
   'use strict';
 
-  var PluginManager = tinymce.util.Tools.resolve('tinymce.PluginManager');
+  var global = tinymce.util.Tools.resolve('tinymce.PluginManager');
 
-  var Tools = tinymce.util.Tools.resolve('tinymce.util.Tools');
+  var global$1 = tinymce.util.Tools.resolve('tinymce.util.Tools');
 
   var getNonEditableClass = function (editor) {
     return editor.getParam('noneditable_noneditable_class', 'mceNonEditable');
@@ -20,7 +20,7 @@ var noneditable = (function () {
       return nonEditableRegExps;
     }
   };
-  var $_1j9cfrgljd09ewos = {
+  var $_9u2u4bhgjh8lz0ym = {
     getNonEditableClass: getNonEditableClass,
     getEditableClass: getEditableClass,
     getNonEditableRegExps: getNonEditableRegExps
@@ -56,18 +56,18 @@ var noneditable = (function () {
       return;
     }
     while (i--) {
-      content = content.replace(nonEditableRegExps[i], replaceMatchWithSpan(editor, content, $_1j9cfrgljd09ewos.getNonEditableClass(editor)));
+      content = content.replace(nonEditableRegExps[i], replaceMatchWithSpan(editor, content, $_9u2u4bhgjh8lz0ym.getNonEditableClass(editor)));
     }
     e.content = content;
   };
   var setup = function (editor) {
     var editClass, nonEditClass;
     var contentEditableAttrName = 'contenteditable';
-    editClass = ' ' + Tools.trim($_1j9cfrgljd09ewos.getEditableClass(editor)) + ' ';
-    nonEditClass = ' ' + Tools.trim($_1j9cfrgljd09ewos.getNonEditableClass(editor)) + ' ';
+    editClass = ' ' + global$1.trim($_9u2u4bhgjh8lz0ym.getEditableClass(editor)) + ' ';
+    nonEditClass = ' ' + global$1.trim($_9u2u4bhgjh8lz0ym.getNonEditableClass(editor)) + ' ';
     var hasEditClass = hasClass(editClass);
     var hasNonEditClass = hasClass(nonEditClass);
-    var nonEditableRegExps = $_1j9cfrgljd09ewos.getNonEditableRegExps(editor);
+    var nonEditableRegExps = $_9u2u4bhgjh8lz0ym.getNonEditableRegExps(editor);
     editor.on('PreInit', function () {
       if (nonEditableRegExps.length > 0) {
         editor.on('BeforeSetContent', function (e) {
@@ -104,10 +104,10 @@ var noneditable = (function () {
       });
     });
   };
-  var $_7y2vatgjjd09ewon = { setup: setup };
+  var $_bsp17lhejh8lz0yi = { setup: setup };
 
-  PluginManager.add('noneditable', function (editor) {
-    $_7y2vatgjjd09ewon.setup(editor);
+  global.add('noneditable', function (editor) {
+    $_bsp17lhejh8lz0yi.setup(editor);
   });
   function Plugin () {
   }
@@ -115,4 +115,4 @@ var noneditable = (function () {
   return Plugin;
 
 }());
-})()
+})();
