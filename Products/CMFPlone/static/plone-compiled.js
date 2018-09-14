@@ -19107,5 +19107,5 @@ require([
 
 });
 
-define("/trabajo/plone/buildout.coredev/src/Products.CMFPlone/Products/CMFPlone/static/plone.js", function(){});
+define("/work/playground/plone/plone.coredev-5.1/src/Products.CMFPlone/Products/CMFPlone/static/plone.js", function(){});
 
