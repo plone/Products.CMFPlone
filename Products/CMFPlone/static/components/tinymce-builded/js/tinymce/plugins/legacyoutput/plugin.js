@@ -2,12 +2,12 @@
 var legacyoutput = (function () {
   'use strict';
 
-  var PluginManager = tinymce.util.Tools.resolve('tinymce.PluginManager');
+  var global = tinymce.util.Tools.resolve('tinymce.PluginManager');
 
-  var Tools = tinymce.util.Tools.resolve('tinymce.util.Tools');
+  var global$1 = tinymce.util.Tools.resolve('tinymce.util.Tools');
 
   var overrideFormats = function (editor) {
-    var alignElements = 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img', fontSizes = Tools.explode(editor.settings.font_size_style_values), schema = editor.schema;
+    var alignElements = 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img', fontSizes = global$1.explode(editor.settings.font_size_style_values), schema = editor.schema;
     editor.formatter.register({
       alignleft: {
         selector: alignElements,
@@ -83,7 +83,7 @@ var legacyoutput = (function () {
         inline: 'font',
         attributes: {
           size: function (vars) {
-            return Tools.inArray(fontSizes, vars.value) + 1;
+            return global$1.inArray(fontSizes, vars.value) + 1;
           }
         }
       },
@@ -96,13 +96,13 @@ var legacyoutput = (function () {
         styles: { backgroundColor: '%value' }
       }
     });
-    Tools.each('b,i,u,strike'.split(','), function (name) {
+    global$1.each('b,i,u,strike'.split(','), function (name) {
       schema.addValidElements(name + '[*]');
     });
     if (!schema.getElementRule('font')) {
       schema.addValidElements('font[face|size|color|style]');
     }
-    Tools.each(alignElements.split(','), function (name) {
+    global$1.each(alignElements.split(','), function (name) {
       var rule = schema.getElementRule(name);
       if (rule) {
         if (!rule.attributes.align) {
@@ -118,7 +118,7 @@ var legacyoutput = (function () {
       overrideFormats(editor);
     });
   };
-  var $_76s7zbe7jd09ewea = { setup: setup };
+  var $_1u3icsf2jh8lz0ov = { setup: setup };
 
   var register = function (editor) {
     editor.addButton('fontsizeselect', function () {
@@ -205,11 +205,11 @@ var legacyoutput = (function () {
       };
     });
   };
-  var $_c9xtzue9jd09ewed = { register: register };
+  var $_qhv2kf4jh8lz0oy = { register: register };
 
-  PluginManager.add('legacyoutput', function (editor) {
-    $_76s7zbe7jd09ewea.setup(editor);
-    $_c9xtzue9jd09ewed.register(editor);
+  global.add('legacyoutput', function (editor) {
+    $_1u3icsf2jh8lz0ov.setup(editor);
+    $_qhv2kf4jh8lz0oy.register(editor);
   });
   function Plugin () {
   }
@@ -217,4 +217,4 @@ var legacyoutput = (function () {
   return Plugin;
 
 }());
-})()
+})();

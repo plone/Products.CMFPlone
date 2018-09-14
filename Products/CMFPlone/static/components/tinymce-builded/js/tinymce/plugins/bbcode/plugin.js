@@ -2,12 +2,12 @@
 var bbcode = (function () {
   'use strict';
 
-  var PluginManager = tinymce.util.Tools.resolve('tinymce.PluginManager');
+  var global = tinymce.util.Tools.resolve('tinymce.PluginManager');
 
-  var Tools = tinymce.util.Tools.resolve('tinymce.util.Tools');
+  var global$1 = tinymce.util.Tools.resolve('tinymce.util.Tools');
 
   var html2bbcode = function (s) {
-    s = Tools.trim(s);
+    s = global$1.trim(s);
     var rep = function (re, str) {
       s = s.replace(re, str);
     };
@@ -51,7 +51,7 @@ var bbcode = (function () {
     return s;
   };
   var bbcode2html = function (s) {
-    s = Tools.trim(s);
+    s = global$1.trim(s);
     var rep = function (re, str) {
       s = s.replace(re, str);
     };
@@ -70,23 +70,23 @@ var bbcode = (function () {
     rep(/\[quote.*?\](.*?)\[\/quote\]/gi, '<span class="quoteStyle">$1</span>&nbsp;');
     return s;
   };
-  var $_3znyhe8jjd09evkt = {
+  var $_bryy4596jh8lyzuk = {
     html2bbcode: html2bbcode,
     bbcode2html: bbcode2html
   };
 
-  PluginManager.add('bbcode', function () {
+  global.add('bbcode', function () {
     return {
       init: function (editor) {
         editor.on('beforeSetContent', function (e) {
-          e.content = $_3znyhe8jjd09evkt.bbcode2html(e.content);
+          e.content = $_bryy4596jh8lyzuk.bbcode2html(e.content);
         });
         editor.on('postProcess', function (e) {
           if (e.set) {
-            e.content = $_3znyhe8jjd09evkt.bbcode2html(e.content);
+            e.content = $_bryy4596jh8lyzuk.bbcode2html(e.content);
           }
           if (e.get) {
-            e.content = $_3znyhe8jjd09evkt.html2bbcode(e.content);
+            e.content = $_bryy4596jh8lyzuk.html2bbcode(e.content);
           }
         });
       }
@@ -98,4 +98,4 @@ var bbcode = (function () {
   return Plugin;
 
 }());
-})()
+})();

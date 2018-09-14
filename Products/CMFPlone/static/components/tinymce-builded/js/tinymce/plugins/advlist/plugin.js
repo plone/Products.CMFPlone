@@ -2,25 +2,25 @@
 var advlist = (function () {
   'use strict';
 
-  var PluginManager = tinymce.util.Tools.resolve('tinymce.PluginManager');
+  var global = tinymce.util.Tools.resolve('tinymce.PluginManager');
 
-  var Tools = tinymce.util.Tools.resolve('tinymce.util.Tools');
+  var global$1 = tinymce.util.Tools.resolve('tinymce.util.Tools');
 
   var applyListFormat = function (editor, listName, styleValue) {
     var cmd = listName === 'UL' ? 'InsertUnorderedList' : 'InsertOrderedList';
     editor.execCommand(cmd, false, styleValue === false ? null : { 'list-style-type': styleValue });
   };
-  var $_2ukoh57fjd09evh2 = { applyListFormat: applyListFormat };
+  var $_2r1x1182jh8lyzqs = { applyListFormat: applyListFormat };
 
   var register = function (editor) {
     editor.addCommand('ApplyUnorderedListStyle', function (ui, value) {
-      $_2ukoh57fjd09evh2.applyListFormat(editor, 'UL', value['list-style-type']);
+      $_2r1x1182jh8lyzqs.applyListFormat(editor, 'UL', value['list-style-type']);
     });
     editor.addCommand('ApplyOrderedListStyle', function (ui, value) {
-      $_2ukoh57fjd09evh2.applyListFormat(editor, 'OL', value['list-style-type']);
+      $_2r1x1182jh8lyzqs.applyListFormat(editor, 'OL', value['list-style-type']);
     });
   };
-  var $_8u1klp7ejd09evh1 = { register: register };
+  var $_hdktl81jh8lyzqr = { register: register };
 
   var getNumberStyles = function (editor) {
     var styles = editor.getParam('advlist_number_styles', 'default,lower-alpha,lower-greek,lower-roman,upper-alpha,upper-roman');
@@ -30,7 +30,7 @@ var advlist = (function () {
     var styles = editor.getParam('advlist_bullet_styles', 'default,circle,disc,square');
     return styles ? styles.split(/[ ,]/) : [];
   };
-  var $_b1sklw7hjd09evh7 = {
+  var $_3fjj2e84jh8lyzqy = {
     getNumberStyles: getNumberStyles,
     getBulletStyles: getBulletStyles
   };
@@ -50,7 +50,7 @@ var advlist = (function () {
     var listElm = editor.dom.getParent(editor.selection.getNode(), 'ol,ul');
     return editor.dom.getStyle(listElm, 'listStyleType') || '';
   };
-  var $_2pd0fc7ijd09evh8 = {
+  var $_9sbytx85jh8lyzqz = {
     isTableCellNode: isTableCellNode,
     isListNode: isListNode,
     getSelectedStyleType: getSelectedStyleType
@@ -62,7 +62,7 @@ var advlist = (function () {
     });
   };
   var toMenuItems = function (styles) {
-    return Tools.map(styles, function (styleValue) {
+    return global$1.map(styles, function (styleValue) {
       var text = styleValueToText(styleValue);
       var data = styleValue === 'default' ? '' : styleValue;
       return {
@@ -71,7 +71,7 @@ var advlist = (function () {
       };
     });
   };
-  var $_9kcql57jjd09evh9 = { toMenuItems: toMenuItems };
+  var $_7vq0jr86jh8lyzr1 = { toMenuItems: toMenuItems };
 
   var findIndex = function (list, predicate) {
     for (var index = 0; index < list.length; index++) {
@@ -86,16 +86,16 @@ var advlist = (function () {
     return function (e) {
       var ctrl = e.control;
       editor.on('NodeChange', function (e) {
-        var tableCellIndex = findIndex(e.parents, $_2pd0fc7ijd09evh8.isTableCellNode);
+        var tableCellIndex = findIndex(e.parents, $_9sbytx85jh8lyzqz.isTableCellNode);
         var parents = tableCellIndex !== -1 ? e.parents.slice(0, tableCellIndex) : e.parents;
-        var lists = Tools.grep(parents, $_2pd0fc7ijd09evh8.isListNode(editor));
+        var lists = global$1.grep(parents, $_9sbytx85jh8lyzqz.isListNode(editor));
         ctrl.active(lists.length > 0 && lists[0].nodeName === listName);
       });
     };
   };
   var updateSelection = function (editor) {
     return function (e) {
-      var listStyleType = $_2pd0fc7ijd09evh8.getSelectedStyleType(editor);
+      var listStyleType = $_9sbytx85jh8lyzqz.getSelectedStyleType(editor);
       e.control.items().each(function (ctrl) {
         ctrl.active(ctrl.settings.data === listStyleType);
       });
@@ -106,11 +106,11 @@ var advlist = (function () {
       active: false,
       type: 'splitbutton',
       tooltip: tooltip,
-      menu: $_9kcql57jjd09evh9.toMenuItems(styles),
+      menu: $_7vq0jr86jh8lyzr1.toMenuItems(styles),
       onPostRender: listState(editor, nodeName),
       onshow: updateSelection(editor),
       onselect: function (e) {
-        $_2ukoh57fjd09evh2.applyListFormat(editor, nodeName, e.control.settings.data);
+        $_2r1x1182jh8lyzqs.applyListFormat(editor, nodeName, e.control.settings.data);
       },
       onclick: function () {
         editor.execCommand(cmd);
@@ -136,19 +136,19 @@ var advlist = (function () {
     }
   };
   var register$1 = function (editor) {
-    addControl(editor, 'numlist', 'Numbered list', 'InsertOrderedList', 'OL', $_b1sklw7hjd09evh7.getNumberStyles(editor));
-    addControl(editor, 'bullist', 'Bullet list', 'InsertUnorderedList', 'UL', $_b1sklw7hjd09evh7.getBulletStyles(editor));
+    addControl(editor, 'numlist', 'Numbered list', 'InsertOrderedList', 'OL', $_3fjj2e84jh8lyzqy.getNumberStyles(editor));
+    addControl(editor, 'bullist', 'Bullet list', 'InsertUnorderedList', 'UL', $_3fjj2e84jh8lyzqy.getBulletStyles(editor));
   };
-  var $_5ivpfe7gjd09evh4 = { register: register$1 };
+  var $_6bc80w83jh8lyzqu = { register: register$1 };
 
-  PluginManager.add('advlist', function (editor) {
+  global.add('advlist', function (editor) {
     var hasPlugin = function (editor, plugin) {
       var plugins = editor.settings.plugins ? editor.settings.plugins : '';
-      return Tools.inArray(plugins.split(/[ ,]/), plugin) !== -1;
+      return global$1.inArray(plugins.split(/[ ,]/), plugin) !== -1;
     };
     if (hasPlugin(editor, 'lists')) {
-      $_5ivpfe7gjd09evh4.register(editor);
-      $_8u1klp7ejd09evh1.register(editor);
+      $_6bc80w83jh8lyzqu.register(editor);
+      $_hdktl81jh8lyzqr.register(editor);
     }
   });
   function Plugin () {
@@ -157,4 +157,4 @@ var advlist = (function () {
   return Plugin;
 
 }());
-})()
+})();

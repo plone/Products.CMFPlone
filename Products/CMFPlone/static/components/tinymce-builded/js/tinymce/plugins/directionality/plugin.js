@@ -2,9 +2,9 @@
 var directionality = (function () {
   'use strict';
 
-  var PluginManager = tinymce.util.Tools.resolve('tinymce.PluginManager');
+  var global = tinymce.util.Tools.resolve('tinymce.PluginManager');
 
-  var Tools = tinymce.util.Tools.resolve('tinymce.util.Tools');
+  var global$1 = tinymce.util.Tools.resolve('tinymce.util.Tools');
 
   var setDir = function (editor, dir) {
     var dom = editor.dom;
@@ -12,7 +12,7 @@ var directionality = (function () {
     var blocks = editor.selection.getSelectedBlocks();
     if (blocks.length) {
       curDir = dom.getAttrib(blocks[0], 'dir');
-      Tools.each(blocks, function (block) {
+      global$1.each(blocks, function (block) {
         if (!dom.getParent(block.parentNode, '*[dir="' + dir + '"]', dom.getRoot())) {
           dom.setAttrib(block, 'dir', curDir !== dir ? dir : null);
         }
@@ -20,21 +20,21 @@ var directionality = (function () {
       editor.nodeChanged();
     }
   };
-  var $_ddklpa2jd09evr9 = { setDir: setDir };
+  var $_805jwcapjh8lz00w = { setDir: setDir };
 
   var register = function (editor) {
     editor.addCommand('mceDirectionLTR', function () {
-      $_ddklpa2jd09evr9.setDir(editor, 'ltr');
+      $_805jwcapjh8lz00w.setDir(editor, 'ltr');
     });
     editor.addCommand('mceDirectionRTL', function () {
-      $_ddklpa2jd09evr9.setDir(editor, 'rtl');
+      $_805jwcapjh8lz00w.setDir(editor, 'rtl');
     });
   };
-  var $_1otbxha1jd09evr6 = { register: register };
+  var $_bg4nrvaojh8lz00v = { register: register };
 
   var generateSelector = function (dir) {
     var selector = [];
-    Tools.each('h1 h2 h3 h4 h5 h6 div p'.split(' '), function (name) {
+    global$1.each('h1 h2 h3 h4 h5 h6 div p'.split(' '), function (name) {
       selector.push(name + '[dir=' + dir + ']');
     });
     return selector.join(',');
@@ -51,11 +51,11 @@ var directionality = (function () {
       stateSelector: generateSelector('rtl')
     });
   };
-  var $_48h3zwa4jd09evrd = { register: register$1 };
+  var $_gcdqcharjh8lz015 = { register: register$1 };
 
-  PluginManager.add('directionality', function (editor) {
-    $_1otbxha1jd09evr6.register(editor);
-    $_48h3zwa4jd09evrd.register(editor);
+  global.add('directionality', function (editor) {
+    $_bg4nrvaojh8lz00v.register(editor);
+    $_gcdqcharjh8lz015.register(editor);
   });
   function Plugin () {
   }
@@ -63,4 +63,4 @@ var directionality = (function () {
   return Plugin;
 
 }());
-})()
+})();

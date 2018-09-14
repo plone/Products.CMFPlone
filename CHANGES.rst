@@ -14,6 +14,9 @@ Breaking changes:
 
 New features:
 
+- Include TinyMCE 4.7.13
+  [erral]
+
 - Update mockup to latest version.
   [frapell]
 

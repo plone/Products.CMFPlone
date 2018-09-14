@@ -2,7 +2,7 @@
 var nonbreaking = (function () {
   'use strict';
 
-  var PluginManager = tinymce.util.Tools.resolve('tinymce.PluginManager');
+  var global = tinymce.util.Tools.resolve('tinymce.PluginManager');
 
   var stringRepeat = function (string, repeats) {
     var str = '';
@@ -19,16 +19,16 @@ var nonbreaking = (function () {
     editor.insertContent(stringRepeat(nbsp, times));
     editor.dom.setAttrib(editor.dom.select('span.mce-nbsp'), 'data-mce-bogus', '1');
   };
-  var $_3eiii6gcjd09ewo6 = { insertNbsp: insertNbsp };
+  var $_fpypash7jh8lz0y5 = { insertNbsp: insertNbsp };
 
   var register = function (editor) {
     editor.addCommand('mceNonBreaking', function () {
-      $_3eiii6gcjd09ewo6.insertNbsp(editor, 1);
+      $_fpypash7jh8lz0y5.insertNbsp(editor, 1);
     });
   };
-  var $_1587phgbjd09ewo5 = { register: register };
+  var $_45ppimh6jh8lz0y4 = { register: register };
 
-  var VK = tinymce.util.Tools.resolve('tinymce.util.VK');
+  var global$1 = tinymce.util.Tools.resolve('tinymce.util.VK');
 
   var getKeyboardSpaces = function (editor) {
     var spaces = editor.getParam('nonbreaking_force_tab', 0);
@@ -38,24 +38,24 @@ var nonbreaking = (function () {
       return spaces;
     }
   };
-  var $_g2ezvggfjd09ewo9 = { getKeyboardSpaces: getKeyboardSpaces };
+  var $_f73qmzhajh8lz0y7 = { getKeyboardSpaces: getKeyboardSpaces };
 
   var setup = function (editor) {
-    var spaces = $_g2ezvggfjd09ewo9.getKeyboardSpaces(editor);
+    var spaces = $_f73qmzhajh8lz0y7.getKeyboardSpaces(editor);
     if (spaces > 0) {
       editor.on('keydown', function (e) {
-        if (e.keyCode === VK.TAB && !e.isDefaultPrevented()) {
+        if (e.keyCode === global$1.TAB && !e.isDefaultPrevented()) {
           if (e.shiftKey) {
             return;
           }
           e.preventDefault();
           e.stopImmediatePropagation();
-          $_3eiii6gcjd09ewo6.insertNbsp(editor, spaces);
+          $_fpypash7jh8lz0y5.insertNbsp(editor, spaces);
         }
       });
     }
   };
-  var $_8r1qqcgdjd09ewo7 = { setup: setup };
+  var $_8k27hmh8jh8lz0y6 = { setup: setup };
 
   var register$1 = function (editor) {
     editor.addButton('nonbreaking', {
@@ -63,17 +63,18 @@ var nonbreaking = (function () {
       cmd: 'mceNonBreaking'
     });
     editor.addMenuItem('nonbreaking', {
+      icon: 'nonbreaking',
       text: 'Nonbreaking space',
       cmd: 'mceNonBreaking',
       context: 'insert'
     });
   };
-  var $_3u1m13ggjd09ewoa = { register: register$1 };
+  var $_2kco2nhbjh8lz0y9 = { register: register$1 };
 
-  PluginManager.add('nonbreaking', function (editor) {
-    $_1587phgbjd09ewo5.register(editor);
-    $_3u1m13ggjd09ewoa.register(editor);
-    $_8r1qqcgdjd09ewo7.setup(editor);
+  global.add('nonbreaking', function (editor) {
+    $_45ppimh6jh8lz0y4.register(editor);
+    $_2kco2nhbjh8lz0y9.register(editor);
+    $_8k27hmh8jh8lz0y6.setup(editor);
   });
   function Plugin () {
   }
@@ -81,4 +82,4 @@ var nonbreaking = (function () {
   return Plugin;
 
 }());
-})()
+})();

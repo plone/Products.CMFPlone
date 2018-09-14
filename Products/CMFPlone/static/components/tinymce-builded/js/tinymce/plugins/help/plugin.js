@@ -2,17 +2,29 @@
 var help = (function () {
   'use strict';
 
-  var PluginManager = tinymce.util.Tools.resolve('tinymce.PluginManager');
+  var global = tinymce.util.Tools.resolve('tinymce.PluginManager');
 
   var noop = function () {
+    var x = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+      x[_i] = arguments[_i];
+    }
   };
   var noarg = function (f) {
     return function () {
+      var x = [];
+      for (var _i = 0; _i < arguments.length; _i++) {
+        x[_i] = arguments[_i];
+      }
       return f();
     };
   };
   var compose = function (fa, fb) {
     return function () {
+      var x = [];
+      for (var _i = 0; _i < arguments.length; _i++) {
+        x[_i] = arguments[_i];
+      }
       return fa(fb.apply(null, arguments));
     };
   };
@@ -28,10 +40,18 @@ var help = (function () {
     return a === b;
   };
   var curry = function (f) {
+    var x = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+      x[_i - 1] = arguments[_i];
+    }
     var args = new Array(arguments.length - 1);
     for (var i = 1; i < arguments.length; i++)
       args[i - 1] = arguments[i];
     return function () {
+      var x = [];
+      for (var _i = 0; _i < arguments.length; _i++) {
+        x[_i] = arguments[_i];
+      }
       var newArgs = new Array(arguments.length);
       for (var j = 0; j < newArgs.length; j++)
         newArgs[j] = arguments[j];
@@ -41,6 +61,10 @@ var help = (function () {
   };
   var not = function (f) {
     return function () {
+      var x = [];
+      for (var _i = 0; _i < arguments.length; _i++) {
+        x[_i] = arguments[_i];
+      }
       return !f.apply(null, arguments);
     };
   };
@@ -57,7 +81,7 @@ var help = (function () {
   };
   var never = constant(false);
   var always = constant(true);
-  var $_4r2zi8ahjd09evsm = {
+  var $_e9igd3b4jh8lz02c = {
     noop: noop,
     noarg: noarg,
     compose: compose,
@@ -73,8 +97,8 @@ var help = (function () {
     always: always
   };
 
-  var never$1 = $_4r2zi8ahjd09evsm.never;
-  var always$1 = $_4r2zi8ahjd09evsm.always;
+  var never$1 = $_e9igd3b4jh8lz02c.never;
+  var always$1 = $_e9igd3b4jh8lz02c.always;
   var none = function () {
     return NONE;
   };
@@ -117,7 +141,7 @@ var help = (function () {
       toArray: function () {
         return [];
       },
-      toString: $_4r2zi8ahjd09evsm.constant('none()')
+      toString: $_e9igd3b4jh8lz02c.constant('none()')
     };
     if (Object.freeze)
       Object.freeze(me);
@@ -186,10 +210,36 @@ var help = (function () {
   var from = function (value) {
     return value === null || value === undefined ? NONE : some(value);
   };
-  var $_d8659wagjd09evsc = {
+  var Option = {
     some: some,
     none: none,
     from: from
+  };
+
+  var typeOf = function (x) {
+    if (x === null)
+      return 'null';
+    var t = typeof x;
+    if (t === 'object' && Array.prototype.isPrototypeOf(x))
+      return 'array';
+    if (t === 'object' && String.prototype.isPrototypeOf(x))
+      return 'string';
+    return t;
+  };
+  var isType = function (type) {
+    return function (value) {
+      return typeOf(value) === type;
+    };
+  };
+  var $_6peqe3b5jh8lz02f = {
+    isString: isType('string'),
+    isObject: isType('object'),
+    isArray: isType('array'),
+    isNull: isType('null'),
+    isBoolean: isType('boolean'),
+    isUndefined: isType('undefined'),
+    isFunction: isType('function'),
+    isNumber: isType('number')
   };
 
   var rawIndexOf = function () {
@@ -204,7 +254,7 @@ var help = (function () {
   }();
   var indexOf = function (xs, x) {
     var r = rawIndexOf(xs, x);
-    return r === -1 ? $_d8659wagjd09evsc.none() : $_d8659wagjd09evsc.some(r);
+    return r === -1 ? Option.none() : Option.some(r);
   };
   var contains = function (xs, x) {
     return rawIndexOf(xs, x) > -1;
@@ -310,19 +360,19 @@ var help = (function () {
     for (var i = 0, len = xs.length; i < len; i++) {
       var x = xs[i];
       if (pred(x, i, xs)) {
-        return $_d8659wagjd09evsc.some(x);
+        return Option.some(x);
       }
     }
-    return $_d8659wagjd09evsc.none();
+    return Option.none();
   };
   var findIndex = function (xs, pred) {
     for (var i = 0, len = xs.length; i < len; i++) {
       var x = xs[i];
       if (pred(x, i, xs)) {
-        return $_d8659wagjd09evsc.some(i);
+        return Option.some(i);
       }
     }
-    return $_d8659wagjd09evsc.none();
+    return Option.none();
   };
   var slowIndexOf = function (xs, x) {
     for (var i = 0, len = xs.length; i < len; ++i) {
@@ -388,12 +438,15 @@ var help = (function () {
     return copy;
   };
   var head = function (xs) {
-    return xs.length === 0 ? $_d8659wagjd09evsc.none() : $_d8659wagjd09evsc.some(xs[0]);
+    return xs.length === 0 ? Option.none() : Option.some(xs[0]);
   };
   var last = function (xs) {
-    return xs.length === 0 ? $_d8659wagjd09evsc.none() : $_d8659wagjd09evsc.some(xs[xs.length - 1]);
+    return xs.length === 0 ? Option.none() : Option.some(xs[xs.length - 1]);
   };
-  var $_d0axraafjd09evs6 = {
+  var from$1 = $_6peqe3b5jh8lz02f.isFunction(Array.from) ? Array.from : function (x) {
+    return slice.call(x);
+  };
+  var $_39vm4xb2jh8lz022 = {
     map: map,
     each: each,
     eachr: eachr,
@@ -419,15 +472,16 @@ var help = (function () {
     sort: sort,
     range: range,
     head: head,
-    last: last
+    last: last,
+    from: from$1
   };
 
-  var I18n = tinymce.util.Tools.resolve('tinymce.util.I18n');
+  var global$1 = tinymce.util.Tools.resolve('tinymce.util.I18n');
 
-  var Env = tinymce.util.Tools.resolve('tinymce.Env');
+  var global$2 = tinymce.util.Tools.resolve('tinymce.Env');
 
-  var meta = Env.mac ? '\u2318' : 'Ctrl';
-  var access = Env.mac ? 'Ctrl + Alt' : 'Shift + Alt';
+  var meta = global$2.mac ? '\u2318' : 'Ctrl';
+  var access = global$2.mac ? 'Ctrl + Alt' : 'Shift + Alt';
   var shortcuts = [
     {
       shortcut: meta + ' + B',
@@ -518,14 +572,14 @@ var help = (function () {
       action: 'Find (if searchreplace plugin activated)'
     }
   ];
-  var $_7hd876ajjd09evsp = { shortcuts: shortcuts };
+  var $_bbc8gcb7jh8lz02j = { shortcuts: shortcuts };
 
   var makeTab = function () {
     var makeAriaLabel = function (shortcut) {
       return 'aria-label="Action: ' + shortcut.action + ', Shortcut: ' + shortcut.shortcut.replace(/Ctrl/g, 'Control') + '"';
     };
-    var shortcutLisString = $_d0axraafjd09evs6.map($_7hd876ajjd09evsp.shortcuts, function (shortcut) {
-      return '<tr data-mce-tabstop="1" tabindex="-1" ' + makeAriaLabel(shortcut) + '>' + '<td>' + I18n.translate(shortcut.action) + '</td>' + '<td>' + shortcut.shortcut + '</td>' + '</tr>';
+    var shortcutLisString = $_39vm4xb2jh8lz022.map($_bbc8gcb7jh8lz02j.shortcuts, function (shortcut) {
+      return '<tr data-mce-tabstop="1" tabindex="-1" ' + makeAriaLabel(shortcut) + '>' + '<td>' + global$1.translate(shortcut.action) + '</td>' + '<td>' + shortcut.shortcut + '</td>' + '</tr>';
     }).join('');
     return {
       title: 'Handy Shortcuts',
@@ -533,11 +587,11 @@ var help = (function () {
       style: 'overflow-y: auto; overflow-x: hidden; max-height: 250px',
       items: [{
           type: 'container',
-          html: '<div>' + '<table class="mce-table-striped">' + '<thead>' + '<th>' + I18n.translate('Action') + '</th>' + '<th>' + I18n.translate('Shortcut') + '</th>' + '</thead>' + shortcutLisString + '</table>' + '</div>'
+          html: '<div>' + '<table class="mce-table-striped">' + '<thead>' + '<th>' + global$1.translate('Action') + '</th>' + '<th>' + global$1.translate('Shortcut') + '</th>' + '</thead>' + shortcutLisString + '</table>' + '</div>'
         }]
     };
   };
-  var $_czlwknaejd09evs2 = { makeTab: makeTab };
+  var $_ek7dnlb1jh8lz01t = { makeTab: makeTab };
 
   var keys = function () {
     var fastKeys = Object.keys;
@@ -601,10 +655,10 @@ var help = (function () {
       var i = props[k];
       var x = obj[i];
       if (pred(x, i, obj)) {
-        return $_d8659wagjd09evsc.some(x);
+        return Option.some(x);
       }
     }
-    return $_d8659wagjd09evsc.none();
+    return Option.none();
   };
   var values = function (obj) {
     return mapToArray(obj, function (v) {
@@ -614,7 +668,7 @@ var help = (function () {
   var size = function (obj) {
     return values(obj).length;
   };
-  var $_9az4yamjd09evsx = {
+  var $_268rpbajh8lz02v = {
     bifilter: bifilter,
     each: each$1,
     map: objectMap,
@@ -638,7 +692,7 @@ var help = (function () {
   var removeFromEnd = function (str, numChars) {
     return str.substring(0, str.length - numChars);
   };
-  var $_bi7jzgaojd09evt4 = {
+  var $_fxe4agbcjh8lz033 = {
     addToStart: addToStart,
     addToEnd: addToEnd,
     removeFromStart: removeFromStart,
@@ -652,12 +706,12 @@ var help = (function () {
     return str.substr(str.length - count, str.length);
   };
   var head$1 = function (str) {
-    return str === '' ? $_d8659wagjd09evsc.none() : $_d8659wagjd09evsc.some(str.substr(0, 1));
+    return str === '' ? Option.none() : Option.some(str.substr(0, 1));
   };
   var tail = function (str) {
-    return str === '' ? $_d8659wagjd09evsc.none() : $_d8659wagjd09evsc.some(str.substring(1));
+    return str === '' ? Option.none() : Option.some(str.substring(1));
   };
-  var $_bpykrapjd09evt5 = {
+  var $_3atz2wbdjh8lz035 = {
     first: first,
     last: last$1,
     head: head$1,
@@ -683,23 +737,23 @@ var help = (function () {
     });
   };
   var removeLeading = function (str, prefix) {
-    return startsWith(str, prefix) ? $_bi7jzgaojd09evt4.removeFromStart(str, prefix.length) : str;
+    return startsWith(str, prefix) ? $_fxe4agbcjh8lz033.removeFromStart(str, prefix.length) : str;
   };
   var removeTrailing = function (str, prefix) {
-    return endsWith(str, prefix) ? $_bi7jzgaojd09evt4.removeFromEnd(str, prefix.length) : str;
+    return endsWith(str, prefix) ? $_fxe4agbcjh8lz033.removeFromEnd(str, prefix.length) : str;
   };
   var ensureLeading = function (str, prefix) {
-    return startsWith(str, prefix) ? str : $_bi7jzgaojd09evt4.addToStart(str, prefix);
+    return startsWith(str, prefix) ? str : $_fxe4agbcjh8lz033.addToStart(str, prefix);
   };
   var ensureTrailing = function (str, prefix) {
-    return endsWith(str, prefix) ? str : $_bi7jzgaojd09evt4.addToEnd(str, prefix);
+    return endsWith(str, prefix) ? str : $_fxe4agbcjh8lz033.addToEnd(str, prefix);
   };
   var contains$1 = function (str, substr) {
     return str.indexOf(substr) !== -1;
   };
   var capitalize = function (str) {
-    return $_bpykrapjd09evt5.head(str).bind(function (head) {
-      return $_bpykrapjd09evt5.tail(str).map(function (tail) {
+    return $_3atz2wbdjh8lz035.head(str).bind(function (head) {
+      return $_3atz2wbdjh8lz035.tail(str).map(function (tail) {
         return head.toUpperCase() + tail;
       });
     }).getOr(str);
@@ -719,7 +773,7 @@ var help = (function () {
   var rTrim = function (str) {
     return str.replace(/\s+$/g, '');
   };
-  var $_4b7dpzanjd09evt2 = {
+  var $_86un3kbbjh8lz02z = {
     supplant: supplant,
     startsWith: startsWith,
     removeLeading: removeLeading,
@@ -912,11 +966,11 @@ var help = (function () {
       name: 'Word Count'
     }
   ];
-  var $_c0pbvaqjd09evt7 = { urls: urls };
+  var $_gdjp4ubejh8lz036 = { urls: urls };
 
-  var makeLink = $_4r2zi8ahjd09evsm.curry($_4b7dpzanjd09evt2.supplant, '<a href="${url}" target="_blank" rel="noopener">${name}</a>');
+  var makeLink = $_e9igd3b4jh8lz02c.curry($_86un3kbbjh8lz02z.supplant, '<a href="${url}" target="_blank" rel="noopener">${name}</a>');
   var maybeUrlize = function (editor, key) {
-    return $_d0axraafjd09evs6.find($_c0pbvaqjd09evt7.urls, function (x) {
+    return $_39vm4xb2jh8lz022.find($_gdjp4ubejh8lz036.urls, function (x) {
       return x.key === key;
     }).fold(function () {
       var getMetadata = editor.plugins[key].getMetadata;
@@ -929,17 +983,17 @@ var help = (function () {
     });
   };
   var getPluginKeys = function (editor) {
-    var keys = $_9az4yamjd09evsx.keys(editor.plugins);
-    return editor.settings.forced_plugins === undefined ? keys : $_d0axraafjd09evs6.filter(keys, $_4r2zi8ahjd09evsm.not($_4r2zi8ahjd09evsm.curry($_d0axraafjd09evs6.contains, editor.settings.forced_plugins)));
+    var keys = $_268rpbajh8lz02v.keys(editor.plugins);
+    return editor.settings.forced_plugins === undefined ? keys : $_39vm4xb2jh8lz022.filter(keys, $_e9igd3b4jh8lz02c.not($_e9igd3b4jh8lz02c.curry($_39vm4xb2jh8lz022.contains, editor.settings.forced_plugins)));
   };
   var pluginLister = function (editor) {
     var pluginKeys = getPluginKeys(editor);
-    var pluginLis = $_d0axraafjd09evs6.map(pluginKeys, function (key) {
+    var pluginLis = $_39vm4xb2jh8lz022.map(pluginKeys, function (key) {
       return '<li>' + maybeUrlize(editor, key) + '</li>';
     });
     var count = pluginLis.length;
     var pluginsString = pluginLis.join('');
-    return '<p><b>' + I18n.translate([
+    return '<p><b>' + global$1.translate([
       'Plugins installed ({0}):',
       count
     ]) + '</b></p>' + '<ul>' + pluginsString + '</ul>';
@@ -954,7 +1008,7 @@ var help = (function () {
   var availablePlugins = function () {
     return {
       type: 'container',
-      html: '<div style="padding: 10px; background: #e3e7f4; height: 100%;" data-mce-tabstop="1" tabindex="-1">' + '<p><b>' + I18n.translate('Premium plugins:') + '</b></p>' + '<ul>' + '<li>PowerPaste</li>' + '<li>Spell Checker Pro</li>' + '<li>Accessibility Checker</li>' + '<li>Advanced Code Editor</li>' + '<li>Enhanced Media Embed</li>' + '<li>Link Checker</li>' + '</ul><br />' + '<p style="float: right;"><a href="https://www.tinymce.com/pricing/?utm_campaign=editor_referral&utm_medium=help_dialog&utm_source=tinymce" target="_blank">' + I18n.translate('Learn more...') + '</a></p>' + '</div>',
+      html: '<div style="padding: 10px; background: #e3e7f4; height: 100%;" data-mce-tabstop="1" tabindex="-1">' + '<p><b>' + global$1.translate('Premium plugins:') + '</b></p>' + '<ul>' + '<li>PowerPaste</li>' + '<li>Spell Checker Pro</li>' + '<li>Accessibility Checker</li>' + '<li>Advanced Code Editor</li>' + '<li>Enhanced Media Embed</li>' + '<li>Link Checker</li>' + '</ul><br />' + '<p style="float: right;"><a href="https://www.tinymce.com/pricing/?utm_campaign=editor_referral&utm_medium=help_dialog&utm_source=tinymce" target="_blank">' + global$1.translate('Learn more...') + '</a></p>' + '</div>',
       flex: 1
     };
   };
@@ -972,20 +1026,20 @@ var help = (function () {
       ]
     };
   };
-  var $_7bezmyaljd09evsr = { makeTab: makeTab$1 };
+  var $_1s6vnjb9jh8lz02m = { makeTab: makeTab$1 };
 
-  var EditorManager = tinymce.util.Tools.resolve('tinymce.EditorManager');
+  var global$3 = tinymce.util.Tools.resolve('tinymce.EditorManager');
 
   var getVersion = function (major, minor) {
     return major.indexOf('@') === 0 ? 'X.X.X' : major + '.' + minor;
   };
   var makeRow = function () {
-    var version = getVersion(EditorManager.majorVersion, EditorManager.minorVersion);
+    var version = getVersion(global$3.majorVersion, global$3.minorVersion);
     var changeLogLink = '<a href="https://www.tinymce.com/docs/changelog/?utm_campaign=editor_referral&utm_medium=help_dialog&utm_source=tinymce" target="_blank">TinyMCE ' + version + '</a>';
     return [
       {
         type: 'label',
-        html: I18n.translate([
+        html: global$1.translate([
           'You are using {0}',
           changeLogLink
         ])
@@ -1002,7 +1056,7 @@ var help = (function () {
       }
     ];
   };
-  var $_dubkovarjd09evt9 = { makeRow: makeRow };
+  var $_8ftfzrbfjh8lz038 = { makeRow: makeRow };
 
   var open = function (editor, pluginUrl) {
     return function () {
@@ -1011,10 +1065,10 @@ var help = (function () {
         bodyType: 'tabpanel',
         layout: 'flex',
         body: [
-          $_czlwknaejd09evs2.makeTab(),
-          $_7bezmyaljd09evsr.makeTab(editor)
+          $_ek7dnlb1jh8lz01t.makeTab(),
+          $_1s6vnjb9jh8lz02m.makeTab(editor)
         ],
-        buttons: $_dubkovarjd09evt9.makeRow(),
+        buttons: $_8ftfzrbfjh8lz038.makeRow(),
         onPostRender: function () {
           var title = this.getEl('title');
           title.innerHTML = '<img src="' + pluginUrl + '/img/logo.png" alt="TinyMCE Logo" style="display: inline-block; width: 200px; height: 50px">';
@@ -1022,30 +1076,30 @@ var help = (function () {
       });
     };
   };
-  var $_8eu5ebadjd09evs0 = { open: open };
+  var $_ddpiq1b0jh8lz01s = { open: open };
 
   var register = function (editor, pluginUrl) {
-    editor.addCommand('mceHelp', $_8eu5ebadjd09evs0.open(editor, pluginUrl));
+    editor.addCommand('mceHelp', $_ddpiq1b0jh8lz01s.open(editor, pluginUrl));
   };
-  var $_90auybacjd09evrz = { register: register };
+  var $_3xejl8azjh8lz01r = { register: register };
 
   var register$1 = function (editor, pluginUrl) {
     editor.addButton('help', {
       icon: 'help',
-      onclick: $_8eu5ebadjd09evs0.open(editor, pluginUrl)
+      onclick: $_ddpiq1b0jh8lz01s.open(editor, pluginUrl)
     });
-    editor.addMenuItem('Help', {
+    editor.addMenuItem('help', {
       text: 'Help',
       icon: 'help',
       context: 'help',
-      onclick: $_8eu5ebadjd09evs0.open(editor, pluginUrl)
+      onclick: $_ddpiq1b0jh8lz01s.open(editor, pluginUrl)
     });
   };
-  var $_f3e8r4atjd09evtb = { register: register$1 };
+  var $_6lvglcbhjh8lz03a = { register: register$1 };
 
-  PluginManager.add('help', function (editor, pluginUrl) {
-    $_f3e8r4atjd09evtb.register(editor, pluginUrl);
-    $_90auybacjd09evrz.register(editor, pluginUrl);
+  global.add('help', function (editor, pluginUrl) {
+    $_6lvglcbhjh8lz03a.register(editor, pluginUrl);
+    $_3xejl8azjh8lz01r.register(editor, pluginUrl);
     editor.shortcuts.add('Alt+0', 'Open help dialog', 'mceHelp');
   });
   function Plugin () {
@@ -1054,4 +1108,4 @@ var help = (function () {
   return Plugin;
 
 }());
-})()
+})();
