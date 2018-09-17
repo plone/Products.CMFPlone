@@ -81,16 +81,15 @@ class TestDocumentBylineViewletView(ViewletsTestCase):
         settings.display_publication_date_in_byline = False
         self.assertEqual(viewlet.pub_date(), None)
 
-
     def test_anonymous_users_see_byline_if_show_enabled(self):
         self.security_settings.allow_anon_views_about = True
-        self.logout()
+        logout()
         viewlet = self._get_viewlet()
         self.assertTrue(viewlet.show())
 
     def test_anonymous_users_dont_see_byline_if_show_disabled(self):
         self.security_settings.allow_anon_views_about = False
-        self.logout()
+        logout()
         viewlet = self._get_viewlet()
         self.assertFalse(viewlet.show())
 
@@ -103,8 +102,6 @@ class TestDocumentBylineViewletView(ViewletsTestCase):
         self.security_settings.allow_anon_views_about = False
         viewlet = self._get_viewlet()
         self.assertTrue(viewlet.show())
-
-
 
 
 class TestHistoryBylineViewletView(ViewletsTestCase):
