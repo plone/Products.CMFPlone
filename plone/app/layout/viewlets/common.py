@@ -441,8 +441,6 @@ class ManagePortletsFallbackViewlet(ViewletBase):
     index = ViewPageTemplateFile('manage_portlets_fallback.pt')
 
     def update(self):
-        ploneview = getMultiAdapter((
-            self.context, self.request), name=u'plone')
         plonelayout = getMultiAdapter((
             self.context, self.request), name=u'plone_layout')
         context_state = getMultiAdapter((self.context, self.request),
