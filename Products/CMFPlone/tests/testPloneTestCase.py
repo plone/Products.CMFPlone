@@ -40,6 +40,6 @@ class TestPloneTestCase(PloneTestCase.PloneTestCase):
 
     def testEditDocument(self):
         self.folder.invokeFactory('Document', id='new')
-        self.assertEqual(self.folder.new.EditableBody(), '')
+        self.assertIsNone(self.folder.new.text)
         self.folder.new.edit('plain', 'data', file='', safety_belt='')
-        self.assertEqual(self.folder.new.EditableBody(), 'data')
+        self.assertEqual(self.folder.new.text.raw, 'data')
