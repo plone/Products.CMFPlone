@@ -111,7 +111,7 @@ is not a valid Interface.
     >>> iface_info['name']
     'IOne'
     >>> iface_info['doc']
-    'One function for IOne'
+    'Test interface one'
     >>> iface_info['bases']
     [<InterfaceClass plone.app.layout.globals.tests.test_interface.IZero>]
     >>> iface_info['base_names']

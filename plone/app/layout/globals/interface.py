@@ -118,7 +118,7 @@ class InterfaceInformation(BrowserView):
         result = {
             'name': iface.getName(),
             'dotted_name': getDottedName(iface),
-            'doc': _trim_doc_string(desc.getDoc()),
+            'doc': _trim_doc_string(iface.getDoc()),
             'bases': bases,
             'base_names': [getDottedName(iface) for base in bases],
             'attributes': attributes,
