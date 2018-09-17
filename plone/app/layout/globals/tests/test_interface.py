@@ -38,8 +38,10 @@ class NotAnInterface(object):
 def test_interface_view(self):
     """Information about the interfaces of an object
 
-    >>> from zope.interface import Interface, implements
-    >>> from zope.interface import directlyProvides, classProvides
+    >>> from zope.interface import implementer
+    >>> from zope.interface import Interface
+    >>> from zope.interface import directlyProvides
+    >>> from zope.interface import provider
     >>> from zope.component import provideAdapter, getMultiAdapter
     >>> from zope.publisher.interfaces.browser import IBrowserRequest
     >>> from zope.publisher.browser import TestRequest
@@ -50,9 +52,10 @@ def test_interface_view(self):
 
     >>> from plone.app.layout.globals.tests.test_interface import IOne, ITwo
 
-    >>> class One(object):
-    ...     implements(IOne)
-    ...     classProvides(ITwo)
+    >>> @implementer(IOne)
+    ... @provider(ITwo)
+    ... class One(object):
+    ...     pass
 
     >>> from plone.app.layout.globals.interface import InterfaceInformation
     >>> provideAdapter(
@@ -93,11 +96,11 @@ is not a valid Interface.
 'plone.app.layout.globals.tests.test_interface.NotAnInterface' \
 is not a valid Interface.
 
-    >>> view.names_and_descriptions(
-    ...     'plone.app.layout.globals.tests.test_interface.IOne')[0]
+    >>> sorted(view.names_and_descriptions(
+    ...     'plone.app.layout.globals.tests.test_interface.IOne'))[0]
     ('one_function', 'One function for IOne')
-    >>> view.names_and_descriptions(
-    ...     'plone.app.layout.globals.tests.test_interface.IOne')[1]
+    >>> sorted(view.names_and_descriptions(
+    ...     'plone.app.layout.globals.tests.test_interface.IOne'))[1]
     ('one_name', 'One name for IOne')
 
     >>> view.get_base_interface()
@@ -108,7 +111,7 @@ is not a valid Interface.
     >>> iface_info['name']
     'IOne'
     >>> iface_info['doc']
-    'One name for IOne'
+    'Test interface one'
     >>> iface_info['bases']
     [<InterfaceClass plone.app.layout.globals.tests.test_interface.IZero>]
     >>> iface_info['base_names']
@@ -123,6 +126,7 @@ is not a valid Interface.
     'one_function'
     >>> iface_info['methods'][0]['signature']
     '()'
+
     """
 
 

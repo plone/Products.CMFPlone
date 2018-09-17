@@ -8,9 +8,11 @@ from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.CMFPlone.interfaces import ISiteSchema
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from six import StringIO
+from six import BytesIO
 from zope.component import getUtility
 from zope.publisher.interfaces import NotFound
+
+import six
 
 
 def _render_cachekey(fun, self):
@@ -101,8 +103,10 @@ class SiteMapView(BrowserView):
     def generate(self):
         """Generates the Gzipped sitemap."""
         xml = self.template()
-        fp = StringIO()
-        gzip = GzipFile(self.filename, 'w', 9, fp)
+        fp = BytesIO()
+        gzip = GzipFile(self.filename, 'wb', 9, fp)
+        if isinstance(xml, six.text_type):
+            xml = xml.encode('utf8')
         gzip.write(xml)
         gzip.close()
         data = fp.getvalue()

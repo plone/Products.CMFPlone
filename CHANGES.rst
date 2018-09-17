@@ -21,6 +21,14 @@ Bug fixes:
 - Get rid of obsolete ``X-UA-Compatible`` header.
   [hvelarde]
 
+- Implement viewlet dummy ordering needed for Python 3 sorting.
+  [ale-rt]
+
+- Fix sitemap in py3.
+  [pbauer]
+
+- Fix tests for py3 and drop use of PloneTestCase.
+  [pbauer, fgrcon]
 
 
 2.8.1 (2018-06-18)

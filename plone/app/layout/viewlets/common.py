@@ -4,6 +4,7 @@ from Acquisition import aq_base
 from Acquisition import aq_inner
 from cgi import escape
 from datetime import date
+from functools import total_ordering
 from plone.app.layout.globals.interfaces import IViewView
 from plone.app.layout.navigation.root import getNavigationRootObject
 from plone.memoize.view import memoize
@@ -29,6 +30,7 @@ from zope.viewlet.interfaces import IViewlet
 
 
 @implementer(IViewlet)
+@total_ordering
 class ViewletBase(BrowserView):
     """ Base class with common functions for link viewlets.
     """
@@ -40,6 +42,9 @@ class ViewletBase(BrowserView):
         self.request = request
         self.view = view
         self.manager = manager
+
+    def __hash__(self):
+        return id(self) * 16
 
     @property
     @deprecate("Use site_url instead. " +
@@ -61,6 +66,16 @@ class ViewletBase(BrowserView):
     def index(self):
         raise NotImplementedError(
             '`index` method must be implemented by subclass.')
+
+    def __lt__(self, other):
+        ''' Sort by name
+        '''
+        return self.__name__ < other.__name__
+
+    def __eq__(self, other):
+        ''' Check for equality
+        '''
+        return id(self) == id(other)
 
 
 class TitleViewlet(ViewletBase):
@@ -426,8 +441,6 @@ class ManagePortletsFallbackViewlet(ViewletBase):
     index = ViewPageTemplateFile('manage_portlets_fallback.pt')
 
     def update(self):
-        ploneview = getMultiAdapter((
-            self.context, self.request), name=u'plone')
         plonelayout = getMultiAdapter((
             self.context, self.request), name=u'plone_layout')
         context_state = getMultiAdapter((self.context, self.request),

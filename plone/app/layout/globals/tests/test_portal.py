@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
-from plone.app.layout.globals.tests.base import GlobalsTestCase
+from plone.app.layout.testing import INTEGRATION_TESTING
+from plone.app.testing import setRoles
+from plone.app.testing import TEST_USER_ID
+from plone.app.testing.helpers import logout
 from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.app.layout.navigation.root import getNavigationRoot
 from plone.registry.interfaces import IRegistry
@@ -11,14 +14,20 @@ from zope.event import notify
 from zope.i18n.locales import locales
 from zope.traversing.interfaces import BeforeTraverseEvent
 
+import unittest
 import zope.interface
 
 
-class TestPortalStateView(GlobalsTestCase):
+class TestPortalStateView(unittest.TestCase):
     """Ensure that the basic redirector setup is successful.
     """
+    layer = INTEGRATION_TESTING
 
-    def afterSetUp(self):
+    def setUp(self):
+        self.portal = self.layer['portal']
+        self.app = self.layer['app']
+        setRoles(self.portal, TEST_USER_ID,['Manager'])
+        self.folder = self.portal.portal_membership.getHomeFolder(TEST_USER_ID)
         self.view = self.folder.restrictedTraverse('@@plone_portal_state')
 
     def test_portal(self):
@@ -35,7 +44,6 @@ class TestPortalStateView(GlobalsTestCase):
 
     def test_navigation_root(self):
         self.assertEqual(self.view.navigation_root(), self.portal)
-
         # mark a folder "between" self.folder and self.portal with
         # INavigationRoot
         members = self.portal['Members']
@@ -63,13 +71,13 @@ class TestPortalStateView(GlobalsTestCase):
     def test_navigation_root_title(self):
         self.portal.Title = "Portal title"
         self.assertEqual(self.view.navigation_root_title(), "Portal title")
-
+        members = self.portal['Members']
         # mark a folder "between" self.folder and self.portal with
         # INavigationRoot
-        members = self.portal['Members']
         zope.interface.alsoProvides(members, INavigationRoot)
         view = members.restrictedTraverse('@@plone_portal_state')
         self.assertEqual(view.navigation_root_title(), members.Title())
+
 
     def test_navigation_root_url(self):
         url = self.app.REQUEST.physicalPathToURL(
@@ -80,6 +88,7 @@ class TestPortalStateView(GlobalsTestCase):
 
         # mark a folder "between" self.folder and self.portal with
         # INavigationRoot
+
         members = self.portal['Members']
         zope.interface.alsoProvides(members, INavigationRoot)
         view = members.restrictedTraverse('@@plone_portal_state')
@@ -133,8 +142,11 @@ class TestPortalStateView(GlobalsTestCase):
         )
 
     def test_anonymous(self):
+        self.portal = self.layer['portal']
+        setRoles(self.portal, TEST_USER_ID,['Manager'])
+        #self.portal.invokeFactory('Folder', 'f0')
         self.assertEqual(self.view.anonymous(), False)
-        self.logout()
+        logout()
         del self.app.REQUEST.__annotations__
         self.assertEqual(self.view.anonymous(), True)
 

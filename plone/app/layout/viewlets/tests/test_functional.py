@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Functional Doctests for plone.app.discussion.
-
-   These test are only triggered when Plone 4 (and plone.testing) is installed.
-"""
-from plone.app.contenttypes.testing import PLONE_APP_CONTENTTYPES_FUNCTIONAL_TESTING
+from plone.app.layout.testing import FUNCTIONAL_TESTING
 from plone.testing import layered
 
 import doctest
@@ -22,6 +18,6 @@ def test_suite():
         layered(doctest.DocFileSuite(test,
                                      optionflags=optionflags,
                                      ),
-                layer=PLONE_APP_CONTENTTYPES_FUNCTIONAL_TESTING)
+                layer=FUNCTIONAL_TESTING)
         for test in normal_testfiles])
     return suite

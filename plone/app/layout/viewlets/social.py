@@ -28,12 +28,12 @@ class SocialTagsViewlet(TitleViewlet):
     @property
     def tags(self):
         # Do not show items with 'itemprop'.
-        return filter(self.head_tag_filter, self._get_tags())
+        return list(filter(self.head_tag_filter, self._get_tags()))
 
     @property
     def body_tags(self):
         # Show only items without 'itemprop'.
-        return filter(self.body_tag_filter, self._get_tags())
+        return list(filter(self.body_tag_filter, self._get_tags()))
 
     @memoize
     def _get_tags(self):
