@@ -20,9 +20,9 @@ from zope.interface import noLongerProvides
 
 
 # Red pixel with filename pixel.png
-SITE_LOGO_BASE64 = 'filenameb64:cGl4ZWwucG5n;datab64:iVBORw0KGgoAAAANSUhEUgAA'\
-                   'AAEAAAABCAIAAACQd1PeAAAADElEQVQI12P4z8AAAAMBAQAY3Y2wAAAAA'\
-                   'ElFTkSuQmCC'
+SITE_LOGO_BASE64 = b'filenameb64:cGl4ZWwucG5n;datab64:iVBORw0KGgoAAAANSUhEUgA'\
+                   b'AAAEAAAABCAIAAACQd1PeAAAADElEQVQI12P4z8AAAAMBAQAY3Y2wAAA'\
+                   b'AAElFTkSuQmCC'
 
 
 class TestViewletBase(ViewletsTestCase):
