@@ -10,10 +10,15 @@ Changelog
 
 Breaking changes:
 
-- Remove all dependencies on plone.app.controlpanel. 
+- Remove all dependencies on plone.app.controlpanel.
   Third party code need either to depend on plone.app.controlpanel 4.0,
   which is a backward compatibilit package only, or also update to not depend on it anymore.
   [jensens]
+
+New features:
+
+- Update TinyMCE to 4.7.13
+  [erral]
 
 - New browser view based login code - merged from plone.login (credits to esteele, pbauer, agitator, jensens, et al).
   `portal_skins/plone_login` is now gone, see PLIP #2092.
@@ -30,28 +35,6 @@ Breaking changes:
 
 - Some tools from CMFCore are now utilities
   [pbauer]
-
-Bug fixes:
-
-- Fix registration of ``robots.txt`` browser view to avoid ``AttributeError`` on Zope's root (fixes `#2052 <https://github.com/plone/Products.CMFPlone/issues/2052>`_).
-  [hvelarde]
-
-- Get rid of obsolete ``X-UA-Compatible`` header.
-  [hvelarde]
-
-- Add test for issue #2469.
-  [jensens]
-
-- Fixed tests when IRichText behavior is used.
-  IRichText -> IRichTextBehavior
-  This is a follow up to `issue 476 <https://github.com/plone/plone.app.contenttypes/issues/476>`_.
-  [iham]
-
-
-5.1.3 (2018-06-22)
-------------------
-
-Breaking changes:
 
 - Remove five.pt for Zope 4
   [jensens]
@@ -104,6 +87,36 @@ New Features:
   [tkimnguyen]
 
 Bug Fixes:
+
+- Remove last legacy Javascript ``highlight-searchterms.js``.
+  Removes also the skins folder ``plone_ecmascript``.
+  It was broken for all (Google, other search engines, own live search);
+  JS worked only when coming from Plone detailed search.
+  [jensens]
+
+- Fix an undefined variable in a test helper function
+  [ale-rt]
+
+- Let the ``combine-bundles`` import step also work when the ``IBundleRegistry`` keyword is not in ``registry.xml``, but in a ``registry`` directory.
+  `Issue 2520 <https://github.com/plone/Products.CMFPlone/issues/2502>`_.
+  [maurits]
+
+- Get rid of obsolete ``X-UA-Compatible`` header.
+  [hvelarde]
+
+- Fix registration of ``robots.txt`` browser view to avoid ``AttributeError`` on Zope's root (fixes `#2052 <https://github.com/plone/Products.CMFPlone/issues/2052>`_).
+  [hvelarde]
+
+- Get rid of obsolete ``X-UA-Compatible`` header.
+  [hvelarde]
+
+- Add test for issue #2469.
+  [jensens]
+
+- Fixed tests when IRichText behavior is used.
+  IRichText -> IRichTextBehavior
+  This is a follow up to `issue 476 <https://github.com/plone/plone.app.contenttypes/issues/476>`_.
+  [iham]
 
 - Hide ``plone.app.querystring`` from add-ons control panel.
   Fixes `issue 2426 <https://github.com/plone/Products.CMFPlone/issues/2426>`_.
