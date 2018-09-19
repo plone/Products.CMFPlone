@@ -291,7 +291,7 @@ class TestSiteAdministratorRoleFunctional(UserGroupsControlPanelTestCase):
             '(Administrators)" />' in contents
         )
 
-        # and should not be addable if we try to force it
+        # and should not be getting that roles if we try to force it
         form = {
             '_authenticator': self.siteadmin_token,
             'form.widgets.username': 'newuser',
@@ -307,7 +307,9 @@ class TestSiteAdministratorRoleFunctional(UserGroupsControlPanelTestCase):
                            request_method='POST', stdin=post_data,
                            basic='siteadmin:secret')
         self.assertNotEqual(200, res.status)
-        self.assertEqual(None, self.portal.acl_users.getUserById('newuser'))
+        self.assertEqual(
+            ['Member', 'Authenticated'],
+            self.portal.acl_users.getUserById('newuser').getRoles())
 
     def test_users_overview_blocks_deleting_managers(self):
         # a user without the Manager role cannot delete a user with the
