@@ -67,6 +67,9 @@ Bug fixes:
   JS worked only when coming from Plone detailed search page.
   [jensens]
 
+- Fix failing thememapper robot test after rebuild of thememapper bundle in p.a.theming PR 147
+  [sunew]
+
 
 5.1.3 (2018-06-22)
 ------------------
