@@ -19,7 +19,6 @@ package_json_contents = """{
     "grunt-contrib-watch": "~1.1.0",
     "grunt-sed": "collective/grunt-sed#e625902539f5c29f1246228270a0330c1097b1e4",
     "less-plugin-inline-urls": "^1.2.0"
-    "less": "~2.7.3"
   }
 }"""  # noqa
 
