@@ -14,13 +14,21 @@ Breaking changes:
 
 New features:
 
+- Upgrade grunt + plugins to same versions as in
+  mockup https://github.com/plone/mockup/pull/870
+  [sunew]
+
 - Include TinyMCE 4.7.13
   [erral]
 
 - Update mockup to latest version.
   [frapell]
 
+
 Bug fixes:
+
+- Remove the devdependencies from bower.json - they are just used for running tests in mockup, not here.
+  [sunew]
 
 - Let the ``combine-bundles`` import step also work when the ``IBundleRegistry`` keyword is not in ``registry.xml``, but in a ``registry`` directory.
   `Issue 2520 <https://github.com/plone/Products.CMFPlone/issues/2502>`_.
