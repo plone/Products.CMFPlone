@@ -5,11 +5,12 @@ from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces import IReorderedEvent
 from Products.CMFPlone.interfaces import ISearchSchema
-from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
+from Products.CMFPlone.tests import PloneTestCase
 from zope.component import getGlobalSiteManager
 from zope.component import getUtility
 from zope.interface import Interface
+
 
 default_user = PloneTestCase.default_user
 portal_name = PloneTestCase.portal_name
@@ -366,18 +367,18 @@ class TestEditMetadata(PloneTestCase.PloneTestCase):
 
     def testSetFormat(self):
         self.assertEqual(self.doc.Format(), 'text/html')
-        self.assertEqual(self.doc.text_format, 'text/html')
+        self.assertEqual(self.doc.format, 'text/html')
         self.utils.editMetadata(self.doc, format='text/x-rst')
         self.assertEqual(self.doc.Format(), 'text/x-rst')
-        self.assertEqual(self.doc.text_format, 'text/x-rst')
+        self.assertEqual(self.doc.format, 'text/x-rst')
 
     def testClearFormat(self):
         self.utils.editMetadata(self.doc, format='text/x-rst')
         self.assertEqual(self.doc.Format(), 'text/x-rst')
-        self.assertEqual(self.doc.text_format, 'text/x-rst')
+        self.assertEqual(self.doc.format, 'text/x-rst')
         self.utils.editMetadata(self.doc, format='')
-        self.assertEqual(self.doc.Format(), 'text/html')
-        self.assertEqual(self.doc.text_format, 'text/html')
+        self.assertEqual(self.doc.Format(), 'text/plain')
+        self.assertEqual(self.doc.format, '')
 
     def testSetLanguage(self):
         self.assertEqual(self.doc.Language(), 'en')
