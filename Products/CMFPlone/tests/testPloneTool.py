@@ -381,7 +381,7 @@ class TestEditMetadata(PloneTestCase.PloneTestCase):
         self.assertEqual(self.doc.format, '')
 
     def testSetLanguage(self):
-        self.assertEqual(self.doc.Language(), 'en')
+        self.assertEqual(self.doc.Language(), '')
         self.utils.editMetadata(self.doc, language='de')
         self.assertEqual(self.doc.Language(), 'de')
 
