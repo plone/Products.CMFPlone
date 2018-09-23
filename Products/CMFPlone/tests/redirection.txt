@@ -30,11 +30,11 @@ And this flag does not, so it should raise a 404:
 
 But it should not give an error while rendering the default error page:
 
-  >>> "the following error occurred while attempting to render the standard error message" in browser.contents
+  >>> b"the following error occurred while attempting to render the standard error message" in browser.contents
   False
 
 As it is an image, it should return a JSON message
-  >>> '{"error_type": "NotFound"}' in browser.contents
+  >>> b'{"error_type": "NotFound"}' in browser.contents
   True
 
 A non-existing page would return a human readable error page
