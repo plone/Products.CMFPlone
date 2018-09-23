@@ -619,12 +619,12 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
         styles = StylesView(self.layer['portal'], subreq, None)
         styles.update()
         results = styles.styles()
-        self.assertEqual(
-            filter(lambda it: 'foo' in it['src'], results)[0],
-            {
+        self.assertListEqual(
+            list(filter(lambda it: 'foo' in it['src'], results)),
+            [{
                 'src': 'http://nohost/plone/++resource++foo.css',
                 'conditionalcomment': '',
                 'rel': 'stylesheet',
                 'bundle': 'none',
-            }
+            }]
         )
