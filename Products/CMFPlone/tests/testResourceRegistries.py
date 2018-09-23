@@ -369,7 +369,7 @@ class TestControlPanel(PloneTestCase.PloneTestCase):
         mng = OverrideFolderManager(self.portal)
         mng.save_file('foo/bar.css', 'foobar')
         value = self.portal.restrictedTraverse('++plone++foo/bar.css')
-        self.assertEqual(str(value), 'foobar')
+        self.assertEqual(value.data, b'foobar')
 
     def test_override_rewrite_links(self):
         req = self.layer['request']
