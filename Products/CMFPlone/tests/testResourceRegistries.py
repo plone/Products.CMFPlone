@@ -387,7 +387,7 @@ class TestControlPanel(PloneTestCase.PloneTestCase):
 }""" % {'site_url': self.portal.absolute_url()}
         mng.save_file('foo/bar.css', css)
         value = self.portal.restrictedTraverse('++plone++foo/bar.css')
-        match = """
+        match = b"""
 .foo {
     background-image: url("../foobar.css");
 }
@@ -397,7 +397,7 @@ class TestControlPanel(PloneTestCase.PloneTestCase):
 .foobar {
     background-image: url("../foo/bar/foobar.css");
 }"""
-        self.assertEqual(str(value), match)
+        self.assertEqual(value.data, match)
 
     def test_get_require_js_config_uses_stub_modules(self):
         view = ResourceRegistryControlPanelView(
