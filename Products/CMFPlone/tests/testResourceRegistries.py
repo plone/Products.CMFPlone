@@ -576,7 +576,7 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
         scripts.update()
         results = scripts.scripts()
         self.assertEqual(
-            filter(lambda it: 'foo' in it['src'], results),
+            [i for i in results if 'foo' in i['src']],
             []
         )
 
