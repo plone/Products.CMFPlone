@@ -21,7 +21,7 @@ from Products.CMFPlone.interfaces import ISecuritySchema
 from Products.CMFPlone.permissions import ManagePortal
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.PloneTool import EMAIL_RE
-from Products.PluggableAuthService.interfaces.authservice import IPluggableAuthService
+from Products.PluggableAuthService.interfaces.authservice import IPluggableAuthService  # noqa: E501
 from Products.PluggableAuthService.interfaces.plugins import IValidationPlugin
 from Products.PluggableAuthService.permissions import SetOwnPassword
 from smtplib import SMTPException
@@ -50,6 +50,7 @@ def getValidPasswordChars():
     for i in range(2, 10):
         password_chars.append(chr(ord('0') + i))
     return password_chars
+
 
 password_chars = getValidPasswordChars()
 
@@ -388,7 +389,7 @@ class RegistrationTool(PloneBaseTool, BaseTool):
             password=member.getPassword(), charset=encoding)
         # The mail headers are not properly encoded we need to extract
         # them and let MailHost manage the encoding.
-        if isinstance(mail_text, six.text_type):
+        if six.PY2 and isinstance(mail_text, six.text_type):
             mail_text = mail_text.encode(encoding)
         message_obj = message_from_string(mail_text.strip())
         subject = message_obj['Subject']
