@@ -70,6 +70,9 @@ Bug fixes:
 - Fix failing thememapper robot test after rebuild of thememapper bundle in p.a.theming PR 147
   [sunew]
 
+- Fix Datatables CSS not available #2512 via PR mockup #863
+  [sunew, thet]
+
 
 5.1.3 (2018-06-22)
 ------------------
