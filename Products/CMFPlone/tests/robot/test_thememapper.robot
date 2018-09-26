@@ -72,7 +72,8 @@ I close the tab labeled "${LABEL}"
     Click Element   jquery=.navbar-nav li:contains("${LABEL}") .remove
 
 I create a new file called "${NAME}"
-    Click Element   css=#btn-addnew
+    Click Element   css=#btngroup-main #btngroup-dropdown-file_menu #dropdown-menu-
+    Click Element   css=#alink-addnew
     Input Text  jquery=.addnew input[type="text"]   ${NAME}
     Click Element   jquery=.addnew .btn-primary
     Sleep   1
@@ -104,7 +105,8 @@ I expect the document ${NAME} to contain ${MESSAGE}
 
 I use the LESS builder on "${file}"
     I open ${file}
-    Click Element   css=#btn-buildless
+    Click Element   css=#btngroup-mapper #btngroup-dropdown-file_menu #dropdown-menu-
+    Click Element   css=#alink-buildless
     Input Text      css=#lessFileName   ${CSSFILE}
     Click element   css=#compileBtn
     Sleep   1
