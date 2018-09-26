@@ -67,6 +67,9 @@ Bug fixes:
   JS worked only when coming from Plone detailed search page.
   [jensens]
 
+- Fix failing thememapper robot test after rebuild of thememapper bundle in p.a.theming PR 147
+  [sunew]
+
 - Fix Datatables CSS not available #2512 via PR mockup #863
   [sunew, thet]
 
