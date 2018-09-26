@@ -67,6 +67,9 @@ Bug fixes:
   JS worked only when coming from Plone detailed search page.
   [jensens]
 
+- Fix Datatables CSS not available #2512 via PR mockup #863
+  [sunew, thet]
+
 
 5.1.3 (2018-06-22)
 ------------------
