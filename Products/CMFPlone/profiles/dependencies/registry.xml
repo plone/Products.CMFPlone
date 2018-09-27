@@ -142,15 +142,7 @@
       <value key="js">less-variables.js</value>
   </record>
 
-  <!-- mockup core reqs -->
-  <records prefix="plone.resources/mockup-registry"
-            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++plone++static/components/mockup-core/js/registry.js</value>
-  </records>
-  <records prefix="plone.resources/mockup-parser"
-            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++plone++static/components/mockup-core/js/parser.js</value>
-  </records>
+  <!-- mockup reqs -->
   <records prefix="plone.resources/mockup-patterns-base"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/base/pattern.js</value>
@@ -502,11 +494,6 @@
   <records prefix="plone.resources/tinymce-insertdatetime"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/tinymce-builded/js/tinymce/plugins/insertdatetime/plugin.js</value>
-      <value key="deps">tinymce</value>
-  </records>
-  <records prefix="plone.resources/tinymce-layer"
-            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++plone++static/components/tinymce-builded/js/tinymce/plugins/layer/plugin.js</value>
       <value key="deps">tinymce</value>
   </records>
   <records prefix="plone.resources/tinymce-legacyoutput"
