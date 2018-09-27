@@ -107,6 +107,13 @@
         />
 
     <browser:page
+        name="mail_password"
+        for="*"
+        class=".mail_password.MailPasswordView"
+        permission="zope.Public"
+        />
+
+    <browser:page
         name="mail_password_response"
         for="*"
         template="templates/mail_password_response.pt"
