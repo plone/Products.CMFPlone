@@ -15,6 +15,9 @@ Breaking changes:
 
 New features:
 
+- Updated tinymce to 4.7.13
+  [obct537]
+
 - Add jqtree-contextmenu to the resource registry
   [b4oshany]
 
