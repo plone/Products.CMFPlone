@@ -70535,7 +70535,7 @@ define('mockup-patterns-tinymce',[
       folderTypes: ['Folder', 'Plone Site'],
       tiny: {
         'content_css': '../../../bower_components/tinymce-builded/js/tinymce/skins/lightgray/content.min.css',
-        theme: '-modern',
+        theme: 'modern',
         plugins: ['advlist', 'autolink', 'lists', 'charmap', 'print', 'preview', 'anchor', 'searchreplace',
                   'visualblocks', 'code', 'fullscreen', 'insertdatetime', 'media', 'table', 'contextmenu',
                   'paste', 'plonelink', 'ploneimage'],
@@ -80472,5 +80472,5 @@ require([
   'use strict';
 });
 
-define("/Users/nathan/plone/buildout.coredev/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
+define("/Users/samschwartz/Projects/plone/buildout.coredev/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
 
