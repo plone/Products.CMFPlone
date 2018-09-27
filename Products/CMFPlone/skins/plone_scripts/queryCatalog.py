@@ -44,7 +44,7 @@ def quotequery(s):
         terms = s.split()
     except ConflictError:
         raise
-    except:
+    except Exception:
         return s
     tokens = ('OR', 'AND', 'NOT')
     s_tokens = ('OR', 'AND')
@@ -110,7 +110,8 @@ for k in REQUEST.keys():
         else:
             query[k] = v
 
-for k, v in second_pass.items():
+for k in second_pass.keys():
+    v = second_pass[k]
     qs = query.get(k)
     if qs is None:
         continue
