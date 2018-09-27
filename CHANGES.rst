@@ -50,6 +50,9 @@ Bug fixes:
 - Some tools from CMFCore are now utilities
   [pbauer]
 
+- Fix failing thememapper robot test after rebuild of thememapper bundle in p.a.theming PR 148
+  [sunew]
+
 - Remove five.pt for Zope 4
   [jensens]
 
