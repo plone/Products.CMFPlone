@@ -7,6 +7,7 @@ from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.app.textfield import RichTextValue
+from plone.dexterity.content import CEILING_DATE
 from plone.indexer.wrapper import IndexableObjectWrapper
 from plone.uuid.interfaces import IAttributeUUID
 from plone.uuid.interfaces import IUUID
@@ -1001,7 +1002,7 @@ class TestCatalogExpirationFiltering(PloneTestCase):
         self.assertEqual(lhs, rhs)
 
     def testCeilingPatch(self):
-        self.assertEqual(self.folder.doc.expires(), DateTime(2500, 0))
+        self.assertEqual(self.folder.doc.expires(), CEILING_DATE)
 
     def testSearchResults(self):
         res = self.catalog.searchResults()
@@ -1321,17 +1322,6 @@ class TestIndexers(PloneTestCase):
         wrapped = IndexableObjectWrapper(self.doc, self.portal.portal_catalog)
         self.assertTrue(wrapped.UID)
         self.assertTrue(uuid == wrapped.UID)
-
-
-class TestMetadata(PloneTestCase):
-
-    def testLocationAddedToMetdata(self):
-        self.folder.invokeFactory(
-            'Document', 'doc', title='document', location='foobar')
-        doc = self.folder.doc
-        catalog = self.portal.portal_catalog
-        brain = catalog(UID=doc.UID())[0]
-        self.assertEqual(brain.location, doc.location)
 
 
 class TestObjectProvidedIndexExtender(unittest.TestCase):
