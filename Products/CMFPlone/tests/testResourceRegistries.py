@@ -241,13 +241,13 @@ class TestResourceNodeImporter(PloneTestCase.PloneTestCase):
 
     def test_resource_blacklist(self):
         # Ensure that blacklisted resources aren't imported
-        importer = self._get_importer(set(('++resource++/bad_resource.js',)))
+        importer = self._get_importer({'++resource++/bad_resource.js'})
         dom = self._get_resource_dom("++resource++/bad_resource.js")
         importer._importNode(dom.documentElement)
         js_files = [x.js for x in self._get_resources().values()]
-        self.assertIn(b"++resource++/bad_resource.js", js_files)
+        self.assertNotIn("++resource++/bad_resource.js", js_files)
         self.assertNotIn(
-            b"resource-bad_resource-js",
+            "resource-bad_resource-js",
             self._get_legacy_bundle().resources,
         )
 
