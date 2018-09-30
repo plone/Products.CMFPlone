@@ -8,10 +8,6 @@ Changelog
 5.1.4 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
 New features:
 
 - Upgrade grunt + plugins to same versions as in
