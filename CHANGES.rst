@@ -5,6 +5,22 @@
 Changelog
 =========
 
+5.1.5 (unreleased)
+------------------
+
+Breaking changes:
+
+- *add item here*
+
+New features:
+
+- *add item here*
+
+Bug fixes:
+
+- *add item here*
+
+
 5.1.4.rc1 (2018-09-30)
 ----------------------
 
