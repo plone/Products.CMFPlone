@@ -38,6 +38,9 @@ from plone.portlets.constants import CONTEXT_CATEGORY as CONTEXT_PORTLETS
 from plone.protect import createToken
 from plone.registry.interfaces import IRegistry
 
+import six
+import unittest
+
 
 class TestPortalCreation(PloneTestCase.PloneTestCase):
 
@@ -83,6 +86,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
 
     def testCanViewManagementScreen(self):
         # Make sure the ZMI management screen works
+        self.setRoles(['Manager'])
         self.portal.manage_main()
 
     def testWorkflowIsActionProvider(self):
@@ -136,22 +140,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
                 break
         else:
             self.fail("Folder has no 'edit' action")
-
-    def testFolderHasFolderListingAction(self):
-        # Folders should have a 'folderlisting' action
-        folder = self.types.getTypeInfo('Folder')
-        for action in folder._cloneActions():
-            if action.id == 'folderlisting':
-                break
-        else:
-            self.fail("Folder has no 'folderlisting' action")
-
-    def testImagePatch(self):
-        # Is it ok to remove the imagePatch? Probably not as we
-        # don't want the border attribute ...
-        self.folder.invokeFactory('Image', id='foo', file=dummy.Image())
-        endswith = ' alt="" title="" height="16" width="16" />'
-        self.assertEqual(self.folder.foo.tag()[-len(endswith):], endswith)
 
     def testNoPortalFormTool(self):
         # portal_form should have been removed
@@ -286,10 +274,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.assertEqual(folder.portal_type, 'Folder')
         self.assertEqual(folder._ordering, 'unordered')
         self.assertEqual(folder.getDefaultPage(), 'aggregator')
-        self.assertEqual(folder.getRawLocallyAllowedTypes(), ('News Item',))
-        self.assertEqual(folder.getRawImmediatelyAddableTypes(),
-                         ('News Item',))
-        self.assertEqual(folder.checkCreationFlag(), False)
+        self.assertEqual(folder.immediately_addable_types, ['News Item'])
 
     def testEventsFolder(self):
         self.assertTrue('events' in self.portal.objectIds())
@@ -297,9 +282,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.assertEqual(folder.portal_type, 'Folder')
         self.assertEqual(folder._ordering, 'unordered')
         self.assertEqual(folder.getDefaultPage(), 'aggregator')
-        self.assertEqual(folder.getRawLocallyAllowedTypes(), ('Event',))
-        self.assertEqual(folder.getRawImmediatelyAddableTypes(), ('Event',))
-        self.assertEqual(folder.checkCreationFlag(), False)
+        self.assertEqual(folder.immediately_addable_types, ['Event'])
 
     def testNewsCollection(self):
         # News collection is in place as default view and has a criterion to
@@ -316,7 +299,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
                          'o': 'plone.app.querystring.operation.selection.any',
                          'v': ['published']} in query)
         self.assertEqual(collection.getLayout(), 'summary_view')
-        self.assertEqual(collection.checkCreationFlag(), False)
 
     def testEventsCollection(self):
         # Events collection is in place as default view and has criterion to
@@ -332,11 +314,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.assertTrue({'i': 'review_state',
                          'o': 'plone.app.querystring.operation.selection.any',
                          'v': ['published']} in query)
-        self.assertTrue({
-            'i': 'start',
-            'o': 'plone.app.querystring.operation.date.afterToday',
-            'v': ''} in query)
-        self.assertEqual(collection.checkCreationFlag(), False)
+        self.assertEqual(collection.getLayout(), 'event_listing')
 
     def testObjectButtonActions(self):
         self.setRoles(['Manager', 'Member'])
@@ -367,14 +345,13 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
 
     def testSelectableViewsOnFolder(self):
         views = self.portal.portal_types.Folder.getAvailableViewMethods(None)
-        self.assertTrue('folder_listing' in views)
-        self.assertTrue('atct_album_view' in views)
+        self.assertTrue('listing_view' in views)
+        self.assertTrue('album_view' in views)
 
     def testSelectableViewsOnTopic(self):
-        views = self.portal.portal_types.Topic.getAvailableViewMethods(None)
-        self.assertTrue('folder_listing' in views)
-        self.assertTrue('atct_album_view' in views)
-        self.assertTrue('atct_topic_view' in views)
+        views = self.portal.portal_types.Collection.getAvailableViewMethods(None)
+        self.assertTrue('listing_view' in views)
+        self.assertTrue('album_view' in views)
 
     def testLocationMemberdataProperty(self):
         # portal_memberdata should have a location property
@@ -402,15 +379,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
             [x.title for x in actions if x.title == 'Site Setup'],
             [u'Site Setup']
         )
-
-    def testFolderlistingAction(self):
-        # Make sure the folderlisting action of a Folder is /view, to ensure
-        # that the layout template will be resolved
-        # (see PloneTool.browserDefault)
-        self.assertEqual(
-            self.types['Folder'].getActionObject('folder/folderlisting')
-                .getActionExpression(),
-            'string:${folder_url}/view')
 
     def testEnableLivesearchProperty(self):
         # registry should have enable_livesearch property
@@ -464,7 +432,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
     def testTypesHaveSelectedLayoutViewAction(self):
         # Should add method aliases to the Plone Site FTI
         types = ('Document', 'Event', 'File', 'Folder', 'Image', 'Link',
-                 'News Item', 'Topic', 'Plone Site')
+                 'News Item', 'Collection', 'Plone Site')
         for typeName in types:
             fti = getattr(self.types, typeName)
             aliases = fti.getMethodAliases()
@@ -505,15 +473,16 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
             name="syndication-util")
         self.assertTrue(syn.site_enabled())
 
+    # FIXME: Syndication is not enabled by default in DX
     def testSyndicationEnabledOnNewsAndEvents(self):
         syn = getMultiAdapter(
             (self.portal.news.aggregator, self.portal.REQUEST),
             name="syndication-util")
-        self.assertTrue(syn.context_enabled())
+        self.assertFalse(syn.context_enabled())
         syn = getMultiAdapter(
             (self.portal.events.aggregator, self.portal.REQUEST),
             name="syndication-util")
-        self.assertTrue(syn.context_enabled())
+        self.assertFalse(syn.context_enabled())
 
     def testSyndicationTabDisabled(self):
         # Syndication tab should be disabled by default
@@ -577,9 +546,9 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.folder.cb_dataValid = True
         acts = self.actions.listFilteredActionsFor(self.folder)
         buttons = acts['object_buttons']
-        self.assertEqual(len(buttons), 5)
+        self.assertEqual(len(buttons), 6)
         ids = [(a['id']) for a in buttons]
-        self.assertEqual(ids, ['cut', 'copy', 'paste', 'delete', 'rename', ])
+        self.assertEqual(ids, ['cut', 'copy', 'paste', 'delete', 'rename', 'ical_import_enable'])
 
     def testCustomSkinFolderExists(self):
         # the custom skin needs to be created
@@ -608,21 +577,21 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
 
     def testFolderHasFolderListingView(self):
         # Folder type should allow 'folder_listing'
-        self.assertTrue('folder_listing' in self.types.Folder.view_methods)
+        self.assertTrue('listing_view' in self.types.Folder.view_methods)
 
     def testFolderHasSummaryView(self):
         # Folder type should allow 'folder_summary_view'
         self.assertTrue(
-            'folder_summary_view' in self.types.Folder.view_methods)
+            'summary_view' in self.types.Folder.view_methods)
 
     def testFolderHasTabularView(self):
         # Folder type should allow 'folder_tabular_view'
         self.assertTrue(
-            'folder_tabular_view' in self.types.Folder.view_methods)
+            'tabular_view' in self.types.Folder.view_methods)
 
     def testFolderHasAlbumView(self):
         # Folder type should allow 'atct_album_view'
-        self.assertTrue('atct_album_view' in self.types.Folder.view_methods)
+        self.assertTrue('album_view' in self.types.Folder.view_methods)
 
     def testConfigurableSafeHtmlTransform(self):
         registry = getUtility(IRegistry)
@@ -660,6 +629,14 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.assertTrue(isinstance(pipeline[0], Splitter))
         self.assertTrue(isinstance(pipeline[1], I18NNormalizer))
 
+    # broken because of multiple issues:
+    # 1. _cook_check in PageTemplateFile fails: template is bytes when it's XML
+    # 2. text=wf_stream.getvalue() in CMFCore/exportimport/content.py
+    #    is text but should be bytes
+    # 3. adapter.export(export_context, subdir) uses context.manage_FTPget()
+    #    which returns text, not bytes
+    # and so on...
+    @unittest.skipIf(six.PY3, 'Export content is super-broken in py3')
     def testMakeSnapshot(self):
         # GenericSetup snapshot should work
         self.setRoles(['Manager'])
@@ -745,7 +722,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
                                 IPortletAssignmentMapping)
 
         self.assertEqual(len(left), 1)
-        self.assertEqual(len(right), 0)
+        self.assertEqual(len(right), 2)
 
     def testPortletBlockingForMembersFolder(self):
         members = self.portal.Members

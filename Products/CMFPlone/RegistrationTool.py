@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
-from AccessControl import ClassSecurityInfo, Unauthorized
+from AccessControl import ClassSecurityInfo
 from AccessControl import getSecurityManager
+from AccessControl import Unauthorized
+from AccessControl.class_init import InitializeClass
 from AccessControl.requestmethod import postonly
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.SecurityManagement import setSecurityManager
-from Acquisition import aq_base, aq_chain
-from AccessControl.class_init import InitializeClass
+from Acquisition import aq_base
+from Acquisition import aq_chain
 from email import message_from_string
 from hashlib import md5
 from plone.registry.interfaces import IRegistry
@@ -14,22 +16,24 @@ from Products.CMFCore.permissions import AddPortalMember
 from Products.CMFCore.RegistrationTool import RegistrationTool as BaseTool
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import ISecuritySchema
 from Products.CMFPlone.permissions import ManagePortal
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.PloneTool import EMAIL_RE
-from Products.CMFPlone import PloneMessageFactory as _
-from Products.PluggableAuthService.interfaces.authservice import IPluggableAuthService
+from Products.PluggableAuthService.interfaces.authservice import IPluggableAuthService  # noqa: E501
 from Products.PluggableAuthService.interfaces.plugins import IValidationPlugin
 from Products.PluggableAuthService.permissions import SetOwnPassword
-from smtplib import SMTPException, SMTPRecipientsRefused
-from zope.component import getUtility
+from smtplib import SMTPException
+from smtplib import SMTPRecipientsRefused
 from zope.component import getMultiAdapter
+from zope.component import getUtility
 from zope.schema import ValidationError
 
 import random
 import re
 import six
+
 
 # - remove '1', 'l', and 'I' to avoid confusion
 # - remove '0', 'O', and 'Q' to avoid confusion
@@ -46,6 +50,7 @@ def getValidPasswordChars():
     for i in range(2, 10):
         password_chars.append(chr(ord('0') + i))
     return password_chars
+
 
 password_chars = getValidPasswordChars()
 
@@ -108,7 +113,10 @@ class RegistrationTool(PloneBaseTool, BaseTool):
 
     def _md5base(self):
         if self._v_md5base is None:
-            self._v_md5base = md5(self.md5key)
+            key = self.md5key
+            if not isinstance(key, six.binary_type):
+                key = key.encode()
+            self._v_md5base = md5(key)
         return self._v_md5base
 
     def _getValidEmailAddress(self, member):
@@ -141,6 +149,8 @@ class RegistrationTool(PloneBaseTool, BaseTool):
                 password += password_chars[random.randint(0, nchars - 1)]
             return password
         else:
+            if not isinstance(s, six.binary_type):
+                s = s.encode()
             m = self._md5base().copy()
             m.update(s)
             d = m.digest()  # compute md5(md5key + s)
@@ -148,7 +158,10 @@ class RegistrationTool(PloneBaseTool, BaseTool):
             password = ''
             nchars = len(password_chars)
             for i in range(0, length):
-                password += password_chars[ord(d[i]) % nchars]
+                if six.PY2:
+                    password += password_chars[ord(d[i]) % nchars]
+                else:
+                    password += password_chars[d[i] % nchars]
             return password
 
     security.declarePublic('isValidEmail')
@@ -376,7 +389,7 @@ class RegistrationTool(PloneBaseTool, BaseTool):
             password=member.getPassword(), charset=encoding)
         # The mail headers are not properly encoded we need to extract
         # them and let MailHost manage the encoding.
-        if isinstance(mail_text, six.text_type):
+        if six.PY2 and isinstance(mail_text, six.text_type):
             mail_text = mail_text.encode(encoding)
         message_obj = message_from_string(mail_text.strip())
         subject = message_obj['Subject']

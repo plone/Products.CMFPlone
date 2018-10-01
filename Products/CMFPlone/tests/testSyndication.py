@@ -2,6 +2,7 @@
 import re
 from Products.CMFCore.utils import getToolByName
 from AccessControl import Unauthorized
+from plone.app.textfield import RichTextValue
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.interfaces.syndication import IFeedSettings
 from Products.CMFPlone.interfaces.syndication import ISiteSyndicationSettings
@@ -9,7 +10,7 @@ from plone.registry.interfaces import IRegistry
 from zope.component import getUtility
 from zExceptions import NotFound
 from Products.CMFPlone.interfaces.syndication import IFeed
-from Products.CMFPlone.browser.syndication.adapters import BaseItem
+from Products.CMFPlone.browser.syndication.adapters import DexterityItem
 
 
 class BaseSyndicationTest(PloneTestCase.PloneTestCase):
@@ -157,8 +158,10 @@ class TestSyndicationFeedAdapter(BaseSyndicationTest):
     def afterSetUp(self):
         super(TestSyndicationFeedAdapter, self).afterSetUp()
         self.feed = IFeed(self.folder)
-        self.feeddatadoc = BaseItem(self.doc1, self.feed)
-        self.feeddatafile = BaseItem(self.file, self.feed)
+        self.feeddatadoc = DexterityItem(self.doc1, self.feed)
+        from plone.namedfile.file import NamedBlobFile
+        self.file.file = NamedBlobFile(data='lorem', filename=u'string.txt')
+        self.feeddatafile = DexterityItem(self.file, self.feed)
 
     def test_link_on_folder(self):
         self.assertEqual(self.feed.link, self.folder.absolute_url())
@@ -172,7 +175,7 @@ class TestSyndicationFeedAdapter(BaseSyndicationTest):
 
     def test_link_on_default_page(self):
         self.folder._setProperty('default_page', 'doc2')
-        feeddatadoc2 = BaseItem(self.doc2, self.feed)
+        feeddatadoc2 = DexterityItem(self.doc2, self.feed)
         self.assertEqual(feeddatadoc2.link, self.folder.absolute_url())
 
     def test_items(self):
@@ -216,10 +219,10 @@ class TestRenderBody(BaseSyndicationTest):
         self.news1 = self.folder.news1
         self.news1.setTitle('News 1')
         self.news1.setDescription('The news item #1')
-        self.news1.setText(BODY_TEXT)
+        self.news1.text = RichTextValue(BODY_TEXT, 'text/html', 'text/html')
         self.news2 = self.folder.news2
         self.news2.setTitle('News 2')
-        self.news2.setText(ROOTED_BODY_TEXT)
+        self.news2.text = RichTextValue(ROOTED_BODY_TEXT, 'text/html', 'text/html')
         # Enable syndication on folder
         registry = getUtility(IRegistry)
         self.site_settings = registry.forInterface(ISiteSyndicationSettings)
@@ -247,7 +250,8 @@ class TestRenderBody(BaseSyndicationTest):
                                                                                                        self.news2.UID(),
                                                                                                        self.folder.absolute_url())
         self.assertTrue(re.search(news2_feed, xml) is not None)
-        self.assertFalse(re.search(ROOTED_BODY_TEXT, xml) is not None)
+        # unlike AT DX does not tidy the output (see doTidy in ATContenTypes)
+        self.assertTrue(re.search(ROOTED_BODY_TEXT, xml) is not None)
         self.assertTrue(re.search('<h2>Header rooted</h2>', xml) is not None)
 
     def test_rss1(self):
@@ -290,9 +294,9 @@ class TestNewsML(BaseSyndicationTest):
         self.folder.invokeFactory('File', 'file')
         self.doc1 = self.folder.doc1
         self.news1 = self.folder.news1
-        self.news1.setText(BODY_TEXT)
+        self.news1.text = RichTextValue(BODY_TEXT, 'text/html', 'text/html')
         self.news2 = self.folder.news2
-        self.news2.setText(ROOTED_BODY_TEXT)
+        self.news2.text = RichTextValue(ROOTED_BODY_TEXT, 'text/html', 'text/html')
         self.file = self.folder.file
         # Enable syndication on folder
         registry = getUtility(IRegistry)

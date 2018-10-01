@@ -96,6 +96,8 @@ def cookWhenChangingSettings(context, bundle=None):
                     css = response.getBody()
                     if css_resource[-8:] != '.min.css':
                         css = css_compiler.compile_string(css)
+                    if not isinstance(css, six.text_type):
+                        css = css.decode('utf8')
                     cooked_css += u'\n/* Resource: {0} */\n{1}\n'.format(
                         css_resource,
                         css
@@ -114,10 +116,12 @@ def cookWhenChangingSettings(context, bundle=None):
             js = response.getBody()
             try:
                 logger.info('Cooking js %s', resource.js)
+                if not isinstance(js, six.text_type):
+                    js = js.decode('utf8')
                 cooked_js += '\n/* resource: {0} */\n{1}'.format(
                     resource.js,
                     js if '.min.js' == resource.js[-7:] else
-                    minify(js.decode(), mangle=False, mangle_toplevel=False)
+                    minify(js, mangle=False, mangle_toplevel=False)
                 )
             except SyntaxError:
                 cooked_js +=\

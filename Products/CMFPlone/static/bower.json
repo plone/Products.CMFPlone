@@ -1,6 +1,6 @@
 {
   "name": "Products.CMFPlone",
-  "version": "5.0b2",
+  "version": "5.1.4",
   "description": "CMFPlone Javascript Bundle",
   "dependencies": {
     "ace-builds": "1.2.6",
@@ -46,22 +46,18 @@
     "requirejs-text": "2.0.15",
     "select2": "3.5.4",
     "selectivizr": "1.0.2",
-    "tinymce-builded": "4.5.6",
+    "tinymce-builded": "4.7.13",
     "requirejs": "",
     "less": "2.1.2",
     "r.js": "2.1.15",
-    "cs-jqtree-contextmenu": "^0.1.0",
-    "js-shortcuts": "^1.0.1"
-  },
-  "devDependencies": {
-    "expect": "0.3.1",
-    "sinonjs": "1.17.1"
+    "js-shortcuts": "^1.0.1",
+    "cs-jqtree-contextmenu": "^0.1.0"
   },
   "resolutions": {
     "bootstrap": "3.3.6",
     "jquery": "1.11.3",
+    "jquery-form": "3.51",
     "select2": "3.5.4",
-    "moment": "2.10.6",
-    "jquery-form": "3.51"
+    "moment": "2.10.6"
   }
 }

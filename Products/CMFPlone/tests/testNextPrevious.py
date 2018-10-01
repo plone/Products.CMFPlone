@@ -40,7 +40,7 @@ class TestNextPrevious(PloneTestCase.PloneTestCase):
 
         # first the field on the atfolder direct, to get sure the field is
         # there
-        enabled = self.folder.case.getNextPreviousEnabled()
+        enabled = self.folder.case.nextPreviousEnabled
         self.assertFalse(enabled)
 
         # secoundly we test if the adapter provides the isNextPreviousEnabled()
@@ -57,7 +57,7 @@ class TestNextPrevious(PloneTestCase.PloneTestCase):
 
     def testNextPreviousViewEnabled(self):
         # set the parent folder "getNextPreviousEnabled" to true
-        self.portal.folder1.setNextPreviousEnabled(True)
+        self.portal.folder1.nextPreviousEnabled = True
 
         # clear request memos
         view = self.portal.folder1.doc12.restrictedTraverse(

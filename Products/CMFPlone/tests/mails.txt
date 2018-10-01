@@ -19,10 +19,10 @@ Now fill in the form:
 
   >>> form = browser.getForm(id='form')
 
-  >>> form.getControl(name='form.widgets.sender_fullname').value = 'T\xc3\xa4st user'
+  >>> form.getControl(name='form.widgets.sender_fullname').value = 'Täst user'
   >>> form.getControl(name='form.widgets.sender_from_address').value = 'test@plone.test'
-  >>> form.getControl(name='form.widgets.subject').value = 'Some t\xc3\xa4st subject.'
-  >>> form.getControl(name='form.widgets.message').value = 'Another t\xc3\xa4st message.'
+  >>> form.getControl(name='form.widgets.subject').value = 'Some täst subject.'
+  >>> form.getControl(name='form.widgets.message').value = 'Another täst message.'
 
 And submit it:
 
@@ -60,7 +60,7 @@ We expect the headers to be properly header encoded (7-bit):
 
 The output should be encoded in a reasonable manner (in this case
 quoted-printable).  There may be some small differences in where
-exactly the lines are cut off, depending on whether you use five.pt 
+exactly the lines are cut off, depending on whether you use five.pt
 (in Zope 2.13) or not, so we turn the message into one line first:
 
   >>> msg.replace('=\n', '').replace('\n', ' ')
@@ -70,5 +70,5 @@ We can also decode the string, though we should still be careful about
 lines ending in different spots:
 
   >>> import quopri
-  >>> quopri.decodestring(msg).replace('\n', ' ')
-  '...Another t\xc3\xa4st message...You are receiving this mail because T\xc3\xa4st user test@plone.test...is sending feedback about the site you administer at...'
+  >>> quopri.decodestring(msg).replace(b'\n', b' ')
+  b'...Another t\xc3\xa4st message...You are receiving this mail because T\xc3\xa4st user test@plone.test...is sending feedback about the site you administer at...'

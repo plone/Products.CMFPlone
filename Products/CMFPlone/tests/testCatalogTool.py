@@ -7,6 +7,7 @@ from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.app.textfield import RichTextValue
+from plone.dexterity.content import CEILING_DATE
 from plone.indexer.wrapper import IndexableObjectWrapper
 from plone.uuid.interfaces import IAttributeUUID
 from plone.uuid.interfaces import IUUID
@@ -1000,9 +1001,6 @@ class TestCatalogExpirationFiltering(PloneTestCase):
         rhs.sort()
         self.assertEqual(lhs, rhs)
 
-    def testCeilingPatch(self):
-        self.assertEqual(self.folder.doc.expires(), DateTime(2500, 0))
-
     def testSearchResults(self):
         res = self.catalog.searchResults()
         self.assertResults(res, base_content)
@@ -1305,13 +1303,19 @@ class TestIndexers(PloneTestCase):
         self.assertTrue(IIndexableObjectWrapper.providedBy(w))
         self.assertTrue(IContentish.providedBy(w))
 
-    def test_getObjSize(self):
+    def test_getObjSize_KB(self):
         from Products.CMFPlone.CatalogTool import getObjSize
         get_size = getObjSize.callable
-        # FIXME: getObjSize die not count text in DX
         self.doc.text = RichTextValue('a' * 1000)
         self.doc.reindexObject()
         self.assertEqual(get_size(self.doc), '1 KB')
+
+    def test_getObjSize_MB(self):
+        from Products.CMFPlone.CatalogTool import getObjSize
+        get_size = getObjSize.callable
+        self.doc.text = RichTextValue('a' * 6000000)
+        self.doc.reindexObject()
+        self.assertEqual(get_size(self.doc), '5.7 MB')
 
     def test_uuid(self):
         alsoProvides(self.doc, IAttributeUUID)
@@ -1321,17 +1325,6 @@ class TestIndexers(PloneTestCase):
         wrapped = IndexableObjectWrapper(self.doc, self.portal.portal_catalog)
         self.assertTrue(wrapped.UID)
         self.assertTrue(uuid == wrapped.UID)
-
-
-class TestMetadata(PloneTestCase):
-
-    def testLocationAddedToMetdata(self):
-        self.folder.invokeFactory(
-            'Document', 'doc', title='document', location='foobar')
-        doc = self.folder.doc
-        catalog = self.portal.portal_catalog
-        brain = catalog(UID=doc.UID())[0]
-        self.assertEqual(brain.location, doc.location)
 
 
 class TestObjectProvidedIndexExtender(unittest.TestCase):

@@ -62,14 +62,14 @@ class TestResourceRegistries(PloneTestCase.PloneTestCase):
                 self.portal.absolute_url()
             )
         )
-        self.assertTrue('alert("Hi!");alert("Ho!");' in resp_js.getBody())
+        self.assertIn(b'alert("Hi!");alert("Ho!");', resp_js.getBody())
 
         resp_css = subrequest(
             '{0}/++plone++static/foobar-compiled.css'.format(
                 self.portal.absolute_url()
             )
         )
-        self.assertTrue('body{color:blue}' in resp_css.getBody())
+        self.assertIn(b'body{color:blue}', resp_css.getBody())
 
     def test_dont_minify_already_minified(self):
         registry = getUtility(IRegistry)
@@ -95,8 +95,8 @@ class TestResourceRegistries(PloneTestCase.PloneTestCase):
         container = persistent_directory[OVERRIDE_RESOURCE_DIRECTORY_NAME]
         container.makeDirectory('static')
         directory = container['static']
-        directory.writeFile('foobar.min.js', 'alert("Hi!");\n\nalert("Ho!");')
-        directory.writeFile('foobar.min.css', 'body {\ncolor: blue;\n}')
+        directory.writeFile('foobar.min.js', b'alert("Hi!");\n\nalert("Ho!");')
+        directory.writeFile('foobar.min.css', b'body {\ncolor: blue;\n}')
 
         cookWhenChangingSettings(self.portal, bundle)
 
@@ -105,14 +105,14 @@ class TestResourceRegistries(PloneTestCase.PloneTestCase):
                 self.portal.absolute_url()
             )
         )
-        self.assertTrue('alert("Hi!");\n\nalert("Ho!");' in resp_js.getBody())
+        self.assertIn(b'alert("Hi!");\n\nalert("Ho!");', resp_js.getBody())
 
         resp_css = subrequest(
             '{0}/++plone++static/foobar-compiled.css'.format(
                 self.portal.absolute_url()
             )
         )
-        self.assertTrue('body {\ncolor: blue;\n}' in resp_css.getBody())
+        self.assertIn(b'body {\ncolor: blue;\n}', resp_css.getBody())
 
     def test_cook_only_css(self):
         registry = getUtility(IRegistry)
@@ -146,7 +146,7 @@ class TestResourceRegistries(PloneTestCase.PloneTestCase):
                 self.portal.absolute_url()
             )
         )
-        self.assertTrue('body {\ncolor: red;\n}' in resp_css.getBody())
+        self.assertIn(b'body {\ncolor: red;\n}', resp_css.getBody())
 
     def test_cooking_missing(self):
         registry = getUtility(IRegistry)
@@ -171,7 +171,7 @@ class TestResourceRegistries(PloneTestCase.PloneTestCase):
                 self.portal.absolute_url()
             )
         )
-        self.assertTrue('Could not find resource' in resp.getBody())
+        self.assertIn(b'Could not find resource', resp.getBody())
 
     def test_error(self):
         registry = getUtility(IRegistry)
@@ -204,7 +204,7 @@ class TestResourceRegistries(PloneTestCase.PloneTestCase):
                 self.portal.absolute_url()
             )
         )
-        self.assertTrue('error cooking' in resp.getBody())
+        self.assertIn(b'error cooking', resp.getBody())
 
 
 class TestResourceNodeImporter(PloneTestCase.PloneTestCase):
@@ -241,14 +241,15 @@ class TestResourceNodeImporter(PloneTestCase.PloneTestCase):
 
     def test_resource_blacklist(self):
         # Ensure that blacklisted resources aren't imported
-        importer = self._get_importer(set(('++resource++/bad_resource.js',)))
+        importer = self._get_importer({'++resource++/bad_resource.js'})
         dom = self._get_resource_dom("++resource++/bad_resource.js")
         importer._importNode(dom.documentElement)
         js_files = [x.js for x in self._get_resources().values()]
-        self.assertTrue("++resource++/bad_resource.js" not in js_files)
-        self.assertTrue(
-            "resource-bad_resource-js" not in
-            self._get_legacy_bundle().resources)
+        self.assertNotIn("++resource++/bad_resource.js", js_files)
+        self.assertNotIn(
+            "resource-bad_resource-js",
+            self._get_legacy_bundle().resources,
+        )
 
     def test_resource_no_blacklist(self):
         importer = self._get_importer()
@@ -368,7 +369,7 @@ class TestControlPanel(PloneTestCase.PloneTestCase):
         mng = OverrideFolderManager(self.portal)
         mng.save_file('foo/bar.css', 'foobar')
         value = self.portal.restrictedTraverse('++plone++foo/bar.css')
-        self.assertEqual(str(value), 'foobar')
+        self.assertEqual(value.data, b'foobar')
 
     def test_override_rewrite_links(self):
         req = self.layer['request']
@@ -386,7 +387,7 @@ class TestControlPanel(PloneTestCase.PloneTestCase):
 }""" % {'site_url': self.portal.absolute_url()}
         mng.save_file('foo/bar.css', css)
         value = self.portal.restrictedTraverse('++plone++foo/bar.css')
-        match = """
+        match = b"""
 .foo {
     background-image: url("../foobar.css");
 }
@@ -396,7 +397,7 @@ class TestControlPanel(PloneTestCase.PloneTestCase):
 .foobar {
     background-image: url("../foo/bar/foobar.css");
 }"""
-        self.assertEqual(str(value), match)
+        self.assertEqual(value.data, match)
 
     def test_get_require_js_config_uses_stub_modules(self):
         view = ResourceRegistryControlPanelView(
@@ -575,7 +576,7 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
         scripts.update()
         results = scripts.scripts()
         self.assertEqual(
-            filter(lambda it: 'foo' in it['src'], results),
+            [i for i in results if 'foo' in i['src']],
             []
         )
 
@@ -618,12 +619,12 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
         styles = StylesView(self.layer['portal'], subreq, None)
         styles.update()
         results = styles.styles()
-        self.assertEqual(
-            filter(lambda it: 'foo' in it['src'], results)[0],
-            {
+        self.assertListEqual(
+            list(filter(lambda it: 'foo' in it['src'], results)),
+            [{
                 'src': 'http://nohost/plone/++resource++foo.css',
                 'conditionalcomment': '',
                 'rel': 'stylesheet',
                 'bundle': 'none',
-            }
+            }]
         )

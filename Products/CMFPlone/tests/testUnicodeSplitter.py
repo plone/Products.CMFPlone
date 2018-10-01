@@ -6,11 +6,18 @@ from plone.app.textfield import RichTextValue
 from Products.CMFCore.tests.base.dummy import DummyContent
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
+# adding UnicodeSplitterPatcth
 from Products.CMFPlone.UnicodeSplitter import CaseNormalizer
+from Products.CMFPlone.UnicodeSplitter import process_str
+from Products.CMFPlone.UnicodeSplitter import process_str_glob
+from Products.CMFPlone.UnicodeSplitter import process_str_post
+from Products.CMFPlone.UnicodeSplitter import process_unicode
+from Products.CMFPlone.UnicodeSplitter import process_unicode_glob
 from Products.CMFPlone.UnicodeSplitter import Splitter
 
 import locale
 import unittest
+
 
 LATIN1 = ('en_US.ISO-8859-1', 'en_US.ISO8859-15', 'en_GB.ISO8859-15',
           'de_DE@euro', 'fr_FR@euro', 'nl_NL@euro')
@@ -25,9 +32,11 @@ def _setlocale(*names):
         except locale.Error as e:
             pass
     else:
-        raise e.__class__("Unsupported locale. These tests need at least one "
-                          "of the following locales available on your system",
-                          str(LATIN1))
+        raise ValueError(
+            "Unsupported locale. "
+            "These tests need at least one of the following locales "
+            "available on your system: %s" % str(LATIN1)
+        )
     return saved
 
 
@@ -79,13 +88,19 @@ class TestSplitter(unittest.TestCase):
         self.assertEqual(self.process(input), output)
         self.assertEqual(self.processGlob(input), output)
 
+    def testMissingLocaleRaises(self):
+        with self.assertRaises(ValueError):
+            _setlocale('TLH')  # klingon locale code
+
     def testProcessLatin1(self):
         #
         # Test passes because plone_lexicon pipeline elements
         # are coded defensively.
         #
-        input = ["\xc4ffin foo"]
-        output = ["\xc4ffin", "foo"]
+        u_input = [u"\xc4ffin foo"]
+        b_input = [t.encode('utf-8') for t in u_input]
+        u_output = [u"\xc4ffin", u"foo"]
+        b_output = [t.encode('utf-8') for t in u_output]
 
         # May still fail if none of the locales is available
         saved = _setlocale(*LATIN1)
@@ -93,10 +108,10 @@ class TestSplitter(unittest.TestCase):
             # If this test is failing, you probably just don't have
             # the latin1 locales generated.  On Ubuntu, this worked:
             #
-            # $ sudo locale-gen en_US en_US.ISO-8859-1 en_US.ISO8859-15 en_GB.ISO8859-15 de_DE@euro fr_FR@euro nl_NL@euro
+            # $ sudo locale-gen en_US en_US.ISO-8859-1 en_US.ISO8859-15 en_GB.ISO8859-15 de_DE@euro fr_FR@euro nl_NL@euro  # noqa: E501
             #
-            self.assertEqual(self.process(input), output)
-            self.assertEqual(self.processGlob(input), output)
+            self.assertEqual(self.process(b_input), b_output)
+            self.assertEqual(self.processGlob(b_input), b_output)
         finally:
             _setlocale(saved)
 
@@ -108,27 +123,28 @@ class TestCaseNormalizer(unittest.TestCase):
         self.process = self.normalizer.process
 
     def testNormalizeGerman(self):
-        input = [u"\xc4ffin"]
-        output = [u"\xe4ffin"]
-        output = [t.encode('utf-8') for t in output]
+        u_input = [u"\xc4ffin"]
+        b_input = [t.encode('utf-8') for t in u_input]
+        u_output = [u"\xe4ffin"]
+        b_output = [t.encode('utf-8') for t in u_output]
 
-        self.assertEqual(self.process(input), output)
-
-        input = [t.encode('utf-8') for t in input]
-        self.assertEqual(self.process(input), output)
+        self.assertEqual(self.process(u_input), b_output)
+        self.assertEqual(self.process(b_input), b_output)
 
     def testNormalizeLatin1(self):
         #
         # Test passes because plone_lexicon pipeline elements
         # are coded defensively.
         #
-        input = ["\xc4ffin"]
-        output = ["\xe4ffin"]
+        u_input = [u"\xc4ffin"]
+        b_input = [t.encode('utf-8') for t in u_input]
+        u_output = [u"\xe4ffin"]
+        b_output = [t.encode('utf-8') for t in u_output]
 
         # May still fail if none of the locales is available
         saved = _setlocale(*LATIN1)
         try:
-            self.assertEqual(self.process(input), output)
+            self.assertEqual(self.process(b_input), b_output)
         finally:
             _setlocale(saved)
 
@@ -151,31 +167,31 @@ class TestQuery(unittest.TestCase):
         self.doc2 = self.folder.doc2
 
     def testQueryByUmlaut(self):
-        self.doc1.SearchableText = '\303\204ffin'
+        self.doc1.SearchableText = 'Äffin'
         self.catalog.indexObject(self.doc1)
-        brains = self.catalog(SearchableText='\303\204ffin')
+        brains = self.catalog(SearchableText='Äffin')
         self.assertEqual(len(brains), 1)
 
     def testQueryByUmlautLower(self):
-        self.doc1.SearchableText = '\303\204ffin'
+        self.doc1.SearchableText = 'Äffin'
         self.catalog.indexObject(self.doc1)
-        brains = self.catalog(SearchableText='\303\244ffin')
+        brains = self.catalog(SearchableText='äffin')
         self.assertEqual(len(brains), 1)
 
     def testQueryDifferentiatesUmlauts(self):
-        self.doc1.SearchableText = '\303\204ffin'
+        self.doc1.SearchableText = 'Äffin'
         self.catalog.indexObject(self.doc1)
-        self.doc2.SearchableText = '\303\226ffin'
+        self.doc2.SearchableText = 'Öffin'
         self.catalog.indexObject(self.doc2)
-        brains = self.catalog(SearchableText='\303\226ffin')
+        brains = self.catalog(SearchableText='Öffin')
         self.assertEqual(len(brains), 1)
 
     def testQueryDifferentiatesUmlautsLower(self):
-        self.doc1.SearchableText = '\303\204ffin'
+        self.doc1.SearchableText = 'Äffin'
         self.catalog.indexObject(self.doc1)
-        self.doc2.SearchableText = '\303\226ffin'
+        self.doc2.SearchableText = 'Öffin'
         self.catalog.indexObject(self.doc2)
-        brains = self.catalog(SearchableText='\303\266ffin')
+        brains = self.catalog(SearchableText='Öffin')
         self.assertEqual(len(brains), 1)
 
     def testQueryByLatin1(self):
@@ -214,56 +230,53 @@ class TestQuery(unittest.TestCase):
         saved = _setlocale(*LATIN1)
         try:
             # Index Latin-1
-            self.doc1.SearchableText = '\xc4ffin'
+            self.doc1.SearchableText = b'\xc4ffin'.decode('latin1')
             self.catalog.indexObject(self.doc1)
             # Query by UTF-8
-            brains = self.catalog(SearchableText='\303\204ffin')
+            brains = self.catalog(
+                SearchableText=b'\xc3\x84ffin'.decode('utf8')
+            )
             self.assertEqual(len(brains), 1)
         finally:
             _setlocale(saved)
 
     def testQueryByUnicode(self):
-        self.doc1.SearchableText = '\303\204ffin'
+        self.doc1.SearchableText = 'Äffin'
         self.catalog.indexObject(self.doc1)
-        brains = self.catalog(SearchableText=u'\xc4ffin')
+        brains = self.catalog(SearchableText=u'Äffin')
         self.assertEqual(len(brains), 1)
 
     def testQueryByUnicodeLower(self):
-        self.doc1.SearchableText = '\303\204ffin'
+        self.doc1.SearchableText = 'Äffin'
         self.catalog.indexObject(self.doc1)
-        brains = self.catalog(SearchableText=u'\xe4ffin')
+        brains = self.catalog(SearchableText=u'äffin')
         self.assertEqual(len(brains), 1)
 
     def testIndexUnicode(self):
         self.doc1.SearchableText = u'\xc4ffin'
         self.catalog.indexObject(self.doc1)
-        brains = self.catalog(SearchableText='\303\204ffin')
+        brains = self.catalog(SearchableText='Äffin')
         self.assertEqual(len(brains), 1)
 
     def testIndexUnicodeLower(self):
         self.doc1.SearchableText = u'\xc4ffin'
         self.catalog.indexObject(self.doc1)
-        brains = self.catalog(SearchableText='\303\244ffin')
+        brains = self.catalog(SearchableText='äffin')
         self.assertEqual(len(brains), 1)
-
-
-# adding UnicodeSplitterPatcth
-from Products.CMFPlone.UnicodeSplitter \
-    import process_str, process_str_post, process_str_glob,\
-    process_unicode, process_unicode_glob
 
 
 class TestBigramFunctions(unittest.TestCase):
 
     def test_process_str(self):
         lsts = [
-            ("日本", ["日本", "本"]),
-            ("日", ["日"]),
-            ("日本語", ["日本", "本語", "語"]),
-            ("日本語python", ["日本", "本語", "語", "python"]),
-            ("日本語12345", ["日本", "本語", "語", "12345"]),
+            ("日本", [u"日本", u"本"]),
+            ("日", [u"日"]),
+            ("日本語", [u"日本", u"本語", u"語"]),
+            ("日本語python", [u"日本", u"本語", u"語", u"python"]),
+            ("日本語12345", [u"日本", u"本語", u"語", u"12345"]),
         ]
         for lst, rst in lsts:
+            rst = [x.encode('utf8') for x in rst]
             self.assertEqual(rst, process_str(lst, "utf8"))
 
     def test_process_unicode(self):
@@ -280,12 +293,13 @@ class TestBigramFunctions(unittest.TestCase):
     def test_process_str_glob(self):
         enc = "utf8"
         lsts = [
-            ("日本", ["日本"]),
-            ("日", ["日*"]),
-            ("日本語", ["日本", "本語"]),
-            ("日本語python", ["日本", "本語", "語", "python"]),
+            ("日本", [u"日本"]),
+            ("日", [u"日*"]),
+            ("日本語", [u"日本", u"本語"]),
+            ("日本語python", [u"日本", u"本語", u"語", u"python"]),
         ]
         for lst, rst in lsts:
+            rst = [x.encode('utf8') for x in rst]
             self.assertEqual(rst, process_str_glob(lst, enc))
             for x, y in zip(rst, process_str_glob(lst, enc)):
                 self.assertEqual(x, y)
@@ -307,10 +321,11 @@ class TestBigramFunctions(unittest.TestCase):
     def test_process_str_post(self):
         enc = "utf8"
         lsts = [
-            ("日本", "日本"),
-            ("日本*", "日本"),
+            ("日本", u"日本"),
+            ("日本*", u"日本"),
         ]
         for lst, rst in lsts:
+            rst = rst.encode('utf8')
             self.assertEqual(rst, process_str_post(lst, enc))
 
 

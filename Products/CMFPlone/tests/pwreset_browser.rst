@@ -196,18 +196,18 @@ then we extract the address that lets us reset our password:
 
   >>> import quopri
   >>> msg = quopri.decodestring(msg)
-  >>> "To: jsmith@example.com" in msg
+  >>> b"To: jsmith@example.com" in msg
   True
-  >>> "The site administrator asks you to reset your password for 'jsmith' userid" in msg
+  >>> b"The site administrator asks you to reset your password for 'jsmith' userid" in msg
   False
-  >>> please_visit_text = "The following link will take you to a page where you can reset your password for Plone site site:"
+  >>> please_visit_text = b"The following link will take you to a page where you can reset your password for Plone site site:"
   >>> please_visit_text in msg
   True
   >>> url_index = msg.index(please_visit_text) + len(please_visit_text)
-  >>> address = msg[url_index:].strip().split()[0]
+  >>> address = msg[url_index:].strip().split()[0].decode()
   >>> address # doctest: +ELLIPSIS
-  'http://nohost/plone/passwordreset/...'
-  >>> "If you didn't expect to receive this email" in msg
+  u'http://nohost/plone/passwordreset/...'
+  >>> b"If you didn't expect to receive this email" in msg
   True
 
 Now that we have the address, we will reset our password:
@@ -336,12 +336,12 @@ We should have received an e-mail at this point:
   2
   >>> import quopri
   >>> msg = quopri.decodestring(str(mailhost.messages[-1]))
-  >>> "The site administrator asks you to reset your password for 'wsmith' userid" in msg
+  >>> b"The site administrator asks you to reset your password for 'wsmith' userid" in msg
   True
-  >>> please_visit_text = "The following link will take you to a page where you can reset your password for Plone site site:"
+  >>> please_visit_text = b"The following link will take you to a page where you can reset your password for Plone site site:"
   >>> please_visit_text in msg
   True
-  >>> "If you didn't expect to receive this email" in msg
+  >>> b"If you didn't expect to receive this email" in msg
   False
 
 
@@ -408,9 +408,9 @@ then we extract the address that lets us reset our password:
   >>> message["To"]
   'bsmith@example.com'
   >>> msgtext = quopri.decodestring(message.get_payload())
-  >>> "Please activate it by visiting" in msgtext
+  >>> b"Please activate it by visiting" in msgtext
   True
-  >>> address = re.search('(http://nohost/plone/passwordreset/[a-z0-9]+\?userid=[\w]*)\s', msgtext).groups()[0]
+  >>> address = re.search(b'(http://nohost/plone/passwordreset/[a-z0-9]+\?userid=[\w]*)\s', msgtext).groups()[0].decode()
 
 Now that we have the address, we will reset our password:
 
@@ -491,9 +491,9 @@ then we extract the address that lets us reset our password:
   >>> message["To"]
   'wwwsmith@example.com'
   >>> msgtext = quopri.decodestring(message.get_payload())
-  >>> "Please activate it by visiting" in msgtext
+  >>> b"Please activate it by visiting" in msgtext
   True
-  >>> address = re.search('(http://nohost/plone/passwordreset/[a-z0-9]+\?userid=[\w]*)\s', msgtext).groups()[0]
+  >>> address = re.search(b'(http://nohost/plone/passwordreset/[a-z0-9]+\?userid=[\w]*)\s', msgtext).groups()[0].decode()
 
 Now that we have the address, we will reset our password:
 

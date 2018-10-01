@@ -9,6 +9,7 @@
 
 from Products.CMFPlone.utils import base_hasattr
 
+
 if obj is None:
     obj = context
 
@@ -45,7 +46,7 @@ if isinstance(size, integer_types):
     if size < const[smaller]:
         return '1 %s' % smaller
     for c in order:
-        if size / const[c] > 0:
+        if int(size / const[c]) > 0:
             break
     return '%.1f %s' % (float(size / float(const[c])), c)
 

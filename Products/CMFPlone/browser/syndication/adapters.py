@@ -304,9 +304,9 @@ class DexterityItem(BaseItem):
             try:
                 primary = IPrimaryFieldInfo(self.context, None)
                 if (INamedField.providedBy(primary.field)
-                        and hasattr(primary.field, 'getSize')
-                        and primary.field.getSize() > 0):
-                    self.file = primary.field
+                        and hasattr(primary.value, 'getSize')
+                        and primary.value.getSize() > 0):
+                    self.file = primary.value
                     self.field_name = primary.fieldname
             except TypeError:
                 pass

@@ -52,7 +52,6 @@ class TestSiteAdministratorRoleFunctional(unittest.TestCase):
             browser = self.browser
         return browser.getControl(name='_authenticator').value
 
-
     def _simplify_white_space(self, text):
         """For easier testing we replace all white space with one space.
 

@@ -8,6 +8,7 @@ from AccessControl import Unauthorized
 from Products.CMFCore.permissions import DeleteObjects
 
 from zExceptions import BadRequest
+from zExceptions.unauthorized import Unauthorized as zUnauthorized
 
 
 class TestPloneFolder(PloneTestCase.PloneTestCase):
@@ -148,7 +149,7 @@ class TestManageDelObjects(PloneTestCase.PloneTestCase):
         # Should NOT be able to delete sub1 due to permission checks in
         # Archetypes.BaseFolder.manage_delObjects().
         self.sub1.manage_permission(DeleteObjects, ['Manager'], acquire=0)
-        self.assertRaises(Unauthorized, self.folder.manage_delObjects, 'sub1')
+        self.assertRaises(zUnauthorized, self.folder.manage_delObjects, 'sub1')
 
     def testManageDelObjectsIfSub2Denied(self):
         # We are able to delete sub1 if sub2 is denied
@@ -173,4 +174,4 @@ class TestManageDelObjectsInPortal(PloneTestCase.PloneTestCase):
         # Should be able to delete sub1 as the portal does not implement
         # additional permission checks.
         self.sub1.manage_permission(DeleteObjects, ['Manager'], acquire=0)
-        self.assertRaises(Unauthorized, self.portal.manage_delObjects, 'sub1')
+        self.assertRaises(zUnauthorized, self.portal.manage_delObjects, 'sub1')

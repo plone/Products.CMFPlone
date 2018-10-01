@@ -232,8 +232,8 @@ Now get the link::
 
     >>> import quopri
     >>> msg = quopri.decodestring(msg)
-    >>> url_index = msg.index('http://nohost/plone/passwordreset/')
-    >>> address = msg[url_index:].split()[0]
+    >>> url_index = msg.index(b'http://nohost/plone/passwordreset/')
+    >>> address = msg[url_index:].split()[0].decode()
 
 Now that we have the address, we will reset our password::
 
@@ -279,8 +279,8 @@ The email is sent to the correct email address::
 Now get the link::
 
     >>> msg = quopri.decodestring(msg)
-    >>> url_index = msg.index('http://nohost/plone/passwordreset/')
-    >>> address = msg[url_index:].split()[0]
+    >>> url_index = msg.index(b'http://nohost/plone/passwordreset/')
+    >>> address = msg[url_index:].split()[0].decode()
 
 Now that we have the address, we will reset our password::
 

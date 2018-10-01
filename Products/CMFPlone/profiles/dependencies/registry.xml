@@ -1071,14 +1071,8 @@
       <value key="js">++plone++static/components/jquery.recurrenceinput.js/lib/jquery.tmpl.js</value>
       <value key="deps">jquery</value>
   </records>
-  <!-- legacy js -->
 
-
-  <records prefix="plone.resources/jquery-highlightsearchterms"
-            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">jquery.highlightsearchterms.js</value>
-  </records>
-
+<!-- legacy js -->
   <record name="plone.resources.last_legacy_import">
     <field type="plone.registry.field.Datetime">
       <title>Last legacy js/css import date</title>
@@ -1177,7 +1171,7 @@
     <value key="enabled">True</value>
     <value key="jscompilation">++plone++static/plone-compiled.min.js</value>
     <value key="csscompilation">++plone++static/plone-compiled.css</value>
-    <value key="last_compilation">2018-07-10 00:00:00</value>
+    <value key="last_compilation">2018-09-26 16:00:00</value>
     <value key="stub_js_modules">
       <element>jquery</element>
     </value>
@@ -1193,7 +1187,7 @@
     <value key="expression">python: member is not None</value>
     <value key="jscompilation">++plone++static/plone-logged-in-compiled.min.js</value>
     <value key="csscompilation">++plone++static/plone-logged-in-compiled.css</value>
-    <value key="last_compilation">2018-07-10 00:00:00</value>
+    <value key="last_compilation">2018-09-26 16:00:00</value>
     <value key="depends">plone</value>
     <value key="stub_js_modules">
       <element>backbone</element>
@@ -1230,12 +1224,11 @@
             interface='Products.CMFPlone.interfaces.IBundleRegistry'>
     <value key="merge_with">default</value>
     <value key="resources" purge="false">
-      <element>jquery-highlightsearchterms</element>
     </value>
     <value key="depends">plone</value>
     <value key="jscompilation">++plone++static/plone-legacy-compiled.js</value>
     <value key="csscompilation">++plone++static/plone-legacy-compiled.css</value>
-    <value key="last_compilation">2017-08-30 15:33:00</value>
+    <value key="last_compilation">2018-09-26 16:00:00</value>
     <value key="compile">False</value>
     <value key="enabled">True</value>
   </records>
@@ -1248,7 +1241,7 @@
     <value key="enabled">False</value>
     <value key="jscompilation">++plone++static/resourceregistry-compiled.min.js</value>
     <value key="csscompilation">++plone++static/resourceregistry-compiled.css</value>
-    <value key="last_compilation">2017-08-30 15:33:00</value>
+    <value key="last_compilation">2018-09-26 16:00:00</value>
     <value key="stub_js_modules">
       <element>jquery</element>
     </value>
