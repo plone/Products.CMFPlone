@@ -22,6 +22,8 @@ Breaking changes:
   This script is no longer available outside Archetypes world.
   #1801
   [jensens]
+- Factor out all static resources into plone.staticresources.
+  [thet]
 
 - Remove all dependencies on plone.app.controlpanel.
   Third party code need either to depend on plone.app.controlpanel 4.0,

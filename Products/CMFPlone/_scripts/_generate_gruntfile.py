@@ -5,7 +5,6 @@ from plone.registry.interfaces import IRegistry
 from plone.resource.directory import FilesystemResourceDirectory
 from plone.resource.file import FilesystemFile
 from plone.subrequest import subrequest
-from Products import CMFPlone
 from Products.CMFCore.FSFile import FSFile
 from Products.CMFPlone.interfaces import IBundleRegistry
 from Products.CMFPlone.interfaces import IResourceRegistry
@@ -19,6 +18,7 @@ from zope.site.hooks import setSite
 import json
 import os
 import pkg_resources
+import plone.staticresources
 import six
 import uuid
 
@@ -275,7 +275,7 @@ modify_vars['sitePath'] = "'/'"
 modify_vars['isPlone'] = 'false'
 modify_vars['isMockup'] = 'false'
 modify_vars['staticPath'] = '\'' + os.path.join(
-    os.path.dirname(CMFPlone.__file__),
+    os.path.dirname(plone.staticresources.__file__),
     'static') + '\''
 if HAS_BARCELONETA:
     modify_vars['barcelonetaPath'] = '\'' + os.path.join(
