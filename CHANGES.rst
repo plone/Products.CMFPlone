@@ -40,6 +40,12 @@ New features:
 
 Bug fixes:
 
+- remove plone.app.folder dependency
+  [petschki]
+  
+- move GopipIndex Class to plone.folder
+  [petschki]
+
 - Fixed getObjSize indexer for Python 3. #2526
   [reinhardt]
 
