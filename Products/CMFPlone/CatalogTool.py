@@ -244,7 +244,7 @@ def getObjSize(obj):
         if size < SIZE_CONST[smaller]:
             return '1 %s' % smaller
         for c in SIZE_ORDER:
-            if size / SIZE_CONST[c] > 0:
+            if size // SIZE_CONST[c] > 0:
                 break
         return '%.1f %s' % (float(size / float(SIZE_CONST[c])), c)
     return size

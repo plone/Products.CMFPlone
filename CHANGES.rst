@@ -40,6 +40,9 @@ New features:
 
 Bug fixes:
 
+- Fixed getObjSize indexer for Python 3. #2526
+  [reinhardt]
+
 - Remove the devdependencies from bower.json - they are just used for running tests in mockup, not here.
   [sunew]
 
