@@ -219,16 +219,9 @@ SIZE_CONST = {'KB': 1024, 'MB': 1024 * 1024, 'GB': 1024 * 1024 * 1024}
 SIZE_ORDER = ('GB', 'MB', 'KB')
 
 
-@indexer(Interface)
-def getObjSize(obj):
-    """ Helper method for catalog based folder contents.
-    """
+def format_size(size):
+    """ Get a human readable size string. """
     smaller = SIZE_ORDER[-1]
-
-    if base_hasattr(obj, 'get_size'):
-        size = obj.get_size()
-    else:
-        size = 0
 
     # if the size is a float, then make it an int
     # happens for large files
@@ -248,6 +241,18 @@ def getObjSize(obj):
                 break
         return '%.1f %s' % (float(size / float(SIZE_CONST[c])), c)
     return size
+
+
+@indexer(Interface)
+def getObjSize(obj):
+    """ Helper method for catalog based folder contents.
+    """
+    if base_hasattr(obj, 'get_size'):
+        size = obj.get_size()
+    else:
+        size = 0
+
+    return format_size(size)
 
 
 @indexer(Interface)
