@@ -463,8 +463,6 @@ def safe_unicode(value, encoding='utf-8'):
     """Converts a value to unicode, even it is already a unicode string.
 
         >>> from Products.CMFPlone.utils import safe_unicode
-
-        >>> test_bytes = u'\u01b5'.encode('utf-8')
         >>> safe_unicode('spam') == u'spam'
         True
         >>> safe_unicode(b'spam') == u'spam'

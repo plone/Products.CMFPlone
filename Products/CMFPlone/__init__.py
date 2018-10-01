@@ -193,7 +193,7 @@ def initialize(context):
         constructors=(zmi_constructor, ),
     )
 
-    from plone.app.folder import nogopip
+    from plone.folder import nogopip
     context.registerClass(
         nogopip.GopipIndex,
         permission='Add Pluggable Index',
