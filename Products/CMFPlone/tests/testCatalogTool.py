@@ -1303,13 +1303,19 @@ class TestIndexers(PloneTestCase):
         self.assertTrue(IIndexableObjectWrapper.providedBy(w))
         self.assertTrue(IContentish.providedBy(w))
 
-    def test_getObjSize(self):
+    def test_getObjSize_KB(self):
         from Products.CMFPlone.CatalogTool import getObjSize
         get_size = getObjSize.callable
-        # FIXME: getObjSize die not count text in DX
         self.doc.text = RichTextValue('a' * 1000)
         self.doc.reindexObject()
         self.assertEqual(get_size(self.doc), '1 KB')
+
+    def test_getObjSize_MB(self):
+        from Products.CMFPlone.CatalogTool import getObjSize
+        get_size = getObjSize.callable
+        self.doc.text = RichTextValue('a' * 6000000)
+        self.doc.reindexObject()
+        self.assertEqual(get_size(self.doc), '5.7 MB')
 
     def test_uuid(self):
         alsoProvides(self.doc, IAttributeUUID)
