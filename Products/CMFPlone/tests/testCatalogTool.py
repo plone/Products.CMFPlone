@@ -1001,9 +1001,6 @@ class TestCatalogExpirationFiltering(PloneTestCase):
         rhs.sort()
         self.assertEqual(lhs, rhs)
 
-    def testCeilingPatch(self):
-        self.assertEqual(self.folder.doc.expires(), CEILING_DATE)
-
     def testSearchResults(self):
         res = self.catalog.searchResults()
         self.assertResults(res, base_content)
