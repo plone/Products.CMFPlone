@@ -18,7 +18,9 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- added CSS hyphenation support for toolbar for avoiding ugly text wrapping
+  Fixes `issue 723 <https://github.com/plone/Products.CMFPlone/issues/723>`_.
+  [ajung]
 
 
 5.1.4.rc1 (2018-09-30)
