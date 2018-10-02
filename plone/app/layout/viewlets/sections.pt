@@ -7,7 +7,7 @@
      i18n:domain="plone">
 
   <p class="hiddenStructure" i18n:translate="heading_sections">Navigation</p>
-  <nav class="plone-navbar" id="portal-globalnav-wrapper">
+  <nav class="plone-navbar pat-navigationmarker" id="portal-globalnav-wrapper">
     <div class="container">
       <div class="plone-navbar-header">
         <button type="button" class="plone-navbar-toggle" data-toggle="collapse" data-target="#portal-globalnav-collapse">
@@ -35,6 +35,7 @@
                   </a>
               </li>
             </tal:tabs>
+          <navtree tal:replace="structure provider:plone.navtree" />
         </ul>
       </div>
     </div>
