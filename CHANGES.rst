@@ -40,6 +40,11 @@ New features:
 
 Bug fixes:
 
+- Removed the ``raiseUnauthorized`` skin script.
+  If you use this, please do permission checking in your own Python code instead (likely in a browser view).
+  Refs `issue 1801 <https://github.com/plone/Products.CMFPlone/issues/1801>`_.
+  [maurits]
+
 - Remove the devdependencies from bower.json - they are just used for running tests in mockup, not here.
   [sunew]
 
