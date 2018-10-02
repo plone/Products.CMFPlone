@@ -10,7 +10,13 @@ from Products.CMFPlone.tests import PloneTestCase
 from zope.component import getGlobalSiteManager
 from zope.component import getUtility
 from zope.interface import Interface
+try:
+    from Products import Archetypes  # noqa: F401
+    HAS_AT = True
+except ImportError:
+    HAS_AT = False
 
+import unittest
 
 default_user = PloneTestCase.default_user
 portal_name = PloneTestCase.portal_name
@@ -91,6 +97,7 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
         for address in invalidInputs:
             self.assertFalse(val(address), '%s should fail' % address)
 
+    @unittest.skipUnless(HAS_AT, 'This is not working anymore on dx objects')
     def testEditFormatMetadataOfFile(self):
         # Test fix for http://dev.plone.org/plone/ticket/1323
         self.folder.invokeFactory('File', id='file')
@@ -103,6 +110,7 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.file.Format(), 'image/gif')
         self.assertEqual(self.folder.file.getFile().content_type, 'image/gif')
 
+    @unittest.skipUnless(HAS_AT, 'This is not working anymore on dx objects')
     def testEditFormatMetadataOfImage(self):
         # Test fix for http://dev.plone.org/plone/ticket/1323
         self.folder.invokeFactory('Image', id='image')
