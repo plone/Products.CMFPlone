@@ -155,8 +155,6 @@ setup(
         ]
     },
     entry_points="""\
-      [console_scripts]
-      plone-compile-resources = Products.CMFPlone._scripts.compile_resources:main
       [plone.recipe.zope2instance.ctl]
       verifydb = Products.CMFPlone._scripts.verifydb:zopectl_entry
     """  # noqa
