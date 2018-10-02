@@ -26,6 +26,7 @@ from Products.CMFPlone.interfaces import INonStructuralFolder
 from Products.CMFPlone.interfaces import IPloneCatalogTool
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.utils import base_hasattr
+from Products.CMFPlone.utils import human_readable_size
 from Products.CMFPlone.utils import safe_callable
 from Products.CMFPlone.utils import safe_unicode
 from Products.ZCatalog.ZCatalog import ZCatalog
@@ -212,39 +213,17 @@ def getObjPositionInParent(obj):
         return ordered.getObjectPosition(obj.getId())
     return 0
 
-SIZE_CONST = {'KB': 1024, 'MB': 1024 * 1024, 'GB': 1024 * 1024 * 1024}
-SIZE_ORDER = ('GB', 'MB', 'KB')
-
 
 @indexer(Interface)
 def getObjSize(obj):
     """ Helper method for catalog based folder contents.
     """
-    smaller = SIZE_ORDER[-1]
-
     if base_hasattr(obj, 'get_size'):
         size = obj.get_size()
     else:
         size = 0
 
-    # if the size is a float, then make it an int
-    # happens for large files
-    try:
-        size = int(size)
-    except (ValueError, TypeError):
-        pass
-
-    if not size:
-        return '0 %s' % smaller
-
-    if isinstance(size, six.integer_types):
-        if size < SIZE_CONST[smaller]:
-            return '1 %s' % smaller
-        for c in SIZE_ORDER:
-            if size // SIZE_CONST[c] > 0:
-                break
-        return '%.1f %s' % (float(size / float(SIZE_CONST[c])), c)
-    return size
+    return human_readable_size(size)
 
 
 @indexer(Interface)
