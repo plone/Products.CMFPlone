@@ -24,7 +24,7 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
         self.folder.invokeFactory(
             'Document', id='doc', text=RichTextValue(u'data'))
         self.assertEqual(self.folder.doc.text.raw, 'data')
-        self.assertEqual(self.folder.doc.Format(), 'text/plain')
+        self.assertEqual(self.folder.doc.Format(), 'text/html')
 
     def testEventCreate(self):
         self.folder.invokeFactory('Event', id='event',
