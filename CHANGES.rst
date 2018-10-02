@@ -14,6 +14,8 @@ Breaking changes:
   Third party code need either to depend on plone.app.controlpanel 4.0,
   which is a backward compatibilit package only, or also update to not depend on it anymore.
   [jensens]
+- Removed getObjectsFromPathList.py skin script. #1801
+  [reinhardt]
 
 New features:
 
