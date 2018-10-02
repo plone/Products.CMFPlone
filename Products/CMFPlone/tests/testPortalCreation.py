@@ -629,14 +629,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.assertTrue(isinstance(pipeline[0], Splitter))
         self.assertTrue(isinstance(pipeline[1], I18NNormalizer))
 
-    # broken because of multiple issues:
-    # 1. _cook_check in PageTemplateFile fails: template is bytes when it's XML
-    # 2. text=wf_stream.getvalue() in CMFCore/exportimport/content.py
-    #    is text but should be bytes
-    # 3. adapter.export(export_context, subdir) uses context.manage_FTPget()
-    #    which returns text, not bytes
-    # and so on...
-    @unittest.skipIf(six.PY3, 'Export content is super-broken in py3')
     def testMakeSnapshot(self):
         # GenericSetup snapshot should work
         self.setRoles(['Manager'])

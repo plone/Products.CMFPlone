@@ -370,22 +370,14 @@ class TestEditMetadata(PloneTestCase.PloneTestCase):
         self.assertEqual(self.doc.format, 'text/html')
         self.utils.editMetadata(self.doc, format='text/x-rst')
         self.assertEqual(self.doc.format, 'text/x-rst')
-        # In DX obj.Format() reads obj.content_type() which uses the
-        # DefaultReadFile.mimeType and allways returns text/plain
-        # for zero or one primary fields
-        # TODO: This seems like a bug.
-        self.assertEqual(self.doc.Format(), 'text/plain')
+        self.assertEqual(self.doc.Format(), 'text/x-rst')
 
     def testClearFormat(self):
         self.utils.editMetadata(self.doc, format='text/x-rst')
         self.assertEqual(self.doc.format, 'text/x-rst')
-        # In DX obj.Format() reads obj.content_type() which uses the
-        # DefaultReadFile.mimeType and allways returns text/plain
-        # for zero or one primary fields
-        # TODO: This seems like a bug.
-        self.assertEqual(self.doc.Format(), 'text/plain')
+        self.assertEqual(self.doc.Format(), 'text/x-rst')
         self.utils.editMetadata(self.doc, format='')
-        self.assertEqual(self.doc.Format(), 'text/plain')
+        self.assertEqual(self.doc.Format(), '')
         self.assertEqual(self.doc.format, '')
 
     def testSetLanguage(self):
@@ -501,11 +493,7 @@ class TestEditMetadataIndependence(PloneTestCase.PloneTestCase):
                             .startswith('2001-01-01T00:00:00'))
         self.assertTrue(self.doc.expiration_date.ISO8601()
                             .startswith('2003-01-01T00:00:00'))
-        # In DX obj.Format() reads obj.content_type() which uses the
-        # DefaultReadFile.mimeType and allways returns text/plain
-        # for zero or one primary fields
-        # TODO: This seems like a bug.
-        self.assertEqual(self.doc.Format(), 'text/plain')
+        self.assertEqual(self.doc.Format(), 'text/html')
         self.assertEqual(self.doc.Language(), 'de')
         self.assertEqual(self.doc.Rights(), 'Copyleft')
 
@@ -520,11 +508,7 @@ class TestEditMetadataIndependence(PloneTestCase.PloneTestCase):
                             .startswith('2001-01-01T00:00:00'))
         self.assertTrue(self.doc.expiration_date.ISO8601()
                             .startswith('2003-01-01T00:00:00'))
-        # In DX obj.Format() reads obj.content_type() which uses the
-        # DefaultReadFile.mimeType and allways returns text/plain
-        # for zero or one primary fields
-        # TODO: This seems like a bug.
-        self.assertEqual(self.doc.Format(), 'text/plain')
+        self.assertEqual(self.doc.Format(), 'text/html')
         self.assertEqual(self.doc.Language(), 'de')
         self.assertEqual(self.doc.Rights(), 'Copyleft')
 
@@ -539,11 +523,7 @@ class TestEditMetadataIndependence(PloneTestCase.PloneTestCase):
         self.assertEqual(self.doc.Contributors(), ('Fred',))
         self.assertTrue(self.doc.expiration_date.ISO8601()
                             .startswith('2003-01-01T00:00:00'))
-        # In DX obj.Format() reads obj.content_type() which uses the
-        # DefaultReadFile.mimeType and allways returns text/plain
-        # for zero or one primary fields
-        # TODO: This seems like a bug.
-        self.assertEqual(self.doc.Format(), 'text/plain')
+        self.assertEqual(self.doc.Format(), 'text/html')
         self.assertEqual(self.doc.Language(), 'de')
         self.assertEqual(self.doc.Rights(), 'Copyleft')
 
@@ -559,11 +539,7 @@ class TestEditMetadataIndependence(PloneTestCase.PloneTestCase):
                             .startswith('2001-01-01T00:00:00'))
         self.assertTrue(self.doc.expiration_date.ISO8601()
                             .startswith('2003-01-01T00:00:00'))
-        # In DX obj.Format() reads obj.content_type() which uses the
-        # DefaultReadFile.mimeType and allways returns text/plain
-        # for zero or one primary fields
-        # TODO: This seems like a bug.
-        self.assertEqual(self.doc.Format(), 'text/plain')
+        self.assertEqual(self.doc.Format(), 'text/html')
         self.assertEqual(self.doc.Rights(), 'Copyleft')
 
 
