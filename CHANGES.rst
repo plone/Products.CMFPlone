@@ -16,6 +16,8 @@ Breaking changes:
   [jensens]
 - Removed getObjectsFromPathList.py skin script. #1801
   [reinhardt]
+- Removed setAuthCookie.py skin script. #1801
+  [tlotze]
 
 New features:
 
@@ -53,6 +55,10 @@ Bug fixes:
 
 - Fixed getObjSize indexer for Python 3. #2526
   [reinhardt]
+- Removed the ``raiseUnauthorized`` skin script.
+  If you use this, please do permission checking in your own Python code instead (likely in a browser view).
+  Refs `issue 1801 <https://github.com/plone/Products.CMFPlone/issues/1801>`_.
+  [maurits]
 
 - Remove the devdependencies from bower.json - they are just used for running tests in mockup, not here.
   [sunew]
@@ -148,6 +154,9 @@ Bug Fixes:
   IRichText -> IRichTextBehavior
   This is a follow up to `issue 476 <https://github.com/plone/plone.app.contenttypes/issues/476>`_.
   [iham]
+
+- Remove unused mail_password.py from skins/plone_scripts
+  [agitator]
 
 - Hide ``plone.app.querystring`` from add-ons control panel.
   Fixes `issue 2426 <https://github.com/plone/Products.CMFPlone/issues/2426>`_.
