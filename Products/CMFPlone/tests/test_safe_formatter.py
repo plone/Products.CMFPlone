@@ -211,10 +211,13 @@ class TestSafeFormatter(PloneTestCase):
         login(self.portal, TEST_USER_NAME)
         # We replace ATDocument with Document to make the tests pass
         # with ATContentTypes and plone.app.contenttypes.
+        if six.PY2:
+            method_name = 'Document.Title'
+        method_name = 'DexterityContent.Title'
         self.assertEqual(
             pt.pt_render(),
-            '<p>access <bound method DexterityContent.Title of '
-            '<Document at /plone/foobar>></p>')
+            u'<p>access <bound method %s of '
+            u'<Document at /plone/foobar>></p>' % method_name)
         logout()
         self.assertRaises(Unauthorized, pt.pt_render)
 
@@ -226,7 +229,7 @@ class TestSafeFormatter(PloneTestCase):
         login(self.portal, TEST_USER_NAME)
         self.assertEqual(
             pt.pt_render(),
-            '<p><Document at foobar></p>')
+            u'<p><Document at foobar></p>')
         logout()
         self.assertRaises(Unauthorized, pt.pt_render)
 
@@ -250,7 +253,7 @@ class TestSafeFormatter(PloneTestCase):
         login(self.portal, TEST_USER_NAME)
         self.assertEqual(
             pt.pt_render(),
-            '<p><Document at foobar></p>')
+            u'<p><Document at foobar></p>')
 
     # Zope 3 templates are always file system templates.  So we actually have
     # no problems allowing str.format there.
