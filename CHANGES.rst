@@ -95,6 +95,10 @@ Bug fixes:
 - Remove ``plone-generate-gruntfile`` (it is all available through ``plone-compile-resources``).
   [jensens]
 
+- Fix toolbar menu on mobile #2333.
+  [tmassman]
+
+
 New Features:
 
 - Update to latest mockup
