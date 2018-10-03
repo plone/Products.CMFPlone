@@ -211,9 +211,9 @@ class TestSafeFormatter(PloneTestCase):
         login(self.portal, TEST_USER_NAME)
         # We replace ATDocument with Document to make the tests pass
         # with ATContentTypes and plone.app.contenttypes.
+        method_name = 'DexterityContent.Title'
         if six.PY2:
             method_name = 'Document.Title'
-        method_name = 'DexterityContent.Title'
         self.assertEqual(
             pt.pt_render(),
             u'<p>access <bound method %s of '
