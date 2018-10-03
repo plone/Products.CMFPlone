@@ -16,6 +16,8 @@ Breaking changes:
   [jensens]
 - Removed getObjectsFromPathList.py skin script. #1801
   [reinhardt]
+- Removed setAuthCookie.py skin script. #1801
+  [tlotze]
 
 New features:
 
