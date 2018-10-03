@@ -10,11 +10,12 @@ from plone.testing.zope import Browser
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 from Products.CMFPlone.utils import _createObjectByType
+from Products.CMFPlone.utils import safe_nativestring
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper
 from zope.component import getUtility
+
 import difflib
 import re
-import six
 import transaction
 import unittest
 
@@ -80,9 +81,8 @@ class TestPloneToolBrowserDefault(unittest.TestCase):
         transaction.commit()
 
         self.browser.open(obj.absolute_url() + path)
-        body = self.browser.contents
-        if six.PY3 and isinstance(body, six.binary_type):
-            body = body.decode('utf8')
+        body = safe_nativestring(self.browser.contents)
+        resolved = safe_nativestring(resolved)
 
         # request/ACTUAL_URL is fubar in tests, remove lines that depend on it
         resolved = RE_REMOVE_DOCCONT.sub('', resolved)
