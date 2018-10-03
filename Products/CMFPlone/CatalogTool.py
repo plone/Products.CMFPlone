@@ -467,12 +467,13 @@ class CatalogTool(PloneBaseTool, BaseTool):
         # Empties catalog, then finds all contentish objects (i.e. objects
         # with an indexObject method), and reindexes them.
         # This may take a long time.
+        idxs = list(self.indexes())
 
         def indexObject(obj, path):
             if (base_hasattr(obj, 'indexObject') and
                     safe_callable(obj.indexObject)):
                 try:
-                    obj.indexObject()
+                    obj.indexObject(idxs=idxs)
 
                     # index conversions from plone.app.discussion
                     annotions = IAnnotations(obj)
