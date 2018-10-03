@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from calmjs.parse import es5
 from datetime import datetime
 from io import BytesIO
 from plone.protect.interfaces import IDisableCSRFProtection
@@ -10,7 +11,6 @@ from Products.CMFPlone.interfaces.resources import IResourceRegistry
 from Products.CMFPlone.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME  # noqa
 from Products.CMFPlone.resources.browser.combine import combine_bundles
 from scss import Compiler
-from slimit import minify
 from zExceptions import NotFound
 from zope.component import getUtility
 from zope.component.hooks import getSite
@@ -121,7 +121,7 @@ def cookWhenChangingSettings(context, bundle=None):
                 cooked_js += '\n/* resource: {0} */\n{1}'.format(
                     resource.js,
                     js if '.min.js' == resource.js[-7:] else
-                    minify(js, mangle=False, mangle_toplevel=False)
+                    es5.minify_print(js)
                 )
             except SyntaxError:
                 cooked_js +=\
