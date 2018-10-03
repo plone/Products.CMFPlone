@@ -13,7 +13,7 @@ New features:
 - Add test for Revert to Revision action in History Viewlet
   [davilima6]
 
-- Reimplement enable_http_compression to replace skin script. #1801
+- Remove ``enable_compression`` method that isn't used in Plone. #1801
   [tlotze]
 
 Bug fixes:

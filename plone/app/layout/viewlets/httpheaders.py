@@ -22,10 +22,6 @@ class HTTPCachingHeaders(HeaderViewlet):
     """Replace the old global_cache_settings/macros/cacheheaders
     """
 
-    def enable_compression(self):
-        """Call to activate gzip"""
-        self.request.RESPONSE.enableHTTPCompression(REQUEST=self.request)
-
     def getHeaders(self):
         lang = getattr(self.context, 'Language', None)
         if callable(lang):
