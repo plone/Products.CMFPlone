@@ -16,6 +16,8 @@ Breaking changes:
   [jensens]
 - Removed getObjectsFromPathList.py skin script. #1801
   [reinhardt]
+- Removed enableHTTPCompression.py skin script. #1801
+  [tlotze]
 
 New features:
 
