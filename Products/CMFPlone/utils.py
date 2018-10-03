@@ -511,6 +511,16 @@ def safe_encode(value, encoding='utf-8'):
     return value
 
 
+def safe_nativestring(value, encoding='utf-8'):
+    """Convert a value to str in py2 and to text in py3
+    """
+    if six.PY2 and isinstance(value, six.text_type):
+        value = safe_encode(value, encoding)
+    if not six.PY2 and isinstance(value, six.binary_type):
+        value = safe_unicode(value, encoding)
+    return value
+
+
 def tuplize(value):
     if isinstance(value, tuple):
         return value
