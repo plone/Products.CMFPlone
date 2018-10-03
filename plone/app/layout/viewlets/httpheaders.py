@@ -24,7 +24,7 @@ class HTTPCachingHeaders(HeaderViewlet):
 
     def enable_compression(self):
         """Call to activate gzip"""
-        self.context.enableHTTPCompression(request=self.request, enable=1)
+        self.request.RESPONSE.enableHTTPCompression(REQUEST=self.request)
 
     def getHeaders(self):
         lang = getattr(self.context, 'Language', None)
