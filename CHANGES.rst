@@ -19,7 +19,8 @@ New features:
 Bug fixes:
 
 - added CSS hyphenation support for toolbar for avoiding ugly text wrapping
-  Fixes `issue 723 <https://github.com/plone/Products.CMFPlone/issues/723>`_.
+  Fixes `issue 723 <https://github.com/plone/Products.CMFPlone/issues/723>`_
+  and `issue 2315` <https://github.com/plone/Products.CMFPlone/issues/2315>_.
   [ajung]
 
 

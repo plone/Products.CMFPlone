@@ -12,7 +12,6 @@
   left: 0;
   width: @plone-left-toolbar;
   height: 100%;
-  hyphens: auto;
   color: @plone-toolbar-text-color;
   background: @plone-toolbar-bg;
 
@@ -507,9 +506,9 @@
 
   nav > ul a > span + span {
     width: @plone-left-toolbar-expanded - 40px;
+    max-width: @plone-left-toolbar-expanded - 40px;
     text-align: left;
     word-wrap: break-word;
-    word-break: break-word;
     background: none;
   }
 
