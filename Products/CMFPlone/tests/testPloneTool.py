@@ -5,18 +5,10 @@ from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces import IReorderedEvent
 from Products.CMFPlone.interfaces import ISearchSchema
-from Products.CMFPlone.tests import dummy
 from Products.CMFPlone.tests import PloneTestCase
 from zope.component import getGlobalSiteManager
 from zope.component import getUtility
 from zope.interface import Interface
-try:
-    from Products import Archetypes  # noqa: F401
-    HAS_AT = True
-except ImportError:
-    HAS_AT = False
-
-import unittest
 
 default_user = PloneTestCase.default_user
 portal_name = PloneTestCase.portal_name
@@ -96,37 +88,6 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
             self.assertTrue(val(address), '%s should validate' % address)
         for address in invalidInputs:
             self.assertFalse(val(address), '%s should fail' % address)
-
-    @unittest.skipUnless(HAS_AT, 'This is not working anymore on dx objects')
-    def testEditFormatMetadataOfFile(self):
-        # Test fix for http://dev.plone.org/plone/ticket/1323
-        self.folder.invokeFactory('File', id='file')
-        self.folder.file.edit(file=dummy.File('foo.zip'))
-        self.assertEqual(self.folder.file.Format(), 'application/zip')
-        self.assertEqual(self.folder.file.getFile().content_type,
-                         'application/zip')
-        # Changing the format should be reflected in content_type property
-        self.utils.editMetadata(self.folder.file, format='image/gif')
-        self.assertEqual(self.folder.file.Format(), 'image/gif')
-        self.assertEqual(self.folder.file.getFile().content_type, 'image/gif')
-
-    @unittest.skipUnless(HAS_AT, 'This is not working anymore on dx objects')
-    def testEditFormatMetadataOfImage(self):
-        # Test fix for http://dev.plone.org/plone/ticket/1323
-        self.folder.invokeFactory('Image', id='image')
-        self.folder.image.edit(file=dummy.Image('foo.zip'))
-        self.assertEqual(self.folder.image.Format(), 'application/zip')
-        self.assertEqual(
-            'application/zip',
-            self.folder.image.getImage().content_type
-        )
-        # Changing the format should be reflected in content_type property
-        self.utils.editMetadata(self.folder.image, format='image/gif')
-        self.assertEqual(self.folder.image.Format(), 'image/gif')
-        self.assertEqual(
-            'image/gif',
-            self.folder.image.getImage().content_type
-        )
 
     def testNormalizeStringPunctuation(self):
         # Punctuation and spacing is removed and replaced by '-'
