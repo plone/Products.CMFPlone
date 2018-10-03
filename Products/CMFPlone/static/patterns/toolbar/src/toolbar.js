@@ -46,7 +46,7 @@ define([
       $('body').removeClass(that.options.classNames.topDefault);
       $('body').removeClass(that.options.classNames.default);
       $('.' + that.options.classNames.logo, that.$container).off('click').on('click', function() {
-        var $el = $(that);
+        var $el = $(that.$el);
         if ($el.hasClass('open')){
           that.$container.css('right', '-' + that.options.toolbar_width);
           $('html').css('margin-left', '0');
