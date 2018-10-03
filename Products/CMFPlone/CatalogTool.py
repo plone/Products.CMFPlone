@@ -470,25 +470,20 @@ class CatalogTool(PloneBaseTool, BaseTool):
         idxs = list(self.indexes())
 
         def indexObject(obj, path):
-            if (base_hasattr(obj, 'indexObject') and
-                    safe_callable(obj.indexObject)):
+            if (base_hasattr(obj, 'reindexObject') and
+                    safe_callable(obj.reindexObject)):
                 try:
-                    obj.indexObject(idxs=idxs)
-
+                    self.reindexObject(obj, idxs=idxs)
                     # index conversions from plone.app.discussion
                     annotions = IAnnotations(obj)
-                    catalog = getToolByName(obj, "portal_catalog")
                     if DISCUSSION_ANNOTATION_KEY in annotions:
                         conversation = annotions[DISCUSSION_ANNOTATION_KEY]
                         conversation = conversation.__of__(obj)
                         for comment in conversation.getComments():
                             try:
-                                if catalog:
-                                    catalog.indexObject(comment)
+                                self.indexObject(comment, idxs=idxs)
                             except StopIteration:  # pragma: no cover
                                 pass
-
-
                 except TypeError:
                     # Catalogs have 'indexObject' as well, but they
                     # take different args, and will fail
