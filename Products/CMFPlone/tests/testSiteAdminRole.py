@@ -167,7 +167,6 @@ class TestSiteAdministratorRole(unittest.TestCase):
             'Reply to item':                                            0,
             'View':                                                     1,
             'View Groups':                                              1,
-            'View History':                                             1,
             'View management screens':                                  0,
             'WebDAV Lock items':                                        1,
             'WebDAV Unlock items':                                      1,

@@ -132,9 +132,6 @@
       <role name="Member"/>
       <role name="Owner"/>
     </permission>
-    <permission name="View History" acquire="True">
-      <role name="Site Administrator"/>
-    </permission>
     <permission name="View management screens"
                 acquire="True">
       <role name="Manager"/>
