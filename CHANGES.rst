@@ -15,6 +15,9 @@ Breaking changes:
   which is a backward compatibilit package only, or also update to not depend on it anymore.
   [jensens]
 
+- Removed my_worklist.py skin script. #1801
+  [reinhardt]
+  
 - Removed getObjectsFromPathList.py skin script. #1801
   [reinhardt]
 
@@ -29,6 +32,9 @@ Breaking changes:
 
 - Removed setAuthCookie.py skin script. #1801
   [tlotze]
+
+- Stop configuring 'View History' permission which was removed from Zope.
+  [davisagli]
 
 New features:
 
