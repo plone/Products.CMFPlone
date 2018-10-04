@@ -16,8 +16,8 @@ Test a list of numbers which contains duplicates:
 
 Test a string sequence:
 
-  >>> portal.unique('abcabc')
-  ['a', 'b', 'c']
+  >>> portal.unique('abcabc') == ['a', 'b', 'c']
+  True
 
 And finally a tuple of lists:
 
