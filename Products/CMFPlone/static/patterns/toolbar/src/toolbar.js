@@ -32,11 +32,11 @@ define([
       desktop_width: '768px'
     },
     pxToInt: function(px) {
-      return parseInt(this.options.desktop_width.split('px')[0], 10);
+      return parseInt(px.split('px')[0], 10);
     },
     setupMobile: function() {
       var that = this;
-      that.$container.css('right', '-' + this.options.toolbar_width);
+      that.$container.css('right', '-' + that.options.toolbar_width);
       // make sure we are in expanded mode
       $('body').addClass(that.options.classNames.leftExpanded);
       $('body').addClass(that.options.classNames.expanded);
@@ -46,9 +46,9 @@ define([
       $('body').removeClass(that.options.classNames.topDefault);
       $('body').removeClass(that.options.classNames.default);
       $('.' + that.options.classNames.logo, that.$container).off('click').on('click', function() {
-        var $el = $(this);
+        var $el = $(that.$el);
         if ($el.hasClass('open')){
-          that.$container.css('right', '-' + this.options.toolbar_width);
+          that.$container.css('right', '-' + that.options.toolbar_width);
           $('html').css('margin-left', '0');
           $('html').css('margin-right', '0');
           $el.removeClass('open');
@@ -56,8 +56,8 @@ define([
         } else {
           that.$container.css('right', '0');
           $el.addClass('open');
-          $('html').css('margin-left', '-' + this.options.toolbar_width);
-          $( 'html' ).css('margin-right', this.options.toolbar_width);
+          $('html').css('margin-left', '-' + that.options.toolbar_width);
+          $( 'html' ).css('margin-right', that.options.toolbar_width);
         }
       });
       // Remove desktop event binding
@@ -69,14 +69,14 @@ define([
         var $el = $(this).parent();
         if ($el.hasClass(that.options.classNames.active)) {
           that.$container.css('right', '0');
-          $('html').css('margin-left', '-' + this.options.toolbar_width);
-          $('html').css('margin-right', this.options.toolbar_width);
+          $('html').css('margin-left', '-' + that.options.toolbar_width);
+          $('html').css('margin-right', that.options.toolbar_width);
           $('nav li', that.$container).removeClass(that.options.classNames.active);
         } else {
           $('nav li', that.$container).removeClass(that.options.classNames.active);
           $el.addClass(that.options.classNames.active);
-          that.$container.css('right', this.options.submenu_width);
-          var margin = this.pxToInt(this.options.toolbar_width) + this.pxToInt(this.options.submenu_width);
+          that.$container.css('right', that.options.submenu_width);
+          var margin = that.pxToInt(that.options.toolbar_width) + that.pxToInt(that.options.submenu_width);
           $('html').css('margin-left', '-' + margin + 'px' );
           $('html').css('margin-right', + margin + 'px');
         }
@@ -296,7 +296,7 @@ define([
     },
     hideElements: function() {
       var that = this;
-      if (this.state.left){
+      if (that.state.left){
         // only when on top
         return;
       }
@@ -380,7 +380,7 @@ define([
       }else {
         that.setupMobile();
       }
-      this.$el.addClass('initialized');
+      that.$el.addClass('initialized');
 
       /* folder contents changes the context.
          This is for usability so the menu changes along with
