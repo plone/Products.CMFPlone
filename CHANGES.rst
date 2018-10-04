@@ -27,6 +27,9 @@ Breaking changes:
 - Removed setAuthCookie.py skin script. #1801
   [tlotze]
 
+- Stop configuring 'View History' permission which was removed from Zope.
+  [davisagli]
+
 New features:
 
 - Factored out human_readable_size method for replacing getObjSize.py. #1801
