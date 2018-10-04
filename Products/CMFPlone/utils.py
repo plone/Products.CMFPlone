@@ -841,10 +841,9 @@ def generate_unique_id(type_name):
     time = '%s.%s' % (now.strftime('%Y-%m-%d'), str(now.millis())[7:])
     rand = str(random())[2:6]
     prefix = ''
-    suffix = ''
 
     if type_name is not None:
         prefix = type_name.replace(' ', '_') + '.'
     prefix = prefix.lower()
 
-    return prefix + time + rand + suffix
+    return prefix + time + rand
