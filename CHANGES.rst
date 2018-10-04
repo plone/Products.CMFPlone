@@ -14,9 +14,17 @@ Breaking changes:
   Third party code need either to depend on plone.app.controlpanel 4.0,
   which is a backward compatibilit package only, or also update to not depend on it anymore.
   [jensens]
+
 - Removed getObjectsFromPathList.py skin script. #1801
   [reinhardt]
+  
 - Removed redirectToReferrer.py skin script. #1801
+  [tlotze]
+
+- Removed enableHTTPCompression.py skin script. #1801
+  [tlotze]
+
+- Removed setAuthCookie.py skin script. #1801
   [tlotze]
 
 New features:
@@ -46,6 +54,9 @@ New features:
 
 
 Bug fixes:
+
+- Fix toolbar menu on mobile #2333.
+  [tmassman]
 
 - Removed the ``raiseUnauthorized`` skin script.
   If you use this, please do permission checking in your own Python code instead (likely in a browser view).
@@ -94,6 +105,7 @@ Bug fixes:
 
 - Remove ``plone-generate-gruntfile`` (it is all available through ``plone-compile-resources``).
   [jensens]
+
 
 New Features:
 
