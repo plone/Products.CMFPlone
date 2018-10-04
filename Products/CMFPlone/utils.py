@@ -30,6 +30,7 @@ from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
 from Products.CMFPlone.log import log
 from Products.CMFPlone.log import log_deprecated
 from Products.CMFPlone.log import log_exc
+from random import random
 from six.moves.urllib.parse import urlparse
 from zope import schema
 from zope.component import getMultiAdapter
@@ -833,3 +834,17 @@ def human_readable_size(size):
                 break
         return '%.1f %s' % (float(size / float(SIZE_CONST[c])), c)
     return size
+
+
+def generate_unique_id(type_name):
+    now = DateTime()
+    time = '%s.%s' % (now.strftime('%Y-%m-%d'), str(now.millis())[7:])
+    rand = str(random())[2:6]
+    prefix = ''
+    suffix = ''
+
+    if type_name is not None:
+        prefix = type_name.replace(' ', '_') + '.'
+    prefix = prefix.lower()
+
+    return prefix + time + rand + suffix

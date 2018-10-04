@@ -26,6 +26,9 @@ New features:
 - Factored out human_readable_size method for replacing getObjSize.py. #1801
   [reinhardt]
 
+- Ported generateUniqueId skin script to utils.generate_unique_id() method. #1801
+  [reinhardt]
+
 - Update TinyMCE to 4.7.13
   [erral]
 
