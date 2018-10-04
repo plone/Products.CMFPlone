@@ -15,7 +15,7 @@ Breaking changes:
   which is a backward compatibilit package only, or also update to not depend on it anymore.
   [jensens]
 
-- Removed getObjectsFromPathList.py skin script. #1801
+- Removed getObjectsFromPathList.py and generateUniqueId.py skin scripts. #1801
   [reinhardt]
   
 - Removed redirectToReferrer.py skin script. #1801

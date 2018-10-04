@@ -11,6 +11,7 @@ from Products.CMFPlone.tests import dummy
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests.utils import folder_position
 from Products.CMFPlone.tests.utils import validateCSSIdentifier
+from Products.CMFPlone.utils import generate_unique_id
 from zope.component import getUtility
 from zope.interface import directlyProvides
 
@@ -181,7 +182,7 @@ class TestBaseNavTree(PloneTestCase.PloneTestCase):
                          '/plone/folder2/folder21/doc211')
 
     def testTopLevelWithPortalFactory(self):
-        id = self.portal.generateUniqueId('Document')
+        id = generate_unique_id('Document')
         typeName = 'Document'
         newObject = self.portal.folder1.restrictedTraverse(
             'portal_factory/' + typeName + '/' + id)
