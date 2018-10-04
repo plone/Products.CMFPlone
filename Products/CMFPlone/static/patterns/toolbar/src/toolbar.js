@@ -474,6 +474,7 @@ define([
             url: $('body').attr('data-portal-url') + path + '/@@render-toolbar',
           }).done(function(data) {
             var $el = $(utils.parseBodyTag(data));
+            $el = $el.find('#edit-zone').length ? $el.find('#edit-zone') : $el;
             that.$el.replaceWith($el);
             Registry.scan($el);
           });
