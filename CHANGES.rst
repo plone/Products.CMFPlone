@@ -17,6 +17,8 @@ Breaking changes:
 
 - Removed getObjectsFromPathList.py skin script. #1801
   [reinhardt]
+- Removed enableHTTPCompression.py skin script. #1801
+  [tlotze]
 
 - Removed setAuthCookie.py skin script. #1801
   [tlotze]
