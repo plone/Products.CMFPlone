@@ -3,7 +3,6 @@
 # code inspired by Ween
 
 from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
-from Products.CMFPlone.utils import isExpired
 
 text = """I lick my brain in silence
 Rather squeeze my head instead
@@ -120,7 +119,7 @@ class TestContentPublishing(PloneTestCase):
                   self.folder.f1.f2):
             self.assertEqual(self.workflow.getInfoFor(o, 'review_state'),
                              'published')
-            self.assertTrue(isExpired(o))
+            self.assertTrue(self.portal.isExpired(o))
 
     def testPublishingWithoutSubobjects(self):
         self.setRoles(['Manager'])  # Make sure we can publish directly
@@ -181,7 +180,7 @@ class TestContentPublishing(PloneTestCase):
             self.workflow.getInfoFor(self.folder.d1, 'review_state'),
             'published')
 
-    # test setting effective/expiration date and isExpired method
+    # test setting effective/expiration date and isExpired script
 
     def testIsExpiredWithExplicitExpiredContent(self):
         self.setRoles(['Manager'])
@@ -189,10 +188,24 @@ class TestContentPublishing(PloneTestCase):
         self.folder.d1.content_status_modify(workflow_action='publish',
                                              effective_date='1/1/2001',
                                              expiration_date='1/2/2001')
-        self.assertTrue(isExpired(self.folder.d1))
+        self.assertTrue(self.portal.isExpired(self.folder.d1))
+
+    def testIsExpiredWithImplicitExpiredContent(self):
+        self.setRoles(['Manager'])
+        self.folder.invokeFactory('Document', id='d1', title='Doc 1')
+        self.folder.d1.content_status_modify(workflow_action='publish',
+                                             effective_date='1/1/2001',
+                                             expiration_date='1/2/2001')
+        self.assertTrue(self.folder.d1.isExpired())
 
     def testIsExpiredWithExplicitNonExpiredContent(self):
         self.setRoles(['Manager'])
         self.folder.invokeFactory('Document', id='d1', title='Doc 1')
         self.folder.d1.content_status_modify(workflow_action='publish')
-        self.assertFalse(isExpired(self.folder.d1))
+        self.assertFalse(self.portal.isExpired(self.folder.d1))
+
+    def testIsExpiredWithImplicitNonExpiredContent(self):
+        self.setRoles(['Manager'])
+        self.folder.invokeFactory('Document', id='d1', title='Doc 1')
+        self.folder.d1.content_status_modify(workflow_action='publish')
+        self.assertFalse(self.folder.d1.isExpired())
