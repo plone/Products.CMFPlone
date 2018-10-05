@@ -14,7 +14,9 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- Added utils.human_readable_size.
+  https://github.com/plone/Products.CMFPlone/issues/1801
+  [reinhardt]
 
 Bug fixes:
 
