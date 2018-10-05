@@ -20,6 +20,7 @@ from os.path import join
 from os.path import split
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.registry.interfaces import IRegistry
+from Products.CMFCore.permissions import AddPortalContent
 from Products.CMFCore.permissions import ManageUsers
 from Products.CMFCore.utils import ToolInit as CMFCoreToolInit
 from Products.CMFCore.utils import getToolByName
@@ -890,7 +891,7 @@ def check_id(
     # check for reserved names
     if id in ('login', 'layout', 'plone', 'zip', 'properties', ):
         return xlate(
-            _(u'${name} is reserved.',
+            _(u'${name} is reserved 1.',
               mapping={'name': id}))
 
     # check for bad characters
@@ -947,6 +948,16 @@ def check_id(
             except Unauthorized:
                 return  # nothing we can do
 
+        # When this was still a Python skin script, some security checks
+        # would have been done automatically and caught by the various
+        # 'except Unauthorized' lines below.  Now, in unrestricted Python
+        # code, we explicitly check.
+        secman = getSecurityManager()
+        if not secman.checkPermission(
+                'Access contents information', contained_by):
+            # We cannot check.  Do not complain.
+            return
+
         # Check for an existing object.
         if id in contained_by:
             try:
@@ -964,13 +975,14 @@ def check_id(
                       'in this folder.', mapping={u'name': id}))
 
         if base_hasattr(contained_by, 'checkIdAvailable'):
-            try:
+            # This used to be called from the check_id skin script,
+            # which would check the permission automatically,
+            # and the code would catch the Unauthorized exception.
+            if secman.checkPermission(AddPortalContent, contained_by):
                 if not contained_by.checkIdAvailable(id):
                     return xlate(
                         _(u'${name} is reserved.',
                           mapping={u'name': id}))
-            except Unauthorized:
-                pass  # ignore if we don't have permission
 
         # containers may implement this hook to further restrict ids
         if base_hasattr(contained_by, 'checkValidId'):
