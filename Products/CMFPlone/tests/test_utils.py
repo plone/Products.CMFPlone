@@ -13,6 +13,7 @@ from zope.component import getUtility
 from zope.interface import alsoProvides
 from plone.subrequest.interfaces import ISubRequest
 
+import re
 import unittest
 
 
@@ -146,6 +147,30 @@ class DefaultUtilsTests(unittest.TestCase):
         ctx = MockContext('/approot/PloneSite/folder/SubSite/folder')
         ctx.vh_root = '/approot/PloneSite/folder/SubSite'
         self.assertEqual(get_top_site_from_url(ctx, req).id, 'SubSite')
+
+    def test_generate_unique_id_no_clash(self):
+        from Products.CMFPlone.utils import generate_unique_id
+
+        ids = [generate_unique_id('some_type') for i in range(20)]
+        self.assertEqual(
+            len(ids),
+            len(set(ids)),
+        )
+
+    def test_generate_unique_id_format(self):
+        from Products.CMFPlone.utils import generate_unique_id
+
+        id_pattern = re.compile('[0-9]{4}-[0-9]{2}-[0-9]{2}\.[0-9]{10}')
+        id1 = generate_unique_id(None)
+        id2 = generate_unique_id(None)
+        self.assertIsNotNone(
+            id_pattern.match(id1),
+            msg='ID does not have expected format: {0}'.format(id1),
+        )
+        self.assertIsNotNone(
+            id_pattern.match(id2),
+            msg='ID does not have expected format: {0}'.format(id2),
+        )
 
 
 class LogoTests(PloneTestCase.PloneTestCase):

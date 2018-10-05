@@ -29,6 +29,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces.controlpanel import IImagingSchema
 from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
+from random import random
 from types import ClassType
 from urlparse import urlparse
 from webdav.interfaces import IWriteLock
@@ -798,3 +799,16 @@ def _safe_format(inst, method):
     as we do in CMFPlone/__init__.py.
     """
     return SafeFormatter(inst).safe_format
+
+
+def generate_unique_id(type_name):
+    now = DateTime()
+    time = '%s.%s' % (now.strftime('%Y-%m-%d'), str(now.millis())[7:])
+    rand = str(random())[2:6]
+    prefix = ''
+
+    if type_name is not None:
+        prefix = type_name.replace(' ', '_') + '.'
+    prefix = prefix.lower()
+
+    return prefix + time + rand

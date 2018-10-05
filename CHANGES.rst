@@ -14,7 +14,9 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- Ported generateUniqueId skin script to utils.generate_unique_id() method.
+  https://github.com/plone/Products.CMFPlone/issues/1801
+  [reinhardt]
 
 Bug fixes:
 
