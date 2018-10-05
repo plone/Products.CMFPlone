@@ -17,7 +17,7 @@ Breaking changes:
 
 - Removed getObjectsFromPathList.py skin script. #1801
   [reinhardt]
-  
+
 - Removed redirectToReferrer.py skin script. #1801
   [tlotze]
 
@@ -29,6 +29,9 @@ Breaking changes:
 
 - Stop configuring 'View History' permission which was removed from Zope.
   [davisagli]
+
+- Remove legacy resource registries portal_css and portal_javascripts
+  [ksuess]
 
 New features:
 
