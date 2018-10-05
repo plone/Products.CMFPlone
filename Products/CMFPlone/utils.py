@@ -1022,7 +1022,12 @@ def _check_for_collision(contained_by, id, **kwargs):
     if id == 'index_html':
         # always allow index_html
         return
-    portal = getToolByName(contained_by, 'portal_url').getPortalObject()
+    portal_url = getToolByName(contained_by, 'portal_url', None)
+    if portal_url is None:
+        # Probably a test.
+        # All other code needs the portal, so there is nothing left to check.
+        return
+    portal = portal_url.getPortalObject()
     if id in portal.contentIds():
         # Fine to use the same id as a *content* item from the root.
         return
