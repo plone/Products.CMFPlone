@@ -23,9 +23,6 @@ Breaking changes:
   
 - Removed getObjectsFromPathList.py skin script. #1801
   [reinhardt]
-
-- Removed isExpired.py skin script. #1801
-  [reinhardt]
   
 - Removed redirectToReferrer.py skin script. #1801
   [tlotze]
