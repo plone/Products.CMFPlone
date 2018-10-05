@@ -18,6 +18,9 @@ New features:
   https://github.com/plone/Products.CMFPlone/issues/1801
   [reinhardt]
 
+- Update mockup.
+  [thet]
+
 Bug fixes:
 
 - *add item here*
