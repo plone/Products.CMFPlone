@@ -15,6 +15,9 @@ Breaking changes:
   which is a backward compatibilit package only, or also update to not depend on it anymore.
   [jensens]
 
+- Removed my_worklist.py skin script. #1801
+  [reinhardt]
+  
 - Removed getObjectsFromPathList.py skin script. #1801
   [reinhardt]
 
@@ -35,7 +38,8 @@ Breaking changes:
 
 New features:
 
-- Factored out human_readable_size method for replacing getObjSize.py. #1801
+- Factored out human_readable_size method for replacing getObjSize.py;
+  removed getObjSize.py. #1801
   [reinhardt]
 
 - Update TinyMCE to 4.7.13
@@ -61,7 +65,10 @@ New features:
 
 Bug fixes:
 
-- Fix toolbar menu on mobile #2333.
+-- Fix wrong CSS property to allow correct word-break.
+  [tmassman]
+
+ Fix toolbar menu on mobile #2333.
   [tmassman]
 
 - Removed the ``raiseUnauthorized`` skin script.
