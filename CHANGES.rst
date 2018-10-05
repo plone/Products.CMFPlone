@@ -17,9 +17,18 @@ Breaking changes:
 
 - Removed getObjectsFromPathList.py skin script. #1801
   [reinhardt]
+  
+- Removed redirectToReferrer.py skin script. #1801
+  [tlotze]
+
+- Removed enableHTTPCompression.py skin script. #1801
+  [tlotze]
 
 - Removed setAuthCookie.py skin script. #1801
   [tlotze]
+
+- Stop configuring 'View History' permission which was removed from Zope.
+  [davisagli]
 
 New features:
 
