@@ -61,7 +61,10 @@ New features:
 
 Bug fixes:
 
-- Fix toolbar menu on mobile #2333.
+-- Fix wrong CSS property to allow correct word-break.
+  [tmassman]
+
+ Fix toolbar menu on mobile #2333.
   [tmassman]
 
 - Removed the ``raiseUnauthorized`` skin script.
