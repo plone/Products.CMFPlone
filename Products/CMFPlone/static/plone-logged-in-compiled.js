@@ -87443,8 +87443,9 @@ define('mockup-patterns-structure-url/js/views/generic-popover',[
       if (self.options.form.dataUrl) {
         self.$('.popover-content').html(_t('Loading...'));
         self.app.loading.show();
+        var url = self.app.getAjaxUrl(self.options.form.dataUrl);
         $.ajax({
-          url: self.options.form.dataUrl,
+          url: url,
           dataType: 'json',
           type: 'POST',
           cache: false,
