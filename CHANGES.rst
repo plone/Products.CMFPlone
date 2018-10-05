@@ -63,6 +63,10 @@ New features:
 
 - Factored out human_readable_size method for replacing getObjSize.py;
   removed getObjSize.py. #1801
+- Add more logging information when writing combined bundles.
+  [thet]
+
+- Factored out human_readable_size method for replacing getObjSize.py. #1801
   [reinhardt]
 
 - Update TinyMCE to 4.7.13
