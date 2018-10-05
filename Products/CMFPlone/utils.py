@@ -942,11 +942,24 @@ def check_id(
             contained_by = context.getParentNode()
         except Unauthorized:
             return  # nothing we can do
+    try:
+        result = _check_for_collision(contained_by, id)
+    except Unauthorized:
+        # There is a permission problem. Safe to assume we can't use this id.
+        return xlate(
+            _(u'${name} is reserved.',
+              mapping={u'name': id}))
+    if result is not None:
+        result = xlate(result, )
+    return result
 
+
+def _check_for_collision(contained_by, id):
     # When this was still a Python skin script, some security checks
-    # would have been done automatically and caught by the various
-    # 'except Unauthorized' lines below.  Now, in unrestricted Python
-    # code, we explicitly check.
+    # would have been done automatically and caught by some
+    # 'except Unauthorized' lines.  Now, in unrestricted Python
+    # code, we explicitly check.  For safety, we let the check_id
+    # function do a try/except Unauthorized when calling us.
     secman = getSecurityManager()
     if not secman.checkPermission(
             'Access contents information', contained_by):
@@ -955,19 +968,11 @@ def check_id(
 
     # Check for an existing object.
     if id in contained_by:
-        try:
-            existing_obj = getattr(contained_by, id, None)
-            if base_hasattr(existing_obj, 'portal_type'):
-                return xlate(
-                    _(u'There is already an item named ${name} in this '
-                      u'folder.',
-                      mapping={u'name': id}))
-        except Unauthorized:
-            # We can't access the object:
-            # safe to assume we can't replace it.
-            return xlate(
-                _(u'There is already an item named ${name} '
-                  'in this folder.', mapping={u'name': id}))
+        existing_obj = getattr(contained_by, id, None)
+        if base_hasattr(existing_obj, 'portal_type'):
+            return _(
+                u'There is already an item named ${name} in this folder.',
+                mapping={u'name': id})
 
     if base_hasattr(contained_by, 'checkIdAvailable'):
         # This used to be called from the check_id skin script,
@@ -975,34 +980,27 @@ def check_id(
         # and the code would catch the Unauthorized exception.
         if secman.checkPermission(AddPortalContent, contained_by):
             if not contained_by.checkIdAvailable(id):
-                return xlate(
-                    _(u'${name} is reserved.',
-                      mapping={u'name': id}))
+                return _(u'${name} is reserved.', mapping={u'name': id})
 
     # containers may implement this hook to further restrict ids
     if base_hasattr(contained_by, 'checkValidId'):
         try:
             contained_by.checkValidId(id)
-        except Unauthorized:
-            raise
         except ConflictError:
             raise
         except:  # noqa: E722
-            return xlate(
-                _(u'${name} is reserved.',
-                  mapping={u'name': id}))
+            return _(u'${name} is reserved.', mapping={u'name': id})
 
     # make sure we don't collide with any parent method aliases
-    portal_types = getToolByName(context, 'portal_types', None)
+    plone_utils = getToolByName(contained_by, 'plone_utils', None)
+    portal_types = getToolByName(contained_by, 'portal_types', None)
     if plone_utils is not None and portal_types is not None:
         parentFti = portal_types.getTypeInfo(contained_by)
         if parentFti is not None:
             aliases = plone_utils.getMethodAliases(parentFti)
             if aliases is not None:
                 if id in aliases.keys():
-                    return xlate(
-                        _(u'${name} is reserved.',
-                          mapping={u'name': id}))
+                    return _(u'${name} is reserved.', mapping={u'name': id})
 
     # Lastly, we want to disallow the id of any of the tools in the portal
     # root, as well as any object that can be acquired via portal_skins.
@@ -1012,24 +1010,19 @@ def check_id(
     if id == 'index_html':
         # always allow index_html
         return
-    portal = context.portal_url.getPortalObject()
+    portal = getToolByName(contained_by, 'portal_url').getPortalObject()
     if id in portal.contentIds():
         # Fine to use the same id as a *content* item from the root.
         return
-    try:
-        # it is allowed to give an object the same id as another
-        # container in it's acquisition path as long as the
-        # object is outside the portal
-        outsideportal = getattr(portal.aq_parent, id, None)
-        insideportal = getattr(portal, id, None)
-        if (insideportal is not None
-                and outsideportal is not None
-                and outsideportal.aq_base == insideportal.aq_base):
-            return
-        # but not other things
-        if getattr(portal, id, None) is not None:
-            return xlate(
-                _(u'${name} is reserved.',
-                  mapping={u'name': id}))
-    except Unauthorized:
-        pass  # ignore if we don't have permission
+    # It is allowed to give an object the same id as another
+    # container in it's acquisition path as long as the
+    # object is outside the portal.
+    outsideportal = getattr(aq_parent(portal), id, None)
+    insideportal = getattr(portal, id, None)
+    if (insideportal is not None
+            and outsideportal is not None
+            and aq_base(outsideportal) == aq_base(insideportal)):
+        return
+    # but not other things
+    if getattr(portal, id, None) is not None:
+        return _(u'${name} is reserved.', mapping={u'name': id})
