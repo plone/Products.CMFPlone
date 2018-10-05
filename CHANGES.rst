@@ -15,7 +15,16 @@ Breaking changes:
   which is a backward compatibilit package only, or also update to not depend on it anymore.
   [jensens]
 
-- Removed getObjectsFromPathList.py and generateUniqueId.py skin scripts. #1801
+- Removed generateUniqueId.py skin scripts. #1801
+  [reinhardt]
+
+- Removed my_worklist.py skin script. #1801
+  [reinhardt]  
+  
+- Removed getObjectsFromPathList.py skin script. #1801
+  [reinhardt]
+
+- Removed isExpired.py skin script. #1801
   [reinhardt]
   
 - Removed redirectToReferrer.py skin script. #1801
@@ -26,6 +35,9 @@ Breaking changes:
 
 - Removed setAuthCookie.py skin script. #1801
   [tlotze]
+
+- Stop configuring 'View History' permission which was removed from Zope.
+  [davisagli]
 
 New features:
 
