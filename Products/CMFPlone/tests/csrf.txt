@@ -428,9 +428,9 @@ limitations, which is why we need to log in as the portal owner first:
   >>> app_browser = Browser(app)
   >>> app_browser.handleErrors = False
   >>> app.acl_users.userFolderAddUser('app', 'secret', ['Manager'], [])
-  >>> from plone.testing import z2
-  >>> z2.logout()
-  >>> z2.login(app['acl_users'], 'app')
+  >>> from plone.testing import zope
+  >>> zope.logout()
+  >>> zope.login(app['acl_users'], 'app')
   >>> import transaction; transaction.commit()
   >>> app_browser.addHeader('Authorization', 'Basic app:secret')
   >>> app_browser.open('http://nohost/plone/@@overview-controlpanel')

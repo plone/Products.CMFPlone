@@ -5,8 +5,8 @@ A very simple and underdocumented testbrowser test.  This is all about
 logging in and out.
 
     >>> from plone.testing.zope import Browser
-    >>> from plone.testing.z2 import login
-    >>> from plone.testing.z2 import logout
+    >>> from plone.testing.zope import login
+    >>> from plone.testing.zope import logout
     >>> from plone.app.testing import setRoles
     >>> from plone.app.testing import SITE_OWNER_NAME
     >>> from plone.app.testing import TEST_USER_ID

@@ -35,9 +35,6 @@ from zope.location.interfaces import ISite
 from zope.site.hooks import clearSite
 from zope.site.hooks import setSite
 
-import six
-import unittest
-
 
 class TestPortalCreation(PloneTestCase.PloneTestCase):
     def afterSetUp(self):

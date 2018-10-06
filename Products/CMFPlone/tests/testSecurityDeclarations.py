@@ -9,23 +9,23 @@ from zExceptions import Unauthorized
 from ZODB.POSException import ConflictError
 from Products.ZCTextIndex.ParseTree import ParseError
 from OFS.CopySupport import CopyError
-from plone.testing import z2
+from plone.testing import zope
 from unittest import TestCase
 
 
 class RestrictedPythonTest(TestCase):
 
-    layer = z2.ZSERVER
+    layer = zope.WSGI_SERVER
 
     def setUp(self):
         self.app = self.layer['app']
         self.folder = self.app
-        z2.installProduct(self.app, 'Products.PythonScripts')
-        z2.installProduct(self.app, 'Products.CMFPlone')
+        zope.installProduct(self.app, 'Products.PythonScripts')
+        zope.installProduct(self.app, 'Products.CMFPlone')
 
     def tearDown(self):
-        z2.uninstallProduct(self.app, 'Products.CMFPlone')
-        z2.uninstallProduct(self.app, 'Products.PythonScripts')
+        zope.uninstallProduct(self.app, 'Products.CMFPlone')
+        zope.uninstallProduct(self.app, 'Products.PythonScripts')
 
     def addPS(self, id, params='', body=''):
         factory = self.folder.manage_addProduct['PythonScripts']
@@ -180,9 +180,12 @@ class TestSecurityDeclarations(RestrictedPythonTest):
                    'print(ZODB.POSException.ConflictError)')
 
     def testRaise_ConflictError(self):
-        self.assertRaises(ConflictError,
-                          self.check, 'from ZODB.POSException import ConflictError;'
-                          'raise ConflictError')
+        self.assertRaises(
+            ConflictError,
+            self.check,
+            'from ZODB.POSException import ConflictError;'
+            'raise ConflictError',
+        )
 
     def testCatch_ConflictErrorRaisedByRestrictedCode(self):
         try:
