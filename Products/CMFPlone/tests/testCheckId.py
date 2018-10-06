@@ -140,13 +140,13 @@ class TestCheckId(PloneTestCase):
         # check_id should not swallow Unauthorized errors raised by hook
         self.folder._setObject('checkValidId', dummy.Raiser(Unauthorized))
         self.folder._setObject('foo', dummy.Item('foo'))
-        self.assertRaises(Unauthorized, self.folder.foo.check_id, 'whatever')
+        self.assertRaises(Unauthorized, check_id(self.folder.foo), 'whatever')
 
     def testContainerHookRaisesConflictError(self):
         # check_id should not swallow ConflictErrors raised by hook
         self.folder._setObject('checkValidId', dummy.Raiser(ConflictError))
         self.folder._setObject('foo', dummy.Item('foo'))
-        self.assertRaises(ConflictError, self.folder.foo.check_id, 'whatever')
+        self.assertRaises(ConflictError, check_id(self.folder.foo), 'whatever')
 
     def testMissingUtils(self):
         # check_id should not bomb out if the plone_utils tool is missing
@@ -229,12 +229,3 @@ class TestCheckId(PloneTestCase):
             check_id(self.portal, 'foo')
         except AttributeError as e:
             self.fail(e)
-
-    def testProxyRoles(self):
-        # Proxy roles should cover missing view permission for all but the
-        # most unusual workflows.
-        proxy_roles = self.folder.check_id._proxy_roles
-        self.assertTrue('Manager' in proxy_roles)
-        self.assertTrue('Owner' in proxy_roles)
-        self.assertTrue('Authenticated' in proxy_roles)
-        self.assertTrue('Anonymous' in proxy_roles)
