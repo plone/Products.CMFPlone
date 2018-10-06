@@ -842,7 +842,11 @@ def check_id(
     Returns an error message if the id is bad or None if the id is good.
     For more info, see that script.
     """
-    return context.check_id(
+    script = getattr(context, 'check_id', None)
+    if script is None:
+        # May happen during tests.
+        return None
+    return script(
         id=id, required=required, alternative_id=alternative_id,
         contained_by=contained_by,
         **kwargs)
