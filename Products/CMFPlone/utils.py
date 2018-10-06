@@ -826,3 +826,23 @@ def human_readable_size(size):
                 break
         return '%.1f %s' % (float(size / float(SIZE_CONST[c])), c)
     return size
+
+
+def check_id(
+        context, id=None, required=0, alternative_id=None, contained_by=None,
+        **kwargs):
+    """Test an id to make sure it is valid.
+
+    In Plone 5.2, this function will replace
+    Products/CMFPlone/skins/plone_scripts/check_id.py.
+    But here in Plone 5.1, the function calls that same script,
+    so that there should be no subtle differences with permissions.
+    See https://github.com/plone/Products.CMFPlone/issues/2582
+
+    Returns an error message if the id is bad or None if the id is good.
+    For more info, see that script.
+    """
+    return context.check_id(
+        id=id, required=required, alternative_id=alternative_id,
+        contained_by=contained_by,
+        **kwargs)
