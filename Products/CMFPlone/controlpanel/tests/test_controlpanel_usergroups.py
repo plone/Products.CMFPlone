@@ -1,15 +1,12 @@
 # -*- coding: utf-8 -*-
+from plone.registry.interfaces import IRegistry
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces import IUserGroupsSettingsSchema
-import unittest
-
+from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 from zope.component import getMultiAdapter
 from zope.component import getUtility
-from plone.registry.interfaces import IRegistry
 
-from Products.CMFCore.utils import getToolByName
-
-from Products.CMFPlone.testing import \
-    PRODUCTS_CMFPLONE_INTEGRATION_TESTING
+import unittest
 
 
 class TypesRegistryIntegrationTest(unittest.TestCase):
@@ -24,19 +21,33 @@ class TypesRegistryIntegrationTest(unittest.TestCase):
         self.request = self.layer['request']
         registry = getUtility(IRegistry)
         self.settings = registry.forInterface(
-            IUserGroupsSettingsSchema, prefix="plone")
+            IUserGroupsSettingsSchema, prefix="plone"
+        )
 
+    @unittest.skip(
+        'view rendering here results in a test-isolation problem together with'
+        'plone.z3cform. To reproduce, test with:'
+        './bin/test --layer plone.z3cform:Functional '
+        '    --layer  Products.CMFPlone.testing.CMFPloneLayer:Integration  '
+        '    -t plone.z3cform '
+        '    -t Products.CMFPlone.controlpanel.tests.'
+        'test_controlpanel_usergroups.TypesRegistryIntegrationTest'
+    )
     def test_usergroups_controlpanel_view(self):
-        view = getMultiAdapter((self.portal, self.portal.REQUEST),
-                               name="usergroup-controlpanel")
+        view = getMultiAdapter(
+            (self.portal, self.portal.REQUEST), name="usergroup-controlpanel"
+        )
         self.assertTrue(view())
 
     def test_usergroups_in_controlpanel(self):
         self.controlpanel = getToolByName(self.portal, "portal_controlpanel")
-        self.assertTrue('UsersGroups' in [
-            a.getAction(self)['id']
-            for a in self.controlpanel.listActions()
-        ])
+        self.assertTrue(
+            'UsersGroups'
+            in [
+                a.getAction(self)['id']
+                for a in self.controlpanel.listActions()
+            ]
+        )
 
     def test_many_groups_setting(self):
         self.assertTrue(hasattr(self.settings, 'many_groups'))
