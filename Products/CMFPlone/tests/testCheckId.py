@@ -176,16 +176,21 @@ class TestCheckId(PloneTestCase):
         # But now the final hasattr check picks this up
         self.assertEqual(r, u'created is reserved.')
 
-    def testCollisionSkipped(self):
-        # Note that check is skipped when we don't have
+    def testCollisionNotSkipped(self):
+        # Note that the existing object check is done, even when we don't have
         # the "Access contents information" permission.
+        # This used to be the other way around.  The reason got lost.
+        # Probably this was because the permission was checked automatically
+        # because check_id was a skin script.  Since Plone 5.2 it is a
+        # function which cannot be accessed from the web or templates,
+        # so the permission test seems unneeded.
         self.folder.manage_permission('Access contents information', [],
                                       acquire=0)
 
         self.folder._setObject('foo', dummy.Item('foo'))
         self.folder._setObject('bar', dummy.Item('bar'))
         r = check_id(self.folder.foo, 'bar')
-        self.assertEqual(r, None)   # success
+        self.assertEqual(r, u'bar is reserved.')
 
     def testReservedIdSkipped(self):
         # This check is picked up by the checkIdAvailable, unless we don't have

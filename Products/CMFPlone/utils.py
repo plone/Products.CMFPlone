@@ -969,14 +969,19 @@ def _check_for_collision(contained_by, id, **kwargs):
     When this was still a Python skin script, some security checks
     would have been done automatically and caught by some
     'except Unauthorized' lines.  Now, in unrestricted Python
-    code, we explicitly check.  For safety, we let the check_id
+    code, we explicitly check.  But not all checks make sense.  If you don't
+    have the 'Access contents information' permission, theoretically
+    you should not be able to check for an existing conflicting id,
+    but it seems silly to then pretend that there is no conflict.
+
+    For safety, we let the check_id
     function do a try/except Unauthorized when calling us.
     """
     secman = getSecurityManager()
-    if not secman.checkPermission(
-            'Access contents information', contained_by):
-        # We cannot check.  Do not complain.
-        return
+    # if not secman.checkPermission(
+    #         'Access contents information', contained_by):
+    #     # We cannot check.  Do not complain.
+    #     return
 
     # Check for an existing object.
     if id in contained_by:
