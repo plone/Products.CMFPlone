@@ -24,15 +24,6 @@ class TypesRegistryIntegrationTest(unittest.TestCase):
             IUserGroupsSettingsSchema, prefix="plone"
         )
 
-    @unittest.skip(
-        'view rendering here results in a test-isolation problem together with'
-        'plone.z3cform. To reproduce, test with:'
-        './bin/test --layer plone.z3cform:Functional '
-        '    --layer  Products.CMFPlone.testing.CMFPloneLayer:Integration  '
-        '    -t plone.z3cform '
-        '    -t Products.CMFPlone.controlpanel.tests.'
-        'test_controlpanel_usergroups.TypesRegistryIntegrationTest'
-    )
     def test_usergroups_controlpanel_view(self):
         view = getMultiAdapter(
             (self.portal, self.portal.REQUEST), name="usergroup-controlpanel"
