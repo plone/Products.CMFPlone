@@ -34170,5 +34170,5 @@ require([
   'use strict';
 });
 
-define("/Volumes/Work/Personal/Plone/Core/buildout.coredev-5.1/src/Products.CMFPlone/Products/CMFPlone/static/resourceregistry.js", function(){});
+define("/Users/esteele/projects/plone_5.1/src/Products.CMFPlone/Products/CMFPlone/static/resourceregistry.js", function(){});
 
