@@ -8,10 +8,6 @@ Changelog
 5.1.5 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
 New features:
 
 - Added utils.human_readable_size.
@@ -20,10 +16,6 @@ New features:
 
 - Update mockup.
   [thet]
-
-Bug fixes:
-
-- *add item here*
 
 
 5.1.4.rc2 (2018-10-03)
