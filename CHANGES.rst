@@ -18,7 +18,8 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Reverted test fix for richtext behavior.
+  [maurits]
 
 
 5.1.4.rc3 (2018-10-08)
