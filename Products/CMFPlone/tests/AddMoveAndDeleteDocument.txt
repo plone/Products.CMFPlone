@@ -51,7 +51,7 @@ browser.
 Now that the document has been added, we can edit it, but we pretend
 we don't know better and forget to type in a Title:
 
-    >>> browser.getControl(name='form.widgets.IRichTextBehavior.text').value = 'About me'
+    >>> browser.getControl(name='form.widgets.IRichText.text').value = 'About me'
     >>> browser.getControl('Save').click()
     >>> 'Required input is missing.' in browser.contents
     True
@@ -186,7 +186,7 @@ between cut and paste, the page should say so and not give a stacktrace.
 
     >>> browser.open('http://nohost/plone')
     >>> browser.getLink('Page').click()
-    >>> browser.getControl(name='form.widgets.IRichTextBehavior.text').value = ''
+    >>> browser.getControl(name='form.widgets.IRichText.text').value = ''
     >>> browser.getControl('Title').value = 'Op een dag'
     >>> browser.getControl('Save').click()
     >>> 'Op een dag' in browser.contents
