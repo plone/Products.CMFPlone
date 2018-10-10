@@ -141,8 +141,8 @@ def write_css(context, folder, meta_bundle):
             if not isinstance(path, six.binary_type):
                 path = path.encode()
             css = re.sub(
-                b"""(url\(['"]?(?!['"]?([a-z]+:|\/)))""",
-                b'\1%s/' % path,
+                rb"""(url\(['"]?(?!['"]?([a-z]+:|\/)))""",
+                rb'\1%s/' % path,
                 css)
             resources.append(css)
 
