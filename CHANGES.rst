@@ -5,7 +5,7 @@
 Changelog
 =========
 
-5.1.4rc5 (unreleased)
+5.1.4rc5 (2018-10-10)
 ---------------------
 
 Bug fixes:
