@@ -8,17 +8,10 @@ Changelog
 5.1.4rc5 (unreleased)
 ---------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
-- *add item here*
+- Fix profile version.
+  [esteele]
 
 
 5.1.4.rc4 (2018-10-10)
