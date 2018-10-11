@@ -5,20 +5,12 @@
 Changelog
 =========
 
-5.1.4 (unreleased)
+5.1.4 (2018-10-11)
 ------------------
-
-Breaking changes:
-
-- *add item here*
 
 New features:
 
-- *add item here*
-
-Bug fixes:
-
-- *add item here*
+- Release CMFPlone 5.1.4
 
 
 5.1.4rc5 (2018-10-10)
