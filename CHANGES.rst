@@ -5,20 +5,21 @@
 Changelog
 =========
 
-5.1.4rc5 (unreleased)
----------------------
-
-Breaking changes:
-
-- *add item here*
+5.1.4 (2018-10-11)
+------------------
 
 New features:
 
-- *add item here*
+- Release CMFPlone 5.1.4
+
+
+5.1.4rc5 (2018-10-10)
+---------------------
 
 Bug fixes:
 
-- *add item here*
+- Fix profile version.
+  [esteele]
 
 
 5.1.4.rc4 (2018-10-10)
