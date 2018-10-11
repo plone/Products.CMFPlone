@@ -321,7 +321,10 @@ class LayoutPolicy(BrowserView):
             IBodyClassAdapter
         )
         for name, body_class_adapter in body_class_adapters:
-            extra_classes = body_class_adapter.get_classes() or []
+            try:
+                extra_classes = body_class_adapter.get_classes(template, view) or []
+            except TypeError:  # This adapter is implemented without arguments
+                extra_classes = body_class_adapter.get_classes() or []
             if isinstance(extra_classes, basestring):
                 extra_classes = extra_classes.split(' ')
             body_classes.update(extra_classes)
