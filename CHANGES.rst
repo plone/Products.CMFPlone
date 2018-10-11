@@ -8,14 +8,6 @@ Changelog
 5.1.5 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - Reverted test fix for richtext behavior.
