@@ -99,13 +99,40 @@ PRODUCTS_CMFPLONE_ROBOT_REMOTE_LIBRARY_FIXTURE = RemoteLibraryLayer(
     name="CMFPloneRobotRemoteLibrary:RobotRemote"
 )
 
-PRODUCTS_CMFPLONE_ROBOT_TESTING = FunctionalTesting(
+PRODUCTS_CMFPLONE_ROBOT_TESTING_1 = FunctionalTesting(
     bases=(
         PRODUCTS_CMFPLONE_FIXTURE,
         PRODUCTS_CMFPLONE_ROBOT_REMOTE_LIBRARY_FIXTURE,
         zope.WSGI_SERVER_FIXTURE
     ),
-    name="CMFPloneLayer:Acceptance"
+    name="CMFPloneLayer:Acceptance_1"
+)
+
+PRODUCTS_CMFPLONE_ROBOT_TESTING_2 = FunctionalTesting(
+    bases=(
+        PRODUCTS_CMFPLONE_FIXTURE,
+        PRODUCTS_CMFPLONE_ROBOT_REMOTE_LIBRARY_FIXTURE,
+        zope.WSGI_SERVER_FIXTURE
+    ),
+    name="CMFPloneLayer:Acceptance_2"
+)
+
+PRODUCTS_CMFPLONE_ROBOT_TESTING_3 = FunctionalTesting(
+    bases=(
+        PRODUCTS_CMFPLONE_FIXTURE,
+        PRODUCTS_CMFPLONE_ROBOT_REMOTE_LIBRARY_FIXTURE,
+        zope.WSGI_SERVER_FIXTURE
+    ),
+    name="CMFPloneLayer:Acceptance_3"
+)
+
+PRODUCTS_CMFPLONE_ROBOT_TESTING_4 = FunctionalTesting(
+    bases=(
+        PRODUCTS_CMFPLONE_FIXTURE,
+        PRODUCTS_CMFPLONE_ROBOT_REMOTE_LIBRARY_FIXTURE,
+        zope.WSGI_SERVER_FIXTURE
+    ),
+    name="CMFPloneLayer:Acceptance_4"
 )
 
 optionflags = (doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE)
