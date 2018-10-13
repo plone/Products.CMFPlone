@@ -340,7 +340,7 @@ class DefaultBodyClasses(object):
         self.context = context
         self.request = request
 
-    def get_classes(self):
+    def get_classes(self, template, view):
         """Default body classes adapter.
         """
         return []
