@@ -17,7 +17,7 @@ Breaking changes:
 
 - Removed my_worklist.py skin script. #1801
   [reinhardt]
-  
+
 - Removed getObjectsFromPathList.py skin script. #1801
   [reinhardt]
 
@@ -64,6 +64,9 @@ New features:
 
 
 Bug fixes:
+
+- make groups_modify_roles test more robust.
+  [tschorr]
 
 -- Fix wrong CSS property to allow correct word-break.
   [tmassman]
