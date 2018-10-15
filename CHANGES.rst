@@ -66,6 +66,9 @@ New features:
 
 Bug fixes:
 
+- make groups_modify_roles test more robust.
+  [tschorr]
+
 -- Fix wrong CSS property to allow correct word-break.
   [tmassman]
 
