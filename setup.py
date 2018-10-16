@@ -138,8 +138,9 @@ setup(
     ],
     extras_require={
         'archetypes': [
-            'Products.ATContentTypes',
-            'archetypes.multilingual',
+            'Products.ATContentTypes ; python_version<"3"',
+            'archetypes.multilingual ; python_version<"3"',
+            'plone.app.contenttypes[archetypes,atrefs] ; python_version<"3"',
         ],
         'test': [
             'lxml',
