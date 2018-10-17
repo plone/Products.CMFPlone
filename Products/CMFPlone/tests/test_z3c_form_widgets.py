@@ -47,13 +47,13 @@ class TestAttackVector(unittest.TestCase):
                 'foo': 'bar'
             })
             wi.form = FakeForm()
-            self.assertEquals(wi.ignoreRequest, False)
+            self.assertEqual(wi.ignoreRequest, False)
             # The SequenceWidget needs terms.  It will have terms=None,
             # where the others have no terms attribute.
             if getattr(wi, 'terms', _marker) is None:
                 wi.terms = self._terms()
             wi.update()
-            self.assertEquals(wi.ignoreRequest, False)
+            self.assertEqual(wi.ignoreRequest, False)
 
     def test_only_get_data_from_valid_request_method(self):
         request = self.layer['request']
@@ -65,13 +65,13 @@ class TestAttackVector(unittest.TestCase):
                 'foobar': self._attack
             })
             wi.form = FakeForm()
-            self.assertEquals(wi.ignoreRequest, False)
+            self.assertEqual(wi.ignoreRequest, False)
             # The SequenceWidget needs terms.  It will have terms=None,
             # where the others have no terms attribute.
             if getattr(wi, 'terms', _marker) is None:
                 wi.terms = self._terms()
             wi.update()
-            self.assertEquals(wi.ignoreRequest, True)
+            self.assertEqual(wi.ignoreRequest, True)
 
     def test_explicitly_allow_data_from_invalid_request_method(self):
         request = self.layer['request']
@@ -86,13 +86,13 @@ class TestAttackVector(unittest.TestCase):
             # Set attribute on form to explicitly allow prefill.
             from Products.CMFPlone.patches.z3c_form import ALLOW_PREFILL
             setattr(wi.form, ALLOW_PREFILL, True)
-            self.assertEquals(wi.ignoreRequest, False)
+            self.assertEqual(wi.ignoreRequest, False)
             # The SequenceWidget needs terms.  It will have terms=None,
             # where the others have no terms attribute.
             if getattr(wi, 'terms', _marker) is None:
                 wi.terms = self._terms()
             wi.update()
-            self.assertEquals(wi.ignoreRequest, False)
+            self.assertEqual(wi.ignoreRequest, False)
 
     def test_only_get_data_from_valid_referrer(self):
         # this handles the use case where hijacker gets user to click on
@@ -108,10 +108,10 @@ class TestAttackVector(unittest.TestCase):
             })
             request.environ['HTTP_REFERER'] = 'http://attacker.com'
             wi.form = FakeForm()
-            self.assertEquals(wi.ignoreRequest, False)
+            self.assertEqual(wi.ignoreRequest, False)
             # The SequenceWidget needs terms.  It will have terms=None,
             # where the others have no terms attribute.
             if getattr(wi, 'terms', _marker) is None:
                 wi.terms = self._terms()
             wi.update()
-            self.assertEquals(wi.ignoreRequest, True)
+            self.assertEqual(wi.ignoreRequest, True)

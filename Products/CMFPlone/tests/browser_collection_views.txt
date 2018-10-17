@@ -9,7 +9,7 @@ summary_view (Summary view)
 full_view (All content)
 tabular_view (Tabular view)
 
-    >>> from plone.testing.z2 import Browser
+    >>> from plone.testing.zope import Browser
     >>> from plone.app.testing import SITE_OWNER_NAME
     >>> from plone.app.testing import SITE_OWNER_PASSWORD
     >>> app = layer['app']

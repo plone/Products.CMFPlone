@@ -105,7 +105,7 @@ class TestMigrationWithExtraUpgrades(PloneTestCase.PloneTestCase):
 
         # Register a too new upgrade.
         fs_version = self.migration.getFileSystemVersion()
-        new_version = unicode(int(fs_version) + 1)
+        new_version = str(int(fs_version) + 1)
         new_step = UpgradeStep(
             'Too new upgrade', _DEFAULT_PROFILE,
             fs_version, new_version,

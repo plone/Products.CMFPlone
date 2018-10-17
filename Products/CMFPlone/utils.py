@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import print_function
 from AccessControl import ClassSecurityInfo
 from AccessControl import getSecurityManager
 from AccessControl import ModuleSecurityInfo
@@ -23,8 +24,8 @@ from plone.registry.interfaces import IRegistry
 from Products.CMFCore.permissions import ManageUsers
 from Products.CMFCore.utils import ToolInit as CMFCoreToolInit
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import bbb
 from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone import bbb
 from Products.CMFPlone.interfaces.controlpanel import IImagingSchema
 from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
 from Products.CMFPlone.log import log
@@ -53,6 +54,7 @@ import sys
 import transaction
 import warnings
 import zope.interface
+
 
 try:
     from types import ClassType
@@ -232,7 +234,10 @@ def utf8_portal(context, str, errors='strict'):
 def getEmptyTitle(context, translated=True):
     """Returns string to be used for objects with no title or id"""
     # The default is an extra fancy unicode elipsis
-    empty = six.text_type('\x5b\xc2\xb7\xc2\xb7\xc2\xb7\x5d', 'utf-8')
+    if six.PY2:
+        empty = unicode('\x5b\xc2\xb7\xc2\xb7\xc2\xb7\x5d', 'utf-8')
+    else:
+        empty = b'\x5b\xc2\xb7\xc2\xb7\xc2\xb7\x5d'.decode('utf8')
     if translated:
         if context is not None:
             if not IBrowserRequest.providedBy(context):
@@ -458,29 +463,41 @@ def safe_unicode(value, encoding='utf-8'):
     """Converts a value to unicode, even it is already a unicode string.
 
         >>> from Products.CMFPlone.utils import safe_unicode
-
-        >>> safe_unicode('spam')
-        u'spam'
-        >>> safe_unicode(u'spam')
-        u'spam'
-        >>> safe_unicode(u'spam'.encode('utf-8'))
-        u'spam'
-        >>> safe_unicode('\xc6\xb5')
-        u'\u01b5'
-        >>> safe_unicode(u'\xc6\xb5'.encode('iso-8859-1'))
-        u'\u01b5'
-        >>> safe_unicode('\xc6\xb5', encoding='ascii')
-        u'\u01b5'
-        >>> safe_unicode(1)
-        1
+        >>> test_bytes = u'\u01b5'.encode('utf-8')
+        >>> safe_unicode('spam') == u'spam'
+        True
+        >>> safe_unicode(b'spam') == u'spam'
+        True
+        >>> safe_unicode(u'spam') == u'spam'
+        True
+        >>> safe_unicode(u'spam'.encode('utf-8')) == u'spam'
+        True
+        >>> safe_unicode(test_bytes) == u'\u01b5'
+        True
+        >>> safe_unicode(u'\xc6\xb5'.encode('iso-8859-1')) == u'\u01b5'
+        True
+        >>> safe_unicode(test_bytes, encoding='ascii') == u'\u01b5'
+        True
+        >>> safe_unicode(1) == 1
+        True
         >>> print(safe_unicode(None))
         None
     """
-    if isinstance(value, six.text_type):
+    if six.PY2:
+        if isinstance(value, unicode):
+            return value
+        elif isinstance(value, basestring):
+            try:
+                value = unicode(value, encoding)
+            except (UnicodeDecodeError):
+                value = value.decode('utf-8', 'replace')
         return value
-    elif isinstance(value, six.string_types):
+
+    if isinstance(value, str):
+        return value
+    elif isinstance(value, bytes):
         try:
-            value = six.text_type(value, encoding)
+            value = str(value, encoding)
         except (UnicodeDecodeError):
             value = value.decode('utf-8', 'replace')
     return value
@@ -491,6 +508,16 @@ def safe_encode(value, encoding='utf-8'):
     """
     if isinstance(value, six.text_type):
         value = value.encode(encoding)
+    return value
+
+
+def safe_nativestring(value, encoding='utf-8'):
+    """Convert a value to str in py2 and to text in py3
+    """
+    if six.PY2 and isinstance(value, six.text_type):
+        value = safe_encode(value, encoding)
+    if not six.PY2 and isinstance(value, six.binary_type):
+        value = safe_unicode(value, encoding)
     return value
 
 
@@ -784,7 +811,10 @@ def get_top_site_from_url(context, request):
         for idx in range(len(url_path)):
             _path = '/'.join(url_path[:idx + 1]) or '/'
             site_path = request.physicalPathFromURL(_path)
-            site_path = safe_encode('/'.join(site_path)) or '/'
+            if six.PY2:
+                site_path = safe_encode('/'.join(site_path)) or '/'
+            else:
+                site_path = '/'.join(site_path) or '/'
             _site = context.restrictedTraverse(site_path)
             if ISite.providedBy(_site):
                 break

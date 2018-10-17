@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from plone.app.testing import SITE_OWNER_NAME, SITE_OWNER_PASSWORD
 from plone.registry.interfaces import IRegistry
-from plone.testing.z2 import Browser
+from plone.testing.zope import Browser
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces import IFilterSchema
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
@@ -103,6 +103,6 @@ class FilterControlPanelFunctionalTest(unittest.TestCase):
         good_html = '<p><a href="http://example.com">harmless link</a></p>'
         ds = datastream('dummy_name')
         self.assertEqual(
-            str(self.safe_html.convert(good_html, ds)),
+            self.safe_html.convert(good_html, ds).getData(),
             '<p/>'
         )

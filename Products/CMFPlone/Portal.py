@@ -3,7 +3,7 @@ from AccessControl import ClassSecurityInfo
 from AccessControl import Permissions
 from AccessControl import Unauthorized
 from Acquisition import aq_base
-from App.class_init import InitializeClass
+from AccessControl.class_init import InitializeClass
 from ComputedAttribute import ComputedAttribute
 from plone.i18n.locales.interfaces import IMetadataLanguageAvailability
 from Products.CMFCore import permissions

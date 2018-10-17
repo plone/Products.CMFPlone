@@ -21,7 +21,9 @@ _ = MessageFactory('plone')
 
 # We should accept both a simple space, unicode u'\u0020 but also a
 # multi-space, so called 'waji-kankaku', unicode u'\u3000'
-MULTISPACE = u'\u3000'.encode('utf-8')
+MULTISPACE = u'\u3000'
+if six.PY2:
+    MULTISPACE = u'\u3000'.encode('utf-8')
 BAD_CHARS = ('?', '-', '+', '*', MULTISPACE)
 EVER = DateTime('1970-01-03')
 

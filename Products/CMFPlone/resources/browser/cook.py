@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
+from io import BytesIO
 from plone.protect.interfaces import IDisableCSRFProtection
 from plone.registry.interfaces import IRegistry
 from plone.resource.interfaces import IResourceDirectory
@@ -9,7 +10,6 @@ from Products.CMFPlone.interfaces.resources import IResourceRegistry
 from Products.CMFPlone.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME  # noqa
 from Products.CMFPlone.resources.browser.combine import combine_bundles
 from scss import Compiler
-from six import StringIO
 from slimit import minify
 from zExceptions import NotFound
 from zope.component import getUtility
@@ -18,6 +18,7 @@ from zope.globalrequest import getRequest
 from zope.interface import alsoProvides
 
 import logging
+import six
 
 
 logger = logging.getLogger('Products.CMFPlone')
@@ -95,6 +96,8 @@ def cookWhenChangingSettings(context, bundle=None):
                     css = response.getBody()
                     if css_resource[-8:] != '.min.css':
                         css = css_compiler.compile_string(css)
+                    if not isinstance(css, six.text_type):
+                        css = css.decode('utf8')
                     cooked_css += u'\n/* Resource: {0} */\n{1}\n'.format(
                         css_resource,
                         css
@@ -104,7 +107,7 @@ def cookWhenChangingSettings(context, bundle=None):
                         u'\n/* Could not find resource: {0} */\n\n'.format(
                             css_resource
                         )
-                    logger.warn('Could not find resource: %s' , css_resource)
+                    logger.warn('Could not find resource: %s', css_resource)
         if not resource.js or not js_path:
             continue
         js_url = siteUrl + '/' + resource.js
@@ -113,6 +116,8 @@ def cookWhenChangingSettings(context, bundle=None):
             js = response.getBody()
             try:
                 logger.info('Cooking js %s', resource.js)
+                if not isinstance(js, six.text_type):
+                    js = js.decode('utf8')
                 cooked_js += '\n/* resource: {0} */\n{1}'.format(
                     resource.js,
                     js if '.min.js' == resource.js[-7:] else
@@ -145,11 +150,11 @@ def cookWhenChangingSettings(context, bundle=None):
         resource_name, resource_filepath = resource_path.split('/', 1)
         if resource_name not in container:
             container.makeDirectory(resource_name)
-        if not isinstance(cooked_string, str):  # handle Error of OFS.Image
+        if not isinstance(cooked_string, six.binary_type):  # handle Error of OFS.Image  # noqa: E501
             cooked_string = cooked_string.encode('ascii', errors='ignore')
         try:
             folder = container[resource_name]
-            fi = StringIO(cooked_string)
+            fi = BytesIO(cooked_string)
             folder.writeFile(resource_filepath, fi)
             logger.info('Writing cooked resource: %s', resource_path)
         except NotFound:

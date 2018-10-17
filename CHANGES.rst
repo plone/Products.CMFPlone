@@ -65,6 +65,15 @@ New features:
 
 Bug fixes:
 
+- remove plone.app.folder dependency
+  [petschki]
+  
+- move GopipIndex Class to plone.folder
+  [petschki]
+
+- Fixed getObjSize indexer for Python 3. #2526
+  [reinhardt]
+- Fix toolbar menu on mobile #2333.
 - make groups_modify_roles test more robust.
   [tschorr]
 
@@ -282,3 +291,6 @@ Bug Fixes:
 
 - Remove depricated ``type`` attribute from ``script`` and ``link`` tags.
   [newbazz]
+
+- Render tinymce attributes correctly in Python3.
+  [sallner]

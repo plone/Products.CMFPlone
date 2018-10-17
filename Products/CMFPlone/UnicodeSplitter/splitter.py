@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
@@ -6,19 +5,21 @@ splitter.py
 
 Created by Mikio Hokari, CMScom and Manabu Terada, CMScom on 2009-09-30.
 """
-import unicodedata
-
-from zope.interface import implementer
-
+from plone.i18n.normalizer.base import baseNormalize
+from Products.CMFPlone.UnicodeSplitter.config import pattern
+from Products.CMFPlone.UnicodeSplitter.config import pattern_g
+from Products.CMFPlone.UnicodeSplitter.config import rx_all
+from Products.CMFPlone.UnicodeSplitter.config import rx_L
+from Products.CMFPlone.UnicodeSplitter.config import rx_U
+from Products.CMFPlone.UnicodeSplitter.config import rxGlob_L
+from Products.CMFPlone.UnicodeSplitter.config import rxGlob_U
 from Products.ZCTextIndex.interfaces import ISplitter
 from Products.ZCTextIndex.PipelineFactory import element_factory
-
-from Products.CMFPlone.UnicodeSplitter.config import rx_U, rxGlob_U, \
-    rx_L, rxGlob_L, rx_all, pattern, pattern_g
-from plone.i18n.normalizer.base import baseNormalize
 from six.moves import range
+from zope.interface import implementer
 
 import six
+import unicodedata
 
 
 def bigram(u, limit=1):
@@ -151,9 +152,13 @@ class Splitter(object):
         """
         return [process_str_post(s) for s in lst]
 
+
 try:
-    element_factory.registerFactory('Word Splitter',
-                                    'Unicode Whitespace splitter', Splitter)
+    element_factory.registerFactory(
+        'Word Splitter',
+        'Unicode Whitespace splitter',
+        Splitter,
+    )
 except ValueError:
     # In case the splitter is already registered, ValueError is raised
     pass
@@ -169,7 +174,7 @@ class CaseNormalizer(object):
             # non-unicode text.
             try:
                 if not isinstance(s, six.text_type):
-                    s = six.text_type(s, enc)
+                    s = s.decode(enc)
             except (UnicodeDecodeError, TypeError):
                 result.append(s.lower())
             else:
@@ -177,9 +182,13 @@ class CaseNormalizer(object):
 
         return result
 
+
 try:
-    element_factory.registerFactory('Case Normalizer',
-                                    'Unicode Case Normalizer', CaseNormalizer)
+    element_factory.registerFactory(
+        'Case Normalizer',
+        'Unicode Case Normalizer',
+        CaseNormalizer,
+    )
 except ValueError:
     # In case the normalizer is already registered, ValueError is raised
     pass
@@ -193,7 +202,7 @@ class I18NNormalizer(object):
         for s in lst:
             try:
                 if not isinstance(s, six.text_type):
-                    s = six.text_type(s, enc)
+                    s = s.decode(enc)
             except (UnicodeDecodeError, TypeError):
                 pass
 
@@ -207,9 +216,13 @@ class I18NNormalizer(object):
 
         return result
 
+
 try:
-    element_factory.registerFactory('Case Normalizer',
-                                    'Unicode Ignoring Accents Case Normalizer', I18NNormalizer)
+    element_factory.registerFactory(
+        'Case Normalizer',
+        'Unicode Ignoring Accents Case Normalizer',
+        I18NNormalizer,
+    )
 except ValueError:
     # In case the normalizer is already registered, ValueError is raised
     pass

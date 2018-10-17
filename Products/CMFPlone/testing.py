@@ -11,7 +11,7 @@ from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing.layers import FunctionalTesting
 from plone.app.testing.layers import IntegrationTesting
-from plone.testing import z2
+from plone.testing import zope
 from Products.CMFPlone.tests.robot.robot_setup import CMFPloneRemoteKeywords
 from Products.CMFPlone.tests.utils import MockMailHost
 from Products.MailHost.interfaces import IMailHost
@@ -103,7 +103,7 @@ PRODUCTS_CMFPLONE_ROBOT_TESTING = FunctionalTesting(
     bases=(
         PRODUCTS_CMFPLONE_FIXTURE,
         PRODUCTS_CMFPLONE_ROBOT_REMOTE_LIBRARY_FIXTURE,
-        z2.ZSERVER_FIXTURE
+        zope.WSGI_SERVER_FIXTURE
     ),
     name="CMFPloneLayer:Acceptance"
 )

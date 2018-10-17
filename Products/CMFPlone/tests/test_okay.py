@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
-from plone.testing.z2 import Browser
+from plone.testing.zope import Browser
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 
+import six
 import unittest
 
 
@@ -28,7 +29,10 @@ class OkayTest(unittest.TestCase):
         for url in urls:
             browser.open(url)
             self.assertEqual(browser.contents, u'OK')
-            get_header = browser.headers.getheader
+            if six.PY2:
+                get_header = browser.headers.getheader
+            else:
+                get_header = browser.headers.get
             self.assertEqual(
                 get_header('Expires'), 'Sat, 1 Jan 2000 00:00:00 GMT')
             self.assertEqual(

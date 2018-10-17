@@ -3,14 +3,16 @@ from plone.resource.interfaces import IResourceDirectory
 from Products.CMFPlone.interfaces.resources import (
     OVERRIDE_RESOURCE_DIRECTORY_NAME,
 )
-from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
 from zope.component import getUtility
 
 from Products.CMFPlone.resources.browser.combine import (
     PRODUCTION_RESOURCE_DIRECTORY,
     combine_bundles,
 )
+from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 from Products.GenericSetup.tests import common
+
+import unittest
 
 
 class DummyImportContext(common.DummyImportContext):
@@ -26,9 +28,12 @@ class DummyImportContext(common.DummyImportContext):
         return path in self._directories
 
 
-class ProductsCMFPloneSetupTest(PloneTestCase):
+class ProductsCMFPloneSetupTest(unittest.TestCase):
 
-    def afterSetUp(self):
+    layer = PRODUCTS_CMFPLONE_INTEGRATION_TESTING
+
+    def setUp(self):
+        self.portal = self.layer['portal']
         combine_bundles(self.portal)
         persistent_directory = getUtility(
             IResourceDirectory, name="persistent")
@@ -36,7 +41,7 @@ class ProductsCMFPloneSetupTest(PloneTestCase):
         self.production_folder = container[PRODUCTION_RESOURCE_DIRECTORY]
 
     def test_production_directory(self):
-        self.assertEquals(
+        self.assertEqual(
             self.production_folder.listDirectory(),
             [
                 'default.css',
@@ -49,7 +54,7 @@ class ProductsCMFPloneSetupTest(PloneTestCase):
 
     def test_default_js_bundle(self):
         self.assertIn(
-            "jQuery",
+            b"jQuery",
             self.production_folder.readFile('default.js')
         )
 
@@ -62,7 +67,7 @@ class ProductsCMFPloneSetupTest(PloneTestCase):
         static.writeFile('plone-legacy-compiled.js', 'alert("Overrided legacy!");')
         combine_bundles(self.portal)
         self.assertIn(
-            'alert("Overrided legacy!");',
+            b'alert("Overrided legacy!");',
             self.production_folder.readFile('default.js')
         )
 
@@ -74,9 +79,9 @@ class ProductsCMFPloneSetupTest(PloneTestCase):
         # from Products.CMFPlone.resources.browser.combine import PRODUCTION_RESOURCE_DIRECTORY
 
         # Prepare some registry xml files with or without the key IBundleRegistry.
-        xml_with = '<registry>with IBundleRegistry</registry>'
-        xml_without = '<registry>without bundle registry</registry>'
-        xml_without2 = '<registry>without bundle registry</registry>'
+        xml_with = b'<registry>with IBundleRegistry</registry>'
+        xml_without = b'<registry>without bundle registry</registry>'
+        xml_without2 = b'<registry>without bundle registry</registry>'
         context = DummyImportContext(self.portal, purge=False)
 
         def get_timestamp():
