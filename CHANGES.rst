@@ -17,8 +17,11 @@ Breaking changes:
 
 - Removed my_worklist.py skin script. #1801
   [reinhardt]
-  
+
 - Removed getObjectsFromPathList.py skin script. #1801
+  [reinhardt]
+
+- Removed isExpired.py skin script. #1801
   [reinhardt]
   
 - Removed redirectToReferrer.py skin script. #1801
@@ -35,7 +38,8 @@ Breaking changes:
 
 New features:
 
-- Factored out human_readable_size method for replacing getObjSize.py. #1801
+- Factored out human_readable_size method for replacing getObjSize.py;
+  removed getObjSize.py. #1801
   [reinhardt]
 
 - Update TinyMCE to 4.7.13
@@ -70,6 +74,13 @@ Bug fixes:
 - Fixed getObjSize indexer for Python 3. #2526
   [reinhardt]
 - Fix toolbar menu on mobile #2333.
+- make groups_modify_roles test more robust.
+  [tschorr]
+
+-- Fix wrong CSS property to allow correct word-break.
+  [tmassman]
+
+ Fix toolbar menu on mobile #2333.
   [tmassman]
 
 - Removed the ``raiseUnauthorized`` skin script.
