@@ -18,6 +18,9 @@ New features:
 
 Bug fixes:
 
+- Add template and view arguments support to IBodyClassAdapters (fixes `#158 <https://github.com/plone/plone.app.layout/issues/158>`_).
+  [rodfersou]
+
 - Show document byline for logged-in users. Fixes #160
   [erral]
 
