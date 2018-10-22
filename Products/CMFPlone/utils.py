@@ -32,6 +32,7 @@ from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
 from types import ClassType
 from urlparse import urlparse
 from webdav.interfaces import IWriteLock
+from zExceptions import BadRequest
 from zope import schema
 from zope.component import getMultiAdapter
 from zope.component import getUtility
@@ -826,3 +827,70 @@ def human_readable_size(size):
                 break
         return '%.1f %s' % (float(size / float(SIZE_CONST[c])), c)
     return size
+
+
+def check_id(
+        context, id=None, required=0, alternative_id=None, contained_by=None,
+        **kwargs):
+    """Test an id to make sure it is valid.
+
+    Returns an error message if the id is bad or None if the id is good.
+
+    In Plone 5.2, this function will replace
+    Products/CMFPlone/skins/plone_scripts/check_id.py.
+    But here in Plone 5.1, the function calls that same script,
+    so that there should be no subtle differences with permissions.
+    See https://github.com/plone/Products.CMFPlone/issues/2582
+
+    For more info on the keyword arguments, see that script.
+
+    We need to fall back to a basic check though, otherwise
+    several tests that rely on this fallback will fail,
+    for example simple content added in a way where the script is
+    not available.  Several packages have their own fallback code
+    for the case that 'check_id' does not exist:
+
+    - Products.Archetypes and Products.ATContentTypes both simply check if
+      id is in parent.objectIds().
+    - plone.app.content tries parent._checkId(newid) from OFS.ObjectManager
+      and catches a possible BadRequest exception to return True instead.
+      This method checks for stuff like not allowing '..' as name,
+      or names starting with an underscore.  This includes a check for
+      an existing item when called with allow_dup=False.
+    - Products.validation has an IdValidator which disallows a space in the id,
+      checks if the id is given to a different object already,
+      and calls ObjectManager.checkValidId, which is the same as _checkId.
+
+    Note that Products.validation is the only one that needs to
+    do special stuff for checking if the conflicting item is the same as
+    the current item being edited.  All others are about adding a new one.
+
+    We do a fallback that should cover all these cases.
+    """
+    script = getattr(context, 'check_id', None)
+    if script is not None:
+        # We have found Products/CMFPlone/skins/plone_scripts/check_id.py
+        # or an override.  This is the expected standard case.
+        return script(
+            id=id, required=required, alternative_id=alternative_id,
+            contained_by=contained_by,
+            **kwargs)
+    if contained_by is None:
+        contained_by = aq_parent(aq_inner(context))
+    if contained_by is None:
+        return
+    # Check for existence.
+    if (id in contained_by.objectIds() and
+            getattr(aq_base(contained_by), id) is not aq_base(context)):
+        return _(u'There is already an item named ${name} in this folder.',
+                  mapping={u'name': safe_unicode(id)})
+    # The container may have the _checkId method from OFS or plone.folder.
+    # We use this only to check for invalid characters, not for duplicates,
+    # because we did that already.
+    script = getattr(contained_by, '_checkId', None)
+    if script is not None:
+        try:
+            return contained_by._checkId(id, allow_dup=True)
+        except BadRequest as exc:
+            return str(exc)
+        return

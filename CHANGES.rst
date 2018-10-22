@@ -36,6 +36,12 @@ Bug fixes:
 
 New features:
 
+- Added ``utils.check_id`` function.
+  This current simply calls the ``check_id.py`` skin script.
+  In Plone 5.2 the function will replace the script.
+  See `issue 2582 <https://github.com/plone/Products.CMFPlone/issues/2582>`_.
+  [maurits]
+
 - Added utils.human_readable_size.
   https://github.com/plone/Products.CMFPlone/issues/1801
   [reinhardt]
