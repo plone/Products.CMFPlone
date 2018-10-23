@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
-from plone.app.testing.bbb import PloneTestCase
 from Products.CMFPlone.PloneBatch import Batch
+from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 from Products.ZCatalog.Lazy import LazyMap
 
+import unittest
 
-class TestBatch(PloneTestCase):
+
+class TestBatch(unittest.TestCase):
 
     def test_batch_no_lazy(self):
         batch = Batch(range(100), size=10, start=10)
@@ -22,26 +24,42 @@ class TestBatch(PloneTestCase):
 
         self.assertEqual(batch.numpages, 10)
         self.assertEqual(batch.pagenumber, 9)
-        self.assertEqual(batch.navlist, [6, 7, 8, 9, 10])
+        self.assertEqual(batch.navlist, range(6, 11))
         self.assertEqual(batch.leapback, [])
-        self.assertEqual(batch.prevlist, [6, 7, 8])
+        self.assertEqual(batch.prevlist, range(6, 9))
         self.assertEqual(batch.previous.length, 10)
         self.assertEqual(batch.next.length, 5)
         self.assertEqual(batch.pageurl({}), 'b_start:int=80')
-        self.assertEqual(
-            batch.prevurls({}),
-            [(6, 'b_start:int=50'), (7, 'b_start:int=60'),
-             (8, 'b_start:int=70')])
-        self.assertEqual(batch.nexturls({}), [(10, 'b_start:int=90')])
+        self.assertListEqual(
+            list(batch.prevurls({})),
+            [
+                (6, 'b_start:int=50'),
+                (7, 'b_start:int=60'),
+                (8, 'b_start:int=70'),
+            ]
+        )
+        self.assertListEqual(
+            list(batch.nexturls({})),
+            [(10, 'b_start:int=90')],
+        )
+
+
+class TestBatchIntegration(unittest.TestCase):
+
+    layer = PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 
     def test_batch_brains(self):
-        self.loginAsPortalOwner()
-        portal = self.portal
-
-        for obj_id in ['%stest' % chr(c) for c in range(97, 123)]:
+        portal = self.layer['portal']
+        obj_ids = ['%stest' % chr(c) for c in range(97, 123)]
+        for obj_id in obj_ids:
             portal.invokeFactory('Document', obj_id)
 
         brains = portal.portal_catalog.searchResults(portal_type='Document',
                                                      sort_on='id')
-        batch = Batch(brains, size=10, start=10)
-        self.assertEqual(batch[0].id, 'jtest')
+        for start in (0, 1, 2, 10):
+            batch = Batch(brains, size=0, start=start)
+            self.assertEqual(
+                batch[0].id,
+                obj_ids[start],
+                'Failing test for start value: {}'.format(start)
+            )

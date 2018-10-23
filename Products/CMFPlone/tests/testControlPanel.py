@@ -1,11 +1,15 @@
 # -*- coding: utf-8 -*-
-from plone.app.testing.bbb import PloneTestCase
+from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
+
+import unittest
 
 
-class TestControlPanel(PloneTestCase):
+class TestControlPanel(unittest.TestCase):
 
-    def afterSetUp(self):
-        self.controlpanel = self.portal.portal_controlpanel
+    layer = PRODUCTS_CMFPLONE_INTEGRATION_TESTING
+
+    def setUp(self):
+        self.controlpanel = self.layer['portal'].portal_controlpanel
 
         # get the expected default groups and configlets
         self.groups = ['Plone', 'Products']

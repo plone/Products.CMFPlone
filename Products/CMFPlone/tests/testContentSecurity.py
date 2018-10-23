@@ -2,7 +2,7 @@
 from AccessControl import Unauthorized
 from Acquisition import aq_base
 from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
-
+from zExceptions.unauthorized import Unauthorized as zUnauthorized
 
 class TestContentSecurity(PloneTestCase):
 
@@ -25,12 +25,13 @@ class TestContentSecurity(PloneTestCase):
     def testCreateOtherMemberContentFails(self):
         self.login('user1')
         folder = self.membership.getHomeFolder('user2')
-        self.assertRaises(ValueError, folder.invokeFactory, 'Document', 'new')
+        with self.assertRaises(zUnauthorized):
+            folder.invokeFactory('Document', 'new')
 
     def testCreateRootContentFails(self):
         self.login('user1')
-        self.assertRaises(Unauthorized, self.portal.invokeFactory,
-                          'Document', 'new')
+        with self.assertRaises(Unauthorized):
+            self.portal.invokeFactory('Document', 'new')
 
     def testDeleteMemberContent(self):
         self.login('user1')
@@ -46,7 +47,8 @@ class TestContentSecurity(PloneTestCase):
 
         self.login('user2')
         folder = self.membership.getHomeFolder('user1')
-        self.assertRaises(Unauthorized, folder.manage_delObjects, ['new'])
+        with self.assertRaises(zUnauthorized):
+            folder.manage_delObjects(['new'])
 
     def testCreateWithLocalRole(self):
         self.login('user1')
@@ -74,8 +76,8 @@ class TestContentSecurity(PloneTestCase):
 
         self.login('user2')
         # This should now raise ValueError
-        self.assertRaises(ValueError, folder.subfolder.invokeFactory,
-                          'Document', 'new')
+        with self.assertRaises(zUnauthorized):
+            folder.subfolder.invokeFactory('Document', 'new')
 
     def testCreateSucceedsWithLocalRoleBlockedInParentButAssingedInSubFolder(self):
         # Make sure that blocking a acquisition in a folder does not interfere
@@ -111,7 +113,7 @@ class TestContentSecurity(PloneTestCase):
         subfolder.new.manage_addLocalRoles('user2', ('Member',))
         self.login('user2')
         # This should not raise Unauthorized
-        subfolder.new.base_view()
+        subfolder.new.view()
 
     def testViewAllowedOnContentInPrivateFolder(self):
         self.login('user1')
@@ -123,10 +125,10 @@ class TestContentSecurity(PloneTestCase):
         doc.manage_addLocalRoles('user2', ('Owner',))
         self.login('user2')
         # This should not raise Unauthorized
-        doc.base_view()
+        doc.view()
         # Neither should anonymous
         self.logout()
-        doc.base_view()
+        doc.view()
 
     def testViewAllowedOnContentInAcquisitionBlockedFolderWithCustomWorkflow(self):
         # Another test for http://dev.plone.org/plone/ticket/4055
@@ -165,7 +167,7 @@ class TestContentSecurity(PloneTestCase):
         # This shouldn't either, but strangely it never does even if the script
         # below, which is called in here, does.  What is wrong here?
         try:
-            subfolder.new.base_view()
+            subfolder.new.view()
         except Unauthorized:
             self.fail("Could not access base_view on 'new'")
         # This should not raise Unauthorized

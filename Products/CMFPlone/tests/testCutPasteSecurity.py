@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from AccessControl import Unauthorized
 from Acquisition import aq_base
+from OFS.CopySupport import CopyError
 from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
 from Products.CMFCore.interfaces import IContentish
 from zope.component import provideHandler, getGlobalSiteManager
@@ -39,8 +40,8 @@ class TestCutPasteSecurity(PloneTestCase):
 
         self.login('user2')
         folder = self.membership.getHomeFolder('user1')
-        self.assertRaises(Unauthorized, folder.manage_renameObject,
-                          'testrename', 'bad')
+        with self.assertRaises(CopyError):
+            folder.manage_renameObject('testrename', 'bad')
 
     def testCopyMemberContent(self):
         self.login('user1')

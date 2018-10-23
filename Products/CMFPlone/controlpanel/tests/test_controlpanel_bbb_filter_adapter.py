@@ -25,35 +25,35 @@ class FilterControlPanelAdapterTest(unittest.TestCase):
 
     def test_get_nasty_tags(self):
         self.settings.nasty_tags = [u'foo', u'bar']
-        self.assertEquals(
+        self.assertEqual(
             getAdapter(self.portal, IFilterSchema).nasty_tags,
             [u'foo', u'bar']
         )
 
     def test_set_nasty_tags(self):
         getAdapter(self.portal, IFilterSchema).nasty_tags = [u'foo', u'bar']
-        self.assertEquals(
+        self.assertEqual(
             self.settings.nasty_tags,
             [u'foo', u'bar']
         )
 
     def test_get_valid_tags(self):
         self.settings.valid_tags = [u'foo', u'bar']
-        self.assertEquals(
+        self.assertEqual(
             getAdapter(self.portal, IFilterSchema).valid_tags,
             [u'foo', u'bar']
         )
 
     def test_set_valid_tags(self):
         getAdapter(self.portal, IFilterSchema).valid_tags = [u'foo', u'bar']
-        self.assertEquals(
+        self.assertEqual(
             self.settings.valid_tags,
             [u'foo', u'bar']
         )
 
     def test_get_custom_attributes(self):
         self.settings.custom_attributes = [u'foo', u'bar']
-        self.assertEquals(
+        self.assertEqual(
             getAdapter(self.portal, IFilterSchema).custom_attributes,
             [u'foo', u'bar']
         )
@@ -62,7 +62,7 @@ class FilterControlPanelAdapterTest(unittest.TestCase):
         getAdapter(self.portal, IFilterSchema).custom_attributes = [
             u'foo', u'bar'
         ]
-        self.assertEquals(
+        self.assertEqual(
             self.settings.custom_attributes,
             [u'foo', u'bar']
         )

@@ -24,7 +24,7 @@ Check the member's properties
 Now we test the members' search form
 
     >>> import transaction; transaction.commit()
-    >>> from plone.testing.z2 import Browser
+    >>> from plone.testing.zope import Browser
     >>> browser = Browser(app)
     >>> portal_url = portal.absolute_url()
     >>> logout_url = portal_url + '/logout'

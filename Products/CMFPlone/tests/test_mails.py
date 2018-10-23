@@ -9,6 +9,8 @@ from Products.CMFPlone.interfaces.controlpanel import IMailSchema
 from zope.component import getUtility
 
 import doctest
+import re
+import six
 import unittest
 
 
@@ -37,16 +39,27 @@ MOCK_MAILHOST_FUNCTIONAL_TESTING = FunctionalTesting(
 )
 
 
+class Py23DocChecker(doctest.OutputChecker):
+    def check_output(self, want, got, optionflags):
+        if six.PY2:
+            want = re.sub("b'(.*?)'", "'\\1'", want)
+        else:
+            want = re.sub("u'(.*?)'", "'\\1'", want)
+        return doctest.OutputChecker.check_output(self, want, got, optionflags)
+
+
 def test_suite():
     return unittest.TestSuite((
         layered(doctest.DocFileSuite(
             'mails.txt',
             optionflags=OPTIONFLAGS,
             package='Products.CMFPlone.tests',
+            checker=Py23DocChecker(),
         ), layer=MOCK_MAILHOST_FUNCTIONAL_TESTING),
         layered(doctest.DocFileSuite(
             'emaillogin.rst',
             optionflags=OPTIONFLAGS,
             package='Products.CMFPlone.tests',
+            checker=Py23DocChecker(),
         ), layer=MOCK_MAILHOST_FUNCTIONAL_TESTING),
     ))

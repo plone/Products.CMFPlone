@@ -7,7 +7,7 @@ from Products.CMFPlone.interfaces import IWorkflowChain
 from ZODB.POSException import ConflictError
 from Acquisition import aq_base
 
-from App.class_init import InitializeClass
+from AccessControl.class_init import InitializeClass
 from AccessControl import getSecurityManager, ClassSecurityInfo
 from Products.CMFCore.permissions import ManagePortal
 from Products.DCWorkflow.Transitions import TRIGGER_USER_ACTION
@@ -246,8 +246,7 @@ class WorkflowTool(PloneBaseTool, BaseTool):
                                 objects_by_path[absurl] = (o.modified(), o)
 
         results = objects_by_path.values()
-        results.sort()
-        return tuple([obj[1] for obj in results])
+        return tuple([obj[1] for obj in sorted(results)])
 
     security.declareProtected(ManagePortal, 'getChainForPortalType')
 

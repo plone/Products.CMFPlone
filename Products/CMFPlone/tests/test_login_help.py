@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from plone import api
-from plone.testing.z2 import Browser
+from plone.testing.zope import Browser
 from Products.CMFPlone.browser.login.login_help import RequestResetPassword
 from Products.CMFPlone.browser.login.login_help import RequestUsername
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING

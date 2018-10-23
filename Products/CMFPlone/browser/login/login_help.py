@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from email import message_from_string
-from email.Header import Header
+from email.header import Header
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
@@ -22,6 +22,7 @@ from zope.i18n import translate
 from zope.interface import implementer
 
 import logging
+import six
 
 
 SEND_USERNAME_TEMPLATE = _(u"mailtemplate_username_info", default=u"""From: {encoded_mail_sender}
@@ -155,7 +156,7 @@ class RequestUsername(form.Form):
         )
         # The mail headers are not properly encoded we need to extract
         # them and let MailHost manage the encoding.
-        if isinstance(mail_text, unicode):
+        if six.PY2 and isinstance(mail_text, six.text_type):
             mail_text = mail_text.encode(encoding)
         message_obj = message_from_string(mail_text.strip())
         subject = message_obj['Subject']

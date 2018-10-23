@@ -62,7 +62,7 @@ class UserMembershipControlPanel(UsersGroupsControlPanelView):
             m) for m in self.gtool.getGroupsForPrincipal(self.member)]
         groupResults.sort(key=lambda x: x is not None and normalizeString(
             x.getGroupTitleOrName()))
-        return filter(None, groupResults)
+        return [i for i in groupResults if i]
 
     def getPotentialGroups(self, searchString):
         ignoredGroups = [x.id for x in self.getGroups() if x is not None]

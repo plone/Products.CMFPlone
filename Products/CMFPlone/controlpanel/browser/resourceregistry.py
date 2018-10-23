@@ -48,12 +48,12 @@ def updateRecordFromDict(record, data):
         if name in data:
             # almost all string data needs to be str, not unicode
             val = data[name]
-            if isinstance(val, six.text_type):
+            if six.PY2 and isinstance(val, six.text_type):
                 val = val.encode('utf-8')
             if isinstance(val, list):
                 newval = []
                 for item in val:
-                    if isinstance(item, six.text_type):
+                    if six.PY2 and isinstance(item, six.text_type):
                         item = item.encode('utf-8')
                     newval.append(item)
                 val = newval
@@ -359,8 +359,10 @@ class ResourceRegistryControlPanelView(RequireJsView):
     def save_less_variables(self):
         data = {}
         for key, val in json.loads(self.request.form.get('data')).items():
-            # need to convert to str: unicode
-            data[key.encode('utf8')] = val
+            if six.PY2 and isinstance(key, six.text_type):
+                # need to convert to str: unicode
+                key = key.encode('utf8')
+            data[key] = val
         self.registry['plone.lessvariables'] = data
         return json.dumps({
             'success': True
@@ -369,8 +371,10 @@ class ResourceRegistryControlPanelView(RequireJsView):
     def save_pattern_options(self):
         data = {}
         for key, val in json.loads(self.request.form.get('data')).items():
-            # need to convert to str: unicode
-            data[key.encode('utf8')] = val
+            if six.PY2 and isinstance(key, six.text_type):
+                # need to convert to str: unicode
+                key = key.encode('utf8')
+            data[key] = val
         self.registry['plone.patternoptions'] = data
         return json.dumps({
             'success': True

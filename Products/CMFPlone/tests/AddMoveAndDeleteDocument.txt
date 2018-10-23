@@ -3,7 +3,7 @@ Adding, Editing, Moving and Deleting a Document
 
 Does what the title says, really.  Plus some assertions.
 
-    >>> from plone.testing.z2 import Browser
+    >>> from plone.testing.zope import Browser
     >>> from plone.app.testing import SITE_OWNER_NAME
     >>> from plone.app.testing import SITE_OWNER_PASSWORD
     >>> app = layer['app']
@@ -116,7 +116,7 @@ We make sure the language is English at the beginning:
 
 And the content language is set to the default:
 
-    >>> browser.headers.dict['content-language']
+    >>> browser.headers.get('content-language')
     'en'
 
 Now set the language to German:
@@ -131,7 +131,7 @@ Now set the language to German:
 
 Make sure the content language was updated:
 
-    >>> browser.headers.dict['content-language']
+    >>> browser.headers.get('content-language')
     'de'
 
 Cut and paste Document

@@ -29,18 +29,18 @@ class NavigationControlPanelAdapterTest(unittest.TestCase):
             True
         )
         self.navigation_settings.generate_tabs = False
-        self.assertEquals(
+        self.assertEqual(
             getAdapter(self.portal, INavigationSchema).generate_tabs,
             False
         )
 
     def test_set_generate_tabs(self):
-        self.assertEquals(
+        self.assertEqual(
             self.navigation_settings.generate_tabs,
             True
         )
         getAdapter(self.portal, INavigationSchema).generate_tabs = False
-        self.assertEquals(
+        self.assertEqual(
             self.navigation_settings.generate_tabs,
             False
         )
@@ -51,18 +51,18 @@ class NavigationControlPanelAdapterTest(unittest.TestCase):
             True
         )
         self.navigation_settings.nonfolderish_tabs = False
-        self.assertEquals(
+        self.assertEqual(
             getAdapter(self.portal, INavigationSchema).nonfolderish_tabs,
             False
         )
 
     def test_set_nonfolderish_tabs(self):
-        self.assertEquals(
+        self.assertEqual(
             self.navigation_settings.nonfolderish_tabs,
             True
         )
         getAdapter(self.portal, INavigationSchema).nonfolderish_tabs = False
-        self.assertEquals(
+        self.assertEqual(
             self.navigation_settings.nonfolderish_tabs,
             False
         )
@@ -90,7 +90,7 @@ class NavigationControlPanelAdapterTest(unittest.TestCase):
             False
         )
         self.navigation_settings.filter_on_workflow = True
-        self.assertEquals(
+        self.assertEqual(
             getAdapter(self.portal, INavigationSchema).filter_on_workflow,
             True
         )
@@ -113,7 +113,7 @@ class NavigationControlPanelAdapterTest(unittest.TestCase):
         )
 
         self.navigation_settings.workflow_states_to_show = ('private',)
-        self.assertEquals(
+        self.assertEqual(
             getAdapter(self.portal, INavigationSchema).workflow_states_to_show,
             ('private',)
         )
