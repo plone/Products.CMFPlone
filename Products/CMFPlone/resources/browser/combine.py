@@ -1,18 +1,19 @@
 # -*- coding: utf-8 -*-
 from Acquisition import aq_base
 from datetime import datetime
+from io import BytesIO
 from plone.registry.interfaces import IRegistry
 from plone.resource.file import FilesystemFile
 from plone.resource.interfaces import IResourceDirectory
 from Products.CMFPlone.interfaces import IBundleRegistry
 from Products.CMFPlone.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME  # noqa
-from six import StringIO
 from zExceptions import NotFound
 from zope.component import getUtility
 from zope.component import queryUtility
 
 import logging
 import re
+import six
 
 
 PRODUCTION_RESOURCE_DIRECTORY = 'production'
@@ -31,6 +32,8 @@ def get_production_resource_directory():
     if 'timestamp.txt' not in production_folder:
         return '%s/++unique++1' % PRODUCTION_RESOURCE_DIRECTORY
     timestamp = production_folder.readFile('timestamp.txt')
+    if not six.PY2 and isinstance(timestamp, six.binary_type):
+        timestamp = timestamp.decode()
     return '%s/++unique++%s' % (
         PRODUCTION_RESOURCE_DIRECTORY, timestamp)
 
@@ -109,9 +112,11 @@ def write_js(context, folder, meta_bundle):
                 continue
             resources.append(resource)
 
-    fi = StringIO()
+    fi = BytesIO()
     for script in resources:
-        fi.write(script + '\n')
+        if not isinstance(script, six.binary_type):
+            script = script.encode()
+        fi.write((script + b'\n'))
     folder.writeFile(meta_bundle + '.js', fi)
 
 
@@ -133,15 +138,19 @@ def write_css(context, folder, meta_bundle):
             # Process relative urls:
             # we prefix with current resource path any url not starting with
             # '/' or http: or data:
+            if not isinstance(path, six.binary_type):
+                path = path.encode()
             css = re.sub(
-                r"""(url\(['"]?(?!['"]?([a-z]+:|\/)))""",
-                r'\1%s/' % path,
+                br"""(url\(['"]?(?!['"]?([a-z]+:|\/)))""",
+                br'\1%s/' % path,
                 css)
             resources.append(css)
 
-    fi = StringIO()
+    fi = BytesIO()
     for script in resources:
-        fi.write(script + '\n')
+        if not isinstance(script, six.binary_type):
+            script = script.encode()
+        fi.write((script + b'\n'))
     folder.writeFile(meta_bundle + '.css', fi)
 
 
@@ -161,8 +170,8 @@ def combine_bundles(context):
     production_folder = container[PRODUCTION_RESOURCE_DIRECTORY]
 
     # store timestamp
-    fi = StringIO()
-    fi.write(datetime.now().isoformat())
+    fi = BytesIO()
+    fi.write(datetime.now().isoformat().encode())
     production_folder.writeFile('timestamp.txt', fi)
 
     # generate new combined bundles

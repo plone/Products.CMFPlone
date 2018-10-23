@@ -12,15 +12,22 @@ Breaking changes:
 
 - Remove all dependencies on plone.app.controlpanel.
   Third party code need either to depend on plone.app.controlpanel 4.0,
-  which is a backward compatibilit package only, or also update to not depend on it anymore.
+  which is a backward compatibility package only, or also update to not depend on it anymore.
   [jensens]
+
+- Removed check_id.py skin script.  Replaced with utils.check_id function.
+  #1801 and #2582.
+  [maurits]
 
 - Removed my_worklist.py skin script. #1801
   [reinhardt]
-  
+
 - Removed getObjectsFromPathList.py skin script. #1801
   [reinhardt]
 
+- Removed isExpired.py skin script. #1801
+  [reinhardt]
+  
 - Removed redirectToReferrer.py skin script. #1801
   [tlotze]
 
@@ -64,6 +71,18 @@ New features:
 
 
 Bug fixes:
+
+- remove plone.app.folder dependency
+  [petschki]
+  
+- move GopipIndex Class to plone.folder
+  [petschki]
+
+- Fixed getObjSize indexer for Python 3. #2526
+  [reinhardt]
+- Fix toolbar menu on mobile #2333.
+- make groups_modify_roles test more robust.
+  [tschorr]
 
 -- Fix wrong CSS property to allow correct word-break.
   [tmassman]
@@ -279,3 +298,6 @@ Bug Fixes:
 
 - Remove depricated ``type`` attribute from ``script`` and ``link`` tags.
   [newbazz]
+
+- Render tinymce attributes correctly in Python3.
+  [sallner]

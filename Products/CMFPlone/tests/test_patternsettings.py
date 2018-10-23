@@ -60,7 +60,7 @@ class TestPatternSettingsView(unittest.TestCase):
     def testShouldReturnCorrectType(self):
         settings = PatternsSettingsView(self.folder, self.layer['request'])
         result = settings()
-        self.assertEquals(type(result), dict)
+        self.assertEqual(type(result), dict)
         for key, value in result.items():
             self.assertTrue(isinstance(key, six.string_types))
             self.assertTrue(isinstance(value, six.string_types))
@@ -68,15 +68,15 @@ class TestPatternSettingsView(unittest.TestCase):
     def testFolderUrls(self):
         settings = PatternsSettingsView(self.folder, self.layer['request'])
         result = settings()
-        self.assertEquals(
+        self.assertEqual(
             result['data-base-url'],
             self.folder.absolute_url()
         )
-        self.assertEquals(
+        self.assertEqual(
             result['data-portal-url'],
             self.layer['portal'].absolute_url()
         )
-        self.assertEquals(
+        self.assertEqual(
             result['data-view-url'],
             self.folder.absolute_url()
         )
@@ -86,12 +86,12 @@ class TestPatternSettingsView(unittest.TestCase):
         file_obj = self.folder['file1']
         settings = PatternsSettingsView(file_obj, self.layer['request'])
         result = settings()
-        self.assertEquals(result['data-base-url'], file_obj.absolute_url())
-        self.assertEquals(
+        self.assertEqual(result['data-base-url'], file_obj.absolute_url())
+        self.assertEqual(
             result['data-portal-url'],
             self.layer['portal'].absolute_url()
         )
-        self.assertEquals(
+        self.assertEqual(
             result['data-view-url'],
             file_obj.absolute_url() + '/view'
         )
@@ -104,4 +104,4 @@ class TestPatternSettingsView(unittest.TestCase):
 
         settings = PatternsSettingsView(self.folder, self.layer['request'])
         result = settings()
-        self.assertEquals(result['data-pat-foo'], u'{"foo": "bar"}')
+        self.assertEqual(result['data-pat-foo'], u'{"foo": "bar"}')

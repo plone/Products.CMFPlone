@@ -8,7 +8,7 @@ from Products.CMFCore.tests.base.content import SIMPLE_STRUCTUREDTEXT
 from Products.CMFCore.tests.base.content import SIMPLE_XHTML
 from Products.CMFCore.tests.base.content import STX_WITH_HTML
 from Products.CMFPlone.interfaces import ISiteSchema
-from Products.CMFPlone.tests import PloneTestCase
+from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 from zope.component import getUtility
 from zope.interface import alsoProvides
 from plone.subrequest.interfaces import ISubRequest
@@ -16,9 +16,9 @@ from plone.subrequest.interfaces import ISubRequest
 import unittest
 
 
-SITE_LOGO_BASE64 = 'filenameb64:cGl4ZWwucG5n;datab64:iVBORw0KGgoAAAANSUhEUgAA'\
-                   'AAEAAAABCAIAAACQd1PeAAAADElEQVQI12P4z8AAAAMBAQAY3Y2wAAAAA'\
-                   'ElFTkSuQmCC'
+SITE_LOGO_BASE64 = b'filenameb64:cGl4ZWwucG5n;datab64:iVBORw0KGgoAAAANSUhEUgA'\
+                   b'AAAEAAAABCAIAAACQd1PeAAAADElEQVQI12P4z8AAAAMBAQAY3Y2wAAA'\
+                   b'AAElFTkSuQmCC'
 
 
 class DefaultUtilsTests(unittest.TestCase):
@@ -41,10 +41,9 @@ class DefaultUtilsTests(unittest.TestCase):
         """safe_encode should always encode unicode to the specified encoding.
         """
         from Products.CMFPlone.utils import safe_encode
-        self.assertEqual(safe_encode(u'späm'), 'sp\xc3\xa4m')
-        self.assertEqual(safe_encode(u'späm', 'utf-8'), 'sp\xc3\xa4m')
-        self.assertEqual(safe_encode(u'späm', encoding='latin-1'), 'sp\xe4m')
-        self.assertEqual(('spam'), 'spam')
+        self.assertEqual(safe_encode(u'späm'), b'sp\xc3\xa4m')
+        self.assertEqual(safe_encode(u'späm', 'utf-8'), b'sp\xc3\xa4m')
+        self.assertEqual(safe_encode(u'späm', encoding='latin-1'), b'sp\xe4m')
 
     def test_get_top_request(self):
         """If in a subrequest, ``get_top_request`` should always return the top
@@ -191,7 +190,9 @@ class DefaultUtilsTests(unittest.TestCase):
         self.assertEqual(human_readable_size('barney'), 'barney')
 
 
-class LogoTests(PloneTestCase.PloneTestCase):
+class LogoTests(unittest.TestCase):
+
+    layer = PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 
     def test_getSiteLogo_with_setting(self):
         from Products.CMFPlone.utils import getSiteLogo

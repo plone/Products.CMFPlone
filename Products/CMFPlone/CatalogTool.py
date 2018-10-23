@@ -6,7 +6,7 @@ from AccessControl.Permissions import search_zcatalog as SearchZCatalog
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
-from App.class_init import InitializeClass
+from AccessControl.class_init import InitializeClass
 from App.special_dtml import DTMLFile
 from BTrees.Length import Length
 from DateTime import DateTime
@@ -72,9 +72,6 @@ BLACKLISTED_INTERFACES = frozenset((
     'OFS.interfaces.ITraversable',
     'OFS.interfaces.IZopeObject',
     'persistent.interfaces.IPersistent',
-    'plone.app.folder.bbb.IArchivable',
-    'plone.app.folder.bbb.IPhotoAlbumAble',
-    'plone.app.folder.folder.IATUnifiedFolder',
     'plone.app.imaging.interfaces.IBaseObject',
     'plone.app.iterate.interfaces.IIterateAware',
     'plone.app.kss.interfaces.IPortalObject',
@@ -200,7 +197,9 @@ def sortable_title(obj):
                 start = sortabletitle[:(MAX_SORTABLE_TITLE - 13)]
                 end = sortabletitle[-10:]
                 sortabletitle = start + '...' + end
-            return sortabletitle.encode('utf-8')
+            if six.PY2:
+                return sortabletitle.encode('utf-8')
+            return sortabletitle
     return ''
 
 
@@ -392,7 +391,8 @@ class CatalogTool(PloneBaseTool, BaseTool):
         objs = []
         site = getSite()
         for path in list(paths):
-            path = path.encode('utf-8')  # paths must not be unicode
+            if six.PY2:
+                path = path.encode('utf-8')  # paths must not be unicode
             try:
                 site_path = '/'.join(site.getPhysicalPath())
                 parts = path[len(site_path) + 1:].split('/')
@@ -467,27 +467,23 @@ class CatalogTool(PloneBaseTool, BaseTool):
         # Empties catalog, then finds all contentish objects (i.e. objects
         # with an indexObject method), and reindexes them.
         # This may take a long time.
+        idxs = list(self.indexes())
 
         def indexObject(obj, path):
-            if (base_hasattr(obj, 'indexObject') and
-                    safe_callable(obj.indexObject)):
+            if (base_hasattr(obj, 'reindexObject') and
+                    safe_callable(obj.reindexObject)):
                 try:
-                    obj.indexObject()
-
+                    self.reindexObject(obj, idxs=idxs)
                     # index conversions from plone.app.discussion
                     annotions = IAnnotations(obj)
-                    catalog = getToolByName(obj, "portal_catalog")
                     if DISCUSSION_ANNOTATION_KEY in annotions:
                         conversation = annotions[DISCUSSION_ANNOTATION_KEY]
                         conversation = conversation.__of__(obj)
                         for comment in conversation.getComments():
                             try:
-                                if catalog:
-                                    catalog.indexObject(comment)
+                                self.indexObject(comment, idxs=idxs)
                             except StopIteration:  # pragma: no cover
                                 pass
-
-
                 except TypeError:
                     # Catalogs have 'indexObject' as well, but they
                     # take different args, and will fail

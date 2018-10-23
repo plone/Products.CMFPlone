@@ -37,9 +37,3 @@ class TestPloneTestCase(PloneTestCase.PloneTestCase):
         self.assertEqual(
             self.workflow.getInfoFor(self.folder.new, 'review_state'),
             'visible')
-
-    def testEditDocument(self):
-        self.folder.invokeFactory('Document', id='new')
-        self.assertEqual(self.folder.new.EditableBody(), '')
-        self.folder.new.edit('plain', 'data', file='', safety_belt='')
-        self.assertEqual(self.folder.new.EditableBody(), 'data')

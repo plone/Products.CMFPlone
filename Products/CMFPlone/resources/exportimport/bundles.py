@@ -6,7 +6,6 @@ from zope.globalrequest import getRequest
 
 
 def combine(context):
-
     logger = context.getLogger('bundles')
     registry = queryUtility(IRegistry)
 
@@ -22,7 +21,7 @@ def combine(context):
     found = False
     for filepath in filepaths:
         body = context.readDataFile(filepath)
-        if body is not None and 'IBundleRegistry' in body:
+        if body is not None and b'IBundleRegistry' in body:
             found = True
             break
     if not found:

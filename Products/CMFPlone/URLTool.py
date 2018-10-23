@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from AccessControl import ClassSecurityInfo
 from Acquisition import aq_parent, aq_inner
-from App.class_init import InitializeClass
+from AccessControl.class_init import InitializeClass
 from plone.registry.interfaces import IRegistry
 from posixpath import normpath
 from Products.CMFCore.interfaces import ISiteRoot

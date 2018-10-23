@@ -41,8 +41,8 @@ Editing Control Panel
   >>> from Products.CMFPlone.interfaces import IEditingSchema
   >>> editing_settings = registry.forInterface(IEditingSchema, prefix='plone')
 
-  >>> editing_settings.default_editor
-  u'TinyMCE'
+  >>> editing_settings.default_editor == u'TinyMCE'
+  True
 
   >>> editing_settings.ext_editor
   False
@@ -154,8 +154,8 @@ Site Control Panel
   >>> from Products.CMFPlone.interfaces import ISiteSchema
   >>> site_settings = registry.forInterface(ISiteSchema, prefix='plone')
 
-  >>> site_settings.site_title
-  u'Plone site'
+  >>> site_settings.site_title == u'Plone site'
+  True
 
   >>> site_settings.exposeDCMetaTags
   False
@@ -163,8 +163,8 @@ Site Control Panel
   >>> site_settings.enable_sitemap
   False
 
-  >>> site_settings.webstats_js
-  u''
+  >>> site_settings.webstats_js == u''
+  True
 
 
 Overview Control Panel
@@ -182,11 +182,12 @@ Markup Control Panel
   >>> from Products.CMFPlone.interfaces import IMarkupSchema
   >>> markup_settings = registry.forInterface(IMarkupSchema, prefix='plone')
 
-  >>> markup_settings.default_type
-  u'text/html'
+  >>> markup_settings.default_type == u'text/html'
+  True
 
-  >>> markup_settings.allowed_types
-  ('text/html', 'text/x-web-textile')
+
+  >>> markup_settings.allowed_types == (u'text/html', u'text/x-web-textile')
+  True
 
 
 User and Groups Control Panel

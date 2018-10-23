@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from OFS.ObjectManager import ObjectManager
 
+# FIXME: This no longer works with the new ZMI
+
 ADD_PLONE_SITE_HTML = '''
 <dtml-if "_.len(this().getPhysicalPath()) == 1 or this().meta_type == 'Folder' and 'PloneSite' not in [o.__class__.__name__ for o in this().aq_chain]">
   <!-- Add Plone site action-->
