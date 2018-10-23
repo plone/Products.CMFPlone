@@ -10,6 +10,11 @@ Changelog
 
 Breaking changes:
 
+- Removed generateUniqueId.py skins script (after it was added to Products.Archetypes).
+  This script is no longer available outside Archetypes world.
+  #1801
+  [jensens]
+
 - Remove all dependencies on plone.app.controlpanel.
   Third party code need either to depend on plone.app.controlpanel 4.0,
   which is a backward compatibility package only, or also update to not depend on it anymore.
@@ -27,7 +32,7 @@ Breaking changes:
 
 - Removed isExpired.py skin script. #1801
   [reinhardt]
-  
+
 - Removed redirectToReferrer.py skin script. #1801
   [tlotze]
 
@@ -74,7 +79,7 @@ Bug fixes:
 
 - remove plone.app.folder dependency
   [petschki]
-  
+
 - move GopipIndex Class to plone.folder
   [petschki]
 

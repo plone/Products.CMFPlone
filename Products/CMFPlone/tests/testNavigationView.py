@@ -14,6 +14,9 @@ from Products.CMFPlone.tests.utils import validateCSSIdentifier
 from zope.component import getUtility
 from zope.interface import directlyProvides
 
+import random
+import string
+
 portal_name = PloneTestCase.portal_name
 
 
@@ -181,10 +184,12 @@ class TestBaseNavTree(PloneTestCase.PloneTestCase):
                          '/plone/folder2/folder21/doc211')
 
     def testTopLevelWithPortalFactory(self):
-        id = self.portal.generateUniqueId('Document')
+        cid = ''.join(
+            [random.choice(string.ascii_lowercase) for x in range(10)]
+        )
         typeName = 'Document'
         newObject = self.portal.folder1.restrictedTraverse(
-            'portal_factory/' + typeName + '/' + id)
+            'portal_factory/' + typeName + '/' + cid)
         # Will raise a KeyError unless bug is fixed
         view = self.view_class(newObject, self.request)
         view.navigationTree()
