@@ -12,7 +12,7 @@ Breaking changes:
 
 - Remove all dependencies on plone.app.controlpanel.
   Third party code need either to depend on plone.app.controlpanel 4.0,
-  which is a backward compatibilit package only, or also update to not depend on it anymore.
+  which is a backward compatibility package only, or also update to not depend on it anymore.
   [jensens]
 
 - Removed check_id.py skin script.  Replaced with utils.check_id function.
@@ -39,6 +39,9 @@ Breaking changes:
 
 - Stop configuring 'View History' permission which was removed from Zope.
   [davisagli]
+
+- Remove legacy resource registries portal_css and portal_javascripts
+  [ksuess]
 
 New features:
 
