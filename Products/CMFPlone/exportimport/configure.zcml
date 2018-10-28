@@ -47,8 +47,6 @@
    <depends name="portlets" />
    <depends name="rolemap" />
    <depends name="catalog" />
-   <depends name="cssregistry" />
-   <depends name="jsregistry" />
    <depends name="viewlets" />
    <depends name="controlpanel" />
    <depends name="propertiestool" />

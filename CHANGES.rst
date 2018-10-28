@@ -306,3 +306,6 @@ Bug Fixes:
 
 - Render tinymce attributes correctly in Python3.
   [sallner]
+
+- Remove unresolved dependencies of plone-final to cssregistry and jsregistry.
+  [pbauer]
