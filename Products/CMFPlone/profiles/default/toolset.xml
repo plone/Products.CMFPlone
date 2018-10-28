@@ -16,14 +16,10 @@
            class="Products.CMFPlone.CatalogTool.CatalogTool"/>
  <required tool_id="portal_controlpanel"
            class="Products.CMFPlone.PloneControlPanel.PloneControlPanel"/>
- <required tool_id="portal_css"
-           class="Products.ResourceRegistries.tools.CSSRegistry.CSSRegistryTool"/>
  <required tool_id="portal_groupdata"
            class="Products.PlonePAS.tools.groupdata.GroupDataTool"/>
  <required tool_id="portal_groups"
            class="Products.PlonePAS.tools.groups.GroupsTool"/>
- <required tool_id="portal_javascripts"
-           class="Products.ResourceRegistries.tools.JSRegistry.JSRegistryTool"/>
  <required tool_id="portal_memberdata"
            class="Products.PlonePAS.tools.memberdata.MemberDataTool"/>
  <required tool_id="portal_membership"
