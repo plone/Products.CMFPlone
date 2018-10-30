@@ -77,6 +77,9 @@ New features:
 
 Bug fixes:
 
+- Modernize robot keywords that use "Get Element Attribute"
+  [ale-rt]
+
 - remove plone.app.folder dependency
   [petschki]
 
