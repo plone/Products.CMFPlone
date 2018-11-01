@@ -79,6 +79,11 @@ New features:
 
 - Rename safe_unicode to safe_text and safe_encode to safe_bytes. Keep old aliases.
   [pbauer]
+- Add a ``bin/instance verifydb`` command which can be used to check
+  that all records in the database can be successfully loaded.
+  This is intended to help with verifying a database conversion
+  from Python 2 to Python 3.
+  [davisagli]
 
 Bug fixes:
 
