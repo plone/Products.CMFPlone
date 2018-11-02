@@ -18,13 +18,13 @@ Changelog
 
 Breaking changes:
 
+- Factor out all static resources and the ``plone-compile-resources`` script into plone.staticresources.
+  [thet]
+
 - Removed generateUniqueId.py skins script (after it was added to Products.Archetypes).
   This script is no longer available outside Archetypes world.
   #1801
   [jensens]
-- Factor out all static resources into plone.staticresources.
-- Factor out all static resources and the ``plone-compile-resources`` script into plone.staticresources.
-  [thet]
 
 - Remove all dependencies on plone.app.controlpanel.
   Third party code need either to depend on plone.app.controlpanel 4.0,
@@ -94,88 +94,12 @@ New features:
 
 - Rename safe_unicode to safe_text and safe_encode to safe_bytes. Keep old aliases.
   [pbauer]
+
 - Add a ``bin/instance verifydb`` command which can be used to check
   that all records in the database can be successfully loaded.
   This is intended to help with verifying a database conversion
   from Python 2 to Python 3.
   [davisagli]
-
-Bug fixes:
-
-- Modernize robot keywords that use "Get Element Attribute"
-  [ale-rt]
-
-- remove plone.app.folder dependency
-  [petschki]
-
-- move GopipIndex Class to plone.folder
-  [petschki]
-
-- Fixed getObjSize indexer for Python 3. #2526
-  [reinhardt]
-- Fix toolbar menu on mobile #2333.
-- make groups_modify_roles test more robust.
-  [tschorr]
-
--- Fix wrong CSS property to allow correct word-break.
-  [tmassman]
-
- Fix toolbar menu on mobile #2333.
-  [tmassman]
-
-- Removed the ``raiseUnauthorized`` skin script.
-  If you use this, please do permission checking in your own Python code instead (likely in a browser view).
-  Refs `issue 1801 <https://github.com/plone/Products.CMFPlone/issues/1801>`_.
-  [maurits]
-
-- Remove the devdependencies from bower.json - they are just used for running tests in mockup, not here.
-  [sunew]
-
-- Adapt tests to `Products.GenericSetup >= 2.0` thus requiring at least that
-  version.
-  [icemac]
-
-- Some tools from CMFCore are now utilities
-  [pbauer]
-
-- Fix failing thememapper robot test after rebuild of thememapper bundle in p.a.theming PR 148
-  [sunew]
-
-- Remove five.pt for Zope 4
-  [jensens]
-
-- Changes for Zope 4 compatibility in maintenance controlpanel.
-  [thet]
-
-- Render exceptions using an exception view instead of standard_error_message.
-  [davisagli]
-
-- Remove old PlacelessTranslationService.
-  [jensens, ksuess]
-
-- Fix controlpanel quickinstaller view:
-  A not yet installed product must not return any upgrade info.
-  [jensens]
-
-- Fix to make plone/plone.session#11 work:
-  Make test for installation of  plone.session more explicit.
-  [jensens]
-
-- Advanced Catalog Clear And Rebuild feature showed wrong processing time due to new queue processing.
-  This was fixed bei calling ``processQueue()`` after indexing.
-  [jensens]
-
-- Some nested `section id="edit-bar"` tag in folder_contents page #2322
-  [terapyon]
-
-- Remove ``plone-generate-gruntfile`` (it is all available through ``plone-compile-resources``).
-  [jensens]
-
-- Migrate from ``slimit`` to ``calmjs.parse`` for the JavaScript cooker #2616
-  [metatoaster]
-
-
-New Features:
 
 - Update to latest mockup
   [frapell]
@@ -194,8 +118,6 @@ New Features:
 
 - add link to Plone.org VPAT accessibility statement
   [tkimnguyen]
-
-Bug Fixes:
 
 - Remove last legacy Javascript ``highlight-searchterms.js``.
   Removes also the skins folder ``plone_ecmascript``.
@@ -340,3 +262,77 @@ Bug Fixes:
 
 - Remove unresolved dependencies of plone-final to cssregistry and jsregistry.
   [pbauer]
+
+Bug fixes:
+
+- Modernize robot keywords that use "Get Element Attribute"
+  [ale-rt]
+
+- remove plone.app.folder dependency
+  [petschki]
+
+- move GopipIndex Class to plone.folder
+  [petschki]
+
+- Fixed getObjSize indexer for Python 3. #2526
+  [reinhardt]
+- Fix toolbar menu on mobile #2333.
+- make groups_modify_roles test more robust.
+  [tschorr]
+
+-- Fix wrong CSS property to allow correct word-break.
+  [tmassman]
+
+ Fix toolbar menu on mobile #2333.
+  [tmassman]
+
+- Removed the ``raiseUnauthorized`` skin script.
+  If you use this, please do permission checking in your own Python code instead (likely in a browser view).
+  Refs `issue 1801 <https://github.com/plone/Products.CMFPlone/issues/1801>`_.
+  [maurits]
+
+- Remove the devdependencies from bower.json - they are just used for running tests in mockup, not here.
+  [sunew]
+
+- Adapt tests to `Products.GenericSetup >= 2.0` thus requiring at least that
+  version.
+  [icemac]
+
+- Some tools from CMFCore are now utilities
+  [pbauer]
+
+- Fix failing thememapper robot test after rebuild of thememapper bundle in p.a.theming PR 148
+  [sunew]
+
+- Remove five.pt for Zope 4
+  [jensens]
+
+- Changes for Zope 4 compatibility in maintenance controlpanel.
+  [thet]
+
+- Render exceptions using an exception view instead of standard_error_message.
+  [davisagli]
+
+- Remove old PlacelessTranslationService.
+  [jensens, ksuess]
+
+- Fix controlpanel quickinstaller view:
+  A not yet installed product must not return any upgrade info.
+  [jensens]
+
+- Fix to make plone/plone.session#11 work:
+  Make test for installation of  plone.session more explicit.
+  [jensens]
+
+- Advanced Catalog Clear And Rebuild feature showed wrong processing time due to new queue processing.
+  This was fixed bei calling ``processQueue()`` after indexing.
+  [jensens]
+
+- Some nested `section id="edit-bar"` tag in folder_contents page #2322
+  [terapyon]
+
+- Remove ``plone-generate-gruntfile`` (it is all available through ``plone-compile-resources``).
+  [jensens]
+
+- Migrate from ``slimit`` to ``calmjs.parse`` for the JavaScript cooker #2616
+  [metatoaster]
