@@ -6,7 +6,7 @@ Author: J Cameron Cooper, Sept 2003
 """
 from AccessControl import ClassSecurityInfo
 from AccessControl import ModuleSecurityInfo
-from App.class_init import InitializeClass
+from AccessControl.class_init import InitializeClass
 from BTrees.OOBTree import OOBTree
 from OFS.SimpleItem import SimpleItem
 from plone.registry.interfaces import IRegistry

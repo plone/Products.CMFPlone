@@ -6,19 +6,11 @@ from plone.app.testing import SITE_OWNER_PASSWORD
 from zExceptions import Unauthorized
 
 import re
+import six
 import unittest
 
 
 class TestAttackVectorsUnit(unittest.TestCase):
-
-    def test_gtbn_funcglobals(self):
-        from Products.CMFPlone.utils import getToolByName
-        try:
-            getToolByName(self.assertTrue, 'func_globals')['__builtins__']
-        except TypeError:
-            pass
-        else:
-            self.fail('getToolByName should block access to non CMF tools')
 
     def test_setHeader_drops_LF(self):
         from ZPublisher.HTTPResponse import HTTPResponse
@@ -62,6 +54,15 @@ allow_module('os')
 
 class TestAttackVectorsFunctional(PloneTestCase):
 
+    def test_gtbn_funcglobals(self):
+        from Products.CMFPlone.utils import getToolByName
+        try:
+            getToolByName(self.assertTrue, '__globals__')['__builtins__']
+        except TypeError:
+            pass
+        else:
+            self.fail('getToolByName should block access to non CMF tools')
+
     def test_widget_traversal_1(self):
         res = self.publish(
             '/plone/@@discussion-settings/++widget++moderator_email')
@@ -96,6 +97,7 @@ class TestAttackVectorsFunctional(PloneTestCase):
             return m.group(1)
         return ''
 
+    @unittest.skip('Delete after move to ATContentTypes')
     def test_gtbn_faux_archetypes_tool(self):
         from Products.CMFCore.utils import FauxArchetypeTool
         from Products.CMFPlone.utils import getToolByName
@@ -122,6 +124,7 @@ class TestAttackVectorsFunctional(PloneTestCase):
         res = self.publish("/plone/uid_catalog/resolve_url?path=/evil")
         self.assertEqual(404, res.status)
 
+    @unittest.skip('Delete after move to ATContentTypes')
     def test_at_download(self):
         self.setRoles(['Manager'])
         self.portal.portal_workflow.setChainForPortalTypes(
@@ -139,11 +142,12 @@ class TestAttackVectorsFunctional(PloneTestCase):
         self.assertTrue(res.headers['location'].startswith(
             'http://nohost/plone/acl_users/credentials_cookie_auth/require_login'))
 
+    @unittest.skip('Delete after move to ATContentTypes')
     def test_ftp(self):
         self.setRoles(['Manager', 'Owner'])
         self.portal.REQUEST.PARENTS = [self.app]
         res = self.portal.news.manage_FTPlist(self.portal.REQUEST)
-        self.assertTrue(isinstance(res, basestring))
+        self.assertTrue(isinstance(res, six.string_types))
         self.portal.portal_workflow.doActionFor(self.portal.news, 'hide')
         self.setRoles(['Member'])
         from zExceptions import Unauthorized
@@ -154,6 +158,7 @@ class TestAttackVectorsFunctional(PloneTestCase):
         res = self.publish('/plone/@@')
         self.assertEqual(404, res.status)
 
+    @unittest.skip('Delete after move to ATContentTypes')
     def test_go_back(self):
         res = self.publish(
             '/plone/front-page/go_back?last_referer=http://${request}',
@@ -182,6 +187,7 @@ class TestAttackVectorsFunctional(PloneTestCase):
         res = self.publish('/plone/utranslate?msgid=foo')
         self.assertEqual(403, res.status)
 
+    @unittest.skip('Delete after move to ATContentTypes')
     def test_createObject(self):
         res = self.publish('/plone/createObject?type_name=File&id=${foo}')
         self.assertEqual(302, res.status)

@@ -5146,7 +5146,13 @@ define('mockup-i18n',[
     if (!self.baseUrl) {
       self.baseUrl = '/plonejsi18n';
     }
-    self.currentLanguage = $('html').attr('lang') || 'en-us';
+    self.currentLanguage = $('html').attr('lang') || 'en';
+
+    // Fix for country specific languages
+    if (self.currentLanguage.split('-').length > 1) {
+      self.currentLanguage = self.currentLanguage.split('-')[0] + '_' + self.currentLanguage.split('-')[1].toUpperCase();
+    }
+
     self.storage = null;
     self.catalogs = {};
     self.ttl = 24 * 3600 * 1000;
@@ -5649,7 +5655,7 @@ define('mockup-utils',[
   };
 
   var parseBodyTag = function(txt) {
-    return $((/<body[^>]*>((.|[\n\r])*)<\/body>/im).exec(txt)[0]
+    return $((/<body[^>]*>[^]*<\/body>/im).exec(txt)[0]
       .replace('<body', '<div').replace('</body>', '</div>')).eq(0).html();
   };
 
@@ -5681,7 +5687,23 @@ define('mockup-utils',[
   };
 
   var removeHTML = function(val) {
-    return val.replace(/<[^>]+>/ig, "");
+    return val.replace(/<[^>]+>/ig, '');
+  };
+
+  var storage = {
+    // Simple local storage wrapper, which doesn't break down if it's not available.
+    get: function (name) {
+        if (window.localStorage) {
+          var val = window.localStorage[name];
+          return typeof(val) === 'string' ? JSON.parse(val) : undefined;
+      }
+    },
+
+    set: function (name, val) {
+      if (window.localStorage) {
+        window.localStorage[name] = JSON.stringify(val);
+      }
+    }
   };
 
   return {
@@ -5696,7 +5718,8 @@ define('mockup-utils',[
     loading: new Loading(),  // provide default loader
     parseBodyTag: parseBodyTag,
     QueryHelper: QueryHelper,
-    setId: setId
+    setId: setId,
+    storage: storage
   };
 });
 
@@ -6430,7 +6453,7 @@ $event.fixHooks.touchcancel = {
  *    selector(string): Selector to use to draggable items in pattern ('li')
  *    dragClass(string): Class to apply to original item that is being dragged. ('item-dragging')
  *    cloneClass(string): Class to apply to cloned item that is dragged. ('dragging')
- *    drop(function): callback function for when item is dropped (null)
+ *    drop(function, string): Callback function or name of callback function in global namespace to be called when item is dropped ('')
  *
  * Documentation:
  *    # Default
@@ -6491,7 +6514,7 @@ define('mockup-patterns-sortable',[
           addClass(pattern.options.cloneClass).
           css({opacity: 0.75, position: 'absolute'}).appendTo(document.body);
       },
-      drop: null // function to handle drop event
+      drop: undefined  // callback function or name of global function
     },
     init: function() {
       var self = this;
@@ -6535,8 +6558,12 @@ define('mockup-patterns-sortable',[
         var $el = $(this);
         $el.removeClass(self.options.dragClass);
         $(dd.proxy).remove();
-        if (self.options.drop) {
-          self.options.drop($el, $el.index() - start);
+          if (self.options.drop) {
+            if (typeof self.options.drop === 'string') {
+              window[self.options.drop]($el, $el.index() - start);
+            } else {
+              self.options.drop($el, $el.index() - start);
+            }
         }
       })
       .drop('init', function(e, dd ) {
@@ -30321,8 +30348,8 @@ define('mockup-patterns-resourceregistry-url/js/overrides',[
           '<% if(view.editing){ %>' +
             '<p class="resource-name text-primary"><%- view.editing %></p> ' +
             '<div class="plone-btn-group">' +
-              '<button class="plone-btn plone-btn-primary plone-btn-xs disabled"><%- _t("Save") %></button> ' +
-              '<button class="plone-btn plone-btn-default plone-btn-xs disabled"><%- _t("Cancel") %></button>' +
+              '<button class="plone-btn plone-btn-primary plone-btn-xs" disabled><%- _t("Save") %></button> ' +
+              '<button class="plone-btn plone-btn-default plone-btn-xs" disabled><%- _t("Cancel") %></button>' +
               '<button class="plone-btn plone-btn-danger plone-btn-xs"><%- _t("Delete customizations") %></button>' +
             '</div>' +
           '<% } %>' +
@@ -32226,7 +32253,7 @@ define('mockup-patterns-modal',[
             } else if (options.onError) {
               options.onError(xhr, textStatus, errorStatus);
             } else {
-              window.alert(_t('There was an error submitting the form.'));
+              // window.alert(_t('There was an error submitting the form.'));
               console.log('error happened do something');
             }
             self.emit('formActionError', [xhr, textStatus, errorStatus]);
@@ -32571,8 +32598,9 @@ define('mockup-patterns-modal',[
       self.$wrapper.addClass('image-modal');
       var src = self.$el.attr('href');
       var srcset = self.$el.attr('data-modal-srcset') || '';
+      var title = $.trim(self.$el.context.innerText) || 'Image';
       // XXX aria?
-      self.$raw = $('<div><h1>Image</h1><div id="content"><div class="modal-image"><img src="' + src + '" srcset="' + srcset + '" /></div></div></div>');
+      self.$raw = $('<div><h1>' + title + '</h1><div id="content"><div class="modal-image"><img src="' + src + '" srcset="' + srcset + '" /></div></div></div>');
       self._show();
     },
 
@@ -32797,9 +32825,6 @@ define('mockup-patterns-modal',[
       self.$modal.addClass(self.options.templateOptions.classActiveName);
       registry.scan(self.$modal);
       self.positionModal();
-      $('img', self.$modal).load(function() {
-        self.positionModal();
-      });
       $(window.parent).on('resize.plone-modal.patterns', function() {
         self.positionModal();
       });
@@ -34145,5 +34170,5 @@ require([
   'use strict';
 });
 
-define("/plone/bld51/src/Products.CMFPlone/Products/CMFPlone/static/resourceregistry.js", function(){});
+define("/work/playground/plone/plone.coredev-5.2/src/Products.CMFPlone/Products/CMFPlone/static/resourceregistry.js", function(){});
 

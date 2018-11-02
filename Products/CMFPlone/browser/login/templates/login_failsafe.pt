@@ -1,0 +1,85 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      i18n:domain="plone"
+      tal:omit-tag="">
+<body tal:omit-tag="">
+
+ <div id="login-form">
+
+  <h1>Failsafe Login</h1>
+
+  <div class="portalMessage error pat-cookietrigger" style="display:none">
+      <strong i18n:translate="">
+          Error
+      </strong>
+      <span tal:omit-tag=""
+          i18n:translate="enable_cookies_message_before_login">
+          Cookies are not enabled. You must enable cookies before you can log in.
+      </span>
+  </div>
+
+    <form action="." method="post"
+          tal:attributes="action view/action; enctype view/enctype">
+
+        <tal:widgets repeat="widget view/widgets/values">
+
+            <tal:block tal:define="hidden python:widget.mode == 'hidden'">
+            <div tal:condition="not:hidden">
+
+                <div class="field"
+                     tal:define="error widget/error"
+                     tal:attributes="class python:'field' + (error and ' error' or '')">
+
+                    <label for=""
+                           tal:attributes="for widget/id"
+                           tal:condition="not:hidden">
+                        <span i18n:translate=""
+                              tal:content="widget/label">label</span>
+                        <span class="required horizontal" title="Required"
+                              tal:condition="python:widget.required and not hidden"
+                              i18n:attributes="title title_required;">&nbsp;</span>
+                    </label>
+
+                    <div class="formHelp"
+                         tal:define="description widget/field/description"
+                         i18n:translate=""
+                         tal:content="description"
+                         tal:condition="description">
+                        field description
+                    </div>
+
+                    <div tal:condition="error"
+                         tal:content="structure error/render">
+                        Error
+                    </div>
+
+                    <div class="widget">
+                        <input type="text" tal:replace="structure widget/render" />
+                    </div>
+
+                </div>
+
+            </div>
+
+            <input type="hidden"
+                   tal:condition="hidden"
+                   tal:replace="structure widget/render" />
+            </tal:block>
+
+        </tal:widgets>
+        <span tal:replace="structure context/@@authenticator/authenticator"/>
+
+        <div class="formControls">
+          <tal:actions tal:repeat="action view/actions/values|nothing">
+            <input type="submit" tal:replace="structure action/render" />
+          </tal:actions>
+        </div>
+    </form>
+
+ </div>
+
+</body>
+</html>

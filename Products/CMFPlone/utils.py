@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import print_function
 from AccessControl import ClassSecurityInfo
 from AccessControl import getSecurityManager
 from AccessControl import ModuleSecurityInfo
@@ -20,17 +21,19 @@ from os.path import join
 from os.path import split
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.registry.interfaces import IRegistry
+from Products.CMFCore.permissions import AddPortalContent
 from Products.CMFCore.permissions import ManageUsers
 from Products.CMFCore.utils import ToolInit as CMFCoreToolInit
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone import bbb
 from Products.CMFPlone.interfaces.controlpanel import IImagingSchema
 from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
 from Products.CMFPlone.log import log
 from Products.CMFPlone.log import log_deprecated
 from Products.CMFPlone.log import log_exc
 from six.moves.urllib.parse import urlparse
-from webdav.interfaces import IWriteLock
+from ZODB.POSException import ConflictError
 from zope import schema
 from zope.component import getMultiAdapter
 from zope.component import getUtility
@@ -48,6 +51,7 @@ import json
 import OFS
 import pkg_resources
 import re
+import six
 import sys
 import transaction
 import warnings
@@ -59,6 +63,10 @@ try:
 except ImportError:
     ClassType = type
 
+if bbb.HAS_ZSERVER:
+    from webdav.interfaces import IWriteLock
+else:
+    from OFS.interfaces import IWriteLock
 
 deprecated_import(
     "Import from Products.CMFPlone.defaultpage instead",
@@ -171,7 +179,7 @@ def isExpired(content):
         expiry = expiry()
 
     # Convert to DateTime if necessary, ExpirationDate may return 'None'
-    if expiry and expiry != 'None' and isinstance(expiry, basestring):
+    if expiry and expiry != 'None' and isinstance(expiry, six.string_types):
         expiry = DateTime(expiry)
 
     if isinstance(expiry, DateTime) and expiry.isPast():
@@ -214,21 +222,24 @@ deprecated('getSiteEncoding',
 # XXX portal_utf8 and utf8_portal probably can go away
 def portal_utf8(context, str, errors='strict'):
     # Test
-    unicode(str, 'utf-8', errors)
+    six.text_type(str, 'utf-8', errors)
     return str
 
 
 # XXX this is the same method as above
 def utf8_portal(context, str, errors='strict'):
     # Test
-    unicode(str, 'utf-8', errors)
+    six.text_type(str, 'utf-8', errors)
     return str
 
 
 def getEmptyTitle(context, translated=True):
     """Returns string to be used for objects with no title or id"""
     # The default is an extra fancy unicode elipsis
-    empty = unicode('\x5b\xc2\xb7\xc2\xb7\xc2\xb7\x5d', 'utf-8')
+    if six.PY2:
+        empty = unicode('\x5b\xc2\xb7\xc2\xb7\xc2\xb7\x5d', 'utf-8')
+    else:
+        empty = b'\x5b\xc2\xb7\xc2\xb7\xc2\xb7\x5d'.decode('utf8')
     if translated:
         if context is not None:
             if not IBrowserRequest.providedBy(context):
@@ -258,10 +269,13 @@ class RealIndexIterator(object):
     def __init__(self, pos=0):
         self.pos = pos
 
-    def next(self):
+    def __next__(self):
+        # Python 3
         result = self.pos
         self.pos = self.pos + 1
         return result
+
+    next = __next__  # Python 2
 
 
 @security.private
@@ -451,29 +465,41 @@ def safe_unicode(value, encoding='utf-8'):
     """Converts a value to unicode, even it is already a unicode string.
 
         >>> from Products.CMFPlone.utils import safe_unicode
-
-        >>> safe_unicode('spam')
-        u'spam'
-        >>> safe_unicode(u'spam')
-        u'spam'
-        >>> safe_unicode(u'spam'.encode('utf-8'))
-        u'spam'
-        >>> safe_unicode('\xc6\xb5')
-        u'\u01b5'
-        >>> safe_unicode(u'\xc6\xb5'.encode('iso-8859-1'))
-        u'\u01b5'
-        >>> safe_unicode('\xc6\xb5', encoding='ascii')
-        u'\u01b5'
-        >>> safe_unicode(1)
-        1
-        >>> print safe_unicode(None)
+        >>> test_bytes = u'\u01b5'.encode('utf-8')
+        >>> safe_unicode('spam') == u'spam'
+        True
+        >>> safe_unicode(b'spam') == u'spam'
+        True
+        >>> safe_unicode(u'spam') == u'spam'
+        True
+        >>> safe_unicode(u'spam'.encode('utf-8')) == u'spam'
+        True
+        >>> safe_unicode(test_bytes) == u'\u01b5'
+        True
+        >>> safe_unicode(u'\xc6\xb5'.encode('iso-8859-1')) == u'\u01b5'
+        True
+        >>> safe_unicode(test_bytes, encoding='ascii') == u'\u01b5'
+        True
+        >>> safe_unicode(1) == 1
+        True
+        >>> print(safe_unicode(None))
         None
     """
-    if isinstance(value, unicode):
+    if six.PY2:
+        if isinstance(value, unicode):
+            return value
+        elif isinstance(value, basestring):
+            try:
+                value = unicode(value, encoding)
+            except (UnicodeDecodeError):
+                value = value.decode('utf-8', 'replace')
         return value
-    elif isinstance(value, basestring):
+
+    if isinstance(value, str):
+        return value
+    elif isinstance(value, bytes):
         try:
-            value = unicode(value, encoding)
+            value = str(value, encoding)
         except (UnicodeDecodeError):
             value = value.decode('utf-8', 'replace')
     return value
@@ -482,8 +508,18 @@ def safe_unicode(value, encoding='utf-8'):
 def safe_encode(value, encoding='utf-8'):
     """Convert unicode to the specified encoding.
     """
-    if isinstance(value, unicode):
+    if isinstance(value, six.text_type):
         value = value.encode(encoding)
+    return value
+
+
+def safe_nativestring(value, encoding='utf-8'):
+    """Convert a value to str in py2 and to text in py3
+    """
+    if six.PY2 and isinstance(value, six.text_type):
+        value = safe_encode(value, encoding)
+    if not six.PY2 and isinstance(value, six.binary_type):
+        value = safe_unicode(value, encoding)
     return value
 
 
@@ -655,7 +691,7 @@ def validate_json(value):
         class JSONError(schema.ValidationError):
             __doc__ = _(u"Must be empty or a valid JSON-formatted "
                         u"configuration – ${message}.", mapping={
-                            'message': unicode(exc)})
+                            'message': six.text_type(exc)})
 
         raise JSONError(value)
 
@@ -777,7 +813,10 @@ def get_top_site_from_url(context, request):
         for idx in range(len(url_path)):
             _path = '/'.join(url_path[:idx + 1]) or '/'
             site_path = request.physicalPathFromURL(_path)
-            site_path = safe_encode('/'.join(site_path)) or '/'
+            if six.PY2:
+                site_path = safe_encode('/'.join(site_path)) or '/'
+            else:
+                site_path = '/'.join(site_path) or '/'
             _site = context.restrictedTraverse(site_path)
             if ISite.providedBy(_site):
                 break
@@ -798,3 +837,244 @@ def _safe_format(inst, method):
     as we do in CMFPlone/__init__.py.
     """
     return SafeFormatter(inst).safe_format
+
+
+SIZE_CONST = {'KB': 1024, 'MB': 1024 * 1024, 'GB': 1024 * 1024 * 1024}
+SIZE_ORDER = ('GB', 'MB', 'KB')
+
+
+def human_readable_size(size):
+    """ Get a human readable size string. """
+    smaller = SIZE_ORDER[-1]
+
+    # if the size is a float, then make it an int
+    # happens for large files
+    try:
+        size = int(size)
+    except (ValueError, TypeError):
+        pass
+
+    if not size:
+        return '0 %s' % smaller
+
+    if isinstance(size, six.integer_types):
+        if size < SIZE_CONST[smaller]:
+            return '1 %s' % smaller
+        for c in SIZE_ORDER:
+            if size // SIZE_CONST[c] > 0:
+                break
+        return '%.1f %s' % (float(size / float(SIZE_CONST[c])), c)
+    return size
+
+
+def check_id(
+        context, id=None, required=0, alternative_id=None, contained_by=None,
+        **kwargs):
+    """Test an id to make sure it is valid.
+
+    This used to be in Products/CMFPlone/skins/plone_scripts/check_id.py.
+
+    Returns an error message if the id is bad or None if the id is good.
+    Parameters are as follows:
+
+        id - the id to check
+
+        required - if False, id can be the empty string
+
+        alternative_id - an alternative value to use for the id
+        if the id is empty or autogenerated
+
+    Accept keyword arguments for compatibility with the fallback
+    in Products.validation.
+
+    Note: The reason the id is included is to handle id error messages for
+    such objects as files and images that supply an alternative id when an
+    id is auto-generated.
+    If you say "There is already an item with this name in this folder"
+    for an image that has the Name field populated with an autogenerated id,
+    it can cause some confusion; since the real problem is the name of
+    the image file name, not in the name of the autogenerated id.
+    """
+    def xlate(message):
+        ts = getToolByName(context, 'translation_service', None)
+        if ts is None:
+            return message
+        return ts.translate(message, context=context.REQUEST)
+
+    # if an alternative id has been supplied, see if we need to use it
+    if alternative_id and not id:
+        id = alternative_id
+
+    # make sure we have an id if one is required
+    if not id:
+        if required:
+            return xlate(_(u'Please enter a name.'))
+
+        # Id is not required and no alternative was specified, so assume the
+        # object's id will be context.getId(). We still should check to make
+        # sure context.getId() is OK to handle the case of pre-created objects
+        # constructed via portal_factory.  The main potential problem is an id
+        # collision, e.g. if portal_factory autogenerates an id that already
+        # exists.
+
+        id = context.getId()
+
+    #
+    # do basic id validation
+    #
+
+    # check for reserved names
+    if id in ('login', 'layout', 'plone', 'zip', 'properties', ):
+        return xlate(
+            _(u'${name} is reserved.',
+              mapping={'name': id}))
+
+    # check for bad characters
+    plone_utils = getToolByName(context, 'plone_utils', None)
+    if plone_utils is not None:
+        bad_chars = plone_utils.bad_chars(id)
+        if len(bad_chars) > 0:
+            bad_chars = ''.join(bad_chars).decode('utf-8')
+            decoded_id = id.decode('utf-8')
+            return xlate(
+                _(u'${name} is not a legal name. The following characters are '
+                  u'invalid: ${characters}',
+                  mapping={u'name': decoded_id, u'characters': bad_chars}))
+
+    # check for a catalog index
+    portal_catalog = getToolByName(context, 'portal_catalog', None)
+    if portal_catalog is not None:
+        if id in list(portal_catalog.indexes()) + list(portal_catalog.schema()):
+            return xlate(
+                _(u'${name} is reserved.',
+                  mapping={u'name': id}))
+
+    # id is good; decide if we should check for id collisions
+    portal_factory = getToolByName(context, 'portal_factory', None)
+    if contained_by is not None:
+        # Always check for collisions if a container was passed
+        # via the contained_by parameter.
+        checkForCollision = True
+    elif portal_factory is not None and portal_factory.isTemporary(context):
+        # always check for collisions if we are creating a new object
+        checkForCollision = True
+        # Climb the acquisition chain until you get at the real container.
+        contained_by = aq_parent(aq_parent(aq_parent(aq_inner(context))))
+    else:
+        # if we have an existing object, only check for collisions
+        # if we are changing the id
+        checkForCollision = (context.getId() != id)
+
+    # check for id collisions
+    if not checkForCollision:
+        # We are done.
+        return
+    # handles two use cases:
+    # 1. object has not yet been created and we don't know where it will be
+    # 2. object has been created and checking validity of id within
+    #    container
+    if contained_by is None:
+        try:
+            contained_by = context.getParentNode()
+        except Unauthorized:
+            return  # nothing we can do
+    try:
+        result = _check_for_collision(contained_by, id, **kwargs)
+    except Unauthorized:
+        # There is a permission problem. Safe to assume we can't use this id.
+        return xlate(
+            _(u'${name} is reserved.',
+              mapping={u'name': id}))
+    if result is not None:
+        result = xlate(result, )
+    return result
+
+
+def _check_for_collision(contained_by, id, **kwargs):
+    """Check for collisions of an object id in a container.
+
+    Accept keyword arguments for compatibility with the fallback
+    in Products.validation.
+
+    When this was still a Python skin script, some security checks
+    would have been done automatically and caught by some
+    'except Unauthorized' lines.  Now, in unrestricted Python
+    code, we explicitly check.  But not all checks make sense.  If you don't
+    have the 'Access contents information' permission, theoretically
+    you should not be able to check for an existing conflicting id,
+    but it seems silly to then pretend that there is no conflict.
+
+    For safety, we let the check_id
+    function do a try/except Unauthorized when calling us.
+    """
+    secman = getSecurityManager()
+    # if not secman.checkPermission(
+    #         'Access contents information', contained_by):
+    #     # We cannot check.  Do not complain.
+    #     return
+
+    # Check for an existing object.
+    if id in contained_by:
+        existing_obj = getattr(contained_by, id, None)
+        if base_hasattr(existing_obj, 'portal_type'):
+            return _(
+                u'There is already an item named ${name} in this folder.',
+                mapping={u'name': id})
+
+    if base_hasattr(contained_by, 'checkIdAvailable'):
+        # This used to be called from the check_id skin script,
+        # which would check the permission automatically,
+        # and the code would catch the Unauthorized exception.
+        if secman.checkPermission(AddPortalContent, contained_by):
+            if not contained_by.checkIdAvailable(id):
+                return _(u'${name} is reserved.', mapping={u'name': id})
+
+    # containers may implement this hook to further restrict ids
+    if base_hasattr(contained_by, 'checkValidId'):
+        try:
+            contained_by.checkValidId(id)
+        except ConflictError:
+            raise
+        except:  # noqa: E722
+            return _(u'${name} is reserved.', mapping={u'name': id})
+
+    # make sure we don't collide with any parent method aliases
+    plone_utils = getToolByName(contained_by, 'plone_utils', None)
+    portal_types = getToolByName(contained_by, 'portal_types', None)
+    if plone_utils is not None and portal_types is not None:
+        parentFti = portal_types.getTypeInfo(contained_by)
+        if parentFti is not None:
+            aliases = plone_utils.getMethodAliases(parentFti)
+            if aliases is not None:
+                if id in aliases.keys():
+                    return _(u'${name} is reserved.', mapping={u'name': id})
+
+    # Lastly, we want to disallow the id of any of the tools in the portal
+    # root, as well as any object that can be acquired via portal_skins.
+    # However, we do want to allow overriding of *content* in the object's
+    # parent path, including the portal root.
+
+    if id == 'index_html':
+        # always allow index_html
+        return
+    portal_url = getToolByName(contained_by, 'portal_url', None)
+    if portal_url is None:
+        # Probably a test.
+        # All other code needs the portal, so there is nothing left to check.
+        return
+    portal = portal_url.getPortalObject()
+    if id in portal.contentIds():
+        # Fine to use the same id as a *content* item from the root.
+        return
+    # It is allowed to give an object the same id as another
+    # container in it's acquisition path as long as the
+    # object is outside the portal.
+    outsideportal = getattr(aq_parent(portal), id, None)
+    insideportal = getattr(portal, id, None)
+    if (insideportal is not None
+            and outsideportal is not None
+            and aq_base(outsideportal) == aq_base(insideportal)):
+        return
+    # but not other things
+    if getattr(portal, id, None) is not None:
+        return _(u'${name} is reserved.', mapping={u'name': id})

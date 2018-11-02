@@ -6,15 +6,15 @@ the translate method and the default parameter.
 
 from AccessControl import ClassSecurityInfo
 from Acquisition import aq_get
-from App.class_init import InitializeClass
-from i18nl10n import monthname_english
-from i18nl10n import monthname_msgid
-from i18nl10n import monthname_msgid_abbr
-from i18nl10n import ulocalized_time
-from i18nl10n import weekdayname_english
-from i18nl10n import weekdayname_msgid
-from i18nl10n import weekdayname_msgid_abbr
-from i18nl10n import weekdayname_msgid_short
+from AccessControl.class_init import InitializeClass
+from .i18nl10n import monthname_english
+from .i18nl10n import monthname_msgid
+from .i18nl10n import monthname_msgid_abbr
+from .i18nl10n import ulocalized_time
+from .i18nl10n import weekdayname_english
+from .i18nl10n import weekdayname_msgid
+from .i18nl10n import weekdayname_msgid_abbr
+from .i18nl10n import weekdayname_msgid_short
 from OFS.SimpleItem import SimpleItem
 from Products.CMFCore.utils import UniqueObject
 from Products.CMFPlone import PloneLocalesMessageFactory as PLMF
@@ -23,6 +23,8 @@ from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from zope.i18n import translate
 from zope.interface import implementer
 from zope.publisher.interfaces.browser import IBrowserRequest
+
+import six
 
 
 @implementer(ITranslationServiceTool)
@@ -60,10 +62,10 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
         # output_encoding
 
         # check if input is not type unicode
-        if not isinstance(m, unicode):
+        if not isinstance(m, six.text_type):
             if input_encoding is None:
                 input_encoding = 'utf-8'
-            m = unicode(str(m), input_encoding, errors)
+            m = six.text_type(str(m), input_encoding, errors)
 
         if output_encoding is None:
             output_encoding = 'utf-8'
@@ -76,14 +78,14 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
     def asunicodetype(self, m, input_encoding=None, errors='strict'):
         # create type unicode from type string
 
-        if isinstance(m, unicode):
+        if isinstance(m, six.text_type):
             return m
 
         if input_encoding is None:
             input_encoding = 'utf-8'
 
         # return as type unicode
-        return unicode(str(m), input_encoding, errors)
+        return six.text_type(str(m), input_encoding, errors)
 
     security.declarePublic('ulocalized_time')
 

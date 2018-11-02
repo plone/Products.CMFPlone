@@ -6,7 +6,7 @@ from AccessControl.Permissions import search_zcatalog as SearchZCatalog
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
-from App.class_init import InitializeClass
+from AccessControl.class_init import InitializeClass
 from App.special_dtml import DTMLFile
 from BTrees.Length import Length
 from DateTime import DateTime
@@ -26,9 +26,11 @@ from Products.CMFPlone.interfaces import INonStructuralFolder
 from Products.CMFPlone.interfaces import IPloneCatalogTool
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.utils import base_hasattr
+from Products.CMFPlone.utils import human_readable_size
 from Products.CMFPlone.utils import safe_callable
 from Products.CMFPlone.utils import safe_unicode
 from Products.ZCatalog.ZCatalog import ZCatalog
+from six.moves import urllib
 from zExceptions import Unauthorized
 from zope.annotation.interfaces import IAnnotations
 from zope.component import queryMultiAdapter
@@ -39,9 +41,8 @@ from zope.interface import providedBy
 
 import logging
 import re
+import six
 import time
-import urllib
-
 
 logger = logging.getLogger('Plone')
 
@@ -71,9 +72,6 @@ BLACKLISTED_INTERFACES = frozenset((
     'OFS.interfaces.ITraversable',
     'OFS.interfaces.IZopeObject',
     'persistent.interfaces.IPersistent',
-    'plone.app.folder.bbb.IArchivable',
-    'plone.app.folder.bbb.IPhotoAlbumAble',
-    'plone.app.folder.folder.IATUnifiedFolder',
     'plone.app.imaging.interfaces.IBaseObject',
     'plone.app.iterate.interfaces.IIterateAware',
     'plone.app.kss.interfaces.IPortalObject',
@@ -189,7 +187,7 @@ def sortable_title(obj):
         if safe_callable(title):
             title = title()
 
-        if isinstance(title, basestring):
+        if isinstance(title, six.string_types):
             # Ignore case, normalize accents, strip spaces
             sortabletitle = mapUnicode(safe_unicode(title)).lower().strip()
             # Replace numbers with zero filled numbers
@@ -199,7 +197,9 @@ def sortable_title(obj):
                 start = sortabletitle[:(MAX_SORTABLE_TITLE - 13)]
                 end = sortabletitle[-10:]
                 sortabletitle = start + '...' + end
-            return sortabletitle.encode('utf-8')
+            if six.PY2:
+                return sortabletitle.encode('utf-8')
+            return sortabletitle
     return ''
 
 
@@ -213,39 +213,17 @@ def getObjPositionInParent(obj):
         return ordered.getObjectPosition(obj.getId())
     return 0
 
-SIZE_CONST = {'KB': 1024, 'MB': 1024 * 1024, 'GB': 1024 * 1024 * 1024}
-SIZE_ORDER = ('GB', 'MB', 'KB')
-
 
 @indexer(Interface)
 def getObjSize(obj):
     """ Helper method for catalog based folder contents.
     """
-    smaller = SIZE_ORDER[-1]
-
     if base_hasattr(obj, 'get_size'):
         size = obj.get_size()
     else:
         size = 0
 
-    # if the size is a float, then make it an int
-    # happens for large files
-    try:
-        size = int(size)
-    except (ValueError, TypeError):
-        pass
-
-    if not size:
-        return '0 %s' % smaller
-
-    if isinstance(size, (int, long)):
-        if size < SIZE_CONST[smaller]:
-            return '1 %s' % smaller
-        for c in SIZE_ORDER:
-            if size / SIZE_CONST[c] > 0:
-                break
-        return '%.1f %s' % (float(size / float(SIZE_CONST[c])), c)
-    return size
+    return human_readable_size(size)
 
 
 @indexer(Interface)
@@ -407,13 +385,14 @@ class CatalogTool(PloneBaseTool, BaseTool):
             # Or: {'path': {'depth': 0, 'query': '/Plone/events/'}}
             paths = paths.get('query', [])
 
-        if isinstance(paths, basestring):
+        if isinstance(paths, six.string_types):
             paths = [paths]
 
         objs = []
         site = getSite()
         for path in list(paths):
-            path = path.encode('utf-8')  # paths must not be unicode
+            if six.PY2:
+                path = path.encode('utf-8')  # paths must not be unicode
             try:
                 site_path = '/'.join(site.getPhysicalPath())
                 parts = path[len(site_path) + 1:].split('/')
@@ -458,6 +437,11 @@ class CatalogTool(PloneBaseTool, BaseTool):
         if not show_inactive and not self.allow_inactive(kw):
             kw['effectiveRange'] = DateTime()
 
+        sort_on = kw.get('sort_on')
+        if sort_on and sort_on not in self.indexes():
+            # I get crazy sort_ons like '194' or 'null'.
+            kw.pop('sort_on')
+
         return ZCatalog.searchResults(self, query, **kw)
 
     __call__ = searchResults
@@ -483,27 +467,23 @@ class CatalogTool(PloneBaseTool, BaseTool):
         # Empties catalog, then finds all contentish objects (i.e. objects
         # with an indexObject method), and reindexes them.
         # This may take a long time.
+        idxs = list(self.indexes())
 
         def indexObject(obj, path):
-            if (base_hasattr(obj, 'indexObject') and
-                    safe_callable(obj.indexObject)):
+            if (base_hasattr(obj, 'reindexObject') and
+                    safe_callable(obj.reindexObject)):
                 try:
-                    obj.indexObject()
-
+                    self.reindexObject(obj, idxs=idxs)
                     # index conversions from plone.app.discussion
                     annotions = IAnnotations(obj)
-                    catalog = getToolByName(obj, "portal_catalog")
                     if DISCUSSION_ANNOTATION_KEY in annotions:
                         conversation = annotions[DISCUSSION_ANNOTATION_KEY]
                         conversation = conversation.__of__(obj)
                         for comment in conversation.getComments():
                             try:
-                                if catalog:
-                                    catalog.indexObject(comment)
+                                self.indexObject(comment, idxs=idxs)
                             except StopIteration:  # pragma: no cover
                                 pass
-
-
                 except TypeError:
                     # Catalogs have 'indexObject' as well, but they
                     # take different args, and will fail
@@ -537,6 +517,6 @@ class CatalogTool(PloneBaseTool, BaseTool):
         if RESPONSE is not None:
             RESPONSE.redirect(
                 URL1 + '/manage_catalogAdvanced?manage_tabs_message=' +
-                urllib.quote(msg))
+                urllib.parse.quote(msg))
 
 InitializeClass(CatalogTool)

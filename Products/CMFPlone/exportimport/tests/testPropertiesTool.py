@@ -4,8 +4,8 @@ from Products.CMFPlone.PropertiesTool import PropertiesTool
 from Products.CMFPlone.PropertiesTool import SimpleItemWithProperties
 from zope.component import provideAdapter
 
-_PROPERTYSHEET_XML = """\
-<?xml version="1.0"?>
+_PROPERTYSHEET_XML = b"""\
+<?xml version="1.0" encoding="utf-8"?>
 <object name="site_properties" meta_type="Plone Property Sheet">
  <property name="title">Site wide properties</property>
  <property name="displayPublicationDateInByline"
@@ -13,8 +13,8 @@ _PROPERTYSHEET_XML = """\
 </object>
 """
 
-_PROPERTIESTOOL_XML = """\
-<?xml version="1.0"?>
+_PROPERTIESTOOL_XML = b"""\
+<?xml version="1.0" encoding="utf-8"?>
 <object name="portal_properties" meta_type="Plone Properties Tool">
  <object name="site_properties" meta_type="Plone Property Sheet">
   <property name="title">Site wide properties</property>

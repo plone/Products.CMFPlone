@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from App.ImageFile import ImageFile
 import os
+import six
 import sys
 import pkg_resources
 
@@ -69,8 +70,9 @@ def initialize(context):
     this_module.Batch = Batch
 
     ModuleSecurityInfo('StringIO').declarePublic('StringIO')
-    from six import StringIO
-    allow_class(StringIO)
+    if six.PY2:
+        from six import StringIO
+        allow_class(StringIO)
 
     # Make Unauthorized importable TTW
     ModuleSecurityInfo('AccessControl').declarePublic('Unauthorized')
@@ -191,7 +193,7 @@ def initialize(context):
         constructors=(zmi_constructor, ),
     )
 
-    from plone.app.folder import nogopip
+    from plone.folder import nogopip
     context.registerClass(
         nogopip.GopipIndex,
         permission='Add Pluggable Index',

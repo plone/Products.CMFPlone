@@ -6,8 +6,8 @@ from Products.CMFPlone.PloneControlPanel import PloneControlPanel
 from zope.component import provideUtility
 from zope.component import provideAdapter
 
-_CONTROLPANEL_XML = """\
-<?xml version="1.0"?>
+_CONTROLPANEL_XML = b"""\
+<?xml version="1.0" encoding="utf-8"?>
 <object name="portal_controlpanel" meta_type="Plone Control Panel Tool">
  <configlet title="Add/Remove Products" action_id="QuickInstaller"
     appId="QuickInstaller" category="Plone" condition_expr=""

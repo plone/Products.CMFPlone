@@ -1,0 +1,54 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+<body>
+  <metal:main fill-slot="main">
+    <metal:main-macro define-macro="main">
+
+      <div>
+
+        <h1 tal:condition="view/label | nothing">
+            <span tal:replace="view/label">Form title</span>
+        </h1>
+
+        <p tal:condition="view/description | nothing"
+           tal:content="structure view/description">Form description</p>
+
+        <form action="." method="post"
+              tal:attributes="action view/action; enctype view/enctype"
+              tal:define="subforms view/subforms">
+
+          <div class="row">
+            <div class="col-xs-6 col-sm-6" tal:repeat="subform subforms"
+                 tal:attributes="class python:'col-xs-12 col-sm-12' if len(subforms) == 1 else 'col-xs-6 col-sm-6'">
+                <tal:subform replace="structure subform/render"></tal:subform>
+            </div>
+          </div>
+
+          <span tal:replace="structure context/@@authenticator/authenticator"/>
+
+        </form>
+
+        <div class="footer"
+             tal:define="portal_state context/@@plone_portal_state;
+                         portal_url portal_state/portal_url">
+          <p class="trouble">
+            <span i18n:translate="need_more_help" tal:omit-tag="">Need more help?</span>
+            <a tal:attributes="href string:${portal_url}/contact-info"
+               href="contact-info" i18n:translate="contact_an_admin">Contact an admin.</a>
+          </p>
+          <p class="go_to_login">
+            <span i18n:translate="go_to_login" tal:omit-tag="">Go to</span>
+            <a tal:attributes="href string:${portal_url}/login" class="pat-plone-modal"
+               i18n:translate="to_login_view" href="login">login</a>.
+          </p>
+        </div>
+      </div>
+    </metal:main-macro>
+  </metal:main>
+</body>
+</html>

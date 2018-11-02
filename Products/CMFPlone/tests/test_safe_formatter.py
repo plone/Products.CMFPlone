@@ -7,6 +7,8 @@ from plone.app.testing import TEST_USER_NAME
 from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
 from zExceptions import Unauthorized
 
+import six
+
 
 BAD_ATTR_STR = """
 <p tal:content="python:'class of {0} is {0.__class__}'.format(context)" />
@@ -105,7 +107,7 @@ class TestSafeFormatter(PloneTestCase):
 
     def test_cook_zope2_page_templates_good_unicode(self):
         from Products.PageTemplates.ZopePageTemplate import ZopePageTemplate
-        pt = ZopePageTemplate('mytemplate', unicode(GOOD_UNICODE))
+        pt = ZopePageTemplate('mytemplate', six.text_type(GOOD_UNICODE))
         hack_pt(pt)
         self.assertEqual(pt.pt_render().strip(), '<p>none</p>')
         hack_pt(pt, self.portal)
@@ -200,7 +202,7 @@ class TestSafeFormatter(PloneTestCase):
 
         # attribute access
         # If access to context.foobar.Title was allowed, it would still only
-        # say 'bound method ATDocument.Title', without giving the actual title,
+        # say 'bound method DexterityContent.Title', without giving the actual title,
         # but there may be other attributes that give worse info.
         pt = ZopePageTemplate(
             'mytemplate', TEMPLATE %
@@ -209,10 +211,13 @@ class TestSafeFormatter(PloneTestCase):
         login(self.portal, TEST_USER_NAME)
         # We replace ATDocument with Document to make the tests pass
         # with ATContentTypes and plone.app.contenttypes.
+        method_name = 'DexterityContent.Title'
+        if six.PY2:
+            method_name = 'Document.Title'
         self.assertEqual(
-            pt.pt_render().replace('ATDocument', 'Document'),
-            '<p>access <bound method Document.Title of '
-            '<Document at /plone/foobar>></p>')
+            pt.pt_render(),
+            u'<p>access <bound method %s of '
+            u'<Document at /plone/foobar>></p>' % method_name)
         logout()
         self.assertRaises(Unauthorized, pt.pt_render)
 
@@ -223,8 +228,8 @@ class TestSafeFormatter(PloneTestCase):
         hack_pt(pt, context=self.portal)
         login(self.portal, TEST_USER_NAME)
         self.assertEqual(
-            pt.pt_render().replace('ATDocument', 'Document'),
-            '<p><Document at foobar></p>')
+            pt.pt_render(),
+            u'<p><Document at foobar></p>')
         logout()
         self.assertRaises(Unauthorized, pt.pt_render)
 
@@ -236,7 +241,7 @@ class TestSafeFormatter(PloneTestCase):
         hack_pt(pt, context=self.portal)
         # If you have such a list, you *can* see an id.
         self.assertEqual(
-            pt.pt_render().replace('ATDocument', 'Document'),
+            pt.pt_render(),
             u'<p>[<Document at /plone/foobar>]</p>')
         # But you cannot access an item.
         pt = ZopePageTemplate(
@@ -247,8 +252,8 @@ class TestSafeFormatter(PloneTestCase):
         # except as authenticated user
         login(self.portal, TEST_USER_NAME)
         self.assertEqual(
-            pt.pt_render().replace('ATDocument', 'Document'),
-            '<p><Document at foobar></p>')
+            pt.pt_render(),
+            u'<p><Document at foobar></p>')
 
     # Zope 3 templates are always file system templates.  So we actually have
     # no problems allowing str.format there.
@@ -301,7 +306,7 @@ class TestFunctionalSafeFormatter(PloneTestCase):
         string_rule = ca[str]['format']
         self.assertTrue(isinstance(string_rule, types.FunctionType))
         # Take less steps for unicode.
-        unicode_rule = ca[unicode]['format']
+        unicode_rule = ca[six.text_type]['format']
         self.assertTrue(isinstance(unicode_rule, types.FunctionType))
         self.assertEqual(string_rule, unicode_rule)
 
@@ -345,7 +350,7 @@ return js()
             self.portal.evil = script
             output = self.publish('/plone/evil')
             self.assertFalse(
-                'Products.CMFPlone.Portal.PloneSite' in output.body)
+                b'Products.CMFPlone.Portal.PloneSite' in output.body)
 
     def test_cook_zope2_page_templates_bad_key_str(self):
         from Products.PageTemplates.ZopePageTemplate import ZopePageTemplate

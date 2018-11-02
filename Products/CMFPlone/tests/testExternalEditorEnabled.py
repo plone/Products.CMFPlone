@@ -1,7 +1,16 @@
 # -*- coding: utf-8 -*-
+import unittest
 from Products.CMFPlone.tests import PloneTestCase
 
+try:
+    import Products.ExternalEditor
+except ImportError:
+    HAS_EXTERNAL_EDITOR = False
+else:
+    HAS_EXTERNAL_EDITOR = True
 
+
+@unittest.skipIf(not HAS_EXTERNAL_EDITOR, 'requires Products.ExternalEditor')
 class TestExternalEditorEnabled(PloneTestCase.PloneTestCase):
     '''Tests the externalEditorEnabled script'''
 

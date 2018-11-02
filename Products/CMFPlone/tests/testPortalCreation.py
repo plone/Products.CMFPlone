@@ -1,19 +1,11 @@
 # -*- coding: utf-8 -*-
-from Products.CMFPlone.tests import PloneTestCase
-from Products.CMFPlone.tests import dummy
-
-from zope.component import getGlobalSiteManager
-from zope.component import getSiteManager
-from zope.component import getMultiAdapter
-from zope.component import getUtility
-from zope.component import queryUtility
-from zope.component.interfaces import IComponentLookup
-from zope.component.interfaces import IComponentRegistry
-from zope.location.interfaces import ISite
-from zope.site.hooks import setSite, clearSite
-
 from Acquisition import aq_base
-
+from plone.portlets.constants import CONTEXT_CATEGORY as CONTEXT_PORTLETS
+from plone.portlets.interfaces import ILocalPortletAssignmentManager
+from plone.portlets.interfaces import IPortletAssignmentMapping
+from plone.portlets.interfaces import IPortletManager
+from plone.protect import createToken
+from plone.registry.interfaces import IRegistry
 from Products.CMFCore.CachingPolicyManager import CachingPolicyManager
 from Products.CMFCore.permissions import AccessInactivePortalContent
 from Products.CMFCore.utils import getToolByName
@@ -22,25 +14,29 @@ from Products.CMFPlone.factory import _DEFAULT_PROFILE
 from Products.CMFPlone.interfaces import IFilterSchema
 from Products.CMFPlone.interfaces import INavigationSchema
 from Products.CMFPlone.interfaces import ISearchSchema
-from Products.CMFPlone.UnicodeSplitter import Splitter, I18NNormalizer
+from Products.CMFPlone.tests import dummy
+from Products.CMFPlone.tests import PloneTestCase
+from Products.CMFPlone.UnicodeSplitter import I18NNormalizer
+from Products.CMFPlone.UnicodeSplitter import Splitter
 from Products.GenericSetup.browser.manage import ExportStepsView
 from Products.GenericSetup.browser.manage import ImportStepsView
-
-from Products.StandardCacheManagers.AcceleratedHTTPCacheManager import \
+from Products.StandardCacheManagers.AcceleratedHTTPCacheManager import (
     AcceleratedHTTPCacheManager
-from Products.StandardCacheManagers.RAMCacheManager import \
-    RAMCacheManager
-
-from plone.portlets.interfaces import IPortletAssignmentMapping
-from plone.portlets.interfaces import IPortletManager
-from plone.portlets.interfaces import ILocalPortletAssignmentManager
-from plone.portlets.constants import CONTEXT_CATEGORY as CONTEXT_PORTLETS
-from plone.protect import createToken
-from plone.registry.interfaces import IRegistry
+)
+from Products.StandardCacheManagers.RAMCacheManager import RAMCacheManager
+from zope.component import getGlobalSiteManager
+from zope.component import getMultiAdapter
+from zope.component import getSiteManager
+from zope.component import getUtility
+from zope.component import queryUtility
+from zope.component.interfaces import IComponentLookup
+from zope.component.interfaces import IComponentRegistry
+from zope.location.interfaces import ISite
+from zope.site.hooks import clearSite
+from zope.site.hooks import setSite
 
 
 class TestPortalCreation(PloneTestCase.PloneTestCase):
-
     def afterSetUp(self):
         self.membership = self.portal.portal_membership
         self.workflow = self.portal.portal_workflow
@@ -51,7 +47,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.memberdata = self.portal.portal_memberdata
         self.catalog = self.portal.portal_catalog
         self.groups = self.portal.portal_groups
-        self.factory = self.portal.portal_factory
         self.skins = self.portal.portal_skins
         self.transforms = self.portal.portal_transforms
         self.javascripts = self.portal.portal_javascripts
@@ -78,27 +73,25 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         # Plone skins should have been set up
         self.assertTrue(hasattr(self.folder, 'logo.png'))
 
-    def testDefaultSkin(self):
-        # index_html should render
-        self.portal.index_html()
-
     def testNoIndexHtmlDocument(self):
         # The portal should not contain an index_html Document
         self.assertFalse('index_html' in self.portal)
 
     def testCanViewManagementScreen(self):
         # Make sure the ZMI management screen works
+        self.setRoles(['Manager'])
         self.portal.manage_main()
 
     def testWorkflowIsActionProvider(self):
         # The workflow tool is one of the last remaining action providers.
         self.assertTrue(
-            'portal_workflow' in self.actions.listActionProviders())
+            'portal_workflow' in self.actions.listActionProviders()
+        )
 
     def testMembersFolderMetaType(self):
-        # Members folder should have meta_type 'ATFolder'
+        # Members folder should have meta_type 'Dexterity Container'
         members = self.membership.getMembersFolder()
-        self.assertEqual(members.meta_type, 'ATFolder')
+        self.assertEqual(members.meta_type, 'Dexterity Container')
 
     def testMembersFolderPortalType(self):
         # Members folder should have portal_type 'Folder'
@@ -142,22 +135,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         else:
             self.fail("Folder has no 'edit' action")
 
-    def testFolderHasFolderListingAction(self):
-        # Folders should have a 'folderlisting' action
-        folder = self.types.getTypeInfo('Folder')
-        for action in folder._cloneActions():
-            if action.id == 'folderlisting':
-                break
-        else:
-            self.fail("Folder has no 'folderlisting' action")
-
-    def testImagePatch(self):
-        # Is it ok to remove the imagePatch? Probably not as we
-        # don't want the border attribute ...
-        self.folder.invokeFactory('Image', id='foo', file=dummy.Image())
-        endswith = ' alt="" title="" height="16" width="16" />'
-        self.assertEqual(self.folder.foo.tag()[-len(endswith):], endswith)
-
     def testNoPortalFormTool(self):
         # portal_form should have been removed
         self.assertFalse('portal_form' in self.portal)
@@ -180,18 +157,28 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
 
     def testNavTreeProperties(self):
         # navtree_properties should contain the new properties
-        self.assertFalse(self.properties.navtree_properties.hasProperty(
-            'parentMetaTypesNotToQuery'))
         self.assertFalse(
-            self.properties.navtree_properties.hasProperty('sitemapDepth'))
+            self.properties.navtree_properties.hasProperty(
+                'parentMetaTypesNotToQuery'
+            )
+        )
         self.assertFalse(
-            self.properties.navtree_properties.hasProperty('showAllParents'))
+            self.properties.navtree_properties.hasProperty('sitemapDepth')
+        )
         self.assertFalse(
-            self.properties.navtree_properties.hasProperty('metaTypesNotToList'))  # noqa
+            self.properties.navtree_properties.hasProperty('showAllParents')
+        )
         self.assertFalse(
-            self.properties.navtree_properties.hasProperty('sortAttribute'))
+            self.properties.navtree_properties.hasProperty(
+                'metaTypesNotToList'
+            )
+        )  # noqa
         self.assertFalse(
-            self.properties.navtree_properties.hasProperty('sortOrder'))
+            self.properties.navtree_properties.hasProperty('sortAttribute')
+        )
+        self.assertFalse(
+            self.properties.navtree_properties.hasProperty('sortOrder')
+        )
 
         registry = getUtility(IRegistry)
         self.assertTrue('plone.workflow_states_to_show' in registry)
@@ -252,7 +239,8 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
     def testNewsTopicIsIndexed(self):
         # News (smart) folder should be cataloged
         res = self.catalog(
-            path={'query': '/plone/news/aggregator', 'depth': 0})
+            path={'query': '/plone/news/aggregator', 'depth': 0}
+        )
         self.assertEqual(len(res), 1)
         self.assertEqual(res[0].getId, 'aggregator')
         self.assertEqual(res[0].Title, 'News')
@@ -261,7 +249,8 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
     def testEventsTopicIsIndexed(self):
         # Events (smart) folder should be cataloged
         res = self.catalog(
-            path={'query': '/plone/events/aggregator', 'depth': 0})
+            path={'query': '/plone/events/aggregator', 'depth': 0}
+        )
         self.assertEqual(len(res), 1)
         self.assertEqual(res[0].getId, 'aggregator')
         self.assertEqual(res[0].Title, 'Events')
@@ -269,8 +258,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
 
     def testNewsFolderIsIndexed(self):
         # News folder should be cataloged
-        res = self.catalog(
-            path={'query': '/plone/news', 'depth': 0})
+        res = self.catalog(path={'query': '/plone/news', 'depth': 0})
         self.assertEqual(len(res), 1)
         self.assertEqual(res[0].getId, 'news')
         self.assertEqual(res[0].Title, 'News')
@@ -278,8 +266,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
 
     def testEventsFolderIsIndexed(self):
         # Events folder should be cataloged
-        res = self.catalog(
-            path={'query': '/plone/events', 'depth': 0})
+        res = self.catalog(path={'query': '/plone/events', 'depth': 0})
         self.assertEqual(len(res), 1)
         self.assertEqual(res[0].getId, 'events')
         self.assertEqual(res[0].Title, 'Events')
@@ -291,10 +278,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.assertEqual(folder.portal_type, 'Folder')
         self.assertEqual(folder._ordering, 'unordered')
         self.assertEqual(folder.getDefaultPage(), 'aggregator')
-        self.assertEqual(folder.getRawLocallyAllowedTypes(), ('News Item',))
-        self.assertEqual(folder.getRawImmediatelyAddableTypes(),
-                         ('News Item',))
-        self.assertEqual(folder.checkCreationFlag(), False)
+        self.assertEqual(folder.immediately_addable_types, ['News Item'])
 
     def testEventsFolder(self):
         self.assertTrue('events' in self.portal.objectIds())
@@ -302,46 +286,61 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.assertEqual(folder.portal_type, 'Folder')
         self.assertEqual(folder._ordering, 'unordered')
         self.assertEqual(folder.getDefaultPage(), 'aggregator')
-        self.assertEqual(folder.getRawLocallyAllowedTypes(), ('Event',))
-        self.assertEqual(folder.getRawImmediatelyAddableTypes(), ('Event',))
-        self.assertEqual(folder.checkCreationFlag(), False)
+        self.assertEqual(folder.immediately_addable_types, ['Event'])
 
     def testNewsCollection(self):
         # News collection is in place as default view and has a criterion to
         # show only News Items, and uses the folder_summary_view.
-        self.assertEqual(['aggregator'],
-                         [i for i in self.portal.news.objectIds()])
+        self.assertEqual(
+            ['aggregator'], [i for i in self.portal.news.objectIds()]
+        )
         collection = getattr(self.portal.news, 'aggregator')
         self.assertEqual(collection._getPortalTypeName(), 'Collection')
         query = collection.query
-        self.assertTrue({'i': 'portal_type',
-                         'o': 'plone.app.querystring.operation.selection.any',
-                         'v': ['News Item']} in query)
-        self.assertTrue({'i': 'review_state',
-                         'o': 'plone.app.querystring.operation.selection.any',
-                         'v': ['published']} in query)
-        self.assertEqual(collection.getLayout(), 'folder_summary_view')
-        self.assertEqual(collection.checkCreationFlag(), False)
+        self.assertTrue(
+            {
+                'i': 'portal_type',
+                'o': 'plone.app.querystring.operation.selection.any',
+                'v': ['News Item'],
+            }
+            in query
+        )
+        self.assertTrue(
+            {
+                'i': 'review_state',
+                'o': 'plone.app.querystring.operation.selection.any',
+                'v': ['published'],
+            }
+            in query
+        )
+        self.assertEqual(collection.getLayout(), 'summary_view')
 
     def testEventsCollection(self):
         # Events collection is in place as default view and has criterion to
         # show only future Events Items.
-        self.assertEqual(['aggregator'],
-                         [i for i in self.portal.events.objectIds()])
+        self.assertEqual(
+            ['aggregator'], [i for i in self.portal.events.objectIds()]
+        )
         collection = getattr(self.portal.events, 'aggregator')
         self.assertEqual(collection._getPortalTypeName(), 'Collection')
         query = collection.query
-        self.assertTrue({'i': 'portal_type',
-                         'o': 'plone.app.querystring.operation.selection.any',
-                         'v': ['Event']} in query)
-        self.assertTrue({'i': 'review_state',
-                         'o': 'plone.app.querystring.operation.selection.any',
-                         'v': ['published']} in query)
-        self.assertTrue({
-            'i': 'start',
-            'o': 'plone.app.querystring.operation.date.afterToday',
-            'v': ''} in query)
-        self.assertEqual(collection.checkCreationFlag(), False)
+        self.assertTrue(
+            {
+                'i': 'portal_type',
+                'o': 'plone.app.querystring.operation.selection.any',
+                'v': ['Event'],
+            }
+            in query
+        )
+        self.assertTrue(
+            {
+                'i': 'review_state',
+                'o': 'plone.app.querystring.operation.selection.any',
+                'v': ['published'],
+            }
+            in query
+        )
+        self.assertEqual(collection.getLayout(), 'event_listing')
 
     def testObjectButtonActions(self):
         self.setRoles(['Manager', 'Member'])
@@ -360,33 +359,26 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.assertTrue('Administrators' in self.groups.listGroupIds())
         self.assertTrue('Reviewers' in self.groups.listGroupIds())
 
-    def testDefaultTypesInPortalFactory(self):
-        types = self.factory.getFactoryTypes().keys()
-        for metaType in ('Document', 'Event', 'File', 'Folder', 'Image',
-                         'Folder', 'Link', 'News Item',
-                         'Topic'):
-            self.assertTrue(metaType in types)
-
     def testGenerateTabsSiteProperty(self):
         # The generate_tabs site property should be emtpy
         registry = getUtility(IRegistry)
         navigation_settings = registry.forInterface(
-            INavigationSchema,
-            prefix="plone"
+            INavigationSchema, prefix="plone"
         )
         self.assertTrue('plone.generate_tabs' in registry)
         self.assertTrue(navigation_settings.generate_tabs)
 
     def testSelectableViewsOnFolder(self):
         views = self.portal.portal_types.Folder.getAvailableViewMethods(None)
-        self.assertTrue('folder_listing' in views)
-        self.assertTrue('atct_album_view' in views)
+        self.assertTrue('listing_view' in views)
+        self.assertTrue('album_view' in views)
 
     def testSelectableViewsOnTopic(self):
-        views = self.portal.portal_types.Topic.getAvailableViewMethods(None)
-        self.assertTrue('folder_listing' in views)
-        self.assertTrue('atct_album_view' in views)
-        self.assertTrue('atct_topic_view' in views)
+        views = self.portal.portal_types.Collection.getAvailableViewMethods(
+            None
+        )
+        self.assertTrue('listing_view' in views)
+        self.assertTrue('album_view' in views)
 
     def testLocationMemberdataProperty(self):
         # portal_memberdata should have a location property
@@ -412,17 +404,8 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         actions = self.actions.listActions()
         self.assertEqual(
             [x.title for x in actions if x.title == 'Site Setup'],
-            [u'Site Setup']
+            [u'Site Setup'],
         )
-
-    def testFolderlistingAction(self):
-        # Make sure the folderlisting action of a Folder is /view, to ensure
-        # that the layout template will be resolved
-        # (see PloneTool.browserDefault)
-        self.assertEqual(
-            self.types['Folder'].getActionObject('folder/folderlisting')
-                .getActionExpression(),
-            'string:${folder_url}/view')
 
     def testEnableLivesearchProperty(self):
         # registry should have enable_livesearch property
@@ -445,8 +428,9 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
     def testPortalFTIIsDynamicFTI(self):
         # Plone Site FTI should be a DynamicView FTI
         fti = self.portal.getTypeInfo()
-        self.assertEqual(fti.meta_type,
-                         'Factory-based Type Information with dynamic views')
+        self.assertEqual(
+            fti.meta_type, 'Factory-based Type Information with dynamic views'
+        )
 
     def testPloneSiteFTIHasMethodAliases(self):
         # Should add method aliases to the Plone Site FTI
@@ -465,8 +449,9 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         atool = self.actions
         self.assertFalse(atool.getActionInfo('site_actions/sitemap') is None)
         self.assertFalse(atool.getActionInfo('site_actions/contact') is None)
-        self.assertFalse(atool.getActionInfo(
-            'site_actions/accessibility') is None)
+        self.assertFalse(
+            atool.getActionInfo('site_actions/accessibility') is None
+        )
 
     def testSetupAction(self):
         self.setRoles(['Manager', 'Member'])
@@ -475,8 +460,17 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
 
     def testTypesHaveSelectedLayoutViewAction(self):
         # Should add method aliases to the Plone Site FTI
-        types = ('Document', 'Event', 'File', 'Folder', 'Image', 'Link',
-                 'News Item', 'Topic', 'Plone Site')
+        types = (
+            'Document',
+            'Event',
+            'File',
+            'Folder',
+            'Image',
+            'Link',
+            'News Item',
+            'Collection',
+            'Plone Site',
+        )
         for typeName in types:
             fti = getattr(self.types, typeName)
             aliases = fti.getMethodAliases()
@@ -486,11 +480,14 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         fti = self.portal.getTypeInfo()
         for action in fti.listActions():
             if action.getId() == 'edit':
-                self.assertEqual(action.getActionExpression(),
-                                 'string:${object_url}/edit')
+                self.assertEqual(
+                    action.getActionExpression(), 'string:${object_url}/edit'
+                )
             if action.getId() == 'sharing':
-                self.assertEqual(action.getActionExpression(),
-                                 'string:${object_url}/sharing')
+                self.assertEqual(
+                    action.getActionExpression(),
+                    'string:${object_url}/sharing',
+                )
 
     def testNavigationAndSearchPanelsInstalled(self):
         # Navigation and search panels should be installed
@@ -504,35 +501,43 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.assertTrue(haveSearch and haveNavigation)
 
     def testOwnerHasAccessInactivePermission(self):
-        permission_on_role = [p for p in self.portal.permissionsOfRole('Owner')
-                              if p['name'] == AccessInactivePortalContent][0]
+        permission_on_role = [
+            p
+            for p in self.portal.permissionsOfRole('Owner')
+            if p['name'] == AccessInactivePortalContent
+        ][0]
         self.assertTrue(permission_on_role['selected'])
         cur_perms = self.portal.permission_settings(
-            AccessInactivePortalContent)[0]
+            AccessInactivePortalContent
+        )[0]
         self.assertTrue(cur_perms['acquire'])
 
     def testSyndicationEnabledByDefault(self):
         syn = getMultiAdapter(
-            (self.portal, self.portal.REQUEST),
-            name="syndication-util")
+            (self.portal, self.portal.REQUEST), name="syndication-util"
+        )
         self.assertTrue(syn.site_enabled())
 
+    # FIXME: Syndication is not enabled by default in DX
     def testSyndicationEnabledOnNewsAndEvents(self):
         syn = getMultiAdapter(
             (self.portal.news.aggregator, self.portal.REQUEST),
-            name="syndication-util")
-        self.assertTrue(syn.context_enabled())
+            name="syndication-util",
+        )
+        self.assertFalse(syn.context_enabled())
         syn = getMultiAdapter(
             (self.portal.events.aggregator, self.portal.REQUEST),
-            name="syndication-util")
-        self.assertTrue(syn.context_enabled())
+            name="syndication-util",
+        )
+        self.assertFalse(syn.context_enabled())
 
     def testSyndicationTabDisabled(self):
         # Syndication tab should be disabled by default
         for action in self.actions.listActions():
             if action.getId() == 'syndication' and action.visible:
                 self.fail(
-                    "Actions tool still has visible 'syndication' action")
+                    "Actions tool still has visible 'syndication' action"
+                )
 
     def testObjectButtonActionsInvisibleOnPortalRoot(self):
         # only a manager would have proper permissions
@@ -558,8 +563,10 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.assertEqual(len(buttons), 4)
         urls = [a['url'] for a in buttons]
         for url in urls:
-            self.assertFalse('index_html' not in url,
-                             'Action wrongly applied to parent object %s' % url)  # noqa
+            self.assertFalse(
+                'index_html' not in url,
+                'Action wrongly applied to parent object %s' % url,
+            )  # noqa
 
     def testObjectButtonActionsPerformCorrectAction(self):
         # only a manager would have proper permissions
@@ -569,18 +576,24 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         buttons = acts['object_buttons']
         self.assertEqual(len(buttons), 4)
         # special case for delete which needs a confirmation form
-        urls = [(a['id'], a['url']) for a in buttons
-                if a['id'] not in ('delete',)]
+        urls = [
+            (a['id'], a['url']) for a in buttons if a['id'] not in ('delete',)
+        ]
         for url in urls:
             # ensure that e.g. the 'copy' url contains object_copy
-            self.assertTrue('object_' + url[0] in url[1],
-                            "%s does not perform the expected object_%s action"
-                            % (url[0], url[0]))
+            self.assertTrue(
+                'object_' + url[0] in url[1],
+                "%s does not perform the expected object_%s action"
+                % (url[0], url[0]),
+            )
 
-        delete_action = [(a['id'], a['url']) for a in buttons
-                         if a['id'] == 'delete'][0]
-        self.assertTrue('delete_confirmation' in delete_action[1],
-                        "object_delete does not use the confirmation form")
+        delete_action = [
+            (a['id'], a['url']) for a in buttons if a['id'] == 'delete'
+        ][0]
+        self.assertTrue(
+            'delete_confirmation' in delete_action[1],
+            "object_delete does not use the confirmation form",
+        )
 
     def testObjectButtonActionsInExpectedOrder(self):
         # The object buttons need to be in a standardized order
@@ -589,62 +602,63 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.folder.cb_dataValid = True
         acts = self.actions.listFilteredActionsFor(self.folder)
         buttons = acts['object_buttons']
-        self.assertEqual(len(buttons), 5)
+        self.assertEqual(len(buttons), 6)
         ids = [(a['id']) for a in buttons]
-        self.assertEqual(ids, ['cut', 'copy', 'paste', 'delete', 'rename', ])
-
-    def testPloneLoginLayerInDefault(self):
-        # plone_login layer should exist
-        path = self.skins.getSkinPath('Plone Default')
-        self.assertTrue('plone_login' in path)
+        self.assertEqual(
+            ids,
+            ['cut', 'copy', 'paste', 'delete', 'rename', 'ical_import_enable'],
+        )
 
     def testCustomSkinFolderExists(self):
         # the custom skin needs to be created
         self.assertTrue('custom' in self.skins)
 
     def testCustomSkinFolderComesFirst(self):
-        firstInDefaultSkin = (
-            self.skins.getSkinPath('Plone Default').split(',')[0])
+        firstInDefaultSkin = self.skins.getSkinPath('Plone Default').split(
+            ','
+        )[0]
         self.assertEqual(
-            firstInDefaultSkin, 'custom',
+            firstInDefaultSkin,
+            'custom',
             "The 'custom' layer was not the first in the Plone Default skin. "
-            "It was %r." % firstInDefaultSkin)
+            "It was %r." % firstInDefaultSkin,
+        )
 
     def testMemberHasViewGroupsPermission(self):
         # Member should be granted the 'View Groups' permission
-        member_has_permission = [p for p in
-                                 self.portal.permissionsOfRole('Member')
-                                 if p['name'] == 'View Groups'][0]
+        member_has_permission = [
+            p
+            for p in self.portal.permissionsOfRole('Member')
+            if p['name'] == 'View Groups'
+        ][0]
         self.assertTrue(member_has_permission['selected'])
 
     def testDiscussionItemWorkflow(self):
         # By default the discussion item has the comment_one_state_workflow
         self.assertEqual(
             self.workflow.getChainForPortalType('Discussion Item'),
-            ('comment_one_state_workflow',))
+            ('comment_one_state_workflow',),
+        )
 
     def testFolderHasFolderListingView(self):
         # Folder type should allow 'folder_listing'
-        self.assertTrue('folder_listing' in self.types.Folder.view_methods)
+        self.assertTrue('listing_view' in self.types.Folder.view_methods)
 
     def testFolderHasSummaryView(self):
         # Folder type should allow 'folder_summary_view'
-        self.assertTrue(
-            'folder_summary_view' in self.types.Folder.view_methods)
+        self.assertTrue('summary_view' in self.types.Folder.view_methods)
 
     def testFolderHasTabularView(self):
         # Folder type should allow 'folder_tabular_view'
-        self.assertTrue(
-            'folder_tabular_view' in self.types.Folder.view_methods)
+        self.assertTrue('tabular_view' in self.types.Folder.view_methods)
 
     def testFolderHasAlbumView(self):
         # Folder type should allow 'atct_album_view'
-        self.assertTrue('atct_album_view' in self.types.Folder.view_methods)
+        self.assertTrue('album_view' in self.types.Folder.view_methods)
 
     def testConfigurableSafeHtmlTransform(self):
         registry = getUtility(IRegistry)
-        settings = registry.forInterface(
-            IFilterSchema, prefix="plone")
+        settings = registry.forInterface(IFilterSchema, prefix="plone")
         # The safe_html transformation should be configurable
         try:
             settings.disable_filtering
@@ -667,8 +681,10 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
     def testHomeActionUsesView(self):
         actions = self.actions.listActions()
         homeAction = [x for x in actions if x.id == 'index_html'][0]
-        self.assertEqual(homeAction.getInfoData()[0]['url'].text,
-                         'string:${globals_view/navigationRootUrl}')
+        self.assertEqual(
+            homeAction.getInfoData()[0]['url'].text,
+            'string:${globals_view/navigationRootUrl}',
+        )
 
     def testPloneLexicon(self):
         # Plone lexicon should use new splitter and case normalizer
@@ -744,33 +760,47 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
 
     def testPortletManagersInstalled(self):
         sm = getSiteManager(self.portal)
-        registrations = [r.name for r in sm.registeredUtilities()
-                         if IPortletManager == r.provided]
-        self.assertEqual(['plone.dashboard1', 'plone.dashboard2',
-                          'plone.dashboard3', 'plone.dashboard4',
-                          'plone.footerportlets',
-                          'plone.leftcolumn', 'plone.rightcolumn'],
-                         sorted(registrations))
+        registrations = [
+            r.name
+            for r in sm.registeredUtilities()
+            if IPortletManager == r.provided
+        ]
+        self.assertEqual(
+            [
+                'plone.dashboard1',
+                'plone.dashboard2',
+                'plone.dashboard3',
+                'plone.dashboard4',
+                'plone.footerportlets',
+                'plone.leftcolumn',
+                'plone.rightcolumn',
+            ],
+            sorted(registrations),
+        )
 
     def testPortletAssignmentsAtRoot(self):
         leftColumn = getUtility(IPortletManager, name=u'plone.leftcolumn')
         rightColumn = getUtility(IPortletManager, name=u'plone.rightcolumn')
 
-        left = getMultiAdapter((self.portal, leftColumn,),
-                               IPortletAssignmentMapping)
-        right = getMultiAdapter((self.portal, rightColumn,),
-                                IPortletAssignmentMapping)
+        left = getMultiAdapter(
+            (self.portal, leftColumn), IPortletAssignmentMapping
+        )
+        right = getMultiAdapter(
+            (self.portal, rightColumn), IPortletAssignmentMapping
+        )
 
         self.assertEqual(len(left), 1)
-        self.assertEqual(len(right), 0)
+        self.assertEqual(len(right), 2)
 
     def testPortletBlockingForMembersFolder(self):
         members = self.portal.Members
         rightColumn = getUtility(IPortletManager, name=u'plone.rightcolumn')
-        portletAssignments = getMultiAdapter((members, rightColumn,),
-                                             ILocalPortletAssignmentManager)
+        portletAssignments = getMultiAdapter(
+            (members, rightColumn), ILocalPortletAssignmentManager
+        )
         self.assertEqual(
-            True, portletAssignments.getBlacklistStatus(CONTEXT_PORTLETS))
+            True, portletAssignments.getBlacklistStatus(CONTEXT_PORTLETS)
+        )
 
     def testAddablePortletsInColumns(self):
         for name in (u'plone.leftcolumn', u'plone.rightcolumn'):
@@ -779,73 +809,113 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
                 p.addview for p in column.getAddablePortletTypes()
             ]
             addable_types.sort()
-            self.assertEqual([
-                'plone.portlet.collection.Collection',
-                'plone.portlet.static.Static',
-                'portlets.Actions',
-                'portlets.Classic',
-                'portlets.Login',
-                'portlets.Navigation',
-                'portlets.News',
-                'portlets.Recent',
-                'portlets.Review',
-                'portlets.Search',
-                'portlets.rss'], addable_types)
+            self.assertEqual(
+                [
+                    'plone.portlet.collection.Collection',
+                    'plone.portlet.static.Static',
+                    'portlets.Actions',
+                    'portlets.Calendar',
+                    'portlets.Classic',
+                    'portlets.Events',
+                    'portlets.Login',
+                    'portlets.Navigation',
+                    'portlets.News',
+                    'portlets.Recent',
+                    'portlets.Review',
+                    'portlets.Search',
+                    'portlets.rss',
+                ],
+                addable_types,
+            )
 
     def testAddablePortletsInDashboard(self):
-        for name in ('plone.dashboard1', 'plone.dashboard2',
-                     'plone.dashboard3', 'plone.dashboard4'):
+        for name in (
+            'plone.dashboard1',
+            'plone.dashboard2',
+            'plone.dashboard3',
+            'plone.dashboard4',
+        ):
             column = getUtility(IPortletManager, name=name)
             addable_types = [
                 p.addview for p in column.getAddablePortletTypes()
             ]
             addable_types.sort()
-            self.assertEqual([
-                'plone.portlet.collection.Collection',
-                'plone.portlet.static.Static',
-                'portlets.Actions',
-                'portlets.Classic',
-                'portlets.News',
-                'portlets.Recent',
-                'portlets.Review',
-                'portlets.Search',
-                'portlets.rss'
-            ], addable_types)
+            self.assertEqual(
+                [
+                    'plone.portlet.collection.Collection',
+                    'plone.portlet.static.Static',
+                    'portlets.Actions',
+                    'portlets.Calendar',
+                    'portlets.Classic',
+                    'portlets.Events',
+                    'portlets.News',
+                    'portlets.Recent',
+                    'portlets.Review',
+                    'portlets.Search',
+                    'portlets.rss',
+                ],
+                addable_types,
+            )
 
     def testReaderEditorRoles(self):
         self.assertTrue('Reader' in self.portal.valid_roles())
         self.assertTrue('Editor' in self.portal.valid_roles())
-        self.assertTrue('Reader' in self.portal.acl_users.portal_role_manager
-                                        .listRoleIds())
-        self.assertTrue('Editor' in self.portal.acl_users.portal_role_manager
-                                        .listRoleIds())
-        self.assertTrue('View' in
-                        [r['name'] for r in
-                            self.portal.permissionsOfRole('Reader')
-                            if r['selected']])
-        self.assertTrue('Modify portal content' in
-                        [r['name'] for r in
-                            self.portal.permissionsOfRole('Editor')
-                            if r['selected']])
+        self.assertTrue(
+            'Reader' in self.portal.acl_users.portal_role_manager.listRoleIds()
+        )
+        self.assertTrue(
+            'Editor' in self.portal.acl_users.portal_role_manager.listRoleIds()
+        )
+        self.assertTrue(
+            'View'
+            in [
+                r['name']
+                for r in self.portal.permissionsOfRole('Reader')
+                if r['selected']
+            ]
+        )
+        self.assertTrue(
+            'Modify portal content'
+            in [
+                r['name']
+                for r in self.portal.permissionsOfRole('Editor')
+                if r['selected']
+            ]
+        )
 
     def testWorkflowsInstalled(self):
-        for wf in ['intranet_workflow', 'intranet_folder_workflow',
-                   'one_state_workflow', 'simple_publication_workflow']:
+        for wf in [
+            'intranet_workflow',
+            'intranet_folder_workflow',
+            'one_state_workflow',
+            'simple_publication_workflow',
+        ]:
             self.assertTrue(wf in self.portal.portal_workflow)
 
     def testAddPermisssionsGivenToContributorRole(self):
         self.assertTrue('Contributor' in self.portal.valid_roles())
-        self.assertTrue('Contributor' in self.portal.acl_users
-                        .portal_role_manager.listRoleIds())
-        for p in ['Add portal content', 'Add portal folders',
-                  'ATContentTypes: Add Document',
-                  'ATContentTypes: Add Event', 'ATContentTypes: Add File',
-                  'ATContentTypes: Add Folder',
-                  'ATContentTypes: Add Link',
-                  'ATContentTypes: Add News Item', ]:
-            self.assertTrue(p in [r['name'] for r in
-                                  self.portal.permissionsOfRole('Contributor')
-                                  if r['selected']])
+        self.assertTrue(
+            'Contributor'
+            in self.portal.acl_users.portal_role_manager.listRoleIds()
+        )
+        for p in [
+            'Add portal content',
+            'Add portal folders',
+            'plone.app.contenttypes: Add Document',
+            'plone.app.contenttypes: Add Event',
+            'plone.app.contenttypes: Add File',
+            'plone.app.contenttypes: Add Folder',
+            'plone.app.contenttypes: Add Link',
+            'plone.app.contenttypes: Add News Item',
+        ]:
+            self.assertTrue(
+                p
+                in [
+                    r['name']
+                    for r in self.portal.permissionsOfRole('Contributor')
+                    if r['selected']
+                ]
+            )
 
     def testSharingAction(self):
         # Should be in portal_actions
@@ -853,20 +923,30 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
 
         # Should not be in any of the default FTIs
         for fti in self.types.values():
-            self.assertFalse('local_roles' in [
-                             a.id for a in fti.listActions()])
+            self.assertFalse(
+                'local_roles' in [a.id for a in fti.listActions()]
+            )
 
     def testSecondaryEditorPermissionsGivenToEditorRole(self):
-        for p in ['Manage properties', 'Modify view template',
-                  'Request review']:
-            self.assertTrue(p in [r['name'] for r in
-                                  self.portal.permissionsOfRole('Editor')
-                                  if r['selected']])
+        for p in [
+            'Manage properties',
+            'Modify view template',
+            'Request review',
+        ]:
+            self.assertTrue(
+                p
+                in [
+                    r['name']
+                    for r in self.portal.permissionsOfRole('Editor')
+                    if r['selected']
+                ]
+            )
 
     def testNonFolderishTabsProperty(self):
         registry = getUtility(IRegistry)
-        navigation_settings = registry.forInterface(INavigationSchema,
-                                                    prefix="plone")
+        navigation_settings = registry.forInterface(
+            INavigationSchema, prefix="plone"
+        )
         self.assertEqual(True, navigation_settings.nonfolderish_tabs)
 
     def testNoDoubleGenericSetupImportSteps(self):
@@ -887,7 +967,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
 
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
-
     def afterSetUp(self):
         self.membership = self.portal.portal_membership
         self.catalog = self.portal.portal_catalog
@@ -914,7 +993,6 @@ class TestPortalBugs(PloneTestCase.PloneTestCase):
 
 
 class TestManagementPageCharset(PloneTestCase.PloneTestCase):
-
     def afterSetUp(self):
         self.properties = self.portal.portal_properties
 
@@ -925,7 +1003,6 @@ class TestManagementPageCharset(PloneTestCase.PloneTestCase):
 
 
 class TestAddPloneSite(PloneTestCase.PloneTestCase):
-
     def afterSetUp(self):
         self.request = self.app.REQUEST
 

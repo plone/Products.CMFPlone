@@ -6,10 +6,10 @@ from AccessControl.requestmethod import postonly
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
-from App.class_init import InitializeClass
+from AccessControl.class_init import InitializeClass
 from ComputedAttribute import ComputedAttribute
 from DateTime import DateTime
-from email.Utils import getaddresses
+from email.utils import getaddresses
 from OFS.ObjectManager import bad_id
 from OFS.SimpleItem import SimpleItem
 from plone.registry.interfaces import IRegistry
@@ -44,7 +44,6 @@ from Products.CMFPlone.utils import safe_unicode
 from Products.CMFPlone.utils import transaction_note
 from Products.statusmessages.interfaces import IStatusMessage
 from six.moves.urllib import parse
-from types import UnicodeType
 from ZODB.POSException import ConflictError
 from zope.component import getUtility
 from zope.component import queryAdapter
@@ -52,8 +51,10 @@ from zope.deprecation import deprecate
 from zope.event import notify
 from zope.interface import implementer
 from zope.lifecycleevent import ObjectModifiedEvent
+
 import re
 import sys
+import six
 import transaction
 
 
@@ -135,7 +136,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     def validateSingleNormalizedEmailAddress(self, address):
         # Lower-level function to validate a single normalized email address,
         # see validateEmailAddress.
-        if not isinstance(address, basestring):
+        if not isinstance(address, six.string_types):
             return False
 
         sub = EMAIL_CUTOFF_RE.match(address)
@@ -152,7 +153,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     @security.public
     def validateSingleEmailAddress(self, address):
         # Validate a single email address, see also validateEmailAddresses.
-        if not isinstance(address, basestring):
+        if not isinstance(address, six.string_types):
             return False
 
         sub = EMAIL_CUTOFF_RE.match(address)
@@ -175,7 +176,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     def validateEmailAddresses(self, addresses):
         # Validate a list of possibly several email addresses, see also
         # validateSingleEmailAddress.
-        if not isinstance(addresses, basestring):
+        if not isinstance(addresses, six.string_types):
             return False
 
         sub = EMAIL_CUTOFF_RE.match(addresses)
@@ -280,7 +281,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         # Encapsulates how the editing of content occurs.
         try:
             self.editMetadata(obj, **kwargs)
-        except AttributeError, msg:
+        except AttributeError as msg:
             log('Failure editing metadata at: %s.\n%s\n' %
                 (obj.absolute_url(), msg))
         if kwargs.get('id', None) is not None:
@@ -428,7 +429,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         s = sys.exc_info()[:2]
         if s[0] == None:
             return None
-        if isinstance(s[0], basestring):
+        if isinstance(s[0], six.string_types):
             return s[0]
         return str(s[1])
 
@@ -1004,7 +1005,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 success.append('%s (%s)' % (obj.getId(), path))
             except ConflictError:
                 raise
-            except Exception, e:
+            except Exception as e:
                 if handle_errors:
                     sp.rollback()
                     failure[path] = e
@@ -1037,7 +1038,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                                             expiration_date=expiration_date)
             except ConflictError:
                 raise
-            except Exception, e:
+            except Exception as e:
                 if handle_errors:
                     # skip this object but continue with sub-objects.
                     sp.rollback()
@@ -1090,7 +1091,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                     success[path] = (new_id, new_title)
             except ConflictError:
                 raise
-            except Exception, e:
+            except Exception as e:
                 if handle_errors:
                     # skip this object but continue with sub-objects.
                     sp.rollback()

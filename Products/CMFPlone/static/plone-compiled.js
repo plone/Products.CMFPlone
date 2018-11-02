@@ -3853,7 +3853,7 @@ define('mockup-utils',[
   };
 
   var parseBodyTag = function(txt) {
-    return $((/<body[^>]*>((.|[\n\r])*)<\/body>/im).exec(txt)[0]
+    return $((/<body[^>]*>[^]*<\/body>/im).exec(txt)[0]
       .replace('<body', '<div').replace('</body>', '</div>')).eq(0).html();
   };
 
@@ -3885,7 +3885,23 @@ define('mockup-utils',[
   };
 
   var removeHTML = function(val) {
-    return val.replace(/<[^>]+>/ig, "");
+    return val.replace(/<[^>]+>/ig, '');
+  };
+
+  var storage = {
+    // Simple local storage wrapper, which doesn't break down if it's not available.
+    get: function (name) {
+        if (window.localStorage) {
+          var val = window.localStorage[name];
+          return typeof(val) === 'string' ? JSON.parse(val) : undefined;
+      }
+    },
+
+    set: function (name, val) {
+      if (window.localStorage) {
+        window.localStorage[name] = JSON.stringify(val);
+      }
+    }
   };
 
   return {
@@ -3900,7 +3916,8 @@ define('mockup-utils',[
     loading: new Loading(),  // provide default loader
     parseBodyTag: parseBodyTag,
     QueryHelper: QueryHelper,
-    setId: setId
+    setId: setId,
+    storage: storage
   };
 });
 
@@ -8682,7 +8699,13 @@ define('mockup-i18n',[
     if (!self.baseUrl) {
       self.baseUrl = '/plonejsi18n';
     }
-    self.currentLanguage = $('html').attr('lang') || 'en-us';
+    self.currentLanguage = $('html').attr('lang') || 'en';
+
+    // Fix for country specific languages
+    if (self.currentLanguage.split('-').length > 1) {
+      self.currentLanguage = self.currentLanguage.split('-')[0] + '_' + self.currentLanguage.split('-')[1].toUpperCase();
+    }
+
     self.storage = null;
     self.catalogs = {};
     self.ttl = 24 * 3600 * 1000;
@@ -12424,154 +12447,166 @@ Picker.extend( 'pickatime', TimePicker )
  *
  */
 
+define(
+  'mockup-patterns-pickadate',[
+    'jquery',
+    'pat-base',
+    'mockup-utils',
+    'translate',
+    'picker',
+    'picker.date',
+    'picker.time',
+    'mockup-patterns-select2'
+  ],
+  function($, Base, utils, _t) {
+    'use strict';
 
-define('mockup-patterns-pickadate',[
-  'jquery',
-  'pat-base',
-  'mockup-utils',
-  'translate',
-  'picker',
-  'picker.date',
-  'picker.time',
-  'mockup-patterns-select2'
-], function($, Base, utils, _t) {
-  'use strict';
-
-  var PickADate = Base.extend({
-    name: 'pickadate',
-    trigger: '.pat-pickadate',
-    parser: 'mockup',
-    defaults: {
-      separator: ' ',
-      date: {
-        selectYears: true,
-        selectMonths: true,
-        formatSubmit: 'yyyy-mm-dd',
-        format: 'yyyy-mm-dd',
-        labelMonthNext: _t('Next month'),
-        labelMonthPrev: _t('Previous month'),
-        labelMonthSelect: _t('Select a month'),
-        labelYearSelect: _t('Select a year'),
-        // hide buttons
-        clear: false,
-        close: false,
-        today: false
+    var PickADate = Base.extend({
+      name: 'pickadate',
+      trigger: '.pat-pickadate',
+      parser: 'mockup',
+      defaults: {
+        separator: ' ',
+        date: {
+          selectYears: true,
+          selectMonths: true,
+          formatSubmit: 'yyyy-mm-dd',
+          format: 'yyyy-mm-dd',
+          labelMonthNext: _t('Next month'),
+          labelMonthPrev: _t('Previous month'),
+          labelMonthSelect: _t('Select a month'),
+          labelYearSelect: _t('Select a year'),
+          // hide buttons
+          clear: false,
+          close: false,
+          today: false
+        },
+        time: {
+          clear: false // hide button
+        },
+        today: _t('Today'),
+        clear: _t('Clear'),
+        timezone: null,
+        autoSetTimeOnDateChange: '+[0,0]',
+        classWrapperName: 'pattern-pickadate-wrapper',
+        classSeparatorName: 'pattern-pickadate-separator',
+        classDateName: 'pattern-pickadate-date',
+        classDateWrapperName: 'pattern-pickadate-date-wrapper',
+        classTimeName: 'pattern-pickadate-time',
+        classTimeWrapperName: 'pattern-pickadate-time-wrapper',
+        classTimezoneName: 'pattern-pickadate-timezone',
+        classTimezoneWrapperName: 'pattern-pickadate-timezone-wrapper',
+        classClearName: 'pattern-pickadate-clear',
+        classNowName: 'pattern-pickadate-now',
+        placeholderDate: _t('Enter date...'),
+        placeholderTime: _t('Enter time...'),
+        placeholderTimezone: _t('Enter timezone...')
       },
-      time: {
-        clear: false  // hide button
-      },
-      today: _t('Today'),
-      clear: _t('Clear'),
-      timezone: null,
-      autoSetTimeOnDateChange: '+[0,0]',
-      classWrapperName: 'pattern-pickadate-wrapper',
-      classSeparatorName: 'pattern-pickadate-separator',
-      classDateName: 'pattern-pickadate-date',
-      classDateWrapperName: 'pattern-pickadate-date-wrapper',
-      classTimeName: 'pattern-pickadate-time',
-      classTimeWrapperName: 'pattern-pickadate-time-wrapper',
-      classTimezoneName: 'pattern-pickadate-timezone',
-      classTimezoneWrapperName: 'pattern-pickadate-timezone-wrapper',
-      classClearName: 'pattern-pickadate-clear',
-      classNowName: 'pattern-pickadate-now',
-      placeholderDate: _t('Enter date...'),
-      placeholderTime: _t('Enter time...'),
-      placeholderTimezone: _t('Enter timezone...')
-    },
-    parseTimeOffset: function(timeOffset) {
-      var op = undefined;
-      if (timeOffset.indexOf('+') === 0) {
-        op = '+';
-        timeOffset = timeOffset.split('+')[1];
-      } else if (timeOffset.indexOf('-') === 0) {
-        op = '-';
-        timeOffset = timeOffset.split('-')[1];
-      }
-      try {
-        timeOffset = JSON.parse(timeOffset);
-      } catch (e) {
-        timeOffset = undefined;
-      }
-      if (timeOffset === false) {
-        return false;
-      } else if (timeOffset === true || Array.isArray(timeOffset) !== true) {
-        return [0,0];
-      }
+      parseTimeOffset: function(timeOffset) {
+        var op = undefined;
+        if (timeOffset.indexOf('+') === 0) {
+          op = '+';
+          timeOffset = timeOffset.split('+')[1];
+        } else if (timeOffset.indexOf('-') === 0) {
+          op = '-';
+          timeOffset = timeOffset.split('-')[1];
+        }
+        try {
+          timeOffset = JSON.parse(timeOffset);
+        } catch (e) {
+          timeOffset = undefined;
+        }
+        if (timeOffset === false) {
+          return false;
+        } else if (timeOffset === true || Array.isArray(timeOffset) !== true) {
+          return [0, 0];
+        }
 
-      var hours = parseInt(timeOffset[0], 10) || 0,
-        mins = parseInt(timeOffset[1], 10) || 0;
+        var hours = parseInt(timeOffset[0], 10) || 0,
+          mins = parseInt(timeOffset[1], 10) || 0;
 
-      if (op === '+' || op === '-') {
+        if (op === '+' || op === '-') {
+          var offset = new Date(),
+            curHours = offset.getHours(),
+            curMins = offset.getMinutes();
 
-        var offset = new Date(),
-          curHours = offset.getHours(),
-          curMins = offset.getMinutes();
-
-        if (op === '+') {
-          hours = curHours + hours;
-          if (hours > 23) {
-            hours = 23;
-          }
-          mins = curMins + mins;
-          if (mins > 59) {
-            mins = 59;
-          }
-        } else if (op === '-') {
-          hours = curHours - hours;
-          if (hours < 0) {
-            hours = 0;
-          }
-          mins = curMins - mins;
-          if (mins < 0) {
-            mins = 0;
+          if (op === '+') {
+            hours = curHours + hours;
+            if (hours > 23) {
+              hours = 23;
+            }
+            mins = curMins + mins;
+            if (mins > 59) {
+              mins = 59;
+            }
+          } else if (op === '-') {
+            hours = curHours - hours;
+            if (hours < 0) {
+              hours = 0;
+            }
+            mins = curMins - mins;
+            if (mins < 0) {
+              mins = 0;
+            }
           }
         }
-      }
-      return [hours,mins];
-    },
-    init: function() {
-      var self = this,
-        value = self.$el.val().split(' '),
-        dateValue = value[0] || '',
-        timeValue = value[1] || '';
+        return [hours, mins];
+      },
+      init: function() {
+        var self = this,
+          value = self.$el.val().split(' '),
+          dateValue = value[0] || '',
+          timeValue = value[1] || '';
 
-      if (utils.bool(self.options.date) === false) {
-        self.options.date = false;
-      }
-      if (utils.bool(self.options.time) === false) {
-        self.options.time = false;
-      }
-      self.options.autoSetTimeOnDateChange = self.parseTimeOffset(self.options.autoSetTimeOnDateChange);
+        if (utils.bool(self.options.date) === false) {
+          self.options.date = false;
+        }
+        if (utils.bool(self.options.time) === false) {
+          self.options.time = false;
+        }
+        self.options.autoSetTimeOnDateChange = self.parseTimeOffset(
+          self.options.autoSetTimeOnDateChange
+        );
 
-      if (self.options.date === false) {
-        timeValue = value[0];
-      }
+        if (self.options.date === false) {
+          timeValue = value[0];
+        }
 
-      self.$el.hide();
+        self.$el.hide();
 
-      self.$wrapper = $('<div/>')
-            .addClass(self.options.classWrapperName)
-            .insertAfter(self.$el);
+        self.$wrapper = $('<div/>')
+          .addClass(self.options.classWrapperName)
+          .insertAfter(self.$el);
 
-      if (self.options.date !== false) {
-        self.$date = $('<input type="text"/>')
-              .attr('placeholder', self.options.placeholderDate)
-              .attr('data-value', dateValue)
-              .addClass(self.options.classDateName)
-              .appendTo($('<div/>')
-                  .addClass(self.options.classDateWrapperName)
-                  .appendTo(self.$wrapper))
-              .pickadate($.extend(true, {}, self.options.date, {
+        if (self.options.date !== false) {
+          self.$date = $('<input type="text"/>')
+            .attr('placeholder', self.options.placeholderDate)
+            .attr('data-value', dateValue)
+            .addClass(self.options.classDateName)
+            .appendTo(
+              $('<div/>')
+                .addClass(self.options.classDateWrapperName)
+                .appendTo(self.$wrapper)
+            )
+            .pickadate(
+              $.extend(true, {}, self.options.date, {
                 onSet: function(e) {
                   if (e.select !== undefined) {
                     self.$date.attr('data-value', e.select);
-                    if (self.options.autoSetTimeOnDateChange !== false && self.$time) {
-                      if (! self.$time.pickatime('picker').get('select')) {
-                        self.$time.pickatime('picker').set('select', self.options.autoSetTimeOnDateChange);
+                    if (
+                      self.options.autoSetTimeOnDateChange !== false &&
+                      self.$time
+                    ) {
+                      if (!self.$time.pickatime('picker').get('select')) {
+                        self.$time
+                          .pickatime('picker')
+                          .set('select', self.options.autoSetTimeOnDateChange);
                       }
                     }
-                    if (self.options.time === false ||
-                        self.$time.attr('data-value') !== '') {
+                    if (
+                      self.options.time === false ||
+                      self.$time.attr('data-value') !== ''
+                    ) {
                       self.updateValue.call(self);
                     }
                   }
@@ -12580,24 +12615,30 @@ define('mockup-patterns-pickadate',[
                     self.$date.attr('data-value', '');
                   }
                 }
-              }));
-      }
+              })
+            );
+        }
 
-      if (self.options.time !== false) {
-        self.options.time.formatSubmit = 'HH:i';
-        self.$time = $('<input type="text"/>')
-              .attr('placeholder', self.options.placeholderTime)
-              .attr('data-value', timeValue)
-              .addClass(self.options.classTimeName)
-              .appendTo($('<div/>')
-                  .addClass(self.options.classTimeWrapperName)
-                  .appendTo(self.$wrapper))
-              .pickatime($.extend(true, {}, self.options.time, {
+        if (self.options.time !== false) {
+          self.options.time.formatSubmit = 'HH:i';
+          self.$time = $('<input type="text"/>')
+            .attr('placeholder', self.options.placeholderTime)
+            .attr('data-value', timeValue)
+            .addClass(self.options.classTimeName)
+            .appendTo(
+              $('<div/>')
+                .addClass(self.options.classTimeWrapperName)
+                .appendTo(self.$wrapper)
+            )
+            .pickatime(
+              $.extend(true, {}, self.options.time, {
                 onSet: function(e) {
                   if (e.select !== undefined) {
                     self.$time.attr('data-value', e.select);
-                    if (self.options.date === false ||
-                        self.$date.attr('data-value') !== '') {
+                    if (
+                      self.options.date === false ||
+                      self.$date.attr('data-value') !== ''
+                    ) {
                       self.updateValue.call(self);
                     }
                   }
@@ -12606,136 +12647,184 @@ define('mockup-patterns-pickadate',[
                     self.$time.attr('data-value', '');
                   }
                 }
-              }));
+              })
+            );
 
-        // XXX: bug in pickatime
-        // work around pickadate bug loading 00:xx as value
-        if (typeof(timeValue) === 'string' && timeValue.substring(0,2) === '00') {
-          self.$time.pickatime('picker').set('select', timeValue.split(':'));
-          self.$time.attr('data-value', timeValue);
-        }
-      }
-
-      if (self.options.date !== false && self.options.time !== false && self.options.timezone) {
-        self.$separator = $('<span/>')
-              .addClass(self.options.classSeparatorName)
-              .html(self.options.separator === ' ' ? '&nbsp;'
-                                                   : self.options.separator)
-              .appendTo(self.$wrapper);
-      }
-
-      if (self.options.timezone !== null) {
-        self.$timezone = $('<input type="text"/>')
-            .addClass(self.options.classTimezoneName)
-            .appendTo($('<div/>')
-              .addClass(self.options.classTimezoneWrapperName)
-              .appendTo(self.$wrapper))
-          .patternSelect2($.extend(true,
-          {
-            'placeholder': self.options.placeholderTimezone,
-            'width': '10em',
-          },
-          self.options.timezone,
-          { 'multiple': false }))
-          .on('change', function(e) {
-            if (e.val !== undefined){
-              self.$timezone.attr('data-value', e.val);
-              if ((self.options.date === false || self.$date.attr('data-value') !== '') &&
-                  (self.options.time === false || self.$time.attr('data-value') !== '')) {
-                self.updateValue.call(self);
-              }
-            }
-          });
-        var defaultTimezone = self.options.timezone.default;
-        // if timezone has a default value included
-        if (defaultTimezone) {
-          var isInList;
-          // the timezone list contains the default value
-          self.options.timezone.data.some(function(obj) {
-            isInList = (obj.text === self.options.timezone.default) ? true : false;
-            return isInList;
-          });
-          if (isInList) {
-            self.$timezone.attr('data-value', defaultTimezone);
-            self.$timezone.parent().find('.select2-chosen').text(defaultTimezone);
+          // XXX: bug in pickatime
+          // work around pickadate bug loading 00:xx as value
+          if (
+            typeof timeValue === 'string' &&
+            timeValue.substring(0, 2) === '00'
+          ) {
+            self.$time.pickatime('picker').set('select', timeValue.split(':'));
+            self.$time.attr('data-value', timeValue);
           }
         }
-        // if data contains only one timezone this value will be chosen
-        // and the timezone dropdown list will be disabled and
-        if (self.options.timezone.data.length === 1) {
-          self.$timezone.attr('data-value', self.options.timezone.data[0].text);
-          self.$timezone.parent().find('.select2-chosen').text(self.options.timezone.data[0].text);
-          self.$timezone.select2('enable', false);
-        }
-      }
 
-      if (utils.bool(self.options.today)) {
-        self.$now = $('<button class="btn btn-xs btn-info" title="' + self.options.today + '"><span class="glyphicon glyphicon-time"></span></button>')
-          .addClass(self.options.classNowName)
-          .on('click', function (e) {
+        if (
+          self.options.date !== false &&
+          self.options.time !== false &&
+          self.options.timezone
+        ) {
+          self.$separator = $('<span/>')
+            .addClass(self.options.classSeparatorName)
+            .html(
+              self.options.separator === ' ' ? '&nbsp;' : self.options.separator
+            )
+            .appendTo(self.$wrapper);
+        }
+
+        if (self.options.timezone !== null) {
+          self.$timezone = $('<input type="text"/>')
+            .addClass(self.options.classTimezoneName)
+            .appendTo(
+              $('<div/>')
+                .addClass(self.options.classTimezoneWrapperName)
+                .appendTo(self.$wrapper)
+            )
+            .patternSelect2(
+              $.extend(
+                true,
+                {
+                  placeholder: self.options.placeholderTimezone,
+                  width: '10em'
+                },
+                self.options.timezone,
+                { multiple: false }
+              )
+            )
+            .on('change', function(e) {
+              if (e.val !== undefined) {
+                self.$timezone.attr('data-value', e.val);
+                if (
+                  (self.options.date === false ||
+                    self.$date.attr('data-value') !== '') &&
+                  (self.options.time === false ||
+                    self.$time.attr('data-value') !== '')
+                ) {
+                  self.updateValue.call(self);
+                }
+              }
+            });
+          var defaultTimezone = self.options.timezone.default;
+          // if timezone has a default value included
+          if (defaultTimezone) {
+            var isInList;
+            // the timezone list contains the default value
+            self.options.timezone.data.some(function(obj) {
+              isInList =
+                obj.text === self.options.timezone.default ? true : false;
+              return isInList;
+            });
+            if (isInList) {
+              self.$timezone.attr('data-value', defaultTimezone);
+              self.$timezone
+                .parent()
+                .find('.select2-chosen')
+                .text(defaultTimezone);
+            }
+          }
+          // if data contains only one timezone this value will be chosen
+          // and the timezone dropdown list will be disabled and
+          if (self.options.timezone.data.length === 1) {
+            self.$timezone.attr(
+              'data-value',
+              self.options.timezone.data[0].text
+            );
+            self.$timezone
+              .parent()
+              .find('.select2-chosen')
+              .text(self.options.timezone.data[0].text);
+            self.$timezone.select2('enable', false);
+          }
+        }
+
+        if (utils.bool(self.options.today)) {
+          self.$now = $(
+            '<button type="button" class="btn btn-xs btn-info" title="' +
+              self.options.today +
+              '"><span class="glyphicon glyphicon-time"></span></button>'
+          )
+            .addClass(self.options.classNowName)
+            .on('click', function(e) {
               e.preventDefault();
               var now = new Date();
-              if (self.$date) { self.$date.data('pickadate').set('select', now); }
-              if (self.$time) { self.$time.data('pickatime').set('select', now); }
+              if (self.$date) {
+                self.$date.data('pickadate').set('select', now);
+              }
+              if (self.$time) {
+                self.$time.data('pickatime').set('select', now);
+              }
               self.emit('updated');
-          })
-          .appendTo(self.$wrapper);
-      }
+            })
+            .appendTo(self.$wrapper);
+        }
 
-      if (utils.bool(self.options.clear)) {
-        self.$clear = $('<button class="btn btn-xs btn-danger" title="' + self.options.clear + '"><span class="glyphicon glyphicon-trash"></span></button>')
-          .addClass(self.options.classClearName)
-          .on('click', function (e) {
+        if (utils.bool(self.options.clear)) {
+          self.$clear = $(
+            '<button type="button" class="btn btn-xs btn-danger" title="' +
+              self.options.clear +
+              '"><span class="glyphicon glyphicon-trash"></span></button>'
+          )
+            .addClass(self.options.classClearName)
+            .on('click', function(e) {
               e.preventDefault();
-              if (self.$date) { self.$date.data('pickadate').clear(); }
-              if (self.$time) { self.$time.data('pickatime').clear(); }
+              if (self.$date) {
+                self.$date.data('pickadate').clear();
+              }
+              if (self.$time) {
+                self.$time.data('pickatime').clear();
+              }
               self.emit('updated');
-          })
-          .appendTo(self.$wrapper);
-      }
-    },
-    updateValue: function() {
-      var self = this,
+            })
+            .appendTo(self.$wrapper);
+        }
+      },
+      updateValue: function() {
+        var self = this,
           value = '';
 
-      if (self.options.date !== false) {
-        var date = self.$date.data('pickadate').component,
+        if (self.options.date !== false) {
+          var date = self.$date.data('pickadate').component,
             dateValue = self.$date.data('pickadate').get('select'),
             formatDate = date.formats.toString;
-        if (dateValue) {
-          value += formatDate.apply(date, [self.options.date.formatSubmit, dateValue]);
+          if (dateValue) {
+            value += formatDate.apply(date, [
+              self.options.date.formatSubmit,
+              dateValue
+            ]);
+          }
         }
-      }
 
-      if (self.options.date !== false && self.options.time !== false) {
-        value += ' ';
-      }
+        if (self.options.date !== false && self.options.time !== false) {
+          value += ' ';
+        }
 
-      if (self.options.time !== false) {
-        var time = self.$time.data('pickatime').component,
+        if (self.options.time !== false) {
+          var time = self.$time.data('pickatime').component,
             timeValue = self.$time.data('pickatime').get('select'),
             formatTime = time.formats.toString;
-        if (timeValue) {
-          value += formatTime.apply(time, ['HH:i', timeValue]);
+          if (timeValue) {
+            value += formatTime.apply(time, ['HH:i', timeValue]);
+          }
         }
-      }
 
-      if (self.options.timezone !== null) {
-        var timezone = ' ' + self.$timezone.attr('data-value');
-        if (timezone) {
-          value += timezone;
+        if (self.options.timezone !== null) {
+          var timezone = ' ' + self.$timezone.attr('data-value');
+          if (timezone) {
+            value += timezone;
+          }
         }
+
+        self.$el.val(value);
+
+        self.emit('updated');
       }
+    });
 
-      self.$el.val(value);
-
-      self.emit('updated');
-    }
-  });
-
-  return PickADate;
-
-});
+    return PickADate;
+  }
+);
 
 /* Autotoc pattern.
  *
@@ -13342,7 +13431,8 @@ define('mockup-patterns-markspeciallinks',[
       if (elonw) {
           // all http links (without the link-plain class), not within this site
           contentarea.find('a[href^="http"]:not(.link-plain):not([href^="' + url + '"])')
-                     .attr('target', '_blank');
+                     .attr('target', '_blank')
+                     .attr('rel', 'noopener');
       }
 
       if (msl) {
@@ -13354,11 +13444,11 @@ define('mockup-patterns-markspeciallinks',[
         // All links without an http href (without the link-plain class), not within this site,
         // and no img children should be wrapped in a link-[protocol] span
         contentarea.find(
-            'a[href]:not([href^="http:"]):not(.link-plain):not([href^="' + url + '"]):not(:has(img))')
+            'a[href]:not([href^="http:"]):not(.link-plain):not([href^="' + url + '"]):not(:has(img)):not([href^="#"])')
             .each(function() {
                 // those without a http link may have another interesting protocol
                 // wrap these in a link-[protocol] span
-                res = protocols.exec(this.href);
+                res = protocols.exec($(this).attr('href'));
                 if (res) {
                     var iconclass = 'glyphicon link-' + res[0];
                     $(this).before('<i class="' + iconclass + '"></i>');
@@ -16710,7 +16800,7 @@ define('mockup-patterns-modal',[
             } else if (options.onError) {
               options.onError(xhr, textStatus, errorStatus);
             } else {
-              window.alert(_t('There was an error submitting the form.'));
+              // window.alert(_t('There was an error submitting the form.'));
               console.log('error happened do something');
             }
             self.emit('formActionError', [xhr, textStatus, errorStatus]);
@@ -17055,8 +17145,9 @@ define('mockup-patterns-modal',[
       self.$wrapper.addClass('image-modal');
       var src = self.$el.attr('href');
       var srcset = self.$el.attr('data-modal-srcset') || '';
+      var title = $.trim(self.$el.context.innerText) || 'Image';
       // XXX aria?
-      self.$raw = $('<div><h1>Image</h1><div id="content"><div class="modal-image"><img src="' + src + '" srcset="' + srcset + '" /></div></div></div>');
+      self.$raw = $('<div><h1>' + title + '</h1><div id="content"><div class="modal-image"><img src="' + src + '" srcset="' + srcset + '" /></div></div></div>');
       self._show();
     },
 
@@ -17281,9 +17372,6 @@ define('mockup-patterns-modal',[
       self.$modal.addClass(self.options.templateOptions.classActiveName);
       registry.scan(self.$modal);
       self.positionModal();
-      $('img', self.$modal).load(function() {
-        self.positionModal();
-      });
       $(window.parent).on('resize.plone-modal.patterns', function() {
         self.positionModal();
       });
@@ -17672,6 +17760,8 @@ define('mockup-patterns-contentloader',[
       if(that.options.url === 'el' && that.$el[0].tagName === 'A'){
         that.options.url = that.$el.attr('href');
       }
+      that.$el.removeClass('loading-content');
+      that.$el.removeClass('content-load-error');
       if(that.options.trigger === 'immediate'){
         that._load();
       }else{
@@ -17711,7 +17801,8 @@ define('mockup-patterns-contentloader',[
             try{
               $el = $(_.template(that.options.template)(data));
             }catch(e){
-              // log this
+              that.$el.removeClass('loading-content');
+              that.$el.addClass('content-load-error');
               log.warn('error rendering template. pat-contentloader will not work');
               return;
             }
@@ -17720,9 +17811,9 @@ define('mockup-patterns-contentloader',[
             $el = $el.find(that.options.content);
           }
           that.loadLocal($el);
-          that.$el.removeClass('loading-content');
         },
         error: function(){
+          that.$el.removeClass('loading-content');
           that.$el.addClass('content-load-error');
         }
       });
@@ -17730,6 +17821,8 @@ define('mockup-patterns-contentloader',[
     loadLocal: function($content){
       var that = this;
       if(!$content && that.options.content === null){
+        that.$el.removeClass('loading-content');
+        that.$el.addClass('content-load-error');
         log.warn('No selector configured');
         return;
       }
@@ -17737,6 +17830,8 @@ define('mockup-patterns-contentloader',[
       if(that.options.target !== null){
         $target = $(that.options.target);
         if($target.size() === 0){
+          that.$el.removeClass('loading-content');
+          that.$el.addClass('content-load-error');
           log.warn('No target nodes found');
           return;
         }
@@ -17745,10 +17840,18 @@ define('mockup-patterns-contentloader',[
       if(!$content){
         $content = $(that.options.content).clone();
       }
-      $content.show();
-      $target.replaceWith($content);
-      Registry.scan($content);
+      if ($content.length) {
+        $content.show();
+        $target.replaceWith($content);
+        Registry.scan($content);
+      } else {
+        // empty target node instead of removing it.
+        // allows for subsequent content loader calls to work sucessfully.
+        $target.empty();
+      }
+
       that.$el.removeClass('loading-content');
+      that.emit('loading-done');
     }
   });
 
@@ -17925,12 +18028,12 @@ define('mockup-patterns-moment',[
   'moment',
   'mockup-i18n'
 ], function($, Base, moment, i18n) {
-  'use strict';
 
   var Moment = Base.extend({
     name: 'moment',
     trigger: '.pat-moment',
     parser: 'mockup',
+    moment_i18n_map: {'no': 'nb'},  // convert Plone language codes to moment codes.
     defaults: {
       // selector of elements to format dates for
       selector: null,
@@ -17947,7 +18050,11 @@ define('mockup-patterns-moment',[
       if (!date || date === 'None') {
         return;
       }
-      moment.locale([(new i18n()).currentLanguage, 'en']);
+      var currentLanguage = (new i18n()).currentLanguage;
+      if (currentLanguage in self.moment_i18n_map) {
+        currentLanguage = self.moment_i18n_map[currentLanguage];
+      }
+      moment.locale([currentLanguage, 'en']);
       date = moment(date);
       if (!date.isValid()) {
         return;
@@ -19000,5 +19107,5 @@ require([
 
 });
 
-define("/home/workspacejensens/cdev/plone5/src/Products.CMFPlone/Products/CMFPlone/static/plone.js", function(){});
+define("/work/playground/plone/plone.coredev-5.2/src/Products.CMFPlone/Products/CMFPlone/static/plone.js", function(){});
 
