@@ -21,6 +21,9 @@ Bug fixes:
 - Fix profile version.
   [esteele]
 
+- Modernize robot keywords that use "Get Element Attribute"
+  [ale-rt]
+
 
 5.1.4.rc4 (2018-10-10)
 ----------------------
