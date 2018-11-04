@@ -74,6 +74,11 @@ New features:
   in the generated package.json in compile_resources.py.
   [sunew]
 
+- Add utility-method safe_nativestring.
+  [pbauer]
+
+- Rename safe_unicode to safe_text and safe_encode to safe_bytes. Keep old aliases.
+  [pbauer]
 
 Bug fixes:
 
