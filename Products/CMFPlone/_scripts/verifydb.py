@@ -38,17 +38,17 @@ def verify_zodb(obj, debug=False):
 
     logger.info('Scanning ZODB...')
 
-    next = None
+    next_ = None
     count = 0
     errors = 0
     while True:
         count += 1
-        oid, tid, data, next = storage.record_iternext(next)
+        oid, tid, data, next_ = storage.record_iternext(next_)
         logger.debug('Verifying {}'.format(oid))
         success = verify_record(oid, data, debug)
         if not success:
             errors += 1
-        if next is None:
+        if next_ is None:
             break
 
     logger.info(
