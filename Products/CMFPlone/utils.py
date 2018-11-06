@@ -461,8 +461,8 @@ def safe_callable(obj):
         return callable(obj)
 
 
-def safe_unicode(value, encoding='utf-8'):
-    """Converts a value to unicode, even it is already a unicode string.
+def safe_text(value, encoding='utf-8'):
+    """Converts a value to text, even it is already a text string.
 
         >>> from Products.CMFPlone.utils import safe_unicode
         >>> test_bytes = u'\u01b5'.encode('utf-8')
@@ -505,21 +505,27 @@ def safe_unicode(value, encoding='utf-8'):
     return value
 
 
-def safe_encode(value, encoding='utf-8'):
-    """Convert unicode to the specified encoding.
+safe_unicode = safe_text
+
+
+def safe_bytes(value, encoding='utf-8'):
+    """Convert text to bytes of the specified encoding.
     """
     if isinstance(value, six.text_type):
         value = value.encode(encoding)
     return value
 
 
+safe_encode = safe_bytes
+
+
 def safe_nativestring(value, encoding='utf-8'):
     """Convert a value to str in py2 and to text in py3
     """
     if six.PY2 and isinstance(value, six.text_type):
-        value = safe_encode(value, encoding)
+        value = safe_bytes(value, encoding)
     if not six.PY2 and isinstance(value, six.binary_type):
-        value = safe_unicode(value, encoding)
+        value = safe_text(value, encoding)
     return value
 
 
