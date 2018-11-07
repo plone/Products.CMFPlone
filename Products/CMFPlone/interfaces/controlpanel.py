@@ -1007,6 +1007,13 @@ class INavigationSchema(Interface):
         required=True
     )
 
+    navigation_depth = schema.Int(
+        title=_(u'Navigation depth'),
+        description=_(u'Number of folder levels to show in the navigation.'),
+        default=1,
+        required=True
+    )
+
     sitemap_depth = schema.Int(
         title=_(u'Sitemap depth'),
         description=_(u'Number of folder levels to show in the site map.'),
