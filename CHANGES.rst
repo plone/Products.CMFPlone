@@ -5,6 +5,22 @@
 Changelog
 =========
 
+5.2a2 (unreleased)
+------------------
+
+Breaking changes:
+
+- *add item here*
+
+New features:
+
+- *add item here*
+
+Bug fixes:
+
+- *add item here*
+
+
 5.2a1 (2018-11-08)
 ------------------
 
