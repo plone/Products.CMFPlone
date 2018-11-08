@@ -6,60 +6,12 @@ Changelog
 =========
 
 
-5.0.10 (unreleased)
--------------------
+.. You should *NOT* be adding new change log entries to this file.
+   You should create a file in the news directory instead.
+   For helpful instructions, please see:
+   https://github.com/plone/plone.releaser/blob/master/ADD-A-NEWS-ITEM.rst
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- Add jqtree-contextmenu to the resource registry
-  [b4oshany]
-
-- Add js-shortcuts to the resource registry
-  [b4oshany]
-
-- Update with latest mockup 2.1.x
-  [frapell]
-
-Bug fixes:
-
-- Fix registration of ``robots.txt`` browser view to avoid ``AttributeError`` on Zope's root (fixes `#2052 <https://github.com/plone/Products.CMFPlone/issues/2052>`_).
-  [hvelarde]
-
-- Fix plone.app.redirector support for JSON/unspecified requests.
-  [rpatterson]
-
-- Do not include too new upgrades when upgrading Plone Site.
-  Otherwise the Plone Site ends up at a newer version that the filesystem code supports,
-  giving an error when upgrading, and resulting in possibly missed upgrades later.
-  Fixes `issue 2377 <https://github.com/plone/Products.CMFPlone/issues/2377>`_.
-  [maurits]
-
-- Unflakied a unit test.
-  [Rotonen]
-
-- Add required ``plone.app.imaging`` as direct dependency.
-  Note, in Plone 5.1 plone.app.imaging is no dependency anymore.
-  [thet]
-
-- Ignore invalid ``sort_on`` parameters in catalog ``searchResults``.
-  Otherwise you get a ``CatalogError``.
-  I get crazy sort_ons like '194' or 'null'.
-  [maurits]
-
-- Require AccessControl 3.0.14 so ``guarded_getitem`` is used.
-  Part of PloneHotfix20171128.  [maurits]
-
-- Improved isURLInPortal according to PloneHotfix20171128.
-  Accept only http/https, and doubly check escaped urls.  [maurits]
-
-- Fixed Products.CMFPlacefulWorkflow being marked as not installed after upgrade from 4.3.
-  This is true for any package in the Products namespace that was installed.
-  Fixes `issue 2103 <https://github.com/plone/Products.CMFPlone/issues/2103>`_.
-  [maurits]
+.. towncrier release notes start
 
 
 5.0.9 (2017-08-05)

@@ -1,0 +1,2 @@
+Require AccessControl 3.0.14 so ``guarded_getitem`` is used.
+Part of PloneHotfix20171128.  [maurits]
