@@ -1,5 +1,4 @@
 from setuptools import setup, find_packages
-import os.path
 
 version = '4.3.19.dev0'
 
@@ -8,7 +7,7 @@ setup(name='Products.CMFPlone',
       description="The Plone Content Management System (core)",
       long_description=(
           open("README.rst").read() + "\n" +
-          open(os.path.join("docs", "CHANGES.rst")).read()
+          open("CHANGES.rst").read()
       ),
       classifiers=[
           "Environment :: Web Environment",
