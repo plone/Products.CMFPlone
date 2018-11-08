@@ -2,3 +2,6 @@ recursive-include Products *
 recursive-include docs *
 include *
 global-exclude *.pyc
+include pyproject.toml
+recursive-exclude news *
+exclude news
