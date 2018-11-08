@@ -3,14 +3,16 @@
 # from catalog queries.
 
 from plone.app.layout.navigation.interfaces import INavtreeStrategy
+from plone.app.layout.navigation.root import getNavigationRoot
+from plone.i18n.normalizer.interfaces import IIDNormalizer
+from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
-from zope.interface import implementer
-from zope.contentprovider.provider import ContentProviderBase
-from plone.i18n.normalizer.interfaces import IIDNormalizer
+from Products.CMFPlone.interfaces.controlpanel import INavigationSchema
 from zope.component import getUtility
+from zope.contentprovider.provider import ContentProviderBase
+from zope.interface import implementer
 import plone.api
-from plone.app.layout.navigation.root import getNavigationRoot
 
 import six
 
@@ -368,6 +370,12 @@ class NavTreeProvider(ContentProviderBase):
     _navtree_context = None
 
     @property
+    def settings(self):
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(INavigationSchema, prefix='plone')
+        return settings
+
+    @property
     def navtree_path(self):
         if self._navtree_path is None:
             self._navtree_path = getNavigationRoot(self.context)
@@ -375,7 +383,7 @@ class NavTreeProvider(ContentProviderBase):
 
     @property
     def navtree_depth(self):
-        return 10
+        return self.settings.navigation_depth
 
     @property
     def enableDesc(self):
