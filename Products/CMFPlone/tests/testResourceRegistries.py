@@ -73,6 +73,17 @@ class TestResourceRegistries(PloneTestCase.PloneTestCase):
         )
         self.assertTrue('body{color:blue}' in resp_css.getBody())
 
+        resp_js = subrequest(
+            '{0}/++plone++static/plone-legacy-compiled.js'.format(
+                self.portal.absolute_url()
+            )
+        )
+        body = resp_js.getBody()
+        self.assertTrue(
+            'resource: ++resource++plone.app.discussion.javascripts/comments.js'
+            in body)
+        self.assertFalse('Could not find resource' in body)
+
     def test_dont_minify_already_minified(self):
         registry = getUtility(IRegistry)
         bundles = registry.collectionOfInterface(IBundleRegistry,
