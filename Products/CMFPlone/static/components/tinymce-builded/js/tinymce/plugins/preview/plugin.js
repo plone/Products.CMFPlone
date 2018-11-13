@@ -1,101 +1,123 @@
-/**
- * plugin.js
- *
- * Released under LGPL License.
- * Copyright (c) 1999-2015 Ephox Corp. All rights reserved
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
+(function () {
+var preview = (function () {
+  'use strict';
 
-/*global tinymce:true */
+  var global = tinymce.util.Tools.resolve('tinymce.PluginManager');
 
-tinymce.PluginManager.add('preview', function(editor) {
-	var settings = editor.settings, sandbox = !tinymce.Env.ie;
+  var global$1 = tinymce.util.Tools.resolve('tinymce.Env');
 
-	editor.addCommand('mcePreview', function() {
-		editor.windowManager.open({
-			title: 'Preview',
-			width: parseInt(editor.getParam("plugin_preview_width", "650"), 10),
-			height: parseInt(editor.getParam("plugin_preview_height", "500"), 10),
-			html: '<iframe src="javascript:\'\'" frameborder="0"' + (sandbox ? ' sandbox="allow-scripts"' : '') + '></iframe>',
-			buttons: {
-				text: 'Close',
-				onclick: function() {
-					this.parent().parent().close();
-				}
-			},
-			onPostRender: function() {
-				var previewHtml, headHtml = '';
+  var getPreviewDialogWidth = function (editor) {
+    return parseInt(editor.getParam('plugin_preview_width', '650'), 10);
+  };
+  var getPreviewDialogHeight = function (editor) {
+    return parseInt(editor.getParam('plugin_preview_height', '500'), 10);
+  };
+  var getContentStyle = function (editor) {
+    return editor.getParam('content_style', '');
+  };
+  var $_71hkk4isjh8lz146 = {
+    getPreviewDialogWidth: getPreviewDialogWidth,
+    getPreviewDialogHeight: getPreviewDialogHeight,
+    getContentStyle: getContentStyle
+  };
 
-				headHtml += '<base href="' + editor.documentBaseURI.getURI() + '">';
+  var global$2 = tinymce.util.Tools.resolve('tinymce.util.Tools');
 
-				tinymce.each(editor.contentCSS, function(url) {
-					headHtml += '<link type="text/css" rel="stylesheet" href="' + editor.documentBaseURI.toAbsolute(url) + '">';
-				});
+  var getPreviewHtml = function (editor) {
+    var previewHtml;
+    var headHtml = '';
+    var encode = editor.dom.encode;
+    var contentStyle = $_71hkk4isjh8lz146.getContentStyle(editor);
+    headHtml += '<base href="' + encode(editor.documentBaseURI.getURI()) + '">';
+    if (contentStyle) {
+      headHtml += '<style type="text/css">' + contentStyle + '</style>';
+    }
+    global$2.each(editor.contentCSS, function (url) {
+      headHtml += '<link type="text/css" rel="stylesheet" href="' + encode(editor.documentBaseURI.toAbsolute(url)) + '">';
+    });
+    var bodyId = editor.settings.body_id || 'tinymce';
+    if (bodyId.indexOf('=') !== -1) {
+      bodyId = editor.getParam('body_id', '', 'hash');
+      bodyId = bodyId[editor.id] || bodyId;
+    }
+    var bodyClass = editor.settings.body_class || '';
+    if (bodyClass.indexOf('=') !== -1) {
+      bodyClass = editor.getParam('body_class', '', 'hash');
+      bodyClass = bodyClass[editor.id] || '';
+    }
+    var preventClicksOnLinksScript = '<script>' + 'document.addEventListener && document.addEventListener("click", function(e) {' + 'for (var elm = e.target; elm; elm = elm.parentNode) {' + 'if (elm.nodeName === "A") {' + 'e.preventDefault();' + '}' + '}' + '}, false);' + '</script> ';
+    var dirAttr = editor.settings.directionality ? ' dir="' + editor.settings.directionality + '"' : '';
+    previewHtml = '<!DOCTYPE html>' + '<html>' + '<head>' + headHtml + '</head>' + '<body id="' + encode(bodyId) + '" class="mce-content-body ' + encode(bodyClass) + '"' + encode(dirAttr) + '>' + editor.getContent() + preventClicksOnLinksScript + '</body>' + '</html>';
+    return previewHtml;
+  };
+  var injectIframeContent = function (editor, iframe, sandbox) {
+    var previewHtml = getPreviewHtml(editor);
+    if (!sandbox) {
+      var doc = iframe.contentWindow.document;
+      doc.open();
+      doc.write(previewHtml);
+      doc.close();
+    } else {
+      iframe.src = 'data:text/html;charset=utf-8,' + encodeURIComponent(previewHtml);
+    }
+  };
+  var $_65q2xtitjh8lz147 = {
+    getPreviewHtml: getPreviewHtml,
+    injectIframeContent: injectIframeContent
+  };
 
-				var bodyId = settings.body_id || 'tinymce';
-				if (bodyId.indexOf('=') != -1) {
-					bodyId = editor.getParam('body_id', '', 'hash');
-					bodyId = bodyId[editor.id] || bodyId;
-				}
+  var open = function (editor) {
+    var sandbox = !global$1.ie;
+    var dialogHtml = '<iframe src="" frameborder="0"' + (sandbox ? ' sandbox="allow-scripts"' : '') + '></iframe>';
+    var dialogWidth = $_71hkk4isjh8lz146.getPreviewDialogWidth(editor);
+    var dialogHeight = $_71hkk4isjh8lz146.getPreviewDialogHeight(editor);
+    editor.windowManager.open({
+      title: 'Preview',
+      width: dialogWidth,
+      height: dialogHeight,
+      html: dialogHtml,
+      buttons: {
+        text: 'Close',
+        onclick: function (e) {
+          e.control.parent().parent().close();
+        }
+      },
+      onPostRender: function (e) {
+        var iframeElm = e.control.getEl('body').firstChild;
+        $_65q2xtitjh8lz147.injectIframeContent(editor, iframeElm, sandbox);
+      }
+    });
+  };
+  var $_bncxn7iqjh8lz144 = { open: open };
 
-				var bodyClass = settings.body_class || '';
-				if (bodyClass.indexOf('=') != -1) {
-					bodyClass = editor.getParam('body_class', '', 'hash');
-					bodyClass = bodyClass[editor.id] || '';
-				}
+  var register = function (editor) {
+    editor.addCommand('mcePreview', function () {
+      $_bncxn7iqjh8lz144.open(editor);
+    });
+  };
+  var $_5cptv5ipjh8lz143 = { register: register };
 
-				var preventClicksOnLinksScript = (
-					'<script>' +
-						'document.addEventListener && document.addEventListener("click", function(e) {' +
-							'for (var elm = e.target; elm; elm = elm.parentNode) {' +
-								'if (elm.nodeName === "A") {' +
-									'e.preventDefault();' +
-								'}' +
-							'}' +
-						'}, false);' +
-					'</script> '
-				);
+  var register$1 = function (editor) {
+    editor.addButton('preview', {
+      title: 'Preview',
+      cmd: 'mcePreview'
+    });
+    editor.addMenuItem('preview', {
+      text: 'Preview',
+      cmd: 'mcePreview',
+      context: 'view'
+    });
+  };
+  var $_fy0w72ivjh8lz14a = { register: register$1 };
 
-				var dirAttr = editor.settings.directionality ? ' dir="' + editor.settings.directionality + '"' : '';
+  global.add('preview', function (editor) {
+    $_5cptv5ipjh8lz143.register(editor);
+    $_fy0w72ivjh8lz14a.register(editor);
+  });
+  function Plugin () {
+  }
 
-				previewHtml = (
-					'<!DOCTYPE html>' +
-					'<html>' +
-					'<head>' +
-						headHtml +
-					'</head>' +
-					'<body id="' + bodyId + '" class="mce-content-body ' + bodyClass + '"' + dirAttr + '>' +
-						editor.getContent() +
-						preventClicksOnLinksScript +
-					'</body>' +
-					'</html>'
-				);
+  return Plugin;
 
-				if (!sandbox) {
-					// IE 6-11 doesn't support data uris on iframes
-					// so I guess they will have to be less secure since we can't sandbox on those
-					// TODO: Use sandbox if future versions of IE supports iframes with data: uris.
-					var doc = this.getEl('body').firstChild.contentWindow.document;
-					doc.open();
-					doc.write(previewHtml);
-					doc.close();
-				} else {
-					this.getEl('body').firstChild.src = 'data:text/html;charset=utf-8,' + encodeURIComponent(previewHtml);
-				}
-			}
-		});
-	});
-
-	editor.addButton('preview', {
-		title: 'Preview',
-		cmd: 'mcePreview'
-	});
-
-	editor.addMenuItem('preview', {
-		text: 'Preview',
-		cmd: 'mcePreview',
-		context: 'view'
-	});
-});
+}());
+})();
