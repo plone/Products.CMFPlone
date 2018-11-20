@@ -9,9 +9,18 @@ from zope.component import getUtility
 from Products.CMFPlone.resources.browser.combine import (
     PRODUCTION_RESOURCE_DIRECTORY,
     combine_bundles,
-    get_override_directory,
     MetaBundleWriter
 )
+
+
+class FakeBundleRegistryRecord(object):
+
+    def __init__(self, merge_with=None, jscompilation=None,
+                 depends=None, csscompilation=None):
+        self.merge_with = merge_with
+        self.jscompilation = jscompilation
+        self.depends = depends
+        self.csscompilation = csscompilation
 
 
 class ProductsCMFPloneSetupTest(PloneTestCase):
@@ -56,5 +65,25 @@ class ProductsCMFPloneSetupTest(PloneTestCase):
 
     def test_ordering_with_depends(self):
         writer = MetaBundleWriter(
-            get_override_directory(self.portal),
-            self.production_folder, 'logged-in')
+            self.portal, self.production_folder, 'logged-in')
+
+        # add in some fake bundles so we can test correct
+        # ordering
+        writer.bundles['foobar-1'] = FakeBundleRegistryRecord(
+            merge_with='logged-in', depends='plone',
+            jscompilation=writer.bundles['plone'].jscompilation,
+            csscompilation=writer.bundles['plone'].csscompilation
+        )
+        writer.bundles['foobar-2'] = FakeBundleRegistryRecord(
+            merge_with='logged-in', depends='foobar-1',
+            jscompilation=writer.bundles['plone'].jscompilation,
+            csscompilation=writer.bundles['plone'].csscompilation
+        )
+        writer.write_js()
+        data = self.production_folder.readFile('logged-in.js')
+        self.assertTrue(
+            data.index('Start Bundle: plone') < data.index('Start Bundle: foobar-1')  # noqa
+        )
+        self.assertTrue(
+            data.index('Start Bundle: foobar-1') < data.index('Start Bundle: foobar-2')  # noqa
+        )
