@@ -95,13 +95,16 @@ class MetaBundleWriter(object):
 
         self._write_out(self.js_resources, '.js')
 
-    def load_js_bundle(self, name, bundle):
+    def load_js_bundle(self, name, bundle, depth=0):
+        if depth > 10:
+            # recursion detection
+            return
         if bundle.merge_with != self.name:
             return
         if bundle.jscompilation:
             if bundle.depends and bundle.depends in self.bundles:
                 self.load_js_bundle(
-                    bundle.depends, self.bundles[bundle.depends])
+                    bundle.depends, self.bundles[bundle.depends], depth + 1)
             if name in self.js_resources:
                 return
             resource = get_resource(self.context, bundle.jscompilation)
@@ -120,14 +123,18 @@ class MetaBundleWriter(object):
         self.folder.writeFile(self.name + postfix, fi)
         resources.clear()
 
-    def load_css_bundle(self, name, bundle):
+    def load_css_bundle(self, name, bundle, depth=0):
+        if depth > 10:
+            # recursion detection
+            return
+
         if bundle.merge_with != self.name:
             return
 
         if bundle.csscompilation:
             if bundle.depends and bundle.depends in self.bundles:
                 self.load_css_bundle(
-                    bundle.depends, self.bundles[bundle.depends])
+                    bundle.depends, self.bundles[bundle.depends], depth + 1)
             if name in self.css_resources:
                 return
 

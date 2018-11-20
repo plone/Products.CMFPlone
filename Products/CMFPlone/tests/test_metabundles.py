@@ -87,3 +87,22 @@ class ProductsCMFPloneSetupTest(PloneTestCase):
         self.assertTrue(
             data.index('Start Bundle: foobar-1') < data.index('Start Bundle: foobar-2')  # noqa
         )
+
+    def test_prevent_circular_depends_error(self):
+        writer = MetaBundleWriter(
+            self.portal, self.production_folder, 'logged-in')
+
+        # add in some fake bundles so we can test correct
+        # ordering
+        writer.bundles['foobar-1'] = FakeBundleRegistryRecord(
+            merge_with='logged-in', depends='foobar-2',
+            jscompilation=writer.bundles['plone'].jscompilation,
+            csscompilation=writer.bundles['plone'].csscompilation
+        )
+        writer.bundles['foobar-2'] = FakeBundleRegistryRecord(
+            merge_with='logged-in', depends='foobar-1',
+            jscompilation=writer.bundles['plone'].jscompilation,
+            csscompilation=writer.bundles['plone'].csscompilation
+        )
+        writer.write_js()
+        writer.write_css()
