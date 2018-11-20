@@ -91,12 +91,13 @@ class MetaBundleWriter(object):
 
         # bundles
         for name, bundle in self.bundles.items():
-            if bundle.merge_with == self.name:
-                self.load_js_bundle(name, bundle)
+            self.load_js_bundle(name, bundle)
 
         self._write_out(self.js_resources, '.js')
 
     def load_js_bundle(self, name, bundle):
+        if bundle.merge_with != self.name:
+            return
         if bundle.jscompilation:
             if bundle.depends and bundle.depends in self.bundles:
                 self.load_js_bundle(
@@ -120,6 +121,9 @@ class MetaBundleWriter(object):
         resources.clear()
 
     def load_css_bundle(self, name, bundle):
+        if bundle.merge_with != self.name:
+            return
+
         if bundle.csscompilation:
             if bundle.depends and bundle.depends in self.bundles:
                 self.load_css_bundle(
@@ -142,8 +146,7 @@ class MetaBundleWriter(object):
 
     def write_css(self):
         for name, bundle in self.bundles.items():
-            if bundle.merge_with == self.name:
-                self.load_css_bundle(name, bundle)
+            self.load_css_bundle(name, bundle)
 
         self._write_out(self.css_resources, '.css')
 
