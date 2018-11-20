@@ -9,6 +9,8 @@ from zope.component import getUtility
 from Products.CMFPlone.resources.browser.combine import (
     PRODUCTION_RESOURCE_DIRECTORY,
     combine_bundles,
+    get_override_directory,
+    MetaBundleWriter
 )
 
 
@@ -51,3 +53,8 @@ class ProductsCMFPloneSetupTest(PloneTestCase):
             'alert("Overrided legacy!");',
             self.production_folder.readFile('default.js')
         )
+
+    def test_ordering_with_depends(self):
+        writer = MetaBundleWriter(
+            get_override_directory(self.portal),
+            self.production_folder, 'logged-in')
