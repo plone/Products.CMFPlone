@@ -70,7 +70,7 @@ class ProductsCMFPloneSetupTest(PloneTestCase):
         # add in some fake bundles so we can test correct
         # ordering
         writer.bundles['foobar-1'] = FakeBundleRegistryRecord(
-            merge_with='logged-in', depends='plone',
+            merge_with='logged-in', depends='plone-logged-in',
             jscompilation=writer.bundles['plone'].jscompilation,
             csscompilation=writer.bundles['plone'].csscompilation
         )
