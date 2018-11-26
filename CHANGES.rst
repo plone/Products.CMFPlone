@@ -18,9 +18,6 @@ Changelog
 
 Breaking changes:
 
-- Factor out all static resources and the ``plone-compile-resources`` script into plone.staticresources.
-  [thet]
-
 - Removed generateUniqueId.py skins script (after it was added to Products.Archetypes).
   This script is no longer available outside Archetypes world.
   #1801
@@ -63,10 +60,6 @@ New features:
 
 - Factored out human_readable_size method for replacing getObjSize.py;
   removed getObjSize.py. #1801
-- Add more logging information when writing combined bundles.
-  [thet]
-
-- Factored out human_readable_size method for replacing getObjSize.py. #1801
   [reinhardt]
 
 - Update TinyMCE to 4.7.13
