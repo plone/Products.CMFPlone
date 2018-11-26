@@ -164,6 +164,9 @@ Bug fixes:
 - Remove ``plone-generate-gruntfile`` (it is all available through ``plone-compile-resources``).
   [jensens]
 
+- Migrate from ``slimit`` to ``calmjs.parse`` for the JavaScript cooker #2616
+  [metatoaster]
+
 
 New Features:
 
