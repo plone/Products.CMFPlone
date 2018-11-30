@@ -10983,6 +10983,16 @@ define('mockup-patterns-resourceregistry-url/js/fields',[
     }
   });
 
+
+  var MergeWithFieldView = ResourceSelectFieldView.extend({
+    multiple: false,
+    getSelectOptions: function() {
+      var self = this;
+      return ['', 'default', 'logged-in'];
+    }
+  });
+
+
   return {
     ResourceDisplayFieldView: ResourceDisplayFieldView,
     VariableFieldView: VariableFieldView,
@@ -10993,7 +11003,8 @@ define('mockup-patterns-resourceregistry-url/js/fields',[
     BundleResourcesFieldView: BundleResourcesFieldView,
     BundleDependsFieldView: BundleDependsFieldView,
     ResourceBoolFieldView: ResourceBoolFieldView,
-    PatternFieldView: PatternFieldView
+    PatternFieldView: PatternFieldView,
+    MergeWithFieldView: MergeWithFieldView
   };
 });
 
@@ -33344,24 +33355,34 @@ define('mockup-patterns-resourceregistry-url/js/registry',[
       title: _t('Conditional comment'),
       description: _t('Internet Explorer conditional comment')
     }, {
+      name: 'load_async',
+      title: _t('Load JavaScript asynchronously?'),
+      view: fields.ResourceBoolFieldView
+    }, {
+      name: 'load_defer',
+      title: _t('Load JavaScript deferred?'),
+      view: fields.ResourceBoolFieldView
+    }, {
       name: 'compile',
       title: _t('Does your bundle contain any RequireJS or LESS files?'),
       view: fields.ResourceBoolFieldView
     }, {
+      name: 'merge_with',
+      title: _t('Merge with'),
+      description: _t('In production, the bundle is merged together with others. Select which one here.'),
+      view: fields.MergeWithFieldView
+    }, {
       name: 'last_compilation',
       title: _t('Last compilation'),
-      description: _t('Date/Time when your bundle was last compiled. Empty, if it was never compiled.'),
-      view: fields.ResourceDisplayFieldView
+      description: _t('Date/Time when your bundle was last compiled. Empty, if it was never compiled.')
     }, {
       name: 'jscompilation',
       title: _t('Compiled JavaScript'),
-      description: _t('Automatically generated path to the compiled JavaScript.'),
-      view: fields.ResourceDisplayFieldView
+      description: _t('Automatically generated path to the compiled JavaScript.')
     }, {
       name: 'csscompilation',
       title: _t('Compiled CSS'),
-      description: _t('Automatically generated path to the compiled CSS.'),
-      view: fields.ResourceDisplayFieldView
+      description: _t('Automatically generated path to the compiled CSS.')
     }, {
       name: 'stub_js_modules',
       title: _t('Stub JS Modules'),
@@ -34170,5 +34191,5 @@ require([
   'use strict';
 });
 
-define("/Users/esteele/projects/plone_5.1/src/Products.CMFPlone/Products/CMFPlone/static/resourceregistry.js", function(){});
+define("/home/_thet/data/dev/plone/buildout.coredev-51/src/Products.CMFPlone/Products/CMFPlone/static/resourceregistry.js", function(){});
 

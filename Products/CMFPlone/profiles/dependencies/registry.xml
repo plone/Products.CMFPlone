@@ -1247,7 +1247,7 @@
     <value key="enabled">False</value>
     <value key="jscompilation">++plone++static/resourceregistry-compiled.min.js</value>
     <value key="csscompilation">++plone++static/resourceregistry-compiled.css</value>
-    <value key="last_compilation">2018-09-26 16:00:00</value>
+    <value key="last_compilation">2018-12-05 01:36:00</value>
     <value key="load_async">False</value>
     <value key="load_defer">False</value>
     <value key="stub_js_modules">
