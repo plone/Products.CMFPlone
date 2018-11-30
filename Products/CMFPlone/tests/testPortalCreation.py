@@ -885,6 +885,9 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         view = ExportStepsView(self.setup, None)
         self.assertEqual([i['id'] for i in view.invalidSteps()], [])
 
+    def testNoPendingUpgrades(self):
+        self.assertListEqual(self.setup.listProfilesWithPendingUpgrades(), [])
+
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
 
