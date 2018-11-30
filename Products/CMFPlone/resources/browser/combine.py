@@ -121,16 +121,18 @@ class MetaBundleWriter(object):
             resource = get_resource(self.context, bundle.jscompilation)
             if not resource:
                 return
-            self.js_resources[name] = resource.encode()
+            self.js_resources[name] = resource
 
     def _write_out(self, resources, postfix):
         fi = BytesIO()
         for bname, script in resources.items():
+            if not isinstance(script, six.binary_type):
+                script = script.encode()
             fi.write(b'''
-// Start Bundle: {0}
-{1}
-// End Bundle: {2}
-'''.format(bname.encode(), script, bname.encode()))
+// Start Bundle: %b
+%b
+// End Bundle: %b
+''' % (bname.encode(), script, bname.encode()))
         self.folder.writeFile(self.name + postfix, fi)
         resources.clear()
 
@@ -187,7 +189,7 @@ def combine_bundles(context):
     production_folder = container[PRODUCTION_RESOURCE_DIRECTORY]
 
     # store timestamp
-    fi = BytesIO()()
+    fi = BytesIO()
     fi.write(datetime.now().isoformat().encode())
     production_folder.writeFile('timestamp.txt', fi)
 

@@ -170,7 +170,7 @@ class ProductsCMFPloneSetupTest(unittest.TestCase):
             csscompilation=writer.bundles['plone'].csscompilation
         )
         writer.write_js()
-        data = self.production_folder.readFile('logged-in.js')
+        data = self.production_folder.readFile('logged-in.js').decode('utf-8')
         self.assertTrue(
             data.index('Start Bundle: plone') < data.index('Start Bundle: foobar-1')  # noqa
         )
