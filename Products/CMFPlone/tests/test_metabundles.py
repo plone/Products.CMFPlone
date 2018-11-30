@@ -9,8 +9,18 @@ from zope.component import getUtility
 from Products.CMFPlone.resources.browser.combine import (
     PRODUCTION_RESOURCE_DIRECTORY,
     combine_bundles,
+    MetaBundleWriter
 )
 from Products.GenericSetup.tests import common
+
+
+class FakeBundleRegistryRecord(object):
+    def __init__(self, merge_with=None, jscompilation=None,
+                 depends=None, csscompilation=None):
+        self.merge_with = merge_with
+        self.jscompilation = jscompilation
+        self.depends = depends
+        self.csscompilation = csscompilation
 
 
 class DummyImportContext(common.DummyImportContext):
@@ -138,3 +148,45 @@ class ProductsCMFPloneSetupTest(PloneTestCase):
         combine(context)
         ts12 = get_timestamp()
         self.assertEqual(ts11, ts12)
+
+    def test_ordering_with_depends(self):
+        writer = MetaBundleWriter(
+            self.portal, self.production_folder, 'logged-in')
+        # add in some fake bundles so we can test correct
+        # ordering
+        writer.bundles['foobar-1'] = FakeBundleRegistryRecord(
+            merge_with='logged-in', depends='plone-logged-in',
+            jscompilation=writer.bundles['plone'].jscompilation,
+            csscompilation=writer.bundles['plone'].csscompilation
+        )
+        writer.bundles['foobar-2'] = FakeBundleRegistryRecord(
+            merge_with='logged-in', depends='foobar-1',
+            jscompilation=writer.bundles['plone'].jscompilation,
+            csscompilation=writer.bundles['plone'].csscompilation
+        )
+        writer.write_js()
+        data = self.production_folder.readFile('logged-in.js')
+        self.assertTrue(
+            data.index('Start Bundle: plone') < data.index('Start Bundle: foobar-1')  # noqa
+        )
+        self.assertTrue(
+            data.index('Start Bundle: foobar-1') < data.index('Start Bundle: foobar-2')  # noqa
+        )
+
+    def test_prevent_circular_depends_error(self):
+        writer = MetaBundleWriter(
+            self.portal, self.production_folder, 'logged-in')
+        # add in some fake bundles so we can test correct
+        # ordering
+        writer.bundles['foobar-1'] = FakeBundleRegistryRecord(
+            merge_with='logged-in', depends='foobar-2',
+            jscompilation=writer.bundles['plone'].jscompilation,
+            csscompilation=writer.bundles['plone'].csscompilation
+        )
+        writer.bundles['foobar-2'] = FakeBundleRegistryRecord(
+            merge_with='logged-in', depends='foobar-1',
+            jscompilation=writer.bundles['plone'].jscompilation,
+            csscompilation=writer.bundles['plone'].csscompilation
+        )
+        writer.write_js()
+        writer.write_css()
