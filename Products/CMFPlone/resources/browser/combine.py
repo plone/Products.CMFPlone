@@ -11,6 +11,7 @@ from zExceptions import NotFound
 from zope.component import getUtility
 from zope.component import queryUtility
 
+from collections import OrderedDict
 import logging
 import re
 
@@ -68,81 +69,101 @@ def get_resource(context, path):
     return result
 
 
-def write_js(context, folder, meta_bundle):
-    registry = getUtility(IRegistry)
-    resources = []
+class MetaBundleWriter(object):
 
-    # default resources
-    if (
-        meta_bundle == 'default' and
-        registry.records.get('plone.resources/jquery.js')
-    ):
-        resources.append(
-            get_resource(
-                context,
-                registry.records['plone.resources/jquery.js'].value
-            )
-        )
-        resources.append(
-            get_resource(
-                context,
-                registry.records['plone.resources.requirejs'].value
-            )
-        )
-        resources.append(
-            get_resource(
-                context,
-                registry.records['plone.resources.configjs'].value
-            )
-        )
+    def __init__(self, context, folder, name):
+        self.context = context
+        self.folder = folder
+        self.name = name
+        self.js_resources = OrderedDict()
+        self.css_resources = OrderedDict()
+        self.registry = getUtility(IRegistry)
+        self.bundles = self.registry.collectionOfInterface(
+            IBundleRegistry, prefix='plone.bundles', check=False)
 
-    # bundles
-    bundles = registry.collectionOfInterface(
-        IBundleRegistry,
-        prefix='plone.bundles',
-        check=False
-    )
-    for bundle in bundles.values():
-        if bundle.merge_with == meta_bundle and bundle.jscompilation:
-            resource = get_resource(context, bundle.jscompilation)
+    def write_js(self):
+
+        # default resources
+        if self.name == 'default' and self.registry.records.get(
+            'plone.resources/jquery.js'
+        ):
+            self.js_resources['_jquery'] = get_resource(
+                self.context,
+                self.registry.records['plone.resources/jquery.js'].value)
+            self.js_resources['_requirejs'] = get_resource(
+                self.context,
+                self.registry.records['plone.resources.requirejs'].value)
+            self.js_resources['_configjs'] = get_resource(
+                self.context,
+                self.registry.records['plone.resources.configjs'].value)
+
+        # bundles
+        for name, bundle in self.bundles.items():
+            self.load_js_bundle(name, bundle)
+
+        self._write_out(self.js_resources, '.js')
+
+    def load_js_bundle(self, name, bundle, depth=0):
+        if depth > 10:
+            # recursion detection
+            return
+        if bundle.merge_with != self.name:
+            return
+        if bundle.jscompilation:
+            if bundle.depends and bundle.depends in self.bundles:
+                self.load_js_bundle(
+                    bundle.depends, self.bundles[bundle.depends], depth + 1)
+            if name in self.js_resources:
+                return
+            resource = get_resource(self.context, bundle.jscompilation)
             if not resource:
-                continue
-            resources.append(resource)
+                return
+            self.js_resources[name] = resource
 
-    fi = StringIO()
-    for script in resources:
-        fi.write(script + '\n')
-    folder.writeFile(meta_bundle + '.js', fi)
+    def _write_out(self, resources, postfix):
+        fi = StringIO()
+        for bname, script in resources.items():
+            fi.write('''
+// Start Bundle: {0}
+{1}
+// End Bundle: {2}
+'''.format(bname, script, bname))
+        self.folder.writeFile(self.name + postfix, fi)
+        resources.clear()
 
+    def load_css_bundle(self, name, bundle, depth=0):
+        if depth > 10:
+            # recursion detection
+            return
 
-def write_css(context, folder, meta_bundle):
-    registry = getUtility(IRegistry)
-    resources = []
+        if bundle.merge_with != self.name:
+            return
 
-    bundles = registry.collectionOfInterface(
-        IBundleRegistry,
-        prefix='plone.bundles',
-        check=False
-    )
-    for bundle in bundles.values():
-        if bundle.merge_with == meta_bundle and bundle.csscompilation:
-            css = get_resource(context, bundle.csscompilation)
+        if bundle.csscompilation:
+            if bundle.depends and bundle.depends in self.bundles:
+                self.load_css_bundle(
+                    bundle.depends, self.bundles[bundle.depends], depth + 1)
+            if name in self.css_resources:
+                return
+
+            css = get_resource(self.context, bundle.csscompilation)
             if not css:
-                continue
+                return
             (path, sep, filename) = bundle.csscompilation.rpartition('/')
             # Process relative urls:
             # we prefix with current resource path any url not starting with
             # '/' or http: or data:
             css = re.sub(
-                r"""(url\(['"]?(?!['"]?([a-z]+:|\/)))""",
+                r'''(url\(['"]?(?!['"]?([a-z]+:|\/)))''',
                 r'\1%s/' % path,
                 css)
-            resources.append(css)
+            self.css_resources[name] = css
 
-    fi = StringIO()
-    for script in resources:
-        fi.write(script + '\n')
-    folder.writeFile(meta_bundle + '.css', fi)
+    def write_css(self):
+        for name, bundle in self.bundles.items():
+            self.load_css_bundle(name, bundle)
+
+        self._write_out(self.css_resources, '.css')
 
 
 def get_override_directory(context):
@@ -166,7 +187,11 @@ def combine_bundles(context):
     production_folder.writeFile('timestamp.txt', fi)
 
     # generate new combined bundles
-    write_js(context, production_folder, 'default')
-    write_js(context, production_folder, 'logged-in')
-    write_css(context, production_folder, 'default')
-    write_css(context, production_folder, 'logged-in')
+    default_writer = MetaBundleWriter(
+        context, production_folder, 'default')
+    default_writer.write_js()
+    logged_in_writer = MetaBundleWriter(
+        context, production_folder, 'logged-in')
+    logged_in_writer.write_js()
+    default_writer.write_css()
+    logged_in_writer.write_css()
