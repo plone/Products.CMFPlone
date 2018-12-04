@@ -688,7 +688,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         else:
             browserDefault = queryAdapter(obj, IBrowserDefault)
         if browserDefault is not None:
-            layout = browserDefault.getLayout()
+            layout = browserDefault.getLayout(check_exists=True)
             if layout is None:
                 raise AttributeError(
                     "%s has no assigned layout, perhaps it needs an FTI" % obj)
