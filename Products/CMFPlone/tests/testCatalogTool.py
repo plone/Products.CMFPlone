@@ -2,6 +2,7 @@
 # -*- encoding: utf-8 -*-
 from Acquisition import aq_base
 from DateTime import DateTime
+from functools import partial
 from OFS.ObjectManager import REPLACEABLE
 from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
@@ -9,20 +10,22 @@ from plone.app.testing import TEST_USER_NAME
 from plone.indexer.wrapper import IndexableObjectWrapper
 from plone.uuid.interfaces import IAttributeUUID
 from plone.uuid.interfaces import IUUID
-from Products.CMFCore.permissions import AccessInactivePortalContent
 from Products.CMFCore.indexing import processQueue
+from Products.CMFCore.permissions import AccessInactivePortalContent
 from Products.CMFPlone.CatalogTool import CatalogTool
 from Products.CMFPlone.CatalogTool import is_folderish
 from Products.CMFPlone.tests import dummy
 from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
 from Products.CMFPlone.tests.utils import folder_position
+from z3c.form.interfaces import IFormLayer
 from zope.event import notify
 from zope.interface import alsoProvides
 from zope.lifecycleevent import ObjectCreatedEvent
-from z3c.form.interfaces import IFormLayer
+
 import transaction
 import unittest
 import zope.interface
+
 
 user2 = 'u2'
 group2 = 'g2'
@@ -541,6 +544,36 @@ class TestCatalogSorting(PloneTestCase):
         self.folder.doc4.reindexObject()
         self.folder.doc5.reindexObject()
         self.folder.doc6.reindexObject()
+
+    def testSortMultipleColumns(self):
+        path = '/'.join(self.folder.getPhysicalPath())
+        query = partial(self.catalog, path=path)
+        brains = query(sort_on=['portal_type', 'sortable_title'])
+        self.assertListEqual(
+            [brain.getPath() for brain in brains],
+            [
+                '/plone/Members/test_user_1_/doc2',
+                '/plone/Members/test_user_1_/doc3',
+                '/plone/Members/test_user_1_/doc',
+                '/plone/Members/test_user_1_/doc5',
+                '/plone/Members/test_user_1_/doc6',
+                '/plone/Members/test_user_1_/doc4',
+                '/plone/Members/test_user_1_'
+            ],
+        )
+        brains = query(sort_on=['portal_type', 'getId'])
+        self.assertListEqual(
+            [brain.getPath() for brain in brains],
+            [
+                '/plone/Members/test_user_1_/doc',
+                '/plone/Members/test_user_1_/doc2',
+                '/plone/Members/test_user_1_/doc3',
+                '/plone/Members/test_user_1_/doc4',
+                '/plone/Members/test_user_1_/doc5',
+                '/plone/Members/test_user_1_/doc6',
+                '/plone/Members/test_user_1_',
+            ]
+        )
 
     def testUnknownSortOnIsIgnored(self):
         # You should not get a CatalogError when an invalid sort_on is passed.
