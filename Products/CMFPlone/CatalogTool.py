@@ -437,10 +437,20 @@ class CatalogTool(PloneBaseTool, BaseTool):
         if not show_inactive and not self.allow_inactive(kw):
             kw['effectiveRange'] = DateTime()
 
-        sort_on = kw.get('sort_on')
-        if sort_on and sort_on not in self.indexes():
-            # I get crazy sort_ons like '194' or 'null'.
-            kw.pop('sort_on')
+        # filter out invalid sort_on indexes
+        sort_on = kw.get('sort_on') or []
+        if isinstance(sort_on, six.string_types):
+            sort_on = [sort_on]
+        valid_indexes = self.indexes()
+        try:
+            sort_on = [idx for idx in sort_on if idx in valid_indexes]
+        except TypeError:
+            # sort_on is not iterable
+            sort_on = []
+        if not sort_on:
+            kw.pop('sort_on', None)
+        else:
+            kw['sort_on'] = sort_on
 
         return ZCatalog.searchResults(self, query, **kw)
 
