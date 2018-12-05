@@ -2,7 +2,7 @@
 from setuptools import setup
 from setuptools import find_packages
 
-version = '5.2a1.dev0'
+version = '5.2a2.dev0'
 
 setup(
     name='Products.CMFPlone',
@@ -37,6 +37,7 @@ setup(
         'AccessControl >= 4.0b1',
         'Acquisition',
         'borg.localrole',
+        'calmjs.parse',
         'DateTime',
         'ExtensionClass',
         'five.customerize',
@@ -110,7 +111,6 @@ setup(
         'pyScss',
         'setuptools>=36.2',
         'six',
-        'slimit',
         'transaction',
         'z3c.autoinclude',
         'ZODB3',
@@ -155,5 +155,7 @@ setup(
     entry_points="""\
       [console_scripts]
       plone-compile-resources = Products.CMFPlone._scripts.compile_resources:main
+      [plone.recipe.zope2instance.ctl]
+      verifydb = Products.CMFPlone._scripts.verifydb:zopectl_entry
     """  # noqa
 )
