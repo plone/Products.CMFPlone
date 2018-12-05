@@ -1172,6 +1172,8 @@
     <value key="jscompilation">++plone++static/plone-compiled.min.js</value>
     <value key="csscompilation">++plone++static/plone-compiled.css</value>
     <value key="last_compilation">2018-10-04 12:00:00</value>
+    <value key="load_async">False</value>
+    <value key="load_defer">False</value>
     <value key="stub_js_modules">
       <element>jquery</element>
     </value>
@@ -1189,6 +1191,8 @@
     <value key="csscompilation">++plone++static/plone-logged-in-compiled.css</value>
     <value key="last_compilation">2018-10-04 12:00:00</value>
     <value key="depends">plone</value>
+    <value key="load_async">False</value>
+    <value key="load_defer">False</value>
     <value key="stub_js_modules">
       <element>backbone</element>
       <element>bootstrap-dropdown</element>
@@ -1231,6 +1235,8 @@
     <value key="last_compilation">2018-09-26 16:00:00</value>
     <value key="compile">False</value>
     <value key="enabled">True</value>
+    <value key="load_async">False</value>
+    <value key="load_defer">False</value>
   </records>
 
   <records prefix="plone.bundles/resourceregistry"
@@ -1241,7 +1247,9 @@
     <value key="enabled">False</value>
     <value key="jscompilation">++plone++static/resourceregistry-compiled.min.js</value>
     <value key="csscompilation">++plone++static/resourceregistry-compiled.css</value>
-    <value key="last_compilation">2018-09-26 16:00:00</value>
+    <value key="last_compilation">2018-12-05 01:36:00</value>
+    <value key="load_async">False</value>
+    <value key="load_defer">False</value>
     <value key="stub_js_modules">
       <element>jquery</element>
     </value>
