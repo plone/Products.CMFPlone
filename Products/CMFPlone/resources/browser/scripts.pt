@@ -10,7 +10,12 @@
 </tal:if><tal:if condition="condcomment">
     <tal:opencc tal:replace="structure string:&lt;!--[if ${condcomment}]&gt;" />
 </tal:if>
-  <script tal:attributes="src script/src; data-bundle script/bundle"></script>
+  <script type="text/javascript"
+      tal:attributes="
+        src script/src;
+        data-bundle script/bundle;
+        async script/async|nothing;
+        defer script/defer|nothing"/>
 <tal:if condition="condcomment">
   <tal:closecc tal:condition="condcomment" tal:replace="structure string:&lt;![endif]--&gt;" />
 </tal:if><tal:if condition="resetrjs">

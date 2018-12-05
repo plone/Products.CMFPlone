@@ -130,3 +130,15 @@ class IBundleRegistry(zope.interface.Interface):
              SimpleTerm('logged-in', 'logged-in', 'logged-in')]),
         default=u"",
         required=False)
+
+    load_async = schema.Bool(
+        title=_(u"Load asynchronously"),
+        description=_("Load the JavaScript files asynchronously by adding an ``async`` attribute to the script tag."),
+        default=False,
+        required=False)
+
+    load_defer = schema.Bool(
+        title=_(u"Load deffered"),
+        description=_("Load the JavaScript files deffered after the document has been parsed but before ``DOMContentLoaded`` by adding a ``defer`` attribute to the script tag."),
+        default=False,
+        required=False)
