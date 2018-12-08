@@ -255,6 +255,10 @@ class TestResourceRegistries(PloneTestCase.PloneTestCase):
         self.assertTrue('defer="defer"' not in view.index(view))
 
     def test_bundle_defer_async_production(self):
+        """The default and logged-in production bundles should never be loaded
+        async or defered.
+        For bundles to be loaded async or defered, you need to empty merge_with
+        """
         registry = getUtility(IRegistry)
 
         bundles = registry.collectionOfInterface(
@@ -277,17 +281,20 @@ class TestResourceRegistries(PloneTestCase.PloneTestCase):
         self.assertTrue('defer="defer"' not in view.index(view))
 
         bundles['plone'].load_async = True
-        bundles['plone'].load_defer = False
-        self.assertEqual(view.index(view).count('async="async"'), 1)
-        self.assertEqual(view.index(view).count('defer="defer"'), 0)
-
-        bundles['plone'].load_async = False
         bundles['plone'].load_defer = True
         self.assertEqual(view.index(view).count('async="async"'), 0)
-        self.assertEqual(view.index(view).count('defer="defer"'), 1)
+        self.assertEqual(view.index(view).count('defer="defer"'), 0)
 
+        bundles['plone'].merge_with = ''
         bundles['plone'].load_async = True
         bundles['plone'].load_defer = True
+        self.assertEqual(view.index(view).count('async="async"'), 1)
+        self.assertEqual(view.index(view).count('defer="defer"'), 1)
+
+        bundles['plone'].merge_with = ''
+        bundles['plone'].load_async = True
+        bundles['plone'].load_defer = True
+        bundles['plone-logged-in'].merge_with = ''
         bundles['plone-logged-in'].load_async = True
         bundles['plone-logged-in'].load_defer = True
         self.assertEqual(view.index(view).count('async="async"'), 2)
