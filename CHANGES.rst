@@ -9,6 +9,28 @@
 
 .. towncrier release notes start
 
+5.1.5rc1 (2018-12-10)
+---------------------
+
+New features:
+
+
+- - Add ``load_async`` and ``load_defer`` attributes to resource registries
+  bundle settings. When set, ``<script>`` tags are rendered with
+  ``async="async"`` resp. ``defer="defer"`` attributes. In production mode, the
+  setting from the ``plone`` resp. ``plone-logged-in`` bundles are used for the
+  ``default`` resp. ``logged-in`` meta bundles (``merge_with`` setting). [thet]
+  (#2644)
+
+
+Bug fixes:
+
+
+- Modernize robot keywords that use "Get Element Attribute" [ale-rt] (#2615)
+- Fix metabundle resource ordering to pay attention to depends setting
+  [vangheem] (#2641)
+
+
 Changelog
 =========
 
