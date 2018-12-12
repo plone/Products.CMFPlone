@@ -110,7 +110,7 @@ class TypesControlPanelFunctionalTest(unittest.TestCase):
         self.browser.getControl(name='type_id').value = ['Document']
         self.browser.getForm(action=self.types_url).submit()
         self.browser.getControl(name='versionpolicy').value = ['off']
-        self.browser.getForm(action=self.types_url).submit()
+        self.browser.getControl(name="form.button.Save").click()
 
         portal_types = self.portal.portal_types
         doc_type = portal_types.Document
@@ -123,7 +123,7 @@ class TypesControlPanelFunctionalTest(unittest.TestCase):
         self.browser.getControl(name='type_id').value = ['Document']
         self.browser.getForm(action=self.types_url).submit()
         self.browser.getControl(name='versionpolicy').value = ['off']
-        self.browser.getForm(action=self.types_url).submit()
+        self.browser.getControl(name="form.button.Save").click()
 
         portal_types = self.portal.portal_types
         doc_type = portal_types.Document
@@ -132,7 +132,7 @@ class TypesControlPanelFunctionalTest(unittest.TestCase):
             not in doc_type.behaviors)  # noqa
 
         self.browser.getControl(name='versionpolicy').value = ['manual']
-        self.browser.getForm(action=self.types_url).submit()
+        self.browser.getControl(name="form.button.Save").click()
 
         self.assertTrue(
             'plone.app.versioningbehavior.behaviors.IVersionable'
@@ -165,3 +165,33 @@ class TypesControlPanelFunctionalTest(unittest.TestCase):
         self.assertTrue(
             'plone.app.lockingbehavior.behaviors.ILocking'
             in file_type.behaviors)
+
+    def test_dont_update_settings_when_switch_types(self):
+        # First of all, set a default
+        self.browser.open(self.types_url)
+        self.browser.getControl(name='type_id').value = ['Link']
+        self.browser.getForm(action=self.types_url).submit()
+        self.browser.getControl(
+            'Redirect immediately to link target'
+        ).selected = True
+        self.browser.getControl('Save').click()
+
+        # Then switch the type
+        self.browser.getControl(name='type_id').value = ['Document']
+        self.browser.getForm(action=self.types_url).submit()
+        self.assertFalse(
+            'Redirect immediately to link target' in self.browser.contents
+        )
+
+        # Go back to the link, and check the value
+        self.browser.getControl(name='type_id').value = ['Link']
+        self.browser.getForm(action=self.types_url).submit()
+
+        self.assertTrue(
+            'Redirect immediately to link target' in self.browser.contents
+        )
+        self.assertEquals(
+            self.browser.getControl(
+                'Redirect immediately to link target').selected,
+            True
+        )

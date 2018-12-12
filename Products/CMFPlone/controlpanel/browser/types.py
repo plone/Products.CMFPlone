@@ -122,7 +122,7 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
         cancel_button = form.get('form.button.Cancel', None) is not None
         type_id = form.get('old_type_id', None)
 
-        if submitted and not cancel_button:
+        if save_button and submitted and not cancel_button:
             if type_id:
                 portal_types = getToolByName(self.context, 'portal_types')
                 portal_repository = getToolByName(self.context,
