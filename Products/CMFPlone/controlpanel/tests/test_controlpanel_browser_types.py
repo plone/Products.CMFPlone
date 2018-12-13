@@ -157,7 +157,7 @@ class TypesControlPanelFunctionalTest(unittest.TestCase):
             not in file_type.behaviors)  # noqa
 
         self.browser.getControl(name='versionpolicy').value = ['manual']
-        self.browser.getForm(action=self.types_url).submit()
+        self.browser.getControl('Save').click()
 
         self.assertTrue(
             'plone.app.versioningbehavior.behaviors.IVersionable'
