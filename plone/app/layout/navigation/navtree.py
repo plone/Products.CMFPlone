@@ -2,15 +2,19 @@
 # This module contains a function to help build navigation-tree-like structures
 # from catalog queries.
 
+from Acquisition import aq_inner
 from plone.app.layout.navigation.interfaces import INavtreeStrategy
 from plone.app.layout.navigation.root import getNavigationRoot
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
+from Products.CMFPlone.interfaces.controlpanel import ILanguageSchema
 from Products.CMFPlone.interfaces.controlpanel import INavigationSchema
+from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.contentprovider.provider import ContentProviderBase
+from zope.globalrequest import getRequest
 from zope.interface import implementer
 import plone.api
 
@@ -376,6 +380,12 @@ class NavTreeProvider(ContentProviderBase):
         return settings
 
     @property
+    def language_settings(self):
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(ILanguageSchema, prefix='plone')
+        return settings
+
+    @property
     def navtree_path(self):
         if self._navtree_path is None:
             self._navtree_path = getNavigationRoot(self.context)
@@ -395,35 +405,69 @@ class NavTreeProvider(ContentProviderBase):
         if self._navtree is not None:
             return self._navtree
 
-        types = plone.api.portal.get_registry_record('plone.displayed_types')
-        lang_current = plone.api.portal.get_current_language()
+        generate_tabs = self.settings.generate_tabs
+        types = self.settings.displayed_types
+        default_language = self.language_settings.default_language
 
-        query = {
-            'path': {'query': self.navtree_path, 'depth': self.navtree_depth},
-            'portal_type': {'query': types},
-            'exclude_from_nav': False,
-            'Language': lang_current,
-            'sort_on': 'getObjPositionInParent',
-        }
-        res = plone.api.content.find(**query)
+        request = getRequest()
+        lang_current = request.get('LANGUAGE', None) or \
+            (self.context and aq_inner(self.context).Language()) \
+            or default_language
 
         ret = {}
-        for it in res:
-            pathkey = '/'.join(it.getPath().split('/')[:-1])
-            entry = {
-                'id': it.id,
-                'uid': it.UID,
-                'url': it.getURL(),
-                'title': it.Title,
-                'review_state': it.review_state,
-            }
-            if pathkey in ret:
-                ret[pathkey].append(entry)
-            else:
-                ret[pathkey] = [entry]
 
-        self._navtree = ret
+        if generate_tabs:
+            query = {
+                'path': {'query': self.navtree_path, 'depth': self.navtree_depth},
+                'portal_type': {'query': types},
+                'exclude_from_nav': False,
+                'Language': lang_current,
+                'sort_on': 'getObjPositionInParent',
+            }
+            res = plone.api.content.find(**query)
+
+            for it in res:
+                pathkey = '/'.join(it.getPath().split('/')[:-1])
+                entry = {
+                    'id': it.id,
+                    'uid': it.UID,
+                    'url': it.getURL(),
+                    'title': it.Title,
+                    'review_state': it.review_state,
+                }
+                if pathkey in ret:
+                    ret[pathkey].append(entry)
+                else:
+                    ret[pathkey] = [entry]
+
+            self._navtree = ret
+        else:
+            portal_tabs_view = getMultiAdapter((self.context, self.request),
+                                               name='portal_tabs_view')
+            self.portal_tabs = portal_tabs_view.topLevelTabs()
+            res = self.portal_tabs
+
+            import pdb; pdb.set_trace()
+
+            for it in res:
+                # pathkey = '/'.join(it.getPath().split('/')[:-1])
+                entry = {
+                    'id': it['id'],
+                    'uid': None,
+                    'url': it['url'],
+                    'title': it['title'],
+                    'review_state': None,
+                }
+                # if pathkey in ret:
+                #     ret[pathkey].append(entry)
+                # else:
+                ret['/'] = [entry]
+
+            self._navtree = ret
+
+
         return ret
+
 
     def build_tree(self, path, first_run=True):
         """Non-template based recursive tree building.
