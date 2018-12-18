@@ -21,7 +21,7 @@ from Products.CMFPlone.UnicodeSplitter import Splitter
 from Products.GenericSetup.browser.manage import ExportStepsView
 from Products.GenericSetup.browser.manage import ImportStepsView
 from Products.StandardCacheManagers.AcceleratedHTTPCacheManager import (
-    AcceleratedHTTPCacheManager
+    AcceleratedHTTPCacheManager,
 )
 from Products.StandardCacheManagers.RAMCacheManager import RAMCacheManager
 from zope.component import getGlobalSiteManager
@@ -29,8 +29,8 @@ from zope.component import getMultiAdapter
 from zope.component import getSiteManager
 from zope.component import getUtility
 from zope.component import queryUtility
-from zope.component.interfaces import IComponentLookup
-from zope.component.interfaces import IComponentRegistry
+from zope.interface.interfaces import IComponentLookup
+from zope.interface.interfaces import IComponentRegistry
 from zope.location.interfaces import ISite
 from zope.site.hooks import clearSite
 from zope.site.hooks import setSite

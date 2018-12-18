@@ -23,7 +23,6 @@ if bbb.HAS_ZSERVER:
     from OFS.ObjectManager import ObjectManager
     ObjectManager.__old_manage_FTPlist = ObjectManager.manage_FTPlist
 
-
     def manage_FTPlist(self, REQUEST):
         """Returns a directory listing consisting of a tuple of
         (id,stat) tuples, marshaled to a string. Note, the listing it
@@ -33,14 +32,16 @@ if bbb.HAS_ZSERVER:
         In the case of non-foldoid objects it should return a single
         tuple (id,stat) representing itself."""
 
-        if not getSecurityManager().checkPermission('Access contents information', self):
+        if not getSecurityManager().checkPermission(
+            'Access contents information', self
+        ):
             raise Unauthorized('Not allowed to access contents.')
 
         return self.__old_manage_FTPlist(REQUEST)
     ObjectManager.manage_FTPlist = manage_FTPlist
 
 # 4. Make sure z3c.form widgets don't get declared as public
-from Products.Five.metaconfigure import ClassDirective
+from AccessControl.metaconfigure import ClassDirective
 old_require = ClassDirective.require
 
 

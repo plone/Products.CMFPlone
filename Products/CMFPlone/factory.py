@@ -7,7 +7,7 @@ from plone.registry.interfaces import IRegistry
 from zope.component import queryUtility
 from zope.event import notify
 from zope.interface import implementer
-from zope.site.hooks import setSite
+from zope.component.hooks import setSite
 
 _TOOL_ID = 'portal_setup'
 _DEFAULT_PROFILE = 'Products.CMFPlone:plone'
@@ -74,6 +74,7 @@ class NonInstallable(object):
                 u'Products.CMFDiffTool:CMFDiffTool',
                 u'Products.CMFEditions:CMFEditions',
                 u'Products.CMFFormController:CMFFormController',
+                u'Products.CMFFormController:uninstall',
                 u'Products.CMFPlone:dependencies',
                 u'Products.CMFPlone:testfixture',
                 u'Products.CMFQuickInstallerTool:CMFQuickInstallerTool',
