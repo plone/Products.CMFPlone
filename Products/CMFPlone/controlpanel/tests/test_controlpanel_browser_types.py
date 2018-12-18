@@ -195,3 +195,34 @@ class TypesControlPanelFunctionalTest(unittest.TestCase):
                 'Redirect immediately to link target').selected,
             True
         )
+
+    def test_dont_update_redirect_links_when_not_in_link_settings(self):
+        # First of all, set a default
+        self.browser.open(self.types_url)
+        self.browser.getControl(name='type_id').value = ['Link']
+        self.browser.getForm(action=self.types_url).submit()
+        self.browser.getControl(
+            'Redirect immediately to link target'
+        ).selected = True
+        self.browser.getControl('Save').click()
+
+        # Then switch the type
+        self.browser.getControl(name='type_id').value = ['Document']
+        self.browser.getForm(action=self.types_url).submit()
+        self.assertFalse(
+            'Redirect immediately to link target' in self.browser.contents
+        )
+        self.browser.getControl('Save').click()
+
+        # Go back to the link, and check the value
+        self.browser.getControl(name='type_id').value = ['Link']
+        self.browser.getForm(action=self.types_url).submit()
+
+        self.assertTrue(
+            'Redirect immediately to link target' in self.browser.contents
+        )
+        self.assertEquals(
+            self.browser.getControl(
+                'Redirect immediately to link target').selected,
+            True
+        )

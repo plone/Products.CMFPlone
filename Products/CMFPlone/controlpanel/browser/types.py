@@ -200,9 +200,9 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
                 elif not default_page_type and type_id in default_page_types:
                     default_page_types.remove(type_id)
                 types_settings.default_page_types = default_page_types
-
-                redirect_links = form.get('redirect_links', False)
-                types_settings.redirect_links = redirect_links
+                if type_id == 'Link':
+                    redirect_links = form.get('redirect_links', False)
+                    types_settings.redirect_links = redirect_links
 
             # Update workflow
             if self.have_new_workflow() \
