@@ -93,9 +93,9 @@ I add a new text field to the member fields
   Wait until page contains element  css=#add-field
   Click Button  Add new field…
   Wait Until Element Is visible  css=#add-field-form #form-widgets-title
-  Input Text  css=#add-field-form #form-widgets-title  test_field
-  Input Text  css=#add-field-form #form-widgets-__name__  test_field
-  Select From List  css=#form-widgets-factory  Text line (String)
+  Input Text  css=#add-field-form #form-widgets-title  Test Field
+  Press Key  css=#add-field-form #form-widgets-title  \\09
+  Select From List By Label  css=#form-widgets-factory  Text line (String)
   Click button  css=.pattern-modal-buttons input#form-buttons-add
   # XXX: This is really really bad! We need a UI notification like:
   # Wait until page contains  Field created.
@@ -106,9 +106,9 @@ I add a new required text field to the member fields
   Wait until page contains element  css=#add-field
   Click Button  Add new field…
   Wait Until Element Is visible  css=#add-field-form #form-widgets-title
-  Input Text  css=#add-field-form #form-widgets-title  test_field
-  Input Text  css=#add-field-form #form-widgets-__name__  test_field
-  Select From List  css=#form-widgets-factory  Text line (String)
+  Input Text  css=#add-field-form #form-widgets-title  Test Field
+  Press Key  css=#add-field-form #form-widgets-title  \\09
+  Select From List By Label  css=#form-widgets-factory  Text line (String)
   Select Checkbox  form.widgets.required:list
   Click button  css=.pattern-modal-buttons input#form-buttons-add
   # XXX: This is really really bad! We need a UI notification like:
