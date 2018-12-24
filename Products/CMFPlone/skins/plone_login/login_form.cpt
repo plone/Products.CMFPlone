@@ -49,7 +49,7 @@
                         target python:test(target in ('_parent', '_top', '_blank', '_self'), target, None);
                         ztu modules/ZTUtils;">
 
-            <div class="portalMessage error pat-cookietrigger" style="display:none">
+            <div class="portalMessage error pat-cookietrigger" style="display:none" role="alert">
                 <strong i18n:translate="">
                     Error
                 </strong>

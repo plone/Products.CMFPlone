@@ -30,7 +30,7 @@
    <div id="content-core">
       <span tal:replace="structure context/@@authenticator/authenticator"/>
       <div class="pat-resourceregistry" tal:attributes="data-pat-resourceregistry view/config">
-        <div class="portalMessage info">
+        <div class="portalMessage info" role="status">
           <strong i18n:translate="">Info</strong>
           <span i18n:translate="">If you see this, it is because there was an error rendering the resource registry
           configuration. It's possible you saved a bundle that gives a JavaScript error

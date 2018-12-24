@@ -43,7 +43,7 @@ If you do not have an account here, head over to the
 </p>
 
 
-<div class="portalMessage error pat-cookietrigger" style="display:none">
+<div class="portalMessage error pat-cookietrigger" style="display:none" role="alert">
     <strong i18n:translate="">
         Error
     </strong>
