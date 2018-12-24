@@ -95,6 +95,10 @@ New features:
 
 Bug fixes:
 
+- Add site_from_address validation in mail controlpanel
+  Fixes `issue 932 <https://github.com/plone/Products.CMFPlone/issues/932>`_.
+  [uwaiszaki]
+  
 - Modernize robot keywords that use "Get Element Attribute"
   [ale-rt]
 
