@@ -447,10 +447,8 @@ class NavTreeProvider(ContentProviderBase):
             self.portal_tabs = portal_tabs_view.topLevelTabs()
             res = self.portal_tabs
 
-            import pdb; pdb.set_trace()
-
             for it in res:
-                # pathkey = '/'.join(it.getPath().split('/')[:-1])
+                pathkey = self.navtree_path
                 entry = {
                     'id': it['id'],
                     'uid': None,
@@ -458,16 +456,14 @@ class NavTreeProvider(ContentProviderBase):
                     'title': it['title'],
                     'review_state': None,
                 }
-                # if pathkey in ret:
-                #     ret[pathkey].append(entry)
-                # else:
-                ret['/'] = [entry]
+                if pathkey in ret:
+                    ret[pathkey].append(entry)
+                else:
+                    ret[pathkey] = [entry]
 
             self._navtree = ret
 
-
         return ret
-
 
     def build_tree(self, path, first_run=True):
         """Non-template based recursive tree building.
@@ -500,5 +496,4 @@ class NavTreeProvider(ContentProviderBase):
         return out
 
     def render(self):
-
         return self.build_tree(self.navtree_path)
