@@ -16,7 +16,6 @@ from zope.component import getUtility
 from zope.contentprovider.provider import ContentProviderBase
 from zope.globalrequest import getRequest
 from zope.interface import implementer
-import plone.api
 
 import six
 
@@ -418,13 +417,16 @@ class NavTreeProvider(ContentProviderBase):
 
         if generate_tabs:
             query = {
-                'path': {'query': self.navtree_path, 'depth': self.navtree_depth},
+                'path': {'query': self.navtree_path,
+                         'depth': self.navtree_depth},
                 'portal_type': {'query': types},
                 'exclude_from_nav': False,
                 'Language': lang_current,
                 'sort_on': 'getObjPositionInParent',
             }
-            res = plone.api.content.find(**query)
+            portal_catalog = getToolByName(self.context, 'portal_catalog')
+
+            res = portal_catalog.searchResults(**query)
 
             for it in res:
                 pathkey = '/'.join(it.getPath().split('/')[:-1])
