@@ -10,7 +10,8 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- Added multilevel dropdown navigation
+  [agitator]
 
 Bug fixes:
 
