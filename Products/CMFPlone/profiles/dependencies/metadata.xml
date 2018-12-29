@@ -2,7 +2,6 @@
 <metadata>
   <version>4</version>
   <dependencies>
-    <dependency>profile-Products.CMFFormController:CMFFormController</dependency>
     <dependency>profile-Products.MimetypesRegistry:MimetypesRegistry</dependency>
     <dependency>profile-Products.PortalTransforms:PortalTransforms</dependency>
     <dependency>profile-Products.CMFEditions:CMFEditions</dependency>
