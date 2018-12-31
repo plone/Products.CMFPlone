@@ -154,11 +154,6 @@ class ScriptsView(ResourceView):
             result = self.default_resources()
             result.extend(self.ordered_bundles_result())
         else:
-            # Acquire load_async and load_defer bundle options from the plone
-            # bundle and use it for the ``default`` meta bundle.
-            bundles = self.get_bundles()
-            load_async = getattr(bundles.get('plone'), 'load_async', False)
-            load_defer = getattr(bundles.get('plone'), 'load_defer', False)
             result = [{
                 'src': '{0}/++plone++{1}'.format(
                     self.site_url,
@@ -166,15 +161,10 @@ class ScriptsView(ResourceView):
                 ),
                 'conditionalcomment': None,
                 'bundle': 'production',
-                'async': 'async' if load_async else None,
-                'defer': 'defer' if load_defer else None
-            }, ]
+                'async': None,  # Do not load ``async`` or
+                'defer': None   # ``defer`` for production bundles.
+            }]
             if not self.anonymous:
-                # Acquire load_async and load_defer bundle options from the
-                # plone-logged-in bundle and use it for the ``logged-in`` meta
-                # bundle.
-                load_async = getattr(bundles.get('plone-logged-in'), 'load_async', False)  # noqa
-                load_defer = getattr(bundles.get('plone-logged-in'), 'load_defer', False)  # noqa
                 result.append({
                     'src': '{0}/++plone++{1}'.format(
                         self.site_url,
@@ -182,8 +172,8 @@ class ScriptsView(ResourceView):
                     ),
                     'conditionalcomment': None,
                     'bundle': 'production',
-                    'async': 'async' if load_async else None,
-                    'defer': 'defer' if load_defer else None
+                    'async': None,  # Do not load ``async`` or
+                    'defer': None   # ``defer`` for production bundles.
                 })
             result.extend(self.ordered_bundles_result(production=True))
 
