@@ -1,18 +1,12 @@
 <tal:statusmsg tal:define="messages view/messages"
-               tal:repeat="message messages">
+    tal:repeat="message messages">
 
-    <div tal:define="mtype message/type | nothing;
-                     mrole python: mtype === 'error' and 'alert' or 'status';"
-         tal:attributes="class string:portalMessage ${mtype};
-                         role mrole;">
-
-        <strong i18n:translate=""
-                tal:content="python:mtype.capitalize()">
-            Info
-        </strong>
+    <div tal:define="mtype message/type | nothing;"
+        tal:attributes="class string:portalMessage ${mtype};">
+        <strong
+            i18n:translate="" tal:content="python:mtype.capitalize()">Info</strong>
         <span class="content"
-              tal:replace="message/message | nothing"
-              i18n:translate="">
+            tal:replace="message/message | nothing" i18n:translate="">
             The status message.
         </span>
     </div>
