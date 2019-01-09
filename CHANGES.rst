@@ -13,6 +13,51 @@ Changelog
 
 .. towncrier release notes start
 
+5.0.10rc1 (2019-01-08)
+----------------------
+
+New features:
+
+
+- Add jqtree-contextmenu to the resource registry Add js-shortcuts to the
+  resource registry [b4oshany] (#2090)
+- Update with latest mockup 2.1.x [frapell] (#2212)
+
+
+Bug fixes:
+
+
+- Fix registration of ``robots.txt`` browser view to avoid ``AttributeError``
+  on Zope's root (fixes `#2052
+  <https://github.com/plone/Products.CMFPlone/issues/2052>`_). [hvelarde]
+  (#2052)
+- Fixed Products.CMFPlacefulWorkflow being marked as not installed after
+  upgrade from 4.3. This is true for any package in the Products namespace that
+  was installed. Fixes `issue 2103
+  <https://github.com/plone/Products.CMFPlone/issues/2103>`_. [maurits] (#2103)
+- Improved isURLInPortal according to PloneHotfix20171128. Accept only
+  http/https, and doubly check escaped urls. [maurits] (#2234)
+- Require AccessControl 3.0.14 so ``guarded_getitem`` is used. Part of
+  PloneHotfix20171128. [maurits] (#2269)
+- Ignore invalid ``sort_on`` parameters in catalog ``searchResults``. Otherwise
+  you get a ``CatalogError``. I get crazy sort_ons like '194' or 'null'.
+  [maurits] (#2289)
+- Add required ``plone.app.imaging`` as direct dependency. Note, in Plone 5.1
+  plone.app.imaging is no dependency anymore. [thet] (#2297)
+- Do not include too new upgrades when upgrading Plone Site. Otherwise the
+  Plone Site ends up at a newer version that the filesystem code supports,
+  giving an error when upgrading, and resulting in possibly missed upgrades
+  later. Fixes `issue 2377
+  <https://github.com/plone/Products.CMFPlone/issues/2377>`_. [maurits] (#2377)
+- Unflakied a unit test. [Rotonen] (#2383)
+- Updated tinymce to 4.7.13 [obct537] (#2527)
+- Fix plone.app.redirector support for JSON/unspecified requests. [rpatterson]
+  (#2619)
+- Fix metabundle resource ordering to pay attention to depends setting
+  [vangheem] (#2632)
+- Fix robot test test_edit_user_schema: Fieldname was set duplicate (first by
+  JS, then by robot). [jensens] (#2669)
+
 
 5.0.9 (2017-08-05)
 ------------------

@@ -1,2 +1,0 @@
-Fix plone.app.redirector support for JSON/unspecified requests.
-[rpatterson]
