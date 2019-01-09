@@ -62,6 +62,8 @@ Bug fixes:
   [vangheem] (#2641)
 - Do not save type settings in "content-controlpanel" when switching between types.
   [cekk]
+- a11y: Added role attribute for portalMessage
+  [nzambello]
 
 Changelog
 =========
