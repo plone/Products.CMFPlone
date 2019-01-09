@@ -13,6 +13,16 @@ from Products.CMFCore.permissions import ManagePortal
 from Products.DCWorkflow.Transitions import TRIGGER_USER_ACTION
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 
+import pkg_resources
+
+try:
+    pkg_resources.get_distribution('plone.app.multilingual')
+except pkg_resources.DistributionNotFound:
+    has_new_lang_bypass = False
+else:
+    has_new_lang_bypass = int(pkg_resources.get_distribution(
+        'plone.app.multilingual').version.split('.')[0]) > 1
+
 
 class WorkflowTool(PloneBaseTool, BaseTool):
 
@@ -232,6 +242,7 @@ class WorkflowTool(PloneBaseTool, BaseTool):
                     # content in *all* languages
                     if 'Language' not in catalog_vars:
 <<<<<<< HEAD
+<<<<<<< HEAD
                         catalog_vars['Language'] = 'all'
 =======
                         if has_new_lang_bypass:
@@ -240,6 +251,12 @@ class WorkflowTool(PloneBaseTool, BaseTool):
                             catalog_vars['Language'] = 'all'
 >>>>>>> bdfde497c... fixed typo
                     # Include inactive content in result list. This is
+=======
+                        if has_new_lang_bypass:
+                            catalog_vars['path'] = '/'
+                        elif has_new_lang_bypass:
+                            catalog_vars['Language'] = 'all'                    # Include inactive content in result list. This is
+>>>>>>> 9859b483e... Review list portlet showed nothing to review with plone.app.multilingual, As WorkflowTool bypassed languages only for p.a.m<2.x or linguaplone. fixed and now compatible to both lang-bypassing methods.
                     # especially important for content scheduled to go public
                     # in the future, but needs to be reviewed before this.
                     catalog_vars['show_inactive'] = True

@@ -1,0 +1,2 @@
+Review list portlet showed nothing to review with plone.app.multilingual, As WorkflowTool bypassed languages only for p.a.m<2.x or linguaplone. fixed and now compatible to both lang-bypassing methods.
+[iham]
