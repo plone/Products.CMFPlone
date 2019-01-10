@@ -214,7 +214,7 @@ class Search(BrowserView):
             return None
         if len(breadcrumbs) > 3:
             # if we have too long breadcrumbs, emit the middle elements
-            empty = {'absolute_url': '', 'Title': '…'}
+            empty = {'absolute_url': '', 'Title': u'…'}
             breadcrumbs = [breadcrumbs[0], empty] + breadcrumbs[-2:]
         return breadcrumbs
 
