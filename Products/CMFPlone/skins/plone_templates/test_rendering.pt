@@ -40,7 +40,7 @@ Headlines
 
 <pre>Example document rendering</pre>
 
-<div class="portalMessage info">
+<div class="portalMessage info" role="status">
     <strong>
         Info
     </strong>
@@ -50,7 +50,7 @@ Headlines
     </span>
 </div>
 
-<dl class="portalMessage error">
+<dl class="portalMessage error" role="alert">
     <dt>
         Error
     </dt>
@@ -60,7 +60,7 @@ Headlines
     </dd>
 </dl>
 
-<dl class="portalMessage warning">
+<dl class="portalMessage warning" role="status">
     <dt>
         Warning
     </dt>
@@ -146,15 +146,15 @@ definition lists. We replace them in the following manners.
 
 <h4>in portal messages</h4>
 
-<div class="portalMessage info">
+<div class="portalMessage info" role="status">
   <strong>Not important</strong>
   This message is here to tell you something went just as you expected.
 </div>
-<div class="portalMessage warning">
+<div class="portalMessage warning" role="status">
   <strong>You might run into problems</strong>
   Please check your settings, be sure what you're doing is right.
 </div>
-<div class="portalMessage error">
+<div class="portalMessage error" role="alert">
   <strong>Something went wrong</strong>
   This is bad, you must notice this.
 </div>

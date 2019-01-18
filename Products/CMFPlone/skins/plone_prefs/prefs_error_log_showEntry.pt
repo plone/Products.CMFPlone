@@ -28,7 +28,8 @@
         <div tal:define="entry python:context.error_log.getLogEntryById(request.get('id'))">
 
             <div class="portalMessage error"
-                tal:condition="not:entry">
+                 role="alert"
+                 tal:condition="not:entry">
                 <strong i18n:translate="">
                     Error
                 </strong>
