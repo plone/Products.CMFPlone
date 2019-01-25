@@ -8,7 +8,7 @@ from zope.interface import Interface
 from zope.interface import Invalid
 from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
-
+from plone.schema import Email
 import json
 
 
@@ -1475,7 +1475,7 @@ class IMailSchema(Interface):
         default=None,
         required=True)
 
-    email_from_address = schema.ASCIILine(
+    email_from_address = Email(
         title=_(u'Site \'From\' address'),
         description=_(
             u'Plone generates e-mail using '
