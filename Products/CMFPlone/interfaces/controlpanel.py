@@ -3,6 +3,7 @@ from basetool import IPloneBaseTool
 from plone.supermodel import model
 from Products.CMFPlone import PloneMessageFactory as _
 from zope import schema
+from plone import schema as Schema
 from zope.interface import implementer
 from zope.interface import Interface
 from zope.interface import Invalid
@@ -1475,7 +1476,7 @@ class IMailSchema(Interface):
         default=None,
         required=True)
 
-    email_from_address = schema.ASCIILine(
+    email_from_address = Schema.Email(
         title=_(u'Site \'From\' address'),
         description=_(
             u'Plone generates e-mail using '
