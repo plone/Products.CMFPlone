@@ -34,11 +34,13 @@
           tal:define="portal context/@@plone_portal_state/portal;
                       first_call not:request/advanced_search|nothing;
                       st python:request.get('SearchableText', '');
+                      section python:request.get('path', '').split('/')[2:];
                       DateTime python:modules['DateTime'].DateTime;
                       navigation_root_url view/navroot_url;">
 
         <input type="hidden" name="sort_on" value="" />
         <input type="hidden" name="sort_order" value="" />
+	<input type="hidden" name="path" value="" tal:attributes="value request/form/path | nothing" />
 
         <div class="input-group">
           <input class="searchPage form-control"
@@ -186,7 +188,9 @@
                 </span>
               </div>
 
-
+              <h4 tal:condition="section">
+		Inside section: <span tal:replace="view/current_section_title" />
+	      </h4>
 
               <metal:searchresults define-macro="search_results">
                 <div class="autotabs">

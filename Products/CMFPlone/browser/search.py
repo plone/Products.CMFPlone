@@ -221,6 +221,11 @@ class Search(BrowserView):
             self._navroot_url = state.navigation_root_url()
         return self._navroot_url
 
+    def current_section_title(self):
+        if 'path' in self.request:
+            return self.context.unrestrictedTraverse(self.request['path']).Title()
+        return ''
+
 
 class AjaxSearch(Search):
 
