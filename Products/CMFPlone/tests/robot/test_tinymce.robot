@@ -59,6 +59,7 @@ insert link
     Click Button  css=div[aria-label="Insert/edit link"] button
     Click Button  css=.pattern-relateditems-container button.favorites
     Click Link  css=.pattern-relateditems-container .favorites a.fav[href='/']
+    Wait Until Element Is Visible  css=.pattern-relateditems-result-select.selectable
     Click Link  css=.pattern-relateditems-result-select.selectable
     Input Text  css=.plone-modal-body [name="title"]  SomeTitle
     Click Button  css=.plone-modal-footer .plone-btn-primary
@@ -71,6 +72,7 @@ insert image
     Click Button  css=div[aria-label="Insert/edit image"] button
     Click Button  css=.pattern-relateditems-container button.favorites
     Click Link  css=.pattern-relateditems-container .favorites a.fav[href='/']
+    Wait Until Element Is Visible  css=.pattern-relateditems-result-select.selectable
     Click Link  css=.pattern-relateditems-result-select.selectable
     Input Text  css=.plone-modal-body [name="title"]  SomeTitle
     Input Text  css=.plone-modal-body [name="alt"]  SomeAlt
