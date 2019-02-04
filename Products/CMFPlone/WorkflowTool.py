@@ -231,7 +231,14 @@ class WorkflowTool(PloneBaseTool, BaseTool):
                     # Support LinguaPlone review situations, you want to see
                     # content in *all* languages
                     if 'Language' not in catalog_vars:
+<<<<<<< HEAD
                         catalog_vars['Language'] = 'all'
+=======
+                        if has_new_lang_bypass:
+                            catalog_vars['path'] = '/'
+                        elif has_new_lang_bypass:
+                            catalog_vars['Language'] = 'all'
+>>>>>>> bdfde497c... fixed typo
                     # Include inactive content in result list. This is
                     # especially important for content scheduled to go public
                     # in the future, but needs to be reviewed before this.
