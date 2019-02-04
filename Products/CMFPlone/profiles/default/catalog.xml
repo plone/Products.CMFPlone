@@ -84,9 +84,6 @@
  <index name="is_folderish" meta_type="BooleanIndex">
   <indexed_attr value="is_folderish"/>
  </index>
- <index name="meta_type" meta_type="FieldIndex">
-  <indexed_attr value="meta_type"/>
- </index>
  <index name="modified" meta_type="DateIndex">
   <property name="index_naive_time_as_local">True</property>
  </index>
@@ -130,7 +127,6 @@
  <column value="is_folderish"/>
  <column value="listCreators"/>
  <column value="location"/>
- <column value="meta_type"/>
  <column value="modified"/>
  <column value="portal_type"/>
  <column value="review_state"/>
