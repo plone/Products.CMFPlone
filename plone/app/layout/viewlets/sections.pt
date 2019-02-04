@@ -6,7 +6,6 @@
      tal:condition="portal_tabs"
      i18n:domain="plone">
 
-  <p class="hiddenStructure" i18n:translate="heading_sections">Navigation</p>
   <nav class="plone-navbar pat-navigationmarker" id="portal-globalnav-wrapper">
     <div class="container">
       <div class="plone-navbar-header">
