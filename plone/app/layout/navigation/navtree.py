@@ -477,8 +477,9 @@ class NavTreeProvider(ContentProviderBase):
         for it in self.navtree.get(path, []):
             sub = self.build_tree(path + '/' + it['id'], first_run=False)
             opener = u"""<input id="navitem-{uid}" type="checkbox" class="opener">
-                         </input><label for="navitem-{uid}"></label>""".format(
-                uid=it['uid']
+                         </input><label for="navitem-{uid}" role="button" aria-label="{title}"></label>""".format(
+                uid=it['uid'],
+                title=it['title']
             ) if sub else ''
             out += u'<li class="{id}{has_sub_class}">'.format(
                 id=normalizer.normalize(it['id']),
