@@ -14,7 +14,8 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- fix python3 compatibility
+  [petschki]
 
 
 3.0.0 (2018-10-30)
