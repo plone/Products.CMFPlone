@@ -485,11 +485,12 @@ class NavTreeProvider(ContentProviderBase):
                 id=normalizer.normalize(it['id']),
                 has_sub_class=' has_subtree' if sub else '',
             )
-            out += u'<a href="{url}" class="state-{review_state}">{title}</a>{opener}'.format(  # noqa
+            out += u'<a href="{url}" class="state-{review_state}"{aria_haspopup}>{title}</a>{opener}'.format(  # noqa
                 url=it['url'],
                 review_state=it['review_state'],
                 title=it['title'],
-                opener=opener if sub else ''
+                opener=opener if sub else '',
+                aria_haspopup=' aria-haspopup="true"' if sub else '',
             )
             out += sub
             out += u'</li>'
