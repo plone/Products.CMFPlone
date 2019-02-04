@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from zope.interface import implementer
-from zope.component.interfaces import ObjectEvent
+from zope.interface.interfaces import ObjectEvent
 from Products.CMFPlone.utils import get_installer
 
 from .interfaces import ISiteManagerCreatedEvent

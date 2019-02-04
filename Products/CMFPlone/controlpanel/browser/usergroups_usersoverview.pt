@@ -52,7 +52,7 @@
           The symbol <img i18n:name="image_link_icon" tal:replace="structure context/site_icon.png" />
           indicates a role inherited from membership in a group.
         </p>
-        <p tal:condition="view/show_users_listing_warning" class="portalMessage warning">
+        <p tal:condition="view/show_users_listing_warning" class="portalMessage warning" role="status">
           <strong i18n:translate="">Note</strong>
           <span i18n:translate="description_pas_users_listing">Some or all of your PAS user source
           plugins do not allow listing of users, so you may not see

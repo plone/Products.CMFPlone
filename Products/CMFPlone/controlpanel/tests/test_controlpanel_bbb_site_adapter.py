@@ -25,42 +25,42 @@ class SiteControlPanelAdapterTest(unittest.TestCase):
 
     def test_get_site_title(self):
         self.settings.site_title = u'Great Site'
-        self.assertEquals(
+        self.assertEqual(
             getAdapter(self.portal, ISiteSchema).site_title,
             u'Great Site'
         )
 
     def test_set_site_title(self):
         getAdapter(self.portal, ISiteSchema).site_title = u'Good Site'
-        self.assertEquals(
+        self.assertEqual(
             self.settings.site_title,
             u'Good Site'
         )
 
     def test_set_site_title_string(self):
         getAdapter(self.portal, ISiteSchema).site_title = 'Good Site'
-        self.assertEquals(
+        self.assertEqual(
             self.settings.site_title,
             u'Good Site'
         )
 
     def test_get_webstats_js(self):
         self.settings.webstats_js = u'Script Tag'
-        self.assertEquals(
+        self.assertEqual(
             getAdapter(self.portal, ISiteSchema).webstats_js,
             u'Script Tag'
         )
 
     def test_set_webstats_js(self):
         getAdapter(self.portal, ISiteSchema).webstats_js = u'Script Tag'
-        self.assertEquals(
+        self.assertEqual(
             self.settings.webstats_js,
             u'Script Tag'
         )
 
     def test_set_webstats_js_string(self):
         getAdapter(self.portal, ISiteSchema).webstats_js = 'Script Tag'
-        self.assertEquals(
+        self.assertEqual(
             self.settings.webstats_js,
             u'Script Tag'
         )

@@ -3,6 +3,5 @@
     i18n_domain="plone.registry">
 
     <include package=".browser" />
-    <include package=".exportimport" />
 
 </configure>

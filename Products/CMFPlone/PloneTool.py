@@ -6,7 +6,7 @@ from AccessControl.requestmethod import postonly
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
-from App.class_init import InitializeClass
+from AccessControl.class_init import InitializeClass
 from ComputedAttribute import ComputedAttribute
 from DateTime import DateTime
 from email.utils import getaddresses
@@ -688,7 +688,10 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         else:
             browserDefault = queryAdapter(obj, IBrowserDefault)
         if browserDefault is not None:
-            layout = browserDefault.getLayout()
+            default_view_fallback = False
+            if base_hasattr(obj, 'getTypeInfo'):
+                default_view_fallback = obj.getTypeInfo().default_view_fallback
+            layout = browserDefault.getLayout(check_exists=default_view_fallback)
             if layout is None:
                 raise AttributeError(
                     "%s has no assigned layout, perhaps it needs an FTI" % obj)

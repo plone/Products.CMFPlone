@@ -1157,7 +1157,7 @@ class ISiteSchema(Interface):
             u'browsers and in syndication feeds.'),
         default=u'Plone site')
 
-    site_logo = schema.ASCII(
+    site_logo = schema.Bytes(
         title=_(u'Site Logo'),
         description=_(u'This shows a custom logo on your site.'),
         required=False,

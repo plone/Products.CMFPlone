@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 from plone.app.testing import SITE_OWNER_NAME, SITE_OWNER_PASSWORD
-from plone.testing.z2 import Browser
+from plone.testing.zope import Browser
 import unittest
 
 
@@ -54,7 +54,7 @@ class TypesControlPanelFunctionalTest(unittest.TestCase):
         self.browser.getForm(action=self.types_url).submit()
         self.assertIn('Globally addable', self.browser.contents)
         self.assertIn('Allow comments', self.browser.contents)
-        self.assertEquals(
+        self.assertEqual(
             self.browser.getControl('Allow comments').selected,
             True
         )
@@ -84,7 +84,7 @@ class TypesControlPanelFunctionalTest(unittest.TestCase):
         self.assertTrue(
             'Redirect immediately to link target' in self.browser.contents
         )
-        self.assertEquals(
+        self.assertEqual(
             self.browser.getControl(
                 'Redirect immediately to link target').selected,
             True

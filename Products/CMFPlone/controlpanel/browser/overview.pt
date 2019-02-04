@@ -22,7 +22,8 @@
     </p>
 
     <div class="portalMessage warning"
-        tal:condition="view/upgrade_warning">
+         role="status"
+         tal:condition="view/upgrade_warning">
         <strong i18n:translate="">
             Warning
         </strong>
@@ -41,7 +42,8 @@
     </div>
 
     <div class="portalMessage warning"
-        tal:condition="view/mailhost_warning">
+         role="status"
+         tal:condition="view/mailhost_warning">
         <strong i18n:translate="">
             Warning
         </strong>
@@ -60,7 +62,8 @@
     </div>
 
     <div class="portalMessage warning"
-        tal:condition="view/timezone_warning">
+         role="status"
+         tal:condition="view/timezone_warning">
         <strong i18n:translate="">
             Warning
         </strong>
@@ -80,7 +83,8 @@
     </div>
 
     <div class="portalMessage warning"
-        tal:condition="not:view/pil">
+         role="status"
+         tal:condition="not:view/pil">
         <strong i18n:translate="">
             Warning
         </strong>

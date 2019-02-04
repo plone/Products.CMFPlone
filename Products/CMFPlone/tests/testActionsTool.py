@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
-from plone.app.testing.bbb import PloneTestCase
-
+from Acquisition import Explicit
+from OFS.SimpleItem import Item
+from plone.app.testing import login
+from Products.CMFCore.ActionInformation import Action
+from Products.CMFCore.ActionInformation import ActionInfo
+from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 from traceback import format_exception
 from zope.i18nmessageid.message import Message
 
-from Acquisition import Explicit
-from OFS.SimpleItem import Item
-from Products.CMFCore.ActionInformation import ActionInfo
-from Products.CMFCore.ActionInformation import Action
+import unittest
 
 
 class ExplicitItem(Item, Explicit):
@@ -16,11 +17,16 @@ class ExplicitItem(Item, Explicit):
     meta_type = 'Dummy Item'
 
 
-class TestActionsTool(PloneTestCase):
+class TestActionsTool(unittest.TestCase):
 
-    def afterSetUp(self):
+    layer = PRODUCTS_CMFPLONE_INTEGRATION_TESTING
+
+    def setUp(self):
+        self.portal = self.layer['portal']
         self.actions = self.portal.portal_actions
         self.portal.acl_users._doAddUser('user1', 'secret', ['Member'], [])
+        self.portal.invokeFactory('Folder', 'f1')
+        self.folder = self.portal['f1']
 
     def fail_tb(self, msg):
         """ special fail for capturing errors """
@@ -86,8 +92,7 @@ class TestActionsTool(PloneTestCase):
         actions = self.actions.listFilteredActionsFor(self.folder)
         match = [a for a in actions['document_actions'] if a['id'] == 'foo']
         self.assertTrue(match)
-        self.portal.portal_workflow.doActionFor(self.folder, 'hide')
-        self.login('user1')
+        login(self.portal, 'user1')
         actions = self.actions.listFilteredActionsFor(self.folder)
         match = [a for a in actions.get('document_actions', [])
                  if a['id'] == 'foo']

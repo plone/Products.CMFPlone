@@ -82,10 +82,16 @@ class ScriptsView(ResourceView):
                     bundle.jscompilation,
                     parse.quote(str(bundle.last_compilation))
                 )
+
+            load_async = 'async' if getattr(bundle, 'load_async', None) else None  # noqa
+            load_defer = 'defer' if getattr(bundle, 'load_defer', None) else None  # noqa
+
             result.append({
                 'bundle': bundle.name,
                 'conditionalcomment': bundle.conditionalcomment,
-                'src': js_location
+                'src': js_location,
+                'async': load_async,
+                'defer': load_defer,
             })
 
     def default_resources(self):
@@ -154,8 +160,10 @@ class ScriptsView(ResourceView):
                     self.production_path + '/default.js'
                 ),
                 'conditionalcomment': None,
-                'bundle': 'production'
-            }, ]
+                'bundle': 'production',
+                'async': None,  # Do not load ``async`` or
+                'defer': None   # ``defer`` for production bundles.
+            }]
             if not self.anonymous:
                 result.append({
                     'src': '{0}/++plone++{1}'.format(
@@ -163,7 +171,9 @@ class ScriptsView(ResourceView):
                         self.production_path + '/logged-in.js'
                     ),
                     'conditionalcomment': None,
-                    'bundle': 'production'
+                    'bundle': 'production',
+                    'async': None,  # Do not load ``async`` or
+                    'defer': None   # ``defer`` for production bundles.
                 })
             result.extend(self.ordered_bundles_result(production=True))
 

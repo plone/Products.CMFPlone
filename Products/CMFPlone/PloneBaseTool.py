@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from App.class_init import InitializeClass
+from AccessControl.class_init import InitializeClass
 from AccessControl import ClassSecurityInfo
 from Products.CMFPlone.interfaces import IPloneBaseTool
 from Acquisition import aq_base

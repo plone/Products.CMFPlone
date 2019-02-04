@@ -18,12 +18,14 @@ from Products.CMFPlone.resources.browser.styles import StylesView
 from Products.CMFPlone.resources.bundle import Bundle
 from Products.CMFPlone.resources.exportimport.resourceregistry import ResourceRegistryNodeAdapter  # noqa
 from Products.CMFPlone.tests import PloneTestCase
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.GenericSetup.context import SetupEnviron
 from xml.dom.minidom import parseString
 from zope.component import getUtility
 
 import json
 import mock
+import os
 
 
 class TestResourceRegistries(PloneTestCase.PloneTestCase):
@@ -62,14 +64,14 @@ class TestResourceRegistries(PloneTestCase.PloneTestCase):
                 self.portal.absolute_url()
             )
         )
-        self.assertTrue('alert("Hi!");alert("Ho!");' in resp_js.getBody())
+        self.assertIn(b'alert("Hi!");alert("Ho!");', resp_js.getBody())
 
         resp_css = subrequest(
             '{0}/++plone++static/foobar-compiled.css'.format(
                 self.portal.absolute_url()
             )
         )
-        self.assertTrue('body{color:blue}' in resp_css.getBody())
+        self.assertIn(b'body{color:blue}', resp_css.getBody())
 
     def test_dont_minify_already_minified(self):
         registry = getUtility(IRegistry)
@@ -95,8 +97,8 @@ class TestResourceRegistries(PloneTestCase.PloneTestCase):
         container = persistent_directory[OVERRIDE_RESOURCE_DIRECTORY_NAME]
         container.makeDirectory('static')
         directory = container['static']
-        directory.writeFile('foobar.min.js', 'alert("Hi!");\n\nalert("Ho!");')
-        directory.writeFile('foobar.min.css', 'body {\ncolor: blue;\n}')
+        directory.writeFile('foobar.min.js', b'alert("Hi!");\n\nalert("Ho!");')
+        directory.writeFile('foobar.min.css', b'body {\ncolor: blue;\n}')
 
         cookWhenChangingSettings(self.portal, bundle)
 
@@ -105,14 +107,14 @@ class TestResourceRegistries(PloneTestCase.PloneTestCase):
                 self.portal.absolute_url()
             )
         )
-        self.assertTrue('alert("Hi!");\n\nalert("Ho!");' in resp_js.getBody())
+        self.assertIn(b'alert("Hi!");\n\nalert("Ho!");', resp_js.getBody())
 
         resp_css = subrequest(
             '{0}/++plone++static/foobar-compiled.css'.format(
                 self.portal.absolute_url()
             )
         )
-        self.assertTrue('body {\ncolor: blue;\n}' in resp_css.getBody())
+        self.assertIn(b'body {\ncolor: blue;\n}', resp_css.getBody())
 
     def test_cook_only_css(self):
         registry = getUtility(IRegistry)
@@ -146,7 +148,7 @@ class TestResourceRegistries(PloneTestCase.PloneTestCase):
                 self.portal.absolute_url()
             )
         )
-        self.assertTrue('body {\ncolor: red;\n}' in resp_css.getBody())
+        self.assertIn(b'body {\ncolor: red;\n}', resp_css.getBody())
 
     def test_cooking_missing(self):
         registry = getUtility(IRegistry)
@@ -171,7 +173,7 @@ class TestResourceRegistries(PloneTestCase.PloneTestCase):
                 self.portal.absolute_url()
             )
         )
-        self.assertTrue('Could not find resource' in resp.getBody())
+        self.assertIn(b'Could not find resource', resp.getBody())
 
     def test_error(self):
         registry = getUtility(IRegistry)
@@ -204,7 +206,99 @@ class TestResourceRegistries(PloneTestCase.PloneTestCase):
                 self.portal.absolute_url()
             )
         )
-        self.assertTrue('error cooking' in resp.getBody())
+        self.assertIn(b'error cooking', resp.getBody())
+
+    def test_bundle_defer_async(self):
+        registry = getUtility(IRegistry)
+
+        bundles = registry.collectionOfInterface(
+            IBundleRegistry,
+            prefix="plone.bundles"
+        )
+        bundle = bundles.add('foobar')
+        bundle.name = 'foobar'
+        bundle.jscompilation = 'foobar.js'
+        bundle.csscompilation = 'foobar.css'
+        bundle.resources = ['foobar']
+
+        view = ScriptsView(self.app, self.app.REQUEST, None, None)
+        view.get_cooked_bundles = lambda: [('foobar', bundle)]
+
+        import Products.CMFPlone.resources.browser
+        path = os.path.dirname(Products.CMFPlone.resources.browser.__file__)
+        view.index = ViewPageTemplateFile('scripts.pt', path)
+        view.update()
+
+        self.assertTrue('async="async"' not in view.index(view))
+        self.assertTrue('defer="defer"' not in view.index(view))
+
+        bundle.load_async = True
+        bundle.load_defer = False
+        self.assertTrue('async="async"' in view.index(view))
+        self.assertTrue('defer="defer"' not in view.index(view))
+
+        bundle.load_async = False
+        bundle.load_defer = True
+        self.assertTrue('async="async"' not in view.index(view))
+        self.assertTrue('defer="defer"' in view.index(view))
+
+        bundle.load_async = True
+        bundle.load_defer = True
+
+        self.assertTrue('async="async"' in view.index(view))
+        self.assertTrue('defer="defer"' in view.index(view))
+
+        bundle.load_async = False
+        bundle.load_defer = False
+
+        self.assertTrue('async="async"' not in view.index(view))
+        self.assertTrue('defer="defer"' not in view.index(view))
+
+    def test_bundle_defer_async_production(self):
+        """The default and logged-in production bundles should never be loaded
+        async or defered.
+        For bundles to be loaded async or defered, you need to empty merge_with
+        """
+        registry = getUtility(IRegistry)
+
+        bundles = registry.collectionOfInterface(
+            IBundleRegistry,
+            prefix="plone.bundles"
+        )
+        bundles['plone'].load_async = False
+        bundles['plone'].load_defer = False
+        bundles['plone-logged-in'].load_async = False
+        bundles['plone-logged-in'].load_defer = False
+
+        view = ScriptsView(self.app, self.app.REQUEST, None, None)
+
+        import Products.CMFPlone.resources.browser
+        path = os.path.dirname(Products.CMFPlone.resources.browser.__file__)
+        view.index = ViewPageTemplateFile('scripts.pt', path)
+        view.update()
+
+        self.assertTrue('async="async"' not in view.index(view))
+        self.assertTrue('defer="defer"' not in view.index(view))
+
+        bundles['plone'].load_async = True
+        bundles['plone'].load_defer = True
+        self.assertEqual(view.index(view).count('async="async"'), 0)
+        self.assertEqual(view.index(view).count('defer="defer"'), 0)
+
+        bundles['plone'].merge_with = ''
+        bundles['plone'].load_async = True
+        bundles['plone'].load_defer = True
+        self.assertEqual(view.index(view).count('async="async"'), 1)
+        self.assertEqual(view.index(view).count('defer="defer"'), 1)
+
+        bundles['plone'].merge_with = ''
+        bundles['plone'].load_async = True
+        bundles['plone'].load_defer = True
+        bundles['plone-logged-in'].merge_with = ''
+        bundles['plone-logged-in'].load_async = True
+        bundles['plone-logged-in'].load_defer = True
+        self.assertEqual(view.index(view).count('async="async"'), 2)
+        self.assertEqual(view.index(view).count('defer="defer"'), 2)
 
 
 class TestResourceNodeImporter(PloneTestCase.PloneTestCase):
@@ -241,14 +335,15 @@ class TestResourceNodeImporter(PloneTestCase.PloneTestCase):
 
     def test_resource_blacklist(self):
         # Ensure that blacklisted resources aren't imported
-        importer = self._get_importer(set(('++resource++/bad_resource.js',)))
+        importer = self._get_importer({'++resource++/bad_resource.js'})
         dom = self._get_resource_dom("++resource++/bad_resource.js")
         importer._importNode(dom.documentElement)
         js_files = [x.js for x in self._get_resources().values()]
-        self.assertTrue("++resource++/bad_resource.js" not in js_files)
-        self.assertTrue(
-            "resource-bad_resource-js" not in
-            self._get_legacy_bundle().resources)
+        self.assertNotIn("++resource++/bad_resource.js", js_files)
+        self.assertNotIn(
+            "resource-bad_resource-js",
+            self._get_legacy_bundle().resources,
+        )
 
     def test_resource_no_blacklist(self):
         importer = self._get_importer()
@@ -264,10 +359,10 @@ class TestResourceNodeImporter(PloneTestCase.PloneTestCase):
         dom = self._get_resource_dom()
         num_resources = self._get_legacy_bundle().resources[:]
         importer._importNode(dom.documentElement)
-        self.assertEquals(len(num_resources) + 1,
+        self.assertEqual(len(num_resources) + 1,
                           len(self._get_legacy_bundle().resources))
         importer._importNode(dom.documentElement)
-        self.assertEquals(len(num_resources) + 1,
+        self.assertEqual(len(num_resources) + 1,
                           len(self._get_legacy_bundle().resources))
 
     def test_remove(self):
@@ -284,9 +379,9 @@ class TestResourceNodeImporter(PloneTestCase.PloneTestCase):
         dom = self._get_resource_dom(remove=True)
         importer._importNode(dom.documentElement)
 
-        self.assertEquals(len(resources) - 1,
+        self.assertEqual(len(resources) - 1,
                           len(self._get_legacy_bundle().resources))
-        self.assertEquals(len(js_files) - 1,
+        self.assertEqual(len(js_files) - 1,
                           len([x.js for x in self._get_resources().values()]))
 
     def test_insert_after(self):
@@ -347,9 +442,9 @@ class TestResourceNodeImporter(PloneTestCase.PloneTestCase):
         dom = self._get_resource_dom(enabled=False)
         importer._importNode(dom.documentElement)
 
-        self.assertEquals(len(resources) - 1,
+        self.assertEqual(len(resources) - 1,
                           len(self._get_legacy_bundle().resources))
-        self.assertEquals(len(js_files),
+        self.assertEqual(len(js_files),
                           len([x.js for x in self._get_resources().values()]))
 
 
@@ -368,7 +463,7 @@ class TestControlPanel(PloneTestCase.PloneTestCase):
         mng = OverrideFolderManager(self.portal)
         mng.save_file('foo/bar.css', 'foobar')
         value = self.portal.restrictedTraverse('++plone++foo/bar.css')
-        self.assertEquals(str(value), 'foobar')
+        self.assertEqual(value.data, b'foobar')
 
     def test_override_rewrite_links(self):
         req = self.layer['request']
@@ -386,7 +481,7 @@ class TestControlPanel(PloneTestCase.PloneTestCase):
 }""" % {'site_url': self.portal.absolute_url()}
         mng.save_file('foo/bar.css', css)
         value = self.portal.restrictedTraverse('++plone++foo/bar.css')
-        match = """
+        match = b"""
 .foo {
     background-image: url("../foobar.css");
 }
@@ -396,14 +491,14 @@ class TestControlPanel(PloneTestCase.PloneTestCase):
 .foobar {
     background-image: url("../foo/bar/foobar.css");
 }"""
-        self.assertEquals(str(value), match)
+        self.assertEqual(value.data, match)
 
     def test_get_require_js_config_uses_stub_modules(self):
         view = ResourceRegistryControlPanelView(
             self.portal, self.layer['request'])
         self.layer['request'].form['bundle'] = 'plone-logged-in'
         config = json.loads(view.js_build_config())
-        self.assertEquals(config['paths']['jquery'], 'empty:')
+        self.assertEqual(config['paths']['jquery'], 'empty:')
 
 
 class DummyResource(object):
@@ -529,14 +624,26 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
         self.assertTrue(scripts.development)
 
         scripts.update()
-        results = scripts.scripts()
+        result = scripts.scripts()[-1]
         self.assertEqual(
-            results[-1],
-            {
-                'src': 'http://nohost/plone/++resource++foo.js?version=123',
-                'conditionalcomment': None,
-                'bundle': 'foo'
-            }
+            result['src'],
+            'http://nohost/plone/++resource++foo.js?version=123'
+        )
+        self.assertEqual(
+             result['conditionalcomment'],
+             None
+        )
+        self.assertEqual(
+            result['bundle'],
+            'foo',
+        )
+        self.assertEqual(
+            result['async'],
+            None
+        )
+        self.assertEqual(
+            result['defer'],
+            None
         )
 
     @mock.patch.object(
@@ -575,7 +682,7 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
         scripts.update()
         results = scripts.scripts()
         self.assertEqual(
-            filter(lambda it: 'foo' in it['src'], results),
+            [i for i in results if 'foo' in i['src']],
             []
         )
 
@@ -618,12 +725,12 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
         styles = StylesView(self.layer['portal'], subreq, None)
         styles.update()
         results = styles.styles()
-        self.assertEqual(
-            filter(lambda it: 'foo' in it['src'], results)[0],
-            {
+        self.assertListEqual(
+            list(filter(lambda it: 'foo' in it['src'], results)),
+            [{
                 'src': 'http://nohost/plone/++resource++foo.css',
                 'conditionalcomment': '',
                 'rel': 'stylesheet',
                 'bundle': 'none',
-            }
+            }]
         )

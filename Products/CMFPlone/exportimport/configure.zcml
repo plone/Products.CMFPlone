@@ -15,28 +15,6 @@
   </genericsetup:importStep>
 
   <genericsetup:importStep
-      name="cssregistry"
-      title="Stylesheet registry"
-      description="Import stylesheet registry"
-      handler="Products.CMFPlone.resources.exportimport.cssregistry.importCSSRegistry">
-    <depends name="skins"/>
-    <depends name="componentregistry"/>
-    <depends name="plone.app.registry"/>
-    <depends name="toolset"/>
-  </genericsetup:importStep>
-
-  <genericsetup:importStep
-      name="jsregistry"
-      title="Javascript registry"
-      description="Import javascript registry"
-      handler="Products.CMFPlone.resources.exportimport.jsregistry.importJSRegistry">
-    <depends name="skins"/>
-    <depends name="componentregistry"/>
-    <depends name="plone.app.registry"/>
-    <depends name="toolset"/>
-  </genericsetup:importStep>
-
-  <genericsetup:importStep
       name="viewlets"
       title="Viewlet Settings"
       description="Import viewlet settings"
@@ -69,8 +47,6 @@
    <depends name="portlets" />
    <depends name="rolemap" />
    <depends name="catalog" />
-   <depends name="cssregistry" />
-   <depends name="jsregistry" />
    <depends name="viewlets" />
    <depends name="controlpanel" />
    <depends name="propertiestool" />

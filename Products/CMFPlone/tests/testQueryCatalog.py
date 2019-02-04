@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Test queryCatalog and plone search forms
+from plone.app.textfield.value import RichTextValue
 from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.interfaces import INavigationSchema
 from Products.CMFPlone.interfaces import ISearchSchema
@@ -240,7 +241,8 @@ class TestQueryCatalogParseError(PloneTestCase.PloneTestCase):
     """
 
     def afterSetUp(self):
-        self.folder.invokeFactory('Document', id='doc', text='foo bar baz')
+        self.folder.invokeFactory(
+            'Document', id='doc', text=RichTextValue(u'foo bar baz'))
 
     def testSearchableText(self):
         request = {'SearchableText': 'foo'}

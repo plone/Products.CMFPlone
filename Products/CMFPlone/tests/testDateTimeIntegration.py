@@ -11,6 +11,8 @@
 
 from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
 from DateTime import DateTime
+from zope.event import notify
+from zope.lifecycleevent import ObjectModifiedEvent
 
 
 class DateTimeTests(PloneTestCase):
@@ -18,7 +20,7 @@ class DateTimeTests(PloneTestCase):
     def testModificationDate(self):
         obj = self.folder
         before = DateTime()
-        obj.processForm(values=dict(Description='foo!'))
+        notify(ObjectModifiedEvent(obj))
         after = DateTime()
         modified = obj.ModificationDate()   # the string representation...
         modified = DateTime(modified)       # is usually parsed again in Plone
@@ -39,7 +41,7 @@ class DateTimeTests(PloneTestCase):
         date = DateTime() + 365             # expire one year from today
         date = DateTime(date.ISO8601())     # but strip off milliseconds
         obj.setEffectiveDate(date)
-        obj.processForm(values=dict(Description='foo!'))
+        notify(ObjectModifiedEvent(obj))
         effective = obj.EffectiveDate()     # the string representation...
         effective = DateTime(effective)     # is usually parsed again in Plone
         self.assertTrue(date.equalTo(effective), (date, effective))
@@ -49,7 +51,7 @@ class DateTimeTests(PloneTestCase):
         date = DateTime() + 365             # expire one year from today
         date = DateTime(date.ISO8601())     # but strip off milliseconds
         obj.setExpirationDate(date)
-        obj.processForm(values=dict(Description='foo!'))
+        notify(ObjectModifiedEvent(obj))
         expired = obj.ExpirationDate()      # the string representation...
         expired = DateTime(expired)         # is usually parsed again in Plone
         self.assertTrue(date.equalTo(expired), (date, expired))

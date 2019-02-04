@@ -5,17 +5,62 @@
 Changelog
 =========
 
-5.2a1 (unreleased)
+.. You should *NOT* be adding new change log entries to this file.
+   You should create a file in the news directory instead.
+   For helpful instructions, please see:
+   https://github.com/plone/plone.releaser/blob/master/ADD-A-NEWS-ITEM.rst
+
+.. towncrier release notes start
+
+
+5.2a1 (2018-11-08)
 ------------------
 
 Breaking changes:
 
-- Remove all dependencies on plone.app.controlpanel.
-  Third party code need either to depend on plone.app.controlpanel 4.0,
-  which is a backward compatibilit package only, or also update to not depend on it anymore.
+- Removed generateUniqueId.py skins script (after it was added to Products.Archetypes).
+  This script is no longer available outside Archetypes world.
+  #1801
   [jensens]
 
+- Remove all dependencies on plone.app.controlpanel.
+  Third party code need either to depend on plone.app.controlpanel 4.0,
+  which is a backward compatibility package only, or also update to not depend on it anymore.
+  [jensens]
+
+- Removed check_id.py skin script.  Replaced with utils.check_id function.
+  #1801 and #2582.
+  [maurits]
+
+- Removed my_worklist.py skin script. #1801
+  [reinhardt]
+
+- Removed getObjectsFromPathList.py skin script. #1801
+  [reinhardt]
+
+- Removed isExpired.py skin script. #1801
+  [reinhardt]
+
+- Removed redirectToReferrer.py skin script. #1801
+  [tlotze]
+
+- Removed enableHTTPCompression.py skin script. #1801
+  [tlotze]
+
+- Removed setAuthCookie.py skin script. #1801
+  [tlotze]
+
+- Stop configuring 'View History' permission which was removed from Zope.
+  [davisagli]
+
+- Remove legacy resource registries portal_css and portal_javascripts
+  [ksuess]
+
 New features:
+
+- Factored out human_readable_size method for replacing getObjSize.py;
+  removed getObjSize.py. #1801
+  [reinhardt]
 
 - Update TinyMCE to 4.7.13
   [erral]
@@ -37,8 +82,44 @@ New features:
   in the generated package.json in compile_resources.py.
   [sunew]
 
+- Add utility-method safe_nativestring.
+  [pbauer]
+
+- Rename safe_unicode to safe_text and safe_encode to safe_bytes. Keep old aliases.
+  [pbauer]
+- Add a ``bin/instance verifydb`` command which can be used to check
+  that all records in the database can be successfully loaded.
+  This is intended to help with verifying a database conversion
+  from Python 2 to Python 3.
+  [davisagli]
 
 Bug fixes:
+
+- Modernize robot keywords that use "Get Element Attribute"
+  [ale-rt]
+
+- remove plone.app.folder dependency
+  [petschki]
+
+- move GopipIndex Class to plone.folder
+  [petschki]
+
+- Fixed getObjSize indexer for Python 3. #2526
+  [reinhardt]
+- Fix toolbar menu on mobile #2333.
+- make groups_modify_roles test more robust.
+  [tschorr]
+
+-- Fix wrong CSS property to allow correct word-break.
+  [tmassman]
+
+ Fix toolbar menu on mobile #2333.
+  [tmassman]
+
+- Removed the ``raiseUnauthorized`` skin script.
+  If you use this, please do permission checking in your own Python code instead (likely in a browser view).
+  Refs `issue 1801 <https://github.com/plone/Products.CMFPlone/issues/1801>`_.
+  [maurits]
 
 - Remove the devdependencies from bower.json - they are just used for running tests in mockup, not here.
   [sunew]
@@ -128,6 +209,10 @@ Bug fixes:
 
 - Remove ``plone-generate-gruntfile`` (it is all available through ``plone-compile-resources``).
   [jensens]
+
+- Migrate from ``slimit`` to ``calmjs.parse`` for the JavaScript cooker #2616
+  [metatoaster]
+
 
 New Features:
 
@@ -288,3 +373,9 @@ Bug Fixes:
 
 - Remove deprecated ``type`` attribute from ``script`` and ``link`` tags.
   [newbazz]
+
+- Render tinymce attributes correctly in Python3.
+  [sallner]
+
+- Remove unresolved dependencies of plone-final to cssregistry and jsregistry.
+  [pbauer]

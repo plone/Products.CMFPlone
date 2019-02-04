@@ -271,7 +271,7 @@ for requirejs, script in resources.items():
 # LESS CONFIGURATION
 
 modify_vars = {}
-modify_vars['sitePath'] = '/'
+modify_vars['sitePath'] = "'/'"
 modify_vars['isPlone'] = 'false'
 modify_vars['isMockup'] = 'false'
 modify_vars['staticPath'] = '\'' + os.path.join(

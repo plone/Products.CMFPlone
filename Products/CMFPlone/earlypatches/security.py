@@ -40,7 +40,7 @@ if bbb.HAS_ZSERVER:
     ObjectManager.manage_FTPlist = manage_FTPlist
 
 # 4. Make sure z3c.form widgets don't get declared as public
-from Products.Five.metaconfigure import ClassDirective
+from AccessControl.metaconfigure import ClassDirective
 old_require = ClassDirective.require
 
 

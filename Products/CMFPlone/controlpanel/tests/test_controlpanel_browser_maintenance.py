@@ -2,7 +2,7 @@
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
-from plone.testing.z2 import Browser
+from plone.testing.zope import Browser
 import unittest
 from App.ApplicationManager import ApplicationManager
 from pkg_resources import get_distribution
