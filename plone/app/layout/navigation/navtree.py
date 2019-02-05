@@ -6,6 +6,7 @@ from Acquisition import aq_inner
 from plone.app.layout.navigation.interfaces import INavtreeStrategy
 from plone.app.layout.navigation.root import getNavigationRoot
 from plone.i18n.normalizer.interfaces import IIDNormalizer
+from plone.memoize.instance import memoize
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
@@ -16,6 +17,7 @@ from zope.component import getUtility
 from zope.contentprovider.provider import ContentProviderBase
 from zope.globalrequest import getRequest
 from zope.interface import implementer
+
 
 import six
 
@@ -368,10 +370,7 @@ def buildFolderTree(context, obj=None, query={},
 
 class NavTreeProvider(ContentProviderBase):
 
-    _navtree = None
-    _navtree_path = None
-    _navtree_context = None
-
+    @memoize
     @property
     def settings(self):
         registry = getUtility(IRegistry)
@@ -384,11 +383,10 @@ class NavTreeProvider(ContentProviderBase):
         settings = registry.forInterface(ILanguageSchema, prefix='plone')
         return settings
 
+    @memoize
     @property
     def navtree_path(self):
-        if self._navtree_path is None:
-            self._navtree_path = getNavigationRoot(self.context)
-        return self._navtree_path
+        return getNavigationRoot(self.context)
 
     @property
     def navtree_depth(self):
@@ -398,12 +396,9 @@ class NavTreeProvider(ContentProviderBase):
     def enableDesc(self):
         return True
 
+    @memoize
     @property
     def navtree(self):
-
-        if self._navtree is not None:
-            return self._navtree
-
         generate_tabs = self.settings.generate_tabs
         types = self.settings.displayed_types
         default_language = self.language_settings.default_language
@@ -442,7 +437,6 @@ class NavTreeProvider(ContentProviderBase):
                 else:
                     ret[pathkey] = [entry]
 
-            self._navtree = ret
         else:
             portal_tabs_view = getMultiAdapter((self.context, self.request),
                                                name='portal_tabs_view')
@@ -462,8 +456,6 @@ class NavTreeProvider(ContentProviderBase):
                     ret[pathkey].append(entry)
                 else:
                     ret[pathkey] = [entry]
-
-            self._navtree = ret
 
         return ret
 
