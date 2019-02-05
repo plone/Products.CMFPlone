@@ -13467,7 +13467,7 @@ define('mockup-patterns-navigationmarker',[
 ], function($, Base) {
 
     var Navigation = Base.extend({
-        name: 'collective.navigation',
+        name: 'navigationmarker',
         trigger: '.pat-navigationmarker',
         parser: 'mockup',
 
