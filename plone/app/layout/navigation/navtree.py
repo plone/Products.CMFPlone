@@ -6,7 +6,7 @@ from Acquisition import aq_inner
 from plone.app.layout.navigation.interfaces import INavtreeStrategy
 from plone.app.layout.navigation.root import getNavigationRoot
 from plone.i18n.normalizer.interfaces import IIDNormalizer
-from plone.memoize.instance import memoize
+from plone.memoize.view import memoize
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
@@ -370,8 +370,8 @@ def buildFolderTree(context, obj=None, query={},
 
 class NavTreeProvider(ContentProviderBase):
 
-    @memoize
     @property
+    @memoize
     def settings(self):
         registry = getUtility(IRegistry)
         settings = registry.forInterface(INavigationSchema, prefix='plone')
@@ -383,7 +383,6 @@ class NavTreeProvider(ContentProviderBase):
         settings = registry.forInterface(ILanguageSchema, prefix='plone')
         return settings
 
-    @memoize
     @property
     def navtree_path(self):
         return getNavigationRoot(self.context)
@@ -396,8 +395,8 @@ class NavTreeProvider(ContentProviderBase):
     def enableDesc(self):
         return True
 
-    @memoize
     @property
+    @memoize
     def navtree(self):
         generate_tabs = self.settings.generate_tabs
         types = self.settings.displayed_types
