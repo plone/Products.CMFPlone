@@ -35,6 +35,7 @@ from zExceptions import Unauthorized
 from zope.annotation.interfaces import IAnnotations
 from zope.component import queryMultiAdapter
 from zope.component.hooks import getSite
+from zope.deprecation.deprecation import deprecate
 from zope.interface import implementer
 from zope.interface import Interface
 from zope.interface import providedBy
@@ -125,16 +126,12 @@ BLACKLISTED_INTERFACES = frozenset((
 ))
 
 
+@deprecate('Use catalog.getAllBrains() instead. ' +
+           'catalog_get_all will be removed in Plone 6')
 def catalog_get_all(catalog, unique_idx='UID'):
     """Get all brains from the catalog.
     """
-    res = [
-        catalog({
-            unique_idx: catalog._catalog.getIndexDataForRID(it)[unique_idx]
-        })[0]
-        for it in catalog._catalog.data
-    ]
-    return res
+    return catalog.getAllBrains()
 
 
 @indexer(Interface)
