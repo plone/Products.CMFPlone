@@ -410,6 +410,7 @@ class IFilterSchema(Interface):
             u'head',
             u'header',
             u'hgroup',
+            u'hr',
             u'html',
             u'i',
             u'iframe',
