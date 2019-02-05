@@ -3,10 +3,12 @@ from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.interfaces import IMailSchema
 from transaction._transaction import Status
 from zope.component import getUtility
+from zope.sendmail.mailer import _SMTPState
 from zope.sendmail.mailer import SMTPMailer
 
 import logging
 import transaction
+
 
 log = logging.getLogger("MailDataManager")
 
@@ -53,5 +55,7 @@ def new_init(
     self.password = mail_settings.smtp_pass
     self.force_tls = force_tls
     self.no_tls = no_tls
+    self._smtp = _SMTPState()
+
 
 SMTPMailer.__init__ = new_init

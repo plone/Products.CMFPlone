@@ -1,0 +1,2 @@
+The patched init method for the class zope.sendmail.mailer.SMTPMailer has been updated, fixing a bug that was preventing to send emails.
+[ale-rt, nazrulworld]
