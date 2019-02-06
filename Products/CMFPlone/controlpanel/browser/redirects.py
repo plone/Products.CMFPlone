@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-from plone import api
 from plone.app.redirector.interfaces import IRedirectionStorage
 from plone.batching.browser import PloneBatchView
 from plone.memoize.view import memoize
 from Products.CMFCore.interfaces import ISiteRoot
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.PloneBatch import Batch
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -45,7 +45,8 @@ def absolutize_path(path, context=None, is_alias=True):
                 path = "{0}/{1}".format(context_path, path)
         if not err and not is_alias:
             # Check whether obj exists at source path
-            result = api.content.find(path={"query": path})
+            catalog = getToolByName(context, 'portal_catalog')
+            result = catalog.searchResults(path={"query": path})
             if len(result) == 0:
                 err = _(u"The provided target object does not exist.")
         if not err and is_alias:
