@@ -159,52 +159,6 @@ Bug fixes:
 
 - Fix failing thememapper robot test after rebuild of thememapper bundle in p.a.theming PR 148
   [sunew]
-Bug fixes:
-
-- Fix an undefined variable in a test helper function
-  [ale-rt]
-
-- Fix registration of ``robots.txt`` browser view to avoid ``AttributeError`` on Zope's root (fixes `#2052 <https://github.com/plone/Products.CMFPlone/issues/2052>`_).
-  [hvelarde]
-
-- Get rid of obsolete ``X-UA-Compatible`` header.
-  [hvelarde]
-
-- Add test for issue #2469.
-  [jensens]
-
-- Fixed tests when IRichText behavior is used.
-  IRichText -> IRichTextBehavior
-  This is a follow up to `issue 476 <https://github.com/plone/plone.app.contenttypes/issues/476>`_.
-  [iham]
-
-
-5.1.3 (2018-06-22)
-------------------
-
-Breaking changes:
-New features:
-
-- Optional auto-login after passwort (re-)set.
-  Active if registry key `plone.autologin_after_password_reset` is `True`.
-  [jensens, agitator]
-
-- Provide an utility ``dump_json_to_text`` that works both on Python 2.7 an Python 3.
-  [ale-rt]
-
-- Prepare for Python 2 / 3 compatibility.
-  [pbauer]
-
-- Fix imports to work with Python 3.
-  [pbauer]
-
-- Mockup update.
-  [thet]
-
-- add link to Plone.org VPAT accessibility statement
-  [tkimnguyen]
-
-Bug fixes:
 
 - Remove five.pt for Zope 4
   [jensens]
@@ -397,7 +351,7 @@ Bug Fixes:
   It does not make much sense anyway and we test nowhere if there is a came_from on that link.
   [jensens]
 
-- Remove deprecated ``type`` attribute from ``script`` and ``link`` tags.
+- Remove depricated ``type`` attribute from ``script`` and ``link`` tags.
   [newbazz]
 
 - Render tinymce attributes correctly in Python3.
