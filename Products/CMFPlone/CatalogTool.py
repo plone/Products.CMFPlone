@@ -142,7 +142,12 @@ def allowedRolesAndUsers(obj):
     """Return a list of roles and users with View permission.
     Used to filter out items you're not allowed to see.
     """
-    allowed = set(rolesForPermissionOn('View', obj))
+
+    # 'Access contents information' is the correct permission for
+    # accessing and displaying metadata of an item.
+    # 'View' should be reserved for accessing the item itself.
+    allowed = set(rolesForPermissionOn('Access contents information', obj))
+
     # shortcut roles and only index the most basic system role if the object
     # is viewable by either of those
     if 'Anonymous' in allowed:
