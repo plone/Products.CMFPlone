@@ -897,6 +897,13 @@ class IMaintenanceSchema(Interface):
 
 class INavigationSchema(Interface):
 
+    navigation_depth = schema.Int(
+        title=_(u'Navigation depth'),
+        description=_(u'Number of folder levels to show in the navigation.'),
+        default=1,
+        required=True
+    )
+
     generate_tabs = schema.Bool(
         title=_(u'Automatically generate tabs'),
         description=_(

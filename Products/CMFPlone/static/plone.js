@@ -34,6 +34,7 @@ require([
   'mockup-patterns-preventdoublesubmit',
   'mockup-patterns-formautofocus',
   'mockup-patterns-markspeciallinks',
+  'mockup-patterns-navigationmarker',
   'mockup-patterns-modal',
   'mockup-patterns-livesearch',
   'mockup-patterns-contentloader',

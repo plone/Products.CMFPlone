@@ -729,6 +729,11 @@
       <value key="js">++resource++mockup/moment/pattern.js</value>
   </records>
 
+  <records prefix="plone.resources/mockup-patterns-navigationmarker"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockup/navigationmarker/pattern.js</value>
+  </records>
+
   <records prefix="plone.resources/mockup-patterns-pickadate"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/pickadate/pattern.js</value>
