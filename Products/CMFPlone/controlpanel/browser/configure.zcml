@@ -303,7 +303,7 @@
       for="Products.CMFCore.interfaces.IContentish"
       class=".redirects.RedirectsView"
       permission="cmf.ModifyPortalContent"
-      allowed_attributes="redirects view_url errors"
+      allowed_attributes="redirects view_url"
       />
 
 </configure>
