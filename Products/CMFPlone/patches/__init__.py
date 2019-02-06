@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-# FIXME: This no longer works with the new ZMI
-# from . import addzmiplonesite          # Add an explicit link to add a new Plone
-# site to the ZMI for faster access
+from . import addzmiplonesite          # Add an link to add a new Plone site
+# and a upgrade-warning to the ZMI
 
 from . import addzmisecuritywarning    # Add a warning to the ZMI security tab
 # that you shouldn't use it
