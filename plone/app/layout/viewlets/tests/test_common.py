@@ -12,8 +12,10 @@ from plone.protect import authenticator as auth
 from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.interfaces import INonStructuralFolder
 from Products.CMFPlone.interfaces import ISiteSchema
+from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.component.hooks import setSite
+from zope.contentprovider.interfaces import IContentProvider
 from zope.interface import alsoProvides
 from zope.interface import directlyProvides
 from zope.interface import noLongerProvides
@@ -268,3 +270,31 @@ class TestGlobalSectionsViewlet(ViewletsTestCase):
         self.assertIn('href="http://nohost/plone/image/view"', html)
         self.assertIn('href="http://nohost/plone/file/view"', html)
         self.assertIn('href="http://nohost/plone/doc"', html)
+
+    def test_globalnav_navigation_depth(self):
+        """ Test selected tabs with a INavigationroot folder involved
+        """
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
+        registry = getUtility(IRegistry)
+        registry['plone.navigation_depth'] = 3
+        self.portal.invokeFactory('Folder', 'folder', title=u'Földer')
+        self.portal.invokeFactory('Folder', 'folder2', title=u'Folder 2')
+        self.portal.invokeFactory('Folder', 'folder3', title=u'Folder 3')
+        folder = self.portal.folder
+        folder.invokeFactory('Folder', 'subfolder', title=u'Subfolder')
+        folder.invokeFactory('Folder', 'subfolder2', title=u'Sübfolder 2')
+        subfolder = folder.subfolder
+        subfolder.invokeFactory('Folder', 'subsubfolder', title=u'Sub2folder')
+
+        request = self.layer['request']
+        nav_tree_provider = getMultiAdapter(
+            (self.portal, request, None), IContentProvider, 'plone.navtree')
+        navtree = nav_tree_provider.navtree
+        self.assertEqual(len(navtree), 3)
+        self.assertEqual(len(navtree['/plone']), 3)
+        self.assertEqual(len(navtree['/plone/folder']), 2)
+        self.assertEqual(len(navtree['/plone/folder/subfolder']), 1)
+
+        gsv = GlobalSectionsViewlet(self.portal, request, None)
+        gsv.update()
+        self.assertTrue(gsv.render())
