@@ -84,6 +84,9 @@
  <index name="is_folderish" meta_type="BooleanIndex">
   <indexed_attr value="is_folderish"/>
  </index>
+ <index name="exclude_from_nav" meta_type="BooleanIndex">
+  <indexed_attr value="exclude_from_nav"/>
+ </index>
  <index name="meta_type" meta_type="FieldIndex">
   <indexed_attr value="meta_type"/>
  </index>
