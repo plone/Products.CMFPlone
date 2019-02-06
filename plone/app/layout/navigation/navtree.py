@@ -406,10 +406,6 @@ class NavTreeProvider(ContentProviderBase):
         return self.settings.navigation_depth
 
     @property
-    def enableDesc(self):
-        return True
-
-    @property
     @memoize
     def navtree(self):
         generate_tabs = self.settings.generate_tabs
