@@ -60,6 +60,9 @@ def absolutize_path(path, is_source=True):
                 result = catalog.searchResults(path={"query": path})
                 if len(result) > 0:
                     err = _(u"Cannot use an existing object as alias.")
+                else:
+                    if portal.unrestrictedTraverse(path, None) is not None:
+                        err = _(u"Cannot use a working path as alias.")
         else:
             # Check whether obj exists at target path
             result = catalog.searchResults(path={"query": path})

@@ -275,10 +275,14 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
             ap('/test-folder', is_source=False),
             ('/plone/test-folder', None))
 
-        # sources must not exist
+        # A source must not exist.
         self.assertEqual(
             ap('/test-folder'),
             ('/plone/test-folder', 'Cannot use an existing object as alias.'))
+        # More general: a source must not be traversable already.
+        self.assertEqual(
+            ap('/view'),
+            ('/plone/view', 'Cannot use a working path as alias.'))
 
         # A source must not already exist in the redirect list.
         storage = getUtility(IRedirectionStorage)
