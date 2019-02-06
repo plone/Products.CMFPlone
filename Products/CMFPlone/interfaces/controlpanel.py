@@ -1432,13 +1432,14 @@ class ITypesSchema(Interface):
                       "aliases can be managed"),
         required=False,
         default=(
-            'Image',
+            'Collection',
+            'Document',
+            'Event',
             'File',
+            'Folder',
+            'Image',
             'Link',
             'News Item',
-            'Folder',
-            'Document',
-            'Event'
         ),
         missing_value=(),
         value_type=schema.Choice(
