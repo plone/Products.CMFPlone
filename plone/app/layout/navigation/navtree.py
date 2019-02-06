@@ -12,6 +12,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
 from Products.CMFPlone.interfaces.controlpanel import ILanguageSchema
 from Products.CMFPlone.interfaces.controlpanel import INavigationSchema
+from Products.CMFPlone.utils import safe_unicode
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.contentprovider.provider import ContentProviderBase
@@ -439,6 +440,7 @@ class NavTreeProvider(ContentProviderBase):
                     'uid': it.UID,
                     'url': it.getURL(),
                     'title': it.Title,
+                    'title': safe_unicode(it.Title),
                     'review_state': it.review_state,
                 }
                 ret.setdefault(pathkey, []).append(entry)
