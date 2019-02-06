@@ -275,11 +275,10 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
             ap('/test-folder', is_source=False),
             ('/plone/test-folder', None))
 
-        # sources do not need to exist, but if an object exists,
-        # we currently have no problems with it.
+        # sources must not exist
         self.assertEqual(
             ap('/test-folder'),
-            ('/plone/test-folder', None))
+            ('/plone/test-folder', 'Cannot use an existing object as alias.'))
 
         # A source must not already exist in the redirect list.
         storage = getUtility(IRedirectionStorage)

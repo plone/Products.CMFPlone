@@ -48,14 +48,20 @@ def absolutize_path(path, is_source=True):
             else:
                 err = _(u"Target path must start with a slash.")
     if not err:
+        catalog = getToolByName(portal, 'portal_catalog')
         if is_source:
             # Check whether already exists in storage
             storage = getUtility(IRedirectionStorage)
             if storage.get(path):
                 err = _(u"The provided alias already exists!")
+            else:
+                # Check whether obj exists at source path.
+                # A redirect would be useless then.
+                result = catalog.searchResults(path={"query": path})
+                if len(result) > 0:
+                    err = _(u"Cannot use an existing object as alias.")
         else:
             # Check whether obj exists at target path
-            catalog = getToolByName(portal, 'portal_catalog')
             result = catalog.searchResults(path={"query": path})
             if len(result) == 0:
                 err = _(u"The provided target object does not exist.")
