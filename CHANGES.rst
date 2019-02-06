@@ -18,6 +18,9 @@ Bug fixes:
 - fix python3 compatibility
   [petschki]
 
+- Fix some issues with the new navigation. (Fixes https://github.com/plone/Products.CMFPlone/issues/2731 and https://github.com/plone/Products.CMFPlone/issues/2730)
+  [pbauer]
+
 
 3.0.0 (2018-10-30)
 ------------------
