@@ -119,9 +119,9 @@ class RedirectionSet(object):
             # Apparently that is the way to minize the keys we ask.
             min_k = u'{0:s}/{1:s}'.format(self.portal_path, query.strip('/'))
             max_k = min_k[:-1] + chr(ord(min_k[-1]) + 1)
-            self.data = list(self.storage._paths.keys(min=min_k, max=max_k))
+            self.data = self.storage._paths.keys(min=min_k, max=max_k)
         else:
-            self.data = list(self.storage._paths.keys())  # maybe be costly
+            self.data = self.storage._paths.keys()
 
     def __len__(self):
         return len(self.data)
