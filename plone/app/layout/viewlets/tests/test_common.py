@@ -253,3 +253,18 @@ class TestGlobalSectionsViewlet(ViewletsTestCase):
         gsv.update()
         self.assertEqual(gsv.selected_tabs, {'portal': 'abc'})
         self.assertEqual(gsv.selected_portal_tab, 'abc')
+
+    def test_globalnav_respects_types_use_view_action_in_listings(self):
+        """ Test selected tabs with a INavigationroot folder involved
+        """
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
+        self.portal.invokeFactory('Image', 'image', title=u'Söme Image')
+        self.portal.invokeFactory('File', 'file', title=u'Some File')
+        self.portal.invokeFactory('Document', 'doc', title=u'Some Döcument')
+        request = self.layer['request']
+        gsv = GlobalSectionsViewlet(self.portal, request, None)
+        gsv.update()
+        html = gsv.render()
+        self.assertIn('href="http://nohost/plone/image/view"', html)
+        self.assertIn('href="http://nohost/plone/file/view"', html)
+        self.assertIn('href="http://nohost/plone/doc"', html)
