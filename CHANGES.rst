@@ -13,6 +13,32 @@ Changelog
 .. towncrier release notes start
 
 
+5.2a2 (2018-12-30)
+------------------
+
+New features:
+
+
+- New robot tests for querystring in Collection type. Now almost all
+  querystring types are robot tested. [llisa123] (#2489)
+- Add ``load_async`` and ``load_defer`` attributes to resource registries
+  bundle settings. When set, ``<script>`` tags are rendered with
+  ``async="async"`` resp. ``defer="defer"`` attributes. You also need to empty
+  the ``merge_with`` property of your bundle, because production bundles
+  (``default.js`` and ``logged-in.js``) are never loaded with async or defer.
+  The default.js includes jQuery and requirejs and those are needed at many
+  places and therefore cannot be loaded asynchronously. Refs: #2649, #2657.
+  [thet] (#2649)
+
+
+Bug fixes:
+
+
+- Delete ``fa_ir.js``. Keep ```fa_IR.js``. [maurits] (#2620)
+- Forward port TinyMCE fixes from 5.1 [vangheem] (#2630)
+- Fix robot test test_edit_user_schema: Fieldname was set duplicate (first by
+  JS, then by robot). [jensens] (#2669)
+
 5.2a1 (2018-11-08)
 ------------------
 
