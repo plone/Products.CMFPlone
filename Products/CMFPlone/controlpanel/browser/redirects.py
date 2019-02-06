@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
-from AccessControl import getSecurityManager
 from plone import api
 from plone.app.redirector.interfaces import IRedirectionStorage
 from plone.batching.browser import PloneBatchView
 from plone.memoize.view import memoize
 from Products.CMFCore.interfaces import ISiteRoot
-from Products.CMFCore.permissions import ManagePortal
 from Products.CMFPlone.PloneBatch import Batch
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -31,7 +29,7 @@ def absolutize_path(path, context=None, is_alias=True):
     storage = getUtility(IRedirectionStorage)
     err = None
     if path is None or path == '':
-        err = (is_source and _(u"You have to enter an alias.")
+        err = (is_alias and _(u"You have to enter an alias.")
                or _(u"You have to enter a target."))
     else:
         if path.startswith('/'):
@@ -56,6 +54,7 @@ def absolutize_path(path, context=None, is_alias=True):
                 err = _(u"The provided alias already exists!")
 
     return path, err
+
 
 class RedirectsView(BrowserView):
     template = ViewPageTemplateFile('redirects-manage.pt')
@@ -267,7 +266,7 @@ class RedirectsControlPanel(BrowserView):
                     successes.append((abs_redirection, abs_target))
             else:
                 had_errors = True
-                self.errors.append(dict(line_number=i+1, line=dialect.delimiter.join(fields),
+                self.errors.append(dict(line_number=i + 1, line=dialect.delimiter.join(fields),
                                         message=err))
 
         if not had_errors:
