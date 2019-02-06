@@ -6,7 +6,6 @@ from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.PloneBatch import Batch
 from Products.Five.browser import BrowserView
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.statusmessages.interfaces import IStatusMessage
 from six import StringIO
 from zope.component import getUtility
@@ -58,7 +57,6 @@ def absolutize_path(path, context=None, is_alias=True):
 
 
 class RedirectsView(BrowserView):
-    template = ViewPageTemplateFile('redirects-manage.pt')
 
     def redirects(self):
         storage = getUtility(IRedirectionStorage)
@@ -98,7 +96,7 @@ class RedirectsView(BrowserView):
             else:
                 status.addStatusMessage(_(u"Alias removed."), type='info')
 
-        return self.template(errors=errors)
+        return self.index(errors=errors)
 
     @memoize
     def view_url(self):
@@ -151,8 +149,6 @@ class RedirectsBatchView(PloneBatchView):
 
 class RedirectsControlPanel(BrowserView):
 
-    template = ViewPageTemplateFile('redirects-controlpanel.pt')
-
     def __init__(self, context, request):
         super(RedirectsControlPanel, self).__init__(context, request)
         self.errors = []
@@ -199,7 +195,7 @@ class RedirectsControlPanel(BrowserView):
         elif 'form.button.Upload' in form:
             self.upload(form['file'], portal, storage, status)
 
-        return self.template()
+        return self.index()
 
     def add(self, redirection, target, portal, storage, status):
         """Add the redirections from the form. If anything goes wrong, do nothing."""

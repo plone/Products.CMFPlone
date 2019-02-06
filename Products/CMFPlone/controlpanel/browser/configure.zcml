@@ -295,6 +295,7 @@
       name="redirection-controlpanel"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".redirects.RedirectsControlPanel"
+      template="redirects-controlpanel.pt"
       permission="cmf.ManagePortal"
       />
 
@@ -302,6 +303,7 @@
       name="manage-aliases"
       for="Products.CMFCore.interfaces.IContentish"
       class=".redirects.RedirectsView"
+      template="redirects-manage.pt"
       permission="cmf.ModifyPortalContent"
       allowed_attributes="redirects view_url"
       />
