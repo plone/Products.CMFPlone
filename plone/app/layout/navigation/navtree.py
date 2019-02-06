@@ -15,7 +15,6 @@ from Products.CMFPlone.interfaces.controlpanel import INavigationSchema
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.contentprovider.provider import ContentProviderBase
-from zope.globalrequest import getRequest
 from zope.interface import implementer
 
 
@@ -370,6 +369,21 @@ def buildFolderTree(context, obj=None, query={},
 
 class NavTreeProvider(ContentProviderBase):
 
+    _opener_markup_template = (
+        u'<input id="navitem-{uid}" type="checkbox" class="opener" />'
+        u'<label for="navitem-{uid}" role="button" aria-label="{title}"></label>'  # noqa: E 501
+    )
+    _item_markup_template = (
+        u'<li class="{id}{has_sub_class}">'
+        u'{opener}'
+        u'<a href="{url}" class="state-{review_state}"{aria_haspopup}>{title}</a>{opener}'  # noqa: E 501
+        u'{sub}'
+        u'</li>'
+    )
+    _subtree_markup_wrapper = (
+        u'<ul class="has_subtree dropdown">{out}</ul>'
+    )
+
     @property
     @memoize
     def settings(self):
@@ -399,13 +413,9 @@ class NavTreeProvider(ContentProviderBase):
     @memoize
     def navtree(self):
         generate_tabs = self.settings.generate_tabs
-        types = self.settings.displayed_types
-        default_language = self.language_settings.default_language
-
-        request = getRequest()
-        lang_current = request.get('LANGUAGE', None) or \
+        lang_current = self.request.get('LANGUAGE', None) or \
             (self.context and aq_inner(self.context).Language()) \
-            or default_language
+            or self.language_settings.default_language
 
         ret = {}
 
@@ -413,7 +423,7 @@ class NavTreeProvider(ContentProviderBase):
             query = {
                 'path': {'query': self.navtree_path,
                          'depth': self.navtree_depth},
-                'portal_type': {'query': types},
+                'portal_type': {'query': self.settings.displayed_types},
                 'exclude_from_nav': False,
                 'Language': lang_current,
                 'sort_on': 'getObjPositionInParent',
@@ -431,63 +441,57 @@ class NavTreeProvider(ContentProviderBase):
                     'title': it.Title,
                     'review_state': it.review_state,
                 }
-                if pathkey in ret:
-                    ret[pathkey].append(entry)
-                else:
-                    ret[pathkey] = [entry]
+                ret.setdefault(pathkey, []).append(entry)
+            return ret
 
-        else:
-            portal_tabs_view = getMultiAdapter((self.context, self.request),
-                                               name='portal_tabs_view')
-            self.portal_tabs = portal_tabs_view.topLevelTabs()
-            res = self.portal_tabs
+        portal_tabs_view = getMultiAdapter((self.context, self.request),
+                                           name='portal_tabs_view')
+        res = portal_tabs_view.topLevelTabs()
 
-            for it in res:
-                pathkey = self.navtree_path
-                entry = {
-                    'id': it['id'],
-                    'uid': None,
-                    'url': it['url'],
-                    'title': it['title'],
-                    'review_state': None,
-                }
-                if pathkey in ret:
-                    ret[pathkey].append(entry)
-                else:
-                    ret[pathkey] = [entry]
+        for it in res:
+            pathkey = self.navtree_path
+            entry = {
+                'id': it['id'],
+                'uid': None,
+                'url': it['url'],
+                'title': it['title'],
+                'review_state': None,
+            }
+            ret.setdefault(pathkey, []).append(entry)
 
         return ret
+
+    def render_item(self, item, path):
+        normalizer = getUtility(IIDNormalizer)
+        item['normalizedid'] = normalizer.normalize(item['id'])
+        sub = self.build_tree(path + '/' + item['id'], first_run=False)
+        if sub:
+            item.update({
+                'sub': sub,
+                'opener':  self._opener_markup_template.format(**item),
+                'aria_haspopup': ' aria-haspopup="true"',
+                'has_sub_class': ' has_subtree',
+            })
+        else:
+            item.update({
+                'sub': sub,
+                'opener':  '',
+                'aria_haspopup': '',
+                'has_sub_class': '',
+            })
+        return self._item_markup_template.format(**item)
 
     def build_tree(self, path, first_run=True):
         """Non-template based recursive tree building.
         3-4 times faster than template based.
-        See figures below.
         """
-        normalizer = getUtility(IIDNormalizer)
         out = u''
-        for it in self.navtree.get(path, []):
-            sub = self.build_tree(path + '/' + it['id'], first_run=False)
-            opener = u"""<input id="navitem-{uid}" type="checkbox" class="opener">
-                         </input><label for="navitem-{uid}" role="button" aria-label="{title}"></label>""".format(
-                uid=it['uid'],
-                title=it['title']
-            ) if sub else ''
-            out += u'<li class="{id}{has_sub_class}">'.format(
-                id=normalizer.normalize(it['id']),
-                has_sub_class=' has_subtree' if sub else '',
-            )
-            out += u'<a href="{url}" class="state-{review_state}"{aria_haspopup}>{title}</a>{opener}'.format(  # noqa
-                url=it['url'],
-                review_state=it['review_state'],
-                title=it['title'],
-                opener=opener if sub else '',
-                aria_haspopup=' aria-haspopup="true"' if sub else '',
-            )
-            out += sub
-            out += u'</li>'
+        for item in self.navtree.get(path, []):
+            out += self.render_item(item, path)
+            self._item_markup_template.format(**item)
 
-        if not first_run:
-            out = u'<ul class="has_subtree dropdown">' + out + u'</ul>' if out else ''
+        if not first_run and out:
+            out = self._subtree_markup_wrapper.format(out=out)
         return out
 
     def render(self):
