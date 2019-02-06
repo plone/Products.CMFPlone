@@ -6,4 +6,14 @@
         <allow interface=".interfaces.INavtreeStrategy" />
     </class>
 
+    <!-- a contentprovider -->
+    <adapter
+        factory=".navtree.NavTreeProvider"
+        for="*
+             *
+             *"
+        name="plone.navtree"
+        provides="zope.contentprovider.interfaces.IContentProvider"
+    />
+
 </configure>

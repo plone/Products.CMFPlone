@@ -2,10 +2,21 @@
 # This module contains a function to help build navigation-tree-like structures
 # from catalog queries.
 
+from Acquisition import aq_inner
 from plone.app.layout.navigation.interfaces import INavtreeStrategy
+from plone.app.layout.navigation.root import getNavigationRoot
+from plone.i18n.normalizer.interfaces import IIDNormalizer
+from plone.memoize.view import memoize
+from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
+from Products.CMFPlone.interfaces.controlpanel import ILanguageSchema
+from Products.CMFPlone.interfaces.controlpanel import INavigationSchema
+from zope.component import getMultiAdapter
+from zope.component import getUtility
+from zope.contentprovider.provider import ContentProviderBase
 from zope.interface import implementer
+
 
 import six
 
@@ -354,3 +365,134 @@ def buildFolderTree(context, obj=None, query={},
 
     # Return the tree starting at rootPath as the root node.
     return itemPaths[rootPath]
+
+
+class NavTreeProvider(ContentProviderBase):
+
+    _opener_markup_template = (
+        u'<input id="navitem-{uid}" type="checkbox" class="opener" />'
+        u'<label for="navitem-{uid}" role="button" aria-label="{title}"></label>'  # noqa: E 501
+    )
+    _item_markup_template = (
+        u'<li class="{id}{has_sub_class}">'
+        u'{opener}'
+        u'<a href="{url}" class="state-{review_state}"{aria_haspopup}>{title}</a>{opener}'  # noqa: E 501
+        u'{sub}'
+        u'</li>'
+    )
+    _subtree_markup_wrapper = (
+        u'<ul class="has_subtree dropdown">{out}</ul>'
+    )
+
+    @property
+    @memoize
+    def settings(self):
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(INavigationSchema, prefix='plone')
+        return settings
+
+    @property
+    def language_settings(self):
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(ILanguageSchema, prefix='plone')
+        return settings
+
+    @property
+    def navtree_path(self):
+        return getNavigationRoot(self.context)
+
+    @property
+    def navtree_depth(self):
+        return self.settings.navigation_depth
+
+    @property
+    def enableDesc(self):
+        return True
+
+    @property
+    @memoize
+    def navtree(self):
+        generate_tabs = self.settings.generate_tabs
+        lang_current = self.request.get('LANGUAGE', None) or \
+            (self.context and aq_inner(self.context).Language()) \
+            or self.language_settings.default_language
+
+        ret = {}
+
+        if generate_tabs:
+            query = {
+                'path': {'query': self.navtree_path,
+                         'depth': self.navtree_depth},
+                'portal_type': {'query': self.settings.displayed_types},
+                'exclude_from_nav': False,
+                'Language': lang_current,
+                'sort_on': 'getObjPositionInParent',
+            }
+            portal_catalog = getToolByName(self.context, 'portal_catalog')
+
+            res = portal_catalog.searchResults(**query)
+
+            for it in res:
+                pathkey = '/'.join(it.getPath().split('/')[:-1])
+                entry = {
+                    'id': it.id,
+                    'uid': it.UID,
+                    'url': it.getURL(),
+                    'title': it.Title,
+                    'review_state': it.review_state,
+                }
+                ret.setdefault(pathkey, []).append(entry)
+            return ret
+
+        portal_tabs_view = getMultiAdapter((self.context, self.request),
+                                           name='portal_tabs_view')
+        res = portal_tabs_view.topLevelTabs()
+
+        for it in res:
+            pathkey = self.navtree_path
+            entry = {
+                'id': it['id'],
+                'uid': None,
+                'url': it['url'],
+                'title': it['title'],
+                'review_state': None,
+            }
+            ret.setdefault(pathkey, []).append(entry)
+
+        return ret
+
+    def render_item(self, item, path):
+        normalizer = getUtility(IIDNormalizer)
+        item['normalizedid'] = normalizer.normalize(item['id'])
+        sub = self.build_tree(path + '/' + item['id'], first_run=False)
+        if sub:
+            item.update({
+                'sub': sub,
+                'opener':  self._opener_markup_template.format(**item),
+                'aria_haspopup': ' aria-haspopup="true"',
+                'has_sub_class': ' has_subtree',
+            })
+        else:
+            item.update({
+                'sub': sub,
+                'opener':  '',
+                'aria_haspopup': '',
+                'has_sub_class': '',
+            })
+        return self._item_markup_template.format(**item)
+
+    def build_tree(self, path, first_run=True):
+        """Non-template based recursive tree building.
+        3-4 times faster than template based.
+        """
+        out = u''
+        for item in self.navtree.get(path, []):
+            out += self.render_item(item, path)
+            self._item_markup_template.format(**item)
+
+        if not first_run and out:
+            out = self._subtree_markup_wrapper.format(out=out)
+        return out
+
+    def render(self):
+        return self.build_tree(self.navtree_path)

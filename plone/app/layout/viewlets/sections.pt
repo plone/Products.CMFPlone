@@ -6,8 +6,7 @@
      tal:condition="portal_tabs"
      i18n:domain="plone">
 
-  <p class="hiddenStructure" i18n:translate="heading_sections">Navigation</p>
-  <nav class="plone-navbar" id="portal-globalnav-wrapper">
+  <nav class="plone-navbar pat-navigationmarker" id="portal-globalnav-wrapper">
     <div class="container">
       <div class="plone-navbar-header">
         <button type="button" class="plone-navbar-toggle" data-toggle="collapse" data-target="#portal-globalnav-collapse">
@@ -22,19 +21,7 @@
         <ul class="plone-nav plone-navbar-nav"
             id="portal-globalnav"
             tal:define="selected_tab python:view.selected_portal_tab">
-            <tal:tabs tal:repeat="tab portal_tabs">
-              <li tal:define="tid tab/id"
-                  tal:attributes="id string:portaltab-${tid};
-                                  class python:selected_tab==tid and 'selected' or nothing">
-                  <a href=""
-                     tal:content="tab/name"
-                     tal:attributes="href tab/url;
-                                     title tab/description|nothing;
-                                     target tab/link_target|nothing;">
-                    Tab Name
-                  </a>
-              </li>
-            </tal:tabs>
+          <navtree tal:replace="structure provider:plone.navtree" />
         </ul>
       </div>
     </div>
