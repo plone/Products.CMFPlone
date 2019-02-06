@@ -1,0 +1,24 @@
+<tal:createplone tal:condition="python: view.is_zope_root">
+  <form method="get"
+        class="text-right"
+        action="@@plone-addsite"
+        target="_top">
+    <input type="hidden" name="site_id" value="Plone" />
+    <button type="submit" class="btn btn-outline-primary btn-sm">Add Plone Site</button>
+    <div class="form-group form-check">
+      <input type="checkbox" class="form-check-input" name="advanced" id="advanced">
+      <label for="advanced">advanced</label>
+    </div>
+  </form>
+</tal:createplone>
+
+<tal:upgrade tal:condition="python: view.is_plone_root and view.needs_upgrade">
+<div class="alert alert-danger" role="alert">
+  The site configuration is outdated and needs to be upgraded.
+  <a class="alert-link"
+     tal:attributes="href python:context.absolute_url() + '/@@plone-upgrade'"
+     title="Go to the upgrade page">
+    Please continue with the upgrade.
+  </a>
+</div>
+</tal:upgrade>

@@ -242,4 +242,12 @@
       layer="zope.interface.Interface"
       />
 
+  <browser:page
+      for="*"
+      name="plone_zmi_patch"
+      class=".zmi.ZMIPatch"
+      template="templates/zmi_patch.pt"
+      permission="zope.Public"
+      />
+
 </configure>
