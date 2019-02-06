@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from AccessControl import getSecurityManager
-from cStringIO import StringIO
 from plone import api
 from plone.app.redirector.interfaces import IRedirectionStorage
 from plone.batching.browser import PloneBatchView
@@ -11,6 +10,7 @@ from Products.CMFPlone.PloneBatch import Batch
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.statusmessages.interfaces import IStatusMessage
+from six import StringIO
 from zope.component import getUtility
 from zope.i18nmessageid import MessageFactory
 
