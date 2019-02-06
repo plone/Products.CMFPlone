@@ -237,3 +237,55 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
             'Alias path must start with a slash.' in self.browser.contents,
             u'Errormessage for missing slash on alias path missing'
         )
+
+    def test_absolutize_path(self):
+        # absolutize_path is a helper function that returns a tuple
+        # of absolute path and error message.
+        from Products.CMFPlone.controlpanel.browser.redirects import (
+            absolutize_path as ap)
+
+        # A path is required.
+        self.assertEqual(
+            ap(''),
+            ('', 'You have to enter an alias.'))
+        self.assertEqual(
+            ap('', is_source=False),
+            ('', 'You have to enter a target.'))
+
+        # relative paths are not accepted
+        self.assertEqual(
+            ap('foo'),
+            ('foo', 'Alias path must start with a slash.'))
+        self.assertEqual(
+            ap('foo', is_source=True),
+            ('foo', 'Alias path must start with a slash.'))
+        self.assertEqual(
+            ap('foo', is_source=False),
+            ('foo', 'Target path must start with a slash.'))
+
+        # absolute paths are good
+        self.assertEqual(ap('/foo'), ('/plone/foo', None))
+        self.assertEqual(ap('/foo', is_source=True), ('/plone/foo', None))
+
+        # for targets, an object must exist on the path
+        self.assertEqual(
+            ap('/foo', is_source=False),
+            ('/plone/foo', 'The provided target object does not exist.'))
+        self.assertEqual(
+            ap('/test-folder', is_source=False),
+            ('/plone/test-folder', None))
+
+        # sources do not need to exist, but if an object exists,
+        # we currently have no problems with it.
+        self.assertEqual(
+            ap('/test-folder'),
+            ('/plone/test-folder', None))
+
+        # A source must not already exist in the redirect list.
+        storage = getUtility(IRedirectionStorage)
+        portal_path = self.layer['portal'].absolute_url_path()
+        storage.add('{0:s}/foo'.format(portal_path),
+                    '{0:s}/test-folder'.format(portal_path))
+        self.assertEqual(
+            ap('/foo', is_source=True),
+            ('/plone/foo', 'The provided alias already exists!'))
