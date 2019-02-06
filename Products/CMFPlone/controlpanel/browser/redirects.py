@@ -16,42 +16,49 @@ import csv
 _ = MessageFactory('plone')
 
 
-def absolutize_path(path, context=None, is_source=True):
-    """Check whether object exist to the provided `path`.
-       Assume relative paths are relative to `context`;
-       reject relative paths if `context` is None.
-       Return a 2-tuple: (absolute redirection path,
-       an error message if something goes wrong and otherwise '').
+def absolutize_path(path, is_source=True):
+    """Create path including the path of the portal root.
+
+    The path must be absolute, so starting with a slash.
+
+    If is_source is true, this is an alternative url
+    that will point to a target (unknown here).
+
+    If is_source is true, path is the path of a target.
+    An object must exist at this path.
+
+    Return a 2-tuple: (absolute redirection path,
+    an error message if something goes wrong and otherwise '').
     """
 
     portal = getUtility(ISiteRoot)
-    storage = getUtility(IRedirectionStorage)
     err = None
-    if path is None or path == '':
-        err = (is_source and _(u"You have to enter an alias.")
-               or _(u"You have to enter a target."))
+    if not path:
+        if is_source:
+            err = _(u"You have to enter an alias.")
+        else:
+            err = _(u"You have to enter a target.")
     else:
         if path.startswith('/'):
             context_path = "/".join(portal.getPhysicalPath())
             path = "{0}{1}".format(context_path, path)
         else:
-            if context is None:
-                err = (is_source and _(u"Alias path must start with a slash.")
-                       or _(u"Target path must start with a slash."))
+            if is_source:
+                err = _(u"Alias path must start with a slash.")
             else:
-                # What case should this be?
-                context_path = "/".join(context.getPhysicalPath()[:-1])
-                path = "{0}/{1}".format(context_path, path)
-        if not err and not is_source:
-            # Check whether obj exists at source path
-            catalog = getToolByName(context, 'portal_catalog')
+                err = _(u"Target path must start with a slash.")
+    if not err:
+        if is_source:
+            # Check whether already exists in storage
+            storage = getUtility(IRedirectionStorage)
+            if storage.get(path):
+                err = _(u"The provided alias already exists!")
+        else:
+            # Check whether obj exists at target path
+            catalog = getToolByName(portal, 'portal_catalog')
             result = catalog.searchResults(path={"query": path})
             if len(result) == 0:
                 err = _(u"The provided target object does not exist.")
-        if not err and is_source:
-            # Check whether already exists in storage
-            if storage.get(path):
-                err = _(u"The provided alias already exists!")
 
     return path, err
 
