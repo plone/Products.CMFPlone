@@ -16,7 +16,7 @@ import csv
 _ = MessageFactory('plone')
 
 
-def absolutize_path(path, context=None, is_alias=True):
+def absolutize_path(path, context=None, is_source=True):
     """Check whether object exist to the provided `path`.
        Assume relative paths are relative to `context`;
        reject relative paths if `context` is None.
@@ -28,7 +28,7 @@ def absolutize_path(path, context=None, is_alias=True):
     storage = getUtility(IRedirectionStorage)
     err = None
     if path is None or path == '':
-        err = (is_alias and _(u"You have to enter an alias.")
+        err = (is_source and _(u"You have to enter an alias.")
                or _(u"You have to enter a target."))
     else:
         if path.startswith('/'):
@@ -36,19 +36,19 @@ def absolutize_path(path, context=None, is_alias=True):
             path = "{0}{1}".format(context_path, path)
         else:
             if context is None:
-                err = (is_alias and _(u"Alias path must start with a slash.")
+                err = (is_source and _(u"Alias path must start with a slash.")
                        or _(u"Target path must start with a slash."))
             else:
                 # What case should this be?
                 context_path = "/".join(context.getPhysicalPath()[:-1])
                 path = "{0}/{1}".format(context_path, path)
-        if not err and not is_alias:
+        if not err and not is_source:
             # Check whether obj exists at source path
             catalog = getToolByName(context, 'portal_catalog')
             result = catalog.searchResults(path={"query": path})
             if len(result) == 0:
                 err = _(u"The provided target object does not exist.")
-        if not err and is_alias:
+        if not err and is_source:
             # Check whether already exists in storage
             if storage.get(path):
                 err = _(u"The provided alias already exists!")
@@ -79,7 +79,7 @@ class RedirectsView(BrowserView):
         errors = {}
 
         if 'form.button.Add' in form:
-            redirection, err = absolutize_path(form.get('redirection'), is_alias=True)
+            redirection, err = absolutize_path(form.get('redirection'), is_source=True)
             if err:
                 errors['redirection'] = err
                 status.addStatusMessage(err, type='error')
@@ -206,9 +206,9 @@ class RedirectsControlPanel(BrowserView):
         abs_target = ''
         target_err = ''
 
-        abs_redirection, err = absolutize_path(redirection, is_alias=True)
+        abs_redirection, err = absolutize_path(redirection, is_source=True)
         if not err:
-            abs_target, target_err = absolutize_path(target, is_alias=False)
+            abs_target, target_err = absolutize_path(target, is_source=False)
 
         if err and target_err:
             err = "{0} {1}".format(err, target_err)
@@ -248,8 +248,8 @@ class RedirectsControlPanel(BrowserView):
         for i, fields in enumerate(csv.reader(file, dialect)):
             if len(fields) == 2:
                 redirection, target = fields
-                abs_redirection, err = absolutize_path(redirection, is_alias=True)
-                abs_target, target_err = absolutize_path(target, is_alias=False)
+                abs_redirection, err = absolutize_path(redirection, is_source=True)
+                abs_target, target_err = absolutize_path(target, is_source=False)
                 if err and target_err:
                     err = "%s %s" % (err, target_err)  # sloppy w.r.t. i18n
                 elif target_err:
