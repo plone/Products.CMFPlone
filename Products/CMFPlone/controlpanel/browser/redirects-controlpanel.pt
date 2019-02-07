@@ -14,7 +14,7 @@
         <dt>Error</dt>
         <dd>
           <p i18n:translate="error_bulk_upload">
-            No aliases were added. Please correct these errors in your CSV file and try again:
+            No alternative urls were added. Please correct these errors in your CSV file and try again:
           </p>
           <table
               style="text-align: left; vertical-align: top"
@@ -44,7 +44,7 @@
       </dl>
 
       <h1 i18n:translate="heading_add_aliases">
-        Manage aliases
+        Manage alternative urls
       </h1>
 
       <form
@@ -52,10 +52,10 @@
           method="post">
         <fieldset>
           <legend i18n:translate="add_alias">
-            Add a new alias
+            Add a new alternative url
           </legend>
 
-          <label for="redirection">Alias Path</label>
+          <label for="redirection">Alternative Url Path</label>
           <input
               type="text"
               name="redirection">
@@ -83,11 +83,11 @@
           enctype="multipart/form-data">
         <fieldset>
           <legend i18n:translate="legend_bulk_upload">
-            Bulk-upload aliases
+            Bulk-upload alternative urls
           </legend>
 
           <p i18n:translate="description_bulk_upload">
-            Add many aliases at once by uploading a CSV file. The first column should be the path to
+            Add many alternative urls at once by uploading a CSV file. The first column should be the path to
             redirect from; the second, the path to redirect to. Both paths must be Plone-site-relative,
             starting with a slash (/).
           </p>
@@ -123,7 +123,7 @@
         <fieldset
           tal:define="batch view/redirects">
           <legend i18n:translate="legend_all_existing_aliases">
-            All existing aliases for this site
+            All existing alternative urls for this site
           </legend>
 
           <label for="filter-existing-aliases-q" i18n:translate="">Filter by prefix</label>

@@ -13,7 +13,7 @@
       <h1
           class="documentFirstHeading"
           i18n:translate="heading_add_aliases">
-        Manage aliases
+        Manage alternative urls
       </h1>
 
       <dl
@@ -23,7 +23,7 @@
           Info
         </dt>
         <dd i18n:translate="help_sharing_page_default_page">
-          You are managing the aliases of a default view in a container.
+          You are managing the alternative urls of a default view in a container.
           To manage them for the entire container,
           <a
               i18n:name="go_here"
@@ -36,7 +36,7 @@
       </dl>
 
       <p i18n:translate="description_adding_aliases">
-        Using this form, you can manage aliases for an item. This
+        Using this form, you can manage alternative urls for an item. This
         is an easy way to make an item available under two different URLs.
       </p>
 
@@ -45,7 +45,7 @@
           method="post">
         <fieldset>
           <legend i18n:translate="legend_existing_aliases">
-            Existing aliases for this item
+            Existing alternative urls for this item
           </legend>
 
           <div class="field"
@@ -55,7 +55,7 @@
             <label
                 for="title"
                 i18n:translate="label_alias">
-              Alias
+              Alternative url
             </label>
 
             <span
@@ -71,7 +71,7 @@
             </div>
 
             <div class="formHelp" i18n:translate="help_alias">
-              Enter the absolute path where the alias should exist. The path must start with '/'.
+              Enter the absolute path where the alternative url should exist. The path must start with '/'.
             </div>
 
             <input
@@ -98,7 +98,7 @@
           method="post">
         <fieldset>
           <legend i18n:translate="legend_existing_aliases">
-            Existing aliases for this item
+            Existing alternative urls for this item
           </legend>
 
           <tal:redirects repeat="redirect view/redirects">

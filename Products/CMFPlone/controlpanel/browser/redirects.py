@@ -35,17 +35,17 @@ def absolutize_path(path, is_source=True):
     err = None
     if not path:
         if is_source:
-            err = _(u"You have to enter an alias.")
+            err = _(u"You have to enter an alternative url.")
         else:
             err = _(u"You have to enter a target.")
     elif not path.startswith('/'):
         if is_source:
-            err = _(u"Alias path must start with a slash.")
+            err = _(u"Alternative url path must start with a slash.")
         else:
             err = _(u"Target path must start with a slash.")
     elif '@@' in path:
         if is_source:
-            err = _(u"Alias path must not be a view.")
+            err = _(u"Alternative url path must not be a view.")
         else:
             err = _(u"Target path must not be a view.")
     else:
@@ -57,16 +57,16 @@ def absolutize_path(path, is_source=True):
             # Check whether already exists in storage
             storage = getUtility(IRedirectionStorage)
             if storage.get(path):
-                err = _(u"The provided alias already exists!")
+                err = _(u"The provided alternative url already exists!")
             else:
                 # Check whether obj exists at source path.
                 # A redirect would be useless then.
                 result = catalog.searchResults(path={"query": path})
                 if len(result) > 0:
-                    err = _(u"Cannot use an existing object as alias.")
+                    err = _(u"Cannot use an existing object as alternative url.")
                 else:
                     if portal.unrestrictedTraverse(path, None) is not None:
-                        err = _(u"Cannot use a working path as alias.")
+                        err = _(u"Cannot use a working path as alternative url.")
         else:
             # Check whether obj exists at target path
             result = catalog.searchResults(path={"query": path})
@@ -106,15 +106,15 @@ class RedirectsView(BrowserView):
             else:
                 del form['redirection']
                 storage.add(redirection, "/".join(self.context.getPhysicalPath()))
-                status.addStatusMessage(_(u"Alias added."), type='info')
+                status.addStatusMessage(_(u"Alternative url added."), type='info')
         elif 'form.button.Remove' in form:
             redirects = form.get('redirects', ())
             for redirect in redirects:
                 storage.remove(redirect)
             if len(redirects) > 1:
-                status.addStatusMessage(_(u"Aliases removed."), type='info')
+                status.addStatusMessage(_(u"Alternative urls removed."), type='info')
             else:
-                status.addStatusMessage(_(u"Alias removed."), type='info')
+                status.addStatusMessage(_(u"Alternative url removed."), type='info')
 
         return self.index(errors=errors)
 
@@ -209,11 +209,11 @@ class RedirectsControlPanel(BrowserView):
             for redirect in redirects:
                 storage.remove(redirect)
             if len(redirects) == 0:
-                status.addStatusMessage(_(u"No aliases selected for removal."), type='info')
+                status.addStatusMessage(_(u"No alternative urls selected for removal."), type='info')
             elif len(redirects) > 1:
-                status.addStatusMessage(_(u"Aliases removed."), type='info')
+                status.addStatusMessage(_(u"Alternative urls removed."), type='info')
             else:
-                status.addStatusMessage(_(u"Alias removed."), type='info')
+                status.addStatusMessage(_(u"Alternative url removed."), type='info')
         elif 'form.button.Add' in form:
             self.add(form['redirection'], form['target_path'], portal, storage, status)
         elif 'form.button.Upload' in form:
@@ -236,7 +236,7 @@ class RedirectsControlPanel(BrowserView):
             err = target_err
         else:
             if abs_redirection == abs_target:
-                err = _(u"Aliases that point to themselves will cause"
+                err = _(u"Alternative urls that point to themselves will cause"
                         u"an endless cycle of redirects.")
                 # TODO: detect indirect recursion
 
@@ -244,7 +244,7 @@ class RedirectsControlPanel(BrowserView):
             status.addStatusMessage(_(err), type='error')
         else:
             storage.add(abs_redirection, abs_target)
-            status.addStatusMessage(_(u"Alias {0} &rarr; {1} added.").format(abs_redirection, abs_target),
+            status.addStatusMessage(_(u"Alternative url {0} &rarr; {1} added.").format(abs_redirection, abs_target),
                                     type='info')
 
     def upload(self, file, portal, storage, status):
@@ -277,7 +277,7 @@ class RedirectsControlPanel(BrowserView):
                 else:
                     if abs_redirection == abs_target:
                         # TODO: detect indirect recursion
-                        err = _(u"Aliases that point to themselves will cause"
+                        err = _(u"Alternative urls that point to themselves will cause"
                                 u"an endless cycle of redirects.")
             else:
                 err = _(u"Each line must have 2 columns.")
@@ -293,7 +293,7 @@ class RedirectsControlPanel(BrowserView):
         if not had_errors:
             for abs_redirection, abs_target in successes:
                 storage.add(abs_redirection, abs_target)
-            status.addStatusMessage(_(u"%i aliases added.") % len(successes), type='info')
+            status.addStatusMessage(_(u"%i alternative urls added.") % len(successes), type='info')
 
     @memoize
     def view_url(self):

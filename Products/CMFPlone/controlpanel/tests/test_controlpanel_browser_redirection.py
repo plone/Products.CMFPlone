@@ -133,11 +133,11 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
 
         self.assertTrue(
             storage.get(storage_alias) == storage_target,
-            '{0} not target of alias!'.format(storage_target)
+            '{0} not target of alternative url!'.format(storage_target)
         )
         self.assertTrue(
-            'The provided alias already exists!' in self.browser.contents,
-            u'Message "alias already exists" not in page!'
+            'The provided alternative url already exists!' in self.browser.contents,
+            u'Message "alternative url already exists" not in page!'
         )
 
     def test_redirection_controlpanel_filtering(self):
@@ -234,8 +234,8 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         self.browser.getControl(name='form.button.Add').click()
 
         self.assertTrue(
-            'Alias path must start with a slash.' in self.browser.contents,
-            u'Errormessage for missing slash on alias path missing'
+            'Alternative url path must start with a slash.' in self.browser.contents,
+            u'Errormessage for missing slash on alternative url missing'
         )
 
     def test_absolutize_path(self):
@@ -247,7 +247,7 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         # A path is required.
         self.assertEqual(
             ap(''),
-            ('', 'You have to enter an alias.'))
+            ('', 'You have to enter an alternative url.'))
         self.assertEqual(
             ap('', is_source=False),
             ('', 'You have to enter a target.'))
@@ -255,10 +255,10 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         # relative paths are not accepted
         self.assertEqual(
             ap('foo'),
-            ('foo', 'Alias path must start with a slash.'))
+            ('foo', 'Alternative url path must start with a slash.'))
         self.assertEqual(
             ap('foo', is_source=True),
-            ('foo', 'Alias path must start with a slash.'))
+            ('foo', 'Alternative url path must start with a slash.'))
         self.assertEqual(
             ap('foo', is_source=False),
             ('foo', 'Target path must start with a slash.'))
@@ -281,14 +281,14 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         # A source must not exist.
         self.assertEqual(
             ap('/test-folder'),
-            ('/plone/test-folder', 'Cannot use an existing object as alias.'))
+            ('/plone/test-folder', 'Cannot use an existing object as alternative url.'))
         # More general: a source must not be traversable already.
         self.assertEqual(
             ap('/view'),
-            ('/plone/view', 'Cannot use a working path as alias.'))
+            ('/plone/view', 'Cannot use a working path as alternative url.'))
         self.assertEqual(
             ap('/@@overview-controlpanel'),
-            ('/@@overview-controlpanel', 'Alias path must not be a view.'))
+            ('/@@overview-controlpanel', 'Alternative url path must not be a view.'))
 
         # A source must not already exist in the redirect list.
         storage = getUtility(IRedirectionStorage)
@@ -297,4 +297,4 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
                     '{0:s}/test-folder'.format(portal_path))
         self.assertEqual(
             ap('/foo', is_source=True),
-            ('/plone/foo', 'The provided alias already exists!'))
+            ('/plone/foo', 'The provided alternative url already exists!'))
