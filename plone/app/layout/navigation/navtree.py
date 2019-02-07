@@ -491,7 +491,6 @@ class NavTreeProvider(ContentProviderBase):
         out = u''
         for item in self.navtree.get(path, []):
             out += self.render_item(item, path)
-            self._item_markup_template.format(**item)
 
         if not first_run and out:
             out = self._subtree_markup_wrapper.format(out=out)
