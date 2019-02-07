@@ -12,6 +12,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
 from Products.CMFPlone.interfaces.controlpanel import ILanguageSchema
 from Products.CMFPlone.interfaces.controlpanel import INavigationSchema
+from Products.CMFPlone.utils import safe_unicode
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.contentprovider.provider import ContentProviderBase
@@ -430,15 +431,21 @@ class NavTreeProvider(ContentProviderBase):
             }
             portal_catalog = getToolByName(self.context, 'portal_catalog')
 
+            registry = getUtility(IRegistry)
+            types_using_view = registry.get(
+                'plone.types_use_view_action_in_listings', [])
             res = portal_catalog.searchResults(**query)
 
             for it in res:
                 pathkey = '/'.join(it.getPath().split('/')[:-1])
+                url = it.getURL()
+                if it.portal_type in types_using_view:
+                    url += '/view'
                 entry = {
                     'id': it.id,
                     'uid': it.UID,
-                    'url': it.getURL(),
-                    'title': it.Title,
+                    'url': url,
+                    'title': safe_unicode(it.Title),
                     'review_state': it.review_state,
                 }
                 ret.setdefault(pathkey, []).append(entry)
