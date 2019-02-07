@@ -9,6 +9,7 @@ from Products.CMFPlone.utils import safe_text
 from Products.Five.browser import BrowserView
 from Products.statusmessages.interfaces import IStatusMessage
 from six import StringIO
+from six.moves.urllib.parse import urlparse
 from zope.component import getUtility
 from zope.i18nmessageid import MessageFactory
 
@@ -22,12 +23,13 @@ def absolutize_path(path, is_source=True):
     """Create path including the path of the portal root.
 
     The path must be absolute, so starting with a slash.
+    Or it can be a full url.
 
     If is_source is true, this is an alternative url
     that will point to a target (unknown here).
 
     If is_source is true, path is the path of a target.
-    An object must exist at this path.
+    An object must exist at this path, unless it is a full url.
 
     Return a 2-tuple: (absolute redirection path,
     an error message if something goes wrong and otherwise '').
@@ -35,6 +37,7 @@ def absolutize_path(path, is_source=True):
 
     portal = getUtility(ISiteRoot)
     err = None
+    is_external_url = False
     if not path:
         if is_source:
             err = _(u"You have to enter an alternative url.")
@@ -44,7 +47,13 @@ def absolutize_path(path, is_source=True):
         if is_source:
             err = _(u"Alternative url path must start with a slash.")
         else:
-            err = _(u"Target path must start with a slash.")
+            # For targets, we accept external urls.
+            # Do basic check.
+            parsed = urlparse(path)
+            if parsed.scheme in ('https', 'http') and parsed.netloc:
+                is_external_url = True
+            else:
+                err = _(u"Target path must start with a slash.")
     elif '@@' in path:
         if is_source:
             err = _(u"Alternative url path must not be a view.")
@@ -53,7 +62,7 @@ def absolutize_path(path, is_source=True):
     else:
         context_path = "/".join(portal.getPhysicalPath())
         path = "{0}{1}".format(context_path, path)
-    if not err:
+    if not err and not is_external_url:
         catalog = getToolByName(portal, 'portal_catalog')
         if is_source:
             # Check whether already exists in storage

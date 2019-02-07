@@ -326,3 +326,29 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
             ap('/foo', is_source=True),
             ('/plone/foo', 'The provided alternative url already exists!'),
         )
+
+        # For targets, we now accept external urls.
+        # Note that this can only be done on the control panel,
+        # so by default only by Site Administrators or Managers.
+        self.assertEqual(
+            ap('https://example.org', is_source=False),
+            ('https://example.org', None),
+        )
+        self.assertEqual(
+            ap('http://example.org', is_source=False),
+            ('http://example.org', None),
+        )
+        self.assertEqual(
+            ap('https://example.org/some/path?foo=bar&bar=foo', is_source=False),
+            ('https://example.org/some/path?foo=bar&bar=foo', None),
+        )
+        self.assertEqual(
+            ap('http://', is_source=False),
+            ('http://', 'Target path must start with a slash.'),
+        )
+        # Using '//' to ignore http/https differences seems useless,
+        # as we don't include content but only link to it.
+        self.assertEqual(
+            ap('//example.org', is_source=False),
+            ('/plone//example.org', 'The provided target object does not exist.'),
+        )
