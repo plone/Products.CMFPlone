@@ -43,7 +43,7 @@
         </dd>
       </dl>
 
-      <h1 i18n:translate="heading_add_aliases">
+      <h1 i18n:translate="">
         URL Management
       </h1>
 

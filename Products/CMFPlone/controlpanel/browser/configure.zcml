@@ -291,12 +291,22 @@
       permission="cmf.ManagePortal"
       />
 
+  <permission
+      id="Products.CMFPlone.ManagePortalAliases"
+      title="Manage Portal Aliases"
+      />
+
+  <permission
+      id="Products.CMFPlone.ManageContextAliases"
+      title="Manage Context Aliases"
+      />
+
   <browser:page
       name="redirection-controlpanel"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".redirects.RedirectsControlPanel"
       template="redirects-controlpanel.pt"
-      permission="cmf.ManagePortal"
+      permission="Products.CMFPlone.ManagePortalAliases"
       />
 
   <browser:page
@@ -304,7 +314,7 @@
       for="Products.CMFCore.interfaces.IContentish"
       class=".redirects.RedirectsView"
       template="redirects-manage.pt"
-      permission="cmf.ModifyPortalContent"
+      permission="Products.CMFPlone.ManageContextAliases"
       allowed_attributes="redirects view_url"
       />
 

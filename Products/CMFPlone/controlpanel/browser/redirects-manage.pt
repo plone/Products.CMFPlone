@@ -12,7 +12,7 @@
         tal:define="context_state context/@@plone_context_state">
       <h1
           class="documentFirstHeading"
-          i18n:translate="heading_add_aliases">
+          i18n:translate="">
         URL Management
       </h1>
 
