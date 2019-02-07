@@ -1,19 +1,18 @@
 # -*- coding: utf-8 -*-
-from Products.CMFPlone.PloneBatch import Batch
-from Products.CMFPlone.controlpanel.browser.redirects import RedirectionSet
-from plone.app.testing import SITE_OWNER_NAME, SITE_OWNER_PASSWORD
 from plone.app.redirector.interfaces import IRedirectionStorage
+from plone.app.testing import SITE_OWNER_NAME
+from plone.app.testing import SITE_OWNER_PASSWORD
 from plone.testing.z2 import Browser
-
+from Products.CMFPlone.controlpanel.browser.redirects import RedirectionSet
+from Products.CMFPlone.PloneBatch import Batch
+from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 
-from Products.CMFPlone.testing import \
-    PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
-
 import math
-import unittest
 import transaction
+import unittest
+
 
 class RedirectionControlPanelFunctionalTest(unittest.TestCase):
     """Test that changes in the mail control panel are actually
@@ -30,7 +29,7 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         self.browser.handleErrors = False
         self.browser.addHeader(
             'Authorization',
-            'Basic %s:%s' % (SITE_OWNER_NAME, SITE_OWNER_PASSWORD,)
+            'Basic %s:%s' % (SITE_OWNER_NAME, SITE_OWNER_PASSWORD),
         )
 
     """
@@ -54,8 +53,9 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
     """
 
     def test_redirection_controlpanel_view(self):
-        view = getMultiAdapter((self.portal, self.portal.REQUEST),
-                               name="redirection-controlpanel")
+        view = getMultiAdapter(
+            (self.portal, self.portal.REQUEST), name="redirection-controlpanel"
+        )
         self.assertTrue(view())
 
     def test_redirection_controlpanel_add_redirect(self):
@@ -64,49 +64,64 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         target_path = '/test-folder'
         storage_path = '/plone/alias-folder'
 
-        self.browser.open(
-            "%s/@@redirection-controlpanel" % self.portal_url)
-        self.browser.getControl(
-            name='redirection').value = redirection_path
-        self.browser.getControl(
-            name='target_path').value = target_path
+        self.browser.open("%s/@@redirection-controlpanel" % self.portal_url)
+        self.browser.getControl(name='redirection').value = redirection_path
+        self.browser.getControl(name='target_path').value = target_path
         self.browser.getControl(name='form.button.Add').click()
 
         self.assertTrue(
             storage.has_path(storage_path),
-            u'Redirection storage should have path "{0}"'.format(storage_path)
+            u'Redirection storage should have path "{0}"'.format(storage_path),
         )
 
     def test_redirection_controlpanel_set(self):
         storage = getUtility(IRedirectionStorage)
         portal_path = self.layer['portal'].absolute_url_path()
         for i in range(1000):
-            storage.add('{0:s}/foo/{1:s}'.format(portal_path, str(i)),
-                        '{0:s}/bar/{1:s}'.format(portal_path, str(i)))
+            storage.add(
+                '{0:s}/foo/{1:s}'.format(portal_path, str(i)),
+                '{0:s}/bar/{1:s}'.format(portal_path, str(i)),
+            )
         redirects = RedirectionSet()
         self.assertEqual(len(redirects), 1000)
-        self.assertDictEqual(redirects[0], {
-            'redirect': '{0:s}/foo/0'.format(portal_path),
-            'path': '/foo/0', 'redirect-to': '/bar/0'
-        })
-        self.assertDictEqual(redirects[999], {
-            'redirect': '{0:s}/foo/999'.format(portal_path),
-            'path': '/foo/999', 'redirect-to': '/bar/999'
-        })
+        self.assertDictEqual(
+            redirects[0],
+            {
+                'redirect': '{0:s}/foo/0'.format(portal_path),
+                'path': '/foo/0',
+                'redirect-to': '/bar/0',
+            },
+        )
+        self.assertDictEqual(
+            redirects[999],
+            {
+                'redirect': '{0:s}/foo/999'.format(portal_path),
+                'path': '/foo/999',
+                'redirect-to': '/bar/999',
+            },
+        )
         self.assertEqual(len(list(iter(redirects))), 1000)
-        self.assertDictEqual(list(iter(redirects))[0], {
-            'redirect': '{0:s}/foo/0'.format(portal_path),
-            'path': '/foo/0', 'redirect-to': '/bar/0'
-        })
+        self.assertDictEqual(
+            list(iter(redirects))[0],
+            {
+                'redirect': '{0:s}/foo/0'.format(portal_path),
+                'path': '/foo/0',
+                'redirect-to': '/bar/0',
+            },
+        )
 
     def test_redirection_controlpanel_batching(self):
         storage = getUtility(IRedirectionStorage)
         portal_path = self.layer['portal'].absolute_url_path()
         for i in range(1000):
-            storage.add('{0:s}/foo/{1:s}'.format(portal_path, str(i)),
-                        '{0:s}/bar/{1:s}'.format(portal_path, str(i)))
-        view = getMultiAdapter((self.layer['portal'], self.layer['request']),
-                               name='redirection-controlpanel')
+            storage.add(
+                '{0:s}/foo/{1:s}'.format(portal_path, str(i)),
+                '{0:s}/bar/{1:s}'.format(portal_path, str(i)),
+            )
+        view = getMultiAdapter(
+            (self.layer['portal'], self.layer['request']),
+            name='redirection-controlpanel',
+        )
         # Test that view/redirects returns batch
         self.assertIsInstance(view.redirects(), Batch)
 
@@ -123,32 +138,34 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         storage.add(storage_alias, storage_target)
         transaction.commit()
 
-        self.browser.open(
-            "%s/@@redirection-controlpanel" % self.portal_url)
-        self.browser.getControl(
-            name='redirection').value = path_alias
-        self.browser.getControl(
-            name='target_path').value = path_target
+        self.browser.open("%s/@@redirection-controlpanel" % self.portal_url)
+        self.browser.getControl(name='redirection').value = path_alias
+        self.browser.getControl(name='target_path').value = path_target
         self.browser.getControl(name='form.button.Add').click()
 
         self.assertTrue(
             storage.get(storage_alias) == storage_target,
-            '{0} not target of alternative url!'.format(storage_target)
+            '{0} not target of alternative url!'.format(storage_target),
         )
         self.assertTrue(
-            'The provided alternative url already exists!' in self.browser.contents,
-            u'Message "alternative url already exists" not in page!'
+            'The provided alternative url already exists!'
+            in self.browser.contents,
+            u'Message "alternative url already exists" not in page!',
         )
 
     def test_redirection_controlpanel_filtering(self):
         storage = getUtility(IRedirectionStorage)
         portal_path = self.layer['portal'].absolute_url_path()
         for i in range(1000):
-            storage.add('{0:s}/foo1/{1:s}'.format(portal_path, str(i)),
-                        '{0:s}/bar/{1:s}'.format(portal_path, str(i)))
+            storage.add(
+                '{0:s}/foo1/{1:s}'.format(portal_path, str(i)),
+                '{0:s}/bar/{1:s}'.format(portal_path, str(i)),
+            )
         for i in range(1000):
-            storage.add('{0:s}/foo2/{1:s}'.format(portal_path, str(i)),
-                        '{0:s}/bar/{1:s}'.format(portal_path, str(i)))
+            storage.add(
+                '{0:s}/foo2/{1:s}'.format(portal_path, str(i)),
+                '{0:s}/bar/{1:s}'.format(portal_path, str(i)),
+            )
 
         redirects = RedirectionSet()
         self.assertEqual(len(redirects), 2000)
@@ -161,107 +178,104 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
 
         request = self.layer['request'].clone()
         request.form['q'] = '/foo'
-        view = getMultiAdapter((self.layer['portal'], request),
-                               name='redirection-controlpanel')
-        self.assertEqual(view.redirects().numpages, math.ceil(2000 / 15.))
+        view = getMultiAdapter(
+            (self.layer['portal'], request), name='redirection-controlpanel'
+        )
+        self.assertEqual(view.redirects().numpages, math.ceil(2000 / 15.0))
 
         request = self.layer['request'].clone()
         request.form['q'] = '/foo1'
-        view = getMultiAdapter((self.layer['portal'], request),
-                               name='redirection-controlpanel')
-        self.assertEqual(view.redirects().numpages, math.ceil(1000 / 15.))
+        view = getMultiAdapter(
+            (self.layer['portal'], request), name='redirection-controlpanel'
+        )
+        self.assertEqual(view.redirects().numpages, math.ceil(1000 / 15.0))
 
         request = self.layer['request'].clone()
         request.form['q'] = '/foo2'
-        view = getMultiAdapter((self.layer['portal'], request),
-                               name='redirection-controlpanel')
-        self.assertEqual(view.redirects().numpages, math.ceil(1000 / 15.))
+        view = getMultiAdapter(
+            (self.layer['portal'], request), name='redirection-controlpanel'
+        )
+        self.assertEqual(view.redirects().numpages, math.ceil(1000 / 15.0))
 
         request = self.layer['request'].clone()
-        view = getMultiAdapter((self.layer['portal'], request),
-                               name='redirection-controlpanel')
-        self.assertEqual(view.redirects().numpages, math.ceil(2000 / 15.))
+        view = getMultiAdapter(
+            (self.layer['portal'], request), name='redirection-controlpanel'
+        )
+        self.assertEqual(view.redirects().numpages, math.ceil(2000 / 15.0))
 
         # Filtering without new request does not have effect because memoize
         request.form['q'] = '/foo2'
-        self.assertEqual(view.redirects().numpages, math.ceil(2000 / 15.))
+        self.assertEqual(view.redirects().numpages, math.ceil(2000 / 15.0))
 
     def test_redirection_controlpanel_redirect_no_target(self):
         path_alias = '/alias'
         path_target = '/not-existing'
 
-        self.browser.open(
-            "%s/@@redirection-controlpanel" % self.portal_url)
-        self.browser.getControl(
-            name='redirection').value = path_alias
-        self.browser.getControl(
-            name='target_path').value = path_target
+        self.browser.open("%s/@@redirection-controlpanel" % self.portal_url)
+        self.browser.getControl(name='redirection').value = path_alias
+        self.browser.getControl(name='target_path').value = path_target
         self.browser.getControl(name='form.button.Add').click()
 
         self.assertTrue(
-            'The provided target object does not exist.' in self.browser.contents,
-            u'Message "target does not exist" not in page!'
+            'The provided target object does not exist.'
+            in self.browser.contents,
+            u'Message "target does not exist" not in page!',
         )
 
     def test_redirection_controlpanel_missing_slash_target(self):
         path_alias = '/alias'
         path_target = 'Members'
 
-        self.browser.open(
-            "%s/@@redirection-controlpanel" % self.portal_url)
-        self.browser.getControl(
-            name='redirection').value = path_alias
-        self.browser.getControl(
-            name='target_path').value = path_target
+        self.browser.open("%s/@@redirection-controlpanel" % self.portal_url)
+        self.browser.getControl(name='redirection').value = path_alias
+        self.browser.getControl(name='target_path').value = path_target
         self.browser.getControl(name='form.button.Add').click()
 
         self.assertTrue(
             'Target path must start with a slash.' in self.browser.contents,
-            u'Errormessage for missing slash on target path missing'
+            u'Errormessage for missing slash on target path missing',
         )
-
 
     def test_redirection_controlpanel_missing_slash_alias(self):
         path_alias = 'alias'
         path_target = '/Members'
 
-        self.browser.open(
-            "%s/@@redirection-controlpanel" % self.portal_url)
-        self.browser.getControl(
-            name='redirection').value = path_alias
-        self.browser.getControl(
-            name='target_path').value = path_target
+        self.browser.open("%s/@@redirection-controlpanel" % self.portal_url)
+        self.browser.getControl(name='redirection').value = path_alias
+        self.browser.getControl(name='target_path').value = path_target
         self.browser.getControl(name='form.button.Add').click()
 
         self.assertTrue(
-            'Alternative url path must start with a slash.' in self.browser.contents,
-            u'Errormessage for missing slash on alternative url missing'
+            'Alternative url path must start with a slash.'
+            in self.browser.contents,
+            u'Errormessage for missing slash on alternative url missing',
         )
 
     def test_absolutize_path(self):
         # absolutize_path is a helper function that returns a tuple
         # of absolute path and error message.
         from Products.CMFPlone.controlpanel.browser.redirects import (
-            absolutize_path as ap)
+            absolutize_path as ap,
+        )
 
         # A path is required.
+        self.assertEqual(ap(''), ('', 'You have to enter an alternative url.'))
         self.assertEqual(
-            ap(''),
-            ('', 'You have to enter an alternative url.'))
-        self.assertEqual(
-            ap('', is_source=False),
-            ('', 'You have to enter a target.'))
+            ap('', is_source=False), ('', 'You have to enter a target.')
+        )
 
         # relative paths are not accepted
         self.assertEqual(
-            ap('foo'),
-            ('foo', 'Alternative url path must start with a slash.'))
+            ap('foo'), ('foo', 'Alternative url path must start with a slash.')
+        )
         self.assertEqual(
             ap('foo', is_source=True),
-            ('foo', 'Alternative url path must start with a slash.'))
+            ('foo', 'Alternative url path must start with a slash.'),
+        )
         self.assertEqual(
             ap('foo', is_source=False),
-            ('foo', 'Target path must start with a slash.'))
+            ('foo', 'Target path must start with a slash.'),
+        )
 
         # absolute paths are good
         self.assertEqual(ap('/foo'), ('/plone/foo', None))
@@ -270,31 +284,45 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         # for targets, an object must exist on the path
         self.assertEqual(
             ap('/foo', is_source=False),
-            ('/plone/foo', 'The provided target object does not exist.'))
+            ('/plone/foo', 'The provided target object does not exist.'),
+        )
         self.assertEqual(
-            ap('/test-folder', is_source=False),
-            ('/plone/test-folder', None))
+            ap('/test-folder', is_source=False), ('/plone/test-folder', None)
+        )
         self.assertEqual(
             ap('/test-folder/@@sharing', is_source=False),
-            ('/test-folder/@@sharing', 'Target path must not be a view.'))
+            ('/test-folder/@@sharing', 'Target path must not be a view.'),
+        )
 
         # A source must not exist.
         self.assertEqual(
             ap('/test-folder'),
-            ('/plone/test-folder', 'Cannot use an existing object as alternative url.'))
+            (
+                '/plone/test-folder',
+                'Cannot use an existing object as alternative url.',
+            ),
+        )
         # More general: a source must not be traversable already.
         self.assertEqual(
             ap('/view'),
-            ('/plone/view', 'Cannot use a working path as alternative url.'))
+            ('/plone/view', 'Cannot use a working path as alternative url.'),
+        )
         self.assertEqual(
             ap('/@@overview-controlpanel'),
-            ('/@@overview-controlpanel', 'Alternative url path must not be a view.'))
+            (
+                '/@@overview-controlpanel',
+                'Alternative url path must not be a view.',
+            ),
+        )
 
         # A source must not already exist in the redirect list.
         storage = getUtility(IRedirectionStorage)
         portal_path = self.layer['portal'].absolute_url_path()
-        storage.add('{0:s}/foo'.format(portal_path),
-                    '{0:s}/test-folder'.format(portal_path))
+        storage.add(
+            '{0:s}/foo'.format(portal_path),
+            '{0:s}/test-folder'.format(portal_path),
+        )
         self.assertEqual(
             ap('/foo', is_source=True),
-            ('/plone/foo', 'The provided alternative url already exists!'))
+            ('/plone/foo', 'The provided alternative url already exists!'),
+        )
