@@ -16,5 +16,6 @@
     <dependency>profile-plone.portlet.collection:default</dependency>
     <dependency>profile-plone.portlet.static:default</dependency>
     <dependency>profile-plone.protect:default</dependency>
+    <dependency>profile-plone.staticresources:default</dependency>
   </dependencies>
 </metadata>
