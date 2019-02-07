@@ -9,7 +9,7 @@
   <body>
     <div metal:fill-slot="prefs_configlet_main">
       <dl
-          tal:condition="view/errors"
+          tal:condition="view/csv_errors|nothing"
           class="portalMessage error">
         <dt>Error</dt>
         <dd>
@@ -21,7 +21,7 @@
               border="0"
               cellpadding="2"
               cellspacing="0">
-            <tr tal:repeat="error view/errors"
+            <tr tal:repeat="error view/csv_errors"
                 style="vertical-align: top">
               <td nowrap="nowrap">
                 <tal:block i18n:translate="label_bulk_upload_line">
@@ -55,6 +55,10 @@
             Add a new alternative url
           </legend>
 
+          <div class="field"
+               tal:define="error view/form_errors/redirection|nothing"
+               tal:attributes="class python:error and 'field error' or 'field'">
+
           <label
               for="redirection"
               i18n:translate="label_alias">
@@ -69,6 +73,10 @@
             (Required)
           </span>
 
+            <div tal:content="error">
+              Validation error output
+            </div>
+
           <div class="formHelp" i18n:translate="help_alias">
             Enter the absolute path where the alternative url should exist. The path must start with '/'.
           </div>
@@ -79,6 +87,11 @@
               value="#"
               size="40"
               tal:attributes="value request/redirection | nothing;"/>
+          </div>
+
+          <div class="field"
+               tal:define="error view/form_errors/target_path|nothing"
+               tal:attributes="class python:error and 'field error' or 'field'">
 
           <label for="target_path">Target Path</label>
 
@@ -90,6 +103,10 @@
             (Required)
           </span>
 
+            <div tal:content="error">
+              Validation error output
+            </div>
+
           <div class="formHelp" i18n:translate="help_target_path">
             Enter the absolute path of the target. The path must start with '/'.
           </div>
@@ -100,6 +117,7 @@
               value="#"
               size="40"
               tal:attributes="value request/target_path | nothing;"/>
+          </div>
 
           <div class="formControls">
             <input class="context"
@@ -135,9 +153,30 @@
             </code>
           </p>
 
-          <input
+          <div class="field"
+               tal:define="error view/form_errors/file|nothing"
+               tal:attributes="class python:error and 'field error' or 'field'">
+            <label
+                for="file"
+                i18n:translate="label_file">
+              CSV file
+            </label>
+
+            <span
+                class="fieldRequired"
+                title="Required"
+                i18n:attributes="title"
+                i18n:translate="label_required">
+              (Required)
+            </span>
+
+            <div tal:content="error">
+              Validation error output
+            </div>
+            <input
               type="file"
               name="file" />
+          </div>
 
           <div class="formControls">
             <input
@@ -177,6 +216,11 @@
                 name="form.button.filter"
                  i18n:attributes="value" />
           </div>
+
+          <div class="field"
+               tal:define="error view/form_errors/remove_redirects|nothing"
+               tal:attributes="class python:error and 'field error' or 'field'"
+               tal:content="error" />
 
           <tal:redirects repeat="redirect batch">
             <div>

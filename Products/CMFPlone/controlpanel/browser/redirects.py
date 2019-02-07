@@ -180,11 +180,6 @@ class RedirectsBatchView(PloneBatchView):
 
 
 class RedirectsControlPanel(BrowserView):
-    def __init__(self, context, request):
-        super(RedirectsControlPanel, self).__init__(context, request)
-        self.errors = []
-        # list of tuples: (line_number, absolute_redirection_path, err_msg, target)
-
     def batching(self):
         return RedirectsBatchView(self.context, self.request)(self.redirects())
 
@@ -210,16 +205,19 @@ class RedirectsControlPanel(BrowserView):
         request = self.request
         form = request.form
         status = IStatusMessage(self.request)
+        # We make a difference between errors when uploading a csv,
+        # and errors in form submit.
+        self.csv_errors = []
+        self.form_errors = {}
 
         if 'form.button.Remove' in form:
             redirects = form.get('redirects', ())
             for redirect in redirects:
                 storage.remove(redirect)
             if len(redirects) == 0:
-                status.addStatusMessage(
-                    _(u"No alternative urls selected for removal."),
-                    type='info',
-                )
+                err = _(u"No alternative urls selected for removal.")
+                status.addStatusMessage(err, type='error')
+                self.form_errors['remove_redirects'] = err
             elif len(redirects) > 1:
                 status.addStatusMessage(
                     _(u"Alternative urls removed."), type='info'
@@ -250,12 +248,12 @@ class RedirectsControlPanel(BrowserView):
 
         Returns error message or nothing.
         """
-        abs_target = ''
-        target_err = ''
-
         abs_redirection, err = absolutize_path(redirection, is_source=True)
-        if not err:
-            abs_target, target_err = absolutize_path(target, is_source=False)
+        if err:
+            self.form_errors['redirection'] = err
+        abs_target, target_err = absolutize_path(target, is_source=False)
+        if target_err:
+            self.form_errors['target_path'] = target_err
 
         if err and target_err:
             err = "{0} {1}".format(err, target_err)
@@ -274,7 +272,7 @@ class RedirectsControlPanel(BrowserView):
         else:
             storage.add(abs_redirection, abs_target)
             status.addStatusMessage(
-                _(u"Alternative url {0} &rarr; {1} added.").format(
+                _(u"Alternative url from {0} to {1} added.").format(
                     abs_redirection, abs_target
                 ),
                 type='info',
@@ -286,9 +284,9 @@ class RedirectsControlPanel(BrowserView):
 
         # No file picked. Theres gotta be a better way to handle this.
         if not file.filename:
-            status.addStatusMessage(
-                _(u"Please pick a file to upload."), type='info'
-            )
+            err = _(u"Please pick a file to upload.")
+            status.addStatusMessage(err, type='error')
+            self.form_errors['file'] = err
             return
         # Turn all kinds of newlines into LF ones. The csv module doesn't do
         # its own newline sniffing and requires either \n or \r.
@@ -329,7 +327,7 @@ class RedirectsControlPanel(BrowserView):
                     successes.append((abs_redirection, abs_target))
             else:
                 had_errors = True
-                self.errors.append(
+                self.csv_errors.append(
                     dict(
                         line_number=i + 1,
                         line=dialect.delimiter.join(fields),

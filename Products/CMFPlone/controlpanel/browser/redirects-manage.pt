@@ -49,8 +49,7 @@
           </legend>
 
           <div class="field"
-               tal:define="error options/errors/redirection|nothing;
-                           redirection request/title | nothing;"
+               tal:define="error options/errors/redirection|nothing"
                tal:attributes="class python:error and 'field error' or 'field'">
             <label
                 for="redirection"
