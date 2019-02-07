@@ -251,6 +251,56 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
             u'Errormessage for missing slash on alternative url missing',
         )
 
+    def test_manage_aliases_standard(self):
+        storage = getUtility(IRedirectionStorage)
+        folder = self.portal['test-folder']
+
+        self.browser.open("%s/@@manage-aliases" % folder.absolute_url())
+        self.browser.getControl(name='redirection').value = '/alias'
+        self.browser.getControl(name='form.button.Add').click()
+
+        self.assertTrue(
+            'Alternative url added.' in self.browser.contents,
+            u'Message for added alternative url missing',
+        )
+        self.assertTrue(storage.has_path('/plone/alias'))
+        self.assertEqual(storage.get('/plone/alias'), '/plone/test-folder')
+
+    def test_manage_aliases_navigation_root(self):
+        from zope.interface import alsoProvides
+        from plone.app.layout.navigation.interfaces import INavigationRoot
+
+        storage = getUtility(IRedirectionStorage)
+        folder = self.portal['test-folder']
+        alsoProvides(folder, INavigationRoot)
+        transaction.commit()
+
+        self.browser.open("%s/@@manage-aliases" % folder.absolute_url())
+        self.browser.getControl(name='redirection').value = '/alias'
+        self.browser.getControl(name='form.button.Add').click()
+
+        self.assertTrue(
+            'Alternative url added.' in self.browser.contents,
+            u'Message for added alternative url missing',
+        )
+        self.assertTrue(storage.has_path('/plone/test-folder/alias'))
+        self.assertEqual(
+            storage.get('/plone/test-folder/alias'), '/plone/test-folder'
+        )
+
+        # Add the navigation root path explicitly.
+        self.browser.getControl(name='redirection').value = '/test-folder/alias2'
+        self.browser.getControl(name='form.button.Add').click()
+
+        self.assertTrue(
+            'Alternative url added.' in self.browser.contents,
+            u'Message for added alternative url missing',
+        )
+        self.assertTrue(storage.has_path('/plone/test-folder/alias2'))
+        self.assertEqual(
+            storage.get('/plone/test-folder/alias2'), '/plone/test-folder'
+        )
+
     def test_absolutize_path(self):
         # absolutize_path is a helper function that returns a tuple
         # of absolute path and error message.
@@ -339,7 +389,10 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
             ('http://example.org', None),
         )
         self.assertEqual(
-            ap('https://example.org/some/path?foo=bar&bar=foo', is_source=False),
+            ap(
+                'https://example.org/some/path?foo=bar&bar=foo',
+                is_source=False,
+            ),
             ('https://example.org/some/path?foo=bar&bar=foo', None),
         )
         self.assertEqual(
@@ -350,5 +403,8 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         # as we don't include content but only link to it.
         self.assertEqual(
             ap('//example.org', is_source=False),
-            ('/plone//example.org', 'The provided target object does not exist.'),
+            (
+                '/plone//example.org',
+                'The provided target object does not exist.',
+            ),
         )

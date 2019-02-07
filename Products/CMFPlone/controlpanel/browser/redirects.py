@@ -10,6 +10,7 @@ from Products.Five.browser import BrowserView
 from Products.statusmessages.interfaces import IStatusMessage
 from six import StringIO
 from six.moves.urllib.parse import urlparse
+from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.i18nmessageid import MessageFactory
 
@@ -110,9 +111,22 @@ class RedirectsView(BrowserView):
         errors = {}
 
         if 'form.button.Add' in form:
-            redirection, err = absolutize_path(
-                form.get('redirection'), is_source=True
-            )
+            redirection = form.get('redirection')
+            if redirection and redirection.startswith('/'):
+                # Check navigation root
+                pps = getMultiAdapter(
+                    (self.context, self.request), name='plone_portal_state'
+                )
+                nav_url = pps.navigation_root_url()
+                portal_url = pps.portal_url()
+                if nav_url != portal_url:
+                    # We are in a navigation root different from the portal root.
+                    # Update the path accordingly, unless the user already did this.
+                    extra = nav_url[len(portal_url) :]
+                    if not redirection.startswith(extra):
+                        redirection = '{0}{1}'.format(extra, redirection)
+
+            redirection, err = absolutize_path(redirection, is_source=True)
             if err:
                 errors['redirection'] = err
                 status.addStatusMessage(err, type='error')
