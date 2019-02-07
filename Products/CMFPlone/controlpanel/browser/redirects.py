@@ -5,6 +5,7 @@ from plone.memoize.view import memoize
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.PloneBatch import Batch
+from Products.CMFPlone.utils import safe_text
 from Products.Five.browser import BrowserView
 from Products.statusmessages.interfaces import IStatusMessage
 from six import StringIO
@@ -290,7 +291,8 @@ class RedirectsControlPanel(BrowserView):
             return
         # Turn all kinds of newlines into LF ones. The csv module doesn't do
         # its own newline sniffing and requires either \n or \r.
-        file = StringIO('\n'.join(file.read().splitlines()))
+        contents = safe_text(file.read()).splitlines()
+        file = StringIO('\n'.join(contents))
 
         # Use first two lines as a representative sample for guessing format,
         # in case one is a bunch of headers.
