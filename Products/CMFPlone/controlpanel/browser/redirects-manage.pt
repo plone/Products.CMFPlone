@@ -13,7 +13,7 @@
       <h1
           class="documentFirstHeading"
           i18n:translate="heading_add_aliases">
-        Manage alternative urls
+        URL Management
       </h1>
 
       <dl
