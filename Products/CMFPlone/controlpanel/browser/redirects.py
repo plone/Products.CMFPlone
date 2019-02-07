@@ -38,15 +38,19 @@ def absolutize_path(path, is_source=True):
             err = _(u"You have to enter an alias.")
         else:
             err = _(u"You have to enter a target.")
-    else:
-        if path.startswith('/'):
-            context_path = "/".join(portal.getPhysicalPath())
-            path = "{0}{1}".format(context_path, path)
+    elif not path.startswith('/'):
+        if is_source:
+            err = _(u"Alias path must start with a slash.")
         else:
-            if is_source:
-                err = _(u"Alias path must start with a slash.")
-            else:
-                err = _(u"Target path must start with a slash.")
+            err = _(u"Target path must start with a slash.")
+    elif '@@' in path:
+        if is_source:
+            err = _(u"Alias path must not be a view.")
+        else:
+            err = _(u"Target path must not be a view.")
+    else:
+        context_path = "/".join(portal.getPhysicalPath())
+        path = "{0}{1}".format(context_path, path)
     if not err:
         catalog = getToolByName(portal, 'portal_catalog')
         if is_source:

@@ -274,6 +274,9 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         self.assertEqual(
             ap('/test-folder', is_source=False),
             ('/plone/test-folder', None))
+        self.assertEqual(
+            ap('/test-folder/@@sharing', is_source=False),
+            ('/test-folder/@@sharing', 'Target path must not be a view.'))
 
         # A source must not exist.
         self.assertEqual(
@@ -283,6 +286,9 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         self.assertEqual(
             ap('/view'),
             ('/plone/view', 'Cannot use a working path as alias.'))
+        self.assertEqual(
+            ap('/@@overview-controlpanel'),
+            ('/@@overview-controlpanel', 'Alias path must not be a view.'))
 
         # A source must not already exist in the redirect list.
         storage = getUtility(IRedirectionStorage)
