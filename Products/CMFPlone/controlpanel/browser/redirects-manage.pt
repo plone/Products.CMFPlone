@@ -44,8 +44,8 @@
           action="${view/view_url}"
           method="post">
         <fieldset>
-          <legend i18n:translate="legend_existing_aliases">
-            Existing alternative urls for this item
+          <legend i18n:translate="add_alias">
+            Add a new alternative url
           </legend>
 
           <div class="field"
@@ -53,9 +53,9 @@
                            redirection request/title | nothing;"
                tal:attributes="class python:error and 'field error' or 'field'">
             <label
-                for="title"
+                for="redirection"
                 i18n:translate="label_alias">
-              Alternative url
+              Alternative url path
             </label>
 
             <span

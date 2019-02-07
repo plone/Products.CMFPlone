@@ -229,20 +229,27 @@ class RedirectsControlPanel(BrowserView):
                     _(u"Alternative url removed."), type='info'
                 )
         elif 'form.button.Add' in form:
-            self.add(
+            err = self.add(
                 form['redirection'],
                 form['target_path'],
                 portal,
                 storage,
                 status,
             )
+            if not err:
+                # clear our the form
+                del form['redirection']
+                del form['target_path']
         elif 'form.button.Upload' in form:
             self.upload(form['file'], portal, storage, status)
 
         return self.index()
 
     def add(self, redirection, target, portal, storage, status):
-        """Add the redirections from the form. If anything goes wrong, do nothing."""
+        """Add the redirections from the form. If anything goes wrong, do nothing.
+
+        Returns error message or nothing.
+        """
         abs_target = ''
         target_err = ''
 
@@ -272,6 +279,7 @@ class RedirectsControlPanel(BrowserView):
                 ),
                 type='info',
             )
+        return err
 
     def upload(self, file, portal, storage, status):
         """Add the redirections from the CSV file `file`. If anything goes wrong, do nothing."""
