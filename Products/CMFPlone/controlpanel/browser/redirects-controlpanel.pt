@@ -11,7 +11,7 @@
       <dl
           tal:condition="view/csv_errors|nothing"
           class="portalMessage error">
-        <dt>Error</dt>
+        <dt i18n:translate="">Error</dt>
         <dd>
           <p i18n:translate="error_bulk_upload">
             No alternative urls were added. Please correct these errors in your CSV file and try again:
@@ -93,7 +93,10 @@
                tal:define="error view/form_errors/target_path|nothing"
                tal:attributes="class python:error and 'field error' or 'field'">
 
-          <label for="target_path">Target Path</label>
+          <label for="target_path"
+              i18n:translate="label_target_path">
+              Target Path
+          </label>
 
           <span
               class="fieldRequired"

@@ -339,7 +339,11 @@ class RedirectsControlPanel(BrowserView):
             for abs_redirection, abs_target in successes:
                 storage.add(abs_redirection, abs_target)
             status.addStatusMessage(
-                _(u"%i alternative urls added.") % len(successes), type='info'
+                _(
+                    u"${count} alternative urls added.",
+                    mapping={'count': len(successes)},
+                ),
+                type='info',
             )
 
     @memoize
