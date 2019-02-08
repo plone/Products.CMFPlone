@@ -1,0 +1,3 @@
+Fix some issues with the new navigation. (Fixes https://github.com/plone/Products.CMFPlone/issues/2731 and https://github.com/plone/Products.CMFPlone/issues/2730)
+[pbauer]
+
