@@ -13,6 +13,15 @@ Changelog
 
 .. towncrier release notes start
 
+5.0.10 (2019-02-07)
+-------------------
+
+New features:
+
+
+- Release Plone 5.0.10 [esteele] (#2735)
+
+
 5.0.10rc1 (2019-01-08)
 ----------------------
 
