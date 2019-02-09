@@ -1,0 +1,3 @@
+- Factor out all static resources and the ``plone-compile-resources`` script into plone.staticresources.
+  [thet]
+

@@ -84,6 +84,9 @@
  <index name="is_folderish" meta_type="BooleanIndex">
   <indexed_attr value="is_folderish"/>
  </index>
+ <index name="exclude_from_nav" meta_type="BooleanIndex">
+  <indexed_attr value="exclude_from_nav"/>
+ </index>
  <index name="modified" meta_type="DateIndex">
   <property name="index_naive_time_as_local">True</property>
  </index>
