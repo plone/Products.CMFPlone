@@ -243,8 +243,9 @@ class WorkflowTool(PloneBaseTool, BaseTool):
                     if 'Language' not in catalog_vars:
                         if has_new_lang_bypass:
                             catalog_vars['path'] = '/'
-                        elif has_new_lang_bypass:
-                            catalog_vars['Language'] = 'all'                    # Include inactive content in result list. This is
+                        else:
+                            catalog_vars['Language'] = 'all'
+                    # Include inactive content in result list. This is
                     # especially important for content scheduled to go public
                     # in the future, but needs to be reviewed before this.
                     catalog_vars['show_inactive'] = True
