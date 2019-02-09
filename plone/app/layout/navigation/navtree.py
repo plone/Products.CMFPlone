@@ -3,10 +3,11 @@
 # from catalog queries.
 
 from Acquisition import aq_inner
+from collections import defaultdict
 from plone.app.layout.navigation.interfaces import INavtreeStrategy
 from plone.app.layout.navigation.root import getNavigationRoot
-from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.memoize.view import memoize
+from plone.memoize.view import memoize_contextless
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
@@ -17,7 +18,6 @@ from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.contentprovider.provider import ContentProviderBase
 from zope.interface import implementer
-
 
 import six
 
@@ -386,7 +386,7 @@ class NavTreeProvider(ContentProviderBase):
     )
 
     @property
-    @memoize
+    @memoize_contextless
     def settings(self):
         registry = getUtility(IRegistry)
         settings = registry.forInterface(INavigationSchema, prefix='plone')
@@ -407,67 +407,89 @@ class NavTreeProvider(ContentProviderBase):
         return self.settings.navigation_depth
 
     @property
+    def current_language(self):
+        return (
+            self.request.get('LANGUAGE', None)
+            or (self.context and aq_inner(self.context).Language())
+            or self.language_settings.default_language
+        )
+
+    @property
     @memoize
     def navtree(self):
-        generate_tabs = self.settings.generate_tabs
-        lang_current = self.request.get('LANGUAGE', None) or \
-            (self.context and aq_inner(self.context).Language()) \
-            or self.language_settings.default_language
-
-        ret = {}
-
-        if generate_tabs:
-            query = {
-                'path': {'query': self.navtree_path,
-                         'depth': self.navtree_depth},
-                'portal_type': {'query': self.settings.displayed_types},
-                'exclude_from_nav': False,
-                'Language': lang_current,
-                'sort_on': 'getObjPositionInParent',
-            }
-            portal_catalog = getToolByName(self.context, 'portal_catalog')
-
-            registry = getUtility(IRegistry)
-            types_using_view = registry.get(
-                'plone.types_use_view_action_in_listings', [])
-            res = portal_catalog.searchResults(**query)
-
-            for it in res:
-                pathkey = '/'.join(it.getPath().split('/')[:-1])
-                url = it.getURL()
-                if it.portal_type in types_using_view:
-                    url += '/view'
-                entry = {
-                    'id': it.id,
-                    'uid': it.UID,
-                    'url': url,
-                    'title': safe_unicode(it.Title),
-                    'review_state': it.review_state,
-                }
-                ret.setdefault(pathkey, []).append(entry)
-            return ret
-
+        ret = defaultdict(list)
         portal_tabs_view = getMultiAdapter((self.context, self.request),
                                            name='portal_tabs_view')
-        res = portal_tabs_view.topLevelTabs()
-
-        for it in res:
-            pathkey = self.navtree_path
-            entry = {
-                'id': it['id'],
+        tabs = portal_tabs_view.topLevelTabs()
+        navtree_path = self.navtree_path
+        for tab in tabs:
+            entry = tab.copy()
+            entry.update({
+                'path': '/'.join((navtree_path, tab['id'])),
                 'uid': None,
-                'url': it['url'],
-                'title': it['title'],
                 'review_state': None,
-            }
-            ret.setdefault(pathkey, []).append(entry)
+            })
+            if 'title' not in entry:
+                entry['title'] = tab.get('description') or tab['id']
+            entry['title'] = safe_unicode(entry['title'])
+            ret[navtree_path].append(entry)
 
+        if not self.settings.generate_tabs:
+            return ret
+
+        query = {
+            'path': {
+                'query': self.navtree_path,
+                'depth': self.navtree_depth,
+            },
+            'portal_type': {'query': self.settings.displayed_types},
+            'Language': self.current_language,
+            'sort_on': self.settings.sort_tabs_on,
+            'is_default_page': False,
+        }
+        if self.settings.sort_tabs_reversed:
+            query['sort_order'] = 'reverse'
+
+        if not self.settings.nonfolderish_tabs:
+            query['is_folderish'] = True
+
+        if self.settings.filter_on_workflow:
+            query['review_state'] = list(
+                self.settings.workflow_states_to_show or ()
+            )
+
+        if not self.settings.show_excluded_items:
+            query['exclude_from_nav'] = False
+
+        portal_catalog = getToolByName(self.context, 'portal_catalog')
+        brains = portal_catalog.searchResults(**query)
+
+        registry = getUtility(IRegistry)
+        types_using_view = registry.get(
+            'plone.types_use_view_action_in_listings', [])
+
+        for brain in brains:
+            brain_path = '/'.join(brain.getPath().split('/'))
+            brain_parent_path = brain_path.rpartition('/')[0]
+            if brain_parent_path == navtree_path:
+                # This should be already provided by the portal_tabs_view
+                continue
+            url = brain.getURL()
+            if brain.portal_type in types_using_view:
+                url += '/view'
+            entry = {
+                'id': brain.getId,
+                'path': brain_path,
+                'uid': brain.UID,
+                'url': url,
+                'title': safe_unicode(brain.Title),
+                'review_state': brain.review_state,
+            }
+            ret[brain_parent_path].append(entry)
         return ret
 
     def render_item(self, item, path):
-        normalizer = getUtility(IIDNormalizer)
-        item['normalizedid'] = normalizer.normalize(item['id'])
-        sub = self.build_tree(path + '/' + item['id'], first_run=False)
+        sub = self.build_tree(item['path'], first_run=False)
         if sub:
             item.update({
                 'sub': sub,
