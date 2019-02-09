@@ -1723,7 +1723,7 @@ class ILinkSchema(Interface):
     mark_special_links = schema.Bool(
         title=_(u'Mark special links'),
         description=_(u'Marks external or special protocol links with class.'),
-        default=True,
+        default=False,
         required=False)
 
 
