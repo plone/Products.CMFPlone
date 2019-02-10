@@ -49,7 +49,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.groups = self.portal.portal_groups
         self.skins = self.portal.portal_skins
         self.transforms = self.portal.portal_transforms
-        self.javascripts = self.portal.portal_javascripts
         self.setup = self.portal.portal_setup
 
     def testInstanceVersion(self):
@@ -197,11 +196,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
                 break
         else:
             self.fail("Actions tool has no 'sitemap' action")
-
-    def testResourceRegistries(self):
-        # We should have portal_css and portal_javascripts tools
-        self.assertTrue(hasattr(self.portal, 'portal_css'))
-        self.assertTrue(hasattr(self.portal, 'portal_javascripts'))
 
     def testUnfriendlyTypesProperty(self):
         # We should have an types_not_searched property
@@ -664,10 +658,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
             settings.disable_filtering
         except (AttributeError, KeyError):
             self.fail('Disabling of safe_html should be possible!')
-
-    def testvcXMLRPCRemoved(self):
-        # vcXMLRPC.js should no longer be registered
-        self.assertFalse('vcXMLRPC.js' in self.javascripts.getResourceIds())
 
     def testCacheManagers(self):
         # The cache and caching policy managers should exist
