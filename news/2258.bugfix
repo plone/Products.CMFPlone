@@ -1,0 +1,2 @@
+deprecate catalog_get_all(catalog) in favor of catalog.getAllBrains()
+[pbauer]

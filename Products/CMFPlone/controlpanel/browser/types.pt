@@ -248,7 +248,7 @@
 
                 </tal:workflows>
 
-                <div tal:condition="view/have_new_workflow" class="portalMessage info">
+                <div tal:condition="view/have_new_workflow" class="portalMessage info" role="status">
                     <strong>Info</strong>
                     <span i18n:translate="types_controlpanel_warn_remap">
                         Changing the workflow of a type will take a while, and may slow down

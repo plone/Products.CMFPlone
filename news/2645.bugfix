@@ -1,0 +1,1 @@
+Fixed fallback to default view when selected layout does not exist for Folder. [gbastien]

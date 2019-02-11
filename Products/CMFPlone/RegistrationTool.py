@@ -482,19 +482,19 @@ class RegistrationTool(PloneBaseTool, BaseTool):
 InitializeClass(RegistrationTool)
 
 _TESTS = (
-    (re.compile("^[0-9a-zA-Z\.\-\_\+\']+\@[0-9a-zA-Z\.\-]+$"),
+    (re.compile(r"^[0-9a-zA-Z\.\-\_\+\']+\@[0-9a-zA-Z\.\-]+$"),
      True, "Failed a"),
-    (re.compile("^[^0-9a-zA-Z]|[^0-9a-zA-Z]$"),
+    (re.compile(r"^[^0-9a-zA-Z]|[^0-9a-zA-Z]$"),
      False, "Failed b"),
-    (re.compile("([0-9a-zA-Z_]{1})\@."),
+    (re.compile(r"([0-9a-zA-Z_]{1})\@."),
      True, "Failed c"),
-    (re.compile(".\@([0-9a-zA-Z]{1})"),
+    (re.compile(r".\@([0-9a-zA-Z]{1})"),
      True, "Failed d"),
-    (re.compile(".\.\-.|.\-\..|.\.\..|.!(xn)\-\-."),
+    (re.compile(r".\.\-.|.\-\..|.\.\..|.!(xn)\-\-."),
      False, "Failed e"),
-    (re.compile(".\.\_.|.\-\_.|.\_\..|.\_\-.|.\_\_."),
+    (re.compile(r".\.\_.|.\-\_.|.\_\..|.\_\-.|.\_\_."),
      False, "Failed f"),
-    (re.compile("(.\.([a-zA-Z]{2,}))$|(.\.(xn--[0-9a-z]+))$"),
+    (re.compile(r"(.\.([a-zA-Z]{2,}))$|(.\.(xn--[0-9a-z]+))$"),
      True, "Failed g"),
 )
 

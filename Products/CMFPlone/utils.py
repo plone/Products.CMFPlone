@@ -402,7 +402,7 @@ def versionTupleFromString(v_str):
         >>> versionTupleFromString('foo') is None
         True
         """
-    regex_str = "(^\d+)[.]?(\d*)[.]?(\d*)[- ]?(alpha|beta|candidate|final|a|b|rc)?(\d*)"  # noqa
+    regex_str = r"(^\d+)[.]?(\d*)[.]?(\d*)[- ]?(alpha|beta|candidate|final|a|b|rc)?(\d*)"  # noqa
     v_regex = re.compile(regex_str)
     match = v_regex.match(v_str)
     if match is None:
