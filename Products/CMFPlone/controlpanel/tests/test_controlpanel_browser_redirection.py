@@ -346,7 +346,7 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
             ap('/test-folder'),
             (
                 '/plone/test-folder',
-                'Cannot use an existing object as alternative url.',
+                'Cannot use a working path as alternative url.',
             ),
         )
         # More general: a source must not be traversable already.

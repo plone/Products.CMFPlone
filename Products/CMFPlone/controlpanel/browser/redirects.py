@@ -73,16 +73,8 @@ def absolutize_path(path, is_source=True):
             else:
                 # Check whether obj exists at source path.
                 # A redirect would be useless then.
-                result = catalog.searchResults(path={"query": path})
-                if len(result) > 0:
-                    err = _(
-                        u"Cannot use an existing object as alternative url."
-                    )
-                else:
-                    if portal.unrestrictedTraverse(path, None) is not None:
-                        err = _(
-                            u"Cannot use a working path as alternative url."
-                        )
+                if portal.unrestrictedTraverse(path, None) is not None:
+                    err = _(u"Cannot use a working path as alternative url.")
         else:
             # Check whether obj exists at target path
             result = catalog.searchResults(path={"query": path})
