@@ -15,7 +15,7 @@ import unittest
 
 
 class RedirectionControlPanelFunctionalTest(unittest.TestCase):
-    """Test that changes in the mail control panel are actually
+    """Test that changes in the redirection control panel are actually
     stored in the registry.
     """
 
@@ -32,25 +32,20 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
             'Basic %s:%s' % (SITE_OWNER_NAME, SITE_OWNER_PASSWORD),
         )
 
-    """
-    def test_mail_controlpanel_link(self):
-        self.browser.open(
-            "%s/@@overview-controlpanel" % self.portal_url)
-        self.browser.getLink('Mail').click()
+    def test_redirection_controlpanel_link(self):
+        self.browser.open("%s/@@overview-controlpanel" % self.portal_url)
+        self.browser.getLink('URL Management').click()
 
-    def test_mail_controlpanel_backlink(self):
-        self.browser.open(
-            "%s/@@mail-controlpanel" % self.portal_url)
+    def test_redirection_controlpanel_backlink(self):
+        self.browser.open("%s/@@redirection-controlpanel" % self.portal_url)
         self.assertTrue("General" in self.browser.contents)
 
-    def test_mail_controlpanel_sidebar(self):
-        self.browser.open(
-            "%s/@@mail-controlpanel" % self.portal_url)
+    def test_redirection_controlpanel_sidebar(self):
+        self.browser.open("%s/@@redirection-controlpanel" % self.portal_url)
         self.browser.getLink('Site Setup').click()
         self.assertTrue(
             self.browser.url.endswith('/plone/@@overview-controlpanel')
         )
-    """
 
     def test_redirection_controlpanel_view(self):
         view = getMultiAdapter(
