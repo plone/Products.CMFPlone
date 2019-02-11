@@ -2,7 +2,6 @@
 from plone.app.redirector.interfaces import IRedirectionStorage
 from plone.batching.browser import PloneBatchView
 from plone.memoize.view import memoize
-from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.PloneBatch import Batch
 from Products.CMFPlone.utils import safe_text
@@ -12,6 +11,7 @@ from six import StringIO
 from six.moves.urllib.parse import urlparse
 from zope.component import getMultiAdapter
 from zope.component import getUtility
+from zope.component.hooks import getSite
 from zope.i18nmessageid import MessageFactory
 
 import csv
@@ -36,7 +36,7 @@ def absolutize_path(path, is_source=True):
     an error message if something goes wrong and otherwise '').
     """
 
-    portal = getUtility(ISiteRoot)
+    portal = getSite()
     err = None
     is_external_url = False
     if not path:
@@ -95,7 +95,7 @@ def absolutize_path(path, is_source=True):
 class RedirectsView(BrowserView):
     def redirects(self):
         storage = getUtility(IRedirectionStorage)
-        portal = getUtility(ISiteRoot)
+        portal = getSite()
         context_path = "/".join(self.context.getPhysicalPath())
         portal_path = "/".join(portal.getPhysicalPath())
         redirects = storage.redirects(context_path)
@@ -162,7 +162,7 @@ class RedirectionSet(object):
     def __init__(self, query=''):
         self.storage = getUtility(IRedirectionStorage)
 
-        portal = getUtility(ISiteRoot)
+        portal = getSite()
         self.portal_path = '/'.join(portal.getPhysicalPath())
         self.portal_path_len = len(self.portal_path)
 
@@ -225,7 +225,7 @@ class RedirectsControlPanel(BrowserView):
 
     def __call__(self):
         storage = getUtility(IRedirectionStorage)
-        portal = getUtility(ISiteRoot)
+        portal = getSite()
         request = self.request
         form = request.form
         status = IStatusMessage(self.request)

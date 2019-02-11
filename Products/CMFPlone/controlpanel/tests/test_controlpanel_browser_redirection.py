@@ -284,7 +284,9 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         )
 
         # Add the navigation root path explicitly.
-        self.browser.getControl(name='redirection').value = '/test-folder/alias2'
+        self.browser.getControl(
+            name='redirection'
+        ).value = '/test-folder/alias2'
         self.browser.getControl(name='form.button.Add').click()
 
         self.assertTrue(
@@ -360,9 +362,22 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
             ),
         )
 
+        # And a source must not exist via (implicit) acquisition.
+        # We might *want* to allow this, but such a redirect would not have effect,
+        # because acquisition happens earlier.
+        # See https://github.com/collective/Products.RedirectionTool/issues/12
+        self.portal.invokeFactory('Document', 'doc')
+        self.assertEqual(
+            ap('/test-folder/doc'),
+            (
+                '/plone/test-folder/doc',
+                'Cannot use a working path as alternative url.',
+            ),
+        )
+
         # A source must not already exist in the redirect list.
         storage = getUtility(IRedirectionStorage)
-        portal_path = self.layer['portal'].absolute_url_path()
+        portal_path = self.portal.absolute_url_path()
         storage.add(
             '{0:s}/foo'.format(portal_path),
             '{0:s}/test-folder'.format(portal_path),
