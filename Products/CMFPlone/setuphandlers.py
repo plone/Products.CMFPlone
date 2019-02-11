@@ -36,30 +36,6 @@ def addCacheHandlers(portal):
                 portal[mgr_id] = mgr_class(mgr_id)
 
 
-def addCacheForResourceRegistry(portal):
-    ram_cache_id = 'ResourceRegistryCache'
-    if ram_cache_id in portal:
-        cache = getattr(portal, ram_cache_id)
-        settings = cache.getSettings()
-        settings['max_age'] = 24 * 3600  # keep for up to 24 hours
-        settings['request_vars'] = ('URL', )
-        cache.manage_editProps('Cache for saved ResourceRegistry files',
-                               settings)
-    reg = getToolByName(portal, 'portal_css', None)
-    if reg is not None \
-            and getattr(aq_base(reg), 'ZCacheable_setManagerId', None) \
-    is not None:
-        reg.ZCacheable_setManagerId(ram_cache_id)
-        reg.ZCacheable_setEnabled(1)
-
-    reg = getToolByName(portal, 'portal_javascripts', None)
-    if reg is not None \
-            and getattr(aq_base(reg), 'ZCacheable_setManagerId', None) \
-    is not None:
-        reg.ZCacheable_setManagerId(ram_cache_id)
-        reg.ZCacheable_setEnabled(1)
-
-
 def purgeProfileVersions(portal):
     """
     Purge profile dependency versions.
@@ -93,11 +69,9 @@ def assignTitles(portal):
         'portal_calendar': 'Controls how events are shown',
         'portal_catalog': 'Indexes all content in the site',
         'portal_controlpanel': 'Registry of control panel screen',
-        'portal_css': 'Registry of CSS files',
         'portal_diff': 'Settings for content version comparisions',
         'portal_groupdata': 'Handles properties on groups',
         'portal_groups': 'Handles group related functionality',
-        'portal_javascripts': 'Registry of JavaScript files',
         'portal_languages': 'Language specific settings',
         'portal_membership': 'Handles membership policies',
         'portal_memberdata': 'Handles the available properties on members',
@@ -172,7 +146,6 @@ def importFinalSteps(context):
     assignTitles(site)
     replace_local_role_manager(site)
     addCacheHandlers(site)
-    addCacheForResourceRegistry(site)
 
     first_weekday_setup(context)
     timezone_setup(context)

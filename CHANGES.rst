@@ -79,7 +79,8 @@ Breaking changes:
 - Stop configuring 'View History' permission which was removed from Zope.
   [davisagli]
 
-- Remove legacy resource registries portal_css and portal_javascripts
+- Removed legacy resource registries portal_css and portal_javascripts;
+  no conditional handling.
   [ksuess]
 
 New features:
