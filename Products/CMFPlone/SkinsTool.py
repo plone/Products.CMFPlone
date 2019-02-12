@@ -3,9 +3,6 @@ from AccessControl import ClassSecurityInfo
 from AccessControl.class_init import InitializeClass
 from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.SkinsTool import SkinsTool as BaseTool
-from Products.ResourceRegistries.tools.BaseRegistry import \
-    cookWhenChangingSettings
-
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 
 
@@ -24,8 +21,6 @@ class SkinsTool(PloneBaseTool, BaseTool):
         # Adds a skin selection.
         super(SkinsTool, self).addSkinSelection(skinname, skinpath,
                                                 test=test, make_default=make_default)
-        # when adding a new skin, we need to tell RR about it
-        cookWhenChangingSettings(None, None)
 
     security.declareProtected(ManagePortal, 'manage_skinLayers')
 
@@ -36,8 +31,6 @@ class SkinsTool(PloneBaseTool, BaseTool):
         response = super(SkinsTool, self).manage_skinLayers(chosen=chosen,
                                                             add_skin=add_skin, del_skin=del_skin, skinname=skinname,
                                                             skinpath=skinpath, REQUEST=REQUEST)
-        # when changing skins, we need to tell RR about it
-        cookWhenChangingSettings(None, None)
         return response
 
 SkinsTool.__doc__ = BaseTool.__doc__
