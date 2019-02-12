@@ -203,5 +203,15 @@
                 acquire="False">
       <role name="Authenticated"/>
     </permission>
+    <permission name="Manage Context Aliases" acquire="True">
+      <role name="Manager"/>
+      <role name="Site Administrator"/>
+      <role name="Owner"/>
+      <role name="Editor"/>
+    </permission>
+    <permission name="Manage Portal Aliases" acquire="True">
+      <role name="Manager"/>
+      <role name="Site Administrator"/>
+    </permission>
   </permissions>
 </rolemap>
