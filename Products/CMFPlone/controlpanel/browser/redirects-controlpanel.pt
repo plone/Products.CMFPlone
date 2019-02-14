@@ -1,0 +1,257 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      xml:lang="en" lang="en"
+      metal:use-macro="context/prefs_main_template/macros/master"
+      i18n:domain="plone">
+
+  <body>
+    <div metal:fill-slot="prefs_configlet_main">
+      <dl
+          tal:condition="view/csv_errors|nothing"
+          class="portalMessage error">
+        <dt i18n:translate="">Error</dt>
+        <dd>
+          <p i18n:translate="error_bulk_upload">
+            No alternative urls were added. Please correct these errors in your CSV file and try again:
+          </p>
+          <table
+              style="text-align: left; vertical-align: top"
+              border="0"
+              cellpadding="2"
+              cellspacing="0">
+            <tr tal:repeat="error view/csv_errors"
+                style="vertical-align: top">
+              <td nowrap="nowrap">
+                <tal:block i18n:translate="label_bulk_upload_line">
+                  Line
+                </tal:block>
+                ${error/line_number}
+                <tal:block i18n:translate="label_bulk_upload_line_suffix">
+                  :
+                </tal:block>
+              </td>
+              <td>
+                ${error/line}
+              </td>
+              <td>
+                ${error/message}
+              </td>
+            </tr>
+          </table>
+        </dd>
+      </dl>
+
+      <h1 i18n:translate="">
+        URL Management
+      </h1>
+
+      <form
+          action="${view/view_url}"
+          method="post">
+        <fieldset>
+          <legend i18n:translate="add_alias">
+            Add a new alternative url
+          </legend>
+
+          <div class="field"
+               tal:define="error view/form_errors/redirection|nothing"
+               tal:attributes="class python:error and 'field error' or 'field'">
+
+          <label
+              for="redirection"
+              i18n:translate="label_alias">
+            Alternative url path
+          </label>
+
+          <span
+              class="fieldRequired"
+              title="Required"
+              i18n:attributes="title"
+              i18n:translate="label_required">
+            (Required)
+          </span>
+
+            <div tal:content="error">
+              Validation error output
+            </div>
+
+          <div class="formHelp" i18n:translate="help_alias">
+            Enter the absolute path where the alternative url should exist. The path must start with '/'.
+          </div>
+
+          <input
+              type="text"
+              name="redirection"
+              value="#"
+              size="40"
+              tal:attributes="value request/redirection | nothing;"/>
+          </div>
+
+          <div class="field"
+               tal:define="error view/form_errors/target_path|nothing"
+               tal:attributes="class python:error and 'field error' or 'field'">
+
+          <label for="target_path"
+              i18n:translate="label_target_path">
+              Target Path
+          </label>
+
+          <span
+              class="fieldRequired"
+              title="Required"
+              i18n:attributes="title"
+              i18n:translate="label_required">
+            (Required)
+          </span>
+
+            <div tal:content="error">
+              Validation error output
+            </div>
+
+          <div class="formHelp" i18n:translate="help_target_path">
+            Enter the absolute path of the target. The path must start with '/'.
+          </div>
+
+          <input
+              type="text"
+              name="target_path"
+              value="#"
+              size="40"
+              tal:attributes="value request/target_path | nothing;"/>
+          </div>
+
+          <div class="formControls">
+            <input class="context"
+                   type="submit"
+                   value="Add"
+                   name="form.button.Add"
+                   i18n:attributes="value" />
+          </div>
+
+        </fieldset>
+      </form>
+
+
+      <form
+          action="${view/view_url}"
+          method="post"
+          enctype="multipart/form-data">
+        <fieldset>
+          <legend i18n:translate="legend_bulk_upload">
+            Bulk-upload alternative urls
+          </legend>
+
+          <p i18n:translate="description_bulk_upload">
+            Add many alternative urls at once by uploading a CSV file. The first column should be the path to
+            redirect from; the second, the path to redirect to. Both paths must be Plone-site-relative,
+            starting with a slash (/).
+          </p>
+          <p>
+            <tal:block i18n:translate="example_caption_bulk_upload">Example:</tal:block><br />
+            <code i18n:translate="example_bulk_upload">
+              /old-home-page.asp,/front-page<br />
+              /people/JoeT,/Users/joe-thurston
+            </code>
+          </p>
+
+          <div class="field"
+               tal:define="error view/form_errors/file|nothing"
+               tal:attributes="class python:error and 'field error' or 'field'">
+            <label
+                for="file"
+                i18n:translate="label_file">
+              CSV file
+            </label>
+
+            <span
+                class="fieldRequired"
+                title="Required"
+                i18n:attributes="title"
+                i18n:translate="label_required">
+              (Required)
+            </span>
+
+            <div tal:content="error">
+              Validation error output
+            </div>
+            <input
+              type="file"
+              name="file" />
+          </div>
+
+          <div class="formControls">
+            <input
+                class="context"
+                type="submit"
+                value="Upload"
+                name="form.button.Upload"
+                i18n:attributes="value"
+              />
+          </div>
+
+        </fieldset>
+      </form>
+
+      <form
+          action="${view/view_url}#manage-existing-aliases"
+          method="post"
+          id="manage-existing-aliases">
+        <fieldset
+          tal:define="batch view/redirects">
+          <legend i18n:translate="legend_all_existing_aliases">
+            All existing alternative urls for this site
+          </legend>
+
+          <label for="filter-existing-aliases-q" i18n:translate="">Filter by prefix</label>
+          <input
+              type="text"
+              name="q"
+              value=""
+              id="filter-existing-aliases-q"
+               tal:attributes="value python:request.form.get('q', '/')"/>
+          <div class="formControls">
+            <input
+                class="context"
+                type="submit"
+                value="Filter"
+                name="form.button.filter"
+                 i18n:attributes="value" />
+          </div>
+
+          <div class="field"
+               tal:define="error view/form_errors/remove_redirects|nothing"
+               tal:attributes="class python:error and 'field error' or 'field'"
+               tal:content="error" />
+
+          <tal:redirects repeat="redirect batch">
+            <div>
+              <label>
+              <input
+                  type="checkbox"
+                  class="noborder"
+                  name="redirects:tuple"
+                  value="${redirect/redirect}" />
+              ${redirect/path} &rarr; ${redirect/redirect-to}
+              </label>
+            </div>
+          </tal:redirects>
+
+          <div tal:condition="python:batch.numpages > 1"
+               tal:replace="structure view/batching">
+          </div>
+
+          <div class="formControls">
+            <input class="context"
+                   type="submit"
+                   value="Remove"
+                   name="form.button.Remove"
+                   i18n:attributes="value" />
+          </div>
+
+        </fieldset>
+      </form>
+    </div>
+  </body>
+</html>
