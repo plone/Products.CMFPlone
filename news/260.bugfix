@@ -1,2 +1,0 @@
-Switched allowedRolesAndUsers indexer from 'View' to the correct permission 'Access contents information' for displaying metadata. 'View' permission should be used on the item itself. The change should not matter for default Plone workflows, since they always use those permissions together.
-[agitator]

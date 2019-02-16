@@ -1,1 +1,0 @@
-No longer mark special links by default. [pbauer]
