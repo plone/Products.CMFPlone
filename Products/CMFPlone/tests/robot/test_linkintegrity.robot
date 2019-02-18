@@ -17,7 +17,7 @@ Library  Remote  ${PLONE_URL}/RobotRemote
 
 Resource  keywords.robot
 
-#Suite setup  Set Selenium speed  0.5s
+# Suite setup  Set Selenium speed  0.5s
 Test Setup  Run keywords  Plone Test Setup
 Test Teardown  Run keywords  Plone Test Teardown
 
@@ -79,8 +79,8 @@ a link in rich text
   Given patterns are loaded
   Wait until element is visible  css=.pat-relateditems .select2-input.select2-default
   Click Element  css=.pat-relateditems .select2-input.select2-default
-  Wait until element is visible  xpath=(//span[contains(., 'One level up')])
-  Click Element  xpath=(//span[contains(., 'One level up')])
+  Wait until element is visible  css=.pattern-relateditems-result.one-level-up a.pattern-relateditems-result-browse
+  Click Element  css=.pattern-relateditems-result.one-level-up a.pattern-relateditems-result-browse
   Wait until element is visible  xpath=(//span[contains(., 'Foo')])
   Click Element  xpath=(//span[contains(., 'Foo')])
   Wait until page contains  Foo
