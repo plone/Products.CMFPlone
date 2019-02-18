@@ -430,7 +430,11 @@ class NavTreeProvider(ContentProviderBase):
                 'review_state': None,
             })
             if 'title' not in entry:
-                entry['title'] = tab.get('description') or tab['id']
+                entry['title'] = (
+                    tab.get('name')
+                    or tab.get('description')
+                    or tab['id']
+                )
             entry['title'] = safe_unicode(entry['title'])
             ret[navtree_path].append(entry)
 
