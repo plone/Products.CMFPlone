@@ -554,7 +554,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.folder.invokeFactory('Document', 'index_html')
         acts = self.actions.listFilteredActionsFor(self.folder.index_html)
         buttons = acts['object_buttons']
-        self.assertEqual(len(buttons), 4)
+        self.assertEqual(len(buttons), 5)
         urls = [a['url'] for a in buttons]
         for url in urls:
             self.assertFalse(
@@ -568,10 +568,13 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.folder.invokeFactory('Document', 'index_html')
         acts = self.actions.listFilteredActionsFor(self.folder.index_html)
         buttons = acts['object_buttons']
-        self.assertEqual(len(buttons), 4)
-        # special case for delete which needs a confirmation form
+        self.assertEqual(len(buttons), 5)
+        # special case for delete which needs a confirmation form,
+        # and for redirection which does not confirm to the url policy,
+        # which apparently is that action id X should have url object_X.
         urls = [
-            (a['id'], a['url']) for a in buttons if a['id'] not in ('delete',)
+            (a['id'], a['url']) for a in buttons if a['id'] not in
+            ('delete', 'redirection')
         ]
         for url in urls:
             # ensure that e.g. the 'copy' url contains object_copy
@@ -589,6 +592,11 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
             "object_delete does not use the confirmation form",
         )
 
+        redirection_action = [
+            (a['id'], a['url']) for a in buttons if a['id'] == 'redirection'
+        ][0]
+        self.assertIn('@@manage-aliases', redirection_action[1])
+
     def testObjectButtonActionsInExpectedOrder(self):
         # The object buttons need to be in a standardized order
         self.setRoles(['Manager', 'Member'])
@@ -596,11 +604,14 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.folder.cb_dataValid = True
         acts = self.actions.listFilteredActionsFor(self.folder)
         buttons = acts['object_buttons']
-        self.assertEqual(len(buttons), 6)
+        self.assertEqual(len(buttons), 7)
         ids = [(a['id']) for a in buttons]
         self.assertEqual(
             ids,
-            ['cut', 'copy', 'paste', 'delete', 'rename', 'ical_import_enable'],
+            ['cut', 'copy', 'paste', 'delete', 'rename',
+             'redirection',
+             'ical_import_enable',
+             ],
         )
 
     def testCustomSkinFolderExists(self):

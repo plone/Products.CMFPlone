@@ -92,6 +92,7 @@ a link in rich text
 should show warning when deleting page
   Go To  ${PLONE_URL}/foo
   Click Link  css=#plone-contentmenu-actions a
+  Wait until element is visible  css=#plone-contentmenu-actions-delete
   Click Link  css=#plone-contentmenu-actions-delete
   Wait until page contains element  css=.breach-container .breach-item
 
@@ -126,6 +127,7 @@ should not show warning when deleting page from folder_contents
 should not show warning when deleting page
   Go To  ${PLONE_URL}/foo
   Click Link  css=#plone-contentmenu-actions a
+  Wait until element is visible  css=#plone-contentmenu-actions-delete
   Click Link  css=#plone-contentmenu-actions-delete
   Page should not contain element  css=.breach-container .breach-item
 
