@@ -8,6 +8,24 @@ Changelog
 
 .. towncrier release notes start
 
+3.1.0 (2019-02-13)
+------------------
+
+New features:
+
+
+- Added multilevel dropdown navigation [agitator] (#2516)
+
+
+Bug fixes:
+
+
+- fix python3 compatibility [petschki] (#176)
+- Fix some issues with the new navigation. (Fixes
+  https://github.com/plone/Products.CMFPlone/issues/2731 and
+  https://github.com/plone/Products.CMFPlone/issues/2730) [pbauer] (#180)
+
+
 3.0.0 (2018-10-30)
 ------------------
 
