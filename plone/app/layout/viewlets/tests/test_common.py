@@ -290,10 +290,27 @@ class TestGlobalSectionsViewlet(ViewletsTestCase):
         nav_tree_provider = getMultiAdapter(
             (self.portal, request, None), IContentProvider, 'plone.navtree')
         navtree = nav_tree_provider.navtree
-        self.assertEqual(len(navtree), 3)
-        self.assertEqual(len(navtree['/plone']), 3)
-        self.assertEqual(len(navtree['/plone/folder']), 2)
-        self.assertEqual(len(navtree['/plone/folder/subfolder']), 1)
+        self.assertListEqual(
+            sorted(navtree),
+            [
+                '/plone',
+                '/plone/Members',
+                '/plone/folder',
+                '/plone/folder/subfolder'
+            ],
+        )
+        self.assertListEqual(
+            [x['title'] for x in navtree['/plone']],
+            [u'Home', u'Members', u'Földer', u'Folder 2', u'Folder 3'],
+        )
+        self.assertListEqual(
+            [x['title'] for x in navtree['/plone/folder']],
+            [u'Subfolder', u'Sübfolder 2'],
+        )
+        self.assertListEqual(
+            [x['title'] for x in navtree['/plone/folder/subfolder']],
+            [u'Sub2folder'],
+        )
 
         gsv = GlobalSectionsViewlet(self.portal, request, None)
         gsv.update()
