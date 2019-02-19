@@ -148,8 +148,9 @@ class CatalogNavigationTabs(BrowserView):
 
         # now add the content to results
         for item in rawresult:
-            if item.exclude_from_nav:
-                continue
+            if not navigation_settings.show_excluded_items:
+                if item.exclude_from_nav:
+                    continue
             cid, item_url = _get_url(item)
             data = {
                 'name': utils.pretty_title_or_id(context, item),
