@@ -12,6 +12,80 @@ Changelog
 
 .. towncrier release notes start
 
+5.2b1 (2019-02-13)
+------------------
+
+Breaking changes:
+
+
+- - Factor out all static resources and the ``plone-compile-resources`` script
+  into plone.staticresources. [thet] (#2542)
+
+
+New features:
+
+
+- PLIP 1486: Merge Products.RedirectionTool into core. Allow users to manage
+  redirects on their site and aliases to content. See
+  https://github.com/plone/Products.CMFPlone/issues/1486 [staeff, maurits]
+  (#1486)
+- - Added multilevel dropdown navigation [agitator] (#2516)
+- No longer mark special links by default. [pbauer] (#2736)
+
+
+Bug fixes:
+
+
+- Switched allowedRolesAndUsers indexer from 'View' to the correct permission
+  'Access contents information' for displaying metadata. 'View' permission
+  should be used on the item itself. The change should not matter for default
+  Plone workflows, since they always use those permissions together. [agitator]
+  (#260)
+- deprecate catalog_get_all(catalog) in favor of catalog.getAllBrains()
+  [pbauer] (#2258)
+- Restore the possibility to sort catalog query results with multiple indexes
+  (#2464)
+- Review list portlet showed nothing to review with plone.app.multilingual, As
+  WorkflowTool bypassed languages only for p.a.m<2.x or linguaplone. fixed and
+  now compatible to both lang-bypassing methods. [iham] (#2595)
+- Fixed fallback to default view when selected layout does not exist for
+  Folder. [gbastien] (#2645)
+- The patched init method for the class zope.sendmail.mailer.SMTPMailer has
+  been updated, fixing a bug that was preventing to send emails. [ale-rt,
+  nazrulworld] (#2665)
+- a11y: Added role attribute for portalMessage [nzambello] (#2675)
+- Fix several warnings shown when running tests on Python 3+. [gforcada]
+  (#2683)
+- fixed Python 3 related str decoding issue in breadcrumbs (#2694)
+- Fixed unstable robot test Scenario: A page is opened to edit in TinyMCE.
+  [maurits] (#2707)
+
+
+5.2a2 (2018-12-30)
+------------------
+
+New features:
+
+
+- New robot tests for querystring in Collection type. Now almost all
+  querystring types are robot tested. [llisa123] (#2489)
+- Add ``load_async`` and ``load_defer`` attributes to resource registries
+  bundle settings. When set, ``<script>`` tags are rendered with
+  ``async="async"`` resp. ``defer="defer"`` attributes. You also need to empty
+  the ``merge_with`` property of your bundle, because production bundles
+  (``default.js`` and ``logged-in.js``) are never loaded with async or defer.
+  The default.js includes jQuery and requirejs and those are needed at many
+  places and therefore cannot be loaded asynchronously. Refs: #2649, #2657.
+  [thet] (#2649)
+
+
+Bug fixes:
+
+
+- Delete ``fa_ir.js``. Keep ```fa_IR.js``. [maurits] (#2620)
+- Forward port TinyMCE fixes from 5.1 [vangheem] (#2630)
+- Fix robot test test_edit_user_schema: Fieldname was set duplicate (first by
+  JS, then by robot). [jensens] (#2669)
 
 5.2a1 (2018-11-08)
 ------------------
@@ -53,7 +127,8 @@ Breaking changes:
 - Stop configuring 'View History' permission which was removed from Zope.
   [davisagli]
 
-- Remove legacy resource registries portal_css and portal_javascripts
+- Removed legacy resource registries portal_css and portal_javascripts;
+  no conditional handling.
   [ksuess]
 
 New features:

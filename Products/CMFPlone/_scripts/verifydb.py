@@ -1,6 +1,8 @@
+# -*- coding: utf-8 -*-
 from Zope2.Startup.run import make_wsgi_app
 from ZODB.interfaces import IStorageCurrentRecordIteration
 from ZODB.serialize import PersistentUnpickler
+
 import argparse
 import io
 import logging

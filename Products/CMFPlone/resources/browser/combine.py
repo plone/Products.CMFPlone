@@ -118,6 +118,7 @@ def write_js(context, folder, meta_bundle):
             script = script.encode()
         fi.write((script + b'\n'))
     folder.writeFile(meta_bundle + '.js', fi)
+    logger.info('Wrote combined JS bundle "%s".' % meta_bundle)
 
 
 def write_css(context, folder, meta_bundle):
@@ -152,6 +153,7 @@ def write_css(context, folder, meta_bundle):
             script = script.encode()
         fi.write((script + b'\n'))
     folder.writeFile(meta_bundle + '.css', fi)
+    logger.info('Wrote combined CSS bundle "%s".' % meta_bundle)
 
 
 def get_override_directory(context):
@@ -179,3 +181,4 @@ def combine_bundles(context):
     write_js(context, production_folder, 'logged-in')
     write_css(context, production_folder, 'default')
     write_css(context, production_folder, 'logged-in')
+    logger.info('Finished bundle compilation.')

@@ -85,20 +85,12 @@
           <header>
             <div id="viewlet-above-content-title" tal:content="structure provider:plone.abovecontenttitle" />
             <metal:title define-slot="content-title">
-                <h1 class="documentFirstHeading"
-                    tal:define="title context/Title"
-                    tal:condition="title"
-                    tal:content="title">Title or id</h1>
+              <h1 tal:replace="structure context/@@title" />
             </metal:title>
             <div id="viewlet-below-content-title" tal:content="structure provider:plone.belowcontenttitle" />
 
             <metal:description define-slot="content-description">
-                <div class="documentDescription description"
-                     tal:define="description context/Description"
-                     tal:content="description"
-                     tal:condition="description">
-                    Description
-                </div>
+              <p tal:replace="structure context/@@description" />
             </metal:description>
           </header>
 

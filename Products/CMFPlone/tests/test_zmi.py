@@ -91,11 +91,6 @@ class ZMITests(unittest.TestCase):
         view = self.portal.restrictedTraverse(url)
         self.assertTrue(view(), msg='{0} is broken'.format(url))
 
-    def test_portal_css(self):
-        url = 'portal_css/manage_cssForm'
-        view = self.portal.restrictedTraverse(url)
-        self.assertTrue(view(), msg='{0} is broken'.format(url))
-
     def test_portal_diff(self):
         url = 'portal_diff/manage_difftypes'
         view = self.portal.restrictedTraverse(url)
@@ -113,11 +108,6 @@ class ZMITests(unittest.TestCase):
 
     def test_portal_historyidhandler(self):
         url = 'portal_historyidhandler/manage_queryObject'
-        view = self.portal.restrictedTraverse(url)
-        self.assertTrue(view(), msg='{0} is broken'.format(url))
-
-    def test_portal_javascripts(self):
-        url = 'portal_javascripts/manage_jsForm'
         view = self.portal.restrictedTraverse(url)
         self.assertTrue(view(), msg='{0} is broken'.format(url))
 

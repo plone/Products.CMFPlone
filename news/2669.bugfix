@@ -1,3 +1,0 @@
-Fix robot test test_edit_user_schema:
-Fieldname was set duplicate (first by JS, then by robot).
-[jensens]
