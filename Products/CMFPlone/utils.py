@@ -3,7 +3,7 @@ from AccessControl import ClassSecurityInfo
 from AccessControl import getSecurityManager
 from AccessControl import ModuleSecurityInfo
 from AccessControl import Unauthorized
-from AccessControl.ZopeGuards import guarded_getattr
+from AccessControl.safe_formatter import SafeFormatter
 from Acquisition import aq_base
 from Acquisition import aq_get
 from Acquisition import aq_inner
@@ -12,7 +12,6 @@ from App.Common import package_home
 from App.Dialogs import MessageDialog
 from App.ImageFile import ImageFile
 from cgi import escape
-from collections import Mapping
 from DateTime import DateTime
 from DateTime.interfaces import DateTimeError
 from log import log
@@ -33,6 +32,7 @@ from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
 from types import ClassType
 from urlparse import urlparse
 from webdav.interfaces import IWriteLock
+from zExceptions import BadRequest
 from zope import schema
 from zope.component import getMultiAdapter
 from zope.component import getUtility
@@ -50,7 +50,6 @@ import json
 import OFS
 import pkg_resources
 import re
-import string
 import sys
 import transaction
 import warnings
@@ -793,70 +792,6 @@ def get_top_site_from_url(context, request):
     return site
 
 
-class _MagicFormatMapping(Mapping):
-    """
-    Pulled from Jinja2
-
-    This class implements a dummy wrapper to fix a bug in the Python
-    standard library for string formatting.
-
-    See http://bugs.python.org/issue13598 for information about why
-    this is necessary.
-    """
-
-    def __init__(self, args, kwargs):
-        self._args = args
-        self._kwargs = kwargs
-        self._last_index = 0
-
-    def __getitem__(self, key):
-        if key == '':
-            idx = self._last_index
-            self._last_index += 1
-            try:
-                return self._args[idx]
-            except LookupError:
-                pass
-            key = str(idx)
-        return self._kwargs[key]
-
-    def __iter__(self):
-        return iter(self._kwargs)
-
-    def __len__(self):
-        return len(self._kwargs)
-
-
-class SafeFormatter(string.Formatter):
-
-    def __init__(self, value):
-        self.value = value
-        super(SafeFormatter, self).__init__()
-
-    def get_field(self, field_name, args, kwargs):
-        """
-        Here we're overridding so we can use guarded_getattr instead of
-        regular getattr
-        """
-        first, rest = field_name._formatter_field_name_split()
-
-        obj = self.get_value(first, args, kwargs)
-
-        # loop through the rest of the field_name, doing
-        #  getattr or getitem as needed
-        for is_attr, i in rest:
-            if is_attr:
-                obj = guarded_getattr(obj, i)
-            else:
-                obj = obj[i]
-
-        return obj, first
-
-    def safe_format(self, *args, **kwargs):
-        kwargs = _MagicFormatMapping(args, kwargs)
-        return self.vformat(self.value, args, kwargs)
-
-
 def _safe_format(inst, method):
     """Use our SafeFormatter that uses guarded_getattr for attribute access.
 
@@ -864,3 +799,98 @@ def _safe_format(inst, method):
     as we do in CMFPlone/__init__.py.
     """
     return SafeFormatter(inst).safe_format
+
+
+SIZE_CONST = {'KB': 1024, 'MB': 1024 * 1024, 'GB': 1024 * 1024 * 1024}
+SIZE_ORDER = ('GB', 'MB', 'KB')
+
+
+def human_readable_size(size):
+    """ Get a human readable size string. """
+    smaller = SIZE_ORDER[-1]
+
+    # if the size is a float, then make it an int
+    # happens for large files
+    try:
+        size = int(size)
+    except (ValueError, TypeError):
+        pass
+
+    if not size:
+        return '0 %s' % smaller
+
+    if isinstance(size, (int, long)):
+        if size < SIZE_CONST[smaller]:
+            return '1 %s' % smaller
+        for c in SIZE_ORDER:
+            if size // SIZE_CONST[c] > 0:
+                break
+        return '%.1f %s' % (float(size / float(SIZE_CONST[c])), c)
+    return size
+
+
+def check_id(
+        context, id=None, required=0, alternative_id=None, contained_by=None,
+        **kwargs):
+    """Test an id to make sure it is valid.
+
+    Returns an error message if the id is bad or None if the id is good.
+
+    In Plone 5.2, this function will replace
+    Products/CMFPlone/skins/plone_scripts/check_id.py.
+    But here in Plone 5.1, the function calls that same script,
+    so that there should be no subtle differences with permissions.
+    See https://github.com/plone/Products.CMFPlone/issues/2582
+
+    For more info on the keyword arguments, see that script.
+
+    We need to fall back to a basic check though, otherwise
+    several tests that rely on this fallback will fail,
+    for example simple content added in a way where the script is
+    not available.  Several packages have their own fallback code
+    for the case that 'check_id' does not exist:
+
+    - Products.Archetypes and Products.ATContentTypes both simply check if
+      id is in parent.objectIds().
+    - plone.app.content tries parent._checkId(newid) from OFS.ObjectManager
+      and catches a possible BadRequest exception to return True instead.
+      This method checks for stuff like not allowing '..' as name,
+      or names starting with an underscore.  This includes a check for
+      an existing item when called with allow_dup=False.
+    - Products.validation has an IdValidator which disallows a space in the id,
+      checks if the id is given to a different object already,
+      and calls ObjectManager.checkValidId, which is the same as _checkId.
+
+    Note that Products.validation is the only one that needs to
+    do special stuff for checking if the conflicting item is the same as
+    the current item being edited.  All others are about adding a new one.
+
+    We do a fallback that should cover all these cases.
+    """
+    script = getattr(context, 'check_id', None)
+    if script is not None:
+        # We have found Products/CMFPlone/skins/plone_scripts/check_id.py
+        # or an override.  This is the expected standard case.
+        return script(
+            id=id, required=required, alternative_id=alternative_id,
+            contained_by=contained_by,
+            **kwargs)
+    if contained_by is None:
+        contained_by = aq_parent(aq_inner(context))
+    if contained_by is None:
+        return
+    # Check for existence.
+    if (id in contained_by.objectIds() and
+            getattr(aq_base(contained_by), id) is not aq_base(context)):
+        return _(u'There is already an item named ${name} in this folder.',
+                  mapping={u'name': safe_unicode(id)})
+    # The container may have the _checkId method from OFS or plone.folder.
+    # We use this only to check for invalid characters, not for duplicates,
+    # because we did that already.
+    script = getattr(contained_by, '_checkId', None)
+    if script is not None:
+        try:
+            return contained_by._checkId(id, allow_dup=True)
+        except BadRequest as exc:
+            return str(exc)
+        return

@@ -94,6 +94,6 @@ require([
         var select = $('#form-widgets-highpixeldensity_scales');
         select.change(autohide_quality_fields);
     }
-});
+  });
 
 });

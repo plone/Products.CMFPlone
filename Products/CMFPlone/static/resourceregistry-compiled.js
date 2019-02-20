@@ -5146,7 +5146,13 @@ define('mockup-i18n',[
     if (!self.baseUrl) {
       self.baseUrl = '/plonejsi18n';
     }
-    self.currentLanguage = $('html').attr('lang') || 'en-us';
+    self.currentLanguage = $('html').attr('lang') || 'en';
+
+    // Fix for country specific languages
+    if (self.currentLanguage.split('-').length > 1) {
+      self.currentLanguage = self.currentLanguage.split('-')[0] + '_' + self.currentLanguage.split('-')[1].toUpperCase();
+    }
+
     self.storage = null;
     self.catalogs = {};
     self.ttl = 24 * 3600 * 1000;
@@ -5649,7 +5655,7 @@ define('mockup-utils',[
   };
 
   var parseBodyTag = function(txt) {
-    return $((/<body[^>]*>((.|[\n\r])*)<\/body>/im).exec(txt)[0]
+    return $((/<body[^>]*>[^]*<\/body>/im).exec(txt)[0]
       .replace('<body', '<div').replace('</body>', '</div>')).eq(0).html();
   };
 
@@ -5681,7 +5687,23 @@ define('mockup-utils',[
   };
 
   var removeHTML = function(val) {
-    return val.replace(/<[^>]+>/ig, "");
+    return val.replace(/<[^>]+>/ig, '');
+  };
+
+  var storage = {
+    // Simple local storage wrapper, which doesn't break down if it's not available.
+    get: function (name) {
+        if (window.localStorage) {
+          var val = window.localStorage[name];
+          return typeof(val) === 'string' ? JSON.parse(val) : undefined;
+      }
+    },
+
+    set: function (name, val) {
+      if (window.localStorage) {
+        window.localStorage[name] = JSON.stringify(val);
+      }
+    }
   };
 
   return {
@@ -5696,7 +5718,8 @@ define('mockup-utils',[
     loading: new Loading(),  // provide default loader
     parseBodyTag: parseBodyTag,
     QueryHelper: QueryHelper,
-    setId: setId
+    setId: setId,
+    storage: storage
   };
 });
 
@@ -10960,6 +10983,16 @@ define('mockup-patterns-resourceregistry-url/js/fields',[
     }
   });
 
+
+  var MergeWithFieldView = ResourceSelectFieldView.extend({
+    multiple: false,
+    getSelectOptions: function() {
+      var self = this;
+      return ['', 'default', 'logged-in'];
+    }
+  });
+
+
   return {
     ResourceDisplayFieldView: ResourceDisplayFieldView,
     VariableFieldView: VariableFieldView,
@@ -10970,7 +11003,8 @@ define('mockup-patterns-resourceregistry-url/js/fields',[
     BundleResourcesFieldView: BundleResourcesFieldView,
     BundleDependsFieldView: BundleDependsFieldView,
     ResourceBoolFieldView: ResourceBoolFieldView,
-    PatternFieldView: PatternFieldView
+    PatternFieldView: PatternFieldView,
+    MergeWithFieldView: MergeWithFieldView
   };
 });
 
@@ -30325,8 +30359,8 @@ define('mockup-patterns-resourceregistry-url/js/overrides',[
           '<% if(view.editing){ %>' +
             '<p class="resource-name text-primary"><%- view.editing %></p> ' +
             '<div class="plone-btn-group">' +
-              '<button class="plone-btn plone-btn-primary plone-btn-xs disabled"><%- _t("Save") %></button> ' +
-              '<button class="plone-btn plone-btn-default plone-btn-xs disabled"><%- _t("Cancel") %></button>' +
+              '<button class="plone-btn plone-btn-primary plone-btn-xs" disabled><%- _t("Save") %></button> ' +
+              '<button class="plone-btn plone-btn-default plone-btn-xs" disabled><%- _t("Cancel") %></button>' +
               '<button class="plone-btn plone-btn-danger plone-btn-xs"><%- _t("Delete customizations") %></button>' +
             '</div>' +
           '<% } %>' +
@@ -32230,7 +32264,7 @@ define('mockup-patterns-modal',[
             } else if (options.onError) {
               options.onError(xhr, textStatus, errorStatus);
             } else {
-              window.alert(_t('There was an error submitting the form.'));
+              // window.alert(_t('There was an error submitting the form.'));
               console.log('error happened do something');
             }
             self.emit('formActionError', [xhr, textStatus, errorStatus]);
@@ -32575,8 +32609,9 @@ define('mockup-patterns-modal',[
       self.$wrapper.addClass('image-modal');
       var src = self.$el.attr('href');
       var srcset = self.$el.attr('data-modal-srcset') || '';
+      var title = $.trim(self.$el.context.innerText) || 'Image';
       // XXX aria?
-      self.$raw = $('<div><h1>Image</h1><div id="content"><div class="modal-image"><img src="' + src + '" srcset="' + srcset + '" /></div></div></div>');
+      self.$raw = $('<div><h1>' + title + '</h1><div id="content"><div class="modal-image"><img src="' + src + '" srcset="' + srcset + '" /></div></div></div>');
       self._show();
     },
 
@@ -32801,9 +32836,6 @@ define('mockup-patterns-modal',[
       self.$modal.addClass(self.options.templateOptions.classActiveName);
       registry.scan(self.$modal);
       self.positionModal();
-      $('img', self.$modal).load(function() {
-        self.positionModal();
-      });
       $(window.parent).on('resize.plone-modal.patterns', function() {
         self.positionModal();
       });
@@ -33323,24 +33355,34 @@ define('mockup-patterns-resourceregistry-url/js/registry',[
       title: _t('Conditional comment'),
       description: _t('Internet Explorer conditional comment')
     }, {
+      name: 'load_async',
+      title: _t('Load JavaScript asynchronously?'),
+      view: fields.ResourceBoolFieldView
+    }, {
+      name: 'load_defer',
+      title: _t('Load JavaScript deferred?'),
+      view: fields.ResourceBoolFieldView
+    }, {
       name: 'compile',
       title: _t('Does your bundle contain any RequireJS or LESS files?'),
       view: fields.ResourceBoolFieldView
     }, {
+      name: 'merge_with',
+      title: _t('Merge with'),
+      description: _t('In production, the bundle is merged together with others. Select which one here.'),
+      view: fields.MergeWithFieldView
+    }, {
       name: 'last_compilation',
       title: _t('Last compilation'),
-      description: _t('Date/Time when your bundle was last compiled. Empty, if it was never compiled.'),
-      view: fields.ResourceDisplayFieldView
+      description: _t('Date/Time when your bundle was last compiled. Empty, if it was never compiled.')
     }, {
       name: 'jscompilation',
       title: _t('Compiled JavaScript'),
-      description: _t('Automatically generated path to the compiled JavaScript.'),
-      view: fields.ResourceDisplayFieldView
+      description: _t('Automatically generated path to the compiled JavaScript.')
     }, {
       name: 'csscompilation',
       title: _t('Compiled CSS'),
-      description: _t('Automatically generated path to the compiled CSS.'),
-      view: fields.ResourceDisplayFieldView
+      description: _t('Automatically generated path to the compiled CSS.')
     }, {
       name: 'stub_js_modules',
       title: _t('Stub JS Modules'),
@@ -34149,5 +34191,5 @@ require([
   'use strict';
 });
 
-define("/trabajo/plone/buildout.coredev/src/Products.CMFPlone/Products/CMFPlone/static/resourceregistry.js", function(){});
+define("/Users/esteele/projects/plone_5.1/src/Products.CMFPlone/Products/CMFPlone/static/resourceregistry.js", function(){});
 

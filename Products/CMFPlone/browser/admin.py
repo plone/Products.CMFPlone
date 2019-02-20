@@ -272,6 +272,7 @@ class AddPloneSite(BrowserView):
                 portal_timezone=form.get('portal_timezone', 'UTC')
             )
             self.request.response.redirect(site.absolute_url())
+            return u''
 
         return self.index()
 
@@ -279,8 +280,8 @@ class AddPloneSite(BrowserView):
 class Upgrade(BrowserView):
 
     def upgrades(self):
-        ps = getattr(self.context, 'portal_setup')
-        return ps.listUpgrades(_DEFAULT_PROFILE)
+        pm = getattr(self.context, 'portal_migration')
+        return pm.listUpgrades()
 
     def versions(self):
         pm = getattr(self.context, 'portal_migration')

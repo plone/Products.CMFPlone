@@ -9,7 +9,31 @@ from zope.component import getUtility
 from Products.CMFPlone.resources.browser.combine import (
     PRODUCTION_RESOURCE_DIRECTORY,
     combine_bundles,
+    MetaBundleWriter
 )
+from Products.GenericSetup.tests import common
+
+
+class FakeBundleRegistryRecord(object):
+    def __init__(self, merge_with=None, jscompilation=None,
+                 depends=None, csscompilation=None):
+        self.merge_with = merge_with
+        self.jscompilation = jscompilation
+        self.depends = depends
+        self.csscompilation = csscompilation
+
+
+class DummyImportContext(common.DummyImportContext):
+    # Copied from plone.app.registry tests.
+    # This expands the context with directories.
+
+    _directories = {}
+
+    def listDirectory(self, path):
+        return self._directories.get(path, [])
+
+    def isDirectory(self, path):
+        return path in self._directories
 
 
 class ProductsCMFPloneSetupTest(PloneTestCase):
@@ -51,3 +75,118 @@ class ProductsCMFPloneSetupTest(PloneTestCase):
             'alert("Overrided legacy!");',
             self.production_folder.readFile('default.js')
         )
+
+    def test_import(self):
+        # If IBundleRegistry is in registry.xml, the combine-bundles import step
+        # will call combine_bundles.
+        from Products.CMFPlone.resources.exportimport.bundles import combine
+        # from Products.CMFPlone.resources.browser.combine import get_override_directory
+        # from Products.CMFPlone.resources.browser.combine import PRODUCTION_RESOURCE_DIRECTORY
+
+        # Prepare some registry xml files with or without the key IBundleRegistry.
+        xml_with = '<registry>with IBundleRegistry</registry>'
+        xml_without = '<registry>without bundle registry</registry>'
+        xml_without2 = '<registry>without bundle registry</registry>'
+        context = DummyImportContext(self.portal, purge=False)
+
+        def get_timestamp():
+            # If combine_bundles is run, a timestamp is updated.
+            return self.production_folder.readFile('timestamp.txt')
+
+        ts1 = get_timestamp()
+        self.assertTrue(ts1)
+
+        # call the import step on a file without bundles
+        context._files = {'registry.xml': xml_without}
+        combine(context)
+        ts2 = get_timestamp()
+        self.assertEqual(ts1, ts2)
+
+        # call the import step on a file with bundles
+        context._files = {'registry.xml': xml_with}
+        combine(context)
+        ts3 = get_timestamp()
+        self.assertLess(ts2, ts3)
+
+        # call the import step on a file without bundles
+        context._files = {'registry.xml': xml_without2}
+        combine(context)
+        ts4 = get_timestamp()
+        self.assertEqual(ts3, ts4)
+
+        # Since Plone 5.1 the registry xml can also be a directory.
+        # Set one file with bundles.
+        context._files = {
+            'registry.xml': xml_without,
+            'registry/foo2.xml': xml_with,
+            'registry/foo3.xml': xml_without2,
+        }
+        context._directories = {
+            'registry': [
+                'foo2.xml',
+                'foo3.xml',
+            ]
+        }
+        combine(context)
+        ts10 = get_timestamp()
+        self.assertLess(ts4, ts10)
+
+        # The registry.xml file itself may be missing.
+        context._files = {
+            'registry/foo2.xml': xml_with,
+            'registry/foo3.xml': xml_without2,
+        }
+        combine(context)
+        ts11 = get_timestamp()
+        self.assertLess(ts10, ts11)
+
+        # Now without any bundle info.
+        context._files = {
+            'registry/foo2.xml': xml_without,
+            'registry/foo3.xml': xml_without2,
+        }
+        combine(context)
+        ts12 = get_timestamp()
+        self.assertEqual(ts11, ts12)
+
+    def test_ordering_with_depends(self):
+        writer = MetaBundleWriter(
+            self.portal, self.production_folder, 'logged-in')
+        # add in some fake bundles so we can test correct
+        # ordering
+        writer.bundles['foobar-1'] = FakeBundleRegistryRecord(
+            merge_with='logged-in', depends='plone-logged-in',
+            jscompilation=writer.bundles['plone'].jscompilation,
+            csscompilation=writer.bundles['plone'].csscompilation
+        )
+        writer.bundles['foobar-2'] = FakeBundleRegistryRecord(
+            merge_with='logged-in', depends='foobar-1',
+            jscompilation=writer.bundles['plone'].jscompilation,
+            csscompilation=writer.bundles['plone'].csscompilation
+        )
+        writer.write_js()
+        data = self.production_folder.readFile('logged-in.js')
+        self.assertTrue(
+            data.index('Start Bundle: plone') < data.index('Start Bundle: foobar-1')  # noqa
+        )
+        self.assertTrue(
+            data.index('Start Bundle: foobar-1') < data.index('Start Bundle: foobar-2')  # noqa
+        )
+
+    def test_prevent_circular_depends_error(self):
+        writer = MetaBundleWriter(
+            self.portal, self.production_folder, 'logged-in')
+        # add in some fake bundles so we can test correct
+        # ordering
+        writer.bundles['foobar-1'] = FakeBundleRegistryRecord(
+            merge_with='logged-in', depends='foobar-2',
+            jscompilation=writer.bundles['plone'].jscompilation,
+            csscompilation=writer.bundles['plone'].csscompilation
+        )
+        writer.bundles['foobar-2'] = FakeBundleRegistryRecord(
+            merge_with='logged-in', depends='foobar-1',
+            jscompilation=writer.bundles['plone'].jscompilation,
+            csscompilation=writer.bundles['plone'].csscompilation
+        )
+        writer.write_js()
+        writer.write_css()

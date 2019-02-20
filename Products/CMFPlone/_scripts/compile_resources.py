@@ -11,13 +11,13 @@ package_json_contents = """{
   "version": "1.1.3",
   "private": true,
   "devDependencies": {
-    "grunt": "~1.0.1",
-    "grunt-cli": "~1.2.0",
+    "grunt": "~1.0.3",
+    "grunt-cli": "~1.3.1",
     "grunt-contrib-less": "~1.4.1",
     "grunt-contrib-requirejs": "~1.0.0",
-    "grunt-contrib-uglify": "~3.1.0",
-    "grunt-contrib-watch": "~1.0.0",
-    "grunt-sed": "collective/grunt-sed#e625902539f5c29f1246228270a0330c1097b1e4", 
+    "grunt-contrib-uglify": "~4.0.0",
+    "grunt-contrib-watch": "~1.1.0",
+    "grunt-sed": "collective/grunt-sed#e625902539f5c29f1246228270a0330c1097b1e4",
     "less-plugin-inline-urls": "^1.2.0"
   }
 }"""  # noqa

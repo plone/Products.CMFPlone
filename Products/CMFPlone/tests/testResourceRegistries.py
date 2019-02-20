@@ -18,12 +18,14 @@ from Products.CMFPlone.resources.browser.styles import StylesView
 from Products.CMFPlone.resources.bundle import Bundle
 from Products.CMFPlone.resources.exportimport.resourceregistry import ResourceRegistryNodeAdapter  # noqa
 from Products.CMFPlone.tests import PloneTestCase
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.GenericSetup.context import SetupEnviron
 from xml.dom.minidom import parseString
 from zope.component import getUtility
 
 import json
 import mock
+import os
 
 
 class TestResourceRegistries(PloneTestCase.PloneTestCase):
@@ -205,6 +207,98 @@ class TestResourceRegistries(PloneTestCase.PloneTestCase):
             )
         )
         self.assertTrue('error cooking' in resp.getBody())
+
+    def test_bundle_defer_async(self):
+        registry = getUtility(IRegistry)
+
+        bundles = registry.collectionOfInterface(
+            IBundleRegistry,
+            prefix="plone.bundles"
+        )
+        bundle = bundles.add('foobar')
+        bundle.name = 'foobar'
+        bundle.jscompilation = 'foobar.js'
+        bundle.csscompilation = 'foobar.css'
+        bundle.resources = ['foobar']
+
+        view = ScriptsView(self.app, self.app.REQUEST, None, None)
+        view.get_cooked_bundles = lambda: [('foobar', bundle)]
+
+        import Products.CMFPlone.resources.browser
+        path = os.path.dirname(Products.CMFPlone.resources.browser.__file__)
+        view.index = ViewPageTemplateFile('scripts.pt', path)
+        view.update()
+
+        self.assertTrue('async="async"' not in view.index(view))
+        self.assertTrue('defer="defer"' not in view.index(view))
+
+        bundle.load_async = True
+        bundle.load_defer = False
+        self.assertTrue('async="async"' in view.index(view))
+        self.assertTrue('defer="defer"' not in view.index(view))
+
+        bundle.load_async = False
+        bundle.load_defer = True
+        self.assertTrue('async="async"' not in view.index(view))
+        self.assertTrue('defer="defer"' in view.index(view))
+
+        bundle.load_async = True
+        bundle.load_defer = True
+
+        self.assertTrue('async="async"' in view.index(view))
+        self.assertTrue('defer="defer"' in view.index(view))
+
+        bundle.load_async = False
+        bundle.load_defer = False
+
+        self.assertTrue('async="async"' not in view.index(view))
+        self.assertTrue('defer="defer"' not in view.index(view))
+
+    def test_bundle_defer_async_production(self):
+        """The default and logged-in production bundles should never be loaded
+        async or defered.
+        For bundles to be loaded async or defered, you need to empty merge_with
+        """
+        registry = getUtility(IRegistry)
+
+        bundles = registry.collectionOfInterface(
+            IBundleRegistry,
+            prefix="plone.bundles"
+        )
+        bundles['plone'].load_async = False
+        bundles['plone'].load_defer = False
+        bundles['plone-logged-in'].load_async = False
+        bundles['plone-logged-in'].load_defer = False
+
+        view = ScriptsView(self.app, self.app.REQUEST, None, None)
+
+        import Products.CMFPlone.resources.browser
+        path = os.path.dirname(Products.CMFPlone.resources.browser.__file__)
+        view.index = ViewPageTemplateFile('scripts.pt', path)
+        view.update()
+
+        self.assertTrue('async="async"' not in view.index(view))
+        self.assertTrue('defer="defer"' not in view.index(view))
+
+        bundles['plone'].load_async = True
+        bundles['plone'].load_defer = True
+        self.assertEqual(view.index(view).count('async="async"'), 0)
+        self.assertEqual(view.index(view).count('defer="defer"'), 0)
+
+        bundles['plone'].merge_with = ''
+        bundles['plone'].load_async = True
+        bundles['plone'].load_defer = True
+        self.assertEqual(view.index(view).count('async="async"'), 1)
+        self.assertEqual(view.index(view).count('defer="defer"'), 1)
+
+        bundles['plone'].merge_with = ''
+        bundles['plone'].load_async = True
+        bundles['plone'].load_defer = True
+        bundles['plone-logged-in'].merge_with = ''
+        bundles['plone-logged-in'].load_async = True
+        bundles['plone-logged-in'].load_defer = True
+        self.assertEqual(view.index(view).count('async="async"'), 2)
+        self.assertEqual(view.index(view).count('defer="defer"'), 2)
 
 
 class TestResourceNodeImporter(PloneTestCase.PloneTestCase):
@@ -529,14 +623,26 @@ class TestScriptsViewlet(PloneTestCase.PloneTestCase):
         self.assertTrue(scripts.development)
 
         scripts.update()
-        results = scripts.scripts()
+        result = scripts.scripts()[-1]
         self.assertEqual(
-            results[-1],
-            {
-                'src': 'http://nohost/plone/++resource++foo.js?version=123',
-                'conditionalcomment': None,
-                'bundle': 'foo'
-            }
+            result['src'],
+            'http://nohost/plone/++resource++foo.js?version=123'
+        )
+        self.assertEqual(
+             result['conditionalcomment'],
+             None
+        )
+        self.assertEqual(
+            result['bundle'],
+            'foo',
+        )
+        self.assertEqual(
+            result['async'],
+            None
+        )
+        self.assertEqual(
+            result['defer'],
+            None
         )
 
     @mock.patch.object(

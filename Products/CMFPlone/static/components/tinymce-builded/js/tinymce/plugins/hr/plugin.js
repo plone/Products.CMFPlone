@@ -1,30 +1,39 @@
-/**
- * plugin.js
- *
- * Released under LGPL License.
- * Copyright (c) 1999-2015 Ephox Corp. All rights reserved
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
+(function () {
+var hr = (function () {
+  'use strict';
 
-/*global tinymce:true */
+  var global = tinymce.util.Tools.resolve('tinymce.PluginManager');
 
-tinymce.PluginManager.add('hr', function(editor) {
-	editor.addCommand('InsertHorizontalRule', function() {
-		editor.execCommand('mceInsertContent', false, '<hr />');
-	});
+  var register = function (editor) {
+    editor.addCommand('InsertHorizontalRule', function () {
+      editor.execCommand('mceInsertContent', false, '<hr />');
+    });
+  };
+  var $_dxcs8yc7jh8lz07d = { register: register };
 
-	editor.addButton('hr', {
-		icon: 'hr',
-		tooltip: 'Horizontal line',
-		cmd: 'InsertHorizontalRule'
-	});
+  var register$1 = function (editor) {
+    editor.addButton('hr', {
+      icon: 'hr',
+      tooltip: 'Horizontal line',
+      cmd: 'InsertHorizontalRule'
+    });
+    editor.addMenuItem('hr', {
+      icon: 'hr',
+      text: 'Horizontal line',
+      cmd: 'InsertHorizontalRule',
+      context: 'insert'
+    });
+  };
+  var $_dmdtoxc8jh8lz07e = { register: register$1 };
 
-	editor.addMenuItem('hr', {
-		icon: 'hr',
-		text: 'Horizontal line',
-		cmd: 'InsertHorizontalRule',
-		context: 'insert'
-	});
-});
+  global.add('hr', function (editor) {
+    $_dxcs8yc7jh8lz07d.register(editor);
+    $_dmdtoxc8jh8lz07e.register(editor);
+  });
+  function Plugin () {
+  }
+
+  return Plugin;
+
+}());
+})();

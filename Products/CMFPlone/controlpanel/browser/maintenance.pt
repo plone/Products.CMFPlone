@@ -15,8 +15,9 @@
          <metal:block define-macro="header">
 
              <dl tal:define="status view/status"
-                  tal:condition="status"
-                  class="portalMessage info">
+                 tal:condition="status"
+                 role="status"
+                 class="portalMessage info">
                  <dt i18n:translate="">
                      Info
                  </dt>
