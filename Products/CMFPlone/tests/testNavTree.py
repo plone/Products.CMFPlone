@@ -18,6 +18,9 @@ from Products.CMFPlone.PloneFolder import PloneFolder
 from Products.CMFPlone.interfaces import INonStructuralFolder
 
 
+import six
+
+
 @implementer(INonStructuralFolder)
 class DummyNonStructuralFolder(PloneFolder):
     pass
@@ -60,7 +63,7 @@ class TestFolderTree(PloneTestCase.PloneTestCase):
         self.portal.invokeFactory('Document', 'doc3')
         self.portal.invokeFactory('Folder', 'folder1')
         self.portal.invokeFactory('Link', 'link1')
-        self.portal.link1.setRemoteUrl('http://plone.org')
+        self.portal.link1.remoteUrl = 'http://plone.org'
         self.portal.link1.reindexObject()
         folder1 = getattr(self.portal, 'folder1')
         folder1.invokeFactory('Document', 'doc11')
@@ -555,7 +558,7 @@ class TestNavigationRoot(PloneTestCase.PloneTestCase):
         folderPath = '/'.join(self.folder.getPhysicalPath())
         portalPath = '/'.join(self.portal.getPhysicalPath())
         relativePath = folderPath[len(portalPath):]
-        self.portal.portal_registry['plone.root'] = unicode(relativePath)
+        self.portal.portal_registry['plone.root'] = six.text_type(relativePath)
         root = getNavigationRoot(self.portal)
         self.assertEqual(root, folderPath)
 

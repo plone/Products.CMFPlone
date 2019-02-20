@@ -1,26 +1,26 @@
 # -*- coding:utf-8
 from datetime import datetime
-import json
-import re
-from urlparse import urlparse
-
-from Products.CMFPlone.interfaces import IBundleRegistry
-from Products.CMFPlone.interfaces import IResourceRegistry
-from Products.CMFPlone.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME  # noqa
-from Products.CMFPlone.resources import RESOURCE_DEVELOPMENT_MODE
-from Products.CMFPlone.resources import add_bundle_on_request
-from Products.CMFPlone.resources.browser.configjs import RequireJsView
-from Products.CMFPlone.resources.browser.cook import cookWhenChangingSettings
-from Products.statusmessages.interfaces import IStatusMessage
 from plone.memoize.view import memoize
 from plone.registry import field
 from plone.registry.interfaces import IRegistry
 from plone.registry.record import Record
 from plone.resource.interfaces import IResourceDirectory
-import posixpath
+from Products.CMFPlone.interfaces import IBundleRegistry
+from Products.CMFPlone.interfaces import IResourceRegistry
+from Products.CMFPlone.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME  # noqa
+from Products.CMFPlone.resources import add_bundle_on_request
+from Products.CMFPlone.resources import RESOURCE_DEVELOPMENT_MODE
+from Products.CMFPlone.resources.browser.configjs import RequireJsView
+from Products.CMFPlone.resources.browser.cook import cookWhenChangingSettings
+from Products.statusmessages.interfaces import IStatusMessage
+from six.moves.urllib import parse
 from zExceptions import NotFound
 from zope.component import getUtility
 
+import json
+import posixpath
+import re
+import six
 
 CSS_URL_REGEX = re.compile('url\(([^)]+)\)')
 
@@ -48,12 +48,12 @@ def updateRecordFromDict(record, data):
         if name in data:
             # almost all string data needs to be str, not unicode
             val = data[name]
-            if isinstance(val, unicode):
+            if six.PY2 and isinstance(val, six.text_type):
                 val = val.encode('utf-8')
             if isinstance(val, list):
                 newval = []
                 for item in val:
-                    if isinstance(item, unicode):
+                    if six.PY2 and isinstance(item, six.text_type):
                         item = item.encode('utf-8')
                     newval.append(item)
                 val = newval
@@ -97,8 +97,8 @@ class OverrideFolderManager(object):
         http://stackoverflow.com/questions/7469573/how-to-construct-relative-url-given-two-absolute-urls-in-python
 
         """
-        base = urlparse(css_url)
-        target = urlparse(asset_url)
+        base = parse.urlparse(css_url)
+        target = parse.urlparse(asset_url)
         if base.netloc != target.netloc:
             return asset_url
         base_dir = '.' + posixpath.dirname(base.path)
@@ -272,7 +272,7 @@ class ResourceRegistryControlPanelView(RequireJsView):
             for resource in bundle_obj.resources:
                 if resource in resources:
                     for css in resources[resource].css:
-                        url = urlparse(css)
+                        url = parse.urlparse(css)
                         if url.netloc == '':
                             # Local
                             src = "%s/%s" % (site_url, css)
@@ -343,7 +343,7 @@ class ResourceRegistryControlPanelView(RequireJsView):
         for key, value in req.form.items():
             if not key.startswith('data-'):
                 continue
-            if isinstance(value, basestring):
+            if isinstance(value, six.string_types):
                 value = [value]
             data += '\n'.join(value) + '\n'
         overrides.save_file(filepath, data)
@@ -359,8 +359,10 @@ class ResourceRegistryControlPanelView(RequireJsView):
     def save_less_variables(self):
         data = {}
         for key, val in json.loads(self.request.form.get('data')).items():
-            # need to convert to str: unicode
-            data[key.encode('utf8')] = val
+            if six.PY2 and isinstance(key, six.text_type):
+                # need to convert to str: unicode
+                key = key.encode('utf8')
+            data[key] = val
         self.registry['plone.lessvariables'] = data
         return json.dumps({
             'success': True
@@ -369,8 +371,10 @@ class ResourceRegistryControlPanelView(RequireJsView):
     def save_pattern_options(self):
         data = {}
         for key, val in json.loads(self.request.form.get('data')).items():
-            # need to convert to str: unicode
-            data[key.encode('utf8')] = val
+            if six.PY2 and isinstance(key, six.text_type):
+                # need to convert to str: unicode
+                key = key.encode('utf8')
+            data[key] = val
         self.registry['plone.patternoptions'] = data
         return json.dumps({
             'success': True

@@ -36,8 +36,9 @@ So first we need a logged in user with manager rights:
   >>> from plone.app.testing import SITE_OWNER_PASSWORD
   >>> from plone.app.testing import TEST_USER_NAME
   >>> from plone.app.testing import TEST_USER_PASSWORD
-  >>> from plone.testing.z2 import Browser
+  >>> from plone.testing.zope import Browser
   >>> browser = Browser(app)
+  >>> browser.handleErrors = False
   >>> browser.open('http://nohost/plone/login_form')
   >>> browser.getControl(name='__ac_name').value = SITE_OWNER_NAME
   >>> browser.getControl(name='__ac_password').value = SITE_OWNER_PASSWORD
@@ -83,7 +84,7 @@ unsuspectingly even clicks the button presented:
   >>> browser.open('http://nohost/plone/@@new-user', data)
   Traceback (most recent call last):
   ...
-  HTTPError: HTTP Error 403: Forbidden
+  zExceptions.Forbidden: Form authenticator is invalid.
   >>> bool(portal.acl_users.getUser('john'))
   False
 
@@ -137,7 +138,7 @@ existing invalid, in which case submitting should yield an error:
   >>> browser.getControl('Save').click()
   Traceback (most recent call last):
   ...
-  HTTPError: HTTP Error 403: Forbidden
+  zExceptions.Forbidden: Form authenticator is invalid.
 
 Next up is the password form.  Well, technically an attacker would need to
 know the current passwort to exploit this, but we'll check nevertheless:
@@ -160,7 +161,7 @@ know the current passwort to exploit this, but we'll check nevertheless:
   >>> browser.getControl('Change Password').click()
   Traceback (most recent call last):
   ...
-  HTTPError: HTTP Error 403: Forbidden
+  zExceptions.Forbidden: Form authenticator is invalid.
   >>> browser.open('http://nohost/plone/logout')
 
 On the admin side of things there's also the user preferences
@@ -184,7 +185,7 @@ as its z3cform the portrait gets always modified because is IObject:
   >>> browser.getControl('Save').click()
   Traceback (most recent call last):
   ...
-  HTTPError: HTTP Error 403: Forbidden
+  zExceptions.Forbidden: Form authenticator is invalid.
 
 
 More tests: Managing Users & Groups
@@ -222,7 +223,7 @@ anymore (which at the same time tests the security control panel):
   >>> browser.getControl('Save').click()
   Traceback (most recent call last):
   ...
-  HTTPError: HTTP Error 403: Forbidden
+  zExceptions.Forbidden: Form authenticator is invalid.
 
 Let's also try adding that user to a group:
 
@@ -244,7 +245,7 @@ Let's also try adding that user to a group:
   >>> browser.getControl('Add user to selected groups').click()
   Traceback (most recent call last):
   ...
-  HTTPError: HTTP Error 403: Forbidden
+  zExceptions.Forbidden: Form authenticator is invalid.
 
 There's an alternative way to adding a user to a group in which the group in
 question is selected first and the user can then be added via the "Group
@@ -271,7 +272,7 @@ Members" tab:
   >>> browser.getControl('Add selected groups and users to this group').click()
   Traceback (most recent call last):
   ...
-  HTTPError: HTTP Error 403: Forbidden
+  zExceptions.Forbidden: Form authenticator is invalid.
 
 
 More tests: Object Actions
@@ -294,14 +295,15 @@ Reopen URL to clean up HTTP_REFERRER
 Now rename
 
   >>> browser.getLink('Rename').click()
-  >>> browser.getControl(name='_authenticator', index=0).value = 'invalid!'
+  >>> browser.getControl(name='_authenticator', index=0).value = 'invalidxx!'
   >>> browser.getControl('New Short Name').value = 'folder'
   >>> browser.getControl(name='form.buttons.Rename').click()
   Traceback (most recent call last):
   ...
-  HTTPError: HTTP Error 403: Forbidden
+  zExceptions.Forbidden: Form authenticator is invalid.
 
-  >>> browser.goBack()
+  >>> browser.open('http://nohost/plone/a-folder/')
+  >>> browser.getLink('Rename').click()
   >>> browser.getControl('New Short Name').value = 'folder'
   >>> browser.getControl(name='form.buttons.Rename').click()
   >>> browser.url.strip()
@@ -322,9 +324,9 @@ Now rename
   >>> browser.getControl('Save').click()
   Traceback (most recent call last):
   ...
-  HTTPError: HTTP Error 403: Forbidden
+  zExceptions.Forbidden
 
-  >>> browser.goBack()
+  >>> browser.getLink('Sharing').click()
   >>> browser.getControl(name='entries.role_Editor:records').value = ['True']
   >>> browser.getControl('Save').click()
   >>> browser.url
@@ -344,9 +346,9 @@ And finally removing the item again:
   >>> browser.getControl('Delete').click()
   Traceback (most recent call last):
   ...
-  HTTPError: HTTP Error 403: Forbidden
+  zExceptions.Forbidden: Form authenticator is invalid.
 
-  >>> browser.goBack()
+  >>> browser.reload()
   >>> browser.getControl('Delete').click()
   >>> browser.url
   'http://nohost/plone'
@@ -391,7 +393,7 @@ publishing process can be protected, though, so let's try this instead:
   >>> browser.getControl('Save').click()
   Traceback (most recent call last):
   ...
-  HTTPError: HTTP Error 403: Forbidden
+  zExceptions.Forbidden: Form authenticator is invalid.
 
 
 More tests: Plone Control Panel
@@ -417,7 +419,7 @@ so testing one of them already makes sure the protection works in most cases:
 browser.getControl('Save').click()
 Traceback (most recent call last):
 ...
-HTTPError: HTTP Error 403: Forbidden
+zExceptions.Forbidden: Form authenticator is invalid.
 
 Exceptions to the rule is the "Maintenance" configlet, which is tested
 separately. The "Maintenance" configlet has some special security
@@ -426,9 +428,9 @@ limitations, which is why we need to log in as the portal owner first:
   >>> app_browser = Browser(app)
   >>> app_browser.handleErrors = False
   >>> app.acl_users.userFolderAddUser('app', 'secret', ['Manager'], [])
-  >>> from plone.testing import z2
-  >>> z2.logout()
-  >>> z2.login(app['acl_users'], 'app')
+  >>> from plone.testing import zope
+  >>> zope.logout()
+  >>> zope.login(app['acl_users'], 'app')
   >>> import transaction; transaction.commit()
   >>> app_browser.addHeader('Authorization', 'Basic app:secret')
   >>> app_browser.open('http://nohost/plone/@@overview-controlpanel')
@@ -438,4 +440,4 @@ limitations, which is why we need to log in as the portal owner first:
   >>> app_browser.getControl('Shut down').click()
   Traceback (most recent call last):
   ...
-  Forbidden: Form authenticator is invalid.
+  zExceptions.Forbidden: Form authenticator is invalid.

@@ -2,29 +2,26 @@
 #
 # Helper objects for the Plone test suite
 #
-
-# $Id$
+from ComputedAttribute import ComputedAttribute
+from OFS.Folder import Folder as SimpleFolder
+from OFS.SimpleItem import SimpleItem
+from Products.CMFPlone.interfaces import INonStructuralFolder
+from Products.CMFPlone.interfaces import IWorkflowChain
+from six import StringIO
+from six import BytesIO
+from zope.interface import implementer
+from zope.interface import Interface
+from ZPublisher.HTTPRequest import FileUpload
 
 import os
 
-from zope.interface import implementer
-from zope.interface import implementer
-from zope.interface import Interface
 
-from Products.CMFPlone.interfaces import INonStructuralFolder
-from Products.CMFPlone.interfaces import IWorkflowChain
-
-from ComputedAttribute import ComputedAttribute
-from OFS.SimpleItem import SimpleItem
-from OFS.Folder import Folder as SimpleFolder
-from ZPublisher.HTTPRequest import FileUpload
-
-
-TEXT = 'file data'
+TEXT = b'file data'
 UTEXT = u'file data'
-GIF = open(os.path.join(os.path.dirname(__file__),
-                        os.pardir,
-                        'tool.gif')).read()
+GIF_FILE = os.path.join(
+    os.path.dirname(__file__), os.pardir, 'tool.gif')
+with open(GIF_FILE, 'rb') as f:
+    GIF = f.read()
 
 
 class Dummy:
@@ -89,6 +86,7 @@ class File(FileUpload):
             self.data = data
         if headers is not None:
             self.headers = headers
+        self.file = BytesIO(self.data)
 
     def seek(self, *args):
         pass

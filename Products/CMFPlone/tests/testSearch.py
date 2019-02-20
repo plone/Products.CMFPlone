@@ -15,6 +15,7 @@ from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.interfaces import ISearchSchema
 
 from plone.app.contentlisting.interfaces import IContentListing
+from plone.app.textfield import RichTextValue
 
 from zope.configuration import xmlconfig
 from zope.interface import alsoProvides
@@ -58,19 +59,19 @@ class SearchLayer(PloneSandboxLayer):
         import plone.app.contentlisting
         xmlconfig.file('configure.zcml',
                        plone.app.contentlisting, context=configurationContext)
-        z2.installProduct(app, 'Products.ATContentTypes')
 
     def setUpPloneSite(self, portal):
         # Install into Plone site using portal_setup
         if 'Document' not in portal.portal_types:
-            applyProfile(portal, 'Products.ATContentTypes:default')
+            applyProfile(portal, 'plone.app.contenttypes:default')
         setRoles(portal, TEST_USER_ID, ['Manager'])
         login(portal, TEST_USER_NAME)
         for i in range(0, 12):
             portal.invokeFactory(
                 'Document',
                 'my-page' + str(i),
-                text='spam spam ham eggs'
+                text=RichTextValue(
+                    u'spam spam ham eggs', 'text/html', 'text/x-html-safe'),
             )
             # Sleep before creating the next one, otherwise ordering by date is
             # not deterministic.

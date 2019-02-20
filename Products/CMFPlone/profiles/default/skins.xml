@@ -3,14 +3,10 @@
    cookie_persistence="False" default_skin="Plone Default"
    request_varname="plone_skin">
  <object name="custom" meta_type="Folder"/>
- <object name="plone_ecmascript" meta_type="Filesystem Directory View"
-    directory="Products.CMFPlone:skins/plone_ecmascript"/>
  <object name="plone_form_scripts" meta_type="Filesystem Directory View"
     directory="Products.CMFPlone:skins/plone_form_scripts"/>
  <object name="plone_images" meta_type="Filesystem Directory View"
     directory="Products.CMFPlone:skins/plone_images"/>
- <object name="plone_login" meta_type="Filesystem Directory View"
-    directory="Products.CMFPlone:skins/plone_login"/>
  <object name="plone_prefs" meta_type="Filesystem Directory View"
     directory="Products.CMFPlone:skins/plone_prefs"/>
  <object name="plone_scripts" meta_type="Filesystem Directory View"
@@ -21,13 +17,11 @@
     directory="Products.CMFPlone:skins/plone_wysiwyg"/>
  <skin-path name="Plone Default">
   <layer name="custom"/>
-  <layer name="plone_ecmascript"/>
   <layer name="plone_wysiwyg"/>
   <layer name="plone_prefs"/>
   <layer name="plone_templates"/>
   <layer name="plone_form_scripts"/>
   <layer name="plone_scripts"/>
   <layer name="plone_images"/>
-  <layer name="plone_login"/>
  </skin-path>
 </object>

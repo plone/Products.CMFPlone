@@ -29,6 +29,8 @@ from plone.namedfile.interfaces import INamedField
 
 from plone.app.contenttypes.behaviors.leadimage import ILeadImage
 
+import six
+
 try:
     from Products.ATContentTypes.interfaces.file import IFileContent
 except ImportError:
@@ -231,7 +233,7 @@ class BaseItem(BaseFeedData):
             value = self.context.text
         else:
             value = self.description
-        if not isinstance(value, basestring):
+        if not isinstance(value, six.string_types):
             if hasattr(value, 'output'):
                 # could be RichTextValue object, needs transform
                 value = value.output
@@ -302,9 +304,9 @@ class DexterityItem(BaseItem):
             try:
                 primary = IPrimaryFieldInfo(self.context, None)
                 if (INamedField.providedBy(primary.field)
-                        and hasattr(primary.field, 'getSize')
-                        and primary.field.getSize() > 0):
-                    self.file = primary.field
+                        and hasattr(primary.value, 'getSize')
+                        and primary.value.getSize() > 0):
+                    self.file = primary.value
                     self.field_name = primary.fieldname
             except TypeError:
                 pass

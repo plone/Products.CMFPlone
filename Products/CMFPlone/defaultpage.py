@@ -13,6 +13,8 @@ from zope.component import queryAdapter
 from zope.component import queryUtility
 from zope.component import queryMultiAdapter
 
+import six
+
 
 def get_default_page(context):
     """Given a folderish item, find out if it has a default-page using
@@ -72,7 +74,7 @@ def get_default_page(context):
 
     # 3.1 Test for default_page attribute in folder, no acquisition
     pages = getattr(aq_base(context), 'default_page', [])
-    if isinstance(pages, basestring):
+    if isinstance(pages, six.string_types):
         pages = [pages]
     for page in pages:
         if page and page in ids:

@@ -10,6 +10,12 @@
 
 <metal:main metal:fill-slot="prefs_configlet_main" i18n:domain="plone">
 
+    <a id="setup-link" class="link-parent"
+       tal:attributes="href string:$portal_url/@@overview-controlpanel"
+       i18n:translate="">
+        Site Setup
+    </a>
+
     <h1 class="documentFirstHeading"
         i18n:translate="">Add-ons</h1>
 
@@ -37,7 +43,7 @@
              id="upgrade-products" class="portlet">
           <header class="portletHeader" i18n:translate="">Upgrades</header>
           <section tal:condition="not:products" class="portletContent">
-            <div id="up-to-date-message" class="portalMessage info">
+            <div id="up-to-date-message" class="portalMessage info" role="status">
                  <strong i18n:translate="">No upgrades in this corner</strong>
                  <span i18n:translate="">You are up to date. High fives.</span>
              </div>
@@ -147,7 +153,8 @@
                   <em class="discreet"> – (<span tal:replace="pid">plugin.app.name</span> <span tal:replace="product/version">1.0</span>)</em>
                 </p>
                 <dl class="portalMessage warning"
-                   tal:condition="not:product/uninstall_profile">
+                    role="status"
+                    tal:condition="not:product/uninstall_profile">
                   <dt i18n:translate="">Warning</dt>
                   <dd i18n:translate="">This product cannot be uninstalled!</dd>
                 </dl>
@@ -188,6 +195,7 @@
                       <em class="discreet"> – (<span tal:replace="pid">plugin.app.name</span> <span tal:replace="product/version">1.0</span>)</em>
                     </p>
                     <dl class="portalMessage info"
+                        role="status"
                         tal:condition="not:product/uninstall_profile">
                       <dt i18n:translate="">Info</dt>
                       <dd i18n:translate="">This product cannot be uninstalled!</dd>
@@ -207,7 +215,7 @@
             <ul class="configlets">
               <li tal:repeat="product products">
                 <h3>
-                  <span tal:replace="product/productname" i18n:translate="">
+                  <span tal:replace="product/product_id" i18n:translate="">
                     Add-on Name
                   </span>
                 </h3>

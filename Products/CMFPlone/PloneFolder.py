@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from plone.memoize import view
-from App.class_init import InitializeClass
+from AccessControl.class_init import InitializeClass
 from zExceptions import NotFound
 from Acquisition import aq_base
 from Acquisition import aq_inner
@@ -13,8 +13,6 @@ from ComputedAttribute import ComputedAttribute
 from OFS.Folder import Folder
 from OFS.ObjectManager import REPLACEABLE
 from OFS.OrderSupport import OrderSupport
-from webdav.NullResource import NullResource
-from webdav.interfaces import IWriteLock
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.CMFCatalogAware import CatalogAware, WorkflowAware, \
@@ -23,9 +21,18 @@ from Products.CMFCore.PortalFolder import PortalFolderBase
 from Products.CMFCore.permissions import AccessContentsInformation, \
     AddPortalContent, AddPortalFolders, ListFolderContents, \
     ModifyPortalContent
+from Products.CMFPlone import bbb
 from Products.CMFPlone.DublinCore import DefaultDublinCoreImpl
 
 from zope.interface import implementer
+import six
+
+if bbb.HAS_ZSERVER:
+    from webdav.NullResource import NullResource
+    from webdav.interfaces import IWriteLock
+else:
+    from OFS.interfaces import IWriteLock
+    NullResource = bbb.NullResource
 
 
 class ReplaceableWrapper:
@@ -144,7 +151,7 @@ class BasePloneFolder(CatalogAware, WorkflowAware, OpaqueItemManager,
         if request and 'REQUEST_METHOD' in request:
             if request.maybe_webdav_client:
                 method = request['REQUEST_METHOD']
-                if method in ('PUT', ):
+                if bbb.HAS_ZSERVER and method in ('PUT', ):
                     # Very likely a WebDAV client trying to create something
                     return ReplaceableWrapper(NullResource(self, 'index_html'))
                 elif method in ('GET', 'HEAD', 'POST'):
@@ -178,7 +185,7 @@ class BasePloneFolder(CatalogAware, WorkflowAware, OpaqueItemManager,
         if ids is None:
             ids = []
         mt = getToolByName(self, 'portal_membership')
-        if isinstance(ids, basestring):
+        if isinstance(ids, six.string_types):
             ids = [ids]
         for id in ids:
             item = self._getOb(id)

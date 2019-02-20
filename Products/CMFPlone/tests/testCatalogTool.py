@@ -2,26 +2,32 @@
 # -*- encoding: utf-8 -*-
 from Acquisition import aq_base
 from DateTime import DateTime
+from functools import partial
 from OFS.ObjectManager import REPLACEABLE
+from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
+from plone.app.textfield import RichTextValue
+from plone.dexterity.content import CEILING_DATE
 from plone.indexer.wrapper import IndexableObjectWrapper
 from plone.uuid.interfaces import IAttributeUUID
 from plone.uuid.interfaces import IUUID
-from Products.CMFCore.permissions import AccessInactivePortalContent
 from Products.CMFCore.indexing import processQueue
+from Products.CMFCore.permissions import AccessInactivePortalContent
 from Products.CMFPlone.CatalogTool import CatalogTool
 from Products.CMFPlone.CatalogTool import is_folderish
 from Products.CMFPlone.tests import dummy
 from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
 from Products.CMFPlone.tests.utils import folder_position
+from z3c.form.interfaces import IFormLayer
 from zope.event import notify
 from zope.interface import alsoProvides
 from zope.lifecycleevent import ObjectCreatedEvent
-from z3c.form.interfaces import IFormLayer
+
 import transaction
 import unittest
 import zope.interface
+
 
 user2 = 'u2'
 group2 = 'g2'
@@ -101,10 +107,10 @@ class TestCatalogSetup(PloneTestCase):
         self.assertEqual(self.catalog.Indexes['effective'].__class__.__name__,
                          'DateIndex')
 
-    def testEndIsDateIndex(self):
-        # end should be a DateIndex
+    def testEndIsDateRecurringIndex(self):
+        # end should be a DateRecurringIndex
         self.assertEqual(self.catalog.Indexes['end'].__class__.__name__,
-                         'DateIndex')
+                         'DateRecurringIndex')
 
     def testExpiresIsDateIndex(self):
         # expires should be a DateIndex
@@ -116,10 +122,10 @@ class TestCatalogSetup(PloneTestCase):
         self.assertEqual(self.catalog.Indexes['modified'].__class__.__name__,
                          'DateIndex')
 
-    def testStartIsDateIndex(self):
-        # start should be a DateIndex
+    def testStartIsDateRecurringIndex(self):
+        # start should be a DateRecurringIndex
         self.assertEqual(self.catalog.Indexes['start'].__class__.__name__,
-                         'DateIndex')
+                         'DateRecurringIndex')
 
     def testEffectiveRangeIsDateRangeIndex(self):
         # effectiveRange should be a DateRangeIndex
@@ -333,10 +339,25 @@ class TestCatalogIndexing(PloneTestCase):
     def testClearFindAndRebuildKeepsModificationDate(self):
         # Index the doc for consistency
         self.catalog.indexObject(self.folder.doc)
-        self.folder.doc.setModificationDate(DateTime(0))
+        self.folder.doc.modification_date = DateTime(0)
+        # FIXME: Index the doc for consistency
         self.catalog.clearFindAndRebuild()
         self.assertEqual(self.folder.doc.modified(), DateTime(0))
         self.assertEqual(len(self.catalog(modified=DateTime(0))), 1)
+
+    def test_acquired_attributes_are_not_indexed(self):
+        # create an index for foo:
+        # from Products.PluginIndexes.FieldIndex.FieldIndex import FieldIndex
+        self.catalog.addIndex('foo', 'FieldIndex')
+
+        # create attribute foo on folder and index on both, folder and
+        # contained
+        self.folder.foo = 'FOO'
+        self.catalog.clearFindAndRebuild()
+
+        # lets see if we have one result for folder, but nothing for doc:
+        brains = self.catalog(foo='FOO')
+        self.assertEqual(len(brains), 1)
 
 
 class TestCatalogSearching(PloneTestCase):
@@ -482,11 +503,18 @@ class TestCatalogSearching(PloneTestCase):
         """PLIP 12110
         """
         self.folder.invokeFactory(
-            'Document', id='docwithaccents-1', text='Econométrie', title='foo')
+            'Document',
+            id='docwithaccents-1',
+            text=RichTextValue('Econométrie', 'text/html', 'text/x-html-safe'),
+            title='foo')
         self.folder.invokeFactory(
-            'Document', id='docwithaccents-2', text='Économétrie')
+            'Document',
+            id='docwithaccents-2',
+            text=RichTextValue('Économétrie', 'text/html', 'text/x-html-safe'))
         self.folder.invokeFactory(
-            'Document', id='docwithout-accents', text='ECONOMETRIE')
+            'Document',
+            id='docwithout-accents',
+            text=RichTextValue('ECONOMETRIE', 'text/html', 'text/x-html-safe'))
 
         self.assertEqual(len(self.catalog(SearchableText='Économétrie')), 3)
         self.assertEqual(len(self.catalog(SearchableText='Econométrie')), 3)
@@ -507,18 +535,18 @@ class TestCatalogSorting(PloneTestCase):
     def afterSetUp(self):
         self.catalog = self.portal.portal_catalog
 
-        self.folder.invokeFactory('Document', id='doc', text='foo')
+        self.folder.invokeFactory('Document', id='doc', text=RichTextValue('foo', 'text/html', 'text/x-html-safe'))
         self.folder.doc.setTitle('12 Document 25')
-        self.folder.invokeFactory('Document', id='doc2', text='foo')
+        self.folder.invokeFactory('Document', id='doc2', text=RichTextValue('foo', 'text/html', 'text/x-html-safe'))
         self.folder.doc2.setTitle('3 Document 4')
-        self.folder.invokeFactory('Document', id='doc3', text='foo')
+        self.folder.invokeFactory('Document', id='doc3', text=RichTextValue('foo', 'text/html', 'text/x-html-safe'))
         self.folder.doc3.setTitle('12 Document 4')
 
-        self.folder.invokeFactory('Document', id='doc4', text='bar')
+        self.folder.invokeFactory('Document', id='doc4', text=RichTextValue('bar', 'text/html', 'text/x-html-safe'))
         self.folder.doc4.setTitle('document 12')
-        self.folder.invokeFactory('Document', id='doc5', text='bar')
+        self.folder.invokeFactory('Document', id='doc5', text=RichTextValue('bar', 'text/html', 'text/x-html-safe'))
         self.folder.doc5.setTitle('Document 2')
-        self.folder.invokeFactory('Document', id='doc6', text='bar')
+        self.folder.invokeFactory('Document', id='doc6', text=RichTextValue('bar', 'text/html', 'text/x-html-safe'))
         self.folder.doc6.setTitle('DOCUMENT 4')
         self.folder.doc.reindexObject()
         self.folder.doc2.reindexObject()
@@ -526,6 +554,46 @@ class TestCatalogSorting(PloneTestCase):
         self.folder.doc4.reindexObject()
         self.folder.doc5.reindexObject()
         self.folder.doc6.reindexObject()
+
+    def testSortMultipleColumns(self):
+        path = '/'.join(self.folder.getPhysicalPath())
+        query = partial(self.catalog, path=path)
+        brains = query(sort_on=['portal_type', 'sortable_title'])
+        self.assertListEqual(
+            [brain.getPath() for brain in brains],
+            [
+                '/plone/Members/test_user_1_/doc2',
+                '/plone/Members/test_user_1_/doc3',
+                '/plone/Members/test_user_1_/doc',
+                '/plone/Members/test_user_1_/doc5',
+                '/plone/Members/test_user_1_/doc6',
+                '/plone/Members/test_user_1_/doc4',
+                '/plone/Members/test_user_1_'
+            ],
+        )
+        brains = query(sort_on=['portal_type', 'getId'])
+        self.assertListEqual(
+            [brain.getPath() for brain in brains],
+            [
+                '/plone/Members/test_user_1_/doc',
+                '/plone/Members/test_user_1_/doc2',
+                '/plone/Members/test_user_1_/doc3',
+                '/plone/Members/test_user_1_/doc4',
+                '/plone/Members/test_user_1_/doc5',
+                '/plone/Members/test_user_1_/doc6',
+                '/plone/Members/test_user_1_',
+            ]
+        )
+
+    def testUnknownSortOnIsIgnored(self):
+        # You should not get a CatalogError when an invalid sort_on is passed.
+        # I get crazy sort_ons like '194' or 'null'.
+        self.assertTrue(len(
+            self.catalog(SearchableText='foo', sort_on='194')) > 0)
+        self.assertTrue(len(
+            self.catalog(SearchableText='foo', sort_on='null')) > 0)
+        self.assertTrue(len(
+            self.catalog(SearchableText='foo', sort_on='relevance')) > 0)
 
     def testSortTitleReturnsProperOrderForNumbers(self):
         # Documents should be returned in proper numeric order
@@ -550,9 +618,9 @@ class TestCatalogSorting(PloneTestCase):
     def testSortableNonASCIITitles(self):
         # test a utf-8 encoded string gets properly unicode converted
         # sort must ignore accents
-        title = 'La Pe\xc3\xb1a'
+        title = b'La Pe\xc3\xb1a'
         doc = self.folder.doc
-        doc.setTitle(title)
+        doc.title = title.decode('utf-8')
         wrapped = IndexableObjectWrapper(doc, self.portal.portal_catalog)
         self.assertEqual(wrapped.sortable_title, 'la pena')
 
@@ -966,9 +1034,6 @@ class TestCatalogExpirationFiltering(PloneTestCase):
         rhs.sort()
         self.assertEqual(lhs, rhs)
 
-    def testCeilingPatch(self):
-        self.assertEqual(self.folder.doc.expires(), DateTime(2500, 0))
-
     def testSearchResults(self):
         res = self.catalog.searchResults()
         self.assertResults(res, base_content)
@@ -1053,6 +1118,36 @@ class TestCatalogExpirationFiltering(PloneTestCase):
         path = '/'.join(self.folder.doc.getPhysicalPath())
         results = [b.getPath() for b in self.catalog(path=path)]
         self.assertIn('/'.join(self.folder.doc.getPhysicalPath()), results)
+
+    def testUnauthorizedIsNotRaisedOnShowInactive(self):
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
+        wf_tool = self.portal.portal_workflow
+        self.portal.invokeFactory('Folder', id='folder1')
+        folder = self.portal['folder1']
+        wf_tool.doActionFor(folder, 'publish', comment='')
+        folder.reindexObject()
+
+        folder.invokeFactory('Folder', id='folder2')
+        folder2 = folder['folder2']
+        wf_tool.doActionFor(folder2, 'hide', comment='')
+        folder2.reindexObject()
+
+        folder2.invokeFactory('Document', id='doc1')
+        doc = folder2['doc1']
+        wf_tool.doActionFor(doc, 'publish', comment='')
+        doc.reindexObject()
+
+        folder2.invokeFactory('Document', id='doc2')
+        doc2 = folder2['doc2']
+        wf_tool.doActionFor(doc2, 'hide', comment='')
+        doc2.reindexObject()
+
+        self.logout()
+        path = '/' + folder2.absolute_url(1)
+        results = self.catalog.searchResults(path=path)
+        self.assertEqual(
+            results[0].getPath(), '/plone/folder1/folder2/doc1')
+        self.assertEqual(len(results), 1)
 
     def testExpiredWithPermissionOnSubpath(self):
         self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
@@ -1139,6 +1234,35 @@ class TestCatalogExpirationFiltering(PloneTestCase):
         res = self.catalog(**query)
         self.assertResults(res, expected_result)
 
+    def testExpiredWithSameNameAsSite(self):
+        # Create an expired folder with the same name as the site
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
+        self.portal.invokeFactory('Folder', id=self.portal.id)
+
+        # Add the AccessInactivePortalContent permission in the plone folder
+        # The user should NOT have this permission in self.folder
+        self.portal.plone.manage_role('Member', [AccessInactivePortalContent])
+
+        # Expire a document
+        self.folder.doc.setExpirationDate(DateTime(2000, 12, 31))
+        self.folder.doc.reindexObject()
+        self.nofx()
+
+        # Inactive content isn't shown without the required permission.
+        expected_result = [content for content in base_content if content != 'doc'] + ['plone']
+
+        # Login as unprivileged user
+        self.login(user2)
+
+        # Path is the site's one
+        query = {
+            'path': '/'.join(self.portal.getPhysicalPath())
+        }
+        res = self.catalog.searchResults(**query)
+        self.assertResults(res, expected_result)
+        res = self.catalog(**query)
+        self.assertResults(res, expected_result)
+
     def testSearchResultsWithAdditionalExpiryFilter(self):
         # For this test we want the expires and effective indices in place,
         # let's make sure everything still works
@@ -1212,12 +1336,19 @@ class TestIndexers(PloneTestCase):
         self.assertTrue(IIndexableObjectWrapper.providedBy(w))
         self.assertTrue(IContentish.providedBy(w))
 
-    def test_getObjSize(self):
+    def test_getObjSize_KB(self):
         from Products.CMFPlone.CatalogTool import getObjSize
         get_size = getObjSize.callable
-        self.doc.setText(u'a' * 1000)
+        self.doc.text = RichTextValue('a' * 1000)
         self.doc.reindexObject()
         self.assertEqual(get_size(self.doc), '1 KB')
+
+    def test_getObjSize_MB(self):
+        from Products.CMFPlone.CatalogTool import getObjSize
+        get_size = getObjSize.callable
+        self.doc.text = RichTextValue('a' * 6000000)
+        self.doc.reindexObject()
+        self.assertEqual(get_size(self.doc), '5.7 MB')
 
     def test_uuid(self):
         alsoProvides(self.doc, IAttributeUUID)
@@ -1227,17 +1358,6 @@ class TestIndexers(PloneTestCase):
         wrapped = IndexableObjectWrapper(self.doc, self.portal.portal_catalog)
         self.assertTrue(wrapped.UID)
         self.assertTrue(uuid == wrapped.UID)
-
-
-class TestMetadata(PloneTestCase):
-
-    def testLocationAddedToMetdata(self):
-        self.folder.invokeFactory(
-            'Document', 'doc', title='document', location="foobar")
-        doc = self.folder.doc
-        catalog = self.portal.portal_catalog
-        brain = catalog(UID=doc.UID())[0]
-        self.assertEqual(brain.location, doc.getLocation())
 
 
 class TestObjectProvidedIndexExtender(unittest.TestCase):

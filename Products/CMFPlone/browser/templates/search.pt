@@ -223,9 +223,9 @@
                           <tal:results repeat="item batch">
                             <li tal:define="hasIcon item/getIcon">
                               <span class="result-title">
-                                <img class="image-icon"
+                                <img class="thumb-icon"
                                      tal:condition="hasIcon"
-                                     tal:replace="structure python: image_scale.tag(item, 'image', scale='icon', css_class='image-icon')">
+                                     tal:replace="structure python: image_scale.tag(item, 'image', scale='icon', css_class='thumb-icon')">
                                 <a href="#"
                                    tal:define="item_url item/getURL;
                                                item_type item/PortalType"

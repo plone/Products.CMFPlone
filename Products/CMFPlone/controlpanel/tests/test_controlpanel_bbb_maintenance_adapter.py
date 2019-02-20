@@ -32,18 +32,18 @@ class MaintenanceControlPanelAdapterTest(unittest.TestCase):
             7
         )
         self.maintenance_settings.days = 4
-        self.assertEquals(
+        self.assertEqual(
             getAdapter(self.portal, IMaintenanceSchema).days,
             4
         )
 
     def test_set_days(self):
-        self.assertEquals(
+        self.assertEqual(
             self.maintenance_settings.days,
             7
         )
         getAdapter(self.portal, IMaintenanceSchema).days = 4
-        self.assertEquals(
+        self.assertEqual(
             self.maintenance_settings.days,
             4
         )

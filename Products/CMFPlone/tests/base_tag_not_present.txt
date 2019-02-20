@@ -4,7 +4,7 @@ Base Tag Not Present
 PLIP #13705 removed the <base> tag from rendered templates, here we'll check
 that in fact is not being injected in some other way.
 
-  >>> from plone.testing.z2 import Browser
+  >>> from plone.testing.zope import Browser
   >>> from plone.app.testing import SITE_OWNER_NAME
   >>> from plone.app.testing import SITE_OWNER_PASSWORD
   >>> app = layer['app']

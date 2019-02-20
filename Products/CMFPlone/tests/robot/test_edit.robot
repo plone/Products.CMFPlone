@@ -81,7 +81,7 @@ I have the title input field
     Element Should Be Visible  xpath=//fieldset[@id='fieldset-default']
 
 I can only see the default tab
-    Wait For Condition  return $('.autotoc-nav .active:visible').size() > 0
+    Wait For Condition  return window.jQuery('.autotoc-nav .active:visible').size() > 0
     Element Should Not Be Visible  xpath=//fieldset[@id='fieldset-settings']
     Element Should Not Be Visible  xpath=//fieldset[@id='fieldset-dates']
     Element Should Not Be Visible  xpath=//fieldset[@id='fieldset-categorization']

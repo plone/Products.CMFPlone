@@ -3,6 +3,51 @@
  <adapters/>
  <utilities>
   <utility
+     interface="Products.CMFCore.interfaces.ITypesTool"
+     object="portal_types"/>
+  <utility
+     interface="Products.CMFCore.interfaces.IActionsTool"
+     object="portal_actions"/>
+  <utility
+     interface="Products.CMFCore.interfaces.ISkinsTool"
+     object="portal_skins"/>
+  <utility
+     interface="Products.CMFCore.interfaces.IWorkflowTool"
+     object="portal_workflow"/>
+  <utility
+     interface="Products.CMFCore.interfaces.ICachingPolicyManager"
+     object="caching_policy_manager"/>
+  <utility
+     interface="Products.CMFCore.interfaces.ICatalogTool"
+     object="portal_catalog"/>
+  <utility
+     interface="Products.CMFCore.interfaces.IContentTypeRegistry"
+     object="content_type_registry"/>
+  <utility
+     interface="Products.MailHost.interfaces.IMailHost"
+     object="MailHost"/>
+  <utility
+     interface="Products.CMFCore.interfaces.IMemberDataTool"
+     object="portal_memberdata"/>
+  <utility
+     interface="Products.CMFCore.interfaces.IMembershipTool"
+     object="portal_membership"/>
+  <utility
+     interface="Products.CMFCore.interfaces.IURLTool"
+     object="portal_url"/>
+  <utility
+     interface="Products.CMFCore.interfaces.IMetadataTool"
+     object="portal_metadata"/>
+  <utility
+     interface="Products.CMFCore.interfaces.IRegistrationTool"
+     object="portal_registration"/>
+  <utility
+     interface="Products.CMFCore.interfaces.ISyndicationTool"
+     object="portal_syndication"/>
+  <utility
+     interface="Products.CMFCore.interfaces.IUndoTool"
+     object="portal_undo"/>
+  <utility
      interface="five.customerize.interfaces.IViewTemplateContainer"
      object="portal_view_customizations"/>
   <utility

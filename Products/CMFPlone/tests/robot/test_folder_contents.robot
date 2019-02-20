@@ -128,4 +128,4 @@ Should be above
     Should be true  ${locator1-position} < ${locator2-position}
 
 folder contents pattern loaded
-    Wait For Condition  return $('.pat-structure div.navbar').size() > 0
+    Wait For Condition  return window.jQuery('.pat-structure div.navbar').size() > 0

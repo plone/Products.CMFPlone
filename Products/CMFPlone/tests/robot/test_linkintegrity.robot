@@ -17,7 +17,7 @@ Library  Remote  ${PLONE_URL}/RobotRemote
 
 Resource  keywords.robot
 
-#Suite setup  Set Selenium speed  0.5s
+# Suite setup  Set Selenium speed  0.5s
 Test Setup  Run keywords  Plone Test Setup
 Test Teardown  Run keywords  Plone Test Teardown
 
@@ -25,8 +25,6 @@ Test Teardown  Run keywords  Plone Test Teardown
 *** Test Cases ***************************************************************
 
 Scenario: When page is linked show warning
-  [Tags]  unstable
-  [Documentation]  This sometimes fails with: StaleElementReferenceException: Message: Element not found in the cache.
   Given a logged-in site administrator
     and a page to link to
     and a page to edit
@@ -35,8 +33,6 @@ Scenario: When page is linked show warning
 
 
 Scenario: After you fix linked page no longer show warning
-  [Tags]  unstable
-  [Documentation]  This sometimes fails with: StaleElementReferenceException: Message: Element not found in the cache.
   Given a logged-in site administrator
   a page to link to
     and a page to edit
@@ -47,9 +43,6 @@ Scenario: After you fix linked page no longer show warning
 
 
 Scenario: Show warning when deleting linked item from folder_contents
-  [Tags]  unstable
-  [Documentation]  This sometimes fails with: StaleElementReferenceException: Message: Element not found in the cache.
-  ...              This one seems to fail more often than the others.
   Given a logged-in site administrator
   a page to link to
     and a page to edit
@@ -86,6 +79,8 @@ a link in rich text
   Given patterns are loaded
   Wait until element is visible  css=.pat-relateditems .select2-input.select2-default
   Click Element  css=.pat-relateditems .select2-input.select2-default
+  Wait until element is visible  css=.pattern-relateditems-result.one-level-up a.pattern-relateditems-result-browse
+  Click Element  css=.pattern-relateditems-result.one-level-up a.pattern-relateditems-result-browse
   Wait until element is visible  xpath=(//span[contains(., 'Foo')])
   Click Element  xpath=(//span[contains(., 'Foo')])
   Wait until page contains  Foo
@@ -97,6 +92,7 @@ a link in rich text
 should show warning when deleting page
   Go To  ${PLONE_URL}/foo
   Click Link  css=#plone-contentmenu-actions a
+  Wait until element is visible  css=#plone-contentmenu-actions-delete
   Click Link  css=#plone-contentmenu-actions-delete
   Wait until page contains element  css=.breach-container .breach-item
 
@@ -131,6 +127,7 @@ should not show warning when deleting page from folder_contents
 should not show warning when deleting page
   Go To  ${PLONE_URL}/foo
   Click Link  css=#plone-contentmenu-actions a
+  Wait until element is visible  css=#plone-contentmenu-actions-delete
   Click Link  css=#plone-contentmenu-actions-delete
   Page should not contain element  css=.breach-container .breach-item
 

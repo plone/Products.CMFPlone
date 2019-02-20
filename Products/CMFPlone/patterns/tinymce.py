@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
+from lxml import html
 from plone.app.layout.navigation.root import getNavigationRootObject
 from plone.app.theming.utils import theming_policy
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.interfaces import IFilterSchema
 from Products.CMFPlone.interfaces import ITinyMCESchema
 from Products.CMFPlone.utils import get_portal
+from Products.CMFPlone.utils import safe_unicode
 from zope.component import getUtility
 
 import json
@@ -17,6 +20,11 @@ class TinyMCESettingsGenerator(object):
         self.request = request
         self.settings = getUtility(IRegistry).forInterface(
             ITinyMCESchema,
+            prefix="plone",
+            check=False
+        )
+        self.filter_settings = getUtility(IRegistry).forInterface(
+            IFilterSchema,
             prefix="plone",
             check=False
         )
@@ -81,7 +89,7 @@ class TinyMCESettingsGenerator(object):
         inline_styles = self.settings.inline_styles or []
         alignment_styles = self.settings.alignment_styles or []
         table_styles = self.settings.table_styles or []
-        return [{
+        style_formats = [{
             'title': 'Headers',
             'items': self.get_styles(header_styles)
         }, {
@@ -98,6 +106,7 @@ class TinyMCESettingsGenerator(object):
             'items': self.get_styles(
                 table_styles, 'classes', {'selector': 'table'})
         }]
+        return [sf for sf in style_formats if sf['items']]
 
     def get_tiny_config(self):
         settings = self.settings
@@ -196,6 +205,26 @@ class TinyMCESettingsGenerator(object):
                 tiny_config['templates'] = json.loads(settings.templates)
             except ValueError:
                 pass
+
+        # add safe_html settings, which are useed in backend for filtering:
+        if not self.filter_settings.disable_filtering:
+            valid_tags = self.filter_settings.valid_tags
+            nasty_tags = self.filter_settings.nasty_tags
+            custom_attributes = self.filter_settings.custom_attributes
+            safe_attributes = [
+                safe_unicode(attr) for attr in html.defs.safe_attrs]
+            valid_attributes = safe_attributes + custom_attributes
+            # valid_elements : 'a[href|target=_blank],strong/b,div[align],br'
+            tiny_valid_elements = []
+            for tag in valid_tags:
+                tag_str = "%s[%s]" % (tag, "|".join(valid_attributes))
+                tiny_valid_elements.append(tag_str)
+            # We want to remove the nasty tag including the content in the
+            # backend, so TinyMCE should allow them here.
+            for tag in nasty_tags:
+                tag_str = "%s[%s]" % (tag, "|".join(valid_attributes))
+                tiny_valid_elements.append(tag_str)
+            tiny_config['valid_elements'] = ",".join(tiny_valid_elements)
 
         if settings.other_settings:
             try:

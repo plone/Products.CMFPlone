@@ -18,34 +18,40 @@ Scenario: Modify an existing action in Actions Control Panel
   Given a logged-in administrator
     and the actions control panel
    When I modify an action title
+   Sleep  1
    Then anonymous users can see the new action title
 
 Scenario: Reorder in Actions Control Panel
   Given a logged-in administrator
     and the actions control panel
    When I change the actions order
+   Sleep  1
    Then anonymous users can see the actions new ordering
 
 Scenario: Create a new action in Actions Control Panel
   Given a logged-in administrator
     and the actions control panel
    When I add a new action
+   Sleep  1
    Then logged-in users can see the new action
 
 Scenario: Hide/show an action in Actions Control Panel
   Given a logged-in administrator
     and the actions control panel
    When I hide an action
+   Sleep  1
    Then anonymous users cannot see the action anymore
   Given a logged-in administrator
     and the actions control panel
    When I unhide the action
+   Sleep  1
    Then anonymous users can see the action again
 
 Scenario: Delete an action in Actions Control Panel
   Given a logged-in administrator
     and the actions control panel
    When I delete an action
+   Sleep  1
    Then anonymous users cannot see the action anymore
 
 *** Keywords *****************************************************************
@@ -53,7 +59,7 @@ Scenario: Delete an action in Actions Control Panel
 # --- GIVEN ------------------------------------------------------------------
 
 a logged-in administrator
-  Enable autologin as   Manager
+  Enable autologin as  Manager
 
 the actions control panel
   Go to  ${PLONE_URL}/@@actions-controlpanel
