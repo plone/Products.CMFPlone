@@ -88,7 +88,7 @@ def cookWhenChangingSettings(context, bundle=None):
 
         if css_path:
             for css_resource in resource.css:
-                css_url = '/' + css_resource
+                css_url = css_resource
                 response = subrequest(css_url)
                 if response.status == 200:
                     logger.info('Cooking css %s', css_resource)
@@ -107,7 +107,7 @@ def cookWhenChangingSettings(context, bundle=None):
                     logger.warn('Could not find resource: %s' , css_resource)
         if not resource.js or not js_path:
             continue
-        js_url = '/' + resource.js
+        js_url = resource.js
         response = subrequest(js_url)
         if response.status == 200:
             js = response.getBody()
