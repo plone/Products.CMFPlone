@@ -3,6 +3,7 @@ from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone._compat import dump_json_to_text
 from Products.CMFPlone.interfaces.basetool import IPloneBaseTool
 from zope import schema
+from zope.deferredimport import deprecated
 from zope.interface import Attribute
 from zope.interface import implementer
 from zope.interface import Interface
@@ -12,6 +13,12 @@ from zope.schema.vocabulary import SimpleVocabulary
 
 import json
 import six
+
+
+deprecated(
+    "It has been moved to plone.i18n.interfaces, import from there instead.",
+    ILanguageSchema='plone.i18n.interfaces:ILanguageSchema',
+)
 
 
 ROBOTS_TXT = u"""Sitemap: {portal_url}/sitemap.xml.gz
