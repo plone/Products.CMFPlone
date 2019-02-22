@@ -10,6 +10,7 @@ from plone.app.registry.browser import controlpanel
 from plone.memoize.instance import memoize
 from plone.registry.interfaces import IRegistry
 from zope.component import getUtility
+from ZPublisher.HTTPRequest import WSGIRequest
 
 import pkg_resources
 
@@ -48,21 +49,29 @@ class OverviewControlPanel(controlpanel.RegistryEditForm):
         return 'PIL' in self.core_versions()
 
     def server_info(self):
+        wsgi = isinstance(self.request, WSGIRequest)
+        server_name = 'unknown'
+        server_version = 'unknown'
+
+        # check for ZServer
         servers = getattr(getConfiguration(), 'servers', None)
         if servers and 'ZServer' in servers[0].__module__:
-            return {
-                'wsgi': False,
-                'server_name': 'ZServer',
-                'version': pkg_resources.get_distribution('ZServer').version,
-            }
+            server_name = 'ZServer'
+            server_version = pkg_resources.get_distribution('ZServer').version
         else:
-            # TODO: How can we find the name of the wsgi-server?
-            server_name = 'waitress'
-            return {
-                'wsgi': True,
-                'server_name': server_name,
-                'version': pkg_resources.get_distribution('waitress').version,
-            }
+            # try to find the wsgi-server that is used
+            server_name = self.request.get('SERVER_SOFTWARE')
+            if server_name:
+                try:
+                    server = pkg_resources.get_distribution(server_name)
+                    server_version = server.version
+                except ImportError:
+                    pass
+        return {
+            'wsgi': wsgi,
+            'server_name': server_name,
+            'version': server_version,
+        }
 
     def version_overview(self):
 
