@@ -72,7 +72,7 @@ setup(
         'plone.browserlayer >= 1.0rc4',
         'plone.contentrules',
         'plone.folder',
-        'plone.i18n',
+        'plone.i18n >= 4.0.4.dev0',
         'plone.indexer',
         'plone.intelligenttext',
         'plone.locking',

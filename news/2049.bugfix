@@ -1,0 +1,3 @@
+Resolve circular dependency between `Products.CMFPlone` and `plone.i18n` by
+moving `ILanguageSchema` there.
+[sallner]
