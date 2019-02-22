@@ -140,6 +140,16 @@
       </tal:list-versions>
     </ul>
 
+    <p tal:define="server_info python:view.server_info()">
+      <ul>
+        <li>WSGI: <span tal:content="python: 'On' if server_info['wsgi'] else 'Off'" /></li>
+        <li>Server:
+          <span tal:content="python: server_info['server_name']">waitress</span>
+          <span tal:content="python: server_info['version']">1.0.0</span>
+        </li>
+      </ul>
+    </p>
+
     <p tal:condition="not:view/is_dev_mode"
        class="discreet"
        i18n:translate="description_production_mode">

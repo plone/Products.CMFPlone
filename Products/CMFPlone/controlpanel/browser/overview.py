@@ -11,6 +11,8 @@ from plone.memoize.instance import memoize
 from plone.registry.interfaces import IRegistry
 from zope.component import getUtility
 
+import pkg_resources
+
 try:
     import plone.app.event
     plone.app.event  # pyflakes
@@ -44,6 +46,23 @@ class OverviewControlPanel(controlpanel.RegistryEditForm):
 
     def pil(self):
         return 'PIL' in self.core_versions()
+
+    def server_info(self):
+        servers = getattr(getConfiguration(), 'servers', None)
+        if servers and 'ZServer' in servers[0].__module__:
+            return {
+                'wsgi': False,
+                'server_name': 'ZServer',
+                'version': pkg_resources.get_distribution('ZServer').version,
+            }
+        else:
+            # TODO: How can we find the name of the wsgi-server?
+            server_name = 'waitress'
+            return {
+                'wsgi': True,
+                'server_name': server_name,
+                'version': pkg_resources.get_distribution('waitress').version,
+            }
 
     def version_overview(self):
 
