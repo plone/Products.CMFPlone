@@ -376,7 +376,6 @@ class NavTreeProvider(ContentProviderBase):
     )
     _item_markup_template = (
         u'<li class="{id}{has_sub_class}">'
-        u'{opener}'
         u'<a href="{url}" class="state-{review_state}"{aria_haspopup}>{title}</a>{opener}'  # noqa: E 501
         u'{sub}'
         u'</li>'
@@ -426,9 +425,10 @@ class NavTreeProvider(ContentProviderBase):
             entry = tab.copy()
             entry.update({
                 'path': '/'.join((navtree_path, tab['id'])),
-                'uid': None,
-                'review_state': None,
+                'uid': tab['id'],
             })
+            if 'review_state' not in entry:
+                entry['review_state'] = None
             if 'title' not in entry:
                 entry['title'] = (
                     tab.get('name')
