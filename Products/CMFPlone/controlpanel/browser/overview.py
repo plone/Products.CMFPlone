@@ -53,20 +53,16 @@ class OverviewControlPanel(controlpanel.RegistryEditForm):
         server_name = 'unknown'
         server_version = ''
 
-        # check for ZServer
-        servers = getattr(getConfiguration(), 'servers', None)
-        if servers and 'ZServer' in servers[0].__module__:
-            server_name = 'ZServer'
-            server_version = pkg_resources.get_distribution('ZServer').version
-        else:
-            # try to find the wsgi-server that is used
-            server_name = self.request.get('SERVER_SOFTWARE')
-            if server_name:
-                try:
-                    server = pkg_resources.get_distribution(server_name)
-                    server_version = server.version
-                except pkg_resources.DistributionNotFound:
-                    pass
+        server_name = self.request.get('SERVER_SOFTWARE')
+        if server_name:
+            if 'ZServer' in server_name:
+                server_name = 'ZServer'
+            try:
+                server = pkg_resources.get_distribution(server_name)
+                server_version = server.version
+            except (pkg_resources.DistributionNotFound,
+                    pkg_resources.RequirementParseError):
+                pass
         return {
             'wsgi': wsgi,
             'server_name': server_name,
