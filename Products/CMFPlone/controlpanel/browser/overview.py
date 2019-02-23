@@ -51,7 +51,7 @@ class OverviewControlPanel(controlpanel.RegistryEditForm):
     def server_info(self):
         wsgi = isinstance(self.request, WSGIRequest)
         server_name = 'unknown'
-        server_version = 'unknown'
+        server_version = ''
 
         # check for ZServer
         servers = getattr(getConfiguration(), 'servers', None)
@@ -65,7 +65,7 @@ class OverviewControlPanel(controlpanel.RegistryEditForm):
                 try:
                     server = pkg_resources.get_distribution(server_name)
                     server_version = server.version
-                except ImportError:
+                except pkg_resources.DistributionNotFound:
                     pass
         return {
             'wsgi': wsgi,
