@@ -222,8 +222,9 @@ class Search(BrowserView):
         return self._navroot_url
 
     def current_section_title(self):
-        if 'path' in self.request:
-            return self.context.unrestrictedTraverse(self.request['path']).Title()
+        section = self.context.restrictedTraverse(self.request['path'], None)
+        if section:
+            return section.Title()
         return ''
 
 

@@ -40,7 +40,7 @@
 
         <input type="hidden" name="sort_on" value="" />
         <input type="hidden" name="sort_order" value="" />
-	<input type="hidden" name="path" value="" tal:attributes="value request/form/path | nothing" />
+        <input type="hidden" name="path" value="" tal:attributes="value request/form/path | nothing" />
 
         <div class="input-group">
           <input class="searchPage form-control"
@@ -189,8 +189,10 @@
               </div>
 
               <h4 tal:condition="section">
-		Inside section: <span tal:replace="view/current_section_title" />
-	      </h4>
+                <span i18n:translate="search_inside_section" i18n:domain="plone">
+                  Inside section
+                </span>: <span tal:replace="view/current_section_title" />
+              </h4>
 
               <metal:searchresults define-macro="search_results">
                 <div class="autotabs">
