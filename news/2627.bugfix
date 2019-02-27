@@ -1,0 +1,3 @@
+Load legacy resources like comments.js
+Compile ++plone++static/plone-legacy-compiled.js with correct resource url of comments.js and others, use relative path instead of site url.
+[ksuess]
