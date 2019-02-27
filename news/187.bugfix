@@ -1,0 +1,2 @@
+Fix tests since the default nav-depth is now 3 for new sites.
+[pbauer]
