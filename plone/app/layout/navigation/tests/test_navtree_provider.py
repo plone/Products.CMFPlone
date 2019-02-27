@@ -33,8 +33,9 @@ class TestNavTreeContentProvider(unittest.TestCase):
         return adapter.navtree
 
     def test_default_settings(self):
+        self.assertEqual(self.registry['plone.navigation_depth'], 3)
         navtree = self._get_navtree()
-        self.assertListEqual(sorted(navtree), ['/plone'])
+        self.assertListEqual(sorted(navtree), ['/plone', '/plone/Members'])
         self.assertListEqual(
             [item['path'] for item in navtree['/plone']],
             ['/plone/index_html', '/plone/Members'],
@@ -57,7 +58,7 @@ class TestNavTreeContentProvider(unittest.TestCase):
             title=u'A simple document (àèìòù)',
         )
         navtree = self._get_navtree()
-        self.assertListEqual(sorted(navtree), ['/plone'])
+        self.assertListEqual(sorted(navtree), ['/plone', '/plone/Members'])
         self.assertListEqual(
             [item['path'] for item in navtree['/plone']],
             ['/plone/index_html', '/plone/Members'],
@@ -76,7 +77,7 @@ class TestNavTreeContentProvider(unittest.TestCase):
         )
         navtree = self._get_navtree()
         # default sorting by position in parent
-        self.assertListEqual(sorted(navtree), ['/plone'])
+        self.assertListEqual(sorted(navtree), ['/plone', '/plone/Members'])
         self.assertListEqual(
             [item['path'] for item in navtree['/plone']],
             [
@@ -90,7 +91,7 @@ class TestNavTreeContentProvider(unittest.TestCase):
         # check we can sort by title
         self.registry['plone.sort_tabs_on'] = u'sortable_title'
         navtree = self._get_navtree()
-        self.assertListEqual(sorted(navtree), ['/plone'])
+        self.assertListEqual(sorted(navtree), ['/plone', '/plone/Members'])
         self.assertListEqual(
             [item['path'] for item in navtree['/plone']],
             [
@@ -104,7 +105,7 @@ class TestNavTreeContentProvider(unittest.TestCase):
         # check we can reverse sorting
         self.registry['plone.sort_tabs_reversed'] = True
         navtree = self._get_navtree()
-        self.assertListEqual(sorted(navtree), ['/plone'])
+        self.assertListEqual(sorted(navtree), ['/plone', '/plone/Members'])
         self.assertListEqual(
             [item['path'] for item in navtree['/plone']],
             [
@@ -143,7 +144,7 @@ class TestNavTreeContentProvider(unittest.TestCase):
         )
         self.registry['plone.workflow_states_to_show'] = (u'private', )
         navtree = self._get_navtree()
-        self.assertListEqual(sorted(navtree), ['/plone'])
+        self.assertListEqual(sorted(navtree), ['/plone', '/plone/Members'])
         self.assertListEqual(
             [item['path'] for item in navtree['/plone']],
             ['/plone/index_html', '/plone/Members'],
