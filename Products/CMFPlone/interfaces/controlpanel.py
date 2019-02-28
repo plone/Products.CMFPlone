@@ -732,7 +732,7 @@ class INavigationSchema(Interface):
     navigation_depth = schema.Int(
         title=_(u'Navigation depth'),
         description=_(u'Number of folder levels to show in the navigation.'),
-        default=1,
+        default=3,
         required=True
     )
 
