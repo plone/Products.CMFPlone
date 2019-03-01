@@ -71,7 +71,7 @@
       name="mail-controlpanel"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".mail.MailControlPanel"
-      permission="cmf.ManagePortal"
+      permission="plone.app.controlpanel.Mail"
       />
 
   <!-- Navigation Control Panel -->
