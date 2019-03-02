@@ -1,0 +1,2 @@
+Fix redirection to `came_from` when url matches LOGIN_TEMPLATE_ID partly
+[petschki]

@@ -117,7 +117,7 @@ class LoginForm(form.EditForm):
         url_tool = getToolByName(self.context, 'portal_url')
         if not url_tool.isURLInPortal(came_from):
             return
-        came_from_path = parse.urlparse(came_from)[2]
+        came_from_path = parse.urlparse(came_from)[2].split('/')
         for login_template_id in LOGIN_TEMPLATE_IDS:
             if login_template_id in came_from_path:
                 return
