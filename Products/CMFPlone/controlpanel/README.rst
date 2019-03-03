@@ -57,7 +57,7 @@ Editing Control Panel
 Language Control Panel
 ----------------------
 
-  >>> from Products.CMFPlone.interfaces import ILanguageSchema
+  >>> from plone.i18n.interfaces import ILanguageSchema
   >>> language_settings = registry.forInterface(ILanguageSchema, prefix='plone')
 
   >>> language_settings.default_language

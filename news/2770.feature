@@ -1,0 +1,1 @@
+Display wsgi-state plus name and version of the server in the controlpanel [pbauer]

@@ -2,7 +2,7 @@
 <registry>
   <records interface="Products.CMFPlone.interfaces.IEditingSchema"
            prefix="plone" />
-  <records interface="Products.CMFPlone.interfaces.ILanguageSchema"
+  <records interface="plone.i18n.interfaces.ILanguageSchema"
            prefix="plone" />
   <records interface="Products.CMFPlone.interfaces.IFilterSchema"
            prefix="plone" />

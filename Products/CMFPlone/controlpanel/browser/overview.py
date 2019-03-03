@@ -10,6 +10,9 @@ from plone.app.registry.browser import controlpanel
 from plone.memoize.instance import memoize
 from plone.registry.interfaces import IRegistry
 from zope.component import getUtility
+from ZPublisher.HTTPRequest import WSGIRequest
+
+import pkg_resources
 
 try:
     import plone.app.event
@@ -44,6 +47,27 @@ class OverviewControlPanel(controlpanel.RegistryEditForm):
 
     def pil(self):
         return 'PIL' in self.core_versions()
+
+    def server_info(self):
+        wsgi = isinstance(self.request, WSGIRequest)
+        server_name = 'unknown'
+        server_version = ''
+
+        server_name = self.request.get('SERVER_SOFTWARE')
+        if server_name:
+            if 'ZServer' in server_name:
+                server_name = 'ZServer'
+            try:
+                server = pkg_resources.get_distribution(server_name)
+                server_version = server.version
+            except (pkg_resources.DistributionNotFound,
+                    pkg_resources.RequirementParseError):
+                pass
+        return {
+            'wsgi': wsgi,
+            'server_name': server_name,
+            'version': server_version,
+        }
 
     def version_overview(self):
 

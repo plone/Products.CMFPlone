@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from zope.component import adapts
-from Products.CMFPlone.interfaces import ILanguageSchema
 from zope.interface import implementer
 from zope.component import getUtility
+from plone.i18n.interfaces import ILanguageSchema
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 
 from plone.registry.interfaces import IRegistry
