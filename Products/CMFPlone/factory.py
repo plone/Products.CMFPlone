@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFPlone.Portal import PloneSite
 from Products.CMFPlone.events import SiteManagerCreatedEvent
 from Products.CMFPlone.interfaces import INonInstallable
@@ -146,6 +147,8 @@ def addPloneSite(context, site_id, title='Plone site', description='',
 
     notify(SiteManagerCreatedEvent(site))
     setSite(site)
+
+    site.getSiteManager().registerUtility(site, ISiteRoot)
 
     setup_tool.setBaselineContext('profile-%s' % profile_id)
     setup_tool.runAllImportStepsFromProfile('profile-%s' % profile_id)
