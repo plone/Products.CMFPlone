@@ -8,6 +8,18 @@ Changelog
 
 .. towncrier release notes start
 
+3.1.1 (2019-03-03)
+------------------
+
+Bug fixes:
+
+
+- Improve the new navigation and add test coverage [ale-rt] (#181)
+- Provide a proper unique id and a review state class for the first level tabs
+  [ale-rt] (#184)
+- Fix tests since the default nav-depth is now 3 for new sites. [pbauer] (#187)
+
+
 3.1.0 (2019-02-13)
 ------------------
 
