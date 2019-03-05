@@ -43,11 +43,11 @@ class AuthenticatorTestCase(PloneTestCase):
 
     def test_PloneTool_transitionObjectsByPaths(self):
         infoFor = self.portal.portal_workflow.getInfoFor
-        frontpage = self.portal['front-page']
+        frontpage = self.portal['news']
         self.assertEqual(infoFor(frontpage, 'review_state'), 'published')
         self.checkAuthenticator(
             '/plone_utils/transitionObjectsByPaths',
-            'workflow_action=retract&paths:list=front-page', status=302)
+            'workflow_action=retract&paths:list=news', status=302)
         self.assertEqual(infoFor(frontpage, 'review_state'), 'visible')
 
     def test_PloneTool_renameObjectsByPaths(self):
