@@ -120,7 +120,7 @@ class TestSafeFormatter(PloneTestCase):
         hack_pt(pt, self.portal)
         self.assertEqual(
             pt.pt_render().strip(),
-            '<p>title of &lt;PloneSite at plone&gt; is Plone site</p>')
+            '<p>title of &lt;PloneSite at plone&gt; is Welcome to Plone</p>')
 
     def test_cook_zope2_page_templates_good_format_attr_unicode(self):
         from Products.PageTemplates.ZopePageTemplate import ZopePageTemplate
@@ -128,7 +128,7 @@ class TestSafeFormatter(PloneTestCase):
         hack_pt(pt, self.portal)
         self.assertEqual(
             pt.pt_render().strip(),
-            '<p>title of &lt;PloneSite at plone&gt; is Plone site</p>')
+            '<p>title of &lt;PloneSite at plone&gt; is Welcome to Plone</p>')
 
     def test_access_to_private_content_not_allowed_via_rich_text(self):
         try:
