@@ -216,3 +216,13 @@ PloneLocalesMessageFactory = MessageFactory('plonelocales')
 # Apply early monkey patches.  For these patches, it is too late if we do this
 # in the initialize method.
 from Products.CMFPlone import earlypatches  # noqa
+
+# https://github.com/zopefoundation/Zope/issues/397
+import zope.interface
+import zope.browserpage.metaconfigure
+import zope.publisher.interfaces.browser
+
+zope.interface.classImplementsOnly(
+    zope.browserpage.metaconfigure.simple,
+    zope.interface.implementedBy(zope.browserpage.metaconfigure.simple) - zope.publisher.interfaces.browser.IBrowserPublisher
+)
