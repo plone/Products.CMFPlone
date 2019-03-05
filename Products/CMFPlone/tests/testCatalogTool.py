@@ -33,7 +33,7 @@ user2 = 'u2'
 group2 = 'g2'
 
 base_content = ['Members', 'aggregator', 'aggregator',
-                'events', 'news', TEST_USER_ID, 'front-page', 'doc']
+                'events', 'news', TEST_USER_ID, 'doc']
 
 
 class TestCatalogSetup(PloneTestCase):
