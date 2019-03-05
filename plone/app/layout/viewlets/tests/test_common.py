@@ -12,10 +12,8 @@ from plone.protect import authenticator as auth
 from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.interfaces import INonStructuralFolder
 from Products.CMFPlone.interfaces import ISiteSchema
-from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.component.hooks import setSite
-from zope.contentprovider.interfaces import IContentProvider
 from zope.interface import alsoProvides
 from zope.interface import directlyProvides
 from zope.interface import noLongerProvides
@@ -228,6 +226,19 @@ class TestGlobalSectionsViewlet(ViewletsTestCase):
     """Test the global sections views viewlet.
     """
 
+    def setUp(self):
+        self.portal = self.layer['portal']
+        self.request = self.layer['request']
+        self.registry = getUtility(IRegistry)
+        self.folder = self.portal['Members'][TEST_USER_ID]
+        self.portal.Members.reindexObject()
+        self.folder.reindexObject()
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
+
+    def _get_navtree(self):
+        gsv = GlobalSectionsViewlet(self.portal, self.request.clone(), None)
+        return gsv.navtree
+
     def test_selectedtabs(self):
         """ Test selected tabs the simplest case
         """
@@ -287,9 +298,7 @@ class TestGlobalSectionsViewlet(ViewletsTestCase):
         subfolder.invokeFactory('Folder', 'subsubfolder', title=u'Sub2folder')
 
         request = self.layer['request']
-        nav_tree_provider = getMultiAdapter(
-            (self.portal, request, None), IContentProvider, 'plone.navtree')
-        navtree = nav_tree_provider.navtree
+        navtree = self._get_navtree()
         self.assertListEqual(
             sorted(navtree),
             [
@@ -315,3 +324,213 @@ class TestGlobalSectionsViewlet(ViewletsTestCase):
         gsv = GlobalSectionsViewlet(self.portal, request, None)
         gsv.update()
         self.assertTrue(gsv.render())
+
+    def test_default_settings(self):
+        self.assertEqual(self.registry['plone.navigation_depth'], 3)
+        navtree = self._get_navtree()
+        self.assertListEqual(sorted(navtree), ['/plone', '/plone/Members'])
+        self.assertListEqual(
+            [item['path'] for item in navtree['/plone']],
+            ['/plone/index_html', '/plone/Members'],
+        )
+
+    def test_do_not_generate_tabs(self):
+        self.registry['plone.generate_tabs'] = False
+        navtree = self._get_navtree()
+        self.assertListEqual(sorted(navtree), ['/plone'])
+        self.assertListEqual(
+            [item['path'] for item in navtree['/plone']],
+            ['/plone/index_html'],
+        )
+
+    def test_generate_tabs_non_folderish(self):
+        self.registry['plone.nonfolderish_tabs'] = False
+        self.portal.invokeFactory(
+            'Document',
+            'test-doc',
+            title=u'A simple document (àèìòù)',
+        )
+        navtree = self._get_navtree()
+        self.assertListEqual(sorted(navtree), ['/plone', '/plone/Members'])
+        self.assertListEqual(
+            [item['path'] for item in navtree['/plone']],
+            ['/plone/index_html', '/plone/Members'],
+        )
+
+    def test_generate_tabs_sorted(self):
+        self.portal.invokeFactory(
+            'Document',
+            'test-doc-2',
+            title=u'Document 2',
+        )
+        self.portal.invokeFactory(
+            'Document',
+            'test-doc-1',
+            title=u'Document 1',
+        )
+        navtree = self._get_navtree()
+        # default sorting by position in parent
+        self.assertListEqual(sorted(navtree), ['/plone', '/plone/Members'])
+        self.assertListEqual(
+            [item['path'] for item in navtree['/plone']],
+            [
+                '/plone/index_html',
+                '/plone/Members',
+                '/plone/test-doc-2',
+                '/plone/test-doc-1',
+            ],
+        )
+
+        # check we can sort by title
+        self.registry['plone.sort_tabs_on'] = u'sortable_title'
+        navtree = self._get_navtree()
+        self.assertListEqual(sorted(navtree), ['/plone', '/plone/Members'])
+        self.assertListEqual(
+            [item['path'] for item in navtree['/plone']],
+            [
+                '/plone/index_html',
+                '/plone/Members',
+                '/plone/test-doc-1',
+                '/plone/test-doc-2',
+            ],
+        )
+
+        # check we can reverse sorting
+        self.registry['plone.sort_tabs_reversed'] = True
+        navtree = self._get_navtree()
+        self.assertListEqual(sorted(navtree), ['/plone', '/plone/Members'])
+        self.assertListEqual(
+            [item['path'] for item in navtree['/plone']],
+            [
+                '/plone/index_html',
+                '/plone/test-doc-2',
+                '/plone/test-doc-1',
+                '/plone/Members',
+            ],
+        )
+
+    def test_generate_tabs_displayed_types(self):
+        self.registry['plone.displayed_types'] = (
+            u'Image',
+            u'File',
+            u'Link',
+            u'News Item',
+            u'Document',
+            u'Event',
+        )
+        navtree = self._get_navtree()
+        self.assertListEqual(
+            [item['path'] for item in navtree['/plone']],
+            [
+                '/plone/index_html',
+            ],
+        )
+
+    def test_generate_tabs_filter_on_state(self):
+        self.registry['plone.filter_on_workflow'] = True
+        navtree = self._get_navtree()
+        self.assertListEqual(
+            [item['path'] for item in navtree['/plone']],
+            [
+                '/plone/index_html',
+            ],
+        )
+        self.registry['plone.workflow_states_to_show'] = (u'private', )
+        navtree = self._get_navtree()
+        self.assertListEqual(sorted(navtree), ['/plone', '/plone/Members'])
+        self.assertListEqual(
+            [item['path'] for item in navtree['/plone']],
+            ['/plone/index_html', '/plone/Members'],
+        )
+
+        # Let's check this works also with deep navigation
+        self.registry['plone.navigation_depth'] = 2
+        navtree = self._get_navtree()
+        self.assertListEqual(sorted(navtree), ['/plone', '/plone/Members'])
+        self.assertListEqual(
+            [item['path'] for item in navtree['/plone']],
+            ['/plone/index_html', '/plone/Members'],
+        )
+        self.assertListEqual(
+            [item['path'] for item in navtree['/plone/Members']],
+            ['/plone/Members/test_user_1_'],
+        )
+
+    def test_generate_tabs_exclude_from_nav(self):
+        self.portal.invokeFactory(
+            'Folder',
+            'test-folder',
+            title=u'Test folder',
+        )
+        self.portal.invokeFactory(
+            'Folder',
+            'excluded-folder',
+            title=u'Excluded folder',
+            exclude_from_nav=True,
+        )
+        self.portal['excluded-folder'].invokeFactory(
+            'Folder',
+            'sub-folder',
+            title=u'Sub folder',
+        )
+
+        navtree = self._get_navtree()
+        self.assertListEqual(
+            [item['path'] for item in navtree['/plone']],
+            [
+                '/plone/index_html',
+                '/plone/Members',
+                '/plone/test-folder',
+                '/plone/excluded-folder',
+            ],
+        )
+
+        # Check also that we we have proper nesting
+        self.registry['plone.navigation_depth'] = 2
+        navtree = self._get_navtree()
+        self.assertListEqual(
+            sorted(navtree),
+            ['/plone', '/plone/Members', '/plone/excluded-folder'],
+        )
+        self.assertListEqual(
+            [item['path'] for item in navtree['/plone/excluded-folder']],
+            ['/plone/excluded-folder/sub-folder'],
+        )
+
+        self.registry['plone.navigation_depth'] = 1
+        self.registry['plone.show_excluded_items'] = False
+        navtree = self._get_navtree()
+        self.assertListEqual(sorted(navtree), ['/plone'])
+        self.assertListEqual(
+            [item['path'] for item in navtree['/plone']],
+            ['/plone/index_html', '/plone/Members', '/plone/test-folder'],
+        )
+
+        # If we increase the navigation depth to 2 the sub folder in the
+        # exclude folder it is there but unlinked
+        self.registry['plone.navigation_depth'] = 2
+        navtree = self._get_navtree()
+        self.assertListEqual(
+            sorted(navtree),
+            ['/plone', '/plone/Members', '/plone/excluded-folder'],
+        )
+        self.assertListEqual(
+            [item['path'] for item in navtree['/plone']],
+            ['/plone/index_html', '/plone/Members', '/plone/test-folder'],
+        )
+        self.assertListEqual(
+            [item['path'] for item in navtree['/plone/excluded-folder']],
+            ['/plone/excluded-folder/sub-folder'],
+        )
+
+        self.portal['excluded-folder']['sub-folder'].exclude_from_nav = True
+        self.portal['excluded-folder']['sub-folder'].reindexObject()
+        navtree = self._get_navtree()
+        self.assertListEqual(
+            sorted(navtree),
+            ['/plone', '/plone/Members'],
+        )
+        self.assertListEqual(
+            [item['path'] for item in navtree['/plone']],
+            ['/plone/index_html', '/plone/Members', '/plone/test-folder'],
+        )

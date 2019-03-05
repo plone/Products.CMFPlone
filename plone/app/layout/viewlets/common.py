@@ -3,17 +3,22 @@ from AccessControl import getSecurityManager
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from cgi import escape
+from collections import defaultdict
 from datetime import date
 from functools import total_ordering
 from plone.app.layout.globals.interfaces import IViewView
+from plone.app.layout.navigation.root import getNavigationRoot
 from plone.app.layout.navigation.root import getNavigationRootObject
 from plone.memoize.view import memoize
+from plone.memoize.view import memoize_contextless
 from plone.protect.utils import addTokenToUrl
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.CMFPlone.interfaces import ISearchSchema
 from Products.CMFPlone.interfaces import ISiteSchema
+from Products.CMFPlone.interfaces.controlpanel import ILanguageSchema
+from Products.CMFPlone.interfaces.controlpanel import INavigationSchema
 from Products.CMFPlone.utils import getSiteLogo
 from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser import BrowserView
@@ -215,6 +220,161 @@ class LogoViewlet(ViewletBase):
 
 class GlobalSectionsViewlet(ViewletBase):
     index = ViewPageTemplateFile('sections.pt')
+
+    _opener_markup_template = (
+        u'<input id="navitem-{uid}" type="checkbox" class="opener" />'
+        u'<label for="navitem-{uid}" role="button" aria-label="{title}"></label>'  # noqa: E 501
+    )
+    _item_markup_template = (
+        u'<li class="{id}{has_sub_class}">'
+        u'<a href="{url}" class="state-{review_state}"{aria_haspopup}>{title}</a>{opener}'  # noqa: E 501
+        u'{sub}'
+        u'</li>'
+    )
+    _subtree_markup_wrapper = (
+        u'<ul class="has_subtree dropdown">{out}</ul>'
+    )
+
+    @property
+    @memoize_contextless
+    def settings(self):
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(INavigationSchema, prefix='plone')
+        return settings
+
+    @property
+    def language_settings(self):
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(ILanguageSchema, prefix='plone')
+        return settings
+
+    @property
+    def navtree_path(self):
+        return getNavigationRoot(self.context)
+
+    @property
+    def navtree_depth(self):
+        return self.settings.navigation_depth
+
+    @property
+    def current_language(self):
+        return (
+            self.request.get('LANGUAGE', None)
+            or (self.context and aq_inner(self.context).Language())
+            or self.language_settings.default_language
+        )
+
+    @property
+    @memoize
+    def navtree(self):
+        ret = defaultdict(list)
+        portal_tabs_view = getMultiAdapter((self.context, self.request),
+                                           name='portal_tabs_view')
+        tabs = portal_tabs_view.topLevelTabs()
+        navtree_path = self.navtree_path
+        for tab in tabs:
+            entry = tab.copy()
+            entry.update({
+                'path': '/'.join((navtree_path, tab['id'])),
+                'uid': tab['id'],
+            })
+            if 'review_state' not in entry:
+                entry['review_state'] = None
+            if 'title' not in entry:
+                entry['title'] = (
+                    tab.get('name')
+                    or tab.get('description')
+                    or tab['id']
+                )
+            entry['title'] = safe_unicode(entry['title'])
+            ret[navtree_path].append(entry)
+
+        if not self.settings.generate_tabs:
+            return ret
+
+        query = {
+            'path': {
+                'query': self.navtree_path,
+                'depth': self.navtree_depth,
+            },
+            'portal_type': {'query': self.settings.displayed_types},
+            'Language': self.current_language,
+            'sort_on': self.settings.sort_tabs_on,
+            'is_default_page': False,
+        }
+        if self.settings.sort_tabs_reversed:
+            query['sort_order'] = 'reverse'
+
+        if not self.settings.nonfolderish_tabs:
+            query['is_folderish'] = True
+
+        if self.settings.filter_on_workflow:
+            query['review_state'] = list(
+                self.settings.workflow_states_to_show or ()
+            )
+
+        if not self.settings.show_excluded_items:
+            query['exclude_from_nav'] = False
+
+        portal_catalog = getToolByName(self.context, 'portal_catalog')
+        brains = portal_catalog.searchResults(**query)
+
+        registry = getUtility(IRegistry)
+        types_using_view = registry.get(
+            'plone.types_use_view_action_in_listings', [])
+
+        for brain in brains:
+            brain_path = '/'.join(brain.getPath().split('/'))
+            brain_parent_path = brain_path.rpartition('/')[0]
+            if brain_parent_path == navtree_path:
+                # This should be already provided by the portal_tabs_view
+                continue
+            url = brain.getURL()
+            if brain.portal_type in types_using_view:
+                url += '/view'
+            entry = {
+                'id': brain.getId,
+                'path': brain_path,
+                'uid': brain.UID,
+                'url': url,
+                'title': safe_unicode(brain.Title),
+                'review_state': brain.review_state,
+            }
+            ret[brain_parent_path].append(entry)
+        return ret
+
+    def render_item(self, item, path):
+        sub = self.build_tree(item['path'], first_run=False)
+        if sub:
+            item.update({
+                'sub': sub,
+                'opener':  self._opener_markup_template.format(**item),
+                'aria_haspopup': ' aria-haspopup="true"',
+                'has_sub_class': ' has_subtree',
+            })
+        else:
+            item.update({
+                'sub': sub,
+                'opener':  '',
+                'aria_haspopup': '',
+                'has_sub_class': '',
+            })
+        return self._item_markup_template.format(**item)
+
+    def build_tree(self, path, first_run=True):
+        """Non-template based recursive tree building.
+        3-4 times faster than template based.
+        """
+        out = u''
+        for item in self.navtree.get(path, []):
+            out += self.render_item(item, path)
+
+        if not first_run and out:
+            out = self._subtree_markup_wrapper.format(out=out)
+        return out
+
+    def render_globalnav(self):
+        return self.build_tree(self.navtree_path)
 
     def update(self):
         context = aq_inner(self.context)

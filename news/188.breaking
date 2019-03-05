@@ -1,0 +1,1 @@
+Remove the ``plone.navtree`` content provider that was introduced in the context of the Navigation PLIP (https://github.com/plone/Products.CMFPlone/issues/2516) [ale-rt]
