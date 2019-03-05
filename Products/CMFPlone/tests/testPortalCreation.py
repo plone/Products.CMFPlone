@@ -531,13 +531,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
                     "Actions tool still has visible 'syndication' action"
                 )
 
-    def testObjectButtonActionsInvisibleOnPortalRoot(self):
-        # only a manager would have proper permissions
-        self.setRoles(['Manager', 'Member'])
-        acts = self.actions.listFilteredActionsFor(self.portal)
-        buttons = acts.get('object_buttons', [])
-        self.assertEqual(0, len(buttons))
-
     def testObjectButtonActionsInvisibleOnPortalDefaultDocument(self):
         # only a manager would have proper permissions
         self.setRoles(['Manager', 'Member'])
