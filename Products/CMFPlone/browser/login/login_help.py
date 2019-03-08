@@ -60,7 +60,7 @@ class RequestResetPassword(form.Form):
         if self.use_email_as_login():
             self.widgets['reset_password'].label = _(
                 u'label_email',
-                default=u'Email'
+                default=u'E-mail'
             )
 
     @button.buttonAndHandler(
