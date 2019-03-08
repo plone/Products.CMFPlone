@@ -161,7 +161,7 @@
                tal:attributes="class python:error and 'field error' or 'field'">
             <label
                 for="file"
-                i18n:translate="label_file">
+                i18n:translate="label_csv_file">
               CSV file
             </label>
 
