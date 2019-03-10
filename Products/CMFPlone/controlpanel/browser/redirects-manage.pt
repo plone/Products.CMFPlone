@@ -22,7 +22,7 @@
         <dt i18n:translate="">
           Info
         </dt>
-        <dd i18n:translate="help_sharing_page_default_page">
+        <dd i18n:translate="help_aliases">
           You are managing the alternative urls of a default view in a container.
           To manage them for the entire container,
           <a
