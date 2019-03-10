@@ -1,0 +1,2 @@
+Fix errors that abort the verification when debugging a DB with ./bin/instance verifydb -D.
+[pbauer]
