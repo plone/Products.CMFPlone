@@ -64,6 +64,7 @@ def verify_record(oid, data, debug=False):
     input_file = io.BytesIO(data)
     unpickler = PersistentUnpickler(None, persistent_load, input_file)
     class_info = 'unknown'
+    pos = None
     try:
         class_info = unpickler.load()
         pos = input_file.tell()
@@ -77,11 +78,17 @@ def verify_record(oid, data, debug=False):
         ))
         logger.info(repr(pickle))
         logger.info(traceback.format_exc())
-        if debug:
+        if debug and pos is not None:
             try:
                 pickletools.dis(pickle[pos:])
+            except Exception:
+                # ignore exceptions while disassembling the pickle since the
+                # real issue is that it references a unavailable module
+                pass
             finally:
                 pdb.set_trace()
+        elif debug and pos is None:
+            pdb.set_trace()
         return False
     return True
 
