@@ -82,7 +82,9 @@ def verify_record(oid, data, debug=False):
             try:
                 pickletools.dis(pickle[pos:])
             except Exception:
-                logger.info(traceback.format_exc())
+                # ignore exceptions while disassembling the pickle since the
+                # real issue is that it references a unavailable module
+                pass
             finally:
                 pdb.set_trace()
         elif debug and pos is None:
