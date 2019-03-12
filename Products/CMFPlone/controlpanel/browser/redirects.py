@@ -16,6 +16,13 @@ from zope.component.hooks import getSite
 from zope.i18nmessageid import MessageFactory
 
 import csv
+import tempfile
+
+try:
+    # use this to stream csv data if we can
+    from ZPublisher.Iterators import filestream_iterator
+except ImportError:
+    filestream_iterator = None
 
 
 _ = MessageFactory('plone')
@@ -369,29 +376,39 @@ class RedirectsControlPanel(BrowserView):
             )
 
     def download(self):
-        """Download all redirects as CSV."""
-        # TODO: saving to a file and streaming as a blob would be useful:
-        # with one million redirects you easily get 30 MB.
-        stream = StringIO()
-        csv_writer = writer(stream)
-        csv_writer.writerow(('old path', 'new path', 'datetime', 'manual'))
-        storage = getUtility(IRedirectionStorage)
-        paths = storage._paths
-        for old_path, new_info in paths.items():
-            row = [old_path]
-            if not isinstance(new_info, tuple):
-                # Old data: only a single path, no date and manual boolean.
-                new_info = (new_info,)
-            row.extend(new_info)
-            csv_writer.writerow(row)
-        contents = stream.getvalue()
+        """Download all redirects as CSV.
+
+        We save to a temporary file and try to stream it as a blob:
+        with one million redirects you easily get 30 MB, which is slow as non-blob.
+        """
+        file_descriptor, file_path = tempfile.mkstemp(
+            suffix='.csv', prefix='redirects_'
+        )
+        with open(file_path, 'w') as stream:
+            csv_writer = writer(stream)
+            csv_writer.writerow(('old path', 'new path', 'datetime', 'manual'))
+            storage = getUtility(IRedirectionStorage)
+            paths = storage._paths
+            for old_path, new_info in paths.items():
+                row = [old_path]
+                if not isinstance(new_info, tuple):
+                    # Old data: only a single path, no date and manual boolean.
+                    new_info = (new_info,)
+                row.extend(new_info)
+                csv_writer.writerow(row)
+        with open(file_path) as stream:
+            contents = stream.read()
+            length = len(contents)
+
         response = self.request.response
         response.setHeader('Content-Type', 'text/csv')
-        response.setHeader('Content-Length', len(contents))
+        response.setHeader('Content-Length', length)
         response.setHeader(
             'Content-Disposition', 'attachment; filename=redirects.csv'
         )
-        return contents
+        if filestream_iterator is None:
+            return contents
+        return filestream_iterator(file_path, 'rb')
 
     @memoize
     def view_url(self):
