@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from csv import writer
 from plone.app.redirector.interfaces import IRedirectionStorage
 from plone.batching.browser import PloneBatchView
 from plone.memoize.view import memoize
@@ -258,6 +259,8 @@ class RedirectsControlPanel(BrowserView):
                 del form['target_path']
         elif 'form.button.Upload' in form:
             self.upload(form['file'], portal, storage, status)
+        elif 'form.button.Download' in form:
+            return self.download()
 
         return self.index()
 
@@ -364,6 +367,31 @@ class RedirectsControlPanel(BrowserView):
                 ),
                 type='info',
             )
+
+    def download(self):
+        """Download all redirects as CSV."""
+        # TODO: saving to a file and streaming as a blob would be useful:
+        # with one million redirects you easily get 30 MB.
+        stream = StringIO()
+        csv_writer = writer(stream)
+        csv_writer.writerow(('old path', 'new path', 'datetime', 'manual'))
+        storage = getUtility(IRedirectionStorage)
+        paths = storage._paths
+        for old_path, new_info in paths.items():
+            row = [old_path]
+            if not isinstance(new_info, tuple):
+                # Old data: only a single path, no date and manual boolean.
+                new_info = (new_info,)
+            row.extend(new_info)
+            csv_writer.writerow(row)
+        contents = stream.getvalue()
+        response = self.request.response
+        response.setHeader('Content-Type', 'text/csv')
+        response.setHeader('Content-Length', len(contents))
+        response.setHeader(
+            'Content-Disposition', 'attachment; filename=redirects.csv'
+        )
+        return contents
 
     @memoize
     def view_url(self):

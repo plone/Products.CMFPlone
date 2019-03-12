@@ -204,6 +204,16 @@
             All existing alternative urls for this site
           </legend>
 
+          <div>
+            <input
+                class="context"
+                type="submit"
+                value="Download all as CSV"
+                name="form.button.Download"
+                i18n:attributes="value"
+              />
+          </div>
+
           <label for="filter-existing-aliases-q" i18n:translate="">Filter by prefix</label>
           <input
               type="text"
