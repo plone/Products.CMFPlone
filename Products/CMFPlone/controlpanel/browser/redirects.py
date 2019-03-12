@@ -125,7 +125,9 @@ class RedirectsView(BrowserView):
             else:
                 del form['redirection']
                 storage.add(
-                    redirection, "/".join(self.context.getPhysicalPath())
+                    redirection,
+                    "/".join(self.context.getPhysicalPath()),
+                    manual=True,
                 )
                 status.addStatusMessage(
                     _(u"Alternative url added."), type='info'
@@ -286,7 +288,7 @@ class RedirectsControlPanel(BrowserView):
         if err:
             status.addStatusMessage(_(err), type='error')
         else:
-            storage.add(abs_redirection, abs_target)
+            storage.add(abs_redirection, abs_target, manual=True)
             status.addStatusMessage(
                 _(u"Alternative url from {0} to {1} added.").format(
                     abs_redirection, abs_target
@@ -354,7 +356,7 @@ class RedirectsControlPanel(BrowserView):
 
         if not had_errors:
             for abs_redirection, abs_target in successes:
-                storage.add(abs_redirection, abs_target)
+                storage.add(abs_redirection, abs_target, manual=True)
             status.addStatusMessage(
                 _(
                     u"${count} alternative urls added.",
