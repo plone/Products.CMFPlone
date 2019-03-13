@@ -426,6 +426,9 @@ class RedirectsControlPanel(BrowserView):
         We save to a temporary file and try to stream it as a blob:
         with one million redirects you easily get 30 MB, which is slow as non-blob.
         """
+        portal = getSite()
+        portal_path = "/".join(portal.getPhysicalPath())
+        len_portal_path = len(portal_path)
         file_descriptor, file_path = tempfile.mkstemp(
             suffix='.csv', prefix='redirects_'
         )
@@ -434,12 +437,20 @@ class RedirectsControlPanel(BrowserView):
             csv_writer.writerow(('old path', 'new path', 'datetime', 'manual'))
             storage = getUtility(IRedirectionStorage)
             paths = storage._paths
+            # Note that the old and new paths start with /plone-site-id.
+            # We strip this, as it is superfluous, and we would get errors
+            # when using this download as an upload.
             for old_path, new_info in paths.items():
+                if old_path.startswith(portal_path):
+                    old_path = old_path[len_portal_path:]
                 row = [old_path]
                 if not isinstance(new_info, tuple):
                     # Old data: only a single path, no date and manual boolean.
                     new_info = (new_info,)
                 row.extend(new_info)
+                new_path = row[1]
+                if new_path.startswith(portal_path):
+                    row[1] = new_path[len_portal_path:]
                 csv_writer.writerow(row)
         with open(file_path) as stream:
             contents = stream.read()

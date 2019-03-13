@@ -620,26 +620,30 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         contents.sort()
         self.assertEqual(
             contents[0],
-            '/plone/foo/0,/plone/bar/0,2019/01/27 10:00:00 GMT-3,True',
+            '/foo/0,/bar/0,2019/01/27 10:00:00 GMT-3,True',
         )
         self.assertEqual(
             contents[1999],
-            '/plone/foo/999,/plone/bar/999,2019/01/27 10:00:00 GMT-3,True',
+            '/foo/999,/bar/999,2019/01/27 10:00:00 GMT-3,True',
         )
 
     def test_download_upload(self):
         # Test uploading a download and downloading an upload.
+
+        # 1. Manually add some redirects.
         storage = getUtility(IRedirectionStorage)
         portal_path = self.layer['portal'].absolute_url_path()
         now = DateTime('2019/01/27 10:00:00 GMT-3')
         for i in range(10):
             storage.add(
                 '{0:s}/foo/{1:s}'.format(portal_path, str(i)),
-                '{0:s}/bar/{1:s}'.format(portal_path, str(i)),
+                '{0:s}/test-folder'.format(portal_path),
                 now=now,
                 manual=True,
             )
         transaction.commit()
+
+        # 2. Download the redirects.
         self.browser.open("%s/@@redirection-controlpanel" % self.portal_url)
         self.browser.getControl(name='form.button.Download').click()
         self.assertEqual(
@@ -648,24 +652,24 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         )
         downloaded_contents = self.browser.contents
         contents = downloaded_contents.splitlines()
-        # pop the header
         self.assertEqual(contents.pop(0), 'old path,new path,datetime,manual')
         self.assertEqual(len(contents), 10)
         contents.sort()
         self.assertEqual(
             contents[0],
-            '/plone/foo/0,/plone/bar/0,2019/01/27 10:00:00 GMT-3,True',
+            '/foo/0,/test-folder,2019/01/27 10:00:00 GMT-3,True',
         )
-        # clear the storage
+
+        # 3. clear the redirect storage
         storage.clear()
         transaction.commit()
-        # download is empty
         self.browser.open("%s/@@redirection-controlpanel" % self.portal_url)
         self.browser.getControl(name='form.button.Download').click()
         contents = self.browser.contents.splitlines()
         self.assertEqual(len(contents), 1)
         self.assertEqual(contents[0], 'old path,new path,datetime,manual')
-        # upload the original download
+
+        # 4. upload the original download
         upload = dummy.File(
             filename='redirects.csv', data=safe_bytes(downloaded_contents)
         )
@@ -684,3 +688,17 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         )
         self.assertNotIn('Please correct these errors', self.browser.contents)
         self.assertEqual(len(storage), 10)
+
+        # 5. download the upload
+        self.browser.getControl(name='form.button.Download').click()
+        new_downloaded_contents = self.browser.contents
+        contents = downloaded_contents.splitlines()
+        self.assertEqual(contents.pop(0), 'old path,new path,datetime,manual')
+        self.assertEqual(len(contents), 10)
+        contents.sort()
+        self.assertEqual(
+            contents[0],
+            '/foo/0,/test-folder,2019/01/27 10:00:00 GMT-3,True',
+        )
+        # and it is actually the same as the original download
+        self.assertEqual(new_downloaded_contents, downloaded_contents)
