@@ -475,7 +475,7 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
             # third column with date:
             (b'/three', b'/test-folder', b'2003-01-31'),
             # fourth column with manual:
-            (b'/four', b'/test-folder', b'2004-01-31', b'False'),
+            (b'/four', b'/test-folder', b'2004/01/27 10:00:00 GMT-3', b'False'),
             # fifth column is ignored:
             (b'/five', b'/test-folder', b'2005-01-31', b'True', b'ignored'),
             # manual can be '0' (or anything starting with f/F/n/N/0)
@@ -530,10 +530,10 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         self.assertEqual(redirect[2], True)
 
         # fourth column with manual:
-        # (b'/four', b'/test-folder', b'2004-01-31', b'False'),
+        # (b'/four', b'/test-folder', b'2004/01/27 10:00:00 GMT-3', b'False'),
         redirect = storage._paths['/plone/four']
         self.assertEqual(redirect[0], '/plone/test-folder')
-        self.assertEqual(redirect[1], DateTime('2004-01-31'))
+        self.assertEqual(redirect[1], DateTime('2004/01/27 10:00:00 GMT-3'))
         self.assertEqual(redirect[2], False)
 
         # fifth column is ignored:

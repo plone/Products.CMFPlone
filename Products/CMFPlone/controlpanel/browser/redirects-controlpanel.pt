@@ -146,13 +146,14 @@
           <p i18n:translate="description_bulk_upload">
             Add many alternative urls at once by uploading a CSV file. The first column should be the path to
             redirect from; the second, the path to redirect to. Both paths must be Plone-site-relative,
-            starting with a slash (/).
+            starting with a slash (/). An optional third colum can contain a date and time.
+            An optional fourth column can contain a boolean to mark as a manual redirect (default true).
           </p>
           <p>
             <tal:block i18n:translate="example_caption_bulk_upload">Example:</tal:block><br />
             <code i18n:translate="example_bulk_upload">
-              /old-home-page.asp,/front-page<br />
-              /people/JoeT,/Users/joe-thurston
+              /old-home-page.asp,/front-page,2019/01/27 10:42:59 GMT+1,true<br />
+              /people/JoeT,/Users/joe-thurston,2018-12-31,false
             </code>
           </p>
 
