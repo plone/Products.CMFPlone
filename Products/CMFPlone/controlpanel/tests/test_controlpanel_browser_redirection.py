@@ -74,7 +74,7 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
 
     def test_redirection_controlpanel_remove_redirects(self):
         storage = getUtility(IRedirectionStorage)
-        for i in range(30):
+        for i in range(31):
             storage['/plone/alias{0}'.format(i)] = '/plone/test-folder'
         transaction.commit()
 
@@ -91,6 +91,10 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         self.assertFalse('/plone/alias1' in self.browser.contents)
         self.assertTrue('/plone/alias2' in self.browser.contents)
         self.assertTrue('/plone/alias29' in self.browser.contents)
+        # The filter could return one value too much.
+        # This tests that we have excludemax=True in the RedirectionSet.
+        self.assertFalse('/plone/alias3' in self.browser.contents)
+        self.assertFalse('/plone/alias30' in self.browser.contents)
         # Remove two.
         self.browser.getControl(name='redirects:tuple').value = [
             '/plone/alias2',
@@ -102,6 +106,33 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         self.assertTrue('/plone/alias1' in storage)
         self.assertTrue('/plone/alias29' in storage)
         self.assertEqual(storage.get('/plone/alias29'), '/plone/test-folder')
+
+    def test_redirection_controlpanel_remove_matching_redirects(self):
+        storage = getUtility(IRedirectionStorage)
+        for i in range(30):
+            storage['/plone/alias{0}'.format(i)] = '/plone/test-folder'
+        transaction.commit()
+
+        # Removing matching redirects can only happen when a filter is selected.
+        self.browser.open("%s/@@redirection-controlpanel" % self.portal_url)
+        self.browser.getControl(name='form.button.MatchRemove').click()
+        self.assertTrue(
+            'No alternative urls selected for removal.'
+            in self.browser.contents
+        )
+        self.assertEqual(len(storage), 30)
+        # query aliases starting with /alias2
+        self.browser.getControl(name='q').value = '/alias2'
+        # The filter is immediately taken into account,
+        # without first explicitly clicking filter.
+        # self.browser.getControl(name='form.button.filter').click()
+        self.browser.getControl(name='form.button.MatchRemove').click()
+        self.assertEqual(len(storage), 19)
+        self.assertFalse('/plone/alias2' in storage)
+        self.assertFalse('/plone/alias20' in storage)
+        self.assertFalse('/plone/alias29' in storage)
+        self.assertTrue('/plone/alias1' in storage)
+        self.assertTrue('/plone/alias12' in storage)
 
     def test_redirection_controlpanel_set(self):
         storage = getUtility(IRedirectionStorage)
@@ -204,6 +235,9 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         self.assertEqual(len(redirects), 1000)
         redirects = RedirectionSet(query='/foo2')
         self.assertEqual(len(redirects), 1000)
+        # this should return one and not two (we need excludemax=True)
+        redirects = RedirectionSet(query='/foo1/777')
+        self.assertEqual(len(redirects), 1)
 
         request = self.layer['request'].clone()
         request.form['q'] = '/foo'

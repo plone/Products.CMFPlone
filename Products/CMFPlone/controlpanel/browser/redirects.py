@@ -180,7 +180,9 @@ class RedirectionSet(object):
             # Apparently that is the way to minize the keys we ask.
             min_k = u'{0:s}/{1:s}'.format(self.portal_path, query.strip('/'))
             max_k = min_k[:-1] + chr(ord(min_k[-1]) + 1)
-            self.data = self.storage._paths.keys(min=min_k, max=max_k)
+            self.data = self.storage._paths.keys(
+                min=min_k, max=max_k, excludemax=True
+            )
         else:
             self.data = self.storage._paths.keys()
 
@@ -240,8 +242,16 @@ class RedirectsControlPanel(BrowserView):
         self.csv_errors = []
         self.form_errors = {}
 
-        if 'form.button.Remove' in form:
-            redirects = form.get('redirects', ())
+        if 'form.button.Remove' in form or 'form.button.MatchRemove' in form:
+            if 'form.button.Remove' in form:
+                redirects = form.get('redirects', ())
+            else:
+                query = self.request.form.get('q', '')
+                if query and query != '/':
+                    rset = RedirectionSet(query)
+                    redirects = list(rset.data)
+                else:
+                    redirects = []
             for redirect in redirects:
                 storage.remove(redirect)
             if len(redirects) == 0:

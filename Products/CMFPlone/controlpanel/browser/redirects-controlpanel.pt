@@ -259,8 +259,13 @@
           <div class="formControls">
             <input class="context"
                    type="submit"
-                   value="Remove"
+                   value="Remove selected"
                    name="form.button.Remove"
+                   i18n:attributes="value" />
+            <input class="context"
+                   type="submit"
+                   value="Remove all that match filter"
+                   name="form.button.MatchRemove"
                    i18n:attributes="value" />
           </div>
 
