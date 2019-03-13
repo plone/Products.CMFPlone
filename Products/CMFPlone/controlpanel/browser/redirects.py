@@ -195,10 +195,18 @@ class RedirectionSet(object):
             path = redirect[self.portal_path_len :]
         else:
             path = redirect
-        redirect_to = self.storage.get(redirect)
+        # redirect_to = self.storage.get(redirect)
+        info = self.storage.get_full(redirect)
+        redirect_to = info[0]
         if redirect_to.startswith(self.portal_path):
             redirect_to = redirect_to[self.portal_path_len :]
-        return {'redirect': redirect, 'path': path, 'redirect-to': redirect_to}
+        return {
+            'redirect': redirect,
+            'path': path,
+            'redirect-to': redirect_to,
+            'datetime': info[1],
+            'manual': info[2],
+        }
 
 
 class RedirectsBatchView(PloneBatchView):

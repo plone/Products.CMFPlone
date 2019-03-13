@@ -239,6 +239,7 @@
                tal:attributes="class python:error and 'field error' or 'field'"
                tal:content="error" />
 
+          <p>Alternative url path &rarr; target url path (date and time of creation, manually created yes/no) </p>
           <tal:redirects repeat="redirect batch">
             <div>
               <label>
@@ -247,7 +248,7 @@
                   class="noborder"
                   name="redirects:tuple"
                   value="${redirect/redirect}" />
-              ${redirect/path} &rarr; ${redirect/redirect-to}
+              ${redirect/path} &rarr; ${redirect/redirect-to} (${redirect/datetime}, ${redirect/manual})
               </label>
             </div>
           </tal:redirects>

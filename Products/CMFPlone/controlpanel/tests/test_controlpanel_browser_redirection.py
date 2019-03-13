@@ -137,26 +137,32 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
     def test_redirection_controlpanel_set(self):
         storage = getUtility(IRedirectionStorage)
         portal_path = self.layer['portal'].absolute_url_path()
+        now = DateTime('2022-02-03')
         for i in range(1000):
             storage.add(
                 '{0:s}/foo/{1:s}'.format(portal_path, str(i)),
                 '{0:s}/bar/{1:s}'.format(portal_path, str(i)),
+                now=now,
             )
         redirects = RedirectionSet()
         self.assertEqual(len(redirects), 1000)
         self.assertDictEqual(
             redirects[0],
             {
-                'redirect': '{0:s}/foo/0'.format(portal_path),
+                'datetime': DateTime('2022-02-03'),
+                'manual': False,
                 'path': '/foo/0',
+                'redirect': '{0:s}/foo/0'.format(portal_path),
                 'redirect-to': '/bar/0',
             },
         )
         self.assertDictEqual(
             redirects[999],
             {
-                'redirect': '{0:s}/foo/999'.format(portal_path),
+                'datetime': DateTime('2022-02-03'),
+                'manual': False,
                 'path': '/foo/999',
+                'redirect': '{0:s}/foo/999'.format(portal_path),
                 'redirect-to': '/bar/999',
             },
         )
@@ -164,8 +170,10 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         self.assertDictEqual(
             list(iter(redirects))[0],
             {
-                'redirect': '{0:s}/foo/0'.format(portal_path),
+                'datetime': DateTime('2022-02-03'),
+                'manual': False,
                 'path': '/foo/0',
+                'redirect': '{0:s}/foo/0'.format(portal_path),
                 'redirect-to': '/bar/0',
             },
         )
