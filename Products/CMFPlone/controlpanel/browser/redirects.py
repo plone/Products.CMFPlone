@@ -165,7 +165,7 @@ class RedirectsView(BrowserView):
 
 
 class RedirectionSet(object):
-    def __init__(self, query=''):
+    def __init__(self, query='', manual=''):
         self.storage = getUtility(IRedirectionStorage)
 
         portal = getSite()
@@ -185,6 +185,18 @@ class RedirectionSet(object):
             )
         else:
             self.data = self.storage._paths.keys()
+        if manual:
+            # either 'yes' or 'no
+            if manual == 'yes':
+                self.data = list(filter(self.is_manual, self.data))
+            else:
+                self.data = list(filter(self.is_automatic, self.data))
+
+    def is_manual(self, redirect):
+        return self.storage.get_full(redirect)[2]
+
+    def is_automatic(self, redirect):
+        return not self.storage.get_full(redirect)[2]
 
     def __len__(self):
         return len(self.data)
@@ -233,7 +245,10 @@ class RedirectsControlPanel(BrowserView):
             'redirect' are equal.
         """
         return Batch(
-            RedirectionSet(self.request.form.get('q', '')),
+            RedirectionSet(
+                query=self.request.form.get('q', ''),
+                manual=self.request.form.get('manual', ''),
+            ),
             15,
             int(self.request.form.get('b_start', '0')),
             orphan=1,
@@ -255,8 +270,9 @@ class RedirectsControlPanel(BrowserView):
                 redirects = form.get('redirects', ())
             else:
                 query = self.request.form.get('q', '')
-                if query and query != '/':
-                    rset = RedirectionSet(query)
+                manual = self.request.form.get('manual', '')
+                if manual or (query and query != '/'):
+                    rset = RedirectionSet(query, manual)
                     redirects = list(rset.data)
                 else:
                     redirects = []

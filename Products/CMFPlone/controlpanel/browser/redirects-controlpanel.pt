@@ -225,6 +225,17 @@
               value=""
               id="filter-existing-aliases-q"
                tal:attributes="value python:request.form.get('q', '/')"/>
+          <label for="filter-existing-aliases-manual" i18n:translate="">Manually or automatically added?</label>
+          <div
+              id="filter-existing-aliases-manual"
+              tal:define="chosen python:request.form.get('manual', '')">
+              <input type="radio" name="manual" id="manual-both" value="" tal:attributes="checked python:chosen==''">
+              <label for="manual-both" i18n:translate="">Both</label><br />
+              <input type="radio" name="manual" id="manual-no" value="no" tal:attributes="checked python:chosen=='no'">
+              <label for="manual-no" i18n:translate="">Automatically</label><br />
+              <input type="radio" name="manual" id="manual-yes" value="yes" tal:attributes="checked python:chosen=='yes'">
+              <label for="manual-yes" i18n:translate="">Manually</label>
+          </div>
           <div class="formControls">
             <input
                 class="context"
