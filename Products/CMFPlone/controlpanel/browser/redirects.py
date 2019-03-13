@@ -165,7 +165,7 @@ class RedirectsView(BrowserView):
 
 
 class RedirectionSet(object):
-    def __init__(self, query='', manual=''):
+    def __init__(self, query='', created='', manual=''):
         self.storage = getUtility(IRedirectionStorage)
 
         portal = getSite()
@@ -187,16 +187,21 @@ class RedirectionSet(object):
             self.data = self.storage._paths.keys()
         if manual:
             # either 'yes' or 'no
-            if manual == 'yes':
-                self.data = list(filter(self.is_manual, self.data))
-            else:
-                self.data = list(filter(self.is_automatic, self.data))
-
-    def is_manual(self, redirect):
-        return self.storage.get_full(redirect)[2]
-
-    def is_automatic(self, redirect):
-        return not self.storage.get_full(redirect)[2]
+            manual = True if manual == 'yes' else False
+        if created:
+            created = DateTime(created)
+        if created or manual != '':
+            chosen = []
+            for redirect in self.data:
+                info = self.storage.get_full(redirect)
+                if manual != '':
+                    if info[2] != manual:
+                        continue
+                if created and info[1]:
+                    if info[1] >= created:
+                        continue
+                chosen.append(redirect)
+            self.data = chosen
 
     def __len__(self):
         return len(self.data)
@@ -247,6 +252,7 @@ class RedirectsControlPanel(BrowserView):
         return Batch(
             RedirectionSet(
                 query=self.request.form.get('q', ''),
+                created=self.request.form.get('datetime', ''),
                 manual=self.request.form.get('manual', ''),
             ),
             15,
@@ -270,9 +276,12 @@ class RedirectsControlPanel(BrowserView):
                 redirects = form.get('redirects', ())
             else:
                 query = self.request.form.get('q', '')
+                created = self.request.form.get('datetime', '')
                 manual = self.request.form.get('manual', '')
-                if manual or (query and query != '/'):
-                    rset = RedirectionSet(query, manual)
+                if created or manual or (query and query != '/'):
+                    rset = RedirectionSet(
+                        query=query, created=created, manual=manual
+                    )
                     redirects = list(rset.data)
                 else:
                     redirects = []

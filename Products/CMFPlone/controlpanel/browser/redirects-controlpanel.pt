@@ -236,6 +236,9 @@
               <input type="radio" name="manual" id="manual-yes" value="yes" tal:attributes="checked python:chosen=='yes'">
               <label for="manual-yes" i18n:translate="">Manually</label>
           </div>
+          <label for="filter-existing-aliases-date" i18n:translate="">Created before</label>
+          <input type="date" id="filter-existing-aliases-date" name="datetime"
+               tal:attributes="value python:request.form.get('datetime', '')"/>
           <div class="formControls">
             <input
                 class="context"
