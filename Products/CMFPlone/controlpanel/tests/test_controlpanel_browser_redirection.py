@@ -8,6 +8,7 @@ from Products.CMFPlone.controlpanel.browser.redirects import RedirectionSet
 from Products.CMFPlone.PloneBatch import Batch
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 from Products.CMFPlone.tests import dummy
+from Products.CMFPlone.utils import safe_bytes
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 
@@ -625,3 +626,61 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
             contents[1999],
             '/plone/foo/999,/plone/bar/999,2019/01/27 10:00:00 GMT-3,True',
         )
+
+    def test_download_upload(self):
+        # Test uploading a download and downloading an upload.
+        storage = getUtility(IRedirectionStorage)
+        portal_path = self.layer['portal'].absolute_url_path()
+        now = DateTime('2019/01/27 10:00:00 GMT-3')
+        for i in range(10):
+            storage.add(
+                '{0:s}/foo/{1:s}'.format(portal_path, str(i)),
+                '{0:s}/bar/{1:s}'.format(portal_path, str(i)),
+                now=now,
+                manual=True,
+            )
+        transaction.commit()
+        self.browser.open("%s/@@redirection-controlpanel" % self.portal_url)
+        self.browser.getControl(name='form.button.Download').click()
+        self.assertEqual(
+            self.browser.headers['Content-Disposition'],
+            'attachment; filename=redirects.csv',
+        )
+        downloaded_contents = self.browser.contents
+        contents = downloaded_contents.splitlines()
+        # pop the header
+        self.assertEqual(contents.pop(0), 'old path,new path,datetime,manual')
+        self.assertEqual(len(contents), 10)
+        contents.sort()
+        self.assertEqual(
+            contents[0],
+            '/plone/foo/0,/plone/bar/0,2019/01/27 10:00:00 GMT-3,True',
+        )
+        # clear the storage
+        storage.clear()
+        transaction.commit()
+        # download is empty
+        self.browser.open("%s/@@redirection-controlpanel" % self.portal_url)
+        self.browser.getControl(name='form.button.Download').click()
+        contents = self.browser.contents.splitlines()
+        self.assertEqual(len(contents), 1)
+        self.assertEqual(contents[0], 'old path,new path,datetime,manual')
+        # upload the original download
+        upload = dummy.File(
+            filename='redirects.csv', data=safe_bytes(downloaded_contents)
+        )
+        self.browser.open("%s/@@redirection-controlpanel" % self.portal_url)
+        self.browser.getControl(name='file').value = upload
+        self.browser.getControl(name='file').value.filename = 'redirects.csv'
+        self.browser.getControl(name='form.button.Upload').click()
+        self.assertNotIn(
+            'Please pick a file to upload.', self.browser.contents
+        )
+        self.assertNotIn(
+            'The provided target object does not exist.', self.browser.contents
+        )
+        self.assertNotIn(
+            'No alternative urls were added.', self.browser.contents
+        )
+        self.assertNotIn('Please correct these errors', self.browser.contents)
+        self.assertEqual(len(storage), 10)
