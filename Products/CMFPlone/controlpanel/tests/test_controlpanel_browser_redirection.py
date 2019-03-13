@@ -420,6 +420,66 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
             ),
         )
 
+    def test_upload_correct(self):
+        from Products.CMFPlone.tests import dummy
+
+        self.browser.open("%s/@@redirection-controlpanel" % self.portal_url)
+        # Note: the targets must exist as actual content.
+        data = [
+            (b'/old-home-page.asp', b'/test-folder'),
+            (b'/people/JoeT', b'/Members'),
+        ]
+        csv = b'\n'.join([b','.join(d) for d in data])
+        upload = dummy.File(filename='redirects.csv', data=csv)
+        self.browser.getControl(name='file').value = upload
+        # We need to explicitly set the filename a second time
+        # because it gets lost...
+        self.browser.getControl(name='file').value.filename = 'redirects.csv'
+        self.browser.getControl(name='form.button.Upload').click()
+        self.assertNotIn(
+            'Please pick a file to upload.', self.browser.contents
+        )
+        self.assertNotIn(
+            'No alternative urls were added.', self.browser.contents
+        )
+        self.assertNotIn('Please correct these errors', self.browser.contents)
+        storage = getUtility(IRedirectionStorage)
+        self.assertEqual(len(storage), 2)
+        self.assertEqual(
+            storage.get('/plone/old-home-page.asp'), '/plone/test-folder'
+        )
+        self.assertEqual(storage.get('/plone/people/JoeT'), '/plone/Members')
+        # Test the internals.
+        redirect = storage._paths['/plone/old-home-page.asp']
+        self.assertEqual(redirect[0], '/plone/test-folder')
+        self.assertIsInstance(redirect[1], DateTime)
+        self.assertEqual(redirect[2], True)  # manual
+
+    def test_upload_bad(self):
+        from Products.CMFPlone.tests import dummy
+
+        self.browser.open("%s/@@redirection-controlpanel" % self.portal_url)
+        # The targets must exist as actual content.
+        # We try a good one and one that does not exist.
+        data = [
+            (b'/old-home-page.asp', b'/test-folder'),
+            (b'/people/JoeT', b'/no-such-content'),
+        ]
+        csv = b'\n'.join([b','.join(d) for d in data])
+        upload = dummy.File(filename='redirects.csv', data=csv)
+        self.browser.getControl(name='file').value = upload
+        # We need to explicitly set the filename a second time
+        # because it gets lost...
+        self.browser.getControl(name='file').value.filename = 'redirects.csv'
+        self.browser.getControl(name='form.button.Upload').click()
+        self.assertNotIn(
+            'Please pick a file to upload.', self.browser.contents
+        )
+        self.assertIn('No alternative urls were added.', self.browser.contents)
+        self.assertIn('Please correct these errors', self.browser.contents)
+        storage = getUtility(IRedirectionStorage)
+        self.assertEqual(len(storage), 0)
+
     def test_download_empty(self):
         self.browser.open("%s/@@redirection-controlpanel" % self.portal_url)
         self.browser.getControl(name='form.button.Download').click()
