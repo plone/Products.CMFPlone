@@ -72,6 +72,37 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
             u'Redirection storage should have path "{0}"'.format(storage_path),
         )
 
+    def test_redirection_controlpanel_remove_redirects(self):
+        storage = getUtility(IRedirectionStorage)
+        for i in range(30):
+            storage['/plone/alias{0}'.format(i)] = '/plone/test-folder'
+        transaction.commit()
+
+        self.browser.open("%s/@@redirection-controlpanel" % self.portal_url)
+        # A batch of 15 is shown, so some are missing.
+        self.assertTrue('/plone/alias1' in self.browser.contents)
+        self.assertTrue('/plone/alias10' in self.browser.contents)
+        self.assertTrue('/plone/alias19' in self.browser.contents)
+        self.assertTrue('/plone/alias2' in self.browser.contents)
+        self.assertFalse('/plone/alias29' in self.browser.contents)
+        # query aliases starting with /alias2
+        self.browser.getControl(name='q').value = '/alias2'
+        self.browser.getControl(name='form.button.filter').click()
+        self.assertFalse('/plone/alias1' in self.browser.contents)
+        self.assertTrue('/plone/alias2' in self.browser.contents)
+        self.assertTrue('/plone/alias29' in self.browser.contents)
+        # Remove two.
+        self.browser.getControl(name='redirects:tuple').value = [
+            '/plone/alias2',
+            '/plone/alias20',
+        ]
+        self.browser.getControl(name='form.button.Remove').click()
+        self.assertFalse('/plone/alias2' in storage)
+        self.assertFalse('/plone/alias20' in storage)
+        self.assertTrue('/plone/alias1' in storage)
+        self.assertTrue('/plone/alias29' in storage)
+        self.assertEqual(storage.get('/plone/alias29'), '/plone/test-folder')
+
     def test_redirection_controlpanel_set(self):
         storage = getUtility(IRedirectionStorage)
         portal_path = self.layer['portal'].absolute_url_path()
@@ -263,6 +294,32 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         )
         self.assertTrue(storage.has_path('/plone/alias'))
         self.assertEqual(storage.get('/plone/alias'), '/plone/test-folder')
+
+    def test_manage_aliases_remove(self):
+        storage = getUtility(IRedirectionStorage)
+        folder = self.portal['test-folder']
+        storage['/plone/alias1'] = '/plone/test-folder'
+        storage['/plone/alias2'] = '/plone/test-folder'
+        storage['/plone/alias3'] = '/plone/test-folder'
+        transaction.commit()
+
+        self.browser.open("%s/@@manage-aliases" % folder.absolute_url())
+        self.browser.getControl(name='redirects:tuple').value = [
+            '/plone/alias1',
+            '/plone/alias2',
+        ]
+        self.browser.getControl(name='form.button.Remove').click()
+        with open('/tmp/test.html', 'w') as testfile:
+            testfile.write(self.browser.contents)
+
+        self.assertTrue(
+            'Alternative urls removed.' in self.browser.contents,
+            u'Message for removed alternative url missing',
+        )
+        self.assertFalse('/plone/alias1' in storage)
+        self.assertFalse('/plone/alias2' in storage)
+        self.assertTrue('/plone/alias3' in storage)
+        self.assertEqual(storage.get('/plone/alias3'), '/plone/test-folder')
 
     def test_manage_aliases_navigation_root(self):
         from zope.interface import alsoProvides
@@ -475,7 +532,12 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
             # third column with date:
             (b'/three', b'/test-folder', b'2003-01-31'),
             # fourth column with manual:
-            (b'/four', b'/test-folder', b'2004/01/27 10:00:00 GMT-3', b'False'),
+            (
+                b'/four',
+                b'/test-folder',
+                b'2004/01/27 10:00:00 GMT-3',
+                b'False',
+            ),
             # fifth column is ignored:
             (b'/five', b'/test-folder', b'2005-01-31', b'True', b'ignored'),
             # manual can be '0' (or anything starting with f/F/n/N/0)
@@ -619,12 +681,10 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         # Note that '999' sorts alphabetically after '1999'.
         contents.sort()
         self.assertEqual(
-            contents[0],
-            '/foo/0,/bar/0,2019/01/27 10:00:00 GMT-3,True',
+            contents[0], '/foo/0,/bar/0,2019/01/27 10:00:00 GMT-3,True'
         )
         self.assertEqual(
-            contents[1999],
-            '/foo/999,/bar/999,2019/01/27 10:00:00 GMT-3,True',
+            contents[1999], '/foo/999,/bar/999,2019/01/27 10:00:00 GMT-3,True'
         )
 
     def test_download_upload(self):
@@ -656,8 +716,7 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         self.assertEqual(len(contents), 10)
         contents.sort()
         self.assertEqual(
-            contents[0],
-            '/foo/0,/test-folder,2019/01/27 10:00:00 GMT-3,True',
+            contents[0], '/foo/0,/test-folder,2019/01/27 10:00:00 GMT-3,True'
         )
 
         # 3. clear the redirect storage
@@ -697,8 +756,7 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         self.assertEqual(len(contents), 10)
         contents.sort()
         self.assertEqual(
-            contents[0],
-            '/foo/0,/test-folder,2019/01/27 10:00:00 GMT-3,True',
+            contents[0], '/foo/0,/test-folder,2019/01/27 10:00:00 GMT-3,True'
         )
         # and it is actually the same as the original download
         self.assertEqual(new_downloaded_contents, downloaded_contents)
