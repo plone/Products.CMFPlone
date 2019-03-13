@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from DateTime import DateTime
 from plone.app.redirector.interfaces import IRedirectionStorage
 from plone.app.testing import SITE_OWNER_NAME
 from plone.app.testing import SITE_OWNER_PASSWORD
@@ -417,4 +418,51 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
                 '/plone//example.org',
                 'The provided target object does not exist.',
             ),
+        )
+
+    def test_download_empty(self):
+        self.browser.open("%s/@@redirection-controlpanel" % self.portal_url)
+        self.browser.getControl(name='form.button.Download').click()
+        self.assertEqual(
+            self.browser.headers['Content-Disposition'],
+            'attachment; filename=redirects.csv',
+        )
+        contents = self.browser.contents.splitlines()
+        self.assertEqual(len(contents), 1)
+        self.assertEqual(contents[0], 'old path,new path,datetime,manual')
+
+    def test_download_bigger(self):
+        storage = getUtility(IRedirectionStorage)
+        portal_path = self.layer['portal'].absolute_url_path()
+        now = DateTime('2019/01/27 10:00:00 GMT-3')
+        for i in range(2000):
+            storage.add(
+                '{0:s}/foo/{1:s}'.format(portal_path, str(i)),
+                '{0:s}/bar/{1:s}'.format(portal_path, str(i)),
+                now=now,
+                manual=True,
+            )
+        transaction.commit()
+        self.browser.open("%s/@@redirection-controlpanel" % self.portal_url)
+        self.browser.getControl(name='form.button.Download').click()
+        self.assertEqual(
+            self.browser.headers['Content-Disposition'],
+            'attachment; filename=redirects.csv',
+        )
+        contents = self.browser.contents.splitlines()
+        # pop the header
+        self.assertEqual(contents.pop(0), 'old path,new path,datetime,manual')
+        self.assertEqual(len(contents), 2000)
+        # The order is probably the alphabetical order of the old path,
+        # but that is not important and may change,
+        # so let's sort it in the tests for good measure.
+        # Note that '999' sorts alphabetically after '1999'.
+        contents.sort()
+        self.assertEqual(
+            contents[0],
+            '/plone/foo/0,/plone/bar/0,2019/01/27 10:00:00 GMT-3,True',
+        )
+        self.assertEqual(
+            contents[1999],
+            '/plone/foo/999,/plone/bar/999,2019/01/27 10:00:00 GMT-3,True',
         )

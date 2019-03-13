@@ -408,6 +408,9 @@ class RedirectsControlPanel(BrowserView):
         )
         if filestream_iterator is None:
             return contents
+        # TODO: this is not enough to really stream the file.
+        # I think we would need to handle Request-Range, like in the old
+        # plone.app.blob.download.handleRequestRange
         return filestream_iterator(file_path, 'rb')
 
     @memoize
