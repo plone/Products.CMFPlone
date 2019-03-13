@@ -7,6 +7,7 @@ from plone.testing.z2 import Browser
 from Products.CMFPlone.controlpanel.browser.redirects import RedirectionSet
 from Products.CMFPlone.PloneBatch import Batch
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
+from Products.CMFPlone.tests import dummy
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 
@@ -420,9 +421,7 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
             ),
         )
 
-    def test_upload_correct(self):
-        from Products.CMFPlone.tests import dummy
-
+    def test_upload_two_columns(self):
         self.browser.open("%s/@@redirection-controlpanel" % self.portal_url)
         # Note: the targets must exist as actual content.
         data = [
@@ -455,9 +454,109 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         self.assertIsInstance(redirect[1], DateTime)
         self.assertEqual(redirect[2], True)  # manual
 
-    def test_upload_bad(self):
-        from Products.CMFPlone.tests import dummy
+    def test_upload_four_columns(self):
+        # Two columns are the minimum,
+        # but we can handle a third column with a datetime,
+        # a fourth column with manual True/False,
+        # and more columns that we ignore.
+        now = DateTime()
+        self.browser.open("%s/@@redirection-controlpanel" % self.portal_url)
+        # Note: the targets must exist as actual content.
+        data = [
+            # We can first have a header, which should be ignored.
+            # Second one should have the same number of columns,
+            # otherwise the delimiter detection can get it wrong.
+            (b'old path', b'new path', b'datetime', b'manual'),
+            # bad dates are silently ignored
+            (b'/baddate', b'/test-folder', b'2006-13-62', b'yes'),
+            # two columns:
+            (b'/two', b'/test-folder'),
+            # third column with date:
+            (b'/three', b'/test-folder', b'2003-01-31'),
+            # fourth column with manual:
+            (b'/four', b'/test-folder', b'2004-01-31', b'False'),
+            # fifth column is ignored:
+            (b'/five', b'/test-folder', b'2005-01-31', b'True', b'ignored'),
+            # manual can be '0' (or anything starting with f/F/n/N/0)
+            (b'/zero', b'/test-folder', b'2000-01-31', b'0'),
+        ]
+        csv = b'\n'.join([b','.join(d) for d in data])
+        upload = dummy.File(filename='redirects.csv', data=csv)
+        self.browser.getControl(name='file').value = upload
+        # We need to explicitly set the filename a second time
+        # because it gets lost...
+        self.browser.getControl(name='file').value.filename = 'redirects.csv'
+        self.browser.getControl(name='form.button.Upload').click()
+        self.assertNotIn(
+            'Please pick a file to upload.', self.browser.contents
+        )
+        self.assertNotIn(
+            'No alternative urls were added.', self.browser.contents
+        )
+        self.assertNotIn('Please correct these errors', self.browser.contents)
 
+        # All five lines have been added.
+        storage = getUtility(IRedirectionStorage)
+        self.assertEqual(len(storage), 6)
+        self.assertEqual(storage.get('/plone/two'), '/plone/test-folder')
+        old_paths = [
+            '/plone/baddate',
+            '/plone/five',
+            '/plone/four',
+            '/plone/three',
+            '/plone/two',
+            '/plone/zero',
+        ]
+        self.assertListEqual(sorted(list(storage)), old_paths)
+        self.assertListEqual(
+            sorted(list(storage.redirects('/plone/test-folder'))), old_paths
+        )
+        # Test the internals.
+
+        # two columns:
+        # (b'/two', b'/test-folder'),
+        redirect = storage._paths['/plone/two']
+        self.assertEqual(redirect[0], '/plone/test-folder')
+        self.assertIsInstance(redirect[1], DateTime)
+        self.assertGreater(redirect[1], now)
+        self.assertEqual(redirect[2], True)  # manual
+
+        # third column with date:
+        # (b'/three', b'/test-folder', b'2003-01-31'),
+        redirect = storage._paths['/plone/three']
+        self.assertEqual(redirect[0], '/plone/test-folder')
+        self.assertEqual(redirect[1], DateTime('2003-01-31'))
+        self.assertEqual(redirect[2], True)
+
+        # fourth column with manual:
+        # (b'/four', b'/test-folder', b'2004-01-31', b'False'),
+        redirect = storage._paths['/plone/four']
+        self.assertEqual(redirect[0], '/plone/test-folder')
+        self.assertEqual(redirect[1], DateTime('2004-01-31'))
+        self.assertEqual(redirect[2], False)
+
+        # fifth column is ignored:
+        # (b'/five', b'/test-folder', b'2005-01-31', b'True', b'ignored'),
+        redirect = storage._paths['/plone/five']
+        self.assertEqual(redirect[0], '/plone/test-folder')
+        self.assertEqual(redirect[1], DateTime('2005-01-31'))
+        self.assertEqual(redirect[2], True)
+
+        # manual can be '0' (or anything starting with f/F/n/N/0)
+        # (b'/zero', b'/test-folder', b'2000-01-31', b'0'),
+        redirect = storage._paths['/plone/zero']
+        self.assertEqual(redirect[0], '/plone/test-folder')
+        self.assertEqual(redirect[1], DateTime('2000-01-31'))
+        self.assertEqual(redirect[2], False)
+
+        # bad dates are silently ignored
+        # (b'/baddate', b'/test-folder', b'2006-13-62', b'yes'),
+        redirect = storage._paths['/plone/baddate']
+        self.assertEqual(redirect[0], '/plone/test-folder')
+        self.assertGreater(redirect[1], now)
+        self.assertEqual(redirect[2], True)
+
+    def test_upload_bad(self):
         self.browser.open("%s/@@redirection-controlpanel" % self.portal_url)
         # The targets must exist as actual content.
         # We try a good one and one that does not exist.

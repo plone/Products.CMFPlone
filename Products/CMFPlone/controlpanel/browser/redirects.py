@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from DateTime import DateTime
+from DateTime.interfaces import DateTimeError
 from csv import writer
 from plone.app.redirector.interfaces import IRedirectionStorage
 from plone.batching.browser import PloneBatchView
@@ -16,6 +18,7 @@ from zope.component.hooks import getSite
 from zope.i18nmessageid import MessageFactory
 
 import csv
+import logging
 import tempfile
 
 try:
@@ -26,6 +29,7 @@ except ImportError:
 
 
 _ = MessageFactory('plone')
+logger = logging.getLogger(__name__)
 
 
 def absolutize_path(path, is_source=True):
@@ -326,11 +330,33 @@ class RedirectsControlPanel(BrowserView):
         dialect = csv.Sniffer().sniff(file.readline() + file.readline())
         file.seek(0)
 
-        successes = []  # list of tuples: (abs_redirection, target)
+        # key is old path, value is tuple(new path, datetime, manual)
+        successes = {}
         had_errors = False
         for i, fields in enumerate(csv.reader(file, dialect)):
-            if len(fields) == 2:
-                redirection, target = fields
+            if len(fields) >= 2:
+                redirection = fields[0]
+                target = fields[1]
+
+                now = None
+                manual = True
+                if len(fields) >= 3:
+                    dt = fields[2]
+                    if dt:
+                        try:
+                            now = DateTime(dt)
+                        except DateTimeError:
+                            logger.warning(
+                                'Failed to parse as DateTime: %s', dt
+                            )
+                            now = None
+                if len(fields) >= 4:
+                    manual = fields[3].lower()
+                    # Compare first character with false, no, 0.
+                    if manual and manual[0] in 'fn0':
+                        manual = False
+                    else:
+                        manual = True
                 abs_redirection, err = absolutize_path(
                     redirection, is_source=True
                 )
@@ -338,6 +364,13 @@ class RedirectsControlPanel(BrowserView):
                     target, is_source=False
                 )
                 if err and target_err:
+                    if (
+                        i == 0
+                        and not redirection.startswith('/')
+                        and not target.startswith('/')
+                    ):
+                        # First line is a header.  Ignore this.
+                        continue
                     err = "%s %s" % (err, target_err)  # sloppy w.r.t. i18n
                 elif target_err:
                     err = target_err
@@ -349,11 +382,11 @@ class RedirectsControlPanel(BrowserView):
                             u"an endless cycle of redirects."
                         )
             else:
-                err = _(u"Each line must have 2 columns.")
+                err = _(u"Each line must have 2 or more columns.")
 
             if not err:
                 if not had_errors:  # else don't bother
-                    successes.append((abs_redirection, abs_target))
+                    successes[abs_redirection] = (abs_target, now, manual)
             else:
                 had_errors = True
                 self.csv_errors.append(
@@ -365,14 +398,26 @@ class RedirectsControlPanel(BrowserView):
                 )
 
         if not had_errors:
-            for abs_redirection, abs_target in successes:
-                storage.add(abs_redirection, abs_target, manual=True)
+            storage.update(successes)
             status.addStatusMessage(
                 _(
                     u"${count} alternative urls added.",
                     mapping={'count': len(successes)},
                 ),
                 type='info',
+            )
+        else:
+            self.csv_errors.insert(
+                0,
+                dict(
+                    line_number=0,
+                    line='',
+                    message=_(
+                        u'msg_delimiter',
+                        default=u"Delimiter detected: ${delimiter}",
+                        mapping={'delimiter': dialect.delimiter},
+                    ),
+                ),
             )
 
     def download(self):
