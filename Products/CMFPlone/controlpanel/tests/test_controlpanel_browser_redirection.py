@@ -328,6 +328,73 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         )
         self.assertEqual(view.redirects().numpages, math.ceil(100 / 15.0))
 
+    def test_redirection_controlpanel_filter_date(self):
+        storage = getUtility(IRedirectionStorage)
+        portal_path = self.layer['portal'].absolute_url_path()
+        time0 = DateTime('2001-01-01')
+        for i in range(400):
+            storage.add(
+                '{0:s}/foo/{1:s}'.format(portal_path, str(i)),
+                '{0:s}/bar/{1:s}'.format(portal_path, str(i)),
+                now=time0 + i,
+            )
+
+        redirects = RedirectionSet()
+        self.assertEqual(len(redirects), 400)
+        # created can be anything that can be parsed by DateTime.
+        # Otherwise it is ignored.
+        redirects = RedirectionSet(created='2019-01-01')
+        self.assertEqual(len(redirects), 400)
+        redirects = RedirectionSet(created='1999-01-01')
+        self.assertEqual(len(redirects), 0)
+        redirects = RedirectionSet(created='2001-01-01')
+        self.assertEqual(len(redirects), 0)
+        redirects = RedirectionSet(created='2001-01-02')
+        self.assertEqual(len(redirects), 1)
+        redirects = RedirectionSet(created='2001-02-01')
+        self.assertEqual(len(redirects), 31)
+        redirects = RedirectionSet(created='2001-02-01 00:00:00')
+        self.assertEqual(len(redirects), 31)
+        redirects = RedirectionSet(created='2001-02-01 00:00:01')
+        self.assertEqual(len(redirects), 32)
+        redirects = RedirectionSet(created='2002-01-01')
+        self.assertEqual(len(redirects), 365)
+        redirects = RedirectionSet(created='2002/01/01')
+        self.assertEqual(len(redirects), 365)
+        redirects = RedirectionSet(created='2002-01-01')
+        self.assertEqual(len(redirects), 365)
+        redirects = RedirectionSet(created='badvalue')
+        self.assertEqual(len(redirects), 400)
+
+        request = self.layer['request'].clone()
+        request.form['datetime'] = ''
+        view = getMultiAdapter(
+            (self.layer['portal'], request), name='redirection-controlpanel'
+        )
+        self.assertEqual(view.redirects().numpages, math.ceil(400 / 15.0))
+
+        request = self.layer['request'].clone()
+        request.form['datetime'] = '2001-01-27'
+        view = getMultiAdapter(
+            (self.layer['portal'], request), name='redirection-controlpanel'
+        )
+        self.assertEqual(view.redirects().numpages, math.ceil(27 / 15.0))
+
+        request = self.layer['request'].clone()
+        request.form['datetime'] = '2002-01-01'
+        view = getMultiAdapter(
+            (self.layer['portal'], request), name='redirection-controlpanel'
+        )
+        self.assertEqual(view.redirects().numpages, math.ceil(365 / 15.0))
+
+        request = self.layer['request'].clone()
+        request.form['datetime'] = '2019-01-01'
+        view = getMultiAdapter(
+            (self.layer['portal'], request), name='redirection-controlpanel'
+        )
+        self.assertEqual(view.redirects().numpages, math.ceil(400 / 15.0))
+
+
     def test_redirection_controlpanel_redirect_no_target(self):
         path_alias = '/alias'
         path_target = '/not-existing'

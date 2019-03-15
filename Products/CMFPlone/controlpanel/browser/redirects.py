@@ -194,7 +194,13 @@ class RedirectionSet(object):
             else:
                 manual = ''
         if created:
-            created = DateTime(created)
+            try:
+                created = DateTime(created)
+            except DateTimeError:
+                logger.warning(
+                    'Failed to parse as DateTime: %s', created
+                )
+                created = ''
         if created or manual != '':
             chosen = []
             for redirect in self.data:
