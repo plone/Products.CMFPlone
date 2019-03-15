@@ -16,8 +16,8 @@ Test Teardown  Run keywords  Plone Test Teardown
 Scenario: Add redirect in the URL Management Control Panel
   Given a logged-in site administrator
     and the URL Management control panel
-   When I add a redirect
-   Then the redirect works
+  When I Add A Redirect To The Test Folder From Alternative Url  /old
+  Then I get redirected to the test folder when visiting  /old
 
 
 *** Keywords *****************************************************************
@@ -33,14 +33,17 @@ the URL Management control panel
 
 # --- WHEN -------------------------------------------------------------------
 
-I add a redirect
-  Input Text  name=redirection  /old
+I Add A Redirect To The Test Folder From Alternative Url
+  [Documentation]  target path must exist in the site
+  [Arguments]  ${old}
+  Input Text  name=redirection  ${old}
   Input Text  name=target_path  /test-folder
   Click Button  Add
 
 
 # --- THEN -------------------------------------------------------------------
 
-the redirect works
-  Go to  ${PLONE_URL}/old
+I get redirected to the test folder when visiting
+  [Arguments]  ${old}
+  Go to  ${PLONE_URL}/${old}
   Location Should Be  ${PLONE_URL}/test-folder
