@@ -16,25 +16,25 @@ Test Teardown  Run keywords  Plone Test Teardown
 Scenario: Add redirect in the URL Management Control Panel
   Given a logged-in site administrator
     and the URL Management control panel
-  When I Add A Redirect To The Test Folder From Alternative Url  /old
+  When I add a redirect to the test folder from alternative url  /old
   Then I get redirected to the test folder when visiting  /old
 
 
 Scenario: Remove redirect in the URL Management Control Panel
   Given a logged-in site administrator
     and the URL Management control panel
-  When I Add A Redirect To The Test Folder From Alternative Url  /old
-   and I Remove The Redirect From Alternative Url  /old
+  When I add a redirect to the test folder from alternative url  /old
+   and I remove the redirect from alternative url  /old
   Then I do not get redirected when visiting  /old
 
 
 Scenario: Remove filtered redirects in the URL Management Control Panel
   Given a logged-in site administrator
     and the URL Management control panel
-  When I Add A Redirect To The Test Folder From Alternative Url  /a
-   and I Add A Redirect To The Test Folder From Alternative Url  /b
-   and I Filter The Redirects With Path  /a
-   and I Remove The Matching Redirects
+  When I add a redirect to the test folder from alternative url  /a
+   and I add a redirect to the test folder from alternative url  /b
+   and I filter the redirects with path  /a
+   and I remove the matching redirects
   Then I do not get redirected when visiting  /a
    and I get redirected to the test folder when visiting  /b
 
@@ -52,7 +52,7 @@ the URL Management control panel
 
 # --- WHEN -------------------------------------------------------------------
 
-I Add A Redirect To The Test Folder From Alternative Url
+I add a redirect to the test folder from alternative url
   [Documentation]  target path must exist in the site
   [Arguments]  ${old}
   Input Text  name=redirection  ${old}
@@ -60,18 +60,18 @@ I Add A Redirect To The Test Folder From Alternative Url
   Click Button  Add
 
 
-I Remove The Redirect From Alternative Url
+I remove the redirect from alternative url
   [Arguments]  ${old}
   Select Checkbox  xpath=//input[@value='/plone${old}']
   Click Button  Remove selected
 
 
-I Filter The Redirects With Path
+I filter the redirects with path
   [Arguments]  ${old}
   Input Text  name=q  ${old}
   Click Button  Filter
 
-I Remove The Matching Redirects
+I remove the matching redirects
   Click Button  Remove all that match filter
 
 
