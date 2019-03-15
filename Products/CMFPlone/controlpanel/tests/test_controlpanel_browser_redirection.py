@@ -278,6 +278,56 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         request.form['q'] = '/foo2'
         self.assertEqual(view.redirects().numpages, math.ceil(2000 / 15.0))
 
+    def test_redirection_controlpanel_filter_manual(self):
+        storage = getUtility(IRedirectionStorage)
+        portal_path = self.layer['portal'].absolute_url_path()
+        for i in range(100):
+            storage.add(
+                '{0:s}/foo/{1:s}'.format(portal_path, str(i)),
+                '{0:s}/bar/{1:s}'.format(portal_path, str(i)),
+                manual=False
+            )
+        for i in range(100, 300):
+            storage.add(
+                '{0:s}/foo/{1:s}'.format(portal_path, str(i)),
+                '{0:s}/bar/{1:s}'.format(portal_path, str(i)),
+                manual=True
+            )
+
+        redirects = RedirectionSet()
+        self.assertEqual(len(redirects), 300)
+        # Form has yes, no, or empty string, anything else is ignored
+        # (so treated as empty string).
+        redirects = RedirectionSet(manual='yes')
+        self.assertEqual(len(redirects), 200)
+        redirects = RedirectionSet(manual='no')
+        self.assertEqual(len(redirects), 100)
+        redirects = RedirectionSet(manual='')
+        self.assertEqual(len(redirects), 300)
+        redirects = RedirectionSet(manual='badvalue')
+        self.assertEqual(len(redirects), 300)
+
+        request = self.layer['request'].clone()
+        request.form['manual'] = ''
+        view = getMultiAdapter(
+            (self.layer['portal'], request), name='redirection-controlpanel'
+        )
+        self.assertEqual(view.redirects().numpages, math.ceil(300 / 15.0))
+
+        request = self.layer['request'].clone()
+        request.form['manual'] = 'yes'
+        view = getMultiAdapter(
+            (self.layer['portal'], request), name='redirection-controlpanel'
+        )
+        self.assertEqual(view.redirects().numpages, math.ceil(200 / 15.0))
+
+        request = self.layer['request'].clone()
+        request.form['manual'] = 'no'
+        view = getMultiAdapter(
+            (self.layer['portal'], request), name='redirection-controlpanel'
+        )
+        self.assertEqual(view.redirects().numpages, math.ceil(100 / 15.0))
+
     def test_redirection_controlpanel_redirect_no_target(self):
         path_alias = '/alias'
         path_target = '/not-existing'

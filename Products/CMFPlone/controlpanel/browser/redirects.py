@@ -186,8 +186,13 @@ class RedirectionSet(object):
         else:
             self.data = self.storage._paths.keys()
         if manual:
-            # either 'yes' or 'no
-            manual = True if manual == 'yes' else False
+            # either 'yes' or 'no', otherwise we ignore the filter
+            if manual == 'yes':
+                manual = True
+            elif manual == 'no':
+                manual = False
+            else:
+                manual = ''
         if created:
             created = DateTime(created)
         if created or manual != '':
