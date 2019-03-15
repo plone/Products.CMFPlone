@@ -7,11 +7,11 @@ from plone.testing.z2 import Browser
 from Products.CMFPlone.controlpanel.browser.redirects import RedirectionSet
 from Products.CMFPlone.PloneBatch import Batch
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
-from Products.CMFPlone.tests import dummy
 from Products.CMFPlone.utils import safe_bytes
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 
+import io
 import math
 import transaction
 import unittest
@@ -285,13 +285,13 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
             storage.add(
                 '{0:s}/foo/{1:s}'.format(portal_path, str(i)),
                 '{0:s}/bar/{1:s}'.format(portal_path, str(i)),
-                manual=False
+                manual=False,
             )
         for i in range(100, 300):
             storage.add(
                 '{0:s}/foo/{1:s}'.format(portal_path, str(i)),
                 '{0:s}/bar/{1:s}'.format(portal_path, str(i)),
-                manual=True
+                manual=True,
             )
 
         redirects = RedirectionSet()
@@ -393,7 +393,6 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
             (self.layer['portal'], request), name='redirection-controlpanel'
         )
         self.assertEqual(view.redirects().numpages, math.ceil(400 / 15.0))
-
 
     def test_redirection_controlpanel_redirect_no_target(self):
         path_alias = '/alias'
@@ -646,11 +645,9 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
             (b'/people/JoeT', b'/Members'),
         ]
         csv = b'\n'.join([b','.join(d) for d in data])
-        upload = dummy.File(filename='redirects.csv', data=csv)
-        self.browser.getControl(name='file').value = upload
-        # We need to explicitly set the filename a second time
-        # because it gets lost...
-        self.browser.getControl(name='file').value.filename = 'redirects.csv'
+        self.browser.getControl(name='file').add_file(
+            io.BytesIO(csv), 'text/plain', 'redirects.csv'
+        )
         self.browser.getControl(name='form.button.Upload').click()
         self.assertNotIn(
             'Please pick a file to upload.', self.browser.contents
@@ -703,11 +700,9 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
             (b'/zero', b'/test-folder', b'2000-01-31', b'0'),
         ]
         csv = b'\n'.join([b','.join(d) for d in data])
-        upload = dummy.File(filename='redirects.csv', data=csv)
-        self.browser.getControl(name='file').value = upload
-        # We need to explicitly set the filename a second time
-        # because it gets lost...
-        self.browser.getControl(name='file').value.filename = 'redirects.csv'
+        self.browser.getControl(name='file').add_file(
+            io.BytesIO(csv), 'text/plain', 'redirects.csv'
+        )
         self.browser.getControl(name='form.button.Upload').click()
         self.assertNotIn(
             'Please pick a file to upload.', self.browser.contents
@@ -787,11 +782,9 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
             (b'/people/JoeT', b'/no-such-content'),
         ]
         csv = b'\n'.join([b','.join(d) for d in data])
-        upload = dummy.File(filename='redirects.csv', data=csv)
-        self.browser.getControl(name='file').value = upload
-        # We need to explicitly set the filename a second time
-        # because it gets lost...
-        self.browser.getControl(name='file').value.filename = 'redirects.csv'
+        self.browser.getControl(name='file').add_file(
+            io.BytesIO(csv), 'text/plain', 'redirects.csv'
+        )
         self.browser.getControl(name='form.button.Upload').click()
         self.assertNotIn(
             'Please pick a file to upload.', self.browser.contents
@@ -888,12 +881,12 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         self.assertEqual(contents[0], 'old path,new path,datetime,manual')
 
         # 4. upload the original download
-        upload = dummy.File(
-            filename='redirects.csv', data=safe_bytes(downloaded_contents)
-        )
         self.browser.open("%s/@@redirection-controlpanel" % self.portal_url)
-        self.browser.getControl(name='file').value = upload
-        self.browser.getControl(name='file').value.filename = 'redirects.csv'
+        self.browser.getControl(name='file').add_file(
+            io.BytesIO(safe_bytes(downloaded_contents)),
+            'text/plain',
+            'redirects.csv',
+        )
         self.browser.getControl(name='form.button.Upload').click()
         self.assertNotIn(
             'Please pick a file to upload.', self.browser.contents
