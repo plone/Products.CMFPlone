@@ -28,6 +28,17 @@ Scenario: Remove redirect in the URL Management Control Panel
   Then I do not get redirected when visiting  /old
 
 
+Scenario: Remove filtered redirects in the URL Management Control Panel
+  Given a logged-in site administrator
+    and the URL Management control panel
+  When I Add A Redirect To The Test Folder From Alternative Url  /a
+   and I Add A Redirect To The Test Folder From Alternative Url  /b
+   and I Filter The Redirects With Path  /a
+   and I Remove The Matching Redirects
+  Then I do not get redirected when visiting  /a
+   and I get redirected to the test folder when visiting  /b
+
+
 *** Keywords *****************************************************************
 
 # --- GIVEN ------------------------------------------------------------------
@@ -53,6 +64,15 @@ I Remove The Redirect From Alternative Url
   [Arguments]  ${old}
   Select Checkbox  xpath=//input[@value='/plone${old}']
   Click Button  Remove selected
+
+
+I Filter The Redirects With Path
+  [Arguments]  ${old}
+  Input Text  name=q  ${old}
+  Click Button  Filter
+
+I Remove The Matching Redirects
+  Click Button  Remove all that match filter
 
 
 # --- THEN -------------------------------------------------------------------
