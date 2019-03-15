@@ -1,0 +1,2 @@
+Add summary of all errors when verifying a DB with ./bin/instance verifydb.
+[pbauer]
