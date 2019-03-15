@@ -20,6 +20,14 @@ Scenario: Add redirect in the URL Management Control Panel
   Then I get redirected to the test folder when visiting  /old
 
 
+Scenario: Remove redirect in the URL Management Control Panel
+  Given a logged-in site administrator
+    and the URL Management control panel
+  When I Add A Redirect To The Test Folder From Alternative Url  /old
+   and I Remove The Redirect From Alternative Url  /old
+  Then I do not get redirected when visiting  /old
+
+
 *** Keywords *****************************************************************
 
 # --- GIVEN ------------------------------------------------------------------
@@ -41,9 +49,22 @@ I Add A Redirect To The Test Folder From Alternative Url
   Click Button  Add
 
 
+I Remove The Redirect From Alternative Url
+  [Arguments]  ${old}
+  Select Checkbox  xpath=//input[@value='/plone${old}']
+  Click Button  Remove selected
+
+
 # --- THEN -------------------------------------------------------------------
 
 I get redirected to the test folder when visiting
   [Arguments]  ${old}
   Go to  ${PLONE_URL}/${old}
   Location Should Be  ${PLONE_URL}/test-folder
+
+
+I do not get redirected when visiting
+  [Arguments]  ${old}
+  Go to  ${PLONE_URL}/${old}
+  Location Should Be  ${PLONE_URL}/${old}
+  Wait Until Page Contains  This page does not seem to exist
