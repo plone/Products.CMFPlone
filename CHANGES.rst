@@ -31,7 +31,7 @@ Bug fixes:
   moving `ILanguageSchema` there. [sallner] (#2049)
 - Use correct permission for mail controlpanel form so that Site Administrators
   can also edit. [fredvd] (#2688)
-- - make linkintegrity robot test more reliable [MrTango] (#2752)
+- Make linkintegrity robot test more reliable [MrTango] (#2752)
 - Check only once if Products.ATContentTypes is available. [gforcada] (#2765)
 - Fix redirection to `came_from` when url matches LOGIN_TEMPLATE_ID partly
   [petschki] (#2771)
