@@ -56,7 +56,7 @@ def verify_zodb(obj, debug=False):
         if next_ is None:
             break
 
-    issues = dict(Counter(sorted(issues)))
+    issues = Counter(sorted(issues))
     msg = ''
     for value, amount in issues.items():
         msg += '{}: {}\n'.format(value, amount)
