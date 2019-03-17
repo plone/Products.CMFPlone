@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from collections import Counter
 from Zope2.Startup.run import make_wsgi_app
 from ZODB.interfaces import IStorageCurrentRecordIteration
 from ZODB.serialize import PersistentUnpickler
@@ -43,20 +44,28 @@ def verify_zodb(obj, debug=False):
     next_ = None
     count = 0
     errors = 0
+    issues = []
     while True:
         count += 1
         oid, tid, data, next_ = storage.record_iternext(next_)
         logger.debug('Verifying {}'.format(oid))
-        success = verify_record(oid, data, debug)
+        success, msg = verify_record(oid, data, debug)
         if not success:
             errors += 1
+            issues.append(msg)
         if next_ is None:
             break
 
+    issues = Counter(sorted(issues))
+    msg = ''
+    for value, amount in issues.items():
+        msg += '{}: {}\n'.format(value, amount)
+
     logger.info(
-        'Done! Scanned {} records. '
-        'Found {} records that could not be loaded.'.format(
-            count, errors)
+        'Done! Scanned {} records. \n'
+        'Found {} records that could not be loaded. \n'
+        'Exceptions and how often they happened: \n'
+        '{}'.format(count, errors, msg)
     )
 
 
@@ -69,7 +78,7 @@ def verify_record(oid, data, debug=False):
         class_info = unpickler.load()
         pos = input_file.tell()
         unpickler.load()
-    except Exception:
+    except Exception as e:
         input_file.seek(0)
         pickle = input_file.read()
         logger.info('\nCould not process {} record {}:'.format(
@@ -89,8 +98,10 @@ def verify_record(oid, data, debug=False):
                 pdb.set_trace()
         elif debug and pos is None:
             pdb.set_trace()
-        return False
-    return True
+        # The same issues should have the same msg
+        msg = '{}: {}'.format(e.__class__.__name__, str(e))
+        return False, msg
+    return True, None
 
 
 def persistent_load(ref):
