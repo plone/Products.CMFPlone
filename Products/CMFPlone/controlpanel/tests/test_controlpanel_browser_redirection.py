@@ -350,10 +350,15 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
         self.assertEqual(len(RedirectionSet(created='2001-02-01')), 31)
         self.assertEqual(len(RedirectionSet(created='2001-02-01 00:00:00')), 31)
         self.assertEqual(len(RedirectionSet(created='2001-02-01 00:00:01')), 32)
-        self.assertEqual(len(RedirectionSet(created='2002-01-01')), 365)
-        self.assertEqual(len(RedirectionSet(created='2002/01/01')), 365)
-        self.assertEqual(len(RedirectionSet(created='2002-01-01')), 365)
         self.assertEqual(len(RedirectionSet(created='badvalue')), 400)
+
+        # DateTime('2002-01-01') results in a timezone GMT+0
+        self.assertEqual(len(RedirectionSet(created='2002-01-01')), 365)
+        # DateTime('2002/01/01') results in a timezone GMT+1 for me,
+        # or a different zone depending on where in the world you are.
+        # So we need to be lenient in the tests.
+        self.assertGreaterEqual(len(RedirectionSet(created='2002/01/01')), 364)
+        self.assertLessEqual(len(RedirectionSet(created='2002/01/01')), 366)
 
         request = self.layer['request'].clone()
         request.form['datetime'] = ''
