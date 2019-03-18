@@ -461,8 +461,6 @@ class RedirectionControlPanelFunctionalTest(unittest.TestCase):
             '/plone/alias2',
         ]
         self.browser.getControl(name='form.button.Remove').click()
-        with open('/tmp/test.html', 'w') as testfile:
-            testfile.write(self.browser.contents)
 
         self.assertTrue(
             'Alternative urls removed.' in self.browser.contents,
