@@ -111,6 +111,7 @@ anonymous users can see the new action title
 anonymous users can see the actions new ordering
   Disable autologin
   Go to  ${PLONE_URL}
+  Wait until page contains  Accessibility
   Page Should Contain Element   xpath=//div[@id='portal-footer']//ul/li[1]/a/span[contains(text(), 'Accessibility')]
   Page Should Contain Element   xpath=//div[@id='portal-footer']//ul/li[3]/a/span[contains(text(), 'Site Map')]
 
