@@ -70,6 +70,7 @@ Scenario: Searchable text query
     and the querystring pattern
     When I open the criteria Searchable text
     and I search for a
+    and Wait Until Element Is Visible  css=div.querystring-preview
     and Click Element  css=div.querystring-preview
     Then we expect 2 hits
     When I open the criteria Searchable text
