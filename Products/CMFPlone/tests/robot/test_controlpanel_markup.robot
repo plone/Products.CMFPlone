@@ -40,6 +40,7 @@ a document '${title}'
 
 the markup control panel
   Go to  ${PLONE_URL}/@@markup-controlpanel
+  Wait until page contains  Markup Settings
 
 
 # --- WHEN -------------------------------------------------------------------

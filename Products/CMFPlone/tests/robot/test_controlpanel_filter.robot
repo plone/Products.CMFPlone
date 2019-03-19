@@ -64,6 +64,7 @@ a logged-in site administrator
 
 the filter control panel
   Go to  ${PLONE_URL}/@@filter-controlpanel
+  Wait until page contains  HTML Filtering Settings
 
 Input RichText
   [Arguments]  ${input}
