@@ -332,6 +332,7 @@ we expect ${NUM} hits
     mark results
 
 we do not expect any hits
+    Wait Until Element Is Visible  css=div#search-results
     Wait Until Element Contains  css=div#search-results  No results were found.
 
 a logged-in manager
