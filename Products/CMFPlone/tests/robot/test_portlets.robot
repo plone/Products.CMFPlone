@@ -24,6 +24,7 @@ Scenario: Add Login Portlet
 
 a manage portlets view
     Go to   ${PLONE_URL}/@@manage-portlets
+    Wait until page contains  Manage portlets
 
 I add a '${portletname}' portlet to the left column
     Select from list  xpath=//div[@id="portletmanager-plone-leftcolumn"]//select  ${portletname}

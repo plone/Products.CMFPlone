@@ -61,9 +61,11 @@ a logged-in site administrator
 
 the security control panel
   Go to  ${PLONE_URL}/@@security-controlpanel
+  Wait until page contains  Security Settings
 
 a published test folder
   Go to  ${PLONE_URL}/test-folder
+  Wait until element is visible  css=#plone-contentmenu-workflow
   Click link  xpath=//li[@id='plone-contentmenu-workflow']/a
   Wait until element is visible  id=workflow-transition-publish
   Click link  id=workflow-transition-publish
@@ -114,16 +116,19 @@ I enable UUID to be used as a user id
 Anonymous users can register to the site
   Disable autologin
   Go to  ${PLONE_URL}
+  Wait until page contains  Plone site
   Element Should Be Visible  xpath=//a[@id='personaltools-join']
 
 Users can select their own passwords when registering
   Disable autologin
   Go to  ${PLONE_URL}/@@register
+  Wait until page contains  Registration form
   Element Should Be Visible  xpath=//input[@id='form-widgets-password']
 
 Users can use email as their login name
   Disable autologin
   Go to  ${PLONE_URL}/@@register
+  Wait until page contains  Registration form
   Element Should Be Visible  xpath=//input[@id='form-widgets-email']
   Element Should Not Be Visible  xpath=//input[@id='form-widgets-username']
 
@@ -133,6 +138,7 @@ A user folder should be created when a user registers and logs in to the site
 
   # I register to the site
   Go to  ${PLONE_URL}/@@register
+  Wait until page contains  Registration form
   Input Text for sure  form.widgets.username  joe
   Input Text for sure  form.widgets.email  joe@test.com
   Input Text for sure  form.widgets.password  supersecret
@@ -141,6 +147,7 @@ A user folder should be created when a user registers and logs in to the site
 
   # I login to the site
   Go to  ${PLONE_URL}/login
+  Wait until page contains  Login Name
   Input text for sure  __ac_name  joe
   Input text for sure  __ac_password  supersecret
   Click Button  Log in
@@ -148,12 +155,14 @@ A user folder should be created when a user registers and logs in to the site
 
   # The user folder should be created
   Go to  ${PLONE_URL}/Members/joe
+  Wait until page contains  joe
   Element Should Contain  css=h1.documentFirstHeading  joe
   Page should Not contain  This page does not seem to exist
 
 Anonymous users can view 'about' information
   Disable autologin
   Go to  ${PLONE_URL}/@@search?SearchableText=test
+  Wait until page contains  Search results
   Element Should Be Visible  xpath=//span[contains(@class, 'documentAuthor')]
 
 UUID should be used for the user id
@@ -162,6 +171,7 @@ UUID should be used for the user id
 
   # I register to the site
   Go to  ${PLONE_URL}/@@register
+  Wait until page contains  Registration form
   Input Text for sure  form.widgets.username  joe
   Input Text for sure  form.widgets.email  joe@test.com
   Input Text for sure  form.widgets.password  supersecret
@@ -170,6 +180,7 @@ UUID should be used for the user id
 
   # I login to the site
   Go to  ${PLONE_URL}/login
+  Wait until page contains  Login Name
   Input text for sure  __ac_name  joe
   Input text for sure  __ac_password  supersecret
   Click Button  Log in
