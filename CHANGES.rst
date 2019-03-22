@@ -12,6 +12,23 @@ Changelog
 
 .. towncrier release notes start
 
+5.2rc2 (2019-03-21)
+-------------------
+
+Bug fixes:
+
+
+- Fix excluded items in navigation [ale-rt] (#2516)
+- Add basic validators for the portal action controlpanel forms (#2689)
+- Fix wrong msgids in link management control panel [erral] (#2788)
+- Fix errors that abort the verification when debugging a DB with ./bin/instance verifydb -D.
+  [pbauer] (#2792)
+- Add summary of all errors when verifying a DB with ./bin/instance verifydb.
+  [pbauer] (#2798)
+- Fixed unstable SearchableText and Scenario Type querystring robot tests.  [maurits] (#2808)
+- Fixed unstable Markup Control Panel and other robot tests.   [maurits] (#2809)
+
+
 5.2rc1 (2019-03-04)
 -------------------
 
