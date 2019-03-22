@@ -8,6 +8,15 @@ Changelog
 
 .. towncrier release notes start
 
+3.1.2 (2019-03-21)
+------------------
+
+Breaking changes:
+
+
+- Remove the ``plone.navtree`` content provider that was introduced in the context of the Navigation PLIP (https://github.com/plone/Products.CMFPlone/issues/2516) [ale-rt] (#188)
+
+
 3.1.1 (2019-03-03)
 ------------------
 
