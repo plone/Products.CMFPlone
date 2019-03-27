@@ -124,9 +124,9 @@ class MetaBundleWriter(object):
         fi = StringIO()
         for bname, script in resources.items():
             fi.write('''
-// Start Bundle: {0}
+/* Start Bundle: {0} */
 {1}
-// End Bundle: {2}
+/* End Bundle: {2} */
 '''.format(bname, script, bname))
         self.folder.writeFile(self.name + postfix, fi)
         resources.clear()
