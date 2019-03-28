@@ -59,6 +59,7 @@ Bug fixes:
   later. Fixes `issue 2377
   <https://github.com/plone/Products.CMFPlone/issues/2377>`_. [maurits] (#2377)
 - Unflakied a unit test. [Rotonen] (#2383)
+- Restore the possibility to sort catalog query results with multiple indexes.  [ale-rt] (#2464)
 - Updated tinymce to 4.7.13 [obct537] (#2527)
 - Fix plone.app.redirector support for JSON/unspecified requests. [rpatterson]
   (#2619)
