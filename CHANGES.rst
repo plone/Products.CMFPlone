@@ -56,7 +56,7 @@ New features:
 
 Bug fixes:
 
-
+- Restore the possibility to sort catalog query results with multiple indexes.  [ale-rt] (#2464)
 - Modernize robot keywords that use "Get Element Attribute" [ale-rt] (#2615)
 - Fix metabundle resource ordering to pay attention to depends setting
   [vangheem] (#2641)
