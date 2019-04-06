@@ -53,6 +53,7 @@ Scenario: Filter Navigation By Displayed Types in the Navigation Control Panel
 
 the navigation control panel
   Go to  ${PLONE_URL}/@@navigation-controlpanel
+  Wait until page contains  Navigation Settings
 
 a published document '${title}'
   ${uid}=  a document '${title}'

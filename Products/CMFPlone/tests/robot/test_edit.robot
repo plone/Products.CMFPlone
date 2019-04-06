@@ -73,6 +73,7 @@ Scenario: Form dropdowns follows DateTime widget values
 an edited page
     Create content  type=Document  title=${TITLE}
     Go to  ${PLONE_URL}/${PAGE_ID}/edit
+    Wait until page contains  Edit Page
 
 
 # --- WHEN -------------------------------------------------------------------

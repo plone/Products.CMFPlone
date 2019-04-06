@@ -12,6 +12,48 @@ Changelog
 
 .. towncrier release notes start
 
+5.2rc2 (2019-03-21)
+-------------------
+
+Bug fixes:
+
+
+- Fix excluded items in navigation [ale-rt] (#2516)
+- Add basic validators for the portal action controlpanel forms (#2689)
+- Fix wrong msgids in link management control panel [erral] (#2788)
+- Fix errors that abort the verification when debugging a DB with ./bin/instance verifydb -D.
+  [pbauer] (#2792)
+- Add summary of all errors when verifying a DB with ./bin/instance verifydb.
+  [pbauer] (#2798)
+- Fixed unstable SearchableText and Scenario Type querystring robot tests.  [maurits] (#2808)
+- Fixed unstable Markup Control Panel and other robot tests.   [maurits] (#2809)
+
+
+5.2rc1 (2019-03-04)
+-------------------
+
+New features:
+
+
+- Views for title and description. [iham] (#2740)
+- Display wsgi-state plus name and version of the server in the controlpanel
+  [pbauer] (#2770)
+- Enable dropdown-navigation for new sites by default. [pbauer] (#2772)
+
+
+Bug fixes:
+
+
+- Resolve circular dependency between `Products.CMFPlone` and `plone.i18n` by
+  moving `ILanguageSchema` there. [sallner] (#2049)
+- Use correct permission for mail controlpanel form so that Site Administrators
+  can also edit. [fredvd] (#2688)
+- Make linkintegrity robot test more reliable [MrTango] (#2752)
+- Check only once if Products.ATContentTypes is available. [gforcada] (#2765)
+- Fix redirection to `came_from` when url matches LOGIN_TEMPLATE_ID partly
+  [petschki] (#2771)
+
+
 5.2b1 (2019-02-13)
 ------------------
 
