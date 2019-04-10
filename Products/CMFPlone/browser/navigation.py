@@ -72,7 +72,7 @@ class CatalogSiteMap(BrowserView):
 class CatalogNavigationTabs(BrowserView):
 
     def _getNavQuery(self):
-                # check whether we only want actions
+        # check whether we only want actions
         registry = getUtility(IRegistry)
         navigation_settings = registry.forInterface(
             INavigationSchema,
@@ -100,6 +100,9 @@ class CatalogNavigationTabs(BrowserView):
             query['review_state'] = navigation_settings.workflow_states_to_show
 
         query['is_default_page'] = False
+
+        if not navigation_settings.show_excluded_items:
+            query['exclude_from_nav'] = False
 
         if not navigation_settings.nonfolderish_tabs:
             query['is_folderish'] = True
@@ -146,11 +149,13 @@ class CatalogNavigationTabs(BrowserView):
                 return (get_id(item), item.getRemoteUrl)
             return get_view_url(item)
 
+        context_path = '/'.join(context.getPhysicalPath())
+
         # now add the content to results
         for item in rawresult:
-            if not navigation_settings.show_excluded_items:
-                if item.exclude_from_nav:
-                    continue
+            if not context_path.startswith(item.getPath()) and item.exclude_from_nav:  # noqa: E501
+                # skip excluded items if they're not in our context path
+                continue
             cid, item_url = _get_url(item)
             data = {
                 'name': utils.pretty_title_or_id(context, item),
