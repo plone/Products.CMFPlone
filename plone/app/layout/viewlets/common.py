@@ -331,7 +331,7 @@ class GlobalSectionsViewlet(ViewletBase):
             if brain_parent_path == navtree_path:
                 # This should be already provided by the portal_tabs_view
                 continue
-            if not context_path.startswith(brain_path) and brain.exclude_from_nav:  # noqa: E501
+            if brain.exclude_from_nav and not context_path.startswith(brain_path):  # noqa: E501
                 # skip excluded items if they're not in our context path
                 continue
             url = brain.getURL()
