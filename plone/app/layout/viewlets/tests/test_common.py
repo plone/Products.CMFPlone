@@ -235,8 +235,10 @@ class TestGlobalSectionsViewlet(ViewletsTestCase):
         self.folder.reindexObject()
         setRoles(self.portal, TEST_USER_ID, ['Manager'])
 
-    def _get_navtree(self):
-        gsv = GlobalSectionsViewlet(self.portal, self.request.clone(), None)
+    def _get_navtree(self, context=None):
+        if context is None:
+            context = self.portal
+        gsv = GlobalSectionsViewlet(context, self.request.clone(), None)
         return gsv.navtree
 
     def test_selectedtabs(self):
@@ -481,7 +483,6 @@ class TestGlobalSectionsViewlet(ViewletsTestCase):
                 '/plone/index_html',
                 '/plone/Members',
                 '/plone/test-folder',
-                '/plone/excluded-folder',
             ],
         )
 
@@ -533,4 +534,25 @@ class TestGlobalSectionsViewlet(ViewletsTestCase):
         self.assertListEqual(
             [item['path'] for item in navtree['/plone']],
             ['/plone/index_html', '/plone/Members', '/plone/test-folder'],
+        )
+
+        # check for 'show_excluded_items' in navtree
+        self.registry['plone.show_excluded_items'] = True
+        navtree = self._get_navtree()
+        # if we're not in (sub)context of an excluded item don't show it
+        self.assertListEqual(
+            [item['path'] for item in navtree['/plone']],
+            ['/plone/index_html', '/plone/Members', '/plone/test-folder'],
+        )
+        # but if so, keep the tree
+        navtree = self._get_navtree(
+            self.portal['excluded-folder']['sub-folder'])
+        self.assertListEqual(
+            [item['path'] for item in navtree['/plone']],
+            ['/plone/index_html', '/plone/Members', '/plone/test-folder',
+             '/plone/excluded-folder'],
+        )
+        self.assertListEqual(
+            [item['path'] for item in navtree['/plone/excluded-folder']],
+            ['/plone/excluded-folder/sub-folder'],
         )
