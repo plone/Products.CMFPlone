@@ -3,7 +3,6 @@ from plone.app.testing import logout
 from plone.registry.interfaces import IRegistry
 from plone.resource.interfaces import IResourceDirectory
 from plone.subrequest import subrequest
-from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.controlpanel.browser.resourceregistry import OverrideFolderManager  # noqa
 from Products.CMFPlone.controlpanel.browser.resourceregistry import ResourceRegistryControlPanelView  # noqa
 from Products.CMFPlone.interfaces import IBundleRegistry
@@ -19,8 +18,6 @@ from Products.CMFPlone.resources.bundle import Bundle
 from Products.CMFPlone.resources.exportimport.resourceregistry import ResourceRegistryNodeAdapter  # noqa
 from Products.CMFPlone.tests import PloneTestCase
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from Products.GenericSetup.context import SetupEnviron
-from xml.dom.minidom import parseString
 from zope.component import getUtility
 
 import json
