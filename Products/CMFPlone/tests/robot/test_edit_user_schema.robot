@@ -80,6 +80,7 @@ a logged-in manager
 
 site registration enabled
   Go To  ${PLONE_URL}/@@security-controlpanel
+  Wait until page contains  Security Settings
   Wait until page contains element  form.widgets.enable_self_reg:list
   Select Checkbox  form.widgets.enable_self_reg:list
   Click Button  Save

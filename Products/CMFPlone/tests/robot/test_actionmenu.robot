@@ -94,7 +94,7 @@ Scenario:
 an actionsmenu page
     Create content  type=Document  title=${TITLE}
     Go to  ${PLONE_URL}/${PAGE_ID}
-
+    Wait until page contains  An actionsmenu page
 
 # --- WHEN -------------------------------------------------------------------
 

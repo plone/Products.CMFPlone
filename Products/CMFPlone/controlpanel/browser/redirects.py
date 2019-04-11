@@ -349,7 +349,7 @@ class RedirectsControlPanel(BrowserView):
             if abs_redirection == abs_target:
                 err = _(
                     u"Alternative urls that point to themselves will cause"
-                    u"an endless cycle of redirects."
+                    u" an endless cycle of redirects."
                 )
                 # TODO: detect indirect recursion
 

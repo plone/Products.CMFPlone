@@ -53,7 +53,7 @@ a document '${title}'
 
 the editing control panel
   Go to  ${PLONE_URL}/@@editing-controlpanel
-
+  Wait until page contains  Editing Settings
 
 # --- WHEN -------------------------------------------------------------------
 

@@ -100,6 +100,7 @@ the site title should be set to '${expected_site_title}'
 
 the site logo should be set to the custom logo
   Go To  ${PLONE_URL}
+  Wait Until Element Is Visible  css=#portal-logo
   Page should contain element  //*[@id="portal-logo"]/img[contains(@src,'@@site-logo/pixel.png')]
 
 then I can see a sitemap
