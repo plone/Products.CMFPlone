@@ -302,6 +302,7 @@ class GlobalSectionsViewlet(ViewletBase):
             'sort_on': self.settings.sort_tabs_on,
             'is_default_page': False,
         }
+
         if self.settings.sort_tabs_reversed:
             query['sort_order'] = 'reverse'
 
@@ -316,6 +317,7 @@ class GlobalSectionsViewlet(ViewletBase):
         if not self.settings.show_excluded_items:
             query['exclude_from_nav'] = False
 
+        context_path = '/'.join(self.context.getPhysicalPath())
         portal_catalog = getToolByName(self.context, 'portal_catalog')
         brains = portal_catalog.searchResults(**query)
 
@@ -324,10 +326,13 @@ class GlobalSectionsViewlet(ViewletBase):
             'plone.types_use_view_action_in_listings', [])
 
         for brain in brains:
-            brain_path = '/'.join(brain.getPath().split('/'))
+            brain_path = brain.getPath()
             brain_parent_path = brain_path.rpartition('/')[0]
             if brain_parent_path == navtree_path:
                 # This should be already provided by the portal_tabs_view
+                continue
+            if brain.exclude_from_nav and not context_path.startswith(brain_path):  # noqa: E501
+                # skip excluded items if they're not in our context path
                 continue
             url = brain.getURL()
             if brain.portal_type in types_using_view:
