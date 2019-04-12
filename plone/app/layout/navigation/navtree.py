@@ -2,21 +2,9 @@
 # This module contains a function to help build navigation-tree-like structures
 # from catalog queries.
 
-from Acquisition import aq_inner
-from collections import defaultdict
 from plone.app.layout.navigation.interfaces import INavtreeStrategy
-from plone.app.layout.navigation.root import getNavigationRoot
-from plone.memoize.view import memoize
-from plone.memoize.view import memoize_contextless
-from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
-from Products.CMFPlone.interfaces.controlpanel import ILanguageSchema
-from Products.CMFPlone.interfaces.controlpanel import INavigationSchema
-from Products.CMFPlone.utils import safe_unicode
-from zope.component import getMultiAdapter
-from zope.component import getUtility
-from zope.contentprovider.provider import ContentProviderBase
 from zope.interface import implementer
 
 import six
