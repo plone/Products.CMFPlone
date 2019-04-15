@@ -3,6 +3,7 @@ from Products.CMFPlone.Portal import PloneSite
 from Products.CMFPlone.events import SiteManagerCreatedEvent
 from Products.CMFPlone.interfaces import INonInstallable
 from Products.GenericSetup.tool import SetupTool
+from Products.statusmessages.interfaces import IStatusMessage
 from plone.registry.interfaces import IRegistry
 from zope.component import queryUtility
 from zope.event import notify
@@ -163,8 +164,16 @@ def addPloneSite(context, site_id, title='Plone site', description='',
     site.manage_changeProperties(**props)
 
     for extension_id in extension_ids:
-        setup_tool.runAllImportStepsFromProfile(
-            'profile-%s' % extension_id)
+        try:
+            setup_tool.runAllImportStepsFromProfile(
+                'profile-%s' % extension_id)
+        except Exception as msg:
+            IStatusMessage(request).add(
+                'Could not install {}: {}\n'
+                'Please try to install it manually using the "Addons" '
+                'controlpanel and report any issues to the '
+                'addon maintainers'.format(extension_id, msg.args),
+                type='warning')
 
     if snapshot is True:
         setup_tool.createSnapshot('initial_configuration')
