@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.Portal import PloneSite
 from Products.CMFPlone.events import SiteManagerCreatedEvent
 from Products.CMFPlone.interfaces import INonInstallable
@@ -168,11 +169,15 @@ def addPloneSite(context, site_id, title='Plone site', description='',
             setup_tool.runAllImportStepsFromProfile(
                 'profile-%s' % extension_id)
         except Exception as msg:
-            IStatusMessage(request).add(
-                'Could not install {}: {}\n'
+            IStatusMessage(request).add(_(
+                'Could not install ${profile_id}: ${error_msg}! '
                 'Please try to install it manually using the "Addons" '
                 'controlpanel and report any issues to the '
-                'addon maintainers'.format(extension_id, msg.args),
+                'addon maintainers.',
+                mapping={
+                    'profile_id': extension_id,
+                    'error_msg': msg.args,
+                }),
                 type='warning')
 
     if snapshot is True:
