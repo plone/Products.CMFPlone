@@ -69,17 +69,17 @@ class LoginForm(form.EditForm):
         """Handle login on this portal where login is external."""
         next_ = self.request.get('next', None)
         came_from = self.request.get('came_from')
+        urlparts = [part for part in parse.urlparse(url)]
+        qs = dict(parse.parse_qsl(urlparts[4]))
         portal_url = getToolByName(self.context, 'portal_url')
-        params = []
         if next_ is not None and not portal_url.isURLInPortal(next_):
             next_ = None
         if next_ is not None:
-            params.append('next={0}'.format(next_))
+            qs['next'] = next_
         if came_from:
-            params.append('came_from={0}'.format(came_from))
-        qs = '?{0}'.format('&'.join(params)) if params else ''
-        url = '{0}{1}'.format(url, qs)
-        self.request.response.redirect(url)
+            qs['came_from'] = came_from
+        urlparts[4] = parse.urlencode(qs)
+        self.request.response.redirect(parse.urlunparse(urlparts))
 
     def _get_auth(self):
         try:
