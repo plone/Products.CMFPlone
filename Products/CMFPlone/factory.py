@@ -5,6 +5,7 @@ from Products.CMFPlone.events import SiteManagerCreatedEvent
 from Products.CMFPlone.interfaces import INonInstallable
 from Products.GenericSetup.tool import SetupTool
 from Products.statusmessages.interfaces import IStatusMessage
+from logging import getLogger
 from plone.registry.interfaces import IRegistry
 from zope.component import queryUtility
 from zope.event import notify
@@ -17,6 +18,8 @@ _CONTENT_PROFILE = 'plone.app.contenttypes:plone-content'
 
 # A little hint for PloneTestCase
 _IMREALLYPLONE5 = True
+
+logger = getLogger('Plone')
 
 
 @implementer(INonInstallable)
@@ -178,7 +181,10 @@ def addPloneSite(context, site_id, title='Plone site', description='',
                     'profile_id': extension_id,
                     'error_msg': msg.args,
                 }),
-                type='warning')
+                type='error')
+            logger.exception(
+                'Error while installing addon {}. '
+                'See traceback below for details.'.format(extension_id))
 
     if snapshot is True:
         setup_tool.createSnapshot('initial_configuration')
