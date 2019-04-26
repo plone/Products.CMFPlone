@@ -134,6 +134,7 @@ class CatalogNavigationTabs(BrowserView):
         for actionInfo in actions:
             data = actionInfo.copy()
             data['name'] = data['title']
+            self.customize_entry(data)
             result.append(data)
 
         # check whether we only want actions
@@ -164,10 +165,14 @@ class CatalogNavigationTabs(BrowserView):
                 'description': item.Description,
                 'review_state': item.review_state
             }
+            self.customize_entry(data, item)
             result.append(data)
 
         return result
 
+    def customize_entry(self, entry, brain=None):
+        """a little helper to enlarge customizability."""
+        pass
 
 @implementer(INavigationBreadcrumbs)
 class CatalogNavigationBreadcrumbs(BrowserView):
