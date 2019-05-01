@@ -8,6 +8,18 @@ Changelog
 
 .. towncrier release notes start
 
+3.1.3 (2019-05-01)
+------------------
+
+Bug fixes:
+
+
+- fix ``show_excluded_items`` in combination with ``exclude_from_nav`` setting
+  [petschki] (#190)
+- Remove unused imports (and so a DeprecationWarning). [jensens] (#193)
+- Make navigation (global sections) subclassing easier. [iham] (#194)
+
+
 3.1.2 (2019-03-21)
 ------------------
 
