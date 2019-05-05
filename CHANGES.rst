@@ -12,6 +12,37 @@ Changelog
 
 .. towncrier release notes start
 
+5.2rc3 (2019-05-04)
+-------------------
+
+New features:
+
+
+- Allow filtering on date and manual/automatic in redirection controlpanel. (#2799)
+- Add a button to export the alternative urls in redirection controlpanel. (#2799)
+- Add a button to remove all alternative urls that match the filter.
+  See `issue 2799 <https://github.com/plone/Products.CMFPlone/issues/2799>`_.
+  [maurits] (#2799)
+
+
+Bug fixes:
+
+
+- gracefully handle tracebacks during addon installation
+  [petschki] (#2228)
+- Add workaround for the case when a inifite recusion in a page-template that uses the main-template crashes the instance instead of raising a RecursionError.
+  [pbauer, esteele] (#2666)
+- Fixed unstable Markup Control Panel robot test again.  [maurits] (#2809)
+- add a missing space in an error message in the redirects control panel and replace "deffered" by "deferred" [vincentfretin] (#2821)
+- Fixes: Cooking resources with non ASCII resulted in encoding error.
+  Further, writing legacy resources resulted in ValueError. [jensens] (#2827)
+- restore ``exclude_from_nav`` combined with ``show_excluded_items`` handling
+  [petschki] (#2828)
+- Fix DeprecationWarning in syndication-view. [jensens] (#2831)
+- Fix malformed url when redirecting to external login. [ericof] (#2842)
+- Make navigation (CatalogNavigationTabs) subclassing easier. [iham] (#2849)
+
+
 5.2rc2 (2019-03-21)
 -------------------
 

@@ -1,2 +1,0 @@
-Fixes: Cooking resources with non ASCII resulted in encoding error.
-Further, writing legacy resources resulted in ValueError. [jensens]

@@ -1,2 +1,0 @@
-Add workaround for the case when a inifite recusion in a page-template that uses the main-template crashes the instance instead of raising a RecursionError.
-[pbauer, esteele]
