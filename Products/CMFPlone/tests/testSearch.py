@@ -165,7 +165,9 @@ class TestSection(SearchTestCase):
         self.assertEqual(search_settings.sort_on, 'relevance')
 
         q = {'SearchableText': 'spam'}
-        res = portal.restrictedTraverse('@@search').results(query=q)
+        view = portal.restrictedTraverse('@@search')
+        self.assertEqual(view.default_sort_on, 'relevance')
+        res = view.results(query=q)
         ids = [r.getId() for r in res]
         expected = [
             'my-page11', 'my-page10', 'my-page9', 'my-page8', 'my-page7',
@@ -186,7 +188,9 @@ class TestSection(SearchTestCase):
         search_settings = registry.forInterface(ISearchSchema, prefix="plone")
         search_settings.sort_on = 'Date'
         q = {'SearchableText': 'spam'}
-        res = portal.restrictedTraverse('@@search').results(query=q)
+        view = portal.restrictedTraverse('@@search')
+        self.assertEqual(view.default_sort_on, 'Date')
+        res = view.results(query=q)
         ids = [r.getId() for r in res]
         expected = [
             'my-page11', 'my-page10', 'my-page9', 'my-page8', 'my-page7',
@@ -202,7 +206,9 @@ class TestSection(SearchTestCase):
         search_settings = registry.forInterface(ISearchSchema, prefix="plone")
         search_settings.sort_on = 'sortable_title'
         q = {'SearchableText': 'spam'}
-        res = portal.restrictedTraverse('@@search').results(query=q)
+        view = portal.restrictedTraverse('@@search')
+        self.assertEqual(view.default_sort_on, 'sortable_title')
+        res = view.results(query=q)
         ids = [r.getId() for r in res]
         expected = [
             'my-page0', 'my-page1', 'my-page2', 'my-page3', 'my-page4',
