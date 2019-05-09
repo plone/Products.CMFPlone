@@ -63,6 +63,7 @@ a logged-in administrator
 
 the actions control panel
   Go to  ${PLONE_URL}/@@actions-controlpanel
+  Wait until page contains  Portal actions
 
 # --- WHEN -------------------------------------------------------------------
 
@@ -106,11 +107,13 @@ I unhide the action
 anonymous users can see the new action title
   Disable autologin
   Go to  ${PLONE_URL}
+  Wait until page contains  Accessibility
   Page Should Contain  A new site map
 
 anonymous users can see the actions new ordering
   Disable autologin
   Go to  ${PLONE_URL}
+  Wait until page contains  Accessibility
   Page Should Contain Element   xpath=//div[@id='portal-footer']//ul/li[1]/a/span[contains(text(), 'Accessibility')]
   Page Should Contain Element   xpath=//div[@id='portal-footer']//ul/li[3]/a/span[contains(text(), 'Site Map')]
 
@@ -118,14 +121,17 @@ logged-in users can see the new action
   Disable autologin
   Enable autologin as   Contributor
   Go to  ${PLONE_URL}
+  Wait until page contains  Accessibility
   Page Should Contain  My favorites
 
 anonymous users cannot see the action anymore
   Disable autologin
   Go to  ${PLONE_URL}
+  Wait until page contains  Accessibility
   Page Should Not Contain  Site Map
 
 anonymous users can see the action again
   Disable autologin
   Go to  ${PLONE_URL}
+  Wait until page contains  Accessibility
   Page Should Contain  Site Map

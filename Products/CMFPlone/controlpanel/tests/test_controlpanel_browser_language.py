@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 from plone.app.testing import SITE_OWNER_NAME, SITE_OWNER_PASSWORD
+from plone.i18n.interfaces import ILanguageSchema
 from plone.registry.interfaces import IRegistry
 from plone.testing.zope import Browser
 
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 
-from Products.CMFPlone.interfaces import ILanguageSchema
 from Products.CMFPlone.testing import \
     PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 

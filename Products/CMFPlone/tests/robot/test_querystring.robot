@@ -70,6 +70,8 @@ Scenario: Searchable text query
     and the querystring pattern
     When I open the criteria Searchable text
     and I search for a
+    and Sleep  0.2
+    and Wait Until Element Is Visible  css=div.querystring-preview
     and Click Element  css=div.querystring-preview
     Then we expect 2 hits
     When I open the criteria Searchable text
@@ -331,6 +333,9 @@ we expect ${NUM} hits
     mark results
 
 we do not expect any hits
+    [Documentation]  The search results may be the previous results that are still visible for a short time, so sleep a bit.  Alternatively look at http://www.obeythetestinggoat.com/how-to-get-selenium-to-wait-for-page-load-after-a-click.html
+    Sleep  0.2
+    Wait Until Element Is Visible  css=div#search-results
     Wait Until Element Contains  css=div#search-results  No results were found.
 
 a logged-in manager

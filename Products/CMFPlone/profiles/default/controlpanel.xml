@@ -187,4 +187,13 @@
     i18n:attributes="title">
   <permission>Manage portal</permission>
  </configlet>
+ <configlet title="URL Management" action_id="RedirectionTool"
+    icon_expr="string:$portal_url/action_icon.png"
+    appId="Plone" category="plone-general"
+    condition_expr=""
+    url_expr="string:${portal_url}/@@redirection-controlpanel"
+    visible="True"
+    i18n:attributes="title">
+  <permission>Manage Portal Aliases</permission>
+ </configlet>
 </object>

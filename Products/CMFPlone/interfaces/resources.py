@@ -138,7 +138,7 @@ class IBundleRegistry(zope.interface.Interface):
         required=False)
 
     load_defer = schema.Bool(
-        title=_(u"Load deffered"),
-        description=_("Load the JavaScript files deffered after the document has been parsed but before ``DOMContentLoaded`` by adding a ``defer`` attribute to the script tag."),
+        title=_(u"Load deferred"),
+        description=_("Load the JavaScript files deferred after the document has been parsed but before ``DOMContentLoaded`` by adding a ``defer`` attribute to the script tag."),
         default=False,
         required=False)

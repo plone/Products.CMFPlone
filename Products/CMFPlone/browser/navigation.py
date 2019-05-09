@@ -72,7 +72,7 @@ class CatalogSiteMap(BrowserView):
 class CatalogNavigationTabs(BrowserView):
 
     def _getNavQuery(self):
-                # check whether we only want actions
+        # check whether we only want actions
         registry = getUtility(IRegistry)
         navigation_settings = registry.forInterface(
             INavigationSchema,
@@ -100,6 +100,9 @@ class CatalogNavigationTabs(BrowserView):
             query['review_state'] = navigation_settings.workflow_states_to_show
 
         query['is_default_page'] = False
+
+        if not navigation_settings.show_excluded_items:
+            query['exclude_from_nav'] = False
 
         if not navigation_settings.nonfolderish_tabs:
             query['is_folderish'] = True
@@ -131,6 +134,7 @@ class CatalogNavigationTabs(BrowserView):
         for actionInfo in actions:
             data = actionInfo.copy()
             data['name'] = data['title']
+            self.customize_entry(data)
             result.append(data)
 
         # check whether we only want actions
@@ -146,9 +150,12 @@ class CatalogNavigationTabs(BrowserView):
                 return (get_id(item), item.getRemoteUrl)
             return get_view_url(item)
 
+        context_path = '/'.join(context.getPhysicalPath())
+
         # now add the content to results
         for item in rawresult:
-            if item.exclude_from_nav:
+            if item.exclude_from_nav and not context_path.startswith(item.getPath()):  # noqa: E501
+                # skip excluded items if they're not in our context path
                 continue
             cid, item_url = _get_url(item)
             data = {
@@ -158,10 +165,14 @@ class CatalogNavigationTabs(BrowserView):
                 'description': item.Description,
                 'review_state': item.review_state
             }
+            self.customize_entry(data, item)
             result.append(data)
 
         return result
 
+    def customize_entry(self, entry, brain=None):
+        """a little helper to enlarge customizability."""
+        pass
 
 @implementer(INavigationBreadcrumbs)
 class CatalogNavigationBreadcrumbs(BrowserView):

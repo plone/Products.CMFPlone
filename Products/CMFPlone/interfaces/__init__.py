@@ -12,7 +12,6 @@ from Products.CMFPlone.interfaces.controlpanel import IDateAndTimeSchema
 from Products.CMFPlone.interfaces.controlpanel import IEditingSchema
 from Products.CMFPlone.interfaces.controlpanel import IFilterSchema
 from Products.CMFPlone.interfaces.controlpanel import IImagingSchema
-from Products.CMFPlone.interfaces.controlpanel import ILanguageSchema
 from Products.CMFPlone.interfaces.controlpanel import ILinkSchema
 from Products.CMFPlone.interfaces.controlpanel import ILoginSchema
 from Products.CMFPlone.interfaces.controlpanel import IMailSchema
@@ -61,3 +60,11 @@ from Products.CMFPlone.interfaces.structure import INonStructuralFolder
 from Products.CMFPlone.interfaces.syndication import ISiteSyndicationSettings
 from Products.CMFPlone.interfaces.translationservice import ITranslationServiceTool
 from Products.CMFPlone.interfaces.workflow import IWorkflowChain
+
+from zope.deferredimport import deprecated
+
+
+deprecated(
+    "It has been moved to plone.i18n.interfaces, import from there instead.",
+    ILanguageSchema='plone.i18n.interfaces:ILanguageSchema',
+)

@@ -12,6 +12,127 @@ Changelog
 
 .. towncrier release notes start
 
+5.2rc3 (2019-05-04)
+-------------------
+
+New features:
+
+
+- Allow filtering on date and manual/automatic in redirection controlpanel. (#2799)
+- Add a button to export the alternative urls in redirection controlpanel. (#2799)
+- Add a button to remove all alternative urls that match the filter.
+  See `issue 2799 <https://github.com/plone/Products.CMFPlone/issues/2799>`_.
+  [maurits] (#2799)
+
+
+Bug fixes:
+
+
+- gracefully handle tracebacks during addon installation
+  [petschki] (#2228)
+- Add workaround for the case when a inifite recusion in a page-template that uses the main-template crashes the instance instead of raising a RecursionError.
+  [pbauer, esteele] (#2666)
+- Fixed unstable Markup Control Panel robot test again.  [maurits] (#2809)
+- add a missing space in an error message in the redirects control panel and replace "deffered" by "deferred" [vincentfretin] (#2821)
+- Fixes: Cooking resources with non ASCII resulted in encoding error.
+  Further, writing legacy resources resulted in ValueError. [jensens] (#2827)
+- restore ``exclude_from_nav`` combined with ``show_excluded_items`` handling
+  [petschki] (#2828)
+- Fix DeprecationWarning in syndication-view. [jensens] (#2831)
+- Fix malformed url when redirecting to external login. [ericof] (#2842)
+- Make navigation (CatalogNavigationTabs) subclassing easier. [iham] (#2849)
+
+
+5.2rc2 (2019-03-21)
+-------------------
+
+Bug fixes:
+
+
+- Fix excluded items in navigation [ale-rt] (#2516)
+- Add basic validators for the portal action controlpanel forms (#2689)
+- Fix wrong msgids in link management control panel [erral] (#2788)
+- Fix errors that abort the verification when debugging a DB with ./bin/instance verifydb -D.
+  [pbauer] (#2792)
+- Add summary of all errors when verifying a DB with ./bin/instance verifydb.
+  [pbauer] (#2798)
+- Fixed unstable SearchableText and Scenario Type querystring robot tests.  [maurits] (#2808)
+- Fixed unstable Markup Control Panel and other robot tests.   [maurits] (#2809)
+
+
+5.2rc1 (2019-03-04)
+-------------------
+
+New features:
+
+
+- Views for title and description. [iham] (#2740)
+- Display wsgi-state plus name and version of the server in the controlpanel
+  [pbauer] (#2770)
+- Enable dropdown-navigation for new sites by default. [pbauer] (#2772)
+
+
+Bug fixes:
+
+
+- Resolve circular dependency between `Products.CMFPlone` and `plone.i18n` by
+  moving `ILanguageSchema` there. [sallner] (#2049)
+- Use correct permission for mail controlpanel form so that Site Administrators
+  can also edit. [fredvd] (#2688)
+- Make linkintegrity robot test more reliable [MrTango] (#2752)
+- Check only once if Products.ATContentTypes is available. [gforcada] (#2765)
+- Fix redirection to `came_from` when url matches LOGIN_TEMPLATE_ID partly
+  [petschki] (#2771)
+
+
+5.2b1 (2019-02-13)
+------------------
+
+Breaking changes:
+
+
+- - Factor out all static resources and the ``plone-compile-resources`` script
+  into plone.staticresources. [thet] (#2542)
+
+
+New features:
+
+
+- PLIP 1486: Merge Products.RedirectionTool into core. Allow users to manage
+  redirects on their site and aliases to content. See
+  https://github.com/plone/Products.CMFPlone/issues/1486 [staeff, maurits]
+  (#1486)
+- - Added multilevel dropdown navigation [agitator] (#2516)
+- No longer mark special links by default. [pbauer] (#2736)
+
+
+Bug fixes:
+
+
+- Switched allowedRolesAndUsers indexer from 'View' to the correct permission
+  'Access contents information' for displaying metadata. 'View' permission
+  should be used on the item itself. The change should not matter for default
+  Plone workflows, since they always use those permissions together. [agitator]
+  (#260)
+- deprecate catalog_get_all(catalog) in favor of catalog.getAllBrains()
+  [pbauer] (#2258)
+- Restore the possibility to sort catalog query results with multiple indexes
+  (#2464)
+- Review list portlet showed nothing to review with plone.app.multilingual, As
+  WorkflowTool bypassed languages only for p.a.m<2.x or linguaplone. fixed and
+  now compatible to both lang-bypassing methods. [iham] (#2595)
+- Fixed fallback to default view when selected layout does not exist for
+  Folder. [gbastien] (#2645)
+- The patched init method for the class zope.sendmail.mailer.SMTPMailer has
+  been updated, fixing a bug that was preventing to send emails. [ale-rt,
+  nazrulworld] (#2665)
+- a11y: Added role attribute for portalMessage [nzambello] (#2675)
+- Fix several warnings shown when running tests on Python 3+. [gforcada]
+  (#2683)
+- fixed Python 3 related str decoding issue in breadcrumbs (#2694)
+- Fixed unstable robot test Scenario: A page is opened to edit in TinyMCE.
+  [maurits] (#2707)
+
 
 5.2a2 (2018-12-30)
 ------------------
@@ -79,7 +200,8 @@ Breaking changes:
 - Stop configuring 'View History' permission which was removed from Zope.
   [davisagli]
 
-- Remove legacy resource registries portal_css and portal_javascripts
+- Removed legacy resource registries portal_css and portal_javascripts;
+  no conditional handling.
   [ksuess]
 
 New features:

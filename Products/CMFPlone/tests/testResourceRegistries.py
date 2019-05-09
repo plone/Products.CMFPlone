@@ -3,7 +3,6 @@ from plone.app.testing import logout
 from plone.registry.interfaces import IRegistry
 from plone.resource.interfaces import IResourceDirectory
 from plone.subrequest import subrequest
-from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.controlpanel.browser.resourceregistry import OverrideFolderManager  # noqa
 from Products.CMFPlone.controlpanel.browser.resourceregistry import ResourceRegistryControlPanelView  # noqa
 from Products.CMFPlone.interfaces import IBundleRegistry
@@ -19,8 +18,6 @@ from Products.CMFPlone.resources.bundle import Bundle
 from Products.CMFPlone.resources.exportimport.resourceregistry import ResourceRegistryNodeAdapter  # noqa
 from Products.CMFPlone.tests import PloneTestCase
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from Products.GenericSetup.context import SetupEnviron
-from xml.dom.minidom import parseString
 from zope.component import getUtility
 
 import json
@@ -299,153 +296,6 @@ class TestResourceRegistries(PloneTestCase.PloneTestCase):
         bundles['plone-logged-in'].load_defer = True
         self.assertEqual(view.index(view).count('async="async"'), 2)
         self.assertEqual(view.index(view).count('defer="defer"'), 2)
-
-
-class TestResourceNodeImporter(PloneTestCase.PloneTestCase):
-    """Test features of registry node importer"""
-    _setup_fixture = 0  # No default fixture
-
-    def _get_importer(self, blacklist=set([])):
-        reg = getToolByName(self.portal, 'portal_javascripts')
-        importer = ResourceRegistryNodeAdapter(reg, SetupEnviron())
-        importer.resource_type = 'javascript'
-        importer.registry = getUtility(IRegistry)
-        importer.resource_blacklist = blacklist
-        return importer
-
-    def _get_resources(self):
-        return getUtility(IRegistry).collectionOfInterface(
-            IResourceRegistry, prefix="plone.resources"
-        )
-
-    def _get_legacy_bundle(self):
-        return getUtility(IRegistry).collectionOfInterface(
-            IBundleRegistry,
-            prefix="plone.bundles",
-            check=False
-        )['plone-legacy']
-
-    def _get_resource_dom(self, name='++resource++/resource.js',
-                          remove=False, enabled=True):
-        return parseString("""
-            <object>
-                <javascript id="%s" remove="%s" enabled="%s" />
-            </object>
-            """ % (name, str(remove), str(enabled).lower()))
-
-    def test_resource_blacklist(self):
-        # Ensure that blacklisted resources aren't imported
-        importer = self._get_importer({'++resource++/bad_resource.js'})
-        dom = self._get_resource_dom("++resource++/bad_resource.js")
-        importer._importNode(dom.documentElement)
-        js_files = [x.js for x in self._get_resources().values()]
-        self.assertNotIn("++resource++/bad_resource.js", js_files)
-        self.assertNotIn(
-            "resource-bad_resource-js",
-            self._get_legacy_bundle().resources,
-        )
-
-    def test_resource_no_blacklist(self):
-        importer = self._get_importer()
-        dom = self._get_resource_dom()
-        importer._importNode(dom.documentElement)
-        js_files = [x.js for x in self._get_resources().values()]
-        self.assertTrue("++resource++/resource.js" in js_files)
-        self.assertTrue(
-            "resource-resource-js" in self._get_legacy_bundle().resources)
-
-    def test_insert_again(self):
-        importer = self._get_importer()
-        dom = self._get_resource_dom()
-        num_resources = self._get_legacy_bundle().resources[:]
-        importer._importNode(dom.documentElement)
-        self.assertEqual(len(num_resources) + 1,
-                          len(self._get_legacy_bundle().resources))
-        importer._importNode(dom.documentElement)
-        self.assertEqual(len(num_resources) + 1,
-                          len(self._get_legacy_bundle().resources))
-
-    def test_remove(self):
-        importer = self._get_importer()
-
-        # inserter it
-        dom = self._get_resource_dom()
-        importer._importNode(dom.documentElement)
-
-        resources = self._get_legacy_bundle().resources[:]
-        js_files = [x.js for x in self._get_resources().values()]
-
-        # import again
-        dom = self._get_resource_dom(remove=True)
-        importer._importNode(dom.documentElement)
-
-        self.assertEqual(len(resources) - 1,
-                          len(self._get_legacy_bundle().resources))
-        self.assertEqual(len(js_files) - 1,
-                          len([x.js for x in self._get_resources().values()]))
-
-    def test_insert_after(self):
-        importer = self._get_importer()
-        one = self._get_resource_dom('one')
-        two = self._get_resource_dom('two')
-        three = self._get_resource_dom('three')
-        importer._importNode(one.documentElement)
-        importer._importNode(two.documentElement)
-        importer._importNode(three.documentElement)
-
-        # now, insert
-        foobar = parseString("""
-            <object>
-                <javascript id="foobar.js" insert-after="one" enabled="true" />
-            </object>
-            """)
-        importer._importNode(foobar.documentElement)
-        resources = self._get_legacy_bundle().resources
-        self.assertEqual(
-            resources.index('one') + 1,
-            resources.index('foobar-js')
-        )
-
-    def test_insert_before(self):
-        importer = self._get_importer()
-        one = self._get_resource_dom('one')
-        two = self._get_resource_dom('two')
-        three = self._get_resource_dom('three')
-        importer._importNode(one.documentElement)
-        importer._importNode(two.documentElement)
-        importer._importNode(three.documentElement)
-
-        # now, insert
-        foobar = parseString("""
-            <object>
-              <javascript id="foobar.js" insert-before="one" enabled="true" />
-            </object>
-            """)
-        importer._importNode(foobar.documentElement)
-        resources = self._get_legacy_bundle().resources
-        self.assertEqual(
-            resources.index('one') - 1,
-            resources.index('foobar-js')
-        )
-
-    def test_be_able_to_disable_but_not_remove(self):
-        importer = self._get_importer()
-
-        # inserter it
-        dom = self._get_resource_dom()
-        importer._importNode(dom.documentElement)
-
-        resources = self._get_legacy_bundle().resources[:]
-        js_files = [x.js for x in self._get_resources().values()]
-
-        # import again
-        dom = self._get_resource_dom(enabled=False)
-        importer._importNode(dom.documentElement)
-
-        self.assertEqual(len(resources) - 1,
-                          len(self._get_legacy_bundle().resources))
-        self.assertEqual(len(js_files),
-                          len([x.js for x in self._get_resources().values()]))
 
 
 class TestConfigJs(PloneTestCase.PloneTestCase):

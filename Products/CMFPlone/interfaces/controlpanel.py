@@ -1,18 +1,27 @@
 # -*- coding: utf-8 -*-
-from plone.supermodel import model
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone._compat import dump_json_to_text
 from Products.CMFPlone.interfaces.basetool import IPloneBaseTool
 from zope import schema
+from zope.deferredimport import deprecated
+from zope.component.hooks import getSite
 from zope.interface import Attribute
 from zope.interface import implementer
 from zope.interface import Interface
 from zope.interface import Invalid
+from zope.interface import invariant
 from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
 
 import json
 import six
+
+
+deprecated(
+    "It has been moved to plone.i18n.interfaces, import from there instead.",
+    ILanguageSchema='plone.i18n.interfaces:ILanguageSchema',
+)
 
 
 ROBOTS_TXT = u"""Sitemap: {portal_url}/sitemap.xml.gz
@@ -153,180 +162,6 @@ class IEditingSchema(Interface):
             u'utilize this feature for its specific purposes.'),
         default=False,
         required=False)
-
-
-class ILanguageSchema(Interface):
-    model.fieldset(
-        'general',
-        label=_(u'General'),
-        fields=[
-            'default_language',
-            'available_languages',
-            'use_combined_language_codes',
-            'display_flags',
-            'always_show_selector'
-        ],
-    )
-
-    default_language = schema.Choice(
-        title=_(u'heading_site_language', default=u'Site language'),
-        description=_(
-            u'description_site_language',
-            default=u'The language used for the content and the UI of '
-                    u'this site.'
-        ),
-        default='en',
-        required=True,
-        vocabulary='plone.app.vocabularies.AvailableContentLanguages'
-    )
-
-    available_languages = schema.List(
-        title=_(u'heading_available_languages',
-                default=u'Available languages'),
-        description=_(u'description_available_languages',
-                      default=u'The languages in which the site should be '
-                              u'translatable.'),
-        required=True,
-        default=['en'],
-        missing_value=[],
-        value_type=schema.Choice(
-            vocabulary='plone.app.vocabularies.AvailableContentLanguages'
-        )
-    )
-
-    use_combined_language_codes = schema.Bool(
-        title=_(
-            u'label_allow_combined_language_codes',
-            default=u'Show country-specific language variants'
-        ),
-        description=_(
-            u'help_allow_combined_language_codes',
-            default=u'Examples: pt-br (Brazilian Portuguese), '
-                    u'en-us (American English) etc.'
-        ),
-        default=True,
-        required=False
-    )
-
-    display_flags = schema.Bool(
-        title=_(
-            u'label_display_flags',
-            default=u'Show language flags'
-        ),
-        description=u'',
-        default=False,
-        required=False
-    )
-
-    always_show_selector = schema.Bool(
-        title=_(
-            u'label_always_show_selector',
-            default=u'Always show language selector'
-        ),
-        description=u'',
-        default=False,
-        required=False
-    )
-
-    model.fieldset(
-        'negotiation_scheme',
-        label=_(u'Negotiation scheme', default=u'Negotiation scheme'),
-        fields=[
-            'use_content_negotiation',
-            'use_path_negotiation',
-            'use_cookie_negotiation',
-            'authenticated_users_only',
-            'set_cookie_always',
-            'use_subdomain_negotiation',
-            'use_cctld_negotiation',
-            'use_request_negotiation',
-        ],
-    )
-    use_content_negotiation = schema.Bool(
-        title=_(u'heading_language_of_the_content',
-                default=u'Use the language of the content item'),
-        description=_(u'description_language_of_the_content',
-                      default=u'Use the language of the content item.'),
-        default=False,
-        required=False,
-    )
-
-    use_path_negotiation = schema.Bool(
-        title=_(
-            u'heading_language_codes_in_URL',
-            default=u'Use language codes in URL path for manual override'),
-        description=_(
-            u'description_language_codes_in_URL',
-            default=u'Use language codes in URL path for manual override.'),
-        default=False,
-        required=False,
-    )
-
-    use_cookie_negotiation = schema.Bool(
-        title=_(u'heading_cookie_manual_override',
-                default=(u'Use cookie for manual override')),
-        description=_(
-            u'description_cookie_manual_override',
-            default=(
-                u'Required for the language selector viewlet to be rendered.'
-            )
-        ),
-        default=False,
-        required=False,
-    )
-
-    authenticated_users_only = schema.Bool(
-        title=_(u'heading_auth_cookie_manual_override',
-                default=u'Authenticated users only'),
-        description=_(
-            u'description_auth_ookie_manual_override',
-            default=(u'Related to: use cookie for manual override')
-        ),
-        default=False,
-        required=False,
-    )
-
-    set_cookie_always = schema.Bool(
-        title=_(
-            u'heading_set_language_cookie_always',
-            default=(u'Set the language cookie always')),
-        description=_(
-            u'description_set_language_cookie_always',
-            default=(
-                u'i.e. also when the \'set_language\' request parameter is '
-                u'absent'
-            )
-        ),
-        default=False,
-        required=False,
-    )
-
-    use_subdomain_negotiation = schema.Bool(
-        title=_(u'heading_use_subdomain',
-                default=u'Use subdomain'),
-        description=_(u'description_use_subdomain',
-                      default=u'e.g.: de.plone.org'),
-        default=False,
-        required=False,
-    )
-
-    use_cctld_negotiation = schema.Bool(
-        title=_(u'heading_top_level_domain',
-                default=u'Use top-level domain'),
-        description=_(u'description_top_level_domain',
-                      default=u'e.g.: www.plone.de'),
-        default=False,
-        required=False,
-    )
-
-    use_request_negotiation = schema.Bool(
-        title=_(u'heading_browser_language_request_negotiation',
-                default=u'Use browser language request negotiation'),
-        description=_(u'description_browser_language_request_negotiation',
-                      default=u'Use browser language request negotiation.'),
-        default=False,
-        required=False,
-    )
 
 
 class ITagAttrPair(Interface):
@@ -900,7 +735,7 @@ class INavigationSchema(Interface):
     navigation_depth = schema.Int(
         title=_(u'Navigation depth'),
         description=_(u'Number of folder levels to show in the navigation.'),
-        default=1,
+        default=3,
         required=True
     )
 
@@ -1731,8 +1566,22 @@ class ILinkSchema(Interface):
     mark_special_links = schema.Bool(
         title=_(u'Mark special links'),
         description=_(u'Marks external or special protocol links with class.'),
-        default=True,
+        default=False,
         required=False)
+
+
+def _check_tales_expression(value):
+    from Products.PageTemplates.Expressions import getEngine
+    try:
+        getEngine().compile(value)
+    except Exception:
+        raise Invalid(
+            _(
+                'The expression "${value}" is invalid',
+                mapping={'value': value},
+            )
+        )
+    return True
 
 
 class IActionSchema(Interface):
@@ -1762,7 +1611,9 @@ class IActionSchema(Interface):
             default=u'An expression producing the called URL. '
             u'Example: string:${globals_view/navigationRootUrl}/page'
         ),
-        required=True)
+        required=True,
+        constraint=_check_tales_expression,
+    )
 
     available_expr = schema.ASCIILine(
         title=_(u'action_condition_heading', default=u'Condition'),
@@ -1804,6 +1655,29 @@ class INewActionSchema(Interface):
     id = schema.ASCIILine(
         title=_(u'Id'),
         required=True)
+
+    @invariant
+    def validate_category_id(data):
+        categoryid = data.category
+        pa = getToolByName(getSite(), 'portal_actions')
+        category = pa.get(categoryid, {})
+        actionid = data.id
+        if actionid in category:
+            raise Invalid(
+                _(
+                    'An action with the id "${actionid}" already exists',
+                    mapping={'actionid': actionid},
+                )
+            )
+        try:
+            category._checkId(actionid)
+        except Exception:
+            raise Invalid(
+                _(
+                    'The id "${actionid}" is invalid',
+                    mapping={'actionid': actionid},
+                )
+            )
 
 
 class IPloneControlPanelView(Interface):
