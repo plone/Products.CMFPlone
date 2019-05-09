@@ -1,5 +1,5 @@
 <metal:page define-macro="master">
-  <tal:block metal:use-macro="context/main_template/macros/master">
+  <tal:block metal:use-macro="context/@@main_template/macros/master">
 
     <metal:block fill-slot="top_slot">
         <metal:override define-slot="top_slot">
@@ -21,7 +21,7 @@
         <metal:slot define-slot="prefs_configlet_wrapper">
           <metal:slot define-slot="prefs_configlet_content">
 
-            <metal:block metal:use-macro="context/main_template/macros/content">
+            <metal:block metal:use-macro="context/@@main_template/macros/content">
               <metal:override metal:fill-slot="main">
                 <metal:slot metal:define-slot="prefs_configlet_main" tal:content="nothing">
                   Page body text

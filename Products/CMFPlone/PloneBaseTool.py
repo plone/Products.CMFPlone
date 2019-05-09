@@ -29,7 +29,7 @@ def initializeTFC():
         try:
             pkg_resources.get_distribution('Products.ATContentTypes')
         except pkg_resources.DistributionNotFound:
-            pass
+            TempFolderClass = False
         else:
             from Products.ATContentTypes.tool.factory import TempFolder
             TempFolderClass = TempFolder

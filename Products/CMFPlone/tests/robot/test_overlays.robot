@@ -218,12 +218,15 @@ a logged-in site administrator
 
 the users and groups configlet
     Go to  ${PLONE_URL}/@@usergroup-userprefs
+    Wait until page contains  User Search
 
 I click the '${link_name}' link
+    Wait until page contains  ${link_name}
     Element should be visible  xpath=//a[descendant-or-self::*[contains(text(), '${link_name}')]]
     Click Link  xpath=//a[descendant-or-self::*[contains(text(), '${link_name}')]]
 
 the '${link_name}' overlay
+    Wait until page contains  ${link_name}
     Click Link  xpath=//a[descendant-or-self::*[contains(text(), '${link_name}')]]
     Wait until keyword succeeds  30  1  Page should contain element  css=div.plone-modal-dialog
 

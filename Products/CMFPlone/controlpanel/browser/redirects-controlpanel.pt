@@ -54,6 +54,7 @@
           <legend i18n:translate="add_alias">
             Add a new alternative url
           </legend>
+          <p i18n:translate="description_change_primary_url">To change the primary url of content, use Actions > Rename.</p>
 
           <div class="field"
                tal:define="error view/form_errors/redirection|nothing"
@@ -79,6 +80,7 @@
 
           <div class="formHelp" i18n:translate="help_alias">
             Enter the absolute path where the alternative url should exist. The path must start with '/'.
+            Only urls that result in a 404 not found page will result in a redirect occurring.
           </div>
 
           <input
@@ -112,6 +114,7 @@
 
           <div class="formHelp" i18n:translate="help_target_path">
             Enter the absolute path of the target. The path must start with '/'.
+            Target must exist or be an existing alternative url path to the target.
           </div>
 
           <input
@@ -146,13 +149,14 @@
           <p i18n:translate="description_bulk_upload">
             Add many alternative urls at once by uploading a CSV file. The first column should be the path to
             redirect from; the second, the path to redirect to. Both paths must be Plone-site-relative,
-            starting with a slash (/).
+            starting with a slash (/). An optional third colum can contain a date and time.
+            An optional fourth column can contain a boolean to mark as a manual redirect (default true).
           </p>
           <p>
             <tal:block i18n:translate="example_caption_bulk_upload">Example:</tal:block><br />
             <code i18n:translate="example_bulk_upload">
-              /old-home-page.asp,/front-page<br />
-              /people/JoeT,/Users/joe-thurston
+              /old-home-page.asp,/front-page,2019/01/27 10:42:59 GMT+1,true<br />
+              /people/JoeT,/Users/joe-thurston,2018-12-31,false
             </code>
           </p>
 
@@ -161,7 +165,7 @@
                tal:attributes="class python:error and 'field error' or 'field'">
             <label
                 for="file"
-                i18n:translate="label_file">
+                i18n:translate="label_csv_file">
               CSV file
             </label>
 
@@ -204,6 +208,16 @@
             All existing alternative urls for this site
           </legend>
 
+          <div>
+            <input
+                class="context"
+                type="submit"
+                value="Download all as CSV"
+                name="form.button.Download"
+                i18n:attributes="value"
+              />
+          </div>
+
           <label for="filter-existing-aliases-q" i18n:translate="">Filter by prefix</label>
           <input
               type="text"
@@ -211,6 +225,20 @@
               value=""
               id="filter-existing-aliases-q"
                tal:attributes="value python:request.form.get('q', '/')"/>
+          <label for="filter-existing-aliases-manual" i18n:translate="">Manually or automatically added?</label>
+          <div
+              id="filter-existing-aliases-manual"
+              tal:define="chosen python:request.form.get('manual', '')">
+              <input type="radio" name="manual" id="manual-both" value="" tal:attributes="checked python:chosen==''">
+              <label for="manual-both" i18n:translate="">Both</label><br />
+              <input type="radio" name="manual" id="manual-no" value="no" tal:attributes="checked python:chosen=='no'">
+              <label for="manual-no" i18n:translate="">Automatically</label><br />
+              <input type="radio" name="manual" id="manual-yes" value="yes" tal:attributes="checked python:chosen=='yes'">
+              <label for="manual-yes" i18n:translate="">Manually</label>
+          </div>
+          <label for="filter-existing-aliases-date" i18n:translate="">Created before</label>
+          <input type="date" id="filter-existing-aliases-date" name="datetime"
+               tal:attributes="value python:request.form.get('datetime', '')"/>
           <div class="formControls">
             <input
                 class="context"
@@ -225,6 +253,7 @@
                tal:attributes="class python:error and 'field error' or 'field'"
                tal:content="error" />
 
+          <p>Alternative url path &rarr; target url path (date and time of creation, manually created yes/no) </p>
           <tal:redirects repeat="redirect batch">
             <div>
               <label>
@@ -233,7 +262,7 @@
                   class="noborder"
                   name="redirects:tuple"
                   value="${redirect/redirect}" />
-              ${redirect/path} &rarr; ${redirect/redirect-to}
+              ${redirect/path} &rarr; ${redirect/redirect-to} (${redirect/datetime}, ${redirect/manual})
               </label>
             </div>
           </tal:redirects>
@@ -245,8 +274,13 @@
           <div class="formControls">
             <input class="context"
                    type="submit"
-                   value="Remove"
+                   value="Remove selected"
                    name="form.button.Remove"
+                   i18n:attributes="value" />
+            <input class="context"
+                   type="submit"
+                   value="Remove all that match filter"
+                   name="form.button.MatchRemove"
                    i18n:attributes="value" />
           </div>
 

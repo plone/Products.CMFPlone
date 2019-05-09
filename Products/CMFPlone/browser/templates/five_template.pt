@@ -1,5 +1,5 @@
 <metal:macro metal:define-macro="page"
-><html metal:use-macro="context/main_template/macros/master">
+><html metal:use-macro="context/@@main_template/macros/master">
 <head>
 <metal:slot metal:fill-slot="style_slot"
 ><metal:slot metal:define-slot="style_slot" /></metal:slot>

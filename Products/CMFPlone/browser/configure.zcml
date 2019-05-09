@@ -97,6 +97,20 @@
 
   <browser:page
       for="*"
+      name="title"
+      template="templates/title.pt"
+      permission="zope.Public"
+      />
+
+  <browser:page
+      for="*"
+      name="description"
+      template="templates/description.pt"
+      permission="zope.Public"
+      />
+
+  <browser:page
+      for="*"
       name="render-toolbar"
       template="templates/toolbar.pt"
       permission="zope.Public"

@@ -59,6 +59,10 @@ class TestCameFromFiltering(unittest.TestCase):
         url = 'https://nohost/plone/logout'
         self.request['came_from'] = url
         self.assertEqual(self.form.get_came_from(), None)
+        # do not filter came_from if url matches parts of login templates
+        url = 'https://nohost/plone/my_custom_logged_in'
+        self.request['came_from'] = url
+        self.assertEqual(self.form.get_came_from(), url)
 
     def test_referer_is_fallback(self):
         url = 'https://nohost/plone/test'

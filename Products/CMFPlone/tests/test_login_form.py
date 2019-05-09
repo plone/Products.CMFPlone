@@ -79,9 +79,9 @@ class TestLoginForm(unittest.TestCase):
             form.request.response.getHeader('Location'),
         )
 
-    def test_login_external_with_params(self):
+    def test_login_external_with_all_params(self):
         registry = self.layer['portal'].portal_registry
-        registry['plone.external_login_url'] = 'http://testurl/extlogin'
+        registry['plone.external_login_url'] = 'http://testurl/extlogin?level=debug'
         self.request['came_from'] = 'foo'
         self.request['next'] = 'bar'
         form = self.portal.restrictedTraverse('login')
@@ -92,6 +92,22 @@ class TestLoginForm(unittest.TestCase):
         )
         self.assertIn(
             'next=bar',
+            form.request.response.getHeader('Location'),
+        )
+        # Keep the original query string
+        self.assertIn(
+            'level=debug',
+            form.request.response.getHeader('Location'),
+        )
+
+    def test_login_external_without_next_param(self):
+        registry = self.layer['portal'].portal_registry
+        registry['plone.external_login_url'] = 'http://testurl/extlogin'
+        self.request['came_from'] = 'foo'
+        form = self.portal.restrictedTraverse('login')
+        form()
+        self.assertIn(
+            'came_from=foo',
             form.request.response.getHeader('Location'),
         )
 

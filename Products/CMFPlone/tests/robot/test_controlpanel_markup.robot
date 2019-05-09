@@ -40,16 +40,20 @@ a document '${title}'
 
 the markup control panel
   Go to  ${PLONE_URL}/@@markup-controlpanel
+  Wait until page contains  Markup Settings
 
 
 # --- WHEN -------------------------------------------------------------------
 
 I set allowed types to "${type}"
+  with the label  ${type}   Select Checkbox
   with the label  text/html  UnSelect Checkbox
   with the label  text/x-web-textile  UnSelect Checkbox
-  with the label  ${type}   Select Checkbox
   Click Button  Save
   Wait until page contains  Changes saved
+  Checkbox Should Be Selected  ${type}
+  Checkbox Should Not Be Selected  text/html
+  Checkbox Should Not Be Selected  text/x-web-textile
 
 I set the default type to "${type}"
   Select from list by label  name=form.widgets.default_type:list  ${type}

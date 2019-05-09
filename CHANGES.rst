@@ -12,6 +12,79 @@ Changelog
 
 .. towncrier release notes start
 
+5.2rc3 (2019-05-04)
+-------------------
+
+New features:
+
+
+- Allow filtering on date and manual/automatic in redirection controlpanel. (#2799)
+- Add a button to export the alternative urls in redirection controlpanel. (#2799)
+- Add a button to remove all alternative urls that match the filter.
+  See `issue 2799 <https://github.com/plone/Products.CMFPlone/issues/2799>`_.
+  [maurits] (#2799)
+
+
+Bug fixes:
+
+
+- gracefully handle tracebacks during addon installation
+  [petschki] (#2228)
+- Add workaround for the case when a inifite recusion in a page-template that uses the main-template crashes the instance instead of raising a RecursionError.
+  [pbauer, esteele] (#2666)
+- Fixed unstable Markup Control Panel robot test again.  [maurits] (#2809)
+- add a missing space in an error message in the redirects control panel and replace "deffered" by "deferred" [vincentfretin] (#2821)
+- Fixes: Cooking resources with non ASCII resulted in encoding error.
+  Further, writing legacy resources resulted in ValueError. [jensens] (#2827)
+- restore ``exclude_from_nav`` combined with ``show_excluded_items`` handling
+  [petschki] (#2828)
+- Fix DeprecationWarning in syndication-view. [jensens] (#2831)
+- Fix malformed url when redirecting to external login. [ericof] (#2842)
+- Make navigation (CatalogNavigationTabs) subclassing easier. [iham] (#2849)
+
+
+5.2rc2 (2019-03-21)
+-------------------
+
+Bug fixes:
+
+
+- Fix excluded items in navigation [ale-rt] (#2516)
+- Add basic validators for the portal action controlpanel forms (#2689)
+- Fix wrong msgids in link management control panel [erral] (#2788)
+- Fix errors that abort the verification when debugging a DB with ./bin/instance verifydb -D.
+  [pbauer] (#2792)
+- Add summary of all errors when verifying a DB with ./bin/instance verifydb.
+  [pbauer] (#2798)
+- Fixed unstable SearchableText and Scenario Type querystring robot tests.  [maurits] (#2808)
+- Fixed unstable Markup Control Panel and other robot tests.   [maurits] (#2809)
+
+
+5.2rc1 (2019-03-04)
+-------------------
+
+New features:
+
+
+- Views for title and description. [iham] (#2740)
+- Display wsgi-state plus name and version of the server in the controlpanel
+  [pbauer] (#2770)
+- Enable dropdown-navigation for new sites by default. [pbauer] (#2772)
+
+
+Bug fixes:
+
+
+- Resolve circular dependency between `Products.CMFPlone` and `plone.i18n` by
+  moving `ILanguageSchema` there. [sallner] (#2049)
+- Use correct permission for mail controlpanel form so that Site Administrators
+  can also edit. [fredvd] (#2688)
+- Make linkintegrity robot test more reliable [MrTango] (#2752)
+- Check only once if Products.ATContentTypes is available. [gforcada] (#2765)
+- Fix redirection to `came_from` when url matches LOGIN_TEMPLATE_ID partly
+  [petschki] (#2771)
+
+
 5.2b1 (2019-02-13)
 ------------------
 
