@@ -3,7 +3,7 @@
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       lang="en"
-      metal:use-macro="context/main_template/macros/master"
+      metal:use-macro="context/@@main_template/macros/master"
       i18n:domain="plone">
 
 <metal:block fill-slot="top_slot"

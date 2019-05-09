@@ -21,7 +21,7 @@ We need to allow multiple languages to see the result of our changes:
 
     >>> from plone.registry.interfaces import IRegistry
     >>> from zope.component import getUtility
-    >>> from Products.CMFPlone.interfaces import ILanguageSchema
+    >>> from plone.i18n.interfaces import ILanguageSchema
     >>> settings = getUtility(IRegistry).forInterface(
     ...     ILanguageSchema,
     ...     prefix='plone')

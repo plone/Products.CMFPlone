@@ -41,6 +41,7 @@ a document '${title}'
 
 the search control panel
   Go to  ${PLONE_URL}/@@search-controlpanel
+  Wait until page contains  Search Settings
 
 
 # --- WHEN -------------------------------------------------------------------

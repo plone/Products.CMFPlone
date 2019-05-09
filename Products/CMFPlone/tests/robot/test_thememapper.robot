@@ -50,6 +50,7 @@ Scenario: Thememapper LESS builder
 
 a new theme to edit
     Go to  ${PLONE_URL}/theming-controlpanel
+    Wait until page contains  Theme settings
     Click Element   jquery=a[href="#modal-copy-barceloneta"]
     Wait Until Element Is Visible   jquery=.plone-modal-body input[type="text"]
     Input Text  jquery=.plone-modal-body input[type="text"]   Test

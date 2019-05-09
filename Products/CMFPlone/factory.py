@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
+from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.Portal import PloneSite
 from Products.CMFPlone.events import SiteManagerCreatedEvent
 from Products.CMFPlone.interfaces import INonInstallable
 from Products.GenericSetup.tool import SetupTool
+from Products.statusmessages.interfaces import IStatusMessage
+from logging import getLogger
 from plone.registry.interfaces import IRegistry
 from zope.component import queryUtility
 from zope.event import notify
@@ -15,6 +18,8 @@ _CONTENT_PROFILE = 'plone.app.contenttypes:plone-content'
 
 # A little hint for PloneTestCase
 _IMREALLYPLONE5 = True
+
+logger = getLogger('Plone')
 
 
 @implementer(INonInstallable)
@@ -163,8 +168,23 @@ def addPloneSite(context, site_id, title='Plone site', description='',
     site.manage_changeProperties(**props)
 
     for extension_id in extension_ids:
-        setup_tool.runAllImportStepsFromProfile(
-            'profile-%s' % extension_id)
+        try:
+            setup_tool.runAllImportStepsFromProfile(
+                'profile-%s' % extension_id)
+        except Exception as msg:
+            IStatusMessage(request).add(_(
+                'Could not install ${profile_id}: ${error_msg}! '
+                'Please try to install it manually using the "Addons" '
+                'controlpanel and report any issues to the '
+                'addon maintainers.',
+                mapping={
+                    'profile_id': extension_id,
+                    'error_msg': msg.args,
+                }),
+                type='error')
+            logger.exception(
+                'Error while installing addon {}. '
+                'See traceback below for details.'.format(extension_id))
 
     if snapshot is True:
         setup_tool.createSnapshot('initial_configuration')
