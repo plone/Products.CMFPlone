@@ -1163,7 +1163,7 @@ class ISiteSchema(Interface):
         description=_(
             u'Select which IDs (short names) can act as fallback '
             u'default pages for a container.'),
-        required=True,
+        required=False,
         default=[
             u'index_html',
             u'index.html',
