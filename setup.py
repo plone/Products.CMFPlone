@@ -153,8 +153,4 @@ setup(
             'zope.testing',
         ]
     },
-    entry_points="""\
-      [plone.recipe.zope2instance.ctl]
-      verifydb = Products.CMFPlone._scripts.verifydb:zopectl_entry
-    """  # noqa
 )
