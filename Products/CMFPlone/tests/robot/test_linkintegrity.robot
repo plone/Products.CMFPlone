@@ -12,12 +12,12 @@
 
 Resource  plone/app/robotframework/keywords.robot
 Resource  plone/app/robotframework/saucelabs.robot
+Resource  plone/app/robotframework/selenium.robot
 
 Library  Remote  ${PLONE_URL}/RobotRemote
 
 Resource  keywords.robot
 
-# Suite setup  Set Selenium speed  0.5s
 Test Setup  Run keywords  Plone Test Setup
 Test Teardown  Run keywords  Plone Test Teardown
 
