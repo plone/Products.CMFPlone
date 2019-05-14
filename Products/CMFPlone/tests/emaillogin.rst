@@ -199,9 +199,8 @@ Resetting the password
 
 These tests are partly copied from... PasswordResetTool. (surprise!)
 
-Now it is time to forget our password and click the ``Forgot your
-password`` link in the login form. This should work by just filling
-in our current email address::
+Now it is time to forget our password and click the ``Forgot your password`` link in the login form.
+This should work by just filling in our current email address::
 
     >>> browser.open('http://nohost/plone/login')
     >>> browser.getLink('Get help').click()
@@ -245,18 +244,11 @@ Now that we have the address, we will reset our password::
     >>> form.getControl(name='password').value = 'secretion'
     >>> form.getControl(name='password2').value = 'secretion'
     >>> form.submit()
-    >>> "Your password has been set successfully." in browser.contents
+    >>> "Password reset successful, you are logged in now!" in browser.contents
     True
 
-We can now login using our new password::
+Logout and continue with first user:
 
-    >>> browser.open('http://nohost/plone/login')
-    >>> browser.getControl(name='__ac_name').value = 'email2@example.org'
-    >>> browser.getControl(name='__ac_password').value = 'secretion'
-    >>> browser.getControl('Log in').click()
-    >>> browser.open('http://nohost/plone')
-    >>> 'Log in' in browser.contents
-    False
     >>> browser.open('http://nohost/plone/logout')
 
 The first user can still reset his password with his user id::
@@ -292,18 +284,5 @@ Now that we have the address, we will reset our password::
     >>> form.getControl(name='password').value = 'secretion'
     >>> form.getControl(name='password2').value = 'secretion'
     >>> form.submit()
-    >>> "Your password has been set successfully." in browser.contents
+    >>> "Password reset successful, you are logged in now!" in browser.contents
     True
-
-We can now login using our new password. We cannot use the initial
-login name though, but have to use our current email address as that
-is our login name::
-
-    >>> browser.open('http://nohost/plone/login')
-    >>> browser.getControl(name='__ac_name').value = 'username@example.org'
-    >>> browser.getControl(name='__ac_password').value = 'secretion'
-    >>> browser.getControl('Log in').click()
-    >>> browser.open('http://nohost/plone')
-    >>> 'Log in' in browser.contents
-    False
-    >>> browser.open('http://nohost/plone/logout')
