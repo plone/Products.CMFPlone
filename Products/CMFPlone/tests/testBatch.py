@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from Products.CMFPlone.PloneBatch import Batch
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
-from Products.ZCatalog.Lazy import LazyMap
+from ZTUtils.Lazy import LazyMap
 
 import unittest
 
