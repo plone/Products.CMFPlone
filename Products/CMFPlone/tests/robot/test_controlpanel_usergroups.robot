@@ -12,6 +12,7 @@
 
 Resource  plone/app/robotframework/keywords.robot
 Resource  plone/app/robotframework/saucelabs.robot
+Resource  plone/app/robotframework/selenium.robot
 
 Library  Remote  ${PLONE_URL}/RobotRemote
 
@@ -61,18 +62,22 @@ a logged-in site administrator
 
 the usergroups control panel
   Go to  ${PLONE_URL}/@@usergroup-userprefs
+  Wait until page contains  Users and Groups
 
 
 # --- WHEN -------------------------------------------------------------------
 
 I click show all users
   Click button  Show all
+  Wait until page contains  User Search
 
 I go to Groups control panel
   Click link  Groups
+  Wait until page contains  Group Search
 
 I click show all groups
   Click button  Show all
+  Wait until page contains  Group Search
 
 I create new group
   Click button  Add New Group
@@ -89,11 +94,13 @@ I create new group
 
 I go to Settings control panel
   Click link  Settings
+  Wait until page contains  User and groups settings
 
 enable many groups and many users settings
   Select Checkbox  name=form.widgets.many_groups:list
   Select Checkbox  name=form.widgets.many_users:list
   Click button  Save
+  Wait until page contains  Data successfully updated.
 
 # --- THEN -------------------------------------------------------------------
 
@@ -109,10 +116,12 @@ all groups should be shown
 
 showing all users is disabled
   Click link  Users
+  Wait until page contains  User Search
   Page should not contain  Show all
 
 showing all groups is disabled
   Click link  Groups
+  Wait until page contains  Group Search
   Page should not contain  Show all
 
 new group should show under all groups

@@ -596,18 +596,27 @@ class TestBasePortalTabs(PloneTestCase.PloneTestCase):
         self.assertEqual(tabs, [])
 
     def testTabsExcludeItemsWithExcludeProperty(self):
-        # Make sure that items witht he exclude_from_nav property are purged
-        view = self.view_class(self.portal, self.request)
-        tabs = view.topLevelTabs(actions=[])
-        orig_len = len(tabs)
         self.portal.folder2.exclude_from_nav = True
         self.portal.folder2.reindexObject()
+
+        # if we're not in context of the excluded item it should disappear
         view = self.view_class(self.portal, self.request)
         tabs = view.topLevelTabs(actions=[])
-        self.assertTrue(tabs)
-        self.assertEqual(len(tabs), orig_len - 1)
         tab_names = [t['id'] for t in tabs]
-        self.assertFalse('folder2' in tab_names)
+        self.assertNotIn('folder2', tab_names)
+
+        # but if we're inside, it should be visible
+        view = self.view_class(self.portal.folder2, self.request)
+        tabs = view.topLevelTabs(actions=[])
+        tab_names = [t['id'] for t in tabs]
+        self.assertIn('folder2', tab_names)
+
+        # Now we flip the setting for plone.show_excluded_items
+        self.navigation_settings.show_excluded_items = False
+        view = self.view_class(self.portal.folder2, self.request)
+        tabs = view.topLevelTabs(actions=[])
+        tab_names = [t['id'] for t in tabs]
+        self.assertNotIn('folder2', tab_names)
 
     def testTabsRespectsTypesWithViewAction(self):
         # With a type in types_use_view_action_in_listings as current action it

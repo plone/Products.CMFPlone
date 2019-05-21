@@ -29,11 +29,11 @@ from zope.component import getMultiAdapter
 from zope.component import getSiteManager
 from zope.component import getUtility
 from zope.component import queryUtility
-from zope.component.interfaces import IComponentLookup
-from zope.component.interfaces import IComponentRegistry
+from zope.component.hooks import clearSite
+from zope.component.hooks import setSite
+from zope.interface.interfaces import IComponentLookup
+from zope.interface.interfaces import IComponentRegistry
 from zope.location.interfaces import ISite
-from zope.site.hooks import clearSite
-from zope.site.hooks import setSite
 
 
 class TestPortalCreation(PloneTestCase.PloneTestCase):
@@ -49,7 +49,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.groups = self.portal.portal_groups
         self.skins = self.portal.portal_skins
         self.transforms = self.portal.portal_transforms
-        self.javascripts = self.portal.portal_javascripts
         self.setup = self.portal.portal_setup
 
     def testInstanceVersion(self):
@@ -197,11 +196,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
                 break
         else:
             self.fail("Actions tool has no 'sitemap' action")
-
-    def testResourceRegistries(self):
-        # We should have portal_css and portal_javascripts tools
-        self.assertTrue(hasattr(self.portal, 'portal_css'))
-        self.assertTrue(hasattr(self.portal, 'portal_javascripts'))
 
     def testUnfriendlyTypesProperty(self):
         # We should have an types_not_searched property
@@ -560,7 +554,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.folder.invokeFactory('Document', 'index_html')
         acts = self.actions.listFilteredActionsFor(self.folder.index_html)
         buttons = acts['object_buttons']
-        self.assertEqual(len(buttons), 4)
+        self.assertEqual(len(buttons), 5)
         urls = [a['url'] for a in buttons]
         for url in urls:
             self.assertFalse(
@@ -574,10 +568,13 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.folder.invokeFactory('Document', 'index_html')
         acts = self.actions.listFilteredActionsFor(self.folder.index_html)
         buttons = acts['object_buttons']
-        self.assertEqual(len(buttons), 4)
-        # special case for delete which needs a confirmation form
+        self.assertEqual(len(buttons), 5)
+        # special case for delete which needs a confirmation form,
+        # and for redirection which does not confirm to the url policy,
+        # which apparently is that action id X should have url object_X.
         urls = [
-            (a['id'], a['url']) for a in buttons if a['id'] not in ('delete',)
+            (a['id'], a['url']) for a in buttons if a['id'] not in
+            ('delete', 'redirection')
         ]
         for url in urls:
             # ensure that e.g. the 'copy' url contains object_copy
@@ -595,6 +592,11 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
             "object_delete does not use the confirmation form",
         )
 
+        redirection_action = [
+            (a['id'], a['url']) for a in buttons if a['id'] == 'redirection'
+        ][0]
+        self.assertIn('@@manage-aliases', redirection_action[1])
+
     def testObjectButtonActionsInExpectedOrder(self):
         # The object buttons need to be in a standardized order
         self.setRoles(['Manager', 'Member'])
@@ -602,11 +604,14 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.folder.cb_dataValid = True
         acts = self.actions.listFilteredActionsFor(self.folder)
         buttons = acts['object_buttons']
-        self.assertEqual(len(buttons), 6)
+        self.assertEqual(len(buttons), 7)
         ids = [(a['id']) for a in buttons]
         self.assertEqual(
             ids,
-            ['cut', 'copy', 'paste', 'delete', 'rename', 'ical_import_enable'],
+            ['cut', 'copy', 'paste', 'delete', 'rename',
+             'redirection',
+             'ical_import_enable',
+             ],
         )
 
     def testCustomSkinFolderExists(self):
@@ -664,10 +669,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
             settings.disable_filtering
         except (AttributeError, KeyError):
             self.fail('Disabling of safe_html should be possible!')
-
-    def testvcXMLRPCRemoved(self):
-        # vcXMLRPC.js should no longer be registered
-        self.assertFalse('vcXMLRPC.js' in self.javascripts.getResourceIds())
 
     def testCacheManagers(self):
         # The cache and caching policy managers should exist

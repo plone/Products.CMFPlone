@@ -12,6 +12,7 @@
 
 Resource  plone/app/robotframework/keywords.robot
 Resource  plone/app/robotframework/saucelabs.robot
+Resource  plone/app/robotframework/selenium.robot
 
 Library  Remote  ${PLONE_URL}/RobotRemote
 Library  Collections
@@ -64,6 +65,7 @@ a logged-in site administrator
 
 the filter control panel
   Go to  ${PLONE_URL}/@@filter-controlpanel
+  Wait until page contains  HTML Filtering Settings
 
 Input RichText
   [Arguments]  ${input}

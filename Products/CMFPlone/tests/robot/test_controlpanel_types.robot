@@ -2,6 +2,7 @@
 
 Resource  plone/app/robotframework/keywords.robot
 Resource  plone/app/robotframework/saucelabs.robot
+Resource  plone/app/robotframework/selenium.robot
 
 Library  Remote  ${PLONE_URL}/RobotRemote
 
@@ -41,9 +42,11 @@ a logged-in manager
 
 the types control panel
   Go to  ${PLONE_URL}/@@content-controlpanel
+  Wait until page contains  Content Settings
 
 Globaly enabled comments
   Go to  ${PLONE_URL}/@@discussion-settings
+  Wait until page contains  Discussion settings
   Select checkbox  name=form.widgets.globally_enabled:list
   Click button  Save
 
@@ -65,6 +68,7 @@ I select '${workflow}' workflow
 
 I add new Link '${id}'
   Go to  ${PLONE_URL}
+  Wait until page contains  Plone site
   Create content  type=Link  id=${id}  title=${id}  remoteUrl=http://www.starzel.de
 
 
@@ -72,9 +76,11 @@ I add new Link '${id}'
 
 Link '${id}' should have comments enabled
   Go to  ${PLONE_URL}/${id}
+  Wait until page contains  ${id}
   Page should contain element  xpath=//div[@id="commenting"]
 
 Link '${id}' should have Single State Workflow enabled
   Go to  ${PLONE_URL}/${id}
+  Wait until page contains  ${id}
   # We check that single state worklow is used, publish button is not present
   Page should not contain element  xpath=//a[@id="workflow-transition-publish"]

@@ -2,7 +2,8 @@
 from setuptools import setup
 from setuptools import find_packages
 
-version = '5.2b1.dev0'
+version = '5.2rc4.dev0'
+
 
 setup(
     name='Products.CMFPlone',
@@ -71,7 +72,7 @@ setup(
         'plone.browserlayer >= 1.0rc4',
         'plone.contentrules',
         'plone.folder',
-        'plone.i18n',
+        'plone.i18n >= 4.0.4.dev0',
         'plone.indexer',
         'plone.intelligenttext',
         'plone.locking',
@@ -84,6 +85,7 @@ setup(
         'plone.registry',
         'plone.schema',
         'plone.session',
+        'plone.staticresources',
         'plone.subrequest',
         'plone.theme',
         'plonetheme.barceloneta',
@@ -103,7 +105,6 @@ setup(
         'Products.PluggableAuthService',
         'Products.PluginRegistry',
         'Products.PortalTransforms',
-        'Products.ResourceRegistries',
         'Products.Sessions',
         'Products.SiteErrorLog',
         'Products.statusmessages',
@@ -152,10 +153,4 @@ setup(
             'zope.testing',
         ]
     },
-    entry_points="""\
-      [console_scripts]
-      plone-compile-resources = Products.CMFPlone._scripts.compile_resources:main
-      [plone.recipe.zope2instance.ctl]
-      verifydb = Products.CMFPlone._scripts.verifydb:zopectl_entry
-    """  # noqa
 )

@@ -12,6 +12,7 @@
 
 Resource  plone/app/robotframework/keywords.robot
 Resource  plone/app/robotframework/saucelabs.robot
+Resource  plone/app/robotframework/selenium.robot
 
 Library  Remote  ${PLONE_URL}/RobotRemote
 
@@ -80,6 +81,7 @@ a logged-in manager
 
 site registration enabled
   Go To  ${PLONE_URL}/@@security-controlpanel
+  Wait until page contains  Security Settings
   Wait until page contains element  form.widgets.enable_self_reg:list
   Select Checkbox  form.widgets.enable_self_reg:list
   Click Button  Save

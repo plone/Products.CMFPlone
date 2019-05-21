@@ -13,7 +13,9 @@ from six.moves.html_parser import HTMLParser
 from six.moves.urllib import parse
 from zope.component import getUtility
 
+import html
 import re
+import six
 
 
 hp = HTMLParser()
@@ -71,7 +73,10 @@ class URLTool(PloneBaseTool, BaseTool):
             return False
 
         # Someone may be doing tricks with escaped html code.
-        unescaped_url = hp.unescape(url)
+        if six.PY2:
+            unescaped_url = hp.unescape(url)
+        else:
+            unescaped_url = html.unescape(url)
         if unescaped_url != url:
             if not self.isURLInPortal(unescaped_url):
                 return False
