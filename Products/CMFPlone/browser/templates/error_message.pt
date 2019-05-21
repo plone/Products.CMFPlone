@@ -1,0 +1,124 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/@@main_template/macros/master"
+      i18n:domain="plone">
+
+<body>
+<metal:main fill-slot="main"
+     tal:define="err_type options/error_type|nothing;
+                 err_tb options/error_tb|nothing;
+                 err_log_id options/error_log_id|nothing">
+
+        <metal:notfound tal:condition="python:err_type == 'NotFound'">
+
+            <tal:redirect define="redirection_view context/@@plone_redirector_view">
+
+                <tal:redirect define="redirect_success redirection_view/attempt_redirect|nothing" replace="nothing">
+                    If the attempt succeeds, we won't see any more of this template
+                </tal:redirect>
+
+                <h1 class="documentFirstHeading"
+                    i18n:translate="heading_site_there_seems_to_be_an_error">
+                    This page does not seem to exist&hellip;
+                </h1>
+
+                <div id="content-core">
+                    <p i18n:translate="description_site_error" class="description">
+ 	                    We apologize for the inconvenience, but the page you were trying to access is not at this address.
+                        You can use the links below to help you find what you are looking for.
+                     </p>
+
+                    <p i18n:translate="description_site_error_mail_site_admin" class="discreet">
+                        If you are certain you have the correct web address but are encountering an error, please
+                        contact the <span i18n:name="site_admin">
+                        <a href="#"
+                           i18n:translate="label_site_admin"
+                           tal:attributes="href string:${context/portal_url}/contact-info">site administration</a></span>.
+                    </p>
+
+                    <p i18n:translate="description_site_error_thank_you">
+                    Thank you.
+                    </p>
+
+                    <!-- Offer search results for suggestions -->
+                    <tal:suggestions define="first_parent redirection_view/find_first_parent;
+                                             similar_items redirection_view/search_for_similar;
+                                             plone_view context/@@plone;
+                                             registry context/portal_registry;
+                                             use_view_action python:registry['plone.types_use_view_action_in_listings'];
+                                             desc_length python:registry['plone.search_results_description_length'];
+                                             normalizeString nocall:plone_view/normalizeString;"
+                                     condition="python:first_parent is not None or similar_items">
+
+                        <h2 i18n:translate="heading_not_found_suggestions">You might have been looking for&hellip;</h2>
+                        <nav>
+                        <ul id="page-not-found-list">
+
+                        <tal:firstparent condition="first_parent/absolute_url | nothing">
+                            <li tal:define="result_url first_parent/absolute_url;
+                                            result_type python:hasattr(first_parent, 'getTypeInfo') and first_parent.getTypeInfo().getId();
+                                            url python:result_url + '/view' if result_type in use_view_action else result_url;"
+                                tal:condition="result_type">
+                                <a href="${url}"
+                                   tal:define="item_wf_state_class python:' state-' + context.portal_workflow.getInfoFor(first_parent, 'review_state', '');"
+                                   tal:attributes="class python:'contenttype-' + normalizeString(result_type) + item_wf_state_class">${first_parent/Title}</a>
+                                <span tal:content="python:plone_view.cropText(first_parent.Description(), desc_length)" class="discreet"> Description </span>
+                            </li>
+                        </tal:firstparent>
+
+                        <tal:similar repeat="similar similar_items">
+                            <li tal:define="result_url similar/getURL;
+                                            result_type similar/portal_type;
+                                            url python:result_url + '/view' if result_type in use_view_action else result_url;">
+                                <a href="${url}"
+                                   tal:define="item_wf_state_class string: state-${similar/review_state};"
+                                   tal:attributes="class python:'contenttype-' + normalizeString(result_type) + item_wf_state_class">${similar/pretty_title_or_id}</a>
+                                <span tal:content="python:plone_view.cropText(similar.Description or '', desc_length)" class="discreet"> Description </span>
+                            </li>
+                        </tal:similar>
+
+                        </ul>
+                        </nav>
+
+                    </tal:suggestions>
+                </div>
+            </tal:redirect>
+
+        </metal:notfound>
+
+        <metal:othererror tal:condition="python: err_type != 'NotFound'"
+             tal:define="isManager view/is_manager">
+
+            <h1 class="documentFirstHeading"
+                i18n:translate="heading_site_error_sorry">
+                We&#8217;re sorry, but there seems to be an error&hellip;
+            </h1>
+
+            <div id="content-core">
+                <div tal:condition="isManager">
+                   <p i18n:translate="description_site_admin_full_error">
+                   Here is the full error message:
+                   </p>
+
+                   <pre tal:content="err_tb"/>
+                </div>
+
+                <tal:noentry condition="not:isManager">
+                    <p i18n:translate="description_site_error_mail_site_admin">
+                    If you are certain you have the correct web address but are encountering an error, please
+                    contact the <span i18n:name="site_admin">
+                    <a href="#"
+                       i18n:translate="label_site_admin"
+                       tal:attributes="href string:${context/portal_url}/contact-info">site administration</a></span>.
+                    </p>
+                </tal:noentry>
+            </div>
+
+        </metal:othererror>
+
+</metal:main>
+</body>
+</html>

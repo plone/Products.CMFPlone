@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from plone.app.testing import SITE_OWNER_NAME, SITE_OWNER_PASSWORD
 from Products.CMFCore.utils import getToolByName
-from plone.testing.z2 import Browser
+from plone.testing.zope import Browser
 from Products.CMFPlone.utils import normalizeString
 
 from Products.CMFPlone.testing import \
@@ -295,18 +295,21 @@ class UserGroupsControlPanelFunctionalTest(unittest.TestCase):
         self.browser.getControl(name='searchstring').value = 'group1'
 
         # Check that role is not selected yet and then select it and apply it.
-        self.assertFalse(self.browser.getControl(
-            name='group_group1:list', index=1
-        ).getControl(value='Contributor').selected)
-        self.browser.getControl(
-            name='group_group1:list', index=1
-        ).getControl(value='Contributor').selected = True
+        form = self.browser.getForm(id='groups_search')
+        ctrls = form._form.fields.get('group_group1:list')
+        roles = [ctrl._value for ctrl in ctrls]
+        expected = 'Site Administrator'
+        self.assertIn(expected, roles)
+        idx = roles.index(expected)
+        self.assertFalse(ctrls[idx].checked)
+        ctrls[idx].checked = True
         self.browser.getControl('Save').click()
 
         # Check that role is now selected
-        self.browser.getControl(
-            name='group_group1:list', index=1
-        ).getControl(value='Contributor').selected
+        form = self.browser.getForm(id='groups_search')
+        ctrl = form._form.get('group_group1:list', index=idx)
+        self.assertEqual(ctrl._value, expected)
+        self.assertTrue(ctrl.checked)
 
     def test_groups_delete_group(self):
         self.browser.open(self.groups_url)

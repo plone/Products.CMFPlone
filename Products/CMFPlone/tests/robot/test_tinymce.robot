@@ -2,6 +2,7 @@
 
 Resource  plone/app/robotframework/keywords.robot
 Resource  plone/app/robotframework/saucelabs.robot
+Resource  plone/app/robotframework/selenium.robot
 
 Library  Remote  ${PLONE_URL}/RobotRemote
 
@@ -43,6 +44,7 @@ Scenario: A page is opened to edit in TinyMCE
 an edited page
     Create content  type=Document  title=${TITLE}
     Go to  ${PLONE_URL}/${PAGE_ID}/edit
+    Wait until page contains  Edit Page
 
 an uploaded image
     Create content  type=Image  title=an-image
@@ -59,6 +61,7 @@ insert link
     Click Button  css=div[aria-label="Insert/edit link"] button
     Click Button  css=.pattern-relateditems-container button.favorites
     Click Link  css=.pattern-relateditems-container .favorites a.fav[href='/']
+    Wait Until Element Is Visible  css=.pattern-relateditems-result-select.selectable
     Click Link  css=.pattern-relateditems-result-select.selectable
     Input Text  css=.plone-modal-body [name="title"]  SomeTitle
     Click Button  css=.plone-modal-footer .plone-btn-primary
@@ -71,6 +74,7 @@ insert image
     Click Button  css=div[aria-label="Insert/edit image"] button
     Click Button  css=.pattern-relateditems-container button.favorites
     Click Link  css=.pattern-relateditems-container .favorites a.fav[href='/']
+    Wait Until Element Is Visible  css=.pattern-relateditems-result-select.selectable
     Click Link  css=.pattern-relateditems-result-select.selectable
     Input Text  css=.plone-modal-body [name="title"]  SomeTitle
     Input Text  css=.plone-modal-body [name="alt"]  SomeAlt

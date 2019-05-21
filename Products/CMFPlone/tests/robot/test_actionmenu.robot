@@ -2,6 +2,7 @@
 
 Resource  plone/app/robotframework/keywords.robot
 Resource  plone/app/robotframework/saucelabs.robot
+Resource  plone/app/robotframework/selenium.robot
 
 Library  Remote  ${PLONE_URL}/RobotRemote
 
@@ -94,7 +95,7 @@ Scenario:
 an actionsmenu page
     Create content  type=Document  title=${TITLE}
     Go to  ${PLONE_URL}/${PAGE_ID}
-
+    Wait until page contains  An actionsmenu page
 
 # --- WHEN -------------------------------------------------------------------
 

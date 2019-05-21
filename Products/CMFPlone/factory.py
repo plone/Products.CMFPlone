@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
-from Products.CMFPlone.Portal import PloneSite
+from logging import getLogger
+from plone.registry.interfaces import IRegistry
+from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.events import SiteManagerCreatedEvent
 from Products.CMFPlone.interfaces import INonInstallable
+from Products.CMFPlone.Portal import PloneSite
 from Products.GenericSetup.tool import SetupTool
-from plone.registry.interfaces import IRegistry
+from Products.statusmessages.interfaces import IStatusMessage
 from zope.component import queryUtility
+from zope.component.hooks import setSite
 from zope.event import notify
 from zope.interface import implementer
-from zope.site.hooks import setSite
 
 _TOOL_ID = 'portal_setup'
 _DEFAULT_PROFILE = 'Products.CMFPlone:plone'
@@ -15,6 +18,8 @@ _CONTENT_PROFILE = 'plone.app.contenttypes:plone-content'
 
 # A little hint for PloneTestCase
 _IMREALLYPLONE5 = True
+
+logger = getLogger('Plone')
 
 
 @implementer(INonInstallable)
@@ -45,10 +50,10 @@ class NonInstallable(object):
             'plone.app.dexterity',
             'plone.app.discussion',
             'plone.app.event',
-            'plone.app.folder',
             'plone.app.imaging',
             'plone.app.intid',
             'plone.app.linkintegrity',
+            'plone.app.querystring',
             'plone.app.registry',
             'plone.app.referenceablebehavior',
             'plone.app.relationfield',
@@ -99,7 +104,6 @@ class NonInstallable(object):
                 u'plone.app.dexterity:default',
                 u'plone.app.discussion:default',
                 u'plone.app.event:default',
-                u'plone.app.folder:default',
                 u'plone.app.imaging:default',
                 u'plone.app.linkintegrity:default',
                 u'plone.app.registry:default',
@@ -164,8 +168,23 @@ def addPloneSite(context, site_id, title='Plone site', description='',
     site.manage_changeProperties(**props)
 
     for extension_id in extension_ids:
-        setup_tool.runAllImportStepsFromProfile(
-            'profile-%s' % extension_id)
+        try:
+            setup_tool.runAllImportStepsFromProfile(
+                'profile-%s' % extension_id)
+        except Exception as msg:
+            IStatusMessage(request).add(_(
+                'Could not install ${profile_id}: ${error_msg}! '
+                'Please try to install it manually using the "Addons" '
+                'controlpanel and report any issues to the '
+                'addon maintainers.',
+                mapping={
+                    'profile_id': extension_id,
+                    'error_msg': msg.args,
+                }),
+                type='error')
+            logger.exception(
+                'Error while installing addon {}. '
+                'See traceback below for details.'.format(extension_id))
 
     if snapshot is True:
         setup_tool.createSnapshot('initial_configuration')

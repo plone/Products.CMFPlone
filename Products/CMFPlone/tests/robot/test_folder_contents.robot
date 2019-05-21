@@ -2,6 +2,7 @@
 
 Resource  plone/app/robotframework/keywords.robot
 Resource  plone/app/robotframework/saucelabs.robot
+Resource  plone/app/robotframework/selenium.robot
 
 Library  Remote  ${PLONE_URL}/RobotRemote
 
@@ -128,4 +129,4 @@ Should be above
     Should be true  ${locator1-position} < ${locator2-position}
 
 folder contents pattern loaded
-    Wait For Condition  return $('.pat-structure div.navbar').size() > 0
+    Wait For Condition  return window.jQuery('.pat-structure div.navbar').size() > 0

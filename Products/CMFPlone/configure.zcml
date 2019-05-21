@@ -5,7 +5,6 @@
            xmlns:i18n="http://namespaces.zope.org/i18n"
            i18n_domain="plone">
 
-  <include package="five.pt" />
   <include package="zope.app.locales" />
   <include package="Products.CMFCore" />
   <include package="Products.GenericSetup" />
@@ -13,10 +12,8 @@
   <include package="plone.app.content" />
   <include package="plone.app.contentrules" />
   <include package="plone.app.contenttypes" />
-  <include package="plone.app.controlpanel" />
   <include package="plone.app.customerize" />
   <include package="plone.app.discussion" />
-  <include package="plone.app.folder" />
   <include package="plone.app.i18n" />
   <include package="plone.app.layout" />
   <include package="plone.app.linkintegrity" />
@@ -40,6 +37,7 @@
 
   <!-- mockup -->
   <include package="mockup" />
+  <include package="plone.staticresources" />
 
   <!-- viewlets zope 3 layers support for themes -->
   <include package="plone.browserlayer" />
@@ -76,7 +74,6 @@
   <include file="deprecated.zcml"/>
   <include file="profiles.zcml"/>
   <include file="catalog.zcml" />
-  <include file="static.zcml" />
 
   <cmf:registerDirectory
       name="skins"
@@ -95,18 +92,26 @@
   <utility factory=".factory.NonInstallable"
            name="Products.CMFPlone" />
 
+  <!-- Adapter for the ++plone++ bundles traverser -->
+  <adapter
+      name="plone"
+      for="* zope.publisher.interfaces.IRequest"
+      provides="zope.traversing.interfaces.ITraversable"
+      factory=".traversal.PloneBundlesTraverser"
+      />
+
   <!-- Adapter for default workflow lookup -->
   <adapter
       factory=".workflow.ToolWorkflowChain"
       trusted="y"
       />
 
-    <!-- include plone plugins with z3c.autoinclude -->
-    <includePlugins
-        zcml:condition="not-have disable-autoinclude"
-        package="plone"
-        file="configure.zcml"
-        />
+  <!-- include plone plugins with z3c.autoinclude -->
+  <includePlugins
+      zcml:condition="not-have disable-autoinclude"
+      package="plone"
+      file="configure.zcml"
+      />
 
   <subscriber for="Products.GenericSetup.events.ProfileImportedEvent"
               handler=".events.profileImportedEventHandler"/>

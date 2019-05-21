@@ -3,7 +3,7 @@ Adding, Editing, Moving and Deleting a Document
 
 Does what the title says, really.  Plus some assertions.
 
-    >>> from plone.testing.z2 import Browser
+    >>> from plone.testing.zope import Browser
     >>> from plone.app.testing import SITE_OWNER_NAME
     >>> from plone.app.testing import SITE_OWNER_PASSWORD
     >>> app = layer['app']
@@ -21,7 +21,7 @@ We need to allow multiple languages to see the result of our changes:
 
     >>> from plone.registry.interfaces import IRegistry
     >>> from zope.component import getUtility
-    >>> from Products.CMFPlone.interfaces import ILanguageSchema
+    >>> from plone.i18n.interfaces import ILanguageSchema
     >>> settings = getUtility(IRegistry).forInterface(
     ...     ILanguageSchema,
     ...     prefix='plone')
@@ -51,7 +51,7 @@ browser.
 Now that the document has been added, we can edit it, but we pretend
 we don't know better and forget to type in a Title:
 
-    >>> browser.getControl(name='form.widgets.IRichText.text').value = 'About me'
+    >>> browser.getControl(name='form.widgets.IRichTextBehavior.text').value = 'About me'
     >>> browser.getControl('Save').click()
     >>> 'Required input is missing.' in browser.contents
     True
@@ -116,7 +116,7 @@ We make sure the language is English at the beginning:
 
 And the content language is set to the default:
 
-    >>> browser.headers.dict['content-language']
+    >>> browser.headers.get('content-language')
     'en'
 
 Now set the language to German:
@@ -131,7 +131,7 @@ Now set the language to German:
 
 Make sure the content language was updated:
 
-    >>> browser.headers.dict['content-language']
+    >>> browser.headers.get('content-language')
     'de'
 
 Cut and paste Document
@@ -186,7 +186,7 @@ between cut and paste, the page should say so and not give a stacktrace.
 
     >>> browser.open('http://nohost/plone')
     >>> browser.getLink('Page').click()
-    >>> browser.getControl(name='form.widgets.IRichText.text').value = ''
+    >>> browser.getControl(name='form.widgets.IRichTextBehavior.text').value = ''
     >>> browser.getControl('Title').value = 'Op een dag'
     >>> browser.getControl('Save').click()
     >>> 'Op een dag' in browser.contents

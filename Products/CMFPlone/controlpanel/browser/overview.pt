@@ -22,7 +22,8 @@
     </p>
 
     <div class="portalMessage warning"
-        tal:condition="view/upgrade_warning">
+         role="status"
+         tal:condition="view/upgrade_warning">
         <strong i18n:translate="">
             Warning
         </strong>
@@ -41,7 +42,8 @@
     </div>
 
     <div class="portalMessage warning"
-        tal:condition="view/mailhost_warning">
+         role="status"
+         tal:condition="view/mailhost_warning">
         <strong i18n:translate="">
             Warning
         </strong>
@@ -60,7 +62,8 @@
     </div>
 
     <div class="portalMessage warning"
-        tal:condition="view/timezone_warning">
+         role="status"
+         tal:condition="view/timezone_warning">
         <strong i18n:translate="">
             Warning
         </strong>
@@ -80,7 +83,8 @@
     </div>
 
     <div class="portalMessage warning"
-        tal:condition="not:view/pil">
+         role="status"
+         tal:condition="not:view/pil">
         <strong i18n:translate="">
             Warning
         </strong>
@@ -134,7 +138,21 @@
       <tal:list-versions repeat="version view/version_overview">
         <li tal:content="version">Version</li>
       </tal:list-versions>
+      <tal:server tal:define="server_info view/server_info;
+                              has_wsgi server_info/wsgi;">
+          <li>
+            <tal:i18n i18n:translate="">WSGI:</tal:i18n>
+            <span i18n:translate="" tal:condition="has_wsgi">On</span>
+            <span i18n:translate="" tal:condition="not:has_wsgi">Off</span>
+          </li>
+          <li>
+            <tal:i18n i18n:translate="">Server:</tal:i18n>
+            <span>${server_info/server_name}</span>
+            <span>${server_info/version}</span>
+          </li>
+      </tal:server>
     </ul>
+
 
     <p tal:condition="not:view/is_dev_mode"
        class="discreet"

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from App.class_init import InitializeClass
+from AccessControl.class_init import InitializeClass
 from AccessControl import ClassSecurityInfo
 from Products.CMFPlone.interfaces import IPloneBaseTool
 from Acquisition import aq_base
@@ -29,7 +29,7 @@ def initializeTFC():
         try:
             pkg_resources.get_distribution('Products.ATContentTypes')
         except pkg_resources.DistributionNotFound:
-            pass
+            TempFolderClass = False
         else:
             from Products.ATContentTypes.tool.factory import TempFolder
             TempFolderClass = TempFolder

@@ -3,7 +3,7 @@ from AccessControl import ClassSecurityInfo
 from AccessControl import Permissions
 from AccessControl import Unauthorized
 from Acquisition import aq_base
-from App.class_init import InitializeClass
+from AccessControl.class_init import InitializeClass
 from ComputedAttribute import ComputedAttribute
 from plone.i18n.locales.interfaces import IMetadataLanguageAvailability
 from Products.CMFCore import permissions
@@ -12,6 +12,7 @@ from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.utils import UniqueObject
 from Products.CMFDynamicViewFTI.browserdefault import BrowserDefaultMixin
+from Products.CMFPlone import bbb
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.DublinCore import DefaultDublinCoreImpl
 from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
@@ -24,9 +25,13 @@ from Products.CMFPlone.permissions import ReplyToItem
 from Products.CMFPlone.permissions import View
 from Products.CMFPlone.PloneFolder import OrderedContainer
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper
-from webdav.NullResource import NullResource
 from zope.component import queryUtility
 from zope.interface import implementer
+
+import six
+
+if bbb.HAS_ZSERVER:
+    from webdav.NullResource import NullResource
 
 
 @implementer(IPloneSiteRoot, ISyndicatable)
@@ -86,7 +91,7 @@ class PloneSite(PortalObjectBase, DefaultDublinCoreImpl, OrderedContainer,
         if request is not None and 'REQUEST_METHOD' in request:
             if request.maybe_webdav_client:
                 method = request['REQUEST_METHOD']
-                if method in ('PUT', ):
+                if bbb.HAS_ZSERVER and method in ('PUT', ):
                     # Very likely a WebDAV client trying to create something
                     return ReplaceableWrapper(NullResource(self, 'index_html'))
                 elif method in ('GET', 'HEAD', 'POST'):
@@ -112,7 +117,7 @@ class PloneSite(PortalObjectBase, DefaultDublinCoreImpl, OrderedContainer,
         """We need to enforce security."""
         if ids is None:
             ids = []
-        if isinstance(ids, basestring):
+        if isinstance(ids, six.string_types):
             ids = [ids]
         for id in ids:
             item = self._getOb(id)

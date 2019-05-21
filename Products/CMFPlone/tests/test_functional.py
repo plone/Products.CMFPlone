@@ -6,11 +6,12 @@ from plone.testing import layered
 import doctest
 import glob
 import os
+import re
+import six
 import unittest
 
 
-UNITTESTS = ['messages.txt', 'mails.txt', 'emaillogin.txt', 'translate.txt',
-             'pwreset_browser.txt']
+UNITTESTS = ['messages.txt', 'mails.txt', 'emaillogin.rst', 'translate.txt']
 CONTENT_TESTS = [
     'AddMoveAndDeleteDocument.txt',
     'base_tag_not_present.txt',
@@ -22,33 +23,62 @@ CONTENT_TESTS = [
 OPTIONFLAGS = (doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE)
 
 
+class Py23DocChecker(doctest.OutputChecker):
+
+    def check_output(self, want, got, optionflags):
+        if six.PY2:
+            want = re.sub('zExceptions.Forbidden', 'Forbidden', want)
+            want = re.sub("b'(.*?)'", "'\\1'", want)
+        else:
+            want = re.sub("u'(.*?)'", "'\\1'", want)
+            # translate doctest exceptions
+            for dotted in ('urllib.error.HTTPError', ):
+                if dotted in got:
+                    got = re.sub(
+                        dotted,
+                        dotted.rpartition('.')[-1],
+                        got,
+                    )
+
+        return doctest.OutputChecker.check_output(self, want, got, optionflags)
+
+
 def test_suite():
     # Some files need to be tested with the standard functional layer.
     ignored = UNITTESTS + CONTENT_TESTS
     standard_filenames = [
         filename for filename in
         glob.glob(os.path.sep.join([os.path.dirname(__file__), '*.txt']))
-        if os.path.basename(filename) not in ignored]
-    suites = [layered(doctest.DocFileSuite(
-              os.path.basename(filename),
-              optionflags=OPTIONFLAGS,
-              package='Products.CMFPlone.tests',
-              ), layer=PLONE_FUNCTIONAL_TESTING)
-              for filename in standard_filenames]
+        if os.path.basename(filename) not in ignored
+    ]
+    suites = [
+        layered(
+            doctest.DocFileSuite(
+                os.path.basename(filename),
+                optionflags=OPTIONFLAGS,
+                package='Products.CMFPlone.tests',
+                checker=Py23DocChecker(),
+            ),
+            layer=PLONE_FUNCTIONAL_TESTING
+        ) for filename in standard_filenames
+    ]
 
     # Other files need to be tested with the plone.app.contenttypes layer.
     content_filenames = [
         filename for filename in
         glob.glob(os.path.sep.join([os.path.dirname(__file__), '*.txt']))
-        if os.path.basename(filename) in CONTENT_TESTS]
-    suites.extend(
-        [layered(
+        if os.path.basename(filename) in CONTENT_TESTS
+    ]
+    suites.extend([
+        layered(
             doctest.DocFileSuite(
                 os.path.basename(filename),
                 optionflags=OPTIONFLAGS,
                 package='Products.CMFPlone.tests',
+                checker=Py23DocChecker(),
             ),
-            layer=PLONE_APP_CONTENTTYPES_FUNCTIONAL_TESTING)
-            for filename in content_filenames])
+            layer=PLONE_APP_CONTENTTYPES_FUNCTIONAL_TESTING
+        ) for filename in content_filenames
+    ])
 
     return unittest.TestSuite(suites)

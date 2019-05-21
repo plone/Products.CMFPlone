@@ -7,6 +7,7 @@ from Products.CMFPlone.browser.navtree import getNavigationRoot
 from Products.CMFPlone.interfaces import ISearchSchema
 from Products.CMFPlone.PloneBatch import Batch
 from Products.ZCTextIndex.ParseTree import ParseError
+from zope.cachedescriptors.property import Lazy as lazy_property
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.component import queryUtility
@@ -15,12 +16,15 @@ from zope.publisher.browser import BrowserView
 from ZTUtils import make_query
 
 import json
+import six
 
 _ = MessageFactory('plone')
 
 # We should accept both a simple space, unicode u'\u0020 but also a
 # multi-space, so called 'waji-kankaku', unicode u'\u3000'
-MULTISPACE = u'\u3000'.encode('utf-8')
+MULTISPACE = u'\u3000'
+if six.PY2:
+    MULTISPACE = u'\u3000'.encode('utf-8')
 BAD_CHARS = ('?', '-', '+', '*', MULTISPACE)
 EVER = DateTime('1970-01-03')
 
@@ -132,6 +136,12 @@ class Search(BrowserView):
             del query['sort_order']
         return query
 
+    @lazy_property
+    def default_sort_on(self):
+        registry = getUtility(IRegistry)
+        search_settings = registry.forInterface(ISearchSchema, prefix='plone')
+        return search_settings.sort_on
+
     def filter_query(self, query):
         query = self._filter_query(query)
         if query is None:
@@ -139,10 +149,9 @@ class Search(BrowserView):
         # explicitly set a sort; if no `sort_on` is present, the catalog sorts
         # by relevance
         if 'sort_on' not in query:
-            registry = getUtility(IRegistry)
-            search_settings = registry.forInterface(ISearchSchema, prefix='plone')
-            if search_settings.sort_on != 'relevance':
-                query['sort_on'] = search_settings.sort_on
+            self.default_sort_on
+            if self.default_sort_on != 'relevance':
+                query['sort_on'] = self.default_sort_on
         elif query['sort_on'] == 'relevance':
             del query['sort_on']
         if query.get('sort_on', '') == 'Date':
@@ -168,9 +177,7 @@ class Search(BrowserView):
     def sort_options(self):
         """ Sorting options for search results view. """
         if 'sort_on' not in self.request.form:
-            registry = getUtility(IRegistry)
-            search_settings = registry.forInterface(ISearchSchema, prefix="plone")
-            self.request.form['sort_on'] = search_settings.sort_on
+            self.request.form['sort_on'] = self.default_sort_on
         return (
             SortOption(self.request, _(u'relevance'), 'relevance'),
             SortOption(
@@ -211,7 +218,7 @@ class Search(BrowserView):
             return None
         if len(breadcrumbs) > 3:
             # if we have too long breadcrumbs, emit the middle elements
-            empty = {'absolute_url': '', 'Title': unicode('…', 'utf-8')}
+            empty = {'absolute_url': '', 'Title': u'…'}
             breadcrumbs = [breadcrumbs[0], empty] + breadcrumbs[-2:]
         return breadcrumbs
 

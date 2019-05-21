@@ -11,7 +11,7 @@
 
 from Products.CMFPlone.tests import PloneTestCase
 
-from App.class_init import InitializeClass
+from AccessControl.class_init import InitializeClass
 from AccessControl import ClassSecurityInfo
 from OFS.SimpleItem import SimpleItem
 
@@ -46,11 +46,11 @@ class BrokenAcquisitionTest(PloneTestCase.PloneTestCase):
         ps.ZPythonScript_edit(params, body)
 
     def testAcquisitionAllowed(self):
-        self._makePS(self.folder, 'ps', '', 'print context.portal_membership')
+        self._makePS(self.folder, 'ps', '', 'print(context.portal_membership)')
         self.folder.allowed.ps()
 
     def testAcquisitionDenied(self):
         # This test fails in Zope 2.7.3
         # Also see http://zope.org/Collectors/CMF/259
-        self._makePS(self.folder, 'ps', '', 'print context.portal_membership')
+        self._makePS(self.folder, 'ps', '', 'print(context.portal_membership)')
         self.folder.denied.ps()

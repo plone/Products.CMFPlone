@@ -16,7 +16,7 @@ class TestNextPrevious(PloneTestCase.PloneTestCase):
         self.portal.invokeFactory('Document', 'doc3')
         self.portal.invokeFactory('Folder', 'folder1')
         self.portal.invokeFactory('Link', 'link1')
-        self.portal.link1.setRemoteUrl('http://plone.org')
+        self.portal.link1.remoteUrl = 'http://plone.org'
         self.portal.link1.reindexObject()
         folder1 = getattr(self.portal, 'folder1')
         folder1.invokeFactory('Document', 'doc11')
@@ -40,7 +40,7 @@ class TestNextPrevious(PloneTestCase.PloneTestCase):
 
         # first the field on the atfolder direct, to get sure the field is
         # there
-        enabled = self.folder.case.getNextPreviousEnabled()
+        enabled = self.folder.case.nextPreviousEnabled
         self.assertFalse(enabled)
 
         # secoundly we test if the adapter provides the isNextPreviousEnabled()
@@ -57,7 +57,7 @@ class TestNextPrevious(PloneTestCase.PloneTestCase):
 
     def testNextPreviousViewEnabled(self):
         # set the parent folder "getNextPreviousEnabled" to true
-        self.portal.folder1.setNextPreviousEnabled(True)
+        self.portal.folder1.nextPreviousEnabled = True
 
         # clear request memos
         view = self.portal.folder1.doc12.restrictedTraverse(

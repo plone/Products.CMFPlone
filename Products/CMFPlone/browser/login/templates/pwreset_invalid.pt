@@ -1,0 +1,37 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/@@main_template/macros/master"
+      i18n:domain="plone">
+<body>
+
+<metal:custom_title fill-slot="content-title">
+    <h1 class="documentFirstHeading" i18n:translate="heading_pwreset_invalid">Error setting password</h1>
+</metal:custom_title>
+
+<metal:custom_desc fill-slot="content-description">
+</metal:custom_desc>
+
+<metal:content-core fill-slot="content-core">
+<metal:content-core define-macro="content-core" tal:define="use_email_as_login python:context.portal_registry['plone.use_email_as_login'];">
+
+        <p i18n:translate="message_pwreset_invalid"
+           tal:condition="not:use_email_as_login">
+           Sorry, this appears to be an invalid request. Please make sure you copied
+           the URL exactly as it appears in your email and that you entered your
+           user name correctly.
+        </p>
+        <p i18n:translate="message_pwreset_invalid_with_email"
+           tal:condition="use_email_as_login">
+           Sorry, this appears to be an invalid request. Please make sure you copied
+           the URL exactly as it appears in your email and that you entered your
+           email address correctly.
+        </p>
+
+</metal:content-core>
+</metal:content-core>
+
+</body>
+</html>

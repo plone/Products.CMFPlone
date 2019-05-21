@@ -4,7 +4,6 @@
         <tal:opencc tal:replace="structure string:&lt;!--[if ${condcomment}]&gt;" />
     </tal:wcondcomment
     ><link rel="style"
-          type="text/css"
           tal:attributes="href style/src;
                           rel style/rel;
                           data-bundle style/bundle;" /><tal:wcondcomment tal:condition="condcomment">

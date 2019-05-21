@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-from zope.component.interfaces import IObjectEvent
 from zope.interface import Attribute
 from zope.interface import Interface
+from zope.interface.interfaces import IObjectEvent
 
 
 class ISiteManagerCreatedEvent(IObjectEvent):

@@ -1,0 +1,37 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      i18n:domain="plone">
+
+<tal:def define="isManager python:view.is_manager()">
+
+<head>
+  <title tal:condition="not:isManager">Error</title>
+  <title tal:condition="isManager">${options/error_type}</title>
+</head>
+
+<body>
+
+  <h1 class="documentFirstHeading"
+      i18n:translate="heading_site_error_sorry">
+      We&#8217;re sorry, but there seems to be an error&hellip;
+  </h1>
+
+  <h2 class="documentFirstHeading"
+      tal:condition="isManager">${options/error_type}</h2>
+
+  <pre tal:condition="isManager"
+       tal:content="options/error_tb" />
+
+  <tal:noentry condition="not:isManager">
+      <p i18n:translate="description_site_error_mail_site_admin">
+      If you are certain you have the correct web address but are encountering an error, please
+      contact the <span i18n:name="site_admin" i18n:translate="label_site_admin">site administration</span>.
+      </p>
+  </tal:noentry>
+
+</body>
+</tal:def>
+</html>

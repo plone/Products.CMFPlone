@@ -1,0 +1,32 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/@@main_template/macros/master"
+      i18n:domain="plone">
+
+<head>
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1);
+                             disable_column_one python:request.set('disable_plone.leftcolumn',1);
+                             disable_column_two python:request.set('disable_plone.rightcolumn',1);" />
+</head>
+
+<body>
+   <metal:content fill-slot="main">
+      <h1 class="documentFirstHeading"
+          i18n:translate="heading_no_privileges">Insufficient Privileges</h1>
+
+      <div class="documentDescription" i18n:translate="description_no_privileges_for_page"
+           tal:define="portal_state context/@@plone_portal_state;
+                       portal_url portal_state/portal_url">
+      You do not have sufficient privileges to view this page. If you believe
+      you are receiving this message in error, contact the
+      <span i18n:name="site_admin"><a href="#"
+         i18n:translate="label_site_administration"
+         tal:attributes="href string:${portal_url}/contact-info">site administration</a></span>.
+      </div>
+
+   </metal:content>
+</html>

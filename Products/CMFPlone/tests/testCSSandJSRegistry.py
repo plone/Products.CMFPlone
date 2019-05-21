@@ -46,7 +46,7 @@ class TestCSSRegistry(PloneTestCase):
     def testJSIsInsertedInPage(self):
         self.registry['plone.resources.development'] = True
         self.registry['plone.bundles/plone.develop_css'] = True
-        page = self.portal.index_html()
+        page = self.portal.view()
         self.assertTrue('++plone++static/plone.less' in page)
 
 
@@ -62,7 +62,6 @@ class TestJSRegistry(PloneTestCase):
         )
         expected = [
             '++resource++plone.js',
-            'jquery.highlightsearchterms.js'
         ]
         js_files = {x.js for x in installedResources.values()}
         for e in expected:
@@ -71,5 +70,5 @@ class TestJSRegistry(PloneTestCase):
     def testJSIsInsertedInPage(self):
         self.registry['plone.resources.development'] = True
         self.registry['plone.bundles/plone.develop_javascript'] = True
-        page = self.portal.index_html()
+        page = self.portal.view()
         self.assertTrue('++resource++plone.js' in page)

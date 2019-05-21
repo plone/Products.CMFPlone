@@ -1,0 +1,32 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/@@main_template/macros/master"
+      i18n:domain="plone">
+<body>
+
+<metal:custom_title fill-slot="content-title">
+    <h1 class="documentFirstHeading"
+        i18n:translate="heading_pwreset_success">Password set</h1>
+</metal:custom_title>
+
+<metal:custom_desc fill-slot="content-description">
+</metal:custom_desc>
+
+<metal:content-core fill-slot="content-core">
+<metal:content-core define-macro="content-core">
+
+    <div class="documentDescription" i18n:translate="message_pwreset_success">
+        Your password has been set successfully. You may now
+        <a href="#" tal:attributes="href view/login_url"
+         i18n:name="login_url">log in</a> with your
+        new password.
+    </div>
+
+</metal:content-core>
+</metal:content-core>
+
+</body>
+</html>

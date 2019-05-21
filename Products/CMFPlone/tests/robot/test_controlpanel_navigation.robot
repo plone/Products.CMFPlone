@@ -2,6 +2,7 @@
 
 Resource  plone/app/robotframework/keywords.robot
 Resource  plone/app/robotframework/saucelabs.robot
+Resource  plone/app/robotframework/selenium.robot
 
 Library  Remote  ${PLONE_URL}/RobotRemote
 
@@ -53,6 +54,7 @@ Scenario: Filter Navigation By Displayed Types in the Navigation Control Panel
 
 the navigation control panel
   Go to  ${PLONE_URL}/@@navigation-controlpanel
+  Wait until page contains  Navigation Settings
 
 a published document '${title}'
   ${uid}=  a document '${title}'

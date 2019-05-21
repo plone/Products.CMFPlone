@@ -14,6 +14,9 @@ from Products.CMFPlone.tests.utils import validateCSSIdentifier
 from zope.component import getUtility
 from zope.interface import directlyProvides
 
+import random
+import string
+
 portal_name = PloneTestCase.portal_name
 
 
@@ -41,7 +44,7 @@ class TestBaseNavTree(PloneTestCase.PloneTestCase):
         self.portal.invokeFactory('Document', 'doc3')
         self.portal.invokeFactory('Folder', 'folder1')
         self.portal.invokeFactory('Link', 'link1')
-        self.portal.link1.setRemoteUrl('http://plone.org')
+        self.portal.link1.remoteUrl = 'http://plone.org'
         self.portal.link1.reindexObject()
         folder1 = getattr(self.portal, 'folder1')
         folder1.invokeFactory('Document', 'doc11')
@@ -73,7 +76,7 @@ class TestBaseNavTree(PloneTestCase.PloneTestCase):
     def testNavTreeExcludesItemsWithExcludeProperty(self):
         # Make sure that items witht he exclude_from_nav property set get
         # no_display set to True
-        self.portal.folder2.setExcludeFromNav(True)
+        self.portal.folder2.exclude_from_nav = True
         self.portal.folder2.reindexObject()
         view = self.view_class(self.portal.folder1.doc11, self.request)
         tree = view.navigationTree()
@@ -84,7 +87,7 @@ class TestBaseNavTree(PloneTestCase.PloneTestCase):
 
     def testShowAllParentsOverridesNavTreeExcludesItemsWithExcludeProp(self):
         # Make sure excluded items are not included in the navtree
-        self.portal.folder2.setExcludeFromNav(True)
+        self.portal.folder2.exclude_from_nav = True
         self.portal.folder2.reindexObject()
         self.navigation_settings.show_excluded_items = True
 
@@ -181,10 +184,12 @@ class TestBaseNavTree(PloneTestCase.PloneTestCase):
                          '/plone/folder2/folder21/doc211')
 
     def testTopLevelWithPortalFactory(self):
-        id = self.portal.generateUniqueId('Document')
+        cid = ''.join(
+            [random.choice(string.ascii_lowercase) for x in range(10)]
+        )
         typeName = 'Document'
         newObject = self.portal.folder1.restrictedTraverse(
-            'portal_factory/' + typeName + '/' + id)
+            'portal_factory/' + typeName + '/' + cid)
         # Will raise a KeyError unless bug is fixed
         view = self.view_class(newObject, self.request)
         view.navigationTree()
@@ -352,7 +357,7 @@ class TestSiteMap(PloneTestCase.PloneTestCase):
         self.portal.invokeFactory('Document', 'doc3')
         self.portal.invokeFactory('Folder', 'folder1')
         self.portal.invokeFactory('Link', 'link1')
-        self.portal.link1.setRemoteUrl('http://plone.org')
+        self.portal.link1.remoteUrl = 'http://plone.org'
         self.portal.link1.reindexObject()
         folder1 = getattr(self.portal, 'folder1')
         folder1.invokeFactory('Document', 'doc11')
@@ -591,18 +596,27 @@ class TestBasePortalTabs(PloneTestCase.PloneTestCase):
         self.assertEqual(tabs, [])
 
     def testTabsExcludeItemsWithExcludeProperty(self):
-        # Make sure that items witht he exclude_from_nav property are purged
-        view = self.view_class(self.portal, self.request)
-        tabs = view.topLevelTabs(actions=[])
-        orig_len = len(tabs)
-        self.portal.folder2.setExcludeFromNav(True)
+        self.portal.folder2.exclude_from_nav = True
         self.portal.folder2.reindexObject()
+
+        # if we're not in context of the excluded item it should disappear
         view = self.view_class(self.portal, self.request)
         tabs = view.topLevelTabs(actions=[])
-        self.assertTrue(tabs)
-        self.assertEqual(len(tabs), orig_len - 1)
         tab_names = [t['id'] for t in tabs]
-        self.assertFalse('folder2' in tab_names)
+        self.assertNotIn('folder2', tab_names)
+
+        # but if we're inside, it should be visible
+        view = self.view_class(self.portal.folder2, self.request)
+        tabs = view.topLevelTabs(actions=[])
+        tab_names = [t['id'] for t in tabs]
+        self.assertIn('folder2', tab_names)
+
+        # Now we flip the setting for plone.show_excluded_items
+        self.navigation_settings.show_excluded_items = False
+        view = self.view_class(self.portal.folder2, self.request)
+        tabs = view.topLevelTabs(actions=[])
+        tab_names = [t['id'] for t in tabs]
+        self.assertNotIn('folder2', tab_names)
 
     def testTabsRespectsTypesWithViewAction(self):
         # With a type in types_use_view_action_in_listings as current action it
@@ -663,7 +677,7 @@ class TestBasePortalTabs(PloneTestCase.PloneTestCase):
     def testLinkRemoteUrlsUsedUnlessLinkCreator(self):
         self.setRoles(['Manager'])
         self.portal.invokeFactory('Link', 'link1')
-        self.portal.link1.setRemoteUrl('http://plone.org')
+        self.portal.link1.remoteUrl = 'http://plone.org'
         self.portal.link1.reindexObject()
         view = self.view_class(self.portal, self.request)
         tabs = view.topLevelTabs(actions=[])
@@ -740,10 +754,12 @@ class TestBaseBreadCrumbs(PloneTestCase.PloneTestCase):
 
 
 class TestCatalogBreadCrumbs(TestBaseBreadCrumbs):
+
     view_class = CatalogNavigationBreadcrumbs
 
 
 class TestPhysicalBreadCrumbs(TestBaseBreadCrumbs):
+
     view_class = PhysicalNavigationBreadcrumbs
 
     def testBreadcrumbsFilterByInterface(self):

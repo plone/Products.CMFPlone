@@ -2,6 +2,7 @@
 
 Resource  plone/app/robotframework/keywords.robot
 Resource  plone/app/robotframework/saucelabs.robot
+Resource  plone/app/robotframework/selenium.robot
 
 Library  Remote  ${PLONE_URL}/RobotRemote
 
@@ -73,6 +74,7 @@ Scenario: Form dropdowns follows DateTime widget values
 an edited page
     Create content  type=Document  title=${TITLE}
     Go to  ${PLONE_URL}/${PAGE_ID}/edit
+    Wait until page contains  Edit Page
 
 
 # --- WHEN -------------------------------------------------------------------
@@ -81,7 +83,7 @@ I have the title input field
     Element Should Be Visible  xpath=//fieldset[@id='fieldset-default']
 
 I can only see the default tab
-    Wait For Condition  return $('.autotoc-nav .active:visible').size() > 0
+    Wait For Condition  return window.jQuery('.autotoc-nav .active:visible').size() > 0
     Element Should Not Be Visible  xpath=//fieldset[@id='fieldset-settings']
     Element Should Not Be Visible  xpath=//fieldset[@id='fieldset-dates']
     Element Should Not Be Visible  xpath=//fieldset[@id='fieldset-categorization']

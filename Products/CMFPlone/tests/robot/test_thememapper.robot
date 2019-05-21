@@ -2,6 +2,7 @@
 
 Resource  plone/app/robotframework/keywords.robot
 Resource  plone/app/robotframework/saucelabs.robot
+Resource  plone/app/robotframework/selenium.robot
 
 Library  Remote  ${PLONE_URL}/RobotRemote
 
@@ -50,6 +51,7 @@ Scenario: Thememapper LESS builder
 
 a new theme to edit
     Go to  ${PLONE_URL}/theming-controlpanel
+    Wait until page contains  Theme settings
     Click Element   jquery=a[href="#modal-copy-barceloneta"]
     Wait Until Element Is Visible   jquery=.plone-modal-body input[type="text"]
     Input Text  jquery=.plone-modal-body input[type="text"]   Test
@@ -62,7 +64,7 @@ I open ${NAME}
 
 I expect ${NUM} tabs to be open
     Sleep  1
-    ${hits}=    Execute Javascript  return $('.navbar-nav li').length.toString();
+    ${hits}=    Execute Javascript  return window.jQuery('.navbar-nav li').length.toString();
     Should Be Equal     ${hits}     ${NUM}
 
 I expect a tab labeled "${LABEL}" to be open
@@ -72,23 +74,24 @@ I close the tab labeled "${LABEL}"
     Click Element   jquery=.navbar-nav li:contains("${LABEL}") .remove
 
 I create a new file called "${NAME}"
-    Click Element   css=#btn-addnew
+    Click Element   css=#btngroup-main #btngroup-dropdown-file_menu #dropdown-menu-
+    Click Element   css=#alink-addnew
     Input Text  jquery=.addnew input[type="text"]   ${NAME}
     Click Element   jquery=.addnew .btn-primary
     Sleep   1
 
 I type some code into the editor
     Click Element   css=.ace_content
-    ${ace_id}=     Execute Javascript   return $('.ace_editor').attr('id');
+    ${ace_id}=     Execute Javascript   return window.jQuery('.ace_editor').attr('id');
     Execute Javascript      ace.edit(${ace_id}).setValue("${LESS}");
 
 I expect the editors value to be "${MESSAGE}"
-    ${ace_id}=      Execute Javascript  return $('.ace_editor').attr('id');
+    ${ace_id}=      Execute Javascript  return window.jQuery('.ace_editor').attr('id');
     ${value}=   Execute Javascript      return ace.edit('${ace_id}').getValue();
     Should Be Equal     ${value}    ${MESSAGE}
 
 I expect the editors value to contain "${MESSAGE}"
-    ${ace_id}=      Execute Javascript  return $('.ace_editor').attr('id');
+    ${ace_id}=      Execute Javascript  return window.jQuery('.ace_editor').attr('id');
     ${value}=   Execute Javascript      return ace.edit('${ace_id}').getValue();
     Should Contain  ${value}    ${MESSAGE}
 
@@ -104,7 +107,8 @@ I expect the document ${NAME} to contain ${MESSAGE}
 
 I use the LESS builder on "${file}"
     I open ${file}
-    Click Element   css=#btn-buildless
+    Click Element   css=#btngroup-mapper #btngroup-dropdown-file_menu #dropdown-menu-
+    Click Element   css=#alink-buildless
     Input Text      css=#lessFileName   ${CSSFILE}
     Click element   css=#compileBtn
     Sleep   1

@@ -1,0 +1,41 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="context/@@main_template/macros/master"
+      i18n:domain="plone">
+
+<head>
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1);
+                             disable_column_one python:request.set('disable_plone.leftcolumn',1);
+                             disable_column_two python:request.set('disable_plone.rightcolumn',1);" />
+</head>
+<body>
+
+<metal:main fill-slot="main">
+
+<tal:notloggedoutafterall>
+    <h1 class="documentFirstHeading"
+        i18n:translate="heading_quit_to_log_out">Still logged in as a Zope user</h1>
+
+    <div class="documentDescription" i18n:translate="description_quit_to_log_out">
+        You are logged in via HTTP authentication (i.e. the Zope Management
+        Interface). In order to log out, you must:
+    </div>
+
+    <div id="content-core">
+        <p i18n:translate="">
+            <a i18n:name="text_logged_out_link"
+               tal:attributes="href string:${portal_url}/@@plone-root-logout"
+               i18n:translate="">
+                Visit this link
+            </a>
+            and click 'Cancel' when prompted with an authentication prompt.
+        </p>
+    </div>
+</tal:notloggedoutafterall>
+
+</metal:main>
+</body>
+</html>

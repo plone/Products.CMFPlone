@@ -1,15 +1,27 @@
 # -*- coding: utf-8 -*-
-from basetool import IPloneBaseTool
-from plone.supermodel import model
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone._compat import dump_json_to_text
+from Products.CMFPlone.interfaces.basetool import IPloneBaseTool
 from zope import schema
+from zope.deferredimport import deprecated
+from zope.component.hooks import getSite
+from zope.interface import Attribute
 from zope.interface import implementer
 from zope.interface import Interface
 from zope.interface import Invalid
+from zope.interface import invariant
 from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
 
 import json
+import six
+
+
+deprecated(
+    "It has been moved to plone.i18n.interfaces, import from there instead.",
+    ILanguageSchema='plone.i18n.interfaces:ILanguageSchema',
+)
 
 
 ROBOTS_TXT = u"""Sitemap: {portal_url}/sitemap.xml.gz
@@ -55,7 +67,7 @@ def validate_json(value):
         class JSONError(schema.ValidationError):
             __doc__ = _(u"Must be empty or a valid JSON-formatted "
                         u"configuration – ${message}.", mapping={
-                            'message': unicode(exc)})
+                            'message': six.text_type(exc)})
 
         raise JSONError(value)
 
@@ -150,180 +162,6 @@ class IEditingSchema(Interface):
             u'utilize this feature for its specific purposes.'),
         default=False,
         required=False)
-
-
-class ILanguageSchema(Interface):
-    model.fieldset(
-        'general',
-        label=_(u'General'),
-        fields=[
-            'default_language',
-            'available_languages',
-            'use_combined_language_codes',
-            'display_flags',
-            'always_show_selector'
-        ],
-    )
-
-    default_language = schema.Choice(
-        title=_(u'heading_site_language', default=u'Site language'),
-        description=_(
-            u'description_site_language',
-            default=u'The language used for the content and the UI of '
-                    u'this site.'
-        ),
-        default='en',
-        required=True,
-        vocabulary='plone.app.vocabularies.AvailableContentLanguages'
-    )
-
-    available_languages = schema.List(
-        title=_(u'heading_available_languages',
-                default=u'Available languages'),
-        description=_(u'description_available_languages',
-                      default=u'The languages in which the site should be '
-                              u'translatable.'),
-        required=True,
-        default=['en'],
-        missing_value=[],
-        value_type=schema.Choice(
-            vocabulary='plone.app.vocabularies.AvailableContentLanguages'
-        )
-    )
-
-    use_combined_language_codes = schema.Bool(
-        title=_(
-            u'label_allow_combined_language_codes',
-            default=u'Show country-specific language variants'
-        ),
-        description=_(
-            u'help_allow_combined_language_codes',
-            default=u'Examples: pt-br (Brazilian Portuguese), '
-                    u'en-us (American English) etc.'
-        ),
-        default=True,
-        required=False
-    )
-
-    display_flags = schema.Bool(
-        title=_(
-            u'label_display_flags',
-            default=u'Show language flags'
-        ),
-        description=u'',
-        default=False,
-        required=False
-    )
-
-    always_show_selector = schema.Bool(
-        title=_(
-            u'label_always_show_selector',
-            default=u'Always show language selector'
-        ),
-        description=u'',
-        default=False,
-        required=False
-    )
-
-    model.fieldset(
-        'negotiation_scheme',
-        label=_(u'Negotiation scheme', default=u'Negotiation scheme'),
-        fields=[
-            'use_content_negotiation',
-            'use_path_negotiation',
-            'use_cookie_negotiation',
-            'authenticated_users_only',
-            'set_cookie_always',
-            'use_subdomain_negotiation',
-            'use_cctld_negotiation',
-            'use_request_negotiation',
-        ],
-    )
-    use_content_negotiation = schema.Bool(
-        title=_(u'heading_language_of_the_content',
-                default=u'Use the language of the content item'),
-        description=_(u'description_language_of_the_content',
-                      default=u'Use the language of the content item.'),
-        default=False,
-        required=False,
-    )
-
-    use_path_negotiation = schema.Bool(
-        title=_(
-            u'heading_language_codes_in_URL',
-            default=u'Use language codes in URL path for manual override'),
-        description=_(
-            u'description_language_codes_in_URL',
-            default=u'Use language codes in URL path for manual override.'),
-        default=False,
-        required=False,
-    )
-
-    use_cookie_negotiation = schema.Bool(
-        title=_(u'heading_cookie_manual_override',
-                default=(u'Use cookie for manual override')),
-        description=_(
-            u'description_cookie_manual_override',
-            default=(
-                u'Required for the language selector viewlet to be rendered.'
-            )
-        ),
-        default=False,
-        required=False,
-    )
-
-    authenticated_users_only = schema.Bool(
-        title=_(u'heading_auth_cookie_manual_override',
-                default=u'Authenticated users only'),
-        description=_(
-            u'description_auth_ookie_manual_override',
-            default=(u'Related to: use cookie for manual override')
-        ),
-        default=False,
-        required=False,
-    )
-
-    set_cookie_always = schema.Bool(
-        title=_(
-            u'heading_set_language_cookie_always',
-            default=(u'Set the language cookie always')),
-        description=_(
-            u'description_set_language_cookie_always',
-            default=(
-                u'i.e. also when the \'set_language\' request parameter is '
-                u'absent'
-            )
-        ),
-        default=False,
-        required=False,
-    )
-
-    use_subdomain_negotiation = schema.Bool(
-        title=_(u'heading_use_subdomain',
-                default=u'Use subdomain'),
-        description=_(u'description_use_subdomain',
-                      default=u'e.g.: de.plone.org'),
-        default=False,
-        required=False,
-    )
-
-    use_cctld_negotiation = schema.Bool(
-        title=_(u'heading_top_level_domain',
-                default=u'Use top-level domain'),
-        description=_(u'description_top_level_domain',
-                      default=u'e.g.: www.plone.de'),
-        default=False,
-        required=False,
-    )
-
-    use_request_negotiation = schema.Bool(
-        title=_(u'heading_browser_language_request_negotiation',
-                default=u'Use browser language request negotiation'),
-        description=_(u'description_browser_language_request_negotiation',
-                      default=u'Use browser language request negotiation.'),
-        default=False,
-        required=False,
-    )
 
 
 class ITagAttrPair(Interface):
@@ -584,10 +422,10 @@ class ITinyMCELayoutSchema(Interface):
             u'you press the bold button inside the editor. '
             u'See https://www.tinymce.com/docs/configure/content-formatting/#formats'),  # NOQA: E501
         constraint=validate_json,
-        default=json.dumps({
+        default=dump_json_to_text({
             'discreet': {'inline': 'span', 'classes': 'discreet'},
             'clearfix': {'block': 'div', 'classes': 'clearfix'}
-        }, indent=4).decode('utf8'),
+        }),
         required=True,
     )
 
@@ -656,7 +494,7 @@ class ITinyMCEPluginSchema(Interface):
         description=_('hint_tinymce_menu',
                       default='JSON formatted Menu configuration.'),
         constraint=validate_json,
-        default=json.dumps({
+        default=dump_json_to_text({
             'edit': {
                 'title': 'Edit',
                 'items': 'undo redo | cut copy paste pastetext | '
@@ -681,7 +519,7 @@ class ITinyMCEPluginSchema(Interface):
                 'items': 'spellchecker charmap emoticons insertdatetime '
                          'layer code'
             }
-        }, indent=4).decode('utf8')
+        })
     )
 
     templates = schema.Text(
@@ -695,7 +533,7 @@ class ITinyMCEPluginSchema(Interface):
         ),
         required=False,
         constraint=validate_json,
-        default=json.dumps({}).decode('utf8'))
+        default=dump_json_to_text({}))
 
     toolbar = schema.Text(
         title=_('label_tinymce_toolbar', default=u'Toolbar'),
@@ -861,7 +699,7 @@ class ITinyMCEAdvancedSchema(Interface):
         ),
         required=False,
         constraint=validate_json,
-        default=json.dumps({}).decode('utf8'),
+        default=dump_json_to_text({}),
     )
 
 
@@ -893,6 +731,13 @@ class IMaintenanceSchema(Interface):
 
 
 class INavigationSchema(Interface):
+
+    navigation_depth = schema.Int(
+        title=_(u'Navigation depth'),
+        description=_(u'Number of folder levels to show in the navigation.'),
+        default=3,
+        required=True
+    )
 
     generate_tabs = schema.Bool(
         title=_(u'Automatically generate tabs'),
@@ -1136,6 +981,14 @@ class ISecuritySchema(Interface):
         default=False,
         required=False)
 
+    autologin_after_password_reset = schema.Bool(
+        title=_(u'Login user after password reset'),
+        description=_(
+            u'After successful password reset the user will be logged '
+            u'in automatically.'),
+        default=True,
+        required=False)
+
 
 class ISiteSchema(Interface):
 
@@ -1146,7 +999,7 @@ class ISiteSchema(Interface):
             u'browsers and in syndication feeds.'),
         default=u'Plone site')
 
-    site_logo = schema.ASCII(
+    site_logo = schema.Bytes(
         title=_(u'Site Logo'),
         description=_(u'This shows a custom logo on your site.'),
         required=False,
@@ -1310,7 +1163,7 @@ class ISiteSchema(Interface):
         description=_(
             u'Select which IDs (short names) can act as fallback '
             u'default pages for a container.'),
-        required=True,
+        required=False,
         default=[
             u'index_html',
             u'index.html',
@@ -1628,8 +1481,8 @@ class IImagingSchema(Interface):
         default=88
     )
 
-    retina_scales = schema.Choice(
-        title=_(u'Retina mode'),
+    highpixeldensity_scales = schema.Choice(
+        title=_(u'High pixel density mode'),
         description=_(u''),
         default='disabled',
         vocabulary=SimpleVocabulary([
@@ -1641,7 +1494,7 @@ class IImagingSchema(Interface):
 
     quality_2x = schema.Int(
         title=_(u'Image quality at 2x'),
-        description=_(u'A value for the quality of 2x retina images, from 1 '
+        description=_(u'A value for the quality of 2x high pixel density images, from 1 '
                       '(lowest) to 95 (highest). A value of 0 will mean '
                       'plone.scaling\'s default will be used, which is '
                       'currently 62.'),
@@ -1652,7 +1505,7 @@ class IImagingSchema(Interface):
 
     quality_3x = schema.Int(
         title=_(u'Image quality at 3x'),
-        description=_(u'A value for the quality of 3x retina images, from 1 '
+        description=_(u'A value for the quality of 3x high pixel density images, from 1 '
                       '(lowest) to 95 (highest). A value of 0 will mean '
                       'plone.scaling\'s default will be used, which is '
                       'currently 51.'),
@@ -1713,8 +1566,22 @@ class ILinkSchema(Interface):
     mark_special_links = schema.Bool(
         title=_(u'Mark special links'),
         description=_(u'Marks external or special protocol links with class.'),
-        default=True,
+        default=False,
         required=False)
+
+
+def _check_tales_expression(value):
+    from Products.PageTemplates.Expressions import getEngine
+    try:
+        getEngine().compile(value)
+    except Exception:
+        raise Invalid(
+            _(
+                'The expression "${value}" is invalid',
+                mapping={'value': value},
+            )
+        )
+    return True
 
 
 class IActionSchema(Interface):
@@ -1741,9 +1608,12 @@ class IActionSchema(Interface):
         title=_(u'action_url_heading', default=u'Action URL'),
         description=_(
             u'action_url_description',
-            default=u'An expression producing the called URL'
+            default=u'An expression producing the called URL. '
+            u'Example: string:${globals_view/navigationRootUrl}/page'
         ),
-        required=True)
+        required=True,
+        constraint=_check_tales_expression,
+    )
 
     available_expr = schema.ASCIILine(
         title=_(u'action_condition_heading', default=u'Condition'),
@@ -1785,3 +1655,54 @@ class INewActionSchema(Interface):
     id = schema.ASCIILine(
         title=_(u'Id'),
         required=True)
+
+    @invariant
+    def validate_category_id(data):
+        categoryid = data.category
+        pa = getToolByName(getSite(), 'portal_actions')
+        category = pa.get(categoryid, {})
+        actionid = data.id
+        if actionid in category:
+            raise Invalid(
+                _(
+                    'An action with the id "${actionid}" already exists',
+                    mapping={'actionid': actionid},
+                )
+            )
+        try:
+            category._checkId(actionid)
+        except Exception:
+            raise Invalid(
+                _(
+                    'The id "${actionid}" is invalid',
+                    mapping={'actionid': actionid},
+                )
+            )
+
+
+class IPloneControlPanelView(Interface):
+    """A marker interface for views showing a controlpanel.
+    """
+
+
+class IPloneControlPanelForm(IPloneControlPanelView):
+    """Forms using plone.app.controlpanel
+    """
+
+    def _on_save():
+        """Callback mehod which can be implemented by control panels to
+        react when the form is successfully saved. This avoids the need
+        to re-define actions only to do some additional notification or
+        configuration which cannot be handled by the normal schema adapter.
+
+        By default, does nothing.
+        """
+
+
+class IConfigurationChangedEvent(Interface):
+    """An event which is fired after a configuration setting has been changed.
+    """
+
+    context = Attribute("The configuration context which was changed.")
+
+    data = Attribute("The configuration data which was changed.")

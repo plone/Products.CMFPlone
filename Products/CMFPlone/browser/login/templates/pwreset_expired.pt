@@ -1,0 +1,34 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/@@main_template/macros/master"
+      i18n:domain="plone">
+<body>
+
+<metal:custom_title fill-slot="content-title">
+        <h1 class="documentFirstHeading"
+            i18n:translate="heading_pwreset_expired">Password request expired</h1>
+</metal:custom_title>
+
+<metal:custom_desc fill-slot="content-description">
+</metal:custom_desc>
+
+<metal:content-core fill-slot="content-core">
+<metal:content-core define-macro="content-core">
+
+            <p i18n:translate="message_pwreset_expired">
+                For your security, password reset URLs are only valid for
+                <span i18n:name="hours" tal:replace="view/expiration_timeout" />
+                hours. This URL has expired, but you may
+                <span i18n:name="message_request_new">
+                   <a href="/mail_password_form" tal:attributes="href string:$portal_url/mail_password_form"
+                      i18n:translate="message_request_new">request a new one</a></span>.
+            </p>
+
+</metal:content-core>
+</metal:content-core>
+
+</body>
+</html>

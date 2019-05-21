@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from plone.app.testing import SITE_OWNER_NAME, SITE_OWNER_PASSWORD
 from plone.registry.interfaces import IRegistry
-from plone.testing.z2 import Browser
+from plone.testing.zope import Browser
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces import IFilterSchema
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
@@ -83,21 +83,26 @@ class FilterControlPanelFunctionalTest(unittest.TestCase):
     def test_nasty_tags(self):
         self.browser.open(
             "%s/@@filter-controlpanel" % self.portal_url)
+        self.assertEqual(
+            self.browser.getControl(name='form.widgets.nasty_tags').value,
+            'style\nobject\nembed\napplet\nscript\nmeta')
         self.browser.getControl(
-            name='form.widgets.nasty_tags'
-        ).value = 'div\r\na'
+            name='form.widgets.nasty_tags').value = 'div\na'
         valid_tags = self.browser.getControl(
             name='form.widgets.valid_tags').value
-        valid_tags = valid_tags.replace('a\r\n', '')
+        self.assertTrue(valid_tags.startswith('a\nabbr\nacronym\naddress'))
+        valid_tags = valid_tags.replace('a\n', '')
         valid_tags = self.browser.getControl(
             name='form.widgets.valid_tags').value = valid_tags
         self.browser.getControl('Save').click()
+        self.assertEqual(self.settings.nasty_tags, [u'div', u'a'])
+        self.assertNotIn(u'a', self.settings.valid_tags)
 
         # test that <a> is filtered
         self.assertFalse(self.settings.disable_filtering)
         good_html = '<p><a href="http://example.com">harmless link</a></p>'
         ds = datastream('dummy_name')
         self.assertEqual(
-            str(self.safe_html.convert(good_html, ds)),
+            self.safe_html.convert(good_html, ds).getData(),
             '<p/>'
         )

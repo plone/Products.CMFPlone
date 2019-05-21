@@ -2,8 +2,7 @@
 from Products.CMFPlone.resources.browser.cook import cookWhenChangingSettings
 from Products.CMFPlone.resources.browser.resource import ResourceView
 from Products.CMFPlone.utils import get_top_request
-from urllib import quote
-from urlparse import urlparse
+from six.moves.urllib import parse
 from zope.component import getMultiAdapter
 
 
@@ -24,7 +23,7 @@ class ScriptsView(ResourceView):
             data = resources.get(resource, None)
             if data is None or not data.js:
                 continue
-            url = urlparse(data.js)
+            url = parse.urlparse(data.js)
             if url.netloc == '':
                 # Local
                 src = '{0}/{1}'.format(self.site_url, data.js)
@@ -74,19 +73,25 @@ class ScriptsView(ResourceView):
                 js_location = '{0}/++plone++{1}/++unique++{2}/{3}'.format(
                     self.site_url,
                     resource_name,
-                    quote(str(bundle.last_compilation)),
+                    parse.quote(str(bundle.last_compilation)),
                     resource_filepath
                 )
             else:
                 js_location = '{0}/{1}?version={2}'.format(
                     self.site_url,
                     bundle.jscompilation,
-                    quote(str(bundle.last_compilation))
+                    parse.quote(str(bundle.last_compilation))
                 )
+
+            load_async = 'async' if getattr(bundle, 'load_async', None) else None  # noqa
+            load_defer = 'defer' if getattr(bundle, 'load_defer', None) else None  # noqa
+
             result.append({
                 'bundle': bundle.name,
                 'conditionalcomment': bundle.conditionalcomment,
-                'src': js_location
+                'src': js_location,
+                'async': load_async,
+                'defer': load_defer,
             })
 
     def default_resources(self):
@@ -155,8 +160,10 @@ class ScriptsView(ResourceView):
                     self.production_path + '/default.js'
                 ),
                 'conditionalcomment': None,
-                'bundle': 'production'
-            }, ]
+                'bundle': 'production',
+                'async': None,  # Do not load ``async`` or
+                'defer': None   # ``defer`` for production bundles.
+            }]
             if not self.anonymous:
                 result.append({
                     'src': '{0}/++plone++{1}'.format(
@@ -164,7 +171,9 @@ class ScriptsView(ResourceView):
                         self.production_path + '/logged-in.js'
                     ),
                     'conditionalcomment': None,
-                    'bundle': 'production'
+                    'bundle': 'production',
+                    'async': None,  # Do not load ``async`` or
+                    'defer': None   # ``defer`` for production bundles.
                 })
             result.extend(self.ordered_bundles_result(production=True))
 

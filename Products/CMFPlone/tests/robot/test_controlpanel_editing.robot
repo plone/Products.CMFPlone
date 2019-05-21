@@ -2,6 +2,7 @@
 
 Resource  plone/app/robotframework/keywords.robot
 Resource  plone/app/robotframework/saucelabs.robot
+Resource  plone/app/robotframework/selenium.robot
 
 Library  Remote  ${PLONE_URL}/RobotRemote
 
@@ -53,7 +54,7 @@ a document '${title}'
 
 the editing control panel
   Go to  ${PLONE_URL}/@@editing-controlpanel
-
+  Wait until page contains  Editing Settings
 
 # --- WHEN -------------------------------------------------------------------
 

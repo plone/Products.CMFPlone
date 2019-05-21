@@ -6,7 +6,7 @@ from AccessControl.Permissions import search_zcatalog as SearchZCatalog
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
-from App.class_init import InitializeClass
+from AccessControl.class_init import InitializeClass
 from App.special_dtml import DTMLFile
 from BTrees.Length import Length
 from DateTime import DateTime
@@ -26,22 +26,24 @@ from Products.CMFPlone.interfaces import INonStructuralFolder
 from Products.CMFPlone.interfaces import IPloneCatalogTool
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.utils import base_hasattr
+from Products.CMFPlone.utils import human_readable_size
 from Products.CMFPlone.utils import safe_callable
 from Products.CMFPlone.utils import safe_unicode
 from Products.ZCatalog.ZCatalog import ZCatalog
+from six.moves import urllib
 from zExceptions import Unauthorized
 from zope.annotation.interfaces import IAnnotations
 from zope.component import queryMultiAdapter
 from zope.component.hooks import getSite
+from zope.deprecation.deprecation import deprecate
 from zope.interface import implementer
 from zope.interface import Interface
 from zope.interface import providedBy
 
 import logging
 import re
+import six
 import time
-import urllib
-
 
 logger = logging.getLogger('Plone')
 
@@ -71,9 +73,6 @@ BLACKLISTED_INTERFACES = frozenset((
     'OFS.interfaces.ITraversable',
     'OFS.interfaces.IZopeObject',
     'persistent.interfaces.IPersistent',
-    'plone.app.folder.bbb.IArchivable',
-    'plone.app.folder.bbb.IPhotoAlbumAble',
-    'plone.app.folder.folder.IATUnifiedFolder',
     'plone.app.imaging.interfaces.IBaseObject',
     'plone.app.iterate.interfaces.IIterateAware',
     'plone.app.kss.interfaces.IPortalObject',
@@ -127,16 +126,12 @@ BLACKLISTED_INTERFACES = frozenset((
 ))
 
 
+@deprecate('Use catalog.getAllBrains() instead. ' +
+           'catalog_get_all will be removed in Plone 6')
 def catalog_get_all(catalog, unique_idx='UID'):
     """Get all brains from the catalog.
     """
-    res = [
-        catalog({
-            unique_idx: catalog._catalog.getIndexDataForRID(it)[unique_idx]
-        })[0]
-        for it in catalog._catalog.data
-    ]
-    return res
+    return catalog.getAllBrains()
 
 
 @indexer(Interface)
@@ -144,7 +139,12 @@ def allowedRolesAndUsers(obj):
     """Return a list of roles and users with View permission.
     Used to filter out items you're not allowed to see.
     """
-    allowed = set(rolesForPermissionOn('View', obj))
+
+    # 'Access contents information' is the correct permission for
+    # accessing and displaying metadata of an item.
+    # 'View' should be reserved for accessing the item itself.
+    allowed = set(rolesForPermissionOn('Access contents information', obj))
+
     # shortcut roles and only index the most basic system role if the object
     # is viewable by either of those
     if 'Anonymous' in allowed:
@@ -189,7 +189,7 @@ def sortable_title(obj):
         if safe_callable(title):
             title = title()
 
-        if isinstance(title, basestring):
+        if isinstance(title, six.string_types):
             # Ignore case, normalize accents, strip spaces
             sortabletitle = mapUnicode(safe_unicode(title)).lower().strip()
             # Replace numbers with zero filled numbers
@@ -199,7 +199,9 @@ def sortable_title(obj):
                 start = sortabletitle[:(MAX_SORTABLE_TITLE - 13)]
                 end = sortabletitle[-10:]
                 sortabletitle = start + '...' + end
-            return sortabletitle.encode('utf-8')
+            if six.PY2:
+                return sortabletitle.encode('utf-8')
+            return sortabletitle
     return ''
 
 
@@ -213,39 +215,17 @@ def getObjPositionInParent(obj):
         return ordered.getObjectPosition(obj.getId())
     return 0
 
-SIZE_CONST = {'KB': 1024, 'MB': 1024 * 1024, 'GB': 1024 * 1024 * 1024}
-SIZE_ORDER = ('GB', 'MB', 'KB')
-
 
 @indexer(Interface)
 def getObjSize(obj):
     """ Helper method for catalog based folder contents.
     """
-    smaller = SIZE_ORDER[-1]
-
     if base_hasattr(obj, 'get_size'):
         size = obj.get_size()
     else:
         size = 0
 
-    # if the size is a float, then make it an int
-    # happens for large files
-    try:
-        size = int(size)
-    except (ValueError, TypeError):
-        pass
-
-    if not size:
-        return '0 %s' % smaller
-
-    if isinstance(size, (int, long)):
-        if size < SIZE_CONST[smaller]:
-            return '1 %s' % smaller
-        for c in SIZE_ORDER:
-            if size / SIZE_CONST[c] > 0:
-                break
-        return '%.1f %s' % (float(size / float(SIZE_CONST[c])), c)
-    return size
+    return human_readable_size(size)
 
 
 @indexer(Interface)
@@ -407,13 +387,14 @@ class CatalogTool(PloneBaseTool, BaseTool):
             # Or: {'path': {'depth': 0, 'query': '/Plone/events/'}}
             paths = paths.get('query', [])
 
-        if isinstance(paths, basestring):
+        if isinstance(paths, six.string_types):
             paths = [paths]
 
         objs = []
         site = getSite()
         for path in list(paths):
-            path = path.encode('utf-8')  # paths must not be unicode
+            if six.PY2:
+                path = path.encode('utf-8')  # paths must not be unicode
             try:
                 site_path = '/'.join(site.getPhysicalPath())
                 parts = path[len(site_path) + 1:].split('/')
@@ -434,7 +415,7 @@ class CatalogTool(PloneBaseTool, BaseTool):
         return allow
 
     @security.protected(SearchZCatalog)
-    def searchResults(self, REQUEST=None, **kw):
+    def searchResults(self, query=None, **kw):
         # Calls ZCatalog.searchResults with extra arguments that
         # limit the results to what the user is allowed to see.
         #
@@ -449,8 +430,8 @@ class CatalogTool(PloneBaseTool, BaseTool):
 
         kw = kw.copy()
         show_inactive = kw.get('show_inactive', False)
-        if isinstance(REQUEST, dict) and not show_inactive:
-            show_inactive = 'show_inactive' in REQUEST
+        if isinstance(query, dict) and not show_inactive:
+            show_inactive = 'show_inactive' in query
 
         user = _getAuthenticatedUser(self)
         kw['allowedRolesAndUsers'] = self._listAllowedRolesAndUsers(user)
@@ -458,60 +439,63 @@ class CatalogTool(PloneBaseTool, BaseTool):
         if not show_inactive and not self.allow_inactive(kw):
             kw['effectiveRange'] = DateTime()
 
-        return ZCatalog.searchResults(self, REQUEST, **kw)
+        # filter out invalid sort_on indexes
+        sort_on = kw.get('sort_on') or []
+        if isinstance(sort_on, six.string_types):
+            sort_on = [sort_on]
+        valid_indexes = self.indexes()
+        try:
+            sort_on = [idx for idx in sort_on if idx in valid_indexes]
+        except TypeError:
+            # sort_on is not iterable
+            sort_on = []
+        if not sort_on:
+            kw.pop('sort_on', None)
+        else:
+            kw['sort_on'] = sort_on
+
+        return ZCatalog.searchResults(self, query, **kw)
 
     __call__ = searchResults
 
-    def search(self, *args, **kw):
+    def search(self, query,
+               sort_index=None, reverse=0, limit=None, merge=1):
         # Wrap search() the same way that searchResults() is
 
         # Make sure any pending index tasks have been processed
         processQueue()
 
-        query = {}
-        if args:
-            query = args[0]
-        elif 'query_request' in kw:
-            query = kw.get('query_request')
-
-        kw['query_request'] = query.copy()
-
         user = _getAuthenticatedUser(self)
         query['allowedRolesAndUsers'] = self._listAllowedRolesAndUsers(user)
 
-        if not self.allow_inactive(kw):
+        if not self.allow_inactive(query):
             query['effectiveRange'] = DateTime()
 
-        kw['query_request'] = query
-
-        return super(CatalogTool, self).search(**kw)
+        return super(CatalogTool, self).search(
+            query, sort_index, reverse, limit, merge)
 
     @security.protected(ManageZCatalogEntries)
     def clearFindAndRebuild(self):
         # Empties catalog, then finds all contentish objects (i.e. objects
         # with an indexObject method), and reindexes them.
         # This may take a long time.
+        idxs = list(self.indexes())
 
         def indexObject(obj, path):
-            if (base_hasattr(obj, 'indexObject') and
-                    safe_callable(obj.indexObject)):
+            if (base_hasattr(obj, 'reindexObject') and
+                    safe_callable(obj.reindexObject)):
                 try:
-                    obj.indexObject()
-
+                    self.reindexObject(obj, idxs=idxs)
                     # index conversions from plone.app.discussion
                     annotions = IAnnotations(obj)
-                    catalog = getToolByName(obj, "portal_catalog")
                     if DISCUSSION_ANNOTATION_KEY in annotions:
                         conversation = annotions[DISCUSSION_ANNOTATION_KEY]
                         conversation = conversation.__of__(obj)
                         for comment in conversation.getComments():
                             try:
-                                if catalog:
-                                    catalog.indexObject(comment)
+                                self.indexObject(comment, idxs=idxs)
                             except StopIteration:  # pragma: no cover
                                 pass
-
-
                 except TypeError:
                     # Catalogs have 'indexObject' as well, but they
                     # take different args, and will fail
@@ -545,6 +529,6 @@ class CatalogTool(PloneBaseTool, BaseTool):
         if RESPONSE is not None:
             RESPONSE.redirect(
                 URL1 + '/manage_catalogAdvanced?manage_tabs_message=' +
-                urllib.quote(msg))
+                urllib.parse.quote(msg))
 
 InitializeClass(CatalogTool)

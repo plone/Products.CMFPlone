@@ -22,10 +22,16 @@ second_pass = {}
 if REQUEST is None:
     REQUEST = context.REQUEST
 
-# See http://dev.plone.org/plone/ticket/9422 for
-# an explanation of '\u3000'
-multispace = u'\u3000'.encode('utf-8')
-
+# We should accept both a simple space, unicode u'\u0020 but also a
+# multi-space, so called 'waji-kankaku', unicode u'\u3000'
+# Stupid hack to find py-version since importing six or sys is forbidden.
+try:
+    # PY2
+    u'foo'.decode('utf8')
+    multispace = u'\u3000'.encode('utf-8')
+except AttributeError:
+    # PY3
+    multispace = u'\u3000'
 
 def quotestring(s):
     return '"%s"' % s
@@ -38,7 +44,7 @@ def quotequery(s):
         terms = s.split()
     except ConflictError:
         raise
-    except:
+    except Exception:
         return s
     tokens = ('OR', 'AND', 'NOT')
     s_tokens = ('OR', 'AND')
@@ -104,7 +110,8 @@ for k in REQUEST.keys():
         else:
             query[k] = v
 
-for k, v in second_pass.items():
+for k in second_pass.keys():
+    v = second_pass[k]
     qs = query.get(k)
     if qs is None:
         continue

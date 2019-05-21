@@ -1,14 +1,40 @@
 # -*- coding: utf-8 -*-
 from AccessControl import ClassSecurityInfo
-from App.class_init import InitializeClass
+from Acquisition import aq_parent, aq_inner
+from AccessControl.class_init import InitializeClass
 from plone.registry.interfaces import IRegistry
 from posixpath import normpath
+from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.URLTool import URLTool as BaseTool
 from Products.CMFPlone.interfaces import ILoginSchema
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
-from urlparse import urlparse, urljoin
+from Products.CMFPlone.patches.gtbn import rewrap_in_request_container
+from six.moves.html_parser import HTMLParser
+from six.moves.urllib import parse
 from zope.component import getUtility
+
+import html
 import re
+import six
+
+
+hp = HTMLParser()
+# These schemas are allowed in full urls to consider them in the portal:
+# A mailto schema is an obvious sign of a url that is not in the portal.
+# This is a whitelist.
+ALLOWED_SCHEMAS = [
+    'https',
+    'http',
+]
+# These bad parts are not allowed in urls that are in the portal:
+# This is a blacklist.
+BAD_URL_PARTS = [
+    '\\\\',
+    '<script',
+    '%3cscript',
+    'javascript:',
+    'javascript%3a',
+]
 
 
 class URLTool(PloneBaseTool, BaseTool):
@@ -34,16 +60,27 @@ class URLTool(PloneBaseTool, BaseTool):
         # sanitize url
         url = re.sub('^[\x00-\x20]+', '', url).strip()
         cmp_url = url.lower()
-        if ('\\\\' in cmp_url or
-                '<script' in cmp_url or
-                '%3cscript' in cmp_url or
-                'javascript:' in cmp_url or
-                'javascript%3a' in cmp_url):
-            return False
+        for bad in BAD_URL_PARTS:
+            if bad in cmp_url:
+                return False
 
         p_url = self()
 
-        _, u_host, u_path, _, _, _ = urlparse(url)
+        schema, u_host, u_path, _, _, _ = parse.urlparse(url)
+        if schema and schema not in ALLOWED_SCHEMAS:
+            # Redirecting to 'data:' may be harmful,
+            # and redirecting to 'mailto:' or 'ftp:' is silly.
+            return False
+
+        # Someone may be doing tricks with escaped html code.
+        if six.PY2:
+            unescaped_url = hp.unescape(url)
+        else:
+            unescaped_url = html.unescape(url)
+        if unescaped_url != url:
+            if not self.isURLInPortal(unescaped_url):
+                return False
+
         if not u_host and not u_path.startswith('/'):
             if context is None:
                 return True  # old behavior
@@ -57,7 +94,7 @@ class URLTool(PloneBaseTool, BaseTool):
             useurl += '/'
 
         # urljoin to current url to get an absolute path
-        _, u_host, u_path, _, _, _ = urlparse(urljoin(useurl, url))
+        _, u_host, u_path, _, _, _ = parse.urlparse(parse.urljoin(useurl, url))
 
         # normalise to end with a '/' so /foobar is not considered within /foo
         if not u_path:
@@ -66,7 +103,7 @@ class URLTool(PloneBaseTool, BaseTool):
             u_path = normpath(u_path)
             if not u_path.endswith('/'):
                 u_path += '/'
-        _, host, path, _, _, _ = urlparse(p_url)
+        _, host, path, _, _, _ = parse.urlparse(p_url)
         if not path.endswith('/'):
             path += '/'
         if host == u_host and u_path.startswith(path):
@@ -75,12 +112,19 @@ class URLTool(PloneBaseTool, BaseTool):
         registry = getUtility(IRegistry)
         settings = registry.forInterface(ILoginSchema, prefix='plone')
         for external_site in settings.allow_external_login_sites:
-            _, host, path, _, _, _ = urlparse(external_site)
+            _, host, path, _, _, _ = parse.urlparse(external_site)
             if not path.endswith('/'):
                 path += '/'
             if host == u_host and u_path.startswith(path):
                 return True
         return False
+
+    def getPortalObject(self):
+        portal = aq_parent(aq_inner(self))
+        if portal is None:
+            portal = getUtility(ISiteRoot)
+        # Make sure portal can acquire REQUEST
+        return rewrap_in_request_container(portal, context=self)
 
 
 URLTool.__doc__ = BaseTool.__doc__

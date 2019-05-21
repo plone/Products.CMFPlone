@@ -13,16 +13,9 @@
     <role name="Contributor" />
   </roles>
   <permissions>
-    <permission name="Access arbitrary user session data"
-                acquire="True">
-      <role name="Site Administrator"/>
-    </permission>
     <permission name="Access inactive portal content"
                 acquire="True">
       <role name="Owner"/>
-      <role name="Site Administrator"/>
-    </permission>
-    <permission name="Access session data" acquire="True">
       <role name="Site Administrator"/>
     </permission>
     <permission name="Add portal content" acquire="True">
@@ -127,14 +120,6 @@
       <role name="Site Administrator"/>
       <role name="Owner"/>
     </permission>
-    <permission name="Use Database Methods" acquire="True">
-      <role name="Site Administrator"/>
-    </permission>
-    <permission name="Use external editor" acquire="False">
-      <role name="Authenticated"/>
-      <role name="Manager"/>
-      <role name="Site Administrator"/>
-    </permission>
     <permission name="Use mailhost services" acquire="True">
       <role name="Site Administrator"/>
     </permission>
@@ -146,9 +131,6 @@
       <role name="Site Administrator"/>
       <role name="Member"/>
       <role name="Owner"/>
-    </permission>
-    <permission name="View History" acquire="True">
-      <role name="Site Administrator"/>
     </permission>
     <permission name="View management screens"
                 acquire="True">
@@ -220,6 +202,16 @@
     <permission name="Show Toolbar"
                 acquire="False">
       <role name="Authenticated"/>
+    </permission>
+    <permission name="Manage Context Aliases" acquire="True">
+      <role name="Manager"/>
+      <role name="Site Administrator"/>
+      <role name="Owner"/>
+      <role name="Editor"/>
+    </permission>
+    <permission name="Manage Portal Aliases" acquire="True">
+      <role name="Manager"/>
+      <role name="Site Administrator"/>
     </permission>
   </permissions>
 </rolemap>

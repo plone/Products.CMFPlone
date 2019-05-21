@@ -1,0 +1,131 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en-US" lang="en-US"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+  <body>
+    <div
+        metal:fill-slot="main"
+        tal:define="context_state context/@@plone_context_state">
+      <h1
+          class="documentFirstHeading"
+          i18n:translate="">
+        URL Management
+      </h1>
+
+      <dl
+          class="portalMessage info"
+          tal:condition="context_state/is_default_page">
+        <dt i18n:translate="">
+          Info
+        </dt>
+        <dd i18n:translate="help_aliases">
+          You are managing the alternative urls of a default view in a container.
+          To manage them for the entire container,
+          <a
+              i18n:name="go_here"
+              i18n:translate="help_aliases_go_here"
+              tal:define="folder context_state/folder"
+              tal:attributes="href string:${folder/absolute_url}/@@manage-aliases">
+            go here
+          </a>.
+        </dd>
+      </dl>
+
+      <p i18n:translate="description_adding_aliases">
+        Using this form, you can manage alternative urls for an item. This
+        is an easy way to make an item available under two different URLs.
+      </p>
+      <p i18n:translate="description_change_primary_url">To change the primary url of content, use Actions > Rename.</p>
+
+      <form
+          action="${view/view_url}"
+          method="post">
+        <fieldset>
+          <legend i18n:translate="add_alias">
+            Add a new alternative url
+          </legend>
+
+          <div class="field"
+               tal:define="error options/errors/redirection|nothing"
+               tal:attributes="class python:error and 'field error' or 'field'">
+            <label
+                for="redirection"
+                i18n:translate="label_alias">
+              Alternative url path
+            </label>
+
+            <span
+                class="fieldRequired"
+                title="Required"
+                i18n:attributes="title"
+                i18n:translate="label_required">
+              (Required)
+            </span>
+
+            <div tal:content="error">
+              Validation error output
+            </div>
+
+            <div class="formHelp" i18n:translate="help_alias">
+              Enter the absolute path where the alternative url should exist. The path must start with '/'.
+              Only urls that result in a 404 not found page will result in a redirect occurring.
+            </div>
+
+            <input
+                type="text"
+                name="redirection"
+                value="#"
+                size="40"
+                tal:attributes="value request/redirection | nothing;"/>
+          </div>
+          <div class="formControls">
+            <input
+                class="context"
+                type="submit"
+                value="Add"
+                name="form.button.Add"
+                i18n:attributes="value" />
+          </div>
+
+        </fieldset>
+      </form>
+
+      <form
+          action="${view/view_url}"
+          method="post">
+        <fieldset>
+          <legend i18n:translate="legend_existing_aliases">
+            Existing alternative urls for this item
+          </legend>
+
+          <tal:redirects repeat="redirect view/redirects">
+            <div>
+              <label>
+              <input
+                  type="checkbox"
+                  class="noborder"
+                  name="redirects:tuple"
+                  value="${redirect/redirect}" />
+                ${redirect/path}
+              </label>
+            </div>
+          </tal:redirects>
+
+          <div class="formControls">
+            <input
+                class="context"
+                type="submit"
+                value="Remove"
+                name="form.button.Remove"
+                i18n:attributes="value" />
+          </div>
+
+        </fieldset>
+      </form>
+    </div>
+  </body>
+</html>

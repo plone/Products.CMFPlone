@@ -2,6 +2,7 @@
 
 Resource  plone/app/robotframework/keywords.robot
 Resource  plone/app/robotframework/saucelabs.robot
+Resource  plone/app/robotframework/selenium.robot
 
 Library  Remote  ${PLONE_URL}/RobotRemote
 
@@ -36,6 +37,7 @@ a logged-in site administrator
 
 the social control panel
   Go to  ${PLONE_URL}/@@social-controlpanel
+  Wait until page contains  Social Media Settings
 
 
 # --- WHEN -------------------------------------------------------------------
@@ -59,17 +61,20 @@ I provide social settings
 
 social tags should exist for anonymous
   Go to  ${PLONE_URL}
+  Wait until page contains  Plone site
   Page should not contain element  css=meta[name="twitter:site"]
   Page should not contain element  css=meta[property="og:article:publisher"]
   Page should not contain element  css=meta[property="fb:app_id"]
   Disable autologin
   Go to  ${PLONE_URL}
+  Wait until page contains  Plone site
   Page should contain element  css=meta[name="twitter:site"]
   Page should contain element  css=meta[property="og:article:publisher"]
   Page should contain element  css=meta[property="fb:app_id"]
 
 social tags should not exist
   Go to  ${PLONE_URL}
+  Wait until page contains  Plone site
   Page should not contain element  css=meta[name="twitter:site"]
   Page should not contain element  css=meta[property="og:article:publisher"]
   Page should not contain element  css=meta[property="fb:app_id"]

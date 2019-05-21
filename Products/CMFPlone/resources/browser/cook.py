@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+from calmjs.parse import es5
 from datetime import datetime
+from io import BytesIO
 from plone.protect.interfaces import IDisableCSRFProtection
 from plone.registry.interfaces import IRegistry
 from plone.resource.interfaces import IResourceDirectory
@@ -9,8 +12,6 @@ from Products.CMFPlone.interfaces.resources import IResourceRegistry
 from Products.CMFPlone.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME  # noqa
 from Products.CMFPlone.resources.browser.combine import combine_bundles
 from scss import Compiler
-from slimit import minify
-from StringIO import StringIO
 from zExceptions import NotFound
 from zope.component import getUtility
 from zope.component.hooks import getSite
@@ -18,6 +19,7 @@ from zope.globalrequest import getRequest
 from zope.interface import alsoProvides
 
 import logging
+import six
 
 
 logger = logging.getLogger('Products.CMFPlone')
@@ -77,7 +79,7 @@ def cookWhenChangingSettings(context, bundle=None):
 
     # Let's join all css and js
     css_compiler = Compiler(output_style='compressed')
-    cooked_css = u''
+    cooked_css = ''
     cooked_js = REQUIREJS_RESET_PREFIX
     siteUrl = getSite().absolute_url()
     request = getRequest()
@@ -95,28 +97,32 @@ def cookWhenChangingSettings(context, bundle=None):
                     css = response.getBody()
                     if css_resource[-8:] != '.min.css':
                         css = css_compiler.compile_string(css)
-                    cooked_css += u'\n/* Resource: {0} */\n{1}\n'.format(
+                    if not isinstance(css, six.text_type):
+                        css = css.decode('utf8')
+                    cooked_css += '\n/* Resource: {0} */\n{1}\n'.format(
                         css_resource,
                         css
                     )
                 else:
                     cooked_css +=\
-                        u'\n/* Could not find resource: {0} */\n\n'.format(
+                        '\n/* Could not find resource: {0} */\n\n'.format(
                             css_resource
                         )
-                    logger.warn('Could not find resource: %s' , css_resource)
+                    logger.warn('Could not find resource: %s', css_resource)
         if not resource.js or not js_path:
             continue
         js_url = siteUrl + '/' + resource.js
         response = subrequest(js_url)
         if response.status == 200:
+            logger.info('Cooking js %s', resource.js)
             js = response.getBody()
+            if not isinstance(js, six.text_type):
+                js = js.decode('utf8')
             try:
-                logger.info('Cooking js %s', resource.js)
                 cooked_js += '\n/* resource: {0} */\n{1}'.format(
                     resource.js,
-                    js if '.min.js' == resource.js[-7:] else
-                    minify(js, mangle=False, mangle_toplevel=False)
+                    js if resource.js.endswith('.min.js') else
+                    es5.minify_print(js)
                 )
             except SyntaxError:
                 cooked_js +=\
@@ -141,15 +147,20 @@ def cookWhenChangingSettings(context, bundle=None):
     def _write_resource(resource_path, cooked_string):
         if not resource_path:
             return
-        resource_path = resource_path.split('++plone++')[-1]
-        resource_name, resource_filepath = resource_path.split('/', 1)
+        if '++plone++' in resource_path:
+            resource_path = resource_path.split('++plone++')[-1]
+        if '/' in resource_path:
+            resource_name, resource_filepath = resource_path.split('/', 1)
+        else:
+            resource_name = 'legacy'
+            resource_filepath = resource_path
         if resource_name not in container:
             container.makeDirectory(resource_name)
-        if not isinstance(cooked_string, str):  # handle Error of OFS.Image
+        if not isinstance(cooked_string, six.binary_type):  # handle Error of OFS.Image  # noqa: E501
             cooked_string = cooked_string.encode('ascii', errors='ignore')
         try:
             folder = container[resource_name]
-            fi = StringIO(cooked_string)
+            fi = BytesIO(cooked_string)
             folder.writeFile(resource_filepath, fi)
             logger.info('Writing cooked resource: %s', resource_path)
         except NotFound:

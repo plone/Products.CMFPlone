@@ -3,7 +3,7 @@
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       lang="en"
-      metal:use-macro="context/main_template/macros/master"
+      metal:use-macro="context/@@main_template/macros/master"
       i18n:domain="plone">
 
 <body>
@@ -16,9 +16,9 @@
 
 
       <p><tal:i18n i18n:translate="description_accessibility_info">
-            This site uses the open source Content Management System <a href="http://plone.com" i18n:name="plone">Plone</a>.
+            This site uses the open source Content Management System <a href="https://plone.com" i18n:name="plone">Plone</a>.
             It meets the Web Content Accessibility Guidelines
-	    (<a href="http://www.w3.org/TR/WCAG20/"><acronym i18n:name="wcag"
+	    (<a href="https://www.w3.org/TR/WCAG20/"><acronym i18n:name="wcag"
                   title="Web Content Accessibility Guidelines"
                   i18n:attributes="title title_wcag;">WCAG</acronym> v2.0</a>) level 'AA' for people with disabilities,
             including blindness and low vision, deafness and hearing loss, learning disabilities,
@@ -26,7 +26,7 @@
             and combinations of these.</tal:i18n></p>
          <p><tal:i18n i18n:translate="description_accessibility_info2">
             It is also accessible to content authors with disabilities per the level 'AA' Authoring Tool Accessibility Guidelines
-            (<a href="http://www.w3.org/TR/ATAG20/"><acronym i18n:name="atag"
+            (<a href="https://www.w3.org/TR/ATAG20/"><acronym i18n:name="atag"
                  title="Authoring Tool Accessibility Guidelines"
                  i18n:attributes="title title_atag;">ATAG</acronym> 2.0</a>).
          </tal:i18n>
@@ -59,6 +59,20 @@
                  i18n:attributes="title title_atag;">ATAG</acronym> 2.0 guidelines are
         subjective; there may be instances where interpretations vary.
         </p>
+
+    	<h3 i18n:translate="heading_vpat">Voluntary Product Accessibility Template (VPAT)</h3>
+        <p i18n:translate="description_vpat">
+          View
+            <a title="Plone's Voluntary Product Accessibility Template (VPAT)"
+               href="https://plone.org/plone-vpat.pdf/view"
+               i18n:attributes="title title_plone_vpat;">
+               Plone's VPAT
+            </a>
+            <a href="https://www.state.gov/m/irm/impact/126340.htm">
+                <acronym i18n:name="vpat" title="About VPAT" i18n:attributes="title title_vpat;">(about VPAT)</acronym>
+            </a>
+        </p>
+
     </div>
 
 </metal:main>

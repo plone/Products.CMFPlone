@@ -5,7 +5,7 @@ from plone.app.testing import TEST_USER_PASSWORD
 from plone.app.testing.bbb import PloneTestCase
 from plone.keyring.interfaces import IKeyManager
 from plone.protect.authenticator import AuthenticatorView
-from StringIO import StringIO
+from six import BytesIO
 from zope.component import queryUtility
 
 
@@ -20,7 +20,7 @@ class AuthenticatorTestCase(PloneTestCase):
     def checkAuthenticator(self, path, query='', status=200):
         credentials = '%s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD)
         path = '/' + self.portal.absolute_url(relative=True) + path
-        data = StringIO(query)
+        data = BytesIO(query.encode('utf8'))
         # without authenticator...
         response = self.publish(path=path, basic=credentials, env={},
                                 request_method='POST', stdin=data)
@@ -28,7 +28,8 @@ class AuthenticatorTestCase(PloneTestCase):
         # with authenticator...
         tag = AuthenticatorView('context', 'request').authenticator()
         token = tag.split('"')[5]
-        data = StringIO(query + '&_authenticator=%s' % token)
+        query = query + '&_authenticator=%s' % token
+        data = BytesIO(query.encode('utf8'))
         response = self.publish(path=path, basic=credentials, env={},
                                 request_method='POST', stdin=data)
         self.assertEqual(response.getStatus(), status)
@@ -65,7 +66,8 @@ class AuthenticatorTestCase(PloneTestCase):
     def test_MembershipTool_setPassword(self):
         self.checkAuthenticator(
             '/portal_membership/setPassword',
-            'password=y0d4Wg')
+            'password=y0d4Wg',
+            status=204)
 
     def test_MembershipTool_deleteMemberArea(self):
         self.checkAuthenticator(
@@ -80,7 +82,8 @@ class AuthenticatorTestCase(PloneTestCase):
     def test_userFolderAddUser(self):
         self.checkAuthenticator(
             '/acl_users/userFolderAddUser',
-            'login=foo&password=bar&domains=&roles:list=Manager')
+            'login=foo&password=bar&domains=&roles:list=Manager',
+            status=204)
 
     def test_userFolderEditUser(self):
         self.checkAuthenticator(
@@ -91,4 +94,5 @@ class AuthenticatorTestCase(PloneTestCase):
     def test_userFolderDelUsers(self):
         self.checkAuthenticator(
             '/acl_users/userFolderDelUsers',
-            'names:list=%s' % TEST_USER_ID)
+            'names:list=%s' % TEST_USER_ID,
+            status=204)

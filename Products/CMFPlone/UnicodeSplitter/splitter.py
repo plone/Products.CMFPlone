@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
@@ -6,16 +5,21 @@ splitter.py
 
 Created by Mikio Hokari, CMScom and Manabu Terada, CMScom on 2009-09-30.
 """
-import unicodedata
-
+from plone.i18n.normalizer.base import baseNormalize
+from Products.CMFPlone.UnicodeSplitter.config import pattern
+from Products.CMFPlone.UnicodeSplitter.config import pattern_g
+from Products.CMFPlone.UnicodeSplitter.config import rx_all
+from Products.CMFPlone.UnicodeSplitter.config import rx_L
+from Products.CMFPlone.UnicodeSplitter.config import rx_U
+from Products.CMFPlone.UnicodeSplitter.config import rxGlob_L
+from Products.CMFPlone.UnicodeSplitter.config import rxGlob_U
+from Products.ZCTextIndex.interfaces import ISplitter
+from Products.ZCTextIndex.PipelineFactory import element_factory
+from six.moves import range
 from zope.interface import implementer
 
-from Products.ZCTextIndex.ISplitter import ISplitter
-from Products.ZCTextIndex.PipelineFactory import element_factory
-
-from Products.CMFPlone.UnicodeSplitter.config import rx_U, rxGlob_U, \
-    rx_L, rxGlob_L, rx_all, pattern, pattern_g
-from plone.i18n.normalizer.base import baseNormalize
+import six
+import unicodedata
 
 
 def bigram(u, limit=1):
@@ -28,16 +32,16 @@ def bigram(u, limit=1):
         日本人-> [日本,本人]
         金 -> []
     """
-    return [u[i:i + 2] for i in xrange(len(u) - limit)]
+    return [u[i:i + 2] for i in range(len(u) - limit)]
 
 
 def process_str_post(s, enc='utf-8'):
     """Receive str, remove ? and *, then return str.
-    If decode gets successful, process str as unicode.
+    If decode gets successful, process str as six.text_type.
     If decode gets failed, process str as ASCII.
     """
     try:
-        if not isinstance(s, unicode):
+        if not isinstance(s, six.text_type):
             uni = s.decode(enc, "strict")
         else:
             uni = s
@@ -52,12 +56,12 @@ def process_str_post(s, enc='utf-8'):
 def process_str(s, enc='utf-8'):
     """Receive str and encoding, then return the list
     of str as bi-grammed result.
-    Decode str into unicode and pass it to process_unicode.
+    Decode str into six.text_type and pass it to process_unicode.
     When decode failed, return the result splitted per word.
     Splitting depends on locale specified by rx_L.
     """
     try:
-        if not isinstance(s, unicode):
+        if not isinstance(s, six.text_type):
             uni = s.decode(enc, "strict")
         else:
             uni = s
@@ -70,12 +74,12 @@ def process_str(s, enc='utf-8'):
 def process_str_glob(s, enc='utf-8'):
     """Receive str and encoding, then return the list
     of str considering glob processing.
-    Decode str into unicode and pass it to process_unicode_glob.
+    Decode str into six.text_type and pass it to process_unicode_glob.
     When decode failed, return the result splitted per word.
     Splitting depends on locale specified by rxGlob_L.
     """
     try:
-        if not isinstance(s, unicode):
+        if not isinstance(s, six.text_type):
             uni = s.decode(enc, "strict")
         else:
             uni = s
@@ -148,9 +152,13 @@ class Splitter(object):
         """
         return [process_str_post(s) for s in lst]
 
+
 try:
-    element_factory.registerFactory('Word Splitter',
-                                    'Unicode Whitespace splitter', Splitter)
+    element_factory.registerFactory(
+        'Word Splitter',
+        'Unicode Whitespace splitter',
+        Splitter,
+    )
 except ValueError:
     # In case the splitter is already registered, ValueError is raised
     pass
@@ -165,8 +173,8 @@ class CaseNormalizer(object):
             # This is a hack to get the normalizer working with
             # non-unicode text.
             try:
-                if not isinstance(s, unicode):
-                    s = unicode(s, enc)
+                if not isinstance(s, six.text_type):
+                    s = s.decode(enc)
             except (UnicodeDecodeError, TypeError):
                 result.append(s.lower())
             else:
@@ -174,9 +182,13 @@ class CaseNormalizer(object):
 
         return result
 
+
 try:
-    element_factory.registerFactory('Case Normalizer',
-                                    'Unicode Case Normalizer', CaseNormalizer)
+    element_factory.registerFactory(
+        'Case Normalizer',
+        'Unicode Case Normalizer',
+        CaseNormalizer,
+    )
 except ValueError:
     # In case the normalizer is already registered, ValueError is raised
     pass
@@ -189,8 +201,8 @@ class I18NNormalizer(object):
         result = []
         for s in lst:
             try:
-                if not isinstance(s, unicode):
-                    s = unicode(s, enc)
+                if not isinstance(s, six.text_type):
+                    s = s.decode(enc)
             except (UnicodeDecodeError, TypeError):
                 pass
 
@@ -204,9 +216,13 @@ class I18NNormalizer(object):
 
         return result
 
+
 try:
-    element_factory.registerFactory('Case Normalizer',
-                                    'Unicode Ignoring Accents Case Normalizer', I18NNormalizer)
+    element_factory.registerFactory(
+        'Case Normalizer',
+        'Unicode Ignoring Accents Case Normalizer',
+        I18NNormalizer,
+    )
 except ValueError:
     # In case the normalizer is already registered, ValueError is raised
     pass

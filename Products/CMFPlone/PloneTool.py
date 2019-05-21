@@ -6,10 +6,10 @@ from AccessControl.requestmethod import postonly
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
-from App.class_init import InitializeClass
+from AccessControl.class_init import InitializeClass
 from ComputedAttribute import ComputedAttribute
 from DateTime import DateTime
-from email.Utils import getaddresses
+from email.utils import getaddresses
 from OFS.ObjectManager import bad_id
 from OFS.SimpleItem import SimpleItem
 from plone.registry.interfaces import IRegistry
@@ -40,9 +40,10 @@ from Products.CMFPlone.utils import base_hasattr
 from Products.CMFPlone.utils import log
 from Products.CMFPlone.utils import log_exc
 from Products.CMFPlone.utils import safe_hasattr
+from Products.CMFPlone.utils import safe_unicode
 from Products.CMFPlone.utils import transaction_note
 from Products.statusmessages.interfaces import IStatusMessage
-from types import UnicodeType
+from six.moves.urllib import parse
 from ZODB.POSException import ConflictError
 from zope.component import getUtility
 from zope.component import queryAdapter
@@ -50,10 +51,11 @@ from zope.deprecation import deprecate
 from zope.event import notify
 from zope.interface import implementer
 from zope.lifecycleevent import ObjectModifiedEvent
+
 import re
 import sys
+import six
 import transaction
-import urlparse
 
 
 _marker = utils._marker
@@ -134,7 +136,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     def validateSingleNormalizedEmailAddress(self, address):
         # Lower-level function to validate a single normalized email address,
         # see validateEmailAddress.
-        if not isinstance(address, basestring):
+        if not isinstance(address, six.string_types):
             return False
 
         sub = EMAIL_CUTOFF_RE.match(address)
@@ -151,7 +153,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     @security.public
     def validateSingleEmailAddress(self, address):
         # Validate a single email address, see also validateEmailAddresses.
-        if not isinstance(address, basestring):
+        if not isinstance(address, six.string_types):
             return False
 
         sub = EMAIL_CUTOFF_RE.match(address)
@@ -174,7 +176,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     def validateEmailAddresses(self, addresses):
         # Validate a list of possibly several email addresses, see also
         # validateSingleEmailAddress.
-        if not isinstance(addresses, basestring):
+        if not isinstance(addresses, six.string_types):
             return False
 
         sub = EMAIL_CUTOFF_RE.match(addresses)
@@ -263,7 +265,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             parent = aq_parent(aq_inner(obj))
             parent.manage_renameObject(obj.getId(), id)
 
-    def _makeTransactionNote(self, obj, msg=''):
+    def _makeTransactionNote(self, obj, msg=u''):
         # TODO Why not aq_parent()?
         relative_path = '/'.join(
             getToolByName(self, 'portal_url').getRelativeContentPath(obj)[:-1]
@@ -271,20 +273,15 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         if not msg:
             msg = relative_path + '/' + obj.title_or_id() \
                 + ' has been modified.'
-        if isinstance(msg, UnicodeType):
-            # Convert unicode to a regular string for the backend write IO.
-            # UTF-8 is the only reasonable choice, as using unicode means
-            # that Latin-1 is probably not enough.
-            msg = msg.encode('utf-8')
         if not transaction.get().description:
-            transaction_note(msg)
+            transaction_note(safe_unicode(msg))
 
     @security.public
     def contentEdit(self, obj, **kwargs):
         # Encapsulates how the editing of content occurs.
         try:
             self.editMetadata(obj, **kwargs)
-        except AttributeError, msg:
+        except AttributeError as msg:
             log('Failure editing metadata at: %s.\n%s\n' %
                 (obj.absolute_url(), msg))
         if kwargs.get('id', None) is not None:
@@ -415,14 +412,14 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         Since Python 2.6: urlparse now returns a ParseResult object.
         We just need the tuple form which is tuple(result).
         """
-        return tuple(urlparse.urlparse(url))
+        return tuple(parse.urlparse(url))
 
     @security.public
     def urlunparse(self, url_tuple):
         """Puts a url back together again, in the manner that
         urlparse breaks it.
         """
-        return urlparse.urlunparse(url_tuple)
+        return parse.urlunparse(url_tuple)
 
     # Enable scripts to get the string value of an exception even if the
     # thrown exception is a string and not a subclass of Exception.
@@ -432,7 +429,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         s = sys.exc_info()[:2]
         if s[0] == None:
             return None
-        if isinstance(s[0], basestring):
+        if isinstance(s[0], six.string_types):
             return s[0]
         return str(s[1])
 
@@ -691,7 +688,10 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         else:
             browserDefault = queryAdapter(obj, IBrowserDefault)
         if browserDefault is not None:
-            layout = browserDefault.getLayout()
+            default_view_fallback = False
+            if base_hasattr(obj, 'getTypeInfo'):
+                default_view_fallback = obj.getTypeInfo().default_view_fallback
+            layout = browserDefault.getLayout(check_exists=default_view_fallback)
             if layout is None:
                 raise AttributeError(
                     "%s has no assigned layout, perhaps it needs an FTI" % obj)
@@ -817,7 +817,6 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         registry = getUtility(IRegistry)
         site_settings = registry.forInterface(
             ISiteSchema, prefix="plone", check=False)
-        use_all = site_settings.exposeDCMetaTags
 
         try:
             use_all = site_settings.exposeDCMetaTags
@@ -1009,7 +1008,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 success.append('%s (%s)' % (obj.getId(), path))
             except ConflictError:
                 raise
-            except Exception, e:
+            except Exception as e:
                 if handle_errors:
                     sp.rollback()
                     failure[path] = e
@@ -1042,7 +1041,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                                             expiration_date=expiration_date)
             except ConflictError:
                 raise
-            except Exception, e:
+            except Exception as e:
                 if handle_errors:
                     # skip this object but continue with sub-objects.
                     sp.rollback()
@@ -1095,7 +1094,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                     success[path] = (new_id, new_title)
             except ConflictError:
                 raise
-            except Exception, e:
+            except Exception as e:
                 if handle_errors:
                     # skip this object but continue with sub-objects.
                     sp.rollback()

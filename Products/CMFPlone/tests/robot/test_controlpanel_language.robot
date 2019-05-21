@@ -2,6 +2,7 @@
 
 Resource  plone/app/robotframework/keywords.robot
 Resource  plone/app/robotframework/saucelabs.robot
+Resource  plone/app/robotframework/selenium.robot
 
 Library  Remote  ${PLONE_URL}/RobotRemote
 
@@ -29,6 +30,7 @@ a logged-in site administrator
 
 the language control panel
   Go to  ${PLONE_URL}/@@language-controlpanel
+  Wait until page contains  Language Settings
 
 
 # --- WHEN -------------------------------------------------------------------
@@ -45,4 +47,5 @@ I set the site language to German
 
 the Plone user interface is in German
   Go to  ${PLONE_URL}
+  Wait until page contains  Sie sind hier
   Page should contain  Sie sind hier
