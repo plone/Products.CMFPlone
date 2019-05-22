@@ -1,3 +1,2 @@
-- Use the shared 'Plone test setup' and 'Plone test teardown' keywords in Robot
-  tests.
-  [Rotonen]
+Use the shared 'Plone test setup' and 'Plone test teardown' keywords in Robot tests.
+[Rotonen]
