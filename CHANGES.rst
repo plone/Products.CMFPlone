@@ -41,7 +41,7 @@ Bug fixes:
 - Fix DeprecationWarning in syndication-view. [jensens] (#2831)
 - Fix malformed url when redirecting to external login. [ericof] (#2842)
 - Make navigation (CatalogNavigationTabs) subclassing easier. [iham] (#2849)
-- Fix script resource parsing error because of self closing tags. [netroxen] (#2870)
+
 
 5.2rc2 (2019-03-21)
 -------------------
