@@ -235,6 +235,7 @@ class IFilterSchema(Interface):
             u'dt',
             u'em',
             u'figure',
+            u'figcaption',
             u'footer',
             u'h1',
             u'h2',
@@ -1513,6 +1514,16 @@ class IImagingSchema(Interface):
         min=0,
         max=95,
         default=51,
+    )
+
+    image_captioning = schema.Bool(
+        title=_('image_captioning_title', u'Enable image captioning'),
+        description=_(
+            'image_captioning_description',
+            u'Enable automatic image captioning for images set in the richtext editor based on the description of images.'
+        ),
+        default=True,
+        required=False
     )
 
 
