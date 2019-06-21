@@ -8,8 +8,8 @@ Library  Remote  ${PLONE_URL}/RobotRemote
 
 Resource  keywords.robot
 
-Test Setup  Run keywords  Open SauceLabs test browser
-Test Teardown  Run keywords  Plone Test Teardown
+Test Setup  Run Keywords  Plone test setup
+Test Teardown  Run keywords  Plone test teardown
 
 
 *** Test Cases ***************************************************************

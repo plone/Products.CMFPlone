@@ -39,6 +39,7 @@
         Using this form, you can manage alternative urls for an item. This
         is an easy way to make an item available under two different URLs.
       </p>
+      <p i18n:translate="description_change_primary_url">To change the primary url of content, use Actions > Rename.</p>
 
       <form
           action="${view/view_url}"
@@ -71,6 +72,7 @@
 
             <div class="formHelp" i18n:translate="help_alias">
               Enter the absolute path where the alternative url should exist. The path must start with '/'.
+              Only urls that result in a 404 not found page will result in a redirect occurring.
             </div>
 
             <input

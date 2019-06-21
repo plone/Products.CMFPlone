@@ -1,28 +1,31 @@
 # -*- coding: utf-8 -*-
-from zope.interface import implementer
-
+from Products.CMFPlone.browser.interfaces import IMainTemplate
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-
-from Products.CMFPlone.browser.interfaces import IMainTemplate
+from zope.interface import implementer
 
 
 @implementer(IMainTemplate)
 class MainTemplate(BrowserView):
 
-    ajax_template = ViewPageTemplateFile('templates/ajax_main_template.pt')
-    main_template = ViewPageTemplateFile('templates/main_template.pt')
+    ajax_template_name = 'templates/ajax_main_template.pt'
+    main_template_name = 'templates/main_template.pt'
 
     def __call__(self):
-        return self.template()
+        return ViewPageTemplateFile(self.template_name)
 
     @property
-    def template(self):
+    def template_name(self):
         if self.request.form.get('ajax_load'):
-            return self.ajax_template
+            return self.ajax_template_name
         else:
-            return self.main_template
+            return self.main_template_name
 
     @property
     def macros(self):
-        return self.template.macros
+        # Reinstanciating the templatefile is a workaround for
+        # https://github.com/plone/Products.CMFPlone/issues/2666
+        # Without this a inifite recusion in a template
+        # (i.e. a template that calls its own view)
+        # kills the instance instead of raising a RecursionError.
+        return ViewPageTemplateFile(self.template_name).macros

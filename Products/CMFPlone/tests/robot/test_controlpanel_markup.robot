@@ -6,6 +6,7 @@ Documentation
 
 Resource  plone/app/robotframework/keywords.robot
 Resource  plone/app/robotframework/saucelabs.robot
+Resource  plone/app/robotframework/selenium.robot
 
 Library  Remote  ${PLONE_URL}/RobotRemote
 
@@ -46,12 +47,11 @@ the markup control panel
 # --- WHEN -------------------------------------------------------------------
 
 I set allowed types to "${type}"
-  [Documentation]  'Wait until page contains  Changes saved' is nicer, but is unstable. See https://github.com/plone/Products.CMFPlone/issues/2809
+  with the label  ${type}   Select Checkbox
   with the label  text/html  UnSelect Checkbox
   with the label  text/x-web-textile  UnSelect Checkbox
-  with the label  ${type}   Select Checkbox
   Click Button  Save
-  Go to  ${PLONE_URL}/@@markup-controlpanel
+  Wait until page contains  Changes saved
   Checkbox Should Be Selected  ${type}
   Checkbox Should Not Be Selected  text/html
   Checkbox Should Not Be Selected  text/x-web-textile

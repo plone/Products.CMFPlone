@@ -29,11 +29,11 @@ from zope.component import getMultiAdapter
 from zope.component import getSiteManager
 from zope.component import getUtility
 from zope.component import queryUtility
-from zope.component.interfaces import IComponentLookup
-from zope.component.interfaces import IComponentRegistry
+from zope.component.hooks import clearSite
+from zope.component.hooks import setSite
+from zope.interface.interfaces import IComponentLookup
+from zope.interface.interfaces import IComponentRegistry
 from zope.location.interfaces import ISite
-from zope.site.hooks import clearSite
-from zope.site.hooks import setSite
 
 
 class TestPortalCreation(PloneTestCase.PloneTestCase):

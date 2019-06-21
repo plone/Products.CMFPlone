@@ -981,6 +981,14 @@ class ISecuritySchema(Interface):
         default=False,
         required=False)
 
+    autologin_after_password_reset = schema.Bool(
+        title=_(u'Login user after password reset'),
+        description=_(
+            u'After successful password reset the user will be logged '
+            u'in automatically.'),
+        default=True,
+        required=False)
+
 
 class ISiteSchema(Interface):
 
@@ -1155,7 +1163,7 @@ class ISiteSchema(Interface):
         description=_(
             u'Select which IDs (short names) can act as fallback '
             u'default pages for a container.'),
-        required=True,
+        required=False,
         default=[
             u'index_html',
             u'index.html',

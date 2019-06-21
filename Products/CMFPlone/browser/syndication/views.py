@@ -1,20 +1,20 @@
 # -*- coding: utf-8 -*-
 from DateTime import DateTime
-from uuid import uuid3
-from uuid import NAMESPACE_OID
-from zope.component import queryAdapter
-from zope.component import getMultiAdapter
-from zope.cachedescriptors.property import Lazy as lazy_property
-from Products.Five import BrowserView
-from zExceptions import NotFound
-
-from Products.CMFPlone.interfaces.syndication import ISearchFeed
+from plone.z3cform.layout import wrap_form
+from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces.syndication import IFeed
 from Products.CMFPlone.interfaces.syndication import IFeedSettings
-from Products.CMFPlone import PloneMessageFactory as _
-
-from z3c.form import form, button, field
-from plone.app.z3cform.layout import wrap_form
+from Products.CMFPlone.interfaces.syndication import ISearchFeed
+from Products.Five import BrowserView
+from uuid import NAMESPACE_OID
+from uuid import uuid3
+from z3c.form import button
+from z3c.form import field
+from z3c.form import form
+from zExceptions import NotFound
+from zope.cachedescriptors.property import Lazy as lazy_property
+from zope.component import getMultiAdapter
+from zope.component import queryAdapter
 
 
 class FeedView(BrowserView):
@@ -81,9 +81,11 @@ class NewsMLFeedView(FeedView):
 class SettingsForm(form.EditForm):
     label = _(u'heading_syndication_properties',
               default=u'Syndication Properties')
-    description = _(u'description_syndication_properties',
-                    default=u'Syndication enables you to syndicate this folder so it can'
-                            u'be synchronized from other web sites.')
+    description = _(
+        u'description_syndication_properties',
+        default=u'Syndication enables you to syndicate this folder so it can'
+                u'be synchronized from other web sites.',
+    )
     fields = field.Fields(IFeedSettings)
 
     @button.buttonAndHandler(_(u'Save'), name='save')
@@ -93,4 +95,6 @@ class SettingsForm(form.EditForm):
             self.status = self.formErrorsMessage
             return
         self.applyChanges(data)
+
+
 SettingsFormView = wrap_form(SettingsForm)

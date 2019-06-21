@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+from DateTime import DateTime
+from DateTime.interfaces import DateTimeError
+from csv import writer
 from plone.app.redirector.interfaces import IRedirectionStorage
 from plone.batching.browser import PloneBatchView
 from plone.memoize.view import memoize
@@ -15,9 +18,18 @@ from zope.component.hooks import getSite
 from zope.i18nmessageid import MessageFactory
 
 import csv
+import logging
+import tempfile
+
+try:
+    # use this to stream csv data if we can
+    from ZPublisher.Iterators import filestream_iterator
+except ImportError:
+    filestream_iterator = None
 
 
 _ = MessageFactory('plone')
+logger = logging.getLogger(__name__)
 
 
 def absolutize_path(path, is_source=True):
@@ -125,7 +137,9 @@ class RedirectsView(BrowserView):
             else:
                 del form['redirection']
                 storage.add(
-                    redirection, "/".join(self.context.getPhysicalPath())
+                    redirection,
+                    "/".join(self.context.getPhysicalPath()),
+                    manual=True,
                 )
                 status.addStatusMessage(
                     _(u"Alternative url added."), type='info'
@@ -151,7 +165,7 @@ class RedirectsView(BrowserView):
 
 
 class RedirectionSet(object):
-    def __init__(self, query=''):
+    def __init__(self, query='', created='', manual=''):
         self.storage = getUtility(IRedirectionStorage)
 
         portal = getSite()
@@ -166,9 +180,39 @@ class RedirectionSet(object):
             # Apparently that is the way to minize the keys we ask.
             min_k = u'{0:s}/{1:s}'.format(self.portal_path, query.strip('/'))
             max_k = min_k[:-1] + chr(ord(min_k[-1]) + 1)
-            self.data = self.storage._paths.keys(min=min_k, max=max_k)
+            self.data = self.storage._paths.keys(
+                min=min_k, max=max_k, excludemax=True
+            )
         else:
             self.data = self.storage._paths.keys()
+        if manual:
+            # either 'yes' or 'no', otherwise we ignore the filter
+            if manual == 'yes':
+                manual = True
+            elif manual == 'no':
+                manual = False
+            else:
+                manual = ''
+        if created:
+            try:
+                created = DateTime(created)
+            except DateTimeError:
+                logger.warning(
+                    'Failed to parse as DateTime: %s', created
+                )
+                created = ''
+        if created or manual != '':
+            chosen = []
+            for redirect in self.data:
+                info = self.storage.get_full(redirect)
+                if manual != '':
+                    if info[2] != manual:
+                        continue
+                if created and info[1]:
+                    if info[1] >= created:
+                        continue
+                chosen.append(redirect)
+            self.data = chosen
 
     def __len__(self):
         return len(self.data)
@@ -179,10 +223,18 @@ class RedirectionSet(object):
             path = redirect[self.portal_path_len :]
         else:
             path = redirect
-        redirect_to = self.storage.get(redirect)
+        # redirect_to = self.storage.get(redirect)
+        info = self.storage.get_full(redirect)
+        redirect_to = info[0]
         if redirect_to.startswith(self.portal_path):
             redirect_to = redirect_to[self.portal_path_len :]
-        return {'redirect': redirect, 'path': path, 'redirect-to': redirect_to}
+        return {
+            'redirect': redirect,
+            'path': path,
+            'redirect-to': redirect_to,
+            'datetime': info[1],
+            'manual': info[2],
+        }
 
 
 class RedirectsBatchView(PloneBatchView):
@@ -209,7 +261,11 @@ class RedirectsControlPanel(BrowserView):
             'redirect' are equal.
         """
         return Batch(
-            RedirectionSet(self.request.form.get('q', '')),
+            RedirectionSet(
+                query=self.request.form.get('q', ''),
+                created=self.request.form.get('datetime', ''),
+                manual=self.request.form.get('manual', ''),
+            ),
             15,
             int(self.request.form.get('b_start', '0')),
             orphan=1,
@@ -226,8 +282,20 @@ class RedirectsControlPanel(BrowserView):
         self.csv_errors = []
         self.form_errors = {}
 
-        if 'form.button.Remove' in form:
-            redirects = form.get('redirects', ())
+        if 'form.button.Remove' in form or 'form.button.MatchRemove' in form:
+            if 'form.button.Remove' in form:
+                redirects = form.get('redirects', ())
+            else:
+                query = self.request.form.get('q', '')
+                created = self.request.form.get('datetime', '')
+                manual = self.request.form.get('manual', '')
+                if created or manual or (query and query != '/'):
+                    rset = RedirectionSet(
+                        query=query, created=created, manual=manual
+                    )
+                    redirects = list(rset.data)
+                else:
+                    redirects = []
             for redirect in redirects:
                 storage.remove(redirect)
             if len(redirects) == 0:
@@ -256,6 +324,8 @@ class RedirectsControlPanel(BrowserView):
                 del form['target_path']
         elif 'form.button.Upload' in form:
             self.upload(form['file'], portal, storage, status)
+        elif 'form.button.Download' in form:
+            return self.download()
 
         return self.index()
 
@@ -286,7 +356,7 @@ class RedirectsControlPanel(BrowserView):
         if err:
             status.addStatusMessage(_(err), type='error')
         else:
-            storage.add(abs_redirection, abs_target)
+            storage.add(abs_redirection, abs_target, manual=True)
             status.addStatusMessage(
                 _(u"Alternative url from {0} to {1} added.").format(
                     abs_redirection, abs_target
@@ -314,11 +384,33 @@ class RedirectsControlPanel(BrowserView):
         dialect = csv.Sniffer().sniff(file.readline() + file.readline())
         file.seek(0)
 
-        successes = []  # list of tuples: (abs_redirection, target)
+        # key is old path, value is tuple(new path, datetime, manual)
+        successes = {}
         had_errors = False
         for i, fields in enumerate(csv.reader(file, dialect)):
-            if len(fields) == 2:
-                redirection, target = fields
+            if len(fields) >= 2:
+                redirection = fields[0]
+                target = fields[1]
+
+                now = None
+                manual = True
+                if len(fields) >= 3:
+                    dt = fields[2]
+                    if dt:
+                        try:
+                            now = DateTime(dt)
+                        except DateTimeError:
+                            logger.warning(
+                                'Failed to parse as DateTime: %s', dt
+                            )
+                            now = None
+                if len(fields) >= 4:
+                    manual = fields[3].lower()
+                    # Compare first character with false, no, 0.
+                    if manual and manual[0] in 'fn0':
+                        manual = False
+                    else:
+                        manual = True
                 abs_redirection, err = absolutize_path(
                     redirection, is_source=True
                 )
@@ -326,6 +418,13 @@ class RedirectsControlPanel(BrowserView):
                     target, is_source=False
                 )
                 if err and target_err:
+                    if (
+                        i == 0
+                        and not redirection.startswith('/')
+                        and not target.startswith('/')
+                    ):
+                        # First line is a header.  Ignore this.
+                        continue
                     err = "%s %s" % (err, target_err)  # sloppy w.r.t. i18n
                 elif target_err:
                     err = target_err
@@ -337,11 +436,11 @@ class RedirectsControlPanel(BrowserView):
                             u"an endless cycle of redirects."
                         )
             else:
-                err = _(u"Each line must have 2 columns.")
+                err = _(u"Each line must have 2 or more columns.")
 
             if not err:
                 if not had_errors:  # else don't bother
-                    successes.append((abs_redirection, abs_target))
+                    successes[abs_redirection] = (abs_target, now, manual)
             else:
                 had_errors = True
                 self.csv_errors.append(
@@ -353,8 +452,7 @@ class RedirectsControlPanel(BrowserView):
                 )
 
         if not had_errors:
-            for abs_redirection, abs_target in successes:
-                storage.add(abs_redirection, abs_target)
+            storage.update(successes)
             status.addStatusMessage(
                 _(
                     u"${count} alternative urls added.",
@@ -362,6 +460,68 @@ class RedirectsControlPanel(BrowserView):
                 ),
                 type='info',
             )
+        else:
+            self.csv_errors.insert(
+                0,
+                dict(
+                    line_number=0,
+                    line='',
+                    message=_(
+                        u'msg_delimiter',
+                        default=u"Delimiter detected: ${delimiter}",
+                        mapping={'delimiter': dialect.delimiter},
+                    ),
+                ),
+            )
+
+    def download(self):
+        """Download all redirects as CSV.
+
+        We save to a temporary file and try to stream it as a blob:
+        with one million redirects you easily get 30 MB, which is slow as non-blob.
+        """
+        portal = getSite()
+        portal_path = "/".join(portal.getPhysicalPath())
+        len_portal_path = len(portal_path)
+        file_descriptor, file_path = tempfile.mkstemp(
+            suffix='.csv', prefix='redirects_'
+        )
+        with open(file_path, 'w') as stream:
+            csv_writer = writer(stream)
+            csv_writer.writerow(('old path', 'new path', 'datetime', 'manual'))
+            storage = getUtility(IRedirectionStorage)
+            paths = storage._paths
+            # Note that the old and new paths start with /plone-site-id.
+            # We strip this, as it is superfluous, and we would get errors
+            # when using this download as an upload.
+            for old_path, new_info in paths.items():
+                if old_path.startswith(portal_path):
+                    old_path = old_path[len_portal_path:]
+                row = [old_path]
+                if not isinstance(new_info, tuple):
+                    # Old data: only a single path, no date and manual boolean.
+                    new_info = (new_info,)
+                row.extend(new_info)
+                new_path = row[1]
+                if new_path.startswith(portal_path):
+                    row[1] = new_path[len_portal_path:]
+                csv_writer.writerow(row)
+        with open(file_path) as stream:
+            contents = stream.read()
+            length = len(contents)
+
+        response = self.request.response
+        response.setHeader('Content-Type', 'text/csv')
+        response.setHeader('Content-Length', length)
+        response.setHeader(
+            'Content-Disposition', 'attachment; filename=redirects.csv'
+        )
+        if filestream_iterator is None:
+            return contents
+        # TODO: this is not enough to really stream the file.
+        # I think we would need to handle Request-Range, like in the old
+        # plone.app.blob.download.handleRequestRange
+        return filestream_iterator(file_path, 'rb')
 
     @memoize
     def view_url(self):

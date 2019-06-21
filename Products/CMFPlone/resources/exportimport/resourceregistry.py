@@ -9,7 +9,7 @@ from Products.GenericSetup.interfaces import IBody
 from Products.GenericSetup.utils import XMLAdapterBase
 from zope.component import queryMultiAdapter
 from zope.component import queryUtility
-from zope.component.interfaces import ComponentLookupError
+from zope.interface.interfaces import ComponentLookupError
 
 
 def importResRegistry(context, reg_id, reg_title, filename):

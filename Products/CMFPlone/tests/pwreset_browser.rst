@@ -222,18 +222,9 @@ Now that we have the address, we will reset our password:
   >>> form.getControl(name='password2').value = 'secretion'
   >>> form.submit()
 
-We can now login using our new password:
+We can now logged in:
 
-  >>> "Your password has been set successfully." in browser.contents
-  True
-  >>> browser.open('http://nohost/plone/login')
-  >>> browser.getControl(name='__ac_name').value = 'jsmith'
-  >>> browser.getControl(name='__ac_password').value = 'secretion'
-  >>> browser.getControl(name='buttons.login').click()
-
-We should be logged in now:
-
-  >>> "You are now logged in" in browser.contents
+  >>> "Password reset successful, you are logged in now!" in browser.contents
   True
 
 Log out again:
@@ -421,16 +412,7 @@ Now that we have the address, we will reset our password:
   >>> browser.getControl(name='password').value = 'secret'
   >>> browser.getControl(name='password2').value = 'secret'
   >>> browser.getControl("Set my password").click()
-  >>> "Your password has been set successfully." in browser.contents
-  True
-
-Now we can log in:
-
-  >>> browser.open('http://nohost/plone/login')
-  >>> browser.getControl("Login Name").value = 'bsmith'
-  >>> browser.getControl("Password").value = 'secret'
-  >>> browser.getControl("Log in").click()
-  >>> "You are now logged in" in browser.contents
+  >>> "Password reset successful, you are logged in now!" in browser.contents
   True
 
 Log out again:
@@ -504,17 +486,10 @@ Now that we have the address, we will reset our password:
   >>> browser.getControl(name='password').value = 'superstr0ng'
   >>> browser.getControl(name='password2').value = 'superstr0ng'
   >>> browser.getControl("Set my password").click()
-  >>> "Your password has been set successfully." in browser.contents
+  >>> "Password reset successful, you are logged in now!" in browser.contents
   True
 
-Now we can log in:
-
-  >>> browser.open('http://nohost/plone/login')
-  >>> browser.getControl("Login Name").value = 'wwwsmith'
-  >>> browser.getControl("Password").value = 'superstr0ng'
-  >>> browser.getControl("Log in").click()
-  >>> "You are now logged in" in browser.contents
-  True
+Log out
 
   >>> browser.getLink('Log out').click()
 

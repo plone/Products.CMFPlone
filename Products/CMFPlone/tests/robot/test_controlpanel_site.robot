@@ -6,6 +6,7 @@ Documentation
 
 Resource  plone/app/robotframework/keywords.robot
 Resource  plone/app/robotframework/saucelabs.robot
+Resource  plone/app/robotframework/selenium.robot
 Variables  Products/CMFPlone/tests/robot/variables.py
 
 Library  Remote  ${PLONE_URL}/RobotRemote

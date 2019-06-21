@@ -2,7 +2,7 @@
 from setuptools import setup
 from setuptools import find_packages
 
-version = '5.2rc3.dev0'
+version = '5.2rc5.dev0'
 
 
 setup(
@@ -153,8 +153,4 @@ setup(
             'zope.testing',
         ]
     },
-    entry_points="""\
-      [plone.recipe.zope2instance.ctl]
-      verifydb = Products.CMFPlone._scripts.verifydb:zopectl_entry
-    """  # noqa
 )

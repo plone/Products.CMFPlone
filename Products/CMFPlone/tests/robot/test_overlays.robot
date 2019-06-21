@@ -8,13 +8,14 @@ Documentation  These tests are just testing the overlay behavior not the
 
 Resource  plone/app/robotframework/keywords.robot
 Resource  plone/app/robotframework/saucelabs.robot
+Resource  plone/app/robotframework/selenium.robot
 
 Library  Remote  ${PLONE_URL}/RobotRemote
 
 Resource  common.robot
 
-Test Setup  Run keywords  Plone Test Setup  Background
-Test Teardown  Run keywords  Plone Test Teardown
+Test Setup  Run Keywords  Plone test setup
+Test Teardown  Run keywords  Plone test teardown
 
 
 *** Test cases ***
