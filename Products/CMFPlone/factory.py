@@ -153,8 +153,6 @@ def addPloneSite(context, site_id, title='Plone site', description='',
     notify(SiteManagerCreatedEvent(site))
     setSite(site)
 
-    site.getSiteManager().registerUtility(site, ISiteRoot)
-
     setup_tool.setBaselineContext('profile-%s' % profile_id)
     setup_tool.runAllImportStepsFromProfile('profile-%s' % profile_id)
 
