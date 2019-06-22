@@ -8,7 +8,7 @@
 <tal:def define="isManager python:view.is_manager()">
 
 <head>
-  <title tal:condition="not:isManager">Error</title>
+  <title tal:condition="not:isManager" i18n:translate="">Error</title>
   <title tal:condition="isManager">${options/error_type}</title>
 </head>
 
