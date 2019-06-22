@@ -2,7 +2,6 @@
 from AccessControl import getSecurityManager
 from Acquisition import aq_base
 from Acquisition import aq_inner
-from cgi import escape
 from collections import defaultdict
 from datetime import date
 from functools import total_ordering
@@ -32,6 +31,11 @@ from zope.i18n import translate
 from zope.interface import alsoProvides
 from zope.interface import implementer
 from zope.viewlet.interfaces import IViewlet
+
+try:
+    from html import escape
+except ImportError:
+    from cgi import escape
 
 
 @implementer(IViewlet)
