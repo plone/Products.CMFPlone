@@ -1,0 +1,2 @@
+Fix site-creation with static resources in the legacy-bundle by moving plone.resource up.
+[pbauer]
