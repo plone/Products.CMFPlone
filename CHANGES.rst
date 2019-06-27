@@ -12,6 +12,24 @@ Changelog
 
 .. towncrier release notes start
 
+5.2rc5 (2019-06-27)
+-------------------
+
+New features:
+
+
+- Add support for Python 3.8 [pbauer] (#2896)
+
+
+Bug fixes:
+
+
+- Add missing i18n:translate calls
+  [erral] (#2891)
+- Fix login-help layout on mobile.
+  [jensens] (#2893)
+
+
 5.2rc4 (2019-06-20)
 -------------------
 
