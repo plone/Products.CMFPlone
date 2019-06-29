@@ -100,14 +100,6 @@ class TestCheckId(PloneTestCase):
         self.assertEqual(r, u'There is already an item named bar in this '
                             u'folder.')
 
-    # def testTempObjectCollision(self):
-    #     # foo = self.folder.restrictedTraverse('portal_factory/Document/foo')
-    #     from plone.dexterity.utils import createContent
-    #     foo = createContent('Document', id='foo')
-    #     self.folder._setObject('bar', dummy.Item('bar'))
-    #     r = check_id(foo, 'bar')
-    #     self.assertEqual(r, u'bar is reserved.')
-
     def testReservedId(self):
         self.folder._setObject('foo', dummy.Item('foo'))
         r = check_id(self.folder.foo, 'portal_catalog')
@@ -139,16 +131,18 @@ class TestCheckId(PloneTestCase):
         self.assertEqual(r, u'whatever is reserved.')
 
     def testContainerHookRaisesUnauthorized(self):
-        # check_id should not swallow Unauthorized errors raised by hook
+        # check_id does not raise Unauthorized errors raised by hook
         self.folder._setObject('checkValidId', dummy.Raiser(Unauthorized))
         self.folder._setObject('foo', dummy.Item('foo'))
-        self.assertRaises(Unauthorized, check_id(self.folder.foo), 'whatever')
+        r = check_id(self.folder.foo, 'whatever')
+        self.assertEqual(r, u'whatever is reserved.')
 
     def testContainerHookRaisesConflictError(self):
         # check_id should not swallow ConflictErrors raised by hook
         self.folder._setObject('checkValidId', dummy.Raiser(ConflictError))
         self.folder._setObject('foo', dummy.Item('foo'))
-        self.assertRaises(ConflictError, check_id(self.folder.foo), 'whatever')
+        with self.assertRaises(ConflictError):
+            check_id(self.folder.foo, 'whatever')
 
     def testMissingUtils(self):
         # check_id should not bomb out if the plone_utils tool is missing
