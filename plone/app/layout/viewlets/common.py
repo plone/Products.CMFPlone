@@ -272,11 +272,8 @@ class GlobalSectionsViewlet(ViewletBase):
     @memoize
     def navtree(self):
         ret = defaultdict(list)
-        portal_tabs_view = getMultiAdapter((self.context, self.request),
-                                           name='portal_tabs_view')
-        tabs = portal_tabs_view.topLevelTabs()
         navtree_path = self.navtree_path
-        for tab in tabs:
+        for tab in self.portal_tabs:
             entry = tab.copy()
             entry.update({
                 'path': '/'.join((navtree_path, tab['id'])),
