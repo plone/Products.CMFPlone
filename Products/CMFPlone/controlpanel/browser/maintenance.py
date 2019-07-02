@@ -3,7 +3,6 @@ from AccessControl import getSecurityManager
 from AccessControl.Permissions import view_management_screens
 from Acquisition import aq_inner
 from App.config import getConfiguration
-from cgi import escape
 from plone.autoform.form import AutoExtensibleForm
 from plone.memoize.view import memoize
 from plone.protect import CheckAuthenticator
@@ -24,6 +23,11 @@ try:
     from Lifetime import shutdown
 except ImportError:
     LIFETIME = False
+
+try:
+    from html import escape
+except ImportError:
+    from cgi import escape
 
 
 logger = logging.getLogger(__file__)
