@@ -8,6 +8,16 @@ Changelog
 
 .. towncrier release notes start
 
+3.2.1 (2019-07-06)
+------------------
+
+Bug fixes:
+
+
+- fix portal_tabs_view.topLevelTabs called twice
+  [mamico] (#201)
+
+
 3.2.0 (2019-06-27)
 ------------------
 
