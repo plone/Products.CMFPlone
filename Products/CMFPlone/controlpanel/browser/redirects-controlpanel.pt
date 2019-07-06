@@ -253,7 +253,7 @@
                tal:attributes="class python:error and 'field error' or 'field'"
                tal:content="error" />
 
-          <p>Alternative url path &rarr; target url path (date and time of creation, manually created yes/no) </p>
+          <p i18n:translate="">Alternative url path &rarr; target url path (date and time of creation, manually created yes/no) </p>
           <tal:redirects repeat="redirect batch">
             <div>
               <label>
