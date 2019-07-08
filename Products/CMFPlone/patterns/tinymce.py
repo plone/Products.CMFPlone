@@ -48,7 +48,7 @@ class TinyMCESettingsGenerator(object):
                 files.append('/'.join([self.nav_root_url, url.strip()]))
         theme = self.get_theme()
         tinymce_content_css = getattr(theme, 'tinymce_content_css', None)
-        if tinymce_content_css is not None:
+        if tinymce_content_css:
             for path in theme.tinymce_content_css.split(','):
                 if path.startswith('http://') or path.startswith('https://'):
                     files.append(path)
