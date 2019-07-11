@@ -12,6 +12,18 @@ Changelog
 
 .. towncrier release notes start
 
+5.2.0 (2019-07-10)
+------------------
+
+Bug fixes:
+
+
+- Don't activate all sorting tabs when no sort option has been chosen.
+  [gyst, rodfersou, jensens] (#1789)
+- Fix test failures exposed in Python 3.8
+  [pbauer] (#2903)
+
+
 5.2rc5 (2019-06-27)
 -------------------
 
