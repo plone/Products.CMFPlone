@@ -13,6 +13,8 @@ Changelog
 
 Bug fixes:
 
+- fix GlobalStatusMessage type translation (#202)
+  [laulaz]
 
 - fix portal_tabs_view.topLevelTabs called twice
   [mamico] (#201)
