@@ -322,16 +322,17 @@ class WorkflowHistoryViewlet(ViewletBase):
 
     @memoize
     def getUserInfo(self, userid):
+        actor = dict(fullname=userid)
         mt = getToolByName(self.context, 'portal_membership')
         info = mt.getMemberInfo(userid)
         if info is None:
-            return dict(actor_home="",
-                        actor=dict(fullname=userid))
+            return dict(actor_home="", actor=actor)
 
-        if not info.get("fullname", None):
-            info["fullname"] = userid
+        fullname = info.get("fullname", None)
+        if fullname:
+            actor['fullname'] = fullname
 
-        return dict(actor=info,
+        return dict(actor=actor,
                     actor_home="%s/author/%s" % (self.site_url, userid))
 
     def workflowHistory(self, complete=True):
