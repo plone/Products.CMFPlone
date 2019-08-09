@@ -15,6 +15,8 @@ New features:
 
 Bug fixes:
 
+- Memory leak on getUserInfo [avoinea] (#204)
+
 - Show document byline for logged-in users. Fixes #160
   [erral]
 
