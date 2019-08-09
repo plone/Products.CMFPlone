@@ -320,6 +320,20 @@ class WorkflowHistoryViewlet(ViewletBase):
 
     index = ViewPageTemplateFile("review_history.pt")
 
+    @memoize
+    def getUserInfo(self, userid):
+        mt = getToolByName(self.context, 'portal_membership')
+        info = mt.getMemberInfo(userid)
+        if info is None:
+            return dict(actor_home="",
+                        actor=dict(fullname=userid))
+
+        if not info.get("fullname", None):
+            info["fullname"] = userid
+
+        return dict(actor=info,
+                    actor_home="%s/author/%s" % (self.site_url, userid))
+
     def workflowHistory(self, complete=True):
         """Return workflow history of this context.
 
@@ -332,8 +346,6 @@ class WorkflowHistoryViewlet(ViewletBase):
             return []
 
         workflow = getToolByName(context, 'portal_workflow')
-        membership = getToolByName(context, 'portal_membership')
-
         review_history = []
 
         try:
@@ -362,14 +374,7 @@ class WorkflowHistoryViewlet(ViewletBase):
                     r['actor'] = {'username': anon, 'fullname': anon}
                     r['actor_home'] = ''
                 else:
-                    r['actor'] = membership.getMemberInfo(actorid)
-                    if r['actor'] is not None:
-                        r['actor_home'] = self.navigation_root_url + \
-                            '/author/' + actorid
-                    else:
-                        # member info is not available
-                        # the user was probably deleted
-                        r['actor_home'] = ''
+                    r.update(self.getUserInfo(actorid))
             review_history.reverse()
 
         except WorkflowException:
@@ -383,20 +388,6 @@ class WorkflowHistoryViewlet(ViewletBase):
 class ContentHistoryViewlet(WorkflowHistoryViewlet):
 
     index = ViewPageTemplateFile("content_history.pt")
-
-    @memoize
-    def getUserInfo(self, userid):
-        mt = getToolByName(self.context, 'portal_membership')
-        info = mt.getMemberInfo(userid)
-        if info is None:
-            return dict(actor_home="",
-                        actor=dict(fullname=userid))
-
-        if not info.get("fullname", None):
-            info["fullname"] = userid
-
-        return dict(actor=info,
-                    actor_home="%s/author/%s" % (self.site_url, userid))
 
     def revisionHistory(self):
         context = aq_inner(self.context)
