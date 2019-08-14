@@ -240,8 +240,8 @@ class PhysicalNavigationBreadcrumbs(BrowserView):
         if IHideFromBreadcrumbs.providedBy(context):
             return base
 
-        if base:
-            item_url = '%s/%s' % (base[-1]['absolute_url'], name)
+        # if base:
+        #     item_url = '%s/%s' % (base[-1]['absolute_url'], name)
 
         rootPath = getNavigationRoot(context)
         itemPath = '/'.join(context.getPhysicalPath())
