@@ -752,9 +752,23 @@ class TestPhysicalBreadCrumbs(TestBaseBreadCrumbs):
         directlyProvides(self.portal.folder1, IHideFromBreadcrumbs)
         newcrumbs = view.breadcrumbs()
         self.assertEqual(len(crumbs) - 1, len(newcrumbs))
-        self.assertEqual(newcrumbs[0]['absolute_url'],
+        self.assertEqual(newcrumbs[-1]['absolute_url'],
                          self.portal.folder1.doc11.absolute_url())
 
+    def testBreadcrumbsFilterByInterface2(self):
+        # Test url of subfolder of hidden folder.
+        self.portal.folder1.invokeFactory('Folder', 'subfolder11')
+        directlyProvides(self.portal.folder1.subfolder11, IHideFromBreadcrumbs)
+        self.portal.folder1.subfolder11.invokeFactory('Folder', 'subfolder111')
+        self.portal.folder1.subfolder11.subfolder111.invokeFactory(
+            'Document', 'doc1111')
+        doc1111 = self.portal.folder1.subfolder11.subfolder111.doc1111
+        view = self.view_class(doc1111, self.request)
+        newcrumbs = view.breadcrumbs()
+        self.assertEqual(
+            newcrumbs[-2]['absolute_url'],
+            self.portal.folder1.subfolder11.subfolder111.absolute_url()
+            )
 
 def test_suite():
     from unittest import TestSuite, makeSuite
