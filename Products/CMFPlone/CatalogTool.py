@@ -324,16 +324,16 @@ class ContentIndexer(object):
             self.counter += 1
 
     def __call__(self, obj, path):
-        if not base_hasattr(obj, 'indexObject'):
+        if not base_hasattr(obj, 'reindexObject'):
             return
-        if not safe_callable(obj.indexObject):
+        if not safe_callable(obj.reindexObject):
             return
         self.counter += 1
         try:
-            obj.indexObject(idxs=self.idxs)
+            obj.reindexObject(idxs=self.idxs)
             self.index_discussion(obj)
         except TypeError:
-            # Catalogs have 'indexObject' as well, but they
+            # Catalogs have 'reindexObject' as well, but they
             # take different args, and will fail
             pass
         except Exception:
