@@ -225,12 +225,9 @@ class PhysicalNavigationBreadcrumbs(BrowserView):
         view = getMultiAdapter((container, request), name='breadcrumbs_view')
         base = tuple(view.breadcrumbs())
 
-        # Some things want to be hidden from the breadcrumbs
+        # Remove hidden objects from breadcrumbs
         if IHideFromBreadcrumbs.providedBy(context):
             return base
-
-        if base:
-            item_url = '%s/%s' % (base[-1]['absolute_url'], name)
 
         rootPath = getNavigationRoot(context)
         itemPath = '/'.join(context.getPhysicalPath())
