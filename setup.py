@@ -10,6 +10,7 @@ setup(
     long_description=open("README.rst").read() + "\n" +
     open("CHANGES.rst").read(),
     classifiers=[
+        "Development Status :: 6 - Mature",
         "Environment :: Web Environment",
         "Framework :: Plone",
         "Framework :: Plone :: 5.1",
@@ -23,7 +24,7 @@ setup(
     keywords='Plone CMF python Zope',
     author='Plone Foundation',
     author_email='plone-developers@lists.sourceforge.net',
-    url='http://plone.org/',
+    url='https://plone.org/',
     license='GPL version 2',
     packages=find_packages(exclude=['ez_setup']),
     namespace_packages=['Products'],
