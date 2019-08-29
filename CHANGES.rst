@@ -24,7 +24,7 @@ New features:
 New features:
 
 
-- - Add ``load_async`` and ``load_defer`` attributes to resource registries
+- Add ``load_async`` and ``load_defer`` attributes to resource registries
   bundle settings. When set, ``<script>`` tags are rendered with
   ``async="async"`` resp. ``defer="defer"`` attributes. You also need to empty
   the ``merge_with`` property of your bundle, because production bundles
@@ -46,7 +46,7 @@ Bug fixes:
 New features:
 
 
-- - Add ``load_async`` and ``load_defer`` attributes to resource registries
+- Add ``load_async`` and ``load_defer`` attributes to resource registries
   bundle settings. When set, ``<script>`` tags are rendered with
   ``async="async"`` resp. ``defer="defer"`` attributes. In production mode, the
   setting from the ``plone`` resp. ``plone-logged-in`` bundles are used for the
@@ -176,8 +176,10 @@ Bug fixes:
   [jensens]
 
 - Fix toolbar on mobile:
+
     - Clicking on menu links, submenus are not shown
     - With a opened submenu, html has huge margins and page content disappears
+
   [nzambello]
 
 - Remove last legacy Javascript ``highlight-searchterms.js``.
