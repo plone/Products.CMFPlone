@@ -8,12 +8,13 @@ Changelog
 
 .. towncrier release notes start
 
-3.2.2 (unreleased)
+3.2.2 (2019-08-29)
 ------------------
 
 Bug fixes:
 
 - Memory leak on getUserInfo [avoinea] (#204)
+
 
 3.2.1 (2019-07-06)
 ------------------
