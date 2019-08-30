@@ -302,11 +302,12 @@ class ContentIndexer(object):
     """An instance of this class can be passed to ZopeFindAndApply
     """
 
-    def __init__(self, catalog, queue_interval=100, log_progress=100):
+    def __init__(self, catalog, queue_interval=100, log_progress=100, idxs=None):
         self.catalog = catalog
         self.queue_interval = queue_interval
         self.log_progress = log_progress
         self.counter = 0
+        self.idxs = idxs
 
     def index_discussion(self, obj):
         # index conversions from plone.app.discussion
@@ -323,16 +324,16 @@ class ContentIndexer(object):
             self.counter += 1
 
     def __call__(self, obj, path):
-        if not base_hasattr(obj, 'indexObject'):
+        if not base_hasattr(obj, 'reindexObject'):
             return
-        if not safe_callable(obj.indexObject):
+        if not safe_callable(obj.reindexObject):
             return
         self.counter += 1
         try:
-            obj.indexObject()
+            obj.reindexObject(idxs=self.idxs)
             self.index_discussion(obj)
         except TypeError:
-            # Catalogs have 'indexObject' as well, but they
+            # Catalogs have 'reindexObject' as well, but they
             # take different args, and will fail
             pass
         except Exception:
@@ -558,7 +559,8 @@ class CatalogTool(PloneBaseTool, BaseTool):
         # This may take a long time.
         self.manage_catalogClear()
         portal = aq_parent(aq_inner(self))
-        index_content = ContentIndexer(aq_inner(self))
+        idxs = list(self.indexes())
+        index_content = ContentIndexer(aq_inner(self), idxs=idxs)
         portal.ZopeFindAndApply(
             portal,
             search_sub=True,
