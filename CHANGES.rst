@@ -9,6 +9,37 @@
 
 .. towncrier release notes start
 
+5.1.6rc1 (2019-09-03)
+---------------------
+
+New features:
+
+
+- Views for title and description. [iham] (#2740)
+
+
+Bug fixes:
+
+
+- Review list portlet showed nothing to review with plone.app.multilingual, As WorkflowTool bypassed languages only for p.a.m<2.x or linguaplone. fixed and now compatible to both lang-bypassing methods.
+  [iham] (#2595)
+- Load legacy resources like comments.js
+  Compile ++plone++static/plone-legacy-compiled.js with correct resource url of comments.js and others, use relative path instead of site url.
+  [ksuess] (#2627)
+- a11y: Added role attribute for portalMessage [nzambello] (#2675)
+- Use correct permission for mail controlpanel form so that Site Administrators can also edit. [fredvd] (#2688)
+- Fixed unstable robot test Scenario: A page is opened to edit in TinyMCE.
+  [maurits] (#2707)
+- Check only once if Products.ATContentTypes is available.
+  [gforcada] (#2765)
+- Don't use // as bundle separators in the resource registry's meta bundle generator. It comments the first css construct in every bundle that follows. [fredvd] (#2820)
+- Always add ``data-default-sort`` attribute to search results.  [maurits] (#2854)
+- Breadcrumbs: consider hidden folders (providing IHideFromBreadcrumbs) when creating urls. [ksuess] (#2935)
+- Avoid changing the modification date when doing catalog clear and rebuild.
+  This happens with a new CMFCore version.
+  [maurits] (#2941)
+
+
 5.1.5 (2019-01-07)
 ------------------
 

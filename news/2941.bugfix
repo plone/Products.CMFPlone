@@ -1,3 +1,0 @@
-Avoid changing the modification date when doing catalog clear and rebuild.
-This happens with a new CMFCore version.
-[maurits]
