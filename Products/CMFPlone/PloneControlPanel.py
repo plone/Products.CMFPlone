@@ -182,10 +182,10 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
         if not name:
             raise ValueError('A name is required.')
 
-        if action is not '':
+        if action != '':
             action = Expression(text=action)
 
-        if condition is not '':
+        if condition != '':
             condition = Expression(text=condition)
 
         if category == '':

@@ -12,6 +12,61 @@ Changelog
 
 .. towncrier release notes start
 
+5.2.0 (2019-07-10)
+------------------
+
+Bug fixes:
+
+
+- Don't activate all sorting tabs when no sort option has been chosen.
+  [gyst, rodfersou, jensens] (#1789)
+- Fix test failures exposed in Python 3.8
+  [pbauer] (#2903)
+
+
+5.2rc5 (2019-06-27)
+-------------------
+
+New features:
+
+
+- Add support for Python 3.8 [pbauer] (#2896)
+
+
+Bug fixes:
+
+
+- Add missing i18n:translate calls
+  [erral] (#2891)
+- Fix login-help layout on mobile.
+  [jensens] (#2893)
+
+
+5.2rc4 (2019-06-20)
+-------------------
+
+New features:
+
+
+- Remove verifydb, it was moved to standalone package zodbverify.
+  [jensens] (#2858)
+
+
+Bug fixes:
+
+
+- If specified in the registry, let the user autologin after the password has been reset (#2439)
+- Allow empty ``default_page`` registry setting
+  [petschki] (#2813)
+- Always add ``data-default-sort`` attribute to search results.  [maurits] (#2854)
+- Fix deprecation warnings.
+  [jensens] (#2862)
+- Use the shared 'Plone test setup' and 'Plone test teardown' keywords in Robot tests.
+  [Rotonen] (#2864)
+- Fix script resource parsing error because of self closing tags.
+  [Netroxen] (#2870)
+
+
 5.2rc3 (2019-05-04)
 -------------------
 
@@ -91,7 +146,7 @@ Bug fixes:
 Breaking changes:
 
 
-- - Factor out all static resources and the ``plone-compile-resources`` script
+- Factor out all static resources and the ``plone-compile-resources`` script
   into plone.staticresources. [thet] (#2542)
 
 
@@ -102,7 +157,7 @@ New features:
   redirects on their site and aliases to content. See
   https://github.com/plone/Products.CMFPlone/issues/1486 [staeff, maurits]
   (#1486)
-- - Added multilevel dropdown navigation [agitator] (#2516)
+- Added multilevel dropdown navigation [agitator] (#2516)
 - No longer mark special links by default. [pbauer] (#2736)
 
 
