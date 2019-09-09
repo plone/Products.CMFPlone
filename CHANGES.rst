@@ -1,21 +1,108 @@
 Changelog
 =========
 
-2.8.2 (unreleased)
+.. You should *NOT* be adding new change log entries to this file.
+   You should create a file in the news directory instead.
+   For helpful instructions, please see:
+   https://github.com/plone/plone.releaser/blob/master/ADD-A-NEWS-ITEM.rst
+
+.. towncrier release notes start
+
+3.2.2 (2019-08-29)
+------------------
+
+Bug fixes:
+
+- Memory leak on getUserInfo [avoinea] (#204)
+
+
+3.2.1 (2019-07-06)
+------------------
+
+Bug fixes:
+
+- fix GlobalStatusMessage type translation (#202)
+  [laulaz]
+
+- fix portal_tabs_view.topLevelTabs called twice
+  [mamico] (#201)
+
+
+3.2.0 (2019-06-27)
+------------------
+
+New features:
+
+
+- Add support for Python 3.8 [pbauer] (#200)
+
+
+3.1.3 (2019-05-01)
+------------------
+
+Bug fixes:
+
+
+- fix ``show_excluded_items`` in combination with ``exclude_from_nav`` setting
+  [petschki] (#190)
+- Remove unused imports (and so a DeprecationWarning). [jensens] (#193)
+- Make navigation (global sections) subclassing easier. [iham] (#194)
+
+
+3.1.2 (2019-03-21)
 ------------------
 
 Breaking changes:
 
-- *add item here*
+
+- Remove the ``plone.navtree`` content provider that was introduced in the context of the Navigation PLIP (https://github.com/plone/Products.CMFPlone/issues/2516) [ale-rt] (#188)
+
+
+3.1.1 (2019-03-03)
+------------------
+
+Bug fixes:
+
+
+- Improve the new navigation and add test coverage [ale-rt] (#181)
+- Provide a proper unique id and a review state class for the first level tabs
+  [ale-rt] (#184)
+- Fix tests since the default nav-depth is now 3 for new sites. [pbauer] (#187)
+
+
+3.1.0 (2019-02-13)
+------------------
+
+New features:
+
+
+- Added multilevel dropdown navigation [agitator] (#2516)
+
+
+Bug fixes:
+
+
+- fix python3 compatibility [petschki] (#176)
+- Fix some issues with the new navigation. (Fixes
+  https://github.com/plone/Products.CMFPlone/issues/2731 and
+  https://github.com/plone/Products.CMFPlone/issues/2730) [pbauer] (#180)
+
+
+3.0.0 (2018-10-30)
+------------------
 
 New features:
 
 - Add test for Revert to Revision action in History Viewlet
   [davilima6]
 
+- Remove ``enable_compression`` method that isn't used in Plone. #1801
+  [tlotze]
+
 Bug fixes:
 
-- Memory leak on getUserInfo [avoinea] (#204)
+- Add template and view arguments support to IBodyClassAdapters (fixes `#158 <https://github.com/plone/plone.app.layout/issues/158>`_).
+  [rodfersou]
 
 - Show document byline for logged-in users. Fixes #160
   [erral]

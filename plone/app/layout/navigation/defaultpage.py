@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from zope.deferredimport import deprecated
 
-
+# remove in Plone 6
 deprecated(
     "Import from Products.CMFPlone instead",
     DefaultPage='Products.CMFPlone.browser.defaultpage:DefaultPage',

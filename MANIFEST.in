@@ -1,6 +1,10 @@
 include *.rst
+include pyproject.toml
 
 graft docs
 graft plone
 
 global-exclude *.pyc
+
+recursive-exclude news *
+exclude news

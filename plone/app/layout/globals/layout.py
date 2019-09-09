@@ -27,6 +27,7 @@ from zope.interface import Interface
 from zope.publisher.browser import BrowserView
 
 import json
+import six
 
 
 TEMPLATE_CLASSES = (
@@ -321,8 +322,11 @@ class LayoutPolicy(BrowserView):
             IBodyClassAdapter
         )
         for name, body_class_adapter in body_class_adapters:
-            extra_classes = body_class_adapter.get_classes() or []
-            if isinstance(extra_classes, basestring):
+            try:
+                extra_classes = body_class_adapter.get_classes(template, view) or []
+            except TypeError:  # This adapter is implemented without arguments
+                extra_classes = body_class_adapter.get_classes() or []
+            if isinstance(extra_classes, six.string_types):
                 extra_classes = extra_classes.split(' ')
             body_classes.update(extra_classes)
 
@@ -337,7 +341,7 @@ class DefaultBodyClasses(object):
         self.context = context
         self.request = request
 
-    def get_classes(self):
+    def get_classes(self, template, view):
         """Default body classes adapter.
         """
         return []
