@@ -13,6 +13,15 @@ Changelog
 
 .. towncrier release notes start
 
+4.3.19rc1 (2019-09-09)
+----------------------
+
+New features:
+
+
+- Add ``X-Content-Type-Options`` and ``X-XSS-Protection`` security headers.
+  [hvelarde] (#2479)
+
 
 4.3.18 (2018-05-29)
 -------------------
