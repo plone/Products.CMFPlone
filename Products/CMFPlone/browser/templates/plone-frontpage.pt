@@ -11,7 +11,7 @@
 
   <div class="hero">
     <h1>Welcome!</h1>
-    <p><a class="context" href="http://plone.com" target="_blank">Learn more about Plone</a></p>
+    <p><a class="context" href="https://plone.com" target="_blank">Learn more about Plone</a></p>
   </div>
 
   <p class="discreet">
@@ -38,12 +38,12 @@ Before you start exploring your newly created Plone site, please do the followin
 <p>After that, we suggest you do one or more of the following:</p>
 
 <ul>
-    <li>Find out <a class="link-plain" href="http://plone.com/features/" target="_blank">What's new in Plone</a>.</li>
-    <li>Read the <a class="link-plain" href="http://docs.plone.org" target="_blank">documentation</a>.</li>
+    <li>Find out <a class="link-plain" href="https://plone.com/features/" target="_blank">What's new in Plone</a>.</li>
+    <li>Read the <a class="link-plain" href="https://docs.plone.org" target="_blank">documentation</a>.</li>
     <li>Follow a <a class="link-plain" href="https://training.plone.org" target="_blank">training</a>.</li>
     <li>Explore the <a class="link-plain" href="https://plone.org/download/add-ons" target="_blank">available add-ons</a> for Plone.</li>
-    <li>Read and/or subscribe to the <a class="link-plain" href="http://plone.org/support" target="_blank">support channels</a>.</li>
-    <li>Find out <a class="link-plain" href="http://plone.com/success-stories" target="_blank">how others are using Plone</a>.</li>
+    <li>Read and/or subscribe to the <a class="link-plain" href="https://plone.org/support" target="_blank">support channels</a>.</li>
+    <li>Find out <a class="link-plain" href="https://plone.com/success-stories/" target="_blank">how others are using Plone</a>.</li>
 </ul>
 
 <h2>Make it your own</h2>
@@ -91,9 +91,9 @@ solutions?
 
 <ul>
     <li>Add your company as a <a class="link-plain"
-        href="http://plone.com/providers" target="_blank">Plone provider</a>.</li>
+        href="https://plone.com/providers/" target="_blank">Plone provider</a>.</li>
     <li>Add a <a class="link-plain"
-        href="http://plone.com/success-stories" target="_blank">success story</a> describing your
+        href="https://plone.com/success-stories/" target="_blank">success story</a> describing your
         deployed project and customer.</li>
 </ul>
 
@@ -105,11 +105,11 @@ language. More about these technologies:
 </p>
 
 <ul>
-<li>The <a class="link-plain" href="http://plone.com" target="_blank">Plone open source
+<li>The <a class="link-plain" href="https://plone.com" target="_blank">Plone open source
     Content Management System</a> web site for evaluators and decision makers.</li>
-<li>The <a class="link-plain" href="http://plone.org" target="_blank">Plone community
+<li>The <a class="link-plain" href="https://plone.org" target="_blank">Plone community
     </a> web site for developers.</li>
-<li>The <a class="link-plain" href="http://www.python.org" target="_blank">Python
+<li>The <a class="link-plain" href="https://www.python.org" target="_blank">Python
     programming language</a> web site.</li>
 </ul>
 
