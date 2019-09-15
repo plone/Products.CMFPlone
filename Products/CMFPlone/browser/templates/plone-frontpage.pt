@@ -55,7 +55,7 @@ Before you start exploring your newly created Plone site, please do the followin
     Try out a different theme, either pick from
     <a href="@@theming-controlpanel" target="_blank">the included ones</a>, or one of the
     <a class="link-plain"
-       href="http://plone.org/products/" target="_blank">available themes
+       href="https://plone.org/download/add-ons" target="_blank">available themes
        from plone.org</a>. <span class="discreet">(Make sure the theme is
        compatible with the version of Plone you are currently using)</span>
     </li>
