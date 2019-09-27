@@ -13,6 +13,9 @@ Changelog
 
 Bug fixes:
 
+- Add missing translation for screen readers
+  [laulaz]
+
 - Memory leak on getUserInfo [avoinea] (#204)
 
 
