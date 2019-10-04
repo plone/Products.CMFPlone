@@ -9,6 +9,7 @@ from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.interfaces import ISecuritySchema
 from Products.CMFPlone.interfaces.syndication import IFeedSettings
 from Products.CMFPlone.interfaces.syndication import ISiteSyndicationSettings
+from Products.CMFPlone.utils import safe_bytes
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.component import getMultiAdapter
 from zope.component import getUtility
@@ -88,9 +89,10 @@ class RSSViewlet(ViewletBase):
                 term = vocabulary.getTerm(typ)
             except LookupError:
                 continue
+
             urls.append({
                 'title': '%s - %s' % (
-                    obj.Title(), term.title),
+                    obj.Title(), safe_bytes(term.title)),
                 'url': obj.absolute_url() + '/' + term.value})
         return urls
 
