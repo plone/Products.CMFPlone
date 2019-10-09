@@ -33,3 +33,8 @@ Now enter some non-ascii text
     >>> text = manager.render()
     >>> site_settings.webstats_js in text
     True
+
+Check if the div sorrounding the script is present
+
+    >>> 'id="plone-analytics"' in text
+    True
