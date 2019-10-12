@@ -8,6 +8,23 @@ Changelog
 
 .. towncrier release notes start
 
+3.3.0 (2019-10-12)
+------------------
+
+New features:
+
+
+- Add a sorrounding div to the webstats js. Fixes #157
+  [erral] (#157)
+
+
+Bug fixes:
+
+
+- Fix memory leak on getUserInfo [avoinea] (#204) (#210)
+- Fix Unicode Error in folders with special chars. See #215 [erral] (#215)
+
+
 3.2.2 (2019-08-29)
 ------------------
 
