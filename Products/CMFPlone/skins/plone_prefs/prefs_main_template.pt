@@ -1,4 +1,4 @@
-<metal:page define-macro="master">
+<metal:page define-macro="master" i18n:domain="plone">
   <tal:block metal:use-macro="context/@@main_template/macros/master">
 
     <metal:block fill-slot="top_slot">
