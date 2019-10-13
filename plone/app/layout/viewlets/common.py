@@ -281,12 +281,20 @@ class GlobalSectionsViewlet(ViewletBase):
             })
             if 'review_state' not in entry:
                 entry['review_state'] = None
+
             if 'title' not in entry:
                 entry['title'] = (
                     tab.get('name')
                     or tab.get('description')
                     or tab['id']
                 )
+            else:
+                # translate Home tab
+                entry['title'] = translate(
+                    entry['title'],
+                    domain='plone',
+                    context=self.request)
+
             entry['title'] = safe_unicode(entry['title'])
             ret[navtree_path].append(entry)
 
