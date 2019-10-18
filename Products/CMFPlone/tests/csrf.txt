@@ -97,7 +97,7 @@ be able to add new users himself if he wishes so:
 
   >>> browser.getControl('Full Name').value = 'John Doe'
   >>> browser.getControl('User Name').value = 'john'
-  >>> browser.getControl('E-mail').value = 'john@foo-security.com'
+  >>> browser.getControl('Email').value = 'john@foo-security.com'
   >>> browser.getControl('Password').value = 'y0d4Wg'
   >>> browser.getControl('Confirm password').value = 'y0d4Wg'
   >>> browser.getControl('Register').click()
@@ -122,7 +122,7 @@ with the personal preferences:
   >>> browser.getControl('Log in').click()
   >>> browser.open('http://nohost/plone/@@personal-information')
   >>> browser.getControl('Full Name').value = 'John Doe'
-  >>> browser.getControl('E-mail').value = 'john@foo-security.com'
+  >>> browser.getControl('Email').value = 'john@foo-security.com'
   >>> browser.getControl('Save').click()
   >>> browser.contents
   '...Info...Changes saved...'
@@ -134,7 +134,7 @@ existing invalid, in which case submitting should yield an error:
   >>> browser.goBack()
   >>> browser.getControl(name='_authenticator', index=0).value = 'invalid!'
   >>> browser.getControl('Full Name').value = 'John Doe'
-  >>> browser.getControl('E-mail').value = 'john@foo-security.com'
+  >>> browser.getControl('Email').value = 'john@foo-security.com'
   >>> browser.getControl('Save').click()
   Traceback (most recent call last):
   ...
@@ -173,7 +173,7 @@ as its z3cform the portrait gets always modified because is IObject:
   >>> browser.getControl('Log in').click()
   >>> browser.open('http://nohost/plone/@@user-information?userid=%s' % SITE_OWNER_NAME)
   >>> browser.getControl('Full Name').value = 'John Doe'
-  >>> browser.getControl('E-mail').value = 'john@foo-security.com'
+  >>> browser.getControl('Email').value = 'john@foo-security.com'
   >>> browser.getControl('Save').click()
   >>> browser.contents
   '...Info...Changes saved...'
@@ -181,7 +181,7 @@ as its z3cform the portrait gets always modified because is IObject:
   >>> browser.goBack()
   >>> browser.getControl(name='_authenticator', index=0).value = 'invalid!'
   >>> browser.getControl('Full Name').value = 'John Doe'
-  >>> browser.getControl('E-mail').value = 'john.doe@foo-security.net'
+  >>> browser.getControl('Email').value = 'john.doe@foo-security.net'
   >>> browser.getControl('Save').click()
   Traceback (most recent call last):
   ...
@@ -203,7 +203,7 @@ anymore (which at the same time tests the security control panel):
   >>> browser.getLink('Users and Groups').click()
   >>> browser.getLink('Add New User').click()
   >>> browser.getControl('User Name').value = 'johnny'
-  >>> browser.getControl('E-mail').value = 'john@foo-security.com'
+  >>> browser.getControl('Email').value = 'john@foo-security.com'
   >>> browser.getControl('Password').value = 'y0d4Wg!'
   >>> browser.getControl('Confirm password').value = 'y0d4Wg!'
   >>> browser.getControl('Register').click()

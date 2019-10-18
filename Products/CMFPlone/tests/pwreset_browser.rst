@@ -126,7 +126,7 @@ Now register a new user:
   'http://nohost/plone/@@register'
 
   >>> browser.getControl('User Name').value = 'jsmith'
-  >>> browser.getControl('E-mail').value = 'jsmith@example.com'
+  >>> browser.getControl('Email').value = 'jsmith@example.com'
   >>> browser.getControl('Password').value = 'secret'
   >>> browser.getControl('Confirm password').value = 'secret'
   >>> browser.getControl('Register').click()
@@ -264,7 +264,7 @@ We navigate to the Users Overview page and register a new user:
   'http://nohost/plone/@@new-user'
 
   >>> browser.getControl('User Name').value = 'wsmith'
-  >>> browser.getControl('E-mail').value = 'wsmith@example.com'
+  >>> browser.getControl('Email').value = 'wsmith@example.com'
   >>> browser.getControl('Password').value = 'supersecret'
   >>> browser.getControl('Confirm password').value = 'supersecret'
   >>> browser.getControl('Register').click()
@@ -366,7 +366,7 @@ Log out again and then join:
   True
   >>> browser.open('http://nohost/plone/@@register')
   >>> browser.getControl('User Name').value = 'bsmith'
-  >>> browser.getControl('E-mail').value = 'bsmith@example.com'
+  >>> browser.getControl('Email').value = 'bsmith@example.com'
 
 We shouldn't be able to fill in our password:
 
@@ -447,7 +447,7 @@ We navigate to the Users Overview page and register a new user:
   'http://nohost/plone/@@new-user'
 
   >>> browser.getControl('User Name').value = 'wwwsmith'
-  >>> browser.getControl('E-mail').value = 'wwwsmith@example.com'
+  >>> browser.getControl('Email').value = 'wwwsmith@example.com'
   >>> browser.getControl('Password').value = 'secret'
   >>> browser.getControl('Confirm password').value = 'secret'
   >>> browser.getControl('Send a confirmation mail with a link to set the password').selected = True
