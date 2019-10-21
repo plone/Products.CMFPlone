@@ -8,6 +8,15 @@ Changelog
 
 .. towncrier release notes start
 
+3.3.1 (2019-10-21)
+------------------
+
+Bug fixes:
+
+
+- Fix Home tab localization [vincentfretin] (#222)
+
+
 3.3.0 (2019-10-12)
 ------------------
 
