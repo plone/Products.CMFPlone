@@ -22,7 +22,7 @@
                   ajax_include_head request/ajax_include_head | nothing;
                   dummy python:request.RESPONSE.setHeader('X-UA-Compatible', 'IE=edge');
                   dummy python:request.RESPONSE.setHeader('X-Content-Type-Options', 'nosniff');
-                  dummy python:request.RESPONSE.setHeader('X-XSS-Protection', '1; mode=block');"
+                  dummy python:request.RESPONSE.setHeader('X-XSS-Protection', '1;; mode=block');"
       tal:attributes="lang lang;
                       xml:lang lang">
 
