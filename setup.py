@@ -2,7 +2,7 @@
 from setuptools import setup
 from setuptools import find_packages
 
-version = '5.2rc6.dev0'
+version = '5.2.1.dev0'
 
 
 setup(
@@ -12,6 +12,7 @@ setup(
     long_description=open("README.rst").read() + "\n" +
     open("CHANGES.rst").read(),
     classifiers=[
+        "Development Status :: 5 - Production/Stable",
         "Environment :: Web Environment",
         "Framework :: Plone",
         "Framework :: Plone :: 5.2",
@@ -23,6 +24,7 @@ setup(
         "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
         "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
     ],
     keywords='Plone CMF Python Zope CMS Webapplication',
