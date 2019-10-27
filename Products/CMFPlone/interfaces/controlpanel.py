@@ -1265,6 +1265,7 @@ class ITypesSchema(Interface):
             u'Document',
             u'Event',
             u'News Item',
+            u'Collection',
         ],
         value_type=schema.TextLine()
     )

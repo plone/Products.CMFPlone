@@ -9,7 +9,7 @@
 
  <div id="login-form">
 
-  <h1>Failsafe Login</h1>
+  <h1 i18n:translate="">Failsafe Login</h1>
 
   <div class="portalMessage error pat-cookietrigger" style="display:none">
       <strong i18n:translate="">
