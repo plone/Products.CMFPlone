@@ -1,0 +1,2 @@
+fix creation of Plone site not adding default content types if example content not selected by user.
+[ericof]
