@@ -1,0 +1,2 @@
+fix creation of Plone site not adding default Dexterity content types if example content not explicitily selected by user.
+[ericof]
