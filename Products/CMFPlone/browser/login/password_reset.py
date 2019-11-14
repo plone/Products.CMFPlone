@@ -117,6 +117,9 @@ class PasswordResetView(BrowserView):
         return
 
     def _reset_password(self, pw_tool, randomstring):
+        state = self.getErrors()
+        if state:
+            return self.form()
         userid = self.request.form.get('userid')
         password = self.request.form.get('password')
         try:
