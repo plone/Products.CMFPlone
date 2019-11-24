@@ -17,6 +17,7 @@ from zope.lifecycleevent import ObjectCreatedEvent
 
 _TOOL_ID = 'portal_setup'
 _DEFAULT_PROFILE = 'Products.CMFPlone:plone'
+_TYPES_PROFILE = 'plone.app.contenttypes:default'
 _CONTENT_PROFILE = 'plone.app.contenttypes:plone-content'
 
 # A little hint for PloneTestCase
@@ -162,9 +163,11 @@ def addPloneSite(context, site_id, title='Plone site', description='',
     reg['plone.default_language'] = default_language
     reg['plone.available_languages'] = [default_language]
 
-    if setup_content:
-        setup_tool.runAllImportStepsFromProfile(
-            'profile-%s' % content_profile_id)
+    # Install default content types profile if user do not select "example content"
+    # during site creation.
+    content_types_profile = content_profile_id if setup_content else _TYPES_PROFILE
+
+    setup_tool.runAllImportStepsFromProfile('profile-{0}'.format(content_types_profile))
 
     props = dict(
         title=title,
