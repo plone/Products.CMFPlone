@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from plone.app.layout.testing import INTEGRATION_TESTING 
+from plone.app.layout.navigation.interfaces import INavigationRoot
+from plone.app.layout.testing import INTEGRATION_TESTING
 from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing.helpers import logout
@@ -7,6 +8,7 @@ from plone.locking.interfaces import ILockable
 from Products.CMFDynamicViewFTI.interfaces import IBrowserDefault
 from Products.CMFPlone.interfaces import INonStructuralFolder
 from Products.CMFPlone.utils import _createObjectByType
+from zope.interface import alsoProvides
 from zope.interface import directlyProvides
 
 import unittest
@@ -220,6 +222,14 @@ class TestContextStateView(unittest.TestCase):
         self.assertEqual(self.dview.is_portal_root(), False)
         self.assertEqual(self.sview.is_portal_root(), False)
         self.assertEqual(self.pview.is_portal_root(), True)
+
+    def test_is_navigation_root(self):
+        alsoProvides(self.folder, INavigationRoot)
+        self.assertEqual(self.fview.is_navigation_root(), True)
+        self.assertEqual(self.dview.is_navigation_root(), True)
+        self.assertEqual(self.sview.is_navigation_root(), False)
+        self.assertEqual(self.pview.is_navigation_root(), True)
+
 
     def test_is_editable(self):
         self.assertEqual(self.dview.is_editable(), True)
