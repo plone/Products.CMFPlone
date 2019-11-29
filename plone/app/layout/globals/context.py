@@ -3,6 +3,7 @@ from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
 from .interfaces import IContextState
+from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.memoize.view import memoize
 from plone.portlets.interfaces import ILocalPortletAssignable
 from plone.registry.interfaces import IRegistry
@@ -198,6 +199,14 @@ class ContextState(BrowserView):
         return aq_base(context) is aq_base(portal) or \
             (self.is_default_page() and
              aq_base(aq_parent(context)) is aq_base(portal))
+
+    @memoize
+    def is_navigation_root(self):
+        context = aq_inner(self.context)
+        return INavigationRoot.providedBy(context) or (
+            self.is_default_page()
+            and INavigationRoot.providedBy(aq_parent(context))
+        )
 
     @memoize
     def is_editable(self):
