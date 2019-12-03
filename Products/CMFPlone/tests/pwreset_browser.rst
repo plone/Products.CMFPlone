@@ -343,6 +343,19 @@ What we do here is quite similiar to 1A, but instead of typing in the
 password ourselves, we will be sent an e-mail with the URL to set our
 password.
 
+We will setup an adapter to capture IUserLoggedInEvent events:
+
+  >>> from zope.component import adapter
+  >>> from Products.PluggableAuthService.interfaces.events import IUserLoggedInEvent
+  >>> from zope.component import getGlobalSiteManager
+  >>> events_fired = []
+  >>> @adapter(IUserLoggedInEvent)
+  ... def got_user_logged_in_event(event):
+  ...     events_fired.append(event)
+  >>> gsm = getGlobalSiteManager()
+  >>> gsm.registerHandler(got_user_logged_in_event)
+
+
 First off, we need to set ``validate_mail`` to False:
 
   >>> browser.open('http://nohost/plone/login')
@@ -389,6 +402,10 @@ We should have received an e-mail at this point:
   3
   >>> msg = str(mailhost.messages[-1])
 
+Let's clear the events storage:
+
+  >>> events_fired = []
+
 Now that we have the message, we want to look at its contents, and
 then we extract the address that lets us reset our password:
 
@@ -414,6 +431,13 @@ Now that we have the address, we will reset our password:
   >>> browser.getControl("Set my password").click()
   >>> "Password reset successful, you are logged in now!" in browser.contents
   True
+
+User is logged in, let's check the event fired for the correct user:
+
+  >>> len(events_fired) == 1
+  True
+  >>> events_fired[0].principal
+  <PloneUser 'bsmith'>
 
 Log out again:
 
