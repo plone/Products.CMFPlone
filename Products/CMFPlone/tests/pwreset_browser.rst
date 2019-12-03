@@ -445,6 +445,10 @@ Log out again:
   >>> "You are now logged out" in browser.contents
   True
 
+Remove got_user_logged_in_event registration:
+
+  >> gsm.unregisterHandler(got_user_logged_in_event)
+
 
 2B. Administrator adds user with email validation enabled
 ---------------------------------------------------------
