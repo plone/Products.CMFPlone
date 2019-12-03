@@ -1,0 +1,2 @@
+Correctly fire events when user autologin after the password has been reset.
+[ericof]
