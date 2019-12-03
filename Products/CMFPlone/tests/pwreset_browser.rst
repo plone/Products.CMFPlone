@@ -447,7 +447,8 @@ Log out again:
 
 Remove got_user_logged_in_event registration:
 
-  >> gsm.unregisterHandler(got_user_logged_in_event)
+  >>> gsm.unregisterHandler(got_user_logged_in_event)
+  True
 
 
 2B. Administrator adds user with email validation enabled
