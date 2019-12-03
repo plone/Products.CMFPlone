@@ -90,6 +90,7 @@ class PasswordResetView(BrowserView):
 
     def _auto_login(self, userid, password):
         aclu = getToolByName(self.context, 'acl_users')
+        membership_tool = getToolByName(self.context, 'portal_membership')
         for name, plugin in aclu.plugins.listPlugins(ICredentialsUpdatePlugin):
             plugin.updateCredentials(
                 self.request,
@@ -97,7 +98,7 @@ class PasswordResetView(BrowserView):
                 userid,
                 password
             )
-        user = getSecurityManager().getUser()
+        user = membership_tool.getMemberById(userid).getUser()
         login_time = user.getProperty('login_time', None)
         if login_time is None:
             notify(UserInitialLoginInEvent(user))
