@@ -10,6 +10,7 @@ from Products.CMFPlone.interfaces import IPasswordResetToolView
 from Products.CMFPlone.interfaces.controlpanel import IMailSchema
 from Products.CMFPlone.PasswordResetTool import ExpiredRequestError
 from Products.CMFPlone.PasswordResetTool import InvalidRequestError
+from Products.CMFPlone.RegistrationTool import get_member_by_login_name
 from Products.CMFPlone.utils import safe_unicode
 from Products.CMFPlone.utils import safeToInt
 from Products.Five import BrowserView
@@ -89,8 +90,8 @@ class PasswordResetView(BrowserView):
     subpath = None
 
     def _auto_login(self, userid, password):
-        aclu = getToolByName(self.context, 'acl_users')
-        membership_tool = getToolByName(self.context, 'portal_membership')
+        context = self.context
+        aclu = getToolByName(context, 'acl_users')
         for name, plugin in aclu.plugins.listPlugins(ICredentialsUpdatePlugin):
             plugin.updateCredentials(
                 self.request,
@@ -98,7 +99,16 @@ class PasswordResetView(BrowserView):
                 userid,
                 password
             )
-        user = membership_tool.getMemberById(userid).getUser()
+
+        member = get_member_by_login_name(context, userid, False)
+
+        if member:
+            user = member.getUser()
+        else:
+            # Fallback in case we cannot find a user
+            # with the given userid
+            user = getSecurityManager().getUser()
+
         login_time = user.getProperty('login_time', None)
         if login_time is None:
             notify(UserInitialLoginInEvent(user))
