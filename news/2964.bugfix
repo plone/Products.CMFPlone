@@ -1,0 +1,2 @@
+Removed broken ``X-XSS-Protection`` header.
+[maurits]

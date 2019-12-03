@@ -3,7 +3,9 @@ import unittest
 import robotsuite
 from plone.testing import layered
 
+from Products.CMFPlone.testing import CLASSIC_THEME_ROBOT_TESTING
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_ROBOT_TESTING
+from Products.CMFPlone.testing import UNSTYLED_THEME_ROBOT_TESTING
 
 
 def test_suite():
@@ -15,10 +17,16 @@ def test_suite():
         if doc.endswith('.robot') and doc.startswith('test_')
     ]
     for test in robot_tests:
+        if 'unstyled' in test:
+            layer = UNSTYLED_THEME_ROBOT_TESTING
+        elif 'classic' in test:
+            layer = CLASSIC_THEME_ROBOT_TESTING
+        else:
+            layer = PRODUCTS_CMFPLONE_ROBOT_TESTING
         suite.addTests([
             layered(
                 robotsuite.RobotTestSuite(test),
-                layer=PRODUCTS_CMFPLONE_ROBOT_TESTING
+                layer=layer
             ),
         ])
     return suite

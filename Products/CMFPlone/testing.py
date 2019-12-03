@@ -50,7 +50,33 @@ class ProductsCMFPloneLayer(PloneSandboxLayer):
         portal.manage_delObjects(['test-folder'])
 
 
+class UnstyledThemeLayer(ProductsCMFPloneLayer):
+
+    def setUpPloneSite(self, portal):
+        super(UnstyledThemeLayer, self).setUpPloneSite(portal)
+        portal.portal_skins.default_skin = 'Plone Default'
+
+
+class ClassicThemeLayer(ProductsCMFPloneLayer):
+
+    def setUpZope(self, app, configurationContext):
+        super(ClassicThemeLayer, self).setUpZope(app, configurationContext)
+        import plonetheme.classic
+        xmlconfig.file(
+            'configure.zcml',
+            plonetheme.classic,
+            context=configurationContext
+        )
+
+    def setUpPloneSite(self, portal):
+        super(ClassicThemeLayer, self).setUpPloneSite(portal)
+        portal.portal_quickinstaller.installProducts(['plonetheme.classic'])
+        portal.portal_skins.default_skin = 'Plone Classic Theme'
+
+
 PRODUCTS_CMFPLONE_FIXTURE = ProductsCMFPloneLayer()
+UNSTYLED_THEME_FIXTURE = UnstyledThemeLayer()
+CLASSIC_THEME_FIXTURE = ClassicThemeLayer()
 
 PRODUCTS_CMFPLONE_INTEGRATION_TESTING = IntegrationTesting(
     bases=(PRODUCTS_CMFPLONE_FIXTURE,),
@@ -72,6 +98,20 @@ PRODUCTS_CMFPLONE_ROBOT_TESTING = FunctionalTesting(
            PRODUCTS_CMFPLONE_ROBOT_REMOTE_LIBRARY_FIXTURE,
            z2.ZSERVER_FIXTURE),
     name="CMFPloneLayer:Acceptance"
+)
+
+UNSTYLED_THEME_ROBOT_TESTING = FunctionalTesting(
+    bases=(UNSTYLED_THEME_FIXTURE,
+           PRODUCTS_CMFPLONE_ROBOT_REMOTE_LIBRARY_FIXTURE,
+           z2.ZSERVER_FIXTURE),
+    name="UnstyledThemingLayer:Acceptance"
+)
+
+CLASSIC_THEME_ROBOT_TESTING = FunctionalTesting(
+    bases=(CLASSIC_THEME_FIXTURE,
+           PRODUCTS_CMFPLONE_ROBOT_REMOTE_LIBRARY_FIXTURE,
+           z2.ZSERVER_FIXTURE),
+    name="ClassicThemingLayer:Acceptance"
 )
 
 optionflags = (doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE)
