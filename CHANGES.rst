@@ -8,6 +8,16 @@ Changelog
 
 .. towncrier release notes start
 
+3.4.0 (2019-12-10)
+------------------
+
+New features:
+
+
+- Add is_navigation_root check in plone_context_state view
+  [erral] (#225)
+
+
 3.3.1 (2019-10-21)
 ------------------
 
