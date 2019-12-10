@@ -1,0 +1,2 @@
+plone.app.discussion introduces an additional workflow. This change takes the additional workflow states into account.
+[ksuess]
