@@ -72,12 +72,47 @@ class PloneSite(Container, SkinnableObjectManager, UniqueObject):
     def __getattr__(self, name):
         if not name:
             raise AttributeError(name)
+        # if name[0] != '_':
+        #     print('PloneSite.__getattr__', self, name)
         try:
             # Try DX
             return super(PloneSite, self).__getattr__(name)
         except AttributeError:
             # Check portal_skins
             return SkinnableObjectManager.__getattr__(self, name)
+
+
+    # def __getattr__(self, name):
+    #     # if name[0] != '_':
+    #     #     print('Container.__getattr__', self, name)
+    #     try:
+    #         return DexterityContent.__getattr__(self, name)
+    #     except AttributeError:
+    #         pass
+
+    #     # Be specific about the implementation we use
+    #     return CMFOrderedBTreeFolderBase.__getattr__(self, name)
+
+    # def __delattr__(self, name):
+    #     try:
+    #         super(Container, self).__delattr__(name)
+    #     except AttributeError:  # delete the item instead
+    #         del self[name]
+
+    # def __setattr__(self, name, value):
+    #     # If we have an existing attribute, just set it.
+    #     # We'll check this first, so we don't check the tree unneeded.
+    #     if name in self.__dict__:
+    #         super(Container, self).__setattr__(name, value)
+
+    #     # if we have a n item, set that
+    #     elif '_tree' in self.__dict__ and name in self:
+    #         del self[name]
+    #         self[name] = value
+
+    #     # else we'll set an attribute.
+    #     else:
+    #         super(Container, self).__setattr__(name, value)
 
     # Removes the 'Components Folder'
 
