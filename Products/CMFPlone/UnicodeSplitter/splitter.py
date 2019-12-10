@@ -13,6 +13,7 @@ from Products.CMFPlone.UnicodeSplitter.config import rx_L
 from Products.CMFPlone.UnicodeSplitter.config import rx_U
 from Products.CMFPlone.UnicodeSplitter.config import rxGlob_L
 from Products.CMFPlone.UnicodeSplitter.config import rxGlob_U
+from Products.CMFPlone.utils import safe_nativestring
 from Products.ZCTextIndex.interfaces import ISplitter
 from Products.ZCTextIndex.PipelineFactory import element_factory
 from six.moves import range
@@ -48,7 +49,7 @@ def process_str_post(s, enc='utf-8'):
     except UnicodeDecodeError:
         return s.replace("?", "").replace("*", "")
     try:
-        return uni.replace(u"?", u"").replace(u"*", u"").encode(enc, "strict")
+        return safe_nativestring(uni.replace(u"?", u"").replace(u"*", u""), enc)
     except UnicodeEncodeError:
         return s.replace("?", "").replace("*", "")
 
@@ -68,7 +69,7 @@ def process_str(s, enc='utf-8'):
     except UnicodeDecodeError:
         return rx_L.findall(s)
     bigrams = process_unicode(uni)
-    return [x.encode(enc, "strict") for x in bigrams]
+    return [safe_nativestring(x, enc) for x in bigrams]
 
 
 def process_str_glob(s, enc='utf-8'):
@@ -86,7 +87,7 @@ def process_str_glob(s, enc='utf-8'):
     except UnicodeDecodeError:
         return rxGlob_L.findall(s)
     bigrams = process_unicode_glob(uni)
-    return [x.encode(enc, "strict") for x in bigrams]
+    return [safe_nativestring(x, enc) for x in bigrams]
 
 
 def process_unicode(uni):
@@ -178,7 +179,7 @@ class CaseNormalizer(object):
             except (UnicodeDecodeError, TypeError):
                 result.append(s.lower())
             else:
-                result.append(s.lower().encode(enc))
+                result.append(safe_nativestring(s.lower(), enc))
 
         return result
 
