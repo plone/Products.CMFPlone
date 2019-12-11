@@ -60,7 +60,7 @@ PORTAL_SKINS_TOOL_ID = 'portal_skins'
 
 
 @implementer(IPloneSiteRoot, INavigationRoot, ISiteRoot, ISyndicatable, IObjectManagerSite)
-class PloneSite(Container, SkinnableObjectManager, UniqueObject):
+class PloneSite(SkinnableObjectManager, Container, UniqueObject):
     """ The Plone site object. """
 
     security = ClassSecurityInfo()
@@ -70,16 +70,20 @@ class PloneSite(Container, SkinnableObjectManager, UniqueObject):
     _checkId = SkinnableObjectManager._checkId
 
     def __getattr__(self, name):
-        if not name:
-            raise AttributeError(name)
-        # if name[0] != '_':
-        #     print('PloneSite.__getattr__', self, name)
         try:
-            # Try DX
-            return super(PloneSite, self).__getattr__(name)
-        except AttributeError:
-            # Check portal_skins
             return SkinnableObjectManager.__getattr__(self, name)
+        except AttributeError:
+            return Container.__getattr__(self, name)
+        # if not name:
+        #     raise AttributeError(name)
+        # # if name[0] != '_':
+        # #     print('PloneSite.__getattr__', self, name)
+        # try:
+        #     # Try DX
+        #     return super(PloneSite, self).__getattr__(name)
+        # except AttributeError:
+        #     # Check portal_skins
+        #     return SkinnableObjectManager.__getattr__(self, name)
 
 
     # def __getattr__(self, name):
