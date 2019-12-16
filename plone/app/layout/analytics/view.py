@@ -20,7 +20,6 @@ class AnalyticsViewlet(BrowserView):
         self.request = request
         self.view = view
         self.manager = manager
-        self.webstats_js = ''
 
     def update(self):
         """render the webstats snippet"""
@@ -31,4 +30,4 @@ class AnalyticsViewlet(BrowserView):
             if site_settings.webstats_js:
                 self.webstats_js = site_settings.webstats_js
         except AttributeError:
-            pass
+            self.webstats_js = u""

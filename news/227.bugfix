@@ -1,0 +1,1 @@
+Restore compatibility with old code that was inheriting from this class and overriding the __init__ method
