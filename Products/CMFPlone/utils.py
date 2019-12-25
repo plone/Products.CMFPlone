@@ -12,7 +12,6 @@ from Acquisition import aq_parent
 from App.Common import package_home
 from App.Dialogs import MessageDialog
 from App.ImageFile import ImageFile
-from cgi import escape
 from DateTime import DateTime
 from DateTime.interfaces import DateTimeError
 from OFS.CopySupport import CopyError
@@ -57,6 +56,10 @@ import transaction
 import warnings
 import zope.interface
 
+try:
+    from html import escape
+except ImportError:
+    from cgi import escape
 
 try:
     from types import ClassType

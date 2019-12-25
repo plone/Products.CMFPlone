@@ -3,7 +3,7 @@ About Plone
 
 Plone is a mature, secure and user-friendly Content Management System (CMS).
 
-Plone - and it's OpenSource community behind - aggregates more than 15 years experience in content-management.
+Plone - and its OpenSource community behind - aggregates more than 15 years experience in content-management.
 It offers all major features expected by a modern CMS out-of-the-box.
 
 Lots of customizations can be made trough-the-web, such as creating content-types, themes, workflows and much more.

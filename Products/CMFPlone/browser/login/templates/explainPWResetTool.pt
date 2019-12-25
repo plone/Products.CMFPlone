@@ -19,12 +19,12 @@
   </p>
   <form action="#" method="post"
         tal:attributes="action request/getURL">
-    <p>Set timeout interval to
-      <input type="text" name="timeout_days" value="${view/timeout_days}" size="10"
+    <p i18n:translate="">Set timeout interval to
+      <input i18n:name="number" type="text" name="timeout_days" value="${view/timeout_days}" size="10"
              style="display: inline; width: auto;"/> days.</p>
 
   <h3 i18n:translate="title_username_check">Username Check</h3>
-  <p>
+  <p i18n:translate="">
     If "username check" is on, users following the confirmation link from their email
     will be required to re-enter their username. This is to combat anonymous email
     sniffing attacks and it is <strong>highly recommended</strong> that you leave
@@ -46,7 +46,3 @@
 
 </body>
 </html>
-
-
-
-
