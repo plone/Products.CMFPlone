@@ -123,6 +123,16 @@ class PloneSite(Container, SkinnableObjectManager, UniqueObject):
         components.__parent__ = self
         self.setSiteManager(components)
 
+    def __delattr__(self, name):
+        # because CMFEditions does del self.portal.portal_purgepolicy
+        try:
+            super().__delattr__(name)
+        except AttributeError:
+            try:
+                del self[name]
+            except KeyError:
+                raise AttributeError(name)
+
     # From PortalObjectBase
     def getSkinsFolderName(self):
         return PORTAL_SKINS_TOOL_ID
