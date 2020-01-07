@@ -14,7 +14,11 @@
 
         <metal:notfound tal:condition="python:err_type == 'NotFound'">
 
-            <tal:redirect define="redirection_view nocall:view/@@plone_redirector_view">
+            <tal:redirect define="redirection_view context/@@plone_redirector_view">
+
+                <tal:redirect define="redirect_success redirection_view/attempt_redirect|nothing" replace="nothing">
+                    If the attempt succeeds, we won't see any more of this template
+                </tal:redirect>
 
                 <h1 class="documentFirstHeading"
                     i18n:translate="heading_site_there_seems_to_be_an_error">
