@@ -409,14 +409,8 @@ class ResourceRegistryControlPanelView(RequireJsView):
         base_url = self.context.absolute_url()
         resources = self.get_resources()
 
-        try:
-            less_url = self.registry['plone.resources.lessc']
-        except KeyError:
-            less_url = '++plone++static/components/less/dist/less-1.7.4.min.js'
-        try:
-            rjs_url = resources['rjs'].js
-        except KeyError:
-            rjs_url = '++plone++static/components/r.js/dist/r.js'
+        less_url = self.registry['plone.resources.lessc']
+        rjs_url = self.registry['plone.resources.rjs']
 
         data = {
             'development': self.registry['plone.resources.development'],
