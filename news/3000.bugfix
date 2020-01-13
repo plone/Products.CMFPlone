@@ -1,2 +1,2 @@
-plone.app.discussion introduces an additional workflow. This change takes the additional workflow states into account.
+plone.app.discussion extends the review workflow for moderation of comments. This change takes the additional workflow states into account.
 [ksuess]
