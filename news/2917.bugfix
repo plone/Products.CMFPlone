@@ -1,2 +1,0 @@
-Fix: PasswordResetView::getErrors is called, this ensures password is validated through RegistrationTool before attempting to reset password.
-[nazrulword]
