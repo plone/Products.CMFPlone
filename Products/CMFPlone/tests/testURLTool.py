@@ -56,6 +56,7 @@ class TestURLTool(unittest.TestCase):
         self.assertTrue(iURLiP('https://www.foobar.com/bar/foo/folder'))
         self.assertFalse(iURLiP('http://www.foobar.com:8080/bar/foo/folder'))
         self.assertFalse(iURLiP('http://www.foobar.com/bar'))
+        self.assertTrue(iURLiP('//www.foobar.com/bar/foo'))
         self.assertFalse(iURLiP('/images'))
         self.assertTrue(iURLiP('/bar/foo/foo'))
 
@@ -124,6 +125,15 @@ class TestURLTool(unittest.TestCase):
         url_tool = self._makeOne()
         iURLiP = url_tool.isURLInPortal
         self.assertFalse(iURLiP('\\\\www.example.com'))
+
+    def test_escape(self):
+        url_tool = self._makeOne()
+        iURLiP = url_tool.isURLInPortal
+        self.assertFalse(iURLiP('\/\/www.example.com'))
+        self.assertFalse(iURLiP('\%2F\%2Fwww.example.com'))
+        self.assertFalse(iURLiP('\%2f\%2fwww.example.com'))
+        self.assertFalse(iURLiP('%2F%2Fwww.example.com'))
+        self.assertFalse(iURLiP('%2f%2fwww.example.com'))
 
     def test_regression_absolute_url_in_portal(self):
         url_tool = self._makeOne()
