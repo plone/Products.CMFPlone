@@ -41,7 +41,8 @@ class TestNoGETControlPanel(PloneTestCase.FunctionalTestCase):
 
     def test_loginChangePassword(self):
         path = self.folder_path + '/login_change_password'
-        qstring = 'password=foo'
+        # Note: needs to be at least five characters.
+        qstring = 'password=foobar'
         self._onlyPOST(path, qstring)
 
 
