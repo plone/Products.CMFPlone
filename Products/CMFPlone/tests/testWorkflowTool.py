@@ -112,7 +112,7 @@ class TestWorkflowTool(PloneTestCase.PloneTestCase):
 
     def testListWFStatesByTitle(self):
         states = self.workflow.listWFStatesByTitle()
-        self.assertEqual(len(states), len(all_states))
+        self.assertGreaterEqual(len(states), len(all_states))
         pub_states = [s for s in states if s[1] == 'published']
         priv_states = [s for s in states if s[1] == 'private']
         pend_states = [s for s in states if s[1] == 'pending']
@@ -122,9 +122,9 @@ class TestWorkflowTool(PloneTestCase.PloneTestCase):
         internal_pub_states = [s for s in states
                                if s[1] == 'internally_published']
 
-        self.assertEqual(len(pub_states), all_states.count('published'))
+        self.assertGreaterEqual(len(pub_states), all_states.count('published'))
         self.assertEqual(len(priv_states), all_states.count('private'))
-        self.assertEqual(len(pend_states), all_states.count('pending'))
+        self.assertGreaterEqual(len(pend_states), all_states.count('pending'))
         self.assertEqual(len(vis_states), all_states.count('visible'))
         self.assertEqual(len(external_states), all_states.count('external'))
         self.assertEqual(len(internal_states), all_states.count('internal'))
