@@ -1,1 +1,1 @@
-Analytics viewlet: restore compatibility with old code that was inheriting from this class and overriding the __init__ method [ale-rt]
+Analytics viewlet: make webstats_js a property, so that it does not rely on an a call to the update method to be correctly evaluated [ale-rt]
