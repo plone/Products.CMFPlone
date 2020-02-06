@@ -12,8 +12,21 @@ We need a view on the content.
 Now we can instantiate the manager.
 
     >>> manager = Footer(portal, request, view)
+    >>> manager.update()
+    >>> for viewlet in manager.viewlets:
+    ...     if viewlet.__name__ == "plone.analytics":
+    ...         analytics = viewlet
+    ...         break
 
-Set analytics (webstats_js) code through the controlpanel
+When no analytics (webstats_js) code is set up the viewlet will not be rendered:
+
+    >>> analytics.webstats_js == u""
+    True
+    >>> text = manager.render()
+    >>> 'id="plone-analytics"' in text
+    False
+
+Set the analytics code through the controlpanel and verify it renders properly:
 
     >>> from plone.registry.interfaces import IRegistry
     >>> from zope.component import getUtility
@@ -21,20 +34,17 @@ Set analytics (webstats_js) code through the controlpanel
     >>> registry = getUtility(IRegistry)
     >>> site_settings = registry.forInterface(ISiteSchema, prefix="plone")
     >>> site_settings.webstats_js = u"<script>window.title='Hello'</script>"
-    >>> manager.update()
+    >>> analytics.webstats_js == site_settings.webstats_js
+    True
     >>> text = manager.render()
+    >>> 'id="plone-analytics"' in text
+    True
     >>> site_settings.webstats_js in text
     True
 
 Now enter some non-ascii text
 
     >>> site_settings.webstats_js = u"<script>window.title='C\xedsa\u0159'</script>"
-    >>> manager.update()
     >>> text = manager.render()
     >>> site_settings.webstats_js in text
-    True
-
-Check if the div sorrounding the script is present
-
-    >>> 'id="plone-analytics"' in text
     True
