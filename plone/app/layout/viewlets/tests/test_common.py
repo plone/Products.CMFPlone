@@ -249,32 +249,6 @@ class TestGlobalSectionsViewlet(ViewletsTestCase):
         gsv = GlobalSectionsViewlet(context, self.request.clone(), None)
         return gsv.navtree
 
-    def test_selectedtabs(self):
-        """ Test selected tabs the simplest case
-        """
-        request = self.layer["request"]
-        request["URL"] = self.folder.absolute_url()
-        gsv = GlobalSectionsViewlet(self.folder, request, None)
-        gsv.update()
-        self.assertEqual(gsv.selected_tabs, {"portal": "Members"})
-        self.assertEqual(gsv.selected_portal_tab, "Members")
-
-    def test_selectedtabs_navroot(self):
-        """ Test selected tabs with a INavigationroot folder involved
-        """
-        setRoles(self.portal, TEST_USER_ID, ["Manager"])
-        self.portal.invokeFactory("Folder", "navroot", title="My new root")
-        navroot = self.portal["navroot"]
-        alsoProvides(navroot, INavigationRoot)
-        navroot.invokeFactory("Folder", "abc", title="short")
-        navroot.invokeFactory("Folder", "xyz", title="Folder with a looong name")
-        request = self.layer["request"]
-        request["URL"] = navroot["abc"].absolute_url()
-        gsv = GlobalSectionsViewlet(navroot, request, None)
-        gsv.update()
-        self.assertEqual(gsv.selected_tabs, {"portal": "abc"})
-        self.assertEqual(gsv.selected_portal_tab, "abc")
-
     def test_globalnav_respects_types_use_view_action_in_listings(self):
         """ Test selected tabs with a INavigationroot folder involved
         """

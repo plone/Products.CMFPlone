@@ -394,46 +394,6 @@ class GlobalSectionsViewlet(ViewletBase):
         )
         return portal_tabs_view.topLevelTabs()
 
-    def update(self):
-        context = aq_inner(self.context)
-        self.selected_tabs = self.selectedTabs(portal_tabs=self.portal_tabs)
-        self.selected_portal_tab = self.selected_tabs["portal"]
-
-    def selectedTabs(self, default_tab="index_html", portal_tabs=()):
-        portal = getToolByName(self.context, "portal_url").getPortalObject()
-        plone_url = getNavigationRootObject(self.context, portal).absolute_url()
-        plone_url_len = len(plone_url)
-        request = self.request
-        valid_actions = []
-
-        url = request["URL"]
-        path = url[plone_url_len:]
-        path_list = path.split("/")
-        if len(path_list) <= 1:
-            return {"portal": default_tab}
-
-        for action in portal_tabs:
-            if not action["url"].startswith(plone_url):
-                # In this case the action url is an external link. Then, we
-                # avoid issues (bad portal_tab selection) continuing with next
-                # action.
-                continue
-            action_path = action["url"][plone_url_len:]
-            if not action_path.startswith("/"):
-                action_path = "/" + action_path
-            action_path_list = action_path.split("/")
-            if action_path_list[1] == path_list[1]:
-                # Make a list of the action ids, along with the path length
-                # for choosing the longest (most relevant) path.
-                valid_actions.append((len(action_path_list), action["id"]))
-
-        # Sort by path length, the longest matching path wins
-        valid_actions.sort()
-        if valid_actions:
-            return {"portal": valid_actions[-1][1]}
-
-        return {"portal": default_tab}
-
 
 class PersonalBarViewlet(ViewletBase):
 
