@@ -27,18 +27,20 @@ class BaseIcon(object):
             return None
 
         tag = '<img width="%s" height="%s" src="%s"' % (
-            self.width, self.height, self.url)
+            self.width,
+            self.height,
+            self.url,
+        )
         if self.title:
             tag += ' title="%s"' % self.title
         if self.description:
             tag += ' alt="%s"' % self.description
-        tag += ' />'
+        tag += " />"
         return tag
 
 
 @implementer(IContentIcon)
 class CatalogBrainContentIcon(BaseIcon):
-
     def __init__(self, context, request, brain):
         self.context = context
         self.request = request
@@ -55,26 +57,29 @@ class CatalogBrainContentIcon(BaseIcon):
             return path
 
         portal_state_view = getMultiAdapter(
-            (self.context, self.request), name=u'plone_portal_state')
+            (self.context, self.request), name=u"plone_portal_state"
+        )
         portal_url = portal_state_view.portal_url()
         return "%s/%s" % (portal_url, path)
 
     @property
     def description(self):
         context = aq_inner(self.context)
-        tt = getToolByName(context, 'portal_types')
-        fti = tt.get(self.brain['portal_type'])
+        tt = getToolByName(context, "portal_types")
+        fti = tt.get(self.brain["portal_type"])
         if fti is not None:
-            res = "%s %s" % (translate(fti.Title(), context=self.request),
-                             self._mimetype())
+            res = "%s %s" % (
+                translate(fti.Title(), context=self.request),
+                self._mimetype(),
+            )
             return res.strip()
         else:
-            return self.brain['portal_type']
+            return self.brain["portal_type"]
 
     def _mimetype(self):
         extensions_mimetype = self.extensions_mimetype()
         id = self.brain.getId
-        mimetype = ''
+        mimetype = ""
         extlength = 0
         for extension in extensions_mimetype.keys():
             if id.endswith(extension):
@@ -89,7 +94,7 @@ class CatalogBrainContentIcon(BaseIcon):
     def extensions_mimetype(self):
         """Return a dict {'.pdf': 'PDF Document', '.ods': '
         """
-        mtr = getToolByName(self.context, 'mimetypes_registry')
+        mtr = getToolByName(self.context, "mimetypes_registry")
         mimetypes = mtr.mimetypes()
         extensions = {}
 
@@ -102,7 +107,6 @@ class CatalogBrainContentIcon(BaseIcon):
 
 @implementer(IContentIcon)
 class CMFContentIcon(BaseIcon):
-
     def __init__(self, context, request, obj):
         self.context = context
         self.request = request
@@ -118,13 +122,13 @@ class CMFContentIcon(BaseIcon):
         if not path:
             return path
 
-        portal_url = getToolByName(self.context, 'portal_url')()
+        portal_url = getToolByName(self.context, "portal_url")()
         return "%s/%s" % (portal_url, path)
 
     @property
     def description(self):
         context = aq_inner(self.context)
-        tt = getToolByName(context, 'portal_types')
+        tt = getToolByName(context, "portal_types")
         fti = tt.get(self.obj.portal_type)
         if fti is not None:
             return fti.Title()
@@ -134,7 +138,6 @@ class CMFContentIcon(BaseIcon):
 
 @implementer(IContentIcon)
 class FTIContentIcon(BaseIcon):
-
     def __init__(self, context, request, obj):
         self.context = context
         self.request = request
@@ -147,12 +150,12 @@ class FTIContentIcon(BaseIcon):
     @property
     def url(self):
         context = self.context
-        portal_url = getToolByName(context, 'portal_url')
+        portal_url = getToolByName(context, "portal_url")
         portal = portal_url.getPortalObject()
 
         ec = createExprContext(aq_parent(context), portal, context)
         icon = self.obj.getIconExprObject()
-        path = ''
+        path = ""
         if icon:
             path = icon(ec)
         return path
@@ -164,7 +167,6 @@ class FTIContentIcon(BaseIcon):
 
 @implementer(IContentIcon)
 class PloneSiteContentIcon(BaseIcon):
-
     def __init__(self, context, request, obj):
         self.context = context
         self.request = request
@@ -176,9 +178,10 @@ class PloneSiteContentIcon(BaseIcon):
 
     @property
     def url(self):
-        portal_url = getToolByName(self.context, 'portal_url')()
-        portal_state = getMultiAdapter((self.context, self.request),
-                                       name=u'plone_portal_state')
+        portal_url = getToolByName(self.context, "portal_url")()
+        portal_state = getMultiAdapter(
+            (self.context, self.request), name=u"plone_portal_state"
+        )
         if portal_state.is_rtl():
             return "%s/rtl-site_icon.png" % portal_url
         else:
@@ -191,7 +194,6 @@ class PloneSiteContentIcon(BaseIcon):
 
 @implementer(IContentIcon)
 class DefaultContentIcon(BaseIcon):
-
     def __init__(self, context, request, obj):
         self.context = context
         self.request = request
@@ -203,7 +205,7 @@ class DefaultContentIcon(BaseIcon):
 
     @property
     def url(self):
-        portal_url = getToolByName(self.context, 'portal_url')()
+        portal_url = getToolByName(self.context, "portal_url")()
         if self.obj is None:
             return None
         return "%s/error_icon.png" % portal_url

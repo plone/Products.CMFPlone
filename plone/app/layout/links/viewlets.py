@@ -17,24 +17,25 @@ from zope.schema.interfaces import IVocabularyFactory
 
 
 def get_language(context, request):
-    portal_state = getMultiAdapter((context, request),
-                                   name=u'plone_portal_state')
+    portal_state = getMultiAdapter((context, request), name=u"plone_portal_state")
     return portal_state.language()
 
 
 def render_cachekey(fun, self):
     # Include the name of the viewlet as the underlying cache key only
     # takes the module and function name into account, but not the class
-    return '\n'.join([
-        self.__name__,
-        self.site_url,
-        get_language(aq_inner(self.context), self.request),
-    ])
+    return "\n".join(
+        [
+            self.__name__,
+            self.site_url,
+            get_language(aq_inner(self.context), self.request),
+        ]
+    )
 
 
 class FaviconViewlet(ViewletBase):
 
-    _template = ViewPageTemplateFile('favicon.pt')
+    _template = ViewPageTemplateFile("favicon.pt")
 
     @ram.cache(render_cachekey)
     def render(self):
@@ -43,7 +44,7 @@ class FaviconViewlet(ViewletBase):
 
 class SearchViewlet(ViewletBase):
 
-    _template = ViewPageTemplateFile('search.pt')
+    _template = ViewPageTemplateFile("search.pt")
 
     @ram.cache(render_cachekey)
     def render(self):
@@ -52,36 +53,32 @@ class SearchViewlet(ViewletBase):
 
 class AuthorViewlet(ViewletBase):
 
-    _template = ViewPageTemplateFile('author.pt')
+    _template = ViewPageTemplateFile("author.pt")
 
     def update(self):
         super(AuthorViewlet, self).update()
-        self.tools = getMultiAdapter((self.context, self.request),
-                                     name='plone_tools')
+        self.tools = getMultiAdapter((self.context, self.request), name="plone_tools")
 
     def show(self):
         anonymous = self.portal_state.anonymous()
         registry = getUtility(IRegistry)
-        settings = registry.forInterface(
-            ISecuritySchema,
-            prefix='plone',
-        )
+        settings = registry.forInterface(ISecuritySchema, prefix="plone",)
         return not anonymous or settings.allow_anon_views_about
 
     def render(self):
         if self.show():
             return self._template()
-        return u''
+        return u""
 
 
 class RSSViewlet(ViewletBase):
-
     def getRssLinks(self, obj):
         settings = IFeedSettings(obj, None)
         if settings is None:
             return []
         factory = getUtility(
-            IVocabularyFactory, "plone.app.vocabularies.SyndicationFeedTypes")
+            IVocabularyFactory, "plone.app.vocabularies.SyndicationFeedTypes"
+        )
         vocabulary = factory(self.context)
         urls = []
         for typ in settings.feed_types:
@@ -90,20 +87,22 @@ class RSSViewlet(ViewletBase):
             except LookupError:
                 continue
 
-            urls.append({
-                'title': '%s - %s' % (
-                    obj.Title(), safe_bytes(term.title)),
-                'url': obj.absolute_url() + '/' + term.value})
+            urls.append(
+                {
+                    "title": "%s - %s" % (obj.Title(), safe_bytes(term.title)),
+                    "url": obj.absolute_url() + "/" + term.value,
+                }
+            )
         return urls
 
     def update(self):
         super(RSSViewlet, self).update()
         self.rsslinks = []
         portal = self.portal_state.portal()
-        util = getMultiAdapter((self.context, self.request),
-                               name="syndication-util")
-        context_state = getMultiAdapter((self.context, self.request),
-                                        name=u'plone_context_state')
+        util = getMultiAdapter((self.context, self.request), name="syndication-util")
+        context_state = getMultiAdapter(
+            (self.context, self.request), name=u"plone_context_state"
+        )
         if context_state.is_portal_root():
             if util.site_enabled():
                 registry = getUtility(IRegistry)
@@ -116,9 +115,8 @@ class RSSViewlet(ViewletBase):
                         if not uid:
                             continue
                         obj = uuidToObject(uid)
-                        if obj is None and uid[0] == '/':
-                            obj = portal.restrictedTraverse(
-                                uid.lstrip('/'), None)
+                        if obj is None and uid[0] == "/":
+                            obj = portal.restrictedTraverse(uid.lstrip("/"), None)
                         if obj is not None:
                             self.rsslinks.extend(self.getRssLinks(obj))
                 self.rsslinks.extend(self.getRssLinks(portal))
@@ -126,7 +124,7 @@ class RSSViewlet(ViewletBase):
             if util.context_enabled():
                 self.rsslinks.extend(self.getRssLinks(self.context))
 
-    index = ViewPageTemplateFile('rsslink.pt')
+    index = ViewPageTemplateFile("rsslink.pt")
 
 
 class CanonicalURL(ViewletBase):
@@ -140,6 +138,7 @@ class CanonicalURL(ViewletBase):
     @view.memoize
     def render(self):
         context_state = getMultiAdapter(
-            (self.context, self.request), name=u'plone_context_state')
+            (self.context, self.request), name=u"plone_context_state"
+        )
         canonical_url = context_state.canonical_object_url()
         return u'    <link rel="canonical" href="%s" />' % canonical_url

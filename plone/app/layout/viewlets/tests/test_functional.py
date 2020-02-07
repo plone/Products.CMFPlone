@@ -6,18 +6,21 @@ import doctest
 import unittest
 
 
-optionflags = (doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE)
+optionflags = doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE
 normal_testfiles = [
-    'history.txt',
+    "history.txt",
 ]
 
 
 def test_suite():
     suite = unittest.TestSuite()
-    suite.addTests([
-        layered(doctest.DocFileSuite(test,
-                                     optionflags=optionflags,
-                                     ),
-                layer=FUNCTIONAL_TESTING)
-        for test in normal_testfiles])
+    suite.addTests(
+        [
+            layered(
+                doctest.DocFileSuite(test, optionflags=optionflags,),
+                layer=FUNCTIONAL_TESTING,
+            )
+            for test in normal_testfiles
+        ]
+    )
     return suite

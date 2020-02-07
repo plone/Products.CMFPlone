@@ -12,22 +12,24 @@ optionflags = doctest.REPORT_ONLY_FIRST_FAILURE | doctest.ELLIPSIS
 
 
 class IZero(Interface):
-    ''' Test interface zero
-    '''
+    """ Test interface zero
+    """
 
 
 class IOne(IZero):
-    ''' Test interface one
-    '''
-    one_name = Attribute('One name for IOne')
+    """ Test interface one
+    """
+
+    one_name = Attribute("One name for IOne")
 
     def one_function():
-        '''One function for IOne'''
+        """One function for IOne"""
 
 
 class ITwo(Interface):
-    ''' Test interface two
-    '''
+    """ Test interface two
+    """
+
     pass
 
 

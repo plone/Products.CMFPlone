@@ -11,7 +11,7 @@ from zope.viewlet.interfaces import IViewlet
 @implementer(IViewlet)
 class AnalyticsViewlet(BrowserView):
 
-    render = ViewPageTemplateFile('view.pt')
+    render = ViewPageTemplateFile("view.pt")
 
     def __init__(self, context, request, view, manager):
         super(AnalyticsViewlet, self).__init__(context, request)
@@ -22,8 +22,7 @@ class AnalyticsViewlet(BrowserView):
     @property
     def webstats_js(self):
         registry = getUtility(IRegistry)
-        site_settings = registry.forInterface(
-            ISiteSchema, prefix="plone", check=False)
+        site_settings = registry.forInterface(ISiteSchema, prefix="plone", check=False)
         try:
             return site_settings.webstats_js or u""
         except AttributeError:

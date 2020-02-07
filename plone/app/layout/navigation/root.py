@@ -27,24 +27,24 @@ def getNavigationRoot(context, relativeRoot=None):
     Return the path of that root.
     """
     try:
-        portal_url = getToolByName(context, 'portal_url')
+        portal_url = getToolByName(context, "portal_url")
     except AttributeError:
         site = getSite()
-        return '/'.join(site.getPhysicalPath())
+        return "/".join(site.getPhysicalPath())
 
     if relativeRoot is None:
         # fetch from portal_properties
         registry = getUtility(IRegistry)
-        relativeRoot = registry.get('plone.root', None)
+        relativeRoot = registry.get("plone.root", None)
 
     # if relativeRoot has a meaningful value,
-    if relativeRoot and relativeRoot != '/':
+    if relativeRoot and relativeRoot != "/":
         # use it
 
         # while taking care of case where
         # relativeRoot is not starting with a '/'
-        if relativeRoot[0] != '/':
-            relativeRoot = '/' + relativeRoot
+        if relativeRoot[0] != "/":
+            relativeRoot = "/" + relativeRoot
 
         portalPath = portal_url.getPortalPath()
         return portalPath + relativeRoot
@@ -52,13 +52,12 @@ def getNavigationRoot(context, relativeRoot=None):
         # compute the root
         portal = portal_url.getPortalObject()
         root = getNavigationRootObject(context, portal)
-        return '/'.join(root.getPhysicalPath())
+        return "/".join(root.getPhysicalPath())
 
 
 def getNavigationRootObject(context, portal):
     obj = context
-    while (not INavigationRoot.providedBy(obj) and
-            aq_base(obj) is not aq_base(portal)):
+    while not INavigationRoot.providedBy(obj) and aq_base(obj) is not aq_base(portal):
         parent = aq_parent(aq_inner(obj))
         if parent is None:
             return obj

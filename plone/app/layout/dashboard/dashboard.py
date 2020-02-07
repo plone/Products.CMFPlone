@@ -24,14 +24,16 @@ class DashboardView(BrowserView):
     """
 
     def __call__(self):
-        self.request.set('disable_border', 1)
-        self.request.set('disable_plone.leftcolumn', 1)
-        self.request.set('disable_plone.rightcolumn', 1)
+        self.request.set("disable_border", 1)
+        self.request.set("disable_plone.leftcolumn", 1)
+        self.request.set("disable_plone.rightcolumn", 1)
         if self.can_edit() and self.empty():
-            message = _(u"info_empty_dashboard",
-                        default=u"Your dashboard is currently empty. Click the"
-                        " <em>edit</em> tab to assign some personal"
-                        " portlets.")
+            message = _(
+                u"info_empty_dashboard",
+                default=u"Your dashboard is currently empty. Click the"
+                " <em>edit</em> tab to assign some personal"
+                " portlets.",
+            )
             IStatusMessage(self.request).add(message)
         return self.index()
 
@@ -41,32 +43,31 @@ class DashboardView(BrowserView):
 
     @memoize
     def can_edit(self):
-        return bool(getSecurityManager().checkPermission(
-            'Portlets: Manage own portlets',
-            self.context
-        ))
+        return bool(
+            getSecurityManager().checkPermission(
+                "Portlets: Manage own portlets", self.context
+            )
+        )
 
     @memoize
     def empty(self):
         dashboards = [
-            getUtility(IPortletManager, name=name) for name in
-            [
-                'plone.dashboard1',
-                'plone.dashboard2',
-                'plone.dashboard3',
-                'plone.dashboard4'
+            getUtility(IPortletManager, name=name)
+            for name in [
+                "plone.dashboard1",
+                "plone.dashboard2",
+                "plone.dashboard3",
+                "plone.dashboard4",
             ]
         ]
 
-        portal_membership = getToolByName(self.context, 'portal_membership')
+        portal_membership = getToolByName(self.context, "portal_membership")
         member = portal_membership.getAuthenticatedMember()
         userid = member.getId()
 
         num_portlets = 0
         for dashboard in dashboards:
-            num_portlets += len(dashboard.get(
-                USER_CATEGORY, {}).get(userid, {}))
+            num_portlets += len(dashboard.get(USER_CATEGORY, {}).get(userid, {}))
             for groupid in member.getGroups():
-                num_portlets += len(dashboard.get(
-                    GROUP_CATEGORY, {}).get(groupid, {}))
+                num_portlets += len(dashboard.get(GROUP_CATEGORY, {}).get(groupid, {}))
         return num_portlets == 0

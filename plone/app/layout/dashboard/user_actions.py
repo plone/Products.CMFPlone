@@ -9,9 +9,8 @@ class UserActionsView(BrowserView):
 
     def user_actions(self):
         context_state = getMultiAdapter(
-            (self.context, self.request),
-            name=u'plone_context_state'
+            (self.context, self.request), name=u"plone_context_state"
         )
 
-        actions = context_state.actions('user')
+        actions = context_state.actions("user")
         return actions

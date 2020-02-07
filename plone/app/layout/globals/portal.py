@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from Acquisition import aq_inner
 from .interfaces import IPortalState
+from Acquisition import aq_inner
 from plone.app.layout.navigation.root import getNavigationRoot
 from plone.app.layout.navigation.root import getNavigationRootObject
 from plone.memoize.view import memoize
@@ -18,7 +18,7 @@ from zope.component.hooks import getSite
 from zope.interface import implementer
 
 
-RIGHT_TO_LEFT = ['ar', 'fa', 'he', 'ps']
+RIGHT_TO_LEFT = ["ar", "fa", "he", "ps"]
 
 
 @implementer(IPortalState)
@@ -38,8 +38,7 @@ class PortalState(BrowserView):
     @memoize_contextless
     def portal_title(self):
         registry = getUtility(IRegistry)
-        settings = registry.forInterface(
-            ISiteSchema, prefix="plone", check=False)
+        settings = registry.forInterface(ISiteSchema, prefix="plone", check=False)
         return settings.site_title
 
     @memoize_contextless
@@ -76,8 +75,11 @@ class PortalState(BrowserView):
         return settings.default_language
 
     def language(self):
-        return self.request.get('LANGUAGE', None) or \
-            aq_inner(self.context).Language() or self.default_language()
+        return (
+            self.request.get("LANGUAGE", None)
+            or aq_inner(self.context).Language()
+            or self.default_language()
+        )
 
     def locale(self):
         return self.request.locale
