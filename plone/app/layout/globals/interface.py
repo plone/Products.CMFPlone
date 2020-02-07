@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from Acquisition import aq_base
 from .interfaces import IInterfaceInformation
+from Acquisition import aq_base
 from plone.memoize.view import memoize
 from Products.Five.browser import BrowserView
 from zope.dottedname.resolve import resolve
@@ -13,7 +13,7 @@ from zope.interface.interfaces import IMethod
 def resolveInterface(dotted_name):
     klass = resolve(dotted_name)
     if not issubclass(klass, Interface):
-        raise ValueError('%r is not a valid Interface.' % dotted_name)
+        raise ValueError("%r is not a valid Interface." % dotted_name)
     return klass
 
 
@@ -26,8 +26,8 @@ def _trim_doc_string(text):
     Trims a doc string to make it format
     correctly with structured text.
     """
-    text = text.strip().replace('\r\n', '\n')
-    lines = text.split('\n')
+    text = text.strip().replace("\r\n", "\n")
+    lines = text.split("\n")
     nlines = [lines[0]]
     if len(lines) > 1:
         min_indent = None
@@ -37,7 +37,7 @@ def _trim_doc_string(text):
                 min_indent = indent
         for line in lines[1:]:
             nlines.append(line[min_indent:])
-    return '\n'.join(nlines)
+    return "\n".join(nlines)
 
 
 def visitBaseInterfaces(iface, lst):
@@ -51,7 +51,6 @@ def visitBaseInterfaces(iface, lst):
 
 @implementer(IInterfaceInformation)
 class InterfaceInformation(BrowserView):
-
     @memoize
     def provides(self, dotted_name):
         iface = resolveInterface(dotted_name)
@@ -104,25 +103,26 @@ class InterfaceInformation(BrowserView):
         methods = []
         for name, desc in iface.namesAndDescriptions():
             if IMethod.providedBy(desc):
-                methods.append({'signature': desc.getSignatureString(),
-                                'name': desc.getName(),
-                                'doc': _trim_doc_string(desc.getDoc())
-                                }
-                               )
+                methods.append(
+                    {
+                        "signature": desc.getSignatureString(),
+                        "name": desc.getName(),
+                        "doc": _trim_doc_string(desc.getDoc()),
+                    }
+                )
             else:
-                attributes.append({'name': desc.getName(),
-                                   'doc': _trim_doc_string(desc.getDoc()),
-                                   }
-                                  )
+                attributes.append(
+                    {"name": desc.getName(), "doc": _trim_doc_string(desc.getDoc()),}
+                )
 
         result = {
-            'name': iface.getName(),
-            'dotted_name': getDottedName(iface),
-            'doc': _trim_doc_string(iface.getDoc()),
-            'bases': bases,
-            'base_names': [getDottedName(iface) for base in bases],
-            'attributes': attributes,
-            'methods': methods,
+            "name": iface.getName(),
+            "dotted_name": getDottedName(iface),
+            "doc": _trim_doc_string(iface.getDoc()),
+            "bases": bases,
+            "base_names": [getDottedName(iface) for base in bases],
+            "attributes": attributes,
+            "methods": methods,
         }
 
         return result

@@ -3,10 +3,11 @@ from zope.deferredimport import deprecated
 from zope.interface import Attribute
 from zope.interface import Interface
 
+
 # remove in plone 6
 deprecated(
     "Import from Products.CMFPlone instead",
-    IDefaultPage='Products.CMFPlone.interfaces.defaultpage:DefaultPage',
+    IDefaultPage="Products.CMFPlone.interfaces.defaultpage:DefaultPage",
 )
 
 
@@ -32,10 +33,12 @@ class INavtreeStrategy(Interface):
     """
 
     rootPath = Attribute(
-        "The path to the root of the navtree (None means use portal root)")
+        "The path to the root of the navtree (None means use portal root)"
+    )
 
     showAllParents = Attribute(
-        "Whether or not to show all parents of the current context always")
+        "Whether or not to show all parents of the current context always"
+    )
 
     def nodeFilter(node):
         """Return True or False to determine whether to include the given node

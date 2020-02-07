@@ -14,10 +14,11 @@ class Fixture(PloneSandboxLayer):
     def setUpZope(self, app, configurationContext):
         # Load ZCML
         import plone.app.layout
+
         self.loadZCML(package=plone.app.layout)
 
     def setUpPloneSite(self, portal):
-        _createObjectByType('Folder', portal, id='Members')
+        _createObjectByType("Folder", portal, id="Members")
         mtool = portal.portal_membership
         if not mtool.getMemberareaCreationFlag():
             mtool.setMemberareaCreationFlag()
@@ -28,10 +29,8 @@ class Fixture(PloneSandboxLayer):
 
 FIXTURE = Fixture()
 INTEGRATION_TESTING = IntegrationTesting(
-    bases=(FIXTURE,),
-    name='plone.app.layout:Integration',
+    bases=(FIXTURE,), name="plone.app.layout:Integration",
 )
 FUNCTIONAL_TESTING = FunctionalTesting(
-    bases=(FIXTURE,),
-    name='plone.app.layout:Functional',
+    bases=(FIXTURE,), name="plone.app.layout:Functional",
 )

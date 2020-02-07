@@ -21,8 +21,7 @@ class NavtreeStrategyBase(object):
     showAllParents = False
 
     # Default sorting and treatment of default-pages
-    supplimentQuery = {'sort_on': 'getObjPositionInParent',
-                       'is_default_page': False}
+    supplimentQuery = {"sort_on": "getObjPositionInParent", "is_default_page": False}
 
     def nodeFilter(self, node):
         return True
@@ -37,8 +36,7 @@ class NavtreeStrategyBase(object):
         return True
 
 
-def buildFolderTree(context, obj=None, query={},
-                    strategy=NavtreeStrategyBase()):
+def buildFolderTree(context, obj=None, query={}, strategy=NavtreeStrategyBase()):
     """Create a tree structure representing a navigation tree. By default,
     it will create a full "sitemap" tree, rooted at the portal, ordered
     by explicit folder order. If the 'query' parameter contains a 'path'
@@ -118,12 +116,12 @@ def buildFolderTree(context, obj=None, query={},
     used for the purposes of selecting the 'currentItem'.
     """
 
-    portal_url = getToolByName(context, 'portal_url')
-    portal_catalog = getToolByName(context, 'portal_catalog')
+    portal_url = getToolByName(context, "portal_url")
+    portal_catalog = getToolByName(context, "portal_catalog")
 
     rootPath = strategy.rootPath
 
-    request = getattr(context, 'REQUEST', {})
+    request = getattr(context, "REQUEST", {})
 
     # Find the object's path. Use parent folder if context is a default-page
 
@@ -133,41 +131,45 @@ def buildFolderTree(context, obj=None, query={},
         objPhysicalPath = obj.getPhysicalPath()
         if utils.isDefaultPage(obj, request):
             objPhysicalPath = objPhysicalPath[:-1]
-        objPath = '/'.join(objPhysicalPath)
+        objPath = "/".join(objPhysicalPath)
 
     portalPath = portal_url.getPortalPath()
     portalObject = portal_url.getPortalObject()
 
     # Calculate rootPath from the path query if not set.
 
-    if 'path' not in query:
+    if "path" not in query:
         if rootPath is None:
             rootPath = portalPath
-        query['path'] = rootPath
+        query["path"] = rootPath
     elif rootPath is None:
-        pathQuery = query['path']
+        pathQuery = query["path"]
         if isinstance(pathQuery, six.string_types):
             rootPath = pathQuery
         else:
             # Adjust for the fact that in a 'navtree' query, the actual path
             # is the path of the current context
-            if pathQuery.get('navtree', False):
-                navtreeLevel = pathQuery.get('navtree_start', 1)
+            if pathQuery.get("navtree", False):
+                navtreeLevel = pathQuery.get("navtree_start", 1)
                 if navtreeLevel > 1:
-                    navtreeContextPath = pathQuery['query']
+                    navtreeContextPath = pathQuery["query"]
                     navtreeContextPathElements = navtreeContextPath[
-                        len(portalPath) + 1:].split('/')
+                        len(portalPath) + 1 :
+                    ].split("/")
                     # Short-circuit if we won't be able to find this path
                     if len(navtreeContextPathElements) < (navtreeLevel - 1):
-                        return {'children': []}
-                    rootPath = portalPath + '/' + '/'.join(
-                        navtreeContextPathElements[:navtreeLevel - 1])
+                        return {"children": []}
+                    rootPath = (
+                        portalPath
+                        + "/"
+                        + "/".join(navtreeContextPathElements[: navtreeLevel - 1])
+                    )
                 else:
                     rootPath = portalPath
             else:
-                rootPath = pathQuery['query']
+                rootPath = pathQuery["query"]
 
-    rootDepth = len(rootPath.split('/'))
+    rootDepth = len(rootPath.split("/"))
 
     # Determine if we need to prune the root (but still force the path to)
     # the parent if necessary
@@ -200,12 +202,12 @@ def buildFolderTree(context, obj=None, query={},
     itemPaths = {}
 
     # Add an (initially empty) node for the root
-    itemPaths[rootPath] = {'children': []}
+    itemPaths[rootPath] = {"children": []}
 
     # If we need to "prune" the parent (but still allow showAllParent to
     # force some children), do so now
     if pruneRoot:
-        itemPaths[rootPath]['_pruneSubtree'] = True
+        itemPaths[rootPath]["_pruneSubtree"] = True
 
     def insertElement(itemPaths, item, forceInsert=False):
         """Insert the given 'item' brain into the tree, which is kept in
@@ -214,8 +216,7 @@ def buildFolderTree(context, obj=None, query={},
         block the insertion of a node.
         """
         itemPath = item.getPath()
-        itemInserted = (itemPaths.get(
-            itemPath, {}).get('item', None) is not None)
+        itemInserted = itemPaths.get(itemPath, {}).get("item", None) is not None
 
         # Short-circuit if we already added this item. Don't short-circuit
         # if we're forcing the insert, because we may have inserted but
@@ -223,10 +224,9 @@ def buildFolderTree(context, obj=None, query={},
         if not forceInsert and itemInserted:
             return
 
-        itemPhysicalPath = itemPath.split('/')
-        parentPath = '/'.join(itemPhysicalPath[:-1])
-        parentPruned = (itemPaths.get(
-            parentPath, {}).get('_pruneSubtree', False))
+        itemPhysicalPath = itemPath.split("/")
+        parentPath = "/".join(itemPhysicalPath[:-1])
+        parentPruned = itemPaths.get(parentPath, {}).get("_pruneSubtree", False)
 
         # Short-circuit if we know we're pruning this item's parent
 
@@ -244,9 +244,8 @@ def buildFolderTree(context, obj=None, query={},
 
         isCurrent = isCurrentParent = False
         if objPath is not None:
-            objpath_startswith_itempath = objPath.startswith(itemPath + '/')
-            objpath_bigger_than_itempath = \
-                len(objPhysicalPath) > len(itemPhysicalPath)
+            objpath_startswith_itempath = objPath.startswith(itemPath + "/")
+            objpath_bigger_than_itempath = len(objPhysicalPath) > len(itemPhysicalPath)
             if objPath == itemPath:
                 isCurrent = True
             elif objpath_startswith_itempath and objpath_bigger_than_itempath:
@@ -254,10 +253,12 @@ def buildFolderTree(context, obj=None, query={},
 
         relativeDepth = len(itemPhysicalPath) - rootDepth
 
-        newNode = {'item': item,
-                   'depth': relativeDepth,
-                   'currentItem': isCurrent,
-                   'currentParent': isCurrentParent, }
+        newNode = {
+            "item": item,
+            "depth": relativeDepth,
+            "currentItem": isCurrent,
+            "currentParent": isCurrentParent,
+        }
 
         insert = True
         if not forceInsert and strategy is not None:
@@ -274,16 +275,16 @@ def buildFolderTree(context, obj=None, query={},
                 itemParent = itemPaths[parentPath]
                 if forceInsert:
                     nodeAlreadyInserted = False
-                    for i in itemParent['children']:
-                        if i['item'].getPath() == itemPath:
+                    for i in itemParent["children"]:
+                        if i["item"].getPath() == itemPath:
                             nodeAlreadyInserted = True
                             break
                     if not nodeAlreadyInserted:
-                        itemParent['children'].append(newNode)
-                elif not itemParent.get('_pruneSubtree', False):
-                    itemParent['children'].append(newNode)
+                        itemParent["children"].append(newNode)
+                elif not itemParent.get("_pruneSubtree", False):
+                    itemParent["children"].append(newNode)
             else:
-                itemPaths[parentPath] = {'children': [newNode]}
+                itemPaths[parentPath] = {"children": [newNode]}
 
             # Ask the subtree filter (if any), if we should be expanding this
             # node
@@ -292,18 +293,18 @@ def buildFolderTree(context, obj=None, query={},
                 # children now
                 expand = True
             else:
-                expand = getattr(item, 'is_folderish', True)
+                expand = getattr(item, "is_folderish", True)
             if expand and (not forceInsert and strategy is not None):
                 expand = strategy.subtreeFilter(newNode)
 
-            children = newNode.setdefault('children', [])
+            children = newNode.setdefault("children", [])
             if expand:
                 # If we had some orphaned children for this node, attach
                 # them
                 if itemPath in itemPaths:
-                    children.extend(itemPaths[itemPath]['children'])
+                    children.extend(itemPaths[itemPath]["children"])
             else:
-                newNode['_pruneSubtree'] = True
+                newNode["_pruneSubtree"] = True
 
             itemPaths[itemPath] = newNode
 
@@ -315,38 +316,38 @@ def buildFolderTree(context, obj=None, query={},
     # context. Note that we use an unrestricted query: things we don't normally
     # have permission to see will be included in the tree.
     if strategy.showAllParents and objPath is not None:
-        objSubPathElements = objPath[len(rootPath) + 1:].split('/')
+        objSubPathElements = objPath[len(rootPath) + 1 :].split("/")
         parentPaths = []
 
-        haveNode = (itemPaths.get(rootPath, {}).get('item', None) is None)
+        haveNode = itemPaths.get(rootPath, {}).get("item", None) is None
         if not haveNode:
             parentPaths.append(rootPath)
 
         parentPath = rootPath
         for i in range(len(objSubPathElements)):
-            nodePath = rootPath + '/' + '/'.join(objSubPathElements[:i + 1])
+            nodePath = rootPath + "/" + "/".join(objSubPathElements[: i + 1])
             node = itemPaths.get(nodePath, None)
 
             # If we don't have this node, we'll have to get it, if we have it
             # but it wasn't connected, re-connect it
-            if node is None or 'item' not in node:
+            if node is None or "item" not in node:
                 parentPaths.append(nodePath)
             else:
                 nodeParent = itemPaths.get(parentPath, None)
                 if nodeParent is not None:
                     nodeAlreadyInserted = False
-                    for i in nodeParent['children']:
-                        if i['item'].getPath() == nodePath:
+                    for i in nodeParent["children"]:
+                        if i["item"].getPath() == nodePath:
                             nodeAlreadyInserted = True
                             break
                     if not nodeAlreadyInserted:
-                        nodeParent['children'].append(node)
+                        nodeParent["children"].append(node)
 
             parentPath = nodePath
 
         # If we were outright missing some nodes, find them again
         if len(parentPaths) > 0:
-            query = {'path': {'query': parentPaths, 'depth': 0}}
+            query = {"path": {"query": parentPaths, "depth": 0}}
             results = portal_catalog.unrestrictedSearchResults(query)
 
             for r in results:

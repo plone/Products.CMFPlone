@@ -14,16 +14,15 @@ from zope.component.hooks import getSite
 
 
 class SocialTagsViewlet(TitleViewlet):
-
     def head_tag_filter(self, value):
         if not isinstance(value, dict):
             return
-        return 'itemprop' not in value
+        return "itemprop" not in value
 
     def body_tag_filter(self, value):
         if not isinstance(value, dict):
             return
-        return 'itemprop' in value
+        return "itemprop" in value
 
     @property
     def tags(self):
@@ -39,13 +38,14 @@ class SocialTagsViewlet(TitleViewlet):
     def _get_tags(self):
         site = getSite()
         registry = getUtility(IRegistry)
-        settings = registry.forInterface(ISocialMediaSchema, prefix="plone",
-                                         check=False)
+        settings = registry.forInterface(
+            ISocialMediaSchema, prefix="plone", check=False
+        )
 
         if not settings.share_social_data:
             return []
 
-        portal_membership = getToolByName(site, 'portal_membership')
+        portal_membership = getToolByName(site, "portal_membership")
         is_anonymous = bool(portal_membership.isAnonymousUser())
         if not is_anonymous:
             return []
@@ -58,16 +58,21 @@ class SocialTagsViewlet(TitleViewlet):
             dict(property="og:type", content="website"),
         ]
         if settings.twitter_username:
-            tags.append(dict(name="twitter:site",
-                             content="@" + settings.twitter_username.lstrip('@')))
+            tags.append(
+                dict(
+                    name="twitter:site",
+                    content="@" + settings.twitter_username.lstrip("@"),
+                )
+            )
         if settings.facebook_app_id:
-            tags.append(dict(property="fb:app_id",
-                             content=settings.facebook_app_id))
+            tags.append(dict(property="fb:app_id", content=settings.facebook_app_id))
         if settings.facebook_username:
             tags.append(
-                dict(property="og:article:publisher",
-                     content="https://www.facebook.com/" +
-                     settings.facebook_username))
+                dict(
+                    property="og:article:publisher",
+                    content="https://www.facebook.com/" + settings.facebook_username,
+                )
+            )
 
         # reuse syndication since that packages the data
         # the way we'd prefer likely
@@ -76,39 +81,51 @@ class SocialTagsViewlet(TitleViewlet):
         if item is None:
             item = BaseItem(self.context, feed)
 
-        tags.extend([
-            dict(itemprop="description", content=item.description),
-            dict(itemprop="url", content=item.link),
-            dict(property="og:description", content=item.description),
-            dict(property="og:url", content=item.link),
-        ])
+        tags.extend(
+            [
+                dict(itemprop="description", content=item.description),
+                dict(itemprop="url", content=item.link),
+                dict(property="og:description", content=item.description),
+                dict(property="og:url", content=item.link),
+            ]
+        )
 
         found_image = False
         if item.has_enclosure and item.file_length > 0:
-            if item.file_type.startswith('image'):
+            if item.file_type.startswith("image"):
                 found_image = True
-                tags.extend([
-                    dict(property="og:image", content=item.file_url),
-                    dict(itemprop="image", content=item.file_url),
-                    dict(property="og:image:type", content=item.file_type)
-                ])
-            elif (item.file_type.startswith('video') or
-                    item.file_type == "application/x-shockwave-flash"):
-                tags.extend([
-                    dict(property="og:video", content=item.file_url),
-                    dict(property="og:video:type", content=item.file_type)
-                ])
-            elif item.file_type.startswith('audio'):
-                tags.extend([
-                    dict(property="og:audio", content=item.file_url),
-                    dict(property="og:audio:type", content=item.file_type)
-                ])
+                tags.extend(
+                    [
+                        dict(property="og:image", content=item.file_url),
+                        dict(itemprop="image", content=item.file_url),
+                        dict(property="og:image:type", content=item.file_type),
+                    ]
+                )
+            elif (
+                item.file_type.startswith("video")
+                or item.file_type == "application/x-shockwave-flash"
+            ):
+                tags.extend(
+                    [
+                        dict(property="og:video", content=item.file_url),
+                        dict(property="og:video:type", content=item.file_type),
+                    ]
+                )
+            elif item.file_type.startswith("audio"):
+                tags.extend(
+                    [
+                        dict(property="og:audio", content=item.file_url),
+                        dict(property="og:audio:type", content=item.file_type),
+                    ]
+                )
 
         if not found_image:
             url = getSiteLogo()
-            tags.extend([
-                dict(property="og:image", content=url),
-                dict(itemprop="image", content=url),
-                dict(property="og:image:type", content='image/png')
-            ])
+            tags.extend(
+                [
+                    dict(property="og:image", content=url),
+                    dict(itemprop="image", content=url),
+                    dict(property="og:image:type", content="image/png"),
+                ]
+            )
         return tags

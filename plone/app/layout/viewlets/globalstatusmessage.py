@@ -7,7 +7,7 @@ from Products.statusmessages.interfaces import IStatusMessage
 class GlobalStatusMessage(ViewletBase):
     """Display messages to the current user"""
 
-    index = ViewPageTemplateFile('globalstatusmessage.pt')
+    index = ViewPageTemplateFile("globalstatusmessage.pt")
 
     def update(self):
         super(GlobalStatusMessage, self).update()

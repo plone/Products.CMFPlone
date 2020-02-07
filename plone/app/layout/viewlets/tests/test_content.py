@@ -5,8 +5,8 @@ from plone.app.layout.viewlets.content import DocumentBylineViewlet
 from plone.app.layout.viewlets.content import HistoryByLineView
 from plone.app.layout.viewlets.tests.base import ViewletsTestCase
 from plone.app.testing import logout
-from plone.app.testing import TEST_USER_ID
 from plone.app.testing import setRoles
+from plone.app.testing import TEST_USER_ID
 from plone.locking.interfaces import ILockable
 from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.interfaces import ISecuritySchema
@@ -19,7 +19,8 @@ from zope.intid.interfaces import IIntIds
 
 try:
     import pkg_resources
-    pkg_resources.get_distribution('plone.app.relationfield')
+
+    pkg_resources.get_distribution("plone.app.relationfield")
 except pkg_resources.DistributionNotFound:
     HAS_DEXTERITY = False
     pass
@@ -39,14 +40,11 @@ class TestDocumentBylineViewletView(ViewletsTestCase):
 
     def setUp(self):
         super(TestDocumentBylineViewletView, self).setUp()
-        self.folder.invokeFactory('Document', 'doc1', title='Document 1')
-        self.context = self.folder['doc1']
+        self.folder.invokeFactory("Document", "doc1", title="Document 1")
+        self.context = self.folder["doc1"]
 
         registry = getUtility(IRegistry)
-        self.security_settings = registry.forInterface(
-            ISecuritySchema,
-            prefix='plone',
-        )
+        self.security_settings = registry.forInterface(ISecuritySchema, prefix="plone",)
 
     def _get_viewlet(self):
         request = self.app.REQUEST
@@ -58,9 +56,7 @@ class TestDocumentBylineViewletView(ViewletsTestCase):
         # configure our portal to enable publication date on pages globally on
         # the site
         registry = getUtility(IRegistry)
-        settings = registry.forInterface(
-            ISiteSchema,
-            prefix='plone')
+        settings = registry.forInterface(ISiteSchema, prefix="plone")
 
         settings.display_publication_date_in_byline = True
 
@@ -111,14 +107,11 @@ class TestHistoryBylineViewletView(ViewletsTestCase):
 
     def setUp(self):
         super(TestHistoryBylineViewletView, self).setUp()
-        self.folder.invokeFactory('Document', 'doc1', title='Document 1')
-        self.context = self.folder['doc1']
+        self.folder.invokeFactory("Document", "doc1", title="Document 1")
+        self.context = self.folder["doc1"]
 
         registry = getUtility(IRegistry)
-        self.security_settings = registry.forInterface(
-            ISecuritySchema,
-            prefix='plone',
-        )
+        self.security_settings = registry.forInterface(ISecuritySchema, prefix="plone",)
 
     def _get_viewlet(self):
         request = self.app.REQUEST
@@ -174,9 +167,7 @@ title="Locked" height="16" width="16" />'
         # configure our portal to enable publication date on pages globally on
         # the site
         registry = getUtility(IRegistry)
-        settings = registry.forInterface(
-            ISiteSchema,
-            prefix='plone')
+        settings = registry.forInterface(ISiteSchema, prefix="plone")
 
         settings.display_publication_date_in_byline = True
 
@@ -199,12 +190,11 @@ title="Locked" height="16" width="16" />'
 
 
 class TestRelatedItemsViewlet(ViewletsTestCase):
-
     def setUp(self):
         super(TestRelatedItemsViewlet, self).setUp()
-        self.folder.invokeFactory('Document', 'doc1', title='Document 1')
-        self.folder.invokeFactory('Document', 'doc2', title='Document 2')
-        self.folder.invokeFactory('Document', 'doc3', title='Document 3')
+        self.folder.invokeFactory("Document", "doc1", title="Document 1")
+        self.folder.invokeFactory("Document", "doc2", title="Document 2")
+        self.folder.invokeFactory("Document", "doc3", title="Document 3")
         intids = getUtility(IIntIds)
         self.folder.doc1.relatedItems = [
             RelationValue(intids.getId(self.folder.doc2)),
@@ -216,48 +206,48 @@ class TestRelatedItemsViewlet(ViewletsTestCase):
         viewlet = ContentRelatedItems(self.folder.doc1, request, None, None)
         viewlet.update()
         related = viewlet.related_items()
-        self.assertEqual([x.Title for x in related], [
-                         'Document 2', 'Document 3'])
+        self.assertEqual([x.Title for x in related], ["Document 2", "Document 3"])
 
     def testDeletedRelatedItems(self):
         # Deleted related items should not cause problems.
-        self.folder._delObject('doc2')
+        self.folder._delObject("doc2")
         request = self.app.REQUEST
         viewlet = ContentRelatedItems(self.folder.doc1, request, None, None)
         viewlet.update()
         related = viewlet.related_items()
-        self.assertEqual([x.Title for x in related], ['Document 3'])
+        self.assertEqual([x.Title for x in related], ["Document 3"])
 
 
 class TestDexterityRelatedItemsViewlet(ViewletsTestCase):
-
     def setUp(self):
         super(TestDexterityRelatedItemsViewlet, self).setUp()
         """ create some sample content to test with """
         from Products.CMFPlone.utils import get_installer
-        setRoles(self.portal, TEST_USER_ID, ['Manager'])
-        fti = DexterityFTI('Dexterity Item with relatedItems behavior')
+
+        setRoles(self.portal, TEST_USER_ID, ["Manager"])
+        fti = DexterityFTI("Dexterity Item with relatedItems behavior")
         self.portal.portal_types._setObject(
-            'Dexterity Item with relatedItems behavior', fti)
-        fti.klass = 'plone.dexterity.content.Item'
-        test_module = 'plone.app.layout.viewlets.tests.test_content'
-        fti.schema = test_module + '.IMyDexterityItem'
-        fti.behaviors = ('plone.app.relationfield.behavior.IRelatedItems',)
-        fti = DexterityFTI('Dexterity Item without relatedItems behavior')
+            "Dexterity Item with relatedItems behavior", fti
+        )
+        fti.klass = "plone.dexterity.content.Item"
+        test_module = "plone.app.layout.viewlets.tests.test_content"
+        fti.schema = test_module + ".IMyDexterityItem"
+        fti.behaviors = ("plone.app.relationfield.behavior.IRelatedItems",)
+        fti = DexterityFTI("Dexterity Item without relatedItems behavior")
         self.portal.portal_types._setObject(
-            'Dexterity Item without relatedItems behavior', fti)
-        fti.klass = 'plone.dexterity.content.Item'
-        fti.schema = test_module + '.IMyDexterityItem'
-        self.folder.invokeFactory('Document', 'doc1', title='Document 1')
-        self.folder.invokeFactory('Document', 'doc2', title='Document 2')
+            "Dexterity Item without relatedItems behavior", fti
+        )
+        fti.klass = "plone.dexterity.content.Item"
+        fti.schema = test_module + ".IMyDexterityItem"
+        self.folder.invokeFactory("Document", "doc1", title="Document 1")
+        self.folder.invokeFactory("Document", "doc2", title="Document 2")
+        self.folder.invokeFactory("Dexterity Item with relatedItems behavior", "dex1")
+        self.folder.invokeFactory("Dexterity Item with relatedItems behavior", "dex2")
         self.folder.invokeFactory(
-            'Dexterity Item with relatedItems behavior', 'dex1')
-        self.folder.invokeFactory(
-            'Dexterity Item with relatedItems behavior', 'dex2')
-        self.folder.invokeFactory(
-            'Dexterity Item without relatedItems behavior', 'dex3')
+            "Dexterity Item without relatedItems behavior", "dex3"
+        )
         qi = get_installer(self.portal)
-        qi.install_product('plone.app.intid')
+        qi.install_product("plone.app.intid")
         intids = getUtility(IIntIds)
         self.folder.dex1.relatedItems = [
             RelationValue(intids.getId(self.folder.doc1)),
@@ -269,7 +259,7 @@ class TestDexterityRelatedItemsViewlet(ViewletsTestCase):
         viewlet = ContentRelatedItems(self.folder.dex1, request, None, None)
         viewlet.update()
         related = viewlet.related_items()
-        self.assertEqual([x.id for x in related], ['doc1', 'doc2'])
+        self.assertEqual([x.id for x in related], ["doc1", "doc2"])
 
         # TODO: we should test with non-published objects and anonymous
         #       users but current workflow has no transition to make an
@@ -293,12 +283,10 @@ class TestDexterityRelatedItemsViewlet(ViewletsTestCase):
         """
         Related items viewlet doesn't include related folder's descendants.
         """
-        self.assertTrue(
-            self.folder.contentValues(), 'Folder is missing descendants')
+        self.assertTrue(self.folder.contentValues(), "Folder is missing descendants")
 
         intids = getUtility(IIntIds)
-        self.folder.dex1.relatedItems = [
-            RelationValue(intids.getId(self.folder))]
+        self.folder.dex1.relatedItems = [RelationValue(intids.getId(self.folder))]
 
         request = self.app.REQUEST
         viewlet = ContentRelatedItems(self.folder.dex1, request, None, None)
@@ -308,9 +296,9 @@ class TestDexterityRelatedItemsViewlet(ViewletsTestCase):
 
     def testDexterityDeletedRelatedItems(self):
         # Deleted related items should not cause problems.
-        self.folder._delObject('doc1')
+        self.folder._delObject("doc1")
         request = self.app.REQUEST
         viewlet = ContentRelatedItems(self.folder.dex1, request, None, None)
         viewlet.update()
         related = viewlet.related_items()
-        self.assertEqual([x.id for x in related], ['doc2'])
+        self.assertEqual([x.id for x in related], ["doc2"])

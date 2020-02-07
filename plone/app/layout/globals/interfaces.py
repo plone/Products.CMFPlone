@@ -295,6 +295,5 @@ class IPatternsSettingsRenderer(Interface):
 
 
 IPatternsSettingsRenderer = deprecated(
-    IPatternsSettingsRenderer,
-    'This interface was deprecated because it was pointless.'
+    IPatternsSettingsRenderer, "This interface was deprecated because it was pointless."
 )

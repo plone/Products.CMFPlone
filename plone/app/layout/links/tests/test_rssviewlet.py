@@ -9,10 +9,9 @@ from zope.component import getUtility
 
 
 class TestRSSViewletView(ViewletsTestCase):
-
     def test_RSSViewlet(self):
-        setRoles(self.portal, TEST_USER_ID, ['Manager'])
-        self.portal.invokeFactory('Folder', 'news')
+        setRoles(self.portal, TEST_USER_ID, ["Manager"])
+        self.portal.invokeFactory("Folder", "news")
         registry = getUtility(IRegistry)
         settings = registry.forInterface(ISiteSyndicationSettings)
         if settings.allowed:
@@ -22,7 +21,7 @@ class TestRSSViewletView(ViewletsTestCase):
         viewlet = RSSViewlet(self.portal, request, None, None)
         viewlet.update()
         result = viewlet.render()
-        self.assertEqual(result.strip(), '')
+        self.assertEqual(result.strip(), "")
         settings.allowed = True
         settings.site_rss_items = (self.portal.news.UID(),)
         request = self.app.REQUEST
