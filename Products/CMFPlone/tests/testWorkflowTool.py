@@ -131,18 +131,23 @@ class TestWorkflowTool(PloneTestCase.PloneTestCase):
             ("", "pending"),
             ("Published", "published"),
         ]
+<<<<<<< HEAD
         if six.PY2:
             self.assertListEqual(
                 sorted(tool.listWFStatesByTitle()), sorted(expected)
             )
         else:
             self.assertListEqual(tool.listWFStatesByTitle(), expected)
+=======
+        self.assertListEqual(tool.listWFStatesByTitle(), expected)
+>>>>>>> Improve tests for the workflow tool method listWFStatesByTitle
         expected = [
             ("", "private",),
             ("", "published"),
             ("", "pending"),
             ("Published", "published"),
         ]
+<<<<<<< HEAD
         if six.PY2:
             self.assertListEqual(
                 sorted(tool.listWFStatesByTitle(filter_similar=True)),
@@ -152,6 +157,11 @@ class TestWorkflowTool(PloneTestCase.PloneTestCase):
             self.assertListEqual(
                 tool.listWFStatesByTitle(filter_similar=True), expected
             )
+=======
+        self.assertListEqual(
+            tool.listWFStatesByTitle(filter_similar=True), expected
+        )
+>>>>>>> Improve tests for the workflow tool method listWFStatesByTitle
 
 
 
