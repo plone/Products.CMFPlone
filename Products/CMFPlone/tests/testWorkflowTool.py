@@ -6,6 +6,7 @@ from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests.dummy import Dummy, DummyWorkflowChainAdapter
 from Products.CMFCore.interfaces import IWorkflowTool
 
+import six
 
 default_user = PloneTestCase.default_user
 
@@ -130,16 +131,27 @@ class TestWorkflowTool(PloneTestCase.PloneTestCase):
             ("", "pending"),
             ("Published", "published"),
         ]
-        self.assertListEqual(tool.listWFStatesByTitle(), expected)
+        if six.PY2:
+            self.assertListEqual(
+                sorted(tool.listWFStatesByTitle()), sorted(expected)
+            )
+        else:
+            self.assertListEqual(tool.listWFStatesByTitle(), expected)
         expected = [
             ("", "private",),
             ("", "published"),
             ("", "pending"),
             ("Published", "published"),
         ]
-        self.assertListEqual(
-            tool.listWFStatesByTitle(filter_similar=True), expected
-        )
+        if six.PY2:
+            self.assertListEqual(
+                sorted(tool.listWFStatesByTitle(filter_similar=True)),
+                sorted(expected),
+            )
+        else:
+            self.assertListEqual(
+                tool.listWFStatesByTitle(filter_similar=True), expected
+            )
 
 
 
