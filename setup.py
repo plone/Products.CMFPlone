@@ -2,7 +2,7 @@
 from setuptools import setup
 from setuptools import find_packages
 
-version = '5.2.1.dev0'
+version = '6.0a1.dev0'
 
 
 setup(
@@ -15,13 +15,12 @@ setup(
         "Development Status :: 5 - Production/Stable",
         "Environment :: Web Environment",
         "Framework :: Plone",
-        "Framework :: Plone :: 5.2",
+        "Framework :: Plone :: 6.0",
         "Framework :: Zope",
         "Framework :: Zope :: 4",
         "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
         "Operating System :: OS Independent",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
@@ -100,7 +99,6 @@ setup(
         'Products.CMFUid',
         'Products.DCWorkflow',
         'Products.ExtendedPathIndex',
-        'Products.ExternalEditor ; python_version<"3"',
         'Products.GenericSetup >= 2.0.dev0',
         'Products.MimetypesRegistry',
         'Products.PlonePAS',
@@ -117,7 +115,7 @@ setup(
         'transaction',
         'z3c.autoinclude',
         'ZODB3',
-        'Zope >= 4.0b5',
+        'Zope[wsgi] >= 4.0b5',
         'zope.app.locales >= 3.6.0',
         'zope.cachedescriptors',
         'zope.component',
@@ -137,14 +135,8 @@ setup(
         'zope.tal',
         'zope.tales',
         'zope.traversing',
-        'ZServer ; python_version<"3"',
     ],
     extras_require={
-        'archetypes': [
-            'Products.ATContentTypes ; python_version<"3"',
-            'archetypes.multilingual ; python_version<"3"',
-            'plone.app.contenttypes[archetypes,atrefs] ; python_version<"3"',
-        ],
         'test': [
             'lxml',
             'mock',
