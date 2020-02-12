@@ -22,5 +22,6 @@ except ValueError, e:
         # should get an error message and contact the admins
         raise e
     context.plone_utils.addPortalMessage(msg)
-    response = context.mail_password_form()
+    REQUEST.RESPONSE.redirect(context.absolute_url()+'/mail_password_form')
+    return
 return response
