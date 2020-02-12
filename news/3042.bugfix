@@ -1,0 +1,2 @@
+Fix mail_password_form throwing error when submitted without entering a user name.
+[achimwilde]
