@@ -5,8 +5,8 @@ from plone.app.layout.testing import INTEGRATION_TESTING
 from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing.helpers import logout
+from plone.i18n.interfaces import ILanguageSchema
 from plone.registry.interfaces import IRegistry
-from Products.CMFPlone.interfaces import ILanguageSchema
 from Products.CMFPlone.interfaces import ISearchSchema
 from Products.CMFPlone.interfaces import ISiteSchema
 from zope.component import getUtility
