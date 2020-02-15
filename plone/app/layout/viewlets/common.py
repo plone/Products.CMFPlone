@@ -8,6 +8,7 @@ from functools import total_ordering
 from plone.app.layout.globals.interfaces import IViewView
 from plone.app.layout.navigation.root import getNavigationRoot
 from plone.app.layout.navigation.root import getNavigationRootObject
+from plone.i18n.interfaces import ILanguageSchema
 from plone.memoize.view import memoize
 from plone.memoize.view import memoize_contextless
 from plone.protect.utils import addTokenToUrl
@@ -16,7 +17,6 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.CMFPlone.interfaces import ISearchSchema
 from Products.CMFPlone.interfaces import ISiteSchema
-from Products.CMFPlone.interfaces.controlpanel import ILanguageSchema
 from Products.CMFPlone.interfaces.controlpanel import INavigationSchema
 from Products.CMFPlone.utils import getSiteLogo
 from Products.CMFPlone.utils import safe_unicode
