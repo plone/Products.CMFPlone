@@ -83,16 +83,21 @@ class GroupMembershipControlPanel(UsersGroupsControlPanelView):
     def getMembers(self):
         searchResults = self.gtool.getGroupMembers(self.groupname)
 
-        groupResults = [self.gtool.getGroupById(m) for m in searchResults]
-        groupResults.sort(key=lambda x: x is not None and normalizeString(
-            x.getGroupTitleOrName()))
+        groupResults = []
+        userResults = []
+        for principal_id in searchResults:
+            principal = self.gtool.getGroupById(principal_id)
+            if principal is not None:
+                groupResults.append(principal)
+                continue
+            principal = self.mtool.getMemberById(principal_id)
+            if principal is not None:
+                userResults.append(principal)
 
-        userResults = [self.mtool.getMemberById(m) for m in searchResults]
-        userResults.sort(key=lambda x: x is not None and x.getProperty(
-            'fullname') is not None and normalizeString(x.getProperty('fullname')) or '')
+        groupResults.sort(key=lambda x: normalizeString(x.getGroupTitleOrName()))
+        userResults.sort(key=lambda x: normalizeString(x.getProperty('fullname') or ''))
 
-        mergedResults = groupResults + userResults
-        return [i for i in mergedResults if i]
+        return groupResults + userResults
 
     def getPotentialMembers(self, searchString):
         ignoredUsersGroups = [
