@@ -365,6 +365,10 @@ class GlobalSectionsViewlet(ViewletBase):
             item.update(
                 {"sub": sub, "opener": "", "aria_haspopup": "", "has_sub_class": "",}
             )
+        if "title" in item:
+            item["title"] = escape(item["title"])
+        if "name" in item:
+            item["name"] = escape(item["name"])
         return self._item_markup_template.format(**item)
 
     def build_tree(self, path, first_run=True):
