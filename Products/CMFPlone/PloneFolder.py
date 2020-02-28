@@ -42,7 +42,7 @@ class ReplaceableWrapper:
 
     def __init__(self, ob):
         warnings.warn(
-            'ReplaceableWrapper is deprecated. Planned remoaval in Plone 6.0',
+            'ReplaceableWrapper is deprecated. Planned removal in Plone 6.0',
             DeprecationWarning,
         )
         self.__ob = ob
