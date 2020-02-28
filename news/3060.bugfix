@@ -1,0 +1,2 @@
+Fix index_html on PortalRoot: ReplaceableWrapper did not work.
+[jensens]
