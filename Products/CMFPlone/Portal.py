@@ -99,7 +99,7 @@ class PloneSite(PortalObjectBase, DefaultDublinCoreImpl, OrderedContainer,
                 # Very likely a WebDAV client trying to create something
                 result = NullResource(self, 'index_html')
                 setattr(result, '__replaceable__', REPLACEABLE)
-                return ReplaceableWrapper()
+                return result
             elif method not in ('GET', 'HEAD', 'POST'):
                 raise AttributeError('index_html')
         # Acquire from skin.
