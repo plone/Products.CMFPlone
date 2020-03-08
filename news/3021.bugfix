@@ -1,3 +1,0 @@
-Integrate Plone20200121 hotfix: prevent XSS in title.
-Part of https://plone.org/security/hotfix/20200121/xss-in-the-title-field-on-plone-5-0-and-higher
-[maurits]

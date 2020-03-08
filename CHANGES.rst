@@ -8,6 +8,23 @@ Changelog
 
 .. towncrier release notes start
 
+3.4.1 (2020-03-09)
+------------------
+
+Bug fixes:
+
+
+- Analytics viewlet: make webstats_js a property, so that it does not rely on an a call to the update method to be correctly evaluated [ale-rt] (#227)
+- Code formating according to Plone standards (black, isort).
+  [thet] (#230)
+- Remove selectedTabs and update method from GlobalSectionsViewlet as both are now unused.
+  [thet] (#231)
+- Remove deprecation warnings [ale-rt] (#233)
+- Integrate Plone20200121 hotfix: prevent XSS in title.
+  Part of https://plone.org/security/hotfix/20200121/xss-in-the-title-field-on-plone-5-0-and-higher
+  [maurits] (#3021)
+
+
 3.4.0 (2019-12-10)
 ------------------
 
