@@ -62,7 +62,7 @@ class EmailLogin(BrowserView):
                 if email:
                     email = pas.applyTransform(email)
                 else:
-                    logger.warn("User %s has no email address.",
+                    logger.warning("User %s has no email address.",
                                 user.getUserId())
                     # Add the normal login name anyway.
                     email = pas.applyTransform(user.getUserName())
@@ -75,7 +75,7 @@ class EmailLogin(BrowserView):
         duplicates = []
         for email, userids in self._email_list.items():
             if len(userids) > 1:
-                logger.warn("Duplicate accounts for email address %s: %r",
+                logger.warning("Duplicate accounts for email address %s: %r",
                             email, userids)
                 duplicates.append((email, userids))
 
@@ -107,7 +107,7 @@ class EmailLogin(BrowserView):
         duplicates = []
         for login_name, userids in self._userid_list.items():
             if len(userids) > 1:
-                logger.warn("Duplicate accounts for lower case user id "
+                logger.warning("Duplicate accounts for lower case user id "
                             "%s: %r", login_name, userids)
                 duplicates.append((login_name, userids))
 
