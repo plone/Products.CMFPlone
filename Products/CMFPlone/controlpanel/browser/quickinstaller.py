@@ -455,7 +455,7 @@ class InstallerView(BrowserView):
 
         if not self.is_profile_installed(profile_id):
             version = self.get_product_version(product_id)
-            logger.warn('Profile %s has no metadata.xml version. Falling back '
+            logger.warning('Profile %s has no metadata.xml version. Falling back '
                         'to package version %s', profile_id, version)
             self.ps.setLastVersionForProfile(profile_id, version)
 
