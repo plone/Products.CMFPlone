@@ -71,7 +71,7 @@ def cookWhenChangingSettings(context, bundle=None):
     css_path = bundle.csscompilation
 
     if not js_path and not css_path:
-        logger.warn(
+        logger.warning(
             'No js_path or css_path found. We need a plone.resource '
             'based resource path in order to store the compiled JS and CSS.'
         )
@@ -108,7 +108,7 @@ def cookWhenChangingSettings(context, bundle=None):
                         '\n/* Could not find resource: {0} */\n\n'.format(
                             css_resource
                         )
-                    logger.warn('Could not find resource: %s', css_resource)
+                    logger.warning('Could not find resource: %s', css_resource)
         if not resource.js or not js_path:
             continue
         js_url = siteUrl + '/' + resource.js
@@ -130,9 +130,9 @@ def cookWhenChangingSettings(context, bundle=None):
                         resource.js,
                         js
                     )
-                logger.warn('Error cooking resource: %s', resource.js)
+                logger.warning('Error cooking resource: %s', resource.js)
         else:
-            logger.warn('Could not find resource: %s', resource.js)
+            logger.warning('Could not find resource: %s', resource.js)
             cooked_js += '\n/* Could not find resource: {0} */\n\n'.format(
                 js_url
             )
@@ -164,7 +164,7 @@ def cookWhenChangingSettings(context, bundle=None):
             folder.writeFile(resource_filepath, fi)
             logger.info('Writing cooked resource: %s', resource_path)
         except NotFound:
-            logger.warn('Error writing cooked resource: %s', resource_path)
+            logger.warning('Error writing cooked resource: %s', resource_path)
 
     _write_resource(js_path, cooked_js)
     _write_resource(css_path, cooked_css)

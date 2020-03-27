@@ -72,7 +72,7 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
             user = acl.getUserById(userId)
             # play safe, though this should never happen
             if user is None:
-                logger.warn(
+                logger.warning(
                     'Skipped user without principal object: %s' % userId)
                 continue
             allAssignedRoles = []
@@ -98,7 +98,7 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
             user = mtool.getMemberById(userId)
             # play safe, though this should never happen
             if user is None:
-                logger.warn(
+                logger.warning(
                     'Skipped user without principal object: %s' % userId)
                 continue
             explicitlyAssignedRoles = []
