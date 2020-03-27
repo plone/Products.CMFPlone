@@ -50,7 +50,7 @@ def get_resource(context, path):
     try:
         resource = context.unrestrictedTraverse(path)
     except NotFound:
-        logger.warn(u'Could not find resource {0}. You may have to create it first.'.format(path))  # noqa
+        logger.warning(u'Could not find resource {0}. You may have to create it first.'.format(path))  # noqa
         return
 
     if isinstance(resource, FilesystemFile):
