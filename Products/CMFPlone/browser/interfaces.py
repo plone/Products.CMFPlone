@@ -288,6 +288,9 @@ class IPlone(Interface):
     def site_encoding():
         """ returns site encoding """
 
+    def patterns_settings():
+        """ returns mockup pattern settings """
+
 
 class ISendToForm(Interface):
     """ Interface for describing the 'sendto' form """
