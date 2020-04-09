@@ -37,3 +37,6 @@ class MarkupRegistryIntegrationTest(unittest.TestCase):
 
     def test_allowed_types_exists(self):
         self.assertTrue(hasattr(self.settings, 'allowed_types'))
+
+    def test_markdown_extensions_exists(self):
+        self.assertTrue(hasattr(self.settings, 'markdown_extensions'))
