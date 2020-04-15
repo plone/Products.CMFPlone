@@ -45,6 +45,12 @@ import re
 import six
 import time
 
+try:
+    from time import clock as process_time
+except ImportError:
+    from time import process_time
+
+
 logger = logging.getLogger('Plone')
 
 _marker = object()
@@ -514,12 +520,12 @@ class CatalogTool(PloneBaseTool, BaseTool):
         method. This may take a long time.
         """
         elapse = time.time()
-        c_elapse = time.clock()
+        c_elapse = process_time()
 
         self.clearFindAndRebuild()
 
         elapse = time.time() - elapse
-        c_elapse = time.clock() - c_elapse
+        c_elapse = process_time() - c_elapse
 
         msg = ('Catalog Rebuilt\n'
                'Total time: %s\n'
