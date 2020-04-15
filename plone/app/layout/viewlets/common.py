@@ -365,9 +365,9 @@ class GlobalSectionsViewlet(ViewletBase):
             item.update(
                 {"sub": sub, "opener": "", "aria_haspopup": "", "has_sub_class": "",}
             )
-        if "title" in item:
+        if "title" in item and item["title"]:
             item["title"] = escape(item["title"])
-        if "name" in item:
+        if "name" in item and item["name"]:
             item["name"] = escape(item["name"])
         return self._item_markup_template.format(**item)
 
