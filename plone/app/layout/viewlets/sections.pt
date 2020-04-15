@@ -19,7 +19,7 @@
 
       <div class="plone-collapse plone-navbar-collapse" id="portal-globalnav-collapse">
         <ul class="plone-nav plone-navbar-nav" id="portal-globalnav">
-          <navtree tal:replace="structure view/render_globalnav" />
+          <navtree tal:replace="structure python:view.render_globalnav()" />
         </ul>
       </div>
     </div>
