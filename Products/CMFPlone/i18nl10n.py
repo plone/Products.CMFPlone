@@ -30,8 +30,8 @@ _dt_format_string_regexp = re.compile(r'\%([{0}])'.format(_all_regexp_set))
 # structures, so here a copy:
 ENGLISH_NAMES = {
     '_days': (
-        '', 'January', 'February', 'March', 'April', 'May', 'June',
-        'July', 'August', 'September', 'October', 'November', 'December'
+        'Sunday', 'Monday', 'Tuesday', 'Wednesday',  'Thursday', 'Friday',
+        'Saturday',
     ),
     '_days_a': ('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'),
     '_days_p': ('Sun.', 'Mon.', 'Tue.', 'Wed.', 'Thu.', 'Fri.', 'Sat.'),
@@ -202,13 +202,13 @@ def ulocalized_time(time, long_format=None, time_only=False, context=None,
 
     # add weekday name, abbr. weekday name, month name, abbr month name
     name_elements = formatelements & name_formatvariables
-    if bool({'a', 'A'} & name_elements):
+    if {'a', 'A'} & name_elements:
         weekday = int(time.strftime('%w'))  # weekday, sunday = 0
         if 'a' in name_elements:
             mapping['a'] = weekdayname_msgid_abbr(weekday)
         if 'A' in name_elements:
             mapping['A'] = weekdayname_msgid(weekday)
-    if bool({'b', 'B'} & name_elements):
+    if {'b', 'B'} & name_elements:
         monthday = int(time.strftime('%m'))  # month, january = 1
         if 'b' in name_elements:
             mapping['b'] = monthname_msgid_abbr(monthday)
