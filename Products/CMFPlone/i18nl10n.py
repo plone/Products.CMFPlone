@@ -2,49 +2,52 @@
 """
 Collection of i18n and l10n utility methods.
 """
-import re
-import logging
-
+from Acquisition import aq_acquire
+from DateTime import DateTime
+from DateTime.interfaces import IDateTime
+from plone.registry.interfaces import IRegistry
+from Products.CMFPlone.utils import log
 from zope.component import getUtility
 from zope.i18n import translate
 from zope.i18n.locales import locales
 from zope.publisher.interfaces.browser import IBrowserRequest
 
-from Acquisition import aq_acquire
-from DateTime import DateTime
-from DateTime.interfaces import IDateTime
+import logging
+import re
 
-from plone.registry.interfaces import IRegistry
-from Products.CMFPlone.utils import log
+datetime_formatvariables = {'H', 'I', 'm', 'd', 'M', 'p', 'S', 'Y', 'y', 'Z'}
+name_formatvariables = {'a', 'A', 'b', 'B'}
+all_formatvariables = datetime_formatvariables | name_formatvariables
+_all_regexp_set = ','.join(all_formatvariables)
+# regexp to split up ${X} format strings
+_interp_regex = re.compile(
+    r'(?<!\$)(\$(?:[%(n)s]|{[%(n)s]}))' % ({'n': _all_regexp_set})
+)
+# regexp to detect if this is a strftime format string
+_dt_format_string_regexp = re.compile(r'\%([{0}])'.format(_all_regexp_set))
 
-# these are taken from PTS, used for format interpolation
-NAME_RE = r"[a-zA-Z][a-zA-Z0-9_]*"
-_interp_regex = re.compile(r'(?<!\$)(\$(?:%(n)s|{%(n)s}))' % ({'n': NAME_RE}))
-
-datetime_formatvariables = ('H', 'I', 'm', 'd', 'M', 'p', 'S', 'Y', 'y', 'Z')
-name_formatvariables = ('a', 'A', 'b', 'B')
-
-ENGLISH_NAMES = {}
-try:
-    from DateTime.DateTime import _DAYS
-    ENGLISH_NAMES['_days'] = _DAYS
-    from DateTime.DateTime import _DAYS_A
-    ENGLISH_NAMES['_days_a'] = _DAYS_A
-    from DateTime.DateTime import _DAYS_P
-    ENGLISH_NAMES['_days_p'] = _DAYS_P
-    from DateTime.DateTime import _MONTHS
-    ENGLISH_NAMES['_months'] = _MONTHS
-    from DateTime.DateTime import _MONTHS_A
-    ENGLISH_NAMES['_months_a'] = _MONTHS_A
-    from DateTime.DateTime import _MONTHS_P
-    ENGLISH_NAMES['_months_p'] = _MONTHS_P
-except ImportError:
-    ENGLISH_NAMES['_days'] = DateTime._days
-    ENGLISH_NAMES['_days_a'] = DateTime._days_a
-    ENGLISH_NAMES['_days_p'] = DateTime._days_p
-    ENGLISH_NAMES['_months'] = DateTime._months
-    ENGLISH_NAMES['_months_a'] = DateTime._months_a
-    ENGLISH_NAMES['_months_p'] = DateTime._months_p
+# those are from DateTime.DateTime, but we must not rely on its internal
+# structures, so here a copy:
+ENGLISH_NAMES = {
+    '_days': (
+        '', 'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+    ),
+    '_days_a': ('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'),
+    '_days_p': ('Sun.', 'Mon.', 'Tue.', 'Wed.', 'Thu.', 'Fri.', 'Sat.'),
+    '_months': (
+        '', 'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December',
+    ),
+    '_months_a': (
+        '', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+    ),
+    '_months_p': (
+        '', 'Jan.', 'Feb.', 'Mar.', 'Apr.', 'May', 'June',
+        'July', 'Aug.', 'Sep.', 'Oct.', 'Nov.', 'Dec.'
+    ),
+}
 
 # The following are helper methods to change the default date and time formats
 # for a specific locale. These locale dependent formats are used in the
@@ -165,13 +168,17 @@ def ulocalized_time(time, long_format=None, time_only=False, context=None,
     # 1. if our Enabled flag in the configuration registry is set,
     # the format string there should override the translation machinery
     formatstring = get_formatstring_from_registry(msgid)
-    if formatstring is not None:
-        return time.strftime(formatstring)
 
-    # 2. the normal case: translation machinery,
-    # that is the ".../LC_MESSAGES/plonelocales.po" files
-    formatstring = translate(msgid, domain, mapping, request,
-                             target_language=target_language)
+    if formatstring is not None:
+        if _dt_format_string_regexp.findall(formatstring):
+            # classic strftime formatting, no i18n/l10n
+            return time.strftime(formatstring)
+    else:
+        # 2. the normal case: translation machinery,
+        # that is the ".../LC_MESSAGES/plonelocales.po" files
+        formatstring = translate(
+            msgid, domain, mapping, request, target_language=target_language
+        )
 
     # 3. if both failed, fall back to hardcoded ISO style
     if formatstring == msgid:
@@ -186,34 +193,22 @@ def ulocalized_time(time, long_format=None, time_only=False, context=None,
         return time.strftime(formatstring)
 
     # get the format elements used in the formatstring
-    formatelements = _interp_regex.findall(formatstring)
-
-    # reformat the ${foo} to foo
-    formatelements = [el[2:-1] for el in formatelements]
+    formatelements = {el[2:-1] for el in _interp_regex.findall(formatstring)}
 
     # add used elements to mapping
-    elements = [e for e in formatelements if e in datetime_formatvariables]
-
-    # add weekday name, abbr. weekday name, month name, abbr month name
-    week_included = True
-    month_included = True
-
-    name_elements = [e for e in formatelements if e in name_formatvariables]
-    if not ('a' in name_elements or 'A' in name_elements):
-        week_included = False
-    if not ('b' in name_elements or 'B' in name_elements):
-        month_included = False
-
+    elements = formatelements & datetime_formatvariables
     for key in elements:
         mapping[key] = time.strftime('%' + key)
 
-    if week_included:
+    # add weekday name, abbr. weekday name, month name, abbr month name
+    name_elements = formatelements & name_formatvariables
+    if bool({'a', 'A'} & name_elements):
         weekday = int(time.strftime('%w'))  # weekday, sunday = 0
         if 'a' in name_elements:
             mapping['a'] = weekdayname_msgid_abbr(weekday)
         if 'A' in name_elements:
             mapping['A'] = weekdayname_msgid(weekday)
-    if month_included:
+    if bool({'b', 'B'} & name_elements):
         monthday = int(time.strftime('%m'))  # month, january = 1
         if 'b' in name_elements:
             mapping['b'] = monthname_msgid_abbr(monthday)
@@ -222,13 +217,18 @@ def ulocalized_time(time, long_format=None, time_only=False, context=None,
 
     # translate translateable elements
     for key in name_elements:
-        mapping[key] = translate(mapping[key], domain,
-                                 context=request, default=mapping[key],
-                                 target_language=target_language)
+        mapping[key] = translate(
+            mapping[key],
+            domain,
+            context=request,
+            default=mapping[key],
+            target_language=target_language,
+        )
 
     # translate the time string
-    return translate(msgid, domain, mapping, request,
-                     target_language=target_language)
+    return translate(
+        msgid, domain, mapping, request, target_language=target_language
+    )
 
 
 def _numbertoenglishname(number, format=None, attr='_days'):
