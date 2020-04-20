@@ -1381,6 +1381,21 @@ class IMarkupSchema(Interface):
         )
     )
 
+    markdown_extensions = schema.List(
+        default=[
+            'markdown.extensions.fenced_code',
+            'markdown.extensions.nl2br',
+        ],
+        description=_(
+            u'Look for available extensions at '
+            u'https://python-markdown.github.io/extensions/ or write your own.'
+        ),
+        missing_value=(),
+        required=False,
+        title=_(u'Enabled markdown extensions'),
+        value_type=schema.TextLine()
+    )
+
 
 class IUserGroupsSettingsSchema(Interface):
 

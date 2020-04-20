@@ -72,3 +72,32 @@ class MarkupControlPanelFunctionalTest(unittest.TestCase):
         settings = registry.forInterface(IMarkupSchema, prefix='plone')
         self.assertEqual(settings.allowed_types,
                          ('text/html', 'text/x-web-textile'))
+
+    def test_markdown_extensions(self):
+        self.browser.open(
+            "%s/@@markup-controlpanel" % self.portal_url)
+        self.assertEqual(
+            self.browser.getControl(
+                name='form.widgets.markdown_extensions'
+            ).value,
+            'markdown.extensions.fenced_code\nmarkdown.extensions.nl2br')
+
+        self.browser.getControl(
+            name='form.widgets.markdown_extensions'
+        ).value = '\n'.join([
+            'markdown.extensions.fenced_code',
+            'markdown.extensions.nl2br',
+            'markdown.extensions.extra',
+        ])
+        self.browser.getControl('Save').click()
+
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(IMarkupSchema, prefix='plone')
+        self.assertEqual(
+            settings.markdown_extensions,
+            [
+                'markdown.extensions.fenced_code',
+                'markdown.extensions.nl2br',
+                'markdown.extensions.extra',
+            ]
+        )
