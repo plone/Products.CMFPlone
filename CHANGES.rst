@@ -8,6 +8,16 @@ Changelog
 
 .. towncrier release notes start
 
+3.4.2 (2020-04-20)
+------------------
+
+Bug fixes:
+
+
+- Make navtree more robust against empty title or name, do not fail but fall back to id.
+  [jensens] (#237)
+
+
 3.4.1 (2020-03-09)
 ------------------
 

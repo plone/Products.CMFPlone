@@ -1,2 +1,0 @@
-Make navtree more robust against empty title or name, do not fail but fall back to id.
-[jensens]
