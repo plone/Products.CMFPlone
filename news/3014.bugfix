@@ -1,0 +1,2 @@
+Redirect (when possible) also ajax requests and do not return an unuseful body
+[ale-rt]
