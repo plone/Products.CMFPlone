@@ -31,6 +31,7 @@ from Products.CMFPlone.utils import safe_callable
 from Products.CMFPlone.utils import safe_unicode
 from Products.ZCatalog.ZCatalog import ZCatalog
 from six.moves import urllib
+from time import process_time
 from zExceptions import Unauthorized
 from zope.annotation.interfaces import IAnnotations
 from zope.component import queryMultiAdapter
@@ -45,10 +46,6 @@ import re
 import six
 import time
 
-try:
-    from time import clock as process_time
-except ImportError:
-    from time import process_time
 
 
 logger = logging.getLogger('Plone')
