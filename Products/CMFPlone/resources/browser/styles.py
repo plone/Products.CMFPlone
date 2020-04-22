@@ -161,6 +161,7 @@ class StylesBase(ResourceBase):
             result.append(data)
 
         # custom.css
+<<<<<<< HEAD
         if self.custom_css:
             custom_css = {
                 'rel': 'stylesheet',
@@ -172,6 +173,18 @@ class StylesBase(ResourceBase):
                 'bundle': 'custom-css'
             }
             result.append(custom_css)
+=======
+        custom_css = {
+            'rel': 'stylesheet',
+            'conditionalcomment': '',
+            'src': "{0}/custom.css?timestamp={1}".format(
+                self.site_url,
+                self.custom_css_timestamp,
+            ),
+            'bundle': 'custom-css'
+        }
+        result.append(custom_css)
+>>>>>>> Add custom.css resource after diazo bundle
         return result
 
 
