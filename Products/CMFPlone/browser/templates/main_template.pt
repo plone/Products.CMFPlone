@@ -83,15 +83,21 @@
           <metal:bodytext define-slot="main">
 
           <header>
+
             <div id="viewlet-above-content-title" tal:content="structure provider:plone.abovecontenttitle" />
+
             <metal:title define-slot="content-title">
               <h1 tal:replace="structure context/@@title" />
             </metal:title>
+
             <div id="viewlet-below-content-title" tal:content="structure provider:plone.belowcontenttitle" />
 
             <metal:description define-slot="content-description">
               <p tal:replace="structure context/@@description" />
             </metal:description>
+
+            <div id="viewlet-below-content-description" tal:content="structure provider:plone.belowcontentdescription" />
+
           </header>
 
           <div id="viewlet-above-content-body" tal:content="structure provider:plone.abovecontentbody" />
