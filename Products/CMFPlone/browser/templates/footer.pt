@@ -8,7 +8,7 @@
 
   <div class="card card-classic" id="portal-footer-signature" metal:define-macro="portlet">
 
-    <div class="card-content">
+    <div class="card-body">
       <span i18n:translate="description_copyright" tal:omit-tag="">
       The
       <span i18n:name="plonecms" tal:omit-tag="">
