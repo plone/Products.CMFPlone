@@ -18,6 +18,7 @@
     <meta:provides feature="plone-5" />
     <meta:provides feature="plone-51" />
     <meta:provides feature="plone-52" />
+    <meta:provides feature="plone-60" />
 
     <include package="Products.CMFCore" file="meta.zcml" />
     <include package="Products.GenericSetup" file="meta.zcml" />
