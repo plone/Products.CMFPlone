@@ -6,13 +6,13 @@
       tal:omit-tag=""
       i18n:domain="plone">
 
-  <aside class="portlet portletClassic" id="portal-colophon" metal:define-macro="portlet">
-    <div class="portletContent">
+  <div class="card card-classic" id="portal-colophon" metal:define-macro="portlet">
+    <div class="card-content">
       <a href="http://plone.com" target="_blank"
          title="This site was built using the Plone Open Source CMS/WCM."
          i18n:attributes="title title_built_with_plone;"
          i18n:translate="label_powered_by_plone">
         Powered by Plone &amp; Python</a>
     </div>
-  </aside>
+  </div>
 </html>
