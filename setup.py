@@ -117,7 +117,6 @@ setup(
         'z3c.autoinclude',
         'ZODB3',
         'Zope[wsgi] >= 4.0b5',
-        'zope.app.locales >= 3.6.0',
         'zope.cachedescriptors',
         'zope.component',
         'zope.container',

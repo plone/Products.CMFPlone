@@ -1,0 +1,2 @@
+zope.app.locales is no longer needed, all zope.app.* was removed.
+[jensens]
