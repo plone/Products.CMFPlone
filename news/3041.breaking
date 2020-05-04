@@ -1,0 +1,4 @@
+A part of "Drop Python 2 Support for Plone 6" #2812:
+Reflect dropping of Python 2 support in setup.py.
+Bump version to 6.0
+[jensens]

@@ -1,31 +1,33 @@
 # -*- coding: utf-8 -*-
-from plone.memoize import view
+from AccessControl import ClassSecurityInfo
+from AccessControl import Permissions
+from AccessControl import Unauthorized
 from AccessControl.class_init import InitializeClass
-from zExceptions import NotFound
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
-from AccessControl import Permissions
-from AccessControl import Unauthorized
-from AccessControl import ClassSecurityInfo
 from ComputedAttribute import ComputedAttribute
-
 from OFS.Folder import Folder
-from OFS.ObjectManager import REPLACEABLE
 from OFS.OrderSupport import OrderSupport
-
-from Products.CMFCore.utils import getToolByName
-from Products.CMFCore.CMFCatalogAware import CatalogAware, WorkflowAware, \
-    OpaqueItemManager
+from plone.memoize import view
+from Products.CMFCore.CMFCatalogAware import CatalogAware
+from Products.CMFCore.CMFCatalogAware import OpaqueItemManager
+from Products.CMFCore.CMFCatalogAware import WorkflowAware
+from Products.CMFCore.permissions import AccessContentsInformation
+from Products.CMFCore.permissions import AddPortalContent
+from Products.CMFCore.permissions import AddPortalFolders
+from Products.CMFCore.permissions import ListFolderContents
+from Products.CMFCore.permissions import ModifyPortalContent
 from Products.CMFCore.PortalFolder import PortalFolderBase
-from Products.CMFCore.permissions import AccessContentsInformation, \
-    AddPortalContent, AddPortalFolders, ListFolderContents, \
-    ModifyPortalContent
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import bbb
 from Products.CMFPlone.DublinCore import DefaultDublinCoreImpl
-
+from zExceptions import NotFound
 from zope.interface import implementer
+
 import six
+import warnings
+
 
 if bbb.HAS_ZSERVER:
     from webdav.NullResource import NullResource
@@ -39,6 +41,10 @@ class ReplaceableWrapper:
     """A wrapper around an object to make it replaceable."""
 
     def __init__(self, ob):
+        warnings.warn(
+            'ReplaceableWrapper is deprecated. Planned removal in Plone 6.0',
+            DeprecationWarning,
+        )
         self.__ob = ob
 
     def __getattr__(self, name):
@@ -146,22 +152,26 @@ class BasePloneFolder(CatalogAware, WorkflowAware, OpaqueItemManager,
     view = __call__
 
     def index_html(self):
-        """Acquire if not present."""
+        """ Acquire if not present. """
         request = getattr(self, 'REQUEST', None)
-        if request and 'REQUEST_METHOD' in request:
-            if request.maybe_webdav_client:
-                method = request['REQUEST_METHOD']
-                if bbb.HAS_ZSERVER and method in ('PUT', ):
-                    # Very likely a WebDAV client trying to create something
-                    return ReplaceableWrapper(NullResource(self, 'index_html'))
-                elif method in ('GET', 'HEAD', 'POST'):
-                    # Do nothing, let it go and acquire.
-                    pass
-                else:
-                    raise AttributeError('index_html')
-        # Acquire from parent
-        _target = aq_parent(aq_inner(self)).aq_acquire('index_html')
-        return ReplaceableWrapper(aq_base(_target).__of__(self))
+        if (
+            request is not None
+            and 'REQUEST_METHOD' in request
+            and request.maybe_webdav_client
+        ):
+            method = request['REQUEST_METHOD']
+            if bbb.HAS_ZSERVER and method in ('PUT', ):
+                # Very likely a WebDAV client trying to create something
+                result = NullResource(self, 'index_html')
+                setattr(result, '__replaceable__', REPLACEABLE)
+                return result
+            elif method not in ('GET', 'HEAD', 'POST'):
+                raise AttributeError('index_html')
+        # Acquire from skin.
+        _target = self.__getattr__('index_html')
+        result = aq_base(_target).__of__(self)
+        setattr(result, '__replaceable__', REPLACEABLE)
+        return result
 
     index_html = ComputedAttribute(index_html, 1)
 

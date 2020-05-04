@@ -14,26 +14,6 @@ class IDocument(Interface):
     """ Dummy document interface
     """
 
-# INFO - Ugh...Rather than use and update ambiguous numbers,
-# we maintain a mapping of the various workflows to states
-# though there are some obvious downsides to this, it's better than just
-# asserting that there are X published states in all workflows, etc.
-workflow_dict = {
-    'folder_workflow': ('private', 'published', 'visible',),
-    'intranet_folder_workflow': ('internal', 'private',),
-    'intranet_workflow': ('internal', 'internally_published', 'pending',
-                          'private', 'external',),
-    'one_state_workflow': ('published',),
-    'plone_workflow': ('pending', 'private', 'published', 'visible',),
-    'simple_publication_workflow': ('private', 'published', 'pending',),
-    'comment_one_state_workflow': ('published',),
-    'comment_review_workflow': ('pending', 'published',)
-}
-# then we join all states into one master list
-all_states = []
-for states in workflow_dict.values():
-    all_states += list(states)
-
 
 class TestWorkflowTool(PloneTestCase.PloneTestCase):
 
@@ -111,25 +91,57 @@ class TestWorkflowTool(PloneTestCase.PloneTestCase):
         self.assertEqual(state_title, state_id)
 
     def testListWFStatesByTitle(self):
-        states = self.workflow.listWFStatesByTitle()
-        self.assertEqual(len(states), len(all_states))
-        pub_states = [s for s in states if s[1] == 'published']
-        priv_states = [s for s in states if s[1] == 'private']
-        pend_states = [s for s in states if s[1] == 'pending']
-        vis_states = [s for s in states if s[1] == 'visible']
-        external_states = [s for s in states if s[1] == 'external']
-        internal_states = [s for s in states if s[1] == 'internal']
-        internal_pub_states = [s for s in states
-                               if s[1] == 'internally_published']
+        from Products.CMFPlone.WorkflowTool import WorkflowTool
+        from Products.DCWorkflow.DCWorkflow import DCWorkflowDefinition
+        from Products.DCWorkflow.States import StateDefinition
 
-        self.assertEqual(len(pub_states), all_states.count('published'))
-        self.assertEqual(len(priv_states), all_states.count('private'))
-        self.assertEqual(len(pend_states), all_states.count('pending'))
-        self.assertEqual(len(vis_states), all_states.count('visible'))
-        self.assertEqual(len(external_states), all_states.count('external'))
-        self.assertEqual(len(internal_states), all_states.count('internal'))
-        self.assertEqual(len(internal_pub_states),
-                         all_states.count('internally_published'))
+        tool = WorkflowTool()
+
+        # Test without workflows
+        self.assertListEqual(tool.listWFStatesByTitle(), [])
+        self.assertListEqual(tool.listWFStatesByTitle(filter_similar=True), [])
+
+        # Test with an empty workflow
+        tool["foo"] = DCWorkflowDefinition("foo")
+
+        self.assertListEqual(tool.listWFStatesByTitle(), [])
+        self.assertListEqual(tool.listWFStatesByTitle(filter_similar=True), [])
+
+        # Test with dummy states
+        tool["foo"].states["private"] = StateDefinition("private")
+        tool["foo"].states["published"] = StateDefinition("published")
+
+        expected = [("", "private",), ("", "published")]
+        self.assertListEqual(tool.listWFStatesByTitle(), expected)
+        self.assertListEqual(
+            tool.listWFStatesByTitle(filter_similar=True), expected
+        )
+
+        # Test with concurrent states
+        tool["bar"] = DCWorkflowDefinition("bar")
+        tool["bar"].states["private"] = StateDefinition("private")
+        tool["bar"].states["pending"] = StateDefinition("pending")
+        tool["bar"].states["published"] = StateDefinition("published")
+        tool["bar"].states["published"].setProperties(title="Published")
+        expected = [
+            ("", "private",),
+            ("", "published"),
+            ("", "private",),
+            ("", "pending"),
+            ("Published", "published"),
+        ]
+        self.assertListEqual(tool.listWFStatesByTitle(), expected)
+        expected = [
+            ("", "private",),
+            ("", "published"),
+            ("", "pending"),
+            ("Published", "published"),
+        ]
+        self.assertListEqual(
+            tool.listWFStatesByTitle(filter_similar=True), expected
+        )
+
+
 
     def testAdaptationBasedWorkflowOverride(self):
         # We take a piece of dummy content and register a dummy

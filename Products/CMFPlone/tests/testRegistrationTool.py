@@ -95,6 +95,26 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
         self.assertFalse(self.registration.testPasswordValidity(
             'validpassword', confirm='anotherpassword') is None)
 
+    def testTestPasswordValidityPolicy(self):
+        self.assertIsNone(self.registration.testPasswordValidity("abcde", confirm=None))
+        self.assertEqual(
+            self.registration.testPasswordValidity("abcd", confirm=None),
+            "Your password must contain at least 5 characters.",
+        )
+        # Password validity is checked with an empty password
+        # to get a nice help message to show for the input field.
+        self.assertEqual(
+            self.registration.testPasswordValidity("", confirm=None),
+            "Minimum 5 characters.",
+        )
+
+    def testPasValidation(self):
+        self.assertIsNone(self.registration.pasValidation("password", "abcde"))
+        self.assertEqual(
+            self.registration.pasValidation("password", "abcd"),
+            "Your password must contain at least 5 characters.",
+        )
+
     def testNewIdAllowed(self):
         self.assertEqual(self.registration.isMemberIdAllowed('newuser'), 1)
 

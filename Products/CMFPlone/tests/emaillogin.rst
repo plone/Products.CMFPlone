@@ -45,7 +45,7 @@ there::
 
     >>> browser.open('http://nohost/plone/@@register')
     >>> browser.getControl('User Name').value='username'
-    >>> browser.getControl('E-mail').value='username@example.org'
+    >>> browser.getControl('Email').value='username@example.org'
     >>> browser.getControl('Password').value = SITE_OWNER_PASSWORD
     >>> browser.getControl('Confirm password').value = SITE_OWNER_PASSWORD
     >>> browser.getControl('Register').click()
@@ -79,7 +79,7 @@ there::
 
 We fill in the rest of the form::
 
-    >>> browser.getControl('E-mail').value='email@example.org'
+    >>> browser.getControl('Email').value='email@example.org'
     >>> browser.getControl('Password').value = SITE_OWNER_PASSWORD
     >>> browser.getControl('Confirm password').value = SITE_OWNER_PASSWORD
     >>> browser.getControl('Register').click()
@@ -155,11 +155,11 @@ switched on::
 We change the email address::
 
     >>> browser.open('http://nohost/plone/@@personal-information')
-    >>> browser.getControl('E-mail').value = 'email2@example.org'
+    >>> browser.getControl('Email').value = 'email2@example.org'
     >>> browser.getControl('Save').click()
     >>> 'Changes saved.' in browser.contents
     True
-    >>> browser.getControl('E-mail').value
+    >>> browser.getControl('Email').value
     'email2@example.org'
 
 After those two changes, we can no longer login with our first email
@@ -188,7 +188,7 @@ The current email address of course works fine for logging in::
 Picking the e-mail address of another user should of course fail::
 
     >>> browser.open('http://nohost/plone/@@personal-information')
-    >>> browser.getControl('E-mail').value = 'username@example.org'
+    >>> browser.getControl('Email').value = 'username@example.org'
     >>> browser.getControl('Save').click()
     >>> 'Changes saved.' in browser.contents
     False

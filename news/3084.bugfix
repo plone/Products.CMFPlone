@@ -1,0 +1,2 @@
+Fixed TypeError when adding both a group and a user to a group.
+[maurits]

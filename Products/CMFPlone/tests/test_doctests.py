@@ -21,7 +21,6 @@ def test_suite():
             package='Products.CMFPlone.tests',
             checker=Py23DocChecker(),
             ),
-        doctest.DocTestSuite('Products.CMFPlone.i18nl10n'),
         doctest.DocTestSuite('Products.CMFPlone.TranslationServiceTool'),
         doctest.DocTestSuite('Products.CMFPlone.utils'),
         doctest.DocTestSuite('Products.CMFPlone.workflow'),

@@ -126,7 +126,7 @@ Now register a new user:
   'http://nohost/plone/@@register'
 
   >>> browser.getControl('User Name').value = 'jsmith'
-  >>> browser.getControl('E-mail').value = 'jsmith@example.com'
+  >>> browser.getControl('Email').value = 'jsmith@example.com'
   >>> browser.getControl('Password').value = 'secret'
   >>> browser.getControl('Confirm password').value = 'secret'
   >>> browser.getControl('Register').click()
@@ -264,7 +264,7 @@ We navigate to the Users Overview page and register a new user:
   'http://nohost/plone/@@new-user'
 
   >>> browser.getControl('User Name').value = 'wsmith'
-  >>> browser.getControl('E-mail').value = 'wsmith@example.com'
+  >>> browser.getControl('Email').value = 'wsmith@example.com'
   >>> browser.getControl('Password').value = 'supersecret'
   >>> browser.getControl('Confirm password').value = 'supersecret'
   >>> browser.getControl('Register').click()
@@ -343,6 +343,19 @@ What we do here is quite similiar to 1A, but instead of typing in the
 password ourselves, we will be sent an e-mail with the URL to set our
 password.
 
+We will setup an adapter to capture IUserLoggedInEvent events:
+
+  >>> from zope.component import adapter
+  >>> from Products.PluggableAuthService.interfaces.events import IUserLoggedInEvent
+  >>> from zope.component import getGlobalSiteManager
+  >>> events_fired = []
+  >>> @adapter(IUserLoggedInEvent)
+  ... def got_user_logged_in_event(event):
+  ...     events_fired.append(event)
+  >>> gsm = getGlobalSiteManager()
+  >>> gsm.registerHandler(got_user_logged_in_event)
+
+
 First off, we need to set ``validate_mail`` to False:
 
   >>> browser.open('http://nohost/plone/login')
@@ -366,7 +379,7 @@ Log out again and then join:
   True
   >>> browser.open('http://nohost/plone/@@register')
   >>> browser.getControl('User Name').value = 'bsmith'
-  >>> browser.getControl('E-mail').value = 'bsmith@example.com'
+  >>> browser.getControl('Email').value = 'bsmith@example.com'
 
 We shouldn't be able to fill in our password:
 
@@ -388,6 +401,10 @@ We should have received an e-mail at this point:
   >>> len(mailhost.messages)
   3
   >>> msg = str(mailhost.messages[-1])
+
+Let's clear the events storage:
+
+  >>> events_fired = []
 
 Now that we have the message, we want to look at its contents, and
 then we extract the address that lets us reset our password:
@@ -415,10 +432,22 @@ Now that we have the address, we will reset our password:
   >>> "Password reset successful, you are logged in now!" in browser.contents
   True
 
+User is logged in, let's check the event fired for the correct user:
+
+  >>> len(events_fired) == 1
+  True
+  >>> events_fired[0].principal
+  <PloneUser 'bsmith'>
+
 Log out again:
 
   >>> browser.getLink('Log out').click()
   >>> "You are now logged out" in browser.contents
+  True
+
+Remove got_user_logged_in_event registration:
+
+  >>> gsm.unregisterHandler(got_user_logged_in_event)
   True
 
 
@@ -447,7 +476,7 @@ We navigate to the Users Overview page and register a new user:
   'http://nohost/plone/@@new-user'
 
   >>> browser.getControl('User Name').value = 'wwwsmith'
-  >>> browser.getControl('E-mail').value = 'wwwsmith@example.com'
+  >>> browser.getControl('Email').value = 'wwwsmith@example.com'
   >>> browser.getControl('Password').value = 'secret'
   >>> browser.getControl('Confirm password').value = 'secret'
   >>> browser.getControl('Send a confirmation mail with a link to set the password').selected = True

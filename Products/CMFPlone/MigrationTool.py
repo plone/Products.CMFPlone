@@ -99,6 +99,7 @@ ADDON_LIST = AddonList([
     Addon(profile_id=u'plone.app.querystring:default'),
     Addon(profile_id=u'plone.app.theming:default'),
     Addon(profile_id=u'plone.app.users:default'),
+    Addon(profile_id=u'plone.staticresources:default'),
 ])
 
 
