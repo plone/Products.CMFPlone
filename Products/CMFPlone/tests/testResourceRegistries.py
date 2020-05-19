@@ -172,6 +172,30 @@ class TestResourceRegistries(PloneTestCase.PloneTestCase):
         )
         self.assertIn(b'Could not find resource', resp.getBody())
 
+    def test_cooking_missing_browserresource(self):
+        registry = getUtility(IRegistry)
+        registry['plone.resources.development'] = True
+        bundles = registry.collectionOfInterface(IBundleRegistry,
+                                                 prefix="plone.bundles")
+        bundle = bundles.add('barbar')
+        bundle.jscompilation = '++resource++notfound/barbar-compiled.js'
+        bundle.csscompilation = '++resource++notfound/barbar-compiled.css'
+        bundle.compile = False
+        bundle.merge_with = 'default'
+
+        bundle = Bundle(bundle)
+
+        # cookWhenChangingSettings(self.portal, bundle)
+        scripts = ScriptsView(
+            self.layer['portal'],
+            self.layer['request'],
+            None
+        )
+        scripts.update()
+        results = scripts.scripts()
+        # at least have jquery.min.js, config.js, require.js, etc.
+        self.assertTrue(len(results)>2)
+
     def test_error(self):
         registry = getUtility(IRegistry)
         bundles = registry.collectionOfInterface(IBundleRegistry,
