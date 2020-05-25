@@ -31,6 +31,7 @@ from Products.CMFPlone.utils import safe_callable
 from Products.CMFPlone.utils import safe_unicode
 from Products.ZCatalog.ZCatalog import ZCatalog
 from six.moves import urllib
+from time import process_time
 from zExceptions import Unauthorized
 from zope.annotation.interfaces import IAnnotations
 from zope.component import queryMultiAdapter
@@ -44,6 +45,8 @@ import logging
 import re
 import six
 import time
+
+
 
 logger = logging.getLogger('Plone')
 
@@ -514,12 +517,12 @@ class CatalogTool(PloneBaseTool, BaseTool):
         method. This may take a long time.
         """
         elapse = time.time()
-        c_elapse = time.clock()
+        c_elapse = process_time()
 
         self.clearFindAndRebuild()
 
         elapse = time.time() - elapse
-        c_elapse = time.clock() - c_elapse
+        c_elapse = process_time() - c_elapse
 
         msg = ('Catalog Rebuilt\n'
                'Total time: %s\n'
