@@ -433,7 +433,7 @@ class RedirectsControlPanel(BrowserView):
                         # TODO: detect indirect recursion
                         err = _(
                             u"Alternative urls that point to themselves will cause"
-                            u"an endless cycle of redirects."
+                            u" an endless cycle of redirects."
                         )
             else:
                 err = _(u"Each line must have 2 or more columns.")

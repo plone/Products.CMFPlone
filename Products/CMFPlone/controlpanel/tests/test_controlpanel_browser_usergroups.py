@@ -370,6 +370,22 @@ class UserGroupsControlPanelFunctionalTest(unittest.TestCase):
             'Add selected groups and users to this group').click()
         self.assertIn('Group 2', self.browser.contents)
 
+        # Check that you can still add a user too.  This failed at some point:
+        # https://github.com/plone/Products.CMFPlone/issues/3048
+        # Add user (Autumn Brooks) to selected group (Group 1)
+        self.browser.getControl(name='searchstring').value = 'TWrMCLIo'
+        self.browser.getControl(name='form.button.Search').click()
+        self.browser.getControl(name='add:list').getControl(
+            value='TWrMCLIo').selected = True
+        self.browser.getControl(
+            'Add selected groups and users to this group').click()
+
+        # Check that both group and user are now part of the group
+        self.browser.open(self.groups_url)
+        self.browser.getLink('Group 1 (group1)').click()
+        self.assertIn('Autumn Brooks', self.browser.contents)
+        self.assertIn('Group 2', self.browser.contents)
+
     def test_usergroups_settings_many_users(self):
         self.browser.open("%s/@@usergroup-controlpanel" % self.portal_url)
         self.browser.getControl(

@@ -12,6 +12,38 @@ Changelog
 
 .. towncrier release notes start
 
+
+5.2.1 (2020-01-13)
+------------------
+
+New features:
+
+
+- Add plone.staticresources to list of addons which are automatically upgraded if upgrade steps are available.
+  [thet] (#2976)
+
+
+Bug fixes:
+
+
+- fix creation of Plone site not adding default Dexterity content types if example content not explicitily selected by user.
+  [ericof] (#1318)
+- fix default value for email msgid
+  [erral] (#2790)
+- Fix: PasswordResetView::getErrors is called, this ensures password is validated through RegistrationTool before attempting to reset password.
+  [nazrulword] (#2917)
+- Breadcrumbs: consider hidden folders when creating urls [ksuess] (#2935)
+- Add Collection to the default_page_types list
+  [erral] (#2956)
+- Fix localization of "Site setup" in some control panels [vincentfretin] (#2958)
+- Fix TTW Bundle compilation broken.
+  [thet] (#2969)
+- Do not save type settings in "content-controlpanel" when switching between types.
+  [cekk] (#2986)
+- Correctly fire events when user autologin after the password has been reset.
+  [ericof] (#2993)
+
+
 5.2.0 (2019-07-10)
 ------------------
 
