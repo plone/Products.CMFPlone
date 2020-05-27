@@ -143,9 +143,10 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
                 a['title'] = translate(title,
                                        context=self.REQUEST)
 
-        def _id(v):
-            return v['id']
-        res.sort(key=_id)
+        def _title(v):
+            return v['title']
+
+        res.sort(key=_title)
         return res
 
     security.declareProtected(ManagePortal, 'unregisterConfiglet')

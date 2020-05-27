@@ -246,6 +246,7 @@ class IFilterSchema(Interface):
             u'head',
             u'header',
             u'hgroup',
+            u'hr',
             u'html',
             u'i',
             u'iframe',
@@ -297,7 +298,7 @@ class IFilterSchema(Interface):
     custom_attributes = schema.List(
         title=_(u'Custom attributes'),
         description=_(u'These attributes are additionally allowed.'),
-        default=[],
+        default=['style'],
         value_type=schema.TextLine(),
         missing_value=[],
         required=False)
@@ -1379,6 +1380,21 @@ class IMarkupSchema(Interface):
         value_type=schema.Choice(
             vocabulary='plone.app.vocabularies.AllowableContentTypes'
         )
+    )
+
+    markdown_extensions = schema.List(
+        default=[
+            'markdown.extensions.fenced_code',
+            'markdown.extensions.nl2br',
+        ],
+        description=_(
+            u'Look for available extensions at '
+            u'https://python-markdown.github.io/extensions/ or write your own.'
+        ),
+        missing_value=(),
+        required=False,
+        title=_(u'Enabled markdown extensions'),
+        value_type=schema.TextLine()
     )
 
 
