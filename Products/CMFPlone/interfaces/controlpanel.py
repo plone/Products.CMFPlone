@@ -246,7 +246,6 @@ class IFilterSchema(Interface):
             u'head',
             u'header',
             u'hgroup',
-            u'hr',
             u'html',
             u'i',
             u'iframe',
@@ -298,7 +297,7 @@ class IFilterSchema(Interface):
     custom_attributes = schema.List(
         title=_(u'Custom attributes'),
         description=_(u'These attributes are additionally allowed.'),
-        default=['style'],
+        default=[],
         value_type=schema.TextLine(),
         missing_value=[],
         required=False)
