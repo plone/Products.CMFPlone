@@ -298,7 +298,7 @@ class IFilterSchema(Interface):
     custom_attributes = schema.List(
         title=_(u'Custom attributes'),
         description=_(u'These attributes are additionally allowed.'),
-        default=['style'],
+        default=[u'style'],
         value_type=schema.TextLine(),
         missing_value=[],
         required=False)
