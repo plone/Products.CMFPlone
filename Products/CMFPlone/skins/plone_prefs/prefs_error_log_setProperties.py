@@ -8,9 +8,11 @@
 ##title=
 
 from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone.utils import safe_nativestring
 
 request = context.REQUEST
 
+ignored_exceptions = map(safe_nativestring, ignored_exceptions)
 context.error_log.setProperties(keep_entries, copy_to_zlog, ignored_exceptions)
 context.plone_utils.addPortalMessage(_(u'Changes made.'))
 
