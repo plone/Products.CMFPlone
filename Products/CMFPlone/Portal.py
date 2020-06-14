@@ -67,6 +67,12 @@ class PloneSite(Container, SkinnableObjectManager, UniqueObject):
     security = ClassSecurityInfo()
     meta_type = portal_type = 'Plone Site'
 
+    # Define zope.component's PersistentComponents so we don't go off and
+    # try to look them up via DX's __getattr__ or behaviours.
+    # This attribute *should* be replaced by
+    # Five's PersistentComponents `_init_registries`
+    utilities = None
+
     # Ensure certain attributes come from the correct base class.
     _checkId = SkinnableObjectManager._checkId
 
