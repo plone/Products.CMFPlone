@@ -329,8 +329,9 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         member = get_member_by_login_name(self, login, raise_exceptions=False)
 
         if member is None:
-            raise ValueError(
-                _(u'The username you entered could not be found.'))
+            # Don't return an error if the user can't be found as this allows
+            # usernames to be scraped (as valid names will not raise an error)
+            return self.mail_password_response(self, REQUEST)
 
         # Make sure the user is allowed to set the password.
         portal = getToolByName(self, 'portal_url').getPortalObject()

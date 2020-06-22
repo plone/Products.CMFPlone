@@ -24,6 +24,9 @@ New features:
 - Include JS Patterns when loading a page via ajax or an iframe
   [displacedaussie, instification]
 
+- Update reset password to not raise an error when user doesn't match.
+  [instification]
+
 Bug fixes:
 
 - Fixed accidentally removing permissions when saving the ``portal_controlpanel`` settings in the ZMI.
