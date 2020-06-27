@@ -85,10 +85,17 @@ class StylesBase(ResourceBase):
                 })
 
     @property
-    def custom_css_timestamp(self):
+    def _theme_settings(self):
         registry = getUtility(IRegistry)
-        theme_settings = registry.forInterface(IThemeSettings, False)
-        return theme_settings.custom_css_timestamp
+        return registry.forInterface(IThemeSettings, False)
+
+    @property
+    def custom_css(self):
+        return self._theme_settings.custom_css
+
+    @property
+    def custom_css_timestamp(self):
+        return self._theme_settings.custom_css_timestamp
 
     def styles(self):
         """
@@ -154,16 +161,17 @@ class StylesBase(ResourceBase):
             result.append(data)
 
         # custom.css
-        custom_css = {
-            'rel': 'stylesheet',
-            'conditionalcomment': '',
-            'src': "{0}/custom.css?timestamp={1}".format(
-                self.site_url,
-                self.custom_css_timestamp,
-            ),
-            'bundle': 'custom-css'
-        }
-        result.append(custom_css)
+        if self.custom_css:
+            custom_css = {
+                'rel': 'stylesheet',
+                'conditionalcomment': '',
+                'src': "{0}/custom.css?timestamp={1}".format(
+                    self.site_url,
+                    self.custom_css_timestamp,
+                ),
+                'bundle': 'custom-css'
+            }
+            result.append(custom_css)
         return result
 
 
