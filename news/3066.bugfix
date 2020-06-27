@@ -1,3 +1,0 @@
-Allow accessing ``plone_view.patterns_settings``.
-This was no problem until now, but a newer ``Zope/zope.tales/Chameleon``  is rightly stricter.
-[maurits]
