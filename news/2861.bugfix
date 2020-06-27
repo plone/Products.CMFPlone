@@ -1,0 +1,1 @@
+ If 'tinymce-content-css' option is missing in themes manifest.cfg prevent unnecessary loading of a css at nav_root_url while editing a page.  [krissik]
