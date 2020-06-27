@@ -1,4 +1,0 @@
-Make the resource registry scripts output more robust when a bundle resource is missing. This prevents
-breaking your whole Plone site and access to the resource registry control panel after inserting
-one missing resource. 
-[fredvd]
