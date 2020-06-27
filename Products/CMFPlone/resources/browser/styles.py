@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 from plone.app.layout.viewlets.common import ViewletBase
+from plone.app.theming.interfaces import IThemeSettings
+from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.resources.browser.cook import cookWhenChangingSettings
 from Products.CMFPlone.resources.browser.resource import ResourceBase
 from Products.CMFPlone.utils import get_top_request
 from six.moves.urllib import parse
+from zope.component import getUtility
 
 
 class StylesBase(ResourceBase):
@@ -81,6 +84,19 @@ class StylesBase(ResourceBase):
                     'src': css_location
                 })
 
+    @property
+    def _theme_settings(self):
+        registry = getUtility(IRegistry)
+        return registry.forInterface(IThemeSettings, False)
+
+    @property
+    def custom_css(self):
+        return self._theme_settings.custom_css
+
+    @property
+    def custom_css_timestamp(self):
+        return self._theme_settings.custom_css_timestamp
+
     def styles(self):
         """
         Get all the styles
@@ -143,6 +159,19 @@ class StylesBase(ResourceBase):
                     'bundle': 'diazo'}
 
             result.append(data)
+
+        # custom.css
+        if self.custom_css:
+            custom_css = {
+                'rel': 'stylesheet',
+                'conditionalcomment': '',
+                'src': "{0}/custom.css?timestamp={1}".format(
+                    self.site_url,
+                    self.custom_css_timestamp,
+                ),
+                'bundle': 'custom-css'
+            }
+            result.append(custom_css)
         return result
 
 
