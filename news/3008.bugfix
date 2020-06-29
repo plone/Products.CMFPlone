@@ -1,0 +1,2 @@
+mail_password form: Do not crash if the userid is not provided or the user doesn't have an email configured
+[frapell]
