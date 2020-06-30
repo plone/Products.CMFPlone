@@ -8,6 +8,15 @@ Changelog
 
 .. towncrier release notes start
 
+3.4.3 (2020-06-30)
+------------------
+
+Bug fixes:
+
+
+- Restore selectedTabs code that was removed in 3.4.1 to prevent breaking changes inside a minor Plone release. Plone doesn't use this code anymore, but third party addons may use it. (#239)
+
+
 3.4.2 (2020-04-20)
 ------------------
 
