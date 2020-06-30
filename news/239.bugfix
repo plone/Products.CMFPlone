@@ -1,0 +1,1 @@
+Restore selectedTabs code that was removed in 3.4.1 to prevent breaking changes inside a minor Plone release. Plone doesn't use this code anymore, but third party addons may use it.
