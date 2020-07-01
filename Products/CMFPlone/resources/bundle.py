@@ -34,7 +34,7 @@ class Bundle(object):
             resource_path = self.data.csscompilation
         try:
             resource = getSite().restrictedTraverse(resource_path)
-        except NotFound:
+        except (NotFound, KeyError):
             return None, None
         if resource.__module__ == 'Products.Five.metaclass':
             try:
