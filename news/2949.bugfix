@@ -1,0 +1,2 @@
+Fix an issue in mail_password_template.pt in the message showing the ip to really try the request.REMOTE_ADDR variable if request.HTTP_X_FORWARDED_FOR is empty (when you're not behind apache or nginx).
+[vincentfretin]
