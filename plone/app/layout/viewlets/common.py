@@ -14,6 +14,7 @@ from plone.memoize.view import memoize_contextless
 from plone.protect.utils import addTokenToUrl
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.CMFPlone.interfaces import ISearchSchema
 from Products.CMFPlone.interfaces import ISiteSchema
@@ -31,6 +32,8 @@ from zope.i18n import translate
 from zope.interface import alsoProvides
 from zope.interface import implementer
 from zope.viewlet.interfaces import IViewlet
+
+import json
 
 
 try:
@@ -468,6 +471,11 @@ class PersonalBarViewlet(ViewletBase):
             modal = action.get("modal")
             if modal:
                 info["class"] = "pat-plone-modal"
+                if '"title":' in modal:
+                    modal = json.loads(modal)
+                    modal['title'] = translate(_(modal['title']), context=self.request)
+                    modal = json.dumps(modal)
+
                 info["data-pat-plone-modal"] = modal
             self.user_actions.append(info)
 
