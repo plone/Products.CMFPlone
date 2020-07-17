@@ -8,6 +8,17 @@ Changelog
 
 .. towncrier release notes start
 
+3.4.4 (2020-07-17)
+------------------
+
+Bug fixes:
+
+
+- Translate title modal like the "Log in" modal.
+  This fixes https://github.com/plone/Products.CMFPlone/issues/3132
+  [vincentfretin] (#241)
+
+
 3.4.3 (2020-06-30)
 ------------------
 
