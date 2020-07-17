@@ -12,6 +12,18 @@ Changelog
 
 .. towncrier release notes start
 
+5.2.2rc2 (2020-07-17)
+---------------------
+
+Bug fixes:
+
+
+- Fix an issue in mail_password_template.pt in the message showing the ip to really try the request.REMOTE_ADDR variable if request.HTTP_X_FORWARDED_FOR is empty (when you're not behind apache or nginx).
+  [vincentfretin] (#2949)
+- mail_password form: Do not crash if the userid is not provided or the user doesn't have an email configured
+  [frapell] (#3008)
+
+
 5.2.2rc1 (2020-06-28)
 ---------------------
 
