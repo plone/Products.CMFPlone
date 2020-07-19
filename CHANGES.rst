@@ -12,6 +12,52 @@ Changelog
 
 .. towncrier release notes start
 
+5.2.2rc1 (2020-06-28)
+---------------------
+
+New features:
+
+
+- Image caption support
+  Allow ``figcaption`` in rich text editor as a valid tag.
+  Add registry setting for plone.image_caption outputfilter transform.
+  [thet] (#2887)
+- Add markdown extension settings to markup control panel.
+  [thomasmassmann] (#3076)
+- Insert virtual custom.css bundle into the header after diazo bundle.
+  Only add this when custom css is set in the theming control panel.
+  [MrTango] (#3086)
+
+
+Bug fixes:
+
+
+- Change control panel item sorting and sort them by title
+  [erral] (#721)
+- Update HTMLFilter settings to enable TinyMCE styling features. See #2329, #2482, #2535
+  [petschki] (#2482)
+- If 'tinymce-content-css' option is missing in themes manifest.cfg prevent unnecessary loading of a css at nav_root_url while editing a page.  [krissik] (#2861)
+- Redirect (when possible) also ajax requests and do not return an unuseful body
+  [ale-rt] (#3014)
+- Merge Hotfix20200121 Check of the strength of password could be skipped. (#3021)
+- Merge Hotfix20200121: isURLInPortal could be tricked into accepting malicious links. (#3021)
+- Improve tests for the workflow tool method listWFStatesByTitle (#3032)
+- Fix index_html on PortalRoot: ReplaceableWrapper did not work.
+  [jensens] (#3060)
+- Allow accessing ``plone_view.patterns_settings``.
+  This was no problem until now, but a newer ``Zope/zope.tales/Chameleon``  is rightly stricter.
+  [maurits] (#3066)
+- Fix Python 3.8 ``time.clock`` removal in CatalogTool [jensens] (#3082)
+- Fixed TypeError when adding both a group and a user to a group.
+  [maurits] (#3084)
+- Make the resource registry scripts output more robust when a bundle resource is missing. This prevents
+  breaking your whole Plone site and access to the resource registry control panel after inserting
+  one missing resource. 
+  [fredvd] (#3096)
+- Bugfix for #3103
+  [petschki] (#3105)
+- Fixed saving ignored exception types in Python 3.  [maurits] (#3115)
+
 
 5.2.1 (2020-01-13)
 ------------------
