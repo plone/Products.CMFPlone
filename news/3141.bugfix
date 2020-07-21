@@ -1,0 +1,4 @@
+Return a Zope aware engine for page templates based on ``zope.pagetemplate`` instead of ``Products.PageTemplates``.
+Fixes possible problems with such templates, for example z3c.form ones, with Zope 4.4 and higher.
+See `issue 3141 <https://github.com/plone/Products.CMFPlone/issues/3141>`_.
+[maurits]
