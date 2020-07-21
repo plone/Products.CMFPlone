@@ -1,2 +1,2 @@
-- Don't create unordered folder by default. Unordered folders make next/prev navigation at plone.restapi don't work.
+- Don't create unordered news and events folder by default. Unordered folders make next/prev navigation at plone.restapi don't work.
   [rodfersou]
