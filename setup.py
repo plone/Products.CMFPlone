@@ -103,6 +103,7 @@ setup(
         'Products.ExtendedPathIndex',
         'Products.ExternalEditor ; python_version<"3"',
         'Products.GenericSetup >= 2.0.dev0',
+        'Products.isurlinportal',
         'Products.MimetypesRegistry',
         'Products.PlonePAS',
         'Products.PluggableAuthService',
