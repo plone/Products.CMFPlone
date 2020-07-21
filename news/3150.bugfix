@@ -1,0 +1,4 @@
+Depend on new package ``Products.isurlinportal``.
+This contains the ``isURLInPortal`` method that was split off from our ``URLTool``.
+See `issue 3150 <https://github.com/plone/Products.CMFPlone/issues/3150>`_.
+[maurits]
