@@ -1,0 +1,3 @@
+Redirection view: factor our navigation root editing to a method `edit_for_navigation_root`.
+This makes it possible to override this method to simply return the redirection unchanged, if you want to support redirects in the site root.
+[maurits]
