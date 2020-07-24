@@ -1,3 +1,5 @@
-Redirection view: factor our navigation root editing to a method `edit_for_navigation_root`.
-This makes it possible to override this method to simply return the redirection unchanged, if you want to support redirects in the site root.
+Redirection view: refactor our navigation root editing to a separate method ``edit_for_navigation_root``.
+Since Plone 5.2 the redirectiontool respects INavigationroot:
+with a manual redirect you cannot enter a path starting with ``/`` which 'escapes' the NavigationRoot to the SiteRoot to link to another part of the Plone instance.
+This refactor makes it possible to override this method to return the redirection unchanged, brining back the pre Plone 5.2 behavior of the ``Products.RedirectionTool`` add-on.
 [maurits]
