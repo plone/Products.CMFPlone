@@ -101,6 +101,7 @@ setup(
         'Products.DCWorkflow',
         'Products.ExtendedPathIndex',
         'Products.GenericSetup >= 2.0.dev0',
+        'Products.isurlinportal',
         'Products.MimetypesRegistry',
         'Products.PlonePAS',
         'Products.PluggableAuthService',

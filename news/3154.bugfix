@@ -1,0 +1,4 @@
+Control panel configlets: first check visibility, then check condition.
+Visibility is cheaper to check.
+Also fixes `bug 3154 <https://github.com/plone/Products.CMFPlone/issues/3154>`_.
+[maurits]
