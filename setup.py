@@ -62,6 +62,7 @@ setup(
         'Products.ExtendedPathIndex',
         'Products.ExternalEditor',
         'Products.GenericSetup >= 1.8.2',
+        'Products.isurlinportal',
         'Products.MimetypesRegistry',
         'Products.PlacelessTranslationService',
         # 'Products.PloneLanguageTool',
