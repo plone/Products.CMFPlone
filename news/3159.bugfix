@@ -1,0 +1,6 @@
+Backport toolbar fixes from mockup master (Plone 5.2):
+
+- Fix the scrollbar always present in the toolbar (fixes mockup#897) [ale-rt]
+- Move toolbar to be above structure pattern, by increasing its z-index from 3 to 20 (fixes Products.CMFPlone#2490) [fulv]
+- Set display none instead of width 0 to the plone-toolbar-left children ul for a correct keyboard tabbing (fixes mockup#950) [erral & ionlizarazu]
+- Fix toolbar menus missing checkmark on some browsers (fixes Products.CMFPlone#1972) [vincentfretin]
