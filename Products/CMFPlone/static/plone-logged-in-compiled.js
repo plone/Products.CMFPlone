@@ -27204,10 +27204,10 @@ define('text',['module'], function (module) {
 });
 
 
-define('text!mockup-patterns-tinymce-url/templates/link.xml',[],function () { return '<div>\n  <div class="linkModal">\n    <h1><%- insertHeading %></h1>\n    <% if(upload){ %>\n    <p class="info">Specify the object to link to. It can be on this site already ("Internal"), an object you upload ("Upload"), from an external site ("External"), an email address ("Email"), or an anchor on this page ("Anchor").</p>\n    <% } %>\n\n    <div class="linkTypes pat-autotoc autotabs"\n         data-pat-autotoc="section:fieldset;levels:legend;IDPrefix:tinymce-autotoc-">\n\n      <fieldset class="linkType internal" data-linkType="internal">\n        <legend id="tinylink-internal">Internal</legend>\n        <div>\n          <div class="form-group main">\n            <!-- this gives the name to the "linkType" -->\n            <input type="text" name="internal" />\n          </div>\n        </div>\n      </fieldset>\n\n      <% if(upload){ %>\n      <fieldset class="linkType upload" data-linkType="upload">\n        <legend id="tinylink-upload">Upload</legend>\n        <div class="uploadify-me"></div>\n      </fieldset>\n      <% } %>\n\n      <fieldset class="linkType external" data-linkType="external">\n        <legend id="tinylink-external">External</legend>\n        <div class="form-group main">\n          <label for="external"><%- externalText %></label>\n          <input type="text" name="external" />\n        </div>\n      </fieldset>\n\n      <fieldset class="linkType email" data-linkType="email">\n        <legend id="tinylink-email">Email</legend>\n        <div class="form-inline">\n          <div class="form-group main">\n            <label><%- emailText %></label>\n            <input type="text" name="email" />\n          </div>\n          <div class="form-group">\n            <label><%- subjectText %></label>\n            <input type="text" name="subject" />\n          </div>\n        </div>\n      </fieldset>\n\n      <fieldset class="linkType anchor" data-linkType="anchor">\n        <legend id="tinylink-anchor">Anchor</legend>\n        <div>\n          <div class="form-group main">\n            <label>Select an anchor</label>\n            <div class="input-wrapper">\n              <select name="anchor" class="pat-select2" data-pat-select2="width:500px" />\n            </div>\n          </div>\n        </div>\n      </fieldset>\n\n    </div><!-- / tabs -->\n\n    <div class="common-controls">\n      <div class="form-group">\n        <label>Target</label>\n        <select name="target">\n          <% _.each(targetList, function(target){ %>\n            <option value="<%- target.value %>"><%- target.text %></option>\n          <% }); %>\n        </select>\n      </div>\n      <div class="form-group">\n        <label><%- titleText %></label>\n        <input type="text" name="title" />\n      </div>\n    </div>\n\n    <input type="submit" class="plone-btn" name="cancel" value="<%- cancelBtn %>" />\n    <input type="submit" class="plone-btn plone-btn-primary context" name="insert" value="<%- insertBtn %>" />\n  </div>\n</div>\n';});
+define('text!mockup-patterns-tinymce-url/templates/link.xml',[],function () { return '<div>\n  <div class="linkModal">\n    <h1><%- insertHeading %></h1>\n    <% if(upload){ %>\n    <p class="info"><%- insertLinkHelp %></p>\n    <% } %>\n\n    <div class="linkTypes pat-autotoc autotabs"\n         data-pat-autotoc="section:fieldset;levels:legend;IDPrefix:tinymce-autotoc-">\n\n      <fieldset class="linkType internal" data-linkType="internal">\n        <legend id="tinylink-internal"><%- internal %></legend>\n        <div>\n          <div class="form-group main">\n            <!-- this gives the name to the "linkType" -->\n            <input type="text" name="internal" />\n          </div>\n        </div>\n      </fieldset>\n\n      <% if(upload){ %>\n      <fieldset class="linkType upload" data-linkType="upload">\n        <legend id="tinylink-upload"><%- uploadText %></legend>\n        <div class="uploadify-me"></div>\n      </fieldset>\n      <% } %>\n\n      <fieldset class="linkType external" data-linkType="external">\n        <legend id="tinylink-external"><%- external %></legend>\n        <div class="form-group main">\n          <label for="external"><%- externalText %></label>\n          <input type="text" name="external" />\n        </div>\n      </fieldset>\n\n      <fieldset class="linkType email" data-linkType="email">\n        <legend id="tinylink-email"><%- emailText %></legend>\n        <div class="form-inline">\n          <div class="form-group main">\n            <label><%- emailText %></label>\n            <input type="text" name="email" />\n          </div>\n          <div class="form-group">\n            <label><%- subjectText %></label>\n            <input type="text" name="subject" />\n          </div>\n        </div>\n      </fieldset>\n\n      <fieldset class="linkType anchor" data-linkType="anchor">\n        <legend id="tinylink-anchor"><%- anchor %></legend>\n        <div>\n          <div class="form-group main">\n            <label><%- anchorLabel %></label>\n            <div class="input-wrapper">\n              <select name="anchor" class="pat-select2" data-pat-select2="width:500px" />\n            </div>\n          </div>\n        </div>\n      </fieldset>\n\n    </div><!-- / tabs -->\n\n    <div class="common-controls">\n      <div class="form-group">\n        <label><%- target %></label>\n        <select name="target">\n          <% _.each(targetList, function(target){ %>\n            <option value="<%- target.value %>"><%- target.text %></option>\n          <% }); %>\n        </select>\n      </div>\n      <div class="form-group">\n        <label><%- titleText %></label>\n        <input type="text" name="title" />\n      </div>\n    </div>\n\n    <input type="submit" class="plone-btn" name="cancel" value="<%- cancelBtn %>" />\n    <input type="submit" class="plone-btn plone-btn-primary context" name="insert" value="<%- insertBtn %>" />\n  </div>\n</div>\n';});
 
 
-define('text!mockup-patterns-tinymce-url/templates/image.xml',[],function () { return '<div>\n  <div class="linkModal">\n    <h1><%- insertHeading %></h1>\n    <% if(_.contains(linkTypes, \'uploadImage\')){ %>\n    <p class="info">Specify an image. It can be on this site already ("Internal Image"), an image you upload ("Upload"), or from an external site ("External Image").</p>\n    <% } %>\n\n    <div class="linkTypes pat-autotoc autotabs"\n         data-pat-autotoc="section:fieldset;levels:legend;IDPrefix:tinymce-autotoc-">\n\n        <% if(_.contains(linkTypes, \'image\')){ %>\n      <fieldset class="linkType image" data-linkType="image">\n        <legend id="tinylink-image">Internal Image</legend>\n        <div class="form-inline">\n          <div class="form-group main">\n            <input type="text" name="image" />\n          </div>\n          <div class="form-group scale">\n            <label><%- scaleText %></label>\n            <select name="scale">\n              <option value="">Original</option>\n                <% _.each(imageScales, function(scale){ %>\n                  <option value="<%- scale.value %>" <% if(scale.value === options.defaultScale){ %>selected<% } %> >\n                    <%- scale.title %>\n                  </option>\n                <% }); %>\n            </select>\n          </div>\n        </div>\n      </fieldset>\n        <% } %>\n\n      <% if(_.contains(linkTypes, \'uploadImage\')){ %>\n      <fieldset class="linkType uploadImage" data-linkType="uploadImage">\n        <legend id="tinylink-uploadImage">Upload</legend>\n        <div class="uploadify-me"></div>\n      </fieldset>\n      <% } %>\n\n      <% if(_.contains(linkTypes, \'externalImage\')){ %>\n      <fieldset class="linkType externalImage" data-linkType="externalImage">\n        <legend id="tinylink-externalImage">External Image</legend>\n        <div>\n          <div class="form-group main">\n            <label><%- externalImageText %></label>\n            <input type="text" name="externalImage" />\n          </div>\n        </div>\n      </fieldset>\n      <% } %>\n\n    </div><!-- / tabs -->\n\n    <div class="common-controls">\n      <div class="form-group title">\n        <label><%- titleText %></label>\n        <input type="text" name="title" />\n      </div>\n      <div class="form-group text">\n        <label><%- altText %></label>\n        <input type="text" name="alt" />\n      </div>\n      <div class="form-group align">\n        <label><%- imageAlignText %></label>\n        <select name="align">\n          <% _.each(Object.keys(options.imageClasses), function(align){ %>\n              <option value="<%- align %>">\n              <%- options.imageClasses[align] %>\n              </option>\n          <% }); %>\n        <select>\n      </div>\n    </div>\n\n    <input type="submit" class="plone-btn" name="cancel" value="<%- cancelBtn %>" />\n    <input type="submit" class="plone-btn plone-btn-primary context" name="insert" value="<%- insertBtn %>" />\n\n  </div>\n</div>\n';});
+define('text!mockup-patterns-tinymce-url/templates/image.xml',[],function () { return '<div>\n  <div class="linkModal">\n    <h1><%- insertHeading %></h1>\n    <% if(_.contains(linkTypes, \'uploadImage\')){ %>\n    <p class="info"><%- insertImageHelp %></p>\n    <% } %>\n\n    <div class="linkTypes pat-autotoc autotabs"\n         data-pat-autotoc="section:fieldset;levels:legend;IDPrefix:tinymce-autotoc-">\n\n        <% if(_.contains(linkTypes, \'image\')){ %>\n      <fieldset class="linkType image" data-linkType="image">\n        <legend id="tinylink-image"><%- internalImageText %></legend>\n        <div class="form-inline">\n          <div class="form-group main">\n            <input type="text" name="image" />\n          </div>\n          <div class="form-group scale">\n            <label><%- scaleText %></label>\n            <select name="scale">\n              <option value="">Original</option>\n                <% _.each(imageScales, function(scale){ %>\n                  <option value="<%- scale.value %>" <% if(scale.value === options.defaultScale){ %>selected<% } %> >\n                    <%- scale.title %>\n                  </option>\n                <% }); %>\n            </select>\n          </div>\n        </div>\n      </fieldset>\n        <% } %>\n\n      <% if(_.contains(linkTypes, \'uploadImage\')){ %>\n      <fieldset class="linkType uploadImage" data-linkType="uploadImage">\n        <legend id="tinylink-uploadImage"><%- uploadText %></legend>\n        <div class="uploadify-me"></div>\n      </fieldset>\n      <% } %>\n\n      <% if(_.contains(linkTypes, \'externalImage\')){ %>\n      <fieldset class="linkType externalImage" data-linkType="externalImage">\n        <legend id="tinylink-externalImage"><%- externalImage %></legend>\n        <div>\n          <div class="form-group main">\n            <label><%- externalImageText %></label>\n            <input type="text" name="externalImage" />\n          </div>\n        </div>\n      </fieldset>\n      <% } %>\n\n    </div><!-- / tabs -->\n\n    <div class="common-controls">\n      <div class="form-group title">\n        <label><%- titleText %></label>\n        <input type="text" name="title" />\n      </div>\n      <div class="form-group text">\n        <label><%- altText %></label>\n        <input type="text" name="alt" />\n      </div>\n      <div class="form-group align">\n        <label><%- imageAlignText %></label>\n        <select name="align">\n          <% _.each(Object.keys(options.imageClasses), function(align){ %>\n              <option value="<%- align %>">\n              <%- options.imageClasses[align] %>\n              </option>\n          <% }); %>\n        <select>\n      </div>\n    </div>\n\n    <input type="submit" class="plone-btn" name="cancel" value="<%- cancelBtn %>" />\n    <input type="submit" class="plone-btn plone-btn-primary context" name="insert" value="<%- insertBtn %>" />\n\n  </div>\n</div>\n';});
 
 define('mockup-ui-url/views/base',[
   'jquery',
@@ -27818,7 +27818,7 @@ define('mockup-ui-url/views/button',[
     },
     handleClick: function(e) {
       e.preventDefault();
-      if (!this.$el.prop('disabled')) {
+      if (!this.$el.is('.disabled')) {
         this.uiEventTrigger('click', this, e);
       }
     },
@@ -27826,10 +27826,10 @@ define('mockup-ui-url/views/button',[
       return _.extend({'icon': '', 'title': ''}, this.options);
     },
     disable: function() {
-      this.$el.prop('disabled', true);
+      this.$el.addClass('disabled');
     },
     enable: function() {
-      this.$el.prop('disabled', false);
+      this.$el.removeClass('disabled');
     }
   });
 
@@ -30373,7 +30373,7 @@ define('mockup-patterns-relateditems',[
 define('text!mockup-patterns-upload-url/templates/upload.xml',[],function () { return '<div class="upload-container upload-multiple">\n    <h2 class="title"><%- _t("Upload here") %></h2>\n    <p class="help">\n        <%- _t(\'Drag and drop files from your computer onto the area below or click the Browse button.\') %>\n    </p>\n    <div class="upload-area">\n        <div class="fallback">\n            <input name="file" type="file" multiple />\n        </div>\n        <div class="dz-message"><p><%-_t("Drop files here...")%></p></div>\n        <div class="row browse-select">\n            <div class="col-md-9">\n                <input\n                    id="fakeUploadFile"\n                    placeholder="<%- _t("Choose File") %>"\n                    disabled\n                    />\n            </div>\n            <div class="col-md-3">\n                <button\n                    type="button"\n                    class="btn btn-primary browse">\n                    <%- _t("Browse") %>\n                </button>\n            </div>\n        </div>\n        <div class="upload-queue">\n            <div class="previews">\n            </div>\n            <div class="controls">\n                <% if (allowPathSelection) { %>\n                <div class="path">\n                    <label><%- _t("Upload to...") %></label>\n                    <p class="form-help">\n                        <%- _t("Select another destination folder or leave blank to add files to the current location.") %>\n                    </p>\n                    <input\n                        type="text"\n                        name="location"\n                        />\n                </div>\n                <% } %>\n                <div class="actions row">\n                    <div class="col-md-9">\n                        <div class="progress progress-striped active">\n                            <div class="progress-bar progress-bar-success"\n                                 role="progressbar"\n                                 aria-valuenow="0"\n                                 aria-valuemin="0"\n                                 aria-valuemax="100"\n                                 style="width: 0%">\n                                <span class="sr-only">40% Complete (success)</span>\n                            </div>\n                        </div>\n                    </div>\n                    <div class="col-md-3 align-right">\n                        <button\n                            type="button"\n                            class="btn btn-primary upload-all">\n                            <%- _t("Upload") %>\n                        </button>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n';});
 
 
-define('text!mockup-patterns-upload-url/templates/preview.xml',[],function () { return '<div class="row item form-inline">\n    <div class="col-md-1 action">\n        <button\n            type="button"\n            class="btn btn-danger btn-xs remove-item"\n            data-dz-remove=""\n            href="javascript:undefined;">\n            <span class="glyphicon glyphicon-remove"></span>\n        </button>\n    </div>\n    <div class="col-md-8 title">\n        <div class="dz-preview">\n          <div class="dz-details">\n            <div class="dz-filename"><span data-dz-name></span></div>\n          </div>\n          <div class="dz-error-message"><span data-dz-errormessage></span></div>\n        </div>\n        <div class="dz-progress">\n            <span class="dz-upload" data-dz-uploadprogress></span>\n        </div>\n    </div>\n    <div class="col-md-3 info">\n        <div class="dz-size" data-dz-size></div>\n        <img data-dz-thumbnail />\n    </div>\n</div>\n';});
+define('text!mockup-patterns-upload-url/templates/preview.xml',[],function () { return '<div class="row item form-inline">\n    <div class="col-xs-2 action">\n        <button\n            type="button"\n            class="btn btn-danger btn-xs remove-item"\n            data-dz-remove=""\n            href="javascript:undefined;">\n            <span class="glyphicon glyphicon-remove"></span>\n        </button>\n    </div>\n    <div class="col-xs-7 title">\n        <div class="dz-preview">\n          <div class="dz-details">\n            <div class="dz-filename"><span data-dz-name></span></div>\n          </div>\n          <div class="dz-error-message"><span data-dz-errormessage></span></div>\n        </div>\n        <div class="dz-progress">\n            <span class="dz-upload" data-dz-uploadprogress></span>\n        </div>\n    </div>\n    <div class="col-xs-3 info">\n        <div class="dz-size" data-dz-size></div>\n        <img data-dz-thumbnail />\n    </div>\n</div>\n';});
 
 /* Upload pattern.
  *
@@ -31238,7 +31238,7 @@ define('mockup-patterns-tinymce-url/js/links',[
 
     editor.addButton('unlink', {
       icon: 'unlink',
-      tooltip: 'Remove link(s)',
+      tooltip: 'Remove link',
       cmd: 'unlink',
       stateSelector: 'a[href]'
     });
@@ -31357,13 +31357,23 @@ define('mockup-patterns-tinymce-url/js/links',[
         upload: this.options.upload,
         text: this.options.text,
         insertHeading: this.options.text.insertHeading,
+        insertImageHelp: this.options.text.insertImageHelp,
+        uploadText: this.options.text.upload,
+        insertLinkHelp: this.options.text.insertLinkHelp,
+        internal: this.options.text.internal,
+        external: this.options.text.external,
+        anchor: this.options.text.anchor,
+        anchorLabel: this.options.text.anchorLabel,
+        target: this.options.text.target,
         linkTypes: this.options.linkTypes,
         externalText: this.options.text.external,
         emailText: this.options.text.email,
         subjectText: this.options.text.subject,
         targetList: this.options.targetList,
         titleText: this.options.text.title,
-        externalImageText: this.options.text.externalImage,
+        internalImageText: this.options.text.internalImage,
+        externalImage: this.options.text.externalImage,
+        externalImageText: this.options.text.externalImageText,
         altText: this.options.text.alt,
         imageAlignText: this.options.text.imageAlign,
         scaleText: this.options.text.scale,
@@ -68030,15 +68040,23 @@ define('mockup-patterns-tinymce',[
         insertHeading: _t('Insert link'),
         title: _t('Title'),
         internal: _t('Internal'),
-        external: _t('External URL (can be relative within this site or absolute if it starts with http:// or https://)'),
+        external: _t('External'),
+        externalText: _t('External URL (can be relative within this site or absolute if it starts with http:// or https://)'),
         email: _t('Email Address'),
         anchor: _t('Anchor'),
+        anchorLabel: _t('Select an anchor'),
+        target: _t('Target'),
         subject: _t('Email Subject (optional)'),
         image: _t('Image'),
         imageAlign: _t('Align'),
         scale: _t('Size'),
         alt: _t('Alternative Text'),
-        externalImage: _t('External Image URL (can be relative within this site or absolute if it starts with http:// or https://)')
+        insertImageHelp: _t('Specify an image. It can be on this site already (Internal Image), an image you upload (Upload), or from an external site (External Image).'),
+        internalImage: _t('Internal Image'),
+        externalImage: _t('External Image'),
+        externalImageText: _t('External Image URL (can be relative within this site or absolute if it starts with http:// or https://)'),
+        upload: _t('Upload'),
+        insertLinkHelp: _t('Specify the object to link to. It can be on this site already (Internal), an object you upload (Upload), from an external site (External), an email address (Email), or an anchor on this page (Anchor).'),
       },
       // URL generation options
       loadingBaseUrl: '../../../bower_components/tinymce-builded/js/tinymce/',
@@ -68059,9 +68077,10 @@ define('mockup-patterns-tinymce',[
         {title: 'Large', value: 'large'}
       ],
       imageClasses: {
-        'image-inline': 'Inline',
-        'image-right': 'Right',
-        'image-left': 'Left'
+        'image-inline': _t('Inline'),
+        'image-right': _t('Right'),
+        'image-left': _t('Left'),
+        'image-responsive': _t('Responsive')
       },
       targetList: [
         {text: _t('Open in this window / frame'), value: ''},
@@ -69310,7 +69329,7 @@ define('mockup-patterns-querystring',[
           $('[id$="sort_on"]', existingSortOn).val($(this).val());
         });
 
-      self.$sortOn.append($('<option value="">No sorting</option>')); // default no sorting
+      self.$sortOn.append($('<option value="">' + _t('No sorting') + '</option>')); // default no sorting
       for (var key in self.options['sortable_indexes']) { // jshint ignore:line
         self.$sortOn.append(
           $('<option/>')
@@ -69925,13 +69944,13 @@ define('mockup-patterns-structure-url/js/actions',[
   return Actions;
 });
 
-define('mockup-patterns-structure-url/js/actionmenu',['underscore'], function(_) {
+define('mockup-patterns-structure-url/js/actionmenu',['underscore', 'translate'], function(_, _t) {
   'use strict';
 
   var menuOptions = {
     'openItem': {
       'url':      '#',
-      'title':    'Open',
+      'title':    _t('Open'),
       'category': 'button',
       'iconCSS':  'glyphicon glyphicon-eye-open',
       'css': '',
@@ -69939,7 +69958,7 @@ define('mockup-patterns-structure-url/js/actionmenu',['underscore'], function(_)
     },
     'editItem': {
       'url':      '#',
-      'title':    'Edit',
+      'title':    _t('Edit'),
       'category': 'button',
       'iconCSS':  'glyphicon glyphicon-pencil',
       'css': '',
@@ -69949,7 +69968,7 @@ define('mockup-patterns-structure-url/js/actionmenu',['underscore'], function(_)
       'library':  'mockup-patterns-structure-url/js/actions',
       'method':   'cutClicked',
       'url':      '#',
-      'title':    'Cut',
+      'title':    _t('Cut'),
       'category': 'dropdown',
       'iconCSS':  'glyphicon glyphicon-scissors',
       'css': '',
@@ -69959,7 +69978,7 @@ define('mockup-patterns-structure-url/js/actionmenu',['underscore'], function(_)
       'library':  'mockup-patterns-structure-url/js/actions',
       'method':   'copyClicked',
       'url':      '#',
-      'title':    'Copy',
+      'title':    _t('Copy'),
       'category': 'dropdown',
       'iconCSS':  'glyphicon glyphicon-duplicate',
       'css': '',
@@ -69969,7 +69988,7 @@ define('mockup-patterns-structure-url/js/actionmenu',['underscore'], function(_)
       'library':  'mockup-patterns-structure-url/js/actions',
       'method':   'pasteClicked',
       'url':      '#',
-      'title':    'Paste',
+      'title':    _t('Paste'),
       'category': 'dropdown',
       'iconCSS':  'glyphicon glyphicon-open-file',
       'css': '',
@@ -69979,7 +69998,7 @@ define('mockup-patterns-structure-url/js/actionmenu',['underscore'], function(_)
       'library':  'mockup-patterns-structure-url/js/actions',
       'method':   'moveTopClicked',
       'url':      '#',
-      'title':    'Move to top of folder',
+      'title':    _t('Move to top of folder'),
       'category': 'dropdown',
       'iconCSS':  'glyphicon glyphicon-step-backward rright',
       'css': '',
@@ -69989,7 +70008,7 @@ define('mockup-patterns-structure-url/js/actionmenu',['underscore'], function(_)
       'library':  'mockup-patterns-structure-url/js/actions',
       'method':   'moveBottomClicked',
       'url':      '#',
-      'title':    'Move to bottom of folder',
+      'title':    _t('Move to bottom of folder'),
       'category': 'dropdown',
       'iconCSS':  'glyphicon glyphicon-step-backward rleft',
       'css': '',
@@ -69999,7 +70018,7 @@ define('mockup-patterns-structure-url/js/actionmenu',['underscore'], function(_)
       'library':  'mockup-patterns-structure-url/js/actions',
       'method':   'setDefaultPageClicked',
       'url':      '#',
-      'title':    'Set as default page',
+      'title':    _t('Set as default page'),
       'category': 'dropdown',
       'iconCSS':  'glyphicon glyphicon-ok-circle',
       'css': '',
@@ -70009,7 +70028,7 @@ define('mockup-patterns-structure-url/js/actionmenu',['underscore'], function(_)
       'library':  'mockup-patterns-structure-url/js/actions',
       'method':   'selectAll',
       'url':      '#',
-      'title':    'Select all contained items',
+      'title':    _t('Select all contained items'),
       'category': 'dropdown',
       'iconCSS':  'glyphicon glyphicon-check',
       'css': '',
@@ -70055,7 +70074,7 @@ define('mockup-patterns-structure-url/js/actionmenu',['underscore'], function(_)
 });
 
 
-define('text!mockup-patterns-structure-url/templates/actionmenu.xml',[],function () { return '<% _.each(menuOptions.button, function(menuOption){ %>\n<a class="action <%- menuOption.name %> <%- menuOption.idx %> pat-tooltip <%- menuOption.css %>"\n    href="<%- menuOption.url %>"\n    title="<%- _t(menuOption.title) %>">\n  <% if (menuOption.iconCSS) { %>\n  <span class="<%- menuOption.iconCSS %>"></span>\n  <% } else { %>\n  <%- _t(menuOption.title) %> \n  <% } %>\n</a>&nbsp;\n<% }); %>\n\n\n<% if (menuOptions.dropdown) { %>\n<a class="dropdown-toggle"\n    data-toggle="dropdown"\n    href="#"\n    aria-haspopup="true"\n    aria-expanded="true"\n    id="<%- id %>"\n    title="Actions">\n  <span class="glyphicon glyphicon-cog"></span><span class="caret"></span>\n</a>\n<ul class="dropdown-menu pull-right" aria-labelledby="<%- id %>">\n  <% if (header) { %>\n    <li class="dropdown-header"><%- header %></li>\n    <li class="divider"></li>\n  <% } %>\n\n  <% _.each(menuOptions.dropdown, function(menuOption){ %>\n  <li>\n    <a class="action <%- menuOption.name %> <%- menuOption.idx %> <%- menuOption.css %>"\n        href="<%- menuOption.url %>">\n      <% if (menuOption.iconCSS) { %>\n      <span class="<%- menuOption.iconCSS %>"></span>\n      <% } %>\n      <%- _t(menuOption.title) %>\n    </a>\n  </li>\n  <% }); %>\n</ul>\n<% } %>\n';});
+define('text!mockup-patterns-structure-url/templates/actionmenu.xml',[],function () { return '<% _.each(menuOptions.button, function(menuOption){ %>\n<a class="action <%- menuOption.name %> <%- menuOption.idx %> pat-tooltip <%- menuOption.css %>"\n    href="<%- menuOption.url %>"\n    title="<%- _t(menuOption.title) %>">\n  <% if (menuOption.iconCSS) { %>\n  <span class="<%- menuOption.iconCSS %>"></span>\n  <% } else { %>\n  <%- _t(menuOption.title) %> \n  <% } %>\n</a>&nbsp;\n<% }); %>\n\n\n<% if (menuOptions.dropdown) { %>\n<a class="dropdown-toggle"\n    data-toggle="dropdown"\n    href="#"\n    aria-haspopup="true"\n    aria-expanded="true"\n    id="<%- id %>"\n    title=\'<%- _t("Actions") %>\'>\n  <span class="glyphicon glyphicon-cog"></span><span class="caret"></span>\n</a>\n<ul class="dropdown-menu pull-right" aria-labelledby="<%- id %>">\n  <% if (header) { %>\n    <li class="dropdown-header"><%- header %></li>\n    <li class="divider"></li>\n  <% } %>\n\n  <% _.each(menuOptions.dropdown, function(menuOption){ %>\n  <li>\n    <a class="action <%- menuOption.name %> <%- menuOption.idx %> <%- menuOption.css %>"\n        href="<%- menuOption.url %>">\n      <% if (menuOption.iconCSS) { %>\n      <span class="<%- menuOption.iconCSS %>"></span>\n      <% } %>\n      <%- _t(menuOption.title) %>\n    </a>\n  </li>\n  <% }); %>\n</ul>\n<% } %>\n';});
 
 define('mockup-patterns-structure-url/js/views/actionmenu',[
   'jquery',
@@ -87312,7 +87331,7 @@ define('mockup-patterns-structure-url/js/views/selectionwell',[
   var WellView = PopoverView.extend({
     className: 'popover selected-items',
     title: _.template(
-      '<input type="text" class="filter" placeholder="Filter" />' +
+      '<input type="text" class="filter" placeholder="<%- _t("Filter") %>" />' +
       '<a href="#" class=" remove-all">' +
       '<span class="glyphicon glyphicon-remove-circle"></span> <%- _t("remove all") %></a>'
     ),
@@ -94873,5 +94892,5 @@ require([
   'use strict';
 });
 
-define("/Users/esteele/projects/plone_5.1/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
+define("/plone51/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
 

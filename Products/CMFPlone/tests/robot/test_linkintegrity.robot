@@ -138,5 +138,5 @@ remove link to page
   Input text  css=.mce-content-body  foo
   Execute Javascript    function selectElementContents(el) {var range = document.createRange(); range.selectNodeContents(el); var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);} var el = document.getElementById("tinymce"); selectElementContents(el);
   UnSelect Frame
-  Click Button  css=div[aria-label="Remove link(s)"] button
+  Click Button  css=div[aria-label="Remove link"] button
   Click Button  css=#form-buttons-save
