@@ -1,0 +1,3 @@
+Fix content type icons not showing in the toolbar Add menu on Safari.
+This fixes https://github.com/plone/Products.CMFPlone/issues/3163
+[vincentfretin]
