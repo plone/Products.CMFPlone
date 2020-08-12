@@ -6,6 +6,8 @@
       metal:use-macro="context/prefs_main_template/macros/master"
       i18n:domain="plone">
 
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
 <body>
 
 <metal:main fill-slot="prefs_configlet_content"
@@ -205,7 +207,7 @@
                   <input type="hidden" name="form.submitted" value="1" />
 
                   <div class="formControls">
-                      <input class="context"
+                      <input class="btn btn-primary"
                              type="submit"
                              name="form.button.Save"
                              value="Save"

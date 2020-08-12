@@ -5,6 +5,7 @@
     lang="en"
     metal:use-macro="context/prefs_main_template/macros/master"
     i18n:domain="plone">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 
 <body>
 
@@ -63,7 +64,7 @@
           <a class="pat-plone-modal" id="add-user"
              data-pat-plone-modal="{&quot;actionOptions&quot;: {&quot;displayInModal&quot;: false}}"
              tal:attributes="href string:${portal_url}/@@new-user">
-             <button i18n:translate="label_add_new_user" id="add-new-user" class="context">Add New User</button>
+             <button i18n:translate="label_add_new_user" id="add-new-user" class="context btn btn-primary">Add New User</button>
           </a>
         </p>
         <form action=""
@@ -78,7 +79,7 @@
                           many_users view/many_users">
           <input type="hidden" name="form.submitted" value="1" />
 
-          <div class="field">
+          <div class="field form-group">
             <label for="quickSearch" i18n:translate="label_user_search">User Search</label>
                           <input class="quickSearch"
                                  id="quickSearch"
@@ -89,14 +90,14 @@
                                  />
 
                           <input type="submit"
-                                 class="searchButton context"
+                                 class="searchButton btn btn-primary"
                                  name="form.button.Search"
                                  value="Search"
                                  i18n:attributes="value label_search;"
                                  />
 
                           <input type="submit"
-                                 class="searchButton standalone"
+                                 class="searchButton btn btn-secondary"
                                  name="form.button.FindAll"
                                  value="Show all"
                                  i18n:attributes="value label_showall;"
@@ -216,7 +217,7 @@
           <div tal:condition="batch">
 
             <div class="formControls">
-              <input class="context"
+              <input class="btn btn-primary"
                  type="submit"
                  name="form.button.Modify"
                  value="Save"

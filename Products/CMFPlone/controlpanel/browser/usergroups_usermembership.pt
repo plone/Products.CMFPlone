@@ -5,6 +5,7 @@
       lang="en"
       metal:use-macro="context/prefs_main_template/macros/master"
       i18n:domain="plone">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 
 <body>
 
@@ -96,7 +97,7 @@
             </tal:block>
           </table>
           <p tal:condition="not:groups" i18n:translate="text_user_not_in_any_group">This user does not belong to any group.</p>
-          <input class="destructive"
+          <input class="btn btn-alert"
                  type="submit"
                  name="form.button.Delete"
                  value="Remove from selected groups"
@@ -118,7 +119,7 @@
                              />
 
                       <input type="submit"
-                             class="searchButton"
+                             class="btn btn-primary"
                              name="form.button.search"
                              value="Search"
                              i18n:attributes="value label_search;" />
@@ -191,7 +192,7 @@
 
           <input type="hidden" name="form.submitted" value="1" />
 
-          <input class="context"
+          <input class="btn btn-primary"
                  type="submit"
                  name="form.button.Add"
                  value="Add user to selected groups"

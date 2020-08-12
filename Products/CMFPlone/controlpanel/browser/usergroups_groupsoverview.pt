@@ -6,6 +6,8 @@
       metal:use-macro="context/prefs_main_template/macros/master"
       i18n:domain="plone">
 
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
 <body>
 
 <metal:main fill-slot="prefs_configlet_content"
@@ -80,11 +82,12 @@
         <p>
           <a class="pat-plone-modal" id="add-group"
              tal:attributes="href string:${portal_url}/@@usergroup-groupdetails">
-             <button i18n:translate="label_add_new_group" class="context">Add New Group</button>
+             <button i18n:translate="label_add_new_group" class="btn btn-primary">Add New Group</button>
           </a>
         </p>
 
         <form action=""
+              class="overflow-auto"
               name="groups_search"
               method="post"
               tal:attributes="action string:$template_id">
@@ -97,7 +100,7 @@
             <input type="hidden" value="" name="showAll"
                    tal:attributes="value showAll"/>
 
-            <div class="field">
+            <div class="field form-group">
 
                 <span tal:omit-tag=""
                       i18n:translate="label_group_search">
@@ -112,14 +115,14 @@
                        />
 
                 <input type="submit"
-                       class="searchButton context"
+                       class="btn btn-primary"
                        name="form.button.Search"
                        value="Search"
                        i18n:attributes="value label_search;"
                        />
 
                 <input type="submit"
-                       class="searchButton"
+                       class="btn btn-secondary"
                        name="form.button.FindAll"
                        value="Show all"
                        i18n:attributes="value label_showall;"
@@ -129,7 +132,7 @@
             </div>
 
 
-            <table class="listing"
+            <table class="table table-bordered table-striped overflow-auto"
                    summary="Select roles for each group"
                    i18n:attributes="summary summary_roles_for_groups;">
                 <tbody>
@@ -240,7 +243,7 @@
                 </div>
 
                 <div class="formControls">
-                  <input class="context"
+                  <input class="btn btn-primary"
                          type="submit"
                          name="form.button.Modify"
                          value="Save"
