@@ -6,6 +6,8 @@
       metal:use-macro="here/prefs_main_template/macros/master"
       i18n:domain="plone">
 
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
 <body>
 
 <div metal:fill-slot="prefs_configlet_main">
