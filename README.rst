@@ -3,16 +3,16 @@ About Plone
 
 Plone is a mature, secure and user-friendly Content Management System (CMS).
 
-Plone - and its OpenSource community behind - aggregates more than 15 years experience in content-management.
+Plone - and the Open Source community behind it - aggregates more than 15 years experience in content management.
 It offers all major features expected by a modern CMS out-of-the-box.
 
-Lots of customizations can be made trough-the-web, such as creating content-types, themes, workflows and much more.
-Pushed one step further Plone can be used as a framework to build custom CMS-like solutions on.
+Lots of customizations can be made trough-the-web, such as creating content types, themes, workflows and much more.
+Pushed one step further Plone can be used as a framework on which to build custom CMS-like solutions.
 
 Plone works as a
 
-- full-featured classical backend renderend CMS,
-- headless CMS offering all features as a RESTapi.
+- full-featured classical server-side rendered CMS,
+- headless CMS offering all features as a REST API.
 
 
 Installing Plone
@@ -30,7 +30,7 @@ Documentation
 
 Consult `the official Plone documentation <https://docs.plone.org>`_ with information for different audiences.
 
-For trainings `comprehensive Plone training material <https://training.plone.org>`_ is offered.
+For trainings `comprehensive Plone training material <https://training.plone.org>`_ is available.
 
 
 What is Plone?
@@ -38,13 +38,13 @@ What is Plone?
 
 Plone is a ready-to-run content management system, offering a complete set of features needed by a wide variety of organizations.
 
-Plone is secure by architecture and offers fine grained permission control over content and actions.
+Security is built into Plone's architecture from the ground up.  Plone offers fine grained permission control over content and actions.
 
 Plone is easy to set up, extremely flexible,
 and provides you with a system for managing web content that is ideal for project groups, communities, web sites, extranets and intranets.
 
 - *Plone is easy to install.*
-  You can install Plone with a a click and run installer, and have a content management system running on your computer in just a few minutes.
+  You can install Plone with a a click-and-run installer, and have a content management system running on your computer in just a few minutes.
 
 - *Plone is easy to use.*
   The Plone Team includes usability experts who have made Plone easy and attractive for content managers to add, update, and maintain content.
@@ -76,12 +76,12 @@ Technical overview
 ------------------
 
 Plone is a content management platform written in Python.
-It builds up on Zope, an Open Source web application server and development system and so on the pluggable Zope Component Architecture (ZCA).
+It builds upon Zope, an Open Source web application server and development system and thus on the pluggable Zope Component Architecture (ZCA).
 
 Python is the easy-to-learn, widely-used and supported Open Source programming language.
-Python can be used to add new features to Plone, and used to understand or make changes to the way that Plone work.
+Python can be used to add new features to Plone, and used to understand or make changes to the way that Plone works.
 
-Plone stores its contents in Zope's built in transactional hierachical object database, the ZODB.
+Plone stores its contents in Zope's built-in transactional hierachical object database, the ZODB.
 The ZODB can be connected to simple file-storages, scalable ZEO-Servers or Postgres, MySQL and Oracle.
 There are addon and techniques, however, to share information with other sources, such as relational databases, LDAP, filesystem
 files, etc.
