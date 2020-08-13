@@ -87,5 +87,16 @@ There are addon and techniques, however, to share information with other sources
 files, etc.
 
 
-.. _plone.org product page: http://plone.org/products/plone
+Official Resources
+------------------
+* `plone.com <https://plone.com/>`_ - Official website for decision makers and evaluators.
+* `plone.org <https://plone.org/>`_ - Official website for developers and community.
+* `Plone support <https://plone.org/support>`_ - Where to find help.
+* `community.plone.org <https://community.plone.org/>`_ - Official community forum, the best place to get help.
+* `docs.plone.org <https://docs.plone.org/>`_ - Official documentation for developers/integrators.
+* `training.plone.org <https://training.plone.org/>`_ - Training classes for developers/integrators/users/designers.
+* `plone.api <https://docs.plone.org/develop/plone.api/docs/index.html>`_ - Documentation for plone.api.
+* `plone.restapi <https://plonerestapi.readthedocs.io/en/latest/>`_ - Documentation for plone.restapi.
+* `official Gitter chat <https://gitter.im/plone/public>`_ - monitored.
 
+.. _plone.org product page: http://plone.org/products/plone
