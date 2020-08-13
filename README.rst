@@ -100,4 +100,3 @@ Official Resources
 * `plone.restapi <https://plonerestapi.readthedocs.io/en/latest/>`_ - Documentation for plone.restapi.
 * `official Gitter chat <https://gitter.im/plone/public>`_ - monitored.
 
-.. _plone.org product page: http://plone.org/products/plone
