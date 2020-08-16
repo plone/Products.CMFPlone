@@ -12,6 +12,31 @@ Changelog
 
 .. towncrier release notes start
 
+5.2.2rc3 (2020-08-16)
+---------------------
+
+Bug fixes:
+
+
+- Return a Zope aware engine for page templates based on ``zope.pagetemplate`` instead of ``Products.PageTemplates``.
+  Fixes possible problems with such templates, for example z3c.form ones, with Zope 4.4 and higher.
+  See `issue 3141 <https://github.com/plone/Products.CMFPlone/issues/3141>`_.
+  [maurits] (#3141)
+- Depend on new package ``Products.isurlinportal``.
+  This contains the ``isURLInPortal`` method that was split off from our ``URLTool``.
+  See `issue 3150 <https://github.com/plone/Products.CMFPlone/issues/3150>`_.
+  [maurits] (#3150)
+- Redirection view: refactor our navigation root editing to a separate method ``edit_for_navigation_root``.
+  Since Plone 5.2 the redirectiontool respects INavigationroot:
+  with a manual redirect you cannot enter a path starting with ``/`` which 'escapes' the NavigationRoot to the SiteRoot to link to another part of the Plone instance.
+  This refactor makes it possible to override this method to return the redirection unchanged, brining back the pre Plone 5.2 behavior of the ``Products.RedirectionTool`` add-on.
+  [maurits] (#3153)
+- Control panel configlets: first check visibility, then check condition.
+  Visibility is cheaper to check.
+  Also fixes `bug 3154 <https://github.com/plone/Products.CMFPlone/issues/3154>`_.
+  [maurits] (#3154)
+
+
 5.2.2rc2 (2020-07-17)
 ---------------------
 
