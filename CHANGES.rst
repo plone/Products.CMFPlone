@@ -12,6 +12,17 @@ Changelog
 
 .. towncrier release notes start
 
+5.2.2 (2020-08-16)
+------------------
+
+Bug fixes:
+
+
+- Release Plone 5.2.2 final.
+  No changes with last release candidate, except that the versions will contain Products.isurlinportal 1.1.0 with a minor security hardening fix.
+  [maurits] (#3510)
+
+
 5.2.2rc3 (2020-08-16)
 ---------------------
 
