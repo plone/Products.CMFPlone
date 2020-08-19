@@ -13,6 +13,26 @@ Changelog
 
 .. towncrier release notes start
 
+4.3.20rc1 (2020-08-19)
+----------------------
+
+Bug fixes:
+
+
+- Removed broken ``X-XSS-Protection`` header.
+  [maurits] (#2964)
+- Merge Hotfix20200121: isURLInPortal could be tricked into accepting malicious links. (#3021)
+- Merge Hotfix20200121 Check of the strenth of password could be skipped. (#3021)
+- Depend on new package ``Products.isurlinportal``.
+  This contains the ``isURLInPortal`` method that was split off from our ``URLTool``.
+  See `issue 3150 <https://github.com/plone/Products.CMFPlone/issues/3150>`_.
+  [maurits] (#3150)
+- Increased metadata version to 4322, to trigger Plone upgrade for Plone 4.3.20.
+  This is the last release ever of the Plone 4.3.x line.
+  See also the `Plone release schedule <https://plone.org/download/release-schedule>`_.
+  [maurits] (#3166)
+
+
 4.3.19 (2019-10-02)
 -------------------
 
