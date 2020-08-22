@@ -32,13 +32,14 @@
 
   <!-- Enabled behaviors -->
   <property name="behaviors" purge="false">
-    <element value="plone.app.dexterity.behaviors.metadata.IDublinCore"/>
-    <element value="plone.app.content.interfaces.INameFromTitle"/>
-    <element value="plone.app.dexterity.behaviors.id.IShortName"/>
-    <element value="plone.app.contenttypes.behaviors.richtext.IRichText"/>
-    <element value="plone.app.relationfield.behavior.IRelatedItems"/>
-    <element value="plone.app.dexterity.behaviors.nextprevious.INextPreviousToggle"/>
-    <element value="plone.app.lockingbehavior.behaviors.ILocking" />
+    <element value="plone.dublincore" />
+    <element value="plone.richtext" />
+    <element value="plone.relateditems" />
+    <element value="plone.locking" />
+    <element value="plone.allowdiscussion" />
+    <element value="plone.excludefromnavigation" />
+    <element value="plone.tableofcontents" />
+    <element value="plone.versioning" />
   </property>
 
   <!-- View information -->
