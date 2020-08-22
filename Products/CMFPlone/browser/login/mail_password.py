@@ -8,6 +8,7 @@ from Products.statusmessages.interfaces import IStatusMessage
 class MailPasswordView(BrowserView):
 
     def __call__(self):
+        response = None
         try:
             response = self.context.portal_registration.mailPassword(
                 self.request.form.get('userid', ''),
@@ -22,6 +23,6 @@ class MailPasswordView(BrowserView):
                 raise e
             IStatusMessage(self.request).add(msg)
             self.request.response.redirect(
-                self.context.absolute_url() + 'mail_password_form'
+                self.context.absolute_url() + '/mail_password_form'
             )
         return response
