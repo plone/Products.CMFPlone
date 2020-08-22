@@ -58,10 +58,11 @@ class ProductsCMFPloneLayer(PloneSandboxLayer):
                 title=u"Members"
             )
 
-        portal._original_MailHost = portal.MailHost
+        portal._original_MailHost = portal['MailHost']
         mail_host = MockMailHost('MailHost')
         mail_host.smtp_host = 'localhost'
-        portal.MailHost = mail_host
+        del portal['MailHost']
+        portal['MailHost'] = mail_host
         site_manager = getSiteManager(portal)
         site_manager.unregisterUtility(provided=IMailHost)
         site_manager.registerUtility(mail_host, IMailHost)
@@ -71,7 +72,8 @@ class ProductsCMFPloneLayer(PloneSandboxLayer):
         setRoles(portal, TEST_USER_ID, ['Manager'])
         portal.manage_delObjects(['test-folder'])
 
-        portal.MailHost = portal._original_MailHost
+        del portal['MailHost']
+        portal['MailHost'] = portal._original_MailHost
         sm = getSiteManager(context=portal)
         sm.unregisterUtility(provided=IMailHost)
         sm.registerUtility(
