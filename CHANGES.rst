@@ -13,6 +13,16 @@ Changelog
 
 .. towncrier release notes start
 
+4.3.20 (2020-08-28)
+-------------------
+
+Bug fixes:
+
+
+- Prepare final release, no changes.
+  [maurits] (#3166)
+
+
 4.3.20rc1 (2020-08-19)
 ----------------------
 
