@@ -186,6 +186,29 @@ class LayoutPolicy(BrowserView):
             pass
         return toolbar_classes
 
+    def _template_name(self, template, view):
+        """Name of template.
+
+        Sometimes it is best to take this from the template, sometimes the view.
+        Note that neither template nor view are always available.
+        For example, mosaic passes a view but not a template.
+        """
+        view_name = view.__name__ if view else ""
+        if isinstance(template, TEMPLATE_CLASSES):
+            # Browser view.  Take the view name.
+            # But it this is 'index.html', it may be the error message view.
+            # It is better to take the template name then.
+            if view_name != "index.html":
+                return view_name
+        # template can be SimpleViewClass, which has no getId.
+        # Probably caught above with isinstance(template, TEMPLATE_CLASSES),
+        # but let's be careful.
+        if template and hasattr(template, "getId"):
+            template_name = template.getId()
+            if template_name:
+                return template_name
+        return view_name
+
     def bodyClass(self, template, view):
         """
         Returns the CSS class to be used on the body tag.
@@ -222,15 +245,7 @@ class LayoutPolicy(BrowserView):
         body_classes = self._toolbar_classes()
 
         # template class (required)
-        template_name = ""
-        if isinstance(template, TEMPLATE_CLASSES):
-            # Browser view
-            template_name = view.__name__
-        elif template is not None:
-            template_name = template.getId()
-        elif view:
-            # E.g. mosaic, which doesn't pass a template
-            template_name = view.__name__
+        template_name = self._template_name(template, view)
         if template_name:
             template_name = normalizer.normalize(template_name)
             body_classes.add("template-%s" % template_name)
