@@ -34,7 +34,7 @@ class UserGroupsSettingsControlPanel(AutoExtensibleForm, form.EditForm):
     def updateActions(self):
         super().updateActions()
         if self.actions and 'save' in self.actions:
-            self.actions['save'].addClass('context')
+            self.actions['save'].addClass('btn-primary')
 
 
 class ControlPanelFormWrapper(layout.FormWrapper):
