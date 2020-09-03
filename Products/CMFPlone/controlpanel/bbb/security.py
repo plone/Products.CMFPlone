@@ -6,7 +6,7 @@ from plone.registry.interfaces import IRegistry
 from zope.component import adapts
 from zope.component import getUtility
 from zope.interface import implementer
-from zope.site.hooks import getSite
+from zope.component.hooks import getSite
 
 
 @implementer(ISecuritySchema)
