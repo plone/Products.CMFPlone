@@ -14,7 +14,7 @@ from Products.CMFPlone.interfaces.syndication import IFeedSettings
 from Products.CMFPlone import PloneMessageFactory as _
 
 from z3c.form import form, button, field
-from plone.app.z3cform.layout import wrap_form
+from plone.z3cform.layout import wrap_form
 
 
 class FeedView(BrowserView):
