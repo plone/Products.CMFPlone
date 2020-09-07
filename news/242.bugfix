@@ -1,4 +1,0 @@
-Made the error page recognisable again in the body classes.
-Instead of ``template-index-html`` you now get ``template-error_message-pt``.
-Compatibility note: in Plone 5.1 and earlier, this was ``template-default_error_message``.
-[maurits]

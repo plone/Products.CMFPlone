@@ -8,6 +8,18 @@ Changelog
 
 .. towncrier release notes start
 
+3.4.5 (2020-09-07)
+------------------
+
+Bug fixes:
+
+
+- Made the error page recognisable again in the body classes.
+  Instead of ``template-index-html`` you now get ``template-error_message-pt``.
+  Compatibility note: in Plone 5.1 and earlier, this was ``template-default_error_message``.
+  [maurits] (#242)
+
+
 3.4.4 (2020-07-17)
 ------------------
 
