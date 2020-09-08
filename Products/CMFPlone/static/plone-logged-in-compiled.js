@@ -31366,7 +31366,7 @@ define('mockup-patterns-tinymce-url/js/links',[
         anchorLabel: this.options.text.anchorLabel,
         target: this.options.text.target,
         linkTypes: this.options.linkTypes,
-        externalText: this.options.text.external,
+        externalText: this.options.text.externalText,
         emailText: this.options.text.email,
         subjectText: this.options.text.subject,
         targetList: this.options.targetList,
@@ -94900,5 +94900,5 @@ require([
   'use strict';
 });
 
-define("/plone51/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
+define("/Users/maurits/community/plone-coredev/5.1/src/Products.CMFPlone/Products/CMFPlone/static/plone-logged-in.js", function(){});
 
