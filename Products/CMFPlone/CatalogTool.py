@@ -183,7 +183,7 @@ def object_provides(obj):
 def zero_fill(matchobj):
     return matchobj.group().zfill(4)
 
-num_sort_regex = re.compile('\d+')
+num_sort_regex = re.compile(r'\d+')
 
 
 @indexer(Interface)

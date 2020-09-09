@@ -22,7 +22,8 @@ import posixpath
 import re
 import six
 
-CSS_URL_REGEX = re.compile('url\(([^)]+)\)')
+
+CSS_URL_REGEX = re.compile(r'url\(([^)]+)\)')
 
 
 class JSONEncoder(json.JSONEncoder):

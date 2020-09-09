@@ -36,11 +36,11 @@ rangetable = dict(
 
 # Splitting core.
 ps = rangetable.values()
-allp = u"".join(ps)
-glob_true = u"[^%s]([^%s]|[\*\?])*|" \
-    % (allp, allp) + u"|".join([u"[%s]+" % (x, ) for x in ps])
+allp = "".join(ps)
+glob_true = r"[^%s]([^%s]|[\*\?])*|" % (allp, allp) + \
+    "|".join(["[%s]+" % (x, ) for x in ps])
 
-glob_false = u"[^%s]+|" % allp + u"|".join(u"[%s]+" % x for x in ps)
+glob_false = r"[^%s]+|" % allp + "|".join("[%s]+" % x for x in ps)
 
 rx_all = re.compile(r"[%s]" % allp, re.UNICODE)
 
