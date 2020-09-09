@@ -1,0 +1,2 @@
+No longer doubly undo a response Content-Type change when combining bundles.
+[maurits]

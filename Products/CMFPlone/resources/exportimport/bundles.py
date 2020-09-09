@@ -2,7 +2,6 @@
 from ..browser.combine import combine_bundles
 from plone.registry.interfaces import IRegistry
 from zope.component import queryUtility
-from zope.globalrequest import getRequest
 
 
 def combine(context):
@@ -27,23 +26,9 @@ def combine(context):
     if not found:
         return
 
-    # Calling combine_bundles will have as side effect that the
-    # Content-Type header of the response is set to application/javascript,
-    # which we do not want.  So we reset it to the original at the end.
+    # Calling combine_bundles used to have as side effect that the
+    # Content-Type header of the response was set to application/javascript,
+    # which we do not want.  But that was fixed already in Plone 5.1b2.
+    # See https://github.com/plone/Products.CMFPlone/pull/1924
     site = context.getSite()
-    request = getattr(site, 'REQUEST', getRequest())
-    # In tests the request can easily be None.
-    if request is not None:
-        orig_header = request.response.getHeader('Content-Type')
     combine_bundles(site)
-    if request is None:
-        # we are done
-        return
-    new_header = request.response.getHeader('Content-Type')
-    if new_header == orig_header:
-        return
-    if orig_header is None:
-        # Setting it to None would result in the string 'None'.
-        # So pick a saner one.
-        orig_header = 'text/html'
-    request.response.setHeader('Content-Type', orig_header)
