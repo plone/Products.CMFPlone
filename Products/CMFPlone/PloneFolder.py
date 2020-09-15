@@ -8,6 +8,7 @@ from Acquisition import aq_inner
 from Acquisition import aq_parent
 from ComputedAttribute import ComputedAttribute
 from OFS.Folder import Folder
+from OFS.ObjectManager import REPLACEABLE
 from OFS.OrderSupport import OrderSupport
 from plone.memoize import view
 from Products.CMFCore.CMFCatalogAware import CatalogAware
