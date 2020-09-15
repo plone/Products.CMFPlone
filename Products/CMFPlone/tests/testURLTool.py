@@ -141,9 +141,9 @@ class TestURLTool(unittest.TestCase):
     def test_escape(self):
         url_tool = self._makeOne()
         iURLiP = url_tool.isURLInPortal
-        self.assertFalse(iURLiP('\/\/www.example.com'))
-        self.assertFalse(iURLiP('\%2F\%2Fwww.example.com'))
-        self.assertFalse(iURLiP('\%2f\%2fwww.example.com'))
+        self.assertFalse(iURLiP(r'\/\/www.example.com'))
+        self.assertFalse(iURLiP(r'\%2F\%2Fwww.example.com'))
+        self.assertFalse(iURLiP(r'\%2f\%2fwww.example.com'))
         self.assertFalse(iURLiP('%2F%2Fwww.example.com'))
         self.assertFalse(iURLiP('%2f%2fwww.example.com'))
 
