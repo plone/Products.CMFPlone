@@ -11,6 +11,7 @@ from Products.CMFPlone.browser.interfaces import INavigationBreadcrumbs
 from Products.CMFPlone.browser.interfaces import INavigationTabs
 from Products.CMFPlone.browser.interfaces import ISiteMap
 from Products.CMFPlone.browser.navtree import SitemapQueryBuilder
+from Products.CMFPlone.defaultpage import check_default_page_via_view
 from Products.CMFPlone.interfaces import IHideFromBreadcrumbs
 from Products.CMFPlone.interfaces import INavigationSchema
 from Products.Five import BrowserView
@@ -184,7 +185,7 @@ class CatalogNavigationBreadcrumbs(BrowserView):
 
         # Check to see if the current page is a folder default view, if so
         # get breadcrumbs from the parent folder
-        if utils.isDefaultPage(context, self.request):
+        if check_default_page_via_view(context, self.request):
             currentPath = '/'.join(utils.parent(context).getPhysicalPath())
         else:
             currentPath = '/'.join(context.getPhysicalPath())
@@ -245,7 +246,7 @@ class PhysicalNavigationBreadcrumbs(BrowserView):
 
         # don't show default pages in breadcrumbs or pages above the navigation
         # root
-        if not utils.isDefaultPage(context, request) \
+        if not check_default_page_via_view(context, request) \
            and not rootPath.startswith(itemPath):
             base += ({
                 'absolute_url': item_url,
