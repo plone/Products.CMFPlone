@@ -26,12 +26,10 @@ class NoGopipTests(unittest.TestCase):
     def testGetObjPositionInParentIndex(self):
         from plone.folder.nogopip import GopipIndex
         catalog = self.portal.portal_catalog
-        self.failUnless('getObjPositionInParent' in catalog.indexes())
-        self.failUnless(
-            isinstance(
-                catalog.Indexes['getObjPositionInParent'],
-                GopipIndex
-            )
+        self.assertIn('getObjPositionInParent', catalog.indexes())
+        self.assertIsInstance(
+            catalog.Indexes['getObjPositionInParent'],
+            GopipIndex
         )
 
     def testSearchOneFolder(self):

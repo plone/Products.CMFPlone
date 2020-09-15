@@ -27,8 +27,7 @@ class MaintenanceControlPanelFunctionalTest(unittest.TestCase):
         # we have to create a user on the zope root. this just does not work
         # with plone.app.testing and TEST_USER or SITE_OWNER
         self.app.acl_users.userFolderAddUser('app', 'secret', ['Manager'], [])
-        from plone.testing import z2
-        z2.login(self.app['acl_users'], 'app')
+        login(self.app['acl_users'], 'app')
 
         import transaction
         transaction.commit()
