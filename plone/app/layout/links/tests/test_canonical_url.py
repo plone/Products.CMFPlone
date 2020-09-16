@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from plone.app.layout.testing import FUNCTIONAL_TESTING
-from plone.testing.z2 import Browser
+from plone.testing.zope import Browser
 
 import unittest
 

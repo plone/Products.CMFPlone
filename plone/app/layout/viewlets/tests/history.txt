@@ -10,7 +10,7 @@ the history viewlet works.
 Open a browser logged in as a Manager.
 
     >>> app = layer['app']
-    >>> from plone.testing.z2 import Browser
+    >>> from plone.testing.zope import Browser
     >>> browser = Browser(app)
     >>> browser.handleErrors = False
     >>> browser.addHeader('Authorization', 'Basic admin:secret')

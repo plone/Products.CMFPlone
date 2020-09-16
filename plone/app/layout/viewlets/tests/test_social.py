@@ -92,13 +92,13 @@ class TestSocialViewlet(ViewletsTestCase):
         settings.share_social_data = False
         viewlet = SocialTagsViewlet(self.folder, self.app.REQUEST, None)
         viewlet.update()
-        self.assertEquals(len(viewlet.tags), 0)
+        self.assertEqual(len(viewlet.tags), 0)
 
     def testDisabledForLoggedUser(self):
         login(self.portal, TEST_USER_NAME)
         viewlet = SocialTagsViewlet(self.folder, self.app.REQUEST, None)
         viewlet.update()
-        self.assertEquals(len(viewlet.tags), 0)
+        self.assertEqual(len(viewlet.tags), 0)
         # clear cache to prevent memoize
         cache = IAnnotations(self.app.REQUEST)
         key = "plone.memoize"
