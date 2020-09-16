@@ -418,7 +418,11 @@ then we extract the address that lets us reset our password:
   >>> msgtext = quopri.decodestring(message.get_payload())
   >>> b"Please activate it by visiting" in msgtext
   True
-  >>> address = re.search(rb'(http://nohost/plone/passwordreset/[a-z0-9]+\?userid=[\w]*)\s', msgtext).groups()[0].decode()
+  >>> import six
+  >>> if six.PY2:
+  ...     address = re.search(r'(http://nohost/plone/passwordreset/[a-z0-9]+\?userid=[\w]*)\s', msgtext).groups()[0].decode()
+  ... else:
+  ...     address = re.search(rb'(http://nohost/plone/passwordreset/[a-z0-9]+\?userid=[\w]*)\s', msgtext).groups()[0].decode()
 
 Now that we have the address, we will reset our password:
 
@@ -504,7 +508,10 @@ then we extract the address that lets us reset our password:
   >>> msgtext = quopri.decodestring(message.get_payload())
   >>> b"Please activate it by visiting" in msgtext
   True
-  >>> address = re.search(rb'(http://nohost/plone/passwordreset/[a-z0-9]+\?userid=[\w]*)\s', msgtext).groups()[0].decode()
+  >>> if six.PY2:
+  ...     address = re.search(r'(http://nohost/plone/passwordreset/[a-z0-9]+\?userid=[\w]*)\s', msgtext).groups()[0].decode()
+  ... else:
+  ...     address = re.search(rb'(http://nohost/plone/passwordreset/[a-z0-9]+\?userid=[\w]*)\s', msgtext).groups()[0].decode()
 
 Now that we have the address, we will reset our password:
 
