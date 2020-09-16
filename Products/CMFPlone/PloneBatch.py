@@ -27,10 +27,13 @@ class Batch(QuantumBatch):
                           'Use the `sequence_length` attribute for the size of the '
                           'entire sequence. '))
 
-    def __nonzero__(self):
-        # Without __nonzero__ a bool(self) would call len(self), which
+    def __bool__(self):
+        # Without __bool__ a bool(self) would call len(self), which
         # gives a deprecation warning.
         return bool(self.length)
+
+    # For Python 2 compatibility:
+    __nonzero__ = __bool__
 
     def initialize(self, start, end, size):
         super(Batch, self).initialize(start, end, size)
