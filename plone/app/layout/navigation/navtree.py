@@ -4,7 +4,7 @@
 
 from plone.app.layout.navigation.interfaces import INavtreeStrategy
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import utils
+from Products.CMFPlone.defaultpage import check_default_page_via_view
 from zope.interface import implementer
 
 import six
@@ -129,7 +129,7 @@ def buildFolderTree(context, obj=None, query={}, strategy=NavtreeStrategyBase())
     objPhysicalPath = None
     if obj is not None:
         objPhysicalPath = obj.getPhysicalPath()
-        if utils.isDefaultPage(obj, request):
+        if check_default_page_via_view(obj, request):
             objPhysicalPath = objPhysicalPath[:-1]
         objPath = "/".join(objPhysicalPath)
 
