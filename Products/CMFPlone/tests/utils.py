@@ -48,13 +48,25 @@ class MockMailHost(MailBase):
         """ Send the message """
         self.messages.append(messageText)
 
-    def send(self, messageText, mto=None, mfrom=None, subject=None,
-             encode=None, immediate=False, charset=None, msg_type=None):
-        messageText, mto, mfrom = _mungeHeaders(messageText,
-                                                mto, mfrom, subject,
-                                                charset=charset,
-                                                msg_type=msg_type)
-        self.messages.append(messageText)
+    def send(self,
+             messageText,
+             mto=None,
+             mfrom=None,
+             subject=None,
+             encode=None,
+             immediate=False,
+             charset=None,
+             msg_type=None):
+        """send *messageText* modified by the other parameters.
+
+        *messageText* can either be an ``email.message.Message``
+        or a string.
+        Note that Products.MailHost 4.10 had changes here.
+        """
+        msg, mto, mfrom = _mungeHeaders(messageText, mto, mfrom,
+                                        subject, charset, msg_type,
+                                        encode)
+        self.messages.append(msg)
 
 
 # a function to test if a string is a valid CSS identifier

@@ -70,8 +70,8 @@ class TestLoginHelp(unittest.TestCase):
         self.assertEqual(reset_password.status, '')
         self.assertEqual(len(self.portal.MailHost.messages), 1)
         message = self.portal.MailHost.messages[0]
-        self.assertIn('To: foo@plone.org', message)
-        self.assertIn('http://nohost/plone/passwordreset/', message)
+        self.assertIn(b'To: foo@plone.org', message)
+        self.assertIn(b'http://nohost/plone/passwordreset/', message)
 
 
 class TestLoginHelpFunctional(unittest.TestCase):
@@ -140,8 +140,8 @@ class TestLoginHelpFunctional(unittest.TestCase):
             'email has been sent with your username.', self.browser.contents)
         self.assertEqual(len(self.portal.MailHost.messages), 1)
         message = self.portal.MailHost.messages[0]
-        self.assertIn('To: foo@plone.org', message)
-        self.assertIn('Your username is: test_user_1_', message)
+        self.assertIn(b'To: foo@plone.org', message)
+        self.assertIn(b'Your username is: test_user_1_', message)
 
         self.browser.getControl(
             name='form.widgets.recover_username').value = 'noemail'
