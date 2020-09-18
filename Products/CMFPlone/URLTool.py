@@ -99,7 +99,6 @@ class URLTool(PloneBaseTool, BaseTool):
 
     @security.public
     def isURLInPortal(self, url, context=None):
-<<<<<<< HEAD
         # Note: no docstring, because the method is publicly available
         # but does not need to be callable on site-url/portal_url/isURLInPortal.
         #
@@ -115,35 +114,6 @@ class URLTool(PloneBaseTool, BaseTool):
         except ImportError:
             # If this somehow fails, it seems better to have a safe fallback,
             # instead of a hard failure.
-=======
-        # Check if a given url is on the same host and contains the portal
-        # path.  Used to ensure that login forms can determine relevant
-        # referrers (i.e. in portal).  Also return true for some relative
-        # urls if context is passed in to allow for url parsing. When context
-        # is not provided, assume that relative urls are in the portal. It is
-        # assumed that http://portal is the same portal as https://portal.
-
-        # External sites listed in 'allow_external_login_sites' of
-        # site_properties are also considered within the portal to allow for
-        # single sign on.
-
-        if url and not safe_url_first_char(url):
-            return False
-
-        # sanitize url
-        url = re.sub('^[\x00-\x20]+', '', url).strip()
-        cmp_url = url.lower()
-        for bad in BAD_URL_PARTS:
-            if bad in cmp_url:
-                return False
-
-        p_url = self()
-
-        schema, u_host, u_path, _, _, _ = parse.urlparse(url)
-        if schema and schema not in ALLOWED_SCHEMAS:
-            # Redirecting to 'data:' may be harmful,
-            # and redirecting to 'mailto:' or 'ftp:' is silly.
->>>>>>> Merge isURLInPortal patch from Hotfix20200121.
             return False
 
         return isURLInPortal(self, url, context=context)
