@@ -9,6 +9,44 @@
 
 .. towncrier release notes start
 
+5.1.7rc1 (2020-09-21)
+---------------------
+
+Bug fixes:
+
+
+- New resource registry bundles for Plone 5.1.7.
+  [maurits] (#1006)
+- Fix default HTLMFilter values to enable TinyMCE styling features
+  [petschki] (#2428)
+- Fix the TinyMCE pattern loading HTML as CSS.
+  [rpatterson] (#2914)
+- Add Collection to the default_page_types list
+  [erral] (#2956)
+- Merge Hotfix20200121 Check of the strength of password could be skipped. (#3021)
+- Merge Hotfix20200121: isURLInPortal could be tricked into accepting malicious links. (#3021)
+- Improve tests for the workflow tool method listWFStatesByTitle (#3032)
+- Fix mail_password_form throwing error when submitted without entering a user name.
+  [achimwilde] (#3042)
+- Fixed deprecation warning for wrap_form from plone.app.z3cform.
+  [maurits] (#3130)
+- Depend on new package ``Products.isurlinportal``.
+  This contains the ``isURLInPortal`` method that was split off from our ``URLTool``.
+  See `issue 3150 <https://github.com/plone/Products.CMFPlone/issues/3150>`_.
+  [maurits] (#3150)
+- Backport toolbar fixes from mockup master (Plone 5.2):
+
+  - Fix the scrollbar always present in the toolbar (fixes mockup#897) [ale-rt]
+  - Move toolbar to be above structure pattern, by increasing its z-index from 3 to 20 (fixes Products.CMFPlone#2490) [fulv]
+  - Set display none instead of width 0 to the plone-toolbar-left children ul for a correct keyboard tabbing (fixes mockup#950) [erral & ionlizarazu]
+  - Fix toolbar menus missing checkmark on some browsers (fixes Products.CMFPlone#1972) [vincentfretin] (#3159)
+- Recompiled plone, plone-logged-in and resourceregistry bundles.
+  [vincentfretin] (#3161)
+- Fix content type icons not showing in the toolbar Add menu on Safari.
+  This fixes https://github.com/plone/Products.CMFPlone/issues/3163
+  [vincentfretin] (#3164)
+
+
 5.1.6 (2019-10-08)
 ------------------
 
