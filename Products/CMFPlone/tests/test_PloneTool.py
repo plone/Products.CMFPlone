@@ -26,24 +26,6 @@ class TestPloneTool(unittest.TestCase):
             'utf-8'
         )
 
-    def test_portal_utf8(self):
-        text = u'Eksempel \xe6\xf8\xe5'
-        site_text = text.encode('utf-8')
-
-        self.assertEqual(
-            self.tool.portal_utf8(site_text),
-            text.encode('utf-8')
-        )
-
-    def test_utf8_portal(self):
-        text = u'Eksempel \xe6\xf8\xe5'
-        utf8text = text.encode('utf-8')
-
-        self.assertEqual(
-            self.tool.utf8_portal(utf8text),
-            text.encode('utf-8')
-        )
-
     def test_getMailHost(self):
         self.assertTrue(
             IMailHost.providedBy(self.tool.getMailHost())

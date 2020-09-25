@@ -221,18 +221,6 @@ deprecated('getSiteEncoding',
             'currently. This method always returns "utf-8"'))
 
 
-# XXX portal_utf8 and utf8_portal probably can go away
-def portal_utf8(context, str_, errors='strict'):
-    # Test
-    warnings.warn("portal_utf8/utf8_portal are deprecated.")
-    str(str_, 'utf-8', errors)
-    return str
-
-
-# XXX this is the same method as above
-utf8_portal = portal_utf8
-
-
 def getEmptyTitle(context, translated=True):
     """Returns string to be used for objects with no title or id"""
     # The default is an extra fancy unicode elipsis
