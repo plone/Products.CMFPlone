@@ -42,9 +42,8 @@ class TestContentPublishing(PloneTestCase):
 
         This testcase was written to prevent collector/2914 regressions
 
-        In addition, some more general tests of content_status_modify and
-        folder_publish behaviour have been added, since this seems a logical
-        place to keep them.
+        In addition, some more general tests of content_status_modify
+        have been added, since this seems a logical place to keep them.
     """
 
     def afterSetUp(self):
@@ -54,95 +53,7 @@ class TestContentPublishing(PloneTestCase):
         self.workflow = self.portal.portal_workflow
         self.setupAuthenticator()
 
-    def _checkMD(self, obj, **changes):
-        """ check the DublinCore Metadata on obj - it must inherit from
-        DublinCore """
-        if changes:
-            _orig_props = {}
-            _orig_props.update(props)
-            props.update(changes)
-
-        self.assertEqual(obj.Title(), props['title'])
-        self.assertEqual(obj.Description(), props['description'])
-        self.assertEqual(obj.Subject(), tuple(props['subject']))
-        self.assertEqual(obj.ExpirationDate(zone='UTC'),
-                         obj._datify(props['expiration_date']).ISO())
-        self.assertEqual(obj.EffectiveDate(zone='UTC'),
-                         obj._datify(props['effective_date']).ISO())
-        self.assertEqual(obj.Format(), props['format'])
-        self.assertEqual(obj.Rights(), props['rights'])
-        self.assertEqual(obj.Language(), props['language'])
-        self.assertEqual(obj.Contributors(), tuple(props['contributors']))
-
-        if changes:
-            props.update(_orig_props)
-
-    # Test the recursive behaviour of content_status_modify and folder_publish:
-
-    def testPublishingSubobjects(self):
-        self.setRoles(['Manager'])  # Make sure we can publish directly
-        self.folder.invokeFactory('Document', id='d1', title='Doc 1')
-        self.folder.invokeFactory('Folder', id='f1', title='Folder 1')
-        self.folder.f1.invokeFactory('Document', id='d2', title='Doc 2')
-        self.folder.f1.invokeFactory('Folder', id='f2', title='Folder 2')
-        paths = []
-        for o in (self.folder.d1, self.folder.f1):
-            paths.append('/'.join(o.getPhysicalPath()))
-
-        # folder_publish requires a non-GET request
-        self.setRequestMethod('POST')
-        self.folder.folder_publish(workflow_action='publish',
-                                   paths=paths,
-                                   include_children=True)
-        for o in (self.folder.d1, self.folder.f1, self.folder.f1.d2,
-                  self.folder.f1.f2):
-            self.assertEqual(self.workflow.getInfoFor(o, 'review_state'),
-                             'published')
-
-    def testPublishingSubobjectsAndExpireThem(self):
-        self.setRoles(['Manager'])  # Make sure we can publish directly
-        self.folder.invokeFactory('Document', id='d1', title='Doc 1')
-        self.folder.invokeFactory('Folder', id='f1', title='Folder 1')
-        self.folder.f1.invokeFactory('Document', id='d2', title='Doc 2')
-        self.folder.f1.invokeFactory('Folder', id='f2', title='Folder 2')
-        paths = []
-        for o in (self.folder.d1, self.folder.f1):
-            paths.append('/'.join(o.getPhysicalPath()))
-
-        # folder_publish requires a non-GET request
-        self.setRequestMethod('POST')
-        self.folder.folder_publish(workflow_action='publish',
-                                   paths=paths,
-                                   effective_date='1/1/2001',
-                                   expiration_date='1/2/2001',
-                                   include_children=True)
-        for o in (self.folder.d1, self.folder.f1, self.folder.f1.d2,
-                  self.folder.f1.f2):
-            self.assertEqual(self.workflow.getInfoFor(o, 'review_state'),
-                             'published')
-            self.assertTrue(isExpired(o))
-
-    def testPublishingWithoutSubobjects(self):
-        self.setRoles(['Manager'])  # Make sure we can publish directly
-        self.folder.invokeFactory('Document', id='d1', title='Doc 1')
-        self.folder.invokeFactory('Folder', id='f1', title='Folder 1')
-        self.folder.f1.invokeFactory('Document', id='d2', title='Doc 2')
-        self.folder.f1.invokeFactory('Folder', id='f2', title='Folder 2')
-        paths = []
-        for o in (self.folder.d1, self.folder.f1):
-            paths.append('/'.join(o.getPhysicalPath()))
-
-        # folder_publish requires a non-GET request
-        self.setRequestMethod('POST')
-        self.folder.folder_publish(workflow_action='publish',
-                                   paths=paths,
-                                   include_children=False)
-        for o in (self.folder.d1, self.folder.f1):
-            self.assertEqual(self.workflow.getInfoFor(o, 'review_state'),
-                             'published')
-        for o in (self.folder.f1.d2, self.folder.f1.f2):
-            self.assertEqual(self.workflow.getInfoFor(o, 'review_state'),
-                             'visible')
+    # Test the recursive behaviour of content_status_modify:
 
     def testPublishingNonDefaultPageLeavesFolderAlone(self):
         self.setRoles(['Manager'])  # Make sure we can publish directly
