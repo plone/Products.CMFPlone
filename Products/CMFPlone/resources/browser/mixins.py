@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from AccessControl.safe_formatter import SafeFormatter
 from plone.registry.interfaces import IRegistry
-from six.moves.urllib.parse import urlparse
+from urllib.parse import urlparse
 from Products.CMFPlone.interfaces import IResourceRegistry
 from Products.Five.browser import BrowserView
 from zope.component import getMultiAdapter

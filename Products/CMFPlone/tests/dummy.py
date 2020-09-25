@@ -7,8 +7,8 @@ from OFS.Folder import Folder as SimpleFolder
 from OFS.SimpleItem import SimpleItem
 from Products.CMFPlone.interfaces import INonStructuralFolder
 from Products.CMFPlone.interfaces import IWorkflowChain
-from six import StringIO
-from six import BytesIO
+from io import StringIO
+from io import BytesIO
 from zope.interface import implementer
 from zope.interface import Interface
 from ZPublisher.HTTPRequest import FileUpload

@@ -31,7 +31,7 @@ from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
 from Products.CMFPlone.log import log
 from Products.CMFPlone.log import log_deprecated
 from Products.CMFPlone.log import log_exc
-from six.moves.urllib.parse import urlparse
+from urllib.parse import urlparse
 from ZODB.POSException import ConflictError
 from zope import schema
 from zope.component import getMultiAdapter
@@ -50,7 +50,6 @@ import json
 import OFS
 import pkg_resources
 import re
-import six
 import sys
 import transaction
 import warnings
@@ -182,7 +181,7 @@ def isExpired(content):
         expiry = expiry()
 
     # Convert to DateTime if necessary, ExpirationDate may return 'None'
-    if expiry and expiry != 'None' and isinstance(expiry, six.string_types):
+    if expiry and expiry != 'None' and isinstance(expiry, str):
         expiry = DateTime(expiry)
 
     if isinstance(expiry, DateTime) and expiry.isPast():
@@ -222,27 +221,10 @@ deprecated('getSiteEncoding',
             'currently. This method always returns "utf-8"'))
 
 
-# XXX portal_utf8 and utf8_portal probably can go away
-def portal_utf8(context, str, errors='strict'):
-    # Test
-    six.text_type(str, 'utf-8', errors)
-    return str
-
-
-# XXX this is the same method as above
-def utf8_portal(context, str, errors='strict'):
-    # Test
-    six.text_type(str, 'utf-8', errors)
-    return str
-
-
 def getEmptyTitle(context, translated=True):
     """Returns string to be used for objects with no title or id"""
     # The default is an extra fancy unicode elipsis
-    if six.PY2:
-        empty = unicode('\x5b\xc2\xb7\xc2\xb7\xc2\xb7\x5d', 'utf-8')
-    else:
-        empty = b'\x5b\xc2\xb7\xc2\xb7\xc2\xb7\x5d'.decode('utf8')
+    empty = b'\x5b\xc2\xb7\xc2\xb7\xc2\xb7\x5d'.decode('utf8')
     if translated:
         if context is not None:
             if not IBrowserRequest.providedBy(context):
@@ -488,16 +470,6 @@ def safe_text(value, encoding='utf-8'):
         >>> print(safe_unicode(None))
         None
     """
-    if six.PY2:
-        if isinstance(value, unicode):
-            return value
-        elif isinstance(value, basestring):
-            try:
-                value = unicode(value, encoding)
-            except (UnicodeDecodeError):
-                value = value.decode('utf-8', 'replace')
-        return value
-
     if isinstance(value, str):
         return value
     elif isinstance(value, bytes):
@@ -514,7 +486,7 @@ safe_unicode = safe_text
 def safe_bytes(value, encoding='utf-8'):
     """Convert text to bytes of the specified encoding.
     """
-    if isinstance(value, six.text_type):
+    if isinstance(value, str):
         value = value.encode(encoding)
     return value
 
@@ -525,9 +497,7 @@ safe_encode = safe_bytes
 def safe_nativestring(value, encoding='utf-8'):
     """Convert a value to str in py2 and to text in py3
     """
-    if six.PY2 and isinstance(value, six.text_type):
-        value = safe_bytes(value, encoding)
-    if not six.PY2 and isinstance(value, six.binary_type):
+    if isinstance(value, bytes):
         value = safe_text(value, encoding)
     return value
 
@@ -700,7 +670,7 @@ def validate_json(value):
         class JSONError(schema.ValidationError):
             __doc__ = _(u"Must be empty or a valid JSON-formatted "
                         u"configuration – ${message}.", mapping={
-                            'message': six.text_type(exc)})
+                            'message': str(exc)})
 
         raise JSONError(value)
 
@@ -821,11 +791,7 @@ def get_top_site_from_url(context, request):
         url_path = urlparse(context.absolute_url()).path.split('/')
         for idx in range(len(url_path)):
             _path = '/'.join(url_path[:idx + 1]) or '/'
-            site_path = request.physicalPathFromURL(_path)
-            if six.PY2:
-                site_path = safe_encode('/'.join(site_path)) or '/'
-            else:
-                site_path = '/'.join(site_path) or '/'
+            site_path = '/'.join(request.physicalPathFromURL(_path)) or '/'
             _site = context.restrictedTraverse(site_path)
             if ISite.providedBy(_site):
                 break
@@ -866,7 +832,7 @@ def human_readable_size(size):
     if not size:
         return '0 %s' % smaller
 
-    if isinstance(size, six.integer_types):
+    if isinstance(size, int):
         if size < SIZE_CONST[smaller]:
             return '1 %s' % smaller
         for c in SIZE_ORDER:

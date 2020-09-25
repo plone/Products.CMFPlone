@@ -29,8 +29,6 @@ from plone.namedfile.interfaces import INamedField
 
 from plone.app.contenttypes.behaviors.leadimage import ILeadImage
 
-import six
-
 try:
     from Products.ATContentTypes.interfaces.file import IFileContent
 except ImportError:
@@ -233,7 +231,7 @@ class BaseItem(BaseFeedData):
             value = self.context.text
         else:
             value = self.description
-        if not isinstance(value, six.string_types):
+        if not isinstance(value, str):
             if hasattr(value, 'output'):
                 # could be RichTextValue object, needs transform
                 value = value.output

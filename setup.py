@@ -112,7 +112,6 @@ setup(
         'Products.TemporaryFolder',
         'pyScss',
         'setuptools>=36.2',
-        'six',
         'transaction',
         'z3c.autoinclude',
         'ZODB3',

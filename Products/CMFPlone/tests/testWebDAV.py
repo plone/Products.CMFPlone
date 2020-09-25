@@ -8,7 +8,7 @@ from Products.CMFPlone import bbb
 from Products.CMFPlone.tests import dummy
 from Products.CMFPlone.tests import PloneTestCase
 
-import six
+import io
 
 
 html = """\
@@ -45,7 +45,7 @@ class TestPUTObjects(PloneTestCase.PloneTestCase):
         response = self.publish(self.folder_path + '/new_html',
                                 env={'CONTENT_TYPE': 'text/html'},
                                 request_method='PUT',
-                                stdin=six.StringIO(html),
+                                stdin=io.StringIO(html),
                                 basic=self.basic_auth)
 
         self.assertEqual(response.getStatus(), 201)
@@ -59,7 +59,7 @@ class TestPUTObjects(PloneTestCase.PloneTestCase):
         response = self.publish(self.folder_path + '/test.rst',
                                 env={'CONTENT_LENGTH': '0'},
                                 request_method='PUT',
-                                stdin=six.StringIO(),
+                                stdin=io.StringIO(),
                                 basic=self.basic_auth)
 
         self.assertEqual(response.getStatus(), 201)
@@ -73,7 +73,7 @@ class TestPUTObjects(PloneTestCase.PloneTestCase):
         response = self.publish(self.folder_path + '/test.txt',
                                 env={'CONTENT_LENGTH': '0'},
                                 request_method='PUT',
-                                stdin=six.StringIO(),
+                                stdin=io.StringIO(),
                                 basic=self.basic_auth)
 
         self.assertEqual(response.getStatus(), 201)
@@ -87,7 +87,7 @@ class TestPUTObjects(PloneTestCase.PloneTestCase):
         response = self.publish(self.folder_path + '/test.ini',
                                 env={'CONTENT_LENGTH': '0'},
                                 request_method='PUT',
-                                stdin=six.StringIO(),
+                                stdin=io.StringIO(),
                                 basic=self.basic_auth)
 
         self.assertEqual(response.getStatus(), 201)
@@ -100,7 +100,7 @@ class TestPUTObjects(PloneTestCase.PloneTestCase):
         response = self.publish(self.folder_path + '/index_html',
                                 env={'CONTENT_TYPE': 'text/html'},
                                 request_method='PUT',
-                                stdin=six.StringIO(html),
+                                stdin=io.StringIO(html),
                                 basic=self.basic_auth)
 
         self.assertEqual(response.getStatus(), 201)
@@ -114,7 +114,7 @@ class TestPUTObjects(PloneTestCase.PloneTestCase):
         response = self.publish(self.folder_path + '/new_image',
                                 env={'CONTENT_TYPE': 'image/gif'},
                                 request_method='PUT',
-                                stdin=six.StringIO(dummy.GIF),
+                                stdin=io.StringIO(dummy.GIF),
                                 basic=self.basic_auth)
 
         self.assertEqual(response.getStatus(), 201)
@@ -131,7 +131,7 @@ class TestPUTObjects(PloneTestCase.PloneTestCase):
         response = self.publish(self.folder_path + '/test.gif',
                                 env={'CONTENT_LENGTH': len(dummy.GIF)},
                                 request_method='PUT',
-                                stdin=six.StringIO(dummy.GIF),
+                                stdin=io.StringIO(dummy.GIF),
                                 basic=self.basic_auth)
 
         self.assertEqual(response.getStatus(), 201)
@@ -149,7 +149,7 @@ class TestPUTObjects(PloneTestCase.PloneTestCase):
         response = self.publish(self.folder_path + '/test.jpg',
                                 env={'CONTENT_LENGTH': len(dummy.GIF)},
                                 request_method='PUT',
-                                stdin=six.StringIO(dummy.GIF),
+                                stdin=io.StringIO(dummy.GIF),
                                 basic=self.basic_auth)
 
         self.assertEqual(response.getStatus(), 201)
@@ -167,7 +167,7 @@ class TestPUTObjects(PloneTestCase.PloneTestCase):
         response = self.publish(self.folder_path + '/test.png',
                                 env={'CONTENT_LENGTH': len(dummy.GIF)},
                                 request_method='PUT',
-                                stdin=six.StringIO(dummy.GIF),
+                                stdin=io.StringIO(dummy.GIF),
                                 basic=self.basic_auth)
 
         self.assertEqual(response.getStatus(), 201)
@@ -185,7 +185,7 @@ class TestPUTObjects(PloneTestCase.PloneTestCase):
         response = self.publish(self.folder_path + '/test.tiff',
                                 env={'CONTENT_LENGTH': len(dummy.GIF)},
                                 request_method='PUT',
-                                stdin=six.StringIO(dummy.GIF),
+                                stdin=io.StringIO(dummy.GIF),
                                 basic=self.basic_auth)
 
         self.assertEqual(response.getStatus(), 201)
@@ -203,7 +203,7 @@ class TestPUTObjects(PloneTestCase.PloneTestCase):
         response = self.publish(self.folder_path + '/test.ico',
                                 env={'CONTENT_LENGTH': len(dummy.GIF)},
                                 request_method='PUT',
-                                stdin=six.StringIO(dummy.GIF),
+                                stdin=io.StringIO(dummy.GIF),
                                 basic=self.basic_auth)
 
         self.assertEqual(response.getStatus(), 201)
@@ -221,7 +221,7 @@ class TestPUTObjects(PloneTestCase.PloneTestCase):
         response = self.publish(self.folder_path + '/index_html',
                                 env={'CONTENT_TYPE': 'image/gif'},
                                 request_method='PUT',
-                                stdin=six.StringIO(dummy.GIF),
+                                stdin=io.StringIO(dummy.GIF),
                                 basic=self.basic_auth)
 
         self.assertEqual(response.getStatus(), 201)
@@ -237,7 +237,7 @@ class TestPUTObjects(PloneTestCase.PloneTestCase):
         response = self.publish(self.portal_path + '/new_html',
                                 env={'CONTENT_TYPE': 'text/html'},
                                 request_method='PUT',
-                                stdin=six.StringIO(html),
+                                stdin=io.StringIO(html),
                                 basic=self.basic_auth)
 
         self.assertEqual(response.getStatus(), 201)
@@ -252,7 +252,7 @@ class TestPUTObjects(PloneTestCase.PloneTestCase):
         response = self.publish(self.portal_path + '/index_html',
                                 env={'CONTENT_TYPE': 'text/html'},
                                 request_method='PUT',
-                                stdin=six.StringIO(html),
+                                stdin=io.StringIO(html),
                                 basic=self.basic_auth)
 
         self.assertEqual(response.getStatus(), 201)
@@ -293,7 +293,7 @@ class TestPUTIndexHtml(PloneTestCase.PloneTestCase):
             self.folder_path + '/index_html',
             basic=self.basic_auth,
             env={'Content-Length': self.length},
-            stdin=six.StringIO(self.body),
+            stdin=io.StringIO(self.body),
             request_method='PUT',
             handle_errors=False)
 
@@ -312,7 +312,7 @@ class TestPUTIndexHtml(PloneTestCase.PloneTestCase):
             self.portal_path + '/index_html',
             basic=self.basic_auth,
             env={'Content-Length': self.length},
-            stdin=six.StringIO(self.body),
+            stdin=io.StringIO(self.body),
             request_method='PUT',
             handle_errors=False)
 
@@ -339,7 +339,7 @@ class TestDAVOperations(PloneTestCase.FunctionalTestCase):
         response = self.publish(self.folder_path + '/sub/index_html',
                                 request_method='PROPFIND',
                                 env={'HTTP_DEPTH': '0'},
-                                stdin=six.StringIO(),
+                                stdin=io.StringIO(),
                                 basic=self.basic_auth)
 
         self.assertEqual(response.getStatus(), 207, response.getBody())
@@ -353,7 +353,7 @@ class TestDAVOperations(PloneTestCase.FunctionalTestCase):
         response = self.publish(self.folder_path + '/sub/index_html',
                                 request_method='PROPFIND',
                                 env={'HTTP_DEPTH': '0'},
-                                stdin=six.StringIO(),
+                                stdin=io.StringIO(),
                                 basic=self.basic_auth)
 
         self.assertEqual(response.getStatus(), 404, response.getBody())
@@ -368,7 +368,7 @@ class TestDAVOperations(PloneTestCase.FunctionalTestCase):
         response = self.publish(self.portal_path + '/index_html',
                                 request_method='PROPFIND',
                                 env={'HTTP_DEPTH': '0'},
-                                stdin=six.StringIO(),
+                                stdin=io.StringIO(),
                                 basic=self.basic_auth)
 
         self.assertEqual(response.getStatus(), 207, response.getBody())
@@ -384,7 +384,7 @@ class TestDAVOperations(PloneTestCase.FunctionalTestCase):
         response = self.publish(self.portal_path + '/index_html',
                                 request_method='PROPFIND',
                                 env={'HTTP_DEPTH': '0'},
-                                stdin=six.StringIO(),
+                                stdin=io.StringIO(),
                                 basic=self.basic_auth)
 
         self.assertEqual(response.getStatus(), 404, response.getBody())
@@ -399,7 +399,7 @@ class TestDAVOperations(PloneTestCase.FunctionalTestCase):
         response = self.publish(self.portal_path,
                                 request_method='PROPFIND',
                                 env={'HTTP_DEPTH': '0'},
-                                stdin=six.StringIO(),
+                                stdin=io.StringIO(),
                                 basic=self.basic_auth)
 
         self.assertEqual(response.getStatus(), 207, response.getBody())
@@ -414,7 +414,7 @@ class TestDAVOperations(PloneTestCase.FunctionalTestCase):
         response = self.publish(self.portal_path,
                                 request_method='PROPFIND',
                                 env={'HTTP_DEPTH': '0'},
-                                stdin=six.StringIO(),
+                                stdin=io.StringIO(),
                                 basic=self.basic_auth)
 
         self.assertEqual(response.getStatus(), 207, response.getBody())
@@ -429,7 +429,7 @@ class TestDAVOperations(PloneTestCase.FunctionalTestCase):
         response = self.publish(self.folder_path,
                                 request_method='PROPFIND',
                                 env={'HTTP_DEPTH': '0'},
-                                stdin=six.StringIO(),
+                                stdin=io.StringIO(),
                                 basic=self.basic_auth)
 
         self.assertEqual(response.getStatus(), 207, response.getBody())
@@ -444,7 +444,7 @@ class TestDAVOperations(PloneTestCase.FunctionalTestCase):
         response = self.publish(self.folder_path,
                                 request_method='PROPFIND',
                                 env={'HTTP_DEPTH': '0'},
-                                stdin=six.StringIO(),
+                                stdin=io.StringIO(),
                                 basic=self.basic_auth)
 
         self.assertEqual(response.getStatus(), 207, response.getBody())

@@ -1,13 +1,9 @@
 # -*- coding: utf-8 -*-
-import six
-
 
 def _unicode_replace(structure):
-    if isinstance(structure, six.binary_type):
-        text = structure.decode('utf-8', 'replace')
-    else:
-        text = six.text_type(structure)
-    return text
+    if isinstance(structure, bytes):
+        return structure.decode('utf-8', 'replace')
+    return str(structure)
 
 
 def _nulljoin(valuelist):

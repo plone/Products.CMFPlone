@@ -1,0 +1,3 @@
+
+Remove ``portal_utf8`` and it twin ``utf8_portal`` from ``utils`` and ``PloneTool`` since its never used nowhere. [jensens]
+

@@ -22,7 +22,6 @@ from zope.i18n import translate
 from zope.interface import implementer
 
 import logging
-import six
 
 
 SEND_USERNAME_TEMPLATE = _(u"mailtemplate_username_info", default=u"""From: {encoded_mail_sender}
@@ -154,10 +153,6 @@ class RequestUsername(form.Form):
             email_from_name=registry['plone.email_from_name'],
             encoded_mail_sender=self.encoded_mail_sender(),
         )
-        # The mail headers are not properly encoded we need to extract
-        # them and let MailHost manage the encoding.
-        if six.PY2 and isinstance(mail_text, six.text_type):
-            mail_text = mail_text.encode(encoding)
         message_obj = message_from_string(mail_text.strip())
         subject = message_obj['Subject']
         m_to = message_obj['To']

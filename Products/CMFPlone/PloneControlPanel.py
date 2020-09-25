@@ -20,8 +20,6 @@ from zope.i18n import translate
 from zope.i18nmessageid import Message
 from zope.interface import implementer
 
-import six
-
 
 class PloneConfiglet(ActionInformation):
 
@@ -197,7 +195,7 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
             except ValueError:
                 visible = 0
 
-        if isinstance(permissions, six.string_types):
+        if isinstance(permissions, str):
             permissions = (permissions, )
 
         return PloneConfiglet(id=id,
