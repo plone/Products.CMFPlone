@@ -5,7 +5,7 @@ from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.resources.browser.cook import cookWhenChangingSettings
 from Products.CMFPlone.resources.browser.resource import ResourceBase
 from Products.CMFPlone.utils import get_top_request
-from six.moves.urllib import parse
+from urllib import parse
 from zope.component import getUtility
 
 

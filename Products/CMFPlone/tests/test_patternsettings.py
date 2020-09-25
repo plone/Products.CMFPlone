@@ -9,7 +9,6 @@ from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 from zope.component import getUtility
 
 import json
-import six
 import unittest
 
 
@@ -62,8 +61,8 @@ class TestPatternSettingsView(unittest.TestCase):
         result = settings()
         self.assertEqual(type(result), dict)
         for key, value in result.items():
-            self.assertTrue(isinstance(key, six.string_types))
-            self.assertTrue(isinstance(value, six.string_types))
+            self.assertTrue(isinstance(key, str))
+            self.assertTrue(isinstance(value, str))
 
     def testFolderUrls(self):
         settings = PatternsSettingsView(self.folder, self.layer['request'])

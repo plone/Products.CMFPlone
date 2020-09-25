@@ -16,7 +16,7 @@ from ZODB.POSException import ConflictError
 from .interfaces import IAuthorFeedbackForm
 
 from plone.registry.interfaces import IRegistry
-from six.moves.urllib.parse import quote_plus
+from urllib.parse import quote_plus
 
 from z3c.form import button
 from z3c.form import field

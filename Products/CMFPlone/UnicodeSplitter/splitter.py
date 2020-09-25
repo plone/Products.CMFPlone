@@ -15,10 +15,8 @@ from Products.CMFPlone.UnicodeSplitter.config import rxGlob_L
 from Products.CMFPlone.UnicodeSplitter.config import rxGlob_U
 from Products.ZCTextIndex.interfaces import ISplitter
 from Products.ZCTextIndex.PipelineFactory import element_factory
-from six.moves import range
 from zope.interface import implementer
 
-import six
 import unicodedata
 
 
@@ -37,11 +35,11 @@ def bigram(u, limit=1):
 
 def process_str_post(s, enc='utf-8'):
     """Receive str, remove ? and *, then return str.
-    If decode gets successful, process str as six.text_type.
+    If decode gets successful, process str as str.
     If decode gets failed, process str as ASCII.
     """
     try:
-        if not isinstance(s, six.text_type):
+        if not isinstance(s, str):
             uni = s.decode(enc, "strict")
         else:
             uni = s
@@ -56,12 +54,12 @@ def process_str_post(s, enc='utf-8'):
 def process_str(s, enc='utf-8'):
     """Receive str and encoding, then return the list
     of str as bi-grammed result.
-    Decode str into six.text_type and pass it to process_unicode.
+    Decode str into str and pass it to process_unicode.
     When decode failed, return the result splitted per word.
     Splitting depends on locale specified by rx_L.
     """
     try:
-        if not isinstance(s, six.text_type):
+        if not isinstance(s, str):
             uni = s.decode(enc, "strict")
         else:
             uni = s
@@ -74,12 +72,12 @@ def process_str(s, enc='utf-8'):
 def process_str_glob(s, enc='utf-8'):
     """Receive str and encoding, then return the list
     of str considering glob processing.
-    Decode str into six.text_type and pass it to process_unicode_glob.
+    Decode str into str and pass it to process_unicode_glob.
     When decode failed, return the result splitted per word.
     Splitting depends on locale specified by rxGlob_L.
     """
     try:
-        if not isinstance(s, six.text_type):
+        if not isinstance(s, str):
             uni = s.decode(enc, "strict")
         else:
             uni = s
@@ -173,7 +171,7 @@ class CaseNormalizer(object):
             # This is a hack to get the normalizer working with
             # non-unicode text.
             try:
-                if not isinstance(s, six.text_type):
+                if not isinstance(s, str):
                     s = s.decode(enc)
             except (UnicodeDecodeError, TypeError):
                 result.append(s.lower())
@@ -201,7 +199,7 @@ class I18NNormalizer(object):
         result = []
         for s in lst:
             try:
-                if not isinstance(s, six.text_type):
+                if not isinstance(s, str):
                     s = s.decode(enc)
             except (UnicodeDecodeError, TypeError):
                 pass

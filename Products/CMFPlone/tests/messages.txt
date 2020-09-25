@@ -122,7 +122,7 @@ to get the parsed and interpreted text.
 
   >>> from zope.tal.htmltalparser import HTMLTALParser
   >>> from zope.tal.talinterpreter import TALInterpreter
-  >>> from six import StringIO
+  >>> from io import StringIO
 
   >>> def compile(source):
   ...     parser = HTMLTALParser()
