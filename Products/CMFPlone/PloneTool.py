@@ -116,16 +116,6 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         """ Get the the site encoding, which is utf-8."""
         return 'utf-8'
 
-    @security.public
-    def portal_utf8(self, str, errors='strict'):
-        """Transforms an string in portal encoding to utf8."""
-        return utils.portal_utf8(self, str, errors)
-
-    @security.public
-    def utf8_portal(self, str, errors='strict'):
-        """Transforms an utf8 string to portal encoding."""
-        return utils.utf8_portal(self, str, errors)
-
     @security.private
     def getMailHost(self):
         """Gets the MailHost."""
