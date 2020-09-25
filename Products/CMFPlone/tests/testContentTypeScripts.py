@@ -6,8 +6,6 @@ from plone.namedfile.file import NamedImage
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 
-import six
-
 AddPortalTopics = 'Add portal topics'
 
 
@@ -121,10 +119,7 @@ class TestImageProps(PloneTestCase.PloneTestCase):
 
     def testImageComputedProps(self):
         from OFS.Image import Image
-        if six.PY2:
-            tag = Image.tag.im_func
-        else:
-            tag = Image.tag
+        tag = Image.tag
         kw = {'_title': 'some title',
               '_alt': 'alt tag',
               'height': 100,

@@ -28,7 +28,6 @@ from Products.CMFPlone.permissions import View
 from plone.i18n.locales.interfaces import IMetadataLanguageAvailability
 from zope.component import queryUtility
 from zope.interface import implementer
-import six
 
 if bbb.HAS_ZSERVER:
     from webdav.NullResource import NullResource
@@ -121,7 +120,7 @@ class PloneSite(PortalObjectBase, DefaultDublinCoreImpl, OrderedContainer,
         """We need to enforce security."""
         if ids is None:
             ids = []
-        if isinstance(ids, six.string_types):
+        if isinstance(ids, str):
             ids = [ids]
         for id in ids:
             item = self._getOb(id)

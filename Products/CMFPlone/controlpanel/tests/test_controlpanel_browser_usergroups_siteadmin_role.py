@@ -8,11 +8,10 @@ from plone.app.testing import TEST_USER_PASSWORD
 from plone.testing.zope import Browser
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
-from six import StringIO
-from six.moves.urllib.parse import urlencode
+from io import StringIO
+from urllib.parse import urlencode
 
 import re
-import six
 import transaction
 import unittest
 import zExceptions
