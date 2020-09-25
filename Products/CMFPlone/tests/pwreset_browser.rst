@@ -326,7 +326,7 @@ We should have received an e-mail at this point:
   >>> len(mailhost.messages)
   2
   >>> import quopri
-  >>> msg = quopri.decodestring(str(mailhost.messages[-1]))
+  >>> msg = quopri.decodestring(mailhost.messages[-1])
   >>> b"The site administrator asks you to reset your password for 'wsmith' userid" in msg
   True
   >>> please_visit_text = b"The following link will take you to a page where you can reset your password for Plone site site:"
@@ -400,7 +400,7 @@ We should have received an e-mail at this point:
   >>> mailhost = layer['portal'].MailHost
   >>> len(mailhost.messages)
   3
-  >>> msg = str(mailhost.messages[-1])
+  >>> msg = mailhost.messages[-1]
 
 Let's clear the events storage:
 
@@ -412,7 +412,7 @@ then we extract the address that lets us reset our password:
   >>> from email.parser import Parser
   >>> import re
   >>> parser = Parser()
-  >>> message = parser.parsestr(msg)
+  >>> message = parser.parsestr(msg.decode("utf-8"))
   >>> message["To"]
   'bsmith@example.com'
   >>> msgtext = quopri.decodestring(message.get_payload())
@@ -498,12 +498,12 @@ We should have received an e-mail at this point:
   >>> mailhost = layer['portal'].MailHost
   >>> len(mailhost.messages)
   4
-  >>> msg = str(mailhost.messages[-1])
+  >>> msg = mailhost.messages[-1]
 
 Now that we have the message, we want to look at its contents, and
 then we extract the address that lets us reset our password:
 
-  >>> message = parser.parsestr(msg)
+  >>> message = parser.parsestr(msg.decode("utf-8"))
   >>> message["To"]
   'wwwsmith@example.com'
   >>> msgtext = quopri.decodestring(message.get_payload())
