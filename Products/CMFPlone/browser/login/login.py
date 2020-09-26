@@ -12,7 +12,7 @@ from Products.CMFPlone.interfaces import IRedirectAfterLogin
 from Products.CMFPlone.interfaces import ISecuritySchema
 from Products.Five.browser import BrowserView
 from Products.statusmessages.interfaces import IStatusMessage
-from six.moves.urllib import parse
+from urllib import parse
 from z3c.form import button
 from z3c.form import field
 from z3c.form import form

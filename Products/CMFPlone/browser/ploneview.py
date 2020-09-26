@@ -10,8 +10,6 @@ from zope.i18n import translate
 from zope.interface import implementer
 from zope.size import byteDisplay
 
-import six
-
 _marker = []
 
 
@@ -113,7 +111,7 @@ class Plone(BrowserView):
         if not length:
             return text
         converted = False
-        if not isinstance(text, six.text_type):
+        if not isinstance(text, str):
             text = utils.safe_unicode(text)
             converted = True
         if len(text) > length:

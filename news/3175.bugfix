@@ -1,0 +1,3 @@
+PloneBatch: define ``__bool__`` as copy of ``__nonzero__``.
+Python 3 calls ``__bool__`` when doing ``bool(batch)``.
+[maurits]

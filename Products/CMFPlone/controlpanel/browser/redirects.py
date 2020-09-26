@@ -10,8 +10,8 @@ from Products.CMFPlone.PloneBatch import Batch
 from Products.CMFPlone.utils import safe_text
 from Products.Five.browser import BrowserView
 from Products.statusmessages.interfaces import IStatusMessage
-from six import StringIO
-from six.moves.urllib.parse import urlparse
+from io import StringIO
+from urllib.parse import urlparse
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.component.hooks import getSite

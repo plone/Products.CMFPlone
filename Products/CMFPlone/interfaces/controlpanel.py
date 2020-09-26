@@ -15,7 +15,6 @@ from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
 
 import json
-import six
 
 
 deprecated(
@@ -67,7 +66,7 @@ def validate_json(value):
         class JSONError(schema.ValidationError):
             __doc__ = _(u"Must be empty or a valid JSON-formatted "
                         u"configuration – ${message}.", mapping={
-                            'message': six.text_type(exc)})
+                            'message': str(exc)})
 
         raise JSONError(value)
 

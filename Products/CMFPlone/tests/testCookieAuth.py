@@ -5,8 +5,12 @@ from plone.app.testing import TEST_USER_PASSWORD
 from plone.testing.zope import Browser
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 
-import base64
 import unittest
+
+try:
+    from base64 import encodebytes
+except ImportError:
+    from base64 import encodestring as encodebytes
 
 
 class TestCookieAuth(unittest.TestCase):
@@ -18,7 +22,7 @@ class TestCookieAuth(unittest.TestCase):
         self.folder = self.portal['test-folder']
         self.browser = Browser(self.layer['app'])
         self.auth_info = '%s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD)
-        self.cookie = base64.encodestring(self.auth_info.encode('utf8'))[:-1]
+        self.cookie = encodebytes(self.auth_info.encode('utf8'))[:-1]
         self.folder.manage_permission('View', ['Manager'], acquire=0)
         logout()
 

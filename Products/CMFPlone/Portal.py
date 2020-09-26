@@ -17,7 +17,6 @@ from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone import bbb
 from Products.CMFPlone.DublinCore import DefaultDublinCoreImpl
 from Products.CMFPlone.PloneFolder import OrderedContainer
-from Products.CMFPlone.PloneFolder import ReplaceableWrapper
 from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
 from Products.CMFPlone.interfaces.syndication import ISyndicatable
 from Products.CMFPlone.permissions import AddPortalContent
@@ -29,7 +28,6 @@ from Products.CMFPlone.permissions import View
 from plone.i18n.locales.interfaces import IMetadataLanguageAvailability
 from zope.component import queryUtility
 from zope.interface import implementer
-import six
 
 if bbb.HAS_ZSERVER:
     from webdav.NullResource import NullResource
@@ -182,6 +180,21 @@ class PloneSite(Container, SkinnableObjectManager, UniqueObject):
         self.removal_inprogress = 1
         PloneSite.inheritedAttribute('manage_beforeDelete')(self, container,
                                                             item)
+
+    security.declareProtected(permissions.DeleteObjects, 'manage_delObjects')
+
+    def manage_delObjects(self, ids=None, REQUEST=None):
+        """We need to enforce security."""
+        if ids is None:
+            ids = []
+        if isinstance(ids, str):
+            ids = [ids]
+        for id in ids:
+            item = self._getOb(id)
+            if not _checkPermission(permissions.DeleteObjects, item):
+                raise Unauthorized(
+                    "Do not have permissions to remove this object")
+        return PortalObjectBase.manage_delObjects(self, ids, REQUEST=REQUEST)
 
     def view(self):
         """ Ensure that we get a plain view of the object, via a delegation to

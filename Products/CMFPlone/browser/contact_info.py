@@ -12,7 +12,7 @@ from plone.registry.interfaces import IRegistry
 from smtplib import SMTPException
 from z3c.form import form, button
 from zope.component import getUtility
-from zope.site.hooks import getSite
+from zope.component.hooks import getSite
 
 import logging
 

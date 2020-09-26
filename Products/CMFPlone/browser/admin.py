@@ -18,7 +18,7 @@ from plone.i18n.locales.interfaces import IContentLanguageAvailability
 from plone.keyring.interfaces import IKeyManager
 from plone.protect.authenticator import check as checkCSRF
 from plone.protect.interfaces import IDisableCSRFProtection
-from six.moves.urllib import parse
+from urllib import parse
 from zope.component import adapts
 from zope.component import getAllUtilitiesRegisteredFor
 from zope.component import getUtility

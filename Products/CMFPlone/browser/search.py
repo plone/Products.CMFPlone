@@ -13,18 +13,16 @@ from zope.component import getUtility
 from zope.component import queryUtility
 from zope.i18nmessageid import MessageFactory
 from zope.publisher.browser import BrowserView
+from ZPublisher.HTTPRequest import record
 from ZTUtils import make_query
 
 import json
-import six
 
 _ = MessageFactory('plone')
 
 # We should accept both a simple space, unicode u'\u0020 but also a
 # multi-space, so called 'waji-kankaku', unicode u'\u3000'
 MULTISPACE = u'\u3000'
-if six.PY2:
-    MULTISPACE = u'\u3000'.encode('utf-8')
 BAD_CHARS = ('?', '-', '+', '*', MULTISPACE)
 EVER = DateTime('1970-01-03')
 
@@ -120,6 +118,11 @@ class Search(BrowserView):
             except AttributeError:
                 # created not a mapping
                 del query['created']
+
+        # https://github.com/plone/Products.CMFPlone/issues/3007
+        # If 'created' exists and is of type 'record', then cast it as dict
+        if 'created' in query and isinstance(query['created'], record):
+            query['created'] = dict(query['created'])
 
         # respect `types_not_searched` setting
         types = query.get('portal_type', [])

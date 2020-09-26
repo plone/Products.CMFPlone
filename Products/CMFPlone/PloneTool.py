@@ -43,7 +43,7 @@ from Products.CMFPlone.utils import safe_hasattr
 from Products.CMFPlone.utils import safe_unicode
 from Products.CMFPlone.utils import transaction_note
 from Products.statusmessages.interfaces import IStatusMessage
-from six.moves.urllib import parse
+from urllib import parse
 from ZODB.POSException import ConflictError
 from zope.component import getUtility
 from zope.component import queryAdapter
@@ -54,7 +54,6 @@ from zope.lifecycleevent import ObjectModifiedEvent
 
 import re
 import sys
-import six
 import transaction
 
 
@@ -117,16 +116,6 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         """ Get the the site encoding, which is utf-8."""
         return 'utf-8'
 
-    @security.public
-    def portal_utf8(self, str, errors='strict'):
-        """Transforms an string in portal encoding to utf8."""
-        return utils.portal_utf8(self, str, errors)
-
-    @security.public
-    def utf8_portal(self, str, errors='strict'):
-        """Transforms an utf8 string to portal encoding."""
-        return utils.utf8_portal(self, str, errors)
-
     @security.private
     def getMailHost(self):
         """Gets the MailHost."""
@@ -136,7 +125,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     def validateSingleNormalizedEmailAddress(self, address):
         # Lower-level function to validate a single normalized email address,
         # see validateEmailAddress.
-        if not isinstance(address, six.string_types):
+        if not isinstance(address, str):
             return False
 
         sub = EMAIL_CUTOFF_RE.match(address)
@@ -153,7 +142,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     @security.public
     def validateSingleEmailAddress(self, address):
         # Validate a single email address, see also validateEmailAddresses.
-        if not isinstance(address, six.string_types):
+        if not isinstance(address, str):
             return False
 
         sub = EMAIL_CUTOFF_RE.match(address)
@@ -176,7 +165,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     def validateEmailAddresses(self, addresses):
         # Validate a list of possibly several email addresses, see also
         # validateSingleEmailAddress.
-        if not isinstance(addresses, six.string_types):
+        if not isinstance(addresses, str):
             return False
 
         sub = EMAIL_CUTOFF_RE.match(addresses)
@@ -429,7 +418,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         s = sys.exc_info()[:2]
         if s[0] == None:
             return None
-        if isinstance(s[0], six.string_types):
+        if isinstance(s[0], str):
             return s[0]
         return str(s[1])
 

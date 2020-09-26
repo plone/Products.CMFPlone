@@ -16,8 +16,6 @@ from zope.component.hooks import getSite
 from zope.i18n.locales import LoadLocaleError
 from zope.i18n.locales import locales
 
-import six
-
 
 def addCacheHandlers(portal):
     """ Add RAM and AcceleratedHTTP cache handlers """
@@ -150,31 +148,12 @@ def importFinalSteps(context):
     first_weekday_setup(context)
     timezone_setup(context)
 
-    external_editor_permissions(site)
     set_zsqlmethods_permissions(site)
 
     # setup resource overrides plone.resource
     persistentDirectory = getUtility(IResourceDirectory, name="persistent")
     if OVERRIDE_RESOURCE_DIRECTORY_NAME not in persistentDirectory:
         persistentDirectory.makeDirectory(OVERRIDE_RESOURCE_DIRECTORY_NAME)
-
-
-def external_editor_permissions(site):
-    """The permission to use Products.ExternalEditor only makes sense when
-    ExternalEditor is installed. In py3 it will not exists because it depends
-    on webdav.
-    The following xml was taken from rolemap.xml:
-    <permission name="Use external editor" acquire="False">
-      <role name="Authenticated"/>
-      <role name="Manager"/>
-      <role name="Site Administrator"/>
-    </permission>
-    """
-    if six.PY2:
-        site.manage_permission(
-            'Use external editor',
-            ['Authenticated', 'Manager', 'Site Administrator'],
-            False)
 
 
 def set_zsqlmethods_permissions(site):

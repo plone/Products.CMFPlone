@@ -19,7 +19,6 @@ from zope.globalrequest import getRequest
 from zope.interface import alsoProvides
 
 import logging
-import six
 
 
 logger = logging.getLogger('Products.CMFPlone')
@@ -97,7 +96,7 @@ def cookWhenChangingSettings(context, bundle=None):
                     css = response.getBody()
                     if css_resource[-8:] != '.min.css':
                         css = css_compiler.compile_string(css)
-                    if not isinstance(css, six.text_type):
+                    if not isinstance(css, str):
                         css = css.decode('utf8')
                     cooked_css += '\n/* Resource: {0} */\n{1}\n'.format(
                         css_resource,
@@ -116,7 +115,7 @@ def cookWhenChangingSettings(context, bundle=None):
         if response.status == 200:
             logger.info('Cooking js %s', resource.js)
             js = response.getBody()
-            if not isinstance(js, six.text_type):
+            if not isinstance(js, str):
                 js = js.decode('utf8')
             try:
                 cooked_js += '\n/* resource: {0} */\n{1}'.format(
@@ -156,7 +155,7 @@ def cookWhenChangingSettings(context, bundle=None):
             resource_filepath = resource_path
         if resource_name not in container:
             container.makeDirectory(resource_name)
-        if not isinstance(cooked_string, six.binary_type):  # handle Error of OFS.Image  # noqa: E501
+        if not isinstance(cooked_string, bytes):  # handle Error of OFS.Image  # noqa: E501
             cooked_string = cooked_string.encode('ascii', errors='ignore')
         try:
             folder = container[resource_name]

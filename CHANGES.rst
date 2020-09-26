@@ -100,7 +100,7 @@ Bug fixes:
   [maurits] (#3084)
 - Make the resource registry scripts output more robust when a bundle resource is missing. This prevents
   breaking your whole Plone site and access to the resource registry control panel after inserting
-  one missing resource. 
+  one missing resource.
   [fredvd] (#3096)
 - Bugfix for #3103
   [petschki] (#3105)

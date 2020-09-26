@@ -7,8 +7,6 @@ from plone.app.testing import TEST_USER_NAME
 from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
 from zExceptions import Unauthorized
 
-import six
-
 
 BAD_ATTR_STR = """
 <p tal:content="python:'class of {0} is {0.__class__}'.format(context)" />
@@ -107,7 +105,7 @@ class TestSafeFormatter(PloneTestCase):
 
     def test_cook_zope2_page_templates_good_unicode(self):
         from Products.PageTemplates.ZopePageTemplate import ZopePageTemplate
-        pt = ZopePageTemplate('mytemplate', six.text_type(GOOD_UNICODE))
+        pt = ZopePageTemplate('mytemplate', str(GOOD_UNICODE))
         hack_pt(pt)
         self.assertEqual(pt.pt_render().strip(), '<p>none</p>')
         hack_pt(pt, self.portal)
@@ -209,11 +207,7 @@ class TestSafeFormatter(PloneTestCase):
             "'access {0.foobar.Title}'.format(context)")
         hack_pt(pt, context=self.portal)
         login(self.portal, TEST_USER_NAME)
-        # We replace ATDocument with Document to make the tests pass
-        # with ATContentTypes and plone.app.contenttypes.
         method_name = 'DexterityContent.Title'
-        if six.PY2:
-            method_name = 'Document.Title'
         self.assertEqual(
             pt.pt_render(),
             u'<p>access <bound method %s of '
@@ -306,7 +300,7 @@ class TestFunctionalSafeFormatter(PloneTestCase):
         string_rule = ca[str]['format']
         self.assertTrue(isinstance(string_rule, types.FunctionType))
         # Take less steps for unicode.
-        unicode_rule = ca[six.text_type]['format']
+        unicode_rule = ca[str]['format']
         self.assertTrue(isinstance(unicode_rule, types.FunctionType))
         self.assertEqual(string_rule, unicode_rule)
 

@@ -8,6 +8,7 @@ from Acquisition import aq_inner
 from Acquisition import aq_parent
 from ComputedAttribute import ComputedAttribute
 from OFS.Folder import Folder
+from OFS.ObjectManager import REPLACEABLE
 from OFS.OrderSupport import OrderSupport
 from plone.memoize import view
 from Products.CMFCore.CMFCatalogAware import CatalogAware
@@ -25,7 +26,6 @@ from Products.CMFPlone.DublinCore import DefaultDublinCoreImpl
 from zExceptions import NotFound
 from zope.interface import implementer
 
-import six
 import warnings
 
 
@@ -195,7 +195,7 @@ class BasePloneFolder(CatalogAware, WorkflowAware, OpaqueItemManager,
         if ids is None:
             ids = []
         mt = getToolByName(self, 'portal_membership')
-        if isinstance(ids, six.string_types):
+        if isinstance(ids, str):
             ids = [ids]
         for id in ids:
             item = self._getOb(id)
