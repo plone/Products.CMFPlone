@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
@@ -49,8 +48,8 @@ class LoggedOutView(BrowserView):
                 self.request
             ).addStatusMessage(
                 _(
-                    u'statusmessage_logged_out',
-                    default=u'You are now logged out.'
+                    'statusmessage_logged_out',
+                    default='You are now logged out.'
                 ),
                 'info',
             )

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.browser.interfaces import IContactForm
@@ -35,13 +33,13 @@ class ContactForm(AutoExtensibleForm, form.Form):
             return False
         return True
 
-    @button.buttonAndHandler(_(u'label_send', default='Send'), name='send')
+    @button.buttonAndHandler(_('label_send', default='Send'), name='send')
     def handle_send(self, action):
         data, errors = self.extractData()
         if errors:
             IStatusMessage(self.request).add(
                 self.formErrorsMessage,
-                type=u'error'
+                type='error'
             )
 
             return
@@ -84,12 +82,12 @@ class ContactForm(AutoExtensibleForm, form.Form):
             log.error(e)
             plone_utils = getToolByName(portal, 'plone_utils')
             exception = plone_utils.exceptionString()
-            message = _(u'Unable to send mail: ${exception}',
-                        mapping={u'exception': exception})
-            IStatusMessage(self.request).add(message, type=u'error')
+            message = _('Unable to send mail: ${exception}',
+                        mapping={'exception': exception})
+            IStatusMessage(self.request).add(message, type='error')
 
     def send_feedback(self):
         IStatusMessage(self.request).add(
-            _(u'A mail has now been sent to the site administrator '
-              u'regarding your questions and/or comments.')
+            _('A mail has now been sent to the site administrator '
+              'regarding your questions and/or comments.')
         )

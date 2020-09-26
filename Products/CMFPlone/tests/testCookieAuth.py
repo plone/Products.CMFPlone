@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.testing import logout
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
@@ -21,7 +20,7 @@ class TestCookieAuth(unittest.TestCase):
         self.portal = self.layer['portal']
         self.folder = self.portal['test-folder']
         self.browser = Browser(self.layer['app'])
-        self.auth_info = '%s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD)
+        self.auth_info = f'{TEST_USER_NAME}:{TEST_USER_PASSWORD}'
         self.cookie = encodebytes(self.auth_info.encode('utf8'))[:-1]
         self.folder.manage_permission('View', ['Manager'], acquire=0)
         logout()

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import re
 from Products.CMFCore.utils import getToolByName
 from AccessControl import Unauthorized
@@ -156,11 +155,11 @@ class TestSyndicationViews(BaseSyndicationTest):
 class TestSyndicationFeedAdapter(BaseSyndicationTest):
 
     def afterSetUp(self):
-        super(TestSyndicationFeedAdapter, self).afterSetUp()
+        super().afterSetUp()
         self.feed = IFeed(self.folder)
         self.feeddatadoc = DexterityItem(self.doc1, self.feed)
         from plone.namedfile.file import NamedBlobFile
-        self.file.file = NamedBlobFile(data='lorem', filename=u'string.txt')
+        self.file.file = NamedBlobFile(data='lorem', filename='string.txt')
         self.feeddatafile = DexterityItem(self.file, self.feed)
 
     def test_link_on_folder(self):
@@ -213,7 +212,7 @@ ROOTED_BODY_TEXT = """<body>
 class TestRenderBody(BaseSyndicationTest):
 
     def afterSetUp(self):
-        super(TestRenderBody, self).afterSetUp()
+        super().afterSetUp()
         self.folder.invokeFactory('News Item', 'news1')
         self.folder.invokeFactory('News Item', 'news2')
         self.news1 = self.folder.news1
@@ -235,18 +234,18 @@ class TestRenderBody(BaseSyndicationTest):
         xml = self.folder.restrictedTraverse("@@atom.xml")()
         self.assertTrue(len(re.findall('<entry>', xml)) == 5)
         news1_feed = r'<entry>\s*<title>News 1</title>\s*' \
-                     r'<link rel="alternate" type="text/html" href="{0}" />\s*' \
-                     r'<id>urn:syndication:{1}</id>\s*' \
+                     r'<link rel="alternate" type="text/html" href="{}" />\s*' \
+                     r'<id>urn:syndication:{}</id>\s*' \
                      r'<summary>The news item #1</summary>\s*' \
-                     r'<content type="xhtml" xml:base="{2}" xml:lang="en" xml:space="preserve">'.format(self.news1.absolute_url(),
+                     r'<content type="xhtml" xml:base="{}" xml:lang="en" xml:space="preserve">'.format(self.news1.absolute_url(),
                                                                                                        self.news1.UID(),
                                                                                                        self.folder.absolute_url())
         self.assertTrue(re.search(news1_feed, xml) is not None)
         self.assertTrue(re.search(BODY_TEXT, xml) is not None)
         news2_feed = r'<entry>\s*<title>News 2</title>\s*' \
-                     r'<link rel="alternate" type="text/html" href="{0}" />\s*' \
-                     r'<id>urn:syndication:{1}</id>\s*' \
-                     r'<content type="xhtml" xml:base="{2}" xml:lang="en" xml:space="preserve">'.format(self.news2.absolute_url(),
+                     r'<link rel="alternate" type="text/html" href="{}" />\s*' \
+                     r'<id>urn:syndication:{}</id>\s*' \
+                     r'<content type="xhtml" xml:base="{}" xml:lang="en" xml:space="preserve">'.format(self.news2.absolute_url(),
                                                                                                        self.news2.UID(),
                                                                                                        self.folder.absolute_url())
         self.assertTrue(re.search(news2_feed, xml) is not None)

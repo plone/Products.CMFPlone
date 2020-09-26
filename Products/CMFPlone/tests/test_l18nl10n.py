@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """ Unit tests for Products.CMFPlone.i18nl10n module. """
 
 import unittest

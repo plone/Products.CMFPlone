@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Products.CMFPlone.interfaces import ISiteSchema
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 from plone.app.testing import TEST_USER_ID
@@ -24,43 +23,43 @@ class SiteControlPanelAdapterTest(unittest.TestCase):
         self.assertTrue(getAdapter(self.portal, ISiteSchema))
 
     def test_get_site_title(self):
-        self.settings.site_title = u'Great Site'
+        self.settings.site_title = 'Great Site'
         self.assertEqual(
             getAdapter(self.portal, ISiteSchema).site_title,
-            u'Great Site'
+            'Great Site'
         )
 
     def test_set_site_title(self):
-        getAdapter(self.portal, ISiteSchema).site_title = u'Good Site'
+        getAdapter(self.portal, ISiteSchema).site_title = 'Good Site'
         self.assertEqual(
             self.settings.site_title,
-            u'Good Site'
+            'Good Site'
         )
 
     def test_set_site_title_string(self):
         getAdapter(self.portal, ISiteSchema).site_title = 'Good Site'
         self.assertEqual(
             self.settings.site_title,
-            u'Good Site'
+            'Good Site'
         )
 
     def test_get_webstats_js(self):
-        self.settings.webstats_js = u'Script Tag'
+        self.settings.webstats_js = 'Script Tag'
         self.assertEqual(
             getAdapter(self.portal, ISiteSchema).webstats_js,
-            u'Script Tag'
+            'Script Tag'
         )
 
     def test_set_webstats_js(self):
-        getAdapter(self.portal, ISiteSchema).webstats_js = u'Script Tag'
+        getAdapter(self.portal, ISiteSchema).webstats_js = 'Script Tag'
         self.assertEqual(
             self.settings.webstats_js,
-            u'Script Tag'
+            'Script Tag'
         )
 
     def test_set_webstats_js_string(self):
         getAdapter(self.portal, ISiteSchema).webstats_js = 'Script Tag'
         self.assertEqual(
             self.settings.webstats_js,
-            u'Script Tag'
+            'Script Tag'
         )

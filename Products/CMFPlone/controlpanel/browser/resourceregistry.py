@@ -1,4 +1,3 @@
-# -*- coding:utf-8
 from datetime import datetime
 from plone.memoize.view import memoize
 from plone.registry import field
@@ -63,12 +62,12 @@ def updateRecordFromDict(record, data):
                     continue
                 if type(val) == bool:
                     record.__registry__.records[full_name] = Record(
-                        field.Bool(title=u""), val)
+                        field.Bool(title=""), val)
                 else:
                     raise
 
 
-class OverrideFolderManager(object):
+class OverrideFolderManager:
 
     def __init__(self, context):
         self.context = context
@@ -112,7 +111,7 @@ class OverrideFolderManager(object):
 
         """
         site_url = self.context.absolute_url()
-        full_resource_url = '%s/++plone++%s' % (site_url, filepath)
+        full_resource_url = f'{site_url}/++plone++{filepath}'
         for css_url in CSS_URL_REGEX.findall(data):
             if css_url.startswith("data:"):
                 continue
@@ -178,9 +177,9 @@ class ResourceRegistryControlPanelView(RequireJsView):
         else:
             if RESOURCE_DEVELOPMENT_MODE:
                 messages = IStatusMessage(self.request)
-                messages.add(u"The FEDEV environment variable is set. No matter "
-                             u"what settings are done here, all bundles will "
-                             u"always be in development mode.", type=u"warn")
+                messages.add("The FEDEV environment variable is set. No matter "
+                             "what settings are done here, all bundles will "
+                             "always be in development mode.", type="warn")
             return self.index()
 
     @property
@@ -271,7 +270,7 @@ class ResourceRegistryControlPanelView(RequireJsView):
                         url = parse.urlparse(css)
                         if url.netloc == '':
                             # Local
-                            src = "%s/%s" % (site_url, css)
+                            src = f"{site_url}/{css}"
                         else:
                             src = "%s" % (css)
 
@@ -325,7 +324,7 @@ class ResourceRegistryControlPanelView(RequireJsView):
         bundle = self.get_bundles().get(req.form['bundle'])
         if bundle:
             bundle.last_compilation = datetime.now()
-            bundle.jscompilation = '++plone++{}'.format(filepath)
+            bundle.jscompilation = f'++plone++{filepath}'
         return json.dumps({
             'success': True,
             'filepath': '++plone++' + filepath
@@ -346,7 +345,7 @@ class ResourceRegistryControlPanelView(RequireJsView):
         bundle = self.get_bundles().get(req.form['bundle'])
         if bundle:
             bundle.last_compilation = datetime.now()
-            bundle.csscompilation = '++plone++{}'.format(filepath)
+            bundle.csscompilation = f'++plone++{filepath}'
         return json.dumps({
             'success': True,
             'filepath': '++plone++' + filepath
@@ -391,7 +390,7 @@ class ResourceRegistryControlPanelView(RequireJsView):
         for fi in files:
             path = fi.getPhysicalPath()
             rel_path = path[len(site_path) + 2:]
-            results.append('++plone++%s/%s' % (
+            results.append('++plone++{}/{}'.format(
                 rel_path[0], '/'.join(rel_path[1:])))
         return results
 
@@ -411,7 +410,7 @@ class ResourceRegistryControlPanelView(RequireJsView):
             'css': {},
             'baseUrl': base_url,
             'manageUrl': '%s/@@resourceregistry-controlpanel' % base_url,
-            'lessUrl': '%s/%s' % (base_url, less_url),
+            'lessUrl': f'{base_url}/{less_url}',
             'lessConfigUrl': '%s/less-variables.js' % base_url,
             'rjsUrl': rjs_url,
             'patternoptions': self.registry['plone.patternoptions']

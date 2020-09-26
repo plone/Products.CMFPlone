@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from AccessControl import getSecurityManager
 from Acquisition import aq_inner
 from App.config import getConfiguration
@@ -73,7 +72,7 @@ class OverviewControlPanel(controlpanel.RegistryEditForm):
 
         core_versions = self.core_versions()
         versions = [
-            'Plone %s (%s)' % (core_versions['Plone'],
+            'Plone {} ({})'.format(core_versions['Plone'],
                                core_versions['Plone Instance'])]
 
         for v in ('CMF', 'Zope', 'Python'):

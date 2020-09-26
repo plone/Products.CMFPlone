@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
 from calmjs.parse import es5
 from datetime import datetime
 from io import BytesIO
@@ -98,13 +96,13 @@ def cookWhenChangingSettings(context, bundle=None):
                         css = css_compiler.compile_string(css)
                     if not isinstance(css, str):
                         css = css.decode('utf8')
-                    cooked_css += '\n/* Resource: {0} */\n{1}\n'.format(
+                    cooked_css += '\n/* Resource: {} */\n{}\n'.format(
                         css_resource,
                         css
                     )
                 else:
                     cooked_css +=\
-                        '\n/* Could not find resource: {0} */\n\n'.format(
+                        '\n/* Could not find resource: {} */\n\n'.format(
                             css_resource
                         )
                     logger.warning('Could not find resource: %s', css_resource)
@@ -118,21 +116,21 @@ def cookWhenChangingSettings(context, bundle=None):
             if not isinstance(js, str):
                 js = js.decode('utf8')
             try:
-                cooked_js += '\n/* resource: {0} */\n{1}'.format(
+                cooked_js += '\n/* resource: {} */\n{}'.format(
                     resource.js,
                     js if resource.js.endswith('.min.js') else
                     es5.minify_print(js)
                 )
             except SyntaxError:
                 cooked_js +=\
-                    '\n/* Resource (error cooking): {0} */\n{1}'.format(
+                    '\n/* Resource (error cooking): {} */\n{}'.format(
                         resource.js,
                         js
                     )
                 logger.warning('Error cooking resource: %s', resource.js)
         else:
             logger.warning('Could not find resource: %s', resource.js)
-            cooked_js += '\n/* Could not find resource: {0} */\n\n'.format(
+            cooked_js += '\n/* Could not find resource: {} */\n\n'.format(
                 js_url
             )
 

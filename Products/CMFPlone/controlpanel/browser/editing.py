@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import IEditingSchema
 from plone.app.registry.browser import controlpanel
@@ -8,12 +7,12 @@ from z3c.form import interfaces
 class EditingControlPanelForm(controlpanel.RegistryEditForm):
 
     id = "EditingControlPanel"
-    label = _(u"Editing Settings")
+    label = _("Editing Settings")
     schema = IEditingSchema
     schema_prefix = "plone"
 
     def updateWidgets(self):
-        super(EditingControlPanelForm, self).updateWidgets()
+        super().updateWidgets()
         # hide the available_editors field/widgets
         self.widgets['available_editors'].mode = interfaces.HIDDEN_MODE
 

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Products.CMFCore.ActionInformation import Action
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
@@ -16,7 +15,7 @@ from zope.component.hooks import getSite
 
 
 @implementer(IConfigurationChangedEvent)
-class ConfigurationChangedEvent(object):
+class ConfigurationChangedEvent:
 
     def __init__(self, context, data):
         self.context = context
@@ -92,7 +91,7 @@ def handle_enable_user_folders(obj, event):
 def _add_mystuff_action(object_category):
     new_action = Action(
         'mystuff',
-        title=_(u'My Folder'),
+        title=_('My Folder'),
         description='',
         url_expr='string:${portal/portal_membership/getHomeUrl}',
         available_expr='python:(member is not None) and \
@@ -103,7 +102,7 @@ def _add_mystuff_action(object_category):
     )
     object_category._setObject('mystuff', new_action)
     # move action to top, at least before the logout action
-    object_category.moveObjectsToTop(('mystuff'))
+    object_category.moveObjectsToTop('mystuff')
 
 
 @adapter(ISecuritySchema, IRecordModifiedEvent)

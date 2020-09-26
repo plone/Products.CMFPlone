@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.testing import SITE_OWNER_NAME, SITE_OWNER_PASSWORD
 from plone.i18n.interfaces import ILanguageSchema
 from plone.registry.interfaces import IRegistry
@@ -29,7 +28,7 @@ class LanguageControlPanelFunctionalTest(unittest.TestCase):
         self.browser.handleErrors = False
         self.browser.addHeader(
             'Authorization',
-            'Basic %s:%s' % (SITE_OWNER_NAME, SITE_OWNER_PASSWORD,)
+            f'Basic {SITE_OWNER_NAME}:{SITE_OWNER_PASSWORD}'
         )
 
     def _inject_available_languages_field(self, value):

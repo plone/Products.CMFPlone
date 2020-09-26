@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.registry.browser import controlpanel
 from plone.z3cform import layout
 from Products.CMFPlone import PloneMessageFactory as _  # NOQA
@@ -10,15 +9,15 @@ from z3c.form import button
 
 class FilterControlPanel(controlpanel.RegistryEditForm):
     id = "FilterControlPanel"
-    label = _(u"HTML Filtering Settings")
+    label = _("HTML Filtering Settings")
     description = _("Keep in mind that editors like TinyMCE might have "
                     "additional filters.")
     schema = IFilterSchema
     schema_prefix = "plone"
-    form_name = _(u"HTML Filtering Settings")
+    form_name = _("HTML Filtering Settings")
     control_panel_view = "filter-controlpanel"
 
-    @button.buttonAndHandler(_(u"Save"), name='save')
+    @button.buttonAndHandler(_("Save"), name='save')
     def handleSave(self, action):  # NOQA
         data, errors = self.extractData()
         if errors:
@@ -27,21 +26,21 @@ class FilterControlPanel(controlpanel.RegistryEditForm):
 
         self.applyChanges(data)
         IStatusMessage(self.request).addStatusMessage(
-            _(u"Changes saved."),
+            _("Changes saved."),
             "info")
         IStatusMessage(self.request).addStatusMessage(
-            _(u"HTML generation is heavily cached across Plone. You may "
-              u"have to edit existing content or restart your server to see "
-              u"the changes."),
+            _("HTML generation is heavily cached across Plone. You may "
+              "have to edit existing content or restart your server to see "
+              "the changes."),
             "warning")
         self.request.response.redirect(self.request.getURL())
 
-    @button.buttonAndHandler(_(u"Cancel"), name='cancel')
+    @button.buttonAndHandler(_("Cancel"), name='cancel')
     def handleCancel(self, action):
         IStatusMessage(self.request).addStatusMessage(
-            _(u"Changes canceled."),
+            _("Changes canceled."),
             "info")
-        self.request.response.redirect("%s/%s" % (
+        self.request.response.redirect("{}/{}".format(
             self.context.absolute_url(),
             self.control_panel_view))
 

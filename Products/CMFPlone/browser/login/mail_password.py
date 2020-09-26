@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from AccessControl import Unauthorized
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.Five import BrowserView

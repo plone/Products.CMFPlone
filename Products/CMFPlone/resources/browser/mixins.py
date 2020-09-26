@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from AccessControl.safe_formatter import SafeFormatter
 from plone.registry.interfaces import IRegistry
 from urllib.parse import urlparse
@@ -51,7 +50,7 @@ class LessConfiguration(BrowserView):
     def __call__(self):
         registry = self.registry()
         portal_state = getMultiAdapter((self.context, self.request),
-                                       name=u'plone_portal_state')
+                                       name='plone_portal_state')
         site_url = portal_state.portal_url()
         result = ""
         result += "sitePath: '\"%s\"',\n" % site_url
@@ -70,7 +69,7 @@ class LessConfiguration(BrowserView):
 
         for name, value in registry.items():
             t = SafeFormatter(value).safe_format(**less_vars_params)
-            result += "'%s': \"%s\",\n" % (name, t)
+            result += f"'{name}': \"{t}\",\n"
 
         # Adding all plone.resource entries css values as less vars
         for name, value in self.resource_registry().items():
@@ -79,11 +78,11 @@ class LessConfiguration(BrowserView):
                 url = urlparse(css)
                 if url.netloc == '':
                     # Local
-                    src = "%s/%s" % (site_url, css)
+                    src = f"{site_url}/{css}"
                 else:
                     src = "%s" % (css)
                 # less vars can't have dots on it
-                result += "'%s': '\"%s\"',\n" % (name.replace('.', '_'), src)
+                result += "'{}': '\"{}\"',\n".format(name.replace('.', '_'), src)
 
         self.request.response.setHeader("Content-Type",
                                         "application/javascript")
@@ -100,7 +99,7 @@ class LessModifyConfiguration(LessConfiguration):
     def __call__(self):
         registry = self.registry()
         portal_state = getMultiAdapter((self.context, self.request),
-                                       name=u'plone_portal_state')
+                                       name='plone_portal_state')
         site_url = portal_state.portal_url()
         result2 = ""
         result2 += "'@sitePath': '\"%s\"',\n" % site_url
@@ -119,7 +118,7 @@ class LessModifyConfiguration(LessConfiguration):
 
         for name, value in registry.items():
             t = SafeFormatter(value).safe_format(**less_vars_params)
-            result2 += "'@%s': \"%s\",\n" % (name, t)
+            result2 += f"'@{name}': \"{t}\",\n"
 
         self.request.response.setHeader("Content-Type",
                                         "application/javascript")
@@ -139,7 +138,7 @@ class LessDependency(BrowserView):
 
     def __call__(self):
         portal_state = getMultiAdapter((self.context, self.request),
-                                       name=u'plone_portal_state')
+                                       name='plone_portal_state')
         site_url = portal_state.portal_url()
 
         registry = self.registry()
@@ -151,7 +150,7 @@ class LessDependency(BrowserView):
                     url = urlparse(css)
                     if url.netloc == '':
                         # Local
-                        src = "%s/%s" % (site_url, css)
+                        src = f"{site_url}/{css}"
                     else:
                         src = "%s" % (css)
 

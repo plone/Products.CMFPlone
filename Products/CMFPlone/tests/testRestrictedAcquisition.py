@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # This test module demonstrates a problem caused by the removal of
 # a few lines of code from cAccessControl.c and ImplPython.c

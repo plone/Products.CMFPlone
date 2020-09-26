@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import INonInstallable
@@ -23,7 +22,7 @@ class InstallerView(BrowserView):
     """
 
     def __init__(self, *args, **kwargs):
-        super(InstallerView, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.ps = getToolByName(self.context, 'portal_setup')
         self.errors = {}
 
@@ -254,8 +253,8 @@ class InstallerView(BrowserView):
                 # A new error is found, register it
                 self.errors[product_id] = dict(
                     type=_(
-                        u"dependency_missing",
-                        default=u"Missing dependency"
+                        "dependency_missing",
+                        default="Missing dependency"
                     ),
                     value=e.args[0],
                     product_id=product_id
@@ -263,8 +262,8 @@ class InstallerView(BrowserView):
             else:
                 self.errors[product_id] = dict(
                     type=_(
-                        u"dependency_missing",
-                        default=u"Missing dependency"
+                        "dependency_missing",
+                        default="Missing dependency"
                     ),
                     value=e.args[0],
                     product_id=product_id
@@ -666,14 +665,14 @@ class UpgradeProductsView(InstallerView):
                 result = self.upgrade_product(product_id)
                 if not result:
                     messages.addStatusMessage(
-                        _(u'Error upgrading ${product}.',
+                        _('Error upgrading ${product}.',
                           mapping={'product': product_id}), type="error")
                     # Abort changes for all upgrades.
                     transaction.abort()
                     break
             else:
                 messages.addStatusMessage(
-                    _(u'Upgraded products.'), type="info")
+                    _('Upgraded products.'), type="info")
 
         purl = getToolByName(self.context, 'portal_url')()
         self.request.response.redirect(purl + '/prefs_install_products_form')
@@ -688,14 +687,14 @@ class InstallProductsView(InstallerView):
             msg_type = 'info'
             result = self.install_product(product_id)
             if result:
-                msg = _(u'Installed ${product}!',
+                msg = _('Installed ${product}!',
                         mapping={'product': product_id})
             else:
                 # Only reason should be that between loading the page and
                 # clicking to install a product, another user has already
                 # installed this product.
                 msg_type = 'error'
-                msg = _(u'Failed to install ${product}.',
+                msg = _('Failed to install ${product}.',
                         mapping={'product': product_id})
             messages.addStatusMessage(msg, type=msg_type)
 
@@ -714,16 +713,16 @@ class UninstallProductsView(InstallerView):
             except Exception as e:
                 logger.error("Could not uninstall %s: %s", product_id, e)
                 msg_type = 'error'
-                msg = _(u'Error uninstalling ${product}.', mapping={
+                msg = _('Error uninstalling ${product}.', mapping={
                         'product': product_id})
             else:
                 if result:
                     msg_type = 'info'
-                    msg = _(u'Uninstalled ${product}.',
+                    msg = _('Uninstalled ${product}.',
                             mapping={'product': product_id})
                 else:
                     msg_type = 'error'
-                    msg = _(u'Could not uninstall ${product}.',
+                    msg = _('Could not uninstall ${product}.',
                             mapping={'product': product_id})
             messages.addStatusMessage(msg, type=msg_type)
 

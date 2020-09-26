@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Acquisition import aq_inner
 from Products.CMFPlone.interfaces.defaultpage import IDefaultPage
 from Products.CMFPlone.defaultpage import get_default_page

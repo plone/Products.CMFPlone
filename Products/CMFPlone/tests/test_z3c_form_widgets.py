@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 from z3c.form import widget
 from z3c.form.browser.text import TextWidget
@@ -16,7 +15,7 @@ WIDGETS_TO_TEST = [
 _marker = object()
 
 
-class FakeForm(object):
+class FakeForm:
     method = 'post'
     ignoreRequest = False
 

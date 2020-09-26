@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from zope.interface import Interface, implementer
 from zope.component import adapter
 from Acquisition import aq_base

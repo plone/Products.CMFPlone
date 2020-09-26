@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from DateTime import DateTime
 from plone.app.users.browser.passwordpanel import PasswordPanel
 from plone.registry.interfaces import IRegistry
@@ -53,7 +52,7 @@ class LoginForm(form.EditForm):
     fields = field.Fields(ILoginFormSchema)
 
     id = 'LoginForm'
-    label = _('label_log_in', default=u'Log in')
+    label = _('label_log_in', default='Log in')
 
     ignoreContext = True
     prefix = ''
@@ -103,11 +102,11 @@ class LoginForm(form.EditForm):
         self.fields['ac_name'].__name__ = fieldname_name
         self.fields['ac_password'].__name__ = fieldname_password
 
-        super(LoginForm, self).updateWidgets(prefix='')
+        super().updateWidgets(prefix='')
 
         if self.use_email_as_login():
-            self.widgets[fieldname_name].label = _(u'label_email',
-                                                   default=u'Email')
+            self.widgets[fieldname_name].label = _('label_email',
+                                                   default='Email')
         self.widgets['came_from'].mode = HIDDEN_MODE
         self.widgets['came_from'].value = self.get_came_from()
 
@@ -127,7 +126,7 @@ class LoginForm(form.EditForm):
         return came_from
 
     def updateActions(self):
-        super(LoginForm, self).updateActions()
+        super().updateActions()
         self.actions['login'].addClass('context')
 
     def _post_login(self):
@@ -160,16 +159,16 @@ class LoginForm(form.EditForm):
             if self.use_email_as_login():
                 status_msg.addStatusMessage(
                     _(
-                        u'Login failed. Both email address and password are '
-                        u'case sensitive, check that caps lock is not enabled.'
+                        'Login failed. Both email address and password are '
+                        'case sensitive, check that caps lock is not enabled.'
                     ),
                     'error',
                 )
             else:
                 status_msg.addStatusMessage(
                     _(
-                        u'Login failed. Both login name and password are case '
-                        u'sensitive, check that caps lock is not enabled.'
+                        'Login failed. Both login name and password are case '
+                        'sensitive, check that caps lock is not enabled.'
                     ),
                     'error',
                 )
@@ -178,8 +177,8 @@ class LoginForm(form.EditForm):
         is_initial_login = self._post_login()
         status_msg.addStatusMessage(
             _(
-                u'you_are_now_logged_in',
-                default=u'Welcome! You are now logged in.',
+                'you_are_now_logged_in',
+                default='Welcome! You are now logged in.',
             ),
             'info'
         )
@@ -247,12 +246,12 @@ class RequireLoginView(BrowserView):
         )
         portal = portal_state.portal()
         if portal_state.anonymous():
-            url = '{0:s}/login'.format(portal.absolute_url())
+            url = f'{portal.absolute_url():s}/login'
             came_from = self.request.get('came_from', None)
             if came_from:
-                url += '?came_from={0:s}'.format(parse.quote(came_from))
+                url += '?came_from={:s}'.format(parse.quote(came_from))
         else:
-            url = '{0:s}/insufficient-privileges'.format(portal.absolute_url())
+            url = f'{portal.absolute_url():s}/insufficient-privileges'
 
         self.request.response.redirect(url)
 
@@ -269,11 +268,11 @@ class InitialLoginPasswordChange(PasswordPanel):
         return self.index()
 
     @button.buttonAndHandler(
-        _(u'label_change_password', default=u'Change Password'),
+        _('label_change_password', default='Change Password'),
         name='reset_passwd',
     )
     def action_reset_passwd(self, action):
-        super(InitialLoginPasswordChange, self).action_reset_passwd(
+        super().action_reset_passwd(
             self, action)
         if not action.form.widgets.errors:
             self.request.response.redirect(self.context.portal_url())
@@ -285,11 +284,11 @@ class ForcedPasswordChange(PasswordPanel):
         return self.index()
 
     @button.buttonAndHandler(
-        _(u'label_change_password', default=u'Change Password'),
+        _('label_change_password', default='Change Password'),
         name='reset_passwd',
     )
     def action_reset_passwd(self, action):
-        super(ForcedPasswordChange, self).action_reset_passwd(self, action)
+        super().action_reset_passwd(self, action)
         if not action.form.widgets.errors:
             membership_tool = getToolByName(self.context, 'portal_membership')
             member = membership_tool.getAuthenticatedMember()

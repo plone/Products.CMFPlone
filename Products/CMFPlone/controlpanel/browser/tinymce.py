@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import ITinyMCELayoutSchema
 from Products.CMFPlone.interfaces import ITinyMCESpellCheckerSchema
@@ -13,29 +12,29 @@ from z3c.form.browser.checkbox import CheckBoxFieldWidget
 
 
 class TinyMCEPluginForm(group.GroupForm):
-    label = _(u"Plugins and Toolbar")
+    label = _("Plugins and Toolbar")
     fields = field.Fields(ITinyMCEPluginSchema)
 
 
 class TinyMCESpellCheckerForm(group.GroupForm):
-    label = _(u"Spell Checker")
+    label = _("Spell Checker")
     fields = field.Fields(ITinyMCESpellCheckerSchema)
 
 
 class TinyMCEResourceTypesForm(group.GroupForm):
-    label = _(u"Resource Types")
+    label = _("Resource Types")
     fields = field.Fields(ITinyMCEResourceTypesSchema)
 
 
 class TinyMCEAdvancedForm(group.GroupForm):
-    label = _(u"Advanced")
+    label = _("Advanced")
     fields = field.Fields(ITinyMCEAdvancedSchema)
 
 
 class TinyMCEControlPanelForm(controlpanel.RegistryEditForm):
 
     id = "TinyMCEControlPanel"
-    label = _(u"TinyMCE Settings")
+    label = _("TinyMCE Settings")
     schema = ITinyMCESchema
     schema_prefix = "plone"
     fields = field.Fields(ITinyMCELayoutSchema)
@@ -43,7 +42,7 @@ class TinyMCEControlPanelForm(controlpanel.RegistryEditForm):
               TinyMCEResourceTypesForm, TinyMCEAdvancedForm)
 
     def updateFields(self):
-        super(TinyMCEControlPanelForm, self).updateFields()
+        super().updateFields()
         self.groups[0].fields['plugins'].widgetFactory = CheckBoxFieldWidget
 
 

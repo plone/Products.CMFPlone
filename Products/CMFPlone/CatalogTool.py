@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from AccessControl import ClassSecurityInfo
 from AccessControl.PermissionRole import rolesForPermissionOn
 from AccessControl.Permissions import manage_zcatalog_entries as ManageZCatalogEntries  # noqa
@@ -469,7 +468,7 @@ class CatalogTool(PloneBaseTool, BaseTool):
         if not self.allow_inactive(query):
             query['effectiveRange'] = DateTime()
 
-        return super(CatalogTool, self).search(
+        return super().search(
             query, sort_index, reverse, limit, merge)
 
     @security.protected(ManageZCatalogEntries)

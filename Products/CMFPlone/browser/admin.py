@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from AccessControl import getSecurityManager
 from AccessControl.Permissions import view as View
 from OFS.interfaces import IApplication
@@ -164,7 +163,7 @@ class AddPloneSite(BrowserView):
         def _key(v):
             # Make sure implicitly selected items come first
             selected = v.get('selected') and 'automatic' or 'manual'
-            return '%s-%s' % (selected, v.get('title', ''))
+            return '{}-{}'.format(selected, v.get('title', ''))
         extension_profiles.sort(key=_key)
 
         for info in profile_registry.listProfileInfo():
@@ -213,7 +212,7 @@ class AddPloneSite(BrowserView):
             langs = struct['languages']
             langs.append({
                 'langcode': langcode,
-                'label': data.get(u'native', data.get(u'name')),
+                'label': data.get('native', data.get('name')),
             })
 
             grouped[lang] = struct
@@ -236,7 +235,7 @@ class AddPloneSite(BrowserView):
         for value in tz_values:
             splitted = value.split('/')
             group = splitted.pop(0)
-            label = u'/'.join(splitted)
+            label = '/'.join(splitted)
 
             entries = grouped.get(group, [])
             entries.append({'label': label or group, 'value': value})
@@ -273,7 +272,7 @@ class AddPloneSite(BrowserView):
                 portal_timezone=form.get('portal_timezone', 'UTC')
             )
             self.request.response.redirect(site.absolute_url())
-            return u''
+            return ''
 
         return self.index()
 

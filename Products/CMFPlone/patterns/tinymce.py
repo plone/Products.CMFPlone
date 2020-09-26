@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from lxml import html
 from plone.app.layout.navigation.root import getNavigationRootObject
 from plone.app.theming.utils import theming_policy
@@ -13,7 +12,7 @@ from zope.component import getUtility
 import json
 
 
-class TinyMCESettingsGenerator(object):
+class TinyMCESettingsGenerator:
 
     def __init__(self, context, request):
         self.context = context
@@ -39,7 +38,7 @@ class TinyMCESettingsGenerator(object):
 
     def get_content_css(self, style_css=''):
         files = [
-            '{0}/++plone++static/plone-compiled.css'.format(self.nav_root_url)
+            f'{self.nav_root_url}/++plone++static/plone-compiled.css'
         ]
         if style_css:
             files.extend(style_css.split(','))
@@ -116,7 +115,7 @@ class TinyMCESettingsGenerator(object):
 
         theme = self.get_theme()
         if theme and getattr(theme, 'tinymce_styles_css', None):
-            importcss_file_filter += ',%s/%s' % (
+            importcss_file_filter += ',{}/{}'.format(
                 self.nav_root_url,
                 theme.tinymce_styles_css.lstrip('/'))
 
@@ -158,7 +157,7 @@ class TinyMCESettingsGenerator(object):
                 if 'compat3x' not in tiny_config['plugins']:
                     tiny_config['plugins'].append('compat3x')
                 tiny_config['external_plugins']['AtD'] = (
-                    '{0}/++plone++static/tinymce-AtD-plugin/'
+                    '{}/++plone++static/tinymce-AtD-plugin/'
                     'editor_plugin.js'.format(self.nav_root_url)
                 )
                 # None when Anonymous User
@@ -175,7 +174,7 @@ class TinyMCESettingsGenerator(object):
             tiny_config['browser_spellcheck'] = True
 
         if toolbar_additions:
-            tiny_config['toolbar'] += ' | {0}'.format(
+            tiny_config['toolbar'] += ' | {}'.format(
                 ' '.join(toolbar_additions)
             )
 
@@ -217,12 +216,12 @@ class TinyMCESettingsGenerator(object):
             # valid_elements : 'a[href|target=_blank],strong/b,div[align],br'
             tiny_valid_elements = []
             for tag in valid_tags:
-                tag_str = "%s[%s]" % (tag, "|".join(valid_attributes))
+                tag_str = "{}[{}]".format(tag, "|".join(valid_attributes))
                 tiny_valid_elements.append(tag_str)
             # We want to remove the nasty tag including the content in the
             # backend, so TinyMCE should allow them here.
             for tag in nasty_tags:
-                tag_str = "%s[%s]" % (tag, "|".join(valid_attributes))
+                tag_str = "{}[{}]".format(tag, "|".join(valid_attributes))
                 tiny_valid_elements.append(tag_str)
             tiny_config['valid_elements'] = ",".join(tiny_valid_elements)
 

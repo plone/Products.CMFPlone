@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from OFS.ObjectManager import ObjectManager
 
 # FIXME: This no longer works with the new ZMI
