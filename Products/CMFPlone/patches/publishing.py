@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # From Products.PloneHotfix20160419
 # Plus extras for properties.
 from OFS.PropertyManager import PropertyManager
@@ -11,10 +10,10 @@ try:
     from plone.dexterity.content import Item
     from plone.dexterity.content import Container
 except ImportError:
-    class Item(object):
+    class Item:
         pass
 
-    class Container(object):
+    class Container:
         pass
 
 try:
@@ -22,10 +21,10 @@ try:
     from Products.ATContentTypes.content.base import ATCTBTreeFolder
 except ImportError:
 
-    class ATCTContent(object):
+    class ATCTContent:
         pass
 
-    class ATCTBTreeFolder(object):
+    class ATCTBTreeFolder:
         pass
 
 

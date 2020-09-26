@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.testing.zope import Browser
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 
@@ -27,7 +26,7 @@ class OkayTest(unittest.TestCase):
         )
         for url in urls:
             browser.open(url)
-            self.assertEqual(browser.contents, u'OK')
+            self.assertEqual(browser.contents, 'OK')
             get_header = browser.headers.get
             self.assertEqual(
                 get_header('Expires'), 'Sat, 1 Jan 2000 00:00:00 GMT')
@@ -44,7 +43,7 @@ class OkayTest(unittest.TestCase):
     def test_okay_view(self):
         for page in (self.app, self.portal):
             view = page.restrictedTraverse('@@ok')
-            self.assertEqual(view(), u'OK')
+            self.assertEqual(view(), 'OK')
             get_header = view.request.response.getHeader
             self.assertEqual(
                 get_header('Expires'), 'Sat, 1 Jan 2000 00:00:00 GMT')

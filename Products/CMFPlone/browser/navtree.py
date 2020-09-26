@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # This module contains a function to help build navigation-tree-like structures
 # from catalog queries. It also contains a standard implementation of the
 # strategy/filtering method that uses Plone's navtree_properties to construct
@@ -28,7 +27,7 @@ security.declarePrivate('utils')
 
 
 @implementer(INavigationQueryBuilder)
-class NavtreeQueryBuilder(object):
+class NavtreeQueryBuilder:
     """Build a navtree query based on the settings in navtree_properties
     """
 
@@ -152,7 +151,7 @@ class SitemapNavtreeStrategy(NavtreeStrategyBase):
                 (portalType is None or portalType not in self.parentTypesNQ):
             showChildren = True
 
-        layout_view = getMultiAdapter((context, request), name=u'plone_layout')
+        layout_view = getMultiAdapter((context, request), name='plone_layout')
 
         newNode['Title'] = utils.pretty_title_or_id(context, item)
         newNode['id'] = item.getId

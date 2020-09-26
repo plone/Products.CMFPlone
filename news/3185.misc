@@ -1,0 +1,3 @@
+Applied: `find . -name "*.py" |grep -v skins|xargs pyupgrade --py36-plus --py3-only`.
+This auto-rewrites Python 2.7 specific syntax and code to Python 3.6+.
+[jensens]

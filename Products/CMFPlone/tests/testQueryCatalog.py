@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Test queryCatalog and plone search forms
 from plone.app.textfield.value import RichTextValue
 from plone.registry.interfaces import IRegistry
@@ -120,12 +119,12 @@ class TestQueryCatalog(PloneTestCase.PloneTestCase):
             INavigationSchema,
             prefix='plone'
         )
-        navigation_settings.root = u'/'
+        navigation_settings.root = '/'
         qry = self.folder.queryCatalog(request, use_navigation_root=True)
         self.assertEqual('/'.join(self.portal.getPhysicalPath()), qry['path'])
         self.setRoles(('Manager',))
         self.portal.invokeFactory('Folder', 'foo')
-        navigation_settings.root = u'/foo'
+        navigation_settings.root = '/foo'
         qry = self.folder.queryCatalog(request, use_navigation_root=True)
         self.assertEqual(
             '/'.join(self.portal.foo.getPhysicalPath()),
@@ -242,7 +241,7 @@ class TestQueryCatalogParseError(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         self.folder.invokeFactory(
-            'Document', id='doc', text=RichTextValue(u'foo bar baz'))
+            'Document', id='doc', text=RichTextValue('foo bar baz'))
 
     def testSearchableText(self):
         request = {'SearchableText': 'foo'}

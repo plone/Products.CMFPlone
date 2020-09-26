@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Acquisition import aq_inner
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
@@ -17,7 +16,7 @@ logger = logging.getLogger('Products.CMFPlone')
 class SecurityControlPanelForm(controlpanel.RegistryEditForm):
 
     id = "SecurityControlPanel"
-    label = _(u"Security Settings")
+    label = _("Security Settings")
     schema = ISecuritySchema
     schema_prefix = "plone"
 

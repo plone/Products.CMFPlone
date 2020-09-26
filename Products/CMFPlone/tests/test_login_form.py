@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from DateTime import DateTime
 from plone.app.z3cform.interfaces import IPloneFormLayer
 from Products.CMFCore.permissions import SetOwnProperties
@@ -35,7 +34,7 @@ class TestLoginForm(unittest.TestCase):
         self.request.set('REQUEST_METHOD', 'POST')
         authenticator = getMultiAdapter(
             (self.portal, self.request),
-            name=u'authenticator'
+            name='authenticator'
         )
         html = authenticator.authenticator()
         token = re.search('value="(.*)"', html).groups()[0]
@@ -43,9 +42,9 @@ class TestLoginForm(unittest.TestCase):
 
     def test_form_update(self):
         self._setup_authenticator_request()
-        self.request['__ac_name'] = u'test'
-        self.request['__ac_password'] = u'secret'
-        self.request['form.widgets.came_from'] = [u'']
+        self.request['__ac_name'] = 'test'
+        self.request['__ac_password'] = 'secret'
+        self.request['form.widgets.came_from'] = ['']
         form = self.portal.restrictedTraverse(FORM_ID)
         form.update()
         data, errors = form.extractData()
@@ -61,9 +60,9 @@ class TestLoginForm(unittest.TestCase):
 
     def test_failsafe_login_form_update(self):
         self._setup_authenticator_request()
-        self.request['__ac_name'] = u'test'
-        self.request['__ac_password'] = u'secret'
-        self.request['form.widgets.came_from'] = [u'']
+        self.request['__ac_name'] = 'test'
+        self.request['__ac_password'] = 'secret'
+        self.request['form.widgets.came_from'] = ['']
         form = self.portal.restrictedTraverse('failsafe_login')
         form.update()
         data, errors = form.extractData()

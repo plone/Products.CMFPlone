@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import unittest
 
 from AccessControl import Unauthorized
@@ -148,9 +147,9 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
 
         registry = getUtility(IRegistry)
         site_settings = registry.forInterface(ISiteSchema, prefix='plone')
-        site_settings.site_title = u'Tëst Portal'
+        site_settings.site_title = 'Tëst Portal'
         mail_settings = registry.forInterface(IMailSchema, prefix="plone")
-        mail_settings.email_from_name = u'Tëst Admin'
+        mail_settings.email_from_name = 'Tëst Admin'
         mail_settings.email_from_address = 'bar@baz.com'
 
         # Notify the registered user
@@ -177,9 +176,9 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
                                                 'email': 'foo@bar.com'})
         registry = getUtility(IRegistry)
         site_settings = registry.forInterface(ISiteSchema, prefix='plone')
-        site_settings.site_title = u'Test Portal'
+        site_settings.site_title = 'Test Portal'
         mail_settings = registry.forInterface(IMailSchema, prefix="plone")
-        mail_settings.email_from_name = u'Test Admin'
+        mail_settings.email_from_name = 'Test Admin'
         mail_settings.email_from_address = 'bar@baz.com'
 
         # Set the portal email encoding
@@ -207,9 +206,9 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
 
         registry = getUtility(IRegistry)
         site_settings = registry.forInterface(ISiteSchema, prefix='plone')
-        site_settings.site_title = u'Tëst Portal'
+        site_settings.site_title = 'Tëst Portal'
         mail_settings = registry.forInterface(IMailSchema, prefix="plone")
-        mail_settings.email_from_name = u'Tëst Admin'
+        mail_settings.email_from_name = 'Tëst Admin'
         mail_settings.email_from_address = 'bar@baz.com'
 
         from zope.publisher.browser import TestRequest
@@ -237,9 +236,9 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
                                                 'email': 'foo@bar.com'})
         registry = getUtility(IRegistry)
         site_settings = registry.forInterface(ISiteSchema, prefix='plone')
-        site_settings.site_title = u'Tëst Portal'
+        site_settings.site_title = 'Tëst Portal'
         mail_settings = registry.forInterface(IMailSchema, prefix="plone")
-        mail_settings.email_from_name = u'Test Admin'
+        mail_settings.email_from_name = 'Test Admin'
         mail_settings.email_from_address = 'bar@baz.com'
 
         # Set the portal email encoding
@@ -307,11 +306,11 @@ class TestEmailValidityChecker(unittest.TestCase):
         self.assertTrue(*result)
 
     def test_idn_cc_tld(self):
-        result = self.check(u"webmaster@example.xn--wgbh1c")
+        result = self.check("webmaster@example.xn--wgbh1c")
         self.assertTrue(*result)
 
     def test_long_tld(self):
-        result = self.check(u"webmaster@example.onion")
+        result = self.check("webmaster@example.onion")
         self.assertTrue(*result)
 
 

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from AccessControl import Unauthorized
 from plone.app.testing.bbb import PloneTestCase
 from Products.CMFCore.utils import getToolByName
@@ -58,7 +57,7 @@ class TestCheckId(PloneTestCase):
 
     def testRequiredId(self):
         r = check_id(self.folder, '', required=1)
-        self.assertEqual(r, u'Please enter a name.')
+        self.assertEqual(r, 'Please enter a name.')
 
     def testAlternativeId(self):
         r = check_id(self.folder, '', alternative_id='foo')
@@ -83,7 +82,7 @@ class TestCheckId(PloneTestCase):
                         'Expected permission "Search ZCatalog"')
 
         r = check_id(self.folder, 'created')
-        self.assertEqual(r, u'created is reserved.')
+        self.assertEqual(r, 'created is reserved.')
 
     def testCatalogMetadata(self):
         portal_catalog = getToolByName(self.portal, 'portal_catalog')
@@ -91,25 +90,25 @@ class TestCheckId(PloneTestCase):
         self.assertTrue('new_metadata' in portal_catalog.schema())
         self.assertFalse('new_metadata' in portal_catalog.indexes())
         r = check_id(self.folder, 'new_metadata')
-        self.assertEqual(r, u'new_metadata is reserved.')
+        self.assertEqual(r, 'new_metadata is reserved.')
 
     def testCollision(self):
         self.folder.invokeFactory('Document', id='foo')
         self.folder.invokeFactory('Document', id='bar')
         r = check_id(self.folder.foo, 'bar')
-        self.assertEqual(r, u'There is already an item named bar in this '
-                            u'folder.')
+        self.assertEqual(r, 'There is already an item named bar in this '
+                            'folder.')
 
     def testReservedId(self):
         self.folder._setObject('foo', dummy.Item('foo'))
         r = check_id(self.folder.foo, 'portal_catalog')
-        self.assertEqual(r, u'portal_catalog is reserved.')
+        self.assertEqual(r, 'portal_catalog is reserved.')
 
     def testHiddenObjectId(self):
         # If a parallel object is not in content-space, should get 'reserved'
         # instead of 'taken'
         r = check_id(self.folder, 'portal_skins')
-        self.assertEqual(r, u'portal_skins is reserved.')
+        self.assertEqual(r, 'portal_skins is reserved.')
 
     def testCanOverrideParentNames(self):
         self.folder.invokeFactory('Document', id='item1')
@@ -121,21 +120,21 @@ class TestCheckId(PloneTestCase):
     def testInvalidId(self):
         self.folder._setObject('foo', dummy.Item('foo'))
         r = check_id(self.folder.foo, '_foo')
-        self.assertEqual(r, u'_foo is reserved.')
+        self.assertEqual(r, '_foo is reserved.')
 
     def testContainerHook(self):
         # Container may have a checkValidId method; make sure it is called
         self.folder._setObject('checkValidId', dummy.Raiser(dummy.Error))
         self.folder._setObject('foo', dummy.Item('foo'))
         r = check_id(self.folder.foo, 'whatever')
-        self.assertEqual(r, u'whatever is reserved.')
+        self.assertEqual(r, 'whatever is reserved.')
 
     def testContainerHookRaisesUnauthorized(self):
         # check_id does not raise Unauthorized errors raised by hook
         self.folder._setObject('checkValidId', dummy.Raiser(Unauthorized))
         self.folder._setObject('foo', dummy.Item('foo'))
         r = check_id(self.folder.foo, 'whatever')
-        self.assertEqual(r, u'whatever is reserved.')
+        self.assertEqual(r, 'whatever is reserved.')
 
     def testContainerHookRaisesConflictError(self):
         # check_id should not swallow ConflictErrors raised by hook
@@ -171,7 +170,7 @@ class TestCheckId(PloneTestCase):
 
         r = check_id(self.folder, 'created')
         # But now the final hasattr check picks this up
-        self.assertEqual(r, u'created is reserved.')
+        self.assertEqual(r, 'created is reserved.')
 
     def testCollisionNotSkipped(self):
         # Note that the existing object check is done, even when we don't have
@@ -187,7 +186,7 @@ class TestCheckId(PloneTestCase):
         self.folder._setObject('foo', dummy.Item('foo'))
         self.folder._setObject('bar', dummy.Item('bar'))
         r = check_id(self.folder.foo, 'bar')
-        self.assertEqual(r, u'bar is reserved.')
+        self.assertEqual(r, 'bar is reserved.')
 
     def testReservedIdSkipped(self):
         # This check is picked up by the checkIdAvailable, unless we don't have
@@ -197,7 +196,7 @@ class TestCheckId(PloneTestCase):
 
         self.folder._setObject('foo', dummy.Item('foo'))
         r = check_id(self.folder.foo, 'portal_catalog')
-        self.assertEqual(r, u'portal_catalog is reserved.')
+        self.assertEqual(r, 'portal_catalog is reserved.')
 
     def testInvalidIdSkipped(self):
         # Note that the check is skipped when we don't have
@@ -217,7 +216,7 @@ class TestCheckId(PloneTestCase):
         self.folder._setObject('foo', dummy.Item('foo'))
         for alias in self.folder.getTypeInfo().getMethodAliases().keys():
             r = check_id(self.folder.foo, alias)
-            self.assertEqual(r, u'%s is reserved.' % alias)
+            self.assertEqual(r, '%s is reserved.' % alias)
 
     def testCheckingMethodAliasesOnPortalRoot(self):
         # Test for bug http://dev.plone.org/plone/ticket/4351

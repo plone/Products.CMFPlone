@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.testing import login
 from plone.app.testing import setRoles
 from plone.app.testing import SITE_OWNER_NAME
@@ -42,7 +41,7 @@ class TestSiteAdministratorRoleFunctional(unittest.TestCase):
         self.browser.handleErrors = False
         self.browser.addHeader(
             'Authorization',
-            'Basic %s:%s' % (TEST_USER_ID, TEST_USER_PASSWORD,)
+            f'Basic {TEST_USER_ID}:{TEST_USER_PASSWORD}'
         )
         self.normal_user = 'DIispfuF'
 
@@ -91,7 +90,7 @@ class TestSiteAdministratorRoleFunctional(unittest.TestCase):
         # a user with the Manager role can grant the Manager role
         self.browser.addHeader(
             'Authorization',
-            'Basic %s:%s' % (SITE_OWNER_NAME, SITE_OWNER_PASSWORD,)
+            f'Basic {SITE_OWNER_NAME}:{SITE_OWNER_PASSWORD}'
         )
         self.browser.open(self.usergroups_url)
         form = {
@@ -159,7 +158,7 @@ class TestSiteAdministratorRoleFunctional(unittest.TestCase):
         self.assertEqual(['Reviewer', 'Authenticated'], roles)
         self.browser.addHeader(
             'Authorization',
-            'Basic %s:%s' % (SITE_OWNER_NAME, SITE_OWNER_PASSWORD,)
+            f'Basic {SITE_OWNER_NAME}:{SITE_OWNER_PASSWORD}'
         )
         self.browser.open(self.groups_url)
         form = {

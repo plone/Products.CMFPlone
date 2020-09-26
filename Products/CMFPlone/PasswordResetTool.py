@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """PasswordResetTool.py
 
 Mailback password reset product for CMF.

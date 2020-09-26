@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from AccessControl import ClassSecurityInfo
 from AccessControl.class_init import InitializeClass
 from Products.CMFCore.permissions import ManagePortal
@@ -19,7 +18,7 @@ class SkinsTool(PloneBaseTool, BaseTool):
 
     def addSkinSelection(self, skinname, skinpath, test=0, make_default=0):
         # Adds a skin selection.
-        super(SkinsTool, self).addSkinSelection(skinname, skinpath,
+        super().addSkinSelection(skinname, skinpath,
                                                 test=test, make_default=make_default)
 
     security.declareProtected(ManagePortal, 'manage_skinLayers')
@@ -28,7 +27,7 @@ class SkinsTool(PloneBaseTool, BaseTool):
                           skinname='', skinpath='', REQUEST=None):
         """ Change the skinLayers.
         """
-        response = super(SkinsTool, self).manage_skinLayers(chosen=chosen,
+        response = super().manage_skinLayers(chosen=chosen,
                                                             add_skin=add_skin, del_skin=del_skin, skinname=skinname,
                                                             skinpath=skinpath, REQUEST=REQUEST)
         return response

@@ -13,9 +13,9 @@ request = context.REQUEST
 
 if 'Mac OS X' in request.get('HTTP_USER_AGENT', ''):
     return context.REQUEST['RESPONSE'].redirect(
-        '%s/externalEdit_/%s.zem?macosx=1' % (context.aq_parent.absolute_url(),
+        '{}/externalEdit_/{}.zem?macosx=1'.format(context.aq_parent.absolute_url(),
                                               url_quote(context.getId())))
 else:
     return context.REQUEST['RESPONSE'].redirect(
-        '%s/externalEdit_/%s' % (context.aq_parent.absolute_url(),
+        '{}/externalEdit_/{}'.format(context.aq_parent.absolute_url(),
                                      url_quote(context.getId())))

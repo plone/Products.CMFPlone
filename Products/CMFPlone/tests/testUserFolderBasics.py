@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Generic user folder tests. Every user folder implementation
 # must pass these.
 

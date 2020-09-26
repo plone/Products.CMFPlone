@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.resource.interfaces import IResourceDirectory
 from Products.CMFPlone.interfaces.resources import (
     OVERRIDE_RESOURCE_DIRECTORY_NAME,

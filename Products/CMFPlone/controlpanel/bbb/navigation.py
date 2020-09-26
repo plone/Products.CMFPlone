@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.interfaces import INavigationSchema
 from Products.CMFPlone.interfaces import IPloneSiteRoot
@@ -9,7 +8,7 @@ from zope.interface import implementer
 
 @adapter(IPloneSiteRoot)
 @implementer(INavigationSchema)
-class NavigationControlPanelAdapter(object):
+class NavigationControlPanelAdapter:
 
     def __init__(self, context):
         self.context = context

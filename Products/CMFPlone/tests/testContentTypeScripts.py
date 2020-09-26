@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from datetime import datetime
 from plone.app.textfield import RichTextValue
 from plone.namedfile.file import NamedFile
@@ -22,7 +21,7 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
 
     def testDocumentCreate(self):
         self.folder.invokeFactory(
-            'Document', id='doc', text=RichTextValue(u'data'))
+            'Document', id='doc', text=RichTextValue('data'))
         self.assertEqual(self.folder.doc.text.raw, 'data')
         self.assertEqual(self.folder.doc.Format(), 'text/html')
 
@@ -61,7 +60,7 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
 
     def testNewsItemCreate(self):
         self.folder.invokeFactory('News Item', id='newsitem',
-                                  text=RichTextValue(u'data'), title='Foo')
+                                  text=RichTextValue('data'), title='Foo')
         self.assertEqual(self.folder.newsitem.text.raw, 'data')
         self.assertEqual(self.folder.newsitem.Title(), 'Foo')
 

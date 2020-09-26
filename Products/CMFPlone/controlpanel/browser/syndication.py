@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Products.CMFCore.utils import getToolByName
 from zope.i18nmessageid import MessageFactory
 from Products.CMFPlone.interfaces.syndication import ISiteSyndicationSettings
@@ -13,11 +12,11 @@ _ = MessageFactory('plone')
 
 class SyndicationControlPanelForm(controlpanel.RegistryEditForm):
     schema = ISiteSyndicationSettings
-    label = _(u'Syndication Settings')
-    description = _(u'Default syndication settings.')
+    label = _('Syndication Settings')
+    description = _('Default syndication settings.')
 
     def updateFields(self):
-        super(SyndicationControlPanelForm, self).updateFields()
+        super().updateFields()
         self.fields['site_rss_items'].widgetFactory = SelectFieldWidget
 
     def getSyndicationSettingsButtonShown(self):
@@ -26,7 +25,7 @@ class SyndicationControlPanelForm(controlpanel.RegistryEditForm):
             return actions.object.syndication.getProperty('visible')
         else:
             IStatusMessage(self.request).addStatusMessage(
-                _(u"Missing syndication settings action."), "warn")
+                _("Missing syndication settings action."), "warn")
 
     def getSyndicationLinkShown(self):
         actions = getToolByName(self.context, 'portal_actions')
@@ -34,7 +33,7 @@ class SyndicationControlPanelForm(controlpanel.RegistryEditForm):
             return actions.document_actions.rss.getProperty('visible')
         else:
             IStatusMessage(self.request).addStatusMessage(
-                _(u"Missing rss link action."), "warn")
+                _("Missing rss link action."), "warn")
 
     def forceCheckboxValue(self, widget, checked):
         if checked:
@@ -49,7 +48,7 @@ class SyndicationControlPanelForm(controlpanel.RegistryEditForm):
                     item['checked'] = False
 
     def update(self):
-        super(SyndicationControlPanelForm, self).update()
+        super().update()
 
         # We override this so we can get actual
         # settings for portal_actions related settings
@@ -72,7 +71,7 @@ class SyndicationControlPanelForm(controlpanel.RegistryEditForm):
             actions.document_actions.rss._setPropValue(
                 'visible', data['show_syndication_link'])
 
-    @button.buttonAndHandler(_(u"Save"), name='save')
+    @button.buttonAndHandler(_("Save"), name='save')
     def handleSave(self, action):
         """
         Again, we're customizing this to handle saving
@@ -86,13 +85,13 @@ class SyndicationControlPanelForm(controlpanel.RegistryEditForm):
         self.setSyndicationActionSettings(data)
         self.applyChanges(data)
         IStatusMessage(self.request).addStatusMessage(
-            _(u"Changes saved."), "info")
+            _("Changes saved."), "info")
         self.request.response.redirect(self.request.getURL())
 
-    @button.buttonAndHandler(_(u"Cancel"), name='cancel')
+    @button.buttonAndHandler(_("Cancel"), name='cancel')
     def handleCancel(self, action):
         IStatusMessage(self.request).addStatusMessage(
-            _(u"Edit cancelled."), "info")
+            _("Edit cancelled."), "info")
         self.request.response.redirect(self.request.getURL())
 
 

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from datetime import datetime
 from plone.resource.directory import FilesystemResourceDirectory
 from plone.resource.file import FilesystemFile
@@ -11,7 +10,7 @@ from zope.component.hooks import getSite
 import os
 
 
-class Bundle(object):
+class Bundle:
     """Wraps pure bundles RecordsProxy and enrich with logic
     .
     Proxy attributes and provide some utility functions
@@ -97,7 +96,7 @@ class Bundle(object):
         return getattr(self.data, name)
 
     def __repr__(self):
-        return '<{0}.{1} object "{2}" at {3}>'.format(
+        return '<{}.{} object "{}" at {}>'.format(
             self.__class__.__module__,
             self.__class__.__name__,
             self.name,

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 ##############################################################################
 #
 # Copyright (c) 2001 Zope Foundation and Contributors.
@@ -47,7 +46,7 @@ def seq_strip(seq, stripper=lambda x: x.strip()):
     if isinstance(seq, tuple):
         return tuple(map(stripper, seq))
 
-    raise ValueError("%s of unsupported sequencetype %s" % (seq, type(seq)))
+    raise ValueError("{} of unsupported sequencetype {}".format(seq, type(seq)))
 
 
 def tuplize(valueName, value, splitter=lambda x: x.split()):

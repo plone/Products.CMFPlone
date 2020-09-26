@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Acquisition import aq_parent
 from AccessControl import Unauthorized
 
@@ -20,7 +19,7 @@ from plone.registry.interfaces import IRegistry
 
 
 @implementer(ISyndicationTool)
-class SyndicationTool(object):
+class SyndicationTool:
     """
     Backward compatible tool. This just implements
     what some other packages use for now to provide

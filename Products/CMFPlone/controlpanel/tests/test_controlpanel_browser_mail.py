@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.testing import SITE_OWNER_NAME, SITE_OWNER_PASSWORD
 from plone.registry.interfaces import IRegistry
 from plone.testing.zope import Browser
@@ -28,7 +27,7 @@ class MailControlPanelFunctionalTest(unittest.TestCase):
         self.browser.handleErrors = False
         self.browser.addHeader(
             'Authorization',
-            'Basic %s:%s' % (SITE_OWNER_NAME, SITE_OWNER_PASSWORD,)
+            f'Basic {SITE_OWNER_NAME}:{SITE_OWNER_PASSWORD}'
         )
 
     def test_mail_controlpanel_link(self):
@@ -179,7 +178,7 @@ class MailControlPanelFunctionalTest(unittest.TestCase):
             "%s/contact-info" % self.portal_url)
         self.assertTrue(
             'Message' in self.browser.contents,
-            u'Message exists not in the contact-info form!'
+            'Message exists not in the contact-info form!'
         )
 
     def test_controlpanel_overview_shows_no_unconfigured_mailhost_warning(
@@ -197,7 +196,7 @@ class MailControlPanelFunctionalTest(unittest.TestCase):
             "%s/overview-controlpanel" % self.portal_url)
         self.assertFalse(
             'not configured a mail host' in self.browser.contents,
-            u'There should not be a warning for unconfigured mailhost!'
+            'There should not be a warning for unconfigured mailhost!'
         )
 
     def test_controlpanel_overview_shows_unconfigured_mailhost_warning(
@@ -210,5 +209,5 @@ class MailControlPanelFunctionalTest(unittest.TestCase):
             "%s/overview-controlpanel" % self.portal_url)
         self.assertTrue(
             'not configured a mail host' in self.browser.contents,
-            u'There should be a warning for unconfigured mailhost!'
+            'There should be a warning for unconfigured mailhost!'
         )

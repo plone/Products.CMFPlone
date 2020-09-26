@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.CMFPlone.interfaces.controlpanel import IMailSchema
 from Products.CMFPlone.utils import safe_hasattr
@@ -10,7 +9,7 @@ from zope.component.hooks import getSite
 
 
 @implementer(IMailSchema)
-class MailControlPanelAdapter(object):
+class MailControlPanelAdapter:
 
     adapts(IPloneSiteRoot)
 

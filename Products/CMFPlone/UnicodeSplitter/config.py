@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 config.py
 
@@ -15,7 +14,7 @@ rangetable = dict(
     # digit=u"\d",
 
     # U+AC00-D7AF       Hangul Syllables        ハングル音節文字
-    hangul=u"\uAC00-\uD7AF",
+    hangul="\uAC00-\uD7AF",
 
     # U+30A0-30FF       Katakana        片仮名
     # U+3040-309F       Hiragana        平仮名
@@ -28,8 +27,8 @@ rangetable = dict(
     # U+F900-FAFF     CJK Compatibility Ideographs    CJK互換漢字
     # ideo=u"\u4E00-\u9FFF\u3400-\u4DBF\uF900-\uFAFF",
 
-    cj=u"\u3040-\u30FF\u4E00-\u9FFF\u3400-\u4DBF\uF900-\uFAFF",
-    thai=u"\u0E00-\u0E7F",  # U+0E00-0E7F Thai タイ文字
+    cj="\u3040-\u30FF\u4E00-\u9FFF\u3400-\u4DBF\uF900-\uFAFF",
+    thai="\u0E00-\u0E7F",  # U+0E00-0E7F Thai タイ文字
 )
 # End of setting.
 
@@ -37,8 +36,8 @@ rangetable = dict(
 # Splitting core.
 ps = rangetable.values()
 allp = "".join(ps)
-glob_true = r"[^%s]([^%s]|[\*\?])*|" % (allp, allp) + \
-    "|".join(["[%s]+" % (x, ) for x in ps])
+glob_true = fr"[^{allp}]([^{allp}]|[\*\?])*|" + \
+    "|".join([f"[{x}]+" for x in ps])
 
 glob_false = r"[^%s]+|" % allp + "|".join("[%s]+" % x for x in ps)
 

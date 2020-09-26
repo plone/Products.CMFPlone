@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces.controlpanel import IMailSchema
 from Products.CMFPlone.utils import pretty_title_or_id
@@ -25,27 +24,27 @@ logger = logging.getLogger("Plone")
 
 
 class SendToForm(form.Form):
-    label = _(u'heading_send_page_to',
-              default=u'Send this page to someone')
+    label = _('heading_send_page_to',
+              default='Send this page to someone')
 
-    description = _(u'description_send_page_url_to',
-                    default=u'Fill in the email address of your '
-                    u'friend, and we will send an email '
-                    u'that contains a link to this page.')
+    description = _('description_send_page_url_to',
+                    default='Fill in the email address of your '
+                    'friend, and we will send an email '
+                    'that contains a link to this page.')
 
     fields = field.Fields(ISendToForm)
     ignoreContext = True
 
     mail_template = ViewPageTemplateFile('templates/sendto_template.pt')
 
-    @button.buttonAndHandler(_(u'label_send', default='Send'),
+    @button.buttonAndHandler(_('label_send', default='Send'),
                              name='send')
     def handle_send(self, action):
         data, errors = self.extractData()
         if errors:
             IStatusMessage(self.request).addStatusMessage(
                 self.formErrorsMessage,
-                type=u'error'
+                type='error'
             )
             return
 
@@ -97,14 +96,14 @@ class SendToForm(form.Form):
             # TODO To many things could possibly go wrong. So we catch all.
             logger.info("Unable to send mail: " + str(e))
             IStatusMessage(self.request).addStatusMessage(
-                _(u'Unable to send mail.'),
-                type=u'error'
+                _('Unable to send mail.'),
+                type='error'
             )
             return
 
         IStatusMessage(self.request).addStatusMessage(
-            _(u'Mail sent.'),
-            type=u'info'
+            _('Mail sent.'),
+            type='info'
         )
 
 send_to_form = layout.wrap_form(SendToForm)

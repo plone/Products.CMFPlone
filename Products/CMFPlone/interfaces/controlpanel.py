@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone._compat import dump_json_to_text
@@ -23,7 +22,7 @@ deprecated(
 )
 
 
-ROBOTS_TXT = u"""Sitemap: {portal_url}/sitemap.xml.gz
+ROBOTS_TXT = """Sitemap: {portal_url}/sitemap.xml.gz
 
 # Define access-restrictions for robots/spiders
 # http://www.robotstxt.org/wc/norobots.html
@@ -64,8 +63,8 @@ def validate_json(value):
         json.loads(value)
     except ValueError as exc:
         class JSONError(schema.ValidationError):
-            __doc__ = _(u"Must be empty or a valid JSON-formatted "
-                        u"configuration – ${message}.", mapping={
+            __doc__ = _("Must be empty or a valid JSON-formatted "
+                        "configuration – ${message}.", mapping={
                             'message': str(exc)})
 
         raise JSONError(value)
@@ -101,8 +100,8 @@ class IControlPanel(IPloneBaseTool):
 class IEditingSchema(Interface):
 
     available_editors = schema.List(
-        title=_(u'Available editors'),
-        description=_(u'Available editors in the portal.'),
+        title=_('Available editors'),
+        description=_('Available editors in the portal.'),
         default=['TinyMCE', 'None'],
         value_type=schema.TextLine(),
         missing_value=[],
@@ -110,66 +109,66 @@ class IEditingSchema(Interface):
     )
 
     default_editor = schema.Choice(
-        title=_(u'Default editor'),
+        title=_('Default editor'),
         description=_(
-            u'Select the default wysiwyg '
-            u'editor. Users will be able to choose their '
-            u'own or select to use the site default.'),
-        default=u'TinyMCE',
+            'Select the default wysiwyg '
+            'editor. Users will be able to choose their '
+            'own or select to use the site default.'),
+        default='TinyMCE',
         missing_value=set(),
         vocabulary='plone.app.vocabularies.AvailableEditors',
         required=True)
 
     ext_editor = schema.Bool(
-        title=_(u'Enable External Editor feature'),
+        title=_('Enable External Editor feature'),
         description=_(
-            u'Determines if the external editor '
-            u'feature is enabled. This feature requires a '
-            u'special client-side application installed. The '
-            u'users also have to enable this in their '
-            u'preferences.'),
+            'Determines if the external editor '
+            'feature is enabled. This feature requires a '
+            'special client-side application installed. The '
+            'users also have to enable this in their '
+            'preferences.'),
         default=False,
         required=False)
 
     enable_link_integrity_checks = schema.Bool(
-        title=_(u'Enable link integrity checks'),
+        title=_('Enable link integrity checks'),
         description=_(
-            u'Determines if the users should get '
-            u'warnings when they delete or move content that '
-            u'is linked from inside the site.'),
+            'Determines if the users should get '
+            'warnings when they delete or move content that '
+            'is linked from inside the site.'),
         default=True,
         required=False)
 
     lock_on_ttw_edit = schema.Bool(
-        title=_(u'Enable locking for through-the-web edits'),
+        title=_('Enable locking for through-the-web edits'),
         description=_(
-            u'Disabling locking here will only '
-            u'affect users editing content through the '
-            u'Plone web UI.  Content edited via WebDAV '
-            u'clients will still be subject to locking.'),
+            'Disabling locking here will only '
+            'affect users editing content through the '
+            'Plone web UI.  Content edited via WebDAV '
+            'clients will still be subject to locking.'),
         default=True,
         required=False)
 
     subjects_of_navigation_root = schema.Bool(
-        title=_(u'Limit tags/keywords to the current navigation root'),
+        title=_('Limit tags/keywords to the current navigation root'),
         description=_(
-            u'Limit tags aka keywords vocabulary used for Tags field and '
-            u'in searches to the terms used inside the subtree of the current '
-            u"navigation root. This can be used together with Plone's "
-            u'multilingual extension plone.app.multilingual to only offer '
-            u'keywords of the current selected language. Other addons may '
-            u'utilize this feature for its specific purposes.'),
+            'Limit tags aka keywords vocabulary used for Tags field and '
+            'in searches to the terms used inside the subtree of the current '
+            "navigation root. This can be used together with Plone's "
+            'multilingual extension plone.app.multilingual to only offer '
+            'keywords of the current selected language. Other addons may '
+            'utilize this feature for its specific purposes.'),
         default=False,
         required=False)
 
 
 class ITagAttrPair(Interface):
-    tags = schema.TextLine(title=u'tags')
-    attributes = schema.TextLine(title=u'attributes')
+    tags = schema.TextLine(title='tags')
+    attributes = schema.TextLine(title='attributes')
 
 
 @implementer(ITagAttrPair)
-class TagAttrPair(object):
+class TagAttrPair:
 
     def __init__(self, tags='', attributes=''):
         self.tags = tags
@@ -183,120 +182,120 @@ class IFilterSchema(Interface):
     # class IFilterTagsSchema(Interface):
 
     disable_filtering = schema.Bool(
-        title=_(u'Disable HTML filtering'),
-        description=_(u'Warning: disabling this can be dangerous. '
-                      u'Only disable if you know what you are doing.'),
+        title=_('Disable HTML filtering'),
+        description=_('Warning: disabling this can be dangerous. '
+                      'Only disable if you know what you are doing.'),
         default=False,
         required=False)
 
     nasty_tags = schema.List(
-        title=_(u'Nasty tags'),
-        description=_(u'These tags and their content are completely blocked '
+        title=_('Nasty tags'),
+        description=_('These tags and their content are completely blocked '
                       'when a page is saved or rendered. They are only deleted'
                       ' if they are not marked as valid_tags'),
-        default=[u'style', u'object', u'embed', u'applet', u'script', u'meta'],
+        default=['style', 'object', 'embed', 'applet', 'script', 'meta'],
         value_type=schema.TextLine(),
         missing_value=[],
         required=False)
 
     valid_tags = schema.List(
-        title=_(u'Valid tags'),
-        description=_(u'A list of valid tags which will be not filtered out.'),
+        title=_('Valid tags'),
+        description=_('A list of valid tags which will be not filtered out.'),
         default=[
-            u'a',
-            u'abbr',
-            u'acronym',
-            u'address',
-            u'article',
-            u'aside',
-            u'audio',
-            u'b',
-            u'bdo',
-            u'big',
-            u'blockquote',
-            u'body',
-            u'br',
-            u'canvas',
-            u'caption',
-            u'cite',
-            u'code',
-            u'col',
-            u'colgroup',
-            u'command',
-            u'datalist',
-            u'dd',
-            u'del',
-            u'details',
-            u'dfn',
-            u'dialog',
-            u'div',
-            u'dl',
-            u'dt',
-            u'em',
-            u'figure',
-            u'figcaption',
-            u'footer',
-            u'h1',
-            u'h2',
-            u'h3',
-            u'h4',
-            u'h5',
-            u'h6',
-            u'head',
-            u'header',
-            u'hgroup',
-            u'hr',
-            u'html',
-            u'i',
-            u'iframe',
-            u'img',
-            u'ins',
-            u'kbd',
-            u'keygen',
-            u'li',
-            u'map',
-            u'mark',
-            u'meter',
-            u'nav',
-            u'ol',
-            u'output',
-            u'p',
-            u'pre',
-            u'progress',
-            u'q',
-            u'rp',
-            u'rt',
-            u'ruby',
-            u'samp',
-            u'section',
-            u'small',
-            u'source',
-            u'span',
-            u'strong',
-            u'sub',
-            u'sup',
-            u'table',
-            u'tbody',
-            u'td',
-            u'tfoot',
-            u'th',
-            u'thead',
-            u'time',
-            u'title',
-            u'tr',
-            u'tt',
-            u'u',
-            u'ul',
-            u'var',
-            u'video',
+            'a',
+            'abbr',
+            'acronym',
+            'address',
+            'article',
+            'aside',
+            'audio',
+            'b',
+            'bdo',
+            'big',
+            'blockquote',
+            'body',
+            'br',
+            'canvas',
+            'caption',
+            'cite',
+            'code',
+            'col',
+            'colgroup',
+            'command',
+            'datalist',
+            'dd',
+            'del',
+            'details',
+            'dfn',
+            'dialog',
+            'div',
+            'dl',
+            'dt',
+            'em',
+            'figure',
+            'figcaption',
+            'footer',
+            'h1',
+            'h2',
+            'h3',
+            'h4',
+            'h5',
+            'h6',
+            'head',
+            'header',
+            'hgroup',
+            'hr',
+            'html',
+            'i',
+            'iframe',
+            'img',
+            'ins',
+            'kbd',
+            'keygen',
+            'li',
+            'map',
+            'mark',
+            'meter',
+            'nav',
+            'ol',
+            'output',
+            'p',
+            'pre',
+            'progress',
+            'q',
+            'rp',
+            'rt',
+            'ruby',
+            'samp',
+            'section',
+            'small',
+            'source',
+            'span',
+            'strong',
+            'sub',
+            'sup',
+            'table',
+            'tbody',
+            'td',
+            'tfoot',
+            'th',
+            'thead',
+            'time',
+            'title',
+            'tr',
+            'tt',
+            'u',
+            'ul',
+            'var',
+            'video',
         ],
         value_type=schema.TextLine(),
         missing_value=[],
         required=False)
 
     custom_attributes = schema.List(
-        title=_(u'Custom attributes'),
-        description=_(u'These attributes are additionally allowed.'),
+        title=_('Custom attributes'),
+        description=_('These attributes are additionally allowed.'),
         default=['style'],
         value_type=schema.TextLine(),
         missing_value=[],
@@ -307,15 +306,15 @@ class ITinyMCELayoutSchema(Interface):
     """This interface defines the layout properties."""
 
     resizing = schema.Bool(
-        title=_(u'Enable resizing the editor window.'),
-        description=_(u'This option gives you the ability to enable/disable '
+        title=_('Enable resizing the editor window.'),
+        description=_('This option gives you the ability to enable/disable '
                       'resizing the editor window. '),
         default=True,
         required=False)
 
     autoresize = schema.Bool(
-        title=_(u'Enable auto resizing of the editor window.'),
-        description=_(u'This option gives you the ability to enable/disable '
+        title=_('Enable auto resizing of the editor window.'),
+        description=_('This option gives you the ability to enable/disable '
                       'auto resizing the editor window depending '
                       'on the content.'),
         default=False,
@@ -323,16 +322,16 @@ class ITinyMCELayoutSchema(Interface):
 
     # TODO: add validation to assert % and px in the value
     editor_width = schema.TextLine(
-        title=_(u'Editor width'),
-        description=_(u'This option gives you the ability to specify the '
+        title=_('Editor width'),
+        description=_('This option gives you the ability to specify the '
                       'width of the editor (like 100% or 400px).'),
         default=None,
         required=False)
 
     # TODO: add validation to assert % and px in the value
     editor_height = schema.TextLine(
-        title=_(u'Editor height'),
-        description=_(u'This option gives you the ability to specify the '
+        title=_('Editor height'),
+        description=_('This option gives you the ability to specify the '
                       'height of the editor in pixels. '
                       'If auto resize is enabled this value is used '
                       'as minimum height.'),
@@ -340,8 +339,8 @@ class ITinyMCELayoutSchema(Interface):
         required=False)
 
     content_css = schema.List(
-        title=_(u'Choose the CSS used in WYSIWYG Editor Area'),
-        description=_(u'This option enables you to specify a custom CSS file '
+        title=_('Choose the CSS used in WYSIWYG Editor Area'),
+        description=_('This option enables you to specify a custom CSS file '
                       'that provides content CSS. '
                       'This CSS file is the one used within the editor '
                       '(the editable area). In addition to what is listed, '
@@ -350,78 +349,78 @@ class ITinyMCELayoutSchema(Interface):
         value_type=schema.TextLine(),
         missing_value=[],
         default=[
-            u'++plone++static/components/tinymce/'
-            u'skins/lightgray/content.min.css'
+            '++plone++static/components/tinymce/'
+            'skins/lightgray/content.min.css'
         ],
         required=False)
 
     header_styles = schema.List(
-        title=_(u'Header styles'),
+        title=_('Header styles'),
         description=_('Name|tag'),
         value_type=schema.TextLine(),
         missing_value=[],
         default=[
-            u'Header 1|h1',
-            u'Header 2|h2',
-            u'Header 3|h3',
-            u'Header 4|h4',
-            u'Header 5|h5',
-            u'Header 6|h6'
+            'Header 1|h1',
+            'Header 2|h2',
+            'Header 3|h3',
+            'Header 4|h4',
+            'Header 5|h5',
+            'Header 6|h6'
         ])
 
     inline_styles = schema.List(
-        title=_(u'Inline styles'),
+        title=_('Inline styles'),
         description=_('Name|format|icon'),
         value_type=schema.TextLine(),
         missing_value=[],
         default=[
-            u'Bold|bold|bold',
-            u'Italic|italic|italic',
-            u'Underline|underline|underline',
-            u'Strikethrough|strikethrough|strikethrough',
-            u'Superscript|superscript|superscript',
-            u'Subscript|subscript|subscript',
-            u'Code|code|code'])
+            'Bold|bold|bold',
+            'Italic|italic|italic',
+            'Underline|underline|underline',
+            'Strikethrough|strikethrough|strikethrough',
+            'Superscript|superscript|superscript',
+            'Subscript|subscript|subscript',
+            'Code|code|code'])
 
     block_styles = schema.List(
-        title=_(u'Block styles'),
+        title=_('Block styles'),
         description=_('Name|format'),
         value_type=schema.TextLine(),
         missing_value=[],
         default=[
-            u'Paragraph|p',
-            u'Blockquote|blockquote',
-            u'Div|div',
-            u'Pre|pre'])
+            'Paragraph|p',
+            'Blockquote|blockquote',
+            'Div|div',
+            'Pre|pre'])
 
     alignment_styles = schema.List(
-        title=_(u'Alignment styles'),
+        title=_('Alignment styles'),
         description=_('Name|format|icon'),
         value_type=schema.TextLine(),
         missing_value=[],
         default=[
-            u'Left|alignleft|alignleft',
-            u'Center|aligncenter|aligncenter',
-            u'Right|alignright|alignright',
-            u'Justify|alignjustify|alignjustify'])
+            'Left|alignleft|alignleft',
+            'Center|aligncenter|aligncenter',
+            'Right|alignright|alignright',
+            'Justify|alignjustify|alignjustify'])
 
     table_styles = schema.List(
-        title=_(u'Table styles'),
+        title=_('Table styles'),
         description=_('Name|class'),
         value_type=schema.TextLine(),
         missing_value=[],
         default=[
-            u'Listing|listing',
-            u'Invisible Grid|invisible-grid'
+            'Listing|listing',
+            'Invisible Grid|invisible-grid'
         ])
 
     formats = schema.Text(
-        title=_(u'Formats'),
+        title=_('Formats'),
         description=_(
-            u'Enter a JSON-formatted style format configuration. '
-            u'A format is for example the style that get applied when '
-            u'you press the bold button inside the editor. '
-            u'See https://www.tinymce.com/docs/configure/content-formatting/#formats'),  # NOQA: E501
+            'Enter a JSON-formatted style format configuration. '
+            'A format is for example the style that get applied when '
+            'you press the bold button inside the editor. '
+            'See https://www.tinymce.com/docs/configure/content-formatting/#formats'),  # NOQA: E501
         constraint=validate_json,
         default=dump_json_to_text({
             'discreet': {'inline': 'span', 'classes': 'discreet'},
@@ -435,42 +434,42 @@ class ITinyMCEPluginSchema(Interface):
     """This interface defines the toolbar properties."""
 
     plugins = schema.List(
-        title=_('label_tinymce_plugins', default=u'Editor plugins'),
+        title=_('label_tinymce_plugins', default='Editor plugins'),
         description=_('help_tinymce_plugins', default=(
-            u'Select plugins to include with tinymce')),
+            'Select plugins to include with tinymce')),
         value_type=schema.Choice(vocabulary=SimpleVocabulary([
-            SimpleTerm('advlist', 'advlist', u'advlist'),
-            SimpleTerm('anchor', 'anchor', u'anchor'),
-            SimpleTerm('autosave', 'autosave', u'autosave'),
-            SimpleTerm('charmap', 'charmap', u'charmap'),
-            SimpleTerm('code', 'code', u'code'),
-            SimpleTerm('colorpicker', 'colorpicker', u'colorpicker'),
-            SimpleTerm('contextmenu', 'contextmenu', u'contextmenu'),
-            SimpleTerm('directionality', 'directionality', u'directionality'),
-            SimpleTerm('emoticons', 'emoticons', u'emoticons'),
-            SimpleTerm('fullpage', 'fullpage', u'fullpage'),
-            SimpleTerm('fullscreen', 'fullscreen', u'fullscreen'),
-            SimpleTerm('hr', 'hr', u'hr'),
-            SimpleTerm('insertdatetime', 'insertdatetime', u'insertdatetime'),
-            SimpleTerm('layer', 'layer', u'layer'),
-            SimpleTerm('lists', 'lists', u'lists'),
-            SimpleTerm('media', 'media', u'media'),
-            SimpleTerm('nonbreaking', 'nonbreaking', u'nonbreaking'),
-            SimpleTerm('noneditable', 'noneditable', u'noneditable'),
-            SimpleTerm('pagebreak', 'pagebreak', u'pagebreak'),
-            SimpleTerm('paste', 'paste', u'paste'),
-            SimpleTerm('preview', 'preview', u'preview'),
-            SimpleTerm('print', 'print', u'print'),
+            SimpleTerm('advlist', 'advlist', 'advlist'),
+            SimpleTerm('anchor', 'anchor', 'anchor'),
+            SimpleTerm('autosave', 'autosave', 'autosave'),
+            SimpleTerm('charmap', 'charmap', 'charmap'),
+            SimpleTerm('code', 'code', 'code'),
+            SimpleTerm('colorpicker', 'colorpicker', 'colorpicker'),
+            SimpleTerm('contextmenu', 'contextmenu', 'contextmenu'),
+            SimpleTerm('directionality', 'directionality', 'directionality'),
+            SimpleTerm('emoticons', 'emoticons', 'emoticons'),
+            SimpleTerm('fullpage', 'fullpage', 'fullpage'),
+            SimpleTerm('fullscreen', 'fullscreen', 'fullscreen'),
+            SimpleTerm('hr', 'hr', 'hr'),
+            SimpleTerm('insertdatetime', 'insertdatetime', 'insertdatetime'),
+            SimpleTerm('layer', 'layer', 'layer'),
+            SimpleTerm('lists', 'lists', 'lists'),
+            SimpleTerm('media', 'media', 'media'),
+            SimpleTerm('nonbreaking', 'nonbreaking', 'nonbreaking'),
+            SimpleTerm('noneditable', 'noneditable', 'noneditable'),
+            SimpleTerm('pagebreak', 'pagebreak', 'pagebreak'),
+            SimpleTerm('paste', 'paste', 'paste'),
+            SimpleTerm('preview', 'preview', 'preview'),
+            SimpleTerm('print', 'print', 'print'),
             # XXX disable save button since it is not implemeneted
             # SimpleTerm('save', 'save', u'save'),
-            SimpleTerm('searchreplace', 'searchreplace', u'searchreplace'),
-            SimpleTerm('tabfocus', 'tabfocus', u'tabfocus'),
-            SimpleTerm('table', 'table', u'table'),
-            SimpleTerm('textcolor', 'textcolor', u'textcolor'),
-            SimpleTerm('textpattern', 'textpattern', u'textpattern'),
-            SimpleTerm('visualblocks', 'visualblocks', u'visualblocks'),
-            SimpleTerm('visualchars', 'visualchars', u'visualchars'),
-            SimpleTerm('wordcount', 'wordcount', u'wordcount')
+            SimpleTerm('searchreplace', 'searchreplace', 'searchreplace'),
+            SimpleTerm('tabfocus', 'tabfocus', 'tabfocus'),
+            SimpleTerm('table', 'table', 'table'),
+            SimpleTerm('textcolor', 'textcolor', 'textcolor'),
+            SimpleTerm('textpattern', 'textpattern', 'textpattern'),
+            SimpleTerm('visualblocks', 'visualblocks', 'visualblocks'),
+            SimpleTerm('visualchars', 'visualchars', 'visualchars'),
+            SimpleTerm('wordcount', 'wordcount', 'wordcount')
         ])),
         default=['advlist', 'fullscreen', 'hr', 'lists', 'media',
                  'nonbreaking', 'noneditable', 'pagebreak', 'paste', 'preview',
@@ -480,15 +479,15 @@ class ITinyMCEPluginSchema(Interface):
         required=False)
 
     menubar = schema.List(
-        title=_('label_tinymce_menubar', default=u'Menubar'),
+        title=_('label_tinymce_menubar', default='Menubar'),
         description=_('help_tinymce_menubar', default=(
-            u'Enter what items you would like in the menu bar.')),
+            'Enter what items you would like in the menu bar.')),
         required=True,
         value_type=schema.TextLine(),
         missing_value=[],
         default=[
-            u'edit', u'table', u'format',
-            u'tools' u'view', u'insert'])
+            'edit', 'table', 'format',
+            'tools' 'view', 'insert'])
 
     menu = schema.Text(
         title=_('label_tinymce_menu', 'Menu'),
@@ -524,12 +523,12 @@ class ITinyMCEPluginSchema(Interface):
     )
 
     templates = schema.Text(
-        title=_('label_tinymce_templates', default=u'Templates'),
+        title=_('label_tinymce_templates', default='Templates'),
         description=_(
             'help_tinymce_templates',
             default=(
-                u'Enter the list of templates in json format '
-                u'https://www.tinymce.com/docs/plugins/template/'
+                'Enter the list of templates in json format '
+                'https://www.tinymce.com/docs/plugins/template/'
             )
         ),
         required=False,
@@ -537,18 +536,18 @@ class ITinyMCEPluginSchema(Interface):
         default=dump_json_to_text({}))
 
     toolbar = schema.Text(
-        title=_('label_tinymce_toolbar', default=u'Toolbar'),
+        title=_('label_tinymce_toolbar', default='Toolbar'),
         description=_('help_tinymce_toolbar', default=(
-            u'Enter how you would like the toolbar items to list.')),
+            'Enter how you would like the toolbar items to list.')),
         required=True,
-        default=u'ltr rtl | undo redo | styleselect | bold italic | '
-                u'alignleft aligncenter alignright alignjustify | '
-                u'bullist numlist outdent indent | '
-                u'unlink plonelink ploneimage')
+        default='ltr rtl | undo redo | styleselect | bold italic | '
+                'alignleft aligncenter alignright alignjustify | '
+                'bullist numlist outdent indent | '
+                'unlink plonelink ploneimage')
 
     custom_plugins = schema.List(
-        title=_(u'Custom plugins'),
-        description=_(u'Enter a list of custom plugins which will be loaded '
+        title=_('Custom plugins'),
+        description=_('Enter a list of custom plugins which will be loaded '
                       'in the editor. Format is '
                       'pluginname|location, one per line.'),
         required=False,
@@ -557,9 +556,9 @@ class ITinyMCEPluginSchema(Interface):
         default=[])
 
     custom_buttons = schema.List(
-        title=_(u'Custom buttons'),
+        title=_('Custom buttons'),
         description=_(
-            u'Enter a list of custom buttons which will be added to toolbar'),
+            'Enter a list of custom buttons which will be added to toolbar'),
         required=False,
         value_type=schema.TextLine(),
         missing_value=[],
@@ -573,69 +572,69 @@ class ITinyMCESpellCheckerSchema(Interface):
     """This interface defines the libraries properties."""
 
     libraries_spellchecker_choice = schema.Choice(
-        title=_(u'Spellchecker plugin to use'),
-        description=_(u'This option allows you to choose the spellchecker for '
-                      u'TinyMCE.'),
+        title=_('Spellchecker plugin to use'),
+        description=_('This option allows you to choose the spellchecker for '
+                      'TinyMCE.'),
         missing_value=set(),
         vocabulary=SimpleVocabulary([
             SimpleTerm('browser', 'browser',
-                       _(u'Default browser spellchecker')),
+                       _('Default browser spellchecker')),
             SimpleTerm('AtD', 'AtD',
-                       _(u'After the deadline (FLOSS)')),
+                       _('After the deadline (FLOSS)')),
         ]),
-        default=u'browser',
+        default='browser',
         required=False)
 
     libraries_atd_ignore_strings = schema.List(
-        title=_(u'AtD ignore strings'),
+        title=_('AtD ignore strings'),
         description=_(
             'label_atd_ignore_strings',
-            default=u'A list of strings which the "After the Deadline" '
-                    u'spellchecker should ignore. '
-                    u'Note: This option is only applicable when the '
-                    u'appropriate spellchecker has been chosen above.'),
+            default='A list of strings which the "After the Deadline" '
+                    'spellchecker should ignore. '
+                    'Note: This option is only applicable when the '
+                    'appropriate spellchecker has been chosen above.'),
         default=[
-            u'Zope',
-            u'Plone',
-            u'TinyMCE'],
+            'Zope',
+            'Plone',
+            'TinyMCE'],
         value_type=schema.TextLine(),
         missing_value=[],
         required=False)
 
     libraries_atd_show_types = schema.List(
-        title=_(u'AtD error types to show'),
+        title=_('AtD error types to show'),
         description=_(
             'help_atderrortypes_to_show',
-            default=u'A list of error types which the '
-                    u'"After the Deadline" spellchecker should check for. '
-                    u'By default, all the available error type will be '
-                    u'listed here.'),
+            default='A list of error types which the '
+                    '"After the Deadline" spellchecker should check for. '
+                    'By default, all the available error type will be '
+                    'listed here.'),
         value_type=schema.TextLine(),
         default=[
-            u'Bias Language',
-            u'Cliches',
-            u'Complex Expression',
-            u'Diacritical Marks',
-            u'Double Negatives',
-            u'Hidden Verbs',
-            u'Jargon Language',
-            u'Passive voice',
-            u'Phrases to Avoid',
-            u'Redundant Expression'],
+            'Bias Language',
+            'Cliches',
+            'Complex Expression',
+            'Diacritical Marks',
+            'Double Negatives',
+            'Hidden Verbs',
+            'Jargon Language',
+            'Passive voice',
+            'Phrases to Avoid',
+            'Redundant Expression'],
         missing_value=[],
         required=False)
 
     libraries_atd_service_url = schema.TextLine(
-        title=_(u'AtD service URL'),
+        title=_('AtD service URL'),
         description=_(
             'help_atd_service_url',
-            default=u'The URL of the "After the Deadline" grammar and spell '
-                    u'checking server. '
-                    u'The default value is the public server, '
-                    u'but ideally you should download and install your own '
-                    u'and specify its address here.'),
+            default='The URL of the "After the Deadline" grammar and spell '
+                    'checking server. '
+                    'The default value is the public server, '
+                    'but ideally you should download and install your own '
+                    'and specify its address here.'),
         required=True,
-        default=u'service.afterthedeadline.com',)
+        default='service.afterthedeadline.com',)
 
 
 class ITinyMCEResourceTypesSchema(Interface):
@@ -651,30 +650,30 @@ class ITinyMCEResourceTypesSchema(Interface):
     #    required=False)
 
     contains_objects = schema.List(
-        title=_(u'Contains objects'),
-        description=_(u'Enter a list of content types which can contain other '
+        title=_('Contains objects'),
+        description=_('Enter a list of content types which can contain other '
                       'objects. Format is one contenttype per line.'),
         value_type=schema.TextLine(),
         default=[
-            u'Folder',
-            u'Large Plone Folder',
-            u'Plone Site'],
+            'Folder',
+            'Large Plone Folder',
+            'Plone Site'],
         missing_value=[],
         required=False)
 
     image_objects = schema.List(
-        title=_(u'Image objects'),
-        description=_(u'Enter a list of content types which can be used as '
+        title=_('Image objects'),
+        description=_('Enter a list of content types which can be used as '
                       'images. Format is one contenttype per line.'),
-        default=[u'Image'],
+        default=['Image'],
         value_type=schema.TextLine(),
         missing_value=[],
         required=False)
 
     entity_encoding = schema.Choice(
-        title=_(u'Entity encoding'),
+        title=_('Entity encoding'),
         description=_(
-            u'This option controls how entities/characters get processed. '
+            'This option controls how entities/characters get processed. '
             'Named: Characters will be converted into named entities '
             'based on the entities option. '
             'Numeric: Characters will be converted into numeric entities. '
@@ -682,10 +681,10 @@ class ITinyMCEResourceTypesSchema(Interface):
             'except these XML default entities: amp lt gt quot'),
         missing_value=set(),
         vocabulary=SimpleVocabulary(
-            [SimpleTerm('named', 'named', _(u'Named')),
-             SimpleTerm('numeric', 'numeric', _(u'Numeric')),
-             SimpleTerm('raw', 'raw', _(u'Raw'))]),
-        default=u"raw",
+            [SimpleTerm('named', 'named', _('Named')),
+             SimpleTerm('numeric', 'numeric', _('Numeric')),
+             SimpleTerm('raw', 'raw', _('Raw'))]),
+        default="raw",
         required=False)
 
 
@@ -717,13 +716,13 @@ class ITinyMCESchema(
 class IMaintenanceSchema(Interface):
 
     days = schema.Int(
-        title=_(u'Days of object history to keep after packing'),
+        title=_('Days of object history to keep after packing'),
         description=_(
-            u'You should pack your database regularly. This number '
-            u'indicates how many days of undo history you want to '
-            u'keep. It is unrelated to versioning, so even if you '
-            u'pack the database, the history of the content changes '
-            u'will be kept. Recommended value is 7 days.'
+            'You should pack your database regularly. This number '
+            'indicates how many days of undo history you want to '
+            'keep. It is unrelated to versioning, so even if you '
+            'pack the database, the history of the content changes '
+            'will be kept. Recommended value is 7 days.'
         ),
         default=7,
         min=0,
@@ -734,70 +733,70 @@ class IMaintenanceSchema(Interface):
 class INavigationSchema(Interface):
 
     navigation_depth = schema.Int(
-        title=_(u'Navigation depth'),
-        description=_(u'Number of folder levels to show in the navigation.'),
+        title=_('Navigation depth'),
+        description=_('Number of folder levels to show in the navigation.'),
         default=3,
         required=True
     )
 
     generate_tabs = schema.Bool(
-        title=_(u'Automatically generate tabs'),
+        title=_('Automatically generate tabs'),
         description=_(
-            u'By default, all items created at the root level will '
-            u'appear as tabs. You can turn this off if you prefer manually '
-            u'constructing this part of the navigation.'),
+            'By default, all items created at the root level will '
+            'appear as tabs. You can turn this off if you prefer manually '
+            'constructing this part of the navigation.'),
         default=True,
         required=False)
 
     nonfolderish_tabs = schema.Bool(
-        title=_(u'Generate tabs for items other than folders.'),
+        title=_('Generate tabs for items other than folders.'),
         description=_(
-            u'By default, any content item in the root of the portal will '
-            u'appear as a tab. If you turn this option off, only folders '
-            u'will be shown. This only has an effect if \'automatically '
-            u'generate tabs\' is enabled.'),
+            'By default, any content item in the root of the portal will '
+            'appear as a tab. If you turn this option off, only folders '
+            'will be shown. This only has an effect if \'automatically '
+            'generate tabs\' is enabled.'),
         default=True,
         required=False)
 
     sort_tabs_on = schema.Choice(
-        title=_(u'Sort tabs on'),
+        title=_('Sort tabs on'),
         description=_(
-            u'Index used to sort the tabs'
+            'Index used to sort the tabs'
         ),
         required=True,
-        default=u'getObjPositionInParent',
+        default='getObjPositionInParent',
         vocabulary=SimpleVocabulary([
             # there is no vocabulary of sortable indexes by now, so hard code
             # some options here
             SimpleTerm(
                 'getObjPositionInParent',
                 'getObjPositionInParent',
-                _(u'Position in Parent')
+                _('Position in Parent')
             ),
             SimpleTerm(
                 'sortable_title',
                 'sortable_title',
-                _(u'Title')
+                _('Title')
             ),
             SimpleTerm(
                 'getId',
                 'getId',
-                _(u'Short Name (ID)')
+                _('Short Name (ID)')
             ),
         ]),
     )
     sort_tabs_reversed = schema.Bool(
-        title=_(u'Reversed sort order for tabs.'),
+        title=_('Reversed sort order for tabs.'),
         description=_(
-            u'Sort tabs in descending.'),
+            'Sort tabs in descending.'),
         default=False,
         required=False)
 
     displayed_types = schema.Tuple(
-        title=_(u'Displayed content types'),
+        title=_('Displayed content types'),
         description=_(
-            u'The content types that should be shown in the navigation and '
-            u'site map.'),
+            'The content types that should be shown in the navigation and '
+            'site map.'),
         required=False,
         default=(
             'Image',
@@ -814,10 +813,10 @@ class INavigationSchema(Interface):
         ))
 
     filter_on_workflow = schema.Bool(
-        title=_(u'Filter on workflow state'),
+        title=_('Filter on workflow state'),
         description=_(
-            u'The workflow states that should be shown in the navigation '
-            u'and the site map.'),
+            'The workflow states that should be shown in the navigation '
+            'and the site map.'),
         default=False,
         required=False)
 
@@ -830,38 +829,38 @@ class INavigationSchema(Interface):
 
     show_excluded_items = schema.Bool(
         title=_(
-            u'Show items normally excluded from navigation if viewing their '
-            u'children.'),
+            'Show items normally excluded from navigation if viewing their '
+            'children.'),
         description=_(
-            u'If an item has been excluded from navigation should it be '
-            u'shown in navigation when viewing content contained within it '
-            u'or within a subfolder.'),
+            'If an item has been excluded from navigation should it be '
+            'shown in navigation when viewing content contained within it '
+            'or within a subfolder.'),
         default=True,
         required=False)
 
     root = schema.TextLine(
         title=_(
-            u'Root'),
+            'Root'),
         description=_(
-            u'Path to be used as navigation root, relative to Plone site root.'
-            u'Starts with \'/\''
+            'Path to be used as navigation root, relative to Plone site root.'
+            'Starts with \'/\''
         ),
-        default=u'/',
+        default='/',
         required=True
     )
 
     sitemap_depth = schema.Int(
-        title=_(u'Sitemap depth'),
-        description=_(u'Number of folder levels to show in the site map.'),
+        title=_('Sitemap depth'),
+        description=_('Number of folder levels to show in the site map.'),
         default=3,
         required=True
     )
 
     parent_types_not_to_query = schema.List(
-        title=_(u'Hide children of these types'),
+        title=_('Hide children of these types'),
         description=_(
-            u'Hide content inside the following types in Navigation.'),
-        default=[u'TempFolder'],
+            'Hide content inside the following types in Navigation.'),
+        default=['TempFolder'],
         value_type=schema.TextLine(),
         missing_value=(),
         required=False,
@@ -871,22 +870,22 @@ class INavigationSchema(Interface):
 class ISearchSchema(Interface):
 
     enable_livesearch = schema.Bool(
-        title=_(u'Enable LiveSearch'),
+        title=_('Enable LiveSearch'),
         description=_(
-            u'Enables the LiveSearch feature, which shows live '
-            u'results if the browser supports JavaScript.'),
+            'Enables the LiveSearch feature, which shows live '
+            'results if the browser supports JavaScript.'),
         default=True,
         required=False
     )
 
     types_not_searched = schema.Tuple(
-        title=_(u'Define the types to be shown in the site and searched'),
+        title=_('Define the types to be shown in the site and searched'),
         description=_(
-            u'Define the types that should be searched and be '
-            u'available in the user facing part of the site. '
-            u'Note that if new content types are installed, they '
-            u'will be enabled by default unless explicitly turned '
-            u'off here or by the relevant installer.'
+            'Define the types that should be searched and be '
+            'available in the user facing part of the site. '
+            'Note that if new content types are installed, they '
+            'will be enabled by default unless explicitly turned '
+            'off here or by the relevant installer.'
         ),
         required=False,
         default=(
@@ -901,21 +900,21 @@ class ISearchSchema(Interface):
     )
 
     search_results_description_length = schema.Int(
-        title=_(u'Crop the item description in search result listings '
-                u'after a number of characters.'),
+        title=_('Crop the item description in search result listings '
+                'after a number of characters.'),
         required=False,
         default=160,
     )
 
     sort_on = schema.Choice(
-        title=_(u'label_sort_on', default=u'Sort on'),
-        description=_(u'Sort the default search on this index'),
+        title=_('label_sort_on', default='Sort on'),
+        description=_('Sort the default search on this index'),
         vocabulary=SimpleVocabulary([
-            SimpleTerm(u'relevance', u'relevance', _(u'relevance')),
-            SimpleTerm(u'Date', u'Date', _(u'date (newest first)')),
-            SimpleTerm(u'sortable_title', u'sortable_title',
-                       _(u'alphabetically'))]),
-        default=u'relevance',
+            SimpleTerm('relevance', 'relevance', _('relevance')),
+            SimpleTerm('Date', 'Date', _('date (newest first)')),
+            SimpleTerm('sortable_title', 'sortable_title',
+                       _('alphabetically'))]),
+        default='relevance',
         required=True
     )
 
@@ -923,70 +922,70 @@ class ISearchSchema(Interface):
 class ISecuritySchema(Interface):
 
     enable_self_reg = schema.Bool(
-        title=_(u'Enable self-registration'),
+        title=_('Enable self-registration'),
         description=_(
-            u'Allows users to register themselves on the site. If '
-            u'not selected, only site managers can add new users.'),
+            'Allows users to register themselves on the site. If '
+            'not selected, only site managers can add new users.'),
         default=False,
         required=False)
 
     enable_user_pwd_choice = schema.Bool(
-        title=_(u'Let users select their own passwords'),
+        title=_('Let users select their own passwords'),
         description=_(
-            u'If not selected, a URL will be generated and '
-            u'e-mailed. Users are instructed to follow the link to '
-            u'reach a page where they can change their password and '
-            u'complete the registration process; this also verifies '
-            u'that they have entered a valid email address.'),
+            'If not selected, a URL will be generated and '
+            'e-mailed. Users are instructed to follow the link to '
+            'reach a page where they can change their password and '
+            'complete the registration process; this also verifies '
+            'that they have entered a valid email address.'),
         default=False,
         required=False)
 
     enable_user_folders = schema.Bool(
-        title=_(u'Enable User Folders'),
+        title=_('Enable User Folders'),
         description=_(
-            u'If selected, home folders where users can create '
-            u'content will be created when they log in.'),
+            'If selected, home folders where users can create '
+            'content will be created when they log in.'),
         default=False,
         required=False)
 
     allow_anon_views_about = schema.Bool(
-        title=_(u'Allow anyone to view \'about\' information'),
+        title=_('Allow anyone to view \'about\' information'),
         description=_(
-            u'If not selected only logged-in users will be able to '
-            u'view information about who created an item and when it '
-            u'was modified.'),
+            'If not selected only logged-in users will be able to '
+            'view information about who created an item and when it '
+            'was modified.'),
         default=False,
         required=False)
 
     use_email_as_login = schema.Bool(
-        title=_(u'Use email address as login name'),
+        title=_('Use email address as login name'),
         description=_(
-            u'Allows users to login with their email address instead '
-            u'of specifying a separate login name. This also updates '
-            u'the login name of existing users, which may take a '
-            u'while on large sites. The login name is saved as '
-            u'lower case, but to be userfriendly it does not matter '
-            u'which case you use to login. When duplicates are found, '
-            u'saving this form will fail. You can use the '
-            u'@@migrate-to-emaillogin page to show the duplicates.'),
+            'Allows users to login with their email address instead '
+            'of specifying a separate login name. This also updates '
+            'the login name of existing users, which may take a '
+            'while on large sites. The login name is saved as '
+            'lower case, but to be userfriendly it does not matter '
+            'which case you use to login. When duplicates are found, '
+            'saving this form will fail. You can use the '
+            '@@migrate-to-emaillogin page to show the duplicates.'),
         default=False,
         required=False)
 
     use_uuid_as_userid = schema.Bool(
-        title=_(u'Use UUID user ids'),
+        title=_('Use UUID user ids'),
         description=_(
-            u'Use automatically generated UUIDs as user id for new users. '
-            u'When not turned on, the default is to use the same as the '
-            u'login name, or when using the email address as login name we '
-            u'generate a user id based on the fullname.'),
+            'Use automatically generated UUIDs as user id for new users. '
+            'When not turned on, the default is to use the same as the '
+            'login name, or when using the email address as login name we '
+            'generate a user id based on the fullname.'),
         default=False,
         required=False)
 
     autologin_after_password_reset = schema.Bool(
-        title=_(u'Login user after password reset'),
+        title=_('Login user after password reset'),
         description=_(
-            u'After successful password reset the user will be logged '
-            u'in automatically.'),
+            'After successful password reset the user will be logged '
+            'in automatically.'),
         default=True,
         required=False)
 
@@ -994,195 +993,195 @@ class ISecuritySchema(Interface):
 class ISiteSchema(Interface):
 
     site_title = schema.TextLine(
-        title=_(u'Site title'),
+        title=_('Site title'),
         description=_(
-            u'This shows up in the title bar of '
-            u'browsers and in syndication feeds.'),
-        default=u'Plone site')
+            'This shows up in the title bar of '
+            'browsers and in syndication feeds.'),
+        default='Plone site')
 
     site_logo = schema.Bytes(
-        title=_(u'Site Logo'),
-        description=_(u'This shows a custom logo on your site.'),
+        title=_('Site Logo'),
+        description=_('This shows a custom logo on your site.'),
         required=False,
     )
 
     exposeDCMetaTags = schema.Bool(
-        title=_(u'Expose Dublin Core metadata'),
-        description=_(u'Exposes the Dublin Core properties as metatags.'),
+        title=_('Expose Dublin Core metadata'),
+        description=_('Exposes the Dublin Core properties as metatags.'),
         default=False,
         required=False)
 
     enable_sitemap = schema.Bool(
-        title=_(u'Expose sitemap.xml.gz'),
+        title=_('Expose sitemap.xml.gz'),
         description=_(
-            u'Exposes your content as a file '
-            u'according to the '
-            u'<a href=\'http://sitemaps.org\'>sitemaps.org</a> '
-            u'standard. You '
-            u'can submit this to compliant search engines '
-            u'like Google, Yahoo and Microsoft. It allows '
-            u'these search engines to more intelligently '
-            u'crawl your site.'),
+            'Exposes your content as a file '
+            'according to the '
+            '<a href=\'http://sitemaps.org\'>sitemaps.org</a> '
+            'standard. You '
+            'can submit this to compliant search engines '
+            'like Google, Yahoo and Microsoft. It allows '
+            'these search engines to more intelligently '
+            'crawl your site.'),
         default=False,
         required=False)
 
     webstats_js = schema.SourceText(
-        title=_(u'JavaScript for web statistics support'),
+        title=_('JavaScript for web statistics support'),
         description=_(
-            u'For enabling web statistics support '
-            u'from external providers (e.g. Google '
-            u'Analytics). Paste the provided code snippet here. '
-            u'It will be rendered as '
-            u'entered near the end of the page.'),
-        default=u'',
+            'For enabling web statistics support '
+            'from external providers (e.g. Google '
+            'Analytics). Paste the provided code snippet here. '
+            'It will be rendered as '
+            'entered near the end of the page.'),
+        default='',
         required=False)
 
     display_publication_date_in_byline = schema.Bool(
-        title=_(u'Display publication date'),
+        title=_('Display publication date'),
         description=_(
-            u'Show in the byline the date a content item was published.'),
+            'Show in the byline the date a content item was published.'),
         default=False,
         required=False)
 
     icon_visibility = schema.Choice(
-        title=_(u'Icon visibility'),
-        description=_(u'Show icons in listings'),
-        default=u'enabled',
+        title=_('Icon visibility'),
+        description=_('Show icons in listings'),
+        default='enabled',
         vocabulary=SimpleVocabulary([
-            SimpleTerm('false', 'false', _(u'Never')),
-            SimpleTerm('enabled', 'enabled', _(u'Always')),
+            SimpleTerm('false', 'false', _('Never')),
+            SimpleTerm('enabled', 'enabled', _('Always')),
             SimpleTerm('authenticated', 'authenticated',
                        _('For authenticated users only'))]),
         required=True)
 
     thumb_visibility = schema.Choice(
-        title=_(u'Thumb visibility'),
-        description=_(u'Show thumbnail images in listings'),
-        default=u'enabled',
+        title=_('Thumb visibility'),
+        description=_('Show thumbnail images in listings'),
+        default='enabled',
         vocabulary=SimpleVocabulary([
-            SimpleTerm('false', 'false', _(u'Never')),
-            SimpleTerm('enabled', 'enabled', _(u'Always')),
+            SimpleTerm('false', 'false', _('Never')),
+            SimpleTerm('enabled', 'enabled', _('Always')),
             SimpleTerm('authenticated', 'authenticated',
-                       _(u'For authenticated users only'))]),
+                       _('For authenticated users only'))]),
         required=True)
 
     no_thumbs_portlet = schema.Bool(
-        title=_(u'No Thumbs in portlets'),
+        title=_('No Thumbs in portlets'),
         description=_(
-            u'Suppress thumbs in all portlets;'
-            u' this default can be overridden individually '
-            u'in selected portlets'),
+            'Suppress thumbs in all portlets;'
+            ' this default can be overridden individually '
+            'in selected portlets'),
         default=False,
         required=False)
 
     no_thumbs_lists = schema.Bool(
-        title=_(u'No thumbs in list views'),
-        description=_(u'Suppress thumbs in all list views; '
-                      u'this default can be overriden individually'),
+        title=_('No thumbs in list views'),
+        description=_('Suppress thumbs in all list views; '
+                      'this default can be overriden individually'),
         default=False,
         required=False)
 
     no_thumbs_summary = schema.Bool(
-        title=_(u'No thumbs in summary views'),
-        description=_(u'Suppress thumbs in all summary views; '
-                      u'this default can be overriden individually'),
+        title=_('No thumbs in summary views'),
+        description=_('Suppress thumbs in all summary views; '
+                      'this default can be overriden individually'),
         default=False,
         required=False)
 
     no_thumbs_tables = schema.Bool(
-        title=_(u'No thumbs in table views'), description=_(
-            u'Suppress thumbs in all tableviews and in folder contents view; '
-            u'this default can be overriden individually'),
+        title=_('No thumbs in table views'), description=_(
+            'Suppress thumbs in all tableviews and in folder contents view; '
+            'this default can be overriden individually'),
         default=False,
         required=False)
 
     thumb_scale_portlet = schema.Choice(
-        title=_(u'Thumb scale for portlets'),
-        description=_(u'This default can be overriden individually.'),
-        default=u'icon',
+        title=_('Thumb scale for portlets'),
+        description=_('This default can be overriden individually.'),
+        default='icon',
         vocabulary='plone.app.vocabularies.ImagesScales',
         required=True)
 
     thumb_scale_listing = schema.Choice(
-        title=_(u'Thumb scale for listings'),
-        description=_(u'E.g. standard view;'
-                      u' This default can be overriden individually.'),
-        default=u'thumb',
+        title=_('Thumb scale for listings'),
+        description=_('E.g. standard view;'
+                      ' This default can be overriden individually.'),
+        default='thumb',
         vocabulary='plone.app.vocabularies.ImagesScales',
         required=True)
 
     thumb_scale_table = schema.Choice(
-        title=_(u'Thumb scale for tables'),
-        description=_(u'E.g., tabular view, folder content listing;'
-                      u' This default can be overriden individually.'),
-        default=u'tile',
+        title=_('Thumb scale for tables'),
+        description=_('E.g., tabular view, folder content listing;'
+                      ' This default can be overriden individually.'),
+        default='tile',
         vocabulary='plone.app.vocabularies.ImagesScales',
         required=True)
 
     thumb_scale_summary = schema.Choice(
-        title=_(u'Thumb scale for summary view'),
-        description=_(u'This default can be overriden individually.'),
-        default=u'mini',
+        title=_('Thumb scale for summary view'),
+        description=_('This default can be overriden individually.'),
+        default='mini',
         vocabulary='plone.app.vocabularies.ImagesScales',
         required=True)
 
     toolbar_position = schema.Choice(
-        title=_(u'Toolbar position'),
+        title=_('Toolbar position'),
         description=_(
-            u'It can be on the side (vertical mode) '
-            u'or on the top (horizontal mode)'),
-        default=u'side',
+            'It can be on the side (vertical mode) '
+            'or on the top (horizontal mode)'),
+        default='side',
         vocabulary=SimpleVocabulary([
-            SimpleTerm('side', 'side', _(u'Side')),
-            SimpleTerm('top', 'top', _(u'Top'))]),
+            SimpleTerm('side', 'side', _('Side')),
+            SimpleTerm('top', 'top', _('Top'))]),
         required=True)
 
     toolbar_logo = schema.TextLine(
-        title=_(u'Relative URL for the toolbar logo'),
+        title=_('Relative URL for the toolbar logo'),
         description=_(
-            u'This must be a URL relative to the site root. '
-            u'By default it is /++plone++static/plone-toolbarlogo.svg'),
-        default=u'/++plone++static/plone-toolbarlogo.svg',
+            'This must be a URL relative to the site root. '
+            'By default it is /++plone++static/plone-toolbarlogo.svg'),
+        default='/++plone++static/plone-toolbarlogo.svg',
         required=False,
     )
 
     robots_txt = schema.SourceText(
         title=_('robots.txt'),
         description=_(
-            u'help_robots_txt',
-            default=u'robots.txt is read by search engines to '
-                    u'determine how to index your site. '
-                    u'For details see <a href=\'http://www.robotstxt.org\'>'
-                    u'http://www.robotstxt.org</a>. '
-                    u'Use \'{portal_url}\' for the site URL.'),
+            'help_robots_txt',
+            default='robots.txt is read by search engines to '
+                    'determine how to index your site. '
+                    'For details see <a href=\'http://www.robotstxt.org\'>'
+                    'http://www.robotstxt.org</a>. '
+                    'Use \'{portal_url}\' for the site URL.'),
         default=ROBOTS_TXT,
         required=False,
     )
 
     default_page = schema.List(
-        title=_(u'Default page IDs'),
+        title=_('Default page IDs'),
         description=_(
-            u'Select which IDs (short names) can act as fallback '
-            u'default pages for a container.'),
+            'Select which IDs (short names) can act as fallback '
+            'default pages for a container.'),
         required=False,
         default=[
-            u'index_html',
-            u'index.html',
-            u'index.htm',
-            u'FrontPage'],
+            'index_html',
+            'index.html',
+            'index.htm',
+            'FrontPage'],
         missing_value=[],
         value_type=schema.TextLine())
 
     roles_allowed_to_add_keywords = schema.List(
-        title=_(u'Roles that can add keywords'),
+        title=_('Roles that can add keywords'),
         description=_(
-            u'help_allow_roles_to_add_keywords',
-            default=u'Only the following roles can add new keywords '),
+            'help_allow_roles_to_add_keywords',
+            default='Only the following roles can add new keywords '),
         required=False,
         default=[
-            u'Manager',
-            u'Site Administrator',
-            u'Reviewer',
+            'Manager',
+            'Site Administrator',
+            'Reviewer',
         ],
         missing_value=[],
         value_type=schema.Choice(vocabulary='plone.app.vocabularies.Roles'),
@@ -1194,22 +1193,22 @@ class IDateAndTimeSchema(Interface):
     """
 
     portal_timezone = schema.Choice(
-        title=_(u'Portal default timezone'),
+        title=_('Portal default timezone'),
         description=_(
-            u'help_portal_timezone',
-            default=u'The timezone setting of the portal. Users can set '
-                    u'their own timezone, if available timezones are '
-                    u'defined.'),
+            'help_portal_timezone',
+            default='The timezone setting of the portal. Users can set '
+                    'their own timezone, if available timezones are '
+                    'defined.'),
         required=True,
         default=None,
         vocabulary='plone.app.vocabularies.CommonTimezones')
 
     available_timezones = schema.List(
-        title=_(u'Available timezones'),
+        title=_('Available timezones'),
         description=_(
-            u'help_available_timezones',
-            default=u'The timezones, which should be available for the '
-                    u'portal. Can be set for users and events'),
+            'help_available_timezones',
+            default='The timezones, which should be available for the '
+                    'portal. Can be set for users and events'),
         required=False,
         default=[],
         missing_value=[],
@@ -1217,10 +1216,10 @@ class IDateAndTimeSchema(Interface):
             vocabulary='plone.app.vocabularies.Timezones'))
 
     first_weekday = schema.Choice(
-        title=_(u'label_first_weekday', default=u'First weekday'),
+        title=_('label_first_weekday', default='First weekday'),
         description=_(
-            u'help_first_weekday',
-            default=u'First day in the week.'),
+            'help_first_weekday',
+            default='First day in the week.'),
         required=True,
         default=None,
         vocabulary='plone.app.vocabularies.Weekdays')
@@ -1231,42 +1230,42 @@ class ITypesSchema(Interface):
     """
 
     types_use_view_action_in_listings = schema.List(
-        title=_(u'Types which use the view action in listing views.'),
+        title=_('Types which use the view action in listing views.'),
         description=_(
-            u'help_types_use_view_action_in_listings',
-            default=u'When clicking items in listing views, these '
-                    u'types will use the \'view\' action instead of using '
-                    u'their default view.'),
+            'help_types_use_view_action_in_listings',
+            default='When clicking items in listing views, these '
+                    'types will use the \'view\' action instead of using '
+                    'their default view.'),
         required=False,
-        default=[u'Image',
-                 u'File'],
+        default=['Image',
+                 'File'],
         missing_value=[],
         value_type=schema.TextLine(),
     )
 
     redirect_links = schema.Bool(
-        title=_(u'Redirect links'),
+        title=_('Redirect links'),
         description=_(
-            u'help_redirect_links',
-            default=u'When clicking on a Link type, should the user be '
-                    u'taken to the default view or be redirected to the '
-                    u'Link\'s URL?'),
+            'help_redirect_links',
+            default='When clicking on a Link type, should the user be '
+                    'taken to the default view or be redirected to the '
+                    'Link\'s URL?'),
         required=False,
         default=True
     )
 
     default_page_types = schema.List(
-        title=_(u'Types that can be set as a default page'),
+        title=_('Types that can be set as a default page'),
         description=_(
-            u'The content types that should be available for selection '
-            u'when setting a default page.'),
+            'The content types that should be available for selection '
+            'when setting a default page.'),
         required=False,
         missing_value=[],
         default=[
-            u'Document',
-            u'Event',
-            u'News Item',
-            u'Collection',
+            'Document',
+            'Event',
+            'News Item',
+            'Collection',
         ],
         value_type=schema.TextLine()
     )
@@ -1276,76 +1275,76 @@ class IMailSchema(Interface):
 
     smtp_host = schema.TextLine(
         title=_(
-            u'label_smtp_server',
-            default=u'SMTP server'),
+            'label_smtp_server',
+            default='SMTP server'),
         description=_(
-            u'help_smtp_server',
-            default=u'The address of your local '
-                    u'SMTP (outgoing e-mail) server. Usually '
-                    u'\'localhost\', unless you use an '
-                    u'external server to send e-mail.'),
-        default=u'localhost',
+            'help_smtp_server',
+            default='The address of your local '
+                    'SMTP (outgoing e-mail) server. Usually '
+                    '\'localhost\', unless you use an '
+                    'external server to send e-mail.'),
+        default='localhost',
         required=True)
 
     smtp_port = schema.Int(
-        title=_(u'label_smtp_port',
-                default=u'SMTP port'),
+        title=_('label_smtp_port',
+                default='SMTP port'),
         description=_(
-            u'help_smtp_port',
-            default=u'The port of your local SMTP '
-                    u'(outgoing e-mail) server. Usually \'25\'.'
+            'help_smtp_port',
+            default='The port of your local SMTP '
+                    '(outgoing e-mail) server. Usually \'25\'.'
         ),
         default=25,
         required=True)
 
     smtp_userid = schema.TextLine(
         title=_(
-            u'label_smtp_userid',
-            default=u'ESMTP username'),
+            'label_smtp_userid',
+            default='ESMTP username'),
         description=_(
-            u'help_smtp_userid',
-            default=u'Username for authentication '
-                    u'to your e-mail server. Not required '
-                    u'unless you are using ESMTP.'),
+            'help_smtp_userid',
+            default='Username for authentication '
+                    'to your e-mail server. Not required '
+                    'unless you are using ESMTP.'),
         default=None,
         required=False)
 
     smtp_pass = schema.Password(
         title=_(
-            u'label_smtp_pass',
-            default=u'ESMTP password'),
+            'label_smtp_pass',
+            default='ESMTP password'),
         description=_(
-            u'help_smtp_pass',
-            default=u'The password for the ESMTP '
-                    u'user account.'),
+            'help_smtp_pass',
+            default='The password for the ESMTP '
+                    'user account.'),
         default=None,
         required=False)
 
     email_from_name = schema.TextLine(
-        title=_(u'Site \'From\' name'),
+        title=_('Site \'From\' name'),
         description=_(
-            u'Plone generates e-mail using '
-            u'this name as the e-mail '
-            u'sender.'),
+            'Plone generates e-mail using '
+            'this name as the e-mail '
+            'sender.'),
         default=None,
         required=True)
 
     email_from_address = schema.ASCIILine(
-        title=_(u'Site \'From\' address'),
+        title=_('Site \'From\' address'),
         description=_(
-            u'Plone generates e-mail using '
-            u'this address as the e-mail '
-            u'return address. It is also '
-            u'used as the destination '
-            u'address for the site-wide '
-            u'contact form and the \'Send test '
-            u'e-mail\' feature.'),
+            'Plone generates e-mail using '
+            'this address as the e-mail '
+            'return address. It is also '
+            'used as the destination '
+            'address for the site-wide '
+            'contact form and the \'Send test '
+            'e-mail\' feature.'),
         default=None,
         required=True)
 
     email_charset = schema.ASCIILine(
-        title=_(u'E-mail characterset'),
-        description=_(u'Characterset to use when sending e-mails.'),
+        title=_('E-mail characterset'),
+        description=_('Characterset to use when sending e-mails.'),
         default='utf-8',
         required=True,
     )
@@ -1354,24 +1353,24 @@ class IMailSchema(Interface):
 class IMarkupSchema(Interface):
 
     default_type = schema.Choice(
-        title=_(u'Default format'),
+        title=_('Default format'),
         description=_(
-            u'Select the default format of textfields for newly '
-            u'created content objects.'
+            'Select the default format of textfields for newly '
+            'created content objects.'
         ),
-        default=u'text/html',
+        default='text/html',
         vocabulary='plone.app.vocabularies.AllowableContentTypes',
         required=True
     )
 
     allowed_types = schema.Tuple(
-        title=_(u'Alternative formats'),
+        title=_('Alternative formats'),
         description=_(
-            u'Select which formats are available for users as '
-            u'alternative to the default format. Note that if new '
-            u'formats are installed, they will be enabled for text '
-            u'fields by default unless explicitly turned off here '
-            u'or by the relevant installer.'
+            'Select which formats are available for users as '
+            'alternative to the default format. Note that if new '
+            'formats are installed, they will be enabled for text '
+            'fields by default unless explicitly turned off here '
+            'or by the relevant installer.'
         ),
         required=True,
         default=('text/html', 'text/x-web-textile'),
@@ -1387,12 +1386,12 @@ class IMarkupSchema(Interface):
             'markdown.extensions.nl2br',
         ],
         description=_(
-            u'Look for available extensions at '
-            u'https://python-markdown.github.io/extensions/ or write your own.'
+            'Look for available extensions at '
+            'https://python-markdown.github.io/extensions/ or write your own.'
         ),
         missing_value=(),
         required=False,
-        title=_(u'Enabled markdown extensions'),
+        title=_('Enabled markdown extensions'),
         value_type=schema.TextLine()
     )
 
@@ -1400,28 +1399,28 @@ class IMarkupSchema(Interface):
 class IUserGroupsSettingsSchema(Interface):
 
     many_groups = schema.Bool(
-        title=_(u'Many groups?'),
+        title=_('Many groups?'),
         description=_(
-            u'Determines if your Plone is optimized '
-            u'for small or large sites. In environments with a '
-            u'lot of groups it can be very slow or impossible '
-            u'to build a list all groups. This option tunes the '
-            u'user interface and behaviour of Plone for this '
-            u'case by allowing you to search for groups instead '
-            u'of listing all of them.'),
+            'Determines if your Plone is optimized '
+            'for small or large sites. In environments with a '
+            'lot of groups it can be very slow or impossible '
+            'to build a list all groups. This option tunes the '
+            'user interface and behaviour of Plone for this '
+            'case by allowing you to search for groups instead '
+            'of listing all of them.'),
         default=False
     )
 
     many_users = schema.Bool(
-        title=_(u'Many users?'),
+        title=_('Many users?'),
         description=_(
-            u'Determines if your Plone is optimized '
-            u'for small or large sites. In environments with a '
-            u'lot of users it can be very slow or impossible to '
-            u'build a list all users. This option tunes the user '
-            u'interface and behaviour of Plone for this case by '
-            u'allowing you to search for users instead of '
-            u'listing all of them.'),
+            'Determines if your Plone is optimized '
+            'for small or large sites. In environments with a '
+            'lot of users it can be very slow or impossible to '
+            'build a list all users. This option tunes the user '
+            'interface and behaviour of Plone for this case by '
+            'allowing you to search for users instead of '
+            'listing all of them.'),
         default=False
     )
 
@@ -1429,24 +1428,24 @@ class IUserGroupsSettingsSchema(Interface):
 def validate_twitter_username(value):
     if value and value.startswith('@'):
         raise Invalid(
-            u'Twitter username should not include the "@" prefix character.')
+            'Twitter username should not include the "@" prefix character.')
     return True
 
 
 class ISocialMediaSchema(Interface):
 
     share_social_data = schema.Bool(
-        title=_(u'Share social data'),
-        description=_(u'Include meta tags on pages to give hints to '
-                      u'social media on how to better render your pages '
-                      u'when shared'),
+        title=_('Share social data'),
+        description=_('Include meta tags on pages to give hints to '
+                      'social media on how to better render your pages '
+                      'when shared'),
         default=True)
 
     twitter_username = schema.ASCIILine(
-        title=_(u'Twitter username'),
+        title=_('Twitter username'),
         description=_(
-            u'To identify things like Twitter Cards. '
-            u'Do not include the "@" prefix character.'
+            'To identify things like Twitter Cards. '
+            'Do not include the "@" prefix character.'
         ),
         required=False,
         default='',
@@ -1454,42 +1453,42 @@ class ISocialMediaSchema(Interface):
     )
 
     facebook_app_id = schema.ASCIILine(
-        title=_(u'Facebook App ID'),
+        title=_('Facebook App ID'),
         description=_(
-            u'To be used with some integrations like Open Graph data'),
+            'To be used with some integrations like Open Graph data'),
         required=False,
         default='')
 
     facebook_username = schema.ASCIILine(
-        title=_(u'Facebook username'),
-        description=_(u'For linking Open Graph data to a Facebook account'),
+        title=_('Facebook username'),
+        description=_('For linking Open Graph data to a Facebook account'),
         required=False,
         default='')
 
 
 class IImagingSchema(Interface):
     allowed_sizes = schema.List(
-        title=_(u'Allowed image sizes'),
+        title=_('Allowed image sizes'),
         description=_(
-            u'Specify all allowed maximum image dimensions, one per line. The '
-            u'required format is &lt;name&gt; &lt;width&gt;:&lt;height&gt;.'
+            'Specify all allowed maximum image dimensions, one per line. The '
+            'required format is &lt;name&gt; &lt;width&gt;:&lt;height&gt;.'
         ),
         value_type=schema.TextLine(),
         default=[
-            u'large 768:768',
-            u'preview 400:400',
-            u'mini 200:200',
-            u'thumb 128:128',
-            u'tile 64:64',
-            u'icon 32:32',
-            u'listing 16:16'],
+            'large 768:768',
+            'preview 400:400',
+            'mini 200:200',
+            'thumb 128:128',
+            'tile 64:64',
+            'icon 32:32',
+            'listing 16:16'],
         missing_value=[],
         required=False,
     )
 
     quality = schema.Int(
-        title=_(u'Scaled image quality'),
-        description=_(u'A value for the quality of scaled images, from 1 '
+        title=_('Scaled image quality'),
+        description=_('A value for the quality of scaled images, from 1 '
                       '(lowest) to 95 (highest). A value of 0 will mean '
                       'plone.scaling\'s default will be used, which is '
                       'currently 88.'),
@@ -1499,19 +1498,19 @@ class IImagingSchema(Interface):
     )
 
     highpixeldensity_scales = schema.Choice(
-        title=_(u'High pixel density mode'),
-        description=_(u''),
+        title=_('High pixel density mode'),
+        description=_(''),
         default='disabled',
         vocabulary=SimpleVocabulary([
-            SimpleTerm('disabled', 'disabled', u'Disabled'),
-            SimpleTerm('2x', '2x', u'Enabled (2x)'),
-            SimpleTerm('3x', '3x', u'Enabled (2x, 3x)')
+            SimpleTerm('disabled', 'disabled', 'Disabled'),
+            SimpleTerm('2x', '2x', 'Enabled (2x)'),
+            SimpleTerm('3x', '3x', 'Enabled (2x, 3x)')
         ]),
     )
 
     quality_2x = schema.Int(
-        title=_(u'Image quality at 2x'),
-        description=_(u'A value for the quality of 2x high pixel density images, from 1 '
+        title=_('Image quality at 2x'),
+        description=_('A value for the quality of 2x high pixel density images, from 1 '
                       '(lowest) to 95 (highest). A value of 0 will mean '
                       'plone.scaling\'s default will be used, which is '
                       'currently 62.'),
@@ -1521,8 +1520,8 @@ class IImagingSchema(Interface):
     )
 
     quality_3x = schema.Int(
-        title=_(u'Image quality at 3x'),
-        description=_(u'A value for the quality of 3x high pixel density images, from 1 '
+        title=_('Image quality at 3x'),
+        description=_('A value for the quality of 3x high pixel density images, from 1 '
                       '(lowest) to 95 (highest). A value of 0 will mean '
                       'plone.scaling\'s default will be used, which is '
                       'currently 51.'),
@@ -1532,10 +1531,10 @@ class IImagingSchema(Interface):
     )
 
     image_captioning = schema.Bool(
-        title=_('image_captioning_title', u'Enable image captioning'),
+        title=_('image_captioning_title', 'Enable image captioning'),
         description=_(
             'image_captioning_description',
-            u'Enable automatic image captioning for images set in the richtext editor based on the description of images.'
+            'Enable automatic image captioning for images set in the richtext editor based on the description of images.'
         ),
         default=True,
         required=False
@@ -1545,38 +1544,38 @@ class IImagingSchema(Interface):
 class ILoginSchema(Interface):
 
     auth_cookie_length = schema.Int(
-        title=_(u'Auth cookie length'),
+        title=_('Auth cookie length'),
         default=0,
         required=False
     )
 
     verify_login_name = schema.Bool(
-        title=_(u'Verify login name'),
+        title=_('Verify login name'),
         default=True,
         required=False
     )
 
     allow_external_login_sites = schema.Tuple(
-        title=_(u'Allow external login sites'),
+        title=_('Allow external login sites'),
         default=(),
         value_type=schema.ASCIILine(),
         required=False
     )
 
     external_login_url = schema.ASCIILine(
-        title=_(u'External login url'),
+        title=_('External login url'),
         default=None,
         required=False
     )
 
     external_logout_url = schema.ASCIILine(
-        title=_(u'External logout url'),
+        title=_('External logout url'),
         default=None,
         required=False
     )
 
     external_login_iframe = schema.Bool(
-        title=_(u'External login iframe'),
+        title=_('External login iframe'),
         default=False,
         required=False
     )
@@ -1585,14 +1584,14 @@ class ILoginSchema(Interface):
 class ILinkSchema(Interface):
 
     external_links_open_new_window = schema.Bool(
-        title=_(u'Open external links in new a window'),
-        description=_(u''),
+        title=_('Open external links in new a window'),
+        description=_(''),
         default=False,
         required=False)
 
     mark_special_links = schema.Bool(
-        title=_(u'Mark special links'),
-        description=_(u'Marks external or special protocol links with class.'),
+        title=_('Mark special links'),
+        description=_('Marks external or special protocol links with class.'),
         default=False,
         required=False)
 
@@ -1614,44 +1613,44 @@ def _check_tales_expression(value):
 class IActionSchema(Interface):
 
     category = schema.Choice(
-        title=_(u'Category'),
+        title=_('Category'),
         vocabulary='plone.app.vocabularies.PortalActionCategories',
         required=True)
 
     title = schema.TextLine(
-        title=_(u'Title'),
+        title=_('Title'),
         required=True)
 
     description = schema.Text(
-        title=_(u'Description'),
+        title=_('Description'),
         required=False)
 
     i18n_domain = schema.TextLine(
-        title=_(u'i18n_domain_heading', default=u'I18n domain'),
-        default=u'plone',
+        title=_('i18n_domain_heading', default='I18n domain'),
+        default='plone',
         required=False)
 
     url_expr = schema.ASCIILine(
-        title=_(u'action_url_heading', default=u'Action URL'),
+        title=_('action_url_heading', default='Action URL'),
         description=_(
-            u'action_url_description',
-            default=u'An expression producing the called URL. '
-            u'Example: string:${globals_view/navigationRootUrl}/page'
+            'action_url_description',
+            default='An expression producing the called URL. '
+            'Example: string:${globals_view/navigationRootUrl}/page'
         ),
         required=True,
         constraint=_check_tales_expression,
     )
 
     available_expr = schema.ASCIILine(
-        title=_(u'action_condition_heading', default=u'Condition'),
+        title=_('action_condition_heading', default='Condition'),
         description=_(
-            u'action_condition_description',
-            default=u'A boolean expression'
+            'action_condition_description',
+            default='A boolean expression'
         ),
         required=False)
 
     permissions = schema.List(
-        title=_(u'action_permissions_heading', default=u'Permissions'),
+        title=_('action_permissions_heading', default='Permissions'),
         required=True,
         default=['View'],
         missing_value=[],
@@ -1661,12 +1660,12 @@ class IActionSchema(Interface):
     )
 
     visible = schema.Bool(
-        title=_(u'action_visibility_heading', default=u'Visible?'),
+        title=_('action_visibility_heading', default='Visible?'),
         default=True,
         required=False)
 
     position = schema.Int(
-        title=_(u'action_position_heading', default=u'Position'),
+        title=_('action_position_heading', default='Position'),
         default=1,
         min=1,
         required=True)
@@ -1675,12 +1674,12 @@ class IActionSchema(Interface):
 class INewActionSchema(Interface):
 
     category = schema.Choice(
-        title=_(u'Category'),
+        title=_('Category'),
         vocabulary='plone.app.vocabularies.PortalActionCategories',
         required=True)
 
     id = schema.ASCIILine(
-        title=_(u'Id'),
+        title=_('Id'),
         required=True)
 
     @invariant

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.testing import login
 from plone.app.testing import TEST_USER_NAME
 from plone.registry.interfaces import IRegistry
@@ -41,7 +40,7 @@ class TestTinyMCESettings(unittest.TestCase):
     def test_other_settings(self):
         registry = getUtility(IRegistry)
         settings = registry.forInterface(ITinyMCESchema, prefix="plone")
-        settings.other_settings = u'{"foo": "bar"}'
+        settings.other_settings = '{"foo": "bar"}'
         conf = self.get_conf()
         self.assertEqual(conf['tiny']['foo'], 'bar')
 
@@ -98,9 +97,9 @@ class TestPatternSettingsView(unittest.TestCase):
     def testPatternOptions(self):
         registry = getUtility(IRegistry)
         registry['plone.patternoptions'] = {
-            'foo': u'{"foo": "bar"}'
+            'foo': '{"foo": "bar"}'
         }
 
         settings = PatternsSettingsView(self.folder, self.layer['request'])
         result = settings()
-        self.assertEqual(result['data-pat-foo'], u'{"foo": "bar"}')
+        self.assertEqual(result['data-pat-foo'], '{"foo": "bar"}')

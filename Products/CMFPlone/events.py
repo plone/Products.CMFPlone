@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from zope.interface import implementer
 from zope.interface.interfaces import ObjectEvent
 from Products.CMFPlone.utils import get_installer
@@ -29,7 +28,7 @@ def profileImportedEventHandler(event):
     profile_id = profile_id.replace('profile-', '')
     gs = event.tool
     installed_version = gs.getLastVersionForProfile(profile_id)
-    if installed_version == (u'latest',):
+    if installed_version == ('latest',):
         qi = get_installer(gs, gs.REQUEST)
         actual_version = qi.get_latest_upgrade_step(profile_id)
         gs.setLastVersionForProfile(profile_id, actual_version)

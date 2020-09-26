@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from zope.component import getMultiAdapter
 
 from Products.CMFCore.utils import getToolByName
@@ -329,7 +328,7 @@ class WorkflowTool(PloneBaseTool, BaseTool):
                     states.extend(state_folder.values())
                 else:
                     for state in state_folder.values():
-                        key = '%s:%s' % (state.id, state.title)
+                        key = f'{state.id}:{state.title}'
                         if not key in dup_list:
                             states.append(state)
                         dup_list[key] = 1

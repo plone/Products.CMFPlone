@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.memoize import forever
 from os import environ
 

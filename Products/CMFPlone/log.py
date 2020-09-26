@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 This module resolves an import order dependency.
 Don't import from here, import from utils.

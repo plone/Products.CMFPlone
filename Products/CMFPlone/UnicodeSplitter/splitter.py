@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 splitter.py
 
@@ -46,7 +45,7 @@ def process_str_post(s, enc='utf-8'):
     except UnicodeDecodeError:
         return s.replace("?", "").replace("*", "")
     try:
-        return uni.replace(u"?", u"").replace(u"*", u"").encode(enc, "strict")
+        return uni.replace("?", "").replace("*", "").encode(enc, "strict")
     except UnicodeEncodeError:
         return s.replace("?", "").replace("*", "")
 
@@ -98,8 +97,7 @@ def process_unicode(uni):
             if not rx_all.match(sword[0]):
                 yield sword
             else:
-                for x in bigram(sword, 0):
-                    yield x
+                yield from bigram(sword, 0)
 
 
 def process_unicode_glob(uni):
@@ -109,7 +107,7 @@ def process_unicode_glob(uni):
     normalized = unicodedata.normalize('NFKC', uni)
     for word in rxGlob_U.findall(normalized):
         swords = [g.group() for g in pattern_g.finditer(word)
-                  if g.group() not in u"*?"]
+                  if g.group() not in "*?"]
         for i, sword in enumerate(swords):
             if not rx_all.match(sword[0]):
                 yield sword
@@ -119,15 +117,14 @@ def process_unicode_glob(uni):
                 else:
                     limit = 0
                 if len(sword) == 1:
-                    bigramed = [sword + u"*"]
+                    bigramed = [sword + "*"]
                 else:
                     bigramed = bigram(sword, limit)
-                for x in bigramed:
-                    yield x
+                yield from bigramed
 
 
 @implementer(ISplitter)
-class Splitter(object):
+class Splitter:
 
     def process(self, lst):
         """ Will be called when indexing.
@@ -162,7 +159,7 @@ except ValueError:
     pass
 
 
-class CaseNormalizer(object):
+class CaseNormalizer:
 
     def process(self, lst):
         enc = 'utf-8'
@@ -192,7 +189,7 @@ except ValueError:
     pass
 
 
-class I18NNormalizer(object):
+class I18NNormalizer:
 
     def process(self, lst):
         enc = 'utf-8'

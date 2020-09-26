@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from zope.interface import implementer
 
 from Products.Five import BrowserView
