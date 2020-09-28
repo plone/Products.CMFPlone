@@ -1,0 +1,4 @@
+No longer consider calling ``len(batch)`` as deprecated.
+The deprecation warning is unvoidable with current ``Products.PageTemplates`` code.
+Fixes `issue 3176 <https://github.com/plone/Products.CMFPlone/issues/3176>`_.
+maurits
