@@ -8,6 +8,16 @@ Changelog
 
 .. towncrier release notes start
 
+3.4.6 (2020-09-28)
+------------------
+
+Bug fixes:
+
+
+- Fixed various deprecation warnings.
+  [maurits] (#3130)
+
+
 3.4.5 (2020-09-07)
 ------------------
 
