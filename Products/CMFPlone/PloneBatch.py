@@ -20,12 +20,17 @@ class Batch(QuantumBatch):
         self.b_start_str = b_start_str
 
     def __len__(self):
+        # Note: Using len() was deprecated for several years.
+        # It was recommended to explicitly either use the `length` attribute
+        # for the size of the current page, which is what we return now,
+        # or use the `sequence_length` attribute for the size of the
+        # entire sequence.
+        # But the deprecation was reverted for Plone 5.2.3,
+        # because core code in Products.PageTemplates called `len`
+        # on batches, making the deprecation warning unavoidable
+        # and thus unnecessary.
+        # See https://github.com/plone/Products.CMFPlone/issues/3176
         return self.length
-    __len__ = deprecated(__len__,
-                         ('Using len() is deprecated. Use the `length` attribute for the '
-                          'size of the current page, which is what we return now. '
-                          'Use the `sequence_length` attribute for the size of the '
-                          'entire sequence. '))
 
     def __bool__(self):
         # Without __bool__ a bool(self) would call len(self), which
