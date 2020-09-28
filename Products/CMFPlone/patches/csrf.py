@@ -13,7 +13,6 @@ def applyPatches():
     PT.changeOwnershipOf = patch(PT.changeOwnershipOf)
     PT.acquireLocalRoles = patch(PT.acquireLocalRoles)
     PT.deleteObjectsByPaths = patch(PT.deleteObjectsByPaths)
-    PT.transitionObjectsByPaths = patch(PT.transitionObjectsByPaths)
     PT.renameObjectsByPaths = patch(PT.renameObjectsByPaths)
 
     from Products.CMFCore.MembershipTool import MembershipTool as MT

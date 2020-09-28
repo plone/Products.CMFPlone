@@ -1009,44 +1009,6 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     deleteObjectsByPaths = postonly(deleteObjectsByPaths)
 
     @security.public
-    def transitionObjectsByPaths(self, workflow_action, paths, comment='',
-                                 expiration_date=None, effective_date=None,
-                                 include_children=False, handle_errors=True,
-                                 REQUEST=None):
-        log_deprecated("transitionObjectsByPaths is deprecated")
-        failure = {}
-        # use the portal for traversal in case we have relative paths
-        portal = getToolByName(self, 'portal_url').getPortalObject()
-        traverse = portal.restrictedTraverse
-        for path in paths:
-            if handle_errors:
-                sp = transaction.savepoint(optimistic=True)
-            try:
-                o = traverse(path, None)
-                if o is not None:
-                    o.content_status_modify(workflow_action,
-                                            comment,
-                                            effective_date=effective_date,
-                                            expiration_date=expiration_date)
-            except ConflictError:
-                raise
-            except Exception as e:
-                if handle_errors:
-                    # skip this object but continue with sub-objects.
-                    sp.rollback()
-                    failure[path] = e
-                else:
-                    raise
-            if getattr(o, 'isPrincipiaFolderish', None) and include_children:
-                subobject_paths = ["%s/%s" % (path, id) for id in o]
-                self.transitionObjectsByPaths(workflow_action, subobject_paths,
-                                              comment, expiration_date,
-                                              effective_date, include_children,
-                                              handle_errors)
-        return failure
-    transitionObjectsByPaths = postonly(transitionObjectsByPaths)
-
-    @security.public
     def renameObjectsByPaths(self, paths, new_ids, new_titles,
                              handle_errors=True, REQUEST=None):
         failure = {}
