@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
 from plone.testing.zope import Browser
@@ -15,7 +14,7 @@ import unittest
 
 
 @implementer(IRedirectAfterLogin)
-class AfterLoginAdapter(object):
+class AfterLoginAdapter:
 
     def __init__(self, context, request):
         self.context = context
@@ -26,7 +25,7 @@ class AfterLoginAdapter(object):
 
 
 @implementer(IInitialLogin)
-class InitialLoginAdapter(object):
+class InitialLoginAdapter:
 
     def __init__(self, context, request):
         self.context = context

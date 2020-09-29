@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.browser.navigation import CatalogNavigationBreadcrumbs
 from Products.CMFPlone.browser.navigation import CatalogNavigationTabs
@@ -220,7 +219,7 @@ class TestBaseNavTree(PloneTestCase.PloneTestCase):
         self.assertEqual(len(tree['children'][-1]['children']), 0)
 
     def testNoRootSet(self):
-        self.navigation_settings.root = u''
+        self.navigation_settings.root = ''
         view = self.view_class(self.portal.folder2.file21, self.request)
         tree = view.navigationTree()
         self.assertTrue(tree)
@@ -228,7 +227,7 @@ class TestBaseNavTree(PloneTestCase.PloneTestCase):
                          '/plone/folder2')
 
     def testRootIsPortal(self):
-        self.navigation_settings.root = u'/'
+        self.navigation_settings.root = '/'
         view = self.view_class(self.portal.folder2.file21, self.request)
         tree = view.navigationTree()
         self.assertTrue(tree)
@@ -236,7 +235,7 @@ class TestBaseNavTree(PloneTestCase.PloneTestCase):
                          '/plone/folder2')
 
     def testRootIsNotPortal(self):
-        self.navigation_settings.root = u'/folder2'
+        self.navigation_settings.root = '/folder2'
         view = self.view_class(self.portal.folder2.file21, self.request)
         tree = view.navigationTree()
         self.assertTrue(tree)
@@ -244,7 +243,7 @@ class TestBaseNavTree(PloneTestCase.PloneTestCase):
                          '/plone/folder2/doc21')
 
     def testRootDoesNotExist(self):
-        self.navigation_settings.root = u'/dodo'
+        self.navigation_settings.root = '/dodo'
         view = self.view_class(self.portal.folder2.file21, self.request)
         tree = view.navigationTree()
         self.assertTrue(tree)
@@ -252,7 +251,7 @@ class TestBaseNavTree(PloneTestCase.PloneTestCase):
         self.assertEqual(len(tree['children']), 0)
 
     def testAboveRoot(self):
-        self.navigation_settings.root = u'/folder2'
+        self.navigation_settings.root = '/folder2'
         view = self.view_class(self.portal, self.request)
         tree = view.navigationTree()
         self.assertTrue(tree)
@@ -262,7 +261,7 @@ class TestBaseNavTree(PloneTestCase.PloneTestCase):
         )
 
     def testOutsideRoot(self):
-        self.navigation_settings.root = u'/folder2'
+        self.navigation_settings.root = '/folder2'
         view = self.view_class(self.portal.folder1, self.request)
         tree = view.navigationTree()
         self.assertTrue(tree)
@@ -460,7 +459,7 @@ class TestSiteMap(PloneTestCase.PloneTestCase):
             self.assertTrue(len(sitemap['children'][-1]['children']) > 0)
 
     def testSitemapWithNavigationRoot(self):
-        self.navigation_settings.root = u'/folder2'
+        self.navigation_settings.root = '/folder2'
         view = self.view_class(self.portal, self.request)
         sitemap = view.siteMap()
         self.assertEqual(sitemap['children'][-1]['item'].getPath(),
@@ -634,7 +633,7 @@ class TestBasePortalTabs(PloneTestCase.PloneTestCase):
             check=False
         )
         type_settings.types_use_view_action_in_listings = [
-            u'Image', u'File', u'Folder'
+            'Image', 'File', 'Folder'
         ]
         # Verify that we have '/view'
         view = self.view_class(self.portal, self.request)
@@ -745,7 +744,7 @@ class TestBaseBreadCrumbs(PloneTestCase.PloneTestCase):
 
     def testBreadcrumbsStopAtNavigationRoot(self):
         self.navigation_settings.top_level = 1
-        self.navigation_settings.root = u'/folder1'
+        self.navigation_settings.root = '/folder1'
         view = self.view_class(self.portal.folder1.doc11, self.request)
         crumbs = view.breadcrumbs()
         self.assertTrue(crumbs)

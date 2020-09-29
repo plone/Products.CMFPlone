@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from AccessControl import Unauthorized
 
 from Products.CMFCore.interfaces import IPropertiesTool
@@ -38,12 +37,12 @@ class AuthorFeedbackForm(form.Form):
     fields = field.Fields(IAuthorFeedbackForm)
     ignoreContext = True
 
-    @button.buttonAndHandler(_(u'label_send', default='Send'),
+    @button.buttonAndHandler(_('label_send', default='Send'),
                              name='send')
     def handle_send(self, action):
         self.portal_state = getMultiAdapter(
             (self.context, self.request),
-            name=u'plone_portal_state'
+            name='plone_portal_state'
         )
 
         self.portal = self.portal_state.portal()
@@ -59,7 +58,7 @@ class AuthorFeedbackForm(form.Form):
         if errors:
             IStatusMessage(self.request).addStatusMessage(
                 self.formErrorsMessage,
-                type=u'error'
+                type='error'
             )
 
             return
@@ -85,12 +84,12 @@ class AuthorFeedbackForm(form.Form):
 
         if send_from_address == '':
             IStatusMessage(self.request).addStatusMessage(
-                _(u'Could not find a valid email address'),
-                type=u'error'
+                _('Could not find a valid email address'),
+                type='error'
             )
             return
 
-        sender_id = "%s (%s), %s" % (
+        sender_id = "{} ({}), {}".format(
             sender.getProperty('fullname'),
             sender.getId(),
             send_from_address
@@ -120,17 +119,17 @@ class AuthorFeedbackForm(form.Form):
             logger.info("Unable to send mail: " + str(e))
 
             IStatusMessage(self.request).addStatusMessage(
-                _(u'Unable to send mail.'),
-                type=u'error'
+                _('Unable to send mail.'),
+                type='error'
             )
 
             return
 
         IStatusMessage(self.request).addStatusMessage(
-            _(u'Mail sent.'),
-            type=u'info'
+            _('Mail sent.'),
+            type='info'
         )
-        self.request.response.redirect('%s/author/%s' % (
+        self.request.response.redirect('{}/author/{}'.format(
             self.portal.absolute_url(),
             author or ''))
         return
@@ -140,7 +139,7 @@ class AuthorFeedbackForm(form.Form):
 class AuthorView(BrowserView):
 
     def __init__(self, context, request):
-        super(AuthorView, self).__init__(context, request)
+        super().__init__(context, request)
 
         self.username = None
 
@@ -235,7 +234,7 @@ class AuthorView(BrowserView):
 
         self.portal_state = getMultiAdapter(
             (self.context, self.request),
-            name=u'plone_portal_state'
+            name='plone_portal_state'
         )
 
         self.feedback_form = AuthorFeedbackForm(

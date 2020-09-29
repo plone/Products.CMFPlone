@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.interfaces import IMailSchema
 from transaction._transaction import Status

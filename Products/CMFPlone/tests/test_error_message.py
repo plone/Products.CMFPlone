@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.redirector.interfaces import IRedirectionStorage
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 from zExceptions import HTTPNotImplemented

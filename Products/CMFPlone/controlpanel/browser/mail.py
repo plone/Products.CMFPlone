@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces.controlpanel import IMailSchema
@@ -20,7 +19,7 @@ log = getLogger('Plone')
 class MailControlPanelForm(controlpanel.RegistryEditForm):
 
     id = "MailControlPanel"
-    label = _(u"Mail Settings")
+    label = _("Mail Settings")
     schema = IMailSchema
     schema_prefix = "plone"
 
@@ -30,7 +29,7 @@ class MailControlPanelForm(controlpanel.RegistryEditForm):
 
     @button.buttonAndHandler(_('Cancel'), name='cancel')
     def handleCancel(self, action):
-        super(MailControlPanelForm, self).handleCancel(self, action)
+        super().handleCancel(self, action)
 
     def save(self):
         data, errors = self.extractData()
@@ -82,17 +81,17 @@ class MailControlPanelForm(controlpanel.RegistryEditForm):
                               charset=email_charset,
                               immediate=True)
 
-            except (socket.error, MailHostError, smtplib.SMTPException):
+            except (OSError, MailHostError, smtplib.SMTPException):
                 # Connection refused or timeout.
                 log.exception('Unable to send test e-mail.')
                 value = sys.exc_info()[1]
-                msg = _(u'Unable to send test e-mail ${error}.',
+                msg = _('Unable to send test e-mail ${error}.',
                         mapping={'error': str(value)})
                 IStatusMessage(self.request).addStatusMessage(
                     msg, type='error')
             else:
                 IStatusMessage(self.request).addStatusMessage(
-                    _(u'Success! Check your mailbox for the test message.'),
+                    _('Success! Check your mailbox for the test message.'),
                     type='info')
         finally:
             # Restore timeout to default value

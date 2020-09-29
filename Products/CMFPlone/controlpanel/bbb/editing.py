@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from zope.component import adapts
 from zope.interface import implementer
 from zope.component import getUtility
@@ -9,7 +8,7 @@ from Products.CMFPlone.interfaces import IEditingSchema
 
 
 @implementer(IEditingSchema)
-class EditingControlPanelAdapter(object):
+class EditingControlPanelAdapter:
 
     adapts(IPloneSiteRoot)
 

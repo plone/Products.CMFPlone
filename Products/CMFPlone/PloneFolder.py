@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from AccessControl import ClassSecurityInfo
 from AccessControl import Permissions
 from AccessControl import Unauthorized

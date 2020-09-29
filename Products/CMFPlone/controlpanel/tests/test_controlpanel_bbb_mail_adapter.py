@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Products.CMFPlone.interfaces import IMailSchema
 from Products.CMFPlone.testing import \
     PRODUCTS_CMFPLONE_INTEGRATION_TESTING
@@ -28,23 +27,23 @@ class MailControlPanelAdapterTest(unittest.TestCase):
     def test_get_smtp_host(self):
         self.assertEqual(
             getAdapter(self.portal, IMailSchema).smtp_host,
-            u'localhost'
+            'localhost'
         )
-        self.mail_settings.smtp_host = u'example.com'
+        self.mail_settings.smtp_host = 'example.com'
         self.assertEqual(
             getAdapter(self.portal, IMailSchema).smtp_host,
-            u'example.com'
+            'example.com'
         )
 
     def test_set_smtp_host(self):
         self.assertEqual(
             self.mail_settings.smtp_host,
-            u'localhost'
+            'localhost'
         )
-        getAdapter(self.portal, IMailSchema).smtp_host = u'example.com'
+        getAdapter(self.portal, IMailSchema).smtp_host = 'example.com'
         self.assertEqual(
             self.mail_settings.smtp_host,
-            u'example.com'
+            'example.com'
         )
 
     def test_get_smtp_port(self):
@@ -74,10 +73,10 @@ class MailControlPanelAdapterTest(unittest.TestCase):
             getAdapter(self.portal, IMailSchema).smtp_userid,
             None
         )
-        self.mail_settings.smtp_userid = u'john@example.com'
+        self.mail_settings.smtp_userid = 'john@example.com'
         self.assertEqual(
             getAdapter(self.portal, IMailSchema).smtp_userid,
-            u'john@example.com'
+            'john@example.com'
         )
 
     def test_set_smtp_userid(self):
@@ -85,10 +84,10 @@ class MailControlPanelAdapterTest(unittest.TestCase):
             self.mail_settings.smtp_userid,
             None
         )
-        getAdapter(self.portal, IMailSchema).smtp_userid = u'john@example.com'
+        getAdapter(self.portal, IMailSchema).smtp_userid = 'john@example.com'
         self.assertEqual(
             self.mail_settings.smtp_userid,
-            u'john@example.com'
+            'john@example.com'
         )
 
     def test_get_smtp_pass(self):
@@ -96,10 +95,10 @@ class MailControlPanelAdapterTest(unittest.TestCase):
             getAdapter(self.portal, IMailSchema).smtp_pass,
             None
         )
-        self.mail_settings.smtp_pass = u'secret'
+        self.mail_settings.smtp_pass = 'secret'
         self.assertEqual(
             getAdapter(self.portal, IMailSchema).smtp_pass,
-            u'secret'
+            'secret'
         )
 
     def test_set_smtp_pass(self):
@@ -107,10 +106,10 @@ class MailControlPanelAdapterTest(unittest.TestCase):
             self.mail_settings.smtp_pass,
             None
         )
-        getAdapter(self.portal, IMailSchema).smtp_pass = u'secret'
+        getAdapter(self.portal, IMailSchema).smtp_pass = 'secret'
         self.assertEqual(
             self.mail_settings.smtp_pass,
-            u'secret'
+            'secret'
         )
 
     def test_get_email_from_name(self):
@@ -118,10 +117,10 @@ class MailControlPanelAdapterTest(unittest.TestCase):
             getAdapter(self.portal, IMailSchema).email_from_name,
             None
         )
-        self.mail_settings.email_from_name = u'John'
+        self.mail_settings.email_from_name = 'John'
         self.assertEqual(
             getAdapter(self.portal, IMailSchema).email_from_name,
-            u'John'
+            'John'
         )
 
     def test_set_email_from_name(self):
@@ -129,10 +128,10 @@ class MailControlPanelAdapterTest(unittest.TestCase):
             self.mail_settings.email_from_name,
             None
         )
-        getAdapter(self.portal, IMailSchema).email_from_name = u'John'
+        getAdapter(self.portal, IMailSchema).email_from_name = 'John'
         self.assertEqual(
             self.mail_settings.email_from_name,
-            u'John'
+            'John'
         )
 
     def test_get_email_from_address(self):

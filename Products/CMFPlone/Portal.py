@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from AccessControl import ClassSecurityInfo
 from AccessControl import Permissions
 from AccessControl import Unauthorized
@@ -154,7 +152,7 @@ class PloneSite(PortalObjectBase, DefaultDublinCoreImpl, OrderedContainer,
         languages = util.getLanguageListing()
         languages.sort(lambda x, y: cmp(x[1], y[1]))
         # Put language neutral at the top.
-        languages.insert(0, (u'', _(u'Language neutral (site default)')))
+        languages.insert(0, ('', _('Language neutral (site default)')))
 
         return languages
 

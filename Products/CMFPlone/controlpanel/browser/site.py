@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import ISiteSchema
 from plone.app.registry.browser import controlpanel
@@ -9,17 +8,17 @@ from z3c.form import interfaces
 class SiteControlPanelForm(controlpanel.RegistryEditForm):
 
     id = "SiteControlPanel"
-    label = _(u"Site Settings")
+    label = _("Site Settings")
     description = _("Site-wide settings.")
     schema = ISiteSchema
     schema_prefix = "plone"
 
     def updateFields(self):
-        super(SiteControlPanelForm, self).updateFields()
+        super().updateFields()
         self.fields['site_logo'].widgetFactory = NamedImageFieldWidget
 
     def updateWidgets(self):
-        super(SiteControlPanelForm, self).updateWidgets()
+        super().updateWidgets()
         # hide the default_page field/widgets
         self.widgets['default_page'].mode = interfaces.HIDDEN_MODE
 

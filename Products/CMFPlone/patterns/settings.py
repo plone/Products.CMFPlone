@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Acquisition import aq_inner
 from Acquisition import aq_parent
 from borg.localrole.interfaces import IFactoryTempFolder
@@ -22,7 +21,7 @@ import json
 
 
 @implementer(IPatternsSettings)
-class PatternSettingsAdapter(object):
+class PatternSettingsAdapter:
     """
     Provides default plone settings relevant for patterns.
     """
@@ -143,11 +142,11 @@ class PatternSettingsAdapter(object):
             'imageScales': self.image_scales,
             'linkAttribute': 'UID',
             # This is for loading the languages on tinymce
-            'loadingBaseUrl': '{0}/++plone++static/components/tinymce-builded/'
+            'loadingBaseUrl': '{}/++plone++static/components/tinymce-builded/'
                               'js/tinymce'.format(portal_url),
             'relatedItems': related_items_config,
             'prependToScalePart': '/@@images/image/',
-            'prependToUrl': '{0}/resolveuid/'.format(site_path.rstrip('/')),
+            'prependToUrl': '{}/resolveuid/'.format(site_path.rstrip('/')),
             'tiny': generator.get_tiny_config(),
             'upload': {
                 'baseUrl': portal_url,

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
 from Products.CMFPlone.interfaces import ISecuritySchema
@@ -10,7 +9,7 @@ from zope.component.hooks import getSite
 
 
 @implementer(ISecuritySchema)
-class SecurityControlPanelAdapter(object):
+class SecurityControlPanelAdapter:
 
     adapts(IPloneSiteRoot)
 

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from AccessControl.PermissionRole import rolesForPermissionOn
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 

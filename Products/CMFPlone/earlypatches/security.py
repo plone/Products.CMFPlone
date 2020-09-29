@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # 1. make sure allow_module can't be called from restricted code
 import AccessControl
 AccessControl.allow_module.__roles__ = ()

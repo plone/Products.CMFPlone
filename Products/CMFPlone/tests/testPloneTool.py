@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Acquisition import Implicit
 from plone.app.testing import SITE_OWNER_NAME
 from plone.registry.interfaces import IRegistry
@@ -136,7 +135,7 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
 
         # 'ChangeSet' is blacklisted, but not in the types by default,
         # so we filter that out.
-        blacklistedTypes = set([t for t in blacklistedTypes if t in types])
+        blacklistedTypes = {t for t in blacklistedTypes if t in types}
         # No black listed types should be returned.
         self.assertEqual([t for t in self.utils.getUserFriendlyTypes()
                           if t in blacklistedTypes], [])
@@ -603,10 +602,10 @@ class TestIDGenerationMethods(PloneTestCase.PloneTestCase):
     def test_pretty_title_or_id_on_catalog_brain(self):
         cat = self.portal.portal_catalog
         self.setRoles(['Manager', 'Member'])
-        self.folder.title = u'My pretty title'
-        self.folder.subject = (u'foobar',)
+        self.folder.title = 'My pretty title'
+        self.folder.subject = ('foobar',)
         self.folder.reindexObject()
-        results = cat(Subject=u'foobar')
+        results = cat(Subject='foobar')
         self.assertEqual(len(results), 1)
         self.assertEqual(self.utils.pretty_title_or_id(results[0]),
                          'My pretty title')
@@ -614,10 +613,10 @@ class TestIDGenerationMethods(PloneTestCase.PloneTestCase):
     def test_pretty_title_or_id_on_catalog_brain_returns_id(self):
         cat = self.portal.portal_catalog
         self.setRoles(['Manager', 'Member'])
-        self.folder.title = u''
-        self.folder.subject = (u'foobar',)
+        self.folder.title = ''
+        self.folder.subject = ('foobar',)
         self.folder.reindexObject()
-        results = cat(Subject=u'foobar')
+        results = cat(Subject='foobar')
         self.assertEqual(len(results), 1)
         self.assertEqual(self.utils.pretty_title_or_id(results[0]),
                          self.folder.getId())
@@ -627,10 +626,10 @@ class TestIDGenerationMethods(PloneTestCase.PloneTestCase):
         self.setRoles(['Manager', 'Member'])
         self.folder.__parent__.manage_renameObject(
             self.folder.id, 'folder.2004-11-09.0123456789')
-        self.folder.title = u''
-        self.folder.subject = (u'foobar',)
+        self.folder.title = ''
+        self.folder.subject = ('foobar',)
         self.folder.reindexObject()
-        results = cat(Subject=u'foobar')
+        results = cat(Subject='foobar')
         self.assertEqual(len(results), 1)
         self.assertEqual(self.utils.pretty_title_or_id(results[0], 'Marker'),
                          'Marker')
@@ -641,7 +640,7 @@ class TestIDGenerationMethods(PloneTestCase.PloneTestCase):
         # Remove Title from catalog metadata to simulate a catalog with no
         # Title metadata and similar pathological cases.
         cat.delColumn('Title')
-        self.folder.title = u''
+        self.folder.title = ''
         self.folder.subject = ('foobar',)
         self.folder.reindexObject()
         results = cat(Subject='foobar')

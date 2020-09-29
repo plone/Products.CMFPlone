@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Collection of i18n and l10n utility methods.
 """
@@ -24,7 +23,7 @@ _interp_regex = re.compile(
     r'(?<!\$)(\$(?:[%(n)s]|{[%(n)s]}))' % ({'n': _all_regexp_set})
 )
 # regexp to detect if this is a strftime format string
-_dt_format_string_regexp = re.compile(r'\%([{0}])'.format(_all_regexp_set))
+_dt_format_string_regexp = re.compile(fr'\%([{_all_regexp_set}])')
 
 # those are from DateTime.DateTime, but we must not rely on its internal
 # structures, so here a copy:
@@ -76,13 +75,13 @@ ENGLISH_NAMES = {
 
 
 def setDefaultDateFormat(localeid, value):
-    gregorian = locales.getLocale(*localeid).dates.calendars[u'gregorian']
+    gregorian = locales.getLocale(*localeid).dates.calendars['gregorian']
     date_format = gregorian.dateFormats['medium'].formats[None]
     date_format.pattern = value
 
 
 def setDefaultTimeFormat(localeid, value):
-    gregorian = locales.getLocale(*localeid).dates.calendars[u'gregorian']
+    gregorian = locales.getLocale(*localeid).dates.calendars['gregorian']
     time_format = gregorian.timeFormats['medium'].formats[None]
     time_format.pattern = value
 
@@ -242,7 +241,7 @@ def _numbertoenglishname(number, format=None, attr='_days'):
 
     number = int(number)
     if format is not None:
-        attr = '%s_%s' % (attr, format)
+        attr = f'{attr}_{format}'
     return ENGLISH_NAMES[attr][number]
 
 

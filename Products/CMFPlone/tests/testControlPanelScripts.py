@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from DateTime import DateTime
 from plone.app.testing import SITE_OWNER_NAME
 from plone.app.testing import SITE_OWNER_PASSWORD
@@ -38,7 +37,7 @@ class TestAccessControlPanelScripts(PloneTestCase):
 
     def afterSetUp(self):
         self.portal_path = self.portal.absolute_url(1)
-        self.basic_auth = '%s:%s' % (SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
+        self.basic_auth = f'{SITE_OWNER_NAME}:{SITE_OWNER_PASSWORD}'
 
     def testUserInformation(self):
         '''Test access to user details.'''

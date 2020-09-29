@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.testing import login
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
@@ -74,7 +73,7 @@ class TestPloneTool(unittest.TestCase):
             []
         )
 
-        self.tool.addPortalMessage(u'A random warning message', 'warning')
+        self.tool.addPortalMessage('A random warning message', 'warning')
         status = IStatusMessage(self.request).show()
         self.assertEqual(
             len(status),
@@ -91,7 +90,7 @@ class TestPloneTool(unittest.TestCase):
             []
         )
 
-        self.tool.addPortalMessage(u'A random info message')
+        self.tool.addPortalMessage('A random info message')
         status = IStatusMessage(self.request).show()
         self.assertEqual(
             len(status),
@@ -186,5 +185,5 @@ class TestPloneTool(unittest.TestCase):
     def test_getEmptyTitle(self):
         self.assertEqual(
             self.tool.getEmptyTitle(translated=False),
-            u'[\xb7\xb7\xb7]'
+            '[\xb7\xb7\xb7]'
         )

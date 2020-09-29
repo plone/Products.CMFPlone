@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from AccessControl.SecurityManagement import getSecurityManager
 from email.header import Header
 from plone.app.layout.navigation.interfaces import INavigationRoot
@@ -35,7 +34,7 @@ class PasswordResetToolView(BrowserView):
         """ return portal_state of plone.app.layout
         """
         return getMultiAdapter((self.context, self.request),
-                               name=u"plone_portal_state")
+                               name="plone_portal_state")
 
     def encode_mail_header(self, text):
         """ Encodes text into correctly encoded email header """
@@ -47,14 +46,14 @@ class PasswordResetToolView(BrowserView):
         mail_settings = registry.forInterface(IMailSchema, prefix="plone")
         from_ = mail_settings.email_from_name
         mail = mail_settings.email_from_address
-        return '"%s" <%s>' % (self.encode_mail_header(from_).encode(), mail)
+        return '"{}" <{}>'.format(self.encode_mail_header(from_).encode(), mail)
 
     def registered_notify_subject(self):
         portal_name = self.portal_state().portal_title()
         return translate(
             _(
-                u'mailtemplate_user_account_info',
-                default=u'User Account Information for ${portal_name}',
+                'mailtemplate_user_account_info',
+                default='User Account Information for ${portal_name}',
                 mapping={'portal_name': safe_unicode(portal_name)},
             ),
             context=self.request,
@@ -63,14 +62,14 @@ class PasswordResetToolView(BrowserView):
     def mail_password_subject(self):
         return translate(
             _(
-                u'mailtemplate_subject_resetpasswordrequest',
-                default=u'Password reset request',
+                'mailtemplate_subject_resetpasswordrequest',
+                default='Password reset request',
             ),
             context=self.request,
         )
 
     def construct_url(self, randomstring):
-        return '%s/passwordreset/%s' % (
+        return '{}/passwordreset/{}'.format(
             self.portal_state().navigation_root_url(), randomstring)
 
     def expiration_timeout(self):
@@ -200,8 +199,8 @@ class PasswordResetView(BrowserView):
 
     def login_url(self):
         portal_state = getMultiAdapter((self.context, self.request),
-                                       name=u"plone_portal_state")
-        return '{0}/login?__ac_name={1}'.format(
+                                       name="plone_portal_state")
+        return '{}/login?__ac_name={}'.format(
             portal_state.navigation_root_url(),
             self.request.form.get('userid', ''))
 

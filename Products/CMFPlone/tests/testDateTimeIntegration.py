@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # tests for issues related to changes in `DateTime` 2.12
 # please see tickets:
 #

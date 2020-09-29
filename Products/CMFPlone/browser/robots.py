@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Products.CMFPlone.interfaces.controlpanel import ISiteSchema
 from Products.Five.browser import BrowserView
 from plone.registry.interfaces import IRegistry

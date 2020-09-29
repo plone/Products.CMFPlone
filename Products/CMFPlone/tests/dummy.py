@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Helper objects for the Plone test suite
 #
@@ -17,7 +16,7 @@ import os
 
 
 TEXT = b'file data'
-UTEXT = u'file data'
+UTEXT = 'file data'
 GIF_FILE = os.path.join(
     os.path.dirname(__file__), os.pardir, 'tool.gif')
 with open(GIF_FILE, 'rb') as f:
@@ -59,7 +58,7 @@ class SizedItem(Item):
         return self.size
 
 
-class FieldStorage(object):
+class FieldStorage:
 
     def __init__(self, file, filename='testfile', headers=None):
         self.file = file
@@ -191,7 +190,7 @@ class DummyContent(Dummy):
         return getattr(self, 'portal_type')
 
 
-class DummyWorkflowTool(object):
+class DummyWorkflowTool:
     """A dummy workflow tool for testing adaptation based workflow"""
 
     def __init__(self, id='portal_workflow'):

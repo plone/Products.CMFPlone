@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.contenttypes.testing import PLONE_APP_CONTENTTYPES_FUNCTIONAL_TESTING  # noqa
 from plone.app.testing import PLONE_FUNCTIONAL_TESTING
 from plone.testing import layered

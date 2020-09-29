@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Acquisition import aq_inner
 from Products.CMFPlone.controlpanel.browser.usergroups import \
     UsersGroupsControlPanelView
@@ -36,7 +35,7 @@ class GroupDetailsControlPanel(UsersGroupsControlPanelView):
         if submitted:
             CheckAuthenticator(self.request)
 
-            msg = _(u'No changes made.')
+            msg = _('No changes made.')
             self.group = None
 
             title = self.request.form.get('title', None)
@@ -45,7 +44,7 @@ class GroupDetailsControlPanel(UsersGroupsControlPanelView):
 
             if addname:
                 if not self.regtool.isMemberIdAllowed(addname):
-                    msg = _(u'The group name you entered is not valid.')
+                    msg = _('The group name you entered is not valid.')
                     IStatusMessage(self.request).add(msg, 'error')
                     return self.index()
 
@@ -54,26 +53,26 @@ class GroupDetailsControlPanel(UsersGroupsControlPanelView):
                                               REQUEST=self.request)
                 if not success:
                     msg = _(
-                        u'Could not add group ${name}, perhaps a user or '
-                        u'group with this name already exists.',
-                        mapping={u'name': addname}
+                        'Could not add group ${name}, perhaps a user or '
+                        'group with this name already exists.',
+                        mapping={'name': addname}
                     )
                     IStatusMessage(self.request).add(msg, 'error')
                     return self.index()
 
                 self.group = self.gtool.getGroupById(addname)
-                msg = _(u'Group ${name} has been added.',
-                        mapping={u'name': addname})
+                msg = _('Group ${name} has been added.',
+                        mapping={'name': addname})
 
             elif self.groupname:
                 self.gtool.editGroup(self.groupname, roles=None, groups=None,
                                      title=title, description=description,
                                      REQUEST=context.REQUEST)
                 self.group = self.gtool.getGroupById(self.groupname)
-                msg = _(u'Changes saved.')
+                msg = _('Changes saved.')
 
             else:
-                msg = _(u'Group name required.')
+                msg = _('Group name required.')
 
             processed = {}
             for id, property in self.gdtool.propertyItems():
@@ -87,7 +86,7 @@ class GroupDetailsControlPanel(UsersGroupsControlPanelView):
             IStatusMessage(self.request).add(
                 msg, type=self.group and 'info' or 'error')
             if self.group and not self.groupname:
-                target_url = '%s/%s' % (self.context.absolute_url(),
+                target_url = '{}/{}'.format(self.context.absolute_url(),
                                         '@@usergroup-groupprefs')
                 self.request.response.redirect(target_url)
                 return ''

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from zope.component import adapts
 from zope.interface import implementer
 from Products.CMFPlone.interfaces.syndication import IFeedSettings
@@ -13,7 +12,7 @@ FEED_SETTINGS_KEY = 'syndication_settings'
 
 
 @implementer(IFeedSettings)
-class FeedSettings(object):
+class FeedSettings:
     adapts(ISyndicatable)
 
     def __init__(self, context):

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """ Unit tests for utils module. """
 
 from plone.registry.interfaces import IRegistry
@@ -41,9 +40,9 @@ class DefaultUtilsTests(unittest.TestCase):
         """safe_encode should always encode unicode to the specified encoding.
         """
         from Products.CMFPlone.utils import safe_encode
-        self.assertEqual(safe_encode(u'späm'), b'sp\xc3\xa4m')
-        self.assertEqual(safe_encode(u'späm', 'utf-8'), b'sp\xc3\xa4m')
-        self.assertEqual(safe_encode(u'späm', encoding='latin-1'), b'sp\xe4m')
+        self.assertEqual(safe_encode('späm'), b'sp\xc3\xa4m')
+        self.assertEqual(safe_encode('späm', 'utf-8'), b'sp\xc3\xa4m')
+        self.assertEqual(safe_encode('späm', encoding='latin-1'), b'sp\xe4m')
 
     def test_get_top_request(self):
         """If in a subrequest, ``get_top_request`` should always return the top
@@ -51,7 +50,7 @@ class DefaultUtilsTests(unittest.TestCase):
         """
         from Products.CMFPlone.utils import get_top_request
 
-        class MockRequest(object):
+        class MockRequest:
 
             def __init__(self, parent_request=None):
                 self._dict = {}
@@ -82,7 +81,7 @@ class DefaultUtilsTests(unittest.TestCase):
         from urllib.parse import urlparse
         from zope.component.interfaces import ISite
 
-        class MockContext(object):
+        class MockContext:
             vh_url = 'http://nohost'
             vh_root = ''
 
@@ -101,7 +100,7 @@ class DefaultUtilsTests(unittest.TestCase):
             def restrictedTraverse(self, path):
                 return MockContext(self.vh_root + path)
 
-        class MockRequest(object):
+        class MockRequest:
             vh_url = 'http://nohost'
             vh_root = ''
 
@@ -128,7 +127,7 @@ class DefaultUtilsTests(unittest.TestCase):
         self.assertEqual(get_top_site_from_url(ctx, req).id, 'PloneSite')
 
         # Case 4, using unicode paths accidentially:
-        ctx = MockContext(u'/approot/PloneSite/folder/SubSite/folder')
+        ctx = MockContext('/approot/PloneSite/folder/SubSite/folder')
         self.assertEqual(get_top_site_from_url(ctx, req).id, 'PloneSite')
 
         # VIRTUAL HOSTING ON SUBSITE

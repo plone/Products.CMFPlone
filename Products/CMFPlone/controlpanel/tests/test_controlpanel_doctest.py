@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Functional Doctests for control panel.
 """
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING

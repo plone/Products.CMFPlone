@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Acquisition import aq_base
 from datetime import datetime
 from io import BytesIO
@@ -33,7 +32,7 @@ def get_production_resource_directory():
     timestamp = production_folder.readFile('timestamp.txt')
     if isinstance(timestamp, bytes):
         timestamp = timestamp.decode()
-    return '%s/++unique++%s' % (
+    return '{}/++unique++{}'.format(
         PRODUCTION_RESOURCE_DIRECTORY, timestamp)
 
 
@@ -49,7 +48,7 @@ def get_resource(context, path):
     try:
         resource = context.unrestrictedTraverse(path)
     except (NotFound, AttributeError):
-        logger.warning(u'Could not find resource {0}. You may have to create it first.'.format(path))  # noqa
+        logger.warning(f'Could not find resource {path}. You may have to create it first.')  # noqa
         return
 
     if isinstance(resource, FilesystemFile):
@@ -115,7 +114,7 @@ def write_js(context, folder, meta_bundle):
     for script in resources:
         if not isinstance(script, bytes):
             script = script.encode()
-        fi.write((script + b'\n'))
+        fi.write(script + b'\n')
     folder.writeFile(meta_bundle + '.js', fi)
     logger.info('Wrote combined JS bundle "%s".' % meta_bundle)
 
@@ -150,7 +149,7 @@ def write_css(context, folder, meta_bundle):
     for script in resources:
         if not isinstance(script, bytes):
             script = script.encode()
-        fi.write((script + b'\n'))
+        fi.write(script + b'\n')
     folder.writeFile(meta_bundle + '.css', fi)
     logger.info('Wrote combined CSS bundle "%s".' % meta_bundle)
 

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import ISearchSchema
 from Products.CMFPlone.controlpanel.widgets import ReverseCheckBoxFieldWidget
@@ -10,17 +9,17 @@ from zope.schema.interfaces import IVocabularyFactory
 class SearchControlPanelForm(controlpanel.RegistryEditForm):
 
     id = "SearchControlPanel"
-    label = _(u"Search Settings")
+    label = _("Search Settings")
     schema = ISearchSchema
     schema_prefix = "plone"
 
     def updateFields(self):
-        super(SearchControlPanelForm, self).updateFields()
+        super().updateFields()
         self.fields['types_not_searched'].widgetFactory = \
             ReverseCheckBoxFieldWidget
 
     def updateWidgets(self):
-        super(SearchControlPanelForm, self).updateWidgets()
+        super().updateWidgets()
         # Replace vocabulary for 'types_not_searched' with user friendly types
         # to hide "bad" types in control panel.
         vocab = self._friendly_types_vocabulary()
@@ -40,7 +39,7 @@ class SearchControlPanelForm(controlpanel.RegistryEditForm):
         new_types = [t for t in all_types if t in submitted_types
                      or (t in current_types and t not in friendly_types)]
         data['types_not_searched'] = tuple(new_types)
-        super(SearchControlPanelForm, self).applyChanges(data)
+        super().applyChanges(data)
 
     def _friendly_types_vocabulary(self):
         return queryUtility(IVocabularyFactory,

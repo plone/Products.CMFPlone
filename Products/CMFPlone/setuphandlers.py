@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Acquisition import aq_base
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.factory import _DEFAULT_PROFILE
@@ -205,7 +204,7 @@ def first_weekday_setup(context):
         parts = (language.split('-') + [None, None])[:3]
         locale = locales.getLocale(*parts)
         # look up first day of week
-        gregorian_calendar = locale.dates.calendars.get(u'gregorian', None)
+        gregorian_calendar = locale.dates.calendars.get('gregorian', None)
         if gregorian_calendar is not None:
             day = gregorian_calendar.week.get('firstDay', 7)
             first = 6 if day == 0 else day - 1
