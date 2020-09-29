@@ -28,7 +28,7 @@ def migrate_to_email_login(context):
             login_name = pas.applyTransform(email)
             pas.updateLoginName(user_id, login_name)
         else:
-            logger.warn("User %s has no email address.", user_id)
+            logger.warning("User %s has no email address.", user_id)
 
 
 def migrate_from_email_login(context):

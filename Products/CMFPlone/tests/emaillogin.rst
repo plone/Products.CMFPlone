@@ -224,7 +224,7 @@ in a list called ``messages``::
 Now that we have the message, we want to look at its contents, and
 then we extract the address that lets us reset our password::
 
-    >>> "To: email2@example.org" in msg
+    >>> b"To: email2@example.org" in msg
     True
 
 Now get the link::
@@ -265,7 +265,7 @@ The email is sent to the correct email address::
     >>> len(mailhost.messages)
     2
     >>> msg = mailhost.messages[-1]
-    >>> "To: username@example.org" in msg
+    >>> b"To: username@example.org" in msg
     True
 
 Now get the link::

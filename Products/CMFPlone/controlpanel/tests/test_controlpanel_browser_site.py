@@ -4,7 +4,7 @@ from plone.registry.interfaces import IRegistry
 from plone.testing.zope import Browser
 from Products.CMFPlone.interfaces import ISiteSchema
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
-from six import BytesIO
+from io import BytesIO
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 

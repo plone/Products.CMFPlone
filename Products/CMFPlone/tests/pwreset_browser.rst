@@ -326,7 +326,7 @@ We should have received an e-mail at this point:
   >>> len(mailhost.messages)
   2
   >>> import quopri
-  >>> msg = quopri.decodestring(str(mailhost.messages[-1]))
+  >>> msg = quopri.decodestring(mailhost.messages[-1])
   >>> b"The site administrator asks you to reset your password for 'wsmith' userid" in msg
   True
   >>> please_visit_text = b"The following link will take you to a page where you can reset your password for Plone site site:"
@@ -342,6 +342,19 @@ We should have received an e-mail at this point:
 What we do here is quite similiar to 1A, but instead of typing in the
 password ourselves, we will be sent an e-mail with the URL to set our
 password.
+
+We will setup an adapter to capture IUserLoggedInEvent events:
+
+  >>> from zope.component import adapter
+  >>> from Products.PluggableAuthService.interfaces.events import IUserLoggedInEvent
+  >>> from zope.component import getGlobalSiteManager
+  >>> events_fired = []
+  >>> @adapter(IUserLoggedInEvent)
+  ... def got_user_logged_in_event(event):
+  ...     events_fired.append(event)
+  >>> gsm = getGlobalSiteManager()
+  >>> gsm.registerHandler(got_user_logged_in_event)
+
 
 First off, we need to set ``validate_mail`` to False:
 
@@ -387,7 +400,11 @@ We should have received an e-mail at this point:
   >>> mailhost = layer['portal'].MailHost
   >>> len(mailhost.messages)
   3
-  >>> msg = str(mailhost.messages[-1])
+  >>> msg = mailhost.messages[-1]
+
+Let's clear the events storage:
+
+  >>> events_fired = []
 
 Now that we have the message, we want to look at its contents, and
 then we extract the address that lets us reset our password:
@@ -395,13 +412,18 @@ then we extract the address that lets us reset our password:
   >>> from email.parser import Parser
   >>> import re
   >>> parser = Parser()
-  >>> message = parser.parsestr(msg)
+  >>> message = parser.parsestr(msg.decode("utf-8"))
   >>> message["To"]
   'bsmith@example.com'
   >>> msgtext = quopri.decodestring(message.get_payload())
   >>> b"Please activate it by visiting" in msgtext
   True
-  >>> address = re.search(b'(http://nohost/plone/passwordreset/[a-z0-9]+\?userid=[\w]*)\s', msgtext).groups()[0].decode()
+
+We need to be careful to keep this working in both Python 2 and 3 without invalid escape sequences.
+It is best to convert msgtext to text first.
+
+  >>> msgtext = msgtext.decode()
+  >>> address = re.search(r'(http://nohost/plone/passwordreset/[a-z0-9]+\?userid=[\w]*)\s', msgtext).groups()[0]
 
 Now that we have the address, we will reset our password:
 
@@ -415,10 +437,22 @@ Now that we have the address, we will reset our password:
   >>> "Password reset successful, you are logged in now!" in browser.contents
   True
 
+User is logged in, let's check the event fired for the correct user:
+
+  >>> len(events_fired) == 1
+  True
+  >>> events_fired[0].principal
+  <PloneUser 'bsmith'>
+
 Log out again:
 
   >>> browser.getLink('Log out').click()
   >>> "You are now logged out" in browser.contents
+  True
+
+Remove got_user_logged_in_event registration:
+
+  >>> gsm.unregisterHandler(got_user_logged_in_event)
   True
 
 
@@ -464,18 +498,19 @@ We should have received an e-mail at this point:
   >>> mailhost = layer['portal'].MailHost
   >>> len(mailhost.messages)
   4
-  >>> msg = str(mailhost.messages[-1])
+  >>> msg = mailhost.messages[-1]
 
 Now that we have the message, we want to look at its contents, and
 then we extract the address that lets us reset our password:
 
-  >>> message = parser.parsestr(msg)
+  >>> message = parser.parsestr(msg.decode("utf-8"))
   >>> message["To"]
   'wwwsmith@example.com'
   >>> msgtext = quopri.decodestring(message.get_payload())
   >>> b"Please activate it by visiting" in msgtext
   True
-  >>> address = re.search(b'(http://nohost/plone/passwordreset/[a-z0-9]+\?userid=[\w]*)\s', msgtext).groups()[0].decode()
+  >>> msgtext = msgtext.decode()
+  >>> address = re.search(r'(http://nohost/plone/passwordreset/[a-z0-9]+\?userid=[\w]*)\s', msgtext).groups()[0]
 
 Now that we have the address, we will reset our password:
 

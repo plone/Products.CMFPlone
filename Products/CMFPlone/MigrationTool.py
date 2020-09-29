@@ -11,7 +11,7 @@ from Products.CMFCore.utils import UniqueObject
 from Products.CMFPlone.factory import _DEFAULT_PROFILE
 from Products.CMFPlone.interfaces import IMigrationTool
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
-from six import StringIO
+from io import StringIO
 from ZODB.POSException import ConflictError
 from zope.interface import implementer
 
@@ -99,6 +99,7 @@ ADDON_LIST = AddonList([
     Addon(profile_id=u'plone.app.querystring:default'),
     Addon(profile_id=u'plone.app.theming:default'),
     Addon(profile_id=u'plone.app.users:default'),
+    Addon(profile_id=u'plone.staticresources:default'),
 ])
 
 

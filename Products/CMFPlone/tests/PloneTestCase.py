@@ -25,7 +25,7 @@ class PloneTestCase(PloneTestCase):
 
     def getAuthenticator(self):
         tag = AuthenticatorView('context', 'request').authenticator()
-        pattern = '<input .*name="(\w+)".*value="(\w+)"'
+        pattern = r'<input .*name="(\w+)".*value="(\w+)"'
         return match(pattern, tag).groups()
 
     def setupAuthenticator(self):

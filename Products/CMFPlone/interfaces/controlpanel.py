@@ -15,7 +15,6 @@ from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
 
 import json
-import six
 
 
 deprecated(
@@ -67,7 +66,7 @@ def validate_json(value):
         class JSONError(schema.ValidationError):
             __doc__ = _(u"Must be empty or a valid JSON-formatted "
                         u"configuration – ${message}.", mapping={
-                            'message': six.text_type(exc)})
+                            'message': str(exc)})
 
         raise JSONError(value)
 
@@ -235,6 +234,7 @@ class IFilterSchema(Interface):
             u'dt',
             u'em',
             u'figure',
+            u'figcaption',
             u'footer',
             u'h1',
             u'h2',
@@ -245,6 +245,7 @@ class IFilterSchema(Interface):
             u'head',
             u'header',
             u'hgroup',
+            u'hr',
             u'html',
             u'i',
             u'iframe',
@@ -296,7 +297,7 @@ class IFilterSchema(Interface):
     custom_attributes = schema.List(
         title=_(u'Custom attributes'),
         description=_(u'These attributes are additionally allowed.'),
-        default=[],
+        default=['style'],
         value_type=schema.TextLine(),
         missing_value=[],
         required=False)
@@ -1380,6 +1381,21 @@ class IMarkupSchema(Interface):
         )
     )
 
+    markdown_extensions = schema.List(
+        default=[
+            'markdown.extensions.fenced_code',
+            'markdown.extensions.nl2br',
+        ],
+        description=_(
+            u'Look for available extensions at '
+            u'https://python-markdown.github.io/extensions/ or write your own.'
+        ),
+        missing_value=(),
+        required=False,
+        title=_(u'Enabled markdown extensions'),
+        value_type=schema.TextLine()
+    )
+
 
 class IUserGroupsSettingsSchema(Interface):
 
@@ -1513,6 +1529,16 @@ class IImagingSchema(Interface):
         min=0,
         max=95,
         default=51,
+    )
+
+    image_captioning = schema.Bool(
+        title=_('image_captioning_title', u'Enable image captioning'),
+        description=_(
+            'image_captioning_description',
+            u'Enable automatic image captioning for images set in the richtext editor based on the description of images.'
+        ),
+        default=True,
+        required=False
     )
 
 

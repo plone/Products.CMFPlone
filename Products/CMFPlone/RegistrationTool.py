@@ -32,7 +32,6 @@ from zope.schema import ValidationError
 
 import random
 import re
-import six
 
 
 # - remove '1', 'l', and 'I' to avoid confusion
@@ -114,7 +113,7 @@ class RegistrationTool(PloneBaseTool, BaseTool):
     def _md5base(self):
         if self._v_md5base is None:
             key = self.md5key
-            if not isinstance(key, six.binary_type):
+            if not isinstance(key, bytes):
                 key = key.encode()
             self._v_md5base = md5(key)
         return self._v_md5base
@@ -149,7 +148,7 @@ class RegistrationTool(PloneBaseTool, BaseTool):
                 password += password_chars[random.randint(0, nchars - 1)]
             return password
         else:
-            if not isinstance(s, six.binary_type):
+            if not isinstance(s, bytes):
                 s = s.encode()
             m = self._md5base().copy()
             m.update(s)
@@ -157,11 +156,8 @@ class RegistrationTool(PloneBaseTool, BaseTool):
             assert(len(d) >= length)
             password = ''
             nchars = len(password_chars)
-            for i in range(0, length):
-                if six.PY2:
-                    password += password_chars[ord(d[i]) % nchars]
-                else:
-                    password += password_chars[d[i] % nchars]
+            for idx in range(0, length):
+                password += password_chars[d[idx] % nchars]
             return password
 
     security.declarePublic('isValidEmail')
@@ -188,7 +184,7 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         # o If the password is valid, return None.
         # o If not, return a string explaining why.
         err = self.pasValidation('password', password)
-        if err and (password == '' or not _checkPermission(ManagePortal, self)):
+        if err:
             return err
 
         if confirm is not None and confirm != password:
@@ -389,8 +385,6 @@ class RegistrationTool(PloneBaseTool, BaseTool):
             password=member.getPassword(), charset=encoding)
         # The mail headers are not properly encoded we need to extract
         # them and let MailHost manage the encoding.
-        if six.PY2 and isinstance(mail_text, six.text_type):
-            mail_text = mail_text.encode(encoding)
         message_obj = message_from_string(mail_text.strip())
         subject = message_obj['Subject']
         m_to = message_obj['To']
@@ -444,8 +438,6 @@ class RegistrationTool(PloneBaseTool, BaseTool):
 
         # The mail headers are not properly encoded we need to extract
         # them and let MailHost manage the encoding.
-        if six.PY2 and isinstance(mail_text, six.text_type):
-            mail_text = mail_text.encode(encoding)
         message_obj = message_from_string(mail_text.strip())
         subject = message_obj['Subject']
         m_to = message_obj['To']

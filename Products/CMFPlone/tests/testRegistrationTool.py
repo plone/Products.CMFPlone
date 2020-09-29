@@ -8,11 +8,17 @@ from Products.CMFPlone.interfaces.controlpanel import IMailSchema, ISiteSchema
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests.utils import MockMailHost
 from Products.MailHost.interfaces import IMailHost
-from email import message_from_string
 from plone.registry.interfaces import IRegistry
 from zope.component import getSiteManager, getUtility
 
 member_id = 'new_member'
+
+try:
+    # Python 3
+    from email import message_from_bytes
+except ImportError:
+    # Python 2
+    from email import message_from_string as message_from_bytes
 
 
 class TestRegistrationTool(PloneTestCase.PloneTestCase):
@@ -95,6 +101,26 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
         self.assertFalse(self.registration.testPasswordValidity(
             'validpassword', confirm='anotherpassword') is None)
 
+    def testTestPasswordValidityPolicy(self):
+        self.assertIsNone(self.registration.testPasswordValidity("abcde", confirm=None))
+        self.assertEqual(
+            self.registration.testPasswordValidity("abcd", confirm=None),
+            "Your password must contain at least 5 characters.",
+        )
+        # Password validity is checked with an empty password
+        # to get a nice help message to show for the input field.
+        self.assertEqual(
+            self.registration.testPasswordValidity("", confirm=None),
+            "Minimum 5 characters.",
+        )
+
+    def testPasValidation(self):
+        self.assertIsNone(self.registration.pasValidation("password", "abcde"))
+        self.assertEqual(
+            self.registration.pasValidation("password", "abcd"),
+            "Your password must contain at least 5 characters.",
+        )
+
     def testNewIdAllowed(self):
         self.assertEqual(self.registration.isMemberIdAllowed('newuser'), 1)
 
@@ -130,7 +156,7 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
         # Notify the registered user
         self.registration.registeredNotify(member_id)
         self.assertEqual(len(mails.messages), 1)
-        msg = message_from_string(mails.messages[0])
+        msg = message_from_bytes(mails.messages[0])
         # We get an encoded subject
         self.assertEqual(
             msg['Subject'],
@@ -162,7 +188,7 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
         # Notify the registered user
         self.registration.registeredNotify(member_id)
         self.assertEqual(len(mails.messages), 1)
-        msg = message_from_string(mails.messages[0])
+        msg = message_from_bytes(mails.messages[0])
 
         # Ensure charset (and thus Content-Type) were set via template
         self.assertEqual(msg['Content-Type'], 'text/plain; charset="us-ascii"')
@@ -189,7 +215,7 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
         from zope.publisher.browser import TestRequest
         self.registration.mailPassword(member_id, TestRequest())
         self.assertEqual(len(mails.messages), 1)
-        msg = message_from_string(mails.messages[0])
+        msg = message_from_bytes(mails.messages[0])
         # We get an encoded subject
         self.assertEqual(msg['Subject'],
                          '=?utf-8?q?Password_reset_request?=')
@@ -222,7 +248,7 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
         from zope.publisher.browser import TestRequest
         self.registration.mailPassword(member_id, TestRequest())
         self.assertEqual(len(mails.messages), 1)
-        msg = message_from_string(mails.messages[0])
+        msg = message_from_bytes(mails.messages[0])
 
         # Ensure charset (and thus Content-Type) were set via template
         self.assertEqual(msg['Content-Type'], 'text/plain; charset="us-ascii"')

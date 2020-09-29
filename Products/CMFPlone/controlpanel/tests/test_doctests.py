@@ -4,33 +4,32 @@ from plone.testing import layered
 
 import doctest
 import re
-import six
 import unittest
+
+
+tests = ('../README.rst',)
 
 
 class Py23DocChecker(doctest.OutputChecker):
 
     def check_output(self, want, got, optionflags):
-        if not six.PY2:
-            want = re.sub("u'(.*?)'", "'\\1'", want)
-            want = re.sub('u"(.*?)"', '"\\1"', want)
+        # TODO: Fix tests to use Python 3 syntax
+        want = re.sub("u'(.*?)'", "'\\1'", want)
+        want = re.sub('u"(.*?)"', '"\\1"', want)
         return doctest.OutputChecker.check_output(self, want, got, optionflags)
-
-
-tests = ('../README.rst',)
-
 
 def test_suite():
     return unittest.TestSuite(
         [
             layered(
                 doctest.DocFileSuite(
-                    f,
+                    ft,
                     optionflags=doctest.ELLIPSIS,
                     checker=Py23DocChecker(),
                 ),
-                layer=PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
+                layer=PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING,
+
             )
-            for f in tests
+            for ft in tests
         ]
     )

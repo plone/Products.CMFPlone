@@ -7,7 +7,6 @@ import doctest
 import glob
 import os
 import re
-import six
 import unittest
 
 
@@ -26,19 +25,15 @@ OPTIONFLAGS = (doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE)
 class Py23DocChecker(doctest.OutputChecker):
 
     def check_output(self, want, got, optionflags):
-        if six.PY2:
-            want = re.sub('zExceptions.Forbidden', 'Forbidden', want)
-            want = re.sub("b'(.*?)'", "'\\1'", want)
-        else:
-            want = re.sub("u'(.*?)'", "'\\1'", want)
-            # translate doctest exceptions
-            for dotted in ('urllib.error.HTTPError', ):
-                if dotted in got:
-                    got = re.sub(
-                        dotted,
-                        dotted.rpartition('.')[-1],
-                        got,
-                    )
+        # translate doctest exceptions
+        # TODO: fix tests to check for full path
+        for dotted in ('urllib.error.HTTPError', ):
+            if dotted in got:
+                got = re.sub(
+                    dotted,
+                    dotted.rpartition('.')[-1],
+                    got,
+                )
 
         return doctest.OutputChecker.check_output(self, want, got, optionflags)
 

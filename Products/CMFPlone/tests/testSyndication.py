@@ -234,19 +234,19 @@ class TestRenderBody(BaseSyndicationTest):
     def test_atom(self):
         xml = self.folder.restrictedTraverse("@@atom.xml")()
         self.assertTrue(len(re.findall('<entry>', xml)) == 5)
-        news1_feed = '<entry>\s*<title>News 1</title>\s*' \
-                     '<link rel="alternate" type="text/html" href="{0}" />\s*' \
-                     '<id>urn:syndication:{1}</id>\s*' \
-                     '<summary>The news item #1</summary>\s*' \
-                     '<content type="xhtml" xml:base="{2}" xml:lang="en" xml:space="preserve">'.format(self.news1.absolute_url(),
+        news1_feed = r'<entry>\s*<title>News 1</title>\s*' \
+                     r'<link rel="alternate" type="text/html" href="{0}" />\s*' \
+                     r'<id>urn:syndication:{1}</id>\s*' \
+                     r'<summary>The news item #1</summary>\s*' \
+                     r'<content type="xhtml" xml:base="{2}" xml:lang="en" xml:space="preserve">'.format(self.news1.absolute_url(),
                                                                                                        self.news1.UID(),
                                                                                                        self.folder.absolute_url())
         self.assertTrue(re.search(news1_feed, xml) is not None)
         self.assertTrue(re.search(BODY_TEXT, xml) is not None)
-        news2_feed = '<entry>\s*<title>News 2</title>\s*' \
-                     '<link rel="alternate" type="text/html" href="{0}" />\s*' \
-                     '<id>urn:syndication:{1}</id>\s*' \
-                     '<content type="xhtml" xml:base="{2}" xml:lang="en" xml:space="preserve">'.format(self.news2.absolute_url(),
+        news2_feed = r'<entry>\s*<title>News 2</title>\s*' \
+                     r'<link rel="alternate" type="text/html" href="{0}" />\s*' \
+                     r'<id>urn:syndication:{1}</id>\s*' \
+                     r'<content type="xhtml" xml:base="{2}" xml:lang="en" xml:space="preserve">'.format(self.news2.absolute_url(),
                                                                                                        self.news2.UID(),
                                                                                                        self.folder.absolute_url())
         self.assertTrue(re.search(news2_feed, xml) is not None)
@@ -257,29 +257,29 @@ class TestRenderBody(BaseSyndicationTest):
     def test_rss1(self):
         xml = self.folder.restrictedTraverse("@@RSS")()
         self.assertTrue(len(re.findall('<item ', xml)) == 5)
-        news_feed = '<item rdf:about="{0}">\s*<title>News 1</title>\s*' \
-                    '<link>{0}</link>\s*' \
-                    '<description>The news item #1</description>\s*' \
-                    '<content:encoded xmlns:content="http://purl.org/rss/1.0/modules/content/"'.format(
+        news_feed = r'<item rdf:about="{0}">\s*<title>News 1</title>\s*' \
+                    r'<link>{0}</link>\s*' \
+                    r'<description>The news item #1</description>\s*' \
+                    r'<content:encoded xmlns:content="http://purl.org/rss/1.0/modules/content/"'.format(
                         self.news1.absolute_url())
         self.assertTrue(re.search(news_feed, xml) is not None)
-        news_feed = '<item rdf:about="{0}">\s*<title>News 2</title>\s*' \
-                    '<link>{0}</link>\s*' \
-                    '<description></description>\s*' \
-                    '<content:encoded xmlns:content="http://purl.org/rss/1.0/modules/content/"'.format(
+        news_feed = r'<item rdf:about="{0}">\s*<title>News 2</title>\s*' \
+                    r'<link>{0}</link>\s*' \
+                    r'<description></description>\s*' \
+                    r'<content:encoded xmlns:content="http://purl.org/rss/1.0/modules/content/"'.format(
                         self.news2.absolute_url())
         self.assertTrue(re.search(news_feed, xml) is not None)
 
     def test_rss2(self):
         xml = self.folder.restrictedTraverse("@@rss.xml")()
         self.assertTrue(len(re.findall('<item>', xml)) == 5)
-        news_feed = '<item>\s*<title>News 1</title>\s*' \
-                    '<description>The news item #1</description>\s*' \
-                    '<content:encoded xmlns:content="http://purl.org/rss/1.0/modules/content/"'
+        news_feed = r'<item>\s*<title>News 1</title>\s*' \
+                    r'<description>The news item #1</description>\s*' \
+                    r'<content:encoded xmlns:content="http://purl.org/rss/1.0/modules/content/"'
         self.assertTrue(re.search(news_feed, xml) is not None)
-        news_feed = '<item>\s*<title>News 2</title>\s*' \
-                    '<description></description>\s*' \
-                    '<content:encoded xmlns:content="http://purl.org/rss/1.0/modules/content/"'
+        news_feed = r'<item>\s*<title>News 2</title>\s*' \
+                    r'<description></description>\s*' \
+                    r'<content:encoded xmlns:content="http://purl.org/rss/1.0/modules/content/"'
         self.assertTrue(re.search(news_feed, xml) is not None)
 
 

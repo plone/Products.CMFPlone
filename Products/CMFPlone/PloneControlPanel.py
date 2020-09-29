@@ -20,8 +20,6 @@ from zope.i18n import translate
 from zope.i18nmessageid import Message
 from zope.interface import implementer
 
-import six
-
 
 class PloneConfiglet(ActionInformation):
 
@@ -131,8 +129,7 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
             for permission in a.permissions:
                 if _checkPermission(permission, portal):
                     verified = 1
-            if verified and a.category == group and a.testCondition(context) \
-                    and a.visible:
+            if verified and a.category == group and a.visible and a.testCondition(context):
                 res.append(a.getAction(context))
         # Translate the title for sorting
         if getattr(self, 'REQUEST', None) is not None:
@@ -143,9 +140,10 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
                 a['title'] = translate(title,
                                        context=self.REQUEST)
 
-        def _id(v):
-            return v['id']
-        res.sort(key=_id)
+        def _title(v):
+            return v['title']
+
+        res.sort(key=_title)
         return res
 
     security.declareProtected(ManagePortal, 'unregisterConfiglet')
@@ -197,7 +195,7 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
             except ValueError:
                 visible = 0
 
-        if isinstance(permissions, six.string_types):
+        if isinstance(permissions, str):
             permissions = (permissions, )
 
         return PloneConfiglet(id=id,
