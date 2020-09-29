@@ -29,17 +29,12 @@
       <include package="wicked.fieldevent" file="meta.zcml" />
     </configure>
 
-    <!-- z3c.autoinclude's `includePlugins` directive finds
+    <!-- plone.autoinclude's `autoIncludePlugins` directive finds
          and executes ZCML files from any installed packages
          that provide an entry point to declare themselves a
          plone plugin -->
-    <include package="z3c.autoinclude" file="meta.zcml" />
-
-    <includePlugins
-        zcml:condition="not-have disable-autoinclude"
-        package="plone"
-        file="meta.zcml"
-        />
+    <include package="plone.autoinclude" file="meta.zcml" />
+    <autoIncludePlugins target="plone" file="meta.zcml" />
 
 </configure>
 
