@@ -11,7 +11,7 @@
 
   <h1 i18n:translate="">Failsafe Login</h1>
 
-  <div class="portalMessage error pat-cookietrigger" style="display:none">
+  <div class="alert alert-danger pat-cookietrigger" style="display:none">
       <strong i18n:translate="">
           Error
       </strong>
@@ -29,9 +29,9 @@
             <tal:block tal:define="hidden python:widget.mode == 'hidden'">
             <div tal:condition="not:hidden">
 
-                <div class="field"
+                <div class="form-group field"
                      tal:define="error widget/error"
-                     tal:attributes="class python:'field' + (error and ' error' or '')">
+                     tal:attributes="class python:'form-group field' + (error and ' error' or '')">
 
                     <label for=""
                            tal:attributes="for widget/id"

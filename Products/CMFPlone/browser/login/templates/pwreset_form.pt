@@ -33,10 +33,10 @@
                            value=""
                            tal:attributes="value options/randomstring | request/randomstring | nothing" />
 
-                    <div class="field"
+                    <div class="form-group field"
                          tal:define="error errors/userid | nothing;
                                      use_email_as_login python:context.portal_registry['plone.use_email_as_login'];"
-                         tal:attributes="class python:error and 'field error' or 'field'"
+                         tal:attributes="class python:error and 'form-group field error' or 'form-group field'"
                          tal:condition="here/portal_password_reset/checkUser | nothing">
 
                       <tal:username tal:condition="not:use_email_as_login">
@@ -61,9 +61,9 @@
                         <input name="userid" id="userid" />
                     </div>
 
-                    <div class="field"
+                    <div class="form-group field"
                          tal:define="error errors/password | nothing;"
-                         tal:attributes="class python:error and 'field error' or 'field'">
+                         tal:attributes="class python:error and 'form-group field error' or 'form-group field'">
 
                         <label for="password"
                                i18n:translate="label_new_password">New password</label>
@@ -80,9 +80,9 @@
                                size="10" />
                     </div>
 
-                    <div class="field"
+                    <div class="form-group field"
                          tal:define="error errors/password | nothing;"
-                         tal:attributes="class python:error and 'field error' or 'field'">
+                         tal:attributes="class python:error and 'form-group field error' or 'form-group field'">
 
                         <label for="password2" i18n:translate="label_confirm_password">Confirm password</label>
                         <div tal:content="error">Validation error output</div>
@@ -101,7 +101,7 @@
                     <div>
                         <div class="label">&nbsp;</div>
 
-                        <div class="field">
+                        <div class="form-group field">
                             <input class="context"
                                    type="submit"
                                    value="Set my password"
