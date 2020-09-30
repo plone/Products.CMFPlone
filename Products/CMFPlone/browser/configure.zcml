@@ -256,4 +256,11 @@
       layer="zope.interface.Interface"
       />
 
+  <browser:page
+      name="test-rendering"
+      for="*"
+      class=".test_rendering.TestRenderingView"
+      permission="zope2.View"
+      />
+
 </configure>
