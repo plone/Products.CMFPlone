@@ -3,17 +3,10 @@ from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.factory import _DEFAULT_PROFILE
 from Products.CMFCore.utils import getToolByName
 
-import sys
 
-
-if sys.version_info.major == 2:
-    # Start a test upgrade at version 2.5.
-    # The first existing upgrade step will immediately put it at 4001.
-    START_PROFILE = '2.5'
-else:
-    # Python 3 is only supported on 5.2+.
-    # This means you can not upgrade from 5.1 or earlier.
-    START_PROFILE = '5200'
+# Python 3 is only supported on 5.2+.
+# This means you can not upgrade from 5.1 or earlier.
+START_PROFILE = '5200'
 
 
 class TestMigrationTool(PloneTestCase.PloneTestCase):
