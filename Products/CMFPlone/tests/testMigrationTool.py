@@ -4,6 +4,11 @@ from Products.CMFPlone.factory import _DEFAULT_PROFILE
 from Products.CMFCore.utils import getToolByName
 
 
+# Python 3 is only supported on 5.2+.
+# This means you can not upgrade from 5.1 or earlier.
+START_PROFILE = '5200'
+
+
 class TestMigrationTool(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
@@ -39,8 +44,7 @@ class TestMigrationTool(PloneTestCase.PloneTestCase):
 
     def testDoUpgrades(self):
         self.setRoles(['Manager'])
-
-        self.setup.setLastVersionForProfile(_DEFAULT_PROFILE, '2.5')
+        self.setup.setLastVersionForProfile(_DEFAULT_PROFILE, START_PROFILE)
         upgrades = self.migration.listUpgrades()
         self.assertGreater(len(upgrades), 0)
 
@@ -69,7 +73,7 @@ class TestMigrationTool(PloneTestCase.PloneTestCase):
 
     def testUpgrade(self):
         self.setRoles(['Manager'])
-        self.setup.setLastVersionForProfile(_DEFAULT_PROFILE, '2.5')
+        self.setup.setLastVersionForProfile(_DEFAULT_PROFILE, START_PROFILE)
         self.migration.upgrade()
 
         # And we have reached our current profile version
@@ -130,7 +134,7 @@ class TestMigrationWithExtraUpgrades(PloneTestCase.PloneTestCase):
 
     def testUpgrade(self):
         self.setRoles(['Manager'])
-        self.setup.setLastVersionForProfile(_DEFAULT_PROFILE, '2.5')
+        self.setup.setLastVersionForProfile(_DEFAULT_PROFILE, START_PROFILE)
         self.migration.upgrade()
 
         # And we have reached our current profile version

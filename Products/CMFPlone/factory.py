@@ -81,7 +81,6 @@ class NonInstallable:
                 'Products.CMFFormController:CMFFormController',
                 'Products.CMFPlone:dependencies',
                 'Products.CMFPlone:testfixture',
-                'Products.CMFQuickInstallerTool:CMFQuickInstallerTool',
                 'Products.NuPlone:uninstall',
                 'Products.MimetypesRegistry:MimetypesRegistry',
                 'Products.PasswordResetTool:PasswordResetTool',

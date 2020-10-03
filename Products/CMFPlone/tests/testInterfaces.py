@@ -11,7 +11,6 @@ from Products.CMFPlone.PloneTool import PloneTool
 from Products.CMFPlone.Portal import PloneSite
 from Products.CMFPlone.PropertiesTool import PropertiesTool
 from Products.CMFPlone.PropertiesTool import SimpleItemWithProperties
-from Products.CMFPlone.QuickInstallerTool import QuickInstallerTool
 from Products.CMFPlone.RegistrationTool import RegistrationTool
 from Products.CMFPlone.SkinsTool import SkinsTool
 from Products.CMFPlone.TypesTool import TypesTool
@@ -266,7 +265,6 @@ testClasses = [
     (PloneTool, ()),
     (PloneSite, ()),
     (PropertiesTool, ()), (SimpleItemWithProperties, ()),
-    (QuickInstallerTool, ()),
     (RegistrationTool, ()),
     (SkinsTool, ()),
     (TypesTool, ()),
