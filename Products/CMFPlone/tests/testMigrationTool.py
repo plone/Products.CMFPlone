@@ -1,8 +1,12 @@
-# -*- coding: utf-8 -*-
 from Products.CMFPlone.tests import PloneTestCase
 
 from Products.CMFPlone.factory import _DEFAULT_PROFILE
 from Products.CMFCore.utils import getToolByName
+
+
+# Python 3 is only supported on 5.2+.
+# This means you can not upgrade from 5.1 or earlier.
+START_PROFILE = '5200'
 
 
 class TestMigrationTool(PloneTestCase.PloneTestCase):
@@ -40,8 +44,7 @@ class TestMigrationTool(PloneTestCase.PloneTestCase):
 
     def testDoUpgrades(self):
         self.setRoles(['Manager'])
-
-        self.setup.setLastVersionForProfile(_DEFAULT_PROFILE, '2.5')
+        self.setup.setLastVersionForProfile(_DEFAULT_PROFILE, START_PROFILE)
         upgrades = self.migration.listUpgrades()
         self.assertGreater(len(upgrades), 0)
 
@@ -70,7 +73,7 @@ class TestMigrationTool(PloneTestCase.PloneTestCase):
 
     def testUpgrade(self):
         self.setRoles(['Manager'])
-        self.setup.setLastVersionForProfile(_DEFAULT_PROFILE, '2.5')
+        self.setup.setLastVersionForProfile(_DEFAULT_PROFILE, START_PROFILE)
         self.migration.upgrade()
 
         # And we have reached our current profile version
@@ -131,7 +134,7 @@ class TestMigrationWithExtraUpgrades(PloneTestCase.PloneTestCase):
 
     def testUpgrade(self):
         self.setRoles(['Manager'])
-        self.setup.setLastVersionForProfile(_DEFAULT_PROFILE, '2.5')
+        self.setup.setLastVersionForProfile(_DEFAULT_PROFILE, START_PROFILE)
         self.migration.upgrade()
 
         # And we have reached our current profile version
@@ -161,17 +164,17 @@ class TestAddonList(PloneTestCase.PloneTestCase):
     def test_addon_repr(self):
         from Products.CMFPlone.MigrationTool import Addon
         addon = Addon(profile_id='foo')
-        self.assertEqual(repr(addon), u'<Addon profile foo>')
+        self.assertEqual(repr(addon), '<Addon profile foo>')
         self.assertEqual(str(addon), '<Addon profile foo>')
 
     def test_upgrade_all(self):
         from Products.CMFPlone.MigrationTool import Addon
         from Products.CMFPlone.MigrationTool import AddonList
         # real ones:
-        cmfeditions = Addon(profile_id=u'Products.CMFEditions:CMFEditions')
-        discussion = Addon(profile_id=u'plone.app.discussion:default')
+        cmfeditions = Addon(profile_id='Products.CMFEditions:CMFEditions')
+        discussion = Addon(profile_id='plone.app.discussion:default')
         # real one with failing check_module:
-        dexterity = Addon(profile_id=u'plone.app.dexterity:default',
+        dexterity = Addon(profile_id='plone.app.dexterity:default',
                           check_module='no.such.module')
         # non-existing one:
         foo = Addon(profile_id='foo')

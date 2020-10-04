@@ -11,16 +11,16 @@ if getattr(request, 'form.button.search', None) is not None:
     search = request.form.get('search_entry')
     if search == '':
         member.setProperties(error_log_update=0.0)
-        context.plone_utils.addPortalMessage(_(u'Showing all entries'))
+        context.plone_utils.addPortalMessage(_('Showing all entries'))
         return request.RESPONSE.redirect(context.absolute_url() + '/prefs_error_log_form')
     return request.RESPONSE.redirect(context.absolute_url() + '/prefs_error_log_showEntry?id=%s' % search)
 elif getattr(request, 'form.button.showall', None) is not None:
     member.setProperties(error_log_update=0.0)
-    context.plone_utils.addPortalMessage(_(u'Showing all entries'))
+    context.plone_utils.addPortalMessage(_('Showing all entries'))
     return request.RESPONSE.redirect(context.absolute_url() + '/prefs_error_log_form')
 elif getattr(request, 'form.button.clear', None) is not None:
     member.setProperties(error_log_update=DateTime().timeTime())
-    context.plone_utils.addPortalMessage(_(u'Entries cleared'))
+    context.plone_utils.addPortalMessage(_('Entries cleared'))
     return request.RESPONSE.redirect(context.absolute_url() + '/prefs_error_log_form')
 else:
     return request.RESPONSE.redirect(context.absolute_url() + '/prefs_error_log_form')

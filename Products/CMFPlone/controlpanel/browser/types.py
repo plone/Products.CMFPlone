@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Acquisition import aq_inner
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
@@ -32,18 +31,18 @@ def format_description(text, request=None):
 VERSION_POLICIES = [
     dict(id="off",
          policy=(),
-         title=_(u"versioning_off",
-                 default=u"No versioning")),
+         title=_("versioning_off",
+                 default="No versioning")),
 
     dict(id="manual",
          policy=("version_on_revert",),
-         title=_(u"versioning_manual",
-                 default=u"Manual")),
+         title=_("versioning_manual",
+                 default="Manual")),
 
     dict(id="automatic",
          policy=("at_edit_autoversion", "version_on_revert"),
-         title=_(u"versioning_automatic",
-                 default=u"Automatic")),
+         title=_("versioning_automatic",
+                 default="Automatic")),
 ]
 
 
@@ -64,13 +63,13 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
             self.status = self.formErrorsMessage
             return
         IStatusMessage(self.request).addStatusMessage(
-            _(u"Changes saved"), "info")
+            _("Changes saved"), "info")
         self.request.response.redirect("@@content-controlpanel")
 
-    @button.buttonAndHandler(_(u"Cancel"), name='cancel')
+    @button.buttonAndHandler(_("Cancel"), name='cancel')
     def handleCancel(self, action):
         IStatusMessage(self.request).addStatusMessage(
-            _(u"Changes canceled."), "info")
+            _("Changes canceled."), "info")
         self.request.response.redirect("@@overview-controlpanel")
 
     @property
@@ -216,10 +215,10 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
                         chain = new_wf
                     else:
                         chain = (new_wf,)
-                    state_map = dict([
-                        (s['old_state'], s['new_state'])
+                    state_map = {
+                        s['old_state']: s['new_state']
                         for s in form.get('new_wfstates', [])
-                    ])
+                    }
                     if '[none]' in state_map:
                         state_map[None] = state_map['[none]']
                         del state_map['[none]']
@@ -262,7 +261,7 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
                         )
 
                 self.request.response.redirect(
-                    '%s/@@content-controlpanel?type_id=%s' % (
+                    '{}/@@content-controlpanel?type_id={}'.format(
                         context.absolute_url(),
                         type_id
                     )
@@ -352,12 +351,12 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
         chain = portal_workflow.getChainForPortalType(self.type_id)
         empty_workflow_dict = dict(
             id='[none]',
-            title=_(u"label_no_workflow"),
+            title=_("label_no_workflow"),
             description=[_(
-                u"description_no_workflow",
-                default=u"This type has no workflow. The visibilty "
-                        u"of items of this type is determined by "
-                        u"the folder they are in.")
+                "description_no_workflow",
+                default="This type has no workflow. The visibilty "
+                        "of items of this type is determined by "
+                        "the folder they are in.")
             ]
         )
 
@@ -391,8 +390,8 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
         )
         return dict(id='(Default)',
                     title=_(
-                        u"label_default_workflow_title",
-                        default=u"Default workflow (${title})",
+                        "label_default_workflow_title",
+                        default="Default workflow (${title})",
                         mapping=dict(title=default_title)),
                     description=format_description(
                         default_workflow.description,
@@ -429,8 +428,8 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
                 0,
                 dict(
                     id='(Default)',
-                    title=_(u"label_default_workflow_title",
-                            default=u"Default workflow (${title})",
+                    title=_("label_default_workflow_title",
+                            default="Default workflow (${title})",
                             mapping=dict(title=default_title)),
                     description=format_description(
                         default_workflow.description,
@@ -497,10 +496,10 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
         if self.new_workflow_is_different():
             if self.new_workflow_is_none():
                 return [_(
-                    u"description_no_workflow",
-                    default=u"This type has no workflow. The visibilty of "
-                            u"items of this type is determined by the "
-                            u"folder they are in.")]
+                    "description_no_workflow",
+                    default="This type has no workflow. The visibilty of "
+                            "items of this type is determined by the "
+                            "folder they are in.")]
             new_workflow = self.real_workflow(self.new_workflow())
             wf = getattr(portal_workflow, new_workflow)
             return format_description(wf.description, self.request)
@@ -534,14 +533,14 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
             new_wf = getattr(portal_workflow, new_workflow)
             default_state = new_wf.initial_state
             return [dict(old_id='[none]',
-                         old_title=_(u"No workflow"),
+                         old_title=_("No workflow"),
                          suggested_id=default_state)]
 
         elif self.new_workflow_is_different():
             old_wf = getattr(portal_workflow, current_workflow)
             new_wf = getattr(portal_workflow, new_workflow)
 
-            new_states = set([s.id for s in new_wf.states.objectValues()])
+            new_states = {s.id for s in new_wf.states.objectValues()}
             default_state = new_wf.initial_state
 
             states = []

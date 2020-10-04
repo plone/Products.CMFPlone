@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from itertools import chain
 from Acquisition import aq_inner
 from Products.CMFPlone.controlpanel.browser.usergroups import \
@@ -125,7 +124,7 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
         utils = getToolByName(context, 'plone_utils')
         groupstool = getToolByName(context, 'portal_groups')
 
-        message = _(u'No changes made.')
+        message = _('No changes made.')
 
         for group in groups:
             roles = [r for r in self.request.form['group_' + group] if r]
@@ -137,7 +136,7 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
                     raise Forbidden
 
             groupstool.editGroup(group, roles=roles, groups=())
-            message = _(u'Changes saved.')
+            message = _('Changes saved.')
 
         if delete:
             for group_id in delete:
@@ -146,6 +145,6 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
                     raise Forbidden
 
             groupstool.removeGroups(delete)
-            message = _(u'Group(s) deleted.')
+            message = _('Group(s) deleted.')
 
         utils.addPortalMessage(message)

@@ -1,0 +1,4 @@
+Removed ``folder_publish.cpy`` script.
+Replaced with folder_publish browser view in ``plone.app.content``.
+Removed deprecated transitionObjectsByPaths.
+[maurits]

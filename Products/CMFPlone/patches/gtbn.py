@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Acquisition import aq_parent, aq_base, aq_inner
 from Acquisition import IAcquirer
 from Products.CMFCore import utils

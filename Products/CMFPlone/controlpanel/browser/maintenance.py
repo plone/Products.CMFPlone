@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from AccessControl import getSecurityManager
 from AccessControl.Permissions import view_management_screens
 from Acquisition import aq_inner
@@ -38,9 +37,9 @@ class MaintenanceControlPanel(AutoExtensibleForm, form.EditForm):
 
     schema = IMaintenanceSchema
     id = "maintenance-control-panel"
-    label = _(u'Maintenance Settings')
-    description = _(u"Zope server and site maintenance options.")
-    form_name = _(u'Zope Database Packing')
+    label = _('Maintenance Settings')
+    description = _("Zope server and site maintenance options.")
+    form_name = _('Zope Database Packing')
     control_panel_view = "maintenance-controlpanel"
     template = ViewPageTemplateFile('maintenance.pt')
 
@@ -48,10 +47,10 @@ class MaintenanceControlPanel(AutoExtensibleForm, form.EditForm):
     def portal(self):
         portal_state = getMultiAdapter(
             (aq_inner(self.context), self.request),
-            name=u'plone_portal_state')
+            name='plone_portal_state')
         return portal_state.portal()
 
-    @button.buttonAndHandler(_(u'Pack database now'), name='pack')
+    @button.buttonAndHandler(_('Pack database now'), name='pack')
     def handle_pack_action(self, action):
         data, errors = self.extractData()
         if errors:
@@ -60,8 +59,8 @@ class MaintenanceControlPanel(AutoExtensibleForm, form.EditForm):
         CheckAuthenticator(self.request)
         if not self.available():
             self.status = _(
-                u'text_not_allowed_manage_server',
-                default=u'You are not allowed to manage the Zope server.'
+                'text_not_allowed_manage_server',
+                default='You are not allowed to manage the Zope server.'
             )
             return
 
@@ -71,15 +70,15 @@ class MaintenanceControlPanel(AutoExtensibleForm, form.EditForm):
             db = self.portal()._p_jar.db()
             t = time.time() - (days * 86400)
             db.pack(t)
-        self.status = _(u'Packed the database.')
+        self.status = _('Packed the database.')
 
-    @button.buttonAndHandler(_(u'Shut down'), name='shutdown')
+    @button.buttonAndHandler(_('Shut down'), name='shutdown')
     def handle_shutdown_action(self, action):
         CheckAuthenticator(self.request)
         if not self.available():
             self.status = _(
-                u'text_not_allowed_manage_server',
-                default=u'You are not allowed to manage the Zope server.'
+                'text_not_allowed_manage_server',
+                default='You are not allowed to manage the Zope server.'
             )
             return
         try:
@@ -93,17 +92,17 @@ class MaintenanceControlPanel(AutoExtensibleForm, form.EditForm):
             raise
         # TODO: returning html has no effect in button handlers
         self.request.response.setHeader('X-Theme-Disabled', 'True')
-        return """<html><head></head><body>{0}</body></html>""".format(
+        return """<html><head></head><body>{}</body></html>""".format(
             _('plone_shutdown', default="Zope is shutting down.")
         )
 
-    @button.buttonAndHandler(_(u'Restart'), name='restart')
+    @button.buttonAndHandler(_('Restart'), name='restart')
     def handle_restart_action(self, action):
         CheckAuthenticator(self.request)
         if not self.available():
             self.status = _(
-                u'text_not_allowed_manage_server',
-                default=u'You are not allowed to manage the Zope server.'
+                'text_not_allowed_manage_server',
+                default='You are not allowed to manage the Zope server.'
             )
             return
 
@@ -117,12 +116,12 @@ class MaintenanceControlPanel(AutoExtensibleForm, form.EditForm):
         # TODO: returning html has no effect in button handlers
         self.request.response.setHeader('X-Theme-Disabled', 'True')
         return """<html><head>
-            <meta http-equiv="refresh" content="5; url={0}">
-        </head><body>{1}</body></html>""".format(
+            <meta http-equiv="refresh" content="5; url={}">
+        </head><body>{}</body></html>""".format(
             escape(url, 1),
             _('plone_restarting',
-                default=u"Zope is restarting. This page will refresh in 30"
-                        u" seconds...")
+                default="Zope is restarting. This page will refresh in 30"
+                        " seconds...")
         )
 
     def available(self):

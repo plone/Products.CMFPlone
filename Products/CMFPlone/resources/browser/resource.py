@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
@@ -23,7 +22,7 @@ from zope.component import getUtility
 from zope.ramcache.interfaces import ram
 
 
-class ResourceBase(object):
+class ResourceBase:
     """Information for script rendering.
 
     This is a mixin base class for a browser view, a viewlet or a tile
@@ -102,7 +101,7 @@ class ResourceBase(object):
     def update(self):
         self.portal_state = getMultiAdapter(
             (self.context, self.request),
-            name=u'plone_portal_state'
+            name='plone_portal_state'
         )
         self.site_url = self.portal_state.portal_url()
         self.registry = getUtility(IRegistry)

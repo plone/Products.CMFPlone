@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import print_function
 from AccessControl import ClassSecurityInfo
 from AccessControl import getSecurityManager
 from AccessControl import ModuleSecurityInfo
@@ -245,7 +243,7 @@ def normalizeString(text, context=None, encoding=None):
     return queryUtility(IIDNormalizer).normalize(text)
 
 
-class RealIndexIterator(object):
+class RealIndexIterator:
     """The 'real' version of the IndexIterator class, that's actually
     used to generate unique indexes.
     """
@@ -281,18 +279,18 @@ class ToolInit(CMFCoreToolInit):
         icon_path = path
         try:
             icon = ImageFile(path, pack.__dict__)
-        except (IOError, OSError):
+        except OSError:
             # Fallback:
             # Assume path is relative to CMFPlone directory
             path = abspath(join(PACKAGE_HOME, path))
             try:
                 icon = ImageFile(path, pack.__dict__)
-            except (IOError, OSError):
+            except OSError:
                 # if there is some problem loading the fancy image
                 # from the tool then  tell someone about it
-                log(('The icon for the product: %s which was set to: %s, '
+                log('The icon for the product: %s which was set to: %s, '
                      'was not found. Using the default.' %
-                     (self.product_name, icon_path)))
+                     (self.product_name, icon_path))
         return icon
 
     def initialize(self, context):
@@ -311,7 +309,7 @@ class ToolInit(CMFCoreToolInit):
                         # Icon was not found
                         return
                     icon.__roles__ = None
-                    tool.icon = 'misc_/%s/%s' % (self.product_name, name)
+                    tool.icon = f'misc_/{self.product_name}/{name}'
                     misc = OFS.misc_.misc_
                     Misc = OFS.misc_.Misc_
                     if not hasattr(misc, pid):
@@ -654,7 +652,7 @@ def set_own_login_name(member, loginname):
 def ajax_load_url(url):
     if url and 'ajax_load' not in url:
         sep = '?' in url and '&' or '?'  # url parameter seperator
-        url = '%s%sajax_load=1' % (url, sep)
+        url = f'{url}{sep}ajax_load=1'
     return url
 
 
@@ -668,8 +666,8 @@ def validate_json(value):
         json.loads(value)
     except ValueError as exc:
         class JSONError(schema.ValidationError):
-            __doc__ = _(u"Must be empty or a valid JSON-formatted "
-                        u"configuration – ${message}.", mapping={
+            __doc__ = _("Must be empty or a valid JSON-formatted "
+                        "configuration – ${message}.", mapping={
                             'message': str(exc)})
 
         raise JSONError(value)
@@ -838,7 +836,7 @@ def human_readable_size(size):
         for c in SIZE_ORDER:
             if size // SIZE_CONST[c] > 0:
                 break
-        return '%.1f %s' % (float(size / float(SIZE_CONST[c])), c)
+        return '{:.1f} {}'.format(float(size / float(SIZE_CONST[c])), c)
     return size
 
 
@@ -883,7 +881,7 @@ def check_id(
     # make sure we have an id if one is required
     if not id:
         if required:
-            return xlate(_(u'Please enter a name.'))
+            return xlate(_('Please enter a name.'))
 
         # Id is not required and no alternative was specified, so assume the
         # object's id will be context.getId(). We still should check to make
@@ -901,7 +899,7 @@ def check_id(
     # check for reserved names
     if id in ('login', 'layout', 'plone', 'zip', 'properties', ):
         return xlate(
-            _(u'${name} is reserved.',
+            _('${name} is reserved.',
               mapping={'name': id}))
 
     # check for bad characters
@@ -912,17 +910,17 @@ def check_id(
             bad_chars = ''.join(bad_chars).decode('utf-8')
             decoded_id = id.decode('utf-8')
             return xlate(
-                _(u'${name} is not a legal name. The following characters are '
-                  u'invalid: ${characters}',
-                  mapping={u'name': decoded_id, u'characters': bad_chars}))
+                _('${name} is not a legal name. The following characters are '
+                  'invalid: ${characters}',
+                  mapping={'name': decoded_id, 'characters': bad_chars}))
 
     # check for a catalog index
     portal_catalog = getToolByName(context, 'portal_catalog', None)
     if portal_catalog is not None:
         if id in list(portal_catalog.indexes()) + list(portal_catalog.schema()):
             return xlate(
-                _(u'${name} is reserved.',
-                  mapping={u'name': id}))
+                _('${name} is reserved.',
+                  mapping={'name': id}))
 
     # id is good; decide if we should check for id collisions
     portal_factory = getToolByName(context, 'portal_factory', None)
@@ -958,8 +956,8 @@ def check_id(
     except Unauthorized:
         # There is a permission problem. Safe to assume we can't use this id.
         return xlate(
-            _(u'${name} is reserved.',
-              mapping={u'name': id}))
+            _('${name} is reserved.',
+              mapping={'name': id}))
     if result is not None:
         result = xlate(result, )
     return result
@@ -993,8 +991,8 @@ def _check_for_collision(contained_by, id, **kwargs):
         existing_obj = getattr(contained_by, id, None)
         if base_hasattr(existing_obj, 'portal_type'):
             return _(
-                u'There is already an item named ${name} in this folder.',
-                mapping={u'name': id})
+                'There is already an item named ${name} in this folder.',
+                mapping={'name': id})
 
     if base_hasattr(contained_by, 'checkIdAvailable'):
         # This used to be called from the check_id skin script,
@@ -1002,7 +1000,7 @@ def _check_for_collision(contained_by, id, **kwargs):
         # and the code would catch the Unauthorized exception.
         if secman.checkPermission(AddPortalContent, contained_by):
             if not contained_by.checkIdAvailable(id):
-                return _(u'${name} is reserved.', mapping={u'name': id})
+                return _('${name} is reserved.', mapping={'name': id})
 
     # containers may implement this hook to further restrict ids
     if base_hasattr(contained_by, 'checkValidId'):
@@ -1011,7 +1009,7 @@ def _check_for_collision(contained_by, id, **kwargs):
         except ConflictError:
             raise
         except:  # noqa: E722
-            return _(u'${name} is reserved.', mapping={u'name': id})
+            return _('${name} is reserved.', mapping={'name': id})
 
     # make sure we don't collide with any parent method aliases
     plone_utils = getToolByName(contained_by, 'plone_utils', None)
@@ -1022,7 +1020,7 @@ def _check_for_collision(contained_by, id, **kwargs):
             aliases = plone_utils.getMethodAliases(parentFti)
             if aliases is not None:
                 if id in aliases.keys():
-                    return _(u'${name} is reserved.', mapping={u'name': id})
+                    return _('${name} is reserved.', mapping={'name': id})
 
     # Lastly, we want to disallow the id of any of the tools in the portal
     # root, as well as any object that can be acquired via portal_skins.
@@ -1052,4 +1050,4 @@ def _check_for_collision(contained_by, id, **kwargs):
         return
     # but not other things
     if getattr(portal, id, None) is not None:
-        return _(u'${name} is reserved.', mapping={u'name': id})
+        return _('${name} is reserved.', mapping={'name': id})

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from zExceptions import NotFound
 from Products.Five import BrowserView
 
@@ -35,7 +34,7 @@ class SyndicationUtil(BrowserView):
         if len(types) == 0:
             return url
         _type = types[0]
-        return '%s/%s' % (url, _type)
+        return f'{url}/{_type}'
 
     def context_allowed(self):
         if not ISyndicatable.providedBy(self.context):

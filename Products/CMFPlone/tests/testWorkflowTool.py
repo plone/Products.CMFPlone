@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from zope.interface import directlyProvides, Interface
 from zope.component import provideAdapter, getGlobalSiteManager
 from Products.CMFPlone.tests import PloneTestCase

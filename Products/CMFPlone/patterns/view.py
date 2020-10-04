@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # This module delivers the global patterns settings
 from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.interfaces import IPatternsSettings
@@ -16,7 +15,7 @@ class PatternsSettingsView(BrowserView):
     def __call__(self):
         portal_state = getMultiAdapter(
             (self.context, self.request),
-            name=u'plone_portal_state'
+            name='plone_portal_state'
         )
         context_state = getMultiAdapter(
             (self.context, self.request),

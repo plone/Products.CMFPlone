@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from AccessControl import Unauthorized
 from plone.app.testing import SITE_OWNER_NAME
 from plone.registry.interfaces import IRegistry

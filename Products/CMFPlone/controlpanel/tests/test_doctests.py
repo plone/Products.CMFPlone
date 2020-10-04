@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 from plone.testing import layered
 

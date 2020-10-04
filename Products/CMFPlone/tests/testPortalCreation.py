@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Acquisition import aq_base
 from plone.portlets.constants import CONTEXT_CATEGORY as CONTEXT_PORTLETS
 from plone.portlets.interfaces import ILocalPortletAssignmentManager
@@ -215,8 +214,8 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         # We should have a default_page_types setting
         registry = self.portal.portal_registry
         self.assertIn('plone.default_page_types', registry)
-        self.assertNotIn(u'Folder', registry['plone.default_page_types'])
-        self.assertIn(u'Document', registry['plone.default_page_types'])
+        self.assertNotIn('Folder', registry['plone.default_page_types'])
+        self.assertIn('Document', registry['plone.default_page_types'])
 
     def testNoMembersAction(self):
         # There should not be a Members action
@@ -398,7 +397,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         actions = self.actions.listActions()
         self.assertEqual(
             [x.title for x in actions if x.title == 'Site Setup'],
-            [u'Site Setup'],
+            ['Site Setup'],
         )
 
     def testEnableLivesearchProperty(self):
@@ -771,8 +770,8 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         )
 
     def testPortletAssignmentsAtRoot(self):
-        leftColumn = getUtility(IPortletManager, name=u'plone.leftcolumn')
-        rightColumn = getUtility(IPortletManager, name=u'plone.rightcolumn')
+        leftColumn = getUtility(IPortletManager, name='plone.leftcolumn')
+        rightColumn = getUtility(IPortletManager, name='plone.rightcolumn')
 
         left = getMultiAdapter(
             (self.portal, leftColumn), IPortletAssignmentMapping
@@ -786,7 +785,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
 
     def testPortletBlockingForMembersFolder(self):
         members = self.portal.Members
-        rightColumn = getUtility(IPortletManager, name=u'plone.rightcolumn')
+        rightColumn = getUtility(IPortletManager, name='plone.rightcolumn')
         portletAssignments = getMultiAdapter(
             (members, rightColumn), ILocalPortletAssignmentManager
         )
@@ -795,7 +794,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         )
 
     def testAddablePortletsInColumns(self):
-        for name in (u'plone.leftcolumn', u'plone.rightcolumn'):
+        for name in ('plone.leftcolumn', 'plone.rightcolumn'):
             column = getUtility(IPortletManager, name=name)
             addable_types = [
                 p.addview for p in column.getAddablePortletTypes()

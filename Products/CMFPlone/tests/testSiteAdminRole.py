@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from AccessControl.PermissionRole import rolesForPermissionOn
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 
@@ -32,10 +31,8 @@ class TestSiteAdministratorRole(unittest.TestCase):
             'Add CMF Diff Tools':                                       0,
             'Add CMF Editions Tools':                                   0,
             'Add CMF Placeful Workflow Tools':                          0,
-            'Add CMF QuickInstaller Tools':                             0,
             'Add CMF Sites':                                            0,
             'Add CMF Unique Id Tools':                                  0,
-            'Add CMFQuickInstallerTools':                               0,
             'Add Content Type Registrys':                               0,
             'Add Controller Page Templates':                            0,
             'Add Controller Python Scripts':                            0,

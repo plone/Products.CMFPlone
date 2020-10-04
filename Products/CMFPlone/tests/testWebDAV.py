@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.testing import SITE_OWNER_NAME
 from plone.app.testing import SITE_OWNER_PASSWORD
 from plone.app.testing import TEST_USER_NAME
@@ -36,7 +35,7 @@ class TestPUTObjects(PloneTestCase.PloneTestCase):
     # Confirms fix for http://dev.plone.org/plone/ticket/1375
 
     def afterSetUp(self):
-        self.basic_auth = '%s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD)
+        self.basic_auth = f'{TEST_USER_NAME}:{TEST_USER_PASSWORD}'
         self.portal_path = self.portal.absolute_url(1)
         self.folder_path = self.folder.absolute_url(1)
 
@@ -279,7 +278,7 @@ class TestPUTIndexHtml(PloneTestCase.PloneTestCase):
     """
 
     def afterSetUp(self):
-        self.basic_auth = '%s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD)
+        self.basic_auth = f'{TEST_USER_NAME}:{TEST_USER_PASSWORD}'
         self.portal_path = self.portal.absolute_url(1)
         self.folder_path = self.folder.absolute_url(1)
         self.body = 'I am the walrus'
@@ -323,7 +322,7 @@ class TestDAVOperations(PloneTestCase.FunctionalTestCase):
 
     def afterSetUp(self):
         self.loginAsPortalOwner()
-        self.basic_auth = '%s:%s' % (SITE_OWNER_NAME,
+        self.basic_auth = '{}:{}'.format(SITE_OWNER_NAME,
                                      SITE_OWNER_PASSWORD)
         self.portal_path = self.portal.absolute_url(1)
         self.folder_path = self.folder.absolute_url(1)

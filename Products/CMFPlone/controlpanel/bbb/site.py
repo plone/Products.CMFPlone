@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from zope.schema.fieldproperty import FieldProperty
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.CMFPlone.interfaces import ISiteSchema
@@ -9,7 +8,7 @@ from zope.interface import implementer
 
 
 @implementer(ISiteSchema)
-class SiteControlPanelAdapter(object):
+class SiteControlPanelAdapter:
 
     adapts(IPloneSiteRoot)
 

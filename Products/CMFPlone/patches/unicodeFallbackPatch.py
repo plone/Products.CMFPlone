@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # The following hacks make sure that Unicode and utf-8 encoded strings can be
 # mixed in all page templates and tal snippets.
 

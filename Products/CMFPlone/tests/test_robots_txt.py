@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Products.CMFPlone.interfaces import ISiteSchema
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 from plone.registry.interfaces import IRegistry
@@ -20,5 +19,5 @@ class RobotsTxtFunctionalTest(unittest.TestCase):
         self.assertIn('{portal_url}/sitemap.xml.gz', settings.robots_txt)
         view = self.portal.restrictedTraverse('robots.txt')
         self.assertIn('http://nohost/plone/sitemap.xml.gz', view())
-        settings.robots_txt = u"Dummy"
-        self.assertEqual(u"Dummy", view())
+        settings.robots_txt = "Dummy"
+        self.assertEqual("Dummy", view())

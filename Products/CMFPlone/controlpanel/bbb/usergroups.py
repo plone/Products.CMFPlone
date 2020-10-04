@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from zope.component import adapts
 from zope.component import getUtility
 from zope.interface import implementer
@@ -9,7 +8,7 @@ from Products.CMFPlone.interfaces import IPloneSiteRoot
 
 
 @implementer(IUserGroupsSettingsSchema)
-class UserGroupsSettingsControlPanelAdapter(object):
+class UserGroupsSettingsControlPanelAdapter:
 
     adapts(IPloneSiteRoot)
 

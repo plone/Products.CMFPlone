@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Products.Five.browser import BrowserView
 
 
@@ -24,4 +23,4 @@ class OK(BrowserView):
         set_header('Expires', 'Sat, 1 Jan 2000 00:00:00 GMT')
         set_header('Cache-Control', 'max-age=0, must-revalidate, private')
         # Return a short and simple message.
-        return u'OK'
+        return 'OK'

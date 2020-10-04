@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from logging import getLogger
 from plone.registry.interfaces import IRegistry
 from plone.uuid.handlers import addAttributeUUID
@@ -27,7 +26,7 @@ logger = getLogger('Plone')
 
 
 @implementer(INonInstallable)
-class NonInstallable(object):
+class NonInstallable:
 
     def getNonInstallableProducts(self):
         return [
@@ -78,46 +77,45 @@ class NonInstallable(object):
     def getNonInstallableProfiles(self):
         return [_DEFAULT_PROFILE,
                 _CONTENT_PROFILE,
-                u'Products.Archetypes:Archetypes',
-                u'Products.ATContentTypes:default',
-                u'Products.CMFDiffTool:CMFDiffTool',
-                u'Products.CMFEditions:CMFEditions',
-                u'Products.CMFFormController:CMFFormController',
-                u'Products.CMFPlone:dependencies',
-                u'Products.CMFPlone:testfixture',
-                u'Products.CMFQuickInstallerTool:CMFQuickInstallerTool',
-                u'Products.NuPlone:uninstall',
-                u'Products.MimetypesRegistry:MimetypesRegistry',
-                u'Products.PasswordResetTool:PasswordResetTool',
-                u'Products.PortalTransforms:PortalTransforms',
-                u'Products.PloneLanguageTool:PloneLanguageTool',
-                u'Products.PlonePAS:PlonePAS',
-                u'borg.localrole:default',
-                u'plone.browserlayer:default',
-                u'plone.keyring:default',
-                u'plone.outputfilters:default',
-                u'plone.portlet.static:default',
-                u'plone.portlet.collection:default',
-                u'plone.protect:default',
-                u'plone.app.blob:default',
-                u'plone.app.blob:file-replacement',
-                u'plone.app.blob:image-replacement',
-                u'plone.app.blob:sample-type',
-                u'plone.app.collection:default',
-                u'plone.app.contenttypes:default',
-                u'plone.app.dexterity:default',
-                u'plone.app.discussion:default',
-                u'plone.app.event:default',
-                u'plone.app.imaging:default',
-                u'plone.app.linkintegrity:default',
-                u'plone.app.registry:default',
-                u'plone.app.relationfield:default',
-                u'plone.app.theming:default',
-                u'plone.app.users:default',
-                u'plone.app.versioningbehavior:default',
-                u'plone.app.z3cform:default',
-                u'plone.formwidget.recurrence:default',
-                u'plone.resource:default',
+                'Products.Archetypes:Archetypes',
+                'Products.ATContentTypes:default',
+                'Products.CMFDiffTool:CMFDiffTool',
+                'Products.CMFEditions:CMFEditions',
+                'Products.CMFFormController:CMFFormController',
+                'Products.CMFPlone:dependencies',
+                'Products.CMFPlone:testfixture',
+                'Products.NuPlone:uninstall',
+                'Products.MimetypesRegistry:MimetypesRegistry',
+                'Products.PasswordResetTool:PasswordResetTool',
+                'Products.PortalTransforms:PortalTransforms',
+                'Products.PloneLanguageTool:PloneLanguageTool',
+                'Products.PlonePAS:PlonePAS',
+                'borg.localrole:default',
+                'plone.browserlayer:default',
+                'plone.keyring:default',
+                'plone.outputfilters:default',
+                'plone.portlet.static:default',
+                'plone.portlet.collection:default',
+                'plone.protect:default',
+                'plone.app.blob:default',
+                'plone.app.blob:file-replacement',
+                'plone.app.blob:image-replacement',
+                'plone.app.blob:sample-type',
+                'plone.app.collection:default',
+                'plone.app.contenttypes:default',
+                'plone.app.dexterity:default',
+                'plone.app.discussion:default',
+                'plone.app.event:default',
+                'plone.app.imaging:default',
+                'plone.app.linkintegrity:default',
+                'plone.app.registry:default',
+                'plone.app.relationfield:default',
+                'plone.app.theming:default',
+                'plone.app.users:default',
+                'plone.app.versioningbehavior:default',
+                'plone.app.z3cform:default',
+                'plone.formwidget.recurrence:default',
+                'plone.resource:default',
                 ]
 
 
@@ -167,7 +165,7 @@ def addPloneSite(context, site_id, title='Plone site', description='',
     # during site creation.
     content_types_profile = content_profile_id if setup_content else _TYPES_PROFILE
 
-    setup_tool.runAllImportStepsFromProfile('profile-{0}'.format(content_types_profile))
+    setup_tool.runAllImportStepsFromProfile(f'profile-{content_types_profile}')
 
     props = dict(
         title=title,

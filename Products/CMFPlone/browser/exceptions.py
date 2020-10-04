@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from AccessControl import getSecurityManager
 from plone.memoize.view import memoize
 from Products.Five import BrowserView

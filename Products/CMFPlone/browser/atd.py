@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Products.CMFCore.utils import getToolByName
 from zope.component import getUtility
 from plone.registry.interfaces import IRegistry
@@ -9,7 +8,7 @@ from zope.interface import implementer
 
 
 @implementer(IATDProxyView)
-class ATDProxyView(object):
+class ATDProxyView:
     """ Proxy for the 'After the Deadline' spellchecker
     """
 

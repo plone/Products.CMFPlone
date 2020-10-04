@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Acquisition import aq_base
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
@@ -47,13 +46,13 @@ class TestPloneToolBrowserDefault(unittest.TestCase):
         _createObjectByType('Folder', self.portal, 'folder')
         _createObjectByType('Document', self.portal, 'document')
         _createObjectByType('File', self.portal, 'file')
-        self.portal.file.file = NamedBlobFile('foo', 'text/plain', u'foo.txt')
+        self.portal.file.file = NamedBlobFile('foo', 'text/plain', 'foo.txt')
         transaction.commit()
 
         self.putils = getToolByName(self.portal, "plone_utils")
         self.browser = Browser(self.layer['app'])
         self.browser.addHeader(
-            'Authorization', 'Basic %s:%s' % (
+            'Authorization', 'Basic {}:{}'.format(
                 TEST_USER_NAME,
                 TEST_USER_PASSWORD,
             )
@@ -143,7 +142,7 @@ class TestPloneToolBrowserDefault(unittest.TestCase):
 
     def testBrowserDefaultMixinFolderGlobalDefaultPage(self):
         registry = getUtility(IRegistry)
-        registry['plone.default_page'] = [u'foo']
+        registry['plone.default_page'] = ['foo']
         self.portal.folder.invokeFactory('Document', 'foo')
         self.assertEqual(self.putils.browserDefault(self.portal.folder),
                          (self.portal.folder, ['foo']))
@@ -242,7 +241,7 @@ class TestPloneToolBrowserDefault(unittest.TestCase):
         default = registry.get('plone.default_page', [])
         self.assertEqual(
             default,
-            [u'index_html', u'index.html', u'index.htm', u'FrontPage']
+            ['index_html', 'index.html', 'index.htm', 'FrontPage']
         )
 
 

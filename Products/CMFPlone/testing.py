@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Acquisition import aq_base
 from plone.app.contenttypes.testing import PLONE_APP_CONTENTTYPES_FIXTURE
 from plone.app.robotframework import AutoLogin
@@ -46,7 +45,7 @@ class ProductsCMFPloneLayer(PloneSandboxLayer):
         portal.invokeFactory(
             "Folder",
             id="test-folder",
-            title=u"Test Folder"
+            title="Test Folder"
         )
         # XXX: this is needed for tests that rely on the Members folder to be
         # present. This folder is otherwise created by a setup handler in
@@ -55,7 +54,7 @@ class ProductsCMFPloneLayer(PloneSandboxLayer):
             portal.invokeFactory(
                 "Folder",
                 id="Members",
-                title=u"Members"
+                title="Members"
             )
 
         portal._original_MailHost = portal['MailHost']

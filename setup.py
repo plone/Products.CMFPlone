@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from setuptools import setup
 from setuptools import find_packages
 
@@ -95,7 +94,6 @@ setup(
         'Products.CMFDynamicViewFTI',
         'Products.CMFEditions',
         'Products.CMFFormController',
-        'Products.CMFQuickInstallerTool',
         'Products.CMFUid',
         'Products.DCWorkflow',
         'Products.ExtendedPathIndex',

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from plone.i18n.interfaces import ILanguageSchema

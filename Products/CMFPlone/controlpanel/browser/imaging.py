@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces.controlpanel import IImagingSchema
 from logging import getLogger
@@ -10,7 +9,7 @@ log = getLogger('Plone')
 class ImagingControlPanelForm(controlpanel.RegistryEditForm):
 
     id = "ImagingSettings"
-    label = _(u"Image Handling Settings")
+    label = _("Image Handling Settings")
     schema = IImagingSchema
     schema_prefix = "plone"
 

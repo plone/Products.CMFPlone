@@ -136,7 +136,7 @@ class TestSafeFormatter(PloneTestCase):
         from Products.PageTemplates.ZopePageTemplate import ZopePageTemplate
         foobar = create_private_document(self.portal, 'foobar')
         login(self.portal, TEST_USER_NAME)
-        foobar.text = RichTextValue(u'Secret.', 'text/plain', 'text/html')
+        foobar.text = RichTextValue('Secret.', 'text/plain', 'text/html')
         self.assertEqual(
             self.portal.portal_workflow.getInfoFor(foobar, 'review_state'),
             'private')
@@ -210,8 +210,8 @@ class TestSafeFormatter(PloneTestCase):
         method_name = 'DexterityContent.Title'
         self.assertEqual(
             pt.pt_render(),
-            u'<p>access <bound method %s of '
-            u'<Document at /plone/foobar>></p>' % method_name)
+            '<p>access <bound method %s of '
+            '<Document at /plone/foobar>></p>' % method_name)
         logout()
         self.assertRaises(Unauthorized, pt.pt_render)
 
@@ -223,7 +223,7 @@ class TestSafeFormatter(PloneTestCase):
         login(self.portal, TEST_USER_NAME)
         self.assertEqual(
             pt.pt_render(),
-            u'<p><Document at foobar></p>')
+            '<p><Document at foobar></p>')
         logout()
         self.assertRaises(Unauthorized, pt.pt_render)
 
@@ -236,7 +236,7 @@ class TestSafeFormatter(PloneTestCase):
         # If you have such a list, you *can* see an id.
         self.assertEqual(
             pt.pt_render(),
-            u'<p>[<Document at /plone/foobar>]</p>')
+            '<p>[<Document at /plone/foobar>]</p>')
         # But you cannot access an item.
         pt = ZopePageTemplate(
             'mytemplate', TEMPLATE %
@@ -247,7 +247,7 @@ class TestSafeFormatter(PloneTestCase):
         login(self.portal, TEST_USER_NAME)
         self.assertEqual(
             pt.pt_render(),
-            u'<p><Document at foobar></p>')
+            '<p><Document at foobar></p>')
 
     # Zope 3 templates are always file system templates.  So we actually have
     # no problems allowing str.format there.
@@ -261,8 +261,8 @@ class TestSafeFormatter(PloneTestCase):
         namespace = {'context': self.portal}
         self.assertEqual(
             pt.pt_render(namespace).strip(),
-            u'<p>&lt;plonesite at plone&gt;</p>\n'
-            u'<p>&lt;PLONESITE AT PLONE&gt;</p>')
+            '<p>&lt;plonesite at plone&gt;</p>\n'
+            '<p>&lt;PLONESITE AT PLONE&gt;</p>')
 
     def test_cook_zope3_page_templates_using_format(self):
         from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -273,14 +273,14 @@ class TestSafeFormatter(PloneTestCase):
         namespace = {'context': self.portal}
         self.assertEqual(
             pt.pt_render(namespace).strip(),
-            u"<p>class of &lt;plonesite at plone&gt; is "
-            u"&lt;class 'products.cmfplone.portal.plonesite'&gt;</p>\n"
-            u"<p>CLASS OF &lt;PLONESITE AT PLONE&gt; IS "
-            u"&lt;CLASS 'PRODUCTS.CMFPLONE.PORTAL.PLONESITE'&gt;</p>\n"
-            u"<p>{'foo': 42} has foo=42</p>\n"
-            u"<p>{'foo': 42} has foo=42</p>\n"
-            u"<p>['ni'] has first item ni</p>\n"
-            u"<p>['ni'] has first item ni</p>"
+            "<p>class of &lt;plonesite at plone&gt; is "
+            "&lt;class 'products.cmfplone.portal.plonesite'&gt;</p>\n"
+            "<p>CLASS OF &lt;PLONESITE AT PLONE&gt; IS "
+            "&lt;CLASS 'PRODUCTS.CMFPLONE.PORTAL.PLONESITE'&gt;</p>\n"
+            "<p>{'foo': 42} has foo=42</p>\n"
+            "<p>{'foo': 42} has foo=42</p>\n"
+            "<p>['ni'] has first item ni</p>\n"
+            "<p>['ni'] has first item ni</p>"
         )
 
 

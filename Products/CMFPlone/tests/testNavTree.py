@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Products.CMFPlone.tests import PloneTestCase
 
 from Products.CMFCore.utils import getToolByName
@@ -537,7 +536,7 @@ class TestFolderTree(PloneTestCase.PloneTestCase):
 class TestNavigationRoot(PloneTestCase.PloneTestCase):
 
     def testGetNavigationRootPropertyNotSet(self):
-        self.portal.portal_registry['plone.root'] = u'/'
+        self.portal.portal_registry['plone.root'] = '/'
         root = getNavigationRoot(self.portal)
         self.assertEqual(root, '/'.join(self.portal.getPhysicalPath()))
 

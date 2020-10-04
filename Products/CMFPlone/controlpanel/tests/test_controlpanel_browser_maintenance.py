@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
@@ -34,14 +33,14 @@ class MaintenanceControlPanelFunctionalTest(unittest.TestCase):
         transaction.commit()
         self.browser.addHeader(
             'Authorization',
-            'Basic %s:%s' % ('app', 'secret')
+            'Basic {}:{}'.format('app', 'secret')
         )
 
         self.site_administrator_browser = Browser(self.app)
         self.site_administrator_browser.handleErrors = False
         self.site_administrator_browser.addHeader(
             'Authorization',
-            'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,)
+            f'Basic {TEST_USER_NAME}:{TEST_USER_PASSWORD}'
         )
 
     def test_maintenance_control_panel_link(self):

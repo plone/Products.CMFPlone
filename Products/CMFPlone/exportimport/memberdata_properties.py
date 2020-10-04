@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """MemberData tool properties setup handlers.
 
 $Id:$

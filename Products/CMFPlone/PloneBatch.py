@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from ZTUtils import make_query
 
 from plone.batching.batch import QuantumBatch
@@ -14,18 +13,23 @@ class Batch(QuantumBatch):
     def __init__(self, sequence, size, start=0, end=0, orphan=0,
                  overlap=0, pagerange=7, quantumleap=0,
                  b_start_str='b_start'):
-        super(Batch, self).__init__(sequence, size, start,
+        super().__init__(sequence, size, start,
                                     end, orphan, overlap,
                                     pagerange, quantumleap)
         self.b_start_str = b_start_str
 
     def __len__(self):
+        # Note: Using len() was deprecated for several years.
+        # It was recommended to explicitly either use the `length` attribute
+        # for the size of the current page, which is what we return now,
+        # or use the `sequence_length` attribute for the size of the
+        # entire sequence.
+        # But the deprecation was reverted for Plone 5.2.3,
+        # because core code in Products.PageTemplates called `len`
+        # on batches, making the deprecation warning unavoidable
+        # and thus unnecessary.
+        # See https://github.com/plone/Products.CMFPlone/issues/3176
         return self.length
-    __len__ = deprecated(__len__,
-                         ('Using len() is deprecated. Use the `length` attribute for the '
-                          'size of the current page, which is what we return now. '
-                          'Use the `sequence_length` attribute for the size of the '
-                          'entire sequence. '))
 
     def __bool__(self):
         # Without __bool__ a bool(self) would call len(self), which
@@ -36,7 +40,7 @@ class Batch(QuantumBatch):
     __nonzero__ = __bool__
 
     def initialize(self, start, end, size):
-        super(Batch, self).initialize(start, end, size)
+        super().initialize(start, end, size)
         self.pagerange, self.pagerangestart, self.pagerangeend = \
             calculate_pagerange(self.pagenumber, self.numpages, self.pagerange)
 

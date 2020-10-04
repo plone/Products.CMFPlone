@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from zope.component.hooks import getSite
 from zope.component import adapts
 from zope.interface import implementer
@@ -37,7 +36,7 @@ except ImportError:
         pass
 
 
-class BaseFeedData(object):
+class BaseFeedData:
 
     def __init__(self, context):
         self.context = context
@@ -289,7 +288,7 @@ class DexterityItem(BaseItem):
     field_name = ''
 
     def __init__(self, context, feed):
-        super(DexterityItem, self).__init__(context, feed)
+        super().__init__(context, feed)
         self.dexterity = IDexterityContent.providedBy(context)
         lead = ILeadImage(self.context, None)
         if lead:
@@ -316,7 +315,7 @@ class DexterityItem(BaseItem):
         if fi is not None:
             filename = fi.filename
             if filename:
-                url += '/@@download/%s/%s' % (
+                url += '/@@download/{}/{}'.format(
                     self.field_name, filename)
         return url
 

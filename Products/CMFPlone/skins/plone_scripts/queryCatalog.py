@@ -22,7 +22,7 @@ second_pass = {}
 if REQUEST is None:
     REQUEST = context.REQUEST
 
-multispace = u'\u3000'
+multispace = '\u3000'
 
 def quotestring(s):
     return '"%s"' % s

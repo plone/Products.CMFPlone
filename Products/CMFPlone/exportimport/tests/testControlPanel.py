@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from OFS.Folder import Folder
 from Products.CMFPlone.exportimport.tests.base import BodyAdapterTestCase
 from Products.CMFPlone.interfaces import IControlPanel

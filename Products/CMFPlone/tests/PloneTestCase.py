@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.testing.zope import Browser
 from plone.app.testing.bbb import PloneTestCase
 from plone.app.testing import PLONE_SITE_ID as portal_name
@@ -38,7 +37,7 @@ class PloneTestCase(PloneTestCase):
         if loggedIn:
             user = TEST_USER_NAME
             pwd = default_password
-            browser.addHeader('Authorization', 'Basic %s:%s' % (user, pwd))
+            browser.addHeader('Authorization', f'Basic {user}:{pwd}')
         return browser
 
 

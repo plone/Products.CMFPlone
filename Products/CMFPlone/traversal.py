@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.resource.traversal import ResourceTraverser
 from zope.component import queryUtility
 from plone.resource.interfaces import IResourceDirectory
@@ -31,7 +30,7 @@ class PloneBundlesTraverser(ResourceTraverser):
         # in case its not a request get the default one
         req = getRequest()
         if not req or 'PATH_INFO' not in req.environ:
-            return super(PloneBundlesTraverser, self).traverse(name, remaining)
+            return super().traverse(name, remaining)
 
         resource_path = req.environ['PATH_INFO'].split('++plone++')[-1]
         resource_name, resource_filepath = resource_path.split('/', 1)
@@ -52,7 +51,7 @@ class PloneBundlesTraverser(ResourceTraverser):
                 directory = container[resource_name]
                 if resource_filepath in directory:
                     return directory
-        return super(PloneBundlesTraverser, self).traverse(name, remaining)
+        return super().traverse(name, remaining)
 
 
 @implementer(IZopeAwareEngine)

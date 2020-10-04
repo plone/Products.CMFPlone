@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import pkg_resources
 
 HAS_ZSERVER = True

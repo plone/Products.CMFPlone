@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.testing import logout
 from plone.registry.interfaces import IRegistry
 from plone.resource.interfaces import IResourceDirectory
@@ -21,7 +20,7 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.component import getUtility
 
 import json
-import mock
+from unittest import mock
 import os
 
 
@@ -57,14 +56,14 @@ class TestResourceRegistries(PloneTestCase.PloneTestCase):
         cookWhenChangingSettings(self.portal, bundle)
 
         resp_js = subrequest(
-            '{0}/++plone++static/foobar-compiled.js'.format(
+            '{}/++plone++static/foobar-compiled.js'.format(
                 self.portal.absolute_url()
             )
         )
         self.assertIn(b'alert("Hi!");alert("Ho!");', resp_js.getBody())
 
         resp_css = subrequest(
-            '{0}/++plone++static/foobar-compiled.css'.format(
+            '{}/++plone++static/foobar-compiled.css'.format(
                 self.portal.absolute_url()
             )
         )
@@ -100,14 +99,14 @@ class TestResourceRegistries(PloneTestCase.PloneTestCase):
         cookWhenChangingSettings(self.portal, bundle)
 
         resp_js = subrequest(
-            '{0}/++plone++static/foobar-compiled.js'.format(
+            '{}/++plone++static/foobar-compiled.js'.format(
                 self.portal.absolute_url()
             )
         )
         self.assertIn(b'alert("Hi!");\n\nalert("Ho!");', resp_js.getBody())
 
         resp_css = subrequest(
-            '{0}/++plone++static/foobar-compiled.css'.format(
+            '{}/++plone++static/foobar-compiled.css'.format(
                 self.portal.absolute_url()
             )
         )
@@ -141,7 +140,7 @@ class TestResourceRegistries(PloneTestCase.PloneTestCase):
         cookWhenChangingSettings(self.portal, bundle)
 
         resp_css = subrequest(
-            '{0}/++plone++static/foobar-compiled.css'.format(
+            '{}/++plone++static/foobar-compiled.css'.format(
                 self.portal.absolute_url()
             )
         )
@@ -166,7 +165,7 @@ class TestResourceRegistries(PloneTestCase.PloneTestCase):
 
         cookWhenChangingSettings(self.portal, bundle)
         resp = subrequest(
-            '{0}/++plone++static/foobar-compiled.js'.format(
+            '{}/++plone++static/foobar-compiled.js'.format(
                 self.portal.absolute_url()
             )
         )
@@ -223,7 +222,7 @@ class TestResourceRegistries(PloneTestCase.PloneTestCase):
 
         cookWhenChangingSettings(self.portal, bundle)
         resp = subrequest(
-            '{0}/++plone++static/foobar-compiled.js'.format(
+            '{}/++plone++static/foobar-compiled.js'.format(
                 self.portal.absolute_url()
             )
         )
@@ -344,15 +343,15 @@ class TestControlPanel(PloneTestCase.PloneTestCase):
         req.environ['PATH_INFO'] = '++plone++foo/bar.css'
         mng = OverrideFolderManager(self.portal)
         css = """
-.foo {
-    background-image: url("%(site_url)s/foobar.css");
-}
-.bar {
-    background-image: url("%(site_url)s/++plone++foo/bar/foobar.css");
-}
-.foobar {
-    background-image: url("%(site_url)s/foo/bar/foobar.css");
-}""" % {'site_url': self.portal.absolute_url()}
+.foo {{
+    background-image: url("{site_url}/foobar.css");
+}}
+.bar {{
+    background-image: url("{site_url}/++plone++foo/bar/foobar.css");
+}}
+.foobar {{
+    background-image: url("{site_url}/foo/bar/foobar.css");
+}}""".format(site_url=self.portal.absolute_url())
         mng.save_file('foo/bar.css', css)
         value = self.portal.restrictedTraverse('++plone++foo/bar.css')
         match = b"""
@@ -375,13 +374,13 @@ class TestControlPanel(PloneTestCase.PloneTestCase):
         self.assertEqual(config['paths']['jquery'], 'empty:')
 
 
-class DummyResource(object):
+class DummyResource:
     def __init__(self, name):
         self.js = name
         self.css = [name, ]
 
 
-class DummyBundle(object):
+class DummyBundle:
     def __init__(self, name, enabled=True):
         self.__prefix__ = 'test/' + name
         self.compile = True

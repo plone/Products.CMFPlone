@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-# -*- encoding: utf-8 -*-
 from Acquisition import aq_base
 from DateTime import DateTime
 from functools import partial
@@ -396,7 +394,7 @@ class TestCatalogSearching(PloneTestCase):
         # Should include the group in list of allowed users
         groupname = self.addUser2ToGroup()
         uf = self.portal.acl_users
-        user = 'user:{0:s}'.format(groupname)
+        user = f'user:{groupname:s}'
         self.assertTrue(
             user in self.catalog._listAllowedRolesAndUsers(uf.getUser(user2)))
 
@@ -1367,7 +1365,7 @@ class TestObjectProvidedIndexExtender(unittest.TestCase):
         return object_provides(object)()
 
     def testNoInterfaces(self):
-        class Dummy(object):
+        class Dummy:
             pass
         self.assertEqual(self._index(Dummy()), ())
 
@@ -1376,7 +1374,7 @@ class TestObjectProvidedIndexExtender(unittest.TestCase):
             pass
 
         @zope.interface.implementer(IDummy)
-        class Dummy(object):
+        class Dummy:
             pass
         self.assertEqual(
             self._index(Dummy()),

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # flake8: noqa
 from Products.CMFPlone.interfaces.basetool import IPloneBaseTool
 from Products.CMFPlone.interfaces.basetool import IPloneCatalogTool

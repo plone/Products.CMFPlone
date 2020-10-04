@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import sys
 import time
 import unittest
@@ -71,7 +70,7 @@ class SearchLayer(PloneSandboxLayer):
                 'Document',
                 'my-page' + str(i),
                 text=RichTextValue(
-                    u'spam spam ham eggs', 'text/html', 'text/x-html-safe'),
+                    'spam spam ham eggs', 'text/html', 'text/x-html-safe'),
             )
             # Sleep before creating the next one, otherwise ordering by date is
             # not deterministic.
@@ -224,14 +223,14 @@ class TestSection(SearchTestCase):
         # Search.filter_query() will get SearchableText from form if not
         # passed in explicit query argument:
         req.form['SearchableText'] = 'spam'
-        view = getMultiAdapter((portal, req), name=u'search')
+        view = getMultiAdapter((portal, req), name='search')
         res = view.results(batch=False)
         self.assertTrue('my-page1' in [r.getId() for r in res],
                         'Test document is not found in the results.')
         # filter_query() will return None on invalid query (no real indexes):
         req = test_request()
         req.form['garbanzo'] = 'chickpea'  # just noise, no index for this
-        view = getMultiAdapter((portal, req), name=u'search')
+        view = getMultiAdapter((portal, req), name='search')
         self.assertIsNone(view.filter_query({'b_start': 0, 'b_size': 10}))
         # resulting empty query, ergo no search performed, empty result:
         self.assertFalse(view.results(batch=False))
@@ -254,7 +253,7 @@ class TestSection(SearchTestCase):
         req.form['created'] = [DateTime('1970/02/01 00:00:00 GMT+0')]
         req.form['created_usage'] = 'range:min'
         req.form['submit'] = 'Search'
-        view = getMultiAdapter((portal, req), name=u'search')
+        view = getMultiAdapter((portal, req), name='search')
         res = view.results(batch=False)
         self.assertEqual([], [r for r in res])
 
