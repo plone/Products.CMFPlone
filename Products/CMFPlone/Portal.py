@@ -17,7 +17,6 @@ from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone import bbb
 from Products.CMFPlone.DublinCore import DefaultDublinCoreImpl
 from Products.CMFPlone.PloneFolder import OrderedContainer
-from Products.CMFPlone.PloneFolder import ReplaceableWrapper
 from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
 from Products.CMFPlone.interfaces.syndication import ISyndicatable
 from Products.CMFPlone.permissions import AddPortalContent

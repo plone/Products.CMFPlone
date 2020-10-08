@@ -1,1 +1,0 @@
-Fix Python 3.8 ``time.clock`` removal in CatalogTool [jensens]

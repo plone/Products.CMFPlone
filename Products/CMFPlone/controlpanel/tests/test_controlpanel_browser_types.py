@@ -190,7 +190,7 @@ class TypesControlPanelFunctionalTest(unittest.TestCase):
         self.assertTrue(
             'Redirect immediately to link target' in self.browser.contents
         )
-        self.assertEquals(
+        self.assertEqual(
             self.browser.getControl(
                 'Redirect immediately to link target').selected,
             True
@@ -221,7 +221,7 @@ class TypesControlPanelFunctionalTest(unittest.TestCase):
         self.assertTrue(
             'Redirect immediately to link target' in self.browser.contents
         )
-        self.assertEquals(
+        self.assertEqual(
             self.browser.getControl(
                 'Redirect immediately to link target').selected,
             True

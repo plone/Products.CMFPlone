@@ -12,6 +12,100 @@ Changelog
 
 .. towncrier release notes start
 
+5.2.2 (2020-08-16)
+------------------
+
+Bug fixes:
+
+
+- Release Plone 5.2.2 final.
+  No changes with last release candidate, except that the versions will contain Products.isurlinportal 1.1.0 with a minor security hardening fix.
+  [maurits] (#3510)
+
+
+5.2.2rc3 (2020-08-16)
+---------------------
+
+Bug fixes:
+
+
+- Return a Zope aware engine for page templates based on ``zope.pagetemplate`` instead of ``Products.PageTemplates``.
+  Fixes possible problems with such templates, for example z3c.form ones, with Zope 4.4 and higher.
+  See `issue 3141 <https://github.com/plone/Products.CMFPlone/issues/3141>`_.
+  [maurits] (#3141)
+- Depend on new package ``Products.isurlinportal``.
+  This contains the ``isURLInPortal`` method that was split off from our ``URLTool``.
+  See `issue 3150 <https://github.com/plone/Products.CMFPlone/issues/3150>`_.
+  [maurits] (#3150)
+- Redirection view: refactor our navigation root editing to a separate method ``edit_for_navigation_root``.
+  Since Plone 5.2 the redirectiontool respects INavigationroot:
+  with a manual redirect you cannot enter a path starting with ``/`` which 'escapes' the NavigationRoot to the SiteRoot to link to another part of the Plone instance.
+  This refactor makes it possible to override this method to return the redirection unchanged, brining back the pre Plone 5.2 behavior of the ``Products.RedirectionTool`` add-on.
+  [maurits] (#3153)
+- Control panel configlets: first check visibility, then check condition.
+  Visibility is cheaper to check.
+  Also fixes `bug 3154 <https://github.com/plone/Products.CMFPlone/issues/3154>`_.
+  [maurits] (#3154)
+
+
+5.2.2rc2 (2020-07-17)
+---------------------
+
+Bug fixes:
+
+
+- Fix an issue in mail_password_template.pt in the message showing the ip to really try the request.REMOTE_ADDR variable if request.HTTP_X_FORWARDED_FOR is empty (when you're not behind apache or nginx).
+  [vincentfretin] (#2949)
+- mail_password form: Do not crash if the userid is not provided or the user doesn't have an email configured
+  [frapell] (#3008)
+
+
+5.2.2rc1 (2020-06-28)
+---------------------
+
+New features:
+
+
+- Image caption support
+  Allow ``figcaption`` in rich text editor as a valid tag.
+  Add registry setting for plone.image_caption outputfilter transform.
+  [thet] (#2887)
+- Add markdown extension settings to markup control panel.
+  [thomasmassmann] (#3076)
+- Insert virtual custom.css bundle into the header after diazo bundle.
+  Only add this when custom css is set in the theming control panel.
+  [MrTango] (#3086)
+
+
+Bug fixes:
+
+
+- Change control panel item sorting and sort them by title
+  [erral] (#721)
+- Update HTMLFilter settings to enable TinyMCE styling features. See #2329, #2482, #2535
+  [petschki] (#2482)
+- If 'tinymce-content-css' option is missing in themes manifest.cfg prevent unnecessary loading of a css at nav_root_url while editing a page.  [krissik] (#2861)
+- Redirect (when possible) also ajax requests and do not return an unuseful body
+  [ale-rt] (#3014)
+- Merge Hotfix20200121 Check of the strength of password could be skipped. (#3021)
+- Merge Hotfix20200121: isURLInPortal could be tricked into accepting malicious links. (#3021)
+- Improve tests for the workflow tool method listWFStatesByTitle (#3032)
+- Fix index_html on PortalRoot: ReplaceableWrapper did not work.
+  [jensens] (#3060)
+- Allow accessing ``plone_view.patterns_settings``.
+  This was no problem until now, but a newer ``Zope/zope.tales/Chameleon``  is rightly stricter.
+  [maurits] (#3066)
+- Fix Python 3.8 ``time.clock`` removal in CatalogTool [jensens] (#3082)
+- Fixed TypeError when adding both a group and a user to a group.
+  [maurits] (#3084)
+- Make the resource registry scripts output more robust when a bundle resource is missing. This prevents
+  breaking your whole Plone site and access to the resource registry control panel after inserting
+  one missing resource.
+  [fredvd] (#3096)
+- Bugfix for #3103
+  [petschki] (#3105)
+- Fixed saving ignored exception types in Python 3.  [maurits] (#3115)
+
 
 5.2.1 (2020-01-13)
 ------------------

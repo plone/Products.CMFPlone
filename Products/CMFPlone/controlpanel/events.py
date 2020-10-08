@@ -12,7 +12,7 @@ from zope.component import adapter
 from zope.component import queryUtility
 from zope.interface import implementer
 from zope.ramcache.interfaces.ram import IRAMCache
-from zope.site.hooks import getSite
+from zope.component.hooks import getSite
 
 
 @implementer(IConfigurationChangedEvent)

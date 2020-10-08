@@ -131,4 +131,9 @@
       provides="plone.scale.interfaces.IScaledImageQuality"
       />
 
+  <adapter
+      for="zope.pagetemplate.engine.ZopeBaseEngine"
+      factory=".traversal.get_zope_page_template_engine"
+      />
+
 </configure>

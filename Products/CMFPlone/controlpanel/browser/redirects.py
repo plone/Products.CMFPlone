@@ -107,6 +107,22 @@ class RedirectsView(BrowserView):
             path = redirect[len(portal_path) :]
             yield {'redirect': redirect, 'path': path}
 
+    def edit_for_navigation_root(self, redirection):
+        # Check navigation root
+        pps = getMultiAdapter(
+            (self.context, self.request), name='plone_portal_state'
+        )
+        nav_url = pps.navigation_root_url()
+        portal_url = pps.portal_url()
+        if nav_url != portal_url:
+            # We are in a navigation root different from the portal root.
+            # Update the path accordingly, unless the user already did this.
+            extra = nav_url[len(portal_url) :]
+            if not redirection.startswith(extra):
+                redirection = '{0}{1}'.format(extra, redirection)
+        # Finally, return the (possibly edited) redirection
+        return redirection
+
     def __call__(self):
         storage = getUtility(IRedirectionStorage)
         request = self.request
@@ -118,17 +134,7 @@ class RedirectsView(BrowserView):
             redirection = form.get('redirection')
             if redirection and redirection.startswith('/'):
                 # Check navigation root
-                pps = getMultiAdapter(
-                    (self.context, self.request), name='plone_portal_state'
-                )
-                nav_url = pps.navigation_root_url()
-                portal_url = pps.portal_url()
-                if nav_url != portal_url:
-                    # We are in a navigation root different from the portal root.
-                    # Update the path accordingly, unless the user already did this.
-                    extra = nav_url[len(portal_url) :]
-                    if not redirection.startswith(extra):
-                        redirection = '{0}{1}'.format(extra, redirection)
+                redirection = self.edit_for_navigation_root(redirection)
 
             redirection, err = absolutize_path(redirection, is_source=True)
             if err:

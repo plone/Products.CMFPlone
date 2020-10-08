@@ -418,7 +418,12 @@ then we extract the address that lets us reset our password:
   >>> msgtext = quopri.decodestring(message.get_payload())
   >>> b"Please activate it by visiting" in msgtext
   True
-  >>> address = re.search(b'(http://nohost/plone/passwordreset/[a-z0-9]+\?userid=[\w]*)\s', msgtext).groups()[0].decode()
+
+We need to be careful to keep this working in both Python 2 and 3 without invalid escape sequences.
+It is best to convert msgtext to text first.
+
+  >>> msgtext = msgtext.decode()
+  >>> address = re.search(r'(http://nohost/plone/passwordreset/[a-z0-9]+\?userid=[\w]*)\s', msgtext).groups()[0]
 
 Now that we have the address, we will reset our password:
 
@@ -504,7 +509,8 @@ then we extract the address that lets us reset our password:
   >>> msgtext = quopri.decodestring(message.get_payload())
   >>> b"Please activate it by visiting" in msgtext
   True
-  >>> address = re.search(b'(http://nohost/plone/passwordreset/[a-z0-9]+\?userid=[\w]*)\s', msgtext).groups()[0].decode()
+  >>> msgtext = msgtext.decode()
+  >>> address = re.search(r'(http://nohost/plone/passwordreset/[a-z0-9]+\?userid=[\w]*)\s', msgtext).groups()[0]
 
 Now that we have the address, we will reset our password:
 
